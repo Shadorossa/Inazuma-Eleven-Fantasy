@@ -1,0 +1,43 @@
+schema = "vr_framework.technique/3"
+# Override chain hand-off scenes (1.2.0, from Inazuma Fantasy; docs/game/mechanics/override-skills.md §10; written by
+# hand). When the first shooter (seat s00 of the combined scene) has just played his own move, the combined move plays
+# its scene from the hand-off on (anims\override_handoff.toml) instead of the full scene that shows his shot again. A
+# direct use of the combined move, or the chain the other way round, keeps the full scene. Only the retail chain
+# combos (override condition type 2 in the retail override_skill_config); a mod that adds or reorders override chains
+# declares its own [[handoff]] rules (Inazuma Fantasy: Spring Thunderclap and its Emperor Penguin No. 2 override).
+# A rule covers the combined move's event, so the normal combo that shares it is covered too.
+
+[[handoff]]
+technique = "whs00350_or"   # Dragon Tornado: Dragon Crash -> Fire Tornado (also the normal whs00350)
+after = ["whs00060"]
+event = "dragon_tornado_handoff"
+
+[[handoff]]
+technique = "whs02980_or"   # Cosmic Blaster: Meteor Blade / Meteor Blade A -> The Detonator (whs02980_or_02 shares the event)
+after = ["whs00510", "whs03410"]
+event = "cosmic_blaster_handoff"
+
+[[handoff]]
+technique = "whs00840_or"   # Wyvern Blizzard: Wyvern Crash -> Eternal Blizzard
+after = ["whs00830"]
+event = "wyvern_blizzard_handoff"
+
+[[handoff]]
+technique = "whs01020_or"   # Tiger Storm: Tiger Drive -> Fireball Storm
+after = ["whs00960"]
+event = "tiger_storm_handoff"
+
+[[handoff]]
+technique = "whs03360_or"   # Icebreaker: Eternal Blizzard -> Ursa Rager
+after = ["whs00440"]
+event = "icebreaker_handoff"
+
+[[handoff]]
+technique = "whs03330_or"   # Emperor Penguin No. 2 feat. Shark: Emperor Penguin No. 2 -> Shark Shooter x2
+after = ["whs00400"]
+event = "ep2_shark_handoff"
+
+[[handoff]]
+technique = "whs03180_or"   # Beyond the Death Zone: Polar Pike -> Death Zone
+after = ["whs02810"]
+event = "beyond_death_zone_handoff"

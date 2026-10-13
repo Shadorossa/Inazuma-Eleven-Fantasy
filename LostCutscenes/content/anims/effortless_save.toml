@@ -1,0 +1,36 @@
+# «Parada sin esfuerzo» (new_animations 1.0.0; keeper_scenes 1.4.0 before 2026-10-08): the cut-in of an effortless save (content\techniques\effortless_save.toml plays
+# it). It is the game's own one-hand catch: ev74_01140, the Chronicle scene of Inazuma Eleven 2 match 1 against Gemini
+# Storm (game fbtl_cro02_010_010, trigger row 24: demo `dev_cro02_010_010_enemy_06` right after Raimon's «Ruptura
+# relámpago» whs00380) where Galileo (c02021010) stops the shot with one hand without effort. Built at boot by the anim
+# engine, nothing baked (docs/game/mechanics/basic-move-cutscenes.md §8):
+# * c0010 = ev74_01140 c0100 (57 frames): the shot flying at the keeper, wide shot.
+# * c0020 = ev74_01140 c0200 (137 frames): close-up, the ball lands in his raised left hand (frame 21) and he holds it
+#   there.
+# The retail scene ships the keeper for body type 4 only (Galileo's; `ACTOR_TEMPLATE_ASSIGN TYPE 04`): `body` gives the
+# other three body types that motion retargeted to their own rig (anim engine cut key `body`). The base is the retail
+# keeper scene ev71_31010 (the match's keeper in slot 6, the ball, the keeper gauge menu, its keeper voice, its
+# event_env_config row; no banner), so the keeper of the match plays it. The sound track is the scene's own
+# (ev74_01140_me, timed to this catch); its impact effect is added by content\effects\effortless_save.toml.
+# 1.1.0-1.3.3 built a cut-in of our own here (ev71_80010: «Recepción negativa» mirrored and slowed, joined to ev71_31090);
+# replaced by the retail one in 1.4.0 (Nacho, 2026-10-07).
+schema = "vr_framework.anim/2"
+
+[[event]]
+name = "effortless_save"
+from = "ev71_31010"
+id = "ev71_80030"
+sound = "ev74_01140"
+cuts = [
+    { from = "ev74_01140", cut = "c0100", body = "c000401" },
+    { from = "ev74_01140", cut = "c0200", body = "c000401" },
+]
+
+# c0020 is a close-up of the raised hand (feet out of frame): the other body types are moved so their left hand is
+# where Galileo's is while he holds the ball (cut frames 21-136), so the ball lands in their hand. Bodies 1-3 are
+# shorter: they rise (the camera does not show it). c0010 (wide shot, the keeper 7 m away) keeps them on the ground.
+[[reach]]
+event = "effortless_save"
+cut = "c0020"
+bone = "l_wph_1_0"
+rig = "c000401"
+frames = [21, 136]

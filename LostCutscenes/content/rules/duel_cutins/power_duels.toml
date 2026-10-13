@@ -1,0 +1,36 @@
+# Drawn by the VR-Framework's scene selector (docs/framework/scene-select.md, situation duel.power_charge_won /
+# duel.power_block_won): pure data. Every entry may carry `when` (the winner's character / card, element, hyper…),
+# `priority` (a character's own scene first) and the pool `no_repeat = true`; none is set here, so the draw is the
+# same as in 1.0.0 (uniform among the pool's scenes).
+schema = "vr_framework.duel_clip/1"
+# «Duelos potentes de CS/Galaxy» (new_animations 1.0.0; the mod keeper_scenes until 2026-10-08): a «Carga potente» (power charge) or «Bloqueo potente» (power block)
+# focus duel won WITHOUT a hyper technique plays one of these cut-ins, drawn at random, instead of the retail one
+# (ev71_40010 / ev71_50010); with a hyper technique active (keshin, armour, miximax, soul…) the retail cut-in stays.
+# The scenes are the anim engine events of content\anims\duel_cutins.toml. Always on (keeper_scenes 1.3.2: the option
+# «Duelos potentes de CS/Galaxy» was retired). Mechanism: docs/framework/types/rule.md «Duel clips»; research:
+# docs/game/research/cs-galaxy-regates.md §11.
+
+[[duel_clip]]
+name = "cs_galaxy_charges"
+case = "power_charge_won"
+presentation = "cutin"
+with_hyper = "retail"
+scenes = [
+    "duel_atk_cs_vca0005",        # strong dodge past the block, 20 m run
+    "duel_atk_cs_vca0006",        # strong dodge over the sliding tackle
+    "duel_atk_cs_vca0007",        # strong breakthrough through the block
+    "duel_atk_cs_vca0008",        # strong breakthrough past the sliding tackle
+    "duel_atk_gx_vca0015",        # Galaxy: dash past the defender (13 m)
+]
+
+[[duel_clip]]
+name = "cs_galaxy_blocks"
+case = "power_block_won"
+presentation = "cutin"
+with_hyper = "retail"
+scenes = [
+    "duel_def_cs_vca0009",        # strong block stops the dodge
+    "duel_def_cs_vca0010",        # strong sliding tackle wins the ball
+    "duel_def_cs_vca0011",        # strong block stops the breakthrough
+    "duel_def_cs_vca0012",        # strong sliding tackle on the breakthrough
+]

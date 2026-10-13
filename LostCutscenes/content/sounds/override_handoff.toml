@@ -1,0 +1,55 @@
+schema = "vr_framework.sound/1"
+# Trimmed copies of the move SE of the override chain hand-off scenes (VRFW 2.1; docs/game/mechanics/override-trims-review.md
+# §3 I1). A move's sound effects are ONE wave `<event>_me` started at frame 0 and timed to the full scene; a hand-off
+# scene drops the first N frames, so it plays a copy of that wave that starts N frames in (`start_frame`, 60 fps):
+# built at boot from the player's own waza_stream (no audio shipped, no re-encoding) and added to waza_stream; the
+# scene names it with `sound_cue` (content\anims\override_handoff.toml).
+
+# Dragon Tornado: ev60_80350 drops c0100-c0200 (frames 0-225)
+[[sfx]]
+add = "ev60_80350_me"
+from = "ev60_00350_me"
+bank = "waza_stream"
+start_frame = 226
+
+# Cosmic Blaster: ev60_82980 drops c0100-c0200 (frames 0-118)
+[[sfx]]
+add = "ev60_82980_me"
+from = "ev60_02980_me"
+bank = "waza_stream"
+start_frame = 119
+
+# Wyvern Blizzard: ev60_80840 drops c0100-c0200 (frames 0-217)
+[[sfx]]
+add = "ev60_80840_me"
+from = "ev60_00840_me"
+bank = "waza_stream"
+start_frame = 218
+
+# Tiger Storm: ev60_81020 drops c0100-c0200 (frames 0-197)
+[[sfx]]
+add = "ev60_81020_me"
+from = "ev60_01020_me"
+bank = "waza_stream"
+start_frame = 198
+
+# Icebreaker: ev60_83360 drops c0100-c0200 (frames 0-255)
+[[sfx]]
+add = "ev60_83360_me"
+from = "ev60_03360_me"
+bank = "waza_stream"
+start_frame = 256
+
+# Emperor Penguin No. 2 feat. Shark: ev60_83330 drops c0100-c0300 (frames 0-248)
+[[sfx]]
+add = "ev60_83330_me"
+from = "ev60_03330_me"
+bank = "waza_stream"
+start_frame = 249
+
+# Beyond the Death Zone: ev60_83185 drops c0100-c0200 and c0300's first 4 frames (0-151; its cue is ev60_03180_me)
+[[sfx]]
+add = "ev60_83185_me"
+from = "ev60_03180_me"
+bank = "waza_stream"
+start_frame = 152

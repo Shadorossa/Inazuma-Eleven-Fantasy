@@ -1,0 +1,15 @@
+# «Parada sin esfuerzo» (new_animations 1.0.0; keeper_scenes 1.4.0 before 2026-10-08): the impact of the retail one-hand catch. Effect object ev74011400 is the
+# one ev74_01140 plays (game file): in its c0200 the flash, rings and point light where the ball meets the raised hand
+# (retail frames 69-101 of the event = cut frames 12-44; the ball lands at cut frame 21). It hangs from point_eff /
+# evp_eff01, whose placement pack the clone copies from ev74_01140 c0200, so it lands where it does in the game.
+# Its c0100 clip (the shot's aura around the flying ball, the «Ruptura relámpago» of that match) is left out: the
+# scene plays for any shot. Applied to the event's eff list at boot (type `effect`, `[[event_effect]]`,
+# docs/framework/effect.md §3). 1.1.1-1.3.3 shipped an impact object of our own here (ev71800100): removed in 1.4.0.
+schema = "vr_framework.effect/1"
+
+[[event_effect]]
+event = "ev71_80030"
+object = "ev74011400"
+cut = "c0020"
+clips = { c0020 = "c0200" }
+attach = { point = "point_eff", locator = "evp_eff01" }

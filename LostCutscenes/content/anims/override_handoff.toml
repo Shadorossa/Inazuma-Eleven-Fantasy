@@ -1,0 +1,89 @@
+schema = "vr_framework.anim/2"
+
+# Override chain hand-off scenes (1.2.0, from Inazuma Fantasy; docs/game/mechanics/override-skills.md §10). In the
+# retail chain combos (override condition type 2: a player shoots move A, a teammate holding B chains it and the shot
+# becomes the combined move C) the game plays A's own scene and then C's FULL scene, which shows A's shot a second
+# time. These events are C's scene from the moment the ball travels to the second player; the technique rules in
+# content\techniques\overrides\handoff.toml play them instead of C's scene only when C's first shooter (seat s00) started A's
+# scene just before. A direct use of C, or the chain the other way round, keeps the full scene. Built at boot from the
+# player's own retail events (nothing Level-5-derived is shipped).
+
+# Dragon Tornado (whs00350_or / whs00350, ev60_00350; s00 = Dragon Crash, s01 = Fire Tornado).
+# Retail: c0100 both run in, c0200 s00's Dragon Crash (the dragon and the shot), c0300 the ball and the dragon fly
+# in from s00's side while s01 jumps (the hand-off), c0400-c0600 s01's Fire Tornado finish. Kept: c0300-c0600
+# (296 of 522 frames).
+[[event]]
+name = "dragon_tornado_handoff"
+from = "ev60_00350"
+id = "ev60_80350"
+sound_cue = "ev60_80350_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0300", "c0400", "c0500", "c0600"]
+
+# Cosmic Blaster (whs02980_or / whs02980_or_02, ev60_02980; s00 = Meteor Blade / Meteor Blade A, s01 = The Detonator).
+# Retail: c0100 s00 dribbles in while s01 jumps, c0200 s00 kicks the ball up to s01, c0300 s01 (facing the camera)
+# carries it into the sky, c0400-c0600 both finish it in space. Kept: c0300-c0600 (538 of 657 frames); Nacho
+# 2026-10-07: start right on the cut where s01 faces the camera. Both scenes keep the move's own sound track.
+[[event]]
+name = "cosmic_blaster_handoff"
+from = "ev60_02980"
+id = "ev60_82980"
+sound_cue = "ev60_82980_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0300", "c0400", "c0500", "c0600"]
+
+# The other retail chain combos whose scene hands the ball from the first shooter (s00) to the partner(s) at a cut
+# boundary (override-skills.md §10.3). Kept: from the partner's first cut on.
+
+# Wyvern Blizzard (whs00840_or, ev60_00840; s00 = Wyvern Crash, s01 = Eternal Blizzard).
+# c0100 both, c0200 s00's Wyvern Crash, c0300 s01 runs to meet the ball, c0400-c0500 his Eternal Blizzard finish.
+[[event]]
+name = "wyvern_blizzard_handoff"
+from = "ev60_00840"
+id = "ev60_80840"
+sound_cue = "ev60_80840_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0300", "c0400", "c0500"]
+
+# Tiger Storm (whs01020_or, ev60_01020; s00 = Tiger Drive, s01 = Fireball Storm).
+# c0100 both, c0200 s00's Tiger Drive sends the ball up, c0300 s01 rises to it, c0400-c0500 his finish.
+[[event]]
+name = "tiger_storm_handoff"
+from = "ev60_01020"
+id = "ev60_81020"
+# the only «Tiger Storm» name call is s00's, in the dropped c0200: said again as the scene opens (with its special-line
+# mate whs01020_sp_0, as in the base)
+voices = [{ cue = "whs01020", seat = "s00", frame = 0 }]
+sound_cue = "ev60_81020_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0300", "c0400", "c0500"]
+
+# Icebreaker (whs03360_or, ev60_03360; s00 = Eternal Blizzard, s01 = Ursa Rager).
+# c0100-c0200 s00's Eternal Blizzard, c0300 s01 runs in, c0400-c0500 his Ursa Rager finish.
+[[event]]
+name = "icebreaker_handoff"
+from = "ev60_03360"
+id = "ev60_83360"
+sound_cue = "ev60_83360_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0300", "c0400", "c0500"]
+
+# Emperor Penguin No. 2 feat. Shark (whs03330_or, ev60_03330; s00 = Emperor Penguin No. 2, s01 / s02 = Shark
+# Shooter). c0100 all, c0200-c0300 s00's penguins and shot, c0400 the ball comes to the sharks, c0500-c0600 their
+# finish.
+[[event]]
+name = "ep2_shark_handoff"
+from = "ev60_03330"
+id = "ev60_83330"
+sound_cue = "ev60_83330_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = ["c0400", "c0500", "c0600"]
+
+# Beyond the Death Zone (whs03180_or, ev60_03185; s00 = Polar Pike, s01-s03 = Death Zone). c0100-c0200 s00's Polar
+# Pike, c0300 his kick (contact at frame 2-4) sends the ball up to the trio, who appear around it at frame 56,
+# c0400-c0600 their Death Zone. Kept: c0300 from frame 4 on.
+[[event]]
+name = "beyond_death_zone_handoff"
+from = "ev60_03185"
+id = "ev60_83185"
+sound_cue = "ev60_83185_me"   # the trimmed copy of the move's SE (content\sounds\override_handoff.toml): every hit in sync
+cuts = [
+    { cut = "c0300", start_at = 4 },
+    "c0400",
+    "c0500",
+    "c0600",
+]

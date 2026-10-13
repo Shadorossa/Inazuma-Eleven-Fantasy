@@ -1,0 +1,68 @@
+# «Duelos potentes de CS/Galaxy» (new_animations 1.0.0; keeper_scenes 1.3.0-1.4.0 before 2026-10-08): the cut-ins a won «Carga potente» / «Bloqueo potente» plays instead of the
+# retail ev71_40010 / ev71_50010 when the winner has no hyper technique (rules\duel_cutins\power_duels.toml picks
+# one at random). Each event is a clone of the retail cut-in of its case (same seats: s00 = the winner, s01 = the loser,
+# ball, sounds) whose only cut c0010 is a 3DS duel cut-in (Chrono Stone / Galaxy vcaNNNN, both players, the ball and
+# its own camera), retargeted to the 4 VR body rigs by research/scripts/duel_cutin_build.py (one armature per rig and
+# seat: c000N01_s00_p00 / c000N01_s01_p00, b000001_s00_p00, camera; the scene placed so its contact is the retail
+# one). Built at boot by the anim engine. The retail cut-in's effects play (effects = true: the speed lines, the impact
+# flash and shock, the dust, the winner's aura, the sounds), re-timed by `sync` (retail frame -> new frame, printed by
+# the build script) so the retail impact lands on this scene's (frame of the closest approach).
+# Research: docs/game/research/cs-galaxy-regates.md §11-§12.
+# The assets\anims\duel_cutins\*.glb are converted from the 3DS games' cut-in packs (Level-5): generated on the author's PC by
+# research/scripts/duel_cutin_build.py, ignored by git, installed through _deploy.toml `overlays` and left out of every
+# release (release_exclude.L5_DERIVED["new_animations"], together with this file and content\rules\duel_cutins\).
+schema = "vr_framework.anim/2"
+
+# vca0005 01 attacker wins (charge, 2.68 s): strong dodge past the block, 20 m run
+[[event]]
+name = "duel_atk_cs_vca0005"
+from = "ev71_40010"
+cuts = [{ glb = "assets/anims/duel_cutins/atk_cs_vca0005.glb", action = "c0010", effects = true, sync = [[43, 0], [109, 89], [202, 182]] }]
+
+# vca0006 01 attacker wins (charge, 2.68 s): strong dodge over the sliding tackle
+[[event]]
+name = "duel_atk_cs_vca0006"
+from = "ev71_40010"
+cuts = [{ glb = "assets/anims/duel_cutins/atk_cs_vca0006.glb", action = "c0010", effects = true, sync = [[40, 0], [109, 91], [202, 184]] }]
+
+# vca0007 01 attacker wins (charge, 2.68 s): strong breakthrough through the block
+[[event]]
+name = "duel_atk_cs_vca0007"
+from = "ev71_40010"
+cuts = [{ glb = "assets/anims/duel_cutins/atk_cs_vca0007.glb", action = "c0010", effects = true, sync = [[43, 0], [109, 89], [202, 182]] }]
+
+# vca0008 01 attacker wins (charge, 2.68 s): strong breakthrough past the sliding tackle
+[[event]]
+name = "duel_atk_cs_vca0008"
+from = "ev71_40010"
+cuts = [{ glb = "assets/anims/duel_cutins/atk_cs_vca0008.glb", action = "c0010", effects = true, sync = [[44, 0], [109, 89], [202, 182]] }]
+
+# vca0015 01 attacker wins (charge, 2.32 s): Galaxy: dash past the defender (13 m)
+[[event]]
+name = "duel_atk_gx_vca0015"
+from = "ev71_40010"
+cuts = [{ glb = "assets/anims/duel_cutins/atk_gx_vca0015.glb", action = "c0010", effects = true, sync = [[51, 0], [109, 75], [202, 168]] }]
+
+# vca0009 01a defender wins (block, 2.68 s): strong block stops the dodge
+[[event]]
+name = "duel_def_cs_vca0009"
+from = "ev71_50010"
+cuts = [{ glb = "assets/anims/duel_cutins/def_cs_vca0009.glb", action = "c0010", effects = true, sync = [[41, 0], [96, 105], [220, 229]] }]
+
+# vca0010 01a defender wins (block, 2.68 s): strong sliding tackle wins the ball
+[[event]]
+name = "duel_def_cs_vca0010"
+from = "ev71_50010"
+cuts = [{ glb = "assets/anims/duel_cutins/def_cs_vca0010.glb", action = "c0010", effects = true, sync = [[41, 0], [96, 105], [220, 229]] }]
+
+# vca0011 01a defender wins (block, 2.68 s): strong block stops the breakthrough
+[[event]]
+name = "duel_def_cs_vca0011"
+from = "ev71_50010"
+cuts = [{ glb = "assets/anims/duel_cutins/def_cs_vca0011.glb", action = "c0010", effects = true, sync = [[0, 61], [96, 104], [220, 228]] }]
+
+# vca0012 01a defender wins (block, 2.68 s): strong sliding tackle on the breakthrough
+[[event]]
+name = "duel_def_cs_vca0012"
+from = "ev71_50010"
+cuts = [{ glb = "assets/anims/duel_cutins/def_cs_vca0012.glb", action = "c0010", effects = true, sync = [[41, 0], [96, 104], [220, 228]] }]

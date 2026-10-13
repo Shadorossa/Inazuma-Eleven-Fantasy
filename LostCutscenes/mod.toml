@@ -1,0 +1,52 @@
+id = "new_animations"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+# «Lost Cutscenes» since 1.3.2 (2026-10-11; «Lost Scenes» 1.3.0-1.3.1, «New Animations» / «Nuevas animaciones» before;
+# repo / install folder LostScenes until 1.3.1): the same name in every language; the id stays.
+name = "Lost Cutscenes"
+version = "1.4.2"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Lost scenes back in matches: animations the game ships but never plays and scenes from earlier Inazuma Eleven games. Keeper: three save / goal pairs the game ships but never plays (standing catch and dives to both sides, each with its beaten version) join the random keeper-gauge scenes; «Effortless save»: a shot that takes at most 15 % of the gauge from a keeper without a move is stopped one-handed over his head (Galileo's catch from Chronicle Mode, played by the match's keeper). Duels: a Power Charge or Power Block won without a hyper move plays a Chrono Stone / Galaxy duel scene. De-summons: when a Keshin, a Keshin armour or a Miximax ends in open play, the player kneels, sweeps the spirit away or throws his arms out (Chrono Stone). Group summons: Griffin summoned by three players and Arthur by two (with Flamberge kicked by all three) when a game mode hands the participants (Inazuma Fantasy). Celebrations: the Inazuma Eleven Cross intros as goal celebrations of their characters (Mark Evans, Axel Blaze, Arion Sherwind…) and four open poses. Override chains: when a shot is chained into its combined move (Dragon Crash → Fire Tornado = Dragon Tornado, Cosmic Blaster, Wyvern Blizzard, Tiger Storm, Icebreaker, Emperor Penguin No. 2 feat. Shark, Beyond the Death Zone), the combined scene starts at the pass instead of repeating the first shot. Always on: the mod has no options."
+priority = 0
+tags = ["Visual"]
+updated = "2026-10-13"
+# This mod's own names (TOML keys [[LostCutscenes.X]], Lua LostCutscenes.X, any later text, command or key); never VRFW.
+prefix = "LostCutscenes"
+folder = "LostCutscenes"
+# One mod for the extra animations (Nacho, 2026-10-08): the keeper scenes and the GO-style duel cut-ins. Data only, no
+# plugin, no Lua, no options. Standard mod layout (docs/framework/mod-layout.md, 1.3.0): declarations in
+# content\<type>\, the converted animations in assets\anims\, game-shaped files in assets\data\:
+#   content\techniques\keeper_scenes.toml     three dormant retail keeper pairs ev71_30010…30060 (technique type [[keeper_scene]])
+#   content\techniques\effortless_save.toml   «Parada sin esfuerzo»: [[keeper_scene]] max_gauge_damage + keeper_save
+#   content\anims\effortless_save.toml        its event ev71_80030, built at boot from the retail ev74_01140 (anim type)
+#   content\effects\effortless_save.toml      its impact, the retail effect object ev74011400 ([[event_effect]])
+#   content\anims\duel_cutins.toml + assets\anims\duel_cutins\*.glb, content\rules\duel_cutins\power_duels.toml
+#                                     «Duelos potentes de CS/Galaxy» (anim type + rule kind duel_clip/1, presentation cutin)
+#   content\rules\aura_end\aura_end.toml + assets\anims\aura_end\*.glb
+#                                     «Desinvocaciones» (1.1.0, from Inazuma Fantasy): field clips + [[on_aura_end]]
+#                                     (rule kind field_clip/1), played by the framework's match engine when a keshin /
+#                                     armour / miximax ends in open play; also the held kneel IF's battery out uses
+#   content\anims\fusion_keshin.toml         Grifo 3 seats ev80_80300, Arturo 2 seats ev80_80240, Flamberge 3 seats ev60_81900
+#                                     (1.1.0, from Inazuma Fantasy; anim type, built at boot from retail events; the
+#                                     seats are filled by a mode's group summon: IF's [[aura_rule]] cut_in / move_event)
+#   content\celebrations\cross_intros.toml + content\characters\celebrations.toml + assets\data\…\ev71\ev71_18*,
+#   content\base_tables\…\ev71        the 30 Cross goal celebrations (1.1.0, from Inazuma Fantasy; celebration type +
+#                                     character claims; event files Level-5-derived: research/recipes/celebrations/
+#                                     new_animations.toml, never committed)
+#   content\anims\override_handoff.toml + content\techniques\overrides\handoff.toml
+#                                     override chain hand-off scenes (1.2.0, from Inazuma Fantasy): the retail chain
+#                                     combos' scenes from the pass on (anim type, built at boot from retail events +
+#                                     technique [[handoff]] rules; docs/game/mechanics/override-skills.md §10)
+#   docs/release/new_animations-personajes.md: which animation each character has
+# The .glb cut-ins and aura-end clips are converted from the 3DS games (Level-5): never committed (.gitignore), installed
+# from the author's working tree (_deploy.toml overlays), left out of every release with their declarations
+# (release_exclude.L5_DERIVED). _deploy.toml and README.md are developer files: never installed.
+# Everything else is built at boot from the player's own game files.
+# History: this is the former mod «Escenas del portero» (keeper_scenes 1.0.0-1.4.0, 2026-10-01…07); `provides` makes
+# an installed keeper_scenes folder be replaced by this mod (only this one runs; the Mods screen asks to remove the old
+# folder). Content keys are unchanged (effortless_save keeps its pinned event ev71_80030; the duel cut-ins are named by
+# key; the keeper pairs are retail events); an old stored keeper_scenes option value was already ignored since 1.3.x.
+# Mechanism: docs/game/mechanics/basic-move-cutscenes.md, docs/framework/types/rule.md «Duel clips».
+requires = ["vr_framework>=2.1.0"]
+provides = ["keeper_scenes=1.4.0"]
+conflicts = []
