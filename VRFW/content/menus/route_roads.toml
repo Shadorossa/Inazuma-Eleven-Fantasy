@@ -1,0 +1,36 @@
+# The Chronicle board's node roads (VR-Framework, graft route_nodes; docs/game/modes/chronicle-side-branches.md
+# «Roads drawn at run time»): each [[VRFW.RouteNode]] road is ONE overlay sprite of the emblem atlas (team type,
+# `vrfw_rd_<node>` on the pages `vrfw_route_road<k>` of vsroute_emblem.g4tx) drawn on an instance of the layer
+# `vrfw_route_road` while the node is shown. No map tile is copied or served (the old per-combination tile copies,
+# 2^n - 1 per tile, are gone).
+#   vrfw_route_road  a clone of the retail one-quad object cmn01_10_new_icon (36 x 36 quad `_icon_new01`, sprite node
+#                    `icon_new01`; the Lua scales it to the sprite's size), in the board's draw pass (m_drawType 1, as
+#                    the map and the pieces), priority 50: above the map tiles (3), under the pieces (100) and their
+#                    lock rings (99 / 101), clear icons and balloons.
+#   vrfw_route_map   the retail route map object (vsroute01_01_route_map) plus one attach row: every road instance
+#                    hangs on the map's `_pos_base01` like the pieces (NullLayerNameAllIndex), so it pans and zooms
+#                    with the map; its local position is the sprite's centre in map px (y up, origin = map centre).
+# Only the main board's setting (vs_route_town_menu) uses the copy and gets the layer; the future / Victory boards keep
+# the retail object. The pool: 64 instances (the Lua reads the count and logs a WARN past it).
+schema = "vr_framework.menu/2"
+
+[[object]]
+name = "vrfw_route_road"
+from = "cmn01_10_new_icon"
+priority = 50
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
+
+[[object]]
+name = "vrfw_route_map"
+from = "vsroute01_01_route_map"
+copy = [{ param = "NullLayerNameAllIndex", match = { 3 = 0xEE90FDDF }, values = { 3 = 0x36F99309 } }]   # vsroute00_05_town_map_piece -> vrfw_route_road
+
+[[patch]]
+menu = "vs_route_town_menu"
+layer = "vsroute00_01_01_route_map"
+object = "vrfw_route_map"
+
+# the pieces' row flags (attached to the map, opened with it)
+[[patch]]
+menu = "vs_route_town_menu"
+add_layer = { name = "vrfw_route_road", object = "vrfw_route_road", count = 64, align = [0, 0], scale = 1, after = "vsroute00_01_02_post_effect", groups = [{ group = "vs_route_town_menu", flags = [0, 1, 2, 0, 0, 0], after = "vsroute00_01_02_post_effect" }] }

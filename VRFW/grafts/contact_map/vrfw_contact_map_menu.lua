@@ -1,0 +1,2612 @@
+-- vrfw_contact_map_menu (plain Lua 5.2 source): the VR-Framework's CONTACT MAP screen (graft contact_map, mod
+-- vr_framework; declared in the framework's menus\contact_map.toml, served as common/script/lua/menu/
+-- vrfw_contact_map_menu.lua.bin). docs/framework/contact-map.md.
+-- The IE-style «contactos» / scout map of a [[VRFW.ContactSet]] a mod declares (content\contact_maps\*.toml, served by
+-- the framework's script scripts\contact_map.lua through CMND_VRFW_CONTACT_*). Screens of one set:
+--   list     the set's maps (rows: title, signed / players); Accept opens one
+--   zones    a map's background with its zone pins (a pin = the zone's first player still to sign); Accept: the zone
+--   grid     a zone's / section's players: a grid of faces (8 x 3 a page) over the zone's own map when it declares
+--            one (GO / CS / Galaxy: the free walk's 3DS area map page); Accept: sign the player
+--   network  a Connection Map: the tiles where the original had them, linked as in the original; STRICT order (IE): a
+--            tile OPENS when a linked tile is acquired; a player tile is acquired once signed, a gate tile (a player
+--            signed elsewhere) once he is in the club, the start and «open» tiles by themselves; a tile not open shows
+--            the «?» plate. A network may be declared `Strict = false` (every tile open, no order) and cut into
+--            pages (its Zones, each node on one): one page is drawn at a time, LB / RB turn it (2026-10-12)
+--   shop     the items the zone / map's players ask for, for sale (FUNC2 / X «Objetos»)
+-- Plate colours as in IE: green = can be signed now, grey = terms not met, red = signed, «?» = not open yet; a red badge
+-- on a plate = one of its requirements is not met. The card shows each requirement as an icon with a met / unmet badge
+-- (VRFW_Recruit kinds: player, item, team level, players of an element / position in the club, matches won, goals).
+-- A player costs the set's recruit currency (Inazuma Fantasy: Puntos de amistad), an item its item currency (Puntos de
+-- pasión). Signing: VRFW_Recruit.Recruit (requirements, price, the game's add-character path, autosave). Record per
+-- save slot: key "contact.<map key>" of owner "vr_framework" = the signed node numbers ("3,17,40").
+-- Opened as a child: parameter crc32("vrfw_contact_set") = crc32 of the set's key ("<mod>.<name>") before
+-- CMND_OPEN_MENU_OBJECT(crc32("vrfw_contact_map_menu")). Texts: the framework's menu_text rows
+-- (text\rows\contact_map.toml) and the mod's own rows the declarations name; never literals.
+-- Rule: no engine call at top level; funcLuaCommand only exists inside callbacks.
+INCLUDE("LUA_PROG_BASE")
+INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
+INCLUDE("LUA_SOCCER_COMMON")                  -- the panel's status plate (UpdateCharaStatusPlateInfoByCharaParamId)
+
+local MENU = 1355292071           -- crc32("vrfw_contact_map_menu")
+local KEY_SET = 1128821923        -- crc32("vrfw_contact_set"): parameter in, the set
+local KEY_RESULT = 1506951015     -- crc32("vrfw_contact_pick"): parameter out (0: nothing to report)
+local KEY_PARENT = 2740862541     -- crc32("vrfw_contact_parent"): optional parameter in, the menu under the screen
+local OWNER = "vr_framework"
+
+-- texts: menu_text rows crc32("vrfw_cm_<name>") of the framework (text\rows\contact_map.toml)
+local T = {
+  REQ_SIGN = 2161724870, REQ_GET = 2154068131,   -- vrfw_cm_req_sign «Ficha a %s» / vrfw_cm_req_get «Obtén %s» (round 4)
+  SHOP_BTN = 3501672787, COUNT = 3593287085, LEVEL_PRICE = 3823326167, REQ_PLAYER = 14895046, REQ_ITEM = 12384550,
+  NO_REQ = 1749383623, STATE_READY = 435451300, STATE_MISSING = 2934530415, STATE_DONE = 525534213,
+  STATE_LOCKED = 2100392169, GATE = 4291389286, GATE_DONE = 4040265050, OPEN_TILE = 919875809, START = 3431801920,
+  ASK = 940992270, JOINED = 1584734803, NEED_PRICE = 3071106297, NEED_REQS = 2477148030, BANK_FULL = 3014680302,
+  OWNED = 1749033698, FAILED = 2500036647, SHOP_ROW = 30181753, SHOP_ASK = 3990525250, SHOP_BOUGHT = 3271124074,
+  SHOP_EMPTY = 877398782, BAG_FULL = 2728655910, ZONE_HINT = 1603344950, UNKNOWN = 3326508568,
+  -- the special requirements (2026-10-12): vrfw_cm_req_team_level / _elem / _wins / _goals, the element / position labels
+  REQ_TEAM_LEVEL = 1040602938, REQ_ELEM = 1482667094, REQ_WINS = 3179220225, REQ_GOALS = 4013490541,
+  ELEM = {2663092405, 129155343, 1890972057, 4006700090, 2580960428}, POS = {889919200, 2885830490, 3674568652, 1164042863},
+  VIEW_MARK = 2320547439,                          -- vrfw_reveal_all_mark «MODO VISTA» (config [debug] reveal_all)
+  STORY_ONLY = 3991482902,                         -- vrfw_cm_story_only «Se ficha en el modo historia» (a StoryOnly node)                               -- vrfw_cm_page «Página %d / %d» (a network's pages, 2026-10-12)
+}
+local MARK_ON, MARK_OFF = "[$gaiji_check01_on] ", "[$gaiji_check01_off] "   -- the office's requirement marks
+
+-- ---- layers ---------------------------------------------------------------------------------------------------------
+local L_ROW = 3455690937        -- save01_02_list_item (1 instance: the input anchor, off screen)
+local L_HEADER = 575058101      -- mainmenu90_01_header
+local L_GUIDE_LINE = 3078308064 -- mainmenu90_05_content_guide_line01
+local L_CURSOR = 2296367164     -- cmn05_01_cursor (hidden: the ring is the cursor)
+local L_BTN_GUIDE = 1138543975  -- mainmenu01_06_base_button_guide
+local L_BTN = 9396745           -- mainmenu01_07_button_guide
+local L_RET = 2005383485        -- mainmenu01_10_return_arrow_button_guide
+local L_RETAIL_BG = 367379312   -- mainmenu90_00_background (hidden: vrfw_cm_back replaces it)
+local L_BACK = 707542725        -- vrfw_cm_back    x1   (450) the background
+local L_ZONEART = 1849226512       -- vrfw_cm_zoneart x1   (451) a zone's own map (GO / CS / Galaxy 3DS area map)
+local L_LINE = 2532723460       -- vrfw_cm_line    x210 (453) links
+local L_TILE = 829249270        -- vrfw_cm_tile    x200 (455) plates / pins / list rows (mouse hit areas)
+local L_FACE = 1123452053       -- vrfw_cm_face    x60  (457) faces
+local L_TAG = 1404648045        -- vrfw_cm_tag     x40  (458) check / padlock badges
+local L_UI = 302224576          -- vrfw_cm_ui      x8   (459) 0 ring, 1-2 page arrows
+local L_CARD = 1375102753       -- vrfw_cm_card    x1   (459) the old info card (2026-10-12 redesign: unused, hidden)
+local L_PANEL = 4049183424      -- vrfw_cm_panel   x2   (452, background pass) 0 the player panel's ground, 1 its fade
+local L_MODEL = 2220950294      -- vrfw_cm_model   x1   (452) the panel's 3D player model (shop01_01_list_base's)
+local L_SHADOW = 858725131      -- mainmenu01_08_chara_3d_shadow (the model's shadow, as the retail shop)
+local L_STATUS = 561386529      -- soccer11_04_chara_stasus (the retail shop's status plate): its description box only
+-- 2026-10-12 (owner: the player's header as the green ROW of the team screens, not the shop's two-row block): the
+-- team screens' header plate (retail soccer11_04pp_chara_status_info; Inazuma Fantasy patches it to its one-row
+-- header + PE everywhere, this screen included) over a slanted, position-coloured band (a soccer11_04 plate showing
+-- only its two plate sprites, as the player page's evt_pp_slant)
+local L_PPROW = 1844915256      -- soccer11_04_formation_chara_status (team_dock_menu's header plate)
+local L_SLANT = 3210151533      -- vrfw_cm_slant (soccer11_04_universe_chara_stasus: the band only)
+local L_ICON = 578213417        -- vrfw_cm_icon    x1   (461) the card's face
+local L_TITLE = 2025982372      -- vrfw_cm_title   x10  (551) list rows' text
+local L_CARDTXT = 1541069194    -- vrfw_cm_cardtxt x4   (551) the card's lines
+local L_REQ = 3347854986        -- vrfw_cm_req     x5   (462) the card's row icons (4 requirements + the price's coin)
+local L_REQOK = 1997209491      -- vrfw_cm_reqok   x4   (463) their met / unmet badges
+local L_BUST = 4140378829      -- vrfw_cm_bust     x162 (457) player busts: the game's miniface + kit
+local L_BUSTICON = 2593122072  -- vrfw_cm_busticon x1   (461) the card's player bust
+-- pools (round 4, owner: tiles vanished while moving on a network): a whole network fits at the widest zoom (IE2:
+-- 203 tiles, 213 links, 193 faces); faces / busts have their own counter (only players and gates carry one)
+-- the card's player requirements use the last CARD_BUSTS face / bust slots (their miniface with kit)
+-- 2026-10-12 (2.2.54 opened NOTHING): a menu stops setting up its layer instances at ~844 (docs/game/ui/
+-- menu-layer-limits.md §2.1); 2.2.53's pools (256 + 224 x 2 + 208 x 2 + the rest) were ~1200 and the input anchor
+-- never opened. Kept under ~730 in all: players' busts (BUST, fixed per player, the last CARD_BUSTS for the card) and
+-- gates' faces (FACE, fixed per gate) apart; badges (TAG) as long as they last
+-- 2026-10-12 (owner: cells missing at the sides / corners of a zoomed-out network): plates and links 240 each (gate
+-- faces 60, badges 40: same 730 in all); DrawNetwork keeps the widest zoom where everything in view fits them
+-- TITLE 20 (2026-10-12): the list rows' titles (0..9) and their right-aligned counts (10..19)
+-- 2026-10-13 (owner: «no aparecen todas las minifaces», [debug] reveal_all): the bust pool (92) ran out long before the
+-- tile pool (240): at the widest zoom ~170 tiles were in view and only the nearest 88 players got their face, the
+-- outer ones a plain plate; the gate faces (60) the same on IE2 (113 gates). Same ~672 instances, moved to the faces
+-- (tiles 200, links 210, player busts 162, gate faces 60), and the widest zoom now also fits the faces in view
+-- (DrawNetwork: zoom in while the players / gates in view need more busts / faces than the pools hold), so every cell
+-- drawn has its face.
+local N = {LINE = 210, TILE = 200, FACE = 60, BUST = 162, TAG = 40, UI = 8, TITLE = 20, CARDTXT = 6, REQ = 5,
+           CARD_BUSTS = 4, full = false}
+-- 2026-10-12 (owner: «los jugadores deben salir con su miniface con su ropa»): a player is drawn as the game's own face
+-- icon of a character card (team00_01_chara_card_for_list, portrait only, the rest of the card hidden): the native
+-- composite (funcLuaMenuCommand 0x20EB2104, icon type 9 = face + kit) of his chara_param, the same miniface + kit bust
+-- as the retail player cards (docs/game/characters/face-icon-uniform.md). Nothing per character here: the engine finds
+-- the face and the kit from the card. Geometry of the card's portrait (as Utilities' friends panel): its height RH,
+-- the offset of its centre from the layer origin (OX, OY).
+local BUST = {
+  MESH = 2828003679 --[[_icon_chr_dmy_l01]], TEX = 21929195 --[[icon_chr_dmy_l01]], NAME = 170976702 --[[_text_chr01]],
+  RH = 156, OX = 59, OY = 11,
+  -- 2026-10-13 (owner: the face cut at the edges, offset): the retail card clips the portrait quad with its mask
+  -- (icon_chr_msk_l01, a 118 x 116 window off the quad's centre), so the face showed cut and off-centre. As the
+  -- office grid does: the mask node is swapped for vrfw_cm_fmask (the whole 156-px quad opaque) and the rarity side
+  -- colour for vrfw_cm_blank (transparent), so the quad (centre OX, OY) is the whole face, scaled to fill the
+  -- card's inner area exactly. MASK_TRIES: frames a swap that answers false (atlas not in) is waited for.
+  T_MASK = 3073015345 --[[icon_chr_msk_l01]], T_COLOR = 3896534971 --[[icon_chr_color01_l01]],
+  S_MASK = "vrfw_cm_fmask", S_BLANK = "vrfw_cm_blank", MASK_TRIES = 30, tries = {},
+  HIDE = {"_icon_chr_base_l01", "_icon_chr_gradation_l01", "_seasonal_frame_l01", "_avatar_frame_l01",
+    "_icon_chr_focus_l01", "_icon_chr_position_dmy_l01", "_icon_base_l01", "_icon_chr_type_dmy_l01", "_icon_lock01",
+    "_icon_captain01", "_icon_ai_role_dmy01", "_gtxt_lv_l01", "_icon_card01", "_icon_chr_def01_l",
+    "_icon_chr_grayout01", "_basara_avatar_l01", "_num_chr_dmy_l01", "_num_chr_dmy_l02", "_gauge_exp_base_l01",
+    "_gauge_exp_l01", "_icon_synergy_l01", "_icon_synergy_l02", "_leader_base01", "_gtxt_leader01"},
+  HIDE_NODES = {"_pos_base02", "_pos_leader01", "_pos_ai_role01", "_num_chr_l01", "_num_chr_l02", "_pos_gauge_exp_l01"},
+  key = {},      -- [layer][idx] = the chara key drawn there (the composite is built once per key)
+  wait = {},     -- "layer:idx" -> {layer, idx}: shown when its face has loaded
+}
+
+local C = {
+  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  SPRITE = 558735651, LOAD_TEX = 839427544, TEX_LOADING = 1506186496, SCALE = 3778714801, POS = 1389957207,
+  ATTACH_TRACE = 1774843228, OPEN_LAYER = 629267548,
+  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
+  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  FADE = 609722083, FADE_DONE = 2259183189,
+  P_SET = 3860611758, P_CLEAR = 3363400568, P_EXISTS = 2947612279, P_GET = 3522198769,
+  MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
+  TEXT_VISIBLE = 1505208242, TEXT_GET = 4074371074,
+  PRIM_COLOR = 855211291, ROTATE = 3476640154, LOG = 3661580131,
+  LANG = 477234096,           -- CMND_GET_LANGUAGE_CODE
+  CM_MAPS = 2333007455,       -- CMND_VRFW_CONTACT_MAPS (set, lang)
+  CM_MAP = 3205285167,        -- CMND_VRFW_CONTACT_MAP (map, lang)
+  SAVE_GET = 2187277743,      -- CMND_VRFW_SAVE_GET (owner, key, default)
+  SAVE_SET = 2574269955,      -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
+  FACE = 552280324, RESET_FACE = 4176779611, FACE_LOADING = 1277042906, NODE_VISIBLE = 2158717427,
+  NAME_VISIBLE = 2735666188, CHARA_OF_PARAM = 347353059, LAYER_NUM = 1175615627, IS_VISIBLE = 1262717583,
+  MENU_CALL = 830228314,      -- (menu, "global function", args...): runs a function in another menu's VM
+  CHECK_INPUT = 4265778440,   -- CMND_CHECK_INPUT_CMD (ctrl, input)
+}
+local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
+local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
+local CUR = 3313461902          -- crc32("cursor")
+local FN = {UP = 1986542592, DOWN = 1528655817, LEFT = 1032132762, RIGHT = 3879601371, SHOP = 3951604560}
+local G_ACCEPT = 1847312674 --[[Aceptar]]
+local I_ENTER, I_FUNC2 = 2750714971 --[[<CMD_ENTER>]], 2387151820 --[[<CMD_FUNC2>]]
+local K_ENTER, K_FUNC2 = 1981080283, 3170216173
+local SE_OK, SE_DECIDE, SE_BACK, SE_NG = 3848881948, 4235359837, 202039849, 2086672038
+local ROW_MESHES = {3025401186, 486732393, 376662541, 3232607807, 1516082254, 3292070381, 1712955010}
+local TEXT_ON, TEXT_OFF = 931545948 --[[_text_list01_on]], 3705682548 --[[_text_list01_off]]
+-- the list item's own plates (2026-10-12, owner: the list of maps as the game's menu rows)
+local ROW_PLATE = {OFF = 486732393 --[[_list_base_s01_off]], ON = 3025401186 --[[_list_base_s01_on]], used = {},
+                   texts = {}}
+local TEXT_DX = 226             -- the list item's text node starts this far right of its origin
+
+local TEX = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+local BACK_TEX = "#/menu/220_img/vrfw_chain/vrfw_chain_back.g4tx"
+local FACE_DIR = "#/menu/200_icon/10_icon_chr/face/"
+local BG_TEX = "#/menu/220_img/vrfw_cm/vrfw_cm_bg.g4tx"         -- the player panel's ground (contact_map_req_art.py)
+local REQ_TEX = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"             -- contact_map_req_art.py: requirement icons, badges
+local COMMON_TEX = "#/menu/200_icon/15_icon_common/icon_common.g4tx"   -- the game's element icons
+local ELEM_ICON = {"icon_cmd_type01", "icon_cmd_type02", "icon_cmd_type03", "icon_cmd_type04"}   -- wind forest fire mountain
+-- the requirement icons on the card: right of the state line, left of the face; a badge on each icon's corner
+local REQ = {X = 1590, DX = 50, Y = 716, SIZE = 40, BADGE = 20}
+local Q = 36                    -- the cmn01_10 quad's own size
+-- the info card (the chain board's card art, taller): panel, the face right, 4 lines
+-- 2026-10-12 redesign (owner): no info box on top. The map uses the screen's left / centre (AREA); the selected
+-- player is shown on the RIGHT as in the Oficina de fichajes: his 3D model (vrfw_cm_model, the retail shop's model
+-- component) with the shop's status plate (name, position, level), his lines (level / price, requirements, state) and
+-- requirement icons under it, on a panel (vrfw_cm_panel 0) that fades into the map on its left (vrfw_cm_panel 1).
+-- Not a player (a list row, a gate, a start tile...): the panel shows the title lines and an icon / face.
+local AREA = {X0 = 40, X1 = 1200, Y0 = 110, Y1 = 1010, CX = 620, CY = 560}
+-- 2026-10-12 round 2 (owner, office reference): as the Oficina de fichajes, the model stands on the right and the
+-- retail status plate (name, nickname, element, position, person icon) with its white description box sits at the
+-- BOTTOM right (STATUS: the plate layer scaled and moved from its retail place at the top right, x 920-1920 /
+-- y 130-500 of its layout, to x 1235-1925 / y 765-1020); the level / price, requirements and state go into a small card
+-- right of the model, above the plate (INFO). Nothing of the panel reaches AREA (the map): the ground starts at
+-- PANEL.X, its fade lies between AREA.X1 and PANEL.X.
+-- round 4 (owner): the model centred on the plate (the shop's model camera puts it at x ~1367; the plate's centre is
+-- x ~1580: the model layer is moved by MODEL_DX); the card above the player, centred on the panel
+-- MODEL_X (2026-10-12, owner: the model stood left over the panel's edge): metres the 3D model is moved right of the
+-- place the shop component builds it at (CMND_GET_CHARA_MODEL_POS -> CMND_SET_CHARA_MODEL_POS, once per build). The
+-- layer move (MODEL_DX) and the component's m_startX start rows did not move the model in game (VRFW 2.2.72 / 2.2.74
+-- screenshots: same place). Shop camera 2410683622 (eye z 12.5, FOV 20): ~245 px a metre at 1080p; the model stood
+-- ~205 px left of the panel's centre (x ~1375 vs ~1580) -> 0.84
+-- MODEL_AT (2026-10-13, owner: «más centrado a la cabecera»; it stood right of the requirement card's centre and from
+-- the card's bottom edge down over the name bar): the model's world place, set absolutely (CMND_SET_CHARA_MODEL_POS)
+-- after each build. The shop camera 2410683622 looks from (0, 2.25, 12.5) at (0, 1.6, 0), FOV 20
+-- (docs/game/engine/menu-chara-capture.md): the build's place (1, 0.8, 5) is 7.5 m from the eye (~408 px a metre, not
+-- the 245 of 2.2.75: the model went to x ~1705, 125 px right of the card) and a 1.6 m player spans ~650 px there, more
+-- than the 505 px between the card's bottom (y 362) and the name bar (y 867). At (2.12, 0.64, 2.05) his feet are at
+-- y ~850 and a 1.6 m head at ~385, centred on x 1580 (the card's centre, INFO.CX). MODEL_X stays for the camera-offset
+-- fallback (a model position that cannot be read).
+local PANEL = {X = 1240, FADE = 40, ICON_X = 1580, ICON_Y = 520, ICON = 160, MODEL = true, MODEL_DX = 213,
+               MODEL_X = 0.84, MODEL_AT = {2.12, 0.64, 2.05}}
+local STATUS_AT = {S = 0.69, DX = 600, DY = 675}
+-- the header row (2026-10-12): the shared header row of the framework (VRFW_UI.HeaderRow, 66_ui_plates.lua; 2026-10-13:
+-- one component for every screen) at its placement variant «contact_map» (content/defaults/ui_plates.toml: scale
+-- 0.69, the row's top-left at (1250, 867), a few px over the shop plate's description box), the slanted band under it
+-- where the player page puts it; the shop plate's description stays where it was (STATUS_AT)
+local HEADROW = {TEMP_ADD = 3380562877, TEMP_FREE = 1829720801, hdl = nil}
+-- round 3 (owner): the card = the price, the state + exactly 4 requirement lines, one requirement each,
+-- unused ones a «________________» placeholder; lines clipped to CLIP characters (the count «have/need» kept)
+-- round 4 (owner): the card above the player, centred on the panel: 4 requirement rows (an icon: the player's
+-- miniface with kit / the item's icon / the requirement's drawing; «Ficha a X», «Obtén X», unused «________»), then
+-- the price with the currency's icon, then the state. Rows: Y; icon at ICON_X, text at TEXT_X.
+local INFO = {CX = 1580, CY = 236, W = 620, H = 252, ICON_X = 1300, TEXT_X = 1330, ICON = 32,
+              YS = {136, 172, 208, 244, 286, 324}, NAME_S = 0.78, LINE_S = 0.62, CLIP = 40, BLANK = "________",
+              TINT = {0.55, 0.6, 0.8}}
+-- 2026-10-12 (owner): a card is exactly its miniface's box (PLATE = FACE: no blue margin around the face); the pitch
+-- (CELL) is kept so the grid stays centred in the same area; the badges sit in the card's bottom-right corner
+local GRID = {COLS = 6, ROWS = 4, CELL = 176, TOP = 236, FACE = 0.72, CHECK = 0.35, REQNG = 0.26}
+local PIN = {PLATE = 92, FACE = 72, COLS = 4, X0 = 245, DX = 250, Y0 = 250, DY = 200}
+-- the network's view (round 3: zoom + pan): world -> screen around the camera (cx, cy) at scale S, drawn inside
+-- VIEW only (left of the player panel: the map scrolls under it); S from FIT (the whole network) to MAX
+-- 2026-10-12 (owner): ONE map per game, drawn virtually (only the tiles in view, the pools bound to them every draw:
+-- DrawNetwork); smooth zoom: LT / RT (ZOOM_RATE x a second while held) and the wheel (WHEEL a notch) move the target
+-- T, the shown scale S eases to it (EASE seconds, exponential); the right stick pans only (PAN px a frame at full
+-- tilt, from DEAD), smooth by its own analog value. CAP: the widest zoom shows about this many tiles (the tile pool).
+-- A card is its miniface's box (PLATE0, the one size); the face fills its inner area exactly, FACE_IN of it (the plate's
+-- 5-px rim of 96 stays on show; 2026-10-13 owner: the face was cut, now the whole portrait quad, see BUST)
+local NET = {S0 = 1.9, S = 1.9, T = 1.9, PLATE0 = 44, SMALL0 = 26, LINE0 = 8,
+             PLATE = 44, SMALL = 26, LINE = 8, FIT = 1, MAX = 3.0, cx = 0, cy = 0, drag = nil,
+             WHEEL = 1.25, ZOOM_RATE = 2.2, EASE = 0.12, DT = 1 / 60, PAN = 18, DEAD = 0.2, CAP = 150,
+             FACE_IN = 1 - 2 * 5 / 96, START = 1.4, HOLD = 8}
+NET.FACE0, NET.FACE = NET.PLATE0 * NET.FACE_IN, NET.PLATE0 * NET.FACE_IN
+local VIEW = {X0 = 40, X1 = 1240, Y0 = 110, Y1 = 1010, CX = 640, CY = 560, MARGIN = 70}
+-- COUNT_PAD / COUNT_CH (2026-10-12, owner: the count right-aligned): its right edge this far in from the row's
+-- right end; the width of one of its characters (digits, «/», space at scale 1) to place it from its length
+local LIST = {CX = 620, TOP = 200, ROW = 76, W = 1080, H = 60, ROWS = 10, COUNT_PAD = 40, COUNT_CH = 17}
+local COLOUR = {READY = {0.55, 0.95, 0.6}, MISSING = {0.72, 0.74, 0.8}, DONE = {1, 0.55, 0.5}, LOCKED = {1, 1, 1},
+                GATE = {0.85, 0.8, 1}, WHITE = {1, 1, 1}, LINK_DONE = {0.38, 0.84, 0.55}, LINK_OPEN = {0.32, 0.64, 1},
+                LINK_LOCKED = {0.62, 0.68, 0.78}, ROW = {0.72, 0.74, 0.82}, ROW_FOCUS = {1, 1, 1}}
+
+-- ---- state ----------------------------------------------------------------------------------------------------------
+local SET = nil         -- the set (CMND_VRFW_CONTACT_MAPS)
+local MAP = nil         -- the open map (CMND_VRFW_CONTACT_MAP) + its key
+local lang = 0
+local mode = "list"     -- list / zones / grid / network / shop
+local prev_mode = nil   -- the shop returns here
+local focus = {list = 1, zones = 1, grid = 1, network = 1, shop = 1}
+local zone = 0          -- the open zone (grid)
+local members = {}      -- grid: the node numbers of the open zone
+local shelf = {}        -- shop: the items shown
+local signed = {}       -- the open map's record: node -> true
+local acquired, opened = {}, {}   -- network state
+-- TEMPORARY view-everything mode (VRFW config [debug] reveal_all, served as SET.reveal; owner 2026-10-13): every tile
+-- of a network is drawn open (faces, names, links), the header says «MODO VISTA». View only: `real` keeps the strict
+-- order's real open tiles and Recruit refuses any other; prices, requirements and the record are untouched.
+local VIEW_ALL = {on = false, real = {}}
+local pos = {}          -- item -> {x, y, hw, hh} on screen (hit areas; the cursor's place)
+local tex_asked, tex_frames, tex_wait = {}, {}, false
+local ready, open_guard, evt_co = false, 20, nil
+
+local function Log(...)
+  pcall(funcLuaCommand, C.LOG, "contact_map", ...)
+end
+
+-- OPEN TRACE (2026-10-13 perf, diagnostics). The owner's log (install83) has a 343 ms HITCH ~1 s after the open, once
+-- the script's 2.3 s were gone from OnInit: engine work with no Lua call, its cause not in the log. For the first
+-- OT.FRAMES frames of the screen, every frame with an event (layer instances set up, by layer; a texture / face that
+-- came in; a redraw; the input anchor) and every OT.EVERY frames logs «contact_map open trace f<n> ...», so the next
+-- HITCH line falls between two of them and names the frame's work. At most OT.MAX lines per open.
+local OT = {f = 0, FRAMES = 150, EVERY = 10, MAX = 40, lines = 0, setup = {}, ev = {}, names = nil}
+local function OtNote(what)
+  if OT.f <= OT.FRAMES then
+    OT.ev[#OT.ev + 1] = what
+  end
+end
+
+--@lib evt_menu_kit.lua#Call,Int,Hide,Ask,Message,Close,StartCo
+
+--@lib evt_menu_kit.lua#Pointer
+local Ptr = EVT_PointerNew()
+
+--@lib evt_menu_kit.lua#CharaModel
+local Model = nil       -- the panel's 3D player model (EVT_CharaModelNew on vrfw_cm_model; made in OnInit)
+
+local function Text(id)
+  local ok, s = pcall(funcLuaCommand, C.TEXT_GET, id)
+  if ok and type(s) == "string" then
+    return s
+  end
+  return ""
+end
+
+local function Fmt(id, ...)
+  local ok, s = pcall(string.format, Text(id), ...)
+  if ok then
+    return s
+  end
+  return Text(id)
+end
+
+local function Place(layer, idx, x, y)
+  funcLuaMenuCommand(C.POS, layer, x, -y, 0, idx)
+end
+
+local function QuadTex(layer, idx, texCrc, spriteCrc, x, y, w, h)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
+  funcLuaMenuCommand(C.SCALE, layer, w / Q, h / Q, 1, idx)
+  funcLuaMenuCommand(C.SPRITE, layer, texCrc, spriteCrc, NODE_QUAD, 0, idx)
+  Place(layer, idx, x, y)
+end
+
+local function Quad(layer, idx, sprite, x, y, w, h)
+  QuadTex(layer, idx, CRC32(TEX), CRC32(sprite), x, y, w, h)
+end
+
+local function Tint(layer, idx, c)
+  funcLuaMenuCommand(C.PRIM_COLOR, layer, idx, MESH_QUAD, c[1], c[2], c[3])
+end
+
+local function Line(layer, idx, s, x, y, scale)
+  if s == nil or s == "" then
+    Hide(layer, idx)
+    return
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
+  funcLuaMenuCommand(C.SCALE, layer, scale or 1, scale or 1, 1, idx)
+  funcLuaMenuCommand(C.TEXT, layer, TEXT_ON, s, idx)
+  funcLuaMenuCommand(C.TEXT_VISIBLE, layer, TEXT_ON, true, idx)
+  Place(layer, idx, x - TEXT_DX * (scale or 1), y)
+end
+
+-- a texture loaded on demand: its crc, or false while loading, or nil when it never came in
+local function Tex(path)
+  if path == nil or path == "" or tex_frames[path] == -1 then
+    return nil
+  end
+  if not tex_asked[path] then
+    tex_asked[path] = true
+    tex_frames[path] = 0
+    funcLuaMenuCommand(C.LOAD_TEX, path)
+  end
+  local tc = CRC32(path)
+  if funcLuaCommand(C.TEX_LOADING, tc) == true then
+    tex_wait = true
+    return false
+  end
+  return tc
+end
+
+local function BustLayer(layer)
+  if layer == L_FACE then
+    return L_BUST
+  elseif layer == L_ICON then
+    return L_BUSTICON
+  end
+  return nil
+end
+
+local function HideBust(layer, idx)
+  if layer ~= nil then
+    Hide(layer, idx)
+    BUST.wait[layer .. ":" .. idx] = nil
+  end
+end
+
+-- the game's miniface + kit bust of chara_param `card`, centred at (x, y), `size` px high
+local function DrawBust(layer, idx, card, x, y, size)
+  local s = size / BUST.RH
+  funcLuaMenuCommand(C.SCALE, layer, s, s, 1, idx)
+  funcLuaMenuCommand(C.POS, layer, x - BUST.OX * s, -y - BUST.OY * s, 0, idx)
+  BUST.key[layer] = BUST.key[layer] or {}
+  if BUST.key[layer][idx] ~= card then
+    for _, m in ipairs(BUST.HIDE) do
+      funcLuaMenuCommand(C.MESH_VISIBLE, layer, CRC32(m), false, idx)
+    end
+    for _, m in ipairs(BUST.HIDE_NODES) do
+      funcLuaMenuCommand(C.NODE_VISIBLE, layer, CRC32(m), false, idx)
+    end
+    funcLuaMenuCommand(C.NAME_VISIBLE, layer, BUST.NAME, false, idx)
+    local tc = CRC32(REQ_TEX)
+    local okm = funcLuaMenuCommand(C.SPRITE, layer, tc, CRC32(BUST.S_MASK), BUST.T_MASK, 0, idx)
+    funcLuaMenuCommand(C.SPRITE, layer, tc, CRC32(BUST.S_BLANK), BUST.T_COLOR, 0, idx)
+    local tk = layer .. ":" .. idx
+    if okm == false and (BUST.tries[tk] or 0) < BUST.MASK_TRIES then
+      BUST.tries[tk] = (BUST.tries[tk] or 0) + 1   -- the atlas is not in yet: swap again next draw
+      funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, false)
+      return
+    end
+    BUST.tries[tk] = nil
+    funcLuaMenuCommand(C.RESET_FACE, layer, idx, BUST.TEX)
+    local ok, chara = pcall(funcLuaCommand, C.CHARA_OF_PARAM, card)
+    if not ok or type(chara) ~= "number" or chara == 0 then
+      chara = card
+    end
+    pcall(SetDisableForceCharaInvalidUseTarget)
+    funcLuaMenuCommand(C.FACE, layer, idx, false, BUST.MESH, BUST.TEX, 0, 0, chara, 0, false, true)
+    pcall(SetEnableForceCharaInvalidUseTarget)
+    BUST.key[layer][idx] = card
+  end
+  local loading = funcLuaMenuCommand(C.FACE_LOADING, layer, idx) == true
+  funcLuaMenuCommand(C.MESH_VISIBLE, layer, BUST.MESH, not loading, idx)
+  BUST.wait[layer .. ":" .. idx] = loading and {layer, idx} or nil
+  funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
+end
+
+-- the busts still loading: shown once their face is in (Step)
+local function BustStep()
+  for k, w in pairs(BUST.wait) do
+    if funcLuaMenuCommand(C.FACE_LOADING, w[1], w[2]) ~= true then
+      funcLuaMenuCommand(C.MESH_VISIBLE, w[1], BUST.MESH, true, w[2])
+      BUST.wait[k] = nil
+      OtNote("face in")
+    end
+  end
+end
+
+local function DrawFace(layer, idx, face, x, y, size)
+  local card = 0
+  if type(face) == "table" then
+    card = Int(face.card)
+    face = face.face
+  end
+  local bl = BustLayer(layer)
+  if card ~= 0 and bl ~= nil then
+    Hide(layer, idx)
+    DrawBust(bl, idx, card, x, y, size)
+    return
+  end
+  HideBust(bl, idx)
+  if face == nil or face == "" then
+    Quad(layer, idx, "vrfw_chain_icon_unknown", x, y, size, size)
+    return
+  end
+  local tc = Tex(FACE_DIR .. face .. "_l.g4tx")
+  if tc == false then
+    Hide(layer, idx)              -- still loading: Step redraws
+  elseif tc == nil then
+    Quad(layer, idx, "vrfw_chain_icon_unknown", x, y, size, size)
+  else
+    QuadTex(layer, idx, tc, CRC32(face .. "_1_l00"), x, y, size, size)
+  end
+end
+
+-- ---- data -----------------------------------------------------------------------------------------------------------
+local function LoadSet(set)
+  lang = Int(Call(C.LANG))
+  local s = Call(C.CM_MAPS, set, lang)
+  if type(s) ~= "table" or type(s.maps) ~= "table" or #s.maps == 0 then
+    return nil
+  end
+  VIEW_ALL.on = s.reveal == true
+  return s
+end
+
+-- the record (2026-10-12): the chara_param ids signed on the map (key «contact.cards.<map>»). It was the node numbers
+-- («contact.<map>»), which a rebuilt map gives to other tiles (a tile two steps from the start looked signed); that
+-- old key is not read any more
+local function RecordKey()
+  return "contact.cards." .. MAP.key
+end
+
+local function LoadRecord()
+  signed = {}
+  local cards = {}
+  local v = Call(C.SAVE_GET, OWNER, RecordKey(), "")
+  for x in string.gmatch(type(v) == "string" and v or "", "%d+") do
+    cards[tonumber(x)] = true
+  end
+  for i, n in ipairs(MAP.nodes) do
+    if n.kind == "player" and cards[Int(n.card)] then
+      signed[i] = true
+    end
+  end
+end
+
+local function SaveRecord()
+  local t = {}
+  for k in pairs(signed) do
+    local n = MAP.nodes[k]
+    if n ~= nil and Int(n.card) ~= 0 then
+      t[#t + 1] = Int(n.card)
+    end
+  end
+  table.sort(t)
+  Call(C.SAVE_SET, OWNER, RecordKey(), table.concat(t, ","), 1)
+end
+
+-- the cards the set's Exclude took off the map (m.excl, 2026-10-13) are not counted: an older record may still name one
+local function MapSigned(m)
+  local v = Call(C.SAVE_GET, OWNER, "contact.cards." .. m.key, "")
+  local skip = {}
+  for _, c in ipairs(type(m.excl) == "table" and m.excl or {}) do
+    skip[Int(c)] = true
+  end
+  local n = 0
+  for x in string.gmatch(type(v) == "string" and v or "", "%d+") do
+    if not skip[tonumber(x)] then
+      n = n + 1
+    end
+  end
+  return n
+end
+
+local function ReqsMet(node)
+  return #VRFW_Recruit.Missing(node.reqs) == 0
+end
+
+local function IsSigned(i)
+  local n = MAP.nodes[i]
+  return signed[i] == true or (n.kind == "player" and VRFW_Recruit.Owned(n.card) > 0)
+end
+
+-- the strict order (IE's Connection Map): acquired / open per tile, to a fixed point
+local function NetState()
+  acquired, opened = {}, {}
+  local nodes = MAP.nodes
+  local changed = true
+  local guard = 0
+  while changed and guard < #nodes + 2 do
+    changed, guard = false, guard + 1
+    for i, n in ipairs(nodes) do
+      if not opened[i] then
+        local o = n.kind == "start" or MAP.strict == false   -- not strict: every tile open
+        for _, l in ipairs(n.links) do
+          if acquired[l] then
+            o = true
+            break
+          end
+        end
+        if o then
+          opened[i], changed = true, true
+        end
+      end
+      if opened[i] and not acquired[i] then
+        local a = false
+        if n.kind == "start" or n.kind == "open" then
+          a = true
+        elseif n.kind == "gate" then
+          a = ReqsMet(n)
+        else
+          a = IsSigned(i)
+        end
+        if a then
+          acquired[i], changed = true, true
+        end
+      end
+    end
+  end
+  VIEW_ALL.real = opened
+  if VIEW_ALL.on then                 -- view everything: every tile drawn open (the real ones stay in VIEW_ALL.real)
+    local all = {}
+    for i in ipairs(nodes) do
+      all[i] = true
+    end
+    opened = all
+  end
+end
+
+local function Price(node)
+  return node.price or 0
+end
+
+local function CanAfford(node)
+  return VRFW_Recruit.Items(SET.rc) >= Price(node)
+end
+
+-- a player's state: "done", "ready", "missing", "locked"
+local function State(i)
+  local n = MAP.nodes[i]
+  if MAP.kind == "network" and not opened[i] then
+    return "locked"
+  end
+  if IsSigned(i) then
+    return "done"
+  end
+  if MAP.kind == "network" and VIEW_ALL.on and not VIEW_ALL.real[i] then
+    return "missing"                  -- view everything: drawn, never «can be signed now» before its real turn
+  end
+  if ReqsMet(n) and CanAfford(n) then
+    return "ready"
+  end
+  return "missing"
+end
+
+local function ZoneMembers(z)
+  local out = {}
+  for i, n in ipairs(MAP.nodes) do
+    if n.kind == "player" and n.zone == z then
+      out[#out + 1] = i
+    end
+  end
+  return out
+end
+
+local function ZoneSigned(z)
+  local k = 0
+  for i, n in ipairs(MAP.nodes) do
+    if n.kind == "player" and n.zone == z and IsSigned(i) then
+      k = k + 1
+    end
+  end
+  return k
+end
+
+local function ItemTitle(id)
+  for _, it in ipairs(MAP and MAP.items or {}) do
+    if it.item == id then
+      return Text(it.title)
+    end
+  end
+  if SET ~= nil and id == SET.ic then
+    return Text(SET.ict)
+  end
+  if SET ~= nil and id == SET.rc then
+    return Text(SET.rct)
+  end
+  return "#" .. tostring(id)
+end
+
+local function ReqLines(node)
+  local out = {}
+  for _, r in ipairs(node.reqs or {}) do
+    local have = VRFW_Recruit.Have(r)
+    local mark = have >= (r.count or 1) and MARK_ON or MARK_OFF
+    local count = "  " .. tostring(math.min(have, r.count or 1)) .. "/" .. tostring(r.count or 1)
+    if r.kind == "player" then
+      -- round 3: the name, cut so the count stays visible
+      out[#out + 1] = mark .. CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 8) .. count
+    elseif r.kind == "item" then
+      local title = (r.title ~= nil and r.title ~= 0) and Text(r.title) or ItemTitle(r.id)
+      out[#out + 1] = mark .. CmClip(title, INFO.CLIP - 8) .. count
+    elseif r.kind == "team_level" then
+      out[#out + 1] = mark .. Fmt(T.REQ_TEAM_LEVEL, r.count or 1, have)
+    elseif r.kind == "element" then
+      out[#out + 1] = mark .. Fmt(T.REQ_ELEM, Text(T.ELEM[r.element] or T.UNKNOWN), r.count or 1, have)
+    elseif r.kind == "position" then
+      out[#out + 1] = mark .. Fmt(T.REQ_ELEM, Text(T.POS[r.position] or T.UNKNOWN), r.count or 1, have)
+    elseif r.kind == "wins" then
+      out[#out + 1] = mark .. Fmt(T.REQ_WINS, r.count or 1, have)
+    elseif r.kind == "goals" then
+      out[#out + 1] = mark .. Fmt(T.REQ_GOALS, r.count or 1, have)
+    end
+  end
+  return out
+end
+
+-- ---- drawing --------------------------------------------------------------------------------------------------------
+local function HideAll()
+  for i = 0, N.TILE - 1 do
+    Hide(L_TILE, i)
+  end
+  for i = 0, N.TAG - 1 do
+    Hide(L_TAG, i)
+  end
+  for i = 0, N.FACE - 1 do
+    Hide(L_FACE, i)
+  end
+  for i = 0, N.BUST - 1 do
+    HideBust(L_BUST, i)
+  end
+  for i = 0, N.LINE - 1 do
+    Hide(L_LINE, i)
+  end
+  for i = 0, N.UI - 1 do
+    Hide(L_UI, i)
+  end
+  for i = 0, N.TITLE - 1 do
+    Hide(L_TITLE, i)
+  end
+end
+
+-- a zone's own map (zones whose declaration names one): fitted into the area under the card, its aspect kept
+local ZONEART = {DIM = {0.62, 0.62, 0.66}}
+
+-- a picture of w x h (a map's 1920 x 1080 background, a zone's own map) fitted into AREA: scale, left, top
+local function AreaFit(w, h)
+  local k = math.min((AREA.X1 - AREA.X0) / w, (AREA.Y1 - AREA.Y0) / h)
+  return k, AREA.CX - w * k / 2, AREA.CY - h * k / 2
+end
+
+-- the map's own picture in AREA: a zone's own map in its grid (dimmed), else the map's background (dimmed in a grid)
+local function DrawZoneArt()
+  if true then                      -- round 3 (owner): no map / zone pictures, the hub's own background shows
+    Hide(L_ZONEART, 0)
+    return
+  end
+  local z = MAP and MAP.zones[zone]
+  local tex, sprite, w, h = nil, nil, 1920, 1080
+  if mode == "grid" and z ~= nil and (z.tex or "") ~= "" and (z.aw or 0) > 0 and (z.ah or 0) > 0 then
+    tex, sprite, w, h = z.tex, z.sprite, z.aw, z.ah
+  elseif mode ~= "list" and mode ~= "shop" and MAP ~= nil and (MAP.tex or "") ~= "" then
+    tex, sprite = MAP.tex, MAP.sprite
+  end
+  local tc = tex and Tex(tex)
+  if not tc then
+    Hide(L_ZONEART, 0)              -- none / loading (Step redraws) / not there
+    return
+  end
+  local k, x0, y0 = AreaFit(w, h)
+  QuadTex(L_ZONEART, 0, tc, CRC32(sprite), x0 + w * k / 2, y0 + h * k / 2, w * k, h * k)
+  Tint(L_ZONEART, 0, mode == "grid" and ZONEART.DIM or COLOUR.WHITE)  -- dimmed under a grid: the faces stay readable
+end
+
+-- the screen's background (whole screen) and the player panel's ground + its fade into the map
+local function DrawBack()
+  Hide(L_BACK, 0)                   -- round 3 (owner): the hub's (Mercado's) own background, not the chain board's
+  -- 2026-10-12 (owner): the panel on the Plantilla screen's background (the game's menu background, its right part,
+  -- vrfw_cm_bg: x PANEL.X - FADE .. 1920, the fade into the map in its own first pixels); the card keeps its dark panel
+  local x0 = PANEL.X - PANEL.FADE
+  QuadTex(L_PANEL, 0, CRC32(BG_TEX), CRC32("vrfw_cm_bg"), (x0 + 1920) / 2, 540, 1920 - x0 + 2, 1080)
+  Hide(L_PANEL, 1)
+end
+
+local function HideReqs()
+  for k = 0, N.REQ - 1 do
+    Hide(L_REQ, k)
+    Hide(L_REQOK, k)
+  end
+end
+
+-- one icon per requirement (kind -> the framework's drawing, or the game's element icon), met / unmet badge
+local REQ_SPRITE = {team_level = "vrfw_cm_req_level", wins = "vrfw_cm_req_wins", goals = "vrfw_cm_req_goals",
+                    item = "vrfw_cm_req_item", player = "vrfw_cm_req_player"}
+
+local function DrawReqs(reqs)
+  for k = 0, N.REQ - 1 do
+    local r = reqs and reqs[k + 1]
+    if r == nil then
+      Hide(L_REQ, k)
+      Hide(L_REQOK, k)
+    else
+      local x = REQ.X + k * REQ.DX
+      local drawn = false
+      if r.kind == "element" and ELEM_ICON[r.element] ~= nil then
+        local tc = Tex(COMMON_TEX)
+        if tc then
+          QuadTex(L_REQ, k, tc, CRC32(ELEM_ICON[r.element]), x, REQ.Y, REQ.SIZE, REQ.SIZE)
+          drawn = true
+        end
+      end
+      if not drawn then
+        local name = REQ_SPRITE[r.kind] or "vrfw_cm_req_item"
+        if r.kind == "position" then
+          name = "vrfw_cm_req_pos_" .. tostring(r.position)
+        end
+        QuadTex(L_REQ, k, CRC32(REQ_TEX), CRC32(name), x, REQ.Y, REQ.SIZE, REQ.SIZE)
+      end
+      local ok = VRFW_Recruit.Have(r) >= (r.count or 1)
+      QuadTex(L_REQOK, k, CRC32(REQ_TEX), CRC32(ok and "vrfw_cm_req_ok" or "vrfw_cm_req_ng"),
+        x + REQ.SIZE * 0.36, REQ.Y + REQ.SIZE * 0.36, REQ.BADGE, REQ.BADGE)
+    end
+  end
+end
+
+-- a node whose own requirements are not all met (the tile's badge)
+local function ReqsUnmet(node)
+  return #VRFW_Recruit.Missing(node.reqs) > 0
+end
+
+-- the panel's status plate (the retail shop's SetupStatusPlate: name, position, level of chara_param `card`)
+-- a text cut to n characters (UTF-8 aware), «…» when cut
+function CmClip(s, n)
+  if type(s) ~= "string" then
+    return s
+  end
+  local out, k, i = {}, 0, 1        -- a «[$…]» markup (the check marks) counts as one character
+  while i <= #s do
+    local tok = s:match("^%[%$[^%]]*%]", i) or s:match("^[%z\1-\127\194-\244][\128-\191]*", i)
+    if tok == nil or tok == "" then
+      break
+    end
+    k = k + 1
+    if k > n then
+      return table.concat(out) .. "…"
+    end
+    out[k] = tok
+    i = i + #tok
+  end
+  return s
+end
+
+local STATUS = {card = nil}
+-- the player's temporary status (CMND_ADD_TEMP_CHARA, as the retail «Ficha» of a card nobody owns): the header row is
+-- filled from it the way the team screens fill theirs, so what hooks that fill (PE, archetype icons) draws here too
+function HEADROW.Free()
+  if HEADROW.hdl ~= nil then
+    pcall(funcLuaCommand, HEADROW.TEMP_FREE, HEADROW.hdl)
+    HEADROW.hdl = nil
+  end
+end
+
+function HEADROW.Hide()
+  for _, l in ipairs({L_STATUS, L_PPROW, L_SLANT}) do
+    funcLuaMenuCommand(C.LAYER_VISIBLE, l, 0, false)
+  end
+end
+
+local function StatusPlate(card, level)
+  if card == nil or type(UpdateCharaStatusPlateInfoByCharaParamId) ~= "function" or type(VRFW_UI) ~= "table" then
+    if STATUS.card ~= false then
+      HEADROW.Hide()
+      HEADROW.Free()
+      STATUS.card = false
+    end
+    return false
+  end
+  local R = HEADROW
+  if STATUS.card ~= card then
+    HEADROW.Free()
+    local rarity = 0
+    if type(GetCharaParamRarity) == "function" then
+      local ok, r = pcall(GetCharaParamRarity, card)
+      rarity = (ok and type(r) == "number") and r or 0
+    end
+    local ok, hdl = pcall(funcLuaCommand, R.TEMP_ADD, card, math.max(1, Int(level)), rarity, 0, false, false, false,
+      false, 0, false, 1)
+    R.hdl = (ok and type(hdl) == "number" and hdl ~= 0) and hdl or nil
+    local HR = VRFW_UI.HeaderRow
+    -- the row: the team screens' fill of their header plate (soccer_formation_menu_inc), by card when no status;
+    -- then the shared rules (natural position badge, staff glyph) and the band (fill, position colour, strip)
+    if R.hdl ~= nil and type(UpdateCharaStatusPlateInfoByCharaStHdl) == "function" then
+      pcall(UpdateCharaStatusPlateInfoByCharaStHdl, L_PPROW, 0, R.hdl, 0, -1, 0, nil, nil, 0, false, false, false, 0, true)
+      HR.BandFill(L_SLANT, 0, R.hdl)
+    else
+      pcall(UpdateCharaStatusPlateInfoByCharaParamId, L_PPROW, 0, card, 0, 6, nil, nil, false, nil, nil, -1, -1)
+      pcall(UpdateCharaStatusPlateInfoByCharaParamId, L_SLANT, 0, card, 0, 6, nil, nil, false, nil, nil, -1, -1)
+      HR.Band(L_SLANT, 0, {band = true})
+    end
+    HR.PortraitOff(L_PPROW, 0)
+    -- 2026-10-12 (owner): the position badge (DC / MC / DF / POR) in the row, not the archetype glyph; «Nv.» with the
+    -- level he joins at (a temporary status may leave the plate's level digits off). The badge: the shared rule (the
+    -- player's own position on the slot's sprite; no position / no status: the slot hidden)
+    local staff, icon = nil, nil
+    if R.hdl ~= nil then
+      staff, icon = HR.AfterFill(L_PPROW, 0, R.hdl)
+    end
+    if staff == false and icon ~= nil then
+      HR.Badge(L_PPROW, 0, icon)
+    else
+      icon = nil
+    end
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PPROW, HR.POS, icon ~= nil, 0)
+    Log("header row position", tostring(icon))
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PPROW, HR.ROLE, false, 0)
+    HR.Level(L_PPROW, 0, Int(level))
+    -- the description: the shop plate's box (round 3: the portrait in its square, the retail rarity colours)
+    pcall(UpdateCharaStatusPlateInfoByCharaParamId, L_STATUS, 0, card, 0, 6, nil, nil, false, nil, nil, -1, -1, nil, nil,
+      true)
+    pcall(funcLuaMenuCommand, 3781155141 --[[CMND_PLAY_ANIME_TYPE]], L_STATUS, 0, 902337421 --[[offset01]], 0, 2892647586 --[[shop]])
+    HR.Band(L_STATUS, 0, {explain = true})
+    Log("header row", card, "status", tostring(R.hdl))
+    STATUS.card = card
+  end
+  funcLuaMenuCommand(C.SCALE, L_STATUS, STATUS_AT.S, STATUS_AT.S, 1, 0)       -- bottom right, as the office
+  funcLuaMenuCommand(C.POS, L_STATUS, STATUS_AT.DX, -STATUS_AT.DY, 0, 0)
+  local HR = VRFW_UI.HeaderRow
+  local s, x, y = HR.Variant("contact_map")
+  HR.Place(L_PPROW, 0, s, x, y)
+  HR.PlaceBand(L_SLANT, 0, s, x, y)
+  -- 2026-10-12 (owner): no blue glowing frame around the row: the plate's seasonal frame (_seasonal_frame01) off
+  funcLuaMenuCommand(C.MESH_VISIBLE, L_PPROW, HR.FRAME, false, 0)
+  for _, l in ipairs({L_STATUS, L_PPROW, L_SLANT}) do
+    funcLuaMenuCommand(C.LAYER_VISIBLE, l, 0, true)
+  end
+  return true
+end
+
+-- the panel: `lines` (the first one the title / name), `face` (a node: his 3D model + status plate; a face key: the
+-- face) or `icon` (a sprite of the chain board's atlas)
+-- the panel: `lines` (the first one the title / name), `face` (a node with a card: his 3D model + the status plate)
+-- or `icon` (a sprite of the chain board's atlas, where the model stands). Never a floating face: without a model
+-- the spot stays empty or shows the icon.
+-- one requirement row of the card (round 4): its short text and its icon
+function ReqRow(r)
+  if r == nil then
+    return INFO.BLANK, nil
+  end
+  local have = VRFW_Recruit.Have(r)
+  local need = r.count or 1
+  local ok = have >= need
+  local count = need > 1 and ("  " .. tostring(math.min(have, need)) .. "/" .. tostring(need)) or ""
+  if r.kind == "player" then
+    local name = (r.name or "") ~= "" and r.name or Text(T.UNKNOWN)
+    return Fmt(T.REQ_SIGN, CmClip(name, INFO.CLIP - 10)), {bust = r.ids and r.ids[1], ok = ok}
+  elseif r.kind == "item" then
+    local title = (r.title ~= nil and r.title ~= 0) and Text(r.title) or ItemTitle(r.id)
+    return Fmt(T.REQ_GET, CmClip(title, INFO.CLIP - 14)) .. "  " .. tostring(math.min(have, need)) .. "/" .. tostring(need),
+      {item = r.id, sprite = "vrfw_cm_req_item", ok = ok}
+  end
+  local sprite = REQ_SPRITE[r.kind] or "vrfw_cm_req_item"
+  if r.kind == "position" then
+    sprite = "vrfw_cm_req_pos_" .. tostring(r.position)
+  end
+  local text = ""
+  if r.kind == "team_level" then
+    text = Fmt(T.REQ_TEAM_LEVEL, need, have)
+  elseif r.kind == "element" then
+    text = Fmt(T.REQ_ELEM, Text(T.ELEM[r.element] or T.UNKNOWN), need, have)
+  elseif r.kind == "position" then
+    text = Fmt(T.REQ_ELEM, Text(T.POS[r.position] or T.UNKNOWN), need, have)
+  elseif r.kind == "wins" then
+    text = Fmt(T.REQ_WINS, need, have)
+  elseif r.kind == "goals" then
+    text = Fmt(T.REQ_GOALS, need, have)
+  end
+  return text .. count, {sprite = sprite, ok = ok}
+end
+
+-- a row's icon: {bust = chara_param} the miniface with kit, {item = id} the item's own icon (the requirement's
+-- drawing until it is there), {sprite = name} a drawing of vrfw_cm.g4tx; ok = true / false: the met / unmet badge
+local function RowIcon(k, ic, y)
+  local x, sz = INFO.ICON_X, INFO.ICON
+  if ic == nil then
+    Hide(L_REQ, k)
+    Hide(L_REQOK, k)
+    if k < N.CARD_BUSTS then
+      HideBust(L_BUST, N.BUST - N.CARD_BUSTS + k)
+    end
+    return
+  end
+  if ic.bust ~= nil and k < N.CARD_BUSTS then
+    Hide(L_REQ, k)
+    DrawBust(L_BUST, N.BUST - N.CARD_BUSTS + k, ic.bust, x, y, sz * 1.25)
+  else
+    if k < N.CARD_BUSTS then
+      HideBust(L_BUST, N.BUST - N.CARD_BUSTS + k)
+    end
+    QuadTex(L_REQ, k, CRC32(REQ_TEX), CRC32(ic.sprite or "vrfw_cm_req_item"), x, y, sz, sz)
+    if ic.item ~= nil then          -- the item's own icon (the game's item icon composite on the quad)
+      local ok, r = pcall(funcLuaMenuCommand, 3508889864 --[[item icon]], L_REQ, k, MESH_QUAD, NODE_QUAD, ic.item)
+      if not INFO.logged then
+        INFO.logged = true
+        Log("card item icon", tostring(ic.item), tostring(ok), tostring(r))
+      end
+    end
+  end
+  if ic.ok ~= nil then
+    QuadTex(L_REQOK, k, CRC32(REQ_TEX), CRC32(ic.ok and "vrfw_cm_req_ok" or "vrfw_cm_req_ng"),
+      x + sz * 0.4, y + sz * 0.4, sz * 0.5, sz * 0.5)
+  else
+    Hide(L_REQOK, k)
+  end
+end
+
+local function Card(lines, face, icon, icons)
+  HideReqs()
+  HideBust(L_BUSTICON, 0)
+  local card = type(face) == "table" and Int(face.card) or 0
+  local model = card ~= 0 and PANEL.MODEL and Model ~= nil and Model.Ok()
+  if model then
+    Model.Show(card)
+    Model.NoTurn()
+    Hide(L_ICON, 0)
+    StatusPlate(card, face.level)
+  else
+    if Model ~= nil then
+      Model.Hide()
+    end
+    StatusPlate(nil)
+    if icon ~= nil then
+      Quad(L_ICON, 0, icon, PANEL.ICON_X, PANEL.ICON_Y, PANEL.ICON, PANEL.ICON)
+    else
+      Hide(L_ICON, 0)
+    end
+  end
+  QuadTex(L_CARD, 0, CRC32(REQ_TEX), CRC32("vrfw_cm_panel"), INFO.CX, INFO.CY, INFO.W, INFO.H)
+  Tint(L_CARD, 0, INFO.TINT)        -- a darker blue than the panel: the rows stand out
+  icons = icons or {}
+  for i = 0, N.CARDTXT - 1 do
+    local ic = icons[i + 1]
+    if i < N.REQ then
+      RowIcon(i, ic, INFO.YS[i + 1])
+    end
+    local x = ic ~= nil and INFO.TEXT_X or INFO.ICON_X - INFO.ICON / 2
+    Line(L_CARDTXT, i, CmClip(lines[i + 1], INFO.CLIP), x, INFO.YS[i + 1],
+      (i == 0 and icons[1] == nil and lines[2] ~= nil and icon == nil and not model) and INFO.NAME_S or INFO.LINE_S)
+  end
+end
+
+local function PlayerCard(i)
+  local n = MAP.nodes[i]
+  local st = State(i)
+  if st == "locked" then
+    Card({Text(T.UNKNOWN), Text(T.STATE_LOCKED)}, nil, "vrfw_chain_icon_lock")
+    return
+  end
+  -- round 4 (owner): 4 short requirement rows with their icons, the price with the currency's icon, the state
+  local state = Text(st == "done" and T.STATE_DONE or (st == "ready" and T.STATE_READY or T.STATE_MISSING))
+  local lines, icons = {}, {}
+  if n.story then
+    -- 2026-10-12 (owner): a player the game signs in story mode: his story conditions (the game's own texts), the
+    -- item he asks for, «Se ficha en el modo historia»; «Ya fichado» once he is in the club. Nothing to buy here.
+    local rows = {}
+    for _, t in ipairs(n.notes or {}) do
+      rows[#rows + 1] = {t, nil}
+    end
+    for _, r in ipairs(n.reqs or {}) do
+      local l, ic = ReqRow(r)
+      rows[#rows + 1] = {l, ic}
+    end
+    for k = 1, 4 do
+      if rows[k] ~= nil then
+        lines[k], icons[k] = rows[k][1], rows[k][2]
+      else
+        lines[k], icons[k] = ReqRow(nil)
+      end
+    end
+    lines[5] = Text(T.STORY_ONLY)
+    lines[6] = st == "done" and state or ""
+    Card(lines, n, nil, icons)
+    return
+  end
+  for k = 1, 4 do
+    lines[k], icons[k] = ReqRow(n.reqs and n.reqs[k])
+  end
+  if n.reqs ~= nil and #n.reqs > 4 then
+    lines[4] = lines[4] .. " +" .. tostring(#n.reqs - 4)
+  end
+  lines[5] = tostring(Price(n)) .. " " .. Text(SET.rct)
+  icons[5] = (SET.rc or 0) ~= 0 and {item = SET.rc, sprite = "vrfw_cm_req_item"} or nil
+  lines[6] = state
+  Card(lines, n, nil, icons)
+end
+
+local function TileCard(i)
+  local n = MAP.nodes[i]
+  if n.kind == "player" then
+    PlayerCard(i)
+  elseif n.kind == "start" then
+    Card({Text(T.START)}, nil, "vrfw_chain_icon_start")
+  elseif n.kind == "open" then
+    Card({Text(T.OPEN_TILE)}, nil, "vrfw_chain_icon_check")
+  elseif not opened[i] then
+    Card({Text(T.UNKNOWN), Text(T.STATE_LOCKED)}, nil, "vrfw_chain_icon_lock")
+  else
+    local name = n.name ~= "" and n.name or Text(T.UNKNOWN)
+    local want = nil                -- the player the gate asks for (his model; no card: the padlock)
+    for _, r in ipairs(n.reqs) do
+      if r.kind == "player" and r.ids ~= nil and r.ids[1] ~= nil then
+        want = {card = r.ids[1]}
+        break
+      end
+    end
+    Card({name, acquired[i] and Text(T.GATE_DONE) or Fmt(T.GATE, name)}, want, want == nil and "vrfw_chain_icon_lock" or nil)
+  end
+end
+
+-- a player's card (2026-10-12, owner): vrfw_cm.g4tx vrfw_cm_plate fills its whole square (the card = the miniface's
+-- box, small corners, contact_map_req_art.py); not open yet: the chain board's «?» plate
+local function Plate(idx, st, x, y, size)
+  if st == "locked" then
+    Quad(L_TILE, idx, "vrfw_chain_tile_hidden", x, y, size, size)
+  else
+    QuadTex(L_TILE, idx, CRC32(REQ_TEX), CRC32("vrfw_cm_plate"), x, y, size, size)
+  end
+  local c = st == "ready" and COLOUR.READY or (st == "done" and COLOUR.DONE or (st == "missing" and COLOUR.MISSING or COLOUR.LOCKED))
+  Tint(L_TILE, idx, c)
+end
+
+local function DrawCursor()
+  local p = pos[focus[mode]]
+  if p == nil then
+    Hide(L_UI, 0)
+    return
+  end
+  local r = math.max(p.hw, p.hh) * 2 * 1.22
+  Quad(L_UI, 0, "vrfw_chain_ring", p.x, p.y, r, r)
+end
+
+-- the list of maps
+-- the list of maps (2026-10-12, owner: rows as the game's menu rows): each row is the retail list item itself
+-- (save01_02_list_item, layer vrfw_cm_title): its «off» plate and text (blue on white), the selected row its «on»
+-- plate and text; «Fichados n / m» after the title; the cursor (cmn05_01_cursor) on the selected row
+local function DrawList()
+  local first = math.max(1, focus.list - LIST.ROWS + 1)
+  local left = LIST.CX - LIST.W / 2
+  for k = 0, LIST.ROWS - 1 do
+    local i = first + k
+    local m = SET.maps[i]
+    if m == nil or k + LIST.ROWS >= N.TITLE then
+      Hide(L_TITLE, k)
+      Hide(L_TITLE, k + LIST.ROWS)
+    else
+      local y = LIST.TOP + k * LIST.ROW
+      local on = i == focus.list
+      -- the map's name on the left; «n / m» right-aligned at the row's right end on its own list item (no plate):
+      -- «Fichados» stays in the panel on the right (owner 2026-10-12)
+      local s = Text(m.title)
+      local c = tostring(m.signed or 0) .. " / " .. tostring(m.players)
+      Line(L_TITLE, k, s, left + 40, y, 1)
+      local kc = k + LIST.ROWS
+      Line(L_TITLE, kc, c, left + LIST.W - LIST.COUNT_PAD - #c * LIST.COUNT_CH, y, 1)
+      for _, t in ipairs({{k, s}, {kc, c}}) do
+        funcLuaMenuCommand(C.TEXT, L_TITLE, TEXT_OFF, t[2], t[1])
+        funcLuaMenuCommand(C.TEXT_VISIBLE, L_TITLE, TEXT_ON, on, t[1])
+        funcLuaMenuCommand(C.TEXT_VISIBLE, L_TITLE, TEXT_OFF, not on, t[1])
+      end
+      ROW_PLATE.texts[kc] = true
+      funcLuaMenuCommand(C.MESH_VISIBLE, L_TITLE, ROW_PLATE.ON, on, k)
+      funcLuaMenuCommand(C.MESH_VISIBLE, L_TITLE, ROW_PLATE.OFF, not on, k)
+      ROW_PLATE.used[k] = true
+      pos[i] = {x = LIST.CX, y = y, hw = LIST.W / 2, hh = LIST.H / 2}
+      if on then
+        funcLuaMenuCommand(C.POS, L_CURSOR, left - 10, -y, 0, 0)
+        funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, true)
+      end
+    end
+  end
+  local m = SET.maps[focus.list]
+  Card({Text(SET.title), Text(m.title), Fmt(T.COUNT, m.signed or 0, m.players)}, nil, nil)
+  Hide(L_UI, 0)
+end
+
+-- the list rows' plates off again (every other view uses the list items as plain text lines)
+local function RowPlatesOff()
+  for k in pairs(ROW_PLATE.used) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_TITLE, ROW_PLATE.ON, false, k)
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_TITLE, ROW_PLATE.OFF, false, k)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, L_TITLE, TEXT_OFF, false, k)
+  end
+  ROW_PLATE.used = {}
+  for k in pairs(ROW_PLATE.texts) do
+    funcLuaMenuCommand(C.TEXT_VISIBLE, L_TITLE, TEXT_OFF, false, k)
+  end
+  ROW_PLATE.texts = {}
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, false)
+end
+
+local function ZonePos(z, k)
+  local zz = MAP.zones[z]
+  if zz.x >= 0 and zz.y >= 0 then
+    local s, x0, y0 = AreaFit(1920, 1080)     -- declared on the 1920 x 1080 background, drawn fitted into AREA
+    return x0 + zz.x * s, y0 + zz.y * s
+  end
+  local rows = math.ceil(#MAP.zones / PIN.COLS)       -- the rows fit into AREA's height
+  local dy = rows > 1 and math.min(PIN.DY, (AREA.Y1 - PIN.PLATE - PIN.Y0) / (rows - 1)) or PIN.DY
+  return PIN.X0 + ((k - 1) % PIN.COLS) * PIN.DX, PIN.Y0 + math.floor((k - 1) / PIN.COLS) * dy
+end
+
+local function ZoneFace(z)
+  local first = nil
+  for _, i in ipairs(ZoneMembers(z)) do
+    first = first or i
+    if not IsSigned(i) then
+      return MAP.nodes[i]
+    end
+  end
+  return first and MAP.nodes[first] or ""
+end
+
+-- the communities / zones of a map as a LIST (round 3, owner: «not a map»): a row per zone with its leader's face
+-- (the first player still to sign), its name and «Fichados n / m»; the panel shows the hovered zone's leader
+local function DrawZones()
+  local first = math.max(1, focus.zones - LIST.ROWS + 1)
+  local left = LIST.CX - LIST.W / 2
+  for k = 0, LIST.ROWS - 1 do
+    local z = first + k
+    local zz = MAP.zones[z]
+    if zz == nil or k >= N.TITLE then
+      Hide(L_TITLE, k)
+    else
+      local y = LIST.TOP + k * LIST.ROW
+      local done = ZoneSigned(z)
+      Quad(L_TILE, k, "vrfw_chain_card", LIST.CX, y, LIST.W, LIST.H)
+      Tint(L_TILE, k, z == focus.zones and COLOUR.ROW_FOCUS or COLOUR.ROW)
+      DrawFace(L_FACE, k, ZoneFace(z), left + 44, y, LIST.H - 6)
+      Line(L_TITLE, k, Text(zz.title) .. "   " .. Fmt(T.COUNT, done, zz.count), left + 90, y, 1)
+      pos[z] = {x = LIST.CX, y = y, hw = LIST.W / 2, hh = LIST.H / 2}
+    end
+  end
+  local zz = MAP.zones[focus.zones]
+  if zz ~= nil then
+    Card({Text(zz.title), Fmt(T.COUNT, ZoneSigned(focus.zones), zz.count), Text(T.ZONE_HINT)}, ZoneFace(focus.zones))
+  end
+  Hide(L_UI, 0)
+end
+
+local function GridPage()
+  return math.floor((focus.grid - 1) / (GRID.COLS * GRID.ROWS))
+end
+
+local function DrawGrid()
+  local per = GRID.COLS * GRID.ROWS
+  local page = GridPage()
+  local left = AREA.CX - (GRID.COLS - 1) * GRID.CELL / 2
+  for k = 0, per - 1 do
+    local g = page * per + k + 1
+    local i = members[g]
+    if i ~= nil then
+      local x = left + (k % GRID.COLS) * GRID.CELL
+      local y = GRID.TOP + math.floor(k / GRID.COLS) * GRID.CELL
+      local st = State(i)
+      local size = GRID.CELL * GRID.FACE            -- the card = the miniface box
+      local bs = size * GRID.CHECK
+      local bx, by = x + size / 2 - bs * 0.45, y + size / 2 - bs * 0.45   -- the badges' centre: the card's bottom-right corner
+      Plate(k, st, x, y, size)
+      DrawFace(L_FACE, k, MAP.nodes[i], x, y, size * NET.FACE_IN)   -- inside the card (owner: hats were cut)
+      if st == "done" then
+        Quad(L_TAG, k, "vrfw_chain_icon_check", bx, by, bs, bs)
+      elseif ReqsUnmet(MAP.nodes[i]) then        -- a requirement not met: the red badge on the card
+        QuadTex(L_TAG, k, CRC32(REQ_TEX), CRC32("vrfw_cm_req_ng"), bx, by, size * GRID.REQNG, size * GRID.REQNG)
+      end
+      pos[g] = {x = x, y = y, hw = size / 2, hh = size / 2}
+    end
+  end
+  local pages = math.max(1, math.ceil(#members / per))
+  if page > 0 then
+    Quad(L_UI, 1, "vrfw_chain_arrow_l", left - GRID.CELL * 0.75, GRID.TOP + GRID.CELL * 1.5, 56, 56)
+  end
+  if page < pages - 1 then
+    Quad(L_UI, 2, "vrfw_chain_arrow_r", left + (GRID.COLS - 0.25) * GRID.CELL, GRID.TOP + GRID.CELL * 1.5, 56, 56)
+  end
+  if members[focus.grid] ~= nil then
+    PlayerCard(members[focus.grid])
+  end
+end
+
+-- the network's world -> screen: x centred on the map's span, y following the camera
+local function NetX(n)
+  return VIEW.CX + (n.x - NET.cx) * NET.S
+end
+
+local function NetY(n)
+  return VIEW.CY + (n.y - NET.cy) * NET.S
+end
+
+local function NetVisible(n)
+  local x, y, h = NetX(n), NetY(n), NET.PLATE / 2
+  return x >= VIEW.X0 + h - 2 and x <= VIEW.X1 - h + 2 and y >= VIEW.Y0 + h - 2 and y <= VIEW.Y1 - h + 2
+end
+
+-- the camera kept over the network: centred on an axis that fits, else inside the network's span (+ a margin)
+local function ClampCamera()
+  local hw, hh = (VIEW.X1 - VIEW.X0) / 2 / NET.S, (VIEW.Y1 - VIEW.Y0) / 2 / NET.S
+  local pad = (NET.PLATE + 20) / NET.S
+  if MAP.maxx - MAP.minx + 2 * pad <= 2 * hw then
+    NET.cx = (MAP.minx + MAP.maxx) / 2
+  else
+    NET.cx = math.max(MAP.minx - pad + hw, math.min(NET.cx, MAP.maxx + pad - hw))
+  end
+  if MAP.maxy - MAP.miny + 2 * pad <= 2 * hh then
+    NET.cy = (MAP.miny + MAP.maxy) / 2
+  else
+    NET.cy = math.max(MAP.miny - pad + hh, math.min(NET.cy, MAP.maxy + pad - hh))
+  end
+end
+
+-- the zoom: tiles, faces and links scale with it
+local function SetScale(sc)
+  NET.S = math.max(NET.FIT, math.min(NET.MAX, sc))
+  NET.T = math.max(NET.FIT, math.min(NET.MAX, NET.T or NET.S))
+  local r = math.min(1.35, NET.S / NET.S0)
+  NET.PLATE, NET.FACE, NET.SMALL, NET.LINE = NET.PLATE0 * r, NET.FACE0 * r, NET.SMALL0 * r, math.max(3, NET.LINE0 * r)
+end
+
+-- the cursor's tile always in view: the camera moves when it comes within MARGIN of VIEW's edges
+local function FollowCamera()
+  local n = MAP.nodes[focus.network]
+  local m = VIEW.MARGIN
+  local x, y = NetX(n), NetY(n)
+  if x < VIEW.X0 + m then
+    NET.cx = NET.cx - (VIEW.X0 + m - x) / NET.S
+  elseif x > VIEW.X1 - m then
+    NET.cx = NET.cx + (x - (VIEW.X1 - m)) / NET.S
+  end
+  if y < VIEW.Y0 + m then
+    NET.cy = NET.cy - (VIEW.Y0 + m - y) / NET.S
+  elseif y > VIEW.Y1 - m then
+    NET.cy = NET.cy + (y - (VIEW.Y1 - m)) / NET.S
+  end
+  ClampCamera()
+end
+
+-- after a pan / zoom the cursor stays on a tile in view: the nearest one to the view's centre when his went out
+local function KeepFocusInView()
+  if NetVisible(MAP.nodes[focus.network]) then
+    return
+  end
+  local best, bd = nil, nil
+  for i, n in ipairs(MAP.nodes) do
+    if NetVisible(n) and n.kind ~= "open" then
+      local d = (NetX(n) - VIEW.CX) ^ 2 + (NetY(n) - VIEW.CY) ^ 2
+      if bd == nil or d < bd then
+        best, bd = i, d
+      end
+    end
+  end
+  if best ~= nil then
+    focus.network = best
+  end
+end
+
+-- the network, virtually (2026-10-12, owner: one map, no pages): the tiles in VIEW, nearest the view's centre first,
+-- up to the tile pool; players' busts on the bust pool (a card keeps the slot it had: a pan never rebuilds a bust;
+-- past the pool, the plate alone), gates' faces on the face pool; links between two drawn tiles, up to the line pool
+local function DrawNetwork()
+  local vis = {}
+  for i, n in ipairs(MAP.nodes) do
+    if NetVisible(n) then
+      vis[#vis + 1] = {i = i, d = (NetX(n) - VIEW.CX) ^ 2 + (NetY(n) - VIEW.CY) ^ 2}
+    end
+  end
+  table.sort(vis, function(a, b) return a.d < b.d end)
+  -- links in view (both ends in view): with the tiles, they must fit the pools; else the widest zoom goes up (the
+  -- floor FIT, eased to: the next frames draw everything again) and this frame draws the nearest ones
+  local inview, nlinks = {}, 0
+  for _, v in ipairs(vis) do
+    inview[v.i] = true
+  end
+  for _, v in ipairs(vis) do
+    for _, b in ipairs(MAP.nodes[v.i].links) do
+      if v.i < b and inview[b] then
+        nlinks = nlinks + 1
+      end
+    end
+  end
+  -- the faces in view too: the players drawn with a bust and the open gates with a face
+  local nplayers, ngates = 0, 0
+  for k = 1, math.min(#vis, N.TILE) do
+    local n = MAP.nodes[vis[k].i]
+    if n.kind == "player" and Int(n.card) ~= 0 and State(vis[k].i) ~= "locked" then
+      nplayers = nplayers + 1
+    elseif n.kind == "gate" and opened[vis[k].i] then
+      ngates = ngates + 1
+    end
+  end
+  if #vis > N.TILE or nlinks > N.LINE or nplayers > N.BUST - N.CARD_BUSTS or ngates > N.FACE then
+    NET.FIT = math.min(NET.MAX, NET.S * 1.04)
+    NET.T = math.max(NET.T or NET.S, NET.FIT)
+  end
+  local short = #vis > N.TILE and "tiles" or (nlinks > N.LINE and "links" or nil)
+  local drawn, slot_of, li = {}, {}, 0
+  for k = 1, math.min(#vis, N.TILE) do
+    drawn[k] = vis[k].i
+    slot_of[vis[k].i] = k - 1
+  end
+  -- bust slots: the cards of the drawn players (not locked), nearest first; a card keeps its slot
+  local nb = N.BUST - N.CARD_BUSTS
+  local keyed = BUST.key[L_BUST] or {}
+  local held = {}
+  for k = 0, nb - 1 do
+    if keyed[k] ~= nil then
+      held[keyed[k]] = k
+    end
+  end
+  local want, bslot, used = {}, {}, {}
+  for _, i in ipairs(drawn) do
+    local n = MAP.nodes[i]
+    if n.kind == "player" and Int(n.card) ~= 0 and State(i) ~= "locked" and #want < nb then
+      want[#want + 1] = i
+      local k = held[n.card]
+      if k ~= nil and not used[k] then
+        bslot[i], used[k] = k, true
+      end
+    end
+  end
+  if #want >= nb and short == nil then
+    short = "faces"
+  end
+  local free = 0
+  for _, i in ipairs(want) do
+    if bslot[i] == nil then
+      while used[free] do
+        free = free + 1
+      end
+      bslot[i], used[free] = free, true
+    end
+  end
+  local gs, tg = 0, 0
+  local function Tag(sprite, tex, x, y, size)   -- a badge while the badge pool lasts
+    if tg >= N.TAG then
+      return
+    end
+    if tex ~= nil then
+      QuadTex(L_TAG, tg, tex, CRC32(sprite), x, y, size, size)
+    else
+      Quad(L_TAG, tg, sprite, x, y, size, size)
+    end
+    tg = tg + 1
+  end
+  for _, i in ipairs(drawn) do
+    local n = MAP.nodes[i]
+    local slot = slot_of[i]
+    local x, y = NetX(n), NetY(n)
+    if n.kind == "player" then
+      local st = State(i)
+      Plate(slot, st, x, y, NET.PLATE)
+      if st ~= "locked" then
+        if bslot[i] ~= nil then
+          DrawBust(L_BUST, bslot[i], n.card, x, y, NET.FACE)
+        end
+        if st == "missing" and ReqsUnmet(n) then
+          Tag("vrfw_cm_req_ng", CRC32(REQ_TEX), x + NET.PLATE * 0.32, y + NET.PLATE * 0.32, NET.PLATE * 0.4)
+        end
+      end
+    elseif n.kind == "gate" then
+      local st = opened[i] and (acquired[i] and "done" or "missing") or "locked"
+      Plate(slot, st, x, y, NET.PLATE)
+      if st ~= "locked" then
+        Tint(L_TILE, slot, acquired[i] and COLOUR.DONE or COLOUR.GATE)
+        if gs < N.FACE then
+          local tc = (n.face or "") ~= "" and Tex(FACE_DIR .. n.face .. "_l.g4tx") or nil
+          if tc then
+            QuadTex(L_FACE, gs, tc, CRC32(n.face .. "_1_l00"), x, y, NET.FACE, NET.FACE)
+          elseif tc == nil then
+            Quad(L_FACE, gs, "vrfw_chain_icon_unknown", x, y, NET.FACE, NET.FACE)
+          end
+          gs = gs + 1
+        end
+        if not acquired[i] then
+          Tag("vrfw_chain_icon_lock", nil, x + NET.PLATE * 0.32, y + NET.PLATE * 0.32, NET.PLATE * 0.42)
+        end
+      end
+    elseif n.kind == "start" then          -- owner: the start bigger than a cell (NET.START)
+      Quad(L_TILE, slot, "vrfw_chain_tile_start", x, y, NET.PLATE * NET.START, NET.PLATE * NET.START)
+      Tint(L_TILE, slot, COLOUR.WHITE)
+    else
+      Quad(L_TILE, slot, opened[i] and "vrfw_chain_tile_done" or "vrfw_chain_tile_hidden", x, y, NET.SMALL, NET.SMALL)
+      Tint(L_TILE, slot, COLOUR.WHITE)
+    end
+    local half = (n.kind == "open") and NET.SMALL / 2 or (n.kind == "start" and NET.PLATE * NET.START / 2 or NET.PLATE / 2)
+    pos[i] = {x = x, y = y, hw = half, hh = half}
+  end
+  for _, a in ipairs(drawn) do
+    local n = MAP.nodes[a]
+    for _, b in ipairs(n.links) do
+      if a < b and slot_of[b] ~= nil then
+        if li >= N.LINE then
+          short = short or "links"
+        else
+          local ax, ay, bx, by = NetX(n), NetY(n), NetX(MAP.nodes[b]), NetY(MAP.nodes[b])
+          local c = (acquired[a] and acquired[b]) and COLOUR.LINK_DONE or ((opened[a] and opened[b]) and COLOUR.LINK_OPEN or COLOUR.LINK_LOCKED)
+          local len = math.sqrt((bx - ax) ^ 2 + (by - ay) ^ 2)
+          Quad(L_LINE, li, "vrfw_chain_line", (ax + bx) / 2, (ay + by) / 2, len, NET.LINE)
+          funcLuaMenuCommand(C.ROTATE, L_LINE, 0, 0, math.atan2(-(by - ay), bx - ax), li)
+          Tint(L_LINE, li, c)
+          li = li + 1
+        end
+      end
+    end
+  end
+  if short ~= nil and not N.full then
+    N.full = true
+    Log("network pool short", short, "in view", #vis, "links", li)
+  end
+  TileCard(focus.network)
+end
+
+local function ShelfFor()
+  -- a zone's shelf: the items its players ask for; elsewhere the map's whole shelf
+  local want = nil
+  if prev_mode == "grid" then
+    want = {}
+    for _, i in ipairs(members) do
+      for _, r in ipairs(MAP.nodes[i].reqs) do
+        if r.kind == "item" then
+          want[r.id] = true
+        end
+      end
+    end
+  end
+  local out = {}
+  for _, it in ipairs(MAP.items) do
+    if want == nil or want[it.item] then
+      out[#out + 1] = it
+    end
+  end
+  return out
+end
+
+local function DrawShop()
+  local first = math.max(1, focus.shop - LIST.ROWS + 1)
+  local left = LIST.CX - LIST.W / 2
+  for k = 0, LIST.ROWS - 1 do
+    local i = first + k
+    local it = shelf[i]
+    if it == nil or k >= N.TITLE then
+      Hide(L_TITLE, k)
+    else
+      local y = LIST.TOP + k * LIST.ROW
+      Quad(L_TILE, k, "vrfw_chain_card", LIST.CX, y, LIST.W, LIST.H)
+      Tint(L_TILE, k, i == focus.shop and COLOUR.ROW_FOCUS or COLOUR.ROW)
+      Line(L_TITLE, k, Fmt(T.SHOP_ROW, Text(it.title), it.price, Text(SET.ict), VRFW_Recruit.Items(it.item)), left + 40, y, 0.9)
+      pos[i] = {x = LIST.CX, y = y, hw = LIST.W / 2, hh = LIST.H / 2}
+    end
+  end
+  Hide(L_UI, 0)
+  if #shelf == 0 then
+    Card({Text(T.SHOP_BTN), Text(T.SHOP_EMPTY)}, nil, nil)
+  else
+    local it = shelf[focus.shop]
+    Card({Text(it.title), Fmt(T.REQ_ITEM, Text(SET.ict), it.price, VRFW_Recruit.Items(SET.ic))}, nil, nil)
+  end
+end
+
+local function UpdateTitle()
+  local title = Text(SET and SET.title or 0)
+  if mode ~= "list" and MAP ~= nil then
+    title = Text(MAP.title)
+    if mode == "grid" and MAP.zones[zone] ~= nil then
+      title = title .. " · " .. Text(MAP.zones[zone].title)
+    elseif mode == "shop" then
+      title = title .. " · " .. Text(T.SHOP_BTN)
+    end
+  end
+  if VIEW_ALL.on then
+    title = title .. "  [" .. Text(T.VIEW_MARK) .. "]"
+  end
+  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], title, 0)
+end
+
+local function UpdateButtonGuide()
+  if false then                     -- round 3 (owner): no «Objetos» on the contact map (no hint, no X / Tab)
+    funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, {T.SHOP_BTN, G_ACCEPT}, {I_FUNC2, I_ENTER}, {0, 18}, {}, {})
+    funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, {K_FUNC2, K_ENTER})
+  else
+    funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, {G_ACCEPT}, {I_ENTER}, {18}, {}, {})
+    funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, {K_ENTER})
+  end
+  funcLuaMenuCommand(C.GUIDE_OPT, MENU, L_BTN_GUIDE, false)
+end
+
+local function DrawAll()
+  if SET == nil then
+    return
+  end
+  OtNote("draw " .. mode)
+  tex_wait = false
+  pos = {}
+  HideAll()
+  RowPlatesOff()
+  HideReqs()
+  DrawBack()
+  DrawZoneArt()
+  if mode == "list" then
+    DrawList()
+  elseif mode == "zones" then
+    DrawZones()
+  elseif mode == "grid" then
+    DrawGrid()
+  elseif mode == "network" then
+    DrawNetwork()
+  elseif mode == "shop" then
+    DrawShop()
+  end
+  if mode ~= "list" and mode ~= "shop" then
+    DrawCursor()
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_GUIDE_LINE, 0, false)
+end
+
+-- ---- navigation -----------------------------------------------------------------------------------------------------
+local function SetMode(m)
+  mode = m
+  UpdateTitle()
+  UpdateButtonGuide()
+  DrawAll()
+end
+
+-- a network opened (2026-10-12: one map, no pages): its span (the camera's bounds), the zoom range (FIT: the whole map
+-- in VIEW, but never wider than about NET.CAP tiles in view: the tile pool; it opens at S0 or fitted to the width),
+-- the cursor on its first player open and not signed
+local function NetOpen()
+  local minx, maxx, miny, maxy = nil, nil, nil, nil
+  for _, n in ipairs(MAP.nodes) do
+    minx, maxx = math.min(minx or n.x, n.x), math.max(maxx or n.x, n.x)
+    miny, maxy = math.min(miny or n.y, n.y), math.max(maxy or n.y, n.y)
+  end
+  MAP.cx, MAP.miny, MAP.maxy = ((minx or 0) + (maxx or 0)) / 2, miny or 0, maxy or 0
+  MAP.minx, MAP.maxx = minx or 0, maxx or 0
+  local sx, sy = (maxx or 0) - (minx or 0), (maxy or 0) - (miny or 0)
+  local vw, vh = VIEW.X1 - VIEW.X0 - NET.PLATE0, VIEW.Y1 - VIEW.Y0 - NET.PLATE0
+  local fit = math.min(NET.S0, sx > 0 and vw / sx or NET.S0, sy > 0 and vh / sy or NET.S0)
+  local density = #MAP.nodes / math.max(1, (sx + NET.PLATE0) * (sy + NET.PLATE0))
+  local cap = math.sqrt(density * vw * vh / NET.CAP)   -- the scale at which ~CAP tiles fill the view
+  NET.FIT = math.min(NET.S0, math.max(fit, cap))
+  NET.T = math.max(NET.FIT, math.min(NET.S0, sx > 0 and vw / sx or NET.S0))
+  SetScale(NET.T)
+  NetState()
+  focus.network = 1
+  for i, n in ipairs(MAP.nodes) do
+    if n.kind == "player" and opened[i] and not acquired[i] then
+      focus.network = i
+      break
+    end
+  end
+  NET.cx, NET.cy = MAP.nodes[focus.network].x, MAP.nodes[focus.network].y
+  ClampCamera()
+  FollowCamera()
+  N.full = false
+end
+
+local function OpenMap(i)
+  local m = SET.maps[i]
+  local data = Call(C.CM_MAP, m.key, lang)
+  if type(data) ~= "table" or type(data.nodes) ~= "table" then
+    Log("map not served", m.key)
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  MAP = data
+  MAP.key = m.key
+  MAP.zones = MAP.zones or {}
+  MAP.items = MAP.items or {}
+  for _, n in ipairs(MAP.nodes) do
+    n.links = n.links or {}
+    n.reqs = n.reqs or {}
+    n.name = n.name or ""
+    n.face = n.face or ""
+  end
+  LoadRecord()
+  if MAP.kind == "network" then
+    NetOpen()
+    SetMode("network")
+  elseif MAP.kind == "list" and #MAP.zones == 1 then
+    zone = 1
+    members = ZoneMembers(1)
+    focus.grid = 1
+    SetMode("grid")
+  else
+    focus.zones = 1
+    SetMode("zones")
+  end
+  Log("open map", m.key, MAP.kind, "nodes", #MAP.nodes, "signed", MapSigned(m))
+end
+
+local function OpenZone(z)
+  zone = z
+  members = ZoneMembers(z)
+  focus.grid = 1
+  for g, i in ipairs(members) do
+    if not IsSigned(i) then
+      focus.grid = g
+      break
+    end
+  end
+  SetMode("grid")
+end
+
+local function OpenShop()
+  prev_mode = mode
+  shelf = ShelfFor()
+  focus.shop = 1
+  SetMode("shop")
+end
+
+-- the pad / keyboard polled for what the screen's input rows do not carry: LB / RB (no row), and Back as a fallback
+-- (2026-10-12: Esc did nothing over the Mercado; a polled Back acts only when OnBack did not come within 2 frames)
+-- Controller (2026-10-12, owner: the pad did not move on the map): the hub under the screen (the Mercado) switches the
+-- engine's free cursor on (CMND_SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE): the stick drove an invisible virtual mouse
+-- and the pad's moves / A went to it. The screen switches it off while it is up (as retail screens with their own
+-- cursor do, ability_learning_board_menu) and back on when it leaves. On top, the moves are polled: the D-pad and the
+-- stick's menu moves (CMD_UP / DOWN / LEFT / RIGHT on MENU_CTRL / MENU_CTRL_WITH_ANALOG_MOVE_FOCUS) and the left stick
+-- itself (CMND_GET_ANALOG_VALUE 0 / 1, y > 0 = up: past 0.5 a step, held = repeat), A (CMD_ENTER) and X (CMD_FUNC2).
+-- A polled press acts only when its callback (OnFunction / OnDecideFocus / OnEnter / the pointer's click) did not come
+-- within 2 frames, so the keyboard and a pad the input rows already serve never move twice.
+-- 2026-10-13 (owner: the Windows cursor showed; it must be the game's green pointer): the free cursor is ON again, the
+-- retail hubs' call (879521569(true, false, true), market / soccer_top / team_dock). With it on, the engine's free
+-- cursor component (nie.exe 0x1047EA0 / 0x1047280) hides the Windows cursor and shows its own pointer (free_cursor_menu
+-- cmn05_01_free_cursor): shown while the mouse or the left stick moves it, hidden on a button press (D-pad / A), and
+-- with the stick at rest it keeps MENU_CTRL selected (the D-pad reaches the input rows). As in retail hubs, the left
+-- stick drives that pointer (hover = EVT_PointerNew); the polled stick steps (KEYS.StickDir) only run while it is off.
+local KEYS = {L1 = 3966226594, R1 = 942075773, BACK = 3011112225,
+              held = {}, frame = 0, back_cb = -100, back_poll = nil, logs = 0,
+              NAV = {UP = 1197218715, DOWN = 3259546669, LEFT = 2765147006, RIGHT = 2075023265,
+                     ENTER = 1981080283},
+              DIR = {UP = {0, -1}, DOWN = {0, 1}, LEFT = {-1, 0}, RIGHT = {1, 0}},
+              ANALOG = 1440697067,    -- CMND_GET_ANALOG_VALUE (index: 0 / 1 = left stick x / y)
+              FREE_CURSOR = 879521569, free_off = false,
+              cb = {}, press = {}, owned = {}, next_rep = {}, stick = nil, co_was = false,
+              REPEAT_FIRST = 18, REPEAT = 6}
+-- the menu this screen opened over (its header, button guides, token panel): hidden while the screen is up, given back
+-- before it closes (VRFW_HubYield, assets\lua\menu\_all\63_hub_yield.lua, run in the hub's own VM)
+local HUB = {menu = nil, on = false}
+local function HubYield(on)
+  if on == HUB.on then
+    return
+  end
+  if on and HUB.menu == nil then
+    -- the opener's parameter (OnInit), else the engine's parent of this menu
+    local ok, parent = pcall(function() return MENU_DEF.GetParentMenuID(MENU) end)
+    if ok and type(parent) == "number" and parent ~= 0 then
+      HUB.menu = parent
+    end
+  end
+  HUB.on = on
+  if HUB.menu == nil then
+    Log("hub yield", tostring(on), "no parent menu")
+    return
+  end
+  local ok, err = pcall(funcLuaCommand, C.MENU_CALL, HUB.menu, "VRFW_HubYield", on, MENU)
+  Log("hub yield", tostring(on), "menu", HUB.menu, tostring(ok), tostring(err))
+end
+
+-- every way out of the screen: the hub gets its layers back first
+local function Leave(result)
+  if Model ~= nil then
+    Model.Hide()
+  end
+  KEYS.Free(true)
+  HubYield(false)
+  HEADROW.Free()
+  if Model ~= nil and Model.cam then        -- the shared menu model camera back (Model.Place's fallback)
+    pcall(funcLuaCommand, 284729675, 1752770328, 0, 0, 0)
+    Model.cam = nil
+  end
+  Close(result)
+end
+
+local function Back()
+  if mode == "shop" then
+    SetMode(prev_mode or "zones")
+  elseif mode == "grid" and not (MAP.kind == "list" and #MAP.zones == 1) then
+    SetMode("zones")
+  elseif mode ~= "list" then
+    for _, m in ipairs(SET.maps) do
+      if m.key == MAP.key then
+        m.signed = MapSigned(m)
+      end
+    end
+    MAP = nil
+    SetMode("list")
+  else
+    Log("back")
+    Leave(0)
+  end
+end
+
+-- the nearest item in a direction among the items on screen (zones / network)
+local function MoveNear(dx, dy)
+  local P = pos
+  if mode == "network" then          -- every tile, also out of view (the camera follows the cursor)
+    P = {}
+    for i, n in ipairs(MAP.nodes) do
+      P[i] = {x = NetX(n), y = NetY(n)}
+    end
+  end
+  local p = P[focus[mode]]
+  if p == nil then
+    return
+  end
+  local best, bd = nil, nil
+  for i, q in pairs(P) do
+    if i ~= focus[mode] then
+      local ex, ey = q.x - p.x, q.y - p.y
+      local along = ex * dx + ey * dy
+      if along > 1 then
+        local across = math.abs(ex * dy) + math.abs(ey * dx)
+        local d = along + across * 2
+        if bd == nil or d < bd then
+          best, bd = i, d
+        end
+      end
+    end
+  end
+  if best ~= nil then
+    focus[mode] = best
+    funcLuaCommand(C.SE, SE_OK)
+    if mode == "network" then
+      FollowCamera()
+    end
+    DrawAll()
+  end
+end
+
+local function MoveGrid(dx, dy)
+  local n = #members
+  if n == 0 then
+    return
+  end
+  local g = focus.grid
+  if dx ~= 0 then
+    g = g + dx
+  else
+    g = g + dy * GRID.COLS
+  end
+  if g < 1 or g > n then
+    return
+  end
+  focus.grid = g
+  funcLuaCommand(C.SE, SE_OK)
+  DrawAll()
+end
+
+local function MoveList(dy, count)
+  local k = focus[mode] + dy
+  if k < 1 or k > count then
+    return
+  end
+  focus[mode] = k
+  funcLuaCommand(C.SE, SE_OK)
+  DrawAll()
+end
+
+-- LB / RB: a page of the grid (24 players), or of the list of maps / the shelf
+local function PageTurn(d)
+  local per, count, key
+  if mode == "grid" then
+    per, count, key = GRID.COLS * GRID.ROWS, #members, "grid"
+  elseif mode == "list" then
+    per, count, key = LIST.ROWS, #SET.maps, "list"
+  elseif mode == "zones" then
+    per, count, key = LIST.ROWS, #MAP.zones, "zones"
+  elseif mode == "shop" then
+    per, count, key = LIST.ROWS, #shelf, "shop"
+  else
+    return false
+  end
+  if count == 0 then
+    return false
+  end
+  local cur = focus[key]
+  local k
+  if key == "grid" then
+    local pages = math.ceil(count / per)
+    local page = math.floor((cur - 1) / per) + d
+    if page < 0 or page >= pages then
+      return false
+    end
+    k = math.min(count, page * per + (cur - 1) % per + 1)
+  else
+    k = math.max(1, math.min(count, cur + d * per))
+    if k == cur then
+      return false
+    end
+  end
+  focus[key] = k
+  Ptr.KeyStep()
+  funcLuaCommand(C.SE, SE_OK)
+  DrawAll()
+  return true
+end
+
+local function KeyOn(k)
+  for _, ctrl in ipairs({1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]}) do
+    local ok, r = pcall(funcLuaCommand, C.CHECK_INPUT, ctrl, k)
+    if ok and r == true then
+      return true
+    end
+  end
+  return false
+end
+local function KeyEdge(name)
+  local on = KeyOn(KEYS[name])
+  local edge = on and not KEYS.held[name]
+  KEYS.held[name] = on
+  return edge
+end
+-- the first presses the menu's callbacks get (log: «input <key> <view>», 8 at most)
+function KEYS.Seen(name)
+  KEYS.seen = (KEYS.seen or 0) + 1
+  if KEYS.seen <= 8 then
+    Log("input", name, mode)
+  end
+end
+-- the engine's free cursor (virtual mouse, the game's pointer): on while the screen is up, as the retail hubs
+function KEYS.Free(on, force)
+  if not force and KEYS.free_off == not on then
+    return
+  end
+  KEYS.free_off = not on
+  local ok = pcall(funcLuaMenuCommand, KEYS.FREE_CURSOR, on, false, true)
+  if not force then
+    Log("free cursor", tostring(on), tostring(ok))
+  end
+end
+-- the left stick as a direction: past 0.5 on its main axis, kept until it falls under 0.3
+function KEYS.StickDir()
+  local okx, x = pcall(funcLuaCommand, KEYS.ANALOG, 0)
+  local oky, y = pcall(funcLuaCommand, KEYS.ANALOG, 1)
+  x = (okx and type(x) == "number") and x or 0
+  y = (oky and type(y) == "number") and y or 0
+  local d = nil
+  if math.max(math.abs(x), math.abs(y)) > 0.5 then
+    if math.abs(x) >= math.abs(y) then
+      d = x > 0 and "RIGHT" or "LEFT"
+    else
+      d = y > 0 and "UP" or "DOWN"
+    end
+  elseif KEYS.stick ~= nil then
+    local v = KEYS.DIR[KEYS.stick]
+    if x * v[1] - y * v[2] > 0.3 then
+      d = KEYS.stick
+    end
+  end
+  KEYS.stick = d
+  return d
+end
+-- one step in a direction, as the arrows' input rows do (OnFunction)
+function KEYS.Move(dx, dy)
+  Ptr.KeyStep()           -- the pad / keys own the selection until the pointer moves again (see PollPointer)
+  if mode == "list" then
+    MoveList(dy ~= 0 and dy or dx, #SET.maps)
+  elseif mode == "zones" then
+    MoveList(dy ~= 0 and dy or dx, #MAP.zones)
+  elseif mode == "shop" then
+    MoveList(dy ~= 0 and dy or dx, #shelf)
+  elseif mode == "grid" then
+    MoveGrid(dx, dy)
+  else
+    MoveNear(dx, dy)
+  end
+end
+
+-- ---- actions --------------------------------------------------------------------------------------------------------
+local function Recruit(i)
+  local n = MAP.nodes[i]
+  local st = State(i)
+  if st == "locked" then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(T.STATE_LOCKED))
+    return
+  end
+  if st == "done" then
+    funcLuaCommand(C.SE, SE_OK)
+    Message(Text(VRFW_Recruit.Owned(n.card) > 0 and T.OWNED or T.STATE_DONE))
+    return
+  end
+  if MAP.kind == "network" and VIEW_ALL.on and not VIEW_ALL.real[i] then
+    funcLuaCommand(C.SE, SE_NG)       -- view everything: a tile not open by the real order is never signed
+    Message(Text(T.STATE_LOCKED))
+    return
+  end
+  if n.story then                     -- signed in story mode, not here (2026-10-12)
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(T.STORY_ONLY))
+    return
+  end
+  local missing = VRFW_Recruit.Missing(n.reqs)
+  if #missing > 0 then
+    funcLuaCommand(C.SE, SE_NG)
+    local lines = {}
+    for _, l in ipairs(ReqLines({reqs = missing})) do
+      lines[#lines + 1] = l
+    end
+    Message(Fmt(T.NEED_REQS, table.concat(lines, "\n")))
+    return
+  end
+  local have = VRFW_Recruit.Items(SET.rc)
+  if have < Price(n) then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Fmt(T.NEED_PRICE, Price(n), Text(SET.rct), have))
+    return
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  if not Ask(Fmt(T.ASK, n.name, n.level, Price(n), Text(SET.rct))) then
+    return
+  end
+  local ok, why = VRFW_Recruit.Recruit({param = n.card, level = n.level, reqs = n.reqs,
+                                       price = {item = SET.rc, count = Price(n)}})
+  if not ok then
+    Log("recruit refused", MAP.key, i, n.card, why)
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(why == "bank_full" and T.BANK_FULL or (why == "owned" and T.OWNED or T.FAILED)))
+    return
+  end
+  signed[i] = true
+  SaveRecord()
+  if MAP.kind == "network" then
+    NetState()
+  end
+  Log("recruited", MAP.key, i, n.card, "level", n.level, "price", Price(n))
+  DrawAll()
+  Message(Fmt(T.JOINED, n.name))
+end
+
+local function Buy(it)
+  local have = VRFW_Recruit.Items(SET.ic)
+  if have < it.price then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Fmt(T.NEED_PRICE, it.price, Text(SET.ict), have))
+    return
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  if not Ask(Fmt(T.SHOP_ASK, Text(it.title), it.price, Text(SET.ict))) then
+    return
+  end
+  if not VRFW_Recruit.Charge(SET.ic, it.price) then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  if not VRFW_Recruit.Give(it.item, 1) then
+    VRFW_Recruit.Give(SET.ic, it.price)       -- the price back: no room
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(T.BAG_FULL))
+    return
+  end
+  Log("bought", MAP.key, it.item, "price", it.price)
+  DrawAll()
+  Message(Fmt(T.SHOP_BOUGHT, Text(it.title)))
+end
+
+local function Decide()
+  if mode == "list" then
+    funcLuaCommand(C.SE, SE_DECIDE)
+    OpenMap(focus.list)
+  elseif mode == "zones" then
+    if MAP.zones[focus.zones] ~= nil then
+      funcLuaCommand(C.SE, SE_DECIDE)
+      OpenZone(focus.zones)
+    end
+  elseif mode == "grid" then
+    local i = members[focus.grid]
+    if i ~= nil then
+      Recruit(i)
+    end
+  elseif mode == "network" then
+    local n = MAP.nodes[focus.network]
+    if n.kind == "player" then
+      Recruit(focus.network)
+    elseif n.kind == "gate" and not acquired[focus.network] then
+      funcLuaCommand(C.SE, SE_NG)
+      Message(opened[focus.network] and Fmt(T.GATE, n.name) or Text(T.STATE_LOCKED))
+    else
+      funcLuaCommand(C.SE, SE_OK)
+    end
+  elseif mode == "shop" then
+    if shelf[focus.shop] ~= nil then
+      Buy(shelf[focus.shop])
+    end
+  end
+end
+
+-- the network's zoom / pan (2026-10-12, owner: smooth; the right stick pans only): LT / RT held move the target zoom
+-- NET.T continuously (ZOOM_RATE x a second), a wheel notch by WHEEL; every frame the shown scale eases to it (EASE s,
+-- exponential), centred on the view as before. The right stick pans (both axes, its tilt = the speed), a mouse drag
+-- pans; the cursor's tile stays in view (KeepFocusInView); redrawn only when the view moved
+function CmNetZoom(f)                -- the target only: CmNetEase shows it
+  NET.T = math.max(NET.FIT, math.min(NET.MAX, (NET.T or NET.S) * f))
+end
+function CmNetEase()
+  local t = NET.T or NET.S
+  if math.abs(t - NET.S) <= t * 0.0015 then
+    if t ~= NET.S then
+      SetScale(t)
+      ClampCamera()
+      KeepFocusInView()
+      DrawAll()
+    end
+    return
+  end
+  local a = 1 - math.exp(-NET.DT / NET.EASE)
+  SetScale(NET.S + (t - NET.S) * a)
+  ClampCamera()
+  KeepFocusInView()
+  DrawAll()
+end
+function CmNetPan(dx, dy)            -- screen px
+  local bx, by = NET.cx, NET.cy
+  NET.cx, NET.cy = NET.cx + dx / NET.S, NET.cy + dy / NET.S
+  ClampCamera()
+  if math.abs(NET.cx - bx) * NET.S > 0.5 or math.abs(NET.cy - by) * NET.S > 0.5 then
+    KeepFocusInView()
+    DrawAll()
+  end
+end
+function CmNetViewStep(free)
+  if mode ~= "network" or MAP == nil or not free then
+    NET.drag = nil
+    return
+  end
+  -- LT / RT held: the target zoom out / in, continuously
+  -- held (owner: one step a press in game): CMD_FUNCL2_ON / _REPEAT / CMD_FUNCL2 each frame, a hit keeps it held for
+  -- HOLD frames (the repeat's gap)
+  local function Held(name, cmds)
+    for _, c in ipairs(cmds) do
+      if KeyOn(c) then
+        NET[name] = KEYS.frame + NET.HOLD
+        break
+      end
+    end
+    return (NET[name] or -1) >= KEYS.frame
+  end
+  if Held("lt", {3833829418 --[[CMD_FUNCL2_ON]], 1520574355 --[[CMD_FUNCL2_REPEAT]], 1970176280 --[[CMD_FUNCL2]]}) then
+    CmNetZoom(NET.ZOOM_RATE ^ -NET.DT)
+  elseif Held("rt", {995340745 --[[CMD_FUNCR2_ON]], 1050707568 --[[CMD_FUNCR2_REPEAT]], 2704260807 --[[CMD_FUNCR2]]}) then
+    CmNetZoom(NET.ZOOM_RATE ^ NET.DT)
+  end
+  CmNetEase()
+  -- right stick (CMND_GET_ANALOG_VALUE 2 / 3, y > 0 = up): pans, speed by its tilt past DEAD
+  local okx, x = pcall(funcLuaCommand, KEYS.ANALOG, 2)
+  local oky, y = pcall(funcLuaCommand, KEYS.ANALOG, 3)
+  x = (okx and type(x) == "number") and x or 0
+  y = (oky and type(y) == "number") and y or 0
+  local function speed(v)
+    local a = math.abs(v)
+    if a <= NET.DEAD then
+      return 0
+    end
+    local f = (a - NET.DEAD) / (1 - NET.DEAD)
+    return (v > 0 and 1 or -1) * NET.PAN * f * f
+  end
+  local px_, py_ = speed(x), -speed(y)
+  if px_ ~= 0 or py_ ~= 0 then
+    CmNetPan(px_, py_)
+  end
+  -- mouse drag (left button held on empty space): the map follows the pointer
+  local held = KeyOn(218912913 --[[CMD_EVT_MOUSE_LEFT]])
+  local px, py = Ptr.Pos()
+  if held and px ~= nil then
+    if NET.drag == nil then
+      NET.drag = {x = px, y = py}
+    else
+      local dx, dy = px - NET.drag.x, py - NET.drag.y
+      if dx ~= 0 or dy ~= 0 then
+        NET.drag.x, NET.drag.y = px, py
+        CmNetPan(-dx, -dy)
+      end
+    end
+  else
+    NET.drag = nil
+  end
+end
+
+local function PollPointer()
+  Ptr.Begin()
+  for i, p in pairs(pos) do
+    Ptr.Box(p.x, p.y, p.hw, p.hh, i)
+  end
+  local ev = Ptr.Poll()
+  if evt_co ~= nil or not ready or open_guard > 0 then
+    return
+  end
+  -- 2026-10-13 (owner: wherever the mouse rested, the selection stayed pinned under it; the pad could not move away):
+  -- hover only on a frame the pointer MOVED (ev.hover). Before, ev.hot / ev.changed after every redraw (Ptr.Forget in
+  -- DrawAll) re-selected the tile under a resting pointer, and a stick step (KEYS.Poll) never left pointer mode; a
+  -- zoom / pan moving the tiles under it did the same. Key / pad steps call Ptr.KeyStep (KEYS.Move, PageTurn): pad
+  -- mode until the pointer moves or clicks. No hover while the map is dragged.
+  if type(ev.hover) == "number" and ev.hover ~= focus[mode] and NET.drag == nil then
+    focus[mode] = ev.hover
+    funcLuaCommand(C.SE, SE_OK)
+    DrawAll()
+  end
+  if type(ev.click) == "number" then
+    KEYS.cb.ENTER = KEYS.frame
+    focus[mode] = ev.click
+    StartCo(Decide)
+  end
+  if mode == "network" and type(ev.wheel) == "number" then
+    CmNetZoom(ev.wheel < 0 and NET.WHEEL or 1 / NET.WHEEL)   -- wheel up = zoom in (the target: eased)
+  end
+end
+
+-- ---- callbacks ------------------------------------------------------------------------------------------------------
+function OnInit()
+  OT.f, OT.lines, OT.setup, OT.ev = 0, 0, {}, {}
+  OtNote("init")
+  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  funcLuaMenuCommand(C.LOAD_TEX, TEX)
+  funcLuaMenuCommand(C.LOAD_TEX, BACK_TEX)
+  funcLuaMenuCommand(C.LOAD_TEX, BG_TEX)
+  ready, open_guard, SET, MAP, mode = false, 20, nil, nil, "list"
+  HUB.menu, HUB.on, BUST.key, BUST.wait = nil, false, {}, {}
+  if funcLuaCommand(C.P_EXISTS, KEY_PARENT) then
+    local parent = Int(funcLuaCommand(C.P_GET, KEY_PARENT))
+    funcLuaCommand(C.P_CLEAR, KEY_PARENT)
+    HUB.menu = parent ~= 0 and parent or nil
+  end
+  focus = {list = 1, zones = 1, grid = 1, network = 1, shop = 1}
+  -- the body types the model's pose has (the framework reads menu_chara_model_pose_config): a player of another body
+  -- type gets no model (the pose command would crash the game, see evt_menu_kit.lua#CharaModel)
+  local bodies = nil
+  local list = Call(2091146409 --[[CMND_VRFW_MODEL_POSE_BODIES]], 2328706751 --[[the retail shop pose]])
+  if type(list) == "table" and #list > 0 then
+    bodies = {}
+    for _, b in ipairs(list) do
+      bodies[b] = true
+    end
+  end
+  Log("model pose bodies", type(list) == "table" and #list or -1)
+  -- each player in his own team's kit (owner 2026-10-13: everybody wore the generic Raimon kit): the framework
+  -- derives it per card from the data (CMND_VRFW_CONTACT_KIT, docs/framework/contact-map.md §18); 0 = the default
+  local function Kit(pid)
+    local r = Call(1949693836 --[[CMND_VRFW_CONTACT_KIT]], pid)
+    if type(r) == "table" and type(r.uniform) == "number" then
+      return r.uniform, tonumber(r.flags) or 0
+    end
+    return 0, 0
+  end
+  Model = EVT_CharaModelNew(L_MODEL, {kit = Kit, shadow = L_SHADOW, log = Log, pose = 2328706751, bodies = bodies})
+  -- 2026-10-12 (owner: RS turned the 3D player): the shop list base's model control (the right stick turns the model)
+  -- stays OFF on this screen, every frame (a build may switch it on); the global menu input controller is never
+  -- changed here (the shop's MENU_CTRL_SEPARATE_CROSS_KEY switch froze the Mercado, IF 1.29.69)
+  function Model.NoTurn()
+    pcall(funcLuaMenuCommand, 1195674914 --[[chara model control]], L_MODEL, 0, false)
+  end
+  -- the model PANEL.MODEL_X metres right of where its build put it: once per build, the frame it is shown
+  -- (CMND_GET_CHARA_MODEL_POS 3136332215 (layer, inst, slot) -> x, y, z; CMND_SET_CHARA_MODEL_POS 1088067423 (layer,
+  -- inst, x, y, z, slot), as the retail SetupCharaModel / CalculateZoomPosition)
+  function Model.Place()
+    local B = Model.build
+    if B == nil or not B.done or Model.pend ~= nil or Model.pid == nil then
+      return
+    end
+    -- the read answers (found, x, y, z) (VRFW 2.2.75 logged «model pos unread true true»: its first value is a
+    -- flag; retail CalculateZoomPosition uses the 2nd-4th); an answer of 3 numbers is taken too
+    local function Read(...)
+      local r = table.pack(pcall(funcLuaMenuCommand, 3136332215, L_MODEL, 0, 0, ...))
+      if not r[1] then
+        return nil
+      end
+      if type(r[2]) == "boolean" then
+        if r[2] and type(r[3]) == "number" and type(r[4]) == "number" and type(r[5]) == "number" then
+          return r[3], r[4], r[5]
+        end
+        return nil
+      end
+      if type(r[2]) == "number" and type(r[3]) == "number" and type(r[4]) == "number" then
+        return r[2], r[3], r[4]
+      end
+      return nil
+    end
+    local ok, x, y, z = true, Read()
+    if x == nil then
+      x, y, z = Read(1001527765)
+    end
+    if not (type(x) == "number" and type(y) == "number" and type(z) == "number") then
+      -- unreadable: the shared menu model camera's offset moves the view instead (camera -MODEL_X = the model
+      -- +MODEL_X on screen; CMND 284729675 on 1752770328, as research/grafts/plate_model); given back on the way out
+      if Model.placed ~= B then
+        Model.placed = B
+        Model.cam = true
+        local okc = pcall(funcLuaCommand, 284729675, 1752770328, -PANEL.MODEL_X, 0, 0)
+        Log("model pos unread: camera offset", -PANEL.MODEL_X, tostring(okc))
+      end
+      return
+    end
+    -- already at our place: nothing; else (a new build, or the component put it back) our place again (absolute:
+    -- no drift)
+    local at = PANEL.MODEL_AT
+    if math.abs(x - at[1]) < 0.005 and math.abs(y - at[2]) < 0.005 and math.abs(z - at[3]) < 0.005 then
+      return
+    end
+    local ok2 = pcall(funcLuaMenuCommand, 1088067423, L_MODEL, 0, at[1], at[2], at[3], 0)
+    Model.px = at[1]
+    Model.moves = (Model.moves or 0) + 1
+    if Model.moves <= 6 then
+      Log("model pos", x, y, z, "->", at[1], at[2], at[3], tostring(ok2))
+    end
+  end
+  STATUS.card = nil
+  local set = 0
+  if funcLuaCommand(C.P_EXISTS, KEY_SET) then
+    set = Int(funcLuaCommand(C.P_GET, KEY_SET))
+    funcLuaCommand(C.P_CLEAR, KEY_SET)
+  end
+  if VRFW_Recruit == nil then
+    Log("error", "VRFW_Recruit missing (the menu part's lua\\_all\\62_recruit.lua did not run in this VM)")
+    return
+  end
+  VRFW_Recruit.Refresh()                        -- the club counts of the element / position requirements, fresh
+  SET = LoadSet(set)
+  if SET == nil then
+    Log("open", "set", set, "not declared: closing")
+    return
+  end
+  for _, m in ipairs(SET.maps) do
+    m.signed = MapSigned(m)
+  end
+  Log("open", SET.key, "maps", #SET.maps, VIEW_ALL.on and "VIEW EVERYTHING ON ([debug] reveal_all): nothing is signed by it" or "")
+end
+
+local function OpenOwnLayers()
+  for i = 0, N.LINE - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_LINE, i)
+  end
+  for i = 0, N.TILE - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_TILE, i)
+  end
+  for i = 0, N.TAG - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_TAG, i)
+  end
+  for i = 0, N.FACE - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_FACE, i)
+  end
+  for i = 0, N.UI - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_UI, i)
+  end
+  for i = 0, N.TITLE - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_TITLE, i)
+  end
+  for i = 0, N.CARDTXT - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_CARDTXT, i)
+  end
+  funcLuaMenuCommand(C.OPEN_LAYER, L_BACK, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_ZONEART, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_CARD, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_ICON, 0)
+  for i = 0, N.BUST - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_BUST, i)
+  end
+  funcLuaMenuCommand(C.OPEN_LAYER, L_BUSTICON, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_PANEL, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_PANEL, 1)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_MODEL, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_SHADOW, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_STATUS, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_SLANT, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_PPROW, 0)
+  for i = 0, N.REQ - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_REQ, i)
+    funcLuaMenuCommand(C.OPEN_LAYER, L_REQOK, i)
+  end
+end
+
+function OnSetupLayer(a1, a2)
+  if OT.f <= OT.FRAMES then
+    OT.setup[a1] = (OT.setup[a1] or 0) + 1
+  end
+  if a1 == L_HEADER then
+    SetupSoccerTopCommonHeaderLayerInfo(a1, 4153539961, 253801632, 3969848060, 1144161661, 3293713115, 253801632, 1152304044, 305955024, 3007971317)
+    UpdateHeader(3586861540)
+    UpdateTitle()
+    OpenOwnLayers()
+  elseif a1 == L_ROW or a1 == L_TITLE or a1 == L_CARDTXT then
+    funcLuaMenuCommand(C.TEXT, a1, TEXT_ON, "", a2)
+    funcLuaMenuCommand(C.TEXT, a1, TEXT_OFF, "", a2)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, a1, TEXT_ON, a1 ~= L_ROW, a2)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, a1, TEXT_OFF, false, a2)
+    for _, m in ipairs(ROW_MESHES) do
+      funcLuaMenuCommand(C.MESH_VISIBLE, a1, m, false, a2)
+    end
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, a2, CUR, false)
+    if a1 ~= L_ROW then
+      Hide(a1, a2)
+    end
+  elseif a1 == L_RETAIL_BG then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
+  elseif a1 == L_BACK or a1 == L_ZONEART or a1 == L_LINE or a1 == L_TILE or a1 == L_FACE or a1 == L_TAG or a1 == L_UI or a1 == L_CARD
+      or a1 == L_ICON or a1 == L_REQ or a1 == L_REQOK or a1 == L_BUST or a1 == L_BUSTICON then
+    Hide(a1, a2)                -- DrawAll draws what is used when the anchor opens
+  elseif a1 == L_PANEL then
+    Hide(a1, a2)
+  elseif a1 == L_MODEL then
+    for _, m in ipairs({"_scr_line01", "_scr_obj01", "_dmy01"}) do   -- shop01_01's scroll bar / dummy: not used here
+      funcLuaMenuCommand(C.MESH_VISIBLE, a1, CRC32(m), false, a2)
+    end
+  elseif a1 == L_STATUS or a1 == L_PPROW or a1 == L_SLANT then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
+  elseif a1 == L_GUIDE_LINE then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, 0, false)
+  elseif a1 == L_BTN_GUIDE then
+    UpdateButtonGuide()
+  end
+end
+
+function OnOpenLayer(a1, a2)
+  if a1 == L_ROW and a2 == 0 then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, false)
+    funcLuaMenuCommand(C.FOCUS_ENABLE, a1, true)
+    funcLuaMenuCommand(C.LIST_NUM, a1, 1)
+    funcLuaMenuCommand(C.FOCUS_SET, a1, 0)
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, 0, CUR, false)
+    funcLuaMenuCommand(C.POS, a1, -4000, 4000, 0, 0)
+    if SET == nil then
+      Close(0)
+      return
+    end
+    OtNote("anchor open")
+    UpdateTitle()
+    DrawAll()
+    UpdateButtonGuide()
+    Ptr.Reset()
+    HubYield(true)
+    KEYS.free_off = true
+    KEYS.Free(true)
+    funcLuaMenuCommand(C.POS, L_MODEL, PANEL.MODEL_DX, 0, 0, 0)   -- the model over the plate's centre
+    ready = true
+    if funcLuaCommand(C.FADE_DONE) then
+      funcLuaCommand(C.FADE, 0, 0.3)
+    end
+  elseif a1 == L_GUIDE_LINE then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, 0, false)
+  end
+end
+
+function OnDecideFocus(a1, a2)
+  KEYS.cb.ENTER = KEYS.frame
+  KEYS.Seen("ENTER")
+  if evt_co ~= nil or not ready or open_guard > 0 or Ptr.Owns() then
+    return
+  end
+  StartCo(Decide)
+end
+
+-- X / FUNC2 «Objetos»: the shelf of the open map / zone
+function KEYS.Shop()
+  if true then                      -- round 3 (owner): the shelf is not offered from the contact map
+    return
+  end
+  if open_guard <= 0 and MAP ~= nil and (mode == "grid" or mode == "network" or mode == "zones") then
+    funcLuaCommand(C.SE, SE_DECIDE)
+    OpenShop()
+  end
+end
+
+-- the polled pad (Step): a press acts 2 frames later unless its callback came; held = repeat (only for a press the
+-- poll owns: a held arrow the engine serves repeats through OnFunction)
+function KEYS.Poll(free)
+  local stick = KEYS.free_off and KEYS.StickDir() or nil    -- free cursor on: the stick drives the game's pointer
+  for name, cmd in pairs(KEYS.NAV) do
+    local on = KeyOn(cmd) or stick == name
+    if on and not KEYS.held[name] then
+      KEYS.press[name] = free and KEYS.frame or nil
+      KEYS.owned[name] = false
+    elseif not on then
+      KEYS.press[name], KEYS.owned[name] = nil, false
+    end
+    KEYS.held[name] = on
+    local p = KEYS.press[name]
+    local act = false
+    if p ~= nil and not KEYS.owned[name] and KEYS.frame - p >= 2 then
+      if (KEYS.cb[name] or -100) < p - 2 and free then   -- a callback just before the poll saw the press counts too
+        KEYS.owned[name] = true
+        KEYS.next_rep[name] = KEYS.frame + KEYS.REPEAT_FIRST
+        act = true
+        if KEYS.logs < 5 then
+          KEYS.logs = KEYS.logs + 1
+          Log("pad by poll (no callback)", name, mode)
+        end
+      else
+        KEYS.press[name] = nil
+      end
+    elseif p ~= nil and KEYS.owned[name] and free and KEYS.DIR[name] ~= nil and KEYS.frame >= KEYS.next_rep[name] then
+      KEYS.next_rep[name] = KEYS.frame + KEYS.REPEAT
+      act = true
+    end
+    if act then
+      local d = KEYS.DIR[name]
+      if d ~= nil then
+        KEYS.Move(d[1], d[2])
+      elseif name == "ENTER" then
+        KEYS.press[name] = nil
+        StartCo(Decide)
+      elseif name == "FUNC2" then
+        KEYS.press[name] = nil
+        KEYS.Shop()
+      end
+    end
+  end
+end
+
+function OnFunction(a1, a2)
+  local id = a1
+  if a1 ~= FN.UP and a1 ~= FN.DOWN and a1 ~= FN.LEFT and a1 ~= FN.RIGHT and a1 ~= FN.SHOP then
+    id = a2
+  end
+  local name = (id == FN.UP and "UP") or (id == FN.DOWN and "DOWN") or (id == FN.LEFT and "LEFT")
+    or (id == FN.RIGHT and "RIGHT") or (id == FN.SHOP and "FUNC2") or nil
+  if name ~= nil then
+    KEYS.cb[name] = KEYS.frame
+    KEYS.Seen(name)
+  end
+  if evt_co ~= nil or not ready then
+    return 1
+  end
+  if id == FN.SHOP then
+    KEYS.Shop()
+    return 1
+  end
+  local dx = id == FN.LEFT and -1 or (id == FN.RIGHT and 1 or 0)
+  local dy = id == FN.UP and -1 or (id == FN.DOWN and 1 or 0)
+  if dx == 0 and dy == 0 then
+    return
+  end
+  KEYS.Move(dx, dy)
+  return 1
+end
+
+function OnEnter(a1, a2)
+  KEYS.cb.ENTER = KEYS.frame
+  if a1 == L_BTN or a1 == L_RET then
+    return 1
+  end
+  OnDecideFocus(a1, a2)
+end
+
+function OnBack(a1)
+  KEYS.back_cb = KEYS.frame
+  if evt_co ~= nil or not ready or open_guard > 0 then
+    return 1
+  end
+  funcLuaCommand(C.SE, SE_BACK)
+  Back()
+  return 1
+end
+
+-- one line per frame with an event (and every OT.EVERY frames) during the first OT.FRAMES frames (OPEN TRACE above)
+local function OtStep()
+  if OT.f > OT.FRAMES then
+    return
+  end
+  if OT.names == nil then
+    OT.names = {[L_LINE] = "line", [L_TILE] = "tile", [L_FACE] = "face", [L_TAG] = "tag", [L_UI] = "ui",
+      [L_TITLE] = "title", [L_CARDTXT] = "cardtxt", [L_BUST] = "bust", [L_BUSTICON] = "busticon", [L_REQ] = "req",
+      [L_REQOK] = "reqok", [L_BACK] = "back", [L_ZONEART] = "zoneart", [L_CARD] = "card", [L_ICON] = "icon",
+      [L_PANEL] = "panel", [L_MODEL] = "model", [L_SHADOW] = "shadow", [L_STATUS] = "status", [L_SLANT] = "slant",
+      [L_PPROW] = "pprow", [L_ROW] = "row", [L_HEADER] = "header"}
+  end
+  local parts = {}
+  for layer, n in pairs(OT.setup) do
+    parts[#parts + 1] = "setup " .. (OT.names[layer] or tostring(layer)) .. " x" .. n
+  end
+  local counted = {}
+  for _, e in ipairs(OT.ev) do
+    counted[e] = (counted[e] or 0) + 1
+  end
+  for e, n in pairs(counted) do
+    parts[#parts + 1] = n > 1 and (e .. " x" .. n) or e
+  end
+  if (#parts > 0 or OT.f % OT.EVERY == 0) and OT.lines < OT.MAX then
+    OT.lines = OT.lines + 1
+    Log("open trace f" .. OT.f, mode, table.concat(parts, ", "))
+  end
+  OT.setup, OT.ev = {}, {}
+  OT.f = OT.f + 1
+end
+
+function Step()
+  pcall(OtStep)
+  if evt_co ~= nil then
+    if coroutine.status(evt_co) == "dead" then
+      evt_co = nil
+    else
+      local ok, err = coroutine.resume(evt_co)
+      if not ok then
+        PRINT("vrfw_contact_map_menu: " .. tostring(err))
+        Log("error", tostring(err))
+        evt_co = nil
+        funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+      elseif coroutine.status(evt_co) == "dead" then
+        evt_co = nil
+      end
+    end
+  end
+  if ready and open_guard > 0 then
+    open_guard = open_guard - 1
+  end
+  if not ready and SET ~= nil then   -- the input anchor never opened: the layer pools are past the engine's limit
+    KEYS.wait = (KEYS.wait or 0) + 1
+    if KEYS.wait == 300 then
+      Log("STUCK: the input anchor never opened (layer instances past the menu's limit?)")
+    end
+  end
+  -- faces / the background still loading: redraw when they arrive (600 frames at most, then the «?» icon)
+  if ready and tex_wait then
+    local changed, still = false, false
+    for path, f in pairs(tex_frames) do
+      if f >= 0 then
+        if funcLuaCommand(C.TEX_LOADING, CRC32(path)) == true then
+          if f + 1 > 600 then
+            tex_frames[path] = -1
+            changed = true
+          else
+            tex_frames[path] = f + 1
+            still = true
+          end
+        else
+          tex_frames[path] = -2
+          changed = true
+          OtNote("tex in")
+        end
+      end
+    end
+    if changed or not still then
+      DrawAll()
+    end
+  end
+  if ready then
+    PollPointer()
+    BustStep()
+    if Model ~= nil then
+      Model.Step()
+      Model.NoTurn()
+      Model.Place()
+    end
+    KEYS.frame = KEYS.frame + 1
+    local free = evt_co == nil and open_guard <= 0 and funcLuaCommand(C.MSG_BUSY) ~= true
+    if KEYS.co_was and evt_co == nil and not KEYS.free_off then
+      KEYS.Free(true, true)     -- a question / message window may have switched the free cursor off
+    end
+    KEYS.co_was = evt_co ~= nil
+    KEYS.Poll(free)
+    CmNetViewStep(free)
+    local l1, r1, back = KeyEdge("L1"), KeyEdge("R1"), KeyEdge("BACK")
+    if free and (l1 or r1) then
+      if not PageTurn(r1 and 1 or -1) then
+        funcLuaCommand(C.SE, SE_NG)
+      end
+    end
+    if back then
+      KEYS.back_poll = KEYS.frame
+    end
+    if KEYS.back_poll ~= nil and KEYS.frame - KEYS.back_poll >= 2 then
+      if KEYS.back_cb < KEYS.back_poll and free then
+        if KEYS.logs < 5 then
+          KEYS.logs = KEYS.logs + 1
+          Log("back by poll (no OnBack)", mode)
+        end
+        funcLuaCommand(C.SE, SE_BACK)
+        Back()
+      end
+      KEYS.back_poll = nil
+    end
+  end
+end

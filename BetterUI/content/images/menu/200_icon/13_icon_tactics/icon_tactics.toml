@@ -1,0 +1,83 @@
+# BetterUI, «Plantilla de equipo» (team dock): ONE purple -> red gradient across the three tactic boxes (Nacho
+# 2026-10-02, round 4; docs/game/ui/ui-redesign.md «Team dock left panel» -> «Round 4»). Each box keeps its own plate
+# mesh (squeezed to the box by the graft ui_clean_dock_panel) and the graft swaps its sprite (slot 0xE7DB0771) to that
+# box's slice: chd_tactic_row_l / _m / _r, added to icon_tactics.g4tx (loaded by the dock; packed into a new texture).
+#
+# A slice = the retail plate sprite (cmd_base_t01 of soccer08_12.g4tx) drawn at the box's size (its shape, drop shadow
+# and alpha edge) whose BODY takes its colours from the same plate drawn once at the whole row's width (the three
+# boxes and their gaps), at the box's place in the row: one gradient seen through three windows. Made by recipes from
+# the PLAYER's own files (no Level-5 pixel in the mod). Until 1.16.0 clean_hud.dll baked them at the early phase
+# (crates/plugins/clean_hud/src/slices.rs, removed).
+#
+# Geometry (soccer08_12 units = px at 1080p / 0.9, research/scripts/clean_hud_dock_panel.py): a box plate 116.36 x
+# 117.95 -> 116 x 118 px; the row plate 378.18 wide -> 378; box centres -120 / 0 / 120 from the row centre -> each box
+# starts 11 / 131 / 251 px into the row. The plate's body inside its 480 x 92 mesh is 20..460 x 20..72 -> 5..111 x
+# 26..92 in a box.
+schema = "vr_framework.image/1"
+
+[[recipe]]
+name = "plate"
+game = "#/menu/00_soccer/soccer08/soccer08_12/soccer08_12.g4tx"
+sprite = "cmd_base_t01"
+
+# the plate at one box's size: shape, shadow, alpha
+[[recipe]]
+name = "box"
+from = "plate"
+ops = [{ op = "resize", size = [116, 118] }]
+
+# the plate at the whole row's width: the gradient
+[[recipe]]
+name = "row"
+from = "plate"
+ops = [{ op = "resize", size = [378, 118] }]
+
+# the row's body seen through each box
+[[recipe]]
+name = "body_l"
+from = "row"
+ops = [{ op = "crop", box = [16, 26, 122, 92] }, { op = "opaque" }]
+
+[[recipe]]
+name = "body_m"
+from = "row"
+ops = [{ op = "crop", box = [136, 26, 242, 92] }, { op = "opaque" }]
+
+[[recipe]]
+name = "body_r"
+from = "row"
+ops = [{ op = "crop", box = [256, 26, 362, 92] }, { op = "opaque" }]
+
+# the box plate with the row's colours in its body, the box plate's own alpha everywhere
+[[recipe]]
+name = "slice_l"
+from = "box"
+ops = [{ op = "paste", image = "body_l", at = [5, 26] }, { op = "alpha_from", image = "box" }]
+
+[[recipe]]
+name = "slice_m"
+from = "box"
+ops = [{ op = "paste", image = "body_m", at = [5, 26] }, { op = "alpha_from", image = "box" }]
+
+[[recipe]]
+name = "slice_r"
+from = "box"
+ops = [{ op = "paste", image = "body_r", at = [5, 26] }, { op = "alpha_from", image = "box" }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+name = "chd_tactic_row_l"
+recipe = "slice_l"
+size = [116, 118]
+
+[[sprite]]
+atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+name = "chd_tactic_row_m"
+recipe = "slice_m"
+size = [116, 118]
+
+[[sprite]]
+atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+name = "chd_tactic_row_r"
+recipe = "slice_r"
+size = [116, 118]

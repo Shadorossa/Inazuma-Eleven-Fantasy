@@ -1,0 +1,25 @@
+# «Configuración de pasivas» of the mod Utilities: the type-9 dispatch inside the team dock's per-player coroutine,
+# exactly the original configurator's entry (Inazuma Fantasy 2026-09-28, ff3bb93934): before the retail branch that
+# opens soccer_passsive_inherit_menu, `UTIL_PCD.Plate(h)` (research/grafts/passive_config/util_pc_dock.lua) runs the
+# session on the player plate and returns true, so the retail branch is skipped and the dock goes on as after any
+# setting. A text graft (edit inside a retail function: the planner re-emits it with the chunk locals it uses).
+# With Inazuma Fantasy, IF's own lua_early merged file of this script runs after Utilities' and redefines the same
+# functions with the same line (its graft prime_dock), so this copy is simply replaced: one dispatch either way.
+name = "passive_config_dispatch"
+mod = "utilities"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Configurable passives: type 9 of the team dock runs Utilities' session (the original entry point)"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "team_dock_formation_menu.OnDecideFocus.PrimeDock"
+  text = '''    elseif l2 == 9 and UTIL_PCD ~= nil and UTIL_PCD.Plate(formation_select_chara_st_hd2) then -- Utilities passive_config
+'''
+  crc = "none"

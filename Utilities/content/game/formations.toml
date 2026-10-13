@@ -1,0 +1,27 @@
+schema = "VRFW.game/2"
+
+# Utilities › Unlocked formations (feature formations; docs/game/characters/uvr-removal.md §7-§8b). The 11-a-side
+# formations the game has in its data but never offers become selectable in the formation picker: the picker's Lua
+# list gets them appended by the graft research/grafts/utilities_formations (it asks CMND_UTIL_FORMATION), and the
+# native row count (MenuListViewSoccerFormation slot 67) is raised by the same number. The list is derived from the
+# tables the game loads (scripts/formations.lua): no id list.
+
+# CMND_UTIL_FORMATION(which, i): which 0 = unlocked, 1 = offered by the game; i 0 = count, 1.. = formId (0 = none)
+[[VRFW.Command]]
+name = "CMND_UTIL_FORMATION"
+handler = "Utilities.Formation"
+
+# MenuListViewSoccerFormation vtable slot 67 (0x1190070): the picker's row count getter `mov eax, [rcx+9E0h]; ret`
+# (the game's own 8, or 5 in the 5v5 picker) + 9 int3 up to 0x1190080. Anchored on the neighbouring
+# `mov eax, 1; ret` (0x1190060) and the prologue of 0x1190080; the 16 bytes are wildcarded so the pattern matches
+# after any of the states below. The script writes `mov eax, [rcx+9E0h]; add eax, N; ret` (the game's count + N).
+# Accepted before the write: the game's getter, a fixed count `mov eax, n; ret` (UVR's DLL / Inazuma Fantasy before
+# 2026-10-08), an earlier `+ n` of ours.
+[[VRFW.Patch]]
+name = "FormationCount"
+game = "Team.FormationCount"
+expect = [
+  "8B 81 E0 09 00 00 C3 CC CC CC CC CC CC CC CC CC",
+  "B8 ?? ?? ?? ?? C3 C3 CC CC CC CC CC CC CC CC CC",
+  "8B 81 E0 09 00 00 05 ?? ?? ?? ?? C3 CC CC CC CC",
+]

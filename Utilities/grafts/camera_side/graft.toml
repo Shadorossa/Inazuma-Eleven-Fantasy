@@ -1,0 +1,27 @@
+# In-match side camera "estilo FIFA" of the mod Utilities (docs/game/media/camaras-fifa.md §7). Since 2026-10-08 the
+# camera mechanism is the VR-Framework's match camera service (docs/framework/camera.md): Utilities declares the preset
+# utilities.side (research/mods/Utilities/cameras/side.toml) and this Lua requests / releases it.
+# Setting: row «Cámara del partido: Original / Lateral» of Opciones › «Opciones de mods», declared in
+# research/mods/Utilities/options.toml (toggle utilities.camera, storage mod_options; texts:
+# research/mods/Utilities/text/rows/camera.toml, 9 languages).
+# Match: soccer_constant_menu (the HUD of every match) reads the row at OnInit and calls CMND_VRFW_CAMERA_REQUEST /
+# _RELEASE; every 30 frames Step repeats CMND_VRFW_CAMERA_APPLY until the soccer camera manager exists.
+# Wrappers of OnInit / Step (order 300; no Inazuma Fantasy patch touches this script, so nothing redefines them after
+# Utilities' patches): the block runs right after the retail OnInit / Step.
+name = "camera_side"
+mod = "utilities"
+order = 300
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "Step"]
+description = "camera: requests Utilities' side camera preset from the framework at match start (setting row in Utilities' options.toml)"
+
+[[files]]
+stem = "soccer_constant_menu"
+expect = ['^function OnInit\(\)$', '^function Step\(\)$']
+
+  [[files.ops]]
+  type = "append_block"
+  src = "camera_side_match.lua"
+  crc = "none"

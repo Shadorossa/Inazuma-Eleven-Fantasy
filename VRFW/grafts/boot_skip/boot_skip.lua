@@ -1,0 +1,128 @@
+-- EVT boot_skip (VR-Framework; docs/game/ui/boot-skip.md) ------------------------------------------------------------
+-- Skips the boot logos and the warning screens of a cold boot, behind the framework option «Saltar avisos de inicio»
+-- (mods_menu.skip_boot_screens, toggle, default ON). A wrapper only: no retail function is redefined, no retail local
+-- is read and no movie id is written here. What is skipped comes from the script's own structure, decided while
+-- LogoStart runs (the native title state calls LogoStart on a cold boot only):
+--   * movies: LogoStart plays the logo movies first, then asks GetPlayOpeningEventId() for the opening and plays it.
+--     While LogoStart runs, PlayTitleMovie plays only the id GetPlayOpeningEventId() answered (whatever the game, the
+--     «Opening del título» hook or a mod chose); every movie before that answer (the logos, whatever ids the game data
+--     gives them) is skipped.
+--   * warnings: DisplayWarningSentence (the caution image) does nothing; DrawWarningSentence (cautionary note, gamepad
+--     recommendation, save notice) becomes VRFW_BootSkipWarnings(), which leaves the screen as the retail one ends.
+--   * the first-boot language / confirm-button setup and the first-run (no avatar) path are LogoStart's own code: kept.
+-- The functions are swapped when LogoStart starts (so whatever definitions the other patches of this script left are
+-- the ones restored and called) and put back before TitleStart runs and when LogoStart ends.
+-- Off = LogoStart unchanged. No answer from the option (no row) = skip, the default. One `lua log: "boot_skip: LogoStart:
+-- ..."` line per cold boot says what was decided and why. Developer overrides:
+-- VRFW_SKIP_LOGOS / VRFW_SKIP_WARNINGS = true / false (nil = follow the option).
+-- Nothing runs at chunk load but definitions (engine calls only inside the functions).
+
+VRFW_BOOT_SKIP_OPT_GET = 4082322029 -- crc32("CMND_VRFW_OPTION_GET"), the core's option read (the old CMND_EVT_OPT_GET logs a deprecation)
+VRFW_BOOT_SKIP_KEY = "mods_menu.skip_boot_screens"
+VRFW_BOOT_SKIP_LOG = 3661580131 -- crc32("CMND_EVT_LOG"), the ModLoader's log line (`lua log: "boot_skip: ..."`)
+
+-- (on, where the answer came from: "override" / "option" / "default")
+function VRFW_BootSkipOn(override)
+  if override ~= nil then
+    return override == true, "override"
+  end
+  local ok, v = pcall(funcLuaCommand, VRFW_BOOT_SKIP_OPT_GET, VRFW_BOOT_SKIP_KEY)
+  if ok and type(v) == "number" then
+    return v ~= 0, "option"
+  end
+  return true, "default"
+end
+
+-- One line per cold boot in loader.log (proof the wrapper ran and what it decided).
+function VRFW_BootSkipLog(text)
+  pcall(funcLuaCommand, VRFW_BOOT_SKIP_LOG, "boot_skip: " .. text)
+end
+
+-- Leaves the screen in the state DrawWarningSentence ends in (bright fade = black, 2259183189 true) and waits,
+-- bounded, for the window system (682363669) like the retail autosave-notice step, so the opening movie starts
+-- exactly as it does after the retail screens. (Engine commands of the retail script, not data.)
+function VRFW_BootSkipWarnings()
+  local t = 0
+  if not funcLuaCommand(2259183189) then
+    funcLuaCommand(609722083, 1, 0.1)
+    while not funcLuaCommand(2259183189) and t < 3 do
+      t = t + funcLuaCommand(1549797111)
+      coroutine.yield()
+    end
+  end
+  t = 0
+  while not funcLuaCommand(682363669) and t < 3 do
+    t = t + funcLuaCommand(1549797111)
+    coroutine.yield()
+  end
+end
+
+-- The platform LogoStart itself reads (its `ret2`): on platform 5 DrawWarningSentence also holds the cross-play
+-- consent, so the warnings are kept there (retail rule of the script).
+VRFW_BOOT_SKIP_PLATFORM_CMD = 3930649506
+VRFW_BOOT_SKIP_KEEP_PLATFORM = 5
+
+do
+  local logo = LogoStart
+  function LogoStart(...)
+    local skip_logos, src_logos = VRFW_BootSkipOn(VRFW_SKIP_LOGOS == nil and EVT_SKIP_LOGOS or VRFW_SKIP_LOGOS)
+    local skip_warn, src_warn = VRFW_BootSkipOn(VRFW_SKIP_WARNINGS == nil and EVT_SKIP_WARNINGS or VRFW_SKIP_WARNINGS)
+    if skip_warn then
+      local ok, p = pcall(funcLuaCommand, VRFW_BOOT_SKIP_PLATFORM_CMD)
+      if ok and p == VRFW_BOOT_SKIP_KEEP_PLATFORM then
+        skip_warn = false
+        src_warn = "platform " .. tostring(p)
+      end
+    end
+    VRFW_BootSkipLog("LogoStart: logos " .. (skip_logos and "skipped" or "kept") .. " (" .. src_logos .. "), warnings "
+      .. (skip_warn and "skipped" or "kept") .. " (" .. src_warn .. ")")
+    if not skip_logos and not skip_warn then
+      return logo(...)
+    end
+    local env = _ENV
+    local orig, shim = {}, {}
+    local opening = nil
+    local function swap(name, fn)
+      if type(env[name]) == "function" then
+        orig[name] = env[name]
+        shim[name] = fn
+        env[name] = fn
+      end
+    end
+    local function restore()
+      for name, fn in pairs(shim) do
+        if env[name] == fn then
+          env[name] = orig[name]
+        end
+      end
+      shim = {}
+    end
+    if skip_logos then
+      swap("GetPlayOpeningEventId", function(...)
+        local r = table.pack(orig.GetPlayOpeningEventId(...))
+        opening = r[1]
+        return table.unpack(r, 1, r.n)
+      end)
+      swap("PlayTitleMovie", function(id, ...)
+        if opening ~= nil and id == opening then
+          return orig.PlayTitleMovie(id, ...)
+        end
+      end)
+    end
+    if skip_warn then
+      swap("DisplayWarningSentence", function() end)
+      swap("DrawWarningSentence", function()
+        VRFW_BootSkipWarnings()
+      end)
+    end
+    swap("TitleStart", function(...)
+      local f = orig.TitleStart
+      restore()
+      return f(...)
+    end)
+    local r = table.pack(logo(...))
+    restore()
+    return table.unpack(r, 1, r.n)
+  end
+end
+-- EVT end ----------------------------------------------------------------------------------------------------------

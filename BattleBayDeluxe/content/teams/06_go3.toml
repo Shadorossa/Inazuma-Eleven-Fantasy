@@ -1,0 +1,278 @@
+# Generated ONCE by research/scripts/bb_chronicle_teams_build.py from the retail v7.1.2 data (last run before 2026-10-13);
+# now HAND-MAINTAINED source: edit it directly or with ModManager «Equipos» (edit the original mod, in place).
+# The script refuses to overwrite it (only --force-regenerate does, and that loses every hand edit).
+# Season group GO3: the Chronicle teams of its route (based_on the game team: roster, kit, formation, emblem,
+# captain; name = the game team's own name text; stadium_fallback = its home stadium, the one its own Chronicle game
+# plays at, stadium_image = that stadium's card art: the Battle Bay row plays there unless an active mod declares
+# the game team's own `stadium` (VR-Framework 2.0.101), then there; movesets and tactics: 80_movesets.toml).
+schema = "vr_framework.team/2"
+
+[[team]]
+name = "go3_0200"
+key = "bbcr_go3_0200"
+based_on = "tm_cro_go3_0200"      # Dragones de Fuego, board fbtl_cro06_020_010
+name_text = 0xF8E3DA34
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001b"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_020_010
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "go3_0300"
+key = "bbcr_go3_0300"
+based_on = "tm_cro_go3_0300"      # Big Waves, board fbtl_cro06_030_010
+name_text = 0xDD93F728
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001b"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_030_010
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "go3_0400"
+key = "bbcr_go3_0400"
+based_on = "tm_cro_go3_0400"      # Cimitarras, board fbtl_cro06_040_010
+name_text = 0x76FC88AE
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001b"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_040_010
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "go3_0500"
+key = "bbcr_go3_0500"
+based_on = "tm_cro_go3_0500"      # Muay Tigers, board fbtl_cro06_050_010
+name_text = 0xAEA511FA
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001b"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_050_010
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "go3_0600"
+key = "bbcr_go3_0600"
+based_on = "tm_cro_go3_0600"      # Resistencia Japón, board fbtl_cro06_060_010
+name_text = 0x410995CD
+level = 40
+series = "GO3"
+stadium_fallback = "s78g001"      # Estadio de fútbol de Odaiba, its Chronicle game fbtl_cro06_060_010
+stadium_image = "ev_chronicle_img/ev_bb_s78g001_01.g4tx"
+
+[[team]]
+name = "go3_0700"
+key = "bbcr_go3_0700"
+based_on = "tm_cro_go3_0700"      # Storm Wolves, board fbtl_cro06_070_010
+name_text = 0x6FFAD7C3
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001b"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_070_010
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "go3_0800"
+key = "bbcr_go3_0800"
+based_on = "tm_cro_go3_0800"      # Sílice, board fbtl_cro06_080_010
+name_text = 0x9068E855
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001"      # Estadio Nave Estelar (Sílice), its Chronicle game fbtl_cro06_080_010
+stadium_image = "ev_chronicle_img/ev_ch_s20g001_0501.g4tx"
+
+[[team]]
+name = "go3_0900"
+key = "bbcr_go3_0900"
+based_on = "tm_cro_go3_0900"      # Naiadi, board fbtl_cro06_090_010
+name_text = 0xFCC01F76
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001b"      # Estadio Nave Estelar (Naiadi), its Chronicle game fbtl_cro06_090_010
+stadium_image = "ev_chronicle_img/ev_ch_s20g001b_0501.g4tx"
+
+[[team]]
+name = "go3_1000"
+key = "bbcr_go3_1000"
+based_on = "tm_cro_go3_1000"      # Magmavís, board fbtl_cro06_100_010
+name_text = 0x2F959C1E
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001c"      # Estadio Nave Estelar (Magmavís), its Chronicle game fbtl_cro06_100_010
+stadium_image = "ev_chronicle_img/ev_ch_s20g001c_0501.g4tx"
+
+[[team]]
+name = "go3_1100"
+key = "bbcr_go3_1100"
+based_on = "tm_cro_go3_1100"      # Fertilia, board fbtl_cro06_110_010
+name_text = 0xF73AE899
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001d"      # Estadio Nave Estelar (Fertilia), its Chronicle game fbtl_cro06_110_010
+stadium_image = "ev_chronicle_img/ev_ch_s20g001d_0501.g4tx"
+
+[[team]]
+name = "go3_1300"
+key = "bbcr_go3_1300"
+based_on = "tm_cro_go3_1300"      # Flota Ixar, board fbtl_cro06_130_010
+name_text = 0x2107F61C
+level = 40
+series = "GO3"
+stadium_fallback = "s21g001"      # Estadio Gran Celesta, its Chronicle game fbtl_cro06_130_010
+stadium_image = "ev_chronicle_img/ev_ch_s21g001_0502.g4tx"
+
+[[team]]
+name = "go3_1400"
+key = "bbcr_go3_1400"
+based_on = "tm_cro_go3_1400"      # Big Bang, board fbtl_cro06_140_010
+name_text = 0x9A33CFE2
+level = 40
+series = "GO3"
+stadium_fallback = "s79g001"      # Campo de Nomor, its Chronicle game fbtl_cro06_140_010
+stadium_image = "ev_chronicle_img/ev_ch_s79g001_0101.g4tx"
+
+[[team]]
+name = "go3_1500"
+key = "bbcr_go3_1500"
+based_on = "tm_cro_go3_1500"      # Supernova, board fbtl_cro06_150_010
+name_text = 0x5B8634F6
+level = 40
+series = "GO3"
+stadium_fallback = "s80g001"      # Campo de la flotilla Falam, its Chronicle game fbtl_cro06_150_010
+stadium_image = "ev_chronicle_img/ev_ch_s80g001_0101.g4tx"
+
+[[team]]
+name = "go3_1600"
+key = "bbcr_go3_1600"
+based_on = "tm_cro_go3_1600"      # Dinastía Galáctica, board fbtl_cro06_160_010
+name_text = 0xA7FC165A
+level = 40
+series = "GO3"
+stadium_fallback = "s32g001"      # Estadio Galaxia Perdida, its Chronicle game fbtl_cro06_160_010
+stadium_image = "ev_chronicle_img/ev_ch_s32g001_0501.g4tx"
+
+[[team]]
+name = "legend_go3_01"
+key = "bbcr_legend_go3_01"
+based_on = "tm_cro_legend_GO3_01"      # Hermanos del Estadio, legend fbtl_cro06_legend_GO3_01
+name_text = 0x27E24C6A
+level = 40
+series = "GO3"
+stadium_fallback = "s78g001"      # Estadio de fútbol de Odaiba, its Chronicle game fbtl_cro06_legend_GO3_01
+stadium_image = "ev_chronicle_img/ev_bb_s78g001_01.g4tx"
+
+[[team]]
+name = "legend_go3_02"
+key = "bbcr_legend_go3_02"
+based_on = "tm_cro_legend_GO3_02"      # Leyendas rebeldes, legend fbtl_cro06_legend_GO3_02
+name_text = 0x5788B8E5
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_legend_GO3_02
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "legend_go3_03"
+key = "bbcr_legend_go3_03"
+based_on = "tm_cro_legend_GO3_03"      # Pimpollos Eleven, legend fbtl_cro06_legend_GO3_03
+name_text = 0x208F8873
+level = 40
+series = "GO3"
+stadium_fallback = "s26g001"      # Campo de la Ribera del río, its Chronicle game fbtl_cro06_legend_GO3_03
+stadium_image = "ev_chronicle_img/ev_ch_s26g001_0101.g4tx"
+
+[[team]]
+name = "legend_go3_04"
+key = "bbcr_legend_go3_04"
+based_on = "tm_cro_legend_GO3_04"      # Féminas Eleven, legend fbtl_cro06_legend_GO3_04
+name_text = 0xCE81E95F
+level = 40
+series = "GO3"
+stadium_fallback = "s39g001"      # Bahía de las Conchas, its Chronicle game fbtl_cro06_legend_GO3_04
+stadium_image = "ev_chronicle_img/ev_ch_s39g001_0101.g4tx"
+
+[[team]]
+name = "legend_go3_05"
+key = "bbcr_legend_go3_05"
+based_on = "tm_cro_legend_GO3_05"      # Némesis Astrales, legend fbtl_cro06_legend_GO3_05
+name_text = 0x5E3EF4CE
+level = 40
+series = "GO3"
+stadium_fallback = "s21g001"      # Estadio Gran Celesta, its Chronicle game fbtl_cro06_legend_GO3_05
+stadium_image = "ev_chronicle_img/ev_ch_s21g001_0502.g4tx"
+
+[[team]]
+name = "legend_go3_06"
+key = "bbcr_legend_go3_06"
+based_on = "tm_cro_legend_GO3_06"      # Iridiscencia Zafiro, legend fbtl_cro06_legend_GO3_06
+name_text = 0x2939C458
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001b"      # Estadio Nave Estelar (Naiadi), its Chronicle game fbtl_cro06_legend_GO3_06
+stadium_image = "ev_chronicle_img/ev_ch_s20g001b_0501.g4tx"
+
+[[team]]
+name = "legend_go3_07"
+key = "bbcr_legend_go3_07"
+based_on = "tm_cro_legend_GO3_07"      # Iridiscencia Rubí, legend fbtl_cro06_legend_GO3_07
+name_text = 0x49FE4DBD
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001d"      # Estadio Nave Estelar (Fertilia), its Chronicle game fbtl_cro06_legend_GO3_07
+stadium_image = "ev_chronicle_img/ev_ch_s20g001d_0501.g4tx"
+
+[[team]]
+name = "legend_go3_08"
+key = "bbcr_legend_go3_08"
+based_on = "tm_cro_legend_GO3_08"      # Las Galácticas, legend fbtl_cro06_legend_GO3_08
+name_text = 0x3EF97D2B
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001b"      # Estadio Nave Estelar (Naiadi), its Chronicle game fbtl_cro06_legend_GO3_08
+stadium_image = "ev_chronicle_img/ev_ch_s20g001b_0501.g4tx"
+
+[[team]]
+name = "legend_go3_09"
+key = "bbcr_legend_go3_09"
+based_on = "tm_cro_legend_GO3_09"      # Tutores Guardianes, legend fbtl_cro06_legend_GO3_12
+name_text = 0xC9EC2D46
+level = 40
+series = "GO3"
+stadium_fallback = "s78g001"      # Estadio de fútbol de Odaiba, its Chronicle game fbtl_cro06_legend_GO3_12
+stadium_image = "ev_chronicle_img/ev_bb_s78g001_01.g4tx"
+
+[[team]]
+name = "legend_go3_10"
+key = "bbcr_legend_go3_10"
+based_on = "tm_cro_legend_GO3_10"      # Comando Entrenadores, legend fbtl_cro06_legend_GO3_10
+name_text = 0xB986D9C9
+level = 40
+series = "GO3"
+stadium_fallback = "s17g001"      # Estadio Camino Imperial, its Chronicle game fbtl_cro06_legend_GO3_10
+stadium_image = "ev_chronicle_img/ev_bb_s17g001_01.g4tx"
+
+[[team]]
+name = "legend_go3_11"
+key = "bbcr_legend_go3_11"
+based_on = "tm_cro_legend_GO3_11"      # Los Estirados, legend fbtl_cro06_legend_GO3_11
+name_text = 0xD0F71C07
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001d"      # Estadio Nave Estelar (Fertilia), its Chronicle game fbtl_cro06_legend_GO3_11
+stadium_image = "ev_chronicle_img/ev_ch_s20g001d_0501.g4tx"
+
+[[team]]
+name = "legend_go3_12"
+key = "bbcr_legend_go3_12"
+based_on = "tm_cro_legend_GO3_12"      # Los Cósmicos, legend fbtl_cro06_legend_GO3_09
+name_text = 0xA7F02C91
+level = 40
+series = "GO3"
+stadium_fallback = "s20g001c"      # Estadio Nave Estelar (Magmavís), its Chronicle game fbtl_cro06_legend_GO3_09
+stadium_image = "ev_chronicle_img/ev_ch_s20g001c_0501.g4tx"
+
+[[team]]
+name = "original_0100"
+key = "bbcr_original_0100"
+based_on = "tm_cro_original_0100"      # Guardianas, board fbtl_cro12_010_010
+name_text = 0x2D0F56AE
+level = 40
+series = "GO3"
+stadium_fallback = "s21g001"      # Estadio Gran Celesta, its Chronicle game fbtl_cro12_010_010
+stadium_image = "ev_chronicle_img/ev_ch_s21g001_0502.g4tx"

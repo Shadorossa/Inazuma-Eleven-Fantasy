@@ -1,0 +1,23 @@
+# ui_clean, block bank_sort_guide (research/scripts/ui_clean_build.py PLAIN_PARTS; docs/game/ui-redesign.md section 11):
+# the sort guide of the player bank. Snippet = menu_generators.ui_clean_plain (menu_assemble.py regen rebuilds it).
+name = "ui_clean_bank_sort_guide"
+order = 900
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []
+description = "ui_clean: bank sort guide"
+
+[[files]]
+stem = "chara_bank_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bank.lua"
+  marker = "ui_clean bank_sort_guide"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_bank_guide.lua", tag = "bank", name = "bank_sort_guide", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "bank" }

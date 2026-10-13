@@ -1,0 +1,49 @@
+-- ===== EVT pachanga field BEGIN =====
+-- Fallback of return = "title" (docs/game/modes/pachangas-sistema.md §3, rules field_net): a pachanga is a street
+-- battle, and when the loader's route did not send the match straight to the title (the patch is not live) the engine
+-- goes back to a story field. On the three menus that only exist there (activity_telop_menu = the field HUD, main_menu =
+-- Start, map_menu = Select): with a pachanga still running (its save sink is on: nothing of this field is written) and
+-- no match, black at once and the retail way to the title; the title ends the way back (pachanga_title.lua: the save
+-- read again, the origin). Story street battles have no pachanga running: retail. No funcLua* call at chunk load.
+do
+  local G = {steps = 0, done = false}
+  local function tick(where, now)
+    local P = VRFW_PACHANGA
+    if G.done or type(P) ~= "table" then
+      return
+    end
+    local st = P.state()
+    local ok, soccer = pcall(funcLuaCommand, 4156639577 --[[CMND_IS_SOCCER_MODE]])
+    if not (st.phase >= 2 and st.phase <= 3 and st.ret == 1 and st.field_net) or (ok and soccer == true) then
+      G.steps = 0
+      return
+    end
+    G.steps = G.steps + 1
+    if not now and G.steps < 2 then
+      return
+    end
+    G.done = true
+    P.log("field after the pachanga -> title", where, tostring(st.id))
+    pcall(funcLuaCommand, 609722083, 1, 0)          -- black at once: no frame of the field
+    if type(funcLuaMenuCommand) == "function" then
+      pcall(funcLuaMenuCommand, 3479138216, 0)      -- no next-state menu (retail BackToTitle)
+    end
+    pcall(funcLuaCommand, 937976662, true)          -- no press-start screen
+    pcall(funcLuaCommand, 3897105282 --[[CMND_GAME_RESET]])
+    pcall(funcLuaCommand, 769636339, 0.5)
+  end
+  VRFW_PACHANGA_FieldTick = tick
+  local init = OnInit
+  function OnInit(...)
+    local r = table.pack(init and init(...))
+    pcall(tick, "menu open", false)
+    return table.unpack(r, 1, r.n)
+  end
+  local step = Step
+  function Step(...)
+    local r = table.pack(step and step(...))
+    pcall(tick, "menu step", false)
+    return table.unpack(r, 1, r.n)
+  end
+end
+-- ===== EVT pachanga field END =====

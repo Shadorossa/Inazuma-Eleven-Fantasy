@@ -1,0 +1,27 @@
+# BetterUI «PERSONAJE» player menu as one column (docs/game/ui/chara-menu-one-column.md).
+# Team dock «Formación» (team_dock_formation_menu): the per-player command window (OpenSubWinSelectCharaSetting) is
+# retail sub-window type 26, a two-column grid (win05_05_sub_list_locator_basic12_two_line, rows filled left to right).
+# This graft opens it as sub-window type 0 (win05_13_sub_list_locator: one column, same win05_04_sub_list_item12 button
+# objbin, so the same button width; the window height comes from the size code for the row count) and lists the
+# entries in the order the grid showed them reading down its columns: left column first, then the right one.
+# Order 906: after the patches that replace / filter GetSelectSettingTypeOrderList (Utilities passive_config_dispatch
+# and Inazuma Fantasy ss2_dock 100, IF team_cmd_dock 200, BetterUI clean_hud_shirt_number 905); these wrappers chain
+# by assignment at run time, outermost.
+name = "clean_hud_chara_menu"
+order = 906
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []   # GetSelectSettingTypeOrderList, OpenSubWinSelectCharaSetting and MENU_DEF.OpenSubWindow are wrapped by
+             # assignment at run time
+description = "BetterUI: the team dock's per-player menu (PERSONAJE) as a one-column list, left grid column first"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "chara_menu.lua"
+  marker = "clean_hud chara_menu"
+  crc = "none"

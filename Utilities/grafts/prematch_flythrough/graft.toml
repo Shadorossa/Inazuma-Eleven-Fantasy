@@ -1,0 +1,29 @@
+# Pre-match stadium fly-through of the mod Utilities (docs/game/media/camaras-fifa.md §6; feature camera, moved out of
+# Inazuma Fantasy 2026-10-08): while the editable pre-match lineup (soccer_formation_menu opened by the native "before
+# soccer start" callback) is on screen, the soccer camera behind it cycles through 4 fixed-position shots of the stadium
+# (SOCCER_FIX_POS_CAMERA_INFO rows evt_cam_fly_01..04 of research/mods/Utilities/base_tables/common/gamedata/soccer/
+# soccer_camera_config.toml) with the retail CMND_CHANGE_SOCCER_CAMERA_TYPE(21, 0,0,0, id) (= SetFixPosSoccerCamera of
+# the match triggers); each row dollies by itself. The retail chase camera comes back (type 0 + CMND_CAMERA_RESET) when
+# the screen really closes. Wrappers only (SetupOpenFromBeforeSoccerStart, CloseFormationMenu, PostStep): Inazuma
+# Fantasy's patches of this script redefine only OnEnter / OnDecideFocus / OnFunction and chain the rest, so they keep
+# these wrappers whichever mod loads first; the close wrapper reads prematch_lineups' EVT_PmEnemyOn (opponent view) so
+# it works inside or outside that graft's wrapper. Without the data rows the ids do not exist and the engine keeps the
+# chase camera (harmless). Kill switch UTIL_PREMATCH_FLYTHROUGH = false.
+name = "prematch_flythrough"
+mod = "utilities"
+order = 50
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["PostStep"]
+description = "camera: pre-match stadium fly-through behind the lineup screen (4 fixed shots, cuts every 7 s)"
+
+[[files]]
+stem = "soccer_formation_menu"
+expect = ['^function PostStep\(\)$']
+
+  [[files.ops]]
+  type = "append_block"
+  src = "flythrough.lua"
+  marker = "prematch_flythrough"
+  crc = "none"

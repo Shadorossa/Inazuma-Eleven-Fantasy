@@ -1,0 +1,46 @@
+schema = "vr_framework.character/2"
+# Inazuma Eleven Cross · Diamond Dust · Inazuma Eleven 2: the Cross version(s) of this team's characters (fixed ids, created by their `order`;
+# series «Inazuma Eleven Cross»: chara_base team_3 = crc32("evt_belong_team_cross")). Moved from Inazuma Fantasy's
+# characters\11_ie2\diamond_dust.toml on 2026-10-08 (first written by research/scripts/if_chara_to_toml.py, which writes them here now:
+# _split.toml). Inazuma Fantasy's EVT fields of their cards (growth, Lv200 stats, INAROGUE rarity) are IF's
+# characters\iecross_cards.toml.
+default_lang = "en"
+
+[[character]]
+name = "gazelle"                                          # Gazelle
+based_on = "c02020890"                                    # template: Gazelle
+order = 66
+
+  [character.base]
+  id = 0x47850485
+  name = "c91022030"
+  voice_bank = 0x1443531D
+  team_2 = 0x00000000
+  team_3 = 0x1E5DC7AA
+  in_ie2 = 0
+  in_ie3 = 1
+
+  [character.new_model]
+  id = 0xA02A0B4D
+  from = 0x8D64355C                                       # model of Gazelle (c02020890)
+  order = 9
+  [character.new_model.cells]
+  clothes = 0x13BF9DAB
+  shoes = 0xFC82384B
+  head_mesh_path = "_face/12_CROSS/c91000140/c91000140.g4md"
+
+  [[character.cards]]
+  id = 0x87162CB7                                         # FW/MF · wind
+  from = 0xBDB75D6F                                       # template: Gazelle (c02020890)
+  order = 78
+  moves = [
+    { move = 0xBCE9DEAB, level = 1 },                     # Chaos Break
+    { move = 0x5E5AF1A9, level = 13 },                    # Northern Impact
+    { move = 0x46FA651E, level = 20 },                    # Water Veil
+    { move = 0x09C23C18, level = 30 },                    # Fire Blizzard
+    { move = 0xA2BF7076, level = 38 },                    # Side Swipe
+    { move = 0x3297683F, level = 43 },                    # Warp Step
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x6B455865, level = 1 },                     # Chaos Illusion
+  ]

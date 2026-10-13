@@ -1,0 +1,75 @@
+schema = "vr_framework.shop/2"
+# The Inazuma Eleven Cross stadium tickets (content/items/cross_stadiums.toml) in the Tienda general (0xF24DB4CD), in the
+# «Tiques» tab with the retail stadium tickets, at the retail price tier (gd120030 Jardín Celestial 140, gd120031
+# 116 Puntos de amistad). A price without `currency` is in the shop's first currency: Puntos de amistad.
+
+[[edit]]
+target = "0xF24DB4CD"           # Tienda general
+
+  [[edit.entry]]
+  item = "stadium_s91g001"               # Inazuma Big Ferry
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s91g001b"              # Inazuma Big Ferry (verano)
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s91g001c"              # Inazuma Big Ferry (festival)
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s92g001"               # Estadio Costero
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s93g001"               # Barco Pirata Fantasma
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s94g001"               # Barco Ramen
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s98g001"               # Campo Cibernético
+  price = 140
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s99g001"               # Cubierta del Big Ferry
+  price = 140
+  stock = 1
+
+# Moved from Inazuma Fantasy (2026-10-08). A shop row's purchase counter / «new» bit index is numbered from
+# "<mod adding the row>.row:<shop>/<item id hex>" (docs/framework/ids-and-numbers.md §3): these aliases keep each
+# row's counter, so a bought ticket stays bought (the row ids, "row:<shop>/<item>", never had the mod in them).
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/1e4f5d8e"
+new = "iecross.row:0xF24DB4CD/1e4f5d8e"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/7ba00e83"
+new = "iecross.row:0xF24DB4CD/7ba00e83"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/0ca73e15"
+new = "iecross.row:0xF24DB4CD/0ca73e15"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/59ef275e"
+new = "iecross.row:0xF24DB4CD/59ef275e"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/648f0eee"
+new = "iecross.row:0xF24DB4CD/648f0eee"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/d6afd2fe"
+new = "iecross.row:0xF24DB4CD/d6afd2fe"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/135f3fff"
+new = "iecross.row:0xF24DB4CD/135f3fff"
+[[alias]]
+old = "inazuma_fantasy.row:0xF24DB4CD/2e3f164f"
+new = "iecross.row:0xF24DB4CD/2e3f164f"

@@ -1,0 +1,26 @@
+# The «Cadena de Crónica» team list (vs_route_town_list_menu): the info window's reward block shows a MINI LIST of the
+# selected match's drops instead of the 4 clear-prize icons (owner 2026-10-12): every drop of the match as «Tasa de
+# aparición» lists it (VR-Framework CMND_VRFW_DROP_LIST_OF: the served drop tables; [VRFW.DropList] order / Hide /
+# AURAS of the active mods), icon + name + rate, an aura item as its aura's banner with its portrait; 3 rows next to
+# the EXP, scrolled with the right stick (up / down) or the mouse wheel. The rows = layer vrfw_cr_drop_row (3 instances
+# of the drop list's row object, menus\chronicle_drop_panel.toml). Works with any mod set (no declaration needed: the
+# drop data is always built); the battle kind shown = the first of VRFW_MatchDifficulty's set that has drops, else
+# Crónica (1), the unlock / gate battle (2), Heroica (4). Hooks SetupInfoWindow (IF's chronicle_redesign redefines
+# SetInfoWindowReward) and Step. docs/framework/drops.md §5, docs/game/modes/chronicle-mode.md §15.
+name = "vrfw_chronicle_drop_panel"
+mod = "vr_framework"
+order = 100
+module = ""
+requires = []
+conflicts = []
+wraps = ["SetupInfoWindow", "OpenCloseInfoWindow", "Step"]
+description = "Chronicle team list: the reward block shows a scrollable mini list of the match's drops"
+
+[[files]]
+stem = "vs_route_town_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_cr_drop_panel.lua"
+  marker = "vrfw_chronicle_drop_panel"
+  crc = "at"

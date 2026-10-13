@@ -1,0 +1,205 @@
+-- ===== EVT ui_clean shirt_number BEGIN =====
+-- research/scripts/ui_clean_build.py, docs/game/ui-redesign.md section 11
+do
+local EVT_UI_Block = function()
+-- EVT ui_clean graft: common part (research/scripts/ui_clean_build.py, docs/game/ui-redesign.md section 11).
+-- Appended as one child function to the retail bytecode of a menu and run at the end of its main chunk.
+-- Build-time placeholders: limpio (string), the owning mod's ui_flags.toml flags, merged (Lua table body), shirt_number_dock (menu tag for the log).
+local EVT_UI_MARK = "EVT_UI_CLEAN_GRAFT"
+
+-- Kill switch. EVT_UI_PRESET = "off" makes every ui_clean wrapper pass everything through unchanged.
+-- Each feature can also be switched off on its own in EVT_UI_FLAGS (set by the build, see --preset / --no-*).
+if EVT_UI_PRESET == nil then
+  EVT_UI_PRESET = "limpio"
+end
+EVT_UI_FLAGS = EVT_UI_FLAGS or {}
+for k, v in pairs({ bank_sort_guide = true, buff_icons = true, buff_panel = false, corner_buttons = true, duel_telop = true, enemy_meters = true, esc_guide = true, exec_offset = true, header_short = true, nickname_pill = true, shirt_number = true, team_param_guide = true, zone_exec = false, zone_hud = true }) do
+  if EVT_UI_FLAGS[k] == nil then
+    EVT_UI_FLAGS[k] = v
+  end
+end
+
+@UI_WRAP@
+
+EVT_UI_FLAGS.shirt_number = true
+-- EVT ui_clean, Clean HUD «shirt numbers» (flag shirt_number; graft research/grafts/clean_hud_shirt_number,
+-- docs/game/ui/team-commands.md §9, docs/game/ui/ui-redesign.md). Team dock «Formación» (team_dock_formation_menu):
+--   * the per-player command window no longer lists «Cambiar número de dorsal» (setting type 6): every consumer of
+--     GetSelectSettingTypeOrderList indexes the filtered list (open, grey, focus popup, dispatch), so the other
+--     entries keep their own screens;
+--   * the team COMANDOS window (Alt, OpenSelectTeamMemberControlSubWindowCore -> sub-window type 22) gets a 7th row
+--     «Ajustes de dorsales» (text clean_hud_shirt_number_cmd) after the retail 6 rows (the retail rows, the bean
+--     checkbox of row 5 and their callbacks are unchanged: the window callback is ours, it forwards 0..5 to the retail
+--     CallbackCloseCondTeamCommandSubWin and turns 6 into the retail «Ajustes de celebración de gol» case 4); the
+--     window keeps the caller's size code: the win05_11 list view shows at most 6 rows (mViewNum 6 in its objbin), so
+--     a 7-row window (size code 7) left an empty band under the list; with the retail 6-row size the 7th row scrolls;
+--   * that row opens the goal celebration screen (soccer_performance_change_menu) in shirt-number mode: the param
+--     store key clean_hud_shirt_number = 1 (+ clean_hud_shirt_number_type = the dock's team type), written by the
+--     WaitExecPerfromanceChangeMenu wrapper, is read by the graft's bytecode child of that menu.
+-- Flag off -> every wrapper passes through: retail per-player list and retail 6-row COMANDOS.
+-- Exports (another mod's graft calls them at run time, never at load; Inazuma Fantasy's COMANDOS grid uses them for
+-- its «Dorsal» cell):
+--   CLEAN_HUD_SHIRT_NUMBER.On()    the feature is on in this build
+--   CLEAN_HUD_SHIRT_NUMBER.Arm()   the next WaitExecPerfromanceChangeMenu opens the screen in shirt-number mode
+-- No engine call at load: only wrappers (the patch runs before the engine registers the menu commands).
+local SN_KEY = 427961193            -- param store: 1 = open the celebration screen in shirt-number mode
+local SN_KEY_TYPE = 1264286919  -- param store: team type of this dock
+local SN_TEXT_CMD = 2111784635   -- menu_text «Ajustes de dorsales» (Clean HUD text/rows)
+local SN_RETAIL_CB = "CallbackCloseCondTeamCommandSubWin"
+local SN_CB = "CLEAN_HUD_ShirtNumberTeamCommand"
+local SN_ROW = 6                -- 0-based row of «Ajustes de dorsales» in the COMANDOS window
+local SN_RETAIL_ROWS = 6        -- retail rows: auto-equip, unequip, beans on, beans off, celebration, [x] auto beans
+local SN_RETAIL_CELEBRATION = 4 -- retail row (and callback case) «Ajustes de celebración de gol»
+local SN_RETAIL_CHECKBOX = 5    -- retail row «[x] Autoequipar judías» (toggles, the window stays open)
+local SN_SETTING_TYPE = 6       -- per-player setting type «Cambiar número de dorsal»
+local SN_SUBWIN_TYPE = 22       -- sub-window type of COMANDOS (win05_11_sub_list_locator_15)
+local SN_LOCATOR = 118161610    -- win05_11_sub_list_locator_15
+local SN_PARAM_TEAM_TYPE = 4081600465 -- retail OnInit reads (and consumes) the dock's team type here
+local CMND_PARAM_HAS = 2947612279
+local CMND_PARAM_GET = 3522198769
+local CMND_PARAM_DEL = 3363400568
+local CMND_PARAM_SET = 3860611758
+local CMND_LIST_SET_FOCUS = 3647847018
+
+CLEAN_HUD_SHIRT_NUMBER = CLEAN_HUD_SHIRT_NUMBER or {}
+local S = CLEAN_HUD_SHIRT_NUMBER
+S.teamType = S.teamType or 0
+S.armed = false
+S.lastPick = nil
+S.opened = false
+S.refocus = false
+
+function S.On()
+  return UiOn("shirt_number")
+end
+
+function S.Arm()
+  S.armed = true
+end
+
+local function SnSetParam(key, v)
+  funcLuaCommand(CMND_PARAM_DEL, key)
+  funcLuaCommand(CMND_PARAM_SET, key, 0, v, 1)
+end
+
+local function SnCopy(t, n)
+  local out = {}
+  if type(t) == "table" then
+    for i = 1, n do
+      out[i] = t[i]
+    end
+  end
+  return out
+end
+
+-- the dock's team type: retail OnInit consumes the param, so it is read just before (nothing is consumed here)
+if S.origInit == nil and type(OnInit) == "function" then
+  S.origInit = OnInit
+  OnInit = function(...)
+    S.teamType = 0
+    if funcLuaCommand(CMND_PARAM_HAS, SN_PARAM_TEAM_TYPE) then
+      S.teamType = funcLuaCommand(CMND_PARAM_GET, SN_PARAM_TEAM_TYPE) or 0
+    end
+    return S.origInit(...)
+  end
+end
+
+-- per-player command list without «Cambiar número de dorsal»
+if S.origSettingList == nil and type(GetSelectSettingTypeOrderList) == "function" then
+  S.origSettingList = GetSelectSettingTypeOrderList
+  GetSelectSettingTypeOrderList = function(...)
+    local src = S.origSettingList(...)
+    if type(src) ~= "table" or not S.On() then
+      return src
+    end
+    local out = {}
+    for i = 1, #src do
+      if src[i] ~= SN_SETTING_TYPE then
+        out[#out + 1] = src[i]
+      end
+    end
+    return out
+  end
+end
+
+-- the retail COMANDOS window (6 rows, retail callback name) gets the 7th row and our callback; any other sub-window
+-- (and a COMANDOS window another mod opens with its own callback) passes through unchanged
+if MENU_DEF ~= nil and type(MENU_DEF.OpenSubWindow) == "function" and S.origOpenSub == nil then
+  S.origOpenSub = MENU_DEF.OpenSubWindow
+  MENU_DEF.OpenSubWindow = function(cb, a2, count, texts, size, title, grey, focus, b1, b2, kind, x0, newf, n14, t15,
+                                    t16, n17, checks, ...)
+    if cb == SN_RETAIL_CB and kind == SN_SUBWIN_TYPE and count == SN_RETAIL_ROWS and type(texts) == "table"
+        and #texts == SN_RETAIL_ROWS and S.On() then
+      local n = SN_RETAIL_ROWS + 1
+      local t = SnCopy(texts, SN_RETAIL_ROWS)
+      t[n] = SN_TEXT_CMD
+      local g = SnCopy(grey, SN_RETAIL_ROWS)
+      g[n] = 1
+      if type(grey) == "table" and grey[1] == 0 then
+        g[n] = 0 -- empty team: the retail rows are all grey
+      end
+      local c = SnCopy(checks, SN_RETAIL_ROWS)
+      c[n] = 0
+      if S.lastPick == SN_ROW and focus == SN_RETAIL_CELEBRATION then
+        focus = SN_ROW
+        S.refocus = true
+      end
+      S.opened = true
+      UiLog("comandos rows", n, "focus", focus, "team type", S.teamType)
+      return S.origOpenSub(SN_CB, a2, n, t, size, title, g, focus, b1, b2, kind, x0, newf, n14, t15, t16, n17,
+        c, ...)
+    end
+    return S.origOpenSub(cb, a2, count, texts, size, title, grey, focus, b1, b2, kind, x0, newf, n14, t15, t16, n17,
+      checks, ...)
+  end
+end
+
+-- the retail opener sets the list focus to its own remembered row (4 after a celebration / shirt-number visit):
+-- back on «Ajustes de dorsales» after it
+if S.origCore == nil and type(OpenSelectTeamMemberControlSubWindowCore) == "function" then
+  S.origCore = OpenSelectTeamMemberControlSubWindowCore
+  OpenSelectTeamMemberControlSubWindowCore = function(...)
+    S.opened, S.refocus = false, false
+    local r = Pack(S.origCore(...))
+    if S.opened and S.refocus then
+      funcLuaCommand(CMND_LIST_SET_FOCUS, SN_ROW, SN_LOCATOR)
+    end
+    S.opened, S.refocus = false, false
+    return table.unpack(r, 1, r.n)
+  end
+end
+
+-- the 7-row COMANDOS window's callback: rows 0..5 are the retail ones, row 6 = the celebration screen in
+-- shirt-number mode (retail case 4 + the armed key)
+function CLEAN_HUD_ShirtNumberTeamCommand(a1, ...)
+  if a1 == SN_ROW then
+    S.lastPick = SN_ROW
+    S.armed = true
+    UiLog("open shirt numbers")
+    return CallbackCloseCondTeamCommandSubWin(SN_RETAIL_CELEBRATION)
+  end
+  if a1 ~= SN_RETAIL_CHECKBOX then
+    S.lastPick = a1
+  end
+  return CallbackCloseCondTeamCommandSubWin(a1, ...)
+end
+
+-- retail case 4 runs coroutine.create(WaitExecPerfromanceChangeMenu) through the global: tell the menu its mode
+if S.origPerf == nil and type(WaitExecPerfromanceChangeMenu) == "function" then
+  S.origPerf = WaitExecPerfromanceChangeMenu
+  WaitExecPerfromanceChangeMenu = function(...)
+    if S.armed and S.On() then
+      SnSetParam(SN_KEY, 1)
+      SnSetParam(SN_KEY_TYPE, S.teamType or 0)
+    else
+      funcLuaCommand(CMND_PARAM_DEL, SN_KEY)
+    end
+    S.armed = false
+    return S.origPerf(...)
+  end
+end
+
+end
+EVT_UI_Block()
+end
+-- ===== EVT ui_clean shirt_number END =====

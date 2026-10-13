@@ -1,0 +1,40 @@
+schema = "vr_framework.team/2"
+# The «Inazuma Eleven Cross» tab of «Competir contra bots» and the Cross season of the Bahía Batalla grid (iecross
+# 1.1.1, 2026-10-08, Nacho: «the Cross tab is the Cross mod's»; docs/framework/free-match-tabs.md, bb-pages.md §2.3).
+# Before, Inazuma Fantasy's graft fantasy_tab drew this tab; now the VR-Framework (2.0.1) draws it from this
+# declaration, with or without Inazuma Fantasy.
+
+# «Competir contra bots» › tab «Inazuma Eleven Cross» after Victory Road (the X icon): the games of the hidden piece
+# evt_cross_piece (content\base_tables\common\gamedata\vsroute\chronicle_vs_route_config.toml: the 11 Cross games, plus Royal
+# Academy (Cross)'s through the list cross_tab). The framework numbers the tab (9 = the first extra tab: order 100
+# keeps it before Inazuma Fantasy's Fantasy 200 / «Leyendas y extras» 300) and writes that number as the piece's
+# routeType. Name: the Cross series' name (the player bank's header), else the menu_text row below.
+[[VRFW.FreeMatchTab]]
+Id = "cross"
+Series = "evt_chara_series_cross"
+Text = "iecross_series_cross"
+Icon = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series10"
+IconOff = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series10_off"
+Order = 100
+Pieces = ["evt_cross_piece"]
+# The four classes of «Competir contra bots» on every Cross game (VR-Framework VRFW.Difficulties; Nacho 2026-10-09:
+# the Cross tab gets the 4 difficulties and the «best» orb): the games only have the HÉROE LEGENDARIO row (9, Nv. 200),
+# so INAZUMA / ZONA LETAL / RANGO DIVINO rows are added from it with the retail class AI and the TOP of each retail
+# class's level range (6: 1-7, 7: 25-31, 8: 50-55), and every row gets a clear bit of its own (the orb). Row 9 keeps
+# its level.
+VRFW.Difficulties = [
+  { Difficulty = 6, Level = 7 },
+  { Difficulty = 7, Level = 31 },
+  { Difficulty = 8, Level = 55 },
+  { Difficulty = 9 },
+]
+
+# Bahía Batalla › the season carousel: the Cross series (type 10 of chara_series_config, this mod's row) is derived by
+# the framework as season `series_10` (after Victory Road); this gives it a name and the same X icon (the default
+# would name the framework's row vrfw_bb_season_10, which does not exist). The Cross teams of the grid name it
+# (content\teams\90_estadio_bb.toml, content\teams\0012_royal_academy_cross.toml).
+[[VRFW.Season]]
+Id = "series_10"
+Text = "iecross_series_cross"
+Icon = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx:icon_list_tab_series10"
+Order = 100                               # after Victory Road (series_09 = 90)

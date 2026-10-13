@@ -1,0 +1,483 @@
+# Texts of the VR-Framework's chain board screen (vrfw_chain_board_menu, docs/framework/chain-board.md): rows of
+# menu_text in the framework's 9 languages, read by the screen's script with CMND_TEXT_GET by id = crc32(row id).
+# The chain's / pages' titles, the rival names and levels come from the declarations (team type), not from here.
+# %s / %d are filled by the script (string.format).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# the button guide of the help key (pad X / keyboard FUNC2); crc32("vrfw_chain_help_btn")
+[[row]]
+id = "vrfw_chain_help_btn"
+es = "Ayuda"
+en = "Help"
+fr = "Aide"
+de = "Hilfe"
+it = "Aiuto"
+pt = "Ajuda"
+ja = "ヘルプ"
+zh_hans = "帮助"
+zh_hant = "說明"
+
+# the help window (Tab «Ayuda»): the rank S line, right of its badge (the framework's rule VRFW_MatchRank)
+[[row]]
+id = "vrfw_chain_help_s"
+es = "Gana por 5 goles y sin encajar"
+en = "Win by 5 goals without conceding"
+fr = "Gagnez par 5 buts sans en encaisser"
+de = "Gewinne mit 5 Toren ohne Gegentor"
+it = "Vinci con 5 gol di scarto senza subirne"
+pt = "Vence por 5 golos sem sofrer"
+ja = "5点差以上・無失点で勝利"
+zh_hans = "净胜5球以上且零失球"
+zh_hant = "淨勝5球以上且零失球"
+
+# the help window (Tab «Ayuda»): the rank A line, right of its badge (the framework's rule VRFW_MatchRank)
+[[row]]
+id = "vrfw_chain_help_a"
+es = "Gana por 3 goles y sin encajar"
+en = "Win by 3 goals without conceding"
+fr = "Gagnez par 3 buts sans en encaisser"
+de = "Gewinne mit 3 Toren ohne Gegentor"
+it = "Vinci con 3 gol di scarto senza subirne"
+pt = "Vence por 3 golos sem sofrer"
+ja = "3点差以上・無失点で勝利"
+zh_hans = "净胜3球以上且零失球"
+zh_hant = "淨勝3球以上且零失球"
+
+# the help window (Tab «Ayuda»): the rank B line, right of its badge (the framework's rule VRFW_MatchRank)
+[[row]]
+id = "vrfw_chain_help_b"
+es = "Gana el partido"
+en = "Win the match"
+fr = "Gagnez le match"
+de = "Gewinne das Spiel"
+it = "Vinci la partita"
+pt = "Vence a partida"
+ja = "試合に勝利"
+zh_hans = "赢得比赛"
+zh_hant = "贏得比賽"
+
+# guide line: a match tile (rival name, level)
+[[row]]
+id = "vrfw_chain_guide_match"
+es = "%s  ·  Nv. %d"
+en = "%s  ·  Lv. %d"
+fr = "%s  ·  Niv. %d"
+de = "%s  ·  St. %d"
+it = "%s  ·  Liv. %d"
+pt = "%s  ·  Nv. %d"
+ja = "%s  ・  Lv.%d"
+zh_hans = "%s  ・  Lv.%d"
+zh_hant = "%s  ・  Lv.%d"
+
+# guide line suffix: the tile's best rank (S / A / B)
+[[row]]
+id = "vrfw_chain_guide_rank"
+es = "Mejor rango: %s"
+en = "Best rank: %s"
+fr = "Meilleur rang : %s"
+de = "Bester Rang: %s"
+it = "Rango migliore: %s"
+pt = "Melhor classificação: %s"
+ja = "最高ランク：%s"
+zh_hans = "最佳评级：%s"
+zh_hant = "最佳評級：%s"
+
+[[row]]
+id = "vrfw_chain_guide_locked"
+es = "Gana una casilla unida a esta para abrirla."
+en = "Win a tile joined to this one to open it."
+fr = "Gagnez une case reliée à celle-ci pour l'ouvrir."
+de = "Gewinne ein verbundenes Feld, um dieses zu öffnen."
+it = "Vinci una casella collegata per aprire questa."
+pt = "Vence uma casa ligada a esta para a abrir."
+ja = "つながったマスで勝つと開きます。"
+zh_hans = "赢下与之相连的格子即可打开。"
+zh_hant = "贏下與之相連的格子即可打開。"
+
+[[row]]
+id = "vrfw_chain_guide_start"
+es = "Inicio"
+en = "Start"
+fr = "Départ"
+de = "Start"
+it = "Inizio"
+pt = "Início"
+ja = "スタート"
+zh_hans = "起点"
+zh_hant = "起點"
+
+# guide line on the start tile once every match is won: the chain's rank
+[[row]]
+id = "vrfw_chain_guide_chain_rank"
+es = "Cadena superada  ·  Rango: %s"
+en = "Chain cleared  ·  Rank: %s"
+fr = "Chaîne terminée  ·  Rang : %s"
+de = "Kette geschafft  ·  Rang: %s"
+it = "Catena superata  ·  Rango: %s"
+pt = "Cadeia superada  ·  Classificação: %s"
+ja = "チェーン達成  ・  ランク：%s"
+zh_hans = "连战完成  ・  评级：%s"
+zh_hant = "連戰完成  ・  評級：%s"
+
+[[row]]
+id = "vrfw_chain_guide_chest"
+es = "Cofre"
+en = "Chest"
+fr = "Coffre"
+de = "Truhe"
+it = "Forziere"
+pt = "Baú"
+ja = "宝箱"
+zh_hans = "宝箱"
+zh_hant = "寶箱"
+
+[[row]]
+id = "vrfw_chain_guide_chest_open"
+es = "Cofre abierto"
+en = "Chest opened"
+fr = "Coffre ouvert"
+de = "Truhe geöffnet"
+it = "Forziere aperto"
+pt = "Baú aberto"
+ja = "開けた宝箱"
+zh_hans = "已打开的宝箱"
+zh_hant = "已打開的寶箱"
+
+# guide line / message: an S chest not ready yet (IE3's «S» chest, kind = "schest")
+[[row]]
+id = "vrfw_chain_guide_schest"
+es = "Cofre S: gana todos los partidos de esta rama con rango S para abrirlo."
+en = "S chest: win every match of this branch with rank S to open it."
+fr = "Coffre S : gagnez tous les matchs de cette branche avec le rang S pour l'ouvrir."
+de = "S-Truhe: Gewinne alle Spiele dieses Zweigs mit Rang S, um sie zu öffnen."
+it = "Forziere S: vinci tutte le partite di questo ramo con rango S per aprirlo."
+pt = "Baú S: vence todas as partidas deste ramo com classificação S para o abrir."
+ja = "Sランク宝箱：このルートの試合をすべてSランクで勝つと開きます。"
+zh_hans = "S宝箱：以S评级赢下这条分支的所有比赛即可打开。"
+zh_hant = "S寶箱：以S評級贏下這條分支的所有比賽即可打開。"
+
+# guide line / message: a placeholder tile (kind = "slot": a board shaped like an IE3 original, rival not chosen yet)
+[[row]]
+id = "vrfw_chain_slot"
+es = "Próximamente"
+en = "Coming soon"
+fr = "Bientôt disponible"
+de = "Demnächst"
+it = "Prossimamente"
+pt = "Brevemente"
+ja = "近日公開"
+zh_hans = "敬请期待"
+zh_hant = "敬請期待"
+
+# the question before a match (rival name, level)
+[[row]]
+id = "vrfw_chain_ask_match"
+es = "¿Jugar contra %s (Nv. %d)?"
+en = "Play against %s (Lv. %d)?"
+fr = "Jouer contre %s (Niv. %d) ?"
+de = "Gegen %s (St. %d) spielen?"
+it = "Giocare contro %s (Liv. %d)?"
+pt = "Jogar contra %s (Nv. %d)?"
+ja = "%s（Lv.%d）と試合しますか？"
+zh_hans = "要与%s（Lv.%d）比赛吗？"
+zh_hant = "要與%s（Lv.%d）比賽嗎？"
+
+# a chest opened (chests give nothing yet)
+[[row]]
+id = "vrfw_chain_chest_opened"
+es = "¡Has abierto el cofre!\nEstá vacío."
+en = "You opened the chest!\nIt is empty."
+fr = "Vous avez ouvert le coffre !\nIl est vide."
+de = "Du hast die Truhe geöffnet!\nSie ist leer."
+it = "Hai aperto il forziere!\nÈ vuoto."
+pt = "Abriste o baú!\nEstá vazio."
+ja = "宝箱を開けた！\n空っぽです。"
+zh_hans = "打开了宝箱！\n里面是空的。"
+zh_hant = "打開了寶箱！\n裡面是空的。"
+
+# a chest whose rewards do not fit in the bag (nothing given; paid the next time the board is shown)
+[[row]]
+id = "vrfw_chain_chest_full"
+es = "No tienes sitio para lo que hay en el cofre.\nHaz hueco y vuelve a abrir esta cadena."
+en = "You have no room for what is in the chest.\nMake some room and open this chain again."
+fr = "Vous n'avez pas de place pour le contenu du coffre.\nFaites de la place et rouvrez cette chaîne."
+de = "Du hast keinen Platz für den Inhalt der Truhe.\nSchaffe Platz und öffne diese Kette erneut."
+it = "Non hai spazio per il contenuto del forziere.\nFai spazio e riapri questa catena."
+pt = "Não tens espaço para o que está no baú.\nFaz espaço e volta a abrir esta cadeia."
+ja = "宝箱の中身を入れる空きがありません。\n空きを作ってから、もう一度このチェーンを開いてください。"
+zh_hans = "没有空间放宝箱里的东西。\n腾出空间后请重新打开这条连战。"
+zh_hant = "沒有空間放寶箱裡的東西。\n騰出空間後請重新打開這條連戰。"
+
+# a chest's player reward joined the club
+[[row]]
+id = "vrfw_chain_chest_player"
+es = "¡Un nuevo jugador se ha unido a tu club!"
+en = "A new player has joined your club!"
+fr = "Un nouveau joueur a rejoint votre club !"
+de = "Ein neuer Spieler ist deinem Verein beigetreten!"
+it = "Un nuovo giocatore si è unito al tuo club!"
+pt = "Um novo jogador juntou-se ao teu clube!"
+ja = "新しい選手がクラブに加入した！"
+zh_hans = "新球员加入了你的俱乐部！"
+zh_hant = "新球員加入了你的俱樂部！"
+
+[[row]]
+id = "vrfw_chain_locked_msg"
+es = "Esta casilla aún está cerrada.\nGana una casilla unida a ella para abrirla."
+en = "This tile is still closed.\nWin a tile joined to it to open it."
+fr = "Cette case est encore fermée.\nGagnez une case reliée pour l'ouvrir."
+de = "Dieses Feld ist noch geschlossen.\nGewinne ein verbundenes Feld, um es zu öffnen."
+it = "Questa casella è ancora chiusa.\nVinci una casella collegata per aprirla."
+pt = "Esta casa ainda está fechada.\nVence uma casa ligada a ela para a abrir."
+ja = "このマスはまだ閉じています。\nつながったマスで勝つと開きます。"
+zh_hans = "这个格子尚未打开。\n赢下与之相连的格子即可打开。"
+zh_hant = "這個格子尚未打開。\n贏下與之相連的格子即可打開。"
+
+# ---- the team card above the board (2.0.49, Nacho 2026-10-09): the focused tile's card --------------------------------
+# a match tile's level (under the team's name)
+[[row]]
+id = "vrfw_chain_card_level"
+es = "Nv. %d"
+en = "Lv. %d"
+fr = "Niv. %d"
+de = "St. %d"
+it = "Liv. %d"
+pt = "Nv. %d"
+ja = "Lv.%d"
+zh_hans = "Lv.%d"
+zh_hant = "Lv.%d"
+
+# a match tile's requirement: the title of its match challenge ([[VRFW.MatchChallenge]])
+[[row]]
+id = "vrfw_chain_card_req"
+es = "Requisito: %s"
+en = "Requirement: %s"
+fr = "Condition : %s"
+de = "Bedingung: %s"
+it = "Requisito: %s"
+pt = "Requisito: %s"
+ja = "条件：%s"
+zh_hans = "条件：%s"
+zh_hant = "條件：%s"
+
+# a match tile without a match challenge
+[[row]]
+id = "vrfw_chain_card_req_none"
+es = "Requisito: ninguno"
+en = "Requirement: none"
+fr = "Condition : aucune"
+de = "Bedingung: keine"
+it = "Requisito: nessuno"
+pt = "Requisito: nenhum"
+ja = "条件：なし"
+zh_hans = "条件：无"
+zh_hant = "條件：無"
+
+# an open match tile's third line: the save's wins against its team (VRFW_Stats.WinsVs, 2026-10-11)
+[[row]]
+id = "vrfw_chain_card_wins"
+es = "Victorias: %d"
+en = "Wins: %d"
+fr = "Victoires : %d"
+de = "Siege: %d"
+it = "Vittorie: %d"
+pt = "Vitórias: %d"
+ja = "勝利数：%d"
+zh_hans = "胜场：%d"
+zh_hant = "勝場：%d"
+
+# a match tile not open yet: its team stays hidden (the «?» plate)
+[[row]]
+id = "vrfw_chain_card_unknown"
+es = "Rival desconocido"
+en = "Unknown rival"
+fr = "Adversaire inconnu"
+de = "Unbekannter Gegner"
+it = "Avversario sconosciuto"
+pt = "Adversário desconhecido"
+ja = "？？？"
+zh_hans = "未知对手"
+zh_hant = "未知對手"
+
+# an open chest not opened yet
+[[row]]
+id = "vrfw_chain_card_chest_rule"
+es = "Pulsa Aceptar para abrirlo."
+en = "Press Confirm to open it."
+fr = "Appuyez sur Valider pour l'ouvrir."
+de = "Drücke Bestätigen, um sie zu öffnen."
+it = "Premi Conferma per aprirlo."
+pt = "Prime Confirmar para o abrir."
+ja = "決定で開けます。"
+zh_hans = "按确认键打开。"
+zh_hant = "按確認鍵打開。"
+
+# the S chest's title and rule
+[[row]]
+id = "vrfw_chain_card_schest"
+es = "Cofre S"
+en = "S chest"
+fr = "Coffre S"
+de = "S-Truhe"
+it = "Forziere S"
+pt = "Baú S"
+ja = "Sの宝箱"
+zh_hans = "S宝箱"
+zh_hant = "S寶箱"
+
+[[row]]
+id = "vrfw_chain_card_schest_rule"
+es = "Consigue S en toda la rama."
+en = "Get S in the whole branch."
+fr = "Obtenez S sur toute la branche."
+de = "Hol S im ganzen Zweig."
+it = "Ottieni S in tutto il ramo."
+pt = "Consegue S em todo o ramo."
+ja = "この枝の全試合でSを取ろう。"
+zh_hans = "在整条分支中取得S。"
+zh_hant = "在整條分支中取得S。"
+
+# a CHAIN HUB (chain-board.md §8, 2026-10-11): the header of its chooser list
+[[row]]
+id = "vrfw_chain_hub_title"
+es = "Cadenas"
+en = "Chains"
+fr = "Chaînes"
+de = "Ketten"
+it = "Catene"
+pt = "Cadeias"
+ja = "チェーン"
+zh_hans = "连战"
+zh_hant = "連戰"
+
+# a chain hub: the focused chain's card, its won matches out of all (%d / %d)
+[[row]]
+id = "vrfw_chain_hub_matches"
+es = "Partidos ganados: %d / %d"
+en = "Matches won: %d / %d"
+fr = "Matchs gagnés : %d / %d"
+de = "Gewonnene Spiele: %d / %d"
+it = "Partite vinte: %d / %d"
+pt = "Partidas ganhas: %d / %d"
+ja = "勝利した試合：%d / %d"
+zh_hans = "已胜比赛：%d / %d"
+zh_hant = "已勝比賽：%d / %d"
+
+# a chain hub: the focused chain's card, what Accept does
+[[row]]
+id = "vrfw_chain_hub_open"
+es = "Pulsa Aceptar para ver la cadena"
+en = "Press Accept to view the chain"
+fr = "Appuyez sur Valider pour voir la chaîne"
+de = "Drücke Bestätigen, um die Kette zu sehen"
+it = "Premi Conferma per vedere la catena"
+pt = "Prima Aceitar para ver a cadeia"
+ja = "決定でチェーンを表示"
+zh_hans = "按确定查看连战"
+zh_hant = "按確定查看連戰"
+
+# a blocked tile (2026-10-12, the 3DS chains' «prohibited» sign; chain-board.md §9): the card's first line
+[[row]]
+id = "vrfw_chain_card_blocked"
+es = "Paso bloqueado"
+en = "Blocked path"
+fr = "Passage bloqué"
+de = "Gesperrter Weg"
+it = "Passaggio bloccato"
+pt = "Passagem bloqueada"
+ja = "通行止め"
+zh_hans = "禁止通行"
+zh_hant = "禁止通行"
+
+# a blocked tile whose requirements are not met yet: the card's last line
+[[row]]
+id = "vrfw_chain_blocked_rule"
+es = "Cumple el requisito para abrir el paso"
+en = "Meet the requirement to open the path"
+fr = "Remplissez la condition pour ouvrir le passage"
+de = "Erfülle die Bedingung, um den Weg zu öffnen"
+it = "Soddisfa il requisito per aprire il passaggio"
+pt = "Cumpre o requisito para abrir a passagem"
+ja = "条件を満たすと通れるようになる"
+zh_hans = "满足条件即可通行"
+zh_hant = "滿足條件即可通行"
+
+# a blocked tile once open: the card's last line
+[[row]]
+id = "vrfw_chain_blocked_open"
+es = "Paso abierto"
+en = "Path open"
+fr = "Passage ouvert"
+de = "Weg offen"
+it = "Passaggio aperto"
+pt = "Passagem aberta"
+ja = "通行可能"
+zh_hans = "已可通行"
+zh_hant = "已可通行"
+
+# Accept on a closed blocked tile (its requirements, written as on the card)
+[[row]]
+id = "vrfw_chain_blocked_msg"
+es = "Este paso está bloqueado.\nRequisito: %s"
+en = "This path is blocked.\nRequirement: %s"
+fr = "Ce passage est bloqué.\nCondition : %s"
+de = "Dieser Weg ist gesperrt.\nBedingung: %s"
+it = "Questo passaggio è bloccato.\nRequisito: %s"
+pt = "Esta passagem está bloqueada.\nRequisito: %s"
+ja = "この先は通行止め。\n条件：%s"
+zh_hans = "此路不通。\n条件：%s"
+zh_hant = "此路不通。\n條件：%s"
+
+# a blocked tile's requirement: a win against a team (the team's name)
+[[row]]
+id = "vrfw_chain_req_win"
+es = "Gana a %s"
+en = "Beat %s"
+fr = "Battez %s"
+de = "Besiege %s"
+it = "Batti %s"
+pt = "Vence %s"
+ja = "%sに勝利"
+zh_hans = "战胜%s"
+zh_hant = "戰勝%s"
+
+# a blocked tile's requirement: a chain completed (the chain's title)
+[[row]]
+id = "vrfw_chain_req_chain"
+es = "Completa la %s"
+en = "Complete the %s"
+fr = "Terminez la %s"
+de = "Schließe die %s ab"
+it = "Completa la %s"
+pt = "Completa a %s"
+ja = "%sを制覇"
+zh_hans = "完成%s"
+zh_hant = "完成%s"
+
+# a blocked tile's requirement: the level of the team in use (needed, the current one)
+[[row]]
+id = "vrfw_chain_req_team_level"
+es = "Nivel de equipo %d (tienes %d)"
+en = "Team level %d (yours: %d)"
+fr = "Niveau d'équipe %d (le vôtre : %d)"
+de = "Teamstufe %d (deine: %d)"
+it = "Livello squadra %d (il tuo: %d)"
+pt = "Nível de equipa %d (o teu: %d)"
+ja = "チームレベル%d（現在%d）"
+zh_hans = "队伍等级%d（当前%d）"
+zh_hant = "隊伍等級%d（目前%d）"
+
+# a blocked tile's requirement: a player in the club (the player's name)
+[[row]]
+id = "vrfw_chain_req_player"
+es = "Ficha a %s"
+en = "Sign %s"
+fr = "Recrutez %s"
+de = "Verpflichte %s"
+it = "Ingaggia %s"
+pt = "Contrata %s"
+ja = "%sをスカウト"
+zh_hans = "招募%s"
+zh_hant = "招募%s"

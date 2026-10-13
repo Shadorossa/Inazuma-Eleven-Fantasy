@@ -1,0 +1,94 @@
+schema = "vr_framework.option/2"
+# Settings of the mod Utilities in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3; parser
+# vr_framework::options, built into the game's settings list by the mod_options plugin). Row keys «utilities.<id>».
+# Texts: text\rows\*.toml (menu_text rows, 9 languages). One block per feature, in the order of the tab; append new
+# rows at the end of their feature's block (or a new block at the end of the file).
+
+# ---------------------------------------------------------------- camera (data: cameras\side.toml + graft camera_side)
+
+# «Cámara del partido: Original / Lateral» (docs/game/media/camaras-fifa.md §7). The framework stores the value
+# (mod_options\utilities.json, key camera); at match start Utilities' Lua (graft camera_side) reads it and requests the
+# framework camera preset utilities.side (cameras\side.toml) or releases it. Before 2026-10-08 the value lived in the
+# global blob camera.json (storage = "command"): the plugin takes it over once. row_key = the SETTING_INFO id this row
+# has always had (Inazuma Fantasy's), so an old copy is adopted, never doubled.
+[[option]]
+id = "camera"
+type = "toggle"
+# «Tipo de cámara en partido» (own text keys since 2026-10-13: camera_type / camera_type_help of text\keys.toml; the
+# evt_set_camera_side_* ids of Inazuma Fantasy stay for the values). A child of the framework's «Ajustes de juego»
+# (mod_options.game_settings): off there = the game's camera, the value kept.
+label = "camera_type"
+help = "camera_type_help"
+parent = "mod_options.game_settings"
+off = { key = "evt_set_camera_side_off", text = "Original" }
+on = { key = "evt_set_camera_side_on", text = "Side" }
+default = 0
+row_key = "evt_set_camera_side"
+order = 102
+
+# «Cámara en los tiros» (the side view while a shot flies) is the mod shot_fx's since 2026-10-08 (always on there, no option row).
+
+# ---------------------------------------------------------------- visual style (content\shaders\visual_style.toml)
+
+# «Estilo visual»: the look of the 3D image, switched live (no restart). Every value but 0 is a [[VRFW.ShaderPreset]]
+# of content\shaders\visual_style.toml (`option.value`); 0 = the game's own look (the default).
+[[option]]
+id = "visual_style"                            # row key utilities.visual_style
+type = "list"
+label = "visual_style"                         # «Shaders personalizados» (text\keys.toml, 9 languages)
+help = "visual_style_help"
+# a child of the framework's «Estilo personalizado» (off there = the game's own look, the value kept)
+parent = "mod_options.custom_style"
+values = [
+    { value = 0, name = "vs_retail", text = "Original" },
+    { value = 1, name = "vs_ie3", text = "IE3" },
+    { value = 2, name = "vs_chrono", text = "Chrono Stone" },
+    { value = 3, name = "vs_soft", text = "Soft" },
+    { value = 4, name = "vs_ie3_contour", text = "IE3 + thick outline" },
+    { value = 5, name = "vs_contour", text = "Thick outline" },
+]
+default = 0
+order = 123
+
+# ---------------------------------------------------------------- original names (crates/plugins/utilities/src/original_names)
+
+# No row here (since Utilities 1.3.0): the choice is the game's own «Nombres de los personajes» row of «Ajustes del
+# juego» (Doblaje / Por equipos / Originales; A opens the team / series picker), stored as names.* values of
+# mod_options\utilities.json. The row «Nombres originales para equipos internacionales de Ares y Orión» of 1.0.1 - 1.2.x
+# is gone: a ticked team shows its original name.
+
+# ---------------------------------------------------------------- level badges (crates/plugins/utilities/src/level_badges)
+
+# «Nivel de técnica: +1 / +2 / +3 / Estrellas» (Nacho 2026-10-08, his art): with «Estrellas» the game's Spanish
+# move-level badges (soccer10_01_lv1..lv4) and the grade glyphs of the text icon sheet (gaiji_game2) are the stars files
+# of files\data (names ending in _util_stars), given to the engine's opens of the game files. Only Spanish files have a
+# stars version: with the game in another language the row changes nothing. Default: the game's art.
+[[option]]
+id = "level_badges"                            # row key utilities.level_badges
+type = "list"
+label = "level_badges"                         # «Nivel de supertécnica personalizado» (text\keys.toml, 9 languages)
+help = "level_badges_help"
+# a child of the framework's «Mostrar rótulos» (off there = the game's badges, the value kept)
+parent = "telop_engine.show_banners"
+values = [
+    { value = 0, name = "lb_retail", text = "+1 / +2 / +3" },
+    { value = 1, name = "lb_stars", text = "Stars" },
+]
+default = 0
+order = 114
+
+# ---------------------------------------------------------------- auto commander (content\game\auto_commander.toml)
+
+# «Modo Comandante automático» (Nacho 2026-10-12 / 2026-10-13, match simulations): on = Battle Bay matches always
+# start in Commander mode (gate open even against an unbeaten rival); free matches and Heroic battles start in it
+# only against a beaten rival; every other match keeps the game's rules (config.toml [auto_commander]). Read live
+# by scripts\auto_commander.lua at each match init (a change applies from the next match).
+[[option]]
+id = "auto_commander"                          # row key utilities.auto_commander
+type = "toggle"
+label = "auto_commander"                       # text\keys.toml, 9 languages
+help = "auto_commander_help"
+default = 0
+# a child of the framework's «Ajustes de juego» (off there = the game's rules, the value kept)
+parent = "mod_options.game_settings"
+order = 103

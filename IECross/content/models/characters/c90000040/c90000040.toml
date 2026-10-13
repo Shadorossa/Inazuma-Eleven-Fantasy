@@ -1,0 +1,66 @@
+schema = "vr_framework.model/1"
+# own model common/chr/_face/12_CROSS/c90000040/c90000040.g4md (research/scripts/if_models_to_glb.py)
+target = "chr/_face/12_CROSS/c90000040/c90000040.g4md"
+template = "chr/_face/01_IE1/c01000010/c01000010.g4md"
+
+[[material]]
+name = "c90000040_20M"
+from = "c01000010_20M"
+textures = ["c90000040_20", "c90000040_20line", "c90000040_20oc", "c90000040_20sp", "c90000040_20spm"]
+
+[[material]]
+name = "c90000040_21M"
+from = "c01000010_20M"
+textures = ["c90000040_21", "c90000040_21line", "c90000040_21oc", "c90000040_21sp", "c90000040_21spm"]
+
+[[material]]
+name = "eye_10M"
+from = "eye_10M"
+textures = ["c90000040_10", "c90000040_10line", "c90000040_10oc"]
+
+[[material]]
+name = "mouth_10M"
+from = "mouth_10M"
+textures = ["c90000040_10", "c90000040_10line", "c90000040_10oc"]
+
+[[texture]]
+name = "c90000040_10"
+
+[[texture]]
+name = "c90000040_10line"
+
+[[texture]]
+name = "c90000040_10oc"
+
+[[texture]]
+name = "c90000040_20"
+
+[[texture]]
+name = "c90000040_20line"
+
+[[texture]]
+name = "c90000040_20oc"
+
+[[texture]]
+name = "c90000040_20sp"
+
+[[texture]]
+name = "c90000040_20spm"
+
+[[texture]]
+name = "c90000040_21"
+
+[[texture]]
+name = "c90000040_21line"
+
+[[texture]]
+name = "c90000040_21oc"
+
+[[texture]]
+name = "c90000040_21sp"
+
+[[texture]]
+name = "c90000040_21spm"
+
+[textures]
+container = "dx11/chr/_face/12_CROSS/c90000040/c90000040.g4tx"

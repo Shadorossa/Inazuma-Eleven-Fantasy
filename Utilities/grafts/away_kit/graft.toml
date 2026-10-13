@@ -1,0 +1,49 @@
+# Kit picker Local / Visitante of the mod Utilities, feature away_kit (docs/game/mechanics/away-kit.md; until
+# 2026-10-08 the standalone mod away_kit): CMD_FUNC3 previews the away twin, decide writes it with
+# CMND_UTIL_TEAM_UNIFORM (plugin utilities.dll). The pairs come from the plugin at run time (CMND_UTIL_AK_PAIR, derived
+# from the item_config / uniform_config the game loads). The CMD_FUNC3 row of equip_uniform_menu is
+# research/mods/Utilities/menus/equip_uniform_menu.toml (menu_engine), the texts research/mods/Utilities/text/rows/
+# menu_text.toml (ids crc32("away_kit.home") / crc32("away_kit.away"), kept). Utilities is lua_early, so these whole-function
+# edits run before the mods that wrap the same functions (Inazuma Fantasy's pachanga_equip wraps OnInit). Built into
+# the mod: menu_assemble.py build --mod utilities.
+name = "away_kit"
+order = 100
+mod = "utilities"
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["CheckTeamDockUniformEquip", "OnEnter", "OnFunction", "OnInit", "UpdateCharaModel", "UpdateItemEquipMenu"]
+description = "away_kit: Local / Visitante kit picker"
+
+[[files]]
+stem = "equip_uniform_menu_list"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "equip_uniform_menu_list.OnSetupLayer.AwayKit"
+  text = '''
+      -- EVT away_kit BEGIN
+      team_set_info2 = UTIL_AK_FocusUniform(team_set_info2)
+      -- EVT away_kit END
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "equip_uniform_menu_list.UpdateButtonGuide.AwayKit"
+  text = '''
+  -- EVT away_kit BEGIN
+  if UTIL_AK_ON then
+    t5[#t5 + 1] = UTIL_AK_BtnText()
+    t6[#t6 + 1] = UTIL_AK_BTN_ICON
+    t7[#t7 + 1] = 18
+    t8[#t8 + 1] = UTIL_AK_BTN_KEY
+  end
+  -- EVT away_kit END
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "away_kit_1.lua"
+  crc = "none"

@@ -1,0 +1,11 @@
+# Framework defaults of a ruleset's [pitch] (VR-Framework 2.1, crates/plugins/match_engine/src/pitch.rs;
+# docs/framework/types/rule.md §16). Mechanism tunables only: the sizes are each ruleset's. A mod may ship its own
+# defaults\pitch.toml to override keys (load order).
+
+# Move and scale the visible goals with the logic: the goal joints __goal1__ … __goal12__ of the shared goal model
+# ar/ao200 (the game's own joint table) go to the scaled end lines and take the ruleset's goal width / height.
+# false = only the match rules change (the goals stay drawn at the retail place and size).
+visual_goals = true
+
+# When the goal model is not found right after the field build, InPlay frames to keep looking for it (60 = 1 s).
+visual_retry_frames = 600

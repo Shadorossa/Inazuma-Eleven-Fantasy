@@ -1,0 +1,745 @@
+-- Team bank pages of the mod Utilities (utilities.dll, feature team_banks; docs/game/mechanics/team-squads-extended.md
+-- section 6.4). N pages x 11 team docks (N = [team_banks] pages of Utilities' config.toml, default 10). Needs the
+-- plugin (CMND_UTIL_TEAMBANK_*, module mask bit 2097152); without it (or on save slot 1, or in a blocked game mode such
+-- as story) the menu is retail.
+-- R3 on a pad / N on the keyboard (CMD_FUNC6), with the focus on the dock level (dock list, team name, formation, kit,
+-- tactics; not on a player card, where the personal plate owns R3), opens the retail "PLANTILLA DE EQUIPO" dock list
+-- (sub_window type 2, the one Partido libre uses to change the active team). Inside it L2 / R2 (Q / E) page through
+-- the pages: the plugin mounts the next page and the list is opened again on it, so every row is the game's own row.
+-- Choosing a row keeps that page mounted and shows that dock; Back mounts the page you started from again and closes.
+-- The window shows the page indicator "<L2> Pág. k/N <R2>" centred in its bottom band (text node `_text_bank01` of
+-- win05_15, Utilities' files\ and menus\objects.toml; geometry research/scripts/team_banks_window_build.py); its
+-- title and the screen title stay the retail ones.
+--
+-- Hook file (graft [[hooks]], never merged with other grafts): the retail callbacks are wrapped with EVT_Host handlers
+-- of the VR-Framework's host of soccer_team_dock_menu (menu_engine lua\soccer_team_dock_menu\000_host.lua). Utilities
+-- is lua_early: its handlers are registered before the host installs its dispatchers on top of every lua_early patch
+-- (Inazuma Fantasy's merged file included), so they run around everything IF made of those functions. Without EVT_Host
+-- the globals are wrapped directly. The retail chunk's locals (n5 = shown dock, n6 = focused layer, l1/l5/l6/l7 =
+-- running coroutines, flag3, t4 = guide entries...) are reached through TB.L, which finds the LIVE copy: the one a
+-- merge-path patch of another mod promoted (Inazuma Fantasy's merged soccer_team_dock_menu file redefines the retail
+-- functions with named upvalues) or, without such a patch, the retail one (map below, `menu_assemble.py locals
+-- menu/soccer_team_dock_menu_`). Needs EVT_DEBUG (ModLoader 1.7.0).
+--
+-- Extension points: UTIL_TEAM_BANKS = false keeps a screen retail (a mode's own squad screen); UTIL_TB is this block's
+-- table (a later block may wrap TB.refresh / TB.header: Inazuma Fantasy's pachanga dock does); UTIL_TB_HOOKS =
+-- { function(TB) ... end, ... } queued by blocks that ran before this one are called once TB exists.
+-- Handlers (ids utilities.team_banks.<point>, phase around): OnInit, Step, FuncOnBack, SwapHeaderTextBack,
+-- SetupButtonGuideText, SetIsTeamDockTop, OnFunction, OnEnter, OnDecideFocus.
+do
+  if UTIL_TEAM_BANKS == nil then
+    UTIL_TEAM_BANKS = true            -- false: retail team dock (no bank window, no header text)
+  end
+  if UTIL_TB_WRAPPED == nil then
+    UTIL_TB_WRAPPED = {}
+  end
+  local D = EVT_DEBUG
+  local TB = {
+    INFO = 589885191,                -- CMND_UTIL_TEAMBANK_INFO -> ok, mounted, count, name, used mask, slot
+    SET = 4280174267,                -- CMND_UTIL_TEAMBANK_SET(bank, online) -> ok, code, dropped, new
+    MENU = 2510611651,               -- CMND_UTIL_TEAMBANK_MENU(open, online)
+    VERSION = 2217361807,            -- CMND_EVT_LOADER_VERSION -> api, module mask
+    LOG = 3661580131,                -- CMND_EVT_LOG
+    MOD_BIT = 2097152,               -- module mask bit 21 = team_banks (utilities.dll)
+    MENU_CTRL = 1332654303,
+    MENU_CTRL_AN = 2748927068,       -- MENU_CTRL_WITH_ANALOG_MOVE_FOCUS (also has CMD_FUNC6 = pad 2 / key 13)
+    CHECK_INPUT = 4265778440,        -- CMND_CHECK_INPUT_CMD(ctrl, cmd)
+    CMD_OPEN = 3147328756,           -- CMD_FUNC6 (pad R3, keyboard N)
+    CMD_L2 = 1970176280,             -- CMD_FUNCL2 (pad L2, keyboard Q)
+    CMD_R2 = 2704260807,             -- CMD_FUNCR2 (pad R2, keyboard E)
+    DIR_L = 2091783662,              -- sub_window ZL / ZR function parameters (Utilities' menus\10_win\sub_window.toml)
+    DIR_R = 2541903734,
+    GLYPH_OPEN = 2453951505,         -- menu_text "<CMD_FUNC6>"
+    GLYPH_ENTER = 2750714971,        -- menu_text "<CMD_ENTER>"
+    TEXT_BANK = 3574588934,          -- retail menu_text "Banco" (guide label)
+    TEXT_BANK_WORD = 2389077999,     -- crc32("evt_tb_bank") = Banco / Bank / Banque ... (Utilities' text rows)
+    TEXT_PAGE = 1108108981,          -- crc32("evt_tb_page") = Pág. / Pg. / P. ... (Utilities' text rows)
+    TEXT_DROPPED = 3636424682,       -- crc32("evt_tb_msg_dropped"): {page} / {n}
+    TEXT_NEW = 1172749997,           -- crc32("evt_tb_msg_new"): {page}
+    WIN_LAYER = 193803588,           -- win05_15_sub_list_locator_doc (the window layer of the sub_window menu)
+    WIN_TEXT = 176089146,            -- crc32("_text_bank01"): the window's page indicator node (bottom band)
+    SET_TEXT = 1083631230,           -- CMND_SET_MENU_TEXT_STRING(layer, node, text, index)
+    TEXT_ACCEPT = 1847312674,        -- menu_text "Aceptar"
+    TEXT_HEADER = 1923260944,        -- menu_text "Plantilla de equipo"
+    TEXT_GET = 4074371074,
+    SET_HEADER = 2865764598,         -- funcLuaMenuCommand(SET_HEADER, 5, text): header title (as in OnInit)
+    MENU_ID = 937147172,             -- soccer_team_dock_menu
+    SUB_WINDOW = 968210065,
+    CURSOR = 2296367164,             -- cmn05_01_cursor
+    CAN_ACTIVE = 1104634465,         -- funcLuaCommand(CAN_ACTIVE, logical set, 0): the retail grey-out rule
+    -- refusal code (store::code) -> crc32 of its text row (Utilities' text rows, 9 languages)
+    REFUSED = {
+      [3] = 1035602341,              -- evt_tb_refused_mode
+      [4] = 1709893516,              -- evt_tb_refused_busy
+      [6] = 2446677379,              -- evt_tb_refused_online
+      [7] = 3134185784,              -- evt_tb_refused_error
+      [8] = 3082045477               -- evt_tb_refused_slot1
+    },
+    ready = false, top = true, co = nil, mounted = 0, count = 10, name = "", slot = 0, used = 0, logs = 0,
+    inwin = false, act = nil, dropped = 0, newbank = false,
+    flows = setmetatable({}, {__mode = "k"}), ignored = 0, polled = false
+  }
+  UTIL_TB = TB
+
+  function TB.pack(...)
+    return {n = select("#", ...), ...}
+  end
+
+  function TB.log(...)
+    if TB.logs < 60 then
+      TB.logs = TB.logs + 1
+      pcall(funcLuaCommand, TB.LOG, "UTIL team_banks", ...)
+    end
+  end
+
+  -- ---- the retail chunk's locals (TB.L) ------------------------------------------------------------------------------
+  -- generated: python research/scripts/menu_assemble.py locals menu/soccer_team_dock_menu_
+  -- local = {retail global, upvalue index, its upvalue count, type}
+  local MAP = {
+    flag3 = {"OnInit", 8, 9, "boolean"},
+    l1 = {"OnInit", 9, 9},
+    l5 = {"OnOpenLayer", 2, 12},
+    l6 = {"OnDecideFocus", 6, 10},
+    l7 = {"Step", 9, 9},
+    n = {"OnSetupLayer", 2, 7, "number"},
+    n4 = {"OnInit", 5, 9, "number"},
+    n5 = {"OnInit", 6, 9, "number"},
+    n6 = {"OnOpenLayer", 4, 12, "number"},
+    n10 = {"OnInit", 2, 9, "number"},
+    t4 = {"GetButtonGuideTextId", 1, 1, "table"}
+  }
+  -- every local name of the retail chunk (a function holding 2+ upvalues with these names is a promoted copy)
+  local CHUNK = {}
+  for _, k in ipairs({"t", "t2", "t3", "t4", "t5", "t6", "n", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n11",
+      "n12", "n13", "l1", "l2", "l3", "l4", "l5", "l6", "l7", "flag", "flag2", "flag3", "flag4", "flag5", "flag6", "flag7"}) do
+    CHUNK[k] = true
+  end
+
+  local function nups(f)
+    local n = 0
+    while D.getupvalue(f, n + 1) ~= nil do
+      n = n + 1
+    end
+    return n
+  end
+
+  -- a promoted copy: an upvalue NAMED k in a text-compiled function reached from the current global g (through the
+  -- upvalues of the wrappers on it), in a function that holds other chunk locals too
+  local function named(f, k, depth, seen)
+    if type(f) ~= "function" or depth > 8 or seen[f] then
+      return nil
+    end
+    seen[f] = true
+    local n, hit, chunk = nups(f), nil, 0
+    for i = 1, n do
+      local name = D.getupvalue(f, i)
+      if CHUNK[name] then
+        chunk = chunk + 1
+      end
+      if name == k then
+        hit = i
+      end
+    end
+    if hit ~= nil and chunk >= 2 then
+      return f, hit
+    end
+    for i = 1, n do
+      local _, v = D.getupvalue(f, i)
+      local r, j = named(v, k, depth + 1, seen)
+      if r ~= nil then
+        return r, j
+      end
+    end
+    return nil
+  end
+
+  -- the retail closure (EVT_Host's snapshot taken before any patch) or the one with the map's upvalue count under it
+  local function holder(f, cnt, depth, seen)
+    if type(f) ~= "function" or depth > 3 or seen[f] then
+      return nil
+    end
+    seen[f] = true
+    local n = nups(f)
+    if n == cnt then
+      return f
+    end
+    for i = 1, n do
+      local _, v = D.getupvalue(f, i)
+      local r = holder(v, cnt, depth + 1, seen)
+      if r ~= nil then
+        return r
+      end
+    end
+    return nil
+  end
+
+  local found = {}
+  local function at(k)
+    local m = MAP[k]
+    if m == nil or D == nil then
+      return nil
+    end
+    local c = found[k]
+    if c == nil then
+      local f, i = nil, nil
+      -- what is under the framework host's dispatcher of g (when it hooked g), else the global
+      local hs = type(EVT_Host) == "table" and type(EVT_Host.hosts) == "table" and EVT_Host.hosts["soccer_team_dock_menu"] or nil
+      for _, g in ipairs({m[1], "OnInit", "Step", "OnOpenLayer", "OnDecideFocus", "SetupButtonGuideText"}) do
+        local p = hs ~= nil and hs.points ~= nil and hs.points[g] or nil
+        f, i = named(p ~= nil and p.prev or nil, k, 0, {})
+        if f == nil then
+          f, i = named(rawget(_ENV, g), k, 0, {})
+        end
+        if f ~= nil then
+          break
+        end
+      end
+      if f == nil and type(EVT_Host) == "table" and type(EVT_Host.retail_fn) == "function" then
+        f = holder(EVT_Host.retail_fn(m[1]), m[3], 0, {})
+        i = m[2]
+      end
+      if f == nil then
+        TB.log("local not found", k)
+        return nil
+      end
+      c = {f, i}
+      found[k] = c
+    end
+    return c[1], c[2], m[4]
+  end
+
+  TB.L = setmetatable({}, {
+    __index = function(_, k)
+      local f, i, ty = at(k)
+      if f == nil then
+        return nil
+      end
+      local _, v = D.getupvalue(f, i)
+      if ty ~= nil and v ~= nil and type(v) ~= ty then
+        return nil
+      end
+      return v
+    end,
+    __newindex = function(_, k, v)
+      local f, i = at(k)
+      if f ~= nil then
+        D.setupvalue(f, i, v)
+      end
+    end
+  })
+  local L = TB.L
+
+  -- wrap the retail callback `name`: make(orig) returns the wrapper. Through the framework's host when it is there
+  -- (an around handler: orig = the next one in the chain), else the global itself (once per definition).
+  local STEM = "soccer_team_dock_menu"
+  function TB.wrap(name, make)
+    if type(EVT_Host) == "table" and type(EVT_Host.on) == "function" then
+      EVT_Host.on(STEM, name, {id = "utilities.team_banks." .. name, phase = "around", fn = function(nxt, ...)
+        return make(nxt)(...)
+      end})
+      return true
+    end
+    local cur = _ENV[name]
+    if type(cur) ~= "function" or UTIL_TB_WRAPPED[cur] then
+      return false
+    end
+    local w = make(cur)
+    UTIL_TB_WRAPPED[w] = true
+    _ENV[name] = w
+    return true
+  end
+
+  function TB.online()
+    if EVT_PmOnline ~= nil then
+      local ok, r = pcall(EVT_PmOnline)
+      return ok and r == true
+    end
+    return funcLuaCommand(3959907440) == true or funcLuaCommand(1191545622) == true
+  end
+
+  function TB.pressed(cmd)
+    return funcLuaCommand(TB.CHECK_INPUT, TB.MENU_CTRL, cmd) == true
+      or funcLuaCommand(TB.CHECK_INPUT, TB.MENU_CTRL_AN, cmd) == true
+  end
+
+  local function alive(co)
+    return type(co) == "thread" and coroutine.status(co) ~= "dead"
+  end
+
+  -- a retail callback (OnFunction / OnEnter / OnDecideFocus) still running = a sub menu of the dock is open
+  function TB.inFlow()
+    for co in pairs(TB.flows) do
+      if coroutine.status(co) ~= "dead" then
+        return true
+      end
+      TB.flows[co] = nil
+    end
+    return false
+  end
+
+  function TB.onCard()
+    local n6 = L.n6
+    return n6 ~= nil and n6 ~= 0 and type(IsCharaCardTypeLayer) == "function" and IsCharaCardTypeLayer(n6) == true
+  end
+
+  -- nil = the bank window may open now; else the reason (logged)
+  function TB.blocked()
+    if alive(L.l1) then
+      return "member move"
+    elseif alive(L.l5) then
+      return "fade"
+    elseif alive(L.l6) then
+      return "team command list"
+    elseif alive(L.l7) then
+      return "training"
+    elseif IsChangeMemberMode ~= nil and IsChangeMemberMode() then
+      return "member change"
+    elseif TB.inFlow() then
+      return "sub menu open"
+    elseif not TB.top and TB.onCard() then
+      return "player card (plate)"
+    end
+    return nil
+  end
+
+  -- the plugin runs and a slot 2+ game outside the blocked modes is loaded
+  function TB.refreshInfo()
+    TB.ready = false
+    if not UTIL_TEAM_BANKS or D == nil then
+      return false
+    end
+    local ok, api, mods = pcall(funcLuaCommand, TB.VERSION)
+    if not ok or type(mods) ~= "number" or math.floor(mods / TB.MOD_BIT) % 2 ~= 1 then
+      return false
+    end
+    local ok2, r, mounted, count, name, used, slot = pcall(funcLuaCommand, TB.INFO)
+    if ok2 and r == true and type(mounted) == "number" and type(count) == "number" then
+      TB.ready, TB.mounted, TB.count, TB.name, TB.used, TB.slot = true, mounted, count, name or "", used or 0, slot or 0
+    end
+    return TB.ready
+  end
+
+  -- a text row in the game's language (nil when missing)
+  function TB.text(id)
+    local ok, s = pcall(funcLuaCommand, TB.TEXT_GET, id)
+    if ok and type(s) == "string" and s ~= "" then
+      return s
+    end
+    return nil
+  end
+
+  -- "Banco" in the game's language (Utilities' row evt_tb_bank)
+  function TB.word()
+    return TB.text(TB.TEXT_BANK_WORD) or "Bank"
+  end
+
+  -- "Banco k/N" of the mounted page
+  function TB.label()
+    return TB.word() .. " " .. (TB.mounted + 1) .. "/" .. TB.count
+  end
+
+  -- the screen title: the retail one (the page is shown in the bank window only, Nacho 2026-10-08)
+  function TB.headerText()
+    return TB.text(TB.TEXT_HEADER) or ""
+  end
+
+  -- "<L2> Pág. k/N <R2>" of the mounted page (the key glyphs follow the input device, like the retail guides)
+  function TB.pageText()
+    local n = (TB.mounted + 1) .. "/" .. TB.count
+    local w = TB.text(TB.TEXT_PAGE)
+    if w ~= nil then
+      n = w .. " " .. n
+    end
+    return "<CMD_FUNCL2>   " .. n .. "   <CMD_FUNCR2>"
+  end
+
+  -- the window's page indicator (empty = the retail window, e.g. the team selection of Partido libre)
+  function TB.winTitle(s)
+    local ok, e = pcall(funcLuaMenuCommand, TB.SET_TEXT, TB.WIN_LAYER, TB.WIN_TEXT, s, 0)
+    if not ok then
+      TB.log("window title error", tostring(e))
+    end
+  end
+
+  function TB.header()
+    local ok, e = pcall(function()
+      funcLuaMenuCommand(TB.SET_HEADER, 5, TB.headerText())
+    end)
+    if not ok then
+      TB.log("header error", tostring(e))
+    end
+  end
+
+  -- modal message, same calls as OpenChangeTeamDockMessage (runs inside TB.co)
+  function TB.message(s)
+    funcLuaMenuCommand(1558704558, TB.MENU_ID, false)
+    funcLuaCommand(2289627655, s, 0, 0, 0, 0, 0, false)
+    local k = -1
+    while k < 0 do
+      k = funcLuaCommand(1523741473)
+      coroutine.yield()
+    end
+    waitTrue(function()
+      return funcLuaCommand(682363669)
+    end)
+  end
+
+  local function try(f, ...)
+    if type(f) == "function" then
+      local ok, e = pcall(f, ...)
+      if not ok then
+        TB.log("refresh error", tostring(e))
+      end
+    end
+  end
+
+  -- the retail L1 / R1 refresh (OnFunction 2294853123) for the shown dock, plus the name bar / emblem / members
+  function TB.refresh()
+    local n5, n10 = L.n5, L.n10
+    try(SetupMemberCharaStHdlList, n5)
+    try(SetShowTeamDockNo, n5)
+    try(SetupTeamPower, n5)
+    local n4 = funcLuaCommand(3713813716 --[[CMND_GET_VS_USE_TEAM_SET]])
+    L.n4 = n4
+    try(function()
+      SetFormationId(GetTeamDockFormationId())
+    end)
+    try(SetVisibleHeaderTeamDoc, true, n5)
+    for i = 0, (L.n or 0) - 1 do
+      try(UpdateViewTeamDockListItem, i)
+    end
+    try(UpdateViewMenuByLock)
+    try(funcLuaMenuCommand, 1195645349 --[[CMND_UPDATE_SYNERGY_BUTTON?]], 1179455358 --[[team00_17_synergy_attachment_button_pillar]], 0, n5, n10)
+    try(funcLuaMenuCommand, 1195645349 --[[CMND_UPDATE_SYNERGY_BUTTON?]], 830633104 --[[team00_17_synergy_attachment_button_flag]], 0, n5, n10)
+    try(SetupTeamDockTeamNameBar)
+    try(UpdateViewTeamDockNo)
+    try(SetActiveDockBackground, n4 == n5)
+    try(UpdateTeamBuildTypeInfo, n5, n10)
+    try(funcLuaMenuCommand, 3781155141 --[[CMND_PLAY_ANIME_TYPE]], 1308042914 --[[team01_05_team_dock_no]], 0, 3183130249, 0, 3627544126)
+    L.flag3 = true                   -- Step -> UpdateFormationInfo (cards on the pitch)
+  end
+
+  -- mount page `target`; true on success (dropped players / new page are remembered for the closing message)
+  function TB.mount(target)
+    local ok, r, code, dropped, isnew = pcall(funcLuaCommand, TB.SET, target, TB.online() and 1 or 0)
+    if not ok or r ~= true then
+      TB.log("mount refused", "target", target, "code", code, ok and "" or tostring(r))
+      funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+      local id = TB.REFUSED[code or 7]
+      local msg = id ~= nil and TB.text(id) or nil
+      if ok and msg ~= nil then
+        TB.message(msg)
+      end
+      return false
+    end
+    if type(dropped) == "number" then
+      TB.dropped = TB.dropped + dropped
+    end
+    if isnew == true then
+      TB.newbank = true
+    end
+    TB.refreshInfo()
+    TB.header()
+    TB.log("mounted", "bank", TB.mounted + 1, "dropped", dropped, "new", isnew)
+    return true
+  end
+
+  -- ---- the bank window (retail dock list) ----------------------------------------------------------------------
+  function UTIL_TB_WinDone(a1)
+    if TB.inwin then
+      if a1 == nil or a1 < 0 then
+        TB.act = TB.act or {"back"}
+      else
+        TB.act = {"pick", a1}
+      end
+    end
+  end
+
+  function UTIL_TB_WinDisabled(a1)      -- a grey row (cannot be the active team) can still be chosen
+    if TB.inwin and type(a1) == "number" then
+      TB.act = {"pick", a1}
+    end
+  end
+
+  function UTIL_TB_WinZLZR(a1, a2)
+    if TB.inwin and TB.act == nil then
+      if a1 == TB.DIR_L or a2 == TB.DIR_L then
+        TB.act = {"page", -1}
+      elseif a1 == TB.DIR_R or a2 == TB.DIR_R then
+        TB.act = {"page", 1}
+      end
+      TB.log("zlzr", tostring(a1), tostring(a2))
+    end
+  end
+
+  function TB.isOpen()
+    return funcLuaCommand(3693934564 --[[CMND_IS_OPEN_MENU_OBJECT]], TB.SUB_WINDOW, TB.CURSOR) == true
+  end
+
+  function TB.isClosed()
+    return funcLuaCommand(1521844538 --[[CMND_IS_CLOSE_MENU_OBJECT]], TB.SUB_WINDOW) == true
+  end
+
+  function TB.closeWin()
+    TB.winTitle("")                  -- the window layer is shared with the retail team selection
+    if not TB.isClosed() then
+      funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], TB.SUB_WINDOW)
+      waitTrue(TB.isClosed)
+    end
+  end
+
+  -- the bottom guide of the window: "<ENTER> Aceptar" only. Q (L2) / E (R2) page through the pages (UTIL_TB_WinZLZR,
+  -- wraps around) and are shown in the window itself, by its page indicator "<L2> Pág. k/N <R2>" (TB.pageText); a
+  -- "<L2><R2> Banco" guide entry repeated them in the screen's bottom bar (Nacho 2026-10-08: not there, at the popup)
+  function TB.windowGuide()
+    local texts = {TB.TEXT_ACCEPT}
+    local keys = {TB.GLYPH_ENTER}
+    local offs = {0}
+    local cmds = {1981080283 --[[CMD_ENTER]]}
+    funcLuaMenuCommand(2209673388, g_parentMenuId, 1138543975 --[[mainmenu01_06_base_button_guide]], texts, keys, offs, {0}, {0})
+    funcLuaMenuCommand(452337289, g_parentMenuId, 1138543975 --[[mainmenu01_06_base_button_guide]], cmds)
+  end
+
+  function TB.openList()
+    local get = MENU_DEF.GetTeamDockNum ~= nil and MENU_DEF.GetTeamDockNum() or 11
+    local first = funcLuaCommand(4017866835)
+    local en = {}
+    for i = 1, get do
+      en[i] = funcLuaCommand(TB.CAN_ACTIVE, first + i - 1, 0) and 1 or 0
+    end
+    MENU_DEF.SetSubwindowCallback_PressZLZREvent("UTIL_TB_WinZLZR")
+    MENU_DEF.OpenSubWindowDisableBtnCB("UTIL_TB_WinDone", "", "UTIL_TB_WinDisabled", get, {}, 1, 0, en, 0, false, false, 2)
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], TB.CURSOR, 0, false)
+    waitTrue(TB.isOpen)
+    funcLuaCommand(63483614, 960, -273)  -- window position (as Partido libre)
+    TB.windowGuide()
+    TB.winTitle(TB.pageText())
+  end
+
+  function TB.window()
+    if not TB.refreshInfo() then
+      funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+      return
+    end
+    local start = TB.mounted
+    TB.dropped, TB.newbank, TB.inwin = 0, false, true
+    funcLuaMenuCommand(1558704558, TB.MENU_ID, false)
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], TB.CURSOR, 0, false, TB.MENU_ID)
+    funcLuaCommand(1917805374, 3848881948 --[[sy0000]])
+    TB.log("window open", "bank", start + 1, "of", TB.count, "dock", L.n5)
+    local result
+    while result == nil do
+      TB.act = nil
+      TB.openList()
+      while TB.act == nil do
+        coroutine.yield()
+        if TB.act == nil then
+          if TB.pressed(TB.CMD_L2) then
+            TB.act = {"page", -1}
+          elseif TB.pressed(TB.CMD_R2) then
+            TB.act = {"page", 1}
+          elseif TB.isClosed() then
+            TB.act = {"back"}
+          end
+        end
+      end
+      local act = TB.act
+      TB.closeWin()
+      if act[1] == "page" then
+        funcLuaCommand(1917805374, 2629173176 --[[sy0009]])
+        TB.mount((TB.mounted + act[2]) % TB.count)
+      else
+        result = act
+      end
+    end
+    TB.inwin = false
+    MENU_DEF.SetSubwindowCallback_PressZLZREvent("OnSubWindowPressZLZREvent")   -- retail default name again
+    if result[1] == "back" and TB.mounted ~= start then
+      if not TB.mount(start) then
+        TB.log("back: could not mount bank", start + 1, "stays on", TB.mounted + 1)
+      end
+    end
+    if result[1] == "pick" then
+      local dock = funcLuaCommand(4017866835) + result[2]
+      TB.log("pick", "bank", TB.mounted + 1, "dock", dock)
+      L.n5 = dock
+    end
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], TB.CURSOR, 0, true, TB.MENU_ID)
+    TB.refresh()
+    TB.header()
+    try(SetupButtonGuideText)
+    if TB.dropped > 0 then
+      local s = TB.text(TB.TEXT_DROPPED)
+      if s ~= nil then
+        TB.message((s:gsub("{page}", TB.label()):gsub("{n}", tostring(TB.dropped))))
+      end
+    elseif TB.newbank and result[1] == "pick" then
+      local s = TB.text(TB.TEXT_NEW)
+      if s ~= nil then
+        TB.message((s:gsub("{page}", TB.label())))
+      end
+    end
+    funcLuaMenuCommand(1558704558, TB.MENU_ID, true)
+  end
+
+  function TB.poll()
+    if TB.co ~= nil then
+      local ok, e = coroutine.resume(TB.co)
+      if not ok then
+        TB.log("coroutine error", tostring(e))
+        TB.inwin = false
+        pcall(funcLuaMenuCommand, 1558704558, TB.MENU_ID, true)
+      end
+      if not ok or coroutine.status(TB.co) == "dead" then
+        TB.co = nil
+      end
+      return
+    end
+    if not (UTIL_TEAM_BANKS and TB.ready) then
+      return
+    end
+    if not TB.polled then
+      TB.polled = true
+      TB.log("poll", "top", TB.top, "focus", L.n6)
+    end
+    if TB.pressed(TB.CMD_OPEN) then
+      local why = TB.blocked()
+      if why ~= nil then
+        if TB.ignored < 20 then
+          TB.ignored = TB.ignored + 1
+          TB.log("R3/N ignored", why, "top", TB.top, "focus", L.n6)
+        end
+        return
+      end
+      TB.co = coroutine.create(TB.window)
+      local ok, e = coroutine.resume(TB.co)
+      if not ok then
+        TB.log("coroutine error", tostring(e))
+        TB.inwin = false
+        pcall(funcLuaMenuCommand, 1558704558, TB.MENU_ID, true)
+      end
+      if not ok or coroutine.status(TB.co) == "dead" then
+        TB.co = nil
+      end
+    end
+  end
+
+  TB.wrap("OnInit", function(orig)
+    return function(...)
+      local r = TB.pack(orig(...))
+      TB.top = true
+      TB.co = nil
+      TB.inwin = false
+      TB.polled = false
+      TB.flows = setmetatable({}, {__mode = "k"})
+      if TB.refreshInfo() then
+        pcall(funcLuaCommand, TB.MENU, 1, TB.online() and 1 or 0)
+        TB.header()
+        TB.log("open", "slot", TB.slot, "bank", TB.mounted + 1, "of", TB.count, "used", TB.used, "dock", L.n5)
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  TB.wrap("Step", function(orig)
+    return function(...)
+      local r = TB.pack(orig(...))
+      local ok, e = pcall(TB.poll)
+      if not ok then
+        TB.log("poll error", tostring(e))
+        TB.co = nil
+        TB.inwin = false
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  TB.wrap("FuncOnBack", function(orig)
+    return function(...)
+      if TB.ready then
+        pcall(funcLuaCommand, TB.MENU, 0, 0)
+        pcall(funcLuaMenuCommand, TB.SET_HEADER, 5, funcLuaCommand(TB.TEXT_GET, TB.TEXT_HEADER))
+      end
+      return orig(...)
+    end
+  end)
+
+  TB.wrap("SwapHeaderTextBack", function(orig)
+    return function(...)
+      local r = TB.pack(orig(...))
+      if TB.ready then
+        TB.header()
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  TB.wrap("SetIsTeamDockTop", function(orig)
+    return function(a1, ...)
+      TB.top = a1 == true
+      return orig(a1, ...)
+    end
+  end)
+
+  -- retail callbacks that open sub menus and wait for them (they run as coroutines): while one is running the dock
+  -- does not own the input. No pcall around orig: the callback yields through this wrapper.
+  local function flow(after)
+    return function(orig)
+      return function(...)
+        local co, main = coroutine.running()
+        local mine = co ~= nil and not main
+        if mine then
+          TB.flows[co] = true
+        end
+        local r = TB.pack(orig(...))
+        if mine then
+          TB.flows[co] = nil
+        end
+        if after ~= nil then
+          after()
+        end
+        return table.unpack(r, 1, r.n)
+      end
+    end
+  end
+  TB.wrap("OnFunction", flow(nil))
+  TB.wrap("OnEnter", flow(nil))
+  -- OnDecideFocus ends with the plain "Plantilla de equipo" header: put the page back into it
+  TB.wrap("OnDecideFocus", flow(function()
+    if UTIL_TEAM_BANKS and TB.ready and TB.co == nil then
+      TB.header()
+    end
+  end))
+
+  -- "<R3> Banco" after the retail guide entries while the plugin answers (t4 is restored right after)
+  TB.wrap("SetupButtonGuideText", function(orig)
+    return function(...)
+      local added = 0
+      local t4 = (UTIL_TEAM_BANKS and TB.ready) and L.t4 or nil
+      if type(t4) == "table" then
+        t4[#t4 + 1] = {textId = TB.TEXT_BANK, gaijiTextId = TB.GLYPH_OPEN, offsetX = 18, enable = 0, inputCmd = TB.CMD_OPEN}
+        added = 1
+      end
+      local r = TB.pack(pcall(orig, ...))
+      for i = 1, added do
+        t4[#t4] = nil
+      end
+      if not r[1] then
+        error(r[2], 0)
+      end
+      return table.unpack(r, 2, r.n)
+    end
+  end)
+
+  -- blocks of other mods that ran before this one and want TB (queued in UTIL_TB_HOOKS)
+  if type(UTIL_TB_HOOKS) == "table" then
+    for _, f in ipairs(UTIL_TB_HOOKS) do
+      if type(f) == "function" then
+        local ok, e = pcall(f, TB)
+        if not ok then
+          TB.log("hook error", tostring(e))
+        end
+      end
+    end
+  end
+end

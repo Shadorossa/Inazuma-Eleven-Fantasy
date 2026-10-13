@@ -1,0 +1,48 @@
+# «Atajos de tienda» / "Shop shortcuts", a feature of Clean HUD (research/mods/BetterUI; docs/game/ui/l2r2-cycle.md;
+# its own mod shop_shortcuts 1.0.3 until 2026-10-08, Inazuma Fantasy's graft shop_cycle until 2026-09-29). Always on
+# (no option row since Clean HUD 1.14.6; its «Opciones de mods» row clean_hud.shop_shortcuts was removed). In a shop opened from the Mercado (shop_menu_buy), in Inazuma Fantasy's
+# office (soccer_vs_cpu_list_menu in office mode) and its team shops, L2 / R2 (keyboard Q / E) opens the previous /
+# next Mercado entry (wrapping, Mercado list order) directly: the Mercado side (ss_market.lua) skips the retail lines
+# that bring the Mercado list back and opens the next entry through its own OnDecideFocus in the same coroutine (no
+# Mercado list, no «Mercado» title between two shops). Host handshake in the param store (evt_shop_cycle_host: 1
+# Mercado, 2 «Modos de juego» of IF's modes_hub, which keeps its own Tienda general <-> Tienda Vínculo loop): a shop
+# opened from anywhere else keeps L2 / R2 retail. The shop side uses the retail shop_menu_setting row that already
+# routes L2 / R2 of the item list to OnFunction (unused by retail); the office hub polls CMND_CHECK_INPUT_CMD. L1 / R1
+# (tabs) untouched. Guide: «<L2><R2> Cambiar de tienda» (text clean_hud.shop_switch, text.toml of clean_hud).
+# Wrappers only (OnFunction, Step, OnInit, OnDecideFocus, UpdateButtonGuide, funcLuaMenuCommand from OnInit / Step):
+# no retail local is read or promoted, nothing needs another graft (works on retail and on top of Inazuma Fantasy).
+name = "shop_shortcuts"
+order = 960
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnFunction", "Step", "OnDecideFocus", "UpdateButtonGuide", "funcLuaMenuCommand", "OnInit"]
+description = "Clean HUD, Atajos de tienda: L2/R2 (Q/E) switch straight to the previous / next Mercado shop"
+
+[[files]]
+stem = "shop_menu_buy"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss_buy.lua"
+  marker = "shop_shortcuts shop"
+  crc = "none"
+
+[[files]]
+stem = "market_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss_market.lua"
+  marker = "shop_shortcuts market"
+  crc = "none"
+
+[[files]]
+stem = "soccer_vs_cpu_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss_office.lua"
+  marker = "shop_shortcuts office"
+  crc = "none"

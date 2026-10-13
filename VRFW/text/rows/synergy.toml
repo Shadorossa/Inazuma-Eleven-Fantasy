@@ -1,0 +1,33 @@
+# Texts of the VR-Framework's team synergies (docs/framework/synergy.md §5): rows of menu_text in the framework's 9
+# languages, read by the synergy menu's patch (assets\lua\synergy\equip_synergy_menu_list\) with CMND_TEXT_GET by
+# id = crc32(row id). The empty slots' hints are the mods' own text keys (their declarations' `hint`).
+# {n} is filled by the patch.
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# after the nexus's name, «(…)» in grey, when he is not in the team (short: the row name box is 360 px)
+[[row]]
+id = "VRFW.SynergyNexusMissing"
+es = "falta"
+en = "missing"
+fr = "absent"
+de = "fehlt"
+it = "assente"
+pt = "ausente"
+ja = "いない"
+zh_hans = "缺席"
+zh_hant = "缺席"
+
+# after the last member row when more players of the synergy's group are in the team than its slots
+[[row]]
+id = "VRFW.SynergyMore"
+es = "+{n} más"
+en = "+{n} more"
+fr = "+{n} de plus"
+de = "+{n} weitere"
+it = "+{n} in più"
+pt = "+{n} a mais"
+ja = "ほか{n}[人/にん]"
+zh_hans = "另有{n}人"
+zh_hant = "另有{n}人"

@@ -1,0 +1,75 @@
+schema = "VRFW.game/2"
+
+# Utilities › «Modo Comandante automático» (feature auto_commander; docs/game/ui/comandante-guia.md §7). With the
+# option row utilities.auto_commander (options.toml) on, a match starts in Commander mode (the AI plays your team,
+# you give orders) in Battle Bay matches (beaten rival or not, gate open) and in free matches / Heroic battles against a
+# beaten rival; other matches keep the game's rules. The player can still switch to Manual in the match. Logic:
+# scripts\auto_commander.lua.
+#
+# How the game does it (nie.exe v7.1.2):
+# * Coach-mode object [g_soccerMgr 0x21F6350] + 0x2028: u32 state, u32 flags (+0x2C), +0x30 pending mode, +0x31 lock,
+#   +0x32 mode (0 Manual, 1 Commander, 2 Spectator, 3 event, 5 none).
+# * RequestCoachMode(u8 mode, Req* req) 0x15E29B0: the engine's mode change (online forces 0; a set req+8 with the lock
+#   on makes it pending). Req = { u32 flags_set, u32 flags_clear, u8 defer, u8, u8 keep_flags, u8 force } (16 bytes).
+# * The match scene's InitState 0x1439C30 sets the first mode right after SetupTeamAIs: RequestCoachMode(debug byte
+#   0x22AE7F6, &zeroed req) at 0x143A1E2 (the byte is 0 in the retail build: Manual). The scene's second init 0x143D470
+#   does the same with a literal 0 at 0x143D6A4. BattleSettingFlow 0x1436F50 state 0x11 later forces 1 only for the
+#   matches flagged 0x200000 (match info +0), 0 online and 3 for its spectator case.
+# * The player's toggle (CMD_CHANGE_COACH_MODE, 0x15995B0) first asks CoachModeBlocked(u8* why) 0xEBF110: true =
+#   refused; why = 1 → «No se puede usar contra rivales que no hayas vencido ya.» (SendErrorMessageChangeCoachAI). It
+#   is refused when the running (game, difficulty) row of the match table has its victory bit clear, when the match has
+#   no row at all (silently), and by fixed exits (online, tutorial, flagged matches). The HUD guide asks it too and shows
+#   «Modo Comandante» only with why = 1 (SetVisibleChangeCoachAIModeButton).
+#
+# What Utilities does: the two init calls are hooked (`call` hooks): with the row on, the script classifies the match
+# (match info game id +4, difficulty +0x15; config.toml [auto_commander]) and, for a Battle Bay match or a free match /
+# Heroic battle the game would allow (the original gate), turns their mode into 1 with the flags the player's toggle
+# uses (set 2, clear 0xC00). Only for a Battle Bay match it fills the table Utilities.AutoCommander so the gate answers
+# "allowed" natively for the rest of that match. Every init empties the tables first: the game's own rules.
+
+# [[g_gameRoot] + 0x6A58] = the running match's info (u32 flags at +0: 0x200000 = a match the game starts in Commander
+# mode itself and keeps there)
+[[VRFW.Global]]
+name = "util_match_info"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+# InitState 0x1439C30: movzx ecx, byte [rip + debug mode]; lea rdx, [rbp-78h]; xorps; movups [rbp-78h], xmm0;
+# call RequestCoachMode (0x143A1E2). The calls before it (SetupTeamAIs …) are wildcarded.
+[[VRFW.Hook]]
+name = "Utilities.CoachModeInit"
+game = "Match.CoachModeInitFirst"
+kind = "call"
+wait_ms = 500
+
+# The scene's second init 0x143D470: xorps; lea rdx, [rbp-10h]; xor ecx, ecx; movups [rbp-10h], xmm0;
+# call RequestCoachMode (0x143D6A4).
+[[VRFW.Hook]]
+name = "Utilities.CoachModeInit2"
+game = "Match.CoachModeInitSecond"
+kind = "call"
+wait_ms = 500
+
+# bool CoachModeBlocked(u8* why) 0xEBF110: push rbx; push r14; sub rsp, 48h; mov rax, [rip + g_gameRoot] (15 bytes
+# stolen, the RIP operand relocated). Answered natively after the game's code while the table holds the match's entry.
+[[VRFW.Hook]]
+name = "Utilities.CoachModeGate"
+game = "Match.IsCoachModeBlocked"
+kind = "function"
+
+# the guide's «Modo Comandante» is shown (why = 1) when the game refused; first, so it still sees the game's answer
+[[VRFW.Hook.answer]]
+table = "Utilities.AutoCommanderWhy"
+key = ["0"]
+when = [
+  { value = "ret", not = 0 },
+  { value = "args[1]", not = 0 },
+]
+write = "[args[1]]:u8"
+
+# then the answer itself: 0 = not blocked
+[[VRFW.Hook.answer]]
+table = "Utilities.AutoCommander"
+key = ["0"]
+when = { value = "ret", not = 0 }
+write = "ret"

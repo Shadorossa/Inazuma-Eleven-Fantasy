@@ -1,0 +1,18 @@
+# The game-update notice (docs/framework/game-updates.md): the title corner label on a nie.exe build that is not a
+# known one; {n} = features + mod declarations off (CMND_VRFW_GAME_UPDATE). crc32("vrfw_game_update_notice") =
+# 2082649789 (title_menu_2 Lua 110_community_label.lua).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+[[row]]
+id = "vrfw_game_update_notice"
+en = "Unknown game version: {n} functions off - see the report"
+es = "Versión del juego desconocida: {n} funciones desactivadas - ver informe"
+fr = "Version du jeu inconnue : {n} fonctions désactivées - voir le rapport"
+de = "Unbekannte Spielversion: {n} Funktionen aus - siehe Bericht"
+it = "Versione del gioco sconosciuta: {n} funzioni disattivate - vedi rapporto"
+pt = "Versão do jogo desconhecida: {n} funções desativadas - ver relatório"
+ja = "不明なゲームバージョン：{n}個の機能を無効化 - レポート参照"
+zh_hans = "未知的游戏版本：已停用 {n} 项功能 - 请查看报告"
+zh_hant = "未知的遊戲版本：已停用 {n} 項功能 - 請查看報告"

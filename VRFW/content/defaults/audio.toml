@@ -1,0 +1,51 @@
+# Audio defaults of the VR-Framework (crates/plugins/audio_engine, library.rs): data the game's files cannot give.
+# Any mod may ship its own defaults\audio.toml; a later mod's key wins (an array is replaced whole).
+
+# Menu music slots: the places where exactly ONE song plays, in the order the in-game audio creator lists them
+# (docs/game/media/custom-bgm.md §1). `target` is what a mod's `[[music]] replace` names: a context of the name index
+# (`title`) or the BGM id the menu starts with CMND_EXEC_CRAFT_OBJ_ID in its Lua (a bg##### cue name or 0x<crc32>).
+# `text` = the slot's text name. A target the game's bgm_config has no row for gets one when a mod redirects it.
+# Chosen by hand because the menus' Lua (compiled) and the grouping of several menus into one slot are not table data.
+# `menu_music = true`: the framework's «Música del menú» row (audio_engine.menu_music) swaps this slot's BGM id at run
+# time for the theme the player picked among the mods' [[VRFW.MenuMusic]] (docs/framework/menu-music.md).
+
+[[menu_slot]]
+key = "title"            # title_main, scene_archive_menu (bg00010)
+target = "title"
+text = "au_slot_title"
+
+[[menu_slot]]
+key = "main_menu"        # soccer_top, team dock, market (Mercado, Oficina), online room
+target = "bg10000"
+text = "au_slot_main"
+menu_music = true
+
+[[menu_slot]]
+key = "victory_road"     # victory_road_top_menu
+target = "0x38B0BE86"
+text = "au_slot_victory_road"
+
+[[menu_slot]]
+key = "story"            # story_mode_top_menu
+target = "bg10050"
+text = "au_slot_story"
+
+[[menu_slot]]
+key = "chronicle"        # chronicle_mode_top_menu
+target = "bg10020"
+text = "au_slot_chronicle"
+
+[[menu_slot]]
+key = "kizuna"           # kizuna_town_top_menu
+target = "bg10030"
+text = "au_slot_kizuna"
+
+[[menu_slot]]
+key = "bb_stadium"       # bb_stadium_top_menu
+target = "bg10040"
+text = "au_slot_bb_stadium"
+
+[[menu_slot]]
+key = "results"          # result_menu, mission_result_menu
+target = "bg40020"
+text = "au_slot_results"

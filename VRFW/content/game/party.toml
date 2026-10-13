@@ -1,0 +1,29 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › party / team sets (VRFW 2.3 service S7, docs/framework/team.md §8). The run time is scripts\party.lua.
+#
+# The party (CGDDPartyStatus, [[g_gameRoot] + Game.RootParty]) holds the 16 logical team sets (docks, vs / esports /
+# tournament sets…; Party.LogicalToPhysical maps a logical set to its physical one, stride 0x874) and their TeamInfo
+# blocks. Mods that rewrite a set (Utilities' team banks, Inazuma Fantasy's pachanga and INAROGUE) name the game's
+# party functions by their profile names (game = "Party.SetOrganizedFlagBit", "Party.RecountTeamInfo",
+# "Party.LogicalToPhysical", "Party.TeamInfoAssign", "Team.SetStruct", "Save.IsJobPending"; the globals
+# "Game.RootParty" and "Save.GameDataBackup"): the profile holds their signatures once, and the framework reports at boot
+# who declares each one. The framework owns the one detour of the party: the load event.
+
+# ------------------------------------------------------------------------------------------------ party load
+
+# bool CGDDPartyStatus::Load(this, ...) 0xDA7FE0 (party vtable slot 4): CGDDSerialize::Load, then the per-team counter
+# pass. Post (scripts\party.lua): the loads since boot, published as game_state vrfw.party.loads (a save load makes a
+# mod take its slot data again; the slot events tell a switch, not whether the party was really read). The game's code
+# always runs and its answer is kept: nothing else changes. Stolen bytes: three 5-byte `mov [rsp+x], reg` (15).
+[[VRFW.Hook]]
+name = "VRFW.PartyLoad"
+game = "Party.Load"
+kind = "function"
+args = ["ptr", "ptr", "ptr", "ptr"]
+ret = "u8"
+
+# party loads since boot (set by scripts\party.lua from the hook above; not answered while the hook is off)
+[[VRFW.State]]
+key = "vrfw.party.loads"
+needs = ["VRFW.PartyLoad"]

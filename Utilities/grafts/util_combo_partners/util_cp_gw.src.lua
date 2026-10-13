@@ -1,0 +1,222 @@
+-- Combo partners of the mod Utilities, general_window part (docs/game/mechanics/combo-partners.md «Confirm popup»).
+-- SOURCE of the hook file util_cp_gw.lua (research/grafts/util_combo_partners/gen_hooks.py fills the @crc
+-- placeholders; edit this file, then run the script). Moved from Inazuma Fantasy's graft combo_partners
+-- (evt_combo_partners_gw.lua, EVT_CPW) on 2026-10-08.
+--
+-- A partner picker (Utilities' on the retail «Tabla de habilidades», Inazuma Fantasy's on its skill table) opens the
+-- retail chara-card window, type 191 (the card band; the text in _text_win02 under it; Sí / No by MSG_KIND 2), after
+-- putting the performers in the parameter store:
+--   util_cp_gw_n            number of cards (1..4)
+--   util_cp_gw_h1..h4       chara status handle per card (0 = «?», a random partner)
+--   util_cp_gw_i1..i4       icons code (element * 10 + position): no longer drawn (the card draws its own), cleared
+-- When those keys are there, setupChangeAvatarRarity (the type 190 / 191 setup) does NOT open the retail single card:
+-- it takes and clears the keys and opens layer util_cp_card (Utilities menus\102_team\combo_partners.toml: the
+-- Plantilla's player card object team00_01_chara_card_for_soccer, 4 instances in general_window, free origin), ONLY
+-- the instances with a performer, side by side and centred in the band above the text, at draw priority 885 (window
+-- 880, retail card 882).
+-- 2026-10-13 (owner: «las cartas como las de la plantilla»): each card is the team screen's player card, filled the
+-- way general_window fills its own retail card (CMND 3837561292 by status handle, NotVisibleCharaCardInfo, the same
+-- extra meshes off): rarity / position background with its gradient, portrait, element icon, position badge. The
+-- layer joins EVT_FC_EXTRA (the team00_01 card layers of BetterUI's compact cards + Inazuma Fantasy's position colours),
+-- so with those mods (IF swaps the object's layout to BetterUI's formation layout, menus\102_team\combo_partner_cards
+-- .toml) the card is the Plantilla's exactly: narrow card, face centred, element bottom left, position bottom right, no
+-- name / level, coloured by position. A random partner is the same card (drawn from another performer's handle) with
+-- the «?» sprite as its portrait, no element / position and greyed out.
+-- Closed with the window (CloseBasaraShopLayer, which closes the retail card layers on every window close). Without
+-- the keys every window is the retail one (the keys are only written right before such a window opens, so the window
+-- type is not read).
+-- Hook file (graft [[hooks]]): general_window has no VR-Framework host, so the globals are wrapped directly, once
+-- per VM. Nothing calls the engine at chunk load.
+do
+  UTIL_CPW = UTIL_CPW or {}
+  UTIL_CPW.LAYER = @crc:util_cp_card@
+  UTIL_CPW.KEY_N = @crc:util_cp_gw_n@
+  UTIL_CPW.KEY_H = {@crc:util_cp_gw_h1@, @crc:util_cp_gw_h2@, @crc:util_cp_gw_h3@, @crc:util_cp_gw_h4@}
+  UTIL_CPW.KEY_I = {@crc:util_cp_gw_i1@, @crc:util_cp_gw_i2@, @crc:util_cp_gw_i3@, @crc:util_cp_gw_i4@}
+  UTIL_CPW.N = 4
+  UTIL_CPW.PRIO = 885
+  -- card centres (general_window space = the 1920 x 1080 screen, y up): the band's upper part (y 220..484 from the
+  -- top), above _text_win02 (its box starts at y -484). The card body is 154 x 116 at scale 1 around its origin
+  -- (formation layout; the retail layout's body is 212 x 132, a few px off centre). {scale, gap between centres}
+  -- by card count
+  UTIL_CPW.X, UTIL_CPW.Y = 960, -352
+  UTIL_CPW.FIT = {[1] = {1.45, 250}, [2] = {1.45, 250}, [3] = {1.45, 250}, [4] = {1.2, 210}}
+  UTIL_CPW.LOG = 3661580131 -- CMND_EVT_LOG -> loader.log
+  -- the card's nodes (team00_01 L card; names of general_window NameSetting_CharaCard)
+  UTIL_CPW.FACE_SLOT = 21929195 --[[icon_chr_dmy_l01]]
+  UTIL_CPW.ICON_MESHES = {32585899 --[[_icon_chr_type_dmy_l01]], 3895971012 --[[_icon_base_l01]],
+    1721769611 --[[_icon_chr_position_dmy_l01]]}
+  UTIL_CPW.GREY = {643056375, 0.55} -- the card's grey-out tint (retail SetCharaCardGrayOutColor), for «?»
+  UTIL_CPW.UNKNOWN = {tex = 2320109963 --[[#/menu/200_icon/15_icon_common/icon_common.g4tx]],
+    spr = @crc:util_cp_unknown@}
+  UTIL_CPW.cards = nil
+
+  function UTIL_CPW.Log(...)
+    pcall(funcLuaCommand, UTIL_CPW.LOG, "utilities combo_partners", "gw", ...)
+  end
+
+  function UTIL_CPW.Take(key)
+    local okh, has = pcall(funcLuaCommand, 2947612279 --[[parameter has]], key)
+    if not okh or has ~= true then
+      return nil
+    end
+    local v = tonumber(funcLuaCommand(3522198769 --[[parameter get]], key))
+    funcLuaCommand(3363400568 --[[parameter clear]], key)
+    return v
+  end
+
+  -- the performers a picker left in the parameter store (nil = none: a retail window)
+  function UTIL_CPW.Read()
+    local m = UTIL_CPW.Take(UTIL_CPW.KEY_N)
+    local out = {}
+    for i = 1, UTIL_CPW.N do
+      local h = UTIL_CPW.Take(UTIL_CPW.KEY_H[i]) or 0
+      UTIL_CPW.Take(UTIL_CPW.KEY_I[i])
+      if m ~= nil and i <= m then
+        if h < 0 then
+          h = h + 4294967296
+        end
+        out[#out + 1] = {hdl = h}
+      end
+    end
+    if m == nil or #out == 0 then
+      return nil
+    end
+    return out
+  end
+
+  -- the handle a «?» card is drawn from (its look only: the portrait, element and position are replaced)
+  function UTIL_CPW.AnyHandle()
+    for _, c in ipairs(UTIL_CPW.cards or {}) do
+      if c.hdl ~= 0 then
+        return c.hdl
+      end
+    end
+    return 0
+  end
+
+  -- card i (0-based) from performer c: the retail card fill of general_window's own card (type 191)
+  function UTIL_CPW.Fill(i, c)
+    local L = UTIL_CPW.LAYER
+    local random = c.hdl == 0
+    local h = random and UTIL_CPW.AnyHandle() or c.hdl
+    if h == 0 then
+      return false, "no handle"
+    end
+    EVT_FC_EXTRA = EVT_FC_EXTRA or {}
+    EVT_FC_EXTRA[L] = true
+    local ok, err = pcall(funcLuaMenuCommand, 3837561292 --[[card by status handle]], L, i, h, true, false, 0, 0, 0,
+      false, false, 0, 0, false, false, 0, false, false, false, false, false, 1)
+    if not ok then
+      return false, tostring(err)
+    end
+    if type(NotVisibleCharaCardInfo) == "function" then
+      pcall(NotVisibleCharaCardInfo, L, i)
+    end
+    for _, m in ipairs({354066630, 2350117244, 3724160950}) do
+      pcall(funcLuaMenuCommand, 2692063727, L, i, m, 3)
+    end
+    pcall(funcLuaMenuCommand, 855005857 --[[collision]], L, i, false)
+    if random then
+      pcall(funcLuaMenuCommand, 4176779611 --[[ResetFaceIcon]], L, i, UTIL_CPW.FACE_SLOT)
+      pcall(funcLuaMenuCommand, 558735651 --[[sprite]], L, UTIL_CPW.UNKNOWN.tex, UTIL_CPW.UNKNOWN.spr,
+        UTIL_CPW.FACE_SLOT, 0, i)
+      for _, m in ipairs(UTIL_CPW.ICON_MESHES) do
+        pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], L, m, false, i)
+      end
+      local g = UTIL_CPW.GREY
+      pcall(funcLuaMenuCommand, 801406373 --[[material colour]], L, i, g[1], g[2], g[2], g[2])
+    end
+    return true, random and "random" or "player"
+  end
+
+  -- place, raise and fill instance i (once it is open)
+  function UTIL_CPW.Draw(i)
+    local cards = UTIL_CPW.cards
+    local c = cards ~= nil and cards[i + 1] or nil
+    local L = UTIL_CPW.LAYER
+    if c == nil or i >= UTIL_CPW.N then
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+      return
+    end
+    local m = math.min(#cards, UTIL_CPW.N)
+    local fit = UTIL_CPW.FIT[m] or UTIL_CPW.FIT[1]
+    local x = UTIL_CPW.X + (i - (m - 1) / 2) * fit[2]
+    local okf, filled, what = pcall(UTIL_CPW.Fill, i, c)
+    pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], L, x, UTIL_CPW.Y, 0, i)
+    pcall(funcLuaMenuCommand, 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], L, fit[1], fit[1], 1, i)
+    pcall(funcLuaMenuCommand, 1491630496 --[[CMND_SET_DRAW_PRIORITY]], L, i, UTIL_CPW.PRIO, true)
+    local shown = okf and filled == true
+    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, shown)
+    UTIL_CPW.Log("card drawn", i, string.format("%08X", c.hdl), "of", m, "fill", tostring(okf and filled),
+      tostring(what), "at", x, UTIL_CPW.Y, "scale", fit[1])
+  end
+
+  function UTIL_CPW.WrapGlobal(name, make)
+    UTIL_CPW.wrapped = UTIL_CPW.wrapped or {}
+    if UTIL_CPW.wrapped[name] then
+      return
+    end
+    local cur = _ENV[name]
+    if cur == nil then
+      return
+    end
+    _ENV[name] = make(cur)
+    UTIL_CPW.wrapped[name] = true
+  end
+
+  -- the type 190 / 191 setup: our cards instead of the retail single card when a picker left performers
+  UTIL_CPW.WrapGlobal("setupChangeAvatarRarity", function(prev)
+    return function(...)
+      UTIL_CPW.cards = nil
+      local ok, cards = pcall(UTIL_CPW.Read)
+      if ok and cards ~= nil then
+        local okE, exists = pcall(funcLuaMenuCommand, 262659071 --[[CMND_IS_EXIST_LAYER]], UTIL_CPW.LAYER)
+        if okE and exists == true then
+          UTIL_CPW.cards = cards
+          -- only the instances with a card are opened (unused ones would stand at the free origin); the card's node
+          -- names are registered first, as general_window does for its own card (NameSetting_CharaCard)
+          for i = 0, math.min(#cards, UTIL_CPW.N) - 1 do
+            if type(NameSetting_CharaCard) == "function" then
+              pcall(NameSetting_CharaCard, UTIL_CPW.LAYER, i)
+            end
+            pcall(funcLuaMenuCommand, 629267548 --[[CMND_OPEN_LAYER]], UTIL_CPW.LAYER, i)
+          end
+          UTIL_CPW.Log("card window", #cards, "cards: layer opening")
+          return
+        end
+        UTIL_CPW.Log("card window", #cards, "cards: layer util_cp_card missing in general_window (menu data)")
+      elseif not ok then
+        UTIL_CPW.Log("card window read failed", tostring(cards))
+      end
+      return prev(...)
+    end
+  end)
+
+  UTIL_CPW.WrapGlobal("OnOpenLayer", function(prev)
+    return function(a1, a2, ...)
+      local r = table.pack(prev(a1, a2, ...))
+      if a1 == UTIL_CPW.LAYER then
+        if UTIL_CPW.cards ~= nil then
+          local ok, err = pcall(UTIL_CPW.Draw, a2 or 0)
+          if not ok then
+            UTIL_CPW.Log("card draw failed", tostring(err))
+          end
+        else
+          pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false)
+        end
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  UTIL_CPW.WrapGlobal("CloseBasaraShopLayer", function(prev)
+    return function(...)
+      if UTIL_CPW.cards ~= nil then
+        pcall(funcLuaMenuCommand, 2323943931 --[[CMND_CLOSE_LAYER_ARRAY]], UTIL_CPW.LAYER)
+        UTIL_CPW.cards = nil
+      end
+      return prev(...)
+    end
+  end)
+end

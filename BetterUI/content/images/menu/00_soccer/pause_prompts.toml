@@ -1,0 +1,72 @@
+# BetterUI, match HUD: one plate for the pause / restart prompts (docs/game/ui/ui-redesign.md §2.11): «(A) Reanudar»
+# (soccer00_27, the restart button), «(Y) Formación» and «Finalizar partido» (soccer01_33, the text plates of the
+# match menus) all wear the retail HUD command plate cmd_base01 (soccer08_08: small corner radius, dark-to-blue
+# gradient, 85 % opaque) instead of the bright semicircular pill / the dark round pill. cmd_base01 is a 188 x 92 picture
+# with a 20 / 14 px transparent margin around its 148 x 52 rectangle (x 20..168, y 20..72), so the rectangle is cut out
+# first: the plates' meshes then ARE the visible rectangle (the layouts: content\menus\pause_prompts.toml). Made at
+# build, on the player's PC, from his own game files (no Level-5 pixel shipped).
+#   * soccer00_27 restart_btn_base01 (440 x 96, one mesh, no nine-slice): the rectangle stretched to 440 x 96
+#   * soccer01_33 replay_guide_base01 (64 x 52, nine-slice x 28..36 = a text plate that grows with its text): the
+#     rectangle's 28 px left cap + 8 px middle + 28 px right cap, so the gradient ends keep their place at any width
+# soccer01_33 is the layout of every guide text plate of the match menus (formation, retire, game end, AFK kick, stamp
+# view, marking): they all take the same plate.
+schema = "vr_framework.image/1"
+
+[[recipe]]
+name = "cmd"
+game = "#/menu/00_soccer/soccer08/soccer08_08/soccer08_08.g4tx"
+texture = "cmd_base01"
+
+[[recipe]]
+name = "body"
+from = "cmd"
+ops = [{ op = "crop", box = [20, 20, 168, 72] }]
+
+# the middle 96 columns of the rectangle (20 %..80 % of its gradient): the nine-slice text plates keep a gradient that
+# does not step at the caps, and «Reanudar» (the whole rectangle stretched) matches them
+[[recipe]]
+name = "core"
+from = "body"
+ops = [{ op = "crop", box = [26, 0, 122, 52] }]
+
+[[recipe]]
+name = "cap_l"
+from = "core"
+ops = [{ op = "crop", box = [0, 0, 28, 52] }]
+
+[[recipe]]
+name = "cap_m"
+from = "core"
+ops = [{ op = "crop", box = [44, 0, 52, 52] }]
+
+[[recipe]]
+name = "cap_r"
+from = "core"
+ops = [{ op = "crop", box = [68, 0, 96, 52] }]
+
+[[recipe]]
+name = "text_plate"
+canvas = [64, 52]
+ops = [
+    { op = "paste", image = "cap_l", at = [0, 0] },
+    { op = "paste", image = "cap_m", at = [28, 0] },
+    { op = "paste", image = "cap_r", at = [36, 0] },
+    { op = "round_corners", radius = 4 },
+]
+
+[[recipe]]
+name = "restart_plate"
+from = "core"
+ops = [{ op = "resize", size = [440, 96] }, { op = "round_corners", radius = 6 }]
+
+[[sprite]]
+atlas = "#/menu/00_soccer/soccer01/soccer01_33/soccer01_33.g4tx"
+name = "replay_guide_base01"
+recipe = "text_plate"
+size = [64, 52]
+
+[[sprite]]
+atlas = "#/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4tx"
+name = "restart_btn_base01"
+recipe = "restart_plate"
+size = [440, 96]

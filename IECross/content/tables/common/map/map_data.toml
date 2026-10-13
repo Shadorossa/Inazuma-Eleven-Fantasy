@@ -1,0 +1,48 @@
+schema = "vr_framework.table/1"
+# The Inazuma Eleven Cross stadiums in the map list (m_MapInfoList, key map_id = crc32 of the map name): each a
+# copy of the retail template its port was built on (s11g001: map type 4; s30g001: type 8, light 0), its own name and
+# paths (research/scripts/cross_stadium_build.py, docs/game/media/cross-stadium-port.md). Row deltas by key, applied
+# after the base tables: Inazuma Fantasy ships the whole list as a base table (rows of every map it adds), which a
+# base-table splice of this mod would not survive. Moved from Inazuma Fantasy on 2026-10-08. `light` is a record (its
+# one field dirRotY, schemas/map/map.toml): `light = [0.0]` was refused and the row skipped (2026-10-12).
+list = "m_MapInfoList"
+
+[[add]]
+key = 0xF3DACE78                     # s91g001
+from = 0x1F894C15                    # s11g001
+cells = { map_name = "s91g001", base_path = "common/map/s/s91g001/", file_path = "s91g001.objbin" }
+
+[[add]]
+key = 0x2F93CC39                     # s91g001b
+from = 0x1F894C15                    # s11g001
+cells = { map_name = "s91g001b", base_path = "common/map/s/s91g001b/", file_path = "s91g001b.objbin" }
+
+[[add]]
+key = 0x5894FCAF                     # s91g001c
+from = 0x1F894C15                    # s11g001
+cells = { map_name = "s91g001c", base_path = "common/map/s/s91g001c/", file_path = "s91g001c.objbin" }
+
+[[add]]
+key = 0xB47AB4A8                     # s92g001
+from = 0x1F894C15                    # s11g001
+cells = { map_name = "s92g001", base_path = "common/map/s/s92g001/", file_path = "s92g001.objbin" }
+
+[[add]]
+key = 0x891A9D18                     # s93g001
+from = 0x1F894C15                    # s11g001
+cells = { map_name = "s93g001", base_path = "common/map/s/s93g001/", file_path = "s93g001.objbin" }
+
+[[add]]
+key = 0x3B3A4108                     # s94g001
+from = 0x6F21C4AE                    # s30g001
+cells = { map_name = "s94g001", base_path = "common/map/s/s94g001/", file_path = "s94g001.objbin", light = { dirRotY = 0.0 } }
+
+[[add]]
+key = 0xFECAAC09                     # s98g001
+from = 0x6F21C4AE                    # s30g001
+cells = { map_name = "s98g001", base_path = "common/map/s/s98g001/", file_path = "s98g001.objbin", light = { dirRotY = 0.0 } }
+
+[[add]]
+key = 0xC3AA85B9                     # s99g001
+from = 0x6F21C4AE                    # s30g001
+cells = { map_name = "s99g001", base_path = "common/map/s/s99g001/", file_path = "s99g001.objbin", light = { dirRotY = 0.0 } }

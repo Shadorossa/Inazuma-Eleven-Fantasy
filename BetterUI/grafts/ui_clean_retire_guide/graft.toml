@@ -1,0 +1,32 @@
+# ui_clean, retire guide (docs/game/ui-redesign.md 11.1z9): the pause's «Finalizar partido» prompt
+# (soccer01_33_game_retire_guide of soccer_constant_menu, and soccer_battle_constant_menu for 5v5 / pachanga) moves from
+# the bottom centre (over the player-stat bar) to the bottom right, just left of the pause icon. Retail style and glyph
+# switching unchanged (only CMND_SET_LAYER_LOCAL_POS after the retail UpdateRetireButtonGuide). Part of the standalone
+# mod clean_hud («Interfaz limpia»). 2026-10-13: also the END-of-match prompt (soccer01_33_gameend_guide, UpdateGameEndButtonGuide)
+# goes up from the bottom strip (it covered the player stats) to the height of «(A) Reanudar»; same plate as «Reanudar».
+name = "ui_clean_retire_guide"
+order = 907
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["UpdateRetireButtonGuide", "UpdateGameEndButtonGuide"]
+description = "ui_clean: pause «Finalizar partido» prompt at the bottom right, left of the pause icon; the end-of-match «Finalizar partido» raised to the height of «Reanudar»"
+
+[[files]]
+stem = "soccer_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "retire_guide_right.lua"
+  marker = "ui_clean retire guide"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "retire_guide_right.lua"
+  marker = "ui_clean retire guide"
+  crc = "none"

@@ -1,0 +1,88 @@
+# «Battle Bay Deluxe» settings. Can also go in <game>\evt_loader\config.toml under
+# [mods.bb_chronicle_teams]. Read by the mod's scripts (scripts\campaign.lua, draft.lua) when the game starts. Every value has a default: a missing
+# key or section keeps it. The campaign draw and the Draft are always on (no «Opciones de mods» row).
+
+[campaign]
+# Order the Campaign's 7 rivals from weakest to strongest (one per seventh of the candidates) by the rating table
+# data/common/gamedata/team/evt_bb_team_rating.cfg.bin when a mod ships one; without it the 7 are drawn at random.
+# false = always at random.
+progression = true
+# 0 = a new draw every campaign and every Draft. Any other number = the same rivals for the same team and the same
+# Draft offers every time (for testing).
+seed = 0
+
+[draft]
+# The Draft's pool is derived when the game starts, from the Battle Bay as the game loads it (no fixed list): every
+# player (squad slots 0-18) of every other Battle Bay team, one card per character. These keys are its rule.
+# The Draft team: the [[team]] of this mod's content\teams folder with this name (content/teams/50_draft.toml): its members are the
+# 16 places (placeholders), its formation places the 11 starters.
+team = "draft"
+# Card types (chara_param column 41) never offered: special cards (5-7 Idol / Hero, 8 Diamond, 10 Prime).
+special_rarities = [5, 6, 7, 8, 10]
+# Text language whose character names merge the variants of one character (same name = one card).
+name_language = "es"
+# chara_param ids never offered (e.g. exclude = [0x12345678]).
+exclude = []
+# Where the Draft tile can be played (1.5.42): "campaign" (the Campaña, and the Torneo started from its grid) and
+# "free_match" (the 1 vs 1 grid: draft the 16, then the Draft team is your 1P / CPU team for that match; the online
+# Battle Bay never). Leave "free_match" out and the 1 vs 1 refuses the tile again.
+modes = ["campaign", "free_match"]
+
+[draft.pack]
+# The «pack opening» of a slot's 5 candidates (1.5.26, graft research/grafts/bb_draft): the screen darkens, a band
+# opens, the 5 cards are dealt face down («?») and turned one by one (lowest card rarity first; a unique best card is
+# kept for last: a pause, a bigger flash and its own sound), then picked on the band. Enter / Back during the
+# animation show all 5 at once. Always on; these are only its timings and look. Times in seconds (60 frames a second).
+intro = 0.25          # darken + the band opening
+deal = 0.22           # one card flying in face down
+deal_stagger = 0.07   # between two cards dealt
+flip = 0.22           # one card turning (half closing, half opening on its face)
+settle = 0.12         # the card's bounce back to its size after the turn
+flash = 0.30          # the white flash over a turned card
+gap = 0.45            # from one card's turn to the next one
+suspense = 0.40       # extra pause before the best card
+outro = 0.28          # the chosen card flying to its place, the screen back
+dim = 0.72            # darkness of the screen behind the band (0 = none, 1 = black)
+scale = 1.6           # the cards' size on the band (1.5.52: the large card, as BetterUI's bank / list cards; 1 = 154 x 116 px)
+spacing = 330         # between two cards' centres, px of the 1920 x 1080 screen
+# retail sounds (sound names): the pack opening, each card dealt, each card turned, the best card turned
+se_open = "sy0000"
+se_deal = "sy0009"
+se_reveal = "sy0010"
+se_best = "sy0080"
+
+[tournament]
+# The «Torneo» (docs/game/modes/bb-tournament.md): BB top menu > «Campaña», «Torneo» in the screen's header (1.5.47). The format and the number of
+# teams are chosen in the game before each tournament; these two keys are only where the cursor starts.
+# "knockout" (straight knockout) or "groups" (groups of 4, one round robin, the first 2 of each group to a knockout).
+format = "knockout"
+# A power of two: 4, 8, 16, 32 or 64 (groups: 8 to 64, teams / 4 groups; 1.5.47: 64 with groups too). The options offer only the counts the
+# Battle Bay pool fills (no byes: a smaller pool plays the largest power of two it fills).
+teams = 16
+# «Filtrar equipos poco importantes» (where the options' cursor starts; chosen in the game before each tournament):
+# true = the tournament's teams are first the teams of the story / Chronicle mode of every game (the opponents and
+# forced teams of the Chronicle board's matches and of the story matches, read from the game's data), then, when they
+# are not enough for the chosen count, the strongest of the other Battle Bay teams (rating + level).
+filter_minor = false
+# The story matches: soccer game keys (soccer_game_config) matched with * (the game's own key convention).
+filter_story_games = ["fbtl_st_*"]
+# Seeds: the strongest teams kept apart in the knockout tree / one per group (pots). false = a plain random draw.
+seeded = true
+# Simulated matches (every match but the player's): goals of a side between equal teams (Poisson mean), the tilt per
+# strength point (strength = the Campaña's rating table + the team's level), a penalty's chance, kicks per side
+goals = 1.3
+strength_weight = 0.035
+penalty_score = 0.75
+penalty_kicks = 5
+# The rulebook of the player's knockout matches (extra time + penalties; content\rules\bbd_knockout.toml). Another
+# mod's rulebook id may go here.
+knockout_rules = "bbd_knockout"
+# 0 = a new draw every tournament. Any other number = the same bracket and simulated results for the same team (testing).
+seed = 0
+# Teams never drawn (owner, 2026-10-12), by team key (team_config); read from the game's team table, mods included:
+# every team wearing the same kit as one of these (the Victory Road school clubs all wear their school's kit)
+exclude_same_kit_as = ["tm_prc_050200"]
+# every team with the same emblem as one of these (Llamarada volcánica: the game's two teams and the mods' copies)
+exclude_same_emblem_as = ["tm_cro_original_0700"]
+# these teams themselves
+exclude_teams = []

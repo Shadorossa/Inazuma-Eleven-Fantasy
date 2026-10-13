@@ -1,0 +1,51 @@
+# Framework defaults of the effect type's build script (scripts\build\effect.lua; docs/framework/build-scripts.md «effect»,
+# docs/framework/types/effect.md). The engine's constants (element colour indices, match stat order, form bits, file
+# prefixes) come from the native side; these are the words and names the build uses. A mod may ship its own
+# `defaults\effect.toml` to override keys (load order; tables merge key by key).
+
+[shot_aura]
+# The trigger of the plain shot: its row marks the ball's list of eff_chr_trigger.
+shoot_trigger = "shoot"
+# The ball trigger row a pooled effect without one copies (the neutral special-move aura); a rule's `like` wins.
+default_like = "ega0075e"
+# Name prefix of the ball triggers the build adds: `<prefix><effect game name>` (its crc32 is the trigger id; `#1`,
+# `#2`… when taken). Changing it changes the ids of every added trigger.
+trigger_prefix = "vrfw_shot_aura."
+
+# `when.form` words -> the form they name (`none` = no active form).
+[shot_aura.form_words]
+keshin = "keshin"
+armour = "armour"
+armor = "armour"
+armed = "armour"
+miximax = "miximax"
+aura = "aura"
+none = "none"
+
+# `[[shot_aura]]` `fit` (docs/framework/effect.md §6 «Fit to the flight»): the defaults of the keys a rule's `fit` does
+# not give. The run time stretches the aura's replay (`replay` effect frames, 60 fps) to the flight still to go when the
+# aura starts (minus `lead` s): `rate` = the whole replay at one speed, `sustain` = the intro and the end at their own
+# speed, the window between stretched. The speed stays in [min_rate, max_rate] (a slow-motion floor: turning parts keep
+# turning). A `sustain` window not given: from min(intro, replay / 3) to replay - max(outro_min, replay * outro).
+[shot_aura.fit]
+mode = "sustain"
+min_rate = 0.15
+max_rate = 2.0
+lead = 0.0
+intro = 12
+outro = 0.25
+outro_min = 6
+
+# The event lists `[[event_effect]]` / `[[attach]]` / `[[event_timing]]` / `[[event_command]]` edit (`%s` = the event
+# name in lower case).
+[event_lists]
+eff = "data/common/event_cfg/eff/%s_eff.cfg.bin"
+evt = "data/common/event_cfg/evt/%s.cfg.bin"
+
+# A pooled `[[event_effect]]`: the motions of the actor it follows when `attach.motions` is not given, and the locator
+# when `attach.locator` is not given.
+[event_effect]
+motions = ["in", "loop", "out"]
+locator = "NONE"
+# An effect object's attach point when `attach.point` is not given.
+point = "point_eff"

@@ -1,0 +1,75 @@
+schema = "VRFW.game/1"
+
+# Utilities › team planner («Planificador de equipo», docs/game/ui/team-planner.md): ghost cards in the team dock's
+# squads. The menu side is graft research/grafts/util_team_planner (hook files on team_dock_formation_menu and
+# soccer_team_dock_menu); the logic is scripts\team_planner.lua (+ scripts\lib\tp_core.lua and the original-names
+# catalogue). Plans: blob team_planner.json per save slot. The rule (display rarity, which owned copies count, a
+# character's normal card): config.toml [team_planner] and other mods' content\team_planner\*.toml (schema utilities.team_planner/1).
+#
+# Lua commands (crc32 of the name; the hook files hold the numbers). A list answer is text "a:b,a:b" ("" = none).
+
+# () -> on (bool: the planner works in this slot), ghost alpha, display rarity
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_INFO"
+handler = "Utilities.TeamPlanner.Info"
+
+# (set, type) -> "slot:param,…" of the squad on the mounted team-bank page, display rarity
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_LIST"
+handler = "Utilities.TeamPlanner.List"
+
+# (set, type, slot, param) -> ok; param 0 removes the slot's plan
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_SET"
+handler = "Utilities.TeamPlanner.Set"
+
+# (param) -> "h,h,…" the owned copies of that card the rule accepts, best first
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_CANDIDATES"
+handler = "Utilities.TeamPlanner.Candidates"
+
+# (set, type, slot, handle) -> ok: the menu placed a real copy in the ghost's slot (the plan is removed)
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_ASSIGNED"
+handler = "Utilities.TeamPlanner.Assigned"
+
+# () -> "set:type,…" the squads of the mounted page that hold plans
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PENDING"
+handler = "Utilities.TeamPlanner.Pending"
+
+# (lang code) -> pages (series), current page (1-based); 0 = no picker
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_OPEN"
+handler = "Utilities.TeamPlanner.PickOpen"
+
+# () -> the card grid's layout ([team_planner.grid]): cols, rows, pitch x, pitch y, card scale, centre x, centre y,
+# card offset x, y, ghost alpha
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_GRID"
+handler = "Utilities.TeamPlanner.PickGrid"
+
+# () -> the team grid's layout ([team_planner.team_grid]): cols, rows, pitch x, pitch y, centre x, centre y
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_TEAM_GRID"
+handler = "Utilities.TeamPlanner.PickTeamGrid"
+
+# (dir) -> page, the series' name, characters owned, characters, team rows
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_TAB"
+handler = "Utilities.TeamPlanner.PickTab"
+
+# (i) -> team row i of the page: name, characters owned, characters, emblem (item_emblem id, 0 = none)
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_ITEM"
+handler = "Utilities.TeamPlanner.PickItem"
+
+# (i) -> opens team row i for the grid: characters, owned, the team's name
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_TEAM"
+handler = "Utilities.TeamPlanner.PickTeam"
+
+# (j) -> character j of the open team: card param, owned, display rarity, name
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_PLAYER"
+handler = "Utilities.TeamPlanner.PickPlayer"

@@ -1,0 +1,55 @@
+# BetterUI, match HUD: layout of «(A) Reanudar» (docs/game/ui/ui-redesign.md §2.11). The restart button
+# (soccer00_27_restart_button of soccer_restart_guide_menu; also «(A) Saque de centro») had its plate swapped for the
+# padded cmd_base01 picture (the visible rectangle starts 10.6 % inside the mesh), so the A glyph, placed for the retail
+# 440 x 96 pill, hung half outside the rectangle's left edge. The plate is now the visible rectangle itself (the picture
+# is cut to it: content\images\menu\00_soccer\pause_prompts.toml): x -220..168, 72 tall (x 0.72 layer scale = 52 px, the
+# height of the match menus' text plates, so «Formación» above it matches). Joints are top-left origin, y up, centred on
+# _pos_btn01: translate y = half the height. Glyph 12 units inside the left edge; the text box centred between the glyph
+# and the right edge (retail: centred on the pill). «Formación» hangs on the node _atc_guide01 (the retail attach row of
+# this layer): the left edge of the plate, one row up; graft ui_clean_kickoff_btn keeps it aligned at run time.
+schema = "vr_framework.menu/2"
+
+# retail translate (-206.0, 35.0), scale (412.0, 70.0)
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_touch_btn01"
+translate = [-220.0, 36.0, 0.0]
+scale = [388.0, 72.0, 1.0]
+
+# retail translate (-220.0, 48.0), scale (440.0, 96.0)
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_restart_btn_base01"
+translate = [-220.0, 36.0, 0.0]
+scale = [388.0, 72.0, 1.0]
+
+# the additive glow / blink layers (hidden by the graft) follow the plate
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_restart_btn_base_add01"
+translate = [-220.0, 36.0, 0.0]
+scale = [388.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_restart_btn_base_add02"
+translate = [-220.0, 36.0, 0.0]
+scale = [388.0, 72.0, 1.0]
+
+# retail translate x -195.0 (the plate's left edge was at -220 but the visible one at -173)
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_text_btn01"
+translate = [-208.0, 24.0, 0.0]
+
+# retail translate x -143.0 (centred on the pill): now centred between the glyph's right end (-160) and the right edge
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_text_guide01"
+translate = [-139.0, 35.0, 0.0]
+
+# retail translate (419.0, 142.0): where «(Y) Formación» hangs, right of the pill; now the plate's left edge, one row up
+[[layout]]
+file = "common/menu/00_soccer/soccer00/soccer00_27/soccer00_27.g4pkm"
+joint = "_atc_guide01"
+translate = [-220.0, 120.0, 0.0]

@@ -1,0 +1,19 @@
+# Texts of the VR-Framework's outfits ([[VRFW.Outfit]], docs/framework/outfits.md): rows of menu_text in the
+# framework's 9 languages, read by the graft vrfw_outfit (equip_menu_select) with CMND_TEXT_GET by id = crc32(row id).
+# Missing row: the empty «Atuendo» row stays blank (retail).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# The label of the empty «Atuendo» row of «Equipamiento» (equip slot 4, no outfit worn; shown at half alpha).
+[[row]]
+id = "vrfw_outfit_slot"
+es = "Atuendo"
+en = "Outfit"
+fr = "Tenue"
+de = "Outfit"
+it = "Tenuta"
+pt = "Traje"
+ja = "コスチューム"
+zh_hans = "服装"
+zh_hant = "服裝"

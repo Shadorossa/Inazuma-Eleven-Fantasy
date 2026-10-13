@@ -1,0 +1,21 @@
+# VR-Framework: #/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx, the Chronicle board's clear-dot atlas.
+# The route board's rank badges (graft route_board, VRFW_RB_Badge; docs/framework/route-board.md): new sprites of the
+# dots' atlas (packed into a new texture of it), set on the 6th dot of a ranked piece (a chain «C» piece's chain rank,
+# or the piece's best rank by the framework's rule VRFW_MatchRank, 2.0.48). Our own drawing: research/scripts/chronicle_rank_badges.py.
+# Other mods may declare other sprites of this atlas (Inazuma Fantasy: clear_icon04); sprite names differ, so they merge.
+schema = "vr_framework.image/1"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "vrfw_rank_s"
+png = "vsroute01_06b/vrfw_rank_s.png"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "vrfw_rank_a"
+png = "vsroute01_06b/vrfw_rank_a.png"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "vrfw_rank_b"
+png = "vsroute01_06b/vrfw_rank_b.png"

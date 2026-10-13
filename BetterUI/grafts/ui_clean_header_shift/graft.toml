@@ -1,0 +1,98 @@
+# ui_clean header_shift (Clean HUD, flag header_short; research/scripts/ui_clean_build.py build_header_shift;
+# docs/game/ui/ui-redesign.md §3.3): the content of 6 retail header menus moves up by the height the compact top
+# bar saves (header scale 0.55 in clean_hud's files\data mainmenu90_01.g4pkm, team panel mainmenu90_31 0.64).
+# Snippets = lua_source('evt_ui_header_shift.lua', tag, default flags, limpio, hs_extra(...)): one shared hs_common.lua
+# (the ui_clean prelude from ../_lib/evt_ui_wrap.lua) with the tag and layer tables as vars per menu. Inazuma Fantasy's
+# own INAROGUE menu (evt_inarogue_menu) is shifted by IF's graft inarogue_header_shift with the same hs_common.lua.
+# Was Inazuma Fantasy's until 2026-10-08 (docs/refactor/if-adaptation-after-e3.md §35); its `requires` on IF's grafts
+# fichajes / shop_general / inarogue went with the split: as a clean_hud patch it runs after IF's (IF is lua_early).
+# Header dock (Clean HUD 1.14.4, docs/game/ui/ui-redesign.md §3.3c): src hs_bar_dock.lua on the retail ability board
+# (ability_learning_board_menu): the player switcher and the stock counter go into the compact bar; its vars are
+# written by research/scripts/ui_clean_build.py --header-dock (checked by --check), never by hand.
+name = "ui_clean_header_shift"
+mod = "clean_hud"
+order = 900
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "ui_clean: header menus content moved up"
+# Not Objetos (item_menu) since BetterUI 1.21.6: its list cells are placed by the native list view (CMenuListViewItem),
+# not attached to the moved list base, so a shifted base left the grid 54.9 px low in its panel and clipped the last row.
+
+[[files]]
+stem = "soccer_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_soccer_top", "@HS_LAYERS@" = "[1167254348] = 2, [1639968229] = 1", "@HS_STRETCH@" = "[1167254348] = { 1.06182, -122.72, 66.77 }" }
+
+[[files]]
+stem = "market_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_market", "@HS_LAYERS@" = "[2251552419] = 1, [3347475721] = 1, [788718523] = 1", "@HS_STRETCH@" = "" }
+
+[[files]]
+stem = "setting_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_setting", "@HS_LAYERS@" = "[168421631] = 1, [3214232292] = 1, [253704787] = 1", "@HS_STRETCH@" = "" }
+
+[[files]]
+stem = "play_guide_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_play_guide", "@HS_LAYERS@" = "[1988385738] = 1", "@HS_STRETCH@" = "" }
+
+[[files]]
+stem = "chronicle_mode_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_chronicle", "@HS_LAYERS@" = "[234014212] = 1", "@HS_STRETCH@" = "" }
+
+[[files]]
+stem = "victory_road_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_vroad", "@HS_LAYERS@" = "[2649513611] = 1, [3551201148] = 1, [1283370973] = 1", "@HS_STRETCH@" = "" }
+
+[[files]]
+stem = "ability_learning_board_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hs_bar_dock.lua"
+  marker = "ui_clean header_dock"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_skill_board", "@HD_LAYERS@" = "[4185841799] = { 346.8, 0.0, 0.55 }, [1070900890] = { 194.84, 19.57, 0.64 }", "@HD_CHECK@" = "91676902" }

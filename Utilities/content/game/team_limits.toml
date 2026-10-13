@@ -1,0 +1,106 @@
+schema = "VRFW.game/2"
+
+# Utilities › No Hero / Diamond squad limits (always on; docs/game/characters/hero-cards.md §8). The game allows at
+# most 2 Hero cards (rarity 5-7, «Ídolo») and 1 Diamond card (rarity 8, «Diamante» / «Fabled»; player, coach or
+# manager) in a squad. The limits are hard-coded in nie.exe v7.1.2 (the game_param values
+# sameCharaParamId*CharaLimitNum are not what is checked): every check counts the Hero / Diamond members of the team
+# set and compares the count with 2 / 1. Here each counting loop no longer counts: its `inc <counter>` becomes a nop,
+# so every count is 0 and no check refuses. Nothing else in those functions changes. The sites (14, all of them: a scan
+# of the whole .text for the game's «rarity 5/6/7 → +1» and «rarity == 8 → +1» loops):
+#
+#   counter / check                                         what it feeds
+#   CountHeroInTeam 0xEA8B90                                team dock member check 0xEA8510 (code 5), its Lua twin
+#                                                           CMND_CHECK_TEAM_CHARA_ORGANIZATION 0xC174B0, the add-to-team
+#                                                           slot picker 0xEA3F20 (bank «add to team»), 0xE9EB30
+#   CountBasaraInTeam 0xEA8C70 (starters)                   the same checks through 0xEA8D40 (code 6), 0xE9EAA0
+#   CountBasaraInTeamAll 0xEA8D40 (coach / manager slots)   "
+#   0xE9A340 (coach / manager Diamonds, twin of 0xEA8D40)   -
+#   0xE9EFE0 / 0xE9F0A0 (team set: Diamonds > 1 / Heroes > 2) team validity tests
+#   ValidateTeamSet 0xEA7FF0 (codes 5 / 6)                  «can't end team edit» / «can't start the match» (Lua
+#                                                           MENU_DEF.IsRequestToDisplayTeamDockMemberErrorMessage,
+#                                                           CMND 0x5BB5D67C = 0xC17D40)
+#   0xEB0290 / 0xEB0320 / 0xEB0590 (codes 5 / 6)            the same tests on the match-side team copy
+#                                                           ([g_gameRoot+0x6A58] + 0x60 + side * 0x1130)
+#   0xE70B00 / 0xBEDC00 → 0x11A4E90                         the member swap check (formation editor / dock swap)
+#
+# The in-match Hero / Diamond actor counters (0x1471490 / 0x1471C10, ball keep time) are other code and stay.
+# Inazuma Fantasy's «1 Prime per team» rides on CountBasaraInTeam (its post hook answers max(Diamonds, Primes)); its
+# detour is the function entry, this patch is inside the loop, so the Diamonds count 0 and the hook still answers the
+# Prime count: Diamonds become unlimited, the Prime limit stays.
+# Patterns: the call to GetCharaRarity 0xE7DB50 (wildcarded), the comparison, the counter (wildcarded: matches before
+# and after the patch) and a few bytes after it (team-row loop bounds 0x1D wildcarded, so a patch of the row count
+# keeps these patterns matching).
+
+# ------------------------------------------------------------------------------------------------ Hero (rarity 5-7)
+
+# CountHeroInTeam 0xEA8B90: sub eax,5; je; sub eax,1; je; cmp eax,1; jne; inc edi
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroCount"
+edit = "Squad.CountHeroCards.Skip"
+
+# 0xE9F0A0 (team set: Heroes > 2)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroTeamTest"
+edit = "Squad.HeroCardsInTeamTest.Skip"
+
+# ValidateTeamSet 0xEA7FF0, flag 8 (code 5)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroValidate"
+edit = "Squad.HeroCardsValidate.Skip"
+
+# 0xEB0320 (match-side team copy: Heroes > 2)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroMatchTest"
+edit = "Squad.HeroCardsInMatchTest.Skip"
+
+# 0xEB0590, flag 8 (match-side team copy, code 5)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroMatchValidate"
+edit = "Squad.HeroCardsInMatchValidate.Skip"
+
+# 0x11A4E90 (member swap check): inc r12d
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.HeroSwap"
+edit = "Squad.HeroCardsInSwap.Skip"
+
+# ------------------------------------------------------------------------------------------------ Diamond (rarity 8)
+
+# CountBasaraInTeam 0xEA8C70 (starters): cmp eax,8; jne; inc edi
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondCount"
+edit = "Squad.CountDiamondCards.Skip"
+
+# CountBasaraInTeamAll 0xEA8D40 (coach / manager slots 0x10-0x13): inc ebx
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondStaffCount"
+edit = "Squad.CountDiamondStaff.Skip"
+
+# 0xE9A340 (coach / manager slots, twin)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondStaffCount2"
+edit = "Squad.CountDiamondStaffInSwap.Skip"
+
+# 0xE9EFE0 (team set: Diamonds > 1)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondTeamTest"
+edit = "Squad.DiamondCardsInTeamTest.Skip"
+
+# ValidateTeamSet 0xEA7FF0, flag 0x10 (code 6)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondValidate"
+edit = "Squad.DiamondCardsValidate.Skip"
+
+# 0xEB0290 (match-side team copy: Diamonds > 1)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondMatchTest"
+edit = "Squad.DiamondCardsInMatchTest.Skip"
+
+# 0xEB0590, flag 0x10 (match-side team copy, code 6)
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondMatchValidate"
+edit = "Squad.DiamondCardsInMatchValidate.Skip"
+
+# 0x11A4E90 (member swap check): inc r13d
+[[VRFW.Patch]]
+name = "Utilities.TeamLimits.DiamondSwap"
+edit = "Squad.DiamondCardsInSwap.Skip"

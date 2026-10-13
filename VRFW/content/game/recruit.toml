@@ -1,0 +1,9 @@
+schema = "VRFW.game/1"
+
+# VR-Framework › recruit service (docs/framework/recruit.md §2.1, VRFW 2.1): the club counts the game Lua's
+# VRFW_Recruit cannot read itself (element / position requirements). Run time: scripts\recruit.lua (also the career
+# counters stats.matches_won / stats.goals for the «matches won» / «goals» requirements).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_RECRUIT_CLUB"     # () -> { total, element = {n x 5}, position = {n x 4} }
+handler = "Recruit.Club"

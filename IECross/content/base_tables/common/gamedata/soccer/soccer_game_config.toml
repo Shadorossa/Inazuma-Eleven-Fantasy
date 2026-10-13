@@ -1,0 +1,77 @@
+schema = "vr_framework.base_table/1"
+# The 11 games of the «Inazuma Eleven Cross» tab of «Competir contra bots» (moved from Inazuma Fantasy's whole
+# soccer_game_config on 2026-10-08, docs/release/iecross.md §6): row deltas BY KEY ([[keyed]], applied after every mod's
+# edition of the file, so they sit on top of IF's whole lists). Each game's difficulty row is written as its
+# REF_DIFFICULTY slice: the framework appends it to SOCCER_GAME_DIFFICULTY and points the game at it (no row positions).
+# Keys / numbers unchanged: game id = crc32(name), clear bit = sort_no 2548-2558 (the saves' «beaten» orbs), prizes =
+# reward_table (soccer_prize_config.toml here), own stadium / AI / drops as before. The 12th game, Royal Academy (Cross),
+# is made by the team type (content/teams/02_royal_academy_cross.toml, list cross_tab in content/teams/cross_tab.toml).
+
+[[keyed]]
+table = "soccer/soccer_game_info"
+key_columns = ["id"]                    # the game id (crc32 of its name); 1.1.2: the schema had no key column, so VR-Framework <= 2.0.2 skipped these rows
+  [[keyed.add]]                         # evt_cm_cx_shin_zeus
+  key = 0x81D0CDFF
+  cells = { name = { text = "evt_cm_cx_shin_zeus" }, game_type = 1, stadium_map = 0x1F894C15, title_text = 0x92ECDB7F, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x49340ED3, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xBD771E2D, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0xC1CE7281, item_drop_table = 0x1F166567, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2548, item_table_decide = 0x0358A9DA, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_shin_mikage
+  key = 0x540B3077
+  cells = { name = { text = "evt_cm_cx_shin_mikage" }, game_type = 1, stadium_map = 0x87A452D6, title_text = 0xAABC1065, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x6F570037, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xF8DF2823, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x62CACE92, item_drop_table = 0xCD4FFA53, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2549, item_table_decide = 0xD10136EE, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_pierrot_kfc
+  key = 0x167F3E08
+  cells = { name = { text = "evt_cm_cx_pierrot_kfc" }, game_type = 1, stadium_map = 0xF3DACE78, title_text = 0x78BB7F75, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x2D230E48, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xBAAB265C, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0xF6ACAB1E, caster_setting = 0x070E54FF, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0xF342B9DF, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0xDEEC8324, item_drop_table = 0x49B3771D, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2550, item_table_decide = 0x55FDBBA0, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_pierrot_chaos
+  key = 0xB0232C51
+  cells = { name = { text = "evt_cm_cx_pierrot_chaos" }, game_type = 1, stadium_map = 0xF3DACE78, title_text = 0x15347360, map_environment = 0, flag_6 = 1, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x668368A4, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0x7D988083, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0xF6ACAB1E, caster_setting = 0x070E54FF, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0xF342B9DF, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x0DED25CC, item_drop_table = 0xB1538CEA, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2551, item_table_decide = 0xAD1D4057, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_kaizoku_ij
+  key = 0xD5B940FC
+  cells = { name = { text = "evt_cm_cx_kaizoku_ij" }, game_type = 1, stadium_map = 0x891A9D18, title_text = 0x7095E317, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0xE7A9C8DC, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xBD5854D7, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0xF6ACAB1E, caster_setting = 0x070E54FF, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0xF342B9DF, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x42A5C5AF, item_drop_table = 0x9F1F3814, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2552, item_table_decide = 0x8351F4A9, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_kaizoku_nose
+  key = 0x2DDA6DD7
+  cells = { name = { text = "evt_cm_cx_kaizoku_nose" }, game_type = 1, stadium_map = 0x891A9D18, title_text = 0xB6EB87D2, map_environment = 0, flag_6 = 1, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x5B3D7077, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0x41702C22, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x22D9E17A, item_drop_table = 0xE7F69E90, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2553, item_table_decide = 0xFBB8522D, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_kaizoku_occult
+  key = 0x60102ADD
+  cells = { name = { text = "evt_cm_cx_kaizoku_occult" }, game_type = 1, stadium_map = 0x891A9D18, title_text = 0x9C11301C, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0xAD118C0A, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0x08002289, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x4A639254, item_drop_table = 0x052A85E9, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2554, item_table_decide = 0x19644954, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_ramen_kidokawa
+  key = 0x1D26BAE2
+  cells = { name = { text = "evt_cm_cx_ramen_kidokawa" }, game_type = 1, stadium_map = 0xB47AB4A8, title_text = 0x3152FE0A, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0xD0271C35, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0x7536B2B6, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x4A639254, item_drop_table = 0xF0D40E59, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2555, item_table_decide = 0xEC9AC2E4, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_ramen_akihabara
+  key = 0x2C36EE29
+  cells = { name = { text = "evt_cm_cx_ramen_akihabara" }, game_type = 1, stadium_map = 0xB47AB4A8, title_text = 0xF25EA14E, map_environment = 0, flag_6 = 1, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0x344CA8F8, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0x40586BCC, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0xE8342CBC, item_drop_table = 0xEAE8EED7, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2556, item_table_decide = 0xF6A6226A, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_ramen_raimon_ob
+  key = 0xC500E903
+  cells = { name = { text = "evt_cm_cx_ramen_raimon_ob" }, game_type = 1, stadium_map = 0xB47AB4A8, title_text = 0x953A175C, map_environment = 0, flag_6 = 1, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0xDD7AAFD2, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xA96E6CE6, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0xA1B25654, item_drop_table = 0x0CC12593, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2557, item_table_decide = 0x108FE92E, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }
+
+  [[keyed.add]]                         # evt_cm_cx_japan_2026
+  key = 0xDD7171CC
+  cells = { name = { text = "evt_cm_cx_japan_2026" }, game_type = 1, stadium_map = 0x4F44DDA6, title_text = 0x5544E2DD, map_environment = 0, flag_6 = 0, c7 = 2, flag_8 = 0, flag_9 = 0, REF_DIFFICULTY = { set = [
+    { difficulty = 9, opponent_team = 0xEF61F9EC, opponent_level = 200, c3 = 4, opponent_ai = 0x3574B8A0, own_team_override = 0, own_team_level = 1, c7 = 0, reward_table = 0xB59065E7, reward_money = 0x00043005, nice_play_exp = 0, bean_reward_1 = 0x6992D1FC, bean_reward_2 = 0x6992D1FC, bean_reward_3 = 0x6992D1FC, bean_reward_4 = 0x43C9A678, growth = 0, c16 = 0, c17 = -1, bgm_setting = 0x79C1A0FE, caster_setting = 0x9E070545, match_minutes = 30, c21 = 0, c22 = 0, c23 = 0, special_rules = 0x8A57ADDE, game_quest = 0, game_quest_2 = 0, c27 = 0, c28 = 0, spirit_chara_table = 0x87A2B8B7, item_drop_table = 0x228D916D, spirit_drop_table = 0xE523407A, lottery_num = 0, spirit_drop_table_2 = 0, first_clear_reward = 0, sort_no = 2558, item_table_decide = 0x3EC35DD0, lottery_num_2 = 0, c38 = 0, c39 = 106, c40 = 0, c41 = 0, c42 = 0, c43 = 0, spirit_chara_table_2 = 0, spirit_drop_table_3 = 0xE523407A, lottery_num_3 = 0, lottery_num_4 = 0, chronicle_team_group = 0, bgm_override = 0 },
+  ] } }

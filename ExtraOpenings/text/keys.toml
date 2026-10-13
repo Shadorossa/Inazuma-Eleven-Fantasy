@@ -1,0 +1,72 @@
+# Texts of Extra Openings (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("extra_openings.<name>"): the mod's name and description on the «Mods» screen, and the labels of its openings
+# in the VR-Framework's «Opening» row (content/scenes/openings.toml `label`: title_opening_<id>; the song names are the same
+# in every language) and of its DS menu theme in the «Música del menú» row (content/sounds/sounds.toml [[VRFW.MenuMusic]]
+# Text: menu_music_ie23, the same in every language). A language missing here falls back to English. (The scene archive
+# titles are fixed-id rows:
+# text\rows\scene_archive_text.toml.)
+schema = "vr_framework.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Extra Openings"
+mod_description = "More title openings: the Nintendo DS openings of Inazuma Eleven 2 («Tsunagariyo») and Inazuma Eleven 3 («Kiai de Hurricane»), remastered in HD, sung in the game's language where the DS games had it (IE2: Japanese, Spanish; IE3: Japanese, English, Spanish, Italian). Choose them in Mod options, row «Opening»: they play after the logos and in the title screen's loop. Both are also in the scene archive (Club room), in its own «Inazuma Eleven» tab. The mod has no options of its own. Also the DS games' menu theme for the menus: Mod options, row «Menu music»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[es.new]
+mod_name = "Openings extra"
+mod_description = "Más openings para el título: los openings de Nintendo DS de Inazuma Eleven 2 («Tsunagariyo») e Inazuma Eleven 3 («Kiai de Hurricane»), remasterizados en HD, cantados en el idioma del juego cuando los juegos de DS lo tenían (IE2: japonés, español; IE3: japonés, inglés, español, italiano). Elígelos en Opciones de mods, fila «Opening»: suenan tras los logos y en el bucle de la pantalla de título. Los dos están también en el archivo de escenas (Sala del club), en su propia pestaña «Inazuma Eleven». El mod no tiene opciones propias. También el tema del menú de los juegos de DS para los menús: Opciones de mods, fila «Música del menú»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[fr.new]
+mod_name = "Génériques en plus"
+mod_description = "Plus de génériques d'ouverture : ceux d'Inazuma Eleven 2 («Tsunagariyo») et d'Inazuma Eleven 3 («Kiai de Hurricane») sur Nintendo DS, remasterisés en HD, chantés dans la langue du jeu quand les jeux DS l'avaient (IE2 : japonais, espagnol ; IE3 : japonais, anglais, espagnol, italien). Choisissez-les dans les Options des mods, ligne «Opening» : ils passent après les logos et dans la boucle de l'écran titre. Les deux sont aussi dans les archives des scènes (Salle du club), dans leur propre onglet «Inazuma Eleven». Le mod n'a pas d'options propres. Aussi le thème du menu des jeux DS pour les menus : Options des mods, ligne «Musique du menu»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[de.new]
+mod_name = "Zusätzliche Openings"
+mod_description = "Mehr Titel-Openings: die Nintendo-DS-Openings von Inazuma Eleven 2 («Tsunagariyo») und Inazuma Eleven 3 («Kiai de Hurricane»), in HD remastert, in der Sprache des Spiels gesungen, wo die DS-Spiele sie hatten (IE2: Japanisch, Spanisch; IE3: Japanisch, Englisch, Spanisch, Italienisch). Wähle sie in den Mod-Optionen, Zeile «Opening»: Sie laufen nach den Logos und in der Schleife des Titelbildschirms. Beide sind auch im Szenenarchiv (Clubraum), in einem eigenen Reiter «Inazuma Eleven». Der Mod hat keine eigenen Optionen. Außerdem das Menüthema der DS-Spiele für die Menüs: Mod-Optionen, Zeile «Menümusik»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[it.new]
+mod_name = "Opening extra"
+mod_description = "Più opening per il titolo: gli opening per Nintendo DS di Inazuma Eleven 2 («Tsunagariyo») e Inazuma Eleven 3 («Kiai de Hurricane»), rimasterizzati in HD, cantati nella lingua del gioco quando i giochi DS l'avevano (IE2: giapponese, spagnolo; IE3: giapponese, inglese, spagnolo, italiano). Sceglili nelle Opzioni delle mod, riga «Opening»: partono dopo i loghi e nel ciclo della schermata del titolo. Entrambi sono anche nell'archivio delle scene (Sala del club), in una scheda propria «Inazuma Eleven». La mod non ha opzioni proprie. Anche il tema del menu dei giochi DS per i menu: Opzioni delle mod, riga «Musica del menu»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[pt.new]
+mod_name = "Aberturas extra"
+mod_description = "Mais aberturas para o título: as aberturas de Nintendo DS de Inazuma Eleven 2 («Tsunagariyo») e Inazuma Eleven 3 («Kiai de Hurricane»), remasterizadas em HD, cantadas no idioma do jogo quando os jogos DS o tinham (IE2: japonês, espanhol; IE3: japonês, inglês, espanhol, italiano). Escolha-as nas Opções de mods, linha «Opening»: tocam depois dos logótipos e no ciclo do ecrã de título. As duas estão também no arquivo de cenas (Sala do clube), num separador próprio «Inazuma Eleven». O mod não tem opções próprias. Também o tema do menu dos jogos DS para os menus: Opções de mods, linha «Música do menu»."
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[ja.new]
+mod_name = "追加オープニング"
+mod_description = "タイトルのオープニングを追加します：ニンテンドーDS版イナズマイレブン2（「つながリーヨ」）とイナズマイレブン3（「気合でハリケーン」）のオープニングをHDリマスターで。DS版にあった言語ではゲームの言語で歌います（IE2：日本語、スペイン語／IE3：日本語、英語、スペイン語、イタリア語）。MODオプションの「Opening」の行で選ぶと、ロゴの後とタイトル画面のループで流れます。どちらもシーンアーカイブ（クラブルーム）の専用タブ「イナズマイレブン」にも入っています。このMOD自体に設定はありません。また、DS版のメニュー曲をメニューのBGMに：MODオプションの「メニューBGM」の行。"
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[zh_hans.new]
+mod_name = "额外片头"
+mod_description = "更多标题片头：任天堂DS版闪电十一人2（《Tsunagariyo》）和闪电十一人3（《Kiai de Hurricane》）的片头，HD重制，在DS版有该语言时以游戏语言演唱（IE2：日语、西班牙语；IE3：日语、英语、西班牙语、意大利语）。在模组选项的「Opening」一行中选择：它们在标志之后和标题画面循环中播放。两者也收录在场景档案（俱乐部活动室）的专属分页「闪电十一人」中。本模组没有自己的选项。另含DS版的菜单曲，可用作菜单音乐：模组选项的「菜单音乐」一行。"
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"
+
+[zh_hant.new]
+mod_name = "額外片頭"
+mod_description = "更多標題片頭：任天堂DS版閃電十一人2（《Tsunagariyo》）和閃電十一人3（《Kiai de Hurricane》）的片頭，HD重製，在DS版有該語言時以遊戲語言演唱（IE2：日語、西班牙語；IE3：日語、英語、西班牙語、義大利語）。在模組選項的「Opening」一行中選擇：它們在標誌之後和標題畫面循環中播放。兩者也收錄在場景檔案（俱樂部活動室）的專屬分頁「閃電十一人」中。本模組沒有自己的選項。另含DS版的選單曲，可用作選單音樂：模組選項的「選單音樂」一行。"
+title_opening_ie2 = "IE2 | Tsunagariyo"
+title_opening_ie3 = "IE3 | Kiai de Hurricane"
+menu_music_ie23 = "Inazuma Eleven 2 / 3"

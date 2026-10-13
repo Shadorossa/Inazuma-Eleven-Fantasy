@@ -1,0 +1,89 @@
+schema = "vr_framework.text_key/1"
+# Texts of the audio_engine mod (format of the text_engine plugin: research/mods/text_engine/README.md).
+# New texts get the id crc32("audio_engine.<name>"): the row «Pack de voces» of Opciones › «Opciones de mods»
+# (options.toml) and its Lua (lua/setting_menu/110_voice_pack.lua) and the row «Música del menú» (menu_music*) use these
+# ids. With the text_engine plugin active,
+# text_engine merges this file with the other mods' texts; without it, the mod_options plugin adds the texts the
+# options.toml names (label, help, texts) to menu_text itself. A language missing here falls back to English.
+default_lang = "en"
+
+[en.new]
+voice_pack = "Custom voices"
+voice_pack_help = "Voice pack from your mods; undubbed lines keep the original voice."
+voice_pack_none = "None"
+voice_pack_off = "Needs the VR ModLoader"
+menu_music = "Menu music"
+menu_music_help = "Music of the menus. Mods can add more themes."
+menu_music_retail = "Original (game)"
+
+[es.new]
+voice_pack = "Voces personalizadas"
+voice_pack_help = "Pack de voces de tus mods; lo no doblado conserva la voz original."
+voice_pack_none = "Ninguno"
+voice_pack_off = "Necesita el VR ModLoader"
+menu_music = "Música del menú"
+menu_music_help = "Música de los menús. Los mods pueden añadir más temas."
+menu_music_retail = "Original del juego"
+
+[fr.new]
+voice_pack = "Voix personnalisées"
+voice_pack_help = "Pack de voix des mods ; le reste garde la voix d'origine."
+voice_pack_none = "Aucun"
+voice_pack_off = "Nécessite le VR ModLoader"
+menu_music = "Musique du menu"
+menu_music_help = "Musique des menus. Les mods peuvent ajouter d'autres thèmes."
+menu_music_retail = "Original (jeu)"
+
+[de.new]
+voice_pack = "Eigene Stimmen"
+voice_pack_help = "Sprachpaket aus Mods; der Rest behält die Originalstimme."
+voice_pack_none = "Keines"
+voice_pack_off = "Benötigt den VR ModLoader"
+menu_music = "Menümusik"
+menu_music_help = "Musik der Menüs. Mods können weitere Themen hinzufügen."
+menu_music_retail = "Original (Spiel)"
+
+[it.new]
+voice_pack = "Voci personalizzate"
+voice_pack_help = "Pacchetto voci dalle mod; il resto mantiene la voce originale."
+voice_pack_none = "Nessuno"
+voice_pack_off = "Richiede il VR ModLoader"
+menu_music = "Musica del menu"
+menu_music_help = "Musica dei menu. Le mod possono aggiungere altri temi."
+menu_music_retail = "Originale (gioco)"
+
+[pt.new]
+voice_pack = "Vozes personalizadas"
+voice_pack_help = "Pacote de vozes dos mods; o resto mantém a voz original."
+voice_pack_none = "Nenhum"
+voice_pack_off = "Requer o VR ModLoader"
+menu_music = "Música do menu"
+menu_music_help = "Música dos menus. Os mods podem adicionar mais temas."
+menu_music_retail = "Original (jogo)"
+
+[ja.new]
+voice_pack = "カスタムボイス"
+voice_pack_help = "MODのボイスパック。未収録のセリフは元のボイスのままです。"
+voice_pack_none = "なし"
+voice_pack_off = "VR ModLoaderが必要です"
+menu_music = "メニューBGM"
+menu_music_help = "メニューのBGM。MODで曲を追加できます。"
+menu_music_retail = "オリジナル（ゲーム）"
+
+[zh_hans.new]
+voice_pack = "自定义语音"
+voice_pack_help = "模组的语音包。未配音的台词保持原语音。"
+voice_pack_none = "无"
+voice_pack_off = "需要 VR ModLoader"
+menu_music = "菜单音乐"
+menu_music_help = "菜单的音乐。模组可以添加更多曲目。"
+menu_music_retail = "原版（游戏）"
+
+[zh_hant.new]
+voice_pack = "自訂語音"
+voice_pack_help = "模組的語音包。未配音的台詞保持原語音。"
+voice_pack_none = "無"
+voice_pack_off = "需要 VR ModLoader"
+menu_music = "選單音樂"
+menu_music_help = "選單的音樂。模組可以新增更多曲目。"
+menu_music_retail = "原版（遊戲）"

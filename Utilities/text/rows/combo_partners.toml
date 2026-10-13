@@ -1,0 +1,97 @@
+# Utilities: texts of the combo partner picker on the retail «Tabla de habilidades» and of its confirm popup
+# (research/grafts/util_combo_partners, docs/game/mechanics/combo-partners.md §6). Ids = crc32 of the label (the Lua
+# asks @crc:utilities.cp_…@). Translations taken from Inazuma Fantasy's rows evt_cpk_* (its skill table keeps its own).
+# Format: docs/framework/types/text.md «Rows with fixed ids».
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# X on a move node of the retail «Tabla de habilidades» (bottom guide)
+[[row]]
+id = "utilities.cp_btn"
+es = "Compañeros"
+en = "Partners"
+fr = "Partenaires"
+de = "Partner"
+it = "Compagni"
+pt = "Parceiros"
+ja = "パートナー"
+zh_hans = "搭档"
+zh_hant = "搭檔"
+
+# the picker title «Compañero k / N»
+[[row]]
+id = "utilities.cp_slot"
+es = "Compañero"
+en = "Partner"
+fr = "Partenaire"
+de = "Partner"
+it = "Compagno"
+pt = "Parceiro"
+ja = "パートナー"
+zh_hans = "搭档"
+zh_hant = "搭檔"
+
+# first row of the picker
+[[row]]
+id = "utilities.cp_random"
+es = "Aleatorio (en el partido)"
+en = "Random (in the match)"
+fr = "Aléatoire (pendant le match)"
+de = "Zufällig (im Spiel)"
+it = "Casuale (in partita)"
+pt = "Aleatório (na partida)"
+ja = "ランダム（試合中）"
+zh_hans = "随机（比赛中）"
+zh_hant = "隨機（比賽中）"
+
+# the «?» card of the confirm popup
+[[row]]
+id = "utilities.cp_random_short"
+es = "Aleatorio"
+en = "Random"
+fr = "Aléatoire"
+de = "Zufällig"
+it = "Casuale"
+pt = "Aleatório"
+ja = "ランダム"
+zh_hans = "随机"
+zh_hant = "隨機"
+
+# a move whose partners are all fixed: «<move> / Fijo: …»
+[[row]]
+id = "utilities.cp_fixed"
+es = "Fijo"
+en = "Fixed"
+fr = "Fixe"
+de = "Fest"
+it = "Fisso"
+pt = "Fixo"
+ja = "固定"
+zh_hans = "固定"
+zh_hant = "固定"
+
+# the confirm popup (general_window card window); <VALUE> = the move
+[[row]]
+id = "utilities.cp_ask_move"
+es = "¿Elegir estos compañeros para realizar <VALUE>?"
+en = "Choose these partners to perform <VALUE>?"
+fr = "Choisir ces partenaires pour exécuter <VALUE> ?"
+de = "Diese Partner für <VALUE> wählen?"
+it = "Scegliere questi compagni per eseguire <VALUE>?"
+pt = "Escolher estes parceiros para executar <VALUE>?"
+ja = "このパートナーで<VALUE>を使いますか？"
+zh_hans = "选择这些搭档施展<VALUE>吗？"
+zh_hant = "選擇這些搭檔施展<VALUE>嗎？"
+
+# X when the board was opened without a team (story field, scout): no squad to choose from
+[[row]]
+id = "utilities.cp_no_team"
+es = "Abre la tabla desde la plantilla de equipo para elegir compañeros."
+en = "Open the board from the Team Dock to choose partners."
+fr = "Ouvre le tableau depuis la Composition d'équipe pour choisir des partenaires."
+de = "Öffne die Tafel über die Team-Bank, um Partner zu wählen."
+it = "Apri la tabella dallo Slot Squadra per scegliere i compagni."
+pt = "Abra o quadro pelo Clube para escolher parceiros."
+ja = "パートナーを選ぶには、チームドックからボードを開いてください。"
+zh_hans = "请从编组队伍打开技能盘以选择搭档。"
+zh_hant = "請從編組隊伍開啟技能盤以選擇搭檔。"

@@ -1,0 +1,30 @@
+-- Utilities neutral element: child of the retail soccer_command_battle_menu_inc bytecode (the match command / close battle
+-- menus). Retail draws no element icon for a player with element 0 / 5 (SetupElementIcon returns early) and has an
+-- empty branch for command element 5 in SetCommandIconTexture; both get the neutral sprites (icon_cmd_type00, and
+-- icon_cmd_on_type00 for the selected state). Only wraps Lua globals at load.
+UTIL_NEUTRAL_CMD = UTIL_NEUTRAL_CMD or {}
+if UTIL_NEUTRAL_CMD.setup == nil then
+  UTIL_NEUTRAL_CMD.setup = SetupElementIcon
+  UTIL_NEUTRAL_CMD.icon = SetCommandIconTexture
+end
+if UTIL_NEUTRAL_CMD.setup ~= nil then
+  function SetupElementIcon(a1, a2, a3, a4, ...)
+    local r = {UTIL_NEUTRAL_CMD.setup(a1, a2, a3, a4, ...)}
+    local ok, el = GetSoccerCharaParamBySoccerHdl(a3, 8)
+    if ok ~= false and (el == 0 or el == 5) then
+      funcLuaMenuCommand(558735651, a1, 2320109963 --[[icon_common]], {{icon_cmd_type00}},
+                         a4 and 1265099231 --[[icon_type_dmy01]] or 2119853747, 0, a2)
+    end
+    return table.unpack(r)
+  end
+end
+if UTIL_NEUTRAL_CMD.icon ~= nil then
+  function SetCommandIconTexture(a1, a2, a3, a4, ...)
+    if a3 == 5 then
+      funcLuaMenuCommand(558735651, a1, 2320109963 --[[icon_common]], a4 and {{icon_cmd_on_type00}} or {{icon_cmd_type00}},
+                         917245562 --[[icon_cmd_type_dmy01]], 0, a2)
+      return
+    end
+    return UTIL_NEUTRAL_CMD.icon(a1, a2, a3, a4, ...)
+  end
+end

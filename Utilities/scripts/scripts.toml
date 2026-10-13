@@ -1,0 +1,97 @@
+# Settings of Utilities' scripts (kind vr_framework.script/1, docs/framework/scripts.md §2). One [[script]] per entry
+# point, each with the settings it needs; every other .lua below scripts\ (lib\) is a library for `require`.
+schema = "vr_framework.script/1"
+
+# Home / Away kit: the pair map is built at load from the whole uniform_config (about 1900 rows)
+[[script]]
+file = "away_kit.lua"
+budget = 2000000
+memory_kb = 32768
+allow = []
+
+# Match camera: only the one-time take-over of the old setting
+[[script]]
+file = "camera_option.lua"
+allow = ["save"]
+
+# Career page: the plate's first EX query reads chara_param (≈6k rows) once to know each card's main position
+[[script]]
+file = "career.lua"
+budget = 2000000
+memory_kb = 65536
+
+# Combo partners
+[[script]]
+file = "combo_partners.lua"
+budget = 500000
+memory_kb = 8192
+allow = []
+
+# Unlocked formations: the list is derived at load from formation_config (115 rows + their placements), item_config
+# and item_text
+[[script]]
+file = "formations.lua"
+budget = 2000000
+memory_kb = 32768
+allow = []
+
+# Original names: the catalogue reads chara_base (about 7200 rows) once at the start; each language's tables read
+# chara_text, chara_text_roma and team_text (the load gets 10 budgets)
+[[script]]
+file = "original_names.lua"
+budget = 5000000
+memory_kb = 65536
+
+# Passive configurator: the start reads chara_param (cols 0, 1, 3, 61-65 of ~6k rows), passive_skill_config and
+# passive_skill_effect_config once; a refresh of the native tables views every configured player (5 engine slot reads
+# each)
+[[script]]
+file = "passive_config.lua"
+budget = 5000000
+memory_kb = 65536
+
+# Auto Commander mode: the match scene's first coach mode (two init hooks, content\game\auto_commander.toml)
+[[script]]
+file = "auto_commander.lua"
+allow = []
+
+# Chronicle route map speed (the defaults)
+[[script]]
+file = "route_map_speed.lua"
+
+# Shop filter
+[[script]]
+file = "shop_filter.lua"
+budget = 500000
+memory_kb = 8192
+allow = []
+
+# Team bank repair (exports TeamBanksMembers / TeamBanksRepair, called by Inazuma Fantasy's «Reparar duplicados»):
+# decodes, edits and encodes the whole sidecar (up to 32 pages x 31 KB) in one call
+[[script]]
+file = "tb_repair.lua"
+budget = 5000000
+memory_kb = 65536
+
+# Team bank pages: a page swap reads / writes the 11 live docks word by word (about 12k memory accesses and 1.3k game
+# calls) and encodes the sidecar (up to 32 pages x 31 KB): the most a call may use
+[[script]]
+file = "team_banks.lua"
+budget = 5000000
+memory_kb = 65536
+
+# Team planner: the start builds the original-names catalogue (chara_series / belong_team / chara_base, about 7200
+# rows) and reads chara_param (cols 0, 1, 41 of ~6k rows) once; a picker / dock call may walk the saved characters
+# (VRFW.chara.saved + one record each, cached 2 s)
+[[script]]
+file = "team_planner.lua"
+budget = 5000000
+memory_kb = 65536
+
+# Friends panel: the friend list / presence / asks go through VRFW.net (the framework's Steam friends API); a friend's
+# details read chara_param (cols 1, 2 of ~6k rows), chara_base, formation_config and item_text once for the names; the
+# profile reads the active squad (29 member reads + their records) and the career store
+[[script]]
+file = "friends.lua"
+budget = 3000000
+memory_kb = 32768

@@ -1,0 +1,28 @@
+# Clean HUD, compact player cards (flag compact_cards; menus\player_cards.toml, docs/game/characters/position-cards.md
+# §8.1 «Portrait mask»): the portrait masks of the formation card layout team00_01_evt_fc (its G4MD names
+# evt_fc_chr_msk_{l,s}01 instead of the retail icon_chr_msk_{l,s}01): the card body alpha in the moved portrait's space,
+# so the centred face is cut at the narrower card's edges. Written by research/scripts/fc_build.py (build_texture);
+# Inazuma Fantasy shipped them in its own team00_01_base rows until 2026-10-08. A texture of their own in every
+# language file of team00_01.g4tx (the layout's atlas).
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+name = "clean_hud_card_msk"
+size = [312, 156]
+
+[[sprite]]
+atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+name = "evt_fc_chr_msk_l01"
+texture = "clean_hud_card_msk"
+x = 0
+y = 0
+png = "team00_01/evt_fc_chr_msk_l01.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+name = "evt_fc_chr_msk_s01"
+texture = "clean_hud_card_msk"
+x = 156
+y = 0
+png = "team00_01/evt_fc_chr_msk_s01.png"

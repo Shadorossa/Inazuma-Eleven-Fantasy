@@ -1,0 +1,27 @@
+# Clean HUD «Modo Crónica» icon boxes (docs/game/ui/competition-menu.md §2, docs/game/ui/ui-redesign.md «Mode top
+# menus cleanup»). Moved from Inazuma Fantasy's chronicle_boxes on 2026-10-09 (Nacho: the square boxes under the
+# «Universo del jugador» gacha banner are Clean HUD's): «Plantilla de equipo», «Objetos», «Tienda» and «Opciones» become
+# 4 square icon boxes (layer clean_hud_chr_box) under the two big rows; «Ayuda» and «Guardar» stay created as the 2
+# small rows, off screen and out of the keys (as Inazuma Fantasy had them); the focused box's name + help in the help
+# line. Wrappers only (no retail local read or promoted). Needs Clean HUD's data: menus/chronicle_boxes.toml (small
+# list 2, the box and "!" layers, keys, focus shifts) + files\data clean_hud_chr_box / clean_hud_chr_list
+# (research/scripts/clean_hud_chr_boxes_build.py); without it every wrapper passes through. Order 910: after Inazuma
+# Fantasy's shop_rework (Tienda's shop swap) and ui_clean_header_shift, before clean_hud_menu_cleanup (corner buttons).
+name = "clean_hud_chr_boxes"
+order = 910
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "OnDecideFocus", "OnFunction",
+         "GetLitItemInfo", "GetNumUsedButtons", "UpdateContentGuide"]
+description = "Clean HUD: Modo Crónica's Plantilla / Objetos / Tienda / Opciones as 4 square icon boxes under «Universo del jugador»"
+
+[[files]]
+stem = "chronicle_mode_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "chr_boxes.lua"
+  marker = "clean_hud chr_boxes"
+  crc = "none"

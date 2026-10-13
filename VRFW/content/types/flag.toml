@@ -1,0 +1,31 @@
+# How the type `flag` (flags\**\*.toml, kind vr_framework.flag/1) becomes rows of the game's flag_config: the global
+# save bit flags a mod's Lua / DLL reads and writes (GetGlobalBitFlag(crc32("<NAME>")), CMND_SET_FLAG…) must be
+# listed there, else the game ignores them. Read by the framework at every start that is not served from the cache:
+# changing this file needs no compile. Format: docs/framework/table-map.md. Columns are schema names
+# (schemas/system/flag.toml, schemas/system/flag_bank.toml).
+schema = "VRFW.table_map/1"
+
+# [[flag]]: a flag at the end of its bank's list (FLAG_INFO(bank) + FLAG_INFO_PARAM(index, id)), in declaration
+# order (load order, file, flag); the bank's count is raised.
+#   name   the flag's name: its id is crc32(name)
+#   id     the id when the name is not known (0x…, a number); with `name` too, both must agree
+#   bank   the FLAG_INFO bank (0 = the story / global bank, …)
+#   bit    its bit in the bank: FIXED (it is where the saves keep it; the size of each bank in the save is not
+#          known, so no free bit is picked)
+# A flag already in the bank with the same bit is kept once; a bit the game or an earlier mod uses for another flag,
+# or the same flag at another bit, is left out (warning: the earlier one keeps it).
+[[map]]
+entry = "flag"
+table = "system/flag"
+mode = "append"
+key = "name"                                   # the label in messages (a flag with only `id`: its position)
+row_key = { lua = "flag.lua:id" }              # crc32(name), or id
+within = { table = "system/flag_bank", column = "bank", key = "{bank}" }
+keep_existing = true                           # never replace a flag the bank has (the same row: kept once)
+unique_columns = ["index"]                     # one flag per bit
+count = "flags"
+[map.fields]
+name = { type = "string" }
+id = { type = "id" }
+bank = { type = "int", required = true }
+bit = { column = "index", type = "int", required = true }

@@ -1,0 +1,31 @@
+# BetterUI: the Team Dock list (soccer_team_dock_menu, «Plantilla de equipo») without the rows «Ajustes de equipo» (kind 12,
+# the one with the ▶ arrow that opens a sub window) and «Formación» (kind 0). The retail list is `t`, one kind per row
+# (12, 0, 10, 1, 2, 7, 9, 8); every list function indexes it by row (`t[i + 1]`) and the row count is `#t`, so removing
+# the kinds re-packs the list (no gap, the unused row instances hidden, the cursor only visits the rows left). The kinds are
+# removed by value, so Inazuma Fantasy's pachanga_dock (which inserts its selector row 13 / removes «Equipar todo»)
+# works in either order. Formation stays reachable from the pitch's FORMACIÓN box and the Alt command of the formation
+# screen; team settings from the CONF. DE EQUIPO box. Runs after the other clean_hud dock blocks. The list is reached as an
+# upvalue (EVT_UpvalueFind): the block names no retail local, so nothing is promoted / redefined (1.21.9).
+# 1.21.10: the list is matched by kinds 7/8/9 (pachanga_dock already removed 10 at load) and filtered again by an
+# OnSetupLayer wrapper on the list layer's first row (each open, before the row count), which logs one line.
+name = "clean_hud_dock_rows"
+order = 925
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []
+description = "BetterUI: no «Ajustes de equipo» / «Formación» rows in the Team Dock list"
+
+[[files]]
+stem = "soccer_team_dock_menu"
+expect = [
+  '^local t = \{12, 0, 10, 1, 2, 7, 9, 8\}$',
+]
+
+  [[files.ops]]
+  type = "append_block"
+  src = "dock_rows.lua"
+  marker = "clean_hud_dock_rows"
+  crc = "none"
+  include = { "@UPV@" = "../_lib/evt_upvalues.lua" }

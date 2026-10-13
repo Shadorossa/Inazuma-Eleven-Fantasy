@@ -1,0 +1,42 @@
+# Match-drop toast (announce_log, SetupAnnounce type 37 / token 6 "¡Has obtenido <ITEM_NAME>!", menu_text
+# 3418394682): GetItemNoRareText converts <ITEM_NAME> with CMND_TEXT_LOCALIZE_CONVERT mode 1 (the item's own name
+# text). Category-160 items (ITEM_SPECIAL_SKILL_INFO: moves, passives, keshin, armed...) have no name text of their
+# own (cols 2/3 = 0; the name is the linked skill's, col 16), so the toast reads "¡Has obtenido !" for a move manual
+# dropped by hd_hissatsu_drops.py (docs/game/mechanics/hissatsu-drops.md sections 2.4 and 9). The retail shop
+# (shop_menu_buy PurchaseConfirmationTextToken) uses mode 155 for category 160 except sub 177; this graft applies the
+# same rule to the toast (types 6 and 8) through VRFW_ItemNameConvertMode.
+# VR-Framework graft since 2.0.9 (always on; any mod's category-160 drops benefit): moved from Inazuma Fantasy's
+# graft announce_item_name (global EVT_ItemNameConvertMode -> VRFW_ItemNameConvertMode, no alias: nothing else read it).
+name = "vrfw_announce_item_name"
+mod = "vr_framework"
+order = 100
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "item drops: move / passive names on the match-drop toast (convert mode 155 for category 160)"
+
+[[files]]
+stem = "announce_log"
+
+  [[files.ops]]
+  type = "replace"
+  point = "announce_log.GetItemText.VrfwAnnounceItemName"
+  text = '''
+  s = funcLuaCommand(762937651 --[[CMND_TEXT_LOCALIZE_CONVERT]], s, VRFW_ItemNameConvertMode(a2, 0), a2, a3) -- VRFW vrfw_announce_item_name
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "replace"
+  point = "announce_log.GetItemNoRareText.VrfwAnnounceItemName"
+  text = '''
+  s = funcLuaCommand(762937651 --[[CMND_TEXT_LOCALIZE_CONVERT]], s, VRFW_ItemNameConvertMode(a2, 1), a2, a3) -- VRFW vrfw_announce_item_name
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_item_name_block.lua"
+  marker = "vrfw_announce_item_name"
+  crc = "none"

@@ -1,0 +1,13 @@
+schema = "vr_framework.base_table/1"
+# Scale rows of the Cross characters (by chara_base id). Moved from Inazuma Fantasy on 2026-10-08.
+
+[[list]]
+name = "m_charaScaleList"
+columns = ["charaID", "field", "soccer", "menu", "menuLooksFirst", "follower", "offset", "addchara", "addchara_offset_y", "rpgBattle", "charaSize", "menuLooksVS", "addchara_offset_y_for_vs"]
+splice = [
+  { at = 2775, remove = 0, rows = [
+    [0x49D3E161, 1.02, 0.0, 0.0, 1.02, 0.0, 0.0, 0.0, 0.0, 1.02, 0, 0.0, 0.0],
+    [0x47850485, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0.0, 0.0],
+    [0x30823413, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0.0, 0.0],
+  ] },
+]

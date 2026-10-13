@@ -1,0 +1,82 @@
+schema = "VRFW.shader/1"
+# «Estilo visual» (Visual style): the presets of the Mods options row utilities.visual_style (options.toml), switched
+# live by the VR-Framework's shader presets (docs/framework/shaders.md). 0 = the game's own look (no preset).
+# Grade values as research/scripts/lt_build.py PRESETS (docs/game/media/lighting.md §6). The HLSL is in
+# assets\shaders\ (its defines default to the neutral values: 1, pivot 0.5, tint [1, 1, 1]).
+
+# ---------------------------------------------------------------- programs
+# the 3D post chain's two pixel passes every scene goes through (the UI is drawn after them and never changes);
+# targets = the v7.1.2 retail dx11/shader/1.00.41 files (size, CRC-32): a modded file is left alone
+
+[[VRFW.ShaderProgram]]
+id = "tonemap"
+target = { name = "tonemap.pfxo", type = "pixel", size = 2348, crc = 0x82034867 }
+source = "assets/shaders/tonemap.hlsl"
+includes = ["assets/shaders/common.hlsl"]
+
+[[VRFW.ShaderProgram]]
+id = "tonemap_lut"
+target = { name = "tonemap_colorgrading.pfxo", type = "pixel", size = 5356, crc = 0xFF23B26B }
+source = "assets/shaders/tonemap_colorgrading.hlsl"
+includes = ["assets/shaders/common.hlsl"]
+
+[[VRFW.ShaderProgram]]
+id = "bloom"
+target = { name = "bloom_composi.pfxo", type = "pixel", size = 1980, crc = 0x3402C9BC }
+source = "assets/shaders/bloom_composi.hlsl"
+defines = { LAYERS = 3 }
+
+[[VRFW.ShaderProgram]]
+id = "bloom_low"
+target = { name = "bloom_composi_l.pfxo", type = "pixel", size = 1584, crc = 0xE8862E76 }
+source = "assets/shaders/bloom_composi.hlsl"
+defines = { LAYERS = 2 }
+
+# «Trazado grueso»: the framework's contour patch of the 14 character / ball contour programs (params thickness,
+# darken)
+[[VRFW.ShaderProgram]]
+id = "contour"
+patch = "contour"
+
+# ---------------------------------------------------------------- presets (option value -> look)
+
+# IE3 (3DS): solid colours, little glow, a bit darker than VR
+[[VRFW.ShaderPreset]]
+id = "ie3"
+label = "vs_ie3"
+option = { key = "utilities.visual_style", value = 1 }
+programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+defines = { GRADE = 1, EXPOSURE = 0.94, GAMMA = 1.06, SATURATION = 1.10, CONTRAST = 1.08, BLOOM = 0.5 }
+
+# Chrono Stone (3DS): more contrast and saturation, deeper mid-tones, almost no bloom
+[[VRFW.ShaderPreset]]
+id = "chrono"
+label = "vs_chrono"
+option = { key = "utilities.visual_style", value = 2 }
+programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+defines = { GRADE = 1, EXPOSURE = 0.90, GAMMA = 1.10, SATURATION = 1.18, CONTRAST = 1.12, TINT = [1.0, 0.99, 0.97], BLOOM = 0.3 }
+
+# only takes the glare off: bloom lower, a touch darker
+[[VRFW.ShaderPreset]]
+id = "soft"
+label = "vs_soft"
+option = { key = "utilities.visual_style", value = 3 }
+programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+defines = { GRADE = 1, EXPOSURE = 0.97, GAMMA = 1.03, SATURATION = 1.04, CONTRAST = 1.03, BLOOM = 0.6 }
+
+# IE3 + «Trazado grueso» (IE GO 3DS): thick dark contour on characters and the ball
+[[VRFW.ShaderPreset]]
+id = "ie3_contour"
+label = "vs_ie3_contour"
+option = { key = "utilities.visual_style", value = 4 }
+programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low", "contour"]
+defines = { GRADE = 1, EXPOSURE = 0.94, GAMMA = 1.06, SATURATION = 1.10, CONTRAST = 1.08, BLOOM = 0.5 }
+params = { thickness = 2.5, darken = 0.6 }
+
+# the game's colours with the thick contour only
+[[VRFW.ShaderPreset]]
+id = "contour"
+label = "vs_contour"
+option = { key = "utilities.visual_style", value = 5 }
+programs = ["contour"]
+params = { thickness = 2.5, darken = 0.6 }

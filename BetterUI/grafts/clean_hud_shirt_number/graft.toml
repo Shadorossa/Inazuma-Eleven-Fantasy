@@ -1,0 +1,47 @@
+# Clean HUD «shirt numbers» (flag shirt_number; docs/game/ui/team-commands.md §9, docs/game/ui/ui-redesign.md).
+# Moved out of Inazuma Fantasy's team commands (team_cmd_dock / team_cmd_menus) on 2026-10-08: the per-player command
+# window of the team dock «Formación» no longer lists «Cambiar número de dorsal»; the team COMANDOS window gets a row
+# «Ajustes de dorsales» that opens the goal celebration screen (two columns: face + name + shirt number) in
+# shirt-number mode, Enter = the retail shirt-number window. Same save field as retail (3095463779).
+# Inazuma Fantasy keeps its COMANDOS grid and the AI mode on top: its «Dorsal» cell calls this graft's export
+# CLEAN_HUD_SHIRT_NUMBER.Arm() at run time.
+# Snippets = menu_generators.ui_clean_plain / ui_clean_child of research/grafts/_src/ui_clean
+# (evt_ui_shirt_number_dock.lua, evt_ui_shirt_number_menu.lua); `menu_assemble.py regen clean_hud_shirt_number --write`
+# rebuilds them. Order 905: after the patches that REPLACE OnInit / GetSelectSettingTypeOrderList of
+# team_dock_formation_menu (Inazuma Fantasy ss2_dock, Utilities passive_config_dispatch, both 100); these wrappers chain.
+name = "clean_hud_shirt_number"
+order = 905
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []   # OnInit, GetSelectSettingTypeOrderList, OpenSelectTeamMemberControlSubWindowCore, WaitExecPerfromanceChangeMenu,
+             # MENU_DEF.OpenSubWindow and the celebration menu's OnInit / OnSetupLayer / UpdateListItem / OnDecideFocus /
+             # InitPerformanceChangeMenuInfo are wrapped by assignment at run time
+description = "Clean HUD: shirt numbers set from the team COMANDOS window (celebration-style list), not per player"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "sn_dock.lua"
+  marker = "ui_clean shirt_number"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_shirt_number_dock.lua", tag = "shirt_number_dock", name = "shirt_number", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "shirt_number_dock" }
+
+[[files]]
+stem = "soccer_performance_change_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "sn_menu.lua"
+  marker = "clean_hud shirt_number"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_shirt_number_menu.lua", tag = "shirt_number_menu", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "shirt_number_menu" }

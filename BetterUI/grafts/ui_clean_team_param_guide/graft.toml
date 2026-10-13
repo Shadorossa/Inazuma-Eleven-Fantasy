@@ -1,0 +1,52 @@
+# ui_clean, block team_param_guide (research/scripts/ui_clean_build.py PLAIN_PARTS; docs/game/ui/ui-redesign.md
+# section 11): the "Y Bonific. de equipo" guide entry drawn like the other guide entries. The snippets are the output
+# of ui_clean_build.build_plain (preset limpio, default flags); `menu_assemble.py regen` rebuilds them from
+# research/grafts/_src/ui_clean through menu_generators.ui_clean_plain.
+# soccer_formation_menu added in phase 2.
+name = "ui_clean_team_param_guide"
+order = 900
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []
+description = "ui_clean: team parameter guide entry restyled (Plantilla / Formación)"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "td_formation.lua"
+  marker = "ui_clean team_param_guide"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_team_param_guide.lua", tag = "td_formation", name = "team_param_guide", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "td_formation" }
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "team_dock.lua"
+  marker = "ui_clean team_param_guide"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_team_param_guide.lua", tag = "team_dock", name = "team_param_guide", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "team_dock" }
+
+[[files]]
+stem = "soccer_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "formation.lua"
+  marker = "ui_clean team_param_guide"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_team_param_guide.lua", tag = "formation", name = "team_param_guide", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "formation" }

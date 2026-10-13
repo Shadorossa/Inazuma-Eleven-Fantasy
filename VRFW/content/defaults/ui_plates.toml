@@ -1,0 +1,72 @@
+# The shared UI plates of the VR-Framework (docs/framework/ui-plates.md; owner 2026-10-13: ONE header row and ONE
+# move plate for every screen). Every layout constant of the two components lives here; the Lua library
+# assets\lua\menu\_all\66_ui_plates.lua (VRFW_UI.HeaderRow / VRFW_UI.MovePlate) reads them from the generated table
+# assets\lua\menu\_all\65_ui_plates_layout.lua (research/scripts/vrfw_ui_plates_build.py; `--check` exits 1 when the
+# Lua is not what this file gives). Units: screen px at 1080p (x right, y down) unless a key says «layout» (the
+# plate's own .g4pkm units, y up). A screen that needs a variant gets a [*.variants.<name>] table here and passes its
+# name (or its own numbers) to the API; it never copies the code.
+schema = "vr_framework.ui_plates/1"
+
+# ---- the player HEADER ROW ---------------------------------------------------------------------------------------
+# The row is the retail status plate (soccer11_04 / soccer11_04pp layouts: Inazuma Fantasy patches them to its one-row
+# header) filled by the retail UpdateCharaStatusPlateInfo* functions; the library applies the shared rules after
+# every fill (natural position, staff role glyph, archetype box ⇔ glyph) and draws the slanted position band.
+[header_row]
+# the atlases the library swaps sprites from that are not the row objects' own (the plate / band / box layers carry
+# their atlases): every menu showing a header row must have them in its res (retail menu setting, a mod's [[patch]]
+# res or a [[screen]]'s res); `vrfw_ui_plates_build.py --check-res` lists the host menus of the grafts that miss one
+# (a missing icon_common2 is the white box in the position slot)
+res = [
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",   # the position badges (natural position)
+]
+# mesh sizes of the position badge and of the archetype / role glyph (soccer11_04 / _04pp): a staff member's role
+# glyph is centred in the badge's slot
+pos_badge = [68, 46]
+role_glyph = 40
+# the row's place in its layout (IF's one-row header: x 957..1909, y 163..227 at scale 1)
+row_origin = [957, 163]
+row_size = [952, 64]
+
+# the slanted, position-coloured band under the row: a second soccer11_04 plate showing only its two band sprites;
+# its visible rows 164..356 squashed to a third, 46 px right of the row (the player page's evt_pp_slant)
+[header_row.band]
+dx = 46
+y0 = 164
+sx = 1.0
+sy = 0.3333333333333333
+# the band copy's nickname box (slanted) behind the archetype glyph: node local (band layer: x = screen - 1966, y up
+# with the layer's 1/3 y scale) and size; screen box x 1015..1071, y 171..219
+namebox = [-951, 78, 56, 144]
+
+# the archetype glyph's slanted box (a btl06_13 gauge frame with the sprite evt_pp_slantbox): screen box x, y, w, h
+[header_row.arch_box]
+box = [1042, 175, 81, 40]
+# a dual archetype (two glyphs) shows its own wide sprite evt_pp_slantbox_wide from x 1036
+box_dual = [1036, 175, 127, 40]
+# the gauge frame mesh in its layout: left, top (layout, y up), width, height
+gauge = [94, 816, 476, 44]
+
+# screens that place a whole row somewhere else: scale s, the row's top-left on screen (x, y)
+[header_row.variants.contact_map]
+s = 0.69
+x = 1250
+y = 867
+
+# ---- the MOVE PLATE ------------------------------------------------------------------------------------------------
+# The element-coloured special-move plate: retail soccer11_09 move row (a layer of that object) filled by the retail
+# SetupCharaSkillItem with the move's OWN evolution grade, or drawn from quads (screens without personal_plate_inc,
+# e.g. a general_window panel) with the same data (VRFW_UI.MovePlate.Look).
+[move_plate]
+# the row fill draws from the row object's own atlas (soccer11_09); a quad-drawn plate (MovePlate.Look) needs the
+# category icons' atlas in its menu's res (the plate sprites' atlas, soccer08_10, is loaded by the screen)
+res = []
+quad_res = [
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",              # category icons
+]
+# the quad look (offsets from the plate's centre, px at scale 1): the plate, the category icon in the circle at the
+# left, the name's left edge, the AT / DF label, the power's right edge
+plate = [600, 82]
+category = [-269, 0, 56]
+name_x = -220
+label = [170, 2, 108, 24]
+power_right = 286

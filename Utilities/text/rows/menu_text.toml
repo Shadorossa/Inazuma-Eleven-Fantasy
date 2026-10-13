@@ -1,0 +1,147 @@
+# Texts of Utilities' team bank pages (feature team_banks; the dock Lua block research/grafts/team_banks reads them with
+# CMND_TEXT_GET(crc32(id))). Format: docs/game/engine/text-engine.md §2. evt_tb_bank / evt_tb_guide_keys keep the ids
+# they had in Inazuma Fantasy. {page} = «Banco k/N», {n} = a number (filled by the Lua). «\n» = a line break of the
+# game's message window.
+schema = "vr_framework.text/2"
+
+[[row]]
+id = "evt_tb_bank"
+es = "Banco"
+en = "Bank"
+fr = "Banque"
+de = "Bank"
+it = "Banca"
+pt = "Banco"
+ja = "バンク"
+zh_hans = "队伍库"
+zh_hant = "隊伍庫"
+
+# the page indicator of the bank window «<L2> Pág. k/N <R2>»: the abbreviated word «page», the same abbreviation as
+# the VR-Framework's Bahía Batalla page label (vrfw_bb_page); crc32("evt_tb_page") = 1108108981
+[[row]]
+id = "evt_tb_page"
+es = "Pág."
+en = "Pg."
+fr = "P."
+de = "S."
+it = "Pag."
+pt = "Pág."
+ja = "P."
+zh_hans = "页"
+zh_hant = "頁"
+
+[[row]]
+id = "evt_tb_guide_keys"
+all = "<CMD_FUNCL2><CMD_FUNCR2>"
+
+[[row]]
+id = "evt_tb_refused_mode"
+es = "Los bancos de plantillas no están disponibles en este modo."
+en = "Team banks are not available in this mode."
+fr = "Les banques d'équipes ne sont pas disponibles dans ce mode."
+de = "Team-Banken sind in diesem Modus nicht verfügbar."
+it = "Le banche squadre non sono disponibili in questa modalità."
+pt = "Os bancos de equipes não estão disponíveis neste modo."
+ja = "このモードではチームバンクは使えません。"
+zh_hans = "此模式下无法使用队伍库。"
+zh_hant = "此模式下無法使用隊伍庫。"
+
+[[row]]
+id = "evt_tb_refused_busy"
+es = "Se está guardando la partida. Inténtalo de nuevo en un momento."
+en = "The game is being saved. Try again in a moment."
+fr = "La partie est en cours de sauvegarde. Réessaie dans un instant."
+de = "Das Spiel wird gerade gespeichert. Versuche es gleich noch einmal."
+it = "Salvataggio in corso. Riprova tra un momento."
+pt = "O jogo está sendo salvo. Tente novamente em instantes."
+ja = "セーブ中です。しばらくしてからもう一度お試しください。"
+zh_hans = "正在保存游戏，请稍后再试。"
+zh_hant = "正在儲存遊戲，請稍後再試。"
+
+[[row]]
+id = "evt_tb_refused_online"
+es = "Los bancos de plantillas no están disponibles en línea."
+en = "Team banks are not available online."
+fr = "Les banques d'équipes ne sont pas disponibles en ligne."
+de = "Team-Banken sind online nicht verfügbar."
+it = "Le banche squadre non sono disponibili online."
+pt = "Os bancos de equipes não estão disponíveis online."
+ja = "オンラインではチームバンクは使えません。"
+zh_hans = "联机时无法使用队伍库。"
+zh_hant = "連線時無法使用隊伍庫。"
+
+[[row]]
+id = "evt_tb_refused_error"
+es = "No se pudo cambiar de banco. Los equipos no han cambiado (detalles en loader.log)."
+en = "The bank could not be switched. Your teams did not change (details in loader.log)."
+fr = "Impossible de changer de banque. Tes équipes n'ont pas changé (détails dans loader.log)."
+de = "Die Bank konnte nicht gewechselt werden. Deine Teams sind unverändert (Details in loader.log)."
+it = "Impossibile cambiare banca. Le squadre non sono cambiate (dettagli in loader.log)."
+pt = "Não foi possível trocar de banco. Suas equipes não mudaram (detalhes em loader.log)."
+ja = "バンクを切り替えられませんでした。チームは変更されていません（詳細は loader.log）。"
+zh_hans = "无法切换队伍库。队伍未改变（详见 loader.log）。"
+zh_hant = "無法切換隊伍庫。隊伍未改變（詳見 loader.log）。"
+
+[[row]]
+id = "evt_tb_refused_slot1"
+es = "La Ranura 1 (partida original) no tiene bancos de plantillas. Usa otra ranura."
+en = "Slot 1 (the original save) has no team banks. Use another slot."
+fr = "L'emplacement 1 (sauvegarde d'origine) n'a pas de banques d'équipes. Utilise un autre emplacement."
+de = "Platz 1 (der Originalspielstand) hat keine Team-Banken. Nutze einen anderen Platz."
+it = "Lo slot 1 (salvataggio originale) non ha banche squadre. Usa un altro slot."
+pt = "O espaço 1 (jogo original) não tem bancos de equipes. Use outro espaço."
+ja = "スロット1（元のセーブ）にはチームバンクがありません。別のスロットを使ってください。"
+zh_hans = "存档位1（原始存档）没有队伍库。请使用其他存档位。"
+zh_hant = "存檔位1（原始存檔）沒有隊伍庫。請使用其他存檔位。"
+
+[[row]]
+id = "evt_tb_msg_dropped"
+es = "{page}: {n} hueco(s) se han vaciado porque esos jugadores ya no\\nestán en tu club (o ya no son los mismos)."
+en = "{page}: {n} slot(s) were emptied because those players are no longer\\nin your club (or are no longer the same)."
+fr = "{page} : {n} place(s) ont été vidées car ces joueurs ne sont plus\\ndans ton club (ou ne sont plus les mêmes)."
+de = "{page}: {n} Platz/Plätze wurden geleert, weil diese Spieler nicht mehr\\nin deinem Verein sind (oder nicht mehr dieselben)."
+it = "{page}: {n} posto/i svuotato/i perché quei giocatori non sono più\\nnel tuo club (o non sono più gli stessi)."
+pt = "{page}: {n} vaga(s) foram esvaziadas porque esses jogadores não estão mais\\nno seu clube (ou não são mais os mesmos)."
+ja = "{page}：{n}枠が空になりました。その選手はもうクラブにいない\\n（または同じ選手ではない）ためです。"
+zh_hans = "{page}：{n}个位置已清空，因为这些球员已不在你的俱乐部\\n（或已不是同一名球员）。"
+zh_hant = "{page}：{n}個位置已清空，因為這些球員已不在你的俱樂部\\n（或已不是同一名球員）。"
+
+[[row]]
+id = "evt_tb_msg_new"
+es = "{page} nuevo: las 11 plantillas están vacías.\\nForma un equipo y actívalo antes de salir."
+en = "{page} is new: its 11 teams are empty.\\nBuild a team and make it active before you leave."
+fr = "{page} est nouvelle : ses 11 équipes sont vides.\\nForme une équipe et active-la avant de quitter."
+de = "{page} ist neu: Ihre 11 Teams sind leer.\\nStelle ein Team auf und aktiviere es, bevor du gehst."
+it = "{page} è nuova: le sue 11 squadre sono vuote.\\nForma una squadra e attivala prima di uscire."
+pt = "{page} é novo: suas 11 equipes estão vazias.\\nMonte uma equipe e ative-a antes de sair."
+ja = "{page}は新しいバンクです。11チームはすべて空です。\\n抜ける前にチームを組んでアクティブにしてください。"
+zh_hans = "{page}是新的：11支队伍都是空的。\\n离开前请组建队伍并设为出场队伍。"
+zh_hant = "{page}是新的：11支隊伍都是空的。\\n離開前請組建隊伍並設為出場隊伍。"
+
+# ---- away_kit (Home / Away kit): the Y label of the kit picker's button guide, the variant the focused kit shows now.
+# Fixed ids = crc32("away_kit.home") / crc32("away_kit.away"), the ids these texts had as keys of the standalone mod
+# away_kit (its Lua falls back to them when CMND_VRFW_TEXT_ID does not know the key). The help line is the game's own.
+
+[[row]]
+id = 0x9751FC8A  # away_kit.home
+en = "Home"
+es = "Local"
+fr = "Domicile"
+de = "Heim"
+it = "Casa"
+pt = "Casa"
+ja = "ホーム"
+zh_hans = "主场"
+zh_hant = "主場"
+
+[[row]]
+id = 0x40D8528B  # away_kit.away
+en = "Away"
+es = "Visitante"
+fr = "Extérieur"
+de = "Auswärts"
+it = "Trasferta"
+pt = "Fora"
+ja = "アウェイ"
+zh_hans = "客场"
+zh_hant = "客場"

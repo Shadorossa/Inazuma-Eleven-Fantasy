@@ -1,0 +1,16 @@
+# The declaration `[[VRFW.CoachLook]]` of the coach clothes rules (service S13 of VRFW 2.3, docs/framework/outfits.md
+# §8): what a mod's content\coach_looks\*.toml may say. Read by scripts\coach_looks.lua at start (every key is checked
+# against this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning).
+# Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.coach_look/1"
+folder = "content/coach_looks"
+
+[entry.CoachLook]
+doc = "while the rule holds, a coach / manager dressed by the player-kit path (a match where he plays or stands as a member) keeps his coach clothes"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+states = { type = "strings", doc = "game_state keys: the rule holds while one of them is 1 (e.g. match.challenge.active)" }
+ui_flags = { type = "strings", doc = "UI flags (the game Lua's flags, by name): the rule holds while one of them has a value of `ui_values`" }
+ui_values = { type = "ints", min = -2147483648, max = 2147483647, doc = "the values of `ui_flags` that hold (default: any value but 0)" }
+always = { type = "bool", default = false, doc = "the rule always holds (every match)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

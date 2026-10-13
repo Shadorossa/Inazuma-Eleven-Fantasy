@@ -1,0 +1,182 @@
+# Settings of the mod Utilities (read by its scripts at start; edit this file in <game>\mods\Utilities\ and restart
+# the game). The mod is one set, always on: no feature switches. Every value has a default: a missing key or section keeps it.
+
+[team_banks]
+# Team bank pages of the Team dock («Plantilla de equipo»): each page holds the 11 team docks of the game.
+# Number of pages, 2..32 (default 10). Lowering it never deletes a page that holds teams: such a save keeps its pages.
+pages = 10
+# A page used for the first time starts as: "empty" = the current docks' names, formations, kits, emblems and tactics
+# with no players; "copy" = a full copy of the page you are on.
+new_page = "empty"
+# Write a check of every dock to the log after each page change (the log is utilities' lines in loader.log).
+verify = true
+# Game modes where pages cannot be changed (keys of the VR-Framework's game_modes.toml): story mode uses the docks
+# for its own squads. Other mods can add modes with a utilities\team_banks.toml in their own folder.
+blocked_modes = ["story"]
+
+[passives]
+# «Configuración de pasivas» (docs/game/mechanics/pasivas-configurables.md).
+# max_slots: how many of a player's 5 passive slots can be configured, 3..5 (out of range: clamped, with a warning in
+# the log). 3 (default) = the game's own passive inheritance limit: slot 2 (general) + slots 4-5 (archetype);
+# 4 adds slot 1 (the special passive); 5 = every slot (how Inazuma Fantasy's configurator worked).
+# Passives configured with a higher value stay in the save but are not applied (grey) until the value is raised.
+max_slots = 5
+# unlock: "all" = every slot of a configurable player works in matches (the ability board no longer gates passives);
+# "configured" = only the configured slots are forced open.
+unlock = "all"
+# always_unlocked: a slot holding a character's own passive (own_passives columns) works even if its board piece is closed.
+always_unlocked = true
+# build_rarities / build_slots: card rarities whose build slots (1-5) keep the board's build passives instead of an
+# own passive (Hero 5-7, Diamante 8).
+build_rarities = [5, 6, 7, 8]
+build_slots = [4, 5]
+# log_first: log the first N slot replacements (0 = none).
+log_first = 20
+# enabled = false: retail passives (no configurator; the team dock keeps «Pasivas heredadas»).
+enabled = true
+
+[role_medal]
+# Matches a player needs before the badge slot of his ability board takes the coach or manager medal. Utilities writes
+# these values into the game's own checks at start (the board's lock, slot light, «N matches left» popup and the
+# opening of the badge piece then use them with the player's real match count). The game: 30 and 10; 0 = no matches.
+# Card rarities 5-7 stay exempt, as in the game. 0..127 (higher: clamped, with a warning in the log).
+matches_required = 0
+# the same for a player created as coach or manager (the story protagonist, staff positions)
+matches_required_created_role = 0
+
+[original_names]
+# Original (Japanese / romaji) names per player: the game's «Nombres de los personajes» row (Opciones › Ajustes del
+# juego) gets the value «Por equipos»; A on the row opens the picker: the team emblems of a series page (Q / E change
+# the series: the game's series table and every series a mod declares in card_filters\), «chosen/players» under each;
+# Y switches a whole team, A on a team opens its player grid (faces; grey = dub name, normal colour = original name; A toggles a player, Y the whole
+# team, L1 / R1 the grid page, B back to the teams). The selection (one key per player) is stored in
+# mod_options\utilities.json.
+# migration of the old «Solo Ares y Orión» (Utilities 1.0.1 - 1.2.x), once: the players of the series whose name in
+# legacy_series_lang (chara_add_info_text) ends with one of these words are chosen
+legacy_series = ["Ares", "Orion"]
+legacy_series_lang = "en"
+# text languages whose team names never change (the original names are the Japanese ones there)
+team_skip_langs = ["ja"]
+# true = the team window closes and opens again after each change (only if the game's window stops taking A)
+picker_reopen = false
+# log every text load / table switch
+log = true
+
+[original_names.team_grid]
+# the team grid (the framework's emblem grid, layers util_jpn_emblem / util_jpn_label of the settings menu): tiles a row,
+# rows a page, tile pitch (px), the grid's centre (screen px, 1920 x 1080, y down)
+cols = 8
+rows = 3
+pitch_x = 210
+pitch_y = 236
+cx = 960
+cy = 520
+
+[original_names.grid]
+# the player grid (layer util_jpn_face of the settings menu): tiles a row, rows a page, tile pitch and face size (px),
+# the grid's centre (screen px, 1920 x 1080, y down)
+cols = 10
+rows = 4
+pitch_x = 150
+pitch_y = 180
+tile = 132
+cx = 960
+cy = 560
+# colour of a player who keeps his dub name (the card's grey-out material; 1 = normal colour)
+grey = 0.38
+# the name the player shows now (dub or original) under each tile
+names = true
+
+[team_planner]
+# Team planner («Planificador de equipo», docs/game/ui/team-planner.md): in a squad of the Team dock, A on an empty slot
+# offers «Añadir del banco» (the game's bank) and «Planificar equipo» (every character of the game and the mods; the
+# chosen one is a semi-transparent GHOST card in the slot until the save gets him). Another mod can set the rule below
+# with a content\team_planner\*.toml in its own folder (the last one in load order wins).
+enabled = true
+# the rarity the picker and the ghosts are drawn at (card rarity value: 0 Normal ... 4 Legendary)
+display_rarity = 4
+# the owned copies that replace a ghost: a list of card rarities, or "any" (every copy of the character's card)
+owned_rarities = [4]
+# chara_param col-41 values of a character's normal card (one entry per character: the first such row of his
+# chara_base); special rows (Hero 5-7, Diamante 8, mods' own) are other cards
+card_values = [0, 1, 2, 3, 4]
+# alpha of a ghost card and of a picker card the save does not own (1 = opaque)
+ghost_alpha = 0.45
+
+[team_planner.team_grid]
+# the picker's team grid (the framework's emblem grid, layers util_tp_emblem / util_tp_label of the formation screen):
+# tiles a row, rows a page, tile pitch (px), the grid's centre (screen px, 1920 x 1080, y down)
+cols = 8
+rows = 3
+pitch_x = 210
+pitch_y = 236
+cx = 960
+cy = 520
+
+[team_planner.grid]
+# the picker's card grid (layer util_tp_card of the formation screen, small cards): cards a row, rows a page (at most
+# 24 cards), the pitch between cards (px), the card scale, the grid's centre (screen px, 1920 x 1080, y down) and the
+# card's centre from its layer origin (px at scale 1, y down; tune if the cards sit off their cells)
+cols = 8
+rows = 2
+pitch_x = 215
+pitch_y = 260
+scale = 1.35
+cx = 960
+cy = 560
+ox = 0
+oy = 0
+
+[route_map_speed]
+# Chronicle route map (Modo Crónica's board): holding R2 moves the map cursor faster. Always on (no Mod options row).
+# R2 did nothing on that map in the game (the zoom is the right stick / mouse wheel and stays as it is).
+# factor: cursor speed multiplier while R2 is held, 1.0..5.0 (default 2.0). While the boost is on, the map's bottom
+# guide shows «R2 Velocidad del cursor» next to the game's prompts.
+factor = 2.0
+# keys: keyboard keys that count as R2 while the game window has the focus ("E", "Shift", "0x45"...; [] = pad only).
+keys = ["E"]
+# log each hold of R2 on the map (start and end lines in loader.log)
+log = true
+
+[friends]
+# Friends panel («Lista de amigos», docs/game/ui/friends.md): the top bar entry slides a panel in on the right of the
+# menu with every Steam friend (in the game: same mods / other mods / without the mod; the mod friends added by code;
+# online; offline), this player's friend code and «Añadir amigo por código»; a friend with the mod opens his details
+# (active team, career summary) and the actions (invite to my Battle Bay private room, join his, send my team code, the
+# mods we differ in, Steam profile). Steam only (the game's steam_api64.dll) and the VR-Framework's own transport;
+# nothing goes through EOS.
+enabled = true
+# the profile friends get when they ask (squad, career summary) is read again at most this often (seconds; at least 5)
+profile_refresh_s = 30
+
+[friends.panel]
+# the panel (screen px, 1920 x 1080, y down): left edge and width, top (under the top bar), row heights, the details
+# pane's width (left of the panel), frames of the slide-in
+x = 1380
+width = 540
+top = 72
+row_h = 72
+head_h = 44
+details_w = 560
+slide_frames = 10
+
+[friends.status_menus]
+# the status a menu publishes when it opens (the script stem of the menu VM); other menus keep the last one. While a
+# private room is open or a match runs the framework publishes «room» / «match» itself.
+bb = ["bb_stadium_top_menu", "enjoy_team_select_menu"]
+menu = ["soccer_top_menu", "market_menu", "item_menu", "play_guide_top_menu", "chronicle_mode_top_menu", "victory_road_top_menu", "information_top_menu", "team_dock_common_top_menu", "title_menu_2"]
+
+[auto_commander]
+# «Modo Comandante automático» (row of Mod options, scripts\auto_commander.lua). Which matches it starts in Commander mode.
+# always_games: match rows (soccer_game_config keys) whose matches always start in Commander mode, the game's gate
+# open even against an unbeaten rival. Every Battle Bay match (loose match, campaign, Battle Bay Deluxe's draft and
+# tournament) plays the Battle Bay row.
+always_games = ["fbtl_bb_stadium_00"]
+# beaten_only_contexts / beaten_only_difficulties: match difficulties (contexts and names of
+# defaults\match_difficulty.toml, every active mod's) that start in Commander mode only when the game allows it (the
+# rival already beaten); the game's gate is kept. free_match = the free-match classes; Heroica / HeroicaPlus = the
+# Heroic battles.
+beaten_only_contexts = ["free_match"]
+beaten_only_difficulties = ["Heroica", "HeroicaPlus"]
+# never_modes: game modes (keys of the VR-Framework's game_modes.toml) where the beaten-only rule never applies.
+never_modes = ["story"]

@@ -1,0 +1,121 @@
+# VR-Framework chain boards on the Chronicle board (docs/framework/chain-board.md, docs/framework/route-board.md; Nacho
+# 2026-10-09): a [[VRFW.RouteNode]] with `chain = …` (a «C» piece) opens the framework's chain board screen
+# (vrfw_chain_board_menu) instead of its command menu, the match tile picked there is launched by the board as the
+# piece's match (its own game and difficulty), and the result is the chain's (VRFW_Chain progress + rank; the piece
+# clears when every match of the chain is won). Generic (every mod's chain nodes, no list). A framework graft since
+# 2026-10-09 (it was Inazuma Fantasy's): Chronicles Deluxe's chain C1 works without IF. The rank of a chain match is
+# route_board's VRFW_RB_MatchRank (since 2.0.48 the framework's S / A / B score rule VRFW_MatchRank); the «C» crest's badge is route_board's VRFW_RB_Badge, VRFW_RCH_RankOf its default rank.
+# Order after route_nodes (160: VRFW_RN_Load); route_board (190) adds the hook points and the host call after it.
+name = "route_chains"
+mod = "vr_framework"
+order = 180
+module = ""
+requires = ["route_nodes"]
+conflicts = []
+wraps = []
+description = "Chronicle board: chain nodes open the framework's chain board"
+
+[[files]]
+stem = "vs_route_town_menu"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "vs_route_town_menu.OpenCommandSelect.RouteChains"
+  src = "rch_common.lua"
+  crc = "none"
+
+  # a chain node opens the chain board (its chain index handed over) instead of the command menu; the board is a full
+  # screen: the board's own footer (button guides) and the piece's title banner are hidden under it (they showed
+  # through, overlapping the chain board's own guide and header) and shown again when it closes (VRFW_RCH_Picked)
+  [[files.ops]]
+  type = "replace"
+  point = "vs_route_town_menu.OpenCommandSelect.RouteChainsReplace"
+  text = '''
+  local evt_rch_menu = VRFW_RCH_MenuFor(a1) -- VRFW route_chains
+  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], evt_rch_menu)
+  VRFW_RCH_ParentUi(evt_rch_menu, false)
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "replace"
+  point = "vs_route_town_menu.OpenCommandSelect.RouteChains2"
+  text = '''
+    return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], evt_rch_menu) -- VRFW route_chains
+'''
+  crc = "none"
+
+  # a match tile picked: launch it as this piece's match (OpenVsTeamMenu + CheckStartSoccerBattle with the tile's own
+  # game and difficulty; state 3 reserves the match, state 2 closes the board)
+  [[files.ops]]
+  type = "insert_before"
+  point = "vs_route_town_menu.OpenCommandSelect.RouteChainsBefore"
+  text = '''
+  local evt_rch_g, evt_rch_d = VRFW_RCH_Picked(a1) -- VRFW route_chains
+  if evt_rch_g ~= nil then
+    funcLuaMenuCommand(2171393651, 1138543975 --[[mainmenu01_06_base_button_guide]], false)
+    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], 1423637364 --[[rpg00_05_menu_button_guide]])
+    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], 9396745 --[[mainmenu01_07_button_guide]])
+    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], 3905678584)
+    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], 139522149)
+    n7 = evt_rch_d
+    n8 = 0
+    n25 = evt_rch_g
+    funcLuaCommand(2565779025, 2437536560, n25)
+    funcLuaCommand(2565779025, 2950461036, n7)
+    funcLuaCommand(2565779025, 808875126, 0)
+    funcLuaCommand(2565779025, 514031480, 0)
+    funcLuaCommand(667984508 --[[CMND_SET_TEMP_BYTE_FLAG]], 3576447329, n8)
+    flag16 = true
+    if n21 ~= 2 then
+      n21 = 3
+    end
+    DeleteNewRouteEffect()
+    flag2 = false
+    funcLuaMenuCommand(1558704558, n9, false)
+    flag6 = false
+    return
+  end
+'''
+  crc = "none"
+
+  # a chain node's balloon: its name only, no player face over it (Nacho 2026-10-10). The face is dropped before the
+  # retail face call (chara 0: the retail «no face» branch, as the story pieces): hiding the face meshes and still
+  # drawing the face (2026-10-10) flashed the placeholder team's player on the first hover, since the face draw shows
+  # the mesh once it is built and a later draw of the same face is a cache hit (2026-10-11, owner report)
+  [[files.ops]]
+  type = "insert_after"
+  point = "vs_route_town_menu.UpdatePieceAtcBalloon.RouteChains"
+  text = '''
+  if not VRFW_RCH_BalloonFace(a3) then -- VRFW route_chains
+    town_map_resource_team_and_c2 = 0
+  end
+'''
+  crc = "none"
+
+  # the retail «new» badge (the red «!» top left) stays hidden on the whole Chronicle board (Nacho 2026-10-10); each
+  # instance's own visibility is put back when the board closes
+  [[files.ops]]
+  type = "insert_after"
+  point = "vs_route_town_menu.Step.RouteChains"
+  text = '''
+  VRFW_RCH_NewIconStep() -- VRFW route_chains
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "vs_route_town_menu.FinalizeMenu.RouteNodes"
+  text = '''
+  VRFW_RCH_NewIcon(true) -- VRFW route_chains
+'''
+  crc = "none"
+
+  # back on the board after a match (state 8), before the retail result handling: a chain match's result
+  [[files.ops]]
+  type = "insert_after"
+  point = "vs_route_town_menu.PreStep.RouteChains"
+  text = '''
+    VRFW_RCH_AfterMatch() -- VRFW route_chains
+'''
+  crc = "none"

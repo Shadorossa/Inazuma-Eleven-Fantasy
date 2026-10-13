@@ -1,0 +1,241 @@
+# Defaults of the team engine (crates/plugins/team_engine; vr_framework::defaults, `defaults/team.toml` of every mod,
+# merged in load order: a later mod overrides a key). Only what the game data cannot give.
+
+[free_match]
+# The game a `free_match` appearance clones when it names no `template_game`: the retail free-match game (its
+# difficulty-9 row is the only one the free-match flow plays). Nothing in soccer_game_config marks it as such.
+template_game = "fbtl_free_001"
+
+[chain]
+# The game every node game of a [[VRFW.Chain]] clones when the chain names no `template_game`: the 11-a-side free match
+# (difficulty rows 6-9).
+template_game = "fbtl_free_001"
+
+[bb_pages]
+# The categories (tabs) of the Bahía Batalla / Estadio BB team grid (docs/framework/bb-pages.md; team engine
+# bb_category.rs, run time vr_framework.dll bb_pages_rt). A row goes to the category its team declaration names
+# (`category = "<id>"` on its bb_stadium appearance), else to the first category whose `rule` it meets, rules tried in
+# this order: `game` (the game's own BB rows), `chain` (a [[VRFW.Chain]] node team, its BB copy, a team based_on one), `mod`
+# (any other row a mod added). A category with no row is not shown; one category of one page = the retail grid.
+# `Text` = a menu_text row id (text\rows\bb_pages.toml, 9 languages); `Icon` = "<atlas>:<sprite>" (the atlas is made
+# at the first start from the player's own game files: images\menu\107_vs\vrfw_bb_pages.toml). A mod adds its own
+# with [[VRFW.Category]] in its teams files, or changes a field of these with the same `Id` (keys PascalCase). `Sort` = the order of a
+# category's rows, keys in turn: `season` (the carousel's order IE1 -> ... -> Victory Road, rows of no season last),
+# `source_order` (the row's place in the table: the game's own BB order, then the mods' rows as they declare them),
+# `name` (the team's shown name in the game's text language, case / accent-insensitive).
+# `dedupe`: a row a mod added whose team an EARLIER category already lists (same shown name, and the same season or
+# at least half of the same starters) is left out of the grid (the game's own rows never are; rows of one category never
+# remove each other): e.g. Classic Teams' level-40 copies of the Chronicle teams that «Chronicle teams in the Battle Bay»
+# already shows in «Equipos principales» / «Equipos secundarios». Log `bb_stadium: N duplicate row(s) left out …`.
+dedupe = true
+# `chronicle_unlock` (2.0.x, Nacho 2026-10-09: «que se tenga que jugar contra ellos y ganarles para desbloquearlos en el
+# BB»): every row whose team has a Chronicle equivalent (a Chronicle board piece's rival, a [[VRFW.RouteNode]], a
+# [[VRFW.Chain]] match tile; same team / BB copy / based_on, else most of the same starters, else the same name) is
+# locked (greyed, padlock, «Gana a X en el modo Crónica») until the player wins that match in the save slot; rows
+# without an equivalent and rows with their own unlock condition are left as they are; CPU rivals of the campaign
+# may still be locked teams. A mod opts out with [VRFW.BbUnlock] Enabled = false (its rows) / Unlocks = false (its
+# nodes and chains). docs/framework/bb-pages.md §8.
+chronicle_unlock = true
+
+[[bb_pages.category]]
+Id = "main"
+Text = "vrfw_bb_cat_main"
+Icon = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx:vrfw_bb_cat_main"
+Order = 10
+Rule = "game"
+Sort = ["season", "source_order"]
+
+[[bb_pages.category]]
+# «Equipos secundarios» (2026-10-08, Nacho; was `chain`, still accepted as an alias): the rule takes the match-chain
+# teams; a mod puts its other second-line teams here with `category = "secondary"` (bb_chronicle_teams: the legends)
+Id = "secondary"
+Aliases = ["chain"]
+Text = "vrfw_bb_cat_secondary"
+Icon = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx:vrfw_bb_cat_secondary"
+Order = 20
+Rule = "chain"
+# alphabetical inside each season (Nacho, 2026-10-08)
+Sort = ["season", "name"]
+
+[[bb_pages.category]]
+Id = "mods"
+Text = "vrfw_bb_cat_mods"
+Icon = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx:vrfw_bb_cat_mods"
+Order = 30
+Rule = "mod"
+Sort = ["season", "source_order"]
+
+[bb_pages.seasons]
+# The season carousel of the same grid (a filter: the categories and pages then show only that season's rows). One
+# season per series of the game's chara_series_config (its charaSeriesType: 1 IE1 ... 9 Victory Road); a row's season =
+# the one its declaration names (`season = "<id>"`), else the highest series with at least 2 starters in its roster
+# (else the highest any starter has). `{type}` = the series type in two digits. The icons are the player bank's own
+# series tab icons (the game's atlas, read at run time: nothing shipped). A mod that adds a series declares
+# [[VRFW.Season]] (id, text, icon, order) in its teams files and names it on its teams.
+from_game = true
+id = "series_{type}"
+text = "vrfw_bb_season_{type}"
+icon = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx:icon_list_tab_series{type}"
+all_text = "vrfw_bb_season_all"
+# the carousel's first entry (every season): a neutral «all» glyph of the tab atlas (four tiles; not the «main teams»
+# glyph, which is the first category's tab)
+all_icon = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx:vrfw_bb_season_all"
+
+# ---- game-data values the team build (scripts\build\team.lua) and its native parts read (2026-10-10: no longer
+# compiled in; docs/framework/build-scripts.md)
+
+[team]
+# A new team without `based_on` is shaped like the first team_config team with this many member rows (a full story
+# roster block: tm_st_game_0101a on v7.1.2, team_create_build.TEMPLATE_TEAM).
+template_rows = 18
+
+[bb_copy]
+# The Estadio BB copy of a team (`<key>_bb`, bb_teams_build.py's rule): its member rows up to slot `last_slot` (the
+# coach; the manager is left out) with these cells (the retail BB rosters' values: flag 0, level offset 0, rarity step
+# 4, cols 14-19 = -1, the eight stat rates 1); its metamorphose slice empty.
+last_slot = 19
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = -1
+rates = 1
+
+[bb_row]
+# A new Estadio BB row (enjoy_mode_team_config ENJOY_MODE_TEAM_INFO) is a copy of the table's first row with these
+# cells (the row's team, leader = the captain's card and order = after the last row are set by the build).
+c2 = 0
+condition = 0
+unlock_text = 0
+c10 = 0
+c11 = -1
+
+[bgm]
+# A team's match music (`music = "<mod>.<song>"`, soccer_game_bgm_config; docs/app/match-team-wizard.md §2.2): the
+# three phase lists (their slices are the info row's fields 5 / 6 / 7), the state slot of the new set that plays the
+# track (0 = game_start) and the slots kept from the base set (18 / 20: its stop commands, harmless for the new track).
+phases = ["m_FirstHalfBgmList", "m_AfterSecondHalfLeadBgmList", "m_AfterSecondHalfNotLeadBgmList"]
+start_slot = 0
+kept_slots = [18, 20]
+
+[free_match_tabs]
+# [[VRFW.FreeMatchTab]] (docs/framework/free-match-tabs.md): the first extra tab's index (the retail bar has tabs 0-8,
+# IE1 ... Victory Road), the extra tabs the retail 10-tab bar holds without a declared [[VRFW.FreeMatchTabBar]], and the
+# most tabs a layout may serve (the list's tab byte; the screen's tab instances are raised up to this many).
+first_tab = 9
+retail_extra = 1
+max_tabs = 12
+
+[bb_unlock]
+# «Win it to unlock it» on the Estadio BB grid (docs/framework/bb-pages.md §8): the difficulty ids of a Chronicle piece
+# (docs/game/modes/chronicle-mode.md §2: normal 1, 2, 3, 4, 10, 11; gate 2, 10, 11), the starters (slots 0-10) two teams
+# must share to be the same team by roster / the same squad, and the comparisons one unlock condition holds (5 nodes
+# per comparison + 1 per OR, at most 255).
+chronicle_diffs = [1, 2, 3, 4, 10, 11]
+min_shared = 6
+same_squad = 9
+max_terms = 42
+# Story teams (owner 2026-10-13): a row whose team is a rival of the game's own STORY mode unlocks by beating it in
+# the story, not in the Chronicle. The rivals and their «beaten in the story» condition are the game's own: the
+# soccer_opponent_info rows of category 0 whose class-6 unlock (cond1) is not a Chronicle clear (the VS-CPU «Story»
+# opponents: GetSoccerGameClearFlag(<story game>, 1) or the story step's global bit). Matched by identity or the same
+# squad. false = those rows follow the Chronicle rule.
+story_unlock = true
+
+# Per category (the [[bb_pages.category]] Id): `difficulties` = the Chronicle difficulties a win must be at (absent =
+# any), `chains = false` = [[VRFW.Chain]] tiles never unlock its rows, `own_team = true` = a row whose team is the
+# player's OWN side in the Chronicle (more starters shared with a piece's forced own team than with any rival: Chrono
+# Storm, Earth Eleven…) unlocks with the decisive match of that route (the deepest match piece on the route's own unlock
+# links from its first match: Chrono Storm -> Ragnah), `hint` = the [bb_unlock.hint] template of its rows.
+# «Equipos principales» (owner 2026-10-13): only their own Chronicle battle (any difficulty), never a chain.
+[bb_unlock.category.main]
+chains = false
+own_team = true
+
+# The hint of a locked row (bb-pages.md §8.2): the team build writes one menu_text row per locked team
+# (`vrfw_bb_unlock_<team hex>`, the row's lock text) from these templates, {team} = the team's shown name and {chain} =
+# the title of the chain whose tile unlocks it, filled in every text language (the game draws the lock text as it is:
+# it fills nothing). `chain` when one of the team's unlock sources is a chain tile, else `chronicle`.
+[bb_unlock.hint.chronicle]
+es = "Gana a este equipo en el modo Crónica para desbloquearlo"
+en = "Beat this team in Chronicle Mode to unlock it"
+fr = "Battez cette équipe en mode Chronique pour la débloquer"
+de = "Besiege dieses Team im Chronik-Modus, um es freizuschalten"
+it = "Batti questa squadra in modalità Cronaca per sbloccarla"
+pt = "Vença esta equipe no modo Crônica para desbloqueá-la"
+ja = "クロニクルモードでこのチームに勝つと解放"
+zh_hans = "在编年史模式中击败这支队伍即可解锁"
+zh_hant = "在編年史模式中擊敗這支隊伍即可解鎖"
+
+[bb_unlock.hint.chronicle_rival]
+es = "Gana a {team} en el modo Crónica para desbloquearlo"
+en = "Beat {team} in Chronicle Mode to unlock it"
+fr = "Battez {team} en mode Chronique pour la débloquer"
+de = "Besiege {team} im Chronik-Modus, um es freizuschalten"
+it = "Batti {team} in modalità Cronaca per sbloccarla"
+pt = "Vença {team} no modo Crônica para desbloqueá-la"
+ja = "クロニクルモードで{team}に勝つと解放"
+zh_hans = "在编年史模式中击败{team}即可解锁"
+zh_hant = "在編年史模式中擊敗{team}即可解鎖"
+
+[bb_unlock.hint.story]
+es = "Gana a este equipo en el modo Historia para desbloquearlo"
+en = "Beat this team in Story Mode to unlock it"
+fr = "Battez cette équipe en mode Histoire pour la débloquer"
+de = "Besiege dieses Team im Story-Modus, um es freizuschalten"
+it = "Batti questa squadra in modalità Storia per sbloccarla"
+pt = "Vença esta equipe no modo História para desbloqueá-la"
+ja = "ストーリーモードでこのチームに勝つと解放"
+zh_hans = "在故事模式中击败这支队伍即可解锁"
+zh_hant = "在故事模式中擊敗這支隊伍即可解鎖"
+
+[bb_unlock.hint.chain]
+es = "Gana a este equipo en \"{chain}\" para desbloquearlo"
+en = "Beat this team in \"{chain}\" to unlock it"
+fr = "Battez cette équipe dans \"{chain}\" pour la débloquer"
+de = "Besiege dieses Team in \"{chain}\", um es freizuschalten"
+it = "Batti questa squadra in \"{chain}\" per sbloccarla"
+pt = "Vença esta equipe em \"{chain}\" para desbloqueá-la"
+ja = "「{chain}」でこのチームに勝つと解放"
+zh_hans = "在「{chain}」中击败这支队伍即可解锁"
+zh_hant = "在「{chain}」中擊敗這支隊伍即可解鎖"
+
+[route_map]
+# The main Chronicle board (routeMapType 0, docs/game/modes/chronicle-side-branches.md): 6 x 6 painted tiles
+# `route_mapRC.g4tx` of 2048 px. Grid position (piecePos) -> map px = (cx + a * x, cy - b * y): a least-squares fit on
+# the pads of IE1 / IE2 / IE3 / GO pieces (residual ~10 px; a node's pad is then snapped on the art). Road and pad sizes
+# of the retail art (full-resolution px, measured at Inazuma Kids FC's pad): road width, pad radii; a dotted road's dash
+# and gap in road widths (Nacho 2026-10-06: dash 1.5x, gap 1x); the side band under the roads / pads when it cannot be
+# measured. Read by the team build's road drawing and the Mods panel's route map (team_engine::build::route::RouteMap).
+map_a = 194.1
+map_b = 112.0
+map_cx = 6141.0
+map_cy = 6139.5
+tile = 2048
+tiles = 6
+road_width = 22.0
+pad_rx = 55.0
+pad_ry = 30.0
+dash = 1.5
+gap = 1.0
+side_default = 5.5
+
+[route_nodes]
+# [[VRFW.RouteNode]]: the size of the board's save status flags (`m_globalChronicle*StatusFlag`, 300 bytes: a node's
+# slot is below it and above every slot the game's own pieces use), a sanity limit of the roads crossing one map tile
+# (a road is one overlay sprite drawn at run time, nothing is copied per tile; the roads past it on a tile are left out
+# with a WARN, the others are drawn), and the box a node's own `Icon` PNG is fitted into on its 128 x 128 board sprite (the
+# retail crests: ~104 px, centred, standing at y 116 = top 12).
+slot_limit = 300
+# Extended slots (docs/framework/route-board.md §5, 2026-10-11): a node's `Slot` may also be slot_limit ..
+# ext_slot_limit - 1. Its clear / lock state is kept by the framework (save service owner vr_framework, key
+# `route_slot.<n>`, graft route_nodes' VRFW_RouteSlots) instead of the 300-byte arrays; its piece row's statusFlagIndex
+# is proxy_slot, one free retail byte that no node may take (the game's own code only ever reads that byte for them).
+ext_slot_limit = 1000
+proxy_slot = 299
+max_nodes_per_tile = 255                  # sanity limit only (2026-10-12: roads are run-time overlays, linear cost; was 3 / 6 with the tile copies)
+crest_box = 104
+crest_top = 12
+# A chain node's piece (`Chain` / a chain hub: its own game is never played) gets this opponentListTab, a tab the
+# «Cadena de Crónica» team list does not have (it has 0-8; docs/game/modes/chronicle-mode.md §12), so the list does not
+# show it as a copy of its `Beside` team (2026-10-12: «Cadena del Abuelo» listed as a second Desesperdidos).
+chain_list_tab = 9

@@ -1,0 +1,72 @@
+schema = "vr_framework.base_table/1"
+file = "data/common/event_cfg/eff/ev61_95110_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev61_00810_eff.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["ev61951100", "common/effect/event/ev61/ev61951100/ev61951100.objbin", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["ev61951100"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 5
+values = ["ev61951100", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 6
+values = ["ev61951100", "c0010", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 7
+values = ["ev61951100", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 9
+values = ["ev61951100", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 10
+values = ["ev61951100", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 11
+values = ["ev61951100", "c0020", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 12
+values = ["ev61951100", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 14
+values = ["ev61951100", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 15
+values = ["ev61951100", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 16
+values = ["ev61951100", "c0030", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 17
+values = ["ev61951100", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 18
+values = ["ev61951100", 0]

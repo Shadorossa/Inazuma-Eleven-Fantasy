@@ -1,0 +1,238 @@
+# Generated ONCE by research/scripts/bb_chronicle_teams_build.py from the retail v7.1.2 data (last run before 2026-10-13);
+# now HAND-MAINTAINED source: edit it directly or with ModManager «Equipos» (edit the original mod, in place).
+# The script refuses to overwrite it (only --force-regenerate does, and that loses every hand edit).
+# Season group ORION: the Chronicle teams of its route (based_on the game team: roster, kit, formation, emblem,
+# captain; name = the game team's own name text; stadium_fallback = its home stadium, the one its own Chronicle game
+# plays at, stadium_image = that stadium's card art: the Battle Bay row plays there unless an active mod declares
+# the game team's own `stadium` (VR-Framework 2.0.101), then there; movesets and tactics: 80_movesets.toml).
+schema = "vr_framework.team/2"
+
+[[team]]
+name = "orion_0100"
+key = "bbcr_orion_0100"
+based_on = "tm_cro_orion_0100"      # Bisonte Rojo, board fbtl_cro08_010_010
+name_text = 0xE582CC2E
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001b"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_010_010
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "orion_0200"
+key = "bbcr_orion_0200"
+based_on = "tm_cro_orion_0200"      # Demonios Brillantes, board fbtl_cro08_020_010
+name_text = 0xA0AB58CD
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001b"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_020_010
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "orion_0300"
+key = "bbcr_orion_0300"
+based_on = "tm_cro_orion_0300"      # Bailarines Eternos, board fbtl_cro08_030_010
+name_text = 0x2A07CEBF
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001b"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_030_010
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "orion_0400"
+key = "bbcr_orion_0400"
+based_on = "tm_cro_orion_0400"      # Ejército del Fénix Árabe, board fbtl_cro08_040_010
+name_text = 0xE0616849
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001b"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_040_010
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "orion_0500"
+key = "bbcr_orion_0500"
+based_on = "tm_cro_orion_0500"      # Tropa Acrobática del Fútbol, board fbtl_cro08_050_010
+name_text = 0xB63AF0BD
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001b"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_050_010
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "orion_0600"
+key = "bbcr_orion_0600"
+based_on = "tm_cro_orion_0600"      # Gigantes Invencibles, board fbtl_cro08_060_010
+name_text = 0x31430FEB
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_060_010
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "legend_orion_06"
+key = "bbcr_legend_orion_06"
+based_on = "tm_cro_legend_ORION_06"      # Unicornios con Estrellas, legend fbtl_cro08_legend_ORION_04
+name_text = 0x518A2D30
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_legend_ORION_04
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "orion_0700"
+key = "bbcr_orion_0700"
+based_on = "tm_cro_orion_0700"      # Navy Invader, board fbtl_cro08_070_010
+name_text = 0xCD63BD70
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_070_010
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "orion_0900"
+key = "bbcr_orion_0900"
+based_on = "tm_cro_orion_0900"      # Olé de Samba, board fbtl_cro08_090_010
+name_text = 0x0EF0BD09
+level = 40
+series = "ORION"
+stadium_fallback = "s83g001"      # Estadio Canal Volga-Don de Volgogrado, its Chronicle game fbtl_cro08_090_010
+stadium_image = "ev_chronicle_img/ev_ch_s83g001_0116.g4tx"
+
+[[team]]
+name = "orion_1000"
+key = "bbcr_orion_1000"
+based_on = "tm_cro_orion_1000"      # Guardianes de la Reina, board fbtl_cro08_100_010
+name_text = 0x13695450
+level = 40
+series = "ORION"
+stadium_fallback = "s83g001"      # Estadio Canal Volga-Don de Volgogrado, its Chronicle game fbtl_cro08_100_010
+stadium_image = "ev_chronicle_img/ev_ch_s83g001_0116.g4tx"
+
+[[team]]
+name = "orion_1200"
+key = "bbcr_orion_1200"
+based_on = "tm_cro_orion_1200"      # Chispas Perfectas, board fbtl_cro08_110_010
+name_text = 0xDB7F2F04
+level = 40
+series = "ORION"
+stadium_fallback = "s84g001"      # Estadio principal RB de Moscú, its Chronicle game fbtl_cro08_110_010
+stadium_image = "ev_chronicle_img/ev_ch_s84g001_0101.g4tx"
+
+[[team]]
+name = "orion_1100"
+key = "bbcr_orion_1100"
+based_on = "tm_cro_orion_1100"      # Eclipse de Orión, board fbtl_cro08_120_010
+name_text = 0xB3511CD3
+level = 40
+series = "ORION"
+stadium_fallback = "s85g001"      # Estadio principal RB de Moscú (noche), its Chronicle game fbtl_cro08_120_010
+stadium_image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx"
+
+[[team]]
+name = "legend_orion_01"
+key = "bbcr_legend_orion_01"
+based_on = "tm_cro_legend_ORION_01"      # Nuevo Inazuma Fusión, legend fbtl_cro08_legend_ORION_01
+name_text = 0xCFEEB893
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_legend_ORION_01
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "legend_orion_02"
+key = "bbcr_legend_orion_02"
+based_on = "tm_cro_legend_ORION_02"      # Selección Mundial, legend fbtl_cro08_legend_ORION_02
+name_text = 0x56E7E929
+level = 40
+series = "ORION"
+stadium_fallback = "s83g001"      # Estadio Canal Volga-Don de Volgogrado, its Chronicle game fbtl_cro08_legend_ORION_02
+stadium_image = "ev_chronicle_img/ev_ch_s83g001_0116.g4tx"
+
+[[team]]
+name = "legend_orion_03"
+key = "bbcr_legend_orion_03"
+based_on = "tm_cro_legend_ORION_03"      # Los Estrafalarios, legend fbtl_cro08_legend_ORION_08
+name_text = 0x21E0D9BF
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_legend_ORION_08
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "legend_orion_04"
+key = "bbcr_legend_orion_04"
+based_on = "tm_cro_legend_ORION_04"      # Estrellas Neo, legend fbtl_cro08_legend_ORION_03
+name_text = 0xBF844C1C
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_legend_ORION_03
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "legend_orion_05"
+key = "bbcr_legend_orion_05"
+based_on = "tm_cro_legend_ORION_05"      # Inazuma Bravos, legend fbtl_cro08_legend_ORION_10
+name_text = 0xC8837C8A
+level = 40
+series = "ORION"
+stadium_fallback = "s84g001"      # Estadio principal RB de Moscú, its Chronicle game fbtl_cro08_legend_ORION_10
+stadium_image = "ev_chronicle_img/ev_ch_s84g001_0101.g4tx"
+
+[[team]]
+name = "legend_orion_07"
+key = "bbcr_legend_orion_07"
+based_on = "tm_cro_legend_ORION_07"      # Brigada Orión Asia, legend fbtl_cro08_legend_ORION_05
+name_text = 0x268D1DA6
+level = 40
+series = "ORION"
+stadium_fallback = "s24g001"      # Estadio Fútbol Frontier feroz, its Chronicle game fbtl_cro08_legend_ORION_05
+stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
+
+[[team]]
+name = "legend_orion_08"
+key = "bbcr_legend_orion_08"
+based_on = "tm_cro_legend_ORION_08"      # Neo Japón Implacable, legend fbtl_cro08_legend_ORION_06
+name_text = 0xB6320037
+level = 40
+series = "ORION"
+stadium_fallback = "s84g001"      # Estadio principal RB de Moscú, its Chronicle game fbtl_cro08_legend_ORION_06
+stadium_image = "ev_chronicle_img/ev_ch_s84g001_0101.g4tx"
+
+[[team]]
+name = "legend_orion_09"
+key = "bbcr_legend_orion_09"
+based_on = "tm_cro_legend_ORION_09"      # Samuráis por la Libertad, legend fbtl_cro08_legend_ORION_09
+name_text = 0xC13530A1
+level = 40
+series = "ORION"
+stadium_fallback = "s25g001"      # Estadio Castillo de Kazán, its Chronicle game fbtl_cro08_legend_ORION_09
+stadium_image = "ev_chronicle_img/ev_ch_s25g001_0116.g4tx"
+
+[[team]]
+name = "legend_orion_10"
+key = "bbcr_legend_orion_10"
+based_on = "tm_cro_legend_ORION_10"      # Sombras del Crepúsculo, legend fbtl_cro08_legend_ORION_07
+name_text = 0xA1F2B944
+level = 40
+series = "ORION"
+stadium_fallback = "s85g001"      # Estadio principal RB de Moscú (noche), its Chronicle game fbtl_cro08_legend_ORION_07
+stadium_image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx"
+
+[[team]]
+name = "legend_orion_11"
+key = "bbcr_legend_orion_11"
+based_on = "tm_cro_legend_ORION_11"      # Familias aguerridas, legend fbtl_cro08_legend_ORION_11
+name_text = 0xD6F589D2
+level = 40
+series = "ORION"
+stadium_fallback = "s85g001"      # Estadio principal RB de Moscú (noche), its Chronicle game fbtl_cro08_legend_ORION_11
+stadium_image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx"
+
+[[team]]
+name = "legend_orion_12"
+key = "bbcr_legend_orion_12"
+based_on = "tm_cro_legend_ORION_12"      # La Élite de Orión, legend fbtl_cro08_legend_ORION_12
+name_text = 0x4FFCD868
+level = 40
+series = "ORION"
+stadium_fallback = "s85g001"      # Estadio principal RB de Moscú (noche), its Chronicle game fbtl_cro08_legend_ORION_12
+stadium_image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx"

@@ -1,0 +1,112 @@
+-- bb_chronicle_teams bb_net_room, network_menu's private-room screen (network_room_match_wait): in our own private
+-- room's session the game's room screen runs as it is (members, rules, ready, countdown, start; the member count and
+-- ready states come from the session the VR-Framework shim keeps, its messages travel on our Steam transport) except
+-- the steps that belong to an EOS lobby:
+--   RequestBack       (Back -> the retail «leave the room?» Yes) the retail one closes the lobby session and re-runs
+--                     the online init (ToMatchingMenuSoccer: the game's own online service): here our room is left
+--                     (its session goes purely: CMND_VRFW_NET_LEAVE) and network_menu closes (the caller's wait ends:
+--                     the «Modos de juego» boxes / the Battle Bay top menu come back)
+--   RequestBackError  (the session broke: the other player gone, an error) the retail screen cleanup, then the same
+--                     leave once no message window is up
+--   OnFunction        invite -> the Steam overlay's invite (CMND_VRFW_NET_INVITE), never the platform / EOS one;
+--                     kick -> nothing (an EOS lobby kick)
+-- Outside our session every function is the retail one. docs/game/modes/bb-online-ownnet.md §18. Globals only (BBNW,
+-- BBNW_*); nothing runs at chunk load.
+BBNW = BBNW or {
+  MENU = 106494436 --[[crc32 network_menu]],
+  STATE = @crc:CMND_VRFW_NET_SESSION_STATE@,
+  STATUS = @crc:CMND_VRFW_NET_STATUS@,
+  LEAVE = @crc:CMND_VRFW_NET_LEAVE@,
+  INVITE = @crc:CMND_VRFW_NET_INVITE@,
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  FN_INVITE = 2028025522,
+  FN_KICK = 564775998,
+  leave_pending = false,
+  seen = false,
+}
+
+function BBNW_Log(...)
+  pcall(funcLuaCommand, BBNW.LOG, "bb_chronicle_teams net room", ...)
+end
+
+-- our session is up, or our room is open (a session the game just ended still has its room until we leave it)
+function BBNW_Ours()
+  local ok, st = pcall(funcLuaCommand, BBNW.STATE)
+  if ok and (st == "up" or st == "arming") then
+    return true
+  end
+  local okp, phase = pcall(funcLuaCommand, BBNW.STATUS)
+  return okp and type(phase) == "string" and phase ~= "none" and phase ~= "closed"
+end
+
+-- our room out, network_menu closed
+function BBNW_Close(why)
+  BBNW_Log("leave", tostring(why))
+  BBNW.leave_pending = false
+  BBNW.seen = false
+  pcall(funcLuaCommand, BBNW.LEAVE)
+  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBNW.MENU, true)
+end
+
+do
+  local rbe = RequestBackError
+  BBNW_RetailBackError = rbe
+  function RequestBackError(...)
+    local r = table.pack(rbe(...))
+    if BBNW.seen or BBNW_Ours() then
+      BBNW_Log("session error: the room is left once the message is answered")
+      BBNW.leave_pending = true
+    end
+    return table.unpack(r, 1, r.n)
+  end
+end
+
+do
+  local back = RequestBack
+  function RequestBack(...)
+    if not BBNW_Ours() then
+      return back(...)
+    end
+    BBNW_Log("back: our room is left")
+    funcLuaMenuCommand(1558704558, BBNW.MENU, false)
+    -- the retail screen cleanup (BGM, timer, stamps, sub windows, team select, cursor); no session step in it
+    if type(BBNW_RetailBackError) == "function" then
+      local ok, err = pcall(BBNW_RetailBackError)
+      if not ok then
+        BBNW_Log("cleanup error", tostring(err))
+      end
+    end
+    BBNW_Close("back")
+  end
+end
+
+do
+  local step = Step
+  function Step(...)
+    if not BBNW.seen and BBNW_Ours() then
+      BBNW.seen = true
+    end
+    if BBNW.leave_pending and funcLuaCommand(898725220 --[[MSG_BUSY]]) ~= true
+        and funcLuaCommand(682363669 --[[MSG_DONE]]) == true then
+      BBNW_Close("session ended")
+      return
+    end
+    return step(...)
+  end
+end
+
+do
+  local fn = OnFunction
+  function OnFunction(a1, a2, ...)
+    if (a1 == BBNW.FN_INVITE or a1 == BBNW.FN_KICK) and BBNW_Ours() then
+      if a1 == BBNW.FN_INVITE then
+        local ok, shown = pcall(funcLuaCommand, BBNW.INVITE)
+        BBNW_Log("invite (Steam overlay)", tostring(ok and shown))
+      else
+        BBNW_Log("kick: not in our rooms")
+      end
+      return
+    end
+    return fn(a1, a2, ...)
+  end
+end

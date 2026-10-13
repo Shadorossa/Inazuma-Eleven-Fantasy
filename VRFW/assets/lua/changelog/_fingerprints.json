@@ -1,0 +1,33 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "title_menu_2": {
+  "script": "title_menu_2_7.01.12.00",
+  "require": [
+   "SetupVroadTournamentInfoBalloon"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "title_tutorial_menu": {
+  "script": "title_tutorial_menu_3.00.26.00",
+  "require": [
+   "UpdateIsLoadingMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vrfw_mods_menu": {
+  "script": "vrfw_mods_menu",
+  "require": [
+   "VRFW_ModsMenuStub"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

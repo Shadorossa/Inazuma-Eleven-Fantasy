@@ -1,0 +1,17 @@
+-- Utilities neutral element: team dock chara status (mainmenu04_03_2). Retail SetupElementIconTexture leaves texture 0
+-- for a character with element 0 / 5; draw the neutral sprite icon_cmd_type00 (crc 3196645112) instead, after retail,
+-- in the same slot. A HOOK file (graft neutral_element_dock): an `after` handler of the VR-Framework's host of
+-- team_dock_menu_rpg_battle (menu_engine lua\team_dock_menu_rpg_battle\000_host.lua), so it runs on top of every
+-- lua_early patch of this screen (Inazuma Fantasy's board_entry file redefines SetupElementIconTexture with its promoted
+-- locals: a plain wrapper of an earlier root would be dropped). No engine call at load.
+local H = VRFW_Host or EVT_Host
+if type(H) == "table" and type(H.on) == "function" then
+  H.on("team_dock_menu_rpg_battle", "SetupElementIconTexture", {id = "utilities.neutral_element_dock", phase = "after",
+    fn = function(r, a1, a2)
+      local el = funcLuaCommand(1131797651, a2, 8)
+      if el == 0 or el == 5 then
+        funcLuaMenuCommand(558735651, 201053059 --[[mainmenu04_03_2_chara_status]], MAIN_MENU.GetTexturePathCommandCommonIcon(),
+                           3196645112 --[[icon_cmd_type00]], 1265099231 --[[icon_type_dmy01]], 0, a1)
+      end
+    end})
+end

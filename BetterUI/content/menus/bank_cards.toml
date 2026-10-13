@@ -1,0 +1,81 @@
+# Hand-maintained. Clean HUD's player bank («Banco»: chara_bank_menu, and chara_bank_menu_for_search = the bank search /
+# miximax picker) with the compact player card (flag compact_cards; docs/game/ui/ui-redesign.md §3.6 / §3.9; moved from
+# Inazuma Fantasy on 2026-10-08):
+# * the grid: 8 columns instead of 6. The list cards use a 0.85 copy of the compact card layout (files\data
+#   team00_01_evt_fcg / team00_01_p1_evt_fcg, root *_output scaled, objbins *_evt_fcg); the grid layout team14_01.g4pkm
+#   has 2 card locators inserted per row (column step 102.8, 12.1 px gaps both ways; 25,952 B instead of the retail
+#   22,816: a new size, so it needs the normal mod install, not a hot copy); the list object walks 8 per row, 72 in all.
+#   Navigation, paging, scrolling and the selection frame are native (CMenuListViewCharaBank, from mLineNum).
+# * the team panel on the right: the formation's compact cards (pitch, leader, drag card, empty slots).
+# Built by research/scripts/ui_clean_build.py (GRID_*, card_rows_bytes) and fc_build.py.
+schema = "vr_framework.menu/2"
+
+[[object_set]]
+object = "team14_01_chara_bank_list"
+set = [
+    { param = "mLineNum", values = { 1 = 8 } },
+    { param = "mLocatorNum", values = { 1 = 72 } },
+]
+
+[[redirect]]
+object = "team00_01_chara_card_for_list"
+to = "team00_01_chara_card_for_list_evt_fcg"
+menus = ["chara_bank_menu", "chara_bank_menu_for_search"]
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_chara_card_for_list"
+count = 72
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_chara_card_blank_for_list"
+object = "team00_01_p1_chara_card_blank_evt_fcg"
+count = 72
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_p4_check_mark"
+count = 72
+
+[[patch]]
+menu = "chara_bank_menu_for_search"
+layer = "team00_01_chara_card_for_list"
+count = 72
+
+[[patch]]
+menu = "chara_bank_menu_for_search"
+layer = "team00_01_chara_card_blank_for_list"
+object = "team00_01_p1_chara_card_blank_evt_fcg"
+count = 72
+
+[[patch]]
+menu = "chara_bank_menu_for_search"
+layer = "team00_01_p4_check_mark"
+count = 72
+
+# the team panel (layer by layer: the formation screens' redirect of these objects does not include the bank)
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_chara_card_for_leader"
+object = "team00_01_chara_card_for_formation_evt"
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_chara_card_for_soccer"
+object = "team00_01_chara_card_for_formation_evt"
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_chara_card_for_move"
+object = "team00_01_chara_card_for_formation_evt"
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_p1_chara_card_blank_for_leader"
+object = "team00_01_p1_chara_card_blank_for_formation_evt"
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "team00_01_p1_chara_card_blank"
+object = "team00_01_p1_chara_card_blank_for_formation_evt"

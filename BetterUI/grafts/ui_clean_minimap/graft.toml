@@ -1,0 +1,34 @@
+# ui_clean, minimap (docs/game/ui-redesign.md 11.1z4): the match pitch minimap (layer soccer00_03_minimap of
+# soccer_constant_menu, and soccer_battle_constant_menu for 5v5 / pachanga) moves UP into the space that the hidden enemy
+# tension / kizuna block (ui_clean_hud, enemy_meters) and the smaller HUD leave free at the right. The pitch and the
+# player dots are one layer (CMenuMinimap draws the dots inside it), so one CMND_SET_LAYER_LOCAL_POS moves both.
+# Only OnSetupLayer / OnOpenLayer are wrapped (retail first, then the offset). Part of the standalone mod clean_hud
+# («Interfaz limpia», docs/app/modloader-split.md §6); other mods' patches of OnInit / Step of the same file don't overlap.
+name = "ui_clean_minimap"
+order = 906
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OnOpenLayer"]
+description = "ui_clean: match minimap (pitch + dots) moved up"
+
+[[files]]
+stem = "soccer_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "minimap_up.lua"
+  marker = "ui_clean minimap"
+  crc = "none"
+
+# 5v5 / pachanga / battle matches: their HUD is soccer_battle_constant_menu (own script, same include, same minimap
+# layer in its group of soccer_constant_menu_setting.cfg)
+[[files]]
+stem = "soccer_battle_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "minimap_up.lua"
+  marker = "ui_clean minimap"
+  crc = "none"

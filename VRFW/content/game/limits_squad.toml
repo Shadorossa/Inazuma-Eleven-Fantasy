@@ -1,0 +1,40 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › squad card types of mods (service S1 of VRFW 2.3, docs/framework/limits.md §3.3). The game's own card
+# types (Hero, Diamond) are lifted by the limits plan (crates/plugins/menu_engine/src/opponent_list.rs, profile edits
+# by name, [limits.squad] of the mods' defaults\limits.toml). A mod's own card type counts with a native one
+# (`[limits.squad.card_type.<name>] rarities = [...], counts_as = "diamond"`): the run time is scripts\limits.lua, on
+# the hook below. Nothing declared = the hook passes every call to the game (the state key stays unset, so the scripts
+# are never called: post_when).
+
+# u32 GetCharaRarity(u32 charaHdl): the rarity of a character handle (0 for an unknown handle).
+[[VRFW.Function]]
+name = "LimitsRarity"
+game = "Card.GetCharaRarity"
+
+# TeamSet* SetStruct(teamsObj, u8 teamType, u8 partyType): the team set of a team type (the members the counters
+# walk).
+[[VRFW.Function]]
+name = "LimitsTeamSet"
+game = "Team.SetStruct"
+
+# The team-set object [[g_gameRoot] + Game.RootParty] (Team.SetStruct's first argument).
+[[VRFW.Global]]
+name = "LimitsParty"
+base = "game_root"
+chain = ["Game.RootParty"]
+
+# 1 while a mod declares a card type counted with a native one (scripts\limits.lua sets it at load).
+[[VRFW.State]]
+key = "vrfw.limits.squad_types"
+
+# u32 CountBasaraInTeam(u8 teamType, u8 partyType): the Diamond starters of a team set (11, or 5 for party type 1);
+# feeds the «1 Diamond per team» checks of the team dock (code 6) and the match start. Post: the answer becomes the
+# largest of the game's count and each declared card type's starters (counts_as = "diamond"), so a second card of
+# such a type trips the game's own «1 Diamond» check. Inazuma Fantasy's «1 Prime per team» (until VRFW 2.3 P4: its
+# own hook of the same function).
+[[VRFW.Hook]]
+name = "LimitsDiamondCounter"
+game = "Card.CountBasaraInTeam"
+needs = ["LimitsRarity", "LimitsTeamSet", "LimitsParty"]
+post_when = { state = "vrfw.limits.squad_types", equals = 1 }

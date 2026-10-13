@@ -1,0 +1,123 @@
+id = "vr_framework"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
+name = "VRFW"
+version = "2.2.197"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
+# the base loads first: the mods that use it load after it (and win their conflicts)
+priority = -10
+tags = ["Framework"]
+updated = "2026-10-13"
+# No `plugin` key since step W: the framework's code (crates/plugins/vr_framework) is linked into the ModLoader's
+# winmm.dll, which runs it for the mod with THIS id (installed as mods\VRFW\; docs/framework/new-core/progress-w.md)
+# The framework's API this folder's content is written for (plan point 1: VRFW.api_version; checked like any mod's)
+requires_api = ">=1"
+# the names other mods put in `requires` (the old separate engine mods; with the version each one had, frozen: vr-core
+# version.rs FROZEN, the same list) and the built-in ModLoader modules the parts replace (armed_voice, voice_packs:
+# audio; match_engine / match_rules: match). An old separate engine folder left in mods\ is skipped (replaced by this
+# mod).
+provides = [
+    "rarity_engine=1.0.0",
+    "character_engine=1.5.0",
+    "look_engine=1.0.0",
+    "team_engine=1.0.0",
+    "anim_engine=1.1.0",
+    "technique_engine=2.1.0",
+    "item_engine=1.0.0",
+    "fx_engine=1.0.0",
+    "model_engine=1.0.0",
+    "table_engine=1.0.0",
+    "mode_engine=1.0.0",
+    "transform_engine=1.1.0",
+    "system_engine=1.0.0",
+    "armed_voice",
+    "voice_packs",
+    "match_rules",
+    "theme_engine=1.0.0",
+    "image_engine=1.0.0",
+    "menu_engine=1.0.0",
+    "telop_engine=1.2.0",
+    "text_engine=1.1.0",
+    "save_engine=1.3.0",
+    "audio_engine=1.3.0",
+    "match_engine=1.2.1",
+    "mod_options=1.0.0",
+    "mods_menu=1.3.0",
+    "changelog=1.0.1",
+]
+# Lua patch roots of the parts, one per topic under assets\lua\ (run in this order; docs/framework/mod-layout.md «VRFW
+# itself», the table vr_framework::fw_layout): «Opciones de mods» tab, «Pack de voces» row and menu music, Mods screen +
+# title button, «Novedades de mods», the VRFW_Save helper of every script + the grafts' patches (save: the save slot
+# screen's title patches, boot_skip…; menu_assemble.py build --mod vr_framework, placed by framework_pack.py), the
+# mode helper, the menu part's hosts (last: a host patch sits on top of what the patches before it made). Declared
+# roots inside assets\lua\ keep assets\lua\ itself out of the roots (its folders are these roots and screens\, the
+# whole screen scripts). Game-path files (the sound_queue_sheet placeholder, full files of the Lua build) are in
+# assets\data\ (read by default: no files_roots).
+lua_roots = ["assets/lua/option", "assets/lua/sound", "assets/lua/mods_screen", "assets/lua/changelog", "assets/lua/save", "assets/lua/mode", "assets/lua/menu", "assets/lua/archetype", "assets/lua/synergy"]
+# CMND_EVT_ANIM_* / CMND_EVT_CHARA_* / CMND_EVT_TEAM_* / CMND_EVT_RARITY_* / CMND_EVT_ITEM_* / CMND_EVT_TEXT_* / CMND_EVT_MODE_* / CMND_EVT_OPT_* / CMND_EVT_VOICE_* / CMND_EVT_MATCH_* / CMND_VRFW_MM_* need the Lua bridge
+loader_modules = ["lua_bridge"]
+# lua_roots / files_roots (1.1.0); <root>\include\<stem>\ patches of INCLUDE'd scripts (assets/lua/save/include/title_menu_inc:
+# the save slot screen's EMPEZAR hook, docs/game/engine/lua-patches.md): 1.7.0; the menu registry raised to 1024
+# (game_state loader.menu_capacity, read by the menu part), the Lua patch cache keys loader.lua_patch.forget /
+# cache_files (hot reload) and the VRFW_Host host-patch check: 1.9.0 (shipped with framework 2.0.0)
+# 2.0.0: the framework built into the ModLoader (step W): an older loader would load this folder as data only
+loader_min = "2.0.0"
+# native access of content\game (docs/framework/native.md §4): byte patches (content\game\member_rows.toml: every
+# member table reader reads the 16-bit member row unsigned, docs/framework/bb-pages.md §9); since 2.0.118 the archetype
+# run time (content\game\archetype.toml + scripts\archetype.lua, docs/framework/archetype.md): functions, the soccer
+# actor global, hooks (team build pick, battle getters, exec conditions 910 / 911), CMND_VRFW_ARCHETYPE_*, state keys
+permissions = ["patch", "memory", "call", "command", "state", "hook"]
+
+# ---- mod tags (Mods panel: Crear › Supertécnicas, the mod info panels; docs/framework/creator.md §8) ----------------
+# The tags any mod may carry: a label (a text key of text\rows\mod_tags.toml), an order and the rules that give it to a
+# mod from its own files (any rule matching = the tag). Other mods declare more tags the same way in their mod.toml; a
+# mod adds / removes tags by hand with [VRFW.Mod] Tags = [...] / NoTags = [...].
+[[VRFW.ModTag]]
+Id = "new_hissatsu"
+Text = "vr_framework.tag_new_hissatsu"
+Short = "vr_framework.tag_new_hissatsu_short"
+Order = 10
+# a new special move
+[[VRFW.ModTag.Detect]]
+Dir = "techniques"
+Tables = ["technique"]
+
+[[VRFW.ModTag]]
+Id = "edited_hissatsu"
+Text = "vr_framework.tag_edited_hissatsu"
+Short = "vr_framework.tag_edited_hissatsu_short"
+Order = 20
+# an edit that sets anything but the visual keys (numbers, element, users, names, gameplay effects…)
+[[VRFW.ModTag.Detect]]
+Dir = "techniques"
+Tables = ["edit"]
+Outside = ["trajectory", "goal_event", "ground_trail", "color", "ball", "effect_variant", "event", "fail_event", "telop", "icon", "effect_flags"]
+Ignore = ["technique", "default_lang", "name"]
+# a removed move, a changed keshin / armed command, an override, a passive of a move
+[[VRFW.ModTag.Detect]]
+Dir = "techniques"
+Tables = ["remove", "aura", "aura_command", "aura_change", "override", "passive"]
+
+[[VRFW.ModTag]]
+Id = "hissatsu_vfx"
+Text = "vr_framework.tag_hissatsu_vfx"
+Short = "vr_framework.tag_hissatsu_vfx_short"
+Order = 30
+# an edit that only sets visual keys (flight, colours, effects, events, banner)
+[[VRFW.ModTag.Detect]]
+Dir = "techniques"
+Tables = ["edit"]
+Only = ["trajectory", "goal_event", "ground_trail", "color", "ball", "effect_variant", "event", "fail_event", "telop", "icon", "effect_flags"]
+Ignore = ["technique", "default_lang", "name"]
+# the scenes of the moves: cutscene environment, keeper scenes, hand-offs
+[[VRFW.ModTag.Detect]]
+Dir = "techniques"
+Tables = ["event_env", "keeper_scene", "handoff"]
+# effects (fx type) and special-move banners (telop type)
+[[VRFW.ModTag.Detect]]
+Dir = "effects"
+[[VRFW.ModTag.Detect]]
+Dir = "telop"
+[[VRFW.ModTag.Detect]]
+Dir = "telops"

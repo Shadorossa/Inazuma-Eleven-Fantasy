@@ -1,0 +1,23 @@
+# The declarations of the match resource rules (service S4 of VRFW 2.3, docs/framework/match-resource.md §10): what a
+# mod's content\resource_rules\*.toml may say. Read by scripts\resource_rules.lua at start (every key is checked
+# against this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning).
+# Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.resource_rule/1"
+folder = "content/resource_rules"
+
+[entry.ShotSpend]
+doc = "what a shot does with one of the engine's team gauges (the retail shot spends the whole gauge and gives back the archetype's return rate of it)"
+# several mods: each key the later mod (load order) gives wins
+gauge = { type = "name", required = true, doc = "the engine's gauge: kizuna (the team's kizuna power, ShootStart's spend at Kizuna.SpendOnShot)" }
+spend_on_shot = { type = "bool", default = true, doc = "false = a shot does not set the gauge to 0 (its bonus is passive, at the gauge's current value, on every shot)" }
+return_on_shot = { type = "bool", default = true, doc = "false = no return after a shot (the Vínculo archetype's 0 .. 50 % rate is not added back): return rate 0" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.OffPitch]
+doc = "the mod takes players off the pitch without a red card (an exhausted player kneels until the end of the match): the engine sees them sent off, the red-card questions answer no, substitutions see them"
+# the mod's own exported native table Resource.OffPitch (key: the soccer actor handle, value 0) names those players;
+# the framework answers IsSentOff / IsSentOffById from it and signals the substitutions (vrfw.off_pitch.layout /
+# vrfw.off_pitch.layout_done) so the mod clears / sets its own member bits around them
+name = { type = "name", required = true, doc = "the rule's name (log, report)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

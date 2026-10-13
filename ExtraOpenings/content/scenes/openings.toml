@@ -1,0 +1,34 @@
+# Extra Openings' title openings: the values this mod adds to the VR-Framework's «Opening» row (Opciones de mods,
+# mod_options.opening; docs/framework/opening.md, docs/game/media/opening-selector-bank.md). The framework owns the row,
+# the retail entry («Original del juego» = the game's own OP1 / OP2 alternation), the game's detected openings (OP1, OP2,
+# Chronicle's) and the title hook; this mod only declares its openings. Inazuma Fantasy declared them (same ids, keys,
+# movie rows, songs) until 2026-10-08 (IF split, docs/refactor/if-mod-split-map.md row if_videoteca).
+# Labels: text\keys.toml title_opening_* (9 languages; the names are the same in every language).
+# Saved choice = the movie id (crc32 of the row key <key>_<lang>): unchanged by the move, a choice made with IF stays.
+schema = "vr_framework.opening/1"
+
+# The Nintendo DS openings: one VP9 USM each (assets\data\dx11\movie\if_op_<game>.usm, built by
+# research/scripts/ds_opening_build.py; tracked as it was in IF) and one song per language ([[music]] if_op_<game>_<lang>,
+# content\sounds\sounds.toml). The framework adds one movie row per song language, key <key>_<lang> (= the movie id the row
+# answers in that game language), a clone of ev74_01190's row (event subtitle menu, no staff roll, no subtitles, 1 s
+# fades) with moviePath and bgmName set; the languages without a song get default_lang's. ▶ = the song of the game
+# language.
+[[opening]]
+id = "ie2"
+label = "title_opening_ie2"
+text = "IE2 | Tsunagariyo"
+file = "common/movie/if_op_ie2.usm"
+key = "if_op_ie2"
+songs = { ja = "if_op_ie2_ja", es = "if_op_ie2_es" }
+default_lang = "ja"
+template = "ev74_01190"
+
+[[opening]]
+id = "ie3"
+label = "title_opening_ie3"
+text = "IE3 | Kiai de Hurricane"
+file = "common/movie/if_op_ie3.usm"
+key = "if_op_ie3"
+songs = { ja = "if_op_ie3_ja", es = "if_op_ie3_es", en = "if_op_ie3_en", it = "if_op_ie3_it" }
+default_lang = "en"
+template = "ev74_01190"

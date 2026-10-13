@@ -1,0 +1,37 @@
+# ui_clean, block nickname_pill (research/scripts/ui_clean_build.py PLAIN_PARTS2): the "X Apodo" pill under the
+# goalkeeper card is never shown and its key does nothing. Applied after team_param_guide, as PLAIN_PARTS2 is.
+# soccer_vs_cpu_list_menu added in phase 2.
+name = "ui_clean_nickname_pill"
+order = 905
+module = "lua_bridge"
+mod = "clean_hud"
+requires = ["ui_clean_team_param_guide"]
+conflicts = []
+wraps = []
+description = "ui_clean: nickname pill hidden, X key swallowed"
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "team_dock_np.lua"
+  marker = "ui_clean nickname_pill"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_nickname_pill.lua", tag = "team_dock_np", name = "nickname_pill", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "team_dock_np" }
+
+[[files]]
+stem = "soccer_vs_cpu_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vs_cpu_list_np.lua"
+  marker = "ui_clean nickname_pill"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_nickname_pill.lua", tag = "vs_cpu_list_np", name = "nickname_pill", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "vs_cpu_list_np" }

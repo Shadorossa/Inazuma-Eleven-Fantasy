@@ -1,0 +1,26 @@
+schema = "vr_framework.rule/1"
+# Battle Bay Deluxe «Torneo»: every knockout match of the player (all rounds of a direct knockout, every round after
+# the group stage) must have a winner (docs/game/modes/bb-tournament.md §5.4). The game has its own extra time (the
+# engine's halves 3-4, off in every retail row) and no shoot-out; the VR-Framework's rule engine adds both
+# (docs/game/modes/prorroga-penaltis.md §8). The graft research/grafts/bb_tournament selects this rulebook before each
+# knockout match (CMND_VRFW_RULE_ENGINE_SELECT("bbd_knockout")) and clears the choice before a group match (a draw
+# stands there). Time, teams and play stay the match row's (the Battle Bay campaign row fbtl_bb_stadium_00).
+# config.toml [tournament] knockout_rules names another rulebook (any mod's) instead.
+id = "bbd_knockout"
+name = "Battle Bay tournament: knockout (extra time + penalties)"   # fallback; text key ruleset_bbd_knockout
+version = 1
+
+[end]
+extra_time = true
+extra_time_halves = 2
+# a third of the row's half length (30 in a full 11v11 row), as a real extra time is to a half
+extra_time_minutes = 10
+golden_goal = false
+penalties = true
+penalties_kicks = 5
+penalties_sudden_death = true
+penalties_order = "forwards_first"
+penalties_first = "user"
+# the result screen shows the score before the shoot-out with one goal more for its winner (2-2, pen. 4-3 -> 3-2);
+# scripts\tournament.lua takes that goal back and records 2-2 (pen. 4-3)
+penalties_final_score = "winner_plus_one"

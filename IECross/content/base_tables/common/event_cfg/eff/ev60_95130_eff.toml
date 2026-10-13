@@ -1,0 +1,95 @@
+schema = "vr_framework.base_table/1"
+file = "data/common/event_cfg/eff/ev60_95130_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev60_02240_eff.cfg.bin"
+
+# IECross 2026-10-13: Cross's colours (content/effects/cross_fireworks.toml: recoloured copy ev60951300 of the retail ev60022400,
+# whose skinned mochi are Cross's own) - the fireworks object is added by the same file
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["ev60951300", "common/effect/event/ev60/ev60951300/ev60951300.objbin", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["ev60951300"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 5
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 6
+values = ["ev60951300", "c0100", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 7
+values = ["ev60951300", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 9
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 10
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 11
+values = ["ev60951300", "c0200", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 12
+values = ["ev60951300", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 14
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 15
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 16
+values = ["ev60951300", "c0300", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 17
+values = ["ev60951300", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 21
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 22
+values = ["ev60951300", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 23
+values = ["ev60951300", "c0400", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 24
+values = ["ev60951300", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 26
+values = ["ev60951300", 0]

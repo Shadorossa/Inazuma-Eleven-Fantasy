@@ -1,0 +1,28 @@
+# clean_hud: the left info panel of «Plantilla de equipo» (soccer_team_dock_menu) re-laid out and the dock number's
+# ‹ › arrows at 60 % (docs/game/ui/ui-redesign.md, «Team dock left panel»). TÁCTICAS as one row of 3 icon boxes; FORMACIÓN (narrowed) |
+# CONF. DE EQUIPO (scaled to the box height, no name under the icon) on one row; EQUIPACIÓN below, centred. Node
+# transforms of this menu's layer instances only (the layouts are shared with the match HUD, the VS / opponent screens
+# and the story docks, so no layout file changes). Focus links re-routed by hooks (OnChangeFocus, MoveFocusInc / Dec /
+# Mtx, a polled LEFT on CONF. DE EQUIPO); the setting is not changed. Round 6: «AT / DF de equipo» moved (whole layer,
+# measured at run time) under the goalkeeper of the 11v11 pitch at half size.
+# Positions: research/scripts/clean_hud_dock_panel.py --write (the generated block of dock_panel.lua), computed from the
+# v7.1.2 layouts. Runs after the other clean_hud blocks of the dock (900 / 905) and, with the ModLoader 1.0.0, after
+# Inazuma Fantasy's patches (global lua_patches first).
+name = "ui_clean_dock_panel"
+order = 920
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "MoveFocusInc", "MoveFocusDec", "MoveFocusMtx", "Step",
+         "SetupTacticsLayer", "UpdateTeamBuildTypeInfo"]
+description = "clean_hud: Plantilla panel (tactics row, Conf. beside Formación) smaller dock arrows, AT / DF under the goalkeeper"
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "dock_panel.lua"
+  marker = "ui_clean_dock_panel"
+  crc = "none"

@@ -1,0 +1,593 @@
+# Texts of the VR-Framework's contact map screen (vrfw_contact_map_menu, docs/framework/contact-map.md): rows of
+# menu_text in the framework's 9 languages, read by the screen with CMND_TEXT_GET by id = crc32(row id). Map / zone
+# titles, item names and character names come from the mods' declarations and the game's tables, not from here.
+# %s / %d are filled by the script (string.format).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# the button guide of the item shelf (pad X / keyboard FUNC2)
+[[row]]
+id = "vrfw_cm_shop_btn"
+es = "Objetos"
+en = "Items"
+fr = "Objets"
+de = "Gegenstände"
+it = "Oggetti"
+pt = "Objetos"
+ja = "アイテム"
+zh_hans = "道具"
+zh_hant = "道具"
+
+# the card's requirement rows (round 4): a player to sign / an item to get (%s = his name / its name)
+[[row]]
+id = "vrfw_cm_req_sign"
+es = "Ficha a %s"
+en = "Sign %s"
+fr = "Recrute %s"
+de = "Verpflichte %s"
+it = "Ingaggia %s"
+pt = "Contrata %s"
+ja = "%sを仲間にする"
+zh_hans = "签下%s"
+zh_hant = "簽下%s"
+
+[[row]]
+id = "vrfw_cm_req_get"
+es = "Obtén %s"
+en = "Get %s"
+fr = "Obtiens %s"
+de = "Hol dir %s"
+it = "Ottieni %s"
+pt = "Obtém %s"
+ja = "%sを入手"
+zh_hans = "获得%s"
+zh_hant = "獲得%s"
+
+# a map / zone line: players signed / players on it
+[[row]]
+id = "vrfw_cm_count"
+es = "Fichados: %d / %d"
+en = "Signed: %d / %d"
+fr = "Recrutés : %d / %d"
+de = "Verpflichtet: %d / %d"
+it = "Ingaggiati: %d / %d"
+pt = "Contratados: %d / %d"
+ja = "加入済み：%d / %d"
+zh_hans = "已签约：%d / %d"
+zh_hant = "已簽約：%d / %d"
+
+# a player's card: level, price and the price's currency
+[[row]]
+id = "vrfw_cm_level_price"
+es = "Nv. %d  ·  %d %s"
+en = "Lv. %d  ·  %d %s"
+fr = "Niv. %d  ·  %d %s"
+de = "Lv. %d  ·  %d %s"
+it = "Liv. %d  ·  %d %s"
+pt = "Nv. %d  ·  %d %s"
+ja = "Lv.%d　%d %s"
+zh_hans = "Lv.%d　%d %s"
+zh_hant = "Lv.%d　%d %s"
+
+# a requirement: that player in the club
+[[row]]
+id = "vrfw_cm_req_player"
+es = "%s en tu club"
+en = "%s in your club"
+fr = "%s dans ton club"
+de = "%s in deinem Verein"
+it = "%s nel tuo club"
+pt = "%s no teu clube"
+ja = "%sがクラブにいる"
+zh_hans = "俱乐部中有%s"
+zh_hant = "俱樂部中有%s"
+
+# a requirement: an item, how many, how many the player has
+[[row]]
+id = "vrfw_cm_req_item"
+es = "%s x%d (tienes %d)"
+en = "%s x%d (you have %d)"
+fr = "%s x%d (tu en as %d)"
+de = "%s x%d (du hast %d)"
+it = "%s x%d (ne hai %d)"
+pt = "%s x%d (tens %d)"
+ja = "%s x%d（所持 %d）"
+zh_hans = "%s x%d（持有 %d）"
+zh_hant = "%s x%d（持有 %d）"
+
+# a player without requirements
+[[row]]
+id = "vrfw_cm_no_req"
+es = "Sin requisitos"
+en = "No requirements"
+fr = "Aucune condition"
+de = "Keine Bedingungen"
+it = "Nessun requisito"
+pt = "Sem requisitos"
+ja = "条件なし"
+zh_hans = "无条件"
+zh_hant = "無條件"
+
+# a player that can be signed now
+[[row]]
+id = "vrfw_cm_state_ready"
+es = "¡Puedes ficharlo!"
+en = "You can sign him now!"
+fr = "Tu peux le recruter !"
+de = "Du kannst ihn verpflichten!"
+it = "Puoi ingaggiarlo!"
+pt = "Já o podes contratar!"
+ja = "スカウトできる！"
+zh_hans = "可以签下他！"
+zh_hant = "可以簽下他！"
+
+# a player whose requirements or price are not met
+[[row]]
+id = "vrfw_cm_state_missing"
+es = "Aún no cumples lo que pide"
+en = "You don't meet his terms yet"
+fr = "Tu ne remplis pas encore ses conditions"
+de = "Du erfüllst seine Bedingungen noch nicht"
+it = "Non soddisfi ancora le sue condizioni"
+pt = "Ainda não cumpres o que pede"
+ja = "まだ条件を満たしていない"
+zh_hans = "尚未满足条件"
+zh_hant = "尚未滿足條件"
+
+# a player already signed from the map
+[[row]]
+id = "vrfw_cm_state_done"
+es = "Ya fichado"
+en = "Already signed"
+fr = "Déjà recruté"
+de = "Bereits verpflichtet"
+it = "Già ingaggiato"
+pt = "Já contratado"
+ja = "加入済み"
+zh_hans = "已签约"
+zh_hant = "已簽約"
+
+# a Connection Map tile not open yet
+[[row]]
+id = "vrfw_cm_state_locked"
+es = "Bloqueado: ficha antes a los jugadores enlazados"
+en = "Locked: sign the linked players first"
+fr = "Verrouillé : recrute d'abord les joueurs liés"
+de = "Gesperrt: verpflichte zuerst die verbundenen Spieler"
+it = "Bloccato: ingaggia prima i giocatori collegati"
+pt = "Bloqueado: contrata primeiro os jogadores ligados"
+ja = "ロック中：つながっている選手を先にスカウトしよう"
+zh_hans = "未开放：先签下相连的球员"
+zh_hant = "未開放：先簽下相連的球員"
+
+# a Connection Map tile whose player is signed elsewhere (office page, pachanga, another map)
+[[row]]
+id = "vrfw_cm_gate"
+es = "Ten a %s en tu club para abrir el camino"
+en = "Have %s in your club to open the way"
+fr = "Aie %s dans ton club pour ouvrir la voie"
+de = "Hab %s in deinem Verein, um den Weg zu öffnen"
+it = "Avere %s nel tuo club apre la strada"
+pt = "Tem %s no teu clube para abrir o caminho"
+ja = "%sをクラブに入れると道が開く"
+zh_hans = "俱乐部中有%s即可开路"
+zh_hant = "俱樂部中有%s即可開路"
+
+# a gate tile passed
+[[row]]
+id = "vrfw_cm_gate_done"
+es = "Camino abierto"
+en = "Way open"
+fr = "Voie ouverte"
+de = "Weg offen"
+it = "Strada aperta"
+pt = "Caminho aberto"
+ja = "道が開いた"
+zh_hans = "道路已开"
+zh_hant = "道路已開"
+
+# a Connection Map tile that passes by itself (story / treasure tiles of the original)
+[[row]]
+id = "vrfw_cm_open_tile"
+es = "Paso libre"
+en = "Free passage"
+fr = "Passage libre"
+de = "Freier Durchgang"
+it = "Passaggio libero"
+pt = "Passagem livre"
+ja = "通過できる"
+zh_hans = "可以通过"
+zh_hant = "可以通過"
+
+# the Connection Map's first tile
+[[row]]
+id = "vrfw_cm_start"
+es = "Inicio"
+en = "Start"
+fr = "Départ"
+de = "Start"
+it = "Inizio"
+pt = "Início"
+ja = "スタート"
+zh_hans = "起点"
+zh_hant = "起點"
+
+# the question before signing: name, level, price, currency
+[[row]]
+id = "vrfw_cm_ask"
+es = "¿Fichar a %s (Nv. %d) por %d %s?"
+en = "Sign %s (Lv. %d) for %d %s?"
+fr = "Recruter %s (Niv. %d) pour %d %s ?"
+de = "%s (Lv. %d) für %d %s verpflichten?"
+it = "Ingaggiare %s (Liv. %d) per %d %s?"
+pt = "Contratar %s (Nv. %d) por %d %s?"
+ja = "%s（Lv.%d）を%d %sでスカウトする？"
+zh_hans = "签下%s（Lv.%d），花费%d %s？"
+zh_hant = "簽下%s（Lv.%d），花費%d %s？"
+
+# after signing
+[[row]]
+id = "vrfw_cm_joined"
+es = "¡%s se ha unido al equipo!"
+en = "%s joined the team!"
+fr = "%s a rejoint l'équipe !"
+de = "%s ist dem Team beigetreten!"
+it = "%s si è unito alla squadra!"
+pt = "%s juntou-se à equipa!"
+ja = "%sが仲間になった！"
+zh_hans = "%s加入了球队！"
+zh_hant = "%s加入了球隊！"
+
+# not enough currency: price, currency, how much the player has
+[[row]]
+id = "vrfw_cm_need_price"
+es = "Necesitas %d %s (tienes %d)."
+en = "You need %d %s (you have %d)."
+fr = "Il te faut %d %s (tu en as %d)."
+de = "Du brauchst %d %s (du hast %d)."
+it = "Ti servono %d %s (ne hai %d)."
+pt = "Precisas de %d %s (tens %d)."
+ja = "%d %sが必要（所持 %d）。"
+zh_hans = "需要%d %s（持有%d）。"
+zh_hant = "需要%d %s（持有%d）。"
+
+# requirements not met: the missing lines follow
+[[row]]
+id = "vrfw_cm_need_reqs"
+es = "Aún te falta:\n%s"
+en = "You still need:\n%s"
+fr = "Il te manque encore :\n%s"
+de = "Dir fehlt noch:\n%s"
+it = "Ti manca ancora:\n%s"
+pt = "Ainda te falta:\n%s"
+ja = "まだ足りない：\n%s"
+zh_hans = "还缺少：\n%s"
+zh_hant = "還缺少：\n%s"
+
+# the club's bank is full
+[[row]]
+id = "vrfw_cm_bank_full"
+es = "Tu banco de jugadores está lleno."
+en = "Your player bank is full."
+fr = "Ta réserve de joueurs est pleine."
+de = "Deine Spielerbank ist voll."
+it = "La tua riserva di giocatori è piena."
+pt = "O teu banco de jogadores está cheio."
+ja = "選手バンクがいっぱい。"
+zh_hans = "球员库已满。"
+zh_hant = "球員庫已滿。"
+
+# the player is already in the club
+[[row]]
+id = "vrfw_cm_owned"
+es = "Ya está en tu club."
+en = "He is already in your club."
+fr = "Il est déjà dans ton club."
+de = "Er ist schon in deinem Verein."
+it = "È già nel tuo club."
+pt = "Já está no teu clube."
+ja = "すでにクラブにいる。"
+zh_hans = "他已在俱乐部中。"
+zh_hant = "他已在俱樂部中。"
+
+# signing failed
+[[row]]
+id = "vrfw_cm_failed"
+es = "No se ha podido fichar."
+en = "The signing failed."
+fr = "Le recrutement a échoué."
+de = "Die Verpflichtung ist fehlgeschlagen."
+it = "Ingaggio non riuscito."
+pt = "Não foi possível contratar."
+ja = "スカウトできなかった。"
+zh_hans = "签约失败。"
+zh_hant = "簽約失敗。"
+
+# an item for sale: name, price, currency, how many the player has
+[[row]]
+id = "vrfw_cm_shop_row"
+es = "%s  ·  %d %s  (tienes %d)"
+en = "%s  ·  %d %s  (you have %d)"
+fr = "%s  ·  %d %s  (tu en as %d)"
+de = "%s  ·  %d %s  (du hast %d)"
+it = "%s  ·  %d %s  (ne hai %d)"
+pt = "%s  ·  %d %s  (tens %d)"
+ja = "%s　%d %s（所持 %d）"
+zh_hans = "%s　%d %s（持有 %d）"
+zh_hant = "%s　%d %s（持有 %d）"
+
+# buy one item: name, price, currency
+[[row]]
+id = "vrfw_cm_shop_ask"
+es = "¿Comprar %s por %d %s?"
+en = "Buy %s for %d %s?"
+fr = "Acheter %s pour %d %s ?"
+de = "%s für %d %s kaufen?"
+it = "Comprare %s per %d %s?"
+pt = "Comprar %s por %d %s?"
+ja = "%sを%d %sで買う？"
+zh_hans = "购买%s，花费%d %s？"
+zh_hant = "購買%s，花費%d %s？"
+
+# after buying
+[[row]]
+id = "vrfw_cm_shop_bought"
+es = "Has conseguido %s."
+en = "You got %s."
+fr = "Tu as obtenu %s."
+de = "Du hast %s erhalten."
+it = "Hai ottenuto %s."
+pt = "Obtiveste %s."
+ja = "%sを手に入れた。"
+zh_hans = "获得了%s。"
+zh_hant = "獲得了%s。"
+
+# no item for sale here
+[[row]]
+id = "vrfw_cm_shop_empty"
+es = "Aquí no se vende ningún objeto."
+en = "No items for sale here."
+fr = "Aucun objet en vente ici."
+de = "Hier gibt es keine Gegenstände."
+it = "Qui non si vende nessun oggetto."
+pt = "Aqui não se vende nenhum objeto."
+ja = "ここで売っているアイテムはない。"
+zh_hans = "这里没有出售的道具。"
+zh_hant = "這裡沒有出售的道具。"
+
+# no room for the item
+[[row]]
+id = "vrfw_cm_bag_full"
+es = "No te caben más."
+en = "You can't carry more."
+fr = "Tu ne peux pas en porter plus."
+de = "Du kannst nicht mehr tragen."
+it = "Non puoi portarne altri."
+pt = "Não cabem mais."
+ja = "これ以上持てない。"
+zh_hans = "无法携带更多。"
+zh_hant = "無法攜帶更多。"
+
+# a zone pin's card: what Accept does
+[[row]]
+id = "vrfw_cm_zone_hint"
+es = "Aceptar: ver a sus jugadores"
+en = "Accept: see its players"
+fr = "Valider : voir ses joueurs"
+de = "Bestätigen: Spieler ansehen"
+it = "Conferma: vedi i giocatori"
+pt = "Aceitar: ver os jogadores"
+ja = "決定：選手を見る"
+zh_hans = "确定：查看球员"
+zh_hant = "確定：查看球員"
+
+# a player not open yet on the Connection Map
+[[row]]
+id = "vrfw_cm_unknown"
+es = "???"
+en = "???"
+fr = "???"
+de = "???"
+it = "???"
+pt = "???"
+ja = "？？？"
+zh_hans = "？？？"
+zh_hant = "？？？"
+
+# a requirement: the level of the team in use (needed, current)
+[[row]]
+id = "vrfw_cm_req_team_level"
+es = "Nivel del equipo %d (tienes %d)"
+en = "Team level %d (yours: %d)"
+fr = "Niveau d'équipe %d (le tien : %d)"
+de = "Teamstufe %d (deine: %d)"
+it = "Livello squadra %d (il tuo: %d)"
+pt = "Nível da equipa %d (o teu: %d)"
+ja = "チームレベル%d（現在%d）"
+zh_hans = "球队等级%d（当前%d）"
+zh_hant = "球隊等級%d（目前%d）"
+
+# a requirement: players of an element / a position in the club (label, needed, current)
+[[row]]
+id = "vrfw_cm_req_elem"
+es = "%s x%d (tienes %d)"
+en = "%s x%d (you have %d)"
+fr = "%s x%d (tu en as %d)"
+de = "%s x%d (du hast %d)"
+it = "%s x%d (ne hai %d)"
+pt = "%s x%d (tens %d)"
+ja = "%s x%d（所持 %d）"
+zh_hans = "%s x%d（持有 %d）"
+zh_hant = "%s x%d（持有 %d）"
+
+# a requirement: matches won in this save (needed, current)
+[[row]]
+id = "vrfw_cm_req_wins"
+es = "Partidos ganados: %d (llevas %d)"
+en = "Matches won: %d (so far %d)"
+fr = "Matchs gagnés : %d (déjà %d)"
+de = "Gewonnene Spiele: %d (bisher %d)"
+it = "Partite vinte: %d (finora %d)"
+pt = "Jogos ganhos: %d (já tens %d)"
+ja = "勝利した試合：%d（現在%d）"
+zh_hans = "获胜场数：%d（当前%d）"
+zh_hant = "獲勝場數：%d（目前%d）"
+
+# a requirement: goals scored in this save (needed, current)
+[[row]]
+id = "vrfw_cm_req_goals"
+es = "Goles marcados: %d (llevas %d)"
+en = "Goals scored: %d (so far %d)"
+fr = "Buts marqués : %d (déjà %d)"
+de = "Erzielte Tore: %d (bisher %d)"
+it = "Gol segnati: %d (finora %d)"
+pt = "Golos marcados: %d (já tens %d)"
+ja = "得点：%d（現在%d）"
+zh_hans = "进球数：%d（当前%d）"
+zh_hant = "進球數：%d（目前%d）"
+
+# label: players of the wind element
+[[row]]
+id = "vrfw_cm_elem_1"
+es = "Jugadores de aire"
+en = "Wind players"
+fr = "Joueurs Vent"
+de = "Wind-Spieler"
+it = "Giocatori Vento"
+pt = "Jogadores de ar"
+ja = "風属性の選手"
+zh_hans = "风属性球员"
+zh_hant = "風屬性球員"
+
+# label: players of the forest element
+[[row]]
+id = "vrfw_cm_elem_2"
+es = "Jugadores de bosque"
+en = "Forest players"
+fr = "Joueurs Bois"
+de = "Wald-Spieler"
+it = "Giocatori Bosco"
+pt = "Jogadores de bosque"
+ja = "林属性の選手"
+zh_hans = "林属性球员"
+zh_hant = "林屬性球員"
+
+# label: players of the fire element
+[[row]]
+id = "vrfw_cm_elem_3"
+es = "Jugadores de fuego"
+en = "Fire players"
+fr = "Joueurs Feu"
+de = "Feuer-Spieler"
+it = "Giocatori Fuoco"
+pt = "Jogadores de fogo"
+ja = "火属性の選手"
+zh_hans = "火属性球员"
+zh_hant = "火屬性球員"
+
+# label: players of the mountain element
+[[row]]
+id = "vrfw_cm_elem_4"
+es = "Jugadores de montaña"
+en = "Mountain players"
+fr = "Joueurs Terre"
+de = "Berg-Spieler"
+it = "Giocatori Montagna"
+pt = "Jogadores de montanha"
+ja = "山属性の選手"
+zh_hans = "山属性球员"
+zh_hant = "山屬性球員"
+
+# label: players of the void element
+[[row]]
+id = "vrfw_cm_elem_5"
+es = "Jugadores de vacío"
+en = "Void players"
+fr = "Joueurs Néant"
+de = "Leere-Spieler"
+it = "Giocatori Vuoto"
+pt = "Jogadores de vazio"
+ja = "無属性の選手"
+zh_hans = "无属性球员"
+zh_hant = "無屬性球員"
+
+# label: goalkeepers
+[[row]]
+id = "vrfw_cm_pos_1"
+es = "Porteros"
+en = "Goalkeepers"
+fr = "Gardiens"
+de = "Torhüter"
+it = "Portieri"
+pt = "Guarda-redes"
+ja = "GK"
+zh_hans = "门将"
+zh_hant = "門將"
+
+# label: forwards
+[[row]]
+id = "vrfw_cm_pos_2"
+es = "Delanteros"
+en = "Forwards"
+fr = "Attaquants"
+de = "Stürmer"
+it = "Attaccanti"
+pt = "Avançados"
+ja = "FW"
+zh_hans = "前锋"
+zh_hant = "前鋒"
+
+# label: midfielders
+[[row]]
+id = "vrfw_cm_pos_3"
+es = "Centrocampistas"
+en = "Midfielders"
+fr = "Milieux"
+de = "Mittelfeldspieler"
+it = "Centrocampisti"
+pt = "Médios"
+ja = "MF"
+zh_hans = "中场"
+zh_hant = "中場"
+
+# label: defenders
+[[row]]
+id = "vrfw_cm_pos_4"
+es = "Defensas"
+en = "Defenders"
+fr = "Défenseurs"
+de = "Verteidiger"
+it = "Difensori"
+pt = "Defesas"
+ja = "DF"
+zh_hans = "后卫"
+zh_hant = "後衛"
+
+
+# a player the game signs elsewhere (StoryOnly: Victory Road's story scouts): the card's line and the notice on Accept
+[[row]]
+id = "vrfw_cm_story_only"
+es = "Se ficha en el modo historia"
+en = "Recruited in story mode"
+fr = "Se recrute en mode histoire"
+de = "Wird im Story-Modus verpflichtet"
+it = "Si ingaggia in modalità storia"
+pt = "Contrata-se no modo história"
+ja = "ストーリーモードでスカウト"
+zh_hans = "在剧情模式中招募"
+zh_hant = "在劇情模式中招募"
+
+# the view-everything mark (config.toml [debug] reveal_all, temporary): the contact map's header and the Inazuma
+# Fantasy office hub show it while the mode is on
+[[row]]
+id = "vrfw_reveal_all_mark"
+es = "MODO VISTA"
+en = "VIEW MODE"
+fr = "MODE APERÇU"
+de = "ANSICHTSMODUS"
+it = "MODALITÀ VISTA"
+pt = "MODO VISTA"
+ja = "閲覧モード"
+zh_hans = "浏览模式"
+zh_hant = "瀏覽模式"

@@ -1,0 +1,112 @@
+schema = "vr_framework.theme/1"
+# The framework's built-in matte dark theme (docs/app/theme-engine.md; study docs/game/ui/dark-mode.md). Pure data:
+# the engine (theme_engine) has no colours of its own. Each accent is one value of the «Tema de la interfaz» row
+# (../options.toml declares only «Desactivado»; the engine adds every theme's accents at boot): `value` 1 / 2 / 3 (the
+# stored option value), `text` = its label in ../text.toml.
+
+[theme]
+id = "dark"
+name = { ja = "ダーク", en = "Dark", es = "Oscuro", fr = "Sombre", de = "Dunkel", it = "Scuro", pt = "Escuro", zh_hans = "深色", zh_hant = "深色" }
+# phase 1: dialogs / windows, title, main hub, shop, pause, Options (keys relative to data/)
+include = [
+    "dx11/menu/10_win", "dx11/menu/20_cmn", "dx11/menu/109_system", "dx11/menu/51_save",
+    "dx11/menu/50_title",
+    "dx11/menu/100_mainmenu", "dx11/menu/100_topmenu",
+    "dx11/menu/150_shop", "dx11/menu/150_list", "dx11/menu/103_item",
+    "dx11/menu/108_option",
+    "dx11/menu/00_soccer/soccer00/soccer00_17", "dx11/menu/00_soccer/soccer00/soccer00_18",
+]
+# icons, faces, art; the title background art (title00: sky, characters, clouds, logos per platform)
+exclude = ["dx11/menu/200_icon", "dx11/menu/220_img", "dx11/menu/50_title/title00"]
+
+[palette]
+bg = "#141414"
+panel = "#1C1C1C"
+card = "#242424"
+card_sel = "#2A2D31"
+border = "#333333"
+text = "#E6E6E6"
+text2 = "#9A9A9A"
+key = "#2E2E2E"
+
+[[accent]]
+id = "blue"
+value = 1
+text = "ui_theme_dark_blue"
+name = { ja = "ブルー", en = "blue", es = "azul", fr = "bleu", de = "blau", it = "blu", pt = "azul", zh_hans = "蓝", zh_hant = "藍" }
+accent = "#3B6EA8"
+accent_hi = "#7FA7D9"
+accent_dark = "#284A72"
+
+[[accent]]
+id = "teal"
+value = 2
+text = "ui_theme_dark_teal"
+name = { ja = "ティール", en = "teal", es = "verde azulado", fr = "bleu canard", de = "Petrol", it = "verde acqua", pt = "verde-azulado", zh_hans = "青绿", zh_hant = "青綠" }
+accent = "#2E8B84"
+accent_hi = "#6FC4BA"
+accent_dark = "#1F5E59"
+
+[[accent]]
+id = "amber"
+value = 3
+text = "ui_theme_dark_amber"
+name = { ja = "アンバー", en = "amber", es = "ámbar", fr = "ambre", de = "Bernstein", it = "ambra", pt = "âmbar", zh_hans = "琥珀", zh_hant = "琥珀" }
+accent = "#B07F35"
+accent_hi = "#DDB46E"
+accent_dark = "#7A5726"
+
+[rules]
+card_gamma = 0.7
+bg_texture = 0.22
+accent_compress = 0.35
+state_desaturate = 0.38
+state_value = 0.8
+accent_hue = [175.0, 245.0]
+keep_colorful = 0.25
+large_keep = 2048
+panel_area = 160000
+bc7 = "fast"
+
+# first match wins; the rest is `auto` (classified from the sprite's pixels)
+# masks / clipping shapes (their grey levels are coverage, not colour)
+[[sprite]]
+match = "*msk*"
+class = "keep"
+[[sprite]]
+match = "mask*"
+class = "keep"
+# pictures, rarity / spirit cards (information)
+[[sprite]]
+match = "img_*"
+class = "keep"
+[[sprite]]
+match = "spirit_*"
+class = "keep"
+[[sprite]]
+match = "icon_*"
+class = "keep"
+[[sprite]]
+match = "*_icon*"
+class = "keep"
+[[sprite]]
+match = "num_*"
+class = "keep"
+[[sprite]]
+match = "*face*"
+class = "keep"
+[[sprite]]
+match = "logo*"
+class = "keep"
+[[sprite]]
+match = "*_img*"
+class = "keep"
+[[sprite]]
+match = "gtxt_*"
+class = "ink"
+
+[fonts]
+enabled = true
+# colour token of the style name -> palette key (k = grey ink, b = blue ink; w white stays)
+map = { k = "text", b = "accent_hi" }
+keep_styles = []

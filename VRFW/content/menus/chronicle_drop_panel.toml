@@ -1,0 +1,10 @@
+# The «Cadena de Crónica» team list (vs_route_town_list_menu): a mini list of the selected match's drops in the info
+# window's reward block (graft vrfw_chronicle_drop_panel, docs/framework/drops.md §5): 3 rows of the drop-rate list's own
+# row object (win05_38_drop_rate_list_item: icon, name, rate; an aura item as its aura's banner) next to the EXP,
+# scrolled with the right stick or the mouse wheel. The aura bands come from team00_30 (res).
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "vs_route_town_list_menu"
+add_layer = { name = "vrfw_cr_drop_row", object = "win05_38_drop_rate_list_item", count = 3, align = ["left", "top"], after = "quest01_08_reward_item", groups = [{ group = "vs_route_town_list_menu", flags = [0, 0, 0, 0, 0, 0], after = "quest01_08_reward_item" }] }
+res = ["#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx", "#/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx"]

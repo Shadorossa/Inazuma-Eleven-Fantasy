@@ -1,0 +1,271 @@
+# The VR-Framework's contact map screen vrfw_contact_map_menu (docs/framework/contact-map.md, VRFW 2.1): the IE-style
+# «contactos» / scout map of a [[VRFW.ContactSet]] declared by a mod (content\contact_maps\*.toml): the set's maps, a
+# map's zones (pins on its drawn background) / sections, a zone's players (a grid of faces), a Connection Map
+# (network: tiles, links, strict order) and the items for sale. Recruiting goes through VRFW_Recruit (the game's own
+# add-character path). Opened by a mod's entry (Inazuma Fantasy: the Mercado's «Mapa de contactos» banner, graft
+# contact_map_banner) with parameter crc32("vrfw_contact_set") = the set; nothing opens it when no mod declares a set.
+# Written from the chain board screen (menus\chain_board.toml): base savedata_management_menu (background, header,
+# guide line, cursor, button guides, the off-screen input anchor) + quad pools of the framework's own objects, by draw
+# priority: vrfw_cm_back (450: the map's background), vrfw_cm_zoneart (451: a zone's own map), vrfw_cm_line (453: links), vrfw_cm_tile (455: plates / pins,
+# the mouse's hit areas), vrfw_cm_face (457: faces), vrfw_cm_tag (458: check / padlock badges), vrfw_cm_ui (459: the
+# cursor ring, page arrows), vrfw_cm_card (459: the info card), vrfw_cm_icon (461: the card's face), vrfw_cm_title +
+# vrfw_cm_cardtxt (the retail list item, 551: list rows and the card's lines). Art: the chain board's atlas
+# (vrfw_chain.g4tx: plates, ring, line, card) and its background for the list of maps; a map's own background comes
+# from its declaration (loaded on demand). The script: graft contact_map (`menu_assemble.py build --mod vr_framework`),
+# packed by framework_pack.py as assets\lua\screens\vrfw_contact_map_menu.lua.
+schema = "vr_framework.menu/2"
+
+# the anchor's layout (.g4pkm): a copy of the retail save01_01 with the system line / time text moved off screen
+layout = [
+    { file = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm", from = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" },
+    { file = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm", joint = "_system_line01", translate = [97.0, 2803.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm", joint = "_text_time01", translate = [116.0, 2812.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm", joint = "_pos_time01", translate = [377.0, 2822.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm", joint = "_pos_top_list_atc01", translate = [0.0, 2696.0, 0.0] },
+]
+
+# ---- objects ----------------------------------------------------------------------------------------------------------
+[[object]]
+name = "vrfw_cm_rows"
+from = "save01_01_list_attach_base"
+remove = [
+    { param = "NullLayerName", match = { 1 = 0x6735D333, 2 = 0x9E0634B0, 3 = 0xCDF9A8B9, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x1032E3A5, 2 = 0xE9010426, 3 = 0xCDF9A8B9, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x8E567606, 2 = 0x77659185, 3 = 0xCDF9A8B9, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0xF9514690, 2 = 0x0062A113, 3 = 0xCDF9A8B9, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x6058172A, 2 = 0x996BF0A9, 3 = 0x1FA09B6B, 4 = 0 } },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" }, values = { 1 = "common/menu/51_save/save01/vrfw_cm_rows/vrfw_cm_rows.g4pkm" } },
+]
+
+# the backgrounds are drawn in the BACKGROUND pass (m_drawType 1, as the retail shop01_00_background): under the 3D
+# player model of the panel (2026-10-12 redesign); every other layer of the screen is drawn over the model
+# 454-456: above the hub's own background-pass layers (market_menu shop01_00_background 451, its market background
+# 453), which covered them (owner screenshots 2026-10-12: the Mercado's green background over the whole map)
+[[object]]
+name = "vrfw_cm_back"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 454 } }]
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
+
+# a zone's own map (GO / CS / Galaxy: the free walk's 3DS area map page) over the background, under everything else
+[[object]]
+name = "vrfw_cm_zoneart"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } }]
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
+
+# the player panel on the right (2026-10-12 redesign): 0 its ground, 1 its fade into the map (vrfw_cm.g4tx
+# vrfw_cm_panel / vrfw_cm_fade); background pass, over the map art, under the 3D model
+[[object]]
+name = "vrfw_cm_panel"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 456 } }]
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
+
+# the panel's 3D player model: the retail shop list base (its CMenuCharaModelComponent, the shop's model camera), the
+# list / sound / collision / analog parts removed; driven by the shared EVT_CharaModelNew (evt_menu_kit.lua#CharaModel)
+[[object]]
+name = "vrfw_cm_model"
+from = "shop01_01_list_base"
+remove_block = ["CMenuListViewShop", "CMenuSoundCmdProperty", "MenuCollisionSetting", "CAnalogInputComponent"]
+
+[[object]]
+name = "vrfw_cm_line"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 453 } }]
+
+# the plates / pins are the mouse's hit areas (docs/game/ui/mouse-support.md): a MenuCollisionSetting on the quad node
+[[object]]
+name = "vrfw_cm_tile"
+from = "cmn01_10_new_icon"
+add_block = [{ block = "MenuCollisionSetting", values = [0], after = "CMenuAnimation" }]
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } }]
+add = [{ block = "MenuCollisionSetting", param = "_icon_new01", values = [0, 1, 1] }]
+
+[[object]]
+name = "vrfw_cm_face"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 457 } }]
+
+[[object]]
+name = "vrfw_cm_tag"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 458 } }]
+
+[[object]]
+name = "vrfw_cm_ui"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
+
+[[object]]
+name = "vrfw_cm_card"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
+
+# the card's requirement icons (462) and their met / unmet badges (463) (2026-10-12: real special requirements)
+[[object]]
+name = "vrfw_cm_req"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 462 } }]
+
+[[object]]
+name = "vrfw_cm_reqok"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 463 } }]
+
+[[object]]
+name = "vrfw_cm_icon"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 461 } }]
+
+
+# a player's bust (2026-10-12, owner: «los jugadores deben salir con su miniface con su ropa»): the retail character
+# card's face icon, the game's miniface + kit of his chara_param (native composite, icon type 9); the screen hides
+# every other part of the card. Faces of the grid / pins / network (457, over the plates) and the info card's (461).
+[[object]]
+name = "vrfw_cm_bust"
+from = "team00_01_chara_card_for_list"
+priority = 457
+
+[[object]]
+name = "vrfw_cm_busticon"
+from = "team00_01_chara_card_for_list"
+priority = 461
+
+# the header row's band (2026-10-12, owner: the player's header as the green row of the team screens): a copy of the
+# office's status plate object (soccer11_04 layout, position-coloured plate sprites) the screen squashes to the row and
+# shows only its two plate sprites (evt_menu_kit.lua#StatusPlateKeep), as the player page's evt_pp_slant (IF
+# plate_row.toml); under the row (the header plate soccer11_04_formation_chara_status, retail priority 303)
+[[object]]
+name = "vrfw_cm_slant"
+from = "soccer11_04_universe_chara_stasus"
+priority = 301
+remove = [
+    { param = "NullLayerName" },
+    { param = "NullLayerIndexName" },
+]
+
+# ---- the screen -------------------------------------------------------------------------------------------------------
+[[screen]]
+name = "vrfw_contact_map_menu"
+like = "language_option_menu"
+# input priority (registry column 3) above its hub: the engine's menu controller gives the pad only to the menus of the
+# highest priority in its input list; language_option_menu's 220 left the pad with the Mercado (market_menu, 230) under
+# the screen (2026-10-12 log: «VRFW input owners 3209C323 p230 top; 50C81DA7 p220»): no D-pad / stick / A reached it.
+# 240 (as 3 retail screens): still under the question / message windows it opens (general_window 999, sub_window 500).
+set = { priority = 240 }
+base = "savedata_management_menu"
+script = "assets/lua/screens/vrfw_contact_map_menu.lua"
+
+[screen.rows]
+layer = [
+    { layer = "save01_01_list_attach_base", object = "vrfw_cm_rows" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "mainmenu90_00_background" },
+    { layer = "vrfw_cm_back", object = "vrfw_cm_back", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_zoneart", object = "vrfw_cm_zoneart", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_line", object = "vrfw_cm_line", count = 210, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_tile", object = "vrfw_cm_tile", count = 200, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_face", object = "vrfw_cm_face", count = 60, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_tag", object = "vrfw_cm_tag", count = 40, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_ui", object = "vrfw_cm_ui", count = 8, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_card", object = "vrfw_cm_card", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_icon", object = "vrfw_cm_icon", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_bust", object = "vrfw_cm_bust", count = 162 },
+    { layer = "vrfw_cm_busticon", object = "vrfw_cm_busticon", count = 1 },
+    { layer = "vrfw_cm_req", object = "vrfw_cm_req", count = 5, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_reqok", object = "vrfw_cm_reqok", count = 4, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_title", object = "save01_02_list_item", count = 20, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_cardtxt", object = "save01_02_list_item", count = 6, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_panel", object = "vrfw_cm_panel", count = 2, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_model", object = "vrfw_cm_model", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "mainmenu01_08_chara_3d_shadow", from = "shop_menu" },
+    { layer = "soccer11_04_chara_stasus", from = "shop_menu" },
+    { layer = "vrfw_cm_slant", object = "vrfw_cm_slant", count = 1 },
+    { layer = "soccer11_04_formation_chara_status", from = "team_dock_menu" },
+    { layer = "mainmenu90_01_header" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu01_10_return_arrow_button_guide" },
+    { layer = "mainmenu01_06_base_button_guide" },
+    { layer = "mainmenu01_07_button_guide" },
+]
+# arrows move (CMD_FUNCTION vrfw_cm_up / _down / _left / _right); no FUNC2 / «Objetos» (owner, 2026-10-12 round 3)
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x76683C00, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0x5B1D6FC9, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x3D85189A, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xE73E04DB, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x76683C00, flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0x5B1D6FC9, flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x3D85189A, flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xE73E04DB, flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+]
+res = [
+    "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_ch_img01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
+    "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx",
+    "#/menu/220_img/vrfw_chain/vrfw_chain_back.g4tx",
+    "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx",
+    "#/menu/220_img/vrfw_cm/vrfw_cm_bg.g4tx",
+    # the panel's model and status plate (the retail shop's: soccer11_04_chara_stasus), the header row's band
+    "#/menu/00_soccer/soccer11/soccer11_04/<LG>/soccer11_04.g4tx",
+    { path = "menu_chara_model_comp", kind = 2 },
+    "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx",
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
+    "#/menu/200_icon/100_num/num_at.g4tx",
+    "#/menu/200_icon/10_icon_chr/spirit_type/spirit_blank10.g4tx",
+    "#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx",
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "save01_01_list_attach_base", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_10_return_arrow_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_06_base_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_07_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_back", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_zoneart", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_line", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_tile", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_face", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_tag", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_ui", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_card", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_icon", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_bust", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_busticon", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_req", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_reqok", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_title", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_cardtxt", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_panel", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_model", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu01_08_chara_3d_shadow", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_04_chara_stasus", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "vrfw_cm_slant", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_04_formation_chara_status", flags = [0, 1, 1, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 3] },
+    { group = "vrfw_contact_map_menu", flags = [1], slice = [3, 27] },
+]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+    { layer = "vrfw_cm_tile", flags = [0, 0, 0], slice = [1, 1] },
+]
+shift_base = []
+shift = []

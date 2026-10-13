@@ -1,0 +1,132 @@
+schema = "vr_framework.changelog/1"
+# IECross: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "IECross"
+
+[en]
+name = "IECross"
+
+[fr]
+name = "IECross"
+
+[de]
+name = "IECross"
+
+[it]
+name = "IECross"
+
+[pt]
+name = "IECross"
+
+[ja]
+name = "IECross"
+
+[zh_hans]
+name = "IECross"
+
+[zh_hant]
+name = "IECross"
+
+[[release]]
+icon = "general"
+notes = [
+    "Inazuma Eleven Cross llega a Victory Road.",
+    "Los 11 equipos de Cross con emblemas y equipaciones.",
+    "Las cartas de Cross: Byron, piratas, payasos y más.",
+    "Las 12 supertécnicas de Cross con sus escenas.",
+    "Los 8 estadios de Cross, con tiques en la tienda.",
+    "Competir contra bots: pestaña Cross y Royal Academy.",
+    "Bahía Batalla y Banco de jugadores: pestaña Cross.",
+]
+
+[release.en]
+notes = [
+    "Inazuma Eleven Cross comes to Victory Road.",
+    "The 11 Cross teams with their crests and kits.",
+    "The Cross cards: Byron, pirates, clowns and more.",
+    "The 12 Cross special moves with their scenes.",
+    "The 8 Cross stadiums, with tickets in the shop.",
+    "Play vs bots: Cross tab and Royal Academy.",
+    "Battle Bay and player Bank: a Cross tab.",
+]
+
+[release.fr]
+notes = [
+    "Inazuma Eleven Cross arrive dans Victory Road.",
+    "Les 11 équipes de Cross avec emblèmes et tenues.",
+    "Les cartes Cross : Byron, pirates, clowns et plus.",
+    "Les 12 techniques de Cross avec leurs scènes.",
+    "Les 8 stades de Cross, tickets en boutique.",
+    "Jouer contre des bots : onglet Cross et Royal Academy.",
+    "Baie Bataille et Banque de joueurs : onglet Cross.",
+]
+
+[release.de]
+notes = [
+    "Inazuma Eleven Cross kommt nach Victory Road.",
+    "Die 11 Cross-Teams mit Wappen und Trikots.",
+    "Die Cross-Karten: Byron, Piraten, Clowns und mehr.",
+    "Die 12 Cross-Techniken mit ihren Szenen.",
+    "Die 8 Cross-Stadien, Tickets im Shop.",
+    "Gegen Bots: Reiter Cross und Royal Academy.",
+    "Kampfbucht und Spielerbank: Reiter Cross.",
+]
+
+[release.it]
+notes = [
+    "Inazuma Eleven Cross arriva in Victory Road.",
+    "Le 11 squadre di Cross con stemmi e divise.",
+    "Le carte Cross: Byron, pirati, pagliacci e altri.",
+    "Le 12 tecniche di Cross con le loro scene.",
+    "Gli 8 stadi di Cross, con biglietti nel negozio.",
+    "Contro i bot: scheda Cross e Royal Academy.",
+    "Baia Battaglia e Banca giocatori: scheda Cross.",
+]
+
+[release.pt]
+notes = [
+    "Inazuma Eleven Cross chega a Victory Road.",
+    "Os 11 times de Cross com emblemas e uniformes.",
+    "As cartas de Cross: Byron, piratas, palhaços e mais.",
+    "As 12 técnicas de Cross com suas cenas.",
+    "Os 8 estádios de Cross, com ingressos na loja.",
+    "Jogar contra bots: aba Cross e Royal Academy.",
+    "Baía Batalha e Banco de jogadores: aba Cross.",
+]
+
+[release.ja]
+notes = [
+    "イナズマイレブンCROSSがVictory Roadに登場。",
+    "CROSSの11チーム、エンブレムとユニフォームつき。",
+    "CROSSのカード：バーン、海賊、ピエロなど。",
+    "CROSSの必殺技12種と演出。",
+    "CROSSのスタジアム8種、チケットはショップで。",
+    "ボットと対戦：CROSSタブとロイヤルアカデミー。",
+    "バトルベイと選手バンクにCROSSタブ。",
+]
+
+[release.zh_hans]
+notes = [
+    "闪电十一人CROSS登陆Victory Road。",
+    "CROSS的11支队伍，附队徽与球衣。",
+    "CROSS卡片：拜伦、海盗、小丑等。",
+    "CROSS的12种必杀技与演出。",
+    "CROSS的8座球场，门票在商店出售。",
+    "与机器人对战：CROSS分页与帝国学园。",
+    "战斗湾与球员库：CROSS分页。",
+]
+
+[release.zh_hant]
+notes = [
+    "閃電十一人CROSS登陸Victory Road。",
+    "CROSS的11支隊伍，附隊徽與球衣。",
+    "CROSS卡片：拜倫、海盜、小丑等。",
+    "CROSS的12種必殺技與演出。",
+    "CROSS的8座球場，門票在商店販售。",
+    "與機器人對戰：CROSS分頁與帝國學園。",
+    "戰鬥灣與球員庫：CROSS分頁。",
+]

@@ -1,0 +1,147 @@
+# The Draft's native access as data (schema VRFW.game/1, docs/framework/native.md), used by scripts\draft.lua (the
+# session of the 8 commands, the pool rule over VRFW.table.raw, the roster rows, the leader sync, the Draft tile's
+# avatar on hook:VRFW.BbRecord); since 1.3.0 (2026-10-10) it replaces bb_chronicle_teams.dll's draft.rs, draft_rt.rs,
+# pool.rs. `enjoy` / `EnjoyRow` are declared once, in campaign.toml (one name space per mod). The graft
+# research/grafts/bb_draft keeps calling the same commands.
+schema = "VRFW.game/1"
+
+# ---------------------------------------------------------------- functions
+[[VRFW.Function]]
+# FindTeamConfig(&record, &container, const u32* teamHash) 0xE6BEE0: the team_config record of a team (no side
+# effect). Three pointer arguments, two of them out: VRFW.mem.buffer blocks.
+name = "FindTeamConfig"
+pattern = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 30 48 8B 05 ?? ?? ?? ?? 48 8B D9 4D"
+rva = 0xE6BEE0
+args = ["ptr", "ptr", "ptr"]
+
+[[VRFW.Function]]
+# FindCharaRecord(container, const u32* hdl) 0xD7F3E0 (vr_sys::sigs::BOARD_FIND_RECORD): the Draft tile's avatar.
+name = "FindCharaRecord"
+pattern = "40 53 48 83 EC 20 44 8B 0A 48 8B DA 45 85 C9 74 39 48 8B 01 41 8B D1 81 E2 FF 0F 00 00 4C 8B 40 40"
+rva = 0xD7F3E0
+args = ["ptr", "ptr"]
+ret = "ptr"
+
+[[VRFW.Function]]
+# Layout guard, never called: BuildRoster 0xE9AC40 at 0xE9AC9B (`movzx r13d,word [r8+28h]` the first member row of the
+# team record … `cmp eax,[r10+70h]` the member row count … `imul r15,rax,54h; add r15,[r10+68h]` member rows of 0x54
+# bytes) = the TeamRecord / TeamConfig / MemberRow layout below. Another build of that code = no Draft.
+name = "RosterRowsCode"
+pattern = "45 0F B7 68 28 4D 89 73 D0 45 33 F6 66 44 89 6C 24 30 45 85 C9 0F 84 ?? ?? ?? ?? 41 0F 29 73 B8 66 0F 6F 35 ?? ?? ?? ?? 41 8B C1 4D 89 63 E0 48 89 44 24 50 4D 89 7B C8 49 0F BF C5 85 C0 0F 88 ?? ?? ?? ?? 41 3B 42 70 0F 8D ?? ?? ?? ?? 4C 6B F8 54 48 8B D0 4D 03 7A 68"
+rva = 0xE9AC9B
+
+[[VRFW.Function]]
+# Layout guard, never called: 0xE9AEB8 `mov r8d,[r15+20h]` = the member's chara_param id (MemberRow.param).
+name = "RosterParamCode"
+pattern = "45 8B 47 20 0F 1F 40 00 44 3B 40 04 74 0B 48 83 C0 0C"
+rva = 0xE9AEB8
+
+[[VRFW.Function]]
+# Layout guard, never called: 0xE9AF13 `movzx eax,byte [r15+47h]` = the member's roster slot (MemberRow.slot).
+name = "RosterSlotCode"
+pattern = "41 0F B6 47 47 88 44 24 74 41 0F B6 47 49 66 89 44 24 76 41 8B 47 40 83 C8 40 4C 89 65 70"
+rva = 0xE9AF13
+
+# ---------------------------------------------------------------- globals ([[g_gameRoot]+…])
+[[VRFW.Global]]
+# the Kizuna town object: +0x15610 the avatar's chara handle, +0x15614 its index (0 = the avatar)
+name = "kizuna"
+base = "game_root"
+chain = [0x6AD8]
+
+[[VRFW.Global]]
+name = "chara_containers"
+base = "game_root"
+chain = ["ROOT_CHARA_CONTAINERS"]
+
+# ---------------------------------------------------------------- structs (BuildRoster 0xE9AC40 reads the same layout)
+[[VRFW.Struct]]
+# `first`: the first member row, a 32-bit cell (the game's readers take its low 16 bits, unsigned with VRFW 2.0.112)
+name = "TeamRecord"
+size = 0x30
+fields = { first = { at = 0x28, type = "u32" }, count = { at = 0x2C, type = "u32" } }
+
+[[VRFW.Struct]]
+name = "TeamConfig"
+size = 0x78
+fields = { members = { at = 0x68, type = "ptr" }, member_count = { at = 0x70, type = "i32" } }
+
+[[VRFW.Struct]]
+# one member row (stride 0x54): chara_param id (written by the Draft) and its copy, the roster slot
+name = "MemberRow"
+size = 0x54
+fields = { param = { at = 0x20, type = "u32" }, uid = { at = 0x24, type = "u32" }, slot = { at = 0x47, type = "u8" } }
+
+[[VRFW.Struct]]
+name = "Kizuna"
+size = 0x15618
+fields = { avatar = { at = 0x15610, type = "u32" }, avatar_index = { at = 0x15614, type = "u8" } }
+
+# ---------------------------------------------------------------- the graft's commands (the DLL's names and answers)
+# All eight need the same declarations: the Draft is on or off as a whole (as the DLL's was).
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_INFO"
+handler = "BattleBayDeluxe.DraftInfo"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_BEGIN"
+handler = "BattleBayDeluxe.DraftBegin"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_SLOTS"
+handler = "BattleBayDeluxe.DraftSlots"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_SLOT"
+handler = "BattleBayDeluxe.DraftSlot"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_CANDS"
+handler = "BattleBayDeluxe.DraftCands"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_PICK"
+handler = "BattleBayDeluxe.DraftPick"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_ABANDON"
+handler = "BattleBayDeluxe.DraftAbandon"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+name = "CMND_BBCR_DRAFT_SYNC"
+handler = "BattleBayDeluxe.DraftSync"
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+# 1.5.42: the free match (1 vs 1) Draft screen is done: the Draft tile's retail decide (GameDecide, called directly,
+# not through the Decide hook) records the drafted team as 1P / CPU (scripts\campaign.lua)
+name = "CMND_BBD_DRAFT_DECIDE"
+handler = "BattleBayDeluxe.DraftDecide"
+needs = ["GameDecide", "GridMenu", "GridSlot", "FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+# 1.5.26: the candidates' «pack opening» look (config.toml [draft.pack]: timings, darkness, size, sounds), asked by the
+# graft when the Draft screen opens; no game access, so no declaration needed (without it the graft keeps its defaults)
+name = "CMND_BBD_DRAFT_PACK"
+handler = "BattleBayDeluxe.DraftPack"
+
+# ---------------------------------------------------------------- what other readers see (game_state)
+[[VRFW.State]]
+# the Draft team hash (0 = no Draft this session): the Decide hook never draws it as a rival and refuses it outside
+# the Campaña
+key = "BattleBayDeluxe.draft.team"
+fallback = 0
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.State]]
+# 0 none, 1 picking, 2 complete, 3 campaign
+key = "BattleBayDeluxe.draft.phase"
+fallback = 0
+needs = ["FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow"]

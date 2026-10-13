@@ -1,0 +1,86 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "bb_stadium_campaign_end_window": {
+  "script": "bb_stadium_campaign_end_window",
+  "require": [
+   "CloseMenu_Coroutine",
+   "PostStep"
+  ],
+  "forbid": [
+   "PreStep",
+   "SetIsChronicleBattle"
+  ],
+  "ambiguous": []
+ },
+ "bb_stadium_top_menu": {
+  "script": "bb_stadium_top_menu_1.03.98.00",
+  "require": [
+   "FadeIn"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "enjoy_team_select_menu_campaign": {
+  "script": "enjoy_team_select_menu_campaign_1.03.73.00",
+  "require": [
+   "OpenFade_Coroutine",
+   "Get_TexturePath_TextureName_From_StadiumTextureArray"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "enjoy_team_select_menu_offline": {
+  "script": "enjoy_team_select_menu_offline_1.04.11.00",
+  "require": [
+   "SetOverwriteInitFocusIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "fade_menu_encount": {
+  "script": "fade_menu_encount",
+  "require": [
+   "SetLoadingLayerVisible"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "network_room_match_top": {
+  "script": "network_room_match_top_5.01.14.00",
+  "require": [
+   "OpenNetworkRoomMatchTop"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "network_room_match_wait": {
+  "script": "network_room_match_wait_4.00.16.10",
+  "require": [
+   "ResetSettingMemberInfoAll"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "sub_window_group": {
+  "script": "sub_window_group_4.00.20.10",
+  "require": [
+   "CheckCallbackNowLayer"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

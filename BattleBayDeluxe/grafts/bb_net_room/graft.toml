@@ -1,0 +1,63 @@
+# Battle Bay «Sala privada» (docs/game/modes/bb-online-ownnet.md §10) of the mod bb_chronicle_teams (Battle Bay
+# Deluxe): with gameplay mods enabled, the Battle Bay top menu's «Multijugador» row opens a private room on the
+# VR-Framework net service (CMND_VRFW_NET_*: Steam transport, the room code + PIN, the mod-set check) instead of the
+# retail EOS rooms; the mode is content\defaults\net.toml [[VRFW.NetMode]] bbd_1v1, the texts evt_bbd_net_*
+# (text\rows\net_text.toml). With only UI mods or none the row stays retail.
+#   bb_stadium_top_menu   bbn_common.lua (BBN_Entry) + bbn_room.lua (the row's decide): create (straight to the
+#                         room's session, no code message / clipboard copy since BBD 1.5.24) / join with the
+#                         clipboard's code / a friend's invite, then our room's session and the game's own private-room
+#                         screen on it; the close notes (wrong code, different mods with the list, the other player
+#                         left / lost)
+#   soccer_top_menu       bbn_common.lua only: «Modos de juego»'s BB «Multi» box (Inazuma Fantasy's modes_hub) calls
+#                         BBN_Entry(host) first, so that box opens this room too, never the retail online steps
+#   network_room_match_top  bbn_top.lua (the network_menu object): in our session, the private-room layer group opens at
+#                         once (never the retail room list / EOS lobbies); Back leaves the room
+#   network_room_match_wait bbn_wait.lua (the private-room screen): the retail screen on our session; Back / a broken
+#                         session leave our room and close network_menu (never the retail lobby close + online init),
+#                         invite = the Steam overlay's, kick off
+# Order 347: after bb_tournament (346). Globals only (BBN*); nothing runs at chunk load. docs bb-online-ownnet.md §18.
+name = "bb_net_room"
+mod = "bb_chronicle_teams"
+order = 347
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnDecideFocus", "Step", "OnBack", "OpenNetworkRoomMatchTop", "RequestBack", "RequestBackError", "OnFunction"]
+description = "Battle Bay: «Multijugador» opens a private 1v1 room on the framework's Steam transport (gameplay mods enabled)"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbn_common.lua"
+  marker = "bb_net_room common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbn_room.lua"
+  marker = "bb_net_room"
+
+[[files]]
+stem = "soccer_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbn_common.lua"
+  marker = "bb_net_room common"
+
+[[files]]
+stem = "network_room_match_top"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbn_top.lua"
+  marker = "bb_net_room top"
+
+[[files]]
+stem = "network_room_match_wait"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbn_wait.lua"
+  marker = "bb_net_room wait"

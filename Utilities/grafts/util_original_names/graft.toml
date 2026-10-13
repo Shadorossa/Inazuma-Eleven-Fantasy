@@ -1,0 +1,24 @@
+# Original names of the mod Utilities (docs/game/ui/original-names.md; plugin utilities.dll, feature original_names,
+# answers CMND_UTIL_NAMES_*). The game's «Nombres de los personajes» row gets «Por equipos»; A on it opens the picker
+# (the game's check-list sub window: one tab per series, its teams with tick boxes, «Todos los equipos»; L2 / R2 or A
+# on the tab line change the tab, B saves). The names are text tables the game loads: a change saved in Opciones takes
+# the retail «Originales» path of the settings script (back to the title in «language change» state, where the game
+# reloads its text tables and every cached name). When the menu closes, the plugin says whether the loaded tables still
+# match the saved choices; if not, the handler sets the settings script's own locals the way a retail «Originales»
+# change does (flag4, flag3 ~= flag2: CloseMenuSetting stores the text-language key and setting_top_menu goes back to
+# the title).
+# HOOK file (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the VR-Framework's host of setting_menu
+# (research/mods/VRFW/assets/lua/menu/setting_menu/000_host.lua; the locals through VRFW_Host.hosts.setting_menu.L, which
+# needs EVT_DEBUG), never merged with other grafts. Built into the mod: menu_assemble.py build --mod utilities.
+name = "util_original_names"
+mod = "utilities"
+order = 330
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Original names: the team / series picker of «Nombres de los personajes» and the text reload of a saved change, like «Originales» (Utilities)"
+
+[[hooks]]
+stem = "setting_menu"
+src = "util_on_setting.lua"

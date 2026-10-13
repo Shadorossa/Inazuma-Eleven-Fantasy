@@ -1,0 +1,36 @@
+# Utilities' top bar texts (docs/framework/top-bar.md §6; BetterUI's clean_hud_topbar_r3 until 2026-10-12): rows of
+# menu_text in 9 languages, read by assets\lua\_all\utilities_top_bar.lua with CMND_TEXT_GET by id = crc32(row id), and by the
+# game's «Configuración de controles» (the label of the action row, content\inputs\top_bar.toml).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# the open button's hint left of the shortcut row: only the button glyph markup of the action's command
+# CMD_VRFW_TOPBAR_OPEN (default L3 / N, as the player bound it in the controls screen); the engine draws the glyph of the
+# device in use. Until 2026-10-13 the row utilities_topbar_r3 «<CMD_FUNC6>» (R3).
+# crc32("utilities_topbar_open") = 536445349
+[[row]]
+id = "utilities_topbar_open"
+es = "<CMD_VRFW_TOPBAR_OPEN>"
+en = "<CMD_VRFW_TOPBAR_OPEN>"
+fr = "<CMD_VRFW_TOPBAR_OPEN>"
+de = "<CMD_VRFW_TOPBAR_OPEN>"
+it = "<CMD_VRFW_TOPBAR_OPEN>"
+pt = "<CMD_VRFW_TOPBAR_OPEN>"
+ja = "<CMD_VRFW_TOPBAR_OPEN>"
+zh_hans = "<CMD_VRFW_TOPBAR_OPEN>"
+zh_hant = "<CMD_VRFW_TOPBAR_OPEN>"
+
+# the action's row in the game's «Configuración de controles» (tab «Controles básicos»)
+# crc32("utilities_topbar_open_action") = 870196544
+[[row]]
+id = "utilities_topbar_open_action"
+es = "Abrir accesos directos"
+en = "Open shortcuts"
+fr = "Ouvrir les raccourcis"
+de = "Schnellzugriff öffnen"
+it = "Apri scorciatoie"
+pt = "Abrir atalhos"
+ja = "ショートカットを開く"
+zh_hans = "打开快捷方式"
+zh_hant = "打開快捷方式"

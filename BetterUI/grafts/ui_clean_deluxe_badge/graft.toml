@@ -1,0 +1,29 @@
+# ui_clean, title «Deluxe Edition» badge (flag deluxe_badge; docs/game/ui/ui-redesign.md §6): the retail «Deluxe Edition»
+# button of the title menu (layer title02_21_dlc_buy_btn: white pill + logo + teal check / cart) becomes a plain badge:
+# no pill, no check; the logo only when the game reports the Deluxe Edition as owned (retail funcLuaCommand(2127863466),
+# the value that drives the check), nothing when not. Never focusable (keys, mouse, Accept); a focus the retail focus
+# graph still sends there goes back to the selected item. Snippet = menu_generators.ui_clean_plain(part =
+# "evt_ui_deluxe_badge.lua") of research/grafts/_src/ui_clean; `menu_assemble.py regen ui_clean_deluxe_badge --write`
+# rebuilds it. Wraps SetupDlcBuyBtn_Coroutine / OnChangeFocus / OnEnter by rawset (pre-empting), OnOpenLayer / Step
+# after the retail ones. Part of the standalone mod clean_hud.
+name = "ui_clean_deluxe_badge"
+order = 912
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["SetupDlcBuyBtn_Coroutine", "OnChangeFocus", "OnEnter", "OnOpenLayer", "Step"]
+description = "ui_clean: title «Deluxe Edition» button as a plain unfocusable badge (logo when owned, hidden when not)"
+
+[[files]]
+stem = "title_menu_2"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "title.lua"
+  marker = "ui_clean deluxe_badge"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_deluxe_badge.lua", tag = "title_deluxe", name = "deluxe_badge", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "title_deluxe" }

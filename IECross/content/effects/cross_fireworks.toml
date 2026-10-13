@@ -1,0 +1,54 @@
+schema = "vr_framework.effect/1"
+# The fireworks variants that play a retail effect object (docs/game/mods/iecross-technique-fx-audit.md §6):
+# Cross's object is the retail one (the same meshes, the same skinned mochi, the same textures: Level-5 exported VR's
+# object to Unity) with a few colours changed + its fireworks (Unity particle systems). So: a copy of the retail
+# object with Cross's colours (its mochi are Cross's own), and the fireworks as IECross's own particles-only object
+# (research/scripts/cross_fx_rebuild.py, recipe effect_port particles_only) played next to it in every cut.
+# Colours = Cross's material _Color (cross_fx_material: colour block c0-c2 = _Color.rgb).
+
+# ---- Dough Ray Me (Fireworks) whs95130 / ev60_95130 (Cross ev60_91003): retail Dough Ray Me's ev60022400
+[[recolor]]
+object = "ev60022400"
+copy = "ev60951300"
+textures = "none"
+materials = "none"
+[[recolor.tint]]
+material = "MA_flash_ring_ALP1"          # flash ring: orange in Cross (white in retail)
+rgb = [1.0, 0.7038, 0.0]
+[[recolor.tint]]
+material = "MA_c00_aura_tamaY_02"        # _100_black_01 backdrop: near black in Cross (0.15, 0, 0 in retail)
+rgb = [0.0126, 0.0045, 0.0045]
+
+[[event_effect]]
+event = "ev60_95130"
+object = "effect/event/ev60/ev60951301/ev60951301.objbin"
+cuts = ["c0100", "c0200", "c0300", "c0400"]
+
+# ---- Goopy Gloopy Goo (Fireworks) whd95110 / ev62_95110_1 (Cross ev62_91001, the dribble block only):
+# retail Goopy Gloopy Goo's ev62010600
+[[recolor]]
+object = "ev62010600"
+copy = "ev62951100"
+textures = "none"
+materials = "none"
+# the ball aura lights: pale yellow in Cross (white in retail)
+[[recolor.tint]]
+material = "Effect_BallAura1_01"
+rgb = [0.9838, 1.0, 0.7704]
+[[recolor.tint]]
+material = "Effect_BallAura1_03"
+rgb = [0.9838, 1.0, 0.7704]
+[[recolor.tint]]
+material = "Effect_BallAura1_04"
+rgb = [0.9838, 1.0, 0.7704]
+[[recolor.tint]]
+material = "Effect_BallAura1_06"
+rgb = [0.9838, 1.0, 0.7704]
+[[recolor.tint]]
+material = "Effect_BallAura1_08"
+rgb = [0.9838, 1.0, 0.7704]
+
+[[event_effect]]
+event = "ev62_95110_1"
+object = "effect/event/ev62/ev62951101/ev62951101.objbin"
+cuts = ["c0011", "c0021", "c0031"]

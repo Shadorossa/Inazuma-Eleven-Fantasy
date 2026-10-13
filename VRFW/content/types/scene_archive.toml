@@ -1,0 +1,30 @@
+# How the `[[row]]`s of kind scene_archive (scenes\**\*.toml, schema vr_framework.scene_archive/1) become rows of the
+# game's «Archivo de escenas» (scene_archive_config, list m_sceneArchiveDataList). The sections ([[section]], the
+# tabs) are made by the framework's code, which gives the lookup `section` (story = 0, competition = 1,
+# chronicle = 2, then every section of this start). Format: docs/framework/table-map.md. Columns are schema names
+# (schemas/scene_archive/scene_archive.toml).
+schema = "VRFW.table_map/1"
+
+[[map]]
+entry = "row"
+table = "scene_archive/scene_archive"
+mode = "append"
+key = "key"                  # row id = crc32(key)
+order = "order"              # rows in order, then load order, file, position
+unique = true                # the first declaration of a key wins
+count = "scene archive rows"
+
+[map.fields]
+key = { type = "string", check = "key", max_len = 96 }
+section = { type = "string", check = "name", max_len = 48, required = true }       # a section id or a retail tab
+event = { column = "event_id_text", type = "string", check = "key", max_len = 96, required = true }   # the event it plays
+title = { column = "text_id_title", type = "id", check = "text_id", trim = true, default = "{key}" }  # scene_archive_text row
+thumbnail = { column = "thumbnail_texture_name", type = "string", check = "key", max_len = 96, default = "{key}" }
+thumbnail_path = { column = "thumbnail_texture_path", type = "string", default = "#/menu/220_img/theater_img/{thumbnail}.g4tx" }
+order = { type = "int", default = 100 }
+
+# The other cells: a zero row as the retail theme movies (no unlock condition, no map jump, no temp flags).
+[map.derive]
+category = { lookup = "section", of = "{section}" }
+flag_num = 1
+event_type = 0

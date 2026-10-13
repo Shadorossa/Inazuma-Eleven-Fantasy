@@ -1,0 +1,60 @@
+# The framework's title version label (docs/framework/lua-hosts.md §6.1): «ver.7.1.2  VRFW 2.00».
+# Retail: «ver.7.1.2  0.90 301», layer title02_04_version of title_menu_2 (layout title02_04.g4pkm, local units of its
+# node _pos_scl_base01, which sits at the top right of the screen, x scale 0.65, y 0.9; quads hang from their joint's
+# top-left corner, Y up; the number primitives end at their joint).
+#
+# * The retail layout is moved: «ver.» and the game version A.B.C 40 units to the left, the X.YY pair to the right end
+#   (where the hidden ZZZ ended, local x 0 = the retail right edge), ZZZ pushed off screen. The Lua handler
+#   (graphics\ui\menu\lua\title_menu_2\100_version_label.lua) fills X.YY with the framework version at run time.
+# * The word is its own layer evt_vrfw_title_word, opened with the screen (same group flags as the label): the retail
+#   object on a copy of the layout where only the «ver.» quad stays on screen, resized to the word's box (-246..-126,
+#   same height and baseline as «ver.»). The copy has no Texture row, so it reads the atlas of its own folder,
+#   dx11\menu\50_title\title02\evt_vrfw_title_word\evt_vrfw_title_word.g4tx, whose sprite gtxt_ver01 is the word. That
+#   atlas is NOT committed: research/scripts/title_word_art.py draws it at pack time (framework_pack.py) with the
+#   colour, x-height, stroke and baseline measured from the retail «ver.» sprite and the cap height of the retail
+#   version digits (our own glyphs, no Level-5 pixels), into the framework root's images\ (the image type creates the atlas).
+#   It reads the box size from the _gtxt_ver01 row below.
+# Widths: «ver.» + 7.1.2 as retail, gap 26, word 120 (the natural width of «VRFW»), gap 30, X.YY 96: from local -512
+# (screen x ≈ 1540 of 1920) to 0 (≈ 1873, the retail right edge). The layer keeps the retail anchoring (right / top), so ultrawide places it as retail.
+schema = "vr_framework.menu/2"
+
+# ---- the retail label ----------------------------------------------------------------------------------------------
+layout = [
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_gtxt_ver01", translate = [-565.0, 21.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_gtxt_dot01", translate = [-367.0, -7.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_gtxt_dot02", translate = [-320.0, -7.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_ver01", translate = [-272.0, 16.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_ver02", translate = [-319.0, 16.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_ver03", translate = [-366.0, 16.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_save02", translate = [-66.0, 9.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_gtxt_dot03", translate = [-68.0, -7.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_save01", translate = [0.0, 9.0, 0.0] },
+    { file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm", joint = "_num_net01", offset = [0.0, 3000.0, 0.0] },
+    # ---- the word's layout: a copy, only the «ver.» quad on screen (it carries the word) ---------------------------
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", from = "common/menu/50_title/title02/title02_04/title02_04.g4pkm" },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_gtxt_ver01", translate = [-246.0, 21.0, 0.0], scale = [120.0, 36.0, 1.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_gtxt_dot01", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_gtxt_dot02", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_gtxt_dot03", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_ver01", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_ver02", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_ver03", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_save01", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_save02", offset = [0.0, 3000.0, 0.0] },
+    { file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm", joint = "_num_net01", offset = [0.0, 3000.0, 0.0] },
+]
+
+# ---- the word's layer ----------------------------------------------------------------------------------------------
+[[object]]
+name = "evt_vrfw_title_word"
+from = "title02_04_version"
+remove_block = ["CMenuCreatePrimitiveComponent"]   # no number primitives: only the word quad
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/50_title/title02/title02_04/title02_04.g4pkm" }, values = { 1 = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm" } },
+]
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "evt_vrfw_title_word", object = "evt_vrfw_title_word", count = 1, align = ["right", "top"], after = "title02_04_version", groups = [
+    { group = "title_menu_2", flags = [0, 1, 0, 0, 1, 0], after = "title02_04_version" },
+] }

@@ -1,0 +1,196 @@
+# Pre-match lineups, a feature of Clean HUD («Interfaz limpia», research/mods/BetterUI; Inazuma Fantasy's graft until
+# 2026-10-08; docs/game/ui/prematch-lineups.md, docs/game/modes/prematch-lineups.md section 11-12): the two lineup
+# screens after the walk-in (soccer_battle_setting_flow_formation_menu) get «Editar» (own) / «Datos» (rival) as a second
+# big button (Siguiente mirrored, bottom left); they open soccer_formation_menu (retail CMND_OPEN_FORMATION_MENU) in edit
+# mode or read-only on the rival, then the screen is shown again. Always on (no option row
+# since Clean HUD 1.14.6; offline matches only). Data of the left button: Clean HUD's
+# menus\soccer_battle_setting_flow_vs_menu.toml (layer, CMD_FUNC3 rows), files\data (layout / objbin,
+# research/scripts/prematch_buttons_build.py) and text.toml (clean_hud.prematch_edit / prematch_data). The auto-advance
+# (rev 3) and the rival view after the pre-match editor's close (rev 2) stay in the code, off. soccer_formation_menu is
+# patched with wrappers only (append_block): Inazuma Fantasy's Pachanga formation screen wraps the same input callbacks,
+# and a redefined retail function in a later mod would drop its wrappers. The editor right after the VS is skipped by
+# Clean HUD's plugin (clean_hud.dll), not here. Not migrated (decision 2026-09-26, probes dropped): the probe-only files
+# soccer_battle_setting_flow_vs_menu, chronicle_mode_soccer_vs_menu, soccer_member_change_menu.
+name = "prematch_lineups"
+mod = "clean_hud"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Clean HUD, pre-match lineups: Editar / Datos on the lineup screens (team editor, rival read-only)"
+
+[[files]]
+stem = "soccer_battle_setting_flow_formation_menu"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.OnInit.PrematchLineups"
+  src = "prematch_lineup_1.lua"
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.OnInit.PrematchLineupsBefore"
+  text = '''
+  EVT_PmLog("EVT prematch: lineup group init", "auto", EVT_PmAutoOn()) -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "replace"
+  point = "soccer_battle_setting_flow_formation_menu.SetupTeamInfo.PrematchLineups"
+  text = '''
+  t2[a1][4] = ret4
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqOpenAndWaitSkillGetTelop.PrematchLineups"
+  text = '''
+  EVT_PmAutoReset() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqOpenAndWaitSkillGetTelop.PrematchLineupsBefore"
+  text = '''
+    if EVT_PmAutoTick(1973487846 --[[team00_01_chara_card_for_soccer]], "telop") then -- EVT auto-advance
+      flag3 = true
+    end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.SeqOpenAndWaitSkillGetTelop.PrematchLineupsAfter"
+  text = '''
+  EVT_PmAutoReset() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqOpenAndWaitSkillGetTelop.PrematchLineups2"
+  text = '''
+    if EVT_PmAutoTick(2805223011 --[[soccer20_11_skill_get_telop]], "telop close") then -- EVT auto-advance
+      flag2 = true
+    end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqFormationScreen.PrematchLineups"
+  text = '''
+  EVT_PmLog("EVT prematch: lineup screen", a1 and "self" or "enemy", "team", t[team_table_id].teamNo) -- EVT
+  EVT_PmCamStart() -- EVT (option EVT_PM_LINEUP_CAM)
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqFormationScreen.PrematchLineupsBefore"
+  text = '''
+  if EVT_PmBtnOn() and EVT_PmReshow(a1) and flag5 == true then -- EVT: shown again after the editor: no telop
+    flag5 = false
+    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], 3018698265 --[[soccer08_12_tactics_cmd]], 3)
+    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], 2579693296 --[[team00_10_tactics_base]], 0, 71445658 --[[Open]], 0, 312708591)
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqFormationScreen.PrematchLineups2"
+  text = '''
+  EVT_PmGuideClose() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.OnSetupLayer.PrematchLineups"
+  text = '''
+  if EVT_PmLeftSetup(a1, a2) then -- EVT prematch: the left big button («Editar» / «Datos»)
+    return
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.OnEnter.PrematchLineups"
+  text = '''
+  if a1 == EVT_PMB.LEFT then -- EVT prematch: «Editar» / «Datos» (left big button: click or Enter)
+    EVT_PmBtnPress("guide")
+    return
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.OnFunction.PrematchLineups"
+  text = '''
+  if a1 == EVT_PMB.FN then -- EVT prematch: CMD_FUNC3 row of the Next button (prematch_buttons_build.py)
+    EVT_PmBtnPress("cfg")
+    return
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.Step.PrematchLineups"
+  text = '''
+  EVT_PmCamTick() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_setting_flow_formation_menu.GoToSoccerGame.PrematchLineups"
+  text = '''
+  EVT_PmCamStop() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqFormationScreen.PrematchLineups3"
+  text = '''
+  EVT_PmAutoReset() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_battle_setting_flow_formation_menu.SeqFormationScreen.PrematchLineups4"
+  text = '''
+    if EVT_PmBtnTick(a1) then -- EVT prematch: «Editar» (own) / «Datos» (rival) -> editor, then this screen again
+      EVT_PmSubOpen(a1)
+      if a1 then
+        SetupTeamInfo(1)
+        ChangeTeamInfo(t[1].teamNo, t[1].formationId, true)
+      end
+      t[team_table_id].eventCoroutine = nil
+      StartFormationScreen(a1)
+      return
+    end
+    if EVT_PmAutoTick(1973487846 --[[team00_01_chara_card_for_soccer]], a1 and "self" or "enemy") then -- EVT auto-advance
+      flag3 = true
+    end
+'''
+  crc = "none"
+
+[[files]]
+stem = "soccer_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "prematch_formation_1.lua"
+  marker = "prematch"
+  crc = "none"

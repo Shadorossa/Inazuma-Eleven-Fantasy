@@ -1,0 +1,75 @@
+# VR-Framework: the «Mods» title tile (lower row of title_menu_2; docs/framework/mods-panel.md §2), added to the
+# retail title00_07.g4tx as the texture vrfw_mods_tile. All of it is the framework's own art: the background scene
+# (title00_07/vrfw_mods_scene.png, variant «circuito» of research/scripts/mods_tile_bg.py: a blueprint grid with hex
+# modules linked by glowing traces and a gear) and the puzzle glyph (title00_07/vrfw_mods_icon_btn.png). The recipes
+# below give the scene the retail _off (blue duotone) / _on (colour under a blue wash) looks at the first start and
+# cut it to the retail tile shape: the only game input is btn_base01_off's alpha, used as a mask. No Level-5 pixel
+# ships. The sprite names are research/mods/mods_menu/tile.toml's (the plugin hands them to the title).
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/50_title/title00/title00_07/title00_07.g4tx"
+name = "vrfw_mods_tile"
+size = [1084, 160]
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_07/title00_07.g4tx"
+name = "vrfw_mods_btn_base_off"
+texture = "vrfw_mods_tile"
+x = 0
+y = 0
+size = [392, 160]
+recipe = "base_off"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_07/title00_07.g4tx"
+name = "vrfw_mods_btn_base_on"
+texture = "vrfw_mods_tile"
+x = 396
+y = 0
+size = [392, 160]
+recipe = "base_on"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_07/title00_07.g4tx"
+name = "vrfw_mods_icon_btn"
+texture = "vrfw_mods_tile"
+x = 792
+y = 0
+png = "title00_07/vrfw_mods_icon_btn.png"
+
+# the background: our own scene (392 x 160, research/scripts/mods_tile_bg.py --export)
+[[recipe]]
+name = "scene"
+png = "title00_07/vrfw_mods_scene.png"
+
+# the retail tile shape (its alpha): btn_base01_off is a whole texture of title00_07.g4tx (392 x 160), not a sprite
+[[recipe]]
+name = "shape"
+game = "dx11/menu/50_title/title00/title00_07/title00_07.g4tx"
+texture = "btn_base01_off"
+
+# retail _off look: luminance -> blue duotone (curves fitted on btn_base01/05/06/08/10_off; the median lifted to 0.5)
+[[recipe]]
+name = "off_rgb"
+from = "scene"
+ops = [{ op = "duotone", lo_pct = 1.0, hi_pct = 99.0, median = 0.5, blue = [30.0, 0.66], blue_max = 205.0, red = [2.0, -0.25, 0.0035], green = [0.0, 0.33, 0.002] }]
+
+[[recipe]]
+name = "bright"
+from = "off_rgb"
+ops = [{ op = "affine", mul = [1.25, 1.25, 1.25], add = [0.0, 18.0, 40.0] }]
+
+[[recipe]]
+name = "base_off"
+from = "off_rgb"
+ops = [{ op = "alpha_from", image = "shape" }]
+
+# retail _on look: the colour scene under a blue wash, heavier lower-left
+[[recipe]]
+name = "base_on"
+from = "scene"
+ops = [
+    { op = "mix_gradient", image = "bright", weight = [0.6, -0.5, 0.25], clamp = [0.15, 0.7] },
+    { op = "alpha_from", image = "shape" },
+]

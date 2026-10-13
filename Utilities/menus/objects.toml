@@ -1,0 +1,14 @@
+# Team bank pages (feature team_banks): the text node `_text_bank01` of the dock-list window, where the Lua writes
+# the page indicator «<L2> Pág. k/N <R2>» in the window's bottom band (centred style fs_32_w_cc_2d0_001; layout
+# files\data\common\menu\10_win\win05\win05_15\win05_15.g4pkm, geometry research/scripts/team_banks_window_build.py). Moved from Inazuma Fantasy
+# (menus/objects.toml) on 2026-10-08.
+schema = "vr_framework.menu/2"
+
+[[object_set]]
+object = "win05_15_sub_list_locator_doc"
+add_block = [
+    { block = "MenuTextSetting", values = [0], after = "CMenuListViewSubWindowCommon" },
+]
+add = [
+    { block = "MenuTextSetting", param = "_text_bank01", values = [0x1A200739] },
+]

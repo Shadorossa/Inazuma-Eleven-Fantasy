@@ -1,0 +1,46 @@
+schema = "vr_framework.character/2"
+# Inazuma Eleven Cross · Prominence · Inazuma Eleven 2: the Cross version(s) of this team's characters (fixed ids, created by their `order`;
+# series «Inazuma Eleven Cross»: chara_base team_3 = crc32("evt_belong_team_cross")). Moved from Inazuma Fantasy's
+# characters\11_ie2\prominence.toml on 2026-10-08 (first written by research/scripts/if_chara_to_toml.py, which writes them here now:
+# _split.toml). Inazuma Fantasy's EVT fields of their cards (growth, Lv200 stats, INAROGUE rarity) are IF's
+# characters\iecross_cards.toml.
+default_lang = "en"
+
+[[character]]
+name = "torch"                                            # Torch
+based_on = "c02020900"                                    # template: Torch
+order = 67
+
+  [character.base]
+  id = 0x30823413
+  name = "c91022031"
+  voice_bank = 0xC4438263
+  team_2 = 0x00000000
+  team_3 = 0x1E5DC7AA
+  in_ie2 = 0
+  in_ie3 = 1
+
+  [character.new_model]
+  id = 0xD72D3BDB
+  from = 0x5D64E422                                       # model of Torch (c02020900)
+  order = 10
+  [character.new_model.cells]
+  clothes = 0x2EDFB41B
+  shoes = 0xC1E211FB
+  head_mesh_path = "_face/12_CROSS/c91000150/c91000150.g4md"
+
+  [[character.cards]]
+  id = 0xF0111C21                                         # FW/MF · fire
+  from = 0x6DB78C11                                       # template: Torch (c02020900)
+  order = 79
+  moves = [
+    { move = 0x09C23C18, level = 1 },                     # Fire Blizzard
+    { move = 0xAE2B3429, level = 13 },                    # Atomic Flare
+    { move = 0x111B676E, level = 20 },                    # Fire Blizzard
+    { move = 0xB60E3C60, level = 30 },                    # Plasma Cut
+    { move = 0x25276CB9, level = 38 },                    # Solar Surprise
+    { move = 0x7C6D5B0E, level = 43 },                    # Astro Break
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x6B455865, level = 1 },                     # Chaos Illusion
+  ]

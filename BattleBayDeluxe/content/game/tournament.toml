@@ -1,0 +1,83 @@
+# The Battle Bay «Torneo» as native data (schema VRFW.game/1, docs/framework/native.md), handled by
+# scripts\tournament.lua (required by campaign.lua: one VM with the Campaña's Decide hook and the Draft). The session
+# block `session` and its struct are declared in campaign.toml (one name space per mod). The graft
+# research/grafts/bb_tournament calls these commands from the Battle Bay top menu, the campaign end window and the
+# screens that read CMND_GET_BB_STADIUM_CAMPAIGN_INFO. docs/game/modes/bb-tournament.md §7.
+schema = "VRFW.game/1"
+
+[[VRFW.Command]]
+# -> table { active, ended, armed, campaign (another campaign holds the block), defaults { fmt, size }, fmt (0
+# knockout, 1 groups), size, k (matches played), matches (the champion's matches), stage, outcome, rules (the
+# rulebook of the next match: "" = the row's own), rival (the next rival's team hash) }
+name = "CMND_BBD_TOURN_INFO"
+handler = "BattleBayDeluxe.TournInfo"
+needs = ["session"]
+
+[[VRFW.Command]]
+# fmt (0 knockout, 1 groups), size (a power of two), configured, filter (1 = filter minor teams) -> ok, why: the next
+# campaign start in the grid is a tournament
+name = "CMND_BBD_TOURN_ARM"
+handler = "BattleBayDeluxe.TournArm"
+needs = ["session"]
+
+[[VRFW.Command]]
+name = "CMND_BBD_TOURN_DISARM"
+handler = "BattleBayDeluxe.TournDisarm"
+needs = ["session"]
+
+[[VRFW.Command]]
+# the values of CMND_VRFW_RULE_ENGINE_STATE (phase, rulebook, goals for, against, shoot-out for, against, winner,
+# extra time) -> table { event = "none" | "result" | "out" | "champion" | "ended" | "abandoned", show, rules }
+name = "CMND_BBD_TOURN_SYNC"
+handler = "BattleBayDeluxe.TournSync"
+needs = ["session"]
+
+[[VRFW.Command]]
+# page (-1 = the first) -> the overlay's view (scripts/lib/tourney_view.lua)
+name = "CMND_BBD_TOURN_VIEW"
+handler = "BattleBayDeluxe.TournView"
+needs = ["session"]
+
+[[VRFW.Command]]
+# sub, i -> handled, value: CMND_GET_BB_STADIUM_CAMPAIGN_INFO 1 (match number) / 3 (rival i) as the tournament shows it;
+# sub 4 (1.5.47) -> true, the loading telop's path length (a tournament match: its format's match count, else the
+# Campaña block's 7)
+name = "CMND_BBD_TOURN_CAMPAIGN_INFO"
+handler = "BattleBayDeluxe.TournCampaignInfo"
+needs = ["session"]
+
+[[VRFW.Command]]
+name = "CMND_BBD_TOURN_ABANDON"
+handler = "BattleBayDeluxe.TournAbandon"
+needs = ["session"]
+
+[[VRFW.Command]]
+name = "CMND_BBD_TOURN_CLOSE"
+handler = "BattleBayDeluxe.TournClose"
+needs = ["session"]
+
+[[VRFW.Command]]
+# -> table { event = "step" | "over" | "none" }: after an elimination, the next remaining round simulated and saved
+name = "CMND_BBD_TOURN_STEP"
+handler = "BattleBayDeluxe.TournStep"
+needs = ["session"]
+
+[[VRFW.Command]]
+# difficulty byte (GetSelectDifficultyIdx() + 1) -> table { ok, waiting }: 1.5.4, the grid's start; with the run the
+# Decide hook drew (the game's own start refused) the campaign block is written and the run saved
+name = "CMND_BBD_TOURN_START"
+handler = "BattleBayDeluxe.TournStart"
+needs = ["session"]
+
+[[VRFW.Command]]
+# -> table { ok, rules }: 1.5.5, Enter on the bracket: the Campaña's block fields kept (save blob
+# bb_tournament_campaign.json), the next tournament match written into the block (index 0)
+name = "CMND_BBD_TOURN_PREPARE"
+handler = "BattleBayDeluxe.TournPrepare"
+needs = ["session"]
+
+[[VRFW.Command]]
+# -> true: the match request failed: the Campaña's block fields back at once
+name = "CMND_BBD_TOURN_UNLOAD"
+handler = "BattleBayDeluxe.TournUnload"
+needs = ["session"]

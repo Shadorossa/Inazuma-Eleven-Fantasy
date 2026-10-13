@@ -1,0 +1,274 @@
+# VR-Framework: the chain board screen's art (#/menu/220_img/vrfw_chain/vrfw_chain.g4tx, a NEW atlas;
+# docs/framework/chain-board.md). The framework's own drawings (vrfw_chain\*.png, research/scripts/chain_board_art.py:
+# page panel, title tab, cursor brackets, tiles locked / open / done / start / «?», start flag, chests (closed, open,
+# padlocked; the IE3 «S» chest too), lock, check, «?», S / A / B badges (the same drawing as the route board's ranks),
+# link bar, page arrows; the IE3 chain screen's look, redrawn). No Level-5 pixel. The screen
+# (menus\chain_board.toml, script vrfw_chain_board_menu) binds the sprites by crc32 of their names. Generated: rerun the
+# script, do not edit by hand.
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain"
+size = [1024, 1280]
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_panel"
+texture = "vrfw_chain"
+x = 0
+y = 0
+size = [432, 368]
+png = "vrfw_chain/vrfw_chain_panel.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_head"
+texture = "vrfw_chain"
+x = 436
+y = 0
+size = [400, 64]
+png = "vrfw_chain/vrfw_chain_head.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_ring"
+texture = "vrfw_chain"
+x = 840
+y = 0
+size = [168, 168]
+png = "vrfw_chain/vrfw_chain_ring.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_locked"
+texture = "vrfw_chain"
+x = 0
+y = 372
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_locked.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_open"
+texture = "vrfw_chain"
+x = 132
+y = 372
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_open.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_done"
+texture = "vrfw_chain"
+x = 264
+y = 372
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_done.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_start"
+texture = "vrfw_chain"
+x = 396
+y = 372
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_start.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_start"
+texture = "vrfw_chain"
+x = 528
+y = 372
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_start.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_chest"
+texture = "vrfw_chain"
+x = 628
+y = 372
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_chest.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_chest_open"
+texture = "vrfw_chain"
+x = 728
+y = 372
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_chest_open.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_lock"
+texture = "vrfw_chain"
+x = 828
+y = 372
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_lock.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_check"
+texture = "vrfw_chain"
+x = 928
+y = 372
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_check.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_rank_s"
+texture = "vrfw_chain"
+x = 0
+y = 504
+size = [64, 64]
+png = "vrfw_chain/vrfw_chain_rank_s.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_rank_a"
+texture = "vrfw_chain"
+x = 68
+y = 504
+size = [64, 64]
+png = "vrfw_chain/vrfw_chain_rank_a.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_rank_b"
+texture = "vrfw_chain"
+x = 136
+y = 504
+size = [64, 64]
+png = "vrfw_chain/vrfw_chain_rank_b.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_line"
+texture = "vrfw_chain"
+x = 204
+y = 504
+size = [16, 16]
+png = "vrfw_chain/vrfw_chain_line.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_arrow_r"
+texture = "vrfw_chain"
+x = 224
+y = 504
+size = [64, 64]
+png = "vrfw_chain/vrfw_chain_arrow_r.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_arrow_l"
+texture = "vrfw_chain"
+x = 292
+y = 504
+size = [64, 64]
+png = "vrfw_chain/vrfw_chain_arrow_l.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_unknown"
+texture = "vrfw_chain"
+x = 360
+y = 504
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_unknown.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_chest_locked"
+texture = "vrfw_chain"
+x = 460
+y = 504
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_chest_locked.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_schest"
+texture = "vrfw_chain"
+x = 560
+y = 504
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_schest.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_schest_open"
+texture = "vrfw_chain"
+x = 660
+y = 504
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_schest_open.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_schest_locked"
+texture = "vrfw_chain"
+x = 760
+y = 504
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_schest_locked.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_hidden"
+texture = "vrfw_chain"
+x = 0
+y = 640
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_hidden.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_tile_chest"
+texture = "vrfw_chain"
+x = 132
+y = 640
+size = [128, 128]
+png = "vrfw_chain/vrfw_chain_tile_chest.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_blocked"
+texture = "vrfw_chain"
+x = 264
+y = 640
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_blocked.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_icon_unblocked"
+texture = "vrfw_chain"
+x = 364
+y = 640
+size = [96, 96]
+png = "vrfw_chain/vrfw_chain_icon_unblocked.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_card"
+texture = "vrfw_chain"
+x = 0
+y = 772
+size = [860, 176]
+png = "vrfw_chain/vrfw_chain_card.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
+name = "vrfw_chain_help_panel"
+texture = "vrfw_chain"
+x = 0
+y = 952
+size = [860, 304]
+png = "vrfw_chain/vrfw_chain_help_panel.png"

@@ -1,0 +1,80 @@
+# Hand-maintained. Clean HUD's compact player cards (flag compact_cards, docs/game/ui/ui-redesign.md §3.6 and
+# docs/game/characters/position-cards.md §8; moved from Inazuma Fantasy on 2026-10-08): the formation screens draw
+# their cards with the formation layout copy (files\data team00_01_evt_fc / team00_01_p1_evt_fc: card 0.78 wide,
+# face centred, portrait masks evt_fc_chr_msk_{l,s}01 in images\menu\102_team\team00\team00_01.toml) and the bench /
+# manager block of the frame copy (soccer11_02_evt_fc). The name and level are hidden by the Lua; element
+# (bottom left) and position (bottom right) are placed by the layout
+# (graft research/grafts/clean_hud_player_cards). Built by research/scripts/fc_build.py (layouts, objbins).
+# Card colours are the game's (rarity); Inazuma Fantasy colours them by position on top and points its other card
+# screens (bank, lists, opponents, equip, ...) at the same layout with its own [[patch]] rows.
+schema = "vr_framework.menu/2"
+
+# the pitch card object: the retail team00_01_chara_card_for_soccer on the formation layout; Hero / Diamond effects on
+# the layout's 0.78-wide locator _evt_pos_eff01 (crc 0x2A0667AE) instead of _pos_base01
+[[object]]
+name = "team00_01_chara_card_for_formation_evt"
+from = "team00_01_chara_card_for_soccer"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+
+# The rival squad screens (2026-10-11): their card layers are built from the retail objects of their own, so the
+# redirects of the formation object above never reached them and the rival side kept the retail card (level, name).
+# Chronicle board VS preview, rival half (vs_route_town_vs_enemy_formation_menu, a child menu of
+# vs_route_town_vs_team_menu, which draws your half): team00_01_chara_card_for_vsroute = the retail pitch card with a
+# longer level-prim list; the same layout swap and Hero / Diamond effect locator as the formation object.
+[[object]]
+name = "team00_01_chara_card_for_vsroute_evt"
+from = "team00_01_chara_card_for_vsroute"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+
+# The rival team screen (opponent_team_menu: rival info of the opponent lists, also story / Kizuna Town rematches):
+# team00_01_chara_card_for_opponent = the retail card without the effect block; only the layout swap.
+[[object]]
+name = "team00_01_chara_card_for_opponent_evt"
+from = "team00_01_chara_card_for_opponent"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+]
+
+# The formation screens: pitch, bench, coach / manager slots and the drag card (layers _for_soccer, _for_leader,
+# _for_move) and their empty slots. Only screens whose every team00_01 card is a formation card (a screen that loads
+# both layouts lost the level on its retail cards: position-cards.md §8.1). enjoy_team_select_menu = the Estadio BB /
+# Bahía Batalla team select (your squad left, the rival right: layers _left / _right, both from this object).
+[[redirect]]
+object = "team00_01_chara_card_for_soccer"
+to = "team00_01_chara_card_for_formation_evt"
+menus = ["enjoy_team_select_menu", "kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu", "vs_route_town_vs_team_menu"]
+
+[[redirect]]
+object = "team00_01_p1_chara_card_blank"
+to = "team00_01_p1_chara_card_blank_for_formation_evt"
+menus = ["kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu", "vs_route_town_vs_team_menu", "vs_route_town_vs_enemy_formation_menu"]
+
+# the bench column and manager block closed up for the narrower cards (retail 122 px cards would overlap at this spacing);
+# opponent_team_menu: the rival's bench and staff the same way as your own squad's
+[[redirect]]
+object = "soccer11_02_formation_frame"
+to = "soccer11_02_formation_frame_evt_fc"
+menus = ["opponent_team_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_menu"]
+
+# the rival squad screens (all their team00_01 cards: pitch, bench, coach / managers, 5 v 5 row)
+[[redirect]]
+object = "team00_01_chara_card_for_vsroute"
+to = "team00_01_chara_card_for_vsroute_evt"
+menus = ["vs_route_town_vs_enemy_formation_menu"]
+
+[[redirect]]
+object = "team00_01_chara_card_for_opponent"
+to = "team00_01_chara_card_for_opponent_evt"
+menus = ["opponent_team_menu"]

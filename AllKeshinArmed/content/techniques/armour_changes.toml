@@ -1,0 +1,370 @@
+schema = "vr_framework.technique/3"
+# All Keshin Armed: the game's own skill-board choice «with armour / without» for EVERY player with a keshin
+# (docs/game/mods/all-keshin-armed.md §2). The board's keshin piece has an armed slot (skillEquipInvInfo.keshinArmed,
+# open from the keshin piece's level + 5): set it and the skill list builder (0xD83370) turns the keshin into the
+# armed form this table names for (keshin, the player's card); empty = the plain keshin. The game takes the FIRST row
+# of a keshin's list for every card when its card is 0, so each keshin of transforms/armours.toml gets one row: its
+# first armour in transforms/armours.toml (the pairing order the framework also uses) for card 0 = any card (the
+# retail per-card lists of these keshin are replaced: the framework builds a non-native wearer's look on his own body).
+# Getting a keshin item also adds the armour items of its list (add item 0xE93210). One [[aura_change]] per keshin that has
+# an armour in transforms/armours.toml (keep the two files together: a new armour pair = its keshin's row here).
+
+[[aura_change]]
+aura = "wkd00060"
+changes = [["wad00060", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00200"
+changes = [["wad00200", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00210"
+changes = [["wad00210", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00270"
+changes = [["wad00270", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00320"
+changes = [["wad00320", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00360"
+changes = [["wad00360", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00370"
+changes = [["wad00370", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00420"
+changes = [["wad00420", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00650"
+changes = [["wad00650", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00670"
+changes = [["wad00670", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00700"
+changes = [["wad00700", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00710"
+changes = [["wad00710", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00722"
+changes = [["wad00720", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00830"
+changes = [["wad00830", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00840"
+changes = [["wad00840", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00890"
+changes = [["wad00890", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkd00920"
+changes = [["wad00920", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00110"
+changes = [["wak00110", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00160"
+changes = [["wak00160", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00170"
+changes = [["wak00170", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00230"
+changes = [["wak00230", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00250"
+changes = [["wak00250", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00260"
+changes = [["wak00260", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00430"
+changes = [["wak00430", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00460"
+changes = [["wak00460", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00490"
+changes = [["wak00490", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00500"
+changes = [["wak00500", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00510"
+changes = [["wak00510", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00520"
+changes = [["wak00520", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00660"
+changes = [["wao00660", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00723"
+changes = [["wak00720", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00770"
+changes = [["wak00770", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00790"
+changes = [["wak00790", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00850"
+changes = [["wak00850", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00940"
+changes = [["wak00940", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00950"
+changes = [["wak00950", "0x00000000"]]
+
+[[aura_change]]
+aura = "wkk00960"
+changes = [["wak00960", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00010"
+changes = [["wao00010", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00070"
+changes = [["wao00070", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00090"
+changes = [["wao00090", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00150"
+changes = [["wao00150", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00180"
+changes = [["wao00180", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00340"
+changes = [["wao00342", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00470"
+changes = [["wao00470", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00480"
+changes = [["wao00480", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00640"
+changes = [["wao00640", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00680"
+changes = [["wao00680", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00721"
+changes = [["wao00720", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00810"
+changes = [["wao00810", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00820"
+changes = [["wao00820", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00900"
+changes = [["wao00900", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00910"
+changes = [["wao00910", "0x00000000"]]
+
+[[aura_change]]
+aura = "wko00930"
+changes = [["wao00930", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00020"
+changes = [["was00020", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00030"
+changes = [["was00030", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00040"
+changes = [["was00040", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00050"
+changes = [["was00050", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00080"
+changes = [["was00080", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00100"
+changes = [["was00100", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00120"
+changes = [["was00120", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00130"
+changes = [["was00130", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00140"
+changes = [["was00140", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00190"
+changes = [["was00190", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00220"
+changes = [["was00220", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00240"
+changes = [["was00240", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00280"
+changes = [["was00280", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00290"
+changes = [["was00290", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00300"
+changes = [["was00300", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00310"
+changes = [["was00310", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00330"
+changes = [["was00330", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00350"
+changes = [["was00351", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00400"
+changes = [["was00400", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00410"
+changes = [["was00410", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00440"
+changes = [["was00441", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00450"
+changes = [["was00450", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00530"
+changes = [["was00530", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00540"
+changes = [["was00540", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00610"
+changes = [["was00610", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00630"
+changes = [["was00630", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00690"
+changes = [["was00690", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00720"
+changes = [["was00720", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00760"
+changes = [["was00760", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00780"
+changes = [["was00780", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00800"
+changes = [["was00800", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00860"
+changes = [["was00860", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00870"
+changes = [["was00870", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00880"
+changes = [["was00880", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00970"
+changes = [["was00970", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00980"
+changes = [["was00980", "0x00000000"]]
+
+[[aura_change]]
+aura = "wks00990"
+changes = [["was00990", "0x00000000"]]

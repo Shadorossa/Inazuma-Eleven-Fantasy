@@ -1,0 +1,29 @@
+# The Draft team's name (0x120BBDC0 = crc32("evt_bbd_draft_name"), the team type's default name text) and
+# description (0x479D6F92, teams/50_draft.toml `description`), moved from Inazuma Fantasy on 2026-10-08.
+schema = "vr_framework.text/2"
+table = "team_text"
+
+[[row]]
+id = 0x479D6F92  # Elige 1 de 5 jugadores para cada puesto y juega la Campaña con tu equ…
+kind = "text"
+es = "Elige 1 de 5 jugadores para cada puesto\\ny juega la Campaña con tu equipo."
+en = "Pick 1 of 5 players for every position\\nand play the Campaign with your team."
+fr = "Choisis 1 joueur sur 5 à chaque poste\\net joue la Campagne avec ton équipe."
+de = "Wähle für jede Position 1 von 5 Spielern\\nund spiele die Kampagne mit deinem Team."
+it = "Scegli 1 giocatore su 5 per ogni ruolo\\ne gioca la Campagna con la tua squadra."
+pt = "Escolhe 1 de 5 jogadores para cada posição\\ne joga a Campanha com a tua equipa."
+ja = "各ポジションで5人から1人を選び、\\nそのチームでキャンペーンに挑もう。"
+zh_hans = "每个位置从5名球员中选择1名，\\n用你的球队参加战役。"
+zh_hant = "每個位置從5名球員中選擇1名，\\n用你的球隊參加戰役。"
+
+[[row]]
+id = 0x120BBDC0  # Draft
+es = "Draft"
+en = "Draft"
+fr = "Draft"
+de = "Draft"
+it = "Draft"
+pt = "Draft"
+ja = "ドラフト"
+zh_hans = "选秀"
+zh_hant = "選秀"

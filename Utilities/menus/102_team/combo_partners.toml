@@ -1,0 +1,59 @@
+# Utilities: the combo partner picker (research/grafts/util_combo_partners, docs/game/mechanics/combo-partners.md §6).
+# Everything here is a declaration over the player's own game files (retail objects / layouts copied and moved), so
+# the picker works with only the VR-Framework and Utilities installed.
+#
+# 1. The retail «Tabla de habilidades» (ability_learning_board_menu) gets the list window of the passive configurator
+#    (objects util_pc_listbg / util_pc_list / util_pc_row of passive_config.toml, the same names: the frame's row
+#    attaches name the layer util_pc_row): the partner list, hidden until X opens it (draw priorities 600-602 set by
+#    the Lua at OnSetupLayer, over the board's nodes and its move panel).
+# 2. general_window gets the performers' cards of the confirm popup (layer util_cp_card, 4 instances, not opened with
+#    the window): since 2026-10-13 the Plantilla's player card (owner: «las cartas como las de la plantilla»), object
+#    util_cp_card = the retail team00_01_chara_card_for_soccer (the team dock's pitch / bench card, also general_window's
+#    own retail card) with a free origin and no touch area. util_cp_gw.lua opens only the instances it needs (1..4),
+#    fills each one like general_window fills its own card (CMND 3837561292 by status handle: background with its
+#    gradient, portrait, element, position), places them side by side above the question and raises them to 885
+#    (window 880, retail card 882). With BetterUI + Inazuma Fantasy the card is the Plantilla's compact one (Inazuma
+#    Fantasy's menus\102_team\combo_partner_cards.toml points this object at BetterUI's formation layout; position
+#    colours by its graft position_cards). Was a 140 x 190 card made of the list row team08_02_ability_list_item
+#    (own layout util_cp_card.g4pkm) until 2026-10-13; IF's evt_cpk_card in general_window until 2026-10-08.
+schema = "vr_framework.menu/2"
+
+[[object]]
+name = "util_cp_card"
+from = "team00_01_chara_card_for_soccer"
+free = true
+remove_block = ["MenuCollisionSetting"]
+
+# 1. the partner list on the retail skill board
+[[patch]]
+menu = "ability_learning_board_menu"
+add_layer = { name = "util_pc_listbg", object = "util_pc_listbg", count = 1, align = ["left", "middle"], scale = 0.20000000298023224, after = "team13_18_unlimited_skill_telop", groups = [{ group = "ability_learning_board_menu", after = "team13_18_unlimited_skill_telop" }] }
+
+[[patch]]
+menu = "ability_learning_board_menu"
+add_layer = { name = "util_pc_list", object = "util_pc_list", count = 1, align = ["left", "middle"], scale = 0.20000000298023224, after = "util_pc_listbg", groups = [{ group = "ability_learning_board_menu", after = "util_pc_listbg" }] }
+
+[[patch]]
+menu = "ability_learning_board_menu"
+add_layer = { name = "util_pc_row", object = "util_pc_row", count = 6, align = ["left", "middle"], scale = 0.20000000298023224, after = "util_pc_list", groups = [{ group = "ability_learning_board_menu", after = "util_pc_list" }] }
+
+[[patch]]
+menu = "ability_learning_board_menu"
+res = [
+    "#/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4tx",
+    "#/menu/102_team/team08/team08_01/team08_01.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx",
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",
+]
+
+# 2. the confirm popup's cards (icon_common: the «?» portrait of a random partner; icon_common2 <LG>: position badges)
+[[patch]]
+menu = "general_window"
+add_layer = { name = "util_cp_card", object = "util_cp_card", count = 4, after = "team00_01_p5_avatar_unlock_basara_ring_for_chara_card", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "team00_01_p5_avatar_unlock_basara_ring_for_chara_card" }] }
+
+[[patch]]
+menu = "general_window"
+res = [
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
+]

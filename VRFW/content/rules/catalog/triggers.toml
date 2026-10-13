@@ -1,0 +1,478 @@
+schema = "vr_framework.rule_catalog/1"
+# The behaviour rules' vocabulary (M7, docs/framework/rule-catalog.md): every trigger (`on`), effect (`do`) and
+# condition (`when`) of `vr_framework.behaviour/1` (docs/framework/rules.md) and what each one allows. Built into
+# the framework (rule_engine::catalog, like content\defaults\game_rarities.toml): the rule compile reads its checks
+# from here, the scripts' `vrfw.triggers` list and the boot report its names. A trigger needs a fire point in the
+# framework's code (its `id` is that point's number, `SinkCall::trigger`, frozen: never renumber, only append);
+# everything else about it (its name, its facts, the effects it takes, its argument words) is this file.
+#
+# [[trigger]]: name (the `on` word), id (frozen number), actor / move (the facts the trigger has: the actor / move
+# conditions hold only on a trigger that has them), args (the words `on = "<name>:<arg>"` takes; absent = any text,
+# checked by the trigger's own code when it has a format: button command, clock seconds, state id, set piece kind),
+# fired_by (where it fires: the hook bus point or the game function, docs/framework/hook-bus.md).
+
+[[trigger]]
+name = "tick"
+id = 1
+fired_by = "hook bus unit_tick, once per frame of the actor loop (matches only)"
+
+[[trigger]]
+name = "actor_tick"
+id = 2
+actor = true
+fired_by = "hook bus unit_tick, every actor on the pitch, every frame"
+
+[[trigger]]
+name = "move_power"
+id = 3
+actor = true
+move = true
+fired_by = "Technique.Power post (0x14D7A90)"
+
+[[trigger]]
+name = "move_check"
+id = 4
+actor = true
+move = true
+fired_by = "Stamina.AuraCostCheck post (0x16710F0): the HUD / input / AI availability of a slot"
+
+[[trigger]]
+name = "block_battle"
+id = 5
+actor = true
+move = true
+fired_by = "hook bus battle_build pre: a block battle (basic block or block move) is built"
+
+[[trigger]]
+name = "mode_enter"
+id = 6
+fired_by = "current-mode service: the current key changes (the key entered: on = \"mode_enter:<key>\" or when.mode)"
+
+[[trigger]]
+name = "mode_leave"
+id = 7
+fired_by = "current-mode service: the current key changes (the key left)"
+
+[[trigger]]
+name = "match_start"
+id = 8
+fired_by = "current-mode service: in_match 0 -> 1"
+
+[[trigger]]
+name = "match_end"
+id = 9
+fired_by = "current-mode service: in_match 1 -> 0"
+
+[[trigger]]
+name = "signal"
+id = 10
+actor = true
+move = true
+fired_by = "a rule's do.signal, the Lua CMND_VRFW_RULE_SIGNAL, the export vrfw_rule_signal (actor / move as sent)"
+
+[[trigger]]
+name = "dash"
+id = 11
+actor = true
+fired_by = "TeamDashStart pre (0x15BFBB0); arg = the dash type (1 dash, 2 dash attack)"
+
+[[trigger]]
+name = "move_speed"
+id = 12
+actor = true
+fired_by = "GetUnitMoveSpeedRate post (0x154B480, own trampoline)"
+
+[[trigger]]
+name = "aura_start"
+id = 13
+actor = true
+fired_by = "CanUseAuraSkill post (0x154E880); arg = the aura attribute bit (1 keshin, 2 armour, 4 miximax, 8 soul, 16 bond, 64 mode change)"
+
+[[trigger]]
+name = "tension_pay"
+id = 14
+actor = true
+move = true
+fired_by = "TensionPay pre (0x16BFC80); arg = skill / concede / the kind number"
+
+[[trigger]]
+name = "event_build"
+id = 15
+actor = true
+move = true
+fired_by = "CmdEventBuild pre (0x14BC0C0); arg = the command type (22 = aura exec)"
+
+[[trigger]]
+name = "zone_check"
+id = 16
+actor = true
+fired_by = "CanStartZone post (0x1533DF0): the zone start check"
+
+[[trigger]]
+name = "recast"
+id = 17
+actor = true
+move = true
+fired_by = "MatchSkillInstall post (0x1606470): kick-off and in-match slot changes"
+
+[[trigger]]
+name = "button_press"
+id = 18
+actor = true
+fired_by = "InputCmdOn post (0x4C8250): the first frame the game answers on; arg (required) = the input command (CMD_SHOOT …)"
+
+[[trigger]]
+name = "button_hold"
+id = 19
+actor = true
+fired_by = "InputCmdOn post (0x4C8250): every frame the command is on; arg (required) = the input command"
+
+[[trigger]]
+name = "button_release"
+id = 20
+actor = true
+fired_by = "frame poll: the command was on the frame before and is not now; arg (required) = the input command"
+
+[[trigger]]
+name = "select"
+id = 21
+actor = true
+args = ["user", "rival", "team0", "team1"]
+fired_by = "frame poll of the controlled player: the side that switched"
+
+[[trigger]]
+name = "clock"
+id = 22
+fired_by = "frame poll of the half's clock; arg (required) = the seconds it fires at, once per half"
+
+[[trigger]]
+name = "goal"
+id = 23
+actor = true
+args = ["user", "rival", "team0", "team1"]
+fired_by = "frame poll of the score: the side that scored, the scorer"
+
+[[trigger]]
+name = "possession"
+id = 24
+actor = true
+args = ["change", "keep"]
+fired_by = "frame poll of the ball owner: the new owner"
+
+[[trigger]]
+name = "foul"
+id = 25
+actor = true
+args = ["none", "card", "red"]
+fired_by = "frame poll of the current restart: the offender"
+
+[[trigger]]
+name = "keeper_save"
+id = 26
+actor = true
+move = true
+args = ["move", "basic"]
+fired_by = "KeeperStageEvent post (0x14CEF60), saved set: the keeper and his move"
+
+[[trigger]]
+name = "set_piece"
+id = 27
+actor = true
+fired_by = "frame poll of the current restart: a new restart, its kicker; arg = throw_in, corner, goal_kick, free_kick, offside, penalty (or 1-6)"
+
+[[trigger]]
+name = "state_enter"
+id = 28
+fired_by = "frame poll of g_soccerState; arg = the state id (9 InPlay, 10 Restart, 11 HalfTime, 13 Goal, 14 FocusBtl …)"
+
+[[trigger]]
+name = "state_leave"
+id = 29
+fired_by = "frame poll of g_soccerState; arg = the state id"
+
+[[trigger]]
+name = "cutin_start"
+id = 30
+fired_by = "match events service: a scripted event starts playing; arg = its group (content\\defaults\\match_events.toml)"
+
+[[trigger]]
+name = "cutin_end"
+id = 31
+fired_by = "match events service: that event stops playing; arg = the group"
+
+[[trigger]]
+name = "keeper_scene"
+id = 32
+actor = true
+move = true
+args = ["saved", "beaten"]
+fired_by = "match events service: the keeper battle's outcome scene is set up"
+
+[[trigger]]
+name = "shot_start"
+id = 33
+move = true
+fired_by = "match events service: the ball enters the shot state"
+
+[[trigger]]
+name = "shot_end"
+id = 34
+move = true
+fired_by = "match events service: the ball leaves the shot state"
+
+[[trigger]]
+name = "duel_won"
+id = 35
+actor = true
+args = ["power_charge", "power_block", "move", "line", "duel"]
+fired_by = "match events service: FocusBattle_ExecResult post, the winner"
+
+[[trigger]]
+name = "duel_lost"
+id = 36
+actor = true
+args = ["power_charge", "power_block", "move", "line", "duel"]
+fired_by = "match events service: FocusBattle_ExecResult post, the loser"
+
+[[trigger]]
+name = "block_won"
+id = 37
+actor = true
+args = ["power_charge", "power_block", "move", "line", "duel"]
+fired_by = "match events service: FocusBattle_ExecResult post, the defender who won"
+
+[[trigger]]
+name = "keeper_beaten"
+id = 38
+actor = true
+move = true
+args = ["move", "basic"]
+fired_by = "match events service: the keeper's scene with the shot winning (KeeperStageEvent)"
+
+[[trigger]]
+name = "chain_window_start"
+id = 39
+args = ["user", "rival"]
+fired_by = "match events service: a shot can be chained now"
+
+[[trigger]]
+name = "chain_window_end"
+id = 40
+args = ["user", "rival"]
+fired_by = "match events service: the chain window is over"
+
+[[trigger]]
+name = "resource"
+id = 41
+actor = true
+fired_by = "framework services' events (match resources); arg = <key>:<event>"
+
+[[trigger]]
+name = "extra_slot"
+id = 42
+actor = true
+fired_by = "framework services' events (extra slots); arg = <key>:<event>"
+
+[[trigger]]
+name = "transform"
+id = 43
+actor = true
+fired_by = "framework services' events (transformations); arg = <key>:<event>"
+
+[[trigger]]
+name = "field_mode"
+id = 44
+fired_by = "framework services' events (field mode); arg = <key>:<event>"
+
+[[trigger]]
+name = "duel_group"
+id = 45
+actor = true
+fired_by = "framework services' events (duel groups); arg = <key>:<event>"
+
+[[trigger]]
+name = "keeper_duel"
+id = 46
+actor = true
+move = true
+args = ["move", "basic"]
+fired_by = "hook bus battle_build pre, keeper battle types 10 / 11 / 14 (KeeperBattleRequestBuild 0x14CF230): every shot that reaches the keeper; the keeper and his move; power_mult / power_add change the shot's power for that battle"
+
+# [[effect]]: a `do` key. on = the triggers it acts on (absent = every trigger); min = the lowest value; words = the
+# values it takes (the first is the default); sink = a built-in sink (rule_engine::builtin; a mod's sink of the same
+# name overrides it; `sink.<name>` is any sink a mod's code registers).
+
+[[effect]]
+name = "power_mult"
+on = ["move_power", "keeper_duel"]
+min = 0.0
+summary = "the move's power (keeper_duel: the shot's power against the keeper) × the product of every rule's power_mult"
+
+[[effect]]
+name = "power_add"
+on = ["move_power", "keeper_duel"]
+summary = "+ the sum of the power_adds (after the multipliers)"
+
+[[effect]]
+name = "block"
+on = ["move_check", "block_battle", "dash", "aura_start", "event_build", "zone_check", "button_press", "button_hold"]
+summary = "true refuses what the trigger is about (false takes back an earlier rule's true; the last rule wins)"
+
+[[effect]]
+name = "speed_mult"
+on = ["move_speed"]
+min = 0.0
+summary = "the player's move speed rate × the product of the speed_mults"
+
+[[effect]]
+name = "cost_mult"
+on = ["tension_pay"]
+min = 0.0
+summary = "the tension cost paid × the product of the cost_mults"
+
+[[effect]]
+name = "recast_mult"
+on = ["recast"]
+min = 0.0
+summary = "the move's recast time × the product of the recast_mults (rounded down)"
+
+[[effect]]
+name = "add_tension"
+summary = "tension points (the HUD's units; negative takes them away), applied on the next unit tick"
+
+[[effect]]
+name = "tension_team"
+words = ["actor", "opponent", "user", "rival"]
+summary = "whose tension add_tension changes"
+
+[[effect]]
+name = "set_flag"
+summary = "rule flags set to 1"
+
+[[effect]]
+name = "clear_flag"
+summary = "rule flags cleared"
+
+[[effect]]
+name = "signal"
+summary = "fires the signal rules of that name (same actor and move; at most 4 deep)"
+
+[[effect]]
+name = "log"
+summary = "the rule's log line gets this text"
+
+[[effect]]
+name = "set_stat"
+sink = true
+summary = "built-in sink: a player's stat"
+
+[[effect]]
+name = "swap_effect"
+sink = true
+summary = "built-in sink: a move's effect swapped"
+
+[[effect]]
+name = "play_scene"
+sink = true
+summary = "built-in sink: a field clip on a player"
+
+[[effect]]
+name = "set_camera"
+sink = true
+summary = "built-in sink: a camera preset"
+
+[[effect]]
+name = "use_move"
+sink = true
+summary = "built-in sink: the player uses a move of his slots (a technique named by key is resolved at compile)"
+
+[[effect]]
+name = "char_effect"
+sink = true
+summary = "built-in sink: an effect held on players for a while"
+
+[[effect]]
+name = "zone_area"
+sink = true
+summary = "built-in sink: the shot zone's area"
+
+# [[condition]]: a `when` key. needs = the fact it reads ("actor" / "move": it holds only on a trigger that has it).
+
+[[condition]]
+name = "mode"
+summary = "the current-mode service holds one of these keys"
+
+[[condition]]
+name = "not_mode"
+summary = "it holds none of these keys"
+
+[[condition]]
+name = "in_match"
+summary = "the mode service's in_match"
+
+[[condition]]
+name = "state"
+summary = "game / loader / mode state keys compared"
+
+[[condition]]
+name = "flag"
+summary = "rule flags all set"
+
+[[condition]]
+name = "not_flag"
+summary = "rule flags none set"
+
+[[condition]]
+name = "soccer_state"
+summary = "the soccer scene state id"
+
+[[condition]]
+name = "half"
+summary = "the current half (1-2; 3-4 extra time; 5 shootout)"
+
+[[condition]]
+name = "clock"
+summary = "the half's clock in game seconds"
+
+[[condition]]
+name = "score"
+summary = "leading / level / trailing (the actor's team, or the user's without an actor)"
+
+[[condition]]
+name = "actor"
+needs = "actor"
+summary = "the actor's character or card"
+
+[[condition]]
+name = "element"
+needs = "actor"
+summary = "the element of the actor's card"
+
+[[condition]]
+name = "team"
+needs = "actor"
+summary = "the actor's side: user / rival"
+
+[[condition]]
+name = "has_ball"
+needs = "actor"
+summary = "the actor holds the ball"
+
+[[condition]]
+name = "zone"
+needs = "actor"
+summary = "the actor stands in that pitch area"
+
+[[condition]]
+name = "technique"
+needs = "move"
+summary = "the move"
+
+[[condition]]
+name = "move_element"
+needs = "move"
+summary = "the move's element"
+
+[[condition]]
+name = "chance"
+summary = "probability 0-1 that the rule fires"

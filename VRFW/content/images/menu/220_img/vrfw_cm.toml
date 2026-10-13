@@ -1,0 +1,153 @@
+# VR-Framework: the contact map screen's requirement icons (#/menu/220_img/vrfw_cm/vrfw_cm.g4tx, a NEW atlas;
+# docs/framework/contact-map.md §4), newly drawn by research/scripts/contact_map_req_art.py (no Level-5 pixel).
+# The screen (vrfw_contact_map_menu) binds the sprites by crc32 of their names. Generated: rerun the script.
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm"
+size = [512, 512]
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_level"
+texture = "vrfw_cm"
+x = 0
+y = 0
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_level.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_wins"
+texture = "vrfw_cm"
+x = 100
+y = 0
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_wins.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_goals"
+texture = "vrfw_cm"
+x = 200
+y = 0
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_goals.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_item"
+texture = "vrfw_cm"
+x = 300
+y = 0
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_item.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_player"
+texture = "vrfw_cm"
+x = 400
+y = 0
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_player.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_pos_1"
+texture = "vrfw_cm"
+x = 0
+y = 100
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_pos_1.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_pos_2"
+texture = "vrfw_cm"
+x = 100
+y = 100
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_pos_2.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_pos_3"
+texture = "vrfw_cm"
+x = 200
+y = 100
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_pos_3.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_pos_4"
+texture = "vrfw_cm"
+x = 300
+y = 100
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_req_pos_4.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_ok"
+texture = "vrfw_cm"
+x = 400
+y = 100
+size = [48, 48]
+png = "vrfw_cm/vrfw_cm_req_ok.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_req_ng"
+texture = "vrfw_cm"
+x = 452
+y = 100
+size = [48, 48]
+png = "vrfw_cm/vrfw_cm_req_ng.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_panel"
+texture = "vrfw_cm"
+x = 0
+y = 200
+size = [48, 48]
+png = "vrfw_cm/vrfw_cm_panel.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_fade"
+texture = "vrfw_cm"
+x = 52
+y = 200
+size = [48, 48]
+png = "vrfw_cm/vrfw_cm_fade.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_plate"
+texture = "vrfw_cm"
+x = 104
+y = 200
+size = [96, 96]
+png = "vrfw_cm/vrfw_cm_plate.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_fmask"
+texture = "vrfw_cm"
+x = 204
+y = 200
+size = [156, 156]
+png = "vrfw_cm/vrfw_cm_fmask.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_cm/vrfw_cm.g4tx"
+name = "vrfw_cm_blank"
+texture = "vrfw_cm"
+x = 364
+y = 200
+size = [16, 16]
+png = "vrfw_cm/vrfw_cm_blank.png"

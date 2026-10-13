@@ -1,0 +1,73 @@
+# The Battle Bay «Draft» screen's layers on the Campaña grid (menu enjoy_team_select_menu, group
+# enjoy_team_select_menu_campaign; 1.5.42: also the free-match group enjoy_team_select_menu_offline, the Draft in the
+# 1 vs 1; opened by the graft research/grafts/bb_draft, not with the group):
+#   evt_bb_draft_card    the 5 candidates of the chosen slot
+#   evt_bb_draft_slot    the 16 roster slots (11 on the pitch, 5 on the bench)
+#   evt_bb_draft_anchor  the input anchor off screen (Enter, Back, the arrows -> CMD_FUNCTION evt_bbd_up / _down /
+#                        _left / _right = 0xDD5D6403 / 0x15804EF9 / 0x731839AA / 0xC1A9A956)
+# The cards are Clean HUD's formation card object team00_01_chara_card_for_formation_evt (research/mods/BetterUI/
+# menus/player_cards.toml); the layers go after the VR-Framework's page line (vrfw_bb_page_guide, menus/bb_pages.toml).
+# Moved from Inazuma Fantasy (menus/107_vs/enjoy_team_select_menu.toml) on 2026-10-08; the layer names keep theirs.
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bb_draft_card", object = "team00_01_chara_card_for_formation_evt", count = 5, after = "vrfw_bb_page_guide", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "vrfw_bb_page_guide" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "vrfw_bb_page_guide" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bb_draft_slot", object = "team00_01_chara_card_for_formation_evt", count = 16, after = "evt_bb_draft_card", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bb_draft_card" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bb_draft_card" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bb_draft_anchor", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0] }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_cmd = [
+    { layer = "evt_bb_draft_anchor", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_bb_draft_anchor", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "evt_bb_draft_anchor", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_bb_draft_anchor", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0xDD5D6403 },
+    { layer = "evt_bb_draft_anchor", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0x15804EF9 },
+    { layer = "evt_bb_draft_anchor", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x731839AA },
+    { layer = "evt_bb_draft_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xC1A9A956 },
+]
+
+# ---- the candidates' «pack opening» (1.5.26, graft bbd_campaign.lua; config.toml [draft.pack]) ---------------------
+# When a slot's 5 candidates are opened the screen darkens, a band opens across it, the 5 cards (evt_bb_draft_card,
+# moved onto the band and drawn larger) are dealt face down and turned one by one with a flash, their names under
+# them. Quads: flat coloured quads of this mod's own atlas #/menu/220_img/bbd_pk/bbd_pk.g4tx (content/images/menu/
+# 220_img/bbd_pk.toml, research/scripts/bbd_pack_art.py), faded by the Lua (1.5.38: CMND_SET_PRIM_COLOR never tinted
+# these quads, the old white quad of the Torneo's atlas stayed white: a white screen); texts: the Torneo's centred text layout (evt_bbd_tn_txt.g4pkm,
+# content\menus\bb_tournament.toml). Draw order (the Lua sets each instance; the pitch cards stay at 700, under the
+# darkness): darkness / band 705-707, glows 712, the 5 cards 720, flashes 726, texts 740, the whole-screen flash 745;
+# the retail cursor (999) stays above.
+[[patch]]
+menu = "enjoy_team_select_menu"
+res = ["#/menu/220_img/bbd_pk/bbd_pk.g4tx"]
+
+[[object]]
+name = "evt_bbd_pk_quad"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 705 } }]
+
+[[object]]
+name = "evt_bbd_pk_txt"
+from = "save01_02_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_02/save01_02.g4pkm" }, values = { 1 = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 551 }, values = { 1 = 740 } },
+]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/51_save/save01/save01_02/save01_02.g4tx"] }]
+
+# 16 quads: darkness, band, its 2 edges, 5 glows, 5 flashes, the whole-screen flash, 1 spare; 7 texts: the title, the
+# 5 names, the hint line
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_pk_quad", object = "evt_bbd_pk_quad", count = 16, align = [1, 8], scale = 0.20000000298023224, after = "evt_bb_draft_slot", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bb_draft_slot" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bb_draft_slot" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_pk_txt", object = "evt_bbd_pk_txt", count = 7, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_pk_quad", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }] }

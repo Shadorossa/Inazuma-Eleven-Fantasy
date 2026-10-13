@@ -1,0 +1,193 @@
+# Texts of the VR-Framework's Bahía Batalla pages (graft vrfw_bb_pages, docs/framework/bb-pages.md): the page
+# label, the names of the framework's categories (defaults\team.toml [bb_pages] category) and of the seasons it
+# derives from the game's series ([bb_pages.seasons], vrfw_bb_season_<type>). menu_text rows in the framework's 9
+# languages; the Lua reads them with CMND_TEXT_GET by id = crc32(row id) and shows nothing for a missing row. A mod
+# that adds a series / category ships the rows its declaration names.
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# the page label of the page plate «<L1> Pág. 1/3 <R1>»: the abbreviated word «page»; crc32("vrfw_bb_page") = 80343219
+[[row]]
+id = "vrfw_bb_page"
+es = "Pág."
+en = "Pg."
+fr = "P."
+de = "S."
+it = "Pag."
+pt = "Pág."
+ja = "P."
+zh_hans = "页"
+zh_hant = "頁"
+
+# category «main teams» (rule game: the game's own BB teams); crc32("vrfw_bb_cat_main") = 2224623876
+[[row]]
+id = "vrfw_bb_cat_main"
+es = "Equipos principales"
+en = "Main Teams"
+fr = "Équipes principales"
+de = "Hauptteams"
+it = "Squadre principali"
+pt = "Equipes principais"
+ja = "メインチーム"
+zh_hans = "主要球队"
+zh_hant = "主要球隊"
+
+# category «secondary teams» (id secondary, alias chain; rule chain: teams of a match chain, their BB copies, the teams based on one, and the teams that name it); crc32("vrfw_bb_cat_secondary") = 382565990
+[[row]]
+id = "vrfw_bb_cat_secondary"
+es = "Equipos secundarios"
+en = "Secondary Teams"
+fr = "Équipes secondaires"
+de = "Nebenteams"
+it = "Squadre secondarie"
+pt = "Equipes secundárias"
+ja = "サブチーム"
+zh_hans = "次要球队"
+zh_hant = "次要球隊"
+
+# category «mod teams» (rule mod: every other row a mod added); crc32("vrfw_bb_cat_mods") = 1487875738
+[[row]]
+id = "vrfw_bb_cat_mods"
+es = "Equipos de mods"
+en = "Mod Teams"
+fr = "Équipes des mods"
+de = "Mod-Teams"
+it = "Squadre delle mod"
+pt = "Equipes de mods"
+ja = "MODチーム"
+zh_hans = "模组球队"
+zh_hant = "模組球隊"
+
+# season carousel: the first entry (no filter; short: it shares the plate with the key glyph); crc32("vrfw_bb_season_all") = 2512982161
+[[row]]
+id = "vrfw_bb_season_all"
+es = "Todas"
+en = "All"
+fr = "Toutes"
+de = "Alle"
+it = "Tutte"
+pt = "Todas"
+ja = "すべて"
+zh_hans = "全部"
+zh_hant = "全部"
+
+# season of series type 1 (chara_series_config); crc32("vrfw_bb_season_01") = 3477742302
+[[row]]
+id = "vrfw_bb_season_01"
+es = "Inazuma Eleven"
+en = "Inazuma Eleven"
+fr = "Inazuma Eleven"
+de = "Inazuma Eleven"
+it = "Inazuma Eleven"
+pt = "Inazuma Eleven"
+ja = "イナズマイレブン"
+zh_hans = "闪电十一人"
+zh_hant = "閃電十一人"
+
+# season of series type 2; crc32("vrfw_bb_season_02") = 1447261028
+[[row]]
+id = "vrfw_bb_season_02"
+es = "Inazuma Eleven 2"
+en = "Inazuma Eleven 2"
+fr = "Inazuma Eleven 2"
+de = "Inazuma Eleven 2"
+it = "Inazuma Eleven 2"
+pt = "Inazuma Eleven 2"
+ja = "イナズマイレブン2"
+zh_hans = "闪电十一人2"
+zh_hant = "閃電十一人2"
+
+# season of series type 3; crc32("vrfw_bb_season_03") = 558121970
+[[row]]
+id = "vrfw_bb_season_03"
+es = "Inazuma Eleven 3"
+en = "Inazuma Eleven 3"
+fr = "Inazuma Eleven 3"
+de = "Inazuma Eleven 3"
+it = "Inazuma Eleven 3"
+pt = "Inazuma Eleven 3"
+ja = "イナズマイレブン3"
+zh_hans = "闪电十一人3"
+zh_hant = "閃電十一人3"
+
+# season of series type 4; crc32("vrfw_bb_season_04") = 3206600273
+[[row]]
+id = "vrfw_bb_season_04"
+es = "Inazuma Eleven GO"
+en = "Inazuma Eleven GO"
+fr = "Inazuma Eleven GO"
+de = "Inazuma Eleven GO"
+it = "Inazuma Eleven GO"
+pt = "Inazuma Eleven GO"
+ja = "イナズマイレブンGO"
+zh_hans = "闪电十一人GO"
+zh_hant = "閃電十一人GO"
+
+# season of series type 5; crc32("vrfw_bb_season_05") = 3358058183
+[[row]]
+id = "vrfw_bb_season_05"
+es = "Chrono Stones"
+en = "Chrono Stones"
+fr = "Chrono Stones"
+de = "Chrono Stones"
+it = "Chrono Stones"
+pt = "Chrono Stones"
+ja = "クロノ・ストーン"
+zh_hans = "时空之石"
+zh_hant = "時空之石"
+
+# season of series type 6; crc32("vrfw_bb_season_06") = 1362016125
+[[row]]
+id = "vrfw_bb_season_06"
+es = "Galaxy"
+en = "Galaxy"
+fr = "Galaxy"
+de = "Galaxy"
+it = "Galaxy"
+pt = "Galaxy"
+ja = "ギャラクシー"
+zh_hans = "银河"
+zh_hant = "銀河"
+
+# season of series type 7; crc32("vrfw_bb_season_07") = 640255979
+[[row]]
+id = "vrfw_bb_season_07"
+es = "Ares"
+en = "Ares"
+fr = "Arès"
+de = "Ares"
+it = "Ares"
+pt = "Ares"
+ja = "アレスの天秤"
+zh_hans = "阿瑞斯的天平"
+zh_hant = "阿瑞斯的天平"
+
+# season of series type 8; crc32("vrfw_bb_season_08") = 3063323258
+[[row]]
+id = "vrfw_bb_season_08"
+es = "Orión"
+en = "Orion"
+fr = "Orion"
+de = "Orion"
+it = "Orione"
+pt = "Órion"
+ja = "オリオンの刻印"
+zh_hans = "猎户座的刻印"
+zh_hant = "獵戶座的刻印"
+
+# season of series type 9; crc32("vrfw_bb_season_09") = 3247549164
+[[row]]
+id = "vrfw_bb_season_09"
+es = "Victory Road"
+en = "Victory Road"
+fr = "Victory Road"
+de = "Victory Road"
+it = "Victory Road"
+pt = "Victory Road"
+ja = "英雄たちのヴィクトリーロード"
+zh_hans = "英雄们的胜利之路"
+zh_hant = "英雄們的勝利之路"
+
+# «win it to unlock it» (docs/framework/bb-pages.md §8.2): the hint of a locked team is not a row here: the team build
+# writes one menu_text row per locked team (vrfw_bb_unlock_<team hex>) from defaults\team.toml [bb_unlock.hint], filled.

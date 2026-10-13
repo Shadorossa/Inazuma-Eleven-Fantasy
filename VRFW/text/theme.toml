@@ -1,0 +1,76 @@
+schema = "vr_framework.text_key/1"
+# Texts of the theme engine part (format of the text engine: research/mods/text_engine/README.md). Ids
+# crc32("theme_engine.<name>"): the «Tema de la interfaz» row of «Opciones de mods» (options.toml).
+default_lang = "en"
+
+[ja.new]
+ui_theme = "インターフェースのテーマ"
+ui_theme_help = "メニューの色。次回の起動から反映されます。"
+ui_theme_off = "オフ"
+ui_theme_dark_blue = "ダーク（ブルー）"
+ui_theme_dark_teal = "ダーク（ティール）"
+ui_theme_dark_amber = "ダーク（アンバー）"
+
+[en.new]
+ui_theme = "Interface theme"
+ui_theme_help = "Menu colours; applies from the next start."
+ui_theme_off = "Off"
+ui_theme_dark_blue = "Dark (blue)"
+ui_theme_dark_teal = "Dark (teal)"
+ui_theme_dark_amber = "Dark (amber)"
+
+[es.new]
+ui_theme = "Tema de la interfaz"
+ui_theme_help = "Colores de los menús; se aplica en el próximo arranque."
+ui_theme_off = "Desactivado"
+ui_theme_dark_blue = "Oscuro (azul)"
+ui_theme_dark_teal = "Oscuro (verde azulado)"
+ui_theme_dark_amber = "Oscuro (ámbar)"
+
+[fr.new]
+ui_theme = "Thème de l'interface"
+ui_theme_help = "Couleurs des menus ; s'applique au prochain démarrage."
+ui_theme_off = "Désactivé"
+ui_theme_dark_blue = "Sombre (bleu)"
+ui_theme_dark_teal = "Sombre (bleu canard)"
+ui_theme_dark_amber = "Sombre (ambre)"
+
+[de.new]
+ui_theme = "Oberflächen-Design"
+ui_theme_help = "Farben der Menüs; gilt ab dem nächsten Start."
+ui_theme_off = "Aus"
+ui_theme_dark_blue = "Dunkel (blau)"
+ui_theme_dark_teal = "Dunkel (Petrol)"
+ui_theme_dark_amber = "Dunkel (Bernstein)"
+
+[it.new]
+ui_theme = "Tema dell'interfaccia"
+ui_theme_help = "Colori dei menu; si applica dal prossimo avvio."
+ui_theme_off = "Disattivato"
+ui_theme_dark_blue = "Scuro (blu)"
+ui_theme_dark_teal = "Scuro (verde acqua)"
+ui_theme_dark_amber = "Scuro (ambra)"
+
+[pt.new]
+ui_theme = "Tema da interface"
+ui_theme_help = "Cores dos menus; aplica-se no próximo arranque."
+ui_theme_off = "Desativado"
+ui_theme_dark_blue = "Escuro (azul)"
+ui_theme_dark_teal = "Escuro (verde-azulado)"
+ui_theme_dark_amber = "Escuro (âmbar)"
+
+[zh_hans.new]
+ui_theme = "界面主题"
+ui_theme_help = "菜单的颜色。下次启动时生效。"
+ui_theme_off = "关闭"
+ui_theme_dark_blue = "深色（蓝）"
+ui_theme_dark_teal = "深色（青绿）"
+ui_theme_dark_amber = "深色（琥珀）"
+
+[zh_hant.new]
+ui_theme = "介面主題"
+ui_theme_help = "選單的顏色。下次啟動時生效。"
+ui_theme_off = "關閉"
+ui_theme_dark_blue = "深色（藍）"
+ui_theme_dark_teal = "深色（青綠）"
+ui_theme_dark_amber = "深色（琥珀）"

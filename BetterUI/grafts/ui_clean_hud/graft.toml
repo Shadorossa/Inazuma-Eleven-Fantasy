@@ -1,0 +1,100 @@
+# ui_clean HUD / menu children (research/scripts/ui_clean_build.py build_lua, LUA_PARTS; docs/game/ui-redesign.md
+# section 11): rival meters, buff icons, Esc guide, zone HUD, area title. Part of the standalone mod clean_hud
+# («Interfaz limpia», docs/app/modloader-split.md §6): retail interface only. Each snippet is
+# menu_generators.ui_clean_child(part, tag, scope = "clean_hud") (preset limpio, buff scale 0.85; only the clean_hud flags
+# in its EVT_UI_FLAGS table) of research/grafts/_src/ui_clean. One patch per menu (bytecode_child source run after
+# the chunk). The menu_def part (rarity banner) is Inazuma Fantasy's: research/grafts/ui_clean_rarity_banner.
+name = "ui_clean_hud"
+order = 900
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []
+description = "ui_clean: HUD children (rival meters, buff icons, Esc guide, zone HUD, area title) + the Mods screen raised"
+
+# The VR-Framework «Mods» screen (vrfw_mods_menu, mod mods_menu; no retail original) is laid out for the retail header;
+# this patch raises it 55 px for the short header (VRFW_MM_LAYOUT.top_dy, read by the screen's OnInit). Matched by the
+# stub's global VRFW_ModsMenuStub (the same fingerprint mods_menu ships).
+[[foreign_patches]]
+stem = "vrfw_mods_menu"
+src = "mods_menu_layout.lua"
+require = ["VRFW_ModsMenuStub"]
+
+[[files]]
+stem = "soccer_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "soccer_menu.lua"
+  marker = "ui_clean soccer_menu"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_soccer_menu.lua", tag = "soccer_menu", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "soccer_menu" }
+
+[[files]]
+stem = "soccer_team_buff_icon_list_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "buff_icons.lua"
+  marker = "ui_clean buff_icons"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_buff_icons.lua", tag = "buff_icons", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "buff_icons" }
+
+[[files]]
+stem = "team_dock_common_top_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "team_dock_top.lua"
+  marker = "ui_clean team_dock_top"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_team_dock_top.lua", tag = "team_dock_top", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "team_dock_top" }
+
+[[files]]
+stem = "soccer_inplay_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "inplay.lua"
+  marker = "ui_clean inplay"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_inplay.lua", tag = "inplay", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "inplay" }
+
+[[files]]
+stem = "soccer_zone_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "zone.lua"
+  marker = "ui_clean zone"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_zone.lua", tag = "zone", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "zone" }
+
+[[files]]
+stem = "soccer_area_title_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "area_title.lua"
+  marker = "ui_clean area_title"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_area_title.lua", tag = "area_title", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "area_title" }

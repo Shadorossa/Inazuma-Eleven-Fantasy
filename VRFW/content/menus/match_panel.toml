@@ -1,0 +1,38 @@
+# VR-Framework 2.0.106: the in-match settings window (docs/framework/match-panel.md; Lua assets\lua\menu\_all\
+# 60_match_panel.lua, VRFW_MatchPanel). This file declares its two objects only; a mod that opens the window in a menu
+# adds the two layers to that menu with its own [[patch]] add_layer (names vrfw_mp_plate / vrfw_mp_label: the Lua
+# looks for them by name), plus the atlas of its plates as a resource of the menu:
+#
+#   [[patch]]
+#   menu = "soccer_menu"
+#   add_layer = { name = "vrfw_mp_plate", object = "vrfw_mp_plate", count = 28, align = [1, 8], scale = 0.2,
+#                 after = "<a layer of the menu>", groups = [{ group = "soccer_menu", flags = [0, 1, 0, 0, 1, 0] }] }
+#   [[patch]]
+#   menu = "soccer_menu"
+#   add_layer = { name = "vrfw_mp_label", object = "vrfw_mp_label", count = 45, after = "vrfw_mp_plate",
+#                 groups = [{ group = "soccer_menu", flags = [0, 1, 0, 0, 1, 0] }] }
+#   res = ["#/menu/108_option/option01/option01_23/option01_23.g4tx", "#/menu/108_option/option01/option01_02/option01_02.g4tx"]
+#
+# vrfw_mp_plate needs 28 instances (the window twice, a cell per row (20), the title bar, the hint strip, the focus fill and
+# frame, two arrows), vrfw_mp_label 45 (title, 4 hint segments, label and value per row) (VRFW 2.2.34). The res are the
+# retail options atlases the window is drawn with by default (a mod passing its own `style` lists its atlas instead).
+# Draw priorities over the match HUD and over a menu's own widgets (the top bar's dropdown is 660-663).
+schema = "vr_framework.menu/2"
+
+# the window's strips and the highlighted row: the 36 px quad of the retail «new» icon, scaled and re-skinned by the Lua
+[[object]]
+name = "vrfw_mp_plate"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 670 } },
+]
+
+# the texts: the retail corner button (cmn03_01_cmd_back), its text node only (its plates are hidden by the Lua), no
+# collision (a click stays with the menu) and no anchor (placed by the Lua)
+[[object]]
+name = "vrfw_mp_label"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 672 } },
+]

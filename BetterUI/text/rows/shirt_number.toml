@@ -1,0 +1,31 @@
+# Clean HUD «shirt numbers» texts (graft research/grafts/clean_hud_shirt_number, docs/game/ui/team-commands.md §9):
+# rows of menu_text in 9 languages, id = crc32(row id). clean_hud_shirt_number_cmd is the 7th row of the team
+# COMANDOS window (the sub-window draws it by id); clean_hud_shirt_number_row is the value of each player row of the
+# shirt-number screen, read with CMND_TEXT_GET, «{n}» = the shirt number.
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+[[row]]
+id = "clean_hud_shirt_number_cmd"
+es = "Ajustes de dorsales"
+en = "Shirt number settings"
+fr = "Réglages des numéros"
+de = "Rückennummern"
+it = "Impostazioni numeri"
+pt = "Ajustes de números"
+ja = "背番号設定"
+zh_hans = "球衣号码设置"
+zh_hant = "球衣號碼設定"
+
+[[row]]
+id = "clean_hud_shirt_number_row"
+es = "Dorsal {n}"
+en = "No. {n}"
+fr = "N° {n}"
+de = "Nr. {n}"
+it = "N. {n}"
+pt = "N.º {n}"
+ja = "背番号 {n}"
+zh_hans = "{n}号"
+zh_hant = "{n}號"

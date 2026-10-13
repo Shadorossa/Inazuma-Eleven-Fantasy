@@ -1,0 +1,57 @@
+id = "bb_chronicle_teams"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+# «Battle Bay Deluxe» since 1.2.0 (2026-10-10; «Chronicle Teams in Battle Bay» / «Equipos de Crónica en Bahía Batalla»
+# before): the same name in every language; the id stays (team names bb_chronicle_teams.<name>, saved data, config).
+name = "Battle Bay Deluxe"
+version = "1.5.54"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Adds the Chronicle mode teams to the Battle Bay as a selectable team and rival: 221 teams (the opponent of each Chronicle match and the legend teams), at level 40, with their original players, kits, formations and emblems, and the special moves and tactics of their legend versions. The match rivals are listed in the «Main teams» category and the legend teams in «Secondary teams», grouped by season. The Campaign draws its 7 rivals from every team of the Battle Bay, not only the page on screen. Draft: the first tile of «Main teams»; in the Campaign, pick 1 of 5 players for each of the 16 places of your squad (the 11 positions of the formation and 5 substitutes, in any order) and play the Campaign with that team. Tournament: a mode of the Campaign screen (Campaign / Tournament in its header bar, L3 or a click), a knockout or a group stage + knockout of 4 to 64 Battle Bay teams (always a power of two) on one screen with the whole bracket and every crest (option: filter minor teams, the teams of each game's story / Chronicle mode first, then the strongest); you play your matches (knockout ones with extra time and penalties), the others are simulated (after an elimination, round by round). Multiplayer (in testing, needs two players with the same gameplay mods): the «Multiplayer» row (and the «Multi» box of Inazuma Fantasy's «Game modes») opens a private 1v1 room on the VR-Framework's Steam transport (create, join with a code or a Steam invite) and, once both are ready, the game's own online Battle Bay team select and match over that transport, never the game's own online rooms. No game file is replaced."
+priority = 0
+tags = ["Teams", "Gameplay"]
+updated = "2026-10-13"
+# This mod's own names (TOML keys [[BattleBayDeluxe.X]], Lua BattleBayDeluxe.X, any later text, command or key); never
+# VRFW. The names it had before keep working: commands CMND_BBCR_DRAFT_*, team names bb_chronicle_teams.<name>, the
+# Draft team key evt_bbd_draft, the old roster files bb_draft_slot<N>.json (imported once), config.toml [campaign] / [draft].
+prefix = "BattleBayDeluxe"
+folder = "BattleBayDeluxe"
+# Standard mod layout (docs/framework/mod-layout.md, 1.2.0):
+#   content\teams\     the team type (vr_framework.team/2): [[team]] based_on + stadium = the team's home; [[append]]
+#                      list = "bb_stadium" with category / season (the Battle Bay pages / categories of VR-Framework,
+#                      docs/framework/bb-pages.md; 2.0.32: a team's Battle Bay row plays at its home stadium).
+#                      NN_<season>.toml, 80_movesets.toml and 90_bb_grid.toml were generated ONCE from the retail data by
+#                      research/scripts/bb_chronicle_teams_build.py (game keys and ids, nothing copied from the game
+#                      files); since 1.5.53 (2026-10-13) they are HAND-MAINTAINED source, edited directly or with
+#                      ModManager «Equipos» in place (docs/app/modmanager-team-editor.md §6); the script refuses to
+#                      overwrite them without --force-regenerate. 50_draft.toml (the Draft team) is hand-written.
+#   content\menus\     bb_tournament.toml: the Torneo's bracket overlay added to the Battle Bay top menu (game list plates,
+#                      crests, connectors; graft research/grafts/bb_tournament); content\images\: its drawings.
+#   content\rules\     bbd_knockout.toml: the Torneo's knockout rulebook (extra time + penalties, the framework rule engine).
+#   content\menus\     bb_draft.toml: the Draft screen's layers (menu type); its cards are Clean HUD's formation card
+#                      object (team00_01_chara_card_for_formation_evt, clean_hud 1.14.5).
+#   content\game\      tournament.toml: the 9 CMND_BBD_TOURN_* commands (scripts\tournament.lua). campaign.toml, draft.toml: the native access as data (VRFW.game/1, docs/framework/native.md):
+#                      the grid's Decide hook, the game functions, globals, structs, the 8 CMND_BBCR_DRAFT_* commands
+#                      and the 2 game_state keys BattleBayDeluxe.draft.team / .phase.
+#   scripts\           campaign.lua (the only entry: the Campaign's 7 rivals from the whole enjoy table, ratings from
+#                      data/common/gamedata/team/evt_bb_team_rating.cfg.bin when a mod ships it), draft.lua (the Draft:
+#                      the pool derived at run time by config.toml [draft], the session of the commands, the roster of
+#                      a running draft campaign in the save blob bb_draft.json of the slot, the old
+#                      <loader data dir>\bb_draft_slot<N>.json imported once; the Draft tile's avatar on
+#                      hook:VRFW.BbRecord), lib\ (helpers). No DLL since 1.3.0 (was bb_chronicle_teams.dll).
+#   text\              keys.toml (the mod's name / description), rows\ (the Draft's texts, text engine).
+# `requires` also makes it load after them (the Decide hook chains on top of the framework's BB pages service;
+# vr_framework 2.0.88: VRFW.bb.unlock_rule, VRFW.data.import_once, hook:VRFW.BbRecord).
+requires = ["vr_framework>=2.0.101", "text_engine>=1.1.0", "menu_engine>=1.0.0", "clean_hud>=1.14.5"]
+conflicts = []
+# native access of content\game (docs/framework/native.md §4)
+permissions = ["memory", "call", "command", "state", "hook"]
+# Lua: the graft research/grafts/bb_draft (`mod = "bb_chronicle_teams"`, menu_assemble.py build --mod
+# bb_chronicle_teams); the loader module its funcLuaCommand calls of CMND_BBCR_DRAFT_* need
+loader_modules = ["lua_bridge"]
+
+# What other mods may use under the prefix: nothing yet (no Lua function, no [[BattleBayDeluxe.X]] key). Other mods
+# edit this mod's teams by name (`[[edit]] target = "bb_chronicle_teams.ie1_0101"`, Inazuma Fantasy) and may ship the
+# campaign's rating table (data/common/gamedata/team/evt_bb_team_rating.cfg.bin); neither is a prefix name.
+[exports]
+functions = []
+keys = []

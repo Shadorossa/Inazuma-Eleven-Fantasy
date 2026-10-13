@@ -1,0 +1,72 @@
+schema = "VRFW.game/2"
+
+# Utilities › Role medal without matches (feature role_medal; docs/game/ui/skill-board-original.md §7). The game's rule:
+# 30 matches, 10 for a character created as staff (card rarities 5-7 exempt), hard-coded as immediates in five places of
+# the board screen. At start each one is set to config.toml [role_medal] (default 0 / 0, at most 127: three sites
+# compare with a sign-extended 8-bit immediate). The match count getter 0xE734D0 is untouched: the game computes the
+# lock, the light and the «N matches left» popup itself with the player's real count. Every immediate is wildcarded,
+# so the patterns still match after the patch; a site whose signature is not found keeps the game's value (WARN).
+# No Lua: the feature is data only.
+
+# Badge slot handler 0xFF23C0, decide (event 0xE0954E57): test ecx, ecx; mov eax, 10; mov ebx, 30; ...; cmovne bx, ax;
+# call 0xE734D0; movzx r12d, ax; cmp r12w, bx; jae (below: popup team13_10c_need_play_count_popup)
+[[VRFW.Patch]]
+name = "SlotDecide.CreatedRole"
+game = "Board.RoleMedalSlotDecideRole"
+width = "u32"
+value = { config = "role_medal.matches_required_created_role", min = 0, max = 127 }
+
+[[VRFW.Patch]]
+name = "SlotDecide.Required"
+game = "Board.RoleMedalSlotDecide"
+width = "u32"
+value = { config = "role_medal.matches_required", min = 0, max = 127 }
+
+# Badge slot handler, slot state (event 0x5B2D73C5): test bl, bl; jne; mov ebx, 30; test al, al; je; mov ebx, 10;
+# cmp r12w, bx; jae (below with no medal: the slot is locked, team13_17_badge_slot_lock_icon)
+[[VRFW.Patch]]
+name = "SlotState.Required"
+game = "Board.RoleMedalSlotState"
+width = "u32"
+value = { config = "role_medal.matches_required", min = 0, max = 127 }
+
+[[VRFW.Patch]]
+name = "SlotState.CreatedRole"
+game = "Board.RoleMedalSlotStateRole"
+width = "u32"
+value = { config = "role_medal.matches_required_created_role", min = 0, max = 127 }
+
+# Badge slot handler, event 0xE9EE6361: rarity <= 4 and cmp ax, 30; jb -> open the badge piece (0x165ABB0)
+[[VRFW.Patch]]
+name = "PieceOpen.Required"
+game = "Board.RoleMedalPieceOpen"
+width = "u8"
+value = { config = "role_medal.matches_required", min = 0, max = 127 }
+
+# Slot light 0xFF14B0 (piece type 9): cmp ax, 10; jb (one threshold for everyone: the lower of the two)
+[[VRFW.Patch]]
+name = "SlotLight"
+game = "Board.RoleMedalSlotLight"
+width = "u8"
+value = { min_of = [{ config = "role_medal.matches_required", min = 0, max = 127 }, { config = "role_medal.matches_required_created_role", min = 0, max = 127 }] }
+
+# Board piece update 0xFF3680 (piece type 9): cmp word [rax+1E8h], 30; jae -> the badge piece is opened
+[[VRFW.Patch]]
+name = "PieceUpdate.Required"
+game = "Board.RoleMedalPieceUpdate"
+width = "u8"
+value = { config = "role_medal.matches_required", min = 0, max = 127 }
+
+# The thresholds now in the game, for other mods' role pickers (game_state; Host::state): the configured values when
+# every site was patched, else the game's own 30 / 10.
+[[VRFW.State]]
+key = "utilities.role_medal.matches_required"
+value = { config = "role_medal.matches_required", min = 0, max = 127 }
+fallback = 30
+needs = ["SlotDecide.CreatedRole", "SlotDecide.Required", "SlotState.Required", "SlotState.CreatedRole", "PieceOpen.Required", "SlotLight", "PieceUpdate.Required"]
+
+[[VRFW.State]]
+key = "utilities.role_medal.matches_required_created_role"
+value = { config = "role_medal.matches_required_created_role", min = 0, max = 127 }
+fallback = 10
+needs = ["SlotDecide.CreatedRole", "SlotDecide.Required", "SlotState.Required", "SlotState.CreatedRole", "PieceOpen.Required", "SlotLight", "PieceUpdate.Required"]

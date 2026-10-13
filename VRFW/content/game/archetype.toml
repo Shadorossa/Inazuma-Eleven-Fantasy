@@ -1,0 +1,317 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › archetypes (team builds) declared by mods (docs/framework/archetype.md). The run time is
+# scripts\archetype.lua: it reads every mod's content\archetypes\*.toml (`VRFW.archetype/1`), lets a declared archetype
+# compete with the game's six team builds and «Libertad» when the engine picks a team's build, keeps its charge / rank
+# per team in a match and applies the archetype passive effects of the framework's vocabulary (vrfw_eff_*). The game's
+# own builds stay the engine's.
+#
+# How the engine picks a team's build (docs/game/ideas/arquetipos-balance.md §1.1, pasivas-configurables.md §2.2):
+# TeamBuildType 0xD9E2D0(const u8 sel[5]) builds the team's passive list (0xD776D0: the counted members' unlocked
+# passives, one entry per effect definition with a team cap, +0xC = carriers), adds each entry's carriers to the
+# builds of its definition's build icons (counts on its stack, rbp+7 + 4 × build, builds 0-6) and answers the build
+# with strictly most points (a tie at the top or none = 6 «Libertad»). sel = { dock, party, 0xFF, 0, 0 } in menus
+# (0x9AB4F151 / 0xD9E280), { 0x10, 3, side, 1, 0 } for a match side (0xD9E240; the match keeps it with 0xDBA9E0).
+# Two mid hooks of that function hand the script the selector and the counts: a declared archetype that wins zeroes
+# the six counts, so the engine answers 6 (no retail build effect, no build AI personality) and the framework runs
+# the declared one.
+
+# ------------------------------------------------------------------------------------------------ functions
+# The passives a match player carries, read as the match builder 0x1604E90 does (the same declarations as Inazuma
+# Fantasy's content\game\own_passives.toml; every mod declares the functions it calls).
+
+# u32* GetTeamPassiveId(u32* out, u32 charaHdl, u8 slot, u8 useCopy) 0xE80A70
+[[VRFW.Function]]
+name = "ArchPassiveId"
+game = "Passive.TeamPassiveId"
+args = ["ptr", "u32", "u8", "u8"]
+ret = "ptr"
+
+# bool IsTeamPassiveUnlocked(u32 charaHdl, u8 slot, u8 useCopy) 0xE80C30
+[[VRFW.Function]]
+name = "ArchPassiveUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+args = ["u32", "u8", "u8"]
+ret = "u8"
+
+# PassiveInfo** ResolvePassiveRarity(PassiveInfo** out, const u32* id, u32 rarity) 0xE6CDA0
+[[VRFW.Function]]
+name = "ArchPassiveRarity"
+game = "Passive.RarityVersion"
+args = ["ptr", "ptr", "u32"]
+ret = "ptr"
+
+# Unit* ActorUnit(actor) 0x15B25E0 (unit +0x370 = the character handle it plays)
+[[VRFW.Function]]
+name = "ArchActorUnit"
+game = "Match.ActorUnit"
+args = ["ptr"]
+ret = "ptr"
+
+# ------------------------------------------------------------------------------------------------ globals
+
+# `[g_soccerActors]` (stride 0x570, 0x3A actors, +0x94 its handle, +0xD0 its team; 0 outside matches)
+[[VRFW.Global]]
+name = "arch_actors"
+game = "Match.SoccerActors.ViaSkillUsed"
+
+# ------------------------------------------------------------------------------------------------ team build pick
+
+# TeamBuildType 0xD9E2D0, before the passive list is built: `mov r9, rdi; mov r8d, r14d` (6 bytes) with rdi = the
+# selector (5 bytes). The handler keeps it for the count hook below.
+[[VRFW.Hook]]
+name = "ArchBuildSelector"
+game = "Passive.TeamBuildTypeSelector"
+kind = "mid"
+wait_ms = 250
+
+# The same function after the counts, before the list is freed: `mov rax, [rip+…]` (7 bytes) with r13 = the passive
+# list (+8 count, +0x10 entry pointers; entry +0 definition id, +0xC carriers) and rbp+7 = the seven build counts.
+# The handler adds the declared archetypes' points (their passives' definitions) and, when one wins, zeroes counts 0-5.
+[[VRFW.Hook]]
+name = "ArchBuildCounts"
+game = "Passive.TeamBuildTypeCounts"
+kind = "mid"
+relocs = [{ at = 3, next = 7 }]
+wait_ms = 250
+
+# ------------------------------------------------------------------------------------------------ match bonuses
+# The battle getters of a match player's buff store (mods + 0x278 + hdl × 0x114, 2 layers; docs/game/mechanics/
+# new-stats.md §4.1): each answers the bonus as a fraction (0.1 = +10 %). Post: + the archetype effects of the actor
+# (tables the script fills when a rank / counter / lineup changes; no entry = nothing added). Answered natively: the
+# battle code asks them many times per frame.
+
+# float ShotAtBonus(u32 hdl) 0x14B6350: chara +0x08 «AT de tiro» (both layers)
+[[VRFW.Hook]]
+name = "ArchShotAt"
+game = "Passive.ShotAtBonus"
+kind = "function"
+relocs = [{ at = 3, next = 7 }]
+args = ["u32"]
+ret = "f32"
+
+[[VRFW.Hook.answer]]
+value = "ret + lookup(Archetype.ShotAt, args[1])"
+
+# float FocusAtBonus(u32 hdl) 0x14B6E70: chara +0x14 «AT de foco» (both layers)
+[[VRFW.Hook]]
+name = "ArchFocusAt"
+game = "Passive.DuelAtBonus"
+kind = "function"
+relocs = [{ at = 3, next = 7 }]
+args = ["u32"]
+ret = "f32"
+
+[[VRFW.Hook.answer]]
+value = "ret + lookup(Archetype.Focus, args[1])"
+
+# float FocusDfBonus(u32 hdl) 0x14B2400: DF % (0x14B6220) + chara +0x18 «DF de foco» (both layers)
+[[VRFW.Hook]]
+name = "ArchFocusDf"
+game = "Passive.DuelDfBonus"
+kind = "function"
+# the profile's steal (19): 7 bytes (sub rsp / mov r10d) have no displacement, and a hook without relocs needs 14:
+# steal through the call and the rip-relative load (both relocated) so the entry gets the 5-byte jump to the stub page
+relocs = [{ at = 8, next = 12 }, { at = 15, next = 19 }]
+args = ["u32"]
+ret = "f32"
+
+[[VRFW.Hook.answer]]
+value = "ret + lookup(Archetype.Focus, args[1])"
+
+# ------------------------------------------------------------------------------------------------ exec conditions
+# Two exec conditions of the passive / command / tactic tables (passives-design.md §3.5, the resolver hook pattern
+# of §7): 910 p «the owner's team build is p» (0-6 the game's, 7+ a declared archetype), 911 p «the owner's team build
+# rank is ≥ p» (a declared archetype's rank 0-5; the game's own builds answer 0). The checker gets { record*,
+# ownerHdl u32 (+8), … } (record +0 = the first parameter, +4 its type: 1 int, 3 float); the owner's team = his
+# actor's +0xD0. No archetype known (outside a match) = false.
+
+[[VRFW.Hook]]
+name = "ArchIsTeamBuild"
+kind = "callback"
+args = ["ptr"]
+ret = "u8"
+fallback = 0
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [{ value = "[[args[1]] + 4]:u8", in = [1, 3] }, { value = "[[args[1]]]:u32", not = 0xC4DC849A }]
+value = "if(lookup(Archetype.Team, [actor([args[1] + 8]:u32) + 0xD0]:u8) == if([[args[1]] + 4]:u8 == 3, [[args[1]]]:f32, [[args[1]]]:i32), 1, 0)"
+
+[[VRFW.Hook]]
+name = "ArchRankAtLeast"
+kind = "callback"
+args = ["ptr"]
+ret = "u8"
+fallback = 0
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [{ value = "[[args[1]] + 4]:u8", in = [1, 3] }, { value = "[[args[1]]]:u32", not = 0xC4DC849A }]
+value = "if(lookup(Archetype.Rank, [actor([args[1] + 8]:u32) + 0xD0]:u8) >= if([[args[1]] + 4]:u8 == 3, [[args[1]]]:f32, [[args[1]]]:i32), 1, 0)"
+
+# void* ResolveExecCondition(u32 id) 0x15640D0: the shared exec condition detour of service S6 (VRFW 2.3,
+# docs/framework/archetype.md §4.1), called once per condition row when the passive / command / tactic tables load.
+# Ordered subscribers, in today's order:
+#   1. the mods' exported tables Passive.ExecCondition (id -> the address of their own checker, a [[VRFW.Table]] row
+#      `callback(<Name>)` filled when that mod's declarations are installed: Inazuma Fantasy's 900), the mod that
+#      loads last first (docs/framework/native.md §2.7);
+#   2. VRFW's own 910 / 911 (the checkers above);
+#   3. the game's table (18 ids; an unknown id = null = false).
+# A mod not migrated yet keeps its own detour on the same entry: the loader chains it before this one (installed
+# later), which is the same order. scripts\archetype.lua logs the run order at boot and reports an id answered twice.
+# Keep this declaration's name and keys: the order and the bytes of 7.1.2 depend on them.
+[[VRFW.Hook]]
+name = "ArchResolveExecCondition"
+game = "Passive.ResolveExecCondition"
+kind = "function"
+args = ["u32"]
+ret = "ptr"
+needs = ["ArchIsTeamBuild", "ArchRankAtLeast"]
+
+# 1. the subscribers' checkers (every mod's exported Passive.ExecCondition)
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "*/Passive.ExecCondition"
+key = ["args[1]"]
+
+# 2. VRFW's own
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = { value = "args[1]", equals = 910 }
+value = "int(callback(ArchIsTeamBuild))"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = { value = "args[1]", equals = 911 }
+value = "int(callback(ArchRankAtLeast))"
+
+# ------------------------------------------------------------------------------------------------ passive slots (S6)
+# Service S6 (VRFW 2.3, docs/framework/archetype.md §4.2): the passive slot readers and the rarity version are ONE
+# detour each, owned here; what they answer is data other mods export (docs/framework/native.md §2.7: `*/<table>` =
+# every active mod that lists the table in its mod.toml [exports] tables, the mod that loads last first). Nothing
+# exported = the game's own answer (retail). The tables (all keyed and filled by the exporting mod's scripts or its
+# [[VRFW.Table]] rows; Utilities' passive configurator and Inazuma Fantasy's Prime are the users):
+#
+#   Passive.SlotChoice   (save slot, saved owner of the handle, slot 0-4) -> passive id: a saved player's configured slot
+#   Passive.OwnSlot      (chara_param id, slot) -> passive id: a character's own passive (chara_param cols 61-65)
+#   Passive.OwnKept      (rarity, slot) present = that slot keeps the game's passive (no own passive there)
+#   Passive.SlotUnlock   (save slot, saved owner, slot) -> 0 / 1: a configured slot's unlock state
+#   Passive.AllOpen      (save slot) -> 1: every non-empty slot of a saved, configurable player works
+#   Passive.OwnOpen      (chara_param id, slot) -> 1: a slot holding an own passive works
+#   Passive.RarityTier   (asked rarity) -> the rarity whose version is read (Prime: 10 -> 4)
+#   Passive.RarityTwin   (passive id) -> the address of the id to read instead (Prime's doubled twins), only for an
+#                        asked rarity listed in Passive.RarityTier
+#
+# A record's +4 = its chara_param id, +0x10 its rarity, +0xEC + slot × 12 its passive slots, +0x1BC the coach /
+# manager badge (0 = a player). Until a mod is migrated (VRFW 2.3 P4) it keeps its own detour on the same entry: the
+# loader chains it before this one, with the same answers.
+
+# u32* GetTeamPassiveId(u32* out, u32 charaHdl, u8 slot, u8 useCopy) 0xE80A70: the engine's single reader of a
+# player's passive slots (match passive builder 0x1604E90, every menu row). Stolen bytes: mov [rsp+8],rbx;
+# mov [rsp+10h],rbp; mov [rsp+18h],rsi (15).
+[[VRFW.Hook]]
+name = "VRFW.PassiveSlotId"
+game = "Passive.TeamPassiveId"
+kind = "function"
+args = ["ptr", "u32", "u8", "u8"]
+ret = "ptr"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SlotChoice"
+key = ["slot", "owner(args[2])", "args[3]"]
+write = "[args[1]]:u32"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.OwnSlot"
+key = ["[record(args[2]) + 4]:u32", "args[3]"]
+when = [
+  { value = "[record(args[2]) + 0x1BC]:u32", equals = 0 },
+  { value = ["[record(args[2]) + 0x10]:u32", "args[3]"], not_in_table = "*/Passive.OwnKept" },
+]
+write = "[args[1]]:u32"
+
+# bool IsTeamPassiveUnlocked(u32 charaHdl, u8 slot, u8 useCopy) 0xE80C30 (tail-jumps to 0xD85360). Stolen bytes:
+# mov [rsp+8],rbx; mov [rsp+10h],rsi; push rdi; sub rsp,20h (15).
+[[VRFW.Hook]]
+name = "VRFW.PassiveSlotUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+kind = "function"
+args = ["u32", "u8", "u8"]
+ret = "bool"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SlotUnlock"
+key = ["slot", "owner(args[1])", "args[2]"]
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.AllOpen"
+key = ["slot"]
+when = [
+  { value = "owner(args[1])", not = 0 },
+  { value = "[record(owner(args[1])) + 0x1BC]:u32", equals = 0 },
+  { value = "[record(args[1]) + 0xEC + args[2] * 12]:u32", not = 0 },
+]
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.OwnOpen"
+key = ["[record(args[1]) + 4]:u32", "args[2]"]
+when = [
+  { value = "[record(args[1]) + 0x1BC]:u32", equals = 0 },
+  { value = ["[record(args[1]) + 0x10]:u32", "args[2]"], not_in_table = "*/Passive.OwnKept" },
+]
+
+# PassiveInfo** ResolvePassiveRarity(PassiveInfo** out, const u32* id, u32 rarity) 0xE6CDA0: the rarity version of a
+# passive (passive_skill_rarity_table row of the id, idList[min(rarity, 5)], 0 = idList[4]; no row = the id itself).
+# Pre: the twin first (it tests the asked rarity), then the tier. Stolen bytes: mov [rsp+8],rbx; mov [rsp+18h],r8d;
+# push rbp; push rsi; push rdi; push r12 (15).
+[[VRFW.Hook]]
+name = "VRFW.PassiveRarity"
+game = "Passive.RarityVersion"
+kind = "function"
+args = ["ptr", "ptr", "u32"]
+ret = "ptr"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "*/Passive.RarityTwin"
+key = ["[args[2]]:u32"]
+when = { value = "args[3]", in_table = "*/Passive.RarityTier" }
+write = "args[2]"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "*/Passive.RarityTier"
+key = ["args[3]"]
+write = "args[3]"
+
+# ------------------------------------------------------------------------------------------------ commands
+# The menus' and the match HUD's archetype (the Lua patches of assets\lua\archetype\include\: dock plate, team
+# parameter guide, team passive list, the controlled player's build gauge).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_ARCHETYPE_TEAM"   # (dock, party) -> build (0-6 the game's, 7+ declared), rank: the last pick of that team
+handler = "Archetype.CmdTeam"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_ARCHETYPE_MATCH"  # (side 0 / 1) -> build, rank, charge, max charge (match side)
+handler = "Archetype.CmdMatch"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_ARCHETYPE_INFO"   # (build) -> ok, name text id, description text id, icon, large icon, gauge icon
+handler = "Archetype.CmdInfo"
+
+# ------------------------------------------------------------------------------------------------ state keys
+# A match side's build (0-6 the game's, 7+ declared; nil outside a match) and a declared archetype's rank (0-5).
+
+[[VRFW.State]]
+key = "vr_framework.archetype.team0"
+
+[[VRFW.State]]
+key = "vr_framework.archetype.team1"
+
+[[VRFW.State]]
+key = "vr_framework.archetype.rank0"
+
+[[VRFW.State]]
+key = "vr_framework.archetype.rank1"

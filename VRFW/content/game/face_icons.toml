@@ -1,0 +1,48 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › face icon rules (service S13 of VRFW 2.3, docs/framework/card-look.md §5). The run time is
+# scripts\face_icons.lua: it reads every mod's content\face_icons\*.toml (`VRFW.face_icon/1`, keys:
+# content\types\face_icon.toml) and, only when a mod declares a rule, installs the detour below. **Nothing here is
+# installed at start** (`apply = "script"`): with no declaration every face icon is drawn as the game draws it.
+#
+# BuildFaceIconComposite(IconComp*, IconSlot* slot): every menu face icon is composed here (slot +0x5B icon type: 9 =
+# face + kit bust, 10 = face only, the engine's own «no kit» mode; +0x28 chara status handle, 0 when drawn by key;
+# +0x30 chara key). The answers are native (no Lua per icon): a type-9 icon of a declared rarity / key becomes type 10.
+# The card look service's kit site ([[VRFW.CardLook]] `face`) and the item transformations' face path site are further
+# in the same function: an icon drawn face only never reaches the kit site.
+[[VRFW.Hook]]
+name = "FaceIcons.Composite"
+game = "Image.BuildFaceIconComposite"
+apply = "script"
+
+# a handle of a declared rarity (key: the handle's record rarity)
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "VRFW.FaceIcon.Rarity"
+key = ["[record([args[2] + 0x28]:u32) + 0x10]:u32"]
+when = { value = "[args[2] + 0x5B]:u8", equals = 9 }
+write = "[args[2] + 0x5B]:u8"
+
+# a declared character key (icons asked without a handle)
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "VRFW.FaceIcon.Key"
+key = ["[args[2] + 0x30]:u32"]
+when = { value = "[args[2] + 0x5B]:u8", equals = 9 }
+write = "[args[2] + 0x5B]:u8"
+
+# ------------------------------------------------------------------------------------------------ commands
+
+# (hdl[, key]) -> mode (0 = the game's icon, 10 = face only), live: how the icon of a card handle (or, with hdl 0, of a
+# character key) is drawn
+[[VRFW.Command]]
+name = "CMND_VRFW_FACE_ICON"
+handler = "FaceIcons.Cmd"
+needs = ["FaceIcons.GetCharaRarity"]
+
+# u32 GetCharaRarity(u32 charaHdl): the rarity of a character handle (record +0x10; 0 for an unknown handle)
+[[VRFW.Function]]
+name = "FaceIcons.GetCharaRarity"
+game = "Card.GetCharaRarity"
+args = ["u32"]
+ret = "u32"

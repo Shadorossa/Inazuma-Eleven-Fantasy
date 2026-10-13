@@ -1,0 +1,20 @@
+# Texts of the VR-Framework's drop-rate list (docs/framework/drops.md §5): rows of menu_text in the framework's 9
+# languages, read by the graft vrfw_drop_list (vs_route_town_drop_rate_list_menu) with CMND_TEXT_GET by id =
+# crc32(row id).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# The header of the «AURAS» section ([VRFW.DropList.Auras]: keshin, totems, Mix-Max, mode changes), written on the
+# «Objetos» pill style like the game's «OBJETOS» / «ESPÍRITUS» headers.
+[[row]]
+id = "vrfw_drop_list_auras"
+es = "AURAS"
+en = "AURAS"
+fr = "AURAS"
+de = "AUREN"
+it = "AURE"
+pt = "AURAS"
+ja = "オーラ"
+zh_hans = "灵气"
+zh_hant = "靈氣"

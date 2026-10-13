@@ -1,0 +1,282 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction",
+  "ActivateAuraSkill"
+ ],
+ "activity_telop_menu": {
+  "script": "activity_telop_menu_1.03.30.00",
+  "require": [
+   "PlayStampAnime"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "announce_log": {
+  "script": "announce_log_1.03.10.00",
+  "require": [
+   "SetupAnnounce"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "bb_stadium_top_menu": {
+  "script": "bb_stadium_top_menu_1.03.98.00",
+  "require": [
+   "FadeIn"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chronicle_mode_top_menu": {
+  "script": "chronicle_mode_top_menu_6.00.06.00",
+  "require": [
+   "WaitCaravanModelLoad"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "enjoy_team_select_menu": {
+  "script": "enjoy_team_select_menu_7.00.15.00",
+  "require": [
+   "OnBack_Coroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "enjoy_team_select_menu_campaign": {
+  "script": "enjoy_team_select_menu_campaign_1.03.73.00",
+  "require": [
+   "OpenFade_Coroutine",
+   "Get_TexturePath_TextureName_From_StadiumTextureArray"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "enjoy_team_select_menu_offline": {
+  "script": "enjoy_team_select_menu_offline_1.04.11.00",
+  "require": [
+   "SetOverwriteInitFocusIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_menu_list": {
+  "script": "equip_menu_list_5.00.19.00",
+  "require": [
+   "CheckEnableEquip"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_menu_select": {
+  "script": "equip_menu_select_5.00.21.00",
+  "require": [
+   "OnEquipOptimalItemConfirm"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "information_top_menu": {
+  "script": "information_top_menu_1.04.09.00",
+  "require": [
+   "PasswordInputFunction"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "item_menu": {
+  "script": "item_menu_2.00.02.00",
+  "require": [
+   "UpdateGuideButtonFunctions"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "main_menu": {
+  "script": "main_menu_1.02.92.00",
+  "require": [
+   "ForceCloseReseiveMenu"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "map_menu": {
+  "script": "map_menu_5.00.21.00",
+  "require": [
+   "UpdateQuestPurposeInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "market_menu": {
+  "script": "market_menu_4.00.05.00",
+  "require": [
+   "IsCheckNoTokenShopIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "play_guide_top_menu": {
+  "script": "play_guide_top_menu_1.04.09.00",
+  "require": [
+   "GetListButtonLayerIndex"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "rpg_info_window": {
+  "script": "rpg_info_window_1.04.23.01",
+  "require": [
+   "SetPurposeText"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "shop_menu_buy": {
+  "script": "shop_menu_buy_7.00.05.00",
+  "require": [
+   "ResetFreeCursor"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_dock_menu": {
+  "script": "soccer_team_dock_menu_7.01.06.00",
+  "require": [
+   "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_vs_cpu_class_select_menu": {
+  "script": "soccer_vs_cpu_class_select_menu_2.00.04.00",
+  "require": [
+   "CalcMainMemberLevelAverage",
+   "PostStep"
+  ],
+  "forbid": [
+   "ConvertTimeFrom32bitInt"
+  ],
+  "ambiguous": []
+ },
+ "soccer_vs_cpu_list_menu": {
+  "script": "soccer_vs_cpu_list_menu_5.00.22.00",
+  "require": [
+   "UpdateDifficult"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_common_top_menu": {
+  "script": "team_dock_common_top_menu_0.00.00.00",
+  "require": [
+   "AddMemberEquipmentToList",
+   "GetSoccerGameOptionBgmList"
+  ],
+  "forbid": [
+   "FinalizeMenu",
+   "OnOpenEndLayer",
+   "InitItemUseMenuParam",
+   "NameSetting_ItemIcon",
+   "OnChangeLayerGroup",
+   "OnBack",
+   "SetupLockIconPos",
+   "OnEnter",
+   "ConvertTimeFrom32bitInt",
+   "OnChangeFocus"
+  ],
+  "ambiguous": []
+ },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "title_menu_2": {
+  "script": "title_menu_2_7.01.12.00",
+  "require": [
+   "SetupVroadTournamentInfoBalloon"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "victory_road_top_menu": {
+  "script": "victory_road_top_menu_7.01.07.00",
+  "require": [
+   "RegistPlaySoundHdl"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_command_select_menu": {
+  "script": "vs_route_town_command_select_menu_7.00.04.00",
+  "require": [
+   "SwapBannerCapture"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_drop_rate_list_menu": {
+  "script": "vs_route_town_drop_rate_list_menu_5.00.11.00",
+  "require": [
+   "ClearIconCache"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_list_menu": {
+  "script": "vs_route_town_list_menu_1.03.90.00",
+  "require": [
+   "OpenCloseInfoWindow"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_menu": {
+  "script": "vs_route_town_menu_6.00.32.00",
+  "require": [
+   "GetRouteTextureInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_vs_enemy_formation_menu": {
+  "script": "vs_route_town_vs_enemy_formation_menu_6.00.34.00",
+  "require": [
+   "SwitchNickname"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_vs_team_menu": {
+  "script": "vs_route_town_vs_team_menu_6.00.34.00",
+  "require": [
+   "UpdateLevel"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "title_main": {
+  "script": "title_main_2.00.16",
+  "require": [
+   "SwitchCaseTitleCheckChangeLanguage"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

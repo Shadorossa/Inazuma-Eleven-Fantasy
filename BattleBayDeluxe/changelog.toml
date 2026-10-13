@@ -1,0 +1,132 @@
+schema = "vr_framework.changelog/1"
+# Battle Bay Deluxe: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "Battle Bay Deluxe"
+
+[en]
+name = "Battle Bay Deluxe"
+
+[fr]
+name = "Battle Bay Deluxe"
+
+[de]
+name = "Battle Bay Deluxe"
+
+[it]
+name = "Battle Bay Deluxe"
+
+[pt]
+name = "Battle Bay Deluxe"
+
+[ja]
+name = "Battle Bay Deluxe"
+
+[zh_hans]
+name = "Battle Bay Deluxe"
+
+[zh_hant]
+name = "Battle Bay Deluxe"
+
+[[release]]
+icon = "stadium"
+notes = [
+    "221 equipos del modo Crónica, a nivel 40.",
+    "Plantillas originales y técnicas legendarias.",
+    "Cada equipo juega en su propio estadio.",
+    "Draft: elige 1 de 5 jugadores para cada puesto.",
+    "Torneo: eliminatoria o grupos de 2 a 32 equipos.",
+    "La Campaña sortea rivales de toda Bahía Batalla.",
+    "Multijugador: sala privada 1v1 (en pruebas).",
+]
+
+[release.en]
+notes = [
+    "221 Chronicle mode teams, at level 40.",
+    "Original squads and legendary moves.",
+    "Each team plays in its own stadium.",
+    "Draft: pick 1 of 5 players for each place.",
+    "Tournament: knockout or groups of 2 to 32 teams.",
+    "The Campaign draws rivals from the whole Battle Bay.",
+    "Multiplayer: private 1v1 room (in testing).",
+]
+
+[release.fr]
+notes = [
+    "221 équipes du mode Chronique, au niveau 40.",
+    "Effectifs d'origine et techniques légendaires.",
+    "Chaque équipe joue dans son propre stade.",
+    "Draft : choisis 1 joueur sur 5 pour chaque poste.",
+    "Tournoi : élimination ou groupes de 2 à 32 équipes.",
+    "La Campagne tire ses rivaux de toute la Baie Bataille.",
+    "Multijoueur : salon privé 1v1 (en test).",
+]
+
+[release.de]
+notes = [
+    "221 Teams aus dem Chronik-Modus, auf Stufe 40.",
+    "Originalkader und legendäre Techniken.",
+    "Jedes Team spielt in seinem eigenen Stadion.",
+    "Draft: wähle 1 von 5 Spielern für jede Position.",
+    "Turnier: K.-o. oder Gruppen mit 2 bis 32 Teams.",
+    "Die Kampagne lost Gegner aus der ganzen Kampfbucht.",
+    "Mehrspieler: privater 1v1-Raum (im Test).",
+]
+
+[release.it]
+notes = [
+    "221 squadre della modalità Cronaca, al livello 40.",
+    "Rose originali e tecniche leggendarie.",
+    "Ogni squadra gioca nel proprio stadio.",
+    "Draft: scegli 1 giocatore su 5 per ogni ruolo.",
+    "Torneo: eliminazione o gironi da 2 a 32 squadre.",
+    "La Campagna sorteggia rivali da tutta la Baia.",
+    "Multigiocatore: stanza privata 1v1 (in prova).",
+]
+
+[release.pt]
+notes = [
+    "221 times do modo Crônica, no nível 40.",
+    "Elencos originais e técnicas lendárias.",
+    "Cada time joga no seu próprio estádio.",
+    "Draft: escolha 1 de 5 jogadores para cada posição.",
+    "Torneio: mata-mata ou grupos de 2 a 32 times.",
+    "A Campanha sorteia rivais de toda a Baía Batalha.",
+    "Multijogador: sala privada 1v1 (em testes).",
+]
+
+[release.ja]
+notes = [
+    "クロニクルモードの221チームをレベル40で。",
+    "オリジナルの編成と伝説の必殺技。",
+    "各チームは専用スタジアムで試合。",
+    "ドラフト：各ポジションで5人から1人を選択。",
+    "トーナメント：2〜32チームの勝ち抜きかグループ。",
+    "キャンペーンの相手はバトルベイ全体から抽選。",
+    "マルチプレイ：1対1のプライベートルーム（テスト中）。",
+]
+
+[release.zh_hans]
+notes = [
+    "编年史模式的221支队伍，等级40。",
+    "原版阵容与传说必杀技。",
+    "每支队伍在自己的球场比赛。",
+    "选秀：每个位置从5名球员中选1名。",
+    "锦标赛：2至32队的淘汰赛或小组赛。",
+    "战役的对手从整个战斗湾中抽选。",
+    "多人游戏：1对1私人房间（测试中）。",
+]
+
+[release.zh_hant]
+notes = [
+    "編年史模式的221支隊伍，等級40。",
+    "原版陣容與傳說必殺技。",
+    "每支隊伍在自己的球場比賽。",
+    "選秀：每個位置從5名球員中選1名。",
+    "錦標賽：2至32隊的淘汰賽或小組賽。",
+    "戰役的對手從整個戰鬥灣中抽選。",
+    "多人遊戲：1對1私人房間（測試中）。",
+]

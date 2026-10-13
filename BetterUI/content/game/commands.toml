@@ -1,0 +1,15 @@
+# BetterUI (mod clean_hud): the game Lua commands its grafts ask (docs/framework/native.md §2). The answers are
+# functions of scripts\better_ui.lua. Until 1.16.0 clean_hud.dll registered them (same names, same answers).
+schema = "VRFW.game/1"
+
+# Graft clean_hud_prematch_skip (event_menu): seconds X must be held to go straight to the kick-off (config.toml
+# prematch_skip_hold; 0 = no X prompt). Without the command the graft uses 1 s.
+[[VRFW.Command]]
+name = "CMND_EVT_CHD_XSKIP_HOLD"
+handler = "BetterUI.SkipHold"
+
+# Graft ui_clean_dock_panel (team dock): the tactic row slices are in icon_tactics.g4tx. Without the command each tactic
+# box keeps its own plate.
+[[VRFW.Command]]
+name = "CMND_EVT_CHD_TACTIC_SLICES"
+handler = "BetterUI.TacticSlices"

@@ -1,0 +1,20 @@
+schema = "vr_framework.rule/1"
+# Reglamento BASE: partido libre de 11 (VS CPU, amistosos). Reproduce el juego original tal cual.
+# Otro mod puede cambiar las reglas de todos los partidos libres trayendo su propio free_match.toml
+# (gana el que carga después) o asignando otro reglamento al modo "free" en su rules\matches.toml.
+id = "free_match"
+name = "Free match (original)"   # fallback; shown in the game language from the text key ruleset_free_match
+version = 1
+
+[time]
+half_minutes = "row"       # la fila del partido (c20; 30 en las 2018 filas de partido completo)
+halves = "row"             # 2 partes en 2012 de las 2022 filas completas (c22 = 0): se deja la de la fila
+
+[teams]
+players = "row"            # los de la fila (11 en un partido completo, tipo 1)
+
+[end]
+extra_time = false         # empate = empate
+golden_goal = false
+penalties = false
+extended_vgoal = "row"     # el V-goal de la historia lo decide la fila (ningún partido libre lo tiene)

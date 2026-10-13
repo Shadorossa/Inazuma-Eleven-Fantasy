@@ -1,0 +1,44 @@
+schema = "VRFW.game/2"
+
+# BetterUI › no team editor between the VS screen and the walk-in in offline matches (docs/game/modes/prematch-lineups.md
+# «Revisión 6» / §14): a [[VRFW.Hook]] kind = "mid" (docs/framework/native.md §2) handled by scripts\prematch_editor.lua.
+# Until 1.16.3 crates/plugins/clean_hud (clean_hud.dll) patched the site itself; same decision and log lines.
+#
+# The site: game::soccerscene::BattleSettingFlow (update 0x1436F50) state 6 waits for the VS menu to close, sets the
+# camera up, then opens the pre-kick-off team editor (soccer_formation_menu) only when the match info flag
+# mi & 0x2000000 is set (mi = [[g_gameRoot]+0x6A58]):
+#
+#   1437594  80 78 16 02            cmp  byte [rax+16h], 2      ; bl = small 5v5 match (for the backdrop call)
+#   1437598  0F 94 C3               sete bl
+#   143759B  F7 00 00 00 00 02      test dword [rax], 2000000h  ; <- hook: the 6-byte test is stolen
+#   14375A1  74 64                  je   1437607                ; bit off: no editor, state = 7 (retail path)
+#   14375A3  B2 05 ...              pre-match BGM, open the editor, dark backdrop 0x1104DB0, state = 7
+#   1437607  C7 46 20 07 00 00 00   mov  dword [rsi+20h], 7
+#
+# The handler gets ev.regs.rax (the match info). `skip = true` = resume at continue_at (the je target: the retail
+# bit-off path, state 7 finds no menu open and goes on to the walk-in); nothing / an error / a busy script VM = the
+# stolen `test` runs and the game goes on at the `je` (retail). Only the 6-byte `test` is stolen (no relative operand:
+# no relocation), the `je` stays in place and reads the flags the trampoline's `test` set. None of rax, rcx, rdx,
+# r8-r11 is live on either path; rbx (bl), rsi, xmm6 / xmm7 must be kept (the stub keeps every register anyway).
+
+# bool IsNetworkSession() 0x1239C70: [g_session] (+0x2410 count, +0x2414 kinds, entry * 0x1208 + 0x1200 bit 2). Two
+# functions have these bytes (0x1239C70 and 0x1239ED0, the same global); the trailing padding picks the first.
+[[VRFW.Function]]
+name = "IsNetworkSession"
+game = "Net.IsSession"
+
+# Match info fields the decision reads.
+[[VRFW.Struct]]
+name = "MatchInfo"
+size = 0x58
+fields = { flags = { at = 0x00, type = "u32" }, match_type = { at = 0x16, type = "u8" }, observer = { at = 0x54, type = "u8" } }
+
+# The site: pattern = cmp / sete / test / je / the editor path's first bytes (the stolen bytes fixed in it, as the
+# trampoline runs them as written); match + 7 = the `test` (0x143759B); continue_at = match + 0x73 = the je target 0x1437607.
+[[VRFW.Hook]]
+name = "PrematchEditor"
+game = "Menu.PrematchEditor"
+kind = "mid"
+needs = ["IsNetworkSession", "MatchInfo"]
+
+# config.toml skip_prematch_editor = false (developer kill switch): the handler answers nothing (retail editor).

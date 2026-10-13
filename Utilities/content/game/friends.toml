@@ -1,0 +1,76 @@
+schema = "VRFW.game/1"
+
+# Utilities › friends panel («Lista de amigos», docs/game/ui/friends.md): every Steam friend + the mod friends added by
+# code, grouped, with their status; this player's friend code; a friend's details (active team, career summary) and
+# actions. The panel is assets\lua\_all\utilities_friends.lua (layers of content\menus\friends_panel.toml in every hub
+# of the top bar); every menu VM also reports its menu (status). The logic is scripts\friends.lua (+ scripts\lib\
+# fr_core.lua) over the VR-Framework's friends API (VRFW.net.*). What friends may ask for / send: content\defaults\
+# net.toml ([[VRFW.NetShare]]). Settings: config.toml [friends].
+
+# (refresh, lang code) -> ready, rows, inbox count, error text, my friend code, panel art texture
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_OPEN"
+handler = "Utilities.Friends.Open"
+
+# () -> panel x, width, top, row height, header height, details width, slide frames (config.toml [friends.panel])
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_LAYOUT"
+handler = "Utilities.Friends.Layout"
+
+# (i) -> kind (head / friend / none), group, name, status key, dot, badge, room (bool), avatar texture, avatar sprite,
+# count (heads) / friend code (friends)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_ROW"
+handler = "Utilities.Friends.Row"
+
+# (i) -> the row's actions, comma-separated (invite, join, code, mods, profile, steam_add, remove; a sent request:
+# cancel, steam_add, profile; a «Solicitudes» row: accept, decline, block, steam_add)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_ACTIONS"
+handler = "Utilities.Friends.Actions"
+
+# (i, action) -> state ("ok" / "wait" / "error"), text
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_DO"
+handler = "Utilities.Friends.Do"
+
+# (i, action) -> state ("wait" / "ok" / "error"), text (the mods we differ in)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_POLL"
+handler = "Utilities.Friends.Poll"
+
+# (i) -> the friend's profile is being asked for (bool)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_DETAILS"
+handler = "Utilities.Friends.Details"
+
+# (i) -> state, team name, formation name, faces ("chara_base:level:name|…"), stats ("key\tname\tvalue" lines)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_DETAILS_POLL"
+handler = "Utilities.Friends.DetailsPoll"
+
+# () -> ok, the added player's SteamID / the error (the friend code is read from the clipboard)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_ADD"
+handler = "Utilities.Friends.Add"
+
+# () -> this player's friend code (also copied to the clipboard)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_COPY"
+handler = "Utilities.Friends.Copy"
+
+# () -> the next received item: kind ("code" / "invite" / ""), sender's name, team lines, data
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_INBOX"
+handler = "Utilities.Friends.Inbox"
+
+# (menu stem) -> the status published for that menu ("" = none)
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_STATUS"
+handler = "Utilities.Friends.Status"
+
+# () -> friend requests waiting, the next notice (kind request / accepted / declined, name), panel art texture, the
+# top bar entry the badge marks
+[[VRFW.Command]]
+name = "CMND_UTIL_FRIENDS_BADGE"
+handler = "Utilities.Friends.Badge"

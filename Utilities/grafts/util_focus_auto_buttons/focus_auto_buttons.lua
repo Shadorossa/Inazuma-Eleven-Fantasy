@@ -1,0 +1,27 @@
+-- UTIL focus_auto_buttons, soccer_focus_battle_menu: the focus battle's «AUTO» left / right plates
+-- (soccer08_35l_focus_auto_button_left / soccer08_35r_focus_auto_button_right) are never shown. The engine calls
+-- SetAutoButtonVisible(show[, layer]) by name at the start / end of every focus battle and SelectAutoButton(left, time)
+-- when Z / C picks a side; the Z / C input and its action are native and stay as they are. Wrappers only (rawget /
+-- rawset of the retail globals); no engine call at load.
+UTIL_FOCUS_AUTO_BUTTONS_HIDDEN = true
+
+do
+  local prevVisible = rawget(_ENV, "SetAutoButtonVisible")
+  if type(prevVisible) == "function" then
+    rawset(_ENV, "SetAutoButtonVisible", function(show, ...)
+      if UTIL_FOCUS_AUTO_BUTTONS_HIDDEN then
+        show = false
+      end
+      return prevVisible(show, ...)
+    end)
+  end
+  local prevSelect = rawget(_ENV, "SelectAutoButton")
+  if type(prevSelect) == "function" then
+    rawset(_ENV, "SelectAutoButton", function(...)
+      if UTIL_FOCUS_AUTO_BUTTONS_HIDDEN then
+        return
+      end
+      return prevSelect(...)
+    end)
+  end
+end

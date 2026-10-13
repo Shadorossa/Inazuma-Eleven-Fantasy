@@ -1,0 +1,123 @@
+# Battle Bay «Torneo» (docs/game/modes/bb-tournament.md) of the mod bb_chronicle_teams (Battle Bay Deluxe): the run
+# lives in the mod's scripts (scripts\tournament.lua + lib\tourney.lua, commands CMND_BBD_TOURN_*, content\game\
+# tournament.toml); the player's matches are the game's own Battle Bay campaign matches; the bracket overlay is the
+# Victory Road final-stage bracket art added to the Battle Bay top menu (content\menus\bb_tournament.toml); texts
+# evt_bbd_tn_* (text\rows\menu_text.toml); knockout matches use the rulebook content\rules\bbd_knockout.toml
+# (the VR-Framework rule engine: extra time + penalties), selected with CMND_VRFW_RULE_ENGINE_SELECT.
+#   bb_stadium_top_menu              bbt_common.lua + bbt_top.lua + bbt_mode.lua: the «Campaña» row in Torneo mode
+#                                    (1.5.47: no «Torneo» row any more, bbt_row.lua removed; a run going = the Torneo,
+#                                    the top bar's Torneo = the same row in Torneo mode); the armed grid; continue /
+#                                    view / new; the sync before the retail OnInit; the bracket overlay (pages:
+#                                    results, groups, tree; after an elimination the remaining rounds one per Enter);
+#                                    the header's Campaña / Torneo selector over the Torneo (bbt_mode.lua)
+#   enjoy_team_select_menu_campaign  bbt_common.lua + bbt_grid.lua (1.5.4): while a tournament is armed, the team's
+#                                    decide opens the tournament options, the difficulty window's start draws it;
+#                                    bbt_mode.lua (1.5.47): the header's Campaña / Torneo selector (arms / disarms)
+#   bb_stadium_campaign_end_window   bbt_common.lua + bbt_end.lua: «continue» goes back to the top menu during a
+#                                    tournament (the results first)
+#   fade_menu_encount                bbt_common.lua: the loading telop's match number and rival ladder are the
+#                                    tournament's; bbt_encount.lua (1.5.47): the path's node count is the mode's
+#   soccer_top_menu                  bbt_common.lua + bbt_top.lua + bbt_hub.lua (1.5.18): Inazuma Fantasy's «Modos de
+#                                    juego» hosts the Torneo (its tile: the panel over the bracket, the grid, the
+#                                    matches, the sync after them); the Battle Bay top menu never opens for it
+#   sub_window_group                 bbt_common.lua: Accept on a row of the Torneo's options panel (L / R window)
+#                                    changes the value in place (OnEnter; 1.5.10); 1.5.16: the panel's third L / R row (OpenWindow
+#                                    wrapped: the mod's 3-row locator evt_bbd_tn_opts_locator, row instance 3)
+# Order 346: after bb_draft (345), so the sync runs before the Draft's own top-menu sync (outer OnInit wrapper).
+# Globals only (BBT, BBT_*); nothing runs at chunk load but the CMND_GET_BB_STADIUM_CAMPAIGN_INFO wrapper's install.
+name = "bb_tournament"
+mod = "bb_chronicle_teams"
+order = 346
+module = "lua_bridge"
+requires = ["bb_draft"]
+conflicts = []
+wraps = ["OnInit", "OnDecideFocus", "OnBack", "OnFunction", "Step", "OnEnter", "OnSetupLayer", "SetupParam", "funcLuaMenuCommand", "funcLuaCommand", "SetupListItemTexture", "OpenWindow", "SetupWindowParams"]
+description = "Battle Bay: the Torneo (knockout or group stage + knockout) on the Campaña's matches, with the Victory Road bracket art"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top.lua"
+  marker = "bb_tournament top"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_mode.lua"
+  marker = "bb_tournament mode"
+
+[[files]]
+stem = "enjoy_team_select_menu_campaign"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_grid.lua"
+  marker = "bb_tournament grid"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_mode.lua"
+  marker = "bb_tournament mode"
+
+[[files]]
+stem = "bb_stadium_campaign_end_window"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_end.lua"
+  marker = "bb_tournament end"
+
+[[files]]
+stem = "fade_menu_encount"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_encount.lua"
+  marker = "bb_tournament encount"
+
+[[files]]
+stem = "sub_window_group"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+[[files]]
+stem = "soccer_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_common.lua"
+  marker = "bb_tournament common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top.lua"
+  marker = "bb_tournament top"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_hub.lua"
+  marker = "bb_tournament hub"

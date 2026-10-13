@@ -1,0 +1,119 @@
+# VR-Framework 2.0.3: the bank family's tab bar takes extra series tabs declared by mods ([[bank_tab]] of
+# card_filters\, docs/framework/card-filter.md §9; first user iecross: «Inazuma Eleven Cross»). The two bank screens get
+# 13 tab instances (retail 11; the framework's Lua hides the ones past the table), and the bar layout for 12 tabs:
+# 12 locator joints in the retail cmn06_04 layout (the blue part of its bar, x -401..479 of _pos_offset01, split in 12
+# slots of 73.3 px; each joint scaled 73.3 / 80 like the retail 80 px slot) and their 12 attach rows
+# vrfw_bank_tab12_NN of cmn06_04_list_tab_attach_11_only, enabled by name by the Lua (card_filters\bank.toml
+# [[bank_tab_bar]] tabs = 12). No new art: the retail bar. 13 tabs need a mod's layout (Inazuma Fantasy ships one).
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "chara_bank_menu"
+layer = "cmn06_20_list_tab_item"
+count = 13
+
+[[patch]]
+menu = "chara_bank_menu_for_search"
+layer = "cmn06_20_list_tab_item"
+count = 13
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_01"
+parent = "_pos_atc_icon_odd_01"
+translate = [-404.333, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_02"
+parent = "_pos_atc_icon_odd_01"
+translate = [-331.000, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_03"
+parent = "_pos_atc_icon_odd_01"
+translate = [-257.667, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_04"
+parent = "_pos_atc_icon_odd_01"
+translate = [-184.333, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_05"
+parent = "_pos_atc_icon_odd_01"
+translate = [-111.000, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_06"
+parent = "_pos_atc_icon_odd_01"
+translate = [-37.667, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_07"
+parent = "_pos_atc_icon_odd_01"
+translate = [35.667, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_08"
+parent = "_pos_atc_icon_odd_01"
+translate = [109.000, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_09"
+parent = "_pos_atc_icon_odd_01"
+translate = [182.333, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_10"
+parent = "_pos_atc_icon_odd_01"
+translate = [255.667, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_11"
+parent = "_pos_atc_icon_odd_01"
+translate = [329.000, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn06/cmn06_04/cmn06_04.g4pkm"
+joint = "_vrfw_bank_tab12_icon_12"
+parent = "_pos_atc_icon_odd_01"
+translate = [402.333, 0.0, 0.0]
+scale = [0.9167, 0.9167, 1.0]
+
+[[object_set]]
+object = "cmn06_04_list_tab_attach_11_only"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA27FFCD4, 0x00502CC8, 0xF10EEA88, 0], after = { param = "NullLayerName", match = { 1 = 0x76175091, 2 = 0x68A9EE15, 3 = 0x1F960C4C, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3B76AD6E, 0x99597D72, 0xF10EEA88, 1], after = { param = "NullLayerName", match = { 1 = 0xA27FFCD4, 2 = 0x00502CC8, 3 = 0xF10EEA88, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4C719DF8, 0xEE5E4DE4, 0xF10EEA88, 2], after = { param = "NullLayerName", match = { 1 = 0x3B76AD6E, 2 = 0x99597D72, 3 = 0xF10EEA88, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xD215085B, 0x703AD847, 0xF10EEA88, 3], after = { param = "NullLayerName", match = { 1 = 0x4C719DF8, 2 = 0xEE5E4DE4, 3 = 0xF10EEA88, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA51238CD, 0x073DE8D1, 0xF10EEA88, 4], after = { param = "NullLayerName", match = { 1 = 0xD215085B, 2 = 0x703AD847, 3 = 0xF10EEA88, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3C1B6977, 0x9E34B96B, 0xF10EEA88, 5], after = { param = "NullLayerName", match = { 1 = 0xA51238CD, 2 = 0x073DE8D1, 3 = 0xF10EEA88, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4B1C59E1, 0xE93389FD, 0xF10EEA88, 6], after = { param = "NullLayerName", match = { 1 = 0x3C1B6977, 2 = 0x9E34B96B, 3 = 0xF10EEA88, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDBA34470, 0x798C946C, 0xF10EEA88, 7], after = { param = "NullLayerName", match = { 1 = 0x4B1C59E1, 2 = 0xE93389FD, 3 = 0xF10EEA88, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xACA474E6, 0x0E8BA4FA, 0xF10EEA88, 8], after = { param = "NullLayerName", match = { 1 = 0xDBA34470, 2 = 0x798C946C, 3 = 0xF10EEA88, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCC63FD03, 0x6E4C2D1F, 0xF10EEA88, 9], after = { param = "NullLayerName", match = { 1 = 0xACA474E6, 2 = 0x0E8BA4FA, 3 = 0xF10EEA88, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBB64CD95, 0x194B1D89, 0xF10EEA88, 10], after = { param = "NullLayerName", match = { 1 = 0xCC63FD03, 2 = 0x6E4C2D1F, 3 = 0xF10EEA88, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x226D9C2F, 0x80424C33, 0xF10EEA88, 11], after = { param = "NullLayerName", match = { 1 = 0xBB64CD95, 2 = 0x194B1D89, 3 = 0xF10EEA88, 4 = 10 } } },
+]

@@ -1,0 +1,21 @@
+# Utilities' data its friends may ask for / send through the VR-Framework's friend protocol (docs/game/ui/friends.md;
+# framework run time crates/plugins/vr_framework/src/net_rt/friends.rs): only Steam friends and the mod friends added
+# by code are answered, one message per friend every 0.4 s, never through EOS.
+#   kind       <mod id>.<name>
+#   ask        a friend may ask for it (the answer is what scripts\friends.lua last gave VRFW.net.share_set)
+#   push       a friend may send it unasked (it waits in the inbox until the friends panel reads it)
+#   max_bytes  biggest data accepted / sent
+
+# this player's profile (scripts\friends.lua share_profile: the active squad's name, formation and members, the career
+# summary, the lines other mods add with Utilities.FriendsProfileLine): a friend's details pane in the panel
+[[VRFW.NetShare]]
+kind = "utilities.profile"
+ask = true
+max_bytes = 4096
+
+# a team share code ("VRT1-" + base-32 of the squad's description, scripts\lib\fr_core.lua): «Enviar código de mi
+# equipo»
+[[VRFW.NetShare]]
+kind = "utilities.team_code"
+push = true
+max_bytes = 4096

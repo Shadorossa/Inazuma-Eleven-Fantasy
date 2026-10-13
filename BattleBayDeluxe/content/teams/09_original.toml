@@ -1,0 +1,151 @@
+# Generated ONCE by research/scripts/bb_chronicle_teams_build.py from the retail v7.1.2 data (last run before 2026-10-13);
+# now HAND-MAINTAINED source: edit it directly or with ModManager «Equipos» (edit the original mod, in place).
+# The script refuses to overwrite it (only --force-regenerate does, and that loses every hand edit).
+# Season group ORIGINAL: the Chronicle teams of its route (based_on the game team: roster, kit, formation, emblem,
+# captain; name = the game team's own name text; stadium_fallback = its home stadium, the one its own Chronicle game
+# plays at, stadium_image = that stadium's card art: the Battle Bay row plays there unless an active mod declares
+# the game team's own `stadium` (VR-Framework 2.0.101), then there; movesets and tactics: 80_movesets.toml).
+schema = "vr_framework.team/2"
+
+[[team]]
+name = "legend_original_07"
+key = "bbcr_legend_original_07"
+based_on = "tm_cro_legend_ORIGINAL_07"      # Solaria-Zeus, legend fbtl_cro09_legend_ORIGINAL_07
+name_text = 0xE88E8BF1
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s11g001b"      # Estadio Zeus, its Chronicle game fbtl_cro09_legend_ORIGINAL_07
+stadium_image = "ev_chronicle_img/ev_bb_s11g001_01.g4tx"
+
+[[team]]
+name = "legend_original_01"
+key = "bbcr_legend_original_01"
+based_on = "tm_cro_legend_ORIGINAL_01"      # Forajidos Solitarios, legend fbtl_cro09_legend_ORIGINAL_01
+name_text = 0x01ED2EC4
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b10g001"      # Patio de <MNT:NAGUMOHARA>, its Chronicle game fbtl_cro09_legend_ORIGINAL_01
+
+[[team]]
+name = "legend_original_02"
+key = "bbcr_legend_original_02"
+based_on = "tm_cro_legend_ORIGINAL_02"      # Mitos Nipones, legend fbtl_cro09_legend_ORIGINAL_02
+name_text = 0x98E47F7E
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b50g001"      # Villa deportiva de Odaiba, alojamientos, its Chronicle game fbtl_cro09_legend_ORIGINAL_02
+
+[[team]]
+name = "legend_original_03"
+key = "bbcr_legend_original_03"
+based_on = "tm_cro_legend_ORIGINAL_03"      # Colegas del Océano, legend fbtl_cro09_legend_ORIGINAL_03
+name_text = 0xEFE34FE8
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b20g001"      # Campo de la cala Caracol, its Chronicle game fbtl_cro09_legend_ORIGINAL_03
+
+[[team]]
+name = "legend_original_04"
+key = "bbcr_legend_original_04"
+based_on = "tm_cro_legend_ORIGINAL_04"      # Brisa Fresca, legend fbtl_cro09_legend_ORIGINAL_04
+name_text = 0x7187DA4B
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b10g004"      # Patio de <MNT:NAGUMOHARA>, its Chronicle game fbtl_cro09_legend_ORIGINAL_04
+stadium_image = "ev_chronicle_img/ev_bb_b10g004_01.g4tx"
+
+[[team]]
+name = "legend_original_05"
+key = "bbcr_legend_original_05"
+based_on = "tm_cro_legend_ORIGINAL_05"      # Tropa Muscular, legend fbtl_cro09_legend_ORIGINAL_05
+name_text = 0x0680EADD
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b17g001"      # Campo del callejón, its Chronicle game fbtl_cro09_legend_ORIGINAL_05
+
+[[team]]
+name = "legend_original_06"
+key = "bbcr_legend_original_06"
+based_on = "tm_cro_legend_ORIGINAL_06"      # Los Monocromáticos, legend fbtl_cro09_legend_ORIGINAL_06
+name_text = 0x9F89BB67
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s01g001"      # Estadio Fútbol Frontier, its Chronicle game fbtl_cro09_legend_ORIGINAL_06
+stadium_image = "ev_chronicle_img/ev_bb_s01g001_01.g4tx"
+
+[[team]]
+name = "legend_original_08"
+key = "bbcr_legend_original_08"
+based_on = "tm_cro_legend_ORIGINAL_08"      # Sinapsis Cibertrónicas, legend fbtl_cro09_legend_ORIGINAL_08
+name_text = 0x78319660
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b50g001"      # Villa deportiva de Odaiba, alojamientos, its Chronicle game fbtl_cro09_legend_ORIGINAL_08
+
+[[team]]
+name = "legend_original_09"
+key = "bbcr_legend_original_09"
+based_on = "tm_cro_legend_ORIGINAL_09"      # Los Gourmet, legend fbtl_cro09_legend_ORIGINAL_09
+name_text = 0x0F36A6F6
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b17g001"      # Campo del callejón, its Chronicle game fbtl_cro09_legend_ORIGINAL_09
+
+[[team]]
+name = "legend_original_11"
+key = "bbcr_legend_original_11"
+based_on = "tm_cro_legend_ORIGINAL_11"      # Flower Power, legend fbtl_cro09_legend_ORIGINAL_11
+name_text = 0x18F61F85
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b10g004"      # Patio de <MNT:NAGUMOHARA>, its Chronicle game fbtl_cro09_legend_ORIGINAL_11
+stadium_image = "ev_chronicle_img/ev_bb_b10g004_01.g4tx"
+
+[[team]]
+name = "legend_original_12"
+key = "bbcr_legend_original_12"
+based_on = "tm_cro_legend_ORIGINAL_12"      # Justicieros, legend fbtl_cro09_legend_ORIGINAL_12
+name_text = 0x81FF4E3F
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "b50g001"      # Villa deportiva de Odaiba, alojamientos, its Chronicle game fbtl_cro09_legend_ORIGINAL_12
+
+[[team]]
+name = "original_0500"
+key = "bbcr_original_0500"
+based_on = "tm_cro_original_0500"      # Tormenta cortante, board fbtl_cro12_040_010
+name_text = 0x66CACE98
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s59g001"      # Jardín Celestial, its Chronicle game fbtl_cro12_040_010
+stadium_image = "ev_chronicle_img/ev_ch_s59g001_0101.g4tx"
+
+[[team]]
+name = "original_0600"
+key = "bbcr_original_0600"
+based_on = "tm_cro_original_0600"      # Hojas espinosas, board fbtl_cro12_050_010
+name_text = 0x8461A6D5
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s67g001"      # Estadio del bosque, its Chronicle game fbtl_cro12_050_010
+stadium_image = "ev_chronicle_img/ev_ch_s67g001_0101.g4tx"
+
+[[team]]
+name = "original_0700"
+key = "bbcr_original_0700"
+based_on = "tm_cro_original_0700"      # Llamarada volcánica, board fbtl_cro12_060_010
+name_text = 0x5FA88A91
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s82g001"      # Estadio de la Academia Plenilunio, its Chronicle game fbtl_cro12_060_010
+stadium_image = "ev_chronicle_img/ev_ch_s82g001_0101.g4tx"
+
+[[team]]
+name = "original_0800"
+key = "bbcr_original_0800"
+based_on = "tm_cro_original_0800"      # Aplastarocas, board fbtl_cro12_070_010
+name_text = 0xC39277F1
+level = 40
+series = "ORIGINAL"
+stadium_fallback = "s73g001"      # Estadio Rocadura, its Chronicle game fbtl_cro12_070_010
+stadium_image = "ev_chronicle_img/ev_ch_s73g001_0101.g4tx"

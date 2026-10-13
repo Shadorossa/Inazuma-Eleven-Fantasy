@@ -1,0 +1,22 @@
+schema = "vr_framework.option/2"
+# Settings of the «Mods» screen in the Opciones tab «Opciones de mods» (format: docs/app/mod-options.md §3).
+#
+# One row: «Saltar avisos de inicio» (below; the framework's boot skip, owned by this part because the part owns the
+# framework's title-screen pieces). No «experimental» options (Nacho, 01/10/2026). Values saved by older versions
+# (evt_loader\mod_options\mods_menu.json: chara_model, chara_model_fullscreen, anim_viewer: the 3D model and the
+# special-move viewer of the in-game creators, removed 2026-10-12) are not read any more and do no harm.
+
+# «Saltar avisos de inicio» / "Skip boot screens" (2026-10-07): the framework's boot skip (graft boot_skip, mod
+# vr_framework; docs/game/ui/boot-skip.md). On = the cold boot goes from the language / button setup straight to the
+# opening movie (no IE 15th / Level-5 logos, no caution, note, gamepad and save notices); Off = the retail sequence.
+# The title script reads it with CMND_EVT_OPT_GET("mods_menu.skip_boot_screens") when LogoStart reaches the logos and
+# the warnings, so a change applies at the next start. Value in evt_loader\mod_options\mods_menu.json.
+[[option]]
+id = "skip_boot_screens"                      # row key mods_menu.skip_boot_screens
+type = "toggle"
+label = "skip_boot_screens"                   # «Saltar avisos de inicio» (text.toml, 9 languages)
+help = "skip_boot_screens_help"
+default = true
+# a child of «Estilo personalizado» (off there = the retail boot sequence, the value kept), last of its children
+parent = "mod_options.custom_style"
+order = 125

@@ -1,0 +1,193 @@
+# VR-Framework: the art of the Bahía Batalla grid's category tabs (#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx, a
+# NEW atlas; docs/framework/bb-pages.md). Made at every first start (and after a game update) from the PLAYER'S own
+# game files by the image type's recipes: the tab plates and the line's backgrounds from the retail BB
+# hexagon tile (vs01_42 enjoy_list_base01: its slate-blue gradient, rounded corners, translucent; the current tab lit
+# with the hexagon cursor's cyan outline, vs01_43 enjoy_list_base01_ol), the «main
+# teams» glyph = the title's Estadio BB icon (title00_07 icon_btn09); the «secondary» and «mods» glyphs are the framework's
+# own drawings (vrfw_bb_pages\glyph_secondary.png: two shields, glyph_mods.png = the «Mods» title tile's puzzle;
+# glyph_all.png = four tiles, the season carousel's «every season»). No Level-5 pixel
+# ships. Sprite names: the runtime's (vrfw_bb_cat_plate_on / _off) and the categories' `icon` (defaults\team.toml).
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_pages"
+size = [536, 160]
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_cat_plate_off"
+texture = "vrfw_bb_pages"
+x = 0
+y = 0
+size = [64, 56]
+recipe = "plate_off"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_cat_plate_on"
+texture = "vrfw_bb_pages"
+x = 68
+y = 0
+size = [64, 56]
+recipe = "plate_on"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_cat_main"
+texture = "vrfw_bb_pages"
+x = 136
+y = 0
+size = [96, 96]
+recipe = "glyph_main"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_cat_secondary"
+texture = "vrfw_bb_pages"
+x = 236
+y = 0
+size = [96, 96]
+recipe = "glyph_secondary"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_cat_mods"
+texture = "vrfw_bb_pages"
+x = 336
+y = 0
+size = [96, 96]
+recipe = "glyph_mods"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_season_all"
+texture = "vrfw_bb_pages"
+x = 436
+y = 0
+size = [96, 96]
+recipe = "glyph_all"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_bg_l"
+texture = "vrfw_bb_pages"
+x = 0
+y = 100
+size = [16, 48]
+recipe = "bg_l"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_bg_m"
+texture = "vrfw_bb_pages"
+x = 16
+y = 100
+size = [64, 48]
+recipe = "bg_m"
+
+[[sprite]]
+atlas = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx"
+name = "vrfw_bb_bg_r"
+texture = "vrfw_bb_pages"
+x = 80
+y = 100
+size = [16, 48]
+recipe = "bg_r"
+
+# ---- tab plates and line backgrounds: the retail BB hexagon tile's look (vs01_42: slate-blue vertical gradient,
+# corners rounded like the tile's, translucent so the stadium shows through) -----------------------------------------
+[[recipe]]
+name = "hex"
+game = "dx11/menu/107_vs/vs01/vs01_42/vs01_42.g4tx"
+texture = "vs01_42"
+# the flat middle of the first hexagon (its full height: the whole gradient)
+ops = [{ op = "crop", box = [95, 58, 135, 166] }, { op = "alpha_crop" }, { op = "opaque" }]
+
+[[recipe]]
+name = "plate_off"
+from = "hex"
+ops = [{ op = "resize", size = [64, 56] }, { op = "round_corners", radius = 10 }, { op = "fade", factor = 0.62 }]
+
+# the current tab: the same tile lit bluer inside the hexagon cursor's cyan outline (retail enjoy_list_base01_ol
+# colour), 3 px
+[[recipe]]
+name = "cursor_ring"
+from = "hex"
+ops = [{ op = "resize", size = [64, 56] }, { op = "fill", rgb = [0, 254, 220] }, { op = "round_corners", radius = 10 }]
+
+[[recipe]]
+name = "lit_inner"
+from = "hex"
+ops = [{ op = "resize", size = [58, 50] }, { op = "affine", mul = [0.8, 1.05, 1.5], add = [10.0, 30.0, 60.0] }, { op = "round_corners", radius = 8 }]
+
+[[recipe]]
+name = "plate_on"
+from = "cursor_ring"
+ops = [{ op = "paste", image = "lit_inner", centre = [32.0, 28.0] }, { op = "fade", factor = 0.85 }]
+
+# the line's background, drawn as left cap + stretched middle + right cap: the three cut side by side (and placed side
+# by side in the atlas) from ONE rounded picture whose columns are all the same (the tile's gradient averaged to one
+# column, then widened), so the joins sample the same colour: no seam, only the middle stretches
+[[recipe]]
+name = "bg_full"
+from = "hex"
+ops = [{ op = "resize", size = [1, 48] }, { op = "resize", size = [96, 48] }, { op = "round_corners", radius = 10 }, { op = "fade", factor = 0.55 }]
+
+[[recipe]]
+name = "bg_l"
+from = "bg_full"
+ops = [{ op = "crop", box = [0, 0, 16, 48] }, { op = "alpha_crop" }]
+
+[[recipe]]
+name = "bg_m"
+from = "bg_full"
+ops = [{ op = "crop", box = [16, 0, 80, 48] }, { op = "alpha_crop" }]
+
+[[recipe]]
+name = "bg_r"
+from = "bg_full"
+ops = [{ op = "crop", box = [80, 0, 96, 48] }, { op = "alpha_crop" }]
+
+# ---- glyphs, each fitted in a 96 x 96 cell (centred) -----------------------------------------------------------------
+[[recipe]]
+name = "bb_icon"
+game = "dx11/menu/50_title/title00/title00_07/title00_07.g4tx"
+sprite = "icon_btn09"
+ops = [{ op = "alpha_crop" }, { op = "fit", box = [88, 88] }]
+
+[[recipe]]
+name = "glyph_main"
+canvas = [96, 96]
+ops = [{ op = "paste", image = "bb_icon", centre = [48.0, 48.0] }]
+
+[[recipe]]
+name = "secondary_png"
+png = "vrfw_bb_pages/glyph_secondary.png"
+ops = [{ op = "alpha_crop" }, { op = "fit", box = [80, 80] }]
+
+[[recipe]]
+name = "glyph_secondary"
+canvas = [96, 96]
+ops = [{ op = "paste", image = "secondary_png", centre = [48.0, 48.0] }]
+
+[[recipe]]
+name = "mods_png"
+png = "vrfw_bb_pages/glyph_mods.png"
+ops = [{ op = "alpha_crop" }, { op = "fit", box = [80, 80] }]
+
+[[recipe]]
+name = "glyph_mods"
+canvas = [96, 96]
+ops = [{ op = "paste", image = "mods_png", centre = [48.0, 48.0] }]
+
+# the season carousel's «every season»: four tiles (the framework's own drawing)
+[[recipe]]
+name = "all_png"
+png = "vrfw_bb_pages/glyph_all.png"
+ops = [{ op = "alpha_crop" }, { op = "fit", box = [72, 72] }]
+
+[[recipe]]
+name = "glyph_all"
+canvas = [96, 96]
+ops = [{ op = "paste", image = "all_png", centre = [48.0, 48.0] }]

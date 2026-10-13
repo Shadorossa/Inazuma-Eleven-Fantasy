@@ -1,0 +1,18 @@
+# Battle Bay Deluxe: the key of the Campaña / Torneo selector in the Campaña screen's header bar (graft
+# research/grafts/bb_tournament/bbt_mode.lua, polled with CMND_CHECK_INPUT on MENU_CTRL; its glyph
+# <CMD_BBD_MODE_SWITCH>). A rebindable action (docs/framework/types/input.md §2b): the row «Cambiar Campaña / Torneo»
+# in the game's «Configuración de controles», tab «Controles básicos» (the menus' tab), where the player rebinds it;
+# the game keeps the choice in its own system save. Default pad Y (index 12; owner 2026-10-13), keyboard B (index 1,
+# the key 1.5.47's CMD_FUNC5 had; Y's own retail key is V = CMD_FUNC3's, not taken). Y is retail CMD_FUNC3 on these
+# screens (the hub's «Guía de controles», the grid's ready balloon button): bbt_mode.lua leaves that retail function
+# out for a press of this key while the selector is shown.
+schema = "VRFW.input/1"
+
+[[action]]
+id = "BattleBayDeluxe.ModeSwitch"
+command = "CMD_BBD_MODE_SWITCH"
+ctrl = "MENU_CTRL"
+category = "basic"
+label = "evt_bbd_mode_switch_action"
+pad = "Y"
+keyboard = "B"

@@ -1,0 +1,197 @@
+-- ===== EVT comandante_guia BEGIN =====
+-- The match HUD shows the button guide «Modo Comandante» (layer soccer00_67_change_ai_mode_button, instance 1,
+-- text soccer_common_text 536261781; «Modo Manual» 1863234265 once the mode is on). The engine refuses to enter the mode
+-- when the rival has not been beaten before (nie.exe 0xEBF110: the clear bit of GAME_CLEAR_FLAG(game, difficulty) of the
+-- running match; it then calls SendErrorMessageChangeCoachAI, «No se puede usar contra rivales que no hayas vencido
+-- ya.»). This hides the guide in that case. VISIBILITY ONLY (another graft moves / restyles the layer).
+--
+-- Why every frame (2026-09-29, in game: the guide stayed visible vs an unbeaten Royal Academy): the engine turns
+-- layers visible again after OnOpenLayer / the retail Set* functions return and calls SetVisibleChangeCoachAIModeButton
+-- natively (ui_clean soccer_menu.lua found the same and hides from PostStep). So besides the wrappers of the three
+-- retail functions (the first hide), Step and PostStep re-apply the hide every frame while the mode is unavailable.
+-- The engine looks Step / PostStep up by name on every frame (0x10C9DD0, lua_getglobal + type check), so defining them
+-- here works even though this menu has neither.
+--
+-- Wrappers only; every engine call is inside a function body (never at chunk load). Anything unknown (no answer, no
+-- match id, online / observer match) leaves the retail guide. Log (evt_loader\loader.log through CMND_EVT_LOG): one line
+-- per match state change with every query result, plus the first call of each wrapper / hook (max 40 lines).
+EVT_CMDR_HIDE = true                   -- false: retail guide always
+local EVT_CMDR_LAYER = 2446662467 --[[soccer00_67_change_ai_mode_button]]
+local EVT_CMDR_CMD_MODE = 3152556728 --[[commander mode is on (coach-mode object byte == 1)]]
+local EVT_CMDR_CMD_OBSERVE = 1347206123 --[[hands-off / spectator mode is on (byte == 2)]]
+local EVT_CMDR_CMD_GAME = 2183839596 --[[0x822ABF6C: (valid, game id) of the running match]]
+local EVT_CMDR_CMD_DIFF = 402364773 --[[0x17FB9965: (true, difficulty) of the running match]]
+local EVT_CMDR_CMD_CLEAR = 989257499 --[[CMND_GET_SOCCER_GAME_CLEAR_FLAG(game, difficulty)]]
+local EVT_CMDR_CMD_GATE = 1363805437 --[[0x514A04FD: (blocked, why) of the engine's gate 0xEBF110 (answered by a mod's hook)]]
+local EVT_CMDR_LOG_N = 0
+local EVT_CMDR_SEEN = {}               -- first-call markers per source
+local EVT_CMDR_KEY = ""                -- last logged state
+local EVT_CMDR_CMD_RULE_GET = @crc:CMND_VRFW_RULE_ENGINE_GET@
+
+local function EVT_CmdrLog(msg)
+  if EVT_CMDR_LOG_N >= 40 or type(funcLuaCommand) ~= "function" then
+    return
+  end
+  EVT_CMDR_LOG_N = EVT_CMDR_LOG_N + 1
+  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT_CMDR " .. msg)
+end
+
+local function EVT_CmdrFirst(src, extra)
+  if not EVT_CMDR_SEEN[src] then
+    EVT_CMDR_SEEN[src] = true
+    EVT_CmdrLog("first call: " .. src .. (extra or ""))
+  end
+end
+
+-- The running match's ruleset says `[play] coach_mode = false` (VRFW 2.2.20; e.g. Inazuma Fantasy's training
+-- field): no coach mode at all. The answer is a number (0 off, 1 on); a match without a ruleset answers false.
+function EVT_CmdrRuledOut()
+  if type(funcLuaCommand) ~= "function" then
+    return false
+  end
+  local ok, v = pcall(funcLuaCommand, EVT_CMDR_CMD_RULE_GET, "play.coach_mode")
+  return ok and v == 0
+end
+
+-- results of every query + the decision. locked = true only when the engine would refuse to enter Commander mode:
+-- not in it, not spectating, and the running match (game, difficulty) has no clear bit yet
+-- the engine's own gate says the mode may be entered (rival beaten, or a mod opened the gate: Utilities' «Modo Comandante
+-- automático» for Battle Bay matches); nil / blocked = ask the clear bit as before
+local function EVT_CmdrGateOpen()
+  local ok, blocked = pcall(funcLuaCommand, EVT_CMDR_CMD_GATE)
+  return ok and blocked == false
+end
+
+local function EVT_CmdrQuery()
+  local q = { locked = false, why = "" }
+  if not EVT_CMDR_HIDE or type(funcLuaCommand) ~= "function" then
+    q.why = "off"
+    return q
+  end
+  local online = false
+  if type(CheckExistsObserver) == "function" then
+    local ok, r = pcall(CheckExistsObserver)
+    online = ok and r == true
+  end
+  q.online = online
+  local ok, coach = pcall(funcLuaCommand, EVT_CMDR_CMD_MODE)
+  q.coach = ok and coach
+  local ok2, observe = pcall(funcLuaCommand, EVT_CMDR_CMD_OBSERVE)
+  q.observe = ok2 and observe
+  local ok3, valid, game = pcall(funcLuaCommand, EVT_CMDR_CMD_GAME)
+  q.valid, q.game = ok3 and valid, ok3 and game
+  local ok4, has, diff = pcall(funcLuaCommand, EVT_CMDR_CMD_DIFF)
+  q.has, q.diff = ok4 and has, ok4 and diff
+  if online then
+    q.why = "online/observer"
+  elseif not ok or coach then
+    q.why = "commander mode already on (or query failed)"
+  elseif not ok2 or observe then
+    q.why = "spectator on (or query failed)"
+  elseif not ok3 or not valid or type(game) ~= "number" or game == 0 then
+    q.why = "no valid game id"
+  elseif not ok4 or not has or type(diff) ~= "number" then
+    q.why = "no difficulty"
+  elseif EVT_CmdrGateOpen() then
+    q.why = "gate open"
+  else
+    local ok5, cleared = pcall(funcLuaCommand, EVT_CMDR_CMD_CLEAR, game, diff)
+    q.cleared = ok5 and cleared
+    if not ok5 or cleared == nil then
+      q.why = "clear query failed"
+    elseif cleared == true then
+      q.why = "rival beaten"
+    else
+      q.locked = true
+      q.why = "not beaten"
+    end
+  end
+  return q
+end
+
+function EVT_CmdrLocked()
+  return EVT_CmdrQuery().locked
+end
+
+-- instance 1 of the guide layer (the Commander / Manual guide); instance 0 = bench request, 2 = spectator
+function EVT_CmdrApply(src)
+  -- no coach mode in this match: the guide stays hidden, none of the coach-mode queries run (the framework refuses
+  -- the button itself)
+  if EVT_CmdrRuledOut() then
+    local ok, o = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_CMDR_LAYER)
+    if ok and o == true then
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CMDR_LAYER, 1, false)
+    end
+    if EVT_CMDR_KEY ~= "ruled_out" then
+      EVT_CMDR_KEY = "ruled_out"
+      EVT_CmdrLog("state via " .. tostring(src) .. ": no coach mode in this match (ruleset play.coach_mode = false): guide hidden")
+    end
+    return
+  end
+  local q = EVT_CmdrQuery()
+  local open = nil
+  if q.locked then
+    local ok, o = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_CMDR_LAYER)
+    open = ok and o
+    if open == true then
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CMDR_LAYER, 1, false)
+    end
+  end
+  local key = tostring(q.game) .. "/" .. tostring(q.diff) .. "/" .. tostring(q.locked) .. "/" .. tostring(q.coach) .. "/" .. tostring(open)
+  if key ~= EVT_CMDR_KEY then
+    EVT_CMDR_KEY = key
+    EVT_CmdrLog(string.format("state via %s: online=%s coach=%s observe=%s valid=%s game=%s diff=%s cleared=%s -> %s; hide=%s layerOpen=%s",
+      tostring(src), tostring(q.online), tostring(q.coach), tostring(q.observe), tostring(q.valid), tostring(q.game),
+      tostring(q.diff), tostring(q.cleared), q.why, tostring(q.locked), tostring(open)))
+  end
+end
+
+local EVT_CMDR_prevSetup = SetupChangeCoachAIModeButton
+function SetupChangeCoachAIModeButton(a1)
+  EVT_CmdrFirst("SetupChangeCoachAIModeButton", " a1=" .. tostring(a1))
+  local r = EVT_CMDR_prevSetup(a1)
+  if a1 == 1 then
+    EVT_CmdrApply("Setup")
+  end
+  return r
+end
+
+local EVT_CMDR_prevUpdate = UpdateViewChangeCoachAIModeButton
+function UpdateViewChangeCoachAIModeButton(a1, a2, a3, a4, a5)
+  EVT_CmdrFirst("UpdateViewChangeCoachAIModeButton")
+  local r = EVT_CMDR_prevUpdate(a1, a2, a3, a4, a5)
+  EVT_CmdrApply("UpdateView")
+  return r
+end
+
+local EVT_CMDR_prevVisible = SetVisibleChangeCoachAIModeButton
+function SetVisibleChangeCoachAIModeButton(a1)
+  EVT_CmdrFirst("SetVisibleChangeCoachAIModeButton", " a1=" .. tostring(a1))
+  local r = EVT_CMDR_prevVisible(a1)
+  EVT_CmdrApply("SetVisible")
+  return r
+end
+
+-- every frame: the engine re-shows the layer after the calls above
+local EVT_CMDR_prevStep = Step
+function Step(...)
+  EVT_CmdrFirst("Step")
+  local r
+  if EVT_CMDR_prevStep ~= nil then
+    r = EVT_CMDR_prevStep(...)
+  end
+  EVT_CmdrApply("Step")
+  return r
+end
+
+local EVT_CMDR_prevPostStep = PostStep
+function PostStep(...)
+  EVT_CmdrFirst("PostStep")
+  local r
+  if EVT_CMDR_prevPostStep ~= nil then
+    r = EVT_CMDR_prevPostStep(...)
+  end
+  EVT_CmdrApply("PostStep")
+  return r
+end
+-- ===== EVT comandante_guia END =====

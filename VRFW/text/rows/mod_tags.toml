@@ -1,0 +1,78 @@
+# The labels of the mod tags the VR-Framework declares (its mod.toml [[VRFW.ModTag]] Text / Short keys), rows of
+# menu_text in the framework's 9 languages; the Mods panel shows the labels in a mod's «Etiquetas» field. A mod
+# that declares tags of its own writes their texts the same way in its own text rows (`<mod>.<key>`).
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+[[row]]
+id = "vr_framework.tag_new_hissatsu"
+en = "New special moves"
+es = "Supertécnicas nuevas"
+fr = "Nouvelles supertechniques"
+de = "Neue Spezialtechniken"
+it = "Supertecniche nuove"
+pt = "Supertécnicas novas"
+ja = "新しい必殺技"
+zh_hans = "新必杀技"
+zh_hant = "新必殺技"
+
+[[row]]
+id = "vr_framework.tag_edited_hissatsu"
+en = "Edited special moves"
+es = "Supertécnicas editadas"
+fr = "Supertechniques modifiées"
+de = "Geänderte Spezialtechniken"
+it = "Supertecniche modificate"
+pt = "Supertécnicas editadas"
+ja = "変更された必殺技"
+zh_hans = "修改的必杀技"
+zh_hant = "修改的必殺技"
+
+[[row]]
+id = "vr_framework.tag_new_hissatsu_short"
+en = "New"
+es = "Nuevas"
+fr = "Nouvelles"
+de = "Neu"
+it = "Nuove"
+pt = "Novas"
+ja = "新規"
+zh_hans = "新增"
+zh_hant = "新增"
+
+[[row]]
+id = "vr_framework.tag_edited_hissatsu_short"
+en = "Edited"
+es = "Editadas"
+fr = "Modifiées"
+de = "Geändert"
+it = "Modificate"
+pt = "Editadas"
+ja = "変更"
+zh_hans = "修改"
+zh_hant = "修改"
+
+[[row]]
+id = "vr_framework.tag_hissatsu_vfx_short"
+en = "VFX"
+es = "Efectos"
+fr = "Effets"
+de = "Effekte"
+it = "Effetti"
+pt = "Efeitos"
+ja = "演出"
+zh_hans = "特效"
+zh_hant = "特效"
+
+[[row]]
+id = "vr_framework.tag_hissatsu_vfx"
+en = "Special move visual effects"
+es = "Efectos visuales de supertécnicas"
+fr = "Effets visuels des supertechniques"
+de = "Visuelle Effekte von Spezialtechniken"
+it = "Effetti visivi delle supertecniche"
+pt = "Efeitos visuais de supertécnicas"
+ja = "必殺技のビジュアルエフェクト"
+zh_hans = "必杀技视觉效果"
+zh_hant = "必殺技視覺效果"

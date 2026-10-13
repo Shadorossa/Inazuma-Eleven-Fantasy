@@ -1,0 +1,62 @@
+# Utilities: the career page «TRAYECTORIA» of the player plate (feature career; Lua research/grafts/util_career_page,
+# docs/game/mechanics/player-career-stats.md §4). Since 2026-10-08 (before: Inazuma Fantasy's layers evt_cs_*).
+#   util_cs_cellt   x4, the cells of row 1 (dates, origin, last result)
+#   util_cs_cell    x16, the cells of rows 2-5 (numbers)
+#   util_cs_panel   the panel (soccer11_20 with its meshes off screen + 20 locators _atc_cs<r><c>) that mounts the cells
+#   util_cs_band    x2, the slanted light-blue row bands of the page (v5, 2026-10-10: a copy of the retail stamina gauge
+#                   btl06_13 whose frame shows Utilities' sprite util_cs_band; under the cells: priority 302 < 303)
+# The page shows two rows of three cells (FICHADO | ORIGEN | PARTIDOS / V-E-D · % | GOLES | GOLES/PART.) on the bands;
+# Layouts / objbins: files\data (research/scripts/career_panel.py --utilities, from the player's retail objects). The
+# panel hangs from the status base's _atc_passive01 (where the retail passive strips hang): the attach row below is
+# added to the retail status base; Inazuma Fantasy's plate uses its own copy of the status base
+# (evt_soccer11_05_formation_status_base, redirected in its menus), which carries the same row. The layers open with
+# the plate's group but stay hidden unless the page is shown (the Lua's guard).
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_cellt", object = "util_cs_cellt", count = 4, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_20_formation_team_passive", groups = [{ group = "personal_plate_menu", flags = [0, 0, 1, 0, 1, 0], after = "soccer11_20_formation_team_passive" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_cell", object = "util_cs_cell", count = 16, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_cellt", groups = [{ group = "personal_plate_menu", flags = [0, 0, 1, 0, 1, 0], after = "util_cs_cellt" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_panel", object = "util_cs_panel", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_cell", groups = [{ group = "personal_plate_menu", flags = [0, 0, 1, 0, 1, 0], after = "util_cs_cell" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_cellt", object = "util_cs_cellt", count = 4, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_20_formation_team_passive", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_20_formation_team_passive" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_cell", object = "util_cs_cell", count = 16, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_cellt", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_cellt" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_panel", object = "util_cs_panel", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_cell", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_cell" }] }
+
+# the panel's attach row on the retail status base: NullLayerName [util_cs_atc01, _atc_passive01, util_cs_panel, 0]
+[[object_set]]
+object = "soccer11_05_formation_status_base"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x38700C30, 0x73029157, 0xD8F902A4, 0] },
+    # v5: the row bands [util_cs_band0 / 1, _atc_passive01, util_cs_band, 0 / 1]
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB91FEAD8, 0x73029157, 0x7654A160, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCE18DA4E, 0x73029157, 0x7654A160, 1] },
+]
+
+# v5 (2026-10-10): the row bands (attach rows on the retail status base above); the Lua scales / places them.
+[[object]]
+name = "util_cs_band"
+from = "btl06_13_stamina_gauge"
+priority = 302
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_band", object = "util_cs_band", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_band", object = "util_cs_band", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }

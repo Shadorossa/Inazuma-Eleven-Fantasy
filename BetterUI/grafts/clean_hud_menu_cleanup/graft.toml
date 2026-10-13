@@ -1,0 +1,42 @@
+# Clean HUD «menu cleanup» (flag corner_buttons; docs/game/ui/ui-redesign.md «Mode top menus cleanup»). Moved from
+# Inazuma Fantasy on 2026-10-09 (Nacho): Modo Competición / «Modos de juego» (soccer_top_menu) and Modo Crónica
+# (chronicle_mode_top_menu) without the corner buttons «V Guía de controles» and «Alt Tutorial» (hidden, their keys /
+# functions / Accept ignored), as IF's comp_menu / chronicle_boxes did. Crónica's icon boxes are graft
+# clean_hud_chr_boxes. The data (corner layers, their retail function ids) is the declared table at the top of the
+# snippet; one snippet for both menus. Snippet = menu_generators.ui_clean_plain(part = "evt_ui_menu_cleanup.lua") of
+# research/grafts/_src/ui_clean; `menu_assemble.py regen clean_hud_menu_cleanup --write` rebuilds it. As a clean_hud
+# patch it runs after Inazuma Fantasy's (comp_menu, modes_hub, shop_rework) and after clean_hud_chr_boxes (910).
+name = "clean_hud_menu_cleanup"
+order = 915
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnEnter", "OnFunction"]
+description = "Clean HUD: no «Guía de controles» / «Tutorial» corner buttons in Competición and Crónica"
+
+[[files]]
+stem = "soccer_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "mc_soccer_top.lua"
+  marker = "ui_clean menu_cleanup"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_menu_cleanup.lua", tag = "menu_cleanup_soccer_top", name = "menu_cleanup", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "menu_cleanup_soccer_top" }
+
+[[files]]
+stem = "chronicle_mode_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "mc_chronicle_top.lua"
+  marker = "ui_clean menu_cleanup"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_plain"
+  generator_args = { part = "evt_ui_menu_cleanup.lua", tag = "menu_cleanup_chronicle_top", name = "menu_cleanup", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "menu_cleanup_chronicle_top" }

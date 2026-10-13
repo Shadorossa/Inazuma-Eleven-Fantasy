@@ -1,0 +1,45 @@
+# Texts of the VR-Framework's character bank filter header (docs/framework/card-filter.md): rows of menu_text in the
+# framework's 9 languages, read by menu_engine lua\_all\20_card_filter.lua with CMND_TEXT_GET by id = crc32(row id).
+# The value names come from the declarations (rarity labels, series name texts), not from here.
+
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+# the value «all cards»; crc32("vrfw_card_filter_all") = 3288464882
+[[row]]
+id = "vrfw_card_filter_all"
+es = "Todas"
+en = "All"
+fr = "Toutes"
+de = "Alle"
+it = "Tutte"
+pt = "Todas"
+ja = "すべて"
+zh_hans = "全部"
+zh_hant = "全部"
+
+# the header: key glyphs (pad L2 / R2, keyboard Q / E) around the value (%s); crc32("vrfw_card_filter_header") = 2923353700
+[[row]]
+id = "vrfw_card_filter_header"
+es = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+en = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+fr = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+de = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+it = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+pt = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+ja = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+zh_hans = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+zh_hant = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
+
+# a value with a tier (a rarity's `tier`): %d = the tier, %s = its name; crc32("vrfw_card_filter_tier") = 2410722143
+[[row]]
+id = "vrfw_card_filter_tier"
+es = "%d★ %s"
+en = "%d★ %s"
+fr = "%d★ %s"
+de = "%d★ %s"
+it = "%d★ %s"
+pt = "%d★ %s"
+ja = "★%d %s"
+zh_hans = "%d★ %s"
+zh_hant = "%d★ %s"

@@ -1,0 +1,24 @@
+# VR-Framework contact maps (docs/framework/contact-map.md, VRFW 2.1; Nacho 2026-10-11): the new screen
+# vrfw_contact_map_menu (src vrfw_contact_map_menu.lua), the IE-style «contactos» / scout map of a [[VRFW.ContactSet]]
+# a mod declares (content\contact_maps\*.toml; served by scripts\contact_map.lua). Declared in the framework's
+# menus\contact_map.toml (layers, objects; art: the chain board's atlas + each map's own background), built with
+# `menu_assemble.py build --mod vr_framework` and packed by framework_pack.py as assets\lua\screens\
+# vrfw_contact_map_menu.lua (the menu type serves it as common/script/lua/menu/vrfw_contact_map_menu.lua.bin). Signing:
+# VRFW_Recruit of the menu part (assets\lua\menu\_all\62_recruit.lua). Opened by a mod's entry (Inazuma Fantasy: the
+# Mercado banner, graft contact_map_banner); nothing opens it when no mod declares a set.
+name = "contact_map"
+order = 121
+mod = "vr_framework"
+requires = []
+conflicts = []
+wraps = []
+description = "Contact map screen (vrfw_contact_map_menu)"
+
+[[files]]
+path = "common/script/lua/menu/vrfw_contact_map_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "vrfw_contact_map_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "vrfw_contact_map_menu" }

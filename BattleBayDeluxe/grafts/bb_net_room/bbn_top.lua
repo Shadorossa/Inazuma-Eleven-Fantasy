@@ -1,0 +1,114 @@
+-- bb_chronicle_teams bb_net_room, network_menu (network_room_match_top): in our own private room's session
+-- (CMND_VRFW_NET_SESSION_STATE "up": VR-Framework net service, Steam transport, no EOS lobby) the menu goes at once to
+-- the game's own private-room screen (layer group network_room_match_wait: members, rules, ready, start; its script's
+-- graft is bbn_wait.lua) the way the retail «Crear sala» / join does once its EOS lobby is made, without that lobby:
+-- never the retail room list (create / search / quick match = EOS lobbies). Back here leaves our room and closes
+-- network_menu. Outside our session every function is the retail one.
+-- v2 (12/10, Nacho: no retail room screen after «Crear sala»): was the online team select at once (the room's members
+-- and ready state never showed). docs/game/modes/bb-online-ownnet.md §14.5, §18. Globals only (BBNT, BBNT_*); nothing
+-- runs at chunk load.
+BBNT = BBNT or {
+  MENU = 106494436 --[[crc32 network_menu]],
+  WAIT = 516266942 --[[crc32 network_room_match_wait: the private-room layer group]],
+  STATE = @crc:CMND_VRFW_NET_SESSION_STATE@,
+  LEAVE = @crc:CMND_VRFW_NET_LEAVE@,
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  opened = false,
+  frames = 0,
+}
+
+function BBNT_Log(...)
+  pcall(funcLuaCommand, BBNT.LOG, "bb_chronicle_teams net top", ...)
+end
+
+-- "up" / "arming" / "ended" / "error" / "off", matches played, this player hosts
+function BBNT_State()
+  local ok, st, matches, is_host = pcall(funcLuaCommand, BBNT.STATE)
+  if not ok then
+    return "off", 0, false
+  end
+  return st, tonumber(matches) or 0, is_host == true
+end
+
+function BBNT_Ours()
+  local st = BBNT_State()
+  return st == "up"
+end
+
+-- leave our room and close this menu (the caller's wait ends: back to the boxes / the Battle Bay top menu)
+function BBNT_Leave(why)
+  BBNT_Log("leave", tostring(why))
+  pcall(funcLuaCommand, BBNT.LEAVE)
+  BBNT.opened = false
+  BBNT.frames = 0
+  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBNT.MENU, true)
+end
+
+-- what OnDecideButtonCreateRoomWindow (host) / CallbackSelectJoinSession (guest) do after their EOS lobby step
+-- succeeded, without it: the room-name parameter (0: the first room name), the cursor closed, the private-room layer
+-- group, its condition background
+function BBNT_ToRoom(is_host)
+  BBNT_Log("our session: the private-room screen opens", tostring(is_host))
+  pcall(ResetLayerGroup)
+  if funcLuaCommand(2947612279, 2056018466) then
+    funcLuaCommand(3363400568, 2056018466)
+  end
+  funcLuaCommand(3860611758, 2056018466, 0, 0, 1)
+  funcLuaCommand(2014550292, 0, false)
+  funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], 2296367164 --[[cmn05_01_cursor]])
+  funcLuaMenuCommand(2792424727 --[[CMND_ON_CHANGE_LAYER_GROUP]], BBNT.WAIT)
+  funcLuaMenuCommand(3010622924, false)
+  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], 405940319 --[[vs01_04_room_condition_background]], 0,
+    902337421 --[[offset01]], 2, 753088835 --[[Default]])
+  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], 405940319 --[[vs01_04_room_condition_background]], 0,
+    2898379319 --[[offset02]], 0, 753088835 --[[Default]])
+end
+
+do
+  local step = Step
+  function Step(...)
+    local st, _, is_host = BBNT_State()
+    if st == "up" then
+      if not BBNT.opened then
+        -- two frames for the menu's own open (its layers up), then the room screen
+        BBNT.frames = BBNT.frames + 1
+        if BBNT.frames >= 2 then
+          BBNT.opened = true
+          local ok, err = pcall(BBNT_ToRoom, is_host)
+          if not ok then
+            BBNT_Log("room screen error", tostring(err))
+            BBNT_Leave("room screen error")
+            return
+          end
+        end
+      end
+    elseif BBNT.opened and (st == "ended" or st == "error" or st == "off") then
+      -- the game's own flows ended the session (error / close): our room goes too, and this menu (it would show the
+      -- retail room list next)
+      BBNT_Leave("session " .. tostring(st))
+      return
+    end
+    return step(...)
+  end
+end
+
+do
+  local top = OpenNetworkRoomMatchTop
+  function OpenNetworkRoomMatchTop(...)
+    if BBNT_Ours() or BBNT.opened then
+      return -- never the retail room list (EOS lobbies) in our session
+    end
+    return top(...)
+  end
+end
+
+do
+  local back = OnBack
+  function OnBack(...)
+    if BBNT_Ours() or BBNT.opened then
+      BBNT_Leave("back")
+      return 1
+    end
+    return back(...)
+  end
+end

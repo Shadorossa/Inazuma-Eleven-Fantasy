@@ -1,0 +1,157 @@
+# Clean HUD's keeper-vs-shot duel gauge (keeper_hp_gauge_menu, object soccer08_47_keeper_hp_gauge_ev, layout
+# soccer08_47.g4pkm), less tall (Nacho 2026-10-09: «que la keeper gauge sea menos alta», then «menos alta aún»): the bar is 50 % of
+# its retail height (1.15.3: 70 %), widths unchanged.
+# * Every quad of the bar (the band behind, the frame, the fill, the add layer, the break / shine / sweep effects) keeps
+#   its width and gets 50 % of its height, scaled about the bar's centre line (local y 0 under _pos_hp01, which is also the
+#   pivot of the animated _scl_keeper_hp_* nodes): the band 50.4 -> 25.2 px on screen (_pos_hp01 is 0.7), the frame
+#   sprite 72.8 -> 36.4 px. The gauge's vertical centre stays where it was.
+# * What sits on the bar's top edge keeps its distance to it (the edge comes 0.7 x 36 x 0.5 = 12.6 px down): the element
+#   icon groups _pos_type01 / _pos_type02 (their plates, the character / move icons and the extra icons of
+#   VR-Framework's vrfw_dual_element_hud, all hung on _atc_type0N_0x under them), the AT / DF power locators
+#   _atc_at01 / _atc_df01, and the centre pop text (_keeper_hp_gtxt_sp_pop01, 18 local units under the 0.7 scale; its
+#   animated parent _pos_keeper_hp_pop01 is not touched). Icons, portraits and texts keep their size.
+# * The portraits (_icon_hp_chr_dmy01 / 02) keep their size; their visible face (mask icon_hp_chr_msk01) ends on the
+#   band's bottom edge in retail, which comes 12.6 px up: they go up as much (18 local units), so they still stand on
+#   the band.
+# Values: retail translate y and scale y x 0.50 (absolute, from soccer08_47.g4pkm v7.1.2); moves as offsets.
+schema = "vr_framework.menu/2"
+
+# retail translate y 36.0, scale y 72.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_base01_l_at_p"
+translate = [-960.0, 18.0, 0.0]
+scale = [1920.0, 36.0, 1.0]
+
+# retail translate y -36.0, scale y 72.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_base01_l_at_e"
+translate = [960.0, -18.0, 0.0]
+scale = [1920.0, 36.0, 1.0]
+
+# retail translate y 52.0, scale y 104.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_gauge01_l"
+translate = [-564.0, 26.0, 0.0]
+scale = [1128.0, 52.0, 1.0]
+
+# retail translate y 52.0, scale y 104.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_gauge02_l"
+translate = [-564.0, 26.0, 0.0]
+scale = [1128.0, 52.0, 1.0]
+
+# retail translate y 52.0, scale y 104.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_add01_l"
+translate = [-564.0, 26.0, 0.0]
+scale = [1128.0, 52.0, 1.0]
+
+# retail translate y 60.0, scale y 120.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_break01"
+translate = [-594.0, 30.0, 0.0]
+scale = [1180.0, 60.0, 1.0]
+
+# retail translate y 60.0, scale y 120.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_break01_add"
+translate = [-594.0, 30.0, 0.0]
+scale = [1180.0, 60.0, 1.0]
+
+# retail translate y 215.0, scale y 456.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_break02"
+translate = [-644.0, 107.5, 0.0]
+scale = [1264.0, 228.0, 1.0]
+
+# retail translate y 60.0, scale y 120.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_shine01"
+translate = [-594.0, 30.0, 0.0]
+scale = [1180.0, 60.0, 1.0]
+
+# retail translate y 60.0, scale y 172.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect03"
+translate = [-31.0, 30.0, 0.0]
+scale = [276.0, 86.0, 1.0]
+
+# retail translate y 60.0, scale y 172.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect03b"
+translate = [-245.0, 30.0, 0.0]
+scale = [276.0, 86.0, 1.0]
+
+# retail translate y 192.0, scale y 356.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect04"
+translate = [-170.0, 96.0, 0.0]
+scale = [352.0, 178.0, 1.0]
+
+# retail translate y 116.0, scale y 232.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect02"
+translate = [-78.0, 58.0, 0.0]
+scale = [156.0, 116.0, 1.0]
+
+# retail translate y 116.0, scale y 232.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect02b"
+translate = [-78.0, 58.0, 0.0]
+scale = [156.0, 116.0, 1.0]
+
+# retail translate y 116.0, scale y 232.0
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_effect01"
+translate = [-78.0, 58.0, 0.0]
+scale = [156.0, 116.0, 1.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_pos_type01"
+offset = [0.0, -12.6, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_pos_type02"
+offset = [0.0, -12.6, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_atc_at01"
+offset = [0.0, -12.6, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_atc_df01"
+offset = [0.0, -12.6, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_keeper_hp_gtxt_sp_pop01"
+offset = [0.0, -18.0, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_icon_hp_chr_dmy01"
+offset = [0.0, 18.0, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/soccer08_47/soccer08_47.g4pkm"
+joint = "_icon_hp_chr_dmy02"
+offset = [0.0, 18.0, 0.0]

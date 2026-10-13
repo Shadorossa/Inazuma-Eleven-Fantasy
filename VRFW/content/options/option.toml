@@ -1,0 +1,54 @@
+schema = "vr_framework.option/2"
+# Rows of the options part of the VR-Framework in Opciones › «Opciones de mods» (docs/app/mod-options.md). Installed
+# as mods\vr_framework\options\option.toml (framework_pack.py moves graphics\ui\options\options.toml there; the core
+# keeps the part's namespace: key mod_options.<id>, value in <data dir>\mod_options\mod_options.json).
+# Texts: this part's text.toml (9 languages).
+
+# «Opening»: the movie the title plays as its opening (cold boot after the logos, and the title's idle attract loop).
+# Native to the framework, always shown. The framework owns this ONE row and the mechanism (hook title_opening:
+# lua/title_main/050_title_opening.lua asks CMND_VRFW_OPTION_HOOK("title_opening") and plays the movie id it
+# answers). Only «Original del juego» is declared here (0 = the game's own pick, the default). The other values are
+# published at boot by the core: first the game's own openings, DETECTED every start from the game's title script
+# (the movie ids its opening picker holds: retail OP1 and OP2), then the openings the enabled mods declare (kind
+# vr_framework.opening/1 of the scene type, scenes\*.toml). docs/framework/opening.md
+# ---- «Llaves» (docs/app/mod-options.md §3.8): parent rows of the tab, each one only for its children (`group = true`:
+# left out when none of its children is on the tab). Desactivado = its children do not apply (the game's own
+# behaviour; their values are kept and shown greyed). Default Activado: what the players had before the groups.
+
+# «Ajustes de juego»: «Voces personalizadas» (audio_engine.voice_pack), «Tipo de cámara en partido»
+# (utilities.camera), «Modo comandante automático» (utilities.auto_commander).
+[[option]]
+id = "game_settings"
+type = "toggle"
+label = "game_settings"
+help = "game_settings_help"
+default = 1
+group = true
+order = 100
+
+# «Estilo personalizado»: «Opening personalizado» (below), «Música del menú» (audio_engine.menu_music), «Shaders
+# personalizados» (utilities.visual_style), «Tema de la interfaz» (theme_engine.ui_theme), «Saltar avisos de inicio»
+# (mods_menu.skip_boot_screens).
+[[option]]
+id = "custom_style"
+type = "toggle"
+label = "custom_style"
+help = "custom_style_help"
+default = 1
+group = true
+order = 120
+
+[[option]]
+id = "opening"
+type = "list"
+hook = "title_opening"
+parent = "mod_options.custom_style"
+label = "opening"
+help = "opening_help"
+values = [
+    { value = 0, name = "opening_retail", text = "Retail" },
+]
+default = 0
+# first child of «Estilo personalizado» (the tab's groups: «Ajustes de juego» 100, «Mostrar rótulos» 110, «Estilo
+# personalizado» 120; a child's order only places it among its siblings)
+order = 121

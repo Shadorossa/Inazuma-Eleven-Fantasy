@@ -1,0 +1,26 @@
+# Career stats of the mod Utilities, match side (docs/game/mechanics/player-career-stats.md; plugin utilities.dll,
+# feature career, answers CMND_UTIL_CAREER_MATCH). soccer_menu (the match HUD, every match type): OnInit tells the
+# plugin "kick-off" and Step ticks it every frame (CMND_UTIL_CAREER_MATCH 1 / 0: the plugin reads the ball owner, the
+# goal lists, the on-pitch members and the per-actor match records itself); soccer_half_time_menu (half time and the
+# full-time result: same menu) reports InitResultParam (2 half time, 3 result).
+# HOOK files (docs/framework/lua-hosts.md §7): neither screen has a VR-Framework host, so the files wrap the globals
+# directly (once per VM, chained over whatever ran before them). Without the plugin the first call answers nothing
+# and the ticks stop. The command hash is written as a number (hook files are shipped as is):
+# crc32("CMND_UTIL_CAREER_MATCH") = 2901266317.
+# Moved from Inazuma Fantasy (graft career_match, CMND_EVT_CAREER_MATCH) on 2026-10-08.
+name = "util_career_match"
+mod = "utilities"
+order = 300
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Career stats: the match HUD and the half-time / result menu feed CMND_UTIL_CAREER_MATCH (Utilities)"
+
+[[hooks]]
+stem = "soccer_menu"
+src = "util_cs_hud.lua"
+
+[[hooks]]
+stem = "soccer_half_time_menu"
+src = "util_cs_result.lua"

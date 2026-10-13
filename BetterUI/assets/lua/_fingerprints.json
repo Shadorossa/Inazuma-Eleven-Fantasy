@@ -1,0 +1,382 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction",
+  "VRFW_ModsMenuStub"
+ ],
+ "ability_learning_board_menu": {
+  "script": "ability_learning_board_menu_7.00.00.00",
+  "require": [
+   "SetCrossButtonFocusMode"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chara_bank_menu": {
+  "script": "chara_bank_menu_6.00.09.00",
+  "require": [
+   "OnClubRoomMoveFaild"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chronicle_mode_soccer_vs_menu": {
+  "script": "chronicle_mode_soccer_vs_menu_1.01.79.00",
+  "require": [
+   "OnOpenChronicleModeVsLocator"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chronicle_mode_top_menu": {
+  "script": "chronicle_mode_top_menu_6.00.06.00",
+  "require": [
+   "WaitCaravanModelLoad"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "event_menu": {
+  "script": "event_menu_6.00.28.00",
+  "require": [
+   "ResetSkippedState"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "market_menu": {
+  "script": "market_menu_4.00.05.00",
+  "require": [
+   "IsCheckNoTokenShopIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "play_guide_top_menu": {
+  "script": "play_guide_top_menu_1.04.09.00",
+  "require": [
+   "GetListButtonLayerIndex"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "setting_top_menu": {
+  "script": "setting_top_menu_3.00.18.00",
+  "require": [
+   "IsFromChronicleModeTop"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "shop_menu_buy": {
+  "script": "shop_menu_buy_7.00.05.00",
+  "require": [
+   "ResetFreeCursor"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_area_title_menu": {
+  "script": "soccer_area_title_menu_0.00.00",
+  "require": [
+   "SetupAreaTitle"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_command_action_menu": {
+  "script": "soccer_battle_command_action_menu_1.00.51",
+  "require": [
+   "CloseSurpriseAttackBonus"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_command_action_menu"
+  ],
+  "chunk_crc": 2511073110,
+  "chunk_size": 671
+ },
+ "soccer_battle_constant_menu": {
+  "script": "soccer_battle_constant_menu_0.00.00",
+  "require": [
+   "InitializeGlobalValues",
+   "CREATE_SOCCER_TRAINING_PERFORMANCE_TEXT"
+  ],
+  "forbid": [
+   "PlayStampPopupCoroutine"
+  ],
+  "ambiguous": [
+   "soccer_training_constant_menu"
+  ],
+  "chunk_crc": 1522934058,
+  "chunk_size": 1308
+ },
+ "soccer_battle_inplay_menu": {
+  "script": "soccer_battle_inplay_menu_1.00.51",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_inplay_menu",
+   "soccer_training_inplay_menu",
+   "soccer_zigzag_dribble_training_inplay_menu"
+  ],
+  "chunk_crc": 392231094,
+  "chunk_size": 845
+ },
+ "soccer_battle_setting_flow_formation_menu": {
+  "script": "soccer_battle_setting_flow_formation_menu_6.00.33.00",
+  "require": [
+   "StartGoToSoccerGame"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_setting_flow_vs_menu": {
+  "script": "soccer_battle_setting_flow_vs_menu_7.00.14.00",
+  "require": [
+   "CheckStoryChapter8Character"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_vs_menu": {
+  "script": "soccer_battle_vs_menu_1.04.02.00",
+  "require": [
+   "OnOpenVsBackgroundLayer"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_command_action_menu": {
+  "script": "soccer_command_action_menu_1.00.51",
+  "require": [
+   "CloseSurpriseAttackBonus"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_command_action_menu"
+  ],
+  "chunk_crc": 2511073110,
+  "chunk_size": 671
+ },
+ "soccer_constant_menu": {
+  "script": "soccer_constant_menu_1.03.19.00",
+  "require": [
+   "PlayStampPopupCoroutine",
+   "InitializeGlobalValues"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_focus_battle_menu": {
+  "script": "soccer_focus_battle_menu_6.00.01.00",
+  "require": [
+   "InitFocusBattleMenu"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_formation_menu": {
+  "script": "soccer_formation_menu_0.06.94",
+  "require": [
+   "UpdateSkillCollision"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_half_time_menu": {
+  "script": "soccer_half_time_menu_7.01.08.00",
+  "require": [
+   "EndHalfTime"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_inplay_menu": {
+  "script": "soccer_inplay_menu_1.00.48",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_inplay_menu",
+   "soccer_training_inplay_menu",
+   "soccer_zigzag_dribble_training_inplay_menu"
+  ],
+  "chunk_crc": 108364872,
+  "chunk_size": 793
+ },
+ "soccer_menu": {
+  "script": "soccer_menu_0.03.81",
+  "require": [
+   "ChangeTensionMeterLeftTopToRightBottom",
+   "InitializeGlobalValues",
+   "OnCloseLayer"
+  ],
+  "forbid": [
+   "SetSoccerBattleTeamName"
+  ],
+  "ambiguous": [
+   "soccer_menu_replay"
+  ],
+  "chunk_crc": 2036312462,
+  "chunk_size": 1022
+ },
+ "soccer_performance_change_menu": {
+  "script": "soccer_performance_change_menu_5.01.06.00",
+  "require": [
+   "InitPerformanceInfoArray"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_restart_guide_menu": {
+  "script": "soccer_restart_guide_menu_1.04.16.00",
+  "require": [
+   "InitializeKickoffButton_Callback"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_scramble_menu": {
+  "script": "soccer_scramble_menu_1.02.79",
+  "require": [
+   "UpdateAnimeScrambleGauge"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_setplay_prev_menu": {
+  "script": "soccer_setplay_prev_menu_1.02.89.00",
+  "require": [
+   "UpdateChangeAIModeButtonText"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_buff_icon_list_menu": {
+  "script": "soccer_team_buff_icon_list_menu_1.01.60.00",
+  "require": [
+   "UpdateAuraBuffCharaIcon"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_dock_menu": {
+  "script": "soccer_team_dock_menu_7.01.06.00",
+  "require": [
+   "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_training_inplay_menu": {
+  "script": "soccer_training_inplay_menu_0.00.00",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_inplay_menu",
+   "soccer_inplay_menu",
+   "soccer_zigzag_dribble_training_inplay_menu"
+  ],
+  "chunk_crc": 392231094,
+  "chunk_size": 845
+ },
+ "soccer_vs_cpu_list_menu": {
+  "script": "soccer_vs_cpu_list_menu_5.00.22.00",
+  "require": [
+   "UpdateDifficult"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_zigzag_dribble_training_inplay_menu": {
+  "script": "soccer_zigzag_dribble_training_inplay_menu_0.00.00",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_inplay_menu",
+   "soccer_inplay_menu",
+   "soccer_training_inplay_menu"
+  ],
+  "chunk_crc": 392231094,
+  "chunk_size": 845
+ },
+ "soccer_zone_menu": {
+  "script": "soccer_zone_menu_1.04.05.00",
+  "require": [
+   "InitSoccerZoneMenu"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_common_top_menu": {
+  "script": "team_dock_common_top_menu_0.00.00.00",
+  "require": [
+   "AddMemberEquipmentToList",
+   "GetSoccerGameOptionBgmList"
+  ],
+  "forbid": [
+   "FinalizeMenu",
+   "OnOpenEndLayer",
+   "InitItemUseMenuParam",
+   "NameSetting_ItemIcon",
+   "OnChangeLayerGroup",
+   "OnBack",
+   "SetupLockIconPos",
+   "OnEnter",
+   "ConvertTimeFrom32bitInt",
+   "OnChangeFocus"
+  ],
+  "ambiguous": []
+ },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "title_menu_2": {
+  "script": "title_menu_2_7.01.12.00",
+  "require": [
+   "SetupVroadTournamentInfoBalloon"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "victory_road_top_menu": {
+  "script": "victory_road_top_menu_7.01.07.00",
+  "require": [
+   "RegistPlaySoundHdl"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vrfw_mods_menu": {
+  "script": "vrfw_mods_menu",
+  "require": [
+   "VRFW_ModsMenuStub"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

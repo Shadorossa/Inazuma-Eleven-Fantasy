@@ -1,0 +1,289 @@
+# VR-Framework configuration (defaults): developer / diagnostic keys only, one section per TYPE (norm §10,
+# vr_core::config): [core] (log_level = "error" | "warn" | "info" | "debug", cache = true, dump_dir = "..."), then
+# [character], [team], [technique], [sound]... Player features are options.toml rows, never keys here. To change a key
+# without touching the mod (survives updates): section [mods.vr_framework] of the loader's config.toml, e.g.
+#   [mods.vr_framework.sound.armed_voice]
+#   enabled = false
+# The 1.x domain sections ([chara.technique], [graphics.telop], [audio]...) are still read, with a warning.
+# Every part is always on: an `enabled` key of a type section is ignored with a warning; a deeper switch of an engine's
+# own feature ([sound.armed_voice], [mods_screen.title_button]) still works. docs/app/vr-framework.md
+
+# ---------------------------------------------------------------- languages
+[languages]
+# the framework's one language source (vr_framework::lang, docs/framework/languages.md). The languages themselves come
+# from the game's files (data/common/text/<lang>/, data/common/sound_asset/<lang>/) and the mods' [content.languages]
+# list order of the languages (the game's file list has none): lists, «the first language written» fallbacks
+order = ["ja", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
+# a text missing in the asked language: the declaring file's default_lang, then `all`, then these
+fallback = ["en", "es"]
+# the language of a text when the caller gives none: "game" (the game's current language) or a language
+default = "game"
+# the language data is written in when a file names none (build-time picks, never the player's language)
+source = "es"
+
+# ---------------------------------------------------------------- dev
+[dev]
+# hot reload (docs/framework/hot-reload.md): watch the mods' files while the game runs and apply what changed as each
+# type allows (live / next_load / restart; report.json `reload`). OFF for players. Console / Lua: `reload <type|mod|lua|all>`
+hot_reload = false
+# how often the watcher looks (ms, 200..60000); a change applies when it is stable for one more look
+poll_ms = 1000
+
+# ---------------------------------------------------------------- debug
+[debug]
+# TEMPORARY view-everything mode (owner 2026-10-13, review only; OFF for players): true = every contact map tile drawn
+# open (faces, names, links) and every Inazuma Fantasy office team page listed in its tab, with a «MODO VISTA» mark on
+# both screens. View only: signing / buying keep their real rules (strict order, requirements, prices) and nothing is
+# written to the save by it. Turn it on for one install without touching the mod: in evt_loader\config.toml
+#   [mods.vr_framework.debug]
+#   reveal_all = true
+reveal_all = false
+
+# ---------------------------------------------------------------- chara (chara\)
+[character]
+# the character engine: the mods' characters\*.toml (new characters, edits, hide / delete, office recruit conditions)
+# built at boot into the game's character tables; the names go through the text engine (docs/app/character-engine.md)
+# language of the recruit-condition names when the Lua gives none: "game" (the game's language) or a text language
+lang = "game"
+
+# [chara.rarity] (no developer keys)
+# the rarity engine: the rarity set the mods declare (rarity.toml): kept / removed game rarities and the mods' own
+# (docs/app/rarity-engine.md)
+
+# [chara.looks] (no developer keys)
+# the look engine: the mods' looks\**\*.toml (clothes / shoes / gloves / exmesh models, team kits and own kits, model
+# cells, emblems, icon sprites) built at boot on the character engine's tables, before the team engine
+# (docs/app/look-engine.md)
+
+[team]
+# the team engine: the mods' teams.toml / teams\*.toml (new teams, edits, hide / delete, where they appear) and the
+# lists mods publish for addons (a free-match tab, a rival pool), built at boot on the character engine's
+# tables; the names go through the text engine, `rules` to the match engine (docs/app/team-engine.md)
+# language of CMND_EVT_TEAM_GET names when the Lua gives none: "game" (the game's language) or a text language
+lang = "game"
+
+[technique]
+# the technique engine: the mods' techniques\*.toml (new special moves, edits, keshin / armed / mix-max commands,
+# hide / delete, learn lists, shop offers for the item engine) built at boot into the game's move tables; the names
+# go through the text engine (docs/app/technique-engine.md)
+# write evt_loader\cache\technique_engine\report.json (the per-mod report of the Mods screen)
+report = true
+# the mods' `goal_event` rules (a goal scored with a move plays its goal event, e.g. the goal smash ev71_00070, whoever
+# scores): false = no hook, only the game's own per-player rows (docs/app/technique-engine.md §3.5)
+goal_events = true
+# the mods' `[[keeper_scene]]` pairs (more random keeper-gauge scenes, e.g. the «Nuevas animaciones» mod, new_animations): false = the
+# game's own 5 pairs only (docs/app/technique-engine.md §3.6)
+keeper_scenes = true
+
+# ---------------------------------------------------------------- anim (anim\)
+[anim]
+# the anim engine: the mods' anims\**\*.toml (camera presets of a cut, an actor's clip copied from another retail cut,
+# new events whose cuts come from several retail events) built at boot into event packs, cameras and event lists, served
+# from the cache; the technique engine gives the new events their event_env_config rows (docs/app/anim-engine.md)
+# write evt_loader\cache\anim_engine\report.json (the per-mod report of the Mods screen)
+report = true
+
+# ---------------------------------------------------------------- items (items\)
+[item]
+# the item engine: the mods' items\*.toml (new items, edits, hide / delete, currencies) and shops\*.toml (shops and
+# their entries, reward tables) built at boot into item_config / shop_config / loot tables; the names go through the
+# text engine (docs/app/item-engine.md)
+# language of the currency labels when the Lua gives none: "game" (the game's language) or a text language
+lang = "game"
+
+# ---------------------------------------------------------------- tables (tables\)
+# [tables] (no developer keys)
+# the table engine: the mods' generic row files rows\**\*.toml (schema vr_framework.rows/1: add / set / delete / order
+# on any game table, T2B or RDBN, per map / per language, slices) applied at boot on top of the other parts' tables
+# (docs/app/rdbn-framework.md)
+
+# ---------------------------------------------------------------- modes (modes\)
+[mode]
+# the mode engine: the game modes the mods declare in modes\*.toml (schema vr_framework.mode/1: entries in «Modos de
+# juego» / the title row, flow, own save slot, rules, rewards, unlock, switch; docs/app/mode-engine.md)
+# language of CMND_EVT_MODE_TEXT when the Lua gives none: "game" (the game's language) or a text language
+lang = "game"
+
+[mode.switch]
+# switch any declared mode off (or on) for this install: "<mod>.<name>" = false. Wins over the mod's own [modes].
+# "some_mod.some_mode" = false
+
+# ---------------------------------------------------------------- text (text\)
+[text]
+# the text engine: the mods' texts by readable keys in 9 languages
+# language of CMND_VRFW_TEXT_GET when the call gives none: "game" (the game's language) or a text language
+lang = "game"
+# only with an old ModLoader without file_serve: minimum free room of a new text file, KiB
+headroom_kib = 64
+# only with an old ModLoader without file_serve: prepare files for installed mods that are not active
+prepare_inactive = true
+
+# ---------------------------------------------------------------- save (save\)
+[flag]
+# per-mod save data tied to the save slot
+# "on_save": slot data is written when the game saves the slot. "immediate": every change is written at once.
+commit = "on_save"
+# mods whose slot data is always written at once (the others follow `commit`)
+immediate_mods = []
+# worker period in ms (slot events, global / immediate writes)
+flush_ms = 250
+# folders kept in <storage>\trash (data of deleted / replaced slots)
+trash_keep = 30
+
+[flag.storage]
+# "profile": %USERPROFILE%\AppData\LocalLow\LEVEL5 Inc_\INAZUMA ELEVEN Victory Road\modloader_saves\
+# "game": <game>\evt_loader\saves\
+location = "profile"
+# absolute folder that overrides `location` ("" = none)
+path = ""
+
+[flag.slots]
+# the slot service (save engine 1.3.0, docs/framework/save-slots.md): more save slots than retail, chosen on the slot
+# screen before EMPEZAR; the vanilla save locked; slot names, backups, copy / delete; slots reserved by mods; the overlay
+# session. false = the game's one save (slot 1, written normally)
+enabled = true
+# player slots, the locked one included (1..99): the slot screen shows 3 per page, more = pages (L1 / R1)
+count = 3
+# the vanilla save is read / duplicate only (never played or written)
+lock = true
+locked_slot = 1
+# slots kept out of the player numbering besides the ones mods reserve themselves (vrfw_slots_reserve). If you raise
+# `count` while a mod that reserves a slot is off, add that slot here so its save is never shown
+reserved = []
+# copies of a slot's save file kept in <loader data dir>\backups\slot<N>\
+backups_per_slot = 5
+# refuse a game write that looks like a fresh profile over a slot with progress (the file is kept; logged ERROR)
+reset_guard = true
+# automatic snapshots of the active slot (boot, game reset, slot switch, friendly / session sink), newest N per slot in
+# modloader_saves\global\vr_framework\snapshots\slot<N>\ (0 = none)
+snapshots_per_slot = 10
+# open the slot screen once at boot (CMND_VRFW_SLOT_NEED_PROMPT)
+ask_on_boot = false
+# relaunch URI of CMND_VRFW_SLOT_RESTART; unset = steam://rungameid/<the running game's Steam app id> (SteamAppId,
+# steam_appid.txt or the library's appmanifest), else the game's exe
+# restart_uri = "steam://rungameid/<app id>"
+# mods whose old slot names (slot_names.json) and story-complete start markers (story_start.json) are imported once
+# into the framework's own (only while it has none; their copies are left as they are): Inazuma Fantasy kept them
+# before the slots moved to the framework
+import_from = ["inazuma_fantasy"]
+# (1.4.0) the save part also adds the mods' [[flag]] (flags.toml: global save flags) to flag_config at start
+
+# ---------------------------------------------------------------- system (system\)
+[param]
+# the system part (1.4.0): global game rules the mods declare instead of shipping a modified table, built at start on
+# the game's tables (docs/app/system-engine.md)
+# the mods' params.toml: any value of the property files (game_param: match rules, AI, battles; new members)
+params = true
+# the mods' input.toml: new input commands, other buttons for existing ones (input_ctrl + key_assign)
+input = true
+
+# ---------------------------------------------------------------- audio (audio\)
+[sound]
+# the audio engine: the mods' audio.toml, voice packs, per-armour shouts
+
+[sound.armed_voice]
+# per-armour shout (<bank>_<armour id>, was00630…) before the retail <bank>_armed
+enabled = true
+
+[sound.output_guard]
+# [Experimental] the CRI WASAPI output zeroes the frames its render leaves unwritten, so an empty render is silence and
+# not the last chunk again (the retail endless looping sound at launch; docs/game/media/boot-audio-stutter.md)
+enabled = true
+
+[sound.queue_sheet]
+# register the new banks (the [[bank]] of the audio.toml files and the ones the engine creates) in sound_queue_sheet
+merge = true
+
+[sound.build]
+# build the [[voice]] / [[sfx]] / [[music]] of the mods' audio.toml at start (cache: evt_loader\cache\audio_engine)
+enabled = true
+
+# ---------------------------------------------------------------- match (match\)
+[rule]
+# the match engine: rulesets (match\rules\ and the rules\ of every mod that uses it) + the Opciones half length
+# Opciones half length (CMND_EVT_MATCH_RULES_*)
+match_rules = true
+# rulesets of the legacy folder evt_loader\match_engine\ too
+legacy_folder = true
+# setup knobs of the rulesets (period, halves, players, ExRule…)
+setup = true
+# testing: a ruleset id applied to every offline full / small match without a Lua selection ("" = off)
+test_ruleset = ""
+# match challenges («Desafíos»: goals in X s, steals, keep the ball; CMND_EVT_CHALLENGE_*, the office trials'
+# CMND_EVT_TRIAL_JUDGE, a ruleset's [challenge]). false = the office trials are not judged
+challenges = true
+
+# ---------------------------------------------------------------- graphics (graphics\)
+# [graphics] (no developer keys)
+# every visual part: special-move banners, the «Opciones de mods» tab, the «Mods» screen (later: rendering)
+
+[telop]
+# custom special-move banners (graphics\telop\ + the telop\ of every mod that uses them: telop\<lang>\<id>.png named by
+# technique id, or telop\*.toml with an optional layout: size, position, anchor, scale, rotation, animation)
+# «Rótulos personalizados» while the player has not chosen a value in «Opciones de mods» (unset = on)
+# custom_banners = true
+# switch live (from the next telop) through a hook on the game's path resolution; false = restart to change
+live_switch = true
+# live reload (telop_engine 1.2): a changed telop TOML / picture shows without restarting; false = only
+# CMND_EVT_TELOP_RELOAD / console `telop reload`
+live_reload = true
+# stored value of each language of «Rótulos personalizados» (2 + position): never reorder, only append
+lang_values = ["es", "en", "fr", "de", "it", "pt", "ja", "zh_hans", "zh_hant"]
+
+[theme]
+# UI themes (graphics\theme\: the built-in dark theme + the themes\*.toml of every mod that uses it), picked in
+# «Opciones de mods» › «Tema de la interfaz»; applies from the next start (docs/app/theme-engine.md)
+# build a theme that is not ready yet in the background (ready for the next start)
+background_build = true
+# atlases encoded at once (0 = half the cores)
+workers = 0
+# seconds after start before a background build begins
+start_delay = 20
+
+[image]
+# the mods' images: images\**\*.toml + PNG (sprites / textures added to or replaced in any .g4tx atlas), built at
+# boot on the player's atlases (only the changed blocks re-encoded), cached per atlas (docs/app/image-engine.md)
+# BC7 encoder preset: ultrafast, veryfast, fast, basic (better, ~2x slower first build), slow
+bc7 = "fast"
+# encoder threads (0 = every core)
+threads = 0
+
+[effect]
+# the fx engine: the mods' effects\**\*.toml (new pooled effects in effect_define, recolour / copies of effect objects,
+# effects added to events, attach points, timing) built at boot and served from the cache (docs/app/fx-engine.md)
+# write evt_loader\cache\fx_engine\report.json (the per-mod report of the Mods screen)
+report = true
+
+[model]
+# the model engine: the mods' models\<kind>\<name>\<name>.glb + <name>.toml (heads, kits, armours, special-move props,
+# effect meshes, items) built at boot into G4MD / G4MG / G4SK / G4TX and served from the cache (docs/app/model-engine.md)
+# write evt_loader\cache\model_engine\report.json (the per-mod report of the Mods screen)
+report = true
+
+[option]
+# the «Opciones de mods» tab of Opciones › Ajustes (graphics\ui\options\)
+
+[option.tab]
+# off: the mods' rows are only removed from the retail tabs and not shown anywhere
+enabled = true
+
+[mods_screen]
+# the «Mods» screen and its title-menu button (graphics\ui\mods_menu\)
+
+[mods_screen.screen]
+enabled = true
+# Serve the menu registry (menu_create_setting) with an own row vrfw_mods_menu?
+#   not set (auto): no when the registry already has another mod's «Mods» menu (a host a mod declares in
+#                   mods_screen\*.toml): the screen is served under that menu; yes otherwise.
+#   true:           always the own row (the behaviour of mods_menu 1.0.0).
+#   false:          safe mode, the registry is never touched; without another mod's «Mods» menu there is no screen.
+# serve_registry = false
+
+[mods_screen.title_button]
+# the «Mods» button: one more button at the end of the title's lower row, with or without other mods
+enabled = true
+
+[changelog]        # «Novedades de mods» sheet (docs/game/ui/update-notes.md)
+at_title = true             # at the title, once per start: the mods whose summary TEXT is new or changed (never on a version bump)
+first_install = "latest"     # a never-seen mod: latest (its summary shows) | none (marked seen silently)
+max_pages = 1                # hard cap: pages per mod (1..10); each changelog.toml is ONE summary of ONE page

@@ -1,0 +1,135 @@
+-- Utilities top bar, title side (title_menu_2; graft util_top_bar, docs/framework/top-bar.md). A top bar shortcut
+-- reset the game to the title and left the title item to press (a retail request id: Modo Competición 2477753773,
+-- Bahía Batalla 3009621826, Modo Crónica 130186018, Mi equipo 1438851263, Mercado 1806468555) in param
+-- utilities_topbar_go. OnInit takes it and keeps the screen black; once the mode row is ready and title_main reads
+-- requests (param utilities_title_ready, ut_title_main.lua), the retail OnEnter runs on the row's Crónica slot (list
+-- index 2, never locked) with that id (GetTitleMenuItemId / IsEnableMenuItemButton answer for it during the call):
+-- the same checks, sound and request as a button press. The same hand-off as Inazuma Fantasy's mh_title.lua (which
+-- replaces this one when IF is on: its [top_bar_title] loads later). Globals only; nothing runs at chunk load.
+Utilities = type(Utilities) == "table" and Utilities or {}
+Utilities.TopBar = type(Utilities.TopBar) == "table" and Utilities.TopBar or {}
+Utilities.TopBar.GO_KEY = 4221495040 --[[crc32 utilities_topbar_go]]
+Utilities.TopBar.READY_KEY = 3292329527 --[[crc32 utilities_title_ready]]
+Utilities.TopBar.LIST_IDX = 2          -- the slot pressed (retail list index 2 = Modo Crónica: always enabled)
+Utilities.TopBar.WAIT = 900            -- frames: the row never got ready -> give up (title shown)
+Utilities.TopBar.READY_MAX = 2400      -- frames: title_main never reported reading requests -> press anyway
+Utilities.TopBar.ALIVE = 3600          -- frames after OnEnter: the title is still here -> give up
+Utilities.TopBar.Title = {pending = nil, frames = 0, fired = 0, force = nil, row_ok = false, unready = false}
+
+function Utilities.TopBar.Log(...)
+  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "utilities top_bar title", ...)
+end
+
+function Utilities.TopBar.Take(k)
+  if not funcLuaCommand(2947612279, k) then
+    return nil
+  end
+  local v = funcLuaCommand(3522198769, k)
+  funcLuaCommand(3363400568, k)
+  return v
+end
+
+function Utilities.TopBar.GiveUp(why)
+  local T = Utilities.TopBar.Title
+  Utilities.TopBar.Log("give up", tostring(T.pending), why)
+  local fired = T.fired > 0
+  T.pending, T.fired, T.force = nil, 0, nil
+  funcLuaCommand(609722083, 0, 0.3)
+  if fired then
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, true)
+    funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], true)
+  end
+end
+
+function Utilities.TopBar.Step()
+  local T = Utilities.TopBar.Title
+  if T.pending == nil then
+    return
+  end
+  T.frames = T.frames + 1
+  if T.fired > 0 then
+    T.fired = T.fired + 1
+    if T.fired > Utilities.TopBar.ALIVE then
+      Utilities.TopBar.GiveUp("the title did not leave after OnEnter")
+    end
+    return
+  end
+  funcLuaCommand(609722083, 1, 0) -- stay black: no title frame between the two menus
+  local pos = GetLayerIndexFromItemListIdx(Utilities.TopBar.LIST_IDX)
+  if not T.row_ok then
+    if T.frames > Utilities.TopBar.WAIT then
+      Utilities.TopBar.GiveUp("the mode row never got ready")
+      return
+    end
+    if T.frames < 30 or IsEnableMenuItemButton(pos, true) ~= true then
+      return
+    end
+    T.row_ok = true
+  end
+  if funcLuaCommand(2947612279, Utilities.TopBar.READY_KEY) ~= true then
+    if T.frames < Utilities.TopBar.READY_MAX then
+      return
+    end
+    if not T.unready then
+      T.unready = true
+      Utilities.TopBar.Log("title_main never reported reading requests: press anyway", T.frames)
+    end
+  end
+  T.fired = 1
+  Utilities.TopBar.Log("press", tostring(T.pending), pos, T.frames)
+  T.force = T.pending
+  local ok, r = pcall(OnEnter, 2250456639 --[[title00_07_item_button_upper]], pos)
+  T.force = nil
+  if not ok then
+    T.fired = 0
+    Utilities.TopBar.GiveUp("OnEnter error " .. tostring(r))
+  elseif r == 1 then
+    T.fired = 0
+    Utilities.TopBar.GiveUp("OnEnter refused")
+  end
+end
+
+do
+  local init = OnInit
+  function OnInit(...)
+    local T = Utilities.TopBar.Title
+    local go = Utilities.TopBar.Take(Utilities.TopBar.GO_KEY)
+    if type(go) == "number" and go < 0 then
+      go = go + 4294967296 -- a title id above 2^31 may come back signed from the param store
+    end
+    if funcLuaCommand(2947612279, Utilities.TopBar.READY_KEY) then
+      funcLuaCommand(3363400568, Utilities.TopBar.READY_KEY) -- this title's title_main sets it again
+    end
+    if type(go) == "number" and go ~= 0 then
+      T.pending, T.frames, T.fired, T.force, T.row_ok, T.unready = go, 0, 0, nil, false, false
+      Utilities.TopBar.Log("hand-off", tostring(go))
+      funcLuaCommand(609722083, 1, 0)
+    end
+    return init(...)
+  end
+  local getid = GetTitleMenuItemId
+  function GetTitleMenuItemId(a1, a2)
+    if Utilities.TopBar.Title.force ~= nil then
+      return Utilities.TopBar.Title.force
+    end
+    return getid(a1, a2)
+  end
+  local enabled = IsEnableMenuItemButton
+  function IsEnableMenuItemButton(a1, a2)
+    if Utilities.TopBar.Title.force ~= nil then
+      return true
+    end
+    return enabled(a1, a2)
+  end
+  local step = Step
+  function Step(...)
+    local r = table.pack(step(...))
+    local ok, err = pcall(Utilities.TopBar.Step)
+    if not ok then
+      Utilities.TopBar.Log("error", tostring(err))
+      Utilities.TopBar.Title.pending, Utilities.TopBar.Title.force = nil, nil
+      funcLuaCommand(609722083, 0, 0.3)
+    end
+    return table.unpack(r, 1, r.n)
+  end
+end

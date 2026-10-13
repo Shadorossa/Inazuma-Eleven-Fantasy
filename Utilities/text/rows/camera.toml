@@ -1,0 +1,55 @@
+# Texts of Utilities' match camera (feature camera; row «Cámara del partido» of options.toml; «Cámara en los tiros»
+# is the mod shot_fx's since 2026-10-08). Format: docs/game/engine/text-engine.md §2. The evt_set_camera_side_* ids are the ones the row had in
+# Inazuma Fantasy (same texts, so the two mods never disagree while IF still declares them).
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+[[row]]
+id = "evt_set_camera_side_btn"
+fallback = false
+es = "Cámara del partido"
+en = "Match camera"
+fr = "Caméra du match"
+de = "Spielkamera"
+it = "Telecamera della partita"
+pt = "Câmera da partida"
+ja = "試合のカメラ"
+zh_hans = "比赛镜头"
+zh_hant = "比賽鏡頭"
+
+[[row]]
+id = "evt_set_camera_side_expl"
+fallback = false
+es = "Original (la del juego) o Lateral: desde la banda y siguiendo el balón, como en FIFA. Vale desde el próximo partido (en el partido también puedes cambiarla en la opción de cámara de la pausa). Necesita el cargador del mod (módulo camera)."
+en = "Original (the game's) or Side: from the touchline, following the ball, like in FIFA. Applies from the next match (in a match you can also change it in the camera option of the pause menu). Needs the mod's loader (camera module)."
+fr = "Originale (celle du jeu) ou Latérale : depuis la ligne de touche, en suivant le ballon, comme dans FIFA. S'applique dès le prochain match (en match, vous pouvez aussi la changer dans l'option de caméra de la pause). Nécessite le chargeur du mod (module camera)."
+de = "Original (die des Spiels) oder Seitlich: von der Seitenlinie aus, dem Ball folgend, wie in FIFA. Gilt ab dem nächsten Spiel (im Spiel auch in der Kameraoption des Pausenmenüs änderbar). Benötigt den Loader des Mods (Modul camera)."
+it = "Originale (quella del gioco) o Laterale: dalla linea laterale, seguendo la palla, come in FIFA. Vale dalla prossima partita (in partita puoi cambiarla anche nell'opzione telecamera della pausa). Richiede il loader della mod (modulo camera)."
+pt = "Original (a do jogo) ou Lateral: da linha lateral, seguindo a bola, como no FIFA. Vale a partir da próxima partida (na partida você também pode mudá-la na opção de câmera da pausa). Requer o carregador do mod (módulo camera)."
+ja = "オリジナル（ゲーム本来）またはサイド：FIFAのようにタッチラインからボールを追います。次の試合から有効です（試合中はポーズのカメラ設定でも変更できます）。MODのローダー（cameraモジュール）が必要です。"
+zh_hans = "原版（游戏原有）或侧面：像FIFA一样从边线跟随足球。从下一场比赛起生效（比赛中也可在暂停菜单的镜头选项中更改）。需要模组的加载器（camera模块）。"
+zh_hant = "原版（遊戲原有）或側面：像FIFA一樣從邊線跟隨足球。從下一場比賽起生效（比賽中也可在暫停選單的鏡頭選項中更改）。需要模組的載入器（camera模組）。"
+
+[[row]]
+id = "evt_set_camera_side_off"
+es = "Original"
+en = "Original"
+fr = "Originale"
+de = "Original"
+it = "Originale"
+pt = "Original"
+ja = "オリジナル"
+zh_hans = "原版"
+zh_hant = "原版"
+
+[[row]]
+id = "evt_set_camera_side_on"
+es = "Lateral"
+en = "Side"
+fr = "Latérale"
+de = "Seitlich"
+it = "Laterale"
+pt = "Lateral"
+ja = "サイド"
+zh_hans = "侧面"
+zh_hant = "側面"

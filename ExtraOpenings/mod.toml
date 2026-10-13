@@ -1,0 +1,43 @@
+id = "extra_openings"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+name = "Extra Openings"
+version = "1.2.3"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "More title openings: the Nintendo DS openings of Inazuma Eleven 2 («Tsunagariyo») and Inazuma Eleven 3 («Kiai de Hurricane»), remastered in HD, sung in the game's language where the DS games had it (IE2: Japanese, Spanish; IE3: Japanese, English, Spanish, Italian). Choose them in Opciones de mods, row «Opening»: they play after the logos and in the title screen's loop. Both are also in the scene archive (Sala del club), in its own «Inazuma Eleven» tab. The mod has no options of its own. Also the DS games' menu theme for the menus: Mod options, row «Menu music»."
+priority = 0
+tags = ["Visual", "Audio"]
+updated = "2026-10-10"
+# This mod's own names (TOML keys [[ExtraOpenings.X]], Lua ExtraOpenings.X; older texts / commands / keys EXOP_ /
+# exop_); never VRFW.
+prefix = "ExtraOpenings"
+folder = "ExtraOpenings"
+# The DS openings of Inazuma Fantasy, moved out of IF on 2026-10-08 (IF split, docs/refactor/if-mod-split-map.md row
+# if_videoteca; docs/release/extra_openings.md). Data only: no plugin, no Lua, no options of its own. Ids, keys and
+# names are the ones IF used. Standard mod layout (docs/framework/mod-layout.md, 1.2.0):
+#   content\scenes\openings.toml       the two openings (kind vr_framework.opening/1): values of the framework's
+#                                      «Opening» row; the framework adds their movie rows if_op_<game>_<lang>
+#   content\scenes\scene_archive.toml  the scene archive section «Inazuma Eleven» (id inazuma_eleven, shared: another
+#                                      mod's rows in a section of that id join the same tab) and the two rows in it
+#                                      (kind vr_framework.scene_archive/1, VR-Framework 2.0.1)
+#   content\sounds\sounds.toml + assets\sounds\music\
+#                                      the songs per language (if_op_ie2_{ja,es}, if_op_ie3_{ja,es,en,it}) and the
+#                                      VR opening preview cuts (if_op_vr_*); since 1.1.0 the DS menu theme
+#                                      exop_menu_ie23 and its [[VRFW.MenuMusic]] (a value of the framework's «Música
+#                                      del menú» row, VR-Framework 2.0.43; research/scripts/ds_menu_music_build.py)
+#   assets\data\dx11\movie\             the two VP9 USMs (if_op_ie2.usm, if_op_ie3.usm), game-shaped (served by path)
+#   content\tables\common\gamedata\movie\, content\techniques\events\videoteca_env.toml,
+#   text\rows\scene_archive_text.toml, assets\data\dx11\menu\220_img\theater_img\
+#                                      the archive rows' movie rows ev_if_vt_op_<game>[_<lang>], event env rows, titles
+#                                      and thumbnails (research/scripts/videoteca_build.py)
+#   text\keys.toml                     the mod's name / description and the openings' labels (9 languages)
+# README.md, _deploy.toml and _split.toml are developer files, never installed.
+# Works without Inazuma Fantasy. The archive tab, its label and the per-language song of the rows are the
+# VR-Framework's (2.0.1: sections declared by id + the scene_archive_menu host handler); IF does not require this mod.
+requires = ["vr_framework>=2.0.43"]
+conflicts = []
+
+# UI only: left out of the mod set two players must share in a private online room, and of «gameplay mods enabled»
+# (VR-Framework net service, docs/game/modes/bb-online-ownnet.md §5)
+[VRFW.Mod]
+AffectsMatch = false

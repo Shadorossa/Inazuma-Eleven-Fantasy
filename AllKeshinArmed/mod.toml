@@ -1,0 +1,32 @@
+id = "all_keshin_armed"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "All Keshin Armed"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Every keshin with its armour, for every player: the armour clothes of every body group and the 189 keshin -> armour pairs, chosen per player on the game's own skill board (the keshin piece's armed slot: set = with armour, empty = without). Getting a keshin gives its armour. Works with the VR-Framework alone; Inazuma Fantasy adds its own rules on top (the armour out of the summoned keshin, its gates)."
+priority = 0
+tags = ["Gameplay", "Characters"]
+updated = "2026-10-13"
+# This mod's own names (TOML keys [[AllKeshinArmed.X]], Lua AllKeshinArmed.X, any later text, command or key); never VRFW.
+prefix = "AllKeshinArmed"
+folder = "AllKeshinArmed"
+# Split out of Inazuma Fantasy on 2026-10-13 (docs/game/mods/all-keshin-armed.md): IF requires it and keeps only its
+# rules. Data only, standard mod layout (docs/framework/mod-layout.md):
+#   content\transforms\armours.toml       the 189 keshin -> armour pairs (transform type, kind "armour")
+#   content\transforms\rules.toml         [rules] armour_wearers = "anyone" + the body-group mesh rules
+#   content\techniques\armour_changes.toml  change_aura_skill_config: each keshin's armour for every card (the board)
+#   content\looks\armour_clothes.toml     the armour clothes' chara_parts rows of every body group
+#   content\models\armours\               the model declarations (glb in assets\models\armours\)
+#   assets\chr\_armd\                     the armour meshes / textures (game files: data\common|dx11\chr\_armd\)
+# vr_framework 2.2.194: transform/2 (`[rules]` armour_wearers / armour_mesh_fallback / armour_no_mesh_groups, the
+# non-native armour look of form::armour), technique/3 `[[aura_change]]`, look/2, model/1.
+requires = ["vr_framework>=2.2.194"]
+conflicts = []
+
+# Nothing to call: other mods read the armours through the framework (transform table, VRFW.form.pairs /
+# armour_for / spirit_of) and layer their own [rules] (merged key by key over the mods).
+[exports]
+functions = []
+keys = []

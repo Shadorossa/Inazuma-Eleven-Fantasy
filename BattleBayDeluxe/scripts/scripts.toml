@@ -1,0 +1,14 @@
+schema = "vr_framework.script/1"
+
+# One entry script: campaign.lua (the Decide hook) requires draft.lua (the Draft's commands, its roster blob, the
+# Draft tile's avatar), tournament.lua (the Torneo: its commands, its blob, the match_start / match_end handlers) and
+# lib/*.lua, so the Campaign, the Draft and the Torneo share one VM and their state.
+# The Draft derives its pool on its first command from chara_param (about 6000 rows), chara_base, chara_text,
+# formation_config and every Battle Bay squad in memory: the widest budget and memory.
+[settings]
+budget = 5000000
+memory_kb = 65536
+allow = ["save"]
+
+[[script]]
+file = "campaign.lua"

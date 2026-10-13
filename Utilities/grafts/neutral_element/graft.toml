@@ -1,0 +1,98 @@
+# Neutral element icon of the mod Utilities (feature neutral_element; docs/game/ui/neutral-element-icon.md; Nacho
+# 2026-09-30: the purple ensō; moved out of Inazuma Fantasy 2026-10-08). Retail only knows
+# elements 1..4 in its element-icon mappers (0 / nil = no icon, or the previous row's icon left in place). Characters
+# with element 0 (coaches, managers, mod characters) or 5 («void») and skills with element 5 («vacío») get the neutral
+# sprites Utilities declares as image recipes (research/mods/Utilities/images/...: made on the player's PC from his own
+# game files + our own ensō PNGs; icon_common.g4tx: icon_cmd_type00, icon_cmd_on_type00, icon_focus_type00,
+# icon_type00; gaiji_game.g4tx: gaiji_cmd_type00).
+# ELEMENT ICON SLOT ONLY: no plates, card bases or office plates. Our own mappers (office grid / requirement icons)
+# carry the neutral entry in their grafts (office_look); the character creator's «Neutro» choice is mods_menu.
+# Wrappers only (retail runs first / answers every other case); no engine call at load.
+name = "neutral_element"
+mod = "utilities"
+order = 300
+module = "lua_patch"
+requires = []  # was position_cards (IF): only file order; the wrappers chain, so the order does not matter
+conflicts = []
+wraps = ["GetElementIconTextureName", "GetCharaElementIconName", "GetElementIcon"]
+description = "Icono de elemento «neutro» (enso morado) para personajes con elemento 0 / 5 y técnicas de elemento 5"
+
+# every card / plate / list drawer: GetCharaElementIconNameBy{CharaStHdl,CharaParamId}, GetSoccerCharaElementIcon,
+# GetElementIcon (5), GetSkillElementGaijiTexture (5), SetupSpecialSkillInfoElementIcon (5). Rebuild mode (bytecode)
+# already, for position_cards.
+[[files]]
+stem = "soccer_common"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "ne_soccer_common.lua"
+  marker = "neutral_element"
+  crc = "braces"
+
+# shop / office / bank lists: GetElementIconTexture (nil for 0 / 5 in retail -> stale icon in reused rows)
+[[files]]
+stem = "shop_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "ne_shop_inc.lua"
+  marker = "neutral_element shop"
+  crc = "braces"
+
+# match command menus: SetupElementIcon (player), SetCommandIconTexture (command element 5: empty retail branch)
+[[files]]
+stem = "soccer_command_battle_menu_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "ne_command_battle_inc.lua"
+  marker = "neutral_element command"
+  crc = "braces"
+
+# team dock chara status (inline if-chain in retail SetupElementIconTexture): graft neutral_element_dock (hook file)
+
+[[files]]
+stem = "chara_pack_probability_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ne_param_icon_name.lua"
+  marker = "neutral_element"
+
+[[files]]
+stem = "players_universe_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ne_param_icon_name.lua"
+  marker = "neutral_element"
+
+[[files]]
+stem = "soccer_battle_setting_flow_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ne_flow_formation.lua"
+  marker = "neutral_element"
+
+[[files]]
+stem = "item_use_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ne_item_use.lua"
+  marker = "neutral_element"
+
+# club join card: element 0 / >4 draws icon_cmd_type05 (the datafile «?», not in icon_common: nothing shows);
+# 0 / 5 -> the neutral sprite
+[[files]]
+stem = "join_club_menu"
+
+  [[files.ops]]
+  type = "replace"
+  point = "join_club_menu.OnSetupLayer.NeutralElement"
+  text = '''
+    else
+      n7 = (n6 == 0 or n6 == 5) and @crc:icon_cmd_type00@ or 3470924407
+    end
+'''

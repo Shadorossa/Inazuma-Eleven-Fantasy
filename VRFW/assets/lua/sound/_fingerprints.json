@@ -1,0 +1,41 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "market_menu": {
+  "script": "market_menu_4.00.05.00",
+  "require": [
+   "IsCheckNoTokenShopIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "setting_menu": {
+  "script": "setting_menu_1.03.73.00",
+  "require": [
+   "ChangeTabEventMainMenu"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_dock_menu": {
+  "script": "soccer_team_dock_menu_7.01.06.00",
+  "require": [
+   "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

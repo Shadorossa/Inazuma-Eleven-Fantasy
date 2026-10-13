@@ -1,0 +1,68 @@
+# Engine limits a mod can ask the framework to raise (docs/framework/limits.md). The framework ships the retail values;
+# a mod that needs more declares the same key in its own `defaults\limits.toml`. Unlike the other defaults files the
+# effective value is the MAXIMUM over the framework and every active mod (not the later mod's), logged at start
+# (`opponent list: effective opponent_rows = ...`, `clear bits: effective clear_bits = ...`).
+
+[limits]
+# Rows per tab of the CPU opponent list (soccer_opponent_info; docs/framework/limits.md §1). Retail 256: the list
+# builder keeps the first 256 rows of the open tab (the table may have more). Above 256 the framework enlarges the
+# menu object at init (vr_sigs::opponent_list); at most 32767 (the builder's short row index).
+opponent_rows = 256
+
+# sort_no capacity of the match clear bits (SOCCER_GAME_DIFFICULTY col 35; docs/framework/clear-bits.md). Retail
+# 2560 = the save member m_globalSoccerGameClearBitFlag (320 bytes); the save engine keeps 2560..32767 in its per-slot
+# blob (VR-Framework 2.0.22). 32768 is the framework's limit: a larger declaration is reported (WARN) and clamped.
+clear_bits = 32768
+
+# ------------------------------------------------------------------------------------------------ squad (S1, VRFW 2.3)
+# Card-type limits of a squad (docs/framework/limits.md §3). The game refuses a squad with more than 2 Hero cards
+# (rarity 5-7, «Ídolo») or more than 1 Diamond card (rarity 8, «Diamante» / «Fabled»; player, coach or manager): these
+# are its retail counts. A mod asks for more with the same key in its own file (`"unlimited"`, or a count: the game's
+# checks compare with a fixed count, so anything above retail lifts the limit entirely). Effective = the maximum.
+[limits.squad]
+max_per_card_type = { hero = 2, diamond = 1 }
+
+# How a card type is lifted (read from the framework's file only): the game profile edits that make each of the
+# game's counting loops stop counting that type (`inc <counter>` -> a nop of the same length; every count is 0, so no
+# check refuses). The sites: docs/game/characters/hero-cards.md §8 (all 14 loops of v7.1.2's .text). `counter` = the
+# framework hook (content\game\limits_squad.toml) a mod's own card type is counted in ([limits.squad.card_type.<name>]
+# with `counts_as`, scripts\limits.lua).
+[limits.squad.native.hero]
+skip = [
+    "Squad.CountHeroCards.Skip",
+    "Squad.HeroCardsInTeamTest.Skip",
+    "Squad.HeroCardsValidate.Skip",
+    "Squad.HeroCardsInMatchTest.Skip",
+    "Squad.HeroCardsInMatchValidate.Skip",
+    "Squad.HeroCardsInSwap.Skip",
+]
+
+[limits.squad.native.diamond]
+skip = [
+    "Squad.CountDiamondCards.Skip",
+    "Squad.CountDiamondStaff.Skip",
+    "Squad.CountDiamondStaffInSwap.Skip",
+    "Squad.DiamondCardsInTeamTest.Skip",
+    "Squad.DiamondCardsValidate.Skip",
+    "Squad.DiamondCardsInMatchTest.Skip",
+    "Squad.DiamondCardsInMatchValidate.Skip",
+    "Squad.DiamondCardsInSwap.Skip",
+]
+counter = "LimitsDiamondCounter"
+
+# ------------------------------------------------------------------------------------------------ lists (S1, VRFW 2.3)
+# Native lists whose row count follows the rows a mod's Lua adds (docs/framework/limits.md §4): the list's Lua calls
+# CMND_VRFW_LIST_ROWS("<name>", extra) when it builds its rows; the row-count getter (a game profile site:
+# `mov eax, [rcx+disp32]; ret`) then answers the game's count + extra. `max_extra`: the menu's own row array holds
+# 256 rows, the game's lists use 8 (11v11) / 5 (5v5).
+[limits.lists.formation_picker]
+getter = "Team.FormationCount"
+max_extra = 248
+
+# ------------------------------------------------------------------------------------------------ constants (S9, VRFW 2.3)
+# Game rules held as immediates in code, by game profile constant name (game\<build>\constants.toml; docs/framework/
+# limits.md §5). The framework declares none: every constant keeps the game's value. A mod declares
+#   [constants]
+#   "Rules.RoleMedalMatchesRequired" = { config = "role_medal.matches_required", default = 0, min = 0, max = 127 }
+# (an integer, `{ config, default, min, max }` from that mod's merged config, `{ min_of = [...] }`, `{ max_of = [...] }`);
+# the later mod in load order wins.

@@ -1,0 +1,41 @@
+# Texts of All Keshin Armed (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("all_keshin_armed.<name>"): the mod's name and description on the «Mods» screen, in the game's language.
+# «All Keshin Armed» is not translated. A language missing here falls back to English.
+schema = "vr_framework.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "All Keshin Armed"
+mod_description = "Every keshin with its armour, for every player. The armour of each keshin fits every body type, so any player with a keshin can wear it. Choose it per player on the skill board: the keshin piece's armour slot set = with armour, empty = without; it opens 5 levels after the keshin piece. Getting a keshin also gives its armour. Works with the VR-Framework alone; game modes such as Inazuma Fantasy add their own rules on top."
+
+[es.new]
+mod_name = "All Keshin Armed"
+mod_description = "Cada espíritu guerrero con su armadura, para todos los jugadores. La armadura de cada espíritu se adapta a todos los tipos de cuerpo, así que cualquier jugador con un espíritu guerrero puede llevarla. Se elige por jugador en la tabla de habilidades: con la ranura de armadura de la pieza del espíritu puesta, con armadura; vacía, sin ella; se abre 5 niveles después de la pieza del espíritu. Conseguir un espíritu da también su armadura. Funciona solo con el VR-Framework; modos como Inazuma Fantasy añaden sus propias reglas."
+
+[fr.new]
+mod_name = "All Keshin Armed"
+mod_description = "Chaque Keshin avec son armure, pour tous les joueurs. L'armure de chaque Keshin s'adapte à tous les types de corps : tout joueur qui a un Keshin peut la porter. Elle se choisit par joueur au tableau des capacités : emplacement d'armure de la pièce du Keshin rempli = avec armure, vide = sans ; il s'ouvre 5 niveaux après la pièce du Keshin. Obtenir un Keshin donne aussi son armure. Fonctionne avec le seul VR-Framework ; des modes comme Inazuma Fantasy ajoutent leurs propres règles."
+
+[de.new]
+mod_name = "All Keshin Armed"
+mod_description = "Jeder Keshin mit seiner Rüstung, für alle Spieler. Die Rüstung jedes Keshin passt zu jedem Körpertyp, also kann jeder Spieler mit einem Keshin sie tragen. Gewählt wird pro Spieler auf der Fähigkeitentafel: Rüstungsplatz am Keshin-Feld belegt = mit Rüstung, leer = ohne; er öffnet sich 5 Stufen nach dem Keshin-Feld. Wer einen Keshin bekommt, erhält auch seine Rüstung. Läuft allein mit dem VR-Framework; Modi wie Inazuma Fantasy fügen eigene Regeln hinzu."
+
+[it.new]
+mod_name = "All Keshin Armed"
+mod_description = "Ogni Keshin con la sua armatura, per tutti i giocatori. L'armatura di ogni Keshin si adatta a ogni tipo di corpo, quindi qualsiasi giocatore con un Keshin può indossarla. Si sceglie per giocatore nella tabella abilità: slot armatura del pezzo del Keshin occupato = con armatura, vuoto = senza; si apre 5 livelli dopo il pezzo del Keshin. Ottenere un Keshin dà anche la sua armatura. Funziona con il solo VR-Framework; modalità come Inazuma Fantasy aggiungono le proprie regole."
+
+[pt.new]
+mod_name = "All Keshin Armed"
+mod_description = "Cada Keshin com a sua armadura, para todos os jogadores. A armadura de cada Keshin adapta-se a todos os tipos de corpo, por isso qualquer jogador com um Keshin pode usá-la. Escolhe-se por jogador no quadro de habilidades: espaço de armadura da peça do Keshin preenchido = com armadura, vazio = sem; abre 5 níveis depois da peça do Keshin. Obter um Keshin dá também a sua armadura. Funciona só com o VR-Framework; modos como Inazuma Fantasy acrescentam as suas próprias regras."
+
+[ja.new]
+mod_name = "All Keshin Armed"
+mod_description = "すべての化身に化身アームドを、すべての選手に。各化身のアームドはどの体型にも合うので、化身を持つ選手なら誰でもアームドできます。スキルボードで選手ごとに選択：化身のピースのアームド枠をセット＝アームドあり、空＝なし。枠は化身のピースの5レベル後に開きます。化身を手に入れるとそのアームドも手に入ります。VR-Frameworkだけで動作し、Inazuma Fantasyなどのモードは独自のルールを追加します。"
+
+[zh_hans.new]
+mod_name = "All Keshin Armed"
+mod_description = "每个化身都有其化身武装，所有球员都能使用。每个化身的武装适合所有体型，拥有化身的球员都能穿上。在技能盘上按球员选择：化身棋子的武装槽放入＝有武装，空着＝无武装；该槽在化身棋子之后5级开放。获得化身时也会获得其武装。只需VR-Framework即可运行；Inazuma Fantasy等模式会加入自己的规则。"
+
+[zh_hant.new]
+mod_name = "All Keshin Armed"
+mod_description = "每個化身都有其化身武裝，所有球員都能使用。每個化身的武裝適合所有體型，擁有化身的球員都能穿上。在技能盤上按球員選擇：化身棋子的武裝槽放入＝有武裝，空著＝無武裝；該槽在化身棋子之後5級開放。獲得化身時也會獲得其武裝。只需VR-Framework即可運行；Inazuma Fantasy等模式會加入自己的規則。"

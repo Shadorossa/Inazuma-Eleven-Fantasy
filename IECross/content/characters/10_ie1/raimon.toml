@@ -1,0 +1,43 @@
+schema = "vr_framework.character/2"
+# Inazuma Eleven Cross · Raimon · Inazuma Eleven: the Cross version(s) of this team's characters (fixed ids, created by their `order`;
+# series «Inazuma Eleven Cross»: chara_base team_3 = crc32("evt_belong_team_cross")). Moved from Inazuma Fantasy's
+# characters\10_ie1\raimon.toml on 2026-10-08 (first written by research/scripts/if_chara_to_toml.py, which writes them here now:
+# _split.toml). Inazuma Fantasy's EVT fields of their cards (growth, Lv200 stats, INAROGUE rarity) are IF's
+# characters\iecross_cards.toml.
+default_lang = "en"
+
+[[character]]
+name = "celia_hills_2"                                    # Celia Hills
+based_on = "c02024740"                                    # template: Celia Hills
+order = 41
+
+  [character.base]
+  id = 0x49B03110
+  name = "c90000071"
+  voice_bank = 0x25D3FD3A
+  team_3 = 0x1E5DC7AA
+  in_ie1 = 0
+  in_ie3 = 1
+
+  [character.new_model]
+  id = 0x67DE4228
+  from = 0xBCF49B7B                                       # model of Celia Hills (c02024740)
+  order = 2
+  [character.new_model.cells]
+  head_mesh_path = "_face/12_CROSS/c90000071/c90000071.g4md"
+  exmesh_1 = 0x94EACC41
+
+  [[character.cards]]
+  id = 0xFFF7C519                                         # MF/DF · wind
+  from = 0x8C27F348                                       # template: Celia Hills (c02024740)
+  order = 51
+  growth_pattern = 1
+  moves = [
+    { move = 0xB576BB31, level = 1 },                     # The Earth
+    { move = 0x6ADE9E01, level = 13 },                    # Illusory Ball
+    { move = 0x4E9A9232, level = 20 },                    # Spinning Cut
+    { move = 0xC16279D1, level = 30 },                    # Field of Force
+    { move = 0x32EEA7FE, level = 38 },                    # Death Zone 2
+    { move = 0x1A868BED, level = 43 },                    # Clone Defence
+  ]
+  cells = { flag_38 = 0 }

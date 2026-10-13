@@ -1,0 +1,63 @@
+# Clean HUD «Modo Crónica» icon boxes (graft clean_hud_chr_boxes; docs/game/ui/competition-menu.md §2; moved from
+# Inazuma Fantasy's chronicle_boxes / menus\100_mainmenu\chronicle_mode_top_menu.toml on 2026-10-09, Nacho): under
+# «Universo del jugador» the small rows Plantilla de equipo, Objetos, Tienda and Opciones become 4 square icon boxes
+# (layer clean_hud_chr_box); «Ayuda» and «Guardar» stay created as the 2 small rows, off screen and out of the keys
+# (the locator clean_hud_chr_list puts them at x -2600), as Inazuma Fantasy had them. Data files:
+# research/scripts/clean_hud_chr_boxes_build.py (comp_menu_build's builders under Clean HUD's names).
+schema = "vr_framework.menu/2"
+
+# small list 7 -> 2 instances (the two rows the Lua maps to «Ayuda» / «Guardar»), their "!" too
+[[patch]]
+menu = "chronicle_mode_top_menu"
+layer = "mainmenu90_12_list_item_small"
+count = 2
+
+[[patch]]
+menu = "chronicle_mode_top_menu"
+layer = "cmn01_11_list_small_notice"
+count = 2
+
+# the list locator: rows 0 / 1 off screen, small rows 2..5 of retail -> the 4 box centres
+[[patch]]
+menu = "chronicle_mode_top_menu"
+layer = "vsroute04_02_chronicle_top_locator"
+object = "clean_hud_chr_list_item_locator"
+
+# the boxes and their "!" (the retail blue "!" object), right after the small list, in the menu's layer group
+[[patch]]
+menu = "chronicle_mode_top_menu"
+add_layer = { name = "clean_hud_chr_box_notice", object = "cmn01_11_blue_exclamation_icon", count = 4, after = "mainmenu90_12_list_item_small", groups = [{ group = "chronicle_mode_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_12_list_item_small" }] }
+
+[[patch]]
+menu = "chronicle_mode_top_menu"
+add_layer = { name = "clean_hud_chr_box", object = "clean_hud_chr_box_item", count = 4, align = ["left", "middle"], after = "clean_hud_chr_box_notice", groups = [{ group = "chronicle_mode_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "clean_hud_chr_box_notice" }], focus = {} }
+
+# keys: the corner-button rows of the lists go (RIGHT -> corner 0x3EE8ADE4, Alt tutorial, V controls guide); the boxes
+# get Back / Accept / left / right (engine list focus) / up (CMD_FUNCTION clean_hud_chr_box_up) / right click
+[[patch]]
+menu = "chronicle_mode_top_menu"
+remove_cmd = [
+    { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x3EE8ADE4 },
+    { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0x9EF0E5F7 },
+    { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x61FBFF76 },
+    { layer = "mainmenu90_12_list_item_small", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x3EE8ADE4 },
+    { layer = "mainmenu90_12_list_item_small", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0x9EF0E5F7 },
+    { layer = "mainmenu90_12_list_item_small", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x61FBFF76 },
+]
+add_cmd = [
+    { layer = "clean_hud_chr_box", input = "CMD_BACK", command = "CMD_FUNCTION", arg = 0x6DCEC137, flag = 1, after = "mainmenu90_12_list_item_small" },
+    { layer = "clean_hud_chr_box", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "clean_hud_chr_box", input = "CMD_LEFT", command = "CMD_FCS_BACK", flag = 1 },
+    { layer = "clean_hud_chr_box", input = "CMD_RIGHT", command = "CMD_FCS_NEXT", flag = 1 },
+    { layer = "clean_hud_chr_box", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x9B2B25A5, flag = 1 },
+    { layer = "clean_hud_chr_box", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_FUNCTION", arg = 0x6DCEC137, flag = 1 },
+]
+
+# focus shifts: «Universo del jugador» down and «Cadena de Crónica» up (retail: wrap to «Guardar») land on box 0
+[[patch]]
+menu = "chronicle_mode_top_menu"
+set_row = [
+    { list = "MENU_FOCUS_SHIFT_BASE_INFO", index = 0, values = ["CMD_FCS_BACK", 0, 0x63F1CB83, 0] },
+    { list = "MENU_FOCUS_SHIFT_BASE_INFO", index = 1, values = ["CMD_FCS_NEXT", 0xFFFFFFFF, 0x63F1CB83, 0] },
+    { list = "MENU_FOCUS_SHIFT_BASE_INFO", index = 2, values = ["CMD_FCS_BACK", 0, 0x63F1CB83, 0] },
+]

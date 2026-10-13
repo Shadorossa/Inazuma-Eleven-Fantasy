@@ -1,0 +1,12 @@
+# The VR-Framework's top bar (research/mods/menu_engine/lua/_all/10_top_bar.lua, docs/framework/top-bar.md): the
+# retail header's rank plate the bar's icon row must not cover. The plate (mainmenu90_03_header_rank: rank, emblem,
+# «next n/m» gauge) hangs from the header's node _pos_atc_rank01 and sits at screen x ≈ 1440-1764, so while it is open
+# the row ends at 1426 (its left edge minus the row gap). A mod that rebuilds the header and wants the plate centred on
+# the bar adds `centre_x` (the node's header-local x) in its own `[top_bar_rank]` and `rank_centre = true` on its
+# `[[top_bar_host]]` menus; the keys merge (the mod that loads last wins a key).
+schema = "vr_framework.menu/2"
+
+[top_bar_rank]
+plate = "mainmenu90_03_header_rank"
+node = "_pos_atc_rank01"
+avoid_right = 1426.0

@@ -1,0 +1,88 @@
+# VR-Framework: the match difficulties that EXIST (2.0.x, Nacho 2026-10-09; docs/framework/match-difficulties.md): the
+# difficulty rows of soccer_game_config a player can reach, per context. Read by the team type's build (route nodes,
+# chain tiles, free-match classes: a difficulty that does not exist is left out with a WARN, never built) and by the
+# Mods panel's event creator (only these are offered; a declared one that does not exist is flagged).
+#
+# One table per difficulty, keyed by its Id: [MatchDifficulty.<Id>]. Every active mod's defaults\match_difficulty.toml
+# is merged by Id in load order (a later mod's keys win, a list is replaced whole): an overhaul removes a difficulty
+# (Enabled = false), moves it to other contexts (Contexts = [...]), renames it (Name) or gives it another badge; a mod's
+# own Id is "<Prefix>.<Name>" (e.g. [MatchDifficulty."Fantasy.Nv200"]).
+#   Difficulty   the SOCCER_GAME_DIFFICULTY id (column `difficulty`, 1-255)
+#   Contexts     where it exists: "route" (normal board pieces, [[VRFW.RouteNode]] Difficulties / FirstClear), "gate"
+#                (gate pieces), "chain" (chain tiles' rows), "free_match" («Competir contra bots» classes)
+#   Enabled      false = it does not exist (default true)
+#   Badge        its title sprite (default atlas: the game's class titles #/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx)
+#   BadgeAtlas   «#/menu/...g4tx» of Badge (a mod's own art: its image type atlas)
+#   Ball         its level ball on the «Competir contra bots» class card (default atlas: the class menu's own
+#                #/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx, balls lv_base00..03). A class that shows
+#                another retail class's Badge and declares no Ball of its own takes that class's ball (the game pairs
+#                each title with its ball)
+#   BallAtlas    «#/menu/...g4tx» of Ball (a mod's own ball: its image type atlas)
+#   Name         per language folder ({ es = "...", en = "..." }); none = the creator's own name of the difficulty
+#   Level        the rival level the mod's rules give it (shown only; the levels are the rules')
+#   Order        the creator's order (default: the difficulty id)
+# The retail set (vs_route_town_list_menu t3, soccer_vs_cpu_class_select_menu; docs/game/modes/chronicle-mode.md §2):
+
+[MatchDifficulty.Cronica]
+Difficulty = 1
+Contexts = ["route"]
+Badge = "gtxt_class21"
+Order = 1
+
+[MatchDifficulty.RouteOpen]
+Difficulty = 2
+Contexts = ["route", "gate"]
+Badge = "gtxt_class22"
+Order = 2
+
+[MatchDifficulty.RareItems]
+Difficulty = 3
+Contexts = ["route"]
+Badge = "gtxt_class23"
+Order = 3
+
+[MatchDifficulty.Heroica]
+Difficulty = 4
+Contexts = ["route", "chain"]
+Badge = "gtxt_class24"
+Order = 4
+
+[MatchDifficulty.HeroicaPlus]
+Difficulty = 10
+Contexts = ["route", "gate"]
+Badge = "gtxt_class26"
+Order = 5
+
+[MatchDifficulty.Legendaria]
+Difficulty = 11
+Contexts = ["route", "gate"]
+Badge = "gtxt_class28"
+Order = 6
+
+[MatchDifficulty.Class1]
+Difficulty = 6
+Contexts = ["free_match", "chain"]
+Badge = "gtxt_class01"
+Ball = "lv_base00"
+Order = 7
+
+[MatchDifficulty.Class2]
+Difficulty = 7
+Contexts = ["free_match", "chain"]
+Badge = "gtxt_class02"
+Ball = "lv_base01"
+Order = 8
+
+[MatchDifficulty.Class3]
+Difficulty = 8
+Contexts = ["free_match", "chain"]
+Badge = "gtxt_class03"
+Ball = "lv_base02"
+Order = 9
+
+[MatchDifficulty.Class4]
+Difficulty = 9
+Contexts = ["free_match", "chain"]
+Badge = "gtxt_class04"
+Ball = "lv_base03"
+Order = 10

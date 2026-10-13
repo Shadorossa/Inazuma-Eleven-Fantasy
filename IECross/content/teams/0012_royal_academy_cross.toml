@@ -1,0 +1,93 @@
+schema = "vr_framework.team/2"
+# Hand-made (edit freely). Moved from Inazuma Fantasy (teams\19_iecross\02_royal_academy_cross.toml) on 2026-10-08 with
+# the Cross tab (content\teams\cross_tab.toml); the [[alias]] below keeps its game evt_cm_te_322299 (the first link of the
+# tab's unlock chain: a save that won it keeps the win) and every other number it had under Inazuma Fantasy.
+
+# Its CPU loadouts: the Chronicle Royal Academy's, the same rows Inazuma Fantasy declares in teams\00_loadouts\10_base.toml
+# (its retail team patches use them too; identical values: no conflict), so the team also builds without it.
+loadout = [
+  { id = 0x7220A644, moves = [0xA7157B91, 0xA6D711A6, 0x7B64F3D2, 0x4E9A9232], levels = [1, 26, 31, 35] },  # Power Shield, Full Power Shield, Hawk Shot, Spinning Cut
+  { id = 0x4EBF4150, moves = [0x6ADE9E01, 0x00196EC2, 0xB1FBC783, 0x67F17FA8], levels = [1, 1, 42, 80] },  # Illusory Ball, Earthquake, Reflect Buster, Mega Quake
+  { id = 0xDBFE04E2, moves = [0x142DBE2A, 0x2B343D01, 0x6ADE9E01, 0x60397CCA], levels = [1, 1, 40, 85] },  # Foul Offence, Cyclone, Illusory Ball, Cross Drive
+  { id = 0x2258C5DE, moves = [0x5643C944, 0x6ADE9E01, 0x34256515, 0x4E9A9232], levels = [1, 1, 23, 74] },  # Killer Slide, Illusory Ball, Dynamite Shot, Spinning Cut
+  { id = 0x3912E9ED, moves = [0x5643C944, 0x17A96A44, 0x01DB04F5, 0x0E0A3F7A], levels = [1, 1, 31, 85] },  # Killer Slide, Clone Faker, Defence Scan, Spatial Portal
+  { id = 0x32E90398, moves = [0x5643C944, 0x142DBE2A, 0xB27F13ED, 0x2B343D01], levels = [1, 1, 25, 76] },  # Killer Slide, Foul Offence, Death Zone, Cyclone
+  { id = 0x6DBA21E7, moves = [0x5643C944, 0x142DBE2A, 0x1ECA5CE1, 0x79224D8B], levels = [1, 1, 1, 65] },  # Killer Slide, Foul Offence, Wrath Shot, Freeze Shot
+  { id = 0x7E07F75A, moves = [0x17A96A44, 0x79224D8B, 0x5643C944, 0xB27F13ED], levels = [1, 25, 30, 90] },  # Clone Faker, Freeze Shot, Killer Slide, Death Zone
+  { id = 0xA8D2EB04, moves = [0x4E9A9232, 0x6ADE9E01, 0x4890FB67, 0xB039ADB4], levels = [1, 1, 1, 1] },  # Spinning Cut, Illusory Ball, Twin Boost, Inazuma Break
+  { id = 0xDA8E8862, moves = [0x5643C944, 0x17A96A44, 0x7DAF3139, 0x61FB16FD], levels = [1, 1, 25, 47] },  # Killer Slide, Clone Faker, Emperor Penguin No. 2, Divine Arrows
+  { id = 0x76F6347B, moves = [0x00196EC2, 0x73C5AF40, 0xB3BD79DA, 0x0455B9CE], levels = [1, 24, 34, 63] },  # Earthquake, Dash Accelerator, Patriot Shot, Run Ball Run
+  { id = 0x1D567217, moves = [0x35E70F22, 0x5643C944, 0x142DBE2A, 0x4890FB67], levels = [1, 28, 41, 67] },  # Grenade Shot, Killer Slide, Foul Offence, Twin Boost
+  { id = 0xC22B71C6, moves = [0x142DBE2A, 0xAAA6489B, 0x1ECA5CE1, 0x7B64F3D2], levels = [1, 29, 46, 75] },  # Foul Offence, Spiral Shot, Wrath Shot, Hawk Shot
+  { id = 0x52827F08, moves = [0x5643C944, 0x259F08C6, 0x166B0073, 0xA8E0F6C2], levels = [1, 29, 40, 55] },  # Killer Slide, Whirlwind Twister, Super Armadillo, Kung Fu Header
+  { id = 0x9779A1AF, moves = [0x4B142F09, 0x18C035B4, 0x7B64F3D2, 0x1F0836D6], levels = [1, 28, 35, 97] },  # Teleport Shot, Ghost Pull, Hawk Shot, Comet Shot
+  { id = 0x1C4ED5F0, moves = [0x5643C944, 0x1ECA5CE1, 0xB27F13ED, 0xC7A9BB3A], levels = [1, 1, 25, 39] },  # Killer Slide, Wrath Shot, Death Zone, Whirlwind Cut
+]
+
+# Moved from Inazuma Fantasy (2026-10-08): the registry numbers it had there (its game in the Cross tab,
+# inazuma_fantasy.ct_cx_royal_academy@inazuma_fantasy.cross_tab#game = 845322299 -> evt_cm_te_322299) stay with it.
+[[alias]]
+old = "inazuma_fantasy.ct_cx_royal_academy"
+new = "iecross.ct_cx_royal_academy"
+
+# ---------------------------------------------------------------------------------------------------------------------
+# «Royal Academy (Cross)» (Nacho, 2026-10-02): first team of the Cross tab's chain. The Cross game's Royal Academy
+# roster is not in the data (research/data/cross_new_content.json has no Teikoku team): this is the Chronicle Royal
+# Academy (tm_cro_ie1_0100, its CPU loadouts) with the Royal Academy Axel Blaze (c90000130, a character of this mod) up front,
+# who plays «Pingüino infernal» (Inferno Penguin, whs95000) from level 1. Daniel Hatch moves to the bench.
+# ---------------------------------------------------------------------------------------------------------------------
+[[team]]
+name = "ct_cx_royal_academy"
+key = "evt_ct_cx_royal_academy"
+level = 1                                 # the team row; its match level is the tab's (Nv. 200)
+formation = 0x94116F1A                    # Royal Academy's
+kit = 0xD6ABDBB4                          # Royal Academy
+emblem = 0x4CA2B04A                       # Royal Academy
+roster = "exact"
+member = [
+  { card = 0x33D11B4C, slot = 0, loadout = 0x7220A644, rarity_step = 1 },                       # Joseph King · GK
+  { card = 0x18FC488F, slot = 1, loadout = 0x4EBF4150, rarity_step = 1 },                       # Peter Drent · DF
+  { card = 0x01E779CE, slot = 2, loadout = 0xDBFE04E2, rarity_step = 1 },                       # Ben Simmons · DF
+  { card = 0x4EA6EF09, slot = 3, loadout = 0x2258C5DE, rarity_step = 1 },                       # Alan Master · MF
+  { card = 0x57BDDE48, slot = 4, loadout = 0x3912E9ED, rarity_step = 1 },                       # Gus Martin · DF
+  { card = 0x7C908D8B, slot = 5, loadout = 0x32E90398, rarity_step = 1 },                       # Herman Waldon · MF
+  { card = 0x658BBCCA, slot = 6, loadout = 0x6DBA21E7, rarity_step = 1 },                       # John Bloom · MF
+  { card = 0xE213A005, slot = 7, loadout = 0x7E07F75A, rarity_step = 1 },                       # Derek Swing · MF
+  { card = 0x2B08403A, slot = 8, number = 10, captain = true, loadout = 0xA8D2EB04, rarity_step = 1 },  # Jude Sharp · MF
+  { card = 0xA4A4D2DC, slot = 9, number = 9, rarity_step = 1, moves = [0x40680BA6, 0x518BCA26, 0x41F3CDC2, 0x00D8C57C], levels = [1, 1, 13, 20] },  # Axel Blaze (Royal Academy, c90000130) · FW: Inferno Penguin, Fire Tornado, Scorching Tackle, Fireball Storm
+  { card = 0x3213717B, slot = 10, number = 11, loadout = 0xDA8E8862, rarity_step = 1 },         # David Samford · FW
+  { card = 0x193E22B8, slot = 11, loadout = 0x76F6347B, rarity_step = 1 },                      # Bob Carlton · GK
+  { card = 0x002513F9, slot = 12, loadout = 0x1D567217, rarity_step = 1 },                      # Cliff Tomlinson · FW
+  { card = 0x4F64853E, slot = 13, loadout = 0xC22B71C6, rarity_step = 1 },                      # Jim Lawrenson · FW
+  { card = 0x567FB47F, slot = 14, loadout = 0x52827F08, rarity_step = 1 },                      # Barry Potts · MF
+  { card = 0x7D52E7BC, slot = 15, loadout = 0x9779A1AF, rarity_step = 1 },                      # Steve Ingham · FW
+  { card = 0xFB089144, slot = 16, number = 17, loadout = 0x1C4ED5F0, rarity_step = 1 },         # Daniel Hatch · FW
+  { card = 0x833D7977, slot = 19, number = 0 },                                                 # Ray Dark · coach
+]
+appears = [
+  { list = "cross_tab" },                 # the Cross tab: first of its chain (content\teams\cross_tab.toml order)
+  { list = "bb_stadium", season = "series_10" },   # Estadio BB (season: the Cross one, content/teams/free_match_tab.toml): its level-40 copy (Inazuma Fantasy's BB order places it in the Cross block)
+]
+  [team.text.en]
+  name = "Royal Academy (Cross)"
+  [team.text.es]
+  name = "Royal Academy (Cross)"
+  [team.text.fr]
+  name = "Royal Academy (Cross)"
+  [team.text.de]
+  name = "Royal Academy (Cross)"
+  [team.text.it]
+  name = "Royal Academy (Cross)"
+  [team.text.pt]
+  name = "Royal Academy (Cross)"
+  [team.text.ja]
+  name = "帝国学園（Cross）"
+  [team.text.zh_hans]
+  name = "帝国学园（Cross）"
+  [team.text.zh_hant]
+  name = "帝國學園（Cross）"
+
+# ==== bb_movesets_build.py: Estadio BB: each player plays its card's first 4 moves, all at level 1 (the engine reads them from the card; the Hiper comes from its slot 9). Regenerate, do not edit.
+[[edit]]
+target = "ct_cx_royal_academy"
+card_moves = 4

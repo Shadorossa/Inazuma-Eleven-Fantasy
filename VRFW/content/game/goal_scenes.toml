@@ -1,0 +1,30 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › no goal scenes (rulebook `[play] goal_scenes = false`, docs/framework/types/rule.md, VRFW 2.2.93). The
+# run time is scripts\goal_scenes.lua: from a goal to the next kick-off of such a match it ends every event the game
+# plays (goal scene, celebration) the way the retail event skip does, without its fades: StopEventSounds + EventSeek to
+# the end (TimelineSeek when the event has no cut table). The same game functions as BetterUI's pre-match X jump
+# (BetterUI content\game\prematch_skip.toml); every mod declares the functions it calls.
+
+# the event manager g_eventManager: 20 slots of 0x7E0 bytes, current slot index u32 at +0x9154
+[[VRFW.Global]]
+name = "event_manager"
+game = "Event.Manager"
+
+# EventSeek(slot, float t) 0xF03E00: t < 0 = run the event's timeline to its end; only with a cut table or +0x7C0
+[[VRFW.Function]]
+name = "EventSeek"
+game = "Event.Seek"
+args = ["ptr", "f32"]
+
+# StopEventSounds(slot, float fade, u8 all) 0xF06EC0: the slot's voices / SE stopped
+[[VRFW.Function]]
+name = "StopEventSounds"
+game = "Audio.StopEventSounds"
+args = ["ptr", "f32", "u8"]
+
+# TimelineSeek(tl, float t, u8 voices) 0x572B50: t < 0 = every pending command run, the timeline marked ended
+[[VRFW.Function]]
+name = "TimelineSeek"
+game = "Event.TimelineSeek"
+args = ["ptr", "f32", "u8"]

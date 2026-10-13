@@ -1,0 +1,88 @@
+schema = "vr_framework.character/2"
+# Inazuma Eleven Cross · Pirates Cove · Inazuma Eleven GO: the Cross version(s) of this team's characters (fixed ids, created by their `order`;
+# series «Inazuma Eleven Cross»: chara_base team_3 = crc32("evt_belong_team_cross")). Moved from Inazuma Fantasy's
+# characters\13_go\pirates_cove.toml on 2026-10-08 (first written by research/scripts/if_chara_to_toml.py, which writes them here now:
+# _split.toml). Inazuma Fantasy's EVT fields of their cards (growth, Lv200 stats, INAROGUE rarity) are IF's
+# characters\iecross_cards.toml.
+default_lang = "en"
+
+[[character]]
+name = "shawn_froste"                                     # Shawn Froste
+based_on = "c02023380"                                    # template: Shawn Froste
+order = 43
+
+  [character.base]
+  id = 0x4566FC4C
+  name = "c90000050"
+  voice_bank = 0x13B82253
+  series = 0x9299810F
+  team_1 = 0x8677AA25
+  team_2 = 0x00000000
+  team_3 = 0x1E5DC7AA
+  in_ie3 = 0
+
+  [character.new_model]
+  id = 0x70E7F00F
+  from = 0x8A9F4412                                       # model of Shawn Froste (c02023380)
+  order = 3
+  [character.new_model.cells]
+  clothes = 0xE58367BE
+  shoes = 0x0ABEC25E
+  head_mesh_path = "_face/12_CROSS/c90000050/c90000050.g4md"
+
+  [[character.cards]]
+  id = 0xFFF7C51C                                         # FW/MF · wind
+  from = 0xBA4C2C21                                       # template: Shawn Froste (c02023380)
+  order = 54
+  growth_pattern = 1
+  moves = [
+    { move = 0x0800562F, level = 1 },                     # Cross Fire
+    { move = 0x19C3F43D, level = 13 },                    # Eternal Blizzard
+    { move = 0x039DBAAC, level = 20 },                    # Land of Ice
+    { move = 0x7E2BE557, level = 30 },                    # Legendary Wolf
+    { move = 0x6F1A9ED7, level = 38 },                    # Cross Fire
+    { move = 0xDCF43422, level = 43 },                    # Aurora Dribble
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x59733AE7, level = 1 },                     # Ocean Birth
+  ]
+
+[[character]]
+name = "xavier_foster"                                    # Xavier Foster
+based_on = "c03030040"                                    # template: Xavier Foster
+order = 44
+
+  [character.base]
+  id = 0x1776374A
+  name = "c90000040"
+  voice_bank = 0x34E95EEC
+  series = 0x9299810F
+  team_1 = 0x8677AA25
+  team_3 = 0x1E5DC7AA
+  in_ie2 = 1
+  in_ie3 = 0
+
+  [character.new_model]
+  id = 0x490BEFA2
+  from = 0xADCE38AD                                       # model of Xavier Foster (c03030040)
+  order = 4
+  [character.new_model.cells]
+  clothes = 0xD8E34E0E
+  shoes = 0x37DEEBEE
+  head_mesh_path = "_face/12_CROSS/c90000040/c90000040.g4md"
+
+  [[character.cards]]
+  id = 0xFFF7C51D                                         # FW/MF · fire
+  from = 0x9D1D509E                                       # template: Xavier Foster (c03030040)
+  order = 55
+  moves = [
+    { move = 0xC9B4602F, level = 1 },                     # Final Death Zone
+    { move = 0x65766A4F, level = 13 },                    # Meteor Blade
+    { move = 0xC3D894B7, level = 20 },                    # The Dawn
+    { move = 0xDAC3A5F6, level = 30 },                    # Big Bang
+    { move = 0xEE3E059F, level = 38 },                    # Celestial Smash
+    { move = 0x2296A01A, level = 43 },                    # Southern Cross
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x59733AE7, level = 1 },                     # Ocean Birth
+  ]

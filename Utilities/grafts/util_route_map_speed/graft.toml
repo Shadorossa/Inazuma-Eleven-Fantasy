@@ -1,0 +1,20 @@
+# Fast cursor on the Chronicle route map of the mod Utilities, the board's prompt (plugin utilities.dll, feature
+# route_map_speed; docs/game/ui/chronicle-route-map-cursor.md). Utilities DECLARES «R2 Velocidad del cursor» to the
+# VR-Framework's footer prompts (VRFW.FooterPrompts, docs/framework/footer-prompts.md): menu vs_route_town_menu, text
+# Utilities.RouteMapSpeedGuide (9 languages, text\rows\route_map_speed.toml), glyph <CMD_FUNCR2> (the key the game
+# binds to R2 on the current device, E on the keyboard by default), When = CMND_UTIL_ROUTE_MAP_SPEED (true while the
+# native update of CVSRouteTownMenu is wrapped). The framework appends it to the board's guide after the game's
+# entries and any other mod's (no Utilities code in the guide call; since Utilities 1.2.5 / VR-Framework 2.0.35).
+# The file is a HOOK file of the board script (docs/framework/lua-hosts.md §7), shipped as is (numbers written as such).
+name = "util_route_map_speed"
+mod = "utilities"
+order = 330
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Chronicle route map: declares «R2 Velocidad del cursor» to the framework's footer prompts (Utilities)"
+
+[[hooks]]
+stem = "vs_route_town_menu"
+src = "util_rms_board.lua"

@@ -1,0 +1,47 @@
+# Generated ONCE by research/scripts/bb_chronicle_teams_build.py from the retail v7.1.2 data (last run before 2026-10-13);
+# now HAND-MAINTAINED source: edit it directly or with ModManager «Equipos» (edit the original mod, in place).
+# The script refuses to overwrite it (only --force-regenerate does, and that loses every hand edit).
+# Season group VICTORY: the Chronicle teams of its route (based_on the game team: roster, kit, formation, emblem,
+# captain; name = the game team's own name text; stadium_fallback = its home stadium, the one its own Chronicle game
+# plays at, stadium_image = that stadium's card art: the Battle Bay row plays there unless an active mod declares
+# the game team's own `stadium` (VR-Framework 2.0.101), then there; movesets and tactics: 80_movesets.toml).
+schema = "vr_framework.team/2"
+
+[[team]]
+name = "victory_0105"
+key = "bbcr_victory_0105"
+based_on = "tm_cro_victory_0105"      # West Manor, board fbtl_cro09_010_010
+name_text = 0xF069E02A
+level = 40
+series = "VICTORY"
+stadium_fallback = "s02g001"      # Estadio Municipal de Fútbol de Nagasaki, its Chronicle game fbtl_cro09_010_010
+stadium_image = "ev_chronicle_img/ev_bb_s02g001_01.g4tx"
+
+[[team]]
+name = "victory_0300"
+key = "bbcr_victory_0300"
+based_on = "tm_cro_victory_0300"      # Eastwind, board fbtl_cro09_030_010
+name_text = 0xE9C4668E
+level = 40
+series = "VICTORY"
+stadium_fallback = "s03g001"      # Estadio de la Bahía de Hakata (Fukuoka), its Chronicle game fbtl_cro09_030_010
+
+[[team]]
+name = "victory_0405"
+key = "bbcr_victory_0405"
+based_on = "tm_cro_victory_0405"      # Stormridge, board fbtl_cro09_040_010
+name_text = 0x8E22EBBE
+level = 40
+series = "VICTORY"
+stadium_fallback = "s01g001"      # Estadio Fútbol Frontier, its Chronicle game fbtl_cro09_040_010
+stadium_image = "ev_chronicle_img/ev_bb_s01g001_01.g4tx"
+
+[[team]]
+name = "victory_0505"
+key = "bbcr_victory_0505"
+based_on = "tm_cro_victory_0505"      # Royal Academy, board fbtl_cro09_050_010
+name_text = 0x48F12EED
+level = 40
+series = "VICTORY"
+stadium_fallback = "s01g001"      # Estadio Fútbol Frontier, its Chronicle game fbtl_cro09_050_010
+stadium_image = "ev_chronicle_img/ev_bb_s01g001_01.g4tx"

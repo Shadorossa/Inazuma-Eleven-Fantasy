@@ -1,0 +1,132 @@
+schema = "vr_framework.changelog/1"
+# BetterUI: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "BetterUI"
+
+[en]
+name = "BetterUI"
+
+[fr]
+name = "BetterUI"
+
+[de]
+name = "BetterUI"
+
+[it]
+name = "BetterUI"
+
+[pt]
+name = "BetterUI"
+
+[ja]
+name = "BetterUI"
+
+[zh_hans]
+name = "BetterUI"
+
+[zh_hant]
+name = "BetterUI"
+
+[[release]]
+icon = "general"
+notes = [
+    "HUD de partido más limpio: sin medidores del rival.",
+    "Rótulos de duelo y zona más pequeños, con su tiempo.",
+    "Barra superior compacta y translúcida en los menús.",
+    "Cartas compactas, Banco a 8 columnas, L2/R2 en tiendas.",
+    "Crónica y Plantilla con menús reordenados.",
+    "Mantén X antes del partido: directo al saque.",
+    "Ficha del jugador y menú «Personaje» más claros.",
+]
+
+[release.en]
+notes = [
+    "Cleaner match HUD: no rival meters or sprint guides.",
+    "Smaller duel and zone banners, with a timer.",
+    "Compact, translucent top bar in the menus.",
+    "Compact cards, 8-column Bank, L2/R2 switch shops.",
+    "Reworked Chronicle and Team Dock menus.",
+    "Hold X before a match: straight to the kick-off.",
+    "Clearer player plate and «Character» menu.",
+]
+
+[release.fr]
+notes = [
+    "HUD de match épuré : sans jauges adverses.",
+    "Bandeaux de duel et de zone réduits, avec minuteur.",
+    "Barre du haut compacte et translucide dans les menus.",
+    "Cartes compactes, Banque à 8 colonnes, L2/R2 boutiques.",
+    "Menus de la Chronique et des équipes réorganisés.",
+    "Maintiens X avant le match : droit au coup d'envoi.",
+    "Fiche du joueur et menu «Personnage» plus clairs.",
+]
+
+[release.de]
+notes = [
+    "Saubereres Spiel-HUD: keine Gegneranzeigen.",
+    "Kleinere Duell- und Zonenbanner, mit Timer.",
+    "Kompakte, durchscheinende obere Leiste in Menüs.",
+    "Kompakte Karten, Bank mit 8 Spalten, L2/R2 im Shop.",
+    "Überarbeitete Menüs für Chronik und Kader.",
+    "X vor dem Spiel halten: direkt zum Anstoß.",
+    "Klarere Spielerkarte und «Figur»-Menü.",
+]
+
+[release.it]
+notes = [
+    "HUD della partita più pulito: niente indicatori rivali.",
+    "Titoli di duello e zona più piccoli, con timer.",
+    "Barra superiore compatta e traslucida nei menu.",
+    "Carte compatte, Banca a 8 colonne, L2/R2 nei negozi.",
+    "Menu della Cronaca e delle squadre riorganizzati.",
+    "Tieni X prima della partita: subito al calcio d'inizio.",
+    "Scheda del giocatore e menu «Personaggio» più chiari.",
+]
+
+[release.pt]
+notes = [
+    "HUD da partida mais limpo: sem medidores do rival.",
+    "Letreiros de duelo e zona menores, com tempo.",
+    "Barra superior compacta e translúcida nos menus.",
+    "Cartas compactas, Banco com 8 colunas, L2/R2 nas lojas.",
+    "Menus da Crônica e dos times reorganizados.",
+    "Segure X antes da partida: direto ao pontapé inicial.",
+    "Ficha do jogador e menu «Personagem» mais claros.",
+]
+
+[release.ja]
+notes = [
+    "すっきりした試合HUD：相手のゲージを非表示。",
+    "勝負・ゾーンの表示を小さく、残り時間つき。",
+    "メニューの上部バーをコンパクトで半透明に。",
+    "カードをコンパクトに、バンク8列、L2/R2で店切替。",
+    "クロニクルとチーム編成のメニューを整理。",
+    "試合前にXを長押し：キックオフへ直行。",
+    "選手情報と「キャラクター」メニューを見やすく。",
+]
+
+[release.zh_hans]
+notes = [
+    "更简洁的比赛HUD：隐藏对手计量槽。",
+    "对决与区域标题更小，附倒计时。",
+    "菜单顶部栏紧凑且半透明。",
+    "紧凑卡片，替补库8列，L2/R2切换商店。",
+    "编年史与阵容菜单重新整理。",
+    "赛前长按X：直接开球。",
+    "球员资料与「角色」菜单更清晰。",
+]
+
+[release.zh_hant]
+notes = [
+    "更簡潔的比賽HUD：隱藏對手量表。",
+    "對決與區域標題更小，附倒數計時。",
+    "選單頂部欄緊湊且半透明。",
+    "緊湊卡片，替補庫8欄，L2/R2切換商店。",
+    "編年史與陣容選單重新整理。",
+    "賽前長按X：直接開球。",
+    "球員資料與「角色」選單更清晰。",
+]

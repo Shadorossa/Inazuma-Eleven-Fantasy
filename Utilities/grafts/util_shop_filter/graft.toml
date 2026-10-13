@@ -1,0 +1,36 @@
+# Shop filter of the mod Utilities (docs/game/modes/tienda-general.md §15; always on, no option row). In the shop tabs
+# whose goods have retail filter categories, the grey end of the tab bar shows the retail filter icon + <CMD_FUNC2>
+# (Tab), like the bank; the key opens the retail item filter window (item_filter_menu, the one of the equipment / kit /
+# emblem / move lists) with the tabs of that kind of goods: equipment -> stat; kits and emblems -> series; special
+# moves -> tension / element / skill type; auras -> element / category. Its accept button keeps in the tab only the
+# rows that pass the engine's own test (utilities.dll, crates/plugins/utilities/src/shop_filter). The window's counter
+# counts the rows of the shop tab. The filter of each tab lasts while the shop is open. Also: the banner at the top
+# right of the shops (shop01_11_view_staff, the SHOP_INFO header picture) stays hidden in every shop. Without
+# utilities.dll: retail shop.
+#
+# Shop side: a HOOK file (docs/framework/lua-hosts.md §7) on the VR-Framework's host of shop_menu_buy, because
+# Inazuma Fantasy's merged shop_menu_buy patch redefines OnShopInit / Step / OnSetupLayer / OnOpenLayer (promoted
+# locals) after Utilities' lua_early root. Window side: an append_block on item_filter_menu (no other mod patches it).
+# Works alone and next to Clean HUD's shop shortcuts (CLEAN_HUD_SS_CO read softly). Was Inazuma Fantasy's graft
+# shop_filter (module office) until 2026-10-08. Built into the mod: menu_assemble.py build --mod utilities.
+name = "util_shop_filter"
+mod = "utilities"
+order = 320
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "UpdateItemCount", "OnFunction", "OnAfterReceiveFilterParam", "Step"]
+description = "Shop filter: Tab at the end of a shop's tab bar opens the game's item filter window for that tab"
+
+[[hooks]]
+stem = "shop_menu_buy"
+src = "util_sf_shop.lua"
+
+[[files]]
+stem = "item_filter_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "util_sf_window.lua"
+  marker = "util_shop_filter window"
+  crc = "none"

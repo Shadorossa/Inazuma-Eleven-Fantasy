@@ -1,0 +1,818 @@
+-- «Configuración de pasivas» of the mod Utilities (utilities.dll, feature passive_config;
+-- docs/game/mechanics/pasivas-configurables.md), player plate part (personal_plate_menu, page 2 «PASIVAS DE EQUIPO»).
+-- SOURCE of the hook file util_pc_plate.lua (research/grafts/passive_config/gen_hooks.py fills the @crc / @ICONS@
+-- placeholders; edit this file, then run the script).
+-- 2026-10-08 rebuilt on the ORIGINAL design of the configurator (Inazuma Fantasy, 2026-09-28: ff3bb93934 ..
+-- 23beba229b), which follows the vanilla game: the team dock's own per-player coroutine hands a session over
+-- (util_pc_dock.lua, UTIL_PCD.Plate, called from the type-9 branch: graft passive_config_dispatch) through the
+-- parameter store: util_pc_edit_req = charaStHdl, util_pc_edit_parent = the dock's parent menu (button guide
+-- owner); this file answers util_pc_edit_done = 1 when the session ends, and the dock's coroutine restores itself.
+-- Session: a cursor on the 5 passive rows (up / down; rows the plugin locks are grey), Aceptar opens the picker on
+-- that row, FUNC3 clears a configured row, Atrás ends. Keys: the game's own menu input (CMND_CHECK_INPUT_CMD on
+-- MENU_CTRL / MENU_CTRL_WITH_ANALOG_MOVE_FOCUS), nothing else. The plate's cards are the retail drawing (only the
+-- row tint / outline / cursor of the original). Slots: the plugin's rules (default = the game's layout: rows 1-3
+-- general passives, rows 4-5 archetype passives; a passive of the wrong kind is never offered nor accepted, a stored
+-- one is kept inactive). [passives] max_slots: a row past the limit is refused with TX_LIMIT.
+-- Picker = Utilities' own list window (research/mods/Utilities/menus/102_team/passive_config.toml over the player's
+-- game files: util_pc_list frame, 6 rows util_pc_row, backdrop util_pc_listbg, filter header util_pc_filter «Z ‹ … › C»)
+-- over the left half: effect icon, description, archetype icon, check mark on the current passive, «Quitar pasiva»
+-- last when the row is configured; L1 / R1 cycle the categories; the focused passive is previewed on the plate row.
+-- Every passive comes from the plugin (CMND_UTIL_PC_*; list rows are pseudo handles 0xE000 + i that it answers in
+-- CMND_GET_CHARA_TEAM_PASSIVE_INFO).
+-- Hook file (graft [[hooks]]): UpdatePassiveLayer, PostStep, OnSetupLayer, OnOpenLayer (and, through UTIL_PCI,
+-- SwapPassiveSkillEffectIcon / UpdateCharaStatusPlateInfoByCharaStHdl) are wrapped with EVT_Host handlers of the
+-- VR-Framework's host of personal_plate_menu; without EVT_Host the globals are wrapped directly. No main-chunk
+-- locals: state lives in UTIL_PPC. Other mods read UTIL_PPC.co (a session runs).
+do
+  UTIL_PPC = UTIL_PPC or {}
+  UTIL_PPC.STEM = "personal_plate_menu"
+  UTIL_PPC.TX_INACTIVE = @crc:utilities.pc_inactive@ -- «configured passives beyond the slot limit are kept, inactive»
+  -- wrap global `name` of this script: make(orig) returns the wrapper (an EVT_Host around handler when the host is
+  -- there, else the global itself, once); create = hook it even when the script does not define it
+  UTIL_PPC.wrapped = UTIL_PPC.wrapped or {}
+  function UTIL_PPC.Wrap(name, make, create)
+    if type(EVT_Host) == "table" and type(EVT_Host.on) == "function" then
+      EVT_Host.on(UTIL_PPC.STEM, name, {id = "utilities.passive_config." .. name, phase = "around", create = create == true,
+        fn = function(nxt, ...)
+          return make(nxt)(...)
+        end})
+      return true
+    end
+    local cur = _ENV[name]
+    if UTIL_PPC.wrapped[name] or (cur == nil and not create) then
+      return UTIL_PPC.wrapped[name] == true
+    end
+    _ENV[name] = make(cur)
+    UTIL_PPC.wrapped[name] = true
+    return true
+  end
+  UTIL_PPC.KEY_REQ = @crc:util_pc_edit_req@
+  UTIL_PPC.KEY_PARENT = @crc:util_pc_edit_parent@
+  UTIL_PPC.KEY_DONE = @crc:util_pc_edit_done@
+  UTIL_PPC.CMD_INFO = @crc:CMND_UTIL_PC_INFO@
+  UTIL_PPC.CMD_SLOT = @crc:CMND_UTIL_PC_SLOT@
+  UTIL_PPC.CMD_LIST = @crc:CMND_UTIL_PC_LIST@
+  UTIL_PPC.CMD_LIST_ID = @crc:CMND_UTIL_PC_LIST_ID@
+  UTIL_PPC.CMD_CAT_NEXT = @crc:CMND_UTIL_PC_CAT_NEXT@
+  UTIL_PPC.CMD_SET = @crc:CMND_UTIL_PC_SET@
+  UTIL_PPC.CMD_SPECIAL = @crc:CMND_UTIL_PC_SPECIAL@
+  UTIL_PPC.TX_QUITAR = @crc:evt_pc_quitar@
+  UTIL_PPC.TX_CHANGE = @crc:evt_pc_g_change@
+  UTIL_PPC.TX_CLEAR = @crc:evt_pc_g_clear@
+  UTIL_PPC.TX_LOCKED = @crc:evt_pc_locked@
+  UTIL_PPC.TX_DUP = @crc:evt_pc_dup@
+  UTIL_PPC.TX_FAIL = @crc:evt_pc_fail@
+  UTIL_PPC.TX_LIMIT = @crc:utilities.pc_limit@ -- «max_slots slots configured already: clear one first»
+  UTIL_PPC.TX_SPECIAL_NONE = @crc:utilities.pc_special_none@ -- Utilities text\keys.toml [<lang>.new] pc_special_none
+  UTIL_PPC.TX_CAT = {
+    [0] = @crc:evt_pc_cat_0@,
+    [1] = @crc:evt_pc_cat_1@,
+    [2] = @crc:evt_pc_cat_2@,
+    [3] = @crc:evt_pc_cat_3@,
+    [4] = @crc:evt_pc_cat_4@,
+    [5] = @crc:evt_pc_cat_5@,
+    [12] = @crc:evt_pc_cat_12@
+  }
+  UTIL_PPC.TX_ELEGIR = 2563379934 -- retail «Elegir»
+  UTIL_PPC.TX_BACK = 430212020 -- the retail «Back» text
+  UTIL_PPC.GL_ENTER = 2750714971 -- <CMD_ENTER>
+  UTIL_PPC.GL_BACK = 1582778933 -- <CMD_BACK>
+  UTIL_PPC.GL_FUNC3 = 3794706590 -- <CMD_FUNC3>
+  UTIL_PPC.K_ENTER = 1981080283
+  UTIL_PPC.K_CLICK = 1651523701
+  UTIL_PPC.K_BACK = 3011112225
+  UTIL_PPC.K_UP = 1197218715
+  UTIL_PPC.K_DOWN = 3259546669
+  UTIL_PPC.K_FUNC3 = 3421673595
+  UTIL_PPC.K_L1 = 3966226594
+  UTIL_PPC.K_R1 = 942075773
+  UTIL_PPC.K_R3 = 3147328756 -- CMD_FUNC6: the player page's Pasivas sub-page key (plate_pages)
+  UTIL_PPC.K_LEFT = 2765147006 -- CMD_LEFT
+  UTIL_PPC.K_RIGHT = 2075023265 -- CMD_RIGHT
+  UTIL_PPC.K_L2 = 1970176280 -- CMD_FUNCL2 (pad LT, keyboard Q): the previous slot (the plate's Q / E pager)
+  UTIL_PPC.K_R2 = 2704260807 -- CMD_FUNCR2 (pad RT, keyboard E): the next slot
+  UTIL_PPC.CTRL = 1332654303 -- MENU_CTRL
+  UTIL_PPC.CTRL2 = 2748927068 -- MENU_CTRL_WITH_ANALOG_MOVE_FOCUS
+  UTIL_PPC.MENU = 1427722143 -- personal_plate_menu
+  UTIL_PPC.ROWS = 811691761 -- soccer11_20_formation_team_passive (the plate's 5 passive rows)
+  -- Utilities' own layers of personal_plate_menu (menus\102_team\passive_config.toml)
+  UTIL_PPC.LIST = @crc:util_pc_list@ -- the list frame (team08_01 without its list view)
+  UTIL_PPC.ITEM = @crc:util_pc_row@ -- 6 list rows (team08_02, taller)
+  UTIL_PPC.BG = @crc:util_pc_listbg@ -- blue backdrop
+  UTIL_PPC.FILTER = @crc:util_pc_filter@ -- filter header: arrows + Z / C glyphs (team01_05 re-laid out)
+  UTIL_PPC.N_CAT = 3660005257 -- _text_list_empty01 of evt_ss_list: the category name, centred between the arrows
+  -- 2026-10-06 (Nacho, screenshot 368): the node has no MenuTextSetting (default style = left / top), so the name sat
+  -- next to the left arrow and high: restyled to fs_28_w_cc_2d0_001_sclw (white 28 px, centred both ways, squeezed
+  -- to the 340 x 60 box), which is centred on the arrows' row (passive_config_build.py FILTER_CY)
+  UTIL_PPC.CAT_STYLE = 3920063359 -- fs_28_w_cc_2d0_001_sclw
+  UTIL_PPC.FILTER_OFF = {3276899644, 3639682320, 2949786046} -- _line_base01, _gtxt_teamdock01, _gtxt_rpg01
+  UTIL_PPC.CURSOR = 2296367164 -- cmn05_01_cursor
+  UTIL_PPC.GUIDE = 1138543975 -- mainmenu01_06_base_button_guide
+  UTIL_PPC.OL1 = 2061463723 -- _passive_base01_ol01
+  UTIL_PPC.LOC = 3313461902 -- cursor attach
+  UTIL_PPC.ROW_HDL = 57344 -- 0xE000
+  UTIL_PPC.VIEW = 9
+  UTIL_PPC.SE_MOVE = 2500047763 -- sy0005
+  UTIL_PPC.SE_OK = 3848881948 -- sy0000
+  UTIL_PPC.SE_NG = 2086672038 -- sy0003
+  UTIL_PPC.SE_BACK = 202039849 -- sy0006
+  UTIL_PPC.co = nil
+
+  function UTIL_PPC.Log(...)
+    if type(PRINT) == "function" then
+      pcall(PRINT, "UTIL passive_config plate", ...)
+    end
+  end
+
+  function UTIL_PPC.Text(id)
+    local ok, s = pcall(funcLuaCommand, 4074371074, id)
+    if ok and type(s) == "string" then
+      return s
+    end
+    return ""
+  end
+
+  -- the game's own menu input, as the original configurator and the retail menus read it
+  function UTIL_PPC.Key(k)
+    local okm, v = pcall(funcLuaCommand, 4265778440, UTIL_PPC.CTRL, k)
+    if okm and v == true then
+      return true
+    end
+    local okn, w = pcall(funcLuaCommand, 4265778440, UTIL_PPC.CTRL2, k)
+    return okn and w == true
+  end
+
+  function UTIL_PPC.SE(id)
+    pcall(funcLuaCommand, 1917805374, id)
+  end
+
+  function UTIL_PPC.Message(id)
+    local s = UTIL_PPC.Text(id)
+    if s == "" then
+      return
+    end
+    funcLuaCommand(2289627655, s, 0, 0, 0, 0, 0, false)
+    while funcLuaCommand(898725220) do
+      coroutine.yield()
+    end
+    while not funcLuaCommand(682363669) do
+      coroutine.yield()
+    end
+  end
+
+  function UTIL_PPC.Guide(entries)
+    local t, g, o, c = {}, {}, {}, {}
+    for k, e in ipairs(entries) do
+      t[k] = e[1]
+      g[k] = e[2]
+      o[k] = k == 1 and 0 or 18
+      c[k] = e[3]
+    end
+    local p = UTIL_PPC.parent or 0
+    pcall(funcLuaMenuCommand, 2209673388, p, UTIL_PPC.GUIDE, t, g, o)
+    pcall(funcLuaMenuCommand, 452337289, p, UTIL_PPC.GUIDE, c)
+  end
+
+  -- archetype categories: 6 + the build (6-11 the game's, 13+ an archetype a mod declares: VRFW's menu_def patch names
+  -- it, docs/framework/archetype.md); 12 is «Recompensas»
+  function UTIL_PPC.CatText(cat)
+    if cat >= 6 and cat ~= 12 and MENU_DEF ~= nil and type(MENU_DEF.GetBuildTypeNameTextIdFromTeamBuildType) == "function" then
+      local id = MENU_DEF.GetBuildTypeNameTextIdFromTeamBuildType(cat - 6)
+      if id ~= nil and id ~= 0 then return id end
+    end
+    return UTIL_PPC.TX_CAT[cat] or UTIL_PPC.TX_CAT[0]
+  end
+
+  function UTIL_PPC.Open(L, k)
+    k = k or 0
+    if funcLuaMenuCommand(262659071, L) and not funcLuaMenuCommand(2640875187, L, k) then
+      funcLuaMenuCommand(629267548, L, k)
+    end
+  end
+
+  -- ---- plate rows -------------------------------------------------------------------------------
+  -- a row the player cannot change (the loader decides: slot 1 without a special passive, slots 2-3 of an Ídolo);
+  -- no session = nothing locked
+  function UTIL_PPC.Locked(i)
+    if (UTIL_PPC.mode or 0) <= 0 or not UTIL_PPC.h then
+      return false
+    end
+    local ok, _, _, locked = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, UTIL_PPC.h, i)
+    return ok and locked == true
+  end
+
+  -- 2026-10-13 (owner: «la 3era pasiva de la lista no me deja cambiarla»): the message of a locked row names its
+  -- cause. CMND_UTIL_PC_SLOT's 6th value: 2 = only the configurable-slot limit ([passives] max_slots of Utilities'
+  -- config.toml; 3 by default opens the slots of the rules' order up to that count, e.g. 2, 4, 5 with Inazuma
+  -- Fantasy's rules, so slot 3 stays closed) -> TX_SLOT_CLOSED; else (Ídolo / Prime / coach rules) TX_LOCKED.
+  UTIL_PPC.TX_SLOT_CLOSED = @crc:utilities.pc_slot_closed@
+  function UTIL_PPC.LockText(i)
+    local ok, _, _, _, _, _, reason = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, UTIL_PPC.h, i)
+    if ok and reason == 2 then
+      UTIL_PPC.Log("locked", i, "slot limit max_slots", UTIL_PPC.max_slots)
+      return UTIL_PPC.TX_SLOT_CLOSED
+    end
+    UTIL_PPC.Log("locked", i, "rules", tostring(reason))
+    return UTIL_PPC.TX_LOCKED
+  end
+
+  -- The special slot's icon tile (slot rules with a special slot only): the sprite the rules declare ([slots]
+  -- special_tile, CMND_UTIL_PC_SPECIAL 3rd value; 0 = the retail tile).
+  UTIL_PPC.ROW_PLATE = 3143733656 -- _passive_base01
+  -- (2026-10-06, player page round 13: the special's title tag over its row, layer evt_pc_title, is removed; the
+  -- special keeps its description)
+  -- the plate's player (the session's handle while configuring)
+  function UTIL_PPC.PlateChara()
+    for _, f in ipairs({GetPersonalPlateSelectCharaStHdlAuto, GetPersonalPlateSelectCharaStHdl}) do
+      if type(f) == "function" then
+        local ok, v = pcall(f)
+        if ok and type(v) == "number" and v ~= 0 then
+          return v
+        end
+      end
+    end
+    return UTIL_PPC.h or 0
+  end
+
+  -- every frame while the passive rows show: the own effect icons of declared passives (UTIL_PCI.EFF_ICON) and the
+  -- special slot's tile when slot rules declare one. The cards themselves stay the retail drawing.
+  function UTIL_PPC.Decorate()
+    local L = UTIL_PPC.ROWS
+    local shown = funcLuaMenuCommand(262659071, L) == true and funcLuaMenuCommand(2640875187, L, 0) == true
+      and funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, 0) == true
+    if not shown then
+      return
+    end
+    local h = UTIL_PPC.PlateChara()
+    for i = 0, 4 do
+      local okp, hasp, pid = pcall(funcLuaCommand, 4081597673, h, i, 0, false, false)
+      if okp and hasp and type(pid) == "number" and pid ~= 0 then
+        local oke, has, eff = pcall(funcLuaCommand, 4054311845, pid)
+        if oke and has then
+          UTIL_PCI.RowEffIcon(L, i, eff)
+        end
+      end
+    end
+    local ok, yes, _, tile, sslot = pcall(funcLuaCommand, UTIL_PPC.CMD_SPECIAL, h)
+    UTIL_PCI.SPECIAL_TILE = (ok and type(tile) == "number") and tile or 0
+    if ok and yes == true and UTIL_PCI.SPECIAL_TILE ~= 0 and type(sslot) == "number" and sslot >= 0 then
+      pcall(funcLuaMenuCommand, 558735651, L, UTIL_PCI.PLATE_TEX, UTIL_PCI.SPECIAL_TILE, UTIL_PCI.PLATE_SLOT, 0, sslot)
+    end
+  end
+
+  UTIL_PPC.Wrap("UpdatePassiveLayer", function(prev)
+    return function(L, i, ...)
+      local r = table.pack(prev(L, i, ...))
+      if L == UTIL_PPC.ROWS then
+        pcall(UTIL_PPC.Decorate)
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  function UTIL_PPC.DrawRows()
+    for i = 0, 4 do
+      if type(UpdatePassiveLayer) == "function" then
+        pcall(UpdatePassiveLayer, UTIL_PPC.ROWS, i)
+      end
+      local locked = UTIL_PPC.Locked(i)
+      local g = locked and 0.6 or 1
+      pcall(funcLuaMenuCommand, 801406373, UTIL_PPC.ROWS, i, 643056375, g, g, g)
+      if locked then
+        pcall(funcLuaMenuCommand, 3781155141, UTIL_PPC.ROWS, i, 2274335502, 0)
+      end
+    end
+  end
+
+  function UTIL_PPC.Mark(sel)
+    for i = 0, 4 do
+      pcall(funcLuaMenuCommand, 3405944500, UTIL_PPC.ROWS, UTIL_PPC.OL1, i == sel, i)
+      pcall(funcLuaMenuCommand, 1774843228, UTIL_PPC.ROWS, i, UTIL_PPC.LOC, i == sel)
+    end
+    pcall(funcLuaMenuCommand, 711242136, UTIL_PPC.CURSOR, 0, sel >= 0)
+  end
+
+  function UTIL_PPC.RowsGuide(sel)
+    local g = {}
+    if not UTIL_PPC.Locked(sel) then
+      g[#g + 1] = {UTIL_PPC.TX_CHANGE, UTIL_PPC.GL_ENTER, UTIL_PPC.K_ENTER}
+      local ok, _, configured = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, UTIL_PPC.h, sel)
+      if ok and configured then
+        g[#g + 1] = {UTIL_PPC.TX_CLEAR, UTIL_PPC.GL_FUNC3, UTIL_PPC.K_FUNC3}
+      end
+    end
+    g[#g + 1] = {UTIL_PPC.TX_BACK, UTIL_PPC.GL_BACK, UTIL_PPC.K_BACK}
+    UTIL_PPC.Guide(g)
+  end
+
+  -- ---- list entries -------------------------------------------------------------------------------
+  -- Rows are taller clones (passive_config_build.py: evt_pc_row, 2-line text box, 6 per page): the page size is the
+  -- row layer's instance count of the setting (9 on a setting without the clones).
+  function UTIL_PPC.Rows()
+    local ok, n = pcall(funcLuaMenuCommand, 1175615627, UTIL_PPC.ITEM)
+    if ok and type(n) == "number" and n >= 1 then
+      return math.min(n, 9)
+    end
+    return 6
+  end
+
+  -- width of a text in "latin characters" (a CJK character counts as 2)
+  function UTIL_PPC.Width(s)
+    local w = 0
+    for ch in string.gmatch(s, "[\1-\127\194-\244][\128-\191]*") do
+      w = w + ((string.byte(ch) >= 224) and 2 or 1)
+    end
+    return w
+  end
+
+  -- One line when it fits the row's text box, else two lines: the retail break (backslash + n) when the text has
+  -- one, otherwise a break at the space nearest to the middle (CJK: at the middle character).
+  UTIL_PPC.LINE = 58
+  function UTIL_PPC.Fit(s)
+    local flat = string.gsub(string.gsub(s, "\\n", " "), "\n", " ")
+    flat = string.gsub(flat, "  +", " ")
+    local w = UTIL_PPC.Width(flat)
+    if w <= UTIL_PPC.LINE then
+      return flat
+    end
+    local brk = string.find(s, "\\n", 1, true)
+    if brk ~= nil then
+      local a = string.sub(s, 1, brk - 1)
+      local b = string.gsub(string.gsub(string.sub(s, brk + 2), "\\n", " "), "\n", " ")
+      if UTIL_PPC.Width(a) <= UTIL_PPC.LINE + 4 and UTIL_PPC.Width(b) <= UTIL_PPC.LINE + 4 then
+        return a .. "\\n" .. b
+      end
+    end
+    local half, best, bestd, pos, cw = w / 2, nil, nil, 1, 0
+    local cut = nil
+    for ch in string.gmatch(flat, "[\1-\127\194-\244][\128-\191]*") do
+      if ch == " " then
+        local d = math.abs(cw - half)
+        if bestd == nil or d < bestd then
+          best, bestd = pos, d
+        end
+      end
+      cw = cw + ((string.byte(ch) >= 224) and 2 or 1)
+      pos = pos + #ch
+      if cut == nil and cw >= half then
+        cut = pos
+      end
+    end
+    if best ~= nil and bestd <= half / 2 then
+      return string.sub(flat, 1, best - 1) .. "\\n" .. string.sub(flat, best + 1)
+    end
+    if cut ~= nil and cut <= #flat then
+      return string.sub(flat, 1, cut - 1) .. "\\n" .. string.sub(flat, cut)
+    end
+    return flat
+  end
+
+  -- text / icons of list row i (pseudo handle), as UpdatePassiveSkillLayerInfo builds a passive row
+  function UTIL_PPC.Entry(i, current)
+    local e = {idx = i, hdl = UTIL_PPC.ROW_HDL + i, current = current, text = "", icon = 0, build = -1}
+    local ok, _, id = pcall(funcLuaCommand, 4081597673, e.hdl, 0, 0, true, false)
+    local ok1, _, value = pcall(funcLuaCommand, 4081597673, e.hdl, 0, 1, true, false)
+    if not ok or type(id) ~= "number" or id == 0 then
+      return e
+    end
+    e.id = id
+    local okE, hasE, eff = pcall(funcLuaCommand, 4054311845, id)
+    eff = (okE and hasE and type(eff) == "number") and eff or 0
+    local dec, disp = 0, (ok1 and type(value) == "number") and value or 0
+    if MENU_DEF ~= nil and type(MENU_DEF.CalcPassiveEffectNeedDecimalDigitAndDisplayValue) == "function" then
+      local okC, d1, d2 = pcall(MENU_DEF.CalcPassiveEffectNeedDecimalDigitAndDisplayValue, eff, disp)
+      if okC then
+        dec, disp = d1, d2
+      end
+    end
+    local okT, hasT, s = pcall(funcLuaCommand, 1136033383, id, 0)
+    if okT and hasT and type(s) == "string" then
+      local okV, r = pcall(funcLuaCommand, 910683996, s, "VALUE", disp, 0, 2, false, dec)
+      if okV and type(r) == "string" then
+        s = r
+      end
+      e.text = UTIL_PPC.Fit(s)
+    end
+    local okI, _, itype = pcall(funcLuaCommand, 551963711, eff, 2, 0)
+    if okI and type(itype) == "number" and type(GeTeamBuffIconTextureName) == "function" then
+      e.icon = UTIL_PCI.EffIcon(eff) or GeTeamBuffIconTextureName(itype) or 0
+    end
+    local okB, _, nb = pcall(funcLuaCommand, 551963711, eff, 3)
+    if okB and type(nb) == "number" and nb > 0 then
+      local okB2, _, b = pcall(funcLuaCommand, 551963711, eff, 4, 0)
+      if okB2 and type(b) == "number" then
+        e.build = b
+      end
+    end
+    return e
+  end
+
+  -- the slot's kind (CMND_UTIL_PC_SLOT 5th value): 0 any, 1 special, 2 general, 3 archetype
+  function UTIL_PPC.Kind(slot)
+    local ok, _, _, _, _, kind = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, UTIL_PPC.h, slot)
+    return (ok and type(kind) == "number") and kind or 0
+  end
+
+  function UTIL_PPC.Build(slot, cat)
+    local ok, n, used, cur = pcall(funcLuaCommand, UTIL_PPC.CMD_LIST, UTIL_PPC.h, slot, cat)
+    if not ok or type(n) ~= "number" then
+      n, used, cur = 0, 0, -1
+    end
+    if type(cur) ~= "number" then
+      cur = -1
+    end
+    local list, init = {}, 0
+    local special = UTIL_PPC.Kind(slot) == 1
+    for i = 0, n - 1 do
+      list[#list + 1] = UTIL_PPC.Entry(i, i == cur)
+      list[#list].special = special
+      if i == cur then
+        init = i
+      end
+    end
+    local okS, _, configured = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, UTIL_PPC.h, slot)
+    if okS and configured then
+      list[#list + 1] = {idx = -1, clear = true, text = UTIL_PPC.Text(UTIL_PPC.TX_QUITAR), icon = 0, build = -1}
+    end
+    return list, (type(used) == "number" and used or cat), init
+  end
+
+  -- one team08_02 row, as the skill-slot screen's custom passive picker draws it
+  function UTIL_PPC.ListRow(k, e, focused)
+    local L = UTIL_PPC.ITEM
+    for _, m in ipairs({1697431574, 4215821749}) do
+      funcLuaMenuCommand(3405944500, L, m, false, k)
+    end
+    funcLuaMenuCommand(3405944500, L, 2334302522, focused, k)
+    funcLuaMenuCommand(3405944500, L, 2022529787, not focused, k)
+    funcLuaMenuCommand(1083631230, L, 931545948, e.text or "", k)
+    funcLuaMenuCommand(1083631230, L, 3705682548, e.text or "", k)
+    funcLuaMenuCommand(2735666188, L, 931545948, focused, k)
+    funcLuaMenuCommand(2735666188, L, 3705682548, not focused, k)
+    -- v4: the plate row's icon block (evt_pc_row quads, passive_config_build.py ROW_QUADS): dark rounded square
+    -- (teambuff_base01, or teambuff_base02 with a badge, as retail SwapPassiveSkillEffectIcon), effect icon on it,
+    -- archetype badge (soccer11_20 atlas, as the plate) on its lower right corner
+    local icon = e.icon ~= nil and e.icon ~= 0
+    local build = e.build ~= nil and e.build >= 0 and type(GeTeamBuffBuildTypeIconTextureName) == "function"
+    UTIL_PCI.RowBacking(L, k, icon, build, e.special)
+    funcLuaMenuCommand(3405944500, L, 2164615260, icon, k)
+    if icon then
+      pcall(funcLuaMenuCommand, 558735651, L, 2301895383, e.icon, 566439826, 0, k)
+    end
+    funcLuaMenuCommand(3405944500, L, 2384755812, build, k)
+    if build then
+      pcall(funcLuaMenuCommand, 558735651, L, UTIL_PCI.PLATE_TEX, GeTeamBuffBuildTypeIconTextureName(e.build), 669321680, 0, k)
+    end
+    funcLuaMenuCommand(3405944500, L, 2309656400, e.current == true, k)
+    funcLuaMenuCommand(2158717427, L, 442049775, false, k)
+    funcLuaMenuCommand(2158717427, L, 3426045766, false, k)
+    funcLuaMenuCommand(1233047821, L, k, 3334923667, false)
+    funcLuaMenuCommand(1233047821, L, k, 3974820126, false)
+  end
+
+  -- filter header above the list: «Z ‹ <category> › C» (shown with the list, its text follows the category)
+  function UTIL_PPC.Filter(show, cat)
+    local L = UTIL_PPC.FILTER
+    if show then
+      pcall(UTIL_PPC.Open, L)
+      for _, m in ipairs(UTIL_PPC.FILTER_OFF) do
+        pcall(funcLuaMenuCommand, 3405944500, L, m, false, 0)
+      end
+      pcall(funcLuaMenuCommand, 2333948100 --[[text style]], UTIL_PPC.LIST, 0, UTIL_PPC.N_CAT, UTIL_PPC.CAT_STYLE)
+      pcall(funcLuaMenuCommand, 1083631230, UTIL_PPC.LIST, UTIL_PPC.N_CAT, UTIL_PPC.Text(UTIL_PPC.CatText(cat or 0)), 0)
+    end
+    pcall(funcLuaMenuCommand, 711242136, L, 0, show)
+    pcall(funcLuaMenuCommand, 3405944500, UTIL_PPC.LIST, UTIL_PPC.N_CAT, show, 0)
+  end
+
+  function UTIL_PPC.ListShow(show, list, first, sel)
+    if not show then
+      UTIL_PPC.Filter(false)
+    end
+    funcLuaMenuCommand(711242136, UTIL_PPC.BG, 0, show)
+    if show then
+      pcall(funcLuaMenuCommand, 558735651, UTIL_PPC.BG, 2311471971, 515167937, 3512665951, 0, 0)
+    end
+    UTIL_PPC.Open(UTIL_PPC.LIST)
+    funcLuaMenuCommand(711242136, UTIL_PPC.LIST, 0, show)
+    for k = 0, UTIL_PPC.VIEW - 1 do
+      local e = show and list[first + k + 1] or nil
+      UTIL_PPC.Open(UTIL_PPC.ITEM, k)
+      if e ~= nil then
+        pcall(UTIL_PPC.ListRow, k, e, first + k == sel)
+      end
+      funcLuaMenuCommand(711242136, UTIL_PPC.ITEM, k, e ~= nil)
+    end
+  end
+
+  -- the focused passive on the plate row being edited (retail row look: icon, full description, archetype icons)
+  function UTIL_PPC.Preview(slot, e)
+    if type(UpdatePassiveSkillLayerInfo) ~= "function" then
+      return
+    end
+    if e == nil then
+      pcall(UpdatePassiveLayer, UTIL_PPC.ROWS, slot)
+    elseif e.clear then
+      pcall(UpdatePassiveSkillLayerInfo, UTIL_PPC.ROWS, slot, UTIL_PPC.h, slot, nil, nil, true, true)
+    else
+      pcall(UpdatePassiveSkillLayerInfo, UTIL_PPC.ROWS, 0, e.hdl, slot, nil, nil, true, false)
+    end
+  end
+
+  -- the category and its Z / C keys are in the filter header (UTIL_PPC.Filter)
+  function UTIL_PPC.ListGuide(cat)
+    UTIL_PPC.Guide({{UTIL_PPC.TX_ELEGIR, UTIL_PPC.GL_ENTER, UTIL_PPC.K_ENTER},
+      {UTIL_PPC.TX_BACK, UTIL_PPC.GL_BACK, UTIL_PPC.K_BACK}})
+  end
+
+  -- the result of a set request: sound, header, message
+  function UTIL_PPC.SetResult(slot, ok, code)
+    if ok then
+      UTIL_PPC.SE(UTIL_PPC.SE_OK)
+      UTIL_PPC.Header()
+      return
+    end
+    UTIL_PPC.SE(UTIL_PPC.SE_NG)
+    UTIL_PPC.Preview(slot, nil)
+    if code == 2 then
+      UTIL_PPC.Message(UTIL_PPC.TX_LOCKED)
+    elseif code == 7 then
+      UTIL_PPC.Message(UTIL_PPC.TX_LIMIT)
+    elseif code == 4 then
+      UTIL_PPC.Message(UTIL_PPC.TX_DUP)
+    else
+      UTIL_PPC.Message(UTIL_PPC.TX_FAIL)
+    end
+  end
+
+  -- the picker on row `slot`; returns after a choice or Atrás (the original's loop)
+  function UTIL_PPC.Pick(slot)
+    UTIL_PPC.VIEW = UTIL_PPC.Rows()
+    local cat = 0
+    local list, init
+    list, cat, init = UTIL_PPC.Build(slot, cat)
+    if #list == 0 and UTIL_PPC.Kind(slot) == 1 then
+      -- a special slot (declared slot rules) with no special for this player: one row saying so
+      local none = UTIL_PPC.Text(UTIL_PPC.TX_SPECIAL_NONE)
+      list = {{idx = -1, none = true, text = none, icon = 0, build = -1, special = true}}
+      init = 0
+    end
+    if #list == 0 then
+      UTIL_PPC.SE(UTIL_PPC.SE_NG)
+      return
+    end
+    local sel = init
+    local first = math.max(0, math.min(sel, #list - UTIL_PPC.VIEW))
+    UTIL_PPC.Mark(-1)
+    UTIL_PPC.ListShow(true, list, first, sel)
+    UTIL_PPC.Filter(true, cat)
+    UTIL_PPC.Preview(slot, list[sel + 1])
+    UTIL_PPC.ListGuide(cat)
+    coroutine.yield()
+    local chosen = nil
+    while true do
+      coroutine.yield()
+      local moved = false
+      if UTIL_PPC.Key(UTIL_PPC.K_BACK) then
+        UTIL_PPC.SE(UTIL_PPC.SE_BACK)
+        break
+      elseif UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK) then
+        chosen = list[sel + 1]
+        break
+      elseif UTIL_PPC.Key(UTIL_PPC.K_DOWN) and sel < #list - 1 then
+        sel = sel + 1
+        if sel >= first + UTIL_PPC.VIEW then
+          first = first + 1
+        end
+        moved = true
+      elseif UTIL_PPC.Key(UTIL_PPC.K_UP) and sel > 0 then
+        sel = sel - 1
+        if sel < first then
+          first = first - 1
+        end
+        moved = true
+      elseif UTIL_PPC.Key(UTIL_PPC.K_L1) or UTIL_PPC.Key(UTIL_PPC.K_R1) then
+        local dir = UTIL_PPC.Key(UTIL_PPC.K_L1) and -1 or 1
+        local ok, c = pcall(funcLuaCommand, UTIL_PPC.CMD_CAT_NEXT, UTIL_PPC.h, slot, cat, dir)
+        if ok and type(c) == "number" and c ~= cat then
+          local l2, c2 = UTIL_PPC.Build(slot, c)
+          if #l2 > 0 then
+            list, cat = l2, c2
+            sel = 0
+            for k, e in ipairs(list) do
+              if e.current then
+                sel = k - 1
+              end
+            end
+            first = math.max(0, math.min(sel, #list - UTIL_PPC.VIEW))
+            UTIL_PPC.Filter(true, cat)
+            moved = true
+          end
+        end
+      end
+      if moved then
+        UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
+        UTIL_PPC.ListShow(true, list, first, sel)
+        UTIL_PPC.Preview(slot, list[sel + 1])
+      end
+    end
+    UTIL_PPC.ListShow(false, list, first, sel)
+    if chosen ~= nil and not chosen.none then
+      local id = 0
+      if not chosen.clear then
+        id = funcLuaCommand(UTIL_PPC.CMD_LIST_ID, chosen.idx)
+      end
+      local ok, code = funcLuaCommand(UTIL_PPC.CMD_SET, UTIL_PPC.h, slot, id)
+      UTIL_PPC.Log("set", UTIL_PPC.h, slot, id, ok, code)
+      UTIL_PPC.SetResult(slot, ok, code)
+    else
+      UTIL_PPC.Preview(slot, nil)
+    end
+    coroutine.yield()
+  end
+
+  -- the session (the original's loop): a cursor on the 5 rows
+  function UTIL_PPC.Session(h)
+    local ok, got, mode, _, _, max_slots, inactive = pcall(funcLuaCommand, UTIL_PPC.CMD_INFO, h)
+    if not ok or got ~= true or type(mode) ~= "number" or mode <= 0 then
+      return
+    end
+    UTIL_PPC.h, UTIL_PPC.mode = h, mode
+    UTIL_PPC.max_slots = type(max_slots) == "number" and max_slots or 5
+    UTIL_PPC.Log("session", h, "mode", mode, "max_slots", UTIL_PPC.max_slots, "inactive", inactive)
+    if type(UpdatePersonalPlatePage) == "function" then
+      pcall(UpdatePersonalPlatePage, 2)
+    end
+    coroutine.yield()
+    UTIL_PPC.DrawRows()
+    if type(inactive) == "number" and inactive > 0 then
+      -- stored choices the current rules do not apply (more than max_slots, or of the wrong kind): kept, grey
+      UTIL_PPC.Message(UTIL_PPC.TX_INACTIVE)
+    end
+    local sel = 0
+    while sel < 4 and UTIL_PPC.Locked(sel) do
+      sel = sel + 1
+    end
+    UTIL_PPC.slot = sel
+    UTIL_PPC.Mark(sel)
+    UTIL_PPC.RowsGuide(sel)
+    coroutine.yield()
+    while true do
+      coroutine.yield()
+      if UTIL_PPC.Key(UTIL_PPC.K_BACK) then
+        UTIL_PPC.SE(UTIL_PPC.SE_BACK)
+        break
+      elseif UTIL_PPC.Key(UTIL_PPC.K_DOWN) and sel < 4 then
+        sel = sel + 1
+        UTIL_PPC.slot = sel
+        UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
+        UTIL_PPC.Mark(sel)
+        UTIL_PPC.RowsGuide(sel)
+      elseif UTIL_PPC.Key(UTIL_PPC.K_UP) and sel > 0 then
+        sel = sel - 1
+        UTIL_PPC.slot = sel
+        UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
+        UTIL_PPC.Mark(sel)
+        UTIL_PPC.RowsGuide(sel)
+      elseif UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK) then
+        if UTIL_PPC.Locked(sel) then
+          UTIL_PPC.SE(UTIL_PPC.SE_NG)
+          UTIL_PPC.Message(UTIL_PPC.LockText(sel))
+        else
+          UTIL_PPC.SE(UTIL_PPC.SE_OK)
+          UTIL_PPC.Pick(sel)
+          UTIL_PPC.DrawRows()
+          UTIL_PPC.Mark(sel)
+        end
+        UTIL_PPC.RowsGuide(sel)
+      elseif UTIL_PPC.Key(UTIL_PPC.K_FUNC3) then
+        local okS, _, configured, locked, stored = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, h, sel)
+        -- a configured row, or an inactive stored choice (wrong kind / past the limit): FUNC3 clears it
+        if okS and not locked and (configured or (type(stored) == "number" and stored ~= 0)) then
+          local okC, code = funcLuaCommand(UTIL_PPC.CMD_SET, h, sel, 0)
+          UTIL_PPC.SetResult(sel, okC, code)
+          UTIL_PPC.DrawRows()
+          UTIL_PPC.Mark(sel)
+          UTIL_PPC.RowsGuide(sel)
+        else
+          UTIL_PPC.SE(UTIL_PPC.SE_NG)
+        end
+      end
+    end
+    UTIL_PPC.slot = nil
+    UTIL_PPC.Mark(-1)
+    UTIL_PPC.mode = 0
+    UTIL_PPC.DrawRows()
+  end
+
+  function UTIL_PPC.Finish()
+    UTIL_PPC.co = nil
+    UTIL_PPC.slot = nil
+    pcall(UTIL_PPC.Mark, -1)
+    pcall(UTIL_PPC.ListShow, false, {}, 0, 0)
+    UTIL_PPC.Log("session end")
+    funcLuaCommand(3363400568, UTIL_PPC.KEY_DONE)
+    funcLuaCommand(3860611758, UTIL_PPC.KEY_DONE, 0, 1, 1)
+  end
+
+  -- every frame: start a requested session, or run the current one
+  function UTIL_PPC.Poll()
+    UTIL_PPC.HookHeader()
+    if UTIL_PPC.co ~= nil then
+      local ok, err = coroutine.resume(UTIL_PPC.co)
+      if not ok then
+        UTIL_PPC.Log("session error", err)
+        UTIL_PPC.Finish()
+      elseif coroutine.status(UTIL_PPC.co) == "dead" then
+        UTIL_PPC.Finish()
+      end
+      return
+    end
+    local okH, has = pcall(funcLuaCommand, 2947612279, UTIL_PPC.KEY_REQ)
+    if not okH or not has then
+      return
+    end
+    local h = funcLuaCommand(3522198769, UTIL_PPC.KEY_REQ)
+    funcLuaCommand(3363400568, UTIL_PPC.KEY_REQ)
+    UTIL_PPC.parent = 0
+    if funcLuaCommand(2947612279, UTIL_PPC.KEY_PARENT) then
+      UTIL_PPC.parent = funcLuaCommand(3522198769, UTIL_PPC.KEY_PARENT)
+      funcLuaCommand(3363400568, UTIL_PPC.KEY_PARENT)
+    end
+    UTIL_PPC.co = coroutine.create(UTIL_PPC.Session)
+    local ok, err = coroutine.resume(UTIL_PPC.co, h)
+    if not ok then
+      UTIL_PPC.Log("session error", err)
+      UTIL_PPC.Finish()
+    elseif coroutine.status(UTIL_PPC.co) == "dead" then
+      UTIL_PPC.Finish()
+    end
+  end
+
+  UTIL_PPC.Wrap("PostStep", function(prev)
+    return function(...)
+      local r
+      if prev then
+        r = prev(...)
+      end
+      pcall(UTIL_PPC.Poll)
+      pcall(UTIL_PPC.Decorate)
+      return r
+    end
+  end, true)
+
+@ICONS@
+  UTIL_PCI.Install(UTIL_PPC.Wrap)
+
+  -- redraw the header after a change, as the plate's own OnOpenLayer does (UpdateCharaStatusPlateInfo(n11): the
+  -- handle the plate holds, GetPersonalPlateSelectCharaStHdl): retail icon (field 36, derived live) + ours
+  function UTIL_PPC.Header()
+    if type(UpdateCharaStatusPlateInfo) ~= "function" then
+      return
+    end
+    local h = nil
+    if type(GetPersonalPlateSelectCharaStHdl) == "function" then
+      local ok, v = pcall(GetPersonalPlateSelectCharaStHdl)
+      if ok and type(v) == "number" and v ~= 0 then
+        h = v
+      end
+    end
+    h = h or UTIL_PPC.h
+    if h ~= nil then
+      pcall(UpdateCharaStatusPlateInfo, h)
+    end
+  end
+
+  function UTIL_PPC.HookHeader()
+    UTIL_PCI.Install(UTIL_PPC.Wrap)
+  end
+
+  -- the picker layers start hidden, above the team dock
+  UTIL_PPC.Wrap("OnSetupLayer", function(prev)
+    return function(a1, a2, ...)
+      if a1 == UTIL_PPC.BG or a1 == UTIL_PPC.LIST or a1 == UTIL_PPC.ITEM or a1 == UTIL_PPC.FILTER then
+        local prio = (a1 == UTIL_PPC.BG and 449) or (a1 == UTIL_PPC.LIST and 450) or (a1 == UTIL_PPC.FILTER and 452) or 451
+        funcLuaMenuCommand(1491630496, a1, a2, prio, true)
+        if a1 == UTIL_PPC.LIST then
+          funcLuaMenuCommand(2158717427, a1, 1839509013, false, a2)
+          funcLuaMenuCommand(2158717427, a1, 1060758565, false, a2)
+          funcLuaMenuCommand(3405944500, a1, 3660005257, false, a2)
+        end
+        funcLuaMenuCommand(711242136, a1, a2, false)
+        return
+      end
+      return prev(a1, a2, ...)
+    end
+  end)
+  UTIL_PPC.Wrap("OnOpenLayer", function(prev)
+    return function(a1, a2, ...)
+      if a1 == UTIL_PPC.BG or a1 == UTIL_PPC.LIST or a1 == UTIL_PPC.ITEM or a1 == UTIL_PPC.FILTER then
+        if UTIL_PPC.co == nil then
+          funcLuaMenuCommand(711242136, a1, a2, false)
+        end
+        return
+      end
+      return prev(a1, a2, ...)
+    end
+  end)
+end

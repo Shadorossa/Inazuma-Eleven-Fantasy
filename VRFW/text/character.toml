@@ -1,0 +1,69 @@
+schema = "vr_framework.text_key/1"
+# Texts of the character part (format of the text engine: research/mods/text_engine/README.md). Ids
+# crc32("character_engine.<name>"). The sentences of a recruit trial with a match challenge (`challenge = …` in a
+# character's [character.recruit] trials: the office line and the creator), {secs} = seconds, {count} = times / goals.
+# The part reads them from here (crates/plugins/character_engine/src/decl.rs `challenge_text`).
+default_lang = "en"
+
+[ja.new]
+challenge_hold = "ボールを{secs}秒間キープする"
+challenge_goals = "{count}ゴールを決める"
+challenge_goals_timed = "{secs}秒以内に{count}ゴールを決める"
+challenge_steals = "ボールを{count}回奪う"
+challenge_steals_timed = "{secs}秒以内にボールを{count}回奪う"
+
+[en.new]
+challenge_hold = "Keep the ball {secs} s without losing it"
+challenge_goals = "Score {count} goals"
+challenge_goals_timed = "Score {count} goals within {secs} s"
+challenge_steals = "Win the ball {count} times"
+challenge_steals_timed = "Win the ball {count} times within {secs} s"
+
+[es.new]
+challenge_hold = "Mantén el balón {secs} s sin perderlo"
+challenge_goals = "Marca {count} goles"
+challenge_goals_timed = "Marca {count} goles antes de {secs} s"
+challenge_steals = "Roba el balón {count} veces"
+challenge_steals_timed = "Roba el balón {count} veces antes de {secs} s"
+
+[fr.new]
+challenge_hold = "Garde le ballon {secs} s sans le perdre"
+challenge_goals = "Marque {count} buts"
+challenge_goals_timed = "Marque {count} buts en moins de {secs} s"
+challenge_steals = "Récupère le ballon {count} fois"
+challenge_steals_timed = "Récupère le ballon {count} fois en moins de {secs} s"
+
+[de.new]
+challenge_hold = "Behalte den Ball {secs} s, ohne ihn zu verlieren"
+challenge_goals = "Erziele {count} Tore"
+challenge_goals_timed = "Erziele {count} Tore in {secs} s"
+challenge_steals = "Erobere den Ball {count}-mal"
+challenge_steals_timed = "Erobere den Ball {count}-mal in {secs} s"
+
+[it.new]
+challenge_hold = "Tieni palla {secs} s senza perderla"
+challenge_goals = "Segna {count} gol"
+challenge_goals_timed = "Segna {count} gol entro {secs} s"
+challenge_steals = "Ruba palla {count} volte"
+challenge_steals_timed = "Ruba palla {count} volte entro {secs} s"
+
+[pt.new]
+challenge_hold = "Mantém a bola {secs} s sem a perder"
+challenge_goals = "Marca {count} golos"
+challenge_goals_timed = "Marca {count} golos em {secs} s"
+challenge_steals = "Recupera a bola {count} vezes"
+challenge_steals_timed = "Recupera a bola {count} vezes em {secs} s"
+
+[zh_hans.new]
+challenge_hold = "持球{secs}秒不丢球"
+challenge_goals = "打进{count}球"
+challenge_goals_timed = "在{secs}秒内打进{count}球"
+challenge_steals = "抢断{count}次"
+challenge_steals_timed = "在{secs}秒内抢断{count}次"
+
+[zh_hant.new]
+challenge_hold = "持球{secs}秒不丟球"
+challenge_goals = "打進{count}球"
+challenge_goals_timed = "在{secs}秒內打進{count}球"
+challenge_steals = "抄截{count}次"
+challenge_steals_timed = "在{secs}秒內抄截{count}次"

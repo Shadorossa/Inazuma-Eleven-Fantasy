@@ -1,0 +1,157 @@
+# Match HUD layout (docs/game/ui-redesign.md §11.1z5): display-only moves / scales of the command-action HUD and the
+# team buff bar. Every action keeps working; only layers are hidden, moved, scaled or re-skinned.
+#   * soccer_command_action_menu / soccer_battle_command_action_menu (both INCLUDE soccer_command_action_menu_inc):
+#     «RT Esprintar» / «RT + B Esprint agresivo» hidden (wrappers of SetDashButtonGuideStatus /
+#     SetDashAttackButtonGuideStatus, called by name by the engine every frame); «¡Subid!» (soccer08_17_go_ahead_guide:
+#     layer moved / scaled, its text sprite untouched) under «Pase», 0.85, square «Chute» plate;
+#     «RB + LB diana» (soccer08_19b) at 0.7 with its plate alone 1.18 larger; «RB + rayo» (soccer08_17b) on the same
+#     square plate at 0.525, as tall as «RB + LB», left-aligned with it by the cross; «RB + rayo» move list guide
+#     (soccer08_19, clean_hud 1.9.0) on the rectangular cmd_base01 plate, 0.85, 40 left; LB tactics ring (soccer08_14) mirrored to
+#     the left edge, and while the tactics menu that LB opens is up, the command cluster (soccer08_07 + attached
+#     plates) and the coach bust (soccer08_13) sit mirrored on the left. Positions / scales re-applied every PostStep.
+#     Move list open (UpdateAnimeMoveOffsetCmdBase, engine by name): the retail slide of the cross (set vs, type
+#     offset, _pos_vs01 -330) held at rest: the open menu keeps the closed anchor, the cards unfold on its left.
+#   * soccer_inplay_menu / soccer_battle_inplay_menu: «Modo Comandante» (+ bench / spectator guides, soccer00_67) at the
+#     top centre under the scoreboard with the square blue plate; its error bubble under them. Visibility untouched
+#     (retail decides it).
+#     Also on soccer_training_inplay_menu / soccer_zigzag_dribble_training_inplay_menu (twins: the loader may give the
+#     match VM either folder) and soccer_setplay_prev_menu (restart menu after a goal).
+#   * soccer_area_title_menu: the big «FOCO» / «DISPUTA» banner (soccer00_14) scaled / aligned to «ZONA DE ÁREA»; in
+#     the shot zone that layer shows the «ZONA DE ÁREA» sprite itself (ui_clean's zone_hud hide off in that VM).
+#   * soccer_zone_menu: «¡Activación del Área!» banner lower (clear of the LB ring).
+#   * Time line (clean_hud 1.8.0): a thin line under the «ZONA DE ÁREA» / «FOCO» / «DISPUTA» banner that shrinks
+#     as the time runs out, drawn in soccer_area_title_menu on the banner's spare quad _speed01 (2026-10-07: blue
+#     gradient with a slanted end, clean_hud's own evt_hl_timeline.g4tx, the fixed-size quad slides off the left edge;
+#     research/scripts/clean_hud_zone_timeline_build.py). The rate comes through the parameter store (per-mille) from the menu that owns
+#     the timer: soccer_zone_menu (UpdateZoneLimitTimer), soccer_focus_battle_menu (the focus stopwatch's rate,
+#     UpdateFocusCountDownTimer / UpdateSkillDecideCountDownTimer), soccer_scramble_menu (the gauges' rings, Step).
+#   * command menus also: «RT Acelerar cursor» never drawn, «RB + LB» hidden in the zone, tactics plates narrower.
+#   * soccer_team_buff_icon_list_menu (bytecode file: bytecode_child source): the buff / aura icon row centred at the
+#     bottom of the screen, re-centred on the current icon count (grows symmetrically). ui_clean_hud's 0.85 icon scale
+#     is kept (read from EVT_UI_FLAGS).
+# Only wrappers (rawget / rawset) of retail globals; engine calls only inside callbacks. Constants at the top of each
+# snippet. Part of the standalone mod clean_hud («Interfaz limpia», docs/app/modloader-split.md §6): retail layers only,
+# no global of another mod is read. Not touched here: SetGoAheadButtonGuideStatus / UpdateTextureAttachButtonGuide (text
+# sprite of the go-ahead guide), the minimap (ui_clean_minimap), the visibility of «Modo Comandante».
+# Run order: these wrappers must run AFTER any patch that REPLACES OnInit / OnSetupLayer / PostStep of the same menu
+# without chaining (a replacement drops them); with the ModLoader 1.0.0 the global evt_loader\lua_patches folder runs
+# before every mod, see docs/app/modloader-split.md §6.
+name = "hud_layout"
+order = 910
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "PostStep", "Step", "UpdateAnimeMoveOffsetCmdBase", "SetupAreaTitle", "SetupZoneExecChara", "SetDashButtonGuideStatus",
+         "SetDashAttackButtonGuideStatus", "SetCursorSpeedUpButtonGuideStatus", "SetRunAuraSlotButtonGuideStatus",
+         "SetAttachButtonGuideStatus", "UpdateZoneLimitTimer",
+         "UpdateFocusCountDownTimer", "UpdateSkillDecideCountDownTimer"]
+description = "hud_layout: match HUD guides moved / scaled, dash guides hidden, LB ring mirrored left, buff row centred"
+
+[[files]]
+stem = "soccer_command_action_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_cmd.lua"
+  marker = "hud_layout"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_command_action_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_cmd.lua"
+  marker = "hud_layout"
+  crc = "none"
+
+[[files]]
+stem = "soccer_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_inplay.lua"
+  marker = "hud_layout inplay"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_inplay.lua"
+  marker = "hud_layout inplay"
+  crc = "none"
+
+[[files]]
+stem = "soccer_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_inplay.lua"
+  marker = "hud_layout inplay"
+  crc = "none"
+
+[[files]]
+stem = "soccer_zigzag_dribble_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_inplay.lua"
+  marker = "hud_layout inplay"
+  crc = "none"
+
+[[files]]
+stem = "soccer_setplay_prev_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_inplay.lua"
+  marker = "hud_layout inplay"
+  crc = "none"
+
+[[files]]
+stem = "soccer_zone_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_zone.lua"
+  marker = "hud_layout zone"
+  crc = "none"
+
+[[files]]
+stem = "soccer_focus_battle_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_focus.lua"
+  marker = "hud_layout focus"
+  crc = "none"
+
+[[files]]
+stem = "soccer_scramble_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_scramble.lua"
+  marker = "hud_layout scramble"
+  crc = "none"
+
+[[files]]
+stem = "soccer_area_title_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hud_layout_area_title.lua"
+  marker = "hud_layout area_title"
+  crc = "none"
+
+[[files]]
+stem = "soccer_team_buff_icon_list_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "hud_layout_buff.lua"
+  marker = "hud_layout buff"
+  crc = "none"

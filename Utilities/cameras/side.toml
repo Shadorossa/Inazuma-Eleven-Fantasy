@@ -1,0 +1,23 @@
+schema = "vr_framework.match_camera/1"
+# Utilities' match cameras (VR-Framework match camera service, docs/framework/camera.md). The framework only applies
+# a preset while a mod requests it: Utilities' Lua (graft research/grafts/camera_side) requests `utilities.side` at
+# every match start when «Cámara del partido» (row utilities.camera, options.toml) is «Lateral», and releases it when
+# the row is «Original». Restart the game after a change of this file.
+
+# «Lateral»: the touchline broadcast camera (docs/game/media/camaras-fifa.md §7). Written into the in-play chase
+# camera rows (58-61) and the rows of the retail camera-distance settings (0-3 / 12-15); each row keeps its look-ahead
+# offsets and interpolation rates. About 45 m of pitch visible across.
+[[preset]]
+name = "side"
+kind = "chase_rows"
+yaw = 90.0            # 90 = the usual touchline, 270 = the other one
+pitch = 28.0          # degrees above the horizontal
+distance = 40.0       # metres from the look point (retail 32)
+fov = 35.0            # vertical field of view (retail 45)
+# false = the pitch range -180..180 of Utilities 1.0.0: the in-play updater (0x153A120) sweeps the pitch with the
+# ball's depth, which is the low view from the opposite touchline Nacho calls «Lateral» (camaras-fifa.md §9.5).
+# true would hold the pitch above at 28 degrees.
+fixed_pitch = false
+# the retail camera option forced to "H" / "H" while «Lateral» holds (body "V" rotates the whole frame 90 degrees,
+# offence "V" replaces the yaw); the player's choice comes back when the preset is released
+option = "horizontal"

@@ -1,0 +1,15 @@
+# The declaration `[[VRFW.FaceIcon]]` of the face icon rules (service S13 of VRFW 2.3, docs/framework/card-look.md §5):
+# what a mod's content\face_icons\*.toml may say. Read by scripts\face_icons.lua at start (every key is checked against
+# this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a
+# table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.face_icon/1"
+folder = "content/face_icons"
+
+[entry.FaceIcon]
+doc = "menu face icons drawn another way: the cards of these rarities / these characters lose the kit bust (face only)"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+mode = { type = "string", default = "face_only", doc = "\"face_only\": an icon the game draws with the kit bust (face + kit) is drawn face only (the game's own «no kit» icon)" }
+rarities = { type = "ints", min = 0, max = 15, doc = "card rarities (the character record's rarity): every icon bound to such a card" }
+characters = { type = "ids", doc = "character keys (names or ids, the icon's key): icons asked without a card (shop / office rows, plates by key)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

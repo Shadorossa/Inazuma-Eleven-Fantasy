@@ -1,0 +1,1056 @@
+-- VRFW bb_pages: pages, category tabs and the season carousel of the Bahía Batalla (Estadio BB) team grid, free match
+-- (enjoy_team_select_menu_offline) and campaign (enjoy_team_select_menu_campaign; campaign-only part in
+-- vrfw_bbp_campaign.lua). docs/framework/bb-pages.md. Moved from Inazuma Fantasy's graft bb_pages on 2026-10-08.
+-- The VR-Framework (vr_framework.dll, bb_pages_rt) builds every page IN PLACE (no close / reopen, no fade): it rebuilds
+-- the 28 slot records with the retail ctor and copies them into the live grid; a decided free-match 1P is kept OFF the
+-- grid. This block redraws the emblems with the retail SetupEmblemIcon and draws two rows above the grid (2026-10-08,
+-- Nacho), centred on the grid, each block on a translucent rounded background (the BB hexagon tile's look):
+--   top row:     [<L2> season icons <R2>]   [category tabs <FUNC2>]      (icons only: no season / category name)
+--   below the grid:        [<L1> Pág. n/N <R1>]                          (smaller)
+-- Keys (menus\bb_pages.toml, rows on the grid layer; swapped 2026-10-08, Nacho): L1 / R1 (keyboard Z / C) = previous /
+-- next page through every category, L2 / R2 (Q / E) = previous / next season (the first entry = every season), the
+-- bank's filter key CMD_FUNC2 (Tab) = next category (wraps). The categories and seasons are data (the team engine's build); with one category of one page
+-- and no season carousel nothing is shown and the keys do nothing (the retail grid). Texts are menu_text rows
+-- (text\rows\bb_pages.toml, 9 languages); a missing row shows nothing (never a literal). Nothing runs at chunk load.
+VRFW_BBP = {
+  CMD = @crc:CMND_VRFW_BB_PAGE@,
+  SLOT = @crc:CMND_VRFW_BB_PAGE_SLOT@,
+  RESET = @crc:CMND_VRFW_BB_PAGE_RESET@,
+  CAT = @crc:CMND_VRFW_BB_PAGE_CATEGORY@,
+  SEASON = @crc:CMND_VRFW_BB_PAGE_SEASON@,
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  TEXT_GET = 4074371074 --[[CMND_TEXT_GET]],
+  FN_PREV = @crc:vrfw_bb_page_prev@,
+  FN_NEXT = @crc:vrfw_bb_page_next@,
+  FN_CAT_PREV = @crc:vrfw_bb_cat_prev@,
+  FN_CAT_NEXT = @crc:vrfw_bb_cat_next@,
+  FN_SEASON = @crc:vrfw_bb_season_next@,
+  FN_SEASON_PREV = @crc:vrfw_bb_season_prev@,
+  MENU = 786045682 --[[enjoy_team_select_menu]],
+  GRID = 106197494 --[[vs01_43_enjoy_team_select_emblem_icon]],
+  OPTLIST = 2039103112 --[[win05_43_soccer_game_option_list_base]],
+  DIFFWIN = 2996147312 --[[win05_11_select_difficulty_win_base]],
+  SUBWIN = 968210065 --[[sub_window]],
+  LOCK = 892105257 --[[mainmenu90_30_lock_icon]],
+  -- «win it to unlock it» (docs/framework/bb-pages.md §8): the focused locked slot's hint on its padlock's guide balloon
+  -- (the lock icon layer's own _pos_lock_guide01 / _text_guide01, as the game's locked list items use it), the «not
+  -- available» sound on an Accept the game refused
+  UNLOCK = @crc:CMND_VRFW_BB_UNLOCK@,
+  LOCK_GUIDE = 1205262648 --[[_pos_lock_guide01]],
+  -- the padlock's two looks (the gallery's recipe, gallery_menu UpdateItem): closed = mesh _lock_icon01_off + anime
+  -- Active stopped (2); «press to unlock» (gold) = mesh _lock_icon01_on + anime Active playing (0); anime type «lock»
+  LOCK_OFF = 868450029 --[[_lock_icon01_off]],
+  LOCK_ON = 3251826719 --[[_lock_icon01_on]],
+  LOCK_ANIME = 1286797620 --[[Active]],
+  LOCK_ANIME_TYPE = 2274335502 --[[lock]],
+  TEAM_INFO = 2151743654 --[[team info by hash: field 2 = name]],
+  SE_NG = 2086672038 --[[sy0003]],
+  EMBLEM_TEX = 618311715 --[[enjoy_list_icon_dmy01: the emblem's texture of SetupEmblemIcon]],
+  EMBLEM_NODE = 3933090681 --[[_pos_enjoy_list01: parent of the emblem and its outline (vs01_43)]],
+  -- the texts / key glyphs: 6 instances of the retail change-page plate (team00_40, right-anchored at its origin; its
+  -- text sizes the plate), their own grey base mesh hidden; the backgrounds: 9 cmn01_10 quads (3 blocks x 3 pieces)
+  LAYER = @crc:vrfw_bb_page_guide@,
+  BG = @crc:vrfw_bb_strip_bg@,
+  TAB_PLATE = @crc:vrfw_bb_tab_plate@,
+  TAB_ICON = @crc:vrfw_bb_tab_icon@,
+  SEASON_ICON = @crc:vrfw_bb_season_icon@,
+  TEXT = 378156699 --[[_text_guide01]],
+  BTN = @crc:_text_btn01@,
+  LABEL = @crc:vrfw_bb_page@,          -- menu_text «Pág.» (text\rows\bb_pages.toml)
+  PLATE_TEX = "#/menu/107_vs/vrfw_bb_pages/vrfw_bb_pages.g4tx",
+  PLATE_ON = @crc:vrfw_bb_cat_plate_on@,
+  PLATE_OFF = @crc:vrfw_bb_cat_plate_off@,
+  BG_L = @crc:vrfw_bb_bg_l@, BG_M = @crc:vrfw_bb_bg_m@, BG_R = @crc:vrfw_bb_bg_r@,
+  PLATE_BASE = @crc:_win_guide_base01@,   -- the change-page plate's own (opaque grey) base mesh: hidden
+  -- plate instances, ONE text or key glyph each (placed by its centre, BBP_TextAt): 0 «Pág. n/N», 1 <L2> (season),
+  -- 2 <FUNC2> (category), 3 <R2> (season), 4 <L1>, 5 <R1>; background blocks: 0 page, 1 season, 2 category
+  I_PAGE = 0, I_CAT_L = 1, I_SEASON = 2, I_CAT_R = 3, I_PAGE_L = 4, I_PAGE_R = 5,
+  B_PAGE = 0, B_SEASON = 1, B_CAT = 2,
+  -- layout (screen px; estimated without a capture, tune here): both rows centred on CX; Y1 = the top row (seasons,
+  -- categories), Y2 = the page row BELOW the grid; both computed from the grid's layout (VRFW_BBP_Rows) unless set
+  -- here. The grid (vs01_42.g4pkm): base node at (960, 545), the hexagon sheet 536 x 992 at 1:1 from y 49, its
+  -- hexagons from y 106 (first row's top) to 984 (last row's bottom) = 545 -/+ 439; on screen the layer is drawn at
+  -- GRID_SCALE about its centre (0.86: the old page pill at y 134 sat above the first hexagons, Nacho's capture).
+  -- Y1 = first hexagon top - BADGE (the 1P / CPU badges over the first hexagons) - ROW_H / 2; Y2 = last hexagon
+  -- bottom + PAGE_GAP + PAGE_H / 2 (the bottom guide text «Elige con qué equipo jugarás» starts below ~980).
+  CX = 960, Y1 = nil, Y2 = nil,
+  GRID_CY = 545, HEX_HALF = 439, GRID_SCALE = 0.86, BADGE = 24, PAGE_GAP = 8,
+  ROW_H = 52, PAD = 10, BLOCK_GAP = 28, GAP = 8,
+  -- the retail text plate is right-anchored at its origin and at least ~200 px wide: a short text's centre sits TEXT_CX
+  -- px left of the origin (measured on Nacho's capture of 2026-10-08: the glyphs landed ~102 px left of their origins)
+  TEXT_CX = 102,
+  KEY_W = 40,                                  -- the room a key glyph takes (Tab is the widest)
+  PAGE_TEXT_W = 110, PAGE_H = 36, PAGE_SCALE = 0.8, -- the page row: «Pág. nn/nn» width at scale 1, height, scale
+  TAB = 50, TAB_GLYPH = 34, TAB_GAP = 8, TABS_MAX = 8,
+  SEASON_W = 64, SEASON_H = 44, SEASON_SIDE = 0.62, SEASON_GAP = 4,
+  DIM = 0.55,
+  PRIO = 690,
+  Q = 36,                                 -- cmn01_10 quad size
+  NODE_QUAD = 1909474081 --[[icon_new01]], MESH_QUAD = 312193881,
+  C_VISIBLE = 711242136, C_POS = 1389957207, C_SCALE = 3778714801, C_SPRITE = 558735651, C_PRIM_COLOR = 855211291,
+  C_LOAD_TEX = 839427544, C_TEX_LOADING = 1506186496,
+  TEX_MIN = 10, TEX_MAX = 600,
+  page = 1, pages = 1, count = 28, p1slot = -1, cat = 1, cats = 1, total = 1, season = 0, seasons = 0,
+  catinfo = {}, seasoninfo = {}, textures = {}, tex_ready = false, tex_t = 0, hidden = false,
+  on = false,
+}
+EVT_BBP = VRFW_BBP -- 1.x name (Inazuma Fantasy's graft bb_draft)
+
+function VRFW_BBP_Log(...)
+  pcall(funcLuaCommand, VRFW_BBP.LOG, "VRFW bb_pages", ...)
+end
+
+local function BBP_Text(key)
+  if key == nil or key == "" or type(CRC32) ~= "function" then
+    return ""
+  end
+  local ok, s = pcall(funcLuaCommand, VRFW_BBP.TEXT_GET, CRC32(key))
+  if ok and type(s) == "string" then
+    return s
+  end
+  return ""
+end
+
+local function BBP_Icon(icon)
+  local tex, spr = tostring(icon or ""):match("^(.*):([^:]+)$")
+  if tex == nil or type(CRC32) ~= "function" then
+    return nil
+  end
+  return {tex = tex, tex_crc = CRC32(tex), spr = CRC32(spr)}
+end
+
+-- state from the framework (page, pages, slots of the page, 1P slot or -1, category, categories, total pages, season,
+-- seasons); false without the framework
+function VRFW_BBP_Query()
+  local B = VRFW_BBP
+  local page, pages, count, p1slot, cat, cats, total, season, seasons = funcLuaCommand(B.CMD, 0, 0)
+  if type(page) ~= "number" then
+    B.on = false
+    B.pages, B.cats, B.total, B.seasons = 1, 1, 1, 0
+    return false
+  end
+  B.on = true
+  B.page, B.pages, B.count, B.p1slot = page, pages, count, p1slot
+  B.cat, B.cats, B.total = cat or 1, cats or 1, total or pages
+  B.season, B.seasons = season or 0, seasons or 0
+  return true
+end
+
+-- the categories and seasons (names, icons) once per grid; their atlases asked
+function VRFW_BBP_LoadInfo()
+  local B = VRFW_BBP
+  B.catinfo, B.seasoninfo = {}, {}
+  local want = {}
+  for i = 1, math.min(B.cats, B.TABS_MAX) do
+    local key, text, icon, pages = funcLuaCommand(B.CAT, i)
+    if key ~= nil then
+      B.catinfo[i] = {key = key, name = BBP_Text(text), icon = BBP_Icon(icon), pages = pages}
+      if B.catinfo[i].icon ~= nil then want[B.catinfo[i].icon.tex] = true end
+    end
+  end
+  if B.cats > 1 or B.total > 1 or B.seasons >= 2 then want[B.PLATE_TEX] = true end
+  for i = 0, B.seasons do
+    local key, text, icon = funcLuaCommand(B.SEASON, i)
+    if key ~= nil then
+      B.seasoninfo[i] = {key = key, name = BBP_Text(text), icon = BBP_Icon(icon)}
+      if B.seasoninfo[i].icon ~= nil then want[B.seasoninfo[i].icon.tex] = true end
+    end
+  end
+  -- only the atlases not asked for yet (a season / category change reuses them: the strip is never hidden again)
+  B.asked = B.asked or {}
+  B.textures = {}
+  for tex in pairs(want) do
+    if not B.asked[tex] then
+      pcall(funcLuaMenuCommand, B.C_LOAD_TEX, tex)
+      B.asked[tex] = true
+      B.textures[#B.textures + 1] = CRC32(tex)
+    end
+  end
+  if #B.textures > 0 then
+    B.tex_ready, B.tex_t = false, 0
+  end
+end
+
+-- the atlases are in (no sprite swap before; the top bar's rule)
+function VRFW_BBP_TexReady()
+  local B = VRFW_BBP
+  if B.tex_ready then
+    return true
+  end
+  B.tex_t = B.tex_t + 1
+  local busy = false
+  for _, crc in ipairs(B.textures) do
+    local ok, b = pcall(funcLuaCommand, B.C_TEX_LOADING, crc)
+    if ok and b == true then busy = true end
+  end
+  if (not busy and B.tex_t >= B.TEX_MIN) or B.tex_t >= B.TEX_MAX then
+    B.tex_ready = true
+  end
+  return B.tex_ready
+end
+
+-- what each strip instance shows now ("layer:idx" -> state): a call with the same state sends nothing (no flicker:
+-- no sprite re-set, no text plate re-layout, no visibility toggle); cleared when the layer is set up again
+VRFW_BBP.shown = {}
+
+local function BBP_Same(layer, idx, state)
+  local B = VRFW_BBP
+  local k = tostring(layer) .. ":" .. tostring(idx)
+  if B.shown[k] == state then
+    return true
+  end
+  B.shown[k] = state
+  return false
+end
+
+local function BBP_Quad(layer, idx, icon, spr, x, y, w, h, on, dim)
+  local B = VRFW_BBP
+  local vis = on and icon ~= nil
+  -- tostring, not %d: the crc32s are above the range this Lua's string.format("%d") accepts (17:32 log: «bad
+  -- argument #3 to 'format'», every quad of the strip then stayed undrawn)
+  local state = vis and table.concat({tostring(icon.tex_crc), tostring(spr or icon.spr), string.format("%.1f %.1f %.1f %.1f", x, y, w, h), tostring(dim)}, " ") or "off"
+  if BBP_Same(layer, idx, state) then
+    return
+  end
+  if not vis then
+    funcLuaMenuCommand(B.C_VISIBLE, layer, idx, false)
+    funcLuaMenuCommand(B.C_POS, layer, -4000, 4000, 0, idx)
+    return
+  end
+  funcLuaMenuCommand(B.C_VISIBLE, layer, idx, true)
+  funcLuaMenuCommand(B.C_SCALE, layer, w / B.Q, h / B.Q, 1, idx)
+  funcLuaMenuCommand(B.C_SPRITE, layer, icon.tex_crc, spr or icon.spr, B.NODE_QUAD, 0, idx)
+  funcLuaMenuCommand(B.C_POS, layer, x, -y, 0, idx)
+  local g = dim and B.DIM or 1
+  funcLuaMenuCommand(B.C_PRIM_COLOR, layer, idx, B.MESH_QUAD, g, g, g)
+end
+
+-- one text or key glyph, its CENTRE at (cx, y), `scale` (1): the retail plate is right-anchored and sizes itself, so its
+-- origin goes TEXT_CX px (scaled) right of the wanted centre; its grey base is off (the block's background is behind)
+local function BBP_TextAt(idx, text, cx, y, show, scale)
+  local B = VRFW_BBP
+  if BBP_Same(B.LAYER, idx, show and string.format("%s %.1f %.1f %.2f", text, cx, y, scale or 1) or "off") then
+    return
+  end
+  funcLuaMenuCommand(B.C_VISIBLE, B.LAYER, idx, show)
+  if not show then
+    return
+  end
+  scale = scale or 1
+  funcLuaMenuCommand(B.C_POS, B.LAYER, cx + B.TEXT_CX * scale, -y, 0, idx)
+  funcLuaMenuCommand(B.C_SCALE, B.LAYER, scale, scale, 1, idx)
+  funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], B.LAYER, idx, B.PRIO, true)
+  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], B.LAYER, B.BTN, "", idx)
+  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], B.LAYER, B.TEXT, text, idx)
+  funcLuaMenuCommand(1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], B.LAYER, idx, B.TEXT)
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LAYER, B.PLATE_BASE, false, idx)
+end
+
+-- one block's background: left edge x, centred on y, w x h. Left cap, middle, right cap: three sprites cut side by
+-- side from ONE rounded picture whose columns are identical (images\menu\107_vs\vrfw_bb_pages.toml bg_full), so the
+-- joins sample the same colour and only the middle stretches; the pieces abut (no overlap, no double alpha)
+local function BBP_Bg(block, x, y, w, h, show)
+  local B = VRFW_BBP
+  local tex = {tex_crc = CRC32(B.PLATE_TEX)}
+  local cap = math.min(h / 3, w / 2)
+  local i = block * 3
+  BBP_Quad(B.BG, i, tex, B.BG_L, x + cap / 2, y, cap, h, show, false)
+  BBP_Quad(B.BG, i + 1, tex, B.BG_M, x + w / 2, y, math.max(w - 2 * cap, 1), h, show and w > 2 * cap, false)
+  BBP_Quad(B.BG, i + 2, tex, B.BG_R, x + w - cap / 2, y, cap, h, show, false)
+end
+
+-- «Pág. n/N» (the keys are separate glyphs)
+function VRFW_BBP_PageText()
+  local B = VRFW_BBP
+  local label = BBP_Text("vrfw_bb_page")
+  local n = tostring(B.page) .. "/" .. tostring(B.pages)
+  if label ~= "" then n = label .. " " .. n end
+  return n
+end
+
+-- the two rows; hidden while a mod's screen covers the grid (VRFW_BBP_Hide). No season / category names: icons only.
+-- Every glyph is placed by its centre from the icons' positions:
+--   top row (Y1), centred on CX:  [<L2> GAP prev cur next GAP <R2>]  BLOCK_GAP  [tab tab tab GAP <FUNC2>]
+--   page row (Y2, below the grid), centred: [<L1> GAP Pág. n/N GAP <R1>] at PAGE_SCALE
+-- the two rows' heights (VRFW_BBP.Y1 / Y2 when set, else from the grid's layout)
+function VRFW_BBP_Rows()
+  local B = VRFW_BBP
+  local half = B.HEX_HALF * B.GRID_SCALE
+  local y1 = B.Y1 or (B.GRID_CY - half - B.BADGE - B.ROW_H / 2)
+  local y2 = B.Y2 or (B.GRID_CY + half + B.PAGE_GAP + B.PAGE_H / 2)
+  return y1, y2
+end
+
+function VRFW_BBP_Draw()
+  local B = VRFW_BBP
+  local Y1, Y2 = VRFW_BBP_Rows()
+  local live = B.on and not B.hidden
+  local show_page = live and B.total > 1
+  local show_cat = live and B.cats > 1
+  local show_season = live and B.seasons >= 2
+  local icons = B.tex_ready
+  local ntab = math.min(B.cats, B.TABS_MAX)
+  -- inner widths of the top row's blocks
+  local w_si = B.SEASON_W * (1 + 2 * B.SEASON_SIDE) + 2 * B.SEASON_GAP
+  local w_season = B.KEY_W + B.GAP + w_si + B.GAP + B.KEY_W
+  local w_tabs = ntab * B.TAB + (ntab - 1) * B.TAB_GAP
+  local w_cat = w_tabs + B.GAP + B.KEY_W
+  local total = 0
+  if show_season then total = total + w_season + 2 * B.PAD end
+  if show_cat then total = total + w_cat + 2 * B.PAD end
+  if show_season and show_cat then total = total + B.BLOCK_GAP end
+  local x = B.CX - total / 2
+  -- seasons: previous / current / next icons (the neighbours smaller, dimmed), then the key glyph right of them
+  if show_season then
+    BBP_Bg(B.B_SEASON, x, Y1, w_season + 2 * B.PAD, B.ROW_H, icons)
+    BBP_TextAt(B.I_CAT_L, "<CMD_FUNCL2>", x + B.PAD + B.KEY_W / 2, Y1, true)
+    local x0 = x + B.PAD + B.KEY_W + B.GAP
+    local n = B.seasons + 1
+    local cur = B.season
+    local prev, nxt = (cur - 1) % n, (cur + 1) % n
+    local sw, sh = B.SEASON_W * B.SEASON_SIDE, B.SEASON_H * B.SEASON_SIDE
+    local si = B.seasoninfo
+    BBP_Quad(B.SEASON_ICON, 0, si[prev] and si[prev].icon, nil, x0 + sw / 2, Y1, sw, sh, icons, true)
+    BBP_Quad(B.SEASON_ICON, 1, si[cur] and si[cur].icon, nil, x0 + sw + B.SEASON_GAP + B.SEASON_W / 2, Y1, B.SEASON_W, B.SEASON_H, icons, false)
+    BBP_Quad(B.SEASON_ICON, 2, si[nxt] and si[nxt].icon, nil, x0 + w_si - sw / 2, Y1, sw, sh, icons, true)
+    BBP_TextAt(B.I_CAT_R, "<CMD_FUNCR2>", x0 + w_si + B.GAP + B.KEY_W / 2, Y1, true)
+    x = x + w_season + 2 * B.PAD + B.BLOCK_GAP
+  else
+    BBP_Bg(B.B_SEASON, 0, 0, 0, 0, false)
+    for i = 0, 2 do BBP_Quad(B.SEASON_ICON, i, nil, nil, 0, 0, 0, 0, false) end
+    BBP_TextAt(B.I_CAT_L, "", 0, 0, false)
+    BBP_TextAt(B.I_CAT_R, "", 0, 0, false)
+  end
+  -- categories: <L2> just left of the first tab, the tabs (the current one lit like the hexagon cursor), <R2> just
+  -- right of the last one
+  if show_cat then
+    BBP_Bg(B.B_CAT, x, Y1, w_cat + 2 * B.PAD, B.ROW_H, icons)
+    local tx = x + B.PAD
+    local plate = {tex_crc = CRC32(B.PLATE_TEX)}
+    for i = 1, B.TABS_MAX do
+      local c = B.catinfo[i]
+      local cx = tx + (i - 1) * (B.TAB + B.TAB_GAP) + B.TAB / 2
+      local here = i <= ntab and c ~= nil
+      local sel = i == B.cat
+      BBP_Quad(B.TAB_PLATE, i - 1, here and plate or nil, sel and B.PLATE_ON or B.PLATE_OFF, cx, Y1, B.TAB, B.TAB * 0.86, icons and here, false)
+      BBP_Quad(B.TAB_ICON, i - 1, here and c.icon or nil, nil, cx, Y1, B.TAB_GLYPH, B.TAB_GLYPH, icons and here, not sel)
+    end
+    BBP_TextAt(B.I_SEASON, "<CMD_FUNC2>", tx + w_tabs + B.GAP + B.KEY_W / 2, Y1, true)
+  else
+    BBP_Bg(B.B_CAT, 0, 0, 0, 0, false)
+    BBP_TextAt(B.I_SEASON, "", 0, 0, false)
+    for i = 0, B.TABS_MAX - 1 do
+      BBP_Quad(B.TAB_PLATE, i, nil, nil, 0, 0, 0, 0, false)
+      BBP_Quad(B.TAB_ICON, i, nil, nil, 0, 0, 0, 0, false)
+    end
+  end
+  -- the page row, smaller, centred on CX below the grid: <L1> and <R1> symmetric around the text
+  local s = B.PAGE_SCALE
+  local tw, kw, g = B.PAGE_TEXT_W * s, B.KEY_W * s, B.GAP * s
+  local w = kw + g + tw + g + kw
+  BBP_Bg(B.B_PAGE, B.CX - w / 2 - B.PAD, Y2, w + 2 * B.PAD, B.PAGE_H, show_page and icons)
+  BBP_TextAt(B.I_PAGE, VRFW_BBP_PageText(), B.CX, Y2, show_page, s)
+  BBP_TextAt(B.I_PAGE_L, "<CMD_FUNCL1>", B.CX - w / 2 + kw / 2, Y2, show_page, s)
+  BBP_TextAt(B.I_PAGE_R, "<CMD_FUNCR1>", B.CX + w / 2 - kw / 2, Y2, show_page, s)
+end
+
+-- 1.x entry point (Inazuma Fantasy's bb_draft calls it when its screen gives the grid back): the line shown again
+function VRFW_BBP_SetupLine(a2)
+  VRFW_BBP.hidden = false
+  VRFW_BBP_Draw()
+end
+EVT_BBP_SetupLine = VRFW_BBP_SetupLine
+
+-- a mod's screen over the grid (Inazuma Fantasy's Draft): the whole line hidden until VRFW_BBP_SetupLine
+function VRFW_BBP_Hide()
+  VRFW_BBP.hidden = true
+  VRFW_BBP_Draw()
+end
+
+-- every slot of the grid from the live records: emblem (retail SetupEmblemIcon), grey reset, empty slots hidden,
+-- lock icons only on locked slots (estadio-bb.md §14.10, the «empty hexagons» fix of 2026-10-02):
+--   * the retail SetupEmblemIcon HIDES the node _pos_enjoy_list01 (the emblem and its outline; 2158717427 = node
+--     visibility) and leaves it to the grid's slot animation to show it again. While the grid stays on screen (a page
+--     turn) the animation does; after the grid was hidden (difficulty window of the campaign, a mod's screen) it does
+--     not, and every redrawn slot stayed an empty dark hexagon. The node is shown here;
+--   * each emblem icon is released first (4176779611, the retail «reset icon»): the engine skips a request for the
+--     emblem a slot already holds (0x1050F00 compares the ids), so a texture dropped while the grid was hidden would
+--     never come back.
+-- A PAGE TURN never shows a white crest (estadio-bb.md §11.5). Engine facts (nie.exe v7.1.2):
+--   * a new emblem request 3190452549 (handler 0xD00BD0, icon type 6 -> 0x1050F00) on a slot that holds another
+--     emblem releases it first (0x104BE90), which RESETS the texture node's sprite swap (0x5573F0): the mesh
+--     _enjoy_list_icon_dmy01 falls back to its dummy texture (white) whatever the hide flag says;
+--   * the .g4tx is opened by the icon status update (0x104F3B0, 0x51CAF0) and the sprite is swapped in by the apply
+--     pass (0x104E470 -> 0x557190) one or more frames later; 1277042906 = the instance's «loading» byte +0xA70.
+-- So the turn: 1. PRELOAD each new crest on a SPARE icon slot of its instance (texture node PRE_KEY, no such node in
+-- vs01_43: nothing drawn), the old crests stay on screen; 2. SWAP once every instance stops loading (or PRELOAD_MS):
+-- the retail redraw with the crest nodes HIDDEN; 3. REVEAL once every changed instance has stopped loading for SETTLE
+-- Steps in a row: all crest nodes shown at once, spare slots released. A crest still loading after REVEAL_MS is
+-- LATE: the others are shown, the late one stays hidden (never the white dummy) and is shown alone once it is in; one
+-- still loading LATE_MS after the turn began FAILED: its crest stays hidden (the hexagon without a crest), logged.
+-- The waits are WALL TIME (CMND_VRFW_BB_PAGE_CLOCK, 2.0.3): the menu Step runs every ~3 ms, so the 2.0.2 budgets of
+-- 30 + 20 Steps lasted ~160 ms and a cold page of mod crests (loose .g4tx served by the loader, decoded later) was
+-- revealed while every instance still reported loading: white squares for a moment (Nacho 2026-10-09). Without the
+-- clock the *_STEPS budgets apply.
+-- The log (VRFW bb_pages) carries the per-cell state of the first Steps: 1 = loading, 0 = in, - = empty slot, and one
+-- «ready» line per turn: the time-to-ready of the page.
+VRFW_BBP.ICON_REQ = 3190452549
+VRFW_BBP.ICON_LOADING = 1277042906
+VRFW_BBP.TEAM_INFO = 2151743654
+VRFW_BBP.PRE_KEY = @crc:vrfw_bbp_preload_emblem@
+VRFW_BBP.CLOCK = @crc:CMND_VRFW_BB_PAGE_CLOCK@
+VRFW_BBP.PRELOAD_MS = 1200
+VRFW_BBP.REVEAL_MS = 600
+VRFW_BBP.LATE_MS = 5000
+VRFW_BBP.PRELOAD_STEPS = 400
+VRFW_BBP.REVEAL_STEPS = 200
+VRFW_BBP.LATE_STEPS = 1600
+VRFW_BBP.SETTLE = 2
+VRFW_BBP.LOG_FRAMES = 6
+VRFW_BBP.hidden_slots = {}
+VRFW_BBP.drawn = {}
+VRFW_BBP.spares = {}
+VRFW_BBP.pend = nil
+
+function VRFW_BBP_Count()
+  return funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], VRFW_BBP.GRID) or 0
+end
+
+-- milliseconds of the framework's monotonic clock, nil without it
+function VRFW_BBP_Now()
+  local ok, t = pcall(funcLuaCommand, VRFW_BBP.CLOCK)
+  if ok and type(t) == "number" then
+    return t
+  end
+  return nil
+end
+
+-- the per-cell state string, whether any cell is loading, and the loading cells (slot -> true)
+function VRFW_BBP_LoadState()
+  local B = VRFW_BBP
+  local teams = B.pend ~= nil and B.pend.teams or {}
+  local t, busy, loading = {}, false, {}
+  for i = 0, VRFW_BBP_Count() - 1 do
+    if teams[i] == nil and B.hidden_slots[i] == true then
+      t[#t + 1] = "-"
+    elseif funcLuaMenuCommand(B.ICON_LOADING, B.GRID, i) == true then
+      t[#t + 1] = "1"
+      busy = true
+      loading[i] = true
+    else
+      t[#t + 1] = "0"
+    end
+  end
+  return table.concat(t), busy, loading
+end
+
+function VRFW_BBP_ReleaseSpares()
+  local B = VRFW_BBP
+  for i in pairs(B.spares) do
+    pcall(funcLuaMenuCommand, 4176779611 --[[reset icon]], B.GRID, i, B.PRE_KEY)
+  end
+  B.spares = {}
+end
+
+-- Showing _pos_enjoy_list01 turns its WHOLE subtree on, the 1P / 2P mark plates included; the game sets them per slot
+-- with the Lua UpdateEmblemIconMesh (called by UpdateSlotMarks 0x1065100). Every node shown here gets its marks again:
+-- the last UpdateEmblemIconMesh arguments the game gave that slot (cached by the wrapper below), else the plain state.
+VRFW_BBP.marks = {}
+
+function VRFW_BBP_RestoreMarks(i)
+  local B = VRFW_BBP
+  local a = B.marks[i]
+  if a ~= nil and UpdateEmblemIconMesh ~= nil then
+    local ok = pcall(UpdateEmblemIconMesh, table.unpack(a, 1, a.n))
+    if ok then
+      return (a[3] == true or a[4] == true) and "P" or "c"
+    end
+  end
+  funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 3808539401 --[[_pos_enjoy_list01_p1]], false, i)
+  funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 2047402675 --[[_pos_enjoy_list01_p2]], false, i)
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.GRID, 2291119251 --[[_enjoy_list_p2_base02]], false, i)
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.GRID, 100709232 --[[_enjoy_list_p1_base02]], false, i)
+  funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 1061671357, false, i)
+  funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 2790162439, false, i)
+  return "f"
+end
+
+-- `only` = the slots a turn changed (nil = every slot): a slot that kept its team was never hidden
+function VRFW_BBP_ShowNodes(only)
+  local B = VRFW_BBP
+  local t = {}
+  for i = 0, VRFW_BBP_Count() - 1 do
+    if only ~= nil and not only[i] then
+      t[#t + 1] = "="
+    elseif B.hidden_slots[i] ~= true then
+      funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, true, i)
+      t[#t + 1] = VRFW_BBP_RestoreMarks(i)
+    else
+      t[#t + 1] = "-"
+    end
+  end
+  return table.concat(t)
+end
+
+function VRFW_BBP_Cancel(why)
+  local B = VRFW_BBP
+  local p = B.pend
+  B.pend = nil
+  if p ~= nil then
+    VRFW_BBP_Log("turn cancelled", why, "phase", p.phase)
+    if p.phase ~= "preload" then
+      VRFW_BBP_ShowNodes(p.changed)
+    end
+  end
+  VRFW_BBP_ReleaseSpares()
+end
+
+-- has the current phase of turn p lasted ms (wall time) / steps (without the clock)?
+function VRFW_BBP_Over(p, ms, steps)
+  if p.t_phase ~= nil then
+    local now = VRFW_BBP_Now()
+    if now ~= nil then
+      return now - p.t_phase >= ms
+    end
+  end
+  return p.frames >= steps
+end
+
+function VRFW_BBP_Ms(from)
+  local now = VRFW_BBP_Now()
+  if now == nil or from == nil then
+    return -1
+  end
+  return now - from
+end
+
+function VRFW_BBP_Slots(set)
+  local t = {}
+  for i in pairs(set) do
+    t[#t + 1] = i
+  end
+  table.sort(t)
+  return table.concat(t, " ")
+end
+
+function VRFW_BBP_Preload(what)
+  local B = VRFW_BBP
+  -- a turn during the previous turn's reveal: its slots still hidden are revealed by this turn (a slot that keeps its
+  -- team on the new page is not in the new redraw's changed set and would stay hidden)
+  local carry = {}
+  local old = B.pend
+  if old ~= nil and old.phase ~= "preload" and old.changed ~= nil then
+    for i in pairs(old.changed) do
+      carry[i] = true
+    end
+  elseif old ~= nil and old.carry ~= nil then
+    carry = old.carry
+  end
+  VRFW_BBP_ReleaseSpares()
+  local teams, asked = {}, 0
+  for i = 0, VRFW_BBP_Count() - 1 do
+    local team = funcLuaCommand(B.SLOT, i)
+    if type(team) == "number" and team ~= 0 then
+      teams[i] = team
+      if B.drawn[i] ~= team or B.hidden_slots[i] == true then
+        local ok, emblem = funcLuaCommand(B.TEAM_INFO, team, 6, 0)
+        if ok then
+          funcLuaMenuCommand(B.ICON_REQ, B.GRID, i, B.PRE_KEY, B.PRE_KEY, emblem, false, false)
+          B.spares[i] = true
+          asked = asked + 1
+        end
+      end
+    end
+  end
+  local now = VRFW_BBP_Now()
+  B.pend = {phase = "preload", frames = 0, teams = teams, page = what, carry = carry, t0 = now, t_phase = now,
+            preload_ms = -1, reveal_ms = -1}
+  VRFW_BBP_Log("preload", what, "crests", asked)
+  if asked == 0 then
+    VRFW_BBP_Swap()
+  end
+end
+
+function VRFW_BBP_Swap()
+  local B = VRFW_BBP
+  local p = B.pend or {frames = 0, teams = {}}
+  local changed = VRFW_BBP_Redraw(true)
+  for i in pairs(p.carry or {}) do
+    if B.hidden_slots[i] ~= true then
+      changed[i] = true
+    end
+  end
+  local now = VRFW_BBP_Now()
+  B.pend = {phase = "reveal", frames = 0, teams = p.teams, page = p.page, changed = changed, clear = {},
+            t0 = p.t0, t_phase = now, preload_ms = VRFW_BBP_Ms(p.t0), late = 0}
+  local state = VRFW_BBP_LoadState()
+  VRFW_BBP_Log("swap", p.page, "after", p.frames, "frames", B.pend.preload_ms, "ms", state)
+end
+
+-- the turn is over: spares released, the time-to-ready logged (one line: the log command keeps its first arguments)
+function VRFW_BBP_Done(p, state, plates, failed)
+  local B = VRFW_BBP
+  B.pend = nil
+  VRFW_BBP_ReleaseSpares()
+  VRFW_BBP_Log("reveal", p.page, "after", p.frames, "frames", state, "plates", plates)
+  VRFW_BBP_Log(string.format("ready %s in %d ms (preload %d ms, reveal %d ms), late %d, failed %s", tostring(p.page),
+               VRFW_BBP_Ms(p.t0), p.preload_ms or -1, p.reveal_ms or -1, p.late or 0, failed or "none"))
+end
+
+function VRFW_BBP_Pump()
+  local B = VRFW_BBP
+  local p = B.pend
+  if p == nil then
+    return
+  end
+  p.frames = p.frames + 1
+  local state, busy, loading = VRFW_BBP_LoadState()
+  if p.frames <= B.LOG_FRAMES then
+    VRFW_BBP_Log(p.phase, p.page, "frame", p.frames, state)
+  end
+  if p.phase == "preload" then
+    if not busy then
+      VRFW_BBP_Swap()
+    elseif VRFW_BBP_Over(p, B.PRELOAD_MS, B.PRELOAD_STEPS) then
+      VRFW_BBP_Log("preload timeout", p.page, VRFW_BBP_Ms(p.t0), "ms", state)
+      VRFW_BBP_Swap()
+    end
+    return
+  end
+  -- reveal / late: a changed slot's crest is in once its instance stopped loading for SETTLE Steps in a row (the apply
+  -- pass swaps the sprite in a Step after the load)
+  local all = true
+  for i in pairs(p.changed) do
+    if loading[i] then
+      p.clear[i] = 0
+      all = false
+    else
+      p.clear[i] = (p.clear[i] or 0) + 1
+      if p.clear[i] < B.SETTLE then
+        all = false
+      end
+    end
+  end
+  if p.phase == "reveal" then
+    if all then
+      p.reveal_ms = VRFW_BBP_Ms(p.t_phase)
+      VRFW_BBP_Done(p, state, VRFW_BBP_ShowNodes(p.changed), nil)
+      return
+    end
+    if not VRFW_BBP_Over(p, B.REVEAL_MS, B.REVEAL_STEPS) then
+      return
+    end
+    -- some crests are late: the ones in are shown, the others stay hidden until theirs is in
+    p.reveal_ms = VRFW_BBP_Ms(p.t_phase)
+    p.phase = "late"
+  end
+  local show, rest = {}, {}
+  for i in pairs(p.changed) do
+    if (p.clear[i] or 0) >= B.SETTLE then
+      show[i] = true
+    else
+      rest[i] = true
+    end
+  end
+  local plates = ""
+  if next(show) ~= nil then
+    plates = VRFW_BBP_ShowNodes(show)
+    if p.late > 0 or next(rest) ~= nil then
+      VRFW_BBP_Log("late crests in", p.page, VRFW_BBP_Slots(show), "at", VRFW_BBP_Ms(p.t0), "ms")
+    end
+  end
+  p.changed = rest
+  if next(rest) == nil then
+    VRFW_BBP_Done(p, state, plates, nil)
+    return
+  end
+  if p.late == 0 then
+    for _ in pairs(rest) do
+      p.late = p.late + 1
+    end
+    VRFW_BBP_Log("crests late", p.page, VRFW_BBP_Slots(rest), "hidden until in", state)
+  end
+  -- LATE_MS after the turn began (its steps without the clock): a crest that never came in stays hidden
+  local over
+  if p.t0 ~= nil and VRFW_BBP_Now() ~= nil then
+    over = VRFW_BBP_Ms(p.t0) >= B.LATE_MS
+  else
+    over = p.frames >= B.LATE_STEPS
+  end
+  if over then
+    VRFW_BBP_Done(p, state, plates, VRFW_BBP_Slots(rest))
+  end
+end
+
+function VRFW_BBP_Redraw(turn)
+  local B = VRFW_BBP
+  turn = turn == true
+  if not turn then
+    VRFW_BBP_Cancel("redraw")
+  end
+  local changed = {}
+  for i = 0, VRFW_BBP_Count() - 1 do
+    local team, unlocked, check, lock = funcLuaCommand(B.SLOT, i)
+    if type(team) == "number" then
+      local show = team ~= 0
+      local was = B.hidden_slots[i] ~= true
+      -- a turn leaves a slot that keeps its team alone (no reset, no hide: no flicker)
+      local same = turn and was == show and B.drawn[i] == (show and team or 0)
+      if not turn or was ~= show then
+        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, i, show)
+      end
+      if show and not same then
+        changed[i] = true
+        funcLuaMenuCommand(801406373, B.GRID, i, 643056375 --[[gray_out]], 1, 1, 1)
+        if not turn or B.hidden_slots[i] == true then
+          funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, i, B.EMBLEM_TEX)
+        end
+        SetupEmblemIcon(i, team, unlocked == true, check == true)
+        funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, not turn, i)
+        if not turn then
+          VRFW_BBP_RestoreMarks(i)
+        end
+      end
+      B.hidden_slots[i] = not show
+      B.drawn[i] = show and team or 0
+    end
+  end
+  VRFW_BBP_LockSync()
+  return changed
+end
+
+-- a padlock instance's look: closed (locked team) or gold («press to unlock»: an open team whose unlock effect was
+-- not seen yet). The game sets the gold one only (AttachLockIcon 0x1063D70 plays Active on an open slot with +0x35 = 0)
+-- and never puts the closed one back: an instance the framework moves to another slot (bb_pages_rt relock, page turns)
+-- kept the gold look on a locked team, whose press is refused (bb-pages.md §8.7). Both looks are set here.
+function VRFW_BBP_LockLook(lock, gold)
+  local B = VRFW_BBP
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LOCK, B.LOCK_OFF, not gold, lock)
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LOCK, B.LOCK_ON, gold, lock)
+  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], B.LOCK, lock, B.LOCK_ANIME, gold and 0 or 2, B.LOCK_ANIME_TYPE)
+end
+
+-- the padlocks (docs/framework/bb-pages.md §8.3, §8.7): the one a slot holds shown while its team is locked (closed
+-- look) or open with its unlock effect not seen yet (gold look: the game's press plays the effect, records it and
+-- removes the padlock, 0x1068F30); every other instance hidden (the framework moves them with the page, bb_pages_rt
+-- relock: an instance no slot holds is back in the game's free deque; the layer has one per slot; relock leaves a
+-- padlock only on a slot that is locked or whose effect was not seen). After every redraw and once after the grid
+-- opened (Step).
+function VRFW_BBP_LockSync()
+  local B = VRFW_BBP
+  local held = {}
+  for i = 0, VRFW_BBP_Count() - 1 do
+    local team, unlocked, _, lock = funcLuaCommand(B.SLOT, i)
+    if type(lock) == "number" and lock >= 0 then
+      local on = type(team) == "number" and team ~= 0 and B.hidden_slots[i] ~= true
+      if on then
+        VRFW_BBP_LockLook(lock, unlocked == true)
+      end
+      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LOCK, lock, on)
+      held[lock] = true
+    end
+  end
+  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], B.LOCK)
+  if type(n) == "number" then
+    for k = 0, n - 1 do
+      if not held[k] then
+        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LOCK, k, false)
+      end
+    end
+  end
+  B.lock_sync = false
+  -- the padlocks moved: the next Step's hint redoes the balloons (VRFW_BBP_GuidesOff), also with the cursor on an
+  -- open slot (false never equals a key, nil included)
+  B.hint_key = false
+end
+EVT_BBP_Query = VRFW_BBP_Query
+EVT_BBP_Redraw = VRFW_BBP_Redraw
+
+-- the lock hint of the focused slot: the row's lock text (since 2.0.90 a menu_text row per locked team,
+-- vrfw_bb_unlock_<team hex>, already filled in every language by the team build; {team} / {chain} are still filled
+-- here for a mod's own lock text that has them), shown on the slot's padlock balloon; an Accept on a locked slot (refused by the game without a sound) plays sy0003. Every Step; cheap when
+-- nothing changes.
+function VRFW_BBP_HintOff()
+  local B = VRFW_BBP
+  if B.hint_lock ~= nil then
+    funcLuaMenuCommand(2158717427 --[[node visible]], B.LOCK, B.LOCK_GUIDE, false, B.hint_lock)
+    funcLuaMenuCommand(2735666188, B.LOCK, B.TEXT, false, B.hint_lock)
+  end
+  B.hint_lock = nil
+  B.hint_key = nil
+end
+
+-- every padlock instance's balloon and text hidden but `keep`'s (a padlock instance, or nil). The game shows the
+-- balloon + text of the focused padlock and hides the old one on a cursor move; bb_pages_rt's relock (page turns)
+-- hides only the balloon of a padlock it gives back, so its text node stayed on and showed, unframed, on the slot
+-- the padlock was given next (bb-pages.md §8.3).
+function VRFW_BBP_GuidesOff(keep)
+  local B = VRFW_BBP
+  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], B.LOCK)
+  if type(n) ~= "number" then
+    return
+  end
+  for k = 0, n - 1 do
+    if k ~= keep then
+      funcLuaMenuCommand(2158717427 --[[node visible]], B.LOCK, B.LOCK_GUIDE, false, k)
+      funcLuaMenuCommand(2735666188, B.LOCK, B.TEXT, false, k)
+    end
+  end
+end
+
+function VRFW_BBP_Hint()
+  local B = VRFW_BBP
+  local cur = funcLuaMenuCommand(2603265800 --[[focus index]], B.GRID)
+  if type(cur) ~= "number" or cur < 0 then
+    return
+  end
+  local ok, locked, text, chain, buzz = pcall(funcLuaCommand, B.UNLOCK, cur)
+  if not ok then
+    return
+  end
+  if buzz == true then
+    funcLuaCommand(1917805374 --[[CMND_SND_PLAY]], B.SE_NG)
+  end
+  local team, _, _, lock = funcLuaCommand(B.SLOT, cur)
+  local key = nil
+  if locked == true and type(text) == "number" and text ~= 0 and not B.hidden then
+    -- text ids are u32 crc32s: %d refuses one above 2^31 in this Lua (the 2.0.56 hint stopped on the first one)
+    key = table.concat({ tostring(cur), tostring(team), tostring(text), tostring(chain), tostring(lock) }, ":")
+  end
+  if key == B.hint_key then
+    return
+  end
+  VRFW_BBP_HintOff()
+  -- no other padlock keeps a balloon or a loose text (a padlock moved to another slot by a page turn keeps the text
+  -- node the game showed on its old slot)
+  VRFW_BBP_GuidesOff(lock)
+  if key == nil or type(lock) ~= "number" or lock < 0 then
+    return
+  end
+  local s = funcLuaCommand(B.TEXT_GET, text)
+  if type(s) ~= "string" or s == "" then
+    return
+  end
+  local has, name = funcLuaCommand(B.TEAM_INFO, team, 2)
+  name = (has and type(name) == "string") and name or ""
+  chain = type(chain) == "string" and chain or ""
+  s = s:gsub("{team}", function() return name end)
+  s = s:gsub("{chain}", function() return chain end)
+  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], B.LOCK, B.TEXT, s, lock)
+  funcLuaMenuCommand(1172899594 --[[CMND_UPDATE_TEXT_PLATE]], B.LOCK, lock, B.TEXT)
+  funcLuaMenuCommand(2158717427 --[[node visible]], B.LOCK, B.LOCK_GUIDE, true, lock)
+  funcLuaMenuCommand(2735666188, B.LOCK, B.TEXT, true, lock)
+  B.hint_lock = lock
+  B.hint_key = key
+end
+
+function VRFW_BBP_CanTurn()
+  local B = VRFW_BBP
+  if not B.on or B.hidden then
+    return false
+  end
+  if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.OPTLIST, 0, B.MENU) == true then
+    return false
+  end
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], B.SUBWIN) == true then
+    return false
+  end
+  if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.DIFFWIN, 0, B.MENU) == true then
+    return false
+  end
+  return true
+end
+
+-- mode 0 = page (L1 / R1), 1 = category (the bank's filter key, Tab), 2 = season (L2 / R2)
+function VRFW_BBP_Turn(d, mode)
+  local B = VRFW_BBP
+  VRFW_BBP_Query()
+  if not VRFW_BBP_CanTurn() then
+    return
+  end
+  if (mode == 0 and B.total <= 1) or (mode == 1 and B.cats <= 1) or (mode == 2 and B.seasons < 2) then
+    return
+  end
+  local from = {B.season, B.cat, B.page}
+  local cursor = funcLuaMenuCommand(2603265800, B.GRID)
+  local page = funcLuaCommand(B.CMD, d, mode)
+  if type(page) ~= "number" then
+    return
+  end
+  VRFW_BBP_Query()
+  if from[1] == B.season and from[2] == B.cat and from[3] == B.page then
+    return
+  end
+  if mode == 2 then
+    VRFW_BBP_LoadInfo()   -- the categories of the new season (their count / names may differ)
+  end
+  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  VRFW_BBP_Preload(string.format("s%d c%d p%d", B.season, B.cat, B.page))
+  -- the cursor stays on its slot, or the last filled one on a short page
+  if type(cursor) == "number" and cursor >= B.count and B.count > 0 then
+    local to = B.count - 1
+    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.GRID) or 0
+    funcLuaMenuCommand(1778826357, B.GRID, to, true)
+    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], B.GRID, 3313461902 --[[cursor]], to, n)
+  end
+  VRFW_BBP_Draw()
+  -- one string: the log command keeps only its first arguments (the 14:36 log cut this line after "category")
+  VRFW_BBP_Log(string.format("turn mode %d %+d -> season %d/%d category %d/%d page %d/%d cursor %s 1P slot %s", mode, d,
+               B.season, B.seasons, B.cat, B.cats, B.page, B.pages, tostring(cursor), tostring(B.p1slot)))
+end
+
+do
+  local init = OnInit
+  function OnInit(...)
+    local r = table.pack(init(...))
+    local ok, err = pcall(function()
+      VRFW_BBP.hidden = false
+      VRFW_BBP.shown, VRFW_BBP.asked = {}, {}
+      VRFW_BBP_Query()
+      VRFW_BBP_LoadInfo()
+      local B = VRFW_BBP
+      local names = {}
+      for i = 1, math.min(B.cats, B.TABS_MAX) do
+        names[#names + 1] = B.catinfo[i] and B.catinfo[i].key or "?"
+      end
+      local snames = {}
+      for i = 0, B.seasons do
+        snames[#snames + 1] = B.seasoninfo[i] and (B.seasoninfo[i].key ~= "" and B.seasoninfo[i].key or "all") or "?"
+      end
+      -- one string: the log command keeps only its first arguments
+      VRFW_BBP_Log(string.format("open page %d/%d categories %d [%s] pages %d seasons %d [%s] textures %d", B.page, B.pages,
+                   B.cats, table.concat(names, " "), B.total, B.seasons, table.concat(snames, " "), #B.textures))
+    end)
+    if not ok then
+      VRFW_BBP_Log("init error", tostring(err))
+    end
+    return table.unpack(r, 1, r.n)
+  end
+
+  local function ours(a1)
+    local B = VRFW_BBP
+    return a1 == B.LAYER or a1 == B.BG or a1 == B.TAB_PLATE or a1 == B.TAB_ICON or a1 == B.SEASON_ICON
+  end
+
+  local setup = OnSetupLayer
+  function OnSetupLayer(a1, a2, ...)
+    if ours(a1) then
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      -- a layer (re)set up: nothing of the strip is known to be shown any more: everything is sent again
+      VRFW_BBP.shown = {}
+      pcall(VRFW_BBP_Draw)
+      return
+    end
+    return setup(a1, a2, ...)
+  end
+
+  local open = OnOpenLayer
+  function OnOpenLayer(a1, a2, ...)
+    if ours(a1) then
+      VRFW_BBP.shown = {}
+      pcall(VRFW_BBP_Draw)
+      return
+    end
+    if a1 == VRFW_BBP.GRID or a1 == VRFW_BBP.LOCK then
+      VRFW_BBP.lock_sync = true   -- the game gave the padlocks out: shown / hidden on the next Step
+    end
+    return open(a1, a2, ...)
+  end
+
+  local fn = OnFunction
+  function OnFunction(a1, a2, ...)
+    local B = VRFW_BBP
+    local d, mode = nil, nil
+    if a1 == B.FN_PREV then d, mode = -1, 0
+    elseif a1 == B.FN_NEXT then d, mode = 1, 0
+    elseif a1 == B.FN_CAT_PREV then d, mode = -1, 1
+    elseif a1 == B.FN_CAT_NEXT then d, mode = 1, 1
+    elseif a1 == B.FN_SEASON then d, mode = 1, 2
+    elseif a1 == B.FN_SEASON_PREV then d, mode = -1, 2
+    end
+    if d ~= nil then
+      local ok, err = pcall(VRFW_BBP_Turn, d, mode)
+      if not ok then
+        VRFW_BBP_Log("turn error", tostring(err))
+      end
+      return 1
+    end
+    return fn(a1, a2, ...)
+  end
+
+  local back = OnBack
+  function OnBack(a1, a2, ...)
+    if a1 == VRFW_BBP.GRID then
+      pcall(VRFW_BBP_Cancel, "back")
+      pcall(funcLuaCommand, VRFW_BBP.RESET)
+    end
+    return back(a1, a2, ...)
+  end
+
+  -- a page shorter than 28: empty slots hidden
+  local setupIcon = SetupEmblemIcon
+  function SetupEmblemIcon(a1, a2, a3, a4, ...)
+    local r = table.pack(setupIcon(a1, a2, a3, a4, ...))
+    if type(a1) == "number" then
+      VRFW_BBP.drawn[a1] = a2 or 0
+    end
+    if (a2 == nil or a2 == 0) and VRFW_BBP.on and (VRFW_BBP.total > 1 or VRFW_BBP.seasons >= 2) then
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_BBP.GRID, a1, false)
+      if type(a1) == "number" then
+        VRFW_BBP.hidden_slots[a1] = true
+      end
+    end
+    return table.unpack(r, 1, r.n)
+  end
+
+  local marks = UpdateEmblemIconMesh
+  if marks ~= nil then
+    function UpdateEmblemIconMesh(a1, ...)
+      if type(a1) == "number" then
+        VRFW_BBP.marks[a1] = table.pack(a1, ...)
+      end
+      return marks(a1, ...)
+    end
+  end
+
+  local step = Step
+  function Step(...)
+    local r = {n = 0}
+    if step ~= nil then
+      r = table.pack(step(...))
+    end
+    local B = VRFW_BBP
+    if B.on and not B.tex_ready then
+      local ok, ready = pcall(VRFW_BBP_TexReady)
+      if ok and ready then
+        VRFW_BBP.shown = {}
+        local dok, derr = pcall(VRFW_BBP_Draw)
+        if not dok then
+          VRFW_BBP_Log("draw error", tostring(derr))
+        end
+      end
+    end
+    if B.pend ~= nil then
+      local ok, err = pcall(VRFW_BBP_Pump)
+      if not ok then
+        VRFW_BBP_Log("turn step error", tostring(err))
+        pcall(VRFW_BBP_Cancel, "error")
+      end
+    end
+    if B.lock_sync == true and B.on and B.pend == nil then
+      local lok, lerr = pcall(VRFW_BBP_LockSync)
+      if not lok then
+        B.lock_sync = false
+        VRFW_BBP_Log("padlock sync error", tostring(lerr))
+      end
+    end
+    if B.hint_err == nil then
+      local hok, herr = pcall(VRFW_BBP_Hint)
+      if not hok then
+        B.hint_err = tostring(herr)
+        VRFW_BBP_Log("unlock hint error (hint off)", B.hint_err)
+      end
+    end
+    return table.unpack(r, 1, r.n)
+  end
+end

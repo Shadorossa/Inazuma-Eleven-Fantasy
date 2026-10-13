@@ -1,0 +1,20 @@
+# The team emblem grid (VR-Framework UI piece, Lua lua\_all\58_emblem_grid.lua `VRFW_EmblemGrid`;
+# docs/framework/emblem-grid.md): the two objects its layers use. A mod adds the layers to the menu it opens the grid
+# in (its own menus TOML: [[patch]] add_layer with these objects, flags [0, 0, 0, 0, 1, 0]: opened per instance by the
+# Lua only while the grid shows).
+#   vrfw_emblem_tile   the retail Battle Bay team-select emblem tile (vs01_43: 136 px plate, 84 px emblem quad
+#                      _enjoy_list_icon_dmy01 filled by the emblem item id, outline = the cursor, check mark = full)
+#   vrfw_tile_label    the retail character card (team00_01) of which the Lua shows only the name text _text_chr01:
+#                      the team name and its count under each tile (two instances a tile)
+# Draw priority 700 / 702: over the menus' own lists (~650), under the sub windows (845+); the Lua may set its own.
+schema = "vr_framework.menu/2"
+
+[[object]]
+name = "vrfw_emblem_tile"
+from = "vs01_43_enjoy_team_select_emblem_icon"
+priority = 700
+
+[[object]]
+name = "vrfw_tile_label"
+from = "team00_01_chara_card_for_list"
+priority = 702

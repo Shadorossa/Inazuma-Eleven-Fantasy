@@ -1,0 +1,385 @@
+-- bb_chronicle_teams bb_tournament, shared helpers (docs/game/modes/bb-tournament.md §7). Appended to every screen the
+-- tournament touches: the Battle Bay top menu, the Campaña grid, the campaign end window, the loading telop
+-- (fade_menu_encount) and the sub window group.
+--   * BBT_Call(cmd, ...): a CMND_BBD_TOURN_* command. The mod's scripts answer them; when they are busy on another
+--     thread at that moment the command answers nothing (loader.log «busy: another thread runs a script now»). Inside a
+--     coroutine the call is tried again on the next frames (up to BBT.TRIES); outside one it answers nil (the caller
+--     keeps its last answer or tries again from Step).
+--   * BBT_Info(): CMND_BBD_TOURN_INFO, the last answer kept (BBT_INFO) for a busy moment.
+--   * CMND_GET_BB_STADIUM_CAMPAIGN_INFO is answered by the tournament first (sub 1 = the match number, sub 3 = the
+--     rival of a match: the player's own path, not the Campaña's 7), through a wrapper of this VM's
+--     funcLuaMenuCommand (the retail chunk looks it up at every call); busy = the answers of the last INFO.
+--     BBD 1.5.8: the game registers funcLuaMenuCommand after the chunk ran (a wrapper installed at load is
+--     overwritten), so the wrapper is put in place at run time, only for the call of a retail reader (SetupParam,
+--     OnSetupLayer) and only while a tournament is armed or running; the original is restored when that call
+--     returns. No tournament = the retail readers run untouched.
+--   * texts: BBT_Text(key) = CMND_TEXT_GET(crc32("evt_bbd_tn_" .. key)) (text\rows\menu_text.toml).
+--   * windows: BBT_Choose (retail sub window list), BBT_Window (retail general window).
+-- Globals only; nothing runs at chunk load but the wrap of the retail readers (no engine call).
+BBT = BBT or {
+  INFO = @crc:CMND_BBD_TOURN_INFO@,
+  CI = @crc:CMND_BBD_TOURN_CAMPAIGN_INFO@,
+  CAMPAIGN = 1267047957 --[[CMND_GET_BB_STADIUM_CAMPAIGN_INFO?]],
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  SUB_WINDOW = 968210065 --[[sub_window]],
+  TRIES = 90,
+}
+BBT_INFO = BBT_INFO or nil
+
+function BBT_Log(...)
+  pcall(funcLuaCommand, BBT.LOG, "bb_chronicle_teams tournament", ...)
+end
+
+-- a command of the mod's scripts: its answers, nil when the scripts stayed busy
+function BBT_Call(cmd, ...)
+  local _, main = coroutine.running()   -- Lua 5.2: the running coroutine, true on the main thread
+  local tries = main and 1 or BBT.TRIES
+  for k = 1, tries do
+    local r = table.pack(pcall(funcLuaCommand, cmd, ...))
+    if r[1] and r.n >= 2 and r[2] ~= nil then
+      return table.unpack(r, 2, r.n)
+    end
+    if k < tries then
+      coroutine.yield()
+    end
+  end
+  BBT_Log("busy: no answer", cmd)
+  return nil
+end
+
+function BBT_Info()
+  local t = BBT_Call(BBT.INFO)
+  if type(t) == "table" then
+    BBT_INFO = t
+    return t
+  end
+  return BBT_INFO or {}
+end
+
+-- the tournament's answer of CMND_GET_BB_STADIUM_CAMPAIGN_INFO(sub, i): handled, value
+function BBT_CampaignInfo(sub, i)
+  if sub ~= 1 and sub ~= 3 then
+    return false
+  end
+  local ok, handled, v = pcall(funcLuaCommand, BBT.CI, sub, i or 0)
+  if ok and handled ~= nil then
+    if handled == true then
+      return true, v
+    end
+    return false
+  end
+  -- busy: the last INFO of this screen
+  local t = BBT_INFO
+  if type(t) == "table" and t.active and t.loaded and t.ci1 ~= nil then
+    if sub == 1 then
+      return true, t.ci1
+    end
+    return true, (t.ci3 and t.ci3[(i or 0) + 1]) or 0
+  end
+  return false
+end
+
+-- a tournament armed or running (CMND_BBD_TOURN_INFO, one try: busy = false, the retail answers stand)
+function BBT_TournamentOn()
+  local ok, t = pcall(funcLuaCommand, BBT.INFO)
+  if ok and type(t) == "table" then
+    BBT_INFO = t
+    return t.active == true or t.armed == true
+  end
+  return false
+end
+
+-- f(...) with this VM's funcLuaMenuCommand answering CMND_GET_BB_STADIUM_CAMPAIGN_INFO from the tournament first;
+-- only while a tournament is armed or running, the original restored when f returns (or fails)
+function BBT_WithCampaignInfo(f, ...)
+  if type(funcLuaMenuCommand) ~= "function" or not BBT_TournamentOn() then
+    return f(...)
+  end
+  local menu_cmd = funcLuaMenuCommand
+  local wrap
+  wrap = function(c, ...)
+    if c == BBT.CAMPAIGN then
+      local sub, i = ...
+      local h, v = BBT_CampaignInfo(sub, i)
+      if h then
+        return v
+      end
+    end
+    return menu_cmd(c, ...)
+  end
+  funcLuaMenuCommand = wrap
+  local r = table.pack(pcall(f, ...))
+  if funcLuaMenuCommand == wrap then
+    funcLuaMenuCommand = menu_cmd
+  end
+  if not r[1] then
+    error(r[2], 0)
+  end
+  return table.unpack(r, 2, r.n)
+end
+
+-- the retail readers of CMND_GET_BB_STADIUM_CAMPAIGN_INFO (sub 1 / 3: fade_menu_encount SetupParam / OnSetupLayer,
+-- bb_stadium_campaign_end_window and bb_stadium_top_menu OnSetupLayer); wrapped once per VM (plain Lua functions of
+-- the retail chunk, not overwritten by the game). Not in sub_window_group (SetupWindowParams): it reads sub 2 only,
+-- which the tournament never answers, and it opens for every window of the game.
+if BBT_WRAPPED_CI == nil and SetupWindowParams == nil then
+  BBT_WRAPPED_CI = true
+  for _, name in ipairs({ "SetupParam", "OnSetupLayer" }) do
+    local f = _G[name]
+    if type(f) == "function" then
+      _G[name] = function(...)
+        return BBT_WithCampaignInfo(f, ...)
+      end
+    end
+  end
+end
+
+-- sub_window_group only (SetupWindowParams): Accept on a row of the Torneo's options panel (the L / R window of
+-- bbt_grid.lua, rows win05_08_sub_list_item_lr) changes the value in place: the row goes to the grid through the
+-- parameter store (evt_bbd_tn_panel_enter = row + 1) and the window stays open. Only while the grid set
+-- evt_bbd_tn_panel_open; every other window: the retail OnEnter.
+if BBT_WRAPPED_SW == nil and SetupWindowParams ~= nil then
+  BBT_WRAPPED_SW = true
+  -- the options panel's dress (called by the grid, cross-menu, 1.5.12): the L / R window is the online room's rank
+  -- condition window; its rows' rank icon slot (_icon_rank_dmy01 of win05_08_sub_list_item_lr) is filled by the
+  -- online menu with a rank sprite, unfilled it is a white box: hidden. Its title sprite is the baked «EQUIPOS»
+  -- (gtxt_team01 of win05_17.g4tx; no text node on that layer): swapped for the retail localized settings title
+  -- (gtxt_settings01 of vs01_21.g4tx, the grid's own «settings» button, so loaded with the grid).
+  function BBT_SW_PanelDress(rows)
+    for r = 0, (rows or 2) - 1 do
+      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 2914934797 --[[win05_08_sub_list_item_lr]],
+        364170841 --[[_icon_rank_dmy01]], false, r)
+    end
+    local loc = (rows or 2) > 2 and BBT_SW_LOC3 or 379318822 --[[win05_17_sub_list_locator_lr]]
+    funcLuaMenuCommand(558735651, loc,
+      CRC32("#/menu/107_vs/vs01/vs01_21/<LG>/vs01_21.g4tx"), CRC32("gtxt_settings01"), CRC32("gtxt_list_lr01"), 0, 0)
+    return true
+  end
+  -- 1.5.16: the Torneo's options have a THIRD L / R row («Filtrar equipos poco importantes»). The retail L / R window
+  -- (layout 3) opens at most 2 rows on the 2-row locator win05_17; while the Torneo's panel is open (the parameter
+  -- evt_bbd_tn_panel_open = its row count, 3) the window's own opening (OpenWindow, wrapped) is completed here: the
+  -- retail locator closed, the mod's 3-row copy opened (evt_bbd_tn_opts_locator: content\menus\bb_tournament.toml,
+  -- its _list04 joint holds row 3, the panel 1.3x taller, the button under the rows), the third row instance of
+  -- win05_08 opened (the menu has 3 since 1.5.16) and the list told it has 3 rows (cursor locator too). Every other
+  -- L / R window of the game is the retail one.
+  BBT_SW_LOC3 = @crc:evt_bbd_tn_opts_locator@
+  function BBT_SW_LrRows()
+    local ok, open = pcall(funcLuaCommand, 2947612279 --[[param has]], @crc:evt_bbd_tn_panel_open@)
+    if not (ok and open == true) then
+      return 2
+    end
+    local okv, n = pcall(funcLuaCommand, 3522198769 --[[param get]], @crc:evt_bbd_tn_panel_open@)
+    if okv and type(n) == "number" and n > 2 then
+      return n
+    end
+    return 2
+  end
+  function BBT_SW_ThirdRow(rows)
+    local ROW, LOC = 2914934797 --[[win05_08_sub_list_item_lr]], 379318822 --[[win05_17_sub_list_locator_lr]]
+    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], LOC, 0)
+    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], BBT_SW_LOC3, 0)
+    for i = 2, rows - 1 do
+      funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], ROW, i)
+    end
+    funcLuaMenuCommand(3252599449 --[[list item count]], ROW, rows)
+    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], ROW, 21268581 --[[select_cur]], 0, rows)
+    return true
+  end
+  -- 1.5.18: the Torneo's panel (BBT_Choose: evt_bbd_tn_panel_center = its rows): the window centred on the screen
+  -- (its locator win05_03_sub_list_locator sits at the panel's top centre: kind 20 puts it at 1068, -181), the
+  -- Campaña team's crest row (win05_04_p1_sub_list_item_add_icon) closed
+  BBT_SW_ROW_H, BBT_SW_PAD = 90, 27
+  function BBT_SW_Panel()
+    local ok, on = pcall(funcLuaCommand, 2947612279 --[[param has]], @crc:evt_bbd_tn_panel_center@)
+    if not (ok and on == true) then
+      return false
+    end
+    local okv, n = pcall(funcLuaCommand, 3522198769 --[[param get]], @crc:evt_bbd_tn_panel_center@)
+    n = (okv and type(n) == "number" and n > 0) and n or 2
+    local h = BBT_SW_PAD + BBT_SW_ROW_H * n
+    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], 2984476230 --[[win05_03_sub_list_locator]], 960,
+      -(540 - h / 2), 0)
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 1342728931 --[[win05_04_p1_sub_list_item_add_icon]], 0, false)
+    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], 1342728931, 0)
+    return true
+  end
+  local setup_params = SetupWindowParams
+  function SetupWindowParams(...)
+    local r = table.pack(setup_params(...))
+    local ok, err = pcall(BBT_SW_Panel)
+    if not ok then
+      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams tournament", "panel:", tostring(err))
+    end
+    return table.unpack(r, 1, r.n)
+  end
+  local setup_layer = OnSetupLayer
+  function OnSetupLayer(a1, a2, ...)
+    if a1 == 1342728931 --[[win05_04_p1_sub_list_item_add_icon]] then
+      local ok, on = pcall(funcLuaCommand, 2947612279 --[[param has]], @crc:evt_bbd_tn_panel_center@)
+      if ok and on == true then
+        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false)
+        return
+      end
+    end
+    return setup_layer(a1, a2, ...)
+  end
+  local open_window = OpenWindow
+  function OpenWindow(...)
+    local r = table.pack(open_window(...))
+    local rows = BBT_SW_LrRows()
+    if rows > 2 then
+      local ok, err = pcall(BBT_SW_ThirdRow, rows)
+      if not ok then
+        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams tournament", "third row:", tostring(err))
+      end
+    end
+    return table.unpack(r, 1, r.n)
+  end
+  local enter = OnEnter
+  function OnEnter(a1, a2, ...)
+    if a1 == 2914934797 --[[win05_08_sub_list_item_lr]] then
+      local ok, open = pcall(funcLuaCommand, 2947612279 --[[param has]], @crc:evt_bbd_tn_panel_open@)
+      if ok and open == true then
+        pcall(funcLuaCommand, 3363400568 --[[param delete]], @crc:evt_bbd_tn_panel_enter@)
+        pcall(funcLuaCommand, 3860611758 --[[param set]], @crc:evt_bbd_tn_panel_enter@, 0, (a2 or 0) + 1)
+        return 1
+      end
+    end
+    return enter(a1, a2, ...)
+  end
+end
+
+-- crc32 of a text id at run time (ids built from values: opt_size_16, ko_3, group_2 …)
+BBT_CRC_T = nil
+function BBT_Crc(s)
+  if BBT_CRC_T == nil then
+    BBT_CRC_T = {}
+    for i = 0, 255 do
+      local c = i
+      for _ = 1, 8 do
+        if c % 2 == 1 then
+          c = bit32.bxor(bit32.rshift(c, 1), 0xEDB88320)
+        else
+          c = bit32.rshift(c, 1)
+        end
+      end
+      BBT_CRC_T[i] = c
+    end
+  end
+  local c = 0xFFFFFFFF
+  for i = 1, #s do
+    c = bit32.bxor(BBT_CRC_T[bit32.band(bit32.bxor(c, string.byte(s, i)), 0xFF)], bit32.rshift(c, 8))
+  end
+  return bit32.bxor(c, 0xFFFFFFFF)
+end
+
+function BBT_Id(key)
+  return BBT_Crc("evt_bbd_tn_" .. key)
+end
+
+function BBT_Text(key)
+  local ok, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], BBT_Id(key))
+  return ok and t or ""
+end
+
+-- a text with <VALUE> filled (the retail text value command)
+function BBT_TextValue(key, n)
+  local t = BBT_Text(key)
+  local ok, r = pcall(funcLuaCommand, 910683996, t, "VALUE", n or 0, 0, 0, true)
+  return ok and r or t
+end
+
+-- a retail sub window list of text ids; the chosen index (0-based), -1 = cancelled. Runs in a coroutine.
+-- 1.5.18 (owner, 2026-10-12): the Campaña's continue window (kind 20: the look of the Battle Bay windows), centred on
+-- the screen and without the Campaña team's crest on its first row (the sub window's side: BBT_SW_Panel, through the
+-- parameter evt_bbd_tn_panel_center = the row count); its size follows the row count (the 3rd argument = the
+-- window's Open size: 2 rows 5, 3 rows 1, 4 rows 2; 1.5.16 always passed 5, so a 3rd row was never shown)
+BBT_CHOOSE_SIZE = { [1] = 5, [2] = 5, [3] = 1, [4] = 2, [5] = 6, [6] = 3 }
+-- 1.5.20 (owner: «Sí» in «¿Empezar un torneo nuevo?» stayed forever): keep = true leaves the window open after the
+-- choice (the caller then asks its Yes / No and calls BBT_ChooseClose): the retail Campaña window asks «Partida
+-- nueva» exactly so, between its two 417837871 (bb_stadium_top_menu WaitExecOtherMenu); a general window opened
+-- after the sub window's close + 417837871 never got its answer.
+function BBT_Choose(ids, cursor, keep)
+  local enabled = {}
+  for i = 1, #ids do
+    enabled[i] = 1
+  end
+  -- 1.5.21 (owner log 15:34: «panel open 2 rows, came up after 0 frames», then «choice -1» 200 ms later): a window
+  -- opened right after a choice was the previous one still closing; its close read as «No». First the previous
+  -- window fully gone (+ a few frames), then the new one must be seen open before its result counts.
+  local g = 0
+  while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.SUB_WINDOW) == true and g < 300 do
+    g = g + 1
+    coroutine.yield()
+  end
+  for _ = 1, 6 do
+    coroutine.yield()
+  end
+  pcall(funcLuaCommand, 3363400568 --[[param delete]], @crc:evt_bbd_tn_panel_center@)
+  pcall(funcLuaCommand, 3860611758 --[[param set]], @crc:evt_bbd_tn_panel_center@, 0, #ids, 1)
+  MENU_DEF.OpenSubWindowDefault(#ids, ids, BBT_CHOOSE_SIZE[#ids] or 5, cursor or 0, enabled, 0, false, false, 20)
+  local f = 0
+  while not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], 2984476230 --[[win05_03_sub_list_locator]], 0,
+    BBT.SUB_WINDOW) and f < 120 do
+    f = f + 1
+    coroutine.yield()
+  end
+  BBT_Log("panel open", #ids, "rows, the previous one gone after", g, "frames, came up after", f)
+  local r = -1
+  funcLuaCommand(417837871)
+  while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.SUB_WINDOW) and r < 0 do
+    r = funcLuaCommand(1394177278 --[[CMND_GET_SUB_WINDOW_RESULT?]])
+    coroutine.yield()
+  end
+  BBT_Log("panel choice", r)
+  if not keep or r < 0 then
+    BBT_ChooseClose()
+  end
+  return r
+end
+
+function BBT_ChooseClose()
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.SUB_WINDOW) then
+    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBT.SUB_WINDOW)
+  end
+  pcall(funcLuaCommand, 3363400568 --[[param delete]], @crc:evt_bbd_tn_panel_center@)
+  funcLuaCommand(417837871)
+end
+
+-- a retail general window with a text id; buttons 1 (OK) or 2 (Yes / No); the answer (0 = Yes / OK)
+-- 1.5.20: the wait of Battle Bay Deluxe's room messages (bbn_common.lua BBN_Msg, which works on «Modos de juego»):
+-- a choice, or a cancel / the window gone once it was up; every change of the reads is logged
+BBT_MSG_MAX, BBT_MSG_UP = 108000, 90
+function BBT_Window(text_id, buttons)
+  funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+  funcLuaCommand(2289627655, text_id, 0, 0)
+  funcLuaCommand(2351835063, buttons, 0)
+  local n, up, last = -1, false, nil
+  for f = 1, BBT_MSG_MAX do
+    coroutine.yield()
+    local a, c = funcLuaCommand(1523741473 --[[MSG_RESULT]])
+    local gone = funcLuaCommand(682363669 --[[MSG_DONE]]) == true
+    local busy = funcLuaCommand(898725220 --[[MSG_BUSY]]) == true
+    if not gone or busy then
+      up = true
+    end
+    local key = tostring(a) .. "/" .. tostring(c) .. "/" .. tostring(gone) .. "/" .. tostring(busy)
+    if key ~= last then
+      last = key
+      BBT_Log("message", f, "choice/cancel/gone/busy", key)
+    end
+    if type(a) == "number" and a >= 0 then
+      n = a
+      break
+    end
+    if (c == true and up) or (up and gone and not busy) then
+      break
+    end
+    if not up and f > BBT_MSG_UP then
+      BBT_Log("message never came up")
+      break
+    end
+  end
+  BBT_Log("message answer", n)
+  return n
+end

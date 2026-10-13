@@ -1,0 +1,27 @@
+schema = "vr_framework.base_table/1"
+file = "data/common/event/ev60/ev60_95020/ev60_95020_light/eventmap_fix_c0020.cfg.bin"
+
+[new]
+order = ["PROP_INFO_BGN"]
+
+[t2b]
+encoding = "shift-jis"
+
+[[list]]
+name = "PROP_INFO_BGN"
+head = ["CLightData"]
+rows = [
+  { "=PROP_PARAM" = ["charaLightDir", -0.4, 0.4, -0.76] },
+  { "=PROP_PARAM" = ["lightDir", 0.364015, 0.474114, 0.801691] },
+  { "=PROP_PARAM" = ["dofFocusIn", 0.2] },
+  { "=PROP_PARAM" = ["dofFocusNearZ", 0.1] },
+  { "=PROP_PARAM" = ["debugDrawDofFlag", 0] },
+  { "=PROP_PARAM" = ["charaHighThreshold", 1.5] },
+  { "=PROP_PARAM" = ["charaShadowRate1", 0.5] },
+  { "=PROP_PARAM" = ["charaShadowRate2", 0.54] },
+  { "=PROP_PARAM" = ["occlusionParam", 0.25, 0.65000004, 0.0, 0.0] },
+  { "=PROP_PARAM" = ["charaUnderRimRate", 1.45] },
+  { "=PROP_PARAM" = ["dofUseAutoFocus", 1] },
+  { "=PROP_PARAM" = ["dofFocusFarZ", 10.0] },
+  { "=PROP_PARAM" = ["dofFocusOut", 30.0] },
+]

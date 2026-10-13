@@ -1,0 +1,42 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › «the field battle ends in the menus» (docs/framework/field-return.md; scripts\field_return.lua). A
+# street battle / pachanga played on a field map (a 5v5 on the battle map loaded as the field map) would go back to that
+# field after the match. While armed, SoccerState::Update's «loaded field map?» test takes the VS / BB menu path (the
+# way the menu matches return) once, and can send the game straight to the title from there. Any mod's friendly or
+# pachanga arms it: the match engine's pachanga executor (friendly `return = "title"`), Inazuma Fantasy's office
+# trials and INAROGUE's 5v5 nodes. Was Inazuma Fantasy's office trial_return (CMND_EVT_TRIAL_RETURN) until
+# 2026-10-13; that name stays as an alias.
+
+# SoccerState::Update, right after the match scene ended: cmp dword [r15+22B4h], -1 (loaded field map slot; -1 = none:
+# VS / BB matches) / je <the menu return>. Armed: the next pass skips to the menu return and disarms.
+[[VRFW.Hook]]
+name = "FieldReturnSite"
+game = "Menu.TrialReturn"
+
+# GameReset(): CMND_GAME_RESET's body (queues the end of SceneRpg and the title; the framework's game reset observer
+# sees the call: the script event game_reset)
+[[VRFW.Function]]
+name = "FieldReturnReset"
+game = "Game.Reset"
+
+# the player data block: + Save.LoadedGuard (game profile field) = the «save loaded» guard (0 = the title reads
+# the slot file again)
+[[VRFW.Global]]
+name = "field_return_play_data"
+base = "game_root"
+chain = ["ROOT_PLAY_DATA"]
+
+# the RPG root: + Route.RpgNoPressStart (game profile field) = no press-start screen (its Lua handler writes the same
+# byte)
+[[VRFW.Global]]
+name = "field_return_rpg"
+game = "Route.Rpg"
+
+# CMND_VRFW_BATTLE_RETURN(op) -> live, armed, taken. op: 1 arm + straight to the title, in-memory game kept / 3 arm +
+# straight to the title, the save read again / 2 arm, the menu route only / 0 disarm / -1 query. A return to the title
+# disarms. CMND_EVT_TRIAL_RETURN = the same command (its 1.x / Inazuma Fantasy name).
+[[VRFW.Command]]
+name = "CMND_VRFW_BATTLE_RETURN"
+aliases = ["CMND_EVT_TRIAL_RETURN"]
+handler = "FieldReturn.Command"

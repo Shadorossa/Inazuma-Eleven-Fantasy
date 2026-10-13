@@ -1,0 +1,109 @@
+schema = "vr_framework.text/2"
+# Names of the Inazuma Eleven Cross stadiums (the map_text NOUN row crc32("map_name_<map>"), read by
+# CMND_GET_MAP_NAME: the free-match stadium list, the match intro). Moved from Inazuma Fantasy's text\rows\map_text.toml
+# on 2026-10-08 (same ids).
+table = "map_text"
+
+[[row]]
+id = "map_name_s91g001"  # 0x63840628: Cross a02g001, the ferry stadium (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Inazuma Big Ferry"
+en = "Inazuma Big Ferry"
+it = "Inazuma Big Ferry"
+fr = "Inazuma Big Ferry"
+de = "Inazuma Big Ferry"
+pt = "Inazuma Big Ferry"
+ja = "Inazuma Big Ferry"
+zh_hans = "Inazuma Big Ferry"
+zh_hant = "Inazuma Big Ferry"
+
+[[row]]
+id = "map_name_s91g001b"  # 0x4468C305: Cross a02g002, the ferry's summer skin (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Inazuma Big Ferry (verano)"
+en = "Inazuma Big Ferry (Summer)"
+it = "Inazuma Big Ferry (estate)"
+fr = "Inazuma Big Ferry (Summer)"
+de = "Inazuma Big Ferry (Summer)"
+pt = "Inazuma Big Ferry (Summer)"
+ja = "Inazuma Big Ferry (Summer)"
+zh_hans = "Inazuma Big Ferry (Summer)"
+zh_hant = "Inazuma Big Ferry (Summer)"
+
+[[row]]
+id = "map_name_s91g001c"  # 0x336FF393: Cross a02g006, the ferry's summer-festival skin (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Inazuma Big Ferry (festival)"
+en = "Inazuma Big Ferry (Festival)"
+it = "Inazuma Big Ferry (festa)"
+fr = "Inazuma Big Ferry (Festival)"
+de = "Inazuma Big Ferry (Festival)"
+pt = "Inazuma Big Ferry (Festival)"
+ja = "Inazuma Big Ferry (Festival)"
+zh_hans = "Inazuma Big Ferry (Festival)"
+zh_hant = "Inazuma Big Ferry (Festival)"
+
+[[row]]
+id = "map_name_s92g001"  # 0x24247CF8: Cross a05g001, the seaside ship deck (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Estadio Costero"
+en = "Seaside Stadium"
+it = "Stadio sul mare"
+fr = "Seaside Stadium"
+de = "Seaside Stadium"
+pt = "Seaside Stadium"
+ja = "Seaside Stadium"
+zh_hans = "Seaside Stadium"
+zh_hant = "Seaside Stadium"
+
+[[row]]
+id = "map_name_s93g001"  # 0x19445548: Cross a04g001, the haunted pirate ship (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Barco Pirata Fantasma"
+en = "Ghost Pirate Ship"
+it = "Nave pirata fantasma"
+fr = "Ghost Pirate Ship"
+de = "Ghost Pirate Ship"
+pt = "Ghost Pirate Ship"
+ja = "Ghost Pirate Ship"
+zh_hans = "Ghost Pirate Ship"
+zh_hant = "Ghost Pirate Ship"
+
+[[row]]
+id = "map_name_s94g001"  # 0xAB648958: Cross a03g001, the Chinese ramen-ship restaurant (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Barco Ramen"
+en = "Ramen Ship"
+it = "Nave del ramen"
+fr = "Ramen Ship"
+de = "Ramen Ship"
+pt = "Ramen Ship"
+ja = "Ramen Ship"
+zh_hans = "Ramen Ship"
+zh_hant = "Ramen Ship"
+
+[[row]]
+id = "map_name_s98g001"  # 0x6E946459: Cross a01g001, the cyber field (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Campo Cibernético"
+en = "Cyber Field"
+it = "Campo cibernetico"
+fr = "Cyber Field"
+de = "Cyber Field"
+pt = "Cyber Field"
+ja = "Cyber Field"
+zh_hans = "Cyber Field"
+zh_hant = "Cyber Field"
+
+[[row]]
+id = "map_name_s99g001"  # 0x53F44DE9: Cross a06g001, the ferry's bow deck (docs/game/media/cross-stadium-port.md §11); other languages = EN
+kind = "noun"
+es = "Cubierta del Big Ferry"
+en = "Big Ferry Deck"
+it = "Ponte del Big Ferry"
+fr = "Big Ferry Deck"
+de = "Big Ferry Deck"
+pt = "Big Ferry Deck"
+ja = "Big Ferry Deck"
+zh_hans = "Big Ferry Deck"
+zh_hant = "Big Ferry Deck"

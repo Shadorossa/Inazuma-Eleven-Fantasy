@@ -1,0 +1,18 @@
+# Hand-maintained. «Tabla de habilidades» (the retail ability board, ability_learning_board_menu) with the compact
+# top bar (flag header_short; docs/game/ui/ui-redesign.md §3.3c): the player switcher (team13_28: ‹ Z face C ›) and
+# the stock counter (team13_27: icon «×N») are placed INTO the bar right of the team panel by the graft
+# ui_clean_header_shift (hs_bar_dock.lua, data from research/scripts/ui_clean_build.py --header-dock). Retail anchors
+# them right / top; here centre / top like the header and its team panel (mainmenu90_01_header), so the placement next
+# to the panel holds at any aspect. At 16:9 the anchor changes nothing (the screen without the team dock's header,
+# where the graft leaves them at their retail place, looks the same as retail).
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "ability_learning_board_menu"
+layer = "team13_28_chara_change_guide"
+align = ["center", "top"]
+
+[[patch]]
+menu = "ability_learning_board_menu"
+layer = "team13_27_new_possibility_stock_num"
+align = ["center", "top"]

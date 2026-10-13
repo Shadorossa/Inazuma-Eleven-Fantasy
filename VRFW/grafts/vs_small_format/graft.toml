@@ -1,0 +1,39 @@
+# Small-format matches on the Chronicle VS screen (vs_route_town_vs_team_menu + vs_route_town_vs_enemy_formation_menu;
+# Nacho 2026-10-13: the 5v5 «Equipo A-5» node of Chronicles Deluxe showed an empty dark card in the middle of both
+# pitches and an empty coach silhouette). The retail screen is built for 11-a-side teams: it hides the unused CARDS but
+# never the blank frames under them (team00_01_p1_chara_card_blank: 19 slots = 11 field + 5 bench + 3 support), and it
+# draws an empty coach card when the team has no coach. With 11 starters every frame is covered by a card; a 3v3 / 5v5
+# / 7v7 team leaves the frames of the missing slots on screen (piled at the layer's default place).
+# Rule (generic, every mod's teams, no list): when a drawn team has fewer than 11 field members (positions 0-10), the
+# format is a small one: only the slots of a member stay (their places = the team's formation, retail), every other
+# card + blank frame is hidden, and the coach card + its frame are hidden unless the team has a coach (position 19).
+# An 11-a-side team keeps the retail screen. The format follows the team that is drawn (3 / 5 / 7 cards).
+# Wrappers only (after the retail drawing); nothing runs at chunk load. INAROGUE's rogue_vs (IF, later) stays on top.
+name = "vs_small_format"
+mod = "vr_framework"
+order = 300
+module = ""
+requires = []
+conflicts = []
+wraps = ["SetFormation", "SetTeamDockFormation"]
+description = "Chronicle VS screen: 3v3 / 5v5 / 7v7 teams show only their own cards (no empty frames, coach only if declared)"
+
+[[files]]
+stem = "vs_route_town_vs_team_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vsf_team.lua"
+  marker = "vrfw vs small format team"
+  include = { "@COMMON@" = "vsf_common.lua" }
+  crc = "none"
+
+[[files]]
+stem = "vs_route_town_vs_enemy_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vsf_enemy.lua"
+  marker = "vrfw vs small format enemy"
+  include = { "@COMMON@" = "vsf_common.lua" }
+  crc = "none"

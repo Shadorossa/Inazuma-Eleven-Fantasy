@@ -1,0 +1,25 @@
+-- ===== VRFW outfit_list BEGIN ===== (docs/framework/outfits.md, research/grafts/vrfw_outfit)
+-- Item list of «Equipamiento» (equip_menu_list): its costume tab (tab 4, the game's own inventory list of costumes)
+-- opens from the «Atuendo» row outside the story too (equip_menu_select passes 363718978 = true). An outfit a mod
+-- declared ([[VRFW.Outfit]], VR-Framework CMND_VRFW_OUTFIT_IS) skips the retail «first costume change» warning (a
+-- story notice). Every other item, and an older framework (pcall fails): retail. Nothing runs at load time; no new
+-- main-chunk locals.
+do
+  VRFW_Outfit = VRFW_Outfit or {}
+  VRFW_Outfit.IS = @crc:CMND_VRFW_OUTFIT_IS@
+
+  if VRFW_Outfit.PrevCaution == nil then
+    VRFW_Outfit.PrevCaution = OpenFirstChangeCostumeCautionMessage
+  end
+
+  function OpenFirstChangeCostumeCautionMessage(a1)
+    if type(a1) == "number" and a1 ~= 0 then
+      local ok, is = pcall(funcLuaCommand, VRFW_Outfit.IS, a1)
+      if ok and is == true then
+        return
+      end
+    end
+    return VRFW_Outfit.PrevCaution(a1)
+  end
+end
+-- ===== VRFW outfit_list END =====

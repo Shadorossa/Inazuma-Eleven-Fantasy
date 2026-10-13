@@ -1,0 +1,20 @@
+# Battle Bay Deluxe's «Torneo» row in Utilities' top bar group «Battle Bay» (VR-Framework 2.0.92 top bar groups,
+# docs/framework/top-bar.md §16.3; the group and its Campaña / 1v1 / Online rows are Utilities', BetterUI's until
+# 2026-10-12: a group is found by its key alone, whichever mod declares it). The action: the
+# title's Estadio BB request with the step bb_tournament, answered by this mod's graft (bb_tournament bbt_top.lua: at the
+# hub's OnInit VRFW_TopBarStep("bb_tournament"), then the «Campaña» row is focused and decided in Torneo mode once the
+# list is ready; 1.5.47: the top menu has no «Torneo» row any more, the Torneo is a mode of the Campaña screen).
+# Without Utilities the group is not declared and this row is left out (logged by the framework).
+schema = "vr_framework.menu/2"
+
+[[entry]]
+host = "top_bar"
+id = "torneo"
+group = "battle_bay"
+text = { es = "Torneo", en = "Tournament", fr = "Tournoi", de = "Turnier", it = "Torneo", pt = "Torneio", ja = "トーナメント", zh_hans = "锦标赛", zh_hant = "錦標賽" }
+# the Victory Road mode's own icon (the title menu's Victory Road button, 292 x 160; a game texture, owner 2026-10-12)
+icon = "#/menu/50_title/title00/title00_07/title00_07.g4tx:icon_btn04"
+icon_aspect = 1.825
+order = 40
+action = { title = "3009621826", path = ["bb_tournament"], direct = { menu = "bb_stadium_top_menu", title_mode = 2 } }
+menus = []

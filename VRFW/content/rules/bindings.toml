@@ -1,0 +1,17 @@
+schema = "vr_framework.rule_binding/1"
+# Tabla de asignación BASE del match engine: modo del partido -> reglamento (docs/game/modes/match-engine.md §12).
+# Es el último recurso: cualquier mod que use el motor la sustituye con su propio rules\matches.toml
+# ([games] partido, [teams] equipo rival, [modes] modo, [default] sus partidos). Los modos salen del propio motor
+# (byte de modo de juego + tipo de partido), sin Lua. Tipo 2 (partido pequeño) = sufijo _small.
+[modes]
+free = "free_match"                 # VS CPU, amistosos, partidos libres (tipo 1: 11 contra 11)
+free_small = "friendly_5v5"         # friendlies («pachangas») / free small matches (type 2: 5-a-side)
+story = "story"                     # Historia (cada fila decide su V-goal y su duración)
+story_small = "story"
+chronicle = "chronicle"             # Crónica
+chronicle_small = "chronicle"
+kizuna = "kizuna"                   # Ciudad vínculo
+kizuna_small = "kizuna"
+victory_road = "victory_road"       # Victory Road
+victory_road_small = "victory_road"
+training = "training"               # entrenamientos y pruebas de regate (tipos 3 y 4)

@@ -1,0 +1,39 @@
+# Clean HUD «compact player cards» (flag compact_cards; docs/game/characters/position-cards.md §4 / §8,
+# docs/game/ui/ui-redesign.md §3.6). Moved out of Inazuma Fantasy's position_cards on 2026-10-08: the layout part (name and
+# level hidden on every card drawn with the formation layout team00_01_evt_fc, which Clean HUD's menus\player_cards.toml +
+# files\data give the formation screens; that layout puts the element icon bottom left and the position badge bottom right). The card colour by position stays Inazuma
+# Fantasy's (graft position_cards), layered on top: both wrap funcLuaMenuCommand and the wrappers chain; IF calls this
+# graft's exports (CLEAN_HUD_PC_IsCompact, _IsCardLayer, _HideName, _KeepName) at run time.
+# Snippet = menu_generators.ui_clean_child(part = "evt_ui_player_cards.lua", tag = "player_cards", scope = "clean_hud")
+# of research/grafts/_src/ui_clean (the ui_clean prelude: UiOn, Pack, UiLog, UiHookMenuCommand). Both files are
+# INCLUDE'd scripts: bytecode children, as position_cards / neutral_element.
+name = "clean_hud_player_cards"
+mod = "clean_hud"
+order = 910
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []   # the 7 formation card functions are wrapped by rawset at run time (CLEAN_HUD_PC_WrapFormation)
+description = "Clean HUD: compact player cards (no name or level on the formation layout; element left, position right)"
+
+[[files]]
+stem = "soccer_common"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "pc_soccer_common.lua"
+  marker = "clean_hud player_cards"
+  crc = "none"
+  generator = "research/scripts/menu_generators.py:ui_clean_child"
+  generator_args = { part = "evt_ui_player_cards.lua", tag = "player_cards", scope = "clean_hud" }
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "player_cards" }
+
+[[files]]
+stem = "soccer_formation_menu_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "pc_formation.lua"
+  marker = "clean_hud player_cards formation"
+  crc = "none"

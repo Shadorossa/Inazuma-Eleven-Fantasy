@@ -1,0 +1,18 @@
+schema = "vr_framework.rule/1"
+# BASE ruleset: friendly / free small match (type 2, «pachanga»). Plays the original game as it is.
+id = "friendly_5v5"
+aliases = ["pachanga_5v5"]   # its id before 2026-10-08
+name = "5-a-side friendly (original)"   # fallback; shown in the game language from the text key ruleset_friendly_5v5
+version = 1
+
+[time]
+half_minutes = "row"       # la fila del partido (c20; 15 en las 204 filas de partido pequeño)
+halves = "row"             # la fila (c22 = 1 en las 204: un solo periodo, mi+0 bit 1 apagado)
+
+[teams]
+players = "row"            # los de la fila (5 en un partido pequeño, tipo 2)
+
+[end]
+extra_time = false
+golden_goal = false
+penalties = false

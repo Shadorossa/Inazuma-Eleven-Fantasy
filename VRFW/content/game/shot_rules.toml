@@ -1,0 +1,216 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › shot / zone rules (service S5 of VRFW 2.3, docs/framework/rules.md §8). The run time is
+# scripts\shot_rules.lua: it reads every mod's content\shot_rules\*.toml (`VRFW.shot_rule/1`, keys:
+# content\types\shot_rule.toml) and, only for what a mod declares, installs the detours / writes the sites below.
+# **Nothing here is installed at start** (`apply = "script"`, script patches): with no declaration the game's code stays
+# as it is. (Was Inazuma Fantasy's content\game\shoot_zone.toml and the long-shot script patches of its
+# training_field.toml until VRFW 2.3.)
+
+# ------------------------------------------------------------------------------------------------ [[VRFW.ZoneArea]]
+#
+# Retail: every «is this position in the zone area?» question goes through IsInZoneArea(z, team) 0x1534640 (28
+# callers: CanStartZone before StartZone, the AI condition, the set-piece restart, the «ÁREA» title, AI behaviours)
+# and its both-teams twin 0x15345B0. They only look at the depth (rate = (z - centreZ) / halfLengthZ x attackSign >
+# zoneLineFieldRateZ 0.45): a full-width band. With area = "penalty_box" both are replaced whole (kind "replace": a
+# rel8 jump in their first bytes, LTCG callers keep xmm4 / xmm5 and r8-r11 across them: the replace stub restores
+# every register): the position is in the zone area when it is inside the penalty box the team attacks (the engine's
+# own box of the pitch in play, field data +0x16884 + i x 0x28 = {x0, z0, x1, z1, ..., cz}), widened by the margin.
+# The x is not an argument: the answers find the vector the z was read from (the same float) in the caller's
+# registers / stack / the ball / the set-piece spot; none = the depth test only. scripts\shot_rules.lua fills the
+# box table every match frame; no box (no match, no valid field data, team > 1) = false, as retail answers without
+# field data.
+#
+# Shot chains: the box is for STARTING a shot; chaining onto a live shot uses the game's own band (chain_area =
+# "retail", the default). A fresh shot asks for the ball holder (CanStartZone, the shot command 0x151B5F0 via
+# IsCharaInZoneArea 0x1533B60 = his position, its «out of the zone» bit = a long shot). A chain asks the same
+# IsInZoneArea, by team, for OTHER players: in the zone the aimed teammate (a HUD skill-row state 0x1110040, the zone
+# HUD 0x1521E30, via 0x1533B60), then, once the chain window is open (play controller flags +0x4C44 bit 0x800,
+# StartShootChain 0x1515940) or taken (bit 0x200, until the chained shot runs, 0x150A210), the chainer's own shot
+# command (docs/game/mechanics/zona-de-tiro.md §6). The twin 0x15345B0 (both teams: defence AI) plays no part. So,
+# with chain_area = "retail", the first answers give the game's own test (the line read live: the rule engine's
+# zone_area moves it) when a chain window is open / taken, or in the zone for a player position that is not the ball
+# holder's (further than 2 m from the ball). Everything else (the ball holder, the ball, the set-piece spot,
+# CanStartZone) keeps the box. "box" = chains use the box too.
+
+# field data of the pitch in play: [[0x21F69D0]] (FieldDepthRate 0x161BF40 reads it first)
+[[VRFW.Global]]
+name = "shot_zone_field"
+game = "Match.Field"
+chain = [0]
+
+# match info: each team's attack sign (i8 at + 0x60 + team x 0x1130 + 0x1102)
+[[VRFW.Global]]
+name = "shot_zone_match_info"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+# the ball [0x1E62AA0] (position at + 0x15F0, second position at + 0x1520)
+[[VRFW.Global]]
+name = "shot_zone_ball"
+game = "Ball.Global.ViaGlobalRead"
+
+# the restart info [0x21F69D8] (set-piece spot at + 0x50), as the set-piece restart 0x1427600 reads it
+[[VRFW.Global]]
+name = "shot_zone_setpiece"
+game = "Match.SetPiece"
+
+# the play controller [0x21F6928]: flags + 0x4C44 (bit 0x4 the zone is on, 0x200 a chain taken, 0x800 the chain window)
+[[VRFW.Global]]
+name = "shot_zone_play_ctrl"
+game = "Match.PlayControl"
+
+# SoccerZoneGlobalParam::zoneLineFieldRateZ (f32, retail 0.45): its address (VRFW.mem.global_addr) is published in
+# vrfw.shot_zone.line for the retail answers
+[[VRFW.Global]]
+name = "shot_zone_line"
+game = "Shot.ZoneLineFieldRate"
+
+# the pointers the answers read the candidate positions from (set by scripts\shot_rules.lua every match frame)
+[[VRFW.State]]
+key = "vrfw.shot_zone.ball"
+needs = ["shot_zone_ball"]
+
+[[VRFW.State]]
+key = "vrfw.shot_zone.setpiece"
+needs = ["shot_zone_setpiece"]
+
+[[VRFW.State]]
+key = "vrfw.shot_zone.play_ctrl"
+needs = ["shot_zone_play_ctrl"]
+
+[[VRFW.State]]
+key = "vrfw.shot_zone.line"
+needs = ["shot_zone_line"]
+
+# 1 = chains use the game's own area (chain_area = "retail", the default), 0 = the box
+[[VRFW.State]]
+key = "vrfw.shot_zone.chain_retail"
+
+# The game's own IsInZoneArea(Z, T): (Z - centreZ) x sign > line x halfLengthZ (halfLengthZ > 0). Team records of
+# ShotZone.Box carry cz / sg / hz (centre z, attack sign, half length); none (no field, sign 0, team > 1) = false.
+[[VRFW.Formula]]
+name = "ShotZone.Retail"
+params = ["Z", "T"]
+value = "(Z - lookup_or(ShotZone.Box:cz, 0, T)) * lookup_or(ShotZone.Box:sg, 0, T) > [state(vrfw.shot_zone.line)]:f32 * lookup_or(ShotZone.Box:hz, 0, T)"
+
+# a position (X, Z) more than 2 m from the ball: not the ball holder's
+[[VRFW.Formula]]
+name = "ShotZone.OffBall"
+params = ["X", "Z"]
+value = "pow(X - [state(vrfw.shot_zone.ball) + 0x15F0]:f32, 2) + pow(Z - [state(vrfw.shot_zone.ball) + 0x15F8]:f32, 2) > 4"
+
+# bool IsInZoneArea(float z, u8 team) 0x1534640: `sub rsp, 28h; cmp dl, 1` (7 bytes), then `ja` rel8
+[[VRFW.Hook]]
+name = "ShotZone.Area"
+game = "Shot.IsInZoneArea"
+kind = "replace"
+fallback = 0
+apply = "script"
+needs = ["shot_zone_field", "shot_zone_match_info"]
+
+# ShotZone.Box: key team (0 / 1) = the box that team attacks, 10 / 11 = the field's boxes 0 / 1;
+# records { x0, x1, z0, z1 } (min / max, margin included); team records also { cz, sg, hz } (ShotZone.Retail).
+
+[[VRFW.Hook.answer]]                   # a shot chain: the window open (0x800) or taken (0x200): the game's own area
+phase = "pre"
+when = { state = "vrfw.shot_zone.chain_retail", equals = 1 }
+value = "if(int(mask([state(vrfw.shot_zone.play_ctrl) + 0x4C44]:u32, 0xA00)) > 0, ShotZone.Retail(args[1], args[2]), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # in the zone, a chara position that is not the ball holder's (the chain partner)
+phase = "pre"
+when = { state = "vrfw.shot_zone.chain_retail", equals = 1 }
+value = "if((int(mask([state(vrfw.shot_zone.play_ctrl) + 0x4C44]:u32, 4)) > 0) * ([regs.rax + 8]:f32 == args[1]) * (abs([regs.rax]:f32) < 1000000000) * ShotZone.OffBall([regs.rax]:f32, args[1]), ShotZone.Retail(args[1], args[2]), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the caller's stack (CanStartZone, no ball owner)
+phase = "pre"
+when = { value = "[[regs.rsp]]:u64", equals = -7636544449577435004 }
+value = "if(([regs.rsp + 0x40]:f32 == args[1]) * (abs([regs.rsp + 0x38]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([regs.rsp + 0x38]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([regs.rsp + 0x38]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from a chara position the caller read with `call 0x16D8FF0; movss xmm0, [rax+8]`
+phase = "pre"
+value = "if(([regs.rax + 8]:f32 == args[1]) * (abs([regs.rax]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([regs.rax]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([regs.rax]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the ball (+0x15F0)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.ball) + 0x15F8]:f32 == args[1]) * (abs([state(vrfw.shot_zone.ball) + 0x15F0]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the ball's second position (+0x1520)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.ball) + 0x1528]:f32 == args[1]) * (abs([state(vrfw.shot_zone.ball) + 0x1520]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the set-piece spot ([0x21F69D8] + 0x50)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.setpiece) + 0x58]:f32 == args[1]) * (abs([state(vrfw.shot_zone.setpiece) + 0x50]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from [rbx + 0x50]
+phase = "pre"
+value = "if(([regs.rbx + 0x58]:f32 == args[1]) * (abs([regs.rbx + 0x50]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([regs.rbx + 0x50]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([regs.rbx + 0x50]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from an (x, z) pair at [r9]
+phase = "pre"
+value = "if(([regs.r9 + 4]:f32 == args[1]) * (abs([regs.r9]:f32) < 1000000000), (args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2])) * ([regs.r9]:f32 >= lookup(ShotZone.Box:x0, args[2])) * ([regs.r9]:f32 <= lookup(ShotZone.Box:x1, args[2])), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x unknown: the depth inside the box only
+phase = "pre"
+value = "(args[1] >= lookup(ShotZone.Box:z0, args[2])) * (args[1] <= lookup(ShotZone.Box:z1, args[2]))"
+
+# bool IsInAnyZoneArea(float z) 0x15345B0 (team 0 or 1): `sub rsp, 28h; mov r9, [rip+…]` (11 bytes)
+[[VRFW.Hook]]
+name = "ShotZone.AreaAny"
+game = "Shot.IsInZoneAreaAny"
+kind = "replace"
+fallback = 0
+apply = "script"
+needs = ["shot_zone_field", "shot_zone_match_info"]
+
+[[VRFW.Hook.answer]]                   # x from the caller's stack (CanStartZone, no ball owner)
+phase = "pre"
+when = { value = "[[regs.rsp]]:u64", equals = -7636544449577435004 }
+value = "if(([regs.rsp + 0x40]:f32 == args[1]) * (abs([regs.rsp + 0x38]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([regs.rsp + 0x38]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([regs.rsp + 0x38]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([regs.rsp + 0x38]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([regs.rsp + 0x38]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from a chara position the caller read with `call 0x16D8FF0; movss xmm0, [rax+8]`
+phase = "pre"
+value = "if(([regs.rax + 8]:f32 == args[1]) * (abs([regs.rax]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([regs.rax]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([regs.rax]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([regs.rax]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([regs.rax]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the ball (+0x15F0)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.ball) + 0x15F8]:f32 == args[1]) * (abs([state(vrfw.shot_zone.ball) + 0x15F0]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([state(vrfw.shot_zone.ball) + 0x15F0]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the ball's second position (+0x1520)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.ball) + 0x1528]:f32 == args[1]) * (abs([state(vrfw.shot_zone.ball) + 0x1520]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([state(vrfw.shot_zone.ball) + 0x1520]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from the set-piece spot ([0x21F69D8] + 0x50)
+phase = "pre"
+value = "if(([state(vrfw.shot_zone.setpiece) + 0x58]:f32 == args[1]) * (abs([state(vrfw.shot_zone.setpiece) + 0x50]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([state(vrfw.shot_zone.setpiece) + 0x50]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from [rbx + 0x50]
+phase = "pre"
+value = "if(([regs.rbx + 0x58]:f32 == args[1]) * (abs([regs.rbx + 0x50]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([regs.rbx + 0x50]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([regs.rbx + 0x50]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([regs.rbx + 0x50]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([regs.rbx + 0x50]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x from an (x, z) pair at [r9]
+phase = "pre"
+value = "if(([regs.r9 + 4]:f32 == args[1]) * (abs([regs.r9]:f32) < 1000000000), max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)) * ([regs.r9]:f32 >= lookup(ShotZone.Box:x0, 10)) * ([regs.r9]:f32 <= lookup(ShotZone.Box:x1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)) * ([regs.r9]:f32 >= lookup(ShotZone.Box:x0, 11)) * ([regs.r9]:f32 <= lookup(ShotZone.Box:x1, 11))), 1 / 0)"
+
+[[VRFW.Hook.answer]]                   # x unknown: the depth inside the box only
+phase = "pre"
+value = "max((args[1] >= lookup(ShotZone.Box:z0, 10)) * (args[1] <= lookup(ShotZone.Box:z1, 10)), (args[1] >= lookup(ShotZone.Box:z0, 11)) * (args[1] <= lookup(ShotZone.Box:z1, 11)))"
+
+# ------------------------------------------------------------------------------------------------ [[VRFW.LongShot]]
+
+# «every shot move as a long shot»: the two long-shot checks of SkillSituationOk 0x1546650 (a shot outside the zone
+# state needs the move's long-shot flag, effect bit 4 of the slot record +0x08; docs/game/hiper/hiper-match-slot.md).
+# Script patches (no bytes here: scripts\shot_rules.lua writes them while the declared flag is on during a match and
+# puts the game's bytes back when it is off / the match ends):
+#   154696F  test r13b, r13b / je …     1546978  test byte [rsi+8], 4   ->  or al, 1 (ZF = 0: the check passes)
+#   1546A29  cmp al, 2 / … / jne …      1546A35  mov eax, [rsi+8]; shr eax, 2; and al, 1  ->  mov al, 1 (+ nops)
+[[VRFW.Patch]]
+name = "ShotRules.LongShotZone"
+game = "Shot.LongShotZone"
+expect = ["F6 46 08 04", "0C 01 90 90"]
+
+[[VRFW.Patch]]
+name = "ShotRules.LongShotKeep"
+game = "Shot.LongShotKeep"
+expect = ["8B 46 08 C1 E8 02 24 01", "B0 01 90 90 90 90 90 90"]

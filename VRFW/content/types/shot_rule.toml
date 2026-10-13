@@ -1,0 +1,24 @@
+# The declarations of the shot / zone rules (service S5 of VRFW 2.3, docs/framework/rules.md §8): what a mod's
+# content\shot_rules\*.toml may say. Read by scripts\shot_rules.lua at start (every key is checked against this file:
+# an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.shot_rule/1"
+folder = "content/shot_rules"
+
+[entry.ZoneArea]
+doc = "where the shoot zone («Área», scene state ZoneState) may start: the game's full-width band past its zone line, or the penalty box the team attacks"
+# several mods: each key the later mod (load order) gives wins
+area = { type = "string", required = true, doc = "\"retail\" (the game's band: nothing installed) or \"penalty_box\" (inside the box the team attacks, widened by the margin)" }
+margin_m = { type = "number", default = 0, min = 0, max = 20, doc = "metres added around the box (0 = the white lines)" }
+margin_config = { type = "string", default = "", doc = "a dotted path of the declaring mod's config that gives margin_m (a user setting; missing = margin_m)" }
+chain_area = { type = "string", default = "retail", doc = "shot chains (a chain window open / taken, or the chain partner's position): \"retail\" = the game's own band, \"box\" = the box too" }
+chain_area_config = { type = "string", default = "", doc = "a dotted path of the declaring mod's config that gives chain_area (missing = chain_area)" }
+extra_state = { type = "string", default = "", doc = "a game_state key prefix of the declaring mod: <prefix>.0 / <prefix>.1 = extra metres around the box team 0 / 1 attacks (its passives), read every match frame; the total stays within 0..20 m" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.LongShot]
+doc = "every shot move may be used as a long shot (outside the zone state the game asks for the move's long-shot flag, effect bit 4 of its slot record): the two checks of SkillSituationOk pass"
+# the rule is on while the named flag (VRFW.set_flag, shared with the rules) is non-zero during a match; it is put back
+# at the end of every match and at the title
+all_moves_flag = { type = "string", required = true, doc = "the flag key that switches the rule on (e.g. a training-match setting row)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

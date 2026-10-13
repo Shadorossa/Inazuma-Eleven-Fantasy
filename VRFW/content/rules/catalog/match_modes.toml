@@ -1,0 +1,35 @@
+schema = "vr_framework.rule_catalog/1"
+# The match modes (M7, docs/framework/rule-catalog.md §3): which mode key a match gets from the engine's own fields,
+# the keys of `[modes]` in a mod's rules\bindings.toml (docs/game/modes/match-engine.md §12). Built into the
+# framework (match_engine::assign, like content\defaults\game_rarities.toml).
+#
+# `type` = the match info's type byte (mi+0x16: 1 full, 2 small / short, 3 training, 4 dribble); `play_mode` = the
+# game's play mode byte ([[g_gameRoot]+0x69C8]+0x2CAC6F: 1 VS / friendlies, 2 and 6 story, 3 Kizuna town,
+# 4 Chronicle, 5 Victory Road). The key list is: default, default + small_suffix, then each [[match_mode]] in file
+# order with its small variant, then training.
+
+[match_modes]
+# a play mode not listed below (or unreadable): VS CPU, friendlies, free matches
+default = "free"
+# a match of one of these types gets `<key><small_suffix>` (5-a-side friendlies, small story matches …)
+small_types = [2]
+small_suffix = "_small"
+# matches of these types are training (whatever the play mode)
+training = "training"
+training_types = [3, 4]
+
+[[match_mode]]
+key = "story"
+play_mode = [2, 6]
+
+[[match_mode]]
+key = "chronicle"
+play_mode = [4]
+
+[[match_mode]]
+key = "kizuna"
+play_mode = [3]
+
+[[match_mode]]
+key = "victory_road"
+play_mode = [5]

@@ -1,0 +1,45 @@
+# The declarations of the skill tab registry (service S3, docs/framework/card-types.md §3): what a mod's
+# content\skill_tabs\*.toml may say, and the compare units scripts\skill_tabs.lua appends to the team aura list's stub
+# (content\game\skill_tabs.toml SkillTabs.AuraList). Every key of a declaration is checked against this file: an
+# unknown key, a wrong type or a value out of range leaves that declaration out with a warning. Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.skill_tab/1"
+folder = "content/skill_tabs"
+
+[entry.SkillTab]
+doc = "a tab of the «Habilidades» / «Técnicas» move list: a game tab changed or removed, or a new one"
+category = { type = "int", min = 0, max = 255, required = true, doc = "the skill category (1-4 move categories, 100 + k aura command type k)" }
+order = { type = "int", doc = "its place: the game's tabs have 10 × their place in the game's table (10, 20, …); ties keep the game's / declaration order" }
+group = { type = "name", doc = "a window name: CMND_VRFW_SKILL_TAB_WINDOW(group) shows only that group's tabs (a group's tabs must follow each other)" }
+hidden = { type = "bool", default = false, doc = "the tab is left out (a game tab removed)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.AuraListHide]
+doc = "rows the team aura screen (equip_aura_skill_menu) leaves out"
+aura_types = { type = "ints", min = 0, max = 255, doc = "aura types (the aura record's type byte)" }
+skills = { type = "ids", doc = "skills: names (their crc32) or ids (0x…)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+# The stub's declared code (content\game\skill_tabs.toml SkillTabs.AuraList: mov rax, [rsp+78h]; test rax, rax;
+# je next slot): its length and the byte of its `je`'s rel32 (to the game's next slot, the branch at match + `branch`).
+[code.head]
+length = 14
+jump = 10
+branch = 0x1B
+
+# One compare unit per hidden value, appended after the stub's own code: `bytes` (`??` filled), the value at byte
+# `value` (`width`), the rel32 of its `je` at byte `jump` (to the game's next slot: the branch of the replaced `je`,
+# match + `branch`).
+[code.aura_type]
+bytes = "80 78 42 ?? 0F 84 ?? ?? ?? ??"      # cmp byte [rax+42h], type; je next slot
+value = 3
+width = "u8"
+jump = 6
+branch = 0x1B
+
+[code.skill]
+bytes = "81 FD ?? ?? ?? ?? 0F 84 ?? ?? ?? ??" # cmp ebp, skill id; je next slot
+value = 2
+width = "u32"
+jump = 8
+branch = 0x1B

@@ -1,0 +1,34 @@
+# BetterUI 1.20.0, player plate («Ficha», personal_plate_menu): the Q / E key glyphs beside the page dots at the bottom
+# of the plate, Q left of the first dot, E right of the last (README.md «Player plate page keys»; Lua
+# assets\lua\personal_plate_menu\120_page_keys.lua). Layer clean_hud_pp_keys: two copies of the retail status base
+# soccer11_05_formation_status_base, instance 0 showing only its header glyph _text_btn_l01 («<CMD_FUNCL2|6>», the
+# retail text, so Q on a keyboard and the pad's button on a pad, as in the plate's header), instance 1 only
+# _text_btn_r01 («<CMD_FUNCR2|6>»). Attached to the status base's _pos_base01 (rows below) so they follow its animation;
+# placed from the VR-Framework's dot row (VRFW_PlayerPages.DotRow, docs/framework/player-pages.md §7), so the glyphs
+# stay at the row's ends whatever the page count.
+schema = "vr_framework.menu/2"
+
+[[object]]
+name = "clean_hud_pp_keys"
+from = "soccer11_05_formation_status_base"
+remove = [
+    { param = "NullLayerName" },
+    { param = "_touch_arw01_l" },
+    { param = "_touch_arw01_r" },
+]
+
+# attach rows on the retail status base: NullLayerName [clean_hud_pp_keys0 / 1, _pos_base01, clean_hud_pp_keys, 0 / 1]
+[[object_set]]
+object = "soccer11_05_formation_status_base"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xAF172E0F, 0x5A709C12, 0x125F33BF, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xD8101E99, 0x5A709C12, 0x125F33BF, 1] },
+]
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "clean_hud_pp_keys", object = "clean_hud_pp_keys", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_05_formation_status_base", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_05_formation_status_base" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "clean_hud_pp_keys", object = "clean_hud_pp_keys", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_05_formation_status_base", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_05_formation_status_base" }] }

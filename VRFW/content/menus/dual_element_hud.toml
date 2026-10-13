@@ -1,0 +1,76 @@
+# VR-Framework: the duel HUDs' extra element icons of a dual-element move (graft research/grafts/vrfw_dual_element_hud,
+# docs/framework/technique.md §4d; Nacho 2026-10-09: «icono 1 | icono 2 | icono 3…», a row, not alternating).
+# The move element icon layers soccer01_06_p1_element_icon_self / _enemy (instance 0 = the character's element,
+# 1 = the move's) get 3 more instances (2-4) hung on the move icon's locator (_atc_type01_02 / _atc_type02_02: their
+# retail attach row of instance 1 copied), so a move of up to 4 elements shows them side by side from there; the Lua
+# places the row (retail size, growing toward the HUD's centre) and hides the unused ones. The compatibility arrow
+# layers hang on the icons (CMenuAttachLocator NullLayerIndexName of the icon object): same instance count, the extra
+# arrows stay hidden.
+# Keeper-vs-shot duel (keeper_hp_gauge_menu, object soccer08_47_keeper_hp_gauge_ev) and move-vs-move duel telop
+# (soccer_vs_skill_menu, object soccer01_06_vs_skill_telop).
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "keeper_hp_gauge_menu"
+layer = "soccer01_06_p1_element_icon_self"
+count = 5
+
+[[patch]]
+menu = "keeper_hp_gauge_menu"
+layer = "soccer01_06_p1_element_icon_enemy"
+count = 5
+
+[[patch]]
+menu = "keeper_hp_gauge_menu"
+layer = "soccer08_10_p4_skill_compatibility_arrow_self"
+count = 5
+
+[[patch]]
+menu = "keeper_hp_gauge_menu"
+layer = "soccer08_10_p4_skill_compatibility_arrow_enemy"
+count = 5
+
+[[patch]]
+menu = "soccer_vs_skill_menu"
+layer = "soccer01_06_p1_element_icon_self"
+count = 5
+
+[[patch]]
+menu = "soccer_vs_skill_menu"
+layer = "soccer01_06_p1_element_icon_enemy"
+count = 5
+
+[[patch]]
+menu = "soccer_vs_skill_menu"
+layer = "soccer08_10_p4_skill_compatibility_arrow_self"
+count = 5
+
+[[patch]]
+menu = "soccer_vs_skill_menu"
+layer = "soccer08_10_p4_skill_compatibility_arrow_enemy"
+count = 5
+
+# instance 1 attach rows (self 0x14D92FB6, enemy 0x0D49EEE4) repeated for instances 2-4
+[[object_set]]
+object = "soccer08_47_keeper_hp_gauge_ev"
+copy = [
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 2 } },
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 4 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 2 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 4 } },
+]
+
+# instance 1 attach rows (self 0x14D92FB6, enemy 0x0D49EEE4) repeated for instances 2-4
+[[object_set]]
+object = "soccer01_06_vs_skill_telop"
+copy = [
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 2 } },
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 0x14D92FB6, 4 = 1 }, values = { 4 = 4 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 2 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 0x0D49EEE4, 4 = 1 }, values = { 4 = 4 } },
+]
+

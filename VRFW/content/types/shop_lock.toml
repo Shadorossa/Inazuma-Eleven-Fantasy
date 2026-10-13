@@ -1,0 +1,15 @@
+# The declaration `[[VRFW.ShopLock]]` of the locked shop rows (service S12 of VRFW 2.3, docs/framework/types/shop.md
+# §13): what a mod's content\shop_locks\*.toml may say. Read by scripts\shop_rows.lua at start (every key is checked
+# against this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning).
+# Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.shop_lock/1"
+folder = "content/shop_locks"
+
+[entry.ShopLock]
+doc = "shops whose rows hidden by an unmet progress condition are listed as locked (shown, not buyable) instead of left out"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+shops = { type = "ids", required = true, doc = "the shops: SHOP_INFO ids (0x…) or their key names (crc32)" }
+items = { type = "ids", doc = "only the rows selling these items (names or ids); none = every row of the shops" }
+keep_hidden = { type = "ids", doc = "flags (names or ids) whose mention in a row's condition keeps the row hidden: a hide or a page selector, not a progress gate" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

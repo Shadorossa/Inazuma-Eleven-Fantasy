@@ -1,0 +1,13 @@
+schema = "vr_framework.base_table/1"
+file = "data/common/event/ev60/ev60_95020/ev60_95020_light/light_list.cfg.bin"
+from = "data/common/event/ev01/ev01_01900/ev01_01900_light/light_list.cfg.bin"
+
+[[list]]
+name = "EV_LI_MAP_LIGHT"
+rows = [
+  ["fix", "c0010", "common/event/ev60/ev60_95020/ev60_95020_light/EventMap_fix_c0010.cfg.bin"],
+  ["fix", "c0020", "common/event/ev60/ev60_95020/ev60_95020_light/EventMap_fix_c0020.cfg.bin"],
+  ["fix", "c0030", "common/event/ev60/ev60_95020/ev60_95020_light/EventMap_fix_c0030.cfg.bin"],
+  ["fix", "c0040", "common/event/ev60/ev60_95020/ev60_95020_light/EventMap_fix_c0040.cfg.bin"],
+  ["fix", "c0050", "common/event/ev60/ev60_95020/ev60_95020_light/EventMap_fix_c0050.cfg.bin"],
+]

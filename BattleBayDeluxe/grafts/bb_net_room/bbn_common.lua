@@ -1,0 +1,390 @@
+-- bb_chronicle_teams bb_net_room, common part: the «Sala privada» (Battle Bay Deluxe 1.5.0;
+-- docs/game/modes/bb-online-ownnet.md §10, §17) while gameplay mods are enabled. The room is the VR-Framework net
+-- service's (CMND_VRFW_NET_*: Steam transport, mod-set check, room code + PIN); the retail EOS rooms (network_menu's
+-- room list) are never opened then (the framework's online guard also refuses them). With only UI mods or none,
+-- BBN_Entry returns false and the caller runs its retail flow. Appended to two menus:
+--   bb_stadium_top_menu  the «Multijugador» row's decide (bbn_room.lua wraps OnDecideFocus)
+--   soccer_top_menu      «Modos de juego»'s BB «Multi» box (Inazuma Fantasy's modes_hub calls BBN_Entry(host) before
+--                        its retail online steps; the host table gives that menu's header and its network_menu wait)
+-- Runs in the decide coroutine (sub windows and message windows wait with coroutine.yield). Globals only (BBN,
+-- BBN_*); nothing runs at chunk load.
+-- v3 (12/10, Nacho: «Crear sala» showed the code message and stayed stuck there, no retail room screen): the room's
+-- virtual session goes up as soon as the room is open (host: at once, guest: once the host welcomed it) and the game's
+-- own private-room screen (network_menu -> network_room_match_wait: members, rules, ready, start) opens on it; Back
+-- there leaves our room (bbn_wait.lua). Every message waits until it is answered OR gone (a window closed by Back or
+-- by itself no longer leaves the flow waiting forever), every wait has a limit, any failure says why and returns.
+-- The own room list (ready / start / invite as sub windows) is gone: the retail screen does that. docs §18.
+-- v4 (12/10, Nacho: «Crear sala» must open the game's own private-room screen, not our code message): create goes
+-- straight to the room's session and the retail private-room screen (network_room_match_wait); no code message, no
+-- clipboard copy. The rival comes in with the room screen's «Invitar» (Steam overlay invite, bbn_wait.lua); the
+-- room code is only logged. docs §19.
+BBN = BBN or {
+  ROW = 106494436 --[[crc32 network_menu: the retail «Multijugador» row's menuObjectName]],
+  MODE = "bbd_1v1", -- content\defaults\net.toml [[VRFW.NetMode]]
+  LIST_MID = 716364754 --[[mainmenu90_11_list_item_middle]],
+  LIST_SMALL = 530619243 --[[mainmenu90_12_list_item_small]],
+  SUB_WINDOW = 968210065 --[[sub_window]],
+  CREST = 1342728931 --[[win05_04_p1_sub_list_item_add_icon]],
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  TEXT_GET = 4074371074 --[[CMND_TEXT_GET]],
+  OWN = @crc:CMND_VRFW_NET_OWN_ONLINE@,
+  STATUS = @crc:CMND_VRFW_NET_STATUS@,
+  CREATE = @crc:CMND_VRFW_NET_CREATE@,
+  JOIN = @crc:CMND_VRFW_NET_JOIN@,
+  READY = @crc:CMND_VRFW_NET_READY@,
+  START = @crc:CMND_VRFW_NET_START@,
+  LEAVE = @crc:CMND_VRFW_NET_LEAVE@,
+  INVITE = @crc:CMND_VRFW_NET_INVITE@,
+  PENDING = @crc:CMND_VRFW_NET_PENDING@,
+  SESSION = @crc:CMND_VRFW_NET_SESSION@,
+  SESSION_STATE = @crc:CMND_VRFW_NET_SESSION_STATE@,
+  T = {
+    title = @crc:evt_bbd_net_room_title@, create = @crc:evt_bbd_net_create@, join = @crc:evt_bbd_net_join@,
+    join_hint = @crc:evt_bbd_net_join_hint@, invite = @crc:evt_bbd_net_invite@,
+    refresh = @crc:evt_bbd_net_refresh@, ready = @crc:evt_bbd_net_ready@,
+    unready = @crc:evt_bbd_net_unready@, start = @crc:evt_bbd_net_start@, leave = @crc:evt_bbd_net_leave@,
+    leave_q = @crc:evt_bbd_net_leave_q@, st_waiting = @crc:evt_bbd_net_st_waiting@,
+    st_connecting = @crc:evt_bbd_net_st_connecting@, st_rival = @crc:evt_bbd_net_st_rival@,
+    st_ready = @crc:evt_bbd_net_st_ready@, st_not_ready = @crc:evt_bbd_net_st_not_ready@,
+    st_starting = @crc:evt_bbd_net_st_starting@, no_steam = @crc:evt_bbd_net_no_steam@, busy = @crc:evt_bbd_net_busy@,
+    bad_code = @crc:evt_bbd_net_bad_code@, invite_q = @crc:evt_bbd_net_invite_q@,
+    session_err = @crc:evt_bbd_net_session_err@,
+    -- the room's close notes (CMND_VRFW_NET_STATUS note key -> text)
+    bad_pin = @crc:evt_bbd_net_n_bad_pin@, mod_set = @crc:evt_bbd_net_n_mod_set@, full = @crc:evt_bbd_net_n_full@,
+    protocol = @crc:evt_bbd_net_n_protocol@, mode = @crc:evt_bbd_net_n_mode@, timeout = @crc:evt_bbd_net_n_timeout@,
+    left = @crc:evt_bbd_net_n_left@, lost = @crc:evt_bbd_net_n_lost@,
+  },
+}
+
+-- the calling menu's hooks for the running BBN_Entry (nil: bb_stadium_top_menu's own behaviour):
+--   header(text)       show the room's status line in the menu header
+--   restore()          the menu's own header again
+--   open(mode_byte)    open the game's online Battle Bay flow for our session (network_menu) and wait for it to close;
+--                      returns true when it closed for a match (the menu goes too, the engine starts the match)
+BBN_HOST = nil
+
+function BBN_Log(...)
+  pcall(funcLuaCommand, BBN.LOG, "bb_chronicle_teams net", ...)
+end
+
+function BBN_Text(id)
+  local ok, t = pcall(funcLuaCommand, BBN.TEXT_GET, id)
+  return (ok and type(t) == "string") and t or ""
+end
+
+-- frames a message may stay up unanswered (30 minutes), frames it may take to come up
+BBN_MSG_MAX = 108000
+BBN_MSG_UP = 90
+
+-- a retail general window with a text (a string: our texts + data lines); buttons 1 (one button) or 2 (Yes / No).
+-- Returns the choice (0 = the first button), -1 = closed without one (Back, or it never came up). The window's
+-- result (1523741473) reads -1 / false once the window object is gone, so waiting for «a choice or a cancel» alone
+-- waits forever when the window closes between two reads (12/10: «Sala creada…» stuck): it also ends when the window
+-- is gone (682363669) after it was up; every change of the reads is logged.
+function BBN_Msg(text, buttons)
+  funcLuaCommand(2289627655 --[[MSG_OPEN]], text, 0, 0)
+  funcLuaCommand(2351835063 --[[MSG_KIND]], buttons, 0)
+  local n, up, last = -1, false, nil
+  for f = 1, BBN_MSG_MAX do
+    coroutine.yield()
+    local a, c = funcLuaCommand(1523741473 --[[MSG_RESULT]])
+    local gone = funcLuaCommand(682363669 --[[MSG_DONE]]) == true
+    local busy = funcLuaCommand(898725220 --[[MSG_BUSY]]) == true
+    if not gone or busy then
+      up = true
+    end
+    local key = tostring(a) .. "/" .. tostring(c) .. "/" .. tostring(gone) .. "/" .. tostring(busy)
+    if key ~= last then
+      last = key
+      BBN_Log("message", f, "choice/cancel/gone/busy", key)
+    end
+    if type(a) == "number" and a >= 0 then
+      n = a
+      break
+    end
+    if (c == true and up) or (up and gone and not busy) then
+      n = -1
+      break
+    end
+    if not up and f > BBN_MSG_UP then
+      BBN_Log("message never came up")
+      break
+    end
+  end
+  return n
+end
+
+-- the sub window's crest row closed
+function BBN_HideCrest()
+  pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], BBN.CREST, 0, false)
+  pcall(funcLuaMenuCommand, 1273612389 --[[CMND_CLOSE_LAYER]], BBN.CREST, 0)
+end
+
+-- a retail sub window list of text ids; the chosen index (0-based), -1 cancelled, -2 closed by `watch` (it returns true
+-- when the list must close: the state changed under it). `watch` runs every 20 frames.
+function BBN_Choose(ids, cursor, watch)
+  local enabled = {}
+  for i = 1, #ids do
+    enabled[i] = 1
+  end
+  MENU_DEF.OpenSubWindowDefault(#ids, ids, 5, cursor or 0, enabled, 0, false, false, 20)
+  local f = 0
+  while not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], 2984476230 --[[win05_03_sub_list_locator]], 0,
+      BBN.SUB_WINDOW) and f < 120 do
+    f = f + 1
+    coroutine.yield()
+  end
+  -- the retail window kind 20 also opens the Campaña team's crest row (win05_04_p1_sub_list_item_add_icon) at the first
+  -- row: ours show only their text (as bbt_common.lua's panel does)
+  BBN_HideCrest()
+  coroutine.yield()
+  BBN_HideCrest()
+  local r, frames = -1, 0
+  funcLuaCommand(417837871)
+  while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBN.SUB_WINDOW) and r < 0 do
+    r = funcLuaCommand(1394177278 --[[CMND_GET_SUB_WINDOW_RESULT?]])
+    frames = frames + 1
+    if r < 0 and watch ~= nil and frames % 20 == 0 then
+      local ok, stop = pcall(watch)
+      if ok and stop then
+        r = -2
+        break
+      end
+    end
+    coroutine.yield()
+  end
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBN.SUB_WINDOW) then
+    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBN.SUB_WINDOW)
+  end
+  funcLuaCommand(417837871)
+  return r
+end
+
+function BBN_Status()
+  local ok, phase, role, code, peer, my_ready, peer_ready, note, detail, mode = pcall(funcLuaCommand, BBN.STATUS)
+  if not ok then
+    return { phase = "none" }
+  end
+  return { phase = phase, role = role, code = code, peer = peer, my_ready = my_ready, peer_ready = peer_ready,
+    note = note, detail = detail, mode = mode }
+end
+
+function BBN_Open(s)
+  return s.phase ~= nil and s.phase ~= "none" and s.phase ~= "closed"
+end
+
+-- the header line: «Sala privada <code> · Esperando a un rival» / «… · Conectando…» (a guest before the welcome)
+function BBN_Header(s)
+  local t = BBN_Text(BBN.T.title)
+  if s.code ~= nil and s.code ~= "" then
+    t = t .. "  " .. s.code
+  end
+  if s.phase == "waiting" then
+    t = t .. "  ·  " .. BBN_Text(s.role == "host" and BBN.T.st_waiting or BBN.T.st_connecting)
+  end
+  if BBN_HOST ~= nil and BBN_HOST.header ~= nil then
+    pcall(BBN_HOST.header, t)
+    return
+  end
+  pcall(SwapSoccerTopCommonHeaderByHeaderType, 30, t)
+end
+
+function BBN_RestoreHeader()
+  if BBN_HOST ~= nil and BBN_HOST.restore ~= nil then
+    pcall(BBN_HOST.restore)
+    return
+  end
+  pcall(SwapSoccerTopCommonHeaderByHeaderType, 30, funcLuaCommand(BBN.TEXT_GET, 3066112094))
+end
+
+-- a closed room: tell why (the refusal's mod lines are data: «id: mine / theirs»); `fallback`: the text id when the
+-- room gave no reason (nil: say nothing then)
+function BBN_Closed(s, fallback)
+  local t
+  if s.note ~= nil and s.note ~= "" and s.note ~= "quit" then
+    local id = BBN.T[s.note]
+    t = id ~= nil and BBN_Text(id) or s.note
+  elseif fallback ~= nil then
+    t = BBN_Text(fallback)
+  else
+    return
+  end
+  if s.detail ~= nil and s.detail ~= "" then
+    t = t .. "\n" .. s.detail
+  end
+  BBN_Msg(t, 1)
+end
+
+-- our room out (if one is open: its session goes with it, purely) and the calling menu's header back
+function BBN_Leave(why)
+  if BBN_Open(BBN_Status()) then
+    BBN_Log("leave", tostring(why))
+    pcall(funcLuaCommand, BBN.LEAVE)
+  end
+  BBN_RestoreHeader()
+end
+
+-- a guest: wait for the host's welcome (the room's own join timeout closes it: wrong code, host gone, refusal); Back
+-- on the one-row list («Salir») gives up. true = welcomed
+function BBN_WaitWelcome()
+  for _ = 1, 100 do
+    local s = BBN_Status()
+    if s.phase == "joined" or s.phase == "started" then
+      return true
+    end
+    if not BBN_Open(s) then
+      BBN_Log("join: the room closed", tostring(s.note))
+      BBN_RestoreHeader()
+      BBN_Closed(s, BBN.T.bad_code)
+      return false
+    end
+    BBN_Header(s)
+    local c = BBN_Choose({ BBN.T.leave }, 0, function()
+      return BBN_Status().phase ~= "waiting"
+    end)
+    if c == -1 or c == 0 then
+      BBN_Leave("join cancelled")
+      return false
+    end
+  end
+  BBN_Leave("join: no answer")
+  BBN_Msg(BBN_Text(BBN.T.bad_code), 1)
+  return false
+end
+
+-- what the retail «Multijugador» row does once its network is up (bb_stadium_top_menu, the network_menu branch of
+-- OnDecideFocus): the team select's online parameters cleared, the online mode byte, network_menu opened; then (this
+-- decide coroutine is the row's wait) until network_menu closes. Its own scripts (graft files bbn_top.lua,
+-- bbn_wait.lua) open the retail private-room screen on our session. true = it closed for a match.
+function BBN_OpenOnlineSelect(mode_byte)
+  if BBN_HOST ~= nil and BBN_HOST.open ~= nil then
+    return BBN_HOST.open(mode_byte) == true
+  end
+  funcLuaCommand(3363400568 --[[param clear]], 357455239 --[[online]])
+  funcLuaCommand(3363400568 --[[param clear]], 1955204128)
+  funcLuaCommand(3860611758 --[[param set]], 1955204128, 0, 0, 1)
+  funcLuaCommand(582611265 --[[online mode byte]], mode_byte)
+  funcLuaCommand(433545986 --[[open menu object]], BBN.ROW, 867016151)
+  pcall(FadeIn)
+  coroutine.yield()
+  waitFalse(function()
+    return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBN.ROW)
+  end)
+  return funcLuaCommand(2947612279, 570346750) == true
+end
+
+-- the room is open (host: created; guest: welcomed): the virtual session goes up (CMND_VRFW_NET_SESSION: the game's
+-- online GameNet init with the framework's pure StartOnline copy, no EOS / EAC step) and the game's private-room
+-- screen opens on it. After it (Back there, an error, the other player gone) our room is left unless a match started.
+function BBN_RoomScreen()
+  BBN_Header(BBN_Status())
+  -- 1, not true: the framework's plugin API cannot read a Lua boolean (true read as 0 = leave: «no virtual
+  -- session», 12/10)
+  local ok, up, mode_byte = pcall(funcLuaCommand, BBN.SESSION, 1)
+  if not ok or up ~= true then
+    BBN_Log("session not up", tostring(up), tostring(mode_byte))
+    BBN_Leave("session refused")
+    BBN_Msg(BBN_Text(BBN.T.session_err) .. "\n" .. tostring(mode_byte or ""), 1)
+    return
+  end
+  BBN_Log("session up: the game's room screen", tostring(mode_byte))
+  local okm, matched = pcall(BBN_OpenOnlineSelect, tonumber(mode_byte) or 0)
+  if not okm then
+    BBN_Log("room screen error", tostring(matched))
+    matched = false
+  end
+  BBN_Log("room screen closed", tostring(matched))
+  if matched ~= true then
+    local s = BBN_Status()
+    BBN_Leave("room screen closed")
+    BBN_Closed(s)
+  end
+end
+
+-- the «Multijugador» row / «Multi» box decided: true = handled here (our room, or a message why it cannot open:
+-- no Steam, mod set not ready, create / join refused), false = no gameplay mods (the caller's retail flow).
+-- `host`: the calling menu's hooks (BBN_HOST above), nil in bb_stadium_top_menu
+function BBN_Entry(host)
+  BBN_HOST = host
+  local ok, handled = pcall(BBN_EntryRun)
+  if not ok then
+    BBN_Log("error", tostring(handled))
+    pcall(BBN_Leave, "error")
+  end
+  BBN_HOST = nil
+  if not ok then
+    error(handled)
+  end
+  return handled
+end
+
+function BBN_EntryRun()
+  local ok, gameplay, steam, set = pcall(funcLuaCommand, BBN.OWN)
+  if not ok or gameplay ~= true then
+    return false -- the retail row
+  end
+  funcLuaCommand(1917805374, 3848881948 --[[sy0000]])
+  if steam ~= true then
+    BBN_Msg(BBN_Text(BBN.T.no_steam), 1)
+    return true
+  end
+  if set ~= true then
+    BBN_Msg(BBN_Text(BBN.T.busy), 1)
+    return true
+  end
+  -- a room left over (a match played, a flow that ended without leaving): a new one starts clean (a rematch is a new
+  -- room)
+  if BBN_Open(BBN_Status()) then
+    BBN_Log("a room was still open: left")
+    pcall(funcLuaCommand, BBN.LEAVE)
+  end
+  -- a friend's invite (Steam overlay / the command line of a game launched by it)
+  local okp, pending = pcall(funcLuaCommand, BBN.PENDING)
+  if okp and type(pending) == "string" and pending ~= "" then
+    if BBN_Msg(BBN_Text(BBN.T.invite_q) .. "\n" .. pending, 2) == 0 then
+      local okj, joined, err = pcall(funcLuaCommand, BBN.JOIN, pending)
+      if okj and joined == true then
+        if BBN_WaitWelcome() then
+          BBN_RoomScreen()
+        end
+      else
+        BBN_Log("join refused", tostring(err))
+        BBN_Msg(BBN_Text(BBN.T.bad_code), 1)
+      end
+      return true
+    end
+  end
+  local c = BBN_Choose({ BBN.T.create, BBN.T.join }, 0)
+  BBN_Log("choice", c)
+  if c == 0 then
+    local okc, made, code = pcall(funcLuaCommand, BBN.CREATE, BBN.MODE)
+    if not okc or made ~= true then
+      BBN_Log("create refused", tostring(code))
+      BBN_Msg(BBN_Text(BBN.T.session_err) .. "\n" .. tostring(code or ""), 1)
+      return true
+    end
+    -- v4: straight to the game's private-room screen (no code message, no clipboard copy)
+    BBN_Log("room created: the game's private-room screen", tostring(code))
+    local s = BBN_Status()
+    if not BBN_Open(s) then
+      BBN_RestoreHeader()
+      BBN_Closed(s, BBN.T.session_err)
+      return true
+    end
+    BBN_RoomScreen()
+  elseif c == 1 then
+    if BBN_Msg(BBN_Text(BBN.T.join_hint), 2) ~= 0 then
+      return true
+    end
+    local okj, joined, err = pcall(funcLuaCommand, BBN.JOIN, "")
+    if not okj or joined ~= true then
+      BBN_Log("join refused", tostring(err))
+      BBN_Msg(BBN_Text(BBN.T.bad_code), 1)
+      return true
+    end
+    if BBN_WaitWelcome() then
+      BBN_RoomScreen()
+    end
+  end
+  return true
+end

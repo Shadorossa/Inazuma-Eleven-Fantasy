@@ -1,0 +1,24 @@
+# ui_clean, kick-off button (docs/game/ui-redesign.md 11.1z10): the retail «(A) Saque de centro» / restart button
+# (soccer00_27_restart_button of soccer_restart_guide_menu) made more discreet: 72 % size, the retail HUD command plate
+# cmd_base01 (small corner radius) instead of the bright rounded pill, no additive glow, slightly translucent. Glyph and
+# text retail. Wraps OnSetupLayer / Step / DecideRestartButton after the retail ones. Part of the standalone mod
+# clean_hud («Interfaz limpia»).
+# 2026-10-13: plate repainted at build (content\images\menu\00_soccer\pause_prompts.toml) and glyph / text placed in
+# content\menus\pause_prompts.toml; «(Y) Formación» kept above the plate (closed loop in Step).
+name = "ui_clean_kickoff_btn"
+order = 908
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "Step", "DecideRestartButton"]
+description = "ui_clean: discreet kick-off / restart button (smaller, square plate, no glow)"
+
+[[files]]
+stem = "soccer_restart_guide_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "kickoff_btn.lua"
+  marker = "ui_clean kickoff button"
+  crc = "none"

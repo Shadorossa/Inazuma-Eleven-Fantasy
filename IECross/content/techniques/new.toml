@@ -1,0 +1,491 @@
+schema = "vr_framework.technique/3"
+# The 12 Inazuma Eleven Cross special moves (docs/game/mechanics/cross-supertecnicas.md §4): 4 converted from Cross
+# (own animation, camera, lights, voices, effects) and 8 retail events cloned with Cross's effects. Own events in
+# content\base_tables\common\event_cfg + assets\data\common\event\ev6x\ev6x_95NNN (research/scripts/cross_waza_build.py ->
+# technique_create_build.py, which deploy here: _split.toml), own texts, manuals (their item
+# rows; catalog numbers from the item type's allocator, VRFW 2.2.70: 13002-13013 were past the 8192-bit flag array): content\base_tables\common\gamedata\item\item_config.toml). Moved from Inazuma Fantasy's techniques\new\new.toml on
+# 2026-10-08 (hand-maintained since 2026-10-05). Fixed keys (skill id = crc32 of the key): saves hold them.
+# "none": a text written in some languages replaces only those (no default-language fallback)
+default_lang = "none"
+
+[[technique]]
+name = "whs95000"
+key = "whs95000"
+base = "whs02470"
+order = 25
+name_text = 0xD8F83E29
+desc_text = 0x8D6EEC7B
+manual = { icon = [161, 246] }
+event = "ev60_95000"
+power_min = 90
+power_max = 520
+tp = 80
+cells = { telopInfoId = 0x27A8DFF7 }
+  [technique.text.ja]
+  name = "インフェルノペンギン"
+  description = "炎をまとったペンギンたちが\nシュートと共に突き進む！"
+  [technique.text.en]
+  name = "Inferno Penguin"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.es]
+  name = "Pingüino Infernal"
+  description = "Cinco pingüinos en llamas surgen del\ncampo y acompañan un disparo abrasador."
+  [technique.text.fr]
+  name = "Pingouin Infernal"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.de]
+  name = "Inferno-Pinguin"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.it]
+  name = "Pinguino Infernale"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.pt]
+  name = "Pinguim Infernal"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.zh_hans]
+  name = "地狱企鹅"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+  [technique.text.zh_hant]
+  name = "地獄企鵝"
+  description = "Five blazing penguins burst from the pitch\nand ride along a scorching shot."
+
+[[technique]]
+name = "whs95010"
+key = "whs95010"
+base = "whs00020"
+order = 26
+name_text = 0x7E8F359D
+desc_text = 0x2B19E7CF
+manual = true
+event = "ev60_95010"
+power_min = 95
+power_max = 600
+tp = 90
+element = "wind"
+color = 1
+  [technique.text.ja]
+  name = "オーシャン・バース"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.en]
+  name = "Ocean Birth"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.es]
+  name = "Nacimiento oceánico"
+  description = "Dos jugadores cabalgan una ola gigante\ny rematan con la fuerza del océano."
+  [technique.text.fr]
+  name = "Naissance océane"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.de]
+  name = "Ozeangeburt"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.it]
+  name = "Nascita Oceanica"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.pt]
+  name = "Nascimento Oceânico"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.zh_hans]
+  name = "海洋诞生"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+  [technique.text.zh_hant]
+  name = "海洋誕生"
+  description = "Two players ride a giant wave and strike\nwith the whole power of the ocean."
+
+[[technique]]
+name = "whs95020"
+key = "whs95020"
+base = "whs00340"
+order = 27
+name_text = 0x4F672F00
+desc_text = 0x1AF1FD52
+manual = true
+event = "ev60_95020"
+power_min = 100
+power_max = 640
+tp = 100
+  [technique.text.ja]
+  name = "ゴッドノウズ・マキナ"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.en]
+  name = "God Knows Machina"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.es]
+  name = "Sabiduría divina Machina"
+  description = "Unas alas mecánicas elevan al tirador\ny su poder divino desciende sobre el balón."
+  [technique.text.fr]
+  name = "Savoir suprême Machina"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.de]
+  name = "Göttliche Weisheit Machina"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.it]
+  name = "Colpo Supremo Machina"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.pt]
+  name = "Asas Celestiais Machina"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.zh_hans]
+  name = "神谕·机械"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+  [technique.text.zh_hant]
+  name = "傾聽神諭·機械"
+  description = "Mechanical wings lift the shooter and\nhis divine power crashes down on the ball."
+
+[[technique]]
+name = "whs95030"
+key = "whs95030"
+base = "whs02640"
+order = 28
+name_text = 0xE91024B4
+desc_text = 0xBC86F6E6
+manual = { icon = [161, 20] }
+event = "ev60_95030"
+growth = 2
+cells = { telopInfoId = 0x7047572A, seriesIdCrc = 0x62E8448F }
+  [technique.text.ja]
+  name = "カオスイリュージョン"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.en]
+  name = "Chaos Illusion"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.es]
+  name = "Ilusión caótica"
+  description = "Fuego y hielo se multiplican en ilusiones\nhasta que el balón real atraviesa la portería."
+  [technique.text.fr]
+  name = "Illusion chaotique"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.de]
+  name = "Chaos-Illusion"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.it]
+  name = "Illusione del Caos"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.pt]
+  name = "Ilusão Caótica"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.zh_hans]
+  name = "混沌幻影"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+  [technique.text.zh_hant]
+  name = "混沌幻影"
+  description = "Fire and ice split into illusions until\nthe real ball tears through the goal."
+
+[[technique]]
+name = "whs95100"
+key = "whs95100"
+base = "whs00040"
+order = 29
+name_text = 0x14523EB7
+desc_text = 0x41C4ECE5
+manual = { icon = [161, 21] }
+event = "ev60_95100"
+power_min = 95
+power_max = 600
+tp = 85
+cells = { partnerType = 3, telopInfoId = 0x45789D74 }
+  [technique.text.ja]
+  name = "サムライペンギン2号"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.en]
+  name = "Samurai Penguin No. 2"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.es]
+  name = "Pingüino samurái n.º 2"
+  description = "El Pingüino emperador n.º 2 con el\nespíritu azul de los samuráis."
+  [technique.text.fr]
+  name = "Manchot samouraï nº 2"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.de]
+  name = "Samurai-Pinguin II"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.it]
+  name = "Pinguino Samurai Nº 2"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.pt]
+  name = "Pinguins Samurais nº 2"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.zh_hans]
+  name = "武士企鹅2号"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+  [technique.text.zh_hant]
+  name = "武士企鵝2號"
+  description = "Emperor Penguin No. 2 carried by\nthe blue spirit of the samurai."
+
+[[technique]]
+name = "whs95110"
+key = "whs95110"
+base = "whs00170"
+order = 30
+name_text = 0xB2253503
+desc_text = 0xE7B3E751
+manual = { icon = [161, 7] }
+event = "ev60_95110"
+effect_flags = 0
+cells = { telopInfoId = 0x0D30A36F }
+  [technique.text.ja]
+  name = "サムライショット"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.en]
+  name = "Samurai Shot"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.es]
+  name = "Tiro samurái"
+  description = "Gira el cuerpo como un samurái y\ndescarga toda su fuerza en el balón."
+  [technique.text.fr]
+  name = "Tir samouraï"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.de]
+  name = "Samurai-Schuss"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.it]
+  name = "Tiro Samurai"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.pt]
+  name = "Chute Samurai"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.zh_hans]
+  name = "武士射门"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+  [technique.text.zh_hant]
+  name = "武士射門"
+  description = "Twist like a samurai drawing his sword\nand unleash it all into the ball."
+
+[[technique]]
+name = "whs95120"
+key = "whs95120"
+base = "whs01940"
+order = 31
+name_text = 0x83CD2F9E
+desc_text = 0xD65BFDCC
+manual = true
+event = "ev60_95120"
+power_min = 65
+power_max = 400
+tp = 65
+  [technique.text.ja]
+  name = "バウンサーラビット（花火）"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.en]
+  name = "Bouncing Bunny (Fireworks)"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.es]
+  name = "Remate rebotado (fuegos artificiales)"
+  description = "El Remate rebotado en versión de\nfestival, entre fuegos artificiales."
+  [technique.text.fr]
+  name = "Lièvre bondissant (feu d'artifice)"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.de]
+  name = "Mondsalto (Feuerwerk)"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.it]
+  name = "Tiro Rimbalzante (Fuochi d'artificio)"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.pt]
+  name = "Coelho Saltitante (Fogos)"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.zh_hans]
+  name = "弹跃之兔（烟花）"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+  [technique.text.zh_hant]
+  name = "彈躍之兔（煙火）"
+  description = "The Bouncing Bunny in its festival\nversion, among fireworks."
+
+[[technique]]
+name = "whs95130"
+key = "whs95130"
+base = "whs02240"
+order = 32
+name_text = 0x25BA242A
+desc_text = 0x702CF678
+manual = true
+event = "ev60_95130"
+power_min = 75
+power_max = 480
+tp = 75
+  [technique.text.ja]
+  name = "やきもちスクリュー（花火）"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.en]
+  name = "Dough Ray Me (Fireworks)"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.es]
+  name = "Tiro amasado (fuegos artificiales)"
+  description = "El Tiro amasado en versión de\nfestival, entre fuegos artificiales."
+  [technique.text.fr]
+  name = "Tir pétri (feu d'artifice)"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.de]
+  name = "Eierkuchen-Knaller (Feuerwerk)"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.it]
+  name = "Tiro Impastato (Fuochi d'artificio)"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.pt]
+  name = "Bolinho de Chuva (Fogos)"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.zh_hans]
+  name = "烤年糕螺旋（烟花）"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+  [technique.text.zh_hant]
+  name = "烤麻糬螺旋（煙火）"
+  description = "The Dough Ray Me in its festival\nversion, among fireworks."
+
+[[technique]]
+name = "who95100"
+key = "who95100"
+base = "who00010"
+order = 33
+name_text = 0xB0BE68BB
+desc_text = 0xE528BAE9
+manual = true
+event = "ev61_95100"
+power_min = 60
+power_max = 360
+tp = 55
+  [technique.text.ja]
+  name = "サムライフェイント"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.en]
+  name = "Samurai Feint"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.es]
+  name = "Finta samurái"
+  description = "Se divide en tres samuráis veloces\ny deja atrás al rival."
+  [technique.text.fr]
+  name = "Feinte samouraï"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.de]
+  name = "Samurai-Finte"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.it]
+  name = "Finta Samurai"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.pt]
+  name = "Finta Samurai"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.zh_hans]
+  name = "武士过人"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+  [technique.text.zh_hant]
+  name = "武士欺敵之術"
+  description = "Split into three swift samurai\nand leave the opponent behind."
+
+[[technique]]
+name = "who95110"
+key = "who95110"
+base = "who00810"
+order = 34
+name_text = 0x16C9630F
+desc_text = 0x435FB15D
+manual = true
+event = "ev61_95110"
+power_min = 65
+power_max = 400
+tp = 65
+  [technique.text.ja]
+  name = "スカイウォーク（花火）"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.en]
+  name = "Dance on Air (Fireworks)"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.es]
+  name = "Pasos aéreos (fuegos artificiales)"
+  description = "Los Pasos aéreos en versión de\nfestival, entre fuegos artificiales."
+  [technique.text.fr]
+  name = "Danse de l'air (feu d'artifice)"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.de]
+  name = "Himmelstanz (Feuerwerk)"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.it]
+  name = "Guizzi Aerei (Fuochi d'artificio)"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.pt]
+  name = "Trilha Celeste (Fogos)"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.zh_hans]
+  name = "空中行者（烟花）"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+  [technique.text.zh_hant]
+  name = "空中行者（煙火）"
+  description = "Dance on Air in its festival\nversion, among fireworks."
+
+[[technique]]
+name = "whd95100"
+key = "whd95100"
+base = "who00220"
+order = 35
+name_text = 0x939FEFFF
+desc_text = 0xC6093DAD
+manual = { icon = [163, 696] }
+event = "ev62_95100"
+category = "block"
+cells = { telopInfoId = 0x13E3914C }
+  [technique.text.ja]
+  name = "ブルーサイクロン"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.en]
+  name = "Blue Cyclone"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.es]
+  name = "Ciclón azul"
+  description = "Un ciclón azul envuelve al rival\ny le arrebata el balón."
+  [technique.text.fr]
+  name = "Cyclone bleu"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.de]
+  name = "Blauer Zyklon"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.it]
+  name = "Ciclone Blu"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.pt]
+  name = "Ciclone Azul"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.zh_hans]
+  name = "蓝色龙卷封锁"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+  [technique.text.zh_hant]
+  name = "藍色龍捲封鎖"
+  description = "A blue cyclone engulfs the opponent\nand snatches the ball away."
+
+[[technique]]
+name = "whd95110"
+key = "whd95110"
+base = "whd01060"
+order = 36
+name_text = 0x35E8E44B
+desc_text = 0x607E3619
+manual = true
+event = "ev62_95110_1"
+fail_event = "ev62_95110_2"
+power_min = 65
+power_max = 400
+tp = 65
+  [technique.text.ja]
+  name = "もちもち黄粉餅（花火）"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.en]
+  name = "Goopy Gloopy Goo (Fireworks)"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.es]
+  name = "Grumo pegapasta (fuegos artificiales)"
+  description = "El Grumo pegapasta en versión de\nfestival, entre fuegos artificiales."
+  [technique.text.fr]
+  name = "Pâte gluante (feu d'artifice)"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.de]
+  name = "Eierkuchen-Falle (Feuerwerk)"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.it]
+  name = "Impasto di Goldie (Fuochi d'artificio)"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.pt]
+  name = "Boleadeira de Mochi (Fogos)"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.zh_hans]
+  name = "软糯糯黄豆粉年糕（烟花）"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."
+  [technique.text.zh_hant]
+  name = "黏呼呼麻糬（煙火）"
+  description = "The Goopy Gloopy Goo in its festival\nversion, among fireworks."

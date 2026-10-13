@@ -1,0 +1,52 @@
+# Technique defaults of the VR-Framework (crates/plugins/technique_engine): data the game's files cannot give.
+# Any mod may ship its own defaults\technique.toml; a later mod's key wins.
+
+# `[[keeper_scene]]` with a mod's own event: its event_env_config row is cloned from these retail scenes. The game's
+# keeper-gauge pairs live in nie.exe's .rdata (read at run time, keeper.rs), not in a table the build can read: the
+# first retail pair (keeper holds / goal conceded) is the template.
+[keeper_scene]
+save_template = "ev71_31010"
+goal_template = "ev71_31020"
+
+# Move mini-effects (docs/framework/technique.md §4e): the value a key takes when a move's rule does not give it
+# (Phase F: data, not constants; docs/framework/rules-inventory.md). The accepted ranges stay in the engine (they are
+# the mechanism's limits).
+[mini_effects]
+# distance_falloff = "inverted": bonus slope (multiple of the game's falloff per second) and the most the shot gains
+# (fraction of its power)
+slope = 1.0
+cap = 0.5
+# pe_sacrifice: share of the user's current PE spent, and the power multiplier
+fraction = 0.15
+power_mult = 1.25
+# power_per_participant: percent of power per counted performer
+participant_pct = 5.0
+# on_win_steal_tension: percent of the shot's tension cost
+steal_pct = 15.0
+# trajectory: dive / drop_skim start height over the kick point (m); ground / drop_skim skim height (m, ball centre);
+# drop_skim: where the ball lands (share of the way to the goal)
+dive_height = 10.0
+ground_height = 0.25
+drop_touch = 0.4
+# trajectory = "level": the level run's height (m, ball centre; a little over the game's own flight, whose goal point
+# is 1.5-2.6 m) and the height it eases into the goal at (m: the keeper's reach, under the 2.44 m bar)
+level_height = 3.0
+level_end_height = 2.0
+# split_shot: parts, and the parts a basic block / a block move takes away
+split_parts = 7
+split_lose_basic = 1
+split_lose_move = 2
+# ground_trail: seconds between two trail pieces
+trail_interval = 0.05
+# trajectory, the shooter fall (technique.md §4e): after the cut-in of a shot whose flight starts at a number
+# (start.height, or the mod's [trajectory] start_height below) the shooter is put at that start (his feet under the
+# ball) and comes down to his ground. Not under this height over his ground (m); the gravity he comes down with (m/s²;
+# the game's ballGravity is 24.8).
+shooter_fall_min_height = 1.5
+shooter_fall_gravity = 24.8
+
+# Per mod (read from each mod's OWN content/defaults/technique.toml, not merged across mods): the start height (m, the
+# ball centre over the pitch) of every `trajectory` of points that mod declares without its own `start.height`; the
+# shooter falls from it too. Unset here: give it in your mod's file, e.g.
+# [trajectory]
+# start_height = 8.0

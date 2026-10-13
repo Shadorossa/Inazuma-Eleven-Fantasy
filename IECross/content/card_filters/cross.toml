@@ -1,0 +1,28 @@
+# Inazuma Eleven Cross in the character bank (VR-Framework card_filter type, docs/framework/card-filter.md; iecross
+# 1.2.0, 2026-10-09, Nacho: «the Cross tab of the bank belongs to the Cross mod»). Its series row (content/base_tables/
+# common/gamedata/character/chara_series_config.toml: type 10) has no membership flag in chara_base: a character is a
+# member through his belong team (chara_base team_1..3 = the Cross belong team, content/base_tables/.../belong_team_config.toml).
+# Moved from Inazuma Fantasy's card_filters/series.toml (the [[series]] value) and graft series_tabs (the tab).
+schema = "vr_framework.card_filter/1"
+
+# The bank's tab bar: an «Inazuma Eleven Cross» tab after Victory Road (the X icon), listing the Cross characters
+# (VR-Framework 2.0.3 [[bank_tab]]: «every series» narrowed to the Cross belong team; its name = the series' name).
+[[bank_tab]]
+id = "cross"
+series = 0x2451B973             # crc32("evt_chara_series_cross"), type 10
+team = 0x1E5DC7AA               # crc32("evt_belong_team_cross")
+icon = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series10"
+icon_off = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series10_off"
+order = 100
+
+# The bank filter header «Q ‹ value › E»: the Cross series as a value; its characters are listed only under it
+# (docs/game/characters/series-tabs.md §8, «Cross-only»), not under the retail series of their host flag.
+# exclusive = true also keeps them out of the bank's retail series tabs (IE1 … Victory Road): the framework refuses the
+# members of the Cross belong team in every list built for a series type 1-9 (VR-Framework card_filter, 2026-10-11),
+# so they show in «TODO» and the Cross tab only. Members = the characters whose chara_base team_1..3 is the Cross team
+# (content\characters\**: team_3 = 0x1E5DC7AA), never a list of ids.
+[[series]]
+id = "cross"
+series = 0x2451B973
+team = 0x1E5DC7AA
+exclusive = true

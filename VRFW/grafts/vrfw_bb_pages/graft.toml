@@ -1,0 +1,51 @@
+# VR-Framework: pages, category tabs and the season carousel of the Bahía Batalla (Estadio BB) team grid
+# (docs/framework/bb-pages.md). Run time: vr_framework.dll bb_pages_rt (CMND_VRFW_BB_PAGE*; the 1.x CMND_EVT_BB_PAGE*
+# names are aliases); layers / keys: research/mods/VRFW/content/menus/bb_pages.toml; texts: text\rows\bb_pages.toml;
+# tab art: images\menu\107_vs\vrfw_bb_pages.toml (made from the player's game files). Moved from Inazuma Fantasy's
+# graft bb_pages on 2026-10-08 (its turn in place, crest preload and 1P handling are unchanged).
+#   enjoy_team_select_menu_offline   vrfw_bbp_grid.lua: L1 / R1 pages, L2 / R2 categories, the bank's filter key
+#   enjoy_team_select_menu_campaign  (CMD_FUNC2, Tab) seasons; the line above the grid; empty slots of a short page
+#                                    hidden; campaign + vrfw_bbp_campaign.lua (redraw after the difficulty window)
+#   enjoy_team_select_menu (online)  vrfw_bbp_online.lua: the game's own list, no pages (quick match, private rooms)
+# With one category of one page and no season carousel nothing is shown (the retail grid). Globals only (VRFW_BBP;
+# EVT_BBP / EVT_BBP_Query / _Redraw / _SetupLine kept as 1.x names); nothing runs at chunk load.
+name = "vrfw_bb_pages"
+mod = "vr_framework"
+order = 340
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnFunction", "OnBack", "SetupEmblemIcon", "OnCloseEndLayer", "Step", "UpdateEmblemIconMesh"]
+description = "Bahía Batalla: pages, category tabs and season carousel on the free-match and campaign team grids"
+
+[[files]]
+stem = "enjoy_team_select_menu_offline"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_bbp_grid.lua"
+  marker = "vrfw_bb_pages"
+
+
+[[files]]
+stem = "enjoy_team_select_menu_campaign"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_bbp_grid.lua"
+  marker = "vrfw_bb_pages"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_bbp_campaign.lua"
+  marker = "vrfw_bb_pages campaign"
+  crc = "none"
+
+
+# the online grid (quick match / private rooms): the game's own list only (vrfw_bbp_online.lua, docs/framework/bb-pages.md §7)
+[[files]]
+stem = "enjoy_team_select_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_bbp_online.lua"
+  marker = "vrfw_bb_pages online"

@@ -1,0 +1,114 @@
+schema = "vr_framework.changelog/1"
+# Openings extra: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "Openings extra"
+
+[en]
+name = "Extra Openings"
+
+[fr]
+name = "Génériques en plus"
+
+[de]
+name = "Zusätzliche Openings"
+
+[it]
+name = "Opening extra"
+
+[pt]
+name = "Aberturas extra"
+
+[ja]
+name = "追加オープニング"
+
+[zh_hans]
+name = "额外片头"
+
+[zh_hant]
+name = "額外片頭"
+
+[[release]]
+icon = "general"
+notes = [
+    "Openings de IE2 e IE3 de DS en el título, en HD.",
+    "Cantados en tu idioma si el juego de DS lo tenía.",
+    "Elígelos en Opciones de mods, fila «Opening».",
+    "También en el Archivo de escenas (Inazuma Eleven).",
+    "Tema del menú de DS: fila «Música del menú».",
+]
+
+[release.en]
+notes = [
+    "The DS IE2 and IE3 openings at the title, in HD.",
+    "Sung in your language if the DS game had it.",
+    "Pick them in Mod options, row «Opening».",
+    "Also in the scene archive (Inazuma Eleven tab).",
+    "The DS menu theme: row «Menu music».",
+]
+
+[release.fr]
+notes = [
+    "Les openings DS d'IE2 et IE3 à l'écran titre, en HD.",
+    "Chantés dans ta langue si le jeu DS l'avait.",
+    "À choisir dans Options des mods, ligne «Opening».",
+    "Aussi dans les archives des scènes (Inazuma Eleven).",
+    "Le thème du menu DS : ligne «Musique du menu».",
+]
+
+[release.de]
+notes = [
+    "Die DS-Openings von IE2 und IE3 am Titel, in HD.",
+    "In deiner Sprache gesungen, wenn das DS-Spiel sie hatte.",
+    "Auswahl in den Mod-Optionen, Zeile «Opening».",
+    "Auch im Szenenarchiv (Reiter Inazuma Eleven).",
+    "Das DS-Menüthema: Zeile «Menümusik».",
+]
+
+[release.it]
+notes = [
+    "Le opening DS di IE2 e IE3 nel titolo, in HD.",
+    "Cantate nella tua lingua se il gioco DS l'aveva.",
+    "Scegliele in Opzioni dei mod, riga «Opening».",
+    "Anche nell'archivio delle scene (Inazuma Eleven).",
+    "Il tema del menu DS: riga «Musica del menu».",
+]
+
+[release.pt]
+notes = [
+    "As aberturas de IE2 e IE3 do DS no título, em HD.",
+    "Cantadas no seu idioma se o jogo de DS tinha.",
+    "Escolha em Opções de mods, linha «Opening».",
+    "Também no arquivo de cenas (aba Inazuma Eleven).",
+    "O tema do menu do DS: linha «Música do menu».",
+]
+
+[release.ja]
+notes = [
+    "DS版IE2・IE3のオープニングをHDでタイトルに。",
+    "DS版にあった言語なら、その言語の歌で。",
+    "MODオプションの「Opening」で選択。",
+    "シーンアーカイブ（イナズマイレブン）にも収録。",
+    "DS版のメニュー曲：「メニューBGM」で選択。",
+]
+
+[release.zh_hans]
+notes = [
+    "DS版IE2与IE3的片头曲，高清呈现于标题画面。",
+    "若DS版有你的语言，则以该语言演唱。",
+    "在模组选项的「Opening」中选择。",
+    "也收录于场景档案（闪电十一人分页）。",
+    "DS版菜单曲：在「菜单音乐」中选择。",
+]
+
+[release.zh_hant]
+notes = [
+    "DS版IE2與IE3的片頭曲，高畫質呈現於標題畫面。",
+    "若DS版有你的語言，則以該語言演唱。",
+    "在模組選項的「Opening」中選擇。",
+    "也收錄於場景檔案（閃電十一人分頁）。",
+    "DS版選單曲：在「選單音樂」中選擇。",
+]

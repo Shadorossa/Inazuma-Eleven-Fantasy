@@ -1,0 +1,14 @@
+# The declaration `[[VRFW.FreeMatchPage]]` of the free-match tab pages (service S8 of VRFW 2.3, docs/framework/
+# free-match-tabs.md §11): what a mod's content\free_match_pages\*.toml may say. Read by scripts\free_match_pages.lua at
+# start (every key is checked against this file: an unknown key, a wrong type or a value out of range leaves that
+# declaration out with a warning). Not a table map.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.free_match_page/1"
+folder = "content/free_match_pages"
+
+[entry.FreeMatchPage]
+doc = "a free-match tab («Competir contra bots» / the office hub list) in pages: page k lists the rows of another tab index"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+tab = { type = "int", min = 0, max = 31, required = true, doc = "the tab index the bar shows (the routeType its pieces have); one declaration per tab: the later mod wins" }
+pages = { type = "ints", min = 0, max = 255, required = true, doc = "the tab index each page lists, in page order (page 1 first; usually the tab itself, then the routeType of the pieces of the next pages)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

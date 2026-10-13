@@ -1,0 +1,51 @@
+# Outfits, UI side (VR-Framework; docs/framework/outfits.md). Always on: it acts only when the active mods declare
+# outfits ([[VRFW.Outfit]] of the item type; the framework answers CMND_VRFW_OUTFIT_COUNT = 0 otherwise and every
+# screen stays retail).
+# * equip_menu_select: the «Atuendo» row (equip slot 4, the game's costume slot that retail shows only in the story
+#   field / RPG dock) in every «Equipamiento»; Aceptar opens the item list on the costume tab; the empty row reads
+#   «Atuendo» (menu_text vrfw_outfit_slot); the 3D preview wears the worn outfit (SetupCharaModel) and is rebuilt when
+#   it changes. Retail with flag6 (story) unchanged.
+# * equip_menu_list: no «first costume change» story warning for a declared outfit.
+# * team_dock_formation_menu: the dock 3D model wears the worn outfit (only the look command of that model is changed).
+# The match look is the framework's hook bus point match_look (item_engine::outfit_rt). Replaces Inazuma Fantasy's
+# graft `outfit` (its moment-kit toggle row, 2026-09-24 .. 2026-10-09) and research/scripts/outfit_build.py.
+name = "vrfw_outfit"
+mod = "vr_framework"
+order = 100
+module = ""
+requires = []
+conflicts = []
+wraps = ["CreateEquipTypeTable", "OnEnter", "UpdateEquipListItem", "CheckEquipmentModelUpdateNeeded", "OpenFirstChangeCostumeCautionMessage", "UpdateViewChara3DModel", "InitChara3DModelByUniformNoWindow"]
+description = "outfits: «Atuendo» row in Equipamiento, its costume list, outfit look in the preview and the team dock"
+
+[[files]]
+stem = "equip_menu_select"
+
+  # the 3D preview wears the outfit (outside the story: the retail costume code below keeps flag6)
+  [[files.ops]]
+  type = "insert_before"
+  point = "equip_menu_select.SetupCharaModel.VrfwOutfit"
+  text = '''
+    n18 = VRFW_Outfit.PreviewUniform(n, n18, n20, flag6) -- VRFW vrfw_outfit
+'''
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_outfit_select.lua"
+  marker = "vrfw_outfit_select"
+
+[[files]]
+stem = "equip_menu_list"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_outfit_list.lua"
+  marker = "vrfw_outfit_list"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_outfit_dock.lua"
+  marker = "vrfw_outfit_dock"

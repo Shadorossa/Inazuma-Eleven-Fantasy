@@ -1,0 +1,304 @@
+# VR-Framework: the save slot screen's card atlas (#/menu/220_img/evt_slot/evt_slot_base.g4tx, a NEW atlas;
+# docs/framework/save-slots.md «Card art»). Its pixels are made at every first start (and after a game update) from
+# the PLAYER'S own game files by the image type's recipes (image_engine::recipe): the release ships this recipe and
+# the framework's own drawings (evt_slot_base\*.png: disc, plus, generic emblem), never Level-5 pixels.
+# Same art as the 2.0 pack-time generator research/scripts/slot_card_art.py (build_sprites / atlas_layout): v4.2
+# bodies 424x624 from the retail save_info_base01 / 02 (save01_04), padlock from mainmenu90_30, row plates from
+# save_mode_base01 + retail glyphs. A recipe that cannot be made is an ERROR in the log; its card stays blank.
+schema = "vr_framework.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_base"
+size = [1708, 1252]
+
+# ---- sprites (shelf packing of slot_card_art.atlas_layout; the screen binds them by crc32 of the name) -------------
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_empty_off"
+texture = "evt_slot_base"
+x = 0
+y = 0
+size = [424, 624]
+recipe = "card_empty_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_empty_on"
+texture = "evt_slot_base"
+x = 428
+y = 0
+size = [424, 624]
+recipe = "card_empty_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_locked_off"
+texture = "evt_slot_base"
+x = 856
+y = 0
+size = [424, 624]
+recipe = "card_locked_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_locked_on"
+texture = "evt_slot_base"
+x = 1284
+y = 0
+size = [424, 624]
+recipe = "card_locked_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_off"
+texture = "evt_slot_base"
+x = 0
+y = 628
+size = [424, 624]
+recipe = "card_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_card_on"
+texture = "evt_slot_base"
+x = 428
+y = 628
+size = [424, 624]
+recipe = "card_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_emblem_generic"
+texture = "evt_slot_base"
+x = 856
+y = 628
+size = [128, 128]
+png = "evt_slot_base/emblem_generic.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_ri_saved"
+texture = "evt_slot_base"
+x = 988
+y = 628
+size = [92, 60]
+recipe = "ri_saved"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_ri_time"
+texture = "evt_slot_base"
+x = 1084
+y = 628
+size = [92, 60]
+recipe = "ri_time"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
+name = "evt_slot_ri_vic"
+texture = "evt_slot_base"
+x = 1180
+y = 628
+size = [92, 60]
+recipe = "ri_vic"
+
+# ---- retail sources (the player's game files) -----------------------------------------------------------------------
+# card bodies: the retail save info plate, focused (a whole texture) and unfocused (a sprite)
+[[recipe]]
+name = "base_on"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+texture = "save_info_base01"
+
+[[recipe]]
+name = "base_off"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_info_base02"
+
+[[recipe]]
+name = "lock"
+game = "dx11/menu/100_mainmenu/mainmenu90/mainmenu90_30/mainmenu90_30.g4tx"
+sprite = "lock_icon01_off"
+ops = [{ op = "alpha_crop" }, { op = "resize_width", width = 48 }]
+
+# ---- own drawings (shipped) --------------------------------------------------------------------------------------
+[[recipe]]
+name = "disc"
+png = "evt_slot_base/disc.png"
+
+[[recipe]]
+name = "plus"
+png = "evt_slot_base/plus.png"
+
+# ---- card body (slot_card_art.card_body): one 168 px period of the hexagon body tiled from y 4, the grey row band at
+# rows 1, 3, 5, the blue bottom bar, a thin top line, rounded lower corners (12 px; the top 21 rows square) ----------
+[[recipe]]
+name = "tile_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 112, 444, 280] }]
+
+[[recipe]]
+name = "grey_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 418, 346, 470] }, { op = "tile", size = [424, 52], at = [0, 0] }, { op = "resize", size = [424, 46] }]
+
+[[recipe]]
+name = "bar_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 588, 868, 606] }, { op = "resize", size = [424, 16] }]
+
+[[recipe]]
+name = "top_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 100, 868, 106] }, { op = "resize", size = [424, 4] }]
+
+[[recipe]]
+name = "body_on"
+from = "tile_on"
+ops = [
+    { op = "tile", size = [424, 624], at = [0, 4] },
+    { op = "paste", image = "grey_on", at = [0, 313] },
+    { op = "paste", image = "grey_on", at = [0, 405] },
+    { op = "paste", image = "grey_on", at = [0, 497] },
+    { op = "paste", image = "bar_on", at = [0, 608] },
+    { op = "paste", image = "top_on", at = [0, 0] },
+    { op = "round_corners", radius = 12, square_top = 21 },
+]
+
+[[recipe]]
+name = "tile_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 112, 444, 280] }]
+
+[[recipe]]
+name = "grey_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 418, 346, 470] }, { op = "tile", size = [424, 52], at = [0, 0] }, { op = "resize", size = [424, 46] }]
+
+[[recipe]]
+name = "bar_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 588, 868, 606] }, { op = "resize", size = [424, 16] }]
+
+[[recipe]]
+name = "top_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 100, 868, 106] }, { op = "resize", size = [424, 4] }]
+
+[[recipe]]
+name = "body_off"
+from = "tile_off"
+ops = [
+    { op = "tile", size = [424, 624], at = [0, 4] },
+    { op = "paste", image = "grey_off", at = [0, 313] },
+    { op = "paste", image = "grey_off", at = [0, 405] },
+    { op = "paste", image = "grey_off", at = [0, 497] },
+    { op = "paste", image = "bar_off", at = [0, 608] },
+    { op = "paste", image = "top_off", at = [0, 0] },
+    { op = "round_corners", radius = 12, square_top = 21 },
+    { op = "fade", factor = 0.92 },
+]
+
+# ---- the six cards (slot_card_art.decorate_body): disc centred at (212, 150); locked = + padlock at (272, 204);
+# empty = dashed circle + plus instead of the disc -----------------------------------------------------------------
+[[recipe]]
+name = "card_on"
+from = "body_on"
+ops = [{ op = "paste", image = "disc", centre = [212.0, 150.0] }]
+
+[[recipe]]
+name = "card_off"
+from = "body_off"
+ops = [{ op = "paste", image = "disc", centre = [212.0, 150.0] }]
+
+[[recipe]]
+name = "card_locked_on"
+from = "card_on"
+ops = [{ op = "paste", image = "lock", centre = [272.0, 204.0] }]
+
+[[recipe]]
+name = "card_locked_off"
+from = "card_off"
+ops = [{ op = "paste", image = "lock", centre = [272.0, 204.0] }]
+
+[[recipe]]
+name = "card_empty_on"
+from = "body_on"
+ops = [{ op = "paste", image = "plus", centre = [212.0, 150.0] }]
+
+[[recipe]]
+name = "card_empty_off"
+from = "body_off"
+ops = [{ op = "paste", image = "plus", centre = [212.0, 150.0] }]
+
+# ---- row icon plates (slot_card_art.row_icons): the retail Historia plate without its glyph, hue-shifted, with a
+# retail glyph in white (44 x 40 box) and a soft navy shadow ------------------------------------------------------
+[[recipe]]
+name = "plate"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_mode_base01"
+ops = [{ op = "blend_columns", x0 = 10, x1 = 58 }]
+
+[[recipe]]
+name = "glyph_ball"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_base_icon03_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+[[recipe]]
+name = "glyph_watch"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_base_icon01_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+[[recipe]]
+name = "glyph_book"
+game = "dx11/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "save_icon_list_s01_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+[[recipe]]
+name = "shadow_ball"
+from = "glyph_ball"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_watch"
+from = "glyph_watch"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_book"
+from = "glyph_book"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+# Victorias: teal
+[[recipe]]
+name = "ri_vic"
+from = "plate"
+ops = [
+    { op = "hue", turns = -0.08 },
+    { op = "paste", image = "shadow_ball", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_ball", centre = [32.0, 30.0] },
+]
+
+# Tiempo total: blue
+[[recipe]]
+name = "ri_time"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.06 },
+    { op = "paste", image = "shadow_watch", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_watch", centre = [32.0, 30.0] },
+]
+
+# Guardado: slate
+[[recipe]]
+name = "ri_saved"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.09 },
+    { op = "saturate", factor = 0.45 },
+    { op = "paste", image = "shadow_book", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_book", centre = [32.0, 30.0] },
+]

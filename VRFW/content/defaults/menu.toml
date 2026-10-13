@@ -1,0 +1,9 @@
+# Framework defaults of the menu type (crates/plugins/menu_engine): what the game's files cannot give. A mod may ship
+# its own `defaults\menu.toml` to override keys (load order); to raise the scene archive's cap, a mod declares
+# `[scene_archive] max_rows = N` in its menus\*.toml instead (the cap is the maximum of both).
+
+# The «Archivo de escenas» list (docs/game/ui/scene-archive-cap.md): rows it can list at least (retail 128). The cap
+# of a start = max(this, every active mod's `[scene_archive] max_rows`, the served scene_archive_config's rows),
+# at most 32767 (the row getter's short index).
+[scene_archive]
+max_rows = 512

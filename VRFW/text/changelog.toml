@@ -1,0 +1,51 @@
+schema = "vr_framework.text_key/1"
+# Texts of the changelog part (format of the text_engine plugin: research/mods/text_engine/README.md). New texts get
+# the id crc32("changelog.<name>"): `news` is the label of the FUNC3 key in the button guide of the «Mods» screen.
+# `sheet_title` is the sheet's title, `date_format` the order of a release's date ({y} year, {m} month, {d} day);
+# the part reads both from this file (crates/plugins/changelog/src/pages.rs).
+default_lang = "en"
+
+[ja.new]
+sheet_title = "MODの新着情報"
+date_format = "{y}/{m}/{d}"
+news = "新着情報"
+
+[en.new]
+sheet_title = "Mod updates"
+date_format = "{y}-{m}-{d}"
+news = "What's new"
+
+[es.new]
+sheet_title = "Novedades de mods"
+date_format = "{d}/{m}/{y}"
+news = "Novedades"
+
+[fr.new]
+sheet_title = "Nouveautés des mods"
+date_format = "{d}/{m}/{y}"
+news = "Nouveautés"
+
+[de.new]
+sheet_title = "Neues in den Mods"
+date_format = "{d}.{m}.{y}"
+news = "Neuigkeiten"
+
+[it.new]
+sheet_title = "Novità delle mod"
+date_format = "{d}/{m}/{y}"
+news = "Novità"
+
+[pt.new]
+sheet_title = "Novidades dos mods"
+date_format = "{d}/{m}/{y}"
+news = "Novidades"
+
+[zh_hans.new]
+sheet_title = "模组更新内容"
+date_format = "{y}/{m}/{d}"
+news = "更新内容"
+
+[zh_hant.new]
+sheet_title = "模組更新內容"
+date_format = "{y}/{m}/{d}"
+news = "更新內容"

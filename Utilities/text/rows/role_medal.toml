@@ -1,0 +1,17 @@
+# Texts of Utilities' feature role_medal (crates/plugins/utilities/src/role_medal; thresholds in config.toml
+# [role_medal]). Format: docs/game/engine/text-engine.md §2. Shown by Inazuma Fantasy's role picker when a player is
+# below those thresholds (<VALUE> = matches missing); the retail board shows the game's own popup.
+schema = "vr_framework.text/2"
+table = "menu_text"
+
+[[row]]
+id = "util_role_need_matches"
+es = "Le faltan <VALUE> partidos para poder llevar una medalla de rol."
+en = "<VALUE> more matches are needed before this player can wear a role medal."
+fr = "Il lui manque <VALUE> matchs pour pouvoir porter une médaille de rôle."
+de = "Es fehlen noch <VALUE> Spiele, bevor dieser Spieler eine Rollenmedaille tragen kann."
+it = "Mancano <VALUE> partite prima che possa portare una medaglia di ruolo."
+pt = "Faltam <VALUE> partidas para este jogador poder usar uma medalha de função."
+ja = "役割メダルを付けるには、あと<VALUE>試合必要です。"
+zh_hans = "还需<VALUE>场比赛才能佩戴职责奖章。"
+zh_hant = "還需<VALUE>場比賽才能佩戴職責獎章。"

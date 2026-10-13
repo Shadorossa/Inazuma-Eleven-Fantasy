@@ -1,0 +1,28 @@
+# The drop-rate list («Tasa de aparición», vs_route_town_drop_rate_list_menu, list view CMenuListViewDropRateList):
+# the look of the «AURAS» section a mod declares ([VRFW.DropList.Auras] of the item type; docs/framework/drops.md §5,
+# docs/game/ui/drop-rate-list-order.md §5). The rows themselves are native: item_engine (drop_list_rt) moves the
+# section's items under an inserted header row at the end of every tab and marks the row being drawn
+# (CMND_VRFW_DROP_ROW). This graft draws them:
+# * the header: the game's header row with its label picture changed (VRFW image vrfw_gtxt_auras01 of win05_38,
+#   one per language, made from menu_text vrfw_drop_list_auras by research/scripts/vrfw_drop_list_header_build.py);
+# * an item of the section: its aura's banner, as the aura card of the game draws it (team00_30 band by aura type and
+#   element, the aura's own art on the right, the item icon on the band's square, the name, the rate).
+# A row reused by another kind of row gets the retail layout back. Always on: without a declared section the
+# framework never marks a row and every row stays retail. [VRFW.DropList] HideTabs: those tabs left out of the tab list.
+name = "vrfw_drop_list"
+mod = "vr_framework"
+order = 100
+module = ""
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnTabChanged", "UpdateListItem_DropItem", "UpdateListItem_DropChara", "UpdateListItem_ItemLine", "UpdateListItem_CharaLine", "OnUpdateTabData"]
+description = "drop-rate list: the AURAS section's header and aura banners ([VRFW.DropList.Auras])"
+
+[[files]]
+stem = "vs_route_town_drop_rate_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_drop_list_block.lua"
+  marker = "vrfw_drop_list"
+  crc = "at"

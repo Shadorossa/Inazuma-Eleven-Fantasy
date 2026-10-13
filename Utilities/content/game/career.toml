@@ -1,0 +1,65 @@
+# Career stats («TRAYECTORIA» page of the player plate): what the feature reads from the game (nie.exe PC v7.1.2) and
+# the Lua commands it answers. The logic is scripts\career.lua (Utilities.Career.*). docs/game/mechanics/player-career-stats.md
+# Was utilities.dll's career module (crates/plugins/utilities/src/career, removed 2026-10-10).
+schema = "VRFW.game/2"
+
+# ---------------------------------------------------------------- game functions
+
+# `Unit* ActorUnit(actor)` 0x15B25E0: the match unit of a soccer actor (unit +0x370 = the character handle it plays).
+[[VRFW.Function]]
+name = "ActorUnit"
+game = "Match.ActorUnit"
+
+# ---------------------------------------------------------------- globals
+
+# The match info block `mi` = [[g_gameRoot]+0x6A58].
+[[VRFW.Global]]
+name = "match_info"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+# The play data block [[g_gameRoot]+0x69C8] (+0x2CAC6F = the play-mode byte).
+[[VRFW.Global]]
+name = "play_data"
+base = "game_root"
+chain = ["ROOT_PLAY_DATA"]
+
+# `[g_soccerActors]` = the soccer actor array (stride 0x570, 0x3A actors; 0 outside matches): the `mov r9, [rip+x]`
+# at +0xC of `CalcUnitMoveSpeed` 0x154DAA0.
+[[VRFW.Global]]
+name = "soccer_actors"
+game = "Match.SoccerActors"
+
+# `[g_ballOwner]` = the ball-owner block (+0x1494 owner actor handle, +0x1498 its team): the site in the handler of
+# `CMND_IS_BALL_OWNER_CHARA` 0xC2A98A.
+[[VRFW.Global]]
+name = "ball"
+game = "Ball.Global"
+
+# `[g_soccerUnits]` = the match unit array (stride 0x380, 0x60 units): the `mov rsi, [rip+x]` at +0x0A of ActorUnit.
+[[VRFW.Global]]
+name = "soccer_units"
+game = "Match.SoccerUnits"
+
+# ---------------------------------------------------------------- Lua commands (crc32 of the name: the grafts ask
+# `@crc:NAME@`; the CMND_EVT_* names are the ones Inazuma Fantasy registered until 2026-10-08)
+
+# CMND_UTIL_CAREER_MATCH(mode) -> state (0 idle, 1 tracking, 2 recorded / done). From the match HUD (graft
+# util_career_match): 1 kick-off, 0 every frame, 2 half time, 3 full-time result.
+[[VRFW.Command]]
+name = "CMND_UTIL_CAREER_MATCH"
+aliases = ["CMND_EVT_CAREER_MATCH"]
+handler = "Utilities.Career.Match"
+needs = ["ActorUnit", "match_info", "soccer_actors", "ball"]
+
+# CMND_UTIL_CAREER(charaStHdl) -> ok, signed, before, matches, wins, draws, losses, goals, assists, mvp, topSkill, topUses
+[[VRFW.Command]]
+name = "CMND_UTIL_CAREER"
+aliases = ["CMND_EVT_CAREER"]
+handler = "Utilities.Career.Get"
+
+# CMND_UTIL_CAREER_EX(charaStHdl, group) -> ok, then the numbers of a group (graft util_career_page)
+[[VRFW.Command]]
+name = "CMND_UTIL_CAREER_EX"
+aliases = ["CMND_EVT_CAREER_EX"]
+handler = "Utilities.Career.Ex"

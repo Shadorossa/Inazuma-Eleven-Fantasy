@@ -1,0 +1,19 @@
+schema = "vr_framework.option/2"
+# Setting of the theme engine in the Opciones tab «Opciones de mods» (format: docs/app/mod-options.md §3). Value kept
+# in evt_loader\mod_options\theme_engine.json; read by theme_engine at boot (docs/app/theme-engine.md §5).
+# Only «Desactivado» (0) is declared here: the values of the themes come from the themes themselves. At boot the engine
+# adds one value per accent of every theme (vr_framework::options::publish_choices): the built-in dark theme's
+# (themes\dark.toml: `value` 1-3, label `text` of text.toml) and the ones other mods ship (<mod>\themes\*.toml).
+
+[[option]]
+id = "ui_theme"                               # row key theme_engine.ui_theme
+type = "list"
+label = "ui_theme"                            # «Tema de la interfaz» (text.toml, 9 languages)
+help = "ui_theme_help"
+values = [
+    { value = 0, name = "ui_theme_off", text = "Desactivado" },
+]
+default = 0
+# a child of «Estilo personalizado» (off there = the game's own look, the theme kept), after «Shaders personalizados»
+parent = "mod_options.custom_style"
+order = 124

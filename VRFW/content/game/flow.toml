@@ -1,0 +1,37 @@
+schema = "VRFW.game/2"
+
+# VR-Framework › flow toggles (service S8 of VRFW 2.3, docs/framework/flow.md). The run time is scripts\flow.lua: it
+# reads every mod's content\flows\*.toml (`VRFW.flow/1`, keys: content\types\flow.toml) and, only when a mod declares a
+# toggle away from the game's rule, installs the detour below. **Nothing here is installed at start**
+# (`apply = "script"`): with no declaration the game's code stays as it is.
+
+# ------------------------------------------------------------------------------------------------ prematch_editor
+
+# The pre-kick-off team editor (soccer_formation_menu between the VS screen and the walk-in): BattleSettingFlow state 6
+# opens it only when the match info flag 0x2000000 is set (`test dword [rax], 2000000h; je <no editor>`). The mid hook
+# runs before the test with rax = the match info; a handler's `skip = true` resumes at the `je` target (the game's own
+# «no editor» path, state 7 goes on to the walk-in); nothing / an error / busy scripts = the game's test runs.
+[[VRFW.Hook]]
+name = "Flow.PrematchEditor"
+game = "Menu.PrematchEditor"
+apply = "script"
+needs = ["Flow.IsNetworkSession", "Flow.MatchInfo"]
+
+# bool IsNetworkSession(): a network session is up (online / local network match)
+[[VRFW.Function]]
+name = "Flow.IsNetworkSession"
+game = "Net.IsSession"
+ret = "bool"
+
+# the match info ([[g_gameRoot] + 0x6A58]): Flags (0x2000000 = the editor opens), MatchType, Observer
+[[VRFW.Struct]]
+name = "Flow.MatchInfo"
+game = "MatchInfo"
+
+# ------------------------------------------------------------------------------------------------ commands
+
+# (name) -> value: the toggle's value in force ("game" when no mod declares it, nil for an unknown toggle), live (its
+# detour is installed)
+[[VRFW.Command]]
+name = "CMND_VRFW_FLOW"
+handler = "Flow.Cmd"

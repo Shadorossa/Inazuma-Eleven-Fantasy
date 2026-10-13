@@ -1,0 +1,553 @@
+# The Battle Bay «Torneo» bracket overlay (docs/game/modes/bb-tournament.md §6), added to the Battle Bay top menu
+# (bb_stadium_top_menu) and drawn by the graft research/grafts/bb_tournament (bbt_top.lua). 1.5.47 (owner
+# 2026-10-13): the top menu's «Torneo» row (1.4.1-1.5.45: a 4th medium row, its list locator, its icon) is gone; the
+# Torneo is a mode of the Campaña screen, picked in its header (the selector's layers below, graft bbt_mode.lua), and
+# the loading telop's path has as many nodes as the match's mode can have (fade_menu_encount_campaign, bbt_encount.lua).
+# 1.5.15 (owner, in game: the Victory Road bracket art showed «Cuadro: mitad izquierda» / right half pages, 16 names as
+# white text on two big white boxes, the slot bars and crowns outside them): the WHOLE bracket in one view, built
+# from the number of teams (rounds = log2(teams), always a power of two), scaled to fit; each team on a list plate of
+# the game (the emblem list's row, team06_02: plate, crest slot, name) with its crest left of the name on the left
+# side and mirrored on the right side (crest on the outer edge, the name right-aligned), the connectors drawn as
+# lines (the winners' path lit), each match's score at its joint, the champion on a plate above the final with a
+# crown. Of the Victory Road art only its background stays (vroad04_01_p1_bg).
+# Every layer is in the menu's layer group with the «not opened with the group» flags (as the Draft's layers): the
+# graft opens / closes them. align [1, 8] + scale 0.2 (as the framework's chain board): the Lua places each instance
+# in screen px from the top left (CMND_SET_LAYER_LOCAL_POS x, -y) and sizes it (CMND_SET_LAYER_SCALE).
+# The input anchor takes the keys while the overlay is up: Enter (next match / close), Back, right click, L1 / R1
+# (pages: results, groups, the bracket) -> CMD_FUNCTION evt_bbd_tn_prev / _next = 0xDD7A8C24 / 0x65B7144D.
+schema = "vr_framework.menu/2"
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+res = [
+    # 1.5.15: the bracket's own drawings (connector line, crown): content\images\menu\220_img\bbd_tn.toml
+    "#/menu/220_img/bbd_tn/bbd_tn.g4tx",
+    # 1.5.47: the mode selector's drawings (strip, pills): content\images\menu\220_img\bbd_md.toml
+    "#/menu/220_img/bbd_md/bbd_md.g4tx",
+]
+
+# ---- objects (1.5.15) --------------------------------------------------------------------------------------------
+# a team's plate, left side: the emblem list's row (team06_02_emblem_list_item) on a narrower copy of its layout
+# (520 px: plate, crest slot 22 px from the left edge, the name after it); no hit zone (the overlay is keys only),
+# no attach to the emblem list's locators; its atlas named (a renamed layout takes the atlas of its own name else)
+[[object]]
+name = "evt_bbd_tn_row_l"
+from = "team06_02_emblem_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team06/team06_02/team06_02.g4pkm" }, values = { 1 = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm" } }]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team06/team06_02/team06_02.g4tx"] }]
+
+# the right side's plate: the same row mirrored: the crest on the outer (right) edge, the name right-aligned
+# (the retail styles' right-aligned twins: fs_32_w_rc_2d0_001_at2 / fs_32_b_rc_2d0_001_at2)
+[[object]]
+name = "evt_bbd_tn_row_r"
+from = "team06_02_emblem_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team06/team06_02/team06_02.g4pkm" }, values = { 1 = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm" } },
+    { param = "_text_list01_on", values = { 1 = 1670131169 } },
+    { param = "_text_list01_off", values = { 1 = -864663 } },
+]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team06/team06_02/team06_02.g4tx"] }]
+
+# a free text (scores, group titles): the save list item's text node centred on the layer's origin, its plates and
+# icon slots shrunk to nothing; the style is set by the Lua (a centred, outlined white)
+[[object]]
+name = "evt_bbd_tn_txt"
+from = "save01_02_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_02/save01_02.g4pkm" }, values = { 1 = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 551 }, values = { 1 = 553 } },
+]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/51_save/save01/save01_02/save01_02.g4tx"] }]
+
+# the connectors (a white quad of bbd_tn.g4tx, tinted): under the plates
+[[object]]
+name = "evt_bbd_tn_line"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 549 } }]
+
+# 1.5.24: a score box at a plate's inner end (results rows): a tinted white quad over the plates (551), under the
+# texts (553)
+[[object]]
+name = "evt_bbd_tn_box"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 552 } }]
+
+# 1.5.54: the group tables (graft BBT_DrawGroups): the cards (546), their header bands / row backgrounds (547) and
+# their marks (548: qualification bars, points cells, separators, header strokes), all under the team rows (551);
+# the form dots on evt_bbd_tn_box (552), the numbers on evt_bbd_tn_txt (553)
+[[object]]
+name = "evt_bbd_tn_card"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 546 } }]
+
+[[object]]
+name = "evt_bbd_tn_band"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 547 } }]
+
+[[object]]
+name = "evt_bbd_tn_mark"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 548 } }]
+
+# the champion's crown: above the plates
+[[object]]
+name = "evt_bbd_tn_icon"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 554 } }]
+
+# ---- layouts (1.5.15) --------------------------------------------------------------------------------------------
+# team06_02 (retail: plate 888 x 72 from x -98, crest 68 px at x 44, name box 584 x 54 at x 119) -> a 520 x 72 plate
+# from x 0 (the layer's origin = the plate's left edge, vertical centre)
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+from = "common/menu/102_team/team06/team06_02/team06_02.g4pkm"
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_list_base_xs01_on"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_list_base_xs01_off"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_list_base_xs01_ol"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_list_base_xs01_ok"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_icon_emblem_dmy01"
+translate = [22.0, 34.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_text_list01_on"
+translate = [98.0, 27.0, 0.0]
+scale = [408.0, 54.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_text_list01_off"
+translate = [98.0, 27.0, 0.0]
+scale = [408.0, 54.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_l/evt_bbd_tn_row_l.g4pkm"
+joint = "_icon_check01"
+scale = [0.0, 0.0, 1.0]
+
+# the mirrored row: the crest 22 px from the right edge, the name box left of it (right-aligned styles: the objects)
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+from = "common/menu/102_team/team06/team06_02/team06_02.g4pkm"
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_list_base_xs01_on"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_list_base_xs01_off"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_list_base_xs01_ol"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_list_base_xs01_ok"
+translate = [0.0, 36.0, 0.0]
+scale = [520.0, 72.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_icon_emblem_dmy01"
+translate = [430.0, 34.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_text_list01_on"
+translate = [18.0, 27.0, 0.0]
+scale = [408.0, 54.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_text_list01_off"
+translate = [18.0, 27.0, 0.0]
+scale = [408.0, 54.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team06/evt_bbd_tn_row_r/evt_bbd_tn_row_r.g4pkm"
+joint = "_icon_check01"
+scale = [0.0, 0.0, 1.0]
+
+# save01_02 (retail: name box 608 x 68 at x 226): the box centred on the origin, the plates / icon slots 0 x 0
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+from = "common/menu/51_save/save01/save01_02/save01_02.g4pkm"
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_text_list01_on"
+translate = [-304.0, 34.0, 0.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_text_list01_off"
+translate = [-304.0, 34.0, 0.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_base_s01_on"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_base_s01_off"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_base_s01_ol"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_base_s01_ok"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_icon_dmy_s01_on"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_icon_dmy_s01_off"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
+joint = "_list_icon_dmy_s01_ok"
+scale = [0.0, 0.0, 1.0]
+
+# ---- layers ------------------------------------------------------------------------------------------------------
+# counts = the largest bracket (T.MAX_SIZE 64 teams, 1.5.44): 32 plates a side (+ the champion's), 63 match scores (results /
+# groups pages: 16 plates, 16 values, 4 group titles), 4 x 62 + 3 connector pieces (a match: 2 stubs + 2 half joints;
+# the final: 2 stubs + the stem to the champion)
+# 1.5.35: + lone crests (evt_bbd_tn_crest; 1.5.44: 32); 1.5.44: 64-team bracket counts
+# 1.5.54: the group tables, every group on one page (16 groups of 4 at most): 64 team rows (evt_bbd_tn_row_l), 336
+# texts (titles, column labels, positions and numbers), 112 boxes (form dots), + the cards / bands / marks layers
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_01_p1_bg", object = "vroad04_01_p1_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_01_p1_bg", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_01_p1_bg" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_row_l", object = "evt_bbd_tn_row_l", count = 64, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_row_r", object = "evt_bbd_tn_row_r", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_l", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_l" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 336, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_icon", object = "evt_bbd_tn_icon", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_txt", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_txt" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_box", object = "evt_bbd_tn_box", count = 112, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+
+# 1.5.35: the winners' crests standing at the bracket's joints and walking to them (the left plate's object, its plate
+# and name hidden by the graft: only the crest); 16 = one per match of a 32-team first round
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_crest", object = "evt_bbd_tn_row_l", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_box", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_box" }] }
+
+# 1.5.54: the group tables' cards, bands and marks (16 groups of a 64-team group stage)
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_card", object = "evt_bbd_tn_card", count = 16, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_crest", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_crest" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_band", object = "evt_bbd_tn_band", count = 96, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_card", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_card" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_mark", object = "evt_bbd_tn_mark", count = 192, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_band", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_band" }] }
+
+# the input anchor (off screen, as the Draft's evt_bb_draft_anchor): its own focus group, keys -> the graft
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_anchor", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_cmd = [
+    { layer = "evt_bbd_tn_anchor", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x65B7144D },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x65B7144D },
+]
+
+# ---- «Modos de juego» (1.5.18) -------------------------------------------------------------------------------------
+# Inazuma Fantasy's hub (soccer_top_menu) hosts the Torneo too (graft bbt_hub.lua): the same bracket layers, anchor
+# and keys in that menu's layer group (the «not opened with the group» flags: the graft opens them), and the
+# bracket's drawings as a resource. 1.5.22 (owner log 18:32: CMND_OPEN_LAYER left them closed in this menu): opened
+# WITH the group (flags [0, 1, …]) and hidden at setup by the graft (bbt_hub.lua), shown by visibility.
+[[patch]]
+menu = "soccer_top_menu"
+res = ["#/menu/220_img/bbd_tn/bbd_tn.g4tx"]
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "vroad04_01_p1_bg", object = "vroad04_01_p1_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_01_p1_bg", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "vroad04_01_p1_bg" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_row_l", object = "evt_bbd_tn_row_l", count = 64, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_line", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_line" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_row_r", object = "evt_bbd_tn_row_r", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_l", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_l" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 336, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_icon", object = "evt_bbd_tn_icon", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_txt", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_txt" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_box", object = "evt_bbd_tn_box", count = 112, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+
+# 1.5.35: the winners' crests standing at the bracket's joints and walking to them (the left plate's object, its plate
+# and name hidden by the graft: only the crest); 16 = one per match of a 32-team first round
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_crest", object = "evt_bbd_tn_row_l", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_box", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_box" }] }
+
+# 1.5.54: the group tables' cards, bands and marks (16 groups of a 64-team group stage)
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_card", object = "evt_bbd_tn_card", count = 16, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_crest", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_crest" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_band", object = "evt_bbd_tn_band", count = 96, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_card", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_card" }] }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_mark", object = "evt_bbd_tn_mark", count = 192, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_band", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_band" }] }
+
+# the input anchor (off screen): its own focus group, keys -> the graft
+[[patch]]
+menu = "soccer_top_menu"
+add_layer = { name = "evt_bbd_tn_anchor", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "soccer_top_menu"
+add_cmd = [
+    { layer = "evt_bbd_tn_anchor", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x65B7144D },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
+    { layer = "evt_bbd_tn_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x65B7144D },
+]
+
+# ---- the Torneo's options window: a third L / R row (1.5.16) -------------------------------------------------------
+# «Filtrar equipos poco importantes» (Sí / No) under «Con fase de grupos» and «Número de equipos». The retail L / R
+# window (sub_window, layout 3: win05_17_sub_list_locator_lr + win05_08_sub_list_item_lr x2) holds 2 rows. While the
+# Torneo's panel is open, the graft (bbt_common.lua BBT_SW_ThirdRow) swaps the window's locator for this 3-row copy
+# and opens a third row instance; every other L / R window keeps the retail locator and its 2 rows.
+[[patch]]
+menu = "sub_window"
+layer = "win05_08_sub_list_item_lr"
+count = 3
+
+# win05_17 with a joint _list04 (row 3, 70 px under row 2, as rows 1-2); the panel and its no-touch zone 1.3x taller
+# (396 -> 515, 356 -> 463) so its inner dark box (retail y 84..256) holds the three rows (y 157 / 227 / 297 from the
+# top), the button joint _list03 in the middle of the band under the box again (retail y 325 -> 424: local -168 ->
+# -267); the attach rows of the retail object plus row 3 (index 2) on _list04
+[[object]]
+name = "evt_bbd_tn_opts_locator"
+from = "win05_17_sub_list_locator_lr"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/10_win/win05/win05_17/win05_17.g4pkm" }, values = { 1 = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm" } }]
+copy = [{ param = "NullLayerName", match = { 3 = -1380032499, 4 = 1 }, values = { 1 = -1906936314, 2 = 2003145093, 4 = 2 } }]
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+from = "common/menu/10_win/win05/win05_17/win05_17.g4pkm"
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+joint = "_list04"
+parent = "_pos_list_atc01"
+translate = [0.0, -140.0, 0.0]
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+joint = "_list03"
+translate = [0.0, -267.0, 0.0]
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+joint = "_list_base_lr01"
+scale = [768.0, 515.0, 1.0]
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+joint = "_untouch01"
+scale = [728.0, 463.0, 1.0]
+
+[[patch]]
+menu = "sub_window"
+add_layer = { name = "evt_bbd_tn_opts_locator", object = "evt_bbd_tn_opts_locator", count = 1, scale = 1, after = "win05_17_sub_list_locator_lr", groups = [{ group = "sub_window_group", flags = [0, 0, 0, 0, 1, 0], after = "win05_17_sub_list_locator_lr" }] }
+
+# ---- the Campaña / Torneo mode selector (1.5.47) ------------------------------------------------------------------
+# Centred in the header bar (graft bbt_mode.lua): a strip, two pills (0 Campaña, 1 Torneo; the active one lit), the
+# key glyph and the two labels (the retail change-page text plate team00_40, as the VR-Framework's grid strip). In the
+# Battle Bay top menu (while the Torneo's bracket / panel is up) and on the Campaña grid (enjoy_team_select_menu,
+# group enjoy_team_select_menu_campaign). Not opened with the group: the graft opens them on the first draw. Draw
+# priorities above the header's widgets (the BB logo 654), under the top bar's (1006+) and the windows'.
+[[object]]
+name = "evt_bbd_mode_bg"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 695 } }]
+
+[[object]]
+name = "evt_bbd_mode_pill"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 696 } }]
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_mode_bg", object = "evt_bbd_mode_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_mode_pill", object = "evt_bbd_mode_pill", count = 2, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_mode_bg", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_mode_bg" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_mode_txt", object = "team00_40_change_page_guide", count = 3, after = "evt_bbd_mode_pill", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_mode_pill" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_mode_bg", object = "evt_bbd_mode_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0] }] }
+res = ["#/menu/220_img/bbd_md/bbd_md.g4tx"]
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_mode_pill", object = "evt_bbd_mode_pill", count = 2, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_mode_bg", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_mode_bg" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_mode_txt", object = "team00_40_change_page_guide", count = 3, after = "evt_bbd_mode_pill", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_mode_pill" }] }
+
+# ---- the loading telop's path (1.5.47) ----------------------------------------------------------------------------
+# fade_menu_encount_campaign: the next rival's telop (vs11_02) carries the path's hexagon nodes (vs01_43, 7 retail
+# instances on its joints _atc_list01 .. _atc_list07: 100 px apart, every other one 55 px lower, from _pos_list01).
+# A tournament's path can be longer (a group stage of 64: 3 + 5 = 8 matches): 12 node instances, and the telop on a
+# copy of its layout with _atc_list08 .. _atc_list12 (and its object with their attach rows). The graft
+# (bbt_encount.lua) places the joints for the path's length and hides the nodes past it; 7 nodes = the retail row.
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+from = "common/menu/107_vs/vs11/vs11_02/vs11_02.g4pkm"
+
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+joint = "_atc_list08"
+parent = "_pos_list01"
+translate = [700.0, -55.0, 0.0]
+
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+joint = "_atc_list09"
+parent = "_pos_list01"
+translate = [800.0, 0.0, 0.0]
+
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+joint = "_atc_list10"
+parent = "_pos_list01"
+translate = [900.0, -55.0, 0.0]
+
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+joint = "_atc_list11"
+parent = "_pos_list01"
+translate = [1000.0, 0.0, 0.0]
+
+[[layout]]
+file = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm"
+joint = "_atc_list12"
+parent = "_pos_list01"
+translate = [1100.0, -55.0, 0.0]
+
+# the telop on that layout (the retail atlas named: a renamed layout takes the atlas of its own name else); node
+# instances 7 .. 11 attached to _atc_list08 .. _atc_list12 (crc32, signed)
+[[object]]
+name = "evt_bbd_encount_telop"
+from = "vs11_02_next_enemy_telop_on_loading"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/107_vs/vs11/vs11_02/vs11_02.g4pkm" }, values = { 1 = "common/menu/107_vs/vs11/evt_bbd_vs11_02/evt_bbd_vs11_02.g4pkm" } }]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/107_vs/vs11/vs11_02/vs11_02.g4tx"] }]
+copy = [
+    { param = "NullLayerName", match = { 3 = 106197494, 4 = 6 }, values = { 1 = -1368342511, 2 = -1368342511, 4 = 7 } },
+    { param = "NullLayerName", match = { 3 = 106197494, 4 = 6 }, values = { 1 = -646451065, 2 = -646451065, 4 = 8 } },
+    { param = "NullLayerName", match = { 3 = 106197494, 4 = 6 }, values = { 1 = -1179616926, 2 = -1179616926, 4 = 9 } },
+    { param = "NullLayerName", match = { 3 = 106197494, 4 = 6 }, values = { 1 = -826848780, 2 = -826848780, 4 = 10 } },
+    { param = "NullLayerName", match = { 3 = 106197494, 4 = 6 }, values = { 1 = 1472075854, 2 = 1472075854, 4 = 11 } },
+]
+
+[[patch]]
+menu = "fade_menu_encount_campaign"
+layer = "vs11_02_next_enemy_telop_on_loading"
+object = "evt_bbd_encount_telop"
+
+[[patch]]
+menu = "fade_menu_encount_campaign"
+layer = "vs01_43_enjoy_team_select_emblem_icon"
+count = 12

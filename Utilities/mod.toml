@@ -1,0 +1,73 @@
+id = "utilities"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+name = "Utilities"
+version = "1.14.33"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Quality-of-life tools for any save. Team Dock pages: the Team Dock gets pages of 11 squads (10 pages by default, set in config.toml); R3 / N opens the squad list, L2 / R2 (Q / E) turn the pages. Passive configurator: choose which passives each player has (3 slots by default, up to 5 in config.toml); other mods can add their own passives to the list. Match camera options. Home / Away kit: in the kit picker, Y shows the away version of any kit and A saves it. Void element icon: players without an element and Void moves show the purple ensō wherever the game draws element icons. Visual style: the look of the 3D image (Original, IE3, Chrono Stone, Soft or Thick outline) in Mod options, applied at once without restarting. Unlocked formations: the 11-a-side formations the game has but never offers (the series' F- formations) can be chosen in the formation picker. Role medal without matches: any player can get the coach or manager medal without the game's 10 / 30 matches (the numbers are set in config.toml [role_medal], 0 by default). Shop filter: in the shop tabs of equipment, kits, emblems, moves and auras, Tab opens the game's item filter window (series, stat, element...) and filters the tab's goods. Move level badges (Spanish): the level badges and grade icons of special moves as stars instead of +1 / +2 / +3, a row of Mod options. Player career stats: a CAREER page on the player plate with each player's signing date, matches, wins / draws / losses, goals, assists, MVP awards, shots, saves and more, counted from every match. Chronicle route map: hold R2 (E) to move the map cursor twice as fast (x2, set in config.toml); the map's button guide shows «R2 Cursor speed». Original names by team: in Settings › Game settings, «Character names» gets «By team»; A on the row opens a picker with one tab per series (IE1 … Victory Road and mods' series) where you tick the teams or whole series whose players show their original names. Bank commands: choosing a player in the Team Dock's Bank opens a command list with Skill board, Equipment and Passive settings for that player, Quick retire (retires him and saves) and the game's equipment rows. Team planner: in a Team Dock squad, A on an empty slot offers «Add from the bank» or «Plan team»: any character of the game or the mods shows as a semi-transparent ghost card in that slot until you get him, then his card takes the slot by itself; a squad with ghosts cannot be the active one. Friends list: the top bar's «Friends list» (right of Market) slides a panel in on the right of the menu with all your Steam friends (in Inazuma Eleven VR with the same mods / other mods / without the mod, online, offline) plus the mod friends you add by friend code (your own code at the top, copy it with Y; X opens the game's keyboard to type a friend's code and sends a friend request: it reaches the other player, who accepts, declines or blocks it from «Requests» at the top of the panel, with a red dot on the top bar icon and a short notice; «Add on Steam» opens Steam's own add-friend dialog), each with avatar, name and what they are doing; A on a friend shows his active team (faces, formation) and career summary, invite him to your Battle Bay private room, join his, send him your team's share code or see the mods you differ in (Steam only, never the game's online service). No Hero / Diamond limits: a squad can field any number of Hero and Diamond cards (the game allows 2 Heroes and 1 Diamond). Top bar shortcuts: icons on the right of the menus' top bar go straight to the game's modes (Competition, Battle Bay with a dropdown of Campaign, 1v1 and Online, Chronicle, My Team, Market, Friends list); mouse or R3 (on the Chronicle route map the bar shows only in its pause menu); other mods add their own icons. Auto Commander Mode: an option row starts Battle Bay matches in Commander Mode, and free matches and Heroic battles against beaten rivals."
+
+priority = 0
+tags = ["Gameplay", "Interface"]
+updated = "2026-10-13"
+# its texts (text\rows\, 9 languages), menu rows (menus\) and options come from the VR-Framework's engines; `requires`
+# also makes it load after the framework. The match camera is data (cameras\side.toml, schema
+# vr_framework.match_camera/1) on the framework's match camera service (VR-Framework 2.0.0, docs/framework/camera.md). Released on its own (Nexus Mods) next to VR-Framework 2.0.0.
+# vr_framework 2.0.25: [[VRFW.ElementIcon]] of the image type (its neutral enso for the Mods panel)
+# vr_framework 2.0.102: the team emblem grid (VRFW_EmblemGrid, objects vrfw_emblem_tile / vrfw_tile_label) of the
+# original-names picker and the team planner
+# 1.11.0 (2026-10-12, owner decision): the top bar shortcuts moved here from BetterUI: content\menus\top_bar.toml
+# (generated by research/scripts/top_bar_build.py: the quads and layers in the retail hubs, the Chronicle board and its
+# START menu, the entries Competition / Battle Bay group (Campaign, 1v1, Online) / Chronicle / My Team / Market / Friends list (a `lua` action:
+# the friends panel, assets\lua\_all\utilities_friends.lua + content\menus\friends_panel.toml) with
+# their BetterUI keys clean_hud.<id> as `aliases`, the host rules, the title hand-off, [VRFW.TopBarStyle]),
+# content\inputs\top_bar.toml, assets\lua\_all\utilities_top_bar.lua (gates Utilities.TopBarOn / TopBarOnBoard, the
+# R3 hint, the dropdown labels, the rank plate's hide; the old CLEAN_HUD_* globals as aliases), the atlas
+# assets\data\dx11\menu\100_mainmenu\mainmenu90\utilities_topbar\utilities_topbar.g4tx, text\rows\top_bar.toml and the
+# grafts util_top_bar (title hand-off), util_top_bar_bb_rows (step bb_row.<id>), util_top_bar_board (step
+# chronicle_board). BetterUI keeps the compact header and the rank plate's centre ([top_bar_rank]); docs/framework/top-bar.md
+# vr_framework 2.0.114: entry `aliases`, dotted gate names (Utilities.TopBarOn), the menu entries' inline texts served
+requires = ["vr_framework>=2.0.116", "text_engine>=1.1.0", "menu_engine>=1.0.0"]
+conflicts = []
+# the standalone mod away_kit 1.0 (2026-10-07) is a feature of Utilities now: an installed away_kit is replaced by it
+# (same Lua commands, same mask bit, same kit ids in the save)
+# the same for the standalone mod visual_presets 1.0.0 («Estilo visual», 2026-10-08): its row is Utilities'
+# utilities.visual_style now
+provides = ["away_kit=1.0.0", "visual_presets=1.0.0"]
+# One set, always on (1.5.2: the old features\<x>\ folders merged into content\game\ + scripts\, docs/framework/native.md;
+# no switches): team_banks (CMND_UTIL_TEAMBANK_*, mask bit 2097152, party Load hook), away_kit
+# (CMND_UTIL_TEAM_UNIFORM + CMND_EVT_TEAM_UNIFORM, CMND_UTIL_AK_PAIR, mask bit 524288), role_medal (7 patched
+# immediates, game_state utilities.role_medal.*), formations (CMND_UTIL_FORMATION + the picker's row count),
+# level_badges (stars files by the Mods options row), route_map_speed (CVSRouteTownMenu update hook,
+# CMND_UTIL_ROUTE_MAP_SPEED), combo_partners (CMND_UTIL_COMBO_* / CMND_UTIL_PAD_HELD + the CMND_EVT_* names,
+# BuildEventCast hook, blob skill_partners.json), shop_filter (CMND_UTIL_SHOP_FILTER_* / CMND_UTIL_SHOP_NEW_*, the tab
+# builder's call hook), career (CMND_UTIL_CAREER_*), original_names (CMND_UTIL_NAMES_*, the settings row hooks), camera
+# (the old setting's take-over), passive_config (the slot readers GetTeamPassiveId / IsTeamPassiveUnlocked answered
+# natively from tables the script fills, [[VRFW.Hook.answer]]; 7 retail command filters; CMND_UTIL_PC_*; blob
+# passive_config.json per slot), team_planner (CMND_UTIL_TP_*, blob team_planner.json per slot). The grafts (research/grafts/*, mod = "utilities") are unchanged.
+# No DLL since 1.5.0 (2026-10-10): «Estilo visual» is data on the VR-Framework's shader presets (content\shaders\visual_style.toml
+# + assets\shaders\*.hlsl, docs/framework/shaders.md). The neutral element icon is Lua + image recipes.
+folder = "Utilities"
+# the mod's own names (docs/framework/native.md §5): Lua functions Utilities.*, TOML keys [[Utilities.*]]
+prefix = "Utilities"
+# native access of content/game (docs/framework/native.md §4)
+permissions = ["memory", "call", "patch", "command", "state", "hook"]
+# Lua: research/grafts/* with `mod = "utilities"` (menu_assemble.py build --mod utilities). lua_early: the away kit's
+# edits of equip_uniform_menu_list must run BEFORE the mods that wrap those functions (Inazuma Fantasy's pachanga_equip);
+# the team dock pages are EVT_Host handlers of the framework's soccer_team_dock_menu host, so they run around every
+# lua_early patch of that screen whatever the order.
+lua_early = true
+loader_modules = ["lua_bridge", "lua_patch"]
+# EVT_DEBUG for the Lua (the team dock's locals) and patches of INCLUDE'd scripts: ModLoader 1.7.0
+loader_min = "1.7.0"
+
+# What other mods may call (docs/framework/native.md §5; mods that `require` utilities): Career.Params(slot) = the
+# chara_param ids of a save slot's career records, comma-separated (Inazuma Fantasy's office «signed once» seed);
+# TeamBanksMembers(slot) / TeamBanksRepair(slot, plan) = the team bank pages' stored members and their repair after a
+# one-card merge (scripts\tb_repair.lua over lib\tb_store.lua; Inazuma Fantasy's «Reparar duplicados»);
+# TopBarOn / TopBarOnBoard = the game Lua gates of the top bar hosts (Utilities.TopBarOn in every menu VM; other mods'
+# [[top_bar_host]] name them, e.g. Inazuma Fantasy's soccer_top_menu). A mod adds an icon to the bar with its own
+# [[entry]] host = "top_bar" (docs/framework/top-bar.md §2), a row of the «Battle Bay» dropdown with group = "battle_bay"
+# FriendsProfileLine(label, value) = a line of the profile friends see in the friends panel's details (e.g. Chronicle
+# progress, Battle Bay record; docs/game/ui/friends.md §3), "" removes it
+[exports]
+functions = ["Career.Params", "TeamBanksMembers", "TeamBanksRepair", "TopBarOn", "TopBarOnBoard", "FriendsProfileLine"]

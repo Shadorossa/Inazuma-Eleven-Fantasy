@@ -1,0 +1,32 @@
+# VR-Framework 2.0.93: the page dots of the player plate built from the player page registry (docs/framework/
+# player-pages.md §7; Lua assets\lua\menu\personal_plate_menu\121_player_page_dots.lua). When the mods' pages change
+# the retail order (Utilities' TRAYECTORIA, ...), the status base's four dots are hidden and the row is drawn by the
+# layer vrfw_pp_dots: two copies of the retail status base (each shows its own four dot meshes, nothing else; up to 8
+# dots), attached to the status base's _pos_base01 so they follow the plate's animation. With only the retail pages
+# the copies stay closed.
+schema = "vr_framework.menu/2"
+
+[[object]]
+name = "vrfw_pp_dots"
+from = "soccer11_05_formation_status_base"
+remove = [
+    { param = "NullLayerName" },
+    { param = "_touch_arw01_l" },
+    { param = "_touch_arw01_r" },
+]
+
+# the copies' attach rows on the retail status base: NullLayerName [vrfw_pp_dots0 / 1, _pos_base01, vrfw_pp_dots, 0 / 1]
+[[object_set]]
+object = "soccer11_05_formation_status_base"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1F2FA1D9, 0x5A709C12, 0xFA48C7C5, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x6828914F, 0x5A709C12, 0xFA48C7C5, 1] },
+]
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "vrfw_pp_dots", object = "vrfw_pp_dots", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_05_formation_status_base", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_05_formation_status_base" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "vrfw_pp_dots", object = "vrfw_pp_dots", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_05_formation_status_base", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_05_formation_status_base" }] }

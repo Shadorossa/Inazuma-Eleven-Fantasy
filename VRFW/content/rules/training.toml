@@ -1,0 +1,20 @@
+schema = "vr_framework.rule/1"
+# Reglamento BASE: los entrenamientos y las pruebas de regate (tipos 3 y 4: sin reloj, reglas de prueba).
+# Todas las reglas se dejan como las pone la fila del partido ("row"): el juego original tal cual. Un mod puede
+# sustituir este reglamento (mismo id, carga después) o asignar otro a estos partidos en su rules\matches.toml.
+id = "training"
+name = "Training (original)"   # fallback; shown in the game language from the text key ruleset_training
+version = 1
+
+[time]
+half_minutes = "row"
+halves = "row"
+
+[teams]
+players = "row"
+
+[end]
+extra_time = false
+golden_goal = false
+penalties = false
+extended_vgoal = "row"
