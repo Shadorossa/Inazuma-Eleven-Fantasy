@@ -180,3 +180,10 @@ beaten_only_contexts = ["free_match"]
 beaten_only_difficulties = ["Heroica", "HeroicaPlus"]
 # never_modes: game modes (keys of the VR-Framework's game_modes.toml) where the beaten-only rule never applies.
 never_modes = ["story"]
+
+[skill_board]
+# The ability board's keshin armour slot (the orb beside a keshin piece, open from the piece's level + 5): retail sets it
+# only when the player owns a copy of the armour item. true = setting it on a keshin that has an armour for his card
+# (change_aura_skill_config) adds one copy of the armour item first, so the slot never needs the item (the game's own
+# rule otherwise). false = the game's rule.
+armour_without_item = true

@@ -645,9 +645,7 @@ function Utilities.Friends.Status(stem)
     if type(stem) == "string" then status_of[stem] = st end
   end
   st = st or nil
-  -- the group answers even with the friends panel off: the menu VM (utilities_friends.lua in lua/_all) enters / leaves
-  -- the Battle Bay mode context by it
-  if not cfg.enabled then return st or "" end
+  if not cfg.enabled then return "" end
   if st ~= nil and st ~= last_status then
     local ok, err = result(net("presence_set", "vrfw_status", st))
     if ok then

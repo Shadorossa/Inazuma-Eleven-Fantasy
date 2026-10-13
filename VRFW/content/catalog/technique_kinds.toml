@@ -1,0 +1,122 @@
+schema = "VRFW.catalog/1"
+# Technique-id prefixes and what they tell (M4, docs/framework/catalogs.md): the kind of a telop banner from its id
+# (telop_engine::kind, docs/game/engine/telop-engine.md §7) and the family of a voice cue from its suffix
+# (audio_engine::cues, docs/game/media/voice-packs.md §2.2). Built into the framework: the installed copy must stay
+# the same data (else it is reported and not read).
+#
+# [sets]: named prefix lists the rules below use (`set = "<name>"`).
+# [[telop]] / [[voice]]: tried in order, the first that matches wins. A rule matches an id (lower case) when ONE of
+# its `prefixes` (or of its `set`) starts it, or it equals one of `exact`; then, when given, `suffix` must end it,
+# `len` is its whole length, and `digits` checks the part after the prefix: "all" = only digits (at least one),
+# "lead" = at least one more character and the next (up to) 5 are digits.
+# telop `kind`: technique, keshin, totem, miximax, armour, kizuna, power, mode_change, badge (else other).
+# voice `family`: the text key of the Mods screen; `[voice_default]` when no rule matches. The families' order
+# (the cue list's sort) is the rules' order, then the default.
+
+[sets]
+# the special moves' id prefixes (telop_waza/<lang>/whs00010.g4tx), in the order a telop template is looked for
+technique = ["whs", "whk", "whd", "who", "wht"]
+# the special moves a voice cue shouts (<bank>_whs00010; no `wht` cue)
+technique_voice = ["whs", "whk", "whd", "who"]
+# the keshin armour aura commands a voice cue shouts (<bank>_was00630)
+armour_voice = ["was", "wao", "wad", "wak"]
+
+[[telop]]
+set = "technique"
+kind = "technique"
+
+[[telop]]
+prefixes = ["aura_mixi"]
+kind = "miximax"
+
+[[telop]]
+prefixes = ["aura_armed"]
+kind = "armour"
+
+[[telop]]
+prefixes = ["aura_kizuna"]
+kind = "kizuna"
+
+[[telop]]
+prefixes = ["aura_power"]
+kind = "power"
+
+[[telop]]
+prefixes = ["mode_change"]
+kind = "mode_change"
+
+# the level / kizuna badges (soccer10_01_lv1..5, soccer10_01_kz): telop objects, not name banners (never hidden)
+[[telop]]
+exact = ["kz"]
+kind = "badge"
+
+[[telop]]
+prefixes = ["lv"]
+len = 3
+digits = "all"
+kind = "badge"
+
+# k000010 (keshin), a000010 (totem): a letter and digits only (a mod's `k_custom` is not one)
+[[telop]]
+prefixes = ["k"]
+digits = "all"
+kind = "keshin"
+
+[[telop]]
+prefixes = ["a"]
+digits = "all"
+kind = "totem"
+
+[[voice]]
+set = "technique_voice"
+digits = "lead"
+family = "au_cue_technique"
+
+[[voice]]
+set = "armour_voice"
+digits = "lead"
+family = "au_cue_armour"
+
+[[voice]]
+exact = ["armed"]
+family = "au_cue_armed"
+
+[[voice]]
+prefixes = ["k"]
+suffix = "_inc"
+family = "au_cue_invoke"
+
+[[voice]]
+prefixes = ["gl"]
+family = "au_cue_goal"
+
+[[voice]]
+prefixes = ["bt"]
+family = "au_cue_match_line"
+
+[[voice]]
+prefixes = ["pa"]
+family = "au_cue_pass"
+
+[[voice]]
+prefixes = ["sh"]
+family = "au_cue_shot"
+
+[[voice]]
+prefixes = ["kp"]
+family = "au_cue_keeper"
+
+[[voice]]
+prefixes = ["sp"]
+family = "au_cue_special"
+
+[[voice]]
+prefixes = ["wa", "fr", "jp"]
+family = "au_cue_reaction"
+
+[[voice]]
+prefixes = ["preview"]
+family = "au_cue_preview"
+
+[voice_default]
+family = "au_cue_other"

@@ -23,7 +23,6 @@ if UTIL_FP == nil then
       OPEN = 2960985135, LAYOUT = 832611508, ROW = 2296591079, ACTIONS = 3156590377, DO = 4170892414, POLL = 2427549134,
       DETAILS = 3410707788, DETAILS_POLL = 2315523593, ADD = 4056528859, COPY = 1505178633, INBOX = 1057064150,
       STATUS = 1889184330, BADGE = 3219144690,
-      MODE_ENTER = 3363701874, MODE_LEAVE = 3938337996,   -- CMND_VRFW_MODE_CURRENT_ENTER / _LEAVE
     },
     C = {
       LOG = 3661580131, TEXT_GET = 4074371074, LANG = 477234096, SND = 3073642526,
@@ -1100,16 +1099,8 @@ if UTIL_FP_HOOKED == nil then
     return FP.here
   end
   local function Init()
-    if type(stem) == "string" then
-      local okS, st = pcall(funcLuaCommand, FP.CMD.STATUS, stem)
-      -- the Battle Bay mode (context `battle_bay` of the framework's game_modes.toml): entered by the menus of the
-      -- "bb" group, left by the "menu" group (config.toml [friends.status_menus]); the player pages hide in it
-      if okS and st == "bb" then
-        pcall(funcLuaCommand, FP.CMD.MODE_ENTER, "battle_bay", "Utilities")
-      elseif okS and st == "menu" then
-        pcall(funcLuaCommand, FP.CMD.MODE_LEAVE, "battle_bay", "Utilities")
-      end
-    end
+    -- (the Battle Bay mode context `battle_bay` is the framework's: game_modes.toml enter_menus / leave_menus)
+    if type(stem) == "string" then pcall(funcLuaCommand, FP.CMD.STATUS, stem) end
     FP.probe = 0
     Here()
     if not FP.wrapped then

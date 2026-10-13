@@ -1,0 +1,199 @@
+schema = "VRFW.catalog/1"
+# The fix hints of the report codes (M4, docs/framework/catalogs.md): what the Mods panel report, `vrfw check` /
+# `vrfw explain` and the troubleshooting page show next to an entry of that code (vr_core::diagnose::hint). Built
+# into the framework: the installed copy must stay the same data (else it is reported and not read).
+# [[hint]] code, text; the order is the troubleshooting page's. A code without a hint is a type's note: its
+# message says what happened.
+
+[[hint]]
+code = "unknown_key"
+text = "check the spelling of the key; the message lists the keys accepted there"
+
+[[hint]]
+code = "missing_key"
+text = "add the key; the type's page in docs/framework/types/ lists the required keys"
+
+[[hint]]
+code = "bad_value"
+text = "write a value of the expected kind (the message says which: a number, a string, one of a list)"
+
+[[hint]]
+code = "parse_error"
+text = "fix the TOML syntax on that line: quotes, `=`, brackets, commas"
+
+[[hint]]
+code = "no_schema"
+text = "put `schema = \"VRFW.<kind>/<version>\"` on its own line before any [table] (the legacy `vr_framework.<kind>` is read too)"
+
+[[hint]]
+code = "unknown_kind"
+text = "use one of the kinds the message lists, or move the file to the folder of its type"
+
+[[hint]]
+code = "kind_not_allowed"
+text = "move the file into the folder of the type the message names"
+
+[[hint]]
+code = "newer_schema"
+text = "update VRFW: the file was written for a newer version"
+
+[[hint]]
+code = "old_schema"
+text = "it still loads; when you next edit the file, write the current schema line the message names (and rename any key the type's page lists as renamed)"
+
+[[hint]]
+code = "old_layout"
+text = "it still loads; move the file (or folder) to the place the message names"
+
+[[hint]]
+code = "layout"
+text = "move the folder or file to the place the message names (docs/framework/mod-layout.md); unknown folders are not read"
+
+[[hint]]
+code = "migration_failed"
+text = "the file could not be upgraded: fix the key the message names by hand"
+
+[[hint]]
+code = "unreadable"
+text = "check that the file exists, is saved as UTF-8 and no other program locks it"
+
+[[hint]]
+code = "conflict"
+text = "two mods set the same value and the one that loads later wins: change the load order or drop one value"
+
+[[hint]]
+code = "missing_ref"
+text = "the id it points to does not exist: check its spelling or enable the mod that declares it"
+
+[[hint]]
+code = "duplicate"
+text = "the same id is declared twice: rename or remove one of them"
+
+[[hint]]
+code = "removed_target"
+text = "another mod removed this entry: load this mod later or stop editing the entry"
+
+[[hint]]
+code = "id_collision"
+text = "two names got the same number: rename one entry; never edit the ids files by hand"
+
+[[hint]]
+code = "deprecated_lua"
+text = "use the Lua command the message names; the old name goes away in 3.0"
+
+[[hint]]
+code = "reserved_name"
+text = "rename it with your mod's own prefix (`<MOD>_…`, `<mod>.…`): `VRFW_` / `vrfw.` names belong to VRFW"
+
+[[hint]]
+code = "enabled_ignored"
+text = "remove `enabled`: switch content on or off with the Mods panel or an option"
+
+[[hint]]
+code = "old_section"
+text = "move the keys to the section the message names"
+
+[[hint]]
+code = "unknown_section"
+text = "check the section name; unknown sections are ignored"
+
+[[hint]]
+code = "raw_row_on_owned_table"
+text = "this table belongs to a type: declare the entry in that type's folder instead of a raw row"
+
+[[hint]]
+code = "build_failed"
+text = "the type could not build: read the message and the lines before it in loader.log"
+
+[[hint]]
+code = "missing_dependency"
+text = "install the mod it requires (or one that provides it), then restart the game"
+
+[[hint]]
+code = "disabled_dependency"
+text = "switch on the mod it requires in the Mods panel, then restart the game"
+
+[[hint]]
+code = "dependency_version"
+text = "update the required mod to a version the message accepts"
+
+[[hint]]
+code = "incompatible_mod"
+text = "switch one of the two mods off: they declare they cannot run together"
+
+[[hint]]
+code = "duplicate_mod"
+text = "two folders have the same id: delete or rename the older folder"
+
+[[hint]]
+code = "mod_not_loaded"
+text = "fix the reason in the message (a requirement, loader version, cycle), then restart"
+
+[[hint]]
+code = "manifest"
+text = "fix mod.toml: id, name, version and the lists `requires` / `conflicts`"
+
+[[hint]]
+code = "file_override"
+text = "two mods replace the same game file or cell: the later one wins; change the order if needed"
+
+[[hint]]
+code = "script_error"
+text = "a mod script failed (an error, its CPU budget or its memory cap) and was switched off: fix the line the message names, then reload or restart"
+
+[[hint]]
+code = "table_limit"
+text = "the table is near or past what the game engine takes: remove rows (or switch off a mod that adds them); past it the game misbehaves or crashes"
+
+# the types' own codes (their pages in docs/framework/types/)
+[[hint]]
+code = "own_whole_file"
+text = "the mod ships the whole game file AND a base table of it: delete one of the two"
+
+[[hint]]
+code = "no_game_file"
+text = "the game has no file at that path: check the path, or add `file = …` / [new] for a new file"
+
+[[hint]]
+code = "font_no_licence"
+text = "add the font's licence file next to it (the font is left out without one)"
+
+[[hint]]
+code = "unknown_style"
+text = "use a text style the game has (the message lists them)"
+
+[[hint]]
+code = "unknown_font"
+text = "declare the font in fonts/ first, or check its name"
+
+[[hint]]
+code = "font_bake"
+text = "the font could not be converted: try another TTF / OTF file"
+
+[[hint]]
+code = "font_missing_glyphs"
+text = "the font lacks some characters of the texts: pick a font that covers the language"
+
+[[hint]]
+code = "empty_scene"
+text = "give the scene at least one line in one language"
+
+[[hint]]
+code = "no_script"
+text = "the trigger names a script that does not exist: check the file name"
+
+[[hint]]
+code = "unknown_placeholder"
+text = "use a placeholder the trigger type knows (the message lists them)"
+
+[[hint]]
+code = "no_source"
+text = "the trigger has nothing to read: add its source"
+
+[[hint]]
+code = "deprecated_key"
+text = "it still works; rename the key as the message says"
+
+[[hint]]
+code = "unowned_animation"
+text = "it still works; move it into the technique's `animation` block (docs: Techniques page)"

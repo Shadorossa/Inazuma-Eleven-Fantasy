@@ -9,7 +9,8 @@
 # The rules are checked by `order` (lower first, default 100); the first that holds is the game-detected key, and every
 # rule that holds answers `is(key)` (a story match: `story`, and `match` too).
 # [[context]]: a key the game has no value for; the screens that run it enter / leave it
-# (CMND_VRFW_MODE_CURRENT_ENTER / _LEAVE).
+# (CMND_VRFW_MODE_CURRENT_ENTER / _LEAVE), or the menus that open (enter_menus / leave_menus = menu script stems: every
+# menu VM reports its opening, lua/menu/_all/13_mode_menus.lua, CMND_VRFW_MODE_CURRENT_MENU).
 # Play-mode values: docs/game/mechanics/outfit-slot.md §2 (1 VS / free / menus, 2 and 6 story, 3 Kizuna town, 4
 # Chronicle, 5 Victory Road).
 schema = "vr_framework.game_modes/1"
@@ -51,11 +52,14 @@ key = "victory_road"
 order = 50
 play_mode = [5]
 
-# Battle Bay (menus and matches): play mode 1 like every free match, so no game value tells it; the menus of Utilities
-# (lua/_all/utilities_friends.lua, by [friends.status_menus]) enter / leave this context. Mods hide features in it with
-# is("battle_bay") (e.g. the player page Utilities.Career).
+# Battle Bay (menus and matches): play mode 1 like every free match, so no game value tells it. Its menus enter the
+# context, the other hubs leave it (a match keeps it: no menu opens). Mods hide features in it with is("battle_bay")
+# (e.g. the player page Utilities.Career).
 [[context]]
 key = "battle_bay"
+enter_menus = ["bb_stadium_top_menu", "enjoy_team_select_menu"]
+leave_menus = ["soccer_top_menu", "market_menu", "item_menu", "play_guide_top_menu", "chronicle_mode_top_menu",
+  "victory_road_top_menu", "information_top_menu", "team_dock_common_top_menu", "title_menu_2"]
 
 [[rule]]
 key = "match"

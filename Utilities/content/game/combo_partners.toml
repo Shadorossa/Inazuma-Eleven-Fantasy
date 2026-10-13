@@ -37,11 +37,14 @@ fields = { handle = { at = 0x94, type = "u32" }, chara = { at = 0x9C, type = "u3
 # void BuildEventCast(ctx*, u32* cast, u32 n, SKILL_INFO* rec, EX_SETTING* ex, char acting, u16 lv, int* mode) 0x16A49A0:
 # fills cast[0..n] (executor, the ex-setting roles, bond teammates, the nearest teammates); called twice per event,
 # acting = 1 for the performing side. Post-hook. The prologue starts with `test rdx,rdx; je rel32`: 19 bytes stolen
-# (test 3 + je 6 + two 5-byte movs), the je's displacement relocated (bytes 5..9).
+# (test 3 + je 6 + two 5-byte movs), the je's displacement relocated (bytes 5..9). A subscriber of the framework's
+# relocated entry of the function (one patch, shared with the hook bus game event `match:event_cast`, run order 100):
+# order 0 = after it (its post handler sees the cast the other subscribers left).
 [[VRFW.Hook]]
 name = "BuildEventCast"
 game = "Battle.BuildEventCast"
 kind = "function"
+order = 0
 
 # skill -> performers, free, named1, named2, named3
 [[VRFW.Command]]

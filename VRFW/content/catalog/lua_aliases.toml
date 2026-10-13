@@ -1,0 +1,441 @@
+schema = "VRFW.catalog/1"
+# The 1.x Lua alias table (M4, docs/framework/catalogs.md; norm §7.2, docs/framework/naming.md): every old command
+# name `<old><VERB>` still answers as `<new><VERB>`, with a deprecation WARN once per name. Built into the framework
+# (vr_core::lua::alias_table): the installed copy must stay the same data (else it is reported and not read).
+#
+# [verb_sets]: verb lists shared by several families (`verbs_of = "<name>"`).
+# [[family]]: old / new prefix, route, verbs (`""` = the prefix itself is the whole name). route: "same" (the new
+# command takes the same arguments), "prepend_type" (the new one is a generic command whose first argument is
+# `type`), "report_filter" (a report command filtered by `type`: `<new>(..., mod, "<type>")`).
+# [[owner]]: the node (type) that owns an old name, by prefix, first match wins (else "core"): while that node is a
+# legacy part the part registers the old name itself and the core does not install the alias.
+
+[verb_sets]
+# the verbs of the `friendly` type's commands
+friendly = ["ABORT", "ACK", "AUX", "BACK", "MAP", "PASSED", "PASSED_SET", "REPORT", "RULES", "START", "STATE", "STEP", "TITLE_NET", "CALLER", "MENU_BACK"]
+
+# anim / celebration
+[[family]]
+old = "CMND_EVT_ANIM_CELEBR_VISIBLE"
+new = "CMND_VRFW_CELEBRATION_VISIBLE"
+route = "same"
+verbs = [""]
+
+[[family]]
+old = "CMND_EVT_ANIM_CREATED_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "anim"
+verbs = ["COUNT", "GET"]
+
+[[family]]
+old = "CMND_EVT_ANIM_"
+new = "CMND_VRFW_ANIM_"
+route = "same"
+verbs = ["EVENT", "PRESETS", "PREVIEW"]
+
+[[family]]
+old = "CMND_EVT_ANIM_REPORT_"
+new = "CMND_VRFW_REPORT_"
+route = "report_filter"
+type = "anim"
+verbs = ["COUNT", "ROW"]
+
+# sound
+[[family]]
+old = "CMND_EVT_AUDIO_"
+new = "CMND_VRFW_SOUND_"
+route = "same"
+verbs = ["LIBRARY", "LIBRARY_TRACK", "TRACK_BGM"]
+
+[[family]]
+old = "CMND_EVT_VOICE_"
+new = "CMND_VRFW_SOUND_VOICE_"
+route = "same"
+verbs = ["GET", "NAME", "SET"]
+
+# changelog: no alias left (CMND_EVT_CHANGELOG_* removed 2.0.75, every caller migrated; naming.md «Removed Lua aliases»)
+# character
+[[family]]
+old = "CMND_EVT_CHARA_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "character"
+verbs = ["COUNT", "GET", "HIDDEN"]
+
+[[family]]
+old = "CMND_EVT_CHARA_REQ_"
+new = "CMND_VRFW_CHARACTER_REQ_"
+route = "same"
+verbs = ["COUNT", "ENTRY", "OF", "ROW"]
+
+# item / shop
+[[family]]
+old = "CMND_EVT_ITEM_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "item"
+verbs = ["COUNT", "FIND", "GET", "HIDDEN"]
+
+[[family]]
+old = "CMND_EVT_ITEM_CURRENCY_"
+new = "CMND_VRFW_ITEM_CURRENCY_"
+route = "same"
+verbs = ["COUNT", "FIND", "GET"]
+
+[[family]]
+old = "CMND_EVT_ITEM_REPORT"
+new = "CMND_VRFW_REPORT_COUNT"
+route = "report_filter"
+type = "item"
+verbs = [""]
+
+[[family]]
+old = "CMND_EVT_ITEM_REPORT_LINE"
+new = "CMND_VRFW_REPORT_ROW"
+route = "report_filter"
+type = "item"
+verbs = [""]
+
+[[family]]
+old = "CMND_EVT_ITEM_REWARD_"
+new = "CMND_VRFW_ITEM_REWARD_"
+route = "same"
+verbs = ["COUNT", "ENTRY", "FIND", "GET", "ROLL"]
+
+[[family]]
+old = "CMND_EVT_ITEM_SHOP_FIND"
+new = "CMND_VRFW_REG_FIND"
+route = "prepend_type"
+type = "shop"
+verbs = [""]
+
+# rule / friendly
+[[family]]
+old = "CMND_EVT_CHALLENGE_"
+new = "CMND_VRFW_RULE_CHALLENGE_"
+route = "same"
+verbs = ["ARM", "CLAIM", "DISARM", "OPTIONS", "STATE"]
+
+# VERSION stays a type command: the old ones answer a NUMBER (the API version) and the Lua checks
+# `type(v) == "number"` (EvtMode.ready); CMND_VRFW_VERSION answers the framework's version string
+[[family]]
+old = "CMND_EVT_MATCH_ENGINE_"
+new = "CMND_VRFW_RULE_ENGINE_"
+route = "same"
+verbs = ["BREAK", "GET", "LIST", "OVERRIDE", "SELECT", "STATE", "VERSION"]
+
+[[family]]
+old = "CMND_EVT_MATCH_RULES_"
+new = "CMND_VRFW_RULE_"
+route = "same"
+verbs = ["APPLY", "GET", "SET"]
+
+[[family]]
+old = "CMND_EVT_PACHANGA_"
+new = "CMND_VRFW_FRIENDLY_"
+route = "same"
+verbs_of = "friendly"
+
+# the type's 2.0-dev names (it was `pachanga` until 2026-10-08)
+[[family]]
+old = "CMND_VRFW_PACHANGA_"
+new = "CMND_VRFW_FRIENDLY_"
+route = "same"
+verbs_of = "friendly"
+
+[[family]]
+old = "CMND_EVT_TRIAL_JUDGE"
+new = "CMND_VRFW_RULE_TRIAL_JUDGE"
+route = "same"
+verbs = [""]
+
+# menu: no alias left (CMND_EVT_MENU_*, _SCENE_ARCHIVE_*, _OPPONENT_ROWS removed, every caller migrated;
+# docs/framework/naming.md «Removed Lua aliases»)
+# options
+# (TAB / VIEW / CELL removed: every caller migrated)
+[[family]]
+old = "CMND_EVT_OPT_"
+new = "CMND_VRFW_OPTION_"
+route = "same"
+verbs = ["GET", "ROW", "ROWS", "SET", "STEP", "TEXT"]
+
+# mode
+[[family]]
+old = "CMND_EVT_MODE_"
+new = "CMND_VRFW_MODE_"
+route = "same"
+verbs = ["ACTIVE", "CLEAR", "ENABLED", "ENTER", "ENTRIES", "ENTRY", "EXIT", "ON", "REWARDS", "RULES", "TEAMS", "TEXT", "UNLOCKED", "VERSION"]
+
+[[family]]
+old = "CMND_EVT_MODE_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "mode"
+verbs = ["COUNT", "GET"]
+
+# creators → forms
+[[family]]
+old = "CMND_VRFW_MM_CH_"
+new = "CMND_VRFW_FORM_"
+route = "prepend_type"
+type = "character"
+verbs = ["CARD", "CURRENT", "DELETE", "EDIT", "ENTRY", "FIELD", "GRID", "ICON", "ITEM", "ITEMS", "OPEN", "RARITY", "REQ", "RESET", "SAVE", "SET", "START", "STEP", "TARGET", "TARGETS"]
+
+# the FM forms already take the creator as their first argument
+[[family]]
+old = "CMND_VRFW_MM_FM_"
+new = "CMND_VRFW_FORM_"
+route = "same"
+verbs = ["CARD", "CURRENT", "FIELD", "GRID", "OPEN", "PREVIEW", "RESET", "SAVE", "SET", "START", "STEP"]
+
+[[family]]
+old = "CMND_VRFW_MM_RULES_"
+new = "CMND_VRFW_FORM_"
+route = "prepend_type"
+type = "rule"
+verbs = ["FIELD", "MODE", "MODES", "OPEN", "RESET", "SAVE", "SET", "STEP", "TARGET", "TARGETS"]
+
+[[family]]
+old = "CMND_VRFW_MM_AN_"
+new = "CMND_VRFW_FORM_"
+route = "prepend_type"
+type = "anim"
+verbs = ["OPEN", "CUTS", "CUT", "SEL", "ROWS", "FIELD", "STEP", "SET", "RESET", "CURRENT", "MOVE", "DEL", "ADD", "SRC", "SRC_CUT", "TECHS", "TECH", "THUMBS", "VIEW_STATE", "VIEW", "BACK", "CLEAR"]
+
+[[family]]
+old = "CMND_VRFW_MM_AU_"
+new = "CMND_VRFW_SOUND_"
+route = "same"
+verbs = ["TARGETS", "TARGET", "NEW", "FILES", "FILE", "SIG", "DESTS", "DEST", "TRACKS", "TRACK", "LANGS", "LANG", "CHARS", "CHAR", "CUES", "CUE", "LINK_MUSIC", "LINK_VOICE", "UNLINK", "BUILD", "PLAY", "NOTES", "CATS", "CAT", "MSTATE", "TICK"]
+
+[[family]]
+old = "CMND_VRFW_MM_"
+new = "CMND_VRFW_MODS_"
+route = "same"
+verbs = ["STATE", "SEARCH", "THUMB", "TASK", "TASKS", "TEXT", "RESULT", "CREATE", "PROVIDES", "MOD_DIR", "OPEN_DIR", "DROP_DIR", "FIELD", "TITLE_COVER"]
+
+# rarity
+[[family]]
+old = "CMND_EVT_RARITY_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "rarity"
+verbs = ["COUNT", "FIND", "GET"]
+
+[[family]]
+old = "CMND_EVT_RARITY_"
+new = "CMND_VRFW_RARITY_"
+route = "same"
+verbs = ["BONUS", "LABEL", "OF_CARD"]
+
+# save
+[[family]]
+old = "CMND_EVT_SAVE_"
+new = "CMND_VRFW_SAVE_"
+route = "same"
+verbs = ["COMMIT", "DEL", "GET", "SET", "SET_BOOL", "SLOT", "GLOBAL_DEL", "GLOBAL_GET", "GLOBAL_SET", "GLOBAL_SET_BOOL"]
+
+# save slots (save_engine's slot service registers the old names while it owns the run time)
+[[family]]
+old = "CMND_EVT_SLOT_"
+new = "CMND_VRFW_SLOT_"
+route = "same"
+verbs = ["ABORT", "BUSY", "COMMIT", "COPY", "DELETE", "FLAGS", "INFO", "INFO_EXT", "INFO_TEXT", "NAME_GET", "NAME_SET", "NEED_PROMPT", "REARM", "RELOAD", "RESTART", "STATE", "TEAM"]
+
+[[family]]
+old = "CMND_EVT_GET_SLOT"
+new = "CMND_VRFW_SLOT_ACTIVE"
+route = "same"
+verbs = [""]
+
+[[family]]
+old = "CMND_EVT_SET_SLOT"
+new = "CMND_VRFW_SLOT_SET"
+route = "same"
+verbs = [""]
+
+# team
+[[family]]
+old = "CMND_EVT_TEAM_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "team"
+verbs = ["COUNT", "GET", "HIDDEN"]
+
+[[family]]
+old = "CMND_EVT_TEAM_"
+new = "CMND_VRFW_TEAM_"
+route = "same"
+verbs = ["LISTS", "LIST_COUNT", "LIST_GET", "LIST_INFO", "OF"]
+
+# [[VRFW.RouteNode]] (team type): CMND_EVT_ROUTE_{NODE,ROAD}_* -> CMND_VRFW_TEAM_ROUTE_{NODE,ROAD}_*
+[[family]]
+old = "CMND_EVT_ROUTE_"
+new = "CMND_VRFW_TEAM_ROUTE_"
+route = "same"
+verbs = ["NODE_COUNT", "NODE_GET", "ROAD_COUNT", "ROAD_GET"]
+
+# [[VRFW.Chain]] (team type): CMND_EVT_CHAIN_* -> CMND_VRFW_TEAM_CHAIN_*
+[[family]]
+old = "CMND_EVT_CHAIN_"
+new = "CMND_VRFW_TEAM_CHAIN_"
+route = "same"
+verbs = ["COUNT", "FIND", "GET", "NODE"]
+
+# technique
+[[family]]
+old = "CMND_EVT_WAZA_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "technique"
+verbs = ["COUNT", "GET", "HIDDEN"]
+
+[[family]]
+old = "CMND_EVT_WAZA_ID"
+new = "CMND_VRFW_TECHNIQUE_ID"
+route = "same"
+verbs = [""]
+
+[[family]]
+old = "CMND_EVT_WAZA_REPORT_"
+new = "CMND_VRFW_REPORT_"
+route = "report_filter"
+type = "technique"
+verbs = ["COUNT", "ROW"]
+
+# telop, text, theme, transform
+[[family]]
+old = "CMND_EVT_TELOP_"
+new = "CMND_VRFW_TELOP_"
+route = "same"
+verbs = ["GET", "SET", "POS_GET", "POS_SET", "RELOAD"]
+
+[[family]]
+old = "CMND_EVT_TEXT_"
+new = "CMND_VRFW_TEXT_"
+route = "same"
+verbs = ["GET", "ID"]
+
+[[family]]
+old = "CMND_EVT_THEME_"
+new = "CMND_VRFW_THEME_"
+route = "same"
+verbs = ["COLOR", "GET"]
+
+[[family]]
+old = "CMND_EVT_XF_"
+new = "CMND_VRFW_REG_"
+route = "prepend_type"
+type = "transform"
+verbs = ["COUNT", "FIND", "GET"]
+
+[[family]]
+old = "CMND_EVT_XF_OF"
+new = "CMND_VRFW_TRANSFORM_OF"
+route = "same"
+verbs = [""]
+
+[[owner]]
+prefix = "CMND_EVT_ANIM_CELEBR"
+node = "celebration"
+
+[[owner]]
+prefix = "CMND_EVT_ANIM_"
+node = "anim"
+
+[[owner]]
+prefix = "CMND_EVT_AUDIO_"
+node = "sound"
+
+[[owner]]
+prefix = "CMND_EVT_VOICE_"
+node = "sound"
+
+[[owner]]
+prefix = "CMND_EVT_CHARA_"
+node = "character"
+
+[[owner]]
+prefix = "CMND_EVT_ITEM_SHOP_"
+node = "shop"
+
+[[owner]]
+prefix = "CMND_EVT_ITEM_"
+node = "item"
+
+[[owner]]
+prefix = "CMND_EVT_CHALLENGE_"
+node = "rule"
+
+[[owner]]
+prefix = "CMND_EVT_MATCH_"
+node = "rule"
+
+[[owner]]
+prefix = "CMND_EVT_TRIAL_"
+node = "rule"
+
+[[owner]]
+prefix = "CMND_EVT_PACHANGA_"
+node = "friendly"
+
+[[owner]]
+prefix = "CMND_VRFW_PACHANGA_"
+node = "friendly"
+
+[[owner]]
+prefix = "CMND_EVT_SLOT_"
+node = "flag"
+
+[[owner]]
+prefix = "CMND_EVT_GET_SLOT"
+node = "flag"
+
+[[owner]]
+prefix = "CMND_EVT_SET_SLOT"
+node = "flag"
+
+[[owner]]
+prefix = "CMND_EVT_OPT_"
+node = "option"
+
+[[owner]]
+prefix = "CMND_EVT_MODE_"
+node = "mode"
+
+[[owner]]
+prefix = "CMND_EVT_RARITY_"
+node = "rarity"
+
+[[owner]]
+prefix = "CMND_EVT_SAVE_"
+node = "flag"
+
+[[owner]]
+prefix = "CMND_EVT_TEAM_"
+node = "team"
+
+[[owner]]
+prefix = "CMND_EVT_WAZA_"
+node = "technique"
+
+[[owner]]
+prefix = "CMND_EVT_TELOP_"
+node = "telop"
+
+[[owner]]
+prefix = "CMND_EVT_TEXT_"
+node = "text"
+
+[[owner]]
+prefix = "CMND_EVT_THEME_"
+node = "theme"
+
+[[owner]]
+prefix = "CMND_EVT_XF_"
+node = "transform"
+
+[[owner]]
+prefix = "CMND_VRFW_MM_"
+node = "mods_screen"
