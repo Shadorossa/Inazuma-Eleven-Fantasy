@@ -1,0 +1,365 @@
+schema = "vr_framework.technique/3"
+# All Keshin Armed: the board armours (the first armour of each keshin, armour_changes.toml) may be worn by every
+# character. The board shows a keshin piece's armour slot only when the armour's AURA_CMD_CHARA list is empty or holds
+# the player's character (0xE14EB0, asked by the slot setup 0xFE4760 and the decide 0xFEEDF0): the retail lists name
+# the one owner, so every list is emptied (= anyone). Keep it in step with armour_changes.toml.
+
+[[aura]]
+aura = "wad00060"
+charas = []
+
+[[aura]]
+aura = "wad00200"
+charas = []
+
+[[aura]]
+aura = "wad00210"
+charas = []
+
+[[aura]]
+aura = "wad00270"
+charas = []
+
+[[aura]]
+aura = "wad00320"
+charas = []
+
+[[aura]]
+aura = "wad00360"
+charas = []
+
+[[aura]]
+aura = "wad00370"
+charas = []
+
+[[aura]]
+aura = "wad00420"
+charas = []
+
+[[aura]]
+aura = "wad00650"
+charas = []
+
+[[aura]]
+aura = "wad00670"
+charas = []
+
+[[aura]]
+aura = "wad00700"
+charas = []
+
+[[aura]]
+aura = "wad00710"
+charas = []
+
+[[aura]]
+aura = "wad00720"
+charas = []
+
+[[aura]]
+aura = "wad00830"
+charas = []
+
+[[aura]]
+aura = "wad00840"
+charas = []
+
+[[aura]]
+aura = "wad00890"
+charas = []
+
+[[aura]]
+aura = "wad00920"
+charas = []
+
+[[aura]]
+aura = "wak00110"
+charas = []
+
+[[aura]]
+aura = "wak00160"
+charas = []
+
+[[aura]]
+aura = "wak00170"
+charas = []
+
+[[aura]]
+aura = "wak00230"
+charas = []
+
+[[aura]]
+aura = "wak00250"
+charas = []
+
+[[aura]]
+aura = "wak00260"
+charas = []
+
+[[aura]]
+aura = "wak00430"
+charas = []
+
+[[aura]]
+aura = "wak00460"
+charas = []
+
+[[aura]]
+aura = "wak00490"
+charas = []
+
+[[aura]]
+aura = "wak00500"
+charas = []
+
+[[aura]]
+aura = "wak00510"
+charas = []
+
+[[aura]]
+aura = "wak00520"
+charas = []
+
+[[aura]]
+aura = "wao00660"
+charas = []
+
+[[aura]]
+aura = "wak00720"
+charas = []
+
+[[aura]]
+aura = "wak00770"
+charas = []
+
+[[aura]]
+aura = "wak00790"
+charas = []
+
+[[aura]]
+aura = "wak00850"
+charas = []
+
+[[aura]]
+aura = "wak00940"
+charas = []
+
+[[aura]]
+aura = "wak00950"
+charas = []
+
+[[aura]]
+aura = "wak00960"
+charas = []
+
+[[aura]]
+aura = "wao00010"
+charas = []
+
+[[aura]]
+aura = "wao00070"
+charas = []
+
+[[aura]]
+aura = "wao00090"
+charas = []
+
+[[aura]]
+aura = "wao00150"
+charas = []
+
+[[aura]]
+aura = "wao00180"
+charas = []
+
+[[aura]]
+aura = "wao00342"
+charas = []
+
+[[aura]]
+aura = "wao00470"
+charas = []
+
+[[aura]]
+aura = "wao00480"
+charas = []
+
+[[aura]]
+aura = "wao00640"
+charas = []
+
+[[aura]]
+aura = "wao00680"
+charas = []
+
+[[aura]]
+aura = "wao00720"
+charas = []
+
+[[aura]]
+aura = "wao00810"
+charas = []
+
+[[aura]]
+aura = "wao00820"
+charas = []
+
+[[aura]]
+aura = "wao00900"
+charas = []
+
+[[aura]]
+aura = "wao00910"
+charas = []
+
+[[aura]]
+aura = "wao00930"
+charas = []
+
+[[aura]]
+aura = "was00020"
+charas = []
+
+[[aura]]
+aura = "was00030"
+charas = []
+
+[[aura]]
+aura = "was00040"
+charas = []
+
+[[aura]]
+aura = "was00050"
+charas = []
+
+[[aura]]
+aura = "was00080"
+charas = []
+
+[[aura]]
+aura = "was00100"
+charas = []
+
+[[aura]]
+aura = "was00120"
+charas = []
+
+[[aura]]
+aura = "was00130"
+charas = []
+
+[[aura]]
+aura = "was00140"
+charas = []
+
+[[aura]]
+aura = "was00190"
+charas = []
+
+[[aura]]
+aura = "was00220"
+charas = []
+
+[[aura]]
+aura = "was00240"
+charas = []
+
+[[aura]]
+aura = "was00280"
+charas = []
+
+[[aura]]
+aura = "was00290"
+charas = []
+
+[[aura]]
+aura = "was00300"
+charas = []
+
+[[aura]]
+aura = "was00310"
+charas = []
+
+[[aura]]
+aura = "was00330"
+charas = []
+
+[[aura]]
+aura = "was00351"
+charas = []
+
+[[aura]]
+aura = "was00400"
+charas = []
+
+[[aura]]
+aura = "was00410"
+charas = []
+
+[[aura]]
+aura = "was00441"
+charas = []
+
+[[aura]]
+aura = "was00450"
+charas = []
+
+[[aura]]
+aura = "was00530"
+charas = []
+
+[[aura]]
+aura = "was00540"
+charas = []
+
+[[aura]]
+aura = "was00610"
+charas = []
+
+[[aura]]
+aura = "was00630"
+charas = []
+
+[[aura]]
+aura = "was00690"
+charas = []
+
+[[aura]]
+aura = "was00720"
+charas = []
+
+[[aura]]
+aura = "was00760"
+charas = []
+
+[[aura]]
+aura = "was00780"
+charas = []
+
+[[aura]]
+aura = "was00800"
+charas = []
+
+[[aura]]
+aura = "was00860"
+charas = []
+
+[[aura]]
+aura = "was00870"
+charas = []
+
+[[aura]]
+aura = "was00880"
+charas = []
+
+[[aura]]
+aura = "was00970"
+charas = []
+
+[[aura]]
+aura = "was00980"
+charas = []
+
+[[aura]]
+aura = "was00990"
+charas = []
