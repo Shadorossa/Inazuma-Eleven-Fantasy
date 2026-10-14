@@ -1,0 +1,21 @@
+schema = "VRFW.catalog/1"
+# The framework's own hosts (M4, docs/framework/catalogs.md): the places a mod's menu entries and modes show up on
+# the framework's (or the retail) screens. Any other host is declared by the mod whose screen lists them
+# (`[[host]]` in its menu / mode file): its id must not be one of these. Built into the framework: the installed copy
+# must stay the same data (else it is reported and not read). A new framework host needs the screen code that draws
+# it.
+
+[menu]
+# hosts of `[[entry]]` / `[[hide]]` (menu_engine, docs/app/menu-engine.md §8): the title's two rows and the scene
+# archive (retail screens the framework extends), Options and the top bar (framework screens). `scene_archive_tab`:
+# a tab added to the «Archivo de escenas» after the retail three (docs/game/ui/scene-archive-cap.md §4).
+hosts = ["title_menu_2.upper", "title_menu_2.lower", "options", "top_bar", "scene_archive_tab"]
+# the hosts that take `[entry.title]` and the action `mode` (the title's mode row); the first is the mode row
+title_hosts = ["title_menu_2.upper"]
+
+[mode]
+# hosts of `[[mode.entry]]` (mode_engine): a button of the title's upper mode row (title_menu_2), one of its lower
+# row, a card of the slot screen (a mode with its own save slot)
+hosts = ["title_row", "title_lower", "slot_screen"]
+# the slot screen host (meant for modes with their own slot)
+slot_screen = "slot_screen"

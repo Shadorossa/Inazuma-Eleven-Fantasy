@@ -2,7 +2,8 @@
 -- `item_drop_table` (col 30: rarity -> percent per roll, soccer_drop_config m_itemDropTableList) and
 -- `item_table_decide` (col 36: rarity -> loot table, m_itemTableDecideTableList) and the player-spirit drops
 -- (col 29 m_spiritCharaTableList: players added to the rival's; cols 31 / 33 m_spiritDropTableList: spirit rarity ->
--- percent per roll, 0 = the engine's default of the difficulty); then [[VRFW.SpiritDrops]] (cols 31 / 33 by
+-- percent per roll, 0 = the engine's default of the difficulty), the first-clear prize (col 34 `FirstClear`, a
+-- soccer_prize_config ITBL id; VRFW 2.4.31); then [[VRFW.SpiritDrops]] (cols 31 / 33 by
 -- difficulty for every row a GameDrops set; docs/framework/drops.md §1b). Run after the route nodes, the
 -- chains and the level maps, so every game the team build makes (`evt_rn_<name>`, `evt_ch_<chain>_<NN>`) can be named.
 -- Mechanism only: which tables a game gets is the declaring mod's data (e.g. Chronicles Deluxe's generated
@@ -139,8 +140,8 @@ function GD.install(X)
 
   -- one declaration: the rows set, or nil, err
   function X.game_drop(d, what)
-    if d.item_drop == nil and d.decide == nil and d.spirit_chara == nil and d.spirit_drop == nil and d.spirit_drop_2 == nil then
-      return nil, "none of ItemDrop, Decide, SpiritChara, SpiritDrop, SpiritDrop2"
+    if d.item_drop == nil and d.decide == nil and d.spirit_chara == nil and d.spirit_drop == nil and d.spirit_drop_2 == nil and d.first_clear == nil then
+      return nil, "none of ItemDrop, Decide, SpiritChara, SpiritDrop, SpiritDrop2, FirstClear"
     end
     local sc, sce = ref(X, d.spirit_chara, "chara", "SpiritChara", "m_spiritCharaTableList")
     if sc == false then return nil, sce end
@@ -155,6 +156,8 @@ function GD.install(X)
     if not ids then return nil, "soccer_drop_config: " .. tostring(ie) end
     local item = d.item_drop ~= nil and T.id(T.trim(d.item_drop)) or nil
     local decide = d.decide ~= nil and T.id(T.trim(d.decide)) or nil
+    -- col 34: the first-clear prize (a soccer_prize_config ITBL id; 0 = none), as a route node's FirstClear
+    local first = d.first_clear ~= nil and T.id(T.trim(d.first_clear)) or nil
     if item ~= nil and item ~= 0 and not ids.item[item] then
       return nil, "ItemDrop " .. d.item_drop .. " (" .. T.hex(item) .. ") is not an m_itemDropTableList table"
     end
@@ -177,6 +180,7 @@ function GD.install(X)
         if sc ~= nil then g:set(i, SG.D_SPIRIT_DROP, T.i32(sc)) end
         if sa ~= nil then g:set(i, SG.D_SPIRIT_TABLE, T.i32(sa)) end
         if sb ~= nil then g:set(i, SG.D_SPIRIT_TABLE_2, T.i32(sb)) end
+        if first ~= nil then g:set(i, SG.D_FIRST_CLEAR, T.i32(first)) end
         out[#out + 1] = i
       end
     end

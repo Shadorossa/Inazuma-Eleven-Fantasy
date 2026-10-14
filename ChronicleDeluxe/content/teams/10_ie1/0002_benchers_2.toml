@@ -1,0 +1,57 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): a rival of the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/
+# chain_sonny.toml). The same team as the set-aside Chronicles Deluxe's (generated there by
+# research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe is
+# active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Benchers 2 (IE, «Sonny Raimon's route» #3; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Benchers_2
+# Left out (over 16 players): Fukazawa Nenji; Mamorino Yuuichi; Hachiya Yasaburou
+[[team]]
+name = "ct_wk_benchers_2"
+key = "evt_ct_wk_benchers_2"
+based_on = "tm_cro_ie1_1320" # Team Ogre: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # team_kits_from_wiki.py: neutral (needs a kit) (was 0x7362C53B)
+level = 50
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x432710C5, slot = 0, number = 1, rarity_step = 1, captain = true }, # Tamakura Geki = Ian Sights (GK)
+  { card = 0xC0E2B1E1, slot = 1, number = 2, rarity_step = 1 }, # Tsuuten Hikari = Amy Spires (DF)
+  { card = 0xEEC3D31A, slot = 2, number = 3, rarity_step = 1 }, # Takigawa Kazuma = Winston Falls (MF)
+  { card = 0xA68BED01, slot = 3, number = 4, rarity_step = 1 }, # Dandou Masanori = Simon Calier ({'IE': 'MF', 'IE2': 'GK'})
+  { card = 0x59B8F5EA, slot = 4, number = 5, rarity_step = 1 }, # Shirokuma Hyouji = Martin Ursus (DF)
+  { card = 0xAA2CDB72, slot = 5, number = 6, rarity_step = 1 }, # Tomooka Naruto = Saul Tunk (MF)
+  { card = 0xB50EF14A, slot = 6, number = 7, rarity_step = 1 }, # Aki Tamamatsu = Gus Heeley (FW)
+  { card = 0xFFF2A89A, slot = 7, number = 8, rarity_step = 1 }, # Hasebe Seiji = Mitch Grumble (MF)
+  { card = 0xC163FC6B, slot = 8, number = 9, rarity_step = 1 }, # Fuji Chihiro = Ben Nevis (DF)
+  { card = 0x5EB15D36, slot = 9, number = 10, rarity_step = 1 }, # Souma Zenki = Zenn Wildhorse (FW)
+  { card = 0xC7EB193D, slot = 10, number = 11, rarity_step = 1 }, # Oyadomari Nagase = Bevan Breakfast (DF)
+  { card = 0xC5EE80D9, slot = 11, number = 12, rarity_step = 1 }, # Kido Yamon = Kevin Castle (GK)
+  { card = 0xFA4F678D, slot = 12, number = 13, rarity_step = 1 }, # Heraku Resu = Harry Closs (DF)
+  { card = 0xBC14082E, slot = 13, number = 14, rarity_step = 1 }, # Yoneyama Uehito = Homer Grower (DF)
+  { card = 0xE9CA7BC6, slot = 14, number = 15, rarity_step = 1 }, # Nakai Yousuke = Eren Middleton (DF)
+  { card = 0xC879050F, slot = 15, number = 16, rarity_step = 1 }, # Medo Usa = Ned Yousef (MF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_benchers.png" # remastered crest of the wiki's Benchers emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Chupabanquillos 2"
+short = "Chupabanquillos 2"
+[team.text.en]
+name = "Benchers 2"
+short = "Benchers 2"
+[team.text.ja]
+name = "ベンチーズ２"
+short = "ベンチーズ２"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_benchers_2"
+card_moves = 4

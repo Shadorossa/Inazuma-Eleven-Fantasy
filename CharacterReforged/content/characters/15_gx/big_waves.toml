@@ -1,0 +1,193 @@
+schema = "VRFW.character/2"
+# Character Reforged · Big Waves · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06030610"                                   # Jude Gordon
+
+  [[edit.cards]]
+  id = 0xB6DFF7CE                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 189, control = 224, technique = 194, pressure = 209, physical = 239, intelligence = 225, agility = 232, freedom = 225 }
+  moves = [
+    { move = 0x2E1BAA18, level = 1 },                     # Crocodile Crush
+    { move = 0xF14FDC17, level = 16 },                    # Shot Pocket
+    { move = 0x422A60B1, level = 26 },                    # Barrier Reef
+    { move = 0xF400CA92, level = 41 },                    # Anchors Aweigh
+  ]
+
+[[edit]]
+target = "c06030620"                                   # Owe Noyster
+
+  [[edit.cards]]
+  id = 0x9DF2A40D                                         # DF/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 196, control = 192, technique = 182, pressure = 203, physical = 232, intelligence = 243, agility = 225, freedom = 225 }
+  moves = [
+    { move = 0x8917BF4B, level = 1 },                     # Willy-Willy
+    { move = 0x530CDFC1, level = 15 },                    # Mystifying Mist
+    { move = 0x025FD09B, level = 28 },                    # Volcano Cut
+    { move = 0x9B3048AB, level = 36 },                    # Shadow Catch
+  ]
+
+[[edit]]
+target = "c06030630"                                   # Whaly Walker
+
+  [[edit.cards]]
+  id = 0x84E9954C                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 171, technique = 189, pressure = 219, physical = 293, intelligence = 224, agility = 188, freedom = 225 }
+  moves = [
+    { move = 0x8917BF4B, level = 1 },                     # Willy-Willy
+    { move = 0x06D2AC29, level = 17 },                    # Diabolical Cut
+    { move = 0x58B5859E, level = 25 },                    # Whip Crack
+    { move = 0xC324C788, level = 38 },                    # Blast Mine
+  ]
+
+[[edit]]
+target = "c06030640"                                   # Sunny Fishton
+
+  [[edit.cards]]
+  id = 0xCBA8038B                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 200, technique = 203, pressure = 216, physical = 171, intelligence = 259, agility = 238, freedom = 225 }
+  moves = [
+    { move = 0x8917BF4B, level = 1 },                     # Willy-Willy
+    { move = 0x3C843987, level = 18 },                    # Flurry Dash
+    { move = 0x49933AEE, level = 25 },                    # Perfect Tower
+    { move = 0xD9BB22A7, level = 40 },                    # Air Ride
+  ]
+
+[[edit]]
+target = "c06030650"                                   # Clem Chowdry
+
+  [[edit.cards]]
+  id = 0xD2B332CA                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 150, control = 201, technique = 166, pressure = 235, physical = 203, intelligence = 271, agility = 213, freedom = 225 }
+  moves = [
+    { move = 0x8917BF4B, level = 1 },                     # Willy-Willy
+    { move = 0x20D01E43, level = 14 },                    # Hey Presto
+    { move = 0x78218C02, level = 24 },                    # Duskfall
+    { move = 0x13D845C9, level = 42 },                    # Samba Strike
+  ]
+
+[[edit]]
+target = "c06030660"                                   # Oscar Squidows
+
+  [[edit.cards]]
+  id = 0xF99E6109                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 238, technique = 252, pressure = 157, physical = 174, intelligence = 192, agility = 230, freedom = 225 }
+  moves = [
+    { move = 0xD8794890, level = 1 },                     # Kangaroo Kick
+    { move = 0xE8F5C774, level = 16 },                    # Megalodon
+    { move = 0x8917BF4B, level = 33 },                    # Willy-Willy
+    { move = 0x7DD6FEF8, level = 46 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c06030670"                                   # Marsha Ark
+
+  [[edit.cards]]
+  id = 0xE0855048                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 248, technique = 257, pressure = 185, physical = 205, intelligence = 231, agility = 197, freedom = 213 }
+  moves = [
+    { move = 0xD8794890, level = 1 },                     # Kangaroo Kick
+    { move = 0x322F0C40, level = 17 },                    # Spider Web
+    { move = 0x5E233E68, level = 32 },                    # Super Elastico
+    { move = 0x2B8C597E, level = 43 },                    # Fugue Wave
+  ]
+
+[[edit]]
+target = "c06030680"                                   # Cole Reef
+
+  [[edit.cards]]
+  id = 0x671D4C87                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 258, technique = 255, pressure = 192, physical = 176, intelligence = 246, agility = 211, freedom = 225 }
+  moves = [
+    { move = 0xD8794890, level = 1 },                     # Kangaroo Kick
+    { move = 0xE8F5C774, level = 1 },                     # Megalodon
+    { move = 0x3A4FFB6C, level = 34 },                    # The Ikaros
+    { move = 0xC66BD10D, level = 49 },                    # Zigzag Spark
+  ]
+
+[[edit]]
+target = "c06030690"                                   # Amanda Ray
+
+  [[edit.cards]]
+  id = 0x7E067DC6                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 224, technique = 235, pressure = 212, physical = 142, intelligence = 223, agility = 213, freedom = 225 }
+  moves = [
+    { move = 0xD8794890, level = 1 },                     # Kangaroo Kick
+    { move = 0x7DD6FEF8, level = 18 },                    # Athena's Anthem
+    { move = 0x2C3D95DD, level = 34 },                    # Sleeping Dust
+    { move = 0x19BA3BFC, level = 51 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c06030700"                                   # Lob Stark
+
+  [[edit.cards]]
+  id = 0xAE06ACB8                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 230, technique = 239, pressure = 149, physical = 227, intelligence = 153, agility = 170, freedom = 231 }
+  moves = [
+    { move = 0xE8F5C774, level = 1 },                     # Megalodon
+    { move = 0x332CCDC9, level = 16 },                    # Heel Kick
+    { move = 0x016DEA27, level = 25 },                    # Accelerator Gears
+    { move = 0x0C08B663, level = 42 },                    # Doom Dive Drive
+  ]
+
+[[edit]]
+target = "c06030710"                                   # Octavius Parson
+
+  [[edit.cards]]
+  id = 0xB71D9DF9                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 236, technique = 216, pressure = 221, physical = 192, intelligence = 215, agility = 181, freedom = 231 }
+  moves = [
+    { move = 0xE8F5C774, level = 1 },                     # Megalodon
+    { move = 0xA2FB4736, level = 15 },                    # Flying Fish
+    { move = 0x61FB16FD, level = 27 },                    # Divine Arrows
+    { move = 0xA4B51923, level = 41 },                    # The Typhoon
+  ]
+
+[[edit]]
+target = "c11806010"                                   # Orlando Sherman
+
+  [[edit.cards]]
+  id = 0x35C7120D                                         # MF/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 235, technique = 223, pressure = 204, physical = 190, intelligence = 227, agility = 207, freedom = 225 }
+  moves = [
+    { move = 0x1C4D4906, level = 4 },                     # Whirlpool
+    { move = 0xE8F5C774, level = 16 },                    # Megalodon
+    { move = 0x414BA9BD, level = 28 },                    # Pincer Pinch
+    { move = 0x46FA651E, level = 35 },                    # Water Veil
+  ]

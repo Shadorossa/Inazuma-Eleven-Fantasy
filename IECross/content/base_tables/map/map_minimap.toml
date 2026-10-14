@@ -1,0 +1,36 @@
+schema = "VRFW.base_table/1"
+# Minimap rows of the Inazuma Eleven Cross stadiums (one placeholder hierarchy row each, as every stadium IF added),
+# at the retail list ends. Moved from Inazuma Fantasy on 2026-10-08; IF's own rows come after these (it requires
+# iecross, which loads first).
+
+[[list]]
+name = "m_mapHierarchyList"
+columns = ["area_no", "scale", "density", "scroll_left_top_x", "scroll_left_top_y", "scroll_right_bottom_x", "scroll_right_bottom_y", "fullScale", "fullBaseAlpha", "fullIconAlpha", "fullRenderAlpha", "layoutPosX", "layoutPosY", "areaTextId", "ref"]
+splice = [
+  { at = 151, remove = 0, rows = [
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+    [0, 1.0, 17.0, 0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, 0.0, 0.0, 0x00000000, [0, 0]],
+  ] },
+]
+
+[[list]]
+name = "m_mapMinimapDataList"
+columns = ["mapId", "mapHierarchyData"]
+splice = [
+  { at = 146, remove = 0, rows = [
+    [0xF3DACE78, [151, 1]],
+    [0x891A9D18, [152, 1]],
+    [0xB47AB4A8, [153, 1]],
+    [0x2F93CC39, [154, 1]],
+    [0x5894FCAF, [155, 1]],
+    [0x3B3A4108, [156, 1]],
+    [0xFECAAC09, [157, 1]],
+    [0xC3AA85B9, [158, 1]],
+  ] },
+]

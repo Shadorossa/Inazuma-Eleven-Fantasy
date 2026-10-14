@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Synergies Reworked: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+lang = "es"
+name = "Synergies Reworked"
+
+[en]
+name = "Synergies Reworked"
+
+[fr]
+name = "Synergies Reworked"
+
+[de]
+name = "Synergies Reworked"
+
+[it]
+name = "Synergies Reworked"
+
+[pt]
+name = "Synergies Reworked"
+
+[ja]
+name = "Synergies Reworked"
+
+[zh_hans]
+name = "Synergies Reworked"
+
+[zh_hant]
+name = "Synergies Reworked"
+
+[[release]]
+icon = "general"
+notes = [
+    "Sinergias que piden jugadores de un equipo o grupo.",
+    "El linaje oscuro: Ray Dark y dos de sus equipos.",
+    "Gerentes: tres gerentes cualesquiera de su serie.",
+    "Alius y Santuario: un jugador de cada equipo.",
+    "El panel muestra el nexo, emblemas y quién falta.",
+]
+
+[release.en]
+notes = [
+    "Synergies that ask for players of a team or group.",
+    "El linaje oscuro: Ray Dark and two of his teams.",
+    "Managers: any three managers of their series.",
+    "Alius and Santuario: one player of each team.",
+    "The panel shows the nexus, crests and who is missing.",
+]
+
+[release.fr]
+notes = [
+    "Synergies qui demandent des joueurs d'une équipe.",
+    "El linaje oscuro : Ray Dark et deux de ses équipes.",
+    "Manageuses : trois manageuses de leur série.",
+    "Alius et Santuario : un joueur de chaque équipe.",
+    "Le panneau montre le lien, les blasons, qui manque.",
+]
+
+[release.de]
+notes = [
+    "Synergien, die Spieler eines Teams verlangen.",
+    "El linaje oscuro: Ray Dark und zwei seiner Teams.",
+    "Managerinnen: drei beliebige ihrer Serie.",
+    "Alius und Santuario: je ein Spieler pro Team.",
+    "Das Fenster zeigt Kern, Wappen und wer fehlt.",
+]
+
+[release.it]
+notes = [
+    "Sinergie che chiedono giocatori di una squadra.",
+    "El linaje oscuro: Ray Dark e due delle sue squadre.",
+    "Manager: tre manager qualsiasi della loro serie.",
+    "Alius e Santuario: un giocatore per squadra.",
+    "Il pannello mostra il nesso, gli stemmi, chi manca.",
+]
+
+[release.pt]
+notes = [
+    "Sinergias que pedem jogadores de uma equipe.",
+    "El linaje oscuro: Ray Dark e duas das suas equipes.",
+    "Gerentes: três gerentes quaisquer da sua série.",
+    "Alius e Santuario: um jogador de cada equipe.",
+    "O painel mostra o nexo, os emblemas e quem falta.",
+]
+
+[release.ja]
+notes = [
+    "チームやグループの選手が条件のシナジー。",
+    "影山零治＋彼のチームの選手2人。",
+    "そのシリーズのマネージャー3人。",
+    "エイリアなど：各チームの選手1人ずつ。",
+    "画面に中心・エンブレム・不足を表示。",
+]
+
+[release.zh_hans]
+notes = [
+    "要求某队或某群体球员的协同效果。",
+    "影山零治加上其球队的两名球员。",
+    "该系列任意三名经理。",
+    "艾利亚等：每队各一名球员。",
+    "面板显示核心、队徽与缺少的人。",
+]
+
+[release.zh_hant]
+notes = [
+    "要求某隊或某群體球員的協同效果。",
+    "影山零治加上其球隊的兩名球員。",
+    "該系列任意三名經理。",
+    "艾利亞等：每隊各一名球員。",
+    "面板顯示核心、隊徽與缺少的人。",
+]

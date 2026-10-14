@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Hacha del Azote negro (Executioner's Axe, whs01880, cut-in ev60_01880).
+# Nacho 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0400) the ball is struck at 2.46 m, drops to 0.55 m within 3 m and skims the pitch at 0.35 m (37.3
+# m on); in the match it flies that profile from the kick, the last height held into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move executioners_axe): the event ball (s00) of
+# ev60_01880 c0400, event frames 1368-1436: [[0.00, 2.46], [2.98, 0.55], [37.32, 0.35]] (0.19 m).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Hacha del Azote negro (whs01880).
+[[edit]]
+target = "whs01880"
+trajectory = { points = [[0.0, 2.46], [2.98, 0.55], [37.32, 0.35]], unblockable = false }

@@ -4,7 +4,7 @@
 # moves 5 units right so the slanted end clears «%». The texts («MÁX.», the number, «%») are their own meshes and stay.
 # The picture is content\images\menu\00_soccer\soccer08\soccer08_04.toml. Until 1.16.0 clean_hud.dll moved it
 # (crates/plugins/clean_hud/src/kizuna.rs build_layout). Only with config.toml slanted_kizuna (default true).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 when = { config = "slanted_kizuna", default = true }
 
 # retail translate x 0.0

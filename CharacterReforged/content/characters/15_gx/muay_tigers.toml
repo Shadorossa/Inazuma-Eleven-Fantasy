@@ -1,0 +1,193 @@
+schema = "VRFW.character/2"
+# Character Reforged · Muay Tigers · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06031010"                                   # Udom Kaochuea
+
+  [[edit.cards]]
+  id = 0x0AEEEC19                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 193, technique = 182, pressure = 223, physical = 228, intelligence = 204, agility = 236, freedom = 225 }
+  moves = [
+    { move = 0x1C2DC89A, level = 1 },                     # Menace Elbow
+    { move = 0x58B5859E, level = 18 },                    # Whip Crack
+    { move = 0xC42D6F54, level = 30 },                    # Aikido
+    { move = 0xDBA0E5E3, level = 44 },                    # Gigant Wall
+  ]
+
+[[edit]]
+target = "c06031020"                                   # Yuth Poonlarp
+
+  [[edit.cards]]
+  id = 0x21C3BFDA                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 200, technique = 200, pressure = 204, physical = 169, intelligence = 259, agility = 213, freedom = 225 }
+  moves = [
+    { move = 0x179492C5, level = 1 },                     # Center Scythe Slice
+    { move = 0x1C2DC89A, level = 19 },                    # Menace Elbow
+    { move = 0x457EB170, level = 29 },                    # Pyrokinetic
+    { move = 0x3663DB4C, level = 39 },                    # Utter Gutsiness Bat
+  ]
+
+[[edit]]
+target = "c06031030"                                   # Napa Rattana
+
+  [[edit.cards]]
+  id = 0x38D88E9B                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 186, technique = 203, pressure = 223, physical = 189, intelligence = 257, agility = 231, freedom = 225 }
+  moves = [
+    { move = 0x179492C5, level = 1 },                     # Center Scythe Slice
+    { move = 0x78218C02, level = 14 },                    # Duskfall
+    { move = 0xDBFD9CFE, level = 31 },                    # Big Ball Trick
+    { move = 0x25276CB9, level = 53 },                    # Solar Surprise
+  ]
+
+[[edit]]
+target = "c06031040"                                   # Naid Sirisukha
+
+  [[edit.cards]]
+  id = 0x7799185C                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 161, technique = 192, pressure = 223, physical = 267, intelligence = 209, agility = 190, freedom = 225 }
+  moves = [
+    { move = 0x179492C5, level = 1 },                     # Center Scythe Slice
+    { move = 0x660EED1E, level = 18 },                    # Low Scythe Slice
+    { move = 0x17110E3B, level = 28 },                    # Jumbo Sandwich
+    { move = 0xC324C788, level = 41 },                    # Blast Mine
+  ]
+
+[[edit]]
+target = "c06031050"                                   # Solada Kulkit
+
+  [[edit.cards]]
+  id = 0x6E82291D                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 143, control = 248, technique = 255, pressure = 142, physical = 234, intelligence = 184, agility = 234, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0x3EC287DE, level = 17 },                    # Bubble Gum
+    { move = 0x4FE09C7A, level = 33 },                    # Acrobatic Keep
+    { move = 0x14D1ED15, level = 42 },                    # Jumping Jack 
+  ]
+
+[[edit]]
+target = "c06031060"                                   # Suchart Chaowarat
+
+  [[edit.cards]]
+  id = 0x45AF7ADE                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 244, control = 258, technique = 238, pressure = 178, physical = 189, intelligence = 231, agility = 186, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0x179492C5, level = 8 },                     # Center Scythe Slice
+    { move = 0xB60E3C60, level = 24 },                    # Plasma Cut
+    { move = 0xDDCA0D2A, level = 35 },                    # Bouncing Bomb
+  ]
+
+[[edit]]
+target = "c06031070"                                   # Naowarat Rahman
+
+  [[edit.cards]]
+  id = 0x5CB44B9F                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 190, technique = 247, pressure = 217, physical = 203, intelligence = 184, agility = 238, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0x179492C5, level = 7 },                     # Center Scythe Slice
+    { move = 0xD6649385, level = 23 },                    # Tusk Force
+    { move = 0xC5EF0563, level = 33 },                    # Three-Legged Rush
+  ]
+
+[[edit]]
+target = "c06031080"                                   # Mei Chaptri
+
+  [[edit.cards]]
+  id = 0xDB2C5750                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 261, technique = 262, pressure = 190, physical = 139, intelligence = 238, agility = 184, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0x20D01E43, level = 16 },                    # Hey Presto
+    { move = 0x2C3D95DD, level = 27 },                    # Sleeping Dust
+    { move = 0x568262FA, level = 40 },                    # Dark Tornado
+  ]
+
+[[edit]]
+target = "c06031090"                                   # Bhak Sepakroh
+
+  [[edit.cards]]
+  id = 0xC2376611                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 246, technique = 247, pressure = 173, physical = 189, intelligence = 209, agility = 190, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0xD6649385, level = 9 },                     # Tusk Force
+    { move = 0x332CCDC9, level = 16 },                    # Heel Kick
+    { move = 0xDDCA0D2A, level = 34 },                    # Bouncing Bomb
+  ]
+
+[[edit]]
+target = "c06031100"                                   # Klaharn Sangsorn
+
+  [[edit.cards]]
+  id = 0x1237B76F                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 301, control = 216, technique = 282, pressure = 136, physical = 248, intelligence = 155, agility = 185, freedom = 225 }
+  moves = [
+    { move = 0x660EED1E, level = 1 },                     # Low Scythe Slice
+    { move = 0xD6649385, level = 10 },                    # Tusk Force
+    { move = 0xCABBA212, level = 30 },                    # Menacing Glare
+    { move = 0x9FEEC7A9, level = 40 },                    # Gigaton Head
+  ]
+
+[[edit]]
+target = "c06031110"                                   # Tamgan Jaa
+
+  [[edit.cards]]
+  id = 0x0B2C862E                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 262, technique = 224, pressure = 165, physical = 184, intelligence = 198, agility = 243, freedom = 231 }
+  moves = [
+    { move = 0xD6649385, level = 1 },                     # Tusk Force
+    { move = 0x660EED1E, level = 5 },                     # Low Scythe Slice
+    { move = 0x15138722, level = 26 },                    # Will-o'-the-Wisp Shot
+    { move = 0x232D05EC, level = 44 },                    # Tiger Drive
+  ]
+
+[[edit]]
+target = "c11806030"                                   # Rashiri Saran
+
+  [[edit.cards]]
+  id = 0x07F1708F                                         # GK/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 216, technique = 211, pressure = 186, physical = 232, intelligence = 207, agility = 257, freedom = 217 }
+  moves = [
+    { move = 0xAC1ACF1C, level = 5 },                     # Flower Plower
+    { move = 0x47657634, level = 15 },                    # Flame Breath
+    { move = 0x58B5859E, level = 21 },                    # Whip Crack
+    { move = 0xA9062A29, level = 47 },                    # Ultrasonic
+  ]

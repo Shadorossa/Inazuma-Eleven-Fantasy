@@ -1,7 +1,7 @@
 # The VR-Framework's character bank filter (docs/framework/card-filter.md): the bank screens that show the header
 # «Q ‹ value › E» above their lists. The values themselves are not here: they are the rarities and series the game and
 # the active mods declare (rarities\, the game's series table + [[series]] of any mod's card_filters\).
-schema = "vr_framework.card_filter/1"
+schema = "VRFW.card_filter/1"
 
 # The keys: pad L2 / R2, keyboard Q / E. Both bank settings send them from the list (and the formation cards) as
 # OnFunction(3959000859, prev 3168962645 | next 70193212); the screens use them only for the personal plate's pages

@@ -33,7 +33,7 @@
 -- The state plates (evt_tb_hover / evt_tb_current / evt_tb_back) come from the atlas the mod that styles the bar
 -- declares (`[VRFW.TopBarStyle] PlatesAtlas`, the command's last value); none: the first icon's atlas, with a WARN.
 -- Leaving a host (path in the log, «go … path …»):
---   direct   an entry with `action.direct`: params, auto-save, fade, the next state written as the title would and
+--   direct   (OFF: TB.DIRECT = false, 2026-10-14) an entry with `action.direct`: params, auto-save, fade, the next state written as the title would and
 --            the retail reset with the title skipped (CMND_VRFW_MENU_TOPBAR_DIRECT): the target opens with nothing in
 --            between (ResetDirect, docs/framework/top-bar.md §22); refused = the title round trip below
 --   reset    the default: params, auto-save, fade, the Mercado's reset to the title (GoCo)
@@ -66,9 +66,14 @@ if VRFW_TopBar == nil then
     NAV_WAIT = 4,                                        -- frames an UP may take to move the menu's focus
     -- diagnostics (loader.log «EVT top_bar <menu> dbg …»): first Step, the raw header-open answer, the texture wait,
     -- once per menu open every entry's quad (pos, size, visible, GPOS read back), the pointer, the D-pad focus moves.
-    DEBUG = true,
+    DEBUG = false,   -- release 2026-10-13: the «dbg» lines of loader.log only with true
     TEX_MIN = 10, TEX_MAX = 600,                         -- frames: texture wait before the first draw
     DEFER_MAX = 3600,                                    -- title: frames a deferred target may wait, then dropped
+    -- the straight reset (`action.direct`, §22): CMND_GAME_RESET wipes the loaded game (the rpg scene's exit) and only
+    -- the title scene reads the slot back, so the bar keeps the game in memory first (CMND_VRFW_SLOT_CARRY, save
+    -- engine) and the new rpg scene's InitState loads it back before it opens the target (2026-10-14, after the owner
+    -- bug «alineaciones vacías» of 2.2.217). false = every `title` entry takes the title round trip.
+    DIRECT = true,
     -- a group's dropdown (§16): panel width, row height, icon height, inner margin, gap under the bar, rows at most
     DROP_W = 320, DROP_H = 52, DROP_ICON = 36, DROP_PAD = 8, DROP_GAP = 4, DROP_MAX = 6,
     -- the panel grows to its longest label up to DROP_W_MAX; a label still wider is shrunk by the styling mod to the
@@ -136,6 +141,7 @@ if VRFW_TopBar == nil then
     GAME_RESET = 3897105282,
     BGM_STOP = 1382940092 --[[CMND_BGM_STOP]], TITLE_MODE = 3718253404 --[[the title's mode value (OnEnter)]],
     TB_DIRECT = 2048294502 --[[CMND_VRFW_MENU_TOPBAR_DIRECT]],
+    CARRY = 2310157611 --[[CMND_VRFW_SLOT_CARRY]],
   }
   C.NAV = {C.UP, C.DOWN, C.LEFT, C.RIGHT}
   -- The game pad / keyboard read straight from the devices (CMND_VRFW_INPUT_PAD / _KEY, docs/framework/match-panel.md
@@ -159,6 +165,7 @@ if VRFW_TopBar == nil then
     TARGET = 837786837,     -- evt_top_bar_target: crc32(entry key) of the shortcut in flight (a mod's screen may go deeper)
     STEP = 3366268333,      -- evt_top_bar_step: how many steps of that entry's `path` were taken (VRFW_TopBarStep)
     DEFER = 3408963264,     -- evt_top_bar_defer: title item for the title once the session is closed (path session)
+    DIRECT = 1469556327,    -- evt_top_bar_direct: a straight reset is in flight (the landing menu logs it, then clears it)
     NAV = 3672361613,       -- evt_top_bar_nav: the bar has the focus (heartbeat: a counter the host bumps every frame)
     HIDE = 1455983968,      -- vrfw_top_bar_hidden: a screen plays something full screen over the hub (a mod's scene
                             -- over the menus): the row is not drawn and takes no input while the param is set
@@ -1009,9 +1016,11 @@ if VRFW_TopBar == nil then
 
   -- the straight reset (an entry's `action.direct`, docs/framework/top-bar.md §22): the next state written as the
   -- retail title writes it before its Continue (root menu 3479138216 or the VS menu flags, the title's mode value
-  -- 3718253404, the title's BGM stop), the retail reset, then CMND_VRFW_MENU_TOPBAR_DIRECT clears the reset's «title
-  -- next» byte: the new rpg scene's InitState opens the target's state at once (play mode, root menu), no title
-  -- scene and no menu in between. The command refused = the title round trip with the entry's item (`item`).
+  -- 3718253404, the title's BGM stop), the game kept in memory (CMND_VRFW_SLOT_CARRY(1): the reset wipes it, the
+  -- title would read it back), the retail reset, then CMND_VRFW_MENU_TOPBAR_DIRECT clears the reset's «title next»
+  -- byte: the new rpg scene's InitState loads the kept game back and opens the target's state at once (play mode, root
+  -- menu), no title scene and no menu in between. Kept game or straight start refused = the title round trip with the
+  -- entry's item (`item`); the title reads the slot from its file as on every return.
   local function ResetDirect(e, item)
     local d = e.direct
     funcLuaCommand(C.AUTO_SAVE)
@@ -1024,19 +1033,39 @@ if VRFW_TopBar == nil then
     funcLuaCommand(419468738, d.vs)
     funcLuaCommand(1507811093, d.vs)
     funcLuaCommand(C.TITLE_MODE, d.mode)
+    -- the auto-save's job done first (the carry refuses while a save / load job is pending); 5 s at most
+    for _ = 1, 300 do
+      if funcLuaCommand(C.SAVE_WORKING) ~= true then break end
+      coroutine.yield()
+    end
+    -- the game kept in memory across the reset (the save engine's carry); refused = no straight start
+    local okc, kept, kib, play, players, why = pcall(funcLuaCommand, C.CARRY, 1)
+    if okc and kept == true then
+      Log("direct: load requested: slot kept in memory", kib, "KiB, play", play, "s,", players, "players")
+    else
+      Log("direct: no carry (", tostring(okc and why or kept), "): the title round trip")
+    end
+    local straight = false
     Log("reset straight into", d.vs and "the VS menu" or tostring(d.menu), "title mode", d.mode)
     funcLuaCommand(C.GAME_RESET)
-    local okd, straight = pcall(funcLuaCommand, C.TB_DIRECT)
-    if okd and straight == true then
-      Log("direct: no title, the next state opens", tostring(e.key))
+    if okc and kept == true then
+      local okd, r = pcall(funcLuaCommand, C.TB_DIRECT)
+      straight = okd and r == true
+      if not straight then
+        pcall(funcLuaCommand, C.CARRY, 0)
+        Log("direct refused (", tostring(r), "): the title round trip")
+      end
+    end
+    if straight then
+      P(K.DIRECT, CRC32(e.key))
+      Log("direct: no title, the next state opens", tostring(e.key), "(InitState loads the kept slot first)")
     else
-      -- the title runs after all: it presses the entry's item as before (the next state above is rewritten by it)
+      -- the title runs: it reads the slot and presses the entry's item as before (the next state above is rewritten)
       P(TT.go, item)
-      Log("direct refused (", tostring(straight), "): the title round trip")
     end
     for _ = 1, 900 do coroutine.yield() end
     Log("still here 900 frames after the reset: screen and input back")
-    Clear(TT.go, TT.box, K.BUSY, K.TARGET, K.DEFER)
+    Clear(TT.go, TT.box, K.BUSY, K.TARGET, K.DEFER, K.DIRECT)
     funcLuaCommand(C.FADE, 0, 0.3)
     if TB.menu ~= nil then funcLuaMenuCommand(C.MENU_ACTIVE, TB.menu, true) end
   end
@@ -1118,7 +1147,7 @@ if VRFW_TopBar == nil then
       elseif select(2, SessionOpen()) then
         path = "session"
       end
-    elseif e.direct ~= nil and e.kind == "title" then
+    elseif e.direct ~= nil and e.kind == "title" and TB.DIRECT == true then
       -- an entry that declares its next state (`action.direct`) from a host that leaves the retail way: straight
       -- into it (§22). Hosts with their own `leave` (a free walk's pause, a session) keep their own way out.
       path = "direct"
@@ -1603,6 +1632,16 @@ if VRFW_TopBar == nil then
     TB.raised, TB.fading = false, false
     if type(funcLuaMenuCommand) ~= "function" or TB.name == nil or type(CRC32) ~= "function" then return end
     LoadRules()
+    -- a straight reset landed (§22): the first menu of the new scene says so with the carry's outcome
+    if funcLuaCommand(C.P_HAS, K.DIRECT) == true then
+      funcLuaCommand(C.P_CLEAR, K.DIRECT)
+      local okc, last = pcall(funcLuaCommand, C.CARRY, 2)
+      if tostring(TB.name):find("^title") then
+        Log("direct: the title runs after all (carry:", tostring(okc and last or "?"), ")")
+      else
+        Log("direct: landed on", TB.name, "(carry:", tostring(okc and last or "?"), ")")
+      end
+    end
     if TB.name == TITLE then
       TB.on = true
       if funcLuaCommand(C.P_HAS, K.HIDE) == true then funcLuaCommand(C.P_CLEAR, K.HIDE) end   -- stale after a reset

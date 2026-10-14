@@ -1,0 +1,25 @@
+schema = "VRFW.skill_tab/1"
+
+# All Changed › a «Modo cambio» tab on the «Habilidades» / «Técnicas» list (ability_list_menu; moved from Inazuma
+# Fantasy's skill_tabs 2026-10-14, docs/game/mechanics/mode-change.md §3.1). Category 106 = aura command type 6: the
+# game's own list filter keeps the mode changes there (the retail ones and this mod's; its carriers and «Crear nuevo
+# cambio» follow content\transforms\mode_change.toml [ability_list]). The game has no tab for it; the VR-Framework's
+# skill tab registry adds it after the game's tabs and draws it (docs/framework/card-types.md §3):
+#   * plate: the Totem tab's square frame (icon type 40), with the mode change's own aura icon on it (icon_sp_area11 of
+#     the game's icon_common atlas, the icon its list rows show; game ids of the atlas and of the focused / unfocused
+#     sprite);
+#   * title: text key all_changed.skill_tab_mode_change (text\keys.toml, 9 languages);
+#   * filter: the aura filter window of the armour tab (config 12, saved group 4), as Inazuma Fantasy's tab;
+#   * the «!» badge: the game's own, for the tab's native index.
+# Only while [mode_change] enabled. With a mod that writes the tab row itself (Inazuma Fantasy) the registry leaves the
+# row to it, so there is never a second «Modo cambio» tab.
+[[VRFW.SkillTab]]
+category = 106
+icon = 40
+icon_atlas = "0x8A4A118B"        # icon_common
+icon_sprite = "0x93EC2960"       # icon_sp_area11, focused tab
+icon_sprite_off = "0xF32B2C99"   # icon_sp_area11, unfocused tab
+text = "all_changed.skill_tab_mode_change"
+filter = 12
+filter_group = 4
+when = [{ config = "mode_change.enabled", default = true }]

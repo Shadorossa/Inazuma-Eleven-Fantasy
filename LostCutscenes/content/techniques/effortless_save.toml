@@ -7,7 +7,7 @@
 # docs/game/mechanics/basic-move-cutscenes.md §6). Always on (1.3.1).
 # Its choice among the conditional saves goes through the VR-Framework's scene selector (situation keeper.conditional,
 # docs/framework/scene-select.md): the highest priority among the saves whose conditions hold, the roll among equals.
-schema = "vr_framework.technique/3"
+schema = "VRFW.technique/3"
 
 [[keeper_scene]]
 save = "effortless_save"          # this mod's event (anims\effortless_save.toml, id ev71_80030 since 1.4.0)

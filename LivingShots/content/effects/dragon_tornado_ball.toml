@@ -1,0 +1,27 @@
+# «Tornado dragón» (Dragon Tornado, whs00350, and its Inazuma Fantasy / Cross variant whs00350_or; fire shot of two
+# players, cut-in ev60_00350): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last
+# cut (c0600, the ball's fire shot down from 11 m): the fire on the ball, its fire waves and shot aura, the fire grains
+# it sheds and the red DRAGON (the waza model ev60_00350, baked) spiralling with it, its body a helix along the flight,
+# instead of the plain fire special-shot aura (ega0075c). The object is ev6035dt00 (effect/event/ev60/ev6035dt00/),
+# built by research/scripts/dragon_tornado_ball_fx.py from the cut-in's effect object ev60003500 and the dragon: c0600
+# replayed from the shot (425), then held at frame 473, ball at the origin flying +Z, x1. Left out: the black backdrop,
+# the shot ring, the camera-aimed aura cards and the ball lights of the parked event ball.
+# docs/game/media/dragon-tornado-ball-fx.md. The trigger copies the fire special-shot aura's row (like = "ega0075c"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight:
+# content\techniques\dragon_tornado_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dragon_tornado"
+from = "ega0075c"
+object = "effect/event/ev60/ev6035dt00/ev6035dt00.objbin"
+
+[[shot_aura]]
+name = "dragon_tornado"
+when = { techniques = ["whs00350", "whs00350_or"] }
+aura = "dragon_tornado"
+like = "ega0075c"
+# the aura's replay (48 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 48 }

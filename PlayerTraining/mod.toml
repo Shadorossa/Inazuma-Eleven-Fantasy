@@ -1,0 +1,68 @@
+id = "player_training"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml). «Player Training» is a provisional name (owner may rename it).
+name = "Player Training"
+version = "1.0.4"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training. Hero, Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
+priority = 0
+tags = ["Gameplay", "Characters"]
+updated = "2026-10-14"
+# This mod's own names (TOML keys [PlayerTraining.X], Lua PlayerTraining.X, commands CMND_PLAYERTRAINING_*, state
+# player_training.*); never VRFW. The old names CMND_EVT_TRAIN_* stay as command aliases (the game Lua calls them).
+prefix = "PlayerTraining"
+folder = "PlayerTraining"
+# Split out of Inazuma Fantasy on 2026-10-14 (owner request: «coge el sistema de entrenamiento de jugadores, sácalo de
+# IF y mételo como dependiente + módulo de CharacterReforged»; docs/refactor/aura-mods-split.md «Player Training»,
+# rules docs/game/mechanics/training-classic.md, stat-training.md). Standard mod layout (docs/framework/mod-layout.md):
+#   config.toml                          [training]: the rule (trade / pool / pairs), the floor, the max value, the
+#                                        rarities that cannot be trained
+#   scripts\player_training.lua (+ lib\) the run time: sessions, rules (lib\training_rules.lua), the Suerte blob
+#                                        training.json (lib\training_store.lua), the game's character objects
+#                                        (lib\chara_view.lua); the per-card values (Libertad = chara_param col 54,
+#                                        Suerte, position, growth) are Character Reforged's exports (lib\card_stats.lua)
+#   content\game\player_training.toml    the commands (CMND_PLAYERTRAINING_*, aliases CMND_EVT_TRAIN_*), the trained
+#                                        points in matches ([[VRFW.MatchStat]]), the module bit 16 the game Lua tests,
+#                                        the save import of Inazuma Fantasy's Suerte blob
+#   content\menus\training_window.toml + assets\menu\10_win\win06\evt_win06_06_training\   the window evt_training_menu
+#   text\rows\training.toml              its texts (menu_text rows evt_tr_*, 9 languages)
+#   content\menus\player_page_slots.toml  its pieces on Character Reforged's player page (1.0.2): the ATRIBUTOS
+#                                        gauges' top (slot page_stat_max) and the committed Suerte (page_luck_bonus)
+# Grafts (research/grafts, mod = player_training): player_training_menu (the window's Lua), player_training_dock (the
+# «Entrenamiento» row of the team dock's command list), player_training_mode (since 2026-10-14, was Inazuma Fantasy's
+# training_btn: the «Entrenar» button and the training mode of Character Reforged's «Fantasy» skill table, a hook
+# file on that screen's host; the button declared in content\menus\skill_table_training.toml, the mode's dark stat
+# icons and column backing in content\images\).
+# 1.0.3: the training beans give nothing while the mod is on (content\game\player_training.toml «the training beans»:
+# the bean stat term zeroed, no automatic bean equip, «Autoequipar judías» read as off) and the skill board's bean slot
+# shows a message instead of the bean menu (graft player_training_beans, text evt_tr_beans_off).
+# 1.0.4 (vr_framework 2.4.24: the list rows point VRFW_ListRows): the formation's team «COMANDOS» window without the bean
+# rows (equip, remove, «Autoequipar judías»): assets\lua\_all\player_training_list_rows.lua.
+# vr_framework 2.4.13: mod families ([module]); character_reforged 1.6.4: the per-card values (StatsReady / StatCard /
+# StatAt / Libertad) and its table CharacterReforged.StatRow (the match modifier's card test).
+# character_reforged 1.6.5: its skill table host (the «Entrenar» button and the training mode hang on it); 1.7.0: the
+# player page's slots (hosts character_reforged.page_stat_max / page_luck_bonus, 1.0.2).
+requires = ["vr_framework>=2.4.24", "character_reforged>=1.7.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+# memory: the card records (prm_growth = the trained points); call: the game's FindCharaRecord / GetLevel; command:
+# its commands; state: player_training.active; hook: the match-build modifier
+permissions = ["memory", "call", "command", "state", "hook"]
+
+# What other mods call: the commands' functions and LuckDelta(charaStHdl) -> the committed Suerte delta (Inazuma
+# Fantasy's CMND_EVT_CHARA_STAT adds it to the Suerte it shows)
+[exports]
+functions = ["Info", "Stat", "Set", "Commit", "Cancel", "Reset", "LuckDelta"]
+keys = []
+# the menu-VM function Character Reforged's skill table host calls for this mod's footer button
+game_lua = ["PlayerTraining.SkillTableButton"]
+tables = []
+
+# A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
+# ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
+# of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 80

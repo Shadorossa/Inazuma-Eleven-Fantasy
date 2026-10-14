@@ -1,4 +1,4 @@
-schema = "vr_framework.match_camera/1"
+schema = "VRFW.match_camera/1"
 # Utilities' match cameras (VR-Framework match camera service, docs/framework/camera.md). The framework only applies
 # a preset while a mod requests it: Utilities' Lua (graft research/grafts/camera_side) requests `utilities.side` at
 # every match start when «Cámara del partido» (row utilities.camera, options.toml) is «Lateral», and releases it when

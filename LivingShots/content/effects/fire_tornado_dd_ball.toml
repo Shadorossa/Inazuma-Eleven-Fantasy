@@ -1,0 +1,29 @@
+# «Tornado de fuego DD» (Fire Tornado DD, whs01760 and whs01760_or, same cut-in; fire shot of two players, cut-in
+# ev60_01760): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0040,
+# the shot from 9.9 m up): the fire swirl round the ball (flame domes, flame wave, flame cone, fire streak), the
+# spiralling fire tube it draws behind it from the kick point with the fire rings running along it, the three light
+# ribbons along the path and the flickering fire chunks shed along the tube, instead of the plain fire special-shot
+# aura (ega0075c).
+# The object is ev6176dd00 (effect/event/ev60/ev6176dd00/), built by research/scripts/fire_tornado_dd_ball_fx.py from
+# the cut-in's effect object ev60017600: the cut-in's motion from the kick (258) replayed with every part kept in its
+# place relative to the ball, then held at c0040 frame 346 (texture flow running on, the chunks flickering on as over
+# 326-346), ball at the origin flying +Z, x1. Left out: the fire flowing into the ball and the fire bar / chunks of the
+# kick, the kick flash, the screen fade. docs/game/media/fire-tornado-dd-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\fire_tornado_dd_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_tornado_dd"
+from = "ega0075c"
+object = "effect/event/ev60/ev6176dd00/ev6176dd00.objbin"
+
+[[shot_aura]]
+name = "fire_tornado_dd"
+when = { techniques = ["whs01760", "whs01760_or"] }
+aura = "fire_tornado_dd"
+like = "ega0075c"
+# the aura's replay (88 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 88 }

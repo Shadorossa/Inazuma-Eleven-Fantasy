@@ -1,0 +1,52 @@
+# Character Reforged: the player header's SLOT (docs/refactor/aura-mods-split.md «Player header»). The one-row player
+# header (content\menus\player_header.toml, generated) leaves a free strip between the gender icon and the rarity
+# banner (header layout x 1453..1599, the band's height). Other mods hang their pieces there with an [[entry]] of this
+# host, read by assets\lua\_all\character_reforged_header.lua (CharacterReforged.Header, every menu VM with the
+# retail plate functions):
+#
+#   [[entry]]
+#   host = "character_reforged.header"
+#   id = "pe"                                  # key <mod>.<id>
+#   order = 100                                # left to right by `order` (default 1000), then load order
+#   action = { lua = "StaminaPoints.PlatePe" } # the menu-VM global function ("A.B" paths) drawing the piece
+#
+# The function is called as f(phase, ctx): phase "fill" on every refresh of a header plate (ctx.layer, ctx.inst,
+# ctx.hdl = the chara status handle; ctx.x = the piece's left edge, ctx.top / ctx.height = the band, ctx.room = the
+# width left, header layout units, y up, origin the plate's _pos_base01) -> the width it takes (0 / nil = nothing
+# drawn: the next piece moves left); phase "step" once or twice a frame after the screen's PostStep / Step (finish an
+# asynchronous draw, follow the plate's visibility). Its layers attach to the header object with an
+# [[object_set]] object = "evt_soccer11_04pp_pp" (trace = the layer's name, locator _pos_base01) and are added to
+# the screens with [[patch]] add_layer after the header layer (soccer11_04_formation_chara_status /
+# soccer11_04_chara_status). Example: Stamina Points' PE (content\menus\pe_plate*.toml, assets\lua\_all\
+# stamina_points_plate.lua).
+schema = "VRFW.menu/2"
+
+[[host]]
+id = "character_reforged.header"
+label = { es = "Cabecera del jugador", en = "Player header", fr = "En-tête du joueur", de = "Spielerkopfzeile", it = "Intestazione del giocatore", pt = "Cabeçalho do jogador", ja = "選手ヘッダー", zh_hans = "球员标题栏", zh_hant = "球員標題欄" }
+
+# The colour of the player page's slanted header band (the band copy under the row, VRFW_UI.HeaderRow.BandFill, graft
+# plate_pages): a mod that recolours it declares
+#
+#   [[entry]]
+#   host = "character_reforged.header_band"
+#   id = "position_colour"
+#   action = { lua = "NoMoreRarities.HeaderBandColour" }   # f(layer, inst, hdl) -> true = it painted the band
+#
+# CharacterReforged.Header.BandColour asks them in order; none painted (or none declared: only the active mods'
+# entries exist) = the retail rarity look (the card's own rarity sprite). No More Rarities' position colour is one.
+[[host]]
+id = "character_reforged.header_band"
+label = { es = "Color de la banda del jugador", en = "Player band colour", fr = "Couleur du bandeau du joueur", de = "Farbe des Spielerbands", it = "Colore della fascia del giocatore", pt = "Cor da faixa do jogador", ja = "選手帯の色", zh_hans = "球员横条颜色", zh_hant = "球員橫條顏色" }
+
+# The header's rarity title (the row's banner left of «Nv.»): a mod that removes it for some cards declares
+#
+#   [[entry]]
+#   host = "character_reforged.header_rarity"
+#   id = "rarity_title"
+#   action = { lua = "NoMoreRarities.HeaderShowsRarity" }  # f(hdl) -> false = no rarity title for that card
+#
+# CharacterReforged.Header.ShowsRarity asks them in order; none says false (or none declared) = the retail title.
+[[host]]
+id = "character_reforged.header_rarity"
+label = { es = "Título de rareza del jugador", en = "Player rarity title", fr = "Titre de rareté du joueur", de = "Seltenheitstitel des Spielers", it = "Titolo di rarità del giocatore", pt = "Título de raridade do jogador", ja = "選手のレアリティ称号", zh_hans = "球员稀有度称号", zh_hant = "球員稀有度稱號" }

@@ -5,7 +5,7 @@
 # one line per failed condition (every / none / at_least / at_most / between, any_of / all_of with indented lines),
 # then «offenders».
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the message's first line and the guide line of a match with a challenge (the mod's title)
@@ -471,3 +471,29 @@ pt = ", "
 ja = "、"
 zh_hans = "、"
 zh_hant = "、"
+
+# a required starter's line (`[[VRFW.MatchChallenge.Required]]` without its own Text; VRFW 2.4.35): %s = «N given
+# character(s)» (vrfw_mc_f_chara), then the formation places (position words joined by «or»)
+[[row]]
+id = "vrfw_mc_required"
+es = "Titular obligatorio: %s"
+en = "Required starter: %s"
+fr = "Titulaire obligatoire : %s"
+de = "Pflicht-Stammspieler: %s"
+it = "Titolare obbligatorio: %s"
+pt = "Titular obrigatório: %s"
+ja = "必須スタメン：%s"
+zh_hans = "必须首发：%s"
+zh_hant = "必須先發：%s"
+
+[[row]]
+id = "vrfw_mc_required_places"
+es = "Titular obligatorio: %s, de %s"
+en = "Required starter: %s, as %s"
+fr = "Titulaire obligatoire : %s, en %s"
+de = "Pflicht-Stammspieler: %s, als %s"
+it = "Titolare obbligatorio: %s, come %s"
+pt = "Titular obrigatório: %s, como %s"
+ja = "必須スタメン：%s（%s）"
+zh_hans = "必须首发：%s（%s）"
+zh_hant = "必須先發：%s（%s）"

@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Huracán (The Hurricane, whs01120 and whs01120_or, same cut-in ev60_01120;
+# whs01120_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights over
+# distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the ball flies low and almost level, 1.94 m -> 1.32 m over 36 m (already under the bar): the
+# match flight is the cut-in's own profile.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move the_hurricane):
+# the effect's ball group (ConstPosBall1 = the event ball) of ev60011200 c0500, effect frames 416-472:
+# [[0.00, 1.94], [15.49, 1.66], [35.63, 1.32]] (0.05 m).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Huracán (whs01120).
+[[edit]]
+target = "whs01120"
+trajectory = { points = [[0.0, 1.94], [15.49, 1.66], [35.63, 1.32]], unblockable = false }

@@ -1,6 +1,6 @@
 # Settings of Utilities' scripts (kind vr_framework.script/1, docs/framework/scripts.md §2). One [[script]] per entry
 # point, each with the settings it needs; every other .lua below scripts\ (lib\) is a library for `require`.
-schema = "vr_framework.script/1"
+schema = "VRFW.script/1"
 
 # Home / Away kit: the pair map is built at load from the whole uniform_config (about 1900 rows)
 [[script]]
@@ -59,7 +59,7 @@ allow = []
 [[script]]
 file = "route_map_speed.lua"
 
-# Skill board: the keshin armour slot without the armour item (the defaults)
+# Skill board: the old [skill_board] armour_without_item key, ignored with a log line (moved to Character Reforged)
 [[script]]
 file = "skill_board.lua"
 
@@ -99,3 +99,18 @@ memory_kb = 65536
 file = "friends.lua"
 budget = 3000000
 memory_kb = 32768
+
+# Technique preview: the move table (skill/skill), chara_base and chara_model / chara_body are read once at load (the
+# load gets 10 budgets); a card's question reads the active squad (29 member reads + their records, their learn lists)
+[[script]]
+file = "tech_preview.lua"
+budget = 2000000
+memory_kb = 65536
+allow = []
+
+# «Cambiar forma»: only the form indicator's place (config.toml [view_forms]) for CMND_UTIL_VIEW_FORMS_CFG
+[[script]]
+file = "view_forms.lua"
+budget = 200000
+memory_kb = 4096
+allow = []

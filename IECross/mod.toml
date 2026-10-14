@@ -2,13 +2,13 @@ id = "iecross"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
 # «IECross» since 1.3.0 (2026-10-10; «Inazuma Eleven Cross» before): the same name in every language; the id stays.
 name = "IECross"
-version = "1.3.12"
+version = "1.3.16"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Eleven Cross in Victory Road. Teams: the 11 Cross teams (Shin Zeus, Shin Brain, KFC Pierrot, Chaos Circus, the Inazuma Japan, Wild and Occult pirates, the Kirkwood, Otaku and Raimon Veterans Ramen teams, Japan 2026) with their crests and kits, and their CPU movesets. Characters: the Cross cards (Byron Love (Cross), Axel Blaze of Royal Academy, pirate Shawn Froste and Xavier Foster, Celia Hills with Jude's cape, clown Gazelle and Torch) with their Cross heads and outfits. Special moves: the 12 Cross moves (Inferno Penguin, Ocean Birth, God Knows Machina, Chaos Illusion and eight Cross versions of Victory Road moves) with their scenes, effects and manuals. Stadiums: the eight Cross stadiums (Inazuma Big Ferry and its summer and festival skins, the seaside deck, the ghost pirate ship, the ramen ship, the cyber field, the ferry's bow deck) as match maps, with their tickets in the general shop and their rows in the free-match stadium list. «Competir contra bots»: the «Inazuma Eleven Cross» tab's matches with their prizes, Royal Academy (Cross) and the unlock chain, in its own «Inazuma Eleven Cross» tab (the X icon, after Victory Road). Bahía Batalla: the Cross teams of the grid under their own Cross season (the X icon). Player bank: an «Inazuma Eleven Cross» tab (the X icon) listing the Cross cards (only there and in «TODO», never under a retail series tab), and the Cross series in the bank filter. The Cross goal celebrations of these characters come from New Animations. Always on: the mod has no options."
 priority = 0
 tags = ["Teams", "Characters", "Techniques"]
-updated = "2026-10-13"
+updated = "2026-10-14"
 # This mod's own names (TOML keys [[IECross.X]], Lua IECross.X, any later text, command or key; older texts keep
 # their iecross_ ids); never VRFW.
 prefix = "IECross"
@@ -33,25 +33,25 @@ folder = "IECross"
 #                                    outfits / shoes, kit textures, two move models); files in assets\models\<kind>\<id>\
     #   assets\data\…                     events, effect objects, crests,
 #   content\techniques\new.toml      the 12 Cross moves (keys whs95000…whd95110: skill ids = crc32(key), as before)
-#   content\base_tables\common\event\…, event_cfg\…
+#   content\base_tables\event\…, event_cfg\…
 #                                    the moves' light / event / effect / sound lists
-#   content\base_tables\common\gamedata\item\item_config.toml
+#   content\base_tables\gamedata\item\item_config.toml
 #                                    manuals, crest items, kit items (same ids / catalog numbers)
-#   content\base_tables\common\gamedata\character\…
+#   content\base_tables\gamedata\character\…
 #                                    the Cross belong team and series, chara scale rows
 #   text\rows\                       team / crest / kit / series names (9 languages)
 #   content\images\menu\200_icon\02_icon_item\icon_item07
 #                                    the six Cross kit item icons
 #   assets\data\…                     events, effect objects, move models, Cross heads, outfits, kit textures, crests,
 #                                    face icons, kit mini-faces (Level-5 / Cross derived, tracked as they were in IF)
-#   assets\data\{common,dx11}\map\s\s9{1,1b,1c,2,3,4,8,9}g001 + content\base_tables\common\map\s\…
-#   + content\base_tables\common\map\map_minimap.toml + content\tables\common\map\map_data.toml
+#   assets\data\{common,dx11}\map\s\s9{1,1b,1c,2,3,4,8,9}g001 + content\base_tables\map\s\…
+#   + content\base_tables\map\map_minimap.toml + content\tables\common\map\map_data.toml
 #   + images\menu\220_img\stadium\img_room_* + text\rows\map_text.toml
 #                                    the eight Cross stadium ports (maps, env / effect tables, minimap and map-list rows,
 #                                    list pictures, names)
 #   content\teams\cross_tab.toml + content\teams\0012_royal_academy_cross.toml
-#   + content\base_tables\common\gamedata\soccer\{soccer_game_config,soccer_prize_config,soccer_opponent_info,
-#   soccer_game_option}.toml + content\base_tables\common\gamedata\vsroute\…
+#   + content\base_tables\gamedata\soccer\{soccer_game_config,soccer_prize_config,soccer_opponent_info,
+#   soccer_game_option}.toml + content\base_tables\gamedata\vsroute\…
 #                                    (1.1.0) the «Inazuma Eleven Cross» tab of «Competir contra bots»: its 11 games,
 #                                    prizes, free-match rows, hidden piece evt_cross_piece ([[keyed]] rows by key on top
 #                                    of Inazuma Fantasy's whole tables), the cross_tab list and Royal Academy (Cross);

@@ -1,0 +1,78 @@
+# The RB+A / RB+B plates on the move selector (research/scripts/hiper_btn_build.py; docs/game/ui/hiper-btn.md): the two
+# soccer_command_action_menu scripts show the framework's CMND_VRFW_XSLOT_PLATES plates (the plates slot running the
+# match). Character Reforged's since 2026-10-14 (the new skill set's aura / mix buttons are the base's: its
+# content\menus\hiper_plates.toml + assets hold the layers, objbins, art and the selector's locators); a NEUTRAL plate.
+# Inazuma Fantasy's look on top: graft hiper_btn_face (its Hiper card rules EVT_HC: the portrait column) + its layer
+# evt_hiper_chr_icon. Nothing at chunk load.
+name = "hiper_btn"
+mod = "character_reforged"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateAnimeMoveOffsetCmdBase", "UpdateVisibleAttachButtonGuide"]
+description = "hiper_btn: Hipertécnica plates in the command action menus"
+
+[[files]]
+stem = "soccer_command_action_menu"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_command_action_menu.OnInit.HiperBtn"
+  text = '''
+  EVT_HiperInit() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_command_action_menu.OnSetupLayer.HiperBtn"
+  text = '''
+  EVT_HiperSetupLayer(a1, a2) -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_command_action_menu.PostStep.HiperBtn"
+  text = '''
+  EVT_HiperStep() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hiper_btn_cmd_1.lua"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_command_action_menu"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_command_action_menu.OnInit.HiperBtn"
+  text = '''
+  EVT_HiperInit() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_command_action_menu.OnSetupLayer.HiperBtn"
+  text = '''
+  EVT_HiperSetupLayer(a1, a2) -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_battle_command_action_menu.PostStep.HiperBtn"
+  text = '''
+  EVT_HiperStep() -- EVT
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "hiper_btn_battle_1.lua"
+  crc = "none"

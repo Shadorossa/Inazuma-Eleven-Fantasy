@@ -1,0 +1,13 @@
+# Dark Empress (Emperatriz oscura, whs10090) goal scene ev71_00080: the retail eff list attaches and turns the
+# effect object of ev71_00070 (ev71000700), which this scene never loads; these two commands use its own ev71000800.
+schema = "VRFW.base_table/1"
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 5
+args = ["ev71000800", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 6
+args = ["ev71000800", 0.0, 0.0, 0.0]

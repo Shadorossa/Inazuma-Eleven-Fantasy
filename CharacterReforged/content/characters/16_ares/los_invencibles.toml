@@ -1,0 +1,71 @@
+schema = "VRFW.character/2"
+# Character Reforged · Los Invencibles · Inazuma Eleven: Ares
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c07130010"                                   # Sergi Hernández
+growth_pattern = 1
+rank = 3
+growth = "normal"
+
+  [[edit.cards]]
+  id = 0xDF79536D                                         # MF/FW · mountain
+  stats = { kick = 284, control = 259, technique = 289, pressure = 190, physical = 193, intelligence = 259, agility = 166, freedom = 225 }
+  moves = [
+    { move = 0x1879C284, level = 3 },                     # Arced Diamond Ray
+    { move = 0x6813360B, level = 16 },                    # Diamond Ray
+    { move = 0x0DBD9938, level = 23 },                    # Diamond Cutter
+    { move = 0x8C58A9CE, level = 38 },                    # Formidable Fortress
+  ]
+
+  [[edit.cards]]
+  id = 0xC09FD427                                         # DF/FW · forest
+  stats = { kick = 246, control = 204, technique = 220, pressure = 228, physical = 248, intelligence = 305, agility = 180, freedom = 225 }
+
+[[edit]]
+target = "c07130020"                                   # Joan Asensi
+
+  [[edit.cards]]
+  id = 0xF45400AE                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 304, control = 254, technique = 238, pressure = 182, physical = 188, intelligence = 208, agility = 184, freedom = 317 }
+  moves = [
+    { move = 0xBDAE2862, level = 3 },                     # Hellfire
+    { move = 0x3F8BFBBA, level = 12 },                    # Double-Trouble
+    { move = 0xEE3E059F, level = 29 },                    # Celestial Smash
+    { move = 0x41F3CDC2, level = 43 },                    # Scorching Tackle
+  ]
+
+[[edit]]
+target = "c07130030"                                   # Leo Segarra
+
+  [[edit.cards]]
+  id = 0xED4F31EF                                         # FW/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 332, control = 244, technique = 243, pressure = 201, physical = 182, intelligence = 224, agility = 182, freedom = 251 }
+  moves = [
+    { move = 0x245D62F1, level = 1 },                     # Attack Scan
+    { move = 0x3F8BFBBA, level = 6 },                     # Double-Trouble
+    { move = 0x65766A4F, level = 21 },                    # Meteor Blade
+    { move = 0x41F3CDC2, level = 58 },                    # Scorching Tackle
+  ]
+
+[[edit]]
+target = "c07130110"                                   # Salvador Castell
+
+  [[edit.cards]]
+  id = 0xDEBB395A                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 205, technique = 194, pressure = 247, physical = 236, intelligence = 244, agility = 255, freedom = 305 }
+  moves = [
+    { move = 0xCD6AEF2D, level = 4 },                     # All-Star
+    { move = 0x0079EF5E, level = 15 },                    # Wetsuit
+    { move = 0xDBA0E5E3, level = 33 },                    # Gigant Wall
+    { move = 0x406CDEE8, level = 51 },                    # Omega Hand
+  ]

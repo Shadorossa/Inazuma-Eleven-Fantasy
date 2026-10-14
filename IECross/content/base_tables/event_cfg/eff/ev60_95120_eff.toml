@@ -1,0 +1,193 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/eff/ev60_95120_eff.cfg.bin"
+
+[new]
+order = ["EVENT_COMMAND_NUM", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS", "EVENT_COMMAND_HEADER", "EVENT_COMMAND_ARGS"]
+
+[t2b]
+strings = "separate"
+
+[[entry]]
+name = "EVENT_COMMAND_NUM"
+values = [32]
+
+[[entry]]
+command = "LOAD_ACTOR_RESOURCE"
+args = ["ev60951200", "common/effect/event/ev60/ev60951200/ev60951200.objbin", 1, 0]
+
+[[entry]]
+command = "LOAD_EFFECT"
+at = 1
+args = ["ega0001"]
+
+[[entry]]
+command = "REGISTER_EFFECT"
+at = 2
+args = ["ega0001", "ega0001"]
+
+[[entry]]
+command = "ACTOR_DECLARE"
+at = 3
+args = ["ev60951200"]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 4
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 5
+args = ["ev60951200", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 6
+args = ["ev60951200", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 7
+args = ["ev60951200", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 8
+args = ["ev60951200", "c0010", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 9
+args = ["ev60951200", 1]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 10
+frame = 192
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 11
+frame = 192
+args = ["ev60951200", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 12
+frame = 192
+args = ["ev60951200", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 13
+frame = 192
+args = ["ev60951200", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 14
+frame = 192
+args = ["ev60951200", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 15
+frame = 192
+args = ["ev60951200", "c0020", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 16
+frame = 192
+args = ["ev60951200", 1]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 17
+frame = 192
+args = ["b000001_s01_p<VARIATION>", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 18
+frame = 192
+args = ["b000001_s01_p<VARIATION>", "c0020", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 19
+frame = 192
+args = ["b000001_s01_p<VARIATION>", 1]
+
+[[entry]]
+command = "CMD_3DB3FBEB"
+at = 20
+frame = 192
+args = [0]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 21
+frame = 282
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 22
+frame = 282
+args = ["ev60951200", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 23
+frame = 282
+args = ["ev60951200", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 24
+frame = 282
+args = ["ev60951200", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 25
+frame = 282
+args = ["ev60951200", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 26
+frame = 282
+args = ["ev60951200", "c0030", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 27
+frame = 282
+args = ["ev60951200", 1]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 28
+frame = 282
+args = ["b000001_s01_p<VARIATION>", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 29
+frame = 282
+args = ["b000001_s01_p<VARIATION>", "c0030", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "CMD_3DB3FBEB"
+at = 30
+frame = 282
+args = [1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 31
+frame = 401
+args = ["ev60951200", 0]

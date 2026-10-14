@@ -1,0 +1,27 @@
+# «Golpe de Atenea» (Athenian Assault, whs02370; wind shot, cut-in ev60_02370): while the ball flies to the goal after
+# the cut-in it carries the cut-in's kick blast (owner 2026-10-12: in the cut-in nothing rides the ball, the blast stays
+# at the kick point): the shoot kick, the purple kick waves and the shot rings round it, the sphere bombs / sparkles
+# thrown off, and the purple beam trailing behind it along the flight, instead of the plain wind special-shot aura
+# (ega0075b).
+# The object is ev6237aa00 (effect/event/ev60/ev6237aa00/), built by research/scripts/athenian_assault_ball_fx.py from
+# the cut-in's effect object ev60023700: c0200's blast from the kick (414) replayed round the ball as it sits at the
+# kick, then held at frame 436 (the rings still whole), flying along the blast's own axis (the beam's), the beam turned
+# to stream behind the ball, ball at the origin flying +Z, x1. docs/game/media/athenian-assault-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\athenian_assault_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "athenian_assault"
+from = "ega0075b"
+object = "effect/event/ev60/ev6237aa00/ev6237aa00.objbin"
+
+[[shot_aura]]
+name = "athenian_assault"
+when = { techniques = ["whs02370"] }
+aura = "athenian_assault"
+like = "ega0075b"
+# the aura's replay (22 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 22 }

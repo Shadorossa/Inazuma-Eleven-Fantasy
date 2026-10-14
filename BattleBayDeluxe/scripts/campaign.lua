@@ -18,7 +18,8 @@
 -- any mod may ship it) the candidates are sorted by rating (unknown = the median) and split into 7 bands, one rival
 -- per band (match 1 one of the weakest seventh, match 7 one of the strongest); else a plain shuffle. Fewer than 7
 -- candidates: each once, the ladder completed by repeating them (never a 0 rival). No candidate: the retail draw. The
--- Draft team is never a rival, and a decide on its tile outside the Campaña is refused. The VR-Framework's «win it
+-- Draft team is never a rival, and a decide on its tile outside the Campaña is refused. 1.5.61: the «Active team» tile
+-- (active_team.lua) is never a rival either, and only the player's side may pick it. The VR-Framework's «win it
 -- to unlock it» rule (docs/framework/bb-pages.md §8) only stops the PLAYER from picking a team: its teams stay CPU
 -- rivals.
 
@@ -26,6 +27,7 @@ local U = require "lib/util"
 local G = require "lib/game"
 local Draft = require "draft"
 local Tourn = require "tournament"
+local Active = require "active_team"
 -- a tournament started with the Draft team keeps the drafted squad (as a Campaña started with it)
 Tourn.on_started = function(run)
   if run.player_team == Draft.team() then
@@ -267,6 +269,26 @@ local function draft_gate(menu, btn, idx)
   return "open"
 end
 
+-- 1.5.61: a decide on the Active team tile (active_team.lua): nil = not that tile or allowed, "refuse" = refused
+local function active_gate(menu, btn, idx)
+  local team = Active.team()
+  if team == 0 or idx >= G.SLOTS or U.rd("u32", btn) ~= G.GRID_LAYER then
+    return nil
+  end
+  if U.get(slot_struct(menu, idx), "team") ~= team then
+    return nil
+  end
+  local m = U.struct("GridMenu", menu)
+  local campaign = (U.get(m, "campaign") or 0) ~= 0
+  local player_one_decided = (U.get(m, "player_one_decided") or 0) ~= 0
+  local why = Active.refusal(campaign, player_one_decided, network_session())
+  if why then
+    VRFW.log("active team: the Active team tile (slot " .. idx .. ") refused (" .. why .. ")")
+    return "refuse"
+  end
+  return nil
+end
+
 local function free_back(why)
   local f = FREE
   FREE = nil
@@ -368,6 +390,20 @@ local function prepare(menu, btn)
   if not raw then
     warn("enjoy table not readable: game campaign draw")
     return nil
+  end
+  -- the Active team tile is never a rival (its players are placeholders: only the player's side plays the active team)
+  local active_team = Active.team()
+  if active_team ~= 0 then
+    local keep = {}
+    for _, r in ipairs(raw) do
+      if r.team ~= active_team then
+        keep[#keep + 1] = r
+      end
+    end
+    raw = keep
+    if player == active_team then
+      info("the campaign plays the player's active team (the Active team tile)")
+    end
   end
   -- the Draft team is never a rival; as the player's team it needs a complete draft
   local draft_team = Draft.team()
@@ -647,6 +683,12 @@ VRFW.on("hook:Decide", function(ev)
   end
   if FREE then
     free_back("a post-phase that never ran")
+  end
+  local oka, active = pcall(active_gate, menu, btn, idx)
+  if not oka then
+    warn("Active team tile check failed: " .. tostring(active))
+  elseif active == "refuse" then
+    return { skip = true, ret = 0 }
   end
   local ok, gate = pcall(draft_gate, menu, btn, idx)
   if not ok then

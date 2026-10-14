@@ -1,0 +1,4 @@
+schema = "VRFW.telop/2"
+# Hand-maintained; first converted by research/scripts/if_telop_env_to_toml.py (retired 2026-10-05 in e48d6f17e3) from Inazuma Fantasy's telop_waza/en/aura_mixi_evt_mx.g4tx; the converter is gone, edit this file by hand.
+# a telop the game does not have: menu object and texture format of aura_mixi_c04000100 (the event names soccer10_01_aura_mixi_evt_mx)
+from = "aura_mixi_c04000100"

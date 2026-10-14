@@ -1,0 +1,30 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of La Tierra (The Earth, whs00480) (Nacho 2026-10-08: each move its own fall,
+# matching its cut-in). In the cut-in the ball becomes the earth globe high over its column of light (c0400); in the
+# shot cut (c0600) the shot's head leaves the top of the column and comes down a long line onto the goal mouth; in the
+# match the ball starts that high over the kick point and comes into the goal at the line's angle: the angled dive
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6). Its dive line is ~70 m long, so on
+# most shots the start comes down onto the 20° line over the kick point and the ball flies one straight line; from
+# farther it leaves level at 26 m and bends into it. Its aura (content\effects\the_earth_ball.toml: since 1.3.10 the shower of
+# comets of c0600, which come down from high onto the goal with the head) is turned along the flight. «La Tierra: Infinito» (whs02650) declares none: through its whole cut-in the event ball stays still
+# 14.8 m up in space (no pitch, no goal, no descent), so it keeps the game's own flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move the_earth): the shot's head
+# (shoot_top_main_new_scl2: the ball is not shown after c0400) of ev60004800 c0600, frames 669 (the top of the
+# column, its highest point) - 720 (the cut's end, at the goal mouth): (-4.72, 26.09, 7.65) -> (23.75, 1.47, -52.85),
+# 26.09 m -> 1.47 m over 66.87 m on the ground = 20.2° down on average; the fast part (669-685) 18.5°, the last 4
+# frames 41.8° (the head eases out to a stop at the goal: not the flight's angle).
+#   height     = 26.0: the start (26.09 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 20:   the straight line start -> end (the mean).
+#   end_height = 1.5:  the cut-in ends at 1.47 m, already in the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# La Tierra (whs00480).
+[[edit]]
+target = "whs00480"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 26.11 m (26.0 over a kick on the pitch) held until 67.62 m before the goal point, then the 20.0
+# deg line down into 1.5 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 33.81 m down (bend 0.5). A shot shorter
+# than 67.62 m starts lower, on the line.
+trajectory = { goal_points = [[67.62, 26.11, 999, 33.81], [0.0, 1.5]], unblockable = false }

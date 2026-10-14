@@ -4,7 +4,7 @@
 # the row ends at 1426 (its left edge minus the row gap). A mod that rebuilds the header and wants the plate centred on
 # the bar adds `centre_x` (the node's header-local x) in its own `[top_bar_rank]` and `rank_centre = true` on its
 # `[[top_bar_host]]` menus; the keys merge (the mod that loads last wins a key).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [top_bar_rank]
 plate = "mainmenu90_03_header_rank"

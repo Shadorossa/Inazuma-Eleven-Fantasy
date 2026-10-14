@@ -16,7 +16,7 @@
 # Always on (keeper_scenes 1.3.1: the option «Escenas extra del portero» was retired).
 # These pairs join the game's own random keeper-gauge pick (its index roll over the lists); the conditional saves
 # (effortless_save.toml) are the framework scene selector's (docs/framework/scene-select.md).
-schema = "vr_framework.technique/3"
+schema = "VRFW.technique/3"
 
 [[keeper_scene]]
 save = "ev71_30010"     # standing catch

@@ -1,0 +1,19 @@
+schema = "CharacterReforged.pairing/1"
+# Character Reforged › the pairing rules of the aura mods' creation flows (docs/refactor/aura-mods-split.md
+# «CharacterReforged: shared base»). Every active mod may declare `content\pairing\*.toml` with
+# [CharacterReforged.PairRules.<system>] tables; the keys merge over the mods in load order (the later mod wins key by
+# key), `default` first, then the system's own table (`miximax` = All Miximaxed, `change` = All Changed, …).
+# Read by scripts\pairing.lua (CharacterReforged.PairRules / PairCheck / PairValidity).
+
+[CharacterReforged.PairRules.default]
+# the base and the partner are two cards of the same character: refused unless true
+same_character = false
+# a card is the partner of at most one base (the first stored pair keeps him)
+one_partner_per_base = true
+# a base may also be the partner of another pair (and a partner a base)
+base_may_be_partner = false
+# card rarities (VRFW.chara.record(hdl).rarity) that may not be the base / the partner
+base_rarities_denied = []
+partner_rarities_denied = []
+# partner moves the player picks with a new pair (0 = none: the pair works as the retail aura does)
+moves = 0

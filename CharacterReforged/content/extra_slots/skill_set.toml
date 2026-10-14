@@ -1,0 +1,124 @@
+# Character Reforged › the new skill set in a match (owner 2026-10-14; docs/refactor/aura-mods-split.md «Skill table»;
+# framework: docs/framework/extra-slot.md §7): while the option «Tabla de habilidades» shows the new set
+# (character_reforged.skill_set_view = 1) every player has, beside his 6 special moves, the AURA slot and the MIX slot
+# of the set (owner 2026-10-14, final: the framework's selected-slot layout, docs/framework/extra-slot.md §7.8):
+#
+#   RB + B (key J)       the AURA COMMAND: the transformation of the selected slot, the AURA slot (his keshin / totem
+#                        summon; with the keshin out, its armour) or the MIX slot (his Mix-Max, his «Modo cambio» both
+#                        ways)
+#   RB + D-pad (key K)   switches the selected slot aura <-> mix (only with both filled; reset to the aura at every match)
+#   RB + A (key H)       the SPECIAL MOVES the running aura / mix grants: the keshin's / totem's own move (also kept
+#                        under its armour), a fusion's partner move; when both grant one, the selected slot's
+#
+# The match move list (the 6 techniques) leaves out every aura of the user's players' technique list ([source]
+# list_auras_out): those positions stay empty this match (no base rule fills them); the save is not touched.
+#
+# The VR-Framework's plates slot (one in all mods) with an option gate: while the option is off the matches run the
+# fallback plates slot of another mod instead (All Changed's RB+B «Modo cambio», `all_changed.change`) or none, so
+# RB+B never fires twice. The aura mods add their pieces to this slot with [[VRFW.ExtraSlotExtend]] (All Miximaxed the
+# fusion, All Changed the swap) and a game mode its rules (Inazuma Fantasy: its Hiper controls, rules and commands).
+#
+# Who has what (the projection over the game's own data, nothing written for it; the same rule as the skill table's
+# CharacterReforged.ProjectSkillSet, scripts\mix_slots.lua):
+#   aura slot = his team aura rows, board slot 8 (the learnset's slot 9 aura), then the first aura of his technique
+#               list in list order (left out of the match list), the auras of his match skill list (a Battle Bay /
+#               preset team's own set), an aura on a normal board slot; the first entry of each kind
+#   mix slot  = his saved mix (native table MixSlot: scripts\mix_slots.lua, the per-save store; for a card with nothing
+#               stored the projection's: the first Mix-Max / «Modo cambio» of his technique list, else of his board),
+#               then the same sources as the aura slot
+#   last      = his character's own moveset (native table MovesetDefault, chara_param -> aura / mix): only for a slot
+#               nothing above filled
+# The user's players take only keshin / totem in the aura slot (an armour alone stands for its keshin); rivals and
+# preset teams take any aura by its type.
+schema = "VRFW.extra_slot/1"
+
+[[VRFW.ExtraSlot]]
+name = "skill_set"                   # key character_reforged.skill_set
+kind = "plates"
+option = "skill_set_view"            # character_reforged.skill_set_view (options.toml): only while the new set is on
+states = [9, 14, 16]                 # open play, duel, zone
+summon_states = [9, 14, 16]
+plate_states = [9, 14, 16]
+lend_slot = "auto"
+start_timeout_s = 15
+restore_delay_s = 1.0
+cooldown_s = 15
+disguise = true
+preload = true
+row_parity = true
+aura_row = true                      # the aura slot's move in the retail aura row with a live state; its press = the aura slot
+
+# ---- THE BUTTONS (owner 2026-10-14). The roles are fixed by the plate (plate 0 = the special moves, plate 1 = the aura
+# command); to swap the two buttons swap the `key` / `pad` values of these two blocks (nothing else refers to them).
+# plate 0 = SPECIAL MOVES BUTTON: the moves the running aura / mix grants
+[VRFW.ExtraSlot.input]
+key = "H"
+pad = "RB+A"
+xinput = true
+
+# plate 1 = AURA COMMAND BUTTON: the selected slot's transformation (aura or mix)
+[[VRFW.ExtraSlot.plate]]
+key = "J"
+pad = "RB+B"
+xinput = true
+
+# the slot selector of the aura command (any D-pad direction while RB is held; the D-pad is held back from the game
+# only while RB is held, so the retail D-pad keeps its own uses)
+[VRFW.ExtraSlot.select]
+key = "K"
+pad = "RB+DPAD"
+xinput = true
+
+# the rival (CPU) uses his aura / mix slot through the same plate decision: open play, while no aura of his runs
+[VRFW.ExtraSlot.cpu]
+chance = 0.3
+interval_s = [3.0, 6.0]
+states = [9]
+idle_only = true
+
+[VRFW.ExtraSlot.source]
+board_slot = 8
+team_aura = true
+board_aura_types = [0, 3, 2, 6]
+compatible = true
+write_aura_row = true
+types = [0, 3]
+mix_types = [2, 6]
+mix_table = "MixSlot"
+team_commands = ["aura", "mix"]
+skill_list = true
+default_table = "MovesetDefault"
+# VRFW 2.4.29: the user's players' match move list leaves out the auras of their technique list (they are this slot's;
+# the positions stay empty); only while this slot's option is on; rivals keep their list
+list_auras_out = true
+
+# around the running keshin: plate 0 its armour, its own move on plate 1 while the mix slot is idle
+[VRFW.ExtraSlot.spirit]
+armour = true
+own_move = true
+inherit = true
+inherit_grace_s = 3.0
+move_hold_s = 4.0
+zone_retry_s = 2.0
+
+# the base's own command names (graft hiper_btn: the button plates; other mods' grafts keep their own names through
+# their extension, both answer)
+[VRFW.ExtraSlot.commands]
+plates = "CMND_CHARACTERREFORGED_PLATES"
+label = "CMND_CHARACTERREFORGED_PLATE_LABEL"
+swap_gauge = "CMND_CHARACTERREFORGED_SWAP_GAUGE"
+fusion_stack = "CMND_CHARACTERREFORGED_FUSION_STACK"
+fusion_partner = "CMND_CHARACTERREFORGED_FUSION_PARTNER"
+
+# In a focus battle (duel) the aura command is never the duel's choice (owner 2026-10-14: the keshin summon and the
+# armour usable AT ANY MOMENT, focus battles included): RB+B there is taken at once, held on the in-play list and
+# played as soon as the duel ends (the player still picks his duel action); the duel is frozen while its cut-in plays
+# (nobody steals the ball inside it). Without this rule the press was the duel's command and was refused outside the
+# duel's choice window. Only while the new set is on (option gate, VRFW 2.4.30): the «Victory Road» view keeps the
+# retail duel choice. One rule in all mods: a later mod's (Inazuma Fantasy's) replaces this one.
+[VRFW.DuelAura]
+types = [0, 1, 2, 3, 6]
+mode = "after_duel"
+fast_resume = true
+freeze_focus = true
+option = "skill_set_view"

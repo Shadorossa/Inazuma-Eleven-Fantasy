@@ -1,0 +1,14 @@
+# Utilities: the player's DOUBLE archetype in Character Reforged's player header (assets\lua\_all\
+# utilities_archetype_header.lua; the rule: content\passive_config\player_archetype.toml). A piece of the header slot
+# (host character_reforged.header, Character Reforged content\menus\player_header_host.toml): on every header refresh
+# it shows the second archetype next to the first one, on the header's own quad (no layer, no room taken in the
+# slot's strip). Only with Character Reforged (the host is its own): without it this file is skipped and the header
+# shows the game's one archetype icon.
+schema = "VRFW.menu/2"
+if_mod = "character_reforged"
+
+[[entry]]
+host = "character_reforged.header"
+id = "double_archetype"
+order = 10
+action = { lua = "Utilities.ArchetypeHeader.Piece" }

@@ -1,0 +1,43 @@
+# Character Reforged (moved from Inazuma Fantasy 2026-10-14, docs/refactor/aura-mods-split.md «Player page»; the Hiper
+# page = the page of the new skill set's aura / mix slots, shown only while the option «Tabla de habilidades» is on
+# the new set). Personal plate "Hipertécnica" page, parent menus (research/scripts/plate_hiper_build.py with_block;
+# docs/game/skill-slots.md "Hiper page on the personal plate"). Last of all (rule of hiper-match-slot.md section 16.34).
+# Phase 2: + soccer_formation_menu; the banks are plate_hiper_bank, the plate itself plate_hiper_plate.
+# The block is evt_plate_hiper_common.lua (this folder, not the shared _lib), shared with plate_hiper_bank (same block) and
+# plate_hiper_plate (include @PH_COMMON@ at the top of its child).
+name = "plate_hiper_common"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]   # IF's merged dock scripts redefine what it wraps: IF's copy wraps them again
+order = 950
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "plate_hiper: the Hiper page declared to the player page registry, guide edits (parent menus)"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_plate_hiper_common.lua"
+  marker = "plate_hiper common"
+  crc = "none"
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_plate_hiper_common.lua"
+  marker = "plate_hiper common"
+  crc = "none"
+
+[[files]]
+stem = "soccer_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_plate_hiper_common.lua"
+  marker = "plate_hiper common"
+  crc = "none"

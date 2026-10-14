@@ -1,0 +1,48 @@
+schema = "VRFW.transform/2"
+# Group Summons: a keshin that several players summon together, like in IE GO Strikers 2013 (docs/game/mods/group-summons.md;
+# mechanism: docs/game/media/strikers-multi-summon.md §4, docs/framework/types/transform.md `[[aura_rule]]`). Who the
+# players are does not matter, only what they carry (their unit's six slots or Character Reforged's aura slot; a
+# miximax never grants these keshin: `transfer = false`). The VR-Framework's aura rule run time does the rest:
+#
+# * participants: the summoner + the nearest team-mates on the pitch that complete ONE set: `carriers` carriers of the
+#   keshin itself, OR one carrier of each keshin of a `components` set (different players, exact sets, no mixing);
+#   a player whose aura slot holds a component sees the group keshin offered on his aura command while a set holds.
+# * trigger: Character Reforged's aura command (RB+B / J) or the retail aura row; refused (logged) when no set holds,
+#   the team already runs that keshin, a participant is bound to another group keshin or a share is not covered.
+# * cost "shared": every participant pays an equal share of the keshin's move from his own pool of it in
+#   `cost_resource` (Aura Points' PEG: content\match_resources\peg.toml of aura_points, `move_cost` of the keshin;
+#   `cost_amount` = a fixed total instead); all must cover their share.
+# * partners "bound": while it runs the other participants start no aura; one of each group keshin per team at a time;
+#   when the summoner's keshin (or its armour) ends, the partners' end with it.
+# * all_can_use_move: every participant may fire the keshin's own move while it runs (Character Reforged's special
+#   moves button, RB+A / H), the cost shared the same way. Under the keshin's armour (All Keshin Armed's pairs) only
+#   the participant who wears it keeps it; a cost model that refuses the keshin's move under its armour refuses it
+#   for the whole group.
+# * cut_in: the summon event with every participant (content\anims\group_summons.toml; seats = carriers);
+#   move_event: the keshin move's event swapped for its every-participant copy while the group runs.
+# More group summons: one more [[aura_rule]] here (+ its anim events and aura row cells); carriers 2..4.
+
+# ---------------------------------------------------------------- Griffin (Grifo, wks00300): 3 players
+[[aura_rule]]
+aura = "wks00300"                                      # Griffin (Gryphon)
+carriers = 3
+components = [["wks00330", "wks00020", "wks00030"]]    # Pegasus Arc + Lancelot + Maestro
+all_can_use_move = true
+cost = "shared"
+cost_resource = "aura_points.peg"                      # each participant's PEG pool of the keshin (Aura Points)
+partners = "bound"
+transfer = false
+cut_in = "ev80_80300"                                  # group_summons.griffin_trio (the 3 participants)
+move_event = { from = "ev60_01900", to = "ev60_81900" }  # Flamberge with the 3 participants (group_summons.flamberge_trio)
+
+# ---------------------------------------------------------------- Arthur (Arturo, wks00240): 2 players
+[[aura_rule]]
+aura = "wks00240"                                      # Arthur
+carriers = 2
+components = [["wks00290", "wks00280"]]                # Shining Dragon + Dark Exodus
+all_can_use_move = true
+cost = "shared"
+cost_resource = "aura_points.peg"                      # each participant's PEG pool of the keshin (Aura Points)
+partners = "bound"
+transfer = false
+cut_in = "ev80_80240"                                  # group_summons.arthur_duo (the 2 participants)

@@ -1,0 +1,15 @@
+schema = "VRFW.base_table/1"
+# God Knows Machina: the animation is ev60_00340 «God Knows» (same cuts and curves): its sound list, name call replaced
+# made by research/scripts/cross_snd_build.py (docs/game/media/cross-fx-audit.md §3); edit the recipe, not this file
+file = "data/common/event_cfg/snd/ev60_95020_snd.cfg.bin"
+from = "data/common/event_cfg/snd/ev60_00340_snd.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 2
+values = ["waza_vc_485", 4, "sp020", -1, "c00<TYPE><NO>_s00_p<VARIATION>", 0, 0, "NONE"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["waza_vc_485", 4, "sp020", 1.0, 0, 0.0, -1, "c00<TYPE><NO>_s00_p<VARIATION>", 0, 0, 0, 0, "NONE"]

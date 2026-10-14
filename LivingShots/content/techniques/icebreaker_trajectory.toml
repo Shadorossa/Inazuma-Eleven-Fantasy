@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Lanza gélida (Icebreaker, whs03360 and whs03360_or, same cut-in ev60_03360;
+# whs03360_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights over
+# distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the ball is shot out of the snowflake 5.48 m up and comes down one straight ~10.5 deg line,
+# 35 m into the pitch (it ends under the grass); in the match it comes down that line into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move icebreaker):
+# the effect's ball group (ball_set = the event ball) of ev60033600 c0500, effect frames 538-550:
+# [[0.00, 5.48], [2.14, 5.34], [15.12, 2.48], [35.33, -0.94]] (0.08 m): 5.48 m -> -0.94 m over 34.61 m = 10.5 deg on
+# average (9.6 deg over the last frames). The 10.5 deg line from 5.48 m brought to 2.0 m at the goal = 18.78 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Lanza gélida (whs03360).
+[[edit]]
+target = "whs03360"
+trajectory = { goal_points = [[18.78, 5.48, 999, 9.39], [0.0, 2.0]], unblockable = false }

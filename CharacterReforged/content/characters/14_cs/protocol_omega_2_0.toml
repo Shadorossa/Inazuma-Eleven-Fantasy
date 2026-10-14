@@ -1,0 +1,108 @@
+schema = "VRFW.character/2"
+# Character Reforged · Protocol Omega 2.0 · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05020700_5000"                              # Beta
+
+  [[edit.cards]]
+  id = 0xED3FF528                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 313, control = 257, technique = 255, pressure = 197, physical = 173, intelligence = 227, agility = 185, freedom = 263 }
+
+[[edit]]
+target = "c05020630"                                   # Kilo
+
+  [[edit.cards]]
+  id = 0x8861A661                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 185, technique = 193, pressure = 225, physical = 271, intelligence = 248, agility = 223, freedom = 221 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 3 },                     # Tesla Coil
+    { move = 0x457EB170, level = 20 },                    # Pyrokinetic
+    { move = 0x650FA58E, level = 29 },                    # Spin Out
+    { move = 0xF7E49F60, level = 47 },                    # Magnetism
+  ]
+
+[[edit]]
+target = "c05020650"                                   # Foxtrot
+
+  [[edit.cards]]
+  id = 0xDE3B01E7                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 267, technique = 274, pressure = 180, physical = 186, intelligence = 240, agility = 194, freedom = 309 }
+  moves = [
+    { move = 0x650FA58E, level = 7 },                     # Spin Out
+    { move = 0xD9BB22A7, level = 19 },                    # Air Ride
+    { move = 0x82788A5A, level = 39 },                    # Straight Counter
+    { move = 0x1C4D4906, level = 48 },                    # Whirlpool
+  ]
+
+[[edit]]
+target = "c05020680"                                   # November
+
+  [[edit.cards]]
+  id = 0x6B957FAA                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 244, technique = 263, pressure = 217, physical = 176, intelligence = 251, agility = 201, freedom = 255 }
+  moves = [
+    { move = 0x650FA58E, level = 1 },                     # Spin Out
+    { move = 0x585098FC, level = 23 },                    # Slice and Dice
+    { move = 0x613ABD43, level = 36 },                    # Dawnrise
+    { move = 0x86F5F6E8, level = 57 },                    # Cupid's Arrow
+  ]
+
+[[edit]]
+target = "c05020700"                                   # Beta
+rank = 3
+growth = "normal"
+stats = { kick = 333, control = 265, technique = 252, pressure = 186, physical = 184, intelligence = 232, agility = 182, freedom = 335 }
+moves = [
+  { move = 0x05124F07, level = 6 },                       # Fission and Fusion
+  { move = 0x650FA58E, level = 22 },                      # Spin Out
+  { move = 0xB0BC314A, level = 46 },                      # Spin Meister
+  { move = 0x1BF20F08, level = 71 },                      # Omega Assault
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0x64EEAC09, level = 1 },                       # Athene [aura]
+]
+
+[[edit]]
+target = "c11905050"                                   # Beta
+rank = 3
+growth = "normal"
+stats = { kick = 290, control = 259, technique = 250, pressure = 209, physical = 170, intelligence = 236, agility = 188, freedom = 255 }
+
+  [[edit.cards]]
+  id = 0x8842AB42                                         # FW/MF · wind
+  moves = [
+    { move = 0x05124F07, level = 6 },                     # Fission and Fusion
+    { move = 0x650FA58E, level = 22 },                    # Spin Out
+    { move = 0xB0BC314A, level = 46 },                    # Spin Meister
+    { move = 0x1BF20F08, level = 71 },                    # Omega Assault
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x64EEAC09, level = 1 },                     # Athene [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0xB0069AEE                                         # FW/MF · wind
+  moves = [
+    { move = 0x05124F07, level = 6 },                     # Fission and Fusion
+    { move = 0x650FA58E, level = 22 },                    # Spin Out
+    { move = 0xB0BC314A, level = 46 },                    # Spin Meister
+    { move = 0x1BF20F08, level = 71 },                    # Omega Assault
+  ]

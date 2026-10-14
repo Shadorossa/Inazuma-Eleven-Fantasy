@@ -5,7 +5,7 @@
 # the player's own capsule icon, copied band by band into the holes 6 px to the left. The plate mesh moves 5 units
 # right (content\menus\kizuna_plate.toml) so the slanted right end clears «%». Only with config.toml
 # slanted_kizuna (default true). Until 1.16.0 clean_hud.dll painted it.
-schema = "vr_framework.image/1"
+schema = "VRFW.image/1"
 when = { config = "slanted_kizuna", default = true }
 
 [[recipe]]

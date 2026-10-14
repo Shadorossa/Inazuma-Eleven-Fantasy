@@ -7,6 +7,16 @@
   "OnFunction",
   "ActivateAuraSkill"
  ],
+ "ability_list_menu": {
+  "script": "ability_list_menu_5.00.29.00",
+  "require": [
+   "UpdateSkillDetailWindow"
+  ],
+  "forbid": [
+   "OnCloseLayer"
+  ],
+  "ambiguous": []
+ },
  "chara_bank_menu": {
   "script": "chara_bank_menu_6.00.09.00",
   "require": [

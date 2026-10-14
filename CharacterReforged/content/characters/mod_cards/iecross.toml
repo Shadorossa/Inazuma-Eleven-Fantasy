@@ -1,0 +1,51 @@
+schema = "VRFW.character/2"
+# Character Reforged · the cards of the mod iecross (Inazuma Eleven Cross, docs/release/iecross.md): their own per-card values (Lv 200 stats without
+# Suerte, growth), as for the retail cards (docs/refactor/aura-mods-split.md «Per-character data»). Moved from Inazuma
+# Fantasy's characters\iecross_cards.toml on 2026-10-14 (its rebalance of those cards; the INAROGUE rarity is InaRogue's).
+# Only while that mod is active (docs/framework/if-mod.md): its cards do not exist without it. Suerte is not declared:
+# Character Reforged derives it (scripts\lib\stats_curve.lua, M.derived_luck).
+# Regenerate the stats lines with research/scripts/mod_card_stats_build.py.
+if_mod = "iecross"
+default_lang = "en"
+
+[[edit]]
+target = "iecross.celia_hills_2"
+card = 0xFFF7C519
+growth = "normal"
+stats = { kick = 257, control = 227, technique = 251, pressure = 223, physical = 165, intelligence = 231, agility = 186, freedom = 375 }  # own stats: copy of c02024740 (GX)
+
+[[edit]]
+target = "iecross.axel_blaze_3"
+card = 0xA4A4D2DC
+growth = "normal"
+stats = { kick = 328, control = 244, technique = 258, pressure = 184, physical = 208, intelligence = 205, agility = 185, freedom = 247 }  # own stats: copy of c01000100 (GX)
+
+[[edit]]
+target = "iecross.byron_love"
+card = 0xFFF7C51A
+growth = "normal"
+stats = { kick = 294, control = 254, technique = 274, pressure = 211, physical = 153, intelligence = 263, agility = 166, freedom = 209 }  # own stats: copy of c01001900 (GX)
+
+[[edit]]
+target = "iecross.gazelle"
+card = 0x87162CB7
+growth = "normal"
+stats = { kick = 339, control = 257, technique = 263, pressure = 193, physical = 188, intelligence = 234, agility = 165, freedom = 213 }  # own stats: copy of c02020890 (model)
+
+[[edit]]
+target = "iecross.torch"
+card = 0xF0111C21
+growth = "normal"
+stats = { kick = 343, control = 259, technique = 261, pressure = 186, physical = 190, intelligence = 230, agility = 167, freedom = 213 }  # own stats: copy of c02020900 (model)
+
+[[edit]]
+target = "iecross.shawn_froste"
+card = 0xFFF7C51C
+growth = "normal"
+stats = { kick = 315, control = 242, technique = 259, pressure = 247, physical = 161, intelligence = 252, agility = 153, freedom = 247 }  # own stats: copy of c02023380 (GX)
+
+[[edit]]
+target = "iecross.xavier_foster"
+card = 0xFFF7C51D
+growth = "normal"
+stats = { kick = 273, control = 271, technique = 220, pressure = 221, physical = 162, intelligence = 254, agility = 171, freedom = 317 }  # own stats: copy of c03030040 (GX)

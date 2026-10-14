@@ -1,0 +1,25 @@
+# Rarity removal, team dock part (docs/game/characters/rarity-removal.md; mod No More Rarities since 2026-10-14,
+# docs/refactor/aura-mods-split.md «No More Rarities»): «Mejorar» (setting type 2 of the player popup «PERSONAJE» = the
+# rarity-up screen soccer_spirit_menu) is not offered, and every kind-0 player of the opened team is raised to rarity 4
+# when the dock opens (EVT_RarityNormalizeTeam).
+# 1.0.5 (2026-10-14, owner: one shared extension point for the popup rows, no mod redefines OnDecideFocus): a HOOK file
+# (docs/framework/lua-hosts.md §7). Until then a text graft: it greyed type 2 and refused it inside OnDecideFocus and
+# called the normalisation inside OnInit, which made No More Rarities build Character Reforged's ss2_dock into its own
+# merged team_dock_formation_menu (promoted locals, redefined after every lua_early root). Now «Mejorar» is a Hide rule
+# of the VR-Framework's list rows (docs/framework/list-rows.md) and the normalisation a «before OnInit» handler on the
+# framework's host of this script (the dock number / type read from the parameters OnInit itself reads, not consumed).
+name = "rar_dock"
+mod = "no_more_rarities"
+# Inazuma Fantasy's prime_dock / team_cmd_dock still list rar_dock in `requires` (order only now: a hook file is never
+# merged; the same rule ids make a second copy in one VM replace the first)
+rebuilt_by = ["inazuma_fantasy"]
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Rarity removal: «Mejorar» not offered on the team dock, team normalised to 5 stars when the dock opens"
+
+[[hooks]]
+stem = "team_dock_formation_menu"
+src = "rarity_dock.lua"

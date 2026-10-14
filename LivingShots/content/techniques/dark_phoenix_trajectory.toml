@@ -1,0 +1,30 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Fénix oscuro (Dark Phoenix, whs00860, forest). In the cut-in the phoenix
+# carries the ball down out of the sky onto the goal: c0600 from 13.6 m at ~29°, c0700 on at 6-18° to 5.7 m at the
+# cut's end, still coming down; in the match it leaves high and comes down that line: the angled dive
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6). Its aura
+# (content\effects\dark_phoenix_ball.toml, the phoenix and the ball's fire) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move dark_phoenix / dark_phoenix_c0700;
+# dark_phoenix_ball_fx.py --trajectory), the event ball b000001 c_add_1_0 of ev60_00860:
+#   c0600, event frames 1452 (it leaves the phoenix's hold, 13.58 m up) - 1504: 13.58 m -> 8.22 m over 9.6 m,
+#          29.3° down on average;
+#   c0700 (its own frame), event frames 1508-1568: 8.69 m -> 5.74 m over 16.5 m, 10.1° on average, 17.7° over
+#          the last 4 frames;
+#   both cuts: 8.3 m down over 26.1 m = 17.7° on average.
+#   height     = 13.5: the start (13.58 m).
+#   angle      = 18:   the mean of the whole descent (both cuts).
+#   end_height = 2.0:  the cut-in ends at 5.7 m still coming down; brought into the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for whs00860 (no conflict). Its override whs00860_or is not edited here: a new move of Inazuma Fantasy, which loads
+# after shot_fx (it requires it), so an [[edit]] of it here would be an unknown technique (technique.md §8); the aura
+# (content\effects\dark_phoenix_ball.toml) does cover it.
+
+# Fénix oscuro (whs00860).
+[[edit]]
+target = "whs00860"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 13.61 m (13.5 over a kick on the pitch) held until 35.73 m before the goal point, then the 18.0
+# deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 17.87 m down (bend 0.5). A shot shorter
+# than 35.73 m starts lower, on the line.
+trajectory = { goal_points = [[35.73, 13.61, 999, 17.87], [0.0, 2.0]], unblockable = false }

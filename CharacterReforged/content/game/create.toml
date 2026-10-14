@@ -1,0 +1,50 @@
+schema = "VRFW.game/2"
+# Character Reforged › the commands of the base game's «Crear …» entry (scripts\lib\create.lua; graft
+# character_reforged_board on the retail skill board; docs/refactor/aura-mods-split.md «The base game's create entry»).
+# The rows are the systems the active mods declare ([CharacterReforged.Create.<system>] in content\pairing\*.toml); each
+# system's own store command keeps the pair (the graft calls it by its id).
+
+# (charaHdl) -> n, create item 1 .. n: the rows of the aura piece's list; the board slots remembered (n = 0: no row)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_BEGIN"
+handler = "CharacterReforged.Create.Begin"
+
+# () -> n, create item 1 .. n: every declared system's create item (the «Fantasy» skill table's picker; nothing remembered)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_ITEMS"
+handler = "CharacterReforged.Create.Items"
+
+# (item) -> row (0 = not a create item), the system's store command id (the «Fantasy» skill table's pick)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_ROW"
+handler = "CharacterReforged.Create.Row"
+
+# (charaHdl) -> row (0 = no create item picked), board slot, the system's store command id
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_PICKED"
+handler = "CharacterReforged.Create.Picked"
+
+# (row, k) -> the system's carrier item id (k = the store's carrier index)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_CARRIER"
+handler = "CharacterReforged.Create.Carrier"
+
+# (charaHdl, slot, carrierInv) -> ok: the carrier on that board slot (the game's placement)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_PLACE"
+handler = "CharacterReforged.Create.Place"
+
+# (charaHdl, slot) -> ok: the slot gets back what it held before the list (refused / cancelled)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_RESTORE"
+handler = "CharacterReforged.Create.Restore"
+
+# (row, code) -> labelId, reasonId, labelText, reasonText: the refusal window's texts (code 0 = none)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_REFUSAL"
+handler = "CharacterReforged.Create.Refusal"
+
+# (step, values…) -> true: one loader.log line per step of the graft («create: board <step> …»)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_LOG"
+handler = "CharacterReforged.Create.Log"

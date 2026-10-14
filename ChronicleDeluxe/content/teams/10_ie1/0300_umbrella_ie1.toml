@@ -1,0 +1,40 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (chronicle_deluxe, 2026-10-14): the same team as Chronicles Deluxe's (the older mod chronicles_deluxe,
+# set aside; same key, so the same team id and save entries). While chronicles_deluxe is active this file is left out
+# (it declares the identical team): the two mods never declare it twice.
+if_not_mod = "chronicles_deluxe"
+# Umbrella (Kasamino) as an IE1 team (Nacho 2026-10-06): the rival of the Chronicle side node after Inazuma Kids FC
+# (content/teams/70_route_nodes/side_nodes.toml, docs/game/modes/chronicle-side-branches.md). Roster = the IE1
+# Kasamino line-up of the wiki (16 players, captain Idemae You = Lou Edmonds), which is the roster of the retail legend
+# team tm_cro_legend_IE2_01 (VR files it under IE2): same cards, loadouts, formation, kit uni_u011201, emblem em010012.
+# Its level comes from its game (the node's rows: Inazuma Kids FC's levels).
+default_lang = "en"
+
+[[team]]
+name = "cro_ie1_umbrella"
+key = "evt_cro_ie1_umbrella"
+based_on = "tm_cro_legend_IE2_01"      # Umbrella (legend team: the Kasamino roster)
+name_text = 0xEFE452DE                 # Umbrella (the game's name text)
+series = "IE1"
+
+# Moves: every player plays his card's own moveset (loadout 0: the characters' TOML), no aura / Hiper (Nacho 2026-10-06).
+[[edit]]
+target = "cro_ie1_umbrella"
+member = [
+  { slot = 0, patch = true, loadout = 0 },
+  { slot = 1, patch = true, loadout = 0 },
+  { slot = 2, patch = true, loadout = 0 },
+  { slot = 3, patch = true, loadout = 0 },
+  { slot = 4, patch = true, loadout = 0 },
+  { slot = 5, patch = true, loadout = 0 },
+  { slot = 6, patch = true, loadout = 0 },
+  { slot = 7, patch = true, loadout = 0 },
+  { slot = 8, patch = true, loadout = 0 },
+  { slot = 9, patch = true, loadout = 0 },
+  { slot = 10, patch = true, loadout = 0 },
+  { slot = 11, patch = true, loadout = 0 },
+  { slot = 12, patch = true, loadout = 0 },
+  { slot = 13, patch = true, loadout = 0 },
+  { slot = 14, patch = true, loadout = 0 },
+  { slot = 15, patch = true, loadout = 0 },
+]

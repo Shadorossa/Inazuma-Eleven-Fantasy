@@ -1,0 +1,29 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Disparo valiente (Brave Shot, whs01240) (Nacho 2026-10-08: each move its
+# own fall, matching its cut-in). In the cut-in the ball hangs inside a crystal sphere ~10.9 m up (c0400), is kicked
+# out of it and streaks towards the goal on a shallow line down (c0400's end), then the last cut (c0500, the ball
+# hidden) shows the shot as a long beam of light whose head runs low into the goal (0.7 m) and whose tail goes back up
+# to the kick; in the match it comes into the goal down the cut-in's line: the angled dive
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6). Its aura
+# (content\effects\brave_shot_ball.toml, the blue comet flame) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move brave_shot; brave_shot_ball_fx.py --trajectory): the
+# event ball (b000001 c_add_1_0) of ev60_01240 c0400, event frames 1308 (the kick out of the sphere) - 1356 (the cut's
+# end): (-0.05, 10.91, -16.34) -> (-0.37, 8.59, -3.36), 10.91 m -> 8.59 m over 13.0 m on the ground = 10.1° down on
+# average, 9.0° over the last 4 frames. The c0500 beam (head = joint beam/pos) agrees: its line from the tail up at the
+# kick (10-14 m) to the head is 13° (first frame) to 8.8° (last frames) down, and its head comes in from 1.70 m to
+# 0.70 m at the goal mouth (effect frames 348-408).
+#   height     = 10.8: the kick (10.91 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 10:   the c0400 line kick -> cut end (10.1°), inside the beam's 8.8-13°.
+#   end_height = 1.2:  the beam's head comes in at 0.7 m; raised into the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# Disparo valiente (whs01240).
+[[edit]]
+target = "whs01240"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 10.91 m (10.8 over a kick on the pitch) held until 55.07 m before the goal point, then the 10.0
+# deg line down into 1.2 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 27.53 m down (bend 0.5). A shot shorter
+# than 55.07 m starts lower, on the line.
+trajectory = { goal_points = [[55.07, 10.91, 999, 27.53], [0.0, 1.2]], unblockable = false }

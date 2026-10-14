@@ -3,7 +3,7 @@
 # with CMND_TEXT_GET by id = crc32(row id). Were Inazuma Fantasy's Fantasy.FreeMatchAskTeam / Fantasy.FreeMatchRivalLocked
 # until 2026-10-09. Missing rows: the retail «start match?» text / the buzzer only.
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # Direct = true: the confirm of an opponent that offers one class; %s = the team name. crc32 4268189860

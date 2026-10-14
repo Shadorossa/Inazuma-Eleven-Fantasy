@@ -1,0 +1,246 @@
+schema = "VRFW.character/2"
+# Character Reforged · Fire Dragon · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03030710"                                   # Bryce Whitingale
+
+  [[edit.cards]]
+  id = 0xE525B25E                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 316, control = 244, technique = 259, pressure = 231, physical = 146, intelligence = 234, agility = 154, freedom = 275 }
+  moves = [
+    { move = 0xA2BF7076, level = 1 },                     # Side Swipe
+    { move = 0x46FA651E, level = 1 },                     # Water Veil
+    { move = 0x5E5AF1A9, level = 10 },                    # Northern Impact
+    { move = 0x09C23C18, level = 50 },                    # Fire Blizzard
+  ]
+
+[[edit]]
+target = "c03030690"                                   # Claude Beacons
+
+  [[edit.cards]]
+  id = 0x2C3E5261                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 332, control = 223, technique = 203, pressure = 194, physical = 211, intelligence = 196, agility = 204, freedom = 297 }
+  moves = [
+    { move = 0x25276CB9, level = 1 },                     # Solar Surprise
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0xAE2B3429, level = 10 },                    # Atomic Flare
+    { move = 0x111B676E, level = 50 },                    # Fire Blizzard (fire)
+  ]
+
+[[edit]]
+target = "c03030610"                                   # Jeongsu Cho
+
+  [[edit.cards]]
+  id = 0xE4E7D869                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 185, control = 188, technique = 171, pressure = 252, physical = 209, intelligence = 220, agility = 261, freedom = 209 }
+  moves = [
+    { move = 0x5B3151F0, level = 1 },                     # Nitro Slap
+    { move = 0x47657634, level = 20 },                    # Flame Breath
+    { move = 0xEF5D458A, level = 20 },                    # Burnout
+    { move = 0x5E7E4775, level = 47 },                    # Table-Turner
+  ]
+
+[[edit]]
+target = "c03030620"                                   # Umi Hwang
+
+  [[edit.cards]]
+  id = 0xCFCA8BAA                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 157, control = 205, technique = 219, pressure = 262, physical = 201, intelligence = 320, agility = 198, freedom = 209 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x79E3E635, level = 10 },                    # Racing Flame
+    { move = 0x2B343D01, level = 34 },                    # Cyclone
+    { move = 0x4CDC2C6B, level = 53 },                    # Shooting Star
+  ]
+
+[[edit]]
+target = "c03030630"                                   # Dooyoon Hong
+
+  [[edit.cards]]
+  id = 0xD6D1BAEB                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 196, technique = 196, pressure = 234, physical = 211, intelligence = 273, agility = 204, freedom = 242 }
+  moves = [
+    { move = 0x025FD09B, level = 1 },                     # Volcano Cut
+    { move = 0x79E3E635, level = 10 },                    # Racing Flame
+    { move = 0x5643C944, level = 25 },                    # Killer Slide
+    { move = 0xDF70E04C, level = 38 },                    # Rodeo Clown
+  ]
+
+[[edit]]
+target = "c03030640"                                   # Minho Cho
+
+  [[edit.cards]]
+  id = 0x99902C2C                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 255, control = 166, technique = 154, pressure = 270, physical = 232, intelligence = 265, agility = 197, freedom = 217 }
+  moves = [
+    { move = 0x7A67325B, level = 1 },                     # Flame Dance
+    { move = 0x5643C944, level = 5 },                     # Killer Slide
+    { move = 0x79E3E635, level = 10 },                    # Racing Flame
+    { move = 0x61FB16FD, level = 54 },                    # Divine Arrows
+  ]
+
+[[edit]]
+target = "c03030650"                                   # Songhwan Ko
+
+  [[edit.cards]]
+  id = 0x808B1D6D                                         # DF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 146, control = 178, technique = 167, pressure = 286, physical = 198, intelligence = 285, agility = 216, freedom = 267 }
+  moves = [
+    { move = 0x79E3E635, level = 1 },                     # Racing Flame
+    { move = 0x3663DB4C, level = 16 },                    # Utter Gutsiness Bat
+    { move = 0xEBD03938, level = 23 },                    # Utter Gutsiness Catch
+    { move = 0x5781A373, level = 42 },                    # Hurricane Arrows
+  ]
+
+[[edit]]
+target = "c03030660"                                   # Paekyeong Park
+
+  [[edit.cards]]
+  id = 0xABA64EAE                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 150, control = 230, technique = 227, pressure = 261, physical = 208, intelligence = 282, agility = 239, freedom = 213 }
+  moves = [
+    { move = 0x79E3E635, level = 1 },                     # Racing Flame
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0x41F3CDC2, level = 20 },                    # Scorching Tackle
+    { move = 0xABA58912, level = 46 },                    # Ignited Steal
+  ]
+
+[[edit]]
+target = "c03030680"                                   # Eunyeong Kim
+
+  [[edit.cards]]
+  id = 0x35256320                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 157, control = 217, technique = 198, pressure = 274, physical = 181, intelligence = 270, agility = 252, freedom = 247 }
+  moves = [
+    { move = 0x41F3CDC2, level = 1 },                     # Scorching Tackle
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0x087999EE, level = 1 },                     # Heel Drop
+    { move = 0x58E8FC83, level = 20 },                    # Rolling Hell
+  ]
+
+[[edit]]
+target = "c03030700"                                   # Changsu Choi
+
+  [[edit.cards]]
+  id = 0xFC3E831F                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 228, technique = 284, pressure = 212, physical = 208, intelligence = 227, agility = 188, freedom = 293 }
+  moves = [
+    { move = 0x79E3E635, level = 1 },                     # Racing Flame
+    { move = 0x087999EE, level = 1 },                     # Heel Drop
+    { move = 0xB4B4D106, level = 20 },                    # Dragon Cannon
+    { move = 0x316A7390, level = 63 },                    # Land Dragon
+  ]
+
+[[edit]]
+target = "c03030720"                                   # Chi-Won Ho
+
+  [[edit.cards]]
+  id = 0xCE08E19D                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 174, control = 201, technique = 184, pressure = 247, physical = 165, intelligence = 221, agility = 228, freedom = 255 }
+  moves = [
+    { move = 0x5B3151F0, level = 1 },                     # Nitro Slap
+    { move = 0x8FBCFC3C, level = 25 },                    # Blazing Knuckle
+    { move = 0xBFCC20E7, level = 36 },                    # Wood Chopper
+    { move = 0xEF5D458A, level = 50 },                    # Burnout
+  ]
+
+[[edit]]
+target = "c03030730"                                   # Dong-Hyun Seul
+
+  [[edit.cards]]
+  id = 0xD713D0DC                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 184, technique = 178, pressure = 189, physical = 227, intelligence = 225, agility = 201, freedom = 221 }
+  moves = [
+    { move = 0x79E3E635, level = 1 },                     # Racing Flame
+    { move = 0x5643C944, level = 25 },                    # Killer Slide
+    { move = 0x514A6198, level = 31 },                    # Asteroid Belt
+    { move = 0x4BD584B7, level = 67 },                    # Power Charge
+  ]
+
+[[edit]]
+target = "c03030740"                                   # Jung-Hoon Yi
+
+  [[edit.cards]]
+  id = 0x9852461B                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 144, control = 257, technique = 282, pressure = 227, physical = 171, intelligence = 275, agility = 213, freedom = 213 }
+  moves = [
+    { move = 0x087999EE, level = 1 },                     # Heel Drop
+    { move = 0x322F0C40, level = 24 },                    # Spider Web
+    { move = 0x58E8FC83, level = 25 },                    # Rolling Hell
+    { move = 0x71831119, level = 61 },                    # Foul Offence 2
+  ]
+
+[[edit]]
+target = "c03030750"                                   # Sung-Jin Noh
+
+  [[edit.cards]]
+  id = 0x8149775A                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 366, control = 219, technique = 185, pressure = 208, physical = 131, intelligence = 189, agility = 165, freedom = 267 }
+  moves = [
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0x259F08C6, level = 12 },                    # Whirlwind Twister
+    { move = 0x41F3CDC2, level = 43 },                    # Scorching Tackle
+    { move = 0x4DDFEDE2, level = 72 },                    # Eagle Buster
+  ]
+
+[[edit]]
+target = "c03030760"                                   # Joon-Ho Ja
+
+  [[edit.cards]]
+  id = 0xAA642499                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 257, technique = 271, pressure = 189, physical = 166, intelligence = 238, agility = 157, freedom = 213 }
+  moves = [
+    { move = 0x087999EE, level = 1 },                     # Heel Drop
+    { move = 0x58E8FC83, level = 20 },                    # Rolling Hell
+    { move = 0x01DB04F5, level = 28 },                    # Defence Scan
+    { move = 0x29B328E6, level = 55 },                    # Spectacle Crash
+  ]
+
+[[edit]]
+target = "c11803030"                                   # Lee Ji Seong
+
+  [[edit.cards]]
+  id = 0x302F80BD                                         # DF/GK · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 196, control = 185, technique = 173, pressure = 240, physical = 230, intelligence = 258, agility = 209, freedom = 263 }
+  moves = [
+    { move = 0x49933AEE, level = 3 },                     # Perfect Tower
+    { move = 0xC4701649, level = 8 },                     # Ice Block
+    { move = 0xAF28F5A0, level = 14 },                    # The Tower
+    { move = 0x1FC99D68, level = 36 },                    # Snow Angel
+  ]

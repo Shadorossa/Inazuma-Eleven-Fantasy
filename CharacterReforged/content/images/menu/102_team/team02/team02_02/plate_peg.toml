@@ -1,0 +1,132 @@
+# Character Reforged › the «PEG» look of the shared Hiper card (the skill table's move panels on evt_skill_slot_menu and
+# the player page's Hiper card, EVT_HC.PegLook / PegPool: the TENSIÓN squares and the «T» after the number turn into
+# the aura's PEG / SP when a mod answers CMND_EVT_PEG_INFO, e.g. Aura Points). Inazuma Fantasy's file of the same name
+# (GENERATED there by research/scripts/plate_peg_build.py; same sprites, same PNGs): copied here on 2026-10-14 (without
+# Inazuma Fantasy the sprites were missing and the panel drew white rectangles), IF's copy removed the same day with
+# the player page (docs/refactor/aura-mods-split.md «Player page»). New texture evt_ph_peg in the retail team02_02
+# atlas.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "evt_ph_peg"
+size = [408, 96]
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["es", "pt"]
+name = "evt_gtxt_peg01"
+texture = "evt_ph_peg"
+x = 4
+y = 4
+png = "plate_peg/peg_es.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["fr"]
+name = "evt_gtxt_peg01"
+texture = "evt_ph_peg"
+x = 4
+y = 4
+png = "plate_peg/pg_fr.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["it"]
+name = "evt_gtxt_peg01"
+texture = "evt_ph_peg"
+x = 4
+y = 4
+png = "plate_peg/psg_it.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["de"]
+name = "evt_gtxt_peg01"
+texture = "evt_ph_peg"
+x = 4
+y = 4
+png = "plate_peg/kgp_de.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["", "en", "zh_hans", "zh_hant"]
+name = "evt_gtxt_peg01"
+texture = "evt_ph_peg"
+x = 4
+y = 4
+png = "plate_peg/fsp_en.png"
+
+[[texture]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "team02_02"
+size = [920, 612]
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["es", "pt"]
+name = "evt_gtxt_peg_t"
+texture = "team02_02"
+x = 0
+y = 536
+png = "plate_peg/peg_es_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["fr"]
+name = "evt_gtxt_peg_t"
+texture = "team02_02"
+x = 0
+y = 536
+png = "plate_peg/pg_fr_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["it"]
+name = "evt_gtxt_peg_t"
+texture = "team02_02"
+x = 0
+y = 536
+png = "plate_peg/psg_it_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["de"]
+name = "evt_gtxt_peg_t"
+texture = "team02_02"
+x = 0
+y = 536
+png = "plate_peg/kgp_de_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+lang = ["", "en", "zh_hans", "zh_hant"]
+name = "evt_gtxt_peg_t"
+texture = "team02_02"
+x = 0
+y = 536
+png = "plate_peg/fsp_en_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "evt_tension_on_peg"
+texture = "team02_02"
+x = 120
+y = 536
+png = "plate_peg/tension_on_peg.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "evt_gtxt_sp_t"
+texture = "team02_02"
+x = 60
+y = 536
+png = "plate_peg/sp_t.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "evt_tension_on_sp"
+texture = "team02_02"
+x = 148
+y = 536
+png = "plate_peg/tension_on_sp.png"

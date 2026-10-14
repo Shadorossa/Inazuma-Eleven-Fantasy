@@ -5,8 +5,27 @@
   "OnInit",
   "Step",
   "OnFunction",
-  "ActivateAuraSkill"
+  "ActivateAuraSkill",
+  "EVT_OpenOriginalBoard"
  ],
+ "ability_list_menu": {
+  "script": "ability_list_menu_5.00.29.00",
+  "require": [
+   "UpdateSkillDetailWindow"
+  ],
+  "forbid": [
+   "OnCloseLayer"
+  ],
+  "ambiguous": []
+ },
+ "ability_list_menu_on_bluebg": {
+  "script": "ability_list_menu_on_bluebg_5.00.29.00",
+  "require": [
+   "SendSkillIdToLua"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "bb_stadium_top_menu": {
   "script": "bb_stadium_top_menu_1.03.98.00",
   "require": [
@@ -160,14 +179,6 @@
   "chunk_crc": 392231094,
   "chunk_size": 845
  },
- "team_dock_formation_menu": {
-  "script": "team_dock_formation_menu_7.00.09.00",
-  "require": [
-   "OpenSubWinSelectCharaSetting"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
  "title_menu_2": {
   "script": "title_menu_2_7.01.12.00",
   "require": [
@@ -232,6 +243,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "shop_menu_basara_top": {
+  "script": "shop_menu_basara_top_0.00.00.00",
+  "require": [
+   "PlayFocusAnimeIn"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "shop_menu_buy": {
   "script": "shop_menu_buy_7.00.05.00",
   "require": [
@@ -272,6 +291,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "team_dock_menu_rpg_battle": {
   "script": "team_dock_menu_rpg_battle_1.04.19.01",
   "require": [
@@ -284,6 +311,15 @@
   "script": "vs_route_town_menu_6.00.32.00",
   "require": [
    "GetRouteTextureInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "evt_skill_slot_menu": {
+  "script": "evt_skill_slot_menu",
+  "require": [
+   "EVT_OpenOriginalBoard",
+   "EVT_PickCoroutine"
   ],
   "forbid": [],
   "ambiguous": []

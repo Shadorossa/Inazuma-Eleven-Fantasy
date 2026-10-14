@@ -1,0 +1,23 @@
+schema = "VRFW.character/2"
+# Character Reforged · no team · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11500560"                                   # King Colossal <FUL:UMIBOZU>
+
+  [[edit.cards]]
+  id = 0x97B4EDED                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 190, technique = 176, pressure = 204, physical = 262, intelligence = 231, agility = 198, freedom = 309 }
+  moves = [
+    { move = 0x75994916, level = 1 },                     # Cunning Pull
+    { move = 0xC66BD10D, level = 13 },                    # Zigzag Spark
+    { move = 0x1C4D4906, level = 20 },                    # Whirlpool
+    { move = 0x2B343D01, level = 30 },                    # Cyclone
+    { move = 0x613ABD43, level = 38 },                    # Dawnrise
+    { move = 0xE0549BE6, level = 43 },                    # Easy Breezy Kid
+  ]

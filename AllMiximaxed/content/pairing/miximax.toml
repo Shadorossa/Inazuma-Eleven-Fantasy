@@ -1,0 +1,31 @@
+schema = "CharacterReforged.pairing/1"
+# All Miximaxed › its pairing rules (system `miximax`), over Character Reforged's defaults (content/pairing/defaults.toml
+# of that mod). Any two of the player's own cards may be fused, as in Chrono Stone; one partner per base, a base is
+# never a partner. A game mode adds its own rules by declaring this table again (its keys win, it loads later).
+
+[CharacterReforged.PairRules.miximax]
+same_character = false
+one_partner_per_base = true
+base_may_be_partner = false
+base_rarities_denied = []
+partner_rarities_denied = []
+# no partner move: the miximax is applied as a retail Mix-Max (the carrier row's boosts, the base's own moves)
+moves = 0
+
+# The base game's «Crear miximax» row: Character Reforged's create entry on the retail skill board (an aura piece's list
+# shows the item, the partner comes from the retail bank picker; scripts\lib\create.lua of that mod). The store command
+# answers 10 + PairCheck code for a pair-rule refusal (pair_codes), its own codes below; the carrier goes on the slot.
+[CharacterReforged.Create.miximax]
+item = "wmm_evt_create"
+label = "all_miximaxed.create_label"
+store = "CMND_ALLMIXIMAXED_SET"
+carrier = "wmm_evt"
+pair_codes = 10
+order = 10
+
+# CMND_ALLMIXIMAXED_SET's own codes (scripts/miximax.lua) -> the refusal window's text
+[CharacterReforged.Create.miximax.refusals]
+"1" = "character_reforged.create_refused_off"
+"20" = "character_reforged.create_refused_not_allowed"
+"21" = "character_reforged.create_refused_store"
+"22" = "character_reforged.create_refused_store"

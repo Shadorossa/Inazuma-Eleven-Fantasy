@@ -2,7 +2,7 @@
 # menu_text in 9 languages, read by assets\lua\_all\utilities_top_bar.lua with CMND_TEXT_GET by id = crc32(row id), and by the
 # game's «Configuración de controles» (the label of the action row, content\inputs\top_bar.toml).
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the open button's hint left of the shortcut row: only the button glyph markup of the action's command

@@ -3,7 +3,7 @@
 # docs/framework/free-match-tabs.md). The framework's Lua (menu_engine soccer_vs_cpu_list_menu/100_free_match_tabs.lua)
 # sets the tab count and hides the instances past it, so with no declared tab the bar is the retail one. Was Inazuma
 # Fantasy's (menus/107_vs/soccer_vs_cpu_list_menu.toml, graft fantasy_tab) until 2026-10-08.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_vs_cpu_list_menu"

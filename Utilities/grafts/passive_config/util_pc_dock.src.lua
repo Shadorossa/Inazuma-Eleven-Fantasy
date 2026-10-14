@@ -5,12 +5,13 @@
 -- 2026-10-08 back to the ORIGINAL design (Inazuma Fantasy 2026-09-28, ff3bb93934): setting type 9 («Pasivas
 -- heredadas», renamed «Configuración de pasivas») is offered to every player the plugin configures and hidden for
 -- coaches, managers and players of a mode's reserved slot; type 10 (the inheritance trash button) is gone. Choosing
--- type 9 never opens the inherit menu: the type-9 branch of the dock's own per-player coroutine calls UTIL_PCD.Plate
--- (one line inserted before the retail branch: graft passive_config_dispatch of Utilities; Inazuma Fantasy's merged
--- file carries the same line in its graft prime_dock), which turns the plate to «PASIVAS DE EQUIPO», hands a session
--- to personal_plate_menu (util_pc_plate.lua) through the parameter store, waits in the dock's coroutine until it
--- ends and restores the dock exactly as the original did; the retail branch then sees «handled» and goes on as
--- after any setting. (The 2026-10-08 replacement, which let the retail branch run and faked the inherit menu's
+-- type 9 never opens the inherit menu: a Handle rule of the VR-Framework's list rows (docs/framework/list-rows.md,
+-- since Utilities 1.15.10; until then one line inserted into the retail OnDecideFocus by the graft
+-- passive_config_dispatch, which redefined that whole function) runs UTIL_PCD.Plate in the dock's own per-player
+-- coroutine right after the popup closed (Inazuma Fantasy's merged file carries the same call in its graft
+-- prime_dock): it turns the plate to «PASIVAS DE EQUIPO», hands a session to personal_plate_menu (util_pc_plate.lua)
+-- through the parameter store, waits in the dock's coroutine until it ends and restores the dock exactly as the
+-- original did; the dock then goes on as after any setting (the framework cancels the retail pick). (The 2026-10-08 replacement, which let the retail branch run and faked the inherit menu's
 -- open / exists answers, left the dock waiting for a restore the retail code never did: stuck after Atrás.)
 -- Without the plugin (CMND_UTIL_PC_INFO unanswered) nothing changes.
 -- Hook file (graft [[hooks]]): GetSelectSettingTypeOrderList is wrapped with an EVT_Host handler of the
@@ -214,6 +215,19 @@ do
       return out
     end
   end)
+  -- «Configuración de pasivas» (setting type 9) of the player popup: the session above instead of the inherit menu,
+  -- for the players the plugin configures (the same test UTIL_PCD.Plate makes)
+  if VRFW_ListRows ~= nil then
+    VRFW_ListRows.Handle(VRFW_ListRows.PLAYER_COMMANDS, {id = "utilities.passive_config",
+      row = VRFW_ListRows.PLAYER_COMMAND.INHERITED_PASSIVES,
+      when = function(context)
+        local on, mode = UTIL_PCD.Info(context.handle)
+        return on and mode > 0
+      end,
+      run = function(context)
+        UTIL_PCD.Plate(context.handle)
+      end})
+  end
 @ICONS@
   UTIL_PCI.Install(UTIL_PCD.Wrap)
 end

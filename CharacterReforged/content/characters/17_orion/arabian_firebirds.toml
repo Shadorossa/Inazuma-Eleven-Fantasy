@@ -1,0 +1,237 @@
+schema = "VRFW.character/2"
+# Character Reforged · Arabian Firebirds · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c08050010"                                   # Falcon Al-Saqir
+
+  [[edit.cards]]
+  id = 0x6D2D0581                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 255, control = 198, technique = 178, pressure = 236, physical = 196, intelligence = 228, agility = 247, freedom = 243 }
+  moves = [
+    { move = 0x00267A00, level = 4 },                     # Falcon Counter
+    { move = 0x4F387999, level = 11 },                    # Sun Block
+    { move = 0xEA12530F, level = 20 },                    # Double Rocket
+    { move = 0xB01D1B68, level = 44 },                    # Power Spike
+  ]
+
+[[edit]]
+target = "c08050020"                                   # Osprey Al-Bahar
+
+  [[edit.cards]]
+  id = 0x46005642                                         # DF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 171, technique = 143, pressure = 227, physical = 234, intelligence = 230, agility = 208, freedom = 259 }
+  moves = [
+    { move = 0x56FBAD3B, level = 1 },                     # Seal Matrix
+    { move = 0x72BFA108, level = 17 },                    # Wall of Atlantis
+    { move = 0x12DB8440, level = 35 },                    # Red Hot Shower
+    { move = 0x7CACF0B0, level = 49 },                    # Horn Train
+  ]
+
+[[edit]]
+target = "c08050030"                                   # Merlin Al-Yaman
+
+  [[edit.cards]]
+  id = 0x5F1B6703                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 182, technique = 157, pressure = 223, physical = 213, intelligence = 246, agility = 204, freedom = 263 }
+  moves = [
+    { move = 0xABA58912, level = 1 },                     # Ignited Steal
+    { move = 0x12DB8440, level = 9 },                     # Red Hot Shower
+    { move = 0x72BFA108, level = 34 },                    # Wall of Atlantis
+    { move = 0xB13A6C3D, level = 52 },                    # Zigzag Flame
+  ]
+
+[[edit]]
+target = "c08050040"                                   # Kestrel Al-Sahir
+
+  [[edit.cards]]
+  id = 0x105AF1C4                                         # DF/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 169, technique = 136, pressure = 247, physical = 204, intelligence = 238, agility = 219, freedom = 313 }
+  moves = [
+    { move = 0x7EEA4EE9, level = 4 },                     # Blade Attack
+    { move = 0x737DCB3F, level = 15 },                    # Pancake Defence
+    { move = 0xA37D1A41, level = 24 },                    # Hyper-Swiper
+    { move = 0xD8794890, level = 38 },                    # Kangaroo Kick
+  ]
+
+[[edit]]
+target = "c08050050"                                   # Buzzard Al-Sahma
+
+  [[edit.cards]]
+  id = 0x0941C085                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 228, technique = 201, pressure = 169, physical = 171, intelligence = 182, agility = 188, freedom = 271 }
+  moves = [
+    { move = 0xABA58912, level = 1 },                     # Ignited Steal
+    { move = 0x00A10ABD, level = 16 },                    # Ball Lightning
+    { move = 0x12DB8440, level = 23 },                    # Red Hot Shower
+    { move = 0x10A0C298, level = 34 },                    # Warp Drive
+  ]
+
+[[edit]]
+target = "c08050060"                                   # Griffon Al-Qahir
+
+  [[edit.cards]]
+  id = 0x226C9346                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 225, technique = 216, pressure = 178, physical = 178, intelligence = 192, agility = 181, freedom = 230 }
+  moves = [
+    { move = 0x7A67325B, level = 1 },                     # Flame Dance
+    { move = 0xC0A013E6, level = 15 },                    # Liar Shot
+    { move = 0x25276CB9, level = 21 },                    # Solar Surprise
+    { move = 0x5DA7EA06, level = 55 },                    # Boomerang Bluff
+  ]
+
+[[edit]]
+target = "c08050070"                                   # Shrike Al-Jazzar
+
+  [[edit.cards]]
+  id = 0x3B77A207                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 271, control = 223, technique = 213, pressure = 178, physical = 180, intelligence = 189, agility = 182, freedom = 230 }
+  moves = [
+    { move = 0xDDCA0D2A, level = 1 },                     # Bouncing Bomb
+    { move = 0x5FE1545F, level = 15 },                    # Flame Veil
+    { move = 0x28B0E96F, level = 27 },                    # Heavy Mettle
+    { move = 0x427719AC, level = 57 },                    # Gale Dash
+  ]
+
+[[edit]]
+target = "c08050080"                                   # Hawke Al-Bazzar
+
+  [[edit.cards]]
+  id = 0xBCEFBEC8                                         # MF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 216, technique = 197, pressure = 194, physical = 167, intelligence = 189, agility = 190, freedom = 271 }
+  moves = [
+    { move = 0x28B0E96F, level = 2 },                     # Heavy Mettle
+    { move = 0x12DB8440, level = 19 },                    # Red Hot Shower
+    { move = 0x10A0C298, level = 35 },                    # Warp Drive
+    { move = 0x00A10ABD, level = 46 },                    # Ball Lightning
+  ]
+
+[[edit]]
+target = "c08050090"                                   # Robin Al-Ahmar
+
+  [[edit.cards]]
+  id = 0xA5F48F89                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 223, technique = 216, pressure = 180, physical = 180, intelligence = 190, agility = 184, freedom = 225 }
+  moves = [
+    { move = 0x5DA7EA06, level = 5 },                     # Boomerang Bluff
+    { move = 0x12DB8440, level = 13 },                    # Red Hot Shower
+    { move = 0x00A10ABD, level = 35 },                    # Ball Lightning
+    { move = 0x18019E0A, level = 45 },                    # Double Grenade
+  ]
+
+[[edit]]
+target = "c08050100"                                   # Condor Al-Kundur
+
+  [[edit.cards]]
+  id = 0x75F45EF7                                         # FW/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 286, control = 236, technique = 194, pressure = 177, physical = 162, intelligence = 177, agility = 185, freedom = 228 }
+  moves = [
+    { move = 0x1D4E888F, level = 3 },                     # Condor Dive
+    { move = 0x12DB8440, level = 15 },                    # Red Hot Shower
+    { move = 0xB813E775, level = 20 },                    # Flaming Firebird
+    { move = 0x4DDFEDE2, level = 50 },                    # Eagle Buster
+  ]
+
+[[edit]]
+target = "c08050110"                                   # Perry Al-Surah
+
+  [[edit.cards]]
+  id = 0x6CEF6FB6                                         # FW/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 373, control = 236, technique = 219, pressure = 176, physical = 162, intelligence = 189, agility = 173, freedom = 234 }
+  moves = [
+    { move = 0x12DB8440, level = 1 },                     # Red Hot Shower
+    { move = 0x457EB170, level = 13 },                    # Pyrokinetic
+    { move = 0xB813E775, level = 23 },                    # Flaming Firebird
+    { move = 0xDDCA0D2A, level = 39 },                    # Bouncing Bomb
+  ]
+
+[[edit]]
+target = "c08050120"                                   # Harris Al-Suhra
+
+  [[edit.cards]]
+  id = 0x47C23C75                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 234, technique = 232, pressure = 189, physical = 161, intelligence = 211, agility = 186, freedom = 293 }
+  moves = [
+    { move = 0xB813E775, level = 3 },                     # Flaming Firebird
+    { move = 0x12DB8440, level = 12 },                    # Red Hot Shower
+    { move = 0x00A10ABD, level = 28 },                    # Ball Lightning
+    { move = 0x592A96B4, level = 50 },                    # Afterimage
+  ]
+
+[[edit]]
+target = "c08050130"                                   # Eagle Al-Suhra
+
+  [[edit.cards]]
+  id = 0x5ED90D34                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 274, control = 232, technique = 219, pressure = 181, physical = 163, intelligence = 203, agility = 185, freedom = 267 }
+  moves = [
+    { move = 0xB813E775, level = 3 },                     # Flaming Firebird
+    { move = 0x12DB8440, level = 18 },                    # Red Hot Shower
+    { move = 0x10A0C298, level = 28 },                    # Warp Drive
+    { move = 0x592A96B4, level = 56 },                    # Afterimage
+  ]
+
+[[edit]]
+target = "c11808060"                                   # Anqa Qushchi
+
+  [[edit.cards]]
+  id = 0x9A59F3F9                                         # GK/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 196, technique = 173, pressure = 178, physical = 223, intelligence = 169, agility = 242, freedom = 271 }
+  moves = [
+    { move = 0xDF2D9951, level = 4 },                     # Close Counter
+    { move = 0x4F387999, level = 11 },                    # Sun Block
+    { move = 0xEA12530F, level = 18 },                    # Double Rocket
+    { move = 0xF14FDC17, level = 24 },                    # Shot Pocket
+  ]
+
+[[edit]]
+target = "c11808070"                                   # Roc Nasr
+
+  [[edit.cards]]
+  id = 0x8342C2B8                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 235, control = 196, technique = 169, pressure = 185, physical = 213, intelligence = 170, agility = 225, freedom = 339 }
+  moves = [
+    { move = 0x12DB8440, level = 1 },                     # Red Hot Shower
+    { move = 0x4F387999, level = 19 },                    # Sun Block
+    { move = 0xB813E775, level = 25 },                    # Flaming Firebird
+    { move = 0x0536F9DB, level = 55 },                    # Sand Blaster
+  ]

@@ -1,0 +1,43 @@
+# Hissatsu Effects (moved out of Inazuma Fantasy 2026-10-14). Hand-written (Nacho 2026-10-06, «Habilidades» move card, page 2): the «Q • • E» row at the bottom of the move card
+# (team02_02_skill_detail_info) of ability_list_menu for a move with a ball mini-effect (graft research/grafts/skill_card).
+# Same assets as the player page's row (research/grafts/plate_pages, layer evt_pp_dots): copies of the retail status
+# base soccer11_05_formation_status_base (its _page01_off / _page01_on dot meshes and its _text_btn_l01 / _text_btn_r01
+# key glyphs, atlas soccer11_05.g4tx). Four instances, each showing ONE part and placed by the Lua:
+#   0 = the Q (LT) glyph, 1 = dot 1 (description), 2 = dot 2 (mini-effect), 3 = the E (RT) glyph.
+# Round 2 (in game: the row never showed; the copy draws at priority 301, under the card's 570, and floated free):
+# each instance is ATTACHED to the card's _pos_base01 (the card's centre; the card copy evt_skc_card = the retail card
+# + 4 attach rows evt_skc_dots0..3, used in ability_list_menu only) so it moves with the card, the Lua turns each trace
+# on and sets the draw priority above the card (580).
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "evt_skc_dots"
+from = "soccer11_05_formation_status_base"
+remove = [
+    { param = "NullLayerName" },
+    { param = "_touch_arw01_l" },
+    { param = "_touch_arw01_r" },
+]
+
+# the card with the row's attach rows (trace name, card node _pos_base01, layer evt_skc_dots, instance)
+[[object]]
+name = "evt_skc_card"
+from = "team02_02_skill_detail_info"
+keep_name = true
+add_block = [{ block = "CMenuAttachLocator", values = [], after = "CMenuIconSwapComponent" }]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xACD6B405, 0x5A709C12, 0x6527353D, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDBD18493, 0x5A709C12, 0x6527353D, 1] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x42D8D529, 0x5A709C12, 0x6527353D, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x35DFE5BF, 0x5A709C12, 0x6527353D, 3] },
+]
+
+[[redirect]]
+object = "team02_02_skill_detail_info"
+to = "evt_skc_card"
+menus = ["ability_list_menu"]
+
+[[patch]]
+menu = "ability_list_menu"
+add_layer = { name = "evt_skc_dots", object = "evt_skc_dots", count = 4, align = [0, 0], scale = 1, after = "team00_40_change_page_guide", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "team00_40_change_page_guide" }] }
+res = ["#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"]

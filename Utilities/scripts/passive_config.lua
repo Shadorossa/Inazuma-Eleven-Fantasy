@@ -36,6 +36,10 @@ local DIAMOND_RARITY = 8
 local SCAN_EVERY_MS = 5000
 
 local CFG, LAYOUT, RULES, UNLOCK = nil, nil, nil, "configured"
+-- the rule of the player's archetype (pc_core player_rule): nil = the game's archetype untouched, else
+-- { slots, without, origin }: Utilities' own [player_archetype] (content\passive_config\player_archetype.toml) or a
+-- mod's typed [slots] archetype = true. Read once, the same rule for every answer (no second derivation anywhere).
+local PLAYER = nil
 local CAT, DECL, VALUES = nil, nil, {}
 local OWN, POS, BASES = {}, {}, {}
 local ACTIVE = false
@@ -231,8 +235,10 @@ local function load_tables()
     end
   end
   CAT, DECL, VALUES, OWN, POS, BASES, RULES, UNLOCK = cat, d, values, own, pos, bases, rules, unlock
+  PLAYER = C.player_rule(rules, d.player_archetype)
   LAYOUT = C.with_order(LAYOUT, rules.order)
   info("slot rules: " .. C.describe(rules))
+  info("player archetype: " .. C.describe_player_rule(PLAYER))
   local general, n_by_id, rewards_n = 0, 0, 0
   for _ in pairs(cat.by_id) do n_by_id = n_by_id + 1 end
   for _, id in ipairs(cat.list) do
@@ -772,7 +778,7 @@ function PC.Info(h)
   local max = LAYOUT and LAYOUT.max or 3
   if not pr then return false, 0, C.NO_ARCHETYPE, C.NO_ARCHETYPE, max, 0 end
   local a, b = C.NO_ARCHETYPE, C.NO_ARCHETYPE
-  if C.archetype_mode(RULES) then a, b = C.derive(CAT, eff) end
+  if PLAYER then a, b = C.derive(CAT, eff, PLAYER.slots) end
   local mode = 0
   for k = 1, N do
     if C.slot_open_in(RULES, pr.card, pr.rarity, k, LAYOUT) then mode = 1 end
@@ -865,9 +871,9 @@ function PC.Set(h, slot, id)
   local slots = {}
   for j = 1, N do slots[j] = string.format("0x%08X", after and after[j] or 0) end
   local arch = ""
-  if C.archetype_mode(RULES) and after then
-    local _, _, name = C.derive(CAT, after)
-    arch = "; archetype " .. name
+  if PLAYER and after then
+    local _, _, name, found = C.derive(CAT, after, PLAYER.slots)
+    arch = "; archetype " .. ((found or PLAYER.without == "none") and name or "the game's own")
   end
   info(string.format("chara 0x%08X (param 0x%08X) slot %d -> %s (was 0x%08X); slots %s%s", h, pr.param, k, id == 0 and "default" or string.format("0x%08X", id), eff[k], table.concat(slots, " "), arch))
   refresh_player(h)
@@ -951,11 +957,14 @@ function PC.InheritClear(h, slot)
   return true, was ~= 0
 end
 
+-- the player's archetype for the build getters: (archetype, name) or nil = the game's own answer (no rule, not a
+-- saved player, or no archetype passive in the archetype slots with [player_archetype] without = "game")
 local function archetype_of(h)
-  if not C.archetype_mode(RULES) then return nil end
+  if not PLAYER then return nil end
   local pr, eff = view(h, 0)
   if not pr then return nil end
-  local a, _, name = C.derive(CAT, eff)
+  local a, _, name, found = C.derive(CAT, eff, PLAYER.slots)
+  if not found and PLAYER.without == "game" then return nil end
   return a, name
 end
 
@@ -965,7 +974,7 @@ function PC.CharaStatus(h, field)
   h, field = arg_u32(h), arg_u32(field)
   if not (h and field) then return false end
   if C.list_index(h) then return true, 0 end
-  if field ~= FIELD_BUILD or not C.archetype_mode(RULES) then return false end
+  if field ~= FIELD_BUILD or not PLAYER then return false end
   local a, name = archetype_of(h)
   if not a then return false end
   log_filter(string.format("chara 0x%08X archetype icon -> %d (%s)", h, a, name))
@@ -974,7 +983,7 @@ end
 
 -- 0x2B16FA30(hdl, …) → ok, build type: the same answer as field 36
 function PC.CharaBuild(h)
-  if not ACTIVE or not C.archetype_mode(RULES) then return false end
+  if not ACTIVE or not PLAYER then return false end
   h = arg_u32(h)
   if not h then return false end
   local a = archetype_of(h)

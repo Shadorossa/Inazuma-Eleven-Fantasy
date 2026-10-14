@@ -2,7 +2,7 @@
 # 2026-10-08 the standalone mod away_kit): CMD_FUNC3 previews the away twin, decide writes it with
 # CMND_UTIL_TEAM_UNIFORM (plugin utilities.dll). The pairs come from the plugin at run time (CMND_UTIL_AK_PAIR, derived
 # from the item_config / uniform_config the game loads). The CMD_FUNC3 row of equip_uniform_menu is
-# research/mods/Utilities/menus/equip_uniform_menu.toml (menu_engine), the texts research/mods/Utilities/text/rows/
+# research/mods/Utilities/content/menus/equip_uniform_menu.toml (menu_engine), the texts research/mods/Utilities/text/rows/
 # menu_text.toml (ids crc32("away_kit.home") / crc32("away_kit.away"), kept). Utilities is lua_early, so these whole-function
 # edits run before the mods that wrap the same functions (Inazuma Fantasy's pachanga_equip wraps OnInit). Built into
 # the mod: menu_assemble.py build --mod utilities.

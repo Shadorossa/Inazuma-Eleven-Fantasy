@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Oso polar n.º 2 (Polar Bear No. 2, whs02770 and whs02770_or, same cut-in
+# ev60_02770; whs02770_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights
+# over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the bear's beam shoots the ball off an 8.30 m perch down a straight ~20 deg line; in the match
+# it comes down that line into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move polar_bear_2):
+# the event ball (s00) of ev60_02770 c0500, event frames 1081-1103: [[0.00, 8.30], [8.02, 5.38], [10.03, 4.58]]
+# (0.05 m; two points 0.08 m): 8.30 m -> 4.58 m over 10.03 m = 20.3 deg; the line brought to 2.0 m at the goal =
+# 16.98 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Oso polar n.º 2 (whs02770).
+[[edit]]
+target = "whs02770"
+trajectory = { goal_points = [[16.98, 8.3, 999, 8.49], [0.0, 2.0]], unblockable = false }

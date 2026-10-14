@@ -1,0 +1,261 @@
+schema = "VRFW.character/2"
+# Character Reforged · Badminton Club · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11500490"                                   # Nadia Watershed
+
+  [[edit.cards]]
+  id = 0x63E27CDB                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 244, technique = 238, pressure = 174, physical = 205, intelligence = 205, agility = 181, freedom = 221 }
+  moves = [
+    { move = 0xD9BB22A7, level = 1 },                     # Air Ride
+    { move = 0xB0BC314A, level = 12 },                    # Spin Meister
+    { move = 0x768AB9C5, level = 20 },                    # Frosticle
+    { move = 0x0D368F6B, level = 28 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c11700300"                                   # Choco Racketfeld
+
+  [[edit.cards]]
+  id = 0xFAA7701C                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 297, control = 252, technique = 209, pressure = 162, physical = 213, intelligence = 185, agility = 176, freedom = 221 }
+  moves = [
+    { move = 0x828A53C8, level = 3 },                     # Plasma Ball
+    { move = 0x650FA58E, level = 11 },                    # Spin Out
+    { move = 0xE8F5C774, level = 30 },                    # Megalodon
+    { move = 0xA2FB4736, level = 46 },                    # Flying Fish
+  ]
+
+[[edit]]
+target = "c11700310"                                   # Minty Shuttlebrook
+
+  [[edit.cards]]
+  id = 0xE3BC415D                                         # FW/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 292, control = 243, technique = 197, pressure = 162, physical = 238, intelligence = 174, agility = 181, freedom = 247 }
+  moves = [
+    { move = 0x1876DB66, level = 5 },                     # Disaster Strike
+    { move = 0x65B7C1F1, level = 19 },                    # Sumo Stomp
+    { move = 0x105C91A7, level = 35 },                    # Slingshot
+    { move = 0xBBE07677, level = 47 },                    # Sidewinder
+  ]
+
+[[edit]]
+target = "c11704010"                                   # Phoebe Soarsky
+
+  [[edit.cards]]
+  id = 0x6E986853                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 196, control = 194, technique = 176, pressure = 204, physical = 273, intelligence = 240, agility = 193, freedom = 230 }
+  moves = [
+    { move = 0x49933AEE, level = 1 },                     # Perfect Tower
+    { move = 0x650FA58E, level = 13 },                    # Spin Out
+    { move = 0x0710C61E, level = 30 },                    # Perimeter Zone
+    { move = 0xB7F1AED6, level = 58 },                    # Double Cyclone
+  ]
+
+[[edit]]
+target = "c11704020"                                   # Helen Deavor
+
+  [[edit.cards]]
+  id = 0x45B53B90                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 205, control = 192, technique = 171, pressure = 196, physical = 281, intelligence = 231, agility = 197, freedom = 247 }
+  moves = [
+    { move = 0x485150D9, level = 1 },                     # Body Shield
+    { move = 0x0CF4E55C, level = 9 },                     # Double Touch
+    { move = 0x36A270F2, level = 31 },                    # Rolling Slide
+    { move = 0xB13A6C3D, level = 53 },                    # Zigzag Flame
+  ]
+
+[[edit]]
+target = "c11704030"                                   # Janet Hollilocks
+
+  [[edit.cards]]
+  id = 0x5CAE0AD1                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 186, technique = 188, pressure = 223, physical = 275, intelligence = 252, agility = 200, freedom = 247 }
+  moves = [
+    { move = 0x78218C02, level = 4 },                     # Duskfall
+    { move = 0x12E67CC1, level = 19 },                    # Future Eye
+    { move = 0xDCC9CCA3, level = 30 },                    # Tesla Coil
+    { move = 0x6BA49049, level = 46 },                    # Mystic Mist
+  ]
+
+[[edit]]
+target = "c11704040"                                   # Barnaby Livergain
+
+  [[edit.cards]]
+  id = 0x13EF9C16                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 244, technique = 242, pressure = 173, physical = 208, intelligence = 207, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x2354CA2D, level = 1 },                     # Wind God's Dance
+    { move = 0x1C8CE2B8, level = 16 },                    # God Knows
+    { move = 0xE0549BE6, level = 33 },                    # Easy Breezy Kid
+    { move = 0x768AB9C5, level = 47 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c11704050"                                   # Sten Fanborough
+
+  [[edit.cards]]
+  id = 0x0AF4AD57                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 231, control = 242, technique = 244, pressure = 182, physical = 211, intelligence = 212, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x7DD6FEF8, level = 2 },                     # Athena's Anthem
+    { move = 0xA8E0F6C2, level = 16 },                    # Kung Fu Header
+    { move = 0x17A96A44, level = 32 },                    # Clone Faker
+    { move = 0x21127474, level = 42 },                    # Ultra Moon
+  ]
+
+[[edit]]
+target = "c11704060"                                   # Crest Vertall
+
+  [[edit.cards]]
+  id = 0x21D9FE94                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 239, technique = 220, pressure = 173, physical = 238, intelligence = 196, agility = 188, freedom = 238 }
+  moves = [
+    { move = 0x9D236FA3, level = 2 },                     # Sword of the King
+    { move = 0x17110E3B, level = 12 },                    # Jumbo Sandwich
+    { move = 0x64CDCFB9, level = 32 },                    # Rising Dragon
+    { move = 0x4031A7F5, level = 56 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "c11704070"                                   # Wyatt Stockaway
+
+  [[edit.cards]]
+  id = 0x38C2CFD5                                         # GK/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 188, control = 201, technique = 169, pressure = 230, physical = 259, intelligence = 215, agility = 261, freedom = 247 }
+  moves = [
+    { move = 0x93E8DBF8, level = 1 },                     # Dimensional Hand
+    { move = 0x18C035B4, level = 13 },                    # Ghost Pull
+    { move = 0xF309624E, level = 36 },                    # Dual Smash
+    { move = 0x91AE65A1, level = 56 },                    # Giant Spider
+  ]
+
+[[edit]]
+target = "c11704080"                                   # Pristin Florynce
+
+  [[edit.cards]]
+  id = 0xBF5AD31A                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 235, technique = 215, pressure = 176, physical = 236, intelligence = 193, agility = 189, freedom = 251 }
+  moves = [
+    { move = 0x9D236FA3, level = 2 },                     # Sword of the King
+    { move = 0x65B7C1F1, level = 12 },                    # Sumo Stomp
+    { move = 0x64CDCFB9, level = 32 },                    # Rising Dragon
+    { move = 0x19BA3BFC, level = 52 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c11704090"                                   # Edmund Boon
+
+  [[edit.cards]]
+  id = 0xA641E25B                                         # GK/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 209, technique = 192, pressure = 176, physical = 269, intelligence = 184, agility = 234, freedom = 221 }
+  moves = [
+    { move = 0xBA833662, level = 2 },                     # Million Hands
+    { move = 0x7A67325B, level = 19 },                    # Flame Dance
+    { move = 0x47657634, level = 34 },                    # Flame Breath
+    { move = 0xFF5C8DAF, level = 42 },                    # Shot Stopper
+  ]
+
+[[edit]]
+target = "c11704100"                                   # Willem Durrmore
+
+  [[edit.cards]]
+  id = 0x76413325                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 196, control = 189, technique = 169, pressure = 203, physical = 298, intelligence = 232, agility = 198, freedom = 230 }
+  moves = [
+    { move = 0x67F17FA8, level = 5 },                     # Mega Quake
+    { move = 0xDEB28A7B, level = 9 },                     # Monkey Turn
+    { move = 0x60F8D774, level = 14 },                    # Gravestone
+    { move = 0x2AF65736, level = 52 },                    # Bamboo Pattern
+  ]
+
+[[edit]]
+target = "c11704110"                                   # Corday Dremin
+
+  [[edit.cards]]
+  id = 0x6F5A0264                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 246, technique = 208, pressure = 174, physical = 215, intelligence = 185, agility = 184, freedom = 255 }
+  moves = [
+    { move = 0xDE4ED944, level = 1 },                     # Snowstorm Leopard
+    { move = 0xC2E6ADBF, level = 18 },                    # Log Roll
+    { move = 0xDB01CFC1, level = 35 },                    # Thunder Beast
+    { move = 0x4683AADF, level = 58 },                    # Space Penguin
+  ]
+
+[[edit]]
+target = "c11704120"                                   # Candace Mardipanz
+
+  [[edit.cards]]
+  id = 0x447751A7                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 246, technique = 230, pressure = 171, physical = 212, intelligence = 200, agility = 184, freedom = 238 }
+  moves = [
+    { move = 0x7C1494CF, level = 1 },                     # Tornado Tunnel
+    { move = 0xA37D1A41, level = 18 },                    # Hyper-Swiper
+    { move = 0x0D368F6B, level = 31 },                    # Heaven's Time
+    { move = 0x768AB9C5, level = 39 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c11704130"                                   # Gloria Somdenn
+
+  [[edit.cards]]
+  id = 0x5D6C60E6                                         # FW/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 250, technique = 208, pressure = 170, physical = 211, intelligence = 182, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x828A53C8, level = 5 },                     # Plasma Ball
+    { move = 0x50880BAF, level = 12 },                    # Frozen Steal
+    { move = 0x9349F1DA, level = 33 },                    # Zephyr Shot
+    { move = 0xE8F5C774, level = 54 },                    # Megalodon
+  ]

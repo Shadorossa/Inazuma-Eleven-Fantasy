@@ -1,0 +1,31 @@
+# Skill table entry on the team dock (docs/refactor/aura-mods-split.md «Skill table»; docs/game/skill-slots.md section 7).
+# Mod Character Reforged: with the option «Tabla de habilidades» on «Fantasy» (row character_reforged.skill_set_view of
+# research/mods/CharacterReforged/options.toml, default off = «Victory Road») the team dock's «Tabla de habilidades»
+# (player popup «PERSONAJE», setting type 5) opens the skill table evt_skill_slot_menu (graft ss2_menus: 6 moves + the
+# aura slot + the mix slot) instead of the ability board; off = Victory Road's own entry (the ability board).
+# 1.7.9 (2026-10-14, owner: «Character Reforged must not touch the team dock popup at all»): a HOOK file
+# (docs/framework/lua-hosts.md §7), no text edit of the script any more. Until then this graft redefined the popup's
+# OnDecideFocus with promoted chunk locals (the type-5 branch, the entry's greying, «Mover» filtered out of
+# GetSelectSettingTypeOrderList while the option was on) and Utilities' passive_config_dispatch carried a copy of its
+# lines (whichever redefined OnDecideFocus last kept both entries). Now:
+#   * the popup's rows are the mods' rules on the VR-Framework's list rows (docs/framework/list-rows.md): «Mover» is
+#     hidden by BetterUI (always, whatever the option), Utilities' type 9 is a Handle rule there;
+#   * the redirect happens at the target: team_dock_skill_table_entry.lua installs, from a «before OnInit» handler on the
+#     framework's host of this script, CharacterReforged.InstallBoardOpenRedirect (assets\lua\_all\
+#     character_reforged_skill_table_entry.lua): the retail branch's CMND_OPEN_MENU_OBJECT of the board opens the skill
+#     table (with the parameters the «Equipamiento» entry gives equip_menu), its wait for the board waits for the skill
+#     table, and «is the board unlocked» answers yes while the option is on (the entry stays selectable, as before).
+#     The option is read (and logged once) when the entry is used, never at Lua load.
+# The name stays ss2_dock: Inazuma Fantasy's _phases.toml part lists it.
+name = "ss2_dock"
+mod = "character_reforged"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Skill table: the team dock's «Tabla de habilidades» opens evt_skill_slot_menu at the board's open while the option is on «Fantasy»"
+
+[[hooks]]
+stem = "team_dock_formation_menu"
+src = "team_dock_skill_table_entry.lua"

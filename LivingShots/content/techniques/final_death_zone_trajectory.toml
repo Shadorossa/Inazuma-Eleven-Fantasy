@@ -1,0 +1,24 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Final Death Zone (Triángulo letal final, whs02010 and whs02010_or, same
+# cut-in ev60_02010; whs02010_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight,
+# heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+#
+# Measured (research/scripts/final_death_zone_ball_fx.py --trajectory): the event ball (b000001 s01 c_add_1_0) of
+# ev60_02010 c0400, effect frames 330 (the kick, 18.5 m up in space) - 462 (the beam's goal end), distance run on the
+# ground from the kick and height. The ball stops in the last triangle (F) from 382 to 436 (one point, 42-47 m) and is
+# then shot along the beam; the whole path is close to one straight line down (13° on average).
+#
+#   points = [[0.0, 18.49], [4.13, 17.54], [8.93, 16.36], [13.54, 15.24], [18.54, 14.02], [23.67, 12.76],
+#             [28.68, 11.54], [33.29, 10.41], [38.09, 9.24], [42.10, 8.26], [47.03, 7.24], [52.36, 6.17],
+#             [56.90, 5.25], [61.44, 4.33], [65.56, 3.50], [69.66, 2.67], [71.25, 2.35]]
+#
+# The cut-in's run is 71 m, longer than any match shot: its straight line is kept, anchored at the goal end. The line
+# kick -> beam end, (18.49 - 2.35) m over 71.25 m = 12.8 deg, brought down to 2.0 m at the goal (the keeper's reach) =
+# 72.80 m long: every shot starts on it (a 30 m shot 8.8 m up) and comes into the goal down the beam's line.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point; the first height is held.
+
+# Triángulo letal final (whs02010; covers whs02010_or).
+[[edit]]
+target = "whs02010"
+trajectory = { goal_points = [[72.8, 18.49, 999, 36.4], [0.0, 2.0]], unblockable = false }

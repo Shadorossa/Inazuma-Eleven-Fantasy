@@ -2,7 +2,7 @@
 # docs/game/mechanics/player-career-stats.md §4). Ids = crc32 of the label (the Lua asks @crc:utilities.cs_…@ and
 # keeps a Spanish fallback). Moved from Inazuma Fantasy's menu_text rows evt_cs_* on 2026-10-08 (the same texts).
 # Format: docs/framework/types/text.md «Rows with fixed ids».
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 [[row]]

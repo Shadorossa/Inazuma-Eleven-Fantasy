@@ -1,0 +1,21 @@
+# Chronicle Deluxe's match difficulties (owner 2026-10-14: «each team keeps only the chronicle battle … remove every
+# rarity but the heroic battle»; docs/game/mods/chronicle-deluxe.md §8). The mechanism is the VR-Framework's
+# (VRFW.MatchDifficulty, docs/framework/match-difficulties.md; its retail set: VRFW content\defaults\match_difficulty.toml);
+# this file only declares what the mod changes, merged over the framework's by Id.
+#
+# Normal board pieces: Crónica (1) and Batalla heroica (4). Gate pieces: their gate battle (2) only. The route-unlock
+# battle of a normal piece is not offered: a Crónica win counts as its clear (graft chronicle_deluxe_board). Nothing is
+# removed from the game data or from a save: the hidden rows keep their clear / lock bits.
+# The «Competir contra bots» classes (6-9) are not touched.
+
+[MatchDifficulty.RouteOpen]
+Contexts = ["gate"]          # hidden on normal pieces (a Crónica win counts as its clear); still the gate battle
+
+[MatchDifficulty.RareItems]
+Enabled = false              # Batalla de objetos inusuales
+
+[MatchDifficulty.HeroicaPlus]
+Enabled = false              # Batalla heroica+
+
+[MatchDifficulty.Legendaria]
+Enabled = false              # Batalla legendaria

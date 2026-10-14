@@ -1,0 +1,35 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction",
+  "EVT_OpenOriginalBoard"
+ ],
+ "common_skill_telop": {
+  "script": "common_skill_telop_1.01.26.00",
+  "require": [
+   "SetupCommonSkillTelop"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "ability_learning_board_menu": {
+  "script": "ability_learning_board_menu_7.00.00.00",
+  "require": [
+   "SetCrossButtonFocusMode"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "evt_skill_slot_menu": {
+  "script": "evt_skill_slot_menu",
+  "require": [
+   "EVT_OpenOriginalBoard",
+   "EVT_PickCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

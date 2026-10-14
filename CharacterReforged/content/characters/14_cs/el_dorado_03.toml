@@ -1,0 +1,19 @@
+schema = "VRFW.character/2"
+# Character Reforged · El Dorado 03 · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06039320"                                   # Axel Blaze
+
+  [[edit.cards]]
+  id = 0xE631296C                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 366, control = 277, technique = 284, pressure = 181, physical = 193, intelligence = 244, agility = 136, freedom = 209 }
+  moves = [
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                     # Fireball Storm
+    { move = 0x0B011EBF, level = 1 },                     # Fireball Screw
+    { move = 0xEAB3792D, level = 1 },                     # Grand Fire
+  ]

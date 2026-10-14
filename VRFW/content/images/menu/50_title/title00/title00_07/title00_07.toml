@@ -5,7 +5,7 @@
 # below give the scene the retail _off (blue duotone) / _on (colour under a blue wash) looks at the first start and
 # cut it to the retail tile shape: the only game input is btn_base01_off's alpha, used as a mask. No Level-5 pixel
 # ships. The sprite names are research/mods/mods_menu/tile.toml's (the plugin hands them to the title).
-schema = "vr_framework.image/1"
+schema = "VRFW.image/1"
 
 [[texture]]
 atlas = "#/menu/50_title/title00/title00_07/title00_07.g4tx"

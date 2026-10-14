@@ -13,7 +13,7 @@
 # (vrfw_chain.g4tx: plates, ring, line, card) and its background for the list of maps; a map's own background comes
 # from its declaration (loaded on demand). The script: graft contact_map (`menu_assemble.py build --mod vr_framework`),
 # packed by framework_pack.py as assets\lua\screens\vrfw_contact_map_menu.lua.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # the anchor's layout (.g4pkm): a copy of the retail save01_01 with the system line / time text moved off screen
 layout = [

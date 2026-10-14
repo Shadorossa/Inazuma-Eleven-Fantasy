@@ -1,7 +1,7 @@
 # Texts of Utilities' friends panel («Lista de amigos», docs/game/ui/friends.md; the panel
 # assets\lua\_all\utilities_friends.lua reads them with CMND_TEXT_GET(crc32(id))). Format: docs/game/engine/
 # text-engine.md §2. «%s» = a name, a code or a number. The top bar entry's own label is in content\menus\top_bar.toml.
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the panel's title

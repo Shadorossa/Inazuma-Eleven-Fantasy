@@ -1,0 +1,40 @@
+schema = "VRFW.transform/2"
+# All Miximaxed: a miximax between any two characters on the base game (docs/game/mods/all-miximaxed.md). Moved out of
+# Inazuma Fantasy's content\transforms\if_miximax.toml on 2026-10-14 (the generic part; IF keeps its rules there).
+
+# The framework's any-pair generator on (types/transform.md §7.6.2): any base × any partner gets the generated look
+# (the base himself in the partner's hair, skin and eye colours); retail pairs and the pairs any mod declares keep their
+# own look over it. The colour data are this mod's (assets\evt_mx = data/common/evt_mx). The first mod turning the
+# generator on owns the fusion store (save blob all_miximaxed\miximax.json; IF's old copy is imported once:
+# content\game\miximax.toml [[VRFW.SaveImport]]).
+[miximax]
+free = true
+colors = "data/common/evt_mx"
+# the «create» row (techniques\carriers.toml): never a retail pair, never a retail miximax form
+carriers = ["wmm_evt_create"]
+# which stored fusions run: the pairing rules of Character Reforged (scripts\miximax.lua; a game mode that loads later
+# names its own function here and wins)
+validity = "AllMiximaxed.Validity"
+
+# The two pseudo-items in the game's ability lists: the carrier a board slot holds after a creation is never listed
+# (each slot gets its own copy), «Crear miximax» only while the skill board's aura list asks for it (UI flag
+# evt_mx_list_create, Character Reforged's graft character_reforged_board).
+[ability_list]
+hide = ["wmm_evt"]
+create = ["wmm_evt_create"]
+create_flag = "evt_mx_list_create"
+
+# The miximax of the base game: any owned player with any owned partner, applied like a retail Mix-Max (aura type 2,
+# the carrier wmm_evt on the board's aura piece, fired from the team's aura row by the game's own executor; the
+# VR-Framework activates the stored fusion's look on that press). The carrier row is a clone of the retail
+# «Miximax Trans» row: its HDP cost, time, buffs and cut-in. Stats and moves: the base's own (the base is the source of
+# truth; the partner only lends his colours). A game mode with its own miximax rules (Inazuma Fantasy: the Chrono
+# Stone stat transfer, the partner move, the Hiper button) declares its own transform for this carrier instead.
+[[transform]]
+name = "miximax"
+kind = "miximax"
+command = "wmm_evt"
+source = { partner = "any" }
+users = { anyone = true }
+look = { hair = "partner", skin = "partner", iris = "partner" }
+if_not_mod = "inazuma_fantasy"

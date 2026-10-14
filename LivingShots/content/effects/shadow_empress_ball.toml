@@ -1,0 +1,26 @@
+# «Emperatriz oscura» (Shadow Empress, whs10090; fire shot, cut-in ev60_10090): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0500, the ball kicked off its 14.9 m perch and coming down
+# ~30 deg): the dark purple flame cluster round it (flame shells, flame flower, small flame discs and its glow card),
+# instead of the plain fire special-shot aura (ega0075c).
+# The object is ev61009se0 (effect/event/ev60/ev61009se0/), built by research/scripts/shadow_empress_ball_fx.py from
+# the cut-in's effect object ev60100900: the cut-in's motion from the kick (441) replayed (the flame flower stretching
+# along the flight as in the cut-in), then held at c0500 frame 506, ball at the origin flying +Z, x1 (the cut-in's own
+# size, ~0.7 m). Nothing else of the cut-in is alive while the ball flies. docs/game/media/shadow-empress-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\shadow_empress_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "shadow_empress"
+from = "ega0075c"
+object = "effect/event/ev60/ev61009se0/ev61009se0.objbin"
+
+[[shot_aura]]
+name = "shadow_empress"
+when = { techniques = ["whs10090"] }
+aura = "shadow_empress"
+like = "ega0075c"
+# the aura's replay (65 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 65 }

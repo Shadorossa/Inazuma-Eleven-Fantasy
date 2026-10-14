@@ -1,0 +1,4339 @@
+schema = "VRFW.technique/3"
+# Hissatsu overhaul V2 (the owner's sheet «Hissatsu_overhaul.V2», 2026-10-12): power_min / power_max (Potencia
+# mínima / máxima), tp (Tensión) and recast (Recast (s)) of retail base moves. Matched by the move's Spanish name:
+# exact, then ignoring upper / lower case, a name shared with override / Mixi Max variants -> the base move only, a
+# name shared by several base moves -> the first base move of the sheet's category, plus the owner's own mappings
+# (Remate Triple = Empuje trillizo, Rayo oscuro 1 / 2, Ventisca de fuego and Fuego cruzado F / V by element).
+# The variants (_or / _mm / _cro / _solo) keep their values. Grade power (+10 % per grade) stays retail.
+# Moved 2026-10-14 from Inazuma Fantasy (its _phases.toml part hissatsu_overhaul, file
+# content/techniques/edits/hissatsu_overhaul.toml, 697 rows) to Hissatsu Reforged. Only REAL changes are kept (owner
+# 2026-10-14), checked against the retail skill_config (v7.1.2 dump, m_skillInfoList): each entry lists only the keys
+# that differ from retail (683 moves). Dropped: 13 unfilled sheet rows (0 / 0 / 0 TP / 30 s: whd00970, whs00580,
+# whs03030, whs03060, whs03080, whs03090, whs03110, whs03120, whs03140, whs03150, whs03220, whs03230, whs03240) and
+# 1 row equal to retail (whs03270). Retail values: research/scripts/hb_skill_dump.py load(True).
+# Mods that load later (Hissatsu Effects, Inazuma Fantasy...) win key by key.
+
+[[edit]]
+target = "rhs10020"
+power_min = 10
+power_max = 60
+tp = 10
+recast = 30
+
+[[edit]]
+target = "rhs10030"
+power_min = 10
+power_max = 60
+tp = 10
+recast = 30
+
+[[edit]]
+target = "rhs10040"
+power_min = 10
+power_max = 60
+tp = 10
+recast = 30
+
+[[edit]]
+target = "rhs10050"
+power_min = 10
+power_max = 60
+tp = 10
+recast = 30
+
+[[edit]]
+target = "whd00010"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whd00020"
+power_max = 320
+
+[[edit]]
+target = "whd00030"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whd00040"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whd00050"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whd00060"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00070"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whd00080"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00090"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00100"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00120"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00130"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00150"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00170"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00180"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00200"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00210"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whd00220"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00230"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00240"
+power_max = 380
+
+[[edit]]
+target = "whd00250"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00260"
+power_max = 380
+
+[[edit]]
+target = "whd00280"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00290"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00300"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00340"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whd00360"
+power_max = 380
+
+[[edit]]
+target = "whd00380"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00390"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00400"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00410"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00420"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00430"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00440"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00480"
+power_max = 380
+
+[[edit]]
+target = "whd00500"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whd00520"
+power_max = 380
+
+[[edit]]
+target = "whd00530"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whd00540"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00550"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00560"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00570"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00580"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00600"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whd00610"
+power_max = 380
+
+[[edit]]
+target = "whd00620"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd00630"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00640"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00650"
+power_max = 380
+
+[[edit]]
+target = "whd00660"
+power_max = 380
+
+[[edit]]
+target = "whd00670"
+power_max = 380
+
+[[edit]]
+target = "whd00680"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00690"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00700"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd00710"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd00720"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whd00730"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whd00740"
+power_max = 320
+
+[[edit]]
+target = "whd00750"
+power_max = 380
+
+[[edit]]
+target = "whd00760"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00770"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd00780"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00790"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00800"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd00810"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whd00820"
+power_max = 380
+
+[[edit]]
+target = "whd00830"
+power_max = 380
+
+[[edit]]
+target = "whd00840"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00850"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd00870"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00880"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whd00890"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whd00900"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00910"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd00980"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whd00990"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd01000"
+power_max = 380
+
+[[edit]]
+target = "whd01010"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd01020"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whd01030"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd01040"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd01050"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd01060"
+power_max = 380
+
+[[edit]]
+target = "whd01070"
+power_max = 380
+
+[[edit]]
+target = "whd01080"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01090"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd01100"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd01110"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whd01130"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd01140"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd01220"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd01230"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd01240"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01250"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd01270"
+power_max = 380
+
+[[edit]]
+target = "whd01280"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd01290"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01300"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01310"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01320"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01330"
+recast = 90
+
+[[edit]]
+target = "whd01340"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whd01350"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd01360"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whd01370"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whd01380"
+recast = 90
+
+[[edit]]
+target = "whd01390"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd01460"
+power_max = 320
+
+[[edit]]
+target = "whd01490"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whd01510"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd01530"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd10010"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd10030"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whd10040"
+power_max = 380
+
+[[edit]]
+target = "whd10060"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whd10080"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whd10090"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd10100"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd10110"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whd10120"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whd10130"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whk00010"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00020"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00050"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00060"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00070"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00080"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00110"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00120"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00130"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00150"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00170"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk00190"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00200"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk00210"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00220"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00230"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00240"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00250"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00280"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00290"
+power_max = 320
+
+[[edit]]
+target = "whk00300"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00310"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00320"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00340"
+power_max = 380
+
+[[edit]]
+target = "whk00350"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00360"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00370"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00390"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00400"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00410"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whk00420"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00430"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00440"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00450"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00460"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00500"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00510"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00520"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00530"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00540"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00550"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00560"
+power_max = 380
+
+[[edit]]
+target = "whk00570"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00580"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00590"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00600"
+power_max = 380
+
+[[edit]]
+target = "whk00610"
+power_max = 380
+
+[[edit]]
+target = "whk00620"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00630"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk00640"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00650"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk00680"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00690"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00700"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00710"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00720"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk00730"
+power_max = 380
+
+[[edit]]
+target = "whk00740"
+power_max = 320
+
+[[edit]]
+target = "whk00750"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00760"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00770"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00790"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00800"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00810"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk00830"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whk00840"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00850"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk00870"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00880"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00890"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk00900"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk00990"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk01000"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk01010"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01020"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk01030"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01040"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01050"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01060"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01070"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whk01090"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01100"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk01110"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01120"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01130"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01180"
+power_max = 320
+
+[[edit]]
+target = "whk01190"
+power_max = 380
+
+[[edit]]
+target = "whk01200"
+power_max = 380
+
+[[edit]]
+target = "whk01210"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01220"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01230"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01240"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01250"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01260"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01270"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01280"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01290"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01300"
+recast = 90
+
+[[edit]]
+target = "whk01310"
+recast = 90
+
+[[edit]]
+target = "whk01320"
+recast = 90
+
+[[edit]]
+target = "whk01330"
+recast = 90
+
+[[edit]]
+target = "whk01400"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk01410"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk01420"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01430"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk01440"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk01450"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk01460"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01470"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01480"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01490"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01500"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01510"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk01520"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whk01530"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01540"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01550"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01560"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01570"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01580"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk01590"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01600"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01610"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01620"
+recast = 90
+
+[[edit]]
+target = "whk01630"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk01640"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "whk01650"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk01660"
+recast = 90
+
+[[edit]]
+target = "whk01670"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "whk01680"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "whk01690"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk10010"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "whk10020"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk10030"
+power_max = 320
+
+[[edit]]
+target = "whk10040"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk10050"
+power_max = 380
+
+[[edit]]
+target = "whk10060"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "whk10070"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "whk10080"
+recast = 90
+
+[[edit]]
+target = "whk10090"
+recast = 90
+
+[[edit]]
+target = "who00010"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00020"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00030"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00040"
+power_max = 380
+
+[[edit]]
+target = "who00050"
+power_max = 320
+
+[[edit]]
+target = "who00060"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00070"
+power_max = 380
+
+[[edit]]
+target = "who00080"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00090"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00100"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00110"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00120"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00130"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00150"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00160"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00170"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00180"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00190"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00200"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00210"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00220"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00230"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00240"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00250"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00260"
+power_max = 380
+
+[[edit]]
+target = "who00270"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00280"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00290"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00300"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00320"
+power_max = 320
+
+[[edit]]
+target = "who00330"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00340"
+power_max = 380
+
+[[edit]]
+target = "who00350"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00360"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00370"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00380"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00390"
+power_max = 380
+
+[[edit]]
+target = "who00400"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00410"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00420"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00430"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00440"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00460"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00470"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00480"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00490"
+power_max = 320
+
+[[edit]]
+target = "who00500"
+power_max = 380
+
+[[edit]]
+target = "who00510"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00520"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00530"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00540"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00550"
+power_max = 320
+
+[[edit]]
+target = "who00560"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00570"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00580"
+power_max = 380
+
+[[edit]]
+target = "who00590"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00600"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who00610"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00620"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00630"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00640"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00650"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00670"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who00680"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00690"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "who00700"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00710"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00720"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00730"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who00740"
+power_max = 380
+
+[[edit]]
+target = "who00750"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00760"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00770"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00780"
+power_max = 380
+
+[[edit]]
+target = "who00790"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00800"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00810"
+power_max = 380
+
+[[edit]]
+target = "who00820"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00830"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00840"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00850"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00860"
+power_max = 320
+
+[[edit]]
+target = "who00870"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who00930"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00940"
+power_max = 380
+
+[[edit]]
+target = "who00950"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00960"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who00970"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who00980"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who00990"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01000"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01010"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who01020"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who01030"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01040"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01050"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who01060"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who01070"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01140"
+power_max = 320
+
+[[edit]]
+target = "who01150"
+power_min = 50
+power_max = 320
+tp = 50
+
+[[edit]]
+target = "who01160"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who01170"
+power_max = 380
+
+[[edit]]
+target = "who01180"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01190"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01200"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01210"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01220"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01230"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01240"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01250"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01260"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01270"
+power_min = 100
+power_max = 640
+tp = 100
+recast = 90
+
+[[edit]]
+target = "who01280"
+recast = 90
+
+[[edit]]
+target = "who01290"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01300"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who01310"
+power_min = 120
+power_max = 770
+tp = 120
+recast = 90
+
+[[edit]]
+target = "who01320"
+recast = 90
+
+[[edit]]
+target = "who01400"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01410"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who01420"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01460"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who01470"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who10020"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who10040"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who10050"
+power_min = 60
+power_max = 380
+tp = 60
+
+[[edit]]
+target = "who10060"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who10070"
+power_min = 75
+power_max = 480
+tp = 75
+
+[[edit]]
+target = "who10080"
+power_min = 90
+power_max = 580
+tp = 90
+recast = 90
+
+[[edit]]
+target = "who10100"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10110"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10120"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10130"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10150"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10160"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "who10170"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00010"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00030"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00040"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00050"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00060"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs00070"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00080"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00090"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00100"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00110"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00120"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00130"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00150"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00160"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00170"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00180"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00190"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00200"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00210"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00220"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00230"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00240"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00250"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00260"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00270"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00280"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs00290"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00300"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00310"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs00320"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00330"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00340"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00350"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00360"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00370"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00380"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00400"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00410"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00420"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00430"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00440"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs00450"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00460"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs00470"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00480"
+power_min = 250
+power_max = 1600
+tp = 250
+recast = 120
+
+[[edit]]
+target = "whs00490"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00500"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00510"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00520"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00530"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00540"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00550"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00560"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00570"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00590"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00600"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs00610"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00620"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00630"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00640"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00650"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00670"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00680"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00690"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00700"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs00710"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00720"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00730"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00740"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00750"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00760"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs00780"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00790"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00800"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs00810"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs00830"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00840"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00850"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs00860"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs00870"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00880"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs00890"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs00900"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00910"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00920"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00930"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00940"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs00950"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs00960"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs00970"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs00980"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs00990"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01000"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs01010"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01020"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01030"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01040"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01050"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs01060"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs01070"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01080"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01090"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01100"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01110"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs01120"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01130"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01160"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01170"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs01180"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01190"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01200"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs01210"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01220"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs01230"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs01250"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs01260"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01270"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01280"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01290"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01300"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01310"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01320"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01330"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01340"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01350"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01360"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01370"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01380"
+power_min = 250
+power_max = 1600
+tp = 250
+recast = 120
+
+[[edit]]
+target = "whs01390"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01400"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01410"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs01420"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01430"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01440"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01450"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01460"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs01470"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01480"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01490"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01500"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs01510"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs01520"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs01530"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs01540"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs01550"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01560"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs01570"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs01580"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01590"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01600"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01610"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs01620"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01630"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs01640"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs01650"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs01660"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01670"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01680"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs01690"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01700"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs01710"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01720"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01730"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01740"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01750"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01760"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs01940"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs01950"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs01960"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs01970"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs01980"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs01990"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02010"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02020"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02030"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02040"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02050"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02060"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs02070"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02080"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02090"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs02100"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02110"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02120"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02130"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02140"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02160"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs02180"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02190"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02200"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02210"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02220"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02230"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02240"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02250"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02260"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02270"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02280"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs02310"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02320"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02330"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02340"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02350"
+power_min = 250
+power_max = 1600
+tp = 250
+recast = 120
+
+[[edit]]
+target = "whs02440"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02460"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs02470"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs02480"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02490"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs02500"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs02510"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs02520"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02530"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02540"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02550"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02560"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02570"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02580"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02600"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02630"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02650"
+power_min = 250
+power_max = 1600
+tp = 250
+recast = 120
+
+[[edit]]
+target = "whs02660"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs02670"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02750"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs02760"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs02770"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02780"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02790"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02800"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs02810"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02820"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02830"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02840"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02850"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02860"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs02870"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs02880"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02890"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02900"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs02910"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs02920"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02930"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02940"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs02950"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs02960"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs02970"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs02990"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03000"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03020"
+power_min = 150
+power_max = 960
+tp = 150
+recast = 120
+
+[[edit]]
+target = "whs03100"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03130"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03170"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03190"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03200"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs03210"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03260"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03300"
+power_max = 380
+recast = 60
+
+[[edit]]
+target = "whs03310"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03320"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03330"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs03340"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03350"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs03360"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs03390"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs03400"
+power_min = 120
+power_max = 770
+tp = 120
+
+[[edit]]
+target = "whs10010"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs10020"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs10030"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs10040"
+power_min = 50
+power_max = 320
+tp = 50
+recast = 60
+
+[[edit]]
+target = "whs10050"
+power_max = 320
+recast = 60
+
+[[edit]]
+target = "whs10060"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs10080"
+power_min = 60
+power_max = 380
+tp = 60
+recast = 60
+
+[[edit]]
+target = "whs10100"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs10110"
+power_min = 100
+power_max = 640
+tp = 100
+
+[[edit]]
+target = "whs10120"
+power_min = 90
+power_max = 580
+tp = 90
+
+[[edit]]
+target = "whs10130"
+power_min = 75
+power_max = 480
+tp = 75
+recast = 60
+
+[[edit]]
+target = "whs10140"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30
+
+[[edit]]
+target = "whs10150"
+power_min = 30
+power_max = 190
+tp = 30
+recast = 30
+
+[[edit]]
+target = "whs10170"
+power_min = 40
+power_max = 260
+tp = 40
+recast = 30

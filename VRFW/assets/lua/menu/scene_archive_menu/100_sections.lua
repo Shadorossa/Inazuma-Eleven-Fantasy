@@ -153,16 +153,18 @@ if VRFW_Host ~= nil then
     id = "menu_engine.scene_archive_variants", phase = "around",
     fn = function(nxt, ...)
       local cmd = funcLuaCommand
-      funcLuaCommand = function(id, a, b, ...)
+      -- the arguments go on as the caller gave them (a C command counts them: no extra nils)
+      funcLuaCommand = function(...)
+        local id, a, b = ...
         if id == SA.ROW_GET and b == 6 then
           funcLuaCommand = cmd
-          local ev = cmd(id, a, b, ...)
+          local ev = cmd(...)
           if ev == nil then
             return ev
           end
           return SA_Variant(cmd, a, ev)
         end
-        return cmd(id, a, b, ...)
+        return cmd(...)
       end
       return nxt(...)
     end,

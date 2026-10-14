@@ -1,14 +1,13 @@
--- VR-Framework › random team, the pure part (docs/framework/random-team.md): the seeded generator, the card filters
--- and the pick of a roster. No game memory, no engine call: everything here works on plain Lua tables, so the same
--- inputs always give the same team (the determinism the service promises: same rule + seed + node + stage + pool =
--- same roster, same name / emblem / kit).
+-- VR-Framework › random team, the pure part (docs/framework/random-team.md): the seed of a draw and the pick of a
+-- roster (the card filters are the framework's card sets, VRFW.chara.select). No game memory, no engine call (the
+-- generator is the framework's VRFW.rng): plain Lua tables, so the same inputs always give the same team (the
+-- determinism the service promises: same rule + seed + node + stage + pool = same roster, same name / emblem / kit).
 --
 -- Numbers are Lua 5.2 doubles; hashes and seeds are u32 (0 .. 2^32-1). Card positions are chara_param's
 -- (1 keeper, 2 forward, 3 midfield, 4 defence); a formation placement is a class of the same numbers.
 
 local C = {}
 
-local band, bor, bxor, rshift = bit32.band, bit32.bor, bit32.bxor, bit32.rshift
 local floor = math.floor
 local TWO32 = 4294967296
 
@@ -25,34 +24,6 @@ function C.hex(v)
   return string.format("0x%08X", C.u32(v))
 end
 
--- ------------------------------------------------------------------------------------------------ hashing
-
--- (a * b) mod 2^32 on 16-bit halves (every partial product stays below 2^53)
-local function imul(a, b)
-  local ah, al = floor(a / 65536), a % 65536
-  local bh, bl = floor(b / 65536), b % 65536
-  return (((ah * bl + al * bh) % 65536) * 65536 + al * bl) % TWO32
-end
-
--- murmur3's finaliser: a well-spread u32 from a u32
-function C.fmix(h)
-  h = C.u32(h)
-  h = bxor(h, rshift(h, 16))
-  h = imul(h, 0x85EBCA6B)
-  h = bxor(h, rshift(h, 13))
-  h = imul(h, 0xC2B2AE35)
-  return bxor(h, rshift(h, 16))
-end
-
--- one u32 from a list of u32 parts (order matters)
-function C.mix(parts)
-  local h = 0x9747B28C
-  for _, p in ipairs(parts) do
-    h = C.fmix(bxor(h, C.fmix(C.u32(p))) + 0x9E3779B9)
-  end
-  return h
-end
-
 -- a seed argument (a game Lua number: up to 2^53, possibly negative) as two u32 halves
 function C.split(v)
   if type(v) ~= "number" or v ~= v then
@@ -63,64 +34,13 @@ function C.split(v)
 end
 
 -- ------------------------------------------------------------------------------------------------ generator
-
-local Rng = {}
-Rng.__index = Rng
-
--- mulberry32: a small generator whose whole state is one u32
-function C.rng(seed)
-  return setmetatable({ s = C.u32(seed) }, Rng)
-end
-
-function Rng:next()
-  self.s = (self.s + 0x6D2B79F5) % TWO32
-  local t = self.s
-  t = imul(bxor(t, rshift(t, 15)), bor(t, 1))
-  t = bxor(t, (t + imul(bxor(t, rshift(t, 7)), bor(t, 61))) % TWO32)
-  return bxor(t, rshift(t, 14))
-end
-
--- uniform in 0 .. n-1 (n >= 1)
-function Rng:below(n)
-  n = floor(n)
-  if n <= 1 then
-    return 0
-  end
-  return floor(self:next() / TWO32 * n)
-end
-
--- uniform in lo .. hi (whole numbers, lo <= hi)
-function Rng:range(lo, hi)
-  if hi < lo then
-    lo, hi = hi, lo
-  end
-  return lo + self:below(hi - lo + 1)
-end
-
--- index (1-based) of a weighted draw over `w` (weights >= 0); nil when every weight is 0
-function Rng:weighted(w)
-  local total = 0
-  for _, x in ipairs(w) do
-    if x > 0 then
-      total = total + x
-    end
-  end
-  if total <= 0 then
-    return nil
-  end
-  local r = self:next() / TWO32 * total
-  local acc = 0
-  local last
-  for i, x in ipairs(w) do
-    if x > 0 then
-      acc = acc + x
-      last = i
-      if r < acc then
-        return i
-      end
-    end
-  end
-  return last
+-- The framework's one seeded generator (VRFW.rng: the daily generator, SplitMix64-seeded PCG32; review 2026-10-13
+-- §3). `words` = the seed parts (numbers), `stream` = 1 roster / 2 look.
+function C.rng(words, stream)
+  local w = {}
+  for i, x in ipairs(words) do w[i] = x end
+  w[#w + 1] = stream
+  return VRFW.rng("VRFW.random_team", w)
 end
 
 -- ------------------------------------------------------------------------------------------------ declaration values
@@ -178,95 +98,6 @@ function C.weights(v)
   return any and out or nil
 end
 
--- ------------------------------------------------------------------------------------------------ card filters
-
--- A compiled filter row: every key it has must hold (AND). Keys (docs/framework/random-team.md §3.1): element,
--- position, rarity, series (series type numbers), team (belong teams), cards, characters, mod (the card's maker),
--- gender, columns = { [col] = { lo, hi } }. A card: { id, base, element, pos, rarity, gender, series = {[t]=true},
--- teams = {[id]=true}, mod, cols = { [col] = v } }.
-function C.match(f, c)
-  if f.cards and not f.cards[c.id] then
-    return false
-  end
-  if f.characters and not f.characters[c.base] then
-    return false
-  end
-  if f.element and not f.element[c.element] then
-    return false
-  end
-  if f.position and not f.position[c.pos] then
-    return false
-  end
-  if f.rarity and not f.rarity[c.rarity] then
-    return false
-  end
-  if f.gender and not f.gender[c.gender] then
-    return false
-  end
-  if f.mod and not f.mod[c.mod or "game"] then
-    return false
-  end
-  if f.series then
-    local hit = false
-    for t in pairs(f.series) do
-      if c.series and c.series[t] then
-        hit = true
-        break
-      end
-    end
-    if not hit then
-      return false
-    end
-  end
-  if f.team then
-    local hit = false
-    for t in pairs(f.team) do
-      if c.teams and c.teams[t] then
-        hit = true
-        break
-      end
-    end
-    if not hit then
-      return false
-    end
-  end
-  if f.columns then
-    for col, r in pairs(f.columns) do
-      local v = c.cols and c.cols[col]
-      if type(v) ~= "number" or v < r[1] or v > r[2] then
-        return false
-      end
-    end
-  end
-  return true
-end
-
--- the pool: the cards (in `cards` order) that pass some include row (or every card when there is none) and no
--- exclude row
-function C.pool(cards, include, exclude)
-  local out = {}
-  for _, c in ipairs(cards) do
-    local ok = #include == 0
-    for _, f in ipairs(include) do
-      if C.match(f, c) then
-        ok = true
-        break
-      end
-    end
-    if ok then
-      for _, f in ipairs(exclude) do
-        if C.match(f, c) then
-          ok = false
-          break
-        end
-      end
-    end
-    if ok then
-      out[#out + 1] = c
-    end
-  end
-  return out
-end
 
 -- ------------------------------------------------------------------------------------------------ the roster
 
@@ -291,7 +122,7 @@ function C.places(starter_classes, bench_rows, bench_keeper)
 end
 
 -- Pick the roster. `opt`:
---   pool          the cards (C.pool), in a fixed order
+--   pool          the pool's cards (the framework's card set, VRFW.chara.select), in a fixed order
 --   places        C.places(...)
 --   unique        "character" (default: one card per chara_base) or "card"
 --   rarity_w      { [rarity] = weight } (nil = every rarity weight 1; a rarity missing from the table = 0)
@@ -299,7 +130,7 @@ end
 --   element_w     { [element] = weight } (nil = 1 each)
 --   max_same      most cards of one element (nil = no cap)
 --   theme         { chance (0..1), weight (multiplier) }: with that chance one element is the team's theme
---   rng           C.rng(...)
+--   rng           C.rng(...) (a VRFW.rng generator)
 -- Returns { picks = { [i] = card } (places order), theme = element or nil, fallbacks = n }, or nil, why.
 function C.pick(opt)
   local rng = opt.rng
@@ -327,7 +158,7 @@ function C.pick(opt)
   end
   -- the theme element (drawn even when unused, so the draw count never depends on the pool)
   local theme
-  local roll = rng:next() / TWO32
+  local roll = rng:float()
   local elements = {}
   local seen = {}
   for _, e in ipairs(base) do

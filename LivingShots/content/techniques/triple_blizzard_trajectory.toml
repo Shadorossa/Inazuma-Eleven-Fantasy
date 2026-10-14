@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Ventisca triple (Triple Blizzard, whs02950 and whs02950_or, same cut-in
+# ev60_02950; whs02950_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights
+# over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# The cut-in's last cut (c0500) is a slow-motion close-up: the ball, 3.47 m up at its first frame, drifts 1.5 m while
+# sinking to 2.87 m; no longer run is shown. In the match it leaves at the cut-in's 3.47 m and comes in one straight
+# line into the goal at 2.0 m (as Inazuma Break).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move triple_blizzard):
+# the event ball (s00) of ev60_02950 c0500, event frames 1015-1130: [[0.00, 3.47], [0.21, 3.34], [1.47, 2.87]]
+# (0.04 m).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Ventisca triple (whs02950).
+[[edit]]
+target = "whs02950"
+trajectory = { points = [[0.0, 3.47]], goal_points = [[0.0, 2.0]], unblockable = false }

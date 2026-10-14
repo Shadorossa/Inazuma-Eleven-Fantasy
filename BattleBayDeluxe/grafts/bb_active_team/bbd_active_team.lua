@@ -1,0 +1,35 @@
+-- bb_chronicle_teams bb_active_team (enjoy_team_select_menu_campaign / _offline; docs/game/modes/estadio-bb.md §16).
+-- The «Active team» tile (evt_bbd_active_team) plays the player's active team; its own team_config players are
+-- placeholders that never play, so the grid's panel does not show them: after the retail UpdateFormation draws the
+-- tile on a side, that side's 11 player cards are hidden (the Draft hides its placeholders the same way). Name, crest,
+-- description and tactics stay as the retail panel draws them. Globals only; nothing runs at chunk load.
+BBD_ACTIVE_TEAM = {
+  TEAM = @crc:evt_bbd_active_team@,
+  LEFT = 3003299608 --[[team00_01_chara_card_left]],
+  RIGHT = 3825623416 --[[team00_01_chara_card_right]],
+  CARDS = 11,
+  LOG = 3661580131 --[[CMND_EVT_LOG]],
+}
+
+-- the panel side that shows the tile (true / nil = the left one, the player's): its player cards hidden
+function BBD_ACTIVE_TEAM_HideCards(left)
+  local B = BBD_ACTIVE_TEAM
+  local layer = left and B.LEFT or B.RIGHT
+  for i = 0, B.CARDS - 1 do
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, false)
+  end
+end
+
+if UpdateFormation ~= nil then
+  local formation = UpdateFormation
+  function UpdateFormation(a1, a2, ...)
+    local r = table.pack(formation(a1, a2, ...))
+    if a1 == BBD_ACTIVE_TEAM.TEAM then
+      local ok, err = pcall(BBD_ACTIVE_TEAM_HideCards, a2 ~= false)
+      if not ok then
+        pcall(funcLuaCommand, BBD_ACTIVE_TEAM.LOG, "bb_chronicle_teams active team", "panel error", tostring(err))
+      end
+    end
+    return table.unpack(r, 1, r.n)
+  end
+end

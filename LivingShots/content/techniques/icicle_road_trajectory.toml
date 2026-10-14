@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Lanza de carámbanos (Icicle Road, whs01830, cut-in ev60_01830). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0300) the ball is kicked low at 2.11 m and flies level, settling to 1.79 m (the ice crystals burst
+# out of the pitch 1.8 m under it); in the match it flies that profile from the kick and holds 1.79 m into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move icicle_road):
+# the event ball (s00) of ev60_01830 c0300, event frames 1318-1428: [[0.00, 2.11], [14.49, 1.85], [40.50, 1.79]]
+# (0.03 m).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Lanza de carámbanos (whs01830).
+[[edit]]
+target = "whs01830"
+trajectory = { points = [[0.0, 2.11], [14.49, 1.85], [40.5, 1.79]], unblockable = false }

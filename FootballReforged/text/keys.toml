@@ -1,0 +1,79 @@
+# Texts of Football Reforged (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("football_reforged.<name>"): the mod's name and description on the «Mods» screen and its rows of «Opciones de
+# mods» (options.toml: the group «Football Reforged» and one row per module), in the game's language. «Football
+# Reforged» is not translated. A language missing here falls back to English. Help lines fit the help bar on one line
+# (about 75 characters in the Latin languages, 38 in Japanese / Chinese).
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Football Reforged"
+mod_description = "A base of match mechanics in modules you switch on or off in Mod options (group «Football Reforged»). Goalkeeper barrier: every keeper has a barrier, the first 25 % of his fatigue bar drawn orange at his goal's side; while it lasts the shots he faces lose power (÷ 1.75), it falls as he tires, and a block move of his team makes his next keeper move 30 % cheaper in tension. Works with the VR-Framework alone; with Stamina Points the barrier follows the keeper's PE."
+modules = "Football Reforged"
+modules_help = "Off: every Football Reforged module off. Your choices are kept."
+goalkeeper_barrier = "Goalkeeper barrier"
+goalkeeper_barrier_help = "Keepers resist shots while the orange barrier lasts; tiring wears it down."
+
+[es.new]
+mod_name = "Football Reforged"
+mod_description = "Una base de mecánicas de partido en módulos que activas o desactivas en Opciones de mods (grupo «Football Reforged»). Barrera del portero: cada portero tiene una barrera, el primer 25 % de su barra de cansancio pintado de naranja del lado de su portería; mientras dura, los tiros que recibe pierden potencia (÷ 1,75), baja con su cansancio, y una técnica de bloqueo de su equipo abarata un 30 % la tensión de su siguiente técnica de portero. Funciona solo con el VR-Framework; con Stamina Points la barrera sigue los PE del portero."
+modules = "Football Reforged"
+modules_help = "Desactivado: todos los módulos de Football Reforged apagados. Se guardan."
+goalkeeper_barrier = "Barrera del portero"
+goalkeeper_barrier_help = "El portero resiste tiros mientras dura su barrera naranja; baja al cansarse"
+
+[fr.new]
+mod_name = "Football Reforged"
+mod_description = "Une base de mécaniques de match en modules à activer ou désactiver dans Options des mods (groupe «Football Reforged»). Barrière du gardien : chaque gardien a une barrière, les premiers 25 % de sa barre de fatigue en orange du côté de son but ; tant qu'elle tient, les tirs qu'il reçoit perdent de la puissance (÷ 1,75), elle baisse avec sa fatigue, et une technique de blocage de son équipe rend sa prochaine technique de gardien 30 % moins chère en tension. Fonctionne avec le VR-Framework seul ; avec Stamina Points la barrière suit les PE du gardien."
+modules = "Football Reforged"
+modules_help = "Désactivé : tous les modules de Football Reforged coupés. Choix conservés."
+goalkeeper_barrier = "Barrière du gardien"
+goalkeeper_barrier_help = "Le gardien résiste aux tirs tant que sa barrière orange tient."
+
+[de.new]
+mod_name = "Football Reforged"
+mod_description = "Eine Basis für Spielmechaniken in Modulen, die du in den Mod-Optionen ein- oder ausschaltest (Gruppe «Football Reforged»). Torwart-Barriere: Jeder Torwart hat eine Barriere, die ersten 25 % seines Ermüdungsbalkens orange auf der Seite seines Tores; solange sie hält, verlieren Schüsse auf ihn an Kraft (÷ 1,75), sie sinkt mit seiner Ermüdung, und eine Blocktechnik seines Teams macht seine nächste Torwarttechnik 30 % billiger in Spannung. Läuft allein mit dem VR-Framework; mit Stamina Points folgt die Barriere den GP des Torwarts."
+modules = "Football Reforged"
+modules_help = "Aus: alle Module von Football Reforged aus. Deine Werte bleiben."
+goalkeeper_barrier = "Torwart-Barriere"
+goalkeeper_barrier_help = "Der Torwart hält Schüssen stand, solange seine orange Barriere hält."
+
+[it.new]
+mod_name = "Football Reforged"
+mod_description = "Una base di meccaniche di partita in moduli da attivare o disattivare in Opzioni dei mod (gruppo «Football Reforged»). Barriera del portiere: ogni portiere ha una barriera, il primo 25 % della sua barra di fatica in arancione dal lato della sua porta; finché dura, i tiri che riceve perdono potenza (÷ 1,75), cala con la fatica, e una tecnica di blocco della sua squadra rende la sua prossima tecnica da portiere più economica del 30 % in tensione. Funziona con il solo VR-Framework; con Stamina Points la barriera segue i PE del portiere."
+modules = "Football Reforged"
+modules_help = "Disattivato: tutti i moduli di Football Reforged spenti. Valori salvati."
+goalkeeper_barrier = "Barriera del portiere"
+goalkeeper_barrier_help = "Il portiere resiste ai tiri finché dura la sua barriera arancione."
+
+[pt.new]
+mod_name = "Football Reforged"
+mod_description = "Uma base de mecânicas de partida em módulos que ativas ou desativas nas Opções de mods (grupo «Football Reforged»). Barreira do guarda-redes: cada guarda-redes tem uma barreira, os primeiros 25 % da sua barra de cansaço a laranja do lado da sua baliza; enquanto dura, os remates que recebe perdem potência (÷ 1,75), desce com o cansaço, e uma técnica de bloqueio da sua equipa torna a sua próxima técnica de guarda-redes 30 % mais barata em tensão. Funciona só com o VR-Framework; com Stamina Points a barreira segue os PE do guarda-redes."
+modules = "Football Reforged"
+modules_help = "Desativado: todos os módulos de Football Reforged desligados. Guardados."
+goalkeeper_barrier = "Barreira do guarda-redes"
+goalkeeper_barrier_help = "O guarda-redes resiste aos remates enquanto dura a barreira laranja."
+
+[ja.new]
+mod_name = "Football Reforged"
+mod_description = "試合メカニクスをモジュールで追加するベース。各モジュールはMODオプション（グループ「Football Reforged」）でオン・オフできる。キーパーバリア：各キーパーは疲労ゲージの自陣ゴール側25％にオレンジのバリアを持ち、残っている間は受けるシュートの威力が1.75分の1になる。バリアは疲労とともに減り、チームのブロック技を使うと次のキーパー技のテンションが30％安くなる。VR-Frameworkだけで動作し、Stamina PointsがあればバリアはキーパーのGPに従う。"
+modules = "Football Reforged"
+modules_help = "オフ：Football Reforgedの全モジュールを無効にする。"
+goalkeeper_barrier = "キーパーバリア"
+goalkeeper_barrier_help = "オレンジのバリアがある間キーパーはシュートに強い。"
+
+[zh_hans.new]
+mod_name = "Football Reforged"
+mod_description = "以模块形式加入比赛机制的基础模组，每个模块可在模组选项（分组「Football Reforged」）中开关。门将屏障：每名门将的疲劳条在己方球门一侧有25％显示为橙色屏障；屏障存在时，他面对的射门威力除以1.75，屏障随疲劳下降；本队使用拦截技后，门将的下一个守门技所需气势便宜30％。仅需VR-Framework即可运行；配合Stamina Points时屏障跟随门将的GP。"
+modules = "Football Reforged"
+modules_help = "关闭：关闭Football Reforged的所有模块。"
+goalkeeper_barrier = "门将屏障"
+goalkeeper_barrier_help = "橙色屏障存在时门将更能抵挡射门，随疲劳下降。"
+
+[zh_hant.new]
+mod_name = "Football Reforged"
+mod_description = "以模組形式加入比賽機制的基礎模組，每個模組可在模組選項（分組「Football Reforged」）中開關。門將屏障：每名門將的疲勞條在己方球門一側有25％顯示為橙色屏障；屏障存在時，他面對的射門威力除以1.75，屏障隨疲勞下降；本隊使用攔截技後，門將的下一個守門技所需氣勢便宜30％。僅需VR-Framework即可運行；配合Stamina Points時屏障跟隨門將的GP。"
+modules = "Football Reforged"
+modules_help = "關閉：關閉Football Reforged的所有模組。"
+goalkeeper_barrier = "門將屏障"
+goalkeeper_barrier_help = "橙色屏障存在時門將更能抵擋射門，隨疲勞下降。"

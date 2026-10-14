@@ -5,7 +5,7 @@
 # hub's OnInit VRFW_TopBarStep("bb_tournament"), then the «Campaña» row is focused and decided in Torneo mode once the
 # list is ready; 1.5.47: the top menu has no «Torneo» row any more, the Torneo is a mode of the Campaña screen).
 # Without Utilities the group is not declared and this row is left out (logged by the framework).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[entry]]
 host = "top_bar"

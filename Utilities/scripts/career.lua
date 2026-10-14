@@ -238,27 +238,26 @@ local function scan_and_date(force)
   commit("signing dates")
 end
 
--- chara_param col 3 (main position) per param id, read once when the plate first asks.
-local positions = nil
+-- The main position of a card (chara_param `main_position`), from the framework's shared character index
+-- (VRFW.chara.card, docs/framework/chara-index.md): no chara_param read in this VM (it cost ~160 ms on the first
+-- plate page). Remembered per card.
+local positions = {}
+local index_warned = false
 local function position_of(param)
-  if not positions then
-    positions = {}
-    local ok, rows = pcall(VRFW.table.rows, "character/chara_param")
-    if ok and rows then
-      local n = 0
-      for _, row in ipairs(rows) do
-        local id, pos = row[1], row[4]
-        if id and pos then
-          positions[bit32.band(id, 0xFFFFFFFF)] = pos
-          n = n + 1
-        end
-      end
-      info("chara_param: " .. n .. " rows with a main position (GK / DF / MF / FW row of the page)")
-    else
-      warn("chara_param not read (" .. tostring(rows) .. "): every player shows the forward row of the page")
+  if not param then return nil end
+  local p = positions[param]
+  if p ~= nil then return p or nil end
+  local ok, c = pcall(VRFW.chara.card, param)
+  if not ok then
+    if not index_warned then
+      index_warned = true
+      warn("character index not readable (" .. tostring(c) .. "): players show the forward row of the page")
     end
+    return nil
   end
-  return positions[param]
+  p = c and c.position
+  positions[param] = p or false
+  return p
 end
 
 -- ---------------------------------------------------------------------------------------- match tracking

@@ -1,0 +1,52 @@
+schema = "VRFW.character/2"
+# Character Reforged · Raimon · Inazuma Eleven 2
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c02029500"                                   # Aquilina Schiller
+growth_pattern = 1
+rank = 3
+growth = "normal"
+
+  [[edit.cards]]
+  id = 0x19A53AFF                                         # FW/MF · forest
+  stats = { kick = 265, control = 250, technique = 250, pressure = 243, physical = 126, intelligence = 247, agility = 230, freedom = 231 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0xAF28F5A0, level = 21 },                    # The Tower
+    { move = 0x2296A01A, level = 32 },                    # Southern Cross
+    { move = 0xA955D999, level = 59 },                    # The Earth: Infinity
+  ]
+
+  [[edit.cards]]
+  id = 0xA8635544                                         # FW/DF · forest
+  stats = { kick = 265, control = 250, technique = 250, pressure = 243, physical = 126, intelligence = 247, agility = 230, freedom = 231 }
+
+  [[edit.cards]]
+  id = 0x93CEB5DE                                         # MF/DF · forest
+  stats = { kick = 217, control = 250, technique = 275, pressure = 243, physical = 126, intelligence = 274, agility = 230, freedom = 231 }
+
+  [[edit.cards]]
+  id = 0x9FA1DBB4                                         # MF/DF · forest
+  stats = { kick = 217, control = 250, technique = 275, pressure = 243, physical = 126, intelligence = 274, agility = 230, freedom = 231 }
+
+  [[edit.cards]]
+  id = 0x4740CCA1                                         # MF/DF · forest
+  stats = { kick = 217, control = 250, technique = 275, pressure = 243, physical = 126, intelligence = 274, agility = 230, freedom = 231 }
+
+[[edit]]
+target = "c11902360"                                   # Shawn Froste
+
+  [[edit.cards]]
+  id = 0x3CFE7E61                                         # FW/MF · wind
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 315, control = 242, technique = 259, pressure = 247, physical = 161, intelligence = 252, agility = 153, freedom = 247 }
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                     # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                     # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                     # Legendary Wolf
+    { move = 0x1FC99D68, level = 1 },                     # Snow Angel
+  ]

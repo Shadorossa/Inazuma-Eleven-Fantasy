@@ -1,0 +1,31 @@
+# Utilities: the player grid of the original-names picker (feature original_names; Lua research/grafts/
+# util_original_names, docs/game/ui/original-names.md §3.2). Opciones › Ajustes del juego › «Nombres de los personajes»
+# › A › a team: the team's players as faces, 10 a row, grey = dub name, normal colour = original name.
+#   util_jpn_face   x40 (cols x rows of [original_names.grid]), the retail character card of the team / formation
+#                   screens (team00_01_chara_card_for_list) on its own layer: the Lua shows only its portrait quad
+#                   (_icon_chr_dmy_l01: face + kit, 552280324 with the chara_base key), its focus frame on the cursor,
+#                   its name text under the face, and greys it with the card's own gray_out material colour (the
+#                   office grid of Inazuma Fantasy draws its faces the same way). Placed and scaled by the Lua
+#                   (local position from the screen's top left, y up). Opened per instance only while the grid shows.
+# Draw priority 700: over the settings list (651 / 652, hidden while the grid shows), under the sub windows (845+).
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "util_jpn_face"
+from = "team00_01_chara_card_for_list"
+priority = 700
+
+[[patch]]
+menu = "setting_menu"
+add_layer = { name = "util_jpn_face", object = "util_jpn_face", count = 40, groups = [{ group = "setting_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The team grid of the picker (2026-10-12): the VR-Framework's emblem grid (VRFW_EmblemGrid, objects vrfw_emblem_tile /
+# vrfw_tile_label of research/mods/VRFW/content/menus/emblem_grid.toml): 24 tiles (cols x rows of
+# [original_names.team_grid]) and two labels a tile (the team's name, «chosen/players»).
+[[patch]]
+menu = "setting_menu"
+add_layer = { name = "util_jpn_emblem", object = "vrfw_emblem_tile", count = 24, groups = [{ group = "setting_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "setting_menu"
+add_layer = { name = "util_jpn_label", object = "vrfw_tile_label", count = 48, groups = [{ group = "setting_menu", flags = [0, 0, 0, 0, 1, 0] }] }

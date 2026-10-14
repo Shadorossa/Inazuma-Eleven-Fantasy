@@ -1,0 +1,190 @@
+schema = "VRFW.character/2"
+# Character Reforged · Golden Oldies · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04003820"                                   # Scott Banyan
+
+  [[edit.cards]]
+  id = 0x55E64D10                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 111, control = 204, technique = 198, pressure = 259, physical = 247, intelligence = 306, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x62BE692D, level = 1 },                     # Whirlwind Force
+    { move = 0x55C71D2A, level = 1 },                     # About Face
+    { move = 0x427719AC, level = 22 },                    # Gale Dash
+    { move = 0xAD6E4BF9, level = 42 },                    # Harvest
+  ]
+
+[[edit]]
+target = "c04003810"                                   # Chuck Pumpkins
+
+  [[edit.cards]]
+  id = 0x7ECB1ED3                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 149, control = 213, technique = 239, pressure = 190, physical = 234, intelligence = 178, agility = 201, freedom = 209 }
+  moves = [
+    { move = 0x4B3099D5, level = 2 },                     # Stomper Stopper
+    { move = 0x17110E3B, level = 23 },                    # Jumbo Sandwich
+    { move = 0x58B5859E, level = 29 },                    # Whip Crack
+    { move = 0xDF2D9951, level = 52 },                    # Close Counter
+  ]
+
+[[edit]]
+target = "c04003830"                                   # Filbert Chestnut
+
+  [[edit.cards]]
+  id = 0x4CFD7C51                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 223, technique = 166, pressure = 227, physical = 236, intelligence = 252, agility = 165, freedom = 363 }
+  moves = [
+    { move = 0x585098FC, level = 12 },                    # Slice and Dice
+    { move = 0xED7B7A4F, level = 15 },                    # Defence Equation
+    { move = 0xDBFD9CFE, level = 40 },                    # Big Ball Trick
+    { move = 0x5643C944, level = 45 },                    # Killer Slide
+  ]
+
+[[edit]]
+target = "c04003840"                                   # Gadish Oldman
+
+  [[edit.cards]]
+  id = 0x03BCEA96                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 151, control = 231, technique = 185, pressure = 204, physical = 213, intelligence = 243, agility = 167, freedom = 359 }
+  moves = [
+    { move = 0xED7B7A4F, level = 7 },                     # Defence Equation
+    { move = 0x928B9BED, level = 24 },                    # Optimal Trajectory
+    { move = 0x0F4DC9B3, level = 42 },                    # Logicstical Sync
+    { move = 0xBA662B00, level = 56 },                    # Pterrordactyl Swoop
+  ]
+
+[[edit]]
+target = "c04003850"                                   # Autumn Leaf
+
+  [[edit.cards]]
+  id = 0x1AA7DBD7                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 228, technique = 220, pressure = 161, physical = 224, intelligence = 197, agility = 213, freedom = 293 }
+  moves = [
+    { move = 0xF7E49F60, level = 14 },                    # Magnetism
+    { move = 0xED7B7A4F, level = 17 },                    # Defence Equation
+    { move = 0x4A17EE80, level = 29 },                    # Hunter's Net
+    { move = 0x19BA3BFC, level = 46 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c04003860"                                   # Skeeter Hawk
+
+  [[edit.cards]]
+  id = 0x318A8814                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 270, technique = 167, pressure = 216, physical = 182, intelligence = 246, agility = 155, freedom = 225 }
+  moves = [
+    { move = 0xA9E3374B, level = 9 },                     # Cyclone Sprint
+    { move = 0xEF3DC416, level = 13 },                    # Skytree Hop
+    { move = 0x6A66FA7E, level = 37 },                    # Killer Whale
+    { move = 0x6ADE9E01, level = 46 },                    # Illusory Ball
+  ]
+
+[[edit]]
+target = "c04003870"                                   # Hal Löwén
+
+  [[edit.cards]]
+  id = 0x2891B955                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 182, control = 266, technique = 197, pressure = 212, physical = 192, intelligence = 236, agility = 158, freedom = 217 }
+  moves = [
+    { move = 0x6F918884, level = 4 },                     # Easy Breezy
+    { move = 0xC4D13C6B, level = 15 },                    # Katana Kick
+    { move = 0x4FE09C7A, level = 35 },                    # Acrobatic Keep
+    { move = 0x14D1ED15, level = 46 },                    # Jumping Jack
+  ]
+
+[[edit]]
+target = "c04003880"                                   # Jacko Lantern
+
+  [[edit.cards]]
+  id = 0xAF09A59A                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 354, control = 205, technique = 181, pressure = 167, physical = 250, intelligence = 147, agility = 153, freedom = 213 }
+  moves = [
+    { move = 0x0BFD4D80, level = 6 },                     # Grand Slam
+    { move = 0x3EC287DE, level = 18 },                    # Bubble Gum
+    { move = 0x79E3E635, level = 28 },                    # Racing Flame
+    { move = 0xB37CD264, level = 42 },                    # Am-Bush
+  ]
+
+[[edit]]
+target = "c04003890"                                   # Guy-Jean Harvestman
+
+  [[edit.cards]]
+  id = 0xB61294DB                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 312, technique = 162, pressure = 193, physical = 176, intelligence = 275, agility = 149, freedom = 367 }
+  moves = [
+    { move = 0x5739C70C, level = 1 },                     # Guided Collide
+    { move = 0xB0BC314A, level = 14 },                    # Spin Meister
+    { move = 0x62BE692D, level = 24 },                    # Whirlwind Force
+    { move = 0x4E9A9232, level = 41 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c04003900"                                   # Bobine Apples
+
+  [[edit.cards]]
+  id = 0x661245A5                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 379, control = 254, technique = 180, pressure = 153, physical = 146, intelligence = 155, agility = 142, freedom = 242 }
+  moves = [
+    { move = 0x7DAF3139, level = 7 },                     # Emperor Penguin No. 2
+    { move = 0x17110E3B, level = 19 },                    # Jumbo Sandwich
+    { move = 0x2B8C597E, level = 34 },                    # Fugue Wave
+    { move = 0xBF6D0AC5, level = 38 },                    # Emperor Penguin No. 3
+  ]
+
+[[edit]]
+target = "c04003910"                                   # Sibylle Equinox
+
+  [[edit.cards]]
+  id = 0x7F0974E4                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 124, control = 275, technique = 188, pressure = 177, physical = 189, intelligence = 204, agility = 170, freedom = 225 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 15 },                    # Astro Break
+    { move = 0x6ADE9E01, level = 22 },                    # Illusory Ball
+    { move = 0x0E0A3F7A, level = 54 },                    # Spatial Portal
+    { move = 0xBB21DDC9, level = 55 },                    # Trina Tumble
+  ]
+
+[[edit]]
+target = "c05026530"                                   # Silvia Woods
+
+  [[edit.cards]]
+  id = 0xAF4C47E4                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 176, control = 219, technique = 128, pressure = 224, physical = 236, intelligence = 230, agility = 271, freedom = 271 }
+  moves = [
+    { move = 0x8C382852, level = 1 },                     # God Hand
+    { move = 0xBE0E4AD0, level = 1 },                     # Fireball Knuckle
+    { move = 0xC19E2AEE, level = 35 },                    # Pegasus Shot
+    { move = 0xF2CB0879, level = 70 },                    # Mugen the Hand
+  ]

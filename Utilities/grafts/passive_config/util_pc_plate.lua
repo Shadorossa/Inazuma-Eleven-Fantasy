@@ -5,7 +5,7 @@
 -- placeholders; edit this file, then run the script).
 -- 2026-10-08 rebuilt on the ORIGINAL design of the configurator (Inazuma Fantasy, 2026-09-28: ff3bb93934 ..
 -- 23beba229b), which follows the vanilla game: the team dock's own per-player coroutine hands a session over
--- (util_pc_dock.lua, UTIL_PCD.Plate, called from the type-9 branch: graft passive_config_dispatch) through the
+-- (util_pc_dock.lua, UTIL_PCD.Plate, run by its Handle rule of the VR-Framework's list rows) through the
 -- parameter store: util_pc_edit_req = charaStHdl, util_pc_edit_parent = the dock's parent menu (button guide
 -- owner); this file answers util_pc_edit_done = 1 when the session ends, and the dock's coroutine restores itself.
 -- Session: a cursor on the 5 passive rows (up / down; rows the plugin locks are grey), Aceptar opens the picker on
@@ -14,7 +14,7 @@
 -- row tint / outline / cursor of the original). Slots: the plugin's rules (default = the game's layout: rows 1-3
 -- general passives, rows 4-5 archetype passives; a passive of the wrong kind is never offered nor accepted, a stored
 -- one is kept inactive). [passives] max_slots: a row past the limit is refused with TX_LIMIT.
--- Picker = Utilities' own list window (research/mods/Utilities/menus/102_team/passive_config.toml over the player's
+-- Picker = Utilities' own list window (research/mods/Utilities/content/menus/102_team/passive_config.toml over the player's
 -- game files: util_pc_list frame, 6 rows util_pc_row, backdrop util_pc_listbg, filter header util_pc_filter «Z ‹ … › C»)
 -- over the left half: effect icon, description, archetype icon, check mark on the current passive, «Quitar pasiva»
 -- last when the row is configured; L1 / R1 cycle the categories; the focused passive is previewed on the plate row.
@@ -526,6 +526,290 @@ do
       {UTIL_PPC.TX_BACK, UTIL_PPC.GL_BACK, UTIL_PPC.K_BACK}})
   end
 
+  -- ---- pointer (mouse / VR free cursor; docs/game/ui/mouse-support.md §5, EVT_PointerNew) ----------------------
+  -- 2026-10-14 (owner screenshot: hovering a passive row with the green virtual-mouse arrow did not move the cyan
+  -- frame). The plate rows and the list rows are drawn by this file with no engine zones of their own (the plate's
+  -- rows may also be moved by a plate page mod through the instance position), so the hit test is done here, from
+  -- the instances' global positions (4002164178, y up), read at hit-test time:
+  --   plate rows (soccer11_20_formation_team_passive, instances 0..4): the 828 x 92 card centred on the instance
+  --     origin (_passive_base01 at (-414, 46) in layer units), only on shown rows;
+  --   list rows (util_pc_row k): x -98 .. +872 from the row origin, ROW_H 104 centred on it (passive_config_build.py
+  --     edit_row), only on rows showing an entry; the filter header's «Z ‹» / «› C» (filter layer local x 120..215 /
+  --     563..653, top -172, 56 high); a 40 px band above the first / below the last row while the list scrolls that way.
+  -- Hover = that row focused (the d-pad's look, sound, guide / preview); click = Accept on it; wheel / band = scroll
+  -- one row; a click on nothing does nothing; Enter / A / the click command belong to the pointer while P.Owns().
+  -- EVT_PointerNew(): a pointer helper for menus that draw their own selectable items (docs/game/ui/mouse-support.md §5).
+  -- Mouse and VR's free cursor (the stick-driven «virtual mouse», CMND_SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE) are
+  -- the same pointer: the engine's pointer position (558229292, screen px, y down) is read every frame and any change
+  -- (or the engine's «mouse moved», 3272825600) puts the menu in pointer mode; a menu arrow (CMD_UP/DOWN/LEFT/RIGHT)
+  -- ends it. The menu declares its zones each time it draws, from the same positions it draws with:
+  --   P.Begin()                              forget the zones of the last drawing
+  --   P.Rect(x, y, w, h, id[, edge])         top-left + size, screen px (y down)
+  --   P.Box(cx, cy, hw, hh, id[, edge])      centre + half sizes, screen px (y down)
+  --   P.Inst(layer, idx, hw, hh, id[, edge]) around a layer instance's global position (read at hit-test time)
+  --   (edge = -1 / 1: a scroll band; hovering it scrolls every P.REPEAT frames: ev.edge)
+  -- The last zone declared wins (popups / buttons drawn over cards). Per frame (Step): local ev = P.Poll() with
+  --   ev.moved   the pointer moved (pointer mode on)          ev.hot / ev.changed  zone id under the pointer / it changed
+  --   ev.click   id clicked (mouse left button, or Accept / the free cursor's A in pointer mode) on a zone
+  --   ev.miss    a mouse click on no zone (do nothing; Enter / A there = the menu's key Accept, pointer mode off)
+  --   ev.wheel   -1 up / 1 down (CMD_EVT_WHEEL_*)
+  --   ev.edge    -1 / 1 from a scroll band                     ev.keys   a menu arrow was pressed (pointer mode off)
+  --   ev.hover   the zone under the pointer, only on a frame the pointer MOVED (or was clicked): hover by movement only,
+  --              so a redraw / scroll / camera move under a resting pointer never re-selects (retail behaviour)
+  -- P.KeyStep(): the menu moved its selection itself (its own key callbacks, a polled stick / D-pad the arrows above do
+  -- not see): pointer mode off and the resting position taken as the baseline, so the pad owns the selection until the
+  -- pointer really moves again or clicks (2026-10-13, contact map: a resting mouse pinned the selection under it).
+  -- Hover = move the selection to ev.hot with the keyboard highlight; ev.click = select it and decide. The menu's own
+  -- Accept callbacks (OnEnter / OnDecideFocus / a polled CMD_ENTER) return early while P.Owns(): in pointer mode the
+  -- click belongs to the pointer, so an item not under it is never activated. Zones are only declared for pickable,
+  -- shown items (never hidden ones). P.Forget() after a redraw under a still pointer re-focuses the zone beneath it.
+  EVT_PointerNew = EVT_PointerNew or function()
+    local P = {zones = {}, on = false, x = nil, y = nil, hot = nil, prev = {}, edge_t = 0, REPEAT = 10}
+    local MOVED, POS, GPOS, CHECK, CTRL = 3272825600, 558229292, 4002164178, 4265778440, 1332654303
+    local LEFT, CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]], 1651523701 --[[CMD_ENTER_CLICK]]
+    local W_UP, W_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[CMD_EVT_WHEEL_DOWN]]
+    local NAV = {1197218715, 3259546669, 2765147006, 2075023265} -- CMD_UP / DOWN / LEFT / RIGHT
+    local CTRLS = {CTRL, 2748927068 --[[analog-move control: the stick's menu moves]]}
+    local function M(cmd, ...)
+      local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
+      if ok then return a, b end
+      return nil
+    end
+    local function In(cmd, ctrl)
+      local ok, r = pcall(funcLuaCommand, CHECK, ctrl or CTRL, cmd)
+      return ok and r == true
+    end
+    local function Edge(cmd, ctrl)
+      local key = ctrl and (tostring(ctrl) .. ":" .. tostring(cmd)) or cmd
+      local now = In(cmd, ctrl)
+      local was = P.prev[key]
+      P.prev[key] = now
+      return now and not was
+    end
+    function P.Begin()
+      P.zones = {}
+    end
+    function P.Rect(x, y, w, h, id, edge)
+      P.zones[#P.zones + 1] = {x, y, x + w, y + h, id = id, edge = edge}
+    end
+    function P.Box(cx, cy, hw, hh, id, edge)
+      P.zones[#P.zones + 1] = {cx - hw, cy - hh, cx + hw, cy + hh, id = id, edge = edge}
+    end
+    function P.Inst(layer, idx, hw, hh, id, edge)
+      P.zones[#P.zones + 1] = {layer = layer, idx = idx, hw = hw, hh = hh, id = id, edge = edge}
+    end
+    function P.Pos()
+      local x, y = M(POS)
+      if type(x) == "number" and type(y) == "number" then return x, y end
+      return nil
+    end
+    function P.At(x, y)
+      if x == nil then x, y = P.x, P.y end
+      if x == nil then return nil end
+      for i = #P.zones, 1, -1 do
+        local z = P.zones[i]
+        if z.layer ~= nil then
+          local gx, gy = M(GPOS, z.layer, z.idx)
+          if type(gx) == "number" and type(gy) == "number" and math.abs(x - gx) <= z.hw and math.abs(-y - gy) <= z.hh then
+            return z
+          end
+        elseif x >= z[1] and x < z[3] and y >= z[2] and y < z[4] then
+          return z
+        end
+      end
+      return nil
+    end
+    -- the Accept being pressed now is a pointer click: the mouse button, or Accept / A in pointer mode ON an item
+    -- (Enter / A with the pointer resting on empty space is a key Accept on the current selection)
+    function P.Owns()
+      return In(LEFT) or (P.on and In(CLICK) and P.At() ~= nil)
+    end
+    -- forget the hovered zone: the next Poll reports the zone under a still pointer as changed (after a redraw)
+    function P.Forget()
+      P.hot = nil
+    end
+    function P.KeyStep()
+      P.on, P.hot = false, nil
+      local x, y = P.Pos()
+      if x ~= nil then P.x, P.y = x, y end
+    end
+    function P.Reset()
+      P.zones, P.on, P.hot, P.prev, P.edge_t = {}, false, nil, {}, 0
+      P.x, P.y = P.Pos()
+      -- a press / wheel / arrow held from the screen before is no click, no scroll, no key
+      for _, c in ipairs({LEFT, CLICK, W_UP, W_DOWN}) do Edge(c) end
+      for _, ctrl in ipairs(CTRLS) do
+        for _, c in ipairs(NAV) do Edge(c, ctrl) end
+      end
+    end
+    function P.Poll()
+      local ev = {}
+      local x, y = P.Pos()
+      if x ~= nil then
+        local moved = M(MOVED) == true
+        if not moved and P.x ~= nil and (math.abs(x - P.x) > 1 or math.abs(y - P.y) > 1) then
+          moved = true    -- the free cursor (stick) moves the pointer without the mouse's «moved» flag
+        end
+        P.x, P.y = x, y
+        if moved then
+          P.on, ev.moved = true, true
+        end
+      end
+      for _, ctrl in ipairs(CTRLS) do
+        for _, c in ipairs(NAV) do
+          if Edge(c, ctrl) then
+            ev.keys = true
+          end
+        end
+      end
+      if ev.keys and not ev.moved then
+        P.on = false
+      end
+      local left, click = Edge(LEFT), Edge(CLICK)
+      if left then
+        P.on = true
+      end
+      local z = P.on and P.At() or nil
+      local id = z and z.id or nil
+      ev.changed = id ~= P.hot
+      P.hot, ev.hot = id, id
+      if z ~= nil and (ev.moved or left) then
+        ev.hover = id
+      end
+      if left then
+        if z ~= nil then
+          ev.click = id
+        else
+          ev.miss = true                 -- a mouse click on empty space: nothing
+        end
+      elseif click and P.on then
+        if z ~= nil then
+          ev.click = id
+        else
+          P.on, P.hot = false, nil       -- Enter / A on empty space: the menu's key Accept takes it (selection kept)
+        end
+      end
+      if In(W_DOWN) then
+        ev.wheel = 1
+      elseif In(W_UP) then
+        ev.wheel = -1
+      end
+      if z ~= nil and z.edge ~= nil then
+        P.edge_t = P.edge_t - 1
+        if P.edge_t <= 0 then
+          ev.edge, P.edge_t = z.edge, P.REPEAT
+        end
+      else
+        P.edge_t = 0
+      end
+      return ev
+    end
+    return P
+  end
+  UTIL_PPC.LAYER_GLOBAL_POS = 4002164178
+  UTIL_PPC.PLATE_ROW_HALF_W, UTIL_PPC.PLATE_ROW_HALF_H = 414, 46
+  UTIL_PPC.LIST_ROW_X, UTIL_PPC.LIST_ROW_W, UTIL_PPC.LIST_ROW_H = -98, 970, 104
+  UTIL_PPC.CAT_LEFT, UTIL_PPC.CAT_RIGHT, UTIL_PPC.CAT_TOP, UTIL_PPC.CAT_H = {120, 95}, {563, 90}, -172, 56
+  UTIL_PPC.SCROLL_BAND_H = 40
+  UTIL_PPC.FOCUS_LOG_MAX = 200
+
+  function UTIL_PPC.GlobalPos(L, k)
+    local ok, x, y = pcall(funcLuaMenuCommand, UTIL_PPC.LAYER_GLOBAL_POS, L, k)
+    if ok and type(x) == "number" and type(y) == "number" then
+      return x, y
+    end
+    return nil
+  end
+
+  -- one line per focus change (first runs: which row, by mouse or pad)
+  function UTIL_PPC.LogFocus(where, row, by)
+    UTIL_PPC.focus_logs = (UTIL_PPC.focus_logs or 0) + 1
+    if UTIL_PPC.focus_logs <= UTIL_PPC.FOCUS_LOG_MAX then
+      UTIL_PPC.Log("focus", where, "row", row, "by", by)
+    end
+  end
+
+  function UTIL_PPC.PlateRowShown(i)
+    local L = UTIL_PPC.ROWS
+    return funcLuaMenuCommand(262659071, L) == true and funcLuaMenuCommand(2640875187, L, i) == true
+      and funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, i) == true
+  end
+
+  -- the session's zones: the 5 plate rows (id = row index)
+  function UTIL_PPC.PlateRowZones(P)
+    P.Begin()
+    for i = 0, 4 do
+      if UTIL_PPC.PlateRowShown(i) then
+        P.Inst(UTIL_PPC.ROWS, i, UTIL_PPC.PLATE_ROW_HALF_W, UTIL_PPC.PLATE_ROW_HALF_H, i)
+        if not UTIL_PPC.zones_logged then
+          local x, y = UTIL_PPC.GlobalPos(UTIL_PPC.ROWS, i)
+          UTIL_PPC.Log("pointer zone plate row", i, "centre", tostring(x), tostring(y and -y))
+        end
+      end
+    end
+    UTIL_PPC.zones_logged = true
+  end
+
+  -- the picker's zones: list rows (id = view index k), category arrows, scroll bands
+  function UTIL_PPC.ListZones(P, list, first)
+    P.Begin()
+    local fx, fy = UTIL_PPC.GlobalPos(UTIL_PPC.FILTER, 0)
+    if fx ~= nil then
+      P.Rect(fx + UTIL_PPC.CAT_LEFT[1], -(fy + UTIL_PPC.CAT_TOP), UTIL_PPC.CAT_LEFT[2], UTIL_PPC.CAT_H, "cat_left")
+      P.Rect(fx + UTIL_PPC.CAT_RIGHT[1], -(fy + UTIL_PPC.CAT_TOP), UTIL_PPC.CAT_RIGHT[2], UTIL_PPC.CAT_H, "cat_right")
+    end
+    local top, bottom = nil, nil
+    for k = 0, UTIL_PPC.VIEW - 1 do
+      if list[first + k + 1] ~= nil then
+        local x, y = UTIL_PPC.GlobalPos(UTIL_PPC.ITEM, k)
+        if x ~= nil then
+          local sy = -y - UTIL_PPC.LIST_ROW_H / 2
+          P.Rect(x + UTIL_PPC.LIST_ROW_X, sy, UTIL_PPC.LIST_ROW_W, UTIL_PPC.LIST_ROW_H, k)
+          top = top or {x + UTIL_PPC.LIST_ROW_X, sy}
+          bottom = {x + UTIL_PPC.LIST_ROW_X, sy + UTIL_PPC.LIST_ROW_H}
+        end
+      end
+    end
+    if top ~= nil and first > 0 then
+      P.Rect(top[1], top[2] - UTIL_PPC.SCROLL_BAND_H, UTIL_PPC.LIST_ROW_W, UTIL_PPC.SCROLL_BAND_H, "scroll_up", -1)
+    end
+    if bottom ~= nil and first + UTIL_PPC.VIEW < #list then
+      P.Rect(bottom[1], bottom[2], UTIL_PPC.LIST_ROW_W, UTIL_PPC.SCROLL_BAND_H, "scroll_down", 1)
+    end
+  end
+
+  -- one pointer per session (UTIL_PPC.pointer), reset whenever the screen under it changes (a held press is no click)
+  function UTIL_PPC.Pointer()
+    if UTIL_PPC.pointer == nil and type(EVT_PointerNew) == "function" then
+      local ok, P = pcall(EVT_PointerNew)
+      if ok then
+        UTIL_PPC.pointer = P
+      end
+    end
+    return UTIL_PPC.pointer
+  end
+
+  function UTIL_PPC.PointerReset()
+    local P = UTIL_PPC.Pointer()
+    if P ~= nil then
+      pcall(P.Reset)
+    end
+  end
+
+  -- this frame's pointer event with the given zones: ev, owns (the Accept pressed now is the pointer's)
+  function UTIL_PPC.PointerPoll(zones, ...)
+    local P = UTIL_PPC.Pointer()
+    if P == nil or not pcall(zones, P, ...) then
+      return {}, false
+    end
+    local ok, ev = pcall(P.Poll)
+    if not ok or type(ev) ~= "table" then
+      return {}, false
+    end
+    local okO, owns = pcall(P.Owns)
+    return ev, okO and owns == true
+  end
+
   -- the result of a set request: sound, header, message
   function UTIL_PPC.SetResult(slot, ok, code)
     if ok then
@@ -571,15 +855,45 @@ do
     UTIL_PPC.ListGuide(cat)
     coroutine.yield()
     local chosen = nil
+    UTIL_PPC.PointerReset()
     while true do
       coroutine.yield()
       local moved = false
+      local by = "pad"
+      local cat_dir = nil
+      local ev, owns = UTIL_PPC.PointerPoll(UTIL_PPC.ListZones, list, first)
+      local clicked = ev.click
+      local scroll = ev.wheel or ev.edge
       if UTIL_PPC.Key(UTIL_PPC.K_BACK) then
         UTIL_PPC.SE(UTIL_PPC.SE_BACK)
         break
-      elseif UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK) then
+      elseif type(clicked) == "number" or (not owns and (UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK))) then
+        if type(clicked) == "number" and list[first + clicked + 1] ~= nil then
+          sel = first + clicked
+          UTIL_PPC.LogFocus("list", sel, "mouse click")
+        end
         chosen = list[sel + 1]
         break
+      elseif clicked == "cat_left" or clicked == "cat_right" then
+        cat_dir = clicked == "cat_left" and -1 or 1
+        by = "mouse"
+      elseif type(ev.hover) == "number" and list[first + ev.hover + 1] ~= nil and first + ev.hover ~= sel then
+        sel = first + ev.hover
+        moved = true
+        by = "mouse"
+      elseif scroll ~= nil then
+        -- wheel / scroll band: the view one row; the focus stays under the pointer (else inside the view)
+        local first2 = math.max(0, math.min(first + scroll, #list - UTIL_PPC.VIEW))
+        if first2 ~= first then
+          first = first2
+          if type(ev.hot) == "number" and list[first + ev.hot + 1] ~= nil then
+            sel = first + ev.hot
+          else
+            sel = math.max(first, math.min(sel, first + UTIL_PPC.VIEW - 1))
+          end
+          moved = true
+          by = "mouse"
+        end
       elseif UTIL_PPC.Key(UTIL_PPC.K_DOWN) and sel < #list - 1 then
         sel = sel + 1
         if sel >= first + UTIL_PPC.VIEW then
@@ -593,7 +907,10 @@ do
         end
         moved = true
       elseif UTIL_PPC.Key(UTIL_PPC.K_L1) or UTIL_PPC.Key(UTIL_PPC.K_R1) then
-        local dir = UTIL_PPC.Key(UTIL_PPC.K_L1) and -1 or 1
+        cat_dir = UTIL_PPC.Key(UTIL_PPC.K_L1) and -1 or 1
+      end
+      if cat_dir ~= nil then
+        local dir = cat_dir
         local ok, c = pcall(funcLuaCommand, UTIL_PPC.CMD_CAT_NEXT, UTIL_PPC.h, slot, cat, dir)
         if ok and type(c) == "number" and c ~= cat then
           local l2, c2 = UTIL_PPC.Build(slot, c)
@@ -615,6 +932,7 @@ do
         UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
         UTIL_PPC.ListShow(true, list, first, sel)
         UTIL_PPC.Preview(slot, list[sel + 1])
+        UTIL_PPC.LogFocus("list", sel, by)
       end
     end
     UTIL_PPC.ListShow(false, list, first, sel)
@@ -658,24 +976,31 @@ do
     UTIL_PPC.Mark(sel)
     UTIL_PPC.RowsGuide(sel)
     coroutine.yield()
+    UTIL_PPC.zones_logged = false
+    UTIL_PPC.PointerReset()
+    -- the focus on row `to` (d-pad or pointer): the same frame, sound and guide either way
+    local function FocusRow(to, by)
+      sel = to
+      UTIL_PPC.slot = sel
+      UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
+      UTIL_PPC.Mark(sel)
+      UTIL_PPC.RowsGuide(sel)
+      UTIL_PPC.LogFocus("plate", sel, by)
+    end
     while true do
       coroutine.yield()
+      local ev, owns = UTIL_PPC.PointerPoll(UTIL_PPC.PlateRowZones)
+      local clicked = type(ev.click) == "number" and ev.click or nil
       if UTIL_PPC.Key(UTIL_PPC.K_BACK) then
         UTIL_PPC.SE(UTIL_PPC.SE_BACK)
         break
-      elseif UTIL_PPC.Key(UTIL_PPC.K_DOWN) and sel < 4 then
-        sel = sel + 1
-        UTIL_PPC.slot = sel
-        UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
-        UTIL_PPC.Mark(sel)
-        UTIL_PPC.RowsGuide(sel)
-      elseif UTIL_PPC.Key(UTIL_PPC.K_UP) and sel > 0 then
-        sel = sel - 1
-        UTIL_PPC.slot = sel
-        UTIL_PPC.SE(UTIL_PPC.SE_MOVE)
-        UTIL_PPC.Mark(sel)
-        UTIL_PPC.RowsGuide(sel)
-      elseif UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK) then
+      elseif clicked ~= nil or (not owns and (UTIL_PPC.Key(UTIL_PPC.K_ENTER) or UTIL_PPC.Key(UTIL_PPC.K_CLICK))) then
+        if clicked ~= nil and clicked ~= sel then
+          sel = clicked
+          UTIL_PPC.slot = sel
+          UTIL_PPC.Mark(sel)
+          UTIL_PPC.LogFocus("plate", sel, "mouse click")
+        end
         if UTIL_PPC.Locked(sel) then
           UTIL_PPC.SE(UTIL_PPC.SE_NG)
           UTIL_PPC.Message(UTIL_PPC.LockText(sel))
@@ -686,6 +1011,13 @@ do
           UTIL_PPC.Mark(sel)
         end
         UTIL_PPC.RowsGuide(sel)
+        UTIL_PPC.PointerReset()
+      elseif type(ev.hover) == "number" and ev.hover ~= sel then
+        FocusRow(ev.hover, "mouse")
+      elseif UTIL_PPC.Key(UTIL_PPC.K_DOWN) and sel < 4 then
+        FocusRow(sel + 1, "pad")
+      elseif UTIL_PPC.Key(UTIL_PPC.K_UP) and sel > 0 then
+        FocusRow(sel - 1, "pad")
       elseif UTIL_PPC.Key(UTIL_PPC.K_FUNC3) then
         local okS, _, configured, locked, stored = pcall(funcLuaCommand, UTIL_PPC.CMD_SLOT, h, sel)
         -- a configured row, or an inactive stored choice (wrong kind / past the limit): FUNC3 clears it
@@ -695,6 +1027,7 @@ do
           UTIL_PPC.DrawRows()
           UTIL_PPC.Mark(sel)
           UTIL_PPC.RowsGuide(sel)
+          UTIL_PPC.PointerReset()
         else
           UTIL_PPC.SE(UTIL_PPC.SE_NG)
         end
@@ -708,6 +1041,7 @@ do
 
   function UTIL_PPC.Finish()
     UTIL_PPC.co = nil
+    UTIL_PPC.pointer = nil
     UTIL_PPC.slot = nil
     pcall(UTIL_PPC.Mark, -1)
     pcall(UTIL_PPC.ListShow, false, {}, 0, 0)

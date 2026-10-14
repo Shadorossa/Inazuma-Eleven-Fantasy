@@ -1,0 +1,6 @@
+schema = "VRFW.character/2"
+# Character Reforged · the EVT stats layout of chara_param (docs/framework/types/character.md §2.4): every card gets
+# cols 43-57 (43 stats version, 44 growth, 45-54 the Lv200 stats, 55-57 other mods' columns), so the cards' `stats` /
+# `growth` of any mod (this mod's content\characters\** first: the retail cards' values) have their columns. The widest
+# `param_columns` of the active mods wins (Inazuma Fantasy declares the same).
+param_columns = 58

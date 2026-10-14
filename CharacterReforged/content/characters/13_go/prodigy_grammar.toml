@@ -1,0 +1,267 @@
+schema = "VRFW.character/2"
+# Character Reforged · Prodigy Grammar · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04000610"                                   # Par Scal
+
+  [[edit.cards]]
+  id = 0x66E09C37                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 180, technique = 151, pressure = 298, physical = 230, intelligence = 221, agility = 166, freedom = 221 }
+  moves = [
+    { move = 0x822B79EA, level = 1 },                     # Somersault Stamp
+    { move = 0x06B22DB5, level = 20 },                    # Gyro-Blocker
+    { move = 0xDF2D9951, level = 38 },                    # Close Counter
+    { move = 0xB8C5883B, level = 52 },                    # God Hand X
+  ]
+
+[[edit]]
+target = "c04000620"                                   # Tez La
+
+  [[edit.cards]]
+  id = 0x4DCDCFF4                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 146, control = 196, technique = 150, pressure = 231, physical = 252, intelligence = 238, agility = 177, freedom = 221 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0xED7B7A4F, level = 20 },                    # Defence Equation
+    { move = 0x0F4DC9B3, level = 35 },                    # Logicstical Sync
+    { move = 0xA9E3374B, level = 49 },                    # Cyclone Sprint
+  ]
+
+[[edit]]
+target = "c04000630"                                   # Aris Tottle
+
+  [[edit.cards]]
+  id = 0x54D6FEB5                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 147, control = 220, technique = 209, pressure = 169, physical = 269, intelligence = 224, agility = 153, freedom = 225 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x5DA7EA06, level = 15 },                    # Boomerang Bluff
+    { move = 0xD8794890, level = 25 },                    # Kangaroo Kick
+    { move = 0x585098FC, level = 52 },                    # Slice and Dice
+  ]
+
+[[edit]]
+target = "c04000640"                                   # Archie Medes
+
+  [[edit.cards]]
+  id = 0x1B976872                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 108, control = 246, technique = 242, pressure = 165, physical = 243, intelligence = 231, agility = 161, freedom = 225 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x12E67CC1, level = 13 },                    # Future Eye
+    { move = 0xAD6E4BF9, level = 20 },                    # Harvest
+    { move = 0x6B1CF436, level = 59 },                    # Bewildered
+  ]
+
+[[edit]]
+target = "c04000650"                                   # Socrat Eiss
+
+  [[edit.cards]]
+  id = 0x028C5933                                         # DF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 124, control = 207, technique = 292, pressure = 186, physical = 247, intelligence = 203, agility = 162, freedom = 209 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x928B9BED, level = 13 },                    # Optimal Trajectory
+    { move = 0x6ADE9E01, level = 24 },                    # Illusory Ball
+    { move = 0x4E9A9232, level = 35 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c04000660"                                   # Ian Stein
+
+  [[edit.cards]]
+  id = 0x29A10AF0                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 255, technique = 288, pressure = 176, physical = 174, intelligence = 184, agility = 147, freedom = 217 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x2E7B2B84, level = 13 },                    # Thief's Eye
+    { move = 0x4E9A9232, level = 29 },                    # Spinning Cut
+    { move = 0x19025F83, level = 35 },                    # Quick Draw
+  ]
+
+[[edit]]
+target = "c04000670"                                   # Ed Ison
+
+  [[edit.cards]]
+  id = 0x30BA3BB1                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 228, technique = 194, pressure = 186, physical = 278, intelligence = 161, agility = 146, freedom = 205 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x928B9BED, level = 13 },                    # Optimal Trajectory
+    { move = 0x73C5AF40, level = 20 },                    # Dash Accelerator
+    { move = 0xACAC21CE, level = 31 },                    # Fake Ball
+  ]
+
+[[edit]]
+target = "c04000680"                                   # Mitchell Angelio
+
+  [[edit.cards]]
+  id = 0xB722277E                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 155, control = 273, technique = 223, pressure = 173, physical = 194, intelligence = 217, agility = 174, freedom = 363 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x928B9BED, level = 13 },                    # Optimal Trajectory
+    { move = 0xDA3FF6C9, level = 36 },                    # Criss-Cross
+    { move = 0x3C843987, level = 42 },                    # Flurry Dash
+  ]
+
+[[edit]]
+target = "c04000690"                                   # Moe Sart
+
+  [[edit.cards]]
+  id = 0xAE39163F                                         # FW/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 261, technique = 174, pressure = 217, physical = 159, intelligence = 200, agility = 146, freedom = 221 }
+  moves = [
+    { move = 0x928B9BED, level = 1 },                     # Optimal Trajectory
+    { move = 0x2E7B2B84, level = 13 },                    # Thief's Eye
+    { move = 0x61FB16FD, level = 40 },                    # Divine Arrows
+    { move = 0x29B328E6, level = 49 },                    # Spectacle Crash
+  ]
+
+[[edit]]
+target = "c04000700"                                   # Dave Inchy
+
+  [[edit.cards]]
+  id = 0x7E39C741                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 297, technique = 169, pressure = 201, physical = 182, intelligence = 261, agility = 134, freedom = 363 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x928B9BED, level = 13 },                    # Optimal Trajectory
+    { move = 0xF7E49F60, level = 30 },                    # Magnetism
+    { move = 0x0F4DC9B3, level = 46 },                    # Logicstical Sync
+  ]
+
+[[edit]]
+target = "c04000710"                                   # Frank Lyn
+
+  [[edit.cards]]
+  id = 0x6722F600                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 147, control = 292, technique = 159, pressure = 239, physical = 140, intelligence = 246, agility = 197, freedom = 251 }
+  moves = [
+    { move = 0x928B9BED, level = 1 },                     # Optimal Trajectory
+    { move = 0x17A96A44, level = 25 },                    # Clone Faker
+    { move = 0xA0BDF96F, level = 35 },                    # Ballista Barrage
+    { move = 0x12E67CC1, level = 52 },                    # Future Eye
+  ]
+
+[[edit]]
+target = "c04000720"                                   # Cooper Nikos
+
+  [[edit.cards]]
+  id = 0x4C0FA5C3                                         # GK/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 135, control = 213, technique = 176, pressure = 231, physical = 224, intelligence = 177, agility = 208, freedom = 367 }
+  moves = [
+    { move = 0x822B79EA, level = 1 },                     # Somersault Stamp
+    { move = 0xC4D13C6B, level = 15 },                    # Katana Kick
+    { move = 0x8B31808E, level = 28 },                    # Wormhole
+    { move = 0xF2CB0879, level = 48 },                    # Mugen the Hand
+  ]
+
+[[edit]]
+target = "c04000730"                                   # Leo Gally
+
+  [[edit.cards]]
+  id = 0x55149482                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 146, control = 228, technique = 184, pressure = 173, physical = 259, intelligence = 225, agility = 192, freedom = 209 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x4A17EE80, level = 20 },                    # Hunter's Net
+    { move = 0xEF3DC416, level = 39 },                    # Skytree Hop
+    { move = 0x5643C944, level = 45 },                    # Killer Slide
+  ]
+
+[[edit]]
+target = "c04000740"                                   # Desmond Cartes
+
+  [[edit.cards]]
+  id = 0x1A550245                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 286, technique = 221, pressure = 142, physical = 180, intelligence = 166, agility = 153, freedom = 209 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x2E7B2B84, level = 13 },                    # Thief's Eye
+    { move = 0xDBFD9CFE, level = 25 },                    # Big Ball Trick
+    { move = 0xAD6E4BF9, level = 56 },                    # Harvest
+  ]
+
+[[edit]]
+target = "c04000750"                                   # Connor Fuschius
+
+  [[edit.cards]]
+  id = 0x034E3304                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 261, technique = 257, pressure = 171, physical = 153, intelligence = 177, agility = 154, freedom = 284 }
+  moves = [
+    { move = 0x12E67CC1, level = 1 },                     # Future Eye
+    { move = 0x14D1ED15, level = 13 },                    # Jumping Jack 
+    { move = 0xCF7FA2C4, level = 30 },                    # Gold Rush
+    { move = 0x73C5AF40, level = 36 },                    # Dash Accelerator
+  ]
+
+[[edit]]
+target = "c04000760"                                   # Dar Wynne
+
+  [[edit.cards]]
+  id = 0x286360C7                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 165, control = 232, technique = 274, pressure = 209, physical = 180, intelligence = 165, agility = 153, freedom = 209 }
+  moves = [
+    { move = 0x928B9BED, level = 1 },                     # Optimal Trajectory
+    { move = 0xF6E75EE9, level = 14 },                    # Headbanger
+    { move = 0x332CCDC9, level = 24 },                    # Heel Kick
+    { move = 0x1C4D4906, level = 39 },                    # Whirlpool
+  ]
+
+[[edit]]
+target = "c11804010"                                   # Tom Jefferson
+
+  [[edit.cards]]
+  id = 0x9FCEDA86                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 262, technique = 221, pressure = 178, physical = 185, intelligence = 188, agility = 166, freedom = 221 }
+  moves = [
+    { move = 0x828A53C8, level = 1 },                     # Plasma Ball
+    { move = 0x650FA58E, level = 13 },                    # Spin Out
+    { move = 0x9349F1DA, level = 23 },                    # Zephyr Shot
+    { move = 0xDF8CB373, level = 36 },                    # Sonic Shot
+  ]

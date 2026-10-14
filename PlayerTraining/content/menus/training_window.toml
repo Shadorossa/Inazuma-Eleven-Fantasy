@@ -1,0 +1,87 @@
+# Player Training › the training window evt_training_menu (moved from Inazuma Fantasy's menus\screens.toml /
+# screen_objects.toml 2026-10-14; built by research/scripts/tr_build.py): its registry row (cloned from `like`), its
+# setting (the retail bean pop-up `base`, the lists that differ written whole) and its window object (the retail bean
+# window with a taller layout: 9 gauge locators, 10 text nodes; the .g4pkm / .g4mg are this mod's
+# assets\menu\10_win\win06\evt_win06_06_training\). No `script`: the screen's Lua is the Lua build's full file (graft
+# player_training_menu, new_file). Opened from the team dock's «Entrenamiento» row (graft player_training_dock).
+schema = "VRFW.menu/2"
+
+# evt_training_menu (tr_build.py): 8 layers; base ability_learning_set_beans_menu
+[[screen]]
+name = "evt_training_menu"
+like = "ability_learning_set_beans_menu"
+base = "ability_learning_set_beans_menu"
+
+# lists as in ability_learning_set_beans_menu: res
+[screen.rows]
+layer = [
+    { layer = "cmn05_01_cursor" },
+    { layer = "win06_06_beans_lump_use_window", object = "evt_win06_06_training" },
+    { layer = "team13_16_beans_gauge", count = 9 },
+    { layer = "cmn03_10_sub_window_button" },
+    { layer = "win05_42_parameter_graph_base" },
+    { layer = "soccer11_06_formation_status_graph_base" },
+    { layer = "soccer11_06_p1_formation_status_graph_param_num" },
+    { layer = "soccer11_07_formation_status_graph" },
+]
+cmd = [
+    { layer = "cmn03_10_sub_window_button", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0xACD7E06B },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xFC9B9D8F },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x9A03EADC },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x43484644 },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x5C8685E1 },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0xE44B1D88 },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xA71F8C1D },
+    { layer = "cmn03_10_sub_window_button", input = "CMD_FUNC2", command = "CMD_FUNCTION", arg = 0xA3DDF388 },
+]
+group_base = [
+    { layer = "cmn05_01_cursor", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "win06_06_beans_lump_use_window", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team13_16_beans_gauge", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn03_10_sub_window_button", flags = [1, 1, 1, 0, 1, 0] },
+    { layer = "win05_42_parameter_graph_base", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_06_formation_status_graph_base", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_06_p1_formation_status_graph_param_num", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_07_formation_status_graph", flags = [0, 1, 1, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 1] },
+    { group = "evt_training_menu", flags = [1], slice = [1, 7] },
+]
+focus_base = [
+    [0x3A06AC3D, 0, 0],  # button
+]
+focus_group = [
+    { layer = "cmn03_10_sub_window_button", flags = [0, 0, 0], slice = [0, 1] },
+]
+shift_base = []
+shift = []
+
+[[object]]
+name = "evt_win06_06_training"
+from = "win06_06_beans_lump_use_window"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/10_win/win06/win06_06/win06_06.g4pkm" }, values = { 1 = "common/menu/10_win/win06/evt_win06_06_training/evt_win06_06_training.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0x51BECE2B, 2 = 0x51BECE2B, 3 = 0x759467F5, 4 = 0 }, values = { 1 = 0x239F862B, 2 = 0x239F862B, 3 = 0xC80E2C1F, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0xC8B79F91, 2 = 0xC8B79F91, 3 = 0x759467F5, 4 = 1 }, values = { 1 = 0x5498B6BD, 2 = 0x5498B6BD, 3 = 0xC80E2C1F, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0xBFB0AF07, 2 = 0xBFB0AF07, 3 = 0x759467F5, 4 = 2 }, values = { 1 = 0xCD91E707, 2 = 0xCD91E707, 3 = 0xC80E2C1F, 4 = 5 } },
+]
+add = [
+    { block = "MenuTextSetting", param = "_text_trn01", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_equip03", match = { 1 = 0x71EC064A, 2 = 0x591A82E2 } } },
+    { block = "MenuTextSetting", param = "_text_trn02", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn01", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn03", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn02", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn04", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn03", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn05", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn04", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn06", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn05", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn07", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn06", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn08", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn07", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trn09", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn08", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "MenuTextSetting", param = "_text_trnhelp", values = [0x71EC064A, 0xD292AF59], after = { param = "_text_trn09", match = { 1 = 0x71EC064A, 2 = 0xD292AF59 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBA96D791, 0xBA96D791, 0xC80E2C1F, 6], after = { param = "NullLayerName", match = { 1 = 0xCD91E707, 2 = 0xCD91E707, 3 = 0xC80E2C1F, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2A29CA00, 0x2A29CA00, 0xC80E2C1F, 7], after = { param = "NullLayerName", match = { 1 = 0xBA96D791, 2 = 0xBA96D791, 3 = 0xC80E2C1F, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5D2EFA96, 0x5D2EFA96, 0xC80E2C1F, 8], after = { param = "NullLayerName", match = { 1 = 0x2A29CA00, 2 = 0x2A29CA00, 3 = 0xC80E2C1F, 4 = 7 } } },
+]

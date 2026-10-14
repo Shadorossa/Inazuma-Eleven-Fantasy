@@ -1,0 +1,25 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "vs_route_town_command_select_menu": {
+  "script": "vs_route_town_command_select_menu_7.00.04.00",
+  "require": [
+   "SwapBannerCapture"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_menu": {
+  "script": "vs_route_town_menu_6.00.32.00",
+  "require": [
+   "GetRouteTextureInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

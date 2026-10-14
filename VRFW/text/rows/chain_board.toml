@@ -3,7 +3,7 @@
 # The chain's / pages' titles, the rival names and levels come from the declarations (team type), not from here.
 # %s / %d are filled by the script (string.format).
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the button guide of the help key (pad X / keyboard FUNC2); crc32("vrfw_chain_help_btn")
@@ -481,3 +481,55 @@ pt = "Contrata %s"
 ja = "%sをスカウト"
 zh_hans = "招募%s"
 zh_hant = "招募%s"
+
+# a double chest (kind dchest, 2026-10-14, chain-board.md §2c): the team card's name line
+[[row]]
+id = "vrfw_chain_card_dchest"
+es = "Cofre doble"
+en = "Double chest"
+fr = "Coffre double"
+de = "Doppelte Truhe"
+it = "Forziere doppio"
+pt = "Baú duplo"
+ja = "ダブル宝箱"
+zh_hans = "双重宝箱"
+zh_hant = "雙重寶箱"
+
+# ... its rule (third line)
+[[row]]
+id = "vrfw_chain_dchest_rule"
+es = "Ábrelo; con S en toda la rama, ábrelo otra vez."
+en = "Open it; with S in the whole branch, open it again."
+fr = "Ouvrez-le ; avec S sur toute la branche, rouvrez-le."
+de = "Öffne sie; mit S im ganzen Zweig erneut öffnen."
+it = "Aprilo; con S in tutto il ramo, riaprilo."
+pt = "Abre-o; com S em todo o ramo, abre-o outra vez."
+ja = "開けよう。枝の全試合でSならもう一度開けられる。"
+zh_hans = "打开它；整条分支取得S后可再次打开。"
+zh_hant = "打開它；整條分支取得S後可再次打開。"
+
+# ... opened once without S (card line and Accept message)
+[[row]]
+id = "vrfw_chain_dchest_half"
+es = "Consigue S en toda la rama para abrirlo otra vez."
+en = "Get S in the whole branch to open it again."
+fr = "Obtenez S sur toute la branche pour le rouvrir."
+de = "Hol S im ganzen Zweig, um sie erneut zu öffnen."
+it = "Ottieni S in tutto il ramo per riaprirlo."
+pt = "Consegue S em todo o ramo para o abrir outra vez."
+ja = "枝の全試合でSを取ると、もう一度開けられる。"
+zh_hans = "在整条分支中取得S即可再次打开。"
+zh_hant = "在整條分支中取得S即可再次打開。"
+
+# ... no reward declared: disabled (card line and Accept message)
+[[row]]
+id = "vrfw_chain_dchest_empty"
+es = "Este cofre está vacío por ahora."
+en = "This chest is empty for now."
+fr = "Ce coffre est vide pour l'instant."
+de = "Diese Truhe ist vorerst leer."
+it = "Questo forziere per ora è vuoto."
+pt = "Este baú está vazio por agora."
+ja = "この宝箱は今のところ空っぽだ。"
+zh_hans = "这个宝箱目前是空的。"
+zh_hant = "這個寶箱目前是空的。"

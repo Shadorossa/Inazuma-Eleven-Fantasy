@@ -1,0 +1,29 @@
+schema = "VRFW.technique/3"
+# Ball mini-effects of retail moves, mod Hissatsu Effects (hand-written; moved out of Inazuma Fantasy 2026-10-14; docs/framework/technique.md §4b).
+# A keeper PUNCH move (Escudo de fuerza…) that wins its duel sends the ball away; [edit.ball] reshapes that ball:
+#   clear_distance = "low" (15 m) | "mid" (25 m) | "high" (40 m) | metres (3-90)   -- where it first bounces
+#   launch         = "flat" (10°) | "low" (25°) | "lob" (45°) | "high" (60°) | degrees (5-85)
+#   direction      = "keep" (the game's way, default) | "forward" (straight down the pitch)
+#   max_travel     = "half_pitch" (47 m) | metres (5-94)  -- how far the ball may go in all (flight + bounces + roll)
+#                    from where it is released; a faster ball keeps its way and angle at a lower speed
+# A key left out keeps the game's own value. The rule also covers the move's _or / _mm variants.
+
+# Escudo de fuerza (Power Shield): a short-to-medium clearance, low trajectory.
+[[edit]]
+target = "whk00020"
+  [edit.ball]
+  clear_distance = 20
+  launch = "low"
+  max_travel = "half_pitch"
+
+# Escudo de fuerza total (Full Power Shield): a long clearance that goes UP (a high lob), straight down the pitch,
+# so nobody picks it up in front of the box. The ball bounces on a lot (bounces keep 88 % / 90 % of the speed): a 40 m
+# lob crossed the whole pitch and scored in the other goal (Nacho 2026-10-07), so its whole travel is capped at half the
+# pitch; the lob stays a 60° lob, only shorter.
+[[edit]]
+target = "whk00120"
+  [edit.ball]
+  clear_distance = "high"
+  launch = "high"
+  direction = "forward"
+  max_travel = "half_pitch"

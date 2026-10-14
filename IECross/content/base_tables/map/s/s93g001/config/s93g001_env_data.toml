@@ -1,0 +1,9 @@
+schema = "VRFW.base_table/1"
+file = "data/common/map/s/s93g001/config/s93g001_env_data.cfg.bin"
+from = "data/common/map/s/s11g001/config/s11g001_env_data.cfg.bin"
+
+[[list]]
+name = "ENV_LIGHT_SET_INFO"
+rows = [
+  [0xE8058B83, 0, { DATA = [[0x21EC8869, 0x11DCAF57]] }],
+]

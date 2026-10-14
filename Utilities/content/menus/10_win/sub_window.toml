@@ -1,0 +1,11 @@
+# Team bank pages (feature team_banks): L2 / R2 (Q / E) on the dock rows of the sub-window's dock list send
+# CMD_FUNCTION 0x85B7BB15 with 0x7CAE15EE (previous) / 0x97825F76 (next), which the engine hands to the opener's ZL/ZR
+# callback (EVT_TB_WinZLZR of research/grafts/team_banks). Moved from Inazuma Fantasy (menus/10_win) on 2026-10-08.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "sub_window"
+add_cmd = [
+    { layer = "mainmenu90_31_doc_item", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x85B7BB15, arg2 = 0x7CAE15EE },
+    { layer = "mainmenu90_31_doc_item", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x85B7BB15, arg2 = 0x97825F76 },
+]

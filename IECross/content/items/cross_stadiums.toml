@@ -1,4 +1,4 @@
-schema = "vr_framework.item/2"
+schema = "VRFW.item/2"
 # Hand-written: the stadium items («key» items, like retail gd1200NN) of the Inazuma Eleven Cross stadiums IF ports
 # (research/scripts/cross_stadium_build.py, docs/game/media/cross-stadium-port.md §11). Owning one unlocks its row in
 # the free-match stadium list (soccer_game_option c2 = GetGlobalItemGetBitFlag(item) == 1, as every retail stadium);
@@ -6,12 +6,17 @@ schema = "vr_framework.item/2"
 # Moved from Inazuma Fantasy with the stadiums' list rows on 2026-10-08: the [[alias]]es at the end keep each
 # ticket's item id (0x1E4F5D8E... = crc32("inazuma_fantasy.<name>"), what the list rows' unlock conditions encode),
 # its catalog bit (bought / owned in the saves), its name text ids and old-save slots.
+# Icon (1.3.14): every retail stadium ticket gd1200NN names gd120001 as its icon override item (item_config col 14,
+# record +0x30, docs/game/mechanics/move-rank-items.md «How an item icon is found»); gd120001 is the only one whose key
+# has a texture (icon_item01.g4tx). A new item gets col 14 = 0 (it draws its own key, gd120030: no texture), so
+# `icon = "gd120001"` gives the Cross tickets the retail tickets' shop / bag icon (key gd120001; col 15 = its sort index).
 default_lang = "es"
 
 [[item]]
 name = "stadium_s91g001"                      # 0x1E4F5D8E: Inazuma Big Ferry (map s91g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Inazuma Big Ferry"
   [item.text.en]
@@ -23,6 +28,7 @@ category = "key"
 name = "stadium_s91g001b"                     # 0x7BA00E83: Inazuma Big Ferry (verano) (map s91g001b)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Inazuma Big Ferry (verano)"
   [item.text.en]
@@ -34,6 +40,7 @@ category = "key"
 name = "stadium_s91g001c"                     # 0x0CA73E15: Inazuma Big Ferry (festival) (map s91g001c)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Inazuma Big Ferry (festival)"
   [item.text.en]
@@ -45,6 +52,7 @@ category = "key"
 name = "stadium_s92g001"                      # 0x59EF275E: Estadio Costero (map s92g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Estadio Costero"
   [item.text.en]
@@ -56,6 +64,7 @@ category = "key"
 name = "stadium_s93g001"                      # 0x648F0EEE: Barco Pirata Fantasma (map s93g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Barco Pirata Fantasma"
   [item.text.en]
@@ -67,6 +76,7 @@ category = "key"
 name = "stadium_s94g001"                      # 0xD6AFD2FE: Barco Ramen (map s94g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Barco Ramen"
   [item.text.en]
@@ -78,6 +88,7 @@ category = "key"
 name = "stadium_s98g001"                      # 0x135F3FFF: Campo Cibernético (map s98g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Campo Cibernético"
   [item.text.en]
@@ -89,6 +100,7 @@ category = "key"
 name = "stadium_s99g001"                      # 0x2E3F164F: Cubierta del Big Ferry (map s99g001)
 base = "gd120030"
 category = "key"
+icon = "gd120001"
   [item.text.es]
   name = "Cubierta del Big Ferry"
   [item.text.en]

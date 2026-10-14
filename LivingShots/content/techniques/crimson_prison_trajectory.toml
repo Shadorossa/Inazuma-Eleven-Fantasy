@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Prisión escarlata (Crimson Prison, whs02380, cut-in ev60_02380). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the ball breaks free at 11.71 m and dives, then runs on in a straight ~21 deg line (the
+# cut-in's sky has no pitch: its heights go on below 0); in the match it flies the cut-in's first 17.8 m from 11.71 m
+# and that line into the goal at 2.0 m, counted back from the goal (a shorter shot starts at the profile's height at
+# the kick).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move crimson_prison): the event ball (s01) of
+# ev60_02380 c0500, event frames 1390-1450: [[0.00, 11.71], [17.76, 3.41], [40.28, -5.46], [50.57, -9.08]] (0.23 m);
+# the line 17.76 -> 50.57 (20.8 deg) brought from 3.41 m to 2.0 m = 3.7 m on, 21.46 m from the start.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Prisión escarlata (whs02380).
+[[edit]]
+target = "whs02380"
+trajectory = { goal_points = [[21.46, 11.71], [3.7, 3.41], [0.0, 2.0]], unblockable = false }

@@ -1,0 +1,98 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe: Chronicle board side nodes ([[VRFW.RouteNode]], the VR-Framework's node system: team type route.rs /
+# scripts\build\team\route.lua, board grafts route_nodes / route_board / route_chains; docs/framework/route-board.md,
+# docs/game/modes/chronicle-side-branches.md). This mod only DECLARES its nodes; the framework builds and draws them.
+#
+# SLOT MANIFEST: `Slot` is the node's byte in the save's Chronicle arrays (271-299). Never change or reuse a released
+# slot: it IS that node's clear / lock state in every save.
+#   271  ie1_umbrella        274  ie1_sallys
+# Same names and slots as the older mod Chronicles Deluxe (chronicles_deluxe, set aside 2026-10-14) and Inazuma Fantasy
+# before it: the piece (evt_rn_piece_<name>), the game (evt_rn_<name>) and the slot are derived from the node's name,
+# not from the mod, so every save's progress of these two nodes is kept as it is.
+# While chronicles_deluxe is active this file is left out: that mod declares the same two nodes (same slots).
+if_not_mod = "chronicles_deluxe"
+default_lang = "es"
+
+# IE1: after Inazuma Kids FC («¡Duelo en la Ribera del río!»), across the bridge. Owner 2026-10-13: a plain Crónica
+# battle (no talks, no in-match events: Scripts = false, no Talk / Quest) with the Raimon that faced Inazuma Kids FC
+# (pltm_cro_ie1_02 at its retail level 5), Umbrella at 6 = midpoint of the Crónica rivals Inazuma Kids FC (5) and
+# Occult (7). Its win unlocks the Heroica (the node opens only its first difficulty, VRFW_RN_Sync; the board's
+# Crónica-win unlock opens 4). Saves that already had the Heroica open keep it.
+[[VRFW.RouteNode]]
+Name = "ie1_umbrella"
+Slot = 271
+After = "fbtl_cro01_020_010"           # Inazuma Kids FC
+Dir = "LU"                             # (-9, -5): the far end of the steel bridge
+Team = "chronicle_deluxe.cro_ie1_umbrella"         # content/teams/10_ie1/0300_umbrella_ie1.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+DropsFrom = "fbtl_cro02_legend_IE2_01" # Umbrella's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+Field = "fbtl_cro01_020_010"           # «Ir al campo»: the same riverbank as Inazuma Kids FC
+  [VRFW.RouteNode.Cronica]
+  Level = 6                            # between Inazuma Kids FC (5) and Occult (7), Crónica
+  OwnTeam = "pltm_cro_ie1_02"          # the Raimon line-up of the Inazuma Kids FC match
+  OwnLevel = 5                         # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Duelo contra el Umbrella!"
+  en = "Showdown with Umbrella!"
+  fr = "Duel contre Umbrella !"
+  de = "Duell gegen Umbrella!"
+  it = "Sfida contro l'Umbrella!"
+  pt = "Duelo contra o Umbrella!"
+  ja = "傘美野と対決！"
+  zh_hans = "对决伞美野！"
+  zh_hant = "對決傘美野！"
+
+# IE1 (Nacho 2026-10-09): Street Sally's, in the middle of the road between Brain (専, Mikage Sennou) and Otaku (秋,
+# Akihabara Nado): a fork from the road's midpoint (-9, -13) along the board's other axis (RD, perpendicular to the
+# Brain - Otaku road, like the retail roads run) to (-8.1, -13.9). Opens with Otaku (Brain's win opens both); on the
+# d-pad it hangs off Otaku (RD, Otaku's free direction).
+# Owner 2026-10-13: a plain Crónica battle (no talks, no in-match events) with the Raimon that faced Brain
+# (pltm_cro_ie1_05 at its retail level 11), Street Sally's at 12 = midpoint of the Crónica rivals Brain (11) and Otaku
+# (13); its win unlocks the Heroica (level = Otaku's Heroica). Spirits / match setup from Sally's own legend game.
+[[VRFW.RouteNode]]
+Name = "ie1_sallys"
+Slot = 274
+After = "fbtl_cro01_050_010"           # Brain (専)
+Beside = "fbtl_cro01_060_010"          # Otaku (秋): the node joins the route after it, its game is the template
+Dir = "RD"
+Pos = [-8.1, -13.9]
+RoadFrom = [-9.0, -13.0]              # the middle of the Brain - Otaku road
+Team = "chronicle_deluxe.cro_ie1_sallys"         # content/teams/10_ie1/0301_sallys_ie1.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+DropsFrom = "fbtl_cro01_legend_IE1_06" # Street Sally's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 12                           # between Brain (11) and Otaku (13), Crónica
+  OwnTeam = "pltm_cro_ie1_05"          # the Raimon line-up of the Brain match (the preceding node)
+  OwnLevel = 11                        # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Partido contra las Street Sally's!"
+  en = "Match against Street Sally's!"
+  fr = "Match contre les Street Sally's !"
+  de = "Spiel gegen die Street Sally's!"
+  it = "Partita contro le Street Sally's!"
+  pt = "Jogo contra as Street Sally's!"
+  ja = "ストリートサリーズと対決！"
+  zh_hans = "对决街头莎莉斯！"
+  zh_hant = "對決街頭莎莉斯！"
+
+# Player spirits (owner 2026-10-14: «Umbrella y Sally's deben poder dropear espíritus como el resto de partidos de
+# Crónica»). The rule of every retail Chronicle board row (v7.1.2 soccer_game_config, all IE1 pieces): col 29
+# spirit_chara_table = 0 and cols 31 / 33 spirit_drop_table(_2) = 0. With 0 the engine (nie.exe 0x15C7850 /
+# 0x15CC810, docs/framework/drops.md §1b) offers the players of the row's own rival team (team_config: the node's
+# Umbrella / Sally's roster) with the default odds of the difficulty: Heroica 0x569BC5E0 + 0xA3C5921B, the higher classes 0x219CF576 / 0xD4C2A28D; the Crónica default
+# is the game's empty table (no retail Crónica drops a spirit). Declared here so the node rows keep that rule
+# whatever template game, `DropsFrom` game or later rule the build meets (a GameDrops key of the row wins over a
+# `[[VRFW.SpiritDrops]] Rows = "game_drops"` rule). No ids of players or tables: the roster is the team's own.
+[[VRFW.GameDrops]]
+Game = "evt_rn_ie1_umbrella"
+SpiritChara = "0"                      # the rival roster only (no extra players)
+SpiritDrop = "0"                       # the engine's default odds of each difficulty, as retail
+SpiritDrop2 = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_ie1_sallys"
+SpiritChara = "0"
+SpiritDrop = "0"
+SpiritDrop2 = "0"

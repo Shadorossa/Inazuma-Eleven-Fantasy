@@ -1,0 +1,61 @@
+# Move-row icons (Nacho 2026-10-06; docs/framework/technique.md §4c, sprites research/scripts/move_icons_build.py):
+# every badge of a special move's icon set (technique engine CMND_VRFW_MOVE_ICONS: long shot, counter shot, shot
+# block), side by side, in every move list, through ONE shared row function (EVT_MoveIconsRow): the «double icon» of a
+# move with two properties (e.g. long shot + counter shot). Mod Hissatsu Reforged since 2026-10-14 (was Inazuma Fantasy's
+# part move_icons): its sprites are in research/mods/HissatsuReforged/content/images/menu/. Other mods add badges /
+# card changes through EVT_MI.SPRITE / SECOND / TAG and EVT_MI_PP.CardHooks (Inazuma Fantasy's graft move_icons_clear:
+# the keeper clear «P», the card's category section removed).
+#   * soccer_common: EVT_MI library + the row function; SetupCommandActionSkillInfoCategoryIcon (the retail badge pass of
+#     the match command rows, player page / bank skill rows, ability lists, ability boards, IF's own lists) wrapped:
+#     retail first, then the set (1st badge in the slot, 2nd on the row's spare armed-logo mesh).
+#   * personal_plate_inc: SetupPersonalPlateCharaSkillItem / SetupCharaSkillItem set the armed mesh's visibility after
+#     the badge pass: the 2nd badge is shown again after them.
+#   * personal_plate_inc SetupPersonalPlateSkillDetailInfo (the single-move detail card, every screen): the tag above
+#     the banner (a long + counter shot: both words, evt_gtxt_long_counter01; a registered badge's tag); one tag slot,
+#     the retail priority (long shot, then counter) otherwise; then the EVT_MI_PP.CardHooks of other grafts, also on
+#     the empty-slot card (SetupPersonalPlateSkillEnptyDetailInfo).
+#   * chara_edit_parts_menu_status(_ability_learning): own inline badge logic: the set drawn after UpdateSkillInfo.
+# Wrappers only (retail first, its results returned); no engine call at load.
+name = "move_icons"
+mod = "hissatsu_reforged"
+order = 300
+module = "lua_patch"
+requires = []
+conflicts = []
+wraps = ["SetupCommandActionSkillInfoCategoryIcon", "SetupPersonalPlateCharaSkillItem", "SetupCharaSkillItem", "SetupPersonalPlateSkillDetailInfo", "SetupPersonalPlateSkillEnptyDetailInfo", "UpdateSkillInfo"]
+description = "Move row icons: two badges at once (long shot + counter shot)"
+
+[[files]]
+stem = "soccer_common"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "mi_soccer_common.lua"
+  marker = "move_icons"
+
+[[files]]
+stem = "personal_plate_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "mi_personal_plate.lua"
+  marker = "move_icons personal_plate"
+  crc = "none"
+
+[[files]]
+stem = "chara_edit_parts_menu_status"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "mi_chara_edit.lua"
+  marker = "move_icons"
+  crc = "none"
+
+[[files]]
+path = "common/script/lua/menu/chara_edit_parts_menu_status_ability_learning.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "mi_chara_edit.lua"
+  marker = "move_icons"
+  crc = "none"

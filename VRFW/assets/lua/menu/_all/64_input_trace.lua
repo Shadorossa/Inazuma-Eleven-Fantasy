@@ -18,9 +18,10 @@
 -- logs it when it changed: «VRFW input owners <vm> f<frame> <list>». A menu still listed above the hub is the owner of
 -- the dead input. The same window also logs our layers drawn in the screen's top-left corner (the dark box over the
 -- header): «VRFW input topleft <vm> f<frame> <layer> <idx> <gx> <gy>; ...».
--- VRFW_INPUT_TRACE.on = false switches it off.
+-- VRFW_INPUT_TRACE.on = false switches it off. Release (2026-10-13): VRFW_INPUT_TRACE.log = false keeps the hooks (the
+-- cursor reset, the freeze watchdog's ring) but writes no «VRFW input» / «owners» / «topleft» lines; true = the trace.
 if VRFW_INPUT_TRACE == nil then
-  local T = {on = true, MAX = 400, n = 0, frame = 0, last = {}, installed = false, vm = "?",
+  local T = {on = true, log = false, MAX = 400, n = 0, frame = 0, last = {}, installed = false, vm = "?",
     watch = 0, WATCH = 3600, EVERY = 60, owners = nil, corner = nil,
     DUMP = 3276827605 --[[CMND_VRFW_MENU_INPUT_DUMP]], GPOS = 4002164178, IS_VISIBLE = 1262717583, LAYER_NUM = 1175615627,
     CORNER = {"evt_topbar_back", "evt_topbar_plate", "evt_topbar_icon", "evt_topbar_hint", "evt_topbar_drop_plate",
@@ -50,7 +51,7 @@ if VRFW_INPUT_TRACE == nil then
       return
     end
     T.last[what] = key
-    if T.n >= T.MAX then
+    if not T.log or T.n >= T.MAX then
       return
     end
     T.n = T.n + 1
@@ -120,12 +121,18 @@ if VRFW_INPUT_TRACE == nil then
       end
       return raw_menu(c, ...)
     end
-    funcLuaCommand = function(c, a, ...)
+    -- 2.4.10: the arguments go on exactly as the caller gave them (`...`, never `c, a, ...`): a C command counts its
+    -- arguments, and a call without one would get an extra nil. The display getters read an optional screen mode
+    -- after their arguments (0x790577C2 resolution, 0x01CF5DE6 resolution count): with that nil they answered the
+    -- WINDOW mode's 1920 x 1080, so the settings menu's «Resolución pantalla» list lost the chosen size (check mark on
+    -- 1920 x 1080, owner 2026-10-14).
+    funcLuaCommand = function(...)
+      local c, a = ...
       local what = T.on and T.CMD[c] or nil
       if what ~= nil and (c ~= 3964465990 or a == 939384271) then
-        pcall(T.Log, what, a, ...)
+        pcall(T.Log, what, select(2, ...))
       end
-      return raw_cmd(c, a, ...)
+      return raw_cmd(...)
     end
     T.watch = T.WATCH
     if T.WD.STEMS[T.stem or ""] ~= nil then
@@ -176,7 +183,7 @@ if VRFW_INPUT_TRACE == nil then
       -- MENU_CTRL itself
       pcall(T.raw_menu, 438207617 --[[CMND_CHANGE_MENU_INPUT_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]])
       pcall(T.raw_menu, 879521569, true, false, true)
-      pcall(T.raw_cmd, 3661580131, "VRFW input", T.vm, "f" .. T.frame, "cursor reset")
+      if T.log then pcall(T.raw_cmd, 3661580131, "VRFW input", T.vm, "f" .. T.frame, "cursor reset") end
       T.cr = nil
     end
   end
@@ -335,7 +342,7 @@ if VRFW_INPUT_TRACE == nil then
     if not T.installed then
       pcall(T.Install)
     end
-    if T.on and T.watch > 0 then
+    if T.on and T.log and T.watch > 0 then
       T.watch = T.watch - 1
       if T.watch % T.EVERY == 0 then
         pcall(T.Watch)

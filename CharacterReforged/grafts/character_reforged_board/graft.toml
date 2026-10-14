@@ -1,0 +1,38 @@
+# Character Reforged › the base game's «Crear …» entry of the aura mods on the retail skill board
+# (docs/refactor/aura-mods-split.md «The base game's create entry»; was All Miximaxed's graft all_miximaxed_board,
+# generalized 2026-10-14). The base game's place for a Mix-Max / mode change item is an aura piece of the board
+# (ability_learning_board_menu: the piece's aura list = ability_list_menu). While that list is open for an aura piece,
+# it shows the «create» item of every system the active mods declare ([CharacterReforged.Create.<system>] in
+# content\pairing\*.toml: All Miximaxed «Crear miximax», All Changed «Crear nuevo cambio»; UI flag evt_mx_list_create of
+# the transform type's [ability_list] create, a free copy of each granted first). When the player picks one, the game
+# places it on the piece's slot like any aura; after the list closes (the board still inactive: the retail coroutine
+# re-activates it afterwards) this graft opens the retail bank picker (chara_bank_menu_for_search) for the partner,
+# calls that system's store command and puts its carrier on that slot; a cancelled or refused pick gives the slot back
+# what it held, a refusal shows a retail info window (its text key per refusal code). The rest is the game's.
+# A HOOK file since 2026-10-14 (board_create_entry_hooks.lua, shipped as is): it wraps the screen's globals
+# OnInit / OnChangeTargetChara (the player), OpenAbilityListMenu (the piece), OpenAbilityListMenu_Coroutine (before the
+# list opens) and waitFalse (the coroutine's wait for the list to close) and calls them; no retail function is
+# replaced. It was a text patch until then: the patch re-declared the screen's chunk locals and redefined every retail
+# function using them, which threw away Utilities' combo partner hooks (its list layers stayed on the board) and the
+# edits of other mods' patches of this screen. No engine calls at chunk load. Item ids, store commands and carriers
+# come from Character Reforged's script (CMND_CHARACTERREFORGED_CREATE_*), never written here.
+# The «Fantasy» skill table (evt_skill_slot_menu, 2026-10-14): table_create_entry_hooks.lua gives its aura / mix row's
+# picker the same rows without Inazuma Fantasy (a free copy of each «create» item before the picker opens; a picked one
+# -> the bank picker, the system's store, its carrier in the player's mix slot); with Inazuma Fantasy its own flow runs.
+name = "character_reforged_board"
+mod = "character_reforged"
+order = 965
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Character Reforged: the aura mods' «Crear …» rows on the skill board's aura pieces and in the skill table's aura / mix picker (partner from the bank, carrier on the slot)"
+
+[[hooks]]
+stem = "ability_learning_board_menu"
+src = "board_create_entry_hooks.lua"
+
+[[hooks]]
+stem = "evt_skill_slot_menu"
+src = "table_create_entry_hooks.lua"
+require = ["EVT_OpenOriginalBoard", "EVT_PickCoroutine"]

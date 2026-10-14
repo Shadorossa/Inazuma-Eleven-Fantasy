@@ -1,0 +1,287 @@
+schema = "VRFW.character/2"
+# Character Reforged · Protocol Omega · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05020500_5000"                              # Alpha
+
+  [[edit.cards]]
+  id = 0xAF1AF255                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 302, control = 258, technique = 254, pressure = 213, physical = 158, intelligence = 232, agility = 193, freedom = 363 }
+
+[[edit]]
+target = "c05020410"                                   # Hotel
+
+  [[edit.cards]]
+  id = 0xB9D3108D                                         # GK/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 255, control = 205, technique = 242, pressure = 243, physical = 251, intelligence = 234, agility = 211, freedom = 375 }
+  moves = [
+    { move = 0x4B3099D5, level = 1 },                     # Stomper Stopper
+    { move = 0x06B22DB5, level = 25 },                    # Gyro-Blocker
+    { move = 0xA6D711A6, level = 42 },                    # Full Power Shield
+    { move = 0xA7157B91, level = 56 },                    # Power Shield
+  ]
+
+[[edit]]
+target = "c05020420"                                   # Oscar
+
+  [[edit.cards]]
+  id = 0x92FE434E                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 201, technique = 192, pressure = 250, physical = 282, intelligence = 302, agility = 205, freedom = 297 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 1 },                     # Tesla Coil
+    { move = 0x2D9F7E76, level = 21 },                    # Breath Taker
+    { move = 0x81FC5E34, level = 42 },                    # Driving Header
+    { move = 0xF7E49F60, level = 65 },                    # Magnetism
+  ]
+
+[[edit]]
+target = "c05020430"                                   # Echo
+
+  [[edit.cards]]
+  id = 0x8BE5720F                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 207, technique = 178, pressure = 215, physical = 203, intelligence = 267, agility = 197, freedom = 213 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 1 },                     # Tesla Coil
+    { move = 0xF14FDC17, level = 12 },                    # Shot Pocket
+    { move = 0xC41097D5, level = 32 },                    # Acrobotics
+    { move = 0xF626F557, level = 51 },                    # Electric Impedance
+  ]
+
+[[edit]]
+target = "c05020440"                                   # Golf
+
+  [[edit.cards]]
+  id = 0xC4A4E4C8                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 169, technique = 153, pressure = 247, physical = 217, intelligence = 239, agility = 240, freedom = 217 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 1 },                     # Tesla Coil
+    { move = 0x650FA58E, level = 9 },                     # Spin Out
+    { move = 0x4B3099D5, level = 28 },                    # Stomper Stopper
+    { move = 0xAC91D94F, level = 42 },                    # Major Miner
+  ]
+
+[[edit]]
+target = "c05020450"                                   # Charlie
+
+  [[edit.cards]]
+  id = 0xDDBFD589                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 232, technique = 212, pressure = 184, physical = 181, intelligence = 200, agility = 194, freedom = 259 }
+  moves = [
+    { move = 0x650FA58E, level = 1 },                     # Spin Out
+    { move = 0xF6E75EE9, level = 10 },                    # Headbanger
+    { move = 0xE196F1D1, level = 39 },                    # Burning Bomb
+    { move = 0xEFFC6FA8, level = 52 },                    # Warhead
+  ]
+
+[[edit]]
+target = "c05020460"                                   # Lima
+
+  [[edit.cards]]
+  id = 0xF692864A                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 254, technique = 231, pressure = 188, physical = 189, intelligence = 231, agility = 209, freedom = 301 }
+  moves = [
+    { move = 0x650FA58E, level = 1 },                     # Spin Out
+    { move = 0x5739C70C, level = 20 },                    # Guided Collide
+    { move = 0x1C4D4906, level = 38 },                    # Whirlpool
+    { move = 0xBBE07677, level = 53 },                    # Sidewinder
+  ]
+
+[[edit]]
+target = "c05020470"                                   # Bravo
+
+  [[edit.cards]]
+  id = 0xEF89B70B                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 220, technique = 201, pressure = 215, physical = 208, intelligence = 213, agility = 235, freedom = 339 }
+  moves = [
+    { move = 0x650FA58E, level = 4 },                     # Spin Out
+    { move = 0x17110E3B, level = 10 },                    # Jumbo Sandwich
+    { move = 0xF7E49F60, level = 24 },                    # Magnetism
+    { move = 0xAC91D94F, level = 53 },                    # Major Miner
+  ]
+
+[[edit]]
+target = "c05020480"                                   # India
+
+  [[edit.cards]]
+  id = 0x6811ABC4                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 255, technique = 220, pressure = 204, physical = 196, intelligence = 232, agility = 203, freedom = 213 }
+  moves = [
+    { move = 0x650FA58E, level = 1 },                     # Spin Out
+    { move = 0xDCC9CCA3, level = 9 },                     # Tesla Coil
+    { move = 0x86F5F6E8, level = 39 },                    # Cupid's Arrow
+    { move = 0x19BA3BFC, level = 45 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c05020490"                                   # Juliet
+
+  [[edit.cards]]
+  id = 0x710A9A85                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 281, control = 248, technique = 213, pressure = 142, physical = 177, intelligence = 165, agility = 177, freedom = 375 }
+  moves = [
+    { move = 0xFB8202AD, level = 3 },                     # Gaussian Goal
+    { move = 0x650FA58E, level = 16 },                    # Spin Out
+    { move = 0x828A53C8, level = 25 },                    # Plasma Ball
+    { move = 0x768AB9C5, level = 58 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c05020500"                                   # Alpha
+
+  [[edit.cards]]
+  id = 0xA10A4BFB                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 302, control = 258, technique = 254, pressure = 213, physical = 158, intelligence = 232, agility = 193, freedom = 363 }
+  moves = [
+    { move = 0xB0BC314A, level = 7 },                     # Spin Meister
+    { move = 0xC324C788, level = 12 },                    # Blast Mine
+    { move = 0xFB8202AD, level = 36 },                    # Gaussian Goal
+    { move = 0x1BF20F08, level = 67 },                    # Omega Assault
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x56D8CE8B, level = 1 },                     # Feng-Huang [aura]
+  ]
+
+[[edit]]
+target = "c05020510"                                   # Mike
+
+  [[edit.cards]]
+  id = 0xB8117ABA                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 177, control = 243, technique = 166, pressure = 186, physical = 188, intelligence = 188, agility = 217, freedom = 417 }
+  moves = [
+    { move = 0xFB8202AD, level = 1 },                     # Gaussian Goal
+    { move = 0x828A53C8, level = 7 },                     # Plasma Ball
+    { move = 0xF9C4BCF4, level = 19 },                    # Double Helix
+    { move = 0x1F7F73BA, level = 62 },                    # Bicycle Slash
+  ]
+
+[[edit]]
+target = "c05020520"                                   # Uniform
+
+  [[edit.cards]]
+  id = 0x933C2979                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 282, control = 219, technique = 207, pressure = 235, physical = 227, intelligence = 239, agility = 204, freedom = 297 }
+  moves = [
+    { move = 0x4B3099D5, level = 3 },                     # Stomper Stopper
+    { move = 0xF14FDC17, level = 17 },                    # Shot Pocket
+    { move = 0x8B31808E, level = 20 },                    # Wormhole
+    { move = 0x7BC5D9F0, level = 45 },                    # Rotary Sander
+  ]
+
+[[edit]]
+target = "c05020530"                                   # Tango
+
+  [[edit.cards]]
+  id = 0x8A271838                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 153, control = 192, technique = 155, pressure = 203, physical = 217, intelligence = 230, agility = 207, freedom = 217 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 3 },                     # Tesla Coil
+    { move = 0xC41097D5, level = 8 },                     # Acrobotics
+    { move = 0x650FA58E, level = 30 },                    # Spin Out
+    { move = 0x19BA3BFC, level = 35 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c05020540"                                   # Zulu
+
+  [[edit.cards]]
+  id = 0xC5668EFF                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 232, technique = 223, pressure = 165, physical = 213, intelligence = 185, agility = 213, freedom = 417 }
+  moves = [
+    { move = 0x650FA58E, level = 1 },                     # Spin Out
+    { move = 0xDCC9CCA3, level = 14 },                    # Tesla Coil
+    { move = 0x64CDCFB9, level = 26 },                    # Rising Dragon
+    { move = 0x05124F07, level = 51 },                    # Fission and Fusion
+  ]
+
+[[edit]]
+target = "c05020550"                                   # X-Ray
+
+  [[edit.cards]]
+  id = 0xDC7DBFBE                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 251, technique = 227, pressure = 198, physical = 205, intelligence = 205, agility = 196, freedom = 417 }
+  moves = [
+    { move = 0xB0BC314A, level = 1 },                     # Spin Meister
+    { move = 0xDCC9CCA3, level = 12 },                    # Tesla Coil
+    { move = 0x650FA58E, level = 32 },                    # Spin Out
+    { move = 0x7C6D5B0E, level = 49 },                    # Astro Break
+  ]
+
+[[edit]]
+target = "c05020560"                                   # Delta
+
+  [[edit.cards]]
+  id = 0xF750EC7D                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 231, technique = 204, pressure = 221, physical = 159, intelligence = 198, agility = 236, freedom = 251 }
+  moves = [
+    { move = 0xB0BC314A, level = 1 },                     # Spin Meister
+    { move = 0x650FA58E, level = 15 },                    # Spin Out
+    { move = 0x414BA9BD, level = 26 },                    # Pincer Pinch
+    { move = 0xE35B59DB, level = 46 },                    # Twin Sun Smash
+  ]
+
+[[edit]]
+target = "c05020410_5000"                              # Hotel
+
+  [[edit.cards]]
+  id = 0xC5C7F97F                                         # GK/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 255, control = 205, technique = 242, pressure = 243, physical = 251, intelligence = 234, agility = 211, freedom = 375 }
+
+[[edit]]
+target = "c05020460_5000"                              # Lima
+
+  [[edit.cards]]
+  id = 0x0060C7F1                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 254, technique = 231, pressure = 188, physical = 189, intelligence = 231, agility = 209, freedom = 301 }

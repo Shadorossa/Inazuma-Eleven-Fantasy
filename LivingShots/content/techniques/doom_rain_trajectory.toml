@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Diluvio letal (Doom Rain, whs01390). Nacho 2026-10-10: every aura move its
+# own flight, heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in's shot cut (c0400) the rain of balls falls from ~20 m on one long straight line toward the goal; in
+# the match the ball comes down that line into the goal (its 72 m line is longer than any shot: the start is on it).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move doom_rain):
+# there is no event ball in c0400; the centroid of the 7 rain balls (BallPos1-6 + BallPos7_c0300_c0400) of
+# ev60_01390, effect frames 283-399 (the whole cut): 19.89 m -> 4.15 m over 63.74 m = 13.9 deg, straight (0.18 m).
+# The cut ends at 4.15 m (over the bar): the same line brought down to 2.0 m (the keeper's reach) = 72.46 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Diluvio letal (whs01390).
+[[edit]]
+target = "whs01390"
+trajectory = { goal_points = [[72.46, 19.89, 999, 36.23], [0.0, 2.0]], unblockable = false }

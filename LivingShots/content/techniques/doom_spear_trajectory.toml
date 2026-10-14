@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Lanza letal (Doom Spear, whs01400). Nacho 2026-10-10: every aura move its
+# own flight, heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in's last cut (c0300) the spear (the ball inside its drill) glides, then dives on a ~30 deg line into the
+# goal; in the match the ball comes down that line. Inazuma Fantasy declares trajectory = "dive" (unblockable) for
+# this move too and loads after this mod: with both on, its rule wins (a technique conflict note).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move doom_spear):
+# the ball inside the drill (twistball_pos) of ev60_01400 c0300 (no event ball in that cut), effect frames 176-340:
+# 18.79 m -> 2.40 m over 28.87 m = 29.6 deg (2 points, 0.14 m; 4 points [[0, 18.79], [21.32, 6.81], [26.09, 3.94],
+# [28.87, 2.40]], 0.02 m). The line brought to 2.0 m at the goal = 29.58 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Lanza letal (whs01400).
+[[edit]]
+target = "whs01400"
+trajectory = { goal_points = [[29.58, 18.79, 999, 14.79], [0.0, 2.0]], unblockable = false }

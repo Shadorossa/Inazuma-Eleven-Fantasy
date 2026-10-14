@@ -1,0 +1,84 @@
+# Character Reforged › the player page's texts (menu_text rows by id, 9 languages), moved from Inazuma Fantasy's
+# text\rows\menu_text.toml on 2026-10-14 with the page (docs/refactor/aura-mods-split.md «Player page»): the Hiper page's
+# empty banner, the PEG / SP plate words of the Hiper card (the match HUD's tag words per language; shown only while the
+# mod Aura Points answers CMND_EVT_PEG_INFO) and the Pasivas sub-page names (graft plate_pages G.PsubLabel). Format:
+# docs/framework/types/text.md.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "evt_ph_empty_name"
+es = "Sin hipertécnica"
+en = "No Hyper Move"
+fr = "Aucune hyper technique"
+de = "Keine Hyper-Technik"
+it = "Nessuna ipertecnica"
+pt = "Sem hipertécnica"
+ja = "超次元技なし"
+zh_hans = "无超次元技能"
+zh_hant = "無超次元技"
+
+[[row]]
+id = "evt_ph_peg_label"
+fallback = false
+es = "PEG"
+en = "FSP"
+fr = "PG"
+de = "KGP"
+it = "PSG"
+pt = "PEG"
+ja = "FSP"
+zh_hans = "FSP"
+zh_hant = "FSP"
+
+[[row]]
+id = "evt_ph_sp_label"
+fallback = false
+es = "SP"
+en = "SP"
+fr = "SP"
+de = "SP"
+it = "SP"
+pt = "SP"
+ja = "SP"
+zh_hans = "SP"
+zh_hant = "SP"
+
+[[row]]
+id = "evt_pp_psub_1"
+fallback = false
+es = "Especial"
+en = "Special"
+fr = "Spéciale"
+de = "Spezial"
+it = "Speciale"
+pt = "Especial"
+ja = "スペシャル"
+zh_hans = "特殊"
+zh_hant = "特殊"
+
+[[row]]
+id = "evt_pp_psub_2"
+fallback = false
+es = "Generales"
+en = "General"
+fr = "Générales"
+de = "Allgemein"
+it = "Generali"
+pt = "Gerais"
+ja = "一般"
+zh_hans = "通用"
+zh_hant = "通用"
+
+[[row]]
+id = "evt_pp_psub_3"
+fallback = false
+es = "Arquetipo"
+en = "Archetype"
+fr = "Archétype"
+de = "Archetyp"
+it = "Archetipo"
+pt = "Arquétipo"
+ja = "アーキタイプ"
+zh_hans = "原型"
+zh_hant = "原型"

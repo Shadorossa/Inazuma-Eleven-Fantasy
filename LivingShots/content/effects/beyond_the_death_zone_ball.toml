@@ -1,0 +1,31 @@
+# «Triángulo letal triturador» (Beyond the Death Zone, whs03180 and whs03180_or, same cut-in; forest shot of four
+# players, cut-in ev60_03185): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last
+# cut with the ball (c0500, the ball shot out of the fifth triangle 19.9 m up, coming down ~48 deg): the purple energy
+# beam it draws from the triangle (core, spirals, glows; it runs ~6 m past the ball, as in the cut-in), the wind
+# sheath and the snow-smoke slashes on the ball, instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6318bz00 (effect/event/ev60/ev6318bz00/), built by research/scripts/beyond_the_death_zone_ball_fx.py
+# from the cut-in's effect object ev60031800: the cut-in's motion from the kick (382) replayed (the beam growing from
+# the triangle behind the ball), then held at c0500 frame 410, ball at the origin flying +Z, x1, rolled -40.5 deg about
+# the flight so the flat beam ribbon stands up facing the touchline. Left out: the triangles (the fifth one with the
+# energy sphere and light flares at the kick point, the players' triangles, the far ones), the black backdrop, the
+# fake-particle cards; c0600 (the beam re-staged through the triangles, no ball).
+# docs/game/media/beyond-the-death-zone-ball-fx.md.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Its flight: content\techniques\beyond_the_death_zone_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "beyond_the_death_zone"
+from = "ega0075d"
+object = "effect/event/ev60/ev6318bz00/ev6318bz00.objbin"
+
+[[shot_aura]]
+name = "beyond_the_death_zone"
+when = { techniques = ["whs03180", "whs03180_or"] }
+aura = "beyond_the_death_zone"
+like = "ega0075d"
+# the aura's replay (28 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 28 }

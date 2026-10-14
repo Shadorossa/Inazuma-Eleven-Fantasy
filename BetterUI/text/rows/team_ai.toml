@@ -1,0 +1,19 @@
+# BetterUI «Ajustes de la IA» (graft clean_hud_team_ai; docs/game/ui/team-commands.md §10): a row of menu_text in 9
+# languages, id = crc32(row id). clean_hud_team_ai_cmd is the row the team COMANDOS window gets through the
+# VR-Framework's list rows (docs/framework/list-rows.md); it opens the goal celebration list in AI-role mode (every
+# player's AI role for the whole team; the role names are the game's own texts).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "clean_hud_team_ai_cmd"
+es = "Ajustes de la IA"
+en = "AI settings"
+fr = "Réglages de l'IA"
+de = "KI-Einstellungen"
+it = "Impostazioni IA"
+pt = "Ajustes da IA"
+ja = "AI設定"
+zh_hans = "AI设置"
+zh_hant = "AI設定"

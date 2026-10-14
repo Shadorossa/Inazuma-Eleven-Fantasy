@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Hissatsu Effects: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+lang = "es"
+name = "Hissatsu Effects"
+
+[en]
+name = "Hissatsu Effects"
+
+[fr]
+name = "Hissatsu Effects"
+
+[de]
+name = "Hissatsu Effects"
+
+[it]
+name = "Hissatsu Effects"
+
+[pt]
+name = "Hissatsu Effects"
+
+[ja]
+name = "Hissatsu Effects"
+
+[zh_hans]
+name = "Hissatsu Effects"
+
+[zh_hant]
+name = "Hissatsu Effects"
+
+[[release]]
+icon = "general"
+notes = [
+    "Efectos de juego en supertécnicas del juego.",
+    "Tiros más fuertes de lejos y tiros divididos en balones.",
+    "Porteros que bloquean el tiro parado o roban tensión.",
+    "Tornado doble toma los elementos de sus dos ejecutores.",
+    "Q / E en la tarjeta de técnica explican su efecto.",
+]
+
+[release.en]
+notes = [
+    "Gameplay effects on the game's special moves.",
+    "Shots stronger from afar and shots split into balls.",
+    "Keepers that lock the stopped shot or steal tension.",
+    "Double Tornado takes the elements of its two users.",
+    "Q / E on the move card explain its effect.",
+]
+
+[release.fr]
+notes = [
+    "Effets de jeu sur les techniques spéciales du jeu.",
+    "Tirs plus forts de loin et tirs divisés en ballons.",
+    "Gardiens qui bloquent le tir arrêté ou volent tension.",
+    "Une technique à deux éléments, ceux de ses exécutants.",
+    "Q / E sur la carte de technique expliquent son effet.",
+]
+
+[release.de]
+notes = [
+    "Spieleffekte für die Spezialtechniken des Spiels.",
+    "Stärkere Fernschüsse und Schüsse, die sich teilen.",
+    "Torhüter sperren den gehaltenen Schuss oder Spannung.",
+    "Eine Technik mit den Elementen ihrer zwei Spieler.",
+    "Q / E auf der Technikkarte erklären ihren Effekt.",
+]
+
+[release.it]
+notes = [
+    "Effetti di gioco sulle tecniche speciali del gioco.",
+    "Tiri più forti da lontano e tiri divisi in palloni.",
+    "Portieri che bloccano il tiro parato o rubano tensione.",
+    "Una tecnica con gli elementi dei suoi due esecutori.",
+    "Q / E sulla carta tecnica ne spiegano l'effetto.",
+]
+
+[release.pt]
+notes = [
+    "Efeitos de jogo nas supertécnicas do jogo.",
+    "Chutes mais fortes de longe e chutes divididos em bolas.",
+    "Goleiros que travam o chute defendido ou roubam tensão.",
+    "Uma técnica com os elementos dos seus dois executores.",
+    "Q / E na carta da técnica explicam o seu efeito.",
+]
+
+[release.ja]
+notes = [
+    "ゲームの必殺技にゲーム効果を追加。",
+    "遠いほど強いシュート、分裂するシュート。",
+    "シュートを封じたりテンションを奪うキーパー技。",
+    "2人の使い手の属性を持つ技。",
+    "技カードのQ / Eで効果を説明。",
+]
+
+[release.zh_hans]
+notes = [
+    "为游戏的必杀技加入玩法效果。",
+    "越远越强的射门、分裂成多个球的射门。",
+    "能封锁射门或夺取气势的守门技。",
+    "拥有两名使用者属性的技能。",
+    "技能卡片上按 Q / E 说明效果。",
+]
+
+[release.zh_hant]
+notes = [
+    "為遊戲的必殺技加入玩法效果。",
+    "越遠越強的射門、分裂成多個球的射門。",
+    "能封鎖射門或奪取氣勢的守門技。",
+    "擁有兩名使用者屬性的技能。",
+    "技能卡片上按 Q / E 說明效果。",
+]

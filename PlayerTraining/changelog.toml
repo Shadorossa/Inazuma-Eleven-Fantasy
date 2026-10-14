@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Player Training: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy (a module of Character Reforged).
+lang = "es"
+name = "Player Training"
+
+[en]
+name = "Player Training"
+
+[fr]
+name = "Player Training"
+
+[de]
+name = "Player Training"
+
+[it]
+name = "Player Training"
+
+[pt]
+name = "Player Training"
+
+[ja]
+name = "Player Training"
+
+[zh_hans]
+name = "Player Training"
+
+[zh_hant]
+name = "Player Training"
+
+[[release]]
+icon = "general"
+notes = [
+    "Entrenamiento clásico: reparte los puntos de Libertad.",
+    "Plantilla › comandos › «Entrenamiento»; L1/R1: jugador.",
+    "Sin puntos libres, subir una baja su contraria.",
+    "Cuenta en los partidos y se guarda en la partida.",
+    "Módulo de Character Reforged.",
+]
+
+[release.en]
+notes = [
+    "Classic training: share out the Freedom points.",
+    "Team dock › commands › «Training»; L1 / R1: player.",
+    "No free points: raising a stat lowers its counterpart.",
+    "It counts in matches and is kept in the save.",
+    "A module of Character Reforged.",
+]
+
+[release.fr]
+notes = [
+    "Entraînement classique : répartis la Liberté.",
+    "Effectif › commandes › «Entraînement» ; L1/R1 : joueur.",
+    "Sans point libre, monter une stat baisse sa contraire.",
+    "Compte en match et reste dans la sauvegarde.",
+    "Un module de Character Reforged.",
+]
+
+[release.de]
+notes = [
+    "Klassisches Training: Freiheitspunkte verteilen.",
+    "Kader › Befehle › «Training»; L1 / R1: Spieler.",
+    "Ohne freie Punkte senkt Erhöhen den Gegenwert.",
+    "Zählt im Spiel und bleibt im Spielstand.",
+    "Ein Modul von Character Reforged.",
+]
+
+[release.it]
+notes = [
+    "Allenamento classico: distribuisci i punti Libertà.",
+    "Rosa › comandi › «Allenamento»; L1 / R1: giocatore.",
+    "Senza punti liberi, alzare una stat abbassa l'opposta.",
+    "Conta nelle partite e resta nel salvataggio.",
+    "Un modulo di Character Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Treino clássico: distribui os pontos de Liberdade.",
+    "Plantel › comandos › «Treino»; L1 / R1: jogador.",
+    "Sem pontos livres, subir um atributo baixa o contrário.",
+    "Conta nas partidas e fica guardado no jogo.",
+    "Um módulo de Character Reforged.",
+]
+
+[release.ja]
+notes = [
+    "クロノ・ストーン式の特訓：フリーダムを配分。",
+    "チーム編成›コマンド›「特訓」、L1/R1で切替。",
+    "残りがないと、対の能力が1ずつ下がる。",
+    "試合に反映され、セーブに残る。",
+    "Character Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "经典特训：分配自由点数。",
+    "队伍编成›指令›「特训」；L1/R1 切换球员。",
+    "没有剩余点数时，提升会降低对应能力。",
+    "在比赛中生效并保存在存档中。",
+    "Character Reforged 的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "經典特訓：分配自由點數。",
+    "隊伍編成›指令›「特訓」；L1/R1 切換球員。",
+    "沒有剩餘點數時，提升會降低對應能力。",
+    "在比賽中生效並保存在存檔中。",
+    "Character Reforged 的模組。",
+]

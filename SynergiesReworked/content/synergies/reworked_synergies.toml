@@ -1,0 +1,116 @@
+schema = "VRFW.synergy/1"
+
+# Synergies Reworked › the reworked team synergies (owner request 2026-10-13; design: docs/game/mechanics/synergy-rework.md
+# §8; split out of Inazuma Fantasy 2026-10-14, docs/game/mods/synergies-reworked.md). The mechanism is the framework's
+# (docs/framework/synergy.md): a synergy declared here replaces the game's condition rows of that game synergy (named
+# characters) by a NEXUS + players of a POOL; its name, slot, icon and effects stay the game's. Who counts is the game's:
+# the starters and the staff slots (3 managers, the coach).
+# Pools are criteria over the game's data (belong teams, series, staff role, gender): never member lists.
+
+# ------------------------------------------------------------------------------------------------ El linaje oscuro
+
+# Every player of Royal Academy (every era: IE1, GO, Ares «Royal Academy» and VR share this belong team), Royal Academy
+# Redux, Zeus, Orfeo (Orpheus), Eclipse de Orión and «Equipo D» (Team K): 164 characters with a card (v7.1.2 data).
+[[VRFW.SynergyPool]]
+name = "dark_lineage"
+teams = [
+    "0x699E68EC",   # Royal Academy
+    "0xF1E3E365",   # Royal Academy Redux
+    "0x9BAD3311",   # Zeus
+    "0x0F3CD0F1",   # Orfeo
+    "0x9E96B18A",   # Eclipse de Orión
+    "0xB95A1DDD",   # «Equipo D» (Team K, IE3; Spanish name of チームＫ, confirmed by the owner 2026-10-13)
+]
+
+[[VRFW.Synergy]]
+key = "sp04003"                                  # El linaje oscuro (retail: Ray Dark + Lucian Dark)
+nexus = ["c11801020", "c11807230"]               # Ray Dark (IE1, Ares): he counts as coach too
+pool = "dark_lineage"
+count = 2
+rule = "min"
+hint = "SynergiesReworked.HintDarkLineage"
+
+# ------------------------------------------------------------------------------------------------ the managers
+# Every female manager of the game (a manager card: chara_param manager flag; chara_base gender female), split by the
+# series the character comes from: IE1-IE3, Ares and Orión → «Las gerentes más allegadas» (16 characters, 13 persons);
+# GO, Chrono Stone, Galaxy and Victory Road → «Las gerentes de GO» (22 characters, 20 persons). Three of them, or more.
+
+[[VRFW.SynergyPool]]
+name = "managers_classic"
+role = "manager"
+gender = "female"
+series = ["ie1", "ie2", "ie3", "ares", "orion"]
+
+[[VRFW.SynergyPool]]
+name = "managers_go"
+role = "manager"
+gender = "female"
+series = ["go", "cs", "galaxy", "vr"]
+
+[[VRFW.Synergy]]
+key = "sp01002"                                  # Las gerentes más allegadas (retail: Silvia, Celia, Nelly)
+pool = "managers_classic"
+count = 3
+rule = "min"
+distinct = "person"                              # Celia (IE1) + Celia (Ares) = one
+hint = "SynergiesReworked.HintManagersClassic"
+
+[[VRFW.Synergy]]
+key = "sp04002"                                  # Las gerentes de GO (retail: Skie, Rosie, Jade)
+pool = "managers_go"
+count = 3
+rule = "min"
+distinct = "person"
+hint = "SynergiesReworked.HintManagersGo"
+
+# ------------------------------------------------------------------------------------------------ Los maestros de Alius
+# Owner 2026-10-13: slot 1 = the NEXUS, any one of the three Alius captains (Xene, Torch, Gazelle: the retail synergy's
+# own condition characters); slots 2 and 3 = one player of each of the two Alius teams the nexus does not captain
+# (Xene -> Génesis, so Diamond Dust + Prominence; Torch -> Prominence, so Diamond Dust + Génesis; Gazelle -> Diamond Dust,
+# so Génesis + Prominence). The rosters are the game's belong teams (chara_base belong team columns, v7.1.2: Génesis 12,
+# Diamond Dust 11, Prominence 11 characters); `skip_nexus_team` leaves out the slot of the nexus's own team (Caos, the
+# other team of Torch and Gazelle, is no slot team). Without a captain in the team: the first nexus (Xene) is shown
+# missing and the slots are Diamond Dust + Prominence. An empty slot shows «a player of <team>» (the game's team name).
+
+[[VRFW.SynergyPool]]
+name = "alius_genesis"
+teams = ["0x8E1A91A5"]   # Génesis
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.SynergyPool]]
+name = "alius_diamond_dust"
+teams = ["0xA4F89470"]   # Diamond Dust (Polvo de Diamantes)
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.SynergyPool]]
+name = "alius_prominence"
+teams = ["0xE0D78A15"]   # Prominence
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.Synergy]]
+key = "sf02002"                                  # Los maestros de Alius (retail: Xene + Torch + Gazelle; AT +2 %, elemental affinity +5 %)
+nexus = ["c02021510", "c02020900", "c02020890"]  # Xene, Torch, Gazelle: any one of them
+slots = ["alius_genesis", "alius_diamond_dust", "alius_prominence"]
+skip_nexus_team = true
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+# ------------------------------------------------------------------------------------------------ Los guerreros de Santuario
+# Owner 2026-10-13: no named characters any more; one player (any) of Oscuridad Ancestral (Ancient Dark) + one player
+# (any) of Luz Eterna (Eternal Light, Unlimited Shining): the game's belong teams (chara_base belong team columns, v7.1.2:
+# 11 persons each; Tezcat and Bai Long, the retail condition characters, are in them). `slot_members`: each row is drawn
+# as the nexus row: the team's crest + its players' minifaces while empty, the player's name once one is in the team.
+
+[[VRFW.SynergyPool]]
+name = "ancient_dark"
+teams = ["0x51535E99"]   # Oscuridad Ancestral
+hint = "SynergiesReworked.HintPlayerOfTeam"   # «Un jugador de {team}» (only drawn without the framework's panel layers)
+
+[[VRFW.SynergyPool]]
+name = "eternal_light"
+teams = ["0x0DF68C09"]   # Luz Eterna
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.Synergy]]
+key = "sf04002"                                  # Los guerreros de Santuario (retail: Bai Long + Tezcat; AT de tiro +4 %, velocidad +5 %)
+slots = ["ancient_dark", "eternal_light"]        # one player of each team (two different persons)
+slot_members = true

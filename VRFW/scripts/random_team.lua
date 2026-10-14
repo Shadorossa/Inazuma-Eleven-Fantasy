@@ -35,8 +35,6 @@ local REC_FIRST, REC_COUNT = 0x28, 0x2C
 local STARTER_SLOTS, BENCH_LAST = 11, 18   -- roster slots 0-10 starters, 11-18 bench, 19 / 20 staff (never written)
 local SCHEMA = "VRFW.random_team/1"
 
-local PARAM_STEM = "data/common/gamedata/character/chara_param"
-local BASE_STEM = "data/common/gamedata/character/chara_base"
 local FORMATION_STEM = "data/common/gamedata/formation/formation_config"
 
 local function info(...) VRFW.log("random_team:", ...) end
@@ -89,16 +87,6 @@ local function table_key(stem)
   return stem .. "_*.cfg.bin"
 end
 
--- column name -> 1-based position of a table (`VRFW.table.columns`); nil when unknown
-local function column_index(table_id)
-  local ok, cols = pcall(VRFW.table.columns, table_id)
-  local out = {}
-  if ok and type(cols) == "table" then
-    for i, n in ipairs(cols) do out[n] = i end
-  end
-  return out
-end
-
 local function active_mods()
   local out = {}
   local ok, decl = pcall(VRFW.files.declarations, "mod.toml")
@@ -114,12 +102,11 @@ end
 
 local RULES, POOLS, LOOKS = nil, {}, {}
 local RULE_LIST = {}
-local NEED_COLS = {}      -- chara_param columns the filters / tiers read (name or 0-based number)
-local NEED_MOD = false    -- some filter asks the card's maker
+local NEED_COLS = {}      -- chara_param columns the tiers read (name or 0-based number)
 local MODS = {}
 
 local POSITION_WORD = { GK = C.POS_GK, FW = C.POS_FW, MF = C.POS_MF, DF = C.POS_DF }
-local FILTER_KEYS = { Element = true, Position = true, Rarity = true, Series = true, Team = true, Cards = true,
+local FILTER_KEYS = { Element = true, Position = true, Rarity = true, Series = true, AppearsIn = true, Set = true, Team = true, Cards = true,
   Characters = true, Mod = true, Gender = true, Columns = true, IfMod = true }
 local STAGE_KEYS = { Stage = true, Stages = true, Level = true, LevelSpread = true, Step = true, RarityWeights = true,
   Tier = true, Formations = true, MaxSame = true, ElementWeights = true, Theme = true }
@@ -145,7 +132,19 @@ local function list_of(v)
   return v
 end
 
--- a filter row as C.match reads it; nil when IfMod names a mod that is not active
+-- the keys of a number set (C.num_set) as a sorted list; nil for none
+local function keys_of(set)
+  if set == nil then return nil end
+  local a = {}
+  for k in pairs(set) do a[#a + 1] = k end
+  table.sort(a, function(x, y) return tostring(x) < tostring(y) end)
+  return a
+end
+
+-- a filter row as a card-set rule of the framework (the one selector vocabulary, docs/framework/chara-index.md §4,
+-- evaluated natively by VRFW.chara.select); nil when IfMod names a mod that is not active. Series = the character's
+-- source series (names or numbers; one meaning framework-wide since 2.3), AppearsIn = his in_* membership flags (what
+-- Series meant before 2.3), Set = declared [[VRFW.CardSet]] names.
 local function compile_filter(where, f)
   unknown_keys(where, f, FILTER_KEYS)
   if type(f.IfMod) == "string" and f.IfMod ~= "" and not MODS[f.IfMod] then
@@ -153,37 +152,44 @@ local function compile_filter(where, f)
     return nil
   end
   local out = {}
-  out.element = C.num_set(f.Element)
-  out.position = C.num_set(f.Position, function(x)
+  out.element = keys_of(C.num_set(f.Element))
+  out.position = keys_of(C.num_set(f.Position, function(x)
     if type(x) == "number" then return floor(x) end
     if type(x) == "string" then return POSITION_WORD[x:upper()] end
     return nil
-  end)
-  out.rarity = C.num_set(f.Rarity)
-  out.gender = C.num_set(f.Gender)
-  out.series = C.num_set(f.Series)
-  out.team = C.num_set(f.Team, function(x) return id_of("team", x) end)
-  out.cards = C.num_set(f.Cards, function(x) return id_of("chara", x) end)
-  out.characters = C.num_set(f.Characters, function(x) return id_of("character", x) end)
-  if f.Mod ~= nil then
-    local s = {}
-    for _, m in ipairs(list_of(f.Mod)) do
-      if type(m) == "string" then s[m] = true end
+  end))
+  out.rarity = keys_of(C.num_set(f.Rarity))
+  out.gender = keys_of(C.num_set(f.Gender))
+  if f.Series ~= nil then out.series = list_of(f.Series) end
+  if f.AppearsIn ~= nil then out.appears_in = list_of(f.AppearsIn) end
+  if f.Set ~= nil then
+    local sets = {}
+    for _, x in ipairs(list_of(f.Set)) do
+      if type(x) == "string" then sets[#sets + 1] = x end
     end
-    out.mod = s
-    NEED_MOD = true
+    out.set = sets
+  end
+  out.team = keys_of(C.num_set(f.Team, function(x) return id_of("team", x) end))
+  out.cards = keys_of(C.num_set(f.Cards, function(x) return id_of("chara", x) end))
+  out.characters = keys_of(C.num_set(f.Characters, function(x) return id_of("character", x) end))
+  if f.Mod ~= nil then
+    local m = {}
+    for _, x in ipairs(list_of(f.Mod)) do
+      if type(x) == "string" then m[#m + 1] = x end
+    end
+    out.mod = m
   end
   if type(f.Columns) == "table" then
-    out.columns_decl = {}
+    local cols = {}
     for col, r in pairs(f.Columns) do
       local rr = C.range(r)
       if rr then
-        out.columns_decl[col] = rr
-        NEED_COLS[col] = true
+        cols[tostring(col)] = rr
       else
         warn(where .. ": Columns." .. tostring(col) .. " needs a number or [min, max] (ignored)")
       end
     end
+    if next(cols) ~= nil then out.columns = cols end
   end
   return out
 end
@@ -326,106 +332,41 @@ end
 -- ------------------------------------------------------------------------------------------------ game data
 
 local CARDS = nil         -- every playable card, by id order
-local PARAM_COL = {}      -- chara_param column (declared name or 0-based number) -> 1-based position
 local FORMS = {}          -- formation id -> { [positionNo] = class } (false = not found)
 local TEAM_ROWS = nil     -- team id -> { name, formation, kit, emblem, level } (team_config as served)
 
-local function col_pos(idx, col)
-  if type(col) == "number" then return floor(col) + 1 end
-  if type(col) == "string" then
-    if col:match("^%d+$") then return tonumber(col) + 1 end
-    return idx[col]
-  end
-  return nil
-end
-
+-- The cards from the framework's ONE character index (VRFW.chara.cards: chara_param / chara_base read once natively,
+-- by column name, shared by every script; 2.3, docs/framework/chara-index.md), with the chara_param column the tiers
+-- name (`TierColumn`: a schema name or a 0-based number). Playable = a main position 1..4.
 local function load_cards()
   if CARDS then return CARDS end
   CARDS = {}
   local t0 = VRFW.now()
-  local pidx = column_index("character/chara_param")
-  local bidx = column_index("character/chara_base")
-  local want = { pidx.id or 1, pidx.chara or 2, pidx.element or 3, pidx.main_position or 4, pidx.special_rarity or 42 }
+  local cols = {}
   for col in pairs(NEED_COLS) do
-    local p = col_pos(pidx, col)
-    if p then
-      PARAM_COL[col] = p
-      want[#want + 1] = p
+    local ok, at = pcall(VRFW.chara.param_column, col)
+    if ok and at ~= nil then
+      cols[#cols + 1] = col
     else
       warn("chara_param has no column " .. tostring(col) .. " (filters on it never match)")
     end
   end
-  -- chara_base: gender, belong teams, the series membership flags (the schema's in_* columns: flag k = series type k)
-  local base = {}
-  local series_cols = {}
-  local ok_c, bcols = pcall(VRFW.table.columns, "character/chara_base")
-  if ok_c and type(bcols) == "table" then
-    for i, n in ipairs(bcols) do
-      if type(n) == "string" and n:sub(1, 3) == "in_" then series_cols[#series_cols + 1] = i end
-    end
-  end
-  local bwant = { bidx.id or 1, bidx.gender or 12, bidx.team_1 or 17, bidx.team_2 or 18, bidx.team_3 or 19 }
-  for _, p in ipairs(series_cols) do bwant[#bwant + 1] = p end
-  local okb, brows = pcall(VRFW.table.raw, table_key(BASE_STEM), "CHARA_BASE_INFO", bwant)
-  if okb and type(brows) == "table" then
-    for _, r in ipairs(brows) do
-      local id = r[bwant[1]]
-      if type(id) == "number" then
-        local teams = {}
-        for k = 3, 5 do
-          local t = r[bwant[k]]
-          if type(t) == "number" and t ~= 0 then teams[u32(t)] = true end
-        end
-        local series = {}
-        for k, p in ipairs(series_cols) do
-          local v = r[p]
-          if type(v) == "number" and v ~= 0 then series[k] = true end
-        end
-        base[u32(id)] = { gender = type(r[bwant[2]]) == "number" and floor(r[bwant[2]]) or 0, teams = teams, series = series }
-      end
-    end
-  else
-    warn("chara_base not readable (" .. tostring(brows) .. "): series / team / gender filters never match")
-  end
-  local okp, prows = pcall(VRFW.table.raw, table_key(PARAM_STEM), "CHARA_PARAM_INFO", want)
-  if not okp or type(prows) ~= "table" then
-    err("chara_param not readable: " .. tostring(prows))
+  local ok, list = pcall(VRFW.chara.cards, { columns = cols })
+  if not ok or type(list) ~= "table" then
+    err("chara_param not readable: " .. tostring(list))
     return CARDS
   end
-  local seen = {}
-  for _, r in ipairs(prows) do
-    local id = r[want[1]]
-    local pos = r[want[4]]
-    if type(id) == "number" and type(pos) == "number" and pos >= 1 and pos <= 4 and not seen[u32(id)] then
-      local cid = u32(id)
-      seen[cid] = true
-      local b = type(r[want[2]]) == "number" and u32(r[want[2]]) or 0
-      local bi = base[b] or {}
-      local cols = {}
-      for col, p in pairs(PARAM_COL) do
-        if type(r[p]) == "number" then cols[col] = r[p] end
-      end
-      CARDS[#CARDS + 1] = { id = cid, base = b, element = type(r[want[3]]) == "number" and floor(r[want[3]]) % 256 or 0,
-        pos = floor(pos), rarity = type(r[want[5]]) == "number" and floor(r[want[5]]) or 0, gender = bi.gender or 0,
-        teams = bi.teams or {}, series = bi.series or {}, cols = cols }
+  for _, c in ipairs(list) do
+    local pos = c.position
+    if type(pos) == "number" and pos >= 1 and pos <= 4 then
+      -- the pool's filters are evaluated natively (VRFW.chara.select): a card row only carries what the pick reads
+      CARDS[#CARDS + 1] = { id = u32(c.id), base = u32(c.base), element = floor(c.element) % 256, pos = floor(pos),
+        rarity = floor(c.rarity or 0), cols = c.cols or {} }
     end
   end
   table.sort(CARDS, function(a, b) return a.id < b.id end)
-  if NEED_MOD and VRFW.ids and VRFW.ids.origin then
-    for _, c in ipairs(CARDS) do
-      local ok, o = pcall(VRFW.ids.origin, "chara", c.id)
-      c.mod = ok and type(o) == "table" and o.origin == "mod" and o.mod or "game"
-    end
-  end
-  info(string.format("%d playable cards read in %d ms (once per session)", #CARDS, floor(VRFW.now() - t0)))
+  info(string.format("%d playable cards taken in %d ms (the framework's character index)", #CARDS, floor(VRFW.now() - t0)))
   return CARDS
-end
-
--- a filter's Columns keys turned into positions known by the card rows (`cols` is keyed by the declared key)
-local function resolve_columns(f)
-  if f.columns_decl and not f.columns then
-    f.columns = f.columns_decl
-  end
 end
 
 local function formation(id)
@@ -617,9 +558,17 @@ local function pool_cards(rule)
   local cached = POOL_CACHE[p.key]
   if cached then return cached end
   local cards = load_cards()
-  for _, f in ipairs(p.include) do resolve_columns(f) end
-  for _, f in ipairs(p.exclude) do resolve_columns(f) end
-  local out = C.pool(cards, p.include, p.exclude)
+  -- the pool's card set (the framework's selector: some Include row, no Exclude row; no Include = every card), kept
+  -- to the playable cards in id order
+  local ok, ids = pcall(VRFW.chara.select, { include = #p.include > 0 and p.include or nil,
+    exclude = #p.exclude > 0 and p.exclude or nil })
+  if not ok or type(ids) ~= "table" then return nil, "pool " .. p.key .. ": not evaluated (" .. tostring(ids) .. ")" end
+  local in_set = {}
+  for _, id in ipairs(ids) do in_set[u32(id)] = true end
+  local out = {}
+  for _, c in ipairs(cards) do
+    if in_set[c.id] then out[#out + 1] = c end
+  end
   local gk = 0
   for _, c in ipairs(out) do
     if c.pos == C.POS_GK then gk = gk + 1 end
@@ -699,9 +648,9 @@ local function build(rule_arg, seed, node, stage, slot, write)
   local st = stage_of(rule, stage)
   local hi, lo = C.split(seed)
   local nid = node_id(node)
-  local seed32 = C.mix({ hi, lo, nid, rule.crc, rule.version, stage })
-  local rng = C.rng(C.mix({ seed32, 1 }))
-  local look_rng = C.rng(C.mix({ seed32, 2 }))
+  local words = { hi, lo, nid, rule.crc, rule.version, stage }
+  local rng = C.rng(words, 1)
+  local look_rng = C.rng(words, 2)
   -- formation: one of the stage's / rule's that fits the slot team's starters, else the slot team's own
   local form_id, classes
   local fits = {}

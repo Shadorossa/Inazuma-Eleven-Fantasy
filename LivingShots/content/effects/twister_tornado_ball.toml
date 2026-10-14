@@ -1,0 +1,31 @@
+# «Twister Tornado» («¡Tormenta, tornado, huracán!», whs02680, wind shot, counter shot: skillEffectBitFlag 16, cut-in
+# ev60_02680): while the ball runs along the pitch to the goal it keeps the cut-in's OWN look at its end (the last cut
+# c0030, the ball rolling into the goal, held at frame 400): the grey-white tornado rising from the ball and leaning
+# back along the flight (its 18 stacked swirl segments, top and wind rings, the whirl = their texture flow running
+# on, as in the cut-in: no joint of the funnel spins there; over the aura's first 30 frames the funnel straightens
+# from 54 to 46.9 deg, the cut-in's own keys 348 -> 378 (its most upright pose), and, an approved deviation
+# (Nacho 2026-10-08), keeps standing up about the ball while the ball runs to the goal: ~20 deg from the vertical
+# 1.75 s after the kick, then held) and the small wind
+# wraps round the ball, instead of the plain wind special-shot aura (ega0075b). The sky / cloud backdrops, the
+# lightning in the clouds, the dust walls and flat smoke on the pitch, the smoke trails, back wind fans, wind sheets,
+# kick ring and fake particles are dropped;
+# x1.0 of the cut-in size (its top 7.5 m over the ball at the kick, 10.4 m once standing, ~8 m wide), lifted 0.3 m.
+# The object is ev6268tt00 (assets\data\{common,dx11}\effect\event\ev60\ev6268tt00\), built by
+# research/scripts/twister_tornado_ball_fx.py from ev60026800; docs/game/media/twister-tornado-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillEffectBitFlag 16 = counter shot, not a
+# chain or long shot): CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# No other technique key uses ev60_02680.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "twister_tornado"
+from = "ega0075b"
+object = "effect/event/ev60/ev6268tt00/ev6268tt00.objbin"
+
+[[shot_aura]]
+name = "twister_tornado"
+when = { techniques = ["whs02680"] }
+aura = "twister_tornado"
+like = "ega0075b"

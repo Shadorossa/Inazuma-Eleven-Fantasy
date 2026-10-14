@@ -1,0 +1,291 @@
+schema = "VRFW.text/2"
+# Hissatsu Effects (moved out of Inazuma Fantasy 2026-10-14). Hand-written (edit freely): texts of the «Habilidades» move card's second page (Q / E, pad LT / RT: the move's ball
+# mini-effect, CMND_VRFW_TECHNIQUE_BALL_EFFECT). Read by the graft research/grafts/skill_card (CMND_TEXT_GET of
+# crc32(id)). docs/framework/technique.md §4b.
+# The page is the title evt_skc_title (centred, Nacho 2026-10-06) over ONE plain sentence built from the effect data
+# (no metres / degrees):
+#   evt_skc_sentence with {dist} {height} {dir} filled from the pieces below (a piece carries its own leading space /
+#   punctuation, "" when that part is the game's own); an effect with no known part shows evt_skc_generic.
+#   distance: <= 18 m short, <= 30 m mid, longer long; height: launch >= 40° high, <= 15° low; direction: forward.
+# Only characters every menu font has (no °, ·, ˚).
+table = "menu_text"
+
+[[row]]
+id = "evt_skc_guide_effect"  # button guide label on the description page
+es = "Efecto"
+en = "Effect"
+fr = "Effet"
+de = "Effekt"
+it = "Effetto"
+pt = "Efeito"
+ja = "効果"
+zh_hans = "效果"
+zh_hant = "效果"
+
+[[row]]
+id = "evt_skc_guide_desc"  # button guide label on the effect page
+es = "Descripción"
+en = "Description"
+fr = "Description"
+de = "Beschreibung"
+it = "Descrizione"
+pt = "Descrição"
+ja = "説明"
+zh_hans = "说明"
+zh_hant = "說明"
+
+[[row]]
+id = "evt_skc_sentence"  # the effect page: {dist} {height} {dir} = the pieces below
+es = "Despeja el balón{dist}{height}{dir}."
+en = "Clears the ball{dist}{height}{dir}."
+fr = "Dégage le ballon{dist}{height}{dir}."
+de = "Wehrt den Ball{dist}{height}{dir} ab."
+it = "Respinge il pallone{dist}{height}{dir}."
+pt = "Afasta a bola{dist}{height}{dir}."
+ja = "ボールを{dir}{dist}{height}クリアする。"
+zh_hans = "将球{height}{dir}解围{dist}。"
+zh_hant = "將球{height}{dir}解圍{dist}。"
+
+[[row]]
+id = "evt_skc_dist_short"
+es = " a poca distancia"
+en = " a short way"
+fr = " à courte distance"
+de = " kurz"
+it = " a breve distanza"
+pt = " a pouca distância"
+ja = "短く"
+zh_hans = "，距离较近"
+zh_hant = "，距離較近"
+
+[[row]]
+id = "evt_skc_dist_mid"
+es = " a media distancia"
+en = " a fair way"
+fr = " à moyenne distance"
+de = " ein gutes Stück weit"
+it = " a media distanza"
+pt = " a meia distância"
+ja = "ほどよく"
+zh_hans = "，距离适中"
+zh_hant = "，距離適中"
+
+[[row]]
+id = "evt_skc_dist_long"
+es = " muy lejos"
+en = " a long way"
+fr = " très loin"
+de = " sehr weit"
+it = " molto lontano"
+pt = " para muito longe"
+ja = "大きく"
+zh_hans = "，飞得很远"
+zh_hant = "，飛得很遠"
+
+[[row]]
+id = "evt_skc_height_high"
+es = " por alto"
+en = " high"
+fr = " en hauteur"
+de = " hoch"
+it = " alto"
+pt = " pelo alto"
+ja = "高く"
+zh_hans = "高高地"
+zh_hant = "高高地"
+
+[[row]]
+id = "evt_skc_height_low"
+es = " a ras de suelo"
+en = " low along the ground"
+fr = " au ras du sol"
+de = " flach"
+it = " rasoterra"
+pt = " rente ao chão"
+ja = "低く"
+zh_hans = "贴地"
+zh_hant = "貼地"
+
+[[row]]
+id = "evt_skc_dir_forward"
+es = " hacia delante"
+en = " straight ahead"
+fr = " droit devant"
+de = " nach vorn"
+it = " in avanti"
+pt = " para a frente"
+ja = "前方へ"
+zh_hans = "向前"
+zh_hant = "向前"
+
+[[row]]
+id = "evt_skc_generic"  # an effect with no distance, height or direction of its own
+es = "Cambia la trayectoria del balón al despejar."
+en = "Changes the ball's path when clearing."
+fr = "Modifie la trajectoire du ballon au dégagement."
+de = "Ändert die Flugbahn des Balls bei der Abwehr."
+it = "Cambia la traiettoria del pallone nel rinvio."
+pt = "Muda a trajetória da bola ao afastar."
+ja = "クリアしたボールの軌道を変える。"
+zh_hans = "改变解围时足球的轨迹。"
+zh_hant = "改變解圍時足球的軌跡。"
+
+[[row]]
+id = "evt_skc_title"  # page 2's title, centred above the sentence (the Lua adds the colour tag)
+es = "Efecto especial"
+en = "Special effect"
+fr = "Effet spécial"
+de = "Spezialeffekt"
+it = "Effetto speciale"
+pt = "Efeito especial"
+ja = "特殊効果"
+zh_hans = "特殊效果"
+zh_hant = "特殊效果"
+
+# Shot / keeper mini-effects (docs/framework/technique.md §4e, CMND_VRFW_TECHNIQUE_MINI_FX): one sentence per effect,
+# joined with a space when a move has several (shown after the ball sentence when a move has both).
+[[row]]
+id = "evt_skc_fx_distance"  # distance_falloff = "inverted" (Excálibur)
+es = "Cuanto más lejos, más potente."
+en = "The farther it flies, the stronger it gets."
+fr = "Plus il vient de loin, plus il est puissant."
+de = "Je weiter der Schuss fliegt, desto stärker wird er."
+it = "Più è lontano, più è potente."
+pt = "Quanto mais longe, mais forte."
+ja = "遠くから撃つほど威力が上がる。"
+zh_hans = "距离越远，威力越强。"
+zh_hant = "距離越遠，威力越強。"
+
+[[row]]
+id = "evt_skc_fx_lock"  # on_win_lock_opponent_move = true (Malla eléctrica)
+es = "Bloquea la supertécnica del rival hasta que vuelvas a usarla."
+en = "Locks the rival's special move until you use this one again."
+fr = "Bloque la supertechnique adverse jusqu'à ce que tu la réutilises."
+de = "Sperrt die Spezialtechnik des Gegners, bis du diese erneut einsetzt."
+it = "Blocca la supertecnica avversaria finché non la riusi."
+pt = "Bloqueia a supertécnica do rival até a voltares a usar."
+ja = "再び使うまで、相手の必殺技を封じる。"
+zh_hans = "封印对手的必杀技，直到再次使用此招。"
+zh_hant = "封印對手的必殺技，直到再次使用此招。"
+
+[[row]]
+id = "evt_skc_fx_pe"  # pe_sacrifice (Pingüino emperador nº1); {pct} = the share of the current PE (15)
+es = "Gasta un {pct} % de PE para aumentar su potencia."
+en = "Spends {pct}% of GP to boost its power."
+fr = "Dépense {pct} % de PE pour augmenter sa puissance."
+de = "Verbraucht {pct} % KP, um seine Stärke zu erhöhen."
+it = "Consuma il {pct}% di PE per aumentarne la potenza."
+pt = "Gasta {pct}% de PE para aumentar a sua potência."
+ja = "PEを{pct}%消費して威力を上げる。"
+zh_hans = "消耗{pct}%的PE来提升威力。"
+zh_hant = "消耗{pct}%的PE來提升威力。"
+
+[[row]]
+id = "evt_skc_fx_participants"  # power_per_participant (Fuego total); {pct} = percent per performer, {element} = evt_skc_elem_N
+es = "+{pct} % de potencia por cada compañero de elemento {element} que la realiza."
+en = "+{pct}% power for each {element} team mate performing it."
+fr = "+{pct} % de puissance par coéquipier d'élément {element} qui l'exécute."
+de = "+{pct} % Stärke für jeden ausführenden Mitspieler vom Element {element}."
+it = "+{pct}% di potenza per ogni compagno di elemento {element} che la esegue."
+pt = "+{pct}% de potência por cada colega de elemento {element} que a executa."
+ja = "技を行う{element}属性の仲間1人につき威力+{pct}%。"
+zh_hans = "每有一名{element}属性队友参与，威力+{pct}%。"
+zh_hant = "每有一名{element}屬性隊友參與，威力+{pct}%。"
+
+[[row]]
+id = "evt_skc_fx_participants_any"  # power_per_participant with element "any" / "void"
+es = "+{pct} % de potencia por cada compañero que la realiza."
+en = "+{pct}% power for each team mate performing it."
+fr = "+{pct} % de puissance par coéquipier qui l'exécute."
+de = "+{pct} % Stärke für jeden ausführenden Mitspieler."
+it = "+{pct}% di potenza per ogni compagno che la esegue."
+pt = "+{pct}% de potência por cada colega que a executa."
+ja = "技を行う仲間1人につき威力+{pct}%。"
+zh_hans = "每有一名队友参与，威力+{pct}%。"
+zh_hant = "每有一名隊友參與，威力+{pct}%。"
+
+[[row]]
+id = "evt_skc_fx_steal"  # on_win_steal_tension (Martillo defensor); {pct} = share of the shot's tension cost (15)
+es = "Si para el tiro, gana un {pct} % de la tensión que gastó el rival."
+en = "If it stops the shot, gains {pct}% of the tension the rival spent."
+fr = "S'il arrête le tir, récupère {pct} % de la tension dépensée par l'adversaire."
+de = "Hält er den Schuss, erhält er {pct} % der Spannung, die der Gegner verbraucht hat."
+it = "Se para il tiro, ottiene il {pct}% della tensione spesa dall'avversario."
+pt = "Se defender o remate, ganha {pct}% da tensão que o rival gastou."
+ja = "シュートを止めると、相手が使ったテンションの{pct}%を得る。"
+zh_hans = "若挡下射门，获得对手所耗气势的{pct}%。"
+zh_hant = "若擋下射門，獲得對手所耗氣勢的{pct}%。"
+
+[[row]]
+id = "evt_skc_fx_dive"  # trajectory = "dive" (Lanza letal): Bezier arc; unblockable on a long shot
+es = "El balón sube y cae en picado sobre la portería; en un tiro lejano, los bloqueos no pueden pararlo."
+en = "The ball rises and dives into the goal; on a long shot, blocks cannot stop it."
+fr = "Le ballon monte puis plonge sur le but ; sur un tir de loin, les contres ne peuvent pas l'arrêter."
+de = "Der Ball steigt und stürzt ins Tor; bei einem Fernschuss können Blocks ihn nicht aufhalten."
+it = "Il pallone sale e piomba in porta; su un tiro da lontano, i blocchi non possono fermarlo."
+pt = "A bola sobe e cai a pique sobre a baliza; num remate de longe, os bloqueios não a param."
+ja = "ボールが上昇し、ゴールへ急降下する。ロングシュートではブロックで止められない。"
+zh_hans = "球升起后俯冲入门；远射时封堵无法拦下。"
+zh_hant = "球升起後俯衝入門；遠射時封堵無法攔下。"
+
+[[row]]
+id = "evt_skc_fx_dive_plain"  # trajectory = { mode = "dive", unblockable = false }
+es = "El balón sube y cae en picado sobre la portería."
+en = "The ball rises and dives into the goal."
+fr = "Le ballon monte puis plonge sur le but."
+de = "Der Ball steigt und stürzt ins Tor."
+it = "Il pallone sale e piomba in porta."
+pt = "A bola sobe e cai a pique sobre a baliza."
+ja = "ボールが上昇し、ゴールへ急降下する。"
+zh_hans = "球升起后俯冲入门。"
+zh_hant = "球升起後俯衝入門。"
+
+# the element words of evt_skc_fx_participants (1 wind, 2 forest, 3 fire, 4 mountain; until 2026-10-14 IF's album rows
+# evt_album_elem_N)
+[[row]]
+id = "evt_skc_elem_1"
+es = "Viento"
+en = "Wind"
+fr = "Vent"
+de = "Wind"
+it = "Vento"
+pt = "Vento"
+ja = "風"
+zh_hans = "风"
+zh_hant = "風"
+
+[[row]]
+id = "evt_skc_elem_2"
+es = "Bosque"
+en = "Forest"
+fr = "Forêt"
+de = "Wald"
+it = "Foresta"
+pt = "Floresta"
+ja = "林"
+zh_hans = "林"
+zh_hant = "林"
+
+[[row]]
+id = "evt_skc_elem_3"
+es = "Fuego"
+en = "Fire"
+fr = "Feu"
+de = "Feuer"
+it = "Fuoco"
+pt = "Fogo"
+ja = "火"
+zh_hans = "火"
+zh_hant = "火"
+
+[[row]]
+id = "evt_skc_elem_4"
+es = "Montaña"
+en = "Mountain"
+fr = "Montagne"
+de = "Berg"
+it = "Montagna"
+pt = "Montanha"
+ja = "山"
+zh_hans = "山"
+zh_hant = "山"

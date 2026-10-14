@@ -1,10 +1,14 @@
-schema = "vr_framework.shop/2"
-# The Inazuma Eleven Cross stadium tickets (content/items/cross_stadiums.toml) in the Tienda general (0xF24DB4CD), in the
-# «Tiques» tab with the retail stadium tickets, at the retail price tier (gd120030 Jardín Celestial 140, gd120031
-# 116 Puntos de amistad). A price without `currency` is in the shop's first currency: Puntos de amistad.
+schema = "VRFW.shop/2"
+# The Inazuma Eleven Cross stadium tickets (content/items/cross_stadiums.toml), sold where the retail stadium tickets are:
+# * with Inazuma Fantasy: its Tienda general (0xF24DB4CD, a shop IF adds), in the «Tiques» tab with the retail stadium
+#   tickets IF moves there, at IF's retail price tier (gd120030 Jardín Celestial 140, gd120031 116 Puntos de amistad).
+#   A price without `currency` is in the shop's first currency: Puntos de amistad.
+# * without it (the Tienda general does not exist): the retail Tienda Vs (0x9BE09172), the shop that sells the base
+#   ticket gd120030, at that retail row's price (35 tk_vi000001 + 35 tk_hr000008, shop_config_3.00.22).
 
 [[edit]]
-target = "0xF24DB4CD"           # Tienda general
+target = "0xF24DB4CD"           # Tienda general (Inazuma Fantasy)
+if_mod = "inazuma_fantasy"
 
   [[edit.entry]]
   item = "stadium_s91g001"               # Inazuma Big Ferry
@@ -44,6 +48,67 @@ target = "0xF24DB4CD"           # Tienda general
   [[edit.entry]]
   item = "stadium_s99g001"               # Cubierta del Big Ferry
   price = 140
+  stock = 1
+
+
+[[edit]]
+target = "0x9BE09172"           # Tienda Vs (retail)
+if_not_mod = "inazuma_fantasy"
+
+  [[edit.entry]]
+  item = "stadium_s91g001"       # Inazuma Big Ferry
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s91g001b"      # Inazuma Big Ferry (verano)
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s91g001c"      # Inazuma Big Ferry (festival)
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s92g001"       # Estadio Costero
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s93g001"       # Barco Pirata Fantasma
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s94g001"       # Barco Ramen
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s98g001"       # Campo Cibernético
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
+  stock = 1
+
+  [[edit.entry]]
+  item = "stadium_s99g001"       # Cubierta del Big Ferry
+  price = 35
+  currency = "tk_vi000001"
+  costs = [{ currency = "tk_hr000008", count = 35 }]
   stock = 1
 
 # Moved from Inazuma Fantasy (2026-10-08). A shop row's purchase counter / «new» bit index is numbered from

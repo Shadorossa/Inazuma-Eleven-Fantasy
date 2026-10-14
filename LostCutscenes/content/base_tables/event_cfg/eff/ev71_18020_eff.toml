@@ -1,0 +1,47 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/eff/ev71_18020_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev65_10025_eff.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["ev71180200", "common/effect/event/ev71/ev71180200/ev71180200.objbin", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["ev71180200"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 5
+values = ["ev71180200", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 6
+values = ["ev71180200", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 7
+values = ["ev71180200", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 8
+values = ["ev71180200", "c0010", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 9
+values = ["ev71180200", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 10
+values = [241, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 10
+values = ["ev71180200", 0]

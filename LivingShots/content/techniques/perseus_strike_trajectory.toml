@@ -1,0 +1,28 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Orbe de Perseo (Perseus Strike, whs03240) (Nacho 2026-10-08: each move its
+# own fall, matching its cut-in). In the cut-in's shot cut (c0500) the ball hangs in its light orb ~8.6 m up until the
+# sword of Perseus strikes it down: it comes down a straight line at ~23° and then flies level at ~1.2 m into the
+# goal; in the match it comes into the goal at that angle: the angled dive (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7.6). Its dive line is ~17 m long, so close in the start comes down onto
+# the 23° line over the kick point and the ball flies one straight line; from farther it leaves level at 8.5 m and
+# bends into it. Its aura (content\effects\perseus_strike_ball.toml, the light orb) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move perseus_strike): the event ball (b000001
+# c_add_1_0) of ev60_03240 c0500, event frames 1040 (struck by the sword, its highest point) - 1087 (its descent
+# stops): (0.00, 8.59, 14.67) -> (5.93, 1.19, 30.38), 8.59 m -> 1.19 m over 16.79 m on the ground = 23.8° down on
+# average, 22.5° over the first 4 frames, 22.9° over the last 4 (a straight line); after 1087 it flies level at
+# 1.19-1.29 m to the end of the cut.
+#   height     = 8.5: the start (8.59 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 23:  the descent angle (the same all along the line).
+#   end_height = 1.2: the cut-in's own end height (its level flight into the goal), already in the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# Orbe de Perseo (whs03240).
+[[edit]]
+target = "whs03240"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 8.61 m (8.5 over a kick on the pitch) held until 17.46 m before the goal point, then the 23.0
+# deg line down into 1.2 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 8.73 m down (bend 0.5). A shot shorter
+# than 17.46 m starts lower, on the line.
+trajectory = { goal_points = [[17.46, 8.61, 999, 8.73], [0.0, 1.2]], unblockable = false }

@@ -2,7 +2,7 @@
 # CMND_TEXT_GET(crc32(id))). Format: docs/game/engine/text-engine.md §2. evt_tb_bank / evt_tb_guide_keys keep the ids
 # they had in Inazuma Fantasy. {page} = «Banco k/N», {n} = a number (filled by the Lua). «\n» = a line break of the
 # game's message window.
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 
 [[row]]
 id = "evt_tb_bank"

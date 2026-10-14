@@ -1,0 +1,180 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/eff/ev60_95000_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev60_01670_eff.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["ev60950000", "common/effect/event/ev60/ev60950000/ev60950000.objbin", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["ev60950000"]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 5
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 6
+args = ["ev60950000", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 7
+args = ["ev60950000", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 8
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 9
+args = ["ev60950000", "c0100", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 10
+args = ["ev60950000", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+command = "PLAY_EFFECT"
+at = 11
+values = [124]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 12
+frame = 124
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 13
+frame = 124
+args = ["ev60950000", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 14
+frame = 124
+args = ["ev60950000", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 15
+frame = 124
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 16
+frame = 124
+args = ["ev60950000", "c0200", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 17
+frame = 124
+args = ["ev60950000", 1]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 18
+frame = 234
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 19
+frame = 234
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 20
+frame = 234
+args = ["ev60950000", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 21
+frame = 234
+args = ["ev60950000", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 22
+frame = 234
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 23
+frame = 234
+args = ["ev60950000", "c0300", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 24
+frame = 234
+args = ["ev60950000", 1]
+
+[[entry]]
+command = "ATTACH_AURA"
+at = 25
+frame = 234
+args = ["b000001_s00_p<VARIATION>", "ball_aura_koutei_penguin", 0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+command = "PLAY_EFFECT"
+at = 26
+values = [351]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 27
+frame = 351
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 28
+frame = 351
+args = ["ev60950000", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 29
+frame = 351
+args = ["ev60950000", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 30
+frame = 351
+args = ["ev60950000", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 31
+frame = 351
+args = ["ev60950000", "c0400", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 32
+frame = 351
+args = ["ev60950000", 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 33
+frame = 444
+args = ["ev60950000", 0]

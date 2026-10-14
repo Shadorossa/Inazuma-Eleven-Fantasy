@@ -1,0 +1,12 @@
+schema = "VRFW.base_table/1"
+# The «Inazuma Eleven Cross» character series (crc32("evt_chara_series_cross"), type 10; its name:
+# text\rows\chara_add_info_text.toml). Moved from Inazuma Fantasy on 2026-10-08.
+
+[[list]]
+name = "m_charaSeriesInfoList"
+columns = ["charaSeriesId", "charaSeriesType", "charaSeriesNameTextId"]
+splice = [
+  { at = 9, remove = 0, rows = [
+    [0x2451B973, 10, 0x41983033],
+  ] },
+]

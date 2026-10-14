@@ -1,7 +1,8 @@
 -- Match challenges («desafíos», `[[VRFW.MatchChallenge]]`; docs/framework/match-challenge.md; was team_engine
 -- challenge.rs, build part): the declarations, the matches that name them (route nodes, chain tiles, free-match
 -- tabs, the challenges' own `Games`) and the player attributes their conditions read. The check itself is the run
--- time's (team_engine challenge.rs `call`).
+-- time's (team_engine challenge.rs `call`). VRFW 2.4.35: `[[VRFW.MatchChallenge.Required]]`, required starters
+-- (`Characters` in formation places `Positions`, optionally `UntilFirstClear`).
 local T = require "lib/team_util"
 local Q = {}
 
@@ -154,17 +155,46 @@ function Q.install(X)
         elseif T.trim(d.Title) == "" then
           VRFW.log.error(what .. ": Title (a menu_text row id) is required: skipped")
         else
-          if #(d.Require or {}) == 0 then VRFW.log.warn(what .. ": no [[vrfw.MatchChallenge.Require]]: every team passes") end
+          if #(d.Require or {}) == 0 and #(d.Required or {}) == 0 then VRFW.log.warn(what .. ": no [[vrfw.MatchChallenge.Require]]: every team passes") end
           local req, bad = {}, nil
           for _, r in ipairs(d.Require or {}) do
             local x, e = X.challenge_req(what, f.mod, r, 0)
             if not x then bad = e break end
             req[#req + 1] = x
           end
+          -- `Difficulties`: the difficulty rows of its games it applies to (empty = every row), 1-255, sorted, once each
+          local diffs, seen = {}, {}
+          for _, x in ipairs(d.Difficulties or {}) do
+            if bad == nil and (x < 1 or x > 255) then bad = "Difficulties: " .. tostring(x) .. " is not a difficulty id (1-255)" end
+            if not seen[x] then seen[x] = true diffs[#diffs + 1] = x end
+          end
+          table.sort(diffs)
+          -- `Required`: starters who must play in given formation places (any card of the characters)
+          local required = {}
+          for _, r in ipairs(d.Required or {}) do
+            local charas = {}
+            for _, c in ipairs(items(r.Characters)) do
+              local id, e = X.chara_of(c, f.mod)
+              if id == nil then
+                VRFW.log.error(what .. ": Required Characters: " .. e .. " (left out)")
+              elseif id == 0 then
+                VRFW.log.error(what .. ": Required Characters `" .. c .. "`: no character (left out)")
+              else
+                charas[#charas + 1] = id
+              end
+            end
+            if #charas == 0 then
+              VRFW.log.error(what .. ": a Required names no known character (left out)")
+            else
+              local positions = {}
+              for _, x in ipairs(items(r.Positions)) do positions[#positions + 1] = POSITION[x] end
+              required[#required + 1] = { charas = charas, positions = positions, until_first_clear = r.UntilFirstClear == true, text = r.Text or "" }
+            end
+          end
           if bad then
             VRFW.log.error(what .. ": " .. bad .. ": skipped")
           else
-            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", scope = d.Scope or "squad", require = req }
+            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", scope = d.Scope or "squad", require = req, difficulties = diffs, required = required }
             local idx
             for k, c in ipairs(out.list) do if c.name == d.Name then idx = k break end end
             if idx then
@@ -295,6 +325,7 @@ function Q.install(X)
       local n = 0
       for _, x in ipairs(out.games) do if x[2] == k - 1 then n = n + 1 end end
       VRFW.log.info(string.format("match challenge %s (%s): %d condition(s), scope %s, %d match game(s)", c.name, c.mod_id, #c.require, c.scope, n))
+      if #c.required > 0 then VRFW.log.info(string.format("match challenge %s: %d required starter(s)", c.name, #c.required)) end
       if n == 0 then VRFW.log.warn("match challenge " .. c.name .. ": no match uses it") end
     end
     -- (3) the attributes the conditions read (only with a challenge)

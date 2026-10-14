@@ -1,0 +1,25 @@
+# «Tornado de fuego» (Fire Tornado, whs00030, fire shot, cut-in ev60_00030; no _or / _mm / _cro key): while the ball
+# flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0040, the ball shot out of the fire
+# tornado): its fire head (flame shell, flame waves, red and yellow glow), its two long fire streaks ~27-30 m behind
+# and the small fire chunks it sheds along them, instead of the plain fire special-shot aura (ega0075c).
+# The object is ev6003ft00 (effect/event/ev60/ev6003ft00/), built by research/scripts/fire_tornado_ball_fx.py from
+# the cut-in's effect object ev60000300 held at c0040 frame 268 (texture flow running on, the flame shell's and one
+# chunk's spin kept as measured in the cut-in), ball at the origin flying +Z, x1; the flat glow cards stood to face
+# the touchline. Left out: the fire tornado round the player and the kick parts (they stay at the kick point in the
+# cut-in). docs/game/media/fire-tornado-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). The aura rides the game's own flight (no trajectory).
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_tornado"
+from = "ega0075c"
+object = "effect/event/ev60/ev6003ft00/ev6003ft00.objbin"
+
+[[shot_aura]]
+name = "fire_tornado"
+when = { techniques = ["whs00030"] }
+aura = "fire_tornado"
+like = "ega0075c"

@@ -1,0 +1,31 @@
+id = "synergies_reworked"
+# «Synergies Reworked» (owner request 2026-10-14: «Separa de IF también lo de las sinergias»; spelling corrected from
+# «SinergiesReworked»). Split out of Inazuma Fantasy (its _phases.toml part `synergies`): declarations of the
+# VR-Framework's synergy type only (VRFW.synergy/1, run time = VRFW scripts\synergy.lua, the panel drawing included),
+# no DLL, no script, no graft. docs/game/mods/synergies-reworked.md.
+# Layout (docs/framework/mod-layout.md):
+#   content\synergies\reworked_synergies.toml   the pools ([[VRFW.SynergyPool]]) and the reworked synergies ([[VRFW.Synergy]])
+#   text\rows\synergy_hints.toml                the hints of the empty slots (menu_text rows, SynergiesReworked.Hint*)
+#   text\keys.toml                              the «Mods» screen's name and description
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description
+# (text\keys.toml) in the game's language.
+name = "Synergies Reworked"
+prefix = "SynergiesReworked"
+folder = "SynergiesReworked"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Reworks some of the game's team synergies so they ask for players of a team or a group instead of a few named characters. El linaje oscuro: Ray Dark plus two players of Royal Academy, Zeus, Orfeo, Eclipse or Team D. Las gerentes más allegadas and Las gerentes de GO: any three female managers of their series. Los maestros de Alius: one Alius captain plus a player of each of the other two Alius teams. Los guerreros de Santuario: one player of Oscuridad Ancestral plus one of Luz Eterna. The names, icons and effects stay the game's; the synergy panel shows the nexus, the teams' crests and who is still missing."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-14"
+# vr_framework 2.2.215: the synergy type with nexus, pools as card sets (teams / series / role / gender), `slots` +
+# `skip_nexus_team`, `slot_members` and the panel drawing (nexus icon, crests, minifaces). Works on the base game:
+# Inazuma Fantasy and Character Reforged are not needed (the pools read the game's own characters).
+requires = ["vr_framework>=2.2.215"]
+conflicts = []
+permissions = []
+
+[exports]
+functions = []
+keys = []

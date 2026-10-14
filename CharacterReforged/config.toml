@@ -1,0 +1,42 @@
+# Character Reforged: default configuration (docs/framework/native.md §2.3). The loader's config.toml
+# [mods.character_reforged] overrides it key by key (survives mod updates), e.g. [mods.character_reforged.level] cap = 150.
+
+# The level cap (content\characters\level.toml [VRFW.Level] MaxConfig). 99 = the game's own cap (nothing raised, the game's
+# curves); 100..999 raises it (EXP rows, story cap, NPCs; the stats below follow it). Above 999 (the engine-safe
+# maximum: the level digits and the patched code sites) is clamped to 999 with a loader.log line. Read at start
+# (a change applies at the next start).
+[level]
+cap = 200
+
+# The per-character stats (scripts\lib\stats_curve.lua, docs/refactor/aura-mods-split.md «Per-character data»). The
+# cards' stored values are their Lv 200 values (chara_param cols 45-54, content\characters\**); the curve:
+#   Lv 1..99     lv1 + (v99 - lv1) * t^p      t = (L - 1) / 98, lv1 = round(v99 * lv1_ratio), p = curve_<growth>
+#   v99          round(v200 / lv200_factor_<growth>)
+#   Lv 100..cap  v99 + (top - v99) * u^curve_post99,   u = (L - 99) / (cap - 99),   top = v99 + (v200 - v99) * S
+#   S            ((cap - 99) / 101)^cap_scale: 1 at cap 200 (top = the stored value), < 1 below, > 1 above
+#   cards without stored values (the game's own cards, Lv99-value rows) above 99: the game's Lv 99 value v grows to
+#   round(v * (1 + gain_<growth> * S)) at the cap along 1 - (1 - u)^shape ([stats.past_cap])
+# Every value rises up to the cap and is clamped to 0..9999. Out-of-range values fall back to the defaults (logged).
+[stats]
+lv1_ratio = 0.10                 # Lv 1 value / Lv 99 value (0..1)
+curve_slow = 1.6                 # exponent of the Lv 1..99 curve per growth type (0.05..20)
+curve_normal = 1.0
+curve_fast = 0.6
+lv200_factor_slow = 1.50         # Lv 200 value / Lv 99 value per growth type (1..10)
+lv200_factor_normal = 1.35
+lv200_factor_fast = 1.25
+curve_post99 = 0.7               # exponent above Lv 99 (0.05..20; < 1 = most of it soon after 99)
+cap_scale = 0.5                  # how the top value follows the cap (0..4; 0 = the stored value at any cap)
+agility_speed = 0.05             # run speed from the Agilidad percentile inside the position: +-5 % (0..0.2; 0 = off)
+speed_npc = true                 # also roster rows without a saved character (opponents)
+
+# card multipliers by rarity (chara_param col 41): "<rarity>" = factor (0.1..10); none = 1
+[stats.rarity_mult]
+
+# growth past Lv 99 of the cards without stored values: gain at the cap per growth type (0..10; × S) and the ease-out
+# exponent (0.1..10; 1 = a straight line, 2 = most of the growth soon after Lv 99)
+[stats.past_cap]
+gain_slow = 0.50
+gain_normal = 0.35
+gain_fast = 0.25
+shape = 2.0

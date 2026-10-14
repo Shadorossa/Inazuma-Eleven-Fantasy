@@ -1,0 +1,35 @@
+schema = "VRFW.character/2"
+# Character Reforged · Student Council · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11740010"                                   # Puffet Vearn
+
+  [[edit.cards]]
+  id = 0x147A59C4                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 192, technique = 184, pressure = 216, physical = 251, intelligence = 250, agility = 194, freedom = 263 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0x3069B219, level = 18 },                    # Super Sumo Stomp
+    { move = 0x8C990270, level = 28 },                    # Gunshot
+    { move = 0x36A270F2, level = 34 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c11740020"                                   # Glorian Flaunt
+
+  [[edit.cards]]
+  id = 0x3F570A07                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 243, technique = 215, pressure = 182, physical = 200, intelligence = 185, agility = 185, freedom = 301 }
+  moves = [
+    { move = 0x61FB16FD, level = 1 },                     # Divine Arrows
+    { move = 0x5E5AF1A9, level = 10 },                    # Northern Impact
+    { move = 0x0D368F6B, level = 19 },                    # Heaven's Time
+    { move = 0x4AD6453E, level = 56 },                    # Back Tornado
+  ]

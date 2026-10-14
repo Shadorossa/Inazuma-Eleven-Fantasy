@@ -1,0 +1,12 @@
+# True Hissatsu: the icon of «Cuaderno de evolución definitiva» (true_hissatsu.ultimate_evolution_manual), a new
+# texture of icon_item01 (the sheet of the `abl` key prefix, next to the Libro de mejora abl_000001): Inazuma Eleven GO
+# Galaxy's own 究極進化の書 icon, upscaled (the PNG: assets\images\menu\200_icon\02_icon_item\ultimate_evolution_manual\).
+# Written by research/scripts/if_ultimate_manual_icon.py (docs/game/mechanics/move-rank-items.md §1.3). Moved from
+# Inazuma Fantasy on 2026-10-14.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/200_icon/02_icon_item/icon_item01.g4tx"
+name = "abl_ue000001"
+png = "ultimate_evolution_manual/abl_ue000001.png"
+mips = 1

@@ -2,7 +2,7 @@
 # (research/grafts/util_combo_partners, docs/game/mechanics/combo-partners.md §6). Ids = crc32 of the label (the Lua
 # asks @crc:utilities.cp_…@). Translations taken from Inazuma Fantasy's rows evt_cpk_* (its skill table keeps its own).
 # Format: docs/framework/types/text.md «Rows with fixed ids».
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # X on a move node of the retail «Tabla de habilidades» (bottom guide)

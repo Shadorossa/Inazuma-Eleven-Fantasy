@@ -1,0 +1,24 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "chara_edit_parts_menu_status": {
+  "script": "chara_edit_parts_menu_status_1.03.71.00",
+  "require": [
+   "UpdateElementSelectIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chara_edit_parts_menu_status_ability_learning": {
+  "script": "chara_edit_parts_menu_status_ability_learning",
+  "require": [
+   "OpenSelectPlayStyleSubWindow"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

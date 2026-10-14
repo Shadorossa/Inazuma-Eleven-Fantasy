@@ -1,0 +1,36 @@
+# Aura Points › its pools on Character Reforged's new skill set in a match (VRFW 2.4.3 [[VRFW.ExtraSlotExtend]];
+# docs/framework/extra-slot.md §7.4 / §8; docs/refactor/aura-mods-split.md «Aura Points»). While the option «Tabla de
+# habilidades» shows the new set, the base's plates slot character_reforged.skill_set runs the matches: RB+B (the
+# aura command) summons the keshin / totem of the aura slot and, with the keshin out, puts on its armour; RB+A fires
+# the spirit's own move. Without these rules the plates asked the retail hyper gauge (hipertensión) for every start
+# (2026-10-14 report: no summon below one gauge bar, «tension short» in the log), although this mod starts them for free
+# on their pool. Same rules Inazuma Fantasy declared on its Hiper slot (read from this mod's tables since 2026-10-14).
+#
+#   start_gate_applies   a keshin / armour / totem that runs on a pool (table AuraPoints.Aura, field pool) of a team
+#                        the pools apply to (AuraPoints.Team, field cost: the user's team, the rival's with [points] cpu)
+#                        starts by its pool, never by the gauge ...
+#   start_refused        ... and is refused only when that pool is empty this match (AuraPoints.Pair, field empty)
+#   move_cost_short      the running spirit's own move (or a fusion keshin partner's) whose pool does not cover its PEG /
+#                        SP cost: greyed and not sent (AuraPoints.Pair peg_cover / partner_cover = 0)
+#   armour_blocks_spirit_move   Chrono Stone rule ([points] cs_armour_keshin_move = false): the keshin's own move is
+#                        not usable under its armour (AuraPoints.Team key 255)
+#
+# The tables are named without `aura_points/`: an extension's tables are read from the extending mod (this one). Inazuma
+# Fantasy's extension declares the same questions (its own and these) and, loading later, replaces them key by key.
+# Without Aura Points nothing of this applies: keshin / armour / totem start with the retail hyper gauge and run on time.
+schema = "VRFW.extra_slot/1"
+
+[[VRFW.ExtraSlotExtend]]
+slot = "character_reforged.skill_set"
+
+[VRFW.ExtraSlotExtend.rules]
+start_gate_applies = [[
+    { table = "AuraPoints.Team", key = ["team"], field = "cost", is = "set" },
+    { table = "AuraPoints.Aura", key = ["skill"], field = "pool", is = "set" },
+]]
+start_refused = [[{ table = "AuraPoints.Pair", key = ["hdl", "skill"], field = "empty", is = "set" }]]
+move_cost_short = [
+    [{ table = "AuraPoints.Pair", key = ["hdl", "skill"], field = "peg_cover", is = "zero" }],
+    [{ table = "AuraPoints.Pair", key = ["hdl", "skill"], field = "partner_cover", is = "zero" }],
+]
+armour_blocks_spirit_move = [[{ table = "AuraPoints.Team", key = [255], field = "armour_blocks_keshin_move", is = "nonzero" }]]

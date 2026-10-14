@@ -1,0 +1,80 @@
+schema = "VRFW.character/2"
+# Character Reforged · Sub Character · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03033400"                                   # Karl Kappa
+
+  [[edit.cards]]
+  id = 0xECCD92A8                                         # GK/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 189, control = 188, technique = 196, pressure = 196, physical = 270, intelligence = 170, agility = 255, freedom = 309 }
+  moves = [
+    { move = 0x4D1E465C, level = 1 },                     # Fake Bomber
+    { move = 0x1D8F2331, level = 1 },                     # Yo-Yo Ball
+    { move = 0xC0A013E6, level = 1 },                     # Liar Shot
+    { move = 0x422A60B1, level = 20 },                    # Barrier Reef
+  ]
+
+[[edit]]
+target = "c06037370"                                   # Lucia
+
+  [[edit.cards]]
+  id = 0x7B99AA1A                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 252, control = 224, technique = 192, pressure = 251, physical = 189, intelligence = 235, agility = 212, freedom = 231 }
+  moves = [
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x6ADE9E01, level = 20 },                    # Illusory Ball
+    { move = 0x8D5B6847, level = 35 },                    # Odin Sword
+    { move = 0xD16D3B59, level = 70 },                    # Supermassive Shot
+  ]
+
+[[edit]]
+target = "c11901010"                                   # Tom Dark
+
+  [[edit.cards]]
+  id = 0x634CF911                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 254, technique = 279, pressure = 207, physical = 155, intelligence = 254, agility = 174, freedom = 251 }
+  moves = [
+    { move = 0x17A96A44, level = 4 },                     # Clone Faker
+    { move = 0x6ADE9E01, level = 11 },                    # Illusory Ball
+    { move = 0xDF8CB373, level = 17 },                    # Sonic Shot
+    { move = 0x4E9A9232, level = 36 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c11903040"                                   # Maxtor Lunde
+
+  [[edit.cards]]
+  id = 0xB432C5DF                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 192, technique = 177, pressure = 252, physical = 208, intelligence = 282, agility = 207, freedom = 355 }
+  moves = [
+    { move = 0x132416F6, level = 1 },                     # Dog Run
+    { move = 0x7EEA4EE9, level = 9 },                     # Blade Attack
+    { move = 0xA8215D7C, level = 20 },                    # The Mountain
+    { move = 0x2FB941B3, level = 44 },                    # Stone Prison
+  ]
+
+[[edit]]
+target = "c03030100"                                   # Hector Helio
+
+  [[edit.cards]]
+  id = 0xF8B3FFAD                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 189, control = 225, technique = 205, pressure = 213, physical = 232, intelligence = 240, agility = 273, freedom = 279 }
+  moves = [
+    { move = 0xA1DEB97A, level = 1 },                     # Soul Hand
+    { move = 0xEB71131A, level = 1 },                     # X Blast
+    { move = 0xB8C5883B, level = 2 },                     # God Hand X
+    { move = 0x7EEA4EE9, level = 50 },                    # Blade Attack
+  ]

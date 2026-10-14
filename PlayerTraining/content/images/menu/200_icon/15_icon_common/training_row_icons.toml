@@ -1,0 +1,83 @@
+# Player Training (moved from Inazuma Fantasy 2026-10-14): the «Entrenar» rows' stat icons in a dark contrast colour (owner 2026-10-13: «el icono debe estar
+# dentro de la tarjeta, y con color de contraste para verlo»). The retail stat icons icon_parameter01..07 of this atlas
+# are white glyphs made for a dark ground; each gets a copy evt_trn_icon_parameterNN filled with the rows' navy, made
+# at the first start (and after a game update) from the player's own game files (no Level-5 pixel ships). The graft
+# player_training_mode (PlayerTraining.TrainingMode.DarkIcon) swaps the copy in wherever the retail icon goes (MENU_DEF.GetStatusParamIconName).
+schema = "VRFW.image/1"
+
+[[recipe]]
+name = "trn_icon_parameter01"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter01"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter01"
+recipe = "trn_icon_parameter01"
+
+[[recipe]]
+name = "trn_icon_parameter02"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter02"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter02"
+recipe = "trn_icon_parameter02"
+
+[[recipe]]
+name = "trn_icon_parameter03"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter03"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter03"
+recipe = "trn_icon_parameter03"
+
+[[recipe]]
+name = "trn_icon_parameter04"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter04"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter04"
+recipe = "trn_icon_parameter04"
+
+[[recipe]]
+name = "trn_icon_parameter05"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter05"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter05"
+recipe = "trn_icon_parameter05"
+
+[[recipe]]
+name = "trn_icon_parameter06"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter06"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter06"
+recipe = "trn_icon_parameter06"
+
+[[recipe]]
+name = "trn_icon_parameter07"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_parameter07"
+ops = [{ op = "fill", rgb = [20, 48, 96] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_trn_icon_parameter07"
+recipe = "trn_icon_parameter07"

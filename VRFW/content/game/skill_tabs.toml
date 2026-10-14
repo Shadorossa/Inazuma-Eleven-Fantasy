@@ -71,3 +71,11 @@ handler = "SkillTabs.CmdWindow"
 [[VRFW.Command]]
 name = "CMND_VRFW_SKILL_TAB_HAS"
 handler = "SkillTabs.CmdHas"
+
+# (category) -> game index, icon, atlas, sprite, sprite off, text id, text, filter, filter group: how the list's Lua
+# draws and filters that tab (menu lua _all/22_skill_tabs.lua, docs/framework/card-types.md §3.3). game index = its
+# place in the game's table (1-based; 0 = a category the game has no tab for); 0 for a value nobody declared (the
+# game's own); text = the title in the game's language as the framework's fallback. Nothing (0) while the service is off.
+[[VRFW.Command]]
+name = "CMND_VRFW_SKILL_TAB_INFO"
+handler = "SkillTabs.CmdInfo"

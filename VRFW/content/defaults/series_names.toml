@@ -1,0 +1,12 @@
+# Short names of the game's series for character rules: [[VRFW.CardSet]] `series` / `appears_in`, the synergy pools'
+# `series`, the random-team filters' `Series` (docs/framework/chara-index.md §1). The canonical names come from the
+# game data's schema: chara_base's in_<name> columns, in series-type order (1 ie1, 2 ie2, 3 ie3, 4 go1, 5 go2, 6 go3,
+# 7 ares, 8 orion, 9 victory_road; schemas/character/chara_base.toml). These are aliases of them; any mod may add more
+# in its own content\defaults\series_names.toml (merged, a later mod wins).
+
+[aliases]
+go = "go1"
+cs = "go2"
+chrono_stone = "go2"
+galaxy = "go3"
+vr = "victory_road"

@@ -1,0 +1,425 @@
+schema = "VRFW.catalog/1"
+# The node kinds of a match flow (M4, docs/framework/catalogs.md; vr_core::types::match_flow, kind
+# `VRFW.match_flow/1` of the trigger type): every kind a flow may use, its category, ports and arguments. The
+# interpreter (match_flow.lua) implements each kind by its name: a new kind needs its code there. Built into the
+# framework: the installed copy must stay the same data (else it is reported and not read).
+#
+# [category.<cat>]: the input / output ports of a kind of that category unless the kind says (`ins` / `outs`);
+# every port is a flow port. Categories: trigger, cond, action, scene, rule, end, note (the editor's header
+# colours). The editor labels a kind with the text key `nf_k_<kind with _>`, a port `nf_p_<port>`, an argument
+# `nf_a_<arg>`.
+# [[kind]]: kind, cat, row (a trigger's game trigger type: one DATA_ITEM row, docs/game/engine/
+# match-scripting.md; -1 = the node's own `type` argument), args = [{ name, type, default }] with type int, num,
+# bool, team (user / rival), member (a soccer member id), id (number, 0x..., or a text -> its crc32), text,
+# enum (+ values).
+
+[category.trigger]
+ins = []
+outs = ["out"]
+
+[category.cond]
+ins = ["in"]
+outs = ["yes", "no"]
+
+[category.action]
+ins = ["in"]
+outs = ["out"]
+
+[category.scene]
+ins = ["in"]
+outs = ["out"]
+
+[category.rule]
+ins = ["in"]
+outs = ["out"]
+
+[category.end]
+ins = ["in"]
+outs = ["out"]
+
+[category.note]
+ins = []
+outs = []
+
+# ---- triggers: one DATA_ITEM row each (docs/game/engine/match-scripting.md, the trigger table)
+[[kind]]
+kind = "trigger.match_init"
+cat = "trigger"
+row = 249
+
+[[kind]]
+kind = "trigger.kickoff"
+cat = "trigger"
+row = 201
+
+[[kind]]
+kind = "trigger.time"
+cat = "trigger"
+row = 227
+args = [
+    { name = "cond", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "trigger.phase"
+cat = "trigger"
+row = 252
+args = [
+    { name = "cond", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "trigger.focus_result"
+cat = "trigger"
+row = 244
+args = [
+    { name = "team", type = "team", default = "user" },
+]
+
+[[kind]]
+kind = "trigger.focus_start"
+cat = "trigger"
+row = 203
+args = [
+    { name = "member", type = "member", default = "0" },
+]
+
+[[kind]]
+kind = "trigger.carrier_area"
+cat = "trigger"
+row = 207
+args = [
+    { name = "cond", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "trigger.shot"
+cat = "trigger"
+row = 211
+args = [
+    { name = "team", type = "team", default = "user" },
+]
+
+[[kind]]
+kind = "trigger.goal"
+cat = "trigger"
+row = 233
+args = [
+    { name = "team", type = "team", default = "user" },
+]
+
+[[kind]]
+kind = "trigger.technique"
+cat = "trigger"
+row = 251
+args = [
+    { name = "member", type = "member", default = "0" },
+]
+
+[[kind]]
+kind = "trigger.half_time"
+cat = "trigger"
+row = 256
+
+[[kind]]
+kind = "trigger.period_whistle"
+cat = "trigger"
+row = 257
+args = [
+    { name = "cond", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "trigger.full_time"
+cat = "trigger"
+row = 248
+
+[[kind]]
+kind = "trigger.result"
+cat = "trigger"
+row = 202
+args = [
+    { name = "result", type = "enum", default = "user", values = ["user", "rival", "draw"] },
+]
+
+[[kind]]
+kind = "trigger.row"
+cat = "trigger"
+row = -1
+args = [
+    { name = "type", type = "int", default = 201 },
+    { name = "target", type = "id", default = "0" },
+    { name = "sub", type = "id", default = "0" },
+    { name = "cond", type = "text", default = "" },
+]
+
+# ---- conditions
+[[kind]]
+kind = "cond.step"
+cat = "cond"
+args = [
+    { name = "flag", type = "id", default = "0x97FCB2EF" },
+    { name = "op", type = "enum", default = "eq", values = ["eq", "ne", "ge", "le", "gt", "lt"] },
+    { name = "value", type = "int", default = 1 },
+]
+
+[[kind]]
+kind = "cond.count"
+cat = "cond"
+outs = ["each", "reached"]
+args = [
+    { name = "flag", type = "id", default = "0x0EF5E355" },
+    { name = "to", type = "int", default = 2 },
+]
+
+[[kind]]
+kind = "cond.members"
+cat = "cond"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "members", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "cond.score"
+cat = "cond"
+args = [
+    { name = "op", type = "enum", default = "lead", values = ["lead", "behind", "tie", "not_lead"] },
+]
+
+[[kind]]
+kind = "cond.once"
+cat = "cond"
+outs = ["first", "again"]
+args = [
+    { name = "flag", type = "id", default = "vrfw_flow_once" },
+]
+
+# ---- actions
+[[kind]]
+kind = "act.set_byte"
+cat = "action"
+args = [
+    { name = "flag", type = "id", default = "0x97FCB2EF" },
+    { name = "value", type = "int", default = 1 },
+]
+
+[[kind]]
+kind = "act.add_byte"
+cat = "action"
+args = [
+    { name = "flag", type = "id", default = "0x0EF5E355" },
+    { name = "n", type = "int", default = 1 },
+]
+
+[[kind]]
+kind = "act.quest_add"
+cat = "action"
+args = [
+    { name = "line", type = "int", default = 0 },
+    { name = "n", type = "int", default = 1 },
+    { name = "quest", type = "id", default = "" },
+]
+
+[[kind]]
+kind = "act.quest_open"
+cat = "action"
+args = [
+    { name = "line", type = "int", default = 0 },
+    { name = "quest", type = "id", default = "" },
+]
+
+[[kind]]
+kind = "act.quest_fill"
+cat = "action"
+args = [
+    { name = "line", type = "int", default = 0 },
+    { name = "flag", type = "id", default = "0x0EF5E355" },
+    { name = "to", type = "int", default = 2 },
+    { name = "quest", type = "id", default = "" },
+]
+
+[[kind]]
+kind = "act.goal"
+cat = "action"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "scorer", type = "member", default = "0" },
+]
+
+[[kind]]
+kind = "act.goal_until_lead"
+cat = "action"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "scorer", type = "member", default = "0" },
+    { name = "max", type = "int", default = 5 },
+]
+
+[[kind]]
+kind = "act.ball_to"
+cat = "action"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+]
+
+[[kind]]
+kind = "act.ball_get"
+cat = "action"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+]
+
+[[kind]]
+kind = "act.focus_interrupt"
+cat = "action"
+
+[[kind]]
+kind = "act.wait"
+cat = "action"
+args = [
+    { name = "seconds", type = "num", default = 0.8 },
+]
+
+[[kind]]
+kind = "act.kickoff_user"
+cat = "action"
+
+[[kind]]
+kind = "act.hide_team"
+cat = "action"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "visible", type = "bool", default = false },
+]
+
+[[kind]]
+kind = "act.camera_fix"
+cat = "action"
+args = [
+    { name = "id", type = "id", default = "0" },
+]
+
+[[kind]]
+kind = "act.enemy_boost"
+cat = "action"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "on", type = "bool", default = true },
+]
+
+# every duel won: the whole team (`member` 0), or only that member (a keeper nobody can beat)
+[[kind]]
+kind = "act.force_win"
+cat = "action"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "on", type = "bool", default = true },
+    { name = "member", type = "member", default = "0" },
+]
+
+[[kind]]
+kind = "act.gather_ball"
+cat = "action"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+    { name = "on", type = "bool", default = true },
+]
+
+[[kind]]
+kind = "act.no_pass"
+cat = "action"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+    { name = "on", type = "bool", default = true },
+]
+
+# an aura skill (keshin, armour, miximax, mode change: an aura command id) started (`on`) or ended on a player through
+# the game's own scripted path (`ExecAuraSkill`, as the story scripts do); `slot` 1-6 first puts the skill in that
+# match slot (its variant is prepared there), `event` plays its cut-in, `refill` fills the team's HDP gauge first
+[[kind]]
+kind = "act.aura"
+cat = "action"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+    { name = "skill", type = "id", default = "0" },
+    { name = "slot", type = "int", default = 0 },
+    { name = "on", type = "bool", default = true },
+    { name = "event", type = "bool", default = true },
+    { name = "refill", type = "bool", default = false },
+]
+
+[[kind]]
+kind = "act.command"
+cat = "action"
+args = [
+    { name = "id", type = "id", default = "0" },
+    { name = "args", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "act.log"
+cat = "action"
+args = [
+    { name = "text", type = "text", default = "" },
+]
+
+# ---- rules: lasting match states (run like actions, usually from the match init / kick-off)
+[[kind]]
+kind = "rule.add_status"
+cat = "rule"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "team", type = "team", default = "user" },
+    { name = "status", type = "id", default = "0x2519EF4A" },
+    { name = "on", type = "bool", default = true },
+    { name = "reset", type = "bool", default = true },
+]
+
+[[kind]]
+kind = "rule.no_shoot"
+cat = "rule"
+args = [
+    { name = "team", type = "team", default = "user" },
+    { name = "on", type = "bool", default = true },
+]
+
+[[kind]]
+kind = "rule.period_time"
+cat = "rule"
+args = [
+    { name = "minutes", type = "int", default = 45 },
+]
+
+# ---- scenes
+[[kind]]
+kind = "scene.demo"
+cat = "scene"
+args = [
+    { name = "name", type = "text", default = "" },
+]
+
+[[kind]]
+kind = "scene.talk"
+cat = "scene"
+args = [
+    { name = "name", type = "text", default = "" },
+]
+
+# ---- the end
+[[kind]]
+kind = "end.match"
+cat = "end"
+
+# ---- a note on the canvas (no ports, never run)
+[[kind]]
+kind = "note.text"
+cat = "note"
+args = [
+    { name = "text", type = "text", default = "" },
+]

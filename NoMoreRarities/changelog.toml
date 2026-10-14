@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# No More Rarities: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+lang = "es"
+name = "No More Rarities"
+
+[en]
+name = "No More Rarities"
+
+[fr]
+name = "No More Rarities"
+
+[de]
+name = "No More Rarities"
+
+[it]
+name = "No More Rarities"
+
+[pt]
+name = "No More Rarities"
+
+[ja]
+name = "No More Rarities"
+
+[zh_hans]
+name = "No More Rarities"
+
+[zh_hant]
+name = "No More Rarities"
+
+[[release]]
+icon = "general"
+notes = [
+    "Todo jugador normal es Leyenda 5★: adiós a 1★-4★.",
+    "Sin bonus de rareza, sin subir rareza ni fusionar.",
+    "Drops, premios, regalos y tiendas dan la carta 5★.",
+    "El filtro «Rareza» solo lista las cartas especiales.",
+    "Partida duplicada: una carta por personaje.",
+]
+
+  [release.en]
+  notes = [
+      "Every normal player is a 5★ Legend: no more 1★-4★.",
+      "No rarity stat bonus, no rarity-up, no fusion.",
+      "Drops, rewards, gifts and shops give the 5★ card.",
+      "The «Rarity» filter lists only the special cards.",
+      "Duplicated save: one card per character.",
+  ]
+
+  [release.fr]
+  notes = [
+      "Chaque joueur normal est Légende 5★ : fini 1★-4★.",
+      "Ni bonus de rareté, ni montée de rareté, ni fusion.",
+      "Butins, prix, cadeaux, boutiques : la carte 5★.",
+      "Le filtre « Rareté » ne liste que les cartes spéciales.",
+      "Partie dupliquée : une carte par personnage.",
+  ]
+
+  [release.de]
+  notes = [
+      "Jeder normale Spieler ist 5★-Legende: kein 1★-4★.",
+      "Kein Seltenheitsbonus, kein Aufstufen, keine Fusion.",
+      "Beute, Preise, Geschenke, Läden: die 5★-Karte.",
+      "Der Filter „Seltenheit“ zeigt nur Spezialkarten.",
+      "Kopierter Spielstand: eine Karte pro Figur.",
+  ]
+
+  [release.it]
+  notes = [
+      "Ogni giocatore normale è Leggenda 5★: addio 1★-4★.",
+      "Niente bonus di rarità, aumento di rarità o fusione.",
+      "Bottini, premi, regali e negozi danno la carta 5★.",
+      "Il filtro «Rarità» elenca solo le carte speciali.",
+      "Salvataggio duplicato: una carta per personaggio.",
+  ]
+
+  [release.pt]
+  notes = [
+      "Todo jogador normal é Lenda 5★: adeus 1★-4★.",
+      "Sem bónus de raridade, sem subir raridade nem fundir.",
+      "Saques, prémios, ofertas e lojas dão a carta 5★.",
+      "O filtro «Raridade» só lista as cartas especiais.",
+      "Jogo duplicado: uma carta por personagem.",
+  ]
+
+  [release.ja]
+  notes = [
+      "通常の選手はすべて★5レジェンド（★1～★4なし）。",
+      "レアリティボーナス・レアリティアップ・合成なし。",
+      "ドロップ・報酬・プレゼント・ショップは★5カード。",
+      "「レアリティ」フィルターは特別なカードだけ。",
+      "複製したセーブはキャラ1人につきカード1枚。",
+  ]
+
+  [release.zh_hans]
+  notes = [
+      "所有普通球员都是★5传奇，不再有★1～★4。",
+      "没有稀有度加成，不能升级稀有度或合成。",
+      "掉落、奖励、礼物和商店都给★5卡。",
+      "「稀有度」筛选只列出特殊卡。",
+      "复制的存档：每个角色一张卡。",
+  ]
+
+  [release.zh_hant]
+  notes = [
+      "所有普通球員都是★5傳奇，不再有★1～★4。",
+      "沒有稀有度加成，不能升級稀有度或合成。",
+      "掉落、獎勵、禮物和商店都給★5卡。",
+      "「稀有度」篩選只列出特殊卡。",
+      "複製的存檔：每個角色一張卡。",
+  ]

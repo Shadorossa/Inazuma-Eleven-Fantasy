@@ -1,0 +1,12 @@
+schema = "VRFW.skill_tab/1"
+
+# Character Reforged › the «Habilidades» / «Técnicas» list (ability_list_menu, the game's fixed tab row) without its
+# «Armadura» tab (category 101, aura command type 1; moved from Inazuma Fantasy's skill_tabs 2026-10-14). An armour is
+# worn through its keshin: the skill board's keshin armed slot (All Keshin Armed, this mod's armour slot) and the
+# keshin's own transform, never as an aura of its own. The armour items stay in the inventory, the shops and the
+# board's armed slot; only this tab goes. The VR-Framework's skill tab registry writes the native tab row and keeps
+# the list's icons, titles and filters in step (docs/framework/card-types.md §3). With a mod that writes the tab row
+# itself (Inazuma Fantasy) the registry leaves the row to it, so the tab is never removed twice.
+[[VRFW.SkillTab]]
+category = 101
+hidden = true

@@ -1,0 +1,105 @@
+schema = "VRFW.changelog/1"
+# Group Summons: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy and Lost Cutscenes.
+lang = "es"
+name = "Group Summons"
+
+[en]
+name = "Group Summons"
+
+[fr]
+name = "Group Summons"
+
+[de]
+name = "Group Summons"
+
+[it]
+name = "Group Summons"
+
+[pt]
+name = "Group Summons"
+
+[ja]
+name = "Group Summons"
+
+[zh_hans]
+name = "Group Summons"
+
+[zh_hant]
+name = "Group Summons"
+
+[[release]]
+icon = "general"
+notes = [
+    "Grifo invocado por tres jugadores, Arturo por dos.",
+    "Todos los participantes salen en la invocación.",
+    "Con RB+B; cada uno paga su parte de PEG.",
+    "Todos pueden usar su supertécnica; Flamberge a tres.",
+]
+
+[release.en]
+notes = [
+    "Griffin summoned by three players, Arthur by two.",
+    "Every participant appears in the summon scene.",
+    "With RB+B; each one pays his share of PEG.",
+    "All may use its move; Flamberge kicked by three.",
+]
+
+[release.fr]
+notes = [
+    "Griffon invoqué par trois joueurs, Arthur par deux.",
+    "Tous les participants dans la scène d'invocation.",
+    "Avec RB+B ; chacun paie sa part de PEG.",
+    "Tous peuvent tirer ; Sabre de feu à trois.",
+]
+
+[release.de]
+notes = [
+    "Greif von drei Spielern beschworen, Artus von zwei.",
+    "Alle Beteiligten in der Beschwörungsszene.",
+    "Mit RB+B; jeder zahlt seinen Anteil an KGP.",
+    "Alle dürfen die Technik nutzen; Flamberge zu dritt.",
+]
+
+[release.it]
+notes = [
+    "Grifo evocato da tre giocatori, Artù da due.",
+    "Tutti i partecipanti nella scena dell'evocazione.",
+    "Con RB+B; ognuno paga la sua parte di PSG.",
+    "Tutti possono usare la tecnica; Flamberga a tre.",
+]
+
+[release.pt]
+notes = [
+    "Grifo invocado por três jogadores, Artur por dois.",
+    "Todos os participantes aparecem na invocação.",
+    "Com RB+B; cada um paga a sua parte de PEG.",
+    "Todos podem usar a técnica; Flambérgia a três.",
+]
+
+[release.ja]
+notes = [
+    "グリフォンは３人、アーサーは２人で召喚。",
+    "参加者全員が召喚シーンに登場。",
+    "RB+Bで召喚、FSPは全員で分担。",
+    "全員が必殺技を使える。ソード・オブ・ファイアは３人で。",
+]
+
+[release.zh_hans]
+notes = [
+    "格里芬由三名球员召唤，亚瑟由两名。",
+    "全体参与者出现在召唤场景中。",
+    "用RB+B召唤；FSP由每人分担。",
+    "全员可用其必杀技；烈火圣剑三人踢出。",
+]
+
+[release.zh_hant]
+notes = [
+    "葛利芬由三名球員召喚，亞瑟由兩名。",
+    "全體參與者出現在召喚場景中。",
+    "用RB+B召喚；FSP由每人分擔。",
+    "全員可用其必殺技；烈火聖劍三人踢出。",
+]

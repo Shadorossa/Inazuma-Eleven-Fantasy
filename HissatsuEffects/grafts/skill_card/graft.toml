@@ -1,0 +1,24 @@
+# «Habilidades» move card, page 2 (Nacho 2026-10-06): Q / E (pad LT / RT) turn the card body (team02_02_skill_detail_info
+# _text_flavor01) between the description and a plain sentence about the move's ball mini-effect, read from the
+# framework at run time (CMND_VRFW_TECHNIQUE_BALL_EFFECT, crates/vr-core/src/types/technique/ball_effect.rs;
+# docs/framework/technique.md §4b) and its shot / keeper mini-effects (CMND_VRFW_TECHNIQUE_MINI_FX, §4e); the player page's «Q • • E» row at the card's bottom (layer evt_skc_dots: Hissatsu Effects
+# content/menus/skill_card_dots.toml). Texts: research/mods/HissatsuEffects/text/rows/skill_card.toml. The card's
+# shadow: images .../team02_02/card_flat.toml (Inazuma Fantasy).
+# 2026-10-14 (owner): moved from Inazuma Fantasy to the mod Hissatsu Effects (hissatsu_effects) with the move effects
+# it shows; the aura windows' page guide reset it also did stays in Inazuma Fantasy (graft aura_guide_reset).
+name = "skill_card"
+mod = "hissatsu_effects"
+order = 220
+module = ""
+requires = []
+conflicts = []
+wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction"]
+description = "Move card: Q / E (LT / RT) show the move's ball / shot / keeper mini-effects, with page dots"
+
+[[files]]
+stem = "ability_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_ability_list_skill_card.lua"
+  marker = "skill_card"

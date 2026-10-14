@@ -1,0 +1,7 @@
+schema = "VRFW.rarity/1"
+# No More Rarities › the rarity set without the game's 1★-4★ rarities (docs/framework/types/rarity.md §1,
+# docs/game/characters/rarity-removal.md): every normal player is the 5★ «Leyenda» card (rarity 4); Héroe (5-7),
+# Diamante (8) and the season cards (9) stay. Was the root `keep` of Inazuma Fantasy's rarities\rarity.toml for its
+# normal players (Inazuma Fantasy still keeps only `legendary` of the game's set: it also removes the retail Héroe /
+# Diamante cards it hides, and adds its own).
+remove = ["normal", "growing", "advanced", "top"]

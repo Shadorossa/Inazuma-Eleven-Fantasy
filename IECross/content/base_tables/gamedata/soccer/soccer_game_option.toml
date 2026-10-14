@@ -1,0 +1,39 @@
+schema = "VRFW.base_table/1"
+# The free-match stadium list rows of the eight Cross stadiums (SOCCER_OPTION_FIELD_INFO: map crc32, list index
+# 95-102, unlock condition = GetGlobalItemGetBitFlag(<ticket>) == 1 (content\items\cross_stadiums.toml: the same item ids as
+# before, aliased from Inazuma Fantasy), list picture and its two sub-textures). By key: they follow Chronicles Deluxe's
+# IE3 rows (92-94) at the end of the list. Moved from Inazuma Fantasy on 2026-10-08.
+
+[[keyed]]
+table = "soccer/soccer_option_field_info"
+  [[keyed.add]]                         # s91g001
+  key = 0xF3DACE78
+  cells = { c1 = 95, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOseT12OAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s91g001.g4tx" }, c4 = 0xF2E64092, c5 = 0x6BEF1128 }
+
+  [[keyed.add]]                         # s91g001b
+  key = 0x2F93CC39
+  cells = { c1 = 96, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOt7oA6DAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s91g001b.g4tx" }, c4 = 0xC5FE66BF, c5 = 0x5CF73705 }
+
+  [[keyed.add]]                         # s91g001c
+  key = 0x5894FCAF
+  cells = { c1 = 97, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOsMpz4VAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s91g001c.g4tx" }, c4 = 0x7D4201DA, c5 = 0xE44B5060 }
+
+  [[keyed.add]]                         # s92g001
+  key = 0xB47AB4A8
+  cells = { c1 = 98, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOtZ7ydeAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s92g001.g4tx" }, c4 = 0x7C694771, c5 = 0xE56016CB }
+
+  [[keyed.add]]                         # s93g001
+  key = 0x891A9D18
+  cells = { c1 = 99, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOtkjw7uAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s93g001.g4tx" }, c4 = 0xB0C347EF, c5 = 0x29CA1655 }
+
+  [[keyed.add]]                         # s94g001
+  key = 0x3B3A4108
+  cells = { c1 = 100, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOvWr9L+AAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s94g001.g4tx" }, c4 = 0xBA064EF6, c5 = 0x230F1F4C }
+
+  [[keyed.add]]                         # s98g001
+  key = 0xFECAAC09
+  cells = { c1 = 101, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOsTXz//AAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s98g001.g4tx" }, c4 = 0xEDA95BB9, c5 = 0x74A00A03 }
+
+  [[keyed.add]]                         # s99g001
+  key = 0xC3AA85B9
+  cells = { c1 = 102, c2 = { text = "AAAAABgFNRftNPcACgEoAAYCNOsuPxZPAAAAAXg=" }, c3 = { text = "#/menu/220_img/stadium/img_room_s99g001.g4tx" }, c4 = 0x21035B27, c5 = 0xB80A0A9D }

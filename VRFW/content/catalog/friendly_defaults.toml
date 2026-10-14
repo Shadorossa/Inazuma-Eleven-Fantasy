@@ -1,0 +1,26 @@
+schema = "VRFW.catalog/1"
+# The defaults of a friendly declaration (M4, docs/framework/catalogs.md; match_engine::friendly::decl,
+# `<mod>\content\friendlies\*.toml`): what a `[[friendly]]` or one of its `before` / `after` steps gets for a key it
+# leaves out. Built into the framework: the installed copy must stay the same data (else it is reported and not read).
+
+[friendly]
+# the team the player plays with: "active_friendly" | "current" (the mode's own VS team)
+team = "active_friendly"
+# no challenge, no pass condition
+challenge = "none"
+pass = "none"
+# safe by default: a friendly inside the player's save never writes it
+save = "sink"
+# where the friendly returns to
+return = "title"
+# return = "title": a story field after the match goes back to the title (fallback)
+field_net = true
+
+[op]
+# `before` / `after` steps (`op = "<name>"`): the keys a step leaves out
+fade_black = { secs = 0.3, frames = 60 }
+key = { value = 1 }
+wait_gone = { frames = 900 }
+wait_settled = { frames = 120 }
+top_wait = { secs = 1.5 }
+watchdog = { frames = 900 }

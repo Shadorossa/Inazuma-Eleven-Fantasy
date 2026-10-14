@@ -1,0 +1,128 @@
+schema = "VRFW.character/2"
+# Character Reforged · cards without a chara_base row · other series
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "0x385F0638"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x969A1E08                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 252, technique = 298, pressure = 207, physical = 173, intelligence = 261, agility = 170, freedom = 285 }  # own stats: model prediction
+
+[[edit]]
+target = "0x3A5852C2"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x949D4AF2                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "0x42922C0C"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0xEC57343C                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+[[edit]]
+target = "0x4B9F121C"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0xE55A0A2C                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 284, control = 248, technique = 297, pressure = 201, physical = 184, intelligence = 257, agility = 166, freedom = 221 }  # own stats: model prediction
+
+[[edit]]
+target = "0x598867F8"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0xF74D7FC8                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 289, control = 248, technique = 293, pressure = 198, physical = 186, intelligence = 252, agility = 169, freedom = 242 }  # own stats: model prediction
+
+[[edit]]
+target = "0x76165736"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0xD8D34F06                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+[[edit]]
+target = "0x973F3548"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x39FA2D78                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+[[edit]]
+target = "0x9C2F5976"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x32EA4146                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "0x9E250448"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x30E01C78                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "0xB0795EB1"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x1EBC4681                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+[[edit]]
+target = "0xBDD762F5"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x13127AC5                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 284, control = 254, technique = 297, pressure = 207, physical = 165, intelligence = 265, agility = 165, freedom = 221 }  # own stats: model prediction
+
+[[edit]]
+target = "0xCE1776D1"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x60D26EE1                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 252, technique = 300, pressure = 200, physical = 171, intelligence = 258, agility = 166, freedom = 247 }  # own stats: model prediction
+
+[[edit]]
+target = "0xD2C173C3"                                  # no chara_base row: only its cards
+
+  [[edit.cards]]
+  id = 0x7C046BF3                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }

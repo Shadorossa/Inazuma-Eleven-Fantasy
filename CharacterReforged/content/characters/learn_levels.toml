@@ -1,0 +1,28 @@
+# Character Reforged · the move learn levels (moved from Inazuma Fantasy on 2026-10-14 with the cards' movesets:
+# docs/refactor/aura-mods-split.md «Per-character data»), read by the VR-Framework's learn-level service
+# (docs/framework/types/character.md §2.7).
+#
+# * Every owned player learns each move of his card at its learn level (chara_param learn list): the framework holds a
+#   move back from the match list until then, and the personal plate / skill screens show the same level.
+# * Cards that only repeat the game's ladder (1/13/20/30/38/43) get a level by the move's power_max:
+#   max(slot floor, tier level); the starter move (slot 1) and moves without power stay at the floor. Cards with their
+#   own levels (the movesets of content\characters\**, other mods' custom cards) keep them.
+# * Slots 7-8 (branch 2 of the retail board) are not part of a moveset (4 moves + the aura in slot 9): dropped from
+#   every card.
+schema = "VRFW.character/2"
+
+[VRFW.LearnLevels]
+Enforce = true
+UnusedSlots = [7, 8]
+StarterAtFloor = true
+Tiers = [
+    { Power = 200, Level = 1 },
+    { Power = 300, Level = 5 },
+    { Power = 360, Level = 12 },
+    { Power = 440, Level = 22 },
+    { Power = 540, Level = 32 },
+    { Power = 640, Level = 42 },
+    { Power = 720, Level = 52 },
+    { Power = 800, Level = 62 },
+    { Power = 880, Level = 75 },
+]

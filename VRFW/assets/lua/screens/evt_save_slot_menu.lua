@@ -1647,18 +1647,17 @@ function OnInit()
 end
 
 -- ---- card layout: N cards spread evenly over the screen width ------------------------------------------------------
--- The layout (evt_save01_01_slot / evt_save01_03_slot) places 4 cards 460 apart (retail centres 270, 730, 1190, 1650).
--- With N cards (CARDS: 3, or 4 while a mod's reserved slot is on) the centres become the N cards of width CARD_W
--- separated by N + 1 equal gaps (edges included) over SCREEN_W; cards keep scale 1 (the biggest size).
--- The engine's units are not assumed: every card's band (L_ROW) and detail window (L_WIN) is MEASURED
--- (CMND_GET_MESH_GLOBAL_POSITION of its left-edge node), moved by the needed delta, measured again and corrected
--- (secant steps, one per two frames, run from Step once the windows are up). Band and window of one card get the same
--- target, so they stay aligned. A group that does not answer (no measure, no effect, no convergence) goes back to the
--- retail position: left-packed but correct, never broken.
-local SCREEN_W, CARD_W, RETAIL_X0, RETAIL_STEP = 1920, 424, 270, 460
-local ROW_LOC = {118449418, 2651206832, 3909157926, 2003145093}              -- _list01 .. _list04 (layer L_ROWBASE)
-local WIN_LOC = {3288252788, 2067965457, 1526173902, 3511381658}             -- _atc_save_info02_01, 03_01, 02_02, 01_01 (L_WINBASE)
-local NODE_POS = 2575768773    -- (layer, idx, node, axis 0 x / 1 y, value): local node translation
+-- The positions are data: the layout (save_slots.toml: evt_save01_01_slot _list01..04 = the bands' locators,
+-- evt_save01_03_slot _atc_save_info* = the windows' locators, the same x per card) already spreads the PER_PAGE
+-- player cards: centre(k, n) = gap + CARD_W / 2 + k * (CARD_W + gap), gap = (SCREEN_W - n * CARD_W) / (n + 1); the
+-- reserved 4th card's locator is centre(3, 4). The layout carries the bands' click zones (_touch_list01) and the
+-- cursor anchor, so with the usual 3 cards nothing moves at run time. Only a count the layout does not spread (the
+-- 4-card row while a mod's reserved slot is on) moves card k by centre(k, CARDS) - LayoutCentre(k): band and window of
+-- one card by the same delta through the same command (the instance's local position, which the instance's click
+-- zone follows: docs/game/ui/mouse-support.md §1.1). Never node writes: the old runtime locator moves (2.2.183 /
+-- 2.2.195) failed per card («no effect of the move») and dropped one group back to the retail x while the other kept
+-- its move (headers and bodies apart). One log line per pass: bodies x, headers x (left edges), applied / fallback.
+local SCREEN_W, CARD_W = 1920, 424
 local GPOS = 499270986         -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y, z
 local LAYER_GET, LAYER_SET = 2834507455, 1389957207   -- layer local position (layer, idx) / (layer, x, y, z, idx)
 local N_ROW_EDGE, N_WIN_EDGE = 3025401186, 1215790087 -- _list_base_s01_on / _save_info_base01 (left-edge nodes)
@@ -1667,6 +1666,14 @@ local layout_done, layout_co, rows_open = false, nil, false
 local function CardCentre(k, n)
   local gap = (SCREEN_W - n * CARD_W) / (n + 1)
   return gap + CARD_W / 2 + k * (CARD_W + gap)
+end
+
+-- the centre the layout data gives card k (save_slots.toml, same formula)
+local function LayoutCentre(k)
+  if k < PER_PAGE then
+    return CardCentre(k, PER_PAGE)
+  end
+  return CardCentre(k, k + 1)
 end
 
 local function Meas(layer, idx, node)
@@ -1683,95 +1690,93 @@ local function WaitFrames(f)
   end
 end
 
--- one group of n cards: layer / edge node measured, `setJ(k, v)` moves card k (0-based) to the joint value v
-local function FitGroup(name, layer, node, setJ, baseJ, n)
-  local m0 = {}
-  for k = 0, n - 1 do
-    m0[k] = Meas(layer, k, node)
-    if m0[k] == nil then
-      Log("card layout", name, "no measure of card", k)
-      return false
-    end
-  end
-  local kk = (m0[1] - m0[0]) / RETAIL_STEP      -- engine units per layout unit
-  if kk < 0.25 or kk > 4 then
-    Log("card layout", name, "implausible scale", kk)
-    return false
-  end
-  local ok = true
-  for k = 0, n - 1 do
-    local want = m0[k] + kk * (CardCentre(k, n) - (RETAIL_X0 + k * RETAIL_STEP))
-    local J, m, jp, mp, slope = baseJ[k], m0[k], nil, nil, 1
-    for it = 1, 4 do
-      local err = want - m
-      if math.abs(err) <= 1.5 then
-        break
-      end
-      if jp ~= nil and J ~= jp then
-        local sl = (m - mp) / (J - jp)
-        if math.abs(sl) < 0.1 then
-          Log("card layout", name, "card", k, "no effect of the move")
-          ok = false
-          break
-        end
-        slope = sl
-      end
-      jp, mp = J, m
-      J = J + err / slope
-      setJ(k, J)
-      WaitFrames(2)
-      m = Meas(layer, k, node)
-      if m == nil then
-        ok = false
-        break
-      end
-    end
-    Log("card layout", name, "card", k, "retail", m0[k], "want", want, "now", tostring(m), "joint", J, "slope", slope)
-    if not ok or m == nil or math.abs(want - m) > 4 then
-      ok = false
-      break
-    end
-  end
-  if not ok then
+-- the left edges of the n bands and windows, once they stopped moving (the open animations); nil = no measure
+local function MeasureEdges(n)
+  local prev
+  for _ = 1, 15 do
+    local cur, same = {rows = {}, wins = {}}, prev ~= nil
     for k = 0, n - 1 do
-      setJ(k, baseJ[k])
+      cur.rows[k], cur.wins[k] = Meas(L_ROW, k, N_ROW_EDGE), Meas(L_WIN, k, N_WIN_EDGE)
+      if cur.rows[k] == nil or cur.wins[k] == nil then
+        return nil
+      end
+      if same and (math.abs(cur.rows[k] - prev.rows[k]) > 0.5 or math.abs(cur.wins[k] - prev.wins[k]) > 0.5) then
+        same = false
+      end
     end
-    WaitFrames(2)
-    Log("card layout", name, "back to the retail positions")
+    if same then
+      return cur
+    end
+    prev = cur
+    WaitFrames(4)
   end
-  return ok
+  return prev
+end
+
+local function EdgeList(t, n)
+  local s = {}
+  for k = 0, n - 1 do
+    s[#s + 1] = string.format("%.1f", t[k])
+  end
+  return table.concat(s, ",")
+end
+
+-- why the measured edges are not the wanted ones (nil = all right): every band over its window, at centre(k, n)
+local function EdgeError(m, n)
+  for k = 0, n - 1 do
+    if math.abs(m.rows[k] - m.wins[k]) > 4 then
+      return "card " .. k .. " header " .. string.format("%.1f", m.rows[k]) .. " body " .. string.format("%.1f", m.wins[k])
+    end
+    local want = CardCentre(k, n) - CARD_W / 2
+    if math.abs(m.wins[k] - want) > 4 then
+      return "card " .. k .. " at " .. string.format("%.1f", m.wins[k]) .. " want " .. string.format("%.1f", want)
+    end
+  end
+  return nil
 end
 
 local function LayoutCards()
-  local n = math.max(1, math.min(CARDS, #ROW_LOC))
-  if n < 2 then
+  local n = math.max(1, math.min(CARDS, WINDOWS))
+  local base, moved = {}, false
+  for k = 0, n - 1 do
+    local dx = CardCentre(k, n) - LayoutCentre(k)
+    if math.abs(dx) > 0.5 then
+      moved = true
+    end
+    local okr, rx, ry, rz = pcall(funcLuaMenuCommand, LAYER_GET, L_ROW, k)
+    local okw, wx, wy, wz = pcall(funcLuaMenuCommand, LAYER_GET, L_WIN, k)
+    base[k] = {
+      dx = dx,
+      row = {okr and type(rx) == "number" and rx or 0, okr and type(ry) == "number" and ry or 0, okr and type(rz) == "number" and rz or 0},
+      win = {okw and type(wx) == "number" and wx or 0, okw and type(wy) == "number" and wy or 0, okw and type(wz) == "number" and wz or 0},
+    }
+  end
+  local function Place(on)
+    for k = 0, n - 1 do
+      local b = base[k]
+      local d = on and b.dx or 0
+      pcall(funcLuaMenuCommand, LAYER_SET, L_ROW, b.row[1] + d, b.row[2], b.row[3], k)
+      pcall(funcLuaMenuCommand, LAYER_SET, L_WIN, b.win[1] + d, b.win[2], b.win[3], k)
+    end
+  end
+  if moved then
+    Place(true)
+    WaitFrames(2)
+  end
+  local m = MeasureEdges(n)
+  if m == nil then
+    Log("card layout", n, "cards", moved and "moved" or "layout", "no measure")
     return
   end
-  local baseJ = {}
-  for k = 0, n - 1 do
-    baseJ[k] = RETAIL_X0 + k * RETAIL_STEP
+  local err = EdgeError(m, n)
+  local how = moved and "applied (moved)" or "applied (layout)"
+  if err ~= nil and moved then
+    Place(false)        -- both groups back together: headers stay over their bodies
+    WaitFrames(2)
+    m = MeasureEdges(n) or m
+    how = "fallback to the layout x"
   end
-  FitGroup("windows", L_WIN, N_WIN_EDGE, function(k, v)
-    pcall(funcLuaMenuCommand, NODE_POS, L_WINBASE, 0, WIN_LOC[k + 1], 0, v)
-  end, baseJ, n)
-  -- the bands: the locator of the list, else the band layer's own local position
-  local okRow = FitGroup("bands (locators)", L_ROW, N_ROW_EDGE, function(k, v)
-    pcall(funcLuaMenuCommand, NODE_POS, L_ROWBASE, 0, ROW_LOC[k + 1], 0, v)
-  end, baseJ, n)
-  if not okRow then
-    local lp = {}
-    for k = 0, n - 1 do
-      local ok, x, y, z = pcall(funcLuaMenuCommand, LAYER_GET, L_ROW, k)
-      lp[k] = {ok and type(x) == "number" and x or 0, ok and type(y) == "number" and y or 0, ok and type(z) == "number" and z or 0}
-    end
-    local bj = {}
-    for k = 0, n - 1 do
-      bj[k] = lp[k][1]
-    end
-    FitGroup("bands (layers)", L_ROW, N_ROW_EDGE, function(k, v)
-      pcall(funcLuaMenuCommand, LAYER_SET, L_ROW, v, lp[k][2], lp[k][3], k)
-    end, bj, n)
-  end
+  Log("card layout", n, "cards bodies x", EdgeList(m.wins, n), "headers x", EdgeList(m.rows, n), how, err and ("reason " .. err) or "")
 end
 
 -- called from Step: starts the layout once (the windows are up and the list is open), then resumes it

@@ -1,0 +1,35 @@
+schema = "VRFW.game/2"
+
+# Character Reforged › the skill board's keshin armour slot without the armour item (scripts\armour_slot.lua; moved from
+# Utilities' [skill_board] armour_without_item on 2026-10-14, owner decision; docs/game/mods/all-keshin-armed.md §2.2).
+# OFF unless an active mod declares `[CharacterReforged.SkillBoard] armour_without_item = true` in its
+# content\skill_board\*.toml (All Keshin Armed does): without it the slot needs the item, as in the retail game.
+# The ability board's armour slot beside a keshin piece (skillEquipInvInfo.keshinArmed) stores an inventory handle: its
+# decide 0xFEEDF0 asks ArmedItemHandle 0xE471F0(&hdl, &keshin, &card, 1) for the player's copy of the armour item that
+# change_aura_skill_config names for (keshin, his card), and does nothing without one. The post handler of that one call
+# site adds a copy when the player owns none and asks again, so the slot is set. Generic: the armour comes from the
+# game's own table (AuraChangeOfCard 0xE6C8D0), no id is named here. The other callers of 0xE471F0 (character release /
+# reset) are untouched.
+
+# u32* Item.Add(u32* out, u32 itemId, u32 count, const char* opts) 0xE93210 (opts = null: an ordinary add)
+[[VRFW.Function]]
+name = "CharacterReforged.ItemAdd"
+game = "Item.Add"
+
+# u32* AuraChangeOfCard(u32* out, const u32* aura, const u32* chara_param) 0xE6C8D0: the change_aura_skill_config row
+# of that aura for that card (a list whose first row has card 0: that row for every card); *out = the command, 0 = none
+[[VRFW.Function]]
+name = "CharacterReforged.AuraChangeOfCard"
+game = "Aura.ChangeOfCard"
+
+# u32* ArmedItemHandle(u32* out, const u32* keshin, const u32* chara_param, u8) 0xE471F0: *out = the invSkill handle
+# of the player's copy of that armour, 0 = none
+[[VRFW.Function]]
+name = "CharacterReforged.ArmedItemHandle"
+game = "Board.ArmedItemHandle"
+
+# the board decide's call of ArmedItemHandle (0xFEFB0A in 0xFEEDF0)
+[[VRFW.Hook]]
+name = "CharacterReforged.ArmedSlotItem"
+game = "Board.ArmedSlotDecideItem"
+kind = "call"

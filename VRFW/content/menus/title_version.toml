@@ -16,7 +16,7 @@
 #   It reads the box size from the _gtxt_ver01 row below.
 # Widths: «ver.» + 7.1.2 as retail, gap 26, word 120 (the natural width of «VRFW»), gap 30, X.YY 96: from local -512
 # (screen x ≈ 1540 of 1920) to 0 (≈ 1873, the retail right edge). The layer keeps the retail anchoring (right / top), so ultrawide places it as retail.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # ---- the retail label ----------------------------------------------------------------------------------------------
 layout = [

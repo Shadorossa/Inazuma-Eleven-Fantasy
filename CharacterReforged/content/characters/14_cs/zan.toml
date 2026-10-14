@@ -1,0 +1,300 @@
+schema = "VRFW.character/2"
+# Character Reforged · Zan · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05022610_5000"                              # Feduhm
+
+  [[edit.cards]]
+  id = 0xA914D684                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 167, technique = 209, pressure = 228, physical = 271, intelligence = 193, agility = 269, freedom = 247 }
+
+[[edit]]
+target = "c05022620_5000"                              # Tsync
+
+  [[edit.cards]]
+  id = 0x98FCCC19                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 203, technique = 212, pressure = 254, physical = 201, intelligence = 300, agility = 208, freedom = 313 }
+
+[[edit]]
+target = "c05022680_5000"                              # Rodh
+
+  [[edit.cards]]
+  id = 0x3C8C9357                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 170, control = 244, technique = 271, pressure = 171, physical = 204, intelligence = 208, agility = 200, freedom = 284 }
+
+[[edit]]
+target = "c05022710_5000"                              # Garreau
+
+  [[edit.cards]]
+  id = 0x65BED61A                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 273, control = 263, technique = 285, pressure = 167, physical = 201, intelligence = 232, agility = 170, freedom = 335 }
+
+[[edit]]
+target = "c05022610"                                   # Feduhm
+
+  [[edit.cards]]
+  id = 0x105E0C68                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 167, technique = 209, pressure = 228, physical = 271, intelligence = 193, agility = 269, freedom = 247 }
+  moves = [
+    { move = 0x07704782, level = 12 },                    # Rejection
+    { move = 0xB01D1B68, level = 25 },                    # Power Spike
+    { move = 0xA7157B91, level = 42 },                    # Power Shield
+    { move = 0x4AF2F3E2, level = 63 },                    # Bridge to Nowhere
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xEEC583CC, level = 1 },                     # Atlanticus [aura]
+  ]
+
+[[edit]]
+target = "c05022620"                                   # Tsync
+
+  [[edit.cards]]
+  id = 0x3B735FAB                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 203, technique = 212, pressure = 254, physical = 201, intelligence = 300, agility = 208, freedom = 313 }
+  moves = [
+    { move = 0x585098FC, level = 6 },                     # Slice and Dice
+    { move = 0xE196F1D1, level = 19 },                    # Burning Bomb
+    { move = 0x457EB170, level = 44 },                    # Pyrokinetic
+    { move = 0x25276CB9, level = 57 },                    # Solar Surprise
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8A4C5BAA, level = 1 },                     # Zhuque [aura]
+  ]
+
+[[edit]]
+target = "c05022630"                                   # Driss
+
+  [[edit.cards]]
+  id = 0x22686EEA                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 190, technique = 215, pressure = 236, physical = 219, intelligence = 275, agility = 207, freedom = 309 }
+  moves = [
+    { move = 0x5643C944, level = 2 },                     # Killer Slide
+    { move = 0x0BFD4D80, level = 15 },                    # Grand Slam
+    { move = 0xAD6E4BF9, level = 37 },                    # Harvest
+    { move = 0x4A17EE80, level = 53 },                    # Hunter's Net
+  ]
+
+[[edit]]
+target = "c05022640"                                   # Ludeau
+
+  [[edit.cards]]
+  id = 0x6D29F82D                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 171, technique = 190, pressure = 257, physical = 292, intelligence = 266, agility = 193, freedom = 317 }
+  moves = [
+    { move = 0x17110E3B, level = 2 },                     # Jumbo Sandwich
+    { move = 0xAD6E4BF9, level = 25 },                    # Harvest
+    { move = 0x414BA9BD, level = 35 },                    # Pincer Pinch
+    { move = 0x04941270, level = 58 },                    # Vac Attack
+  ]
+
+[[edit]]
+target = "c05022650"                                   # Dios
+
+  [[edit.cards]]
+  id = 0x7432C96C                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 146, control = 259, technique = 265, pressure = 205, physical = 211, intelligence = 247, agility = 178, freedom = 209 }
+  moves = [
+    { move = 0xF94FAAA7, level = 15 },                    # Decoy Deploy
+    { move = 0xC324C788, level = 23 },                    # Blast Mine
+    { move = 0x4FE09C7A, level = 33 },                    # Acrobatic Keep
+    { move = 0x64CDCFB9, level = 50 },                    # Rising Dragon
+  ]
+
+[[edit]]
+target = "c05022660"                                   # Grigham
+
+  [[edit.cards]]
+  id = 0x5F1F9AAF                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 189, control = 232, technique = 279, pressure = 196, physical = 208, intelligence = 216, agility = 204, freedom = 221 }
+  moves = [
+    { move = 0xF94FAAA7, level = 14 },                    # Decoy Deploy
+    { move = 0x3C843987, level = 22 },                    # Flurry Dash
+    { move = 0x39CB2F02, level = 30 },                    # Dragster
+    { move = 0x2354CA2D, level = 52 },                    # Wind God's Dance
+  ]
+
+[[edit]]
+target = "c05022670"                                   # Zatang
+
+  [[edit.cards]]
+  id = 0x4604ABEE                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 200, control = 247, technique = 285, pressure = 180, physical = 220, intelligence = 220, agility = 203, freedom = 335 }
+  moves = [
+    { move = 0xF94FAAA7, level = 13 },                    # Decoy Deploy
+    { move = 0x0BFD4D80, level = 26 },                    # Grand Slam
+    { move = 0x457EB170, level = 40 },                    # Pyrokinetic
+    { move = 0xB60E3C60, level = 59 },                    # Plasma Cut
+  ]
+
+[[edit]]
+target = "c05022680"                                   # Rodh
+
+  [[edit.cards]]
+  id = 0xC19CB721                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 170, control = 244, technique = 271, pressure = 171, physical = 204, intelligence = 208, agility = 200, freedom = 284 }
+  moves = [
+    { move = 0xF94FAAA7, level = 14 },                    # Decoy Deploy
+    { move = 0xF9C4BCF4, level = 24 },                    # Double Helix
+    { move = 0xD9BB22A7, level = 44 },                    # Air Ride
+    { move = 0x768AB9C5, level = 57 },                    # Frosticle
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x61A1BA8C, level = 1 },                     # Poseidon [aura]
+  ]
+
+[[edit]]
+target = "c05022690"                                   # Djibz
+
+  [[edit.cards]]
+  id = 0xD8878660                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 255, technique = 257, pressure = 173, physical = 194, intelligence = 223, agility = 184, freedom = 279 }
+  moves = [
+    { move = 0xF9C4BCF4, level = 1 },                     # Double Helix
+    { move = 0xF94FAAA7, level = 6 },                     # Decoy Deploy
+    { move = 0xE196F1D1, level = 48 },                    # Burning Bomb
+    { move = 0x0B011EBF, level = 56 },                    # Fireball Screw
+  ]
+
+[[edit]]
+target = "c05022710"                                   # Garreau
+
+  [[edit.cards]]
+  id = 0x119C665F                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 273, control = 263, technique = 285, pressure = 167, physical = 201, intelligence = 232, agility = 170, freedom = 335 }
+  moves = [
+    { move = 0x035C1112, level = 4 },                     # Gungnir
+    { move = 0x7F15DC5F, level = 28 },                    # Desert Drift
+    { move = 0x6ADE9E01, level = 48 },                    # Illusory Ball
+    { move = 0x1C8CE2B8, level = 65 },                    # God Knows
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x50130C60, level = 1 },                     # Corvus [aura]
+  ]
+
+[[edit]]
+target = "c05022720"                                   # Steiyah
+
+  [[edit.cards]]
+  id = 0x3AB1359C                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 166, control = 223, technique = 158, pressure = 227, physical = 150, intelligence = 225, agility = 263, freedom = 375 }
+  moves = [
+    { move = 0x07704782, level = 11 },                    # Rejection
+    { move = 0x8C382852, level = 23 },                    # God Hand
+    { move = 0xED1BFBD3, level = 30 },                    # Fingers of Gaia
+    { move = 0xD471DE6C, level = 51 },                    # Snakebite
+  ]
+
+[[edit]]
+target = "c05022730"                                   # Mhadoor
+
+  [[edit.cards]]
+  id = 0x23AA04DD                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 215, technique = 157, pressure = 240, physical = 201, intelligence = 302, agility = 217, freedom = 363 }
+  moves = [
+    { move = 0x7D6E9A87, level = 4 },                     # The Wall
+    { move = 0x5643C944, level = 11 },                    # Killer Slide
+    { move = 0x585098FC, level = 40 },                    # Slice and Dice
+    { move = 0xB01D1B68, level = 50 },                    # Power Spike
+  ]
+
+[[edit]]
+target = "c05022740"                                   # Heyze
+
+  [[edit.cards]]
+  id = 0x6CEB921A                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 240, technique = 250, pressure = 242, physical = 163, intelligence = 259, agility = 220, freedom = 313 }
+  moves = [
+    { move = 0x3C843987, level = 2 },                     # Flurry Dash
+    { move = 0xF94FAAA7, level = 15 },                    # Decoy Deploy
+    { move = 0x1C4D4906, level = 31 },                    # Whirlpool
+    { move = 0x2354CA2D, level = 52 },                    # Wind God's Dance
+  ]
+
+[[edit]]
+target = "c05022750"                                   # Kuhrach
+
+  [[edit.cards]]
+  id = 0x75F0A35B                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 228, technique = 258, pressure = 159, physical = 194, intelligence = 182, agility = 177, freedom = 217 }
+  moves = [
+    { move = 0x518BCA26, level = 5 },                     # Fire Tornado
+    { move = 0x0B011EBF, level = 12 },                    # Fireball Screw
+    { move = 0xDDCA0D2A, level = 23 },                    # Bouncing Bomb
+    { move = 0x910F4F83, level = 53 },                    # Fire Tornado DD
+  ]
+
+[[edit]]
+target = "c05022760"                                   # Torhm
+
+  [[edit.cards]]
+  id = 0x5EDDF098                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 263, control = 247, technique = 230, pressure = 201, physical = 185, intelligence = 211, agility = 189, freedom = 375 }
+  moves = [
+    { move = 0xF9C4BCF4, level = 2 },                     # Double Helix
+    { move = 0x035C1112, level = 7 },                     # Gungnir
+    { move = 0xF88DC090, level = 26 },                    # Z Slash
+    { move = 0x65766A4F, level = 39 },                    # Meteor Blade
+  ]

@@ -1,0 +1,34 @@
+# BetterUI «Ajustes de la IA» (docs/game/ui/team-commands.md §10; BetterUI 1.21.26, owner 2026-10-14): the AI roles of
+# the WHOLE team from the formation's team COMANDOS window, ported from Inazuma Fantasy's team commands (its «IA» cell,
+# grafts team_cmd_dock / team_cmd_menus, read only: IF keeps its own grid). The per-player «Configurar rol de la IA» is
+# hidden from the player popup (graft clean_hud_chara_menu).
+#   * team_ai_dock.lua (HOOK file on the VR-Framework's host of team_dock_formation_menu): the COMANDOS row, an Add rule
+#     of the framework's list rows (docs/framework/list-rows.md); it arms the AI-role mode and runs the retail «Ajustes de
+#     celebración de gol»; WaitExecPerfromanceChangeMenu tells the celebration list its mode (param store keys
+#     clean_hud_team_ai / clean_hud_team_ai_type);
+#   * team_ai_menu.lua (bytecode child of soccer_performance_change_menu): the celebration list in AI-role mode, every
+#     row = the player's AI role, Enter = the retail AI-role chooser, applied like the retail per-player option.
+# Texts: text\rows\team_ai.toml (clean_hud_team_ai_cmd, 9 languages); the role names are the game's own texts.
+name = "clean_hud_team_ai"
+order = 907
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = []   # the celebration menu's OnInit / InitPerformanceChangeMenuInfo / OnSetupLayer / UpdateListItem /
+             # OnDecideFocus are wrapped by assignment at run time (bytecode child); the dock part only registers
+             # VRFW_Host handlers and a VRFW_ListRows rule
+description = "BetterUI: «Ajustes de la IA» in the team COMANDOS window (every player's AI role for the whole team)"
+
+[[hooks]]
+stem = "team_dock_formation_menu"
+src = "team_ai_dock.lua"
+
+[[files]]
+stem = "soccer_performance_change_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "team_ai_menu.lua"
+  marker = "clean_hud team_ai"
+  crc = "at"

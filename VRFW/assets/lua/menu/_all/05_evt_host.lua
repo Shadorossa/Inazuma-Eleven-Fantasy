@@ -289,11 +289,33 @@ local function failed(stem, e, err)
   H.note(stem, e.id .. " (" .. e.point .. ", " .. e.phase .. ") failed: " .. tostring(err))
 end
 
+-- what is under the dispatcher of a point the host hooked AGAIN (install: «replaced after the host hooked it»): the
+-- new function may be a wrapper over the dispatcher that calls it through something the host could not see (a table
+-- field: `S.origInit = OnInit; OnInit = function(...) ... return S.origInit(...) end`). The call into it is counted
+-- per coroutine; the dispatcher entered again from inside it goes on with what was under the FIRST hook (p.base),
+-- never through the handlers and the new function again (that loop was the team dock's Lua stack overflow,
+-- 2026-10-14). Errors keep going up (rethrown).
+local function call_under_rehooked(p, f, ...)
+  local co = coroutine.running()
+  local inside = p.inside
+  inside[co] = (inside[co] or 0) + 1
+  local r = pack(pcall(f, ...))
+  local n = inside[co] - 1
+  inside[co] = n > 0 and n or nil
+  if not r[1] then
+    error(r[2], 0)
+  end
+  return unpack(r, 2, r.n)
+end
+
 local function build(h, p)
   local c = { gen = H.gen, before = H.order(h.stem, p.name, "before"), after = H.order(h.stem, p.name, "after") }
   local nxt = function(...)
     local f = p.prev
     if f ~= nil then
+      if p.inside ~= nil then
+        return call_under_rehooked(p, f, ...)
+      end
       return f(...)
     end
   end
@@ -354,6 +376,18 @@ end
 
 local function make_dispatch(h, p)
   return function(...)
+    if p.inside ~= nil and p.inside[coroutine.running()] ~= nil then
+      if not p.looped then
+        p.looped = true
+        H.note(h.stem, p.name .. ": the function the host hooked again calls the host's dispatcher (a wrapper over it): "
+          .. "that call goes on with what was under the first hook, once (no loop)")
+      end
+      local base = p.base
+      if base ~= nil and base ~= p.prev then
+        return base(...)
+      end
+      return
+    end
     if h.egen ~= H.gen then
       edit(h)
     end
@@ -389,10 +423,27 @@ local function make_dispatch(h, p)
   end
 end
 
--- `target` is reached from f through upvalues (f is a wrapper some later patch put over the dispatcher)
+-- `target` is reached from f through upvalues (f is a wrapper some later patch put over the dispatcher), or through a
+-- field of a table upvalue (a wrapper that keeps what it wraps in its own table: `S.origInit = OnInit`; the globals
+-- table itself is not searched)
 local function wraps(f, target, depth, seen)
   local dbg = D or EVT_DEBUG
-  if type(f) ~= "function" or dbg == nil or depth > 4 or seen[f] then
+  if dbg == nil or depth > 4 or seen[f] then
+    return false
+  end
+  if type(f) == "table" then
+    if rawequal(f, _ENV) or rawequal(f, _G) then
+      return false
+    end
+    seen[f] = true
+    for _, v in next, f do
+      if rawequal(v, target) then
+        return true
+      end
+    end
+    return false
+  end
+  if type(f) ~= "function" then
     return false
   end
   seen[f] = true
@@ -402,7 +453,7 @@ local function wraps(f, target, depth, seen)
     if n == nil then
       return false
     end
-    if v == target or (type(v) == "function" and wraps(v, target, depth + 1, seen)) then
+    if rawequal(v, target) or ((type(v) == "function" or type(v) == "table") and wraps(v, target, depth + 1, seen)) then
       return true
     end
     i = i + 1
@@ -422,6 +473,12 @@ local function install(h, p)
   end
   if p.dispatch ~= nil then
     H.note(h.stem, p.name .. " was replaced after the host hooked it: hooked again over the new function")
+    -- the new function may still call the dispatcher (a wrapper the search above could not see): the dispatcher
+    -- entered again from inside it goes on with what was under the first hook (call_under_rehooked)
+    if p.inside == nil then
+      p.base = p.prev
+      p.inside = {}
+    end
   end
   p.prev = cur
   p.dispatch = p.dispatch or make_dispatch(h, p)
@@ -453,24 +510,98 @@ local function holder(f, nup, dbg, depth, seen)
   return nil
 end
 
+-- A merge-path patch that PROMOTED the retail locals (declared them again and redefined every function using them:
+-- Utilities' passive_config_dispatch, Character Reforged's ss2_dock on team_dock_formation_menu) runs on its OWN copy;
+-- the retail closures' upvalues then never change. Such a patch is compiled from text, so its closures keep their
+-- upvalue names (stripped retail bytecode has none): the closure live now for the map's function that captures every
+-- local the map gives that function (`names`) holds the live copy. Searched from the global (and from what is under
+-- the host's dispatcher) through wrapper upvalues; -> closure, upvalue index of `k`.
+local function promoted(f, k, names, dbg, depth, seen)
+  if type(f) ~= "function" or depth > 4 or seen[f] then
+    return nil
+  end
+  seen[f] = true
+  local have, idx, i = {}, nil, 1
+  while true do
+    local n, v = dbg.getupvalue(f, i)
+    if n == nil then
+      break
+    end
+    have[n] = true
+    if n == k then
+      idx = i
+    end
+    i = i + 1
+  end
+  if idx ~= nil then
+    local all = true
+    for _, x in ipairs(names) do
+      if not have[x] then
+        all = false
+        break
+      end
+    end
+    if all then
+      return f, idx
+    end
+  end
+  for j = 1, i - 1 do
+    local _, v = dbg.getupvalue(f, j)
+    local r, ri = promoted(v, k, names, dbg, depth + 1, seen)
+    if r ~= nil then
+      return r, ri
+    end
+  end
+  return nil
+end
+
 local function make_locals(h)
-  local found = {}
+  local found = {}       -- k -> { f, index, the two closures it was searched from } (searched again when they change)
+  local names_of = nil   -- retail function name -> the map's locals it captures
+  local function names(fn)
+    if names_of == nil then
+      names_of = {}
+      for name, e in pairs(h.map) do
+        local l = names_of[e[1]] or {}
+        l[#l + 1] = name
+        names_of[e[1]] = l
+      end
+    end
+    return names_of[fn] or {}
+  end
   local function at(k)
     local m = h.map[k]
     local dbg = D or EVT_DEBUG
     if m == nil or dbg == nil then
       return nil
     end
-    local f = found[k]
-    if f == nil then
-      f = holder(H.retail[m[1]], m[3], dbg, 0, {})
+    local p = h.points[m[1]]
+    local top, under = rawget(_ENV, m[1]), p ~= nil and p.dispatch ~= nil and p.prev or nil
+    local c = found[k]
+    if c == nil or c.top ~= top or c.under ~= under then
+      local seen = {}
+      local f, i = promoted(under, k, names(m[1]), dbg, 0, seen)
+      if f == nil then
+        f, i = promoted(top, k, names(m[1]), dbg, 0, seen)
+      end
+      local how = "promoted"
+      if f == nil then
+        f, i, how = holder(H.retail[m[1]], m[3], dbg, 0, {}), m[2], "retail"
+      end
       if f == nil then
         H.note(h.stem, "local " .. tostring(k) .. ": " .. tostring(m[1]) .. " with " .. tostring(m[3]) .. " upvalues not found")
         return nil
       end
-      found[k] = f
+      if c ~= nil and c.how ~= how then
+        H.note(h.stem, "local " .. tostring(k) .. ": now the " .. how .. " copy (" .. tostring(m[1]) .. " was redefined)")
+      end
+      c = { f = f, i = i, top = top, under = under, how = how }
+      found[k] = c
+      if how == "promoted" then
+        H.note(h.stem, "local " .. tostring(k) .. ": served from a patch's promoted copy (" .. tostring(m[1]) .. "), not the retail one")
+      end
     end
-    return f, m[2], m[4], dbg
+    return c.f, c.i, m[4], dbg
   end
   return setmetatable({}, {
     __index = function(_, k)

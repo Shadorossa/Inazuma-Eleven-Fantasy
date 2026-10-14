@@ -1,0 +1,57 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): a rival of the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/
+# chain_sonny.toml). The same team as the set-aside Chronicles Deluxe's (generated there by
+# research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe is
+# active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Benchers 3 (IE, «Sonny Raimon's route» #6; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Benchers_3
+# Left out (over 16 players): Tsuchimori Kouji; Amai Kazuya; Kunikida Haito; Eji Nobuya
+[[team]]
+name = "ct_wk_benchers_3"
+key = "evt_ct_wk_benchers_3"
+based_on = "tm_cro_ie1_1320" # Team Ogre: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # team_kits_from_wiki.py: neutral (needs a kit) (was 0x7362C53B)
+level = 60
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0xC5EE80D9, slot = 0, number = 1, rarity_step = 1 }, # Kido Yamon = Kevin Castle (GK)
+  { card = 0xA50F396F, slot = 1, number = 2, rarity_step = 1 }, # Kusao Hisashi = Lorne Mower ({'IE': 'DF', 'IE2': 'GK'})
+  { card = 0xD4DFFB59, slot = 2, number = 3, rarity_step = 1 }, # Ooshima Yuuichi = Bart Grantham ({'IE': 'DF', 'IE2': 'GK'})
+  { card = 0x157DB743, slot = 3, number = 4, rarity_step = 1 }, # Denju Atsumu = Ryan Tappin (MF)
+  { card = 0x23C6A973, slot = 4, number = 5, rarity_step = 1 }, # Isshiki Masashi = Maston Color (MF)
+  { card = 0x1B6EE6FB, slot = 5, number = 6, rarity_step = 1 }, # Nagahama Hosomichi = Alton Cotts (MF)
+  { card = 0x16F9632D, slot = 6, number = 7, rarity_step = 1 }, # Shitsuhara Zen = Pete Bogg (MF)
+  { card = 0xAEA1A7C0, slot = 7, number = 8, rarity_step = 1, captain = true }, # Ebisu Masayoshi = Ian Stager (DF)
+  { card = 0xE35456CC, slot = 8, number = 9, rarity_step = 1 }, # Kurono Tokio = Andy Chronic (DF)
+  { card = 0x20427D1D, slot = 9, number = 10, rarity_step = 1 }, # Osamoto Gou = Don Ation (FW)
+  { card = 0xF45C3635, slot = 10, number = 11, rarity_step = 1 }, # Touma Souta = Grant Eldorado ({'IE': 'FW', 'IE2': 'GK'})
+  { card = 0xFC767CF4, slot = 11, number = 12, rarity_step = 1 }, # Ishizaki Mitsuru = Paul Caperock (DF)
+  { card = 0xE1E03107, slot = 12, number = 13, rarity_step = 1 }, # Ikuji Kamao = Fred Crumb (DF)
+  { card = 0xD05287EB, slot = 13, number = 14, rarity_step = 1 }, # Atsuta Nao = Bill Steakspear (DF)
+  { card = 0xFFF2A89A, slot = 14, number = 15, rarity_step = 1 }, # Hasebe Seiji = Mitch Grumble (MF)
+  { card = 0xAA2CDB72, slot = 15, number = 16, rarity_step = 1 }, # Tomooka Naruto = Saul Tunk (MF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_benchers.png" # remastered crest of the wiki's Benchers emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Chupabanquillos 3"
+short = "Chupabanquillos 3"
+[team.text.en]
+name = "Benchers 3"
+short = "Benchers 3"
+[team.text.ja]
+name = "ベンチーズ３"
+short = "ベンチーズ３"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_benchers_3"
+card_moves = 4

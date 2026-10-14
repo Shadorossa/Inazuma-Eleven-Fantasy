@@ -1,0 +1,43 @@
+# Character Reforged: the player page's SLOTS (docs/refactor/aura-mods-split.md «Player page»). The paged player page
+# («Ficha», personal_plate_menu: PERFIL, ATRIBUTOS, SUPERTÉCNICAS, the Hiper page, the retail pages; Lua research/
+# grafts/plate_pages, plate_model, plate_hiper_*; data content\menus\player_page_*.toml) shows Character Reforged's own
+# values. Other mods add theirs as data: an [[entry]] of one of these hosts whose action is a command of theirs. The page
+# asks the last declared entry first, then the earlier ones, then its default (assets\lua\_all\
+# character_reforged_page.lua, CharacterReforged.Page):
+#
+#   [[entry]]
+#   host = "character_reforged.page_stat"
+#   id = "stat"                                     # key <mod>.<id>
+#   action = { command = "CMND_MYMOD_CHARA_STAT" }  # (charaStHdl, idx 0..8) -> value (< 0 = no answer)
+#
+# Hosts (call -> answer):
+# * character_reforged.page_stat: (charaStHdl, idx 0..8; 8 = Suerte) -> value, ... The stat ATRIBUTOS and the radar
+#   show. Default: CMND_CHARACTERREFORGED_CHARA_STAT (the per-character stats; Suerte from the curve).
+# * character_reforged.page_luck_bonus: (charaStHdl) -> a number added to Suerte's default (a training mod's committed
+#   Suerte). Asked only when no page_stat entry answered (such an entry gives the whole value). Default: 0.
+# * character_reforged.page_stat_max: (charaStHdl, idx) -> ok, value, base, bonus, delta, committed, min, max (the shape
+#   of a training screen's stat command). The top of the stat's gauge on ATRIBUTOS = base + max. Default: one scale for
+#   the 8 rows (the largest value + 15 %, rounded up to 50, at least 100).
+# * character_reforged.page_stat_gain: (charaStHdl) -> ok, favouredMask, gain0 .. gain8 (stat idx order). The stats a
+#   form (a Mix-Max) adds: the ATRIBUTOS Normal / Miximax view (form key), the Hiper page's gains. Default: none (no
+#   Miximax view).
+# Pages of other mods are declared to the VR-Framework's player page registry (VRFW_PlayerPages.Add,
+# docs/framework/player-pages.md); the header row's free strip is the host character_reforged.header
+# (player_header_host.toml).
+schema = "VRFW.menu/2"
+
+[[host]]
+id = "character_reforged.page_stat"
+label = { es = "Página del jugador: estadísticas", en = "Player page: stats", fr = "Page du joueur : statistiques", de = "Spielerseite: Werte", it = "Pagina del giocatore: statistiche", pt = "Página do jogador: estatísticas", ja = "選手ページ：能力値", zh_hans = "球员页面：能力值", zh_hant = "球員頁面：能力值" }
+
+[[host]]
+id = "character_reforged.page_luck_bonus"
+label = { es = "Página del jugador: Suerte extra", en = "Player page: Luck bonus", fr = "Page du joueur : bonus de Chance", de = "Spielerseite: Glücksbonus", it = "Pagina del giocatore: bonus Fortuna", pt = "Página do jogador: bónus de Sorte", ja = "選手ページ：運の加算", zh_hans = "球员页面：运气加成", zh_hant = "球員頁面：運氣加成" }
+
+[[host]]
+id = "character_reforged.page_stat_max"
+label = { es = "Página del jugador: tope de estadística", en = "Player page: stat limit", fr = "Page du joueur : limite de statistique", de = "Spielerseite: Wertgrenze", it = "Pagina del giocatore: limite statistica", pt = "Página do jogador: limite de estatística", ja = "選手ページ：能力値の上限", zh_hans = "球员页面：能力值上限", zh_hant = "球員頁面：能力值上限" }
+
+[[host]]
+id = "character_reforged.page_stat_gain"
+label = { es = "Página del jugador: aumentos de forma", en = "Player page: form gains", fr = "Page du joueur : gains de forme", de = "Spielerseite: Formbonus", it = "Pagina del giocatore: aumenti di forma", pt = "Página do jogador: ganhos de forma", ja = "選手ページ：形態の上昇値", zh_hans = "球员页面：形态加成", zh_hant = "球員頁面：形態加成" }

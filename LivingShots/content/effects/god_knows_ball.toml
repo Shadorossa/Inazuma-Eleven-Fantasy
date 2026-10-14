@@ -1,0 +1,23 @@
+# «God Knows» («Sabiduría divina», whs00340, wind shot, cut-in ev60_00340): while the ball flies to the goal it stays
+# inside the cut-in's OWN white energy orb with its white lightning (the last cut c0050, the shot to the goal, held at
+# frame 420, the lightning's texture flow running on) instead of the plain wind special-shot aura (ega0075b). The flat
+# glow discs of the cut-in (fixed facing its camera: edge-on bars from the touchline), its speed shades and backdrop
+# are dropped; x0.3 of the cut-in size (orb ~1.9 m wide).
+# The object is ev6034gk00 (assets\data\{common,dx11}\effect\event\ev60\ev6034gk00\), built by
+# research/scripts/god_knows_ball_fx.py from ev60003400; docs/game/media/god-knows-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). whs00340_mm is Inazuma Fantasy's copy of the move (same cut-in).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "god_knows_orb"
+from = "ega0075b"
+object = "effect/event/ev60/ev6034gk00/ev6034gk00.objbin"
+
+[[shot_aura]]
+name = "god_knows_orb"
+when = { techniques = ["whs00340", "whs00340_mm"] }
+aura = "god_knows_orb"
+like = "ega0075b"

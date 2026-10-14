@@ -1,0 +1,14 @@
+# Player Training: the training's rules (read by scripts\player_training.lua at the start; restart the game after a
+# change). docs/game/mechanics/stat-training.md §10, training-classic.md §2. Moved from Inazuma Fantasy on 2026-10-14
+# (its defaults: IF had no [training] section, so these are the values it ran with).
+[training]
+# "trade" (Libertad = free points; with none left, raising a stat lowers its counterpart one for one; by hand never below
+# the base), "pool" (one pool: lowering any stat gives a point back) or "pairs" (Libertad first, then the position
+# seesaws; only trained stats can be lowered)
+rule = "trade"
+# the lowest a drained stat can go, in % of its untrained base (0 = down to 1)
+floor_percent = 0
+# the highest trained base value of a stat
+max_value = 9999
+# card rarities that cannot be trained (no Libertad): Héroe 5-6, Diamante 7-8, Prime 10 (Inazuma Fantasy's rule)
+locked_rarities = [5, 6, 7, 8, 10]

@@ -1,0 +1,170 @@
+schema = "VRFW.character/2"
+# Character Reforged · Advanced Epsilon · Inazuma Eleven 2
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11902210"                                   # Dvalin
+
+  [[edit.cards]]
+  id = 0x727D8291                                         # GK/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 209, technique = 221, pressure = 231, physical = 236, intelligence = 240, agility = 240, freedom = 225 }
+  moves = [
+    { move = 0x8B31808E, level = 1 },                     # Wormhole
+    { move = 0x8E7E960B, level = 1 },                     # Drill Smasher
+    { move = 0x035C1112, level = 1 },                     # Gungnir
+    { move = 0x7FE98F60, level = 1 },                     # Ganymede Ray
+  ]
+
+[[edit]]
+target = "c11902220"                                   # Kenville
+
+  [[edit.cards]]
+  id = 0x5950D152                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 194, technique = 204, pressure = 220, physical = 252, intelligence = 273, agility = 194, freedom = 230 }
+  moves = [
+    { move = 0x10A0C298, level = 1 },                     # Warp Drive
+    { move = 0x28B0E96F, level = 1 },                     # Heavy Mettle
+    { move = 0x78E027BC, level = 38 },                    # Shine Drive
+    { move = 0x514A6198, level = 52 },                    # Asteroid Belt
+  ]
+
+[[edit]]
+target = "c11902230"                                   # Mole
+
+  [[edit.cards]]
+  id = 0x404BE013                                         # DF/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 184, technique = 200, pressure = 252, physical = 248, intelligence = 282, agility = 197, freedom = 255 }
+  moves = [
+    { move = 0x10A0C298, level = 1 },                     # Warp Drive
+    { move = 0x3EC287DE, level = 1 },                     # Bubble Gum
+    { move = 0x47657634, level = 44 },                    # Flame Breath
+    { move = 0x8E7E960B, level = 52 },                    # Drill Smasher
+  ]
+
+[[edit]]
+target = "c11902240"                                   # Kayson
+
+  [[edit.cards]]
+  id = 0x0F0A76D4                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 198, technique = 212, pressure = 225, physical = 246, intelligence = 281, agility = 186, freedom = 230 }
+  moves = [
+    { move = 0x28B0E96F, level = 1 },                     # Heavy Mettle
+    { move = 0x514A6198, level = 1 },                     # Asteroid Belt
+    { move = 0x09BBF3D9, level = 41 },                    # Dark Whirlwind
+    { move = 0x142DBE2A, level = 55 },                    # Foul Offence
+  ]
+
+[[edit]]
+target = "c11902250"                                   # Tytan
+
+  [[edit.cards]]
+  id = 0x16114795                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 192, technique = 200, pressure = 219, physical = 273, intelligence = 266, agility = 190, freedom = 255 }
+  moves = [
+    { move = 0x6633159F, level = 1 },                     # Gravitation
+    { move = 0x00196EC2, level = 40 },                    # Earthquake
+    { move = 0x28B0E96F, level = 46 },                    # Heavy Mettle
+    { move = 0x7BA5586C, level = 65 },                    # Mad Express
+  ]
+
+[[edit]]
+target = "c11902260"                                   # Fedora
+
+  [[edit.cards]]
+  id = 0x3D3C1456                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 242, technique = 261, pressure = 194, physical = 201, intelligence = 234, agility = 180, freedom = 247 }
+  moves = [
+    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
+    { move = 0xB633C4E1, level = 31 },                    # Photon Crash
+    { move = 0x4D1E465C, level = 39 },                    # Fake Bomber
+    { move = 0xA5777314, level = 65 },                    # Assault Shot
+  ]
+
+[[edit]]
+target = "c11902270"                                   # Krypto
+
+  [[edit.cards]]
+  id = 0x24272517                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 238, control = 244, technique = 266, pressure = 196, physical = 193, intelligence = 236, agility = 184, freedom = 251 }
+  moves = [
+    { move = 0x3B8D915B, level = 3 },                     # Meteor Shower
+    { move = 0x7C6D5B0E, level = 11 },                    # Astro Break
+  ]
+
+[[edit]]
+target = "c11902280"                                   # Sworm
+
+  [[edit.cards]]
+  id = 0xA3BF39D8                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 243, technique = 278, pressure = 194, physical = 192, intelligence = 236, agility = 177, freedom = 213 }
+  moves = [
+    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
+    { move = 0xB633C4E1, level = 39 },                    # Photon Crash
+    { move = 0x7FE98F60, level = 51 },                    # Ganymede Ray
+    { move = 0x1B854A64, level = 63 },                    # Cosmic Blast
+  ]
+
+[[edit]]
+target = "c11902290"                                   # Mercury
+
+  [[edit.cards]]
+  id = 0xBAA40899                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 305, control = 248, technique = 258, pressure = 207, physical = 185, intelligence = 228, agility = 170, freedom = 225 }
+  moves = [
+    { move = 0x4AD6453E, level = 1 },                     # Back Tornado
+    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
+    { move = 0x8C990270, level = 55 },                    # Gunshot
+    { move = 0x035C1112, level = 65 },                    # Gungnir
+  ]
+
+[[edit]]
+target = "c11902300"                                   # Metron
+
+  [[edit.cards]]
+  id = 0x6AA4D9E7                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 333, control = 247, technique = 251, pressure = 186, physical = 190, intelligence = 213, agility = 167, freedom = 221 }
+  moves = [
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x10A0C298, level = 1 },                     # Warp Drive
+    { move = 0x60397CCA, level = 1 },                     # Cross Drive
+    { move = 0x7C6D5B0E, level = 55 },                    # Astro Break
+  ]
+
+[[edit]]
+target = "c11902310"                                   # Zell
+
+  [[edit.cards]]
+  id = 0x73BFE8A6                                         # FW/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 300, control = 240, technique = 243, pressure = 215, physical = 190, intelligence = 224, agility = 182, freedom = 251 }
+  moves = [
+    { move = 0x7FE98F60, level = 1 },                     # Ganymede Ray
+    { move = 0xB1FBC783, level = 1 },                     # Reflect Buster
+    { move = 0x2F78EA0D, level = 10 },                    # Triangle Z
+    { move = 0x8B31808E, level = 50 },                    # Wormhole
+  ]

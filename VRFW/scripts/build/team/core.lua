@@ -606,7 +606,13 @@ function C.install(X)
     if f.emblem ~= nil then
       if type(f.emblem) == "table" then
         local id, e = X.emblem_png(m, t, f.emblem)
-        if id then X.set_info(t, TI.EMBLEM, id, m, what, "emblem") else errs[#errs + 1] = "emblem: " .. e end
+        if id then
+          X.set_info(t, TI.EMBLEM, id, m, what, "emblem")
+        elseif e then
+          errs[#errs + 1] = "emblem: " .. e
+        else
+          VRFW.log.info(what .. ": emblem " .. tostring(f.emblem.png) .. ": that mod is not active, the team keeps its emblem")
+        end
       else
         local id = T.id(f.emblem)
         local ok, e = X.emblem_exists(id)
@@ -972,8 +978,21 @@ function C.install(X)
   end
 
   -- a new emblem item from a PNG of the mod (its textures = the PNG fitted into every texture file of `base`)
+  -- where a PNG emblem's picture is: `png = "<path>"` = a file of the declaring mod; `png = "<mod id>:<path>"` = a
+  -- file of another mod (e.g. Chronicles Deluxe's remastered crests). That mod not active -> nil: the team keeps the
+  -- emblem it has (its base's / retail crest), never an error; a missing file of an active mod stays an error.
+  function X.emblem_png_source(m, png)
+    local other, rel = tostring(png):match("^([%w_]+):(.+)$")
+    if other == nil then return m, png end
+    if VRFW.team.mod_file(other, rel) == nil then return nil end
+    return other, rel
+  end
+
+  -- returns the item id; nil, err on an error; nil, nil when the picture's mod is absent (keep the emblem)
   function X.emblem_png(m, t, p)
-    local img, e = VRFW.team.png(m, p.png)
+    local src, rel = X.emblem_png_source(m, p.png)
+    if src == nil then return nil, nil end
+    local img, e = VRFW.team.png(src, rel)
     if not img then return nil, e end
     local base = p.base ~= nil and T.id(p.base) or (TC.uint(X.tc:info(t), TI.EMBLEM) or 0)
     return X.emblem_from_image(t, img, base, false, p.catalog or "unique", X.number_key(m, t) .. "#emblem")
@@ -1208,7 +1227,7 @@ function C.install(X)
     end
     local emb, kit = TC.uint(tc:info(t), TI.EMBLEM) or 0, TC.uint(tc:info(t), TI.KIT) or 0
     -- a PNG emblem's item name = the team's name
-    if type(d.emblem) == "table" and not T.is_empty(meta.names) then
+    if type(d.emblem) == "table" and not T.is_empty(meta.names) and X.emblem_png_source(m, d.emblem.png) ~= nil then
       local mark = VRFW.crc32(internal .. "_emblem")
       X.push_text(m, meta.default_lang, { table = "item_text", id = mark, variant = 0, texts = T.copy(meta.names), add = true,
         origin = what .. ": emblem (" .. m .. ")", kind = "noun" })

@@ -1,0 +1,274 @@
+schema = "VRFW.character/2"
+# Character Reforged · Super Triple C · Inazuma Eleven 2
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c02024410"                                   # Daisy Fields
+
+  [[edit.cards]]
+  id = 0xF316B954                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 286, control = 173, technique = 177, pressure = 188, physical = 248, intelligence = 165, agility = 251, freedom = 225 }
+  moves = [
+    { move = 0xC13F00CC, level = 1 },                     # Flower Power
+    { move = 0xBC48F489, level = 1 },                     # Claw Slash
+    { move = 0x5B3151F0, level = 37 },                    # Nitro Slap
+    { move = 0x5405771D, level = 65 },                    # Supreme Spin
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xD66DCC44, level = 1 },                     # Daji [aura]
+  ]
+
+[[edit]]
+target = "c02024420"                                   # Alexia Sand
+
+  [[edit.cards]]
+  id = 0xD83BEA97                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 201, technique = 209, pressure = 252, physical = 207, intelligence = 301, agility = 204, freedom = 265 }
+  moves = [
+    { move = 0xDF70E04C, level = 1 },                     # Rodeo Clown
+    { move = 0x4D1E465C, level = 1 },                     # Fake Bomber
+    { move = 0x6B1CF436, level = 32 },                    # Bewildered
+    { move = 0x31ABD82E, level = 42 },                    # Circus Block
+  ]
+
+[[edit]]
+target = "c02024430"                                   # Hellen Hearth
+
+  [[edit.cards]]
+  id = 0xC120DBD6                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 200, technique = 200, pressure = 212, physical = 212, intelligence = 261, agility = 176, freedom = 275 }
+  moves = [
+    { move = 0x27D9B69F, level = 1 },                     # Prima Donna
+    { move = 0x2C3D95DD, level = 1 },                     # Sleeping Dust
+    { move = 0x4C1D87D5, level = 1 },                     # Bed of Roses
+    { move = 0x0D368F6B, level = 47 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c02024440"                                   # Rose Pinkpetal
+
+  [[edit.cards]]
+  id = 0x8E614D11                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 217, technique = 236, pressure = 227, physical = 219, intelligence = 308, agility = 203, freedom = 213 }
+  moves = [
+    { move = 0x4D1E465C, level = 1 },                     # Fake Bomber
+    { move = 0x3EC287DE, level = 1 },                     # Bubble Gum
+    { move = 0x6DD736DD, level = 30 },                    # Ribbon Shower
+    { move = 0x2C3D95DD, level = 38 },                    # Sleeping Dust
+  ]
+
+[[edit]]
+target = "c02024450"                                   # Esther Greenland
+
+  [[edit.cards]]
+  id = 0x977A7C50                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 200, technique = 204, pressure = 225, physical = 204, intelligence = 277, agility = 188, freedom = 321 }
+  moves = [
+    { move = 0x2C3D95DD, level = 1 },                     # Sleeping Dust
+    { move = 0x7EEA4EE9, level = 26 },                    # Blade Attack
+    { move = 0x65766A4F, level = 33 },                    # Meteor Blade
+    { move = 0xECD991E4, level = 55 },                    # The Stinger
+  ]
+
+[[edit]]
+target = "c02024460"                                   # Bela Bluebells
+
+  [[edit.cards]]
+  id = 0xBC572F93                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 176, control = 242, technique = 252, pressure = 151, physical = 211, intelligence = 186, agility = 231, freedom = 225 }
+  moves = [
+    { move = 0x5049A011, level = 1 },                     # Spinning Shot
+    { move = 0x55C71D2A, level = 1 },                     # About Face
+    { move = 0x6DD736DD, level = 28 },                    # Ribbon Shower
+    { move = 0x316A7390, level = 40 },                    # Land Dragon
+  ]
+
+[[edit]]
+target = "c02024470"                                   # Natalie Sunrise
+
+  [[edit.cards]]
+  id = 0xA54C1ED2                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 262, technique = 275, pressure = 176, physical = 198, intelligence = 228, agility = 178, freedom = 255 }
+  moves = [
+    { move = 0x3EC287DE, level = 1 },                     # Bubble Gum
+    { move = 0x55C71D2A, level = 1 },                     # About Face
+    { move = 0x4D1E465C, level = 29 },                    # Fake Bomber
+    { move = 0x21127474, level = 57 },                    # Ultra Moon
+  ]
+
+[[edit]]
+target = "c02024480"                                   # Hillary Bush
+
+  [[edit.cards]]
+  id = 0x22D4021D                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 277, control = 251, technique = 263, pressure = 180, physical = 194, intelligence = 227, agility = 180, freedom = 263 }
+  moves = [
+    { move = 0x6DD736DD, level = 1 },                     # Ribbon Shower
+    { move = 0xAC6D8A70, level = 1 },                     # Rainbow Arc
+    { move = 0x4F58F805, level = 25 },                    # Coil Turn
+    { move = 0xC42D6F54, level = 55 },                    # Aikido
+  ]
+
+[[edit]]
+target = "c02024490"                                   # Mary Moor
+
+  [[edit.cards]]
+  id = 0x3BCF335C                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 252, technique = 263, pressure = 173, physical = 185, intelligence = 220, agility = 184, freedom = 267 }
+  moves = [
+    { move = 0x06130797, level = 1 },                     # Rolling Kick
+    { move = 0x261BDCA8, level = 1 },                     # Moonsault
+    { move = 0x6DD736DD, level = 32 },                    # Ribbon Shower
+    { move = 0x5E233E68, level = 60 },                    # Super Elastico
+  ]
+
+[[edit]]
+target = "c02024500"                                   # Suzette Hartland
+rank = 3
+growth = "normal"
+stats = { kick = 273, control = 250, technique = 220, pressure = 185, physical = 169, intelligence = 205, agility = 178, freedom = 301 }
+moves = [
+  { move = 0x4C1D87D5, level = 1 },                       # Bed of Roses
+  { move = 0x54C4DCA3, level = 1 },                       # Butterfly Trance
+  { move = 0xC5EF0563, level = 45 },                      # Three-Legged Rush
+  { move = 0x27D9B69F, level = 60 },                      # Prima Donna
+]
+
+[[edit]]
+target = "c02024510"                                   # Lily Willow
+
+  [[edit.cards]]
+  id = 0xF2D4D363                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 254, control = 254, technique = 242, pressure = 234, physical = 162, intelligence = 240, agility = 186, freedom = 259 }
+  moves = [
+    { move = 0x6DD736DD, level = 1 },                     # Ribbon Shower
+    { move = 0x54C4DCA3, level = 1 },                     # Butterfly Trance
+    { move = 0x27D9B69F, level = 1 },                     # Prima Donna
+    { move = 0x750E6DAB, level = 40 },                    # Matador Feint
+  ]
+
+[[edit]]
+target = "c02024520"                                   # Dell Closeout
+
+  [[edit.cards]]
+  id = 0xD9F980A0                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 200, technique = 182, pressure = 224, physical = 261, intelligence = 207, agility = 266, freedom = 213 }
+  moves = [
+    { move = 0x4523C86D, level = 1 },                     # Killer Blade
+    { move = 0xC13F00CC, level = 1 },                     # Flower Power
+    { move = 0x55C71D2A, level = 30 },                    # About Face
+    { move = 0x5E7E4775, level = 46 },                    # Table-Turner
+  ]
+
+[[edit]]
+target = "c02024530"                                   # Amy Spires
+
+  [[edit.cards]]
+  id = 0xC0E2B1E1                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 201, technique = 201, pressure = 215, physical = 251, intelligence = 262, agility = 189, freedom = 213 }
+  moves = [
+    { move = 0xDF70E04C, level = 1 },                     # Rodeo Clown
+    { move = 0x4741C0E8, level = 1 },                     # Steeple Shot
+    { move = 0x2C3D95DD, level = 36 },                    # Sleeping Dust
+    { move = 0x74CC079C, level = 54 },                    # Big Fan
+  ]
+
+[[edit]]
+target = "c02024540"                                   # Peony Cash
+
+  [[edit.cards]]
+  id = 0x8FA32726                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 188, control = 243, technique = 246, pressure = 204, physical = 170, intelligence = 231, agility = 193, freedom = 259 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0x3EC287DE, level = 32 },                    # Bubble Gum
+    { move = 0x6DD736DD, level = 40 },                    # Ribbon Shower
+    { move = 0xA7B451B3, level = 56 },                    # Paladin Strike
+  ]
+
+[[edit]]
+target = "c02024550"                                   # Gayle Revel
+
+  [[edit.cards]]
+  id = 0x96B81667                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 292, control = 232, technique = 228, pressure = 159, physical = 208, intelligence = 189, agility = 171, freedom = 251 }
+  moves = [
+    { move = 0x261BDCA8, level = 1 },                     # Moonsault
+    { move = 0xAAA6489B, level = 1 },                     # Spiral Shot
+    { move = 0xAA67E325, level = 37 },                    # Desert Blast
+    { move = 0x74CC079C, level = 49 },                    # Big Fan
+  ]
+
+[[edit]]
+target = "c02024560"                                   # Janine Brook
+
+  [[edit.cards]]
+  id = 0xBD9545A4                                         # GK/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 198, technique = 186, pressure = 221, physical = 243, intelligence = 211, agility = 258, freedom = 251 }
+  moves = [
+    { move = 0xBC48F489, level = 1 },                     # Claw Slash
+    { move = 0x5405771D, level = 30 },                    # Supreme Spin
+    { move = 0x3663DB4C, level = 38 },                    # Utter Gutsiness Bat
+    { move = 0xDCA94D3F, level = 53 },                    # Flash Upper
+  ]
+
+[[edit]]
+target = "c11802060"                                   # Nerina Hartland
+
+  [[edit.cards]]
+  id = 0xF5E4139D                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 211, technique = 205, pressure = 194, physical = 254, intelligence = 203, agility = 239, freedom = 242 }
+  moves = [
+    { move = 0xBD8A9EBE, level = 1 },                     # Infinite Wall
+    { move = 0x6B1CF436, level = 19 },                    # Bewildered
+    { move = 0x8AF3EAB9, level = 34 },                    # Hammer of Fury
+    { move = 0x8DFA4265, level = 52 },                    # Toughness Block
+  ]
+
+[[edit]]
+target = "c02024410_5000"                              # Daisy Fields
+
+  [[edit.cards]]
+  id = 0xECB341FC                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 286, control = 173, technique = 177, pressure = 188, physical = 248, intelligence = 165, agility = 251, freedom = 225 }

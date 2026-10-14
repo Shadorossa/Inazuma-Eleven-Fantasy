@@ -1,0 +1,223 @@
+schema = "VRFW.character/2"
+# Character Reforged · The Sambassadors · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c08100010"                                   # Rio
+
+  [[edit.cards]]
+  id = 0x6E915954                                         # FW/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 335, control = 217, technique = 188, pressure = 197, physical = 174, intelligence = 184, agility = 190, freedom = 259 }
+  moves = [
+    { move = 0x78E027BC, level = 2 },                     # Shine Drive
+    { move = 0xDCF43422, level = 18 },                    # Aurora Dribble
+    { move = 0x2690CAFB, level = 35 },                    # Beyond the Sambadrome
+    { move = 0x768AB9C5, level = 45 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c08100020"                                   # Alegre
+
+  [[edit.cards]]
+  id = 0x45BC0A97                                         # FW/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 356, control = 243, technique = 221, pressure = 180, physical = 167, intelligence = 201, agility = 174, freedom = 267 }
+  moves = [
+    { move = 0x13D845C9, level = 4 },                     # Samba Strike
+    { move = 0x2690CAFB, level = 8 },                     # Beyond the Sambadrome
+    { move = 0x2752A0CC, level = 26 },                    # Capoeira Kick
+    { move = 0x0CF4E55C, level = 55 },                    # Double Touch
+  ]
+
+[[edit]]
+target = "c08100030"                                   # André
+
+  [[edit.cards]]
+  id = 0x5CA73BD6                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 279, control = 235, technique = 240, pressure = 178, physical = 158, intelligence = 207, agility = 176, freedom = 225 }
+  moves = [
+    { move = 0x3F00EDE9, level = 2 },                     # Dash Storm
+    { move = 0x2690CAFB, level = 7 },                     # Beyond the Sambadrome
+    { move = 0xD9BB22A7, level = 36 },                    # Air Ride
+    { move = 0x15EFD41D, level = 53 },                    # Dual Pass
+  ]
+
+[[edit]]
+target = "c08100040"                                   # Manaus
+
+  [[edit.cards]]
+  id = 0x13E6AD11                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 238, technique = 231, pressure = 184, physical = 158, intelligence = 209, agility = 182, freedom = 259 }
+  moves = [
+    { move = 0x3F00EDE9, level = 2 },                     # Dash Storm
+    { move = 0x2690CAFB, level = 19 },                    # Beyond the Sambadrome
+    { move = 0xD9BB22A7, level = 32 },                    # Air Ride
+    { move = 0x0CF4E55C, level = 45 },                    # Double Touch
+  ]
+
+[[edit]]
+target = "c08100050"                                   # Iguaçu
+
+  [[edit.cards]]
+  id = 0x0AFD9C50                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 285, control = 234, technique = 234, pressure = 182, physical = 159, intelligence = 209, agility = 181, freedom = 238 }
+  moves = [
+    { move = 0x68982058, level = 5 },                     # Armadillo Circus
+    { move = 0x2690CAFB, level = 16 },                    # Beyond the Sambadrome
+    { move = 0x427719AC, level = 33 },                    # Gale Dash
+    { move = 0x13D845C9, level = 44 },                    # Samba Strike
+  ]
+
+[[edit]]
+target = "c08100060"                                   # Belo
+
+  [[edit.cards]]
+  id = 0x21D0CF93                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 271, control = 224, technique = 217, pressure = 180, physical = 180, intelligence = 193, agility = 182, freedom = 238 }
+  moves = [
+    { move = 0x25276CB9, level = 1 },                     # Solar Surprise
+    { move = 0x21127474, level = 12 },                    # Ultra Moon
+    { move = 0x5E233E68, level = 23 },                    # Super Elastico
+    { move = 0x13D845C9, level = 46 },                    # Samba Strike
+  ]
+
+[[edit]]
+target = "c08100070"                                   # Luís
+
+  [[edit.cards]]
+  id = 0x38CBFED2                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 230, technique = 219, pressure = 180, physical = 163, intelligence = 193, agility = 192, freedom = 297 }
+  moves = [
+    { move = 0x2296A01A, level = 1 },                     # Southern Cross
+    { move = 0x2690CAFB, level = 12 },                    # Beyond the Sambadrome
+    { move = 0x70417B2E, level = 18 },                    # Deceptor Dribble
+    { move = 0xDF70E04C, level = 34 },                    # Rodeo Clown
+  ]
+
+[[edit]]
+target = "c08100080"                                   # João
+
+  [[edit.cards]]
+  id = 0xBF53E21D                                         # DF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 231, control = 178, technique = 151, pressure = 221, physical = 207, intelligence = 235, agility = 208, freedom = 267 }
+  moves = [
+    { move = 0x6A66FA7E, level = 3 },                     # Killer Whale
+    { move = 0x5E233E68, level = 13 },                    # Super Elastico
+    { move = 0x7A67325B, level = 19 },                    # Flame Dance
+    { move = 0x36A270F2, level = 39 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c08100090"                                   # Maceió
+
+  [[edit.cards]]
+  id = 0xA648D35C                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 177, technique = 151, pressure = 220, physical = 209, intelligence = 231, agility = 208, freedom = 247 }
+  moves = [
+    { move = 0x2296A01A, level = 5 },                     # Southern Cross
+    { move = 0x7A67325B, level = 15 },                    # Flame Dance
+    { move = 0xB633C4E1, level = 29 },                    # Photon Crash
+    { move = 0x36A270F2, level = 48 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c08100100"                                   # Bernardo
+
+  [[edit.cards]]
+  id = 0x76480222                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 165, technique = 134, pressure = 240, physical = 221, intelligence = 225, agility = 216, freedom = 335 }
+  moves = [
+    { move = 0x2296A01A, level = 1 },                     # Southern Cross
+    { move = 0x7A67325B, level = 15 },                    # Flame Dance
+    { move = 0xB633C4E1, level = 30 },                    # Photon Crash
+    { move = 0x36A270F2, level = 43 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c08100110"                                   # Gonçalo
+
+  [[edit.cards]]
+  id = 0x6F533363                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 185, technique = 144, pressure = 230, physical = 207, intelligence = 198, agility = 254, freedom = 271 }
+  moves = [
+    { move = 0x44E1A25A, level = 1 },                     # Pressure Punch
+    { move = 0x30093385, level = 17 },                    # Marinara Barrier
+    { move = 0x4063C70A, level = 35 },                    # Sauced-up Marinara Barrier
+    { move = 0xC379BE95, level = 50 },                    # Counter Strike
+  ]
+
+[[edit]]
+target = "c08100120"                                   # Belém
+
+  [[edit.cards]]
+  id = 0x447E60A0                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 159, technique = 124, pressure = 243, physical = 231, intelligence = 220, agility = 220, freedom = 335 }
+  moves = [
+    { move = 0x2DFFFFEA, level = 4 },                     # Ground Quake
+    { move = 0x2690CAFB, level = 16 },                    # Beyond the Sambadrome
+    { move = 0x21127474, level = 33 },                    # Ultra Moon
+    { move = 0x36A270F2, level = 50 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c08100130"                                   # Paulo
+
+  [[edit.cards]]
+  id = 0x5D6551E1                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 225, technique = 200, pressure = 184, physical = 174, intelligence = 190, agility = 193, freedom = 286 }
+  moves = [
+    { move = 0xB633C4E1, level = 1 },                     # Photon Crash
+    { move = 0x28B0E96F, level = 18 },                    # Heavy Mettle
+    { move = 0x2690CAFB, level = 24 },                    # Beyond the Sambadrome
+    { move = 0x00196EC2, level = 43 },                    # Earthquake
+  ]
+
+[[edit]]
+target = "c11808120"                                   # Cristiano Dabola
+
+  [[edit.cards]]
+  id = 0xFFF75CCA                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 181, technique = 144, pressure = 207, physical = 211, intelligence = 217, agility = 205, freedom = 313 }
+  moves = [
+    { move = 0x427719AC, level = 2 },                     # Gale Dash
+    { move = 0xB633C4E1, level = 10 },                    # Photon Crash
+    { move = 0x5E233E68, level = 34 },                    # Super Elastico
+    { move = 0x25276CB9, level = 55 },                    # Solar Surprise
+  ]

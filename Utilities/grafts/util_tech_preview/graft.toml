@@ -1,0 +1,34 @@
+# Technique preview of the mod Utilities (docs/game/ui/technique-preview.md; owner request 2026-10-14; always on, no
+# option row). On the special move card of the «Supertécnicas» list (ability_list_menu; its skill board variant
+# ability_list_menu_on_bluebg shares the menu setting and the card) the prompt «<RS> Previsualizar» (layer util_tp_hint,
+# content\menus\tech_preview.toml) plays the move's cut-in full screen with a player of the active squad at the move's
+# position and comes back to the list exactly as it was. The block wraps UpdateSkillDetailWindow (the move on the card),
+# OnChangeFocus (an empty tab: no move), OnSetupLayer (the prompt starts hidden), OnFunction (nothing while the cut-in
+# plays) and Step (the prompt, the button, the play coroutine). What to play: scripts\tech_preview.lua
+# (CMND_UTIL_TECH_PREVIEW); the cross-menu helpers (the model holder chara_model_only_view_menu, the header bars) are
+# assets\lua\_all\utilities_tech_preview.lua. The playing is the VR-Framework's live player (CMND_EVT_ANIM_PREVIEW +
+# CMND_VRFW_ANIM_LIVE_*). Built into the mod: menu_assemble.py build --mod utilities.
+name = "util_tech_preview"
+mod = "utilities"
+order = 330
+module = "lua_patch"
+requires = []
+conflicts = []
+wraps = ["UpdateSkillDetailWindow", "OnChangeFocus", "OnSetupLayer", "OnFunction", "Step"]
+description = "Technique preview: RS on a special move card plays its cut-in full screen with a player of the active squad"
+
+[[files]]
+stem = "ability_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "util_tp_card.lua"
+  marker = "util_tech_preview"
+
+[[files]]
+stem = "ability_list_menu_on_bluebg"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "util_tp_card.lua"
+  marker = "util_tech_preview"

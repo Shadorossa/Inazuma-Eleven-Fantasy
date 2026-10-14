@@ -5,7 +5,7 @@
 # Lua is not what this file gives). Units: screen px at 1080p (x right, y down) unless a key says «layout» (the
 # plate's own .g4pkm units, y up). A screen that needs a variant gets a [*.variants.<name>] table here and passes its
 # name (or its own numbers) to the API; it never copies the code.
-schema = "vr_framework.ui_plates/1"
+schema = "VRFW.ui_plates/1"
 
 # ---- the player HEADER ROW ---------------------------------------------------------------------------------------
 # The row is the retail status plate (soccer11_04 / soccer11_04pp layouts: Inazuma Fantasy patches them to its one-row

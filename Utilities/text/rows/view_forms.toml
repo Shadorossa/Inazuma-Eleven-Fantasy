@@ -1,0 +1,115 @@
+# Utilities' «Cambiar forma» texts (docs/game/mechanics/form-viewer.md §8): rows of menu_text in 9 languages, read
+# with CMND_TEXT_GET by id = crc32(row id) by assets\lua\_all\utilities_view_forms.lua and the graft util_view_forms,
+# and by the game's «Configuración de controles» (the action's row, content\inputs\view_forms.toml). The form names
+# follow the form ids of the VR-Framework's form viewer (0 Normal, 1 Miximax, 2 Armour, 3 the miximax's own armour +
+# Miximax, 4 the aura slot's armour + Miximax); their translations are Inazuma Fantasy's (text\rows\player_forms.toml).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the action's glyph: the button bound now (the engine draws it for the device in use)
+# crc32("utilities_view_forms") = 508024922
+[[row]]
+id = "utilities_view_forms"
+es = "<CMD_UTIL_VIEW_FORMS>"
+en = "<CMD_UTIL_VIEW_FORMS>"
+fr = "<CMD_UTIL_VIEW_FORMS>"
+de = "<CMD_UTIL_VIEW_FORMS>"
+it = "<CMD_UTIL_VIEW_FORMS>"
+pt = "<CMD_UTIL_VIEW_FORMS>"
+ja = "<CMD_UTIL_VIEW_FORMS>"
+zh_hans = "<CMD_UTIL_VIEW_FORMS>"
+zh_hant = "<CMD_UTIL_VIEW_FORMS>"
+
+# the button guide's label (after the glyph)
+# crc32("utilities_view_forms_prompt") = 3087075317
+[[row]]
+id = "utilities_view_forms_prompt"
+es = "Cambiar forma"
+en = "Change form"
+fr = "Changer de forme"
+de = "Form wechseln"
+it = "Cambia forma"
+pt = "Mudar forma"
+ja = "フォーム切り替え"
+zh_hans = "切换形态"
+zh_hant = "切換形態"
+
+# the action's row in the game's «Configuración de controles» (tab «Controles básicos»)
+# crc32("utilities_view_forms_action") = 2636310367
+[[row]]
+id = "utilities_view_forms_action"
+es = "Cambiar forma (ver personaje)"
+en = "Change form (character view)"
+fr = "Changer de forme (vue du personnage)"
+de = "Form wechseln (Charakteransicht)"
+it = "Cambia forma (vista personaggio)"
+pt = "Mudar forma (ver personagem)"
+ja = "フォーム切り替え（キャラクター表示）"
+zh_hans = "切换形态（查看角色）"
+zh_hant = "切換形態（查看角色）"
+
+# form 0, crc32 2620987062
+[[row]]
+id = "utilities_view_forms_form0"
+es = "Normal"
+en = "Normal"
+fr = "Normale"
+de = "Normal"
+it = "Normale"
+pt = "Normal"
+ja = "通常"
+zh_hans = "通常"
+zh_hant = "通常"
+
+# form 1 (a fusion, or a retail miximax / mode change), crc32 3946718752
+[[row]]
+id = "utilities_view_forms_form1"
+es = "Miximax"
+en = "Miximax"
+fr = "Miximax"
+de = "Miximorph"
+it = "Miximax"
+pt = "Fusão Miximax"
+ja = "ミキシトランス"
+zh_hans = "合体变身"
+zh_hant = "合體變身"
+
+# form 2, crc32 1916237722
+[[row]]
+id = "utilities_view_forms_form2"
+es = "Armadura"
+en = "Armour"
+fr = "Armure"
+de = "Rüstung"
+it = "Armatura"
+pt = "Armadura"
+ja = "アームド"
+zh_hans = "化身铠甲"
+zh_hant = "化身鎧甲"
+
+# form 3 (the miximax's own armour + Miximax), crc32 87049996
+[[row]]
+id = "utilities_view_forms_form3"
+es = "Armadura Miximax"
+en = "Miximax Armour"
+fr = "Mixi-Armure"
+de = "Miximorph-Rüstung"
+it = "Mixi-Armatura"
+pt = "Mixi-Armadura"
+ja = "ミキシトランス・アームド"
+zh_hans = "合体变身铠甲"
+zh_hant = "合體變身鎧甲"
+
+# form 4 (the aura slot's armour + Miximax), crc32 2606027439
+[[row]]
+id = "utilities_view_forms_form4"
+es = "Armadura + Miximax"
+en = "Armour + Miximax"
+fr = "Armure + Miximax"
+de = "Rüstung + Miximorph"
+it = "Armatura + Miximax"
+pt = "Armadura + Miximax"
+ja = "アームド＋ミキシトランス"
+zh_hans = "化身铠甲＋合体变身"
+zh_hant = "化身鎧甲＋合體變身"

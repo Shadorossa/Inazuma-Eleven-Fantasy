@@ -1,0 +1,157 @@
+schema = "VRFW.game/2"
+
+# Player Training › the classic training's commands, its match modifier and its save import (moved from Inazuma
+# Fantasy's content\game\training.toml + chara_records.toml on 2026-10-14; docs/game/mechanics/training-classic.md,
+# stat-training.md). The logic is scripts\player_training.lua (PlayerTraining.*, rules in scripts\lib\
+# training_rules.lua, the Suerte blob in scripts\lib\training_store.lua). The old command names CMND_EVT_TRAIN_* stay
+# as aliases: the training window evt_training_menu (graft player_training_menu) and Inazuma Fantasy's skill-table
+# training mode (its graft training_btn) call them by those names.
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_INFO"     # (charaStHdl, fresh) -> ok, status, libTotal, libAvail, level, position, dirty, growthType, rule
+aliases = ["CMND_EVT_TRAIN_INFO"]
+handler = "PlayerTraining.Info"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_STAT"     # (charaStHdl, idx) -> ok, value, base, bonus, delta, committed, min, max, partner1, partner2
+aliases = ["CMND_EVT_TRAIN_STAT"]
+handler = "PlayerTraining.Stat"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_SET"      # (charaStHdl, idx, newDelta) -> ok, stop, reached, libAvail, d0 … d8
+aliases = ["CMND_EVT_TRAIN_SET"]
+handler = "PlayerTraining.Set"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_COMMIT"   # (charaStHdl) -> ok, status
+aliases = ["CMND_EVT_TRAIN_COMMIT"]
+handler = "PlayerTraining.Commit"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_CANCEL"   # (charaStHdl, 0 = every session) -> ok
+aliases = ["CMND_EVT_TRAIN_CANCEL"]
+handler = "PlayerTraining.Cancel"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_RESET"    # (charaStHdl) -> ok, libAvail
+aliases = ["CMND_EVT_TRAIN_RESET"]
+handler = "PlayerTraining.Reset"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_LUCK_DELTA"   # (charaStHdl) -> the committed Suerte delta (0 = none)
+handler = "PlayerTraining.LuckDelta"
+needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+
+# ------------------------------------------------------------------------------------------------ the match copy
+
+[[VRFW.State]]
+key = "player_training.active"     # 1 = the training runs (scripts\player_training.lua)
+
+# prm_growth[0..7] (the trained deltas) added to the match copy of a saved character's copy (not kind 0) whose card
+# has per-character values (Character Reforged's table); clamped to 1..9999 (the engine keeps a minimum of 1). Before
+# Character Reforged's run speed (its order 100).
+[[VRFW.MatchStat]]
+name = "PlayerTraining.TrainedPoints"
+order = 10
+when = [
+  { state = "player_training.active", equals = 1 },
+  { value = "mask(args[2], 0xF000)", not = 0 },
+  { value = ["[record(args[2]) + 4]:u32"], in_table = "character_reforged/CharacterReforged.StatRow" },
+]
+stat = "clamp(args[4] + [record(args[2]) + 0x24 + i * 4]:i32, 1, 9999)"
+
+# module bit 16 of CMND_EVT_LOADER_VERSION (the game Lua's «training available» test: the team dock row, the window,
+# the skill table's training mode); was Inazuma Fantasy's module training
+[[VRFW.ModuleMask]]
+bit = 4
+needs = ["CMND_PLAYERTRAINING_INFO", "PlayerTraining.TrainedPoints"]
+
+# ------------------------------------------------------------------------------------------------ the training beans
+
+# The training replaces the retail training beans (docs/game/mechanics/beans-training.md): while this mod is on, an
+# equipped bean adds nothing to any stat and no bean is ever equipped automatically. Without the mod nothing changes
+# (these declarations ship only here).
+#
+# RefreshBeansParam (profile Board.RefreshBeansParam) is the one writer of the bean term of a character's parameter block
+# (param block [obj + 0x10], + 0x90: one i32 per stat type 0..7 = min(count, cap) of its bean slot), which every stat
+# sum adds (menus, the player page, the match copies). After the game's code the 8 entries are 0. The bean slots and
+# the items themselves are untouched (the save keeps them; they count again once the mod is off).
+[[VRFW.Hook]]
+name = "PlayerTraining.BeansGiveNothing"
+game = "Board.RefreshBeansParam"
+kind = "function"
+
+[[VRFW.Hook.answer]]
+phase = "post"
+each = { count = "8", max = 8 }
+when = { value = "[args[1] + 0x10]", not = 0 }
+value = "0"
+write = "[[args[1] + 0x10] + 0x90 + i * 4]:i32"
+
+# TeamAutoEquipBeans (profile Board.TeamAutoEquipBeans): every automatic bean equip (the «Equipar judías» rows and the five
+# native callers gated by the «Autoequipar judías» flag: joins, level-ups, end-of-match prizes) is skipped; the answer
+# 0x100 = not done, reason 1 («no beans»: the retail rows show their «no beans» line), nothing equipped. The beans stay
+# in the inventory. The one-character fill of the rarity-up check (0xE82E70) is NOT blocked: a rarity-up that needs
+# beans keeps working (a cost, no stat gain).
+[[VRFW.Hook]]
+name = "PlayerTraining.NoBeanAutoEquip"
+game = "Board.TeamAutoEquipBeans"
+kind = "function"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+value = "256"
+write = "ret"
+
+# The «Autoequipar judías» setting (retail commands 0x2086CD04 get / 0x799BDB53 set): read as off, a change ignored
+# (scripts\player_training.lua PlayerTraining.AutoBeansGet / AutoBeansSet)
+[[VRFW.CommandFilter]]
+name = "PlayerTraining.AutoBeansGet"
+command = 0x2086CD04
+handler = "PlayerTraining.AutoBeansGet"
+
+[[VRFW.CommandFilter]]
+name = "PlayerTraining.AutoBeansSet"
+command = 0x799BDB53
+handler = "PlayerTraining.AutoBeansSet"
+
+# CMND_PLAYERTRAINING_BEANS_OFF() -> true while the beans give nothing (graft player_training_beans: the board's bean
+# slot shows a message instead of the retail bean menu)
+[[VRFW.Command]]
+name = "CMND_PLAYERTRAINING_BEANS_OFF"
+handler = "PlayerTraining.BeansOff"
+needs = ["PlayerTraining.BeansGiveNothing"]
+
+# ------------------------------------------------------------------------------------------------ the save
+
+# Inazuma Fantasy's Suerte deltas (its blob training.json, same layout) copied once per slot (never over this mod's
+# own); the trained points themselves (prm_growth) are the game's save
+[[VRFW.SaveImport]]
+name = "PlayerTraining.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["training.json"]
+
+# ------------------------------------------------------------------------------------------------ the game's objects
+
+# CharaStatus* FindCharaRecord(Container*, const u32* charaHdl) 0xD7F3E0: the status object of a handle (record at
+# +0x08, param block at +0x10)
+[[VRFW.Function]]
+name = "PlayerTraining.FindCharaRecord"
+game = "Board.FindCharaRecord"
+
+# u16 HumanChara_GetLevel(CharaStatus*, u8* outFlag) 0xD85710: the effective level, as HumanChara_RefreshStatus passes it
+[[VRFW.Function]]
+name = "PlayerTraining.HumanGetLevel"
+game = "Chara.HumanGetLevel"
+
+# [[g_gameRoot]+0x69D8]: the character containers (container of kind k = [this + 8 + k * 8])
+[[VRFW.Global]]
+name = "player_training_chara_containers"
+base = "game_root"
+chain = [0x69D8]

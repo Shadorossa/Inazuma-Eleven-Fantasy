@@ -1,0 +1,27 @@
+# «Ruptura relámpago» (Inazuma Break, whs00380 and whs00380_mm, same cut-in; wind shot of three players, cut-in
+# ev60_00380): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0070,
+# the ball struck 4.3 m up and shot level): its yellow glow and flickering light cards, and at the strike the
+# lightning bolts crackling round it and its flashes, instead of the plain wind special-shot aura (ega0075b).
+# The object is ev6038in00 (effect/event/ev60/ev6038in00/), built by research/scripts/inazuma_break_ball_fx.py from
+# the cut-in's effect object ev60003800: the cut-in's motion from the strike (604) replayed, then held at c0070 frame
+# 648 (the light cards blinking on as over 626-648), ball at the origin flying +Z, x1; the glow and light cards (they
+# face the cut-in's camera) turned to face the touchline, two-sided. Left out: the sky bolts striking the kick point
+# and their ground ring. docs/game/media/inazuma-break-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\inazuma_break_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "inazuma_break"
+from = "ega0075b"
+object = "effect/event/ev60/ev6038in00/ev6038in00.objbin"
+
+[[shot_aura]]
+name = "inazuma_break"
+when = { techniques = ["whs00380", "whs00380_mm"] }
+aura = "inazuma_break"
+like = "ega0075b"
+# the aura's replay (44 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 44 }

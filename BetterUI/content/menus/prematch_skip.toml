@@ -6,7 +6,7 @@
 # layout, one plate (204 px) + 12 px to the left, so it moves with the retail one wherever the locator goes. Its texts
 # («<CMD_FUNC4>» + clean_hud.prematch_skip) and its ring are set by the graft. Only event_menu gets the extra attach row
 # (the locator object is redirected there, not changed in place: replay_menu keeps the retail one).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # the node the X guide hangs on: _replay_guide01 (-248, -44) moved left by the plate width 204 + a 12 px gap
 [[layout]]

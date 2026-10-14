@@ -1,0 +1,54 @@
+id = "aura_points"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Aura Points"
+version = "1.0.2"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Keshin, keshin armours and totems run on points instead of time, as in Chrono Stone and Galaxy. Each player has a fighting-spirit pool (PEG) for each keshin and an SP bar for each totem for the whole match: summoning is free and has no time limit, the keshin's or totem's own special move costs its points instead of tension, an armour drains its keshin's PEG while it is worn, and an empty pool sends the spirit away for the rest of the match. A purple PEG bar (blue for SP) shows under the controlled player's face and, in place of the stopwatch, on the aura's entry of the bottom row of team passives and auras. Without this mod they keep the game's own timers. Works with the VR-Framework alone; Inazuma Fantasy adds its own rules on top."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-14"
+# This mod's own names (TOML keys [AuraPoints.X], Lua AuraPoints.X, commands CMND_AURAPOINTS_*, tables AuraPoints.*;
+# game Lua AuraPoints_Hud); never VRFW.
+prefix = "AuraPoints"
+folder = "AuraPoints"
+# Split out of Inazuma Fantasy on 2026-10-14 (owner request; docs/refactor/aura-mods-split.md «Aura Points»): IF's
+# keshin PEG / totem SP pools, their costs and the HUD bar. Standard mod layout (docs/framework/mod-layout.md):
+#   config.toml                         [points]: the rules (cost model, armour drain / refill, which moves pay, CPU)
+#   content\match_resources\            peg.toml / sp.toml: the pools per keshin / totem (generated from the wiki
+#                                       export by research/scripts/peg_table_build.py / soul_table_build.py)
+#   content\game\aura_points.toml       the cost points' providers (cost check, start pay, tension pay), structs, commands
+#   content\menus\peg_bar.toml          the HUD bar's layers; content\images\…\btl06_13\aura_points_bars.toml its sprites
+#   scripts\aura_points.lua (+ lib\)    the run time; graft research/grafts/aura_points_hud: the HUD bar
+#   content\menus\buff_bar.toml         the layer of the PEG / SP bars on the buff row's keshin / armour / totem
+#                                       entries (graft research/grafts/aura_points_buff_bar: in place of the stopwatch)
+#   content\extra_slots\skill_set_points.toml   the pool rules on Character Reforged's RB plates (start by the pool,
+#                                       never by the hyper gauge; empty pool = refused; the spirit move's PEG / SP cost)
+# vr_framework 2.2.221: per-aura match resources, the cost points (hook bus `order`), the aura rules (group keshin),
+# extra slot rules that read other mods' tables (`<mod>/<table>`, Inazuma Fantasy's Hiper slot reads this mod's).
+# character_reforged: the shared base of the aura mods (owner decision 2026-10-14).
+# vr_framework 2.4.30: the plates' lent aura passes the engine's team sequence lock without Inazuma Fantasy's policy
+# keys (the armour in the shooting zone), the identity rebuild that takes.
+requires = ["vr_framework>=2.4.30", "character_reforged>=1.0.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["memory", "call", "command", "hook"]
+
+# Other mods read the pools through the framework (VRFW.resource.* on aura_points.peg / aura_points.sp, the answers'
+# resource()), the tables below in their native answers / extra slot rules (`aura_points/AuraPoints.Pair`…), the
+# commands CMND_AURAPOINTS_PEG / _PEG_INFO from their game Lua, and give their inputs as rule flags
+# (aura_points.free_peg / free_sp / cost_pct.<hdl> / exempt.<hdl> / armour_free.<hdl>: scripts\aura_points.lua).
+[exports]
+functions = []
+keys = []
+tables = ["AuraPoints.Aura", "AuraPoints.Player", "AuraPoints.Pair", "AuraPoints.Team"]
+game_lua = ["AuraPoints_Hud"]
+
+# A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
+# ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
+# of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 40

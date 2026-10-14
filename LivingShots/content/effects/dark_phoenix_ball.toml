@@ -1,0 +1,29 @@
+# «Dark Phoenix» («Fénix oscuro», whs00860, forest shot, three players, cut-in ev60_00860; Inazuma Fantasy's override
+# whs00860_or plays the same cut-in): while the ball flies to the goal it keeps the end of the cut-in's OWN look (the
+# last cut c0700, held at frame 546, the texture flow running on) instead of the plain forest special-shot aura
+# (ega0075d): the purple phoenix carrying the ball under its breast, flapping its wings and swaying round it as the cut-in
+# shows it (its c0700 motion replayed forward and back over the whole flight), in its purple fire; the ball wrapped in
+# its purple fire bands and rings trailing ~1 m behind it, its wave shells and glows, its pink sparks flying off the
+# ball and the phoenix's breast. x0.4 of the cut-in size (phoenix ~8 m from beak to tail tips, ~6 m across the wings).
+# The glow discs on the ball keep the cut-in's pose (50 deg off the touchline axis: discs, not lines, from the
+# touchline), both faces drawn. The speed-line tunnel, the sparks left at the kick point and the 30 m spark field are dropped.
+# The object is ev6086dp00 (assets\data\{common,dx11}\effect\event\ev60\ev6086dp00\), built by
+# research/scripts/dark_phoenix_ball_fx.py from ev60008600 + the phoenix (waza model ev60_00860 and its fire layer
+# ev60008601, baked as rigid meshes per bone); docs/game/media/dark-phoenix-ball-fx.md.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"; skillColorIdx 3, skillEffectBitFlag 0):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its dive:
+# content\techniques\dark_phoenix_trajectory.toml (whs00860; whs00860_or is Inazuma Fantasy's own move: aura only).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dark_phoenix"
+from = "ega0075d"
+object = "effect/event/ev60/ev6086dp00/ev6086dp00.objbin"
+
+[[shot_aura]]
+name = "dark_phoenix"
+when = { techniques = ["whs00860", "whs00860_or"] }
+aura = "dark_phoenix"
+like = "ega0075d"

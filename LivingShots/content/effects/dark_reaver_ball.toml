@@ -1,0 +1,25 @@
+# «Desolación eterna» (Dark Reaver, whs01930; void shot, cut-in ev60_01930): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0500, the ball kicked from 12.8 m, diving along a gently
+# curving path): its red-black cores, rings, auras and waves, the slash trail of the kick and the dark breath it
+# sheds behind it, instead of the plain void special-shot aura (ega0075e). The object is ev6193dr00
+# (effect/event/ev60/ev6193dr00/), built by research/scripts/dark_reaver_ball_fx.py from the cut-in's effect object
+# ev60019300: c0500 replayed from just before the kick (404), then held at frame 488, ball at the origin flying +Z,
+# x1. Left out: the scenery (backdrop, ground, sky), the keshin. docs/game/media/dark-reaver-ball-fx.md. The trigger
+# copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\dark_reaver_trajectory.toml. Mod
+# «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dark_reaver"
+from = "ega0075e"
+object = "effect/event/ev60/ev6193dr00/ev6193dr00.objbin"
+
+[[shot_aura]]
+name = "dark_reaver"
+when = { techniques = ["whs01930"] }
+aura = "dark_reaver"
+like = "ega0075e"
+# the aura's replay (84 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 84 }

@@ -1,0 +1,15 @@
+# «Living Shots» (shot_fx): no translucent blue/red band along the shot on the pitch (Nacho 2026-10-08).
+# The band is the game's «shot line» effect: ShotMotionBuild 0x14A6810 plays it through the effect manager when the
+# shot's line has a radius (req+0xC4 > 0): ega0086_1 (crc 0xDBCD8950) or ega0086_2 (0x42C4D8EA, the other side),
+# both rows on the object effect/battle/common/ega0086/ega0086.objbin (meshes _100_areaA_01 / _100_areaB_01 /
+# _200_scA_01 / _200_scB_02), rotated (0, yaw, 0, 10.0), mode 5, scaled to the line (width = 2 x radius + 0.15,
+# length x 0.1). Visual only: the line itself (start, end, radius at req+0xA0 / +0xB0 / +0xC4, ball+0x18C0..) and every
+# check that reads it (blocks on the line) stay the game's; only the object's four meshes are not drawn (alpha 0, in
+# place: the object is used by these two rows only). docs/game/mechanics/move-mini-effects.md §9.9.
+schema = "VRFW.effect/1"
+
+[[recolor]]
+object = "ega0086"
+[[recolor.tint]]
+mesh = ["_100_area", "_200_sc"]
+alpha = 0.0

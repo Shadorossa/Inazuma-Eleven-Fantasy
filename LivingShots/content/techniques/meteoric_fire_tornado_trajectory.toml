@@ -1,0 +1,35 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Tornado de fuego meteoro (Meteoric Fire Tornado, whs10110) and its V
+# (whs10160) (Nacho 2026-10-08: each move its own dive, matching its cut-in). In the cut-in's shot cut (c0500) the
+# meteor falls from the sky onto the goal; in the match the ball starts that high over the kick point and comes into
+# the goal at the cut-in's angle: the angled dive (docs/framework/technique.md §4e, docs/game/mechanics/
+# move-mini-effects.md §7.6). Close in the start comes down onto the 53° line (the angle is kept); farther the ball
+# leaves level at 23.3 m and bends into the 53° line half way down it (no kink: its aura, turned along the flight,
+# turns smoothly). Its aura (content\effects\meteoric_fire_tornado_ball.toml) already trails along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move meteoric_fire_tornado): the ball joint c_add_1_0
+# (ball_set chain) of ev60101100 c0500, frames 331-440: (-8.38, 23.37, 30.40) -> (0.34, 8.88, 36.70), 23.37 m ->
+# 8.88 m over 10.76 m on the ground = 53.4° down (52.7° over the last 4 frames; the V's object has the same animation).
+#   height     = 23.3: the start (23.37 m, ball centre) over a kick on the pitch (ball radius 0.11).
+#   angle      = 53:   the descent angle.
+#   end_height = 2.0:  the cut-in ends at 8.9 m (over the bar, out of the keeper's reach): brought to 2.0 m, under
+#                      the crossbar, a high ball the keeper scene can play.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for these moves (no conflict).
+
+# Tornado de fuego meteoro (whs10110).
+[[edit]]
+target = "whs10110"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 23.41 m (23.3 over a kick on the pitch) held until 16.13 m before the goal point, then the 53.0
+# deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 8.07 m down (bend 0.5). A shot shorter
+# than 16.13 m starts lower, on the line.
+trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }
+# Tornado de fuego meteoro V (whs10160): the same cut-in animation.
+[[edit]]
+target = "whs10160"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 23.41 m (23.3 over a kick on the pitch) held until 16.13 m before the goal point, then the 53.0
+# deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 8.07 m down (bend 0.5). A shot shorter
+# than 16.13 m starts lower, on the line.
+trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }

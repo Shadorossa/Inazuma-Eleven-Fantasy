@@ -336,6 +336,24 @@ VRFW.on("hook:TB_PartyLoad:post", function(ev)
   return nil
 end)
 
+-- A return to the title (GameReset) clears the game in memory: until the next party Load its docks are the reset
+-- game's, not the slot's save, and must not be taken as «docks edited» (the boot mode's mode_leave read them and staged
+-- their fingerprint, so every later load of the slot warned «written with other docks», 2026-10-14 log: fp 07D9C1C2 =
+-- the reset docks, C7D24E2B = the save's). The party_loads count at the last reset; nil = a load came after it.
+local reset_loads = nil
+VRFW.on("game_reset", function()
+  reset_loads = party_loads
+  return nil
+end)
+local function docks_from_reset()
+  if reset_loads == nil then return false end
+  if party_loads ~= reset_loads then
+    reset_loads = nil
+    return false
+  end
+  return true
+end
+
 local loads_warned = false
 local function loads_now()
   local ok, v = pcall(VRFW.state, KEY_LOADS)
@@ -589,7 +607,7 @@ local function touch(why)
     local st = resolve(slot, party)
     if SS.dirty and slot >= 2 and (SS.restage or not SS.staged) then
       stage(why)
-    elseif slot >= 2 and st and (st.fingerprint or 0) ~= 0 and loads_now() ~= 0 then
+    elseif slot >= 2 and st and (st.fingerprint or 0) ~= 0 and loads_now() ~= 0 and not docks_from_reset() then
       -- docks edited without a page change (dock closed / mode change): the sidecar takes the live fingerprint, else
       -- every later load of the slot warned «written with other docks» for an ordinary edit (2026-10-13)
       local w = live_docks(party)

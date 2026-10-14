@@ -1,0 +1,197 @@
+schema = "VRFW.character/2"
+# Character Reforged · Newspaper Club · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11500450"                                   # Colleen Evenholm
+
+  [[edit.cards]]
+  id = 0xCF5733D7                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 246, technique = 247, pressure = 180, physical = 205, intelligence = 215, agility = 184, freedom = 221 }
+  moves = [
+    { move = 0xD9BB22A7, level = 4 },                     # Air Ride
+    { move = 0x5E5AF1A9, level = 18 },                    # Northern Impact
+    { move = 0xE0549BE6, level = 28 },                    # Easy Breezy Kid
+    { move = 0x768AB9C5, level = 54 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c11700180"                                   # Veronica Camry
+
+  [[edit.cards]]
+  id = 0x31FA2E7A                                         # MF/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 227, technique = 220, pressure = 186, physical = 223, intelligence = 201, agility = 190, freedom = 263 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 2 },                     # The Ikaros
+    { move = 0xEF5D458A, level = 15 },                    # Burnout
+    { move = 0xAF150D21, level = 25 },                    # Swallow Counter
+    { move = 0x0A3F27B7, level = 31 },                    # Foul Offence 3
+  ]
+
+[[edit]]
+target = "c11700190"                                   # Cora Inkton
+
+  [[edit.cards]]
+  id = 0x28E11F3B                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 185, technique = 167, pressure = 204, physical = 301, intelligence = 228, agility = 200, freedom = 255 }
+  moves = [
+    { move = 0x67F17FA8, level = 1 },                     # Mega Quake
+    { move = 0xC324C788, level = 6 },                     # Blast Mine
+    { move = 0x2FB941B3, level = 18 },                    # Stone Prison
+    { move = 0x52CEB5F6, level = 47 },                    # Iron Wall
+  ]
+
+[[edit]]
+target = "c11700200"                                   # Uriah Goldfield
+
+  [[edit.cards]]
+  id = 0xFB651A2B                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 282, control = 246, technique = 211, pressure = 167, physical = 215, intelligence = 180, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x5F989B9E, level = 5 },                     # Wyvern Crash
+    { move = 0x4E22F64D, level = 9 },                     # Transporter Device
+    { move = 0x4C1D87D5, level = 31 },                    # Bed of Roses
+    { move = 0x121A2FFE, level = 45 },                    # Mirage Shot
+  ]
+
+[[edit]]
+target = "c11700570"                                   # Verica Nyman
+
+  [[edit.cards]]
+  id = 0xB16B9A69                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 238, control = 247, technique = 228, pressure = 167, physical = 221, intelligence = 204, agility = 185, freedom = 255 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 4 },                     # The Ikaros
+    { move = 0x141046AB, level = 14 },                    # Overnight Fortress
+    { move = 0x087999EE, level = 25 },                    # Heel Drop
+    { move = 0xDA3FF6C9, level = 32 },                    # Criss-Cross
+  ]
+
+[[edit]]
+target = "c11734010"                                   # Aldus Ogden
+
+  [[edit.cards]]
+  id = 0x29381283                                         # GK/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 205, control = 207, technique = 200, pressure = 185, physical = 266, intelligence = 190, agility = 236, freedom = 234 }
+  moves = [
+    { move = 0xF2CB0879, level = 3 },                     # Mugen the Hand
+    { move = 0x514A6198, level = 15 },                    # Asteroid Belt
+    { move = 0xF14FDC17, level = 26 },                    # Shot Pocket
+    { move = 0x9B3048AB, level = 57 },                    # Shadow Catch
+  ]
+
+[[edit]]
+target = "c11734020"                                   # Adal Miramond
+
+  [[edit.cards]]
+  id = 0x02154140                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 244, technique = 246, pressure = 181, physical = 205, intelligence = 215, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x2354CA2D, level = 4 },                     # Wind God's Dance
+    { move = 0x5E5AF1A9, level = 12 },                    # Northern Impact
+    { move = 0x0D368F6B, level = 33 },                    # Heaven's Time
+    { move = 0x3F00EDE9, level = 39 },                    # Dash Storm
+  ]
+
+[[edit]]
+target = "c11734030"                                   # Trace Combe
+
+  [[edit.cards]]
+  id = 0x1B0E7001                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 189, technique = 181, pressure = 212, physical = 275, intelligence = 243, agility = 200, freedom = 247 }
+  moves = [
+    { move = 0x78218C02, level = 4 },                     # Duskfall
+    { move = 0x4E22F64D, level = 19 },                    # Transporter Device
+    { move = 0x1A868BED, level = 36 },                    # Clone Defence
+    { move = 0xB5B7108F, level = 57 },                    # Shadow Stitch
+  ]
+
+[[edit]]
+target = "c11734040"                                   # Tito De Core
+
+  [[edit.cards]]
+  id = 0x544FE6C6                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 311, control = 243, technique = 204, pressure = 158, physical = 221, intelligence = 173, agility = 182, freedom = 255 }
+  moves = [
+    { move = 0x0C08B663, level = 1 },                     # Doom Dive Drive
+    { move = 0x2A4E3349, level = 18 },                    # Heart Beat
+    { move = 0x3663DB4C, level = 26 },                    # Utter Gutsiness Bat
+    { move = 0xBDAE2862, level = 56 },                    # Hellfire
+  ]
+
+[[edit]]
+target = "c11734050"                                   # Fiona Leroux
+
+  [[edit.cards]]
+  id = 0x4D54D787                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 211, control = 246, technique = 236, pressure = 174, physical = 216, intelligence = 204, agility = 189, freedom = 247 }
+  moves = [
+    { move = 0x7748D3F2, level = 1 },                     # Devil Ball
+    { move = 0xACAC21CE, level = 9 },                     # Fake Ball
+    { move = 0x21127474, level = 25 },                    # Ultra Moon
+    { move = 0x750E6DAB, level = 46 },                    # Matador Feint
+  ]
+
+[[edit]]
+target = "c11734060"                                   # Nance Meridian
+
+  [[edit.cards]]
+  id = 0x66798444                                         # DF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 189, technique = 184, pressure = 212, physical = 289, intelligence = 248, agility = 197, freedom = 225 }
+  moves = [
+    { move = 0x67F17FA8, level = 1 },                     # Mega Quake
+    { move = 0x029E7B25, level = 13 },                    # Gaia Break
+    { move = 0x2FB941B3, level = 30 },                    # Stone Prison
+    { move = 0x60F8D774, level = 54 },                    # Gravestone
+  ]
+
+[[edit]]
+target = "c11734070"                                   # Memo Rize
+
+  [[edit.cards]]
+  id = 0x7F62B505                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 211, control = 246, technique = 236, pressure = 174, physical = 216, intelligence = 204, agility = 189, freedom = 247 }
+  moves = [
+    { move = 0x7DD6FEF8, level = 1 },                     # Athena's Anthem
+    { move = 0x19025F83, level = 18 },                    # Quick Draw
+    { move = 0x750E6DAB, level = 33 },                    # Matador Feint
+    { move = 0x17A96A44, level = 57 },                    # Clone Faker
+  ]

@@ -1,0 +1,113 @@
+schema = "VRFW.character/2"
+# Character Reforged · Sub Character · Inazuma Eleven
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c01006540"                                   # Ton Nino
+
+  [[edit.cards]]
+  id = 0x6E82A650                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 270, technique = 208, pressure = 163, physical = 198, intelligence = 225, agility = 159, freedom = 343 }
+  moves = [
+    { move = 0x60397CCA, level = 14 },                    # Cross Drive
+    { move = 0xC66BD10D, level = 22 },                    # Zigzag Spark
+    { move = 0x3663DB4C, level = 36 },                    # Utter Gutsiness Bat
+    { move = 0x47380F29, level = 51 },                    # Echo Ball
+  ]
+
+[[edit]]
+target = "c01010940"                                   # Chester Horse Jr
+
+  [[edit.cards]]
+  id = 0x7F932958                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 266, technique = 297, pressure = 189, physical = 203, intelligence = 257, agility = 201, freedom = 217 }
+  moves = [
+    { move = 0x6B1CF436, level = 5 },                     # Bewildered
+    { move = 0x01DB04F5, level = 15 },                    # Defence Scan
+    { move = 0x29B328E6, level = 29 },                    # Spectacle Crash
+    { move = 0x47380F29, level = 44 },                    # Echo Ball
+  ]
+
+[[edit]]
+target = "c06037360"                                   # Julia Blaze
+
+  [[edit.cards]]
+  id = 0x62829B5B                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 115, control = 248, technique = 284, pressure = 205, physical = 155, intelligence = 236, agility = 181, freedom = 375 }
+  moves = [
+    { move = 0xC2E6ADBF, level = 1 },                     # Log Roll
+    { move = 0x518BCA26, level = 20 },                    # Fire Tornado
+    { move = 0x2A4E3349, level = 32 },                    # Heart Beat
+    { move = 0x43B5739B, level = 66 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c11901080"                                   # Chester Horse Sr
+
+  [[edit.cards]]
+  id = 0xB28E4258                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 185, control = 213, technique = 146, pressure = 216, physical = 240, intelligence = 221, agility = 258, freedom = 217 }
+  moves = [
+    { move = 0xEBD03938, level = 3 },                     # Utter Gutsiness Catch
+    { move = 0xE4849E49, level = 12 },                    # Wild Dunk
+    { move = 0xDBA0E5E3, level = 30 },                    # Gigant Wall
+    { move = 0x2D9F7E76, level = 44 },                    # Breath Taker
+  ]
+
+[[edit]]
+target = "c11901090"                                   # Zak Wallside
+
+  [[edit.cards]]
+  id = 0xAB957319                                         # DF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 200, control = 192, technique = 181, pressure = 247, physical = 234, intelligence = 275, agility = 196, freedom = 343 }
+  moves = [
+    { move = 0x63BDA8A4, level = 3 },                     # Inazuma Drop
+    { move = 0x7D6E9A87, level = 10 },                    # The Wall
+    { move = 0xA8215D7C, level = 19 },                    # The Mountain
+    { move = 0x73C5AF40, level = 34 },                    # Dash Accelerator
+  ]
+
+[[edit]]
+target = "c11902080"                                   # Sonny Raimon
+
+  [[edit.cards]]
+  id = 0xA03BEDB6                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 271, technique = 225, pressure = 161, physical = 211, intelligence = 203, agility = 192, freedom = 231 }
+  moves = [
+    { move = 0xC4D13C6B, level = 1 },                     # Katana Kick
+    { move = 0x568262FA, level = 14 },                    # Dark Tornado
+    { move = 0xA0BDF96F, level = 32 },                    # Ballista Barrage
+    { move = 0xF5638A87, level = 53 },                    # Elemental Destroyer
+  ]
+
+[[edit]]
+target = "c11903020"                                   # Gregory Smith
+
+  [[edit.cards]]
+  id = 0xE2686259                                         # GK/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 235, control = 216, technique = 209, pressure = 220, physical = 220, intelligence = 228, agility = 221, freedom = 375 }
+  moves = [
+    { move = 0xEE9F2FBD, level = 3 },                     # God Catch
+    { move = 0x8C382852, level = 9 },                     # God Hand
+    { move = 0xC636A810, level = 21 },                    # Combustion Catch
+    { move = 0x8AF3EAB9, level = 30 },                    # Hammer of Fury
+  ]

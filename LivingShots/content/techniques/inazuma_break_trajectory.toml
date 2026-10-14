@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Ruptura relámpago (Inazuma Break, whs00380 and whs00380_mm, same cut-in
+# ev60_00380; whs00380_mm covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights
+# over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0070) the three players strike the ball 4.28 m up and it flies dead level (no descent). In the match
+# it leaves at the cut-in's 4.28 m and comes in one straight line into the goal at 2.0 m (the keeper's reach; the level
+# run would put every shot over the bar), as La Tierra: Infinito.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move inazuma_break):
+# the event ball (s01) of ev60_00380 c0070, event frames 1604-1652: [[0.00, 4.28], [15.96, 4.28]] (0.00 m): level.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+# (The same move's goal scene: content\techniques\goal_smash.toml.)
+
+# Ruptura relámpago (whs00380).
+[[edit]]
+target = "whs00380"
+trajectory = { points = [[0.0, 4.28]], goal_points = [[0.0, 2.0]], unblockable = false }

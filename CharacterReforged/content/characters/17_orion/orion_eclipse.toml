@@ -1,0 +1,219 @@
+schema = "VRFW.character/2"
+# Character Reforged · Orion Eclipse · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c08120010"                                   # Betelgeuse
+
+  [[edit.cards]]
+  id = 0x14510A34                                         # FW/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 344, control = 217, technique = 192, pressure = 194, physical = 171, intelligence = 181, agility = 184, freedom = 238 }
+  moves = [
+    { move = 0x4CDC2C6B, level = 5 },                     # Shooting Star
+    { move = 0x627FC293, level = 9 },                     # Meteor Attack
+    { move = 0xDA3FF6C9, level = 24 },                    # Criss-Cross
+    { move = 0x97C48D68, level = 40 },                    # Astro Gate
+  ]
+
+[[edit]]
+target = "c08120020"                                   # Jade Beor
+
+  [[edit.cards]]
+  id = 0x3F7C59F7                                         # FW/MF · forest
+  growth = "normal"
+  stats = { kick = 362, control = 251, technique = 238, pressure = 178, physical = 167, intelligence = 212, agility = 170, freedom = 251 }
+  moves = [
+    { move = 0xA5777314, level = 2 },                     # Assault Shot
+    { move = 0x3E49918D, level = 15 },                    # Orion's Shade
+    { move = 0x59A180E7, level = 32 },                    # Shadow Swarm
+    { move = 0x28B0E96F, level = 46 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c08120030"                                   # Rigel
+
+  [[edit.cards]]
+  id = 0x266768B6                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 281, control = 236, technique = 232, pressure = 185, physical = 158, intelligence = 213, agility = 176, freedom = 251 }
+  moves = [
+    { move = 0x0885CAD1, level = 5 },                     # Prime Legend
+    { move = 0x627FC293, level = 15 },                    # Meteor Attack
+    { move = 0xDA3FF6C9, level = 26 },                    # Criss-Cross
+    { move = 0x3B8D915B, level = 50 },                    # Meteor Shower
+  ]
+
+[[edit]]
+target = "c08120040"                                   # Bellatrix
+
+  [[edit.cards]]
+  id = 0x6926FE71                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 258, control = 223, technique = 208, pressure = 182, physical = 184, intelligence = 192, agility = 189, freedom = 275 }
+  moves = [
+    { move = 0x24E5068E, level = 2 },                     # Fractal Repeller
+    { move = 0xAC91D94F, level = 19 },                    # Major Miner
+    { move = 0xDA3FF6C9, level = 35 },                    # Criss-Cross
+    { move = 0x3B8D915B, level = 49 },                    # Meteor Shower
+  ]
+
+[[edit]]
+target = "c08120050"                                   # Mintaka
+
+  [[edit.cards]]
+  id = 0x703DCF30                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 279, control = 231, technique = 223, pressure = 184, physical = 166, intelligence = 207, agility = 185, freedom = 259 }
+  moves = [
+    { move = 0x1F0836D6, level = 2 },                     # Comet Shot
+    { move = 0x2FB941B3, level = 16 },                    # Stone Prison
+    { move = 0x4CDC2C6B, level = 21 },                    # Shooting Star
+    { move = 0x10A0C298, level = 42 },                    # Warp Drive
+  ]
+
+[[edit]]
+target = "c08120060"                                   # Alnilam
+
+  [[edit.cards]]
+  id = 0x5B109CF3                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 231, technique = 221, pressure = 178, physical = 159, intelligence = 197, agility = 176, freedom = 247 }
+  moves = [
+    { move = 0xDE4ED944, level = 1 },                     # Snowstorm Leopard
+    { move = 0xC79443BB, level = 17 },                    # Waterfall
+    { move = 0xDA3FF6C9, level = 31 },                    # Criss-Cross
+    { move = 0x10A0C298, level = 55 },                    # Warp Drive
+  ]
+
+[[edit]]
+target = "c08120070"                                   # Alnitak
+
+  [[edit.cards]]
+  id = 0x420BADB2                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 231, technique = 213, pressure = 177, physical = 163, intelligence = 192, agility = 185, freedom = 298 }
+  moves = [
+    { move = 0xDE4ED944, level = 1 },                     # Snowstorm Leopard
+    { move = 0xC79443BB, level = 17 },                    # Waterfall
+    { move = 0xDA3FF6C9, level = 23 },                    # Criss-Cross
+    { move = 0x10A0C298, level = 49 },                    # Warp Drive
+  ]
+
+[[edit]]
+target = "c08120080"                                   # Saiph
+
+  [[edit.cards]]
+  id = 0xC593B17D                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 163, technique = 142, pressure = 243, physical = 238, intelligence = 236, agility = 212, freedom = 271 }
+  moves = [
+    { move = 0x24E5068E, level = 4 },                     # Fractal Repeller
+    { move = 0xC79443BB, level = 12 },                    # Waterfall
+    { move = 0xDA3FF6C9, level = 30 },                    # Criss-Cross
+    { move = 0x0E0A3F7A, level = 46 },                    # Spatial Portal
+  ]
+
+[[edit]]
+target = "c08120090"                                   # Meissa
+
+  [[edit.cards]]
+  id = 0xDC88803C                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 176, technique = 144, pressure = 230, physical = 211, intelligence = 235, agility = 207, freedom = 335 }
+  moves = [
+    { move = 0x24E5068E, level = 5 },                     # Fractal Repeller
+    { move = 0xC79443BB, level = 9 },                     # Waterfall
+    { move = 0xDA3FF6C9, level = 29 },                    # Criss-Cross
+    { move = 0x28B0E96F, level = 41 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c08120100"                                   # Tabit
+
+  [[edit.cards]]
+  id = 0x0C885142                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 170, technique = 138, pressure = 228, physical = 236, intelligence = 228, agility = 209, freedom = 335 }
+  moves = [
+    { move = 0x24E5068E, level = 1 },                     # Fractal Repeller
+    { move = 0xC79443BB, level = 9 },                     # Waterfall
+    { move = 0xDA3FF6C9, level = 29 },                    # Criss-Cross
+    { move = 0x28B0E96F, level = 50 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c08120110"                                   # Procyon
+
+  [[edit.cards]]
+  id = 0x15936003                                         # GK/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 244, control = 194, technique = 174, pressure = 234, physical = 196, intelligence = 217, agility = 252, freedom = 244 }
+  moves = [
+    { move = 0x06B22DB5, level = 3 },                     # Gyro-Blocker
+    { move = 0x291202C4, level = 7 },                     # Shadow Shield
+    { move = 0x49F3BB72, level = 26 },                    # Psychlone
+    { move = 0x46A71C03, level = 39 },                    # Black Hole
+  ]
+
+[[edit]]
+target = "c08120120"                                   # Sirius
+
+  [[edit.cards]]
+  id = 0x3EBE33C0                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 174, technique = 138, pressure = 211, physical = 213, intelligence = 216, agility = 212, freedom = 259 }
+  moves = [
+    { move = 0x24E5068E, level = 4 },                     # Fractal Repeller
+    { move = 0x29728358, level = 11 },                    # Planet Shield
+    { move = 0xDA3FF6C9, level = 35 },                    # Criss-Cross
+    { move = 0x28B0E96F, level = 42 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c08120130"                                   # Hatysa
+
+  [[edit.cards]]
+  id = 0x27A50281                                         # MF/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 266, control = 215, technique = 185, pressure = 184, physical = 169, intelligence = 178, agility = 192, freedom = 285 }
+  moves = [
+    { move = 0x24E5068E, level = 2 },                     # Fractal Repeller
+    { move = 0x29728358, level = 17 },                    # Planet Shield
+    { move = 0xDA3FF6C9, level = 31 },                    # Criss-Cross
+    { move = 0x10A0C298, level = 39 },                    # Warp Drive
+  ]
+
+[[edit]]
+target = "c08120140"                                   # Kappa
+
+  [[edit.cards]]
+  id = 0x68E49446                                         # MF/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 254, control = 215, technique = 201, pressure = 200, physical = 161, intelligence = 196, agility = 190, freedom = 259 }
+  moves = [
+    { move = 0x24E5068E, level = 1 },                     # Fractal Repeller
+    { move = 0x29728358, level = 13 },                    # Planet Shield
+    { move = 0x514A6198, level = 28 },                    # Asteroid Belt
+    { move = 0x10A0C298, level = 37 },                    # Warp Drive
+  ]

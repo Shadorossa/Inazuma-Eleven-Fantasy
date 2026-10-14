@@ -1,0 +1,238 @@
+schema = "VRFW.character/2"
+# Character Reforged · Avenging Acrobats · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c08060010"                                   # Bruce Lau
+
+  [[edit.cards]]
+  id = 0x2A8D7F51                                         # GK/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 263, control = 192, technique = 169, pressure = 244, physical = 205, intelligence = 225, agility = 246, freedom = 271 }
+  moves = [
+    { move = 0x574008CD, level = 5 },                     # Kung Fu Fighting
+    { move = 0xF8D0B98D, level = 19 },                    # Fantastic Save
+    { move = 0x47657634, level = 36 },                    # Flame Breath
+    { move = 0xFF5C8DAF, level = 43 },                    # Shot Stopper
+  ]
+
+[[edit]]
+target = "c08060020"                                   # Coryn Fong
+
+  [[edit.cards]]
+  id = 0x01A02C92                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 266, control = 185, technique = 171, pressure = 236, physical = 209, intelligence = 269, agility = 197, freedom = 255 }
+  moves = [
+    { move = 0x17227C17, level = 4 },                     # Crack Shot
+    { move = 0x7A67325B, level = 16 },                    # Flame Dance
+    { move = 0x0D0B77EA, level = 32 },                    # Floral Fiesta
+    { move = 0x36A270F2, level = 53 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c08060030"                                   # Michelle Luo
+
+  [[edit.cards]]
+  id = 0x18BB1DD3                                         # DF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 182, technique = 170, pressure = 235, physical = 227, intelligence = 265, agility = 197, freedom = 247 }
+  moves = [
+    { move = 0x17227C17, level = 5 },                     # Crack Shot
+    { move = 0x7A67325B, level = 18 },                    # Flame Dance
+    { move = 0x31ABD82E, level = 25 },                    # Circus Block
+    { move = 0x2C3D95DD, level = 35 },                    # Sleeping Dust
+  ]
+
+[[edit]]
+target = "c08060040"                                   # Sammo Tong
+
+  [[edit.cards]]
+  id = 0x57FA8B14                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 180, technique = 146, pressure = 221, physical = 217, intelligence = 238, agility = 204, freedom = 297 }
+  moves = [
+    { move = 0x67F17FA8, level = 1 },                     # Mega Quake
+    { move = 0x0BC0B501, level = 11 },                    # Last Lion of Defence
+    { move = 0x72BFA108, level = 26 },                    # Wall of Atlantis
+    { move = 0x05567847, level = 35 },                    # Runaway Train
+  ]
+
+[[edit]]
+target = "c08060050"                                   # David Liang
+
+  [[edit.cards]]
+  id = 0x4EE1BA55                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 281, control = 232, technique = 248, pressure = 194, physical = 158, intelligence = 220, agility = 176, freedom = 242 }
+  moves = [
+    { move = 0x17227C17, level = 1 },                     # Crack Shot
+    { move = 0x31ABD82E, level = 13 },                    # Circus Block
+    { move = 0x592A96B4, level = 18 },                    # Afterimage
+    { move = 0xDF70E04C, level = 44 },                    # Rodeo Clown
+  ]
+
+[[edit]]
+target = "c08060060"                                   # Donnie Yang
+
+  [[edit.cards]]
+  id = 0x65CCE996                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 289, control = 235, technique = 230, pressure = 176, physical = 162, intelligence = 203, agility = 174, freedom = 238 }
+  moves = [
+    { move = 0x17227C17, level = 1 },                     # Crack Shot
+    { move = 0xAF150D21, level = 10 },                    # Swallow Counter
+    { move = 0x592A96B4, level = 23 },                    # Afterimage
+    { move = 0x79E3E635, level = 57 },                    # Racing Flame
+  ]
+
+[[edit]]
+target = "c08060070"                                   # Bolo Cheung
+
+  [[edit.cards]]
+  id = 0x7CD7D8D7                                         # MF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 284, control = 215, technique = 212, pressure = 204, physical = 182, intelligence = 207, agility = 184, freedom = 251 }
+  moves = [
+    { move = 0x7EEA4EE9, level = 3 },                     # Blade Attack
+    { move = 0x8917BF4B, level = 19 },                    # Willy-Willy
+    { move = 0x58E8FC83, level = 24 },                    # Rolling Hell
+    { move = 0x485150D9, level = 43 },                    # Body Shield
+  ]
+
+[[edit]]
+target = "c08060080"                                   # Jackie Tan
+
+  [[edit.cards]]
+  id = 0xFB4FC418                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 304, control = 236, technique = 246, pressure = 188, physical = 177, intelligence = 225, agility = 174, freedom = 251 }
+  moves = [
+    { move = 0xA5F2EFEA, level = 1 },                     # Brave Shot
+    { move = 0x17227C17, level = 19 },                    # Crack Shot
+    { move = 0x4FE09C7A, level = 24 },                    # Acrobatic Keep
+    { move = 0x58E8FC83, level = 41 },                    # Rolling Hell
+  ]
+
+[[edit]]
+target = "c08060090"                                   # Jimmy Wongfu
+
+  [[edit.cards]]
+  id = 0xE254F559                                         # MF/DF · wind
+  growth = "normal"
+  stats = { kick = 305, control = 244, technique = 257, pressure = 189, physical = 169, intelligence = 235, agility = 174, freedom = 251 }
+  moves = [
+    { move = 0x5BE73EBE, level = 1 },                     # One for All
+    { move = 0x0E394D56, level = 15 },                    # Avenging Eagle
+    { move = 0x17227C17, level = 25 },                    # Crack Shot
+    { move = 0x259F08C6, level = 42 },                    # Whirlwind Twister
+  ]
+
+[[edit]]
+target = "c08060100"                                   # Jet Long
+
+  [[edit.cards]]
+  id = 0x32542427                                         # FW/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 228, technique = 185, pressure = 159, physical = 169, intelligence = 158, agility = 186, freedom = 251 }
+  moves = [
+    { move = 0x574008CD, level = 4 },                     # Kung Fu Fighting
+    { move = 0x332CCDC9, level = 9 },                     # Heel Kick
+    { move = 0x58E8FC83, level = 22 },                    # Rolling Hell
+    { move = 0x427719AC, level = 45 },                    # Gale Dash
+  ]
+
+[[edit]]
+target = "c08060110"                                   # Stephen Chang
+
+  [[edit.cards]]
+  id = 0x2B4F1566                                         # FW/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 285, control = 230, technique = 197, pressure = 173, physical = 170, intelligence = 169, agility = 190, freedom = 255 }
+  moves = [
+    { move = 0x2354CA2D, level = 4 },                     # Wind God's Dance
+    { move = 0xA8E0F6C2, level = 17 },                    # Kung Fu Header
+    { move = 0x574008CD, level = 36 },                    # Kung Fu Fighting
+    { move = 0x3C843987, level = 46 },                    # Flurry Dash
+  ]
+
+[[edit]]
+target = "c08060120"                                   # Mars Hung
+
+  [[edit.cards]]
+  id = 0x006246A5                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 273, control = 223, technique = 212, pressure = 177, physical = 176, intelligence = 188, agility = 181, freedom = 255 }
+  moves = [
+    { move = 0xA3F886BF, level = 1 },                     # Rock Hammer
+    { move = 0xD8794890, level = 12 },                    # Kangaroo Kick
+    { move = 0x2FB941B3, level = 33 },                    # Stone Prison
+    { move = 0x64CDCFB9, level = 42 },                    # Rising Dragon
+  ]
+
+[[edit]]
+target = "c08060130"                                   # Gordon Siu
+
+  [[edit.cards]]
+  id = 0x197977E4                                         # DF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 178, technique = 144, pressure = 215, physical = 205, intelligence = 223, agility = 209, freedom = 259 }
+  moves = [
+    { move = 0x64CDCFB9, level = 3 },                     # Rising Dragon
+    { move = 0x2B343D01, level = 11 },                    # Cyclone
+    { move = 0xD8794890, level = 26 },                    # Kangaroo Kick
+    { move = 0x31ABD82E, level = 44 },                    # Circus Block
+  ]
+
+[[edit]]
+target = "c11808080"                                   # Lucy Wongfu
+
+  [[edit.cards]]
+  id = 0x04DADE77                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 230, technique = 207, pressure = 188, physical = 157, intelligence = 198, agility = 188, freedom = 293 }
+  moves = [
+    { move = 0xA2BF7076, level = 5 },                     # Side Swipe
+    { move = 0x1F0836D6, level = 16 },                    # Comet Shot
+    { move = 0x0E394D56, level = 28 },                    # Avenging Eagle
+    { move = 0x2296A01A, level = 38 },                    # Southern Cross
+  ]
+
+[[edit]]
+target = "c11808090"                                   # Wilson Ip
+
+  [[edit.cards]]
+  id = 0x1DC1EF36                                         # GK/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 198, technique = 180, pressure = 173, physical = 205, intelligence = 166, agility = 247, freedom = 263 }
+  moves = [
+    { move = 0x4AF2F3E2, level = 1 },                     # Bridge to Nowhere
+    { move = 0xECD991E4, level = 11 },                    # The Stinger
+    { move = 0xA553C5C8, level = 19 },                    # Clone Block
+    { move = 0x9B3048AB, level = 48 },                    # Shadow Catch
+  ]

@@ -1,0 +1,124 @@
+schema = "VRFW.changelog/1"
+# Chronicle Deluxe: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): new mod (the Umbrella / Sally's nodes and the drop lists' AURAS section, from Inazuma Fantasy).
+# 1.1.0 (2026-10-14): rewritten with the chain «Ruta prémium de Sonny».
+lang = "es"
+name = "Chronicle Deluxe"
+
+[en]
+name = "Chronicle Deluxe"
+
+[fr]
+name = "Chronicle Deluxe"
+
+[de]
+name = "Chronicle Deluxe"
+
+[it]
+name = "Chronicle Deluxe"
+
+[pt]
+name = "Chronicle Deluxe"
+
+[ja]
+name = "Chronicle Deluxe"
+
+[zh_hans]
+name = "Chronicle Deluxe"
+
+[zh_hant]
+name = "Chronicle Deluxe"
+
+[[release]]
+icon = "general"
+notes = [
+    "Crónica IE1: partido contra el Umbrella tras el puente.",
+    "Crónica IE1: las Street Sally's entre Brain y Otaku.",
+    "Ganar su Crónica abre su Heroica.",
+    "Cadena «Ruta prémium de Sonny» (IE1) tras el Zeus.",
+    "Elementales: solo con el elemento débil ante el suyo.",
+    "Botín: sección «AURAS» con los objetos de aura.",
+]
+
+[release.en]
+notes = [
+    "IE1 Chronicle: a match against Umbrella past the bridge.",
+    "IE1 Chronicle: Street Sally's between Brain and Otaku.",
+    "Winning their Crónica opens their Heroica.",
+    "Chain «Sonny's Premium Route» (IE1) after Zeus.",
+    "Elemental teams: only the element weak against theirs.",
+    "Drops: an «AURAS» section with the aura items.",
+]
+
+[release.fr]
+notes = [
+    "Chronique IE1 : match contre Umbrella après le pont.",
+    "Chronique IE1 : les Street Sally's entre Brain et Otaku.",
+    "Gagner leur Chronique ouvre leur Héroïque.",
+    "Chaîne «Route premium de Sonny» (IE1) après Zeus.",
+    "Élémentaires : seulement l'élément faible face au leur.",
+    "Butin : une section «AURAS» pour les objets d'aura.",
+]
+
+[release.de]
+notes = [
+    "IE1-Chronik: ein Spiel gegen Umbrella hinter der Brücke.",
+    "IE1-Chronik: Street Sally's zwischen Brain und Otaku.",
+    "Ihr Chronik-Sieg öffnet ihren Heldenmodus.",
+    "Kette «Sonnys Premium-Route» (IE1) nach Zeus.",
+    "Element-Teams: nur das ihnen unterlegene Element.",
+    "Beute: ein Abschnitt «AURAS» mit den Aura-Gegenständen.",
+]
+
+[release.it]
+notes = [
+    "Cronaca IE1: partita contro l'Umbrella oltre il ponte.",
+    "Cronaca IE1: le Street Sally's tra Brain e Otaku.",
+    "Vincere la loro Cronaca apre la loro Eroica.",
+    "Catena «Percorso premium di Sonny» (IE1) dopo Zeus.",
+    "Elementali: solo l'elemento debole contro il loro.",
+    "Premi: una sezione «AURAS» con gli oggetti aura.",
+]
+
+[release.pt]
+notes = [
+    "Crónica IE1: jogo contra o Umbrella depois da ponte.",
+    "Crónica IE1: as Street Sally's entre Brain e Otaku.",
+    "Ganhar a sua Crónica abre a sua Heroica.",
+    "Cadeia «Rota premium de Sonny» (IE1) depois do Zeus.",
+    "Elementais: só o elemento fraco contra o seu.",
+    "Prémios: uma secção «AURAS» com os objetos de aura.",
+]
+
+[release.ja]
+notes = [
+    "IE1クロニクル：橋の先で傘美野と対決。",
+    "IE1クロニクル：ブレインとオタクの間にサリーズ。",
+    "クロニクルに勝つとヒロイックが開く。",
+    "ゼウスの後、IE1の大介のプレミアムルート。",
+    "属性チームは弱点属性の選手だけで挑む。",
+    "ドロップ：オーラアイテムの「AURAS」欄。",
+]
+
+[release.zh_hans]
+notes = [
+    "IE1 编年史：过桥后对决伞美野。",
+    "IE1 编年史：Brain 与 Otaku 之间的街头莎莉斯。",
+    "赢下编年史即开启英雄难度。",
+    "击败宙斯后：IE1大介的高级对战路线。",
+    "属性队伍：只能用被克制属性的球员。",
+    "掉落：灵气道具的「AURAS」分区。",
+]
+
+[release.zh_hant]
+notes = [
+    "IE1 編年史：過橋後對決傘美野。",
+    "IE1 編年史：Brain 與 Otaku 之間的街頭莎莉斯。",
+    "贏下編年史即開啟英雄難度。",
+    "擊敗宙斯後：IE1大介的高級對戰路線。",
+    "屬性隊伍：只能用被克制屬性的球員。",
+    "掉落：靈氣道具的「AURAS」分區。",
+]

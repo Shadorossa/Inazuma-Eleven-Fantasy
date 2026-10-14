@@ -1,0 +1,28 @@
+# «Doom Spear» (Doom Spear, whs01400, forest long shot, cut-in ev60_01400): while the ball flies to the goal after the
+# cut-in it travels inside the red lattice spear it becomes in the cut-in, instead of the plain green forest long-shot
+# aura (ega0085d).
+# The spear is ev6014sp00 (assets\data\{common,dx11}\effect\event\ev60\ev6014sp00\), built by
+# research/scripts/doom_spear_ball_fx.py from the cut-in's own effect object ev60014000 (cut c0300, frame 235): the
+# lattice shells around the ball (whs0068 meshes) recoloured to a dark red body with red veins, the black drill
+# inside, and the red aura it radiates (drill fog, the red_ya glow and fog wedge, the ball glow; HDR-boosted red);
+# everything else hidden. Re-rooted so that the ball is in the middle at the origin and the flight points along +Z,
+# scaled x1.6 (spear ~5.8 m long, ~1 m thick, red glow ~8 m behind), with in / loop / out clips (shells spin in loop).
+# The ball's aura trigger copies the forest long-shot aura's row (like = "ega0085d"), whose callback
+# CB_SkillShootBallAura turns the effect's +Z along the ball's velocity every frame (0x1490B30), so the spear follows
+# any flight (the game's own, or Inazuma Fantasy's dive). docs/game/media/doom-spear-ball-fx.md.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+# A trajectory named below (dive, ground, drop_skim, split shot) is a GAMEPLAY mini-effect of Inazuma Fantasy, not of
+# this mod: without it the aura rides the game's own flight.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doom_spear_lattice"
+from = "ega0085d"
+object = "effect/event/ev60/ev6014sp00/ev6014sp00.objbin"
+
+[[shot_aura]]
+name = "doom_spear_lattice"
+when = { techniques = "whs01400" }
+aura = "doom_spear_lattice"
+like = "ega0085d"

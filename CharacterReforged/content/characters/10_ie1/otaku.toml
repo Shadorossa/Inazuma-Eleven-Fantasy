@@ -1,0 +1,280 @@
+schema = "VRFW.character/2"
+# Character Reforged · Otaku · Inazuma Eleven
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c01001010"                                   # Sam Idol
+
+  [[edit.cards]]
+  id = 0x88E9A847                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 208, technique = 196, pressure = 196, physical = 275, intelligence = 198, agility = 243, freedom = 242 }
+  moves = [
+    { move = 0x5405771D, level = 1 },                     # Supreme Spin
+    { move = 0xDA628FD4, level = 1 },                     # Sliding Goal
+    { move = 0xEBD03938, level = 34 },                    # Utter Gutsiness Catch
+    { move = 0x93E8DBF8, level = 70 },                    # Dimensional Hand
+  ]
+
+[[edit]]
+target = "c01001020"                                   # Marcus Train
+
+  [[edit.cards]]
+  id = 0xA3C4FB84                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 190, technique = 184, pressure = 221, physical = 203, intelligence = 252, agility = 208, freedom = 297 }
+  moves = [
+    { move = 0xACAC21CE, level = 1 },                     # Fake Ball
+    { move = 0x520F1E48, level = 26 },                    # Psycho Shot
+    { move = 0xC66BD10D, level = 33 },                    # Zigzag Spark
+    { move = 0x7BA5586C, level = 48 },                    # Mad Express
+  ]
+
+[[edit]]
+target = "c01001030"                                   # Light Nobel
+
+  [[edit.cards]]
+  id = 0xBADFCAC5                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 247, technique = 252, pressure = 209, physical = 181, intelligence = 240, agility = 185, freedom = 259 }
+  moves = [
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x3663DB4C, level = 1 },                     # Utter Gutsiness Bat
+    { move = 0xACAC21CE, level = 26 },                    # Fake Ball
+    { move = 0xB2BEB853, level = 37 },                    # Whale Guard
+  ]
+
+[[edit]]
+target = "c01001040"                                   # Walter Valiant
+
+  [[edit.cards]]
+  id = 0xF59E5C02                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 250, technique = 265, pressure = 176, physical = 166, intelligence = 225, agility = 182, freedom = 242 }
+  moves = [
+    { move = 0x34256515, level = 1 },                     # Dynamite Shot
+    { move = 0xACAC21CE, level = 1 },                     # Fake Ball
+    { move = 0x1F0836D6, level = 24 },                    # Comet Shot
+    { move = 0xB576BB31, level = 75 },                    # The Earth
+  ]
+
+[[edit]]
+target = "c01001050"                                   # Spencer Gates
+
+  [[edit.cards]]
+  id = 0xEC856D43                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 197, technique = 197, pressure = 231, physical = 162, intelligence = 273, agility = 184, freedom = 267 }
+  moves = [
+    { move = 0x3663DB4C, level = 1 },                     # Utter Gutsiness Bat
+    { move = 0x3069B219, level = 1 },                     # Super Sumo Stomp
+    { move = 0xC0A013E6, level = 50 },                    # Liar Shot
+    { move = 0xACAC21CE, level = 57 },                    # Fake Ball
+  ]
+
+[[edit]]
+target = "c01001060"                                   # Josh Spear
+
+  [[edit.cards]]
+  id = 0xC7A83E80                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 273, technique = 270, pressure = 231, physical = 147, intelligence = 254, agility = 198, freedom = 250 }
+  moves = [
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x01DB04F5, level = 35 },                    # Defence Scan
+    { move = 0x18C035B4, level = 47 },                    # Ghost Pull
+    { move = 0xAA67E325, level = 50 },                    # Desert Blast
+  ]
+
+[[edit]]
+target = "c01001070"                                   # Gaby Farmer
+
+  [[edit.cards]]
+  id = 0xDEB30FC1                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 266, control = 228, technique = 201, pressure = 225, physical = 171, intelligence = 212, agility = 215, freedom = 317 }
+  moves = [
+    { move = 0x142DBE2A, level = 1 },                     # Foul Offence
+    { move = 0x2B343D01, level = 1 },                     # Cyclone
+    { move = 0x6B1CF436, level = 25 },                    # Bewildered
+    { move = 0x63BDA8A4, level = 40 },                    # Inazuma Drop
+  ]
+
+[[edit]]
+target = "c01001080"                                   # A. Woodbridge
+
+  [[edit.cards]]
+  id = 0x592B130E                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 235, technique = 227, pressure = 215, physical = 154, intelligence = 227, agility = 205, freedom = 289 }
+  moves = [
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x3663DB4C, level = 26 },                    # Utter Gutsiness Bat
+    { move = 0x4F58F805, level = 38 },                    # Coil Turn
+    { move = 0x4890FB67, level = 43 },                    # Twin Boost
+  ]
+
+[[edit]]
+target = "c01001090"                                   # Gus Gamer
+
+  [[edit.cards]]
+  id = 0x4030224F                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 263, technique = 252, pressure = 171, physical = 165, intelligence = 204, agility = 184, freedom = 251 }
+  moves = [
+    { move = 0x3663DB4C, level = 1 },                     # Utter Gutsiness Bat
+    { move = 0x6B1CF436, level = 28 },                    # Bewildered
+    { move = 0x4D1E465C, level = 39 },                    # Fake Bomber
+    { move = 0x78E027BC, level = 55 },                    # Shine Drive
+  ]
+
+[[edit]]
+target = "c01001100"                                   # Mark Gambling
+
+  [[edit.cards]]
+  id = 0x9030F331                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 257, control = 262, technique = 193, pressure = 170, physical = 126, intelligence = 188, agility = 186, freedom = 251 }
+  moves = [
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x5506B694, level = 1 },                     # Utter Gutsiness Club
+    { move = 0x33ED6677, level = 21 },                    # Doppelganger
+    { move = 0xA7B451B3, level = 60 },                    # Paladin Strike
+  ]
+
+[[edit]]
+target = "c01001110"                                   # Theodore Master
+
+  [[edit.cards]]
+  id = 0x892BC270                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 248, technique = 227, pressure = 201, physical = 163, intelligence = 209, agility = 193, freedom = 251 }
+  moves = [
+    { move = 0x1F0836D6, level = 1 },                     # Comet Shot
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x60397CCA, level = 26 },                    # Cross Drive
+    { move = 0x3663DB4C, level = 40 },                    # Utter Gutsiness Bat
+  ]
+
+[[edit]]
+target = "c01001120"                                   # Ham Signalman
+
+  [[edit.cards]]
+  id = 0xA20691B3                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 252, technique = 254, pressure = 176, physical = 161, intelligence = 213, agility = 176, freedom = 267 }
+  moves = [
+    { move = 0x6B1CF436, level = 1 },                     # Bewildered
+    { move = 0x4F58F805, level = 22 },                    # Coil Turn
+    { move = 0x2FB941B3, level = 34 },                    # Stone Prison
+    { move = 0xB3BD79DA, level = 48 },                    # Patriot Shot
+  ]
+
+[[edit]]
+target = "c01001130"                                   # Bill Formby
+
+  [[edit.cards]]
+  id = 0xBB1DA0F2                                         # DF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 228, technique = 238, pressure = 161, physical = 228, intelligence = 251, agility = 184, freedom = 263 }
+  moves = [
+    { move = 0x33ED6677, level = 1 },                     # Doppelganger
+    { move = 0x8DFA4265, level = 26 },                    # Toughness Block
+    { move = 0x322F0C40, level = 35 },                    # Spider Web
+    { move = 0xADAFE047, level = 46 },                    # Dual Strike
+  ]
+
+[[edit]]
+target = "c01001140"                                   # Grant Eldorado
+
+  [[edit.cards]]
+  id = 0xF45C3635                                         # GK/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 158, control = 217, technique = 219, pressure = 281, physical = 162, intelligence = 278, agility = 304, freedom = 255 }
+  moves = [
+    { move = 0xD824318D, level = 1 },                     # Swan Dive
+    { move = 0x2CFC3E63, level = 18 },                    # Dragon Crash
+    { move = 0x44E1A25A, level = 27 },                    # Pressure Punch
+    { move = 0xDCA94D3F, level = 52 },                    # Flash Upper
+  ]
+
+[[edit]]
+target = "c01001150"                                   # Mike Vox
+
+  [[edit.cards]]
+  id = 0xED470774                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 157, control = 223, technique = 230, pressure = 212, physical = 216, intelligence = 282, agility = 193, freedom = 313 }
+  moves = [
+    { move = 0xACAC21CE, level = 1 },                     # Fake Ball
+    { move = 0x3C843987, level = 26 },                    # Flurry Dash
+    { move = 0x01DB04F5, level = 40 },                    # Defence Scan
+    { move = 0x47380F29, level = 59 },                    # Echo Ball
+  ]
+
+[[edit]]
+target = "c01001160"                                   # Ollie Webb
+
+  [[edit.cards]]
+  id = 0xC66A54B7                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 204, technique = 200, pressure = 205, physical = 288, intelligence = 251, agility = 213, freedom = 301 }
+  moves = [
+    { move = 0x01DB04F5, level = 25 },                    # Defence Scan
+    { move = 0x0F703132, level = 35 },                    # Black Magic
+    { move = 0x28B0E96F, level = 42 },                    # Heavy Mettle
+    { move = 0x60397CCA, level = 51 },                    # Cross Drive
+  ]
+
+[[edit]]
+target = "c11801080"                                   # Manny Artic
+
+  [[edit.cards]]
+  id = 0x79D291FD                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 193, control = 251, technique = 231, pressure = 181, physical = 203, intelligence = 208, agility = 184, freedom = 293 }
+  moves = [
+    { move = 0x5E233E68, level = 3 },                     # Super Elastico
+    { move = 0x73C5AF40, level = 11 },                    # Dash Accelerator
+    { move = 0x60F8D774, level = 26 },                    # Gravestone
+    { move = 0x4031A7F5, level = 47 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "c11801090"                                   # Meina Maiden
+
+  [[edit.cards]]
+  id = 0x60C9A0BC                                         # DF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 170, control = 204, technique = 190, pressure = 217, physical = 224, intelligence = 262, agility = 190, freedom = 252 }
+  moves = [
+    { move = 0xAEEA9F97, level = 2 },                     # Sigma Zone
+    { move = 0xADAFE047, level = 16 },                    # Dual Strike
+    { move = 0x72BFA108, level = 25 },                    # Wall of Atlantis
+    { move = 0x2C3D95DD, level = 58 },                    # Sleeping Dust
+  ]

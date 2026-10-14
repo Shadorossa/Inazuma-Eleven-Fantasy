@@ -1,0 +1,17 @@
+schema = "VRFW.game/2"
+# Character Reforged › the skill table's placement rule (scripts\skill_set.lua; docs/refactor/aura-mods-split.md
+# «Skill table»). The screen's pickers (graft ss2_menus) grey and refuse what this answers false for, and every equip
+# of the screen (pick, player set, import, reset) asks it before writing.
+
+# (charaHdl, slot, move) -> ok, reason (slot 1..6 = move rows, 7 = aura slot, 8 = mix slot; reason = the refusing rule:
+# "type" for the base rules, else the name another mod registered with CharacterReforged.AddPlaceRule)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CAN_PLACE"
+handler = "CharacterReforged.CanPlaceCmd"
+
+# () -> n, then n x (command id, slot kind: 0 = this screen's slot 1..8, 1 = the game's board slot): the place rules
+# other mods declare as data ([CharacterReforged.PlaceRules.<name>] in their content\skill_set\*.toml), asked by the
+# skill table after CMND_CHARACTERREFORGED_CAN_PLACE allowed
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLACE_RULES"
+handler = "CharacterReforged.PlaceRulesCmd"

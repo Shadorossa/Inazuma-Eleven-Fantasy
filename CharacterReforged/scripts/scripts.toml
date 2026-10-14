@@ -1,0 +1,10 @@
+# Settings of Character Reforged's scripts (kind VRFW.script/1, docs/framework/scripts.md §2). No [[script]] list:
+# every top-level scripts\*.lua is an entry point (name order), every .lua below (lib\) a library for `require`.
+schema = "VRFW.script/1"
+
+# The duplicate-players hook (scripts\duplicate_players.lua, 2026-10-14) holds a whole save at once (12.6 MB in,
+# 12.6 MB out, ~30 MB at the peak of a retail duplicate) and walks thousands of players in one slot_copy call: the
+# same caps as Inazuma Fantasy's save rules had. They are caps, not reservations: the other scripts use what they used.
+[settings]
+budget = 5000000
+memory_kb = 65536

@@ -1,0 +1,231 @@
+schema = "VRFW.character/2"
+# Character Reforged · Alia Academy · Inazuma Eleven: Ares
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c07100090"                                   # Ben Blowton
+
+  [[edit.cards]]
+  id = 0x5000A3B5                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 208, control = 257, technique = 267, pressure = 188, physical = 178, intelligence = 230, agility = 165, freedom = 230 }
+  moves = [
+    { move = 0xABA58912, level = 1 },                     # Ignited Steal
+    { move = 0x79E3E635, level = 1 },                     # Racing Flame
+    { move = 0x166B0073, level = 35 },                    # Super Armadillo
+    { move = 0x9765A74A, level = 65 },                    # Beast Fang
+  ]
+
+[[edit]]
+target = "c07100060"                                   # Bryce Whitingale
+
+  [[edit.cards]]
+  id = 0xD798BF7A                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 316, control = 244, technique = 259, pressure = 231, physical = 146, intelligence = 234, agility = 154, freedom = 275 }
+  moves = [
+    { move = 0x46FA651E, level = 1 },                     # Water Veil
+    { move = 0x111B676E, level = 1 },                     # Fire Blizzard
+    { move = 0x5E5AF1A9, level = 10 },                    # Northern Impact
+    { move = 0x09C23C18, level = 50 },                    # Fire Blizzard
+  ]
+
+[[edit]]
+target = "c07100070"                                   # Claude Beacons
+
+  [[edit.cards]]
+  id = 0xCE838E3B                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 332, control = 223, technique = 203, pressure = 194, physical = 211, intelligence = 196, agility = 204, freedom = 297 }
+  moves = [
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0x111B676E, level = 1 },                     # Fire Blizzard
+    { move = 0xAE2B3429, level = 10 },                    # Atomic Flare
+    { move = 0x09C23C18, level = 50 },                    # Fire Blizzard
+  ]
+
+[[edit]]
+target = "c07100100"                                   # Grant Icewater
+
+  [[edit.cards]]
+  id = 0x800072CB                                         # DF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 197, technique = 201, pressure = 192, physical = 258, intelligence = 250, agility = 208, freedom = 225 }
+  moves = [
+    { move = 0x6633159F, level = 1 },                     # Gravitation
+    { move = 0x7FE98F60, level = 22 },                    # Ganymede Ray
+    { move = 0x28B0E96F, level = 38 },                    # Heavy Mettle
+    { move = 0x18019E0A, level = 44 },                    # Double Grenade
+  ]
+
+[[edit]]
+target = "c07100030"                                   # Jordan Greenway
+
+  [[edit.cards]]
+  id = 0xAAEF4B3F                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 294, control = 246, technique = 251, pressure = 189, physical = 185, intelligence = 234, agility = 161, freedom = 263 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0x97C48D68, level = 1 },                     # Astro Gate
+    { move = 0x10A0C298, level = 5 },                     # Warp Drive
+    { move = 0x43B5739B, level = 38 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c07100130"                                   # Ronny Metcalf
+
+  [[edit.cards]]
+  id = 0xAB2D2108                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 278, technique = 316, pressure = 170, physical = 173, intelligence = 252, agility = 176, freedom = 209 }
+  moves = [
+    { move = 0x73C5AF40, level = 1 },                     # Dash Accelerator
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x3B8D915B, level = 33 },                    # Meteor Shower
+    { move = 0x5AAE42DA, level = 50 },                    # Triple Dash
+  ]
+
+[[edit]]
+target = "c07100050"                                   # Isabelle Trick
+
+  [[edit.cards]]
+  id = 0xFCB5ECB9                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 286, control = 223, technique = 261, pressure = 203, physical = 149, intelligence = 212, agility = 171, freedom = 325 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0x750E6DAB, level = 45 },                    # Matador Feint
+    { move = 0x5E233E68, level = 55 },                    # Super Elastico
+    { move = 0xEB71131A, level = 70 },                    # X Blast
+  ]
+
+[[edit]]
+target = "c07100010"                                   # Hunter Foster
+
+  [[edit.cards]]
+  id = 0x98D929BD                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 342, control = 258, technique = 257, pressure = 198, physical = 176, intelligence = 238, agility = 169, freedom = 297 }
+  moves = [
+    { move = 0x65766A4F, level = 1 },                     # Meteor Blade
+    { move = 0xB633C4E1, level = 5 },                     # Photon Crash
+    { move = 0xC3D894B7, level = 35 },                    # The Dawn
+    { move = 0xEE3E059F, level = 40 },                    # Celestial Smash
+  ]
+
+[[edit]]
+target = "c07100020"                                   # Xavier Schiller
+
+  [[edit.cards]]
+  id = 0xB3F47A7E                                         # FW/MF · forest
+  growth = "normal"
+  stats = { kick = 292, control = 266, technique = 261, pressure = 197, physical = 181, intelligence = 234, agility = 178, freedom = 259 }
+  moves = [
+    { move = 0x16E01620, level = 1 },                     # Penguin Reckoning
+    { move = 0x8924CD67, level = 19 },                    # The Detonator
+    { move = 0x903FFC26, level = 26 },                    # Zigzag Zoom
+    { move = 0x142DBE2A, level = 34 },                    # Foul Offence
+  ]
+
+[[edit]]
+target = "c07100120"                                   # Bonnie Sparks
+
+  [[edit.cards]]
+  id = 0xB2361049                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 174, control = 177, technique = 192, pressure = 262, physical = 239, intelligence = 263, agility = 158, freedom = 335 }
+  moves = [
+    { move = 0xABA58912, level = 1 },                     # Ignited Steal
+    { move = 0xB13A6C3D, level = 38 },                    # Zigzag Flame
+    { move = 0x3B8D915B, level = 44 },                    # Meteor Shower
+    { move = 0xEF5D458A, level = 69 },                    # Burnout
+  ]
+
+[[edit]]
+target = "c07100110"                                   # Claire Lesnow
+
+  [[edit.cards]]
+  id = 0x991B438A                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 86, control = 180, technique = 177, pressure = 227, physical = 220, intelligence = 228, agility = 261, freedom = 309 }
+  moves = [
+    { move = 0x50880BAF, level = 1 },                     # Frozen Steal
+    { move = 0xC4701649, level = 30 },                    # Ice Block
+    { move = 0xB633C4E1, level = 40 },                    # Photon Crash
+    { move = 0xB8C5883B, level = 75 },                    # God Hand X
+  ]
+
+[[edit]]
+target = "c07100080"                                   # Nigel August
+
+  [[edit.cards]]
+  id = 0x491B92F4                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 302, control = 244, technique = 236, pressure = 157, physical = 200, intelligence = 176, agility = 194, freedom = 230 }
+  moves = [
+    { move = 0x30A819A7, level = 1 },                     # Twin Boost F
+    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
+    { move = 0xAE2B3429, level = 50 },                    # Atomic Flare
+    { move = 0xABA58912, level = 60 },                    # Ignited Steal
+  ]
+
+[[edit]]
+target = "c07100040"                                   # Dave Quagmire
+
+  [[edit.cards]]
+  id = 0xE5AEDDF8                                         # GK/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 211, technique = 271, pressure = 204, physical = 212, intelligence = 208, agility = 197, freedom = 213 }
+  moves = [
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0x3F00EDE9, level = 1 },                     # Dash Storm
+    { move = 0x1C8CE2B8, level = 1 },                     # God Knows
+    { move = 0x035C1112, level = 1 },                     # Gungnir
+  ]
+
+[[edit]]
+target = "c07100140"                                   # Zeke Valanche
+
+  [[edit.cards]]
+  id = 0xE46CB7CF                                         # FW/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 252, technique = 252, pressure = 192, physical = 193, intelligence = 209, agility = 194, freedom = 231 }
+  moves = [
+    { move = 0x7FE98F60, level = 1 },                     # Ganymede Ray
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x8E7E960B, level = 1 },                     # Drill Smasher
+    { move = 0xEF5D458A, level = 50 },                    # Burnout
+  ]
+
+[[edit]]
+target = "c11807200"                                   # Aquilina Schiller
+
+  [[edit.cards]]
+  id = 0x97E49047                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 250, technique = 275, pressure = 243, physical = 126, intelligence = 274, agility = 230, freedom = 231 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0xAF28F5A0, level = 21 },                    # The Tower
+    { move = 0x2296A01A, level = 32 },                    # Southern Cross
+    { move = 0xA955D999, level = 59 },                    # The Earth: Infinity
+  ]

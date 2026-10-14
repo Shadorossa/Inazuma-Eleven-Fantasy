@@ -1,0 +1,20 @@
+# Character Reforged › its rows in Opciones › «Opciones de mods» and on the Mods screen's «Ajustes» (format:
+# docs/app/mod-options.md §3). Values: <data dir>\mod_options\character_reforged.json.
+
+# «Tabla de habilidades» (owner request 2026-10-14: «que puedas activar la visualización del set nuevo (6 técnicas, 1 aura
+# slot y 1 mix slot) o dejar la de Victory Road»). 0 = Victory Road's own view (the team dock's «Tabla de habilidades»
+# opens the game's skill board, «Mover» listed), the default; 1 = «Fantasy» (named «Set nuevo» until 2026-10-14), the
+# new set (the skill table screen
+# evt_skill_slot_menu: 6 special moves + the aura slot + the mix slot). Read when the entry is used (grafts ss2_dock,
+# cr_bank_skill_table, board_entry; one log line per use: «Character Reforged skill table entry»): no restart. Switching never loses anything: both views show the
+# same saved data (docs/refactor/aura-mods-split.md «Skill table», the 6 + 1 + 1 mapping).
+[[option]]
+id = "skill_set_view"                         # row key character_reforged.skill_set_view
+type = "toggle"
+label = "skill_set_view"                      # text\keys.toml, 9 languages
+help = "skill_set_view_help"
+off = { name = "skill_set_view_off", text = "Victory Road" }
+on = { name = "skill_set_view_on", text = "Fantasy" }
+default = 0
+parent = "mod_options.game_settings"
+order = 140

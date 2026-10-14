@@ -4,7 +4,7 @@
 # languages; the Lua reads them with CMND_TEXT_GET by id = crc32(row id) and shows nothing for a missing row. A mod
 # that adds a series / category ships the rows its declaration names.
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the page label of the page plate «<L1> Pág. 1/3 <R1>»: the abbreviated word «page»; crc32("vrfw_bb_page") = 80343219

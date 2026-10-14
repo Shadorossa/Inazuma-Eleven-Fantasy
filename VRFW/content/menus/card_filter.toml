@@ -1,7 +1,7 @@
 # The character bank filter header (docs/framework/card-filter.md): a 2nd instance of each bank screen's retail filter
 # plate (team14_02_filter_guide, «Filtro»): instance 0 stays the retail one, instance 1 is the header the framework's
 # Lua (menu_engine lua\_all\20_card_filter.lua) moves and fills.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "chara_bank_menu"

@@ -3,7 +3,7 @@ schema = "VRFW.game/1"
 # Utilities › «Nivel de técnica: +1 / +2 / +3 / Estrellas» (feature level_badges), a row of «Opciones de mods»
 # (utilities.level_badges, options.toml). With «Estrellas» the game's Spanish move-level art shows stars instead of
 # +1 / +2 / +3: the match badges soccer10_01_lv1..lv4 and the grade glyphs gaiji_wlv* of the text icon sheet gaiji_game2
-# (Nacho's art). The stars files are the mod's own files/data/ files named as the game file with _util_stars before the
+# (Nacho's art). The stars files are the mod's own assets files named as the game file with _util_stars before the
 # extension (new keys, never a replacement of the game's file); while the row says «Estrellas» the engine's opens of the
 # game file are redirected to them. Which files have a stars version is read from the mod folder (only the Spanish
 # ones today: every other language keeps the game's art). A change applies the next time the game opens the file: the

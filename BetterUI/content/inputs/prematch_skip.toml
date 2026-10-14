@@ -4,7 +4,7 @@
 #                             CMD_EVENT_SKIP_HOLD is Y held (pad [2, 12] / keyboard [2, 21]) there. State 2 = held.
 # The event controllers have no key_assign profiles: these input_ctrl rows are the ones in force. In talk events X is
 # also the retail auto-forward toggle (CMD_EVENT_AUTO_FORWARD_ON, a press): holding it there toggles that once too.
-schema = "vr_framework.input/1"
+schema = "VRFW.input/1"
 
 [[command]]
 ctrl = "EVENT_CTRL_VISUAL"

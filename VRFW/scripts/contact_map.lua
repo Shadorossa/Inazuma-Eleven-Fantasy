@@ -115,15 +115,10 @@ end
 local FACE_FILE = "data/dx11/menu/200_icon/10_icon_chr/face/%s_l.g4tx"
 local FACES = { has = {} }
 
--- ONE read of chara_base / chara_param for the whole session (2026-10-13: the face check and the names each read both
--- tables, ~13k rows apiece, on the screen's first open and its first map: a 1 s hitch each): internal name and name
--- text per chara_base id, chara_base id per card (chara_param id).
--- 2026-10-13 perf (owner log: «character index read in 1458 ms» on the game thread at the first open): VRFW.table.rows
--- built every column of both tables by name and by position; now VRFW.table.raw reads only the 3 + 2 columns used,
--- from the framework's parsed-file cache, and the index is built when the script loads (bottom of this file).
--- chara_base: col 0 id, 1 internal name, 3 name text (schemas/character/chara_base.toml); chara_param: col 0 id, 1 base
-local BASE_STEM = "data/common/gamedata/character/chara_base"
-local PARAM_STEM = "data/common/gamedata/character/chara_param"
+-- The framework's ONE character index (VRFW.chara: chara_base / chara_param read once natively, by column name, shared
+-- by every script; 2.3, docs/framework/chara-index.md): internal name and name text per chara_base id, chara_base id per
+-- card, asked per id and kept here. Before 2.3 this script read both tables itself (~13k rows apiece, columns by
+-- position: «character index read in 1458 ms»).
 
 -- the key of a game table as the game loads it: `<stem>.cfg.bin` when the file list has it, else the newest
 -- `<stem>_<version>.cfg.bin` (VRFW.table.raw takes the highest version of a glob)
@@ -134,28 +129,42 @@ local function table_key(stem)
   return stem .. "_*.cfg.bin"
 end
 
+-- a table whose missing keys are asked once from `f` (nil answers are asked again: few, never in a loop)
+local function lazy(f)
+  return setmetatable({}, { __index = function(t, k)
+    local v = f(k)
+    if v ~= nil then rawset(t, k, v) end
+    return v
+  end })
+end
+
+local function character(b)
+  local ok, c = pcall(VRFW.chara.character, b)
+  if ok and type(c) == "table" then return c end
+  return nil
+end
+
 local CHARA = nil
 local function chara_index()
   if CHARA ~= nil then return CHARA end
   local t0 = VRFW.now()
-  CHARA = { name_of = {}, text_of = {}, base_of = {} }
-  local ok, e = pcall(function()
-    for _, r in ipairs(VRFW.table.raw(table_key(BASE_STEM), "CHARA_BASE_INFO", { 1, 2, 4 }) or {}) do
-      if type(r[1]) == "number" then
-        local id = u32(r[1])
-        if type(r[2]) == "string" and r[2] ~= "" then CHARA.name_of[id] = r[2] end
-        CHARA.text_of[id] = u32(r[4])
-      end
-    end
-  end)
-  if not ok then warn("chara_base not readable: " .. tostring(e)) end
-  ok, e = pcall(function()
-    for _, r in ipairs(VRFW.table.raw(table_key(PARAM_STEM), "CHARA_PARAM_INFO", { 1, 2 }) or {}) do
-      if type(r[1]) == "number" and type(r[2]) == "number" then CHARA.base_of[u32(r[1])] = u32(r[2]) end
-    end
-  end)
-  if not ok then warn("chara_param not readable: " .. tostring(e)) end
-  info(string.format("character index read in %d ms (once per session)", math.floor(VRFW.now() - t0)))
+  local ok, e = pcall(VRFW.chara.card, 0)     -- builds the shared index now (once per session for every script)
+  if not ok then warn("character index not readable: " .. tostring(e)) end
+  CHARA = {
+    name_of = lazy(function(b)
+      local c = character(b)
+      return c and c.name ~= "" and c.name or nil
+    end),
+    text_of = lazy(function(b)
+      local c = character(b)
+      return c and u32(c.name_text) or nil
+    end),
+    base_of = lazy(function(card)
+      local okb, b = pcall(VRFW.chara.base_of, card)
+      return okb and type(b) == "number" and u32(b) or nil
+    end),
+  }
+  info(string.format("character index ready in %d ms (the framework's, shared)", math.floor(VRFW.now() - t0)))
   return CHARA
 end
 
@@ -180,106 +189,62 @@ local function own_face(face, base, card)
 end
 
 -- ---------------------------------------------------------------------------------------------- excluded cards
--- [[VRFW.ContactSet]] `Exclude = [ {rule}, ... ]` (2026-10-13): cards a set keeps OFF all its maps, as a set DERIVED
--- from the game data (never a list of ids). Rules:
---   { AuraVariants = { AuraType = 2 } }   the variant card (AURA_CMD_INFO col 13, a chara_param) of every row of the
---                                         served aura_skill_config (the game's rows and the mods' loose ones) whose
---                                         auraType (col 10) is that type, or one of a list (0 keshin, 1 armed,
---                                         2 miximax, ...): the pre-made variant cards
---   { IdealMiximaxPartners = true }       every card of the characters that are only ever the PARTNER of the game's
---                                         ideal (pre-made) miximax pairs: the aura character (col 7) of an auraType 2
---                                         row (or `{ AuraType = n }`) that owns (AURA_CMD_CHARA) no such row itself
---                                         (Zeta, Nobunaga, Okita, ...); partners that have their own miximax (the
---                                         Galaxy player x player pairs: Arion, Victor, Mark, ...) stay
+-- [[VRFW.ContactSet]] `Exclude = [ ... ]` (2026-10-13): cards a set keeps OFF all its maps, as a set DERIVED from the
+-- game data (never a list of ids). Since 2.3 a card set of the framework (the one selector vocabulary, [[VRFW.CardSet]],
+-- evaluated natively over the one character index: docs/framework/chara-index.md §4). Each entry is:
+--   "<mod>.<name>"                        a declared [[VRFW.CardSet]] (e.g. Inazuma Fantasy's premade miximax set)
+--   { aura_variant = { aura_type = 2 } }  a card-set rule (any key of the vocabulary: series, team, aura_variant,
+--                                         ideal_miximax_partner, ...)
+--   { AuraVariants = { AuraType = 2 } }   2.2 spelling of { aura_variant = { aura_type = 2 } }: the pre-made variant
+--                                         cards of that aura type (0 keshin, 1 armed, 2 miximax, ...)
+--   { IdealMiximaxPartners = true }       2.2 spelling of { ideal_miximax_partner = true } (or `{ AuraType = n }`):
+--                                         every card of the characters that are only ever the PARTNER of the game's
+--                                         ideal (pre-made) miximax pairs (Zeta, Nobunaga, Okita, ...)
 -- On every map of the set: a player node of such a card is taken out (a network links the tiles around it to each
 -- other, so the strict order runs on as if he were signed: no empty tile, no cut branch); requirements drop such cards
 -- (a requirement left without players goes; a gate left without requirements goes, re-linked the same way); zone counts
 -- follow, a zone left without players goes. The cards stay what they are in the save (owned, in the club): the record
 -- «contact.cards.<map>» may still name one (the screen skips the map's `excl` when it counts).
-local AURA_TABLE = "data/common/gamedata/skill/aura_skill_config_*.cfg.bin"
 
-local function aura_variants(rule, where)
-  local types, list = {}, {}
-  local t = rule.AuraType
-  for _, v in ipairs(type(t) == "table" and t or { t }) do
-    if tonumber(v) then
-      types[math.floor(tonumber(v))] = true
-      list[#list + 1] = tostring(math.floor(tonumber(v)))
-    end
+-- one Exclude entry as a card-set rule (a set name stays a text) and its text for the log; nil when not one
+local function exclude_rule(r)
+  if type(r) == "string" and r ~= "" then return r, "set " .. r end
+  if type(r) ~= "table" then return nil end
+  if type(r.AuraVariants) == "table" then
+    local t = r.AuraVariants.AuraType
+    local shown = type(t) == "table" and table.concat(t, "/") or tostring(t)
+    return { aura_variant = { aura_type = t } }, "aura variants of type " .. shown
   end
-  if #list == 0 then
-    warn(where .. ": AuraVariants without AuraType (rule left out)")
-    return nil
+  if r.IdealMiximaxPartners == true or type(r.IdealMiximaxPartners) == "table" then
+    local t = type(r.IdealMiximaxPartners) == "table" and tonumber(r.IdealMiximaxPartners.AuraType) or nil
+    return { ideal_miximax_partner = t and { aura_type = t } or true },
+      "ideal miximax partners of type " .. tostring(t or 2)
   end
-  local ok, rows = pcall(VRFW.table.raw, AURA_TABLE, "AURA_CMD_INFO", { 11, 14 })
-  if not ok or type(rows) ~= "table" then
-    warn(where .. ": aura_skill_config not readable (" .. tostring(rows) .. "): AuraVariants left out")
-    return nil
-  end
-  local out = {}
-  for _, r in ipairs(rows) do
-    local ty, card = tonumber(r[11]), id_of(r[14])
-    if ty ~= nil and types[math.floor(ty) % 256] and card ~= nil and card ~= 0 then out[card] = true end
-  end
-  return out, "aura variants of type " .. table.concat(list, "/")
+  if next(r) ~= nil then return r, "rule" end
+  return nil
 end
 
-local function ideal_partners(rule, where)
-  local ty = type(rule) == "table" and tonumber(rule.AuraType) or 2
-  ty = math.floor(ty)
-  local ok1, info = pcall(VRFW.table.raw, AURA_TABLE, "AURA_CMD_INFO", { 8, 11 })
-  local ok2, refs = pcall(VRFW.table.raw, AURA_TABLE, "AURA_CMD_INFO_REF_CHARA", { 1, 2 })
-  local ok3, chars = pcall(VRFW.table.raw, AURA_TABLE, "AURA_CMD_CHARA", { 1 })
-  if not (ok1 and ok2 and ok3) or type(info) ~= "table" or type(refs) ~= "table" or type(chars) ~= "table"
-      or #refs ~= #info then
-    warn(where .. ": aura_skill_config (rows, owners) not readable: IdealMiximaxPartners left out")
-    return nil
-  end
-  local partner, owner = {}, {}
-  for i, r in ipairs(info) do
-    local t = tonumber(r[11])
-    if t ~= nil and math.floor(t) % 256 == ty then
-      local pc = id_of(r[8])
-      if pc ~= nil and pc ~= 0 then partner[pc] = true end
-      local a, c = tonumber(refs[i][1]), tonumber(refs[i][2])
-      if a ~= nil and c ~= nil then
-        for k = a + 1, a + c do
-          local o = chars[k] and id_of(chars[k][1])
-          if o ~= nil then owner[o] = true end
-        end
-      end
-    end
-  end
-  local bases, nb = {}, 0
-  for b in pairs(partner) do
-    if not owner[b] then
-      bases[b] = true
-      nb = nb + 1
-    end
-  end
-  local out = {}
-  for card, b in pairs(chara_index().base_of) do
-    if bases[b] then out[card] = true end
-  end
-  return out, string.format("ideal miximax partners of type %d: %d characters", ty, nb)
-end
-
--- the card set of a set's Exclude rules: card -> true, and the rules as text (log)
+-- the card set of a set's Exclude entries: card -> true, and the entries as text (log)
 local function exclusion(s)
-  local ex, what = {}, {}
+  local rules, what = {}, {}
   for k, r in ipairs(s.exclude) do
-    local where = string.format("%s: [[VRFW.ContactSet]] %s: Exclude #%d", s.where, s.key, k)
-    local cards, text = nil, nil
-    if type(r) == "table" and type(r.AuraVariants) == "table" then
-      cards, text = aura_variants(r.AuraVariants, where)
-    elseif type(r) == "table" and (r.IdealMiximaxPartners == true or type(r.IdealMiximaxPartners) == "table") then
-      cards, text = ideal_partners(r.IdealMiximaxPartners, where)
+    local rule, text = exclude_rule(r)
+    if rule == nil then
+      warn(string.format("%s: [[VRFW.ContactSet]] %s: Exclude #%d: not a card set name or a rule - left out", s.where,
+        s.key, k))
     else
-      warn(where .. ": unknown rule (known: AuraVariants, IdealMiximaxPartners) - left out")
-    end
-    if cards ~= nil then
-      for c in pairs(cards) do ex[c] = true end
+      rules[#rules + 1] = rule
       what[#what + 1] = text
+    end
+  end
+  local ex = {}
+  if #rules > 0 then
+    local ok, ids = pcall(VRFW.chara.select, { include = rules })
+    if ok and type(ids) == "table" then
+      for _, c in ipairs(ids) do ex[u32(c)] = true end
+    else
+      warn(string.format("%s: [[VRFW.ContactSet]] %s: Exclude not evaluated (%s): nothing excluded", s.where, s.key,
+        tostring(ids)))
     end
   end
   return ex, table.concat(what, ", ")

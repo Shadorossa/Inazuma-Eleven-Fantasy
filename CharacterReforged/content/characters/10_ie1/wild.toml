@@ -1,0 +1,283 @@
+schema = "VRFW.character/2"
+# Character Reforged · Wild · Inazuma Eleven
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c01000610"                                   # Charlie Boardfield
+
+  [[edit.cards]]
+  id = 0x34D8B390                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 149, control = 184, technique = 162, pressure = 252, physical = 243, intelligence = 212, agility = 292, freedom = 301 }
+  moves = [
+    { move = 0x8FBCFC3C, level = 1 },                     # Blazing Knuckle
+    { move = 0xC2BBD4A2, level = 1 },                     # Wild Claw
+    { move = 0x5E7E4775, level = 37 },                    # Table-Turner
+    { move = 0xEF5D458A, level = 56 },                    # Burnout
+  ]
+
+[[edit]]
+target = "c01000620"                                   # Hugo Tallgeese
+
+  [[edit.cards]]
+  id = 0x1FF5E053                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 281, technique = 286, pressure = 150, physical = 194, intelligence = 208, agility = 134, freedom = 335 }
+  moves = [
+    { move = 0x73C5AF40, level = 1 },                     # Dash Accelerator
+    { move = 0x37A1B17B, level = 1 },                     # Fire Rooster
+    { move = 0xC7A9BB3A, level = 34 },                    # Whirlwind Cut
+    { move = 0x7207C577, level = 70 },                    # Boost Glider
+  ]
+
+[[edit]]
+target = "c01000630"                                   # Wilson Fishman
+
+  [[edit.cards]]
+  id = 0x06EED112                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 181, control = 188, technique = 177, pressure = 193, physical = 321, intelligence = 223, agility = 211, freedom = 255 }
+  moves = [
+    { move = 0x19025F83, level = 1 },                     # Quick Draw
+    { move = 0x4E9A9232, level = 25 },                    # Spinning Cut
+    { move = 0x2BF596BF, level = 44 },                    # Tsunami Boost
+    { move = 0x46FA651E, level = 58 },                    # Water Veil
+  ]
+
+[[edit]]
+target = "c01000640"                                   # Peter Johnson
+
+  [[edit.cards]]
+  id = 0x49AF47D5                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 190, technique = 171, pressure = 188, physical = 250, intelligence = 208, agility = 174, freedom = 255 }
+  moves = [
+    { move = 0x3EC287DE, level = 1 },                     # Bubble Gum
+    { move = 0x10A0C298, level = 18 },                    # Warp Drive
+    { move = 0xACAC21CE, level = 38 },                    # Fake Ball
+    { move = 0x322F0C40, level = 49 },                    # Spider Web
+  ]
+
+[[edit]]
+target = "c01000650"                                   # Leonard O'Shea
+
+  [[edit.cards]]
+  id = 0x50B47694                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 290, control = 154, technique = 126, pressure = 265, physical = 209, intelligence = 232, agility = 198, freedom = 309 }
+  moves = [
+    { move = 0x166B0073, level = 1 },                     # Super Armadillo
+    { move = 0x7CACF0B0, level = 1 },                     # Horn Train
+    { move = 0xDD365E15, level = 40 },                    # Mole Shuffle
+    { move = 0x9765A74A, level = 75 },                    # Beast Fang
+  ]
+
+[[edit]]
+target = "c01000660"                                   # Cham Lion
+
+  [[edit.cards]]
+  id = 0x7B992557                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 147, control = 240, technique = 221, pressure = 247, physical = 182, intelligence = 242, agility = 186, freedom = 284 }
+  moves = [
+    { move = 0x55C71D2A, level = 1 },                     # About Face
+    { move = 0x19025F83, level = 1 },                     # Quick Draw
+    { move = 0x5B6C28ED, level = 48 },                    # Invisible Fake
+    { move = 0x121A2FFE, level = 54 },                    # Mirage Shot
+  ]
+
+[[edit]]
+target = "c01000670"                                   # Steve Eagle
+
+  [[edit.cards]]
+  id = 0x62821416                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 270, technique = 296, pressure = 143, physical = 192, intelligence = 219, agility = 180, freedom = 255 }
+  moves = [
+    { move = 0x1D4E888F, level = 1 },                     # Condor Dive
+    { move = 0x7B64F3D2, level = 20 },                    # Hawk Shot
+    { move = 0xC7A9BB3A, level = 32 },                    # Whirlwind Cut
+    { move = 0x4DDFEDE2, level = 71 },                    # Eagle Buster
+  ]
+
+[[edit]]
+target = "c01000680"                                   # Bruce Monkey
+
+  [[edit.cards]]
+  id = 0xE51A08D9                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 259, technique = 265, pressure = 150, physical = 197, intelligence = 200, agility = 186, freedom = 255 }
+  moves = [
+    { move = 0xDEB28A7B, level = 1 },                     # Monkey Turn
+    { move = 0x53CD747F, level = 1 },                     # Tarzan Kick
+    { move = 0xD8794890, level = 35 },                    # Kangaroo Kick
+    { move = 0x261BDCA8, level = 55 },                    # Moonsault
+  ]
+
+[[edit]]
+target = "c01000690"                                   # Gary Lancaster
+
+  [[edit.cards]]
+  id = 0xFC013998                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 360, control = 181, technique = 135, pressure = 236, physical = 188, intelligence = 181, agility = 225, freedom = 221 }
+  moves = [
+    { move = 0x3663DB4C, level = 1 },                     # Utter Gutsiness Bat
+    { move = 0x53CD747F, level = 1 },                     # Tarzan Kick
+    { move = 0x166B0073, level = 1 },                     # Super Armadillo
+    { move = 0x4BD584B7, level = 48 },                    # Power Charge
+  ]
+
+[[edit]]
+target = "c01000700"                                   # Harry Snake
+
+  [[edit.cards]]
+  id = 0x2C01E8E6                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 279, technique = 273, pressure = 155, physical = 234, intelligence = 205, agility = 186, freedom = 247 }
+  moves = [
+    { move = 0x49529150, level = 1 },                     # Snake Shot
+    { move = 0xC66BD10D, level = 21 },                    # Zigzag Spark
+    { move = 0x60397CCA, level = 36 },                    # Cross Drive
+    { move = 0x43B5739B, level = 65 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c01000710"                                   # Adrian Speed
+
+  [[edit.cards]]
+  id = 0x351AD9A7                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 257, technique = 278, pressure = 153, physical = 212, intelligence = 163, agility = 185, freedom = 335 }
+  moves = [
+    { move = 0x53CD747F, level = 1 },                     # Tarzan Kick
+    { move = 0x2296A01A, level = 1 },                     # Southern Cross
+    { move = 0x34256515, level = 24 },                    # Dynamite Shot
+    { move = 0x2D3E5454, level = 60 },                    # Clone Shot
+  ]
+
+[[edit]]
+target = "c01000720"                                   # Alan Coe
+
+  [[edit.cards]]
+  id = 0x1E378A64                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 275, technique = 285, pressure = 174, physical = 150, intelligence = 227, agility = 154, freedom = 293 }
+  moves = [
+    { move = 0x53CD747F, level = 1 },                     # Tarzan Kick
+    { move = 0xDEB28A7B, level = 30 },                    # Monkey Turn
+    { move = 0x0455B9CE, level = 48 },                    # Run Ball Run
+    { move = 0x6ADE9E01, level = 51 },                    # Illusory Ball
+  ]
+
+[[edit]]
+target = "c01000730"                                   # Philip Anders
+
+  [[edit.cards]]
+  id = 0x072CBB25                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 232, technique = 193, pressure = 231, physical = 180, intelligence = 205, agility = 197, freedom = 304 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x142DBE2A, level = 24 },                    # Foul Offence
+    { move = 0xA8E0F6C2, level = 35 },                    # Kung Fu Header
+    { move = 0x68982058, level = 66 },                    # Armadillo Circus
+  ]
+
+[[edit]]
+target = "c01000740"                                   # Rocky Rackham
+
+  [[edit.cards]]
+  id = 0x486D2DE2                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 213, technique = 207, pressure = 155, physical = 298, intelligence = 216, agility = 166, freedom = 313 }
+  moves = [
+    { move = 0x166B0073, level = 1 },                     # Super Armadillo
+    { move = 0x35E70F22, level = 18 },                    # Grenade Shot
+    { move = 0x68982058, level = 37 },                    # Armadillo Circus
+    { move = 0x55C71D2A, level = 40 },                    # About Face
+  ]
+
+[[edit]]
+target = "c01000750"                                   # Matt Mouseman
+
+  [[edit.cards]]
+  id = 0x51761CA3                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 128, control = 294, technique = 285, pressure = 153, physical = 194, intelligence = 200, agility = 158, freedom = 335 }
+  moves = [
+    { move = 0xACAC21CE, level = 15 },                    # Fake Ball
+    { move = 0x6B1CF436, level = 25 },                    # Bewildered
+    { move = 0xAC6D8A70, level = 42 },                    # Rainbow Arc
+    { move = 0x592A96B4, level = 55 },                    # Afterimage
+  ]
+
+[[edit]]
+target = "c01000760"                                   # Chad Bullford
+
+  [[edit.cards]]
+  id = 0x7A5B4F60                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 84, control = 178, technique = 154, pressure = 289, physical = 239, intelligence = 228, agility = 312, freedom = 271 }
+  moves = [
+    { move = 0x8FBCFC3C, level = 1 },                     # Blazing Knuckle
+    { move = 0x8DFA4265, level = 1 },                     # Toughness Block
+    { move = 0xC2BBD4A2, level = 36 },                    # Wild Claw
+    { move = 0xDBA0E5E3, level = 53 },                    # Gigant Wall
+  ]
+
+[[edit]]
+target = "c11801060"                                   # Harry Savage
+
+  [[edit.cards]]
+  id = 0xE751BC73                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 188, control = 258, technique = 239, pressure = 178, physical = 184, intelligence = 211, agility = 180, freedom = 297 }
+  moves = [
+    { move = 0x2354CA2D, level = 1 },                     # Wind God's Dance
+    { move = 0x7EEA4EE9, level = 15 },                    # Blade Attack
+    { move = 0xC42D6F54, level = 35 },                    # Aikido
+    { move = 0x0D368F6B, level = 49 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c11807060"                                   # Flammie Gonzalez
+
+  [[edit.cards]]
+  id = 0xC23AE3AF                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 257, technique = 216, pressure = 180, physical = 182, intelligence = 193, agility = 180, freedom = 255 }
+  moves = [
+    { move = 0xB3BD79DA, level = 5 },                     # Patriot Shot
+    { move = 0x21127474, level = 17 },                    # Ultra Moon
+    { move = 0xB7474004, level = 36 },                    # Dough Ray Me
+    { move = 0x35E70F22, level = 53 },                    # Grenade Shot
+  ]

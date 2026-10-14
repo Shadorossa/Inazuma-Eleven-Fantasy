@@ -5,7 +5,7 @@
 # Same art as the 2.0 pack-time generator research/scripts/slot_card_art.py (build_sprites / atlas_layout): v4.2
 # bodies 424x624 from the retail save_info_base01 / 02 (save01_04), padlock from mainmenu90_30, row plates from
 # save_mode_base01 + retail glyphs. A recipe that cannot be made is an ERROR in the log; its card stays blank.
-schema = "vr_framework.image/1"
+schema = "VRFW.image/1"
 
 [[texture]]
 atlas = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"

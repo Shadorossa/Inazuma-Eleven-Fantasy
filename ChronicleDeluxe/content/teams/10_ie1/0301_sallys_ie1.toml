@@ -1,0 +1,37 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (chronicle_deluxe, 2026-10-14): the same team as Chronicles Deluxe's (the older mod chronicles_deluxe,
+# set aside; same key, so the same team id and save entries). While chronicles_deluxe is active this file is left out
+# (it declares the identical team): the two mods never declare it twice.
+if_not_mod = "chronicles_deluxe"
+# Street Sally's as an IE1 team (Nacho 2026-10-09): the rival of the Chronicle side node «Sally's» (Chronicle Deluxe,
+# content/teams/70_route_nodes/side_nodes.toml `ie1_sallys`, docs/game/modes/chronicle-side-branches.md §9.13), like
+# Umbrella (0300_umbrella_ie1.toml). Roster = the retail legend team tm_cro_legend_ie1_06 (its formation, kit and crest
+# through based_on), the line-up of the Estadio BB clone bb_204 (Chronicles Deluxe's 0203_sallys.toml); every player plays his card's own
+# moveset (loadout 0), no aura / Hiper. Its level comes from its game (the node's rows).
+default_lang = "en"
+
+[[team]]
+name = "cro_ie1_sallys"
+key = "evt_cro_ie1_sallys"
+based_on = "tm_cro_legend_ie1_06"      # Street Sally's (legend team)
+name_text = 0x63356893                 # Street Sally's (the game's name text)
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x9D55AF75, slot = 0, loadout = 0, uid = 0x23C3F8D3 },  # Suzanne Yuma · GK
+  { card = 0xB678FCB6, slot = 1, loadout = 0, uid = 0x08EEAB10 },  # Tammy Fielding · DF
+  { card = 0xAF63CDF7, slot = 2, loadout = 0, uid = 0x11F59A51 },  # Alex Lovely · DF
+  { card = 0xE0225B30, slot = 3, loadout = 0, uid = 0x5EB40C96 },  # Louis Hillside · DF
+  { card = 0xF9396A71, slot = 4, loadout = 0, uid = 0x47AF3DD7 },  # Ness Sheldon · DF
+  { card = 0xD21439B2, slot = 5, loadout = 0, uid = 0x6C826E14 },  # Lizzy Squirrel · MF
+  { card = 0xCB0F08F3, slot = 6, loadout = 0, uid = 0x75995F55 },  # Kippy Jones · MF
+  { card = 0x4C97143C, slot = 7, loadout = 0, uid = 0xF201439A },  # Fayette Riversong · MF
+  { card = 0x558C257D, slot = 9, number = 9, captain = true, loadout = 0, uid = 0xEB1A72DB },  # Samantha Moonlight · FW
+  { card = 0x858CF403, slot = 8, number = 10, loadout = 0, uid = 0x3B1AA3A5 },  # Mitch Sandstone · MF
+  { card = 0x9C97C542, slot = 10, loadout = 0, uid = 0x220192E4 },  # Eddie Prentice · FW
+  { card = 0xB7BA9681, slot = 11, loadout = 0, uid = 0x092CC127 },  # Alf Holmes · GK
+  { card = 0xAEA1A7C0, slot = 12, loadout = 0, uid = 0x1037F066 },  # Ian Stager · DF
+  { card = 0xE1E03107, slot = 13, loadout = 0, uid = 0x5F7666A1 },  # Fred Crumb · DF
+  { card = 0xF8FB0046, slot = 14, loadout = 0, uid = 0x466D57E0 },  # Doug Baughan · FW
+  { card = 0xD3D65385, slot = 15, loadout = 0, uid = 0x6D400423 },  # Pip Daltry · DF
+]

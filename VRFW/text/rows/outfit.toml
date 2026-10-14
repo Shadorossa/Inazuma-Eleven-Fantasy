@@ -2,7 +2,7 @@
 # framework's 9 languages, read by the graft vrfw_outfit (equip_menu_select) with CMND_TEXT_GET by id = crc32(row id).
 # Missing row: the empty «Atuendo» row stays blank (retail).
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # The label of the empty «Atuendo» row of «Equipamiento» (equip slot 4, no outfit worn; shown at half alpha).

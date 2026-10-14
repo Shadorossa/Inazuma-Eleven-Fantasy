@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# True Hissatsu: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+lang = "es"
+name = "True Hissatsu"
+
+[en]
+name = "True Hissatsu"
+
+[fr]
+name = "True Hissatsu"
+
+[de]
+name = "True Hissatsu"
+
+[it]
+name = "True Hissatsu"
+
+[pt]
+name = "True Hissatsu"
+
+[ja]
+name = "True Hissatsu"
+
+[zh_hans]
+name = "True Hissatsu"
+
+[zh_hant]
+name = "True Hissatsu"
+
+[[release]]
+icon = "general"
+notes = [
+    "Cada supertécnica sube de nivel al usarla en partidos.",
+    "Aviso en el partido: «<técnica> sube a Nv.N».",
+    "La curva de usos se cambia en config.toml.",
+    "Libro de mejora de supertécnica: +1 nivel.",
+    "Cuaderno de evolución definitiva: el último nivel.",
+    "Nadie lleva dos veces la misma supertécnica.",
+]
+
+  [release.en]
+  notes = [
+      "Each special move levels up as it is used in matches.",
+      "Match banner: «<move> levels up to Lv.N».",
+      "The use curve is set in config.toml.",
+      "Special Move Upgrade Book: +1 level.",
+      "Ultimate Evolution Manual: the final level.",
+      "No player carries the same move twice, on any board.",
+  ]
+
+  [release.fr]
+  notes = [
+      "Chaque supertechnique monte de niveau en match.",
+      "En match : « <technique> passe au Niv.N ».",
+      "La courbe d'utilisations se règle dans config.toml.",
+      "Livre d'amélioration de technique : +1 niveau.",
+      "Livre d'évolution ultime : le dernier niveau.",
+      "Aucun joueur ne porte deux fois la même technique.",
+  ]
+
+  [release.de]
+  notes = [
+      "Jede Spezialtechnik steigt durch Einsatz im Spiel auf.",
+      "Im Spiel: „<Technik> steigt auf St.N“.",
+      "Die Einsatzkurve steht in config.toml.",
+      "Technik-Verbesserungsbuch: +1 Stufe.",
+      "Buch der ultimativen Evolution: die letzte Stufe.",
+      "Kein Spieler trägt dieselbe Technik zweimal.",
+  ]
+
+  [release.it]
+  notes = [
+      "Ogni supertecnica sale di livello usandola in partita.",
+      "In partita: «<tecnica> sale al Liv.N».",
+      "La curva di utilizzi si cambia in config.toml.",
+      "Libro potenziamento tecnica: +1 livello.",
+      "Libro dell'evoluzione suprema: l'ultimo livello.",
+      "Nessun giocatore ripete una supertecnica.",
+  ]
+
+  [release.pt]
+  notes = [
+      "Cada supertécnica sobe de nível ao usá-la nas partidas.",
+      "Na partida: «<técnica> sobe para Nv.N».",
+      "A curva de usos muda-se em config.toml.",
+      "Livro de melhoria de técnica: +1 nível.",
+      "Livro da evolução suprema: o último nível.",
+      "Nenhum jogador repete a mesma supertécnica.",
+  ]
+
+  [release.ja]
+  notes = [
+      "必殺技は試合で使うほど進化する。",
+      "試合中に「〇〇がLv.Nにレベルアップ」と表示。",
+      "使用回数の基準はconfig.tomlで変更可。",
+      "必殺技強化の書：1段階進化。",
+      "究極進化の書：最終段階へ。",
+      "同じ必殺技は1人に1つまで（どのボードでも）。",
+  ]
+
+  [release.zh_hans]
+  notes = [
+      "必杀技在比赛中越用越强。",
+      "比赛中显示「某技升至Lv.N」。",
+      "使用次数曲线可在config.toml中修改。",
+      "必杀技强化之书：进化一个阶段。",
+      "究极进化之书：进化到最终阶段。",
+      "同一球员不能装备两个相同的必杀技。",
+  ]
+
+  [release.zh_hant]
+  notes = [
+      "必殺技在比賽中越用越強。",
+      "比賽中顯示「某技升至Lv.N」。",
+      "使用次數曲線可在config.toml中修改。",
+      "必殺技強化之書：進化一個階段。",
+      "究極進化之書：進化到最終階段。",
+      "同一球員不能裝備兩個相同的必殺技。",
+  ]

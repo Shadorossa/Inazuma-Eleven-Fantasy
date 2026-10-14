@@ -1,0 +1,56 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): a rival of the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/
+# chain_sonny.toml). The same team as the set-aside Chronicles Deluxe's (generated there by
+# research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe is
+# active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# The Mountains (IE, «Sonny Raimon's route» #7; report status: missing).
+# Roster: wiki lineup «IE3 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/The_Mountains
+# Left out (no card in the game): Philip Owen
+[[team]]
+name = "ct_wk_the_mountains"
+key = "evt_ct_wk_the_mountains"
+based_on = "tm_cro_ie1_1320" # Team Ogre: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # team_kits_from_wiki.py: neutral (needs a kit) (was 0x7362C53B)
+level = 55
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0xCD8C35F3, slot = 0, number = 1, rarity_step = 1 }, # Talal Hamad = Talal Hamad (GK)
+  { card = 0xF297F4DE, slot = 1, number = 2, rarity_step = 1 }, # Makiya Hiroshi = Mark Hillvalley (DF)
+  { card = 0x7BD1DABC, slot = 2, number = 3, rarity_step = 1 }, # Walter Mountain = Walter Mountain (DF)
+  { card = 0x9A14F842, slot = 3, number = 4, rarity_step = 1 }, # Djamel Djammadu = Jamila Wali (DF)
+  { card = 0xBC14082E, slot = 4, number = 5, rarity_step = 1 }, # Yoneyama Uehito = Homer Grower (DF)
+  { card = 0x47398A93, slot = 5, number = 6, rarity_step = 1, captain = true }, # Harano Tooru = Tom Walters (MF)
+  { card = 0x959B463C, slot = 6, number = 7, rarity_step = 1 }, # Omotsuki Sora = Grengo (MF)
+  { card = 0x9F5BEEC7, slot = 7, number = 8, rarity_step = 1 }, # Clive Scissors = Derek Rabson (MF)
+  { card = 0x8149775A, slot = 8, number = 9, rarity_step = 1 }, # Noh Sung-joon = Sung-Jin Noh (FW)
+  { card = 0x5D99D53B, slot = 9, number = 10, rarity_step = 1 }, # Raffaele Generani = Raffaele Generani (FW)
+  { card = 0x58D6C3BE, slot = 10, number = 11, rarity_step = 1 }, # Indigo Lazuli = Indigo Lazuli (GK)
+  { card = 0x03B7BD8D, slot = 11, number = 12, rarity_step = 1 }, # Ishiyama Morihito = Maurice Badgame (DF)
+  { card = 0x0E20385B, slot = 12, number = 13, rarity_step = 1 }, # Yukino Seiya = Sean Snowfield (MF)
+  { card = 0x23C6A973, slot = 13, number = 14, rarity_step = 1 }, # Isshiki Masashi = Maston Color (MF)
+  { card = 0x0B31AB2F, slot = 14, number = 15, rarity_step = 1 }, # Theodor Ulrich = Theodor Ulrich (MF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_the_mountains.png" # remastered crest of the wiki's The Mountains emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Montañeros"
+short = "Montañeros"
+[team.text.en]
+name = "The Mountains"
+short = "The Mountains"
+[team.text.ja]
+name = "ザ・マウンテンズ"
+short = "ザ・マウンテンズ"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_the_mountains"
+card_moves = 4

@@ -41,6 +41,12 @@ EVT_HL_SKILL_OPEN_DX = -40        -- centre shift, layout units (- = left)
 EVT_HL_SKILL_OPEN_DY = 0          -- (+ = up)
 EVT_HL_SKILL_OPEN_PAD = 8         -- plate margin left / right of the content (layer units)
 EVT_HL_SKILL_OPEN_H = 56          -- visible plate height (layer units; the retail pill is 62)
+-- 2026-10-14 (Nacho): the action plates of the Y/X/B/A cross that carry «Pase», «Esquivar» and «Disparar»
+-- (soccer08_08_cmd_act_base_cmd instances; the plate shows whichever action the engine gave its slot, so the plates are
+-- picked by action, not by position) and the «Cancelar» guide plate with the B glyph (soccer08_17_cancel_guide, shown
+-- while the move list is open) 20 % smaller around their own centre, so they keep their place on the cross / guide row.
+-- «Chute» and «Pase alto» keep the retail size.
+EVT_HL_ACTION_PLATE_SCALE = 0.8
 -- LB tactics ring (soccer08_14_tactics_screen_guide, retail centre x -130, y 429), moved to the left edge at the height
 -- of the cross of the tactics menu (the ring hides while that menu is up)
 EVT_HL_TACTICS_LEFT = true
@@ -118,6 +124,21 @@ local HL_SO_BASE_X, HL_SO_BASE_Y = -156, 136 --[[_pos_base01 from the corner]]
 local HL_SO_CONTENT_L, HL_SO_CONTENT_R = -51, 44
 local HL_TAC_PLATE = 3392405315 --[[soccer08_12_cmd_act_tactics_cmd x4: 0 below, 1 left, 2 above, 3 right of the cross]]
 local HL_TAC_HALF_W = 240
+local HL_CANCEL_GUIDE = 2027749905 --[[soccer08_17_cancel_guide]]
+local HL_BASE_CMD = 556446027 --[[soccer08_08_cmd_act_base_cmd: the 4 action plates of the cross, instances 0..3]]
+local HL_BASE_CMD_COUNT = 4
+-- action ids the engine gives SetupBaseCmdInfo (index into the retail texture list gtxt_cmd01..): the plates to shrink
+local HL_ACTION_PASS = 9 --[[gtxt_cmd09 «Pase»]]
+local HL_ACTION_SHOOT_IN_ZONE = 10 --[[gtxt_cmd10 «Disparar»]]
+local HL_ACTION_DODGE = 21 --[[gtxt_cmd21 «Esquivar»]]
+local HL_SMALL_PLATE_ACTIONS = {
+  [HL_ACTION_PASS] = true,
+  [HL_ACTION_SHOOT_IN_ZONE] = true,
+  [HL_ACTION_DODGE] = true,
+}
+local hl_plate_action = {}        -- instance index (0..3) -> action id of its last SetupBaseCmdInfo
+local hl_plate_ready = {}         -- instance index -> its layer instance has been set up
+local hl_plate_scale_sent = {}    -- instance index -> last layer scale sent (nil: none yet)
 local hl_zone = 0                 -- frames left of the zone signal
 local HL_TYPE_OFFSET = 1493879504 --[[offset: type of set vs, _pos_vs01 0 -> -330 while the move list is open]]
 local hl_list_open = false        -- last UpdateAnimeMoveOffsetCmdBase answer (= retail flag3)
@@ -309,6 +330,9 @@ local function HL_Place(layer)
     local cx = HL_SO_BASE_X + x + w * (HL_PLATE_VX0 + HL_PLATE_VX1) / 2
     local cy = HL_SO_BASE_Y
     HL_Cmd(HL_CMND_POS, HL_SKILL_OPEN, cx + EVT_HL_SKILL_OPEN_DX - s * cx, cy + EVT_HL_SKILL_OPEN_DY - s * cy, 0, 0)
+  elseif layer == HL_CANCEL_GUIDE then
+    local s = EVT_HL_ACTION_PLATE_SCALE
+    HL_Cmd(HL_CMND_SCALE, HL_CANCEL_GUIDE, s, s, 1, 0)
   elseif layer == HL_RING then
     if not EVT_HL_TACTICS_LEFT then
       return
@@ -334,6 +358,20 @@ local function HL_Place(layer)
   end
 end
 
+-- layer scale of the 4 action plates of the cross: EVT_HL_ACTION_PLATE_SCALE for «Pase» / «Disparar» / «Esquivar»,
+-- 1 for any other action; only sent when it changes
+local function HL_PlaceActionPlates()
+  for i = 0, HL_BASE_CMD_COUNT - 1 do
+    if hl_plate_ready[i] then
+      local s = HL_SMALL_PLATE_ACTIONS[hl_plate_action[i]] and EVT_HL_ACTION_PLATE_SCALE or 1
+      if hl_plate_scale_sent[i] ~= s then
+        HL_Cmd(HL_CMND_SCALE, HL_BASE_CMD, s, s, 1, i)
+        hl_plate_scale_sent[i] = s
+      end
+    end
+  end
+end
+
 local function HL_PlaceAll()
   HL_Place(HL_GOAHEAD)
   HL_Place(HL_AURA_REL)
@@ -341,6 +379,8 @@ local function HL_PlaceAll()
   HL_Place(HL_SKILL_OPEN)
   HL_Place(HL_RING)
   HL_Place(HL_TAC_PLATE)
+  HL_Place(HL_CANCEL_GUIDE)
+  HL_PlaceActionPlates()
 end
 
 local function HL_Wrap(name, after)
@@ -467,6 +507,18 @@ if type(hl_prevOffset) == "function" then
   end)
 end
 
+-- the engine calls these by name when it gives a plate of the cross its action (SetupBaseCmdInfo(index, action, ...))
+HL_Wrap("SetupBaseCmdInfo", function(index, action)
+  if type(index) == "number" and index >= 0 and index < HL_BASE_CMD_COUNT then
+    hl_plate_action[index] = action or 0
+    HL_PlaceActionPlates()
+  end
+end)
+HL_Wrap("ResetBaseCmdInfo", function()
+  hl_plate_action = {}
+  HL_PlaceActionPlates()
+end)
+
 -- retail OnInit resets flag3 (list closed); SetupButtonCmdBase then skips the slides to rest
 HL_Wrap("OnInit", function()
   hl_list_open = false
@@ -482,6 +534,9 @@ HL_Wrap("OnSetupLayer", function(a1, a2)
     HL_SwapAuraRelease()
   elseif a1 == HL_SKILL_OPEN then
     HL_SwapSkillOpen()
+  elseif a1 == HL_BASE_CMD and type(a2) == "number" then
+    hl_plate_ready[a2] = true
+    hl_plate_scale_sent[a2] = nil   -- the retail setup may have reset the layer scale
   end
   HL_Place(a1)
 end)

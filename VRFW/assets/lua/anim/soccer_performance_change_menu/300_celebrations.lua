@@ -47,9 +47,11 @@ function InitPerformanceInfoArray()
   if hdl == nil or real == nil then
     return CEL_InitPerformanceInfoArray()
   end
-  funcLuaCommand = function(cmd, a, b, ...)
+  -- the arguments go on as the caller gave them (a C command counts them: no extra nils)
+  funcLuaCommand = function(...)
+    local cmd, a, b = ...
     if cmd == CEL.INFO and b == 3 then
-      local ok, valid = real(cmd, a, b, ...)
+      local ok, valid = real(...)
       if ok ~= false and valid ~= false then
         local okid, pid = real(CEL.INFO, a, 4)
         if okid ~= false and pid ~= nil and pid ~= 0 then
@@ -61,7 +63,7 @@ function InitPerformanceInfoArray()
       end
       return ok, valid
     end
-    return real(cmd, a, b, ...)
+    return real(...)
   end
   local okc, err = pcall(CEL_InitPerformanceInfoArray)
   funcLuaCommand = real

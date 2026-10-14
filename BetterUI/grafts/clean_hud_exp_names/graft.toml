@@ -1,0 +1,22 @@
+# BetterUI: no player name on the cards of the post-match «RESULTADOS · EXP» screen (soccer_result_menu_exp; owner
+# request 2026-10-14). The retail card (layer 1774749226, 20 instances: manager, support, starters, reserves) has its name
+# line `_text_chr01` hidden after the card command; level, SIGUIENTE, portrait, badges and «¡Nueva técnica!» stay.
+# OnOpenLayer and UpdateAllCharaCard (which runs the card command again after the exp skip) are wrapped; both only
+# call the original first and hide the name afterwards. No engine call at load.
+name = "clean_hud_exp_names"
+order = 930
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnOpenLayer", "UpdateAllCharaCard"]
+description = "BetterUI: no player names on the post-match experience result cards"
+
+[[files]]
+stem = "soccer_result_menu_exp"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "exp_names.lua"
+  marker = "clean_hud_exp_names"
+  crc = "none"

@@ -1,0 +1,10 @@
+schema = "VRFW.transform/2"
+# Character Reforged › the form context of every saved card for the VR-Framework's form viewer («Cambiar forma» in
+# Ver apariencia and every menu that shows a player's forms; owner 2026-10-14: «the character's form context must come
+# from Character Reforged, not from VRFW guessing»). scripts/mix_slots.lua fills the native table FormContext (saved
+# card -> { aura, mix, aura_from, mix_from }) from the view in use (the new 6 + 2 set or Victory Road's own); the
+# viewer reads it instead of scanning the board (its scan stays only for a game without this mod). The forms themselves
+# come from the mods that declare them: the armour of the aura's spirit (All Keshin Armed's transforms), the miximax
+# look (All Miximaxed's / the retail pairs), the mode change (All Changed / retail). VRFW 2.4.5 [miximax] form_source.
+[miximax]
+form_source = "FormContext"

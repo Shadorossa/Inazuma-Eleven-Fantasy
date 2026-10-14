@@ -1,0 +1,265 @@
+schema = "VRFW.character/2"
+# Character Reforged · Earth Eleven · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06030210"                                   # Skie Blue
+
+  [[edit.cards]]
+  id = 0xB1D65F12                                         # MF/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 247, technique = 262, pressure = 205, physical = 138, intelligence = 239, agility = 203, freedom = 389 }
+  moves = [
+    { move = 0xC13F00CC, level = 1 },                     # Flower Power
+    { move = 0xD3A09353, level = 18 },                    # Hoopsie-Daisy
+    { move = 0x2C3D95DD, level = 32 },                    # Sleeping Dust
+    { move = 0x6DD736DD, level = 43 },                    # Ribbon Shower
+  ]
+
+[[edit]]
+target = "c06030010"                                   # Terry Archibald
+
+  [[edit.cards]]
+  id = 0xB2528B7C                                         # GK/MF · wind
+  growth = "normal"
+  stats = { kick = 150, control = 247, technique = 153, pressure = 200, physical = 282, intelligence = 257, agility = 270, freedom = 385 }
+  moves = [
+    { move = 0xE4849E49, level = 1 },                     # Wild Dunk
+    { move = 0xE6C22010, level = 1 },                     # Claw de Force
+    { move = 0x4BB5052B, level = 1 },                     # Mammoth Stomp
+    { move = 0x04F493EC, level = 48 },                    # Dragon Rage Dunk
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7BCEA96F, level = 1 },                     # Mammoth Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030020"                                   # Trina Verdure
+
+  [[edit.cards]]
+  id = 0x997FD8BF                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 80, control = 203, technique = 185, pressure = 313, physical = 196, intelligence = 363, agility = 243, freedom = 397 }
+  moves = [
+    { move = 0xBB21DDC9, level = 1 },                     # Trina Tumble
+    { move = 0x0CF4E55C, level = 12 },                    # Double Touch
+    { move = 0x322F0C40, level = 20 },                    # Spider Web
+    { move = 0x867EE0BB, level = 42 },                    # Verdure Vortex
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xC3052576, level = 1 },                     # Fox Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030030"                                   # Keenan Sharpe
+
+  [[edit.cards]]
+  id = 0x8064E9FE                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 84, control = 235, technique = 165, pressure = 279, physical = 255, intelligence = 363, agility = 194, freedom = 225 }
+  moves = [
+    { move = 0xA23AEC88, level = 1 },                     # Copy Cut
+    { move = 0xB4488239, level = 5 },                     # Look! UFO
+    { move = 0x5DA7EA06, level = 13 },                    # Boomerang Bluff
+    { move = 0x0F4DC9B3, level = 30 },                    # Logicstical Sync
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xEF21DE69, level = 1 },                     # Owl Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030040"                                   # Zippy Lerner
+
+  [[edit.cards]]
+  id = 0xCF257F39                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 84, control = 234, technique = 193, pressure = 261, physical = 193, intelligence = 360, agility = 182, freedom = 225 }
+  moves = [
+    { move = 0xED7B7A4F, level = 1 },                     # Defence Equation
+    { move = 0x2E7B2B84, level = 5 },                     # Thief's Eye
+    { move = 0x12E67CC1, level = 8 },                     # Future Eye
+    { move = 0x0F4DC9B3, level = 30 },                    # Logicstical Sync
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xF0F12DC3, level = 1 },                     # Ratel Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030050"                                   # Frank Foreman
+
+  [[edit.cards]]
+  id = 0xD63E4E78                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 143, control = 162, technique = 169, pressure = 301, physical = 320, intelligence = 271, agility = 182, freedom = 375 }
+  moves = [
+    { move = 0xF0ED37BC, level = 1 },                     # Buffalo Crusher
+    { move = 0xF4604B0E, level = 12 },                    # Fancy-Footwork
+    { move = 0x82788A5A, level = 25 },                    # Straight Counter
+    { move = 0xEFFC6FA8, level = 43 },                    # Warhead
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xBFB0BB04, level = 1 },                     # Buffalo Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030060"                                   # Buddy Fury
+
+  [[edit.cards]]
+  id = 0xFD131DBB                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 257, technique = 271, pressure = 189, physical = 201, intelligence = 252, agility = 192, freedom = 271 }
+  moves = [
+    { move = 0x867EE0BB, level = 1 },                     # Verdure Vortex
+    { move = 0x81FC5E34, level = 1 },                     # Driving Header
+    { move = 0xCABBA212, level = 2 },                     # Menacing Glare
+    { move = 0x52CEB5F6, level = 51 },                    # Iron Wall
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xD9DB2AFA, level = 1 },                     # Grizzly Totem [aura]
+  ]
+
+[[edit]]
+target = "c06038010"                                   # Buddy Fury
+
+  [[edit.cards]]
+  id = 0x77E6A393                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 277, control = 255, technique = 275, pressure = 189, physical = 198, intelligence = 250, agility = 185, freedom = 243 }
+  moves = [
+    { move = 0xCABBA212, level = 1 },                     # Menacing Glare
+    { move = 0x81FC5E34, level = 1 },                     # Driving Header
+    { move = 0x44BCDB47, level = 39 },                    # Pyroclastic
+    { move = 0x52CEB5F6, level = 53 },                    # Iron Wall
+  ]
+
+[[edit]]
+target = "c06030070"                                   # Cerise Blossom
+
+  [[edit.cards]]
+  id = 0xE4082CFA                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 266, control = 254, technique = 275, pressure = 204, physical = 171, intelligence = 265, agility = 189, freedom = 213 }
+  moves = [
+    { move = 0xD3A09353, level = 8 },                     # Hoopsie-Daisy
+    { move = 0xAAD10DF7, level = 15 },                    # Mermaid Smash
+    { move = 0x6DD736DD, level = 28 },                    # Ribbon Shower
+    { move = 0x54C4DCA3, level = 35 },                    # Butterfly Trance
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xC0C01BBB, level = 1 },                     # Serow Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030110"                                   # Falco Flashman
+
+  [[edit.cards]]
+  id = 0xB390E14B                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 312, control = 239, technique = 201, pressure = 184, physical = 204, intelligence = 192, agility = 211, freedom = 305 }
+  moves = [
+    { move = 0xD9BB22A7, level = 1 },                     # Air Ride
+    { move = 0xB3CA3CB6, level = 1 },                     # Parkour Power
+    { move = 0x9B63BB1B, level = 1 },                     # Black Dawn
+    { move = 0x0AC37488, level = 30 },                    # Heavenly Drive
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x2E3D11F1, level = 1 },                     # Falcon Totem [aura]
+  ]
+
+[[edit]]
+target = "c06038020"                                   # Falco Flashman
+
+  [[edit.cards]]
+  id = 0x5CCBF050                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 312, control = 239, technique = 201, pressure = 184, physical = 204, intelligence = 192, agility = 211, freedom = 305 }
+  moves = [
+    { move = 0xB3CA3CB6, level = 1 },                     # Parkour Power
+    { move = 0xA955D999, level = 1 },                     # The Earth: Infinity
+    { move = 0x9B63BB1B, level = 1 },                     # Black Dawn
+    { move = 0x568262FA, level = 30 },                    # Dark Tornado
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x2E3D11F1, level = 1 },                     # Falcon Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030120"                                   # Zack Avalon
+
+  [[edit.cards]]
+  id = 0x98BDB288                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 336, control = 259, technique = 185, pressure = 215, physical = 224, intelligence = 240, agility = 153, freedom = 305 }
+  moves = [
+    { move = 0xD4222DDC, level = 1 },                     # Kabuki Break
+    { move = 0xA955D999, level = 1 },                     # The Earth: Infinity
+    { move = 0xC9BAEA82, level = 40 },                    # Eye of the Storm
+    { move = 0xB6852A33, level = 50 },                    # I Am the Almighty
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7867B677, level = 1 },                     # Lion Totem [aura]
+  ]
+
+[[edit]]
+target = "c06030220"                                   # Glacia Vessal
+
+  [[edit.cards]]
+  id = 0x9AFB0CD1                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 289, control = 243, technique = 239, pressure = 193, physical = 147, intelligence = 205, agility = 212, freedom = 335 }
+  moves = [
+    { move = 0x86F5F6E8, level = 1 },                     # Cupid's Arrow
+    { move = 0xAF28F5A0, level = 19 },                    # The Tower
+    { move = 0x54C4DCA3, level = 38 },                    # Butterfly Trance
+    { move = 0xCABBA212, level = 52 },                    # Menacing Glare
+  ]
+
+[[edit]]
+target = "c06039290"                                   # Astero Black
+
+  [[edit.cards]]
+  id = 0x04079A90                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 319, control = 248, technique = 232, pressure = 205, physical = 192, intelligence = 230, agility = 190, freedom = 225 }
+  moves = [
+    { move = 0x7DAF3139, level = 1 },                     # Emperor Penguin No. 2
+    { move = 0xBF6D0AC5, level = 26 },                    # Emperor Penguin No. 3
+    { move = 0x0DCADC54, level = 34 },                    # Emperor Penguin 7
+    { move = 0xC9B4602F, level = 60 },                    # Final Death Zone
+  ]

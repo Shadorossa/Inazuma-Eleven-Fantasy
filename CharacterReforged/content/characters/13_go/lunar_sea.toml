@@ -1,0 +1,299 @@
+schema = "VRFW.character/2"
+# Character Reforged · Lunar Sea · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04001610_5000"                              # Alessandro il Grande
+
+  [[edit.cards]]
+  id = 0x0FC97613                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 243, technique = 186, pressure = 216, physical = 158, intelligence = 248, agility = 258, freedom = 347 }
+
+[[edit]]
+target = "c04001610"                                   # Alessandro il Grande
+
+  [[edit.cards]]
+  id = 0xDE5CFB52                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 243, technique = 186, pressure = 216, physical = 158, intelligence = 248, agility = 258, freedom = 347 }
+  moves = [
+    { move = 0xE546F47E, level = 1 },                     # Dust Devil
+    { move = 0x5B3151F0, level = 21 },                    # Nitro Slap
+    { move = 0x62DEE8B1, level = 38 },                    # Jumping Whack
+    { move = 0x2C5D1441, level = 59 },                    # Song of the Three Kingdoms
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xBC1258F8, level = 1 },                     # Gigante [aura]
+  ]
+
+[[edit]]
+target = "c04001620"                                   # Gene Ghiskhan
+
+  [[edit.cards]]
+  id = 0xF571A891                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 165, technique = 140, pressure = 285, physical = 271, intelligence = 255, agility = 157, freedom = 213 }
+  moves = [
+    { move = 0x585098FC, level = 3 },                     # Slice and Dice
+    { move = 0x17110E3B, level = 20 },                    # Jumbo Sandwich
+    { move = 0xEFFC6FA8, level = 36 },                    # Warhead
+    { move = 0x7D6E9A87, level = 38 },                    # The Wall
+  ]
+
+[[edit]]
+target = "c04001630"                                   # Attila Hun
+
+  [[edit.cards]]
+  id = 0xEC6A99D0                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 181, control = 161, technique = 155, pressure = 270, physical = 288, intelligence = 242, agility = 171, freedom = 389 }
+  moves = [
+    { move = 0x585098FC, level = 1 },                     # Slice and Dice
+    { move = 0x81FC5E34, level = 19 },                    # Driving Header
+    { move = 0xB60E3C60, level = 33 },                    # Plasma Cut
+    { move = 0x414BA9BD, level = 52 },                    # Pincer Pinch
+  ]
+
+[[edit]]
+target = "c04001640"                                   # Sun Tzu
+
+  [[edit.cards]]
+  id = 0xA32B0F17                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 248, technique = 217, pressure = 138, physical = 306, intelligence = 254, agility = 143, freedom = 230 }
+  moves = [
+    { move = 0x585098FC, level = 1 },                     # Slice and Dice
+    { move = 0x62BE692D, level = 19 },                    # Whirlwind Force
+    { move = 0x4E9A9232, level = 35 },                    # Spinning Cut
+    { move = 0xC324C788, level = 39 },                    # Blast Mine
+  ]
+
+[[edit]]
+target = "c04001650"                                   # Arty Xerxes
+
+  [[edit.cards]]
+  id = 0xBA303E56                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 150, control = 200, technique = 232, pressure = 181, physical = 286, intelligence = 225, agility = 167, freedom = 238 }
+  moves = [
+    { move = 0x585098FC, level = 1 },                     # Slice and Dice
+    { move = 0x6ADE9E01, level = 22 },                    # Illusory Ball
+    { move = 0x5739C70C, level = 30 },                    # Guided Collide
+    { move = 0xDCC9CCA3, level = 34 },                    # Tesla Coil
+  ]
+
+[[edit]]
+target = "c04001660"                                   # Darius Cyrus
+
+  [[edit.cards]]
+  id = 0x911D6D95                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 281, technique = 153, pressure = 244, physical = 163, intelligence = 293, agility = 146, freedom = 267 }
+  moves = [
+    { move = 0xC324C788, level = 4 },                     # Blast Mine
+    { move = 0x1C4D4906, level = 27 },                    # Whirlpool
+    { move = 0xA37D1A41, level = 35 },                    # Hyper-Swiper
+    { move = 0xC66BD10D, level = 44 },                    # Zigzag Spark
+  ]
+
+[[edit]]
+target = "c04001670"                                   # Jerry Onimo
+
+  [[edit.cards]]
+  id = 0x88065CD4                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 173, control = 246, technique = 182, pressure = 292, physical = 144, intelligence = 292, agility = 132, freedom = 217 }
+  moves = [
+    { move = 0xC324C788, level = 1 },                     # Blast Mine
+    { move = 0x81FC5E34, level = 23 },                    # Driving Header
+    { move = 0xEFFC6FA8, level = 27 },                    # Warhead
+    { move = 0x141046AB, level = 46 },                    # Overnight Fortress
+  ]
+
+[[edit]]
+target = "c04001680"                                   # Leon Ohnepart
+
+  [[edit.cards]]
+  id = 0x0F9E401B                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 163, control = 273, technique = 207, pressure = 278, physical = 143, intelligence = 294, agility = 134, freedom = 259 }
+  moves = [
+    { move = 0x7F15DC5F, level = 4 },                     # Desert Drift
+    { move = 0xB0BC314A, level = 13 },                    # Spin Meister
+    { move = 0xC324C788, level = 38 },                    # Blast Mine
+    { move = 0x84385EE2, level = 41 },                    # Black Tide Ride
+  ]
+
+[[edit]]
+target = "c04001700"                                   # Robert Lee
+
+  [[edit.cards]]
+  id = 0xC685A024                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 271, technique = 228, pressure = 173, physical = 188, intelligence = 188, agility = 154, freedom = 375 }
+  moves = [
+    { move = 0xEFFC6FA8, level = 1 },                     # Warhead
+    { move = 0x81FC5E34, level = 16 },                    # Driving Header
+    { move = 0xC324C788, level = 41 },                    # Blast Mine
+    { move = 0xC4D13C6B, level = 47 },                    # Katana Kick
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x555C1AE5, level = 1 },                     # Roc [aura]
+  ]
+
+[[edit]]
+target = "c04001710"                                   # Nobby Naga
+
+  [[edit.cards]]
+  id = 0xDF9E9165                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 248, technique = 325, pressure = 174, physical = 207, intelligence = 177, agility = 132, freedom = 217 }
+  moves = [
+    { move = 0xEFFC6FA8, level = 4 },                     # Warhead
+    { move = 0xC4D13C6B, level = 19 },                    # Katana Kick
+    { move = 0xC324C788, level = 37 },                    # Blast Mine
+    { move = 0x9FEEC7A9, level = 62 },                    # Gigaton Head
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x4C472BA4, level = 1 },                     # Firebird [aura]
+  ]
+
+[[edit]]
+target = "c04001720"                                   # Salvador Addin
+
+  [[edit.cards]]
+  id = 0xF4B3C2A6                                         # GK/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 244, technique = 250, pressure = 180, physical = 184, intelligence = 213, agility = 171, freedom = 355 }
+  moves = [
+    { move = 0xF14FDC17, level = 1 },                     # Shot Pocket
+    { move = 0x6A66FA7E, level = 14 },                    # Killer Whale
+    { move = 0xB01D1B68, level = 32 },                    # Power Spike
+    { move = 0xE546F47E, level = 51 },                    # Dust Devil
+  ]
+
+[[edit]]
+target = "c04001730"                                   # Otto Bismark
+
+  [[edit.cards]]
+  id = 0xEDA8F3E7                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 153, control = 223, technique = 198, pressure = 193, physical = 240, intelligence = 251, agility = 189, freedom = 217 }
+  moves = [
+    { move = 0x4E22F64D, level = 8 },                     # Transporter Device
+    { move = 0x15138722, level = 20 },                    # Will-o'-the-Wisp Shot
+    { move = 0x8B90AAAC, level = 24 },                    # Fortissimo
+    { move = 0xF88DC090, level = 36 },                    # Z Slash
+  ]
+
+[[edit]]
+target = "c04001740"                                   # Jean Darc
+
+  [[edit.cards]]
+  id = 0xA2E96520                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 177, technique = 158, pressure = 255, physical = 207, intelligence = 243, agility = 198, freedom = 230 }
+  moves = [
+    { move = 0x414BA9BD, level = 10 },                    # Pincer Pinch
+    { move = 0x141046AB, level = 25 },                    # Overnight Fortress
+    { move = 0x0E8FA384, level = 35 },                    # Warsaw
+    { move = 0x737DCB3F, level = 51 },                    # Pancake Defence
+  ]
+
+[[edit]]
+target = "c04001750"                                   # Bobby Bruce
+
+  [[edit.cards]]
+  id = 0xBBF25461                                         # FW/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 224, technique = 217, pressure = 188, physical = 278, intelligence = 138, agility = 143, freedom = 263 }
+  moves = [
+    { move = 0x332CCDC9, level = 12 },                    # Heel Kick
+    { move = 0x05567847, level = 20 },                    # Runaway Train
+    { move = 0xF6E75EE9, level = 34 },                    # Headbanger
+    { move = 0xADD8A52B, level = 40 },                    # Matchlock Bullet
+  ]
+
+[[edit]]
+target = "c04001760"                                   # Hanny Bawl
+
+  [[edit.cards]]
+  id = 0x90DF07A2                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 167, control = 290, technique = 161, pressure = 177, physical = 190, intelligence = 203, agility = 203, freedom = 230 }
+  moves = [
+    { move = 0xC4D13C6B, level = 4 },                     # Katana Kick
+    { move = 0xED7B7A4F, level = 13 },                    # Defence Equation
+    { move = 0xDF8CB373, level = 24 },                    # Sonic Shot
+    { move = 0x2354CA2D, level = 40 },                    # Wind God's Dance
+  ]
+
+[[edit]]
+target = "c11804050"                                   # Sturm Schwartzkopf
+
+  [[edit.cards]]
+  id = 0xFBA21F82                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 259, technique = 224, pressure = 181, physical = 185, intelligence = 189, agility = 170, freedom = 225 }
+  moves = [
+    { move = 0xF9C4BCF4, level = 3 },                     # Double Helix
+    { move = 0x12E67CC1, level = 16 },                    # Future Eye
+    { move = 0x8B90AAAC, level = 26 },                    # Fortissimo
+    { move = 0x14D1ED15, level = 32 },                    # Jumping Jack 
+  ]
+
+[[edit]]
+target = "c04001710_5000"                              # Nobby Naga
+
+  [[edit.cards]]
+  id = 0xC363768D                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 248, technique = 325, pressure = 174, physical = 207, intelligence = 177, agility = 132, freedom = 217 }
+
+[[edit]]
+target = "c04001700_5000"                              # Robert Lee
+
+  [[edit.cards]]
+  id = 0x65147D39                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 271, technique = 228, pressure = 173, physical = 188, intelligence = 188, agility = 154, freedom = 375 }

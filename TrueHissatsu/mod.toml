@@ -1,0 +1,70 @@
+id = "true_hissatsu"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "True Hissatsu"
+version = "1.0.5"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); the Special Move Upgrade Book (+1 level, also in the general shop) is an item of its own. A player can no longer carry the same special move twice, whatever board you use. Works with the VR-Framework alone."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-14"
+# This mod's own names (TOML keys [TrueHissatsu.X], Lua TrueHissatsu.X, commands CMND_TRUEHISSATSU_*, text ids
+# TrueHissatsu.*); never VRFW.
+prefix = "TrueHissatsu"
+folder = "TrueHissatsu"
+# Split out of Inazuma Fantasy on 2026-10-14 (owner request; docs/refactor/aura-mods-split.md «True Hissatsu»): IF's
+# technique ranks by use (module skill_rank), the grade-up banner (graft sr_popup), the move-rank items and the
+# one-copy-per-set rule. Standard mod layout (docs/framework/mod-layout.md):
+#   config.toml                       [ranks] the use curve and the rules, [duplicates] the one-copy rule
+#   content\game\true_hissatsu.toml   the engine entries (hooks, functions, globals), the commands, the save import
+#   content\items\rank_items.toml     the Libro de mejora de supertécnica (own item since 1.0.4; the retail
+#                                     abl_000001 «Nueva posibilidad» is retail again) + the Cuaderno de evolución
+#                                     definitiva (Galaxy's 究極進化の書); content\shops\ their shop rows; their icons in
+#                                     content\images\ (the book's: a recipe of the retail icon; the manual's PNG in
+#                                     assets\images\)
+#   scripts\true_hissatsu.lua (+ lib\) the run time: the store, the hooks, the commands, the exports
+#   text\                             mod texts, the rank items' messages and the banner suffix (9 languages)
+# Grafts: research/grafts/sr_popup (mod true_hissatsu: the banner); research/grafts/move_rank_items (mod true_hissatsu
+# since 2026-10-14, hook files: the book / manual used from BOTH skill views; docs/game/mechanics/move-rank-items.md):
+#   Character Reforged's «Fantasy» skill table: a row action of its host (content\menus\skill_table_rank_items.toml,
+#   CMD_FUNC1 on a move row, Sí / No window); Victory Road's own board: this mod's rebindable key
+#   TrueHissatsu.RankItems.Use (content\inputs\rank_items.toml, default LT / U) on a move piece, two presses through
+#   the board's telop.
+# Other mods' data read as rules: content\true_hissatsu\*.toml [TrueHissatsu.Rules] of any active mod (e.g. Inazuma
+# Fantasy: no rank-up by use in INAROGUE), the cards' VRFW.MoveGrades (recruit grades) of any mod.
+# hissatsu_reforged: its base (the special-move family; owner 2026-10-14). Character Reforged is NOT required: True
+# Hissatsu owns its rules in both views (the retail board: Board.CanEquip hook; Character Reforged's «Fantasy» skill
+# table, when that mod is on: the data it reads, content/skill_set/true_hissatsu.toml, and the row action its
+# host calls; the [[host]] is declared here too so the entry stays valid while Character Reforged is off).
+requires = ["vr_framework>=2.4.13", "hissatsu_reforged>=1.0.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["memory", "call", "command", "hook"]
+
+# What other mods call (docs/refactor/aura-mods-split.md «True Hissatsu»):
+#   CanPlace(hdl, slot, item) -> ok, reason   may item go on board slot `slot` (0..8) of card `hdl`? (one copy per set)
+#   Uses(hdl, skill) -> uses, grade, next     Grade(hdl, skill) -> grade (0..5)
+#   Items() -> raise item id, last-grade item id, use cap, last grade
+#   StoreBlob(slot) -> text | nil             StoreBlobWrite(slot, text) -> ok, why (the per-slot store, blob skill_uses.json)
+[exports]
+functions = ["CanPlace", "Uses", "Grade", "Items", "StoreBlob", "StoreBlobWrite"]
+# [TrueHissatsu.Rules] in any mod's content\true_hissatsu\*.toml (schema TrueHissatsu.rules/1; that mod lists
+# "true_hissatsu" in its [layout] script_folders): later mods win key by key
+keys = ["Rules"]
+# the menu-VM functions other mods' screens call by name: Character Reforged's skill table host calls
+# TrueHissatsu.SkillTableRankItem(phase, ctx) (graft move_rank_items, rank_items_skill_table.lua)
+game_lua = ["TrueHissatsu.SkillTableRankItem"]
+
+# content\skill_set\ is read by Character Reforged (its place rules as data): the layout lint accepts it
+[layout]
+script_folders = ["skill_set"]
+
+# A MODULE of Hissatsu Reforged (owner request 2026-10-14, docs/framework/mod-families.md; until then of Character
+# Reforged): the Mods screen, the ModManager and `vrfw list` show it inside Hissatsu Reforged's entry («Módulos y
+# ajustes»: on / off) instead of as a mod of its own; switching Hissatsu Reforged off switches it off too. Its name
+# there: its mod_name (text\keys.toml).
+[module]
+of = "hissatsu_reforged"
+order = 20

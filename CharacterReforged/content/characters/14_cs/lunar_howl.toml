@@ -1,0 +1,267 @@
+schema = "VRFW.character/2"
+# Character Reforged · Lunar Howl · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05023410_5000"                              # Lee Canthrup
+
+  [[edit.cards]]
+  id = 0xFC4AC5BA                                         # GK/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 225, technique = 232, pressure = 244, physical = 230, intelligence = 259, agility = 271, freedom = 213 }
+
+[[edit]]
+target = "c05023420_5000"                              # Gerald Fuss
+
+  [[edit.cards]]
+  id = 0xCDA2DF27                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 204, technique = 176, pressure = 284, physical = 228, intelligence = 321, agility = 193, freedom = 225 }
+
+[[edit]]
+target = "c05023500_5000"                              # Wolfram Vulpeen
+
+  [[edit.cards]]
+  id = 0x9697CE90                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 371, control = 261, technique = 289, pressure = 153, physical = 181, intelligence = 198, agility = 185, freedom = 293 }
+
+[[edit]]
+target = "c05023510_5000"                              # Luke Kayon
+
+  [[edit.cards]]
+  id = 0x30E0C524                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 347, control = 259, technique = 288, pressure = 216, physical = 169, intelligence = 242, agility = 171, freedom = 247 }
+
+[[edit]]
+target = "c05023410"                                   # Lee Canthrup
+
+  [[edit.cards]]
+  id = 0xAB66BF63                                         # GK/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 225, technique = 232, pressure = 244, physical = 230, intelligence = 259, agility = 271, freedom = 213 }
+  moves = [
+    { move = 0x53E9C2A3, level = 1 },                     # Capable Hands
+    { move = 0xD5B3B45B, level = 6 },                     # Crimson Sphere
+    { move = 0x585098FC, level = 47 },                    # Slice and Dice
+    { move = 0x4AF2F3E2, level = 65 },                    # Bridge to Nowhere
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xA200C165, level = 1 },                     # Koro-Koro-Gon [aura]
+  ]
+
+[[edit]]
+target = "c05023420"                                   # Gerald Fuss
+
+  [[edit.cards]]
+  id = 0x804BECA0                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 204, technique = 176, pressure = 284, physical = 228, intelligence = 321, agility = 193, freedom = 225 }
+  moves = [
+    { move = 0xB0F8060A, level = 8 },                     # Ozone Flayer
+    { move = 0xB60E3C60, level = 19 },                    # Plasma Cut
+    { move = 0xDF4D18CD, level = 37 },                    # Feather Duster
+    { move = 0x25276CB9, level = 57 },                    # Solar Surprise
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x70A3B320, level = 1 },                     # Kukulkan [aura]
+  ]
+
+[[edit]]
+target = "c05023430"                                   # Kym Errer
+
+  [[edit.cards]]
+  id = 0x9950DDE1                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 197, technique = 176, pressure = 270, physical = 212, intelligence = 306, agility = 182, freedom = 251 }
+  moves = [
+    { move = 0xB0F8060A, level = 1 },                     # Ozone Flayer
+    { move = 0x2354CA2D, level = 15 },                    # Wind God's Dance
+    { move = 0xECB91078, level = 38 },                    # Volcanic Flight
+    { move = 0xB8A509A7, level = 60 },                    # Asterocks
+  ]
+
+[[edit]]
+target = "c05023440"                                   # Hunter O'Mann
+
+  [[edit.cards]]
+  id = 0xD6114B26                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 170, control = 213, technique = 306, pressure = 255, physical = 185, intelligence = 248, agility = 192, freedom = 217 }
+  moves = [
+    { move = 0xB60E3C60, level = 3 },                     # Plasma Cut
+    { move = 0x7748D3F2, level = 20 },                    # Devil Ball
+    { move = 0xAF28F5A0, level = 45 },                    # The Tower
+    { move = 0x2296A01A, level = 52 },                    # Southern Cross
+  ]
+
+[[edit]]
+target = "c05023450"                                   # Mona Selene
+
+  [[edit.cards]]
+  id = 0xCF0A7A67                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 232, technique = 305, pressure = 231, physical = 177, intelligence = 250, agility = 196, freedom = 213 }
+  moves = [
+    { move = 0xB60E3C60, level = 1 },                     # Plasma Cut
+    { move = 0x0D0B77EA, level = 18 },                    # Floral Fiesta
+    { move = 0xB58AE80E, level = 32 },                    # Silk Road
+    { move = 0x25276CB9, level = 58 },                    # Solar Surprise
+  ]
+
+[[edit]]
+target = "c05023460"                                   # Lou Garrou
+
+  [[edit.cards]]
+  id = 0xE42729A4                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 198, technique = 323, pressure = 243, physical = 230, intelligence = 224, agility = 169, freedom = 209 }
+  moves = [
+    { move = 0x44BCDB47, level = 7 },                     # Pyroclastic
+    { move = 0x414BA9BD, level = 20 },                    # Pincer Pinch
+    { move = 0xC324C788, level = 50 },                    # Blast Mine
+    { move = 0x7DD6FEF8, level = 57 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c05023470"                                   # Al Woo
+
+  [[edit.cards]]
+  id = 0xFD3C18E5                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 230, technique = 302, pressure = 224, physical = 197, intelligence = 238, agility = 207, freedom = 209 }
+  moves = [
+    { move = 0x2296A01A, level = 8 },                     # Southern Cross
+    { move = 0xA37D1A41, level = 17 },                    # Hyper-Swiper
+    { move = 0xC16279D1, level = 39 },                    # Field of Force
+    { move = 0x7DD6FEF8, level = 59 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c05023480"                                   # Sylvester Bullet
+
+  [[edit.cards]]
+  id = 0x7AA4042A                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 228, technique = 298, pressure = 230, physical = 167, intelligence = 246, agility = 228, freedom = 225 }
+  moves = [
+    { move = 0x2296A01A, level = 1 },                     # Southern Cross
+    { move = 0xA37D1A41, level = 17 },                    # Hyper-Swiper
+    { move = 0xB0F8060A, level = 36 },                    # Ozone Flayer
+    { move = 0xDE4ED944, level = 61 },                    # Snowstorm Leopard
+  ]
+
+[[edit]]
+target = "c05023490"                                   # Terri Ann Thrope
+
+  [[edit.cards]]
+  id = 0x63BF356B                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 242, technique = 302, pressure = 201, physical = 147, intelligence = 209, agility = 185, freedom = 209 }
+  moves = [
+    { move = 0xB039ADB4, level = 6 },                     # Inazuma Break
+    { move = 0xB60E3C60, level = 15 },                    # Plasma Cut
+    { move = 0xC513565C, level = 45 },                    # Doom Spear
+    { move = 0xE29933EC, level = 59 },                    # Dimensional Deluge
+  ]
+
+[[edit]]
+target = "c05023500"                                   # Wolfram Vulpeen
+
+  [[edit.cards]]
+  id = 0xB3BFE415                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 371, control = 261, technique = 289, pressure = 153, physical = 181, intelligence = 198, agility = 185, freedom = 293 }
+  moves = [
+    { move = 0x02E93E49, level = 11 },                    # Werewolf Howl
+    { move = 0xD262F964, level = 23 },                    # Format Disk
+    { move = 0xAE5C7145, level = 54 },                    # Fangtasmagoria
+    { move = 0xCBF2DE76, level = 76 },                    # Nocturne
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xC304BA8E, level = 1 },                     # Mix 'n' Match: <FUL:G GENE> [aura]
+  ]
+
+[[edit]]
+target = "c05023510"                                   # Luke Kayon
+
+  [[edit.cards]]
+  id = 0xAAA4D554                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 347, control = 259, technique = 288, pressure = 216, physical = 169, intelligence = 242, agility = 171, freedom = 247 }
+  moves = [
+    { move = 0x0C08B663, level = 1 },                     # Doom Dive Drive
+    { move = 0x64CDCFB9, level = 20 },                    # Rising Dragon
+    { move = 0xC513565C, level = 51 },                    # Doom Spear
+    { move = 0x02E93E49, level = 71 },                    # Werewolf Howl
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x13077546, level = 1 },                     # Asura [aura]
+  ]
+
+[[edit]]
+target = "c05028630"                                   # Wolfram Vulpeen
+
+  [[edit.cards]]
+  id = 0x4DD58E8E                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 371, control = 261, technique = 289, pressure = 153, physical = 181, intelligence = 198, agility = 185, freedom = 293 }
+  moves = [
+    { move = 0x02E93E49, level = 15 },                    # Werewolf Howl
+    { move = 0x9EA7BBCD, level = 34 },                    # Magmire
+    { move = 0xAE5C7145, level = 53 },                    # Fangtasmagoria
+    { move = 0xAE2B3429, level = 71 },                    # Atomic Flare
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x28522161, level = 1 },                     # Dire Wolf [aura]
+  ]
+
+[[edit]]
+target = "c05023430_5000"                              # Kym Errer
+
+  [[edit.cards]]
+  id = 0x6BD5D493                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 197, technique = 176, pressure = 270, physical = 212, intelligence = 306, agility = 182, freedom = 251 }
+
+[[edit]]
+target = "c05023490_5000"                              # Terri Ann Thrope
+
+  [[edit.cards]]
+  id = 0xCFA58BDD                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 242, technique = 302, pressure = 201, physical = 147, intelligence = 209, agility = 185, freedom = 209 }

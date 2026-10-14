@@ -1,0 +1,31 @@
+# Character Reforged › the match HUD plates of the new skill set (moved from Inazuma Fantasy 2026-10-14 with the RB+A /
+# RB+B buttons, owner: «base owns a neutral plate, IF overrides its look»; docs/refactor/aura-mods-split.md «The 6 + 2
+# set over the retail data»). The graft research/grafts/hiper_btn (mod character_reforged) draws them from the
+# framework's CMND_VRFW_XSLOT_PLATES (whichever plates slot runs the match: this mod's skill set slot, or All Changed's
+# RB+B fallback). Inazuma Fantasy adds its look on top: the portrait column (its menus\00_soccer\
+# soccer_command_action_menu_hiper_face.toml, layer evt_hiper_chr_icon) and the Hiper card rules (graft hiper_btn_face).
+#
+# Layer soccer08_10_cmd_act_hiper_slot x2 = the plates (object of assets\gamedata\menu\obj\
+# soccer08_10_cmd_act_hiper_slot.objbin, a copy of the move-row widget soccer08_10; its art assets\menu\00_soccer\
+# soccer08\evt_soccer08_10_hiper); layer evt_hiper_input x2 = the input column «RB» over «A» / «B» (a copy of the retail
+# «RB + LB» guide soccer08_19b, evt_hiper_input.objbin + its art); the move selector's extra attach locators
+# (assets\menu\00_soccer\soccer08\soccer08_07\soccer08_07.g4pkm) and attach rows (object_set below). Built by
+# research/scripts/hiper_btn_build.py (its --deploy still writes Inazuma Fantasy's folder: copy the outputs here).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_command_action_menu"
+add_layer = { name = "soccer08_10_cmd_act_hiper_slot", object = "soccer08_10_cmd_act_hiper_slot", count = 2, after = "soccer08_10_cmd_act_aura_slot", groups = [{ group = "soccer_command_action_menu", after = "soccer08_17_cancel_guide" }, { group = "soccer_battle_command_action_menu", after = "soccer08_17_cancel_guide" }] }
+
+[[patch]]
+menu = "soccer_command_action_menu"
+add_layer = { name = "evt_hiper_input", object = "evt_hiper_input", count = 2, after = "soccer08_10_p5_aura_skill_chara_icon", groups = [{ group = "soccer_command_action_menu", after = "soccer08_17_cancel_guide" }, { group = "soccer_battle_command_action_menu", after = "soccer08_17_cancel_guide" }] }
+
+[[object_set]]
+object = "soccer08_07_cmd_act_btn_cmd_base"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x98CDB4A3, 0x9CD2D1CC, 0x1A7DB629, 0], after = { param = "NullLayerName", match = { 1 = 0x3D9460BA, 2 = 0x0CAB94BF, 3 = 0x78DD0211, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9A8B0AFA, 0x9E946F95, 0x1A7DB629, 1], after = { param = "NullLayerName", match = { 1 = 0x98CDB4A3, 2 = 0x9CD2D1CC, 3 = 0x1A7DB629, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x06A92100, 0x02B6446F, 0x1A7DB629, 0], after = { param = "NullLayerName", match = { 1 = 0x9A8B0AFA, 2 = 0x9E946F95, 3 = 0x1A7DB629, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x04EF9F59, 0x00F0FA36, 0x1A7DB629, 1], after = { param = "NullLayerName", match = { 1 = 0x06A92100, 2 = 0x02B6446F, 3 = 0x1A7DB629, 4 = 0 } } },
+]

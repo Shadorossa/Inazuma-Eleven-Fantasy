@@ -1,0 +1,69 @@
+# The «Último recurso» family (Last Resort): four cut-ins, four auras. While the ball flies to the goal it keeps its
+# cut-in's OWN look instead of the plain special-shot aura: the glowing core sphere and the spinning petal aura round
+# the ball (the cut-in's ballAura set, held at the last cut with the ball, the petals' spin and texture flow running
+# on) and the cut-in's dragon (the waza model baked into the aura, its skin cut into rigid segments that follow its
+# own bones' cut-in motion, played back and forth, placed round the ball as the cut-in shows it; the ball flies
+# straight at mid height: content\techniques\last_resort_trajectory.toml). The flat camera-facing discs on the ball, the
+# camera blurs, the 22-28 m path ribbons, the kick's wind cones / smoke / rocks, the sand / purple walls at the goal
+# and the backdrops are dropped (docs/game/media/last-resort-ball-fx.md).
+#   Último recurso (Last Resort, whs03270, fire, cut-in ev60_03270): ev6327lr00, ev60032700 c0050 frame 514 + the brown
+#     rock dragon (ev60_03270_10, event frame 1046), x0.5.
+#   Último recurso (Last Resort, whs03275, fire, cut-in ev74_01280): ev7428lr00, ev74012800 c0600 frame 680 (the ball
+#     flying level at the camera in its petal aura) + the same dragon from its c0500, x0.5.
+#   Último recurso: Sigma (Last Resort Σ, whs03280 / whs03280_cro, void, cut-in ev60_03285): ev6328ls00, ev60032850
+#     c0600 frame 535 (pink core and petal aura) + the cyan dragon holding the ball in its jaws and the dragons
+#     following it (c0600, event frame 1176), their stretched bodies fading out 6-12 m behind (cut-in size), x0.4.
+#   Último recurso: Dragón (Last Resort D, whs03290 / whs03290_cro, void, cut-in ev60_03290): ev6329ld00, ev60032900
+#     c0050 frame 514 + the purple dragon (ev60_03290_10 / _11 / _20 / _30, event frame 1046), x0.5.
+# Objects in assets\data\{common,dx11}\effect\event\ev60\<stem>\, built by research/scripts/last_resort_ball_fx.py.
+# The triggers copy the retail special-shot aura rows of each element (CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame, aura-balon-tiro.md §2b): fire ega0075c, void ega0075e (skillEffectBitFlag 0 / 16 = counter
+# shot: the plain rows). The _cro keys (Chronicle copies) are the same moves: in their move's rule. No _or / _mm
+# variant exists (Inazuma Fantasy's whs03280_or is only a proposal, override-skills.md §6).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "last_resort_dragon"
+from = "ega0075c"
+object = "effect/event/ev60/ev6327lr00/ev6327lr00.objbin"
+
+[[effect]]
+name = "last_resort_v2_dragon"
+from = "ega0075c"
+object = "effect/event/ev60/ev7428lr00/ev7428lr00.objbin"
+
+[[effect]]
+name = "last_resort_sigma_dragons"
+from = "ega0075e"
+object = "effect/event/ev60/ev6328ls00/ev6328ls00.objbin"
+
+[[effect]]
+name = "last_resort_d_dragon"
+from = "ega0075e"
+object = "effect/event/ev60/ev6329ld00/ev6329ld00.objbin"
+
+[[shot_aura]]
+name = "last_resort_dragon"
+when = { techniques = ["whs03270"] }
+aura = "last_resort_dragon"
+like = "ega0075c"
+
+[[shot_aura]]
+name = "last_resort_v2_dragon"
+when = { techniques = ["whs03275"] }
+aura = "last_resort_v2_dragon"
+like = "ega0075c"
+
+[[shot_aura]]
+name = "last_resort_sigma_dragons"
+when = { techniques = ["whs03280", "whs03280_cro"] }
+aura = "last_resort_sigma_dragons"
+like = "ega0075e"
+
+[[shot_aura]]
+name = "last_resort_d_dragon"
+when = { techniques = ["whs03290", "whs03290_cro"] }
+aura = "last_resort_d_dragon"
+like = "ega0075e"

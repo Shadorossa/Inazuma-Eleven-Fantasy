@@ -1,0 +1,30 @@
+# «Spring Thunderclap» («Trueno de primavera», whs10010 and its override whs10010_or, same cut-in ev60_10010; wind
+# shot of two players): while the ball flies to the goal it keeps the end of the cut-in's OWN look (the last cut c0050,
+# the ball struck out of the dust cloud and shot at the goal, held at frame 466, the texture flow running on): the
+# purple comet round the ball (jerking about the flight every 4 frames, as in the cut-in) and the beam of purple
+# lightning behind it (thunder ribbons, light lines, black core line), running back to where the ball was kicked for
+# the whole shot (growing with the flight up to 40 m, its far end fading out), lightning crackling on the beam's front
+# part and on the ball (their own blinks and pose jumps replayed from the cut-in), instead of the plain wind
+# special-shot aura (ega0075b); x3 of the cut-in size (comet ~2 m across, 3.5 m long; beam 0.75-1.35 m wide; bolts
+# 2.4-6.5 m). The cut-in's scenery (backdrop, cloud banks, the dust cloud), the kick point's glows, lightning, wind
+# cones and shock, and the sky sparks are dropped. The object is ev61001st0
+# (assets\data\{common,dx11}\effect\event\ev60\ev61001st0\), built by research/scripts/spring_thunderclap_ball_fx.py
+# from ev60100100; docs/game/media/spring-thunderclap-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillColorIdx 1, skillEffectBitFlag 0):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame, so the beam always trails straight behind the
+# ball (aura-balon-tiro.md §2b). No _mm / _cro key. Flight: the game's own (no trajectory file: the cut-in's shot is
+# level at 0.6-0.8 m).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "spring_thunderclap"
+from = "ega0075b"
+object = "effect/event/ev60/ev61001st0/ev61001st0.objbin"
+
+[[shot_aura]]
+name = "spring_thunderclap"
+when = { techniques = ["whs10010", "whs10010_or"] }
+aura = "spring_thunderclap"
+like = "ega0075b"

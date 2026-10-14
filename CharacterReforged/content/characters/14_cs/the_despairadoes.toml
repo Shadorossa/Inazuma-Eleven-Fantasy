@@ -1,0 +1,317 @@
+schema = "VRFW.character/2"
+# Character Reforged · The Despairadoes · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05024810_5000"                              # Lotus
+
+  [[edit.cards]]
+  id = 0xCF84BD3C                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 113, control = 228, technique = 184, pressure = 270, physical = 204, intelligence = 267, agility = 289, freedom = 230 }
+
+[[edit]]
+target = "c05024830_5000"                              # Tulip
+
+  [[edit.cards]]
+  id = 0x581BAC15                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 166, control = 196, technique = 151, pressure = 255, physical = 252, intelligence = 294, agility = 224, freedom = 301 }
+
+[[edit]]
+target = "c05024900_5000"                              # Aster
+
+  [[edit.cards]]
+  id = 0xA559B616                                         # FW/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 259, technique = 282, pressure = 167, physical = 150, intelligence = 204, agility = 198, freedom = 217 }
+
+[[edit]]
+target = "c05024910_5000"                              # Gentian
+
+  [[edit.cards]]
+  id = 0x032EBDA2                                         # FW/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 313, control = 257, technique = 271, pressure = 132, physical = 190, intelligence = 176, agility = 207, freedom = 355 }
+
+[[edit]]
+target = "c05024920_5000"                              # Flora
+
+  [[edit.cards]]
+  id = 0x32C6A73F                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 234, technique = 263, pressure = 204, physical = 143, intelligence = 204, agility = 177, freedom = 225 }
+
+[[edit]]
+target = "c05028610_5000"                              # Flora
+
+  [[edit.cards]]
+  id = 0x3C3A5C1A                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 234, technique = 263, pressure = 204, physical = 143, intelligence = 204, agility = 177, freedom = 225 }
+  moves = [
+    { move = 0xAC1ACF1C, level = 1 },                     # Flower Plower
+    { move = 0xD262F964, level = 1 },                     # Format Disk
+    { move = 0x0D0B77EA, level = 30 },                    # Floral Fiesta
+    { move = 0xB0F8060A, level = 49 },                    # Ozone Flayer
+  ]
+
+[[edit]]
+target = "c05024810"                                   # Lotus
+
+  [[edit.cards]]
+  id = 0x3FAB7EBE                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 113, control = 228, technique = 184, pressure = 270, physical = 204, intelligence = 267, agility = 289, freedom = 230 }
+  moves = [
+    { move = 0x34844F37, level = 12 },                    # White Hole
+    { move = 0xFC5DC53F, level = 27 },                    # Double God Hand
+    { move = 0x2D9F7E76, level = 44 },                    # Breath Taker
+    { move = 0x49F3BB72, level = 59 },                    # Psychlone
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xFD409F87, level = 1 },                     # Vritra [aura]
+  ]
+
+[[edit]]
+target = "c05024820"                                   # Magnol
+
+  [[edit.cards]]
+  id = 0x14862D7D                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 201, technique = 150, pressure = 284, physical = 209, intelligence = 316, agility = 203, freedom = 221 }
+  moves = [
+    { move = 0x0D0B77EA, level = 1 },                     # Floral Fiesta
+    { move = 0x7D6E9A87, level = 19 },                    # The Wall
+    { move = 0x4B3099D5, level = 36 },                    # Stomper Stopper
+    { move = 0xD262F964, level = 50 },                    # Format Disk
+  ]
+
+[[edit]]
+target = "c05024830"                                   # Tulip
+
+  [[edit.cards]]
+  id = 0x0D9D1C3C                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 166, control = 196, technique = 151, pressure = 255, physical = 252, intelligence = 294, agility = 224, freedom = 301 }
+  moves = [
+    { move = 0x0D0B77EA, level = 3 },                     # Floral Fiesta
+    { move = 0x67F17FA8, level = 18 },                    # Mega Quake
+    { move = 0xC324C788, level = 33 },                    # Blast Mine
+    { move = 0xA8215D7C, level = 56 },                    # The Mountain
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x03C716DD, level = 1 },                     # Judge [aura]
+  ]
+
+[[edit]]
+target = "c05024840"                                   # Argyr
+
+  [[edit.cards]]
+  id = 0x42DC8AFB                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 188, control = 213, technique = 157, pressure = 266, physical = 239, intelligence = 327, agility = 205, freedom = 221 }
+  moves = [
+    { move = 0x0D0B77EA, level = 1 },                     # Floral Fiesta
+    { move = 0x5643C944, level = 22 },                    # Killer Slide
+    { move = 0xF4604B0E, level = 30 },                    # Fancy-Footwork
+    { move = 0x43B5739B, level = 54 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c05024850"                                   # Laven
+
+  [[edit.cards]]
+  id = 0x5BC7BBBA                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 95, control = 274, technique = 297, pressure = 258, physical = 170, intelligence = 297, agility = 169, freedom = 225 }
+  moves = [
+    { move = 0xD262F964, level = 10 },                    # Format Disk
+    { move = 0xD471DE6C, level = 18 },                    # Snakebite
+    { move = 0x414BA9BD, level = 25 },                    # Pincer Pinch
+    { move = 0xC513565C, level = 40 },                    # Doom Spear
+  ]
+
+[[edit]]
+target = "c05024860"                                   # Viol
+
+  [[edit.cards]]
+  id = 0x70EAE879                                         # MF/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 227, technique = 293, pressure = 219, physical = 232, intelligence = 231, agility = 171, freedom = 225 }
+  moves = [
+    { move = 0xD262F964, level = 12 },                    # Format Disk
+    { move = 0xB01D1B68, level = 21 },                    # Power Spike
+    { move = 0x52CEB5F6, level = 38 },                    # Iron Wall
+    { move = 0xA7157B91, level = 54 },                    # Power Shield
+  ]
+
+[[edit]]
+target = "c05024870"                                   # Dandy
+
+  [[edit.cards]]
+  id = 0x69F1D938                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 244, technique = 275, pressure = 228, physical = 194, intelligence = 261, agility = 193, freedom = 259 }
+  moves = [
+    { move = 0xD262F964, level = 11 },                    # Format Disk
+    { move = 0x8A52C09B, level = 18 },                    # Doomsword Slash
+    { move = 0xB58AE80E, level = 36 },                    # Silk Road
+    { move = 0xB8A509A7, level = 52 },                    # Asterocks
+  ]
+
+[[edit]]
+target = "c05024880"                                   # Chamomile
+
+  [[edit.cards]]
+  id = 0xEE69C5F7                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 238, technique = 270, pressure = 242, physical = 162, intelligence = 265, agility = 185, freedom = 213 }
+  moves = [
+    { move = 0xD262F964, level = 12 },                    # Format Disk
+    { move = 0x0D0B77EA, level = 23 },                    # Floral Fiesta
+    { move = 0x5E233E68, level = 38 },                    # Super Elastico
+    { move = 0xEDBAD1F1, level = 61 },                    # Brimstone Rain
+  ]
+
+[[edit]]
+target = "c05024890"                                   # Orchid
+
+  [[edit.cards]]
+  id = 0xF772F4B6                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 266, technique = 282, pressure = 194, physical = 201, intelligence = 257, agility = 163, freedom = 217 }
+  moves = [
+    { move = 0xD262F964, level = 11 },                    # Format Disk
+    { move = 0x2CFC3E63, level = 24 },                    # Dragon Crash
+    { move = 0xC66BD10D, level = 34 },                    # Zigzag Spark
+    { move = 0x04941270, level = 60 },                    # Vac Attack
+  ]
+
+[[edit]]
+target = "c05024900"                                   # Aster
+
+  [[edit.cards]]
+  id = 0x277225C8                                         # FW/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 259, technique = 282, pressure = 167, physical = 150, intelligence = 204, agility = 198, freedom = 217 }
+  moves = [
+    { move = 0xB8A509A7, level = 1 },                     # Asterocks
+    { move = 0xE29933EC, level = 1 },                     # Dimensional Deluge
+    { move = 0xEDBAD1F1, level = 40 },                    # Brimstone Rain
+    { move = 0xFA40689A, level = 64 },                    # Solar Nexus
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0BDE2E30, level = 1 },                     # Ashtaroth [aura]
+  ]
+
+[[edit]]
+target = "c05024910"                                   # Gentian
+
+  [[edit.cards]]
+  id = 0x3E691489                                         # FW/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 313, control = 257, technique = 271, pressure = 132, physical = 190, intelligence = 176, agility = 207, freedom = 355 }
+  moves = [
+    { move = 0xAC1ACF1C, level = 2 },                     # Flower Plower
+    { move = 0x0D0B77EA, level = 14 },                    # Floral Fiesta
+    { move = 0x8917BF4B, level = 42 },                    # Willy-Willy
+    { move = 0xF7E49F60, level = 59 },                    # Magnetism
+  ]
+
+[[edit]]
+target = "c05024920"                                   # Flora
+
+  [[edit.cards]]
+  id = 0x1544474A                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 234, technique = 263, pressure = 204, physical = 143, intelligence = 204, agility = 177, freedom = 225 }
+  moves = [
+    { move = 0xAC1ACF1C, level = 1 },                     # Flower Plower
+    { move = 0xD262F964, level = 1 },                     # Format Disk
+    { move = 0x0D0B77EA, level = 30 },                    # Floral Fiesta
+    { move = 0xB0F8060A, level = 49 },                    # Ozone Flayer
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0A1F5AB1, level = 1 },                     # Mix 'n' Match: Black Rose [aura]
+  ]
+
+[[edit]]
+target = "c05024930"                                   # Sterne
+
+  [[edit.cards]]
+  id = 0x0C5F760B                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 312, control = 252, technique = 240, pressure = 204, physical = 159, intelligence = 223, agility = 166, freedom = 263 }
+  moves = [
+    { move = 0x016DEA27, level = 1 },                     # Accelerator Gears
+    { move = 0x2296A01A, level = 7 },                     # Southern Cross
+    { move = 0x828A53C8, level = 37 },                    # Plasma Ball
+    { move = 0xC755E805, level = 52 },                    # Triple Threat
+  ]
+
+[[edit]]
+target = "c05028610"                                   # Flora
+
+  [[edit.cards]]
+  id = 0x7FE3EC0C                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 234, technique = 263, pressure = 204, physical = 143, intelligence = 204, agility = 177, freedom = 225 }
+  moves = [
+    { move = 0x05124F07, level = 1 },                     # Fission and Fusion
+    { move = 0x0D0B77EA, level = 28 },                    # Floral Fiesta
+    { move = 0xAC1ACF1C, level = 45 },                    # Flower Plower
+    { move = 0xD16D3B59, level = 57 },                    # Supermassive Shot
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x3FE225E7, level = 1 },                     # Eris [aura]
+  ]
+
+[[edit]]
+target = "c05024910_5100"                              # Gentian
+
+  [[edit.cards]]
+  id = 0x02ECD795                                         # FW/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 313, control = 257, technique = 271, pressure = 132, physical = 190, intelligence = 176, agility = 207, freedom = 355 }

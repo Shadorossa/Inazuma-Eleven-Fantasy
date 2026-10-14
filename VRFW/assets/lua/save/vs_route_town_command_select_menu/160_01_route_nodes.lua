@@ -522,12 +522,16 @@ function VRFW_RN_Sync(effect)
         all_open = false
       end
     end
-    if not any_clear and all_open then
+    local ready = VRFW_RN_Ready(node)
+    if not any_clear and (all_open or (not ready and VRFW_RN_IsOpen(node))) then
+      -- a never-used slot, or a node opened before its prerequisites (`After`) are won: the retail one-time lock set-up
+      -- of a save unlocks difficulty 1 of every piece whose move row reaches the start piece, so a node `Beside` the
+      -- start (a fork off the first rail) would be open from the first board visit
       for k = 1, #VRFW_RN_DIFFS do
         funcLuaCommand(VRFW_RN_CMD_SET_LOCK, node.slot, true, VRFW_RN_DIFFS[k])
       end
     end
-    if VRFW_RN_Ready(node) then
+    if ready then
       local was_open = VRFW_RN_IsOpen(node)
       if not was_open and effect and node.idx >= 0 and WaitPieceOpenEffect ~= nil then
         WaitPieceOpenEffect({node.idx}, {true})

@@ -31,8 +31,7 @@ local ANS_ACTIVE, ANS_ROWS = 0x7C, 0x74
 local MAX_ROWS = 3                       -- the panel's room (SynergyDetail's list) and its largest layout
 local KIND_NEXUS, KIND_NEXUS_MISSING, KIND_FILLED, KIND_EMPTY = 1, 2, 3, 4
 
--- the game's series enum (chara_series_config charaSeriesType), by the names a declaration uses
-local SERIES = { ie1 = 1, ie2 = 2, ie3 = 3, go = 4, cs = 5, chrono_stone = 5, galaxy = 6, ares = 7, orion = 8, vr = 9, victory_road = 9 }
+-- series names: the framework's (VRFW.chara.series_of: chara_base's in_<name> columns + content\defaults\series_names.toml)
 local GENDER = { male = 1, female = 2 }
 local ROLES = { manager = true, coach = true }
 
@@ -108,9 +107,14 @@ local function read_pool(mod, file, p, i)
     x.any_team = true
   end
   for _, s in ipairs(list_of(p.series)) do
-    local n = SERIES[tostring(s):lower()] or tonumber(s)
-    if not n then return nil, string.format("%s %s: series %q (ie1 ie2 ie3 go cs galaxy ares orion vr)", where, p.name, tostring(s)) end
-    x.series[n] = true
+    -- the framework's series names (the index answers nil = not a series; not readable now = checked when evaluated)
+    local ok, n = pcall(VRFW.chara.series_of, s)
+    if ok and n == nil then
+      local okn, names = pcall(VRFW.chara.series_names)
+      return nil, string.format("%s %s: series %q (%s, or an alias of content\\defaults\\series_names.toml)", where, p.name,
+        tostring(s), okn and type(names) == "table" and table.concat(names, " ") or "?")
+    end
+    x.series[#x.series + 1] = ok and n or s
     x.any_series = true
   end
   if p.role ~= nil then
@@ -254,93 +258,80 @@ end
 
 local IDX = nil          -- { base_of[param], card[base], role[base] = { manager, coach }, info[base] = { person, gender, series, teams }, ok }
 
--- Read once per session: at script load (the loader thread, see the end of the file), else at the first check. The
--- tables never change while the game runs (2026-10-13: built inside the first SynergyCheck it cost 787 ms on the game
--- thread, a menu hitch).
+-- The framework's ONE character index (VRFW.chara: chara_param / chara_base / chara_series_config read once natively,
+-- by column name, shared by every script; 2.3, docs/framework/chara-index.md). Taken once per session: at script load
+-- (the loader thread, see the end of the file), else at the first check. Before 2.3 this script read the three tables
+-- itself (columns by position, ~800 ms).
 local function index()
   if IDX then return IDX end
   local t0 = VRFW.now()
-  local tp, ts = t0, t0
-  IDX = { base_of = {}, card = {}, role = {}, info = {}, order = {} }
+  IDX = { card = {}, role = {}, info = {}, order = {} }
+  -- a card's character, asked once per card id (the members' cards)
+  IDX.base_of = setmetatable({}, { __index = function(t, param)
+    local ok, b = pcall(VRFW.chara.base_of, param)
+    if ok and type(b) == "number" then
+      b = u32(b)
+      rawset(t, param, b)
+      return b
+    end
+    return nil
+  end })
   local ok, e = pcall(function()
-    -- chara_param: col 0 id, 1 chara_base, 37 coach flag, 38 manager flag (docs/framework/synergy.md §3)
-    for _, r in ipairs(VRFW.table.raw(table_key("data/common/gamedata/character/chara_param"), "CHARA_PARAM_INFO", { 1, 2, 38, 39 }) or {}) do
-      if type(r[1]) == "number" and type(r[2]) == "number" then
-        local b = u32(r[2])
-        IDX.base_of[u32(r[1])] = b
-        IDX.card[b] = true
-        if r[38] == 1 or r[39] == 1 then
-          local x = IDX.role[b] or {}
-          if r[38] == 1 then x.coach = true end
-          if r[39] == 1 then x.manager = true end
-          IDX.role[b] = x
-        end
-      end
-    end
-    tp = VRFW.now()
-    local stype = {}
-    for _, r in ipairs(VRFW.table.raw(table_key("data/common/gamedata/character/chara_series_config"), "m_charaSeriesInfoList") or {}) do
-      if type(r[1]) == "number" and type(r[2]) == "number" then stype[u32(r[1])] = math.floor(r[2]) end
-    end
-    ts = VRFW.now()
-    -- chara_base: col 0 id, 3 name text (one person = one name text), 11 gender, 15 series, 16-18 belong teams
-    for _, r in ipairs(VRFW.table.raw(table_key("data/common/gamedata/character/chara_base"), "CHARA_BASE_INFO", { 1, 4, 12, 16, 17, 18, 19 }) or {}) do
-      if type(r[1]) == "number" then
-        local id = u32(r[1])
-        IDX.info[id] = {
-          person = type(r[4]) == "number" and u32(r[4]) or id,
-          gender = type(r[12]) == "number" and math.floor(r[12]) or 0,
-          series = type(r[16]) == "number" and stype[u32(r[16])] or 0,
-          teams = { u32(r[17] or 0), u32(r[18] or 0), u32(r[19] or 0) },
-        }
-        IDX.order[#IDX.order + 1] = id
-      end
+    for _, c in ipairs(VRFW.chara.characters()) do
+      local id = u32(c.id)
+      IDX.info[id] = {
+        person = u32(c.name_text),
+        gender = math.floor(c.gender or 0),
+        series = math.floor(c.series or 0),
+        teams = { u32(c.teams[1] or 0), u32(c.teams[2] or 0), u32(c.teams[3] or 0) },
+      }
+      if (c.cards or 0) > 0 then IDX.card[id] = true end
+      if c.coach or c.manager then IDX.role[id] = { coach = c.coach or nil, manager = c.manager or nil } end
+      IDX.order[#IDX.order + 1] = id
     end
   end)
   IDX.ok = ok
-  if not ok then warn("character tables not readable: " .. tostring(e) .. " (declared synergies stay off)") end
-  local t1 = VRFW.now()
-  info(string.format("character index: %d characters, %d staff, read in %d ms (chara_param %d, series %d, chara_base %d)",
+  if not ok then warn("character index not readable: " .. tostring(e) .. " (declared synergies stay off)") end
+  info(string.format("character index: %d characters, %d staff, taken in %d ms (the framework's, shared)",
     #IDX.order, (function()
       local n = 0
       for _ in pairs(IDX.role) do n = n + 1 end
       return n
-    end)(), math.floor(t1 - t0), math.floor(tp - t0), math.floor(ts - tp), math.floor(t1 - ts)))
+    end)(), math.floor(VRFW.now() - t0)))
   return IDX
 end
 
--- in the pool: listed in `charas`, or matching every other criterion the pool gives (teams: any of the character's
--- three belong teams; series: his source series; role: a staff flag on one of his cards; gender)
-local function in_pool(p, base)
-  if p.exclude[base] then return false end
-  if p.any_chara and p.charas[base] then return true end
-  if not (p.any_team or p.any_series or p.role or p.gender) then return false end
-  local c = IDX.info[base]
-  if not c then return false end
-  if p.gender and c.gender ~= p.gender then return false end
-  if p.any_series and not p.series[c.series] then return false end
-  if p.role then
-    local r = IDX.role[base]
-    if not (r and r[p.role]) then return false end
-  end
-  if p.any_team then
-    for _, t in ipairs(c.teams) do
-      if t ~= 0 and p.teams[t] then return true end
-    end
-    return false
-  end
-  return true
-end
-
--- the pool's members (chara_base ids in the table's order), resolved once
+-- The pool's members (chara_base ids in the table's order), resolved once: a card set of the framework (the one
+-- selector vocabulary, docs/framework/chara-index.md §4) over characters: listed in `charas`, or matching every other
+-- criterion the pool gives (teams: any of the character's three belong teams; series: his source series; role: a
+-- staff flag on one of his cards; gender), and not in `exclude`.
 local function pool_members(p)
   if p.members then return p.members end
   index()
   p.members, p.set = {}, {}
-  for _, b in ipairs(IDX.order) do
-    if in_pool(p, b) then
-      p.members[#p.members + 1] = b
-      p.set[b] = true
+  local include = {}
+  if p.any_chara then
+    local ids = {}
+    for b in pairs(p.charas) do ids[#ids + 1] = b end
+    include[#include + 1] = { characters = ids }
+  end
+  if p.any_team or p.any_series or p.role or p.gender then
+    include[#include + 1] = { team = p.any_team and p.team_list or nil, series = p.any_series and p.series or nil,
+      role = p.role, gender = p.gender and { p.gender } or nil }
+  end
+  local exclude = {}
+  for b in pairs(p.exclude) do exclude[#exclude + 1] = b end
+  if #include > 0 then
+    local ok, ids = pcall(VRFW.chara.select, { include = include, exclude = #exclude > 0 and { { characters = exclude } } or nil },
+      { characters = true })
+    if ok and type(ids) == "table" then
+      for _, b in ipairs(ids) do
+        b = u32(b)
+        p.members[#p.members + 1] = b
+        p.set[b] = true
+      end
+    else
+      warn(string.format("pool %s: not evaluated (%s): no members", p.key, tostring(ids)))
     end
   end
   info(string.format("pool %s: %d characters", p.key, #p.members))

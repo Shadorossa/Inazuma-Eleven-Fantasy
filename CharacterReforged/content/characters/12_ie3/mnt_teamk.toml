@@ -1,0 +1,265 @@
+schema = "VRFW.character/2"
+# Character Reforged · <MNT:TEAMK> · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03031010"                                   # Indigo Lazuli
+
+  [[edit.cards]]
+  id = 0x58D6C3BE                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 176, control = 192, technique = 171, pressure = 277, physical = 155, intelligence = 232, agility = 248, freedom = 301 }
+  moves = [
+    { move = 0xA6D711A6, level = 1 },                     # Full Power Shield
+    { move = 0x8B31808E, level = 25 },                    # Wormhole
+    { move = 0x3526A49C, level = 50 },                    # Road Roller
+    { move = 0xF64674CB, level = 65 },                    # Fist of Justice
+  ]
+
+[[edit]]
+target = "c03031020"                                   # Roseo Diamante
+
+  [[edit.cards]]
+  id = 0x73FB907D                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 88, control = 162, technique = 128, pressure = 312, physical = 167, intelligence = 262, agility = 209, freedom = 335 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0xAD6E4BF9, level = 15 },                    # Harvest
+    { move = 0xB5B7108F, level = 30 },                    # Shadow Stitch
+    { move = 0xC16279D1, level = 68 },                    # Field of Force
+  ]
+
+[[edit]]
+target = "c03031030"                                   # Azubel Turchese
+
+  [[edit.cards]]
+  id = 0x6AE0A13C                                         # DF/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 174, control = 177, technique = 169, pressure = 281, physical = 205, intelligence = 285, agility = 207, freedom = 297 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x6633159F, level = 20 },                    # Gravitation
+    { move = 0xDA628FD4, level = 32 },                    # Sliding Goal
+    { move = 0x29728358, level = 50 },                    # Planet Shield
+  ]
+
+[[edit]]
+target = "c03031040"                                   # Nello Agata
+
+  [[edit.cards]]
+  id = 0x25A137FB                                         # DF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 95, control = 188, technique = 163, pressure = 238, physical = 215, intelligence = 235, agility = 236, freedom = 335 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x322F0C40, level = 15 },                    # Spider Web
+    { move = 0x3BF45E9A, level = 58 },                    # Triple Boost
+    { move = 0x91AE65A1, level = 68 },                    # Giant Spider
+  ]
+
+[[edit]]
+target = "c03031050"                                   # Azzurro Zaffiro
+
+  [[edit.cards]]
+  id = 0x3CBA06BA                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 104, control = 216, technique = 230, pressure = 252, physical = 217, intelligence = 317, agility = 228, freedom = 301 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x2B343D01, level = 1 },                     # Cyclone
+    { move = 0xC7A9BB3A, level = 15 },                    # Whirlwind Cut
+    { move = 0x06D2AC29, level = 65 },                    # Diabolical Cut
+  ]
+
+[[edit]]
+target = "c03031060"                                   # Beldio Smeraldo
+
+  [[edit.cards]]
+  id = 0x17975579                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 93, control = 285, technique = 313, pressure = 169, physical = 154, intelligence = 244, agility = 174, freedom = 339 }
+  moves = [
+    { move = 0x17A96A44, level = 1 },                     # Clone Faker
+    { move = 0x142DBE2A, level = 1 },                     # Foul Offence
+    { move = 0x1A868BED, level = 20 },                    # Clone Defence
+    { move = 0x28B0E96F, level = 30 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c03031070"                                   # Rosso Granato
+
+  [[edit.cards]]
+  id = 0x0E8C6438                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 227, technique = 219, pressure = 231, physical = 157, intelligence = 236, agility = 203, freedom = 267 }
+  moves = [
+    { move = 0x71831119, level = 1 },                     # Foul Offence 2
+    { move = 0x7DAF3139, level = 30 },                    # Emperor Penguin No. 2
+    { move = 0xB4757AB8, level = 38 },                    # Divine Stamp
+    { move = 0x2AF65736, level = 45 },                    # Bamboo Pattern
+  ]
+
+[[edit]]
+target = "c03031080"                                   # Giallo Topazio
+
+  [[edit.cards]]
+  id = 0x891478F7                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 311, control = 230, technique = 208, pressure = 166, physical = 131, intelligence = 177, agility = 155, freedom = 297 }
+  moves = [
+    { move = 0x71831119, level = 1 },                     # Foul Offence 2
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x2F78EA0D, level = 40 },                    # Triangle Z
+    { move = 0x514A6198, level = 45 },                    # Asteroid Belt
+  ]
+
+[[edit]]
+target = "c03031090"                                   # Bianco Perla
+
+  [[edit.cards]]
+  id = 0x900F49B6                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 373, control = 259, technique = 240, pressure = 122, physical = 142, intelligence = 162, agility = 150, freedom = 279 }
+  moves = [
+    { move = 0x30A819A7, level = 1 },                     # Twin Boost F
+    { move = 0x142DBE2A, level = 15 },                    # Foul Offence
+    { move = 0x17A96A44, level = 35 },                    # Clone Faker
+    { move = 0x7DAF3139, level = 42 },                    # Emperor Penguin No. 2
+  ]
+
+[[edit]]
+target = "c03031100"                                   # Giulio Acuto
+
+  [[edit.cards]]
+  id = 0x400F98C8                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 263, technique = 263, pressure = 196, physical = 150, intelligence = 254, agility = 192, freedom = 284 }
+  moves = [
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0xD9477198, level = 1 },                     # Emperor Penguin X
+    { move = 0x4890FB67, level = 15 },                    # Twin Boost
+    { move = 0xB039ADB4, level = 20 },                    # Inazuma Break
+  ]
+
+[[edit]]
+target = "c03031110"                                   # Violetto Ametista
+
+  [[edit.cards]]
+  id = 0x5914A989                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 282, technique = 273, pressure = 174, physical = 155, intelligence = 215, agility = 167, freedom = 297 }
+  moves = [
+    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
+    { move = 0x1ECA5CE1, level = 1 },                     # Wrath Shot
+    { move = 0xB27F13ED, level = 20 },                    # Death Zone
+    { move = 0x1A472053, level = 42 },                    # Double Wrath Shot
+  ]
+
+[[edit]]
+target = "c03031120"                                   # Grigio Quarzo
+
+  [[edit.cards]]
+  id = 0x7239FA4A                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 88, control = 192, technique = 165, pressure = 265, physical = 302, intelligence = 217, agility = 309, freedom = 325 }
+  moves = [
+    { move = 0xA7157B91, level = 1 },                     # Power Shield
+    { move = 0xDBA0E5E3, level = 40 },                    # Gigant Wall
+    { move = 0xAC6D8A70, level = 40 },                    # Rainbow Arc
+    { move = 0x18C035B4, level = 55 },                    # Ghost Pull
+  ]
+
+[[edit]]
+target = "c03031130"                                   # Pardo Berillo
+
+  [[edit.cards]]
+  id = 0x6B22CB0B                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 89, control = 193, technique = 178, pressure = 213, physical = 273, intelligence = 235, agility = 227, freedom = 309 }
+  moves = [
+    { move = 0xAAA6489B, level = 1 },                     # Spiral Shot
+    { move = 0xAD6E4BF9, level = 20 },                    # Harvest
+    { move = 0x087999EE, level = 44 },                    # Heel Drop
+    { move = 0xC379BE95, level = 50 },                    # Counter Strike
+  ]
+
+[[edit]]
+target = "c03031140"                                   # Marrone Corniola
+
+  [[edit.cards]]
+  id = 0x24635DCC                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 242, technique = 234, pressure = 186, physical = 204, intelligence = 209, agility = 192, freedom = 343 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x6C6C932B, level = 32 },                    # Megaton Head
+    { move = 0x592A96B4, level = 35 },                    # Afterimage
+    { move = 0x0710C61E, level = 38 },                    # Perimeter Zone
+  ]
+
+[[edit]]
+target = "c03031150"                                   # Amaranto Rubino
+
+  [[edit.cards]]
+  id = 0x3D786C8D                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 188, technique = 150, pressure = 238, physical = 163, intelligence = 197, agility = 224, freedom = 335 }
+  moves = [
+    { move = 0x18019E0A, level = 1 },                     # Double Grenade
+    { move = 0x71831119, level = 15 },                    # Foul Offence 2
+    { move = 0x06130797, level = 33 },                    # Rolling Kick
+    { move = 0x30A819A7, level = 50 },                    # Twin Boost F
+  ]
+
+[[edit]]
+target = "c03031160"                                   # Avorio Opale
+
+  [[edit.cards]]
+  id = 0x16553F4E                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 412, control = 242, technique = 194, pressure = 147, physical = 192, intelligence = 146, agility = 138, freedom = 293 }
+  moves = [
+    { move = 0x3F00EDE9, level = 1 },                     # Dash Storm
+    { move = 0x30A819A7, level = 20 },                    # Twin Boost F
+    { move = 0x7FE98F60, level = 46 },                    # Ganymede Ray
+    { move = 0x06D2AC29, level = 58 },                    # Diabolical Cut
+  ]
+
+[[edit]]
+target = "c11803050"                                   # Mister D
+
+  [[edit.cards]]
+  id = 0x6675273B                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 248, technique = 238, pressure = 190, physical = 173, intelligence = 220, agility = 192, freedom = 225 }
+  moves = [
+    { move = 0x7DAF3139, level = 1 },                     # Emperor Penguin No. 2
+    { move = 0xBF6D0AC5, level = 26 },                    # Emperor Penguin No. 3
+    { move = 0x0DCADC54, level = 34 },                    # Emperor Penguin 7
+    { move = 0xC9B4602F, level = 60 },                    # Final Death Zone
+  ]

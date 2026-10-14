@@ -5,7 +5,7 @@
 # Its c0100 clip (the shot's aura around the flying ball, the «Ruptura relámpago» of that match) is left out: the
 # scene plays for any shot. Applied to the event's eff list at boot (type `effect`, `[[event_effect]]`,
 # docs/framework/effect.md §3). 1.1.1-1.3.3 shipped an impact object of our own here (ev71800100): removed in 1.4.0.
-schema = "vr_framework.effect/1"
+schema = "VRFW.effect/1"
 
 [[event_effect]]
 event = "ev71_80030"

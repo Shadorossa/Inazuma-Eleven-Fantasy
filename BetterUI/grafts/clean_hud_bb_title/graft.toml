@@ -1,0 +1,22 @@
+# BetterUI: no title text «Campaña» in the Battle Bay header bar (owner request 2026-10-14). The bar (red BB icon, the
+# «Estadio BB / Bahía de Batalla» logo) is the header layer mainmenu90_01_header of bb_stadium_top_menu, which also hosts
+# the team-select grid and the hub's sub-screens; its text node _text_sub_title02 carries the mode title. The retail code
+# writes it again with its state changes, so Step (wrapped, after the retail Step) blanks it; Battle Bay Deluxe blanks the
+# same text on its grid (same empty string, no conflict). Only that text: logo, icon and bar stay. No engine call at load.
+name = "clean_hud_bb_title"
+order = 962
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["Step"]
+description = "BetterUI: no «Campaña» title text in the Battle Bay header bar"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bb_title.lua"
+  marker = "clean_hud_bb_title"
+  crc = "none"

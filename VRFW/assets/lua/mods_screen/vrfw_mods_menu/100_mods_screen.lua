@@ -94,6 +94,9 @@ local M = {
   TAG_DEF = Crc("CMND_VRFW_MM_TAG_DEF"),        -- (i) -> id, text key
   MOD_TAGS = Crc("CMND_VRFW_MM_MOD_TAGS"),      -- (mod id) -> its tag ids, one per line
   PERMS = Crc("CMND_VRFW_MM_PERMS"),            -- (mod id) -> its native permissions (mod.toml permissions), ", "-joined
+  -- (mod id) -> parent ("" = not a module), order, name key, internal modules (option row ids, one per line): the mod
+  -- families of mod.toml [module] / [modules] (docs/framework/mod-families.md)
+  MODULE = Crc("CMND_VRFW_MM_MODULE"),
 }
 -- the screen's background: the retail Guardar one (screen.rs BG_LAYER), hidden until the first full drawing shows it
 -- with the content (CE.Ready) and asserted again whenever the page changed or a window / keyboard closed (CE.bg_dirty)
@@ -220,6 +223,7 @@ local G = {
   LIST_X = 40, LIST_Y = 221, ROW_W = 1100, ROW_H = 62, ROW_STEP = 68, LIST_ROWS = 10,
   PANEL_X = 1170, PANEL_Y = 221, PANEL_W = 710, PANEL_H = 682,
   WIN_X = 240, WIN_Y = 138, WIN_W = 1440, WIN_H = 832, WIN_BAR = 64,
+  DIM_ALPHA = 0.55,          -- the dim behind a mod's page: the Mods list still shows through
   COVER_W = 400, COVER_H = 225,   -- a mod's page: its cover (16:9)
   SB_X = 1840, SB_W = 10,
   Q = 36,                    -- the cmn01_10 quad side
@@ -515,6 +519,18 @@ local function ReadAll()
       if ln ~= "" then
         m.name = ln
       end
+      -- its family (docs/framework/mod-families.md): the parent it is a module of, its place and short name there,
+      -- and its own internal modules (option rows, keys "<mod>.<id>")
+      local par, ord, nkey, internal = Call(M.MODULE, m.id)
+      m.parent, m.morder, m.internal = Str(par), Int(ord), {}
+      if Str(nkey) ~= "" then
+        local kid = TextIdKey(m.id .. "." .. Str(nkey))
+        local s = kid ~= nil and Str(Call(C.TEXT_GET, kid)) or ""
+        m.mname = s ~= "" and s or nil
+      end
+      for o in string.gmatch(Str(internal), "[^\n]+") do
+        m.internal[#m.internal + 1] = m.id .. "." .. o
+      end
       if m.id == BASE then
         if base_mod == nil then base_mod = m end
       else
@@ -522,6 +538,25 @@ local function ReadAll()
         mods[#mods + 1] = m
       end
     end
+  end
+  -- the families: a module mod whose parent is installed lives in the parent's entry (m.family = the parent, the
+  -- parent's m.modules = its module mods by order, then name); one whose parent is missing stays a mod of its own
+  local byid = {}
+  for _, m in ipairs(mods) do
+    byid[m.id] = m
+    m.modules = {}
+  end
+  for _, m in ipairs(mods) do
+    m.family = m.parent ~= "" and m.parent ~= m.id and byid[m.parent] or nil
+    if m.family ~= nil then
+      m.family.modules[#m.family.modules + 1] = m
+    end
+  end
+  for _, m in ipairs(mods) do
+    table.sort(m.modules, function(a, b)
+      if a.morder ~= b.morder then return a.morder < b.morder end
+      return string.lower(a.mname or a.name) < string.lower(b.mname or b.name)
+    end)
   end
   if base_mod ~= nil and base_mod.enabled then
     if base_mod.state == 0 then cnt.active = math.max(0, cnt.active - 1) end
@@ -606,10 +641,14 @@ local function Shown()
   local f = FILTERS[ui.filter]
   local out = {}
   for _, m in ipairs(mods) do
-    local ok = true
-    if q ~= "" then
-      local hay = Fold(m.name .. " " .. m.id .. " " .. m.author .. " " .. Text(m, 8))
-      ok = string.find(hay, q, 1, true) ~= nil
+    -- a module mod is a row of its parent's page, not a card (docs/framework/mod-families.md)
+    local ok = m.family == nil
+    if ok and q ~= "" then
+      local hay = m.name .. " " .. m.id .. " " .. m.author .. " " .. Text(m, 8)
+      for _, mm in ipairs(m.modules or {}) do
+        hay = hay .. " " .. mm.name .. " " .. mm.id .. " " .. (mm.mname or "")
+      end
+      ok = string.find(Fold(hay), q, 1, true) ~= nil
     end
     if ok and f == "on" then
       ok = m.enabled
@@ -1399,7 +1438,11 @@ local function DrawOrder()
           Quad("Q1", SP("tile" .. TileOf(m.id)), G.LIST_X + 78, y + 7, 78, 48, m.enabled and 1 or 0.7)
           Txt("TC", Initial(m), G.LIST_X + 117, y + 31, 1.0)
         end
-        local nm = (m.enabled and "[CB]" or "[CWG]") .. Cut(m.name ~= "" and m.name or m.id, 34) .. "[C]"
+        local nm = m.name ~= "" and m.name or m.id
+        if m.family ~= nil then
+          nm = m.family.name .. " › " .. (m.mname or nm)     -- a module mod: in its parent's family
+        end
+        nm = (m.enabled and "[CB]" or "[CWG]") .. Cut(nm, 34) .. "[C]"
         Txt("TL", nm, G.LIST_X + 176, y + 31, 0.92)
         local vx = G.LIST_X + 820
         if m.id == BASE then
@@ -1441,7 +1484,8 @@ local function PopupWindow(title, right)
       ClosePopup()
     end
   end)
-  Quad("PD", SP("dim"), 0, 0, 1920, 1080)
+  -- the list behind stays visible, dimmed (owner 14/10: «oscurecer un poco», no opaque cover)
+  Quad("PD", SP("dim"), 0, 0, 1920, 1080, G.DIM_ALPHA)
   Quad("P0", SP("bar"), G.WIN_X, G.WIN_Y, G.WIN_W, G.WIN_BAR)
   Quad("P0", SP("white"), G.WIN_X, G.WIN_Y + G.WIN_BAR, G.WIN_W, G.WIN_H - G.WIN_BAR, 1)
   Txt("PL", title, G.WIN_X + 32, G.WIN_Y + G.WIN_BAR / 2, 1.2)
@@ -1580,6 +1624,11 @@ function RV.Label(m, k)
   if k == 1 then
     return T("page_info")
   elseif k == 4 then
+    -- short enough for the view tab (owner 14/10: «Módulos y aju…» was cut): «Módulos (n)» counts the modules,
+    -- «Ajustes (n)» the settings of a mod without modules
+    if RV.HasModules(m) then
+      return T("page_modules", {n = #(m.modules or {}) + #(m.internal or {})})
+    end
     return T("page_settings", {n = #RV.Settings(m.id)})
   end
   local r = RV.Of(m.id)
@@ -1699,7 +1748,7 @@ end
 -- the same rows, values and storage as Opciones › «Opciones de mods» (one store: <data dir>\mod_options\<mod>.json, or
 -- the owner's get / set commands). Only the mods active at this start have rows (the registry is built at boot).
 -- (functions of RV: the main chunk is at Lua's limit of 200 locals)
-RV.VIEWS, RV.SROWS, RV.SSTEP = 4, 10, 60
+RV.VIEWS = 4
 RV.OPT = {ROWS = Crc("CMND_VRFW_OPTION_ROWS"), ROW = Crc("CMND_VRFW_OPTION_ROW"), GET = Crc("CMND_VRFW_OPTION_GET"),
           SET = Crc("CMND_VRFW_OPTION_SET"), STEP = Crc("CMND_VRFW_OPTION_STEP"), TEXT = Crc("CMND_VRFW_OPTION_TEXT")}
 
@@ -1710,17 +1759,43 @@ function RV.Settings(id)
   if r ~= nil then
     return r
   end
-  r = {}
+  local opts = {}
   local pre = id .. "."
   for i = 1, Int(Call(RV.OPT.ROWS)) do
     local k, kind, storage, label, fallback, get, set = Call(RV.OPT.ROW, i)
     if type(k) == "string" and string.sub(k, 1, #pre) == pre then
-      r[#r + 1] = {key = k, kind = Str(kind), storage = Str(storage), label = Int(label), fallback = Str(fallback),
-                   get = Int(get), set = Int(set)}
+      opts[#opts + 1] = {key = k, kind = Str(kind), storage = Str(storage), label = Int(label), fallback = Str(fallback),
+                         get = Int(get), set = Int(set)}
     end
+  end
+  -- the «Modules» first (docs/framework/mod-families.md): the module mods of its family (on / off = the mod switched
+  -- on / off), then its internal modules (option rows named in [modules] options), then the other settings
+  r = {}
+  local m = ModById(id)
+  if m ~= nil then
+    for _, mm in ipairs(m.modules or {}) do
+      r[#r + 1] = {module = mm, key = mm.id}
+    end
+    for _, key in ipairs(m.internal or {}) do
+      for k, o in ipairs(opts) do
+        if o.key == key then
+          o.imodule = true
+          r[#r + 1] = table.remove(opts, k)
+          break
+        end
+      end
+    end
+  end
+  for _, o in ipairs(opts) do
+    r[#r + 1] = o
   end
   RV.cache[ck] = r
   return r
+end
+
+-- the mod has a «Modules» list (module mods of its family or internal modules)
+function RV.HasModules(m)
+  return #(m.modules or {}) > 0 or #(m.internal or {}) > 0
 end
 
 -- a menu_text row in the game's language, else the fallback
@@ -1736,6 +1811,9 @@ end
 
 -- (value, changeable): nil for a row with its own Lua behaviour or a value nobody answers
 function RV.Value(r)
+  if r.module ~= nil then
+    return r.module.enabled and 1 or 0, true      -- a module mod: on = switched on
+  end
   if r.kind == "lua" or r.storage == "lua" then
     return nil, false
   end
@@ -1760,6 +1838,10 @@ function RV.Value(r)
 end
 
 function RV.Fmt(r, v)
+  if r.module ~= nil then
+    local k = v == 1 and "module_on" or "module_off"
+    return T(r.module.pending and (k .. "_next") or k)
+  end
   local id, fb = Call(RV.OPT.TEXT, r.key, v)
   if type(id) ~= "number" then
     return tostring(v)
@@ -1771,6 +1853,9 @@ end
 -- the selected row's value one step in direction `dir` (±1), stored where the row keeps it
 function RV.Change(m, dir)
   local r = RV.Settings(m.id)[ui.popup.srow or 1]
+  if r ~= nil and r.module ~= nil then
+    return RV.ToggleModule(r.module)
+  end
   local v, live = nil, false
   if r ~= nil then
     v, live = RV.Value(r)
@@ -1793,67 +1878,267 @@ function RV.Change(m, dir)
   Draw()
 end
 
--- up / down pick a row, left / right / A change it; false = no rows (the keys keep walking the buttons)
+-- The «Módulos» view as cards (owner 14/10): each module (a module mod of the family, or an internal module = an option
+-- row named in [modules] options) is a card with its name, a short description and a tick box that shows whether it is
+-- on; two cards a line. The mod's own settings follow as rows with their current value in a ◀ ▶ box. The page scrolls
+-- by lines. RV.Layout(m) -> lines {kind = "head" | "cards" | "row", h = height, items = {row numbers}, text}
+RV.CARD_H, RV.CARD_GAP, RV.HEAD_H, RV.ROW_H = 100, 12, 44, 62
+
+function RV.Layout(m)
+  local rows = RV.Settings(m.id)
+  local lines, pending = {}, nil
+  local function flush()
+    if pending ~= nil then
+      lines[#lines + 1] = {kind = "cards", h = RV.CARD_H + RV.CARD_GAP, items = pending}
+      pending = nil
+    end
+  end
+  local nmods = 0
+  for n, r in ipairs(rows) do
+    if r.module ~= nil or r.imodule then
+      nmods = nmods + 1
+      if n == 1 then
+        lines[#lines + 1] = {kind = "head", h = RV.HEAD_H, text = T("section_modules")}
+      end
+      pending = pending or {}
+      pending[#pending + 1] = n
+      if #pending == 2 then
+        flush()
+      end
+    else
+      flush()
+      if nmods > 0 and n == nmods + 1 then
+        lines[#lines + 1] = {kind = "head", h = RV.HEAD_H, text = T("section_settings")}
+      end
+      lines[#lines + 1] = {kind = "row", h = RV.ROW_H, items = {n}}
+    end
+  end
+  flush()
+  return lines
+end
+
+-- the line and column of row number n in `lines`
+function RV.Where(lines, n)
+  for li, l in ipairs(lines) do
+    for c, it in ipairs(l.items or {}) do
+      if it == n then
+        return li, c
+      end
+    end
+  end
+  return nil, nil
+end
+
+-- the next line with items from line `li` in direction d (±1), or nil
+function RV.NextLine(lines, li, d)
+  local k = li + d
+  while lines[k] ~= nil and lines[k].kind == "head" do
+    k = k + d
+  end
+  return lines[k] ~= nil and k or nil
+end
+
+-- A / a click on row n: a module card switches on / off, a setting moves one step
+function RV.Activate(m, n)
+  local r = RV.Settings(m.id)[n]
+  if r == nil then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  ui.popup.srow, ui.popup.szone = n, "rows"
+  if r.module ~= nil then
+    RV.ToggleModule(r.module)
+  else
+    RV.Change(m, 1)
+  end
+end
+
+-- The pad in the «Módulos» / «Ajustes» view. Rows zone: up / down move between lines (cards, setting rows; down from
+-- the last line goes to the footer buttons), left / right move between the two cards of a line or change a setting's
+-- value. Buttons zone: left / right walk the buttons, up goes back to the last line. false = no rows (the keys keep
+-- walking the buttons as in the other views).
 function RV.SettingsKey(id)
   local m = ModById(ui.popup.id)
   local rows = m and RV.Settings(m.id) or {}
   if #rows == 0 then
     return false
   end
-  if id == FN.UP or id == FN.DOWN then
-    local s = math.max(1, math.min(#rows, (ui.popup.srow or 1) + (id == FN.UP and -1 or 1)))
-    funcLuaCommand(C.SE, s ~= ui.popup.srow and SE_MOVE or SE_NG)
-    ui.popup.srow = s
+  local p = ui.popup
+  local lines = RV.Layout(m)
+  local function moved(ok)
+    funcLuaCommand(C.SE, ok and SE_MOVE or SE_NG)
     Draw()
+  end
+  if p.szone == "buttons" then
+    if id == FN.UP then
+      local li = RV.NextLine(lines, #lines + 1, -1)
+      p.szone, p.srow = "rows", li and lines[li].items[1] or 1
+      moved(true)
+    elseif id == FN.LEFT or id == FN.RIGHT then
+      local n = #PopupButtons(m)
+      local b = math.max(1, math.min(n, (p.btn or 1) + (id == FN.LEFT and -1 or 1)))
+      local ok = b ~= p.btn
+      p.btn = b
+      moved(ok)
+    else
+      moved(false)
+    end
+    return true
+  end
+  local sel = math.max(1, math.min(p.srow or 1, #rows))
+  local li, col = RV.Where(lines, sel)
+  if li == nil then
+    li, col = RV.NextLine(lines, 0, 1), 1
+  end
+  local line = lines[li]
+  if id == FN.UP or id == FN.DOWN then
+    local k = RV.NextLine(lines, li, id == FN.UP and -1 or 1)
+    if k == nil then
+      if id == FN.DOWN and #PopupButtons(m) > 0 then
+        p.szone = "buttons"
+        p.btn = math.max(1, math.min(#PopupButtons(m), p.btn or 1))
+        moved(true)
+      else
+        moved(false)
+      end
+      return true
+    end
+    local its = lines[k].items
+    p.srow = its[math.min(col or 1, #its)]
+    moved(true)
+  elseif line ~= nil and line.kind == "cards" then
+    -- left / right between the two cards of the line
+    local c = (col or 1) + (id == FN.LEFT and -1 or 1)
+    if line.items[c] ~= nil then
+      p.srow = line.items[c]
+      moved(true)
+    else
+      moved(false)
+    end
   else
+    p.srow = sel
     RV.Change(m, id == FN.LEFT and -1 or 1)
   end
   return true
 end
 
+-- a module card: plate (focus frame when focused), tick box (green tick = on), name, short description, state
+function RV.DrawCard(m, n, r, x, y, w, focused)
+  local name, desc, on, s
+  if r.module ~= nil then
+    local mm = r.module
+    name = mm.mname or (mm.name ~= "" and mm.name or mm.id)
+    desc = string.match(Text(mm, 0), "^%s*([^\n]*)") or ""
+    on = mm.enabled
+    s = RV.Fmt(r, on and 1 or 0)
+  else
+    name = RV.TextOf(r.label, r.fallback ~= "" and r.fallback or r.key)
+    desc = T("module_internal")
+    local v = RV.Value(r)
+    on = v ~= nil and v ~= 0
+    s = v ~= nil and T(on and "module_on" or "module_off") or T("set_unknown")
+  end
+  local h = RV.CARD_H
+  Quad("P0", SP((on and "hcard" or "hcard_off") .. (focused and "_sel" or "")), x, y, w, h)
+  if on then
+    Quad("P1", SP("ok"), x + 22, y + h / 2 - 20, 40, 40)
+  else
+    Quad("P1", SP(focused and "opt_sel" or "opt"), x + 22, y + h / 2 - 20, 40, 40)
+  end
+  local tx, tw = x + 82, w - 102
+  Txt("PL", "[CB]" .. Cut(name, Fit(tw, 0.82)) .. "[C]", tx, y + 27, 0.82)
+  if desc ~= "" then
+    Txt("PL", "[CWG]" .. Cut(desc, Fit(tw, 0.6)) .. "[C]", tx, y + 54, 0.6)
+  end
+  local pend = r.module ~= nil and r.module.pending
+  Txt("PL", (pend and "[CY]" or (on and "[CN]" or "[CWG]")) .. Cut(s, Fit(tw, 0.62)) .. "[C]", tx, y + 79, 0.62)
+  Hit(x, y, w, h, "set" .. n, function() RV.Activate(m, n) end)
+end
+
+-- a setting row: its label and its current value in a ◀ ▶ box (greyed when it cannot change now)
+function RV.DrawRow(m, n, r, x, y, w, focused)
+  local h = RV.ROW_H - 6
+  Quad("P0", SP(focused and "row_sel" or "row"), x, y, w, h)
+  local label = RV.TextOf(r.label, r.fallback ~= "" and r.fallback or r.key)
+  Txt("PL", "[CB]" .. Cut(label, Fit(w - 400, 0.8)) .. "[C]", x + 28, y + h / 2, 0.8)
+  local v, live = RV.Value(r)
+  local bx = x + w - 330
+  if r.kind == "lua" or r.storage == "lua" then
+    Txt("PL", "[CWG]" .. Cut(T("set_lua"), Fit(310, 0.7)) .. "[C]", bx, y + h / 2, 0.7)
+  elseif v == nil then
+    Txt("PL", "[CWG]" .. T("set_unknown") .. "[C]", bx, y + h / 2, 0.74)
+  else
+    Quad("P1", SP((focused and live) and "val_sel" or "val"), bx, y + (h - 46) / 2, 300, 46)
+    Txt("PL", (live and "[CB]" or "[CWG]") .. Cut(RV.Fmt(r, v), Fit(220, 0.74)) .. "[C]", bx + 40, y + h / 2, 0.74)
+  end
+  Hit(x, y, w, h, "set" .. n, function() RV.Activate(m, n) end)
+end
+
 function RV.DrawSettings(m)
   local rows = RV.Settings(m.id)
-  local px, py = G.WIN_X + 40, G.WIN_Y + G.WIN_BAR + 36
+  local px, py = G.WIN_X + 40, G.WIN_Y + G.WIN_BAR + 24
   local w = G.WIN_W - 80
   if #rows == 0 then
     local why = (m.enabled and m.state == 0 and not m.pending) and "set_none" or "set_inactive"
     for i, l in ipairs(Wrap(T(why), Fit(w, 0.8), 3)) do
-      Txt("PL", "[CN]" .. l .. "[C]", px, py + 4 + (i - 1) * 34, 0.8)
+      Txt("PL", "[CN]" .. l .. "[C]", px, py + 16 + (i - 1) * 34, 0.8)
     end
     return
   end
-  local sel = math.max(1, math.min(ui.popup.srow or 1, #rows))
-  local top = math.max(0, math.min(ui.popup.stop or 0, #rows - RV.SROWS))
-  if sel <= top then
-    top = sel - 1
-  elseif sel > top + RV.SROWS then
-    top = sel - RV.SROWS
+  local p = ui.popup
+  local sel = math.max(1, math.min(p.srow or 1, #rows))
+  p.srow = sel
+  local lines = RV.Layout(m)
+  local bottom = G.WIN_Y + G.WIN_H - 78 - 44     -- above the note line and the footer buttons
+  local avail = bottom - py
+  -- scroll: the selected line on the page (with its section title when it is right above)
+  local sl = RV.Where(lines, sel) or 1
+  local top = math.max(1, math.min(p.stop or 1, #lines))
+  if sl < top then
+    top = sl
   end
-  ui.popup.srow, ui.popup.stop = sel, top
-  for i = 1, math.min(RV.SROWS, #rows - top) do
-    local n = top + i
-    local r = rows[n]
-    local y = py + (i - 1) * RV.SSTEP
-    local on = (mouse.on and mouse.hot == "set" .. n) or (not mouse.on and n == sel)
-    Quad("P0", SP(on and "row_sel" or "row"), px, y, w, RV.SSTEP - 6)
-    local label = RV.TextOf(r.label, r.fallback ~= "" and r.fallback or r.key)
-    Txt("PL", "[CB]" .. Cut(label, Fit(760, 0.8)) .. "[C]", px + 24, y + (RV.SSTEP - 6) / 2, 0.8)
-    local v, live = RV.Value(r)
-    local s
-    if r.kind == "lua" or r.storage == "lua" then
-      s = "[CWG]" .. Cut(T("set_lua"), Fit(500, 0.74)) .. "[C]"
-    elseif v == nil then
-      s = "[CWG]" .. T("set_unknown") .. "[C]"
-    else
-      s = (live and "[CB]" or "[CWG]") .. "<  " .. Cut(RV.Fmt(r, v), Fit(420, 0.8)) .. "  >[C]"
+  if top > 1 and lines[top - 1].kind == "head" and top - 1 <= sl then
+    top = top - 1
+  end
+  local function fits(a, b)
+    local hsum = 0
+    for k = a, b do
+      hsum = hsum + lines[k].h
     end
-    Txt("PL", s, px + 820, y + (RV.SSTEP - 6) / 2, 0.8)
-    Hit(px, y, w, RV.SSTEP - 6, "set" .. n, function()
-      ui.popup.srow = n
-      RV.Change(m, 1)
-    end)
+    return hsum <= avail
   end
-  Txt("PL", "[CWG]" .. Cut(T("set_note"), Fit(w, 0.66)) .. "[C]", px, py + RV.SROWS * RV.SSTEP + 4, 0.66)
+  while top < sl and not fits(top, sl) do
+    top = top + 1
+  end
+  p.stop = top
+  local cw = (w - 16) / 2
+  local y, first, last = py, nil, nil
+  for k = top, #lines do
+    local l = lines[k]
+    if y + l.h > bottom + RV.CARD_GAP then
+      break
+    end
+    if l.kind == "head" then
+      Txt("PL", "[CN]" .. Cut(l.text, Fit(w, 0.8)) .. "[C]", px, y + RV.HEAD_H / 2, 0.8)
+    else
+      for c, n in ipairs(l.items) do
+        first, last = first or n, n
+        local foc = (mouse.on and mouse.hot == "set" .. n) or (not mouse.on and p.szone ~= "buttons" and n == sel)
+        if l.kind == "cards" then
+          RV.DrawCard(m, n, rows[n], px + (c - 1) * (cw + 16), y, cw, foc)
+        else
+          RV.DrawRow(m, n, rows[n], px, y, w, foc)
+        end
+      end
+    end
+    y = y + l.h
+  end
+  -- more lines above / below: where the page is
+  local note = T("set_note")
+  if first ~= nil and (first > 1 or last < #rows) then
+    note = T("report_rows", {n = first, c = last, t = #rows}) .. "   " .. note
+  end
+  Txt("PL", "[CWG]" .. Cut(note, Fit(w, 0.62)) .. "[C]", px, bottom + 22, 0.62)
 end
 
 local function DrawDetails()
@@ -1873,8 +2158,10 @@ local function DrawDetails()
     end
     local bs = PopupButtons(m)
     ui.popup.btn = math.max(1, math.min(#bs, ui.popup.btn or 1))
+    -- «Módulos» / «Ajustes» with rows: the pad reaches the buttons from the last line (szone "buttons")
+    local pad_on_buttons = ui.popup.view ~= 4 or ui.popup.szone == "buttons" or #RV.Settings(m.id) == 0
     for k, pb in ipairs(bs) do
-      local hot = mouse.on and mouse.hot == pb.id or (not mouse.on and ui.popup.btn == k)
+      local hot = mouse.on and mouse.hot == pb.id or (not mouse.on and pad_on_buttons and ui.popup.btn == k)
       PopupButton(pb.slot, pb.label, pb.filled, hot, pb.act, pb.id)
     end
     return
@@ -2158,8 +2445,8 @@ function Toggle()
     end
     return
   end
-  local ok = Call(M.SET_ENABLED, m.idx, m.enabled and 0 or 1)
-  Log("toggle", m.id, m.enabled and "OFF" or "ON", "ok", tostring(ok))
+  local id = m.id
+  local ok, msg = RV.SwitchMod(m, not m.enabled)
   if ok ~= true then
     funcLuaCommand(C.SE, SE_NG)
     Message(T("fail"))
@@ -2167,12 +2454,69 @@ function Toggle()
   end
   funcLuaCommand(C.SE, SE_OK)
   changed = true
-  local id, on = m.id, not m.enabled
-  ReadAll()
   SelectMod(id)
+  Toast(msg)
+  Draw()
+end
+
+-- Switch mod `m` on / off with its family (docs/framework/mod-families.md): a parent switched off takes its module
+-- mods with it, a module switched on brings its parent. The ModLoader's own switch does the same
+-- (evt_modfmt::ModsState::toggled); it is repeated here for an older ModLoader. Reads the list again.
+-- -> ok, the toast's text
+function RV.SwitchMod(m, on)
+  local ok = Call(M.SET_ENABLED, m.idx, on and 1 or 0)
+  Log("toggle", m.id, on and "ON" or "OFF", "ok", tostring(ok))
+  if ok ~= true then
+    return false
+  end
+  local id, nmods, parent = m.id, 0, nil
+  for _, mm in ipairs(m.modules or {}) do
+    if mm.enabled then nmods = nmods + 1 end
+  end
+  if on and m.family ~= nil and not m.family.enabled then
+    parent = m.family.id
+  end
+  ReadAll()
+  local now, again = ModById(id), false
+  if now ~= nil and not on then
+    for _, mm in ipairs(now.modules) do
+      if mm.enabled then
+        Call(M.SET_ENABLED, mm.idx, 0)
+        again = true
+      end
+    end
+  elseif now ~= nil and parent ~= nil then
+    local p = ModById(parent)
+    if p ~= nil and not p.enabled then
+      Call(M.SET_ENABLED, p.idx, 1)
+      again = true
+    end
+  end
+  if again then
+    ReadAll()
+    now = ModById(id)
+  end
+  local n = NameOf(id)
   -- back to how the game started (off -> on): nothing to restart for
-  local now = ModById(id)
-  Toast(T((now ~= nil and not now.pending) and "toast_same" or (on and "toast_on" or "toast_off"), {n = NameOf(id)}))
+  if now ~= nil and not now.pending then
+    return true, T("toast_same", {n = n})
+  elseif not on and nmods > 0 then
+    return true, T("toast_family_off", {n = n, c = nmods})
+  elseif parent ~= nil then
+    return true, T("toast_parent_on", {n = n, o = NameOf(parent)})
+  end
+  return true, T(on and "toast_on" or "toast_off", {n = n})
+end
+
+-- a «Modules» row of a mod's page: its module mod switched on / off (with the family rules of RV.SwitchMod)
+function RV.ToggleModule(mm)
+  local ok, msg = RV.SwitchMod(mm, not mm.enabled)
+  funcLuaCommand(C.SE, ok and SE_OK or SE_NG)
+  if ok then
+    changed = true
+    RV.cache = {}              -- the page's rows hold the old list's entries: read again
+  end
+  Toast(ok and msg or T("fail"))
   Draw()
 end
 
@@ -2215,7 +2559,7 @@ function OpenDetails()
   end
   funcLuaCommand(C.SE, SE_OK)
   RV.cache = {}              -- the report as it is now (read again at every page)
-  ui.popup = {kind = "mod", id = m.id, btn = 1, view = 1, top = 0, srow = 1, stop = 0}
+  ui.popup = {kind = "mod", id = m.id, btn = 1, view = 1, top = 0, srow = 1, stop = 0, szone = "rows"}
   Draw()
 end
 
@@ -2825,8 +3169,8 @@ local function Decide()
   if ui.popup ~= nil then
     local m = ModById(ui.popup.id)
     local pb = m and PopupButtons(m)[ui.popup.btn or 1]
-    if m ~= nil and ui.popup.view == 4 and #RV.Settings(m.id) > 0 then
-      RV.Change(m, 1)         -- «Ajustes»: A changes the selected setting
+    if m ~= nil and ui.popup.view == 4 and #RV.Settings(m.id) > 0 and ui.popup.szone ~= "buttons" then
+      RV.Activate(m, ui.popup.srow or 1)   -- «Módulos» / «Ajustes»: A switches the focused card / steps the setting
     elseif pb ~= nil then
       pb.act()
     else

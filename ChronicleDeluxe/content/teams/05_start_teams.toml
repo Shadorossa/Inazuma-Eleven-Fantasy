@@ -1,0 +1,115 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (chronicle_deluxe, 1.2.1, 2026-10-14): the three starting teams of a NEW save (the
+# `select_first_team_menu` choice, docs/game/mods/chronicle-deluxe.md §8.8). Owner: the three teams keep their game
+# names, crests, kits, team level (2) and coach (Clark von Wunderbar, slot 19); only the eleven players and the
+# formation change, to the owner's three line-ups: IE1 players + Victorio Cryptix in his normal form (card 0x2AA62CA1,
+# the card the game's shops sell; not the possessed c11600090 nor the young c11600110).
+# Captain: Victorio Cryptix, the centre forward, in all three (the game's captains sat on slots of formations that
+# change here: team 1 slot 8, team 2 slot 2, team 3 slot 8).
+# Per team two edits: (1) the line-up, the eleven cards in formation order (new rows: the old captain flag is cleared);
+# (2) `patch` rows that put back the cells of the game's rows a new row resets: every starter's boots (0x6D5D11A0, the
+# game's start-team boots) and the game's per-slot level offset (+1 on three slots per team).
+# Slots = the formation's places (formation_config startPos; x < 0 = left on the formation screen).
+default_lang = "en"
+
+# --- Team 1 (start_team_01): 4-3-3 Delta ----------------------------------------------------------------------
+[[edit]]
+target = "start_team_01"
+formation = 0x937CAB03                    # 4-3-3 Delta (the centre midfielder deeper than the two side ones)
+member = [
+  { card = 0xED304218, slot = 0 },                   # Art Pendragon · GK
+  { card = 0x30D2BF9F, slot = 1 },                   # Paul Peabody · DF left
+  { card = 0xDD905F9A, slot = 2 },                   # Duncan Jump · DF centre-left
+  { card = 0x43643778, slot = 3 },                   # Saul Dowd · DF centre-right
+  { card = 0xD371D7B0, slot = 4 },                   # Miles Ryan · DF right
+  { card = 0x474ECFFF, slot = 5 },                   # Rory Boomer · MF left
+  { card = 0xC1C4785E, slot = 6 },                   # Nev Erin · MF centre
+  { card = 0x2164B4A2, slot = 7 },                   # Christian Dear · MF right
+  { card = 0xEEB49676, slot = 8 },                   # Balt Decker · FW left
+  { card = 0x2AA62CA1, slot = 9, captain = true },   # Victorio Cryptix · FW centre
+  { card = 0x4DA54BDA, slot = 10 },                  # Sagaminator · FW right
+]
+
+[[edit]]
+target = "start_team_01"
+member = [
+  { slot = 0, patch = true, equipment = [0x6D5D11A0] },                      # Art Pendragon
+  { slot = 1, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Paul Peabody
+  { slot = 2, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Duncan Jump
+  { slot = 3, patch = true, equipment = [0x6D5D11A0] },                      # Saul Dowd
+  { slot = 4, patch = true, equipment = [0x6D5D11A0] },                      # Miles Ryan
+  { slot = 5, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Rory Boomer
+  { slot = 6, patch = true, equipment = [0x6D5D11A0] },                      # Nev Erin
+  { slot = 7, patch = true, equipment = [0x6D5D11A0] },                      # Christian Dear
+  { slot = 8, patch = true, equipment = [0x6D5D11A0] },                      # Balt Decker
+  { slot = 9, patch = true, equipment = [0x6D5D11A0] },                      # Victorio Cryptix
+  { slot = 10, patch = true, equipment = [0x6D5D11A0] },                     # Sagaminator
+]
+
+# --- Team 2 (start_team_02): 4-3-3 Delta ----------------------------------------------------------------------
+[[edit]]
+target = "start_team_02"
+formation = 0x937CAB03                    # 4-3-3 Delta (the centre midfielder deeper than the two side ones)
+member = [
+  { card = 0x595C5662, slot = 0 },                   # Ace Server · GK
+  { card = 0x746A0613, slot = 1 },                   # Lee Gleagle · DF left
+  { card = 0x2377575C, slot = 2 },                   # Ant Hophila · DF centre-left
+  { card = 0x2A6DAE38, slot = 3 },                   # Burt Mocking · DF centre-right
+  { card = 0x3B5CD5B8, slot = 4 },                   # Winn deBreeze · DF right
+  { card = 0xF5E9196E, slot = 5 },                   # Heath Rower · MF left
+  { card = 0x3A6C661D, slot = 6 },                   # Hunter Glory · MF centre
+  { card = 0x0C25A1BF, slot = 7 },                   # Pascal Richter · MF right
+  { card = 0x1CD6B008, slot = 8 },                   # Penfold Pulper · FW left
+  { card = 0x2AA62CA1, slot = 9, captain = true },   # Victorio Cryptix · FW centre
+  { card = 0x21C33097, slot = 10 },                  # Vinny Trioquist · FW right
+]
+
+[[edit]]
+target = "start_team_02"
+member = [
+  { slot = 0, patch = true, equipment = [0x6D5D11A0] },                      # Ace Server
+  { slot = 1, patch = true, equipment = [0x6D5D11A0] },                      # Lee Gleagle
+  { slot = 2, patch = true, equipment = [0x6D5D11A0] },                      # Ant Hophila
+  { slot = 3, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Burt Mocking
+  { slot = 4, patch = true, equipment = [0x6D5D11A0] },                      # Winn deBreeze
+  { slot = 5, patch = true, equipment = [0x6D5D11A0] },                      # Heath Rower
+  { slot = 6, patch = true, equipment = [0x6D5D11A0] },                      # Hunter Glory
+  { slot = 7, patch = true, equipment = [0x6D5D11A0] },                      # Pascal Richter
+  { slot = 8, patch = true, equipment = [0x6D5D11A0] },                      # Penfold Pulper
+  { slot = 9, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Victorio Cryptix
+  { slot = 10, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },   # Vinny Trioquist
+]
+
+# --- Team 3 (start_team_03): 4-3-3 Triangle -------------------------------------------------------------------
+[[edit]]
+target = "start_team_03"
+formation = 0xE47B9B95                    # 4-3-3 Triangle (an attacking midfielder ahead of the two others)
+member = [
+  { card = 0x6B6A34E0, slot = 0 },                   # Rex George · GK
+  { card = 0xC1B33D32, slot = 1 },                   # Patrick Edie · DF centre-left
+  { card = 0x153E90FE, slot = 2 },                   # Beau Fort · DF centre-right
+  { card = 0x8F4784AE, slot = 3 },                   # Sal Curie · DF left
+  { card = 0x4201D97A, slot = 4 },                   # Jack Frosty · DF right
+  { card = 0x9A095A0E, slot = 5 },                   # Dash Dotter · MF centre, attacking
+  { card = 0x6F40CC67, slot = 6 },                   # Shemmy Ramis · MF left
+  { card = 0x741D437F, slot = 7 },                   # Fred Ferrell · MF right
+  { card = 0x2AA62CA1, slot = 8, captain = true },   # Victorio Cryptix · FW centre
+  { card = 0x74EF9AED, slot = 9 },                   # Ashley Fay · FW left
+  { card = 0xD91D2328, slot = 10 },                  # Nick Yergrub · FW right
+]
+
+[[edit]]
+target = "start_team_03"
+member = [
+  { slot = 0, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Rex George
+  { slot = 1, patch = true, equipment = [0x6D5D11A0] },                      # Patrick Edie
+  { slot = 2, patch = true, equipment = [0x6D5D11A0] },                      # Beau Fort
+  { slot = 3, patch = true, equipment = [0x6D5D11A0] },                      # Sal Curie
+  { slot = 4, patch = true, equipment = [0x6D5D11A0] },                      # Jack Frosty
+  { slot = 5, patch = true, equipment = [0x6D5D11A0] },                      # Dash Dotter
+  { slot = 6, patch = true, equipment = [0x6D5D11A0] },                      # Shemmy Ramis
+  { slot = 7, patch = true, equipment = [0x6D5D11A0] },                      # Fred Ferrell
+  { slot = 8, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },    # Victorio Cryptix
+  { slot = 9, patch = true, equipment = [0x6D5D11A0] },                      # Ashley Fay
+  { slot = 10, patch = true, equipment = [0x6D5D11A0], level_offset = 1 },   # Nick Yergrub
+]

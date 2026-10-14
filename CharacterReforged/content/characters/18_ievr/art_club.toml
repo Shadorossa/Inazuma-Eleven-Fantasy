@@ -1,0 +1,180 @@
+schema = "VRFW.character/2"
+# Character Reforged · Art Club · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11500270"                                   # Colette Brushmont
+
+  [[edit.cards]]
+  id = 0xF9EC2DE7                                         # DF/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 182, technique = 176, pressure = 220, physical = 278, intelligence = 243, agility = 200, freedom = 225 }
+  moves = [
+    { move = 0xA8215D7C, level = 1 },                     # The Mountain
+    { move = 0x93885A64, level = 9 },                     # Fire Drill
+    { move = 0x47657634, level = 26 },                    # Flame Breath
+    { move = 0x025FD09B, level = 45 },                    # Volcano Cut
+  ]
+
+[[edit]]
+target = "c11700210"                                   # Aimee Porteret
+
+  [[edit.cards]]
+  id = 0xE27E2B6A                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 243, technique = 235, pressure = 167, physical = 215, intelligence = 201, agility = 185, freedom = 221 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 1 },                     # The Ikaros
+    { move = 0x35E70F22, level = 14 },                    # Grenade Shot
+    { move = 0x41F3CDC2, level = 27 },                    # Scorching Tackle
+    { move = 0x00A10ABD, level = 45 },                    # Ball Lightning
+  ]
+
+[[edit]]
+target = "c11700390"                                   # Lorenzo Dellart
+
+  [[edit.cards]]
+  id = 0x2B65CB55                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 315, control = 248, technique = 207, pressure = 159, physical = 220, intelligence = 181, agility = 180, freedom = 251 }
+  moves = [
+    { move = 0x0C08B663, level = 3 },                     # Doom Dive Drive
+    { move = 0x2A4E3349, level = 18 },                    # Heart Beat
+    { move = 0x8A52C09B, level = 29 },                    # Doomsword Slash
+    { move = 0x18019E0A, level = 35 },                    # Double Grenade
+  ]
+
+[[edit]]
+target = "c11723010"                                   # Mireille Modelle
+
+  [[edit.cards]]
+  id = 0x898F038A                                         # GK/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 205, technique = 185, pressure = 212, physical = 259, intelligence = 208, agility = 251, freedom = 221 }
+  moves = [
+    { move = 0xF64674CB, level = 4 },                     # Fist of Justice
+    { move = 0x7EEA4EE9, level = 9 },                     # Blade Attack
+    { move = 0x422A60B1, level = 23 },                    # Barrier Reef
+    { move = 0x922AB1CF, level = 49 },                    # Safety First
+  ]
+
+[[edit]]
+target = "c11723020"                                   # Greef Lonbrusch
+
+  [[edit.cards]]
+  id = 0xA2A25049                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 205, control = 190, technique = 173, pressure = 196, physical = 281, intelligence = 231, agility = 200, freedom = 242 }
+  moves = [
+    { move = 0x613ABD43, level = 5 },                     # Dawnrise
+    { move = 0x2A4E3349, level = 17 },                    # Heart Beat
+    { move = 0x025FD09B, level = 30 },                    # Volcano Cut
+    { move = 0x585098FC, level = 43 },                    # Slice and Dice
+  ]
+
+[[edit]]
+target = "c11723030"                                   # Bracker Grippe
+
+  [[edit.cards]]
+  id = 0xBBB96108                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 242, technique = 213, pressure = 182, physical = 217, intelligence = 189, agility = 186, freedom = 251 }
+  moves = [
+    { move = 0x15138722, level = 2 },                     # Will-o'-the-Wisp Shot
+    { move = 0x4E22F64D, level = 13 },                    # Transporter Device
+    { move = 0x79224D8B, level = 26 },                    # Freeze Shot
+    { move = 0x1B854A64, level = 32 },                    # Cosmic Blast
+  ]
+
+[[edit]]
+target = "c11723040"                                   # Trew Talif
+
+  [[edit.cards]]
+  id = 0xF4F8F7CF                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 220, control = 246, technique = 234, pressure = 169, physical = 216, intelligence = 198, agility = 185, freedom = 247 }
+  moves = [
+    { move = 0x2354CA2D, level = 1 },                     # Wind God's Dance
+    { move = 0x4F58F805, level = 11 },                    # Coil Turn
+    { move = 0xC42D6F54, level = 30 },                    # Aikido
+    { move = 0x768AB9C5, level = 46 },                    # Frosticle
+  ]
+
+[[edit]]
+target = "c11723050"                                   # Madeline Milke
+
+  [[edit.cards]]
+  id = 0xEDE3C68E                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 182, technique = 171, pressure = 224, physical = 277, intelligence = 242, agility = 203, freedom = 242 }
+  moves = [
+    { move = 0x8C382852, level = 1 },                     # God Hand
+    { move = 0x5AF33BC7, level = 19 },                    # God Hand
+    { move = 0xAD6E4BF9, level = 26 },                    # Harvest
+    { move = 0x1A868BED, level = 43 },                    # Clone Defence
+  ]
+
+[[edit]]
+target = "c11723060"                                   # Giovanni Buston
+
+  [[edit.cards]]
+  id = 0xC6CE954D                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 238, technique = 236, pressure = 177, physical = 230, intelligence = 205, agility = 185, freedom = 221 }
+  moves = [
+    { move = 0x9D236FA3, level = 5 },                     # Sword of the King
+    { move = 0x53CD747F, level = 13 },                    # Tarzan Kick
+    { move = 0x64CDCFB9, level = 32 },                    # Rising Dragon
+    { move = 0xC5EF0563, level = 41 },                    # Three-Legged Rush
+  ]
+
+[[edit]]
+target = "c11723070"                                   # Audreen Slumberey
+
+  [[edit.cards]]
+  id = 0xDFD5A40C                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 235, control = 246, technique = 242, pressure = 176, physical = 208, intelligence = 211, agility = 182, freedom = 220 }
+  moves = [
+    { move = 0x6E53E2B3, level = 4 },                     # Angel Ball
+    { move = 0x1D4E888F, level = 16 },                    # Condor Dive
+    { move = 0xE0549BE6, level = 36 },                    # Easy Breezy Kid
+    { move = 0x3F00EDE9, level = 42 },                    # Dash Storm
+  ]
+
+[[edit]]
+target = "c11723080"                                   # Zinnia Crylic
+
+  [[edit.cards]]
+  id = 0x584DB8C3                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 243, technique = 208, pressure = 169, physical = 219, intelligence = 178, agility = 182, freedom = 255 }
+  moves = [
+    { move = 0xB27F13ED, level = 1 },                     # Death Zone
+    { move = 0x12E67CC1, level = 14 },                    # Future Eye
+    { move = 0x1B854A64, level = 24 },                    # Cosmic Blast
+    { move = 0x4C1D87D5, level = 42 },                    # Bed of Roses
+  ]

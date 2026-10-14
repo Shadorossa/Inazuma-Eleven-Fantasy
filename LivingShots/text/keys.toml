@@ -1,0 +1,60 @@
+schema = "VRFW.text_key/1"
+# Texts of «Living Shots» (mod id shot_fx; «Efectos de tiro» / Shot FX until 1.4.0) (format of the text engine: docs/framework/types/text.md). New texts get the id
+# crc32("shot_fx.<name>"): the «Saltar la cinemática de gol especial» row of «Opciones de mods» (options.toml, the
+# Goal Smash feature, the standalone mod goal_smash until 2026-10-08).
+# The On / Off value names are mod_options' own. A language missing here falls back to English.
+default_lang = "en"
+
+[en.new]
+mod_name = "Living Shots"
+mod_description = "Special shots keep their cut-in look while the ball flies: Doom Spear travels inside its red lattice spear, Excalibur rides its slash wave and leaves a burnt gash on the pitch, Doom Rain flies among its rain of dark balls, Emperor Penguin No. 1 / 2 / 3 carry their penguins and Katana Kick its wave and maple leaves. Visual only: no power, cost, path or block change. Camera on shots: while a shot at goal flies, the camera shows it from the touchline, then your camera comes back (always on, no setting). Special goals: scoring with Meteoric Fire Tornado, Inazuma Break, Shadow Empress or Ultimate Eleven Assault smashes the goal (each with its own scene; Ultimate Eleven Assault's is golden), whoever uses it; option «Skip special goal scene» in Mod options."
+skip_goal_scene = "Skip special goal scene"
+skip_goal_scene_help = "On: goals scored with this mod's moves show the normal goal scene."
+
+[es.new]
+mod_name = "Living Shots"
+mod_description = "Las supertécnicas de tiro conservan su aspecto de la cinemática mientras el balón vuela: Lanza letal viaja dentro de su lanza roja, Excalibur cabalga su onda de corte y deja un tajo en el campo, Diluvio letal vuela entre su lluvia de balones oscuros, Pingüino emperador n.º 1 / 2 / 3 llevan sus pingüinos y Chut ancestral su onda y sus hojas de arce. Solo visual: no cambia potencia, coste, trayectoria ni bloqueos. Cámara en los tiros: mientras vuela un tiro a portería, la cámara lo muestra desde la banda y luego vuelve tu cámara (siempre activa, sin opción). Goles especiales: marcar con Tornado de fuego meteoro, Ruptura relámpago, Emperatriz oscura o Impulso del equipo definitivo rompe la portería (cada una con su escena; la de Impulso del equipo definitivo, dorada), la use quien la use; opción «Saltar la cinemática de gol especial» en Opciones de mods."
+skip_goal_scene = "Saltar la cinemática de gol especial"
+skip_goal_scene_help = "Activado: los goles con técnicas de este mod muestran el gol normal."
+
+[fr.new]
+mod_name = "Living Shots"
+mod_description = "Les tirs spéciaux gardent l'aspect de leur cinématique pendant que le ballon vole : Lance des ténèbres voyage dans sa lance rouge, Excalibur chevauche son onde tranchante et laisse une entaille brûlée sur le terrain, Pluie des ténèbres vole parmi sa pluie de ballons sombres, Manchot empereur nº 1 / 2 / 3 emportent leurs manchots et Tir katana ancestral son onde et ses feuilles d'érable. Purement visuel : ni puissance, ni coût, ni trajectoire, ni blocages ne changent. Caméra des tirs : pendant qu'un tir cadré vole, la caméra le montre depuis la ligne de touche, puis votre caméra revient (toujours active, sans option). Buts spéciaux : marquer avec Tornade de feu météore, Éclair pulvérisant, Impératrice des ombres ou Attaque équipe ultime brise le but (chacune avec sa scène ; celle d'Attaque équipe ultime est dorée), quel que soit le tireur ; option « Passer la scène de but spéciale » dans Options des mods."
+skip_goal_scene = "Passer la scène de but spéciale"
+skip_goal_scene_help = "Activé : les buts marqués avec ce mod montrent le but normal."
+
+[de.new]
+mod_name = "Living Shots"
+mod_description = "Spezialschüsse behalten ihr Aussehen aus der Zwischensequenz, während der Ball fliegt: Schattenspeer fliegt in seinem roten Speer, Excalibur reitet auf seiner Schnittwelle und hinterlässt eine verbrannte Kerbe auf dem Platz, Schattenhagel fliegt in seinem Regen aus dunklen Bällen, Kaiserpinguin I / II / III tragen ihre Pinguine und Katana-Kick seine Welle und Ahornblätter. Nur optisch: Stärke, Kosten, Flugbahn und Blocks bleiben gleich. Schusskamera: Während ein Torschuss fliegt, zeigt die Kamera ihn von der Seitenlinie, danach kehrt deine Kamera zurück (immer aktiv, ohne Option). Spezialtore: Ein Tor mit Meteor-Feuertornado, Blitzausbruch, Schattenkaiserin oder Sturm der Äonen zerstört das Tor (jede mit eigener Szene; die von Sturm der Äonen ist golden), egal wer sie einsetzt; Option „Spezial-Torszene überspringen“ in den Mod-Optionen."
+skip_goal_scene = "Spezial-Torszene überspringen"
+skip_goal_scene_help = "An: Tore mit Techniken dieses Mods zeigen die normale Torszene."
+
+[it.new]
+mod_name = "Living Shots"
+mod_description = "I tiri speciali mantengono l'aspetto della loro scena mentre il pallone vola: Lancia Micidiale viaggia dentro la sua lancia rossa, Excalibur cavalca la sua onda di taglio e lascia un solco bruciato sul campo, Raffica Micidiale vola tra la sua pioggia di palloni oscuri, Pinguino Imperatore Nº 1 / 2 / 3 portano i loro pinguini e Tiro Ancestrale la sua onda e le sue foglie d'acero. Solo visivo: potenza, costo, traiettoria e blocchi non cambiano. Telecamera sui tiri: mentre vola un tiro in porta, la telecamera lo mostra dalla linea laterale, poi torna la tua telecamera (sempre attiva, senza opzione). Gol speciali: segnare con Tornado di Fuoco Meteora, Ariete Inazuma, Imperatrice Oscura o Assalto della Squadra Invincibile distrugge la porta (ognuna con la sua scena; quella di Assalto della Squadra Invincibile è dorata), chiunque la usi; opzione «Salta la scena del gol speciale» in Opzioni delle mod."
+skip_goal_scene = "Salta la scena del gol speciale"
+skip_goal_scene_help = "Attivato: i gol con le tecniche di questa mod mostrano il gol normale."
+
+[pt.new]
+mod_name = "Living Shots"
+mod_description = "Os chutes especiais mantêm o visual da sua cena enquanto a bola voa: Lança Mortal viaja dentro da sua lança vermelha, Excalibur cavalga a sua onda de corte e deixa um rasgo queimado no campo, Chuva Mortal voa entre a sua chuva de bolas sombrias, Pinguins Imperiais nº 1 / 2 / 3 levam os seus pinguins e Chute Ancestral a sua onda e as suas folhas de bordo. Apenas visual: não muda potência, custo, trajetória nem bloqueios. Câmera nos chutes: enquanto voa um chute a gol, a câmera mostra-o a partir da lateral e depois volta a sua câmera (sempre ativa, sem opção). Gols especiais: marcar com Furacão Meteórico, Relâmpago Destruidor, Imperatriz das Sombras ou Ataque dos Onze Supremos destrói o gol (cada uma com a sua cena; a de Ataque dos Onze Supremos é dourada), seja quem for que a use; opção «Saltar a cena de golo especial» em Opções de mods."
+skip_goal_scene = "Saltar a cena de golo especial"
+skip_goal_scene_help = "Ativado: os golos com técnicas deste mod mostram o golo normal."
+
+[ja.new]
+mod_name = "Living Shots"
+mod_description = "必殺シュートが、ボールが飛んでいる間もカットインの見た目を保ちます：デススピアーは赤い槍に包まれて飛び、エクスカリバーは斬撃の波に乗ってフィールドに焼け跡を残し、デスレインは黒いボールの雨の中を飛び、皇帝ペンギン１号 / ２号 / ３号はペンギンを、伝来宝刀は波動とカエデの葉を引き連れます。見た目だけの変更で、威力・消費・軌道・ブロックは変わりません。シュートカメラ：ゴールへのシュートが飛んでいる間、カメラがサイドラインから映し、その後いつものカメラに戻ります（常に有効、設定なし）。特殊ゴール：メテオッド・ファイアトルネード、イナズマブレイク、エンプレス・シャドウ、最強イレブン波動で得点するとゴールが壊れます（技ごとに専用の演出、最強イレブン波動は金色）。使う選手は問いません。「MODオプション」に「特殊ゴール演出をスキップ」の設定があります。"
+skip_goal_scene = "特殊ゴール演出をスキップ"
+skip_goal_scene_help = "オン：このMODの必殺技でのゴールは通常のゴール演出になります。"
+
+[zh_hans.new]
+mod_name = "Living Shots"
+mod_description = "必杀射门在球飞行时也保持过场演出中的外观：死亡之枪在红色长枪中飞行，王者之剑乘着斩击波前进并在球场上留下烧焦的刀痕，死亡弹雨在黑色弹雨中飞行，皇帝企鹅1号 / 2号 / 3号带着企鹅，传承宝刀带着波动和枫叶。仅为视觉效果：威力、消耗、轨迹和阻挡都不变。射门镜头：射向球门的球飞行时，镜头从边线拍摄，之后回到你的镜头（始终开启，无选项）。特殊进球：用陨星·烈焰龙卷风、闪电爆破、帝影裁决或最强十一人波动进球会击碎球门（各有专属演出，最强十一人波动为金色），无论由谁使出；“模组选项”中有“跳过特殊进球演出”选项。"
+skip_goal_scene = "跳过特殊进球演出"
+skip_goal_scene_help = "开：用本模组必杀技的进球显示普通进球演出。"
+
+[zh_hant.new]
+mod_name = "Living Shots"
+mod_description = "必殺射門在球飛行時也保持過場演出中的外觀：驟死巨矛在紅色長矛中飛行，誓約勝利之劍乘著斬擊波前進並在球場上留下燒焦的刀痕，死亡彈雨在黑色彈雨中飛行，皇帝企鵝1號 / 2號 / 3號帶著企鵝，傳承寶刀帶著波動和楓葉。僅為視覺效果：威力、消耗、軌跡和攔截都不變。射門鏡頭：射向球門的球飛行時，鏡頭從邊線拍攝，之後回到你的鏡頭（始終開啟，無選項）。特殊進球：用隕石烈焰龍捲風、閃電爆破、帝影裁決或最強十一人波動進球會擊碎球門（各有專屬演出，最強十一人波動為金色），無論由誰使出；「模組選項」中有「跳過特殊進球演出」選項。"
+skip_goal_scene = "跳過特殊進球演出"
+skip_goal_scene_help = "開：用本模組必殺技的進球顯示普通進球演出。"

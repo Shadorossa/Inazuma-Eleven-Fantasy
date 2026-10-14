@@ -1,0 +1,25 @@
+# «Chaos Break» («Remate caótico», whs01250, forest shot, three-player combo, cut-in ev60_01250; also Inazuma Fantasy's
+# whs01250_or, the same cut-in): while the ball flies to the goal it sits in the cut-in's OWN white-gold energy sphere
+# inside its fire and ice rings, with the three trails of ice, fire and gold light behind it (the last cut c0600, the
+# shot onto the goal, held at frame 446, the textures' flow running on) instead of the plain forest special-shot aura
+# (ega0075d). The core's flat glow discs and halo ring (turned to the cut-in camera: bars from the touchline), the
+# camera flash lines, the backdrop and the kick-spot parts are dropped; x0.75 of the cut-in size (rings ~3.2 m).
+# The trails and the rings keep spinning as in the cut-in; the trails' tails fade out along their length.
+# The object is ev6125cb00 (from ev60012500), in assets\data\{common,dx11}\effect\event\ev60\ev6125cb00\, built by
+# research/scripts/chaos_break_ball_fx.py; docs/game/media/chaos-break-ball-fx.md.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "chaos_break"
+from = "ega0075d"
+object = "effect/event/ev60/ev6125cb00/ev6125cb00.objbin"
+
+[[shot_aura]]
+name = "chaos_break"
+when = { techniques = ["whs01250", "whs01250_or"] }
+aura = "chaos_break"
+like = "ega0075d"

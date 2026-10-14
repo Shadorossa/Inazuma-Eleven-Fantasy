@@ -1,0 +1,57 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): a rival of the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/
+# chain_sonny.toml). The same team as the set-aside Chronicles Deluxe's (generated there by
+# research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe is
+# active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Benchers 1 (IE, «Sonny Raimon's route» #3; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Benchers_1
+# Left out (over 16 players): Hitogata Gen; Tsuburaya Michi; Kurogami Noroi
+[[team]]
+name = "ct_wk_benchers_1"
+key = "evt_ct_wk_benchers_1"
+based_on = "tm_cro_ie1_1320" # Team Ogre: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # team_kits_from_wiki.py: neutral (needs a kit) (was 0x7362C53B)
+level = 45
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x47AA6C77, slot = 0, number = 1, rarity_step = 1, captain = true }, # Katakura Jion = Jimbo Cellar (GK)
+  { card = 0x70C5626A, slot = 1, number = 2, rarity_step = 1 }, # Mizubuchi Nashi = Neil Waters (DF)
+  { card = 0x157DB743, slot = 2, number = 3, rarity_step = 1 }, # Denju Atsumu = Ryan Tappin (MF)
+  { card = 0xC66A54B7, slot = 3, number = 4, rarity_step = 1 }, # Netto Saguri = Ollie Webb (DF)
+  { card = 0x1DB35E0A, slot = 4, number = 5, rarity_step = 1 }, # Fushi Matsuru = Rob Crombie ({'IE': 'DF', 'IE2': 'GK'})
+  { card = 0x0B6F2EDE, slot = 5, number = 6, rarity_step = 1 }, # Gozan Sou = Roman Kandel (MF)
+  { card = 0x0275D7BA, slot = 6, number = 7, rarity_step = 1 }, # Dazai Umekichi = Mike Passing (FW)
+  { card = 0x486D2DE2, slot = 7, number = 8, rarity_step = 1 }, # Araigawa Kumami = Rocky Rackham (DF)
+  { card = 0xBA9CED78, slot = 8, number = 9, rarity_step = 1 }, # Jahana Sango = Coral Talent (FW)
+  { card = 0x8FA32726, slot = 9, number = 10, rarity_step = 1 }, # Senba Ginko = Peony Cash (MF)
+  { card = 0x16F9632D, slot = 10, number = 11, rarity_step = 1 }, # Shitsuhara Zen = Pete Bogg (MF)
+  { card = 0x7A5B4F60, slot = 11, number = 12, rarity_step = 1 }, # Ushio Kuuya = Chad Bullford ({'IE': 'DF', 'IE2': 'GK'})
+  { card = 0xED470774, slot = 12, number = 13, rarity_step = 1 }, # Seimo Sakuta = Mike Vox (DF)
+  { card = 0x42F300E8, slot = 13, number = 14, rarity_step = 1 }, # Hirao Jin = Charles Oughtry (MF)
+  { card = 0x567FB47F, slot = 14, number = 15, rarity_step = 1 }, # Shibuki Shoudai = Barry Potts (MF)
+  { card = 0x1E378A64, slot = 15, number = 16, rarity_step = 1 }, # Koara Noboru = Alan Coe (MF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_benchers.png" # remastered crest of the wiki's Benchers emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Chupabanquillos 1"
+short = "Chupabanquillos 1"
+[team.text.en]
+name = "Benchers 1"
+short = "Benchers 1"
+[team.text.ja]
+name = "ベンチーズ１"
+short = "ベンチーズ１"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_benchers_1"
+card_moves = 4

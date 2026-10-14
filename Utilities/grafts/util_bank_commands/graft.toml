@@ -28,3 +28,9 @@ description = "Bank player popup: skill table / equipment / passives entries, qu
 [[hooks]]
 stem = "chara_bank_menu"
 src = "util_bank_commands.lua"
+
+# the retail «Tabla de habilidades» opened from the bank for a player outside the dock: the START card's missing slot
+# (docs/game/ui/bank-commands.md §2)
+[[hooks]]
+stem = "ability_learning_board_menu"
+src = "util_bank_board.lua"

@@ -1,0 +1,128 @@
+schema = "VRFW.character/2"
+# Character Reforged · Inazuma Legend National · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05024650"                                   # Nathan Swift
+
+  [[edit.cards]]
+  id = 0x515996B0                                         # DF/MF · wind
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 238, control = 213, technique = 225, pressure = 255, physical = 176, intelligence = 323, agility = 193, freedom = 234 }
+  moves = [
+    { move = 0x3C843987, level = 1 },                     # Flurry Dash
+    { move = 0xC21AFE80, level = 1 },                     # Whirlwind Drop
+    { move = 0x2354CA2D, level = 15 },                    # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                    # The Hurricane
+  ]
+
+[[edit]]
+target = "c05024630"                                   # Jack Wallside
+
+  [[edit.cards]]
+  id = 0x07033136                                         # DF/MF · mountain
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 151, control = 196, technique = 150, pressure = 294, physical = 204, intelligence = 329, agility = 198, freedom = 213 }
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                     # The Wall
+    { move = 0x4031A7F5, level = 12 },                    # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                    # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                    # The Mountain
+  ]
+
+[[edit]]
+target = "c05024710"                                   # Axel Blaze
+
+  [[edit.cards]]
+  id = 0x34F73983                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 366, control = 277, technique = 284, pressure = 181, physical = 193, intelligence = 244, agility = 136, freedom = 209 }
+  moves = [
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                     # Fireball Storm
+    { move = 0x0B011EBF, level = 1 },                     # Fireball Screw
+    { move = 0xEAB3792D, level = 1 },                     # Grand Fire
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7978E1FA, level = 1 },                     # Lancelot [aura]
+  ]
+
+[[edit]]
+target = "c05024680"                                   # Kevin Dragonfly
+
+  [[edit.cards]]
+  id = 0xE4F7E8FD                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 315, control = 277, technique = 290, pressure = 136, physical = 224, intelligence = 192, agility = 165, freedom = 209 }
+  moves = [
+    { move = 0x2CFC3E63, level = 1 },                     # Dragon Crash
+    { move = 0xE937AD43, level = 1 },                     # Dragon Slayer
+    { move = 0x5F989B9E, level = 18 },                    # Wyvern Crash
+    { move = 0x10D90D59, level = 32 },                    # Wyvern Blizzard
+  ]
+
+[[edit]]
+target = "c05024690"                                   # Xavier Schiller
+
+  [[edit.cards]]
+  id = 0xFDECD9BC                                         # FW/MF · fire
+  growth = "normal"
+  stats = { kick = 329, control = 255, technique = 251, pressure = 215, physical = 177, intelligence = 240, agility = 177, freedom = 251 }
+  moves = [
+    { move = 0x65766A4F, level = 3 },                     # Meteor Blade
+    { move = 0x1755397B, level = 20 },                    # Dark Energy Star
+    { move = 0xC3D894B7, level = 36 },                    # The Dawn
+    { move = 0x00A10ABD, level = 48 },                    # Ball Lightning
+  ]
+
+[[edit]]
+target = "c05024700"                                   # Shawn Froste
+
+  [[edit.cards]]
+  id = 0x2DEC08C2                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 342, control = 274, technique = 216, pressure = 239, physical = 149, intelligence = 255, agility = 173, freedom = 213 }
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                     # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                     # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                     # Legendary Wolf
+    { move = 0x1FC99D68, level = 1 },                     # Snow Angel
+  ]
+
+[[edit]]
+target = "c05024660"                                   # Caleb Stonewall
+
+  [[edit.cards]]
+  id = 0x7A74C573                                         # MF/FW · fire
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 306, control = 282, technique = 259, pressure = 208, physical = 173, intelligence = 282, agility = 170, freedom = 217 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x71831119, level = 1 },                     # Foul Offence 2
+    { move = 0xC16279D1, level = 1 },                     # Field of Force
+    { move = 0xBF6D0AC5, level = 50 },                    # Emperor Penguin No. 3
+  ]
+
+[[edit]]
+target = "c05024640"                                   # Hurley Kane
+
+  [[edit.cards]]
+  id = 0x4842A7F1                                         # DF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 194, technique = 176, pressure = 261, physical = 235, intelligence = 300, agility = 170, freedom = 217 }
+  moves = [
+    { move = 0x4E9A9232, level = 1 },                     # Spinning Cut
+    { move = 0x2BF596BF, level = 1 },                     # Tsunami Boost
+    { move = 0xA4B51923, level = 1 },                     # The Typhoon
+    { move = 0xB2BEB853, level = 28 },                    # Whale Guard
+  ]

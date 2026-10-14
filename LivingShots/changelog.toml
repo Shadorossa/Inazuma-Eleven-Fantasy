@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# Living Shots: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "Living Shots"
+
+[en]
+name = "Living Shots"
+
+[fr]
+name = "Living Shots"
+
+[de]
+name = "Living Shots"
+
+[it]
+name = "Living Shots"
+
+[pt]
+name = "Living Shots"
+
+[ja]
+name = "Living Shots"
+
+[zh_hans]
+name = "Living Shots"
+
+[zh_hant]
+name = "Living Shots"
+
+[[release]]
+icon = "general"
+notes = [
+    "Los tiros especiales vuelan con el efecto de su escena.",
+    "Decenas de tiros: Tornado dragón, Excálibur y más.",
+    "Auras también en paradas y bloqueos con técnica.",
+    "Solo visual: no cambia potencia ni bloqueos.",
+    "Cámara de banda que sigue el tiro como en la tele.",
+    "Goles especiales que rompen la portería (opción).",
+]
+
+[release.en]
+notes = [
+    "Special shots fly with the effect of their scene.",
+    "Dozens of shots: Dragon Tornado, Excalibur and more.",
+    "Auras on saves and blocks with a move too.",
+    "Visual only: no power or block changes.",
+    "Touchline camera that follows the shot like on TV.",
+    "Special goals that smash the net (optional scene).",
+]
+
+[release.fr]
+notes = [
+    "Les tirs spéciaux volent avec l'effet de leur scène.",
+    "Des dizaines de tirs : Tornade du dragon, Excalibur…",
+    "Auras aussi sur les arrêts et contres avec technique.",
+    "Purement visuel : puissance et contres inchangés.",
+    "Caméra latérale qui suit le tir comme à la télé.",
+    "Buts spéciaux qui brisent le but (scène optionnelle).",
+]
+
+[release.de]
+notes = [
+    "Spezialschüsse fliegen mit dem Effekt ihrer Szene.",
+    "Dutzende Schüsse: Drachentornado, Excalibur und mehr.",
+    "Auren auch bei Paraden und Blocks mit Technik.",
+    "Nur optisch: Stärke und Blocks bleiben gleich.",
+    "Seitenkamera folgt dem Schuss wie im Fernsehen.",
+    "Spezialtore zerstören das Tor (Szene optional).",
+]
+
+[release.it]
+notes = [
+    "I tiri speciali volano con l'effetto della loro scena.",
+    "Decine di tiri: Tornado del drago, Excalibur e altri.",
+    "Aure anche su parate e blocchi con tecnica.",
+    "Solo grafica: potenza e blocchi invariati.",
+    "Telecamera laterale che segue il tiro come in TV.",
+    "Gol speciali che rompono la porta (scena opzionale).",
+]
+
+[release.pt]
+notes = [
+    "Os chutes especiais voam com o efeito da sua cena.",
+    "Dezenas de chutes: Tornado do dragão, Excalibur e mais.",
+    "Auras também em defesas e bloqueios com técnica.",
+    "Só visual: não muda força nem bloqueios.",
+    "Câmera lateral que segue o chute como na TV.",
+    "Gols especiais que quebram o gol (cena opcional).",
+]
+
+[release.ja]
+notes = [
+    "必殺シュートが演出のエフェクトをまとって飛ぶ。",
+    "対応シュートは数十種類。",
+    "必殺技のセーブやブロックにもオーラ。",
+    "見た目のみ：威力やブロックは変わらない。",
+    "テレビ中継のようなサイドカメラでシュートを追う。",
+    "ゴールを破壊する特殊ゴール（演出は省略可）。",
+]
+
+[release.zh_hans]
+notes = [
+    "必杀射门带着演出特效飞向球门。",
+    "支持数十种必杀射门。",
+    "使用必杀技的扑救与封堵也有气场。",
+    "仅视觉效果：不改变威力与封堵。",
+    "边线镜头像电视转播一样跟随射门。",
+    "特殊进球会击碎球门（可跳过演出）。",
+]
+
+[release.zh_hant]
+notes = [
+    "必殺射門帶著演出特效飛向球門。",
+    "支援數十種必殺射門。",
+    "使用必殺技的撲救與封堵也有氣場。",
+    "僅視覺效果：不改變威力與封堵。",
+    "邊線鏡頭像電視轉播一樣跟隨射門。",
+    "特殊進球會擊碎球門（可跳過演出）。",
+]

@@ -2,7 +2,7 @@
 # duel.power_block_won): pure data. Every entry may carry `when` (the winner's character / card, element, hyper…),
 # `priority` (a character's own scene first) and the pool `no_repeat = true`; none is set here, so the draw is the
 # same as in 1.0.0 (uniform among the pool's scenes).
-schema = "vr_framework.duel_clip/1"
+schema = "VRFW.duel_clip/1"
 # «Duelos potentes de CS/Galaxy» (new_animations 1.0.0; the mod keeper_scenes until 2026-10-08): a «Carga potente» (power charge) or «Bloqueo potente» (power block)
 # focus duel won WITHOUT a hyper technique plays one of these cut-ins, drawn at random, instead of the retail one
 # (ev71_40010 / ev71_50010); with a hyper technique active (keshin, armour, miximax, soul…) the retail cut-in stays.

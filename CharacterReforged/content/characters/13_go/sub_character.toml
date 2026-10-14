@@ -1,0 +1,375 @@
+schema = "VRFW.character/2"
+# Character Reforged · Sub Character · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04000350"                                   # Spotter
+
+  [[edit.cards]]
+  id = 0x04479BD8                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 194, technique = 292, pressure = 197, physical = 230, intelligence = 180, agility = 196, freedom = 317 }
+  moves = [
+    { move = 0xAA67E325, level = 3 },                     # Desert Blast
+    { move = 0xB58AE80E, level = 25 },                    # Silk Road
+    { move = 0xAE5C7145, level = 42 },                    # Fangtasmagoria
+    { move = 0xA9E3374B, level = 51 },                    # Cyclone Sprint
+  ]
+
+[[edit]]
+target = "c05026610"                                   # Jordan Greenway
+
+  [[edit.cards]]
+  id = 0x9F3C9B3F                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 315, control = 279, technique = 266, pressure = 180, physical = 189, intelligence = 257, agility = 151, freedom = 221 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0x97C48D68, level = 1 },                     # Astro Gate
+    { move = 0x10A0C298, level = 5 },                     # Warp Drive
+    { move = 0x43B5739B, level = 38 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c05026510"                                   # Nelly Evans
+
+  [[edit.cards]]
+  id = 0x9D7A2566                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 255, control = 251, technique = 232, pressure = 186, physical = 190, intelligence = 197, agility = 165, freedom = 251 }
+  moves = [
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x2A4E3349, level = 1 },                     # Heart Beat
+    { move = 0x900C8E0A, level = 43 },                    # Maestro's Call
+    { move = 0x87379CDF, level = 65 },                    # Fire Tornado TC
+  ]
+
+[[edit]]
+target = "c05026520"                                   # Celia Hills
+
+  [[edit.cards]]
+  id = 0xB65776A5                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 252, technique = 292, pressure = 204, physical = 182, intelligence = 244, agility = 154, freedom = 247 }
+  moves = [
+    { move = 0x01DB04F5, level = 1 },                     # Defence Scan
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0xC16279D1, level = 50 },                    # Field of Force
+    { move = 0x32EEA7FE, level = 70 },                    # Death Zone 2
+  ]
+
+[[edit]]
+target = "c05026600"                                   # Austin Hobbes
+
+  [[edit.cards]]
+  id = 0x8627AA7E                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 329, control = 290, technique = 259, pressure = 147, physical = 161, intelligence = 217, agility = 161, freedom = 321 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0x232D05EC, level = 1 },                     # Tiger Drive
+    { move = 0xF02C9C02, level = 1 },                     # Tiger Storm
+    { move = 0xA6763B84, level = 1 },                     # Gladius Arch
+  ]
+
+[[edit]]
+target = "c05026540"                                   # Camellia Travis
+
+  [[edit.cards]]
+  id = 0xE00DD123                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 204, technique = 231, pressure = 244, physical = 224, intelligence = 301, agility = 174, freedom = 230 }
+  moves = [
+    { move = 0x73C5AF40, level = 10 },                    # Dash Accelerator
+    { move = 0x7EEA4EE9, level = 16 },                    # Blade Attack
+    { move = 0x4890FB67, level = 23 },                    # Twin Boost
+    { move = 0x36A270F2, level = 38 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c05026560"                                   # Charley Horse
+
+  [[edit.cards]]
+  id = 0xD23BB3A1                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 88, control = 213, technique = 158, pressure = 223, physical = 212, intelligence = 271, agility = 242, freedom = 355 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x6B1CF436, level = 13 },                    # Bewildered
+    { move = 0x3663DB4C, level = 24 },                    # Utter Gutsiness Bat
+    { move = 0x737DCB3F, level = 40 },                    # Pancake Defence
+  ]
+
+[[edit]]
+target = "c05026570"                                   # Chester Horse Sr
+
+  [[edit.cards]]
+  id = 0xCB2082E0                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 185, control = 213, technique = 146, pressure = 216, physical = 240, intelligence = 221, agility = 258, freedom = 217 }
+  moves = [
+    { move = 0xEBD03938, level = 3 },                     # Utter Gutsiness Catch
+    { move = 0xE4849E49, level = 12 },                    # Wild Dunk
+    { move = 0xDBA0E5E3, level = 30 },                    # Gigant Wall
+    { move = 0x2D9F7E76, level = 44 },                    # Breath Taker
+  ]
+
+[[edit]]
+target = "c05026630"                                   # Faythe Heeler
+
+  [[edit.cards]]
+  id = 0xAD0AF9BD                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 80, control = 201, technique = 188, pressure = 251, physical = 227, intelligence = 292, agility = 186, freedom = 335 }
+  moves = [
+    { move = 0xA37D1A41, level = 6 },                     # Hyper-Swiper
+    { move = 0xBBA44137, level = 17 },                    # Great Wall
+    { move = 0x6DD736DD, level = 37 },                    # Ribbon Shower
+    { move = 0xB0F8060A, level = 53 },                    # Ozone Flayer
+  ]
+
+[[edit]]
+target = "c05026640"                                   # Maia
+
+  [[edit.cards]]
+  id = 0xE24B6F7A                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 188, control = 198, technique = 213, pressure = 223, physical = 239, intelligence = 267, agility = 180, freedom = 230 }
+  moves = [
+    { move = 0x6BA49049, level = 1 },                     # Mystic Mist
+    { move = 0x20D01E43, level = 10 },                    # Hey Presto
+    { move = 0xDCC9CCA3, level = 37 },                    # Tesla Coil
+    { move = 0xEC78BBC6, level = 62 },                    # Black Ash
+  ]
+
+[[edit]]
+target = "c05026650"                                   # Julia Blaze
+
+  [[edit.cards]]
+  id = 0xFB505E3B                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 236, technique = 286, pressure = 161, physical = 171, intelligence = 203, agility = 158, freedom = 375 }
+  moves = [
+    { move = 0x2A4E3349, level = 3 },                     # Heart Beat
+    { move = 0xB7474004, level = 20 },                    # Dough Ray Me
+    { move = 0x0B011EBF, level = 30 },                    # Fireball Screw
+    { move = 0xDA3FF6C9, level = 52 },                    # Criss-Cross
+  ]
+
+[[edit]]
+target = "c06037450"                                   # William Glass
+
+  [[edit.cards]]
+  id = 0x4CE0DE1D                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 238, control = 279, technique = 282, pressure = 197, physical = 146, intelligence = 240, agility = 165, freedom = 417 }
+  moves = [
+    { move = 0x0F703132, level = 1 },                     # Black Magic
+    { move = 0x29B328E6, level = 30 },                    # Spectacle Crash
+    { move = 0x01DB04F5, level = 50 },                    # Defence Scan
+    { move = 0xBCE9DEAB, level = 75 },                    # Chaos Break
+  ]
+
+[[edit]]
+target = "c06039020"                                   # Seymour Hillman
+
+  [[edit.cards]]
+  id = 0xE4779735                                         # GK/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 149, control = 216, technique = 225, pressure = 235, physical = 228, intelligence = 251, agility = 274, freedom = 217 }
+  moves = [
+    { move = 0x8C382852, level = 1 },                     # God Hand
+    { move = 0x8FBCFC3C, level = 1 },                     # Blazing Knuckle
+    { move = 0x91AE65A1, level = 1 },                     # Giant Spider
+    { move = 0x4BD584B7, level = 1 },                     # Power Charge
+  ]
+
+[[edit]]
+target = "c06037400"                                   # Victoria Vanguard
+
+  [[edit.cards]]
+  id = 0x31972A58                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 250, technique = 265, pressure = 238, physical = 165, intelligence = 271, agility = 161, freedom = 355 }
+  moves = [
+    { move = 0xAF28F5A0, level = 1 },                     # The Tower
+    { move = 0x54C4DCA3, level = 21 },                    # Butterfly Trance
+    { move = 0xC42D6F54, level = 34 },                    # Aikido
+    { move = 0x49933AEE, level = 69 },                    # Perfect Tower
+  ]
+
+[[edit]]
+target = "c06037430"                                   # Darren LaChance
+
+  [[edit.cards]]
+  id = 0x1ABA799B                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 231, technique = 177, pressure = 200, physical = 216, intelligence = 232, agility = 261, freedom = 355 }
+  moves = [
+    { move = 0x8C382852, level = 1 },                     # God Hand
+    { move = 0xA491AFFF, level = 1 },                     # Majin the Hand
+    { move = 0xF2CB0879, level = 1 },                     # Mugen the Hand
+    { move = 0xF7841EFC, level = 1 },                     # Fiend Hand
+  ]
+
+[[edit]]
+target = "c06037440"                                   # Archer Hawkins
+
+  [[edit.cards]]
+  id = 0x55FBEF5C                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 277, control = 193, technique = 113, pressure = 232, physical = 274, intelligence = 274, agility = 178, freedom = 271 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x04941270, level = 1 },                     # Vac Attack
+    { move = 0x142DBE2A, level = 30 },                    # Foul Offence
+    { move = 0x7B64F3D2, level = 40 },                    # Hawk Shot
+  ]
+
+[[edit]]
+target = "c06037460"                                   # Arion Sherwind
+
+  [[edit.cards]]
+  id = 0x67CD8DDE                                         # MF/FW · wind
+  growth = "normal"
+  stats = { kick = 266, control = 220, technique = 305, pressure = 200, physical = 197, intelligence = 219, agility = 174, freedom = 230 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0xC2E6ADBF, level = 10 },                    # Log Roll
+    { move = 0x6F918884, level = 22 },                    # Easy Breezy
+    { move = 0xA9E3374B, level = 35 },                    # Cyclone Sprint
+  ]
+
+[[edit]]
+target = "c06037380"                                   # Janison Veteran
+
+  [[edit.cards]]
+  id = 0xFC01B6D5                                         # GK/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 217, technique = 232, pressure = 204, physical = 225, intelligence = 216, agility = 198, freedom = 255 }
+  moves = [
+    { move = 0x2A4E3349, level = 1 },                     # Heart Beat
+    { move = 0xDF2D9951, level = 15 },                    # Close Counter
+    { move = 0x50E88A33, level = 34 },                    # Fist Beam
+    { move = 0xB8C5883B, level = 64 },                    # God Hand X
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x9036A3E7, level = 1 },                     # Serendipity [aura]
+  ]
+
+[[edit]]
+target = "c06037390"                                   # Aquilina Schiller
+
+  [[edit.cards]]
+  id = 0xE51A8794                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 250, technique = 250, pressure = 243, physical = 126, intelligence = 247, agility = 230, freedom = 231 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0xAF28F5A0, level = 21 },                    # The Tower
+    { move = 0x2296A01A, level = 32 },                    # Southern Cross
+    { move = 0xA955D999, level = 59 },                    # The Earth: Infinity
+  ]
+
+[[edit]]
+target = "c06039030"                                   # Frank Wintersea
+
+  [[edit.cards]]
+  id = 0xFD6CA674                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 194, technique = 158, pressure = 181, physical = 243, intelligence = 200, agility = 238, freedom = 225 }
+  moves = [
+    { move = 0x2E7B2B84, level = 1 },                     # Thief's Eye
+    { move = 0x1C4D4906, level = 14 },                    # Whirlpool
+    { move = 0xE196F1D1, level = 24 },                    # Burning Bomb
+    { move = 0x650FA58E, level = 44 },                    # Spin Out
+  ]
+
+[[edit]]
+target = "c06039040"                                   # Sonny Raimon
+
+  [[edit.cards]]
+  id = 0xB22D30B3                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 271, technique = 225, pressure = 161, physical = 211, intelligence = 203, agility = 192, freedom = 231 }
+  moves = [
+    { move = 0xC4D13C6B, level = 1 },                     # Katana Kick
+    { move = 0x568262FA, level = 14 },                    # Dark Tornado
+    { move = 0xA0BDF96F, level = 32 },                    # Ballista Barrage
+    { move = 0xF5638A87, level = 53 },                    # Elemental Destroyer
+  ]
+
+[[edit]]
+target = "c11904030"                                   # Othello Go
+
+  [[edit.cards]]
+  id = 0x66A46BA1                                         # FW/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 252, control = 254, technique = 235, pressure = 192, physical = 178, intelligence = 198, agility = 161, freedom = 279 }
+  moves = [
+    { move = 0x0E4E083A, level = 2 },                     # Zero Magnum
+    { move = 0x568262FA, level = 7 },                     # Dark Tornado
+    { move = 0xF5638A87, level = 24 },                    # Elemental Destroyer
+    { move = 0x3297683F, level = 39 },                    # Warp Step
+  ]
+
+[[edit]]
+target = "c04017260"                                   # Ton Nino
+
+  [[edit.cards]]
+  id = 0x8E1FB325                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 270, technique = 208, pressure = 163, physical = 198, intelligence = 225, agility = 159, freedom = 343 }
+  moves = [
+    { move = 0x60397CCA, level = 14 },                    # Cross Drive
+    { move = 0xC66BD10D, level = 22 },                    # Zigzag Spark
+    { move = 0x3663DB4C, level = 36 },                    # Utter Gutsiness Bat
+    { move = 0x47380F29, level = 51 },                    # Echo Ball
+  ]
+
+[[edit]]
+target = "c06037380_5000"                              # Janison Veteran
+
+  [[edit.cards]]
+  id = 0xA6A761B2                                         # GK/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 215, technique = 236, pressure = 217, physical = 228, intelligence = 228, agility = 200, freedom = 279 }

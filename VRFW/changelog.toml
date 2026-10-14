@@ -1,4 +1,4 @@
-schema = "vr_framework.changelog/1"
+schema = "VRFW.changelog/1"
 # VRFW: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
 # Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
@@ -15,8 +15,8 @@ notes = [
     "Opciones de mods y esta hoja de novedades.",
     "Mods en TOML y Lua, textos en 9 idiomas, sin DLL.",
     "Personajes, equipos, técnicas, modos y menús de mods.",
-    "Ranuras de guardado y datos de cada mod en tu partida.",
-    "Arranque rápido; amigos y salas privadas por Steam.",
+    "Ranuras de guardado; amigos y salas privadas por Steam.",
+    "Arranque rápido; listo para futuras versiones del juego.",
 ]
 
 [release.en]
@@ -26,8 +26,8 @@ notes = [
     "Mod options and this What's new sheet.",
     "Mods in TOML and Lua, texts in 9 languages, no DLLs.",
     "Characters, teams, moves, modes and menus from mods.",
-    "Save slots and each mod's data in your save.",
-    "Fast boot; Steam friends and private rooms.",
+    "Save slots; Steam friends and private rooms.",
+    "Fast boot; ready for future versions of the game.",
 ]
 
 [release.fr]
@@ -37,8 +37,8 @@ notes = [
     "Options des mods et cette page de nouveautés.",
     "Mods en TOML et Lua, textes en 9 langues, sans DLL.",
     "Personnages, équipes, techniques, modes et menus.",
-    "Emplacements de sauvegarde et données de chaque mod.",
-    "Démarrage rapide ; amis Steam et salons privés.",
+    "Emplacements de sauvegarde ; amis Steam, salons privés.",
+    "Démarrage rapide ; prêt pour les futures versions.",
 ]
 
 [release.de]
@@ -48,8 +48,8 @@ notes = [
     "Mod-Optionen und diese Neuigkeiten-Seite.",
     "Mods in TOML und Lua, Texte in 9 Sprachen, ohne DLL.",
     "Figuren, Teams, Techniken, Modi und Menüs aus Mods.",
-    "Speicherplätze und die Daten jedes Mods im Spielstand.",
-    "Schneller Start; Steam-Freunde und private Räume.",
+    "Speicherplätze; Steam-Freunde und private Räume.",
+    "Schneller Start; bereit für künftige Spielversionen.",
 ]
 
 [release.it]
@@ -59,8 +59,8 @@ notes = [
     "Opzioni dei mod e questa pagina delle novità.",
     "Mod in TOML e Lua, testi in 9 lingue, senza DLL.",
     "Personaggi, squadre, tecniche, modalità e menu dai mod.",
-    "Slot di salvataggio e dati di ogni mod nella partita.",
-    "Avvio rapido; amici di Steam e stanze private.",
+    "Slot di salvataggio; amici Steam e stanze private.",
+    "Avvio rapido; pronto per le future versioni del gioco.",
 ]
 
 [release.pt]
@@ -70,8 +70,8 @@ notes = [
     "Opções de mods e esta tela de novidades.",
     "Mods em TOML e Lua, textos em 9 idiomas, sem DLL.",
     "Personagens, times, técnicas, modos e menus de mods.",
-    "Espaços de salvamento e dados de cada mod no seu jogo.",
-    "Início rápido; amigos da Steam e salas privadas.",
+    "Espaços de salvamento; amigos da Steam, salas privadas.",
+    "Início rápido; pronto para futuras versões do jogo.",
 ]
 
 [release.ja]
@@ -81,8 +81,8 @@ notes = [
     "MODオプションとこの新着情報画面。",
     "TOMLとLuaでMODを作成、9言語対応、DLL不要。",
     "MODからキャラ・チーム・技・モード・メニューを追加。",
-    "セーブスロットと各MODのデータをセーブに保存。",
-    "高速起動。Steamフレンドとプライベートルーム。",
+    "セーブスロット。Steamフレンドとプライベートルーム。",
+    "高速起動。今後のゲーム更新にも対応。",
 ]
 
 [release.zh_hans]
@@ -92,8 +92,8 @@ notes = [
     "模组选项与此更新内容画面。",
     "模组使用TOML与Lua，支持9种语言，无需DLL。",
     "模组可添加角色、队伍、必杀技、模式与菜单。",
-    "存档栏位，以及各模组在存档中的数据。",
-    "快速启动；Steam好友与私人房间。",
+    "存档栏位；Steam好友与私人房间。",
+    "快速启动；可适配游戏的后续版本。",
 ]
 
 [release.zh_hant]
@@ -103,6 +103,6 @@ notes = [
     "模組選項與此更新內容畫面。",
     "模組使用TOML與Lua，支援9種語言，無需DLL。",
     "模組可新增角色、隊伍、必殺技、模式與選單。",
-    "存檔欄位，以及各模組在存檔中的資料。",
-    "快速啟動；Steam好友與私人房間。",
+    "存檔欄位；Steam好友與私人房間。",
+    "快速啟動；可適配遊戲的後續版本。",
 ]

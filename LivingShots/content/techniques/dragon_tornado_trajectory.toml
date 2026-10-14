@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Tornado dragón (Dragon Tornado, whs00350, cut-in ev60_00350; Inazuma
+# Fantasy declares its whs00350_or's own). Nacho 2026-10-10: every aura move its own flight, heights over distances
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0600) the ball's fire is shot from 11.39 m and dives, steepening, to the pitch 22.2 m on; in the match
+# it comes down that dive into the goal at 2.0 m (18.72 m from the shot on the cut-in's path), counted back from the
+# goal (a shorter shot starts at the dive's height at the kick).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move dragon_tornado): the effect joint
+# a_aura1_null_cns_f (the ball's fire; the event ball is parked out of sight in c0600) of ev60003500 c0600, effect
+# frames 425-513: [[0.00, 11.39], [1.16, 10.47], [3.97, 10.16], [22.21, 0.07]] (largest height error 0.19 m); 2.0 m is
+# crossed at 18.72 m.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Tornado dragón (whs00350).
+[[edit]]
+target = "whs00350"
+trajectory = { goal_points = [[18.72, 11.39], [17.56, 10.47], [14.75, 10.16], [0.0, 2.0]], unblockable = false }
+

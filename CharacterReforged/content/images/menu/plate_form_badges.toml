@@ -1,0 +1,268 @@
+# Inazuma Fantasy: the player page's FORM BADGE on PERFIL (owner 2026-10-12, replaces the «Normal» / «Armadura» text
+# pill under the level): the shown form as black-and-white glyph tiles + the RS (<CMD_FUNC6>) key on a light plate of
+# the same size, right of them. Made at the first start (and after a game update) from the PLAYER'S own game files: the
+# glyphs are the game's own monochrome tab icons (icon_list_tab.g4tx: the skill list's aura tabs
+# icon_list_tab_sp_area06 armour / 07 Mix-Max, and the player bust icon_list_tab_datafile05), each on a near-black
+# square with a slight corner radius.
+# No Level-5 pixel ships. Added to the btl06_13 atlas, so the page's gauge copies (layer evt_pp_fbadge, IF
+# menus/102_team/plate_row.toml) can swap them into their frame quad. Which glyphs a form shows: research/grafts/
+# plate_pages G.FORM_GLYPHS (form ids of the VR-Framework's form viewer: 0 Normal, 1 Miximax, 2 Armour, 3 the
+# miximax's own armour + Miximax (its armour glyph carries a small Mix-Max mark), 4 the aura slot's armour +
+# Miximax). More glyphs of the same atlas, for a later form kind: icon_list_tab_sp_area05 keshin, 08 totem, 11 «Modo
+# cambio» (same 80 x 80 tile, same recipe as the armour one).
+schema = "VRFW.image/1"
+
+# the plate: a 64 x 64 near-black square, corner radius 6 (the back of every glyph tile)
+[[recipe]]
+name = "fb_plate"
+canvas = [64, 64]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [22, 22, 26] },
+    { op = "round_corners", radius = 6 },
+]
+
+# the RS key's plate: the same square, light (the key glyphs, pad and keyboard, are dark keycaps)
+[[recipe]]
+name = "fb_key"
+canvas = [64, 64]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [236, 236, 240] },
+    { op = "round_corners", radius = 6 },
+]
+
+# a tab glyph of the skill list (white rounded tile, the figure cut out): its 80 x 80 tile, fitted to 48 x 48
+[[recipe]]
+name = "fb_g_miximax"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area07"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "fb_g_armour"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area06"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+# the player bust (white silhouette): its drawn box, fitted to 40 x 40
+[[recipe]]
+name = "fb_g_player"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_datafile05"
+ops = [
+    { op = "alpha_crop" },
+    { op = "fit", box = [40, 40] },
+]
+
+[[recipe]]
+name = "fb_player"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_player", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_miximax"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_miximax", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_armour"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_armour", centre = [32, 32] }]
+
+# the armour the miximax grants (form 3): the armour glyph a little up-left, a small Mix-Max glyph on its lower right
+[[recipe]]
+name = "fb_g_mixmark"
+from = "fb_g_miximax"
+ops = [{ op = "fit", box = [24, 24] }]
+
+[[recipe]]
+name = "fb_g_armour_small"
+from = "fb_g_armour"
+ops = [{ op = "fit", box = [42, 42] }]
+
+[[recipe]]
+name = "fb_mxarmour"
+from = "fb_plate"
+ops = [
+    { op = "paste", image = "fb_g_armour_small", centre = [27, 27] },
+    { op = "paste", image = "fb_plate_mark", centre = [46, 46] },
+    { op = "paste", image = "fb_g_mixmark", centre = [46, 46] },
+]
+
+# a dark rim behind the small mark, so it stands apart from the armour glyph
+[[recipe]]
+name = "fb_plate_mark"
+canvas = [28, 28]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [22, 22, 26] },
+    { op = "round_corners", radius = 4 },
+]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_key"
+recipe = "fb_key"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_player"
+recipe = "fb_player"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_miximax"
+recipe = "fb_miximax"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_armour"
+recipe = "fb_armour"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_mxarmour"
+recipe = "fb_mxarmour"
+
+# 2026-10-13 (owner: a DOUBLE hyper, mix slot + aura slot, RS alternates the Hiper page between them): the Hiper page's
+# badge shows BOTH slots' glyphs by the move's aura type (research/grafts/plate_pages G.SLOT_GLYPH), the shown slot lit,
+# the other dimmed (its glyph faded on the same plate): keshin 05, armour 06, Mix-Max 07, totem 08, «Modo cambio» 11.
+
+[[recipe]]
+name = "fb_g_keshin"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area05"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "fb_keshin"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_keshin", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_totem"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area08"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "fb_totem"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_totem", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_mode"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area11"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "fb_mode"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_mode", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_keshin_dim"
+from = "fb_g_keshin"
+ops = [{ op = "fade", factor = 0.3 }]
+
+[[recipe]]
+name = "fb_keshin_dim"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_keshin_dim", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_armour_dim"
+from = "fb_g_armour"
+ops = [{ op = "fade", factor = 0.3 }]
+
+[[recipe]]
+name = "fb_armour_dim"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_armour_dim", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_miximax_dim"
+from = "fb_g_miximax"
+ops = [{ op = "fade", factor = 0.3 }]
+
+[[recipe]]
+name = "fb_miximax_dim"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_miximax_dim", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_totem_dim"
+from = "fb_g_totem"
+ops = [{ op = "fade", factor = 0.3 }]
+
+[[recipe]]
+name = "fb_totem_dim"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_totem_dim", centre = [32, 32] }]
+
+[[recipe]]
+name = "fb_g_mode_dim"
+from = "fb_g_mode"
+ops = [{ op = "fade", factor = 0.3 }]
+
+[[recipe]]
+name = "fb_mode_dim"
+from = "fb_plate"
+ops = [{ op = "paste", image = "fb_g_mode_dim", centre = [32, 32] }]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_keshin"
+recipe = "fb_keshin"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_totem"
+recipe = "fb_totem"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_mode"
+recipe = "fb_mode"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_keshin_dim"
+recipe = "fb_keshin_dim"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_armour_dim"
+recipe = "fb_armour_dim"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_miximax_dim"
+recipe = "fb_miximax_dim"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_totem_dim"
+recipe = "fb_totem_dim"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_pp_fb_mode_dim"
+recipe = "fb_mode_dim"

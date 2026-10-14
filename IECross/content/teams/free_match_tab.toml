@@ -1,11 +1,11 @@
-schema = "vr_framework.team/2"
+schema = "VRFW.team/2"
 # The «Inazuma Eleven Cross» tab of «Competir contra bots» and the Cross season of the Bahía Batalla grid (iecross
 # 1.1.1, 2026-10-08, Nacho: «the Cross tab is the Cross mod's»; docs/framework/free-match-tabs.md, bb-pages.md §2.3).
 # Before, Inazuma Fantasy's graft fantasy_tab drew this tab; now the VR-Framework (2.0.1) draws it from this
 # declaration, with or without Inazuma Fantasy.
 
 # «Competir contra bots» › tab «Inazuma Eleven Cross» after Victory Road (the X icon): the games of the hidden piece
-# evt_cross_piece (content\base_tables\common\gamedata\vsroute\chronicle_vs_route_config.toml: the 11 Cross games, plus Royal
+# evt_cross_piece (content\base_tables\gamedata\vsroute\chronicle_vs_route_config.toml: the 11 Cross games, plus Royal
 # Academy (Cross)'s through the list cross_tab). The framework numbers the tab (9 = the first extra tab: order 100
 # keeps it before Inazuma Fantasy's Fantasy 200 / «Leyendas y extras» 300) and writes that number as the piece's
 # routeType. Name: the Cross series' name (the player bank's header), else the menu_text row below.

@@ -21,16 +21,17 @@ end
 
 local PARAM = nil   -- card -> { element, position }
 
+-- a card's element and main position: the framework's ONE character index (VRFW.chara, read once natively for every
+-- script; 2.3, docs/framework/chara-index.md), asked per card and kept
 local function params()
   if PARAM then return PARAM end
-  PARAM = {}
-  local ok, rows = pcall(VRFW.table.rows, "character/chara_param")
-  for _, r in ipairs(ok and type(rows) == "table" and rows or {}) do
-    local id = r[1] or r.id
-    if type(id) == "number" then
-      PARAM[u32(id)] = { tonumber(r.element or r[3]) or 0, tonumber(r.main_position or r[4]) or 0 }
-    end
-  end
+  PARAM = setmetatable({}, { __index = function(t, card)
+    local ok, c = pcall(VRFW.chara.card, card)
+    if not ok or type(c) ~= "table" then return nil end
+    local v = { tonumber(c.element) or 0, tonumber(c.position) or 0 }
+    rawset(t, card, v)
+    return v
+  end })
   return PARAM
 end
 

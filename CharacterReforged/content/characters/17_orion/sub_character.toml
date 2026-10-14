@@ -1,0 +1,125 @@
+schema = "VRFW.character/2"
+# Character Reforged · Sub Character · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11908030"                                   # Gustav Nikolsky
+
+  [[edit.cards]]
+  id = 0x2C72D419                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 184, technique = 178, pressure = 236, physical = 196, intelligence = 259, agility = 194, freedom = 275 }
+  moves = [
+    { move = 0x0E0A3F7A, level = 1 },                     # Spatial Portal
+    { move = 0x1A868BED, level = 14 },                    # Clone Defence
+    { move = 0xDCF43422, level = 29 },                    # Aurora Dribble
+    { move = 0x637C031A, level = 35 },                    # No Escape
+  ]
+
+[[edit]]
+target = "c11908040"                                   # Ivan Allegrov
+
+  [[edit.cards]]
+  id = 0x633342DE                                         # MF/DF · wind
+  growth = "normal"
+  stats = { kick = 298, control = 247, technique = 263, pressure = 194, physical = 154, intelligence = 243, agility = 171, freedom = 258 }
+  moves = [
+    { move = 0x0C7FF30F, level = 1 },                     # Divine Drive
+    { move = 0xDCF43422, level = 10 },                    # Aurora Dribble
+    { move = 0x7C1494CF, level = 34 },                    # Tornado Tunnel
+    { move = 0x19C3F43D, level = 48 },                    # Eternal Blizzard
+  ]
+
+[[edit]]
+target = "c11908050"                                   # Yekaterina Stronov
+
+  [[edit.cards]]
+  id = 0x7A28739F                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 342, control = 238, technique = 231, pressure = 184, physical = 159, intelligence = 196, agility = 174, freedom = 221 }
+  moves = [
+    { move = 0x0C7FF30F, level = 3 },                     # Divine Drive
+    { move = 0x768AB9C5, level = 8 },                     # Frosticle
+    { move = 0x568262FA, level = 23 },                    # Dark Tornado
+    { move = 0xD9E65BBA, level = 57 },                    # Aurora Curtain
+  ]
+
+[[edit]]
+target = "c11908060"                                   # Truman Newton
+
+  [[edit.cards]]
+  id = 0x5105205C                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 279, control = 232, technique = 227, pressure = 188, physical = 167, intelligence = 212, agility = 184, freedom = 301 }
+  moves = [
+    { move = 0x43B5739B, level = 1 },                     # Lightning Bolt
+    { move = 0xB10794BC, level = 10 },                    # Flash Dash
+    { move = 0x83BAE06D, level = 33 },                    # Golden Gull
+    { move = 0xB9D18D42, level = 51 },                    # Solar Flex
+  ]
+
+[[edit]]
+target = "c11807240"                                   # Nelly Raimon
+
+  [[edit.cards]]
+  id = 0xF3885543                                         # FW/DF · fire
+  growth = "normal"
+  stats = { kick = 369, control = 238, technique = 227, pressure = 192, physical = 162, intelligence = 207, agility = 173, freedom = 251 }
+  moves = [
+    { move = 0xB576BB31, level = 5 },                     # The Earth
+    { move = 0x4C1D87D5, level = 11 },                    # Bed of Roses
+    { move = 0x750E6DAB, level = 30 },                    # Matador Feint
+    { move = 0x86F5F6E8, level = 46 },                    # Cupid's Arrow
+  ]
+
+[[edit]]
+target = "c11908110"                                   # Master Li
+
+  [[edit.cards]]
+  id = 0x1F86DCAC                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 286, control = 236, technique = 186, pressure = 174, physical = 151, intelligence = 171, agility = 182, freedom = 251 }
+  moves = [
+    { move = 0x61FB16FD, level = 1 },                     # Divine Arrows
+    { move = 0x5049A011, level = 17 },                    # Spinning Shot
+    { move = 0xDF70E04C, level = 34 },                    # Rodeo Clown
+    { move = 0x63BDA8A4, level = 56 },                    # Inazuma Drop
+  ]
+
+[[edit]]
+target = "c11908120"                                   # Philip Star
+
+  [[edit.cards]]
+  id = 0x34AB8F6F                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 301, control = 238, technique = 248, pressure = 190, physical = 161, intelligence = 224, agility = 171, freedom = 247 }
+  moves = [
+    { move = 0x1F0836D6, level = 4 },                     # Comet Shot
+    { move = 0x0CF4E55C, level = 19 },                    # Double Touch
+    { move = 0x2B343D01, level = 27 },                    # Cyclone
+    { move = 0xCC7060F9, level = 51 },                    # Starstruck
+  ]
+
+[[edit]]
+target = "c11908130"                                   # Lucas Star
+
+  [[edit.cards]]
+  id = 0x2DB0BE2E                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 302, control = 236, technique = 250, pressure = 194, physical = 162, intelligence = 228, agility = 173, freedom = 251 }
+  moves = [
+    { move = 0x2296A01A, level = 4 },                     # Southern Cross
+    { move = 0x01DB04F5, level = 14 },                    # Defence Scan
+    { move = 0x20D01E43, level = 34 },                    # Hey Presto
+    { move = 0xCC7060F9, level = 40 },                    # Starstruck
+  ]

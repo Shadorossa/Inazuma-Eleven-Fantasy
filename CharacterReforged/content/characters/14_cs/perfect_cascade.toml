@@ -1,0 +1,982 @@
+schema = "VRFW.character/2"
+# Character Reforged · Perfect Cascade · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05021810_5000"                              # Vee Wai
+
+  [[edit.cards]]
+  id = 0x8513F873                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 215, technique = 196, pressure = 262, physical = 176, intelligence = 252, agility = 240, freedom = 375 }
+
+[[edit]]
+target = "c05021820_5000"                              # Dee Vee
+
+  [[edit.cards]]
+  id = 0xB4FBE2EE                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 194, technique = 181, pressure = 248, physical = 235, intelligence = 282, agility = 197, freedom = 355 }
+
+[[edit]]
+target = "c05021830_5000"                              # Ayt Bee
+
+  [[edit.cards]]
+  id = 0x128CE95A                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 197, technique = 154, pressure = 194, physical = 248, intelligence = 234, agility = 224, freedom = 221 }
+
+[[edit]]
+target = "c05021840_5000"                              # En Sicks
+
+  [[edit.cards]]
+  id = 0xD72BD7D4                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 189, technique = 159, pressure = 211, physical = 259, intelligence = 238, agility = 228, freedom = 309 }
+
+[[edit]]
+target = "c05021850_5000"                              # Wun Ell
+
+  [[edit.cards]]
+  id = 0x715CDC60                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 238, technique = 232, pressure = 194, physical = 189, intelligence = 198, agility = 193, freedom = 251 }
+
+[[edit]]
+target = "c05021860_5000"                              # Zed Kyu
+
+  [[edit.cards]]
+  id = 0x40B4C6FD                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 239, technique = 265, pressure = 192, physical = 196, intelligence = 217, agility = 201, freedom = 335 }
+
+[[edit]]
+target = "c05021870_5000"                              # Kay Zirro
+
+  [[edit.cards]]
+  id = 0xE6C3CD49                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 252, technique = 230, pressure = 173, physical = 213, intelligence = 211, agility = 201, freedom = 459 }
+
+[[edit]]
+target = "c05021880_5000"                              # Cee Eff
+
+  [[edit.cards]]
+  id = 0x108BBDA0                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 252, technique = 234, pressure = 178, physical = 200, intelligence = 220, agility = 208, freedom = 385 }
+
+[[edit]]
+target = "c05021890_5000"                              # Ar Ecks
+
+  [[edit.cards]]
+  id = 0xB6FCB614                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 316, control = 261, technique = 254, pressure = 184, physical = 213, intelligence = 239, agility = 174, freedom = 293 }
+
+[[edit]]
+target = "c05021900_5000"                              # Em Tee
+
+  [[edit.cards]]
+  id = 0xEFCEF359                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 262, technique = 225, pressure = 186, physical = 189, intelligence = 211, agility = 219, freedom = 305 }
+
+[[edit]]
+target = "c05021910_5000"                              # Ough Cee
+
+  [[edit.cards]]
+  id = 0x49B9F8ED                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 274, technique = 208, pressure = 153, physical = 163, intelligence = 203, agility = 186, freedom = 355 }
+
+[[edit]]
+target = "c05021920_5000"                              # Jay Yuu
+
+  [[edit.cards]]
+  id = 0x7851E270                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 154, control = 224, technique = 176, pressure = 238, physical = 190, intelligence = 236, agility = 227, freedom = 417 }
+
+[[edit]]
+target = "c05021930_5000"                              # Faiv Ess
+
+  [[edit.cards]]
+  id = 0xDE26E9C4                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 205, technique = 182, pressure = 189, physical = 197, intelligence = 238, agility = 238, freedom = 417 }
+
+[[edit]]
+target = "c05021940_5000"                              # Tu Eigh
+
+  [[edit.cards]]
+  id = 0x1B81D74A                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 252, technique = 205, pressure = 184, physical = 196, intelligence = 225, agility = 204, freedom = 417 }
+
+[[edit]]
+target = "c05021950_5000"                              # Aye Nort
+
+  [[edit.cards]]
+  id = 0xBDF6DCFE                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 254, technique = 227, pressure = 147, physical = 166, intelligence = 167, agility = 223, freedom = 238 }
+
+[[edit]]
+target = "c05021960_5000"                              # Ji Tenn
+
+  [[edit.cards]]
+  id = 0x8C1EC663                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 259, technique = 238, pressure = 198, physical = 185, intelligence = 205, agility = 181, freedom = 221 }
+
+[[edit]]
+target = "c05028410_5000"                              # Vee Wai
+
+  [[edit.cards]]
+  id = 0x7E1F5B67                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 215, technique = 196, pressure = 262, physical = 176, intelligence = 252, agility = 240, freedom = 375 }
+
+[[edit]]
+target = "c05028420_5000"                              # Dee Vee
+
+  [[edit.cards]]
+  id = 0x4FF741FA                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 194, technique = 181, pressure = 248, physical = 235, intelligence = 282, agility = 197, freedom = 355 }
+
+[[edit]]
+target = "c05028430_5000"                              # Ayt Bee
+
+  [[edit.cards]]
+  id = 0xE9804A4E                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 197, technique = 154, pressure = 194, physical = 248, intelligence = 234, agility = 224, freedom = 221 }
+
+[[edit]]
+target = "c05028440_5000"                              # En Sicks
+
+  [[edit.cards]]
+  id = 0x2C2774C0                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 189, technique = 159, pressure = 211, physical = 259, intelligence = 238, agility = 228, freedom = 309 }
+
+[[edit]]
+target = "c05028450_5000"                              # Wun Ell
+
+  [[edit.cards]]
+  id = 0x8A507F74                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 238, technique = 232, pressure = 194, physical = 189, intelligence = 198, agility = 193, freedom = 251 }
+
+[[edit]]
+target = "c05028460_5000"                              # Zed Kyu
+
+  [[edit.cards]]
+  id = 0xBBB865E9                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 239, technique = 265, pressure = 192, physical = 196, intelligence = 217, agility = 201, freedom = 335 }
+
+[[edit]]
+target = "c05028470_5000"                              # Kay Zirro
+
+  [[edit.cards]]
+  id = 0x1DCF6E5D                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 252, technique = 230, pressure = 173, physical = 213, intelligence = 211, agility = 201, freedom = 459 }
+
+[[edit]]
+target = "c05028480_5000"                              # Cee Eff
+
+  [[edit.cards]]
+  id = 0xEB871EB4                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 252, technique = 234, pressure = 178, physical = 200, intelligence = 220, agility = 208, freedom = 385 }
+
+[[edit]]
+target = "c05028490_5000"                              # Ar Ecks
+
+  [[edit.cards]]
+  id = 0x4DF01500                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 316, control = 261, technique = 254, pressure = 184, physical = 213, intelligence = 239, agility = 174, freedom = 293 }
+
+[[edit]]
+target = "c05028500_5000"                              # Em Tee
+
+  [[edit.cards]]
+  id = 0x14C2504D                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 262, technique = 225, pressure = 186, physical = 189, intelligence = 211, agility = 219, freedom = 305 }
+
+[[edit]]
+target = "c05028510_5000"                              # Ough Cee
+
+  [[edit.cards]]
+  id = 0xB2B55BF9                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 274, technique = 208, pressure = 153, physical = 163, intelligence = 203, agility = 186, freedom = 355 }
+
+[[edit]]
+target = "c05028520_5000"                              # Jay Yuu
+
+  [[edit.cards]]
+  id = 0x835D4164                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 154, control = 224, technique = 176, pressure = 238, physical = 190, intelligence = 236, agility = 227, freedom = 417 }
+
+[[edit]]
+target = "c05028530_5000"                              # Faiv Ess
+
+  [[edit.cards]]
+  id = 0x252A4AD0                                         # DF/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 205, technique = 182, pressure = 189, physical = 197, intelligence = 238, agility = 238, freedom = 417 }
+
+[[edit]]
+target = "c05028540_5000"                              # Tu Eigh
+
+  [[edit.cards]]
+  id = 0xE08D745E                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 252, technique = 205, pressure = 184, physical = 196, intelligence = 225, agility = 204, freedom = 417 }
+
+[[edit]]
+target = "c05028550_5000"                              # Aye Nort
+
+  [[edit.cards]]
+  id = 0x46FA7FEA                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 254, technique = 227, pressure = 147, physical = 166, intelligence = 167, agility = 223, freedom = 238 }
+
+[[edit]]
+target = "c05021810"                                   # Vee Wai
+
+  [[edit.cards]]
+  id = 0x08758E8C                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 215, technique = 196, pressure = 262, physical = 176, intelligence = 252, agility = 240, freedom = 375 }
+  moves = [
+    { move = 0x35462500, level = 10 },                    # Crescent Cross
+    { move = 0xFD9FAF08, level = 18 },                    # Twist 'n' Clout
+    { move = 0x8C382852, level = 39 },                    # God Hand
+    { move = 0xE6C22010, level = 53 },                    # Claw de Force
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0ABB2633, level = 1 },                     # Plasma Shadow GK [aura]
+  ]
+
+[[edit]]
+target = "c05021820"                                   # Dee Vee
+
+  [[edit.cards]]
+  id = 0x2358DD4F                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 194, technique = 181, pressure = 248, physical = 235, intelligence = 282, agility = 197, freedom = 355 }
+  moves = [
+    { move = 0xC41097D5, level = 6 },                     # Acrobotics
+    { move = 0xCB79C825, level = 19 },                    # In-Line Stampede
+    { move = 0x585098FC, level = 42 },                    # Slice and Dice
+    { move = 0xEFFC6FA8, level = 51 },                    # Warhead
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05021830"                                   # Ayt Bee
+
+  [[edit.cards]]
+  id = 0x3A43EC0E                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 197, technique = 154, pressure = 194, physical = 248, intelligence = 234, agility = 224, freedom = 221 }
+  moves = [
+    { move = 0xC41097D5, level = 8 },                     # Acrobotics
+    { move = 0x585098FC, level = 12 },                    # Slice and Dice
+    { move = 0xC2E6ADBF, level = 30 },                    # Log Roll
+    { move = 0xA37D1A41, level = 48 },                    # Hyper-Swiper
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05021840"                                   # En Sicks
+
+  [[edit.cards]]
+  id = 0x75027AC9                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 189, technique = 159, pressure = 211, physical = 259, intelligence = 238, agility = 228, freedom = 309 }
+  moves = [
+    { move = 0xC41097D5, level = 7 },                     # Acrobotics
+    { move = 0xCB79C825, level = 13 },                    # In-Line Stampede
+    { move = 0x530CDFC1, level = 29 },                    # Mystifying Mist
+    { move = 0xC2E6ADBF, level = 47 },                    # Log Roll
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05021850"                                   # Wun Ell
+
+  [[edit.cards]]
+  id = 0x6C194B88                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 238, technique = 232, pressure = 194, physical = 189, intelligence = 198, agility = 193, freedom = 251 }
+  moves = [
+    { move = 0xCB79C825, level = 12 },                    # In-Line Stampede
+    { move = 0xE35B59DB, level = 23 },                    # Twin Sun Smash
+    { move = 0xA2BF7076, level = 37 },                    # Side Swipe
+    { move = 0xC41097D5, level = 56 },                    # Acrobotics
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05021860"                                   # Zed Kyu
+
+  [[edit.cards]]
+  id = 0x4734184B                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 239, technique = 265, pressure = 192, physical = 196, intelligence = 217, agility = 201, freedom = 335 }
+  moves = [
+    { move = 0xCB79C825, level = 9 },                     # In-Line Stampede
+    { move = 0x4A17EE80, level = 14 },                    # Hunter's Net
+    { move = 0xA37D1A41, level = 34 },                    # Hyper-Swiper
+    { move = 0x0BFD4D80, level = 46 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05021870"                                   # Kay Zirro
+
+  [[edit.cards]]
+  id = 0x5E2F290A                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 252, technique = 230, pressure = 173, physical = 213, intelligence = 211, agility = 201, freedom = 459 }
+  moves = [
+    { move = 0xCB79C825, level = 11 },                    # In-Line Stampede
+    { move = 0x585098FC, level = 17 },                    # Slice and Dice
+    { move = 0x98E76F75, level = 40 },                    # Rapid Fire
+    { move = 0x0BFD4D80, level = 44 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05021880"                                   # Cee Eff
+
+  [[edit.cards]]
+  id = 0xD9B735C5                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 252, technique = 234, pressure = 178, physical = 200, intelligence = 220, agility = 208, freedom = 385 }
+  moves = [
+    { move = 0xCB79C825, level = 10 },                    # In-Line Stampede
+    { move = 0x530CDFC1, level = 15 },                    # Mystifying Mist
+    { move = 0xDF8CB373, level = 23 },                    # Sonic Shot
+    { move = 0x7F15DC5F, level = 52 },                    # Desert Drift
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05021890"                                   # Ar Ecks
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 316, control = 261, technique = 254, pressure = 184, physical = 213, intelligence = 239, agility = 174, freedom = 293 }
+moves = [
+  { move = 0xCB79C825, level = 3 },                       # In-Line Stampede
+  { move = 0xE35B59DB, level = 22 },                      # Twin Sun Smash
+  { move = 0x828A53C8, level = 39 },                      # Plasma Ball
+  { move = 0x1755397B, level = 57 },                      # Dark Energy Star
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0, level = 0 },                                # (empty)
+  { move = 0x7F240509, level = 1 },                       # Plasma Shadow AT [aura]
+]
+
+[[edit]]
+target = "c05021900"                                   # Em Tee
+
+  [[edit.cards]]
+  id = 0x10ACD5FA                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 262, technique = 225, pressure = 186, physical = 189, intelligence = 211, agility = 219, freedom = 305 }
+  moves = [
+    { move = 0xE35B59DB, level = 12 },                    # Twin Sun Smash
+    { move = 0x19C3F43D, level = 23 },                    # Eternal Blizzard
+    { move = 0xDF8CB373, level = 33 },                    # Sonic Shot
+    { move = 0xCF7FA2C4, level = 45 },                    # Gold Rush
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05021910"                                   # Ough Cee
+
+  [[edit.cards]]
+  id = 0x09B7E4BB                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 274, technique = 208, pressure = 153, physical = 163, intelligence = 203, agility = 186, freedom = 355 }
+  moves = [
+    { move = 0xE35B59DB, level = 13 },                    # Twin Sun Smash
+    { move = 0x8A52C09B, level = 21 },                    # Doomsword Slash
+    { move = 0x98E76F75, level = 36 },                    # Rapid Fire
+    { move = 0x0B011EBF, level = 53 },                    # Fireball Screw
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05021920"                                   # Jay Yuu
+
+  [[edit.cards]]
+  id = 0x229AB778                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 154, control = 224, technique = 176, pressure = 238, physical = 190, intelligence = 236, agility = 227, freedom = 417 }
+  moves = [
+    { move = 0x8B31808E, level = 1 },                     # Wormhole
+    { move = 0xFD9FAF08, level = 3 },                     # Twist 'n' Clout
+    { move = 0xC636A810, level = 32 },                    # Combustion Catch
+    { move = 0x35462500, level = 55 },                    # Crescent Cross
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0ABB2633, level = 1 },                     # Plasma Shadow GK [aura]
+  ]
+
+[[edit]]
+target = "c05021930"                                   # Faiv Ess
+
+  [[edit.cards]]
+  id = 0x3B818639                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 205, technique = 182, pressure = 189, physical = 197, intelligence = 238, agility = 238, freedom = 417 }
+  moves = [
+    { move = 0x585098FC, level = 1 },                     # Slice and Dice
+    { move = 0x1F7F73BA, level = 8 },                     # Bicycle Slash
+    { move = 0x3663DB4C, level = 26 },                    # Utter Gutsiness Bat
+    { move = 0x0BFD4D80, level = 42 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05021940"                                   # Tu Eigh
+
+  [[edit.cards]]
+  id = 0x74C010FE                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 252, technique = 205, pressure = 184, physical = 196, intelligence = 225, agility = 204, freedom = 417 }
+  moves = [
+    { move = 0xCB79C825, level = 12 },                    # In-Line Stampede
+    { move = 0x4A17EE80, level = 20 },                    # Hunter's Net
+    { move = 0x530CDFC1, level = 30 },                    # Mystifying Mist
+    { move = 0x14D1ED15, level = 44 },                    # Jumping Jack
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05021950"                                   # Aye Nort
+
+  [[edit.cards]]
+  id = 0x6DDB21BF                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 254, technique = 227, pressure = 147, physical = 166, intelligence = 167, agility = 223, freedom = 238 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0xDF8CB373, level = 10 },                    # Sonic Shot
+    { move = 0xE35B59DB, level = 44 },                    # Twin Sun Smash
+    { move = 0xAC91D94F, level = 53 },                    # Major Miner
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05021960"                                   # Ji Tenn
+
+  [[edit.cards]]
+  id = 0x46F6727C                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 259, technique = 238, pressure = 198, physical = 185, intelligence = 205, agility = 181, freedom = 221 }
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                     # Eternal Blizzard
+    { move = 0xDF8CB373, level = 9 },                     # Sonic Shot
+    { move = 0xA37D1A41, level = 24 },                    # Hyper-Swiper
+    { move = 0xE35B59DB, level = 52 },                    # Twin Sun Smash
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05028410"                                   # Vee Wai
+
+  [[edit.cards]]
+  id = 0x7C673862                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 215, technique = 196, pressure = 262, physical = 176, intelligence = 252, agility = 240, freedom = 375 }
+  moves = [
+    { move = 0x35462500, level = 3 },                     # Crescent Cross
+    { move = 0x8B31808E, level = 18 },                    # Wormhole
+    { move = 0x8C382852, level = 37 },                    # God Hand
+    { move = 0xF14FDC17, level = 53 },                    # Shot Pocket
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0ABB2633, level = 1 },                     # Plasma Shadow GK [aura]
+  ]
+
+[[edit]]
+target = "c05028420"                                   # Dee Vee
+
+  [[edit.cards]]
+  id = 0x574A6BA1                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 194, technique = 181, pressure = 248, physical = 235, intelligence = 282, agility = 197, freedom = 355 }
+  moves = [
+    { move = 0xC41097D5, level = 5 },                     # Acrobotics
+    { move = 0xCB79C825, level = 16 },                    # In-Line Stampede
+    { move = 0x585098FC, level = 39 },                    # Slice and Dice
+    { move = 0xEFFC6FA8, level = 54 },                    # Warhead
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05028430"                                   # Ayt Bee
+
+  [[edit.cards]]
+  id = 0x4E515AE0                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 197, technique = 154, pressure = 194, physical = 248, intelligence = 234, agility = 224, freedom = 221 }
+  moves = [
+    { move = 0xC41097D5, level = 7 },                     # Acrobotics
+    { move = 0x585098FC, level = 12 },                    # Slice and Dice
+    { move = 0xC2E6ADBF, level = 31 },                    # Log Roll
+    { move = 0xA37D1A41, level = 48 },                    # Hyper-Swiper
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05028440"                                   # En Sicks
+
+  [[edit.cards]]
+  id = 0x0110CC27                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 189, technique = 159, pressure = 211, physical = 259, intelligence = 238, agility = 228, freedom = 309 }
+  moves = [
+    { move = 0xC41097D5, level = 8 },                     # Acrobotics
+    { move = 0xCB79C825, level = 14 },                    # In-Line Stampede
+    { move = 0x530CDFC1, level = 30 },                    # Mystifying Mist
+    { move = 0xC2E6ADBF, level = 49 },                    # Log Roll
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05028450"                                   # Wun Ell
+
+  [[edit.cards]]
+  id = 0x180BFD66                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 138, control = 238, technique = 232, pressure = 194, physical = 189, intelligence = 198, agility = 193, freedom = 251 }
+  moves = [
+    { move = 0xCB79C825, level = 10 },                    # In-Line Stampede
+    { move = 0xE35B59DB, level = 24 },                    # Twin Sun Smash
+    { move = 0xC636A810, level = 37 },                    # Combustion Catch
+    { move = 0xC41097D5, level = 54 },                    # Acrobotics
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028460"                                   # Zed Kyu
+
+  [[edit.cards]]
+  id = 0x3326AEA5                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 239, technique = 265, pressure = 192, physical = 196, intelligence = 217, agility = 201, freedom = 335 }
+  moves = [
+    { move = 0xCB79C825, level = 7 },                     # In-Line Stampede
+    { move = 0x4A17EE80, level = 16 },                    # Hunter's Net
+    { move = 0xA37D1A41, level = 31 },                    # Hyper-Swiper
+    { move = 0x0BFD4D80, level = 45 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028470"                                   # Kay Zirro
+
+  [[edit.cards]]
+  id = 0x2A3D9FE4                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 252, technique = 230, pressure = 173, physical = 213, intelligence = 211, agility = 201, freedom = 459 }
+  moves = [
+    { move = 0xCB79C825, level = 8 },                     # In-Line Stampede
+    { move = 0x585098FC, level = 14 },                    # Slice and Dice
+    { move = 0x98E76F75, level = 37 },                    # Rapid Fire
+    { move = 0x0BFD4D80, level = 43 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028480"                                   # Cee Eff
+
+  [[edit.cards]]
+  id = 0xADA5832B                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 184, control = 252, technique = 234, pressure = 178, physical = 200, intelligence = 220, agility = 208, freedom = 385 }
+  moves = [
+    { move = 0xCB79C825, level = 9 },                     # In-Line Stampede
+    { move = 0x530CDFC1, level = 17 },                    # Mystifying Mist
+    { move = 0xDF8CB373, level = 27 },                    # Sonic Shot
+    { move = 0xC66BD10D, level = 48 },                    # Zigzag Spark
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028490"                                   # Ar Ecks
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 316, control = 261, technique = 254, pressure = 184, physical = 213, intelligence = 239, agility = 174, freedom = 293 }
+
+  [[edit.cards]]
+  id = 0xB4BEB26A                                         # MF/DF · mountain
+  moves = [
+    { move = 0xCB79C825, level = 1 },                     # In-Line Stampede
+    { move = 0xE35B59DB, level = 21 },                    # Twin Sun Smash
+    { move = 0xC636A810, level = 42 },                    # Combustion Catch
+    { move = 0x1755397B, level = 52 },                    # Dark Energy Star
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0x9C9ABBD0                                         # MF/DF · mountain
+  moves = [
+    { move = 0xCB79C825, level = 1 },                     # In-Line Stampede
+    { move = 0xE35B59DB, level = 21 },                    # Twin Sun Smash
+    { move = 0xC636A810, level = 42 },                    # Combustion Catch
+    { move = 0x1755397B, level = 52 },                    # Dark Energy Star
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x1A263D4C, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028500"                                   # Em Tee
+
+  [[edit.cards]]
+  id = 0x64BE6314                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 262, technique = 225, pressure = 186, physical = 189, intelligence = 211, agility = 219, freedom = 305 }
+  moves = [
+    { move = 0xE35B59DB, level = 12 },                    # Twin Sun Smash
+    { move = 0x19C3F43D, level = 22 },                    # Eternal Blizzard
+    { move = 0xDF8CB373, level = 32 },                    # Sonic Shot
+    { move = 0xCF7FA2C4, level = 47 },                    # Gold Rush
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05028510"                                   # Ough Cee
+
+  [[edit.cards]]
+  id = 0x7DA55255                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 288, control = 274, technique = 208, pressure = 153, physical = 163, intelligence = 203, agility = 186, freedom = 355 }
+  moves = [
+    { move = 0xE35B59DB, level = 11 },                    # Twin Sun Smash
+    { move = 0x8A52C09B, level = 19 },                    # Doomsword Slash
+    { move = 0xDDCA0D2A, level = 40 },                    # Bouncing Bomb
+    { move = 0x0B011EBF, level = 51 },                    # Fireball Screw
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05028520"                                   # Jay Yuu
+
+  [[edit.cards]]
+  id = 0x56880196                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 154, control = 224, technique = 176, pressure = 238, physical = 190, intelligence = 236, agility = 227, freedom = 417 }
+  moves = [
+    { move = 0x8B31808E, level = 1 },                     # Wormhole
+    { move = 0x50E88A33, level = 7 },                     # Fist Beam
+    { move = 0xC636A810, level = 33 },                    # Combustion Catch
+    { move = 0x35462500, level = 59 },                    # Crescent Cross
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x0ABB2633, level = 1 },                     # Plasma Shadow GK [aura]
+  ]
+
+[[edit]]
+target = "c05028530"                                   # Faiv Ess
+
+  [[edit.cards]]
+  id = 0x4F9330D7                                         # DF/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 205, technique = 182, pressure = 189, physical = 197, intelligence = 238, agility = 238, freedom = 417 }
+  moves = [
+    { move = 0x016DEA27, level = 1 },                     # Accelerator Gears
+    { move = 0x568262FA, level = 8 },                     # Dark Tornado
+    { move = 0xC636A810, level = 29 },                    # Combustion Catch
+    { move = 0x0BFD4D80, level = 41 },                    # Grand Slam
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8CEAA470, level = 1 },                     # Plasma Shadow DF [aura]
+  ]
+
+[[edit]]
+target = "c05028540"                                   # Tu Eigh
+
+  [[edit.cards]]
+  id = 0x00D2A610                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 252, technique = 205, pressure = 184, physical = 196, intelligence = 225, agility = 204, freedom = 417 }
+  moves = [
+    { move = 0xCB79C825, level = 10 },                    # In-Line Stampede
+    { move = 0x4A17EE80, level = 22 },                    # Hunter's Net
+    { move = 0x530CDFC1, level = 28 },                    # Mystifying Mist
+    { move = 0x14D1ED15, level = 48 },                    # Jumping Jack
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7F240509, level = 1 },                     # Plasma Shadow AT [aura]
+  ]
+
+[[edit]]
+target = "c05028550"                                   # Aye Nort
+
+  [[edit.cards]]
+  id = 0x19C99751                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 254, technique = 227, pressure = 147, physical = 166, intelligence = 167, agility = 223, freedom = 238 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0xDF8CB373, level = 9 },                     # Sonic Shot
+    { move = 0xE35B59DB, level = 43 },                    # Twin Sun Smash
+    { move = 0xC66BD10D, level = 52 },                    # Zigzag Spark
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c05028560"                                   # Ji Tenn
+
+  [[edit.cards]]
+  id = 0x32E4C492                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 259, technique = 238, pressure = 198, physical = 185, intelligence = 205, agility = 181, freedom = 221 }
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                     # Eternal Blizzard
+    { move = 0xDF8CB373, level = 10 },                    # Sonic Shot
+    { move = 0xA37D1A41, level = 26 },                    # Hyper-Swiper
+    { move = 0xE35B59DB, level = 53 },                    # Twin Sun Smash
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x7C37F77F, level = 1 },                     # Plasma Shadow SH [aura]
+  ]
+
+[[edit]]
+target = "c06039110"                                   # Schemer Guile
+
+  [[edit.cards]]
+  id = 0xCE98AEC1                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 220, control = 290, technique = 215, pressure = 174, physical = 204, intelligence = 230, agility = 216, freedom = 231 }
+  moves = [
+    { move = 0xC4D13C6B, level = 1 },                     # Katana Kick
+    { move = 0x62BE692D, level = 8 },                     # Whirlwind Force
+    { move = 0xE35B59DB, level = 45 },                    # Twin Sun Smash
+    { move = 0xCB79C825, level = 59 },                    # In-Line Stampede
+  ]

@@ -4,7 +4,7 @@
 # TXT_ID tables); a missing row falls back to the English literal in the script. Placeholders are Lua
 # string.format ones (%d, %s), in the same order in every language.
 
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # the button guide's «Duplicar» (X / CMD_FUNC4); crc32("evt_slot_dup_text") = 3316700371

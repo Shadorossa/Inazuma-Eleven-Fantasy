@@ -1,0 +1,25 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of «Nocturne» («Escena nocturna», whs02310). In the cut-in's last cut (c0300)
+# the wolf carries the ball level 12.9 m up across the sky and then dives with it onto the goal; in the match
+# (coordinator 2026-10-08, for Nacho) it flies the technique type's **level flight at mid height** instead of that
+# dive: `trajectory = { mode = "level" }` (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md
+# §7.7): the ball rises from the kick to the framework's default `level_height` (3.0 m, ball centre, a little over the
+# game's own flight), runs level and eases into the goal at `level_end_height` (2.0 m, the keeper's reach). Its aura
+# (content\effects\nocturne_ball.toml, the wolf and its red-black funnel) is turned along the flight.
+#
+# The cut-in's own dive, kept for reference (research/scripts/shot_trajectory_from_cutin.py --move nocturne;
+# nocturne_ball_fx.py --trajectory): the event ball (b000001 slot s01, c_add_1_0) of ev60_02310 c0300, event frames
+# 1420-1500: (0.00, 12.94, 11.75) -> (0.00, 4.70, 30.59), 12.94 m -> 4.70 m over 18.84 m on the ground = 23.6° down
+# (1.3.10 first flew it as the angled dive height 12.8, angle 24, end_height 2.0, bend 0.5).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this key (no conflict). Its override key whs02310_or is not edited here: a new move of Inazuma Fantasy, which
+# loads after shot_fx (it requires it), so an [[edit]] of it here would be an unknown technique (technique.md §8);
+# the aura (content\effects\nocturne_ball.toml) does cover it.
+
+# Escena nocturna (Nocturne, whs02310).
+[[edit]]
+target = "whs02310"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }

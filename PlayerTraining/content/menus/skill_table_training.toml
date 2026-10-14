@@ -1,0 +1,15 @@
+# Player Training › the «Entrenar» button of Character Reforged's «Fantasy» skill table (docs/framework/
+# skill-table-host.md; docs/game/mechanics/stat-training.md §9): the FOOTER BUTTON of that screen's host (Character
+# Reforged's content\menus\skill_table_host.toml, graft skill_table_host), between «Set de jugador» and «Pasiva
+# personalizada». The host draws the label (text row evt_tr_btn of text\rows\training.toml), the guide line comes from
+# PlayerTraining.SkillTableButton("guide") and Aceptar calls PlayerTraining.SkillTableButton("press"): the training mode
+# on that screen (or the training window evt_training_menu when the mode's layers are missing). The function and the
+# mode are this mod's hook file of the screen (graft player_training_mode).
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "character_reforged.skill_table.footer_button"
+id = "training"
+text = "evt_tr_btn"
+order = 100
+action = { lua = "PlayerTraining.SkillTableButton" }

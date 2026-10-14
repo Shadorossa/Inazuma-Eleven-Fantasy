@@ -1,7 +1,7 @@
 # Texts of Battle Bay Deluxe's «Sala privada» (graft research/grafts/bb_net_room: the private online room on the
 # VR-Framework net service, docs/game/modes/bb-online-ownnet.md §10), menu_text rows in 9 languages. The Lua asks
 # CMND_TEXT_GET(crc32(id)); the room's code, the mod list of a refusal and the other player's name are data, not text.
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "menu_text"
 
 # crc32("evt_bbd_net_room_title") = 2337040932

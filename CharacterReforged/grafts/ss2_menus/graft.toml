@@ -1,0 +1,47 @@
+# Skill slots v2 menus (research/scripts/ss2_build.py build_lua_menu / build_lua_pick / build_lua_blue;
+# docs/game/skill-slots.md): the new evt_skill_slot_menu (a copy of the retail equip_menu_select decompile + the EVT
+# blocks), the pick block of ability_list_menu (EVT_MX_COMPAT data: aura_skill_config of the retail assets, without the
+# Inazuma Fantasy's wmm_evt rows) and the six-sense hand-back of ability_list_menu_on_bluebg. The dock part is ss2_dock; the skill_tabs
+# block is the skill_tabs graft. Layouts / setting / registry stay in ss2_build.py.
+# Mod Character Reforged since 2026-10-14 (owner: the new skill table = 6 moves + the aura slot + the mix slot is the
+# aura mods' base, behind the option row character_reforged.skill_set_view; docs/refactor/aura-mods-split.md «Skill
+# table»). The screen's registry row, objects, layouts, art and texts are research/mods/CharacterReforged
+# (content/menus/skill_table.toml, assets/, text/rows/skill_table.toml). Inazuma Fantasy rebuilds this graft into its
+# own merged scripts (its blocks extend the same chunks: Hiper card, plate pages, miximax, PE, master seal...), so its
+# evt_skill_slot_menu replaces this mod's when both are active (IF loads after it) and the picker blocks below carry a
+# copy guard (EVT_SS2_PICK_GEN / EVT_SS2_BLUE_GEN: only the last copy in a VM acts). The Hiper card component
+# (@HIPER_CARD@) is still the file of IF's graft folder plate_hiper_plate (shared with IF's plate).
+name = "ss2_menus"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["CreateEquipTypeTable", "EVT_Equip", "EVT_OpenOriginalBoard", "EVT_PickCoroutine", "EVT_RestoreCoroutine", "EVT_SS_PickCoroutine", "GetEquipItemIdByLayerIdx", "GetEquipListItemInfo", "GetEquipType", "GetEquipTypeNum", "OnAfterReceiveFilterParam", "OnBack", "OnChangeFocus", "OnDecideFocus", "OnEnter", "OnFunction", "OnInit", "OnOpenLayer", "OnSetupLayer", "SendSkillIdToLua", "Step", "UpdateButtonGuide", "UpdateEquipCondition", "UpdateEquipItemInfo", "UpdateEquipListItem", "UpdateEquippedVisibleCheck", "UpdateListItem", "UpdateSkillDetailWindow"]
+description = "Skill slots v2: evt_skill_slot_menu + ability list picks"
+
+[[files]]
+path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_skill_slot_menu.lua"
+  crc = "none"
+  include = { "@HIPER_CARD@" = "../plate_hiper_plate/evt_hiper_card.lua" }
+
+[[files]]
+stem = "ability_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss2_pick_1.lua"
+  crc = "none"
+
+[[files]]
+stem = "ability_list_menu_on_bluebg"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss2_blue_1.lua"
+  crc = "none"

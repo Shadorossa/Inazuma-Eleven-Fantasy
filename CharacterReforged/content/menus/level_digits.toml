@@ -1,0 +1,124 @@
+schema = "VRFW.menu/2"
+# Character Reforged · the level numbers with 3 digits (the level cap above 99, content/characters/level.toml): the
+# retail menu objects that draw a character's or a team's level (lists, team banners, VS / match headers, focus
+# balloons, scoreboards) get DispMaxValue 999. Moved from Inazuma Fantasy's menus/objects.toml (part level200) on
+# 2026-10-14.
+
+[[object_set]]
+object = "mainmenu90_19_02_list_item"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0xB49DEFB2 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0xC4F71B3D }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "mainmenu90_31_doc_item"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0xB49DEFB2 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x2D94BE08 }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "mainmenu90_34_cpu_team_formation"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x03185924 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x83777AFE }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "mainmenu90_34_practice_match_formation"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x03185924 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x83777AFE }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer00_01_scoreboard"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x8F7049BE }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x16791804 }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer00_01b_scoreboard_battle"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x8F7049BE }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x16791804 }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer02_22_chara_face_balloon"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer08_40_scramble_gauge"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x02CAC6DE }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x9BC39764 }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer20_04_vs_team_info_self_p1"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0xE53A4A40 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0xC78806EE }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer20_05_vs_team_info_enemy_p1"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x7C331BFA }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x80287C3E }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer20_10_team_info_header_enemy"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer20_10_team_info_header_self"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer24_04_p1_self_team_info"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer24_05_p1_enemy_team_info"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "team01_04_team_name_bar"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "team01_04b_my_team_name_plate"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "title02_10_my_team_banner"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0x8745EF0C }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x1E4CBEB6 }, values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "town02_21_avatar_list_item"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0xB49DEFB2 }, values = { 2 = 999 } },
+    { param = "DispMaxValue", match = { 1 = 0x2D94BE08 }, values = { 2 = 999 } },
+]

@@ -1,7 +1,7 @@
 # Pre-match stadium fly-through of the mod Utilities (docs/game/media/camaras-fifa.md §6; feature camera, moved out of
 # Inazuma Fantasy 2026-10-08): while the editable pre-match lineup (soccer_formation_menu opened by the native "before
 # soccer start" callback) is on screen, the soccer camera behind it cycles through 4 fixed-position shots of the stadium
-# (SOCCER_FIX_POS_CAMERA_INFO rows evt_cam_fly_01..04 of research/mods/Utilities/base_tables/common/gamedata/soccer/
+# (SOCCER_FIX_POS_CAMERA_INFO rows evt_cam_fly_01..04 of research/mods/Utilities/content/base_tables/gamedata/soccer/
 # soccer_camera_config.toml) with the retail CMND_CHANGE_SOCCER_CAMERA_TYPE(21, 0,0,0, id) (= SetFixPosSoccerCamera of
 # the match triggers); each row dollies by itself. The retail chase camera comes back (type 0 + CMND_CAMERA_RESET) when
 # the screen really closes. Wrappers only (SetupOpenFromBeforeSoccerStart, CloseFormationMenu, PostStep): Inazuma

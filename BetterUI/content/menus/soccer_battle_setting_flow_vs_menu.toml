@@ -5,7 +5,7 @@
 # its commands; CMD_FUNC3 on «Siguiente» too, so the key works with either button focused (CMD_FUNCTION
 # crc32("evt_pm_btn"), the graft's EVT_PMB.FN). Online the layer is never opened and the CMD_FUNC3 rows
 # reach nothing (no option row since 1.14.6: always on offline).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_battle_setting_flow_vs_menu"

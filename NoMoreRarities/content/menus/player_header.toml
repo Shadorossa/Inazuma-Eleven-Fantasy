@@ -1,0 +1,23 @@
+# No More Rarities in Character Reforged's player header. 1) The player page's header band in the player's POSITION
+# colour (owner 2026-10-14: «el color de posición solo con NoMoreRarities»; without this mod the band keeps the
+# retail rarity look): a band colour of Character Reforged's host character_reforged.header_band
+# (CharacterReforged\content\menus\player_header_host.toml). Character Reforged's header
+# (CharacterReforged.Header.BandColour) calls NoMoreRarities.HeaderBandColour (assets\lua\_all\
+# no_more_rarities_header.lua) on every fill of the band; a special card (Héroe / Ídolo / Diamante) is left to
+# Character Reforged's rarity look.
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "character_reforged.header_band"
+id = "position_colour"
+order = 100
+action = { lua = "NoMoreRarities.HeaderBandColour" }
+
+# 2) The header's rarity title (the banner left of «Nv.», Character Reforged's host character_reforged.header_rarity):
+# removed with the rarities this mod removes; Ídolo and the rarities other mods declare keep theirs
+# (NoMoreRarities.HeaderShowsRarity, assets\lua\_all\no_more_rarities_header.lua)
+[[entry]]
+host = "character_reforged.header_rarity"
+id = "rarity_title"
+order = 100
+action = { lua = "NoMoreRarities.HeaderShowsRarity" }

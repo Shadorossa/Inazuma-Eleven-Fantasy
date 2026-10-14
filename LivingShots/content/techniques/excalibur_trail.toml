@@ -1,0 +1,39 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the technique keys of this mod (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7.2 / §9): the ground trail (visual) and, since 2026-10-08 (Nacho), the
+# ground trajectory of Excálibur and Chut ancestral (the ball skims the pitch the whole way and enters the goal low;
+# height 0.11 m = the ball's radius: rolling on the pitch from the kick into the net, Nacho 2026-10-08; same goal point x / z and flight time, the game's block rules: no block or keeper rule changes). No power, cost or
+# block key: those stay with the mods that want them (Inazuma Fantasy keeps Excálibur's distance bonus). The technique
+# type merges the keys of every mod per field; the trajectories below are the SAME values Inazuma Fantasy declares
+# (techniques\move_mini_effects.toml), so with both mods on there is no conflict (a different value would be a
+# «technique conflict» warning, the later mod winning).
+
+# The ground trail (Nacho 2026-10-07: «que haga el efecto de destruir el suelo … se quede unos segundos … se elimine
+# luego con fade»): the cut-in's ground cut (content\effects\ground_marks.toml excalibur_mark since 1.3.6) left on the pitch
+# along the ball's path: a piece every 0.05 s at the ball's point on the pitch, turned along the shot, each lit 3.5 s
+# then faded out in 1 s (the effect's own clip: the pitch «regenerates»). Visual only: nothing is hit, nothing changes
+# the shot. `max_height = 100` (Nacho 2026-10-08): at ANY ball height, so the trail runs under the game's own (lofted)
+# flight too (the engine default, 1.2 m, left almost no piece without Inazuma Fantasy's ground trajectory).
+# `lift = 0.12` (2026-10-08: pieces played but none seen in game): the piece is a V-shaped cut whose floor lies 0.12 m
+# under its origin (rims +0.2 m), and most stadiums draw their grass as a parallax layer over y 0, so at y 0 the cut
+# was buried; lifted, its floor sits on the pitch. Tune here if it still does not show (e.g. 0.2) or floats.
+
+# 1.3.6: each move plays its own mark built on ega2011 (content\effects\ground_marks.toml; the event copy ev6097gs00 never
+# drew). lift 0.12: over the stadiums' grass layer (the marks are depth tested since 1.3.7); life 4.5: each piece is
+# removed 4.5 s after it was left (3.5 s lit + 1 s fade), and all of them at once on save / goal / shot end.
+
+# Excálibur (whs00970).
+[[edit]]
+target = "whs00970"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): one point = flat at 0.11 m (the ground skim above).
+trajectory = { points = [[0.0, 0.11]], unblockable = false }
+ground_trail = { effect = "shot_fx.excalibur_mark", object = "effect/battle/common/egx0970/egx0970.objbin", interval = 0.05, scale = 1.0, scatter = 0.0, orient = true, max_height = 100, lift = 0.12, life = 4.5 }
+
+# Chut ancestral (whs01500, Nacho 2026-10-08: the same damaged-ground trail): the same gash piece. The A/B test of
+# 2026-10-08 (Chut left the game's own grounding dust ega2011 through this very request: seen in game) proved the call
+# path; the gash object was the cause and was rebuilt (move-mini-effects.md §9.10).
+[[edit]]
+target = "whs01500"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): one point = flat at 0.11 m (the ground skim above).
+trajectory = { points = [[0.0, 0.11]], unblockable = false }
+ground_trail = { effect = "shot_fx.katana_mark", object = "effect/battle/common/egx1500/egx1500.objbin", interval = 0.05, scale = 1.0, scatter = 0.0, orient = true, max_height = 100, lift = 0.12, life = 4.5 }

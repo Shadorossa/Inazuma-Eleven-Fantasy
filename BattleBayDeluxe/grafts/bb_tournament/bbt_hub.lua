@@ -56,7 +56,17 @@ BBT_HOST = {
       EVT_MH_MarkBBMatch(BBT_HUB.KEY)
     end
   end,
+  -- 1.5.58 (layer budget, docs/game/ui/menu-layer-limits.md §2.3): this menu's pools where they differ from the Battle
+  -- Bay top menu's (BBT.N; the counts of content\menus\bb_tournament.toml, soccer_top_menu patches: change both
+  -- together): no score-box pool, its boxes drawn on the connector pool at the box's draw priority (share); 64 texts
+  -- (1.5.60: the same as the Battle Bay top menu; the group tables are drawn in their own menu, BBT_GroupsShow)
+  pools = { box = 0, txt = 64 },
+  share = { box = "line" },
 }
+for k, n in pairs(BBT_HOST.pools) do
+  BBT.N[k] = n
+end
+BBT.SHARE = BBT_HOST.share
 
 -- 1.5.22: every bracket layer (opened with this menu's group: content\menus\bb_tournament.toml) hidden and parked at
 -- its setup, the anchor without the control focus until the bracket opens

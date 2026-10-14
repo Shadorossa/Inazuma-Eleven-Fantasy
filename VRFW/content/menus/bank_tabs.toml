@@ -5,7 +5,7 @@
 # slots of 73.3 px; each joint scaled 73.3 / 80 like the retail 80 px slot) and their 12 attach rows
 # vrfw_bank_tab12_NN of cmn06_04_list_tab_attach_11_only, enabled by name by the Lua (card_filters\bank.toml
 # [[bank_tab_bar]] tabs = 12). No new art: the retail bar. 13 tabs need a mod's layout (Inazuma Fantasy ships one).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "chara_bank_menu"

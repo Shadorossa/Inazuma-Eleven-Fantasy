@@ -1,0 +1,73 @@
+# All Changed › the commands of the custom «Modo cambio» (scripts/all_changed.lua; docs/game/mods/all-changed.md):
+# what a creation screen asks (Character Reforged's pairing flow). Inazuma Fantasy keeps its own CMND_EVT_MC_* /
+# CMND_FANTASY_MC_* commands (its skill table's grafts), answered through this mod's exports plus its own rules.
+schema = "VRFW.game/1"
+
+# Inazuma Fantasy's created changes (blob mode_change.json of each save slot, 2026-10-04 .. 2026-10-14) are this mod's
+# since 2026-10-14: copied once into slot<N>/all_changed/ (the old files are left as they are).
+[[VRFW.SaveImport]]
+name = "AllChanged.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["mode_change.json"]
+
+# () -> enabled, cooldown s, create item id
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_ON"
+handler = "AllChanged.Mc.On"
+
+# () -> create id, the 8 carrier ids (crc32 of wmc_evt0..7)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_ITEMS"
+handler = "AllChanged.Mc.Items"
+
+# (base, start[, perCall]) -> total, n, n x (hdl, param, chara, element, position, allowed)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_CANDIDATES"
+handler = "AllChanged.Mc.Candidates"
+
+# (base, partner) -> ok, code, index (the new change is equipped)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_ADD"
+handler = "AllChanged.Mc.Add"
+
+# (base) -> count, equipped (-1 = none)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_LIST"
+handler = "AllChanged.Mc.List"
+
+# (base, index) -> exists, partnerHdl, partnerParam, partnerChara
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_ITEM"
+handler = "AllChanged.Mc.Item"
+
+# (base, index | -1) -> ok
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_EQUIP"
+handler = "AllChanged.Mc.Equip"
+
+# (base, index) -> ok
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_DELETE"
+handler = "AllChanged.Mc.Delete"
+
+# (base) -> exists, partnerParam, partnerChara, partnerHdl (the equipped change)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_GET"
+handler = "AllChanged.Mc.Get"
+
+# (card) -> kind (0 free, 2 mode change partner), base
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_RESERVATION"
+handler = "AllChanged.Mc.Reservation"
+
+# (base, partner) -> ok, code
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_MC_PARTNER_OK"
+handler = "AllChanged.Mc.PartnerOk"
+
+# (base, partner) -> code (0 = stored and equipped; 10 + Character Reforged's PairCheck code; else MC_ADD's code),
+# carrier index k (wmc_evt<k>): the store of Character Reforged's create entry on the skill board («Crear nuevo cambio»,
+# content\pairing\change.toml)
+[[VRFW.Command]]
+name = "CMND_ALLCHANGED_CREATE"
+handler = "AllChanged.Mc.Create"

@@ -1,0 +1,51 @@
+# Aura Points' PEG / SP bar on the match HUD (docs/game/mechanics/aura-costs.md §12.6 / §14; docs/refactor/
+# aura-mods-split.md): under the controlled player's face bubble (under Inazuma Fantasy's PE bar when its graft
+# stamina_hud draws one), the pool of his keshin / armour (purple PEG) or totem (blue SP), with its tag and a glass
+# gloss while the spirit is out. Layers aura_points_peg_bar / _shine / _label (the mod's content\menus\peg_bar.toml),
+# sprites in btl06_13 (content\images\menu\02_btl\btl06\btl06_13\aura_points_bars.toml), value from the mod's command
+# CMND_AURAPOINTS_PEG (scripts\aura_points.lua). Was the PEG part of Inazuma Fantasy's graft stamina_hud until
+# 2026-10-14.
+# Wrappers of UpdateScreenOutCtrlCharaIcon (watches the bubble, changes nothing) and PostStep (draws); order 310: after
+# stamina_hud (300) when both build into one script. Nothing at chunk load.
+name = "aura_points_hud"
+mod = "aura_points"
+order = 310
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateScreenOutCtrlCharaIcon", "PostStep"]
+description = "Aura Points: the PEG / SP bar under the controlled player's face bubble"
+
+[[files]]
+stem = "soccer_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hud.lua"
+  marker = "AuraPoints hud"
+
+# twins of soccer_inplay_menu (same include, same setting): the loader may hand the match VM any of these folders (the
+# same list as stamina_hud's)
+[[files]]
+stem = "soccer_battle_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hud.lua"
+  marker = "AuraPoints hud"
+
+[[files]]
+stem = "soccer_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hud.lua"
+  marker = "AuraPoints hud"
+
+[[files]]
+stem = "soccer_zigzag_dribble_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hud.lua"
+  marker = "AuraPoints hud"

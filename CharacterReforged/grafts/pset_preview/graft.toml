@@ -1,0 +1,25 @@
+# «Set de jugador» preview (docs/game/skill-slots.md "Set preview panel"): while the Sets list of the Supertécnicas
+# screen is open, the right page lists everything the focused set stores (role, Hipertécnica, moves, custom passive,
+# equipment, the 5 configured passives) in retail passive rows; sets also store / load the passives and the role
+# (vr-loader CMND_EVT_PSET_FULL / SET2, board_presets.rs v3). Layers + setting: research/scripts/pset_preview_build.py;
+# texts: research/scripts/ss2_popup_text_build.py (PL.TX of ss2_menus). Overrides PL.SetGet / SetCurrent / SetSame /
+# SetWrite / SetFocus / DetailHideAll / SetsCoroutine and defines PL.SetLoadExtra (hook in ss2_menus' PL.SetLoad).
+# Mod Character Reforged since 2026-10-14 (the skill table moved there with graft ss2_menus); the sets themselves are
+# Inazuma Fantasy's store (CMND_EVT_PSET_*, scripts\board_presets.lua): without IF the Sets button answers nothing.
+name = "pset_preview"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
+order = 320
+module = "lua_bridge"
+requires = ["ss2_menus", "ss2_pc_rows"]
+conflicts = []
+wraps = ["OnSetupLayer"]
+description = "Player sets: full preview panel of the focused set + passives and role stored in the set"
+
+[[files]]
+path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pset_preview.lua"
+  marker = "pset_preview"

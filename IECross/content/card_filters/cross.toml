@@ -3,7 +3,7 @@
 # common/gamedata/character/chara_series_config.toml: type 10) has no membership flag in chara_base: a character is a
 # member through his belong team (chara_base team_1..3 = the Cross belong team, content/base_tables/.../belong_team_config.toml).
 # Moved from Inazuma Fantasy's card_filters/series.toml (the [[series]] value) and graft series_tabs (the tab).
-schema = "vr_framework.card_filter/1"
+schema = "VRFW.card_filter/1"
 
 # The bank's tab bar: an «Inazuma Eleven Cross» tab after Victory Road (the X icon), listing the Cross characters
 # (VR-Framework 2.0.3 [[bank_tab]]: «every series» narrowed to the Cross belong team; its name = the series' name).

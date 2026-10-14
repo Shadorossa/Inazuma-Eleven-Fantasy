@@ -1,0 +1,26 @@
+# «Luminous Orb» («Impacto luminoso», whs10200, wind shot, cut-in ev60_10200): while the ball flies to the goal it
+# stays inside the cut-in's OWN cloud of glittering light specks (the last cut c0400 of the shot object ev60102001,
+# the ball diving at the camera inside its burst of light, held at frame 450) instead of the plain wind special-shot
+# aura (ega0075b). The burst's glow, spiky rims, edge waves, aura sheets and light lines are all flat cards the
+# cut-in keeps turned to its camera, which rides the flight line: turned along the flight they would be bars from the
+# touchline, so they are dropped, with the light walls along the furrow on the pitch, the camera-held smoke, rock
+# blurs and white-outs, the c0300 burst and the keshin object ev60102000 (c0100-c0200); x0.5 of the cut-in size
+# (specks ~2 m round the ball).
+# The object is ev6120lo00 (assets\data\{common,dx11}\effect\event\ev60\ev6120lo00\), built by
+# research/scripts/luminous_orb_ball_fx.py from ev60102001; docs/game/media/luminous-orb-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillEffectBitFlag 0): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other technique key uses ev60_10200.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "luminous_orb_specks"
+from = "ega0075b"
+object = "effect/event/ev60/ev6120lo00/ev6120lo00.objbin"
+
+[[shot_aura]]
+name = "luminous_orb_specks"
+when = { techniques = ["whs10200"] }
+aura = "luminous_orb_specks"
+like = "ega0075b"

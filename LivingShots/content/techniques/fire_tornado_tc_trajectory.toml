@@ -1,0 +1,23 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Tornado de fuego DT (Fire Tornado TC, whs02160 + _or; whs02170). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0400) the ball is kicked off a 9.9 m perch and comes down a straight ~30 deg line; in the match it
+# comes down that line into the goal. whs02170 has no cut-in of its own in v7.1.2 (no ev60_02170; the aura file
+# covers it with whs02160's): it gets the same flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move fire_tornado_tc):
+# the event ball (s01) of ev60_02160 c0400, effect frames 312-400: 9.90 m -> 2.59 m over 12.82 m = 29.7 deg,
+# straight (0.07 m); the line brought to 2.0 m at the goal = 13.85 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Tornado de fuego DT (whs02160).
+[[edit]]
+target = "whs02160"
+trajectory = { goal_points = [[13.85, 9.9, 999, 6.93], [0.0, 2.0]], unblockable = false }
+
+# Tornado de fuego DT, whs02170 (whs02170).
+[[edit]]
+target = "whs02170"
+trajectory = { goal_points = [[13.85, 9.9, 999, 6.93], [0.0, 2.0]], unblockable = false }

@@ -1,0 +1,44 @@
+# True Hissatsu's level-up banner (docs/game/mechanics/skill-rank-usage.md section 7.10): when a move levels up by use
+# the mod re-opens the move's skill telop and SetupCommonSkillTelop appends the text TrueHissatsu.RankUpSuffix
+# («sube a Nv.N», text\rows\rank_items.toml of the mod, {n} = the new level) to the move's name. The level comes from
+# CMND_TRUEHISSATSU_RANK_POPUP (scripts\true_hissatsu.lua; consumed once). Without the mod the command does not answer
+# and the banner is retail. Was Inazuma Fantasy's (module skill_rank) until 2026-10-14. Nothing at chunk load.
+# Since True Hissatsu 1.0.4 it also reports the save's retail «Nueva posibilidad» stock (abl_000001, the upgrade book
+# until 1.0.3) to CMND_TRUEHISSATSU_RETAIL_STOCK, which logs it once per save slot (never converted).
+name = "sr_popup"
+mod = "true_hissatsu"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "True Hissatsu: ' sube a Nv.N' suffix on the skill telop"
+
+[[files]]
+stem = "common_skill_telop"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "common_skill_telop.SetupCommonSkillTelop.SrPopup"
+  text = '''
+    -- True Hissatsu: level-up banner ("<name> sube a Nv.N"); retail text when nothing is pending / no mod
+    local evt_ok, evt_grade = funcLuaCommand(831350515 --[[CMND_TRUEHISSATSU_RANK_POPUP]], n)
+    if evt_ok == true and type(ret) == "string" and type(evt_grade) == "number" then
+      local evt_tok, evt_sfx = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], 2297825242 --[[TrueHissatsu.RankUpSuffix]])
+      if evt_tok and type(evt_sfx) == "string" and evt_sfx ~= "" then
+        ret = ret .. string.gsub(evt_sfx, "{n}", tostring(evt_grade + 1))
+      end
+    end
+    -- True Hissatsu 1.0.4: the save's retail «Nueva posibilidad» (abl_000001, no longer the upgrade book) logged once
+    -- per save slot; the mod asks with -1, the stock is never converted
+    do
+      local evt_rok, evt_need = pcall(funcLuaCommand, 77729015 --[[CMND_TRUEHISSATSU_RETAIL_STOCK]], -1)
+      if evt_rok and evt_need == true then
+        local evt_nok, evt_num = pcall(funcLuaCommand, 2011560392 --[[CMND_GET_ITEM_NUM]], 39851619 --[[abl_000001]], false)
+        if evt_nok and type(evt_num) == "number" then
+          pcall(funcLuaCommand, 77729015 --[[CMND_TRUEHISSATSU_RETAIL_STOCK]], evt_num)
+        end
+      end
+    end
+'''
+  crc = "none"

@@ -1,0 +1,14 @@
+schema = "VRFW.item/2"
+# Chronicle Deluxe: the «AURAS» section of the match drop lists (moved from Inazuma Fantasy on 2026-10-14, owner).
+# The drop-rate list («Tasa de aparición» of the Chronicle board) and the «Cadena de Crónica» panel's mini drop list show
+# the aura items a match drops in their own «AURAS» section at the end of the list, under its own header, each row drawn
+# as its aura's banner (band by aura type and element, the aura's art, the item icon, the rate).
+# The mechanism is the VR-Framework's (item type [VRFW.DropList.Auras], item_engine drop_list_rt, graft vrfw_drop_list,
+# docs/framework/drops.md §5); this mod only declares which items form the section. Since VRFW 2.4.17 each part of
+# [VRFW.DropList] comes from the mod that declares it, so another mod's list order (Inazuma Fantasy's) still applies.
+# Works on the base game: every sub-category below is an item_config sub-category of the game.
+
+# The section, in this order: keshin (ITEM_SPECIAL_SKILL_INFO sub-category 171), totems (174), Mix-Max (173), mode
+# changes (178).
+[VRFW.DropList.Auras]
+Subs = [171, 174, 173, 178]

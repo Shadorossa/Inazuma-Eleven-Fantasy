@@ -5,7 +5,8 @@
 # moves -> tension / element / skill type; auras -> element / category. Its accept button keeps in the tab only the
 # rows that pass the engine's own test (utilities.dll, crates/plugins/utilities/src/shop_filter). The window's counter
 # counts the rows of the shop tab. The filter of each tab lasts while the shop is open. Also: the banner at the top
-# right of the shops (shop01_11_view_staff, the SHOP_INFO header picture) stays hidden in every shop. Without
+# right of the shops (shop01_11_view_staff, the SHOP_INFO header picture) stays hidden in every shop, the Diamante
+# shop «El atrio de los indomables» too (its own script shop_menu_basara_top: util_sf_banner_basara.lua, 2026-10-14). Without
 # utilities.dll: retail shop.
 #
 # Shop side: a HOOK file (docs/framework/lua-hosts.md §7) on the VR-Framework's host of shop_menu_buy, because
@@ -25,6 +26,10 @@ description = "Shop filter: Tab at the end of a shop's tab bar opens the game's 
 [[hooks]]
 stem = "shop_menu_buy"
 src = "util_sf_shop.lua"
+
+[[hooks]]
+stem = "shop_menu_basara_top"
+src = "util_sf_banner_basara.lua"
 
 [[files]]
 stem = "item_filter_menu"

@@ -1,4 +1,4 @@
-schema = "vr_framework.sound/1"
+schema = "VRFW.sound/1"
 # Trimmed copies of the move SE of the override chain hand-off scenes (VRFW 2.1; docs/game/mechanics/override-trims-review.md
 # §3 I1). A move's sound effects are ONE wave `<event>_me` started at frame 0 and timed to the full scene; a hand-off
 # scene drops the first N frames, so it plays a copy of that wave that starts N frames in (`start_frame`, 60 fps):

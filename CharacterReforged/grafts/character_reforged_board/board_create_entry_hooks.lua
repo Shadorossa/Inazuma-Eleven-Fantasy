@@ -1,0 +1,266 @@
+-- Character Reforged › the base game's «Crear …» entry on the retail skill board (graft character_reforged_board;
+-- docs/refactor/aura-mods-split.md «The base game's create entry»). HOOK file (graft [[hooks]], shipped as is: the
+-- command ids below are written as numbers, their names in the comments): it wraps the screen's globals and calls
+-- them, it never replaces a retail function. Until 2026-10-14 this was a text patch that re-declared the screen's
+-- chunk locals and redefined every retail function using them (OnInit, OnSetupLayer, OnOpenLayer, OnChangeTargetChara,
+-- UpdateFooterButtonGuide, …): those redefinitions threw away the wrappers of the hook files that run before it
+-- (Utilities' combo partner picker: its list layers stayed visible over the board) and the edits of other mods'
+-- patches of the same screen.
+--   * an aura piece (category 1) is about to list its auras (OpenAbilityListMenu_Coroutine, before the list opens):
+--     every system's «create» item listed, a free copy owned (BeforeList);
+--   * the list closed (right after the coroutine's first wait, the one for the list; the board is still inactive:
+--     the retail coroutine re-activates it afterwards, this file never touches the menu's active state): a «create»
+--     row picked -> the partner from the retail bank picker, the system stores the pair, the carrier goes on the slot;
+--     cancelled / refused -> the slot gets back what it held (+ the info window for a refusal) (AfterList).
+-- One row per system the active mods declare (All Miximaxed «Crear miximax», All Changed «Crear nuevo cambio»): ids,
+-- store commands and carriers come from Character Reforged's script (CMND_CHARACTERREFORGED_CREATE_*), never written
+-- here. The player and the piece come from the screen's own calls (OnInit's parameters, OnChangeTargetChara,
+-- OpenAbilityListMenu). Definitions and wraps only at chunk load (no engine call).
+do
+  CharacterReforged_Board = CharacterReforged_Board or {}
+  local Board = CharacterReforged_Board
+  Board.FLAG_SET = 489464673                         -- CMND_EVT_UI_FLAG_SET (key, value)
+  Board.FLAG = 2656223599                            -- evt_mx_list_create: the create entries of the transform type's [ability_list]
+  Board.BEGIN = 868175223                            -- CMND_CHARACTERREFORGED_CREATE_BEGIN (charaHdl) -> n, create item 1 .. n
+  Board.PICKED = 2300437941                          -- CMND_CHARACTERREFORGED_CREATE_PICKED (charaHdl) -> row (0 none), slot, store command id
+  Board.CARRIER = 907079567                          -- CMND_CHARACTERREFORGED_CREATE_CARRIER (row, k) -> carrier item id
+  Board.PLACE = 1026001839                           -- CMND_CHARACTERREFORGED_CREATE_PLACE (charaHdl, slot, inv) -> ok
+  Board.RESTORE = 4143853932                         -- CMND_CHARACTERREFORGED_CREATE_RESTORE (charaHdl, slot) -> ok
+  Board.REFUSAL = 3947752921                         -- CMND_CHARACTERREFORGED_CREATE_REFUSAL (row, code) -> labelId, reasonId, labelText, reasonText
+  Board.LOG = 2743311895                             -- CMND_CHARACTERREFORGED_CREATE_LOG (step, values…)
+  Board.PIECE_INFO = 4147077179                      -- (piece) -> layerIdx, posIdx, skillId, selectedSkillId, category, … (GetEffectPieceInfoFromMenu)
+  Board.AURA_CATEGORY = 1                            -- an aura piece of the board
+  Board.PARAM_HAS = 2947612279                       -- parameter store: has (key)
+  Board.PARAM_GET = 3522198769                       -- parameter store: get (key)
+  Board.PARAM_CHARA = 4161869490                     -- the player the team dock passes (OnInit reads and clears it)
+  Board.ITEM_NUM = 2011560392                        -- CMND_GET_ITEM_NUM (item) -> copies owned
+  Board.ADD_ITEM = 1897915498                        -- CMND_ADD_ITEM_ONLY (item, count, flag) -> inventory handle
+  Board.DEL_ITEM = 425598937                         -- CMND_DELETE_ITEM (item, count)
+  Board.EQUIPPED_NUM = 556568075                     -- (inventory handle) -> copies equipped
+  Board.OPEN_MENU = 433545986                        -- CMND_OPEN_MENU_OBJECT
+  Board.EXIST_MENU = 2231168902                      -- CMND_IS_EXIST_MENU_OBJECT
+  Board.EXIST = 264888438                            -- CMND_IS_EXIST_MENU (menu) -> bool
+  Board.BANK_MENU = 1981996040                       -- chara_bank_menu_for_search (the retail card picker)
+  Board.PLATE_MENU = 1427722143                      -- personal_plate_menu (the bank's CloseMenu closes it)
+  -- the bank's pick: retail temp int 2524660062 (OnInit sets 0, OnDecideFocus sets the card's handle then CloseMenu
+  -- when its parent is not the passive inherit menu; read with 3185911119, written with 2565779025)
+  Board.TEMP_GET = 3185911119
+  Board.TEMP_SET = 2565779025
+  Board.BANK_RESULT = 2524660062
+  Board.TEXT_GET = 4074371074                        -- CMND_TEXT_GET (text id) -> the text in the game's language
+  Board.MSG_OPEN = 2289627655                        -- general (system) window: open
+  Board.MSG_KIND = 2351835063
+  Board.MSG_BUSY = 898725220
+  Board.MSG_DONE = 682363669
+  Board.OPEN_WAIT = 90                               -- frames the bank may take to open
+  Board.MSG_WAIT = 600                               -- frames the info window may take before it is left alone
+  Board.aura = false
+  Board.chara = nil                                  -- the shown player (charaStHdl)
+  Board.piece = -1                                   -- the piece whose list opens next
+
+  function Board.Log(step, ...)
+    pcall(funcLuaCommand, Board.LOG, step, ...)
+  end
+
+  -- an aura piece is about to list its auras: every system's «create» item listed, a free copy owned
+  function Board.BeforeList(hdl, piece)
+    Board.aura = false
+    if type(piece) ~= "number" or piece < 0 or type(hdl) ~= "number" or hdl == 0 then
+      return
+    end
+    local _, _, _, _, category = funcLuaMenuCommand(Board.PIECE_INFO, piece)
+    if category ~= Board.AURA_CATEGORY then
+      return
+    end
+    local answer = table.pack(funcLuaCommand(Board.BEGIN, hdl))
+    local count = answer[1]
+    if type(count) ~= "number" or count <= 0 then
+      return                                         -- no system declared, or Character Reforged's script is not running
+    end
+    Board.aura = true
+    for i = 1, count do
+      local create = answer[i + 1]
+      if type(create) == "number" and create ~= 0 then
+        local owned = funcLuaCommand(Board.ITEM_NUM, create)
+        local granted = false
+        if type(owned) ~= "number" or owned <= 0 then
+          funcLuaCommand(Board.ADD_ITEM, create, 1, false)
+          granted = true
+        else
+          local handle = funcLuaCommand(Board.ADD_ITEM, create, 1, false)
+          funcLuaCommand(Board.DEL_ITEM, create, 1)
+          local used = (type(handle) == "number" and handle ~= 0) and funcLuaCommand(Board.EQUIPPED_NUM, handle) or 0
+          if type(used) == "number" and used >= owned then
+            funcLuaCommand(Board.ADD_ITEM, create, 1, false)
+            granted = true
+          end
+        end
+        Board.Log("1 list", "row", i, "item", create, "owned", owned, "free copy granted", granted)
+      end
+    end
+    funcLuaCommand(Board.FLAG_SET, Board.FLAG, 1)
+  end
+
+  -- the info window of a refusal: the system's name, then the reason (retail message window, kind 1 = info)
+  function Board.Refusal(row, code)
+    local label_id, reason_id, label_s, reason_s = funcLuaCommand(Board.REFUSAL, row, code)
+    local function text_of(id, fallback)
+      local s = nil
+      if type(id) == "number" and id ~= 0 then
+        local ok, v = pcall(funcLuaCommand, Board.TEXT_GET, id)
+        if ok and type(v) == "string" and v ~= "" then s = v end
+      end
+      if s == nil and type(fallback) == "string" then s = fallback end
+      return s or ""
+    end
+    local label, reason = text_of(label_id, label_s), text_of(reason_id, reason_s)
+    if reason == "" then
+      Board.Log("7 refusal", "row", row, "code", code, "no text: no window")
+      return
+    end
+    local message = label ~= "" and (label .. "\n" .. reason) or reason
+    funcLuaCommand(Board.MSG_OPEN, message, 0, 0, 0, 0, 0, false)
+    funcLuaCommand(Board.MSG_KIND, 1, 0)
+    local frames = 0
+    waitFalse(function()
+      frames = frames + 1
+      return funcLuaCommand(Board.MSG_BUSY) and frames < Board.MSG_WAIT
+    end)
+    waitTrue(function()
+      frames = frames + 1
+      return funcLuaCommand(Board.MSG_DONE) or frames >= Board.MSG_WAIT
+    end)
+    Board.Log("7 refusal", "row", row, "code", code, "window shown, closed after frames", frames)
+  end
+
+  -- the list closed: a «create» row picked -> the partner from the bank, the system stores the pair, the carrier goes
+  -- on the slot; cancelled / refused -> the slot gets back what it held (+ the info window for a refusal)
+  function Board.AfterList(hdl)
+    if not Board.aura then
+      return
+    end
+    Board.aura = false
+    funcLuaCommand(Board.FLAG_SET, Board.FLAG, 0)
+    local row, slot, store = funcLuaCommand(Board.PICKED, hdl)
+    if type(row) ~= "number" or row <= 0 or type(slot) ~= "number" or slot < 0 then
+      Board.Log("2 picked", "none")
+      return
+    end
+    Board.Log("2 picked", "row", row, "slot", slot, "store", store)
+    local plate_before = funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true
+    funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
+    funcLuaCommand(Board.OPEN_MENU, Board.BANK_MENU)
+    local frames = 0
+    waitTrue(function()
+      frames = frames + 1
+      return funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU) or frames > Board.OPEN_WAIT
+    end)
+    Board.Log("3 bank open", "exists", funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU) == true, "after frames", frames, "plate before", plate_before)
+    waitFalse(function()
+      return funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU)
+    end)
+    local partner = funcLuaCommand(Board.TEMP_GET, Board.BANK_RESULT)
+    funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
+    Board.Log("4 bank closed", "temp int 2524660062 =", partner, "plate after", funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true)
+    local code = -1                                  -- -1 cancelled (no window)
+    if type(partner) == "number" and partner ~= 0 then
+      local stored, k = funcLuaCommand(store, hdl, partner)
+      code = type(stored) == "number" and stored or -3  -- -3: the store command did not answer a code
+      Board.Log("5 store", "base", hdl, "partner", partner, "code", code, "k", k)
+      if code == 0 then
+        local carrier = funcLuaCommand(Board.CARRIER, row, k)
+        local inv = 0
+        if type(carrier) == "number" and carrier ~= 0 then
+          inv = funcLuaCommand(Board.ADD_ITEM, carrier, 1, false) or 0
+        end
+        local placed = type(inv) == "number" and inv ~= 0 and funcLuaCommand(Board.PLACE, hdl, slot, inv) == true
+        Board.Log("6 carrier", "item", carrier, "inv", inv, "placed", placed)
+        if not placed then
+          if type(inv) == "number" and inv ~= 0 then
+            funcLuaCommand(Board.DEL_ITEM, carrier, 1)
+          end
+          code = -2                                  -- stored, the carrier not on the slot
+        end
+      end
+    end
+    if code ~= 0 then
+      funcLuaCommand(Board.RESTORE, hdl, slot)
+      if code ~= -1 then
+        Board.Refusal(row, code)
+      else
+        Board.Log("7 cancelled", "slot", slot, "given back")
+      end
+    end
+  end
+
+  -- ---- the wraps (once per VM; each calls what it wrapped) -----------------------------------------------------
+  function Board.WrapGlobal(name, make)
+    Board.wrapped = Board.wrapped or {}
+    if Board.wrapped[name] then
+      return
+    end
+    local current = _ENV[name]
+    if current == nil then
+      return
+    end
+    _ENV[name] = make(current)
+    Board.wrapped[name] = true
+  end
+
+  -- the player: the team dock's parameter, read before the retail OnInit takes it
+  Board.WrapGlobal("OnInit", function(previous)
+    return function(...)
+      Board.chara, Board.piece, Board.aura = nil, -1, false
+      pcall(function()
+        if funcLuaCommand(Board.PARAM_HAS, Board.PARAM_CHARA) == true then
+          Board.chara = funcLuaCommand(Board.PARAM_GET, Board.PARAM_CHARA)
+        end
+      end)
+      return previous(...)
+    end
+  end)
+
+  -- L / R: another player
+  Board.WrapGlobal("OnChangeTargetChara", function(previous)
+    return function(chara, ...)
+      Board.chara = chara
+      return previous(chara, ...)
+    end
+  end)
+
+  -- the piece whose list opens (the retail function keeps it in its chunk local for the coroutine)
+  Board.WrapGlobal("OpenAbilityListMenu", function(previous)
+    return function(piece, ...)
+      Board.piece = piece
+      return previous(piece, ...)
+    end
+  end)
+
+  -- the list coroutine (registered by the retail OnInit with SetupManageCoroutineFunc, after this wrap): BeforeList
+  -- before it opens the list; the list's close is then awaited by the coroutine's first waitFalse
+  Board.WrapGlobal("OpenAbilityListMenu_Coroutine", function(previous)
+    return function(...)
+      local chara, piece = Board.chara, Board.piece
+      pcall(Board.BeforeList, chara, piece)
+      Board.pending = nil
+      if Board.aura then
+        Board.pending = { routine = coroutine.running(), chara = chara }
+      end
+      return previous(...)
+    end
+  end)
+
+  -- AfterList right after the list coroutine's first waitFalse returned (the list closed), before the retail code
+  -- re-activates the board; any other waitFalse (other coroutines, later waits) passes straight through
+  Board.WrapGlobal("waitFalse", function(previous)
+    return function(condition, ...)
+      local result = table.pack(previous(condition, ...))
+      local pending = Board.pending
+      if pending ~= nil and pending.routine == coroutine.running() then
+        Board.pending = nil
+        Board.AfterList(pending.chara)
+      end
+      return table.unpack(result, 1, result.n)
+    end
+  end)
+end

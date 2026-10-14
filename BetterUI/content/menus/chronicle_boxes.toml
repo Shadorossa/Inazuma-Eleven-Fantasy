@@ -4,7 +4,7 @@
 # (layer clean_hud_chr_box); «Ayuda» and «Guardar» stay created as the 2 small rows, off screen and out of the keys
 # (the locator clean_hud_chr_list puts them at x -2600), as Inazuma Fantasy had them. Data files:
 # research/scripts/clean_hud_chr_boxes_build.py (comp_menu_build's builders under Clean HUD's names).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # small list 7 -> 2 instances (the two rows the Lua maps to «Ayuda» / «Guardar»), their "!" too
 [[patch]]

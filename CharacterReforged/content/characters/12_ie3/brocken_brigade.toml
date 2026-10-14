@@ -1,0 +1,249 @@
+schema = "VRFW.character/2"
+# Character Reforged · Brocken Brigade · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03032810"                                   # Thorsten Welger
+
+  [[edit.cards]]
+  id = 0x44703DE8                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 213, technique = 220, pressure = 234, physical = 230, intelligence = 247, agility = 263, freedom = 211 }
+  moves = [
+    { move = 0xC7F4C227, level = 7 },                     # Shot Trap
+    { move = 0xB37CD264, level = 20 },                    # Am-Bush
+    { move = 0xECD991E4, level = 50 },                    # The Stinger
+    { move = 0x46A71C03, level = 53 },                    # Black Hole
+  ]
+
+[[edit]]
+target = "c03032820"                                   # Alexander Hausen
+
+  [[edit.cards]]
+  id = 0x6F5D6E2B                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 192, technique = 198, pressure = 240, physical = 247, intelligence = 286, agility = 212, freedom = 209 }
+  moves = [
+    { move = 0xB37CD264, level = 1 },                     # Am-Bush
+    { move = 0x2FB941B3, level = 23 },                    # Stone Prison
+    { move = 0x3069B219, level = 42 },                    # Super Sumo Stomp
+    { move = 0xD9477198, level = 51 },                    # Emperor Penguin X
+  ]
+
+[[edit]]
+target = "c03032830"                                   # Heinrich Farber
+
+  [[edit.cards]]
+  id = 0x76465F6A                                         # DF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 194, technique = 208, pressure = 227, physical = 250, intelligence = 288, agility = 221, freedom = 213 }
+  moves = [
+    { move = 0x7EEA4EE9, level = 1 },                     # Blade Attack
+    { move = 0xB37CD264, level = 30 },                    # Am-Bush
+    { move = 0x7DAF3139, level = 54 },                    # Emperor Penguin No. 2
+    { move = 0x88B554E0, level = 60 },                    # Galatyn
+  ]
+
+[[edit]]
+target = "c03032840"                                   # Kurt Zawel
+
+  [[edit.cards]]
+  id = 0x3907C9AD                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 205, technique = 215, pressure = 196, physical = 254, intelligence = 266, agility = 219, freedom = 221 }
+  moves = [
+    { move = 0x38094535, level = 1 },                     # Sub-Terfuge
+    { move = 0x4031A7F5, level = 12 },                    # Mole Fake
+    { move = 0x7D6E9A87, level = 27 },                    # The Wall
+    { move = 0xA8215D7C, level = 48 },                    # The Mountain
+  ]
+
+[[edit]]
+target = "c03032850"                                   # Lukas Schmidt
+
+  [[edit.cards]]
+  id = 0x201CF8EC                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 203, technique = 216, pressure = 232, physical = 250, intelligence = 296, agility = 236, freedom = 213 }
+  moves = [
+    { move = 0x1162A8AF, level = 1 },                     # Bewilder Blast
+    { move = 0x4BD584B7, level = 1 },                     # Power Charge
+    { move = 0x7CACF0B0, level = 26 },                    # Horn Train
+    { move = 0x1C8CE2B8, level = 62 },                    # God Knows
+  ]
+
+[[edit]]
+target = "c03032860"                                   # Theodor Ulrich
+
+  [[edit.cards]]
+  id = 0x0B31AB2F                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 292, control = 250, technique = 261, pressure = 188, physical = 197, intelligence = 231, agility = 213, freedom = 225 }
+  moves = [
+    { move = 0x41F3CDC2, level = 1 },                     # Scorching Tackle
+    { move = 0x8C990270, level = 1 },                     # Gunshot
+    { move = 0xECD991E4, level = 31 },                    # The Stinger
+    { move = 0x52CEB5F6, level = 52 },                    # Iron Wall
+  ]
+
+[[edit]]
+target = "c03032870"                                   # Jan Oster
+
+  [[edit.cards]]
+  id = 0x122A9A6E                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 271, technique = 296, pressure = 181, physical = 159, intelligence = 246, agility = 193, freedom = 230 }
+  moves = [
+    { move = 0xB37CD264, level = 1 },                     # Am-Bush
+    { move = 0x38094535, level = 31 },                    # Sub-Terfuge
+    { move = 0x01DB04F5, level = 40 },                    # Defence Scan
+    { move = 0x8C990270, level = 66 },                    # Gunshot
+  ]
+
+[[edit]]
+target = "c03032880"                                   # Niklas Kuster
+
+  [[edit.cards]]
+  id = 0x95B286A1                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 297, control = 240, technique = 251, pressure = 190, physical = 173, intelligence = 228, agility = 204, freedom = 225 }
+  moves = [
+    { move = 0x3C843987, level = 1 },                     # Flurry Dash
+    { move = 0x43B5739B, level = 24 },                    # Lightning Bolt
+    { move = 0x7DAF3139, level = 47 },                    # Emperor Penguin No. 2
+    { move = 0x4890FB67, level = 53 },                    # Twin Boost
+  ]
+
+[[edit]]
+target = "c03032890"                                   # Jonas Polk
+
+  [[edit.cards]]
+  id = 0x8CA9B7E0                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 252, technique = 274, pressure = 176, physical = 205, intelligence = 234, agility = 184, freedom = 221 }
+  moves = [
+    { move = 0x8C990270, level = 4 },                     # Gunshot
+    { move = 0x6633159F, level = 16 },                    # Gravitation
+    { move = 0xE9968761, level = 22 },                    # Rocket Kobushi
+    { move = 0xA9229CF5, level = 47 },                    # The Galaxy
+  ]
+
+[[edit]]
+target = "c03032900"                                   # Maximilian Müller
+
+  [[edit.cards]]
+  id = 0x5CA9669E                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 312, control = 244, technique = 232, pressure = 184, physical = 188, intelligence = 205, agility = 190, freedom = 217 }
+  moves = [
+    { move = 0x38094535, level = 1 },                     # Sub-Terfuge
+    { move = 0x568262FA, level = 1 },                     # Dark Tornado
+    { move = 0xA6763B84, level = 34 },                    # Gladius Arch
+    { move = 0x259F08C6, level = 41 },                    # Whirlwind Twister
+  ]
+
+[[edit]]
+target = "c03032910"                                   # Peter Naumann
+
+  [[edit.cards]]
+  id = 0x45B257DF                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 236, technique = 216, pressure = 185, physical = 169, intelligence = 194, agility = 193, freedom = 221 }
+  moves = [
+    { move = 0x38094535, level = 4 },                     # Sub-Terfuge
+    { move = 0x61FB16FD, level = 28 },                    # Divine Arrows
+    { move = 0x60397CCA, level = 34 },                    # Cross Drive
+    { move = 0xA5777314, level = 49 },                    # Assault Shot
+  ]
+
+[[edit]]
+target = "c03032920"                                   # Gerhard Enders
+
+  [[edit.cards]]
+  id = 0x6E9F041C                                         # GK/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 194, technique = 184, pressure = 269, physical = 252, intelligence = 239, agility = 294, freedom = 217 }
+  moves = [
+    { move = 0xC7F4C227, level = 1 },                     # Shot Trap
+    { move = 0x4BD584B7, level = 45 },                    # Power Charge
+    { move = 0x5E7E4775, level = 50 },                    # Table-Turner
+    { move = 0x88B554E0, level = 60 },                    # Galatyn
+  ]
+
+[[edit]]
+target = "c03032930"                                   # Erwin Völz
+
+  [[edit.cards]]
+  id = 0x7784355D                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 294, control = 263, technique = 262, pressure = 176, physical = 165, intelligence = 217, agility = 189, freedom = 221 }
+  moves = [
+    { move = 0x8C990270, level = 1 },                     # Gunshot
+    { move = 0xDCF43422, level = 23 },                    # Aurora Dribble
+    { move = 0x66F2BE21, level = 50 },                    # Leaping Thunder
+    { move = 0xBF6D0AC5, level = 61 },                    # Emperor Penguin No. 3
+  ]
+
+[[edit]]
+target = "c03032940"                                   # Jens Hoffman
+
+  [[edit.cards]]
+  id = 0x38C5A39A                                         # FW/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 273, control = 267, technique = 267, pressure = 192, physical = 221, intelligence = 230, agility = 205, freedom = 213 }
+  moves = [
+    { move = 0x7FE98F60, level = 1 },                     # Ganymede Ray
+    { move = 0xB37CD264, level = 30 },                    # Am-Bush
+    { move = 0x6730D416, level = 46 },                    # Emperor Penguin No. 1
+    { move = 0x18C035B4, level = 54 },                    # Ghost Pull
+  ]
+
+[[edit]]
+target = "c03032950"                                   # Ernst Fliedner
+
+  [[edit.cards]]
+  id = 0x21DE92DB                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 255, technique = 273, pressure = 198, physical = 188, intelligence = 247, agility = 216, freedom = 221 }
+  moves = [
+    { move = 0xB37CD264, level = 1 },                     # Am-Bush
+    { move = 0x79E3E635, level = 23 },                    # Racing Flame
+    { move = 0x47380F29, level = 39 },                    # Echo Ball
+    { move = 0x7DAF3139, level = 63 },                    # Emperor Penguin No. 2
+  ]
+
+[[edit]]
+target = "c03032960"                                   # Emmanuel Ewerz
+
+  [[edit.cards]]
+  id = 0x0AF3C118                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 193, technique = 201, pressure = 247, physical = 225, intelligence = 293, agility = 236, freedom = 217 }
+  moves = [
+    { move = 0x7EEA4EE9, level = 1 },                     # Blade Attack
+    { move = 0xB37CD264, level = 3 },                     # Am-Bush
+    { move = 0x4BD584B7, level = 16 },                    # Power Charge
+    { move = 0xB13A6C3D, level = 50 },                    # Zigzag Flame
+  ]

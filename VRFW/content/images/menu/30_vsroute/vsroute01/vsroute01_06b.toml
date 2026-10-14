@@ -3,7 +3,7 @@
 # dots' atlas (packed into a new texture of it), set on the 6th dot of a ranked piece (a chain «C» piece's chain rank,
 # or the piece's best rank by the framework's rule VRFW_MatchRank, 2.0.48). Our own drawing: research/scripts/chronicle_rank_badges.py.
 # Other mods may declare other sprites of this atlas (Inazuma Fantasy: clear_icon04); sprite names differ, so they merge.
-schema = "vr_framework.image/1"
+schema = "VRFW.image/1"
 
 [[sprite]]
 atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"

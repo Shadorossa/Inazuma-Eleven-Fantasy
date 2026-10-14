@@ -1,0 +1,28 @@
+# «Tormenta del tigre» (Tiger Storm, whs01020 and whs01020_or, same cut-in; fire shot of two players, cut-in
+# ev60_01020): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0500, the
+# ball shot level high up): the fire rings stacked round it, the tiger silhouette cards, the swirls and flame aura on
+# it, the two fire sheets and four fire trails streaming behind it, and its TIGER (the cut-in's own waza model) running
+# behind it, instead of the plain fire special-shot aura (ega0075c).
+# The object is ev6102ts00 (effect/event/ev60/ev6102ts00/), built by research/scripts/tiger_storm_ball_fx.py from the
+# cut-in's effect object ev60010200 and the waza model ev60_00960 (baked as rigid segments by waza_replay_aura.py, as
+# Last Resort's dragon): the cut-in's motion from c0500's start (376) replayed with every part and the tiger in their
+# place relative to the ball, then held at frame 432 (the tiger's own motion over 418-432 going on, back and forth),
+# ball at the origin flying +Z, x1. Left out: the camera-aimed ball lights and speed lines. docs/game/media/tiger-storm-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\tiger_storm_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "tiger_storm"
+from = "ega0075c"
+object = "effect/event/ev60/ev6102ts00/ev6102ts00.objbin"
+
+[[shot_aura]]
+name = "tiger_storm"
+when = { techniques = ["whs01020", "whs01020_or"] }
+aura = "tiger_storm"
+like = "ega0075c"
+# the aura's replay (56 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 56 }

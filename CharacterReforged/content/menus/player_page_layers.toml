@@ -1,0 +1,144 @@
+# Character Reforged: the player page's own layers on the plate screens (personal_plate_menu, _for_datafile): the
+# 8-stat radar (the status base / graph objects redirected to the page's copies evt_soccer11_05 / evt_soccer11_06_9 /
+# evt_soccer11_07_9, the Suerte label layer, 8 numbers), the Hiper page's card layers (evt_ph_*: move rows, armour tag,
+# skill detail, tension rows, aura face, the PEG pool), the Pasivas strips' select object. Moved from Inazuma Fantasy
+# on 2026-10-14 (its menus/102_team/personal_plate_menu.toml, personal_plate_menu_for_datafile.toml,
+# plate_peg_pool.toml and the 4 plate redirects of menus/redirects.toml; docs/refactor/aura-mods-split.md «Player
+# page»). Hand-maintained. The generated part of the page (pages, model, band / card copies, gauges, dots, hosts) is
+# player_page_layout.toml; the objects / layouts are this mod's assets (assets\gamedata\menu\obj\evt_ph_*,
+# evt_soccer11_0*; assets\menu\00_soccer\soccer11\evt_*). The career page's layers are the mod Utilities'.
+schema = "VRFW.menu/2"
+
+# ---- the plate's status base and radar: the page's copies (8 axes, the page-only locators)
+[[redirect]]
+object = "soccer11_05_formation_status_base"
+to = "evt_soccer11_05_formation_status_base"
+menus = ["personal_plate_menu", "personal_plate_menu_for_datafile"]
+
+[[redirect]]
+object = "soccer11_06_formation_status_graph_base"
+to = "evt_soccer11_06_9_formation_status_graph_base"
+menus = ["personal_plate_menu", "personal_plate_menu_for_datafile"]
+
+[[redirect]]
+object = "soccer11_06_p1_formation_status_graph_param_num"
+to = "evt_soccer11_06_p1_9_formation_status_graph_param_num"
+menus = ["personal_plate_menu", "personal_plate_menu_for_datafile"]
+
+[[redirect]]
+object = "soccer11_07_formation_status_graph"
+to = "evt_soccer11_07_9_formation_status_graph"
+menus = ["personal_plate_menu", "personal_plate_menu_for_datafile"]
+
+# ---- personal_plate_menu
+[[patch]]
+menu = "personal_plate_menu"
+layer = "soccer11_06_p1_formation_status_graph_param_num"
+count = 8
+
+[[patch]]
+menu = "personal_plate_menu"
+layer = "soccer11_07_formation_status_graph"
+count = 2
+
+[[patch]]
+menu = "personal_plate_menu"
+layer = "soccer11_20_formation_team_passive"
+object = "soccer11_20_formation_team_passive_select"
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_soccer11_06_9x_formation_status_graph_extra", object = "evt_soccer11_06_9x_formation_status_graph_extra", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_06_formation_status_graph_base", groups = [{ group = "personal_plate_menu", after = "soccer11_06_formation_status_graph_base" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_move_row", object = "evt_ph_move_row", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_09_formation_chara_skill", groups = [{ group = "personal_plate_menu", flags = [0, 0, 1, 0, 1, 0], after = "soccer11_09_formation_chara_skill" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_armour_tag", object = "evt_ph_armour_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_move_row", groups = [{ group = "personal_plate_menu", flags = [0, 0, 1, 0, 1, 0], after = "evt_ph_move_row" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_skill_detail_info", object = "evt_ph_skill_detail_info", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "team02_02_skill_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "team02_02_skill_detail_info" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_tension", object = "evt_ph_tension", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_skill_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_skill_detail_info" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_face", object = "evt_ph_face", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "team00_30_aura_keshin_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "team00_30_aura_keshin_detail_info" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+res = [
+    { path = "#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx", after = "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx" },
+    { path = "#/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4tx", after = "ega1450a_2" },
+    "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx",
+]
+
+# ---- the PEG / SP pool on the Hiper page's spirit card (was IF menus/102_team/plate_peg_pool.toml)
+# 2026-10-04 (user): a keshin / armour card shows its pool «170 PEG» ON the card, centred, in the TENSIÓN digits, drawn
+# BEHIND the «Armadura» tag (evt_ph_armour_tag, priority 580) and over the card (evt_ph_face, 570). Layer
+# evt_ph_peg_pool: one more instance of the extra rows' TENSIÓN group object evt_ph_tension (number primitive + the «T»
+# slot, which the Lua swaps for «PEG»; squares, track and label hidden); research/grafts/plate_hiper_plate
+# (EVT_PHI.PoolTag) scales and places it on the card. Drawn only while the mod Aura Points answers CMND_EVT_PEG_INFO.
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "evt_ph_peg_pool", object = "evt_ph_tension", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_tension", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_tension" }] }
+
+# the attach row of evt_ph_tension instance 0 (0x82D588EA) repeated for evt_ph_peg_pool (0x4525A873), instance 0
+[[object_set]]
+object = "evt_ph_skill_detail_info"
+copy = [
+  { param = "NullLayerName", match = { 3 = 0x82D588EA, 4 = 0 }, values = { 3 = 0x4525A873, 4 = 0 }, optional = true },
+  { param = "NullLayerName", match = { 3 = 0x82D588EA, 4 = 0 }, values = { 3 = 0x4525A873, 4 = 1 }, optional = true },
+  { param = "NullLayerName", match = { 3 = 0x82D588EA, 4 = 0 }, values = { 3 = 0x4525A873, 4 = 2 }, optional = true }
+]
+
+# ---- personal_plate_menu_for_datafile
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+layer = "soccer11_06_p1_formation_status_graph_param_num"
+count = 8
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+layer = "soccer11_07_formation_status_graph"
+count = 2
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_soccer11_06_9x_formation_status_graph_extra", object = "evt_soccer11_06_9x_formation_status_graph_extra", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_06_formation_status_graph_base", groups = [{ group = "personal_plate_menu", flags = [0, 1, 0, 0, 1, 0], after = "soccer11_06_formation_status_graph_base" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_move_row", object = "evt_ph_move_row", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_09_formation_chara_skill", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_09_formation_chara_skill" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_armour_tag", object = "evt_ph_armour_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_move_row", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_move_row" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_skill_detail_info", object = "evt_ph_skill_detail_info", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "team02_02_skill_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "team02_02_skill_detail_info" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_tension", object = "evt_ph_tension", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_skill_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_skill_detail_info" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_face", object = "evt_ph_face", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "team00_30_aura_keshin_detail_info", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "team00_30_aura_keshin_detail_info" }] }
+
+# evt_ph_peg_pool after evt_ph_tension of this menu: declared after it (patches apply in file order)
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "evt_ph_peg_pool", object = "evt_ph_tension", count = 3, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_tension", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_tension" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+res = [
+    { path = "#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx", after = "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx" },
+]

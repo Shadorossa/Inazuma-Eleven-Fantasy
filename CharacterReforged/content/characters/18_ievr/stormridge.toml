@@ -1,0 +1,285 @@
+schema = "VRFW.character/2"
+# Character Reforged · Stormridge · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11070010"                                   # Floramira Pagotta
+
+  [[edit.cards]]
+  id = 0x4EDF13AC                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 271, control = 244, technique = 273, pressure = 198, physical = 200, intelligence = 240, agility = 176, freedom = 213 }
+  moves = [
+    { move = 0xAB6422AC, level = 4 },                     # Phantom Shot
+    { move = 0x7C93E472, level = 16 },                    # Ghoulish Glare
+    { move = 0x18C035B4, level = 35 },                    # Ghost Pull
+    { move = 0x0E0A3F7A, level = 48 },                    # Spatial Portal
+  ]
+
+[[edit]]
+target = "c11070020"                                   # Kaz Bloomfield
+
+  [[edit.cards]]
+  id = 0x65F2406F                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 192, technique = 204, pressure = 239, physical = 259, intelligence = 281, agility = 196, freedom = 230 }
+  moves = [
+    { move = 0x0E0A3F7A, level = 5 },                     # Spatial Portal
+    { move = 0x7C93E472, level = 18 },                    # Ghoulish Glare
+    { move = 0x1A868BED, level = 36 },                    # Clone Defence
+    { move = 0x18C035B4, level = 54 },                    # Ghost Pull
+  ]
+
+[[edit]]
+target = "c11070030"                                   # Govin Castlehoven
+
+  [[edit.cards]]
+  id = 0x7CE9712E                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 194, technique = 207, pressure = 242, physical = 255, intelligence = 290, agility = 181, freedom = 251 }
+  moves = [
+    { move = 0x24627633, level = 1 },                     # Fortress of Despair
+    { move = 0x7C93E472, level = 16 },                    # Ghoulish Glare
+    { move = 0xA2BF7076, level = 27 },                    # Side Swipe
+    { move = 0xAD6E4BF9, level = 56 },                    # Harvest
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x9BF8BCD4, level = 1 },                     # Warborg [aura]
+  ]
+
+[[edit]]
+target = "c11070040"                                   # Blaine Westbrook
+
+  [[edit.cards]]
+  id = 0x33A8E7E9                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 343, control = 248, technique = 244, pressure = 182, physical = 208, intelligence = 207, agility = 169, freedom = 221 }
+  moves = [
+    { move = 0x96040B1C, level = 1 },                     # Shadow Empress
+    { move = 0x7C93E472, level = 17 },                    # Ghoulish Glare
+    { move = 0x15138722, level = 23 },                    # Will-o'-the-Wisp Shot
+    { move = 0xC16279D1, level = 52 },                    # Field of Force
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xD3712971, level = 1 },                     # Clearbunny [aura]
+  ]
+
+[[edit]]
+target = "c11070050"                                   # Alistar Montero
+
+  [[edit.cards]]
+  id = 0x2AB3D6A8                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 239, technique = 259, pressure = 196, physical = 220, intelligence = 231, agility = 176, freedom = 213 }
+  moves = [
+    { move = 0xF7E49F60, level = 5 },                     # Magnetism
+    { move = 0x20D01E43, level = 9 },                     # Hey Presto
+    { move = 0x4FE09C7A, level = 32 },                    # Acrobatic Keep
+    { move = 0x31ABD82E, level = 56 },                    # Circus Block
+  ]
+
+[[edit]]
+target = "c11070060"                                   # Elijah Singleton
+
+  [[edit.cards]]
+  id = 0x019E856B                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 248, technique = 254, pressure = 193, physical = 209, intelligence = 238, agility = 181, freedom = 225 }
+  moves = [
+    { move = 0x7C93E472, level = 3 },                     # Ghoulish Glare
+    { move = 0x19025F83, level = 12 },                    # Quick Draw
+    { move = 0x0455B9CE, level = 21 },                    # Run Ball Run
+    { move = 0xDBFD9CFE, level = 41 },                    # Big Ball Trick
+  ]
+
+[[edit]]
+target = "c11070070"                                   # Kiona Blackwell
+
+  [[edit.cards]]
+  id = 0x1885B42A                                         # GK/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 220, control = 203, technique = 182, pressure = 248, physical = 247, intelligence = 236, agility = 247, freedom = 225 }
+  moves = [
+    { move = 0x91AE65A1, level = 4 },                     # Giant Spider
+    { move = 0xD534C4E6, level = 11 },                    # Silent Inkstroke
+    { move = 0x9B3048AB, level = 18 },                    # Shadow Catch
+    { move = 0x822B79EA, level = 57 },                    # Somersault Stamp
+  ]
+
+[[edit]]
+target = "c11070080"                                   # Lennox Portsman
+
+  [[edit.cards]]
+  id = 0x9F1DA8E5                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 181, technique = 185, pressure = 243, physical = 288, intelligence = 266, agility = 196, freedom = 221 }
+  moves = [
+    { move = 0x00196EC2, level = 1 },                     # Earthquake
+    { move = 0x05567847, level = 15 },                    # Runaway Train
+    { move = 0x637C031A, level = 32 },                    # No Escape
+    { move = 0x17110E3B, level = 46 },                    # Jumbo Sandwich
+  ]
+
+[[edit]]
+target = "c11070090"                                   # Rohan Snatchett
+
+  [[edit.cards]]
+  id = 0x860699A4                                         # MF/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 231, technique = 243, pressure = 205, physical = 213, intelligence = 227, agility = 181, freedom = 225 }
+  moves = [
+    { move = 0x25276CB9, level = 1 },                     # Solar Surprise
+    { move = 0xAF150D21, level = 15 },                    # Swallow Counter
+    { move = 0xD0A1DBC3, level = 30 },                    # Bungee Ball Burst
+    { move = 0x3B8D915B, level = 40 },                    # Meteor Shower
+  ]
+
+[[edit]]
+target = "c11070100"                                   # Marinus Courier
+
+  [[edit.cards]]
+  id = 0x560648DA                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 316, control = 244, technique = 231, pressure = 190, physical = 211, intelligence = 205, agility = 176, freedom = 217 }
+  moves = [
+    { move = 0x18019E0A, level = 3 },                     # Double Grenade
+    { move = 0x0CF4E55C, level = 8 },                     # Double Touch
+    { move = 0xEFFC6FA8, level = 25 },                    # Warhead
+    { move = 0x43B5739B, level = 46 },                    # Lightning Bolt
+  ]
+
+[[edit]]
+target = "c11070110"                                   # Umbren Lightwood
+
+  [[edit.cards]]
+  id = 0x4F1D799B                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 302, control = 247, technique = 236, pressure = 196, physical = 204, intelligence = 211, agility = 174, freedom = 217 }
+  moves = [
+    { move = 0x7C93E472, level = 1 },                     # Ghoulish Glare
+    { move = 0xB0BC314A, level = 18 },                    # Spin Meister
+    { move = 0x20D01E43, level = 36 },                    # Hey Presto
+    { move = 0xA2BF7076, level = 53 },                    # Side Swipe
+  ]
+
+[[edit]]
+target = "c11070120"                                   # Zelane Whitlow
+
+  [[edit.cards]]
+  id = 0x64302A58                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 205, technique = 190, pressure = 215, physical = 255, intelligence = 215, agility = 231, freedom = 234 }
+  moves = [
+    { move = 0x41AEB4DF, level = 1 },                     # Crystal Barrier
+    { move = 0xE9968761, level = 8 },                     # Rocket Kobushi
+    { move = 0xD471DE6C, level = 26 },                    # Snakebite
+    { move = 0xB633C4E1, level = 44 },                    # Photon Crash
+  ]
+
+[[edit]]
+target = "c11070130"                                   # Rael Abbeybogy
+
+  [[edit.cards]]
+  id = 0x7D2B1B19                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 258, control = 246, technique = 259, pressure = 194, physical = 197, intelligence = 231, agility = 173, freedom = 213 }
+  moves = [
+    { move = 0x24E5068E, level = 4 },                     # Fractal Repeller
+    { move = 0x18C035B4, level = 14 },                    # Ghost Pull
+    { move = 0x166B0073, level = 23 },                    # Super Armadillo
+    { move = 0x6633159F, level = 53 },                    # Gravitation
+  ]
+
+[[edit]]
+target = "c11070140"                                   # Dawsey Geistfeld
+
+  [[edit.cards]]
+  id = 0x326A8DDE                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 293, control = 246, technique = 230, pressure = 193, physical = 204, intelligence = 205, agility = 181, freedom = 217 }
+  moves = [
+    { move = 0x61FB16FD, level = 5 },                     # Divine Arrows
+    { move = 0x7C93E472, level = 13 },                    # Ghoulish Glare
+    { move = 0x0E0A3F7A, level = 35 },                    # Spatial Portal
+    { move = 0x568262FA, level = 41 },                    # Dark Tornado
+  ]
+
+[[edit]]
+target = "c11070150"                                   # Volk Lorius
+
+  [[edit.cards]]
+  id = 0x2B71BC9F                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 263, control = 247, technique = 265, pressure = 196, physical = 196, intelligence = 236, agility = 176, freedom = 217 }
+  moves = [
+    { move = 0x15138722, level = 1 },                     # Will-o'-the-Wisp Shot
+    { move = 0x7C93E472, level = 17 },                    # Ghoulish Glare
+    { move = 0x6ADE9E01, level = 31 },                    # Illusory Ball
+    { move = 0x1A868BED, level = 44 },                    # Clone Defence
+  ]
+
+[[edit]]
+target = "c11070160"                                   # Drexel Kixley
+
+  [[edit.cards]]
+  id = 0x005CEF5C                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 217, control = 189, technique = 186, pressure = 224, physical = 279, intelligence = 259, agility = 193, freedom = 225 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0x17110E3B, level = 9 },                     # Jumbo Sandwich
+    { move = 0x2FB941B3, level = 28 },                    # Stone Prison
+    { move = 0x087999EE, level = 54 },                    # Heel Drop
+  ]
+
+[[edit]]
+target = "c11070500"                                   # Wythers Moonridge
+
+  [[edit.cards]]
+  id = 0x510FE006                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 231, control = 246, technique = 246, pressure = 186, physical = 205, intelligence = 221, agility = 190, freedom = 240 }
+  moves = [
+    { move = 0x21127474, level = 1 },                     # Ultra Moon
+    { move = 0x7C93E472, level = 10 },                    # Ghoulish Glare
+    { move = 0x1A868BED, level = 33 },                    # Clone Defence
+    { move = 0x78218C02, level = 44 },                    # Duskfall
+  ]
+
+[[edit]]
+target = "c11070510"                                   # Mirela Delisle
+
+  [[edit.cards]]
+  id = 0x4814D147                                         # DF/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 182, technique = 180, pressure = 234, physical = 269, intelligence = 258, agility = 207, freedom = 230 }
+  moves = [
+    { move = 0x93885A64, level = 2 },                     # Fire Drill
+    { move = 0xB5B7108F, level = 15 },                    # Shadow Stitch
+    { move = 0x6633159F, level = 36 },                    # Gravitation
+    { move = 0x592A96B4, level = 48 },                    # Afterimage
+  ]

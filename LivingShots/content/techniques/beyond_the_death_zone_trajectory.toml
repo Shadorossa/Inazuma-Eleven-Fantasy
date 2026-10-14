@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Triángulo letal triturador (Beyond the Death Zone, whs03180 and whs03180_or,
+# same cut-in ev60_03185; whs03180_or covered by the base move's rule). Nacho 2026-10-10: every aura move its own
+# flight, heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the ball is shot out of the fifth triangle 19.87 m up and comes down a straight ~48 deg line;
+# in the match it comes down that line into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move beyond_the_death_zone):
+# the event ball (s00) of ev60_03185 c0500, event frames 1382-1410: [[0.00, 19.87], [0.68, 19.23], [5.25, 14.09],
+# [13.38, 5.11]] (0.03 m; two points 0.12 m): 19.87 m -> 5.11 m over 13.38 m = 47.8 deg; the line brought to 2.0 m at
+# the goal = 16.20 m long.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Triángulo letal triturador (whs03180).
+[[edit]]
+target = "whs03180"
+trajectory = { goal_points = [[16.2, 19.87, 999, 8.1], [0.0, 2.0]], unblockable = false }

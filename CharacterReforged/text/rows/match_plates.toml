@@ -1,0 +1,32 @@
+# Character Reforged › the match plates' slot tags (the aura command's selected slot: RB + D-pad switches; graft
+# hiper_btn, «<move> · Aura»), copied 2026-10-14 from Inazuma Fantasy's text\rows\hiper_slots.toml so the tags show
+# without IF (the base's plates slot uses the selected-slot layout since Character Reforged 1.7.10). The mix slot holds
+# a Mix-Max OR a «Modo cambio»: its generic name is «Modo cambio» (owner 2026-10-12).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "evt_hs_tag_aura"
+fallback = false
+es = "Aura"
+en = "Aura"
+fr = "Aura"
+de = "Aura"
+it = "Aura"
+pt = "Aura"
+ja = "オーラ"
+zh_hans = "灵气"
+zh_hant = "靈氣"
+
+[[row]]
+id = "evt_hs_tag_mix"
+fallback = false
+es = "Modo cambio"
+en = "Change Mode"
+fr = "Mode changement"
+de = "Wechselmodus"
+it = "Modalità cambio"
+pt = "Modo mudança"
+ja = "チェンジモード"
+zh_hans = "转换模式"
+zh_hant = "轉換模式"

@@ -1,0 +1,27 @@
+# «Gran explosión» (Great Blaster, whs02180 and whs02180_mm, same cut-in; void shot of two players, cut-in ev60_02180):
+# while the ball flies to the goal after the cut-in it keeps the look of the cut-in's shot cut (c0300): its white star
+# auras and ball cards, the blue / yellow tails and tail auras streaming behind it and the back light, GROWING along the
+# flight as the cut-in grows them (owner 2026-10-12: «creciente»), instead of the plain void special-shot aura
+# (ega0075e).
+# The object is ev6218gb00 (effect/event/ev60/ev6218gb00/), built by research/scripts/great_blaster_ball_fx.py from the
+# cut-in's effect object ev60021800: c0300 replayed from the kick (346), held at 392, its tails turning on; the parts'
+# sizes follow the scale curve of docs/game/media/great-blaster-ball-fx.md §2 (aura ~4.8 -> 7.8 m, tails ~25 -> 44 m
+# over the first ~2.2 s, the back light growing no faster than the tails), ball at the origin flying +Z, x1.
+# The trigger copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\great_blaster_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "great_blaster"
+from = "ega0075e"
+object = "effect/event/ev60/ev6218gb00/ev6218gb00.objbin"
+
+[[shot_aura]]
+name = "great_blaster"
+when = { techniques = ["whs02180", "whs02180_mm"] }
+aura = "great_blaster"
+like = "ega0075e"
+# the aura's replay (46 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 46 }

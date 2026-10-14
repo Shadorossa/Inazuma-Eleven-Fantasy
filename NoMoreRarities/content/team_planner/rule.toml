@@ -1,0 +1,7 @@
+schema = "utilities.team_planner/1"
+# No More Rarities' rule for Utilities' team planner («Planificador de equipo», docs/game/ui/team-planner.md §2.4; moved
+# from Inazuma Fantasy 2026-10-14): one card per character, every normal player is «Leyenda» (rarity 4,
+# docs/game/characters/rarity-removal.md). The picker and the ghosts show the normal look (display rarity 4) and the
+# character itself replaces his ghost: any owned copy of his card counts, whatever its rarity value.
+display_rarity = 4
+owned_rarities = "any"

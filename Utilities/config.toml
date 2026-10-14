@@ -181,9 +181,58 @@ beaten_only_difficulties = ["Heroica", "HeroicaPlus"]
 # never_modes: game modes (keys of the VR-Framework's game_modes.toml) where the beaten-only rule never applies.
 never_modes = ["story"]
 
-[skill_board]
-# The ability board's keshin armour slot (the orb beside a keshin piece, open from the piece's level + 5): retail sets it
-# only when the player owns a copy of the armour item. true = setting it on a keshin that has an armour for his card
-# (change_aura_skill_config) adds one copy of the armour item first, so the slot never needs the item (the game's own
-# rule otherwise). false = the game's rule.
-armour_without_item = true
+[tech_preview]
+# Technique preview (docs/game/ui/technique-preview.md): «<RS> Previsualizar» on the special move card of the
+# «Supertécnicas» list plays the move's cut-in full screen with a player of the active squad (the button: the action
+# «Previsualizar supertécnica» of the game's «Configuración de controles», default RS / P). Always on; these are tunables.
+# The squad's first `lineup` members are the starting eleven (the performer is looked for there first, then on the bench).
+lineup = 11
+# Skill category (1 shoot, 2 dribble, 3 block, 4 catch) -> the card's main position that performs it (1 GK, 2 FW, 3 MF,
+# 4 DF).
+positions = { "1" = 2, "2" = 3, "3" = 4, "4" = 1 }
+# true = a player whose card learns the move (its learn list) is preferred over the first one at the position.
+prefer_learners = true
+# The preview plays only while one of `need_any_menu` is open (the menu-scene team dock: from the title or the main
+# hub) and none of `off_with_menus` (Chronicle / story field: their scene plays events by itself).
+need_any_menu = ["team_dock_common_top_menu", "soccer_top_menu"]
+off_with_menus = ["chronicle_mode_top_menu", "team_dock_menu_rpg_battle"]
+# Menus hidden and suspended while the cut-in plays (when open), and the header layers hidden in `bar_menus`.
+hide_menus = ["ability_list_menu", "sub_window", "item_filter_menu", "ability_learning_board_menu", "personal_plate_menu", "team_dock_formation_menu", "soccer_formation_menu", "soccer_team_dock_menu", "team_dock_common_top_menu", "soccer_top_menu"]
+bar_menus = ["team_dock_common_top_menu", "soccer_top_menu", "soccer_team_dock_menu"]
+bar_layers = ["mainmenu90_01_header", "mainmenu90_03_header_rank", "mainmenu90_31_doc_item", "mainmenu90_05_content_guide_line01", "mainmenu90_06_content_guide_line03", "mainmenu01_06_base_button_guide"]
+# The one-model menu and its layer that hold the performer's model while the cut-in plays.
+carrier_menu = "chara_model_only_view_menu"
+carrier_layer = "rpg99_99_chara_model_only_view"
+# The menu scene's backdrop (craft object) behind the cut-in; "" = none.
+backdrop = "bg10000"
+# The prompt's offset from its place on the card (menu px, x right / y up).
+hint_x = 0
+hint_y = 0
+# Fades (seconds), the longest wait for the performer's model (frames) and for the cut-in (seconds).
+fade_s = 0.3
+bgm_fade_s = 0.5
+model_wait_frames = 300
+max_seconds = 120
+# true = B ends the cut-in (the game's own hold-to-skip works too).
+back_skips = true
+# true = one log line per move a card asks about (the play itself always logs).
+log_queries = false
+
+# «Cambiar forma» in the retail «Ver apariencia» (docs/game/mechanics/form-viewer.md §8.3): the form indicator
+# at the top right of the shown character (only while he has more than one form): a dark tile with the form's glyph,
+# then a light tile under the bound key's glyph. Screen px of a 1920 x 1080 menu: badge_x = the row's right edge,
+# badge_y = its vertical centre (y down).
+[view_forms]
+badge_x = 1720
+badge_y = 230
+# Scale of the whole row (tiles, gap and key glyph).
+badge_scale = 1
+# Draw priority of the tiles (over the 3D model and the formation board); the key glyph draws one above.
+badge_priority = 690
+# The tiles' side and the gap between them (screen px at scale 1).
+tile_size = 52
+tile_gap = 6
+# The key glyph's text scale and its nudge inside the light tile (screen px; key_dy < 0 = up).
+key_scale = 0.9
+key_dx = 0
+key_dy = 0

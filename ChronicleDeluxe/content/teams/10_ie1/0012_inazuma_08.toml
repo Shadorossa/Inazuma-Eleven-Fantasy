@@ -1,0 +1,52 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): «Ases de Inazuma» (Inazuma '08, イナズマ'08) of IE1, the last rival of the lower branch of
+# the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/chain_sonny.toml). The same team key as the set-aside
+# Chronicles Deluxe's «Inazuma '08» (ct_iy_08, the same team id and the same 11 players): while chronicles_deluxe is
+# active this file is left out and that mod's team (with its CPU loadouts and crest item) is used. Here: the wiki lineup
+# (docs/game/data/wiki-missing-teams.csv, https://inazuma-eleven.fandom.com/wiki/Inazuma_'08) with each card's own
+# moves, the formation / tactics of the retail «FF National Pick A» legend team (as Chronicles Deluxe's), the wiki crest
+# (WebP -> PNG, no resize).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+
+[[team]]
+name = "ct_iy_08"
+key = "evt_ct_iy_08"
+based_on = "tm_cro_legend_ie1_12"         # FF National Pick A (its formation, tactics, team skills)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (no VR kit of the wiki's)
+level = 85
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x8FE0009B, slot = 0, number = 1, rarity_step = 1 },   # Albert Green (GK)
+  { card = 0xA0402FEA, slot = 1, number = 2, rarity_step = 1 },   # Newton Flust (DF)
+  { card = 0xE80811F1, slot = 2, number = 3, rarity_step = 1 },   # Ricky Clover (DF)
+  { card = 0xB678FCB6, slot = 3, number = 4, rarity_step = 1 },   # Tammy Fielding (DF)
+  { card = 0xBADFCAC5, slot = 4, number = 5, rarity_step = 1 },   # Light Nobel (MF)
+  { card = 0x62821416, slot = 5, number = 6, rarity_step = 1 },   # Steve Eagle (MF)
+  { card = 0xD0A05E79, slot = 6, number = 7, rarity_step = 1 },   # Arion Matlock (MF)
+  { card = 0x810188B1, slot = 7, number = 8, rarity_step = 1 },   # Cameron Morefield (MF)
+  { card = 0xC88BDC9D, slot = 8, number = 9, rarity_step = 1 },   # Edward Gladstone (MF)
+  { card = 0x3F84F4AD, slot = 9, number = 10, rarity_step = 1 },  # Neil Turner (FW)
+  { card = 0xFF85EDF6, slot = 10, number = 11, rarity_step = 1, captain = true },   # Johan Tassman (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/wiki/inazuma_08.png"   # the wiki's Inazuma '08 emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Ases de Inazuma"
+short = "Ases de Inazuma"
+[team.text.en]
+name = "Inazuma '08"
+short = "Inazuma '08"
+[team.text.ja]
+name = "イナズマ'08"
+short = "イナズマ'08"
+
+# each player plays its card's first 4 moves (the engine reads them from the card)
+[[edit]]
+target = "ct_iy_08"
+card_moves = 4

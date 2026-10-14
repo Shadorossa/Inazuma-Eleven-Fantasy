@@ -1,0 +1,158 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/eff/ev60_95030_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev63_01150_2_eff.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["ev60950300", "common/effect/event/ev60/ev60950300/ev60950300.objbin", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["ev60950300"]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 5
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 6
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 7
+args = ["ev60950300", "c0100", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 8
+args = ["ev60950300", 1]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 9
+frame = 146
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 10
+frame = 146
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 11
+frame = 146
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 12
+frame = 146
+args = ["ev60950300", "c0200", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 13
+frame = 146
+args = ["ev60950300", 1]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 14
+frame = 196
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 15
+frame = 196
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 16
+frame = 196
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 17
+frame = 196
+args = ["ev60950300", "c0300", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 18
+frame = 196
+args = ["ev60950300", 1]
+
+[[entry]]
+command = "ATTACH_AURA"
+at = 19
+frame = 196
+args = ["b000001_s01_p<VARIATION>", "ball_aura_freeze_shot", 0, 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 20
+frame = 202
+args = ["b000001_s01_p<VARIATION>", 0]
+
+[[entry]]
+command = "PLAY_EFFECT"
+at = 21
+frame = 258
+args = ["ega0001", 1, 0, 0, 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 22
+frame = 258
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 23
+frame = 258
+args = ["ev60950300", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 24
+frame = 258
+args = ["ev60950300", "c0400", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 25
+frame = 258
+args = ["ev60950300", 1]
+
+[[entry]]
+command = "ATTACH_AURA"
+at = 26
+frame = 258
+args = ["b000001_s01_p<VARIATION>", "ball_aura_cross_fire", 0, 1]
+
+[[entry]]
+command = "ATTACH_AURA"
+at = 27
+frame = 258
+args = ["b000001_s02_p<VARIATION>", "ball_aura_cross_fire", 0, 1]
+
+[[entry]]
+command = "ATTACH_AURA"
+at = 28
+frame = 258
+args = ["b000001_s03_p<VARIATION>", "ball_aura_cross_fire", 0, 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 29
+frame = 379
+args = ["ev60950300", 0]

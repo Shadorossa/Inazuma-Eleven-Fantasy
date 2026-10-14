@@ -1,11 +1,12 @@
 -- Battle Bay Deluxe: helpers shared by campaign.lua and draft.lua (one VM: draft.lua is required by campaign.lua).
 -- Numbers: Lua 5.2 doubles. Hashes are u32 (0 .. 2^32-1); the game's T2B ints come signed (u32() fixes them).
--- The 64-bit seeded generator is SplitMix64 on two 32-bit halves (bit32), the generator bb_chronicle_teams.dll used.
+-- The 64-bit seeded generator is the framework's SplitMix64 stream (VRFW.rng.splitmix64), the generator
+-- bb_chronicle_teams.dll used.
 
 local U = {}
 
-local band, bor, bxor = bit32.band, bit32.bor, bit32.bxor
-local lshift, rshift = bit32.lshift, bit32.rshift
+local band, bxor = bit32.band, bit32.bxor
+local rshift = bit32.rshift
 local floor = math.floor
 local TWO32 = 4294967296
 U.TWO32 = TWO32
@@ -76,76 +77,18 @@ end
 
 -- ------------------------------------------------------------------------------------------------ SplitMix64
 
-local function add64(ah, al, bh, bl)
-  local lo = al + bl
-  local carry = 0
-  if lo >= TWO32 then
-    lo = lo - TWO32
-    carry = 1
-  end
-  return (ah + bh + carry) % TWO32, lo
-end
-
--- (a * b) mod 2^64 on 16-bit limbs (every partial sum stays below 2^53)
-local function mul64(ah, al, bh, bl)
-  local a0, a1, a2, a3 = al % 65536, floor(al / 65536), ah % 65536, floor(ah / 65536)
-  local b0, b1, b2, b3 = bl % 65536, floor(bl / 65536), bh % 65536, floor(bh / 65536)
-  local c0 = a0 * b0
-  local c1 = a0 * b1 + a1 * b0
-  local c2 = a0 * b2 + a1 * b1 + a2 * b0
-  local c3 = a0 * b3 + a1 * b2 + a2 * b1 + a3 * b0
-  local r0 = c0 % 65536
-  c1 = c1 + floor(c0 / 65536)
-  local r1 = c1 % 65536
-  c2 = c2 + floor(c1 / 65536)
-  local r2 = c2 % 65536
-  c3 = c3 + floor(c2 / 65536)
-  local r3 = c3 % 65536
-  return r2 + r3 * 65536, r0 + r1 * 65536
-end
-
--- z ^ (z >> k), 0 < k < 32
-local function xorshr(h, l, k)
-  local sl = bor(rshift(l, k), lshift(h, 32 - k))
-  return bxor(h, rshift(h, k)), bxor(l, sl)
-end
-
-local Rng = {}
-Rng.__index = Rng
-
--- a generator seeded with the 64-bit value hi:lo
+-- a generator seeded with the 64-bit value hi:lo: the framework's SplitMix64 stream (VRFW.rng.splitmix64, the one
+-- generator API of the framework; bit-exact with the generator bb_chronicle_teams.dll used): g:next() -> hi, lo of the
+-- next 64-bit output; g:below(n) -> the output mod n (n > 0); g:shuffle(v) -> Fisher-Yates over a 1-based array (the
+-- DLL's order: i from the end down to the second element)
 function U.rng(hi, lo)
-  return setmetatable({ h = U.u32(hi), l = U.u32(lo) }, Rng)
+  return VRFW.rng.splitmix64(U.u32(hi), U.u32(lo))
 end
 
 -- a seed from a Lua number (a config value: exact up to 2^53) as hi, lo
 function U.split64(n)
   n = floor(math.max(0, n or 0))
   return floor(n / TWO32) % TWO32, n % TWO32
-end
-
--- the next 64-bit output as hi, lo
-function Rng:next()
-  self.h, self.l = add64(self.h, self.l, 0x9E3779B9, 0x7F4A7C15)
-  local h, l = xorshr(self.h, self.l, 30)
-  h, l = mul64(h, l, 0xBF58476D, 0x1CE4E5B9)
-  h, l = xorshr(h, l, 27)
-  h, l = mul64(h, l, 0x94D049BB, 0x133111EB)
-  return xorshr(h, l, 31)
-end
-
--- uniform in 0 .. n-1 (n > 0): the 64-bit output mod n
-function Rng:below(n)
-  local h, l = self:next()
-  return ((h % n) * TWO32 + l) % n
-end
-
--- Fisher-Yates over a 1-based array (the DLL's order: i from the end down to the second element)
-function Rng:shuffle(v)
-  for i = #v - 1, 1, -1 do
-    local j = self:below(i + 1)
-    v[i + 1], v[j + 1] = v[j + 1], v[i + 1]
-  end
 end
 
 -- a run-time seed (config seed 0): the time since the scripts started, an address of this run (ASLR) and a counter

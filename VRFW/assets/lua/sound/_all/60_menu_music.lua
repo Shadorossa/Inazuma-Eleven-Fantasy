@@ -25,14 +25,16 @@ if VRFW_MenuMusic == nil then
     if type(real) ~= "function" or real == M.wrapper then
       return false
     end
-    local function wrapped(cmd, a, ...)
+    -- the arguments go on as the caller gave them (a C command counts them: no extra nil for a call without one)
+    local function wrapped(...)
+      local cmd, a = ...
       if cmd == M.EXEC and type(a) == "number" then
         local ok, v = pcall(real, M.ASK, a)
         if ok and type(v) == "number" and v ~= 0 then
-          a = v
+          return real(cmd, v, select(3, ...))
         end
       end
-      return real(cmd, a, ...)
+      return real(...)
     end
     M.wrapper = wrapped
     funcLuaCommand = wrapped

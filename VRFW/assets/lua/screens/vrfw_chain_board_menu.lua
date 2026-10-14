@@ -14,6 +14,8 @@
 --                   retail «item get» window per item; a chest opened before the payout existed pays the next time
 --                   its board is shown; bag full: a message, retried later)
 --   S chest ....... IE3's «S» chest (kind schest): opens like a chest once every match of its branch is won with S
+--   double chest .. (kind dchest, chain-board.md §2c) opened without S: its base reward, closed again (drawn as the S
+--                   chest); opened again once its branch is all S: the special reward, then open. No reward: disabled
 --   locked ........ a message; start: nothing
 --   slot .......... a placeholder of a board shaped like an IE3 original (no team yet): the «?» plate, «Próximamente»
 --   blocked ....... the 3DS chains' red «prohibited» sign: the card shows its requirements (a win against a team, a
@@ -64,6 +66,8 @@ local T = {
   CARD_LEVEL = 2793446092, CARD_REQ = 594567671, CARD_REQ_NONE = 2976084942, CARD_UNKNOWN = 697218748,
   CARD_CHEST = 3849747250, CARD_SCHEST = 390217589, CARD_SCHEST_RULE = 4095379111,
   CARD_WINS = 3412778781,   -- vrfw_chain_card_wins (2026-10-11): the wins against the tile's team
+  -- a double chest (2026-10-14): vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty
+  CARD_DCHEST = 160501078, DCHEST_RULE = 979975818, DCHEST_HALF = 2280379239, DCHEST_EMPTY = 4144261363,
   -- a blocked tile (2026-10-12): vrfw_chain_card_blocked / _blocked_rule / _blocked_open / _blocked_msg and one row per
   -- requirement kind vrfw_chain_req_win / _chain / _team_level / _player
   CARD_BLOCKED = 1593703163, BLOCKED_RULE = 1769468095, BLOCKED_OPEN = 2346704855, BLOCKED_MSG = 2829757331,
@@ -487,6 +491,20 @@ local function Emblem(tile)
   return tc, CRC32(tile.emblem .. "_s01")
 end
 
+-- a double chest's icon (chain-board.md §2c): disabled = the padlocked chest; open = the open chest; base taken («h»)
+-- = the S chest (padlocked until its branch is all S); not opened yet = the chest (padlocked until reached)
+local function DChestIcon(t)
+  local st = VRFW_Chain.TileState(B, t)
+  if VRFW_Chain.DChestEmpty(B, t) then
+    return "vrfw_chain_icon_chest_locked"
+  elseif st == "o" then
+    return "vrfw_chain_icon_chest_open"
+  elseif st == "h" then
+    return VRFW_Chain.DChestReady(B, t) and "vrfw_chain_icon_schest" or "vrfw_chain_icon_schest_locked"
+  end
+  return VRFW_Chain.Open(B, t) and "vrfw_chain_icon_chest" or "vrfw_chain_icon_chest_locked"
+end
+
 local function DrawTile(t)
   local tile, p, s = B.tiles[t], pos[t], slot_of[t]
   local x, y = p[1], p[2]
@@ -507,6 +525,10 @@ local function DrawTile(t)
     local pre = tile.kind == "schest" and "vrfw_chain_icon_schest" or "vrfw_chain_icon_chest"
     plate = "vrfw_chain_tile_chest"
     icon = st == "o" and pre .. "_open" or (open and pre or pre .. "_locked")
+  elseif tile.kind == "dchest" then
+    -- a double chest: the chest; once its base reward is taken («h») the S chest, padlocked until the branch is all S
+    plate = "vrfw_chain_tile_chest"
+    icon = DChestIcon(t)
   elseif not open then
     plate, icon = "vrfw_chain_tile_hidden", false   -- a match not open yet: the «?» plate, no crest (IE3)
   else
@@ -526,7 +548,7 @@ local function DrawTile(t)
       QuadTex(L_EMB, s, tc, sc, x, y, ic, ic)
     end
   else
-    local ics = (tile.kind == "chest" or tile.kind == "schest" or tile.kind == "blocked") and ts * G.CHEST or ic   -- chests / signs fill their plate
+    local ics = (tile.kind == "chest" or tile.kind == "schest" or tile.kind == "dchest" or tile.kind == "blocked") and ts * G.CHEST or ic   -- chests / signs fill their plate
     Quad(L_EMB, s, icon, x, y, ics, ics)
   end
   -- the best rank's badge (defaults\match_rank.toml Badge / BadgeAtlas: a mod's own ranks bring their art)
@@ -774,6 +796,26 @@ local function DrawCard()
   elseif tile.kind == "schest" then
     lines = {Text(T.CARD_SCHEST), st == "o" and Text(T.CHEST_OPEN) or Text(T.CARD_SCHEST_RULE)}
     icon = st == "o" and "vrfw_chain_icon_schest_open" or (open and "vrfw_chain_icon_schest" or "vrfw_chain_icon_schest_locked")
+  elseif tile.kind == "dchest" then
+    local status
+    if VRFW_Chain.DChestEmpty(B, focus) then
+      status = Text(T.DCHEST_EMPTY)
+    elseif st == "o" then
+      status = Text(T.CHEST_OPEN)
+    elseif VRFW_Chain.DChestReady(B, focus) then
+      status = Text(T.CARD_CHEST)
+    elseif st == "h" then
+      status = Text(T.DCHEST_HALF)
+    elseif open then
+      status = Text(T.CARD_SCHEST_RULE)      -- no base reward: it waits for the S
+    else
+      status = Text(T.LOCKED)
+    end
+    lines = {Text(T.CARD_DCHEST), status}
+    if not VRFW_Chain.DChestEmpty(B, focus) and st ~= "o" then
+      lines[3] = Text(T.DCHEST_RULE)
+    end
+    icon = DChestIcon(focus)
   elseif tile.kind == "chest" then
     lines = {Text(T.CHEST), st == "o" and Text(T.CHEST_OPEN) or Text(open and T.CARD_CHEST or T.LOCKED)}
     icon = st == "o" and "vrfw_chain_icon_chest_open" or (open and "vrfw_chain_icon_chest" or "vrfw_chain_icon_chest_locked")
@@ -1145,10 +1187,36 @@ local function Decide()
     Message(Fmt(T.BLOCKED_MSG, ReqText(tile)))
     return
   end
+  if tile.kind == "dchest" and VRFW_Chain.DChestEmpty(B, focus) then
+    funcLuaCommand(C.SE, SE_NG)
+    Log("dchest disabled", tile.id)
+    Message(Text(T.DCHEST_EMPTY))
+    return
+  end
   if not VRFW_Chain.Open(B, focus) then
     funcLuaCommand(C.SE, SE_NG)
     Log("locked", tile.id)
     Message(Text(tile.kind == "schest" and T.SCHEST or T.LOCKED_MSG))
+    return
+  end
+  if tile.kind == "dchest" then
+    local st = VRFW_Chain.TileState(B, focus)
+    if st == "o" then
+      funcLuaCommand(C.SE, SE_OK)
+      return
+    end
+    if not VRFW_Chain.DChestReady(B, focus) then
+      funcLuaCommand(C.SE, SE_NG)
+      Log("dchest waits for S", tile.id, st)
+      Message(Text(st == "h" and T.DCHEST_HALF or T.SCHEST))
+      return
+    end
+    funcLuaCommand(C.SE, SE_DECIDE)
+    VRFW_Chain.OpenChest(B, focus)
+    DrawAll()
+    if not PayChest(focus) then
+      Message(Text(T.CHEST_OPENED))
+    end
     return
   end
   if tile.kind == "chest" or tile.kind == "schest" then

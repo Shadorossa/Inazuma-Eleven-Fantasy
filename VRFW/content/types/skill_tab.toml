@@ -12,6 +12,15 @@ category = { type = "int", min = 0, max = 255, required = true, doc = "the skill
 order = { type = "int", doc = "its place: the game's tabs have 10 × their place in the game's table (10, 20, …); ties keep the game's / declaration order" }
 group = { type = "name", doc = "a window name: CMND_VRFW_SKILL_TAB_WINDOW(group) shows only that group's tabs (a group's tabs must follow each other)" }
 hidden = { type = "bool", default = false, doc = "the tab is left out (a game tab removed)" }
+# How the tab looks and filters in the list's Lua (menu lua _all/22_skill_tabs.lua, docs/framework/card-types.md §3.3).
+# A game tab keeps the game's own icon, title and filter unless these are given; a new category needs `icon` and `text`.
+icon = { type = "int", min = 1, max = 65535, doc = "the tab icon type whose plate is drawn (a game tab's: 27-30 the move categories, 37 keshin, 38 armour, 39 Mix-Max, 40 totem, 41 bond transform, 42 awakening)" }
+icon_atlas = { type = "string", doc = "the texture the tab's own sprite comes from: its game id (0x...) or name (crc32); with icon_sprite" }
+icon_sprite = { type = "string", doc = "the sprite drawn over the plate's icon on the focused tab: its game id (0x...) or name (crc32)" }
+icon_sprite_off = { type = "string", doc = "the sprite of the unfocused tab (default: icon_sprite)" }
+text = { type = "string", doc = "the tab's title: a text key (<mod>.<name>, in the mod's text keys) or a text id (0x...)" }
+filter = { type = "int", min = 0, max = 255, doc = "the filter window's config of the tab (game: 6-9 the move tabs, 11-16 the aura tabs; default: the first game tab of its kind)" }
+filter_group = { type = "int", min = 0, max = 255, doc = "the saved filter group of the tab (game: 3 moves, 4 auras; default: the first game tab of its kind)" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
 
 [entry.AuraListHide]

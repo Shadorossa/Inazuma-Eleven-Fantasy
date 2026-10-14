@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Estocada samurái (Bushin Blades, whs01865, cut-in ev60_01865). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0400) the ball is cut down from 16.48 m and dives ~40 deg, easing out to 3.85 m 17.3 m on, its last
+# line ~33 deg; in the match it comes down that profile with its last line extended into the goal at 2.0 m, counted
+# back from the goal (a shorter shot starts at the profile's height at the kick).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move bushin_blades): the event ball (s00) of
+# ev60_01865 c0400, event frames 1404-1486: [[0.00, 16.48], [5.35, 11.92], [10.59, 8.15], [17.30, 3.85]] (0.07 m);
+# the last line (32.7 deg) brought to 2.0 m = 20.19 m from the start.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Estocada samurái (whs01865).
+[[edit]]
+target = "whs01865"
+trajectory = { goal_points = [[20.19, 16.48], [14.84, 11.92], [9.6, 8.15], [0.0, 2.0]], unblockable = false }

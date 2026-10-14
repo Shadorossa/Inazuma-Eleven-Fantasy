@@ -1,0 +1,143 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction",
+  "EVT_OpenOriginalBoard"
+ ],
+ "ability_list_menu": {
+  "script": "ability_list_menu_5.00.29.00",
+  "require": [
+   "UpdateSkillDetailWindow"
+  ],
+  "forbid": [
+   "OnCloseLayer"
+  ],
+  "ambiguous": []
+ },
+ "ability_list_menu_on_bluebg": {
+  "script": "ability_list_menu_on_bluebg_5.00.29.00",
+  "require": [
+   "SendSkillIdToLua"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chara_bank_menu": {
+  "script": "chara_bank_menu_6.00.09.00",
+  "require": [
+   "OnClubRoomMoveFaild"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chara_bank_menu_for_search": {
+  "script": "chara_bank_menu_for_search_6.00.17.00",
+  "require": [
+   "SuspendPersonalPlate"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_menu_select": {
+  "script": "equip_menu_select_5.00.21.00",
+  "require": [
+   "OnEquipOptimalItemConfirm"
+  ],
+  "forbid": [
+   "EVT_BranchBase"
+  ],
+  "ambiguous": []
+ },
+ "personal_plate_menu": {
+  "script": "personal_plate_menu_6.00.09.00",
+  "require": [
+   "GetPersonalPlateSelectCharaStHdl"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "rpg_select_scout_chara_menu": {
+  "script": "rpg_select_scout_chara_menu_5.00.32.00",
+  "require": [
+   "OpenAbilityLearningBoard"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_command_action_menu": {
+  "script": "soccer_battle_command_action_menu_1.00.51",
+  "require": [
+   "CloseSurpriseAttackBonus"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_command_action_menu"
+  ],
+  "chunk_crc": 2511073110,
+  "chunk_size": 671
+ },
+ "soccer_command_action_menu": {
+  "script": "soccer_command_action_menu_1.00.51",
+  "require": [
+   "CloseSurpriseAttackBonus"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_command_action_menu"
+  ],
+  "chunk_crc": 2511073110,
+  "chunk_size": 671
+ },
+ "soccer_formation_menu": {
+  "script": "soccer_formation_menu_0.06.94",
+  "require": [
+   "UpdateSkillCollision"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_dock_menu": {
+  "script": "soccer_team_dock_menu_7.01.06.00",
+  "require": [
+   "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_menu_rpg_battle": {
+  "script": "team_dock_menu_rpg_battle_1.04.19.01",
+  "require": [
+   "UpdateAttachedControlCharaBadge"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "ability_learning_board_menu": {
+  "script": "ability_learning_board_menu_7.00.00.00",
+  "require": [
+   "SetCrossButtonFocusMode"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "evt_skill_slot_menu": {
+  "script": "evt_skill_slot_menu",
+  "require": [
+   "EVT_OpenOriginalBoard",
+   "EVT_PickCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

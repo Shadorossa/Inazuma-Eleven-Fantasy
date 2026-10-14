@@ -5,7 +5,7 @@
 # movie rows, songs) until 2026-10-08 (IF split, docs/refactor/if-mod-split-map.md row if_videoteca).
 # Labels: text\keys.toml title_opening_* (9 languages; the names are the same in every language).
 # Saved choice = the movie id (crc32 of the row key <key>_<lang>): unchanged by the move, a choice made with IF stays.
-schema = "vr_framework.opening/1"
+schema = "VRFW.opening/1"
 
 # The Nintendo DS openings: one VP9 USM each (assets\data\dx11\movie\if_op_<game>.usm, built by
 # research/scripts/ds_opening_build.py; tracked as it was in IF) and one song per language ([[music]] if_op_<game>_<lang>,

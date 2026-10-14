@@ -58,7 +58,14 @@
 --   so only one item is highlighted (CHD_Go / CHD_Ghost).
 -- Pointer: the engine's hit zone of a layer is its layout rectangle carried by the layer's attach locator; node
 -- writes do not move it. So the header kit is drawn centred on its retail zone (CHD_HDR.ux / uy) and the field
--- locator puts that point between the team name and the player plate.
+-- locator puts that point between the team name and the player plate. The crest (a node of the bar's root layer, no
+-- locator of its own) gets its zone from the layout: BetterUI redirects this menu's team01_04_team_name_bar to
+-- team01_04_team_name_bar_evt_bui (content\menus\dock_header.toml), whose layout team01_04_evt_bui has
+-- _touch_emblem01 on the header-mode crest (research/scripts/dock_layout_build.py); that zone is switched off while
+-- the crest is not drawn there (panel mode, before the mode is decided, kill switches): CHD.HeaderZones.
+-- CHD.HeaderZones also keeps the team name's zone (456 px, it does not follow the narrowed plate) off right of the
+-- drawn plate and the kit's (130 px square) off outside the drawn kit, so the item under the pointer is the item
+-- drawn there (owner 2026-10-14: the pointer on the crest left the focus frame on the team name).
 -- Engine calls only inside callbacks. Kill switches: EVT_CHD_PANEL (panel + header + focus), EVT_CHD_CLIP (one gradient;
 -- false = each box squeezes the whole plate), EVT_CHD_ARROWS; EVT_UI_PRESET = "off" = all off.
 -- @@dock_panel_layout BEGIN (research/scripts/clean_hud_dock_panel.py --write; computed from the v7.1.2 layouts, not seen in game)
@@ -326,7 +333,9 @@ local CHD = {
   wait = 0,                       -- Steps waited for the team name / player plates (they open after the bar's kit)
   shift = nil, going = false, moves = 0,
   ghost = nil,                    -- {layer, idx, Steps}: the item a re-routed move left, unmarked again (CHD_Ghost)
-  kitc = nil, nameOff = false, zoneLogs = 0,   -- the drawn kit (global), the team name zone switched off over it
+  kitc = nil, nameR = nil, zoneLogs = 0,   -- the drawn kit (global: centre, half sizes), the team name plate's right edge
+  zoneOff = {},                   -- header layer -> true while CHD.HeaderZones holds its pointer zone off
+  hfocus = nil, hfocusLogs = 0,   -- the header item holding the focus (logged once per change)
   atdf = {x = 0, y = 0, s = 1, wait = 0, n = 0},   -- the AT / DF layer's local pos / scale as last sent
 }
 
@@ -576,6 +585,7 @@ local function CHD_FixKit()
   local kx = CHD_HDR.kx
   local nx = CHD_G(CHD.NAME, 0, CHD.NAME_BASE)
   local px = CHD_G(CHD.DECK, 0, CHD.DECK_BASE)
+  CHD.nameR = nx ~= nil and nx + CHD_NAME[1][4] * kbx or nil   -- the drawn team name plate's right edge (global)
   if nx ~= nil and px ~= nil then
     local gl, gr = (nx - bx) / kbx + CHD_NAME[1][4], (px - bx) / kbx
     if gr > gl and gr - gl < 600 then
@@ -845,34 +855,90 @@ local function CHD_ConfToPitch(at, ai)
   end
 end
 
--- every Step (header mode): the team name plate's pointer zone is its layout rectangle (468 px from the plate's left
--- edge, it does not follow the narrowed plate), so it runs on over the whole kit and could take the kit's hover /
--- click. While the pointer is on the drawn kit the name plate's zone is switched off (retail 855005857, as the dock
--- does for every zone during a dock move), and back on when it leaves. Pointer = screen px, y down; global positions
--- are compared with (x, -y) as the retail players_universe_menu does. The first readings are logged.
-local function CHD_PointerGuard()
-  if CHD.hdr ~= "header" or CHD.kitc == nil or not CHD_Open(CHD.NAME, 0) then
+-- every Step: the header's pointer zones (engine zones = layout rectangles, docs/game/ui/ui-redesign.md «pointer zones
+-- do not follow node writes») matched to what is drawn, so hovering an item focuses that item:
+--   crest     its zone (_touch_emblem01 of BetterUI's team01_04_evt_bui layout) is on the header-mode crest: on only
+--             while the header relayout is applied (header mode); off otherwise (the crest is drawn at its retail place
+--             then and the zone would lie on the retail team name plate)
+--   team name its zone runs 456 px from the plate's left (the plate is narrower): off while the pointer is right of the
+--             drawn plate (over the kit, the gap, the player plate's left end)
+--   kit       its zone is the retail 130 px square around the drawn 100 px kit: off while the pointer is outside the
+--             drawn kit (it ran over the team name's and the player plate's ends)
+-- A zone that is off only stops hover / click inside its own rectangle (retail 855005857 (layer, idx, bool), the call
+-- the dock makes for every zone during a dock move); never while the layer's group is suspended (child menu, dock
+-- move): the retail owns the zones then. Pointer = screen px, y down; global positions compared with (x, -y) as the
+-- retail players_universe_menu does. Every switch is logged (first 24).
+function CHD.Zone(layer, off, why)
+  if (CHD.zoneOff[layer] == true) == off then
     return
   end
-  if CHD_Get(CHD.LAYER_ACTIVE, CHD.UNI) == false then
-    return                        -- a child menu is up / the dock is moving: the retail owns the zones
+  CHD.zoneOff[layer] = off
+  CHD_Cmd(CHD.ZONE, layer, 0, not off)
+  if CHD.zoneLogs < 24 then
+    CHD.zoneLogs = CHD.zoneLogs + 1
+    CHD_Log("pointer zone of " .. tostring(layer) .. (off and " off" or " on") .. " (" .. why .. ")")
+  end
+end
+
+function CHD.HeaderZones()
+  CHD.zoneTick = (CHD.zoneTick or 0) + 1
+  if CHD.zoneTick >= 30 then       -- a dock move / child menu switches every zone on again behind this cache
+    CHD.zoneTick = 0
+    for layer, off in pairs(CHD.zoneOff) do
+      if off and CHD_Open(layer, 0) and CHD_Get(CHD.LAYER_ACTIVE, layer) ~= false then
+        CHD_Cmd(CHD.ZONE, layer, 0, false)
+      end
+    end
+  end
+  if CHD_Open(CHD.BAR, 0) and CHD_Get(CHD.LAYER_ACTIVE, CHD.BAR) ~= false then
+    local hdr = CHD_PanelOn() and CHD.hdr == "header"
+    CHD.Zone(CHD.BAR, not hdr, hdr and "crest drawn on its zone" or "crest not drawn on its zone")
+  end
+  if not CHD_PanelOn() or CHD.hdr ~= "header" then
+    return
   end
   local ok, x, y = CHD_Cmd(CHD.POINTER)
   if not ok or type(x) ~= "number" or type(y) ~= "number" then
     return
   end
   local k = CHD.kitc
-  local on = math.abs(x - k[1]) <= k[3] and math.abs(-y - k[2]) <= k[4]
-  if on == CHD.nameOff then
+  local onKit = k ~= nil and math.abs(x - k[1]) <= k[3] and math.abs(-y - k[2]) <= k[4]
+  if CHD_Open(CHD.NAME, 0) and CHD_Get(CHD.LAYER_ACTIVE, CHD.NAME) ~= false then
+    local right = CHD.nameR ~= nil and x > CHD.nameR
+    CHD.Zone(CHD.NAME, onKit or right, string.format("pointer %.0f,%.0f, plate right edge %s", x, y,
+      CHD.nameR ~= nil and string.format("%.0f", CHD.nameR) or "?"))
+  end
+  if k ~= nil and CHD_Open(CHD.UNI, 0) and CHD_Get(CHD.LAYER_ACTIVE, CHD.UNI) ~= false then
+    CHD.Zone(CHD.UNI, not onKit, string.format("pointer %.0f,%.0f, kit %.0f,%.0f +-%.0f,%.0f", x, y, k[1], k[2], k[3],
+      k[4]))
+  end
+end
+
+-- every Step (header mode): one log line each time the focus moves to / within / off the header items, with the pointer
+-- (to tell a hover from a key move in the log: the pointer stays put on a key move)
+CHD.HDR_ITEMS = {{"crest", CHD.BAR}, {"team name", CHD.NAME}, {"kit", CHD.UNI}, {"player plate", CHD.DECK}}
+function CHD.HeaderFocusLog()
+  if CHD.hdr ~= "header" or CHD.hfocusLogs >= 60 then
     return
   end
-  CHD.nameOff = on
-  CHD_Cmd(CHD.ZONE, CHD.NAME, 0, not on)
-  if CHD.zoneLogs < 8 then
-    CHD.zoneLogs = CHD.zoneLogs + 1
-    CHD_Log(string.format("pointer %.0f,%.0f kit %.0f,%.0f (+-%.0f,%.0f): team name zone %s", x, y, k[1], k[2], k[3],
-      k[4], on and "off" or "on"))
+  local cur = "other"
+  for _, it in ipairs(CHD.HDR_ITEMS) do
+    if CHD_Open(it[2], 0) and CHD_Active(it[2]) then
+      cur = it[1]
+    end
   end
+  if cur == CHD.hfocus then
+    return
+  end
+  local prev = CHD.hfocus
+  CHD.hfocus = cur
+  if prev == nil and cur == "other" then
+    return
+  end
+  CHD.hfocusLogs = CHD.hfocusLogs + 1
+  local ok, x, y = CHD_Cmd(CHD.POINTER)
+  CHD_Log(string.format("header focus %s -> %s (pointer %s)", tostring(prev), cur,
+    (ok and type(x) == "number" and type(y) == "number") and string.format("%.0f,%.0f", x, y) or "?"))
 end
 
 -- every Step (2026-10-13, owner: the pointer on CONF. DE EQUIPO lit FORMACIÓN): the same rule for the FORMACIÓN | CONF.
@@ -1305,8 +1371,11 @@ CHD_After("Step", function()
       CHD_Clip()
     end
     CHD_FixKit()
-    CHD_PointerGuard()
     CHD.BoxGuard()
+    CHD.HeaderFocusLog()
+  end
+  if not CHD.busy then
+    CHD.HeaderZones()
   end
   if not CHD.busy then
     CHD_Atdf()

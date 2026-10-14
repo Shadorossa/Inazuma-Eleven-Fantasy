@@ -1,0 +1,175 @@
+schema = "VRFW.character/2"
+# Character Reforged · Northern Fang · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04015320"                                   # Brutus Nastion
+
+  [[edit.cards]]
+  id = 0x41B8D49D                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 212, control = 194, technique = 223, pressure = 231, physical = 252, intelligence = 217, agility = 286, freedom = 209 }
+  moves = [
+    { move = 0xF5C2A0A5, level = 26 },                    # Capoeira Grab
+    { move = 0xC7F4C227, level = 27 },                    # Shot Trap
+    { move = 0x50E88A33, level = 43 },                    # Fist Beam
+    { move = 0x1FA91CF4, level = 58 },                    # Negative Feedback
+  ]
+
+[[edit]]
+target = "c04015330"                                   # Linder Loper
+
+  [[edit.cards]]
+  id = 0x58A3E5DC                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 181, technique = 224, pressure = 248, physical = 212, intelligence = 263, agility = 196, freedom = 279 }
+  moves = [
+    { move = 0x530CDFC1, level = 13 },                    # Mystifying Mist
+    { move = 0xC324C788, level = 21 },                    # Blast Mine
+    { move = 0x4E22F64D, level = 34 },                    # Transporter Device
+    { move = 0x04941270, level = 54 },                    # Vac Attack
+  ]
+
+[[edit]]
+target = "c04015340"                                   # Jude Osbourne
+
+  [[edit.cards]]
+  id = 0x17E2731B                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 161, control = 219, technique = 196, pressure = 234, physical = 197, intelligence = 297, agility = 192, freedom = 238 }
+  moves = [
+    { move = 0xDCC9CCA3, level = 12 },                    # Tesla Coil
+    { move = 0xF7E49F60, level = 17 },                    # Magnetism
+    { move = 0x650FA58E, level = 43 },                    # Spin Out
+    { move = 0x3297683F, level = 58 },                    # Warp Step
+  ]
+
+[[edit]]
+target = "c04015350"                                   # Locke Saflowe
+
+  [[edit.cards]]
+  id = 0x0EF9425A                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 200, control = 211, technique = 207, pressure = 238, physical = 182, intelligence = 305, agility = 201, freedom = 339 }
+  moves = [
+    { move = 0xDA3FF6C9, level = 17 },                    # Criss-Cross
+    { move = 0x2A4E3349, level = 27 },                    # Heart Beat
+    { move = 0xF4604B0E, level = 33 },                    # Fancy-Footwork
+    { move = 0xA1BE38E6, level = 50 },                    # La Flamme
+  ]
+
+[[edit]]
+target = "c04015360"                                   # Nate Gobby
+
+  [[edit.cards]]
+  id = 0x25D41199                                         # DF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 196, technique = 207, pressure = 269, physical = 186, intelligence = 306, agility = 248, freedom = 343 }
+  moves = [
+    { move = 0xBBA44137, level = 15 },                    # Great Wall
+    { move = 0x7C6D5B0E, level = 25 },                    # Astro Break
+    { move = 0x8A52C09B, level = 39 },                    # Doomsword Slash
+    { move = 0x2CFC3E63, level = 64 },                    # Dragon Crash
+  ]
+
+[[edit]]
+target = "c04015370"                                   # Reggie Alldark
+
+  [[edit.cards]]
+  id = 0x3CCF20D8                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 132, control = 236, technique = 336, pressure = 197, physical = 134, intelligence = 224, agility = 221, freedom = 213 }
+  moves = [
+    { move = 0x79E3E635, level = 19 },                    # Racing Flame
+    { move = 0x2A4E3349, level = 21 },                    # Heart Beat
+    { move = 0x4031A7F5, level = 43 },                    # Mole Fake
+    { move = 0xECB91078, level = 67 },                    # Volcanic Flight
+  ]
+
+[[edit]]
+target = "c04015380"                                   # Bill Froger
+
+  [[edit.cards]]
+  id = 0xBB573C17                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 234, technique = 329, pressure = 161, physical = 171, intelligence = 181, agility = 192, freedom = 389 }
+  moves = [
+    { move = 0x20D01E43, level = 11 },                    # Hey Presto
+    { move = 0x737DCB3F, level = 18 },                    # Pancake Defence
+    { move = 0x6ADE9E01, level = 47 },                    # Illusory Ball
+    { move = 0x7DAF3139, level = 55 },                    # Emperor Penguin No. 2
+  ]
+
+[[edit]]
+target = "c04015390"                                   # Romeo Fitzroy
+
+  [[edit.cards]]
+  id = 0xA24C0D56                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 207, technique = 311, pressure = 208, physical = 207, intelligence = 212, agility = 201, freedom = 213 }
+  moves = [
+    { move = 0x2B8C597E, level = 10 },                    # Fugue Wave
+    { move = 0xA2BF7076, level = 29 },                    # Side Swipe
+    { move = 0x9B916289, level = 47 },                    # Jurassic Jaws
+    { move = 0x05124F07, level = 66 },                    # Fission and Fusion
+  ]
+
+[[edit]]
+target = "c04015400"                                   # Caesar Lionheart
+
+  [[edit.cards]]
+  id = 0x76C1A09A                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 246, technique = 316, pressure = 180, physical = 162, intelligence = 230, agility = 181, freedom = 221 }
+  moves = [
+    { move = 0xC324C788, level = 10 },                    # Blast Mine
+    { move = 0x6A66FA7E, level = 31 },                    # Killer Whale
+    { move = 0x4031A7F5, level = 45 },                    # Mole Fake
+    { move = 0x2A4E3349, level = 58 },                    # Heart Beat
+  ]
+
+[[edit]]
+target = "c04015410"                                   # Stan Roller
+
+  [[edit.cards]]
+  id = 0x6FDA91DB                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 323, control = 279, technique = 286, pressure = 112, physical = 254, intelligence = 173, agility = 147, freedom = 209 }
+  moves = [
+    { move = 0x65766A4F, level = 18 },                    # Meteor Blade
+    { move = 0xDE4ED944, level = 33 },                    # Snowstorm Leopard
+    { move = 0xC6978232, level = 47 },                    # Dinosaur Roar
+    { move = 0x1755397B, level = 53 },                    # Dark Energy Star
+  ]
+
+[[edit]]
+target = "c04015420"                                   # Bracknell Forge
+
+  [[edit.cards]]
+  id = 0x44F7C218                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 207, technique = 221, pressure = 173, physical = 243, intelligence = 158, agility = 209, freedom = 209 }
+  moves = [
+    { move = 0x44BCDB47, level = 20 },                    # Pyroclastic
+    { move = 0xDE4ED944, level = 29 },                    # Snowstorm Leopard
+    { move = 0xCB79C825, level = 57 },                    # In-Line Stampede
+    { move = 0xC6978232, level = 66 },                    # Dinosaur Roar
+  ]

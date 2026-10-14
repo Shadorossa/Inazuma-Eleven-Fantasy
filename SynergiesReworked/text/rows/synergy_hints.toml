@@ -1,0 +1,53 @@
+# Synergies Reworked: the hints of the empty slots of its reworked synergies (content\synergies\reworked_synergies.toml
+# `hint`), shown in grey in the synergy detail panel where a member is missing (docs/framework/synergy.md §5).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "SynergiesReworked.HintDarkLineage"
+es = "De Royal, Zeus, Orfeo, Eclipse o Equipo D"
+en = "From Royal, Zeus, Orpheus, Eclipse or Team D"
+fr = "De Royal, Zeus, Orphée, Éclipse ou Équipe D"
+de = "Aus Royal, Zeus, Orpheus, Eclipse, Team D"
+it = "Da Royal, Zeus, Orfeo, Eclipse o Squadra D"
+pt = "Do Royal, Zeus, Orfeu, Eclipse ou Time D"
+ja = "[帝国/ていこく]・[世宇子/ぜうす]・オルフェウス・シャドウ・チームＫ"
+zh_hans = "帝国／世宇子／奥尔菲斯／猎户座之影／K队"
+zh_hant = "帝國／世宇子／奧爾菲斯／獵戶座之影／K隊"
+
+[[row]]
+id = "SynergiesReworked.HintManagersClassic"
+es = "Gerente de IE1-IE3, Ares u Orión"
+en = "Manager from IE1-IE3, Ares or Orion"
+fr = "Manager d'IE1-IE3, Ares ou Orion"
+de = "Managerin aus IE1-IE3, Ares, Orion"
+it = "Manager di IE1-IE3, Ares o Orion"
+pt = "Gerente de IE1-IE3, Ares ou Orion"
+ja = "IE1～IE3・アレス・オリオンのマネージャー"
+zh_hans = "IE1-IE3、阿瑞斯、猎户座的经理"
+zh_hant = "IE1-IE3、阿瑞斯、獵戶座的經理"
+
+[[row]]
+id = "SynergiesReworked.HintManagersGo"
+es = "Gerente de GO, CS, Galaxy o VR"
+en = "Manager from GO, CS, Galaxy or VR"
+fr = "Manager de GO, CS, Galaxy ou VR"
+de = "Managerin aus GO, CS, Galaxy, VR"
+it = "Manager di GO, CS, Galaxy o VR"
+pt = "Gerente de GO, CS, Galaxy ou VR"
+ja = "GO・CS・ギャラクシー・VRのマネージャー"
+zh_hans = "GO、CS、银河、VR的经理"
+zh_hant = "GO、CS、銀河、VR的經理"
+
+# «Los maestros de Alius» / «Los guerreros de Santuario»: an empty team slot; {team} = that slot's team name (the game's team text)
+[[row]]
+id = "SynergiesReworked.HintPlayerOfTeam"
+es = "Un jugador de {team}"
+en = "A player from {team}"
+fr = "Un joueur de {team}"
+de = "Ein Spieler von {team}"
+it = "Un giocatore di {team}"
+pt = "Um jogador de {team}"
+ja = "{team}の選手"
+zh_hans = "{team}的球员"
+zh_hant = "{team}的球員"

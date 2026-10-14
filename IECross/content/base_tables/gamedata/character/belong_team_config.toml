@@ -1,0 +1,13 @@
+schema = "VRFW.base_table/1"
+# The «Inazuma Eleven Cross» belong team (crc32("evt_belong_team_cross"), its name: text\rows\team_text.toml): the
+# team_3 of the Cross characters, the player bank's Cross series. Moved from Inazuma Fantasy on 2026-10-08.
+
+[[list]]
+name = "m_belongTeamInfoList"
+columns = ["belongTeamId", "binderTeamOrderType", "teamNameTextId", "teamEmblemId_IE", "teamEmblemId_GO", "teamEmblemId_AREORI", "teamEmblemId_V", "teamNumber_IE1", "teamNumber_IE2", "teamNumber_IE3", "teamNumber_GO1", "teamNumber_GO2", "teamNumber_GO3", "teamNumber_ARES", "teamNumber_ORION", "teamNumber_V", "teamKit_IE", "teamKit_GO", "teamKit_AREORI", "teamKit_V"]
+sort = false
+splice = [
+  { at = 208, remove = 0, rows = [
+    [0x1E5DC7AA, 216, 0x622EDDA9, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 999, 999, 999, 999, 999, 999, 999, 999, 999, 0x00000000, 0x00000000, 0x00000000, 0x00000000],
+  ] },
+]

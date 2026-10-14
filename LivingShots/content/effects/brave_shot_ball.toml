@@ -1,0 +1,26 @@
+# «Brave Shot» («Disparo valiente», whs01240, mountain shot, long shot: skillEffectBitFlag 4, cut-in ev60_01240):
+# while the ball flies to the goal it keeps the cut-in's OWN blue comet flame (the cut c0400, the ball kicked out of
+# the crystal sphere ~10.9 m up and streaking towards the goal, held at frame 340, the flame's texture flow running on)
+# instead of the plain mountain long-shot aura (ega0085a). The crystal sphere round the ball, the flat light disc on
+# it, the kick spot's star and lines, the radial backdrop, the jump rings and the c0500 beam (a 60 m flat fan of light
+# from the kick to the goal; the ball is hidden through c0500) are dropped; x1.0 of the cut-in size (flame ~0.9 m wide,
+# ~1.2 m long, the ball at its head).
+# The object is ev6124bs00 (assets\data\{common,dx11}\effect\event\ev60\ev6124bs00\), built by
+# research/scripts/brave_shot_ball_fx.py from ev60012400; docs/game/media/brave-shot-ball-fx.md.
+# The trigger copies the mountain long-shot aura's row (like = "ega0085a"; skillEffectBitFlag 4 = long shot):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other technique key
+# uses ev60_01240 (who01240 / whd01240 / whk01240 are other moves with their own ev61-63 cut-ins).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "brave_shot_flame"
+from = "ega0085a"
+object = "effect/event/ev60/ev6124bs00/ev6124bs00.objbin"
+
+[[shot_aura]]
+name = "brave_shot_flame"
+when = { techniques = ["whs01240"] }
+aura = "brave_shot_flame"
+like = "ega0085a"

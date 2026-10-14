@@ -1,0 +1,191 @@
+schema = "VRFW.character/2"
+# Character Reforged · Storm Wolves · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06031210"                                   # Aleksei Karimov
+
+  [[edit.cards]]
+  id = 0x096A3877                                         # GK/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 231, technique = 209, pressure = 217, physical = 209, intelligence = 247, agility = 224, freedom = 225 }
+  moves = [
+    { move = 0xFD9FAF08, level = 1 },                     # Twist 'n' Clout
+    { move = 0xCD6AEF2D, level = 23 },                    # All-Star
+    { move = 0x06B22DB5, level = 34 },                    # Gyro-Blocker
+    { move = 0xF5C2A0A5, level = 49 },                    # Capoeira Grab
+  ]
+
+[[edit]]
+target = "c06031220"                                   # Sergei Chernov
+
+  [[edit.cards]]
+  id = 0x22476BB4                                         # DF/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 220, technique = 203, pressure = 230, physical = 165, intelligence = 305, agility = 166, freedom = 225 }
+  moves = [
+    { move = 0x0E8FA384, level = 1 },                     # Warsaw
+    { move = 0xFD9FAF08, level = 22 },                    # Twist 'n' Clout
+    { move = 0x04941270, level = 33 },                    # Vac Attack
+    { move = 0x4E9A9232, level = 46 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c06031230"                                   # Mitya Eremin
+
+  [[edit.cards]]
+  id = 0x3B5C5AF5                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 203, technique = 213, pressure = 227, physical = 201, intelligence = 286, agility = 188, freedom = 225 }
+  moves = [
+    { move = 0x0E8FA384, level = 1 },                     # Warsaw
+    { move = 0x332CCDC9, level = 20 },                    # Heel Kick
+    { move = 0x035C1112, level = 35 },                    # Gungnir
+    { move = 0xB13A6C3D, level = 50 },                    # Zigzag Flame
+  ]
+
+[[edit]]
+target = "c06031240"                                   # Yuri Avelin
+
+  [[edit.cards]]
+  id = 0x741DCC32                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 185, technique = 181, pressure = 251, physical = 185, intelligence = 275, agility = 242, freedom = 225 }
+  moves = [
+    { move = 0x0E8FA384, level = 1 },                     # Warsaw
+    { move = 0xB58AE80E, level = 21 },                    # Silk Road
+    { move = 0x322F0C40, level = 36 },                    # Spider Web
+    { move = 0x4A17EE80, level = 45 },                    # Hunter's Net
+  ]
+
+[[edit]]
+target = "c06031250"                                   # Kenja Jo'rayev
+
+  [[edit.cards]]
+  id = 0x6D06FD73                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 173, technique = 232, pressure = 216, physical = 269, intelligence = 232, agility = 180, freedom = 225 }
+  moves = [
+    { move = 0x0E8FA384, level = 1 },                     # Warsaw
+    { move = 0x2FB941B3, level = 20 },                    # Stone Prison
+    { move = 0x17110E3B, level = 30 },                    # Jumbo Sandwich
+    { move = 0xC324C788, level = 43 },                    # Blast Mine
+  ]
+
+[[edit]]
+target = "c06031260"                                   # Leonid Mirzayev
+
+  [[edit.cards]]
+  id = 0x462BAEB0                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 259, technique = 246, pressure = 192, physical = 170, intelligence = 240, agility = 217, freedom = 225 }
+  moves = [
+    { move = 0xB58AE80E, level = 1 },                     # Silk Road
+    { move = 0x585098FC, level = 24 },                    # Slice and Dice
+    { move = 0x2B8C597E, level = 37 },                    # Fugue Wave
+    { move = 0xC66BD10D, level = 51 },                    # Zigzag Spark
+  ]
+
+[[edit]]
+target = "c06031270"                                   # Ruslan Kashimov
+
+  [[edit.cards]]
+  id = 0x5F309FF1                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 261, control = 246, technique = 239, pressure = 167, physical = 224, intelligence = 211, agility = 166, freedom = 225 }
+  moves = [
+    { move = 0xB58AE80E, level = 1 },                     # Silk Road
+    { move = 0x0E8FA384, level = 21 },                    # Warsaw
+    { move = 0xCF7FA2C4, level = 36 },                    # Gold Rush
+    { move = 0x64CDCFB9, level = 45 },                    # Rising Dragon
+  ]
+
+[[edit]]
+target = "c06031280"                                   # Aaron Gachinsky
+
+  [[edit.cards]]
+  id = 0xD8A8833E                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 277, control = 267, technique = 252, pressure = 170, physical = 201, intelligence = 235, agility = 158, freedom = 225 }
+  moves = [
+    { move = 0xB58AE80E, level = 1 },                     # Silk Road
+    { move = 0xCF7FA2C4, level = 22 },                    # Gold Rush
+    { move = 0x457EB170, level = 34 },                    # Pyrokinetic
+    { move = 0x3663DB4C, level = 44 },                    # Utter Gutsiness Bat
+  ]
+
+[[edit]]
+target = "c06031290"                                   # Maxim Adrov
+
+  [[edit.cards]]
+  id = 0xC1B3B27F                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 257, technique = 242, pressure = 186, physical = 197, intelligence = 207, agility = 182, freedom = 231 }
+  moves = [
+    { move = 0xCF7FA2C4, level = 1 },                     # Gold Rush
+    { move = 0x81FC5E34, level = 20 },                    # Driving Header
+    { move = 0xDDCA0D2A, level = 33 },                    # Bouncing Bomb
+    { move = 0xEDBAD1F1, level = 47 },                    # Brimstone Rain
+  ]
+
+[[edit]]
+target = "c06031300"                                   # Domitri Sobirov
+
+  [[edit.cards]]
+  id = 0x11B36301                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 277, control = 274, technique = 236, pressure = 200, physical = 208, intelligence = 242, agility = 190, freedom = 231 }
+  moves = [
+    { move = 0xCF7FA2C4, level = 1 },                     # Gold Rush
+    { move = 0xB58AE80E, level = 11 },                    # Silk Road
+    { move = 0x016DEA27, level = 38 },                    # Accelerator Gears
+    { move = 0x1876DB66, level = 54 },                    # Disaster Strike
+  ]
+
+[[edit]]
+target = "c06031310"                                   # Zafar Malayev
+
+  [[edit.cards]]
+  id = 0x08A85240                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 271, technique = 190, pressure = 240, physical = 163, intelligence = 261, agility = 198, freedom = 231 }
+  moves = [
+    { move = 0xCF7FA2C4, level = 1 },                     # Gold Rush
+    { move = 0xDF8CB373, level = 21 },                    # Sonic Shot
+    { move = 0xB3CA3CB6, level = 36 },                    # Parkour Power
+    { move = 0x65766A4F, level = 50 },                    # Meteor Blade
+  ]
+
+[[edit]]
+target = "c11806080"                                   # Nikolai Gagarin
+
+  [[edit.cards]]
+  id = 0xE405A944                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 252, technique = 223, pressure = 176, physical = 182, intelligence = 198, agility = 205, freedom = 213 }
+  moves = [
+    { move = 0x61FB16FD, level = 5 },                     # Divine Arrows
+    { move = 0x5049A011, level = 13 },                    # Spinning Shot
+    { move = 0x768AB9C5, level = 20 },                    # Frosticle
+    { move = 0x19C3F43D, level = 35 },                    # Eternal Blizzard
+  ]

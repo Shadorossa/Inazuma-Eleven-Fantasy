@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Aura Points: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+lang = "es"
+name = "Aura Points"
+
+[en]
+name = "Aura Points"
+
+[fr]
+name = "Aura Points"
+
+[de]
+name = "Aura Points"
+
+[it]
+name = "Aura Points"
+
+[pt]
+name = "Aura Points"
+
+[ja]
+name = "Aura Points"
+
+[zh_hans]
+name = "Aura Points"
+
+[zh_hant]
+name = "Aura Points"
+
+[[release]]
+icon = "general"
+notes = [
+    "Keshin, armaduras y tótems usan puntos, no tiempo.",
+    "PEG por keshin y SP por tótem para todo el partido.",
+    "Invocar es gratis; su supertécnica gasta PEG o SP.",
+    "La armadura consume el PEG de su keshin mientras dura.",
+    "Barra morada (azul en SP) bajo la cara del jugador.",
+]
+
+[release.en]
+notes = [
+    "Keshin, armours and totems run on points, not time.",
+    "PEG per keshin and SP per totem for the whole match.",
+    "Summoning is free; its special move costs PEG or SP.",
+    "An armour drains its keshin's PEG while it is worn.",
+    "A purple bar (blue for SP) under the player's face.",
+]
+
+[release.fr]
+notes = [
+    "Keshin, armures et totems utilisent des points.",
+    "PEG par keshin et SP par totem pour tout le match.",
+    "Invoquer est gratuit ; sa technique coûte PEG ou SP.",
+    "Une armure consomme le PEG de son keshin.",
+    "Une barre violette (bleue en SP) sous le visage.",
+]
+
+[release.de]
+notes = [
+    "Keshin, Rüstungen und Totems nutzen Punkte statt Zeit.",
+    "KGP pro Keshin und SP pro Totem für das ganze Spiel.",
+    "Beschwören ist gratis; seine Technik kostet KGP o. SP.",
+    "Eine Rüstung verbraucht die KGP ihres Keshin.",
+    "Ein violetter Balken (blau für SP) unter dem Gesicht.",
+]
+
+[release.it]
+notes = [
+    "Keshin, armature e totem usano punti, non tempo.",
+    "PSG per keshin e SP per totem per tutta la partita.",
+    "Evocare è gratis; la sua tecnica costa PSG o SP.",
+    "Un'armatura consuma il PSG del suo keshin.",
+    "Una barra viola (blu per SP) sotto il volto.",
+]
+
+[release.pt]
+notes = [
+    "Keshin, armaduras e totens usam pontos, não tempo.",
+    "PEG por keshin e SP por totem para toda a partida.",
+    "Invocar é grátis; a sua técnica custa PEG ou SP.",
+    "Uma armadura consome o PEG do seu keshin.",
+    "Uma barra roxa (azul em SP) sob o rosto do jogador.",
+]
+
+[release.ja]
+notes = [
+    "化身・化身アームド・ソウルが時間でなくポイント制に。",
+    "試合を通して化身ごとのFSP、ソウルごとのSP。",
+    "召喚は無料、その必殺技はFSPかSPを消費。",
+    "アームド中は化身のFSPが減っていく。",
+    "選手の顔の下に紫のバー（SPは青）。",
+]
+
+[release.zh_hans]
+notes = [
+    "化身、化身铠甲与灵魂改用点数，不再计时。",
+    "整场比赛每个化身一条FSP，每个灵魂一条SP。",
+    "召唤免费；其必杀技消耗FSP或SP。",
+    "铠甲穿着期间持续消耗其化身的FSP。",
+    "球员头像下方显示紫色条（SP为蓝色）。",
+]
+
+[release.zh_hant]
+notes = [
+    "化身、化身鎧甲與靈魂改用點數，不再計時。",
+    "整場比賽每個化身一條FSP，每個靈魂一條SP。",
+    "召喚免費；其必殺技消耗FSP或SP。",
+    "鎧甲穿著期間持續消耗其化身的FSP。",
+    "球員頭像下方顯示紫色條（SP為藍色）。",
+]

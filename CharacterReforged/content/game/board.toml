@@ -1,0 +1,41 @@
+schema = "VRFW.game/2"
+# Character Reforged › the game's skill-board placement the aura mods' creation flows use (scripts\pairing.lua
+# CharacterReforged.BoardPlace: the carrier a flow hands out goes on the board slot the player chose). Record `rec8` =
+# VRFW.chara.record(hdl).addr: +0x94 + 4*slot placed item, +0xC8 + 4*slot native item, +0x165 + slot piece effect index
+# (signed byte; negative = closed). docs/game/ui/skill-board-original.md.
+
+# void PlaceByHandle(const u32* charaHdl, int pieceEffectIdx, u32 invHdl, u8 base, u8) 0xE7D700: record by handle,
+# then 0xD80B40 (puts the inventory item on the slot of that piece)
+[[VRFW.Function]]
+name = "CharacterReforged.BoardPlaceByHandle"
+game = "Board.PlaceByHandle"
+
+# bool CanEquipOnBoard(u32 charaHdl, u32 invHdl, u8 needFree, u8 ?, u8 targetSlot) 0xE7D310: «may this item go on this
+# board slot» (True Hissatsu's duplicate rule hooks it)
+[[VRFW.Function]]
+name = "CharacterReforged.BoardCanEquip"
+game = "Board.CanEquip"
+
+# SkillPieceList* BoardSkillPieces(SkillPieceList* out, const u32* charaHdl) 0x165D300: the board definition's skill
+# pieces in board-slot order, out = { u8 (*entries)[2], u64 count } (entry byte 0 = piece effect index)
+[[VRFW.Function]]
+name = "CharacterReforged.BoardSkillPieces"
+game = "Board.SkillPieces"
+
+# The skill table's aura slot (board slot 8) without Inazuma Fantasy's board service (scripts\board_slots.lua; the
+# same arguments and answers as IF's CMND_EVT_BOARD_PIECE / PLACE / CLEAR, which the table uses when they answer).
+# Status codes (first answer): 1 ok, 0 refused, 2 mismatch, -1 bad args, -2 not ready, -3 closed, -4 exception,
+# -5 no record, -6 would close.
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_BOARD_PIECE"   # (charaStHdl, boardSlot) -> piece, effectiveInv, placedInv, nativeInv
+handler = "CharacterReforged.BoardSlots.Piece"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_BOARD_PLACE"   # (charaStHdl, invHdl, boardSlot) -> status, effectiveInv
+handler = "CharacterReforged.BoardSlots.Place"
+needs = ["CharacterReforged.BoardCanEquip", "CharacterReforged.BoardPlaceByHandle", "CharacterReforged.BoardSkillPieces"]
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_BOARD_CLEAR"   # (charaStHdl, boardSlot[, keepOpen 0 / 1 / 3]) -> status, effectiveInv
+handler = "CharacterReforged.BoardSlots.Clear"
+needs = ["CharacterReforged.BoardPlaceByHandle"]

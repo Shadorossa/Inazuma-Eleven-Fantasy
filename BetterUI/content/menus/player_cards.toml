@@ -7,7 +7,7 @@
 # (graft research/grafts/clean_hud_player_cards). Built by research/scripts/fc_build.py (layouts, objbins).
 # Card colours are the game's (rarity); Inazuma Fantasy colours them by position on top and points its other card
 # screens (bank, lists, opponents, equip, ...) at the same layout with its own [[patch]] rows.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # the pitch card object: the retail team00_01_chara_card_for_soccer on the formation layout; Hero / Diamond effects on
 # the layout's 0.78-wide locator _evt_pos_eff01 (crc 0x2A0667AE) instead of _pos_base01

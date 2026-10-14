@@ -213,7 +213,7 @@ verbs = ["TARGETS", "TARGET", "NEW", "FILES", "FILE", "SIG", "DESTS", "DEST", "T
 old = "CMND_VRFW_MM_"
 new = "CMND_VRFW_MODS_"
 route = "same"
-verbs = ["STATE", "SEARCH", "THUMB", "TASK", "TASKS", "TEXT", "RESULT", "CREATE", "PROVIDES", "MOD_DIR", "OPEN_DIR", "DROP_DIR", "FIELD", "TITLE_COVER"]
+verbs = ["STATE", "SEARCH", "THUMB", "TASK", "TASKS", "TEXT", "RESULT", "CREATE", "PROVIDES", "MOD_DIR", "OPEN_DIR", "DROP_DIR", "FIELD", "TITLE_COVER", "TAG_DEFS", "TAG_DEF", "MOD_TAGS", "PERMS"]
 
 # rarity
 [[family]]
@@ -281,7 +281,7 @@ verbs = ["NODE_COUNT", "NODE_GET", "ROAD_COUNT", "ROAD_GET"]
 old = "CMND_EVT_CHAIN_"
 new = "CMND_VRFW_TEAM_CHAIN_"
 route = "same"
-verbs = ["COUNT", "FIND", "GET", "NODE"]
+verbs = ["COUNT", "FIND", "GET", "NODE", "BOARD", "PAGE", "TILE", "OF_PIECE"]
 
 # technique
 [[family]]

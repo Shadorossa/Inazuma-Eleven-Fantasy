@@ -1,0 +1,29 @@
+schema = "VRFW.character/2"
+# Character Reforged · The Snow Weasels · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05029810"                                   # Silvain Hache
+
+  [[edit.cards]]
+  id = 0xCDC1A663                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 243, technique = 263, pressure = 190, physical = 184, intelligence = 198, agility = 169, freedom = 209 }
+  moves = [
+    { move = 0x1C097E46, level = 7 },                     # Dragon Drive
+    { move = 0x768AB9C5, level = 23 },                    # Frosticle
+    { move = 0x5E5AF1A9, level = 40 },                    # Northern Impact
+    { move = 0x0E4E083A, level = 61 },                    # Zero Magnum
+  ]
+
+[[edit]]
+target = "c05029810_5000"                              # Silvain Hache
+
+  [[edit.cards]]
+  id = 0x3ECB5A6B                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 294, control = 240, technique = 261, pressure = 188, physical = 181, intelligence = 196, agility = 166, freedom = 209 }

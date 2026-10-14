@@ -1,0 +1,41 @@
+schema = "VRFW.text_key/1"
+# Texts of «Hissatsu Effects» (mod hissatsu_effects, 2026-10-14) (format: docs/framework/types/text.md): the «Mods»
+# screen's name and description. The move card page's texts are the menu_text rows of text\rows\skill_card.toml.
+# A language missing here falls back to English.
+default_lang = "en"
+
+[en.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Gameplay effects for the game's own special moves: Excalibur grows stronger the farther it flies and is also a counter shot, Doom Rain splits into 7 balls that blocks take away, Electric Trap locks the shot it stops, Needle Hammer steals tension, Grand Fire gains power for each fire team mate who performs it, Power Shield clears the ball low, and Double Tornado takes the elements of its two performers, with its tornadoes recoloured to match. In the Habilidades list, Q / E (LT / RT) turn the move card to a page that explains the move's effect. With Living Shots on, these shots also get its flights and auras."
+
+[es.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Efectos de juego para supertécnicas del propio juego: Excálibur gana potencia cuanto más lejos vuela y también es un tiro de contraataque, Diluvio letal se divide en 7 balones que los bloqueos van quitando, Malla eléctrica bloquea el tiro que para, Martillo defensor roba tensión, Fuego total gana potencia por cada compañero de fuego que la realiza, Escudo de fuerza despeja bajo, y Tornado doble toma los elementos de sus dos ejecutores, con sus tornados del color de cada uno. En la lista de Habilidades, Q / E (LT / RT) pasan la tarjeta de la técnica a una página que explica su efecto. Con Living Shots activo, estos tiros tienen además sus trayectorias y auras."
+
+[fr.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Effets de jeu pour les techniques spéciales du jeu : tirs plus puissants de loin, tir divisé en plusieurs ballons, gardiens qui bloquent le tir arrêté ou volent de la tension, bonus par coéquipier du même élément, dégagements des poings repensés, et une technique à deux éléments aux tornades recolorées. Dans la liste Habilidades, Q / E (LT / RT) tournent la carte de la technique vers une page qui explique son effet. Avec Living Shots activé, ces tirs reçoivent aussi ses trajectoires et auras."
+
+[de.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Spieleffekte für die Spezialtechniken des Spiels: Schüsse, die aus der Ferne stärker werden, ein Schuss, der sich in mehrere Bälle teilt, Torhüter, die den gehaltenen Schuss sperren oder Spannung stehlen, ein Bonus pro Mitspieler desselben Elements, neue Faustabwehren und eine Technik mit zwei Elementen und umgefärbten Tornados. In der Liste Habilidades blättern Q / E (LT / RT) die Technikkarte auf eine Seite, die ihren Effekt erklärt. Mit aktivem Living Shots erhalten diese Schüsse zusätzlich dessen Flugbahnen und Auren."
+
+[it.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Effetti di gioco per le tecniche speciali del gioco: tiri più potenti da lontano, un tiro che si divide in più palloni, portieri che bloccano il tiro parato o rubano tensione, un bonus per ogni compagno dello stesso elemento, respinte di pugno ridisegnate e una tecnica a due elementi con tornado ricolorati. Nella lista Habilidades, Q / E (LT / RT) girano la carta della tecnica su una pagina che ne spiega l'effetto. Con Living Shots attivo, questi tiri ottengono anche le sue traiettorie e aure."
+
+[pt.new]
+mod_name = "Hissatsu Effects"
+mod_description = "Efeitos de jogo para as supertécnicas do jogo: chutes mais fortes de longe, um chute que se divide em várias bolas, goleiros que bloqueiam o chute defendido ou roubam tensão, um bônus por cada colega do mesmo elemento, socos com novos afastamentos e uma técnica de dois elementos com tornados recoloridos. Na lista Habilidades, Q / E (LT / RT) viram a carta da técnica para uma página que explica o seu efeito. Com Living Shots ativo, estes chutes também recebem as suas trajetórias e auras."
+
+[ja.new]
+mod_name = "Hissatsu Effects"
+mod_description = "ゲームの必殺技にゲーム効果を追加：遠くから撃つほど強くなるシュート、複数のボールに分かれるシュート、止めたシュートを封じたりテンションを奪うキーパー技、同じ属性の仲間ごとの威力ボーナス、新しいパンチングのクリア、2つの属性を持ち竜巻の色が変わる技。わざ一覧でQ / E（LT / RT）を押すと、技のカードが効果を説明するページに切り替わる。Living Shotsが有効なら、これらのシュートにその軌道とオーラも加わる。"
+
+[zh_hans.new]
+mod_name = "Hissatsu Effects"
+mod_description = "为游戏自带的必杀技加入玩法效果：越远越强的射门、分成多个球的射门、能封锁被扑住的射门或夺取气势的守门技、每名同属性队友的威力加成、新的拳击解围，以及拥有两种属性、龙卷风随之变色的技能。在技能列表中按 Q / E（LT / RT）可将技能卡片翻到说明效果的一页。启用 Living Shots 时，这些射门还会获得它的轨迹与气场。"
+
+[zh_hant.new]
+mod_name = "Hissatsu Effects"
+mod_description = "為遊戲內建的必殺技加入玩法效果：越遠越強的射門、分成多個球的射門、能封鎖被撲住的射門或奪取氣勢的守門技、每名同屬性隊友的威力加成、新的拳擊解圍，以及擁有兩種屬性、龍捲風隨之變色的技能。在技能列表中按 Q / E（LT / RT）可將技能卡片翻到說明效果的一頁。啟用 Living Shots 時，這些射門還會獲得它的軌跡與氣場。"

@@ -1,4 +1,4 @@
-schema = "vr_framework.changelog/1"
+schema = "VRFW.changelog/1"
 # Utilidades: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
 # Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
@@ -40,7 +40,7 @@ notes = [
     "Atajos a los modos en la barra superior.",
     "Estilo visual, cámara de partido y equipación visitante.",
     "Formaciones ocultas; sin límite de Ídolos ni Diamantes.",
-    "Trayectoria del jugador, filtro de tiendas y más.",
+    "Vista previa de supertécnicas, trayectoria y más.",
 ]
 
 [release.en]
@@ -51,7 +51,7 @@ notes = [
     "Mode shortcuts on the top bar.",
     "Visual style, match camera and away kits.",
     "Hidden formations; no Hero / Diamond limits.",
-    "Player career page, shop filter and more.",
+    "Special move preview, career page and more.",
 ]
 
 [release.fr]
@@ -62,7 +62,7 @@ notes = [
     "Raccourcis vers les modes dans la barre du haut.",
     "Style visuel, caméra de match et tenue extérieure.",
     "Formations cachées ; Héros et Diamants sans limite.",
-    "Carrière du joueur, filtre des boutiques et plus.",
+    "Aperçu des supertechniques, carrière et plus.",
 ]
 
 [release.de]
@@ -73,7 +73,7 @@ notes = [
     "Schnellzugriff auf die Modi in der oberen Leiste.",
     "Grafikstil, Spielkamera und Auswärtstrikots.",
     "Versteckte Formationen; Helden und Diamanten frei.",
-    "Spielerlaufbahn, Shopfilter und mehr.",
+    "Spezialtechnik-Vorschau, Laufbahn und mehr.",
 ]
 
 [release.it]
@@ -84,7 +84,7 @@ notes = [
     "Scorciatoie alle modalità nella barra superiore.",
     "Stile visivo, telecamera e divise da trasferta.",
     "Formazioni nascoste; Eroi e Diamanti senza limite.",
-    "Carriera del giocatore, filtro dei negozi e altro.",
+    "Anteprima supertecniche, carriera e altro.",
 ]
 
 [release.pt]
@@ -95,7 +95,7 @@ notes = [
     "Atalhos para os modos na barra superior.",
     "Estilo visual, câmera da partida e uniforme reserva.",
     "Formações ocultas; Heróis e Diamantes sem limite.",
-    "Carreira do jogador, filtro das lojas e mais.",
+    "Prévia de supertécnicas, carreira e mais.",
 ]
 
 [release.ja]
@@ -106,7 +106,7 @@ notes = [
     "上部バーから各モードへショートカット。",
     "映像スタイル、試合カメラ、アウェイユニフォーム。",
     "隠しフォーメーション、ヒーロー・ダイヤの制限なし。",
-    "選手の経歴ページ、ショップの絞り込みなど。",
+    "必殺技プレビュー、選手の経歴など。",
 ]
 
 [release.zh_hans]
@@ -117,7 +117,7 @@ notes = [
     "顶部栏快速进入各模式。",
     "画面风格、比赛镜头与客场球衣。",
     "隐藏阵型；英雄与钻石卡不限数量。",
-    "球员生涯页面、商店筛选等。",
+    "必杀技预览、球员生涯等。",
 ]
 
 [release.zh_hant]
@@ -128,5 +128,5 @@ notes = [
     "頂部欄快速進入各模式。",
     "畫面風格、比賽鏡頭與客場球衣。",
     "隱藏陣型；英雄與鑽石卡不限數量。",
-    "球員生涯頁面、商店篩選等。",
+    "必殺技預覽、球員生涯等。",
 ]

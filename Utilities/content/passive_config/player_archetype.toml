@@ -1,0 +1,26 @@
+# Utilities › passive configurator: the player's ARCHETYPE follows his archetype passives (owner 2026-10-14: what
+# Inazuma Fantasy's configurator did, now Utilities' own; docs/game/mechanics/pasivas-configurables.md §2.2).
+# Read by scripts\passive_config.lua (lib\pc_core.lua parse_player_archetype / player_rule / derive); format
+# utilities.passive_config/1 (§3). The last mod in load order that declares a [player_archetype] wins (a WARN names the
+# one it replaces).
+#
+# * Which slots: the slots whose kind is "archetype" in the slot rules (the game's own slots: 4 and 5; a mod's
+#   [slots] kinds may name others). Which passive is of which archetype is never listed here: it is read from the
+#   data the game loads (passive_skill_effect_config: an effect definition's build icon) and from the archetypes the
+#   mods declare (content\archetypes\*.toml, VRFW.archetype/1: their `passives`).
+# * The rule: two archetype passives of one archetype = that archetype; of two DIFFERENT archetypes = a DOUBLE
+#   archetype (the first slot's archetype is the player's archetype, the second one is shown next to it in the player
+#   header when Character Reforged is active: content\menus\archetype_header.toml); one = that one.
+# * Where it applies: the game's archetype getters of a player (the plate / header icon, the explanation window, the
+#   signing guides: the retail command filters of content\game\passive_config.toml) and CMND_UTIL_PC_INFO (both
+#   archetypes). The TEAM's archetype is the game's own count of its starters' archetype passives (unchanged), so a
+#   double player gives a point to each of his two archetypes.
+# * A mod whose [slots] say archetype = true (its typed layout: special / general / general / archetype / archetype)
+#   keeps its own stricter rule: no archetype passive = no archetype. Same code, applied once.
+schema = "utilities.passive_config/1"
+
+[player_archetype]
+derive = true
+# no archetype passive in the archetype slots: "game" = the player keeps the game's own archetype (a player nobody
+# configured looks as in the game), "none" = no archetype
+without = "game"

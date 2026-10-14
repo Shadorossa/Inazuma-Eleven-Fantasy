@@ -1,0 +1,23 @@
+# Character Reforged (moved from Inazuma Fantasy 2026-10-14, docs/refactor/aura-mods-split.md «Player page»): the
+# player's 3D model on the player page («Ficha», personal_plate_menu), right of the description in
+# the space the one-row header frees (docs/game/ui/ui-redesign.md «Player page: one-row header and 3D model»). Layer
+# evt_pp_model and the page drawn before the 3D pass: Character Reforged content/menus/player_page_layout.toml
+# (research/scripts/if_plate_row_build.py). Ports the retail SetupCharaModel / SetCharaModelVisible (shop, team dock
+# view) with the office's one-build-per-player rule. The form cycle key is the mod Utilities' «Cambiar forma»
+# (Utilities.ViewForms, its export; the declaration content/menus/player_page_view_forms.toml, only with Utilities).
+name = "plate_model"
+mod = "character_reforged"
+order = 970
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateCharaStatusPlateInfoByCharaStHdl", "PostStep", "OnCloseLayer"]
+description = "Player page: the player's 3D model right of the description"
+
+[[files]]
+stem = "personal_plate_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "plate_model.lua"
+  marker = "plate model"

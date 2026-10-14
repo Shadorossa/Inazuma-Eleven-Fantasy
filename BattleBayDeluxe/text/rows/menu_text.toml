@@ -2,7 +2,7 @@
 # quit question; evt_bbd_locked = the Draft tile's unlock text, teams/50_draft.toml). The Lua asks
 # CMND_TEXT_GET(crc32(id)). The ids keep the ones they had in Inazuma Fantasy (moved 2026-10-08). Format:
 # docs/framework/types/text.md «Rows with fixed ids».
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 
 [[row]]
 id = "evt_bbd_locked"

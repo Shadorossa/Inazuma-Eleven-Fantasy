@@ -1,0 +1,49 @@
+id = "group_summons"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Group Summons"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Keshin summoned by several players together, as in IE GO Strikers 2013: Griffin by three players and Arthur by two, all of them in the summon scene. The participants are the nearest team-mates on the pitch who carry the keshin, or one carrier of each of its component keshin. The aura command (RB+B) starts it; every participant pays his share of its move from his own PEG pool, may fire its move while it runs and starts no other aura meanwhile, and Griffin's Flamberge is kicked by all three. Other keshin are summoned as usual."
+priority = 0
+tags = ["Gameplay", "Visual"]
+updated = "2026-10-14"
+# This mod's own names (TOML keys [[GroupSummons.X]], Lua GroupSummons.X, any later text, command or key); never VRFW.
+prefix = "GroupSummons"
+folder = "GroupSummons"
+# Split out of Inazuma Fantasy and Lost Cutscenes on 2026-10-14 (owner request; docs/game/mods/group-summons.md,
+# docs/refactor/aura-mods-split.md «Group Summons»). Data only (no plugin, no Lua, no options), standard mod layout
+# (docs/framework/mod-layout.md):
+#   content\transforms\group_summons.toml          the [[aura_rule]] of each group keshin: how many carriers, the
+#                                                  component sets, the shared PEG cost (Aura Points' pools), bound
+#                                                  partners, every participant's move, the cut-in and the move event
+#                                                  (was Inazuma Fantasy's content\transforms\if_aura_rules.toml)
+#   content\techniques\auras\group_summon_cutins.toml   the keshin's aura row plays its every-participant cut-in
+#                                                  (was Inazuma Fantasy's content\techniques\auras\fusion_keshin_cutins.toml)
+#   content\anims\group_summons.toml               the cut-ins with every participant (Griffin 3 seats ev80_80300,
+#                                                  Arthur 2 seats ev80_80240) and Flamberge kicked by the three
+#                                                  (ev60_81900), built at boot from retail events; pinned ids; the old
+#                                                  Lost Cutscenes keys (new_animations.*) are [[alias]]es
+#                                                  (was Lost Cutscenes' content\anims\fusion_keshin.toml, 1.1.0-1.4.5)
+# The mechanism is the VR-Framework's (services aura_rule over transform_engine core::group: carriers, sets, the
+# move_check gate, the runs, the cut-in seats, the partners' summon replay), the trigger and the moves button are
+# Character Reforged's plates slot (RB+B aura command, RB+A special moves, its cooldown), the cost Aura Points' PEG
+# pools (aura_points.peg, shared by the participants), the armours All Keshin Armed's keshin -> armour pairs.
+# vr_framework 2.4.30: the plates' lent aura and the aura rules as Character Reforged / Aura Points use them;
+# 2.4.38: an anim reference to a moved key (the [[alias]]es here) reads the event under its new key.
+requires = ["vr_framework>=2.4.30", "character_reforged>=1.7.13", "aura_points>=1.0.2", "all_keshin_armed>=1.0.7"]
+conflicts = []
+
+# Nothing to call: other mods read the group keshin through the framework (vrfw_aura_rule_*, CMND_VRFW_AURA_RULE) and
+# reference the events by id or by key (group_summons.griffin_trio / arthur_duo / flamberge_trio).
+[exports]
+functions = []
+keys = []
+
+# A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
+# ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
+# of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 45

@@ -1,0 +1,17 @@
+# Utilities' technique preview (docs/game/ui/technique-preview.md): the prompt «<RS> Previsualizar» at the bottom right
+# of the special move card (team02_02_skill_detail_info) of the «Supertécnicas» list (ability_list_menu). ONE layer
+# instance (menu layer budget, docs/game/ui/menu-layer-limits.md): a copy of the card's own retail prompt, the page
+# guide team00_40_change_page_guide (button glyph node _text_btn01 + guide text _text_guide01 on an auto-sized plate,
+# draw priority 655 over the card's 570), so it looks like the game's prompts and sits where the game puts that guide.
+# The retail guide only shows for aura moves (keshin / armed / miximax pages); this one only for special moves with a
+# cut-in: they never show together. The graft research/grafts/util_tech_preview fills its texts (rows of
+# text\rows\tech_preview.toml), opens / shows it and offsets it by config.toml [tech_preview] hint_x / hint_y.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "util_tp_hint"
+from = "team00_40_change_page_guide"
+
+[[patch]]
+menu = "ability_list_menu"
+add_layer = { name = "util_tp_hint", object = "util_tp_hint", count = 1, align = [0, 0], scale = 1, after = "team00_40_change_page_guide", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "team00_40_change_page_guide" }] }

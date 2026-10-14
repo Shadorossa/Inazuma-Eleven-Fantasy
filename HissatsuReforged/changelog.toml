@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# Hissatsu Reforged: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy (the special-move balance, the double icon).
+lang = "es"
+name = "Hissatsu Reforged"
+
+[en]
+name = "Hissatsu Reforged"
+
+[fr]
+name = "Hissatsu Reforged"
+
+[de]
+name = "Hissatsu Reforged"
+
+[it]
+name = "Hissatsu Reforged"
+
+[pt]
+name = "Hissatsu Reforged"
+
+[ja]
+name = "Hissatsu Reforged"
+
+[zh_hans]
+name = "Hissatsu Reforged"
+
+[zh_hant]
+name = "Hissatsu Reforged"
+
+[[release]]
+icon = "general"
+notes = [
+    "Supertécnicas reequilibradas: 683 del juego.",
+    "Nueva potencia mínima y máxima de cada una.",
+    "Nuevo coste de tensión y tiempo de recarga.",
+    "La potencia por grado sigue siendo la del juego.",
+    "Dos iconos a la vez: tiro largo y contraataque.",
+    "Base de Hissatsu Effects y True Hissatsu.",
+]
+
+[release.en]
+notes = [
+    "Rebalanced special moves: 683 of the game.",
+    "New minimum and maximum power for each one.",
+    "New tension cost and recast time.",
+    "The power per grade stays the game's.",
+    "Two icons at once: long shot and counter shot.",
+    "Base of Hissatsu Effects and True Hissatsu.",
+]
+
+[release.fr]
+notes = [
+    "Supertechniques rééquilibrées : 683 du jeu.",
+    "Nouvelle puissance minimale et maximale.",
+    "Nouveau coût de tension et temps de recharge.",
+    "La puissance par rang reste celle du jeu.",
+    "Deux icônes : tir de loin et contre-attaque.",
+    "Base de Hissatsu Effects et True Hissatsu.",
+]
+
+[release.de]
+notes = [
+    "Neu ausgeglichene Techniken: 683 des Spiels.",
+    "Neue minimale und maximale Stärke für jede.",
+    "Neue Spannungskosten und Abklingzeit.",
+    "Die Stärke pro Stufe bleibt die des Spiels.",
+    "Zwei Symbole: Fernschuss und Konterschuss.",
+    "Basis von Hissatsu Effects und True Hissatsu.",
+]
+
+[release.it]
+notes = [
+    "Supertecniche ribilanciate: 683 del gioco.",
+    "Nuova potenza minima e massima per ognuna.",
+    "Nuovo costo di tensione e tempo di ricarica.",
+    "La potenza per grado resta quella del gioco.",
+    "Due icone: tiro da lontano e contropiede.",
+    "Base di Hissatsu Effects e True Hissatsu.",
+]
+
+[release.pt]
+notes = [
+    "Supertécnicas reequilibradas: 683 do jogo.",
+    "Nova potência mínima e máxima de cada uma.",
+    "Novo custo de tensão e tempo de recarga.",
+    "A potência por grau continua a do jogo.",
+    "Dois ícones: chute de longe e contra-ataque.",
+    "Base do Hissatsu Effects e True Hissatsu.",
+]
+
+[release.ja]
+notes = [
+    "必殺技683個のバランスを調整。",
+    "それぞれの最小・最大威力を変更。",
+    "テンション消費とリキャストも変更。",
+    "ランクごとの威力はゲームのまま。",
+    "ロングとカウンターの両アイコン表示。",
+    "Hissatsu Effects等のベース。",
+]
+
+[release.zh_hans]
+notes = [
+    "重新平衡游戏中的683个必杀技。",
+    "每个必杀技新的最小与最大威力。",
+    "新的气势消耗和冷却时间。",
+    "每个等级的威力保持游戏原样。",
+    "同时显示远射与反击两个图标。",
+    "Hissatsu Effects 等的基础。",
+]
+
+[release.zh_hant]
+notes = [
+    "重新平衡遊戲中的683個必殺技。",
+    "每個必殺技新的最小與最大威力。",
+    "新的氣勢消耗和冷卻時間。",
+    "每個等級的威力保持遊戲原樣。",
+    "同時顯示遠射與反擊兩個圖示。",
+    "Hissatsu Effects 等的基礎。",
+]

@@ -1,0 +1,20 @@
+schema = "VRFW.character/2"
+# Character Reforged · Japanese Resistance · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06039230"                                   # Caleb Stonewall
+
+  [[edit.cards]]
+  id = 0xFEE8721A                                         # MF/FW · fire
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 306, control = 282, technique = 259, pressure = 208, physical = 173, intelligence = 282, agility = 170, freedom = 217 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                     # Killer Slide
+    { move = 0x71831119, level = 1 },                     # Foul Offence 2
+    { move = 0xC16279D1, level = 1 },                     # Field of Force
+    { move = 0xBF6D0AC5, level = 50 },                    # Emperor Penguin No. 3
+  ]

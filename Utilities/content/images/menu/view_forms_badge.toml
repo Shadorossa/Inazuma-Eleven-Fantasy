@@ -1,0 +1,184 @@
+# Utilities › «Cambiar forma»: the art of the form indicator of the retail «Ver apariencia» (graft
+# research/grafts/util_view_forms, layers util_vf_tile of content\menus\view_forms.toml; docs/game/mechanics/
+# form-viewer.md §8.3). Two square tiles side by side, as Inazuma Fantasy's player page showed the form (owner
+# 2026-10-14, the look of Character Reforged's content\images\menu\plate_form_badges.toml, made here from the same
+# recipe so Utilities needs no other mod): a near-black tile with the shown form's white glyph, then a light tile under
+# the bound key's glyph (the key itself is game text, <CMD_UTIL_VIEW_FORMS>: the pad's button on a pad, the key's
+# letter on a keyboard).
+# A NEW atlas (#/menu/102_team/util_view_forms/util_view_forms.g4tx), made at the first start (and after a game update)
+# from the PLAYER'S own game files: the glyphs are the game's own monochrome tab icons (icon_list_tab.g4tx: the skill
+# list's aura tabs icon_list_tab_sp_area06 armour / 07 Mix-Max / 11 «Modo cambio», and the player bust
+# icon_list_tab_datafile05). No Level-5 pixel ships.
+# Which tile a form shows: the graft's FORM_TILES (form ids of the VR-Framework's form viewer: 0 Normal, 1 Miximax,
+# 2 Armour, 3 the miximax's own armour + Miximax, 4 the aura slot's armour + Miximax; 3 and 4 = the armour glyph with a
+# small Mix-Max mark). util_vf_tile_mode («Modo cambio») is made for a later form kind: the viewer lists none today.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_view_forms"
+size = [204, 136]
+
+# ---- the tiles (64 x 64 each, 3 per row) -----------------------------------------------------------------------------
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_normal"
+texture = "util_view_forms"
+x = 0
+y = 0
+size = [64, 64]
+recipe = "tile_normal"
+
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_miximax"
+texture = "util_view_forms"
+x = 68
+y = 0
+size = [64, 64]
+recipe = "tile_miximax"
+
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_armour"
+texture = "util_view_forms"
+x = 136
+y = 0
+size = [64, 64]
+recipe = "tile_armour"
+
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_armour_miximax"
+texture = "util_view_forms"
+x = 0
+y = 68
+size = [64, 64]
+recipe = "tile_armour_miximax"
+
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_mode"
+texture = "util_view_forms"
+x = 68
+y = 68
+size = [64, 64]
+recipe = "tile_mode"
+
+[[sprite]]
+atlas = "#/menu/102_team/util_view_forms/util_view_forms.g4tx"
+name = "util_vf_tile_key"
+texture = "util_view_forms"
+x = 136
+y = 68
+size = [64, 64]
+recipe = "tile_key"
+
+# ---- recipes -----------------------------------------------------------------------------------------------------------
+# the form tile's back: a 64 x 64 near-black square, corner radius 6
+[[recipe]]
+name = "dark_plate"
+canvas = [64, 64]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [22, 22, 26] },
+    { op = "round_corners", radius = 6 },
+]
+
+# the key's tile: the same square, light (the key glyphs, pad and keyboard, are dark keycaps)
+[[recipe]]
+name = "tile_key"
+canvas = [64, 64]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [236, 236, 240] },
+    { op = "round_corners", radius = 6 },
+]
+
+# a tab glyph of the skill list (white rounded tile, the figure cut out): its 80 x 80 tile, fitted to 48 x 48
+[[recipe]]
+name = "glyph_miximax"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area07"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "glyph_armour"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area06"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+[[recipe]]
+name = "glyph_mode"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_sp_area11"
+ops = [
+    { op = "crop", box = [32, 8, 112, 88] },
+    { op = "fit", box = [48, 48] },
+]
+
+# the player bust (white silhouette): its drawn box, fitted to 40 x 40
+[[recipe]]
+name = "glyph_player"
+game = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_datafile05"
+ops = [
+    { op = "alpha_crop" },
+    { op = "fit", box = [40, 40] },
+]
+
+[[recipe]]
+name = "tile_normal"
+from = "dark_plate"
+ops = [{ op = "paste", image = "glyph_player", centre = [32, 32] }]
+
+[[recipe]]
+name = "tile_miximax"
+from = "dark_plate"
+ops = [{ op = "paste", image = "glyph_miximax", centre = [32, 32] }]
+
+[[recipe]]
+name = "tile_armour"
+from = "dark_plate"
+ops = [{ op = "paste", image = "glyph_armour", centre = [32, 32] }]
+
+[[recipe]]
+name = "tile_mode"
+from = "dark_plate"
+ops = [{ op = "paste", image = "glyph_mode", centre = [32, 32] }]
+
+# armour + Miximax (forms 3 and 4): the armour glyph a little up-left, a small Mix-Max glyph on its lower right over a
+# dark rim, so it stands apart from the armour glyph
+[[recipe]]
+name = "glyph_armour_small"
+from = "glyph_armour"
+ops = [{ op = "fit", box = [42, 42] }]
+
+[[recipe]]
+name = "glyph_miximax_mark"
+from = "glyph_miximax"
+ops = [{ op = "fit", box = [24, 24] }]
+
+[[recipe]]
+name = "mark_rim"
+canvas = [28, 28]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [22, 22, 26] },
+    { op = "round_corners", radius = 4 },
+]
+
+[[recipe]]
+name = "tile_armour_miximax"
+from = "dark_plate"
+ops = [
+    { op = "paste", image = "glyph_armour_small", centre = [27, 27] },
+    { op = "paste", image = "mark_rim", centre = [46, 46] },
+    { op = "paste", image = "glyph_miximax_mark", centre = [46, 46] },
+]

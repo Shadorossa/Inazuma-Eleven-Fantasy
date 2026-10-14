@@ -1,0 +1,136 @@
+schema = "VRFW.technique/3"
+# Shot / keeper mini-effects of retail moves, mod Hissatsu Effects (hand-written; moved out of Inazuma Fantasy 2026-10-14; docs/framework/technique.md §4e). Generic keys
+# of the technique type; each rule also covers the move's _or / _mm variants.
+#   distance_falloff = "inverted" | { mode = "inverted", slope = 1.0, cap = 0.5 } | "game"
+#       a LONG SHOT of the move gains power with its flight instead of losing it: the game's falloff (power x
+#       longShootAttenuationRatePerSecond lost per second until the ball enters the area) mirrored into a bonus of
+#       slope x that, until the shot has gained cap x its power at the kick.
+#   on_win_lock_opponent_move = true
+#       a keeper move: when it stops a shot, the shooter cannot use that shot move again until this team stops another
+#       move / player with such a move (then that lock is released and the new one applies). One lock per team.
+#   pe_sacrifice = { fraction = 0.15, power_mult = 1.25 }
+#       on use the user spends that share of his CURRENT PE and the move's power is multiplied (full boost with at
+#       least fraction x max PE; less PE = a proportionally smaller boost; 0 PE = no cost, no boost).
+#   power_per_participant = { element = "fire", pct = 5 }
+#       a multi-player move gains pct % of its power for each team mate of that element performing it with the user
+#       (the cast of the move's event; include_executor = true counts the user too).
+#   on_win_steal_tension = { pct = 15 }
+#       a keeper move: when it stops a shot, the keeper's team gains pct % of the tension the shot cost.
+#   trajectory: not declared here. Every flight of IF's moves (Excálibur, Pingüino emperador nº1 / nº3, Lanza letal,
+#       Chut ancestral) is Living Shots' (research/mods/LivingShots, optional): heights over distances
+#       measured from each move's cut-in (docs/framework/technique.md §4e). IF's old dive / ground / drop_skim entries
+#       were dropped on 2026-10-10 so Living Shots' flight is the one that plays.
+#   ground_trail = { effect = "<mod>.<name>", object = "effect/…/<x>.objbin", interval = 0.05, scale = 1.0, scatter = 0.0, orient = true }
+#       while the shot's ball touches the pitch a piece of that pooled effect is left at its ground point every
+#       interval s (the game's grounding effect), turned along the shot; each piece plays its clip once (its fade).
+#   split_shot = { parts = 7, lose = { basic = 1, move = 2 }, lose_by_move = { whd00010 = 3 } }
+#       the shot's power is split in parts balls: a field block on it costs balls (basic / body block, block move,
+#       or a given move) instead of a block battle (each blocker once per shot) and the shot flies on with the power
+#       of the balls left; the block that would take the last balls plays the game's battle. hide_ball = true (a
+#       visual key: only Living Shots sets it) does not draw the real match ball while the split shot flies.
+
+# Excálibur (Excalibur, long shot, wind): the farther, the stronger. Retail long-shot falloff is 0.5 of the power per
+# second in IF (game_param longShootAttenuationRatePerSecond); mirrored: +50 % per second of flight, at most +50 %.
+# Also a COUNTER shot (owner 2026-10-14): effect_flags 4 (long shot, retail) + 16 (counter shot) = 20: it plays as both
+# and its rows / card show both badges (Hissatsu Reforged's double icon, docs/framework/technique.md §4c). Gameplay
+# classification only: the shot block use and its cut-in (ev60_80970) stay Inazuma Fantasy's part excalibur_block.
+[[edit]]
+target = "whs00970"
+distance_falloff = { mode = "inverted", slope = 1.0, cap = 0.5 }
+effect_flags = 20
+# Its flight (on the ground into the goal) is Living Shots' (shot_fx techniques\excalibur_trail.toml).
+# The cut-in's ground cut left along the path (ground_trail, visual only) and every ball aura in flight moved to the
+# mod «Efectos de tiro» (research/mods/LivingShots, optional) on 2026-10-08: its
+# techniques\excalibur_trail.toml adds that key to this move (the technique type merges the mods' keys per field).
+
+# Malla eléctrica (Electric Trap, keeper catch, wind): stopping a shot locks the shooter's move.
+[[edit]]
+target = "whk00700"
+on_win_lock_opponent_move = true
+
+# Pingüino emperador nº1 (Emperor Penguin No. 1, shot, forest): 15 % of the user's current PE for x1.25 power
+# (multiplier confirmed by Nacho 2026-10-06).
+# The PE is Inazuma Fantasy's (module stamina): without a PE provider the move has no cost and no boost (framework log).
+[[edit]]
+target = "whs00610"
+pe_sacrifice = { fraction = 0.15, power_mult = 1.25 }
+# Its flight is Living Shots' (shot_fx techniques\emperor_penguin_trajectory.toml).
+
+# Fuego total (Grand Fire, 4-player shot, fire): +5 % power for each FIRE team mate performing it with the shooter
+# (Nacho 2026-10-07: «por cada compañero de fuego realizando la técnica»; the shooter himself is not counted).
+[[edit]]
+target = "whs01230"
+power_per_participant = { element = "fire", pct = 5 }
+
+# Martillo defensor (Needle Hammer, keeper catch, wind): stopping a shot gives the keeper's team 15 % of the tension
+# the shooter spent on it.
+[[edit]]
+target = "whk00730"
+on_win_steal_tension = { pct = 15 }
+
+# Diluvio letal (Doom Rain, long shot, fire; Nacho 2026-10-07: «cada uno de esos balones reparta la fuerza de la
+# supertécnica en 7: … al chocar 2 balones, la fuerza de 5 se mantiene igual»): the ball leaves the kicker on the
+# game's own flight (no dive: Nacho 2026-10-07 in game, «que salga de abajo, del jugador») among its rain of 7 balls
+# fanning out from his foot (shot_fx effects\doom_rain_ball.toml; one of them covers the white match ball) and its power
+# is split in them: a body / basic block takes 1 ball, a block move 2, a wall (El muro, Muro de hierro) 3; the shot flies on with the power of
+# the balls left (the spread lets the rest pass); the block that would take the last balls plays the game's battle.
+# Gameplay only. Hiding the real ball while the 7 visual balls fly (hide_ball) is Living Shots' (shot_fx
+# techniques\doom_rain_split_ball.toml): the technique type merges split_shot key by key across mods, so Living Shots
+# adds only its hide_ball key to this rule.
+[[edit]]
+target = "whs01390"
+split_shot = { parts = 7, lose = { basic = 1, move = 2 }, lose_by_move = { whd00010 = 3, whd00620 = 3 } }
+
+# ---- [edit.VRFW.MoveEffect]: generic per-move duel effects (docs/framework/technique.md §4g; numbers and readings:
+# docs/game/mechanics/move-effects.md).
+
+# Muralla infinita (Infinite Wall, keeper catch, mountain; the keeper and two team mates in its scene): its power gets
+# an extra of 225 % of the performers' Presión + Físico (the mean of the performers: one player's stat term, the
+# unit VR's own stat term uses: 1 stat point = 1 power point), 75 points less per use of the team in the match:
+# 1st 225 %, 2nd 150 %, 3rd 75 %, 4th and later 0 % (Nacho 2026-10-11).
+[[edit]]
+target = "whk00230"
+[edit.VRFW.MoveEffect]
+StatPower = { Stats = ["pressure", "physical"], Weight = 2.25, DecayPerUse = 0.75, Scope = "team_match", Combine = "mean" }
+
+# Mano omega (Omega Hand, keeper catch, mountain): its FIRST use of the team in the match has its move power x30
+# (PowerMult is the total factor: ×30 = +2900 %, owner 2026-10-12, was ×31; «el primero es prácticamente imbatible»); later uses are normal (Nacho 2026-10-11; «PP» read as the move's
+# power: VR's skill data has power and the TP cost, no other «PP»).
+[[edit]]
+target = "whk00690"
+VRFW.MoveEffect.FirstUse = { PowerMult = 30.0, Scope = "team_match", Uses = 1 }
+
+# Tiro balista (Ballista Barrage, long shot, mountain): as a long shot it loses 10 % less power than normal (x0.9 the
+# game's falloff per second) and its ball flies 30 % faster (Nacho 2026-10-11).
+[[edit]]
+target = "whs01540"
+VRFW.MoveEffect = { LongShotFalloffMult = 0.9, BallSpeedMult = 1.3 }
+
+# Tiro del cometa (Comet Shot, long shot, wind): its ball flies 15 % faster, and every rival who tries to block it on its
+# way (a body block or a block move, walls included; once per blocker per shot) costs the rival team 2 % of its
+# tension gauge (Nacho 2026-10-11).
+[[edit]]
+target = "whs00140"
+VRFW.MoveEffect = { BallSpeedMult = 1.15, OnBlock = { Team = "rival", Tension = -0.02 } }
+
+# Mano mágica (Majin the Hand, keeper catch): on use it refunds 25 % of the full recast of the special moves of its
+# own element in the team's slots on recast (the forest version forest moves, the mountain versions mountain moves;
+# not its own slot) (Nacho 2026-10-11).
+[[edit]]
+target = "whk00470"
+VRFW.MoveEffect.OnUse = { CooldownRefund = 0.25, Filter = { Team = "own", Element = "same_as_move" } }
+
+[[edit]]
+target = "whk00220"
+VRFW.MoveEffect.OnUse = { CooldownRefund = 0.25, Filter = { Team = "own", Element = "same_as_move" } }
+
+# The GO version (mountain, no learners in v7.1.2): the same rule if a player gets it.
+[[edit]]
+target = "whk00910"
+VRFW.MoveEffect.OnUse = { CooldownRefund = 0.25, Filter = { Team = "own", Element = "same_as_move" } }
+
+# Hora celestial (Heaven's Time, dribble, wind): the rivals it beats are sent 18 m away from the user (along the line
+# user -> rival, kept on the pitch), after its cut-in (Nacho 2026-10-11).
+[[edit]]
+target = "who00200"
+VRFW.MoveEffect.OnSuccess = { PushAffected = { RadiusM = 18 } }

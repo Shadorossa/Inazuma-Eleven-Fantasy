@@ -1,0 +1,24 @@
+# «Big Bang» (whs01110, fire shot, three-player combo, cut-in ev60_01110): while the ball flies to the goal it is the
+# nose of the cut-in's OWN giant blazing meteor (the last cut c0700, the meteor diving from the sky onto the goal, held
+# at frame 600, its fire's texture flow running on), the flames over its dome and the fire streaks trailing behind,
+# instead of the plain fire special-shot aura (ega0075c). The 600 m streak fan, the shock ring pulsing at the nose
+# (flat across the flight: a bar from the touchline), the dark backdrop, the camera-front flashes, the screen blur and
+# the c0500 / c0600 space / galaxy / light-disc parts are dropped; x0.06 of the cut-in size (meteor ~2.9 m across).
+# The object is ev6111bb00 (assets\data\{common,dx11}\effect\event\ev60\ev6111bb00\), built by
+# research/scripts/big_bang_ball_fx.py from ev60011100; docs/game/media/big-bang-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "big_bang_meteor"
+from = "ega0075c"
+object = "effect/event/ev60/ev6111bb00/ev6111bb00.objbin"
+
+[[shot_aura]]
+name = "big_bang_meteor"
+when = { techniques = ["whs01110"] }
+aura = "big_bang_meteor"
+like = "ega0075c"

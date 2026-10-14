@@ -1,0 +1,26 @@
+# «Torpedo tridente» (Trident Torpedo, whs01850; wind shot, cut-in ev60_01850): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's last cut (c0400, the ball kicked out of the whirlpool 10.7 m up,
+# flying on and easing down to 9.2 m): its blue light, white tip, water auras and wave shell, born at the kick with
+# the kick wave, instead of the plain wind special-shot aura (ega0075b). The object is ev6185tt00
+# (effect/event/ev60/ev6185tt00/), built by research/scripts/trident_torpedo_ball_fx.py from the cut-in's effect
+# object ev60018500: c0400 replayed from the kick (340), then held at frame 458, ball at the origin flying +Z, x1.
+# Left out: the scenery (sky, clouds, sea and waves), the whirlpool and the water drops at the kick point, the
+# wind-up's glints and aura, the keshin. docs/game/media/trident-torpedo-ball-fx.md. The trigger copies the wind
+# special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b). Its flight: content\techniques\trident_torpedo_trajectory.toml. Mod «Living Shots»
+# (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own cut-in effects by
+# research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "trident_torpedo"
+from = "ega0075b"
+object = "effect/event/ev60/ev6185tt00/ev6185tt00.objbin"
+
+[[shot_aura]]
+name = "trident_torpedo"
+when = { techniques = ["whs01850"] }
+aura = "trident_torpedo"
+like = "ega0075b"
+# the aura's replay (118 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 118 }

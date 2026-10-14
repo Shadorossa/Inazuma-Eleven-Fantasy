@@ -241,6 +241,63 @@ do
     return s.Menu, s.Params == "equip" and "equip" or "board", s.Clear
   end
 
+  -- the bank's personal plate (the panel «Y mostrar estadísticas») is open: the retail local `flag` through the
+  -- framework's host (nil when the host cannot read it)
+  function B.PlateOpen()
+    local ok, v = pcall(function()
+      return VRFW_Host.hosts.chara_bank_menu.L.flag
+    end)
+    if ok and type(v) == "boolean" then
+      return v
+    end
+    return nil
+  end
+
+  -- 2026-10-14 (owner screenshot): during the passive session the configurator's list window (personal_plate_menu,
+  -- draw priority 449-452) covers the left half, but the bank's focused card (the native list view raises it) drew on
+  -- top of its first row, and the bank's tab bar («Inazuma Eleven Cross» + its Z / C glyphs) stood over the
+  -- configurator's filter header («Z ‹ Todas › C»). These bank layers are hidden while the session runs and shown
+  -- again exactly as they were (only the instances that were visible).
+  B.PC_HIDE_ALL = {3310065218 --[[cmn06_04_list_tab_attach_11_only]], 4044286600 --[[cmn06_20_list_tab_item]],
+                   3222237174 --[[cmn06_20_list_tab_item_search]], 529927244 --[[cmn06_21_list_tab_search]],
+                   8877084 --[[cmn06_11_sort_bar_left]], 1199683335 --[[team14_02_filter_guide]]}
+  B.PC_HIDE_FOCUS = {1791816279 --[[team00_01_chara_card_for_list]], 2855422738 --[[team00_01_chara_card_blank_for_list]],
+                     30530992 --[[team00_01_p4_check_mark]]}
+  B.PC_HIDE_CURSOR = 2296367164      -- cmn05_01_cursor
+  function B.HideForPassives()
+    local hidden = {}
+    local function hide(layer, idx)
+      local ok, v = pcall(funcLuaMenuCommand, 1262717583 --[[is layer visible]], layer, idx)
+      if ok and v == true then
+        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, idx, false)
+        hidden[#hidden + 1] = {layer, idx}
+      end
+    end
+    for _, layer in ipairs(B.PC_HIDE_ALL) do
+      local ok, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], layer)
+      if ok and type(n) == "number" then
+        for i = 0, math.min(n, 64) - 1 do
+          hide(layer, i)
+        end
+      end
+    end
+    local okS, sel = pcall(GetSelectedLayerIdxInList)
+    if okS and type(sel) == "number" and sel >= 0 then
+      for _, layer in ipairs(B.PC_HIDE_FOCUS) do
+        hide(layer, sel)
+      end
+    end
+    hide(B.PC_HIDE_CURSOR, 0)
+    B.Log("passives: bank layers hidden", #hidden, "focused card", tostring(sel))
+    return hidden
+  end
+
+  function B.ShowAgain(hidden)
+    for _, e in ipairs(hidden or {}) do
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], e[1], e[2], true)
+    end
+  end
+
   -- «Configuración de pasivas»: the session of Utilities' configurator on the plate (as the formation's UTIL_PCD.Plate)
   function B.Passives(h)
     if not B.PassivesOk(h) then
@@ -249,15 +306,20 @@ do
       return
     end
     SetCharaBankInputEnabled(false)
-    if not menuExists(B.PLATE_MENU) and type(OpenPersonalPlate) == "function" then
-      pcall(OpenPersonalPlate)
-      for _ = 1, 30 do
+    -- 2026-10-14: the bank BUILDS the plate menu in its OnSetupLayer and only hides it, so the menu always exists and
+    -- the old «not menuExists» test never opened it: without the panel (Y «mostrar estadísticas») nothing took the
+    -- session. The open state is the retail local `flag`; OpenPersonalPlate itself returns at once when it is open.
+    local wasOpen = B.PlateOpen()
+    local closeAfter = false
+    if wasOpen ~= true and type(OpenPersonalPlate) == "function" then
+      local ok = pcall(OpenPersonalPlate)
+      closeAfter = ok and wasOpen == false
+      for _ = 1, 20 do
         coroutine.yield()
-        if menuExists(B.PLATE_MENU) then
-          break
-        end
       end
     end
+    B.Log("passives: plate open before", tostring(wasOpen), "close after", tostring(closeAfter))
+    local hidden = B.HideForPassives()
     pcall(UpdatePersonalPlate, h)
     coroutine.yield()
     funcLuaCommand(3363400568, B.KEY_DONE)
@@ -282,6 +344,10 @@ do
       end
     end
     coroutine.yield()
+    B.ShowAgain(hidden)
+    if closeAfter and type(ClosePersonalPlate) == "function" then
+      pcall(ClosePersonalPlate)          -- the panel was closed before the session: closed again
+    end
     B.Back(h)
   end
 

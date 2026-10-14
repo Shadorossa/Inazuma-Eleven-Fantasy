@@ -1,0 +1,30 @@
+id = "shot_fx"
+# «Living Shots» (until 1.4.0 «Efectos de tiro» / Shot FX). name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+name = "Living Shots"
+# the mod's own name prefix (docs/framework/new-core/plan.md «Mod prefixes»): its own TOML keys / Lua names are
+# LivingShots.X; the mod id stays shot_fx (saved option values, `requires`, Inazuma Fantasy's dependency)
+prefix = "LivingShots"
+folder = "LivingShots"
+version = "1.4.69"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Special shots keep their cut-in look while the ball flies: Doom Spear travels inside its red lattice spear, Excalibur rides its slash wave and leaves a burnt gash on the pitch, Doom Rain flies among its rain of dark balls, Emperor Penguin No. 1 / 2 / 3 carry their penguins, Katana Kick its wave and maple leaves, Doom Break skims the pitch inside its spiked ball, God Knows flies inside its lightning orb and Ultimate Eleven Assault inside its golden sphere with rainbow streaks. Visual only: no power, cost, path or block change. Camera on shots: while a shot at goal flies, the camera shows it from the touchline, then your camera comes back (always on, no setting). Special goals: scoring with Meteoric Fire Tornado, Inazuma Break, Shadow Empress or Ultimate Eleven Assault smashes the goal (each with its own scene; Ultimate Eleven Assault's is golden), whoever uses it; option «Skip special goal scene» in Mod options."
+priority = 0
+tags = ["Visual"]
+updated = "2026-10-14"
+# Data only, no DLL, no Lua (1.4.0): content\effects\ ([[effect]] + [[shot_aura]] of the effect type, docs/framework/effect.md
+# §6), visual keys of the technique type (techniques\: ground_trail, trajectories, goal_event), the match camera
+# presets cameras\ and the shot camera content\camera_drives\shot_view.toml ([[VRFW.CameraDrive]], run every frame by
+# the VR-Framework: docs/framework/camera-drive.md; until 1.4.0 the plugin shot_fx.dll and config.toml [shot_flight]).
+# Works on the retail moves, without Inazuma Fantasy (which requires this mod and adds its own gameplay mini-effects to
+# the same moves). `requires` also makes it load after the framework.
+# 1.2.0 (2026-10-08): the mod Goal Smash merged in (content\techniques\goal_smash.toml goal_event rules, its goal events in
+# assets\data\common\event_cfg + effect\event\ev71, options.toml / text\keys.toml «Saltar la cinemática de gol especial»;
+# docs/game/mechanics/goal-smash.md §9); `provides` makes an installed copy of the old mod skipped.
+# 1.3.0 (2026-10-08): the shot camera goes through the VR-Framework match camera service (docs/framework/camera.md
+# §3.1): its pose is the preset cameras\shot.toml (shot_fx.shot), requested at priority 10 (above Utilities'
+# «Lateral») for the shot window only.
+# 1.4.0 (2026-10-10): renamed «Living Shots»; the shot camera is data (the framework's camera drive), shot_fx.dll gone.
+requires = ["vr_framework>=2.0.0"]
+provides = ["goal_smash=1.0.0"]
+conflicts = []

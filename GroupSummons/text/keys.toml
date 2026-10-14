@@ -1,0 +1,41 @@
+# Texts of Group Summons (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("group_summons.<name>"): the mod's name and description on the «Mods» screen, in the game's language.
+# «Group Summons» is not translated. A language missing here falls back to English.
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Group Summons"
+mod_description = "Keshin summoned by several players together, as in IE GO Strikers 2013: Griffin by three players and Arthur by two, all of them in the summon scene. The participants are the nearest team-mates on the pitch who carry the keshin, or one carrier of each of its component keshin. The aura command (RB+B) starts it; every participant pays his share of its move from his own PEG pool, may use its move while it is out and summons nothing else meanwhile, and Griffin's Flamberge is kicked by all three. Other keshin are summoned as usual."
+
+[es.new]
+mod_name = "Group Summons"
+mod_description = "Espíritus guerreros invocados por varios jugadores a la vez, como en IE GO Strikers 2013: Grifo por tres jugadores y Arturo por dos, todos ellos en la escena de invocación. Los participantes son los compañeros más cercanos en el campo que llevan ese espíritu, o uno de cada espíritu que lo compone. Se invoca con el comando de aura (RB+B); cada participante paga su parte de la supertécnica con su propio PEG, puede usarla mientras el espíritu está fuera y no invoca nada más mientras tanto, y Flamberge de Grifo lo chutan los tres. Los demás espíritus se invocan como siempre."
+
+[fr.new]
+mod_name = "Group Summons"
+mod_description = "Des Keshin invoqués par plusieurs joueurs à la fois, comme dans IE GO Strikers 2013 : Griffon par trois joueurs et Arthur par deux, tous dans la scène d'invocation. Les participants sont les coéquipiers les plus proches sur le terrain qui portent ce Keshin, ou un porteur de chacun des Keshin qui le composent. La commande d'aura (RB+B) le lance ; chaque participant paie sa part de la technique avec son propre PEG, peut l'utiliser tant que le Keshin est là et n'invoque rien d'autre pendant ce temps, et le Sabre de feu de Griffon est tiré par les trois. Les autres Keshin s'invoquent comme d'habitude."
+
+[de.new]
+mod_name = "Group Summons"
+mod_description = "Keshin, die mehrere Spieler gemeinsam beschwören, wie in IE GO Strikers 2013: Greif von drei Spielern und Artus von zwei, alle in der Beschwörungsszene. Beteiligt sind die nächsten Mitspieler auf dem Feld, die diesen Keshin tragen, oder je ein Träger jedes Keshin, aus dem er besteht. Der Aura-Befehl (RB+B) startet ihn; jeder Beteiligte zahlt seinen Anteil der Technik aus seinen eigenen KGP, darf sie nutzen, solange der Keshin draußen ist, und beschwört währenddessen nichts anderes, und Greifs Flamberge schießen alle drei. Andere Keshin werden wie gewohnt beschworen."
+
+[it.new]
+mod_name = "Group Summons"
+mod_description = "Keshin evocati da più giocatori insieme, come in IE GO Strikers 2013: Grifo da tre giocatori e Artù da due, tutti nella scena dell'evocazione. I partecipanti sono i compagni più vicini in campo che hanno quel Keshin, o un portatore di ciascuno dei Keshin che lo compongono. Il comando aura (RB+B) lo avvia; ogni partecipante paga la sua parte della tecnica con il proprio PSG, può usarla finché il Keshin è in campo e nel frattempo non evoca altro, e la Flamberga di Grifo la calciano tutti e tre. Gli altri Keshin si evocano come sempre."
+
+[pt.new]
+mod_name = "Group Summons"
+mod_description = "Keshin invocados por vários jogadores ao mesmo tempo, como em IE GO Strikers 2013: Grifo por três jogadores e Artur por dois, todos na cena da invocação. Os participantes são os colegas mais próximos em campo que têm esse Keshin, ou um portador de cada Keshin que o compõe. O comando de aura (RB+B) inicia-o; cada participante paga a sua parte da técnica com o seu próprio PEG, pode usá-la enquanto o Keshin está fora e não invoca mais nada entretanto, e a Flambérgia de Grifo é chutada pelos três. Os outros Keshin invocam-se como sempre."
+
+[ja.new]
+mod_name = "Group Summons"
+mod_description = "IE GO ストライカーズ 2013のように、複数の選手で化身を一緒に召喚します：グリフォンは３人、アーサーは２人で、全員が召喚シーンに登場します。参加者は、その化身を持つフィールド上の最も近い味方、または構成する化身をそれぞれ持つ選手です。オーラコマンド（RB+B）で召喚し、参加者はそれぞれ自分のFSPから必殺技の分担分を払い、化身が出ている間はその必殺技を使えますが、その間ほかの召喚はできません。グリフォンのソード・オブ・ファイアは３人でシュートします。ほかの化身はいつも通りに召喚されます。"
+
+[zh_hans.new]
+mod_name = "Group Summons"
+mod_description = "像 IE GO 王者 2013 一样，由多名球员一起召唤化身：格里芬由三名球员召唤，亚瑟由两名，全员出现在召唤场景中。参与者是场上携带该化身的最近队友，或分别携带其组成化身的球员。用灵气指令（RB+B）召唤；每名参与者用自己的FSP支付必杀技的一份，化身在场期间可以使用其必杀技，其间不能召唤别的。格里芬的烈火圣剑由三人一起踢出。其他化身照常召唤。"
+
+[zh_hant.new]
+mod_name = "Group Summons"
+mod_description = "像 IE GO 王者 2013 一樣，由多名球員一起召喚化身：葛利芬由三名球員召喚，亞瑟由兩名，全員出現在召喚場景中。參與者是場上攜帶該化身的最近隊友，或分別攜帶其組成化身的球員。用靈氣指令（RB+B）召喚；每名參與者用自己的FSP支付必殺技的一份，化身在場期間可以使用其必殺技，其間不能召喚別的。葛利芬的烈火聖劍由三人一起踢出。其他化身照常召喚。"

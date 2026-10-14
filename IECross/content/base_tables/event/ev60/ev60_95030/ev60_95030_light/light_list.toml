@@ -1,0 +1,12 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event/ev60/ev60_95030/ev60_95030_light/light_list.cfg.bin"
+from = "data/common/event/ev01/ev01_04000/ev01_04000_light/light_list.cfg.bin"
+
+[[list]]
+name = "EV_LI_MAP_LIGHT"
+rows = [
+  ["fix", "c0100", "common/event/ev60/ev60_95030/ev60_95030_light/EventMap_fix_c0100.cfg.bin"],
+  ["fix", "c0200", "common/event/ev60/ev60_95030/ev60_95030_light/EventMap_fix_c0200.cfg.bin"],
+  ["fix", "c0300", "common/event/ev60/ev60_95030/ev60_95030_light/EventMap_fix_c0300.cfg.bin"],
+  ["fix", "c0400", "common/event/ev60/ev60_95030/ev60_95030_light/EventMap_fix_c0400.cfg.bin"],
+]

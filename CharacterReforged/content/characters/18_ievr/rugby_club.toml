@@ -1,0 +1,229 @@
+schema = "VRFW.character/2"
+# Character Reforged · Rugby Club · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11700360"                                   # Bartholomew Blitzer
+
+  [[edit.cards]]
+  id = 0xACFDD79A                                         # DF/GK · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 182, technique = 170, pressure = 228, physical = 294, intelligence = 252, agility = 201, freedom = 230 }
+  moves = [
+    { move = 0x72BFA108, level = 5 },                     # Wall of Atlantis
+    { move = 0x2D9F7E76, level = 16 },                    # Breath Taker
+    { move = 0x31ABD82E, level = 32 },                    # Circus Block
+    { move = 0x637C031A, level = 58 },                    # No Escape
+  ]
+
+[[edit]]
+target = "c11709010"                                   # Heathcliff Humbold
+
+  [[edit.cards]]
+  id = 0x9CF2B08E                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 235, technique = 227, pressure = 170, physical = 232, intelligence = 197, agility = 180, freedom = 230 }
+  moves = [
+    { move = 0x9D236FA3, level = 1 },                     # Sword of the King
+    { move = 0x53CD747F, level = 9 },                     # Tarzan Kick
+    { move = 0x4031A7F5, level = 24 },                    # Mole Fake
+    { move = 0x19BA3BFC, level = 43 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c11709020"                                   # Tufton Frizzell
+
+  [[edit.cards]]
+  id = 0xB7DFE34D                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 244, technique = 232, pressure = 170, physical = 217, intelligence = 198, agility = 186, freedom = 238 }
+  moves = [
+    { move = 0xD9BB22A7, level = 1 },                     # Air Ride
+    { move = 0x039DBAAC, level = 17 },                    # Land of Ice
+    { move = 0xC42D6F54, level = 28 },                    # Aikido
+    { move = 0x0D368F6B, level = 38 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c11709030"                                   # Eldon Compayne
+
+  [[edit.cards]]
+  id = 0xAEC4D20C                                         # DF/GK · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 177, technique = 163, pressure = 220, physical = 301, intelligence = 232, agility = 205, freedom = 230 }
+  moves = [
+    { move = 0x67F17FA8, level = 3 },                     # Mega Quake
+    { move = 0x2D9F7E76, level = 15 },                    # Breath Taker
+    { move = 0x52CEB5F6, level = 28 },                    # Iron Wall
+    { move = 0x737DCB3F, level = 34 },                    # Pancake Defence
+  ]
+
+[[edit]]
+target = "c11709040"                                   # Lysander Trimore
+
+  [[edit.cards]]
+  id = 0xE18544CB                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 185, technique = 169, pressure = 201, physical = 301, intelligence = 228, agility = 200, freedom = 242 }
+  moves = [
+    { move = 0xA8215D7C, level = 3 },                     # The Mountain
+    { move = 0x5DA7EA06, level = 9 },                     # Boomerang Bluff
+    { move = 0xDD0BA694, level = 32 },                    # Okehazama Ravine
+    { move = 0x2FB941B3, level = 40 },                    # Stone Prison
+  ]
+
+[[edit]]
+target = "c11709050"                                   # Hapleigh Mistakian
+
+  [[edit.cards]]
+  id = 0xF89E758A                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 240, technique = 236, pressure = 177, physical = 215, intelligence = 208, agility = 182, freedom = 221 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 4 },                     # The Ikaros
+    { move = 0x35E70F22, level = 14 },                    # Grenade Shot
+    { move = 0x00A10ABD, level = 30 },                    # Ball Lightning
+    { move = 0x087999EE, level = 44 },                    # Heel Drop
+  ]
+
+[[edit]]
+target = "c11709060"                                   # Seph T. Forst
+
+  [[edit.cards]]
+  id = 0xD3B32649                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 239, technique = 239, pressure = 176, physical = 227, intelligence = 205, agility = 185, freedom = 221 }
+  moves = [
+    { move = 0x5E233E68, level = 5 },                     # Super Elastico
+    { move = 0x53CD747F, level = 14 },                    # Tarzan Kick
+    { move = 0x19BA3BFC, level = 32 },                    # Dance on Air
+    { move = 0x4031A7F5, level = 50 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "c11709070"                                   # Cuthbert Obelidge
+
+  [[edit.cards]]
+  id = 0xCAA81708                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 300, control = 239, technique = 197, pressure = 163, physical = 234, intelligence = 171, agility = 180, freedom = 230 }
+  moves = [
+    { move = 0x1876DB66, level = 4 },                     # Disaster Strike
+    { move = 0xDEB28A7B, level = 12 },                    # Monkey Turn
+    { move = 0x14D1ED15, level = 28 },                    # Jumping Jack 
+    { move = 0x574008CD, level = 57 },                    # Kung Fu Fighting
+  ]
+
+[[edit]]
+target = "c11709080"                                   # Bernadine Banquet
+
+  [[edit.cards]]
+  id = 0x4D300BC7                                         # FW/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 279, control = 236, technique = 208, pressure = 181, physical = 234, intelligence = 186, agility = 189, freedom = 251 }
+  moves = [
+    { move = 0x54C4DCA3, level = 1 },                     # Butterfly Trance
+    { move = 0x00196EC2, level = 19 },                    # Earthquake
+    { move = 0x105C91A7, level = 25 },                    # Slingshot
+    { move = 0x232D05EC, level = 39 },                    # Tiger Drive
+  ]
+
+[[edit]]
+target = "c11709090"                                   # Isolde Bourgeon
+
+  [[edit.cards]]
+  id = 0x542B3A86                                         # GK/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 205, technique = 182, pressure = 216, physical = 261, intelligence = 211, agility = 247, freedom = 225 }
+  moves = [
+    { move = 0x53E9C2A3, level = 4 },                     # Capable Hands
+    { move = 0x7A67325B, level = 12 },                    # Flame Dance
+    { move = 0x47657634, level = 21 },                    # Flame Breath
+    { move = 0x8FBCFC3C, level = 31 },                    # Blazing Knuckle
+  ]
+
+[[edit]]
+target = "c11709100"                                   # Dashiell Fass
+
+  [[edit.cards]]
+  id = 0x842BEBF8                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 209, control = 246, technique = 240, pressure = 180, physical = 212, intelligence = 208, agility = 188, freedom = 242 }
+  moves = [
+    { move = 0x7748D3F2, level = 2 },                     # Devil Ball
+    { move = 0xF7E49F60, level = 8 },                     # Magnetism
+    { move = 0xDBFD9CFE, level = 14 },                    # Big Ball Trick
+    { move = 0x750E6DAB, level = 55 },                    # Matador Feint
+  ]
+
+[[edit]]
+target = "c11709110"                                   # Feodor Wayte
+
+  [[edit.cards]]
+  id = 0x9D30DAB9                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 242, technique = 227, pressure = 174, physical = 219, intelligence = 201, agility = 185, freedom = 251 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 1 },                     # The Ikaros
+    { move = 0x93885A64, level = 12 },                    # Fire Drill
+    { move = 0x0A3F27B7, level = 19 },                    # Foul Offence 3
+    { move = 0x087999EE, level = 54 },                    # Heel Drop
+  ]
+
+[[edit]]
+target = "c11709120"                                   # Zacharias Klutchett
+
+  [[edit.cards]]
+  id = 0xB61D897A                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 244, technique = 232, pressure = 174, physical = 207, intelligence = 205, agility = 184, freedom = 223 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 1 },                     # The Ikaros
+    { move = 0xDDCA0D2A, level = 8 },                     # Bouncing Bomb
+    { move = 0x00A10ABD, level = 34 },                    # Ball Lightning
+    { move = 0x132416F6, level = 58 },                    # Dog Run
+  ]
+
+[[edit]]
+target = "c11709130"                                   # Adele Lettante
+
+  [[edit.cards]]
+  id = 0xAF06B83B                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 193, technique = 171, pressure = 198, physical = 270, intelligence = 231, agility = 200, freedom = 234 }
+  moves = [
+    { move = 0x613ABD43, level = 1 },                     # Dawnrise
+    { move = 0xDCF43422, level = 10 },                    # Aurora Dribble
+    { move = 0x0710C61E, level = 16 },                    # Perimeter Zone
+    { move = 0x1C4D4906, level = 32 },                    # Whirlpool
+  ]

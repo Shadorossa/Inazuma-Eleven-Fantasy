@@ -1,0 +1,8 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (docs/game/mods/chronicle-deluxe.md §8.3): «Competir contra bots» opens every class of an opponent
+# together. Retail locks class k of a Chronicle opponent (rows 6-9) until its Chronicle difficulty k is won (Crónica,
+# route unlock, unusual items, Heroica): with the unusual-items battle gone, class 8 would never open, and the owner's
+# rule is that the Batalla heroica unlocks nothing. With "together" an opponent opens with its lowest class, i.e. with
+# the Crónica win (the framework's rule, docs/framework/free-match-tabs.md §8; per key: another mod's other keys stay).
+[VRFW.FreeMatch]
+Unlock = "together"

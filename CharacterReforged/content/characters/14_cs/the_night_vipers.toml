@@ -1,0 +1,31 @@
+schema = "VRFW.character/2"
+# Character Reforged · The Night Vipers · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05029840"                                   # Venom Braggard
+
+  [[edit.cards]]
+  id = 0xB0B65226                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 193, technique = 207, pressure = 255, physical = 211, intelligence = 302, agility = 217, freedom = 238 }
+  moves = [
+    { move = 0xB8A509A7, level = 1 },                     # Asterocks
+    { move = 0x2296A01A, level = 22 },                    # Southern Cross
+    { move = 0x4A17EE80, level = 41 },                    # Hunter's Net
+    { move = 0xEEFFAE21, level = 52 },                    # Jungle Jam
+  ]
+
+[[edit]]
+target = "c05029840_5000"                              # Venom Braggard
+
+  [[edit.cards]]
+  id = 0x6CF375CC                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 180, control = 193, technique = 207, pressure = 255, physical = 211, intelligence = 302, agility = 217, freedom = 238 }

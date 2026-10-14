@@ -1,0 +1,44 @@
+# «Tabla de habilidades» of the story field dock (team_dock_menu_rpg_battle) and of the scout screen
+# (rpg_select_scout_chara_menu): the skill table evt_skill_slot_menu instead of the game's ability board while
+# Character Reforged's option «Tabla de habilidades» (row character_reforged.skill_set_view) is on «Fantasy»; on
+# «Victory Road» the retail board. The option is read each time the entry is used (CharacterReforged.EntryOpensSkillTable
+# of Character Reforged's assets\lua\_all\character_reforged_skill_table_entry.lua: one log line per use).
+# History: Inazuma Fantasy's board removal (research/scripts/board_entry_build.py; docs/game/ui/skill-board-original.md
+# section 8.5). 2026-10-14 (cr_entry, owner bug: without Inazuma Fantasy these entries still opened the board): the
+# graft moves to Character Reforged, the owner of the skill table; its team dock part (EVT_AfterSkillSlotMenu, the same
+# function ss2_dock already defines) is dropped, and the story dock's entry is selectable only while the option shows
+# the skill table (Inazuma Fantasy made it always selectable).
+name = "board_entry"
+mod = "character_reforged"
+order = 200
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["ExecAbilityBoardMenu", "OpenAbilityLearningBoard"]
+description = "Story dock and scout screen: «Tabla de habilidades» opens the skill table while the option is on «Fantasy»"
+
+[[files]]
+stem = "team_dock_menu_rpg_battle"
+
+  [[files.ops]]
+  type = "replace"
+  point = "team_dock_menu_rpg_battle.OnEnter.BoardEntry"
+  text = '''
+    if funcLuaCommand(347870658, 1810526795 --[[ability_learning_board_menu]]) or EVT_BoardSkillSetOn() then -- EVT: Character Reforged skill table
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "board_rpg_1.lua"
+  marker = "board removal"
+  crc = "none"
+
+[[files]]
+stem = "rpg_select_scout_chara_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "board_scout_1.lua"
+  marker = "board removal"
+  crc = "none"

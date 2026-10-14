@@ -1,0 +1,59 @@
+# Texts of All Changed (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("all_changed.<name>"): the mod's name and description on the «Mods» screen, in the game's language.
+# «All Changed» is not translated. A language missing here falls back to English.
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "All Changed"
+mod_description = "Custom mode changes: any player can get his own «Modo cambio» into any other character you own. In a match he swaps into that player (look, stats and moves) and back again with RB+B, as often as you like, with 25 seconds between two swaps; no cost and no time limit, and a green aura while the change runs. The game's own mode changes stay as they are. Works with the VR-Framework alone; game modes such as Inazuma Fantasy put the change on their own slots and add their own rules."
+create_label = "Create change"
+skill_tab_mode_change = "Mode Change"
+
+[es.new]
+mod_name = "All Changed"
+mod_description = "Modos cambio a medida: cualquier jugador puede tener su propio «Modo cambio» a cualquier otro personaje que tengas. En el partido se convierte en ese jugador (aspecto, estadísticas y técnicas) y vuelve a ser él con RB+B, tantas veces como quieras, con 25 segundos entre dos cambios; sin coste ni límite de tiempo, y con un aura verde mientras dura el cambio. Los modos cambio del juego siguen como están. Funciona solo con el VR-Framework; modos como Inazuma Fantasy ponen el cambio en sus propias ranuras y añaden sus reglas."
+create_label = "Crear cambio"
+skill_tab_mode_change = "Modo cambio"
+
+[fr.new]
+mod_name = "All Changed"
+mod_description = "Des changements de mode sur mesure : tout joueur peut avoir son propre « Modo cambio » vers n'importe quel autre personnage que vous possédez. En match, il se change en ce joueur (apparence, stats et techniques) et redevient lui-même avec RB+B, autant de fois que vous voulez, avec 25 secondes entre deux changements ; sans coût ni limite de temps, et avec une aura verte pendant le changement. Les changements de mode du jeu restent tels quels. Fonctionne avec le seul VR-Framework ; des modes comme Inazuma Fantasy placent le changement dans leurs propres emplacements et ajoutent leurs règles."
+create_label = "Créer un changement"
+skill_tab_mode_change = "Changement de mode"
+
+[de.new]
+mod_name = "All Changed"
+mod_description = "Eigene Moduswechsel: Jeder Spieler kann seinen eigenen « Modo cambio » zu jeder anderen Figur haben, die du besitzt. Im Spiel verwandelt er sich in diesen Spieler (Aussehen, Werte und Techniken) und mit RB+B wieder zurück, so oft du willst, mit 25 Sekunden zwischen zwei Wechseln; ohne Kosten und ohne Zeitlimit, mit einer grünen Aura während des Wechsels. Die Moduswechsel des Spiels bleiben, wie sie sind. Läuft allein mit dem VR-Framework; Modi wie Inazuma Fantasy legen den Wechsel auf ihre eigenen Plätze und fügen eigene Regeln hinzu."
+create_label = "Wechsel erstellen"
+skill_tab_mode_change = "Moduswechsel"
+
+[it.new]
+mod_name = "All Changed"
+mod_description = "Cambi di modalità su misura: ogni giocatore può avere il suo « Modo cambio » verso qualsiasi altro personaggio che possiedi. In partita si trasforma in quel giocatore (aspetto, statistiche e tecniche) e torna sé stesso con RB+B, tutte le volte che vuoi, con 25 secondi tra due cambi; senza costo né limite di tempo, con un'aura verde mentre il cambio dura. I cambi di modalità del gioco restano come sono. Funziona con il solo VR-Framework; modalità come Inazuma Fantasy mettono il cambio nei propri slot e aggiungono le proprie regole."
+create_label = "Crea cambio"
+skill_tab_mode_change = "Cambio modalità"
+
+[pt.new]
+mod_name = "All Changed"
+mod_description = "Mudanças de modo à medida: qualquer jogador pode ter o seu próprio « Modo cambio » para qualquer outra personagem que tenhas. No jogo transforma-se nesse jogador (aparência, atributos e técnicas) e volta a ser ele com RB+B, as vezes que quiseres, com 25 segundos entre duas mudanças; sem custo nem limite de tempo, e com uma aura verde enquanto a mudança dura. As mudanças de modo do jogo ficam como estão. Funciona só com o VR-Framework; modos como Inazuma Fantasy põem a mudança nos seus próprios espaços e acrescentam as suas regras."
+create_label = "Criar mudança"
+skill_tab_mode_change = "Mudança de modo"
+
+[ja.new]
+mod_name = "All Changed"
+mod_description = "自分だけのモードチェンジ：どの選手にも、持っている他の好きなキャラへの「モードチェンジ」を作れます。試合中はRB+Bでそのキャラ（見た目・能力・技）に変身し、もう一度押すと元に戻ります。何度でも使え、切り替えの間隔は25秒。コストも時間制限もなく、変身中は緑のオーラをまといます。ゲーム本来のモードチェンジはそのままです。VR-Frameworkだけで動作し、Inazuma Fantasyなどのモードは独自の枠とルールを追加します。"
+create_label = "モードチェンジを作る"
+skill_tab_mode_change = "モードチェンジ"
+
+[zh_hans.new]
+mod_name = "All Changed"
+mod_description = "自定义模式切换：任何球员都能拥有切换为你持有的任意其他角色的专属「模式切换」。比赛中按RB+B变成该球员（外观、能力与技能），再按一次变回自己，次数不限，两次切换间隔25秒；不消耗、无时间限制，切换期间身披绿色气场。游戏原有的模式切换保持不变。只需VR-Framework即可运行；Inazuma Fantasy等模式会把切换放进自己的槽位并加入自己的规则。"
+create_label = "创建模式切换"
+skill_tab_mode_change = "模式切换"
+
+[zh_hant.new]
+mod_name = "All Changed"
+mod_description = "自訂模式切換：任何選手都能擁有切換為你持有的任意其他角色的專屬「模式切換」。比賽中按RB+B變成該選手（外觀、能力與技巧），再按一次變回自己，次數不限，兩次切換間隔25秒；不消耗、無時間限制，切換期間身披綠色氣場。遊戲原有的模式切換保持不變。只需VR-Framework即可運行；Inazuma Fantasy等模式會把切換放進自己的槽位並加入自己的規則。"
+create_label = "建立模式切換"
+skill_tab_mode_change = "模式切換"

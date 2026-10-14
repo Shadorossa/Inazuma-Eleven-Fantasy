@@ -1,6 +1,6 @@
 # The Draft team's name (0x120BBDC0 = crc32("evt_bbd_draft_name"), the team type's default name text) and
 # description (0x479D6F92, teams/50_draft.toml `description`), moved from Inazuma Fantasy on 2026-10-08.
-schema = "vr_framework.text/2"
+schema = "VRFW.text/2"
 table = "team_text"
 
 [[row]]
@@ -27,3 +27,30 @@ pt = "Draft"
 ja = "ドラフト"
 zh_hans = "选秀"
 zh_hant = "選秀"
+
+# The «Active team» tile (1.5.61, teams/51_active_team.toml): its name (0xD3032435 = crc32("evt_bbd_active_team_name"),
+# the team type's default name text) and description (0x8695F667 = crc32("evt_bbd_active_team_desc")).
+[[row]]
+id = 0x8695F667  # Juega con tu equipo activo, sin draft.
+kind = "text"
+es = "Juega con tu equipo activo, sin draft."
+en = "Play with your active team, no draft."
+fr = "Joue avec ton équipe active, sans draft."
+de = "Spiele mit deinem aktiven Team, ohne Draft."
+it = "Gioca con la tua squadra attiva, senza draft."
+pt = "Joga com a tua equipa ativa, sem draft."
+ja = "アクティブチームでプレイ。ドラフトなし。"
+zh_hans = "使用你的当前队伍比赛，无需选秀。"
+zh_hant = "使用你的當前隊伍比賽，無需選秀。"
+
+[[row]]
+id = 0xD3032435  # Equipo activo
+es = "Equipo activo"
+en = "Active team"
+fr = "Équipe active"
+de = "Aktives Team"
+it = "Squadra attiva"
+pt = "Equipa ativa"
+ja = "アクティブチーム"
+zh_hans = "当前队伍"
+zh_hant = "當前隊伍"

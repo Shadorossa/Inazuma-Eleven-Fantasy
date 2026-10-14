@@ -1,0 +1,280 @@
+schema = "VRFW.character/2"
+# Character Reforged · Nosfanatica · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05023610_5000"                              # Vince Sizor
+
+  [[edit.cards]]
+  id = 0xBE6FC2C7                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 181, control = 209, technique = 238, pressure = 258, physical = 151, intelligence = 257, agility = 278, freedom = 217 }
+
+[[edit]]
+target = "c05023620_5000"                              # Ron Innwater
+
+  [[edit.cards]]
+  id = 0x8F87D85A                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 207, technique = 161, pressure = 271, physical = 225, intelligence = 325, agility = 223, freedom = 221 }
+
+[[edit]]
+target = "c05023660_5000"                              # Dave Walker
+
+  [[edit.cards]]
+  id = 0x7BC8FC49                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 193, control = 232, technique = 285, pressure = 240, physical = 165, intelligence = 259, agility = 225, freedom = 217 }
+
+[[edit]]
+target = "c05023690_5000"                              # Desmodus Drakul
+
+  [[edit.cards]]
+  id = 0x8D808CA0                                         # MF/FW · mountain
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 308, control = 254, technique = 321, pressure = 220, physical = 147, intelligence = 265, agility = 153, freedom = 209 }
+
+[[edit]]
+target = "c05023700_5000"                              # Woodrow Stake
+
+  [[edit.cards]]
+  id = 0xD4B2C9ED                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 344, control = 244, technique = 286, pressure = 209, physical = 171, intelligence = 224, agility = 186, freedom = 213 }
+
+[[edit]]
+target = "c05023710_5000"                              # Nora Flexion
+
+  [[edit.cards]]
+  id = 0x72C5C259                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 324, control = 242, technique = 284, pressure = 194, physical = 155, intelligence = 203, agility = 161, freedom = 209 }
+
+[[edit]]
+target = "c05023610"                                   # Vince Sizor
+
+  [[edit.cards]]
+  id = 0xA8E26B0D                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 181, control = 209, technique = 238, pressure = 258, physical = 151, intelligence = 257, agility = 278, freedom = 217 }
+  moves = [
+    { move = 0x9AF2229C, level = 1 },                     # Gravity Point
+    { move = 0xE785D6D9, level = 5 },                     # Inferno Fist
+    { move = 0xDCC9CCA3, level = 60 },                    # Tesla Coil
+    { move = 0xFC5DC53F, level = 65 },                    # Double God Hand
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xF1157066, level = 1 },                     # Demogorgon [aura]
+  ]
+
+[[edit]]
+target = "c05023620"                                   # Ron Innwater
+
+  [[edit.cards]]
+  id = 0x83CF38CE                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 207, technique = 161, pressure = 271, physical = 225, intelligence = 325, agility = 223, freedom = 221 }
+  moves = [
+    { move = 0x72BFA108, level = 1 },                     # Wall of Atlantis
+    { move = 0x4E22F64D, level = 1 },                     # Transporter Device
+    { move = 0x7F15DC5F, level = 52 },                    # Desert Drift
+    { move = 0xB0F8060A, level = 64 },                    # Ozone Flayer
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x687AE856, level = 1 },                     # Raiden [aura]
+  ]
+
+[[edit]]
+target = "c05023630"                                   # Holly Waters
+
+  [[edit.cards]]
+  id = 0x9AD4098F                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 171, control = 193, technique = 144, pressure = 293, physical = 212, intelligence = 320, agility = 235, freedom = 217 }
+  moves = [
+    { move = 0xA8215D7C, level = 1 },                     # The Mountain
+    { move = 0x25276CB9, level = 1 },                     # Solar Surprise
+    { move = 0xD0A1DBC3, level = 45 },                    # Bungee Ball Burst
+    { move = 0x72BFA108, level = 57 },                    # Wall of Atlantis
+  ]
+
+[[edit]]
+target = "c05023640"                                   # Turner Fogg
+
+  [[edit.cards]]
+  id = 0xD5959F48                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 150, control = 207, technique = 174, pressure = 290, physical = 201, intelligence = 332, agility = 251, freedom = 213 }
+  moves = [
+    { move = 0x72BFA108, level = 5 },                     # Wall of Atlantis
+    { move = 0xC324C788, level = 17 },                    # Blast Mine
+    { move = 0xA8215D7C, level = 34 },                    # The Mountain
+    { move = 0xB8A509A7, level = 54 },                    # Asterocks
+  ]
+
+[[edit]]
+target = "c05023650"                                   # Sid Viper
+
+  [[edit.cards]]
+  id = 0xCC8EAE09                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 244, technique = 289, pressure = 252, physical = 158, intelligence = 285, agility = 231, freedom = 217 }
+  moves = [
+    { move = 0x7DD6FEF8, level = 13 },                    # Athena's Anthem
+    { move = 0x0E0A3F7A, level = 22 },                    # Spatial Portal
+    { move = 0xC16279D1, level = 39 },                    # Field of Force
+    { move = 0xA9A7000B, level = 43 },                    # Bouncing Bunny
+  ]
+
+[[edit]]
+target = "c05023660"                                   # Dave Walker
+
+  [[edit.cards]]
+  id = 0xE7A3FDCA                                         # MF/DF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 193, control = 232, technique = 285, pressure = 240, physical = 165, intelligence = 259, agility = 225, freedom = 217 }
+  moves = [
+    { move = 0x768AB9C5, level = 1 },                     # Frosticle
+    { move = 0x04941270, level = 22 },                    # Vac Attack
+    { move = 0xC87880B5, level = 40 },                    # Hyperdrive
+    { move = 0x84385EE2, level = 65 },                    # Black Tide Ride
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xF08A634C, level = 1 },                     # Tachyon [aura]
+  ]
+
+[[edit]]
+target = "c05023670"                                   # Porphyria Filia
+
+  [[edit.cards]]
+  id = 0xFEB8CC8B                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 139, control = 250, technique = 289, pressure = 243, physical = 165, intelligence = 273, agility = 235, freedom = 213 }
+  moves = [
+    { move = 0x768AB9C5, level = 6 },                     # Frosticle
+    { move = 0x0D0B77EA, level = 14 },                    # Floral Fiesta
+    { move = 0xAC1ACF1C, level = 29 },                    # Flower Plower
+    { move = 0xF94FAAA7, level = 55 },                    # Decoy Deploy
+  ]
+
+[[edit]]
+target = "c05023680"                                   # Hugh Mumford
+
+  [[edit.cards]]
+  id = 0x7920D044                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 240, technique = 304, pressure = 228, physical = 115, intelligence = 250, agility = 236, freedom = 209 }
+  moves = [
+    { move = 0x19BA3BFC, level = 1 },                     # Dance on Air
+    { move = 0x6BA49049, level = 9 },                     # Mystic Mist
+    { move = 0x15138722, level = 27 },                    # Will-o'-the-Wisp Shot
+    { move = 0x3A4FFB6C, level = 52 },                    # The Ikaros
+  ]
+
+[[edit]]
+target = "c05023690"                                   # Desmodus Drakul
+
+  [[edit.cards]]
+  id = 0x603BE105                                         # MF/FW · mountain
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 308, control = 254, technique = 321, pressure = 220, physical = 147, intelligence = 265, agility = 153, freedom = 209 }
+  moves = [
+    { move = 0xD2E9EF37, level = 11 },                    # Bloodsucker Bite
+    { move = 0x0D368F6B, level = 25 },                    # Heaven's Time
+    { move = 0xB501FE5D, level = 58 },                    # Holy Roller
+    { move = 0xCBF2DE76, level = 81 },                    # Nocturne
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x13046BF0, level = 1 },                     # Mix 'n' Match: <FUL:V GENE> [aura]
+  ]
+
+[[edit]]
+target = "c05023700"                                   # Woodrow Stake
+
+  [[edit.cards]]
+  id = 0xB03B307B                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 344, control = 244, technique = 286, pressure = 209, physical = 171, intelligence = 224, agility = 186, freedom = 213 }
+  moves = [
+    { move = 0x5E5AF1A9, level = 4 },                     # Northern Impact
+    { move = 0x2B8C597E, level = 21 },                    # Fugue Wave
+    { move = 0xEDBAD1F1, level = 49 },                    # Brimstone Rain
+    { move = 0xD2E9EF37, level = 75 },                    # Bloodsucker Bite
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x66A81250, level = 1 },                     # Sand Man [aura]
+  ]
+
+[[edit]]
+target = "c05023710"                                   # Nora Flexion
+
+  [[edit.cards]]
+  id = 0xA920013A                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 324, control = 242, technique = 284, pressure = 194, physical = 155, intelligence = 203, agility = 161, freedom = 209 }
+  moves = [
+    { move = 0x0DCADC54, level = 12 },                    # Emperor Penguin 7
+    { move = 0xCB79C825, level = 25 },                    # In-Line Stampede
+    { move = 0xD32B8500, level = 47 },                    # Atomic Spin
+    { move = 0x1876DB66, level = 65 },                    # Disaster Strike
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x8D8458C8, level = 1 },                     # Argentia [aura]
+  ]
+
+[[edit]]
+target = "c05028640"                                   # Desmodus Drakul
+
+  [[edit.cards]]
+  id = 0x02941849                                         # MF/FW · mountain
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 308, control = 254, technique = 321, pressure = 220, physical = 147, intelligence = 265, agility = 153, freedom = 209 }
+  moves = [
+    { move = 0xD2E9EF37, level = 15 },                    # Bloodsucker Bite
+    { move = 0x87BC8A8C, level = 35 },                    # Hydro Flow
+    { move = 0x9B63BB1B, level = 51 },                    # Black Dawn
+    { move = 0x19B4B151, level = 70 },                    # Great Blaster
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x037F72A2, level = 1 },                     # Glenr [aura]
+  ]

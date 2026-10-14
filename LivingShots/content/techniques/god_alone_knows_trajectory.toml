@@ -1,0 +1,21 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the ground trajectory of Omnisabiduría divina (God Alone Knows, whs02900; Nacho
+# 2026-10-08: «es un tiro rasante», like Mangual letal, content\techniques\doom_break_trajectory.toml): in the match the ball
+# skims the pitch the whole way and enters the goal low (height 0.11 m = the ball's radius; same goal point x / z and
+# flight time, the game's block rules: docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.2).
+# Its aura (content\effects\god_alone_knows_ball.toml, ev6290ga00: the energy sphere, ~1 m radius, centred on the ball) is not
+# lifted: on the ground its lower half dips under the grass, as in the cut-in, where the ball ploughs a trench through
+# the pitch inside its sphere. No power, cost or block key. Inazuma Fantasy declares no trajectory for this move (no
+# conflict).
+#
+# Background (replaced 2026-10-08: it was an angled dive from 7.9 m at 24 deg): in the cut-in's shot cut (c0500) the
+# event ball (b000001 c_add_1_0) is struck down out of the sky, 7.97 m -> the pitch over 17.5 m (event frames 970-1027,
+# research/scripts/shot_trajectory_from_cutin.py --move god_alone_knows), runs under the pitch in its trench (lowest
+# -0.52 m at 1047), comes out at 1081 and runs low (1.31 m at the cut's end) to the goal: the shot itself is that low run
+# along the pitch, the fall from the sky is only its wind-up.
+
+# Omnisabiduría divina (whs02900).
+[[edit]]
+target = "whs02900"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): one point = flat at 0.11 m (the ground skim above).
+trajectory = { points = [[0.0, 0.11]], unblockable = false }

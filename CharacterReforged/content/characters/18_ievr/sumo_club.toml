@@ -1,0 +1,229 @@
+schema = "VRFW.character/2"
+# Character Reforged · Sumo Club · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11700100"                                   # Stouton Savant
+
+  [[edit.cards]]
+  id = 0xF923A472                                         # GK/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 194, technique = 166, pressure = 235, physical = 277, intelligence = 216, agility = 265, freedom = 251 }
+  moves = [
+    { move = 0xEE9F2FBD, level = 4 },                     # God Catch
+    { move = 0x24E5068E, level = 18 },                    # Fractal Repeller
+    { move = 0xDCA94D3F, level = 28 },                    # Flash Upper
+    { move = 0x62DEE8B1, level = 45 },                    # Jumping Whack
+  ]
+
+[[edit]]
+target = "c11700110"                                   # Finnes Grapplefeld
+
+  [[edit.cards]]
+  id = 0xE0389533                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 190, control = 192, technique = 177, pressure = 208, physical = 274, intelligence = 239, agility = 197, freedom = 238 }
+  moves = [
+    { move = 0x06D2AC29, level = 3 },                     # Diabolical Cut
+    { move = 0x592A96B4, level = 19 },                    # Afterimage
+    { move = 0x1A868BED, level = 25 },                    # Clone Defence
+    { move = 0xB5B7108F, level = 37 },                    # Shadow Stitch
+  ]
+
+[[edit]]
+target = "c11700120"                                   # Barrett Mistbarrow
+
+  [[edit.cards]]
+  id = 0xCB15C6F0                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 184, technique = 177, pressure = 213, physical = 296, intelligence = 240, agility = 197, freedom = 234 }
+  moves = [
+    { move = 0x485150D9, level = 1 },                     # Body Shield
+    { move = 0xC324C788, level = 13 },                    # Blast Mine
+    { move = 0x52CEB5F6, level = 32 },                    # Iron Wall
+    { move = 0x637C031A, level = 58 },                    # No Escape
+  ]
+
+[[edit]]
+target = "c11700380"                                   # Zuna Yokochenko
+
+  [[edit.cards]]
+  id = 0x327EFA14                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 312, control = 240, technique = 209, pressure = 174, physical = 234, intelligence = 188, agility = 182, freedom = 255 }
+  moves = [
+    { move = 0xC8760A18, level = 2 },                     # Falling Planet
+    { move = 0xC324C788, level = 14 },                    # Blast Mine
+    { move = 0x105C91A7, level = 31 },                    # Slingshot
+    { move = 0xA7B451B3, level = 45 },                    # Paladin Strike
+  ]
+
+[[edit]]
+target = "c11712010"                                   # Jakell Wardly
+
+  [[edit.cards]]
+  id = 0x76931E3F                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 190, technique = 177, pressure = 208, physical = 275, intelligence = 238, agility = 196, freedom = 242 }
+  moves = [
+    { move = 0x78218C02, level = 4 },                     # Duskfall
+    { move = 0x70417B2E, level = 13 },                    # Deceptor Dribble
+    { move = 0xDCC9CCA3, level = 24 },                    # Tesla Coil
+    { move = 0xAD6E4BF9, level = 47 },                    # Harvest
+  ]
+
+[[edit]]
+target = "c11712020"                                   # Bechet Ardevout
+
+  [[edit.cards]]
+  id = 0x5DBE4DFC                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 254, control = 239, technique = 232, pressure = 180, physical = 216, intelligence = 208, agility = 181, freedom = 230 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 4 },                     # The Ikaros
+    { move = 0xDDCA0D2A, level = 18 },                    # Bouncing Bomb
+    { move = 0xAF150D21, level = 34 },                    # Swallow Counter
+    { move = 0x0A3F27B7, level = 47 },                    # Foul Offence 3
+  ]
+
+[[edit]]
+target = "c11712030"                                   # Argion Boneback
+
+  [[edit.cards]]
+  id = 0x44A57CBD                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 239, technique = 209, pressure = 178, physical = 230, intelligence = 185, agility = 184, freedom = 225 }
+  moves = [
+    { move = 0xD8851BAF, level = 3 },                     # Unicorn Boost
+    { move = 0x6B1CF436, level = 19 },                    # Bewildered
+    { move = 0x29B328E6, level = 31 },                    # Spectacle Crash
+    { move = 0x2EBA803A, level = 45 },                    # Dirt Ball
+  ]
+
+[[edit]]
+target = "c11712040"                                   # Sahl Saltzman
+
+  [[edit.cards]]
+  id = 0x0BE4EA7A                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 246, control = 243, technique = 235, pressure = 170, physical = 213, intelligence = 203, agility = 184, freedom = 225 }
+  moves = [
+    { move = 0x3A4FFB6C, level = 1 },                     # The Ikaros
+    { move = 0x35E70F22, level = 12 },                    # Grenade Shot
+    { move = 0xB60E3C60, level = 35 },                    # Plasma Cut
+    { move = 0xDA3FF6C9, level = 43 },                    # Criss-Cross
+  ]
+
+[[edit]]
+target = "c11712050"                                   # Fermin Dealitz
+
+  [[edit.cards]]
+  id = 0x12FFDB3B                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 269, control = 246, technique = 211, pressure = 177, physical = 212, intelligence = 188, agility = 180, freedom = 221 }
+  moves = [
+    { move = 0x61FB16FD, level = 5 },                     # Divine Arrows
+    { move = 0xDCF43422, level = 9 },                     # Aurora Dribble
+    { move = 0x63BDA8A4, level = 33 },                    # Inazuma Drop
+    { move = 0x19C3F43D, level = 44 },                    # Eternal Blizzard
+  ]
+
+[[edit]]
+target = "c11712060"                                   # Ricemond Chowen
+
+  [[edit.cards]]
+  id = 0x39D288F8                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 192, control = 190, technique = 177, pressure = 208, physical = 275, intelligence = 238, agility = 196, freedom = 242 }
+  moves = [
+    { move = 0x06D2AC29, level = 1 },                     # Diabolical Cut
+    { move = 0x12E67CC1, level = 17 },                    # Future Eye
+    { move = 0x322F0C40, level = 30 },                    # Spider Web
+    { move = 0xAD6E4BF9, level = 48 },                    # Harvest
+  ]
+
+[[edit]]
+target = "c11712070"                                   # Vergil Turnaraud
+
+  [[edit.cards]]
+  id = 0x20C9B9B9                                         # MF/GK · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 225, technique = 212, pressure = 188, physical = 238, intelligence = 197, agility = 193, freedom = 243 }
+  moves = [
+    { move = 0x5E233E68, level = 1 },                     # Super Elastico
+    { move = 0x2D9F7E76, level = 12 },                    # Breath Taker
+    { move = 0x64CDCFB9, level = 36 },                    # Rising Dragon
+    { move = 0x19BA3BFC, level = 54 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c11712080"                                   # Chaunce Gambell
+
+  [[edit.cards]]
+  id = 0xA751A576                                         # MF/GK · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 223, technique = 203, pressure = 186, physical = 236, intelligence = 189, agility = 193, freedom = 251 }
+  moves = [
+    { move = 0x9D236FA3, level = 1 },                     # Sword of the King
+    { move = 0x2D9F7E76, level = 9 },                     # Breath Taker
+    { move = 0x4FE09C7A, level = 35 },                    # Acrobatic Keep
+    { move = 0x64CDCFB9, level = 48 },                    # Rising Dragon
+  ]
+
+[[edit]]
+target = "c11712090"                                   # Arby Trayton
+
+  [[edit.cards]]
+  id = 0xBE4A9437                                         # GK/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 208, technique = 174, pressure = 189, physical = 263, intelligence = 189, agility = 244, freedom = 239 }
+  moves = [
+    { move = 0x4AF2F3E2, level = 2 },                     # Bridge to Nowhere
+    { move = 0xA37D1A41, level = 13 },                    # Hyper-Swiper
+    { move = 0xF08DB620, level = 34 },                    # Whirlwind
+    { move = 0x906C0F96, level = 53 },                    # Electric Trap
+  ]
+
+[[edit]]
+target = "c11712100"                                   # Darrell Dignard
+
+  [[edit.cards]]
+  id = 0x6E4A4549                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 186, technique = 166, pressure = 208, physical = 290, intelligence = 231, agility = 198, freedom = 247 }
+  moves = [
+    { move = 0x485150D9, level = 1 },                     # Body Shield
+    { move = 0x6B1CF436, level = 12 },                    # Bewildered
+    { move = 0x2FB941B3, level = 34 },                    # Stone Prison
+    { move = 0x60F8D774, level = 54 },                    # Gravestone
+  ]

@@ -1,0 +1,28 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Mordisco de vampiro (Bloodsucker Bite, whs02300) (Nacho 2026-10-08: each
+# move its own fall, matching its cut-in). In the cut-in's shot cut (c0200) the ball hangs ~10 m up in front of the
+# moon, is kicked and flies down a long, shallow line, levelling off ~5.6 m up where the cut-in ends (it never
+# reaches the goal); in the match it comes into the goal at that line's angle: the angled dive
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6). Its dive line is ~44 m long, so
+# on most shots the start comes down onto the 10.5° line over the kick point and the ball flies one straight line;
+# only from farther it leaves level at 10.1 m first. Its aura (content\effects\bloodsucker_bite_ball.toml) is turned along
+# the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move bloodsucker_bite): the event ball (b000001 slot
+# s01, c_add_1_0) of ev60_02300 c0200, event frames 1294 (the kick; held at 10.2 m since 1182) - 1380 (the cut's
+# end): (-0.01, 10.23, 0.41) -> (4.36, 5.63, 24.90), 10.23 m -> 5.63 m over 24.87 m on the ground = 10.5° down
+# (~15° just after the kick, 0.7° over the last 4 frames: the levelling off, not the shot's line).
+#   height     = 10.1: the start (10.23 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 10.5: the descent angle (the straight line's mean, like Omega Assault).
+#   end_height = 2.0:  the cut-in stops at 5.6 m (it never reaches the goal): brought to 2.0 m, in the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# Mordisco de vampiro (whs02300).
+[[edit]]
+target = "whs02300"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 10.21 m (10.1 over a kick on the pitch) held until 44.3 m before the goal point, then the 10.5
+# deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 22.15 m down (bend 0.5). A shot shorter
+# than 44.3 m starts lower, on the line.
+trajectory = { goal_points = [[44.3, 10.21, 999, 22.15], [0.0, 2.0]], unblockable = false }

@@ -1,4 +1,4 @@
-schema = "vr_framework.option/2"
+schema = "VRFW.option/2"
 # Settings of the mod Utilities in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3; parser
 # vr_framework::options, built into the game's settings list by the mod_options plugin). Row keys «utilities.<id>».
 # Texts: text\rows\*.toml (menu_text rows, 9 languages). One block per feature, in the order of the tab; append new
@@ -61,7 +61,7 @@ order = 123
 
 # «Nivel de técnica: +1 / +2 / +3 / Estrellas» (Nacho 2026-10-08, his art): with «Estrellas» the game's Spanish
 # move-level badges (soccer10_01_lv1..lv4) and the grade glyphs of the text icon sheet (gaiji_game2) are the stars files
-# of files\data (names ending in _util_stars), given to the engine's opens of the game files. Only Spanish files have a
+# of assets\ (names ending in _util_stars), given to the engine's opens of the game files. Only Spanish files have a
 # stars version: with the game in another language the row changes nothing. Default: the game's art.
 [[option]]
 id = "level_badges"                            # row key utilities.level_badges

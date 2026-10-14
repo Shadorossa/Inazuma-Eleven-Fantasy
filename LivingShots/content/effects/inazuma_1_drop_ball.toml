@@ -1,0 +1,28 @@
+# «Supertrampolín relámpago» (Inazuma-1 Drop, whs00690 and whs00690_or, same cut-in; wind shot of three players,
+# cut-in ev60_00690): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut
+# (c0800, the ball shot from 5.4 m up along +Z): its blue / sky lights and the lightning crackling round it, the blue
+# cones over it, the four ribbons trailing ~32 m behind it and the electric sparks flashing round it, instead of the
+# plain wind special-shot aura (ega0075b).
+# The object is ev6069i100 (effect/event/ev60/ev6069i100/), built by research/scripts/inazuma_1_drop_ball_fx.py from
+# the cut-in's effect object ev60006900: the cut-in's motion from the shot (384) replayed, then held at c0800 frame
+# 462 (the lightning cards and sparks flashing on as over 420-462), ball at the origin flying +Z, x1; the round lights
+# facing along the flight, the lightning cards turned to face the touchline, two-sided (1.4.44). Nothing of
+# c0800 is left out but the ptlb. docs/game/media/inazuma-1-drop-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\inazuma_1_drop_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "inazuma_1_drop"
+from = "ega0075b"
+object = "effect/event/ev60/ev6069i100/ev6069i100.objbin"
+
+[[shot_aura]]
+name = "inazuma_1_drop"
+when = { techniques = ["whs00690", "whs00690_or"] }
+aura = "inazuma_1_drop"
+like = "ega0075b"
+# the aura's replay (78 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 78 }

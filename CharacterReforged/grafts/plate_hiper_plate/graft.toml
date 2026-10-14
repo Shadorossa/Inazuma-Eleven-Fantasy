@@ -1,0 +1,24 @@
+# Character Reforged (moved from Inazuma Fantasy 2026-10-14, docs/refactor/aura-mods-split.md «Player page»).
+# Personal plate "Hipertécnica" page, the plate itself (research/scripts/plate_hiper_build.py graft; docs/game/
+# skill-slots.md "Hiper page on the personal plate"): the child that defines EVT_PlateHiperStep (common block + plate
+# body, placeholders already filled: research/test-mods/plate_hiper/evt_plate_hiper_graft.lua). Exactly one copy by
+# construction (the three-copies freeze of hiper-match-slot.md 16.24 cannot happen from retail). Layout / objbin /
+# setting / textures stay in the script.
+name = "plate_hiper_plate"
+mod = "character_reforged"
+order = 950
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "plate_hiper: the Hiper page of personal_plate_menu"
+
+[[files]]
+stem = "personal_plate_menu"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "evt_plate_hiper_graft.lua"
+  marker = "plate_hiper plate"
+  crc = "none"
+  include = { "@PH_COMMON@" = "../plate_hiper_common/evt_plate_hiper_common.lua", "@HIPER_CARD@" = "evt_hiper_card.lua" }

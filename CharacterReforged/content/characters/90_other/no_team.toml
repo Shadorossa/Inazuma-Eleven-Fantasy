@@ -1,0 +1,861 @@
+schema = "VRFW.character/2"
+# Character Reforged · no team · other series
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "an000100_01"                                 # an000100_01
+
+  [[edit.cards]]
+  id = 0x742C57A4                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "an000101_01"                                 # an000101_01
+
+  [[edit.cards]]
+  id = 0xCC9030C1                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "an000102_01"                                 # an000102_01
+
+  [[edit.cards]]
+  id = 0xDE259F2F                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "an000150"                                    # Josephine
+
+  [[edit.cards]]
+  id = 0x696F1C32                                         # FW/MF · void
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x163D8F70, level = 1 },                     # Chip Shot
+    { move = 0xC66BD10D, level = 13 },                    # Zigzag Spark
+    { move = 0x3663DB4C, level = 20 },                    # Utter Gutsiness Bat
+    { move = 0xBBE07677, level = 30 },                    # Sidewinder
+    { move = 0x05124F07, level = 38 },                    # Fission and Fusion
+    { move = 0xF94FAAA7, level = 43 },                    # Decoy Deploy
+  ]
+
+[[edit]]
+target = "i000122"                                     # ボール発射マシン
+
+  [[edit.cards]]
+  id = 0x3855B5EA                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x240BEDF2, level = 1 },                     # Bounce Shot
+    { move = 0x70417B2E, level = 13 },                    # Deceptor Dribble
+    { move = 0x568262FA, level = 20 },                    # Dark Tornado
+    { move = 0xC19E2AEE, level = 30 },                    # Pegasus Shot
+    { move = 0x15138722, level = 38 },                    # Will-o'-the-Wisp Shot
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+  ]
+
+[[edit]]
+target = "kt000031"                                    # kt000031
+
+  [[edit.cards]]
+  id = 0x24E1C617                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "kt000033"                                    # kt000033
+
+  [[edit.cards]]
+  id = 0x39E4F6AF                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "kt000034"                                    # kt000034
+
+  [[edit.cards]]
+  id = 0x815891CA                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "kt000035"                                    # kt000035
+
+  [[edit.cards]]
+  id = 0x93ED3E24                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+
+[[edit]]
+target = "npc0080"                                     # npc0080
+
+  [[edit.cards]]
+  id = 0xBCCD18F0                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0x7C6D5B0E, level = 13 },                    # Astro Break
+    { move = 0xDBFD9CFE, level = 20 },                    # Big Ball Trick
+    { move = 0x750E6DAB, level = 30 },                    # Matador Feint
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x74B5C85D, level = 43 },                    # Security Shot
+  ]
+
+[[edit]]
+target = "npc0243"                                     # npc0243
+
+  [[edit.cards]]
+  id = 0x29B9001C                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x501F2F12, level = 1 },                     # Heel Flick
+    { move = 0x60397CCA, level = 13 },                    # Cross Drive
+    { move = 0x3F00EDE9, level = 20 },                    # Dash Storm
+    { move = 0xE0549BE6, level = 30 },                    # Easy Breezy Kid
+    { move = 0x7C1494CF, level = 38 },                    # Tornado Tunnel
+    { move = 0xDF8CB373, level = 43 },                    # Sonic Shot
+  ]
+
+[[edit]]
+target = "npc0252"                                     # npc0252
+
+  [[edit.cards]]
+  id = 0xAC654EC9                                         # GK/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 209, technique = 197, pressure = 212, physical = 227, intelligence = 209, agility = 240, freedom = 266 }
+  moves = [
+    { move = 0xCB8E6D04, level = 1 },                     # Mighty Save
+    { move = 0x43B5739B, level = 13 },                    # Lightning Bolt
+    { move = 0xEA12530F, level = 20 },                    # Double Rocket
+    { move = 0x50E88A33, level = 30 },                    # Fist Beam
+    { move = 0x53E9C2A3, level = 38 },                    # Capable Hands
+    { move = 0x00A10ABD, level = 43 },                    # Ball Lightning
+  ]
+
+[[edit]]
+target = "npc0259"                                     # npc0259
+
+  [[edit.cards]]
+  id = 0x733B0A77                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 209, technique = 197, pressure = 212, physical = 227, intelligence = 209, agility = 240, freedom = 266 }
+  moves = [
+    { move = 0xCB8E6D04, level = 1 },                     # Mighty Save
+    { move = 0x6B1CF436, level = 13 },                    # Bewildered
+    { move = 0xDA628FD4, level = 20 },                    # Sliding Goal
+    { move = 0xA3980723, level = 30 },                    # Colosseum Guard
+    { move = 0xDBA0E5E3, level = 38 },                    # Gigant Wall
+    { move = 0xC5EF0563, level = 43 },                    # Three-Legged Rush
+  ]
+
+[[edit]]
+target = "npc0260"                                     # npc0260
+
+  [[edit.cards]]
+  id = 0x21CAE110                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x240BEDF2, level = 1 },                     # Bounce Shot
+    { move = 0x2A4E3349, level = 13 },                    # Heart Beat
+    { move = 0x78E027BC, level = 20 },                    # Shine Drive
+    { move = 0xBDAE2862, level = 30 },                    # Hellfire
+    { move = 0x8EDFBC29, level = 38 },                    # Double Jaw
+    { move = 0xDA3FF6C9, level = 43 },                    # Criss-Cross
+  ]
+
+[[edit]]
+target = "npc0307"                                     # npc0307
+
+  [[edit.cards]]
+  id = 0xE836B902                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0x7EEA4EE9, level = 13 },                    # Blade Attack
+    { move = 0xE0549BE6, level = 20 },                    # Easy Breezy Kid
+    { move = 0x3F00EDE9, level = 30 },                    # Dash Storm
+    { move = 0x2354CA2D, level = 38 },                    # Wind God's Dance
+    { move = 0xAF28F5A0, level = 43 },                    # The Tower
+  ]
+
+[[edit]]
+target = "npc0382"                                     # npc0382
+
+  [[edit.cards]]
+  id = 0x5085C785                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x2D68DB57, level = 1 },                     # Deceptive Step
+    { move = 0x18C035B4, level = 13 },                    # Ghost Pull
+    { move = 0x750E6DAB, level = 20 },                    # Matador Feint
+    { move = 0xDBFD9CFE, level = 30 },                    # Big Ball Trick
+    { move = 0xC16279D1, level = 38 },                    # Field of Force
+    { move = 0xAD6E4BF9, level = 43 },                    # Harvest
+  ]
+
+[[edit]]
+target = "npc0384"                                     # npc0384
+
+  [[edit.cards]]
+  id = 0xB9E662B0                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x06458894, level = 1 },                     # Feint Dash
+    { move = 0x4F58F805, level = 13 },                    # Coil Turn
+    { move = 0xC42D6F54, level = 20 },                    # Aikido
+    { move = 0x768AB9C5, level = 30 },                    # Frosticle
+    { move = 0x7C1494CF, level = 38 },                    # Tornado Tunnel
+    { move = 0xBA662B00, level = 43 },                    # Pterrordactyl Swoop
+  ]
+
+[[edit]]
+target = "npc0405"                                     # npc0405
+
+  [[edit.cards]]
+  id = 0x0377CEAB                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x06458894, level = 1 },                     # Feint Dash
+    { move = 0xA9E3374B, level = 13 },                    # Cyclone Sprint
+    { move = 0xC42D6F54, level = 20 },                    # Aikido
+    { move = 0xE0549BE6, level = 30 },                    # Easy Breezy Kid
+    { move = 0x7C1494CF, level = 38 },                    # Tornado Tunnel
+    { move = 0x04941270, level = 43 },                    # Vac Attack
+  ]
+
+[[edit]]
+target = "npc0603"                                     # npc0603
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+  [[edit.cards]]
+  id = 0x551D4B24                                         # FW/MF · fire
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                     # Power Shot
+    { move = 0x43B5739B, level = 13 },                    # Lightning Bolt
+    { move = 0x18019E0A, level = 20 },                    # Double Grenade
+    { move = 0xF26A225B, level = 30 },                    # RC Shot
+    { move = 0x65766A4F, level = 38 },                    # Meteor Blade
+    { move = 0x132416F6, level = 43 },                    # Dog Run
+  ]
+
+  [[edit.cards]]
+  id = 0x47A8E4CA                                         # FW/MF · fire
+  moves = [
+    { move = 0x72514A74, level = 1 },                     # Low Drive
+    { move = 0x2A4E3349, level = 13 },                    # Heart Beat
+    { move = 0xEFFC6FA8, level = 20 },                    # Warhead
+    { move = 0x4890FB67, level = 30 },                    # Twin Boost
+    { move = 0x0C08B663, level = 38 },                    # Doom Dive Drive
+    { move = 0x087999EE, level = 43 },                    # Heel Drop
+  ]
+
+[[edit]]
+target = "npc1101"                                     # npc1101
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+  [[edit.cards]]
+  id = 0x4604E078                                         # FW/MF · forest
+  moves = [
+    { move = 0x240BEDF2, level = 1 },                     # Bounce Shot
+    { move = 0x20D01E43, level = 13 },                    # Hey Presto
+    { move = 0x4E5B398C, level = 20 },                    # Acrobat Bomber
+    { move = 0x79224D8B, level = 30 },                    # Freeze Shot
+    { move = 0xC513565C, level = 38 },                    # Doom Spear
+    { move = 0x750E6DAB, level = 43 },                    # Matador Feint
+  ]
+
+  [[edit.cards]]
+  id = 0x56D3174D                                         # FW/MF · forest
+  moves = [
+    { move = 0x72514A74, level = 1 },                     # Low Drive
+    { move = 0x12E67CC1, level = 13 },                    # Future Eye
+    { move = 0x0455B9CE, level = 20 },                    # Run Ball Run
+    { move = 0x2D3E5454, level = 30 },                    # Clone Shot
+    { move = 0x7FE98F60, level = 38 },                    # Ganymede Ray
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+  ]
+
+[[edit]]
+target = "npc2102"                                     # npc2102
+
+  [[edit.cards]]
+  id = 0x10895DAB                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x2D68DB57, level = 1 },                     # Deceptive Step
+    { move = 0x53CD747F, level = 13 },                    # Tarzan Kick
+    { move = 0x4FE09C7A, level = 20 },                    # Acrobatic Keep
+    { move = 0x64CDCFB9, level = 30 },                    # Rising Dragon
+    { move = 0x5E233E68, level = 38 },                    # Super Elastico
+    { move = 0x9B916289, level = 43 },                    # Jurassic Jaws
+  ]
+
+[[edit]]
+target = "npc2106"                                     # npc2106
+
+  [[edit.cards]]
+  id = 0x36BC9571                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+  moves = [
+    { move = 0x3AD8DFD1, level = 1 },                     # Curving Cut
+    { move = 0x5AF33BC7, level = 13 },                    # God Hand
+    { move = 0x0E0A3F7A, level = 20 },                    # Spatial Portal
+    { move = 0xB5B7108F, level = 30 },                    # Shadow Stitch
+    { move = 0x06D2AC29, level = 38 },                    # Diabolical Cut
+    { move = 0x06B22DB5, level = 43 },                    # Gyro-Blocker
+  ]
+
+[[edit]]
+target = "npc2312"                                     # npc2312
+
+  [[edit.cards]]
+  id = 0x05262A85                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+  moves = [
+    { move = 0x08EEBD53, level = 1 },                     # Feint Play
+    { move = 0xE854ED56, level = 13 },                    # Warp Space
+    { move = 0xDCC9CCA3, level = 20 },                    # Tesla Coil
+    { move = 0xB5B7108F, level = 30 },                    # Shadow Stitch
+    { move = 0x78218C02, level = 38 },                    # Duskfall
+    { move = 0xF309624E, level = 43 },                    # Dual Smash
+  ]
+
+[[edit]]
+target = "npc2314"                                     # npc2314
+
+  [[edit.cards]]
+  id = 0xC22D1172                                         # MF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x1F5EB9D5, level = 1 },                     # Nutmeg
+    { move = 0x4B3099D5, level = 13 },                    # Stomper Stopper
+    { move = 0x750E6DAB, level = 20 },                    # Matador Feint
+    { move = 0x17A96A44, level = 30 },                    # Clone Faker
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x91AE65A1, level = 43 },                    # Giant Spider
+  ]
+
+[[edit]]
+target = "npc2316"                                     # npc2316
+
+  [[edit.cards]]
+  id = 0x2C23705E                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x163D8F70, level = 1 },                     # Chip Shot
+    { move = 0x3B8D915B, level = 13 },                    # Meteor Shower
+    { move = 0xF26A225B, level = 20 },                    # RC Shot
+    { move = 0xEFFC6FA8, level = 30 },                    # Warhead
+    { move = 0xF02C9C02, level = 38 },                    # Tiger Storm
+    { move = 0xD0A1DBC3, level = 43 },                    # Bungee Ball Burst
+  ]
+
+[[edit]]
+target = "npc2322"                                     # npc2322
+
+  [[edit.cards]]
+  id = 0x7F820E51                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                     # Power Shot
+    { move = 0x6ADE9E01, level = 13 },                    # Illusory Ball
+    { move = 0x4C1D87D5, level = 20 },                    # Bed of Roses
+    { move = 0xC19E2AEE, level = 30 },                    # Pegasus Shot
+    { move = 0x15138722, level = 38 },                    # Will-o'-the-Wisp Shot
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+  ]
+
+[[edit]]
+target = "npc2323"                                     # Science Teacher
+
+  [[edit.cards]]
+  id = 0xF6CBEDD0                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x6C827857, level = 1 },                     # Rolling Steal
+    { move = 0x12E67CC1, level = 13 },                    # Future Eye
+    { move = 0x18C035B4, level = 20 },                    # Ghost Pull
+    { move = 0x17A96A44, level = 30 },                    # Clone Faker
+    { move = 0xC16279D1, level = 38 },                    # Field of Force
+    { move = 0x322F0C40, level = 43 },                    # Spider Web
+  ]
+
+[[edit]]
+target = "npc2520"                                     # npc2520
+
+  [[edit.cards]]
+  id = 0x3ED67BC3                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+  moves = [
+    { move = 0x6C827857, level = 1 },                     # Rolling Steal
+    { move = 0x2A4E3349, level = 13 },                    # Heart Beat
+    { move = 0x025FD09B, level = 20 },                    # Volcano Cut
+    { move = 0x4CDC2C6B, level = 30 },                    # Shooting Star
+    { move = 0x613ABD43, level = 38 },                    # Dawnrise
+    { move = 0x00A10ABD, level = 43 },                    # Ball Lightning
+  ]
+
+[[edit]]
+target = "npc2521"                                     # npc2521
+
+  [[edit.cards]]
+  id = 0x866A1CA6                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 194, technique = 190, pressure = 227, physical = 235, intelligence = 262, agility = 197, freedom = 263 }
+  moves = [
+    { move = 0x08EEBD53, level = 1 },                     # Feint Play
+    { move = 0x6B1CF436, level = 13 },                    # Bewildered
+    { move = 0x2FB941B3, level = 20 },                    # Stone Prison
+    { move = 0x31ABD82E, level = 30 },                    # Circus Block
+    { move = 0x485150D9, level = 38 },                    # Body Shield
+    { move = 0x4031A7F5, level = 43 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "npc2542"                                     # npc2542
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+
+  [[edit.cards]]
+  id = 0x391E6729                                         # MF/DF · wind
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0x4F58F805, level = 13 },                    # Coil Turn
+    { move = 0x3F00EDE9, level = 20 },                    # Dash Storm
+    { move = 0x768AB9C5, level = 30 },                    # Frosticle
+    { move = 0xD9BB22A7, level = 38 },                    # Air Ride
+    { move = 0x1C4D4906, level = 43 },                    # Whirlpool
+  ]
+
+  [[edit.cards]]
+  id = 0x1B9F46E8                                         # MF/DF · wind
+  moves = [
+    { move = 0x62294D90, level = 1 },                     # Dust Kick
+    { move = 0x4E9A9232, level = 13 },                    # Spinning Cut
+    { move = 0x0D368F6B, level = 20 },                    # Heaven's Time
+    { move = 0xE0549BE6, level = 30 },                    # Easy Breezy Kid
+    { move = 0x2354CA2D, level = 38 },                    # Wind God's Dance
+    { move = 0xB0F8060A, level = 43 },                    # Ozone Flayer
+  ]
+
+[[edit]]
+target = "npc2547"                                     # npc2547
+
+  [[edit.cards]]
+  id = 0x22DEC83F                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x1F5EB9D5, level = 1 },                     # Nutmeg
+    { move = 0x7C6D5B0E, level = 13 },                    # Astro Break
+    { move = 0xDBFD9CFE, level = 20 },                    # Big Ball Trick
+    { move = 0x750E6DAB, level = 30 },                    # Matador Feint
+    { move = 0x7DD6FEF8, level = 38 },                    # Athena's Anthem
+    { move = 0x8B90AAAC, level = 43 },                    # Fortissimo
+  ]
+
+[[edit]]
+target = "npc2548"                                     # npc2548
+
+  [[edit.cards]]
+  id = 0xB261D5AE                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x501F2F12, level = 1 },                     # Heel Flick
+    { move = 0xAB6422AC, level = 13 },                    # Phantom Shot
+    { move = 0xDBFD9CFE, level = 20 },                    # Big Ball Trick
+    { move = 0x17A96A44, level = 30 },                    # Clone Faker
+    { move = 0x7DD6FEF8, level = 38 },                    # Athena's Anthem
+    { move = 0x0455B9CE, level = 43 },                    # Run Ball Run
+  ]
+
+[[edit]]
+target = "npc2902"                                     # npc2902
+
+  [[edit.cards]]
+  id = 0x3FC200D0                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x06458894, level = 1 },                     # Feint Dash
+    { move = 0x06130797, level = 13 },                    # Rolling Kick
+    { move = 0x17A96A44, level = 20 },                    # Clone Faker
+    { move = 0x750E6DAB, level = 30 },                    # Matador Feint
+    { move = 0xC16279D1, level = 38 },                    # Field of Force
+    { move = 0x2D3E5454, level = 43 },                    # Clone Shot
+  ]
+
+[[edit]]
+target = "npc2903"                                     # npc2903
+
+  [[edit.cards]]
+  id = 0x48C53046                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0xAB6422AC, level = 13 },                    # Phantom Shot
+    { move = 0x17A96A44, level = 20 },                    # Clone Faker
+    { move = 0x750E6DAB, level = 30 },                    # Matador Feint
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x2D3E5454, level = 43 },                    # Clone Shot
+  ]
+
+[[edit]]
+target = "npc2904"                                     # npc2904
+
+  [[edit.cards]]
+  id = 0xD6A1A5E5                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x62294D90, level = 1 },                     # Dust Kick
+    { move = 0x7C6D5B0E, level = 13 },                    # Astro Break
+    { move = 0xDBFD9CFE, level = 20 },                    # Big Ball Trick
+    { move = 0x21127474, level = 30 },                    # Ultra Moon
+    { move = 0x7DD6FEF8, level = 38 },                    # Athena's Anthem
+    { move = 0x568262FA, level = 43 },                    # Dark Tornado
+  ]
+
+[[edit]]
+target = "npc2905"                                     # npc2905
+
+  [[edit.cards]]
+  id = 0xA1A69573                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x1F5EB9D5, level = 1 },                     # Nutmeg
+    { move = 0x1ECA5CE1, level = 13 },                    # Wrath Shot
+    { move = 0x750E6DAB, level = 20 },                    # Matador Feint
+    { move = 0x17A96A44, level = 30 },                    # Clone Faker
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x4C1D87D5, level = 43 },                    # Bed of Roses
+  ]
+
+[[edit]]
+target = "npc3200"                                     # npc3200
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+
+  [[edit.cards]]
+  id = 0xFF6413AF                                         # MF/FW · forest
+  moves = [
+    { move = 0x501F2F12, level = 1 },                     # Heel Flick
+    { move = 0x06130797, level = 13 },                    # Rolling Kick
+    { move = 0x750E6DAB, level = 20 },                    # Matador Feint
+    { move = 0xDBFD9CFE, level = 30 },                    # Big Ball Trick
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x4E5B398C, level = 43 },                    # Acrobat Bomber
+  ]
+
+  [[edit.cards]]
+  id = 0x88632339                                         # MF/FW · forest
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0x1ECA5CE1, level = 13 },                    # Wrath Shot
+    { move = 0xDBFD9CFE, level = 20 },                    # Big Ball Trick
+    { move = 0x21127474, level = 30 },                    # Ultra Moon
+    { move = 0xC16279D1, level = 38 },                    # Field of Force
+    { move = 0x8B90AAAC, level = 43 },                    # Fortissimo
+  ]
+
+  [[edit.cards]]
+  id = 0x116A7283                                         # MF/FW · forest
+  moves = [
+    { move = 0x2D68DB57, level = 1 },                     # Deceptive Step
+    { move = 0xAB6422AC, level = 13 },                    # Phantom Shot
+    { move = 0x17A96A44, level = 20 },                    # Clone Faker
+    { move = 0xDBFD9CFE, level = 30 },                    # Big Ball Trick
+    { move = 0x7748D3F2, level = 38 },                    # Devil Ball
+    { move = 0x1B854A64, level = 43 },                    # Cosmic Blast
+  ]
+
+[[edit]]
+target = "npc5005"                                     # npc5005
+
+  [[edit.cards]]
+  id = 0x33A09645                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 248, technique = 251, pressure = 190, physical = 184, intelligence = 224, agility = 184, freedom = 258 }
+  moves = [
+    { move = 0x49041E53, level = 1 },                     # Crosscut Feint
+    { move = 0x7C6D5B0E, level = 13 },                    # Astro Break
+    { move = 0x17A96A44, level = 20 },                    # Clone Faker
+    { move = 0xDBFD9CFE, level = 30 },                    # Big Ball Trick
+    { move = 0xC16279D1, level = 38 },                    # Field of Force
+    { move = 0x8B90AAAC, level = 43 },                    # Fortissimo
+  ]
+
+[[edit]]
+target = "spirit_element_fire_chronicle"               # spirit_element_fire_chronicle
+
+  [[edit.cards]]
+  id = 0x3BFFA375                                         # 0 · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_fire_story"                   # spirit_element_fire_story
+
+  [[edit.cards]]
+  id = 0x86503F3A                                         # 0 · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_forest_chronicle"             # spirit_element_forest_chronicle
+
+  [[edit.cards]]
+  id = 0x9667EFA2                                         # 0 · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_forest_story"                 # spirit_element_forest_story
+
+  [[edit.cards]]
+  id = 0x90B639BB                                         # 0 · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_mountain_chronicle"           # spirit_element_mountain_chronicle
+
+  [[edit.cards]]
+  id = 0xBDC7C395                                         # 0 · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_mountain_story"               # spirit_element_mountain_story
+
+  [[edit.cards]]
+  id = 0x81274E23                                         # 0 · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_wind_chronicle"               # spirit_element_wind_chronicle
+
+  [[edit.cards]]
+  id = 0x08DE01D2                                         # 0 · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_element_wind_story"                   # spirit_element_wind_story
+
+  [[edit.cards]]
+  id = 0xC35FFA3C                                         # 0 · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_token_god_hand_grass"                 # spirit_token_god_hand_grass
+
+  [[edit.cards]]
+  id = 0x115B612B                                         # 0 · neutral
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "spirit_token_inazuma_flower"                 # spirit_token_inazuma_flower
+
+  [[edit.cards]]
+  id = 0xAAFC1156                                         # 0 · neutral
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "stairs000001"                                # Hecaton Stairway
+growth_pattern = 1
+rank = 3
+growth = "normal"
+stats = { kick = 262, control = 248, technique = 227, pressure = 190, physical = 184, intelligence = 201, agility = 184, freedom = 259 }
+
+  [[edit.cards]]
+  id = 0xE49BF37A                                         # FW/MF · forest
+  moves = [
+    { move = 0x3D10DCB3, level = 1 },                     # Curve Shot
+    { move = 0x4E22F64D, level = 13 },                    # Transporter Device
+    { move = 0xC19E2AEE, level = 20 },                    # Pegasus Shot
+    { move = 0x8B90AAAC, level = 30 },                    # Fortissimo
+    { move = 0xADAFE047, level = 38 },                    # Dual Strike
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+  ]
+
+  [[edit.cards]]
+  id = 0xB826B2E2                                         # FW/MF · forest
+  moves = [
+    { move = 0x240BEDF2, level = 1 },                     # Bounce Shot
+    { move = 0x70417B2E, level = 13 },                    # Deceptor Dribble
+    { move = 0xC19E2AEE, level = 20 },                    # Pegasus Shot
+    { move = 0x79224D8B, level = 30 },                    # Freeze Shot
+    { move = 0xE937AD43, level = 38 },                    # Dragon Slayer
+    { move = 0x21127474, level = 43 },                    # Ultra Moon
+  ]
+
+  [[edit.cards]]
+  id = 0xBDA25E76                                         # FW/MF · forest
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                     # Power Shot
+    { move = 0x20D01E43, level = 13 },                    # Hey Presto
+    { move = 0x0455B9CE, level = 20 },                    # Run Ball Run
+    { move = 0x4E5B398C, level = 30 },                    # Acrobat Bomber
+    { move = 0x7FE98F60, level = 38 },                    # Ganymede Ray
+    { move = 0xDBFD9CFE, level = 43 },                    # Big Ball Trick
+  ]
+
+  [[edit.cards]]
+  id = 0xF56FFCCE                                         # FW/MF · forest
+  moves = [
+    { move = 0x3D10DCB3, level = 1 },                     # Curve Shot
+    { move = 0x592A96B4, level = 13 },                    # Afterimage
+    { move = 0xC19E2AEE, level = 20 },                    # Pegasus Shot
+    { move = 0x4C1D87D5, level = 30 },                    # Bed of Roses
+    { move = 0x7FE98F60, level = 38 },                    # Ganymede Ray
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+  ]
+
+  [[edit.cards]]
+  id = 0xA445897D                                         # FW/MF · forest
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                     # Power Shot
+    { move = 0x6ADE9E01, level = 13 },                    # Illusory Ball
+    { move = 0x0455B9CE, level = 20 },                    # Run Ball Run
+    { move = 0x74B5C85D, level = 30 },                    # Security Shot
+    { move = 0xB27F13ED, level = 38 },                    # Death Zone
+    { move = 0xDBFD9CFE, level = 43 },                    # Big Ball Trick
+  ]
+
+  [[edit.cards]]
+  id = 0x961C3AB7                                         # FW/MF · forest
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                     # Power Shot
+    { move = 0x70417B2E, level = 13 },                    # Deceptor Dribble
+    { move = 0xC19E2AEE, level = 20 },                    # Pegasus Shot
+    { move = 0x568262FA, level = 30 },                    # Dark Tornado
+    { move = 0xE937AD43, level = 38 },                    # Dragon Slayer
+    { move = 0xDBFD9CFE, level = 43 },                    # Big Ball Trick
+  ]
+
+  [[edit.cards]]
+  id = 0x0A287FB9                                         # FW/MF · forest
+  moves = [
+    { move = 0x72514A74, level = 1 },                     # Low Drive
+    { move = 0x20D01E43, level = 13 },                    # Hey Presto
+    { move = 0x79224D8B, level = 20 },                    # Freeze Shot
+    { move = 0x2D3E5454, level = 30 },                    # Clone Shot
+    { move = 0x7FE98F60, level = 38 },                    # Ganymede Ray
+    { move = 0x750E6DAB, level = 43 },                    # Matador Feint
+  ]

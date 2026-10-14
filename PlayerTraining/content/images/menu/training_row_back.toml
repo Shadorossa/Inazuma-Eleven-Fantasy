@@ -1,0 +1,25 @@
+# Player Training (moved from Inazuma Fantasy 2026-10-14): the translucent backing behind the «Entrenar» value and gauge column (owner 2026-10-13: «ponle un
+# fondo translúcido a las barras para que haya un poco de contraste con el azul»). One plain rounded panel in the rows'
+# navy at 40 % opacity, drawn at boot by the image recipes (nothing from the game's pixels ships: a flat fill). Added to
+# the btl06_13 atlas; the graft player_training_mode (PlayerTraining.TrainingMode.ROWBAR.BACK) swaps it into the gauge's retail navy pill mesh
+# (_beans_param_base01, sprite slot beans_param_base01) and stretches that mesh over rows 1..8 (one gauge instance).
+# The panel is ONE rounded rectangle behind the whole value + gauge column (owner: a rectangle for the whole column, not one
+# per row); the game stretches it, so it carries a nine-slice (the corners keep their radius).
+schema = "VRFW.image/1"
+
+[[recipe]]
+name = "trn_col_back"
+canvas = [256, 256]
+ops = [
+    { op = "opaque" },
+    { op = "fill", rgb = [20, 48, 96] },
+    { op = "round_corners", radius = 16 },
+    { op = "alpha_scale", mul = 102, div = 255 },
+]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "evt_trn_col_back"
+recipe = "trn_col_back"
+nine_slice = [20, 20, 20, 20]
+design_size = [256, 256]

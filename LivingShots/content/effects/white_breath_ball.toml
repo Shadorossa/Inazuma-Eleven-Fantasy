@@ -1,0 +1,30 @@
+# «White Breath» («Aliento blanco», whs01870, wind shot, cut-in ev60_01870): while the ball flies to the goal it keeps
+# the end of the cut-in's OWN look (the cut c0400, the breath shot out of the player's mouth, held at frame 338, the
+# texture flow running on): the pale-gold arrowhead of light round the ball (its tip just ahead of it) with the breath
+# beam running back behind it, its ribbons and three widening streak cones (two of them turning about the beam in
+# opposite directions, as in the cut-in), instead of the plain wind special-shot aura (ega0075b); x0.4 of the cut-in
+# size (arrowhead ~1.2 m). The beam trails back from the ball to the kick point for the whole shot (Nacho 2026-10-08):
+# it grows with the time since the aura started at the match ball's speed (0.75 m / frame, ~45 m/s), up to 40 m,
+# its far end fading out softly. The
+# dragon backdrop, the c0100-c0300 sets, the mouth glows and rings, the fake-particle field and the white-out are
+# dropped.
+# The object is ev6187wb00 (assets\data\{common,dx11}\effect\event\ev60\ev6187wb00\), built by
+# research/scripts/white_breath_ball_fx.py from ev60018700; docs/game/media/white-breath-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillColorIdx 1, skillEffectBitFlag 0):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other technique key
+# (no _or / _mm / _cro) uses ev60_01870. No trajectory file: in the cut-in the ball flies level, rising gently from
+# 2.6 m to 3.5 m at the goal mouth (the game's own flight).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "white_breath"
+from = "ega0075b"
+object = "effect/event/ev60/ev6187wb00/ev6187wb00.objbin"
+
+[[shot_aura]]
+name = "white_breath"
+when = { techniques = ["whs01870"] }
+aura = "white_breath"
+like = "ega0075b"

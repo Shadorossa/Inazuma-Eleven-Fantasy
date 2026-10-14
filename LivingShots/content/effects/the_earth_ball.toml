@@ -1,0 +1,50 @@
+# «The Earth» («La Tierra», whs00480, mountain shot, three-player combo, cut-in ev60_00480) and «The Earth: Infinity»
+# («La Tierra: Infinito», whs02650, mountain shot, cut-in ev60_02650): two cut-ins, two auras, one generator
+# (research/scripts/the_earth_ball_fx.py; docs/game/media/the-earth-ball-fx.md), instead of the plain mountain
+# special-shot aura (ega0075a).
+#
+# The Earth: the shot is many shots (Nacho 2026-10-08, like Diluvio letal / Doom Rain): the ball flies among the cut-in's
+# shower of ten cyan comets (its last cut c0600, held at frame 684, the textures' flow running on), the shot's head on
+# the ball (x3), the comets spread round it (the cut-in's ~40 m spread compressed to ~5.6 m across, 2.8 m up, 5.2 m
+# along; full at once, then closing in toward the target; each circling a little), all turned along the flight.
+# Dropped: the comets' long trail curves (10-40 m paths fixed in the cut-in's world), the earth globe and its flat
+# discs and rings, the light column, the ground auras, the backdrops, the c0100-c0500 sets; draw priorities 31 clamped
+# to 30; x0.25 of the cut-in size (comets ~1.3 m long). Object ev6048ea00, built from ev60004800 (until 1.3.10: the
+# c0400 globe on the ball).
+#
+# The Earth: Infinity: the ball flies as the cut-in's last cut (c0700, held at frame 750) shows the shot: inside the
+# earth globe and its rings, the long cyan energy beam trailing behind it. Dropped: the flat ball discs
+# (camera-facing sheets up to 13.6 m), the black and space backdrops, the white-out light, the fire and lightning
+# sets; x0.28 since 1.3.10 (Nacho 2026-10-08: bigger, x0.1 before; globe ~3.1 m, exit rings ~9-10 m). Since 1.3.10 (Nacho 2026-10-08) the beam reaches back from the globe towards the kick
+# point for the whole shot (growing 0.75 m / frame, up to 40 m) and fades out at its far end (no hard edge).
+# Object ev6265ei00, built from ev60026500.
+#
+# The objects are in assets\data\{common,dx11}\effect\event\ev60\<object>\. Each trigger copies the mountain
+# special-shot aura's row (like = "ega0075a"; skillEffectBitFlag 0 on both: neither chain nor long shot):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No _or / _mm / _cro
+# variant uses either cut-in.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_earth_globe"
+from = "ega0075a"
+object = "effect/event/ev60/ev6048ea00/ev6048ea00.objbin"
+
+[[shot_aura]]
+name = "the_earth_globe"
+when = { techniques = ["whs00480"] }
+aura = "the_earth_globe"
+like = "ega0075a"
+
+[[effect]]
+name = "the_earth_infinity_beam"
+from = "ega0075a"
+object = "effect/event/ev60/ev6265ei00/ev6265ei00.objbin"
+
+[[shot_aura]]
+name = "the_earth_infinity_beam"
+when = { techniques = ["whs02650"] }
+aura = "the_earth_infinity_beam"
+like = "ega0075a"

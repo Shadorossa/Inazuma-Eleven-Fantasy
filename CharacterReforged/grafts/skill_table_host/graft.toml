@@ -1,0 +1,30 @@
+# Character Reforged › the skill table's extension point (docs/framework/skill-table-host.md; owner 2026-10-14): other
+# mods add a ROW ACTION (a key on the focused move row: CMD_FUNC1) or the FOOTER BUTTON (the button between «Set de
+# jugador» and «Pasiva personalizada», layer evt_cmn03_07_btn_train) of the «Fantasy» skill table evt_skill_slot_menu
+# as data ([[entry]] host = "character_reforged.skill_table.row_action" / ".footer_button", action = { lua = ... };
+# the hosts are content\menus\skill_table_host.toml of the mod) and a Lua function of their own, called f(phase, ctx).
+# For a whole screen mode (Player Training's training) the block also serves the chunk's locals by name
+# (CharacterReforged.SkillTable.L / .Env(globals)) and graft skill_table_host_hooks makes the script a VR-Framework host.
+# A text graft of another mod cannot be built into this script (ss2_menus ships it whole; cross-mod requires are not
+# supported) and a hook file cannot reach the chunk's locals: this block is the one place that can. Replaces the grafts
+# move_rank_items (now True Hissatsu's hook files) and training_btn (now Player Training's hook file).
+# The block is GENERATED: edit skill_table_host_block.src.lua and run gen_block.py (the locals map).
+# rebuilt_by: Inazuma Fantasy builds it into its own merged evt_skill_slot_menu (part skill_table), like ss2_menus.
+name = "skill_table_host"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]
+order = 330
+module = "lua_bridge"
+requires = ["ss2_menus"]
+conflicts = []
+wraps = ["OnFunction", "OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "OnDecideFocus", "OnInit"]
+description = "Character Reforged: the skill table's extension point (declared row actions, footer button, locals for screen modes)"
+
+[[files]]
+path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "skill_table_host_block.lua"
+  marker = "skill_table_host"
+  crc = "at"

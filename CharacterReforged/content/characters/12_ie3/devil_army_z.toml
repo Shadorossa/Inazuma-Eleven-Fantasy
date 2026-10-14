@@ -1,0 +1,171 @@
+schema = "VRFW.character/2"
+# Character Reforged · Devil Army Z · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03034210"                                   # Astaroth
+
+  [[edit.cards]]
+  id = 0x6C8CE7E2                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 223, control = 219, technique = 185, pressure = 220, physical = 204, intelligence = 225, agility = 275, freedom = 339 }
+  moves = [
+    { move = 0xA25A6D14, level = 1 },                     # The End
+    { move = 0x0A3F27B7, level = 1 },                     # Foul Offence 3
+    { move = 0xA01CD34D, level = 63 },                    # Temporal Wall
+    { move = 0x91AE65A1, level = 75 },                    # Giant Spider
+  ]
+
+[[edit]]
+target = "c03034220"                                   # Bael
+
+  [[edit.cards]]
+  id = 0x47A1B421                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 153, technique = 134, pressure = 269, physical = 232, intelligence = 248, agility = 240, freedom = 313 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0x09BBF3D9, level = 1 },                     # Dark Whirlwind
+    { move = 0x514A6198, level = 54 },                    # Asteroid Belt
+    { move = 0x6633159F, level = 72 },                    # Gravitation
+  ]
+
+[[edit]]
+target = "c03034230"                                   # Abigor
+
+  [[edit.cards]]
+  id = 0x5EBA8560                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 266, control = 170, technique = 162, pressure = 255, physical = 203, intelligence = 265, agility = 203, freedom = 225 }
+  moves = [
+    { move = 0x7748D3F2, level = 1 },                     # Devil Ball
+    { move = 0x28B0E96F, level = 36 },                    # Heavy Mettle
+    { move = 0xA25A6D14, level = 58 },                    # The End
+    { move = 0xC16279D1, level = 72 },                    # Field of Force
+  ]
+
+[[edit]]
+target = "c03034240"                                   # Behemoth
+
+  [[edit.cards]]
+  id = 0x11FB13A7                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 208, control = 173, technique = 180, pressure = 247, physical = 255, intelligence = 251, agility = 203, freedom = 351 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0x6633159F, level = 37 },                    # Gravitation
+    { move = 0x1162A8AF, level = 47 },                    # Bewilder Blast
+    { move = 0x34E4CEAB, level = 56 },                    # Barbarian Shield
+  ]
+
+[[edit]]
+target = "c03034250"                                   # Belial
+
+  [[edit.cards]]
+  id = 0x08E022E6                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 284, control = 173, technique = 159, pressure = 173, physical = 255, intelligence = 197, agility = 204, freedom = 221 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0xBD2BB49C, level = 42 },                    # Dark Matter
+    { move = 0x592A96B4, level = 71 },                    # Afterimage
+    { move = 0x28B0E96F, level = 72 },                    # Heavy Mettle
+  ]
+
+[[edit]]
+target = "c03034260"                                   # Malphas
+
+  [[edit.cards]]
+  id = 0x23CD7125                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 234, control = 230, technique = 290, pressure = 203, physical = 161, intelligence = 223, agility = 189, freedom = 321 }
+  moves = [
+    { move = 0x7748D3F2, level = 1 },                     # Devil Ball
+    { move = 0x06D2AC29, level = 48 },                    # Diabolical Cut
+    { move = 0x71831119, level = 72 },                    # Foul Offence 2
+    { move = 0x0A3F27B7, level = 73 },                    # Foul Offence 3
+  ]
+
+[[edit]]
+target = "c03034270"                                   # Glasya
+
+  [[edit.cards]]
+  id = 0x3AD64064                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 215, technique = 200, pressure = 151, physical = 201, intelligence = 167, agility = 197, freedom = 221 }
+  moves = [
+    { move = 0x7748D3F2, level = 1 },                     # Devil Ball
+    { move = 0x34E4CEAB, level = 41 },                    # Barbarian Shield
+    { move = 0xBDAE2862, level = 51 },                    # Hellfire
+    { move = 0x1162A8AF, level = 72 },                    # Bewilder Blast
+  ]
+
+[[edit]]
+target = "c03034280"                                   # Jezebeth
+
+  [[edit.cards]]
+  id = 0xBD4E5CAB                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 239, technique = 254, pressure = 174, physical = 182, intelligence = 220, agility = 188, freedom = 217 }
+  moves = [
+    { move = 0x78218C02, level = 1 },                     # Duskfall
+    { move = 0x71831119, level = 26 },                    # Foul Offence 2
+    { move = 0x3B8D915B, level = 57 },                    # Meteor Shower
+    { move = 0x2C3D95DD, level = 72 },                    # Sleeping Dust
+  ]
+
+[[edit]]
+target = "c03034290"                                   # Arachne
+
+  [[edit.cards]]
+  id = 0xA4556DEA                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 317, control = 223, technique = 212, pressure = 132, physical = 207, intelligence = 161, agility = 186, freedom = 371 }
+  moves = [
+    { move = 0x7748D3F2, level = 1 },                     # Devil Ball
+    { move = 0x2C3D95DD, level = 1 },                     # Sleeping Dust
+    { move = 0x06D2AC29, level = 59 },                    # Diabolical Cut
+    { move = 0xEAB3792D, level = 72 },                    # Grand Fire
+  ]
+
+[[edit]]
+target = "c03034300"                                   # Thanatos
+
+  [[edit.cards]]
+  id = 0x7455BC94                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 308, control = 207, technique = 255, pressure = 176, physical = 208, intelligence = 154, agility = 143, freedom = 259 }
+  moves = [
+    { move = 0xBD2BB49C, level = 1 },                     # Dark Matter
+    { move = 0x34E4CEAB, level = 37 },                    # Barbarian Shield
+    { move = 0x09BBF3D9, level = 43 },                    # Dark Whirlwind
+    { move = 0x22EF6FDB, level = 60 },                    # Dark Phoenix
+  ]
+
+[[edit]]
+target = "c03034310"                                   # Destra
+
+  [[edit.cards]]
+  id = 0x6D4E8DD5                                         # FW/MF · mountain
+  growth = "normal"
+  stats = { kick = 324, control = 255, technique = 231, pressure = 196, physical = 200, intelligence = 221, agility = 192, freedom = 255 }
+  moves = [
+    { move = 0xBD2BB49C, level = 1 },                     # Dark Matter
+    { move = 0x6633159F, level = 32 },                    # Gravitation
+    { move = 0x9606E75F, level = 60 },                    # Shadow Ray
+    { move = 0xBDAE2862, level = 75 },                    # Hellfire
+  ]

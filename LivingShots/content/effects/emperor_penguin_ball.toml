@@ -1,0 +1,50 @@
+# The three «Pingüino emperador» shots: while the ball flies after the cut-in, the cut-in's PENGUINS travel with it
+# instead of the plain forest special-shot aura (ega0075d). Nacho 2026-10-07 (previews of the cut-ins' ends):
+#   nº1 whs00610 (ev60_00610): five small red penguins circling the ball round its fire (option A); the ball dives
+#       from above (option C: Inazuma Fantasy's techniques\move_mini_effects.toml trajectory = "dive");
+#   nº2 whs00400 (ev60_00400): a ring of five navy / white penguins round its orange fire ball, scaled down (option A);
+#   nº3 whs01050 (ev60_01050): its purple aura round the ball, five purple penguins flying low just AHEAD of it
+#       (option C); the ball drops from the sky, touches the pitch and skims (trajectory = "drop_skim").
+# The penguins are the cut-ins' own waza models (chr/_waza/<event>), baked as rigid effect meshes into each aura object
+# (ev6061pg00, ev6040pg00, ev6105pg00 under assets\data\{common,dx11}\effect\event\ev60\), built by
+# research/scripts/emperor_penguin_ball_fx.py; docs/game/media/emperor-penguin-ball-fx.md.
+# Each trigger copies the forest special-shot aura's row (like = "ega0075d"): its callback CB_SkillShootBallAura turns
+# +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). The rules list the _or / _mm variants too.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+# A trajectory named below (dive, ground, drop_skim, split shot) is a GAMEPLAY mini-effect of Inazuma Fantasy, not of
+# this mod: without it the aura rides the game's own flight.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "emperor_penguin_1"
+from = "ega0075d"
+object = "effect/event/ev60/ev6061pg00/ev6061pg00.objbin"
+
+[[effect]]
+name = "emperor_penguin_2"
+from = "ega0075d"
+object = "effect/event/ev60/ev6040pg00/ev6040pg00.objbin"
+
+[[effect]]
+name = "emperor_penguin_3"
+from = "ega0075d"
+object = "effect/event/ev60/ev6105pg00/ev6105pg00.objbin"
+
+[[shot_aura]]
+name = "emperor_penguin_1"
+when = { techniques = "whs00610" }
+aura = "emperor_penguin_1"
+like = "ega0075d"
+
+[[shot_aura]]
+name = "emperor_penguin_2"
+when = { techniques = ["whs00400", "whs00400_or"] }
+aura = "emperor_penguin_2"
+like = "ega0075d"
+
+[[shot_aura]]
+name = "emperor_penguin_3"
+when = { techniques = ["whs01050", "whs01050_or", "whs01050_mm"] }
+aura = "emperor_penguin_3"
+like = "ega0075d"

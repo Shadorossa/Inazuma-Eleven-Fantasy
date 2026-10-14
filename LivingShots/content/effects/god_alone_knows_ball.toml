@@ -1,0 +1,25 @@
+# «God Alone Knows» («Omnisabiduría divina», whs02900, wind shot, cut-in ev60_02900; its own cut-in, not God Knows'
+# ev60_00340): while the ball flies to the goal it stays inside the cut-in's OWN white-gold energy sphere (the last cut
+# c0500, the ball struck down out of the sky into the pitch and out towards the goal, held at frame 560, the spheres'
+# texture flow running on) instead of the plain wind special-shot aura (ega0075b). The 26 m flat light disc and the
+# 25 m camera-facing flares round the sphere (bars from the touchline), the distortion disc, the sky lightning, the
+# trench, crack, dust waves, rocks and smoke on the pitch and the earlier cuts are dropped; x0.25 of the cut-in size
+# (sphere ~2 m wide, the ball in its middle).
+# The object is ev6290ga00 (assets\data\{common,dx11}\effect\event\ev60\ev6290ga00\), built by
+# research/scripts/god_alone_knows_ball_fx.py from ev60029000; docs/game/media/god-alone-knows-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillEffectBitFlag 0): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other technique key uses ev60_02900.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "god_alone_knows_orb"
+from = "ega0075b"
+object = "effect/event/ev60/ev6290ga00/ev6290ga00.objbin"
+
+[[shot_aura]]
+name = "god_alone_knows_orb"
+when = { techniques = ["whs02900"] }
+aura = "god_alone_knows_orb"
+like = "ega0075b"

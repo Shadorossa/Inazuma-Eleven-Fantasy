@@ -12,6 +12,9 @@ local CHAIN_PACHANGA = "chain_match"
 -- at most this many nodes per chain (two-digit game suffix); board size limits (the chain board screen's)
 local MAX_NODES = 99
 local MAX_BOARD_COLS, MAX_BOARD_ROWS, MAX_HEX_COLS, MAX_BOARD_PAGES = 6, 5, 16, 8
+-- SOCCER_GAME_DIFFICULTY prize columns (end-of-match-rewards.md §2): 8 the win prize (every entry, every win), 11-14
+-- the bean tables, 34 the first clear
+local D_WIN_PRIZE, D_BEAN_PRIZES, D_FIRST_CLEAR_PRIZE = 8, { 11, 12, 13, 14 }, 34
 
 local function valid_name(s)
   return s ~= "" and #s <= 16 and s:find("^[a-z0-9_]+$") ~= nil
@@ -362,9 +365,16 @@ function CH.install(X)
         start = i - 1
       elseif t.kind == "match" then
         if T.trim(t.team or "") == "" then return nil, tw .. ": a match tile needs `team`" end
+        local ok, re = check_rewards(t.reward, false)
+        if not ok then return nil, tw .. ": " .. re .. " (a match tile's rewards are items)" end
       elseif t.kind == "chest" or t.kind == "schest" then
         local ok, re = check_rewards(t.reward, true)
         if not ok then return nil, tw .. ": " .. re end
+      elseif t.kind == "dchest" then
+        local ok, re = check_rewards(t.reward, true)
+        if not ok then return nil, tw .. ": " .. re end
+        ok, re = check_rewards(t.s_reward, true)
+        if not ok then return nil, tw .. ": SReward: " .. re end
       elseif t.kind == "blocked" then
         if #(t.requires or {}) == 0 then return nil, tw .. ": a blocked tile needs [[VRFW.Chain.Tile.Requires]]" end
       end
@@ -374,8 +384,11 @@ function CH.install(X)
       if t.kind ~= "match" and (t.team ~= nil or t.level ~= nil) then
         VRFW.log.warn(what .. ": " .. tw .. ": `team` / `level` only apply to match tiles (ignored)")
       end
-      if not (t.kind == "chest" or t.kind == "schest") and #(t.reward or {}) > 0 then
-        VRFW.log.warn(what .. ": " .. tw .. ": `reward` only applies to chest tiles (ignored)")
+      if not (t.kind == "chest" or t.kind == "schest" or t.kind == "dchest" or t.kind == "match") and #(t.reward or {}) > 0 then
+        VRFW.log.warn(what .. ": " .. tw .. ": `reward` only applies to chest and match tiles (ignored)")
+      end
+      if t.kind ~= "dchest" and #(t.s_reward or {}) > 0 then
+        VRFW.log.warn(what .. ": " .. tw .. ": `SReward` only applies to double chests (Kind = \"dchest\") (ignored)")
       end
     end
     if start == nil then return nil, "no `start` tile" end
@@ -436,7 +449,7 @@ function CH.install(X)
     for i, t in ipairs(tiles) do
       local tb = { id = t.id, kind = t.kind, page = (t.page or 1) - 1, col = t.pos[1] - 1, row = t.pos[2] - 1, links = T.keys(links[i]),
         game = 0, game_key = "", team = 0, level = 0, difficulty = 0, title = {}, rival = {}, emblem = "", reward = "",
-        requires = "", requires_names = {} }
+        s_reward = "", requires = "", requires_names = {} }
       if t.kind == "match" then
         nmatch = nmatch + 1
         if nmatch > MAX_NODES then return nil, string.format("more than %d match tiles", MAX_NODES) end
@@ -448,6 +461,24 @@ function CH.install(X)
         tb.emblem = X.team_emblem_key(n.team)
         tb.game, tb.game_key, tb.team, tb.level, tb.difficulty = n.game, n.game_key, n.team, n.level, n.difficulty
         tb.title, tb.rival = n.title, n.rival
+        if #(t.reward or {}) > 0 then
+          -- the tile's rewards: a new win prize table (col 8) on every row of its game; bean / first-clear prizes cleared
+          local items = {}
+          for _, x in ipairs(t.reward) do items[#items + 1] = { T.id(x.item), x.count or 1 } end
+          local nid, pe = X.new_prize(items, tb.game_key .. "_win")
+          if not nid then return nil, "tile `" .. t.id .. "`: reward: " .. pe end
+          local g, SG = X.games_t, X.SG
+          local x = X.gcache().by_id[tb.game]
+          if not x then return nil, "tile `" .. t.id .. "`: game gone" end
+          for _, i in ipairs(X.grows(x)) do
+            g:set(i, D_WIN_PRIZE, T.i32(nid))
+            for _, c in ipairs(D_BEAN_PRIZES) do g:set(i, c, 0) end
+            g:set(i, D_FIRST_CLEAR_PRIZE, 0)
+          end
+          g:touch()
+          X.touched.games = true
+          VRFW.log.info(what .. ": match `" .. t.id .. "`: every win gives " .. rewards(t.reward) .. " at the end of the match (win prize; no other prize)")
+        end
       elseif t.kind == "blocked" then
         local enc, rn = X.chain_requires(m, "tile `" .. t.id .. "`", t.requires, titles)
         if not enc then return nil, rn end
@@ -459,6 +490,18 @@ function CH.install(X)
         tb.reward = enc
         if #(t.reward or {}) > 0 then
           VRFW.log.info(what .. ": chest `" .. t.id .. "`: gives " .. enc .. " once opened")
+        end
+      elseif t.kind == "dchest" then
+        -- a double chest (chain-board.md §2c): base reward, then the special one with rank S on its branch
+        local enc, re = X.chest_rewards(m, t.reward)
+        if not enc then return nil, "tile `" .. t.id .. "`: " .. re end
+        local senc, se = X.chest_rewards(m, t.s_reward)
+        if not senc then return nil, "tile `" .. t.id .. "`: SReward: " .. se end
+        tb.reward, tb.s_reward = enc, senc
+        if enc == "" and senc == "" then
+          VRFW.log.info(what .. ": double chest `" .. t.id .. "`: no reward declared: disabled (never opens)")
+        else
+          VRFW.log.info(what .. ": double chest `" .. t.id .. "`: base [" .. enc .. "], rank S [" .. senc .. "]")
         end
       end
       out.tiles[#out.tiles + 1] = tb

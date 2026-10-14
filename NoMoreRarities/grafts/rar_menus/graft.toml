@@ -1,0 +1,96 @@
+# Rarity removal, spirit / summon menus (research/scripts/rar_build.py build_spirit / build_summon;
+# docs/game/characters/rarity-removal.md): no fusion / auto-fusion, sub-window options 3-4 and the rarity-up button
+# greyed and refused. The team dock part is rar_dock. Its points never touch the lines Inazuma Fantasy's fichajes edits
+# (OnFunction / OpenSpiritSubWindow of the summon menu: each graft at its own retail line), so neither requires the other.
+# Mod No More Rarities since 2026-10-14 (docs/refactor/aura-mods-split.md «No More Rarities»): on the base game it
+# needs nothing of Inazuma Fantasy's fichajes (every point is retail text); Inazuma Fantasy builds it into its own
+# merged soccer_spirit_menu / soccer_summon_menu (its fichajes / series_tabs extend the same functions).
+name = "rar_menus"
+mod = "no_more_rarities"
+rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
+order = 110
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Rarity removal: spirit / summon menus"
+
+[[files]]
+stem = "soccer_spirit_menu"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_spirit_menu.MixChara.RarMenus"
+  text = '''
+  if EVT_RARITY_UP_DISABLED then -- EVT rarity: no fusion
+    funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+    return
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_spirit_menu.OpenMixSameCharaConfirmDialog.RarMenus"
+  text = '''
+  if EVT_RARITY_UP_DISABLED then -- EVT rarity: no auto-fusion
+    funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+    return
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  text = '''
+
+-- EVT rarity: normal mode has no rarity-up (docs/game/rarity-removal.md). false = retail behaviour.
+EVT_RARITY_UP_DISABLED = true
+'''
+  crc = "none"
+
+[[files]]
+stem = "soccer_summon_menu"
+
+  # the rarity-up button: refused with the retail «not possible» sound (the retail else-branch of `if flag13`)
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_summon_menu.OnFunction.RarMenus"
+  text = '''
+    if EVT_RARITY_UP_DISABLED then -- EVT rarity: the rarity-up screen is closed
+      funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+      return
+    end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "soccer_summon_menu.OpenSpiritSubWindow.RarMenus"
+  text = '''
+  if EVT_RARITY_UP_DISABLED then -- EVT rarity
+    l8 = 0
+    l9 = 0
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_after"
+  point = "soccer_summon_menu.CallBackSpirit.RarMenus"
+  text = '''
+  if EVT_RARITY_UP_DISABLED and (a1 == 3 or a1 == 4) then -- EVT rarity
+    funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+    a1 = -1
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  text = '''
+
+-- EVT rarity: normal mode has no rarity-up (docs/game/rarity-removal.md). false = retail behaviour.
+EVT_RARITY_UP_DISABLED = true
+'''
+  crc = "none"

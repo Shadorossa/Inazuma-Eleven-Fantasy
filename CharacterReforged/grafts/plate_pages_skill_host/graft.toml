@@ -1,0 +1,27 @@
+# Character Reforged: the player page's shared header row / white card on the skill table (evt_skill_slot_menu, the new
+# file of ss2_menus): the block of research/grafts/plate_pages with the host table host_skill.lua (no pages, fixed type
+# 9, no chart). Split out of plate_pages on 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»): Inazuma Fantasy
+# ships its own merged evt_skill_slot_menu (it rebuilds ss2_menus with its blocks), which replaces this mod's while IF
+# is on, so IF rebuilds this graft too (`rebuilt_by`); the screen's file is one copy per VM either way.
+name = "plate_pages_skill_host"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]   # IF's merged evt_skill_slot_menu carries it too (it replaces this mod's file)
+order = 975
+module = "lua_bridge"
+requires = ["ss2_menus"]   # the screen (its new file); the plate_hiper blocks never reach this file
+conflicts = []
+wraps = ["ChangePersonalPlatePageByCharaHdl", "ChangePersonalPlatePageByCharaParamId",
+         "UpdateCharaParameterGraphByCharaStHdl", "SwapPersonalPlateTexture", "PostStep", "OnCloseLayer",
+         "SetPersonalPlateType", "OnSetupPersonalPlateLayer", "ChangeActiveUI", "OpenPersonalPlate",
+         "ClosePersonalPlate", "SetNameSearchInputEnabled",
+         "Step"]   # 2026-10-14: the page's per-frame body runs after the screen's Step (no PostStep there; host_skill.lua)
+description = "Player page: header row and card on the skill table (evt_skill_slot_menu)"
+
+[[files]]
+path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "../plate_pages/plate_pages.lua"
+  marker = "plate_pages plate"
+  include = { "@COMMON@" = "../plate_pages/plate_pages_common.lua", "@HOST@" = "../plate_pages/host_skill.lua" }

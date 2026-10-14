@@ -1,0 +1,41 @@
+# The «Active team» tile's native access as data (schema VRFW.game/1, docs/framework/native.md; 1.5.61, owner
+# 2026-10-14). The tile (content\teams\51_active_team.toml) plays the player's ACTIVE TEAM as it is: no draft, no team
+# pick. docs/game/modes/estadio-bb.md §16 has the reverse engineering; in short:
+#
+# * Every match of the Battle Bay (the 1 vs 1's start button and the Campaña's first match in the grid's Decide
+#   0x1068350, every later Campaña / Torneo match in 0xCB4C90) is asked through StartMatchRequest 0x17B7260(scene,
+#   request). The request's +0xA0 (u8) = 1 «explicit teams» (the Battle Bay's), +0xA4 = the player's team, +0xA8 = the
+#   rival team (u32 team ids).
+# * The match setup 0x16B59D0 builds the player's side from +0xA4; when it is 0 it takes the game row's own-side team
+#   (soccer_game_config difficulty col 5: 0 in every row of fbtl_bb_stadium_00, as in the VS friendly fbtl_free_001)
+#   with the «user team set» flag (setup +0x3C = 1): the team builder 0xE9C190 then builds the side from the player's
+#   active VS team set, exactly as a VS friendly does (real levels, moves, formation, kit, crest).
+# * So the hook below only rewrites the request: player's team = the Active team tile -> 0. The grid, the Campaña's
+#   session block (+0x2CA6EC) and the Torneo's run keep the tile's team, so their screens keep showing its name and
+#   crest; only the match is built from the active team.
+#
+# Native answer, no script on the game thread: the table BattleBayDeluxe.ActiveTeam holds the tile's team id
+# (scripts\active_team.lua fills it at start). No entry = the request as the game made it.
+schema = "VRFW.game/1"
+
+[[VRFW.Hook]]
+# StartMatchRequest(scene, request) 0x17B7260: the generic «start this match» of every mode (15 callers). Stolen bytes:
+# mov [rsp+18h],rbx / mov [rsp+20h],rsi / push rbp / push rdi / push r14 = 14 bytes, no relative operand (unique
+# pattern in the v7.1.2 dump; the RIP operand after them is a wildcard).
+name = "StartMatchRequest"
+kind = "function"
+pattern = "48 89 5C 24 18 48 89 74 24 20 55 57 41 56 48 8D 6C 24 90 48 81 EC 70 01 00 00 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 60 8B 42 6C"
+rva = 0x17B7260
+steal = 14
+args = ["ptr", "ptr"]
+ret = "u64"
+
+# the player's team of a Battle Bay request (+0xA0 = 1) is the Active team tile: 0 = the player's active team
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [
+  { value = "[args[2] + 0xA0]:u8", equals = 1 },
+  { value = "[args[2] + 0xA4]:u32", in_table = "BattleBayDeluxe.ActiveTeam" },
+]
+value = "0"
+write = "[args[2] + 0xA4]:u32"

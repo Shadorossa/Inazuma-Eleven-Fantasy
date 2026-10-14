@@ -1,0 +1,22 @@
+# Player Training › the training window (research/scripts/tr_build.py; docs/game/mechanics/training-classic.md,
+# stat-training.md): the new menu evt_training_menu (registry row / setting / window object: the mod's
+# content\menus\training_window.toml). This graft is the source of the script. 2026-09-28: pool rule + base-only values
+# + 9-language texts (the mod's text\rows\training.toml). Was Inazuma Fantasy's graft training_menu until 2026-10-14.
+# The script asks the mod's commands by their old names (CMND_EVT_TRAIN_*, aliases of CMND_PLAYERTRAINING_*) and the
+# module bit 16 of CMND_EVT_LOADER_VERSION (the mod's [[VRFW.ModuleMask]] bit 4). Nothing at chunk load but globals.
+name = "player_training_menu"
+mod = "player_training"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Player Training: the training window evt_training_menu"
+
+[[files]]
+path = "common/script/lua/menu/evt_training_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_training_menu.lua"
+  crc = "at"          # @crc:evt_tr_*@ = menu_text rows of the mod's text\rows\training.toml

@@ -1,0 +1,87 @@
+# VR-Framework: the framework's own title screen art (Nacho, 2026-10-13): the «INAZUMA ELEVEN Victory Road
+# Framework» logo and a press-start key art (a night stadium + the two title characters), shown with VRFW alone.
+#
+# The two pictures are OWNER ART derived from Level-5 assets: never committed. They live in the git-ignored folder
+# research/build/owner_art/ (or the folder of the env VRFW_OWNER_ART): vrfw_logo.png + vrfw_title_screen.webp (or
+# .png). research/scripts/vrfw_title_art.py (called by framework_pack.py) writes them as PNGs under the packed mod's
+# assets\images\menu\50_title\vrfw_title_art\; without them this file is left out of the pack with a warning and the
+# retail title stays.
+#
+# The sheet (vrfw_title_screen, 1762 x 2000) is the retail title00_01_st texture's layout (5280 x 5992) at 1/3 scale:
+# the background where bg_sky01_st is (the layer drawn full screen, 2640 x 1200 around the 1920 x 1080 screen), the
+# two characters where bg_chr02_st (left, the girl with the ball) and bg_chr01_st (right, the boy upside down) are.
+# Each sprite is repainted with its box of the sheet scaled back to the sprite's size (aspect kept); the sprites the
+# sheet leaves empty (bg_green_eff01_st, bg_lens_flare01_st) and the cloud textures stay retail. The logo (any size)
+# is fitted into the box the retail logo uses inside its 1600 x 1200 texture (logo02), for every language file of the
+# press-start logo (title00_03_02) and of the mode-menu logo (title02_01).
+#
+# Inazuma Fantasy serves its own title art (part title_art: whole title00_01_st / title00_03_02 / title02_01 files).
+# A mod's whole file is only the BASE of an image declaration (docs/framework/types/image.md §5), so this file would
+# paint over it: it is off while IF says so in its config ([title_art] own = true, research/mods/InazumaFantasy/
+# config.toml). Without IF the path reads the framework's own config (no such key) -> default false -> on.
+schema = "VRFW.image/1"
+when = { config = "inazuma_fantasy.title_art.own", equals = false, default = false }
+
+# ---- press-start background + characters (title_menu layer title00_01_title_top_st) -------------------------------
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_sky01_st"
+recipe = "background"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_chr02_st"
+recipe = "character_left"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_chr01_st"
+recipe = "character_right"
+
+# ---- the logo (title_menu layer title00_03_02_title_logo, title_menu_2 layer title02_01_title_logo_2) --------------
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_03_02/<LG>/title00_03_02.g4tx"
+name = "logo02"
+recipe = "logo"
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_01/<LG>/title02_01.g4tx"
+name = "logo02"
+recipe = "logo"
+
+# ---- recipes -------------------------------------------------------------------------------------------------------
+
+[[recipe]]
+name = "sheet"
+png = "vrfw_title_art/vrfw_title_sheet.png"
+
+# bg_sky01_st (0, 0, 5280, 2400) of the texture = rows 0..801 of the sheet (its last rows fade out: made opaque)
+[[recipe]]
+name = "background"
+from = "sheet"
+ops = [{ op = "crop", box = [0, 0, 1762, 801] }, { op = "resize", size = [5280, 2400] }, { op = "opaque" }]
+
+# bg_chr02_st (0, 3608, 2008, 2384)
+[[recipe]]
+name = "character_left"
+from = "sheet"
+ops = [{ op = "crop", box = [0, 1204, 670, 2000] }, { op = "resize", size = [2008, 2384] }]
+
+# bg_chr01_st (2012, 3608, 1760, 1992)
+[[recipe]]
+name = "character_right"
+from = "sheet"
+ops = [{ op = "crop", box = [671, 1204, 1259, 1869] }, { op = "resize", size = [1760, 1992] }]
+
+# the retail logos' drawing spans about (23..1575, 100..1136) of the 1600 x 1200 texture: same box, same centre
+[[recipe]]
+name = "logo_art"
+png = "vrfw_title_art/vrfw_logo.png"
+ops = [{ op = "alpha_crop" }, { op = "fit", box = [1552, 1036] }]
+
+[[recipe]]
+name = "logo"
+canvas = [1600, 1200]
+ops = [{ op = "paste", image = "logo_art", centre = [799.0, 618.0] }]

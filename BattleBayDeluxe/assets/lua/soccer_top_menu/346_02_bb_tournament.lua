@@ -422,8 +422,8 @@ end
 --   * The overlay (content\menus\bb_tournament.toml), filled from CMND_BBD_TOURN_VIEW; 1.5.15: the WHOLE bracket in
 --     one view, built from its size (rounds = log2(teams)): each team on a game list plate with its crest (left side:
 --     crest left of the name; right side mirrored), the connectors drawn as lines (the winners' path lit), each
---     match's score at its joint, the champion's plate and crown above the final; results / group pages on the same
---     plates (goals / points beside them); the page title in the menu's header. L1 / R1 (and left / right) turn pages, Enter = next match (the retail campaign «continue»
+--     match's score at its joint, the champion's plate and crown above the final; results pages on the same
+--     plates (goals beside them), the group tables in their own menu (1.5.60, BBT_GroupsShow); the page title in the menu's header. L1 / R1 (and left / right) turn pages, Enter = next match (the retail campaign «continue»
 --     request, after selecting the round's rulebook); eliminated: Enter simulates the next remaining round and shows
 --     it (round by round to the final), then closes and clears the run; Back = close.
 -- Globals only (BBT_*); nothing runs at chunk load.
@@ -493,13 +493,21 @@ BBT.L.box = 4216515300   -- 1.5.24: a score box at a plate's inner end (between 
 -- 1.5.35: a crest alone (the left plate's object, plate and name hidden): the winners standing at the bracket's joints
 -- and walking to them (at most one per match of the first round: 32)
 BBT.L.crest = 3817070050
--- 1.5.54: the group tables (BBT_DrawGroups): a card per group (546), its header band / row backgrounds (547), its
--- marks (548: qualification bars, points cells, separators, header strokes); 64 team rows, 336 texts, 112 boxes
-BBT.L.card = 2005703842
-BBT.L.band = 692561562
-BBT.L.mark = 132969984
-BBT.N = { line = 256, row_l = 64, row_r = 32, txt = 336, icon = 1, box = 112, crest = 32, card = 16, band = 96,
-  mark = 192 }
+-- 1.5.57 (owner in game 2026-10-13 22:41: the Battle Bay top menu stayed WHITE): the engine sets up at most ~844
+-- layer instances in one open menu (docs/game/ui/menu-layer-limits.md §2.1-§2.2); past it the menu never finishes
+-- opening (its background never ends opening, the retail FadeIn never runs: the title's white fade stays). 1.5.54
+-- had raised this menu to 1440 instances (its own group-table layers, row_l 64, txt 336, box 112); 1.5.57 went back
+-- to the bracket's own pools. 1.5.60: the group tables are drawn in their own menu (BBT_GroupsShow), so the texts are
+-- the bracket's only (txt 64: 63 scores of a 64-team bracket, 64 goals of a 32-match results page). Budget: retail 26
+-- + Utilities 269 + this file 484 = 779 in bb_stadium_top_menu (every pool costs its instances at every opening).
+BBT.N = { line = 256, row_l = 33, row_r = 32, txt = 64, icon = 1, box = 64, crest = 32 }
+-- draw priority of a connector-pool quad by what it draws (the layer's own is the connectors' 549; a score box drawn
+-- on it where the menu has no box pool: 552, BBT.SHARE)
+BBT.PRIO = { line = 549, box = 552 }
+-- 1.5.58: a pool this menu does not have (BBT.N[k] = 0) drawn on another pool of the same object, at its own draw
+-- priority (BBT.PRIO[k]): { box = "line" } on «Modos de juego» (bbt_hub.lua BBT_HOST.share; the layer budget). None
+-- here: this menu has every pool
+BBT.SHARE = {}
 BBT.ROW_CHAMP = 32                 -- row_l instance of the champion's plate
 BBT.ART = 2658588602               -- crc32("#/menu/220_img/bbd_tn/bbd_tn.g4tx"): the mod's drawings
 BBT.SPR_LINE = 1533989496
@@ -541,7 +549,8 @@ BBT.G = {
   -- the Victory Road background (vroad04_01_p1: one translucent navy panel, 2004 x 724 at y 178 below its origin)
   -- stretched to hold the whole bracket: BG_TOP .. BG_BOTTOM
   BG_Y = 178, BG_H = 724, BG_TOP = 100, BG_BOTTOM = 1036,
-  -- results (8 matches: two columns of 4, the two plates of a match one above the other); the group tables: BBT.GRP
+  -- results (8 matches: two columns of 4, the two plates of a match one above the other); the group tables: their own
+  -- menu (BBT_GroupsShow)
   RES_X = 190, RES_TOP = 196, RES_MATCH = 196, RES_ROW = 80, RES_VAL = 56,
 }
 -- the top menu's own layers hidden under the overlay (the retail lists of WaitExecOtherMenu)
@@ -722,18 +731,32 @@ function BBT_End()
   end)
 end
 
--- a tinted quad of the mod's drawings: centre (x, y), w x h px
-function BBT_Quad(layer, spr, x, y, w, h, col)
+-- a tinted quad of the mod's drawings: centre (x, y), w x h px; prio = the draw priority of a connector-pool
+-- instance (1.5.58: a score box on a host without a box pool, BBT.SHARE; nil = the connectors' own)
+function BBT_Quad(layer, spr, x, y, w, h, col, prio)
   local C, G = BBT.C, BBT.G
-  local i = BBT_Take(layer)
   local nk = "icon"
   for k, l in pairs(BBT.L) do
     if l == layer and BBT.N[k] then
       nk = k
     end
   end
+  -- 1.5.58: a pool shared with another one (BBT.SHARE) on the menu that has none of its own
+  local to = BBT.N[nk] <= 0 and BBT.SHARE[nk] or nil
+  if to ~= nil and BBT.L[to] ~= nil and BBT.N[to] then
+    layer, nk, prio = BBT.L[to], to, prio or BBT.PRIO[nk]
+  end
+  local i = BBT_Take(layer)
   if i >= BBT.N[nk] then
     return
+  end
+  if layer == BBT.L.line then
+    local want = prio or BBT.PRIO.line
+    BBT_S.prio = BBT_S.prio or {}
+    if BBT_S.prio[i] ~= want then
+      BBT_S.prio[i] = want
+      funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, i, want, true)
+    end
   end
   funcLuaMenuCommand(C.VISIBLE, layer, i, true)
   funcLuaMenuCommand(C.SCALE, layer, w / G.Q, h / G.Q, 1, i)
@@ -1219,297 +1242,63 @@ function BBT_DrawResults(v)
   end
 end
 
--- 1.5.54 (owner 2026-10-13, the approved sketch research/scripts/bbd_groups_sketch.py, mock --game): the group stage
--- as standings tables, EVERY group on one page (was 4 groups a page as loose plates + «0 pts +0»). One card per group
--- (a white slanted plate, its navy header band «GRUPO A» with two slanted strokes), one row per team: position, crest
--- and name (the team row evt_bbd_tn_row_l, its plate hidden), the numbers, the points in a darker cell; the top 2 =
--- the qualification zone (green bar + tinted row), the player's row blue with white texts; the form (the group
--- results so far: won / drawn / lost dots). The grid follows the group count:
---   2 groups  wide     2 x 1, PJ G E P GF GC DG Pts + a «Forma» column (3 dots)
---   4 groups  wide     2 x 2, the same columns
---   8 groups  compact  4 x 2, PJ G E P DG Pts, the form dots under the name
---   16 groups tiny     4 x 4 (a 64-team group stage), PJ DG Pts (their labels in the header band), no form dots;
---                      rows ~39 px (the row scale ~0.46)
--- Under the cards a legend (qualification, the player's team, the form dots); the page title is the header's
--- «Fase de grupos · Jornada N de 3» (view.title groups_md).
--- Layers: the cards evt_bbd_tn_card (546), bands / row backgrounds evt_bbd_tn_band (547), marks evt_bbd_tn_mark
--- (548), the team rows (551), the dots evt_bbd_tn_box (552), the texts evt_bbd_tn_txt (553): every colour is a
--- PRE-COLOURED sprite of bbd_tn.g4tx (CMND_SET_PRIM_COLOR does not tint these quads; research/scripts/
--- bbd_bracket_art.py), drawn white.
-BBT.GRP = {
-  Y0 = 124, Y1 = 984, MX = 40, GAP_X = 20, GAP_Y = 16, LEGEND_Y = 1014, LEGEND_X = 56,
-  -- the card sprite (256 x 256): the plate's box inside it and its slant (bbd_bracket_art.py CARD_BOX)
-  CARD = { W = 256, H = 256, L = 6, T = 6, R = 14, B = 18, SK = 8 },
-  -- the team row (evt_bbd_tn_row_l): crest 22 px, name 98 px from its left edge, 72 px high; the name's font (px at
-  -- scale 1) and its mean glyph width (of the px) for the cut with «…»
-  PLATE_H = 72, CREST_IN = 22, NAME_L = 98, NAME_PX = 32, NAME_CHAR = 0.48,
-  FILL = 0.84, PAD = 6, SEP = 2, QBAR = 6, TXT_HALF = 304,
-  ST = {
-    num = 3847724198,       -- fs_28_b_cc_2d0_001 (blue, centred, no outline)
-    num_dim = 2029954615,   -- fs_28_k_cc_2d0_001 (W D L GF GC)
-    num_me = 1911293514,    -- fs_28_w_cc_2d0_001 (white, the player's row)
-    pts = 2392563157,       -- fs_32_b_cc_2d0_001
-    pts_me = 438306617,     -- fs_32_w_cc_2d0_001
-    label = 543999875,      -- fs_22_k_cc_2d0_001_nr_sclw (column labels)
-    label_l = 3591594987,   -- fs_22_k_lc_2d0_001_nr_sclw («Equipo»)
-    label_pts = 2001536506, -- fs_22_b_cc_2d0_001_sclw («Pts»)
-    label_head = 1829976141, -- fs_22_w_cc_2d0_001_nr (labels in the header band, tiny)
-    title = 3945487540,     -- fs_32_w_lc_2d0_001 («GRUPO A»)
-    legend = 834427687,     -- fs_26_w_lc_2d2_001 (outlined white, on the background)
-  },
-  MODES = {
-    wide = { head = 50, labels = 30, pitch_max = 84, s_max = 0.8, cw = 42, ptsw = 58, pos_w = 44, pad_r = 16,
-      cols = { "pj", "g", "e", "p", "gf", "gc", "dg", "pts" }, form = "col", dot = 22, dot_pitch = 28,
-      name_dy = 0, num_s = 0.95, pts_s = 0.95, title_s = 1.0, label_s = 0.95 },
-    compact = { head = 46, labels = 28, pitch_max = 84, s_max = 0.66, cw = 28, ptsw = 42, pos_w = 30, pad_r = 14,
-      cols = { "pj", "g", "e", "p", "dg", "pts" }, form = "under", dot = 12, dot_pitch = 16, dot_dy = 21,
-      name_dy = -8, num_s = 0.8, pts_s = 0.82, title_s = 0.85, label_s = 0.85 },
-    tiny = { head = 34, labels = 0, pitch_max = 48, s_max = 0.5, cw = 38, ptsw = 44, pos_w = 30, pad_r = 12,
-      cols = { "pj", "dg", "pts" }, form = false, name_dy = 0, num_s = 0.6, pts_s = 0.62, title_s = 0.62,
-      label_s = 0.7 },
-  },
-  DIM = { g = true, e = true, p = true, gf = true, gc = true },
-}
-BBT.SPR_GRP = {
-  card = 2624519773, head = 763990034, qual = 308650821, qual_tint = 2315879333,
-  me = 2434295730, pts = 910184237, pts_me = 1149433725, sep = 4275471326,
-  stroke = 144416928, stroke2 = 3423307333,
-  W = 1675980812, D = 3881513426, L = 3917527520, none = 2704804066,
+-- 1.5.60 (owner 2026-10-14: «que la fase de grupos no se divida nunca en páginas, siempre 1 sola página»): the group
+-- stage's standings tables (1.5.54's approved sketch: a card per group, position, crest + name, the numbers, the
+-- points cell, the qualification zone, the player's row, the form dots, the legend) are drawn with EVERY group on one
+-- page (1 / 2 / 4 groups «wide», 8 «compact» 4 x 2, 16 «tiny» 4 x 4) in a menu of their own, evt_bbd_tn_groups_menu
+-- (content\menus\bb_tournament.toml [[screen]], its script assets\lua\screens\evt_bbd_tn_groups_menu.lua): 642 layer
+-- instances that this menu (bb_stadium_top_menu at 779 of the engine's ~844 per open menu, docs/game/ui/
+-- menu-layer-limits.md §2.1-2.3) cannot hold. 1.5.57-1.5.58 paged them on the bracket's pools (BBT_GrpPaging, L1 / R1,
+-- «(k/n)» in the title): gone. That menu is display-only (registry priority 0, no input layer): this host keeps the
+-- keys (L1 / R1 to the other pages, Enter, Back), its header title and the background; the group page draws nothing on
+-- this menu's pools (all hidden) and opens the child; any other page, or the overlay's close, closes it.
+BBT.GM = {
+  MENU = 3003171228,
+  P_PAGE = 3658435887,   -- parameter: the view page the child draws
+  P_HOST = 19065074,   -- parameter: this host (the child closes itself when it is gone)
 }
 
--- the grid of n groups: mode, columns, rows
-function BBT_GrpGrid(n)
-  if n <= 2 then
-    return "wide", math.max(1, n), 1
-  elseif n <= 4 then
-    return "wide", 2, 2
-  elseif n <= 8 then
-    return "compact", 4, 2
-  end
-  return "tiny", 4, 4
-end
-
--- a flat quad from (x0, y0) to (x1, y1)
-function BBT_GrpRect(layer, spr, x0, y0, x1, y1)
-  if x1 <= x0 or y1 <= y0 then
+-- the child opened once it is wanted and an earlier one has finished closing (Step and BBT_GroupsShow)
+function BBT_GroupsStep()
+  local S = BBT_S
+  if S.gm_want == nil or S.gm_open or not S.open then
     return
   end
-  BBT_Quad(layer, spr, (x0 + x1) / 2, (y0 + y1) / 2, x1 - x0, y1 - y0, BBT.WHITE)
-end
-
--- a text left-aligned at x (the text box is 608 px wide, centred on the instance's origin)
-function BBT_GrpTxtL(s, x, y, scale, style)
-  BBT_Txt(s, x + BBT.GRP.TXT_HALF * scale, y, scale, style)
-end
-
--- a string's width in glyph units (CJK = 2) and its cut to `units` with «…»
-function BBT_GrpUnits(s)
-  local u = 0
-  for ch in tostring(s or ""):gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-    u = u + (ch:byte(1) >= 0xE3 and 2 or 1)
-  end
-  return u
-end
-
-function BBT_GrpFit(s, units)
-  s = tostring(s or "")
-  if units <= 0 or BBT_GrpUnits(s) <= units then
-    return s
-  end
-  local out, u = {}, 0
-  for ch in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-    local w = ch:byte(1) >= 0xE3 and 2 or 1
-    if u + w > units - 1 then
-      break
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GM.MENU) == true then
+    S.gm_wait = (S.gm_wait or 0) + 1
+    if S.gm_wait == 300 then
+      BBT_Log("groups menu: an earlier one still exists after 300 Steps; waiting")
     end
-    out[#out + 1] = ch
-    u = u + w
-  end
-  return (table.concat(out):gsub("%s+$", "")) .. "…"
-end
-
--- a team row: crest + name (the team row object, its plate hidden); (x, y) = its left edge / vertical centre
-function BBT_GrpRow(r, x, y, s, maxpx)
-  local C, L, G = BBT.C, BBT.L, BBT.GRP
-  local i = BBT_Take(L.row_l)
-  if i >= BBT.N.row_l then
     return
   end
-  funcLuaMenuCommand(C.VISIBLE, L.row_l, i, true)
-  funcLuaMenuCommand(C.SCALE, L.row_l, s, s, 1, i)
-  funcLuaMenuCommand(C.POS, L.row_l, x, -y, 0, i)
-  for _, m in pairs(BBT.PLATE) do
-    funcLuaMenuCommand(C.MESH_VISIBLE, L.row_l, m, false, i)
-  end
-  local name = BBT_GrpFit(BBT_TeamName(r.team), math.floor(maxpx / (G.NAME_PX * s * G.NAME_CHAR)))
-  local white = r.me == true
-  funcLuaMenuCommand(C.TEXT, L.row_l, BBT.TXT_ON, white and name or "", i)
-  funcLuaMenuCommand(C.TEXT, L.row_l, BBT.TXT_OFF, white and "" or name, i)
-  funcLuaMenuCommand(C.TEXT_VISIBLE, L.row_l, BBT.TXT_ON, white, i)
-  funcLuaMenuCommand(C.TEXT_VISIBLE, L.row_l, BBT.TXT_OFF, not white, i)
-  funcLuaMenuCommand(C.PRIM_COLOR, L.row_l, i, BBT.MESH_EMBLEM, 1, 1, 1)
-  BBT_Alpha(L.row_l, i, r.out and BBT.ADV.OUT_ALPHA or 1)
-  BBT_Emblem(L.row_l, i, r.team)
+  S.gm_wait = 0
+  pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GM.P_PAGE, 0, S.gm_want, 1)
+  pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GM.P_HOST, 0, BBT_HOST.menu, 1)
+  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], BBT.GM.MENU)
+  S.gm_open = true
+  BBT_Log("groups menu opened over", BBT_HOST.name, "page", S.gm_want)
 end
 
--- a goal difference: «+2», «0», «-1»
-function BBT_GrpDg(n)
-  n = n or 0
-  return n > 0 and ("+" .. n) or tostring(n)
-end
-
--- one group's card at (x, y), w x h
-function BBT_GrpCard(grp, M, x, y, w, h, pitch)
-  local G, L, SP = BBT.GRP, BBT.L, BBT.SPR_GRP
-  local K = G.CARD
-  local sx, sy = w / (K.W - K.L - K.R), h / (K.H - K.T - K.B)
-  BBT_Quad(L.card, SP.card, x - K.L * sx + K.W * sx / 2, y - K.T * sy + K.H * sy / 2, K.W * sx, K.H * sy, BBT.WHITE)
-  local sk = K.SK * sx
-  local function lx(yy)
-    return x + sk * (1 - (yy - y) / h)
-  end
-  local function rx(yy)
-    return x + w - sk * (yy - y) / h
-  end
-  -- the columns (constant over the card: inside its slanted edges at every height)
-  local xr = x + w - sk - 3
-  local ptsx = xr - M.pad_r - M.ptsw / 2
-  local xs = {}
-  local nc = #M.cols
-  xs[nc] = ptsx
-  for c = nc - 1, 1, -1 do
-    xs[c] = ptsx - M.ptsw / 2 - M.cw * (nc - c - 0.5)
-  end
-  local num_left = ptsx - M.ptsw / 2 - M.cw * (nc - 1)
-  local form_right = num_left - 10
-  local limit = M.form == "col" and (form_right - 3 * M.dot_pitch - 6) or (num_left - 8)
-  -- the header band, its strokes and title
-  local hb = y + M.head
-  local bx0, bx1 = lx(y + M.head / 2), rx(y + M.head / 2)
-  BBT_GrpRect(L.band, SP.head, bx0, y, bx1, hb)
-  local stx = M.labels > 0 and (bx1 - M.head * 2.4) or (num_left - M.head * 1.4)
-  BBT_Quad(L.mark, SP.stroke, stx, y + M.head / 2, M.head * 0.5, M.head, BBT.WHITE)
-  BBT_Quad(L.mark, SP.stroke2, stx + M.head * 0.55, y + M.head / 2, M.head * 0.3, M.head, BBT.WHITE)
-  BBT_GrpTxtL(string.upper(BBT_Text("group_" .. tostring(grp.n or 0))), lx(y) + 18, y + M.head / 2, M.title_s,
-    G.ST.title)
-  -- the row's left part: the position, then the crest
-  local xl = lx(y) + 3
-  local pos_x = xl + G.QBAR + M.pos_w / 2
-  local s = math.min(M.s_max, pitch * G.FILL / G.PLATE_H)
-  local ox = xl + G.QBAR + M.pos_w - G.CREST_IN * s
-  local name_x = ox + G.NAME_L * s
-  -- the column labels: under the band, or in it (tiny)
-  if M.labels > 0 then
-    local ly = hb + M.labels / 2
-    BBT_GrpTxtL(BBT_Text("col_team"), name_x, ly, M.label_s, G.ST.label_l)
-    if M.form == "col" then
-      BBT_Txt(BBT_Text("col_form"), form_right - 1.5 * M.dot_pitch, ly, M.label_s, G.ST.label)
-    end
-  end
-  for c, k in ipairs(M.cols) do
-    local st = M.labels == 0 and G.ST.label_head or (k == "pts" and G.ST.label_pts or G.ST.label)
-    BBT_Txt(BBT_Text("col_" .. k), xs[c], M.labels > 0 and (hb + M.labels / 2) or (y + M.head / 2), M.label_s, st)
-  end
-  -- the rows
-  local top = hb + M.labels + G.PAD
-  for k = 1, 4 do
-    local r = grp.rows and grp.rows[k]
-    if r and (r.team or 0) ~= 0 then
-      local ry = top + (k - 1) * pitch
-      local yc = ry + pitch / 2
-      local rl, rr = lx(ry) + 3, rx(ry + pitch) - 3
-      local qual = (r.pos or k) <= 2
-      if r.me then
-        BBT_GrpRect(L.band, SP.me, rl, ry + 1, rr, ry + pitch - 1)
-      elseif qual then
-        BBT_GrpRect(L.band, SP.qual_tint, rl, ry + 1, rr, ry + pitch - 1)
-      end
-      if qual then
-        BBT_GrpRect(L.mark, SP.qual, rl, ry + 1, rl + G.QBAR, ry + pitch - 1)
-      end
-      if k < 4 then
-        BBT_GrpRect(L.mark, SP.sep, rl + G.QBAR + 4, ry + pitch - G.SEP / 2, rr, ry + pitch + G.SEP / 2)
-      end
-      BBT_GrpRect(L.mark, r.me and SP.pts_me or SP.pts, ptsx - M.ptsw / 2, ry + 2, ptsx + M.ptsw / 2, ry + pitch - 2)
-      local st_num = r.me and G.ST.num_me or G.ST.num
-      BBT_Txt(tostring(r.pos or k), pos_x, yc, M.num_s, st_num)
-      BBT_GrpRow(r, ox, yc + M.name_dy, s, limit - name_x)
-      for c, key in ipairs(M.cols) do
-        local val = key == "dg" and BBT_GrpDg(r.dg) or tostring(r[key] or 0)
-        if key == "pts" then
-          BBT_Txt(val, xs[c], yc, M.pts_s, r.me and G.ST.pts_me or G.ST.pts)
-        else
-          BBT_Txt(val, xs[c], yc, M.num_s, (G.DIM[key] and not r.me) and G.ST.num_dim or st_num)
-        end
-      end
-      -- the form: dots under the name (compact) or in their column (wide; the matchdays not played yet as rings)
-      local form = tostring(r.form or "")
-      if M.form == "under" then
-        for f = 1, #form do
-          local spr = SP[form:sub(f, f)]
-          if spr then
-            BBT_Quad(BBT.L.box, spr, name_x + M.dot / 2 + (f - 1) * M.dot_pitch, yc + M.dot_dy, M.dot, M.dot,
-              BBT.WHITE)
-          end
-        end
-      elseif M.form == "col" then
-        for f = 1, 3 do
-          local spr = SP[form:sub(f, f)] or SP.none
-          BBT_Quad(BBT.L.box, spr, form_right - (3 - f + 0.5) * M.dot_pitch, yc, M.dot, M.dot, BBT.WHITE)
-        end
-      end
-    end
-  end
-end
-
--- the legend under the cards: the qualification zone, the player's team, the form dots
-function BBT_GrpLegend(v, M)
-  local G, L, SP = BBT.GRP, BBT.L, BBT.SPR_GRP
-  local y, x = G.LEGEND_Y, G.LEGEND_X
-  local ls = 0.9
-  local function item(txt)
-    BBT_GrpTxtL(txt, x, y, ls, G.ST.legend)
-    x = x + BBT_GrpUnits(txt) * 26 * ls * 0.45 + 44
-  end
-  BBT_GrpRect(L.mark, SP.qual, x, y - 13, x + 10, y + 13)
-  x = x + 20
-  item(BBT_Text("legend_qualify_" .. tostring(v.qualify or 0)))
-  BBT_GrpRect(L.mark, SP.me, x, y - 13, x + 10, y + 13)
-  x = x + 20
-  item(BBT_Text("legend_you"))
-  if M.form then
-    for _, f in ipairs({ "W", "D", "L" }) do
-      BBT_Quad(L.box, SP[f], x + 9, y, 18, 18, BBT.WHITE)
-      x = x + 24
-      local t = BBT_Text("form_" .. f:lower())
-      BBT_GrpTxtL(t, x, y, ls, G.ST.legend)
-      x = x + BBT_GrpUnits(t) * 26 * ls * 0.45 + 18
-    end
-    item(BBT_Text("legend_form"))
-  end
-end
-
-function BBT_DrawGroups(v)
-  local G = BBT.GRP
-  local groups = v.groups or {}
-  local n = #groups
-  if n == 0 then
+-- the group page shown: the child menu opened, or asked to draw again when it is already up
+function BBT_GroupsShow(page)
+  local S = BBT_S
+  S.gm_want = page
+  if S.gm_open then
+    pcall(funcLuaCommand, 830228314 --[[cross-menu call]], BBT.GM.MENU, "BBG_Redraw", page)
     return
   end
-  local mode, cols, rows = BBT_GrpGrid(n)
-  local M = G.MODES[mode]
-  local cw = (BBT.G.W - 2 * G.MX - (cols - 1) * G.GAP_X) / cols
-  local ch_max = (G.Y1 - G.Y0 - (rows - 1) * G.GAP_Y) / rows
-  local pitch = math.min(M.pitch_max, (ch_max - M.head - M.labels - 2 * G.PAD) / 4)
-  local ch = M.head + M.labels + 2 * G.PAD + 4 * pitch
-  local top = (G.Y0 + G.Y1) / 2 - (rows * ch + (rows - 1) * G.GAP_Y) / 2
-  for gi, grp in ipairs(groups) do
-    local c, r = (gi - 1) % cols, math.floor((gi - 1) / cols)
-    if r < rows then
-      BBT_GrpCard(grp, M, G.MX + c * (cw + G.GAP_X), top + r * (ch + G.GAP_Y), cw, ch, pitch)
-    end
+  BBT_GroupsStep()
+end
+
+-- the child closed (another page shown, the overlay closed)
+function BBT_GroupsHide()
+  local S = BBT_S
+  S.gm_want = nil
+  if S.gm_open then
+    S.gm_open = false
+    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBT.GM.MENU)
+    BBT_Log("groups menu closed")
   end
-  BBT_GrpLegend(v, M)
 end
 
 -- the second line of a plate: a results score, a group table row
@@ -1654,14 +1443,18 @@ function BBT_Draw(page, animate)
       BBT_DrawTree(v)
     elseif v.kind == "results" then
       BBT_DrawResults(v)
-    elseif v.kind == "groups" then
-      BBT_DrawGroups(v)
     end
   end)
   if not ok then
     BBT_Log("draw error", tostring(err))
   end
   BBT_End()
+  -- 1.5.60: the group page = every group on one page in the group stage's own menu (this menu's pools all hidden)
+  if v.kind == "groups" then
+    BBT_GroupsShow(v.page)
+  else
+    BBT_GroupsHide()
+  end
   if animate and v.kind == "tree" then
     local oka, erra = pcall(BBT_AnimStart, v)
     if not oka then
@@ -1685,9 +1478,13 @@ function BBT_Draw(page, animate)
       keys[#keys + 1] = tostring(k) .. ":" .. type(x) .. (type(x) == "table" and ("#" .. #x) or "")
     end
   end
-  BBT_Log(string.format("bracket drawn n=%d on %s (kind %s, rounds %s; plates %d+%d, lines %d, texts %d)%s",
+  if v.kind == "groups" then
+    keys = {}   -- the group page draws in its own menu (its log line: «groups menu open …»)
+  end
+  BBT_Log(string.format("bracket drawn n=%d on %s (kind %s, rounds %s; plates %d+%d, lines %d, texts %d)%s%s",
     placed, BBT_HOST.name, tostring(v.kind), tostring(v.rounds), u[L.row_l] or 0, u[L.row_r] or 0, u[L.line] or 0,
-    u[L.txt] or 0, #keys > 0 and (" view: " .. table.concat(keys, " ")) or ""))
+    u[L.txt] or 0, v.kind == "groups" and (" groups " .. #(v.groups or {}) .. " in evt_bbd_tn_groups_menu") or "",
+    #keys > 0 and (" view: " .. table.concat(keys, " ")) or ""))
   -- the title in the menu's own header: the page; after the run, its end
   local title = BBT_Title(v)
   local tail = BBT_Outcome(v)
@@ -1704,6 +1501,7 @@ function BBT_Open(page)
   end
   BBT_S.open = true
   BBT_S.emb = {}
+  BBT_S.prio = {}
   local H = BBT_HOST
   BBT_SwitchLayers(H.close, false)
   BBT_ShowLayers(H.hide, false)
@@ -1756,6 +1554,7 @@ end
 
 function BBT_Close()
   BBT_S.champ, BBT_S.champ_done, BBT_S.anim = nil, false, nil
+  BBT_GroupsHide()   -- 1.5.60: the group stage's own menu
   BBT_EachInstance(function(l, i)
     bbt_close_layer(l, i)
   end)
@@ -2148,8 +1947,34 @@ function BBT_ModeTopStep()
   local S = BBT_S
   BBT_ModeAfterGrid()
   BBT_ModeAfterStep()
-  BBT_ModeDraw("tournament", false, false)
+  -- 1.5.57: the selector's layers are no longer in this menu (the grid's own only): nothing drawn here
   BBT_ModePoll(false)   -- keeps the key / click edges current
+end
+
+-- 1.5.57 diagnosis (the white Battle Bay top menu of 2026-10-13: the menu past the engine's layer instance limit never
+-- finished opening). Once per opening, BBT_SETUP_FRAMES Steps after OnInit: the instances the engine created of each
+-- overlay pool (CMND_GET_CREATE_LAYER_NUM) against the menu file's counts, whether the background
+-- (mainmenu90_00_background) is open and whether the screen is still covered by a fade (2259183189). A short pool
+-- or «covered true» = the menu is still too big.
+BBT_SETUP_FRAMES = 180
+function BBT_SetupCheck()
+  if BBT_HOST.name ~= "bb_stadium_top_menu" then
+    return
+  end
+  local parts, short = {}, 0
+  for k, n in pairs(BBT.N) do
+    local got = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], BBT.L[k])
+    got = type(got) == "number" and got or -1
+    if got < n then
+      short = short + 1
+    end
+    parts[#parts + 1] = string.format("%s %d/%d", k, got, n)
+  end
+  table.sort(parts)
+  local bg = funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], 367379312 --[[mainmenu90_00_background]], 0)
+  local covered = funcLuaCommand(2259183189) == true
+  BBT_Log(string.format("top menu setup: %s; background open %s, covered %s (%s)", table.concat(parts, ", "),
+    tostring(bg), tostring(covered), (short > 0 or covered) and "STUCK? pools short or screen covered" or "ok"))
 end
 
 -- ------------------------------------------------------------------------------------------------ wraps
@@ -2157,6 +1982,7 @@ end
 do
   local init = OnInit
   function OnInit(...)
+    BBT_S.setup_frames = 0
     local ok, done = pcall(BBT_Sync)
     if not ok then
       BBT_Log("sync error", tostring(done))
@@ -2236,8 +2062,26 @@ do
   function Step(...)
     local r = { step(...) }
     local S = BBT_S
+    if S.setup_frames ~= nil then
+      S.setup_frames = S.setup_frames + 1
+      if S.setup_frames >= BBT_SETUP_FRAMES then
+        S.setup_frames = nil
+        local okc, errc = pcall(BBT_SetupCheck)
+        if not okc then
+          BBT_Log("setup check error", tostring(errc))
+        end
+      end
+    end
     if S.open and S.champ then
       pcall(BBT_ChampStep)
+    end
+    -- 1.5.60: the group stage's own menu, once an earlier one finished closing
+    if S.gm_want ~= nil and not S.gm_open then
+      local okg, errg = pcall(BBT_GroupsStep)
+      if not okg then
+        S.gm_want = nil
+        BBT_Log("groups menu error", tostring(errg))
+      end
     end
     if S.open and S.anim then
       local oka, erra = pcall(BBT_AnimStep)
@@ -2371,7 +2215,17 @@ BBT_HOST = {
       EVT_MH_MarkBBMatch(BBT_HUB.KEY)
     end
   end,
+  -- 1.5.58 (layer budget, docs/game/ui/menu-layer-limits.md §2.3): this menu's pools where they differ from the Battle
+  -- Bay top menu's (BBT.N; the counts of content\menus\bb_tournament.toml, soccer_top_menu patches: change both
+  -- together): no score-box pool, its boxes drawn on the connector pool at the box's draw priority (share); 64 texts
+  -- (1.5.60: the same as the Battle Bay top menu; the group tables are drawn in their own menu, BBT_GroupsShow)
+  pools = { box = 0, txt = 64 },
+  share = { box = "line" },
 }
+for k, n in pairs(BBT_HOST.pools) do
+  BBT.N[k] = n
+end
+BBT.SHARE = BBT_HOST.share
 
 -- 1.5.22: every bracket layer (opened with this menu's group: content\menus\bb_tournament.toml) hidden and parked at
 -- its setup, the anchor without the control focus until the bracket opens

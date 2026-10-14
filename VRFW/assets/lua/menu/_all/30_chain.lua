@@ -10,6 +10,10 @@
 -- start tile is always done. A tile is OPEN when it is done or a tile linked to it is done. The chain's rank = the
 -- average of its match tiles' ranks (S = 3, A = 2, B = 1), rounded half up, once every match tile is won.
 -- A chest's declared rewards are given once (CH.Pay; key "chain.<chain key>.paid" = the paid chests' tile ids).
+-- A DOUBLE chest (kind "dchest", chain-board.md §2c): a base reward and a special one (rank S on its branch). Opened
+-- without S: the base reward, then it closes again ("h"); opened with S: the special one (and the base one if never
+-- taken), then it stays open ("o"). No base reward: it waits for the S. No reward at all: disabled, never opens. Paid
+-- parts: "<tile id>" (base) and "<tile id>+s" (special) in "chain.<chain key>.paid".
 -- The match being played from a board: key "chain.pending" = "<chain key>|<tile>|<slot>" (slot = the opener's own
 -- number, e.g. the Chronicle node's save slot; in memory, never committed).
 -- A BLOCKED tile (the 3DS chains' red «prohibited» sign, chain-board.md §9): its requirements (a win against a team on
@@ -104,7 +108,7 @@ if VRFW_Chain == nil then
       b.pages[p + 1] = call(CH.CMD.PAGE, i, p) or ""
     end
     for t = 0, ntiles - 1 do
-      local id, kind, page, col, row, links, game, team, level, diff, ttl, rival, emblem, reward, req, reqn = call(CH.CMD.TILE, i, t)
+      local id, kind, page, col, row, links, game, team, level, diff, ttl, rival, emblem, reward, req, reqn, sreward = call(CH.CMD.TILE, i, t)
       local links1 = {}
       for _, x in ipairs(csv(links)) do
         links1[#links1 + 1] = x + 1
@@ -112,6 +116,7 @@ if VRFW_Chain == nil then
       b.tiles[t + 1] = {id = id or "", kind = kind or "", page = page or 0, col = col or 0, row = row or 0, links = links1,
                         game = game or 0, team = team or 0, level = level or 0, difficulty = diff or 0, title = ttl or "",
                         rival = rival or "", emblem = emblem or "", reward = reward or "",
+                        sreward = type(sreward) == "string" and sreward or "",
                         requires = requires(type(req) == "string" and req or "", type(reqn) == "string" and reqn or "")}
     end
     CH.boards[i] = b
@@ -252,11 +257,18 @@ if VRFW_Chain == nil then
     return opened
   end
 
+  -- a double chest with no reward declared: disabled (never opens)
+  function CH.DChestEmpty(b, t)
+    local tile = b.tiles[t]
+    return tile ~= nil and tile.kind == "dchest" and tile.reward == "" and (tile.sreward or "") == ""
+  end
+
   function CH.Open(b, t)
     if CH.Done(b, t) then
       return true
     end
-    if b.tiles[t].kind == "slot" or b.tiles[t].kind == "blocked" or (b.tiles[t].kind == "schest" and not CH.SReady(b, t)) then
+    if b.tiles[t].kind == "slot" or b.tiles[t].kind == "blocked" or (b.tiles[t].kind == "schest" and not CH.SReady(b, t))
+        or CH.DChestEmpty(b, t) then
       return false   -- a slot (a placeholder tile, no team yet) never opens; a blocked tile opens by CH.Sync only
     end
     for _, j in ipairs(b.tiles[t].links) do
@@ -367,12 +379,44 @@ if VRFW_Chain == nil then
     return old
   end
 
-  -- a chest opened (its rewards: CH.Pay, chain-board.md §2b)
+  -- a chest opened (its rewards: CH.Pay, chain-board.md §2b). A double chest (§2c): "o" when its branch is all S, else
+  -- "h" (base reward taken, closed again); "h" -> "o" once the branch is all S. Returns the tile's state now.
   function CH.OpenChest(b, t)
+    local tile = b.tiles[t]
+    if tile.kind == "dchest" then
+      local st = CH.TileState(b, t)
+      if CH.DChestEmpty(b, t) or st == "o" then
+        return st
+      end
+      if CH.SReady(b, t) then
+        put(b, t, "o")
+      elseif st == "0" and tile.reward ~= "" then
+        put(b, t, "h")
+      end
+      CH.Log("chest", b.key, tile.id, CH.TileState(b, t))
+      return CH.TileState(b, t)
+    end
     if not CH.Done(b, t) then
       put(b, t, "o")
-      CH.Log("chest", b.key, b.tiles[t].id)
+      CH.Log("chest", b.key, tile.id)
     end
+    return CH.TileState(b, t)
+  end
+
+  -- a double chest the player can open now: reached, not disabled, and either never opened (with a base reward, or with
+  -- S) or opened once without S and now S-ready
+  function CH.DChestReady(b, t)
+    if not CH.Open(b, t) or CH.DChestEmpty(b, t) then
+      return false
+    end
+    local st, tile = CH.TileState(b, t), b.tiles[t]
+    if st == "o" then
+      return false
+    end
+    if CH.SReady(b, t) then
+      return (tile.sreward or "") ~= "" or st == "0"
+    end
+    return st == "0" and tile.reward ~= ""
   end
 
   -- ---- chest rewards (chain-board.md §2b) ---------------------------------------------------------------------------
@@ -384,11 +428,13 @@ if VRFW_Chain == nil then
   CH.ITEM_ADD = 1897915498     -- CMND_ADD_ITEM_ONLY (item, n): no window (the screen shows the retail one)
   CH.AUTO_SAVE = 3673719958    -- CMND_SYSTEM_AUTO_SAVE
 
-  -- a chest's declared rewards: {{kind = "item", id, count} / {kind = "player", id = card}}
-  function CH.Rewards(b, t)
+  -- a chest's declared rewards: {{kind = "item", id, count} / {kind = "player", id = card}} (special = a double chest's
+  -- rank-S reward)
+  function CH.Rewards(b, t, special)
     local out = {}
     local tile = b.tiles[t]
-    for part in string.gmatch(tile ~= nil and tile.reward or "", "[^,]+") do
+    local enc = tile ~= nil and (special and (tile.sreward or "") or tile.reward) or ""
+    for part in string.gmatch(enc, "[^,]+") do
       local card = string.match(part, "^player:(%d+)$")
       local id, n = string.match(part, "^(%d+):(%d+)$")
       if card ~= nil then
@@ -418,13 +464,33 @@ if VRFW_Chain == nil then
     return paid_set(b)[b.tiles[t].id] == true
   end
 
+  -- the parts of chest t due and not paid yet: {{special = false / true}} (a chest: its reward once opened; a double
+  -- chest: the base once opened ("h" / "o"), the special one once "o")
+  local function due(b, t, m)
+    local tile, st = b.tiles[t], CH.TileState(b, t)
+    local out = {}
+    if tile.kind == "chest" or tile.kind == "schest" then
+      if tile.reward ~= "" and st == "o" and not m[tile.id] then
+        out[#out + 1] = false
+      end
+    elseif tile.kind == "dchest" then
+      if tile.reward ~= "" and (st == "h" or st == "o") and not m[tile.id] then
+        out[#out + 1] = false
+      end
+      if (tile.sreward or "") ~= "" and st == "o" and not m[tile.id .. "+s"] then
+        out[#out + 1] = true
+      end
+    end
+    return out
+  end
+
   -- the opened chests of board b whose declared rewards were never given (tile indices)
   function CH.Unpaid(b)
     local out, m = {}, nil
     for t, tile in ipairs(b.tiles) do
-      if (tile.kind == "chest" or tile.kind == "schest") and tile.reward ~= "" and CH.TileState(b, t) == "o" then
+      if (tile.kind == "chest" or tile.kind == "schest" or tile.kind == "dchest") and CH.TileState(b, t) ~= "0" then
         m = m or paid_set(b)
-        if not m[tile.id] then
+        if #due(b, t, m) > 0 then
           out[#out + 1] = t
         end
       end
@@ -443,14 +509,22 @@ if VRFW_Chain == nil then
   -- joins "chain.<key>.paid" before the autosave.
   function CH.Pay(b, t)
     local tile = b.tiles[t]
-    if tile == nil or (tile.kind ~= "chest" and tile.kind ~= "schest") or CH.TileState(b, t) ~= "o" then
+    if tile == nil or (tile.kind ~= "chest" and tile.kind ~= "schest" and tile.kind ~= "dchest") or CH.TileState(b, t) == "0" then
       return nil, "closed"
     end
     local m = paid_set(b)
-    if m[tile.id] then
+    -- the parts due now (a chest: one; a double chest: base and / or special) and their marks in the paid set
+    local parts_due = due(b, t, m)
+    if #parts_due == 0 then
       return {}
     end
-    local rw = CH.Rewards(b, t)
+    local rw, marks = {}, {}
+    for _, special in ipairs(parts_due) do
+      for _, r in ipairs(CH.Rewards(b, t, special)) do
+        rw[#rw + 1] = r
+      end
+      marks[#marks + 1] = special and (tile.id .. "+s") or tile.id
+    end
     if #rw == 0 then
       return {}
     end
@@ -482,7 +556,9 @@ if VRFW_Chain == nil then
         end
       end
     end
-    m[tile.id] = true
+    for _, k in ipairs(marks) do
+      m[k] = true
+    end
     local ids = {}
     for id in pairs(m) do
       ids[#ids + 1] = id
@@ -490,7 +566,7 @@ if VRFW_Chain == nil then
     table.sort(ids)
     pcall(funcLuaCommand, CH.SAVE_SET, CH.OWNER, "chain." .. b.key .. ".paid", table.concat(ids, ";"), 0)
     pcall(funcLuaCommand, CH.AUTO_SAVE)
-    CH.Log("chest paid", b.key, tile.id, table.concat(parts, ", "))
+    CH.Log("chest paid", b.key, table.concat(marks, "/"), table.concat(parts, ", "))
     return given
   end
 

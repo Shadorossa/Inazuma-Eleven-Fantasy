@@ -11,7 +11,7 @@
 # The assets\anims\duel_cutins\*.glb are converted from the 3DS games' cut-in packs (Level-5): generated on the author's PC by
 # research/scripts/duel_cutin_build.py, ignored by git, installed through _deploy.toml `overlays` and left out of every
 # release (release_exclude.L5_DERIVED["new_animations"], together with this file and content\rules\duel_cutins\).
-schema = "vr_framework.anim/2"
+schema = "VRFW.anim/2"
 
 # vca0005 01 attacker wins (charge, 2.68 s): strong dodge past the block, 20 m run
 [[event]]

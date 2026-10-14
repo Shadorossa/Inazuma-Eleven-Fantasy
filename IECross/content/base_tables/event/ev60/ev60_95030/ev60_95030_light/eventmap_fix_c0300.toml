@@ -1,0 +1,18 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event/ev60/ev60_95030/ev60_95030_light/eventmap_fix_c0300.cfg.bin"
+from = "data/common/event/ev60/ev60_02190/ev60_02190_light/eventmap_fix_c0300.cfg.bin"
+
+[[list]]
+name = "PROP_INFO_BGN"
+set = [
+  { row = 2, cells = { "#0" = "dofFocusIn", "#1" = 0.2 } },
+  { row = 3, cells = { "#0" = "dofFocusNearZ", "#1" = 0.1 } },
+]
+splice = [
+  { at = 1, remove = 1, rows = [
+    { "=PROP_PARAM" = ["lightDir", 0.364015, 0.474114, 0.801691] },
+  ] },
+  { at = 4, remove = 0, rows = [
+    { "=PROP_PARAM" = ["debugDrawDofFlag", 0] },
+  ] },
+]

@@ -1,0 +1,26 @@
+# «Dragon Drive» («Rizo de dragón», whs01990, wind chain shot, cut-in ev60_01990): while the ball flies to the goal it
+# rides the wide end of the cut-in's OWN yellow light beam, the fan of light the dragon's kick fires at the ball (the
+# last cut c0030 after the kick, held at frame 330, texture flow running on: a vertical fan widening from a bright star
+# at the kick spot to the ball, its fake sparkles) instead of the plain wind special-shot aura (ega0075b). The cut-in's
+# black backdrop, the earlier cuts' dragon, the kick flash, the speed lines, the green shock rings of c0030 (flat rings
+# growing to hundreds of metres: bars across the flight from the touchline), the camera-front ball glow and the
+# scattering ring of fake particles are dropped; x0.3 of the cut-in size (the fan ~2.3 m behind the ball).
+# The object is ev6199dd00 (assets\data\{common,dx11}\effect\event\ev60\ev6199dd00\), built by
+# research/scripts/dragon_drive_ball_fx.py from ev60019900; docs/game/media/dragon-drive-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; the move is a chain shot, skillEffectBitFlag
+# 8: in a chain of 2+ the retail aura is ega0080b, the rule fires on the move either way): CB_SkillShootBallAura turns
+# +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dragon_drive_beam"
+from = "ega0075b"
+object = "effect/event/ev60/ev6199dd00/ev6199dd00.objbin"
+
+[[shot_aura]]
+name = "dragon_drive_beam"
+when = { techniques = "whs01990" }
+aura = "dragon_drive_beam"
+like = "ega0075b"

@@ -1,0 +1,966 @@
+# Character Reforged › the skill table (moved from Inazuma Fantasy 2026-10-14, owner: «el nuevo tablero de habilidades
+# como un activable»; docs/refactor/aura-mods-split.md «Skill table»). Used only while the option row
+# character_reforged.skill_set_view («Tabla de habilidades») is on: the team dock's «Tabla de habilidades» then opens
+# this screen (graft ss2_dock) instead of the game's board. The screen = 6 move rows + the aura / mix row (graft
+# ss2_menus): its registry row (cloned from `like`), setting (the retail `base` with the lists that differ written
+# whole), the menu objects it adds (each a retail object `from` with rows changed) and their layouts (copies of
+# retail layouts with joints moved; the prebuilt .g4pkm / .g4mg / .g4tx are this mod's assets\menu\). No `script`:
+# the screen's Lua is the Lua build's full file (graft ss2_menus, new_file) served from assets\script\lua\menu\
+# (Inazuma Fantasy ships its own merged build of it, which replaces this one while IF is active). The layers of IF's
+# additions (training panel evt_trn_*, combo partner picker evt_cpk_*, set preview evt_psp_*) stay declared here,
+# hidden: only the blocks that use them show them (the training panel and its button evt_cmn03_07_btn_train: Player
+# Training's hook file on the screen's host, graft skill_table_host since 2026-10-14; the button is the host's footer
+# button, hidden while no mod declares one).
+# Moved from Inazuma Fantasy's menus\screens.toml / screen_objects.toml / screen_layouts.toml; hand-maintained.
+schema = "VRFW.menu/2"
+
+layout = [
+    # evt_passive_panel.g4pkm
+    { file = "common/menu/00_soccer/soccer11/evt_passive_panel/evt_passive_panel.g4pkm", from = "common/menu/00_soccer/soccer11/soccer11_21/soccer11_21.g4pkm" },
+    { file = "common/menu/00_soccer/soccer11/evt_passive_panel/evt_passive_panel.g4pkm", joint = "_win_teamparameter01", translate = [500.0, -209.0, 0.0], scale = [920.0, 772.0, 1.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_passive_panel/evt_passive_panel.g4pkm", joint = "_scissor_list01", translate = [500.0, -259.0, 0.0], scale = [920.0, 672.0, 1.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_passive_panel/evt_passive_panel.g4pkm", joint = "_pos_atc_list01", translate = [960.0, -301.0, 0.0] },
+    # evt_role_badge.g4pkm
+    { file = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm", from = "common/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4pkm" },
+    { file = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm", joint = "_teambuff_base01", translate = [255.0, 68.0, 0.0], scale = [136.0, 136.0, 1.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm", joint = "_icon_teambuff_dmy01", translate = [271.0, 52.0, 0.0], scale = [104.0, 104.0, 1.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm", joint = "_text_passive01", translate = [-110.0, -80.0, 0.0], scale = [220.0, 40.0, 1.0] },
+    # evt_trn_cell.g4pkm
+    { file = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm", from = "common/menu/00_soccer/soccer20/soccer20_09/soccer20_09.g4pkm" },
+    { file = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm", joint = "_pos_base01", translate = [0.0, 0.0, 0.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm", joint = "_lvbonus_base01", translate = [19702.0, 66.0, 0.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm", joint = "_text_bonus01", translate = [-75.0, 43.0, 0.0], scale = [150.0, 26.0, 1.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm", joint = "_text_exp01", translate = [-75.0, 16.0, 0.0], scale = [150.0, 52.0, 1.0] },
+    # evt_team00_26_detail.g4pkm
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", from = "common/menu/102_team/team00/team00_26/team00_26.g4pkm" },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_win_base01", translate = [-250.0, 235.0, 0.0], scale = [1.0, 1.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_orb_base01", translate = [-275.0, 200.0, 0.0], scale = [525.0, 128.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_text_name01", translate = [-163.0, 154.0, 0.0], scale = [290.0, 36.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_pos_icon_build01", translate = [150.0, 156.0, 0.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_icon_fs_area_dmy01", translate = [-272.0, 184.0, 0.0], scale = [96.0, 96.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_icon_buff_dmy01", translate = [-261.0, 173.0, 0.0], scale = [74.0, 74.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_passive_sixth_base01", translate = [-248.0, 56.0, 0.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_passive_teambuff_icon_dmy01", translate = [-244.0, 52.0, 0.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_text_flavor01", translate = [-160.0, 56.0, 0.0], scale = [402.0, 200.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_pos_atc_build01", translate = [-248.0, -150.0, 0.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_pos_atc_build02", translate = [-86.0, -150.0, 0.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_icon_orb01_off", translate = [-272.0, 184.0, 0.0], scale = [96.0, 96.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_win_line01", translate = [-248.0, 56.0, 0.0], scale = [8.0, 200.0, 1.0] },
+    { file = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm", joint = "_text_flavor02", translate = [-232.0, 56.0, 0.0], scale = [476.0, 200.0, 1.0] },
+    # evt_team02_02_detail.g4pkm
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", from = "common/menu/102_team/team02/team02_02/team02_02.g4pkm" },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_sp_win_base01", translate = [-250.0, 235.0, 0.0], scale = [1.0, 1.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_item_win_line01", translate = [-248.0, -4.0, 0.0], scale = [8.0, 168.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_sp_base01", translate = [-275.0, 200.0, 0.0], scale = [525.0, 128.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_wlv_base01", translate = [-275.0, 200.0, 0.0], scale = [525.0, 128.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_pos_area01", translate = [-261.0, 122.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_icon_sp_area_dmy01", translate = [78.0, 214.0, 0.0], scale = [170.0, 170.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_icon_sp_area01_off", translate = [-249.0, 190.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_icon_sp_sub_dmy01", translate = [-261.0, 230.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_gtxt_longshoot01", translate = [-211.0, 229.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_gtxt_override01", translate = [-78.0, 240.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_ai_use01", translate = [-248.0, -196.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_pos_tension01", translate = [-28.0, 41.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_gtxt_cmd_at01", translate = [-40.0, 110.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_num_at01", translate = [244.0, 128.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_text_name01", translate = [-261.0, 176.0, 0.0], scale = [497.0, 36.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_text_area01", translate = [-236.0, 122.0, 0.0], scale = [200.0, 40.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_text_flavor01", translate = [-232.0, -4.0, 0.0], scale = [484.0, 168.0, 1.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_pos_atc_check01", translate = [-215.0, -22.0, 0.0] },
+    { file = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm", joint = "_pos_atc_check02", translate = [-215.0, -36.0, 0.0] },
+    # evt_ss_row_plate.g4pkm (2026-10-13: the list rows' move plate, soccer11_09 9 px right)
+    { file = "common/menu/00_soccer/soccer11/evt_ss_row_plate/evt_ss_row_plate.g4pkm", from = "common/menu/00_soccer/soccer11/soccer11_09/soccer11_09.g4pkm" },
+    { file = "common/menu/00_soccer/soccer11/evt_ss_row_plate/evt_ss_row_plate.g4pkm", joint = "_pos_base01", translate = [9.0, 0.0, 0.0] },
+    { file = "common/menu/00_soccer/soccer11/evt_ss_row_plate/evt_ss_row_plate.g4pkm", joint = "_pos_base02", translate = [9.0, 0.0, 0.0] },
+    # evt_cpk_list.g4pkm (2026-10-13: the combo partner picker frame; the rows keep the retail step 68 so 9 fit the list area)
+    { file = "common/menu/102_team/team08/evt_cpk_list/evt_cpk_list.g4pkm", from = "common/menu/102_team/team08/team08_01/team08_01.g4pkm" },
+    { file = "common/menu/102_team/team08/evt_cpk_list/evt_cpk_list.g4pkm", joint = "_pos_list_atc01", translate = [0.0, -315.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_list/evt_cpk_list.g4pkm", joint = "_text_list_empty01", translate = [217.0, -170.0, 0.0], scale = [340.0, 60.0, 1.0] },
+    # evt_cpk_row.g4pkm (2026-10-13: the combo partner row, 75 high (was 84; evt_pc_row 104); face 50, element 34, badge 52 x 38, name at x 190)
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", from = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_list_base_xs01_on", translate = [-98.0, 37.5, 0.0], scale = [970.0, 75.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_list_base_xs01_off", translate = [-98.0, 37.5, 0.0], scale = [970.0, 75.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_list_base_xs01_ol", translate = [-98.0, 37.5, 0.0], scale = [970.0, 75.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_list_base_xs01_ok", translate = [-98.0, 37.5, 0.0], scale = [970.0, 75.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_icon_cmd_type_base01", translate = [74.0, 19.0, 0.0], scale = [38.0, 38.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_icon_cmd_type_dmy01", translate = [76.0, 17.0, 0.0], scale = [34.0, 34.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_icon_sp_area_dmy01", translate = [13.0, 25.0, 0.0], scale = [50.0, 50.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_icon_sixth_dmy01", translate = [121.0, 19.0, 0.0], scale = [52.0, 38.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_text_list01_off", translate = [190.0, 33.0, 0.0], scale = [621.0, 66.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_text_list01_on", translate = [190.0, 33.0, 0.0], scale = [621.0, 66.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_icon_check01", translate = [819.0, 16.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm", joint = "_touch_list01", translate = [-89.0, 33.0, 0.0], scale = [982.0, 66.0, 1.0] },
+    # evt_cpk_arrow.g4pkm (2026-10-13: the picker list's scroll arrows, retail item01_01 frame; arrows 56 x 32 in the right margin
+    # of the rows (x 881), the up arrow just above the list top (-277), the down arrow just under its bottom (-891))
+    { file = "common/menu/103_item/item01/evt_cpk_arrow/evt_cpk_arrow.g4pkm", from = "common/menu/103_item/item01/item01_01/item01_01.g4pkm" },
+    { file = "common/menu/103_item/item01/evt_cpk_arrow/evt_cpk_arrow.g4pkm", joint = "_pos_arrow_u01", translate = [881.0, -245.0, 0.0] },
+    { file = "common/menu/103_item/item01/evt_cpk_arrow/evt_cpk_arrow.g4pkm", joint = "_pos_arrow_d01", translate = [881.0, -891.0, 0.0] },
+    # evt_pc_list.g4pkm
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", from = "common/menu/102_team/team08/team08_01/team08_01.g4pkm" },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_pos_list_atc01", translate = [0.0, -329.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list00", translate = [0.0, 102.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list02", translate = [0.0, -102.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list03", translate = [0.0, -204.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list04", translate = [0.0, -306.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list05", translate = [0.0, -408.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list06", translate = [0.0, -510.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list07", translate = [0.0, -612.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list08", translate = [0.0, -714.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list09", translate = [0.0, -816.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list10", translate = [0.0, -918.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_text_list_empty01", translate = [217.0, -170.0, 0.0], scale = [340.0, 60.0, 1.0] },
+    # evt_pc_row.g4pkm
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", from = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_list_base_xs01_on", translate = [-98.0, 52.0, 0.0], scale = [970.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_list_base_xs01_off", translate = [-98.0, 52.0, 0.0], scale = [970.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_list_base_xs01_ol", translate = [-98.0, 52.0, 0.0], scale = [970.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_list_base_xs01_ok", translate = [-98.0, 52.0, 0.0], scale = [970.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_icon_cmd_type_base01", translate = [42.0, 36.0, 0.0], scale = [72.0, 72.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_icon_sp_area_dmy01", translate = [46.0, 32.0, 0.0], scale = [64.0, 64.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_icon_sixth_dmy01", translate = [105.0, 6.0, 0.0], scale = [44.0, 44.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_text_list01_off", translate = [158.0, 44.0, 0.0], scale = [653.0, 88.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_text_list01_on", translate = [158.0, 44.0, 0.0], scale = [653.0, 88.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_icon_check01", translate = [819.0, 28.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_touch_list01", translate = [-89.0, 43.0, 0.0], scale = [982.0, 86.0, 1.0] },
+    # evt_ss_listbg.g4pkm
+    { file = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm", from = "common/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4pkm" },
+    { file = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm", joint = "_bg_black00", scale = [971.0, 1096.0, 1.0] },
+]
+
+# evt_skill_slot_menu (ss2_build.py): 59 layers; base equip_menu
+[[screen]]
+name = "evt_skill_slot_menu"
+like = "network_room_match_offer"
+base = "equip_menu"
+
+[screen.rows]
+layer = [
+    { layer = "soccer11_04_chara_status" },
+    { layer = "soccer11_05_equip_status_base" },
+    { layer = "soccer11_06_status_graph_base" },
+    { layer = "soccer11_06_p1_formation_status_graph_param_num" },
+    { layer = "soccer11_07_status_graph" },
+    { layer = "team05_02_equip_info_easy" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "team11_01_personal_plate" },
+    { layer = "soccer11_16_rpg_attack_defense_param" },
+    { layer = "team11_03_seasonal_player_plate" },
+    { layer = "team05_01_equip_base", object = "evt_team05_01_skill_slot_base" },
+    { layer = "team00_01_chara_card" },  # the base equip_menu's card (Inazuma Fantasy patches in Clean HUD's compact card)
+    { layer = "team00_02_chara_card" },
+    { layer = "soccer11_08_equip_list_item", object = "evt_ss_equip_row", count = 7 },  # 2026-10-13: the retail row + the move plate attach
+    { layer = "mainmenu01_08_chara_3d_shadow" },
+    { layer = "cmn03_07_cmn_button_equip", object = "evt_cmn03_07_btn_long" },
+    { layer = "evt_cmn03_07_btn_ss", object = "evt_cmn03_07_btn_ss", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_cmn03_07_btn_icon", object = "evt_cmn03_07_btn_icon", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "cmn02_01_blackbg", from = "bb_stadium_campaign_end_window", count = 4, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_passive_panel", object = "evt_passive_panel", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "soccer11_20_formation_team_passive", from = "personal_plate_menu", object = "evt_soccer11_20_pvrow", count = 12, align = [1, 8] },
+    { layer = "evt_cmn03_07_role_opt", object = "evt_cmn03_07_role_opt", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_role_badge", object = "evt_role_badge", count = 3, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_ss_list", object = "evt_pc_list", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "team08_02_ability_list_item", from = "ability_list_menu", object = "evt_pc_row", count = 6 },
+    { layer = "evt_ss_listbg", object = "evt_ss_listbg", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_cmn03_07_btn_role", object = "evt_cmn03_07_btn_role", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "team02_02_skill_detail_info", from = "ability_learning_board_menu", object = "evt_team02_02_skill_detail_info" },
+    { layer = "team13_26b_open_level_lock", from = "ability_learning_board_menu" },
+    { layer = "team00_26_passive_slot_detail_info", from = "ability_learning_board_menu", object = "evt_team00_26_passive_slot_detail_info" },
+    { layer = "team00_25_p1_build_name", from = "ability_learning_board_menu" },
+    { layer = "evt_ss_hiper_detail", object = "evt_ss_hiper_detail", count = 2 },
+    { layer = "evt_ph_move_row", object = "evt_ph_move_row", count = 2, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "team00_30_aura_keshin_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_keshin_detail_info" },
+    { layer = "team00_30_aura_keshin_armed_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_keshin_armed_detail_info" },
+    { layer = "team00_30_aura_mixi_max_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_mixi_max_detail_info" },
+    { layer = "team00_30_aura_soul_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_soul_detail_info" },
+    { layer = "team00_30_aura_kizuna_trans_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_kizuna_trans_detail_info" },
+    { layer = "team00_30_aura_awakening_power_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_awakening_power_detail_info" },
+    { layer = "team00_30_aura_mode_change_detail_info", from = "ability_learning_board_menu", object = "evt_team00_30_aura_mode_change_detail_info" },
+    { layer = "evt_ss_aura2", object = "evt_ss_aura2" },
+    { layer = "evt_psp_base", object = "evt_psp_base" },
+    { layer = "evt_psp_move", object = "evt_psp_move", count = 7, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_psp_equip", object = "soccer11_08_formation_chara_equip_item", count = 6, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_psp_pv", object = "soccer11_20_formation_team_passive", count = 5, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_psp_six", object = "team00_28_six_sense_detail_info", align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_cmn03_07_btn_train", object = "evt_cmn03_07_btn_train", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_psp_ai", object = "cmn01_30_ai_mark", count = 7, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_trn_panel", object = "evt_trn_panel" },
+    { layer = "evt_trn_row", object = "soccer11_08_formation_chara_equip_item", count = 9, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_trn_gauge", object = "team13_16_beans_gauge", count = 9, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_trn_cell", object = "evt_trn_cell", count = 2, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_trn_pebar", object = "evt_trn_pebar", align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_trn_arrow", object = "soccer11_06_p1_formation_status_graph_param_num", count = 18, align = [3, 8], scale = 0.20000000298023224 },
+    { layer = "evt_ss_row_plate", object = "evt_ss_row_plate", count = 7, align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-13: move plate on each list row (evt_ss_equip_row's NullLayerIndexName)
+    { layer = "evt_cpk_list", object = "evt_cpk_list", align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-13: the combo partner picker's own list frame (step 76)
+    { layer = "evt_cpk_row", object = "evt_cpk_row", count = 9, align = [1, 8], scale = 0.20000000298023224 },  # its rows (75 high, step 68, 9 visible)
+    { layer = "evt_cpk_arrow", object = "evt_cpk_arrow", align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-13: the picker list's scroll arrows (retail item list arrows)
+]
+cmd = [
+    { layer = "soccer11_08_equip_list_item", input = "CMD_UP", command = "CMD_FCS_BACK" },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_DOWN", command = "CMD_FCS_NEXT" },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "soccer11_08_equip_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0xF4F7D4CD },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_UP", command = "CMD_FCS_BACK" },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "cmn03_07_cmn_button_equip", input = "CMD_RIGHT", command = "CMD_FCS_NEXT" },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_UP", command = "CMD_FCS_MTX_UP" },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_LEFT", command = "CMD_FCS_BACK" },
+    { layer = "evt_cmn03_07_btn_ss", input = "CMD_RIGHT", command = "CMD_FCS_NEXT" },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_UP", command = "CMD_FCS_MTX_UP" },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_LEFT", command = "CMD_FCS_BACK" },
+    { layer = "evt_cmn03_07_btn_icon", input = "CMD_RIGHT", command = "CMD_FCS_NEXT" },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_UP", command = "CMD_FCS_MTX_UP" },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "evt_cmn03_07_btn_role", input = "CMD_LEFT", command = "CMD_FCS_BACK" },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_UP", command = "CMD_FCS_MTX_UP" },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0xE990E9B8 },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_LEFT", command = "CMD_FCS_BACK" },
+    { layer = "evt_cmn03_07_btn_train", input = "CMD_RIGHT", command = "CMD_FCS_NEXT" },
+]
+res = [
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/200_icon/100_num/num_menu02.g4tx",
+    "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx",
+    "#/menu/100_mainmenu/mainmenu01/mainmenu01_08/mainmenu01_08.g4tx",
+    "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx",
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx",
+    "#/menu/200_icon/08_icon_teambuff/<LG>/icon_teambuff.g4tx",
+    "#/menu/200_icon/18_icon_abilearboard/<LG>/icon_abilearboard.g4tx",
+    "#/menu/102_team/team13/team13_05c/team13_05c.g4tx",
+    "#/menu/200_icon/02_icon_item/icon_item01.g4tx",
+    "#/menu/200_icon/100_num/num_at.g4tx",
+    "#/menu/200_icon/100_num/num_alb.g4tx",
+    "#/menu/102_team/team02/evt_ss_parts/evt_ss_parts.g4tx",
+    "#/menu/102_team/team02/evt_ss_bands/evt_ss_bands.g4tx",
+    "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
+    { path = "menu_chara_model_comp", kind = 2 },
+]
+group_base = [
+    { layer = "soccer11_04_chara_status", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_05_equip_status_base", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_06_status_graph_base", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_06_p1_formation_status_graph_param_num", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_07_status_graph", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team05_02_equip_info_easy", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team11_01_personal_plate", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "soccer11_16_rpg_attack_defense_param", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "team11_03_seasonal_player_plate", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team05_01_equip_base", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team00_01_chara_card", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team00_02_chara_card", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_08_equip_list_item", flags = [1, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu01_08_chara_3d_shadow", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "cmn03_07_cmn_button_equip", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cmn03_07_btn_ss", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cmn03_07_btn_icon", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn02_01_blackbg", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_passive_panel", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "soccer11_20_formation_team_passive", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cmn03_07_role_opt", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_role_badge", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_ss_list", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team08_02_ability_list_item", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_ss_listbg", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cmn03_07_btn_role", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team02_02_skill_detail_info", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team13_26b_open_level_lock", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team00_26_passive_slot_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_25_p1_build_name", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_ss_hiper_detail", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_ph_move_row", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_keshin_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_keshin_armed_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_mixi_max_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_soul_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_kizuna_trans_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_awakening_power_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "team00_30_aura_mode_change_detail_info", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_ss_aura2", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_psp_base", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_psp_move", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_psp_equip", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_psp_pv", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_psp_six", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_cmn03_07_btn_train", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_psp_ai", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_panel", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_row", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_gauge", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_cell", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_pebar", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_trn_arrow", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_ss_row_plate", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "evt_cpk_list", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cpk_row", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_cpk_arrow", flags = [0, 1, 1, 0, 1, 0] },
+]
+group = [
+    { group = "common", flags = [0, 0], slice = [0, 11] },
+    { group = "evt_skill_slot_menu", flags = [1, 0], slice = [11, 48] },
+]
+focus_base = [
+    [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button
+]
+focus_group = [
+    { layer = "soccer11_08_equip_list_item", flags = [0, 0, 0], slice = [0, 1] },
+    { layer = "cmn03_07_cmn_button_equip", flags = [0, 0, 0], slice = [1, 1] },
+    { layer = "evt_cmn03_07_btn_ss", flags = [0, 0, 0], slice = [2, 1] },
+    { layer = "evt_cmn03_07_btn_icon", flags = [0, 0, 0], slice = [3, 1] },
+    { layer = "evt_cmn03_07_btn_role", flags = [0, 0, 0], slice = [4, 1] },
+    { layer = "evt_cmn03_07_btn_train", flags = [0, 0, 0], slice = [5, 1] },
+]
+shift_base = [
+    ["CMD_FCS_BACK", 0, 0x1E057607, -1],  # cmn03_07_cmn_button_equip
+    ["CMD_FCS_NEXT", -1, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
+    ["CMD_FCS_BACK", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # evt_cmn03_07_btn_train
+    ["CMD_FCS_BACK", 0, 0x18B9DC60, 0],  # evt_cmn03_07_btn_train
+    ["CMD_FCS_NEXT", -1, 0x8C7C3A06, 0],  # evt_cmn03_07_btn_role (2026-10-12: the «Pasivas de la rama» button is gone)
+    ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+    ["CMD_FCS_BACK", 0, 0x241778A4, 0],
+    ["CMD_FCS_NEXT", -1, 0x8C7C3A06, 0],
+    ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+    ["CMD_FCS_BACK", 0, 0x241778A4, 0],  # evt_cmn03_07_btn_ss (was the removed «Pasivas de la rama» button)
+    ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+    ["CMD_FCS_BACK", 0, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
+    ["CMD_FCS_NEXT", -1, 0x241778A4, 0],
+    ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+]
+shift = [
+    { layer = "soccer11_08_equip_list_item", slice = [0, 2] },
+    { layer = "cmn03_07_cmn_button_equip", slice = [2, 2] },
+    { layer = "evt_cmn03_07_btn_ss", slice = [4, 3] },
+    { layer = "evt_cmn03_07_btn_icon", slice = [7, 3] },
+    { layer = "evt_cmn03_07_btn_role", slice = [10, 2] },
+    { layer = "evt_cmn03_07_btn_train", slice = [12, 3] },
+]
+
+[[object]]
+name = "evt_cmn03_07_btn_icon"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_cmn03_07_btn_long"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_long/evt_cmn03_07_btn_long.g4pkm" } },
+    { param = "_text_cmd01", match = { 1 = 0x21187163 }, values = { 1 = 0x17CA5988 } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_long/evt_cmn03_07_btn_long.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_cmn03_07_btn_role"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_cmn03_07_btn_ss"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_cmn03_07_btn_train"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_train/evt_cmn03_07_btn_train.g4pkm" } },
+    { param = "_text_cmd01", match = { 1 = 0x21187163 }, values = { 1 = 0x17CA5988 } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_train/evt_cmn03_07_btn_train.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_cmn03_07_role_opt"
+from = "cmn03_07_cmn_button_equip"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } } },
+]
+
+[[object]]
+# 2026-10-13: the picker list's scroll arrows: the retail item list frame (item01_01_list_base: arrows _arrow_list_u01 /
+# _arrow_list_d01 under _pos_arrow_u01 / _d01) without its native list view, attach block or chara model; the layout
+# clone evt_cpk_arrow moves the two arrows to the list's right edge (top / bottom of the rows). Lua (PL.ListArrows)
+# hides the frame base and shows an arrow only when rows lie above / below the visible window.
+name = "evt_cpk_arrow"
+from = "item01_01_list_base"
+remove_block = [
+    "CMenuListViewItem",
+    "CMenuCharaModelComponent",
+    "CMenuAttachLocator",
+    "MenuCollisionSetting",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/103_item/item01/item01_01/item01_01.g4pkm" }, values = { 1 = "common/menu/103_item/item01/evt_cpk_arrow/evt_cpk_arrow.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/103_item/item01/item01_01/item01_01.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/103_item/item01/evt_cpk_arrow/evt_cpk_arrow.g4pkm" } } },
+]
+
+[[object]]
+# 2026-10-13 (owner: smaller partner rows, less gap): the combo partner picker's OWN list frame (graft combo_partners via
+# PL.PopList's mode.list_layer): evt_pc_list's recipe on its own layout copy evt_cpk_list (row step 76, 8 rows
+# evt_cpk_row 0..8 on _list01.._list09, 9 visible rows); evt_pc_list / evt_pc_row stay the shared frame of the other selectors.
+name = "evt_cpk_list"
+from = "team08_01_ability_list"
+remove_block = [
+    "CMenuListViewAbility",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_01/team08_01.g4pkm" }, values = { 1 = "common/menu/102_team/team08/evt_cpk_list/evt_cpk_list.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0xC58C2211, 2 = 0x61605A5B, 3 = 0xB7B5EDE0, 4 = 0 }, values = { 1 = 0x249A55D3, 2 = 0x070F650A, 3 = 0x279B2022 } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team08/team08_01/team08_01.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/evt_cpk_list/evt_cpk_list.g4pkm" } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x539D6545, 0x9E0634B0, 0x279B2022, 1], after = { param = "NullLayerName", match = { 1 = 0x249A55D3, 2 = 0x070F650A, 3 = 0x279B2022, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCA9434FF, 0xE9010426, 0x279B2022, 2], after = { param = "NullLayerName", match = { 1 = 0x539D6545, 2 = 0x9E0634B0, 3 = 0x279B2022, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBD930469, 0x77659185, 0x279B2022, 3], after = { param = "NullLayerName", match = { 1 = 0xCA9434FF, 2 = 0xE9010426, 3 = 0x279B2022, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x23F791CA, 0x0062A113, 0x279B2022, 4], after = { param = "NullLayerName", match = { 1 = 0xBD930469, 2 = 0x77659185, 3 = 0x279B2022, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x54F0A15C, 0x996BF0A9, 0x279B2022, 5], after = { param = "NullLayerName", match = { 1 = 0x23F791CA, 2 = 0x0062A113, 3 = 0x279B2022, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCDF9F0E6, 0xEE6CC03F, 0x279B2022, 6], after = { param = "NullLayerName", match = { 1 = 0x54F0A15C, 2 = 0x996BF0A9, 3 = 0x279B2022, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBAFEC070, 0x7ED3DDAE, 0x279B2022, 7], after = { param = "NullLayerName", match = { 1 = 0xCDF9F0E6, 2 = 0xEE6CC03F, 3 = 0x279B2022, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2A41DDE1, 0x09D4ED38, 0x279B2022, 8], after = { param = "NullLayerName", match = { 1 = 0xBAFEC070, 2 = 0x7ED3DDAE, 3 = 0x279B2022, 4 = 7 } } },
+]
+
+[[object]]
+# 2026-10-13: the combo partner picker's row: evt_pc_row's recipe (row text styles) on the 84-high layout evt_cpk_row
+name = "evt_cpk_row"
+from = "team08_02_ability_list_item"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" }, values = { 1 = "common/menu/102_team/team08/evt_cpk_row/evt_cpk_row.g4pkm" } },
+    { param = "_text_list01_on", match = { 1 = 0xCEA5440D }, values = { 1 = 0xF95C4E77 } },
+    { param = "_text_list01_off", match = { 1 = 0x52DBA785 }, values = { 1 = 0x79D8048A } },
+]
+
+[[object]]
+name = "evt_passive_panel"
+from = "soccer11_21_formation_team_passive_list_base"
+keep_name = true
+remove_block = [
+    "CMenuListViewSoccerParameter",
+    "MenuCollisionSetting",
+]
+add_block = [
+    { block = "CMenuAttachLocator", values = [], after = "CMenuTextPlateUpdateProperty" },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_21/soccer11_21.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_passive_panel/evt_passive_panel.g4pkm" } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x19BC0C51, 0x939B81F4, 0x30616EF1, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x6EBB3CC7, 0x812E2E1A, 0x30616EF1, 1], after = { param = "NullLayerName", match = { 1 = 0x19BC0C51, 2 = 0x939B81F4, 3 = 0x30616EF1, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF7B26D7D, 0x3992497F, 0x30616EF1, 2], after = { param = "NullLayerName", match = { 1 = 0x6EBB3CC7, 2 = 0x812E2E1A, 3 = 0x30616EF1, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x80B55DEB, 0xA44571C6, 0x30616EF1, 3], after = { param = "NullLayerName", match = { 1 = 0xF7B26D7D, 2 = 0x3992497F, 3 = 0x30616EF1, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1ED1C848, 0x1CF916A3, 0x30616EF1, 4], after = { param = "NullLayerName", match = { 1 = 0x80B55DEB, 2 = 0xA44571C6, 3 = 0x30616EF1, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x69D6F8DE, 0x0E4CB94D, 0x30616EF1, 5], after = { param = "NullLayerName", match = { 1 = 0x1ED1C848, 2 = 0x1CF916A3, 3 = 0x30616EF1, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF0DFA964, 0xB6F0DE28, 0x30616EF1, 6], after = { param = "NullLayerName", match = { 1 = 0x69D6F8DE, 2 = 0x0E4CB94D, 3 = 0x30616EF1, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x87D899F2, 0xEE93CE7E, 0x30616EF1, 7], after = { param = "NullLayerName", match = { 1 = 0xF0DFA964, 2 = 0xB6F0DE28, 3 = 0x30616EF1, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x17678463, 0x562FA91B, 0x30616EF1, 8], after = { param = "NullLayerName", match = { 1 = 0x87D899F2, 2 = 0xEE93CE7E, 3 = 0x30616EF1, 4 = 7 } } },
+]
+
+[[object]]
+name = "evt_pc_list"
+from = "team08_01_ability_list"
+keep_name = true
+remove_block = [
+    "CMenuListViewAbility",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_01/team08_01.g4pkm" }, values = { 1 = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0xC58C2211, 2 = 0x61605A5B, 3 = 0xB7B5EDE0, 4 = 0 }, values = { 1 = 0x86442321, 2 = 0x070F650A, 3 = 0x47DADFA7 } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team08/team08_01/team08_01.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm" } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF14313B7, 0x9E0634B0, 0x47DADFA7, 1], after = { param = "NullLayerName", match = { 1 = 0x86442321, 2 = 0x070F650A, 3 = 0x47DADFA7, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x684A420D, 0xE9010426, 0x47DADFA7, 2], after = { param = "NullLayerName", match = { 1 = 0xF14313B7, 2 = 0x9E0634B0, 3 = 0x47DADFA7, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1F4D729B, 0x77659185, 0x47DADFA7, 3], after = { param = "NullLayerName", match = { 1 = 0x684A420D, 2 = 0xE9010426, 3 = 0x47DADFA7, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8129E738, 0x0062A113, 0x47DADFA7, 4], after = { param = "NullLayerName", match = { 1 = 0x1F4D729B, 2 = 0x77659185, 3 = 0x47DADFA7, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF62ED7AE, 0x996BF0A9, 0x47DADFA7, 5], after = { param = "NullLayerName", match = { 1 = 0x8129E738, 2 = 0x0062A113, 3 = 0x47DADFA7, 4 = 4 } } },
+]
+
+[[object]]
+name = "evt_pc_row"
+from = "team08_02_ability_list_item"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" }, values = { 1 = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm" } },
+    { param = "_text_list01_on", match = { 1 = 0xCEA5440D }, values = { 1 = 0xF95C4E77 } },
+    { param = "_text_list01_off", match = { 1 = 0x52DBA785 }, values = { 1 = 0x79D8048A } },
+]
+
+[[object]]
+name = "evt_ph_move_row"
+from = "soccer11_09_formation_chara_skill"
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuCollisionSetting",
+]
+
+[[object]]
+name = "evt_psp_base"
+from = "soccer11_05_formation_status_base"
+keep_name = true
+remove_block = [
+    "MenuTextSetting",
+    "MenuCollisionSetting",
+]
+add_block = [
+    { block = "MenuTextSetting", values = [0], after = "CMenuIconSwapComponent" },
+]
+remove = [
+    { param = "NullLayerName", match = { 1 = 0xE656D277, 2 = 0xA0723EA5, 3 = 0x5E2D8DC9, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x783247D4, 2 = 0x397B6F1F, 3 = 0x5E2D8DC9, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x0F357742, 2 = 0x6B2EED00, 3 = 0x5E2D8DC9, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x963C26F8, 2 = 0xF227BCBA, 3 = 0x5E2D8DC9, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x8797D4FC, 2 = 0x26E64C0B, 3 = 0xBFB0FA58, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xB67FCE61, 2 = 0xBFEF1DB1, 3 = 0xBFB0FA58, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x1008C5D5, 2 = 0xA0723EA5, 3 = 0xBFB0FA58, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0xD5AFFB5B, 2 = 0x397B6F1F, 3 = 0xBFB0FA58, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x73D8F0EF, 2 = 0x6B2EED00, 3 = 0xBFB0FA58, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x4230EA72, 2 = 0xF227BCBA, 3 = 0xBFB0FA58, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0xBE1B665F, 2 = 0x6D1ED3E9, 3 = 0x5E2D8DC9, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xF9BB1C8F, 2 = 0x2ABEA939, 3 = 0x5E2D8DC9, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0xC4DB353F, 2 = 0x862968EA, 3 = 0x5E2D8DC9, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x76FBE92F, 2 = 0xC189123A, 3 = 0x5E2D8DC9, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x4B9BC09F, 2 = 0x69EB03D4, 3 = 0x5E2D8DC9, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x0C3BBA4F, 2 = 0x2E4B7904, 3 = 0x5E2D8DC9, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x402F17F9, 2 = 0x73029157, 3 = 0x058CD8A2, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xD9264643, 2 = 0xEA0BC0ED, 3 = 0x058CD8A2, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0xAE2176D5, 2 = 0x9D0CF07B, 3 = 0x058CD8A2, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x3045E376, 2 = 0x036865D8, 3 = 0x058CD8A2, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x4742D3E0, 2 = 0x746F554E, 3 = 0x058CD8A2, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x402F17F9, 2 = 0x73029157, 3 = 0x30616EF1, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xD9264643, 2 = 0xEA0BC0ED, 3 = 0x30616EF1, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0xAE2176D5, 2 = 0x9D0CF07B, 3 = 0x30616EF1, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x3045E376, 2 = 0x036865D8, 3 = 0x30616EF1, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x4742D3E0, 2 = 0x746F554E, 3 = 0x30616EF1, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x78C0DA49, 2 = 0xA5F297B3, 3 = 0xE065923F, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xD5834A7D, 2 = 0xB9DB3CCB, 3 = 0x9CA4CC78, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x05F91120, 2 = 0xB9DB3CCB, 3 = 0x9E0726C7, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xD7713490, 2 = 0xB9DB3CCB, 3 = 0x1797F0F4, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x094EB8D0, 2 = 0xB9DB3CCB, 3 = 0xDB4D653F, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x77D1325D, 2 = 0xB9DB3CCB, 3 = 0x22554BD3, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x4E81E28B, 2 = 0xB9DB3CCB, 3 = 0xD8B1BB19, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xA77AE7FA, 2 = 0xB9DB3CCB, 3 = 0x4DD12975, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xDDB7692B, 2 = 0xB9DB3CCB, 3 = 0xBAA5B8E9, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x1BF96C5F, 2 = 0x45FA93D4, 3 = 0x9CA4CC78, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x117439D9, 2 = 0x45FA93D4, 3 = 0x9E0726C7, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xA90752F3, 2 = 0x45FA93D4, 3 = 0x1797F0F4, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xE3893DC5, 2 = 0x45FA93D4, 3 = 0xDB4D653F, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x517C079B, 2 = 0x45FA93D4, 3 = 0x22554BD3, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x3A7401B2, 2 = 0x45FA93D4, 3 = 0xD8B1BB19, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xC1A2660A, 2 = 0x45FA93D4, 3 = 0x4DD12975, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x7A65BF5D, 2 = 0x45FA93D4, 3 = 0xBAA5B8E9, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x4F08FED2, 2 = 0x46107348, 3 = 0x6B798073, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x040B081A, 2 = 0xC4DCA1F4, 3 = 0x6B798073, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x7227DBFA, 2 = 0x46107348, 3 = 0xFB13E821, 4 = 0 } },
+    { param = "m_isDettachParentTraceOff", match = { 1 = 1 } },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_05/soccer11_05.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_psp_base/evt_psp_base.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0xC124E6CD, 2 = 0x36D43B7D, 3 = 0x5DC0711B, 4 = 0 }, values = { 1 = 0xE84A70E2, 2 = 0x26E64C0B, 3 = 0x8131081B } },
+    { param = "NullLayerName", match = { 1 = 0x582DB777, 2 = 0xAFDD6AC7, 3 = 0x5DC0711B, 4 = 0 }, values = { 1 = 0x9F4D4074, 2 = 0xBFEF1DB1, 3 = 0x8131081B, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x2D757892, 2 = 0x82331669, 3 = 0x5DC0711B, 4 = 0 }, values = { 1 = 0x064411CE, 2 = 0xA0723EA5, 3 = 0x8131081B, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x6AD50242, 2 = 0xC5936CB9, 3 = 0x5DC0711B, 4 = 0 }, values = { 1 = 0x71432158, 2 = 0x397B6F1F, 3 = 0x8131081B, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x92A653EF, 2 = 0x36D43B7D, 3 = 0xE696A70F, 4 = 0 }, values = { 1 = 0xEF27B4FB, 2 = 0x6B2EED00, 3 = 0x8131081B, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x0BAF0255, 2 = 0xAFDD6AC7, 3 = 0xE696A70F, 4 = 0 }, values = { 1 = 0x9820846D, 2 = 0xF227BCBA, 3 = 0x8131081B, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x1F0CD95B, 2 = 0x82331669, 3 = 0xE696A70F, 4 = 0 }, values = { 1 = 0x0129D5D7, 2 = 0x26E64C0B, 3 = 0x8131081B, 4 = 6 } },
+    { param = "NullLayerName", match = { 1 = 0x58ACA38B, 2 = 0xC5936CB9, 3 = 0xE696A70F, 4 = 0 }, values = { 1 = 0xA68D46F9, 2 = 0x80C94DDA, 3 = 0x26A6FC6D } },
+    { param = "NullLayerName", match = { 1 = 0x29E9EBF7, 2 = 0x79942A89, 3 = 0xB276195E, 4 = 0 }, values = { 1 = 0xD18A766F, 2 = 0xC769370A, 3 = 0x26A6FC6D, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0xB0E0BA4D, 2 = 0xE09D7B33, 3 = 0xB276195E, 4 = 1 }, values = { 1 = 0x488327D5, 2 = 0xFA091EBA, 3 = 0x26A6FC6D, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0xC7E78ADB, 2 = 0x979A4BA5, 3 = 0xB276195E, 4 = 2 }, values = { 1 = 0x3F841743, 2 = 0x4829C2AA, 3 = 0x26A6FC6D, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x59831F78, 2 = 0x09FEDE06, 3 = 0xB276195E, 4 = 3 }, values = { 1 = 0xA1E082E0, 2 = 0x7549EB1A, 3 = 0x26A6FC6D, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x2E842FEE, 2 = 0x7EF9EE90, 3 = 0xB276195E, 4 = 4 }, values = { 1 = 0xD6E7B276, 2 = 0x32E991CA, 3 = 0x26A6FC6D, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x6ABE304D, 2 = 0x80C94DDA, 3 = 0xB276195E, 4 = 0 }, values = { 1 = 0x3B0EB89D, 2 = 0x73029157, 3 = 0x85ACE819 } },
+    { param = "NullLayerName", match = { 1 = 0x2D1E4A9D, 2 = 0xC769370A, 3 = 0xB276195E, 4 = 1 }, values = { 1 = 0x4C09880B, 2 = 0xEA0BC0ED, 3 = 0x85ACE819 } },
+    { param = "NullLayerName", match = { 1 = 0x107E632D, 2 = 0xFA091EBA, 3 = 0xB276195E, 4 = 2 }, values = { 1 = 0xD500D9B1, 2 = 0x9D0CF07B, 3 = 0x85ACE819 } },
+    { param = "NullLayerName", match = { 1 = 0xA25EBF3D, 2 = 0x4829C2AA, 3 = 0xB276195E, 4 = 3 }, values = { 1 = 0xA207E927, 2 = 0x036865D8, 3 = 0x85ACE819 } },
+    { param = "NullLayerName", match = { 1 = 0x9F3E968D, 2 = 0x7549EB1A, 3 = 0xB276195E, 4 = 4 }, values = { 1 = 0x3C637C84, 2 = 0x746F554E, 3 = 0x85ACE819 } },
+    { param = "NullLayerName", match = { 1 = 0xD89EEC5D, 2 = 0x32E991CA, 3 = 0xB276195E, 4 = 5 }, values = { 1 = 0x60145707, 2 = 0xA5F297B3, 3 = 0x272EA26C, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x0858B35B, 2 = 0x26E64C0B, 3 = 0x5E2D8DC9, 4 = 0 }, values = { 1 = 0xF6E2BCAD, 2 = 0x36D43B7D, 3 = 0x01EA98B8 } },
+    { param = "NullLayerName", match = { 1 = 0x9151E2E1, 2 = 0xBFEF1DB1, 3 = 0x5E2D8DC9, 4 = 1 }, values = { 1 = 0xDD903A01, 2 = 0x36D43B7D, 3 = 0x8B270560, 4 = 0 } },
+]
+add = [
+    { block = "MenuTextSetting", param = "_text_btn_r01", values = [0xAED632CE, 0xAAE855C6] },
+    { block = "MenuTextSetting", param = "_text_btn_l01", values = [0xAED632CE, 0x007FACEE], after = { param = "_text_btn_r01", match = { 1 = 0xAED632CE, 2 = 0xAAE855C6 } } },
+]
+
+[[object]]
+name = "evt_psp_move"
+from = "soccer11_09_formation_chara_skill"
+keep_name = true
+remove_block = [
+    "MenuCollisionSetting",
+]
+remove = [
+    { param = "NullLayerName", match = { 1 = 0xC57F6A8E, 2 = 0x10D35175, 3 = 0x88DFC83C, 4 = 0 } },
+    { param = "NullLayerIndexName", match = { 1 = 0x76FC0BE2, 2 = 0x76FC0BE2, 3 = 0x2415248C } },
+    { param = "IsUseParentMenuRenderComponentAlignment", match = { 1 = 0xC57F6A8E } },
+]
+set = [
+    { param = "NullLayerIndexName", match = { 1 = 0x31A3BDFA, 2 = 0x31A3BDFA, 3 = 0xB84D55F7 }, values = { 3 = 0x5B7DC6FC } },
+]
+
+[[object]]
+name = "evt_role_badge"
+from = "soccer11_20_formation_team_passive"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/evt_role_badge/evt_role_badge.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_soccer11_20_pvrow"
+from = "soccer11_20_formation_team_passive"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_soccer11_20_pvrow/evt_soccer11_20_pvrow.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/evt_soccer11_20_pvrow/evt_soccer11_20_pvrow.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_ss_aura2"
+from = "team00_30_aura_keshin_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuListViewArmedChara",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_aura2/evt_team00_30_aura2.g4pkm" } },
+]
+
+[[object]]
+# 2026-10-13 (owner: the 6 move rows as move plates): the list row of the Tabla de habilidades, retail, + instance i
+# carries instance i of layer evt_ss_row_plate (object evt_ph_move_row: the soccer11_09 move plate) on _pos_base01
+# (retail NullLayerIndexName attach, as soccer11_09 carries its AI mark)
+name = "evt_ss_equip_row"
+from = "soccer11_08_equip_list_item"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [0x5A709C12, 0x5A709C12, 0x9E025C36], after = { param = "NullLayerName", match = { 1 = 0xC57F6A8E, 2 = 0x10D35175, 3 = 0x88DFC83C, 4 = 0 } } },
+]
+
+[[object]]
+name = "evt_ss_hiper_detail"
+from = "team02_02_skill_detail_info"
+keep_name = true
+add_block = [
+    { block = "CMenuAttachLocator", values = [], after = "CSetupMeshVisible" },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team02/team02_02/team02_02.g4pkm" }, values = { 1 = "common/menu/102_team/team02/evt_ss_hiper_detail/evt_ss_hiper_detail.g4pkm" } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCE09B68A, 0xBAFF841A, 0x433AE479, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5700E730, 0x23F6D5A0, 0x433AE479, 1], after = { param = "NullLayerName", match = { 1 = 0xCE09B68A, 2 = 0xBAFF841A, 3 = 0x433AE479, 4 = 0 } } },
+]
+
+[[object]]
+name = "evt_ss_listbg"
+from = "cmn02_01_bluebg"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm" } } },
+]
+
+[[object]]
+# 2026-10-13: the move plate of each list row (layer evt_ss_row_plate): evt_ph_move_row's recipe (retail soccer11_09
+# without its attach / touch rows) on the layout copy evt_ss_row_plate, the plate 9 px right so it sits centred in the
+# row's cyan focus frame (plate -266..247 -> -257..256, frame -276..276)
+name = "evt_ss_row_plate"
+from = "soccer11_09_formation_chara_skill"
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuCollisionSetting",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_09/soccer11_09.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_ss_row_plate/evt_ss_row_plate.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_26_passive_slot_detail_info"
+from = "team00_26_passive_slot_detail_info"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_26/team00_26.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm" } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team00/team00_26/team00_26.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/evt_team00_26_detail/evt_team00_26_detail.g4pkm" } } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_awakening_power_detail_info"
+from = "team00_30_aura_awakening_power_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_keshin_armed_detail_info"
+from = "team00_30_aura_keshin_armed_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuListViewArmedChara",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_keshin_detail_info"
+from = "team00_30_aura_keshin_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuListViewArmedChara",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_kizuna_trans_detail_info"
+from = "team00_30_aura_kizuna_trans_detail_info"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_mixi_max_detail_info"
+from = "team00_30_aura_mixi_max_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuListViewArmedChara",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_mode_change_detail_info"
+from = "team00_30_aura_mode_change_detail_info"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team00_30_aura_soul_detail_info"
+from = "team00_30_aura_soul_detail_info"
+keep_name = true
+remove_block = [
+    "CMenuAttachLocator",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_30/team00_30.g4pkm" }, values = { 1 = "common/menu/102_team/team00/evt_team00_30_detail/evt_team00_30_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team02_02_skill_detail_info"
+from = "team02_02_skill_detail_info"
+keep_name = true
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team02/team02_02/team02_02.g4pkm" }, values = { 1 = "common/menu/102_team/team02/evt_team02_02_detail/evt_team02_02_detail.g4pkm" } },
+]
+
+[[object]]
+name = "evt_team05_01_skill_slot_base"
+from = "team05_01_equip_base"
+keep_name = true
+remove = [
+    { param = "NullLayerName", match = { 1 = 0x107E632D, 2 = 0x5B2BC278, 3 = 0xFD6BC152, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0xA25EBF3D, 2 = 0xE90B1E68, 3 = 0xFD6BC152, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0x9F3E968D, 2 = 0xD46B37D8, 3 = 0xFD6BC152, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0xD89EEC5D, 2 = 0x93CB4D08, 3 = 0xFD6BC152, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x1CBC96E4, 2 = 0x5C3B5618, 3 = 0x119DCCF8, 4 = 0 } },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team05/team05_01/team05_01.g4pkm" }, values = { 1 = "common/menu/102_team/team05/evt_team05_01_skill/evt_team05_01_skill.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0x29E9EBF7, 2 = 0x070F650A, 3 = 0xFD6BC152, 4 = 0 }, values = { 1 = 0xB22CDF8C } },
+    { param = "NullLayerName", match = { 1 = 0xB0E0BA4D, 2 = 0x9E0634B0, 3 = 0xFD6BC152, 4 = 1 }, values = { 1 = 0xC52BEF1A, 2 = 0x21EB9118 } },
+    { param = "NullLayerName", match = { 1 = 0xC7E78ADB, 2 = 0xE9010426, 3 = 0xFD6BC152, 4 = 2 }, values = { 1 = 0x5C22BEA0, 2 = 0x664BEBC8 } },
+    { param = "NullLayerName", match = { 1 = 0x59831F78, 2 = 0x77659185, 3 = 0xFD6BC152, 4 = 3 }, values = { 1 = 0x2B258E36, 2 = 0x5B2BC278 } },
+    { param = "NullLayerName", match = { 1 = 0x2E842FEE, 2 = 0x0062A113, 3 = 0xFD6BC152, 4 = 4 }, values = { 1 = 0xB5411B95, 2 = 0xE90B1E68 } },
+    { param = "NullLayerName", match = { 1 = 0x6ABE304D, 2 = 0x21EB9118, 3 = 0xFD6BC152, 4 = 0 }, values = { 1 = 0xC2462B03, 2 = 0xD46B37D8, 4 = 5 } },
+    { param = "NullLayerName", match = { 1 = 0x2D1E4A9D, 2 = 0x664BEBC8, 3 = 0xFD6BC152, 4 = 1 }, values = { 1 = 0x5B4F7AB9, 2 = 0x93CB4D08, 4 = 6 } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2D4A94F7, 0x0E18A088, 0xBE8199B7, 0], after = { param = "NullLayerName", match = { 1 = 0x3928F14D, 2 = 0x9711F132, 3 = 0x1E057607, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5A4DA461, 0x791F901E, 0x241778A4, 0], after = { param = "NullLayerName", match = { 1 = 0x2D4A94F7, 2 = 0x0E18A088, 3 = 0xBE8199B7, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB32E0154, 0x907C352B, 0x18B9DC60, 0], after = { param = "NullLayerName", match = { 1 = 0x5A4DA461, 2 = 0x791F901E, 3 = 0x241778A4, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9696A0F7, 0xFABC7D0B, 0x30616EF1, 10], after = { param = "NullLayerName", match = { 1 = 0xB32E0154, 2 = 0x907C352B, 3 = 0x18B9DC60, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xE1919061, 0x8DBB4D9D, 0x30616EF1, 9], after = { param = "NullLayerName", match = { 1 = 0x9696A0F7, 2 = 0xFABC7D0B, 3 = 0x30616EF1, 4 = 10 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC42931C2, 0xE77B05BD, 0x8C7C3A06, 0], after = { param = "NullLayerName", match = { 1 = 0xE1919061, 2 = 0x8DBB4D9D, 3 = 0x30616EF1, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x7FF505C2, 0x13DFD83E, 0x30616EF1, 11], after = { param = "NullLayerName", match = { 1 = 0xC42931C2, 2 = 0xE77B05BD, 3 = 0x8C7C3A06, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xD8A4501C, 0x90FC723B, 0xEDD8C879, 0], after = { param = "NullLayerName", match = { 1 = 0x7FF505C2, 2 = 0x13DFD83E, 3 = 0x30616EF1, 4 = 11 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB4C9D869, 0x09F52381, 0xE57860F7, 0], after = { param = "NullLayerName", match = { 1 = 0xD8A4501C, 2 = 0x90FC723B, 3 = 0xEDD8C879, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2DC089D3, 0x90FC723B, 0xE57860F7, 1], after = { param = "NullLayerName", match = { 1 = 0xB4C9D869, 2 = 0x09F52381, 3 = 0xE57860F7, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5AC7B945, 0xE7FB42AD, 0xE57860F7, 2], after = { param = "NullLayerName", match = { 1 = 0x2DC089D3, 2 = 0x90FC723B, 3 = 0xE57860F7, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xFC32D95D, 0x70D0285E, 0x1FE3C73D, 0], after = { param = "NullLayerName", match = { 1 = 0x5AC7B945, 2 = 0xE7FB42AD, 3 = 0xE57860F7, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBF4F8EAF, 0xF0C4379C, 0x9CA4CC78, 0], after = { param = "NullLayerName", match = { 1 = 0xFC32D95D, 2 = 0x70D0285E, 3 = 0x1FE3C73D, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x92E73FFC, 0xFBA72B23, 0xD9D41C4E, 0], after = { param = "NullLayerName", match = { 1 = 0xBF4F8EAF, 2 = 0xF0C4379C, 3 = 0x9CA4CC78, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8828D7DB, 0xF0C4379C, 0x5EF918A5, 0], after = { param = "NullLayerName", match = { 1 = 0x92E73FFC, 2 = 0xFBA72B23, 3 = 0xD9D41C4E, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xE691D0C5, 0xF0C4379C, 0xF7965672, 0], after = { param = "NullLayerName", match = { 1 = 0x8828D7DB, 2 = 0xF0C4379C, 3 = 0x5EF918A5, 4 = 0 } } },
+    # 2026-10-12 (hand-written): instance 1 of evt_ss_hiper_detail (the aura PEG / SP pool gauge, PL.PoolGauge) on the same locator
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xE691D0C5, 0xF0C4379C, 0xF7965672, 1], after = { param = "NullLayerName", match = { 1 = 0xE691D0C5, 2 = 0xF0C4379C, 3 = 0xF7965672, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x10B6D2C3, 0xF0C4379C, 0x9E0726C7, 0], after = { param = "NullLayerName", match = { 1 = 0xE691D0C5, 2 = 0xF0C4379C, 3 = 0xF7965672, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x67B1E255, 0xF0C4379C, 0x1797F0F4, 0], after = { param = "NullLayerName", match = { 1 = 0x10B6D2C3, 2 = 0xF0C4379C, 3 = 0x9E0726C7, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xFEB8B3EF, 0xF0C4379C, 0xDB4D653F, 0], after = { param = "NullLayerName", match = { 1 = 0x67B1E255, 2 = 0xF0C4379C, 3 = 0x1797F0F4, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x89BF8379, 0xF0C4379C, 0x22554BD3, 0], after = { param = "NullLayerName", match = { 1 = 0xFEB8B3EF, 2 = 0xF0C4379C, 3 = 0xDB4D653F, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x17DB16DA, 0xF0C4379C, 0xD8B1BB19, 0], after = { param = "NullLayerName", match = { 1 = 0x89BF8379, 2 = 0xF0C4379C, 3 = 0x22554BD3, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x60DC264C, 0xF0C4379C, 0x4DD12975, 0], after = { param = "NullLayerName", match = { 1 = 0x17DB16DA, 2 = 0xF0C4379C, 3 = 0xD8B1BB19, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF9D577F6, 0xF0C4379C, 0xBAA5B8E9, 0], after = { param = "NullLayerName", match = { 1 = 0x60DC264C, 2 = 0xF0C4379C, 3 = 0x4DD12975, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8DCC88A0, 0xF0C4379C, 0x968AB16E, 0], after = { param = "NullLayerName", match = { 1 = 0xF9D577F6, 2 = 0xF0C4379C, 3 = 0xBAA5B8E9, 4 = 0 } } },
+]
+
+[[object]]
+name = "evt_trn_cell"
+from = "soccer20_09_team_level_diff_bonus"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer20/soccer20_09/soccer20_09.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_trn_cell/evt_trn_cell.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 201 }, values = { 1 = 303 } },
+    { param = "_text_bonus01", match = { 1 = 0x4D0759D7 }, values = { 1 = 0x206CC783 } },
+    { param = "_text_exp01", match = { 1 = 0xDAEAB1ED }, values = { 1 = 0xAF0E5227 } },
+]
+
+[[object]]
+name = "evt_trn_panel"
+from = "soccer11_20_formation_team_passive"
+add_block = [
+    { block = "CMenuAttachLocator", values = [], after = "CSetupMeshVisible" },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_trn_panel/evt_trn_panel.g4pkm" } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA2560927, 0x15DBB8A0, 0x00CAAC19, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB8BB68BC, 0x5E80030F, 0x598687F6, 0], after = { param = "NullLayerName", match = { 1 = 0xA2560927, 2 = 0x15DBB8A0, 3 = 0x00CAAC19, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3B5F589D, 0x8CD2E91A, 0x00CAAC19, 1], after = { param = "NullLayerName", match = { 1 = 0xB8BB68BC, 2 = 0x5E80030F, 3 = 0x598687F6, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x21B23906, 0xC78952B5, 0x598687F6, 1], after = { param = "NullLayerName", match = { 1 = 0x3B5F589D, 2 = 0x8CD2E91A, 3 = 0x00CAAC19, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4C58680B, 0xFBD5D98C, 0x00CAAC19, 2], after = { param = "NullLayerName", match = { 1 = 0x21B23906, 2 = 0xC78952B5, 3 = 0x598687F6, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x56B50990, 0xB08E6223, 0x598687F6, 2], after = { param = "NullLayerName", match = { 1 = 0x4C58680B, 2 = 0xFBD5D98C, 3 = 0x00CAAC19, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xD23CFDA8, 0x65B14C2F, 0x00CAAC19, 3], after = { param = "NullLayerName", match = { 1 = 0x56B50990, 2 = 0xB08E6223, 3 = 0x598687F6, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC8D19C33, 0x2EEAF780, 0x598687F6, 3], after = { param = "NullLayerName", match = { 1 = 0xD23CFDA8, 2 = 0x65B14C2F, 3 = 0x00CAAC19, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA53BCD3E, 0x12B67CB9, 0x00CAAC19, 4], after = { param = "NullLayerName", match = { 1 = 0xC8D19C33, 2 = 0x2EEAF780, 3 = 0x598687F6, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBFD6ACA5, 0x59EDC716, 0x598687F6, 4], after = { param = "NullLayerName", match = { 1 = 0xA53BCD3E, 2 = 0x12B67CB9, 3 = 0x00CAAC19, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3C329C84, 0x8BBF2D03, 0x00CAAC19, 5], after = { param = "NullLayerName", match = { 1 = 0xBFD6ACA5, 2 = 0x59EDC716, 3 = 0x598687F6, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x26DFFD1F, 0xC0E496AC, 0x598687F6, 5], after = { param = "NullLayerName", match = { 1 = 0x3C329C84, 2 = 0x8BBF2D03, 3 = 0x00CAAC19, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4B35AC12, 0xFCB81D95, 0x00CAAC19, 6], after = { param = "NullLayerName", match = { 1 = 0x26DFFD1F, 2 = 0xC0E496AC, 3 = 0x598687F6, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x51D8CD89, 0xB7E3A63A, 0x598687F6, 6], after = { param = "NullLayerName", match = { 1 = 0x4B35AC12, 2 = 0xFCB81D95, 3 = 0x00CAAC19, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDB8AB183, 0x6C070004, 0x00CAAC19, 7], after = { param = "NullLayerName", match = { 1 = 0x51D8CD89, 2 = 0xB7E3A63A, 3 = 0x598687F6, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC167D018, 0x275CBBAB, 0x598687F6, 7], after = { param = "NullLayerName", match = { 1 = 0xDB8AB183, 2 = 0x6C070004, 3 = 0x00CAAC19, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xAC8D8115, 0x1B003092, 0x00CAAC19, 8], after = { param = "NullLayerName", match = { 1 = 0xC167D018, 2 = 0x275CBBAB, 3 = 0x598687F6, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB660E08E, 0x505B8B3D, 0x598687F6, 8], after = { param = "NullLayerName", match = { 1 = 0xAC8D8115, 2 = 0x1B003092, 3 = 0x00CAAC19, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA7191FA2, 0x4C6DACEA, 0xAA4567E2, 0], after = { param = "NullLayerName", match = { 1 = 0xB660E08E, 2 = 0x505B8B3D, 3 = 0x598687F6, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3E104E18, 0xD564FD50, 0xAA4567E2, 1], after = { param = "NullLayerName", match = { 1 = 0xA7191FA2, 2 = 0x4C6DACEA, 3 = 0xAA4567E2, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x49177E8E, 0xA263CDC6, 0xAA4567E2, 2], after = { param = "NullLayerName", match = { 1 = 0x3E104E18, 2 = 0xD564FD50, 3 = 0xAA4567E2, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xD773EB2D, 0x3C075865, 0xAA4567E2, 3], after = { param = "NullLayerName", match = { 1 = 0x49177E8E, 2 = 0xA263CDC6, 3 = 0xAA4567E2, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA074DBBB, 0x4B0068F3, 0xAA4567E2, 4], after = { param = "NullLayerName", match = { 1 = 0xD773EB2D, 2 = 0x3C075865, 3 = 0xAA4567E2, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x397D8A01, 0xD2093949, 0xAA4567E2, 5], after = { param = "NullLayerName", match = { 1 = 0xA074DBBB, 2 = 0x4B0068F3, 3 = 0xAA4567E2, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4E7ABA97, 0xA50E09DF, 0xAA4567E2, 6], after = { param = "NullLayerName", match = { 1 = 0x397D8A01, 2 = 0xD2093949, 3 = 0xAA4567E2, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDEC5A706, 0x35B1144E, 0xAA4567E2, 7], after = { param = "NullLayerName", match = { 1 = 0x4E7ABA97, 2 = 0xA50E09DF, 3 = 0xAA4567E2, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xA9C29790, 0x42B624D8, 0xAA4567E2, 8], after = { param = "NullLayerName", match = { 1 = 0xDEC5A706, 2 = 0x35B1144E, 3 = 0xAA4567E2, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBAFDD6E5, 0xB270126A, 0xAA4567E2, 9], after = { param = "NullLayerName", match = { 1 = 0xA9C29790, 2 = 0x42B624D8, 3 = 0xAA4567E2, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x23F4875F, 0x2B7943D0, 0xAA4567E2, 10], after = { param = "NullLayerName", match = { 1 = 0xBAFDD6E5, 2 = 0xB270126A, 3 = 0xAA4567E2, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x54F3B7C9, 0x5C7E7346, 0xAA4567E2, 11], after = { param = "NullLayerName", match = { 1 = 0x23F4875F, 2 = 0x2B7943D0, 3 = 0xAA4567E2, 4 = 10 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCA97226A, 0xC21AE6E5, 0xAA4567E2, 12], after = { param = "NullLayerName", match = { 1 = 0x54F3B7C9, 2 = 0x5C7E7346, 3 = 0xAA4567E2, 4 = 11 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBD9012FC, 0xB51DD673, 0xAA4567E2, 13], after = { param = "NullLayerName", match = { 1 = 0xCA97226A, 2 = 0xC21AE6E5, 3 = 0xAA4567E2, 4 = 12 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x24994346, 0x2C1487C9, 0xAA4567E2, 14], after = { param = "NullLayerName", match = { 1 = 0xBD9012FC, 2 = 0xB51DD673, 3 = 0xAA4567E2, 4 = 13 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x539E73D0, 0x5B13B75F, 0xAA4567E2, 15], after = { param = "NullLayerName", match = { 1 = 0x24994346, 2 = 0x2C1487C9, 3 = 0xAA4567E2, 4 = 14 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC3216E41, 0xCBACAACE, 0xAA4567E2, 16], after = { param = "NullLayerName", match = { 1 = 0x539E73D0, 2 = 0x5B13B75F, 3 = 0xAA4567E2, 4 = 15 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB4265ED7, 0xBCAB9A58, 0xAA4567E2, 17], after = { param = "NullLayerName", match = { 1 = 0xC3216E41, 2 = 0xCBACAACE, 3 = 0xAA4567E2, 4 = 16 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC8B5F0F6, 0x5B8758E5, 0xBE69DE24, 0], after = { param = "NullLayerName", match = { 1 = 0xB4265ED7, 2 = 0xBCAB9A58, 3 = 0xAA4567E2, 4 = 17 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBFB2C060, 0x2C806873, 0xBE69DE24, 1], after = { param = "NullLayerName", match = { 1 = 0xC8B5F0F6, 2 = 0x5B8758E5, 3 = 0xBE69DE24, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1725E2CD, 0x12DB7777, 0xC8C4CC87, 0], after = { param = "NullLayerName", match = { 1 = 0xBFB2C060, 2 = 0x2C806873, 3 = 0xBE69DE24, 4 = 1 } } },
+]
+
+[[object]]
+name = "evt_trn_pebar"
+from = "soccer11_04pp_chara_status_info"
+remove_block = [
+    "CMenuEffectAttachComponent",
+    "CMenuAttachLocator",
+]

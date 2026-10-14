@@ -1,0 +1,217 @@
+schema = "VRFW.character/2"
+# Character Reforged · Naiadi Eleven · Inazuma Eleven GO Galaxy
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c06031610"                                   # Van Tarel
+
+  [[edit.cards]]
+  id = 0x0E6390AB                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 131, control = 242, technique = 205, pressure = 242, physical = 239, intelligence = 267, agility = 248, freedom = 225 }
+  moves = [
+    { move = 0x4A776F1C, level = 1 },                     # Hydro Breath
+    { move = 0xC79443BB, level = 23 },                    # Waterfall
+    { move = 0x8B31808E, level = 35 },                    # Wormhole
+    { move = 0xE6C22010, level = 51 },                    # Claw de Force
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x50E3FAAC, level = 1 },                     # Delpinus Totem [aura]
+  ]
+
+[[edit]]
+target = "c06031620"                                   # Squalcha Nhess
+
+  [[edit.cards]]
+  id = 0x254EC368                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 117, control = 204, technique = 173, pressure = 239, physical = 220, intelligence = 281, agility = 232, freedom = 389 }
+  moves = [
+    { move = 0xC79443BB, level = 5 },                     # Waterfall
+    { move = 0x039DBAAC, level = 18 },                    # Land of Ice
+    { move = 0x78218C02, level = 36 },                    # Duskfall
+    { move = 0x0F4DC9B3, level = 50 },                    # Logicstical Sync
+  ]
+
+[[edit]]
+target = "c06031630"                                   # Sog Galily
+
+  [[edit.cards]]
+  id = 0x3C55F229                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 177, control = 204, technique = 161, pressure = 246, physical = 259, intelligence = 289, agility = 200, freedom = 375 }
+  moves = [
+    { move = 0xC79443BB, level = 8 },                     # Waterfall
+    { move = 0x4A776F1C, level = 24 },                    # Hydro Breath
+    { move = 0x650FA58E, level = 34 },                    # Spin Out
+    { move = 0x4E9A9232, level = 47 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c06031640"                                   # Tinkel Urmia
+
+  [[edit.cards]]
+  id = 0x731464EE                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 247, technique = 304, pressure = 184, physical = 155, intelligence = 225, agility = 193, freedom = 335 }
+  moves = [
+    { move = 0x87BC8A8C, level = 1 },                     # Hydro Flow
+    { move = 0xC79443BB, level = 10 },                    # Waterfall
+    { move = 0xFD49C046, level = 32 },                    # Bubble Trouble
+    { move = 0x2354CA2D, level = 43 },                    # Wind God's Dance
+  ]
+
+[[edit]]
+target = "c06031650"                                   # Plink Powai
+
+  [[edit.cards]]
+  id = 0x6A0F55AF                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 173, control = 227, technique = 282, pressure = 211, physical = 186, intelligence = 224, agility = 205, freedom = 279 }
+  moves = [
+    { move = 0x87BC8A8C, level = 1 },                     # Hydro Flow
+    { move = 0xC79443BB, level = 11 },                    # Waterfall
+    { move = 0x7C1494CF, level = 36 },                    # Tornado Tunnel
+    { move = 0xE3D04F88, level = 55 },                    # Jackknife
+  ]
+
+[[edit]]
+target = "c06031660"                                   # Puddel Khaspian
+
+  [[edit.cards]]
+  id = 0x4122066C                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 267, control = 238, technique = 273, pressure = 198, physical = 167, intelligence = 225, agility = 182, freedom = 225 }
+  moves = [
+    { move = 0x87BC8A8C, level = 4 },                     # Hydro Flow
+    { move = 0xFD49C046, level = 17 },                    # Bubble Trouble
+    { move = 0x6DD736DD, level = 31 },                    # Ribbon Shower
+    { move = 0x7DD6FEF8, level = 48 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c06031670"                                   # Sploosh Saroma
+
+  [[edit.cards]]
+  id = 0x5839372D                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 240, technique = 247, pressure = 212, physical = 173, intelligence = 232, agility = 182, freedom = 225 }
+  moves = [
+    { move = 0x87BC8A8C, level = 5 },                     # Hydro Flow
+    { move = 0xFD49C046, level = 18 },                    # Bubble Trouble
+    { move = 0x7C1494CF, level = 30 },                    # Tornado Tunnel
+    { move = 0x04941270, level = 45 },                    # Vac Attack
+  ]
+
+[[edit]]
+target = "c06031680"                                   # Droplit Turkana
+
+  [[edit.cards]]
+  id = 0xDFA12BE2                                         # MF/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 216, control = 240, technique = 259, pressure = 194, physical = 158, intelligence = 224, agility = 192, freedom = 225 }
+  moves = [
+    { move = 0x87BC8A8C, level = 2 },                     # Hydro Flow
+    { move = 0xFD49C046, level = 8 },                     # Bubble Trouble
+    { move = 0x039DBAAC, level = 33 },                    # Land of Ice
+    { move = 0x6DD736DD, level = 45 },                    # Ribbon Shower
+  ]
+
+[[edit]]
+target = "c06031690"                                   # Plip Batur
+
+  [[edit.cards]]
+  id = 0xC6BA1AA3                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 240, control = 232, technique = 266, pressure = 196, physical = 193, intelligence = 196, agility = 189, freedom = 231 }
+  moves = [
+    { move = 0xFD49C046, level = 7 },                     # Bubble Trouble
+    { move = 0xC79443BB, level = 23 },                    # Waterfall
+    { move = 0x7E2BE557, level = 36 },                    # Legendary Wolf
+    { move = 0xCB79C825, level = 47 },                    # In-Line Stampede
+  ]
+
+[[edit]]
+target = "c06031700"                                   # Serban Bacha
+
+  [[edit.cards]]
+  id = 0x16BACBDD                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 275, control = 243, technique = 252, pressure = 182, physical = 211, intelligence = 196, agility = 185, freedom = 231 }
+  moves = [
+    { move = 0xFD49C046, level = 6 },                     # Bubble Trouble
+    { move = 0x87BC8A8C, level = 12 },                    # Hydro Flow
+    { move = 0x828A53C8, level = 32 },                    # Plasma Ball
+    { move = 0xDE4ED944, level = 46 },                    # Snowstorm Leopard
+  ]
+
+[[edit]]
+target = "c06031710"                                   # Plunk Balkhash
+
+  [[edit.cards]]
+  id = 0x0FA1FA9C                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 293, control = 235, technique = 243, pressure = 147, physical = 231, intelligence = 162, agility = 220, freedom = 231 }
+  moves = [
+    { move = 0xFD49C046, level = 10 },                    # Bubble Trouble
+    { move = 0xE8F5C774, level = 20 },                    # Megalodon
+    { move = 0xD9BB22A7, level = 35 },                    # Air Ride
+    { move = 0x82788A5A, level = 48 },                    # Straight Counter
+  ]
+
+[[edit]]
+target = "c06031720"                                   # Rondula Flehl
+
+  [[edit.cards]]
+  id = 0x248CA95F                                         # MF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 285, control = 254, technique = 286, pressure = 184, physical = 188, intelligence = 248, agility = 189, freedom = 254 }
+  moves = [
+    { move = 0xE3D04F88, level = 5 },                     # Jackknife
+    { move = 0xC42D6F54, level = 26 },                    # Aikido
+    { move = 0xB501FE5D, level = 39 },                    # Holy Roller
+    { move = 0x0D368F6B, level = 54 },                    # Heaven's Time
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x6C7554B7, level = 1 },                     # Phoenichias Totem [aura]
+  ]
+
+[[edit]]
+target = "c11806050"                                   # Porco Umir
+
+  [[edit.cards]]
+  id = 0x51ABD709                                         # MF/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 238, technique = 242, pressure = 194, physical = 186, intelligence = 223, agility = 212, freedom = 221 }
+  moves = [
+    { move = 0xC16279D1, level = 4 },                     # Field of Force
+    { move = 0x70417B2E, level = 18 },                    # Deceptor Dribble
+    { move = 0x91AE65A1, level = 23 },                    # Giant Spider
+    { move = 0xDBFD9CFE, level = 58 },                    # Big Ball Trick
+  ]

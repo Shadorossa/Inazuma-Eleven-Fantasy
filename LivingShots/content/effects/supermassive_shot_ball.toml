@@ -1,0 +1,31 @@
+# «Tiro supermasivo» (Supermassive Shot, whs02100 and whs02100_mm, same cut-in; mountain counter shot, cut-in
+# ev60_02100): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0400, the
+# ball ploughing level along the pitch as a ~9 m black hole sphere): the black sphere with its red and black core and
+# the red waves swirling inside it, its haze, speed lines and purple lightning, the black rocks with red glows orbiting
+# it, and the dust walls, dust waves and ploughed ground it drags, instead of the plain mountain special-shot aura
+# (ega0075a).
+# The object is ev6210sm00 (effect/event/ev60/ev6210sm00/), built by research/scripts/supermassive_shot_ball_fx.py from
+# the cut-in's effect object ev60021000: the whole of c0400 replayed (the effect's ball group main_ball_pos is the ball:
+# no event ball in the last cuts), then held at frame 518, the inner swirl turning on at its measured rates, the rocks'
+# orbits, the lightning and speed lines' jumps and the ground chunks running on over the cut again and again, ball at
+# the origin flying +Z, x1; the core discs, rings and vortex waves facing along the flight (1.4.43). Nothing
+# else is alive in c0400. docs/game/media/supermassive-shot-ball-fx.md.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Its flight: content\techniques\supermassive_shot_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "supermassive_shot"
+from = "ega0075a"
+object = "effect/event/ev60/ev6210sm00/ev6210sm00.objbin"
+
+[[shot_aura]]
+name = "supermassive_shot"
+when = { techniques = ["whs02100", "whs02100_mm"] }
+aura = "supermassive_shot"
+like = "ega0075a"
+# the aura's replay (78 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 78 }

@@ -1,0 +1,97 @@
+schema = "VRFW.character/2"
+# Character Reforged · Orion Juniors · Inazuma Eleven: Orion
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c08090160"                                   # Rion
+
+  [[edit.cards]]
+  id = 0xE65E1470                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 289, control = 234, technique = 180, pressure = 176, physical = 150, intelligence = 165, agility = 181, freedom = 329 }
+  moves = [
+    { move = 0xDE4ED944, level = 5 },                     # Snowstorm Leopard
+    { move = 0x14A6A879, level = 13 },                    # Regal Eagle
+    { move = 0x768AB9C5, level = 36 },                    # Frosticle
+    { move = 0xDCF43422, level = 55 },                    # Aurora Dribble
+  ]
+
+[[edit]]
+target = "c08090170"                                   # Van Maanen
+
+  [[edit.cards]]
+  id = 0xFF452531                                         # FW/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 292, control = 224, technique = 169, pressure = 170, physical = 180, intelligence = 151, agility = 190, freedom = 335 }
+  moves = [
+    { move = 0x332CCDC9, level = 3 },                     # Heel Kick
+    { move = 0x316A7390, level = 11 },                    # Land Dragon
+    { move = 0x768AB9C5, level = 35 },                    # Frosticle
+    { move = 0xC6978232, level = 46 },                    # Dinosaur Roar
+  ]
+
+[[edit]]
+target = "c08090180"                                   # Veles
+
+  [[edit.cards]]
+  id = 0x78DD39FE                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 244, control = 232, technique = 215, pressure = 181, physical = 143, intelligence = 190, agility = 185, freedom = 304 }
+  moves = [
+    { move = 0x43B5739B, level = 2 },                     # Lightning Bolt
+    { move = 0x70417B2E, level = 15 },                    # Deceptor Dribble
+    { move = 0xDEB28A7B, level = 29 },                    # Monkey Turn
+    { move = 0xBEAF60F2, level = 44 },                    # Banana Shot
+  ]
+
+[[edit]]
+target = "c08090190"                                   # Brock
+
+  [[edit.cards]]
+  id = 0x61C608BF                                         # DF/GK · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 203, control = 165, technique = 124, pressure = 239, physical = 203, intelligence = 212, agility = 220, freedom = 375 }
+  moves = [
+    { move = 0x01DB04F5, level = 5 },                     # Defence Scan
+    { move = 0xDCF43422, level = 14 },                    # Aurora Dribble
+    { move = 0x768AB9C5, level = 35 },                    # Frosticle
+    { move = 0x2E7B2B84, level = 55 },                    # Thief's Eye
+  ]
+
+[[edit]]
+target = "c08090200"                                   # Wolfe
+
+  [[edit.cards]]
+  id = 0xB2420DAF                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 244, control = 234, technique = 197, pressure = 177, physical = 151, intelligence = 184, agility = 189, freedom = 359 }
+  moves = [
+    { move = 0x087999EE, level = 1 },                     # Heel Drop
+    { move = 0xDCF43422, level = 14 },                    # Aurora Dribble
+    { move = 0x768AB9C5, level = 27 },                    # Frosticle
+    { move = 0x78E027BC, level = 42 },                    # Shine Drive
+  ]
+
+[[edit]]
+target = "c11908310"                                   # Alexander Allegrov
+
+  [[edit.cards]]
+  id = 0x1C0208C2                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 315, control = 242, technique = 255, pressure = 178, physical = 155, intelligence = 219, agility = 167, freedom = 217 }
+  moves = [
+    { move = 0x0C7FF30F, level = 1 },                     # Divine Drive
+    { move = 0x6F918884, level = 10 },                    # Easy Breezy
+    { move = 0x1F0836D6, level = 30 },                    # Comet Shot
+    { move = 0x1FC99D68, level = 38 },                    # Snow Angel
+  ]

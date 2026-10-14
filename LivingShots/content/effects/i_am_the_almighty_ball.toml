@@ -1,0 +1,24 @@
+# «I Am the Almighty» («Soy todopoderoso», whs02340, mountain shot, cut-in ev60_02340): while the ball flies to the goal
+# it is the tip of the cut-in's OWN orange wind drill (the last cut c0040, the drill boring down from the sky onto the
+# goal, held at frame 574, the wind's texture flow running on), its spiral widening behind the ball and the blue
+# lightning round the tip, instead of the plain mountain special-shot aura (ega0075a). The flat discs at the tip
+# (facing the cut-in camera: bars from the touchline), the 60-70 m glow under the drill, the c0030 wind sphere, the
+# sky backdrop and the goal-mouth dust are dropped; x0.1 of the cut-in size (drill ~2.8 m long, ~3 m wide at the back).
+# The object is ev6234ia00 (assets\data\{common,dx11}\effect\event\ev60\ev6234ia00\), built by
+# research/scripts/i_am_the_almighty_ball_fx.py from ev60023400; docs/game/media/i-am-the-almighty-ball-fx.md.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b). whs02340_mm is the move's _mm variant (same cut-in).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "i_am_the_almighty_drill"
+from = "ega0075a"
+object = "effect/event/ev60/ev6234ia00/ev6234ia00.objbin"
+
+[[shot_aura]]
+name = "i_am_the_almighty_drill"
+when = { techniques = ["whs02340", "whs02340_mm"] }
+aura = "i_am_the_almighty_drill"
+like = "ega0075a"

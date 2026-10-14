@@ -1,0 +1,24 @@
+# Character Reforged › what each slot of the new skill set accepts (owner 2026-10-14; docs/refactor/aura-mods-split.md
+# «Skill table»). Read by scripts\skill_set.lua (CharacterReforged.CanPlace): every active mod's content\skill_set\*.toml
+# may declare [CharacterReforged.SkillSet] keys (later mods win key by key). Aura types are the engine's aura record
+# type (VRFW.extra_slot.aura_type): 0 keshin, 1 keshin armour, 2 Mix-Max, 3 totem, 6 «Modo cambio».
+# Only used while the option «Tabla de habilidades» shows the new set; with Victory Road's view nothing is checked.
+schema = "CharacterReforged.skill_set/1"
+
+[CharacterReforged.SkillSet]
+# the 6 move rows: special moves only (no aura of any type)
+moves_refuse_auras = true
+# the aura slot: keshin and totem (an armour comes through its keshin in the match, never alone)
+aura_types = [0, 3]
+# the mix slot: Mix-Max and «Modo cambio» (their creation entries and carriers have these types too)
+mix_types = [2, 6]
+# a character's own moveset (owner 2026-10-14: his keshin / totem and his Mix-Max / «Modo cambio» go to the aura / mix
+# slot by default, unless the player or his team's data already filled it): scripts/mix_slots.lua publishes the native
+# table MovesetDefault (chara_param -> { aura, mix }; read by content/extra_slots/skill_set.toml [source] default_table)
+# from each card's learn list slot 9 and, for the mix, from this export when that script sees it (agreed shape:
+# CharacterReforged.Moveset(card) -> { techniques, aura, mix, … }, docs/refactor/aura-mods-split.md «Per-character
+# data»). "" = the learn list only.
+moveset_export = "CharacterReforged.Moveset"
+
+# [CharacterReforged.PlaceRules.<name>]: another mod's placement rule as data (scripts\skill_set.lua «place rules as
+# data»): command = "CMND_<MOD>_CAN_PLACE" ((charaHdl, slot, move) -> ok, … ; false refuses), slot = "board" | "set"

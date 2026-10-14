@@ -350,6 +350,49 @@ function R.install(X)
     return nid
   end
 
+  -- a new prize table crc32(name) holding `items` ({{item, count}}: rows [item, count, weight 1, condition 0, 0], the
+  -- game gives every entry), shaped like the file's first rows; an existing table of that id is kept (the Rust twin:
+  -- chain.rs chain_new_prize). Used by the chains' match tile rewards (chain.lua).
+  function X.new_prize(items, name)
+    if not X.prize_t then
+      local k, e = X.table_key(PRIZE_PREFIX)
+      if not k then return nil, e end
+      local t, e2 = VRFW.rows.open(k)
+      if not t then return nil, e2 end
+      X.prize_t = t
+    end
+    local p = X.prize_t
+    local nid = VRFW.crc32(name)
+    if p:find("ITBL_BASE", 0, nid) then return nid end
+    local rows = p:rows("ITBL_ITEMS")
+    if #rows == 0 then return nil, "soccer_prize_config: no ITBL_ITEMS row to copy" end
+    local bi = nil
+    if bi == nil then
+      for i = 0, p:len() - 1 do
+        if p:hash(i) == VRFW.crc32("ITBL_BASE") then bi = i break end
+      end
+    end
+    if bi == nil then return nil, "soccer_prize_config: no ITBL_BASE row to copy" end
+    if bi + 1 >= p:len() or p:hash(bi + 1) ~= VRFW.crc32("ITBL_BASE_REF_ITEMS") then return nil, "soccer_prize_config: ITBL_BASE without its REF row" end
+    local base, refr = p:entry(bi), p:entry(bi + 1)
+    local new = {}
+    for _, it in ipairs(items) do
+      local e = p:entry(rows[1])
+      local vals = { it[1], math.max(1, it[2] or 1), 1, 0, 0 }
+      for c, v in ipairs(vals) do TC.set_int(e.values, c - 1, v) end
+      new[#new + 1] = e
+    end
+    local start = #rows
+    -- the base row is copied BEFORE the items are appended (the ITBL_ITEMS list sits before ITBL_BASE)
+    local ok, e = pcall(p.append_rows, p, "ITBL_ITEMS", { "ITBL_ITEMS" }, new, #new)
+    if not ok then return nil, tostring(e) end
+    TC.set_int(base.values, 0, nid)
+    refr.values = { start, #new }
+    ok, e = pcall(p.append_rows, p, "ITBL_BASE", { "ITBL_BASE", "ITBL_BASE_REF_ITEMS" }, { base, refr }, 1)
+    if not ok then return nil, tostring(e) end
+    return nid
+  end
+
   -- every `[[VRFW.RouteNode]]` of the files, in load order: the nodes and the tiles with roads
   function X.route_nodes(files)
     local made, roads, icons = {}, {}, {}

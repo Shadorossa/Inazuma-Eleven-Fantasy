@@ -2,31 +2,49 @@ id = "all_keshin_armed"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "All Keshin Armed"
-version = "1.0.1"
+version = "1.0.7"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Every keshin with its armour, for every player: the armour clothes of every body group and the 189 keshin -> armour pairs, chosen per player on the game's own skill board (the keshin piece's armed slot: set = with armour, empty = without). Getting a keshin gives its armour. Works with the VR-Framework alone; Inazuma Fantasy adds its own rules on top (the armour out of the summoned keshin, its gates)."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-13"
+updated = "2026-10-14"
 # This mod's own names (TOML keys [[AllKeshinArmed.X]], Lua AllKeshinArmed.X, any later text, command or key); never VRFW.
 prefix = "AllKeshinArmed"
 folder = "AllKeshinArmed"
 # Split out of Inazuma Fantasy on 2026-10-13 (docs/game/mods/all-keshin-armed.md): IF requires it and keeps only its
-# rules. Data only, standard mod layout (docs/framework/mod-layout.md):
+# rules. Data plus one small script (the page tag), standard mod layout (docs/framework/mod-layout.md):
 #   content\transforms\armours.toml       the 189 keshin -> armour pairs (transform type, kind "armour")
-#   content\transforms\rules.toml         [rules] armour_wearers = "anyone" + the body-group mesh rules
+#   content\transforms\rules.toml         [rules] armour_wearers = "anyone" + the body-group mesh rules +
+#                                         armour_identity = "wearer" (the wearer keeps his name, face and voice)
 #   content\techniques\armour_changes.toml  change_aura_skill_config: each keshin's armour for every card (the board)
 #   content\looks\armour_clothes.toml     the armour clothes' chara_parts rows of every body group
+#   content\skill_board\armour_slot.toml  switches on Character Reforged's armour slot without the item (was Utilities'
+#                                         [skill_board] armour_without_item until 2026-10-14)
 #   content\models\armours\               the model declarations (glb in assets\models\armours\)
 #   assets\chr\_armd\                     the armour meshes / textures (game files: data\common|dx11\chr\_armd\)
+#   content\game\armour_tag.toml + scripts\armour_tag.lua   the «Armadura» tag on Character Reforged's player page
+#                                         (hyper card): answers its page slot CMND_EVT_HIPER_ARMOUR (moved from IF 2026-10-14)
 # vr_framework 2.2.194: transform/2 (`[rules]` armour_wearers / armour_mesh_fallback / armour_no_mesh_groups, the
-# non-native armour look of form::armour), technique/3 `[[aura_change]]`, look/2, model/1.
-requires = ["vr_framework>=2.2.194"]
+# non-native armour look of form::armour), technique/3 `[[aura_change]]`, look/2, model/1; vr_framework 2.4.6: `[rules]
+# armour_identity` (an older framework refuses the key) and the identity rebuild of an armour set on the board.
+# character_reforged: its family (the [module] below, 2026-10-14)
+requires = ["vr_framework>=2.4.6", "character_reforged>=1.7.2"]
 conflicts = []
+# The page slot answer (scripts\armour_tag.lua): lua_bridge reads the character records and the framework's armour table.
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["memory", "command"]
 
 # Nothing to call: other mods read the armours through the framework (transform table, VRFW.form.pairs /
 # armour_for / spirit_of) and layer their own [rules] (merged key by key over the mods).
 [exports]
 functions = []
 keys = []
+
+# A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
+# ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
+# of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 10

@@ -1,0 +1,28 @@
+# «Tormenta de fuego» (Fireball Storm, whs10190 and whs10190_or, same cut-in; fire shot, cut-in ev60_10190): while the
+# ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0200, the ball shot down out of
+# the sky from 26.5 m along a curving fire tornado): its fire aura and the fire tornado it runs down (outer and inner
+# fire swirls and two fire lines, a column reaching back up the ball's way), instead of the plain fire special-shot
+# aura (ega0075c).
+# The object is ev61019fs0 (effect/event/ev60/ev61019fs0/), built by research/scripts/fireball_storm_ball_fx.py from
+# the cut-in's effect object ev60101900: c0200 replayed from its first frame (146) with every part in its place
+# relative to the ball (the tornado stays where the cut-in draws it, falling behind), then held at frame 212 (the last
+# frame of the ball's aura), ball at the origin flying +Z, x1. Left out: the black backdrop, the sparks shed in the
+# world. docs/game/media/fireball-storm-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\fireball_storm_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fireball_storm"
+from = "ega0075c"
+object = "effect/event/ev60/ev61019fs0/ev61019fs0.objbin"
+
+[[shot_aura]]
+name = "fireball_storm"
+when = { techniques = ["whs10190", "whs10190_or"] }
+aura = "fireball_storm"
+like = "ega0075c"
+# the aura's replay (66 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 66 }

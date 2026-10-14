@@ -1,0 +1,30 @@
+schema = "VRFW.match_camera/3"
+# «Living Shots»'s chain view (VR-Framework match camera service, docs/framework/camera.md §1.2 / §3.2). While a
+# shot can be chained (the game's «Oportunidad de cadena de tiros»: the framework match events chain_window_start /
+# _end) during the shot view, shot_fx.dll requests `shot_fx.chain` (config.toml [shot_flight] chain_preset) instead of
+# `shot_fx.shot` and drives it. Every chain window (+1, +2, +3…) does the same; when a window closes the camera eases
+# back to the shot view. Restart the game after a change of this file.
+#
+# 1.3.5 (Nacho): the camera leaves the touchline and orbits round the ball: from the side view it swings along an arc
+# (yaw eased at turn_rate, the distance eased from the touchline's to `distance`) to a view 45 degrees toward the
+# attacked goal, behind and beside the play, so the chaining player, the ball and the goal line up in the frame.
+
+[[preset]]
+name = "chain"
+kind = "chase_rows"
+yaw = 90.0            # the shot view's side (cameras\shot.toml); the turn toward the goal is added to it
+pitch = 22.0          # degrees above the horizontal, held
+distance = 32.0       # metres from the ball: the radius of the arc
+fov = 45.0            # vertical field of view (widened only when the goal does not fit, see frame_goal)
+fixed_pitch = true
+option = "horizontal"
+# "orbit": round the look point (the ball) at `distance` / `pitch`; a turn of the yaw is an arc round the play
+anchor = "orbit"
+fallback_half_width = 30.0   # the pitch's half width when the game's field data is unreadable (where the goal is)
+# the attacked goal in frame: a fixed turn toward it; the fov widens only if the goal mouth + goal_margin does not fit
+frame_goal = true
+turn = 45.0           # degrees toward the attacked goal (0..65), in every chain window
+goal_margin = 10.0    # metres round the goal mouth centre kept on screen (across, along, up): more than half the
+                      # goal's width (3.7 m), so both posts, the crossbar and some pitch round them show
+max_turn = 60.0       # degrees: the limit of the turn (without `turn`: the smallest turn that frames the goal, up to this)
+turn_rate = 60.0      # degrees (and metres) per second, the fastest the yaw / distance / fov move: a smooth arc, no cut

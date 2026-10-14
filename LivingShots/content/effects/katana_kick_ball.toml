@@ -1,0 +1,25 @@
+# «Katana Kick» (whs01500, mountain shot, cut-in ev60_01500): while the ball skims the pitch into the goal
+# (Inazuma Fantasy's techniques\move_mini_effects.toml trajectory = "ground", 0.11 m: the ball rolling on the pitch, Nacho 2026-10-08) it rides the
+# cut-in's OWN c0300 wave instead of the plain mountain special-shot aura (ega0075a). Nacho 2026-10-07 (option A, «con
+# el efecto propio del chut ancestral»): the blades, the rising yellow-white wall, the line wave and tails, the sand
+# smoke and the red maple leaves (swirling round the wake), no ground gash.
+# The object is ev6150ca00 (assets\data\{common,dx11}\effect\event\ev60\ev6150ca00\), built by
+# research/scripts/katana_kick_ball_fx.py from ev60015000; docs/game/media/katana-kick-ball-fx.md.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+# Its ground trajectory is declared by this mod too since 2026-10-08 (content\techniques\excalibur_trail.toml, the same value as
+# Inazuma Fantasy's): the aura skims the pitch into the goal with or without Inazuma Fantasy.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "katana_kick_wave"
+from = "ega0075a"
+object = "effect/event/ev60/ev6150ca00/ev6150ca00.objbin"
+
+[[shot_aura]]
+name = "katana_kick_wave"
+when = { techniques = "whs01500" }
+aura = "katana_kick_wave"
+like = "ega0075a"

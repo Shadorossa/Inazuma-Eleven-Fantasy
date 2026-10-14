@@ -2,7 +2,7 @@
 # window's reward block (graft vrfw_chronicle_drop_panel, docs/framework/drops.md §5): 3 rows of the drop-rate list's own
 # row object (win05_38_drop_rate_list_item: icon, name, rate; an aura item as its aura's banner) next to the EXP,
 # scrolled with the right stick or the mouse wheel. The aura bands come from team00_30 (res).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "vs_route_town_list_menu"

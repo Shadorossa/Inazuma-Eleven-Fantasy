@@ -1,0 +1,35 @@
+schema = "VRFW.character/2"
+# Character Reforged · Team <LST:YUTO> · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c01010980"                                   # Shadow Cimmerian
+
+  [[edit.cards]]
+  id = 0xD3266654                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 252, control = 258, technique = 259, pressure = 230, physical = 180, intelligence = 248, agility = 215, freedom = 343 }
+  moves = [
+    { move = 0xB27F13ED, level = 1 },                     # Death Zone
+    { move = 0x568262FA, level = 1 },                     # Dark Tornado
+    { move = 0xB5B7108F, level = 1 },                     # Shadow Stitch
+    { move = 0x32EEA7FE, level = 70 },                    # Death Zone 2
+  ]
+
+[[edit]]
+target = "c03030030"                                   # Isaac Glass
+
+  [[edit.cards]]
+  id = 0xD25CC659                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 275, control = 320, technique = 328, pressure = 113, physical = 159, intelligence = 194, agility = 159, freedom = 359 }
+  moves = [
+    { move = 0x3C843987, level = 1 },                     # Flurry Dash
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0x29B328E6, level = 30 },                    # Spectacle Crash
+    { move = 0xAEEA9F97, level = 75 },                    # Sigma Zone
+  ]

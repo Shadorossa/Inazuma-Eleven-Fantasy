@@ -1,6 +1,6 @@
 # Settings of VRFW's own scripts (kind vr_framework.script/1, docs/framework/scripts.md §2). No [[script]] list: every
 # top-level scripts\*.lua is an entry point (name order), every .lua below (lib\, build\) a library for `require`.
-schema = "vr_framework.script/1"
+schema = "VRFW.script/1"
 
 # The contact map service (contact_map.lua) reads every mod's content\contact_maps\*.toml on its first call (Inazuma
 # Fantasy: ~2000 nodes with their requirements, 10 maps) and a map's names from chara_base / chara_param (~13k rows):

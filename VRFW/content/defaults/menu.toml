@@ -7,3 +7,13 @@
 # at most 32767 (the row getter's short index).
 [scene_archive]
 max_rows = 512
+
+# Layer instances per open menu (docs/game/ui/menu-layer-limits.md §2.3): the engine sets up only about 844 when a
+# menu opens (§2.1 Mods screen, §2.2 Battle Bay top menu); past it the menu never finishes opening (white screen, no
+# error). Every build sums each served menu's instances (retail + every mod's add_layer / count, after the merge) and
+# logs a WARN past `warn`, an ERROR past `hard`, with the total and each mod's share; `vrfw check` does the same
+# offline. The build is never refused. A mod that proves a higher limit ships its own [layer_instances].
+[layer_instances]
+warn = 800
+hard = 844
+doc = "docs/game/ui/menu-layer-limits.md §2.3"

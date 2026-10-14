@@ -1,0 +1,40 @@
+# Utilities: the player page's passive cards during a «Configuración de pasivas» session (Lua UTIL_PPC.RowTint,
+# research/grafts/passive_config): the slot being edited = util_passive_card_sel (the retail card on a 3 px cyan rim:
+# the VR list focus colour); the other slots and no session = the retail passive_base01. (2026-10-08, Nacho: the old
+# «dim» sprite, a light grey silhouette at 55 %, and the near-white «sel» plate made the angled cards vanish on the
+# white panel: both now keep the retail card's own pixels.)
+# Both are made at the first start (and after a game update) from the PLAYER'S own game files by the image type's
+# recipes (docs/framework/types/image.md §2.1): the retail card silhouette passive_base01 of soccer11_20 (72 x 92),
+# never a Level-5 pixel in the mod. A recipe that cannot be made is an ERROR in the log; the card then stays blank
+# only during a session.
+schema = "VRFW.image/1"
+
+[[sprite]]
+atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+name = "util_passive_card_sel"
+size = [72, 92]
+recipe = "sel"
+
+# ---- the retail card itself, and its silhouette with the alpha stretched to full (its peak is below 255) ------------
+[[recipe]]
+name = "card"
+game = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+sprite = "passive_base01"
+ops = [{ op = "resize", size = [66, 86] }]
+
+[[recipe]]
+name = "shape"
+game = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+sprite = "passive_base01"
+ops = [{ op = "resize", size = [72, 92] }, { op = "alpha_normalize" }]
+
+# ---- the edited slot: a cyan silhouette with the retail card on it, 3 px smaller = a cyan rim round the card ---------
+[[recipe]]
+name = "rim"
+from = "shape"
+ops = [{ op = "fill", rgb = [0, 200, 255] }]
+
+[[recipe]]
+name = "sel"
+canvas = [72, 92]
+ops = [{ op = "paste", image = "rim", at = [0, 0] }, { op = "paste", image = "card", at = [3, 3] }]

@@ -1,0 +1,216 @@
+schema = "VRFW.character/2"
+# Character Reforged · Eternal Light · Inazuma Eleven GO
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c04003470_5000"                              # Dawntavius Spectrum
+
+  [[edit.cards]]
+  id = 0x00CA6CD2                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 296, control = 201, technique = 279, pressure = 208, physical = 184, intelligence = 201, agility = 192, freedom = 343 }
+
+[[edit]]
+target = "c04003500_5000"                              # Bailong
+
+  [[edit.cards]]
+  id = 0x09C752C2                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 370, control = 284, technique = 259, pressure = 143, physical = 165, intelligence = 213, agility = 144, freedom = 209 }
+
+[[edit]]
+target = "c04003500_5100"                              # Bailong
+
+  [[edit.cards]]
+  id = 0x080538F5                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 370, control = 284, technique = 259, pressure = 143, physical = 165, intelligence = 213, agility = 144, freedom = 209 }
+
+[[edit]]
+target = "c04003410"                                   # Albion Lumina
+
+  [[edit.cards]]
+  id = 0x77D1E7B7                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 227, technique = 169, pressure = 254, physical = 219, intelligence = 267, agility = 255, freedom = 375 }
+  moves = [
+    { move = 0xD471DE6C, level = 1 },                     # Snakebite
+    { move = 0x41AEB4DF, level = 24 },                    # Crystal Barrier
+    { move = 0x4A17EE80, level = 30 },                    # Hunter's Net
+    { move = 0x1FA91CF4, level = 51 },                    # Negative Feedback
+  ]
+
+[[edit]]
+target = "c04003420"                                   # Candido Glow
+
+  [[edit.cards]]
+  id = 0x5CFCB474                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 177, control = 190, technique = 190, pressure = 269, physical = 236, intelligence = 294, agility = 207, freedom = 355 }
+  moves = [
+    { move = 0x20D01E43, level = 1 },                     # Hey Presto
+    { move = 0x25276CB9, level = 23 },                    # Solar Surprise
+    { move = 0xF626F557, level = 53 },                    # Electric Impedance
+    { move = 0x7D6E9A87, level = 60 },                    # The Wall
+  ]
+
+[[edit]]
+target = "c04003430"                                   # Dwight Whittaker
+
+  [[edit.cards]]
+  id = 0x45E78535                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 166, control = 178, technique = 216, pressure = 270, physical = 300, intelligence = 281, agility = 182, freedom = 343 }
+  moves = [
+    { move = 0x7F15DC5F, level = 6 },                     # Desert Drift
+    { move = 0xC324C788, level = 27 },                    # Blast Mine
+    { move = 0x72BFA108, level = 49 },                    # Wall of Atlantis
+    { move = 0xA3F886BF, level = 56 },                    # Rock Hammer
+  ]
+
+[[edit]]
+target = "c04003440"                                   # Beamer Daye
+
+  [[edit.cards]]
+  id = 0x0AA613F2                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 235, control = 176, technique = 219, pressure = 261, physical = 238, intelligence = 262, agility = 162, freedom = 351 }
+  moves = [
+    { move = 0x39CB2F02, level = 1 },                     # Dragster
+    { move = 0x93885A64, level = 15 },                    # Fire Drill
+    { move = 0x737DCB3F, level = 50 },                    # Pancake Defence
+    { move = 0xECB91078, level = 60 },                    # Volcanic Flight
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xF641A1A7, level = 1 },                     # White Pawn [aura]
+  ]
+
+[[edit]]
+target = "c04003450"                                   # Chandler Blanc
+
+  [[edit.cards]]
+  id = 0x13BD22B3                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 208, control = 203, technique = 224, pressure = 238, physical = 189, intelligence = 286, agility = 192, freedom = 385 }
+  moves = [
+    { move = 0x7DD6FEF8, level = 11 },                    # Athena's Anthem
+    { move = 0x650FA58E, level = 19 },                    # Spin Out
+    { move = 0x25276CB9, level = 38 },                    # Solar Surprise
+    { move = 0xD1E62D0A, level = 56 },                    # Mushroom Hop
+  ]
+
+[[edit]]
+target = "c04003460"                                   # Beacon Noor
+
+  [[edit.cards]]
+  id = 0x38907170                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 193, control = 296, technique = 267, pressure = 169, physical = 221, intelligence = 252, agility = 180, freedom = 213 }
+  moves = [
+    { move = 0x0D368F6B, level = 12 },                    # Heaven's Time
+    { move = 0xE8F5C774, level = 18 },                    # Megalodon
+    { move = 0xDCC9CCA3, level = 28 },                    # Tesla Coil
+    { move = 0x9349F1DA, level = 40 },                    # Zephyr Shot
+  ]
+
+[[edit]]
+target = "c04003470"                                   # Dawntavius Spectrum
+
+  [[edit.cards]]
+  id = 0x218B4031                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 296, control = 201, technique = 279, pressure = 208, physical = 184, intelligence = 201, agility = 192, freedom = 343 }
+  moves = [
+    { move = 0x332CCDC9, level = 1 },                     # Heel Kick
+    { move = 0x066442FB, level = 19 },                    # Gusher Crusher
+    { move = 0x2B8C597E, level = 41 },                    # Fugue Wave
+    { move = 0x5739C70C, level = 57 },                    # Guided Collide
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xF641A1A7, level = 1 },                     # White Pawn [aura]
+  ]
+
+[[edit]]
+target = "c04003480"                                   # Brighton Spark
+
+  [[edit.cards]]
+  id = 0xA6135CFE                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 185, control = 225, technique = 265, pressure = 267, physical = 167, intelligence = 263, agility = 154, freedom = 359 }
+  moves = [
+    { move = 0x8B90AAAC, level = 2 },                     # Fortissimo
+    { move = 0x6ADE9E01, level = 20 },                    # Illusory Ball
+    { move = 0x768AB9C5, level = 45 },                    # Frosticle
+    { move = 0x7DD6FEF8, level = 59 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c04003490"                                   # Laban Lux
+
+  [[edit.cards]]
+  id = 0xBF086DBF                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 215, technique = 250, pressure = 221, physical = 208, intelligence = 213, agility = 159, freedom = 297 }
+  moves = [
+    { move = 0x2354CA2D, level = 6 },                     # Wind God's Dance
+    { move = 0x768AB9C5, level = 21 },                    # Frosticle
+    { move = 0x25276CB9, level = 53 },                    # Solar Surprise
+    { move = 0xB7474004, level = 58 },                    # Dough Ray Me
+  ]
+
+[[edit]]
+target = "c04003500"                                   # Bailong
+
+  [[edit.cards]]
+  id = 0x6F08BCC1                                         # FW/MF · wind
+  growth = "normal"
+  stats = { kick = 370, control = 284, technique = 259, pressure = 143, physical = 165, intelligence = 213, agility = 144, freedom = 209 }
+  moves = [
+    { move = 0x89D614F5, level = 12 },                    # White Hurricane
+    { move = 0x3297683F, level = 26 },                    # Warp Step
+    { move = 0x1C097E46, level = 45 },                    # Dragon Drive
+    { move = 0x0E4E083A, level = 67 },                    # Zero Magnum
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x6C3521EC, level = 1 },                     # Mix 'n' Match: Zhuge Liang [aura]
+  ]
+
+[[edit]]
+target = "c04003510"                                   # Filbert Weissman
+
+  [[edit.cards]]
+  id = 0x76138D80                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 223, technique = 236, pressure = 174, physical = 213, intelligence = 173, agility = 209, freedom = 389 }
+  moves = [
+    { move = 0xC513565C, level = 2 },                     # Doom Spear
+    { move = 0x4FE09C7A, level = 25 },                    # Acrobatic Keep
+    { move = 0x9FEEC7A9, level = 49 },                    # Gigaton Head
+    { move = 0x19BA3BFC, level = 56 },                    # Dance on Air
+  ]

@@ -1,0 +1,26 @@
+# Football Reforged › its rows in Opciones › «Opciones de mods» and on the Mods screen's «Ajustes» (format:
+# docs/app/mod-options.md §3, «llaves» §3.8). Values: <data dir>\mod_options\football_reforged.json.
+# One group row «Football Reforged» and one child row per module (content\modules\<module>.toml names its row in
+# `option`). Desactivado on the group = every module off (their own values are kept, shown greyed). Read live by the
+# modules (scripts\lib\modules.lua): no restart. Adding a module = one more child row here (docs/game/mods/
+# football-reforged.md §3).
+
+# «Football Reforged»: the group (only shown while one of its modules is on the tab)
+[[option]]
+id = "modules"                                # row key football_reforged.modules
+type = "toggle"
+label = "modules"                             # text\keys.toml, 9 languages
+help = "modules_help"
+default = 1
+group = true
+order = 400
+
+# «Barrera del portero» (module goalkeeper_barrier)
+[[option]]
+id = "goalkeeper_barrier"                     # row key football_reforged.goalkeeper_barrier
+type = "toggle"
+label = "goalkeeper_barrier"
+help = "goalkeeper_barrier_help"
+default = 1
+parent = "football_reforged.modules"
+order = 100

@@ -1,0 +1,27 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Flamberge (Flamberge, whs01900) (each move its own fall, matching its
+# cut-in). In the cut-in Grifo's keshin swings its flaming sword and the ball, held 5.6 m up over the swing, is
+# volleyed off it (c0400): a short steep drop to ~3.4 m, then a long shallow line down to the goal mouth (1.14 m at
+# the cut's end); in the match it comes into the goal down that line: the angled dive (docs/framework/technique.md
+# §4e, docs/game/mechanics/move-mini-effects.md §7.6). Its aura (content\effects\flamberge_ball.toml, the fire head and its
+# train of fire rings) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move flamberge; flamberge_ball_fx.py --trajectory): the
+# event ball (b000001 s00 c_add_1_0) of ev60_01900 c0400, event frames 1414 (the volley) - 1498 (the cut's end):
+# (-1.74, 5.54, 4.03) -> (-2.05, 1.14, 45.87), 5.54 m -> 1.14 m over 41.85 m on the ground = 6.0° down on average
+# (25° over the first 4.7 m, ~3.5° after it; 1.3° over the last 4 frames).
+#   height     = 5.5: the volley (5.54 m).
+#   angle      = 6:   the c0400 line volley -> cut end (6.0°).
+#   end_height = 1.2: the cut's end at the goal mouth (1.14 m).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). No _or / _mm / _cro key; Inazuma
+# Fantasy's three-player Flamberge (ev60_81900) is the same key. Inazuma Fantasy declares no trajectory for this move
+# (no conflict).
+
+# Flamberge (whs01900).
+[[edit]]
+target = "whs01900"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 5.61 m (5.5 over a kick on the pitch) held until 41.96 m before the goal point, then the 6.0
+# deg line down into 1.2 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 20.98 m down (bend 0.5). A shot shorter
+# than 41.96 m starts lower, on the line.
+trajectory = { goal_points = [[41.96, 5.61, 999, 20.98], [0.0, 1.2]], unblockable = false }

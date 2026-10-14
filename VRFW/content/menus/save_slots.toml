@@ -7,9 +7,15 @@
 # pack time by framework_pack.py with slot_card_art.write_atlas from the retail dump, never committed).
 # The layout keeps 4 cards: the 4th is the card of a slot a mod reserved (its content from the owner's
 # VRFW_SS_RESERVED provider); the script hides it while no reserved slot is enterable.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # ---- the layouts (.g4pkm) of the screen's own objects (below): retail copies with joints moved / resized ---------
+# Card x (the band locators _list01..04 of evt_save01_01_slot and the window locators of evt_save01_03_slot, same
+# x per card): the cards spread evenly over the 1920 px screen, centre(k, n) = gap + 212 + k * (424 + gap) with
+# gap = (1920 - n * 424) / (n + 1). Cards 1..3 (the player page, n = 3): 374, 960, 1546 (162 px margins and gaps);
+# the reserved 4th card's locator: centre(3, 4) = 1663.2. The script's CardCentre is the same formula and moves a
+# card at run time only by centre(k, shown cards) - this layout x (0 with 3 cards; the 4-card case while a mod's
+# reserved slot is on). The layout carries the bands' click zones (_touch_list01), so the 3-card page needs no move.
 
 layout = [
     # evt_save01_01_slot.g4pkm
@@ -17,10 +23,10 @@ layout = [
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_system_line01", translate = [97.0, 2803.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_text_time01", translate = [116.0, 2812.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_pos_time01", translate = [377.0, 2822.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list01", translate = [270.0, 86.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list02", translate = [730.0, 86.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list03", translate = [1190.0, 86.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list04", translate = [1650.0, 86.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list01", translate = [374.0, 86.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list02", translate = [960.0, 86.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list03", translate = [1546.0, 86.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list04", translate = [1663.2, 86.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list05", translate = [0.0, 2648.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_list06", translate = [0.0, 2540.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_01_slot/evt_save01_01_slot.g4pkm", joint = "_pos_top_list_atc01", recompute = true },
@@ -41,10 +47,10 @@ layout = [
     # evt_save01_03_slot.g4pkm
     { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", from = "common/menu/51_save/save01/save01_03/save01_03.g4pkm" },
     { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_save_arrow_01", translate = [922.0, 2639.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info01_01", translate = [1650.0, -568.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info02_01", translate = [270.0, -568.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info02_02", translate = [1190.0, -568.0, 0.0] },
-    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info03_01", translate = [730.0, -568.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info01_01", translate = [1663.2, -568.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info02_01", translate = [374.0, -568.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info02_02", translate = [1546.0, -568.0, 0.0] },
+    { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_atc_save_info03_01", translate = [960.0, -568.0, 0.0] },
     { file = "common/menu/51_save/save01/evt_save01_03_slot/evt_save01_03_slot.g4pkm", joint = "_pos_base01", recompute = true },
     # evt_save01_04_card.g4pkm
     { file = "common/menu/51_save/save01/evt_save01_04_card/evt_save01_04_card.g4pkm", from = "common/menu/51_save/save01/save01_04/save01_04.g4pkm" },

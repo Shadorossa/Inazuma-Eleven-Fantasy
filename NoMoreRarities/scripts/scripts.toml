@@ -1,0 +1,11 @@
+# Settings of No More Rarities' scripts (kind VRFW.script/1, docs/framework/scripts.md §2). No [[script]] list: every
+# top-level scripts\*.lua is an entry point, every .lua below (lib\) a library for `require`.
+schema = "VRFW.script/1"
+
+# The spirit purge of a duplicated save (scripts\spirit_purge.lua, 2026-10-14) holds a whole save at once (12.6 MB in,
+# 12.6 MB out) and walks the 7,470 player spirit entries in one slot_duplicate call: the same caps as Character
+# Reforged's duplicate-players hook. Reading and the save tree need no permission; it writes no flags nor saved data.
+[settings]
+budget = 5000000
+memory_kb = 65536
+allow = []

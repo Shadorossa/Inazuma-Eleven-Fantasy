@@ -1,0 +1,64 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of the «Último recurso» family (Last Resort) (Nacho 2026-10-08: no dive and
+# no skim along the grass: «media», a straight flight, level at mid height, as the end of each cut-in shows the ball).
+# The technique type's level flight at mid height is `trajectory = { mode = "level", height, end_height }`
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.7): the ball rises from the kick to
+# `height` m (ball centre; accepted 1.5-4 m, technique_engine minifx_level::HEIGHT_RANGE; the framework's default
+# `level_height` 3.0, a little over the game's own flight), runs level and eases into the goal at `end_height` (default
+# `level_end_height` 2.0, the keeper's reach). Their auras (content\effects\last_resort_ball.toml) are turned along the flight.
+#
+# Measured (research/scripts/last_resort_ball_fx.py --trajectory; shot_trajectory_from_cutin.py --move last_resort /
+# last_resort_sigma), the event ball b000001 c_add_1_0, the flat part after the kick's fall:
+#   Último recurso / Dragón (whs03270, whs03290; ev60_03270 / ev60_03290 c0050, event frames 1062-1146): level at
+#   2.5-3.1 m into the goal -> height 2.8 (its middle; in the range), into the goal at 2.0.
+#   Último recurso, second version (whs03275; ev74_01280 c0600, event frames 1014-1146): level at 1.26-1.30 m: under
+#   the range (a ground skim, not «media») -> the framework's default height (3.0), into the goal at 2.0.
+#   Sigma (whs03280; ev60_03285 c0500's end, event frames 1074-1090): levelling off at 0.99-0.85 m (its c0600 runs in
+#   a space tunnel with no pitch: -0.44 m on the event's origin, not a height): under the range -> the default (3.0).
+#   (1.3.10 first used mode = "ground" at 1.5 / 1.3 / 0.9 m: the ground skim's range stops at 1.5 m.)
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for these moves (no conflict). The _cro keys (Chronicle copies, retail rows) are the same moves: same flight; they are
+# not _or / _mm variants, so the base's [[edit]] does not cover them (as whs01670_cro): each gets its own, same values.
+
+# Último recurso (whs03270).
+[[edit]]
+target = "whs03270"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Último recurso, second version (whs03275, cut-in ev74_01280).
+[[edit]]
+target = "whs03275"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Último recurso: Sigma (whs03280).
+[[edit]]
+target = "whs03280"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Último recurso: Sigma, Chronicle copy (whs03280_cro).
+[[edit]]
+target = "whs03280_cro"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Último recurso: Dragón (whs03290).
+[[edit]]
+target = "whs03290"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Último recurso: Dragón, Chronicle copy (whs03290_cro).
+[[edit]]
+target = "whs03290_cro"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
+# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
+# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
+trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }

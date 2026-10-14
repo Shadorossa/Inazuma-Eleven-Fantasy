@@ -1,0 +1,36 @@
+schema = "VRFW.character/2"
+# Character Reforged · The Golden Bears · Inazuma Eleven GO Chrono Stone
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c05029820"                                   # Goldus Janque
+
+  [[edit.cards]]
+  id = 0xE6ECF5A0                                         # GK/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 189, technique = 153, pressure = 228, physical = 275, intelligence = 211, agility = 269, freedom = 267 }
+  moves = [
+    { move = 0xE647BCEE, level = 1 },                     # God Hand V
+    { move = 0xDD0BA694, level = 27 },                    # Okehazama Ravine
+    { move = 0xD471DE6C, level = 42 },                    # Snakebite
+    { move = 0x07704782, level = 52 },                    # Rejection
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xBB1BF024, level = 1 },                     # Great Genie [aura]
+  ]
+
+[[edit]]
+target = "c05029820_5000"                              # Goldus Janque
+
+  [[edit.cards]]
+  id = 0x0F2340F6                                         # GK/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 189, technique = 153, pressure = 228, physical = 275, intelligence = 211, agility = 269, freedom = 267 }

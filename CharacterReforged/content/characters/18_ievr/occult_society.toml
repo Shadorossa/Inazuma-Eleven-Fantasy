@@ -1,0 +1,181 @@
+schema = "VRFW.character/2"
+# Character Reforged · Occult Society · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11500430"                                   # Aila Pavey
+
+  [[edit.cards]]
+  id = 0x990D9451                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 244, technique = 204, pressure = 162, physical = 217, intelligence = 174, agility = 181, freedom = 267 }
+  moves = [
+    { move = 0x828A53C8, level = 1 },                     # Plasma Ball
+    { move = 0x46FA651E, level = 9 },                     # Water Veil
+    { move = 0x4683AADF, level = 23 },                    # Space Penguin
+    { move = 0x95823331, level = 32 },                    # The Tube
+  ]
+
+[[edit]]
+target = "c11700540"                                   # Izekiel Truth
+
+  [[edit.cards]]
+  id = 0x9A46C9AA                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 246, technique = 240, pressure = 180, physical = 216, intelligence = 215, agility = 188, freedom = 251 }
+  moves = [
+    { move = 0x7DD6FEF8, level = 5 },                     # Athena's Anthem
+    { move = 0x19025F83, level = 13 },                    # Quick Draw
+    { move = 0x750E6DAB, level = 31 },                    # Matador Feint
+    { move = 0xDBFD9CFE, level = 52 },                    # Big Ball Trick
+  ]
+
+[[edit]]
+target = "c11700660"                                   # Gemma Coombs
+
+  [[edit.cards]]
+  id = 0xAA361571                                         # DF/GK · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 211, control = 181, technique = 167, pressure = 215, physical = 282, intelligence = 235, agility = 205, freedom = 238 }
+  moves = [
+    { move = 0xA8215D7C, level = 1 },                     # The Mountain
+    { move = 0xEF5D458A, level = 18 },                    # Burnout
+    { move = 0x025FD09B, level = 34 },                    # Volcano Cut
+    { move = 0x414BA9BD, level = 43 },                    # Pincer Pinch
+  ]
+
+[[edit]]
+target = "c11730010"                                   # Fuyo Catcher
+
+  [[edit.cards]]
+  id = 0xA65A85D4                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 247, control = 238, technique = 251, pressure = 185, physical = 223, intelligence = 216, agility = 188, freedom = 221 }
+  moves = [
+    { move = 0x5E233E68, level = 2 },                     # Super Elastico
+    { move = 0x53CD747F, level = 15 },                    # Tarzan Kick
+    { move = 0x4FE09C7A, level = 31 },                    # Acrobatic Keep
+    { move = 0x19BA3BFC, level = 38 },                    # Dance on Air
+  ]
+
+[[edit]]
+target = "c11730020"                                   # Eviden Tracer
+
+  [[edit.cards]]
+  id = 0x8D77D617                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 224, control = 243, technique = 234, pressure = 176, physical = 217, intelligence = 204, agility = 186, freedom = 242 }
+  moves = [
+    { move = 0x7C1494CF, level = 3 },                     # Tornado Tunnel
+    { move = 0xA9E3374B, level = 15 },                    # Cyclone Sprint
+    { move = 0xE0549BE6, level = 35 },                    # Easy Breezy Kid
+    { move = 0xC42D6F54, level = 49 },                    # Aikido
+  ]
+
+[[edit]]
+target = "c11730030"                                   # Murray Hollowpot
+
+  [[edit.cards]]
+  id = 0x946CE756                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 250, control = 246, technique = 240, pressure = 165, physical = 209, intelligence = 201, agility = 181, freedom = 225 }
+  moves = [
+    { move = 0x7748D3F2, level = 3 },                     # Devil Ball
+    { move = 0x7C6D5B0E, level = 7 },                     # Astro Break
+    { move = 0xDBFD9CFE, level = 32 },                    # Big Ball Trick
+    { move = 0x17A96A44, level = 57 },                    # Clone Faker
+  ]
+
+[[edit]]
+target = "c11730040"                                   # Morrigan Shutterly
+
+  [[edit.cards]]
+  id = 0xDB2D7191                                         # DF/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 201, control = 186, technique = 173, pressure = 209, physical = 296, intelligence = 238, agility = 200, freedom = 247 }
+  moves = [
+    { move = 0x67F17FA8, level = 5 },                     # Mega Quake
+    { move = 0x166B0073, level = 14 },                    # Super Armadillo
+    { move = 0x52CEB5F6, level = 34 },                    # Iron Wall
+    { move = 0x737DCB3F, level = 44 },                    # Pancake Defence
+  ]
+
+[[edit]]
+target = "c11730050"                                   # Sylas Saxton
+
+  [[edit.cards]]
+  id = 0xC23640D0                                         # DF/GK · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 184, technique = 176, pressure = 224, physical = 274, intelligence = 247, agility = 200, freedom = 235 }
+  moves = [
+    { move = 0x49933AEE, level = 1 },                     # Perfect Tower
+    { move = 0xB907E20C, level = 11 },                    # Procyon Net
+    { move = 0x04941270, level = 33 },                    # Vac Attack
+    { move = 0xB0F8060A, level = 45 },                    # Ozone Flayer
+  ]
+
+[[edit]]
+target = "c11730060"                                   # Ferdy Fenwick
+
+  [[edit.cards]]
+  id = 0xE91B1313                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 220, control = 246, technique = 238, pressure = 176, physical = 212, intelligence = 207, agility = 185, freedom = 247 }
+  moves = [
+    { move = 0xD9BB22A7, level = 2 },                     # Air Ride
+    { move = 0x4E9A9232, level = 18 },                    # Spinning Cut
+    { move = 0x3F00EDE9, level = 34 },                    # Dash Storm
+    { move = 0xE0549BE6, level = 46 },                    # Easy Breezy Kid
+  ]
+
+[[edit]]
+target = "c11730070"                                   # Hazel Woodrow
+
+  [[edit.cards]]
+  id = 0xF0002252                                         # GK/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 196, control = 194, technique = 155, pressure = 219, physical = 285, intelligence = 203, agility = 266, freedom = 259 }
+  moves = [
+    { move = 0xE647BCEE, level = 1 },                     # God Hand V
+    { move = 0x24E5068E, level = 10 },                    # Fractal Repeller
+    { move = 0x8DFA4265, level = 15 },                    # Toughness Block
+    { move = 0xBFCC20E7, level = 42 },                    # Wood Chopper
+  ]
+
+[[edit]]
+target = "c11730080"                                   # Ouijane Boarden
+
+  [[edit.cards]]
+  id = 0x77983E9D                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 190, technique = 192, pressure = 216, physical = 269, intelligence = 257, agility = 197, freedom = 223 }
+  moves = [
+    { move = 0xA8215D7C, level = 5 },                     # The Mountain
+    { move = 0xDDCA0D2A, level = 9 },                     # Bouncing Bomb
+    { move = 0x025FD09B, level = 28 },                    # Volcano Cut
+    { move = 0x79E3E635, level = 56 },                    # Racing Flame
+  ]

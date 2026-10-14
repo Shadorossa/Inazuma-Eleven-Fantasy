@@ -1,0 +1,19 @@
+schema = "VRFW.game/2"
+
+# Utilities › technique preview (docs/game/ui/technique-preview.md): «<RS> Previsualizar» on the special move card of
+# the «Supertécnicas» list plays the move's cut-in full screen with a player of the active squad. The logic that picks
+# the event and the performer is scripts\tech_preview.lua (Utilities.TechPreview.*); the menu side is the graft
+# research/grafts/util_tech_preview (ability_list_menu) and assets\lua\_all\utilities_tech_preview.lua. The playing is
+# the VR-Framework's live player (CMND_EVT_ANIM_PREVIEW, CMND_VRFW_ANIM_LIVE_*). The squad is read with team_banks.toml's
+# tb_party / TB_LogicalToPhysical.
+
+# CMND_UTIL_TECH_PREVIEW(skill) -> ok (0 / 1), event, performer handle, chara name, body rig (1-4), category, how / why
+[[VRFW.Command]]
+name = "CMND_UTIL_TECH_PREVIEW"
+handler = "Utilities.TechPreview.Plan"
+needs = ["TB_LogicalToPhysical", "tb_party"]
+
+# CMND_UTIL_TECH_PREVIEW_CFG() -> a table of the menu side's tunables (config.toml [tech_preview], names as crc32)
+[[VRFW.Command]]
+name = "CMND_UTIL_TECH_PREVIEW_CFG"
+handler = "Utilities.TechPreview.Config"

@@ -1,0 +1,208 @@
+# Group Summons: the summon cut-ins with every participant and Flamberge kicked by the three Griffin participants
+# (docs/game/media/strikers-multi-summon.md §5, docs/game/mods/group-summons.md). Built at boot from the player's own
+# retail events (anim type: copies of ev80_00040 / ev80_00060 / ev60_01900 with extra seats): nothing Level-5-derived
+# is shipped. Staging from IE GO Strikers 2013 (Flamberge / Caliburn openings): the participants stand together, the
+# summoner in front, the others beside and a little behind (Griffin's two flankers mirror each other), every body
+# summons at once with VR's own summon motion, the keshin rises behind the group.
+# Ids are pinned (ev80_80300 Griffin 3 seats, ev80_80240 Arthur 2 seats, ev60_81900 Flamberge 3 seats): this mod's
+# [[aura_rule]] cut_in / move_event (content/transforms/group_summons.toml) and its aura rows' `event` cells
+# (content/techniques/auras/group_summon_cutins.toml) name them. Who fills seats 1..N-1 is the VR-Framework's aura rule
+# run time (services aura_rule: the SoccerEventPlay chain pre-hook hands the participants chosen at the press).
+# History: Inazuma Fantasy's anims/fusion_keshin.toml (2026-10-06 .. 2026-10-08), then Lost Cutscenes 1.1.0-1.4.5
+# (content/anims/fusion_keshin.toml, keys new_animations.grifo_trio / arturo_duo / flamberge_trio), here since
+# Group Summons 1.0.0 (2026-10-14). The ids did not change; the old keys are aliases (below), so a reference to them
+# (another mod's [[cut]] / [[camera]] event, a registry) reads these events.
+
+schema = "VRFW.anim/2"
+
+[[alias]]
+old = "new_animations.grifo_trio"
+new = "group_summons.griffin_trio"
+
+[[alias]]
+old = "new_animations.arturo_duo"
+new = "group_summons.arthur_duo"
+
+[[alias]]
+old = "new_animations.flamberge_trio"
+new = "group_summons.flamberge_trio"
+
+
+# ---------------------------------------------------------------- Griffin (Grifo, 3 seats)
+
+[[event]]
+name = "griffin_trio"
+from = "ev80_00040"          # Griffin's retail cut-in (shared by 26 keshin; this copy is Griffin's alone)
+id = "ev80_80300"
+seats = 3
+assigned = ["k000300"]       # Griffin's own keshin motion (the base's <ASSIGN> packs of k000300)
+cuts = [
+    { from = "ev80_00040", cut = "c0010", copies = { s01 = "s00", s02 = "s00" } },
+    { from = "ev80_00040", cut = "c0020", copies = { s01 = "s00", s02 = "s00" } },
+]
+
+[[cut]]
+event = "group_summons.griffin_trio"
+cut = "c0010"
+actor = "s01"
+source = { event = "ev80_00040", cut = "c0010", actor = "s00" }
+offset = [-0.8, 0.0, -0.5]
+trim = [3, 161]
+
+[[cut]]
+event = "group_summons.griffin_trio"
+cut = "c0010"
+actor = "s02"
+source = { event = "ev80_00040", cut = "c0010", actor = "s00" }
+offset = [0.8, 0.0, -0.5]
+# no mirror here: the mirrored summon motion of c0010 tilts the body off its placement (preview 2026-10-06)
+trim = [5, 161]
+
+# The centre player (the summoner) in the summon shot: Griffin's own c0020 pose is turned ~37° to the camera and
+# reads off to one side (Nacho 2026-10-07). The «mountain» keshin cut-in ev80_00050 has the same cut (111 frames,
+# same camera) with a frontal, symmetric power-up (crouch, fists out, then rising with the arms open): 0° to the
+# camera every frame, hips on x = 0, exactly between the flankers (±0.82 m). The flankers keep Griffin's pose (s02
+# mirrored), so the trio is symmetric.
+[[cut]]
+event = "group_summons.griffin_trio"
+cut = "c0020"
+actor = "s00"
+source = { event = "ev80_00050", cut = "c0020", actor = "s00" }
+
+[[cut]]
+event = "group_summons.griffin_trio"
+cut = "c0020"
+actor = "s01"
+source = { event = "ev80_00040", cut = "c0020", actor = "s00" }
+offset = [-0.8, 0.0, -0.5]
+
+[[cut]]
+event = "group_summons.griffin_trio"
+cut = "c0020"
+actor = "s02"
+source = { event = "ev80_00040", cut = "c0020", actor = "s00" }
+offset = [0.8, 0.0, -0.5]
+mirror = true
+
+# ---------------------------------------------------------------- Arthur (Arturo, 2 seats)
+
+[[event]]
+name = "arthur_duo"
+from = "ev80_00060"          # Arthur's retail cut-in (shared with wks00540)
+id = "ev80_80240"
+seats = 2
+assigned = ["k000240"]       # Arthur's own keshin motion
+cuts = [
+    { from = "ev80_00060", cut = "c0010", copies = { s01 = "s00" } },
+    { from = "ev80_00060", cut = "c0020", copies = { s01 = "s00" } },
+]
+
+[[cut]]
+event = "group_summons.arthur_duo"
+cut = "c0010"
+actor = "s01"
+source = { event = "ev80_00060", cut = "c0010", actor = "s00" }
+offset = [0.8, 0.0, -0.4]
+mirror = true
+trim = [4, 161]
+
+[[cut]]
+event = "group_summons.arthur_duo"
+cut = "c0020"
+actor = "s01"
+source = { event = "ev80_00060", cut = "c0020", actor = "s00" }
+offset = [0.8, 0.0, -0.4]
+mirror = true
+
+# ---------------------------------------------------------------- Flamberge with the three Griffin participants
+# Griffin's move (whs01900, retail ev60_01900) performed by all three: the partners do the summoner's motion (full kick
+# in sync), ±0.8 m / 0.5 m back in the power-up and keshin cuts (c0010 staggered 3 / 5 frames). Jump and shot
+# (c0030 / c0040): a triangle around the ball, all three feet on it. The summoner kicks as in retail (right foot, the
+# ball at its front right, (-1.67, 3.89) in event space, struck c0040 f4-52, launched f53 along +Z; hips 1.0 m from the
+# ball, ~40° off the line behind it, toward +X). Every copy is turned about the ball itself (`pivot` on it), so its
+# kicking foot meets the ball on the same frames: s01 = mirrored (left foot) and yaw +60 about the mirrored ball, put
+# back with offset -3.34: beside the ball on -X, facing 60° toward +X; s02 = yaw -60 about the ball: beside it on +X,
+# facing 60° toward -X. The two kick lines cross at the ball, the summoner's runs through it along the shot.
+# (2026-10-07: the ±90° V kicked across the shot and ended facing back; the arrowhead of bcfc6f63b, offset sideways
+# with a 15° toe-in, kicked the air beside the ball.)
+# Cameras: retail ev60_01900's, untouched (Nacho 2026-10-07: the camera never changes; a flanker the framing hides
+# is fine; a `focus` camera broke the shot in game). Played instead of ev60_01900 only while Griffin is
+# out with its participants (content/transforms/group_summons.toml move_event).
+
+[[event]]
+name = "flamberge_trio"
+from = "ev60_01900"
+id = "ev60_81900"
+seats = 3
+cuts = [
+    { from = "ev60_01900", cut = "c0100", copies = { s01 = "s00", s02 = "s00" } },
+    { from = "ev60_01900", cut = "c0200", copies = { s01 = "s00", s02 = "s00" } },
+    { from = "ev60_01900", cut = "c0300", copies = { s01 = "s00", s02 = "s00" } },
+    { from = "ev60_01900", cut = "c0400", copies = { s01 = "s00", s02 = "s00" } },
+]
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0010"
+actor = "s01"
+source = { event = "ev60_01900", cut = "c0100", actor = "s00" }
+offset = [-0.8, 0.0, -0.5]
+trim = [3, 89]
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0010"
+actor = "s02"
+source = { event = "ev60_01900", cut = "c0100", actor = "s00" }
+offset = [0.8, 0.0, -0.5]
+trim = [5, 89]
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0020"
+actor = "s01"
+source = { event = "ev60_01900", cut = "c0200", actor = "s00" }
+offset = [-0.8, 0.0, -0.5]
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0020"
+actor = "s02"
+source = { event = "ev60_01900", cut = "c0200", actor = "s00" }
+offset = [0.8, 0.0, -0.5]
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0030"
+actor = "s01"
+source = { event = "ev60_01900", cut = "c0300", actor = "s00" }
+mirror = true                        # left foot: the body on the -X side of the ball
+yaw = 60.0                           # turned about the ball: facing 60° toward +X, kicking through it
+pivot = [1.67, 0.0, 3.89]            # the mirrored ball (mirror plane x = 0)
+offset = [-3.34, 0.0, 0.0]           # back onto the real ball
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0030"
+actor = "s02"
+source = { event = "ev60_01900", cut = "c0300", actor = "s00" }
+yaw = -60.0                          # right foot, turned about the ball: on its +X side, facing 60° toward -X
+pivot = [-1.67, 0.0, 3.89]           # the ball where the summoner strikes it
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0040"
+actor = "s01"
+source = { event = "ev60_01900", cut = "c0400", actor = "s00" }
+mirror = true                        # left foot: the body on the -X side of the ball
+yaw = 60.0                           # turned about the ball: facing 60° toward +X, kicking through it
+pivot = [1.67, 0.0, 3.89]            # the mirrored ball (mirror plane x = 0)
+offset = [-3.34, 0.0, 0.0]           # back onto the real ball
+
+[[cut]]
+event = "group_summons.flamberge_trio"
+cut = "c0040"
+actor = "s02"
+source = { event = "ev60_01900", cut = "c0400", actor = "s00" }
+yaw = -60.0                          # right foot, turned about the ball: on its +X side, facing 60° toward -X
+pivot = [-1.67, 0.0, 3.89]           # the ball where the summoner strikes it

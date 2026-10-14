@@ -1,0 +1,23 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event/ev62/ev62_95110/ev62_95110_light/light_list.cfg.bin"
+from = "data/common/event/ev62/ev62_01060/ev62_01060_light/light_list.cfg.bin"
+
+[[list]]
+name = "EV_LI_MAP_LIGHT"
+rows = [
+  ["fix", "c0011", "common/event/ev62/ev62_95110/ev62_95110_light/EventMap_fix_c0011.cfg.bin"],
+  ["fix", "c0012", "common/event/ev62/ev62_95110/ev62_95110_light/EventMap_fix_c0012.cfg.bin"],
+  ["fix", "c0021", "common/event/ev62/ev62_95110/ev62_95110_light/EventMap_fix_c0021.cfg.bin"],
+  ["fix", "c0022", "common/event/ev62/ev62_95110/ev62_95110_light/EventMap_fix_c0022.cfg.bin"],
+  ["fix", "c0031", "common/event/ev62/ev62_95110/ev62_95110_light/EventMap_fix_c0031.cfg.bin"],
+]
+
+[[list]]
+name = "EV_LI_CHARA_LIGHT"
+rows = [
+  ["ev62010600", "c0011", "common/event/ev62/ev62_95110/ev62_95110_light/ev62010600_c0011.cfg.bin"],
+  ["ev62010600", "c0012", "common/event/ev62/ev62_95110/ev62_95110_light/ev62010600_c0012.cfg.bin"],
+  ["ev62010600", "c0021", "common/event/ev62/ev62_95110/ev62_95110_light/ev62010600_c0021.cfg.bin"],
+  ["ev62010600", "c0022", "common/event/ev62/ev62_95110/ev62_95110_light/ev62010600_c0022.cfg.bin"],
+  ["ev62010600", "c0031", "common/event/ev62/ev62_95110/ev62_95110_light/ev62010600_c0031.cfg.bin"],
+]

@@ -1,0 +1,30 @@
+# «Northern Impact» («Balón iceberg», whs00930, wind shot, a chain shot: skillEffectBitFlag 8, cut-in ev60_00930):
+# while the ball flies to the goal it keeps the end of the cut-in's OWN look (the cut c0030, the ball just kicked
+# along the pitch, held at frame 296, the texture flow running on): the frost cloud on the ball and the two twisted
+# ice ribbons winding round each other behind it, instead of the plain wind special-shot aura (ega0075b); x0.5 of the
+# cut-in size (ribbons ~0.9 m wide, ~2.5 m long behind the ball). Its cyan arrow fans (vertical cards up to 7 m tall
+# and 18 m long in the cut-in) and its wind funnel (a 41 x 20 m dish) are shrunk about the ball to ~2-2.8 m long and
+# a ~2 m dish, in their cut-in poses (arrow tips just ahead of the ball, fans running back; no spin, no fade: Nacho
+# 2026-10-08, everything as in the cut-in). The flat streak
+# lines and glow discs, the smoke trails left on the pitch, the white-out, the front flash and the c0010 / c0020
+# aurora, sky and ground are dropped.
+# The object is ev6093ni00 (assets\data\{common,dx11}\effect\event\ev60\ev6093ni00\), built by
+# research/scripts/northern_impact_ball_fx.py from ev60009300; docs/game/media/northern-impact-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillEffectBitFlag 8: a chain shot, not a
+# long shot): CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other
+# technique key uses ev60_00930 (who00930 / whd00930 / whk00930 are other moves with their own ev61-63 cut-ins). No
+# trajectory file: in the cut-in the ball flies level (0.97 m) to the goal.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "northern_impact_ice"
+from = "ega0075b"
+object = "effect/event/ev60/ev6093ni00/ev6093ni00.objbin"
+
+[[shot_aura]]
+name = "northern_impact_ice"
+when = { techniques = ["whs00930"] }
+aura = "northern_impact_ice"
+like = "ega0075b"

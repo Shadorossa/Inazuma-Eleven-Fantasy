@@ -1,0 +1,42 @@
+id = "hissatsu_reforged"
+# «Hissatsu Reforged» (owner request 2026-10-14: «HissatsuReforged que tenga el cambio de potencia, tensión, etc. en las
+# supertécnicas, y de ahí serán dependientes Hissatsu Effects y otras cosas más»). The BASE mod of the special-move
+# family: the balance of the game's special moves (power, tension cost, recast) and the «double icon» (a move with two
+# properties, e.g. long shot + counter shot, shows both badges). Split out of Inazuma Fantasy (its _phases.toml part
+# hissatsu_overhaul, and the generic half of its part move_icons). No DLL, no script: declarations of the VR-Framework's
+# technique / image types and one Lua graft (research/grafts/move_icons, `mod = "hissatsu_reforged"`).
+# docs/game/mods/hissatsu-reforged.md.
+# Layout (docs/framework/mod-layout.md):
+#   content\techniques\hissatsu_overhaul.toml   the owner's sheet «Hissatsu_overhaul.V2»: power_min / power_max / tp /
+#                                               recast of the 683 retail base moves it really changes
+#   content\images\menu\                        the double icon's sprites: the rows' second badge
+#                                               (200_icon\15_icon_common\move_icons.toml) and the detail card's long +
+#                                               counter shot tag (102_team\team02\team02_02\move_tags_combined.toml)
+#   text\keys.toml                              the «Mods» screen's name and description
+# Modules (docs/framework/mod-families.md): a mod that belongs here requires hissatsu_reforged and declares
+# [module] of = "hissatsu_reforged" (Hissatsu Effects order 10, True Hissatsu order 20).
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description
+# (text\keys.toml) in the game's language.
+name = "Hissatsu Reforged"
+prefix = "HissatsuReforged"
+folder = "HissatsuReforged"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Rebalances the game's special moves: new minimum and maximum power, tension cost and recast time for 683 of the game's moves. The power each grade adds stays the game's. A move with two properties (long shot and counter shot) shows both icons in every move list and on its card. The base of the special-move mods: Hissatsu Effects and True Hissatsu are its modules."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-14"
+# vr_framework 2.4.13: the technique type's [[edit]] (power_min / power_max / tp / recast), the technique engine's move
+# icon sets (CMND_VRFW_MOVE_ICONS) and the mod families ([module] rows of this mod's entry on the «Mods» screen). Works
+# on the base game: Inazuma Fantasy and Character Reforged are not needed.
+requires = ["vr_framework>=2.4.13"]
+conflicts = []
+permissions = []
+# the graft move_icons patches INCLUDE'd menu scripts (soccer_common, personal_plate_inc): ModLoader 1.7.0
+loader_modules = ["lua_patch"]
+loader_min = "1.7.0"
+
+[exports]
+functions = []
+keys = []

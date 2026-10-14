@@ -291,7 +291,7 @@ end
 -- ---------------------------------------------------------------------------------------------- declarations
 
 function M.new_decl()
-  return { passives = {}, titles = {}, shared_specials = {}, restricted_specials = {}, effect_icons = {}, reward_funcs = {}, reward_effects = {}, origin = {}, slots = nil, aliases = {}, n_passives = 0 }
+  return { passives = {}, titles = {}, shared_specials = {}, restricted_specials = {}, effect_icons = {}, reward_funcs = {}, reward_effects = {}, origin = {}, slots = nil, player_archetype = nil, aliases = {}, n_passives = 0 }
 end
 
 local function entry_id(t, alt)
@@ -358,6 +358,14 @@ function M.add_decl(d, mod_id, doc)
       end
       if type(t.title) == "string" and t.title ~= "" then d.titles[id] = t.title end
     end
+  end
+  if doc.player_archetype ~= nil then
+    local p, w = M.parse_player_archetype(mod_id, doc.player_archetype)
+    if p and d.player_archetype and d.player_archetype.origin ~= mod_id then
+      warn[#warn + 1] = string.format("[player_archetype] of %s replaces the one of %s", mod_id, d.player_archetype.origin)
+    end
+    for _, x in ipairs(w) do warn[#warn + 1] = x end
+    if p then d.player_archetype = p end
   end
   if type(doc.slots) == "table" then
     local r, w = M.parse_slots(mod_id, doc.slots)
@@ -819,14 +827,64 @@ end
 
 -- ---------------------------------------------------------------------------------------------- archetype
 
--- (first, second, name): the player's archetype from his archetype slots 4-5 (6 = none)
-function M.derive(c, eff)
-  local a, b = M.archetype(c, eff[4]), M.archetype(c, eff[5])
-  if a and b and a == b then return a, M.NO_ARCHETYPE, M.ARCH_NAMES[a] end
-  if a and b then return a, b, M.ARCH_NAMES[a] .. " and " .. M.ARCH_NAMES[b] end
-  local x = a or b
-  if x then return x, M.NO_ARCHETYPE, M.ARCH_NAMES[x] end
-  return M.NO_ARCHETYPE, M.NO_ARCHETYPE, "no archetype"
+-- [player_archetype] of a declaration file → { derive, without, origin } (+ warnings); nil = the table is ignored.
+--   derive  = true: the player's archetype follows the archetype passives of his archetype slots (the slots whose
+--             kind is "archetype": the game's own slots 4-5)
+--   without = "game": no archetype passive in those slots keeps the game's own archetype of the player;
+--             "none": no archetype passive = no archetype
+function M.parse_player_archetype(mod_id, t)
+  if type(t) ~= "table" then return nil, { "[player_archetype]: a table expected (ignored)" } end
+  local p, warn = { derive = false, without = "game", origin = mod_id }, {}
+  if t.derive ~= nil then
+    if type(t.derive) == "boolean" then p.derive = t.derive else warn[#warn + 1] = "[player_archetype] derive: true / false (false kept)" end
+  end
+  if t.without ~= nil then
+    local s = type(t.without) == "string" and t.without:lower():match("^%s*(.-)%s*$") or ""
+    if s == "game" or s == "none" then p.without = s else warn[#warn + 1] = "[player_archetype] without: \"game\" or \"none\" (\"game\" kept)" end
+  end
+  return p, warn
+end
+
+-- the slots (1-based, in order) whose kind is "archetype" in the slot rules r
+function M.archetype_slots(r)
+  local v = {}
+  for k = 1, M.N_SLOTS do
+    if r.kinds[k] == M.ARCHETYPE then v[#v + 1] = k end
+  end
+  return v
+end
+
+-- The rule of the player's archetype (r = the slot rules, p = the declarations' [player_archetype]) → nil (the game's
+-- archetype is untouched) or { slots, without, origin }. A mod's [slots] archetype = true (the typed layout) derives
+-- with no fallback, as it always did; else the declared [player_archetype] (Utilities' own: derive, fallback the game's).
+function M.player_rule(r, p)
+  local slots = M.archetype_slots(r)
+  if #slots == 0 then return nil end
+  if M.archetype_mode(r) then return { slots = slots, without = "none", origin = r.origin } end
+  if p and p.derive then return { slots = slots, without = p.without, origin = p.origin } end
+  return nil
+end
+
+function M.describe_player_rule(pr)
+  if not pr then return "the game's own (untouched)" end
+  return string.format("from the archetype passives of slot(s) %s, none = %s (declared by %s)", table.concat(pr.slots, " "),
+    pr.without == "game" and "the game's own archetype" or "no archetype", pr.origin ~= "" and pr.origin or "?")
+end
+
+-- (first, second, name, found): the player's archetype from the archetype passives of `slots` (default 4-5; the first
+-- two that hold one): two of one archetype → that one; two different → a double archetype (first, second); one → that
+-- one; none → 6 (found = false)
+function M.derive(c, eff, slots)
+  local got = {}
+  for _, k in ipairs(slots or { 4, 5 }) do
+    local x = M.archetype(c, eff[k])
+    if x and #got < 2 then got[#got + 1] = x end
+  end
+  local a, b = got[1], got[2]
+  if a and b and a == b then return a, M.NO_ARCHETYPE, M.ARCH_NAMES[a], true end
+  if a and b then return a, b, M.ARCH_NAMES[a] .. " and " .. M.ARCH_NAMES[b], true end
+  if a then return a, M.NO_ARCHETYPE, M.ARCH_NAMES[a], true end
+  return M.NO_ARCHETYPE, M.NO_ARCHETYPE, "no archetype", false
 end
 
 -- ---------------------------------------------------------------------------------------------- store

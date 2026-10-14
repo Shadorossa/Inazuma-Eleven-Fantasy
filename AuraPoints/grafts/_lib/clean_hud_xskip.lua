@@ -1,0 +1,122 @@
+-- Shared head of Clean HUD's pre-match X skip (research/grafts/clean_hud_prematch_skip): `--@lib clean_hud_xskip.lua#Head`
+-- at the top of each snippet (graft_lib.expand_lib). The menus run in separate Lua states, so the state lives in the
+-- game's parameter store: ARMED while a pre-match flow is between its VS screen and the kick-off, GO once X was held,
+-- JUMP when BetterUI's direct jump ended the event (1.21.7: no cover, no chained skips; the cover is the fallback).
+-- Only definitions: nothing here calls the engine at chunk load.
+--@section Head
+-- Clean HUD pre-match X skip: shared helpers ----------------------------------------------------------------------
+CHD_XS = CHD_XS or {}
+CHD_XS.ARMED = 3249651016                -- param crc32("clean_hud_xskip_armed"): 1 = VS screen left, kick-off not reached
+CHD_XS.GO = 642531123                    -- param crc32("clean_hud_xskip_go"): 1 = X held: every remaining step skipped
+CHD_XS.COVER = 4255488170                -- param crc32("clean_hud_xskip_cover"): 1 = the black cover is up
+CHD_XS.FADE = 609722083                  -- bright fade (alpha, seconds, fade layer): handler 0xC82C60
+CHD_XS.COVER_LAYER = 1                   -- fade layer 1 (prog_common's cover); the event skip fades layer 0 only
+CHD_XS.COVER_IN_S = 0.5                  -- the cover's fade in at the kick-off (the retail skip fade's length)
+CHD_XS.HOLD = 3626036482                 -- param crc32("clean_hud_xskip_hold"): 1 = the framework holds the cover black
+CHD_XS.HOLD_CMD = 3788104116             -- CMND_BETTERUI_XSKIP_COVER(on) -> 1 (BetterUI content\game\prematch_skip.toml)
+CHD_XS.JUMP = 1616504339                 -- param crc32("clean_hud_xskip_jump"): 1 = the direct jump ended the event (no cover)
+CHD_XS.JUMP_CMD = 1614912098             -- CMND_BETTERUI_XSKIP_JUMP(on) -> 1 (BetterUI content\game\prematch_skip.toml)
+CHD_XS.PARAM_HAS = 2947612279
+CHD_XS.PARAM_GET = 3522198769
+CHD_XS.PARAM_DEL = 3363400568
+CHD_XS.PARAM_SET = 3860611758
+CHD_XS.LOG = 3661580131                  -- CMND_EVT_LOG (loader log; absent without the Lua bridge: pcall)
+function CHD_XS.Log(...)
+  pcall(funcLuaCommand, CHD_XS.LOG, "clean_hud prematch skip:", ...)
+end
+function CHD_XS.Get(key)
+  local ok, has = pcall(funcLuaCommand, CHD_XS.PARAM_HAS, key)
+  if ok and has then
+    local ok2, v = pcall(funcLuaCommand, CHD_XS.PARAM_GET, key)
+    if ok2 and type(v) == "number" then
+      return v
+    end
+  end
+  return 0
+end
+function CHD_XS.Set(key, v)
+  pcall(funcLuaCommand, CHD_XS.PARAM_DEL, key)
+  pcall(funcLuaCommand, CHD_XS.PARAM_SET, key, 0, v, 1)
+end
+function CHD_XS.Del(key)
+  local ok, has = pcall(funcLuaCommand, CHD_XS.PARAM_HAS, key)
+  if ok and has then
+    pcall(funcLuaCommand, CHD_XS.PARAM_DEL, key)
+  end
+end
+function CHD_XS.Online()                 -- network match / observer: retail only (same test as the pre-match lineups)
+  return funcLuaCommand(3959907440) == true or funcLuaCommand(1191545622) == true
+end
+function CHD_XS.Cover(t)                 -- black over everything on fade layer 1 (t = fade-out seconds, 0 = at once)
+  pcall(funcLuaCommand, CHD_XS.FADE, 1, t, CHD_XS.COVER_LAYER)
+end
+local function ChdXsHoldCmd(on)         -- true = the framework answered (BetterUI's script)
+  local ok, r = pcall(funcLuaCommand, CHD_XS.HOLD_CMD, on)
+  return ok and r == 1
+end
+function CHD_XS.Hold()                   -- the cover is black: from now on the game's own fade-ins cannot lift it
+  if CHD_XS.Get(CHD_XS.HOLD) == 1 then
+    return
+  end
+  if ChdXsHoldCmd(1) then                -- 0 / no answer (no hook, script busy): asked again next Step; Lua cover meanwhile
+    CHD_XS.Set(CHD_XS.HOLD, 1)
+    CHD_XS.Log("cover held (native)")
+  end
+end
+function CHD_XS.Release()                -- true = nothing holds the cover any more
+  if CHD_XS.Get(CHD_XS.HOLD) ~= 1 then
+    ChdXsHoldCmd(0)                      -- a hold asked but not confirmed: cleared anyway
+    return true
+  end
+  if ChdXsHoldCmd(0) then
+    CHD_XS.Del(CHD_XS.HOLD)
+    return true
+  end
+  CHD_XS.Log("cover release not answered: asked again later")
+  return false
+end
+function CHD_XS.Jump(src)                -- the direct jump: the running event ended now, no fade. true = done
+  local ok, r = pcall(funcLuaCommand, CHD_XS.JUMP_CMD, 1)
+  if ok and r == 1 then
+    CHD_XS.Set(CHD_XS.JUMP, 1)
+    CHD_XS.Log("direct jump", src, "(event ended, no fade)")
+    return true
+  end
+  return false
+end
+function CHD_XS.JumpEnd()                -- the jump is over: the native flag off (the second entrance event allowed again)
+  pcall(funcLuaCommand, CHD_XS.JUMP_CMD, 0)  -- always (a flag set but the param lost); BetterUI logs only a real end
+  CHD_XS.Del(CHD_XS.JUMP)
+end
+function CHD_XS.Uncover(t, src)          -- lift the cover (only if it is up); t = fade-in seconds. false = still held
+  if CHD_XS.Get(CHD_XS.COVER) ~= 0 then
+    if not CHD_XS.Release() then         -- the fade in would be held black: kept for the next caller / Step
+      return false
+    end
+    CHD_XS.Del(CHD_XS.COVER)
+    pcall(funcLuaCommand, CHD_XS.FADE, 0, t, CHD_XS.COVER_LAYER)
+    CHD_XS.Log("cover lifted", src, t, "s")
+  end
+  return true
+end
+function CHD_XS.Arm(src)                 -- a VS screen closes: the pre-match events and lineups follow
+  if CHD_XS.Online() then
+    CHD_XS.Disarm(src .. " (online)")
+    return
+  end
+  CHD_XS.Uncover(0, src .. " (stale)")
+  CHD_XS.JumpEnd()
+  CHD_XS.Del(CHD_XS.GO)
+  CHD_XS.Set(CHD_XS.ARMED, 1)
+  CHD_XS.Log("armed", src)
+end
+function CHD_XS.Disarm(src)              -- the lineups / kick-off / half time: nothing pre-match is left
+  CHD_XS.Uncover(CHD_XS.COVER_IN_S, src)
+  if CHD_XS.Get(CHD_XS.ARMED) ~= 0 or CHD_XS.Get(CHD_XS.GO) ~= 0 then
+    CHD_XS.Log("disarmed", src)
+  end
+  CHD_XS.JumpEnd()
+  CHD_XS.Del(CHD_XS.ARMED)
+  CHD_XS.Del(CHD_XS.GO)
+end
+-- Clean HUD pre-match X skip: shared helpers end ------------------------------------------------------------------

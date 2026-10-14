@@ -13,7 +13,11 @@
 --   * Team aura list: the declared aura types and skills (`[[VRFW.AuraListHide]]`, every mod's, in load order, once
 --     each) are left out of the rows; the game's own test (no record = no row) stays first.
 --   * CMND_VRFW_SKILL_TABS() -> n, categories; CMND_VRFW_SKILL_TAB_WINDOW([group]) -> start, count;
---     CMND_VRFW_SKILL_TAB_HAS(category) -> bool.
+--     CMND_VRFW_SKILL_TAB_HAS(category) -> bool; CMND_VRFW_SKILL_TAB_INFO(category) -> game index, icon, atlas, sprite,
+--     sprite off, text id, text, filter, filter group (the list's Lua part, menu lua _all/22_skill_tabs.lua: icons,
+--     titles and filters follow the native list; docs/framework/card-types.md §3.3).
+--   * A mod that patches the tab sites itself (its own stub) keeps them: the registry stays off and says so once (info),
+--     so a tab is never removed or added twice.
 
 SkillTabs = SkillTabs or {}
 
@@ -29,6 +33,7 @@ local LIST = {}           -- the native list's categories (TAB_ON)
 local HAS = {}            -- category -> true (TAB_ON)
 local GROUPS = {}         -- group name -> { start, count }
 local GROUP_ORDER = {}    -- group names in list order (CMND_VRFW_SKILL_TAB_WINDOW(k) = the k-th)
+local INFO = {}           -- category -> { game_index, icon, atlas, sprite, sprite_off, text_id, text, filter, filter_group }
 local WIN = { 0, 0 }      -- the window in force: start, count
 
 local function rd(ty, at)
@@ -90,6 +95,23 @@ end
 
 -- ---------------------------------------------------------------------------------------------- tabs
 
+-- the keys a declaration may change on a tab (merged per category, later mod wins key by key)
+local TAB_KEYS = { order = true, group = true, hidden = true, icon = true, icon_atlas = true, icon_sprite = true,
+  icon_sprite_off = true, text = true, filter = true, filter_group = true }
+
+local function id_or_zero(v)
+  if v == nil then return 0 end
+  return D.id_of(v) or 0
+end
+
+-- the title's text: a key of the text engine (in the game's language), or "" (an id: the game's own lookup)
+local function text_of(v)
+  if type(v) ~= "string" or v:match("^%s*0[xX]%x+%s*$") or v:match("^%s*%d+%s*$") then return "" end
+  local ok, s = pcall(VRFW.text, v)
+  if ok and type(s) == "string" then return s end
+  return ""
+end
+
 local function build_list(game, tabs)
   local by_cat, seq = {}, {}
   for i, c in ipairs(game) do
@@ -109,7 +131,7 @@ local function build_list(game, tabs)
       seq[#seq + 1] = t
     end
     for key in pairs(d.given) do
-      if key == "order" or key == "group" or key == "hidden" then t[key] = d.v[key] end
+      if TAB_KEYS[key] then t[key] = d.v[key] end
     end
     t.from = d.where
   end
@@ -136,7 +158,9 @@ local function start_tabs(d)
   if #d.tabs == 0 then return "no tab declarations" end
   local game, why = game_tabs()
   if not game then
-    warn(why .. ": the move list keeps the game's tabs")
+    -- another mod's own patch of the same sites (its stub) is not a fault: it keeps the tab row, the declarations
+    -- wait (a tab is removed / added once, never twice)
+    info(why .. ": the move list keeps that tab row; the declared tabs are not applied")
     return "off (" .. why .. ")"
   end
   local list = build_list(game, d.tabs)
@@ -186,10 +210,24 @@ local function start_tabs(d)
     return "table only (count not written)"
   end
   TAB_ON = true
-  LIST, HAS = {}, {}
+  LIST, HAS, INFO = {}, {}, {}
+  local looks = {}
   for _, t in ipairs(list) do
     LIST[#LIST + 1] = t.category
     HAS[t.category] = true
+    INFO[t.category] = {
+      t.game and t.base or 0, t.icon or 0, id_or_zero(t.icon_atlas), id_or_zero(t.icon_sprite),
+      id_or_zero(t.icon_sprite_off or t.icon_sprite), id_or_zero(t.text), text_of(t.text), t.filter or 0,
+      t.filter_group or 0,
+    }
+    if not t.game and (t.icon == nil or t.text == nil) then
+      warn(string.format("tab %d (%s): a new tab without `icon` / `text`: it borrows the first game tab of its kind's",
+        t.category, tostring(t.from)))
+    end
+    if t.icon or t.icon_sprite or t.text then looks[#looks + 1] = tostring(t.category) end
+  end
+  if #looks > 0 then
+    info("tabs with a declared look: " .. table.concat(looks, " "))
   end
   local gs = {}
   for _, g in ipairs(order) do gs[#gs + 1] = string.format("%s %d+%d", g, groups[g][1], groups[g][2]) end
@@ -279,6 +317,14 @@ function SkillTabs.CmdWindow(group)
     end
   end
   return WIN[1], WIN[2]
+end
+
+-- (category) -> game index, icon, atlas, sprite, sprite off, text id, text, filter, filter group (0: off / unknown)
+function SkillTabs.CmdInfo(category)
+  local c = tonumber(category)
+  local i = TAB_ON and c and INFO[c] or nil
+  if not i then return 0 end
+  return table.unpack(i, 1, 9)
 end
 
 -- (category) -> the native list has that tab

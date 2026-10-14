@@ -15,6 +15,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "bb_stadium_top_menu": {
+  "script": "bb_stadium_top_menu_1.03.98.00",
+  "require": [
+   "FadeIn"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "chara_bank_menu": {
   "script": "chara_bank_menu_6.00.09.00",
   "require": [
@@ -239,6 +247,14 @@
   "script": "soccer_restart_guide_menu_1.04.16.00",
   "require": [
    "InitializeKickoffButton_Callback"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_result_menu_exp": {
+  "script": "soccer_result_menu_exp_6.00.20.00",
+  "require": [
+   "OnOpenGrowthPopCommon"
   ],
   "forbid": [],
   "ambiguous": []

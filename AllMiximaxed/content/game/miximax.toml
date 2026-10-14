@@ -1,0 +1,27 @@
+schema = "VRFW.game/2"
+# All Miximaxed › the creation flow's commands (scripts/miximax.lua; Character Reforged's create entry on the skill board
+# calls CMND_ALLMIXIMAXED_SET) and the one-time import of Inazuma Fantasy's fusion store (docs/game/mods/all-miximaxed.md §2, §4).
+
+# (base, partner) -> code (0 = the miximax is stored): the store of Character Reforged's create entry (system
+# `miximax`, content/pairing/miximax.toml); an older caller may add (slot, carrierInv): the carrier is put on that slot
+[[VRFW.Command]]
+name = "CMND_ALLMIXIMAXED_SET"
+handler = "AllMiximaxed.Set"
+
+# (base) -> partnerHdl, partnerChara (0 = no miximax)
+[[VRFW.Command]]
+name = "CMND_ALLMIXIMAXED_GET"
+handler = "AllMiximaxed.Get"
+
+# (base) -> ok
+[[VRFW.Command]]
+name = "CMND_ALLMIXIMAXED_CLEAR"
+handler = "AllMiximaxed.Clear"
+
+# The fusion store moved with the generator (content/transforms/miximax.toml): the framework now keeps it in this
+# mod's per-slot blob. Inazuma Fantasy's copy (slot<N>/inazuma_fantasy/miximax.json) is copied once into
+# slot<N>/all_miximaxed/miximax.json (docs/framework/save-slots.md §12; the old file is left as it is).
+[[VRFW.SaveImport]]
+name = "AllMiximaxed.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["miximax.json"]

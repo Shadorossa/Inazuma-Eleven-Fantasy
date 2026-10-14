@@ -12,7 +12,7 @@
 #                    with the map; its local position is the sprite's centre in map px (y up, origin = map centre).
 # Only the main board's setting (vs_route_town_menu) uses the copy and gets the layer; the future / Victory boards keep
 # the retail object. The pool: 64 instances (the Lua reads the count and logs a WARN past it).
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[object]]
 name = "vrfw_route_road"

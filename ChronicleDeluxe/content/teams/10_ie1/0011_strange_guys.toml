@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): Strange Guys («Sospechosos», あやしいやつら) of IE1, a rival of the chain «Ruta prémium de
+# Sonny» (content/teams/70_route_nodes/chain_sonny.toml, upper branch #8). VR has no such team (Chronicles Deluxe's
+# «Sospechosos A / B» are the IE2 rosters). Roster: the wiki lineup (docs/game/data/wiki-missing-teams.csv, «IE2 | Game
+# opponent», https://inazuma-eleven.fandom.com/wiki/Ayashii_Yatsura): its 11 players resolved to their retail cards,
+# keeper first, then defenders, midfielders, forwards (chara_param position). Formation / kit / tactics: Team Ogre's,
+# as the other wiki route teams (the wiki formation is not mapped). Crest: the remastered wiki crest (Chronicles
+# Deluxe's ie1_ayashii_yatsura.png, the same art as the IE2 A / B teams).
+default_lang = "en"
+
+[[team]]
+name = "ie1_strange_guys"
+key = "evt_chd_ie1_strange_guys"
+based_on = "tm_cro_ie1_1320"              # Team Ogre: formation, kit, tactics
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (no VR kit of the wiki's)
+level = 75
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x1EC553F6, slot = 0, number = 1, rarity_step = 1 },   # Dan Castella (GK)
+  { card = 0x91A7C4A1, slot = 1, number = 2, rarity_step = 1 },   # Will Stonehead (DF)
+  { card = 0x2EE0D28A, slot = 2, number = 3, rarity_step = 1 },   # Spike Thorne (DF)
+  { card = 0x2E38ED70, slot = 3, number = 4, rarity_step = 1 },   # Nick Turine (DF)
+  { card = 0x59FBD257, slot = 4, number = 5, rarity_step = 1 },   # Brook Atwater (DF)
+  { card = 0xEA4EAFA8, slot = 5, number = 6, rarity_step = 1 },   # Luke Lively (DF)
+  { card = 0xFF552CAF, slot = 6, number = 7, rarity_step = 1 },   # Irv Washinton (DF)
+  { card = 0xC141E4A0, slot = 7, number = 8, rarity_step = 1, captain = true },   # Sam O'Reilly (MF)
+  { card = 0x649917A4, slot = 8, number = 9, rarity_step = 1 },   # Abe Seiler (MF)
+  { card = 0x008297CC, slot = 9, number = 10, rarity_step = 1 },  # Scott Springer (FW)
+  { card = 0xC85B1DC4, slot = 10, number = 11, rarity_step = 1 }, # Keanu Dell (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_ayashii_yatsura.png"   # remastered crest of the wiki's Ayashii Yatsura emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Sospechosos"
+short = "Sospechosos"
+[team.text.en]
+name = "Strange Guys"
+short = "Strange Guys"
+[team.text.ja]
+name = "あやしいやつら"
+short = "あやしいやつら"
+
+# each player plays its card's first 4 moves (the engine reads them from the card)
+[[edit]]
+target = "ie1_strange_guys"
+card_moves = 4

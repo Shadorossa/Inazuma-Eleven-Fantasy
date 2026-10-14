@@ -7,9 +7,10 @@
 # HOOK files (docs/framework/lua-hosts.md §7): EVT_Host handlers on the VR-Framework's hosts of the two stems
 # (research/mods/VRFW/assets/lua/menu/<stem>/000_host.lua), never merged with other grafts, no promoted locals. Their text
 # is generated: edit util_pc_*.src.lua and run gen_hooks.py (fills @crc / @ICONS@ = _lib/util_passive_icons.lua /
-# --@lib). The dispatch of type 9 inside the dock's per-player coroutine is a hook point of Inazuma Fantasy's merged
-# team_dock_formation_menu file (graft prime_dock: `UTIL_PCD.Plate(h)` when UTIL_PCD exists): an edit inside a retail
-# function whose locals IF promotes cannot live in another mod. IF's Supertécnicas screen uses the same picker rows
+# --@lib). The dispatch of type 9 inside the dock's per-player coroutine is a Handle rule of the VR-Framework's list
+# rows (docs/framework/list-rows.md, Utilities 1.15.10; the text graft passive_config_dispatch, which redefined the
+# dock's OnDecideFocus for one line, is gone); Inazuma Fantasy's merged team_dock_formation_menu file still carries the
+# same call in its graft prime_dock. IF's Supertécnicas screen uses the same picker rows
 # (graft ss2_pc_rows, mod inazuma_fantasy).
 name = "passive_config"
 mod = "utilities"

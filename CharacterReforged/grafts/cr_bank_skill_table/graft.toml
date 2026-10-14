@@ -1,0 +1,19 @@
+# Character Reforged's declaration for Utilities' «Banco» COMANDOS popup (Utilities graft util_bank_commands,
+# docs/game/ui/bank-commands.md §4): «Tabla de habilidades» opens the skill table (evt_skill_slot_menu, graft
+# ss2_menus) with the parameters the formation passes to it, as the formation entry does (graft ss2_dock), while the
+# option «Tabla de habilidades» shows the new set (row character_reforged.skill_set_view); with Victory Road's view the
+# popup keeps its own entry (the retail ability board). Was a line of Inazuma Fantasy's fantasy_bank_rules until
+# 2026-10-14. HOOK file (docs/framework/lua-hosts.md §7): it only fills Utilities' table (no handler, no engine call at
+# load; the option is read when Utilities asks, at call time). Without Utilities it is inert.
+name = "cr_bank_skill_table"
+mod = "character_reforged"
+order = 340
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "Bank COMANDOS popup of Utilities: the skill table while the new set view is on"
+
+[[hooks]]
+stem = "chara_bank_menu"
+src = "cr_bank_skill_table.lua"

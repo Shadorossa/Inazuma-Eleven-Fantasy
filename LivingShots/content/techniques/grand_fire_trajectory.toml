@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the ground trajectory of Fuego total (Grand Fire, whs01230; its description: «a mighty
+# ground shot»): in the cut-in's last cut (c0300) the three players' kick sends the ball low along the pitch (0.49 m
+# over it) pushing its crescent of fire and burning its trail into the pitch into the goal; in the match the ball runs
+# along the pitch the whole way and enters the goal low (height 0.11 m = the ball's radius; same goal point x / z and
+# flight time, the game's block rules: docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.2),
+# like Golpe cataclismo (content\techniques\disaster_strike_trajectory.toml). Its aura (content\effects\grand_fire_ball.toml,
+# ev6123gf00) keeps the scorched trail on the pitch (research/scripts/grand_fire_ball_fx.py FLIGHT_H: keep the two
+# equal).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move grand_fire): the event ball b000001 s00 c_add_1_0 of
+# ev60_01230 c0300, event frames 1244-1396: (0.03, 0.49, 14.20) -> (0.00, 0.49, 60.00): 45.8 m along +Z at 0.05-0.61 m
+# (0.49 m from 1308 to the end), no descent. No power, cost or block key (Inazuma Fantasy's power_per_participant edit
+# of whs01230 is another key: no conflict).
+
+# Fuego total (whs01230).
+[[edit]]
+target = "whs01230"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): one point = flat at 0.11 m (the ground skim above).
+trajectory = { points = [[0.0, 0.11]], unblockable = false }

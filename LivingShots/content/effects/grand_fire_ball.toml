@@ -1,0 +1,28 @@
+# «Grand Fire» («Fuego total», whs01230; fire, 3 players, long shot, cut-in ev60_01230; no _or / _mm / _cro key):
+# while the ball runs to the goal after the cut-in it keeps the look of the end of the cut-in's last cut (c0300)
+# instead of the plain fire long-shot aura (ega0085c): the fire comet round the ball, the huge crescent of fire it
+# pushes ahead of it, and the scorched trail it burns into the pitch from the kick point with the flames and smoke left
+# burning on it.
+# The object is ev6123gf00 (assets\data\{common,dx11}\effect\event\ev60\ev6123gf00\), built by
+# research/scripts/grand_fire_ball_fx.py from the cut-in's effect object ev60012300 (c0300 held at frame 384, texture
+# flow running on through a 30 s loop; placed by its top-level joints, the root still): the ball at the origin, its run
+# along +Z, everything x0.25 about the ball's spot on the pitch (crescent ~30 m wide, comet ~2 m tall); the scorch
+# grows from the kick point at 0.75 m a frame up to 40 m behind its head, its tail fading, the flames and smoke on it
+# moving with the stretch. docs/game/media/grand-fire-ball-fx.md.
+# The trigger copies the fire long-shot aura's row (like = "ega0085c"; skillEffectBitFlag 4 = long shot):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). The aura lives from
+# the first flight frame to the end of the shot like every [[shot_aura]] (the framework starts and stops it).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "grand_fire_blaze"
+from = "ega0085c"
+object = "effect/event/ev60/ev6123gf00/ev6123gf00.objbin"
+
+[[shot_aura]]
+name = "grand_fire_blaze"
+when = { techniques = ["whs01230"] }
+aura = "grand_fire_blaze"
+like = "ega0085c"

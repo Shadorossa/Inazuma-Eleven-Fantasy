@@ -1,0 +1,28 @@
+# Utilities: the card grid of the team planner's picker (feature team_planner; Lua research/grafts/util_team_planner,
+# docs/game/ui/team-planner.md §2.2). Plantilla de equipo › Formación › A on an empty slot › «Planificar equipo» › a team:
+# the team's characters as cards.
+#   util_tp_card   x24 (cols x rows of [team_planner.grid], at most 24), a copy of the formation screen's own character
+#                  card (team00_01_chara_card_for_soccer: its textures are in the menu's resources already); the Lua
+#                  draws each from a card param (the game's param-id card command), places / scales it, dims the cards
+#                  the save does not own and sets its draw priority over the formation. Opened per instance only while
+#                  the grid shows.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "util_tp_card"
+from = "team00_01_chara_card_for_soccer"
+
+[[patch]]
+menu = "soccer_formation_menu"
+add_layer = { name = "util_tp_card", object = "util_tp_card", count = 24, groups = [{ group = "soccer_formation_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The picker's team grid (2026-10-12): the VR-Framework's emblem grid (VRFW_EmblemGrid, objects vrfw_emblem_tile /
+# vrfw_tile_label of research/mods/VRFW/content/menus/emblem_grid.toml): 24 tiles (cols x rows of
+# [team_planner.team_grid]) and two labels a tile (the team's name, «owned/characters»).
+[[patch]]
+menu = "soccer_formation_menu"
+add_layer = { name = "util_tp_emblem", object = "vrfw_emblem_tile", count = 24, groups = [{ group = "soccer_formation_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "soccer_formation_menu"
+add_layer = { name = "util_tp_label", object = "vrfw_tile_label", count = 48, groups = [{ group = "soccer_formation_menu", flags = [0, 0, 0, 0, 1, 0] }] }

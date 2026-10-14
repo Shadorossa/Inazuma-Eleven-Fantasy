@@ -1,0 +1,236 @@
+schema = "VRFW.character/2"
+# Character Reforged · Orpheus · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03031610"                                   # Gigi Blasi
+
+  [[edit.cards]]
+  id = 0x5C5BBF0C                                         # GK/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 225, control = 225, technique = 239, pressure = 259, physical = 123, intelligence = 258, agility = 235, freedom = 209 }
+  moves = [
+    { move = 0xA3980723, level = 1 },                     # Colosseum Guard
+    { move = 0xED1BFBD3, level = 1 },                     # Fingers of Gaia
+    { move = 0x00196EC2, level = 33 },                    # Earthquake
+    { move = 0xDBA0E5E3, level = 42 },                    # Gigant Wall
+  ]
+
+[[edit]]
+target = "c03031620"                                   # Vento Galliano
+
+  [[edit.cards]]
+  id = 0x7776ECCF                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 86, control = 193, technique = 193, pressure = 309, physical = 209, intelligence = 327, agility = 216, freedom = 221 }
+  moves = [
+    { move = 0x3C843987, level = 1 },                     # Flurry Dash
+    { move = 0x34E4CEAB, level = 20 },                    # Barbarian Shield
+    { move = 0x3F00EDE9, level = 53 },                    # Dash Storm
+    { move = 0xB7F1AED6, level = 62 },                    # Double Cyclone
+  ]
+
+[[edit]]
+target = "c03031630"                                   # Ottorino Nobili
+
+  [[edit.cards]]
+  id = 0x6E6DDD8E                                         # DF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 186, technique = 194, pressure = 259, physical = 236, intelligence = 298, agility = 224, freedom = 221 }
+  moves = [
+    { move = 0xA6D711A6, level = 1 },                     # Full Power Shield
+    { move = 0x34E4CEAB, level = 20 },                    # Barbarian Shield
+    { move = 0x4BD584B7, level = 38 },                    # Power Charge
+    { move = 0x7FE98F60, level = 56 },                    # Ganymede Ray
+  ]
+
+[[edit]]
+target = "c03031640"                                   # Anton Graziuso
+
+  [[edit.cards]]
+  id = 0x212C4B49                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 197, control = 194, technique = 203, pressure = 279, physical = 161, intelligence = 319, agility = 197, freedom = 209 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0x34E4CEAB, level = 20 },                    # Barbarian Shield
+    { move = 0x1A868BED, level = 40 },                    # Clone Defence
+    { move = 0x0710C61E, level = 57 },                    # Perimeter Zone
+  ]
+
+[[edit]]
+target = "c03031650"                                   # Marco Maserati
+
+  [[edit.cards]]
+  id = 0x38377A08                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 182, control = 201, technique = 215, pressure = 243, physical = 265, intelligence = 304, agility = 208, freedom = 209 }
+  moves = [
+    { move = 0x31ABD82E, level = 1 },                     # Circus Block
+    { move = 0x261BDCA8, level = 1 },                     # Moonsault
+    { move = 0x21127474, level = 35 },                    # Ultra Moon
+    { move = 0x47380F29, level = 57 },                    # Echo Ball
+  ]
+
+[[edit]]
+target = "c03031660"                                   # Angelo Gabrini
+
+  [[edit.cards]]
+  id = 0x131A29CB                                         # MF/DF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 266, technique = 282, pressure = 192, physical = 144, intelligence = 248, agility = 157, freedom = 325 }
+  moves = [
+    { move = 0x61FB16FD, level = 1 },                     # Divine Arrows
+    { move = 0xB633C4E1, level = 1 },                     # Photon Crash
+    { move = 0x78E027BC, level = 37 },                    # Shine Drive
+    { move = 0x0D368F6B, level = 60 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c03031670"                                   # Gianluca Zanardi
+
+  [[edit.cards]]
+  id = 0x0A01188A                                         # MF/FW · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 211, control = 262, technique = 282, pressure = 193, physical = 181, intelligence = 248, agility = 198, freedom = 217 }
+  moves = [
+    { move = 0x332CCDC9, level = 1 },                     # Heel Kick
+    { move = 0x47380F29, level = 15 },                    # Echo Ball
+    { move = 0x3BF45E9A, level = 40 },                    # Triple Boost
+    { move = 0x46FA651E, level = 65 },                    # Water Veil
+  ]
+
+[[edit]]
+target = "c03031680"                                   # Giorgio Giannini
+
+  [[edit.cards]]
+  id = 0x8D990445                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 208, control = 248, technique = 263, pressure = 200, physical = 196, intelligence = 243, agility = 211, freedom = 213 }
+  moves = [
+    { move = 0x7EEA4EE9, level = 1 },                     # Blade Attack
+    { move = 0x47380F29, level = 15 },                    # Echo Ball
+    { move = 0x8FBCFC3C, level = 32 },                    # Blazing Knuckle
+    { move = 0x0D368F6B, level = 57 },                    # Heaven's Time
+  ]
+
+[[edit]]
+target = "c03031690"                                   # Dante Diavolo
+
+  [[edit.cards]]
+  id = 0x94823504                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 224, technique = 217, pressure = 157, physical = 170, intelligence = 182, agility = 190, freedom = 213 }
+  moves = [
+    { move = 0x47380F29, level = 1 },                     # Echo Ball
+    { move = 0x34E4CEAB, level = 20 },                    # Barbarian Shield
+    { move = 0x28B0E96F, level = 35 },                    # Heavy Mettle
+    { move = 0xB4757AB8, level = 55 },                    # Divine Stamp
+  ]
+
+[[edit]]
+target = "c03031700"                                   # Paolo Bianchi
+
+  [[edit.cards]]
+  id = 0x4482E47A                                         # FW/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 275, control = 278, technique = 286, pressure = 126, physical = 212, intelligence = 211, agility = 178, freedom = 279 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0x8D5B6847, level = 1 },                     # Odin Sword
+    { move = 0x61FB16FD, level = 42 },                    # Divine Arrows
+    { move = 0x7DD6FEF8, level = 58 },                    # Athena's Anthem
+  ]
+
+[[edit]]
+target = "c03031710"                                   # Raffaele Generani
+
+  [[edit.cards]]
+  id = 0x5D99D53B                                         # FW/DF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 328, control = 220, technique = 194, pressure = 230, physical = 162, intelligence = 212, agility = 208, freedom = 225 }
+  moves = [
+    { move = 0x79224D8B, level = 1 },                     # Freeze Shot
+    { move = 0x19025F83, level = 28 },                    # Quick Draw
+    { move = 0xB1FBC783, level = 40 },                    # Reflect Buster
+    { move = 0x3BF45E9A, level = 65 },                    # Triple Boost
+  ]
+
+[[edit]]
+target = "c03031720"                                   # Daniele Sanctis
+
+  [[edit.cards]]
+  id = 0x76B486F8                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 146, control = 193, technique = 180, pressure = 262, physical = 205, intelligence = 231, agility = 306, freedom = 242 }
+  moves = [
+    { move = 0xDBA0E5E3, level = 1 },                     # Gigant Wall
+    { move = 0x8FBCFC3C, level = 1 },                     # Blazing Knuckle
+    { move = 0xBFCC20E7, level = 33 },                    # Wood Chopper
+    { move = 0xA3980723, level = 63 },                    # Colosseum Guard
+  ]
+
+[[edit]]
+target = "c03031730"                                   # Enrico Oliviero
+
+  [[edit.cards]]
+  id = 0x6FAFB7B9                                         # MF/FW · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 297, control = 225, technique = 219, pressure = 174, physical = 212, intelligence = 196, agility = 208, freedom = 230 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0x60397CCA, level = 1 },                     # Cross Drive
+    { move = 0x47380F29, level = 59 },                    # Echo Ball
+    { move = 0x3BF45E9A, level = 68 },                    # Triple Boost
+  ]
+
+[[edit]]
+target = "c03031740"                                   # Alessandro Rossa
+
+  [[edit.cards]]
+  id = 0x20EE217E                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 252, control = 252, technique = 270, pressure = 190, physical = 193, intelligence = 240, agility = 190, freedom = 209 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                     # Double Touch
+    { move = 0xAC6D8A70, level = 1 },                     # Rainbow Arc
+    { move = 0x31ABD82E, level = 45 },                    # Circus Block
+    { move = 0x4E9A9232, level = 65 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c03031750"                                   # Giuseppe Cannavaro
+
+  [[edit.cards]]
+  id = 0x39F5103F                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 147, control = 186, technique = 185, pressure = 304, physical = 165, intelligence = 316, agility = 204, freedom = 325 }
+  moves = [
+    { move = 0x31ABD82E, level = 1 },                     # Circus Block
+    { move = 0x4031A7F5, level = 1 },                     # Mole Fake
+    { move = 0xDD365E15, level = 48 },                    # Mole Shuffle
+    { move = 0x47380F29, level = 62 },                    # Echo Ball
+  ]

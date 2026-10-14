@@ -38,6 +38,9 @@ poll_ms = 1000
 #   [mods.vr_framework.debug]
 #   reveal_all = true
 reveal_all = false
+# the BB P2P phase-1 probes (docs/game/modes/bb-p2p-lockstep.md §8: fixed dt, seeded RNG, input record / replay, state
+# hash lines): "off" for players; "record" | "replay" | "replay_p2" only in a test install's loader config
+p2p_probe = "off"
 
 # ---------------------------------------------------------------- chara (chara\)
 [character]

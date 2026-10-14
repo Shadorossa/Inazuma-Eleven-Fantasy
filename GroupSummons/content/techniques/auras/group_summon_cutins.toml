@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# Group Summons: the summon cut-ins with every participant (content\anims\group_summons.toml;
+# docs/game/media/strikers-multi-summon.md §5). Griffin and Arthur play their own copies of the retail cut-in
+# (aura_skill_config col 12 `event` = crc32 of the event name). The participants are handed to the event by the
+# VR-Framework's aura rule run time (SoccerEventPlay chain pre-hook) from this mod's content\transforms\group_summons.toml.
+# Moved from Inazuma Fantasy's content\techniques\auras\fusion_keshin_cutins.toml (2026-10-14).
+
+[[aura]]
+aura = "wks00300"                 # Griffin: ev80_00040 -> ev80_80300 (3 players)
+cells = { event = 0xEAA61CD5 }    # crc32("ev80_80300")
+
+[[aura]]
+aura = "wks00240"                 # Arthur: ev80_00060 -> ev80_80240 (2 players)
+cells = { event = 0x8F08B3E6 }    # crc32("ev80_80240")

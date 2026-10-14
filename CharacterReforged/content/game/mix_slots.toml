@@ -1,0 +1,33 @@
+schema = "VRFW.game/2"
+# Character Reforged › the new skill set's mix slot store and slot questions (scripts\mix_slots.lua;
+# docs/refactor/aura-mods-split.md «The 6 + 2 set over the retail data»). The skill table (graft ss2_menus) and the
+# Hiper pages of Inazuma Fantasy ask them.
+
+# Inazuma Fantasy kept the mix slots in its blob hiper_slots.json until 2026-10-14: copied once per save slot into this
+# mod's folder (same file name and layout; IF's file is left as it is)
+[[VRFW.SaveImport]]
+name = "CharacterReforged.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["hiper_slots.json"]
+
+# (move) -> kind (0 aura slot, 1 mix slot, 2 an armour: the aura slot through its keshin, -1 none), keshin
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_SLOT_OF"
+handler = "CharacterReforged.SlotOfCmd"
+
+# (saved card) -> his mix-slot move (0 = empty)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_MIX_GET"
+handler = "CharacterReforged.MixGet"
+
+# (saved card, move | 0) -> ok, code (0 ok, 1 not a Mix-Max / «Modo cambio» move, 2 not written)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_MIX_SET"
+handler = "CharacterReforged.MixSetCmd"
+
+# (saved card) -> aura, mix, aura_from, mix_from, then the 6 rows' list positions (0..5, -1 none): THE projection of
+# the new set (CharacterReforged.ProjectSkillSet, read only); the skill table shows its aura / mix halves from it (from:
+# 0..5 a list position, 8 board slot 8, 100 the mix store, 200 the board, -1 none)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PROJECT_SKILL_SET"
+handler = "CharacterReforged.ProjectSkillSetCmd"

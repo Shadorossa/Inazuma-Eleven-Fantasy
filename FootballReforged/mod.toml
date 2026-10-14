@@ -1,0 +1,50 @@
+id = "football_reforged"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Football Reforged"
+version = "1.0.1"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "A base of match mechanics in modules you switch on or off in Mod options (group «Football Reforged»). Goalkeeper barrier: every keeper has a barrier, the first 25 % of his fatigue bar drawn orange at his goal's side; while it lasts the shots he faces lose power (÷ 1.75), it falls as he tires, and a block move of his team makes his next keeper move 30 % cheaper in tension. Works with the VR-Framework alone; with Stamina Points the barrier follows the keeper's PE."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-14"
+# This mod's own names (TOML keys [FootballReforged.X], Lua FootballReforged.X, commands CMND_FOOTBALLREFORGED_*, tables
+# FootballReforged.*); never VRFW.
+prefix = "FootballReforged"
+folder = "FootballReforged"
+# Created on 2026-10-14 (owner request: «uno que se llame "FootballReforged" y sea como una base con módulos para
+# seleccionar, y meter dentro de este mod lo de la barrera del portero de IF»; docs/game/mods/football-reforged.md).
+# Standard mod layout (docs/framework/mod-layout.md):
+#   content\modules\<module>.toml      one file per MODULE: id, its option row, default, text keys ([FootballReforged.Module])
+#   options.toml                       the group row «Football Reforged» + one child row (on / off) per module
+#   scripts\lib\modules.lua            the one switch helper: FootballReforged.ModuleOn("<module>") (live, no restart)
+#   config.toml                        each module's settings ([goalkeeper_barrier])
+#   content\game\football_reforged.toml  globals, structs, the cost check provider, the HUD commands
+#   text\keys.toml                     the mod's name / description and the option rows, 9 languages
+# Module goalkeeper_barrier (was Inazuma Fantasy's part gk_barrier until 2026-10-14):
+#   scripts\goalkeeper_barrier.lua, config.toml [goalkeeper_barrier], content\menus\goalkeeper_barrier_hud.toml +
+#   content\images\menu\02_btl\btl06\btl06_13\goalkeeper_barrier.toml (the orange segment layer), graft
+#   research/grafts/football_reforged_barrier_hud (draws it inside the scoreboard's keeper fatigue bars).
+# vr_framework 2.4.6: the rule triggers keeper_duel / tension_pay:skill, the cost point Stamina.AuraCostCheck (hook bus
+# `order`), the match resources (VRFW.resource.get: the optional PE of Stamina Points), «Opciones de mods» groups
+# (parent / group rows), VRFW.files.declarations.
+requires = ["vr_framework>=2.4.6"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["memory", "call", "command", "hook"]
+
+# Other mods read the keeper discount table (FootballReforged.KeeperTension (keeper handle, move) -> ok) in their native
+# answers, the barrier through CMND_FOOTBALLREFORGED_GOALKEEPER_BARRIER(side) -> ok, percent, discount, team, user, and a
+# module's switch through the option row football_reforged.<module> (CMND_VRFW_OPTION_GET / VRFW.option).
+[exports]
+functions = []
+keys = []
+tables = ["FootballReforged.KeeperTension"]
+
+# Its INTERNAL modules (docs/framework/mod-families.md): the option rows of options.toml that switch a module on / off
+# (content\modules\<module>.toml names its row). The Mods screen lists them first on this mod's page («Módulos y
+# ajustes»), the same list a family's module mods use. Adding a module = its row in options.toml + its id here.
+[modules]
+options = ["goalkeeper_barrier"]

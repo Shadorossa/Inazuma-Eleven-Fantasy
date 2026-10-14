@@ -11,6 +11,12 @@ progression = true
 # Draft offers every time (for testing).
 seed = 0
 
+[active_team]
+# The «Active team» tile (1.5.61): the first tile of «Main teams», before the Draft; it plays your active team as it is
+# (the team the game uses outside the Battle Bay), no draft and no team pick. The tile: the [[team]] of this mod's
+# content\teams folder with this name (content/teams/51_active_team.toml; its players are placeholders, never played).
+team = "active_team"
+
 [draft]
 # The Draft's pool is derived when the game starts, from the Battle Bay as the game loads it (no fixed list): every
 # player (squad slots 0-18) of every other Battle Bay team, one card per character. These keys are its rule.

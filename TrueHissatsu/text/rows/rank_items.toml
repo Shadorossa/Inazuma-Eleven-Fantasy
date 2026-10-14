@@ -1,0 +1,171 @@
+schema = "VRFW.text/2"
+# True Hissatsu › the move-rank items' messages in both skill views (graft move_rank_items: Character Reforged's skill
+# table and Victory Road's own board; read with
+# CMND_TEXT_GET of crc32(row id); docs/game/mechanics/skill-rank-usage.md §7.15). Placeholders filled by the graft:
+# {item} the item's name, {move} the move's name, {old} / {new} the grade (the game's evolution glyph, else
+# TrueHissatsu.RankItemLevel), {count} how many of the item the player has.
+table = "menu_text"
+
+[[row]]
+id = "TrueHissatsu.RankItemGuide"  # button guide on a move row
+es = "Subir nivel"
+en = "Level up"
+fr = "Améliorer"
+de = "Stufe erhöhen"
+it = "Potenzia"
+pt = "Subir nível"
+ja = "レベルアップ"
+zh_hans = "升级"
+zh_hant = "升級"
+
+[[row]]
+id = "TrueHissatsu.RankItemLevel"  # a grade without an evolution glyph; {n} = grade + 1
+es = "Nv. {n}"
+en = "Lv. {n}"
+fr = "Niv. {n}"
+de = "St. {n}"
+it = "Liv. {n}"
+pt = "Nv. {n}"
+ja = "Lv.{n}"
+zh_hans = "Lv.{n}"
+zh_hant = "Lv.{n}"
+
+[[row]]
+id = "TrueHissatsu.RankItemConfirm"  # the confirm window (Sí / No)
+es = "¿Usar {item} con {move}?\n{old} → {new}   (tienes {count})"
+en = "Use {item} on {move}?\n{old} → {new}   (you have {count})"
+fr = "Utiliser {item} sur {move} ?\n{old} → {new}   (tu en as {count})"
+de = "{item} für {move} verwenden?\n{old} → {new}   (du hast {count})"
+it = "Usare {item} su {move}?\n{old} → {new}   (ne hai {count})"
+pt = "Usar {item} em {move}?\n{old} → {new}   (tens {count})"
+ja = "{move}に{item}を使いますか？\n{old} → {new}　（所持数 {count}）"
+zh_hans = "要对{move}使用{item}吗？\n{old} → {new}　（持有 {count}）"
+zh_hant = "要對{move}使用{item}嗎？\n{old} → {new}　（持有 {count}）"
+
+[[row]]
+id = "TrueHissatsu.RankItemDone"
+es = "¡{move} ha subido de nivel!\n{old} → {new}"
+en = "{move} levelled up!\n{old} → {new}"
+fr = "{move} a monté de niveau !\n{old} → {new}"
+de = "{move} ist eine Stufe aufgestiegen!\n{old} → {new}"
+it = "{move} è salita di livello!\n{old} → {new}"
+pt = "{move} subiu de nível!\n{old} → {new}"
+ja = "{move}が進化した！\n{old} → {new}"
+zh_hans = "{move}进化了！\n{old} → {new}"
+zh_hant = "{move}進化了！\n{old} → {new}"
+
+[[row]]
+id = "TrueHissatsu.RankItemNone"  # no upgrade book in the bag
+es = "No tienes ningún {item}."
+en = "You don't have any {item}."
+fr = "Tu n'as aucun {item}."
+de = "Du hast kein {item}."
+it = "Non hai nessun {item}."
+pt = "Não tens nenhum {item}."
+ja = "{item}を持っていない。"
+zh_hans = "你没有{item}。"
+zh_hant = "你沒有{item}。"
+
+[[row]]
+id = "TrueHissatsu.RankItemNeedsLast"  # second-to-last grade, no Ultimate Evolution Manual
+es = "{move} está en su penúltimo nivel ({old}).\nSolo el {item} puede llevarla al último nivel, y no tienes ninguno."
+en = "{move} is at its second-to-last level ({old}).\nOnly the {item} can take it to the final level, and you don't have one."
+fr = "{move} est à son avant-dernier niveau ({old}).\nSeul le {item} peut l'amener au dernier niveau, et tu n'en as aucun."
+de = "{move} ist auf der vorletzten Stufe ({old}).\nNur das {item} bringt sie auf die letzte Stufe, und du hast keins."
+it = "{move} è al penultimo livello ({old}).\nSolo il {item} può portarla all'ultimo livello, e non ne hai nessuno."
+pt = "{move} está no penúltimo nível ({old}).\nSó o {item} a pode levar ao último nível, e não tens nenhum."
+ja = "{move}は最終段階の1つ手前（{old}）。\n最終段階にできるのは{item}だけだが、持っていない。"
+zh_hans = "{move}处于倒数第二阶段（{old}）。\n只有{item}能让它进化到最终阶段，但你没有。"
+zh_hant = "{move}處於倒數第二階段（{old}）。\n只有{item}能讓它進化到最終階段，但你沒有。"
+
+[[row]]
+id = "TrueHissatsu.RankItemMax"  # already at the last grade
+es = "{move} ya está en su nivel máximo ({old})."
+en = "{move} is already at its maximum level ({old})."
+fr = "{move} est déjà à son niveau maximum ({old})."
+de = "{move} ist bereits auf der höchsten Stufe ({old})."
+it = "{move} è già al livello massimo ({old})."
+pt = "{move} já está no nível máximo ({old})."
+ja = "{move}はすでに最終段階（{old}）。"
+zh_hans = "{move}已经是最终阶段（{old}）。"
+zh_hant = "{move}已經是最終階段（{old}）。"
+
+[[row]]
+id = "TrueHissatsu.RankItemNoGrade"  # aura / spirit moves, moves not in the list
+es = "Esta técnica no puede subir de nivel."
+en = "This move can't level up."
+fr = "Cette technique ne peut pas monter de niveau."
+de = "Diese Technik kann keine Stufe aufsteigen."
+it = "Questa tecnica non può salire di livello."
+pt = "Esta técnica não pode subir de nível."
+ja = "この技は進化できない。"
+zh_hans = "这个招式无法进化。"
+zh_hant = "這個招式無法進化。"
+
+[[row]]
+id = "TrueHissatsu.RankItemFailed"  # the rank system did not answer (module off) or refused
+es = "No se ha podido usar el objeto."
+en = "The item couldn't be used."
+fr = "Impossible d'utiliser l'objet."
+de = "Der Gegenstand konnte nicht verwendet werden."
+it = "Impossibile usare l'oggetto."
+pt = "Não foi possível usar o objeto."
+ja = "アイテムを使えなかった。"
+zh_hans = "无法使用该道具。"
+zh_hant = "無法使用該道具。"
+
+# The level-up banner in the match (graft sr_popup): appended to the move's name on the skill telop when a move levels
+# up by use; {n} = the new level (grade + 1)
+[[row]]
+id = "TrueHissatsu.RankUpSuffix"
+es = " sube a Nv.{n}"
+en = " levels up to Lv.{n}"
+fr = " passe au Niv.{n}"
+de = " steigt auf St.{n}"
+it = " sale al Liv.{n}"
+pt = " sobe para Nv.{n}"
+ja = "がLv.{n}にレベルアップ"
+zh_hans = "升至Lv.{n}"
+zh_hant = "升至Lv.{n}"
+
+# Victory Road's own board (graft move_rank_items, rank_items_board.lua): the rebindable key of content\inputs\
+# rank_items.toml. Its row in «Configuración de controles» (Controles básicos)...
+[[row]]
+id = "TrueHissatsu.RankItemUseAction"
+es = "Usar libro de supertécnica"
+en = "Use special move book"
+fr = "Utiliser un livre de technique"
+de = "Technikbuch verwenden"
+it = "Usa libro della tecnica"
+pt = "Usar livro de técnica"
+ja = "必殺技の書を使う"
+zh_hans = "使用必杀技之书"
+zh_hant = "使用必殺技之書"
+
+# ...its glyph in the board's bottom guide («<key> Subir nivel»): only the markup of the action's command, so it follows
+# the player's binding and the device...
+[[row]]
+id = "TrueHissatsu.RankItemUseKey"
+es = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+en = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+fr = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+de = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+it = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+pt = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+ja = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+zh_hans = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+zh_hant = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+
+# ...and the second line of the board's question (the board keeps its own keys, so the use is a second press of the
+# key on the same move instead of a Sí / No window)
+[[row]]
+id = "TrueHissatsu.RankItemPressAgain"
+es = "Pulsa <CMD_TRUEHISSATSU_RANK_ITEM_USE> otra vez para usarlo."
+en = "Press <CMD_TRUEHISSATSU_RANK_ITEM_USE> again to use it."
+fr = "Appuie de nouveau sur <CMD_TRUEHISSATSU_RANK_ITEM_USE> pour l'utiliser."
+de = "Drücke erneut <CMD_TRUEHISSATSU_RANK_ITEM_USE>, um ihn zu verwenden."
+it = "Premi di nuovo <CMD_TRUEHISSATSU_RANK_ITEM_USE> per usarlo."
+pt = "Prime <CMD_TRUEHISSATSU_RANK_ITEM_USE> outra vez para o usar."
+ja = "もう一度<CMD_TRUEHISSATSU_RANK_ITEM_USE>で使用"
+zh_hans = "再按一次<CMD_TRUEHISSATSU_RANK_ITEM_USE>使用"
+zh_hant = "再按一次<CMD_TRUEHISSATSU_RANK_ITEM_USE>使用"

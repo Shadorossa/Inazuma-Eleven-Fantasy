@@ -1,0 +1,26 @@
+# «Vuelo de fénix» (Firebird Flight, whs02360; fire shot, cut-in ev60_02360): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0400, the ball kicked from 15.8 m on the phoenix's fire
+# wings): its red / yellow / white lights and waves, the phoenix's fire wings beating round it and the fire grains it
+# sheds and leaves along its way, instead of the plain fire special-shot aura (ega0075c). The object is ev6236ff00
+# (effect/event/ev60/ev6236ff00/), built by research/scripts/firebird_flight_ball_fx.py from the cut-in's effect
+# object ev60023600: c0400 replayed from just before the kick (384), then held at frame 488, ball at the origin
+# flying +Z, x1. Left out: the space backdrop and its flowing streaks, the camera blur plane, the keshin ring, the
+# fire at the kick point, the keshins. docs/game/media/firebird-flight-ball-fx.md. The trigger copies the fire
+# special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b). Its flight: content\techniques\firebird_flight_trajectory.toml. Mod «Living Shots»
+# (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own cut-in effects by
+# research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "firebird_flight"
+from = "ega0075c"
+object = "effect/event/ev60/ev6236ff00/ev6236ff00.objbin"
+
+[[shot_aura]]
+name = "firebird_flight"
+when = { techniques = ["whs02360"] }
+aura = "firebird_flight"
+like = "ega0075c"
+# the aura's replay (104 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 104 }

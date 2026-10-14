@@ -12,7 +12,7 @@
 # own drawings, research/scripts/chain_board_art.py). The script is the Lua build's full file (graft chain_board,
 # `menu_assemble.py build --mod vr_framework`), packed by framework_pack.py as menus\scripts\vrfw_chain_board_menu.lua.
 # Harmless when no mod declares a chain board: nothing opens the screen.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 # the anchor's layout (.g4pkm): a copy of the retail save01_01 with the system line / time text moved off screen
 layout = [

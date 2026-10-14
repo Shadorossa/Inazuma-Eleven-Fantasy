@@ -1,0 +1,82 @@
+schema = "VRFW.character/2"
+# Character Reforged · Neo National · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03030070"                                   # Dave Quagmire
+
+  [[edit.cards]]
+  id = 0xB630035D                                         # MF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 325, control = 246, technique = 340, pressure = 180, physical = 169, intelligence = 220, agility = 149, freedom = 213 }
+  moves = [
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0x3F00EDE9, level = 1 },                     # Dash Storm
+    { move = 0x1C8CE2B8, level = 1 },                     # God Knows
+    { move = 0x035C1112, level = 1 },                     # Gungnir
+  ]
+
+[[edit]]
+target = "c04017360"                                   # Zack Cummings
+
+  [[edit.cards]]
+  id = 0x8FDDD912                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 248, control = 167, technique = 162, pressure = 257, physical = 266, intelligence = 267, agility = 235, freedom = 213 }
+  moves = [
+    { move = 0x29728358, level = 1 },                     # Planet Shield
+    { move = 0xAD6E4BF9, level = 1 },                     # Harvest
+    { move = 0x00196EC2, level = 10 },                    # Earthquake
+    { move = 0x7207C577, level = 67 },                    # Boost Glider
+  ]
+
+[[edit]]
+target = "c04017410"                                   # Wilbur Watkins
+
+  [[edit.cards]]
+  id = 0xC5D35950                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 340, control = 240, technique = 219, pressure = 132, physical = 201, intelligence = 144, agility = 154, freedom = 247 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
+    { move = 0x7FE98F60, level = 10 },                    # Ganymede Ray
+    { move = 0xB4757AB8, level = 40 },                    # Divine Stamp
+    { move = 0x6DAEF91C, level = 55 },                    # Supernova
+  ]
+
+[[edit]]
+target = "c04017470"                                   # Ethan Whitering
+
+  [[edit.cards]]
+  id = 0x9389FED6                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 239, technique = 263, pressure = 198, physical = 167, intelligence = 216, agility = 196, freedom = 247 }
+  moves = [
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
+    { move = 0x9765A74A, level = 10 },                    # Beast Fang
+    { move = 0x30A819A7, level = 63 },                    # Twin Boost F
+  ]
+
+[[edit]]
+target = "c06037140"                                   # Zeke Valanche
+
+  [[edit.cards]]
+  id = 0x53302DB7                                         # FW/GK · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 265, control = 252, technique = 252, pressure = 192, physical = 193, intelligence = 209, agility = 194, freedom = 231 }
+  moves = [
+    { move = 0x7FE98F60, level = 1 },                     # Ganymede Ray
+    { move = 0x029E7B25, level = 1 },                     # Gaia Break
+    { move = 0x8E7E960B, level = 1 },                     # Drill Smasher
+    { move = 0xEF5D458A, level = 50 },                    # Burnout
+  ]

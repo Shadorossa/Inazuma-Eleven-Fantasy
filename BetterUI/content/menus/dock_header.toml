@@ -1,0 +1,26 @@
+# Hand-maintained. The Team Dock («Plantilla de equipo», soccer_team_dock_menu) header: the crest's pointer zone on the
+# crest the dock_panel graft draws (BetterUI 1.21.22, owner 2026-10-14: the pointer on the crest left the focus frame on
+# the team name). The engine builds a zone from the LAYOUT rectangle of its MenuCollisionSetting node (the crest:
+# _touch_emblem01 of team01_04); node writes do not move it (docs/game/ui/ui-redesign.md «pointer zones do not follow
+# node writes»), and the graft draws the crest 116 px right of retail, so it had no zone. This dock's team row object
+# uses a copy of the layout, team01_04_evt_bui (research/scripts/dock_layout_build.py: the shared layout's row shift +
+# _touch_emblem01 on the header-mode crest); every other screen (team_dock_menu: retail crest place) keeps the shared
+# object and layout. The graft (research/grafts/ui_clean_dock_panel, CHD.HeaderZones) switches the copy's crest zone
+# off while the crest is not drawn there (panel mode, kill switches).
+schema = "VRFW.menu/2"
+
+# DispMaxValue 999: the team level digits («Nv. 999», the header leaves room for 3): only the display maximum, so
+# nothing changes while the level stays <= 99; Inazuma Fantasy raises the same value on the shared object (its
+# [[object_set]] does not reach this copy)
+[[object]]
+name = "team01_04_team_name_bar_evt_bui"
+from = "team01_04_team_name_bar"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team01/team01_04/team01_04.g4pkm" }, values = { 1 = "common/menu/102_team/team01/team01_04/team01_04_evt_bui.g4pkm" } },
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[redirect]]
+object = "team01_04_team_name_bar"
+to = "team01_04_team_name_bar_evt_bui"
+menus = ["soccer_team_dock_menu"]

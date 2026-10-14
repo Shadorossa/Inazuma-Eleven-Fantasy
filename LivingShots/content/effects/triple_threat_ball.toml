@@ -1,0 +1,29 @@
+# «Triple amenaza» (Triple Threat, whs01700, whs01700_mm and whs01700_or, same cut-in; mountain shot of three players,
+# cut-in ev60_01700): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut
+# (c0500, the ball shot level from 9.25 m up): the blue wind aura round the ball with its bright blue streak and its
+# lightning, the white wind tunnel growing from the kick point along the path (up to ~25 m behind the ball), the white
+# wind rings and the blue wind streams with their lightning left behind it, instead of the plain mountain
+# special-shot aura (ega0075a).
+# The object is ev6170tt00 (effect/event/ev60/ev6170tt00/), built by research/scripts/triple_threat_ball_fx.py from
+# the cut-in's effect object ev60017000: the cut-in's motion from the kick (332) replayed with every part kept in its
+# place relative to the ball, then held at c0500 frame 392 (texture flow running on, the lightning blinking on as
+# over 352-392), ball at the origin flying +Z, x1. Left out: the radial-light backdrop (scenery 70-88 m behind).
+# docs/game/media/triple-threat-ball-fx.md.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\triple_threat_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "triple_threat"
+from = "ega0075a"
+object = "effect/event/ev60/ev6170tt00/ev6170tt00.objbin"
+
+[[shot_aura]]
+name = "triple_threat"
+when = { techniques = ["whs01700", "whs01700_mm", "whs01700_or"] }
+aura = "triple_threat"
+like = "ega0075a"
+# the aura's replay (60 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 60 }

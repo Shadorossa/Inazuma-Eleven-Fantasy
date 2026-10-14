@@ -11,6 +11,9 @@
 #     plates) and the coach bust (soccer08_13) sit mirrored on the left. Positions / scales re-applied every PostStep.
 #     Move list open (UpdateAnimeMoveOffsetCmdBase, engine by name): the retail slide of the cross (set vs, type
 #     offset, _pos_vs01 -330) held at rest: the open menu keeps the closed anchor, the cards unfold on its left.
+#     2026-10-14: the «Pase» / «Disparar» / «Esquivar» plates of the cross (soccer08_08_cmd_act_base_cmd, picked by the
+#     action the engine gives SetupBaseCmdInfo) and the «Cancelar» guide (soccer08_17_cancel_guide) at 0.8
+#     (EVT_HL_ACTION_PLATE_SCALE); «Chute» and «Pase alto» untouched.
 #   * soccer_inplay_menu / soccer_battle_inplay_menu: «Modo Comandante» (+ bench / spectator guides, soccer00_67) at the
 #     top centre under the scoreboard with the square blue plate; its error bubble under them. Visibility untouched
 #     (retail decides it).
@@ -42,7 +45,7 @@ module = "lua_bridge"
 mod = "clean_hud"
 requires = []
 conflicts = []
-wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "PostStep", "Step", "UpdateAnimeMoveOffsetCmdBase", "SetupAreaTitle", "SetupZoneExecChara", "SetDashButtonGuideStatus",
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "PostStep", "Step", "UpdateAnimeMoveOffsetCmdBase", "SetupBaseCmdInfo", "ResetBaseCmdInfo", "SetupAreaTitle", "SetupZoneExecChara", "SetDashButtonGuideStatus",
          "SetDashAttackButtonGuideStatus", "SetCursorSpeedUpButtonGuideStatus", "SetRunAuraSlotButtonGuideStatus",
          "SetAttachButtonGuideStatus", "UpdateZoneLimitTimer",
          "UpdateFocusCountDownTimer", "UpdateSkillDecideCountDownTimer"]

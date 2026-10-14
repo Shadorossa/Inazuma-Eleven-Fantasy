@@ -1,0 +1,19 @@
+# Character Reforged › the skill table as a VR-Framework host (docs/framework/lua-hosts.md, docs/framework/
+# skill-table-host.md): a HOOK file of evt_skill_slot_menu (the «Fantasy» skill table; the script is graft ss2_menus,
+# no retail original, so the hook names the script's globals in `require`). It makes the script the host
+# «evt_skill_slot_menu» whose locals map is the one graft skill_table_host serves (CharacterReforged.SkillTable.L):
+# other mods' hook files then hook its callbacks with VRFW_Host.on (Player Training's training mode). Shipped as is
+# (numbers, no placeholders); no engine call at chunk load. Not rebuilt by Inazuma Fantasy: one copy per VM.
+name = "skill_table_host_hooks"
+mod = "character_reforged"
+order = 330
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Character Reforged: the skill table script as a VR-Framework host (VRFW_Host)"
+
+[[hooks]]
+stem = "evt_skill_slot_menu"
+src = "skill_table_host_hooks.lua"
+require = ["EVT_OpenOriginalBoard", "EVT_PickCoroutine"]

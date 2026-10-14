@@ -69,10 +69,12 @@ size = 0x40
 fields = { team = { at = 0x0, type = "u32" }, leader = { at = 0x4, type = "u32" }, stadium = { at = 0xC, type = "u32" }, cond = { at = 0x10, type = "ptr" }, bgm = { at = 0x2C, type = "u32" } }
 
 [[VRFW.Struct]]
-# the grid menu object: campaign variant byte; 28 slot records of 0x38 bytes from +0x258 (GridSlot)
+# the grid menu object: campaign variant byte; 28 slot records of 0x38 bytes from +0x258 (GridSlot);
+# player_one_decided (1.5.61): the 1 vs 1's player side is picked (the next grid decide picks the rival; GameDecide
+# 0x1068350: `cmp byte [rcx+894h], 0`)
 name = "GridMenu"
 size = 0x8C8
-fields = { campaign = { at = 0x885, type = "u8" } }
+fields = { campaign = { at = 0x885, type = "u8" }, player_one_decided = { at = 0x894, type = "u8" } }
 
 [[VRFW.Struct]]
 name = "GridSlot"

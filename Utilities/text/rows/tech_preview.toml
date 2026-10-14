@@ -1,0 +1,47 @@
+# Utilities' technique preview texts (docs/game/ui/technique-preview.md): rows of menu_text in 9 languages, read by the
+# graft research/grafts/util_tech_preview with CMND_TEXT_GET by id = crc32(row id), and by the game's «Configuración de
+# controles» (the label of the action row, content\inputs\tech_preview.toml).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the prompt's button: only the glyph markup of the action's command CMD_UTIL_TECH_PREVIEW (default RS / P, as the player
+# bound it); the engine draws the glyph of the device in use. crc32("utilities_tech_preview_key")
+[[row]]
+id = "utilities_tech_preview_key"
+es = "<CMD_UTIL_TECH_PREVIEW>"
+en = "<CMD_UTIL_TECH_PREVIEW>"
+fr = "<CMD_UTIL_TECH_PREVIEW>"
+de = "<CMD_UTIL_TECH_PREVIEW>"
+it = "<CMD_UTIL_TECH_PREVIEW>"
+pt = "<CMD_UTIL_TECH_PREVIEW>"
+ja = "<CMD_UTIL_TECH_PREVIEW>"
+zh_hans = "<CMD_UTIL_TECH_PREVIEW>"
+zh_hant = "<CMD_UTIL_TECH_PREVIEW>"
+
+# the prompt's word, right of the glyph, on the move card (bottom right). crc32("utilities_tech_preview")
+[[row]]
+id = "utilities_tech_preview"
+es = "Previsualizar"
+en = "Preview"
+fr = "Aperçu"
+de = "Vorschau"
+it = "Anteprima"
+pt = "Pré-visualizar"
+ja = "プレビュー"
+zh_hans = "预览"
+zh_hant = "預覽"
+
+# the action's row in the game's «Configuración de controles» (tab «Controles básicos»).
+# crc32("utilities_tech_preview_action")
+[[row]]
+id = "utilities_tech_preview_action"
+es = "Previsualizar supertécnica"
+en = "Preview special move"
+fr = "Aperçu de la supertechnique"
+de = "Spezialtechnik-Vorschau"
+it = "Anteprima supertecnica"
+pt = "Pré-visualizar supertécnica"
+ja = "必殺技をプレビュー"
+zh_hans = "预览必杀技"
+zh_hant = "預覽必殺技"

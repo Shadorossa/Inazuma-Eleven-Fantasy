@@ -54,8 +54,6 @@ local OBJ_SIZE = 0x8A0                     -- the grid object image of the BB pa
 local KEY_TEAM = "BattleBayDeluxe.draft.team"
 local KEY_PHASE = "BattleBayDeluxe.draft.phase"
 
-local PARAM_STEM = "data/common/gamedata/character/chara_param"
-local BASE_STEM = "data/common/gamedata/character/chara_base"
 local FORMATION_STEM = "data/common/gamedata/formation/formation_config"
 local TEXT_ROOT = "data/common/text"
 
@@ -202,22 +200,18 @@ end
 
 -- ------------------------------------------------------------------------------------------------ the pool rule
 
--- chara_param: { [id] = { base, element, pos, card } }
+-- chara_param: { [id] = { base, element, pos, card } } (card = its special_rarity), from the framework's ONE character
+-- index (VRFW.chara.cards: chara_param read once natively, by column name, for every script; VRFW 2.3)
 local function parse_params()
-  -- only the 5 columns read (the framework builds no row tables for the other ~60)
-  local rows = VRFW.table.raw(U.table_key(PARAM_STEM), "CHARA_PARAM_INFO", { 1, 2, 3, 4, 42 })
   local out, n = {}, 0
-  for _, r in ipairs(rows) do
-    if type(r[1]) == "number" then
-      local card = r[42]
-      out[U.u32(r[1])] = {
-        base = type(r[2]) == "number" and U.u32(r[2]) or 0,
-        element = type(r[3]) == "number" and U.u32(r[3]) % 256 or 0,
-        pos = type(r[4]) == "number" and U.u32(r[4]) % 256 or 0,
-        card = type(card) == "number" and floor(card) or nil,
-      }
-      n = n + 1
-    end
+  for _, c in ipairs(VRFW.chara.cards()) do
+    out[U.u32(c.id)] = {
+      base = U.u32(c.base),
+      element = U.u32(c.element) % 256,
+      pos = U.u32(c.position) % 256,
+      card = floor(c.rarity),
+    }
+    n = n + 1
   end
   if n == 0 then
     fail("chara_param: no CHARA_PARAM_INFO row")
@@ -233,13 +227,12 @@ local function parse_names(lang)
       txt[U.u32(r[1])] = U.trim(r[6])
     end
   end
+  -- the characters' name texts: the framework's character index (VRFW.chara.characters)
   local out = {}
-  for _, r in ipairs(VRFW.table.raw(U.table_key(BASE_STEM), "CHARA_BASE_INFO", { 1, 4 })) do
-    if type(r[1]) == "number" and type(r[4]) == "number" then
-      local n = txt[U.u32(r[4])]
-      if n and n ~= "" then
-        out[U.u32(r[1])] = n
-      end
+  for _, c in ipairs(VRFW.chara.characters()) do
+    local n = txt[U.u32(c.name_text)]
+    if n and n ~= "" then
+      out[U.u32(c.id)] = n
     end
   end
   return out

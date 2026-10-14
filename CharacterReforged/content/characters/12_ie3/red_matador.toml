@@ -1,0 +1,248 @@
+schema = "VRFW.character/2"
+# Character Reforged · Red Matador · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03032610"                                   # Fermín Sánchez
+
+  [[edit.cards]]
+  id = 0x4EEE10E2                                         # GK/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 126, control = 177, technique = 150, pressure = 293, physical = 220, intelligence = 239, agility = 254, freedom = 255 }
+  moves = [
+    { move = 0x7CACF0B0, level = 12 },                    # Horn Train
+    { move = 0xECD991E4, level = 20 },                    # The Stinger
+    { move = 0xC0FD6AFB, level = 45 },                    # Fireball Head
+    { move = 0x8E7E960B, level = 60 },                    # Drill Smasher
+  ]
+
+[[edit]]
+target = "c03032620"                                   # José Costa
+
+  [[edit.cards]]
+  id = 0x65C34321                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 92, control = 209, technique = 217, pressure = 293, physical = 193, intelligence = 336, agility = 194, freedom = 325 }
+  moves = [
+    { move = 0x17A96A44, level = 1 },                     # Clone Faker
+    { move = 0x105C91A7, level = 1 },                     # Slingshot
+    { move = 0x60F8D774, level = 26 },                    # Gravestone
+    { move = 0x4E9A9232, level = 48 },                    # Spinning Cut
+  ]
+
+[[edit]]
+target = "c03032630"                                   # Rafael López
+
+  [[edit.cards]]
+  id = 0x7CD87260                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 111, control = 180, technique = 178, pressure = 288, physical = 278, intelligence = 301, agility = 225, freedom = 238 }
+  moves = [
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0x7A67325B, level = 16 },                    # Flame Dance
+    { move = 0x5E233E68, level = 50 },                    # Super Elastico
+    { move = 0x750E6DAB, level = 62 },                    # Matador Feint
+  ]
+
+[[edit]]
+target = "c03032640"                                   # Antonio Gallego
+
+  [[edit.cards]]
+  id = 0x3399E4A7                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 186, control = 166, technique = 150, pressure = 262, physical = 201, intelligence = 254, agility = 228, freedom = 267 }
+  moves = [
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0xBA833662, level = 30 },                    # Million Hands
+    { move = 0x55C71D2A, level = 39 },                    # About Face
+    { move = 0x34E4CEAB, level = 57 },                    # Barbarian Shield
+  ]
+
+[[edit]]
+target = "c03032650"                                   # Queraldo Naval
+
+  [[edit.cards]]
+  id = 0x2A82D5E6                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 274, control = 158, technique = 135, pressure = 254, physical = 288, intelligence = 235, agility = 223, freedom = 242 }
+  moves = [
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0x750E6DAB, level = 28 },                    # Matador Feint
+    { move = 0x105C91A7, level = 36 },                    # Slingshot
+    { move = 0x7EEA4EE9, level = 51 },                    # Blade Attack
+  ]
+
+[[edit]]
+target = "c03032660"                                   # Juan Nadal
+
+  [[edit.cards]]
+  id = 0x01AF8625                                         # MF/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 97, control = 305, technique = 340, pressure = 124, physical = 261, intelligence = 225, agility = 189, freedom = 230 }
+  moves = [
+    { move = 0x4E9A9232, level = 1 },                     # Spinning Cut
+    { move = 0x025FD09B, level = 41 },                    # Volcano Cut
+    { move = 0x38094535, level = 60 },                    # Sub-Terfuge
+    { move = 0x1A868BED, level = 63 },                    # Clone Defence
+  ]
+
+[[edit]]
+target = "c03032670"                                   # Igor Ferreira
+
+  [[edit.cards]]
+  id = 0x18B4B764                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 177, control = 289, technique = 328, pressure = 177, physical = 225, intelligence = 266, agility = 194, freedom = 263 }
+  moves = [
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0x15EFD41D, level = 27 },                    # Dual Pass
+    { move = 0x3EC287DE, level = 35 },                    # Bubble Gum
+    { move = 0x78E027BC, level = 49 },                    # Shine Drive
+  ]
+
+[[edit]]
+target = "c03032680"                                   # Pedro Moreno
+
+  [[edit.cards]]
+  id = 0x9F2CABAB                                         # MF/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 343, control = 277, technique = 292, pressure = 115, physical = 190, intelligence = 167, agility = 131, freedom = 301 }
+  moves = [
+    { move = 0x750E6DAB, level = 1 },                     # Matador Feint
+    { move = 0x105C91A7, level = 15 },                    # Slingshot
+    { move = 0xB37CD264, level = 60 },                    # Am-Bush
+    { move = 0xC0A013E6, level = 70 },                    # Liar Shot
+  ]
+
+[[edit]]
+target = "c03032690"                                   # Miguel Pereira
+
+  [[edit.cards]]
+  id = 0x86379AEA                                         # MF/FW · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 305, control = 288, technique = 325, pressure = 154, physical = 155, intelligence = 243, agility = 162, freedom = 221 }
+  moves = [
+    { move = 0x105C91A7, level = 1 },                     # Slingshot
+    { move = 0x17A96A44, level = 43 },                    # Clone Faker
+    { move = 0x6B1CF436, level = 47 },                    # Bewildered
+    { move = 0x38094535, level = 60 },                    # Sub-Terfuge
+  ]
+
+[[edit]]
+target = "c03032700"                                   # Samuel Mayo
+
+  [[edit.cards]]
+  id = 0x56374B94                                         # FW/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 324, control = 262, technique = 251, pressure = 119, physical = 184, intelligence = 170, agility = 178, freedom = 250 }
+  moves = [
+    { move = 0x105C91A7, level = 30 },                    # Slingshot
+    { move = 0x750E6DAB, level = 31 },                    # Matador Feint
+    { move = 0x316A7390, level = 48 },                    # Land Dragon
+    { move = 0x8D5B6847, level = 67 },                    # Odin Sword
+  ]
+
+[[edit]]
+target = "c03032710"                                   # Davi Peroqué
+
+  [[edit.cards]]
+  id = 0x4F2C7AD5                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 351, control = 248, technique = 227, pressure = 111, physical = 198, intelligence = 149, agility = 170, freedom = 213 }
+  moves = [
+    { move = 0x105C91A7, level = 40 },                    # Slingshot
+    { move = 0x750E6DAB, level = 46 },                    # Matador Feint
+    { move = 0x4AD6453E, level = 53 },                    # Back Tornado
+    { move = 0x4890FB67, level = 60 },                    # Twin Boost
+  ]
+
+[[edit]]
+target = "c03032720"                                   # Juan Espindola
+
+  [[edit.cards]]
+  id = 0x64012916                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 239, control = 167, technique = 128, pressure = 294, physical = 163, intelligence = 211, agility = 273, freedom = 313 }
+  moves = [
+    { move = 0xDCA94D3F, level = 1 },                     # Flash Upper
+    { move = 0x750E6DAB, level = 24 },                    # Matador Feint
+    { move = 0xE9968761, level = 34 },                    # Rocket Kobushi
+    { move = 0xEF5D458A, level = 57 },                    # Burnout
+  ]
+
+[[edit]]
+target = "c03032730"                                   # Isaac César
+
+  [[edit.cards]]
+  id = 0x7D1A1857                                         # FW/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 338, control = 251, technique = 232, pressure = 154, physical = 185, intelligence = 181, agility = 200, freedom = 225 }
+  moves = [
+    { move = 0x518BCA26, level = 11 },                    # Fire Tornado
+    { move = 0x105C91A7, level = 15 },                    # Slingshot
+    { move = 0x5E233E68, level = 46 },                    # Super Elastico
+    { move = 0xA5777314, level = 55 },                    # Assault Shot
+  ]
+
+[[edit]]
+target = "c03032740"                                   # Laudelino Castor
+
+  [[edit.cards]]
+  id = 0x325B8E90                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 149, technique = 117, pressure = 263, physical = 262, intelligence = 224, agility = 242, freedom = 209 }
+  moves = [
+    { move = 0x025FD09B, level = 8 },                     # Volcano Cut
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0x91AE65A1, level = 48 },                    # Giant Spider
+    { move = 0x73C5AF40, level = 54 },                    # Dash Accelerator
+  ]
+
+[[edit]]
+target = "c03032750"                                   # Carlos Arroyo
+
+  [[edit.cards]]
+  id = 0x2B40BFD1                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 178, control = 250, technique = 254, pressure = 196, physical = 250, intelligence = 230, agility = 216, freedom = 213 }
+  moves = [
+    { move = 0x0710C61E, level = 12 },                    # Perimeter Zone
+    { move = 0x5FE1545F, level = 32 },                    # Flame Veil
+    { move = 0x087999EE, level = 42 },                    # Heel Drop
+    { move = 0x52CEB5F6, level = 50 },                    # Iron Wall
+  ]
+
+[[edit]]
+target = "c03032760"                                   # Federico Rubiera
+
+  [[edit.cards]]
+  id = 0x006DEC12                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 173, control = 296, technique = 298, pressure = 111, physical = 250, intelligence = 170, agility = 173, freedom = 215 }
+  moves = [
+    { move = 0x1D8F2331, level = 10 },                    # Yo-Yo Ball
+    { move = 0x105C91A7, level = 15 },                    # Slingshot
+    { move = 0x78E027BC, level = 39 },                    # Shine Drive
+    { move = 0x5E233E68, level = 64 },                    # Super Elastico
+  ]

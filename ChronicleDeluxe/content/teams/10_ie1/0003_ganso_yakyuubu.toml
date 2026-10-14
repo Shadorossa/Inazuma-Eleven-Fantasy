@@ -1,0 +1,56 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-14): a rival of the chain «Ruta prémium de Sonny» (content/teams/70_route_nodes/
+# chain_sonny.toml). The same team as the set-aside Chronicles Deluxe's (generated there by
+# research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe is
+# active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Ganso Yakyuubu (IE, «Sonny Raimon's route» #4; report status: missing).
+# Roster: wiki lineup «IE3 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Ganso_Yakyuubu
+# Left out (no card in the game): Ko Sung-hwan
+[[team]]
+name = "ct_wk_ganso_yakyuubu"
+key = "evt_ct_wk_ganso_yakyuubu"
+based_on = "tm_cro_ie1_1320" # Team Ogre: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # team_kits_from_wiki.py: neutral (needs a kit) (was 0x7362C53B)
+level = 55
+series = "IE"
+roster = "exact"
+member = [
+  { card = 0x3D971753, slot = 0, number = 1, rarity_step = 1 }, # Subaru = Teller Scoap (GK)
+  { card = 0x080F5938, slot = 1, number = 2, rarity_step = 1, captain = true }, # Kyuuji = Jody MacGough (DF)
+  { card = 0xA6F456CE, slot = 2, number = 3, rarity_step = 1 }, # Kakigawa = Earl Grayson (DF)
+  { card = 0x2D80A56C, slot = 3, number = 4, rarity_step = 1 }, # Kanae (scout character) = Mia Pitchford (DF)
+  { card = 0xF4FBB200, slot = 4, number = 5, rarity_step = 1 }, # Nakazono = Doug Outon (MF)
+  { card = 0x2357A3D4, slot = 5, number = 6, rarity_step = 1 }, # Oobayashi = Ollie Seeker (MF)
+  { card = 0x86854230, slot = 6, number = 7, rarity_step = 1 }, # Takagi = Tim Eisback (DF)
+  { card = 0xD83BEA97, slot = 7, number = 8, rarity_step = 1 }, # Torahama Kouko = Alexia Sand (DF)
+  { card = 0x62FDAFD9, slot = 8, number = 9, rarity_step = 1 }, # Tamada = Theo Bernoulli (MF)
+  { card = 0x3A31C519, slot = 9, number = 10, rarity_step = 1 }, # Terai = Nick Templeton (FW)
+  { card = 0xC82C58A8, slot = 10, number = 11, rarity_step = 1 }, # Kabe = Glen Adeer (FW)
+  { card = 0xF3F21ADC, slot = 11, number = 12, rarity_step = 1 }, # Sorahara = Conor Trail (GK)
+  { card = 0x7E06F28B, slot = 12, number = 13, rarity_step = 1 }, # Hiroaki = Boe Tyer (GK)
+  { card = 0x04D7D484, slot = 13, number = 14, rarity_step = 1 }, # Sakata = Neville List (DF)
+  { card = 0x74BAC74A, slot = 14, number = 15, rarity_step = 1 }, # Chouno = Shaun Imago (DF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie1_ganso_yakyuubu.png" # remastered crest of the wiki's Ganso Yakyuubu emblem.png
+base = "em010012"
+catalog = "shared"
+
+[team.text.es]
+name = "Baseball All Stars"
+short = "Baseball All Stars"
+[team.text.en]
+name = "Baseball All Stars"
+short = "Baseball All Stars"
+[team.text.ja]
+name = "元祖･野球部"
+short = "元祖･野球部"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_ganso_yakyuubu"
+card_moves = 4

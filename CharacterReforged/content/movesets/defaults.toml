@@ -1,0 +1,9 @@
+schema = "CharacterReforged.movesets/1"
+# Character Reforged › the cards' mix (Mix-Max / «Modo cambio» aura command) for CharacterReforged.Moveset
+# (scripts\moveset.lua; docs/refactor/aura-mods-split.md «Per-character data»). The 4 special moves and the aura are the
+# card's learn list (content\characters\**); the mix is not a game datum, so any mod may declare it here:
+#   [CharacterReforged.Mix]
+#   "0x3E469E9A" = 0x3BADEC5D      # card (chara_param id) = its mix's aura command id
+# Every active mod's content\movesets\*.toml is read; the later mod wins key by key. None today.
+
+[CharacterReforged.Mix]

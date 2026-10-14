@@ -1,0 +1,28 @@
+# «Triángulo letal final» (Final Death Zone, whs02010 and whs02010_or, same cut-in; forest shot of three players,
+# cut-in ev60_02010): while the ball flies to the goal after the cut-in it keeps the look of the end of the cut-in's
+# last cut (c0400 438-494): it runs inside the purple-white energy beam the last triangle fires at the goal (beam
+# lines, black core line, auras, spiral, particles, the side glow / wave growing with the ball, lightning flashing on
+# it), instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6201fd00 (effect/event/ev60/ev6201fd00/), built by research/scripts/final_death_zone_ball_fx.py from
+# the cut-in's effect object ev60020100: the cut-in's motion from the launch (438) replayed with the beam kept in
+# place relative to the ball (reaching ahead to the goal from where the ball was shot, the ball running its length),
+# then held at the cut's end (494: the beam 28 m behind the ball), texture flow running on, x1. Left out: the space /
+# Earth / dragon backdrops, the triangles A-F, the players' auras and the energy sphere (it stays in the last
+# triangle while the ball runs the beam). docs/game/media/final-death-zone-ball-fx.md.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: the cut-in's path is measured in
+# content\techniques\final_death_zone_trajectory.toml (no edit yet: the game's own flight).
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "final_death_zone"
+from = "ega0075d"
+object = "effect/event/ev60/ev6201fd00/ev6201fd00.objbin"
+
+[[shot_aura]]
+name = "final_death_zone"
+when = { techniques = ["whs02010", "whs02010_or"] }
+aura = "final_death_zone"
+like = "ega0075d"

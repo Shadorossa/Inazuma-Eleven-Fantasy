@@ -1,0 +1,30 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Impacto luminoso (Luminous Orb, whs10200) (Nacho 2026-10-08: each move its
+# own fall, matching its cut-in). In the cut-in's shot cut (c0400 of ev60102001) the ball, in its burst of light, opens
+# ~5.7 m up, dives at the camera (steep at first, ~21°, easing out) to 1.74 m over the pitch, then swoops back up to
+# 5.8 m where the cut-in ends; in the match it comes into the goal down the dive's line: the angled dive
+# (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6), its steep start then easing out
+# rendered by the bend. The swoop back up is not reproduced (it would carry the ball over the bar). Its dive line is
+# ~21 m long, so close in the start comes down onto the 10.6° line over the kick point and the ball flies one straight
+# line; from farther it leaves level at 5.6 m and bends into it. Its aura (content\effects\luminous_orb_ball.toml, the light
+# specks) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move luminous_orb; luminous_orb_ball_fx.py --trajectory):
+# the event ball (b000001 c_add_1_0) of ev60_10200 c0400, event frames 970 (the cut opens on it, its highest point of
+# the dive) - 1020 (its lowest point): (-3.31, 5.73, -22.04) -> (-3.44, 1.74, -0.80), 5.73 m -> 1.74 m over 21.2 m on
+# the ground = 10.6° down on average, 21.4° over the first 4 frames, 0.8° over the last 4 (it levels off). It then
+# rises to 5.77 m at the cut's end (1088, 37.8 m past the lowest point, 6.1° up on average).
+#   height     = 5.6: the start (5.73 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 10.6: the dive line start -> lowest point (the mean; the bend gives the steep start).
+#   end_height = 1.8: the cut-in's own lowest point (1.74 m), in the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# Impacto luminoso (whs10200).
+[[edit]]
+target = "whs10200"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 5.71 m (5.6 over a kick on the pitch) held until 20.89 m before the goal point, then the 10.6
+# deg line down into 1.8 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 10.45 m down (bend 0.5). A shot shorter
+# than 20.89 m starts lower, on the line.
+trajectory = { goal_points = [[20.89, 5.71, 999, 10.45], [0.0, 1.8]], unblockable = false }

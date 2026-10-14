@@ -8,7 +8,7 @@
 # (research/mods/VRFW/assets/lua/menu/<stem>/000_host.lua), never merged with other grafts, no promoted locals (the
 # retail locals through VRFW_Host.hosts.<stem>.L). Their text is generated: edit util_tp_*.src.lua / util_tp_common.lua
 # and run gen_hooks.py. The picker's cards are Utilities' layer util_tp_card of soccer_formation_menu
-# (research/mods/Utilities/menus/102_team/team_planner.toml).
+# (research/mods/Utilities/content/menus/102_team/team_planner.toml).
 name = "util_team_planner"
 mod = "utilities"
 order = 345

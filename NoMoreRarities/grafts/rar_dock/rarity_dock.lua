@@ -1,0 +1,66 @@
+-- No More Rarities, team dock (hook file of graft rar_dock; docs/game/rarity-removal.md, docs/framework/list-rows.md)
+-- Normal mode: every normal player is 5☆ (rarity 4). Hero (5-7) and Diamond (8) are never touched.
+-- No engine call at load: the rule and the handler are only registered here.
+-- Only while the rarity removal applies (NoMoreRarities.RarityRemovalApplies, the mod's lua\_all): never in a reserved
+-- slot, a mode's own save such as INAROGUE's, whose players keep their rarities and «Mejorar» exactly as in the game.
+local function RarityRemovalApplies()
+  local rules = rawget(_ENV, "NoMoreRarities")
+  return type(rules) ~= "table" or type(rules.RarityRemovalApplies) ~= "function" or rules.RarityRemovalApplies()
+end
+EVT_RARITY_UP_DISABLED = true   -- «Mejorar» (setting type 2 = rarity-up screen) not offered on the team dock
+EVT_RARITY_NORMALIZE = true     -- raise every saved player (handle kind 0) of the opened team to EVT_RARITY_TARGET
+EVT_RARITY_TARGET = 4
+function EVT_RarityNormalizeTeam(teamSet, teamType)
+  if not EVT_RARITY_NORMALIZE or not RarityRemovalApplies() then
+    return 0
+  end
+  local done = 0
+  for slot = 0, 28 do
+    local ok, hdl = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], teamSet, teamType, 8, slot)
+    if ok and type(hdl) == "number" and hdl > 0 and math.floor(hdl / 4096) % 16 == 0 then
+      local r = funcLuaCommand(1131797651, hdl, 12)
+      if type(r) == "number" and r < EVT_RARITY_TARGET then
+        if funcLuaCommand(1641888398 --[[CMND_SET_CHARA_RARITY]], hdl, EVT_RARITY_TARGET) then
+          done = done + 1
+        end
+      end
+    end
+  end
+  if done > 0 then
+    PRINT("EVT rarity: " .. done .. " player(s) raised to " .. EVT_RARITY_TARGET)
+  end
+  return done
+end
+
+-- «Mejorar» of the player popup «PERSONAJE»: hidden (the VR-Framework's list rows)
+if VRFW_ListRows ~= nil then
+  VRFW_ListRows.Hide(VRFW_ListRows.PLAYER_COMMANDS, {id = "no_more_rarities.hide_rarity_up",
+    row = VRFW_ListRows.PLAYER_COMMAND.RARITY_UP, when = function()
+      return EVT_RARITY_UP_DISABLED == true and RarityRemovalApplies()
+    end})
+end
+
+-- the opened team raised to 5★ before the dock reads it: retail OnInit takes the dock number / type from the parameter
+-- store (and deletes them), so they are read here without deleting; absent = what the script's locals n / n10 hold
+-- (the host's locals; 0 when they are not readable)
+if VRFW_Host ~= nil then
+  local function script_local(name)
+    local host = VRFW_Host.hosts and VRFW_Host.hosts["team_dock_formation_menu"]
+    if host == nil or host.L == nil then
+      return 0
+    end
+    local ok, value = pcall(function() return host.L[name] end)
+    return ok and type(value) == "number" and value or 0
+  end
+  VRFW_Host.on("team_dock_formation_menu", "OnInit", {id = "no_more_rarities.normalize_team", phase = "before",
+    fn = function()
+      local dock_number, dock_type = script_local("n"), script_local("n10")
+      if funcLuaCommand(2947612279, 3357163798) then
+        dock_number = funcLuaCommand(3522198769, 3357163798) or 0
+      end
+      if funcLuaCommand(2947612279, 4081600465) then
+        dock_type = funcLuaCommand(3522198769, 4081600465) or 0
+      end
+      EVT_RarityNormalizeTeam(dock_number, dock_type)
+    end})
+end

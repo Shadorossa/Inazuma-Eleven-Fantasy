@@ -1,0 +1,24 @@
+# Inazuma Fantasy's Supertécnicas screen (evt_skill_slot_menu, graft ss2_menus): its list pickers (custom passive,
+# role, set) use the taller row clone evt_pc_row of Utilities' passive configurator (2-line text, 6 rows per page) and
+# the plate rows' icon block (research/grafts/_lib/util_passive_icons.lua, UTIL_PCI: own effect icons answered by
+# Utilities' CMND_UTIL_PC_EFF_ICON, the dual archetype icon). Was the passive_config_ss2 block of graft passive_config
+# until the configurator moved to the mod Utilities (2026-10-08). docs/game/mechanics/pasivas-configurables.md §10.
+# Mod Character Reforged since 2026-10-14 (the skill table moved there with graft ss2_menus).
+name = "ss2_pc_rows"
+mod = "character_reforged"
+rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
+order = 300
+module = "lua_bridge"
+requires = ["ss2_menus"]
+conflicts = []
+wraps = ["OnSetupLayer"]
+description = "Supertécnicas pickers: taller rows + the configurator's icon block"
+
+[[files]]
+path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ss2_pc_rows.lua"
+  marker = "ss2_pc_rows"
+  include = { "@ICONS@" = "../_lib/util_passive_icons.lua" }

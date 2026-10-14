@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of La Tierra: Infinito (The Earth: Infinity, whs02650). Nacho 2026-10-10: every
+# aura move its own flight, heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-
+# effects.md §7).
+# Its cut-in (ev60_02650) has no ball flight to measure: the event ball rises to 14.82 m in c0400 and stays still
+# there (the globe) to the end of c0700, where the shot is the beam growing by scale. In the match the ball starts
+# at the globe's height and flies one straight line down into the goal at 2.0 m (the keeper's reach), the line the
+# beam draws.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move the_earth (its comment)):
+# the event ball (s01) of ev60_02650: 14.82 m from event frame ~1404 to 1798; no effect joint moves more than 0.54 m
+# over c0700's 706-798.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# La Tierra: Infinito (whs02650).
+[[edit]]
+target = "whs02650"
+trajectory = { points = [[0.0, 14.82]], goal_points = [[0.0, 2.0]], unblockable = false }

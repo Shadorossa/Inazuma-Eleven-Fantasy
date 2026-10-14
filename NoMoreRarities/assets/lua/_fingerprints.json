@@ -1,0 +1,33 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "soccer_spirit_menu": {
+  "script": "soccer_spirit_menu_6.00.03.00",
+  "require": [
+   "GetMemberCharaStHdlList"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_summon_menu": {
+  "script": "soccer_summon_menu_6.00.34.00",
+  "require": [
+   "SelectSpiritItem"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

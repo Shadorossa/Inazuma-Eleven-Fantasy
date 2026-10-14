@@ -1,0 +1,38 @@
+# «Meteoric Fire Tornado» («Tornado de fuego meteoro», whs10110, fire shot, cut-in ev60_10110) and «Meteoric Fire
+# Tornado V» (whs10160, cut-in ev60_10160): while the ball flies to the goal it is the head of the cut-in's OWN blazing
+# meteor with its tornado of fire behind it (the last cut c0500, the meteor diving onto the goal, held at frame 440,
+# the fire's texture flow running on) instead of the plain fire special-shot aura (ega0075c). The camera-facing parts
+# (light disc, sky lightning), the backdrop glow, the white shock cups and grey air shells in front of the meteor
+# (crescents across the flight from the touchline) are dropped; x0.2 of the cut-in size (head ~2 m, fire ~6 m behind).
+# The objects are ev6111mf00 (from ev60101100, Meteoric Fire Tornado) and ev6116mf00 (from ev60101600, the V: the same
+# meshes and animation, its fire on the full shaders where the plain move's use the `_low` ones), in
+# files\data\{common,dx11}\effect\event\ev60\<object>\, built by research/scripts/meteoric_fire_tornado_ball_fx.py;
+# docs/game/media/meteoric-fire-tornado-ball-fx.md.
+# The triggers copy the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). The goal scene of these moves (the smashed goal, ev71_00070)
+# is Goal Smash's (content\techniques\goal_smash.toml), untouched.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under files\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteoric_fire_tornado"
+from = "ega0075c"
+object = "effect/event/ev60/ev6111mf00/ev6111mf00.objbin"
+
+[[effect]]
+name = "meteoric_fire_tornado_v"
+from = "ega0075c"
+object = "effect/event/ev60/ev6116mf00/ev6116mf00.objbin"
+
+[[shot_aura]]
+name = "meteoric_fire_tornado"
+when = { techniques = "whs10110" }
+aura = "meteoric_fire_tornado"
+like = "ega0075c"
+
+[[shot_aura]]
+name = "meteoric_fire_tornado_v"
+when = { techniques = "whs10160" }
+aura = "meteoric_fire_tornado_v"
+like = "ega0075c"

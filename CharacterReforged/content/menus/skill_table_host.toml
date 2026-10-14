@@ -1,0 +1,38 @@
+# Character Reforged › the skill table's extension point (docs/framework/skill-table-host.md): the two hosts other mods
+# add to with an [[entry]] (read by the block of graft skill_table_host in the screen evt_skill_slot_menu, the
+# «Fantasy» view of the option «Tabla de habilidades»):
+#
+#   [[entry]]
+#   host = "character_reforged.skill_table.row_action"   # a key on the focused move row (CMD_FUNC1)
+#   id = "rank_items"                                    # key <mod>.<id>
+#   text = "TrueHissatsu.RankItemGuide"                  # the guide entry (a text row of the mod)
+#   action = { lua = "TrueHissatsu.SkillTableRankItem" } # f(phase, ctx): "available" -> true / false, "press"
+#
+#   [[entry]]
+#   host = "character_reforged.skill_table.x_action"     # the same on X (CMD_FUNC4): Utilities' partner picker of
+#   id = "partners"                                      # combination moves; not taken while Inazuma Fantasy's own
+#   text = "<guide text row>"                            # block (its partner picker) is in the screen
+#   action = { lua = "Utilities.SkillTablePartners" }
+#
+#   [[entry]]
+#   host = "character_reforged.skill_table.footer_button" # the button between «Set de jugador» and «Pasiva
+#   id = "training"                                       # personalizada»: one slot (the first entry by order)
+#   text = "evt_tr_btn"                                   # its label
+#   action = { lua = "PlayerTraining.SkillTableButton" }  # f(phase, ctx): "guide" -> the guide line, "press"
+#
+# ctx = {key, chara (charaStHdl), row / slot (0 the aura / mix row, 1-6 the moves; nil on the button), move}. The
+# functions live in the mod's own hook file of the stem evt_skill_slot_menu (or a lua\_all file). Order: `order`
+# (default 1000), then load order; `module` hides an entry while that mod / part is off.
+schema = "VRFW.menu/2"
+
+[[host]]
+id = "character_reforged.skill_table.row_action"
+label = { es = "Tabla de habilidades: acción de fila", en = "Skill table: row action", fr = "Table des techniques : action de ligne", de = "Fähigkeitentabelle: Zeilenaktion", it = "Tabella abilità: azione di riga", pt = "Tabela de habilidades: ação de linha", ja = "スキル表：行のアクション", zh_hans = "技能表：行操作", zh_hant = "技能表：行操作" }
+
+[[host]]
+id = "character_reforged.skill_table.x_action"
+label = { es = "Tabla de habilidades: acción X", en = "Skill table: X action", fr = "Table des techniques : action X", de = "Fähigkeitentabelle: X-Aktion", it = "Tabella abilità: azione X", pt = "Tabela de habilidades: ação X", ja = "スキル表：Xのアクション", zh_hans = "技能表：X操作", zh_hant = "技能表：X操作" }
+
+[[host]]
+id = "character_reforged.skill_table.footer_button"
+label = { es = "Tabla de habilidades: botón inferior", en = "Skill table: footer button", fr = "Table des techniques : bouton du bas", de = "Fähigkeitentabelle: untere Schaltfläche", it = "Tabella abilità: pulsante in basso", pt = "Tabela de habilidades: botão inferior", ja = "スキル表：下部ボタン", zh_hans = "技能表：底部按钮", zh_hant = "技能表：底部按鈕" }

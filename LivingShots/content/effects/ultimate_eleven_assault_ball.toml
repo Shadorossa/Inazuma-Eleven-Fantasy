@@ -1,0 +1,26 @@
+# «Ultimate Eleven Assault» («Impulso del equipo definitivo», whs02350, wind team shot of 3 players, cut-in ev60_02350):
+# while the ball flies to the goal it stays inside the cut-in's OWN golden light sphere with its sparkles (the last cut
+# c0040, the shot diving to the goal, held at frame 490, texture flow running on) instead of the plain wind
+# special-shot aura (ega0075b). The cut-in's rainbow shock rings and flat glow discs (flat, facing the flight: edge-on
+# bars from the touchline), its seven yellow light beams (flat strips 20-30 m long: bars / spikes from the side) and
+# its backdrop are dropped; the move's rainbow comes back on the sphere's shell streaks (the rings' own rainbow
+# texture as vertex colours, banded round the ball; the streaks keep scrolling through it), the core stays gold;
+# x0.22 of the cut-in size (sphere ~1.9 m wide).
+# The object is ev6235ua00 (assets\data\{common,dx11}\effect\event\ev60\ev6235ua00\), built by
+# research/scripts/ultimate_eleven_assault_ball_fx.py from ev60023500; docs/game/media/ultimate-eleven-assault-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its golden goal scene is content\techniques\goal_smash.toml (ev71_00090).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "ultimate_eleven_assault_sphere"
+from = "ega0075b"
+object = "effect/event/ev60/ev6235ua00/ev6235ua00.objbin"
+
+[[shot_aura]]
+name = "ultimate_eleven_assault_sphere"
+when = { techniques = ["whs02350"] }
+aura = "ultimate_eleven_assault_sphere"
+like = "ega0075b"

@@ -7,16 +7,18 @@
 # CLEAN_HUD_SHIRT_NUMBER.Arm() at run time.
 # Snippets = menu_generators.ui_clean_plain / ui_clean_child of research/grafts/_src/ui_clean
 # (evt_ui_shirt_number_dock.lua, evt_ui_shirt_number_menu.lua); `menu_assemble.py regen clean_hud_shirt_number --write`
-# rebuilds them. Order 905: after the patches that REPLACE OnInit / GetSelectSettingTypeOrderList of
-# team_dock_formation_menu (Inazuma Fantasy ss2_dock, Utilities passive_config_dispatch, both 100); these wrappers chain.
+# rebuilds them. Order 905: after the patches that REPLACE OnInit of team_dock_formation_menu (Inazuma Fantasy's merged
+# file, 100); these wrappers chain.
+# BetterUI 1.21.26: the per-player row (type 6) and the COMANDOS row are rules of the VR-Framework's list rows
+# (docs/framework/list-rows.md: a Hide and an Add rule) instead of wrappers of GetSelectSettingTypeOrderList,
+# MENU_DEF.OpenSubWindow and the COMANDOS opener with an own window callback.
 name = "clean_hud_shirt_number"
 order = 905
 module = "lua_bridge"
 mod = "clean_hud"
 requires = []
 conflicts = []
-wraps = []   # OnInit, GetSelectSettingTypeOrderList, OpenSelectTeamMemberControlSubWindowCore, WaitExecPerfromanceChangeMenu,
-             # MENU_DEF.OpenSubWindow and the celebration menu's OnInit / OnSetupLayer / UpdateListItem / OnDecideFocus /
+wraps = []   # the dock's OnInit / WaitExecPerfromanceChangeMenu: VRFW_Host «before» handlers (BetterUI 1.21.27); the celebration menu's OnInit / OnSetupLayer / UpdateListItem / OnDecideFocus /
              # InitPerformanceChangeMenuInfo are wrapped by assignment at run time
 description = "Clean HUD: shirt numbers set from the team COMANDOS window (celebration-style list), not per player"
 

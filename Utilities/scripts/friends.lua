@@ -35,7 +35,6 @@
 
 local F = require "lib/fr_core"
 local S = require "lib/tb_store"
-local Cat = require "lib/original_names_catalogue"
 local T = require "lib/original_names_tables"
 local CS = require "lib/career_store"
 
@@ -236,7 +235,7 @@ end
 
 -- ---------------------------------------------------------------------------------------- names
 
-local names = nil   -- { lang, base = { [param] = chara_base }, text = { [chara_base] = name text id }, rows, forms, nouns }
+local names = nil   -- { lang, base = { [param] = chara_base | false }, text = { [chara_base] = name text id | false }, rows, forms, nouns }
 
 local function lang_of(code)
   local c = type(code) == "number" and math.floor(code) or nil
@@ -250,16 +249,10 @@ end
 
 local function load_names(lang)
   if names and names.lang == lang then return names end
+  -- card -> character -> name text come from the framework's shared character index (VRFW.chara.*,
+  -- docs/framework/chara-index.md), asked per shown player (name_of / base_of): no chara_param / chara_base read in this
+  -- VM (each was a full-table scan, ~100+ ms on the game thread, and a large heap kept for the session)
   local n = { lang = lang, base = {}, text = {}, forms = {}, nouns = {} }
-  local ok = pcall(function()
-    for _, r in ipairs(VRFW.table.rows("character/chara_param")) do
-      if type(r[1]) == "number" and type(r[2]) == "number" then n.base[r[1]] = r[2] end
-    end
-    for _, c in ipairs(Cat.charas()) do
-      n.text[c[8]] = c[1]
-    end
-  end)
-  if not ok then warn("character names not readable: the team shows ids") end
   pcall(function()
     for _, r in ipairs(VRFW.table.rows("formation/formation")) do
       if type(r.form_id) == "number" then
@@ -279,10 +272,35 @@ local function load_names(lang)
   return n
 end
 
+-- the character of a card (cached per card; false = unknown)
+local function base_of(param)
+  local n = names
+  if not n or type(param) ~= "number" then return nil end
+  local b = n.base[param]
+  if b == nil then
+    local ok, c = pcall(VRFW.chara.base_of, param)
+    b = (ok and type(c) == "number") and c or false
+    n.base[param] = b
+  end
+  return b or nil
+end
+
+-- the name text id of a character (cached; false = unknown)
+local function name_text_of(b)
+  local n = names
+  if not n or not b then return nil end
+  local id = n.text[b]
+  if id == nil then
+    local ok, c = pcall(VRFW.chara.character, b)
+    id = (ok and type(c) == "table" and type(c.name_text) == "number") and c.name_text or false
+    n.text[b] = id
+  end
+  return id or nil
+end
+
 local function name_of(param)
   local n = names
-  local b = n and n.base[param]
-  local id = b and n.text[b]
+  local id = name_text_of(base_of(param))
   local r = id and n.rows[id]
   local s = r and r[0]
   if type(s) == "string" and s ~= "" then return T.strip_furigana(s) end
@@ -509,7 +527,7 @@ local function parse_profile(d)
     elseif p[1] == "m" then
       for prm, lv in tostring(p[2] or ""):gmatch("(%d+):(%d+):%d+") do
         local param = tonumber(prm)
-        local base = names and names.base[param] or 0
+        local base = base_of(param) or 0
         faces[#faces + 1] = F.int(base) .. ":" .. lv .. ":" .. (name_of(param):gsub("[|:]", " "))
       end
     elseif p[1] == "matches" or p[1] == "goals" or p[1] == "mvp" then

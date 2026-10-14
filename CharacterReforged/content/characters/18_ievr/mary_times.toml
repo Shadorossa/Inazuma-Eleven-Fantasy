@@ -1,0 +1,55 @@
+schema = "VRFW.character/2"
+# Character Reforged · Mary Times · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11200010"                                   # Mary Times Eleven
+
+  [[edit.cards]]
+  id = 0xB1376EB7                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 198, technique = 194, pressure = 197, physical = 282, intelligence = 192, agility = 238, freedom = 348 }
+
+[[edit]]
+target = "c11200020"                                   # Mary Times Eleven
+
+  [[edit.cards]]
+  id = 0x9A1A3D74                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 228, control = 198, technique = 197, pressure = 201, physical = 278, intelligence = 196, agility = 238, freedom = 352 }
+
+[[edit]]
+target = "c11200030"                                   # Mary Times Eleven
+
+  [[edit.cards]]
+  id = 0x83010C35                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 197, technique = 194, pressure = 193, physical = 282, intelligence = 189, agility = 239, freedom = 355 }
+
+[[edit]]
+target = "c11200040"                                   # Mary Times Eleven
+
+  [[edit.cards]]
+  id = 0xCC409AF2                                         # GK/MF · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 231, control = 196, technique = 193, pressure = 196, physical = 284, intelligence = 189, agility = 236, freedom = 355 }
+
+[[edit]]
+target = "c11200500"                                   # Hurley Kane
+
+  [[edit.cards]]
+  id = 0xAEE79D1D                                         # DF/FW · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 274, control = 182, technique = 208, pressure = 231, physical = 232, intelligence = 258, agility = 167, freedom = 209 }

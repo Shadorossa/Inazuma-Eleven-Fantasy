@@ -1,0 +1,41 @@
+# Aura Points: the rules of the PEG / SP pools (read by scripts\aura_points.lua at the start; restart the game after a
+# change). The pool sizes and move costs per keshin / totem are content\match_resources\peg.toml / sp.toml.
+# Rules: docs/game/mechanics/aura-costs.md §12 (PEG), §14 (SP), §18 (Chrono Stone model). Split out of Inazuma
+# Fantasy's [aura_cost] on 2026-10-14 (docs/refactor/aura-mods-split.md): the PE (match stamina) rules stayed there.
+[points]
+# keshin and keshin armour run on PEG: each player has one pool of fighting-spirit points per keshin for the whole
+# match (the keshin's Galaxy KP at level 6); the start is free and has no time limit, the keshin's own move costs its
+# Galaxy cost in PEG instead of tension, at 0 PEG the keshin is dismissed and does not come back that match; a manual
+# release keeps the pool. An armour runs on its keshin's pool. false = retail keshin / armour (time, hyper gauge)
+peg = true
+# totems on SP: one SP bar per player and totem for the whole match (its Galaxy SP at max level); the summon is free
+# and has no time limit, its move costs its Galaxy cost in SP instead of tension, at 0 SP the totem leaves and does not
+# come back that match. false = retail totems
+sp = true
+# the rival (CPU) team plays by the same rules (false: only the user's team)
+cpu = true
+# the pool's own move pays its PEG / SP instead of tension (false: PEG / SP and its tension)
+move_tension_free = true
+# Armour cost model: "cs" = Chrono Stone's (docs/game/miximax/chrono-stone-drain.md) with every cost × cs_scale; "if" =
+# the older rules (armour_boost, armour_drain_per_s)
+cost_model = "cs"
+cs_scale = 0.75
+# "if" model: every time the armour goes on, the pool (max and current) × armour_boost, then armour_drain_per_s PEG per
+# second of live play; at 0 the armour ends (and the keshin is done for the match)
+armour_boost = 1.05
+armour_drain_per_s = 1.0
+# "cs" model: PEG per live second = (KP + ATK) × cs_armour_drain_k × cs_scale (KP = the pool, ATK = the keshin's Chrono
+# Stone ATK, values.atk of peg.toml); × cs_armour_gk_zone_mult for a goalkeeper inside his own penalty box
+cs_armour_drain_k = 0.025
+cs_armour_gk_zone_mult = 0.5
+# ATK of a keshin without one in the table
+default_atk = 80
+# "cs": the FIRST armour of a pool in the match restores this × max PEG (capped at max); later armours restore nothing
+cs_armour_first_refill = 0.30
+# "cs": special moves under the armour (the keshin's move under the armour too) cost no PEG
+cs_armour_moves_free = true
+# "cs", keshin out (no armour): "own" = only the moves of his running warrior spirit cost PEG (the keshin's own move,
+# its armour forms'); "peg" = every special move he fires costs its tension cost in PEG and no tension
+cs_keshin_moves_cost = "own"
+# "cs": may the armoured player use his keshin's own move? false = no (it belongs to the summoned keshin: refused)
+cs_armour_keshin_move = false

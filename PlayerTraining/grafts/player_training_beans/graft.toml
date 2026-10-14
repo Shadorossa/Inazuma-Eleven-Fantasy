@@ -1,0 +1,19 @@
+# Player Training › the retail skill board's bean slot (ability_learning_board_menu; docs/game/mechanics/
+# beans-training.md §2.6, training-classic.md). While the mod is on, an equipped training bean adds nothing (native hook
+# PlayerTraining.BeansGiveNothing, content\game\player_training.toml), so the bean slot no longer opens the retail bean
+# menu (no bean is placed for nothing): it shows a retail info window (menu_text row evt_tr_beans_off of the mod's
+# text\rows\training.toml) and the board goes on. A HOOK file (shipped as is): it wraps the screen's global
+# OpenBeansSetMenu_Coroutine before the retail OnInit registers it (SetupManageCoroutineFunc 7); with the mod off or
+# its command not answering, the retail coroutine runs unchanged. No engine call at chunk load.
+name = "player_training_beans"
+mod = "player_training"
+order = 340
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Player Training: the skill board's bean slot shows «the beans have no effect» instead of the bean menu"
+
+[[hooks]]
+stem = "ability_learning_board_menu"
+src = "player_training_beans_hooks.lua"

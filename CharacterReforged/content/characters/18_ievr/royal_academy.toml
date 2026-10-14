@@ -1,0 +1,275 @@
+schema = "VRFW.character/2"
+# Character Reforged · Royal Academy · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11080010"                                   # Ruelle Neurivieu
+
+  [[edit.cards]]
+  id = 0xCC8F847D                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 215, control = 194, technique = 201, pressure = 235, physical = 261, intelligence = 277, agility = 188, freedom = 225 }
+  moves = [
+    { move = 0x54C4DCA3, level = 3 },                     # Butterfly Trance
+    { move = 0x5643C944, level = 12 },                    # Killer Slide
+    { move = 0x1C4D4906, level = 36 },                    # Whirlpool
+    { move = 0x6ADE9E01, level = 52 },                    # Illusory Ball
+  ]
+
+[[edit]]
+target = "c11080020"                                   # Solan Brightmoor
+
+  [[edit.cards]]
+  id = 0xE7A2D7BE                                         # FW/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 311, control = 230, technique = 238, pressure = 219, physical = 207, intelligence = 216, agility = 184, freedom = 217 }
+  moves = [
+    { move = 0x32EEA7FE, level = 3 },                     # Death Zone 2
+    { move = 0xFB0BF8BD, level = 13 },                    # Marshal's Light
+    { move = 0x585098FC, level = 31 },                    # Slice and Dice
+    { move = 0x0F4F25F0, level = 51 },                    # The Stronghold
+  ]
+
+[[edit]]
+target = "c11080030"                                   # Syd Faircrest
+
+  [[edit.cards]]
+  id = 0xFEB9E6FF                                         # MF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 294, control = 248, technique = 267, pressure = 186, physical = 201, intelligence = 235, agility = 171, freedom = 213 }
+  moves = [
+    { move = 0x0F4F25F0, level = 5 },                     # The Stronghold
+    { move = 0xFB0BF8BD, level = 11 },                    # Marshal's Light
+    { move = 0x5643C944, level = 22 },                    # Killer Slide
+    { move = 0x4604DA62, level = 32 },                    # Royal Penguin Parade
+  ]
+
+[[edit]]
+target = "c11080040"                                   # Hudson Headland
+
+  [[edit.cards]]
+  id = 0xB1F87038                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 194, technique = 194, pressure = 232, physical = 261, intelligence = 274, agility = 186, freedom = 225 }
+  moves = [
+    { move = 0x0F4F25F0, level = 4 },                     # The Stronghold
+    { move = 0x2B343D01, level = 16 },                    # Cyclone
+    { move = 0xDA3FF6C9, level = 30 },                    # Criss-Cross
+    { move = 0x1C4D4906, level = 43 },                    # Whirlpool
+  ]
+
+[[edit]]
+target = "c11080050"                                   # Kaien Spiradawn
+
+  [[edit.cards]]
+  id = 0xA8E34179                                         # FW/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 304, control = 246, technique = 232, pressure = 194, physical = 205, intelligence = 208, agility = 170, freedom = 217 }
+  moves = [
+    { move = 0x4604DA62, level = 1 },                     # Royal Penguin Parade
+    { move = 0xFB0BF8BD, level = 15 },                    # Marshal's Light
+    { move = 0x5643C944, level = 25 },                    # Killer Slide
+    { move = 0x1ECA5CE1, level = 50 },                    # Wrath Shot
+  ]
+
+[[edit]]
+target = "c11080060"                                   # Asten Royds
+
+  [[edit.cards]]
+  id = 0x83CE12BA                                         # DF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 177, technique = 178, pressure = 244, physical = 292, intelligence = 259, agility = 193, freedom = 217 }
+  moves = [
+    { move = 0x3B8D915B, level = 5 },                     # Meteor Shower
+    { move = 0x00196EC2, level = 18 },                    # Earthquake
+    { move = 0x637C031A, level = 34 },                    # No Escape
+    { move = 0x0F4F25F0, level = 52 },                    # The Stronghold
+  ]
+
+[[edit]]
+target = "c11080070"                                   # Ciel Natcherall
+
+  [[edit.cards]]
+  id = 0x9AD523FB                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 243, technique = 248, pressure = 200, physical = 211, intelligence = 234, agility = 174, freedom = 225 }
+  moves = [
+    { move = 0x0F4F25F0, level = 3 },                     # The Stronghold
+    { move = 0x6ADE9E01, level = 10 },                    # Illusory Ball
+    { move = 0x2E7B2B84, level = 20 },                    # Thief's Eye
+    { move = 0xB27F13ED, level = 43 },                    # Death Zone
+  ]
+
+[[edit]]
+target = "c11080080"                                   # Kyo Seestar
+
+  [[edit.cards]]
+  id = 0x1D4D3F34                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 296, control = 246, technique = 232, pressure = 190, physical = 209, intelligence = 203, agility = 177, freedom = 217 }
+  moves = [
+    { move = 0xFB0BF8BD, level = 4 },                     # Marshal's Light
+    { move = 0x4604DA62, level = 14 },                    # Royal Penguin Parade
+    { move = 0x3B8D915B, level = 29 },                    # Meteor Shower
+    { move = 0x4CDC2C6B, level = 46 },                    # Shooting Star
+  ]
+
+[[edit]]
+target = "c11080090"                                   # Vex Frieden
+
+  [[edit.cards]]
+  id = 0x04560E75                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 242, control = 190, technique = 197, pressure = 227, physical = 267, intelligence = 267, agility = 184, freedom = 213 }
+  moves = [
+    { move = 0xC16279D1, level = 1 },                     # Field of Force
+    { move = 0x5643C944, level = 6 },                     # Killer Slide
+    { move = 0x0A3F27B7, level = 16 },                    # Foul Offence 3
+    { move = 0x7A67325B, level = 49 },                    # Flame Dance
+  ]
+
+[[edit]]
+target = "c11080100"                                   # Theon Stillcliffe
+
+  [[edit.cards]]
+  id = 0xD456DF0B                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 279, control = 238, technique = 250, pressure = 186, physical = 228, intelligence = 220, agility = 180, freedom = 225 }
+  moves = [
+    { move = 0x025FD09B, level = 1 },                     # Volcano Cut
+    { move = 0x41F3CDC2, level = 9 },                     # Scorching Tackle
+    { move = 0xFB0BF8BD, level = 18 },                    # Marshal's Light
+    { move = 0xDDCA0D2A, level = 40 },                    # Bouncing Bomb
+  ]
+
+[[edit]]
+target = "c11080110"                                   # Ashlan Panoptos
+
+  [[edit.cards]]
+  id = 0xCD4DEE4A                                         # GK/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 221, control = 198, technique = 186, pressure = 240, physical = 271, intelligence = 230, agility = 252, freedom = 225 }
+  moves = [
+    { move = 0xB01D1B68, level = 3 },                     # Power Spike
+    { move = 0xFE199725, level = 9 },                     # Royal Shield
+    { move = 0xA7157B91, level = 21 },                    # Power Shield
+    { move = 0xA6D711A6, level = 32 },                    # Full Power Shield
+  ]
+
+[[edit]]
+target = "c11080120"                                   # Lenox Grinder
+
+  [[edit.cards]]
+  id = 0xE660BD89                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 306, control = 244, technique = 216, pressure = 189, physical = 208, intelligence = 200, agility = 173, freedom = 217 }
+  moves = [
+    { move = 0x1ECA5CE1, level = 3 },                     # Wrath Shot
+    { move = 0x4890FB67, level = 19 },                    # Twin Boost
+    { move = 0x6ADE9E01, level = 33 },                    # Illusory Ball
+    { move = 0xFB0BF8BD, level = 54 },                    # Marshal's Light
+  ]
+
+[[edit]]
+target = "c11080130"                                   # Ophelia Ennercourt
+
+  [[edit.cards]]
+  id = 0xFF7B8CC8                                         # FW/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 289, control = 242, technique = 230, pressure = 198, physical = 208, intelligence = 205, agility = 178, freedom = 221 }
+  moves = [
+    { move = 0xBF6D0AC5, level = 1 },                     # Emperor Penguin No. 3
+    { move = 0x7748D3F2, level = 12 },                    # Devil Ball
+    { move = 0x5643C944, level = 24 },                    # Killer Slide
+    { move = 0xC16279D1, level = 56 },                    # Field of Force
+  ]
+
+[[edit]]
+target = "c11080140"                                   # Riggs Fornstrut
+
+  [[edit.cards]]
+  id = 0xB03A1A0F                                         # MF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 259, control = 227, technique = 225, pressure = 211, physical = 223, intelligence = 223, agility = 180, freedom = 217 }
+  moves = [
+    { move = 0x00196EC2, level = 2 },                     # Earthquake
+    { move = 0x0F4F25F0, level = 6 },                     # The Stronghold
+    { move = 0xFB0BF8BD, level = 25 },                    # Marshal's Light
+    { move = 0x05567847, level = 58 },                    # Runaway Train
+  ]
+
+[[edit]]
+target = "c11080150"                                   # Leticia Legatus
+
+  [[edit.cards]]
+  id = 0xA9212B4E                                         # GK/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 244, control = 205, technique = 193, pressure = 219, physical = 255, intelligence = 217, agility = 228, freedom = 225 }
+  moves = [
+    { move = 0xDA3FF6C9, level = 1 },                     # Criss-Cross
+    { move = 0xFE199725, level = 9 },                     # Royal Shield
+    { move = 0xA7157B91, level = 17 },                    # Power Shield
+    { move = 0xA6D711A6, level = 36 },                    # Full Power Shield
+  ]
+
+[[edit]]
+target = "c11080160"                                   # Arran Realis
+
+  [[edit.cards]]
+  id = 0x820C788D                                         # DF/FW · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 193, technique = 193, pressure = 221, physical = 261, intelligence = 263, agility = 188, freedom = 213 }
+  moves = [
+    { move = 0x86F5F6E8, level = 2 },                     # Cupid's Arrow
+    { move = 0x5643C944, level = 13 },                    # Killer Slide
+    { move = 0x93885A64, level = 34 },                    # Fire Drill
+    { move = 0xF9C4BCF4, level = 55 },                    # Double Helix
+  ]
+
+[[edit]]
+target = "c11080500"                                   # Alice Rendell
+
+  [[edit.cards]]
+  id = 0xD35F77D7                                         # MF/FW · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 251, control = 246, technique = 263, pressure = 200, physical = 192, intelligence = 236, agility = 178, freedom = 225 }
+  moves = [
+    { move = 0x7DAF3139, level = 2 },                     # Emperor Penguin No. 2
+    { move = 0x6ADE9E01, level = 19 },                    # Illusory Ball
+    { move = 0x0F4F25F0, level = 24 },                    # The Stronghold
+    { move = 0xFB0BF8BD, level = 38 },                    # Marshal's Light
+  ]
+
+[[edit]]
+target = "c11080510"                                   # Partis Payton
+
+  [[edit.cards]]
+  id = 0xCA444696                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 230, control = 203, technique = 181, pressure = 200, physical = 278, intelligence = 197, agility = 234, freedom = 235 }
+  moves = [
+    { move = 0xB01D1B68, level = 5 },                     # Power Spike
+    { move = 0xFE199725, level = 14 },                    # Royal Shield
+    { move = 0xA7157B91, level = 22 },                    # Power Shield
+    { move = 0xA6D711A6, level = 33 },                    # Full Power Shield
+  ]

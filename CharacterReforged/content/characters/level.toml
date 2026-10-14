@@ -1,0 +1,16 @@
+schema = "VRFW.character/2"
+# Character Reforged · the level cap (owner 2026-10-14; docs/refactor/aura-mods-split.md «Per-character data»;
+# docs/framework/system.md §3, docs/game/mechanics/level-cap.md). Moved from Inazuma Fantasy (its characters\level.toml).
+#
+# The cap is config.toml [level] cap (MaxConfig below; Max = the value used when the config has none): 99 = the game's
+# own cap (nothing raised, the game's curves), up to 999 (the engine-safe maximum: a higher value is clamped with a
+# loader.log line). EXP of the levels above the game's last one: Base + Linear·k + Square·k², k = level − 99 (the
+# game's Lv 99 → 100 step continues; any cap gets its rows). The stats follow the cap too (scripts\lib\stats_curve.lua).
+[VRFW.Level]
+Max = 200
+MaxConfig = "level.cap"
+Exp = { Base = 124072, Linear = 3700, Square = 20 }   # EXP of level 99 + k
+StoryCap = "max"
+RarityExpRate = 1.0
+Npc = true                # opponents / NPCs / match copies above the game's cap too
+BeansLevel = 99           # bean cap per slot = 2 x min(Lv, 99) - 18 = 180

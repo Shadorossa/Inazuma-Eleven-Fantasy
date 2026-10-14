@@ -1,0 +1,36 @@
+# No More Rarities › the «Rareza» tab of the two filter windows (player lists and fichas list; docs/game/characters/
+# rarity-removal.md §8, docs/refactor/aura-mods-split.md «No More Rarities»). The tab lists from rarity 5 on
+# (content\game\rarity_filter.toml of the mod: the removed rarities 0-3 and rarity 4 have no box). Every normal card
+# is rarity 4, so a specific rarity set always lets rarity 4 through, and the removed rarities 0-3 that older saved
+# sets still hold are dropped. Split out of Inazuma Fantasy's graft rarity_filter (2026-10-14), which keeps the Prime
+# entry, the season placeholder and the legacy-set marker.
+# The filter includes are INCLUDE'd: their patches run after the include's chunk (include/<stem>/), each one wraps the
+# filter-param functions of its menu table.
+name = "no_more_rarities_filter"
+mod = "no_more_rarities"
+order = 120
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "No More Rarities: a specific rarity set always lets the normal cards (rarity 4) through"
+
+[[files]]
+stem = "chara_filter_menu_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "keep_normal_cards.lua"
+  marker = "no_more_rarities chara"
+  crc = "none"
+  vars = { "@MENU@" = "CHARA_FILTER_MENU" }
+
+[[files]]
+stem = "spirit_filter_menu_inc"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "keep_normal_cards.lua"
+  marker = "no_more_rarities spirit"
+  crc = "none"
+  vars = { "@MENU@" = "SPIRIT_FILTER_MENU" }

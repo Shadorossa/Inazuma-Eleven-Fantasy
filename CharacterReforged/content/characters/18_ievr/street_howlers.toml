@@ -1,0 +1,36 @@
+schema = "VRFW.character/2"
+# Character Reforged · Street Howlers · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c11700620"                                   # Cane Fangley
+
+  [[edit.cards]]
+  id = 0xCE5AD075                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 190, technique = 188, pressure = 211, physical = 273, intelligence = 248, agility = 200, freedom = 234 }
+  moves = [
+    { move = 0x613ABD43, level = 5 },                     # Dawnrise
+    { move = 0xDCF43422, level = 16 },                    # Aurora Dribble
+    { move = 0x1FC99D68, level = 35 },                    # Snow Angel
+    { move = 0xAF28F5A0, level = 46 },                    # The Tower
+  ]
+
+[[edit]]
+target = "c11700630"                                   # Fenric Wulfgang
+
+  [[edit.cards]]
+  id = 0xD741E134                                         # FW/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 323, control = 246, technique = 223, pressure = 167, physical = 215, intelligence = 190, agility = 184, freedom = 251 }
+  moves = [
+    { move = 0x0B011EBF, level = 2 },                     # Fireball Screw
+    { move = 0x35E70F22, level = 10 },                    # Grenade Shot
+    { move = 0x132416F6, level = 17 },                    # Dog Run
+    { move = 0x4741C0E8, level = 57 },                    # Steeple Shot
+  ]

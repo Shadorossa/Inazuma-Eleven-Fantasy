@@ -1,0 +1,174 @@
+schema = "VRFW.character/2"
+# Character Reforged · Team Ogre · Inazuma Eleven 3
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "c03033610"                                   # Lars Luceafăr
+
+  [[edit.cards]]
+  id = 0xF6527787                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 182, control = 198, technique = 194, pressure = 274, physical = 227, intelligence = 250, agility = 271, freedom = 325 }
+  moves = [
+    { move = 0x5977EFA9, level = 1 },                     # High Voltage
+    { move = 0x906C0F96, level = 1 },                     # Electric Trap
+    { move = 0xBB415C55, level = 1 },                     # Needle Hammer
+    { move = 0x9AF2229C, level = 46 },                    # Gravity Point
+  ]
+
+[[edit]]
+target = "c03033620"                                   # Lump Trungus
+
+  [[edit.cards]]
+  id = 0xDD7F2444                                         # DF/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 151, control = 173, technique = 208, pressure = 273, physical = 216, intelligence = 270, agility = 209, freedom = 335 }
+  moves = [
+    { move = 0x7BA5586C, level = 1 },                     # Mad Express
+    { move = 0x06D2AC29, level = 1 },                     # Diabolical Cut
+    { move = 0x2DFFFFEA, level = 1 },                     # Ground Quake
+    { move = 0x025FD09B, level = 52 },                    # Volcano Cut
+  ]
+
+[[edit]]
+target = "c03033630"                                   # Bump Trungus
+
+  [[edit.cards]]
+  id = 0xC4641505                                         # DF/MF · wind
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 143, control = 182, technique = 220, pressure = 269, physical = 193, intelligence = 277, agility = 227, freedom = 335 }
+  moves = [
+    { move = 0x2DFFFFEA, level = 1 },                     # Ground Quake
+    { move = 0x1162A8AF, level = 1 },                     # Bewilder Blast
+    { move = 0x4BD584B7, level = 1 },                     # Power Charge
+    { move = 0xAEEA9F97, level = 65 },                    # Sigma Zone
+  ]
+
+[[edit]]
+target = "c03033640"                                   # Oni Triumvir
+
+  [[edit.cards]]
+  id = 0x8B2583C2                                         # MF/DF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 154, control = 267, technique = 284, pressure = 212, physical = 194, intelligence = 263, agility = 171, freedom = 263 }
+  moves = [
+    { move = 0x0A3F27B7, level = 1 },                     # Foul Offence 3
+    { move = 0x6633159F, level = 4 },                     # Gravitation
+    { move = 0xC513565C, level = 54 },                    # Doom Spear
+    { move = 0x4BD584B7, level = 60 },                    # Power Charge
+  ]
+
+[[edit]]
+target = "c03033650"                                   # Drachen Gunther
+
+  [[edit.cards]]
+  id = 0x923EB283                                         # MF/DF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 219, control = 196, technique = 311, pressure = 201, physical = 235, intelligence = 181, agility = 184, freedom = 221 }
+  moves = [
+    { move = 0xAEEA9F97, level = 1 },                     # Sigma Zone
+    { move = 0x1162A8AF, level = 1 },                     # Bewilder Blast
+    { move = 0x4BD584B7, level = 34 },                    # Power Charge
+    { move = 0x5781A373, level = 53 },                    # Hurricane Arrows
+  ]
+
+[[edit]]
+target = "c03033660"                                   # Mystral Callous
+
+  [[edit.cards]]
+  id = 0xB913E140                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 304, control = 234, technique = 311, pressure = 150, physical = 173, intelligence = 162, agility = 159, freedom = 339 }
+  moves = [
+    { move = 0xC513565C, level = 1 },                     # Doom Spear
+    { move = 0x119EFB90, level = 41 },                    # Doom Rain
+    { move = 0x71831119, level = 53 },                    # Foul Offence 2
+    { move = 0x7748D3F2, level = 54 },                    # Devil Ball
+  ]
+
+[[edit]]
+target = "c03033670"                                   # Radd Ischer
+
+  [[edit.cards]]
+  id = 0xA008D001                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 173, control = 176, technique = 196, pressure = 259, physical = 254, intelligence = 261, agility = 204, freedom = 347 }
+  moves = [
+    { move = 0xAD6E4BF9, level = 1 },                     # Harvest
+    { move = 0x4BD584B7, level = 1 },                     # Power Charge
+    { move = 0x025FD09B, level = 56 },                    # Volcano Cut
+    { move = 0x906C0F96, level = 62 },                    # Electric Trap
+  ]
+
+[[edit]]
+target = "c03033690"                                   # Bash Lancer
+
+  [[edit.cards]]
+  id = 0x3E8BFD8F                                         # FW/MF · forest
+  growth = "normal"
+  stats = { kick = 370, control = 239, technique = 257, pressure = 198, physical = 180, intelligence = 211, agility = 171, freedom = 217 }
+  moves = [
+    { move = 0xC513565C, level = 9 },                     # Doom Spear
+    { move = 0x5739C70C, level = 19 },                    # Guided Collide
+    { move = 0xF4A1E0B0, level = 62 },                    # Entropic Arrows
+    { move = 0xE29933EC, level = 71 },                    # Dimensional Deluge
+  ]
+
+[[edit]]
+target = "c03033700"                                   # Ichabod Stark
+
+  [[edit.cards]]
+  id = 0xEE8B2CF1                                         # MF/FW · mountain
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 238, control = 255, technique = 277, pressure = 165, physical = 204, intelligence = 211, agility = 174, freedom = 335 }
+  moves = [
+    { move = 0x119EFB90, level = 1 },                     # Doom Rain
+    { move = 0x6633159F, level = 1 },                     # Gravitation
+    { move = 0x1162A8AF, level = 41 },                    # Bewilder Blast
+    { move = 0xC16279D1, level = 58 },                    # Field of Force
+  ]
+
+[[edit]]
+target = "c03033710"                                   # Jynx Jenkins
+
+  [[edit.cards]]
+  id = 0xF7901DB0                                         # DF/MF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 144, control = 153, technique = 132, pressure = 292, physical = 298, intelligence = 263, agility = 247, freedom = 343 }
+  moves = [
+    { move = 0x025FD09B, level = 1 },                     # Volcano Cut
+    { move = 0x4BD584B7, level = 1 },                     # Power Charge
+    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
+    { move = 0xC66BD10D, level = 66 },                    # Zigzag Spark
+  ]
+
+[[edit]]
+target = "c04018060"                                   # Escavan Malice
+
+  [[edit.cards]]
+  id = 0xD5F8771D                                         # FW/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 298, control = 234, technique = 242, pressure = 235, physical = 190, intelligence = 227, agility = 167, freedom = 271 }
+  moves = [
+    { move = 0x119EFB90, level = 1 },                     # Doom Rain
+    { move = 0x6E53E2B3, level = 1 },                     # Angel Ball
+    { move = 0x1162A8AF, level = 48 },                    # Bewilder Blast
+    { move = 0xC513565C, level = 67 },                    # Doom Spear
+  ]

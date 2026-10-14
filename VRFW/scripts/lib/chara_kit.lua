@@ -59,7 +59,7 @@ local CACHE = {}       -- card -> { uniform, flags, source }
 local function read_all()
   if D ~= nil then return D end
   local t0 = VRFW.now()
-  D = { uniform = {}, item_uniform = {}, series = {}, kits = {}, type_era = {}, eras = 0, chara = {}, card = {},
+  D = { uniform = {}, item_uniform = {}, kits = {}, type_era = {}, eras = 0, chara = {}, card = {},
         roster = nil, n_uniform = 0 }
   -- the uniforms (uniform_config m_UniformInfoList nameId)
   pcall(function()
@@ -82,13 +82,6 @@ local function read_all()
     for _, r in ipairs(rows or {}) do
       local id, u = u32(r[1]), u32(r[p])
       if id ~= 0 and u ~= 0 and D.item_uniform[id] == nil then D.item_uniform[id] = u end
-    end
-  end)
-  -- series id -> series type
-  pcall(function()
-    for _, r in ipairs(VRFW.table.rows("character/chara_series")) do
-      local id = u32(col(r, "chara_series_id", "charaSeriesId"))
-      if id ~= 0 then D.series[id] = u32(col(r, "chara_series_type", "charaSeriesType")) end
     end
   end)
   -- belong_team_config: the era kit columns, series type k -> era (the k-th teamNumber_<x> column), team -> kits
@@ -118,36 +111,25 @@ local function read_all()
       end
     end
   end)
-  -- chara_base: series and teams per character (only those columns)
-  pcall(function()
-    local ps = pos_of("character/chara_base", "series")
-    local p1, p2, p3 = pos_of("character/chara_base", "team_1"), pos_of("character/chara_base", "team_2"),
-      pos_of("character/chara_base", "team_3")
-    if not (ps and p1 and p2 and p3) then return end
-    local rows = VRFW.table.raw(key_of("character/chara_base", "data/common/gamedata/character/chara_base_*.cfg.bin"),
-      "CHARA_BASE_INFO", { 1, ps, p1, p2, p3 })
-    for _, r in ipairs(rows or {}) do
-      local id = u32(r[1])
-      if id ~= 0 then D.chara[id] = { u32(r[ps]), u32(r[p1]), u32(r[p2]), u32(r[p3]) } end
-    end
-  end)
-  -- chara_param: the character and the main position per card
-  pcall(function()
-    local pb = pos_of("character/chara_param", "chara", "chara_base") or 2
-    local pp = pos_of("character/chara_param", "main_position")
-    local want = { 1, pb }
-    if pp then want[#want + 1] = pp end
-    local rows = VRFW.table.raw(key_of("character/chara_param", "data/common/gamedata/character/chara_param_*.cfg.bin"),
-      "CHARA_PARAM_INFO", want)
-    for _, r in ipairs(rows or {}) do
-      local id = u32(r[1])
-      if id ~= 0 then D.card[id] = { u32(r[pb]), pp and u32(r[pp]) or 0 } end
-    end
-  end)
-  VRFW.log(string.format("chara_kit: tables read in %d ms (%d uniforms, %d belong teams, %d eras, %d characters, %d cards)",
+  -- the characters' series type and teams, the cards' character and main position: the framework's ONE character
+  -- index (VRFW.chara, read once natively for every script; 2.3, docs/framework/chara-index.md), asked per id
+  D.chara = setmetatable({}, { __index = function(t, base)
+    local ok, c = pcall(VRFW.chara.character, base)
+    if not ok or type(c) ~= "table" then return nil end
+    local v = { u32(c.series), u32(c.teams[1]), u32(c.teams[2]), u32(c.teams[3]) }
+    rawset(t, base, v)
+    return v
+  end })
+  D.card = setmetatable({}, { __index = function(t, card)
+    local ok, c = pcall(VRFW.chara.card, card)
+    if not ok or type(c) ~= "table" then return nil end
+    local v = { u32(c.base), u32(c.position) }
+    rawset(t, card, v)
+    return v
+  end })
+  VRFW.log(string.format("chara_kit: tables read in %d ms (%d uniforms, %d belong teams, %d eras; characters and cards: the framework's index)",
     math.floor(VRFW.now() - t0), D.n_uniform, (function() local n = 0 for _ in pairs(D.kits) do n = n + 1 end return n end)(),
-    D.eras, (function() local n = 0 for _ in pairs(D.chara) do n = n + 1 end return n end)(),
-    (function() local n = 0 for _ in pairs(D.card) do n = n + 1 end return n end)()))
+    D.eras))
   return D
 end
 
@@ -164,7 +146,7 @@ end
 local function belong_kit(base)
   local c = D.chara[base]
   if c == nil then return nil end
-  local era = D.type_era[D.series[c[1]] or 0]
+  local era = D.type_era[c[1]]
   for t = 2, 4 do
     local kits = c[t] ~= 0 and D.kits[c[t]] or nil
     if kits ~= nil then

@@ -1,0 +1,158 @@
+schema = "VRFW.technique/3"
+# All Changed › the «Modo cambio» commands (docs/game/mods/all-changed.md; moved from Inazuma Fantasy 2026-10-14,
+# docs/game/mechanics/mode-change.md §2). All are clones of the retail mode change `mode_change_c06030060` (auraType 6:
+# the mode change's lists, plates and cut-in) with
+#   * power_min (cost) 0: no hyper gauge / tension; power_max (time) 90: the swap holds the timer full;
+#   * no buffs (effects / unique_effects empty): the partner form is the partner card as it is; no AURA_CMD_CHARA owner;
+#   * linked_skill (col 6) = the command itself, as every retail mode_change_* row.
+# `wmc_evt_create` is «Crear nuevo cambio» (a creation screen's entry, never equipped); `wmc_evt0` .. `wmc_evt7` are the
+# carriers of a player's change (the plates slot's mix slot holds `wmc_evt<k>`; the VR-Framework's swap turns its
+# metamorphosis into the partner card). Their items: base_tables\gamedata\item\item_config.toml (sub_category
+# 178 = mode change). Ids = crc32 of the keys, the same as in Inazuma Fantasy's saves.
+default_lang = "none"
+
+[[aura_command]]
+key = "wmc_evt_create"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x79E7C50A, desc_text = 0x2C711758, linked_skill = 0xD4A87F7F, order = 7000 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt0"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0x2CFBD0A6, order = 7001 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt1"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0x5BFCE030, order = 7002 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt2"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0xC2F5B18A, order = 7003 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt3"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0xB5F2811C, order = 7004 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt4"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0x2B9614BF, order = 7005 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt5"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0x5C912429, order = 7006 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt6"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0xC5987593, order = 7007 }
+unique_effects = []
+effects = []
+charas = []
+
+[[aura_command]]
+key = "wmc_evt7"
+from = "mode_change_c06030060"
+power_min = 0
+power_max = 90
+cells = { name_text = 0x6558B9E6, desc_text = 0x30CE6BB4, linked_skill = 0xB29F4505, order = 7008 }
+unique_effects = []
+effects = []
+charas = []
+
+[[text]]
+id = 0x6558B9E6
+kind = "noun"
+add = true
+ja = "モードチェンジ"
+en = "Mode Change"
+es = "Modo cambio"
+fr = "Changement de mode"
+de = "Moduswechsel"
+it = "Cambio modalità"
+pt = "Mudança de modo"
+zh_hans = "模式切换"
+zh_hant = "模式切換"
+
+[[text]]
+id = 0x30CE6BB4
+kind = "text"
+add = true
+ja = "この選手とその変身先の選手を切り替える\n（RB + B、25秒ごと）。変身中は相手の姿・\n能力・技になる。テンション消費・時間制限なし。"
+en = "Swap between this player and his change\n(RB + B, every 25 s): he becomes that player,\nlook, stats and moves; no tension, no time limit."
+es = "Cambia entre este jugador y su cambio\n(RB + B, cada 25 s): se convierte en él, aspecto,\nestadísticas y técnicas; sin tensión ni límite de tiempo."
+fr = "Alterne entre ce joueur et son changement\n(RB + B, toutes les 25 s) : il devient ce joueur,\napparence, stats et techniques ; sans tension ni limite."
+de = "Wechselt zwischen diesem Spieler und seinem\nWechsel (RB + B, alle 25 s): er wird dieser Spieler,\nAussehen, Werte, Techniken; keine Spannung, kein Limit."
+it = "Alterna tra questo giocatore e il suo cambio\n(RB + B, ogni 25 s): diventa quel giocatore,\naspetto, statistiche e tecniche; niente tensione né limite."
+pt = "Alterna entre este jogador e a sua mudança\n(RB + B, a cada 25 s): torna-se esse jogador,\naparência, atributos e técnicas; sem tensão nem limite."
+zh_hans = "在该球员与其变换对象之间切换\n（RB + B，每25秒）：变为对方的外观、\n能力与技能；不消耗气势，无时间限制。"
+zh_hant = "在該選手與其變換對象之間切換\n（RB + B，每25秒）：變為對方的外觀、\n能力與技巧；不消耗氣勢，無時間限制。"
+
+[[text]]
+id = 0x79E7C50A
+kind = "noun"
+add = true
+ja = "新しいチェンジを作る"
+en = "Create New Change"
+es = "Crear nuevo cambio"
+fr = "Créer un changement"
+de = "Neuer Wechsel"
+it = "Crea nuovo cambio"
+pt = "Criar nova mudança"
+zh_hans = "创建新的切换"
+zh_hant = "建立新的切換"
+
+[[text]]
+id = 0x2C711758
+kind = "text"
+add = true
+ja = "好きなキャラを選ぶ：試合中、この選手はその\nキャラに変身でき、また元に戻れる\n（RB + B、25秒ごと）。"
+en = "Pick any character: in matches this player can\nswap into him and back again\n(RB + B, every 25 s)."
+es = "Elige cualquier personaje: en los partidos este\njugador podrá convertirse en él y volver\n(RB + B, cada 25 s)."
+fr = "Choisis un personnage : en match, ce joueur pourra\nse changer en lui et revenir\n(RB + B, toutes les 25 s)."
+de = "Wähle eine Figur: Im Spiel kann sich dieser Spieler\nin sie verwandeln und zurück\n(RB + B, alle 25 s)."
+it = "Scegli un personaggio: in partita questo giocatore\npotrà trasformarsi in lui e tornare\n(RB + B, ogni 25 s)."
+pt = "Escolhe uma personagem: nos jogos este jogador\npoderá transformar-se nela e voltar\n(RB + B, a cada 25 s)."
+zh_hans = "选择任意角色：比赛中该球员可以\n变成他，再变回来\n（RB + B，每25秒）。"
+zh_hant = "選擇任意角色：比賽中該選手可以\n變成他，再變回來\n（RB + B，每25秒）。"

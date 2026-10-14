@@ -1,0 +1,25 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the dive of Big Bang (whs01110) (Nacho 2026-10-08: each move its own fall, matching its
+# cut-in). In the cut-in's shot cut (c0700) the ball is hidden inside the meteor and the meteor's nose falls from the
+# sky toward the goal mouth; in the match the ball starts at the nose's height over the kick point and comes into the
+# goal at its angle: the angled dive (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.6).
+# Close in the start comes down onto the 46° line; farther the ball leaves level at 11 m and bends into it. Its aura
+# (content\effects\big_bang_ball.toml, the meteor) is turned along the flight.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move big_bang): the meteor's nose (apex of the dome
+# _830_a_meteor_base_01_new_c0070) of ev60011100 c0700, frames 536-620: (0.00, 11.16, 40.53) -> (0.00, 4.27, 47.27),
+# 11.16 m -> 4.27 m over 6.74 m on the ground = 45.7° down (the same over the last 4 frames, the dome's axis).
+#   height     = 11.0: the start (11.16 m) over a kick on the pitch (ball radius 0.11).
+#   angle      = 46:   the descent angle.
+#   end_height = 2.0:  the cut-in ends at 4.3 m (over the bar): brought to 2.0 m, in the keeper's reach.
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Inazuma Fantasy declares no trajectory
+# for this move (no conflict).
+
+# Big Bang (whs01110).
+[[edit]]
+target = "whs01110"
+# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
+# flight: 11.11 m (11.0 over a kick on the pitch) held until 8.8 m before the goal point, then the 46.0
+# deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 4.4 m down (bend 0.5). A shot shorter
+# than 8.8 m starts lower, on the line.
+trajectory = { goal_points = [[8.8, 11.11, 999, 4.4], [0.0, 2.0]], unblockable = false }

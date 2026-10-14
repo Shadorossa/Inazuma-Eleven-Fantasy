@@ -1,0 +1,59 @@
+# Chronicle Deluxe's settings (docs/game/mods/chronicle-deluxe.md §8). Read by the generator
+# research/scripts/chronicle_deluxe_heroic_build.py, which writes the mod's data from them (content\teams\90_rules\
+# heroic.toml, content\base_tables\gamedata\soccer\soccer_prize_config.toml, text\rows\heroic_challenges.toml): change a
+# value here, re-run the generator (`--check` = exit 1 when the data is stale). Nothing here is read in game.
+
+# The Batalla heroica's rival level along the Chronicle (owner 2026-10-14: «starts at the Royal Academy node at level 4
+# and scales up to level 200 at the last stage of Victory Road's heroic battles»). The heroic battles in the game's own
+# Chronicle order (the routes of chronicle_vs_route_config, their match pieces in table order; this mod's side nodes right
+# after the piece they follow) get level = first + (last - first) × t ^ curve_exponent, t = 0 at the first battle and 1 at
+# the last, rounded half up. curve_exponent = 1 is a straight line; above 1 the climb is slower first, faster at the end.
+[heroic]
+first_level = 4
+last_level = 200
+curve_exponent = 1.0
+
+# The player's team in a Batalla heroica is synced (the row's level sync: players above it play at it) to a level
+# `level_sync_below_percent` % below the rival's: sync = rival × (100 − percent) / 100, rounded DOWN, at least 1.
+level_sync_below_percent = 7
+
+# The heroic player rules (owner 2026-10-14). The «first game» of a player is his character's source series in the
+# game's data (chara_base series → chara_series_config type: Inazuma Eleven, 2, 3, GO, GO 2, GO Galaxy, Ares, Orion,
+# Victory Road); a Chronicle route's game is the series most of its Crónica rivals' players belong to.
+#   cap:  every player of the squad (starters and bench; the coach and the reserves never count) is from the node's game
+#         or an earlier one
+#   ramp: from the second game on, at least N players of the squad are from the node's game; N climbs over that game's
+#         heroic battles in Chronicle order: N = ramp_start + (ramp_end − ramp_start) × t ^ ramp_exponent, rounded UP
+#         (t = 0 at the game's first heroic battle, 1 at its last, which asks ramp_end)
+#   max_per_series: from the second game on, at most this many players of the squad from any one game (season); the
+#         first game's battles have none (no other season is allowed there). 0 = no maximum. (owner 2026-10-14: 7)
+[heroic.players]
+ramp_start = 1
+ramp_end = 7
+ramp_exponent = 1.0
+max_per_series = 7
+
+# The required starter of every Batalla heroica (owner 2026-10-14), from the first one (Royal Academy) to Victory
+# Road's last: the player's starting line-up must have this character (any card of his: the normal cards and the
+# Hero / Idol ones of the same character; NOT the possessed form c11600090 nor the young one c11600110, other
+# characters) in a formation place of one of `positions` (the place in the dock's formation: fw = DL, mf = MC), only
+# until that heroic battle's first win (`until_first_clear`). He is exempt from the cap, and counts toward the ramp
+# and the per-season maximum only where his own series (chara_base: Victory Road) is allowed, i.e. in Victory Road's
+# heroic battles. The Crónica has no rule.
+[heroic.required]
+character = "c11600010"   # Victorio Cryptix, normal form (the one of the starting teams, content/teams/05_start_teams.toml)
+positions = ["fw", "mf"]
+until_first_clear = true
+
+# The short names the match info uses for the games (series names of chara_base's in_<name> columns). A game missing
+# here is written with the game's own full name (chara_series_config's name text, every language).
+[heroic.players.short_names]
+ie1 = "IE1"
+ie2 = "IE2"
+ie3 = "IE3"
+go1 = "GO"
+go2 = "CS"
+go3 = "Galaxy"
+ares = "Ares"
+orion = "Orion"
+victory_road = "VR"

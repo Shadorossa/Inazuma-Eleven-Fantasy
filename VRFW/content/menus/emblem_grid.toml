@@ -7,7 +7,7 @@
 #   vrfw_tile_label    the retail character card (team00_01) of which the Lua shows only the name text _text_chr01:
 #                      the team name and its count under each tile (two instances a tile)
 # Draw priority 700 / 702: over the menus' own lists (~650), under the sub windows (845+); the Lua may set its own.
-schema = "vr_framework.menu/2"
+schema = "VRFW.menu/2"
 
 [[object]]
 name = "vrfw_emblem_tile"

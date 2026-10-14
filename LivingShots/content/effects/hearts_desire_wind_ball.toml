@@ -1,0 +1,24 @@
+# «Ataque de corazón» (Heart's Desire, whs02420; wind shot, cut-in ev60_02420): while the ball flies to the goal after the cut-in it
+# keeps the look of the cut-in's last cut (c0300, the ball thrust level through a pink sky): its fogs streaming back,
+# its turning white spirals and whirls, its rim, light and sparkles, instead of the plain wind special-shot aura
+# (ega0075b). The object is ev6242hd00 (effect/event/ev60/ev6242hd00/), built by research/scripts/hearts_desire_wind_ball_fx.py from the
+# cut-in's effect object ev60024200: c0300 replayed from its first frame (366), then held at frame 466, ball at the origin
+# flying +Z, x1. Left out: the pink sky backdrop and its bubbles and stars. docs/game/media/hearts-desire-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\hearts_desire_wind_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "hearts_desire_wind"
+from = "ega0075b"
+object = "effect/event/ev60/ev6242hd00/ev6242hd00.objbin"
+
+[[shot_aura]]
+name = "hearts_desire_wind"
+when = { techniques = ["whs02420"] }
+aura = "hearts_desire_wind"
+like = "ega0075b"
+# the aura's replay (100 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 100 }

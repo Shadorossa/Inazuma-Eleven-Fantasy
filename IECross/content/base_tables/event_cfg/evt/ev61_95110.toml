@@ -1,0 +1,2032 @@
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/evt/ev61_95110.cfg.bin"
+from = "data/common/event_cfg/evt/ev60_00960.cfg.bin"
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+values = ["c0010", 0, 104, "NONE"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 1
+values = ["c0020", 104, 222, "NONE"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 2
+values = ["c0030", 222, 315, "NONE"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 3
+values = ["common/event/ev61/ev61_95110/ev61_95110_camera.g4cm"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 7
+values = [0, 0x35746E60, 100]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 7
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "INVARID", 7, 0, 0, 0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 8
+values = ["b000001_s00_p<VARIATION>", "b000001", 0, 0, 0, 0, 0, 0, "NONE", 0, 0, 0, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 9
+values = ["point_s01", "common/event/ev_point/point/point.g4sk", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 10
+values = ["point_s90", "common/event/ev_point/point/point.g4sk", 1, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 11
+values = ['common\event\ev61/ev61_95110\ev61_95110_light\light_list.cfg.bin']
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 12
+values = [0, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 12
+values = ["point_eff", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 13
+values = [0, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 13
+values = ["b000001_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/b000001_s00_p<VARIATION>##ボール/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 14
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/c00<TYPE><NO>_s00_p<VARIATION>##共通リグ/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 15
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 16
+values = ["point_s00", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_s00##配置ポイント/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 17
+values = ["point_s01", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_s01##配置ポイント/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 18
+values = ["point_s90", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_s90##配置ポイント/", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 19
+values = [0, 0xDDC9D278, 105]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 19
+values = []
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 20
+values = [0, 0xDDC9D278, 105]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 20
+values = []
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 21
+values = [0, 0x65B17A68, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 21
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 22
+values = [0, 0x8B9492DD, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 22
+values = ["c00<TYPE><NO>_s00_p<VARIATION>"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 23
+values = [0, 0x65B17A68, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 23
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 24
+values = [0, 0x8B9492DD, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 24
+values = ["c00<TYPE><NO>_s01_p<VARIATION>"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 25
+values = [0, 0x8B9492DD, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 25
+values = ["b000001_s00_p<VARIATION>"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 26
+values = [0, 0xBF205D4E, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 26
+values = []
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 27
+values = [0, 0x682C8656, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 27
+values = ["c0010", "RESET_DEF"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 28
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 28
+values = ["point_eff", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 29
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 29
+values = ["point_s00", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 30
+values = [0, 0xFBBCCB17, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 30
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 31
+values = [0, 0xC5C98AD3, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 31
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 32
+values = [0, 0x1C645E1F, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 32
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 1.0, 1.0, 1.0, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 33
+values = [0, 0x92AF8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 33
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 34
+values = [0, 0xBD9E73F6, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 35
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 35
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 36
+values = [0, 0xFBBCCB17, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 36
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 37
+values = [0, 0xC5C98AD3, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 37
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 38
+values = [0, 0x1C645E1F, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 38
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 1.0, 1.0, 1.0, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 39
+values = [0, 0x92AF8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 39
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 40
+values = [0, 0xBD9E73F6, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 40
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 41
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 41
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 42
+values = [0, 0xFBBCCB17, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 42
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 43
+values = [0, 0xC5C98AD3, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 44
+values = [0, 0x1C645E1F, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 44
+values = ["b000001_s00_p<VARIATION>", 1.0, 1.0, 1.0, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 45
+values = [0, 0x92AF8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 45
+values = ["b000001_s00_p<VARIATION>", 0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 46
+values = [0, 0xBD9E73F6, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 46
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 47
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 47
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 48
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 48
+values = ["point_s01", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 49
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 49
+values = ["point_s90", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 50
+values = [0, 0x8BC2ABE4, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 50
+values = ["CCameraCtrlEvent", 0.1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 51
+values = [0, 0x9DB8AB4C, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 51
+values = ["CCameraCtrlEvent", 5000]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 52
+values = [0, 0x0E78BCB7, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 52
+values = [0, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 53
+values = [0, 0x0E78BCB7, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 53
+values = [2, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 54
+values = [0, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 54
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 55
+values = [0, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 55
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 56
+values = [0, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 56
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 57
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 58
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 60
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 61
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 63
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 64
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 66
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 67
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 68
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 69
+values = [0, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 69
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 70
+values = [0, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 70
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 71
+values = [0, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 71
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 72
+values = [0, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 72
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 73
+values = [0, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 73
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 74
+values = [0, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 74
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 75
+values = [0, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 75
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 76
+values = [0, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 76
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 77
+values = [0, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 77
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 78
+values = ["b000001_s00_p<VARIATION>", "point_s90", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 79
+values = ["b000001_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 80
+values = [0, 0xE540F1AE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 80
+values = ["c0010", 2, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 81
+values = [0, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 81
+values = ["point_eff", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 82
+values = [0, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 82
+values = ["b000001_s00_p<VARIATION>", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 83
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 83
+values = ["b000001_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 84
+values = [0, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 84
+values = ["b000001_s00_p<VARIATION>", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 85
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 86
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 86
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 87
+values = [0, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 87
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 88
+values = [0, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 88
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 89
+values = [0, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 89
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 90
+values = [0, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 90
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 91
+values = [0, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 91
+values = ["point_s00", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 92
+values = ["point_s01", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 93
+values = ["point_s90", "c0010", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 94
+values = [0, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 94
+values = ["EventMap", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 95
+values = [0, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 95
+values = ["point_light", "c0010"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 96
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 96
+values = ["point_eff", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/point_eff##エフェクト用配置ポイント/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 97
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 97
+values = ["b000001_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/b000001_s00_p<VARIATION>##ボール/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 98
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 98
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/c00<TYPE><NO>_s00_p<VARIATION>##共通リグ/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 99
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 99
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 100
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 100
+values = ["point_s00", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/point_s00##配置ポイント/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 101
+values = [1, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 101
+values = ["point_s01", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/point_s01##配置ポイント/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 102
+values = ["point_s90", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0020/load/point_s90##配置ポイント/", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 103
+values = [104, 0xDDC9D278, 105]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 103
+values = []
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 104
+values = [104, 0x682C8656, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 104
+values = ["c0020", "RESET_DEF"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 105
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 105
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 106
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 106
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 107
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 107
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 108
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 108
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 109
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 109
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 110
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 110
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 111
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 111
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 112
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 112
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 113
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 113
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 114
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 114
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 115
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 115
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 116
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 116
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 117
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 117
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 118
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 118
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 119
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 120
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 120
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 121
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 121
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 122
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 122
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 123
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 123
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 124
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 124
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 125
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 125
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 126
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 126
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 127
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 127
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 128
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 128
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 129
+values = [104, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 129
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 130
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 130
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 131
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 131
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 132
+values = [104, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 132
+values = ["b000001_s00_p<VARIATION>", "point_s90", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 133
+values = [104, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 133
+values = ["b000001_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 134
+values = [104, 0xE540F1AE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 134
+values = ["c0020", 2, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 135
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 135
+values = ["point_eff", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 136
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 136
+values = ["b000001_s00_p<VARIATION>", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 137
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 137
+values = ["b000001_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 138
+values = [104, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 138
+values = ["b000001_s00_p<VARIATION>", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 139
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 139
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 140
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 140
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 141
+values = [104, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 141
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 142
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 142
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 143
+values = [104, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 143
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 144
+values = [104, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 144
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 145
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 145
+values = ["point_s00", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 146
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 146
+values = ["point_s01", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 147
+values = [104, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 147
+values = ["point_s90", "c0020", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 148
+values = [104, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 148
+values = ["EventMap", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 149
+values = [104, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 149
+values = ["point_light", "c0020"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 150
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 150
+values = ["point_eff", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 151
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 151
+values = ["b000001_s00_p<VARIATION>", "/scene/c0010/load/b000001_s00_p<VARIATION>##ボール/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 152
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 152
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "/scene/c0010/load/c00<TYPE><NO>_s00_p<VARIATION>##共通リグ/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 153
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 153
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "/scene/c0010/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 154
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 154
+values = ["point_s00", "/scene/c0010/load/point_s00##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 155
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 155
+values = ["point_s01", "/scene/c0010/load/point_s01##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 156
+values = [104, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 156
+values = ["point_s90", "/scene/c0010/load/point_s90##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 157
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 157
+values = ["point_eff", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/point_eff##エフェクト用配置ポイント/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 158
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 158
+values = ["b000001_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/b000001_s00_p<VARIATION>##ボール/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 159
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 159
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/c00<TYPE><NO>_s00_p<VARIATION>##共通リグ/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 160
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 160
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 161
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 161
+values = ["point_s00", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/point_s00##配置ポイント/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 162
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 162
+values = ["point_s01", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/point_s01##配置ポイント/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 163
+values = [105, 0xD552FA5D, 102]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 163
+values = ["point_s90", "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", "/scene/c0030/load/point_s90##配置ポイント/", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 164
+values = [222, 0xDDC9D278, 105]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 164
+values = []
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 165
+values = [222, 0x682C8656, 106]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 165
+values = ["c0030", "RESET_DEF"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 166
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 166
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 167
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 167
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 168
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 168
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 169
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 169
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 170
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 170
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 171
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 171
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 172
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 172
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 173
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 173
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 174
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 174
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 175
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 175
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 176
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 176
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 177
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 177
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 178
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 178
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 179
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 179
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "point_s00", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 180
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 180
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 181
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 181
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "01"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 182
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 182
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 183
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 183
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 184
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 184
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "02"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 185
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 185
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp02", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 186
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 186
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 187
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 187
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "03"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 188
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 188
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp03", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 189
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 189
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 190
+values = [222, 0xFE393582, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 190
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "TYPE", "04"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 191
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 191
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "point_s01", "evp04", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 192
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 192
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 193
+values = [222, 0xA2D1F942, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 193
+values = ["b000001_s00_p<VARIATION>", "point_s90", "evp01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 194
+values = [222, 0xF7099ABE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 194
+values = ["b000001_s00_p<VARIATION>", 0.0, 0.0, 0.0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 195
+values = [222, 0xE540F1AE, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 195
+values = ["c0030", 2, 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 196
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 196
+values = ["point_eff", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 197
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 197
+values = ["b000001_s00_p<VARIATION>", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 198
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 198
+values = ["b000001_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 199
+values = [222, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 199
+values = ["b000001_s00_p<VARIATION>", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 200
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 200
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 201
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 201
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 202
+values = [222, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 202
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 203
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 203
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 204
+values = [222, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 204
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 1]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 205
+values = [222, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 205
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "c0030"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 206
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 206
+values = ["point_s00", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 207
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 207
+values = ["point_s01", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 208
+values = [222, 0xA9BDE997, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 208
+values = ["point_s90", "c0030", 272, 0, 0, "common/event/ev61/ev61_95110/ev61_95110_<CHARA>_<CUT>.g4pk", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 209
+values = [222, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 210
+values = [222, 0xB9FC8079, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 211
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 212
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 213
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 214
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 214
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "/scene/c0020/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 215
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 215
+values = ["point_s00", "/scene/c0020/load/point_s00##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 216
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 216
+values = ["point_s01", "/scene/c0020/load/point_s01##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 217
+values = [222, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 218
+values = [315, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 218
+values = ["b000001_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 219
+values = [315, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 219
+values = ["c00<TYPE><NO>_s00_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 220
+values = [315, 0xAFE3804D, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 220
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", 0]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 221
+values = [315, 0x0E78BCB7, 110]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 222
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 223
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 224
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 225
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 225
+values = ["c00<TYPE><NO>_s01_p<VARIATION>", "/scene/c0030/load/c00<TYPE><NO>_s01_p<VARIATION>##共通リグ/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 226
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 226
+values = ["point_s00", "/scene/c0030/load/point_s00##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 227
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 227
+values = ["point_s01", "/scene/c0030/load/point_s01##配置ポイント/"]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 228
+values = [315, 0x7EE3A490, 900]
+
+[[entry]]
+name = "EVENT_COMMAND_HEADER"
+at = 229
+values = [315, 0xB4CD69F7, 1000]
+
+[[entry]]
+name = "EVENT_COMMAND_ARGS"
+at = 229
+values = [315]

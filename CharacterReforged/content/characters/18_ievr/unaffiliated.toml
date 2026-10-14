@@ -1,0 +1,373 @@
+schema = "VRFW.character/2"
+# Character Reforged · Unaffiliated · Inazuma Eleven: Victory Road
+# The per-card stats (Lv200 values, growth, growth pattern, rank) and learn lists (moves) of the retail
+# characters: Inazuma Fantasy's character data, moved here on 2026-10-14 (docs/refactor/aura-mods-split.md
+# «Per-character data»). Only the fields that differ from the retail game.
+
+[[edit]]
+target = "edit_avatar00"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x30B2F63D                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar01"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x47B5C6AB                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar02"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xDEBC9711                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar03"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xA9BBA787                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar04"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x37DF3224                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar05"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x40D802B2                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar06"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xD9D15308                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar07"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xAED6639E                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar08"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x3E697E0F                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar09"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x496E4E99                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar10"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x29A9C77C                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar11"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x5EAEF7EA                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar12"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xC7A7A650                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar13"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xB0A096C6                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar14"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x2EC40365                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar15"                               # Avatar
+
+  [[edit.cards]]
+  id = 0x59C333F3                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "edit_avatar16"                               # Avatar
+
+  [[edit.cards]]
+  id = 0xC0CA6249                                         # FW/MF · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+
+[[edit]]
+target = "c11500230"                                   # Jeremy Yung
+
+  [[edit.cards]]
+  id = 0x9D80E8E3                                         # DF/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 194, control = 188, technique = 177, pressure = 216, physical = 263, intelligence = 238, agility = 198, freedom = 325 }
+  moves = [
+    { move = 0x78218C02, level = 3 },                     # Duskfall
+    { move = 0x6ADE9E01, level = 14 },                    # Illusory Ball
+    { move = 0x0E0A3F7A, level = 19 },                    # Spatial Portal
+    { move = 0x322F0C40, level = 30 },                    # Spider Web
+  ]
+
+[[edit]]
+target = "c11500240"                                   # Huxley Tagg
+
+  [[edit.cards]]
+  id = 0xD2C17E24                                         # DF/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 204, control = 182, technique = 171, pressure = 212, physical = 285, intelligence = 228, agility = 197, freedom = 317 }
+  moves = [
+    { move = 0x485150D9, level = 1 },                     # Body Shield
+    { move = 0x00196EC2, level = 18 },                    # Earthquake
+    { move = 0x19BA3BFC, level = 35 },                    # Dance on Air
+    { move = 0xC41097D5, level = 53 },                    # Acrobotics
+  ]
+
+[[edit]]
+target = "c11500320"                                   # Brannon Chalant
+
+  [[edit.cards]]
+  id = 0x8559B395                                         # DF/MF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 192, technique = 178, pressure = 205, physical = 258, intelligence = 232, agility = 194, freedom = 309 }
+  moves = [
+    { move = 0x49933AEE, level = 1 },                     # Perfect Tower
+    { move = 0x4E9A9232, level = 17 },                    # Spinning Cut
+    { move = 0x3F00EDE9, level = 27 },                    # Dash Storm
+    { move = 0x1FC99D68, level = 45 },                    # Snow Angel
+  ]
+
+[[edit]]
+target = "c11500370"                                   # Sami Wampovich
+
+  [[edit.cards]]
+  id = 0xF82E47D0                                         # GK/MF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 213, control = 194, technique = 167, pressure = 193, physical = 278, intelligence = 178, agility = 248, freedom = 339 }
+  moves = [
+    { move = 0xEE9F2FBD, level = 1 },                     # God Catch
+    { move = 0x2D9F7E76, level = 11 },                    # Breath Taker
+    { move = 0xC5EF0563, level = 19 },                    # Three-Legged Rush
+    { move = 0x8AF3EAB9, level = 45 },                    # Hammer of Fury
+  ]
+
+[[edit]]
+target = "c11500900"                                   # Fergus Lougdon
+
+  [[edit.cards]]
+  id = 0xBAF854C1                                         # DF/MF · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 207, control = 188, technique = 176, pressure = 207, physical = 266, intelligence = 231, agility = 198, freedom = 313 }
+  moves = [
+    { move = 0x613ABD43, level = 1 },                     # Dawnrise
+    { move = 0x7A67325B, level = 10 },                    # Flame Dance
+    { move = 0xD0A1DBC3, level = 15 },                    # Bungee Ball Burst
+    { move = 0x585098FC, level = 37 },                    # Slice and Dice
+  ]
+
+[[edit]]
+target = "c11748020"                                   # Stran Linemont
+
+  [[edit.cards]]
+  id = 0xFAE322E8                                         # FW/DF · wind
+  rank = 3
+  growth = "normal"
+  stats = { kick = 270, control = 242, technique = 211, pressure = 185, physical = 205, intelligence = 188, agility = 186, freedom = 279 }
+  moves = [
+    { move = 0x828A53C8, level = 1 },                     # Plasma Ball
+    { move = 0x1C8CE2B8, level = 19 },                    # God Knows
+    { move = 0x1FC99D68, level = 34 },                    # Snow Angel
+    { move = 0x63BDA8A4, level = 55 },                    # Inazuma Drop
+  ]
+
+[[edit]]
+target = "c11748040"                                   # Lacie Pawford
+
+  [[edit.cards]]
+  id = 0xACB9856E                                         # DF/GK · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 181, technique = 178, pressure = 234, physical = 255, intelligence = 246, agility = 201, freedom = 301 }
+  moves = [
+    { move = 0x06D2AC29, level = 4 },                     # Diabolical Cut
+    { move = 0x2E7B2B84, level = 14 },                    # Thief's Eye
+    { move = 0x9B3048AB, level = 22 },                    # Shadow Catch
+    { move = 0x6BA49049, level = 56 },                    # Mystic Mist
+  ]
+
+[[edit]]
+target = "c11748060"                                   # Marcol Leapstone
+
+  [[edit.cards]]
+  id = 0x9E8FE7EC                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 232, control = 235, technique = 227, pressure = 180, physical = 223, intelligence = 197, agility = 186, freedom = 305 }
+  moves = [
+    { move = 0x5E233E68, level = 4 },                     # Super Elastico
+    { move = 0x166B0073, level = 15 },                    # Super Armadillo
+    { move = 0x637C031A, level = 35 },                    # No Escape
+    { move = 0xC5EF0563, level = 57 },                    # Three-Legged Rush
+  ]
+
+[[edit]]
+target = "c11748080"                                   # Ignacio Gerhardt
+
+  [[edit.cards]]
+  id = 0x000CCA62                                         # DF/FW · fire
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 227, control = 192, technique = 192, pressure = 213, physical = 271, intelligence = 255, agility = 196, freedom = 225 }
+  moves = [
+    { move = 0x49933AEE, level = 2 },                     # Perfect Tower
+    { move = 0xDDCA0D2A, level = 13 },                    # Bouncing Bomb
+    { move = 0x79E3E635, level = 20 },                    # Racing Flame
+    { move = 0x36A270F2, level = 41 },                    # Rolling Slide
+  ]
+
+[[edit]]
+target = "c11748100"                                   # Rynor Rushenfort
+
+  [[edit.cards]]
+  id = 0xC9172A5D                                         # FW/GK · fire
+  rank = 3
+  growth = "normal"
+  stats = { kick = 294, control = 227, technique = 197, pressure = 190, physical = 209, intelligence = 180, agility = 188, freedom = 297 }
+  moves = [
+    { move = 0xB9A6C82E, level = 4 },                     # Triangle ZZ
+    { move = 0x35E70F22, level = 13 },                    # Grenade Shot
+    { move = 0xB8C5883B, level = 19 },                    # God Hand X
+    { move = 0x0597D3F9, level = 36 },                    # Dragon Tornado
+  ]
+
+[[edit]]
+target = "c11748110"                                   # Crag Bolderin
+
+  [[edit.cards]]
+  id = 0xD00C1B1C                                         # MF/GK · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 243, control = 221, technique = 211, pressure = 190, physical = 227, intelligence = 192, agility = 190, freedom = 321 }
+  moves = [
+    { move = 0x5E233E68, level = 3 },                     # Super Elastico
+    { move = 0xDEB28A7B, level = 10 },                    # Monkey Turn
+    { move = 0xBFCC20E7, level = 20 },                    # Wood Chopper
+    { move = 0x4031A7F5, level = 55 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "c11748120"                                   # Bowie Buffoon
+
+  [[edit.cards]]
+  id = 0xFB2148DF                                         # GK/DF · forest
+  rank = 3
+  growth = "normal"
+  stats = { kick = 198, control = 201, technique = 178, pressure = 203, physical = 252, intelligence = 190, agility = 248, freedom = 319 }
+  moves = [
+    { move = 0x9AF2229C, level = 3 },                     # Gravity Point
+    { move = 0x46A71C03, level = 17 },                    # Black Hole
+    { move = 0xAD6E4BF9, level = 34 },                    # Harvest
+    { move = 0xF309624E, level = 51 },                    # Dual Smash
+  ]
+
+[[edit]]
+target = "c11748130"                                   # Margot Napier
+
+  [[edit.cards]]
+  id = 0xE23A799E                                         # MF/DF · mountain
+  rank = 3
+  growth = "normal"
+  stats = { kick = 236, control = 234, technique = 225, pressure = 182, physical = 223, intelligence = 198, agility = 188, freedom = 301 }
+  moves = [
+    { move = 0x9D236FA3, level = 3 },                     # Sword of the King
+    { move = 0x5DA7EA06, level = 18 },                    # Boomerang Bluff
+    { move = 0x637C031A, level = 30 },                    # No Escape
+    { move = 0x4031A7F5, level = 56 },                    # Mole Fake
+  ]
+
+[[edit]]
+target = "c11501000"                                   # 海坊主（ジグザグドリブル用）
+
+  [[edit.cards]]
+  id = 0xAF0720CB                                         # FW/MF · forest
+  growth_pattern = 1
+  rank = 3
+  growth = "normal"
+  stats = { kick = 278, control = 248, technique = 204, pressure = 163, physical = 212, intelligence = 176, agility = 177, freedom = 221 }
+  moves = [
+    { move = 0x72514A74, level = 1 },                     # Low Drive
+    { move = 0x592A96B4, level = 13 },                    # Afterimage
+    { move = 0x2D3E5454, level = 20 },                    # Clone Shot
+    { move = 0x4E5B398C, level = 30 },                    # Acrobat Bomber
+    { move = 0xF9C4BCF4, level = 38 },                    # Double Helix
+    { move = 0x21127474, level = 43 },                    # Ultra Moon
+  ]

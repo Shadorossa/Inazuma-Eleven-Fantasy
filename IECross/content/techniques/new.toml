@@ -1,9 +1,9 @@
-schema = "vr_framework.technique/3"
+schema = "VRFW.technique/3"
 # The 12 Inazuma Eleven Cross special moves (docs/game/mechanics/cross-supertecnicas.md §4): 4 converted from Cross
 # (own animation, camera, lights, voices, effects) and 8 retail events cloned with Cross's effects. Own events in
-# content\base_tables\common\event_cfg + assets\data\common\event\ev6x\ev6x_95NNN (research/scripts/cross_waza_build.py ->
+# content\base_tables\event_cfg + assets\data\common\event\ev6x\ev6x_95NNN (research/scripts/cross_waza_build.py ->
 # technique_create_build.py, which deploy here: _split.toml), own texts, manuals (their item
-# rows; catalog numbers from the item type's allocator, VRFW 2.2.70: 13002-13013 were past the 8192-bit flag array): content\base_tables\common\gamedata\item\item_config.toml). Moved from Inazuma Fantasy's techniques\new\new.toml on
+# rows; catalog numbers from the item type's allocator, VRFW 2.2.70: 13002-13013 were past the 8192-bit flag array): content\base_tables\gamedata\item\item_config.toml). Moved from Inazuma Fantasy's techniques\new\new.toml on
 # 2026-10-08 (hand-maintained since 2026-10-05). Fixed keys (skill id = crc32 of the key): saves hold them.
 # "none": a text written in some languages replaces only those (no default-language fallback)
 default_lang = "none"

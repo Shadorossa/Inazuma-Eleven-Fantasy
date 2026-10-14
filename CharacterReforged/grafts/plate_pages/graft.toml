@@ -1,0 +1,48 @@
+# Character Reforged (moved from Inazuma Fantasy on 2026-10-14, owner: «portea el resto de la página del personaje de IF
+# a CharacterReforged»; docs/refactor/aura-mods-split.md «Player page»): the player page in pages (docs/game/ui/
+# ui-redesign.md «Player page: one-row header and 3D model», round 2): PERFIL (description + 3D model) and ATRIBUTOS
+# (the 8 stats as gauge rows) in front of the retail ATRIBUTOS page, which keeps only the moves (SUPERTÉCNICAS); the
+# band of the header as a normal 2D copy of the page.
+# The pages are declared to the VR-Framework's player page registry (VRFW_PlayerPages, docs/framework/player-pages.md):
+# CharacterReforged.Profile (index 6, type 8) first, CharacterReforged.Stats (7, type 9) after it; with plate_hiper's
+# CharacterReforged.Hiper and the mod Utilities' TRAYECTORIA (Utilities.Career, index 5, type 6, last) the order is
+# 6 -> 7 -> 0 -> 4 -> 1 -> 2 -> 3 -> 5. The framework steps Q/E and maps the types; the plate block hands TRAYECTORIA's
+# page change to UTIL_CS.PageChange under its own wrappers and draws the dots from the registry's slots. Data: Character
+# Reforged content/menus/player_page_layout.toml (research/scripts/if_plate_row_build.py) and
+# content/menus/player_page_layers.toml; the values other mods add (stats, training max, miximax gains) come through
+# the page's slots (assets/lua/_all/character_reforged_page.lua, content/menus/player_page_host.toml).
+# The parent menus' part (team dock, Plantilla, formation) is the graft plate_pages_dock, the two character banks' part
+# plate_pages_bank and the skill table's host part plate_pages_skill_host (all three rebuilt by Inazuma Fantasy, whose
+# own grafts redefine functions of the same chunks); this graft (personal_plate_menu, equip_menu_select) is built by
+# Character Reforged alone (one copy per VM).
+name = "plate_pages"
+mod = "character_reforged"
+order = 975
+module = "lua_bridge"
+requires = ["plate_hiper_plate", "ss2_menus"]
+conflicts = []
+wraps = ["ChangePersonalPlatePageByCharaHdl", "ChangePersonalPlatePageByCharaParamId",
+         "UpdateCharaParameterGraphByCharaStHdl", "SwapPersonalPlateTexture", "PostStep", "OnCloseLayer",
+         "SetPersonalPlateType", "OnSetupPersonalPlateLayer", "ChangeActiveUI", "OpenPersonalPlate",
+         "ClosePersonalPlate", "SetNameSearchInputEnabled"]
+description = "Player page: PERFIL / ATRIBUTOS (gauges) / SUPERTÉCNICAS pages, header band as a 2D copy"
+
+[[files]]
+stem = "personal_plate_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "plate_pages.lua"
+  marker = "plate_pages plate"
+  include = { "@COMMON@" = "plate_pages_common.lua", "@HOST@" = "host_plate.lua" }
+
+# round 11: the same block on the screens with their own copy of the plate (header row, white card, bar chart);
+# 2026-10-13: ONE file for every host again (the hosts' fork plate_host_look.lua merged into plate_pages.lua)
+[[files]]
+stem = "equip_menu_select"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "plate_pages.lua"
+  marker = "plate_pages plate"
+  include = { "@COMMON@" = "plate_pages_common.lua", "@HOST@" = "host_equip.lua" }
