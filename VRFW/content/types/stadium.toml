@@ -1,0 +1,33 @@
+# Maps the `stadium` type (content/stadiums/**/*.toml) to the stadium list of the game's stadium pickers
+# (soccer_game_option SOCCER_OPTION_FIELD_INFO: free match, Battle Bay / VS rooms, ranked match settings).
+schema = "VRFW.table_map/1"
+
+# [[stadium]]: one row of the list; a later mod's row for the same map replaces an earlier one.
+#   map          the map name (s91g001); row key = crc32(map). The map itself is the mod's own data
+#   name         its name per language ({ es = "…", en = "…" }): the map_text name row map_name_<map>
+#   picture      the list picture's texture name (default img_room_<map>): #/menu/220_img/stadium/<picture>.g4tx with
+#                the sprites <picture>_01 and <picture>_02
+#   order        list position, 0-255, smaller first (default 200: after the game's stadiums)
+#   unlock_item  shown only once this item was obtained (an item name, 0x…, or a mod item <mod>.<name>); none = always
+#   cells        other cells by column name (c0-c5)
+[[map]]
+entry = "stadium"
+table = "soccer/soccer_option_field_info"
+mode = "append"
+key = "map"
+cells = "cells"
+count = "stadiums"
+[map.fields]
+map = { type = "string", check = "key", required = true }
+name = { text = "map_text", text_id = "map_name_{map}", text_field = "noun" }
+picture = { type = "string", check = "key", default = "img_room_{map}" }
+order = { type = "int" }
+unlock_item = { type = "id" }
+[map.refs]
+unlock_item = "item"
+[map.derive]
+c1 = { lua = "stadium.lua:order" }
+c2 = { lua = "stadium.lua:condition" }
+c3 = "#/menu/220_img/stadium/{picture}.g4tx"
+c4 = { crc32 = "{picture}_01" }
+c5 = { crc32 = "{picture}_02" }

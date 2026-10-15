@@ -24,8 +24,9 @@
 --    More Rarities' normal card rarity when it is on and applies (NoMoreRarities.NormalCardRarity, 4), else the spirit's
 --    own rarity; and takes his spirit back (CMND_ADD_ITEM_SPIRIT -1, only when the bag holds it and nothing else changed
 --    the count: -1 on an empty stock wraps to 999), then one autosave. A player already in the club or a full bank: the
---    spirit stays as the game gave it (logged). One log line per recruit («NewRecruitment spirit recruit»). The owned
---    players never drop in the first place (the VR-Framework's [VRFW.DropList.Spirits], content\items\drop_list.toml).
+--    spirit stays as the game gave it (logged). One log line per recruit («NewRecruitment spirit recruit»). Since 1.0.1
+--    no player spirit drops in a match at all (the VR-Framework's [VRFW.DropList.Spirits] ExcludeAll,
+--    content\items\drop_list.toml), so this step only finishes the recruits noted before; it is kept harmless.
 -- When it goes on: the engine registers funcLuaCommand AFTER every patch of the script ran
 -- (docs/game/engine/lua-patches.md §7), and a later merge-path patch may redefine the script's callbacks after every
 -- _all file (in «Plantilla de equipo», soccer_team_dock_menu, Player Training's player_training_dock redefines

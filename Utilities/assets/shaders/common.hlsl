@@ -1,6 +1,7 @@
 // Utilities' «Estilo visual» (content\shaders\visual_style.toml, VRFW.shader/1; docs/framework/shaders.md), was
 // Inazuma Fantasy module `lighting`; research/scripts/lt_shader.py checks it (docs/game/media/lighting.md).
-// Pasted before tonemap.hlsl / tonemap_colorgrading.hlsl (`includes`), compiled as ps_5_0 by the VR-Framework. The
+// Pasted before tonemap.hlsl / tonemap_colorgrading.hlsl / colorgrading.hlsl (`includes`), compiled as ps_5_0 by the
+// VR-Framework. The
 // preset's `defines` set GRADE, EXPOSURE, GAMMA, SATURATION, CONTRAST, PIVOT, TINT (unset = the neutral values below).
 // The register layout / names equal the retail program (the engine D3DReflects the file).
 #ifndef LUMA
@@ -49,12 +50,20 @@ struct PSIn
     float2 uv  : TEXCOORD0;
 };
 
-// retail tonemap (extended Reinhard on luma, chara pixels scaled by fEnableRateForChara)
-float3 RetailTonemap(float3 c, float2 uv, out float charaBit)
+// 1 on character pixels (bit 0 of the mask's z), 0 elsewhere
+float CharaBit(float2 uv)
 {
     float m = in_texMask.Sample(in_texMaskSampler, uv).z;
-    charaBit = ((int)(m * 255.0 + 0.5) & 1) ? 1.0 : 0.0;
-    float rate = (charaBit * (fEnableRateForChara - 1.0) + 1.0) * fEnableRate;
+    return ((int)(m * 255.0 + 0.5) & 1) ? 1.0 : 0.0;
+}
+
+// retail tonemap (extended Reinhard on luma, chara pixels scaled by fEnableRateForChara). The scene rate is read as at
+// least 0: the retail pass never runs at a rate of 0 or below, the framework's `tonemap_pass` patch runs it there as
+// an identity pass so the grade still applies.
+float3 RetailTonemap(float3 c, float2 uv, out float charaBit)
+{
+    charaBit = CharaBit(uv);
+    float rate = (charaBit * (fEnableRateForChara - 1.0) + 1.0) * max(fEnableRate, 0.0);
     float white2 = fLumWhite * fLumWhite;
     float lavg = ro_luminance[0];
     lavg = fScrLumEnable * (fScrLum - lavg) + lavg;

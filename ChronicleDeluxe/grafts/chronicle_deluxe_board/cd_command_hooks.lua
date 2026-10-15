@@ -8,11 +8,15 @@
 --     fewer rows it is cut to them: height = retail - 70 * (slots - rows), top edge kept (the banner and the rows do not
 --     move), so the margin under the last row equals the one over the first (VRFW_RBC_ListLayer). The panel sprites
 --     get nine-slice guides (content\images\menu\30_vsroute\vsroute01\vsroute01_15c.toml / 15d.toml) so the rounded
---     corners and the shadow keep their size.
+--     corners and the shadow keep their size. The bands under the last row (VRFW_RBC_PanelExtra = their sum: the
+--     match challenge line, this mod's team lineup) are added to that height while they are shown.
+--   * team lineup (cd_lineup.lua, 1.8.0): a band under the rows with the active team's starters on a mini pitch and the
+--     «Y Plantilla de equipo» button that opens the team dock from the board.
 -- With Inazuma Fantasy's Chronicle redesign active (its global EVT_ChrFrameFit, the same fit with its own layouts and
 -- the same guides) the fit is IF's: one implementation.
 ChronicleDeluxe = ChronicleDeluxe or {}
 ChronicleDeluxe.Command = ChronicleDeluxe.Command or {}
+@LINEUP@
 local K = ChronicleDeluxe.Command
 
 -- kind 1 = a gate piece; no set declared = every row
@@ -38,7 +42,7 @@ K.PANEL = {
 K.ROW_HEIGHT = 70
 K.NODE_SCALE = 2885415772         -- (layer, instance, node, width, height): a quad's size in px
 
-function K.FitPanel(layer, kind, rows)
+function K.FitPanel(layer, kind, rows, extra)
   local p = K.PANEL[kind]
   if p == nil or rows == nil or rows < 1 then
     return
@@ -46,7 +50,13 @@ function K.FitPanel(layer, kind, rows)
   if rows > p.slots then
     rows = p.slots
   end
-  funcLuaMenuCommand(K.NODE_SCALE, layer, 0, p.node, p.width, p.height - K.ROW_HEIGHT * (p.slots - rows))
+  funcLuaMenuCommand(K.NODE_SCALE, layer, 0, p.node, p.width, p.height - K.ROW_HEIGHT * (p.slots - rows) + (extra or 0))
+end
+
+-- this mod fits the panel (not Inazuma Fantasy's redesign, and the mod's difficulty set is declared)
+function K.OwnsPanel(kind)
+  return EVT_ChrFrameFit == nil and VRFW_MatchDifficulty ~= nil
+    and VRFW_MatchDifficulty.Set(kind == 1 and "gate" or "route") ~= nil
 end
 
 if VRFW_Host ~= nil then
@@ -56,9 +66,15 @@ if VRFW_Host ~= nil then
     end})
   VRFW_Host.on("vs_route_town_command_select_menu", "VRFW_RBC_ListLayer", {id = "chronicle_deluxe.panel_fit",
     phase = "after", fn = function(r, layer, kind, rows)
-      if EVT_ChrFrameFit == nil and VRFW_MatchDifficulty ~= nil
-          and VRFW_MatchDifficulty.Set(kind == 1 and "gate" or "route") ~= nil then
-        K.FitPanel(layer, kind, rows)
+      if K.OwnsPanel(kind) then
+        K.FitPanel(layer, kind, rows, VRFW_RBC ~= nil and VRFW_RBC.panel.extra or 0)
       end
     end})
+  VRFW_Host.on("vs_route_town_command_select_menu", "VRFW_RBC_PanelExtra", {id = "chronicle_deluxe.panel_band",
+    phase = "after", fn = function(r, layer, kind, rows, extra)
+      if layer ~= nil and K.OwnsPanel(kind) then
+        K.FitPanel(layer, kind, rows, extra)
+      end
+    end})
+  ChronicleDeluxe.Lineup.Register("vs_route_town_command_select_menu", K.OwnsPanel)
 end

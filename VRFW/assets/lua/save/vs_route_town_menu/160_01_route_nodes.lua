@@ -122,6 +122,7 @@ function OnInit()
     funcLuaCommand(1563721075)
     funcLuaCommand(1891570685 --[[CMND_SET_CHRONICLE_CLEAR_STATUS?]], 0, true, 1)
   end
+  VRFW_RN_OpenStartNeighbours() -- VRFW route_nodes
   VRFW_RN_Sync(false) -- VRFW route_nodes
   local temp_bit_flag = funcLuaCommand(2283097588 --[[CMND_GET_TEMP_BIT_FLAG]], 2136027977)
   if not temp_bit_flag then
@@ -417,6 +418,115 @@ function VRFW_RN_SyncGates(node, effect)
     end
   end
   return opened
+end
+
+-- The retail one-time lock set-up of a save (OnInit, CMND 0x5D347D73) locks every piece and unlocks difficulty 1 of
+-- the pieces whose move row reaches the start piece (eventType 6): on the first Chronicle visit that is the first
+-- battle (Royal Academy), the piece the tutorial (byte flag 0xBBDFB830 = 3, trigger 504) waits for. With route nodes
+-- on the board that piece stayed locked, and the first visit's cutscenes (trigger 505) lock it again after OnInit. The
+-- same rule, from the board's own data: a start neighbour that is no route node, has nothing cleared and every
+-- difficulty locked gets difficulty 1 unlocked, at OnInit and again while the board runs (VRFW_RN_StartNeighboursStep);
+-- its board piece is redrawn (the board draws its pieces before OnInit's change shows). A stuck save recovers at the
+-- next board visit. Route nodes keep their own rule (VRFW_RN_Sync).
+VRFW_RN_START_EVENT = 6            -- eventType of the start piece
+VRFW_RN_FIRST_DIFFICULTY = 1       -- the difficulty the retail set-up unlocks
+VRFW_RN_CMD_PIECE_INFO = 126049514 -- (piece index, field): 3 = move row (LU, LD, RU, RD piece ids), 6 = statusFlagIndex
+VRFW_RN_CMD_PIECE_INSTANCE = 1350631190 -- funcLuaMenuVSRouteTownCommand: piece index -> its board piece instance (-1 = not placed)
+VRFW_RN_CMD_TRIGGER_RUNNING = 3500708916
+VRFW_RN_CLEAR_ICON_LAYER = 2638032167 --[[vsroute01_06c_town_map_piece_clear_icon]]
+VRFW_RN_START_CHECK_FRAMES = 30    -- frames between two checks while the board runs
+VRFW_RN_START = nil                -- {{idx, slot}} of the start neighbours (built on first use)
+VRFW_RN_START_REDRAW = {}          -- piece index -> true: opened here, its board piece not redrawn yet
+VRFW_RN_START_FRAME = VRFW_RN_START_CHECK_FRAMES - 1 -- the first board frame checks at once
+
+-- The start neighbours that follow the rule: {idx, slot} (no route node, not a start or eventType 4 piece).
+function VRFW_RN_StartNeighbours()
+  if VRFW_RN_START ~= nil then
+    return VRFW_RN_START
+  end
+  local rn = VRFW_RN_Load()
+  local list, seen = {}, {}
+  for i = 0, 4095 do
+    if not funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, i, 6) then
+      break
+    end
+    local okS, kindS = GetTownMapResourceEvent(i, 1, false, false)
+    if okS and kindS == VRFW_RN_START_EVENT then
+      local move = table.pack(funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, i, 3))
+      for k = 3, move[1] == true and move.n or 0 do
+        local id = move[k]
+        if type(id) == "number" and id ~= 0 then
+          local okI, j = funcLuaCommand(VRFW_RN_CMD_PIECE_IDX, id)
+          if okI and type(j) == "number" and j >= 0 and not seen[j] and rn.byIdx[j] == nil then
+            seen[j] = true
+            local okE, kind = GetTownMapResourceEvent(j, 1, false, false)
+            local okF, slot = funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, j, 6)
+            if okE and okF and type(slot) == "number" and kind ~= VRFW_RN_START_EVENT and kind ~= 4 then
+              list[#list + 1] = {idx = j, slot = slot, start = i}
+            end
+          end
+        end
+      end
+    end
+  end
+  VRFW_RN_START = list
+  return list
+end
+
+-- Unlock difficulty 1 of every start neighbour with nothing cleared and every difficulty locked. Returns the number
+-- of pieces opened; each is marked for a redraw (VRFW_RN_StartRedraw).
+function VRFW_RN_OpenStartNeighbours()
+  local opened = 0
+  local list = VRFW_RN_StartNeighbours()
+  for n = 1, #list do
+    local p = list[n]
+    local any_clear, all_locked = false, true
+    for d = 1, #VRFW_RN_DIFFS do
+      if VRFW_RN_Clear(p.slot, VRFW_RN_DIFFS[d]) then
+        any_clear = true
+      end
+      if not VRFW_RN_Locked(p.slot, VRFW_RN_DIFFS[d]) then
+        all_locked = false
+      end
+    end
+    if not any_clear and all_locked then
+      funcLuaCommand(VRFW_RN_CMD_SET_LOCK, p.slot, false, VRFW_RN_FIRST_DIFFICULTY)
+      VRFW_RN_START_REDRAW[p.idx] = true
+      opened = opened + 1
+      VRFW_RN_Log("start neighbour opened", "idx", p.idx, "slot", p.slot, "start", p.start)
+    end
+  end
+  return opened
+end
+
+-- Redraw the board pieces opened here once they are placed (crest and clear dots of the piece's instance).
+function VRFW_RN_StartRedraw()
+  for idx in pairs(VRFW_RN_START_REDRAW) do
+    local ok, inst = pcall(funcLuaMenuVSRouteTownCommand, VRFW_RN_CMD_PIECE_INSTANCE, idx)
+    if ok and type(inst) == "number" and inst >= 0 then
+      UpdateTownMapPiece(VRFW_RN_PIECE_LAYER, inst, idx)
+      if UpdatePieceClearIcon ~= nil then
+        UpdatePieceClearIcon(VRFW_RN_CLEAR_ICON_LAYER, inst, idx)
+      end
+      VRFW_RN_START_REDRAW[idx] = nil
+      VRFW_RN_Log("start neighbour redrawn", "idx", idx, "instance", inst)
+    end
+  end
+end
+
+-- Every VRFW_RN_START_CHECK_FRAMES frames of the board (end of PreStep, graft route_board), while no route trigger
+-- runs: the rule again (the first visit's cutscenes lock the piece after OnInit) and the redraw of the opened pieces.
+function VRFW_RN_StartNeighboursStep()
+  VRFW_RN_START_FRAME = VRFW_RN_START_FRAME + 1
+  if VRFW_RN_START_FRAME < VRFW_RN_START_CHECK_FRAMES then
+    return
+  end
+  VRFW_RN_START_FRAME = 0
+  if funcLuaCommand(VRFW_RN_CMD_TRIGGER_RUNNING) then
+    return
+  end
+  VRFW_RN_OpenStartNeighbours()
+  VRFW_RN_StartRedraw()
 end
 
 -- Save state of every node: first use of the slot -> locked; open (prerequisites won) -> its first shown difficulty
@@ -1579,6 +1689,9 @@ function PreStep()
   end
   StepMap()
   StepCharaModel()
+  if VRFW_RN_StartNeighboursStep ~= nil then -- VRFW route_nodes: the start's neighbours stay open on a fresh Chronicle
+    VRFW_RN_StartNeighboursStep()
+  end
   VRFW_RB_InviteCheck() -- VRFW route_board
 end
 function Step()

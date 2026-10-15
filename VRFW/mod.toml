@@ -1,14 +1,14 @@
 id = "vr_framework"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.4.128"
+version = "2.4.135"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # No plugin key: the framework's code is linked into the ModLoader (winmm.dll) and runs for the mod with this id.
 # The framework API version this folder's content is written for (checked like any mod's requires_api)
 requires_api = ">=1"

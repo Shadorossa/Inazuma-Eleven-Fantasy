@@ -65,6 +65,26 @@ Keep = [
 ]
 ReplaceWith = "tk_hr000008"
 
+# Every match of every mode also pays both currencies at its end, as rows of the result list (owner request 2026-10-15),
+# on top of what its goal rolls give. The amounts are the player's: config.toml [match_drops.friendship] /
+# [match_drops.passion] (win, draw, loss, per_goal = for each goal of the user's team, any result); the values below are
+# the defaults when the config has no such key. VR-Framework [[VRFW.MatchDropExtra]] (docs/framework/drops.md §6).
+[[VRFW.MatchDropExtra]]
+Item = "tk_hr000008"                        # Puntos de amistad
+Win = 10
+Draw = 5
+Loss = 2
+PerGoal = 2
+Config = "match_drops.friendship"
+
+[[VRFW.MatchDropExtra]]
+Item = "tk_bb000001"                        # Puntos de pasión
+Win = 1
+Draw = 1
+Loss = 0
+PerGoal = 0
+Config = "match_drops.passion"
+
 # The Chronicle drop-rate list («Tasa de aparición»): Puntos de pasión first; Puntos de amistad are not listed (paid at
 # the end of the match).
 [VRFW.DropList]

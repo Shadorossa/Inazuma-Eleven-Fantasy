@@ -59,20 +59,31 @@ fields = { uniform = { at = 0x1C, type = "u32" }, emblem = { at = 0x20, type = "
 # block's address) for the teams in the table only, so the grid keeps the tile's own «Draft» text.
 # Stolen bytes: mov [rsp+20h],rbx / push rbp / push rsi / push rdi / push r12 / push r13 / push r14 = 14 bytes, no
 # relative operand (unique pattern in the v7.1.2 dump).
+# Full signature: TeamLookBuild(out, record, const u32* p3, u32 flags, const u64[2]* p5, u8 p6) -> out; p5 and p6 are
+# stack arguments that 0xE9B580 reads (p5 dereferenced at 0xE9B5D7). 1.5.77 declared only (out, record): the detour
+# then passed 0 for both and every match crashed reading [0 + 8] (off in 1.5.78). The framework now forwards the
+# stack slots in any case; the full list is declared here as well.
 [[VRFW.Hook]]
 name = "TeamLookBuild"
 kind = "function"
 pattern = "48 89 5C 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E9 48 81 EC A0 00 00 00 45 33 ED 33 C0 4C 89 29 0F 57 C0 4C 89 69 08 4C 8B F1"
 rva = 0xE9B760
 steal = 14
-args = ["ptr", "ptr"]
+args = ["ptr", "ptr", "ptr", "u32", "ptr", "u8"]
 ret = "ptr"
 
-# the record's team id (+0) has a name in the table: that name as the match team set's name
+# the record's team id (+0) has a name in the table: that name as the match team set's name (out +0x60). Written
+# through args[1] (the out block the game filled), only for a non-null out and record and a team in the table; a
+# missing entry gives no value, so nothing is written.
 [[VRFW.Hook.answer]]
 phase = "post"
+when = [
+  { value = "args[1]", not = 0 },
+  { value = "args[2]", not = 0 },
+  { value = "[args[2]]:u32", in_table = "BattleBayDeluxe.TeamName" },
+]
 value = "lookup(BattleBayDeluxe.TeamName, [args[2]]:u32)"
-write = "[ret + 0x60]:u64"
+write = "[args[1] + 0x60]:u64"
 
 [[VRFW.Hook]]
 # StartMatchRequest(scene, request) 0x17B7260: the generic «start this match» of every mode (15 callers). Stolen bytes:

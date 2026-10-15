@@ -2,13 +2,15 @@ id = "pachangas"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Pachangas"
-version = "1.0.0"
+version = "1.0.1"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Team Dock gets a type row (11v11 | 7v7 | 5v5 | 3v3; 11v11 and 5v5 available): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-15"
+# 1.0.1 (2026-10-15): the team name length filter left pachanga_dock: Utilities owns it (graft util_team_name,
+# docs/game/ui/team-name-length.md)
 # This mod's own names (Lua Pachangas.X, commands CMND_PACHANGAS_*); never VRFW. The grafts keep their EVT_PT_* game Lua
 # globals.
 prefix = "Pachangas"

@@ -220,7 +220,7 @@ local function write_name(team, name)
     return "name unchanged"
   end
   local okb, block = pcall(VRFW.mem.buffer, NAME_BLOCK, NAME_BYTES)
-  if not okb or type(block) ~= "number" then
+  if not okb or type(block) ~= "number" or block == 0 then
     warn("mirror: no native block for the team name")
     return "name NOT written"
   end

@@ -25,11 +25,12 @@ stem = "vs_route_town_menu"
   src = "rn_common.lua"
   crc = "none"
 
-  # after the retail one-time lock set-up of a save (clear bit (0, 1)): node slots, open nodes
+  # after the retail one-time lock set-up of a save (clear bit (0, 1)): the start's neighbours, node slots, open nodes
   [[files.ops]]
   type = "insert_before"
   point = "vs_route_town_menu.OnInit.RouteNodes"
   text = '''
+  VRFW_RN_OpenStartNeighbours() -- VRFW route_nodes
   VRFW_RN_Sync(false) -- VRFW route_nodes
 '''
   crc = "none"

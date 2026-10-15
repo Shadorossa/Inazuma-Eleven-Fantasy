@@ -65,11 +65,11 @@ local function profile_address(name, offset)
 end
 
 function P.Config()
-  local mode = MODES[setting("player_page.match_model", "match")] or MODES.match
+  local mode = MODES[setting("player_page.match_model", "off")] or MODES.off
   local camera_name = setting("player_page.match_camera", "vs")
   local camera = CAMERAS[camera_name] or (type(camera_name) == "number" and camera_name) or CAMERAS.vs
   local report = setting("player_page.capture_report", true) == true and 1 or 0
-  local live = setting("player_page.match_live_pause", true) == true and 1 or 0
+  local live = setting("player_page.match_live_pause", false) == true and 1 or 0
   return mode, camera, report, camera == CAMERAS.bust and 1 or 0, live
 end
 

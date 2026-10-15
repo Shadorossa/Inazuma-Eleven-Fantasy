@@ -1,4 +1,5 @@
 schema = "VRFW.param/1"
-# Focus field (CMD_CATCH_BOMB) trigger radius halved: retail 5.1 m.
-[game_param.CSoccerGlobalParam]
-catchRingRadius = 2.55
+# Focus field (CMD_CATCH_BOMB): the game scales the field effect and checks the reach with catchBombRangeMax.
+# Halved from retail 8.0 m: the drawn rings and the gameplay area shrink together.
+[game_param.SoccerBattleGlobalParam]
+catchBombRangeMax = 4.0

@@ -1,0 +1,23 @@
+# Inazuma Fantasy: default configuration (docs/framework/native.md §2.3). The loader's config.toml
+# [mods.inazuma_fantasy_2] overrides it key by key (survives mod updates), e.g.
+# [mods.inazuma_fantasy_2.match_drops.friendship] win = 20. Read at start (a change applies at the next start).
+
+# What every match (every mode) pays at its end, as rows of the result list, on top of what its goal rolls give
+# (content\items\currencies.toml, VR-Framework [[VRFW.MatchDropExtra]]): by the result (win / draw / loss) plus
+# per_goal for each goal of your team (any result). 0..255 each (one row holds at most 255). 1 Punto de pasión is worth
+# 10 Puntos de amistad; a Tienda general row costs 1-12 Puntos de pasión.
+# Defaults chosen 2026-10-15 (the earlier Inazuma Fantasy had no fixed amount, only its drop tables: about 0.4 Puntos
+# de amistad and 0.07 Puntos de pasión per goal, docs/game/mechanics/end-of-match-rewards.md §4).
+[match_drops.friendship]
+# Puntos de amistad (tk_hr000008)
+win = 10
+draw = 5
+loss = 2
+per_goal = 2
+
+[match_drops.passion]
+# Puntos de pasión (tk_bb000001)
+win = 1
+draw = 1
+loss = 0
+per_goal = 0

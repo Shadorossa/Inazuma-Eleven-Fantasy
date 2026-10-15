@@ -256,40 +256,8 @@ do
     }
   end
 
-  -- ================================================================================================================
-  -- The team name's length (Nacho 2026-10-02: «11/12» -> 20). The retail OnEnter of the name frame opens the keyboard
-  -- with a literal 12: funcLuaCommand(962493425, 0, name, 1956827977 [title], 0, 12, ...) (soccer_team_dock_menu
-  -- 7.01.06.00 line 2347). The keyboard's «n/m» counter (keyboard_input_menu, utf8 length) and the native IME limit
-  -- (game::ImeContext +0x7C, counted in characters) both read that argument: no native check. The save field is
-  -- 128 bytes of UTF-8 (TeamInfo +0x000, written with strcpy_s at 0xC4BA60; the match copy +0x107A is 0x80 too), so the
-  -- cap is 31 characters (4 bytes each, worst case, + NUL). A mode sets EVT_TEAM_NAME_MAX before this block.
-  if EVT_TEAM_NAME_MAX == nil then
-    EVT_TEAM_NAME_MAX = 20
-  end
-  PT.KB_OPEN, PT.KB_TITLE_TEAM, PT.NAME_CAP = 962493425, 1956827977, 31
-
-  function PT.nameMax()
-    local m = math.floor(tonumber(EVT_TEAM_NAME_MAX) or 12)
-    return math.max(1, math.min(PT.NAME_CAP, m))
-  end
-
-  -- the keyboard call of the retail name edit gets the mod's length: a filter on funcLuaCommand, installed at the
-  -- first name edit (never at load) and armed for that one call only
-  function PT.nameFilter()
-    if PT.kbBase ~= nil or type(funcLuaCommand) ~= "function" then
-      return
-    end
-    local base = funcLuaCommand
-    PT.kbBase = base
-    funcLuaCommand = function(id, a, b, c, d, e, ...)
-      if PT.nameEdit and id == PT.KB_OPEN and c == PT.KB_TITLE_TEAM then
-        PT.nameEdit = false
-        PT.log("team name max", e, "->", PT.nameMax())
-        e = PT.nameMax()
-      end
-      return base(id, a, b, c, d, e, ...)
-    end
-  end
+  -- The team name's length is Utilities' (graft util_team_name, docs/game/ui/team-name-length.md; 2026-10-15): this
+  -- block only keeps the other template in step after the retail name edit.
 
   -- colours of the text fallback (one colour-tagged line in the row's own text nodes, used only when the menu data
   -- has no box layers: an older install). font_color rows, docs/game/ui/fonts.md §4.
@@ -1755,12 +1723,9 @@ do
         PT.pick = col                -- the column of this press, for its OnDecideFocus (bug 2026-10-02 14:05)
       end
       if a1 == PT.NAME_FRAME then
-        -- the retail name edit writes (n5, n10, 0): the other template of the dock takes the new name (§9); its
-        -- keyboard opens with EVT_TEAM_NAME_MAX characters instead of 12
-        PT.nameFilter()
-        PT.nameEdit = true
+        -- the retail name edit writes (n5, n10, 0): the other template of the dock takes the new name (§9); the
+        -- keyboard's length is Utilities' (graft util_team_name)
         local r = PT.pack(orig(a1, a2, ...))
-        PT.nameEdit = false
         PT.linkShown()
         return table.unpack(r, 1, r.n)
       end

@@ -503,6 +503,115 @@ function VRFW_RN_SyncGates(node, effect)
   return opened
 end
 
+-- The retail one-time lock set-up of a save (OnInit, CMND 0x5D347D73) locks every piece and unlocks difficulty 1 of
+-- the pieces whose move row reaches the start piece (eventType 6): on the first Chronicle visit that is the first
+-- battle (Royal Academy), the piece the tutorial (byte flag 0xBBDFB830 = 3, trigger 504) waits for. With route nodes
+-- on the board that piece stayed locked, and the first visit's cutscenes (trigger 505) lock it again after OnInit. The
+-- same rule, from the board's own data: a start neighbour that is no route node, has nothing cleared and every
+-- difficulty locked gets difficulty 1 unlocked, at OnInit and again while the board runs (VRFW_RN_StartNeighboursStep);
+-- its board piece is redrawn (the board draws its pieces before OnInit's change shows). A stuck save recovers at the
+-- next board visit. Route nodes keep their own rule (VRFW_RN_Sync).
+VRFW_RN_START_EVENT = 6            -- eventType of the start piece
+VRFW_RN_FIRST_DIFFICULTY = 1       -- the difficulty the retail set-up unlocks
+VRFW_RN_CMD_PIECE_INFO = 126049514 -- (piece index, field): 3 = move row (LU, LD, RU, RD piece ids), 6 = statusFlagIndex
+VRFW_RN_CMD_PIECE_INSTANCE = 1350631190 -- funcLuaMenuVSRouteTownCommand: piece index -> its board piece instance (-1 = not placed)
+VRFW_RN_CMD_TRIGGER_RUNNING = 3500708916
+VRFW_RN_CLEAR_ICON_LAYER = 2638032167 --[[vsroute01_06c_town_map_piece_clear_icon]]
+VRFW_RN_START_CHECK_FRAMES = 30    -- frames between two checks while the board runs
+VRFW_RN_START = nil                -- {{idx, slot}} of the start neighbours (built on first use)
+VRFW_RN_START_REDRAW = {}          -- piece index -> true: opened here, its board piece not redrawn yet
+VRFW_RN_START_FRAME = VRFW_RN_START_CHECK_FRAMES - 1 -- the first board frame checks at once
+
+-- The start neighbours that follow the rule: {idx, slot} (no route node, not a start or eventType 4 piece).
+function VRFW_RN_StartNeighbours()
+  if VRFW_RN_START ~= nil then
+    return VRFW_RN_START
+  end
+  local rn = VRFW_RN_Load()
+  local list, seen = {}, {}
+  for i = 0, 4095 do
+    if not funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, i, 6) then
+      break
+    end
+    local okS, kindS = GetTownMapResourceEvent(i, 1, false, false)
+    if okS and kindS == VRFW_RN_START_EVENT then
+      local move = table.pack(funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, i, 3))
+      for k = 3, move[1] == true and move.n or 0 do
+        local id = move[k]
+        if type(id) == "number" and id ~= 0 then
+          local okI, j = funcLuaCommand(VRFW_RN_CMD_PIECE_IDX, id)
+          if okI and type(j) == "number" and j >= 0 and not seen[j] and rn.byIdx[j] == nil then
+            seen[j] = true
+            local okE, kind = GetTownMapResourceEvent(j, 1, false, false)
+            local okF, slot = funcLuaCommand(VRFW_RN_CMD_PIECE_INFO, j, 6)
+            if okE and okF and type(slot) == "number" and kind ~= VRFW_RN_START_EVENT and kind ~= 4 then
+              list[#list + 1] = {idx = j, slot = slot, start = i}
+            end
+          end
+        end
+      end
+    end
+  end
+  VRFW_RN_START = list
+  return list
+end
+
+-- Unlock difficulty 1 of every start neighbour with nothing cleared and every difficulty locked. Returns the number
+-- of pieces opened; each is marked for a redraw (VRFW_RN_StartRedraw).
+function VRFW_RN_OpenStartNeighbours()
+  local opened = 0
+  local list = VRFW_RN_StartNeighbours()
+  for n = 1, #list do
+    local p = list[n]
+    local any_clear, all_locked = false, true
+    for d = 1, #VRFW_RN_DIFFS do
+      if VRFW_RN_Clear(p.slot, VRFW_RN_DIFFS[d]) then
+        any_clear = true
+      end
+      if not VRFW_RN_Locked(p.slot, VRFW_RN_DIFFS[d]) then
+        all_locked = false
+      end
+    end
+    if not any_clear and all_locked then
+      funcLuaCommand(VRFW_RN_CMD_SET_LOCK, p.slot, false, VRFW_RN_FIRST_DIFFICULTY)
+      VRFW_RN_START_REDRAW[p.idx] = true
+      opened = opened + 1
+      VRFW_RN_Log("start neighbour opened", "idx", p.idx, "slot", p.slot, "start", p.start)
+    end
+  end
+  return opened
+end
+
+-- Redraw the board pieces opened here once they are placed (crest and clear dots of the piece's instance).
+function VRFW_RN_StartRedraw()
+  for idx in pairs(VRFW_RN_START_REDRAW) do
+    local ok, inst = pcall(funcLuaMenuVSRouteTownCommand, VRFW_RN_CMD_PIECE_INSTANCE, idx)
+    if ok and type(inst) == "number" and inst >= 0 then
+      UpdateTownMapPiece(VRFW_RN_PIECE_LAYER, inst, idx)
+      if UpdatePieceClearIcon ~= nil then
+        UpdatePieceClearIcon(VRFW_RN_CLEAR_ICON_LAYER, inst, idx)
+      end
+      VRFW_RN_START_REDRAW[idx] = nil
+      VRFW_RN_Log("start neighbour redrawn", "idx", idx, "instance", inst)
+    end
+  end
+end
+
+-- Every VRFW_RN_START_CHECK_FRAMES frames of the board (end of PreStep, graft route_board), while no route trigger
+-- runs: the rule again (the first visit's cutscenes lock the piece after OnInit) and the redraw of the opened pieces.
+function VRFW_RN_StartNeighboursStep()
+  VRFW_RN_START_FRAME = VRFW_RN_START_FRAME + 1
+  if VRFW_RN_START_FRAME < VRFW_RN_START_CHECK_FRAMES then
+    return
+  end
+  VRFW_RN_START_FRAME = 0
+  if funcLuaCommand(VRFW_RN_CMD_TRIGGER_RUNNING) then
+    return
+  end
+  VRFW_RN_OpenStartNeighbours()
+  VRFW_RN_StartRedraw()
+end
+
 -- Save state of every node: first use of the slot -> locked; open (prerequisites won) -> its first shown difficulty
 -- unlocked; its gated pieces (VRFW_RN_SyncGates). `effect`: nodes without a native link that open now play the retail open effect (inside the clear-effect
 -- coroutine only). Returns true when a node opened.
@@ -941,11 +1050,22 @@ end
 --                                             {} when none): append entries to the three lists
 --   VRFW_RBC_ListLayer(layer, kind, rows)     the battle-kind list panel (layer 14202445 normal / 1695882381 gate) is
 --                                             placed and about to open with `rows` rows
---   VRFW_RBC_PanelExtra(layer, kind, rows, extra)  the panel must reach `extra` px further down under its last row (a
---                                             band of the framework, e.g. the match challenge line; 0 = fitted to the
---                                             rows again): a mod that sizes the panel re-sizes it ("after" handler)
--- VRFW_RBC.panel = {layer, kind, rows, extra, x, y}: the list panel as placed (x, y = its layer's local position then,
--- CMND_GET_LAYER_LOCAL_POS), extra = the band asked for last (reset to 0 when the panel is placed).
+--   VRFW_RBC_PanelExtra(layer, kind, rows, extra)  the panel must reach `extra` px further down under its last row (the
+--                                             bands below; 0 = fitted to the rows again): a mod that sizes the panel
+--                                             re-sizes it ("after" handler)
+-- Bands under the last row (stacked by order, lowest first; their sum is the panel's extra):
+--   VRFW_RBC_PanelBand(id, height, order)     asks for band `id` of `height` px (0 / nil = gone); calls
+--                                             VRFW_RBC_PanelExtra with the new sum when it changed
+--   VRFW_RBC_PanelBandTop(id) -> y            the screen y (1920 x 1080, y down) of the band's top edge (the panel as
+--                                             placed; a caller adds the panel's shift while it moves)
+--   VRFW_RBC_PanelShift() -> dx, dy           how far the panel's layer moved since it was placed (its open / close
+--                                             slide; layer axes, y up)
+-- The match challenge line is band "match_challenge" (order 10). Bands are cleared when the panel is placed: a module
+-- asks for its band again from an "after" handler of VRFW_RBC_ListLayer.
+-- VRFW_RBC.panel = {layer, kind, rows, extra, x, y, bands}: the list panel as placed (x, y = its layer's local position
+-- then, CMND_GET_LAYER_LOCAL_POS), extra = the sum of the bands (reset to 0 when the panel is placed).
+-- VRFW_RBC.GEOMETRY: the battle-kind list of both piece kinds as placed (screen px): the first row's centre line, the
+-- rows' spacing (layouts vsroute01_15c / 15d `_atc_listNN`, 70 px apart), half a row's height, the panel's centre line.
 -- The script's locals a handler may read / write: VRFW_RBC.L.<name> (decompile names; one line in VRFW_RBC_LOCALS
 -- when a mod needs another one).
 VRFW_RBC = VRFW_RBC or {}
@@ -984,11 +1104,12 @@ end
 function VRFW_RBC_Guide(item, icons, texts, cmds)
 end
 
-VRFW_RBC.panel = VRFW_RBC.panel or {extra = 0}
+VRFW_RBC.panel = VRFW_RBC.panel or {extra = 0, bands = {}}
+VRFW_RBC.GEOMETRY = {FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30, PANEL_MID_X = 436}
 
 function VRFW_RBC_ListLayer(layer, kind, rows)
   local p = VRFW_RBC.panel
-  p.layer, p.kind, p.rows, p.extra = layer, kind, rows, 0
+  p.layer, p.kind, p.rows, p.extra, p.bands = layer, kind, rows, 0, {}
   local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], layer, 0)
   p.x = ok and type(x) == "number" and x or nil
   p.y = ok and type(y) == "number" and y or nil
@@ -996,6 +1117,58 @@ end
 
 function VRFW_RBC_PanelExtra(layer, kind, rows, extra)
   VRFW_RBC.panel.extra = extra
+end
+
+function VRFW_RBC_PanelBand(id, height, order)
+  local p = VRFW_RBC.panel
+  p.bands = p.bands or {}
+  local old = p.bands[id]
+  height = height or 0
+  order = order or 0
+  if height <= 0 then
+    if old == nil then
+      return
+    end
+    p.bands[id] = nil
+  elseif old ~= nil and old.height == height and old.order == order then
+    return
+  else
+    p.bands[id] = {height = height, order = order}
+  end
+  local total = 0
+  for _, band in pairs(p.bands) do
+    total = total + band.height
+  end
+  if p.layer ~= nil then
+    VRFW_RBC_PanelExtra(p.layer, p.kind, p.rows, total)
+  else
+    p.extra = total
+  end
+end
+
+function VRFW_RBC_PanelBandTop(id)
+  local p = VRFW_RBC.panel
+  local g = VRFW_RBC.GEOMETRY
+  local y = g.FIRST_ROW_MID_Y + g.ROW_STEP * (math.max(p.rows or 1, 1) - 1) + g.ROW_HALF_HEIGHT
+  local own = (p.bands or {})[id]
+  for other, band in pairs(p.bands or {}) do
+    if own ~= nil and other ~= id and (band.order < own.order or (band.order == own.order and other < id)) then
+      y = y + band.height
+    end
+  end
+  return y
+end
+
+function VRFW_RBC_PanelShift()
+  local p = VRFW_RBC.panel
+  if p.layer == nil or p.x == nil or p.y == nil then
+    return 0, 0
+  end
+  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], p.layer, 0)
+  if not ok or type(x) ~= "number" or type(y) ~= "number" then
+    return 0, 0
+  end
+  return x - p.x, y - p.y
 end
 -- VRFW route_board END
 function FinalizeMenu()

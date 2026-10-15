@@ -9,10 +9,13 @@
 #                         dots show only the difficulties that exist
 #                         (1.2.4: on an orb bar with one socket per difficulty, cd_orb_bar.lua)
 #   cd_command_hooks.lua  vs_route_town_command_select_menu: the battle-kind rows that exist (normal piece: Crónica,
-#                         Heroica; gate piece: its gate battle); 1.2.4: the «MI EQUIPO» blue panel cut to those rows
+#                         Heroica; gate piece: its gate battle); 1.2.4: the «MI EQUIPO» blue panel cut to those rows;
+#                         1.8.0: under them the active team's lineup and «Y Plantilla de equipo» (cd_lineup.lua,
+#                         layers of content\menus\team_lineup.toml)
 #   cd_list_menu.lua      vs_route_town_list_menu (1.2.4; no framework host there: wrappers appended to the script):
 #                         each team row's orb bar, the info window's battle-kind rows and its height
 #   cd_orb_bar.lua        the orb bar (shared by the board and the team list, included in both)
+#   cd_lineup.lua         the team lineup band of the command menu (included in cd_command_hooks.lua)
 # docs/game/mods/chronicle-deluxe.md §8.9 (the orb bars and panels).
 # Which difficulties exist is the mod's data (content\defaults\match_difficulty.toml, the framework's
 # VRFW_MatchDifficulty); levels, rewards and the heroic player rules are team-type data
@@ -35,6 +38,7 @@ include = { "@ORB_BAR@" = "cd_orb_bar.lua" }
 [[hooks]]
 stem = "vs_route_town_command_select_menu"
 src = "cd_command_hooks.lua"
+include = { "@LINEUP@" = "cd_lineup.lua" }
 
 [[files]]
 stem = "vs_route_town_list_menu"

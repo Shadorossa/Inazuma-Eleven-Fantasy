@@ -1,0 +1,18 @@
+# Chronicle Deluxe: the button under the team lineup of the Chronicle board's «MI EQUIPO» panel (content\menus\
+# team_lineup.toml, research/grafts/chronicle_deluxe_board/cd_lineup.lua). <CMD_FUNC3> is the game's Y button glyph
+# (its keyboard key on a keyboard); the name is the retail one of the team dock in each language.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the button under the lineup: Y opens the team dock
+[[row]]
+id = "chronicle_deluxe_team_dock_button"
+es = "<CMD_FUNC3> Plantilla de equipo"
+en = "<CMD_FUNC3> Team Dock"
+fr = "<CMD_FUNC3> Composition d'équipe"
+de = "<CMD_FUNC3> Team-Bank"
+it = "<CMD_FUNC3> Slot Squadra"
+pt = "<CMD_FUNC3> Clube"
+ja = "<CMD_FUNC3> チームドック"
+zh_hans = "<CMD_FUNC3> 编组队伍"
+zh_hant = "<CMD_FUNC3> 編組隊伍"

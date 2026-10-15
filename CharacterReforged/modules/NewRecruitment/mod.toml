@@ -2,10 +2,10 @@ id = "new_recruitment"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "New Recruitment"
-version = "1.0.0"
+version = "1.0.1"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). A spirit drop is the player himself: recruited into the bank, his spirit taken back; a player you own no longer drops nor shows in the drop lists (one row per character); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove them from the current save. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
+description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). Matches drop no players: no player spirit drops in any match and the drop-rate list shows only its items tab (players come from other sources); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove them from the current save. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
 priority = 0
 tags = ["Gameplay", "Characters"]
 updated = "2026-10-15"
@@ -22,10 +22,12 @@ folder = "NewRecruitment"
 #                                     which copy is kept, element spirits per released copy; apply_on_load: the same on
 #                                     every load of a player slot (Character Reforged keeps a backup of the save first)
 #   content\team_planner\rule.toml    Utilities' team planner: any owned copy of a character counts
-#   content\items\drop_list.toml      [VRFW.DropList.Spirits]: a player the user owns is no spirit candidate (never
-#                                     dropped, not listed), one drop-list row per character; not in a reserved slot
+#   content\items\drop_list.toml      [VRFW.DropList.Spirits] ExcludeAll: no player spirit drops in matches (every
+#                                     candidate refused, the chance lost), [VRFW.DropList] HideTabs: no player groups
+#                                     in «Tasa de aparición»; not in a reserved slot
 #   assets\lua\_all\new_recruitment_spirits.lua   no spirit «!» notices, no «Espíritu» row in the team docks, and a
-#                                     spirit drop of a normal card = the player: noted on the match result screen,
+#                                     spirit drop of a normal card (since 1.0.1 none drops outside a reserved slot,
+#                                     so only there) = the player: noted on the match result screen,
 #                                     recruited into the bank on the first step of a menu of the save (VRFW_Recruit), his
 #                                     spirit taken back (at No More Rarities' normal card rarity when it is on, else at
 #                                     the spirit's own rarity)
@@ -40,7 +42,9 @@ folder = "NewRecruitment"
 # backup blobs are Character Reforged's. No save import is needed.
 # vr_framework 2.4.32: [VRFW.DropList.Spirits]; 2.4.36: the slot_duplicate event; 2.4.40: the save tools.
 # character_reforged 1.7.8: the duplicate rules' apply_on_load.
-requires = ["vr_framework>=2.4.40", "character_reforged>=1.7.8"]
+# 1.0.1 (vr_framework 2.4.133: [VRFW.DropList.Spirits] ExcludeAll): no player drops in matches, no player groups in the
+# drop-rate list (owner request 2026-10-15).
+requires = ["vr_framework>=2.4.133", "character_reforged>=1.7.8"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 

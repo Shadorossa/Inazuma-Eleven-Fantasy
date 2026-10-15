@@ -9,11 +9,444 @@
 --     fewer rows it is cut to them: height = retail - 70 * (slots - rows), top edge kept (the banner and the rows do not
 --     move), so the margin under the last row equals the one over the first (VRFW_RBC_ListLayer). The panel sprites
 --     get nine-slice guides (content\images\menu\30_vsroute\vsroute01\vsroute01_15c.toml / 15d.toml) so the rounded
---     corners and the shadow keep their size.
+--     corners and the shadow keep their size. The bands under the last row (VRFW_RBC_PanelExtra = their sum: the
+--     match challenge line, this mod's team lineup) are added to that height while they are shown.
+--   * team lineup (cd_lineup.lua, 1.8.0): a band under the rows with the active team's starters on a mini pitch and the
+--     «Y Plantilla de equipo» button that opens the team dock from the board.
 -- With Inazuma Fantasy's Chronicle redesign active (its global EVT_ChrFrameFit, the same fit with its own layouts and
 -- the same guides) the fit is IF's: one implementation.
 ChronicleDeluxe = ChronicleDeluxe or {}
 ChronicleDeluxe.Command = ChronicleDeluxe.Command or {}
+-- Chronicle Deluxe, the team lineup of the Chronicle board's command menu (docs/game/mods/chronicle-deluxe.md §12).
+-- Included in cd_command_hooks.lua (a hook file of the VR-Framework's command menu script, graft route_board).
+-- Nothing runs at load but the definitions (no engine call).
+-- Under the battle rows of the «MI EQUIPO» panel, after the match challenge line, one band of the framework
+-- (VRFW_RBC_PanelBand "chronicle_deluxe.lineup") shows:
+--   * the active team's formation name;
+--   * its eleven starters on the game's formation pitch (the VS screen's field, layout vsroute02_06), each the game's
+--     small player card (face, position colour: the team dock's own card fill), placed by the formation's slot
+--     positions with the retail rule of CalcFormationIconPosition (soccer_common);
+--   * the button «Y Plantilla de equipo».
+-- Y (CMD_FUNC3: the list's input row of content\menus\team_lineup.toml, function FUNCTION_TEAM_DOCK) or a mouse click
+-- on the button closes the menu with the retail «Plantilla de equipo» item (listItemType 0): the board opens the team
+-- dock as retail did from that row and opens this menu again when the dock closes, so the lineup is read again.
+-- Layers (content\menus\team_lineup.toml, opened here): chronicle_deluxe_lineup_pitch (1), chronicle_deluxe_lineup_card
+-- (11, one per formation slot), chronicle_deluxe_lineup_text (2: the formation name, the button). Without them (menu
+-- patch not installed) or when this mod does not size the panel, nothing is drawn and no band is asked for.
+ChronicleDeluxe = ChronicleDeluxe or {}
+ChronicleDeluxe.Lineup = ChronicleDeluxe.Lineup or {}
+local P = ChronicleDeluxe.Lineup
+
+P.BAND_ID = "chronicle_deluxe.lineup"
+P.BAND_ORDER = 20                  -- after the match challenge line (10)
+P.LAYER = {PITCH = 3017938276 --[[chronicle_deluxe_lineup_pitch]], CARD = 260350298 --[[chronicle_deluxe_lineup_card]],
+  TEXT = 572235342 --[[chronicle_deluxe_lineup_text]]}
+P.TEXT_FORMATION, P.TEXT_BUTTON = 0, 1
+P.STARTERS = 11                    -- formation slots 0..10
+P.MEMBER_SLOTS = 29                -- team set members 0..28 (as the VS screen reads them)
+P.FUNCTION_TEAM_DOCK = 1238658383  -- crc32("chronicle_deluxe_team_dock"): the Y row's function
+P.BUTTON_TEXT = 1601543300         -- menu_text row chronicle_deluxe_team_dock_button («<CMD_FUNC3> Plantilla de equipo»)
+P.ITEM_TEAM_DOCK = 0               -- the retail list item «Plantilla de equipo»: the board opens soccer_team_dock_menu
+P.MENU = 1193383590                -- vs_route_town_command_select_menu
+P.RESULT = 2612514222              -- the menu's result parameter (the board reads it)
+P.C = {
+  OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, MESH_VISIBLE = 3405944500,
+  TEXT = 1083631230, LAYER_NUM = 1175615627,
+  DRAW_PRIORITY = 1491630496,      -- (layer, instance, priority, children)
+  FILL_CARD = 2329292196,          -- (card table): the team dock's player card fill (UpdateMemberCharaIconInfoByChrStHdl)
+  TEAM_SET = 3713813716,           -- CMND_GET_VS_USE_TEAM_SET
+  TEAM_SET_INFO = 1033065575,      -- (set, 0, what): 4 formation, 7 uniform, 8 (+ member) captain
+  TEAM_MEMBER = 1720957768,        -- (set, 0, member, what): 0 player handle, 1 formation slot
+  CHARA_INFO = 1131797651,         -- (handle, 0): level
+  FORMATION_INFO = 2649030357,     -- CMND_GET_SOCCER_FORMATION_INFO
+  TEXT_GET = 4074371074,           -- CMND_TEXT_GET (menu_text id)
+  TEXT_OF_ID = 297699480,          -- (text id) -> the string (the formation's name)
+  CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303,
+  POINTER = 558229292,             -- the pointer's screen px (y down)
+  ENTER_CLICK = 1651523701,        -- CMD_ENTER_CLICK: mouse, Enter, A
+  ENTER = 1981080283,              -- CMD_ENTER: Enter, A (so a click is ENTER_CLICK without ENTER)
+  SE = 1917805374, SE_DECIDE = 3848881948 --[[sy0000]],
+  CLOSE_MENU = 320421347, P_CLEAR = 3363400568, P_SET = 3860611758,
+}
+-- the formation pitch (layout vsroute02_06, v7.1.2; px, layer axes y up): the field quad's top edge and height, the
+-- slot locators _pos_formation01_cc / _lu / _ld (centre, top-left, bottom-left), the top and bottom widths
+P.PITCH = {CENTRE_X = 1394, CENTRE_Y = -533, TOP_Y = -296, BOTTOM_Y = -856, TOP_WIDTH = 428, BOTTOM_WIDTH = 588,
+  FIELD_TOP_Y = -294, FIELD_HEIGHT = 564}
+-- the slot position rule (CalcFormationIconPosition as the VS screen calls it): width / depth units of the formation
+-- data, its base set and the offset set, the offset scale, the keeper's lift
+P.FORMATION = {WIDTH_UNITS = 60, DEPTH_UNITS = 90, BASE_SET = 2, OFFSET_SET = 10, OFFSET_SCALE = 0.85, KEEPER_LIFT = 20}
+-- the band (screen px): gap, name line, gap, pitch (scaled), gap, button line
+P.LAYOUT = {TOP_GAP = 10, NAME_HEIGHT = 30, NAME_GAP = 10, PITCH_SCALE_X = 0.75, PITCH_SCALE_Y = 0.45, PITCH_GAP = 16,
+  BUTTON_HEIGHT = 44, CARD_SCALE = 0.40, NAME_SCALE = 0.7, BUTTON_SCALE = 0.66,
+  PRIORITY_PITCH = 850, PRIORITY_CARD = 852, PRIORITY_TEXT = 856}   -- over the panel (845) and its rows (847)
+-- the text object (the framework's vrfw_mp_label, the retail corner button cmn03_01): its text node, plates, the
+-- node's left edge and centre line, the width of one Latin character at scale 1, the plate's box
+P.LABEL = {TEXT_NODE = 378327766 --[[_text_cmd_back01]], PLATE = 298211823 --[[_cmd_back_base01]],
+  PLATE_ADD = 2853207670 --[[_cmd_back_base01_add]], TEXT_LEFT = -384, TEXT_MID_Y = 144, CHAR_WIDTH = 12.5,
+  PLATE_LEFT = -397, PLATE_WIDTH = 416, PLATE_HEIGHT = 76}
+-- the small card's pieces the board does not show (the VS screen hides the same)
+P.CARD_HIDE = {2635558741 --[[_icon_card01]], 69091055 --[[_icon_card02]], 814224422 --[[_icon_lock01]],
+  2843821468 --[[_icon_lock02]]}
+
+local function reset()
+  P.on, P.pending, P.shown, P.opened = false, false, false, {}
+  P.cards, P.base, P.shift, P.button, P.click_prev = {}, {}, nil, nil, false
+end
+reset()
+
+local function M(...)
+  local r = table.pack(pcall(funcLuaMenuCommand, ...))
+  if not r[1] then
+    return nil
+  end
+  return table.unpack(r, 2, r.n)
+end
+
+local function F(...)
+  local r = table.pack(pcall(funcLuaCommand, ...))
+  if not r[1] then
+    return nil
+  end
+  return table.unpack(r, 2, r.n)
+end
+
+local function instances(layer)
+  local n = M(P.C.LAYER_NUM, layer)
+  return type(n) == "number" and n or 0
+end
+
+-- the menu has the layers of content\menus\team_lineup.toml
+local function layers_ready()
+  return instances(P.LAYER.PITCH) >= 1 and instances(P.LAYER.CARD) >= P.STARTERS and instances(P.LAYER.TEXT) >= 2
+end
+
+P.BAND_HEIGHT = math.ceil(P.LAYOUT.TOP_GAP + P.LAYOUT.NAME_HEIGHT + P.LAYOUT.NAME_GAP
+  + P.PITCH.FIELD_HEIGHT * P.LAYOUT.PITCH_SCALE_Y + P.LAYOUT.PITCH_GAP + P.LAYOUT.BUTTON_HEIGHT)
+
+-- width of a text at scale 1 (a button tag <...> counts as two characters, a CJK glyph as two)
+local function text_width(s)
+  local units, i, n = 0, 1, string.len(s)
+  while i <= n do
+    local b = string.byte(s, i)
+    if b == 60 then   -- "<"
+      local close = string.find(s, ">", i, true)
+      if close ~= nil then
+        units = units + 2
+        i = close + 1
+      else
+        units = units + 1
+        i = i + 1
+      end
+    else
+      local len = b >= 0xF0 and 4 or (b >= 0xE0 and 3 or (b >= 0xC0 and 2 or 1))
+      units = units + (len >= 3 and 2 or 1)
+      i = i + len
+    end
+  end
+  return math.max(units, 1) * P.LABEL.CHAR_WIDTH
+end
+
+-- a slot's position from the pitch's centre (pitch px, y up): the retail rule with the pitch's locators
+function P.SlotOffset(formation, slot)
+  local G, R = P.PITCH, P.FORMATION
+  local ok, x, _, y = F(P.C.FORMATION_INFO, 4, formation, slot, R.BASE_SET)
+  if ok ~= true then
+    x, y = 0, 0
+  end
+  x, y = x or 0, y or 0
+  local total = math.abs(G.TOP_Y - G.BOTTOM_Y)
+  local above = math.abs(G.CENTRE_Y - G.TOP_Y)
+  local below = math.abs(G.CENTRE_Y - G.BOTTOM_Y)
+  local depth = y / R.DEPTH_UNITS
+  local height_here = -y * (total / R.DEPTH_UNITS) + total * 0.5
+  local width_here = (G.TOP_WIDTH - G.BOTTOM_WIDTH) * (height_here / total) + G.BOTTOM_WIDTH
+  local px = x * (width_here / R.WIDTH_UNITS)
+  local py = below - y * (G.BOTTOM_WIDTH / R.WIDTH_UNITS)
+  if depth < 0 then
+    py = py + total * depth * above / below
+  elseif depth > 0 then
+    py = py + above * depth * below / (total * 0.5)
+  end
+  local okO, dx, dy = F(P.C.FORMATION_INFO, 4, formation, slot, R.OFFSET_SET)
+  if okO == true then
+    px = px + (dx or 0) * R.OFFSET_SCALE
+    py = py + (dy or 0) * R.OFFSET_SCALE
+  end
+  py = py - below
+  local okK, kind = F(P.C.FORMATION_INFO, 5, formation, slot)
+  if okK == true and kind == 0 then
+    py = py + R.KEEPER_LIFT
+  end
+  return px, py
+end
+
+-- the active team: its set, formation, formation name and starters {slot -> card table}
+function P.ReadTeam()
+  local set = F(P.C.TEAM_SET)
+  if type(set) ~= "number" then
+    return nil
+  end
+  local okF, formation = F(P.C.TEAM_SET_INFO, set, 0, 4)
+  if okF ~= true or type(formation) ~= "number" or formation == 0 then
+    return nil
+  end
+  local okU, uniform = F(P.C.TEAM_SET_INFO, set, 0, 7)
+  local name = ""
+  local okN, text = F(P.C.FORMATION_INFO, 7, formation)
+  if okN == true and text ~= nil then
+    local s = F(P.C.TEXT_OF_ID, text)
+    name = type(s) == "string" and s or ""
+  end
+  local team = {set = set, formation = formation, name = name, starters = {}}
+  for i = 0, P.MEMBER_SLOTS - 1 do
+    local okH, handle = F(P.C.TEAM_MEMBER, set, 0, i, 0)
+    local okS, slot = F(P.C.TEAM_MEMBER, set, 0, i, 1)
+    if okH == true and okS == true and type(handle) == "number" and handle ~= 0 and type(slot) == "number"
+        and slot >= 0 and slot < P.STARTERS then
+      local okP, position = F(P.C.FORMATION_INFO, 6, formation, slot)
+      local okC, captain = F(P.C.TEAM_SET_INFO, set, 0, 8, handle)
+      local level = F(P.C.CHARA_INFO, handle, 0)
+      team.starters[slot] = {
+        layerName = P.LAYER.CARD, layerIdx = slot, charaStHdl = handle, isBigCardType = false,
+        isForceLeader = false, overwritePosType = okP == true and position or 0, charaFaceType = 0,
+        level = type(level) == "number" and level or 0, isCaptain = okC == true and captain == true,
+        uniformId = okU == true and uniform or 0, isMainMember = true, titleAttr = 0, isForceUpdateBustup = false,
+        isManager = false, isGrayout = false, isDisableTeamUniform = false, rarityFrameEffectDrawType = 0,
+        isTeamDockIconVisible = false, isForcePlayerUniform = true, teamSet = set, faceIconChrStHdl = 0,
+        isUpdateTempAvatar = true,
+      }
+    end
+  end
+  return team
+end
+
+local function place(layer, k)
+  local b = P.base[layer .. ":" .. k]
+  if b == nil then
+    return
+  end
+  local dx, dy = 0, 0
+  if VRFW_RBC_PanelShift ~= nil then
+    dx, dy = VRFW_RBC_PanelShift()
+  end
+  M(P.C.POS, layer, b[1] + dx, b[2] + dy, 0, k)
+end
+
+local function open(layer, k, priority)
+  local key = layer .. ":" .. k
+  if not P.opened[key] then
+    P.opened[key] = true
+    M(P.C.OPEN, layer, k)
+  end
+  M(P.C.DRAW_PRIORITY, layer, k, priority, true)
+end
+
+-- one card: the game's fill, the extra pieces off (again when its instance is built: OnOpenLayer)
+local function fill_card(slot)
+  local card = P.cards[slot]
+  if card == nil then
+    M(P.C.VISIBLE, P.LAYER.CARD, slot, false)
+    return
+  end
+  local shown = M(P.C.FILL_CARD, card)
+  for _, mesh in ipairs(P.CARD_HIDE) do
+    M(P.C.MESH_VISIBLE, P.LAYER.CARD, mesh, false, slot)
+  end
+  M(P.C.SCALE, P.LAYER.CARD, P.LAYOUT.CARD_SCALE, P.LAYOUT.CARD_SCALE, 1, slot)
+  place(P.LAYER.CARD, slot)
+  M(P.C.VISIBLE, P.LAYER.CARD, slot, shown ~= false)
+end
+
+-- a text line: `s` at `scale`, centred on (cx, cy) (screen px); plate = the corner button's plate behind it
+local function text_line(k, s, scale, cx, cy, plate)
+  local L = P.LABEL
+  open(P.LAYER.TEXT, k, P.LAYOUT.PRIORITY_TEXT)
+  M(P.C.MESH_VISIBLE, P.LAYER.TEXT, L.PLATE, plate == true, k)
+  M(P.C.MESH_VISIBLE, P.LAYER.TEXT, L.PLATE_ADD, false, k)
+  M(P.C.TEXT, P.LAYER.TEXT, L.TEXT_NODE, s, k)
+  M(P.C.SCALE, P.LAYER.TEXT, scale, scale, 1, k)
+  local x
+  if plate then
+    x = cx - (L.PLATE_LEFT + L.PLATE_WIDTH / 2) * scale   -- the plate centred, the text at its left as retail
+  else
+    x = cx - text_width(s) * scale / 2 - L.TEXT_LEFT * scale
+  end
+  P.base[P.LAYER.TEXT .. ":" .. k] = {x, -cy - L.TEXT_MID_Y * scale}
+  place(P.LAYER.TEXT, k)
+  M(P.C.VISIBLE, P.LAYER.TEXT, k, s ~= "")
+end
+
+function P.Hide()
+  if not P.shown then
+    return
+  end
+  P.shown = false
+  M(P.C.VISIBLE, P.LAYER.PITCH, 0, false)
+  for slot = 0, P.STARTERS - 1 do
+    M(P.C.VISIBLE, P.LAYER.CARD, slot, false)
+  end
+  M(P.C.VISIBLE, P.LAYER.TEXT, P.TEXT_FORMATION, false)
+  M(P.C.VISIBLE, P.LAYER.TEXT, P.TEXT_BUTTON, false)
+end
+
+-- the band's content, from the active team as it is now
+function P.Draw()
+  local team = P.ReadTeam()
+  if team == nil or VRFW_RBC_PanelBandTop == nil then
+    return P.Hide()
+  end
+  local A, G = P.LAYOUT, P.PITCH
+  local top = VRFW_RBC_PanelBandTop(P.BAND_ID)
+  local cx = VRFW_RBC.GEOMETRY.PANEL_MID_X
+  -- the formation name
+  text_line(P.TEXT_FORMATION, team.name, A.NAME_SCALE, cx, top + A.TOP_GAP + A.NAME_HEIGHT / 2, false)
+  -- the pitch: its centre locator at (cx, cy)
+  local pitch_top = top + A.TOP_GAP + A.NAME_HEIGHT + A.NAME_GAP
+  local sx, sy = A.PITCH_SCALE_X, A.PITCH_SCALE_Y
+  local cy = pitch_top + (G.FIELD_TOP_Y - G.CENTRE_Y) * sy
+  open(P.LAYER.PITCH, 0, A.PRIORITY_PITCH)
+  M(P.C.SCALE, P.LAYER.PITCH, sx, sy, 1, 0)
+  P.base[P.LAYER.PITCH .. ":0"] = {cx - G.CENTRE_X * sx, -cy - G.CENTRE_Y * sy}
+  place(P.LAYER.PITCH, 0)
+  M(P.C.VISIBLE, P.LAYER.PITCH, 0, true)
+  -- the starters
+  P.cards = team.starters
+  for slot = 0, P.STARTERS - 1 do
+    local rx, ry = P.SlotOffset(team.formation, slot)
+    P.base[P.LAYER.CARD .. ":" .. slot] = {cx + rx * sx, -cy + ry * sy}
+    open(P.LAYER.CARD, slot, A.PRIORITY_CARD)
+    fill_card(slot)
+  end
+  -- the button
+  local by = pitch_top + G.FIELD_HEIGHT * sy + A.PITCH_GAP + A.BUTTON_HEIGHT / 2
+  local label = F(P.C.TEXT_GET, P.BUTTON_TEXT)
+  text_line(P.TEXT_BUTTON, type(label) == "string" and label or "", A.BUTTON_SCALE, cx, by, true)
+  local L = P.LABEL
+  P.button = {x = cx, y = by, half_w = L.PLATE_WIDTH * A.BUTTON_SCALE / 2, half_h = L.PLATE_HEIGHT * A.BUTTON_SCALE / 2}
+  P.click_prev = true   -- a click counts from its press: the one that opened the menu must be released first
+  P.shown = true
+end
+
+-- the board opens the team dock: the menu closes with the retail «Plantilla de equipo» item
+function P.OpenTeamDock()
+  local L = VRFW_RBC.L
+  if not P.shown or L.flag or L.flag2 then
+    return false
+  end
+  funcLuaCommand(P.C.SE, P.C.SE_DECIDE)
+  P.Hide()
+  pcall(SetupButtonGuide)
+  funcLuaCommand(P.C.P_CLEAR, P.RESULT)
+  funcLuaCommand(P.C.P_SET, P.RESULT, 0, P.ITEM_TEAM_DOCK, 1)
+  funcLuaCommand(P.C.CLOSE_MENU, P.MENU)
+  L.flag = true
+  return true
+end
+
+-- a mouse click on the button (ENTER_CLICK without ENTER: not Enter / A), on its press
+local function button_clicked()
+  local held = funcLuaCommand(P.C.CHECK_INPUT, P.C.MENU_CTRL, P.C.ENTER_CLICK) == true
+    and funcLuaCommand(P.C.CHECK_INPUT, P.C.MENU_CTRL, P.C.ENTER) ~= true
+  local pressed = held and not P.click_prev
+  P.click_prev = held
+  if not pressed or P.button == nil then
+    return false
+  end
+  local mx, my = M(P.C.POINTER)
+  if type(mx) ~= "number" or type(my) ~= "number" then
+    return false
+  end
+  local dx, dy = 0, 0
+  if VRFW_RBC_PanelShift ~= nil then
+    dx, dy = VRFW_RBC_PanelShift()
+  end
+  local b = P.button
+  return math.abs(mx - (b.x + dx)) <= b.half_w and math.abs(my - (b.y - dy)) <= b.half_h
+end
+
+function P.Step()
+  if P.pending then
+    P.pending = false
+    if VRFW_RBC.L.flag then
+      return
+    end
+    P.Draw()
+    return
+  end
+  if not P.shown then
+    return
+  end
+  local dx, dy = 0, 0
+  if VRFW_RBC_PanelShift ~= nil then
+    dx, dy = VRFW_RBC_PanelShift()
+  end
+  if P.shift == nil or P.shift[1] ~= dx or P.shift[2] ~= dy then
+    P.shift = {dx, dy}
+    place(P.LAYER.PITCH, 0)
+    for slot = 0, P.STARTERS - 1 do
+      place(P.LAYER.CARD, slot)
+    end
+    place(P.LAYER.TEXT, P.TEXT_FORMATION)
+    place(P.LAYER.TEXT, P.TEXT_BUTTON)
+  end
+  if button_clicked() then
+    P.OpenTeamDock()
+  end
+end
+
+-- the handlers on the command menu `stem`; owns(kind) = this mod sizes the panel of that piece kind
+function P.Register(stem, owns)
+  if VRFW_Host == nil then
+    return
+  end
+  local id = "chronicle_deluxe.lineup"
+  VRFW_Host.on(stem, "OnInit", {id = id, phase = "before", fn = function()
+    reset()
+  end})
+  -- the panel is placed: the band, then the drawing on the next Step (the layers open outside the setup callback)
+  VRFW_Host.on(stem, "VRFW_RBC_ListLayer", {id = id, phase = "after", fn = function(r, layer, kind, rows)
+    P.on = owns(kind) and VRFW_RBC_PanelBand ~= nil and layers_ready()
+    if P.on then
+      VRFW_RBC_PanelBand(P.BAND_ID, P.BAND_HEIGHT, P.BAND_ORDER)
+      P.pending = true
+    end
+  end})
+  -- an instance is built: its draw priority again, a card's fill again
+  VRFW_Host.on(stem, "OnOpenLayer", {id = id, phase = "after", fn = function(r, a1, a2)
+    if not P.shown or type(a2) ~= "number" then
+      return
+    end
+    if a1 == P.LAYER.CARD and a2 < P.STARTERS then
+      M(P.C.DRAW_PRIORITY, a1, a2, P.LAYOUT.PRIORITY_CARD, true)
+      fill_card(a2)
+    elseif a1 == P.LAYER.PITCH then
+      M(P.C.DRAW_PRIORITY, a1, a2, P.LAYOUT.PRIORITY_PITCH, true)
+    elseif a1 == P.LAYER.TEXT then
+      M(P.C.DRAW_PRIORITY, a1, a2, P.LAYOUT.PRIORITY_TEXT, true)
+    end
+  end})
+  VRFW_Host.on(stem, "Step", {id = id, phase = "after", fn = function()
+    if P.on then
+      P.Step()
+    end
+  end})
+  VRFW_Host.on(stem, "OnFunction", {id = id, phase = "before", fn = function(a1)
+    if a1 ~= P.FUNCTION_TEAM_DOCK then
+      return
+    end
+    if P.on then
+      P.OpenTeamDock()
+    end
+    return VRFW_Host.HALT
+  end})
+  -- the menu closes (a row decided, Back): the band's pieces go with it
+  VRFW_Host.on(stem, "OnDecideFocus", {id = id, phase = "before", fn = function()
+    P.Hide()
+  end})
+  VRFW_Host.on(stem, "OnBack", {id = id, phase = "before", fn = function()
+    P.Hide()
+  end})
+end
 local K = ChronicleDeluxe.Command
 
 -- kind 1 = a gate piece; no set declared = every row
@@ -39,7 +472,7 @@ K.PANEL = {
 K.ROW_HEIGHT = 70
 K.NODE_SCALE = 2885415772         -- (layer, instance, node, width, height): a quad's size in px
 
-function K.FitPanel(layer, kind, rows)
+function K.FitPanel(layer, kind, rows, extra)
   local p = K.PANEL[kind]
   if p == nil or rows == nil or rows < 1 then
     return
@@ -47,7 +480,13 @@ function K.FitPanel(layer, kind, rows)
   if rows > p.slots then
     rows = p.slots
   end
-  funcLuaMenuCommand(K.NODE_SCALE, layer, 0, p.node, p.width, p.height - K.ROW_HEIGHT * (p.slots - rows))
+  funcLuaMenuCommand(K.NODE_SCALE, layer, 0, p.node, p.width, p.height - K.ROW_HEIGHT * (p.slots - rows) + (extra or 0))
+end
+
+-- this mod fits the panel (not Inazuma Fantasy's redesign, and the mod's difficulty set is declared)
+function K.OwnsPanel(kind)
+  return EVT_ChrFrameFit == nil and VRFW_MatchDifficulty ~= nil
+    and VRFW_MatchDifficulty.Set(kind == 1 and "gate" or "route") ~= nil
 end
 
 if VRFW_Host ~= nil then
@@ -57,9 +496,15 @@ if VRFW_Host ~= nil then
     end})
   VRFW_Host.on("vs_route_town_command_select_menu", "VRFW_RBC_ListLayer", {id = "chronicle_deluxe.panel_fit",
     phase = "after", fn = function(r, layer, kind, rows)
-      if EVT_ChrFrameFit == nil and VRFW_MatchDifficulty ~= nil
-          and VRFW_MatchDifficulty.Set(kind == 1 and "gate" or "route") ~= nil then
-        K.FitPanel(layer, kind, rows)
+      if K.OwnsPanel(kind) then
+        K.FitPanel(layer, kind, rows, VRFW_RBC ~= nil and VRFW_RBC.panel.extra or 0)
       end
     end})
+  VRFW_Host.on("vs_route_town_command_select_menu", "VRFW_RBC_PanelExtra", {id = "chronicle_deluxe.panel_band",
+    phase = "after", fn = function(r, layer, kind, rows, extra)
+      if layer ~= nil and K.OwnsPanel(kind) then
+        K.FitPanel(layer, kind, rows, extra)
+      end
+    end})
+  ChronicleDeluxe.Lineup.Register("vs_route_town_command_select_menu", K.OwnsPanel)
 end

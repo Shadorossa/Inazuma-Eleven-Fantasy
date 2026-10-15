@@ -5,8 +5,9 @@ schema = "VRFW.shader/1"
 # assets\shaders\ (its defines default to the neutral values: 1, pivot 0.5, tint [1, 1, 1]).
 
 # ---------------------------------------------------------------- programs
-# the 3D post chain's two pixel passes every scene goes through (the UI is drawn after them and never changes);
-# targets = the v7.1.2 retail dx11/shader/1.00.41 files (size, CRC-32): a modded file is left alone
+# the 3D post chain's pixel passes (the UI is drawn after them and never changes): per frame the engine runs one of
+# tonemap / tonemap + LUT / LUT only (a scene with the tonemap off and a colour LUT on: events, some maps), then the
+# bloom composite; targets = the v7.1.2 retail dx11/shader/1.00.41 files (size, CRC-32): a modded file is left alone
 
 [[VRFW.ShaderProgram]]
 id = "tonemap"
@@ -18,7 +19,19 @@ includes = ["assets/shaders/common.hlsl"]
 id = "tonemap_lut"
 target = { name = "tonemap_colorgrading.pfxo", type = "pixel", size = 5356, crc = 0xFF23B26B }
 source = "assets/shaders/tonemap_colorgrading.hlsl"
-includes = ["assets/shaders/common.hlsl"]
+includes = ["assets/shaders/common.hlsl", "assets/shaders/lut.hlsl"]
+
+[[VRFW.ShaderProgram]]
+id = "lut_only"
+target = { name = "colorgrading.pfxo", type = "pixel", size = 4072, crc = 0x6DA48F0D }
+source = "assets/shaders/colorgrading.hlsl"
+includes = ["assets/shaders/common.hlsl", "assets/shaders/lut.hlsl"]
+
+# the framework's tonemap pass patch: the engine also runs the tonemap pass in scenes whose tonemap rate is 0 or below
+# (most event cuts, some maps: retail skips the pass there), as an identity pass, so the grade covers every 3D scene
+[[VRFW.ShaderProgram]]
+id = "tonemap_pass"
+patch = "tonemap_pass"
 
 [[VRFW.ShaderProgram]]
 id = "bloom"
@@ -45,7 +58,7 @@ patch = "contour"
 id = "ie3"
 label = "vs_ie3"
 option = { key = "utilities.visual_style", value = 1 }
-programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+programs = ["tonemap", "tonemap_lut", "lut_only", "tonemap_pass", "bloom", "bloom_low"]
 defines = { GRADE = 1, EXPOSURE = 0.94, GAMMA = 1.06, SATURATION = 1.10, CONTRAST = 1.08, BLOOM = 0.5 }
 
 # Chrono Stone (3DS): more contrast and saturation, deeper mid-tones, almost no bloom
@@ -53,7 +66,7 @@ defines = { GRADE = 1, EXPOSURE = 0.94, GAMMA = 1.06, SATURATION = 1.10, CONTRAS
 id = "chrono"
 label = "vs_chrono"
 option = { key = "utilities.visual_style", value = 2 }
-programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+programs = ["tonemap", "tonemap_lut", "lut_only", "tonemap_pass", "bloom", "bloom_low"]
 defines = { GRADE = 1, EXPOSURE = 0.90, GAMMA = 1.10, SATURATION = 1.18, CONTRAST = 1.12, TINT = [1.0, 0.99, 0.97], BLOOM = 0.3 }
 
 # only takes the glare off: bloom lower, a touch darker
@@ -61,7 +74,7 @@ defines = { GRADE = 1, EXPOSURE = 0.90, GAMMA = 1.10, SATURATION = 1.18, CONTRAS
 id = "soft"
 label = "vs_soft"
 option = { key = "utilities.visual_style", value = 3 }
-programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low"]
+programs = ["tonemap", "tonemap_lut", "lut_only", "tonemap_pass", "bloom", "bloom_low"]
 defines = { GRADE = 1, EXPOSURE = 0.97, GAMMA = 1.03, SATURATION = 1.04, CONTRAST = 1.03, BLOOM = 0.6 }
 
 # IE3 + «Trazado grueso» (IE GO 3DS): thick dark contour on characters and the ball
@@ -69,7 +82,7 @@ defines = { GRADE = 1, EXPOSURE = 0.97, GAMMA = 1.03, SATURATION = 1.04, CONTRAS
 id = "ie3_contour"
 label = "vs_ie3_contour"
 option = { key = "utilities.visual_style", value = 4 }
-programs = ["tonemap", "tonemap_lut", "bloom", "bloom_low", "contour"]
+programs = ["tonemap", "tonemap_lut", "lut_only", "tonemap_pass", "bloom", "bloom_low", "contour"]
 defines = { GRADE = 1, EXPOSURE = 0.94, GAMMA = 1.06, SATURATION = 1.10, CONTRAST = 1.08, BLOOM = 0.5 }
 params = { thickness = 2.5, darken = 0.6 }
 

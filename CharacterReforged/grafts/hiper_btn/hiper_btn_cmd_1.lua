@@ -31,6 +31,26 @@ local evt_ho_want = false   -- last corner placement (the list-open transition s
 -- for the fallback
 -- inst: the plate instance the bar is drawn on (the «modo cambio» is the mix slot's: instance 1 since 2026-10-12)
 local evt_cd = {tex = 0, t = 0, swapped = false, shown = nil, geo = nil, total = 0, logs = 0, inst = 1}
+-- the collapsed plates (EVT_FoldApply, EVT_HIPER_COLLAPSE below). From the plate layout evt_soccer08_10_hiper: the
+-- band quad width, the input column's locator x (_atc_evt_input01), the band quads (name hash, top-left x, width,
+-- height), the left ends of the name (_text_cmd_sp01) and of the armour logo (_gtxt_cmd_armed01). progress: 0
+-- collapsed .. 1 expanded; width: band width of this frame (nil = full); band / shift: band width and input column
+-- shift applied per instance (nil = not since its draw); icon / logo: what the draw showed of the type icon and the
+-- armour logo
+local evt_fold = {
+  full_width = 436, input_x = -184, name_left = -163, logo_left = -103,
+  quads = {
+    {4282364172 --[[_cmd_base_sp01]], -251, 436, 68},
+    {1851880983 --[[_cmd_base_sp_add01]], -251, 436, 68},
+    {4150798253 --[[_cmd_base_sp_add02]], -251, 436, 68},
+    {3742978053 --[[_cmd_base_sp_grayout01]], -251, 436, 68},
+    {1213120893 --[[_sp_ring02]], -279, 480, 112},
+    {3077712952 --[[_cmd_base_sp_effect01]], -232, 464, 64},
+    {738647743 --[[_cmd_base_sp_blank01]], -244, 488, 80},
+  },
+  progress = 0, input_shift = 0, width = nil, band = {}, shift = {}, icon = {}, logo = {},
+}
+
 -- the slot tags of the selected-slot controls (menu_text evt_hs_tag_aura / evt_hs_tag_mix, 9 languages), read once
 -- EVT_HIPER_SLOT_TAG: the tag after the plate's name («  · Aura»); off: the name alone (owner 2026-10-15)
 EVT_HIPER_SLOT_TAG = false
@@ -65,6 +85,8 @@ function EVT_HiperInit()
   EVT_Reset()
   evt_ho_open = false
   evt_ho_want = false
+  evt_fold.progress, evt_fold.input_shift, evt_fold.width = 0, 0, nil
+  evt_fold.band, evt_fold.shift = {}, {}
 end
 
 function EVT_HiperSetupLayer(a1, a2)
@@ -75,6 +97,7 @@ function EVT_HiperSetupLayer(a1, a2)
       EVT_last[a2 + 1].shown = false
     end
     evt_ho_set[a2 + 1] = nil
+    evt_fold.band[a2 + 1] = nil
     if a2 == evt_cd.inst then
       evt_cd.swapped, evt_cd.shown, evt_cd.geo = false, nil, nil   -- a set-up layer has its retail sprite back
     end
@@ -247,6 +270,22 @@ local evt_glyph_logs, evt_glyph_last = 0, {}
 EVT_INPUT_TAGS = {["<CMD_DECIDE_CMD_R_DOWN>"] = "<CMD_ENTER>", ["<CMD_DECIDE_CMD_R_RIGHT>"] = "<CMD_BACK>",
   ["<CMD_DECIDE_CMD_R_LEFT>"] = "<CMD_FUNC4>", ["<CMD_DECIDE_CMD_R_UP>"] = "<CMD_FUNC3>"}
 
+-- Collapsed plates (owner 2026-10-15): while the retail move list is closed (RB not held) each plate shows only its
+-- input column and the aura portrait, on a short band anchored at the plate's right end; when the list opens (the
+-- retail open state, UpdateAnimeMoveOffsetCmdBase(true): RB held) the band stretches to the left to the full plate
+-- with the type icon and the name, and back when it closes. The band quads are resized and moved at their right end;
+-- the input column slides with the band's left end. Display only; every plate of every slot behaves the same.
+EVT_HIPER_COLLAPSE = true
+EVT_HIPER_COLLAPSE_FRAMES = 8        -- frames of the stretch (about 0.13 s)
+EVT_HIPER_COLLAPSED_WIDTH = 183      -- band quad width while collapsed (plate layer units; full 436)
+EVT_HIPER_COLLAPSED_INPUT_X = 40     -- input column centre while collapsed (plate layer units; full -184)
+
+local function EVT_FoldWidth()
+  local p = evt_fold.progress
+  local eased = p * p * (3 - 2 * p)
+  return EVT_HIPER_COLLAPSED_WIDTH + (evt_fold.full_width - EVT_HIPER_COLLAPSED_WIDTH) * eased
+end
+
 function EVT_InputHide(inst)
   pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_IN, inst, false)
 end
@@ -256,7 +295,7 @@ function EVT_InputDraw(inst, top, bottom)
   pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_IN_ATC, true)
   local k = EVT_INPUT_K * (EVT_HIPER_PLATE_SCALE or 1)
   funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_IN, k, k, 1, inst)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX, EVT_INPUT_DY, 0, inst)
+  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX + evt_fold.input_shift, EVT_INPUT_DY, 0, inst)
   local r1 = funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_IN, EVT_IN_TOP, top, inst)
   local r2 = funcLuaMenuCommand(1083631230, EVT_IN, EVT_IN_BOTTOM, bottom, inst)
   funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_IN, EVT_IN_TOP, top ~= "", inst)
@@ -289,7 +328,8 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
   UpdateSkillCmdSkillName(L, inst, hdl, skill, nameId, category)
   -- the category icon slot at the plate's left end (retail sets it for every move row; left alone it shows the
   -- widget's placeholder: a white chevron / square)
-  if not pcall(SetupCommandActionSkillInfoCategoryIcon, L, inst, skill) then
+  evt_fold.icon[inst + 1] = pcall(SetupCommandActionSkillInfoCategoryIcon, L, inst, skill)
+  if not evt_fold.icon[inst + 1] then
     funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 2164615260 --[[_icon_sp_area_dmy01]], false, inst)
   end
   -- the button icons left of the name (game glyph tags; the text renderer follows the active device). 2026-09-30
@@ -349,7 +389,8 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
     funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, EVT_CUBES[i], false, inst)
   end
   funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1621112166 --[[_cmd_pw_cube01]], false, inst)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1206374040 --[[_gtxt_cmd_armed01]], armed or armour == true, inst)
+  evt_fold.logo[inst + 1] = armed or armour == true
+  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1206374040 --[[_gtxt_cmd_armed01]], evt_fold.logo[inst + 1], inst)
   funcLuaMenuCommand(2158717427, L, 4081284803 --[[_pos_at01]], false, inst)
   funcLuaMenuCommand(1233047821, L, inst, 2467766246, false)
   funcLuaMenuCommand(1233047821, L, inst, 875648615, false)
@@ -475,7 +516,10 @@ local function EVT_CdBar(frac)
     funcLuaMenuCommand(558735651 --[[swap texture]], EVT_HL, EVT_CD_TEX, EVT_CD_SPRITE, EVT_CD_SLOT, 0, evt_cd.inst)
     evt_cd.swapped, evt_cd.geo = true, nil
   end
-  local w = (EVT_HIPER_CD_BAR_R - EVT_HIPER_CD_BAR_L) * math.max(0, frac)
+  -- a collapsed band (EVT_FoldApply) shortens the bar from its left end
+  local span = (EVT_HIPER_CD_BAR_R - EVT_HIPER_CD_BAR_L) * (evt_fold.width or evt_fold.full_width) / evt_fold.full_width
+  local left = EVT_HIPER_CD_BAR_R - span
+  local w = span * math.max(0, frac)
   if w < 1 then
     EVT_CdShow(false)
     return
@@ -484,11 +528,11 @@ local function EVT_CdBar(frac)
   local quad_h = h * EVT_CD_ROWS / EVT_CD_OPAQUE
   local top = EVT_HIPER_CD_BAR_BOTTOM + h * 9 / EVT_CD_OPAQUE   -- opaque rows 2..8 of the quad end on the bottom
   local g = evt_cd.geo
-  if g == nil or math.abs(g[1] - w) > 0.05 or g[2] ~= top or g[3] ~= quad_h then
+  if g == nil or math.abs(g[1] - w) > 0.05 or g[2] ~= top or g[3] ~= quad_h or math.abs(g[4] - left) > 0.05 then
     funcLuaMenuCommand(2885415772 --[[node size]], EVT_HL, evt_cd.inst, EVT_CD_MESH, w, quad_h)
-    funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, evt_cd.inst, EVT_CD_MESH, 0, EVT_HIPER_CD_BAR_L)
+    funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, evt_cd.inst, EVT_CD_MESH, 0, left)
     funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, evt_cd.inst, EVT_CD_MESH, 1, top)
-    evt_cd.geo = {w, top, quad_h}
+    evt_cd.geo = {w, top, quad_h, left}
   end
   EVT_CdShow(true)
 end
@@ -512,6 +556,7 @@ local function EVT_Update(inst, st, hdl, skill, ring, glyph, armour, suffix, pov
   last.pover = pover
   local ok, face = pcall(EVT_HiperDraw, inst, st, hdl, skill, ring, appear, glyph, armour, suffix, pover)
   last.face = ok and face == true
+  evt_fold.band[inst + 1] = nil   -- the draw showed the name / icon again: EVT_FoldApply sets the band again
   if inst == evt_cd.inst then
     evt_cd.shown = nil   -- the draw hid the bar's quad (_cmd_pw_cube01): EVT_CdBar sets it again
   end
@@ -643,7 +688,9 @@ function EVT_HiperOpenPlace()
   end
   local cross = want and EVT_HO_CrossX() or EVT_HO_CROSS
   local scale = EVT_HIPER_PLATE_SCALE or 1
-  local row_dx = 314 * scale + (EVT_HIPER_OPEN_GAP or 0)
+  -- the left plate follows the right plate's band while it collapses / stretches (EVT_FoldApply)
+  local band = (evt_fold.width or evt_fold.full_width) / evt_fold.full_width
+  local row_dx = math.floor(314 * band * scale + (EVT_HIPER_OPEN_GAP or 0) + 0.5)
   for inst = 0, 1 do
     local dx, dy = 0, 0
     if want then
@@ -663,6 +710,54 @@ function EVT_HiperOpenPlace()
       funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_HL, scale, scale, 1, inst)
       funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_HL, dx, dy, 0, inst)
       evt_ho_set[inst + 1] = key
+    end
+  end
+end
+
+-- one frame of the collapse (engine calls: EVT_HiperStep only). The progress moves toward the retail list state
+-- over EVT_HIPER_COLLAPSE_FRAMES; each shown plate gets its band quads at the current width (right ends kept), the
+-- name, type icon and armour logo only once the band reaches them, and the input column at the band's left part.
+local function EVT_FoldApply()
+  local target = (evt_ho_open or not EVT_HIPER_COLLAPSE) and 1 or 0
+  local frames = EVT_HIPER_COLLAPSE_FRAMES or 0
+  local step = frames > 0 and 1 / frames or 1
+  if evt_fold.progress < target then
+    evt_fold.progress = math.min(target, evt_fold.progress + step)
+  elseif evt_fold.progress > target then
+    evt_fold.progress = math.max(target, evt_fold.progress - step)
+  end
+  local width = EVT_FoldWidth()
+  evt_fold.width = width
+  local fraction = width / evt_fold.full_width
+  local input_travel = (EVT_HIPER_COLLAPSED_INPUT_X - evt_fold.input_x) / (evt_fold.full_width - EVT_HIPER_COLLAPSED_WIDTH)
+  local input_x = evt_fold.input_x + (evt_fold.full_width - width) * input_travel
+  local shift = math.floor((input_x - evt_fold.input_x) * (EVT_HIPER_PLATE_SCALE or 1) + 0.5)
+  evt_fold.input_shift = shift
+  local full = width >= evt_fold.full_width
+  local band_left = evt_fold.quads[1][2] + evt_fold.quads[1][3] - width
+  for inst = 0, 1 do
+    local last = EVT_last[inst + 1]
+    if last ~= nil and last.shown then
+      -- a fully open band is the layout's own: set once, then left to the retail animations
+      if not (full and evt_fold.band[inst + 1] == evt_fold.full_width) then
+        for i = 1, #evt_fold.quads do
+          local quad = evt_fold.quads[i]
+          local quad_width = quad[3] * fraction
+          funcLuaMenuCommand(2885415772 --[[node size]], EVT_HL, inst, quad[1], quad_width, quad[4])
+          funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, inst, quad[1], 0, quad[2] + quad[3] - quad_width)
+        end
+        funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_HL, 1123081621 --[[_text_cmd_sp01]],
+          band_left <= evt_fold.name_left - 12, inst)
+        funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 2164615260 --[[_icon_sp_area_dmy01]],
+          full and evt_fold.icon[inst + 1] == true, inst)
+        funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 1206374040 --[[_gtxt_cmd_armed01]],
+          band_left <= evt_fold.logo_left - 12 and evt_fold.logo[inst + 1] == true, inst)
+        evt_fold.band[inst + 1] = width
+      end
+      if evt_fold.shift[inst + 1] ~= shift then
+        funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX + shift, EVT_INPUT_DY, 0, inst)
+        evt_fold.shift[inst + 1] = shift
+      end
     end
   end
 end
@@ -773,6 +868,11 @@ function EVT_HiperStep()
       end
       pcall(EVT_HideDummies, EVT_HL, inst, last.face)
     end
+  end
+  local okf, errf = pcall(EVT_FoldApply)
+  if not okf then
+    pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "collapse error", tostring(errf))
+    EVT_HIPER_COLLAPSE = false
   end
   pcall(EVT_HiperOpenPlace)
 end

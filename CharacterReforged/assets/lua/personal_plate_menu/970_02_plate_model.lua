@@ -357,12 +357,16 @@ EVT_PPM = EVT_PPM or {}
     return type(EVT_PPG) == "table" and EVT_PPG.plateType == 1
   end
   -- a match page without the opt-in capture: no model (the retail match plate has none)
+  -- Character Reforged 1.8.52: the match capture is off by default again (config.toml [player_page] match_model "off"):
+  -- the match «Formación» is a pause screen, and a model built during a pause is never drawn into its render texture
+  -- (the quad showed white; docs/game/engine/menu-chara-capture.md «Pause screens»). The capture menus outside a
+  -- match (EVT_PPM_CAPTURE_MENUS) keep their capture whatever match_model says; EVT_PPM_CAPTURE = false turns them off.
   -- the capture settings, read once: mode 0 off / 1 in a match / 2 every screen, camera crc, report, bust camera
   function M.Settings()
     if M.cfg then
       return M.cfg
     end
-    local c = {mode = 1, cam = 3085867494, report = false, bust = false, live = false}
+    local c = {mode = 0, cam = 3085867494, report = false, bust = false, live = false}
     local ok, mode, cam, report, bust, live = pcall(funcLuaCommand, M.CFG_CMD)
     if ok and type(mode) == "number" then
       c.mode = mode
@@ -406,7 +410,7 @@ EVT_PPM = EVT_PPM or {}
   -- which model layer this page uses (only while none is open)
   function M.ChooseLayer()
     local mode = M.Settings().mode
-    local cap = mode == 2 or (mode == 1 and M.InMatch()) or (mode ~= 0 and M.InCaptureMenu())
+    local cap = mode == 2 or (mode == 1 and M.InMatch()) or (EVT_PPM_CAPTURE ~= false and M.InCaptureMenu())
     if cap and Cmd(CMD_EXIST, M.CAP) ~= true then
       if not M.capMissLogged then
         M.capMissLogged = true

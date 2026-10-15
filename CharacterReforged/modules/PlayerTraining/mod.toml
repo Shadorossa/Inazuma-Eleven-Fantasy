@@ -2,10 +2,10 @@ id = "player_training"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml). «Player Training» is a provisional name (owner may rename it).
 name = "Player Training"
-version = "1.0.9"
+version = "1.0.10"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training. Hero, Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
+description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training, and Chronicle matches drop no training beans. Hero, Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
 priority = 0
 tags = ["Gameplay", "Characters"]
 updated = "2026-10-15"
@@ -26,6 +26,8 @@ folder = "PlayerTraining"
 #                                        points in matches ([[VRFW.MatchStat]]), the module bit 16 the game Lua tests,
 #                                        the save import of Inazuma Fantasy's Suerte blob
 #   content\menus\training_window.toml + assets\menu\10_win\win06\evt_win06_06_training\   the window evt_training_menu
+#   content\items\no_chronicle_beans.toml   [[VRFW.MatchDropRemove]]: no stat bean (item category 210) from a Chronicle
+#                                        match (drops and prizes; the slot stays empty)
 #   text\rows\training.toml              its texts (menu_text rows evt_tr_*, 9 languages)
 #   content\menus\player_page_slots.toml  its pieces on Character Reforged's player page (1.0.2): the ATRIBUTOS
 #                                        gauges' top (slot page_stat_max) and the committed Suerte (page_luck_bonus)
@@ -59,7 +61,8 @@ folder = "PlayerTraining"
 # de tu jugador» (text evt_tr_mode_guide_short); position labels evt_tr_pos_gk / df / mf / fw.
 # 1.0.9: the position tag re-placed every frame at the bar's right end (the retail tag slid to its own place when it opened).
 lua_early = true
-requires = ["vr_framework>=2.4.47", "character_reforged>=1.7.0"]
+# 1.0.10 (vr_framework 2.4.133: [[VRFW.MatchDropRemove]]): Chronicle matches drop no training beans.
+requires = ["vr_framework>=2.4.133", "character_reforged>=1.7.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

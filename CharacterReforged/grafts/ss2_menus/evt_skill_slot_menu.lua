@@ -2324,7 +2324,16 @@ PL.LAYOUT_CARD_TRAINING = true
 -- slot, the icon 64 px on its left, the name beside it) and the description right under the band, inside the one card
 -- (screen 750..866: three lines). {node, default x, y, sx, sy, plain x, y, sx, sy} (layout units, y up)
 PL.LAYOUT_PLAIN_FLAVOR = {691026122 --[[_text_flavor01]], -232, -4, 484, 168, -234, 88, 900, 116}
-PL.LAYOUT_CARD.plain = PL.CARD_ONE
+-- 2026-10-15 round 2 (owner: «arregla cómo se ve abajo a la derecha»): the role panel's own compact card, fully on
+-- screen. A text node never moves by node translation (its rect stays at the locator + the retail offset: the name
+-- 261 left of it, the description 232 left of it), so the locator _pos_evt_detail01 is placed from the card instead and
+-- the band / icon meshes are placed back from it (as the training view does): icon PAD from the card's left edge,
+-- the name GAP after it. The description box is the retail 484 px one (its font squeezes any longer line to fit), so it
+-- is wrapped to that width by PL.WrapText and the card is as tall as four lines.
+PL.CARD_PLAIN = {985, 640, 1650, 956}
+PL.LAYOUT_CARD.plain = PL.CARD_PLAIN
+PL.PLAIN = {pad = 12, icon = 64, gap = 10, name_x = -261, loc_y = 846, band_y = 196, band_h = 88, icon_y = 184,
+  inset = 5, wrap_units = 36, quote_line = CALC_CRC("_item_win_line01")}
 -- 2026-10-07 round 2 (Nacho: the banners started ~25 px left of the card): every aura window (and the miximax's
 -- second header evt_ss_aura2) moved right by its _pos_base01 so the banner's left edge (layout x -275 from the
 -- locator at x 1235 = screen 960) is the card's (985); aura2 sits on the banner line in the miximax's aura view
@@ -2371,6 +2380,12 @@ function PL.ApplyDetailLayout()
   end
   local mv = mode == "move"
   local tr = mode == "training"
+  local PP = PL.PLAIN
+  local plx = PL.CARD_PLAIN[1] + PP.pad + PP.icon + PP.gap - PP.name_x      -- locator x that puts the name right of the icon
+  if mode == "plain" and PL.LAYOUT_LOCS[1] ~= nil and funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_BASE) then
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_BASE, 0, PL.LAYOUT_LOCS[1][1], 0, plx)
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_BASE, 0, PL.LAYOUT_LOCS[1][1], 1, -PP.loc_y)
+  end
   local banner = tr or mode == "plain"            -- the band as the card's banner, the icon 64 px on its left
   if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
     for _, j in ipairs(PL.LAYOUT_TRN_NODES) do
@@ -2379,10 +2394,21 @@ function PL.ApplyDetailLayout()
       funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, j[1], banner and j[8] or j[4], banner and j[9] or j[5])
     end
     local f = PL.LAYOUT_PLAIN_FLAVOR
-    local plain = mode == "plain"
-    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 0, plain and f[6] or f[2])
-    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 1, plain and f[7] or f[3])
-    funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, f[1], plain and f[8] or f[4], plain and f[9] or f[5])
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 0, f[2])         -- the description keeps its retail rect
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 1, f[3])
+    funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, f[1], f[4], f[5])
+    if mode == "plain" then
+      local x0, x1 = PL.CARD_PLAIN[1], PL.CARD_PLAIN[3]
+      for _, band in ipairs({1125548721 --[[_sp_base01]], 3384915402 --[[_wlv_base01]]}) do
+        funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, band, 0, x0 - plx)
+        funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, band, 1, PP.band_y)
+        funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, band, x1 - x0 - PP.inset, PP.band_h)
+      end
+      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, 2164615260 --[[_icon_sp_area_dmy01]], 0, x0 + PP.pad - plx)
+      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, 2164615260, 1, PP.icon_y)
+      funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, 2164615260, PP.icon, PP.icon)
+      funcLuaMenuCommand(C.MESH_VISIBLE, L_DETAIL, PP.quote_line, false, 0)    -- the retail grey quote bar
+    end
   end
   -- 2026-10-07 (Nacho: «quita los cuadros azules»): no navy list column (L_BASE _list_base01) behind the training
   -- stat rows; back when the training view ends (only then: the custom passive list hides it on its own)
@@ -4994,9 +5020,36 @@ function PL.RoleRow(k, e, selected)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, PL.MESH_SIXTH, false, k)
 end
 
+-- text broken into lines of at most `units` width (a letter 1, a CJK / kana glyph 2) at spaces (or anywhere without any)
+function PL.WrapText(text, units)
+  local out = {}
+  for para in (text .. "\n"):gmatch("(.-)\n") do
+    local line, width = "", 0
+    local function flush()
+      if line ~= "" then
+        out[#out + 1] = (line:gsub("%s+$", ""))
+      end
+      line, width = "", 0
+    end
+    for word, space in para:gmatch("(%S+)(%s*)") do
+      local w = 0
+      for ch in word:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+        w = w + (#ch >= 3 and 2 or 1)
+      end
+      if width > 0 and width + w > units then
+        flush()
+      end
+      line, width = line .. word .. space, width + w + (space ~= "" and 1 or 0)
+    end
+    flush()
+  end
+  return table.concat(out, "\n")
+end
+
 function PL.RoleFocus(e)
   PL.PanelPlain(PL.BAND_ROLE[e.role], e.name,
-    PL.Txt(PL.ROLE_DESC_TX[e.role]) .. "\n" .. PL.Txt(PL.ROLE_EFF_TX[e.role]),
+    PL.WrapText(PL.Txt(PL.ROLE_DESC_TX[e.role]), PL.PLAIN.wrap_units) .. "\n"
+      .. PL.WrapText(PL.Txt(PL.ROLE_EFF_TX[e.role]), PL.PLAIN.wrap_units),
     function(L)
       local medal = PL.ROLE_ITEM[e.role]
       if medal ~= nil then

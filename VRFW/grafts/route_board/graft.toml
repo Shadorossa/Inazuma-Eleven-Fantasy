@@ -180,6 +180,9 @@ stem = "vs_route_town_menu"
   type = "replace"
   point = "vs_route_town_menu.PreStep.RouteBoard6"
   text = '''
+  if VRFW_RN_StartNeighboursStep ~= nil then -- VRFW route_nodes: the start's neighbours stay open on a fresh Chronicle
+    VRFW_RN_StartNeighboursStep()
+  end
   VRFW_RB_InviteCheck() -- VRFW route_board
 '''
   crc = "none"

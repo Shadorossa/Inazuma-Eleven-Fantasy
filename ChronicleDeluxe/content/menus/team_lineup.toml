@@ -1,0 +1,47 @@
+# Chronicle Deluxe: the team lineup of the Chronicle board's command menu (docs/game/mods/chronicle-deluxe.md §12; Lua
+# research/grafts/chronicle_deluxe_board/cd_lineup.lua). Under the battle rows of the «MI EQUIPO» panel: the active
+# team's formation name, its eleven starters on the game's formation pitch and the button «Y Plantilla de equipo».
+#   chronicle_deluxe_lineup_pitch  1 x the VS screen's formation pitch (vsroute02_06), without its card attachments
+#   chronicle_deluxe_lineup_card   11 x the VS screen's player card (team00_01), one per formation slot, no click area
+#   chronicle_deluxe_lineup_text   2 x the framework's text object (vrfw_mp_label): the formation name, the button
+# Not opened with the group (flags [0, 0, 0, 0, 1, 0]): the Lua opens, places and fills them. Draw priorities are set
+# by the Lua over the panel (845) and its rows (847).
+# Y (CMD_FUNC3) on the battle list calls OnFunction with crc32("chronicle_deluxe_team_dock") = 1238658383: the Lua
+# closes the menu with the retail «Plantilla de equipo» item and the board opens the team dock.
+schema = "VRFW.menu/2"
+
+# the pitch: the retail formation field without the attach rows of the VS screen's card layers
+[[object]]
+name = "chronicle_deluxe_lineup_pitch"
+from = "vsroute02_06_enemy_formation_base"
+remove_block = ["CMenuAttachLocator"]
+
+# a player card: the VS screen's card, no collision (a click stays with the menu)
+[[object]]
+name = "chronicle_deluxe_lineup_card"
+from = "team00_01_chara_card_for_vsroute"
+remove_block = ["MenuCollisionSetting"]
+
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+add_layer = { name = "chronicle_deluxe_lineup_pitch", object = "chronicle_deluxe_lineup_pitch", count = 1, after = "vsroute01_18_legend_telop", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "vsroute01_18_legend_telop" }] }
+
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+add_layer = { name = "chronicle_deluxe_lineup_card", object = "chronicle_deluxe_lineup_card", count = 11, after = "chronicle_deluxe_lineup_pitch", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "chronicle_deluxe_lineup_pitch" }] }
+
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+add_layer = { name = "chronicle_deluxe_lineup_text", object = "vrfw_mp_label", count = 2, after = "chronicle_deluxe_lineup_card", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "chronicle_deluxe_lineup_card" }] }
+
+# the card's level digits (the VS screen's number atlas; num_menu01 is already a resource of the menu)
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+res = ["#/menu/200_icon/100_num/num_menu02.g4tx"]
+
+# Y on the battle list: the team dock
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+add_cmd = [
+    { layer = "vsroute01_16_sub_list", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 1238658383, flag = 1 },
+]

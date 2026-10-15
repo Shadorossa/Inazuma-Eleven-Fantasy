@@ -1,0 +1,47 @@
+schema = "VRFW.stadium/1"
+# The eight Inazuma Eleven Cross stadiums in every stadium picker of the game (free match, Battle Bay / VS rooms,
+# ranked match settings), each listed once its ticket was obtained (content\items\cross_stadiums.toml: the ticket's
+# item id, kept from Inazuma Fantasy by its [[alias]]). Their names are text\rows\map_text.toml, their list
+# pictures content\images\menu\220_img\stadium\img_room_<map>.toml (the default picture name), their maps
+# assets\map\s\<map>\ + content\tables\common\map\map_data.toml. Positions 95-102 keep them after the game's stadiums
+# in the order they had.
+
+[[stadium]]
+map = "s91g001"          # Inazuma Big Ferry
+order = 95
+unlock_item = "0x1E4F5D8E"    # ticket stadium_s91g001
+
+[[stadium]]
+map = "s91g001b"         # Inazuma Big Ferry (verano)
+order = 96
+unlock_item = "0x7BA00E83"    # ticket stadium_s91g001b
+
+[[stadium]]
+map = "s91g001c"         # Inazuma Big Ferry (festival)
+order = 97
+unlock_item = "0x0CA73E15"    # ticket stadium_s91g001c
+
+[[stadium]]
+map = "s92g001"          # Estadio Costero
+order = 98
+unlock_item = "0x59EF275E"    # ticket stadium_s92g001
+
+[[stadium]]
+map = "s93g001"          # Barco Pirata Fantasma
+order = 99
+unlock_item = "0x648F0EEE"    # ticket stadium_s93g001
+
+[[stadium]]
+map = "s94g001"          # Barco Ramen
+order = 100
+unlock_item = "0xD6AFD2FE"    # ticket stadium_s94g001
+
+[[stadium]]
+map = "s98g001"          # Campo Cibernético
+order = 101
+unlock_item = "0x135F3FFF"    # ticket stadium_s98g001
+
+[[stadium]]
+map = "s99g001"          # Cubierta del Big Ferry
+order = 102
+unlock_item = "0x2E3F164F"    # ticket stadium_s99g001

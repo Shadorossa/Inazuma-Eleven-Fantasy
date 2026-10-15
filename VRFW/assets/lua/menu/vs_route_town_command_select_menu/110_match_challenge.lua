@@ -2,7 +2,8 @@
 -- VRFW_Host host of the framework's route_board graft) shows the match challenge of the focused row.
 -- While a match row (difficultyType > 0) of a piece whose game has a [[VRFW.MatchChallenge]] for that row (the route
 -- node's `Challenge`, or the challenge's `Games` + `Difficulties`) is focused, the blue list panel grows by one band
--- under its last row (VRFW_RBC_PanelExtra: the mod that sizes the panel re-sizes it) and the band shows the
+-- under its last row (band "match_challenge" of VRFW_RBC_PanelBand, the first one: the mod that sizes the panel
+-- re-sizes it) and the band shows the
 -- challenge's condition centred (its `Short` text, else its title: VRFW_MC.Status label), shrunk to the panel's width,
 -- light blue when the active dock meets it and light red when not (the same check the VS screen gates the kick-off
 -- with). On any other row the band is gone. The line follows the panel's layer when it moves (Step).
@@ -29,6 +30,7 @@ if VRFW_Host ~= nil then
     C = {
       OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, GET_POS = 2834507455,
       MESH_VISIBLE = 3405944500, TEXT = 1083631230, LAYER_NUM = 1175615627,
+      DRAW_PRIORITY = 1491630496,   -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
     },
     -- screen px (1920 x 1080, y down) of the battle-kind list of a normal piece as placed: the first row's centre
     -- line, the rows' spacing (vsroute01_15c `_atc_listNN`, 70 px apart), half a row's height, the gap between two
@@ -90,13 +92,18 @@ if VRFW_Host ~= nil then
     return nil
   end
 
-  -- the panel's band: asked once per change (the mod that sizes the panel re-sizes it)
+  -- the panel's band: asked once per change (the mod that sizes the panel re-sizes it); BAND_ORDER = the first band
+  local BAND_ID, BAND_ORDER, LABEL_PRIORITY = "match_challenge", 10, 856   -- over the panel (845) and its rows (847)
   local function panel_band(extra)
     local p = VRFW_RBC ~= nil and VRFW_RBC.panel or nil
-    if p == nil or p.layer == nil or p.extra == extra or VRFW_RBC_PanelExtra == nil then
+    if p == nil or p.layer == nil then
       return
     end
-    pcall(VRFW_RBC_PanelExtra, p.layer, p.kind, p.rows, extra)
+    if VRFW_RBC_PanelBand ~= nil then
+      pcall(VRFW_RBC_PanelBand, BAND_ID, extra, BAND_ORDER)
+    elseif p.extra ~= extra and VRFW_RBC_PanelExtra ~= nil then
+      pcall(VRFW_RBC_PanelExtra, p.layer, p.kind, p.rows, extra)
+    end
   end
 
   -- how far the panel's layer moved since it was placed (px, the layer position's own axes)
@@ -146,6 +153,12 @@ if VRFW_Host ~= nil then
     local left = LABEL.PANEL_MID_X - width_at_one * scale / 2
     local last_row_mid = LABEL.FIRST_ROW_MID_Y + LABEL.ROW_STEP * (math.max(row_count, 1) - 1)
     local y = last_row_mid + LABEL.ROW_HALF_HEIGHT + LABEL.ROW_GAP + LABEL.BAND_HEIGHT / 2
+    if VRFW_RBC_PanelBandTop ~= nil then
+      local ok, top = pcall(VRFW_RBC_PanelBandTop, BAND_ID)
+      if ok and type(top) == "number" then
+        y = top + LABEL.ROW_GAP + LABEL.BAND_HEIGHT / 2
+      end
+    end
     local colour = status.ok and LABEL.COLOUR_MET or LABEL.COLOUR_UNMET
     for _, mesh in ipairs(LABEL.TEXT_MESHES) do
       M(LABEL.C.MESH_VISIBLE, LABEL.LAYER, mesh, false, k)
@@ -154,6 +167,7 @@ if VRFW_Host ~= nil then
     M(LABEL.C.SCALE, LABEL.LAYER, scale, scale, 1, k)
     LABEL.x, LABEL.y = left - LABEL.TEXT_LEFT * scale, -y - LABEL.TEXT_MID_Y * scale
     place()
+    M(LABEL.C.DRAW_PRIORITY, LABEL.LAYER, k, LABEL_PRIORITY, true)
     M(LABEL.C.VISIBLE, LABEL.LAYER, k, true)
   end
 

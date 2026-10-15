@@ -2,10 +2,10 @@ id = "inazuma_fantasy_2"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Inazuma Fantasy"
-version = "1.3.2"
+version = "1.3.3"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Inazuma Fantasy. A «General Store» at the top of the Market sells every team emblem, ticket (stadiums, Kizuna areas), Kizuna decoration and sticker of every shop in the game, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it."
+description = "Inazuma Fantasy. A «General Store» at the top of the Market sells every team emblem, ticket (stadiums, Kizuna areas), Kizuna decoration and sticker of every shop in the game, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points). Every match also pays Friendship and Passion Points at its end (amounts in config.toml). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-15"
@@ -19,7 +19,8 @@ folder = "InazumaFantasy"
 #   assets\menu\150_shop\...\shop01_20.g4pkm   GENERATED: research/scripts/inazuma_fantasy_market_bar.py
 #   text\rows\shop_text.toml            the bar's name
 #   content\items\currencies.toml       Puntos de amistad (tk_hr000008) / Puntos de pasión (tk_bb000001): retail items
-#                                       renamed, the match rules that pay them; their icons in content\images\...\currencies*
+#                                       renamed, the match rules that pay them (every match adds both at its end: the
+#                                       amounts in config.toml [match_drops]); their icons in content\images\...\currencies*
 #   content\characters\idols.toml       the Idol cards: each replaces a game Idol card of the same player (same card id);
 #                                       Hidetoshi Nakata (no game Idol) is a new card, not obtainable yet
 #   content\techniques\idols.toml       their move whs00010_solo and their ability boards
@@ -29,7 +30,8 @@ folder = "InazumaFantasy"
 # Graft (research/grafts): inazuma_fantasy_general_store (the Mercado entry, market_menu).
 # lua_early: the graft is a merge-path patch of market_menu; early, the later wrappers of that script stay on top of it.
 lua_early = true
-requires = ["vr_framework>=2.4.76"]
+# 1.3.3 (vr_framework 2.4.133: [[VRFW.MatchDropExtra]]): every match pays Puntos de amistad / pasión at its end.
+requires = ["vr_framework>=2.4.133"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

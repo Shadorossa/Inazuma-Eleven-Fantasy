@@ -1,0 +1,31 @@
+# Texts of the stadium list pages (menu_text rows, 9 languages): the first and last row of a page when the list of a
+# stadium picker is longer than one window (assets\lua\menu\_all\69_stadium_pages.lua).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# First row of pages 2 and later: back to the previous page.
+[[row]]
+id = "vrfw_stadium_list_previous"
+es = "Página anterior"
+en = "Previous page"
+fr = "Page précédente"
+de = "Vorherige Seite"
+it = "Pagina precedente"
+pt = "Página anterior"
+ja = "前のページ"
+zh_hans = "上一页"
+zh_hant = "上一頁"
+
+# Last row of every page but the last: on to the next page.
+[[row]]
+id = "vrfw_stadium_list_next"
+es = "Página siguiente"
+en = "Next page"
+fr = "Page suivante"
+de = "Nächste Seite"
+it = "Pagina successiva"
+pt = "Próxima página"
+ja = "次のページ"
+zh_hans = "下一页"
+zh_hant = "下一頁"
