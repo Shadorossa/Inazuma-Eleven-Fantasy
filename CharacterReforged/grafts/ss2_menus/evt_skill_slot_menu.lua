@@ -1463,10 +1463,11 @@ end
 --   board service (CMND_EVT_BOARD_PIECE / PLACE / CLEAR / LAYOUT, Inazuma Fantasy's board.lua): the board mirror of the
 --   rows, board slot 8 of the aura; without it the match list (CMND_SET_SKILL) and the team aura row
 --   (TEAM_AURA_SET) are written alone, both retail
---   custom passive (CMND_EVT_SIXSENSE) and player sets (CMND_EVT_PSET_GET): the slot / the set store
+--   custom passive (CMND_EVT_SIXSENSE): the slot; player sets (CMND_CHARACTERREFORGED_PLAYER_SET_GET, Character
+--   Reforged's scripts\player_sets.lua): the set store
 -- One «loader check» log line per missing service and screen visit.
 PL.SERVICE_PROBE = {board = {C.EVT_PIECE, 0, 0}, six_sense = {1074115993 --[[CMND_EVT_SIXSENSE]], 0, 0, 0, -1},
-  player_sets = {1175561726 --[[CMND_EVT_PSET_GET]], 0, 0}}
+  player_sets = {390397015 --[[CMND_CHARACTERREFORGED_PLAYER_SET_GET]], 0, 0}}
 PL.service_logged = {}
 function PL.HasService(name)
   local probe = PL.SERVICE_PROBE[name]
@@ -1474,7 +1475,10 @@ function PL.HasService(name)
   if probe ~= nil then
     answer, second = EVT_Call(table.unpack(probe))
   end
-  local present = type(answer) == "number" or second ~= nil   -- PSET_GET(0, 0) answers false, ""
+  local present = type(answer) == "number" or second ~= nil   -- PLAYER_SET_GET(0, 0) answers false, ""
+  if not present and name == "board" and PL.SERVICE_PROBE.aura_slot ~= nil and PL.HasService("aura_slot") then
+    PL.service_logged[name] = true               -- Character Reforged's board commands stand in: nothing to report
+  end
   if not present and not PL.service_logged[name] then
     PL.service_logged[name] = true
     EVT_Call(C.EVT_LOG, "skill_slots", "loader check", name, "service missing")
@@ -1485,7 +1489,7 @@ local function EVT_HasBoard()
   return PL.HasService("board")
 end
 -- 2026-10-14 (owner: pressing the aura half did nothing without Inazuma Fantasy): the AURA SLOT's board writes (board
--- slot 8 only: place, clear, read) go to Character Reforged's own commands (scriptsoard_slots.lua, the same
+-- slot 8 only: place, clear, read) go to Character Reforged's own commands (scripts\board_slots.lua, the same
 -- arguments and answers) when IF's board service is missing. Every other board write of this screen (the forced
 -- layout, the board mirror of the rows) stays IF's: without IF the rows are the projection of the list, untouched.
 PL.CR_BOARD = {[C.EVT_PLACE] = 3270716539 --[[CMND_CHARACTERREFORGED_BOARD_PLACE]],
@@ -1522,28 +1526,73 @@ function PL.ProjPos(row)
   if n == nil or n == 0 then
     return row - 1
   end
-  local free, aura = {}, {}
+  local free, boarded, empty, aura = {}, {}, {}, {}
   for p = 0, EVT_NORMAL_NUM - 1 do
     local id = funcLuaCommand(C.GET_SKILL, n, p)
     id = (id ~= nil) and EVT_U32(id) or 0
-    local sp = false
-    if id ~= 0 then
-      sp = PL.special_of[id]
-      if sp == nil then
-        sp = EVT_IsSpecial(id) == true
-        PL.special_of[id] = sp
+    if id == 0 then
+      id = PL.BoardTechniqueAt(p)                -- an empty position shows its board cell's technique
+      if id ~= 0 then
+        boarded[#boarded + 1] = p
+      else
+        empty[#empty + 1] = p
       end
-    end
-    if sp then
+    elseif PL.IsSpecialCached(id) then
       aura[#aura + 1] = p
     else
       free[#free + 1] = p
     end
   end
+  -- 2026-10-15 (owner): the list's techniques, then the positions filled from their board cell (the order of
+  -- CharacterReforged.EffectiveSkillSet), then the empty ones, the hidden aura positions last
+  for _, p in ipairs(boarded) do
+    free[#free + 1] = p
+  end
+  for _, p in ipairs(empty) do
+    free[#free + 1] = p
+  end
   for _, p in ipairs(aura) do
     free[#free + 1] = p
   end
   return free[row] or (row - 1)
+end
+function PL.IsSpecialCached(id)
+  local sp = PL.special_of[id]
+  if sp == nil then
+    sp = EVT_IsSpecial(id) == true
+    PL.special_of[id] = sp
+  end
+  return sp
+end
+-- the move on board cell `p` (placed item, else native), 0 for none
+function PL.BoardMoveAt(p)
+  local inv = funcLuaCommand(C.BOARD_INV, n, p, 1)
+  if inv == nil or inv == 0 then
+    inv = funcLuaCommand(C.BOARD_INV, n, p, 0)
+  end
+  if inv == nil or inv == 0 then
+    return 0
+  end
+  return EVT_U32(funcLuaCommand(C.INV_ITEM, inv, 0))
+end
+-- the technique board cell `p` adds to the rows, 0 for none: never an aura, never a move already in the match list or
+-- shown by an earlier empty position (the dedupe of CharacterReforged.EffectiveSkillSet)
+function PL.BoardTechniqueAt(p)
+  local id = PL.BoardMoveAt(p)
+  if id == 0 or PL.IsSpecialCached(id) then
+    return 0
+  end
+  local at = funcLuaCommand(C.SKILL_POS, n, id)
+  if at ~= nil and at >= 0 and at < EVT_NORMAL_NUM then
+    return 0
+  end
+  for q = 0, p - 1 do
+    local listed = funcLuaCommand(C.GET_SKILL, n, q)
+    if (listed == nil or listed == 0) and PL.BoardMoveAt(q) == id then
+      return 0
+    end
+  end
+  return id
 end
 
 -- row -> board skill slot: Hiper = 8, rows 1-6 = the board slot of their list position (the board mirrors the list)
@@ -1641,7 +1690,8 @@ local function EVT_Skill(row)
     end
     return skill
   end
-  return (EVT_BoardSkill(EVT_BoardSlot(row)))
+  -- the board cell's technique: never an aura (retail board), never a duplicate of a listed move
+  return PL.BoardTechniqueAt(EVT_BoardSlot(row))
 end
 
 -- 2026-09-27: the shown player's learnset (see PL above). skill[k] / lv[k], k = chara_param slot 1-9.
@@ -1866,7 +1916,7 @@ function UpdateEquipListItem(a1)
       text = PL.LOCK_COLOR .. text .. "[C]"
     end
   else
-    text = "---"
+    text = ""                                      -- an empty row: the plate alone (owner 2026-10-14: no «---»)
   end
   if a1 == 0 and EVT_SPECIAL_LABEL ~= "" then
     text = EVT_SPECIAL_LABEL .. "   " .. text
@@ -1901,7 +1951,7 @@ function UpdateEquipListItem(a1)
     funcLuaMenuCommand(2735666188 --[[text visible]], L_ROW, info.itemTextName, not on, a1)
   end
   funcLuaMenuCommand(C.MESH_VISIBLE, L_ROW, 3515732558 --[[_icon_equip01]], lock_icon and not on, a1)
-  if skill ~= 0 and not on then
+  if skill ~= 0 and not on and not (a1 == 0 and PL.HS_ON and not locked) then
     funcLuaMenuCommand(C.ITEM_ICON, L_ROW, a1, info.itemIconMeshName, icon_tex, skill)
     funcLuaMenuCommand(C.MESH_VISIBLE, L_ROW, info.itemIconMeshName, true, a1)
   else
@@ -1993,11 +2043,14 @@ local function EVT_SetupSkillInfo(skill)
     end
   end
   if aura_chara ~= 0 then
-    SetDisableForceCharaInvalidUseTarget()
-    funcLuaMenuCommand(552280324, L_INFO, 0, false, 2787359195 --[[_item_chr_dmy01]], 2052777044 --[[item_chr_dmy01]], 0, 0, aura_chara)
+    -- keshin / armour / totem characters have no list face icon: their aura art (PL.AuraPortrait)
+    pcall(funcLuaMenuCommand, 4176779611 --[[ResetFaceIcon]], L_INFO, 0, 2052777044 --[[item_chr_dmy01]])
+    local okd, drawn = pcall(PL.AuraPortrait, L_INFO, 0, 2787359195 --[[_item_chr_dmy01]], 2052777044, skill)
+    aura_chara = (okd and drawn) and aura_chara or 0
+  end
+  if aura_chara ~= 0 then
     funcLuaMenuCommand(C.MESH_VISIBLE, L_INFO, 2634282032 --[[_item_chr_base01]], true, 0)
     funcLuaMenuCommand(C.MESH_VISIBLE, L_INFO, 2787359195 --[[_item_chr_dmy01]], true, 0)
-    SetEnableForceCharaInvalidUseTarget()
   else
     funcLuaMenuCommand(C.MESH_VISIBLE, L_INFO, 2634282032 --[[_item_chr_base01]], false, 0)
     funcLuaMenuCommand(C.MESH_VISIBLE, L_INFO, 2787359195 --[[_item_chr_dmy01]], false, 0)
@@ -2266,6 +2319,12 @@ PL.LAYOUT_TRN_PANEL = 3504298707               -- evt_trn_panel
 PL.LAYOUT_TRN_CELLS = {{1535596773 --[[_atc_trncell00]], 1135, -826, 1080, -795},
   {746612851 --[[_atc_trncell01]], 1355, -826, 1250, -795}}
 PL.LAYOUT_CARD_TRAINING = true
+-- 2026-10-15 (owner: the role picker's panel showed a huge medal past the band and an empty white card): the plain
+-- panel (PL.PanelPlain with opts.banner, mode "plain") uses the training view's banner (band 930 x 88 in the card's top
+-- slot, the icon 64 px on its left, the name beside it) and the description right under the band, inside the one card
+-- (screen 750..866: three lines). {node, default x, y, sx, sy, plain x, y, sx, sy} (layout units, y up)
+PL.LAYOUT_PLAIN_FLAVOR = {691026122 --[[_text_flavor01]], -232, -4, 484, 168, -234, 88, 900, 116}
+PL.LAYOUT_CARD.plain = PL.CARD_ONE
 -- 2026-10-07 round 2 (Nacho: the banners started ~25 px left of the card): every aura window (and the miximax's
 -- second header evt_ss_aura2) moved right by its _pos_base01 so the banner's left edge (layout x -275 from the
 -- locator at x 1235 = screen 960) is the card's (985); aura2 sits on the banner line in the miximax's aura view
@@ -2312,12 +2371,18 @@ function PL.ApplyDetailLayout()
   end
   local mv = mode == "move"
   local tr = mode == "training"
+  local banner = tr or mode == "plain"            -- the band as the card's banner, the icon 64 px on its left
   if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
     for _, j in ipairs(PL.LAYOUT_TRN_NODES) do
-      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, j[1], 0, tr and j[6] or j[2])
-      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, j[1], 1, tr and j[7] or j[3])
-      funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, j[1], tr and j[8] or j[4], tr and j[9] or j[5])
+      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, j[1], 0, banner and j[6] or j[2])
+      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, j[1], 1, banner and j[7] or j[3])
+      funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, j[1], banner and j[8] or j[4], banner and j[9] or j[5])
     end
+    local f = PL.LAYOUT_PLAIN_FLAVOR
+    local plain = mode == "plain"
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 0, plain and f[6] or f[2])
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, f[1], 1, plain and f[7] or f[3])
+    funcLuaMenuCommand(2885415772 --[[node scale]], L_DETAIL, 0, f[1], plain and f[8] or f[4], plain and f[9] or f[5])
   end
   -- 2026-10-07 (Nacho: «quita los cuadros azules»): no navy list column (L_BASE _list_base01) behind the training
   -- stat rows; back when the training view ends (only then: the custom passive list hides it on its own)
@@ -3001,6 +3066,9 @@ function OnFunction(a1, a2)
       end
     elseif ok_row and not EVT_IsPrime() and not PL.IdolFixed(row) then
       local removable = EVT_Skill(row) ~= 0
+      if not removable and PL.RowRemovable ~= nil then
+        removable = PL.RowRemovable(row) == true   -- the Hiper row showing a list fallback
+      end
       evt_co = coroutine.create(function()
         local act = PL.TapOrHold(removable)       -- V / Y: tap = Restablecer, hold = Eliminar
         if act == "remove" then
@@ -4490,6 +4558,7 @@ function PL.TxTable()
   ROLE_NOREC = 1332833930, -- evt_pl_role_norec
   ROLE_NOW = 1480268909, -- evt_pl_role_now
   ROLE_STORY = 3154551016, -- evt_pl_role_story
+  ROLE_TITLE = 2087115963, -- evt_pl_role_title
   SET_BTN = 2135514294, -- evt_pl_set_btn
   SET_BTN_GUIDE = 3362243025, -- evt_pl_set_btn_guide
   SET_EMPTY = 2056799810, -- evt_pl_set_empty
@@ -4511,6 +4580,7 @@ function PL.TxTable()
   SS_QUIT = 1197300667, -- evt_pl_ss_quit
   SUM_EQUIP = 1859211264, -- evt_pl_sum_equip
   SUM_HIPER = 1201407754, -- evt_pl_sum_hiper
+  SUM_MIX = 294335918, -- evt_pl_sum_mix
   SUM_MOVES = 3650984834, -- evt_pl_sum_moves
   SUM_PASSIVE = 4213968171, -- evt_pl_sum_passive
   }
@@ -4559,10 +4629,10 @@ PL.role_shown = nil
 PL.subwin_result = -1
 PL.role_open = false
 
--- CMND_EVT_GET_ROLE -> role (0 none, 1 coach, 2 manager, 3 unresolved badge, -5 not a saved player; -1 = no loader),
+-- CMND_CHARACTERREFORGED_GET_ROLE -> role (0 none, 1 coach, 2 manager, 3 unresolved badge, -5 not a saved player; -1 = no loader),
 -- native (creation-time staff bit: 1 coach / 2 manager, e.g. the story protagonist Destin Billows), lock (1 = story copy)
 function PL.Role()
-  local ok, r, _, _, native, lock = pcall(funcLuaCommand, 3425748681 --[[CMND_EVT_GET_ROLE]], n)
+  local ok, r, _, _, native, lock = pcall(funcLuaCommand, 1327558109 --[[CMND_CHARACTERREFORGED_GET_ROLE]], n)
   if not ok or type(r) ~= "number" then
     return -1, 0, 0
   end
@@ -4747,8 +4817,9 @@ function PL.Key(k)
 end
 
 -- the integrated panel without the move parts (the look of the custom passive's fallback): band, name, description,
--- optionally the big icon (170 px, _icon_sp_area_dmy01) drawn by `icon(L)`
-function PL.PanelPlain(band, name, desc, icon)
+-- optionally the big icon (170 px, _icon_sp_area_dmy01) drawn by `icon(L)`. opts.banner: the compact card (mode
+-- "plain"): the band as the card's banner with the icon 64 px and the name on it, the description under it.
+function PL.PanelPlain(band, name, desc, icon, opts)
   if not funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
     return
   end
@@ -4774,6 +4845,11 @@ function PL.PanelPlain(band, name, desc, icon)
   funcLuaMenuCommand(C.TEXT, L_DETAIL, 691026122 --[[_text_flavor01]], desc, 0)
   if icon ~= nil and pcall(icon, L_DETAIL) then
     funcLuaMenuCommand(C.MESH_VISIBLE, L_DETAIL, PL.MESH_AREA, true, 0)
+  end
+  if opts ~= nil and opts.banner then
+    funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, 1704438437 --[[_text_name01]], true, 0)
+    funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, 691026122 --[[_text_flavor01]], desc ~= "", 0)
+    pcall(PL.SetDetailLayout, "plain")
   end
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_DETAIL, 0, true)
   evt_detail_on = true
@@ -4928,7 +5004,16 @@ function PL.RoleFocus(e)
       else
         funcLuaMenuCommand(C.SPRITE, L, PL.TEX_BADGE, PL.BADGE_SPR[0], PL.SLOT_AREA, 0, 0)
       end
-    end)
+    end, {banner = true})
+end
+
+-- the screen's 3D model and its shadow (retail SetCharaModelVisible: the model of soccer11_05_equip_status_base)
+function PL.ModelVisible(visible)
+  local h = funcLuaMenuCommand(3895705890 --[[model of a layer]], 2917320188 --[[soccer11_05_equip_status_base]], 0, 0)
+  if type(h) == "number" and h ~= 0 then
+    funcLuaCommand(1890282463 --[[chara model visible]], h, visible)
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, 858725131 --[[mainmenu01_08_chara_3d_shadow]], 0, visible)
 end
 
 function PL.RoleCoroutine()
@@ -4947,9 +5032,12 @@ function PL.RoleCoroutine()
     list[#list + 1] = {role = r, name = PL.RoleName(r), current = r == cur}
   end
   PL.role_open = true
-  local keys = {{text = PL.TX.BTN_SELECT, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"},
-    {text = PL.TX.BTN_BACK, icon = PL.I_BACK, cmd = PL.K_BACK}}
-  local pick = PL.PopList(list, math.max(0, math.min(2, cur)), {
+  -- 2026-10-15 (owner: «arregla la interfaz en el selector de rol»): only «Elegir» in the guide (the corner return guide
+  -- mainmenu01_10 already shows Esc: «Volver» twice before), the 3D model hidden under the list, the header titled
+  local keys = {{text = PL.TX.BTN_SELECT, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"}}
+  pcall(PL.ModelVisible, false)
+  PL.HeaderTitle(PL.Txt(PL.TX.ROLE_TITLE))
+  local okp, pick = pcall(PL.PopList, list, math.max(0, math.min(2, cur)), {
     row = PL.RoleRow, focus = PL.RoleFocus, guide = PL.Txt(PL.TX.ROLE_GUIDE),
     keys = function()
       return keys
@@ -4959,12 +5047,17 @@ function PL.RoleCoroutine()
       return "close"
     end})
   PL.role_open = false
+  PL.HeaderTitle(nil)
+  pcall(PL.ModelVisible, true)
+  if not okp then
+    error(pick, 0)
+  end
   -- «Sin rol» also runs when the badge is already gone but the creation-time staff bit is still on (native ~= 0)
   if pick >= 0 and (pick ~= cur or (pick == 0 and native ~= 0)) then
     if pick ~= 0 then
       funcLuaCommand(PL.ADD_ITEM, PL.ROLE_ITEM[pick], 1, false)   -- a free copy for the equip (retail shares stacks)
     end
-    local st, now = EVT_Call(885127448, n, pick)
+    local st, now = EVT_Call(3083981324 --[[CMND_CHARACTERREFORGED_SET_ROLE]], n, pick)
     EVT_Log("role", n, cur, "->", pick, "native", native, "status", st, "now", now)
     if st == 1 then
       funcLuaCommand(C.SE, SE_DECIDE)
@@ -5072,7 +5165,9 @@ function EVT_SS_PickCoroutine()
   funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, true)
 end
 
--- ---- "Set de jugador": per-player builds (loader store evt_loader\ss_player_sets_slot<N>.json) ----------------------
+-- ---- Player sets: per-player builds (Character Reforged's store: scripts\player_sets.lua, blob ss_player_sets.json) --
+-- Opened by the save-icon button (the screen's bottom button layer L_BTN, square skin, PL.SAVE_BUTTON). A set also
+-- keeps the mix slot (PL.HsMix / PL.HsMixPut): saved, compared, loaded and exported with the rest.
 -- v4 (2026-09-28, user: plain white bars on a grey box): the retail list window of the custom-passive picker (as the
 -- role picker). Rows = "Set N · <name>" / "Set N · Vacío" (greyed), the first move's category + element icons, the
 -- retail check mark on the set equal to the player's current build. The focused set is summed up in the integrated
@@ -5090,7 +5185,7 @@ function PL.EquipIds()
 end
 
 function PL.SetGet(i)
-  local r = {pcall(funcLuaCommand, 1175561726, n, i)}
+  local r = {pcall(funcLuaCommand, 390397015 --[[CMND_CHARACTERREFORGED_PLAYER_SET_GET]], n, i)}
   if not r[1] or r[2] ~= true then
     return nil
   end
@@ -5120,6 +5215,8 @@ function PL.SetCurrent()
   -- 2026-10-13: the kit (uniformId) of the team this screen edits, kept with a saved set for its row's miniface
   local okk, has, kit = pcall(funcLuaCommand, 1033065575 --[[CMND_GET_TEAM_SET_INFO]], n3, n17, 7)
   cur.kit = (okk and has and type(kit) == "number") and EVT_U32(kit) or 0
+  local okm, mix = pcall(PL.HsMix)                  -- the mix slot (0 = empty or no mix store)
+  cur.mix = (okm and type(mix) == "number") and mix or 0
   return cur
 end
 
@@ -5136,6 +5233,9 @@ function PL.SetSame(p, cur)
     if (p.equip[k] or 0) ~= (cur.equip[k] or 0) then
       return false
     end
+  end
+  if (p.mix or 0) ~= 0 and p.mix ~= (cur.mix or 0) then
+    return false
   end
   return p.hiper == cur.hiper and p.sixsense == cur.sixsense
 end
@@ -5165,8 +5265,8 @@ function PL.SetList()
     list[#list + 1] = e
   end
   -- 2026-10-13 (owner: «mueve el icono de exportar abajo de la ranura 5, y haz uno de importar .vrmod»; «… en una
-  -- sola fila»): one row under #5, «Exportar set | Importar set» (PL.VrmRow); it acts on the last set row the cursor
-  -- was on (PL.set_sel)
+  -- sola fila»): one row under #5, «Exportar | Importar» (PL.VrmRow: two buttons of the layer evt_pset_file_btn); it
+  -- acts on the last set row the cursor was on (PL.set_sel)
   list[#list + 1] = {kind = "vrm", name = PL.Txt(PL.TX.SET_EXPORT_ROW),
     names = {PL.Txt(PL.TX.SET_EXPORT_ROW), PL.Txt(PL.TX.SET_IMPORT_ROW)}}
   return list
@@ -5210,6 +5310,9 @@ function PL.SetSummary(p)
   if p.hiper ~= 0 then
     lines[#lines + 1] = PL.Txt(PL.TX.SUM_HIPER, EVT_Name(p.hiper))
   end
+  if (p.mix or 0) ~= 0 then
+    lines[#lines + 1] = PL.Txt(PL.TX.SUM_MIX, EVT_Name(p.mix))
+  end
   local eq = 0
   for k = 1, 5 do
     if p.equip[k] ~= 0 then
@@ -5240,20 +5343,20 @@ function PL.SetFocus(e)
   end or nil)
 end
 
+-- (no «Volver» entry: the screen's corner return guide mainmenu01_10 already shows Esc; 2026-10-15 it showed twice)
 function PL.SetKeys(e)
-  local back = {text = PL.TX.BTN_BACK, icon = PL.I_BACK, cmd = PL.K_BACK}
   if e ~= nil and e.kind ~= nil then
     local kind = PL.SetKind(e)
     local tx = kind == "export" and PL.TX.SET_EXPORT_ROW or PL.TX.SET_IMPORT_ROW
-    return {{text = tx, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = kind}, back}
+    return {{text = tx, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = kind}}
   end
   if e == nil or e.p == nil then
-    return {{text = PL.TX.BTN_SAVE, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "save"}, back}
+    return {{text = PL.TX.BTN_SAVE, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "save"}}
   end
   return {{text = PL.TX.BTN_LOAD, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "load"},
     {text = PL.TX.BTN_SAVE, icon = PL.I_FUNC4, cmd = PL.K_FUNC4, act = "save"},
     {text = PL.TX.BTN_RENAME, icon = PL.I_FUNC1, cmd = PL.K_FUNC1, act = "rename"},
-    {text = PL.TX.BTN_DELETE, icon = PL.I_FUNC3, cmd = PL.K_FUNC3, act = "delete"}, back}
+    {text = PL.TX.BTN_DELETE, icon = PL.I_FUNC3, cmd = PL.K_FUNC3, act = "delete"}}
 end
 
 -- write set i: p = nil saves the current build (name = its first move), else p with `name`
@@ -5270,7 +5373,8 @@ function PL.SetWrite(i, p, name)
     name = name or (first ~= 0 and EVT_Name(first) or PL.Txt(PL.TX.SET_N, i + 1))
   end
   local m, e = p.moves, p.equip
-  local ok = EVT_Call(1564388946, n, i, EVT_Cut(name or "", 26), m[1], m[2], m[3], m[4], m[5], m[6], p.hiper,
+  local ok = EVT_Call(3421032623 --[[CMND_CHARACTERREFORGED_PLAYER_SET_SAVE]], n, i, EVT_Cut(name or "", 26), m[1], m[2],
+    m[3], m[4], m[5], m[6], p.hiper,
     e[1], e[2], e[3], e[4], e[5], p.sixsense or 0)
   EVT_Log("player set save", i, name, ok)
   return ok
@@ -5374,7 +5478,7 @@ function PL.SetAct(act, e, i)
     end
   elseif act == "delete" then
     if PL.MxAsk(PL.Txt(PL.TX.ASK_DEL, i + 1)) then
-      local ok = EVT_Call(1463518193, n, i)
+      local ok = EVT_Call(3791889842 --[[CMND_CHARACTERREFORGED_PLAYER_SET_DELETE]], n, i)
       funcLuaCommand(C.SE, ok and SE_REMOVE or SE_NG)
     else
       funcLuaCommand(C.SE, SE_BACK)
@@ -5448,6 +5552,18 @@ function PL.SetLoad(p)
         pcall(EVT_Equip, 0, p.hiper, 0, nil)
       else
         skip(PL.TX.SKIP_NOTOWN, EVT_Name(p.hiper))
+      end
+    end
+    -- the mix slot (a stored empty slot leaves the current one as it is, as every other field)
+    local mix = p.mix or 0
+    local okm, now = pcall(PL.HsMix)
+    if mix ~= 0 and okm and now ~= mix then
+      if PL.IdolFixed(0) then
+        skip(PL.TX.SKIP_IDOL, EVT_Name(mix))
+      elseif not has(mix) then
+        skip(PL.TX.SKIP_NOTOWN, EVT_Name(mix))
+      elseif not PL.HsMixPut(mix) then
+        skip(PL.TX.SKIP_FAIL, EVT_Name(mix))
       end
     end
   end
@@ -5525,7 +5641,7 @@ function PL.SetsCoroutine()
   PL.set_sel = init
   PL.vrm_half = 0
   local pick, act = PL.PopList(list, init, {row = PL.SetRowDraw, focus = PL.SetFocus,
-    guide = PL.Txt(PL.TX.SET_GUIDE), keys = PL.SetKeys, act = PL.SetAct, refresh = PL.SetList, side = PL.SetSide, tick = PL.SetTick,
+    guide = PL.Txt(PL.TX.SET_GUIDE), keys = PL.SetKeys, act = PL.SetAct, refresh = PL.SetList, side = PL.SetSide,
     vert = PL.SetVert})
   if pick >= 0 and act == "load" then
     local p = PL.SetGet(pick)
@@ -5538,21 +5654,22 @@ end
 
 -- ---- «Exportar set» / «Importar set» (2026-10-13): .vrmod files of one set -----------------------------------------
 -- Rows 6-7 of the «Set de jugador» list (PL.SetList), acting on the last set row the cursor was on (PL.set_sel).
--- Files: scripts\board_presets.lua (CMND_EVT_PSET_EXPORT / _IMPORT_LIST / _IMPORT_ENTRY / _IMPORT_READ), TOML
--- schema utilities.vrmod/1 kind "character" in <game>\modloader_exports\<config [player_set_export] area>\.
+-- Files: Character Reforged's scripts\player_sets.lua (CMND_CHARACTERREFORGED_PLAYER_SET_EXPORT / _IMPORT_LIST /
+-- _IMPORT_ENTRY / _IMPORT_READ), TOML schema utilities.vrmod/1 kind "character" in
+-- <game>\modloader_exports\<config [player_sets] export_area>\.
 -- docs/game/ui/vrmod-export.md §2.4. No input switch: messages are the general window (EVT_Message / PL.MxAsk).
 -- (built in a function, as PL.TxTable: these numbers stay out of the main chunk's constant table)
 function PL.VrmDef()
   return {
   -- the retail header clouds (icon_header_sub_upload01 / download01) cut and centred, white for the selected blue row,
-  -- navy for the light rows: IF content/images/menu/200_icon/15_icon_common/vrmod_icons.toml (made at boot)
+  -- navy for the light rows: Character Reforged content/images/menu/200_icon/15_icon_common/player_set_icons.toml
   TEX = 2320109963,           -- #/menu/200_icon/15_icon_common/icon_common.g4tx
   UP = {[true] = 3273312901 --[[evt_vrm_up_white]], [false] = 1886212399 --[[evt_vrm_up_dark]]},
   DOWN = {[true] = 3165484893 --[[evt_vrm_down_white]], [false] = 2916954723 --[[evt_vrm_down_dark]]},
-  EXPORT = 1011673721,        -- CMND_EVT_PSET_EXPORT
-  LIST = 2744554341,          -- CMND_EVT_PSET_IMPORT_LIST
-  ENTRY = 1042083410,         -- CMND_EVT_PSET_IMPORT_ENTRY
-  READ = 2131307034,          -- CMND_EVT_PSET_IMPORT_READ
+  EXPORT = 2594033569,        -- CMND_CHARACTERREFORGED_PLAYER_SET_EXPORT
+  LIST = 4192844953,          -- CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_LIST
+  ENTRY = 2320314186,         -- CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_ENTRY
+  READ = 628491750,           -- CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_READ
   K_LEFT = 2765147006,        -- CMD_LEFT
   K_RIGHT = 2075023265,       -- CMD_RIGHT
   }
@@ -5560,126 +5677,92 @@ end
 PL.VRM = PL.VrmDef()
 
 -- 2026-10-13 (owner: «deberían ser exportar set | importar set en una sola fila»; in game the 7th list row only
--- showed after a scroll): ONE list entry under #5 (kind "vrm") drawn as two halves INSIDE its row instance, so the
--- list has 6 rows. The team08_02 row (team08_02.g4pkm / its objbin): plates _list_base_xs01_on / _off / _ol / _ok at
--- x -98, 970 x 72 (atlas #/menu/102_team/team08/team08_02/<LG>/team08_02.g4tx); texts _text_list01_on / _off at x 151,
--- 448 x 54 (MenuTextSetting styles: on = white, off = dark); icon quads _icon_sp_area_dmy01 (53, 25, 50) and
--- _icon_sixth_dmy01 (59, 19, 38). Left half = the _off plate + the _off text + the area icon, right half = the _ok plate
--- + the _on text + the sixth icon moved one half + 10 right; the plates take the on / off sprite and the texts the
--- white / dark style of their half's state (PL.vrm_half = the selected half). Any other draw puts them back
--- (PL.RowFull). Pointer: the row registers two zones (PL.ptr_split; the right half's id is k + 0.5).
-function PL.RowDef()
+-- showed after a scroll): ONE list entry under #5 (kind "vrm"), so the list has 6 rows.
+-- 2026-10-15 (owner: «dos placas del mismo estilo lado a lado, cada una con su icono y texto»): the two halves are the
+-- two instances of an own layer, evt_pset_file_btn (Character Reforged content/menus/skill_table.toml: object
+-- evt_pset_file_btn = the team08_02 row with the half-width layout evt_pset_file_btn.g4pkm, plates 480 x 104 at x -98,
+-- icon 46 px at x -49, text at x 22, cursor locator at x -42), attached by evt_pc_list at the row slot of instance 5
+-- (_list06, left) and _list06_right (490 right). The list row instance under them is blanked. Why not inside the
+-- row instance (CR 1.7.33 .. 1.8.2): the row's own G4RA keeps the _list_base_xs01_ok material hidden (type «OK», loop
+-- _sma_hide_mat_01: the plate only flashes on a decide), so the right plate never showed, and a text box does not
+-- follow a runtime node move (docs/game/mechanics/combo-partners.md), so both labels stayed at the row's text x.
+-- Pointer: the row registers two zones (PL.ptr_split; the right half's id is k + 0.5).
+function PL.FileBtnDef()
   return {
-  ON = 2334302522 --[[_list_base_xs01_on]], OFF = 2022529787 --[[_list_base_xs01_off]],
-  OL = 1697431574 --[[_list_base_xs01_ol]], OK = 4215821749 --[[_list_base_xs01_ok]],
-  TEXT_ON = 931545948 --[[_text_list01_on]], TEXT_OFF = 3705682548 --[[_text_list01_off]],
-  ICON_R = 2384755812 --[[_icon_sixth_dmy01]], ICON_R_SLOT = 669321680 --[[icon_sixth_dmy01]],
-  TEX = 414762439 --[[#/menu/102_team/team08/team08_02/<LG>/team08_02.g4tx]],
-  SPR_ON = 1200035802 --[[list_base_xs01_on]], SPR_OFF = 3628801333 --[[list_base_xs01_off]],
-  SLOT_OFF = 3628801333 --[[list_base_xs01_off (the _off node's sprite slot)]],
-  SLOT_OK = 938337109 --[[list_base_xs01_ok (the _ok node's sprite slot)]],
-  STYLE_ON = 3466937357 --[[the _on text style (objbin -828029939)]], STYLE_OFF = 1390126981,
-  PLATE_X = -98, PLATE = {970, 72}, TEXT_X = 151, TEXT = {448, 54}, ICON_R_POS = {59, 19}, ICON_R_SIZE = 38,
-  ICON_POS = {53, 25}, ICON_SIZE = 50, HALF = 480, GAP = 10, TEXT_HALF = 223,
-  SCALE = 2885415772 --[[node scale (layer, idx, node, sx, sy)]],
-  MOVE = 2575768773 --[[node translation (layer, idx, node, axis, value)]],
-  STYLE = 2333948100 --[[text style (layer, idx, node, style)]],
+  L = 3123481048 --[[evt_pset_file_btn]],
+  SLOT = 5,                   -- the list row instance the layer is attached over (evt_pc_list _list06)
+  PLATE_X = -98, HALF = 480, GAP = 10,
   }
 end
-PL.ROW = PL.RowDef()
+PL.FILE_BTN = PL.FileBtnDef()
 PL.row_split = {}
 PL.vrm_half = 0
+PL.file_btn_shown = false
 
--- a row instance back to the retail row (only one a split row changed)
+-- a row instance no longer drawn as the export / import row
 function PL.RowFull(L, k)
-  if L ~= PL.L_SSROW or PL.row_split[k] == nil then
+  if L == PL.L_SSROW then
+    PL.row_split[k] = nil
+  end
+end
+
+-- the two export / import buttons off (the set list closed or another list drawn)
+function PL.FileBtnHide()
+  if not PL.file_btn_shown then
     return
   end
-  PL.row_split[k] = nil
-  local R = PL.ROW
-  for _, m in ipairs({R.ON, R.OFF, R.OL, R.OK}) do
-    funcLuaMenuCommand(R.MOVE, L, k, m, 0, R.PLATE_X)
-    funcLuaMenuCommand(R.SCALE, L, k, m, R.PLATE[1], R.PLATE[2])
+  PL.file_btn_shown = false
+  local F = PL.FILE_BTN
+  for h = 0, 1 do
+    funcLuaMenuCommand(C.LAYER_VISIBLE, F.L, h, false)
   end
-  funcLuaMenuCommand(C.SPRITE, L, R.TEX, R.SPR_OFF, R.SLOT_OFF, 0, k)
-  funcLuaMenuCommand(C.SPRITE, L, R.TEX, 938337109 --[[list_base_xs01_ok]], R.SLOT_OK, 0, k)
-  for _, t in ipairs({R.TEXT_ON, R.TEXT_OFF}) do
-    funcLuaMenuCommand(R.MOVE, L, k, t, 0, R.TEXT_X)
-    funcLuaMenuCommand(R.SCALE, L, k, t, R.TEXT[1], R.TEXT[2])
-  end
-  funcLuaMenuCommand(R.STYLE, L, k, R.TEXT_ON, R.STYLE_ON)
-  funcLuaMenuCommand(R.STYLE, L, k, R.TEXT_OFF, R.STYLE_OFF)
-  funcLuaMenuCommand(R.MOVE, L, k, R.ICON_R, 0, R.ICON_R_POS[1])
-  funcLuaMenuCommand(R.MOVE, L, k, R.ICON_R, 1, R.ICON_R_POS[2])
-  funcLuaMenuCommand(R.SCALE, L, k, R.ICON_R, R.ICON_R_SIZE, R.ICON_R_SIZE)
-  pcall(funcLuaMenuCommand, 4176779611 --[[ResetFaceIcon]], L, k, R.ICON_R_SLOT)
+  pcall(funcLuaMenuCommand, C.CURSOR_LOC, F.L, 3313461902 --[[cursor]], 2, 2)
 end
 
--- the geometry of the split row in instance k: plate / text / icon visibility, sizes and places. Applied on the draw
--- AND every frame by the list loop (PL.SetTick): 2026-10-13 the owner saw only the left plate, both texts at the same x
--- and the icons apart, i.e. the places set once at the draw did not stick on the plates and texts (the retail row's
--- own animation writes their translation / visibility again after the draw)
-function PL.VrmGeom(k)
-  local L, R = PL.L_SSROW, PL.ROW
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.ON, false, k)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.OL, false, k)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.OFF, true, k)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.OK, true, k)
-  funcLuaMenuCommand(R.SCALE, L, k, R.OFF, R.HALF, R.PLATE[2])
-  funcLuaMenuCommand(R.SCALE, L, k, R.OK, R.HALF, R.PLATE[2])
-  funcLuaMenuCommand(R.MOVE, L, k, R.OFF, 0, R.PLATE_X)
-  funcLuaMenuCommand(R.MOVE, L, k, R.OK, 0, R.PLATE_X + R.HALF + R.GAP)
-  funcLuaMenuCommand(2735666188 --[[text visible]], L, R.TEXT_OFF, true, k)
-  funcLuaMenuCommand(2735666188 --[[text visible]], L, R.TEXT_ON, true, k)
-  funcLuaMenuCommand(R.SCALE, L, k, R.TEXT_OFF, R.TEXT_HALF, R.TEXT[2])
-  funcLuaMenuCommand(R.SCALE, L, k, R.TEXT_ON, R.TEXT_HALF, R.TEXT[2])
-  funcLuaMenuCommand(R.MOVE, L, k, R.TEXT_OFF, 0, R.TEXT_X)
-  funcLuaMenuCommand(R.MOVE, L, k, R.TEXT_ON, 0, R.TEXT_X + R.HALF + R.GAP)
-  funcLuaMenuCommand(R.MOVE, L, k, PL.MESH_AREA, 0, R.ICON_POS[1])
-  funcLuaMenuCommand(R.MOVE, L, k, PL.MESH_AREA, 1, R.ICON_POS[2])
-  funcLuaMenuCommand(R.MOVE, L, k, R.ICON_R, 0, R.ICON_POS[1] + R.HALF + R.GAP)
-  funcLuaMenuCommand(R.MOVE, L, k, R.ICON_R, 1, R.ICON_POS[2])
-  funcLuaMenuCommand(R.SCALE, L, k, R.ICON_R, R.ICON_SIZE, R.ICON_SIZE)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, PL.MESH_AREA, true, k)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.ICON_R, true, k)
+-- one button: instance h of evt_pset_file_btn (0 = export, 1 = import), on = it has the focus
+function PL.FileBtnDraw(h, text, on)
+  local F = PL.FILE_BTN
+  PL.Open(F.L, h)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, F.L, h, true)
+  PL.MxRowBase(F.L, h, {name = text}, on)
+  local spr = h == 0 and PL.VRM.UP[on] or PL.VRM.DOWN[on]
+  funcLuaMenuCommand(C.SPRITE, F.L, PL.VRM.TEX, spr, PL.SLOT_AREA, 0, h)
+  funcLuaMenuCommand(C.MESH_VISIBLE, F.L, PL.MESH_AREA, true, h)
 end
 
--- every frame of the set list: keep the split rows' geometry
-function PL.SetTick()
-  for k in pairs(PL.row_split) do
-    pcall(PL.VrmGeom, k)
-  end
-end
-
--- «Exportar set | Importar set» in row instance k (selected = the row has the focus; PL.vrm_half = which half)
+-- «Exportar | Importar» for row instance k (selected = the row has the focus; PL.vrm_half = which half)
 function PL.VrmRow(k, e, selected)
-  local L, R = PL.L_SSROW, PL.ROW
+  local L, F = PL.L_SSROW, PL.FILE_BTN
+  if k ~= F.SLOT then
+    -- the layer sits over one row slot only; elsewhere (not reached: the list has 6 entries) one plain row
+    PL.MxRowBase(L, k, {name = e.names[1] .. "  |  " .. e.names[2]}, selected)
+    return
+  end
+  -- the list row under the buttons stays empty: no plate, text, icon or mark
   PL.MxRowBase(L, k, {name = ""}, false)
   PL.row_split[k] = true
-  local left_on = selected == true and PL.vrm_half == 0
-  local right_on = selected == true and PL.vrm_half == 1
-  PL.VrmGeom(k)
-  -- plates: _off = left, _ok = right, each with the on / off sprite of its state
-  funcLuaMenuCommand(C.SPRITE, L, R.TEX, left_on and R.SPR_ON or R.SPR_OFF, R.SLOT_OFF, 0, k)
-  funcLuaMenuCommand(C.SPRITE, L, R.TEX, right_on and R.SPR_ON or R.SPR_OFF, R.SLOT_OK, 0, k)
-  -- texts: _off = «Exportar set» (left), _on = «Importar set» (right), white / dark by state
-  funcLuaMenuCommand(C.TEXT, L, R.TEXT_OFF, e.names[1], k)
-  funcLuaMenuCommand(C.TEXT, L, R.TEXT_ON, e.names[2], k)
-  funcLuaMenuCommand(R.STYLE, L, k, R.TEXT_OFF, left_on and R.STYLE_ON or R.STYLE_OFF)
-  funcLuaMenuCommand(R.STYLE, L, k, R.TEXT_ON, right_on and R.STYLE_ON or R.STYLE_OFF)
-  -- icons: the area quad (left) and the sixth quad as a second 50 px quad (right)
+  funcLuaMenuCommand(C.MESH_VISIBLE, L, PL.SSROW_BASE_ON, false, k)
+  funcLuaMenuCommand(C.MESH_VISIBLE, L, PL.SSROW_BASE_OFF, false, k)
+  funcLuaMenuCommand(2735666188 --[[text visible]], L, PL.SSROW_TEXT_ON, false, k)
+  funcLuaMenuCommand(2735666188 --[[text visible]], L, PL.SSROW_TEXT_OFF, false, k)
   pcall(funcLuaMenuCommand, 4176779611 --[[ResetFaceIcon]], L, k, PL.SLOT_AREA)
-  pcall(funcLuaMenuCommand, 4176779611 --[[ResetFaceIcon]], L, k, R.ICON_R_SLOT)
-  funcLuaMenuCommand(C.SPRITE, L, PL.VRM.TEX, PL.VRM.UP[left_on], PL.SLOT_AREA, 0, k)
-  funcLuaMenuCommand(C.SPRITE, L, PL.VRM.TEX, PL.VRM.DOWN[right_on], R.ICON_R_SLOT, 0, k)
-  PL.VrmGeom(k)
+  PL.file_btn_shown = true
+  PL.FileBtnDraw(0, e.names[1], selected == true and PL.vrm_half == 0)
+  PL.FileBtnDraw(1, e.names[2], selected == true and PL.vrm_half == 1)
 end
 
--- the pointer zones of a split row instance: {left rect, right rect} ({x, w, h} from the instance origin), else nil
+-- the list cursor on the focused button while the export / import row has the focus (PL.SSListShow)
+function PL.FileBtnCursor(RL, NR)
+  local F = PL.FILE_BTN
+  pcall(funcLuaMenuCommand, C.CURSOR_LOC, RL, 3313461902 --[[cursor]], NR, NR)
+  pcall(funcLuaMenuCommand, C.CURSOR_LOC, F.L, 3313461902 --[[cursor]], PL.vrm_half == 1 and 1 or 0, 2)
+end
+
+-- the pointer zones of the export / import row: {left rect, right rect} ({x, w, h} from the row instance origin)
 function PL.SetPtrSplit(k)
   if PL.row_split[k] then
-    local R = PL.ROW
-    return {{R.PLATE_X, R.HALF, PL.PTR_SS[3]}, {R.PLATE_X + R.HALF + R.GAP, R.HALF, PL.PTR_SS[3]}}
+    local F = PL.FILE_BTN
+    return {{F.PLATE_X, F.HALF, PL.PTR_SS[3]}, {F.PLATE_X + F.HALF + F.GAP, F.HALF, PL.PTR_SS[3]}}
   end
   return nil
 end
@@ -5749,7 +5832,7 @@ function PL.SetExport(i)
   local r = {pcall(funcLuaCommand, PL.VRM.EXPORT, n, name, level, m[1] or 0, m[2] or 0, m[3] or 0, m[4] or 0,
     m[5] or 0, m[6] or 0, p.hiper or 0, e[1] or 0, e[2] or 0, e[3] or 0, e[4] or 0, e[5] or 0, p.sixsense or 0,
     p.role or -1, p.name or "", pv[1] or 0, pv[2] or 0, pv[3] or 0, pv[4] or 0, pv[5] or 0,
-    cf[1] or 0, cf[2] or 0, cf[3] or 0, cf[4] or 0, cf[5] or 0, p.kit or 0)}
+    cf[1] or 0, cf[2] or 0, cf[3] or 0, cf[4] or 0, cf[5] or 0, p.kit or 0, p.mix or 0)}
   EVT_Log("player set export", i, tostring(r[1]), tostring(r[2]), tostring(r[3]), tostring(r[4]))
   if r[1] and r[2] == true and type(r[3]) == "string" then
     funcLuaCommand(C.SE, SE_DECIDE)
@@ -5827,8 +5910,7 @@ function PL.SetImport(i)
       PL.PanelPlain(6, f.name, f.file)
     end,
     keys = function()
-      return {{text = PL.TX.SET_IMPORT_ROW, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"},
-        {text = PL.TX.BTN_BACK, icon = PL.I_BACK, cmd = PL.K_BACK}}
+      return {{text = PL.TX.SET_IMPORT_ROW, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"}}
     end,
     act = function()
       return "close"
@@ -5844,7 +5926,7 @@ function PL.SetImport(i)
     return
   end
   -- ok, set name, chara_param of the file, checksum ok, missing ids (text), m1..m6, hiper, e1..e5, six sense, role,
-  -- p1..p5, c1..c5 (-1 = no passives stored), kit
+  -- p1..p5, c1..c5 (-1 = no passives stored), kit, mix
   local v = {}
   for k = 7, 37 do
     v[k - 6] = tonumber(r[k]) or 0
@@ -5905,6 +5987,11 @@ function PL.SetImport(i)
     end
   end
   p.kit = EVT_U32(v[25])                          -- the kit the set was saved in (0 = none: the current team's)
+  local mix, mix_ok = PL.ImportMove(EVT_U32(v[26]), true, other)
+  p.mix = mix
+  if not mix_ok then
+    skipped[#skipped + 1] = EVT_Name(EVT_U32(v[26]))
+  end
   if PL.SetGet(i) ~= nil and not PL.MxAsk(PL.Txt(PL.TX.ASK_OVER, i + 1)) then
     funcLuaCommand(C.SE, SE_BACK)
     return
@@ -5945,6 +6032,41 @@ end
 
 function PL.ClearAltGlyph()
   funcLuaMenuCommand(C.TEXT, L_BTN, 950238781 --[[_text_btn01 key glyph]], "", 0)
+  funcLuaMenuCommand(C.TEXT, L_BTN, 625330766 --[[_text_cmd01 label: the button is an icon]], "", 0)
+end
+
+-- The player-sets button: the screen's bottom button layer (L_BTN) with the square skin of the other icon buttons and a
+-- save icon on top: instance PL.SAVE_BUTTON.ICON of the passive-row layer (the slot of the removed passives button's
+-- icon), drawn as the six-sense / role icons are (EVT_ButtonIcon). The icon follows the button's visibility (the list
+-- covers and the screen modes hide the button). The hint is the guide line (PL.TX.SET_BTN_GUIDE).
+-- (built in a function: these numbers stay out of the main chunk's constant table)
+function PL.SaveButtonDef()
+  return {
+  ICON = EVT_ROW_ICON_PV,     -- row-layer instance attached at the button (_pos_btn_ico02)
+  TEX = 2320109963,           -- #/menu/200_icon/15_icon_common/icon_common.g4tx
+  SPRITE = 4128237245,        -- character_reforged_player_sets_icon (Character Reforged content\images)
+  PRIORITY = 560,             -- as the other button icons
+  IS_VISIBLE = 1262717583,    -- CMND_IS_LAYER_VISIBLE (layer, idx)
+  CURSOR = 3313461902,        -- the button's cursor attach (off, as on the other square buttons)
+  }
+end
+PL.SAVE_BUTTON = PL.SaveButtonDef()
+
+function PL.SaveIcon()
+  local B = PL.SAVE_BUTTON
+  EVT_ButtonIcon(B.ICON, B.TEX, B.SPRITE)
+  B.shown = nil                                    -- PL.SaveIconFollow sets the visibility on the next frame
+end
+
+-- the icon shown exactly while the button is (one check per frame; the layer command only on a change)
+function PL.SaveIconFollow()
+  local B = PL.SAVE_BUTTON
+  local ok, visible = pcall(funcLuaMenuCommand, B.IS_VISIBLE, L_BTN, 0)
+  local show = ok and visible ~= false and not evt_pv_open
+  if show ~= B.shown then
+    B.shown = show
+    funcLuaMenuCommand(C.LAYER_VISIBLE, L_PV_ROW, B.ICON, show)
+  end
 end
 
 -- 2026-10-12 (owner): the «Pasivas de la rama» button between «Pasiva personalizada» and «Rol» is gone; «Rol» and its
@@ -5973,10 +6095,16 @@ function OnSetupLayer(a1, a2)
     pcall(PL.RoleIcon)
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, true)
     return
+  elseif a1 == L_PV_ROW and a2 == PL.SAVE_BUTTON.ICON then
+    funcLuaMenuCommand(EVT_PRIORITY, a1, a2, PL.SAVE_BUTTON.PRIORITY, true)
+    pcall(PL.SaveIcon)
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, true)
+    return
   end
   PL.PrevSetupLayer(a1, a2)
   if a1 == L_BTN then
-    PL.ClearAltGlyph()                               -- Alt does nothing any more: no key glyph on the button
+    PL.ClearAltGlyph()                               -- no key glyph and no label: the button is an icon
+    funcLuaMenuCommand(1774843228, a1, a2, PL.SAVE_BUTTON.CURSOR, false)
   end
 end
 
@@ -5991,8 +6119,8 @@ function OnOpenLayer(a1, a2)
   elseif a1 == PL.L_BADGE then
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, PL.role_open)
     return
-  elseif a1 == L_PV_ROW and a2 == PL.ROW_ICON_ROLE then
-    PL.role_frames = 10
+  elseif a1 == L_PV_ROW and (a2 == PL.ROW_ICON_ROLE or a2 == PL.SAVE_BUTTON.ICON) then
+    PL.role_frames = 10                            -- the open restores mesh visibility: re-apply the icons
     return
   end
   PL.PrevOpenLayer(a1, a2)
@@ -6046,8 +6174,10 @@ function Step()
   if PL.role_frames > 0 and evt_co == nil and not evt_pv_open then
     PL.role_frames = PL.role_frames - 1
     pcall(PL.RoleIcon)
+    pcall(PL.SaveIcon)
     pcall(PL.ClearAltGlyph)
   end
+  pcall(PL.SaveIconFollow)
 end
 
 -- ===================================================================================================
@@ -6229,6 +6359,8 @@ function PL.SSListShow(show, list, first, sel)
       pcall(PL.RowFull, PL.L_SSROW, k)
     end
   end
+  local file_btn_was = PL.file_btn_shown              -- 2026-10-15: the export / import buttons (PL.VrmRow) redraw below
+  PL.file_btn_shown = false
   if show ~= PL.list_covered then
     PL.list_covered = show
     pcall(PL.ListCover, show)
@@ -6253,8 +6385,20 @@ function PL.SSListShow(show, list, first, sel)
     funcLuaMenuCommand(C.LAYER_VISIBLE, L_ROW, r, not show)
   end
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, not show)
+  if file_btn_was and not PL.file_btn_shown then
+    PL.file_btn_shown = true
+    pcall(PL.FileBtnHide)
+  end
   if show then
     pcall(funcLuaMenuCommand, C.CURSOR_LOC, RL, 3313461902 --[[cursor]], sel - first, NR)
+    if PL.file_btn_shown then
+      local se = list[sel + 1]
+      if se ~= nil and se.kind == "vrm" then
+        pcall(PL.FileBtnCursor, RL, NR)
+      else
+        pcall(funcLuaMenuCommand, C.CURSOR_LOC, PL.FILE_BTN.L, 3313461902 --[[cursor]], 2, 2)
+      end
+    end
   end
   if show and PL.list_mode ~= nil then
     local e = list[sel + 1]
@@ -6375,8 +6519,7 @@ function EVT_SS_PickCoroutine()
     row = PL.SSRow, focus = PL.SSFocus,
     guide = PL.TxtOr(PL.TX.SS_GUIDE, "Elige la pasiva personalizada de este jugador. La marca indica la que lleva."),
     keys = function()
-      return {{text = PL.TX.BTN_SELECT, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"},
-        {text = PL.TX.BTN_BACK, icon = PL.I_BACK, cmd = PL.K_BACK}}
+      return {{text = PL.TX.BTN_SELECT, icon = PL.I_ENTER, cmd = PL.K_ENTER, act = "pick"}}
     end,
     act = function()
       return "close"
@@ -6423,13 +6566,18 @@ function OnSetupLayer(a1, a2)
     funcLuaMenuCommand(EVT_PRIORITY, a1, a2, 451, true)
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
     return
+  elseif a1 == PL.FILE_BTN.L then
+    funcLuaMenuCommand(EVT_PRIORITY, a1, a2, 452, true)   -- the export / import buttons over their list row
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
+    pcall(funcLuaMenuCommand, C.CURSOR_LOC, a1, 3313461902 --[[cursor]], 2, 2)   -- the list cursor stays off them
+    return
   end
   PL.SslPrevSetupLayer(a1, a2)
 end
 
 PL.SslPrevOpenLayer = OnOpenLayer
 function OnOpenLayer(a1, a2)
-  if a1 == PL.L_SSLIST or a1 == PL.L_SSROW or a1 == PL.L_LISTBG then
+  if a1 == PL.L_SSLIST or a1 == PL.L_SSROW or a1 == PL.L_LISTBG or a1 == PL.FILE_BTN.L then
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
     return
   end
@@ -6451,7 +6599,9 @@ PL.MX_ON = true                                  -- false = the Hiper row opens 
 PL.MX_STUB = nil                                 -- nil = auto (stub while the loader does not answer), true / false = force
 PL.MX_CMD = {SET = 3209494861, GET = 2757888737, CLEAR = 520287167,
   CAN_BASE = 2189230194, PARTNER_OF = 2051756436,
-  CANDIDATES = 62312748}
+  CANDIDATES = 62312748,
+  PAGE_FUSION = 2603267224 --[[CMND_CHARACTERREFORGED_PAGE_FUSION]],
+  PAGE_FUSION_CLEAR = 2993094043 --[[CMND_CHARACTERREFORGED_PAGE_FUSION_CLEAR]]}
 -- SET codes (miximax-chrono-stone.md §12.4): 0 ok, 1 module off, 2 Prime, 3 base not found, 4 partner not owned,
 -- 5 same card, 6 rule, 7 write error
 PL.MX_SET_ERR = {[1] = "El módulo miximax del vr-loader está desactivado.",
@@ -6501,6 +6651,16 @@ function PL.MxGet()
     return nil
   end
   if PL.MxStub() then
+    -- without Inazuma Fantasy's commands: the page slot CMND_CHARACTERREFORGED_PAGE_FUSION (All Miximaxed's running
+    -- fusion, CMND_EVT_MX_GET's answer + the partner's handle; 2026-10-14: the mix panel showed nothing for its fusion)
+    local okp, pexists, ppartner, pm1, pm2, pchara, pbest, phdl = pcall(funcLuaCommand, PL.MX_CMD.PAGE_FUSION, h)
+    if okp and pexists == true then
+      local f = {partner = EVT_U32(ppartner or 0), move = EVT_U32(pm1 or 0), move2 = EVT_U32(pm2 or 0), chara = pchara or 0,
+        best = pbest == true or pbest == 1, phdl = type(phdl) == "number" and phdl or 0}
+      local okk, face = pcall(funcLuaCommand, 347353059, f.partner)
+      f.face = (okk and type(face) == "number" and face ~= 0) and face or f.chara
+      return f
+    end
     return PL.mx_stub[PL.MxParam(h)]
   end
   local ok, exists, partner, m1, m2, chara, best = pcall(funcLuaCommand, PL.MX_CMD.GET, h)
@@ -6963,6 +7123,14 @@ function PL.MxClear()
   local base = PL.MxParam(n)
   if PL.MxStub() then
     PL.mx_stub[base] = nil
+    -- All Miximaxed's fusion (page slot CMND_CHARACTERREFORGED_PAGE_FUSION_CLEAR) and its carrier copy
+    local okc, cleared = pcall(funcLuaCommand, PL.MX_CMD.PAGE_FUSION_CLEAR, n)
+    if okc and cleared == true then
+      local have = funcLuaCommand(PL.ITEM_NUM, PL.MX_FUSION)
+      if type(have) == "number" and have > 0 then
+        funcLuaCommand(PL.DEL_ITEM, PL.MX_FUSION, 1)
+      end
+    end
   else
     pcall(funcLuaCommand, PL.MX_CMD.CLEAR, n)
     -- the fusion's carrier copy goes with it (one wmm_evt per fusion)
@@ -8114,7 +8282,7 @@ end
 -- ===================================================================================================
 PL.MC_ON = true
 PL.MC_CMD = {ON = 1689747210, ITEMS = 2121540544, CANDIDATES = 2117900510, ADD = 3010720229, LIST = 2447822974,
-  ITEM = 3392474488, EQUIP = 1830357309, DELETE = 2464860440, GET = 3008539762}
+  ITEM = 3392474488, EQUIP = 1830357309, DELETE = 2464860440}
 PL.MC_ERR = {[1] = "El modo cambio está desactivado (vr-loader).", [3] = "No se encuentra la carta base.",
   [4] = "Ese jugador no se puede usar como cambio.", [5] = "Un jugador no puede cambiar a sí mismo.",
   [6] = "Este jugador ya tiene 8 cambios: quita uno antes (Eliminar en la fila de la hipertécnica).",
@@ -8435,7 +8603,8 @@ function PL.ResetKit(row)
   return m
 end
 
-function EVT_ResetCoroutine(row)
+-- Restablecer before the Fantasy slot fallbacks wrap it (EVT_ResetCoroutine below)
+function PL.BaseResetCoroutine(row)
   if EVT_IsPrime() then
     funcLuaCommand(C.SE, SE_NG)
     return
@@ -8545,7 +8714,7 @@ PL.hs_fixed = {}
 -- image type from the retail item_list_base01: content\images\menu\00_soccer\soccer11\evt_hs_plates.toml), loaded
 -- once (the retail white plate until it is in), and each half's icon sits at the left end of its own plate, its name
 -- after it (a few spaces, as the text node itself does not move). The picker opened from a half shows only that
--- half's tabs (CMND_FANTASY_ST_WINDOW: keshin / totem or Mix-Max / «Modo cambio»), from a move row only the move
+-- half's tabs (the skill tab registry's window: keshin / totem or Mix-Max / «Modo cambio»), from a move row only the move
 -- categories (PL.HsPrevPick wrapper below).
 -- Round 6 (in game, shots 227-230): (1) the aura half showed the MIX move's icon and the mix half the retail star: the
 -- item-icon command's 4th argument is the texture SLOT of the layer instance, not the mesh, and both halves wrote
@@ -8587,7 +8756,25 @@ PL.HS_ROW = {BASE1 = 970690259 --[[_item_list_base01]], BASE2 = 2583835390 --[[_
   -- the aura half's short name on this menu: menu_text row evt_hs_totem_short = "|"-separated name formats of a
   -- totem in the language (<VALUE> = the totem's own name), e.g. "Totem <VALUE>" / "<VALUE> Totem"
   TOTEM_SHORT = 2237215146 --[[crc32(evt_hs_totem_short)]],
-  PAD1 = " ", PAD2 = "   ", CUT = 14,
+  PAD1 = "", PAD2 = "", CUT = 14,
+  -- 2026-10-14 (owner: «no deberían aparecer esos iconos cuadrados, deberían aparecer el portrait del aura o
+  -- jugador»): no move icon on the plates any more. Each plate shows a PORTRAIT at its right end, over the darker
+  -- slanted corner: the aura's character (keshin / totem, SKILL_INFO 17) on the aura plate, the partner (fusion,
+  -- retail Mix-Max) or the other form («Modo cambio») on the mix plate; an empty slot shows none. The portrait is the
+  -- character's list face icon (552280324, as the bank / dock lists and the retail item cards draw it) on the
+  -- row's own icon quads (_icon_item_dmy01 / _icon_title01), so no layer is added. The names start where the icons
+  -- were: a text node does not move by itself (round 4), so each plate set is moved left by its locator
+  -- (_pos_list01 / _pos_list02) and its plate, focus frame and portrait moved back right by the same amount.
+  POS1 = 1307475940 --[[_pos_list01]], TEXT_SHIFT1 = 57, TEXT_SHIFT2 = 38,
+  BASE_X = -283, FOCUS_X = -286,
+  -- portrait: inside the painted part of the plate sprite (item_list_base01 568 x 80: opaque rows 9..62, columns
+  -- 11..554, i.e. 54 of the plate's 80 units tall, centred, and 7 units in from its right end), so nothing sticks out
+  -- above or below. A quad cannot be clipped (no UV command; the menu scissor clips whole layer instances), so the
+  -- portrait is sized to the band: 54 units square, top at plate centre + 27, 2 units inside the painted right end
+  -- (world -10 aura, 278 mix; the sets are shifted by -TEXT_SHIFT1 / SHIFT2 - TEXT_SHIFT2)
+  FACE_SIZE = 54, FACE_Y = 27, AURA_FACE_X = -7, MIX_FACE_X = -26,
+  TEXT1_SPLIT_W = 188, TEXT2_SPLIT_W = 188,
+  RESET_FACE = 4176779611 --[[ResetFaceIcon (layer, idx, texture slot)]],
   ICON_SLOT1 = 1875672568 --[[icon_item_dmy01]], ICON_SLOT2 = 3047759730 --[[icon_title01 (the slot _icon_title01 draws)]],
   TEXT1_BOX = {410, 54}, TEXT2_BOX = {408, 54}, TEXT1_W = 205, TEXT2_W = 224,
   FOCUS1 = 155463921 --[[_item_list_focus01]], FOCUS_SIZE = {572, 88}, FOCUS_HALF_W = 286,
@@ -8607,7 +8794,7 @@ PL.HS_ROW = {BASE1 = 970690259 --[[_item_list_base01]], BASE2 = 2583835390 --[[_
   HIT_X = {{-283, -1}, {5, 287}}, HIT_Y = {-44, 36},
   PLATE_TEX = "#/menu/00_soccer/soccer11/evt_soccer11_08_hs/evt_hs_plates.g4tx",
   PLATE_TEX_CRC = 4050240674 --[[crc32(PLATE_TEX)]], PLATE_AURA = 2408592914 --[[evt_hs_plate_aura]],
-  PLATE_MIX = 4118466748 --[[evt_hs_plate_mix]], ST_WINDOW = 1807193320 --[[CMND_FANTASY_ST_WINDOW]],
+  PLATE_MIX = 4118466748 --[[evt_hs_plate_mix]],
   K_LEFT = 2765147006 --[[CMD_LEFT]], K_RIGHT = 2075023265 --[[CMD_RIGHT]]}
 
 -- one row again (a level-locked Hiper row, never split): sizes, positions, the spare set, the focus frame and the text
@@ -8628,6 +8815,25 @@ function PL.HsUnsplitRow()
   funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON1, 0, R.ICON1_X)
   funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON1, 1, R.ICON_RETAIL_Y)
   funcLuaMenuCommand(R.SCALE, L, 0, R.ICON1, R.ICON_RETAIL_SIZE, R.ICON_RETAIL_SIZE)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.POS1, 0, 0)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.BASE1, 0, R.BASE_X)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.FOCUS1, 0, R.FOCUS_X)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.BASE2, 0, R.BASE_X)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.FOCUS2, 0, R.FOCUS_X)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON2, 0, R.ICON1_X)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON2, 1, R.ICON_RETAIL_Y)
+  funcLuaMenuCommand(R.SCALE, L, 0, R.ICON2, R.ICON_RETAIL_SIZE, R.ICON_RETAIL_SIZE)
+  if PL.hs_faces then
+    -- the portraits leave the icon slots: the row's own move icon again
+    PL.hs_faces = false
+    PL.hs_face_key = {}
+    funcLuaMenuCommand(R.RESET_FACE, L, 0, R.ICON_SLOT1)
+    funcLuaMenuCommand(R.RESET_FACE, L, 0, R.ICON_SLOT2)
+    local skill = PL.RowMove(0)
+    if skill ~= 0 then
+      funcLuaMenuCommand(C.ITEM_ICON, L, 0, R.ICON1, R.ICON_SLOT1, skill)
+    end
+  end
   PL.HsTouch(R.TOUCH_RETAIL)
   local info = GetEquipListItemInfo(GetEquipType(0))
   if info ~= nil and info.fontStyle ~= nil then
@@ -8672,15 +8878,21 @@ end
 function PL.HsSplitRow()
   local R, L = PL.HS_ROW, L_ROW
   local aura, mix = PL.CrShownSlots()
+  local mix_partner = mix ~= 0 and PL.HsMixPartner(mix) or nil
   local function label(id, half)
-    local t = "---"
-    if id ~= 0 then
-      t = EVT_Cut(half == 1 and PL.HsMixName(id) or PL.HsShortName(EVT_Name(id)), R.CUT)
+    if id == 0 then
+      return ""                                    -- an empty slot: the plate alone (owner: no «---»)
     end
-    return (half == 1 and R.PAD2 or R.PAD1) .. t
+    local t = half == 1 and PL.HsMixName(id, mix_partner) or PL.HsShortName(EVT_Name(id))
+    return (half == 1 and R.PAD2 or R.PAD1) .. EVT_Cut(t, R.CUT)
   end
   local tinted = PL.HsPlatesReady()
   PL.hs_plates_wait = not tinted
+  -- left set (the aura slot): moved left by its locator so the name starts near the plate's left edge; its plate,
+  -- focus frame and portrait moved back right
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.POS1, 0, -R.TEXT_SHIFT1)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.BASE1, 0, R.BASE_X + R.TEXT_SHIFT1)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.FOCUS1, 0, R.FOCUS_X + R.TEXT_SHIFT1)
   -- left plate: IF's purple plate (the retail white one until it is loaded), half the row
   if tinted then
     funcLuaMenuCommand(C.SPRITE, L, R.PLATE_TEX_CRC, R.PLATE_AURA, EVT_ROW_BASE, 0, 0)
@@ -8691,20 +8903,18 @@ function PL.HsSplitRow()
   funcLuaMenuCommand(R.SCALE, L, 0, R.FOCUS1, R.FOCUS_HALF_W, R.FOCUS_SIZE[2])
   funcLuaMenuCommand(C.MESH_VISIBLE, L, R.FOCUS1, PL.hs_half == 0, 0)
   funcLuaMenuCommand(2333948100 --[[text style]], L, 0, R.TEXT1, R.STYLE)
-  funcLuaMenuCommand(R.SCALE, L, 0, R.TEXT1, R.TEXT1_W, R.TEXT1_BOX[2])
+  funcLuaMenuCommand(R.SCALE, L, 0, R.TEXT1, R.TEXT1_SPLIT_W, R.TEXT1_BOX[2])
   funcLuaMenuCommand(C.TEXT, L, R.TEXT1, label(aura, 0), 0)
   funcLuaMenuCommand(C.TEXT_ALPHA, L, 0, R.TEXT1, 1)
-  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON1, 0, R.AURA_ICON_X)
-  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON1, 1, R.ICON_Y)
-  funcLuaMenuCommand(R.SCALE, L, 0, R.ICON1, R.ICON_SIZE, R.ICON_SIZE)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.ICON1, aura ~= 0, 0)
-  if aura ~= 0 then
-    funcLuaMenuCommand(C.ITEM_ICON, L, 0, R.ICON1, R.ICON_SLOT1, aura)
-  end
+  PL.HsFace(R.ICON1, R.ICON_SLOT1, R.AURA_FACE_X, aura ~= 0 and function(L1, m, s)
+    return PL.AuraPortrait(L1, 0, m, s, aura)
+  end or nil, string.format("%s:%08X", tostring(n), EVT_U32(aura)))
   -- right plate: the spare title set, its base = the same plate in orange (the mix slot: Mix-Max or «Modo cambio»),
   -- half the row, on the right, as tall as the left one and on its line
   funcLuaMenuCommand(EVT_POS_VISIBLE, L, R.POS2, true, 0)
-  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.POS2, 0, R.SHIFT2)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.POS2, 0, R.SHIFT2 - R.TEXT_SHIFT2)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.BASE2, 0, R.BASE_X + R.TEXT_SHIFT2)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.FOCUS2, 0, R.FOCUS_X + R.TEXT_SHIFT2)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, R.BASE2, true, 0)
   if tinted then
     funcLuaMenuCommand(C.SPRITE, L, R.PLATE_TEX_CRC, R.PLATE_MIX, R.SLOT2, 0, 0)
@@ -8718,16 +8928,134 @@ function PL.HsSplitRow()
   funcLuaMenuCommand(R.SCALE, L, 0, R.FOCUS2, R.FOCUS_HALF_W, R.FOCUS_SIZE[2])
   funcLuaMenuCommand(C.MESH_VISIBLE, L, R.FOCUS2, PL.hs_half == 1, 0)
   funcLuaMenuCommand(2333948100 --[[text style]], L, 0, R.TEXT2, R.STYLE)
-  funcLuaMenuCommand(R.SCALE, L, 0, R.TEXT2, R.TEXT2_W, R.TEXT2_BOX[2])
+  funcLuaMenuCommand(R.SCALE, L, 0, R.TEXT2, R.TEXT2_SPLIT_W, R.TEXT2_BOX[2])
   funcLuaMenuCommand(C.TEXT, L, R.TEXT2, label(mix, 1), 0)
   funcLuaMenuCommand(C.TEXT_ALPHA, L, 0, R.TEXT2, 1)
-  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON2, 0, R.MIX_ICON_X)
-  funcLuaMenuCommand(R.TRANSLATE, L, 0, R.ICON2, 1, R.ICON_Y)
-  funcLuaMenuCommand(R.SCALE, L, 0, R.ICON2, R.ICON_SIZE, R.ICON_SIZE)
-  funcLuaMenuCommand(C.MESH_VISIBLE, L, R.ICON2, mix ~= 0, 0)
-  if mix ~= 0 then
-    funcLuaMenuCommand(C.ITEM_ICON, L, 0, R.ICON2, R.ICON_SLOT2, mix)
+  PL.HsFace(R.ICON2, R.ICON_SLOT2, R.MIX_FACE_X, mix ~= 0 and function(L1, m, s)
+    if mix_partner == nil then
+      return false
+    end
+    if mix_partner.skill ~= nil then
+      return PL.AuraPortrait(L1, 0, m, s, mix_partner.skill)
+    end
+    return PL.ListFace(L1, 0, m, s, mix_partner.face)
+  end or nil, string.format("%s:%08X:%s:%s", tostring(n), EVT_U32(mix), mix_partner and tostring(mix_partner.skill) or "-",
+    mix_partner and tostring(mix_partner.face) or "-"))
+end
+
+-- a plate's portrait on the row's icon quad `mesh` (texture slot `slot`) at the plate's right end. `draw(L, mesh,
+-- slot)` draws it and returns true; when it draws nothing the player's own face is shown instead, so a filled plate
+-- never shows the bare quad (a white square). draw nil = hidden. The slot is reset first (a previous portrait or move
+-- icon never shows through). `key` names what is drawn (player + move): while it is unchanged the portrait already on
+-- the slot is kept, as a redraw reloads the texture and shows the bare quad (a white flash) on every row refresh.
+PL.hs_faces = false
+PL.hs_face_key = {}                            -- texture slot -> key of the portrait drawn on it
+function PL.HsFace(mesh, slot, x, draw, key)
+  local R, L = PL.HS_ROW, L_ROW
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, mesh, 0, x)
+  funcLuaMenuCommand(R.TRANSLATE, L, 0, mesh, 1, R.FACE_Y)
+  funcLuaMenuCommand(R.SCALE, L, 0, mesh, R.FACE_SIZE, R.FACE_SIZE)
+  if draw ~= nil and key ~= nil and PL.hs_faces and PL.hs_face_key[slot] == key then
+    funcLuaMenuCommand(C.MESH_VISIBLE, L, mesh, true, 0)   -- the row refresh hid the icon mesh: the same portrait again
+    return
   end
+  PL.hs_face_key[slot] = nil
+  funcLuaMenuCommand(R.RESET_FACE, L, 0, slot)
+  if draw == nil then
+    funcLuaMenuCommand(C.MESH_VISIBLE, L, mesh, false, 0)
+    return
+  end
+  PL.hs_faces = true
+  local okd, drawn = pcall(draw, L, mesh, slot)
+  if not (okd and drawn == true) then
+    funcLuaMenuCommand(R.RESET_FACE, L, 0, slot)
+    okd, drawn = pcall(PL.OwnerFace, L, 0, mesh, slot)
+  end
+  local shown = okd and drawn == true
+  funcLuaMenuCommand(C.MESH_VISIBLE, L, mesh, shown, 0)
+  if shown then
+    PL.hs_face_key[slot] = key
+  end
+end
+
+-- a character's list face icon (552280324, as the bank / dock lists draw it) on (mesh, slot); false = not drawn
+function PL.ListFace(L, idx, mesh, slot, key)
+  if type(key) ~= "number" or key == 0 then
+    return false
+  end
+  pcall(SetDisableForceCharaInvalidUseTarget)
+  local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, idx, false, mesh, slot, 0, 0, key)
+  pcall(SetEnableForceCharaInvalidUseTarget)
+  return ok and r ~= false
+end
+
+-- the shown player's own face icon on (mesh, slot): the fallback portrait; false = not drawn
+function PL.OwnerFace(L, idx, mesh, slot)
+  local key = funcLuaCommand(C.CHARA_GET, n, 1) or 0
+  if key == 0 then
+    return false
+  end
+  local param = funcLuaCommand(C.CHARA_GET, n, 4) or 0
+  local okk, keeper = pcall(MENU_DEF.IsKeeper, param)
+  pcall(SetDisableForceCharaInvalidUseTarget)
+  local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, idx, false, mesh, slot, n, 255, key, 0,
+    okk and keeper == true)
+  pcall(SetEnableForceCharaInvalidUseTarget)
+  return ok and r ~= false
+end
+
+-- an aura skill's portrait on (mesh, slot) by the retail aura windows' rule: the aura character (SKILL_INFO 17) drawn
+-- as aura art of the aura type (SwapLayerFaceIconTex type PL.AURA_FACE_TYPE: keshin / armour 8, totem 14, Mix-Max 12
+-- when that art exists). Keshin / armour / totem characters (k* / a* keys) have no list face icon, so 552280324 only
+-- draws the other characters (a Mix-Max partner without Mix-Max art). False = not drawn.
+function PL.AuraPortrait(L, idx, mesh, slot, skill)
+  local ok, cid = funcLuaCommand(C.SKILL_INFO, skill, 17)
+  if not ok or type(cid) ~= "number" or cid == 0 then
+    return false
+  end
+  local _, t = funcLuaCommand(C.SKILL_INFO, skill, 13)
+  local art = PL.AURA_FACE_TYPE[t]
+  if art == 12 and funcLuaMenuCommand(2208175668 --[[has Mix-Max face art]], cid) ~= true then
+    art = nil
+  end
+  if art == nil then
+    return PL.ListFace(L, idx, mesh, slot, cid)
+  end
+  local okr, r = pcall(funcLuaMenuCommand, 346643487 --[[SwapLayerFaceIconTex]], L, idx, mesh, slot, cid, 0, art, true,
+    true, true, 5)
+  return okr and r ~= false
+end
+
+-- the mix slot's other character: {face = face key / chara id, name} or nil. A created fusion: its partner (All
+-- Miximaxed / Inazuma Fantasy store, PL.MxGet); a «Modo cambio»: the other form (EVT_HC.McGet, else the change list);
+-- a retail Mix-Max: its partner character (SKILL_INFO 17).
+function PL.HsMixPartner(mix)
+  if PL.MX_ON and mix == PL.MX_FUSION then
+    local okf, f = pcall(PL.MxGet)
+    if okf and f ~= nil and ((f.face or 0) ~= 0 or (f.chara or 0) ~= 0) then
+      local face = (f.face ~= nil and f.face ~= 0) and f.face or f.chara
+      return {face = face, name = (f.chara or 0) ~= 0 and PL.MxCharaName(f.chara) or nil}
+    end
+  end
+  if type(EVT_HC) == "table" and type(EVT_HC.McGet) == "function" then
+    local okm, m = pcall(EVT_HC.McGet, n, mix)
+    if okm and m ~= nil and (m.face or 0) ~= 0 then
+      return {face = m.face, name = m.name}
+    end
+  end
+  local k = PL.McIndex ~= nil and PL.McIndex(mix) or nil
+  if k ~= nil then
+    for _, c in ipairs(PL.McList()) do
+      if c.idx == k and (c.chara or 0) ~= 0 then
+        return {face = c.chara, name = PL.MxCharaName(c.chara)}
+      end
+    end
+  end
+  local ok, cid = funcLuaCommand(C.SKILL_INFO, mix, 17)
+  if ok and type(cid) == "number" and cid ~= 0 then
+    return {face = cid, name = PL.MxCharaName(cid), skill = mix}
+  end
+  return nil
 end
 
 -- IF's pre-tinted plates (atlas evt_hs_plates): requested once; true when they can be drawn
@@ -8745,10 +9073,25 @@ function PL.HsPlatesReady()
 end
 
 -- the picker's tabs follow the slot that opens it (owner 2026-10-12): a move row only the move categories, the Hiper
--- row's aura half keshin / totem, its mix half Mix-Max / «Modo cambio» (scripts\skill_tabs.lua windows); the whole
+-- row's aura half keshin / totem, its mix half Mix-Max / «Modo cambio»; the whole
 -- table again when the picker closes (also after an error, so the team dock's list is never left narrowed)
+-- 2026-10-14 (owner: «en el selector de aura solo Keshin y Tótem, en el de mix solo miximax y modo cambio, en el de
+-- supertécnicas solo tiro, regate, defensa y portero»): without Inazuma Fantasy the tab row is the VR-Framework's skill
+-- tab registry (docs/framework/card-types.md §3): the picker asks CMND_VRFW_SKILL_TAB_WINDOW(group) for the group of
+-- its slot; which categories each group holds is Character Reforged's data (content\skill_tabs\picker_groups.toml;
+-- All Changed's «Modo cambio» tab joins «mix»). The other tabs are not built at all (the native list, the Z / C cycle,
+-- the icons, the filters and the mouse zones follow the window); the cursor starts on the group's first tab. No
+-- registered tab (the registry answers 0): the game's whole tab row.
+PL.TAB_GROUP = {[1] = "moves", [2] = "aura", [3] = "mix"}   -- picker kind -> group name (0 / other: the whole list)
+PL.VRFW_SKILL_TABS = 2356136113                  -- crc32("CMND_VRFW_SKILL_TABS") () -> n, categories (0 = off)
+PL.VRFW_SKILL_TAB_WINDOW = 1059402324            -- crc32("CMND_VRFW_SKILL_TAB_WINDOW") (group) -> start, count
 function PL.TabWindow(kind)
-  pcall(funcLuaCommand, PL.HS_ROW.ST_WINDOW, kind)
+  local okt, tabs = pcall(funcLuaCommand, PL.VRFW_SKILL_TABS)
+  if okt and type(tabs) == "number" and tabs > 0 then
+    local okw, start, count = pcall(funcLuaCommand, PL.VRFW_SKILL_TAB_WINDOW, PL.TAB_GROUP[kind] or "")
+    pcall(EVT_Call, C.EVT_LOG, "skill_slots", "picker tab window", PL.TAB_GROUP[kind] or "all",
+      okw and tostring(start) or "?", okw and tostring(count) or tostring(start))
+  end
 end
 
 PL.HsPrevPick = EVT_PickCoroutine
@@ -8840,23 +9183,15 @@ end
 
 -- a Mix-Max fusion: the move's name only (owner 2026-10-12: never the player's); a created change:
 -- «<carrier name>: <partner>»; else the move's own name
-function PL.HsMixName(mix)
+function PL.HsMixName(mix, partner)
   if mix == nil or mix == 0 then
-    return "---"
+    return ""
   end
-  if PL.MX_ON and mix == PL.MX_FUSION then
-    local okf, f = pcall(PL.MxGet)
-    if okf and f ~= nil then
-      return EVT_Name(mix)
-    end
+  if partner == nil then
+    partner = PL.HsMixPartner(mix)
   end
-  local k = PL.McIndex ~= nil and PL.McIndex(mix) or nil
-  if k ~= nil then
-    for _, c in ipairs(PL.McList()) do
-      if c.idx == k then
-        return EVT_Name(mix) .. ": " .. PL.MxCharaName(c.chara)
-      end
-    end
+  if partner ~= nil and type(partner.name) == "string" and partner.name ~= "" then
+    return partner.name
   end
   return EVT_Name(mix)
 end
@@ -9449,7 +9784,7 @@ function PL.RowPlate(r, skill, locked, need, fixed, inactive)
   local ok, err = VRFW_UI.MovePlate.Row(L, r, n, skill, {page = L_ROW, open = PL.Open, restore = {nil, L_DETAIL, 0, nil, nil},
     locked = locked, need = need, fixed = fixed, lock_color = PL.LOCK_COLOR,
     name = skill ~= 0 and (inactive and (PL.LOCK_COLOR .. EVT_Name(skill) .. "[C]") or EVT_Name(skill)) or nil,
-    suffix = inactive and "" or nil, log = true})   -- inactive: the name greyed (no text appended); log: «move plate fill»
+    suffix = inactive and "" or nil, empty_text = "", log = true})   -- inactive: the name greyed (no text appended); log: «move plate fill»
   if not ok then
     pcall(EVT_Call, C.EVT_LOG, "skill_slots", "row plate failed", r, string.format("%08X", EVT_U32(skill)), tostring(err))
     return false
@@ -9661,6 +9996,46 @@ function EVT_Equip(row, skill, inv_hint, cur)
 end
 -- ===== Character Reforged projection END =====
 
+-- ===== Board-only move guide (2026-10-14) =====
+-- A move row greyed by the projection holds a move that sits on the board slot but not in the match list (its list
+-- position is empty): the match does not use it. While such a row has the focus, the bottom guide line says so (text
+-- evt_ss_board_only); leaving it puts the screen's own guide back. Nothing is written to the save.
+PL.TX_BOARD_ONLY = 1501903055                 -- crc32("evt_ss_board_only")
+PL.board_guide = false
+PL.BgPrevItemInfo = UpdateEquipItemInfo
+function UpdateEquipItemInfo(...)
+  local r = PL.BgPrevItemInfo(...)
+  local ok, err = pcall(PL.BoardOnlyGuide)
+  if not ok then
+    pcall(EVT_Call, C.EVT_LOG, "skill_slots", "board-only guide failed", tostring(err))
+  end
+  return r
+end
+
+function PL.BoardOnlyGuide()
+  local board_only = false
+  if n14 ~= L_BTN and n ~= nil and n ~= 0 and not EVT_IsPrime() then
+    local row = funcLuaMenuCommand(C.FOCUS_IDX, L_ROW)
+    if type(row) == "number" and row >= 1 and row < EVT_ROW_NUM and not EVT_IsLocked(row) then
+      local skill = PL.RowMove(row)
+      board_only = skill ~= 0 and not EVT_Active(skill)
+    end
+  end
+  if board_only then
+    local t = PL.Txt(PL.TX_BOARD_ONLY)
+    if t ~= "" then
+      PL.Guide(t)
+      PL.board_guide = true
+    end
+  elseif PL.board_guide then
+    PL.board_guide = false
+    if not PL.IdolFixed(funcLuaMenuCommand(C.FOCUS_IDX, L_ROW)) then
+      PL.Guide(EVT_GUIDE_TEXT)
+    end
+  end
+end
+-- ===== Board-only move guide END =====
+
 -- ===== Character Reforged slot rules (2026-10-14) =====
 -- What each slot accepts is Character Reforged's rule (scripts\skill_set.lua, CMND_CHARACTERREFORGED_CAN_PLACE: the
 -- data of content\skill_set\*.toml + the place rules other mods register with CharacterReforged.AddPlaceRule, e.g. a
@@ -9761,83 +10136,51 @@ end
 
 -- ===== V tap / hold (2026-10-14) =====
 -- V / Y on a row (CMD_FUNC3; owner 2026-10-14: as Inazuma Fantasy had it): a tap = «Restablecer» (the row's basic
--- kit move back), held PL.HOLD.SECONDS = «Eliminar» (the row emptied). The guide shows «V Restablecer» only; while the
--- key is held the game's own long-press ring (layer cr_skill_table_hold, object win04_12_long_press_button: Character
--- Reforged content\menus\skill_table.toml) fills over its glyph. With Inazuma Fantasy's block in this script
--- (EVT_CPK) its own timer and ring answer instead. The pad's hold time comes from Utilities' CMND_UTIL_PAD_HELD when
--- it answers; without it (keyboard, or no Utilities) the key counts as held while CMD_FUNC3 keeps repeating.
--- Runs inside the screen's action coroutine (it yields every frame) and returns once the key is released, so the
--- still-held key never starts another action. PL fields only (no main-chunk locals).
+-- kit move back), held PL.HOLD.SECONDS = «Eliminar» (the row emptied). The guide shows «Y Restablecer» only; the hold
+-- is the framework's hold prompt (VRFW_FooterPrompts.AddHold / WaitHold, docs/framework/footer-prompts.md §6): no
+-- ring while idle, the retail long-press ring (layer cr_skill_table_hold, Character Reforged
+-- content\menus\skill_table_hold_ring.toml) over its glyph only while the key is held, filling with the hold. With
+-- Inazuma Fantasy's block in this script (EVT_CPK) its own timer and ring answer instead. The pad's hold time comes
+-- from Utilities' CMND_UTIL_PAD_HELD when it answers; without it the key counts as held while CMD_FUNC3 repeats.
+-- PL fields only (no main-chunk locals).
 PL.HOLD = {
-  SECONDS = 1.5,
-  KEY_GRACE = 30,                                  -- keyboard: frames without a CMD_FUNC3 repeat = released
+  NAME = "CharacterReforged.SkillTableRemove",
+  SECONDS = 2,                                     -- owner 2026-10-14: «cuando lo pulsas 2 s»
   PAD_HELD = 1960855917,                           -- crc32("CMND_UTIL_PAD_HELD") (mask) -> seconds held, -1 / false
   PAD_MASK = 4096,                                 -- the pad's Y (CMD_FUNC3)
   RING = 4275388294,                               -- layer cr_skill_table_hold
-  RING_RATE = 1996459178,                          -- its rate «bar» (0 empty .. 1 full)
-  RING_TEXT = 950238781,                           -- _text_btn01: the key glyph in the ring
-  RING_SCALE = 50 / 68,                            -- the ring's glyph box is 68 px, the guide's 50 px
-  GUIDE_BUTTON = 9396745,                          -- mainmenu01_07_button_guide: one instance per guide entry
   GUIDE_ENTRY = 1,                                 -- «Restablecer» (Aceptar 0)
-  GUIDE_GLYPH = 950238781,                         -- its _text_btn01 (50 x 50, top-left)
-  RING_DX = 25, RING_DY = -25,                     -- glyph top-left -> centre (layout units, y up)
-  ring_ready = false,
-  logged = false,
 }
 
-function PL.HoldRingPosition()
-  local H = PL.HOLD
-  local menus = {n12 or 0, EVT_MENU or 0}
-  for _, m in ipairs(menus) do
-    if m ~= 0 then
-      local ok, gx, gy = pcall(funcLuaMenuCommand, 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]], H.GUIDE_BUTTON,
-        H.GUIDE_ENTRY, H.GUIDE_GLYPH, m)
-      if ok and type(gx) == "number" and type(gy) == "number" and (gx ~= 0 or gy ~= 0) then
-        return gx + H.RING_DX, gy + H.RING_DY
-      end
-    end
+-- the hold prompt, declared on first use (the framework's Lua may load after this chunk); false = no framework
+function PL.HoldDeclare()
+  local F = VRFW_FooterPrompts
+  if F == nil or F.AddHold == nil then
+    return false
   end
-  return nil
-end
-
--- one frame of the hold: the ring at `progress` (0..1) over the guide's V glyph; nothing when the layer is missing
-function PL.HoldRing(progress)
-  local H = PL.HOLD
-  local L = H.RING
-  if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L) ~= true then
-    return
+  if F.holds[PL.HOLD.NAME] == nil then
+    F.AddHold({
+      Name = PL.HOLD.NAME,
+      Ring = PL.HOLD.RING,
+      Icon = PL.I_FUNC3,
+      Entry = PL.HOLD.GUIDE_ENTRY,
+      Seconds = PL.HOLD.SECONDS,
+      HeldSeconds = function()
+        local ok, seconds = pcall(funcLuaCommand, PL.HOLD.PAD_HELD, PL.HOLD.PAD_MASK)
+        return (ok and type(seconds) == "number") and seconds or nil
+      end,
+      Pressed = function()
+        return PL.Key(PL.K_FUNC3) == true
+      end,
+      Menus = function()
+        return {n12 or 0, EVT_MENU or 0}
+      end,
+      OnHeld = function()
+        funcLuaCommand(C.SE, SE_DECIDE)
+      end,
+    })
   end
-  if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], L, 0) ~= true then
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], L, 0)
-    return
-  end
-  if funcLuaMenuCommand(3057768039 --[[CMND_IS_LOADING]], L) == true then
-    return
-  end
-  if not H.ring_ready then
-    H.ring_ready = true
-    funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], L, 0, 700, true)
-    funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], L, H.RING_SCALE, H.RING_SCALE, 1, 0)
-    local okg, glyph = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], PL.I_FUNC3)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], L, H.RING_TEXT, (okg and type(glyph) == "string") and glyph or "", 0)
-    funcLuaMenuCommand(541357333 --[[rate init]], L, H.RING_RATE, 0, 0)
-  end
-  local x, y = PL.HoldRingPosition()
-  if x == nil then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, false)
-    return
-  end
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], L, x, y, 0, 0)
-  funcLuaMenuCommand(1595998683 --[[CMND_SET_RATE]], L, H.RING_RATE, 0, math.max(0, math.min(1, progress)), 0)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, true)
-end
-
-function PL.HoldRingEnd()
-  local L = PL.HOLD.RING
-  if funcLuaMenuCommand(262659071, L) == true and funcLuaMenuCommand(2640875187, L, 0) == true then
-    funcLuaMenuCommand(1595998683, L, PL.HOLD.RING_RATE, 0, 0, 0)
-    funcLuaMenuCommand(711242136, L, 0, false)
-  end
+  return true
 end
 
 -- "reset" (a tap) or "remove" (held); a row with nothing to remove answers "reset" at once
@@ -9845,48 +10188,245 @@ function PL.TapOrHold(removable)
   if EVT_CPK ~= nil and EVT_CPK.YHold ~= nil then
     return EVT_CPK.YHold(removable)              -- Inazuma Fantasy's block: its own timer and ring
   end
-  if not removable then
+  if not removable or not PL.HoldDeclare() then
     return "reset"
   end
-  local H = PL.HOLD
-  local frames, last_key, pad_seen, result = 0, 0, false, nil
-  while true do
-    local ok, seconds = pcall(funcLuaCommand, H.PAD_HELD, H.PAD_MASK)
-    if not ok or type(seconds) ~= "number" then
-      seconds = -1
-    end
-    if seconds > 0 then
-      pad_seen = true
-    end
-    local okk, pressed = pcall(PL.Key, PL.K_FUNC3)
-    if okk and pressed == true then
-      last_key = frames
-    end
-    local held, time
-    if pad_seen then
-      held, time = seconds > 0, seconds
-    else
-      held, time = frames - last_key <= H.KEY_GRACE, frames / 60
-    end
-    if result == nil then
-      if not held then
-        result = "reset"
-        break
-      end
-      pcall(PL.HoldRing, time / H.SECONDS)
-      if time >= H.SECONDS then
-        result = "remove"
-        funcLuaCommand(C.SE, SE_DECIDE)
-      end
-    elseif not held then
-      break
-    end
-    coroutine.yield()
-    frames = frames + 1
-  end
-  pcall(PL.HoldRingEnd)
+  local held = VRFW_FooterPrompts.WaitHold(PL.HOLD.NAME)
+  local result = held == "held" and "remove" or "reset"
   pcall(UpdateEquipItemInfo)                       -- the guide line again
-  pcall(EVT_Call, C.EVT_LOG, "skill_slots", "V", result, frames, "frames", "pad", tostring(pad_seen))
+  pcall(EVT_Call, C.EVT_LOG, "skill_slots", "V", result)
   return result
 end
 -- ===== V tap / hold END =====
+
+-- ===== unlimited copies BEGIN =====
+-- Unlimited copies (VR-Framework VRFW_Copies, docs/framework/unlimited-copies.md): while a rule a mod declares holds for
+-- an item, one owned copy serves every player. The equip below hands the move a handle the retail way (one copy added,
+-- placed, removed again); when every copy was already in use the removal is refused and the owned count grows. The
+-- wrapper notes the owned count of the picked item and of every item on this player's board (a swap or a restore can
+-- move them) and brings back any unlimited item whose count grew. Without a holding rule nothing changes. No new chunk
+-- local (the chunk is close to the 200-locals limit): the state is in PL.
+PL.CopiesPrevEquip = EVT_Equip
+function EVT_Equip(row, skill, inv_hint, cur)
+  if type(VRFW_Copies) ~= "table" then
+    return PL.CopiesPrevEquip(row, skill, inv_hint, cur)
+  end
+  local okS, before = pcall(function()
+    local ids = {EVT_U32(skill)}
+    for b = 0, 8 do
+      ids[#ids + 1] = (EVT_BoardSkill(b))
+    end
+    return VRFW_Copies.Snapshot(ids)
+  end)
+  if not okS or next(before) == nil then
+    return PL.CopiesPrevEquip(row, skill, inv_hint, cur)
+  end
+  PL.CopiesPrevEquip(row, skill, inv_hint, cur)    -- not inside a pcall: it may yield (messages)
+  local okR, err = pcall(VRFW_Copies.Restore, before, function(id)
+    for b = 0, 8 do
+      local s, h = EVT_BoardSkill(b)
+      if s == id and h ~= nil and h ~= 0 then
+        return h
+      end
+    end
+    return nil
+  end)
+  if not okR then
+    pcall(funcLuaCommand, C.EVT_LOG, "unlimited_copies", "restore error", tostring(err))
+  end
+end
+
+PL.CopiesPrevOnInit = OnInit
+function OnInit(...)
+  if type(VRFW_Copies) == "table" then
+    pcall(VRFW_Copies.Reset)                       -- a key item won since the last visit counts now
+  end
+  return PL.CopiesPrevOnInit(...)
+end
+-- ===== unlimited copies END =====
+
+-- ===== Fantasy slot fallbacks (2026-10-15) =====
+-- With Character Reforged's projection (the option on Fantasy) the aura half shows board slot 8, else the first
+-- keshin / totem / armour of the technique list; the mix half the stored mix, else the first Mix-Max / «Modo cambio» of
+-- the list, else of the board. Owner 2026-10-15: those list / board entries are not a layer under the slot. An equip,
+-- a reset or a removal on a half also takes that half's list / board entries off the board (board slot = list
+-- position; the item goes back to stock, as a retail unequip), so the slot never falls back to them. Only the shown
+-- player's own board; slot 8 (the aura slot itself) and the mix store are never touched here. Victory Road (no
+-- projection answer): nothing changes. PL fields only (no main-chunk locals).
+PL.FB_LIST_BOARD_SLOTS = 8                    -- board slots 0..7 (8 is the aura slot)
+function PL.FbWanted(half, id)
+  if id == nil or id == 0 then
+    return false
+  end
+  local kind = PL.HsKind(id)
+  if half == "mix" then
+    return kind == 1
+  end
+  return kind == 0 or kind == 2
+end
+
+-- the board slots holding a fallback of `half`: the list positions with such a move, and (mix half) any board slot
+function PL.FbSources(half)
+  local out, seen = {}, {}
+  for p = 0, EVT_NORMAL_NUM - 1 do
+    local id = EVT_ListSkill(p)
+    if PL.FbWanted(half, id) then
+      out[#out + 1] = {slot = p, id = id}
+      seen[p] = true
+    end
+  end
+  if half == "mix" then
+    for b = 0, PL.FB_LIST_BOARD_SLOTS - 1 do
+      local id = EVT_BoardSkill(b)
+      if not seen[b] and PL.FbWanted(half, id) then
+        out[#out + 1] = {slot = b, id = id}
+      end
+    end
+  end
+  return out
+end
+
+-- the board service of the fallback clear: Inazuma Fantasy's board commands, else Character Reforged's own
+-- (scripts\board_slots.lua, any board slot 0..8, the same arguments and answers); one of them, never both
+function PL.FbBoardWritable()
+  return EVT_HasBoard() or PL.HasService("aura_slot")
+end
+-- clear one board slot (keepOpen mode 1: the placed item off; 3: the native item off too) -> status
+function PL.FbBoardClear(slot, mode)
+  if EVT_HasBoard() then
+    return EVT_Call(C.EVT_CLEAR, n, slot, mode)
+  end
+  local ok, st = pcall(funcLuaCommand, PL.CR_BOARD[C.EVT_CLEAR], n, slot, mode)
+  return ok and st or nil
+end
+
+-- the technique a list position takes when its aura leaves: its board cell's technique, else the learnset move of that
+-- slot (learned by level); never an aura, never a move already in the list. None: the position is emptied.
+function PL.FbRefill(pos)
+  local function usable(m)
+    if m == nil or m == 0 or PL.IsSpecialCached(m) then
+      return false
+    end
+    local at = funcLuaCommand(C.SKILL_POS, n, m)
+    return not (at ~= nil and at >= 0 and at < EVT_NORMAL_NUM)
+  end
+  local m = PL.BoardTechniqueAt(pos)
+  if not usable(m) then
+    local ls = PL.Learnset()
+    m = ls.skill[pos + 1] or 0
+    local lv = funcLuaCommand(C.CHARA_GET, n, 0) or 0
+    if (ls.lv[pos + 1] or 0) > lv then
+      m = 0
+    end
+  end
+  if usable(m) then
+    funcLuaCommand(C.SET_SKILL, n, m, pos)
+    if EVT_ListSkill(pos) == EVT_U32(m) then
+      return m
+    end
+  end
+  funcLuaCommand(C.REMOVE_SKILL, n, pos)
+  return 0
+end
+
+-- take the fallbacks of `half` off the board -> how many slots were cleared. A keshin, totem or armour of the list
+-- goes entirely (owner 2026-10-15: armours too): the placed item, then the native one, then its list position.
+function PL.FbClear(half, why)
+  if PL.readonly or n == nil or n == 0 or EVT_IsPrime() or not PL.FbBoardWritable() or not PL.HS_ON then
+    return 0
+  end
+  local okp, proj = pcall(PL.CrProjection)
+  if not okp or proj == nil then
+    return 0
+  end
+  local cleared = 0
+  for _, s in ipairs(PL.FbSources(half)) do
+    local st = PL.FbBoardClear(s.slot, 1)
+    if EVT_BoardSkill(s.slot) == s.id then
+      st = PL.FbBoardClear(s.slot, 3)          -- a native move: taken off too
+    end
+    local left = EVT_BoardSkill(s.slot)
+    local listed = EVT_ListSkill(s.slot) == s.id
+    if listed then
+      PL.FbRefill(s.slot)
+      listed = EVT_ListSkill(s.slot) == s.id
+    end
+    local gone = left ~= s.id and not listed
+    if gone then
+      cleared = cleared + 1
+    end
+    pcall(EVT_Call, C.EVT_LOG, "skill_slots", "fantasy fallback", why, half, string.format("%08X", EVT_U32(n)),
+      "board slot", s.slot, EVT_Name(s.id), "clear status", tostring(st), EVT_HasBoard() and "IF board" or "CR board",
+      gone and "removed" or "still there")
+  end
+  return cleared
+end
+
+PL.FbPrevEquip = EVT_Equip
+function EVT_Equip(row, skill, inv_hint, cur)
+  local r = PL.FbPrevEquip(row, skill, inv_hint, cur)   -- not inside a pcall: it may yield (messages)
+  if row == 0 and skill ~= nil and skill ~= 0 and r ~= false then
+    local okk, kind = pcall(PL.HsKind, skill)
+    local half = (okk and kind == 1) and "mix" or ((okk and (kind == 0 or kind == 2)) and "aura" or nil)
+    local placed = half == "mix" and PL.HsMix() == EVT_U32(skill) or (half == "aura" and EVT_Skill(0) == EVT_U32(skill))
+    if placed then
+      local ok, cleared = pcall(PL.FbClear, half, "equip")
+      if ok and cleared > 0 then
+        pcall(EVT_AfterChange)
+      end
+    end
+  end
+  return r
+end
+
+PL.FbPrevRestore = EVT_RestoreCoroutine
+function EVT_RestoreCoroutine(row)
+  if row ~= 0 or not PL.HS_ON then
+    return PL.FbPrevRestore(row)
+  end
+  local mix = PL.HsMix()
+  local aura_half = PL.hs_half == 0 or mix == 0
+  local okp, proj = pcall(PL.CrProjection)
+  -- the aura half shows a list fallback and its own slot is empty: the removal is the fallback's
+  if aura_half and okp and proj ~= nil and EVT_Skill(0) == 0 and #PL.FbSources("aura") > 0 then
+    local ok, cleared = pcall(PL.FbClear, "aura", "remove")
+    funcLuaCommand(C.SE, (ok and cleared > 0) and SE_REMOVE or SE_NG)
+    pcall(EVT_AfterChange)
+    EVT_FocusRow(0)
+    return
+  end
+  local r = PL.FbPrevRestore(row)
+  local ok, cleared = pcall(PL.FbClear, aura_half and "aura" or "mix", "reset / remove")
+  if ok and cleared > 0 then
+    pcall(EVT_AfterChange)
+  end
+  return r
+end
+-- the Hiper row can be emptied by Eliminar (hold) when a half shows something, its own slot or a fallback
+function PL.RowRemovable(row)
+  if row ~= 0 or not PL.HS_ON then
+    return false
+  end
+  local okS, aura, mix = pcall(PL.CrShownSlots)
+  return okS and ((aura or 0) ~= 0 or (mix or 0) ~= 0)
+end
+
+-- Restablecer (tap) on the aura half with its own slot empty: a shown list fallback goes as with Eliminar; nothing to
+-- restore and nothing shown: the error sound, no board write
+PL.FbPrevReset = PL.BaseResetCoroutine
+function EVT_ResetCoroutine(row)
+  if row ~= 0 or not PL.HS_ON or EVT_Skill(0) ~= 0 or (PL.hs_half == 1 and PL.HsMix() ~= 0) then
+    return PL.FbPrevReset(row)
+  end
+  local okp, proj = pcall(PL.CrProjection)
+  if okp and proj ~= nil and #PL.FbSources("aura") > 0 then
+    return EVT_RestoreCoroutine(0)
+  end
+  local okk, kit = pcall(PL.ResetKit, 0)
+  if okk and (kit or 0) == 0 then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  return PL.FbPrevReset(row)
+end
+-- ===== Fantasy slot fallbacks END =====

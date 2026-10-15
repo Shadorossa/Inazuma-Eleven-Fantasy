@@ -1,4 +1,4 @@
--- menu_engine: the in-match settings window (docs/framework/match-panel.md). A game-style list window a mod opens over
+-- menu_engine: the in-match settings window. A game-style list window a mod opens over
 -- a match (or any menu): a title bar, rows «label      ‹ value ›», a highlighted row, a line of button hints. The
 -- framework draws it and reads the input; the mod gives the rows and decides what a row does. Runs in every script VM
 -- (lua\_all) but only defines the table VRFW_MatchPanel: nothing happens until a mod's Lua calls
@@ -6,11 +6,11 @@
 -- add_layer, objects of the framework's content\menus\match_panel.toml), then VRFW_MatchPanel.step() every frame of
 -- that menu.
 --
--- Look (VRFW 2.2.34, owner 2026-10-12: «in the game's style»): the retail options screen's own sprites
+-- Look: the retail options screen's own sprites
 -- (108_option: option01_23 the slanted list cells, their cyan focus frame and the arrow buttons; option01_02 the blue
 -- title bar), so the window looks like the game's options list. A mod may pass its own sprites (`style`, below).
 -- Values are drawn next to two arrow sprites, never with «<» «>» characters: the game's text markup reads those as a
--- tag and the value vanished (training field, 2026-10-12).
+-- tag and the value vanished (training field).
 --
 -- Layers (added by the host mod, never a retail object swapped):
 --   vrfw_mp_plate  cmn01_10_new_icon quads re-skinned with the style's sprites, drawn in instance order: 0, 1 the
@@ -35,7 +35,7 @@
 --   closed = function(why) end,                -- "back" | "closed" | "error" | the mod's reason
 --   style = { <part> = { "#/menu/…g4tx", "<sprite>" }, … },   -- parts: panel, row, title, hint, focus, frame,
 --                                              -- arrow_l, arrow_r (a part left out: the retail default below); the
---                                              -- 2.0.106 form { atlas, back, hover } still works (back = row, hover = focus)
+--                                              -- the old form { atlas, back, hover } still works (back = row, hover = focus)
 --   pause = true,
 --   width = 1040, row_h = 46, top = nil,       -- screen px (1920 x 1080); top nil = centred
 -- }

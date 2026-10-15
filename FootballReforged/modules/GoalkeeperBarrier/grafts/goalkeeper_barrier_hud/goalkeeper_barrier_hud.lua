@@ -1,0 +1,398 @@
+-- ===== EVT FootballReforged barrier hud BEGIN =====
+-- EVT goalkeeper_barrier_hud (mod Goalkeeper Barrier, a module of Football Reforged; docs/game/mechanics/gk-barrier.md
+-- §4): each keeper's barrier drawn INSIDE his fatigue bar of the scoreboard (layer soccer00_01_kp_scoreboard_kp, rate
+-- settings gauge_self / gauge_enemy) as a bronze segment: the barrier is the TOP 25 % of the keeper bar (the part that
+-- drains first, at the bar's GOAL SIDE: own team's bar (left of the scoreboard, locator _pos_hp01) its LEFT end,
+-- rival's bar (right, _pos_hp02) its RIGHT end). The segment runs from the barrier line (75 % of the bar) to the bar's
+-- current end: the whole top 25 % for a full bar, shorter as the bar drops, hidden at 75 % or below.
+-- Layer football_reforged_barrier (the mod's content\menus\goalkeeper_barrier_hud.toml: the retail btl06_13 gauge, 2
+-- instances hung on _pos_hp01 / _pos_hp02): only its fill is shown (frame, red trail and label hidden), its sprite
+-- hp_bar02 swapped for the bronze football_reforged_barrier_fill01, its rate kept full; the segment is the layer's
+-- local position + x scale. Placement is measured, not assumed: each instance's local position -> screen mapping is
+-- probed once (CMND_GET_MESH_GLOBAL_POSITION of its fill node at two positions and two scales), the target is the
+-- keeper bar read from the scoreboard's locators _pos_hp01 / _pos_hp02 every frame, and a drift of the instance's
+-- origin (the scoreboard sliding, the attach applying late) is corrected from the fill node's reading. Without global
+-- positions the static locator-space formula is used. Value: CMND_GOALKEEPERBARRIER_GET(-1 own / -2
+-- rival) -> ok, percent (segment length, % of the bar), …, barrier share (the line); no answer = hidden. Hidden too while the keeper bar layer is
+-- closed. Engine calls only from the wrapped UpdateScoreboardKeeperHp (every frame from StepSoccerConstantMenu); every
+-- call goes through pcall. loader.log: the first lines «FR_BARRIER ...» (CMND_EVT_LOG) say what the step saw.
+FOOTBALL_BARRIER_HUD = true                   -- false: no barrier segments
+FOOTBALL_BARRIER_CMD = @crc:CMND_GOALKEEPERBARRIER_GET@
+-- each keeper bar in its locator's space (layout units, y up): _keeper_hp_gauge01_s / 02_s, top-left (-182, 12), 364 x 24
+FOOTBALL_BARRIER_BAR_LEFT = -182
+FOOTBALL_BARRIER_BAR_TOP = 12
+FOOTBALL_BARRIER_BAR_WIDTH = 364
+FOOTBALL_BARRIER_BAR_HEIGHT = 24
+FOOTBALL_BARRIER_LOCATOR_SPAN = 670           -- x distance from _pos_hp01 (-335) to _pos_hp02 (335), layout units
+-- the end of each bar its fill drains from (the barrier's end): own bar its left end, rival's its right end
+FOOTBALL_BARRIER_TOP_AT_LEFT = {true, false}
+FOOTBALL_BARRIER_SHARE = {25, 25}             -- per side: the barrier share of the bar in % (from the command)
+FOOTBALL_BARRIER_DEBUG = false                -- from the command (config.toml hud_debug): plain retail gauge, whole share
+FOOTBALL_BARRIER_BAR_RATE = 3112466283        -- the retail keeper bar fill: (3 own / 4 rival) -> ok, rate 0..1
+FOOTBALL_BARRIER_RIVAL_DX = 0                 -- extra offset of the rival's segment (layout units)
+FOOTBALL_BARRIER_RIVAL_DY = 0
+FOOTBALL_BARRIER_PROBE_STEP = 100             -- local units an instance moves while its mapping is measured
+FOOTBALL_BARRIER_PROBE_WAIT = 2               -- frames between a probe change and its reading
+FOOTBALL_BARRIER_SETTLE = 1                   -- frames between a placement and its check
+FOOTBALL_BARRIER_SNAP = 2                     -- screen units: a segment this close to its target is shown
+FOOTBALL_BARRIER_FILL_FRAMES = 10             -- frames after a show in which the fill is set up every frame
+FOOTBALL_BARRIER_FILL_EVERY = 30              -- then every this many frames while shown
+FOOTBALL_BARRIER_LOGS = 0
+FOOTBALL_BARRIER_SHOWN = {false, false}
+FOOTBALL_BARRIER_LAST = {nil, nil}
+FOOTBALL_BARRIER_MAPPING = {nil, nil}         -- per instance: measured mapping, false = not measurable
+
+local BARRIER_LAYER = 1188342059 --[[football_reforged_barrier]]
+local BARRIER_KEEPER_BARS = 546630184 --[[soccer00_01_kp_scoreboard_kp]]
+local BARRIER_RATE_BAR = 3060237847 --[[hp_bar]]
+local BARRIER_RATE_RED = 2546116024 --[[hp_bar_red]]
+local BARRIER_MESH_FRAME = 1837325853 --[[_hp_base01]]
+local BARRIER_MESH_LABEL = 1257514352 --[[_gtxt_stamina01]]
+local BARRIER_MESH_TRAIL = 2609329121 --[[_hp_empty01]]
+local BARRIER_ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx]]
+local BARRIER_TEXTURE_SLOT = 1460691304 --[[hp_bar02: the fill's texture slot]]
+local BARRIER_TEXTURE_BRONZE = 2373451861 --[[football_reforged_barrier_fill01]]
+-- measured placement: nodes, commands and per-instance state (one local: the chunk's local budget is shared)
+local barrier_hud = {
+  FILL_NODE = 2043683848 --[[_hp_bar02]],
+  LOCATORS = {2302841237 --[[_pos_hp01]], 273399855 --[[_pos_hp02]]},
+  GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]],
+  SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]],
+  SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]],
+  RATE_BOUND = 1203687233 --[[is the rate bound: (layer, rate, 0, instance)]],
+  RATE_BIND = 541357333 --[[bind a rate: (layer, rate, group index, instance)]],
+  RATE_SET = 1595998683 --[[set a rate: (layer, rate, 0, value, instance, immediate)]],
+  probe = {nil, nil},
+  place = {nil, nil},
+  fill = {0, 0},          -- per instance: frames since it was shown
+  fill_logged = {false, false},
+  state = {nil, nil},     -- per side: what it draws, logged on a change
+}
+-- the source gauge's fill _hp_bar02: top-left (100, -820), 448 x 24 (layout units, y up)
+local BARRIER_SOURCE_X, BARRIER_SOURCE_Y, BARRIER_SOURCE_W, BARRIER_SOURCE_H = 100, -820, 448, 24
+local barrier_ready = {false, false, init = false}
+
+local function FootballBarrier_Menu(...)
+  if type(funcLuaMenuCommand) ~= "function" then
+    return nil
+  end
+  local r = table.pack(pcall(funcLuaMenuCommand, ...))
+  if not r[1] then
+    return nil
+  end
+  return table.unpack(r, 2, r.n)
+end
+
+local function FootballBarrier_Log(...)
+  if FOOTBALL_BARRIER_LOGS >= 40 or type(funcLuaCommand) ~= "function" then
+    return
+  end
+  FOOTBALL_BARRIER_LOGS = FOOTBALL_BARRIER_LOGS + 1
+  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "FR_BARRIER", ...)
+end
+
+-- the barrier of side 1 (own) / 2 (rival): its percent 0..100, or nil (nothing to show)
+function FootballBarrier_Value(side)
+  if type(funcLuaCommand) ~= "function" then
+    return nil
+  end
+  -- the keeper bar as the scoreboard draws it (the retail UpdateScoreboardKeeperHp's own read): the barrier's source
+  local bar_ok, has_bar, bar_rate = pcall(funcLuaCommand, FOOTBALL_BARRIER_BAR_RATE, side == 1 and 3 or 4)
+  if not bar_ok or not has_bar or type(bar_rate) ~= "number" then
+    bar_rate = nil
+  end
+  local ok, has, percent, _, _, _, share, debug = pcall(funcLuaCommand, FOOTBALL_BARRIER_CMD, side == 1 and -1 or -2, bar_rate)
+  if not ok or has ~= true or type(percent) ~= "number" then
+    return nil
+  end
+  if type(share) == "number" and share > 0 and share <= 100 then
+    FOOTBALL_BARRIER_SHARE[side] = share
+  end
+  FOOTBALL_BARRIER_DEBUG = debug == 1
+  if FOOTBALL_BARRIER_DEBUG then
+    return FOOTBALL_BARRIER_SHARE[side]
+  end
+  return math.max(0, math.min(100, percent))
+end
+
+-- the left end of instance i's segment `width` long, in its locator's space: it starts or ends at the barrier line,
+-- toward the end its bar drains from
+function FootballBarrier_SegmentLeft(i, width)
+  local line = FOOTBALL_BARRIER_BAR_WIDTH * FOOTBALL_BARRIER_SHARE[i + 1] / 100
+  if FOOTBALL_BARRIER_TOP_AT_LEFT[i + 1] then
+    return FOOTBALL_BARRIER_BAR_LEFT + line - width
+  end
+  return FOOTBALL_BARRIER_BAR_LEFT + FOOTBALL_BARRIER_BAR_WIDTH - line
+end
+
+-- the static placement (locator space, no measurement): instance i (0 own, 1 rival), a segment `width` long
+function FootballBarrier_LayerPos(i, width)
+  local sx, sy = width / BARRIER_SOURCE_W, FOOTBALL_BARRIER_BAR_HEIGHT / BARRIER_SOURCE_H
+  local left = FootballBarrier_SegmentLeft(i, width)
+  local dx, dy = 0, 0
+  if i == 1 then
+    dx, dy = FOOTBALL_BARRIER_RIVAL_DX, FOOTBALL_BARRIER_RIVAL_DY
+  end
+  return left - BARRIER_SOURCE_X * sx + dx, FOOTBALL_BARRIER_BAR_TOP - BARRIER_SOURCE_Y * sy + dy, sx, sy
+end
+
+function FootballBarrier_Global(layer, index, node)
+  local x, y = FootballBarrier_Menu(barrier_hud.GLOBAL_POS, layer, index, node)
+  if type(x) ~= "number" or type(y) ~= "number" then
+    return nil
+  end
+  return x, y
+end
+
+-- measures instance i's mapping: screen = origin + unit * (position + scale * object point), from its fill node read at
+-- position 0 / scale 1, position step / scale 1 and position 0 / scale 2. Called once per frame; true when known.
+function FootballBarrier_Probe(i)
+  if FOOTBALL_BARRIER_MAPPING[i + 1] ~= nil then
+    return true
+  end
+  local p = barrier_hud.probe[i + 1]
+  if p == nil then
+    barrier_hud.probe[i + 1] = {stage = 1, wait = FOOTBALL_BARRIER_PROBE_WAIT}
+    FootballBarrier_Menu(barrier_hud.SET_SCALE, BARRIER_LAYER, 1, 1, 1, i)
+    FootballBarrier_Menu(barrier_hud.SET_POS, BARRIER_LAYER, 0, 0, 0, i)
+    return false
+  end
+  if p.wait > 0 then
+    p.wait = p.wait - 1
+    return false
+  end
+  local x, y = FootballBarrier_Global(BARRIER_LAYER, i, barrier_hud.FILL_NODE)
+  if x == nil then
+    FOOTBALL_BARRIER_MAPPING[i + 1] = false
+    FootballBarrier_Log("instance", i, "no global position for the fill node: static placement")
+    return true
+  end
+  local step = FOOTBALL_BARRIER_PROBE_STEP
+  if p.stage == 1 then
+    p.x1, p.y1, p.stage, p.wait = x, y, 2, FOOTBALL_BARRIER_PROBE_WAIT
+    FootballBarrier_Menu(barrier_hud.SET_POS, BARRIER_LAYER, step, step, 0, i)
+    return false
+  end
+  if p.stage == 2 then
+    p.x2, p.y2, p.stage, p.wait = x, y, 3, FOOTBALL_BARRIER_PROBE_WAIT
+    FootballBarrier_Menu(barrier_hud.SET_POS, BARRIER_LAYER, 0, 0, 0, i)
+    FootballBarrier_Menu(barrier_hud.SET_SCALE, BARRIER_LAYER, 2, 2, 1, i)
+    return false
+  end
+  local unit_x, unit_y = (p.x2 - p.x1) / step, (p.y2 - p.y1) / step
+  if math.abs(unit_x) < 0.05 or math.abs(unit_y) < 0.05 then
+    FOOTBALL_BARRIER_MAPPING[i + 1] = false
+    FootballBarrier_Log("instance", i, "position does not move the fill node", string.format("%.3f %.3f", unit_x, unit_y),
+      "static placement")
+    return true
+  end
+  local node_x, node_y = x - p.x1, y - p.y1
+  FOOTBALL_BARRIER_MAPPING[i + 1] = {unit_x = unit_x, unit_y = unit_y, node_x = node_x, node_y = node_y,
+    origin_x = p.x1 - node_x, origin_y = p.y1 - node_y}
+  FOOTBALL_BARRIER_LAST[i + 1] = nil
+  FootballBarrier_Log("instance", i, "mapping unit", string.format("%.3f %.3f", unit_x, unit_y), "origin",
+    string.format("%.1f %.1f", p.x1 - node_x, p.y1 - node_y))
+  return true
+end
+
+-- the measured placement of instance i for a segment `width` layout units long, from the scoreboard's keeper bar
+-- locators: local position and scale, or nil (locators not readable)
+function FootballBarrier_MeasuredPos(i, width, map)
+  local own_x, own_y = FootballBarrier_Global(BARRIER_KEEPER_BARS, 0, barrier_hud.LOCATORS[1])
+  local rival_x, rival_y = FootballBarrier_Global(BARRIER_KEEPER_BARS, 0, barrier_hud.LOCATORS[2])
+  if own_x == nil or rival_x == nil then
+    return nil
+  end
+  local board_x = (rival_x - own_x) / FOOTBALL_BARRIER_LOCATOR_SPAN
+  if math.abs(board_x) < 0.05 then
+    return nil
+  end
+  local board_y = board_x * map.unit_y / map.unit_x
+  local target_x, target_y
+  local left = FootballBarrier_SegmentLeft(i, width)
+  if i == 0 then
+    target_x = own_x + left * board_x
+    target_y = own_y + FOOTBALL_BARRIER_BAR_TOP * board_y
+  else
+    target_x = rival_x + (left + FOOTBALL_BARRIER_RIVAL_DX) * board_x
+    target_y = rival_y + (FOOTBALL_BARRIER_BAR_TOP + FOOTBALL_BARRIER_RIVAL_DY) * board_y
+  end
+  local sx = width * board_x / (map.unit_x * BARRIER_SOURCE_W)
+  local sy = FOOTBALL_BARRIER_BAR_HEIGHT * board_y / (map.unit_y * BARRIER_SOURCE_H)
+  local px = (target_x - map.origin_x) / map.unit_x - sx * BARRIER_SOURCE_X
+  local py = (target_y - map.origin_y) / map.unit_y - sy * BARRIER_SOURCE_Y
+  return px, py, sx, sy
+end
+
+-- places instance i for a segment `width` long; true once it sits on its target (then it may be shown)
+function FootballBarrier_Place(i, width)
+  local map = FOOTBALL_BARRIER_MAPPING[i + 1]
+  local place = barrier_hud.place[i + 1]
+  if map and place and place.wait > 0 then
+    place.wait = place.wait - 1
+    return place.settled
+  end
+  -- a moved origin (the scoreboard sliding, a late attach) is corrected from the fill node's reading
+  if map and place then
+    local x, y = FootballBarrier_Global(BARRIER_LAYER, i, barrier_hud.FILL_NODE)
+    if x ~= nil then
+      local origin_x = x - map.unit_x * place.px - place.sx * map.node_x
+      local origin_y = y - map.unit_y * place.py - place.sy * map.node_y
+      local error_x, error_y = origin_x - map.origin_x, origin_y - map.origin_y
+      if math.abs(error_x) <= FOOTBALL_BARRIER_SNAP and math.abs(error_y) <= FOOTBALL_BARRIER_SNAP then
+        place.settled = true
+      end
+      if math.abs(error_x) > 0.5 or math.abs(error_y) > 0.5 then
+        map.origin_x, map.origin_y = origin_x, origin_y
+      end
+    end
+  end
+  local px, py, sx, sy
+  if map then
+    px, py, sx, sy = FootballBarrier_MeasuredPos(i, width, map)
+  end
+  local measured = px ~= nil
+  if not measured then
+    px, py, sx, sy = FootballBarrier_LayerPos(i, width)
+  end
+  if place == nil or math.abs(place.px - px) > 0.05 or math.abs(place.py - py) > 0.05 or math.abs(place.sx - sx) > 0.0005
+      or math.abs(place.sy - sy) > 0.0005 then
+    FootballBarrier_Menu(barrier_hud.SET_SCALE, BARRIER_LAYER, sx, sy, 1, i)
+    FootballBarrier_Menu(barrier_hud.SET_POS, BARRIER_LAYER, px, py, 0, i)
+    local settled = (place ~= nil and place.settled) or not measured
+    place = {px = px, py = py, sx = sx, sy = sy, wait = FOOTBALL_BARRIER_SETTLE, settled = settled}
+    barrier_hud.place[i + 1] = place
+    if FOOTBALL_BARRIER_LAST[i + 1] == nil or math.abs(FOOTBALL_BARRIER_LAST[i + 1] - width) > 0.5 then
+      FOOTBALL_BARRIER_LAST[i + 1] = width
+      FootballBarrier_Log("instance", i, measured and "measured" or "static", "width", string.format("%.1f", width),
+        "pos scale", string.format("%.1f %.1f / %.3f %.3f", px, py, sx, sy))
+    end
+  elseif not measured then
+    place.settled = true
+  end
+  return place.settled
+end
+
+-- instance i's fill full and alone: the rates bound (when the layer lost them) and set (bar full, no red trail), the
+-- gauge's frame, label and red trail hidden
+function FootballBarrier_Fill(i)
+  local bound = FootballBarrier_Menu(barrier_hud.RATE_BOUND, BARRIER_LAYER, BARRIER_RATE_BAR, 0, i)
+  if bound ~= true then
+    FootballBarrier_Menu(barrier_hud.RATE_BIND, BARRIER_LAYER, BARRIER_RATE_BAR, 0, i)
+    FootballBarrier_Menu(barrier_hud.RATE_BIND, BARRIER_LAYER, BARRIER_RATE_RED, 0, i)
+  end
+  FootballBarrier_Menu(barrier_hud.RATE_SET, BARRIER_LAYER, BARRIER_RATE_BAR, 0, 1, i, true)    -- the fill always full
+  FootballBarrier_Menu(barrier_hud.RATE_SET, BARRIER_LAYER, BARRIER_RATE_RED, 0, 0, i, true)    -- no red trail
+  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_FRAME, false, i)
+  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
+  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
+  if FOOTBALL_BARRIER_SHOWN[i + 1] and not barrier_hud.fill_logged[i + 1] then
+    barrier_hud.fill_logged[i + 1] = true
+    FootballBarrier_Log("instance", i, "fill set after the show, rate bound before", tostring(bound))
+  end
+end
+
+local function FootballBarrier_HideOne(i)
+  if FOOTBALL_BARRIER_SHOWN[i + 1] then
+    FOOTBALL_BARRIER_SHOWN[i + 1] = false
+    FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)
+  end
+end
+
+function FootballBarrier_Step()
+  if not FOOTBALL_BARRIER_HUD or FootballBarrier_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], BARRIER_KEEPER_BARS, 0) ~= true then
+    FootballBarrier_HideOne(0)
+    FootballBarrier_HideOne(1)
+    return
+  end
+  local widths = {}
+  for side = 1, 2 do
+    local percent = FootballBarrier_Value(side)
+    -- one line per change of what a side draws (no answer / barrier 0 / a segment)
+    local state = percent == nil and "no answer" or (percent * FOOTBALL_BARRIER_BAR_WIDTH / 100 < 0.5 and "barrier 0: hidden" or "segment")
+    if barrier_hud.state[side] ~= state then
+      barrier_hud.state[side] = state
+      FootballBarrier_Log("instance", side - 1, state, percent and string.format("%.1f %%", percent) or "")
+    end
+    if percent ~= nil then
+      local width = FOOTBALL_BARRIER_BAR_WIDTH * percent / 100
+      if width >= 0.5 then
+        widths[side] = width
+      end
+    end
+  end
+  if widths[1] == nil and widths[2] == nil then
+    FootballBarrier_HideOne(0)
+    FootballBarrier_HideOne(1)
+    return
+  end
+  if FootballBarrier_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], BARRIER_LAYER) ~= true then
+    barrier_ready = {false, false, init = false}
+    barrier_hud.probe, barrier_hud.place = {nil, nil}, {nil, nil}
+    FOOTBALL_BARRIER_MAPPING = {nil, nil}
+    FOOTBALL_BARRIER_SHOWN = {false, false}
+    FootballBarrier_Menu(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], BARRIER_LAYER)
+    return
+  end
+  if FootballBarrier_Menu(3057768039 --[[CMND_IS_LOADING_LAYER]], BARRIER_LAYER) == true then
+    return
+  end
+  -- the layer opens with both instances visible as the retail gauge: hidden at once, each shown once placed
+  if not barrier_ready.init then
+    barrier_ready.init = true
+    for i = 0, 1 do
+      FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)
+      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_FRAME, false, i)
+      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
+      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
+    end
+    FOOTBALL_BARRIER_SHOWN = {false, false}
+    FootballBarrier_Log("layer open: instances hidden")
+  end
+  for i = 0, 1 do
+    local width = widths[i + 1]
+    if width == nil then
+      FootballBarrier_HideOne(i)
+    else
+      if not barrier_ready[i + 1] then
+        barrier_ready[i + 1] = true
+        FOOTBALL_BARRIER_LAST[i + 1] = nil
+        FOOTBALL_BARRIER_SHOWN[i + 1] = false
+        FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)    -- hidden until placed
+        FootballBarrier_Fill(i)
+        if FOOTBALL_BARRIER_DEBUG then
+          FootballBarrier_Log("instance", i, "debug: the plain retail gauge over the barrier share")
+        else
+          FootballBarrier_Menu(558735651 --[[swap texture]], BARRIER_LAYER, BARRIER_ATLAS, BARRIER_TEXTURE_BRONZE, BARRIER_TEXTURE_SLOT, 0, i)
+        end
+      end
+      if FootballBarrier_Probe(i) and FootballBarrier_Place(i, width) then
+        if not FOOTBALL_BARRIER_SHOWN[i + 1] then
+          FOOTBALL_BARRIER_SHOWN[i + 1] = true
+          barrier_hud.fill[i + 1] = 0
+          FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, true)
+          local x, y = FootballBarrier_Global(BARRIER_LAYER, i, barrier_hud.FILL_NODE)
+          FootballBarrier_Log("shown", i, "fill node at", string.format("%.1f %.1f", x or 0, y or 0))
+        end
+        -- showing an instance replays the gauge's open animation, which starts the fill at rate 0 (only its first
+        -- column drawn, a thin line): the full fill is set again right after the show and then now and then
+        local frames = barrier_hud.fill[i + 1]
+        barrier_hud.fill[i + 1] = frames + 1
+        if frames < FOOTBALL_BARRIER_FILL_FRAMES or frames % FOOTBALL_BARRIER_FILL_EVERY == 0 then
+          FootballBarrier_Fill(i)
+        end
+      end
+    end
+  end
+end
+
+local FootballBarrier_previousUpdate = UpdateScoreboardKeeperHp
+function UpdateScoreboardKeeperHp(...)
+  local r = {n = 0}
+  if type(FootballBarrier_previousUpdate) == "function" then
+    r = table.pack(FootballBarrier_previousUpdate(...))
+  end
+  pcall(FootballBarrier_Step)
+  return table.unpack(r, 1, r.n)
+end
+-- ===== EVT FootballReforged barrier hud END =====

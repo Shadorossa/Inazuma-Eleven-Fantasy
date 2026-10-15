@@ -1,23 +1,33 @@
--- VRFW › team synergies declared by mods (docs/framework/synergy.md §5, §10): the synergy list's detail panel
+-- VRFW › team synergies declared by mods: the synergy list's detail panel
 -- (team16_02_synergy_item_detail, rows team16_03_synergy_chara_condition_list). The engine draws the declared rows
 -- itself (the framework's hook on its row builder: the nexus, the members that fill the slots, a pool character for
 -- an empty slot); after the game's code this patch, for a declared synergy only:
---   * the nexus row of a one-person nexus: his face in the big square on an orange plate (a vrfw_syn_crest instance
---     with the flat sprite vrfw_syn_box under a vrfw_syn_face miniface at full size), the status square orange;
---   * the nexus row of a several-person nexus: the NEXUS icon in the big square (the row's face mesh with the sprite vrfw_syn_nexus), the small
---     status square orange (an instance of vrfw_syn_face drawing the flat sprite vrfw_syn_box: CMND_SET_PRIM_COLOR does
---     not tint these quads), no tag text; the nexus in the team: his name; a missing nexus (team known): the minifaces
---     of every allowed nexus character right after the icon (layer vrfw_syn_face); without that layer: «(missing)»;
+--   * the nexus row: drawn as any member row (the game's face of the nexus, his name, the retail check box), only the
+--     row line orange; a missing nexus (team known): his face grey and translucent, and for a several-person nexus the
+--     minifaces of the other allowed nexus characters right after it (layer vrfw_syn_face); without that layer:
+--     «(missing)». (the orange status square and the orange plate of the one-person nexus showed
+--     as broken placeholders, an orange square and an orange square in a pink hexagon; both removed, as is the NEXUS
+--     sprite on the face mesh)
 --   * an empty slot: no face, no plate, no series icons, no label; the crests of the pool's teams in a row on the right
---     (layer vrfw_syn_crest: the plain emblem, none of the tile's plates / frames); a pool that names no team (or no
---     crest layer): the slot's hint text on the grey plate;
+--     (layer vrfw_syn_crest: the plain emblem, none of the tile's plates / frames, at the size of the row's series
+--     icons); a pool that names no team (or no crest layer): the slot's hint text on the grey plate;
 --   * a synergy declared with `slot_members`: every slot row drawn as the nexus row: its pool's team crest in the big
 --     square (layer vrfw_syn_crest), the filler's name when filled, else the pool's members' minifaces after the crest;
---   * the last filled row: «+N» when more pool players are in the team than the slots (rule "min");
+--   * a filled row: the filler's name only (no «+N»); with team crests: the crests at the right end, the row's series
+--     icons redrawn just left of them (layer vrfw_syn_icon);
+--   * an empty staff slot (a pool with a role, no team): the role's icon in the face square, the required series' icons
+--     right-aligned (layer vrfw_syn_icon: CMND_VRFW_ROLE_ICON / CMND_VRFW_SERIES_ICON drawn with the sprite command), the
+--     role's short name in grey;
+--   * a present nexus of a several-person declaration: his face and name at the left, the other persons' faces at the far right;
 --   * an inactive synergy: the other rows' names grey, the title and effect texts at half alpha.
 -- Every row is put back to the game's look first (tints, alpha, meshes), also for an undeclared synergy: the rows are
 -- reused by every synergy's panel; the extra layers' instances are hidden. The extra pieces are placed from the rows'
 -- own screen positions (CMND_GET_MESH_GLOBAL_POSITION) and placed again each frame while shown (open animations).
+-- An extra instance's look (which tile / row meshes it hides) is set again once it is built (OnOpenLayer).
+-- The crest tile's node is shown FIRST, then its plates hidden: CMND_SET_NODE_VISIBLE sets the flag on every mesh under
+-- the node (the retail SetupEmblemIcon hides _pos_enjoy_list01, the parent of the emblem quad, then shows the quad and
+-- the outline one by one). Showing _pos_enjoy_list01 after the hides re-showed every plate under it: the red / pink
+-- team-colour hexagons and the cyan cursor outline around each crest (twice).
 -- No engine call at load time; every call guarded.
 
 VRFW_Synergy = VRFW_Synergy or {}
@@ -59,14 +69,10 @@ local CHECK = 2309656400                   -- _icon_check01
 local SERIES = { 3231997250, 1504513272, 782908526 }   -- _icon_series_dmy01..03
 local DETAIL_TEXTS = { 1704438437, 852552077, 2883172407, 3705571489 }   -- _text_name01, _text_win01..03
 local TXT_MISSING = 787277494              -- VRFW.SynergyNexusMissing
-local TXT_MORE = 446965088                 -- VRFW.SynergyMore («+{n}»)
-local LOAD_TEX = 839427544               -- CMND_LOAD_MENU_RES_TEXTURE (path)
-local TEX_LOADING = 1506186496             -- (texture crc) -> true while still loading
-local SPRITE = 558735651                   -- (layer, texture crc, sprite crc, texture slot crc, 0, instance)
-local ART_PATH = "#/menu/220_img/vrfw_syn/vrfw_syn.g4tx"
-local ART = 2748818662                     -- crc32(ART_PATH)
-local SPR_NEXUS = 4142643543               -- crc32("vrfw_syn_nexus"): 64 x 64, the nexus icon
-local SPR_BOX = 1643701063                 -- crc32("vrfw_syn_box"): 32 x 32, the orange status square
+local TXT_ROLE = { manager = 172090118, coach = 3665956829 }   -- VRFW.SynergyRoleManager / VRFW.SynergyRoleCoach
+local CMD_SERIES_ICON = 817571471          -- CMND_VRFW_SERIES_ICON (series) -> ok, sheet, sprite
+local CMD_ROLE_ICON = 2310432700           -- CMND_VRFW_ROLE_ICON (role) -> ok, sheet, sprite
+local SPRITE = 558735651                   -- sprite command (layer, sheet, sprite, texture node, 0, instance) -> true once applied
 local GREY_ALPHA = 0.5
 local ORANGE = { 1.0, 0.55, 0.12 }         -- the nexus row's tint (the name: [CMODE03] = 247 107 0)
 local GHOST = { 0.62, 0.62, 0.62 }         -- a missing nexus's face / an empty slot's plate: grey ...
@@ -77,14 +83,14 @@ local KIND_NEXUS, KIND_NEXUS_MISSING, KIND_FILLED, KIND_EMPTY = 1, 2, 3, 4
 -- the extra layers (content\menus\synergy_panel.toml) and the row geometry they are placed by (team16_03, row-local
 -- units, y up: check box centred on the origin, the face plate 64 at x 31..95, the series icons x 592..764)
 local L_CREST, N_CREST = 527765702, 18     -- vrfw_syn_crest (vrfw_emblem_tile)
-local L_FACE, N_FACE = 734603085, 33       -- vrfw_syn_face (team16_03 itself): 30 minifaces + 3 orange boxes
-local K_BOX0 = 30                          -- the instances from here draw the orange status squares (one a nexus row)
-local BOX_PX = 32                          -- the status square's size, row units, centred on the row origin
-local FACE_PX = 64                         -- the row's face mesh (_icon_chr_dmy01), row units
+local L_FACE, N_FACE = 734603085, 30       -- vrfw_syn_face (team16_03 itself): 30 minifaces
+local L_ICON, N_ICON = 1263105521, 24      -- vrfw_syn_icon (team16_03 itself): one series / role icon per instance
 local ROW_RIGHT = 764                      -- the right edge of the series icons: the extras end there
 local ANCHOR_A, ANCHOR_AX, ANCHOR_AY = 4051829508, -16, 16   -- _icon_check_box01 at (-16, 16)
 local ANCHOR_B, ANCHOR_BX, ANCHOR_BY = 3231997250, 706, 14   -- _icon_series_dmy01 at (706, 14)
-local CREST_PX, CREST_STEP = 44, 50        -- crest size / pitch, row units
+local CREST_PX, CREST_STEP = 52, 56        -- crest size / pitch, row units: the series icons' size, 4 apart
+local SERIES_LEFT = 592                    -- the left edge of the series icons' three slots
+local SERIES_CREST_PX, SERIES_CREST_STEP, SERIES_CREST_GAP = 40, 42, 8   -- crests beside the series icons: size, pitch, gap
 local BIG_CREST_PX = 60                    -- a slot_members row's crest, in the big square (the face plate x 31..95)
 local EMBLEM_PX = 84                       -- the tile's emblem quad
 local TILE_MESH, TILE_SLOT = 1926542734, 618311715   -- _enjoy_list_icon_dmy01 / enjoy_list_icon_dmy01
@@ -93,11 +99,21 @@ local TILE_MESH, TILE_SLOT = 1926542734, 618311715   -- _enjoy_list_icon_dmy01 /
 -- frames (p1 / p2 plates) and their add / ok quads showed as frames with white rectangles around the crest.
 local TILE_HIDE = { 2668225226, 1751802610, 3159751709, 155260060, 688408036, 2291119251, 1323396684, 294053161,
                     2968134629, 100709232, 1763834249 }
-local TILE_HIDE_NODES = { 1061671357, 2790162439, 2047402675 }   -- _pos_1p01, _pos_1p02, _pos_enjoy_list01_p2
-local TILE_NODE = 3933090681                                     -- _pos_enjoy_list01 (the emblem's node)
+-- the plates' nodes (under _pos_enjoy_list01: _p1 / _p2 hold the two team-colour hexagon sets) and the player tags
+local TILE_HIDE_NODES = { 3808539401, 2047402675, 1061671357, 2790162439 }   -- _pos_enjoy_list01_p1 / _p2, _pos_1p01 / 02
+local TILE_NODE = 3933090681               -- _pos_enjoy_list01 (parent of the plates, the outline and the emblem quad)
 local FACE_SCALE, FACE_STEP = 0.6, 44      -- a candidate's plate (64) and face at 0.6, pitch in row units
 local FACE_X0, FACE_X1 = 31, 95            -- the plate's x extent in the row object
 local LOAD_FRAMES = 120                    -- an icon still loading after this is shown anyway
+-- an icon instance shows only its first series quad (_icon_series_dmy01: top left 706, 14, 58 x 38 in the row object;
+-- the series quads' pitch 57) with the asked sprite on its texture node icon_series_dmy01
+local ICON_MESH, ICON_SLOT = 3231997250, 201452450
+local ICON_W, ICON_PITCH = 58, 57
+local ICON_CX, ICON_CY = 706 + 58 / 2, 14 - 38 / 2   -- the quad's centre in the row object
+local SERIES_ROW_Y = ICON_CY               -- the row's own series icons' centre line
+local ROLE_SCALE = 1.25                    -- the role icon in the face square (plate 64 x 64 at x 31..95, centre y 0)
+local MAX_STRIP = 6                        -- series icons of one row (room between the name and the row's end)
+local CREST_GAP = 8                        -- between a filled row's series icons and its crests
 
 local function text(id)
   local ok, s = pcall(funcLuaCommand, CMD_TEXT_GET, id)
@@ -157,23 +173,46 @@ local function row_frame(inst)
   return ax - ANCHOR_AX * s, ay - ANCHOR_AY * s, s
 end
 
+-- instance k's look: on a crest only the emblem quad (every plate / frame / cursor / check of the tile hidden), on a
+-- miniface only its plate (tinted) and face. Sent when shown and again once the instance is built (lost before)
+local function dress(layer, k)
+  local w = ex(layer).want[k]
+  if not w then return end
+  if layer == L_ICON then
+    for _, m in ipairs({ CHECK_BOX, CHECK, LINE, FACE_BASE, FACE, SERIES[2], SERIES[3] }) do M(SET_MESH_VISIBLE, layer, m, false, k) end
+    M(C.TEXT_VISIBLE, layer, TEXT_NAME, false, k)
+    tint(layer, k, ICON_MESH, WHITE)
+    M(PRIM_ALPHA, layer, k, ICON_MESH, 1)
+    M(SET_MESH_VISIBLE, layer, ICON_MESH, w.done == true, k)
+  elseif layer == L_CREST then
+    -- order matters: a node's visibility is set on every mesh under it, so the parent first, the hides after
+    M(C.NODE_VISIBLE, layer, TILE_NODE, true, k)
+    for _, n in ipairs(TILE_HIDE_NODES) do M(C.NODE_VISIBLE, layer, n, false, k) end
+    for _, m in ipairs(TILE_HIDE) do M(SET_MESH_VISIBLE, layer, m, false, k) end
+    -- the emblem quad (shown again by the parent node above): only once its emblem is asked for and loaded
+    M(SET_MESH_VISIBLE, layer, TILE_MESH, w.asked == true and ex(layer).wait[k] == nil, k)
+  else
+    tint(layer, k, FACE, WHITE)
+    M(PRIM_ALPHA, layer, k, FACE, 1)
+    for _, m in ipairs({ CHECK_BOX, CHECK, LINE, SERIES[1], SERIES[2], SERIES[3] }) do M(SET_MESH_VISIBLE, layer, m, false, k) end
+    M(C.TEXT_VISIBLE, layer, TEXT_NAME, false, k)
+    M(SET_MESH_VISIBLE, layer, FACE_BASE, w.plate ~= false, k)
+    if w.plate ~= false then tint(layer, k, FACE_BASE, w.plate or ORANGE) end
+  end
+end
+
 -- the icon of instance k: asked for once the instance is built; hidden until it has loaded (when Step runs)
-local art_loaded
 local function ask(layer, k)
   local e = ex(layer)
   local w = e.want[k]
   if not w or not e.built[k] or w.asked then return end
-  if w.spr then
-    -- a flat sprite of the framework's atlas (loaded with the menu: synergy_panel.toml `res`): bound only once the
-    -- texture answers «loaded», hidden until then (Tick asks again), so an untextured white quad never shows
-    local mesh = layer == L_CREST and TILE_MESH or FACE
-    if not art_loaded() then
-      M(SET_MESH_VISIBLE, layer, mesh, false, k)
-      return
-    end
-    w.asked = true
-    M(SPRITE, layer, ART, w.spr, layer == L_CREST and TILE_SLOT or FACE_SLOT, 0, k)
-    M(SET_MESH_VISIBLE, layer, mesh, true, k)
+  if layer == L_ICON then
+    -- the sprite command answers false (and draws nothing) while the sheet or the instance's model is not ready: asked
+    -- again each frame from Tick, at most LOAD_FRAMES times, the quad hidden until it answers true
+    w.done = M(SPRITE, layer, w.sheet, w.sprite, ICON_SLOT, 0, k) == true
+    w.tries = (w.tries or 0) + 1
+    w.asked = w.done or w.tries >= LOAD_FRAMES
+    M(SET_MESH_VISIBLE, layer, ICON_MESH, w.done, k)
     return
   end
   w.asked = true
@@ -187,12 +226,12 @@ local function ask(layer, k)
     pcall(SetEnableForceCharaInvalidUseTarget)
     M(SET_MESH_VISIBLE, layer, FACE, not S.stepped, k)
   end
-  if S.stepped and not w.spr then e.wait[k] = LOAD_FRAMES end
+  if S.stepped then e.wait[k] = LOAD_FRAMES end
 end
 
 -- instance k of `layer` shows icon `id` at row `row` (row-local centre lx, size px), or nothing (id nil); a miniface's
--- plate is tinted `plate` (default orange: a nexus's; false = no plate); `scale`: a miniface's size (default FACE_SCALE)
-local function show(layer, k, id, row, lx, px, spr, plate, scale)
+-- plate is tinted `plate` (default orange: a nexus's; false = no plate)
+local function show(layer, k, id, row, lx, px, plate)
   local e = ex(layer)
   if not id then
     if e.opened[k] then M(C.LAYER_VISIBLE, layer, k, false) end
@@ -205,34 +244,65 @@ local function show(layer, k, id, row, lx, px, spr, plate, scale)
     e.opened[k] = true
   end
   local w = e.want[k]
-  if not w or w.id ~= id or w.spr ~= spr then
-    w = { id = id, spr = spr }
+  if not w or w.id ~= id then
+    w = { id = id }
     e.want[k] = w
   end
-  w.row, w.lx, w.px, w.scale = row, lx, px, scale
+  w.row, w.lx, w.px, w.plate = row, lx, px, plate
   M(C.LAYER_VISIBLE, layer, k, true)
-  if layer == L_CREST then
-    for _, m in ipairs(TILE_HIDE) do M(SET_MESH_VISIBLE, layer, m, false, k) end
-    for _, n in ipairs(TILE_HIDE_NODES) do M(C.NODE_VISIBLE, layer, n, false, k) end
-    M(C.NODE_VISIBLE, layer, TILE_NODE, true, k)
-  else
-    if not spr then
-      -- a reused instance: back to a plain face (a missing one-person nexus greys it after this)
-      tint(layer, k, FACE, WHITE)
-      M(PRIM_ALPHA, layer, k, FACE, 1)
-    end
-    for _, m in ipairs({ CHECK_BOX, CHECK, LINE, SERIES[1], SERIES[2], SERIES[3] }) do M(SET_MESH_VISIBLE, layer, m, false, k) end
-    M(C.TEXT_VISIBLE, layer, TEXT_NAME, false, k)
-    M(SET_MESH_VISIBLE, layer, FACE_BASE, not spr and plate ~= false, k)   -- a miniface keeps its plate; the status square has none
-    if not spr and plate ~= false then tint(layer, k, FACE_BASE, plate or ORANGE) end
-  end
+  dress(layer, k)
   ask(layer, k)
+end
+
+-- icon instance k shows sprite (sheet, sprite) centred on row `row`'s (lx, ly) at `scale` x the row's own series icon
+-- (sheet nil: nothing)
+local function show_icon(k, sheet, sprite, row, lx, ly, scale)
+  local e = ex(L_ICON)
+  if not sheet then
+    if e.opened[k] then M(C.LAYER_VISIBLE, L_ICON, k, false) end
+    e.want[k] = nil
+    return
+  end
+  if not e.opened[k] then
+    M(C.OPEN_LAYER, L_ICON, k)
+    e.opened[k] = true
+  end
+  local w = e.want[k]
+  if not w or w.sheet ~= sheet or w.sprite ~= sprite then
+    w = { sheet = sheet, sprite = sprite }
+    e.want[k] = w
+  end
+  w.row, w.lx, w.ly, w.k = row, lx, ly, scale
+  M(C.LAYER_VISIBLE, L_ICON, k, true)
+  dress(L_ICON, k)
+  ask(L_ICON, k)
+end
+
+-- a series' / role's icon: sheet, sprite (nil when the framework has none)
+local function icon_of(cmd, v)
+  local ok, has, sheet, sprite = pcall(funcLuaCommand, cmd, v)
+  if ok and has == true and type(sheet) == "number" and type(sprite) == "number" then return sheet, sprite end
+  return nil
+end
+
+-- the series icons `list` (series numbers, at most MAX_STRIP: the last ones) in a row, the last one's right edge at row
+-- x `right`; returns the next free icon instance
+local function series_strip(ii, inst, list, right)
+  local n = math.min(#list, MAX_STRIP)
+  for j = 1, n do
+    local sheet, sprite = icon_of(CMD_SERIES_ICON, list[#list - n + j])
+    if sheet and ii < N_ICON then
+      show_icon(ii, sheet, sprite, inst, right - ICON_W / 2 - (n - j) * ICON_PITCH, SERIES_ROW_Y, 1)
+      ii = ii + 1
+    end
+  end
+  return ii
 end
 
 -- every shown instance at its row's current place
 local function place_all()
   local frames = {}
-  for _, layer in ipairs({ L_CREST, L_FACE }) do
+  for _, layer in ipairs({ L_CREST, L_FACE, L_ICON }) do
     local e = ex(layer)
     for k, w in pairs(e.want) do
       local f = frames[w.row]
@@ -243,13 +313,18 @@ local function place_all()
       end
       if f then
         local ox, oy, s = f[1], f[2], f[3]
-        if layer == L_CREST then
+        if layer == L_ICON then
+          -- the instance's origin so that its series quad is centred on (lx, ly)
+          local sc = w.k * s
+          M(C.LOCAL_SCALE, layer, sc, sc, 1, k)
+          M(C.LOCAL_POS, layer, ox + w.lx * s - ICON_CX * sc, oy + w.ly * s - ICON_CY * sc, 0, k)
+        elseif layer == L_CREST then
           local sc = w.px / EMBLEM_PX * s
           M(C.LOCAL_SCALE, layer, sc, sc, 1, k)
           M(C.LOCAL_POS, layer, ox + w.lx * s, oy, 0, k)      -- the tile's origin = its centre
         else
-          local sc = (w.spr and BOX_PX / FACE_PX or w.scale or FACE_SCALE) * s
-          -- the row object's origin so that its plate (the status square: its face mesh) is centred on lx, y 0
+          local sc = FACE_SCALE * s
+          -- the row object's origin so that its plate is centred on lx, y 0
           M(C.LOCAL_SCALE, layer, sc, sc, 1, k)
           M(C.LOCAL_POS, layer, ox + w.lx * s - (FACE_X0 + FACE_X1) / 2 * sc, oy, 0, k)
         end
@@ -261,7 +336,7 @@ local function place_all()
 end
 
 local function hide_extras()
-  for _, layer in ipairs({ L_CREST, L_FACE }) do
+  for _, layer in ipairs({ L_CREST, L_FACE, L_ICON }) do
     local e = ex(layer)
     for k in pairs(e.opened) do M(C.LAYER_VISIBLE, layer, k, false) end
     e.want, e.wait = {}, {}
@@ -277,12 +352,12 @@ local function reset_row(inst)
   pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, true, inst)
   pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, CHECK_BOX, true, inst)
   if S.sprite_rows and S.sprite_rows[inst] then
-    M(C.RESET_FACE, ROW, inst, FACE_SLOT)      -- the nexus icon off the face mesh
+    M(C.RESET_FACE, ROW, inst, FACE_SLOT)      -- an older version's nexus icon off the face mesh
     S.sprite_rows[inst] = nil
   end
   -- the series icons are left to the game: its row draw (just before this patch runs) shows a character's series and
   -- hides the unused slots (a row is reused by characters of 1-3 series). Forcing all three on here showed the unused
-  -- slot as a white quad left of the saga icons on member rows (in-game 2026-10-13)
+  -- slot as a white quad left of the saga icons on member rows
   tint(ROW, inst, FACE, WHITE)
   tint(ROW, inst, FACE_BASE, WHITE)
   tint(ROW, inst, LINE, WHITE)
@@ -299,39 +374,6 @@ local function reset_all()
   if S.extras then hide_extras() end
 end
 
--- the nexus icon / status square atlas: asked for once; sprites are bound when it has loaded
-function S.art_ready()
-  if not has_layer(L_FACE) then return false end
-  if not S.art_asked then
-    S.art_asked = true
-    pcall(funcLuaCommand, LOAD_TEX, ART_PATH)
-  end
-  return true
-end
-
--- the atlas is in the menu's texture cache: only an explicit «not loading» answer counts (2026-10-13: the atlas was
--- never requested, the command answered no «loading» and the sprites were bound to a missing texture: white quads)
-art_loaded = function()
-  if not S.art_asked then return false end
-  local ok, loading = pcall(funcLuaCommand, TEX_LOADING, ART)
-  return ok and loading == false
-end
-
--- the nexus icon on the face mesh of every nexus row of this panel, once the atlas has loaded (else Tick retries)
-function S.apply_icons()
-  if not S.pending or next(S.pending) == nil then return end
-  if not art_loaded() then
-    -- hidden meanwhile, so the previous face never shows under the icon
-    for inst in pairs(S.pending) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, false, inst) end
-    return
-  end
-  for inst in pairs(S.pending) do
-    M(SPRITE, ROW, ART, SPR_NEXUS, FACE_SLOT, 0, inst)
-    pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, true, inst)
-  end
-  S.pending = {}
-end
-
 -- the rows of the declared synergy `item` just drawn (nothing but the reset for any other synergy)
 function S.ApplyPanel(item)
   reset_all()
@@ -342,15 +384,8 @@ function S.ApplyPanel(item)
   S.touched = true
   local active = p.active == 1 or p.active == true
   local has_team = p.team == 1 or p.team == true
-  local extra = tonumber(p.extra) or 0
-  local crest_ok, face_ok = has_layer(L_CREST), has_layer(L_FACE)
-  local last_filled = 0
-  for r, row in ipairs(p.rows) do
-    if row.kind == KIND_FILLED or row.kind == KIND_NEXUS then last_filled = r end
-  end
-  local ci, fi, bi = 0, 0, 0
-  local art_ok = S.art_ready()
-  S.pending = {}
+  local crest_ok, face_ok, icon_ok = has_layer(L_CREST), has_layer(L_FACE), has_layer(L_ICON)
+  local ci, fi, ii = 0, 0, 0
   for r, row in ipairs(p.rows) do
     local inst = r - 1
     local name = type(row.name) == "string" and row.name or ""
@@ -368,16 +403,13 @@ function S.ApplyPanel(item)
       S.extras = true
       if row.kind == KIND_FILLED then
         s = active and name or ("[CGRAYOUT]" .. name .. "[C]")
-        if r == last_filled and extra > 0 then
-          s = s .. "  [CGRAYOUT]" .. string.gsub(text(TXT_MORE), "{n}", tostring(math.floor(extra))) .. "[C]"
-        end
       else
         for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
         s = ""
         for j, id in ipairs(face_ok and split_ids(row.faces) or {}) do
-          if fi < K_BOX0 then
+          if fi < N_FACE then
             local lx = FACE_X1 + 10 + (FACE_X1 - FACE_X0) * FACE_SCALE / 2 + (j - 1) * FACE_STEP
-            show(L_FACE, fi, id, inst, lx, 0, nil, WHITE)
+            show(L_FACE, fi, id, inst, lx, 0, WHITE)
             fi = fi + 1
           end
         end
@@ -386,7 +418,22 @@ function S.ApplyPanel(item)
       pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, false, inst)
       for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
       local crests = crest_ok and split_ids(row.crests) or {}
-      if #crests > 0 then
+      local role = type(row.role) == "string" and row.role or ""
+      local rsheet, rsprite = nil, nil
+      if role ~= "" and icon_ok and #crests == 0 then rsheet, rsprite = icon_of(CMD_ROLE_ICON, role) end
+      if rsheet then
+        -- a staff slot: the role's icon in place of the grey square, the required series' icons right-aligned, the
+        -- role's short name
+        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
+        if ii < N_ICON then
+          show_icon(ii, rsheet, rsprite, inst, (FACE_X0 + FACE_X1) / 2, 0, ROLE_SCALE)
+          ii = ii + 1
+        end
+        ii = series_strip(ii, inst, split_ids(row.series), ROW_RIGHT)
+        local label = TXT_ROLE[role] and text(TXT_ROLE[role]) or ""
+        s = label ~= "" and ("[CGRAYOUT]" .. label .. "[C]") or ""
+        S.extras = true
+      elseif #crests > 0 then
         -- no label, no plate: only the allowed teams' crests, right-aligned on the series icons' place
         pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
         s = ""
@@ -407,73 +454,86 @@ function S.ApplyPanel(item)
         s = "[CGRAYOUT]" .. h .. "[C]"
       end
     elseif row.kind == KIND_NEXUS or row.kind == KIND_NEXUS_MISSING then
+      -- the game's own row (the nexus's face, the retail check box), only the line orange; no extra pieces on it
       tint(ROW, inst, LINE, ORANGE)
+      tint(ROW, inst, FACE_BASE, ORANGE)
       s = active and name or ("[CGRAYOUT]" .. name .. "[C]")
-      local faces = {}
-      if row.kind == KIND_NEXUS_MISSING and has_team and face_ok then faces = split_ids(row.faces) end
-      local one = tonumber(row.base) or 0
-      if not (row.single == 1 or row.single == true) then one = 0 end
-      if one ~= 0 and art_ok and crest_ok and ci < N_CREST and fi < K_BOX0 then
-        -- a one-person nexus: his face is the icon, on an orange plate (the flat sprite on a crest instance, the face
-        -- on a full-size miniface instance above it: the face layer is added after the crest layer); the row's own
-        -- face and white plate hidden; missing (team known): the face grey and translucent, the name grey
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, false, inst)
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, CHECK_BOX, false, inst)
-        local mid = (FACE_X0 + FACE_X1) / 2
-        show(L_CREST, ci, 1, inst, mid, FACE_PX, SPR_BOX)
-        ci = ci + 1
-        show(L_FACE, fi, one, inst, mid, 0, nil, false, 1)
-        if row.kind == KIND_NEXUS_MISSING and has_team then
-          tint(L_FACE, fi, FACE, GHOST)
-          M(PRIM_ALPHA, L_FACE, fi, FACE, GHOST_ALPHA)
+      if row.kind == KIND_NEXUS and face_ok then
+        -- a present nexus of a several-person declaration: his face and name stay at the left, the other allowed persons'
+        -- faces go to the far right of the card
+        local shown = tonumber(row.base) or 0
+        local others = {}
+        for _, id in ipairs(split_ids(row.faces)) do
+          if id ~= shown then others[#others + 1] = id end
         end
-        fi = fi + 1
-        if bi < N_FACE - K_BOX0 then
-          show(L_FACE, K_BOX0 + bi, 1, inst, 0, BOX_PX, SPR_BOX)
-          bi = bi + 1
-        end
-        S.extras = true
-        faces = {}
-      elseif art_ok then
-        -- the nexus icon in the big square, the small status square orange (a flat sprite instance)
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, CHECK_BOX, false, inst)
-        S.sprite_rows = S.sprite_rows or {}
-        S.sprite_rows[inst] = true
-        S.pending[inst] = true
-        if bi < N_FACE - K_BOX0 then
-          show(L_FACE, K_BOX0 + bi, 1, inst, 0, BOX_PX, SPR_BOX)
-          bi = bi + 1
+        if #others > 0 then
+          for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
+          for j, id in ipairs(others) do
+            if fi < N_FACE then
+              local lx = ROW_RIGHT - (FACE_X1 - FACE_X0) * FACE_SCALE / 2 - (#others - j) * FACE_STEP
+              show(L_FACE, fi, id, inst, lx, 0)
+              fi = fi + 1
+            end
+          end
           S.extras = true
         end
-      else
-        tint(ROW, inst, FACE_BASE, ORANGE)
       end
-      if #faces > 0 then
-        -- the allowed nexus characters' minifaces right after the icon (plate x 31..95)
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, art_ok, inst)
-        for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
-        s = ""
-        for j, id in ipairs(faces) do
-          if fi < K_BOX0 then
-            local lx = FACE_X1 + 10 + (FACE_X1 - FACE_X0) * FACE_SCALE / 2 + (j - 1) * FACE_STEP
-            show(L_FACE, fi, id, inst, lx, 0)
-            fi = fi + 1
+      if row.kind == KIND_NEXUS_MISSING and has_team then
+        -- missing: his face grey and translucent; several persons: the others right after it, no text
+        tint(ROW, inst, FACE, GHOST)
+        pcall(funcLuaMenuCommand, PRIM_ALPHA, ROW, inst, FACE, GHOST_ALPHA)
+        local shown = tonumber(row.base) or 0
+        local others = {}
+        if face_ok then
+          for _, id in ipairs(split_ids(row.faces)) do
+            if id ~= shown then others[#others + 1] = id end
           end
         end
-        S.extras = true
-      elseif row.kind == KIND_NEXUS_MISSING and has_team and one == 0 then
-        if not art_ok then
-          tint(ROW, inst, FACE, GHOST)
-          pcall(funcLuaMenuCommand, PRIM_ALPHA, ROW, inst, FACE, GHOST_ALPHA)
+        if #others > 0 then
+          for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
+          s = ""
+          for j, id in ipairs(others) do
+            if fi < N_FACE then
+              local lx = FACE_X1 + 10 + (FACE_X1 - FACE_X0) * FACE_SCALE / 2 + (j - 1) * FACE_STEP
+              show(L_FACE, fi, id, inst, lx, 0)
+              fi = fi + 1
+            end
+          end
+          S.extras = true
+        elseif not (row.single == 1 or row.single == true) then
+          s = s .. "  [CGRAYOUT](" .. text(TXT_MISSING) .. ")[C]"
         end
-        s = s .. "  [CGRAYOUT](" .. text(TXT_MISSING) .. ")[C]"
       end
     else
       s = active and name or ("[CGRAYOUT]" .. name .. "[C]")
-      if r == last_filled and extra > 0 then
-        s = s .. "  [CGRAYOUT]" .. string.gsub(text(TXT_MORE), "{n}", tostring(math.floor(extra))) .. "[C]"
+      if row.kind == KIND_FILLED then
+        -- the series' team crests right-aligned at the row's end, the row's series icons redrawn just left of them
+        -- (vrfw_syn_icon; the game's own quads sit at the row's end); without the icon layer or the row's series: the
+        -- game's icons stay and the crests sit left of them
+        local crests = crest_ok and split_ids(row.crests) or {}
+        local own = icon_ok and split_ids(row.series) or {}
+        if #crests > 0 and #own > 0 then
+          for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
+          for j, id in ipairs(crests) do
+            if ci < N_CREST then
+              local lx = ROW_RIGHT - SERIES_CREST_PX / 2 - (#crests - j) * SERIES_CREST_STEP
+              show(L_CREST, ci, id, inst, lx, SERIES_CREST_PX)
+              ci = ci + 1
+            end
+          end
+          local left = ROW_RIGHT - SERIES_CREST_PX - (#crests - 1) * SERIES_CREST_STEP
+          ii = series_strip(ii, inst, own, left - CREST_GAP)
+          S.extras = true
+        elseif #crests > 0 then
+          for j, id in ipairs(crests) do
+            if ci < N_CREST then
+              local lx = SERIES_LEFT - SERIES_CREST_GAP - SERIES_CREST_PX / 2 - (#crests - j) * SERIES_CREST_STEP
+              show(L_CREST, ci, id, inst, lx, SERIES_CREST_PX)
+              ci = ci + 1
+            end
+          end
+          S.extras = true
+        end
       end
     end
     if name ~= "" or row.kind == KIND_EMPTY or row.kind == KIND_NEXUS_MISSING then
@@ -482,9 +542,8 @@ function S.ApplyPanel(item)
   end
   -- the instances this panel does not use
   for k = ci, N_CREST - 1 do show(L_CREST, k, nil) end
-  for k = fi, K_BOX0 - 1 do show(L_FACE, k, nil) end
-  for k = K_BOX0 + bi, N_FACE - 1 do show(L_FACE, k, nil) end
-  S.apply_icons()
+  for k = fi, N_FACE - 1 do show(L_FACE, k, nil) end
+  for k = ii, N_ICON - 1 do show_icon(k, nil) end
   if S.extras then place_all() end
   detail_alpha(active and 1 or GREY_ALPHA)
 end
@@ -492,22 +551,20 @@ end
 -- per frame while extras show: placed again (the panel's open animation moves the rows), loaded icons shown
 function S.Tick()
   S.stepped = true
-  if S.pending and next(S.pending) ~= nil then pcall(S.apply_icons) end
   if not S.extras then return end
-  for _, layer in ipairs({ L_CREST, L_FACE }) do
-    local e = ex(layer)
-    for k, w in pairs(e.want) do
-      if w.spr and not w.asked then ask(layer, k) end
-    end
-  end
   place_all()
+  -- icons whose sprite was not applied yet: asked again
+  for k, w in pairs(ex(L_ICON).want) do
+    if not w.asked then ask(L_ICON, k) end
+  end
   for _, layer in ipairs({ L_CREST, L_FACE }) do
     local e = ex(layer)
     local mesh = layer == L_CREST and TILE_MESH or FACE
     for k, left in pairs(e.wait) do
       if M(C.LOADING, layer, k) ~= true or left <= 0 then
-        M(SET_MESH_VISIBLE, layer, mesh, true, k)
         e.wait[k] = nil
+        if layer == L_CREST then dress(layer, k) end      -- the plates hidden again with the loaded emblem shown
+        M(SET_MESH_VISIBLE, layer, mesh, true, k)
       else
         e.wait[k] = left - 1
       end
@@ -517,8 +574,9 @@ end
 
 -- an extra layer's instance is built: its icon can be asked for now
 function S.Built(layer, inst)
-  if (layer == L_CREST or layer == L_FACE) and type(inst) == "number" then
+  if (layer == L_CREST or layer == L_FACE or layer == L_ICON) and type(inst) == "number" then
     ex(layer).built[inst] = true
+    dress(layer, inst)
     ask(layer, inst)
   end
 end

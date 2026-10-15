@@ -1,0 +1,26 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "ability_learning_board_menu": {
+  "script": "ability_learning_board_menu_7.00.00.00",
+  "require": [
+   "SetCrossButtonFocusMode"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_six_sense_menu": {
+  "script": "equip_six_sense_menu",
+  "require": [
+   "UpdateItemEquipLine",
+   "PostStep"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

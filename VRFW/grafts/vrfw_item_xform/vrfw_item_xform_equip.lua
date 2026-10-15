@@ -1,4 +1,4 @@
--- ===== VRFW item_xform BEGIN ===== (docs/framework/types/item.md §13, research/grafts/vrfw_item_xform)
+-- ===== VRFW item_xform BEGIN ===== (research/grafts/vrfw_item_xform)
 -- Equipment list (equip_menu_list): a transformation item ([[VRFW.ItemTransform]] of a mod) chosen for a player it
 -- cannot transform is refused with the error sound and the reason the declaring mod wrote (VR-Framework
 -- CMND_VRFW_ITEM_XFORM_CAN -> ok, reason (1 incompatible, 2 locked), textId). Taking the item off is never refused.

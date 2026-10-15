@@ -1,9 +1,7 @@
 schema = "VRFW.rule/1"
-# Reglamento BASE: la Crónica.
-# Todas las reglas se dejan como las pone la fila del partido ("row"): el juego original tal cual. Un mod puede
-# sustituir este reglamento (mismo id, carga después) o asignar otro a estos partidos en su rules\matches.toml.
+# Base ruleset for Chronicle matches: every rule follows the match row (original game); a mod may replace it (same id) or bind another.
 id = "chronicle"
-name = "Chronicle (original)"   # fallback; shown in the game language from the text key ruleset_chronicle
+name = "Chronicle (original)"   # fallback; localized via text key ruleset_chronicle
 version = 1
 
 [time]

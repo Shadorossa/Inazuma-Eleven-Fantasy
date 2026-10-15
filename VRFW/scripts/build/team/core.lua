@@ -1,6 +1,5 @@
--- The team build's context and its core steps (was team_engine build.rs): references, the fields of a new team / an
--- edit (members, loadouts, kit, emblem, texts), new kits and emblems, new teams. Every function returns `nil, err`
--- where the old builder returned `Err` (the caller notes it); positions of teams / members are 0-based.
+-- Team build context and core steps: references, fields of a new team / edit (members, loadouts, kit, emblem, texts),
+-- new kits and emblems, new teams. Functions return `nil, err` on failure; positions are 0-based.
 local T = require "lib/team_util"
 local U = require "lib/util"
 local TC = require "team/tc"
@@ -9,8 +8,7 @@ local C = {}
 local CATALOG_BITS = 8192
 local CATALOG_SHARED = CATALOG_BITS - 1
 local CATALOG_SPACE = "item_catalog"
--- MIGRATION ONLY: the catalog number an emblem had under the engine's OLD rule (the first number from 8150 no item row
--- uses), registered for the migration of old saves, never given out
+-- Migration only: catalog number an emblem had under the old rule (first number from 8150 unused by an item row); never given out.
 local LEGACY_CATALOG_FROM = 8150
 local SLOT_COACH, SLOT_MANAGER, MAX_SLOT = 19, 20, 20
 local LOADOUT_MOVES = 6
@@ -252,8 +250,7 @@ function C.install(X)
     return v
   end
 
-  -- a member's `aura` / `mix` (the two Hiper auras of a CPU player: keshin / totem, miximax / mode change; docs
-  -- types/team.md): they take the last slots of his loadout, after his `moves`
+  -- a member's `aura` / `mix` (the two Hiper auras of a CPU player): they take the last loadout slots, after his `moves`
   local function extras(mem)
     local x = {}
     if mem.aura ~= nil then x[#x + 1] = { T.id(mem.aura), mem.aura_level or 1 } end
@@ -271,8 +268,37 @@ function C.install(X)
     return pairs_
   end
 
+  -- a member's `moves_from`: the current special moves of that character / card (first 6 move / learn level pairs, empty slots left out) as his loadout
+  -- crc32("<tkey>_te_sk_<slot>"); nil = no such card or no move (his card's own list)
+  function X.linked_loadout(tkey, mem, errs)
+    local from = T.trim(mem.moves_from or "")
+    if mem.moves ~= nil or mem.loadout ~= nil or mem.aura ~= nil or mem.mix ~= nil then
+      errs[#errs + 1] = string.format("member slot %d: `moves_from` with `moves` / `loadout` / `aura` / `mix` (the link is used)", mem.slot)
+    end
+    local card, err = X.player_ref(from, nil, "")
+    if not card then
+      errs[#errs + 1] = string.format("member slot %d: moves_from: %s", mem.slot, err)
+      return nil
+    end
+    local mv = {}
+    for _, p in ipairs(X.ch.pairs[card] or {}) do
+      if #mv >= LOADOUT_MOVES then break end
+      if not (p[1] == 0 or p[1] == 4294967295) then mv[#mv + 1] = { p[1], p[2] } end
+    end
+    if #mv == 0 then
+      VRFW.log.info(string.format("%s: member slot %d: moves_from `%s`: card %s has no special move (his own list is kept)", tkey, mem.slot, from, T.hex(card)))
+      return nil
+    end
+    local lid = VRFW.crc32(tkey .. "_te_sk_" .. mem.slot)
+    local e = X.tc:loadout(lid, mv)
+    if not e then return nil end
+    X.tc:put_loadout(e)
+    return lid
+  end
+
   -- the loadout id of a member's `loadout` / `moves` (own rows: crc32("<tkey>_te_sk_<slot>")); nil = the card's own
   function X.member_loadout(tkey, mem, errs)
+    if mem.moves_from ~= nil then return X.linked_loadout(tkey, mem, errs) end
     if mem.loadout ~= nil then
       if mem.moves ~= nil or mem.aura ~= nil or mem.mix ~= nil then
         errs[#errs + 1] = string.format("member slot %d: `loadout` with `moves` / `aura` / `mix` (the loadout is used)", mem.slot)
@@ -357,7 +383,7 @@ function C.install(X)
           errs[#errs + 1] = string.format("member slot %d: `remove` / `patch` are [[edit.member]] keys", mem.slot)
         else
           if mem.number ~= nil and mem.number > 99 then
-            -- the game data has a few (a retail Victoria Vanguard row wears 105): kept, noted
+            -- retail data has a few numbers above 99: kept, noted
             VRFW.log.info(string.format("%s: member slot %d: shirt number %d above 99 (kept)", tkey, mem.slot, mem.number))
           end
           local bad = (mem.equipment ~= nil and #mem.equipment > 4) or (mem.c14_19 ~= nil and #mem.c14_19 > 6)
@@ -395,7 +421,7 @@ function C.install(X)
     local tid, tkey = tc:id_of(t), tc:key_of(t)
     local own = {}
     for _, x in ipairs(members) do
-      if x.moves ~= nil or x.loadout ~= nil then own[x.slot] = true end
+      if x.moves ~= nil or x.loadout ~= nil or x.moves_from ~= nil then own[x.slot] = true end
     end
     local s, e = tc:member_range(t)
     for i = s, e - 1 do
@@ -514,7 +540,9 @@ function C.install(X)
               errs[#errs + 1] = string.format("member slot %d: shirt number out of 0-99", mem.slot)
             end
             local loadout
-            if mem.moves ~= nil then
+            if mem.moves_from ~= nil then
+              loadout = X.linked_loadout(tkey, mem, errs)
+            elseif mem.moves ~= nil then
               if #mem.moves > LOADOUT_MOVES then
                 errs[#errs + 1] = string.format("member slot %d: %d moves, a member takes at most %d (the rest is left out)", mem.slot, #mem.moves, LOADOUT_MOVES)
               end
@@ -594,8 +622,7 @@ function C.install(X)
         elseif ok then
           X.set_info(t, TI.KIT, id, m, what, "kit")
         elseif type(f.kit) == "number" then
-          -- a number is kept (game teams carry kit ids uniform_config lacks: the game falls back), a name is most
-          -- likely a typo
+          -- a number is kept (game teams carry kit ids uniform_config lacks), a name is most likely a typo
           VRFW.log.warn(what .. ": kit " .. T.idref_text(f.kit) .. " is not in uniform_config: kept as written")
           X.set_info(t, TI.KIT, id, m, what, "kit")
         else
@@ -874,7 +901,7 @@ function C.install(X)
     return id
   end
 
-  -- vr_framework::ids::probe_id: crc32(key), then crc32("<key>#1"), … until not taken (nor 0 / 0xFFFFFFFF)
+  -- crc32(key), then crc32("<key>#1"), … until not taken (nor 0 / 0xFFFFFFFF)
   function X.probe_id(key, taken)
     local id = VRFW.crc32(key)
     local i = 1
@@ -942,8 +969,7 @@ function C.install(X)
     return r
   end
 
-  -- the catalog number of a new emblem item: `shared` = the last bit; `unique` = the deterministic number of `nkey`
-  -- in the range above the GAME's item_config, skipping the numbers the merged base uses (as read the first time)
+  -- catalog number of a new emblem item: `shared` = the last bit; `unique` = a deterministic number of `nkey` above the game's item_config range
   function X.emblem_catalog(used, mode, nkey)
     if mode == "shared" then return CATALOG_SHARED end
     if not X.cat_used then X.cat_used = T.copy(used) end
@@ -978,9 +1004,8 @@ function C.install(X)
   end
 
   -- a new emblem item from a PNG of the mod (its textures = the PNG fitted into every texture file of `base`)
-  -- where a PNG emblem's picture is: `png = "<path>"` = a file of the declaring mod; `png = "<mod id>:<path>"` = a
-  -- file of another mod (e.g. Chronicles Deluxe's remastered crests). That mod not active -> nil: the team keeps the
-  -- emblem it has (its base's / retail crest), never an error; a missing file of an active mod stays an error.
+  -- `png = "<path>"` = a file of the declaring mod; `png = "<mod id>:<path>"` = a file of another mod; if that mod is inactive the team keeps its emblem,
+  -- a missing file of an active mod is an error
   function X.emblem_png_source(m, png)
     local other, rel = tostring(png):match("^([%w_]+):(.+)$")
     if other == nil then return m, png end
@@ -1185,9 +1210,7 @@ function C.install(X)
     X.created_by_id[tid] = c
     X.created_by_internal[internal] = c
     if base ~= nil then X.based_on[tid] = tc:id_of(base) end
-    -- `same_as` (a team key or a list): the teams this one IS for identity, whatever its roster (the BB unlock rule's
-    -- identity match, bb.lua X.bb_roots): a chain rival re-rostered from another game names the BB team it stands for
-    -- instead of being matched by its shown name (2026-10-13)
+    -- `same_as` (a team key or a list): the teams this one counts as for identity matching (BB unlock rule), whatever its roster
     if d.same_as ~= nil then
       for _, ref in ipairs(type(d.same_as) == "table" and d.same_as or { d.same_as }) do
         local b, e = X.team_ref(ref, m)
@@ -1220,8 +1243,7 @@ function C.install(X)
     t = tc:find(tid)
     if t == nil then return "row gone" end
     local meta = X.meta[tid] or X.new_meta()
-    -- a `name_text` (or, with a fixed `key`, its default `<key>_name` row) names the team through a text row the
-    -- game or the mod's text rows have
+    -- a `name_text` (or, with a fixed `key`, its default `<key>_name` row) names the team through an existing text row
     if T.is_empty(meta.names) and d.name_text == nil and d.key == nil then
       VRFW.log.warn(what .. ": no [team.text.<lang>] name nor name_text: the new team shows no name")
     end

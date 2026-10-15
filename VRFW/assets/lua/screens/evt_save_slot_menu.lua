@@ -3,8 +3,8 @@
 -- declared in the framework's menus\save_slots.toml, served as common/script/lua/menu/evt_save_slot_menu.lua.bin).
 -- The slot screen opened by EMPEZAR on the title screen (title_menu_inc, see save_slots_inc_1.lua): 3 player cards per
 -- page; the player slots come from the save part's layout (CMND_VRFW_SLOT_LAYOUT, config [save.slots] count), more
--- than 3 = pages (L1 / R1). Moved with the slot service from Inazuma Fantasy to the VR-Framework (2026-10-07); the
--- story-complete start's question (StoryAsk) is part of it since 2026-10-08.
+-- than 3 = pages (L1 / R1). The
+-- story-complete start's question (StoryAsk) is part of it.
 -- Layers come from the "Guardar" screen (savedata_management_menu_setting, cloned by research/scripts/slot_build.py).
 -- Extension points for other mods (a Lua patch of this stem, run right after this chunk): VRFW_SS_HOOKS / VRFW_SS_API
 -- (see "extension points" below), and the reserved 4th card (a slot a mod reserved; its provider VRFW_SS_RESERVED).
@@ -15,7 +15,7 @@
 -- Result for the title menu: parameter crc32("evt_save_slot_result") = 0 cancel, else the slot chosen (confirmed).
 -- The locked slot (the vanilla save, slot 1 by default): never returned as a result; only a duplicate source /
 -- renameable.
--- Controls (user scheme, save-slots.md "Controls"):
+-- Controls (user scheme):
 --   A / Accept ......... locked slot: message; slot with data: play; empty: new game (+ the story question)
 --   X (CMD_FUNC4) ...... Duplicate: slot 1 -> empty target; empty slot -> source with data; slot with data -> empty
 --                        target. Polled with CMND_CHECK_INPUT_CMD (no setting change)
@@ -23,8 +23,7 @@
 --   L1 / R1 ............ previous / next page of player slots (only with more than 3)
 -- Source/target choices use the sub_window list (chained yes/no if it does not open). Every input and decision is
 -- logged to evt_loader\loader.log ("slot_menu" lines).
--- Docs: docs/game/save-slots.md §10, docs/game/vr-loader.md §1.3.
--- Load marker: funcLuaCommand is registered only AFTER the chunk ran (position-cards.md §4b), so at load time this
+-- Load marker: funcLuaCommand is registered only AFTER the chunk ran, so at load time this
 -- normally logs nothing; OnInit logs "slot_menu OnInit" as the first sign that the script loaded.
 if funcLuaCommand ~= nil then
   pcall(funcLuaCommand, 3661580131, "slot_menu chunk loaded (early)")
@@ -34,7 +33,7 @@ INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- UpdateHeader + soccer-top header helpers (+ general window inc)
 INCLUDE("LUA_MENU_DEF")                       -- MENU_DEF.OpenSubWindow (options list)
 
--- ---- vr-loader commands (docs/game/vr-loader.md §1, API 1). Filled by slot_build.py from LOADER_CMDS. -------------
+-- ---- vr-loader commands (API 1). Filled by slot_build.py from LOADER_CMDS. -------------
 -- Loader absent / module off: the engine does not know the hash and the call returns a single false.
 local EVT_LOADER = {
   VERSION = 2217361807,         -- () -> api, modules (bit1 = save_slots)
@@ -180,7 +179,7 @@ local page, pages = 0, 1
 --                                  count = 0, empty = "...", footer = "..."} end,   -- row 3's value = count
 --     reset = {button = <text id>, ask = "...", done = "...", fail = "... {1} ...",       -- CMD_FUNC2 on the card
 --              run = function(api) return ok, code end},
---     locked = true, locked_msg = "...",  -- (2.0.1) shown LOCKED while the owner's mode is off (not enterable):
+--     locked = true, locked_msg = "...",  -- shown LOCKED while the owner's mode is off (not enterable):
 --   }                                     --   padlock body, dimmed band, Accept = a message only, no reset
 -- A reserved slot whose mode is off has no card, unless its provider says `locked = true` (a mode that exists but is
 -- not available yet): then the first such slot gets the card, locked. An enterable reserved slot always wins.
@@ -200,11 +199,11 @@ local RES_LAST = 12       -- reserved slots looked at for the card: 2 .. RES_LAS
 local res = nil           -- the card's slot while it is on (OnInit): {slot, owner, p = the owner's provider or {}}
 -- the providers, by owner mod id (fresh on every run of this chunk; the owners' patches run after it)
 VRFW_SS_RESERVED = {}
--- 1.x name (docs/framework/naming.md): same object
+-- 1.x name: same object
 EVT_SS_RESERVED = VRFW_SS_RESERVED
 -- our texture (dx11/menu/220_img/evt_slot/evt_slot_base.g4tx, built by slot_build.py from slot_card_art.py)
 local ART_PATH = "#/menu/220_img/evt_slot/evt_slot_base.g4tx"
--- v4.1 (in game 2026-09-28): the emblem disc, lock and plus are baked into the body variants (the sprite
+-- v4.1: the emblem disc, lock and plus are baked into the body variants (the sprite
 -- swaps on the retail face nodes did not show); the row icons are our plates (evt_slot_ri_*) on the texture-slot
 -- dummies; the emblem goes on the savedata_ch_img01_dmy texture slot (evt_slot_emblem_generic until / unless the
 -- emblem texture is in). Sprite hashes are crc32 of the sprite names (filled in by slot_build.py).
@@ -239,7 +238,7 @@ local WIN_LABELS = {2244889632, 482811290, 1807756556, 4121213103}   -- attach l
 local C = {
   TEXT = 1083631230,          -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
   TEXT_GET = 4074371074,      -- CMND_TEXT_GET (text id) -> string
-  TEXT_NUM = 1583337767,      -- (string, "NUM", n) -> string (retail "Capítulo <NUM>")
+  TEXT_NUM = 1583337767,      -- (string, "NUM", n) -> string (retail "Chapter <NUM>")
   MESH_VISIBLE = 3405944500,  -- (layer, mesh, bool, idx)
   LAYER_VISIBLE = 711242136,  -- (layer, idx, bool)
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
@@ -306,10 +305,10 @@ local PLACEHOLDER_TEXT = 968662090 -- any valid text id; every row is overwritte
 local FN_RENAME = 981253811     -- CMD_FUNC1
 local FN_DELETE = 3656619642     -- CMD_FUNC3
 local FN_DUP = 3393070439           -- CMD_FUNC4 (X): duplicate
-local KB_TITLE = 2568160623                 -- retail menu_text «Nombre» (Name)
+local KB_TITLE = 2568160623                 -- retail menu_text "Nombre" (Name)
 local KB_MAX = 20
 -- button guide: text ids / icon text ids / command key hashes (menu_text.cfg.bin, equip_menu_inc UpdateEquipButtonGuide)
-local G_ACCEPT, G_NAME, G_DELETE = 1847312674 --[[Aceptar]], 2568160623 --[[Nombre]], 3961481199 --[[Eliminar]]
+local G_ACCEPT, G_NAME, G_DELETE = 1847312674 --[[Accept]], 2568160623 --[[Nombre]], 3961481199 --[[Eliminar]]
 local I_ENTER, I_FUNC1, I_FUNC3 = 2750714971 --[[<CMD_ENTER>]], 203473330 --[[<CMD_FUNC1>]], 3794706590 --[[<CMD_FUNC3>]]
 local K_ENTER, K_FUNC1, K_FUNC3 = 1981080283 --[[CMD_ENTER]], 637335895 --[[CMD_FUNC1]], 3421673595 --[[CMD_FUNC3]]
 -- X: CMD_FUNC4 = pad 15 (Square / Xbox X) and keyboard code 23 ('X') in input_ctrl_3.00.18.00 MENU_CTRL
@@ -319,10 +318,10 @@ local K_FUNC4, I_FUNC4 = 1435897304 --[[CMD_FUNC4]], 2085238077 --[[<CMD_FUNC4>]
 -- like X
 local K_FUNC2, I_FUNC2 = 3170216173 --[[CMD_FUNC2]], 2387151820 --[[<CMD_FUNC2>]]
 local G_DUP = 3316700371   -- menu_text row evt_slot_dup_text (text/rows/save_slots.toml; the guide needs a text id)
--- pages (more than 3 player slots): L1 / R1 polled in Step with CMND_CHECK_INPUT_CMD on MENU_CTRL (the IF bank's way);
--- the guide shows the retail «Cambiar página» with the R1 glyph
+-- pages (more than 3 player slots): L1 / R1 polled in Step with CMND_CHECK_INPUT_CMD on MENU_CTRL (the mod bank's way);
+-- the guide shows the retail "Change page" with the R1 glyph
 local K_PAGE_PREV, K_PAGE_NEXT = 3559725168, 2955903379
-local G_PAGE, I_R1, K_R1 = 884337385 --[[Cambiar página]], 1596629152 --[[<CMD_FUNCR1>]], 942075773 --[[CMD_FUNCR1]]
+local G_PAGE, I_R1, K_R1 = 884337385 --[[Change page]], 1596629152 --[[<CMD_FUNCR1>]], 942075773 --[[CMD_FUNCR1]]
 local MENU_CTRL, CHECK_INPUT = 1332654303, 4265778440   -- CMND_CHECK_INPUT_CMD(MENU_CTRL, cmd)
 local SE_OK, SE_DECIDE, SE_BACK = 3848881948, 4235359837, 202039849
 
@@ -350,7 +349,7 @@ local N = {
   BASE_NODE = 3786803635,      -- save_info_base01 (the body sprite target)
 }
 -- number primitives (names from the objbin CMenuCreatePrimitiveComponent; retail UpdateDetailWindow)
--- In-game round 1 (2026-09-27): the retail time prims (24x35 digits + colons) ran into the "Tiempo total" label and
+-- the retail time prims (24x35 digits + colons) ran into the "Tiempo total" label and
 -- the retail victory prims are centred on their locator (they spilled past the card edge). Now the time is TEXT on
 -- N.TITLE and the count (victories / fragments) uses the retail "matches played" prim (blue shared digits,
 -- right-aligned at its locator, scaled by slot_build.COUNT_SCALE); every other prim stays off screen and hidden.
@@ -784,7 +783,7 @@ local function FillWindow(idx)
     return funcLuaCommand(C.TEXT_NUM, funcLuaCommand(C.TEXT_GET, textId), "NUM", v)
   end
   Text(idx, N.CAT[1], TXT.T_STORY)
-  Text(idx, N.SUB[2], Num(2849482415, ch))                 -- Capítulo <NUM>
+  Text(idx, N.SUB[2], Num(2849482415, ch))                 -- Chapter <NUM>
   Mesh(idx, N.STORY_STAR, s.clearBits % 2 == 1)
   Text(idx, N.CAT[2], TXT.T_CHRON)
   Text(idx, N.SUB[3], string.format(TXT.MATCHES, s.chBattles))
@@ -904,7 +903,7 @@ local function UpdateButtonGuide()
   local n = SlotAt(focus)
   local texts, icons, cmds, z = {G_ACCEPT}, {I_ENTER}, {K_ENTER}, {0}
   if pages > 1 then
-    -- L1 / R1: the pages of player slots (the retail «Cambiar página» guide)
+    -- L1 / R1: the pages of player slots (the retail "Change page" guide)
     table.insert(texts, G_PAGE)
     table.insert(icons, I_R1)
     table.insert(cmds, K_R1)
@@ -974,7 +973,7 @@ end
 -- yes/no with the cursor on "No" (retail savedata_management_menu_reset CheckWindowCoroutine): true = yes
 -- Window kind (2, 15) does NOT report through MSG_RESULT: "yes" sets the parameter 1449645767 (retail
 -- chara_bank_menu:1119-1127, title_menu_2 OpenRematchConfirmGeneralWin_Coroutine, savedata reset: P_HAS(1449645767)
--- = yes, cleared afterwards). In game 2026-09-24c MSG_RESULT read "no" although the user chose yes.
+-- = yes, cleared afterwards). In game MSG_RESULT read "no" although the user chose yes.
 local P_YES = 1449645767
 local function AskDanger(text)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
@@ -1028,11 +1027,11 @@ end
 
 -- ---- extension points --------------------------------------------------------------------------------------
 -- Other mods extend this screen with a Lua patch of the stem evt_save_slot_menu (run right after this chunk; e.g.
--- Inazuma Fantasy's INAROGUE card). The patch only registers functions (no engine call at chunk load):
+-- a mod's reserved-slot card). The patch only registers functions (no engine call at chunk load):
 --   if type(VRFW_SS_HOOKS) == "table" and type(VRFW_SS_HOOKS.new_game) == "table" then
 --     table.insert(VRFW_SS_HOOKS.new_game, function(n, api) ... end)
 --   end
--- VRFW_SS_HOOKS.new_game: function(n, api), run in the screen's coroutine after «Nueva partida» on the empty slot n
+-- VRFW_SS_HOOKS.new_game: function(n, api), run in the screen's coroutine after "Nueva partida" on the empty slot n
 --   was confirmed (and after the framework's own story question) and before the screen closes with result n; a hook
 --   may ask (api.Ask yields). Errors are logged and the next hook runs.
 -- VRFW_SS_API (version 1): the screen's helpers a hook needs: Call(cmd, ...) (protected funcLuaCommand), Log(...)
@@ -1040,7 +1039,7 @@ end
 --   command ids C.TEXT_GET (text id -> string) / C.TEXT_NUM / C.SE, the sound ids SE.OK / DECIDE / BACK, MENU.
 -- Fresh tables on every run of this chunk: the hooks are those of the patches that run after it.
 VRFW_SS_HOOKS = {new_game = {}}
-EVT_SS_HOOKS = VRFW_SS_HOOKS   -- 1.x name (docs/framework/naming.md): same object
+EVT_SS_HOOKS = VRFW_SS_HOOKS   -- 1.x name: same object
 VRFW_SS_API = {
   version = 1,
   Call = Call, Log = Log, Ask = Ask, AskDanger = AskDanger, Message = Message,
@@ -1048,7 +1047,7 @@ VRFW_SS_API = {
   SE = {OK = SE_OK, DECIDE = SE_DECIDE, BACK = SE_BACK},
   MENU = MENU,
 }
-EVT_SS_API = VRFW_SS_API   -- 1.x name (docs/framework/naming.md): same object
+EVT_SS_API = VRFW_SS_API   -- 1.x name: same object
 
 local function RunHooks(name, n)
   local list = VRFW_SS_HOOKS[name]
@@ -1273,7 +1272,7 @@ local function AskName(initial)
   local frames, live, changes = 0, "", 0
   while funcLuaCommand(C.KB_ACTIVE) do
     frames = frames + 1
-    local t = funcLuaCommand(C.KB_TEXT)      -- live buffer (same getter; no side effects: handler 0xC4F360)
+    local t = funcLuaCommand(C.KB_TEXT)      -- live buffer (same getter; no side effects)
     if type(t) == "string" and t ~= live then
       if t ~= "" then
         live = t
@@ -1290,7 +1289,7 @@ local function AskName(initial)
   local cancelled = rawc == true
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
   Log("keyboard closed after frames", frames, "raw cancelled", tostring(rawc), "text [" .. tostring(text) .. "]", "live [" .. live .. "]")
-  -- 2026-09-24c: cancelled = true and "" although the user typed a name. Do not trust the flag alone: if a name was
+  -- cancelled = true and "" although the user typed a name. Do not trust the flag alone: if a name was
   -- seen while the keyboard was open, offer it.
   if (type(text) ~= "string" or text == "") and live ~= "" then
     if Ask(string.format(TXT.USE_NAME, live)) then
@@ -1409,8 +1408,8 @@ local function Play(n)
   end
 end
 
--- the story-complete start (save part story_start, docs/framework/save-slots.md §7): yes = the slot's marker turns
--- «pending» and the title applies the post-story state once in that slot (graft story_start). Without it in the save
+-- the story-complete start (save part story_start): yes = the slot's marker turns
+-- "pending" and the title applies the post-story state once in that slot (graft story_start). Without it in the save
 -- part (CMND_VRFW_STORY_START_GET unknown: not a number) nothing is asked.
 local function StoryAsk(n)
   local st = Call(EVT_LOADER.STORY_GET, n)
@@ -1654,8 +1653,7 @@ end
 -- cursor anchor, so with the usual 3 cards nothing moves at run time. Only a count the layout does not spread (the
 -- 4-card row while a mod's reserved slot is on) moves card k by centre(k, CARDS) - LayoutCentre(k): band and window of
 -- one card by the same delta through the same command (the instance's local position, which the instance's click
--- zone follows: docs/game/ui/mouse-support.md §1.1). Never node writes: the old runtime locator moves (2.2.183 /
--- 2.2.195) failed per card («no effect of the move») and dropped one group back to the retail x while the other kept
+-- zone follows). Never node writes: the old runtime locator moves failed per card ("no effect of the move") and dropped one group back to the retail x while the other kept
 -- its move (headers and bodies apart). One log line per pass: bodies x, headers x (left edges), applied / fallback.
 local SCREEN_W, CARD_W = 1920, 424
 local GPOS = 499270986         -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y, z
@@ -1812,7 +1810,7 @@ function OnSetupLayer(a1, a2)
     if a2 >= CARDS then
       funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
       funcLuaMenuCommand(C.ATTACH_TRACE, a1, a2, 3313461902 --[[cursor]], false)
-      -- no click zone on a hidden row: it would take the engine focus on hover (docs/game/ui/mouse-support.md §2)
+      -- no click zone on a hidden row: it would take the engine focus on hover
       pcall(funcLuaMenuCommand, 855005857 --[[enable / remove an instance's zone]], a1, a2, false)
       return
     end
@@ -1885,7 +1883,7 @@ function OnDecideFocus(a1, a2)
 end
 
 -- CMD_FUNC1 / CMD_FUNC3 on the rows (MENU_CMD_INFO CMD_FUNCTION ids evt_slot_rename / evt_slot_delete); the button
--- guide sends the same commands when clicked. lua.md: OnFunction(id, layer); both orders are accepted.
+-- guide sends the same commands when clicked. OnFunction(id, layer); both orders are accepted.
 function OnFunction(a1, a2)
   Log("OnFunction", tostring(a1), tostring(a2), "slot", tostring(SlotAt(focus)), "busy", evt_co ~= nil and "yes" or "no")
   if evt_co ~= nil then

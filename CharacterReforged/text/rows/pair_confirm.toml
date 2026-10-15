@@ -1,0 +1,60 @@
+# Character Reforged › the texts of the «Crear …» confirmation panel (hook pair_confirm_window_hooks.lua of graft
+# character_reforged_board; ported from Inazuma Fantasy's text\rows\mx_confirm.toml on 2026-10-14). The other stat
+# names on the panel are the game's own menu_text rows. Format: docs/framework/types/text.md.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the PE row's name (the max PE the pair adds, Chrono Stone's GP share): the match HUD's PE tag of each language
+[[row]]
+id = "character_reforged_pair_pe"
+fallback = false
+es = "PE"
+en = "GP"
+fr = "PE"
+de = "GP"
+it = "PE"
+pt = "PE"
+ja = "GP"
+zh_hans = "GP"
+zh_hant = "GP"
+
+# the pill on the move plate: the pair is ideal (a retail pair / overdrive: the full transfer) or normal
+[[row]]
+id = "character_reforged_pair_ideal"
+fallback = false
+es = "Ideal"
+en = "Ideal"
+fr = "Idéal"
+de = "Ideal"
+it = "Ideale"
+pt = "Ideal"
+ja = "ベスト"
+zh_hans = "最佳"
+zh_hant = "最佳"
+
+[[row]]
+id = "character_reforged_pair_normal"
+fallback = false
+es = "Normal"
+en = "Normal"
+fr = "Normal"
+de = "Normal"
+it = "Normale"
+pt = "Normal"
+ja = "ノーマル"
+zh_hans = "普通"
+zh_hant = "普通"
+
+# Suerte's name on the panel (the game has no menu_text row of its own for it)
+[[row]]
+id = "character_reforged_pair_luck"
+fallback = false
+es = "Suerte"
+en = "Luck"
+fr = "Chance"
+de = "Glück"
+it = "Fortuna"
+pt = "Sorte"
+ja = "ラック"
+zh_hans = "运气"
+zh_hant = "運氣"

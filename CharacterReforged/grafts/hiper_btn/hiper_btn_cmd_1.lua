@@ -32,8 +32,13 @@ local evt_ho_want = false   -- last corner placement (the list-open transition s
 -- inst: the plate instance the bar is drawn on (the «modo cambio» is the mix slot's: instance 1 since 2026-10-12)
 local evt_cd = {tex = 0, t = 0, swapped = false, shown = nil, geo = nil, total = 0, logs = 0, inst = 1}
 -- the slot tags of the selected-slot controls (menu_text evt_hs_tag_aura / evt_hs_tag_mix, 9 languages), read once
+-- EVT_HIPER_SLOT_TAG: the tag after the plate's name («  · Aura»); off: the name alone (owner 2026-10-15)
+EVT_HIPER_SLOT_TAG = false
 local evt_sel = {tags = nil}
 local function EVT_SelTag(slot)
+  if not EVT_HIPER_SLOT_TAG then
+    return ""
+  end
   if evt_sel.tags == nil then
     evt_sel.tags = {}
     for k, id in pairs({[0] = 2257771510 --[[evt_hs_tag_aura]], [1] = 1104879536 --[[evt_hs_tag_mix]]}) do
@@ -141,7 +146,7 @@ end
 -- place / clean instance `inst` of the card layer (engine calls: from EVT_HiperStep only)
 local function EVT_PlateFacePlace(inst)
   pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_CHR_ATC, true)
-  local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H
+  local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H * (EVT_HIPER_PLATE_SCALE or 1)
   funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_CHR, k, k, 1, inst)
   funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_CHR, EVT_HIPER_FACE_DX - EVT_CHR_BAND_R * k,
     EVT_HIPER_FACE_DY - EVT_CHR_BAND_TOP * k, 0, inst)
@@ -249,7 +254,7 @@ end
 -- the column of plate `inst`: attach entry on, scale / shift, the two texts, shown (engine calls: EVT_HiperStep only)
 function EVT_InputDraw(inst, top, bottom)
   pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_IN_ATC, true)
-  local k = EVT_INPUT_K
+  local k = EVT_INPUT_K * (EVT_HIPER_PLATE_SCALE or 1)
   funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_IN, k, k, 1, inst)
   funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX, EVT_INPUT_DY, 0, inst)
   local r1 = funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_IN, EVT_IN_TOP, top, inst)
@@ -547,6 +552,8 @@ EVT_HIPER_OPEN_Y = {-192, -192}     -- plate centres while open, relative to the
                                     -- lowest plate of the cross (_cmd01_02 at -76, bottom ~-106) and the page dots (-62);
                                     -- one row (Nacho 2026-09-30: the RB+X plate left of the RB+A plate)
 EVT_HIPER_OPEN_GAP = 12             -- gap between the RB+X plate (instance 1, left) and the RB+A plate (instance 0, right)
+EVT_HIPER_PLATE_SCALE = 0.88        -- plate size (1 = the move row's own); the right edge stays where it was
+EVT_HIPER_RAISE_Y = 22              -- plates moved up by this (layout units, y up)
 local EVT_HO_ATC_X = 504            -- x of _atc_hiper01_r / _atc_hiper02_r relative to the cross (hiper_btn_build.py _RX)
 local EVT_HO_ATC_Y = {-36, 30}      -- their y (instance 0 / 1)
 local EVT_HO_HALF_R = 133           -- plate right half-width (245 x 0.72)
@@ -635,11 +642,12 @@ function EVT_HiperOpenPlace()
     end
   end
   local cross = want and EVT_HO_CrossX() or EVT_HO_CROSS
-  local row_dx = 314 + (EVT_HIPER_OPEN_GAP or 0)
+  local scale = EVT_HIPER_PLATE_SCALE or 1
+  local row_dx = 314 * scale + (EVT_HIPER_OPEN_GAP or 0)
   for inst = 0, 1 do
     local dx, dy = 0, 0
     if want then
-      dx = math.floor(EVT_HIPER_OPEN_RIGHT - EVT_HO_HALF_R - (cross + EVT_HO_ATC_X) + 0.5)
+      dx = math.floor(EVT_HIPER_OPEN_RIGHT - EVT_HO_HALF_R * scale - (cross + EVT_HO_ATC_X) + 0.5)
       if inst == 1 and EVT_HIPER_OPEN_Y[1] == EVT_HIPER_OPEN_Y[2] then
         dx = dx - row_dx
       end
@@ -649,8 +657,10 @@ function EVT_HiperOpenPlace()
       dy = EVT_HO_U_Y[1] - EVT_HO_U_Y[2]
     end
     dx = dx + EVT_SlideDx(inst)
-    local key = dx .. "," .. dy
+    dy = dy + (EVT_HIPER_RAISE_Y or 0)
+    local key = dx .. "," .. dy .. "," .. scale
     if evt_ho_set[inst + 1] ~= key then
+      funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_HL, scale, scale, 1, inst)
       funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_HL, dx, dy, 0, inst)
       evt_ho_set[inst + 1] = key
     end

@@ -1,14 +1,12 @@
-# The declaration `[[VRFW.CardType]]` of the card-type registry (service S2, docs/framework/card-types.md): what a
-# mod's content\card_types\*.toml may say. Read by scripts\card_types.lua at start (every key is checked against this
-# file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a table
-# map: nothing here becomes table rows.
+# Schema of `[[VRFW.CardType]]`: a card type (card rarity) as the filter windows and player bank treat it.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.card_type/1"
 folder = "content/card_types"
 
 [entry.CardType]
 doc = "a card type (a card rarity): how the filter windows' «Rareza» tab and the player bank treat it"
-# key of the declaration: `<mod>.<name>`; two declarations of one rarity: the later mod's keys win, key by key
+# Key of the declaration: `<mod>.<name>`; for one rarity declared twice the later mod's keys win, key by key.
 name = { type = "name", required = true, doc = "a-z 0-9 _" }
 rarity = { type = "int", min = 0, max = 15, required = true, doc = "the card rarity (character record +0x10, chara_param rarity column)" }
 label = { type = "string", doc = "text key of its name (for the mods' own menus; the tab draws the rarity's own texture)" }

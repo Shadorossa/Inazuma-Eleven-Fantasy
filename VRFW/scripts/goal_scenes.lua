@@ -1,12 +1,6 @@
--- VR-Framework: a ruleset with `[play] goal_scenes = false` (docs/framework/types/rule.md, VRFW 2.2.93; Inazuma
--- Fantasy's training field «Modo libre», owner 2026-10-13: «after a goal, straight back to the kick-off») has no goal
--- scenes. While such a match runs the match engine publishes the state key match.goal_scenes = 0; then, from a goal
--- (the `goal` trigger, or the keeper beaten by a shot: the goal scene starts before the score changes) until the next
--- kick-off, every event the game plays (the goal scene, the scorer's celebration) is run to its end in the frame it is
--- seen: its sounds stopped and its timeline seeked to the end, the retail event skip without its fades (the same steps
--- as BetterUI's pre-match X jump, docs/game/ui/prematch-skip.md §6). The game's own flow then goes on by itself (the
--- seek runs every pending command of the timeline). Every other match: nothing.
--- Declarations: content\game\goal_scenes.toml (event_manager, EventSeek, StopEventSounds, TimelineSeek).
+-- Skips goal scenes while the active ruleset has `[play] goal_scenes = false` (state key match.goal_scenes = 0).
+-- From a goal (or a keeper beaten by a shot) to the next kick-off, every event the game plays is run to its end in the frame it is seen: sounds stopped, timeline seeked to the end.
+-- Declarations: content\game\goal_scenes.toml. Every other match: nothing.
 
 local GOAL = 13                    -- soccer state Goal
 local RESTART = 10                 -- soccer state Restart (the kick-off): the skip ends there

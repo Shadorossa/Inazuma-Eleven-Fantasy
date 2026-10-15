@@ -1,0 +1,17 @@
+# Chronicle Deluxe › the «Sello del Maestro» notice (docs/game/mods/chronicle-deluxe.md §10): the Chronicle board shows a
+# one-time message «you got the Master's Seal» after the win that makes the key item owned (the Destructores gate
+# battle). A HOOK file of the VR-Framework's board script (graft route_board, docs/framework/route-board.md §3); nothing
+# runs at chunk load but definitions and VRFW_Host registrations. What the Seal does is data (content\unlimited_copies\
+# master_seal.toml, the framework's VRFW_Copies).
+name = "chronicle_deluxe_master_seal"
+mod = "chronicle_deluxe"
+order = 156
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "Chronicle Deluxe: the one-time «Master's Seal obtained» notice on the Chronicle board"
+
+[[hooks]]
+stem = "vs_route_town_menu"
+src = "cd_master_seal_notice.lua"

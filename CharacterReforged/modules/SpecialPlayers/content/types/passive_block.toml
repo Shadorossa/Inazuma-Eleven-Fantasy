@@ -1,0 +1,283 @@
+# Special Players › the block types of the special passives (kind SpecialPlayers.passive_block/1). A block is one
+# reusable piece of a passive, declared once by name in a mod's content\passive_blocks\*.toml and used by name by any
+# number of passives (content\special_passives\, kind SpecialPlayers.special_passive/1). A passive reads as a sentence:
+#   «When <event> of <who> → <effects> to <targets> · nullified when <event> of <who>»
+# Roles:
+#   trigger    the event that turns the passive on (one more stack each time with a Stack block); a passive without
+#              any trigger is always on
+#   stack      how the stacks build up: maximum, how long each lasts, back to 0 at each half
+#   reset      the event that nullifies it (its stacks back to 0)
+#   condition  what must hold (when it counts and when it applies)
+#   effect     what it does to its targets while it is on, × its stacks: technique power by move kind, stat parameters,
+#              tension cost, move speed, recast; or at once on the trigger (tension, refuse); or the game passive of the
+#              own passive slot (GamePassive)
+# Each [entry.<Type>] is one block type. Its plain keys describe it: `role`, `text` (the text key of its description
+# in text\keys.toml; `{<key>}` = the block's value of <key>), `needs` (the fact it reads: actor / move), `apply` (how
+# the interpreter uses an effect), `hooks` (the triggers a lasting effect is answered on), `answer` (the
+# behaviour-rule effect it answers) and `amount_key` (the key holding the amount). Its table keys are the block's keys:
+# { type, required, default, min, max, values, words, ref, doc } (`values` = the allowed words; `words` = the text key
+# prefix of those words; `ref` = what the value names, for the editors). The tables after the entries are data the
+# interpreter and the editors share. vrfw check validates the block files against this file;
+# scripts\lib\special_passives.lua runs them.
+schema = "VRFW.decl_schema/1"
+kind = "SpecialPlayers.passive_block/1"
+folder = "content/passive_blocks"
+
+# ------------------------------------------------------------------------------------------------ when / stacks / reset
+
+[entry.Trigger]
+role = "trigger"
+text = "ev_default"
+doc = "the event that turns the passive on: a behaviour-rule trigger (VRFW content\\rules\\catalog\\triggers.toml) whose player is `by`, seen from the carrier"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+on = { type = "string", required = true, ref = "rule_trigger", doc = "the event (goal, keeper_save, block_won, duel_won, possession, foul…)" }
+arg = { type = "string", default = "", ref = "rule_trigger_arg", doc = "only this argument of the event (goal:user, duel_won:move…); empty = any" }
+by = { type = "string", default = "self", values = ["self", "teammate", "team", "opponent", "anyone"], words = "by", doc = "whose event: the carrier, a teammate, anyone of his team, an opponent, anyone" }
+wording = { type = "string", default = "", values = ["when", "each_time"], words = "wording", doc = "the description says «when» or «each time» (empty: «each time» with a Stack block, else «when»)" }
+
+[entry.Stack]
+role = "stack"
+text = "sentence_max"
+doc = "each trigger adds one stack (the effects × the stacks)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+max = { type = "int", default = 0, min = 0, max = 99, doc = "the most stacks (0 = no limit)" }
+duration_s = { type = "int", default = 0, min = 0, max = 5400, doc = "the stacks end this many seconds after the last one (0 = they stay)" }
+per_half = { type = "bool", default = false, doc = "the stacks go back to 0 at each half" }
+
+[entry.Reset]
+role = "reset"
+text = "sentence_reset"
+doc = "the event that nullifies the passive: its stacks back to 0"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+on = { type = "string", required = true, ref = "rule_trigger", doc = "the event" }
+arg = { type = "string", default = "", ref = "rule_trigger_arg", doc = "only this argument of the event; empty = any" }
+by = { type = "string", default = "team", values = ["self", "teammate", "team", "opponent", "anyone"], words = "by", doc = "whose event" }
+
+# ------------------------------------------------------------------------------------------------ conditions
+
+[entry.MoveElement]
+role = "condition"
+text = "block_move_element"
+needs = "move"
+doc = "the element of the move used, as the game answers for that slot"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+elements = { type = "strings", required = true, values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "any of these elements" }
+
+[entry.CarrierElement]
+role = "condition"
+text = "block_carrier_element"
+needs = "actor"
+doc = "the element of the carrier's card"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+elements = { type = "strings", required = true, values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "any of these elements" }
+
+[entry.Move]
+role = "condition"
+text = "block_move"
+needs = "move"
+doc = "the move used is one of these"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+moves = { type = "strings", required = true, ref = "move", doc = "moves: an internal key (whs00010) or a mod move <mod>.<name>" }
+
+[entry.MoveKind]
+role = "condition"
+text = "block_move_kind"
+needs = "move"
+doc = "the kind of the move of the event (skill table category and flags: [move_kinds])"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", required = true, values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "any of these kinds" }
+
+[entry.Outcome]
+role = "condition"
+text = "block_outcome"
+doc = "how the event ended: the argument of its trigger (technique_result won / lost, keeper_scene saved / beaten…; [outcomes])"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+result = { type = "string", required = true, values = ["succeeds", "fails"], words = "outcome", doc = "succeeds or fails" }
+
+[entry.CarriesPassive]
+role = "condition"
+text = "block_carries_passive"
+needs = "actor"
+doc = "the carrier carries one of these game passives: in an unlocked team passive slot or in his own passive slot"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+passives = { type = "strings", required = true, ref = "passive", doc = "passive keys (ps10001, a mod passive's key)" }
+
+[entry.Side]
+role = "condition"
+text = "block_side"
+needs = "actor"
+doc = "the carrier plays for this side"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+side = { type = "string", required = true, values = ["user", "rival"], words = "side", doc = "user = the player's team, rival = the other team" }
+
+[entry.HasBall]
+role = "condition"
+text = "block_has_ball"
+needs = "actor"
+doc = "the carrier holds the ball"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+
+[entry.Score]
+role = "condition"
+text = "block_score"
+doc = "the score of the carrier's team"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+states = { type = "strings", required = true, values = ["leading", "level", "trailing"], words = "score", doc = "any of these" }
+
+[entry.Half]
+role = "condition"
+text = "block_half"
+doc = "the current half"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+halves = { type = "ints", required = true, min = 1, max = 5, doc = "any of these: 1-2, 3-4 extra time, 5 shootout" }
+
+[entry.Clock]
+role = "condition"
+text = "block_clock"
+doc = "the clock of the current half, in game minutes"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+from_minute = { type = "int", default = 0, min = 0, max = 90, doc = "from this minute of the half" }
+until_minute = { type = "int", default = 0, min = 0, max = 90, doc = "before this minute of the half (0 = to the end)" }
+
+[entry.Chance]
+role = "condition"
+text = "block_chance"
+doc = "it counts this often (checked when the trigger happens)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "int", required = true, min = 1, max = 100, doc = "the chance in %" }
+
+# ------------------------------------------------------------------------------------------------ effects
+
+[entry.TechniquePower]
+role = "effect"
+text = "obj_power"
+apply = "power"
+hooks = "move_power"
+amount_key = "value"
+doc = "the power of the targets' special moves of these kinds (move_power), × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", default = [], values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "the move kinds (empty = every move); see [move_kinds]" }
+mode = { type = "string", default = "percent", values = ["percent", "flat"], words = "mode", doc = "percent of the power, or power points" }
+value = { type = "number", required = true, min = -1000, max = 1000, doc = "per stack" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose moves" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+
+[entry.Stat]
+role = "effect"
+text = "obj_stat"
+apply = "stat"
+amount_key = "value"
+doc = "the targets' match stat parameters (the framework's set_stat, from their base), × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+stats = { type = "strings", required = true, values = ["kick", "control", "technique", "pressure", "physical", "agility", "intelligence"], words = "stat", doc = "the parameters" }
+mode = { type = "string", default = "flat", values = ["percent", "flat"], words = "mode", doc = "percent of the base, or points" }
+value = { type = "number", required = true, min = -1000, max = 1000, doc = "per stack" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose parameters" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+
+[entry.TensionCost]
+role = "effect"
+text = "obj_tension_cost"
+apply = "rate"
+answer = "cost_mult"
+hooks = "tension_pay"
+amount_key = "percent"
+doc = "the tension cost the targets pay (tension_pay), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (-20 = 20 % cheaper)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "who pays" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+
+[entry.MoveSpeed]
+role = "effect"
+text = "obj_move_speed"
+apply = "rate"
+answer = "speed_mult"
+hooks = "move_speed"
+amount_key = "percent"
+doc = "the targets' move speed rate (move_speed), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (10 = 10 % faster)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "who" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+
+[entry.RecastTime]
+role = "effect"
+text = "obj_recast_time"
+apply = "rate"
+answer = "recast_mult"
+hooks = "recast"
+amount_key = "percent"
+doc = "the recast time of the targets' moves (recast), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (-50 = half the time)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose moves" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+
+[entry.Tension]
+role = "effect"
+text = "fx_tension"
+apply = "tension"
+amount_key = "units"
+doc = "at once, each time the trigger happens: tension points (the HUD's units) for a team, seen from the event's player"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+units = { type = "int", required = true, min = -100, max = 100, doc = "units added (negative takes them away)" }
+team = { type = "string", default = "actor", values = ["actor", "opponent", "user", "rival"], words = "tension_team", doc = "whose tension" }
+
+[entry.Refuse]
+role = "effect"
+text = "fx_refuse"
+apply = "refuse"
+answer = "block"
+doc = "at once: what the trigger is about is refused (the move, the dash, the aura…), when the carrier is the event's player"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+
+[entry.GamePassive]
+role = "effect"
+text = "block_game_passive"
+apply = "own_slot"
+doc = "the game passive in the carrier's own passive slot (board equip slot 9): shown on the board, used by the match like any passive"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+passive = { type = "string", required = true, ref = "passive", doc = "the passive's key (ps10001, a mod passive's key from a content\\techniques\\*.toml [[passive]] row)" }
+unlock = { type = "string", default = "board", values = ["board", "always"], words = "unlock", doc = "board: once the custom passive piece of his board is open; always: from level 1" }
+
+# ------------------------------------------------------------------------------------------------ shared data
+
+# the move kinds of TechniquePower: skill table `category` (1 shoot, 2 dribble, 3 block, 4 keeper) and the
+# `skill_effect_bit_flag` bits (shoot: 4 long shot, 8 chain; block: 16 shot block; keeper: 1 catch, 2 punch)
+[move_kinds]
+shoot = { category = 1 }
+long_shoot = { category = 1, flag = 4 }
+chain_shoot = { category = 1, flag = 8 }
+dribble = { category = 2 }
+block = { category = 3 }
+shoot_block = { category = 3, flag = 16 }
+catch = { category = 4, flag = 1 }
+punch = { category = 4, flag = 2 }
+
+# how an Outcome reads the argument of its event
+[outcomes]
+succeeds = ["won", "saved"]
+fails = ["lost", "beaten"]
+
+# the passive level of a player (value_by_level): the first level whose player level he has reached. The game has no
+# level for the special passives: this table is the mod's choice (14 levels over the game's 99).
+[levels]
+from_player_level = [1, 8, 15, 22, 29, 36, 43, 50, 57, 64, 71, 78, 85, 92]
+
+# the card's main_position numbers (chara_position)
+[positions]
+gk = 1
+fw = 2
+mf = 3
+df = 4

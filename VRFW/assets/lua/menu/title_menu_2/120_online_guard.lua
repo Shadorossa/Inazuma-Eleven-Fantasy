@@ -1,5 +1,4 @@
--- online_guard (VR-Framework, always on): the blocked modes of content\defaults\online_guard.toml leave the title row
--- (docs/framework/online-guard.md). Handlers of the framework's title_menu_2 host (VRFW_Host, lua-hosts.md); every
+-- online_guard (VR-Framework, always on): the blocked modes of content\defaults\online_guard.toml leave the title row. Handlers of the framework's title_menu_2 host (VRFW_Host); every
 -- list comes from the framework (CMND_VRFW_BLOCKED_TITLE): nothing here names a mode, a layer or a function.
 --
 --   * the row: the framework served the title files with one upper button less per blocked item (the row centred

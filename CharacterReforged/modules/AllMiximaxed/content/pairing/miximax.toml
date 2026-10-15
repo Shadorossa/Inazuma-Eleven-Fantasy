@@ -1,0 +1,51 @@
+schema = "CharacterReforged.pairing/1"
+# All Miximaxed › its pairing rules (system `miximax`), over Character Reforged's defaults (content/pairing/defaults.toml
+# of that mod). Any two of the player's own cards may be fused, as in Chrono Stone; one partner per base, a base is
+# never a partner. A game mode adds its own rules by declaring this table again (its keys win, it loads later).
+
+[CharacterReforged.PairRules.miximax]
+same_character = false
+one_partner_per_base = true
+base_may_be_partner = false
+base_rarities_denied = []
+partner_rarities_denied = []
+# the base learns ONE move of the partner, picked in the bank after the partner (Character Reforged's create flow; as
+# Inazuma Fantasy's «Crear miximax»): shown on the player page's mix card, given in a match while the miximax runs
+# (1.0.6, owner 2026-10-14; was 0: no partner move)
+moves = 1
+
+# The base game's «Crear miximax» row: Character Reforged's create entry on the retail skill board (an aura piece's list
+# shows the item, the partner and his move come from the retail bank picker; scripts\lib\create.lua of that mod). The
+# store command answers 10 + PairCheck code for a pair-rule refusal (pair_codes), its own codes below; the carrier goes
+# on the slot.
+[CharacterReforged.Create.miximax]
+item = "wmm_evt_create"
+label = "all_miximaxed.create_label"
+store = "CMND_ALLMIXIMAXED_SET"
+carrier = "wmm_evt"
+pair_codes = 10
+order = 10
+# the bank's confirmation (Sí / No) after the partner and his move: text key, {base} {partner} {moves}
+confirm = "all_miximaxed.create_confirm"
+# the Mix-Max glyph between the base's and the partner's cards of that confirmation (icon_common sprite)
+confirm_icon = "icon_sp_area07"
+# the stats that confirmation shows (the base's and what the miximax adds: scripts\lib\stat_transfer.lua)
+preview = "CMND_ALLMIXIMAXED_PREVIEW"
+# the Chrono Stone MIXIMAX scene after a stored pair (Character Reforged's skill table; content\anims\mx_scene.toml)
+scene = true
+
+# CMND_ALLMIXIMAXED_SET's own codes (scripts/miximax.lua) -> the refusal window's text
+[CharacterReforged.Create.miximax.refusals]
+"1" = "character_reforged.create_refused_off"
+"20" = "character_reforged.create_refused_not_allowed"
+"21" = "character_reforged.create_refused_store"
+"22" = "character_reforged.create_refused_store"
+
+# Character Reforged's partner locks (its scripts\partner_lock.lua): every stored fusion's partner stays in the player
+# bank (greyed, never placed into a team) with this plate over his card: the purple «Mix» (sprite of
+# content/images/menu/102_team/team11/team11_05/partner_badge.toml, word = text key partner_badge). scripts/miximax.lua
+# sends the partners (CharacterReforged.PartnerLockSet).
+[CharacterReforged.PartnerLock.miximax]
+badge_sprite = "all_miximaxed_partner_badge"
+badge_text = "all_miximaxed.partner_badge"
+order = 10

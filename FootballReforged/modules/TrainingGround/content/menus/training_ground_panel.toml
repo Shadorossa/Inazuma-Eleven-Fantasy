@@ -1,0 +1,38 @@
+# Training Ground (docs/game/mods/training-ground.md): the drill's settings window on the match HUD (soccer_menu; a 5v5
+# drill's HUD is the group soccer_battle_menu of the same layout). The window is the framework's VRFW_MatchPanel
+# (docs/framework/match-panel.md; objects vrfw_mp_plate / vrfw_mp_label of its content\menus\match_panel.toml); this
+# file adds its two layers to soccer_menu (groups soccer_menu + soccer_battle_menu; they open with the HUD's group, the
+# Lua hides them until SELECT) and the atlases of its look (the retail options screen's option01_23 / option01_02). The
+# graft training_ground (training_ground_panel.lua) opens it. Over it, the layers of the rival team picker (the
+# framework's VRFW_EmblemGrid, docs/framework/emblem-grid.md: emblem tiles vrfw_emblem_tile, names vrfw_tile_label;
+# cols x rows of config.toml [training_ground.picker] = 6 x 3).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_menu"
+add_layer = { name = "vrfw_mp_plate", object = "vrfw_mp_plate", count = 28, align = [1, 8], scale = 0.2, after = "soccer08_26_p1_hyperdimensional_power_one_gauge_enemy", groups = [
+    { group = "soccer_menu", flags = [0, 1, 0, 0, 1, 0] },
+    { group = "soccer_battle_menu", flags = [0, 1, 0, 0, 1, 0] },
+] }
+res = ["#/menu/108_option/option01/option01_23/option01_23.g4tx", "#/menu/108_option/option01/option01_02/option01_02.g4tx"]
+
+[[patch]]
+menu = "soccer_menu"
+add_layer = { name = "vrfw_mp_label", object = "vrfw_mp_label", count = 45, after = "vrfw_mp_plate", groups = [
+    { group = "soccer_menu", flags = [0, 1, 0, 0, 1, 0] },
+    { group = "soccer_battle_menu", flags = [0, 1, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_menu"
+add_layer = { name = "training_ground_emblem", object = "vrfw_emblem_tile", count = 18, after = "vrfw_mp_label", groups = [
+    { group = "soccer_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_menu"
+add_layer = { name = "training_ground_tile_label", object = "vrfw_tile_label", count = 36, after = "training_ground_emblem", groups = [
+    { group = "soccer_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

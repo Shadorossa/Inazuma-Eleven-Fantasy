@@ -1,8 +1,5 @@
-# Defaults of the anim engine (vr_framework::defaults, `defaults/anim.toml` of every mod, merged in load order: a
-# later mod overrides a key). Only what the game data cannot give.
+# Defaults of the anim engine, merged across mods in load order (later mod wins).
 
 [celebration]
-# The event a mod's own celebration event clones its event_env_config row from (and whose picker image it shows),
-# when its [[celebration]] has no `template`: a one-cut goal performance with the user-side lists (crowd, scoring
-# jingle, goal voice). Not the first retail celebration row (ev71_10010).
+# Event whose event_env_config row a mod's celebration clones when its [[celebration]] has no `template`.
 template = "ev71_10020"

@@ -1,8 +1,8 @@
--- menu_engine: INPUT TRACE (VR-Framework 2.2, 2026-10-12, diagnostics; docs/app/contact-map-fichajes-2026-10-12.md §6-7).
+-- menu_engine: INPUT TRACE (diagnostics).
 -- Definitions + wrappers only (this file runs in every menu VM, lua\_all); the trace is installed from the VM's first
 -- OnInit / Step (the engine registers funcLuaCommand / funcLuaMenuCommand after the chunk), never at load.
 --
--- Owner, 2026-10-12: after leaving any shop page the hub under it takes no input (no key reaches its Lua). Every Lua
+-- after leaving any shop page the hub under it takes no input (no key reaches its Lua). Every Lua
 -- call that switches a menu's input is logged with the VM that sent it, so the unbalanced one shows in loader.log:
 --   «VRFW input <vm> f<frame> <what> <args>»
 -- MENU_ACTIVE (menu, on), the layer input switch 2171393651 (layer, on), the ctrl focus 3518307824 (layer, on), the
@@ -10,15 +10,15 @@
 -- show (369172623 / 66378409), open / close of a menu, and the shop's temp flag 939384271. A call repeating the last
 -- one of the same kind in the VM is not logged again; at most VRFW_INPUT_TRACE.MAX lines per VM.
 --
--- 2.2.25 (round 6: every Lua switch was balanced, the hub still got no key): the engine's own input owners. Each frame
--- CMenuController (vtable slot 3, 0x54D8F0 -> 0x5510A0) gives the pad only to the entries of its input list with the
+-- (every Lua switch was balanced, the hub still got no key): the engine's own input owners. Each frame
+-- CMenuController (vtable slot 3) gives the pad only to the entries of its input list with the
 -- highest priority; an entry whose menu is gone is dropped there. For 60 s after a VM starts and after it makes its
 -- menu active again (the return from a child screen), every 60 frames the VM asks the framework's script for that list
 -- (CMND_VRFW_MENU_INPUT_DUMP, scripts\menu_input.lua: menu crc, priority, order, alive, the menu's active byte) and
 -- logs it when it changed: «VRFW input owners <vm> f<frame> <list>». A menu still listed above the hub is the owner of
 -- the dead input. The same window also logs our layers drawn in the screen's top-left corner (the dark box over the
 -- header): «VRFW input topleft <vm> f<frame> <layer> <idx> <gx> <gy>; ...».
--- VRFW_INPUT_TRACE.on = false switches it off. Release (2026-10-13): VRFW_INPUT_TRACE.log = false keeps the hooks (the
+-- VRFW_INPUT_TRACE.on = false switches it off. Release: VRFW_INPUT_TRACE.log = false keeps the hooks (the
 -- cursor reset, the freeze watchdog's ring) but writes no «VRFW input» / «owners» / «topleft» lines; true = the trace.
 if VRFW_INPUT_TRACE == nil then
   local T = {on = true, log = false, MAX = 400, n = 0, frame = 0, last = {}, installed = false, vm = "?",
@@ -41,7 +41,7 @@ if VRFW_INPUT_TRACE == nil then
       args[#args + 1] = tostring((select(i, ...)))
     end
     local sig = table.concat(args, ",")
-    -- 2.2.74: the last RING calls of this VM, every one (the freeze watchdog dumps them)
+    -- the last RING calls of this VM, every one (the freeze watchdog dumps them)
     T.ring[#T.ring + 1] = "f" .. T.frame .. " " .. what .. "(" .. sig .. ")"
     if #T.ring > T.RING then
       table.remove(T.ring, 1)
@@ -112,7 +112,7 @@ if VRFW_INPUT_TRACE == nil then
         if c == 1558704558 and select(2, ...) == true then
           T.watch = T.WATCH                      -- a menu made active again: watch its input for 60 s
           if T.inactive and T.CURSOR_RESET[T.stem or ""] then
-            T.cr = 0                             -- 2.2.59: the device-mode reset below
+            T.cr = 0                             -- the device-mode reset below
           end
           T.inactive = false
         elseif c == 1558704558 and select(2, ...) == false then
@@ -121,11 +121,11 @@ if VRFW_INPUT_TRACE == nil then
       end
       return raw_menu(c, ...)
     end
-    -- 2.4.10: the arguments go on exactly as the caller gave them (`...`, never `c, a, ...`): a C command counts its
+    -- the arguments go on exactly as the caller gave them (`...`, never `c, a, ...`): a C command counts its
     -- arguments, and a call without one would get an extra nil. The display getters read an optional screen mode
     -- after their arguments (0x790577C2 resolution, 0x01CF5DE6 resolution count): with that nil they answered the
     -- WINDOW mode's 1920 x 1080, so the settings menu's «Resolución pantalla» list lost the chosen size (check mark on
-    -- 1920 x 1080, owner 2026-10-14).
+    -- 1920 x 1080).
     funcLuaCommand = function(...)
       local c, a = ...
       local what = T.on and T.CMD[c] or nil
@@ -136,9 +136,9 @@ if VRFW_INPUT_TRACE == nil then
     end
     T.watch = T.WATCH
     if T.WD.STEMS[T.stem or ""] ~= nil then
-      pcall(T.WdCallbacks)                     -- 2.2.74: the freeze watchdog counts this VM's input callbacks
+      pcall(T.WdCallbacks)                     -- the freeze watchdog counts this VM's input callbacks
     end
-    -- 2.2.29: Step wrapped again here (OnInit runs after every patch of the script: a stem patch that redefined Step
+    -- Step wrapped again here (OnInit runs after every patch of the script: a stem patch that redefined Step
     -- after lua\_all dropped the first wrapper, so the market's trace stayed at frame 0 and never watched)
     if not T.ticking and type(Step) == "function" then
       local step = Step
@@ -165,7 +165,7 @@ if VRFW_INPUT_TRACE == nil then
     return table.unpack(r, 2, r.n)
   end
 
-  -- 2.2.59 (owner: after a shop the Mercado / the office list stays dead until the stick and another device are
+  -- (after a shop the Mercado / the office list stays dead until the stick and another device are
   -- switched quickly, then works): the engine's device mode (the stick's virtual mouse, CMND_SET_ENABLE_FREE_CURSOR_FOR
   -- _VIRTUAL_MOUSE 879521569, which retail market_menu turns on when it opens: (true, false, true)) is reset once when
   -- the hub makes itself active again after a child: off two frames later, on (retail arguments) two frames after
@@ -178,8 +178,7 @@ if VRFW_INPUT_TRACE == nil then
     if T.cr == 2 then
       pcall(T.raw_menu, 879521569, false, false, true)
     elseif T.cr == 4 then
-      -- 2.2.74: the normal menu controller first (a shop's 3D model view leaves MENU_CTRL_SEPARATE_CROSS_KEY selected;
-      -- docs/app/contact-map-fichajes-2026-10-12.md section 23), then the retail virtual mouse, which may select
+      -- the normal menu controller first (a shop's 3D model view leaves MENU_CTRL_SEPARATE_CROSS_KEY selected), then the retail virtual mouse, which may select
       -- MENU_CTRL itself
       pcall(T.raw_menu, 438207617 --[[CMND_CHANGE_MENU_INPUT_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]])
       pcall(T.raw_menu, 879521569, true, false, true)
@@ -188,7 +187,7 @@ if VRFW_INPUT_TRACE == nil then
     end
   end
 
-  -- 2.2.74 FREEZE WATCHDOG (shop freeze, intermittent). In the Mercado, the office hub and the shop page: a VM whose
+  -- FREEZE WATCHDOG (shop freeze, intermittent). In the Mercado, the office hub and the shop page: a VM whose
   -- menu should have the input (open, not closing, no child window / shop / hub / plate over it, no fade) that sees
   -- Accept / Back pressed on the device (CMND_VRFW_INPUT_PAD / _KEY) WD.PRESSES times over at least WD.SPAN frames with
   -- none of its input callbacks (OnFunction, OnDecideFocus, OnEnter, OnBack, OnChangeFocus) is frozen. Then, at most
@@ -363,7 +362,7 @@ if VRFW_INPUT_TRACE == nil then
       return T.Wrapped(step, ...)
     end
   end
-  -- the same entry points as VRFW_Host handlers (2.2.29): in a host script (shop_menu_buy, soccer_vs_cpu_list_menu...)
+  -- the same entry points as VRFW_Host handlers: in a host script (shop_menu_buy, soccer_vs_cpu_list_menu...)
   -- a lua_early merged file redefines OnInit / Step after lua\_all and the wrappers above never run; the host's
   -- dispatchers call these. The handler ticks only where no Step wrapper of ours ever ran.
   local VH = VRFW_Host

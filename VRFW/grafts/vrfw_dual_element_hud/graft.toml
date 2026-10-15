@@ -1,8 +1,6 @@
-# VR-Framework dual-element duel HUD (docs/framework/technique.md §4d «Dual element», docs/game/mechanics/dual-element.md
-# §3b; Nacho 2026-10-09: «Implementa el doble elemento en el framework por si algún mod quiere hacer algo parecido»).
+# VR-Framework dual-element duel HUD.
 # A move with a dual element ([edit.VRFW.DualElement] of the technique type: From = "performers" or Elements = [...])
-# shows ALL its elements on the versus HUDs side by side, icon 1 | icon 2 | …, every icon at the retail size (Nacho
-# 2026-10-09: a row that grows, not alternating, not shrunk; 2 px gap, same vertical centre). The row grows toward
+# shows ALL its elements on the versus HUDs side by side, icon 1 | icon 2 | …, every icon at the retail size (a row that grows, not alternating, not shrunk; 2 px gap, same vertical centre). The row grows toward
 # the HUD's centre, the free side: the enemy's row to the left of the retail move icon (which stays), the own row to
 # the right (the retail icon moves to its right end), so the retail icon is always the rightmost and its hung arrow
 # stays at the row's top-right; the move compatibility arrow
@@ -12,8 +10,7 @@
 # SetupVsElementIconLayerMenu / UpdateVsElementIconCompatibilityArrow, which get the character and move handles
 # directly). The extra icon instances (2-4, on the move icon's locator) are the framework's menus\dual_element_hud.toml
 # (keeper-vs-shot duel keeper_hp_gauge_menu and move-vs-move duel telop soccer_vs_skill_menu). No per-move table: the
-# elements come from the technique engine (CMND_VRFW_TECHNIQUE_ELEMENTS). Was Inazuma Fantasy's graft
-# dual_element_hud (keeper duel only, alternating icon, never shipped) until 2026-10-09.
+# elements come from the technique engine (CMND_VRFW_TECHNIQUE_ELEMENTS).
 # Wrappers only (retail runs first); globals VRFW_DualElement*; no engine call at chunk load.
 name = "vrfw_dual_element_hud"
 mod = "vr_framework"

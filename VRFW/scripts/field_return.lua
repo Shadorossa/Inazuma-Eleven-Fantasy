@@ -1,28 +1,16 @@
--- VR-Framework › «the field battle ends in the menus» (docs/framework/field-return.md). Declarations:
--- content\game\field_return.toml (FieldReturnSite, FieldReturnReset, field_return_play_data, field_return_rpg,
--- CMND_VRFW_BATTLE_RETURN = CMND_EVT_TRIAL_RETURN). Was Inazuma Fantasy's office trial_return (scripts\trial_return.lua,
--- before that the Rust office::trial_return of inazuma_fantasy.dll) until 2026-10-13: same ops, same answers, same
--- log lines, so every caller (the match engine's pachanga executor, IF's office trials, INAROGUE's 5v5 dock) keeps
--- working without Inazuma Fantasy.
---
+-- Field battle returns to the menus instead of the field map. Declarations: content\game\field_return.toml.
 -- | Command | Args | Returns |
 -- |---|---|---|
--- | CMND_VRFW_BATTLE_RETURN (alias CMND_EVT_TRIAL_RETURN) | op: 1 arm (menu route + straight to the title, in-memory game kept), 3 arm (the same, the title reads the save again), 2 arm (the menu route only), 0 disarm, -1 query | live, armed, taken (passes routed since start) |
---
--- A street battle / pachanga that loads its battle map as the field map would make SoccerState::Update return to that
--- field after the match. While armed, its next pass at the «loaded field map?» test (hook FieldReturnSite) takes the
--- VS / BB menu path and disarms. Ops 1 / 3 then also go straight to the title from there: the «save loaded» guard 1
--- (op 1: the title keeps the in-memory game, its result) or 0 (op 3: the title reads the slot file again, which a
--- pachanga's save sink kept untouched), no press-start screen, and the retail GameReset (CMND_GAME_RESET's body: the
--- framework's game reset event runs every title-return observer). A return to the title disarms.
+-- | CMND_VRFW_BATTLE_RETURN (alias CMND_EVT_TRIAL_RETURN) | op: 1 arm (menu route + straight to the title, in-memory game kept), 3 arm (same, title rereads the save), 2 arm (menu route only), 0 disarm, -1 query | live, armed, taken |
+-- While armed, the next pass at the «loaded field map?» test (hook FieldReturnSite) takes the VS / BB menu path and disarms.
+-- Ops 1 / 3 also go straight to the title (no press-start screen, retail GameReset). A return to the title disarms.
 
 FieldReturn = FieldReturn or {}
 
--- the byte offsets come from the game profile (structs.toml [[field]], read from the code that uses them on the
--- running build): player data + Save.LoadedGuard = the «save loaded» guard, RPG root + Route.RpgNoPressStart = no
--- press-start screen. A field that does not resolve (or a byte that holds no flag) is not written.
+-- Byte offsets come from the game profile (structs.toml): Save.LoadedGuard = «save loaded» guard, Route.RpgNoPressStart = skip press-start.
+-- A field that does not resolve, or a byte holding no flag, is not written.
 local GUARD_FIELD, NO_PRESS_START_FIELD = "Save.LoadedGuard", "Route.RpgNoPressStart"
-local GUARD_MAX, NO_PRESS_START_MAX = 5, 1   -- the values the game itself stores there (guard states 0..5, a bool)
+local GUARD_MAX, NO_PRESS_START_MAX = 5, 1   -- max values the game stores there (guard states 0..5, a bool)
 
 local armed, to_title, keep_game, taken, titles = false, false, true, 0, 0
 
@@ -44,7 +32,7 @@ end
 local function live() return VRFW.is_on("FieldReturnSite") end
 local function can_title() return VRFW.is_on("FieldReturnReset") end
 
--- a profile field's offset (nil = not on this build)
+-- Profile field offset (nil = not on this build).
 local function field(name)
   local ok, off = pcall(VRFW.game.field, name)
   if ok and type(off) == "number" and off > 0 then return off end
@@ -53,7 +41,7 @@ local function field(name)
   return nil
 end
 
--- base + the field's offset, written only when the byte there holds a value the game stores in it (<= max)
+-- Writes base + field offset only when the byte there holds a value the game stores in it (<= max).
 local function wr8(base, name, max, v)
   local off = base and field(name)
   if not off then return false end
@@ -66,9 +54,8 @@ local function wr8(base, name, max, v)
   return (pcall(VRFW.mem.write, "u8", at, v))
 end
 
--- Inside SoccerState::Update, right after the match scene ended and before the RPG field state resumes: the same as
--- the Lua rpg_save_menu.BackToTitle / pause returnToTitle (CMND_GAME_RESET), plus the guard and no press-start screen.
--- GameReset only queues scene requests, so the field state never runs a frame.
+-- Inside SoccerState::Update after the match scene ended, before the RPG field state resumes. Same effect as the game's own back-to-title path (CMND_GAME_RESET).
+-- Sets the guard and no-press-start, then GameReset; GameReset only queues scene requests, so no field frame runs.
 local function go_title()
   local blk = global("field_return_play_data")
   local guard = wr8(blk, GUARD_FIELD, GUARD_MAX, keep_game and 1 or 0) and keep_game
@@ -95,7 +82,7 @@ function FieldReturn.Command(op)
   return on, armed and on, taken
 end
 
--- the «loaded field map?» test of SoccerState::Update: armed = the VS / BB menu path (skip to continue_at)
+-- The «loaded field map?» test of SoccerState::Update: armed = take the VS / BB menu path (skip to continue_at).
 VRFW.on("hook:FieldReturnSite", function(ev)
   if not armed then return nil end
   armed = false
@@ -104,7 +91,7 @@ VRFW.on("hook:FieldReturnSite", function(ev)
   return { skip = true }
 end)
 
--- a title return (any): nothing may stay armed
+-- Any title return: nothing may stay armed.
 VRFW.on("game_reset", function(ev)
   if armed then
     armed = false

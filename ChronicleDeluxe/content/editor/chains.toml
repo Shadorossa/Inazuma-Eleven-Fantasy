@@ -100,6 +100,7 @@ Id = "chain"
   Rows = "Board.Rows"
   Layout = "Board.Layout"
   Colours = { start = "#d83a3a", match = "#7fb2e0", chest = "#a99ad8", dchest = "#c08ad8", schest = "#d8b04a", slot = "#e08a3a", blocked = "#9a3a3a" }
+  Badge = "Level"
 
 [[Shape]]
 Id = "board"
@@ -196,6 +197,7 @@ Id = "tile"
   [[Shape.Field]]
   Key = "Challenge"
   Type = "string"
+  More = true
   When = { Kind = ["match"] }
   Label = { es = "Condición", en = "Condition" }
   Help = { es = "Un [[VRFW.MatchChallenge]] que tu equipo debe cumplir para jugarlo (p. ej. ChronicleDeluxe.OnlyEarth).", en = "A [[VRFW.MatchChallenge]] your team must meet to play it (e.g. ChronicleDeluxe.OnlyEarth)." }

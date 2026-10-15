@@ -1,41 +1,26 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › card-type registry (service S2 of VRFW 2.3, docs/framework/card-types.md). The run time is
-# scripts\card_types.lua: it reads every mod's content\card_types\*.toml (`VRFW.card_type/1`, keys:
-# content\types\card_type.toml) and, only when a mod declares card types, writes the sites below. **Nothing here is
-# written at start** (`apply = "script"` / script patches): with no declaration the game's code stays as it is.
-#
-# The «Rareza» tab of the two filter windows («FILTRAR» of the player lists, CMenuListViewCharaFilter, and of the fichas
-# list, CMenuListViewSoccerSpiritFilter) is not data: each window builds its items with a loop, twice (the tab builder
-# and the full rebuild = 4 lists), then pairs them two per row under «Todos»:
-#   +0          mov r9d, <zero reg> + alignment nop    <- Move + First: mov r9d, first (the first rarity listed)
-#   +head       xor r8d, r8d; mov edx, r9d; mov rcx, rbx
-#   +head+9     call AddTempItem(this, value, option 0, sortKey r9d)   <- Extra: through a stub, the loop's end value
-#                                                                         becomes the extra card type's rarity
-#   +head+14    inc r9d; cmp r9d, <end>                <- End: one more item while an extra card type is listed
-#   +head+21    jb loop
-# Item values stay rarity values, so the menu Lua (texture t6[value + 1]), the filter params, the engine filter and the
-# filter state in the save (one bit per rarity) keep their meaning; the extra entry is sorted last (its sort key stays
-# the loop's end value). Site names and bytes: the game profile (game\<build>\sites.toml / edits.toml, `Card.Rarity*`).
+# Card-type registry sites (scripts/card_types.lua); written only when a mod declares card types (apply = "script").
+# The rarity tab of the character and spirit filter windows is built by a loop; the patches below extend it by one extra item.
 
-# ------------------------------------------------------------------------------------------------ functions
+# ---- functions
 
-# u32 GetCharaRarity(u32 charaHdl): the rarity of a character handle (record +0x10; 0 for an unknown handle)
+# u32 GetCharaRarity(u32 charaHdl): rarity of a character handle (0 if unknown)
 [[VRFW.Function]]
 name = "CardTypes.GetCharaRarity"
 game = "Card.GetCharaRarity"
 args = ["u32"]
 ret = "u32"
 
-# ------------------------------------------------------------------------------------------------ the «Rareza» tab
+# ---- rarity tab
 
-# ---- CMenuListViewCharaFilter, builder of the «Rareza» tab
+# ---- CMenuListViewCharaFilter, builder of the rarity tab (game label «Rareza»)
 [[VRFW.Patch]]
 name = "CardTypes.CharaTab.Move"
 edit = "Card.RarityCharaTab.MoveRewrite"
 apply = "script"
 
-# the first rarity listed (u32 immediate of the `mov r9d, imm32`): a script patch, the script gives the value
+# first rarity listed (u32 immediate); value supplied by the script
 [[VRFW.Patch]]
 name = "CardTypes.CharaTab.First"
 game = "Card.RarityCharaTab.First"
@@ -47,9 +32,7 @@ edit = "Card.RarityCharaTab.SkipRewrite"
 apply = "script"
 needs = ["CardTypes.CharaTab.Move"]
 
-# the loop's call: cmp edx, <end>; jne +5; mov edx, <extra rarity>; jmp AddTempItem (its ret goes back to the loop).
-# Both immediates come from the script (the game's loop end, the extra card type's rarity); declared: 9 / 9 = the
-# game's own items.
+# loop call stub; both immediates (loop end, extra rarity) are written by the script
 [[VRFW.Patch]]
 name = "CardTypes.CharaTab.Extra"
 game = "Card.RarityCharaTab.Prime"
@@ -60,13 +43,13 @@ code = "83 FA ?? 75 05 BA ?? ?? ?? ?? E9 ?? ?? ?? ??"
 imm = [{ at = 2, width = "u8", value = 9 }, { at = 6, width = "u32", value = 9 }]
 refs = [{ at = 11, branch = 21 }]
 
-# the loop end: one more item with an extra card type (the script writes the game's end + 1)
+# loop end + 1 when an extra card type exists
 [[VRFW.Patch]]
 name = "CardTypes.CharaTab.End"
 game = "Card.RarityCharaTab.End"
 needs = ["CardTypes.CharaTab.Extra"]
 
-# ---- CMenuListViewCharaFilter, the same loop in the full rebuild switch (case rarity)
+# ---- CMenuListViewCharaFilter, full rebuild
 [[VRFW.Patch]]
 name = "CardTypes.CharaRebuild.Move"
 edit = "Card.RarityCharaRebuild.MoveRewrite"
@@ -98,7 +81,7 @@ name = "CardTypes.CharaRebuild.End"
 game = "Card.RarityCharaRebuild.End"
 needs = ["CardTypes.CharaRebuild.Extra"]
 
-# ---- CMenuListViewSoccerSpiritFilter, builder of the «Rareza» tab
+# ---- CMenuListViewSoccerSpiritFilter, builder of the rarity tab (game label «Rareza»)
 [[VRFW.Patch]]
 name = "CardTypes.SpiritTab.Move"
 edit = "Card.RaritySpiritTab.MoveRewrite"
@@ -162,18 +145,14 @@ name = "CardTypes.SpiritRebuild.End"
 game = "Card.RaritySpiritRebuild.End"
 needs = ["CardTypes.SpiritRebuild.Extra"]
 
-# ------------------------------------------------------------------------------------------------ the player bank
+# ---- player bank
 
-# 1 = a card type declares `every_filter` (scripts\card_types.lua; 0 = the hook below never calls the scripts)
+# 1 when the CardTypes.BankFilter hook is on (set only when a card type declares every_filter).
 [[VRFW.State]]
 key = "vr_framework.card_types.every_filter"
 
-# bool CharaBankFilter(ctx, u32 hdl, const u32* paramId, Filter* f): the per-player test of the player bank / search
-# lists. Pre (scripts\card_types.lua, only while a card type declares `every_filter`, the filter's rarity test is on
-# and its rarity set has 1..15 entries): the rarities of the `every_filter` card types are added to the set, so their
-# players pass any specific rarity filter. Chained with the other hooks of the same function (the framework's character
-# bank filter, mods' own).
-#   Filter: +0x15CB u8 rarity test on, +0xA44 u32 entries of the rarity set, +0xA48 u8[16] the set.
+# bool CharaBankFilter(ctx, hdl, paramId, Filter*): adds the rarities of `every_filter` card types to the filter's rarity set
+#   Filter: +0x15CB u8 rarity test on, +0xA44 u32 set size, +0xA48 u8[16] set
 [[VRFW.Hook]]
 name = "CardTypes.BankFilter"
 game = "Card.BankFilter"
@@ -186,17 +165,15 @@ pre_when = [
   { value = "[args[4] + 0xA44]:u32", in = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
 ]
 
-# ------------------------------------------------------------------------------------------------ commands
+# ---- commands
 
-# (charaHdl) -> rarity, listed, every_filter: the card type of a handle (rarity 0 for an unknown handle); listed = the
-# «Rareza» tab lists it, every_filter = its players pass any specific rarity filter
+# (charaHdl) -> rarity, listed, every_filter  (rarity 0 for an unknown handle)
 [[VRFW.Command]]
 name = "CMND_VRFW_CARD_TYPE"
 handler = "CardTypes.CmdType"
 needs = ["CardTypes.GetCharaRarity"]
 
-# () -> n, rarity 1, …, rarity n: the rarities the «Rareza» tab lists, in its order (0 = the service is off: the game's
-# own list)
+# () -> n, then the n rarities listed on the rarity tab, in order (n = 0: service off).
 [[VRFW.Command]]
 name = "CMND_VRFW_CARD_TYPE_TAB"
 handler = "CardTypes.CmdTab"

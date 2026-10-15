@@ -1,0 +1,26 @@
+# All Changed › its swap on Character Reforged's new skill set (docs/game/mods/all-changed.md).
+schema = "VRFW.extra_slot/1"
+
+# With Character Reforged's new skill set on (option «Tabla de habilidades» = «Set nuevo»), the matches run its plates
+# slot instead (character_reforged.skill_set: RB+A the aura slot, RB+B the mix slot; this fallback steps aside, so RB+B
+# never fires twice): the same swap goes into its mix slot. VRFW 2.4.3 [[VRFW.ExtraSlotExtend]]; `ModeChange` is this
+# mod's table (the framework reads it as all_changed/ModeChange). A player whose change is equipped has its carrier in
+# Character Reforged's mix store / his board or team aura row.
+[[VRFW.ExtraSlotExtend]]
+slot = "character_reforged.skill_set"
+
+# the same recharge command on Character Reforged's slot (its own names stay registered as aliases)
+[VRFW.ExtraSlotExtend.commands]
+swap_gauge = "CMND_ALLCHANGED_SWAP_GAUGE"
+
+[VRFW.ExtraSlotExtend.swap]
+carriers = "wmc_evt{k}"
+count = 8
+cooldown_s = 60.0                    # the owner's tunable: keep it equal to change.toml's
+permanent = true
+states = [9, 14, 16]
+free_lent_slot = true
+cpu = false
+become_partner = true
+release_button = false
+change_table = "ModeChange"

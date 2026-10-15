@@ -1,14 +1,13 @@
-# VR-Framework: the Chronicle route board's hook points and hosts (docs/framework/route-board.md; Nacho 2026-10-09:
-# «mueve esos grafts al framework»). The board scripts vs_route_town_menu and vs_route_town_command_select_menu are
+# VR-Framework: the Chronicle route board's hook points and hosts. The board scripts vs_route_town_menu and vs_route_town_command_select_menu are
 # patched by ONE owner, the framework (route_nodes + route_chains + this graft: one merged file per script, so the
 # promoted main-chunk locals exist once). The edits a mod's rules need inside retail functions are generic hook
 # points here (global functions with the retail behaviour as default, rb_common.lua / rbc_common.lua), the piece rank
 # badge drawing (VRFW_RB_Badge), the locals accessors VRFW_RB.L / VRFW_RBC.L, and at the end of each script's patch the
 # VRFW_Host host call: every mod's handlers (registered from its own hook files, [[hooks]], before or after this file
-# runs) are hooked there. Inazuma Fantasy's Chronicle rules (chronicle_redesign: Crónica / Heroica, fast clear, orbs;
-# chronicle_field: «Ir al campo») are hook files of IF on these points (the S / A / B piece ranks are the framework's
-# since 2.0.48: VRFW_RB_Won / VRFW_RB_Rank / VRFW_RB_MatchRank defaults, VRFW_MatchRank), so the
-# framework's nodes, chains and badges work with or without IF (Chronicles Deluxe needs no IF Lua).
+# runs) are hooked there. A mod's chronicle rules (difficulty modes, fast clear, orbs;
+# a "Go to the field" action) are hook files of that mod on these points (the S / A / B piece ranks are the framework's
+# VRFW_RB_Won / VRFW_RB_Rank / VRFW_RB_MatchRank defaults, VRFW_MatchRank), so the
+# framework's nodes, chains and badges work with or without such a mod.
 # Order 190: after route_nodes (160) and route_chains (180), so this graft's own file (the host call last) runs after
 # theirs and every hooked global is defined when the host hooks it.
 name = "route_board"
@@ -96,7 +95,7 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the retail «next difficulty» unlock, unless a mod's rule unlocked what this clear opens
+  # the retail "next difficulty" unlock, unless a mod's rule unlocked what this clear opens
   [[files.ops]]
   type = "replace"
   point = "vs_route_town_menu.PreStep.RouteBoard4"
@@ -110,7 +109,7 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # a held clear keeps the «won» temp bit for when the board comes back to state 10
+  # a held clear keeps the "won" temp bit for when the board comes back to state 10
   [[files.ops]]
   type = "replace"
   point = "vs_route_town_menu.PreStep.RouteBoard5"
@@ -185,8 +184,8 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the board's bottom guide (V Lista de equipos, N Ir a la ruta ...): the mods' footer prompts after the retail
-  # entries (VRFW.FooterPrompts, docs/framework/footer-prompts.md; menu_engine lua\_all\55_footer_prompts.lua)
+  # the board's bottom guide (V Team list, N Go to the route ...): the mods' footer prompts after the retail
+  # entries (VRFW.FooterPrompts; menu_engine lua\_all\55_footer_prompts.lua)
   [[files.ops]]
   type = "insert_after"
   point = "vs_route_town_menu.SetupButtonGuideInfo.RouteBoard"

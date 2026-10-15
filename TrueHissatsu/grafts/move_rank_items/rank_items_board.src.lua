@@ -1,21 +1,24 @@
 -- True Hissatsu › the move-rank items on Victory Road's own skill board (ability_learning_board_menu, the «Tabla de
 -- habilidades» of the game; docs/game/mechanics/move-rank-items.md «Victory Road's board»). SOURCE of the hook file
 -- rank_items_board.lua (gen_hooks.py fills the @crc placeholders and the shared part rank_items_core.src.lua).
--- The board is native: its keys are the engine's (A the piece, X the «editable» toggle / Utilities' combo partners, Y
--- the quick bean equip, L3 the bean trade) and its OnFunction is empty, so this file uses its OWN key: the rebindable
--- action TrueHissatsu.RankItems.Use (command CMD_TRUEHISSATSU_RANK_ITEM_USE, default LT / U; content\inputs\
--- rank_items.toml), polled in Step. The board's input is never switched off (no window over it: the native board
--- would take the window's keys), so the use takes TWO presses on the same move piece:
+-- The key is Start (CMD_FUNC1; keyboard: the game's Start key), as in Inazuma Fantasy's skill table and Character
+-- Reforged's «Fantasy» one (owner 2026-10-14). On this native board Start is the retail «Equipar rápido judías»
+-- (setting command 0x3CAC9521: the engine calls the screen's OpenBeansSetMenu with the bean pieces): on a MOVE piece
+-- that call is withheld (OpenBeansSetMenu wrapped, the bean menu does not open) and Start uses a rank item; on every
+-- other piece Start stays the retail quick equip. The key is polled in Step (CMND_CHECK_INPUT_CMD). The board's input
+-- is never switched off (no window over it: the native board would take the window's keys), so the confirmation is
+-- the board's own telop and a second press:
 --   1st press -> the board's telop (team13_18_unlimited_skill_telop, the retail text plate) shows «¿Usar X con Y?
---               old → new (tienes N)» + «Pulsa <key> otra vez para usarlo», or the refusal (max level, no book, a move
---               without levels, not in the player's set...);
+--               old → new (tienes N)» + «Pulsa <Start> otra vez para usarlo», or the refusal with the retail «cannot»
+--               sound (max level, no book, a move without levels...);
 --   2nd press on the same piece, while that telop is up -> the rules apply the item, one copy leaves the bag, the
 --               telop says «¡Y ha subido de nivel! old → new» and the detail card is drawn again.
--- Moving the cursor, L / R, a sub-menu or 5 seconds take the question away. The bottom guide gets «<key> Subir nivel»
--- on a move piece while the player holds a book or a manual (UpdateFooterButtonGuide wrapped: the retail call's own
--- tables get the entry). The player comes from the screen's own calls (OnInit's parameter, OnChangeTargetChara,
--- UpdateAbilityLearningBoardCharaCard). One log line per use / refusal. Hook file: the screen has no VR-Framework host,
--- the globals are wrapped once per VM and chained; no engine call at chunk load.
+-- Moving the cursor, L / R, a sub-menu or 5 seconds take the question away. The bottom guide: on a move piece the
+-- retail «<Start> Equipar rápido judías» entry becomes «<Start> Subir nivel» (VRFW_FooterPrompts: a declaration with
+-- Replaces = the retail Start glyph, attached to UpdateFooterButtonGuide). The player comes from the screen's own
+-- calls (OnInit's parameter, OnChangeTargetChara, UpdateAbilityLearningBoardCharaCard). One log line per use /
+-- refusal. Hook file: the screen has no VR-Framework host, the globals are wrapped once per VM and chained (each wrap
+-- calls what it wrapped); no engine call at chunk load.
 do
 @CORE@
 
@@ -27,10 +30,8 @@ do
     CTRL = 1332654303,               -- MENU_CTRL
     CTRL_ANALOG = 2748927068,        -- MENU_CTRL_WITH_ANALOG_MOVE_FOCUS
     CHECK_INPUT = 4265778440,        -- CMND_CHECK_INPUT_CMD (ctrl, command) -> pressed
-    KEY = @crc:CMD_TRUEHISSATSU_RANK_ITEM_USE@,
-    GUIDE = 1138543975,              -- mainmenu01_06_base_button_guide
-    GUIDE_TEXTS = 2209673388,        -- (menu, guide, texts, glyphs, offsets)
-    GUIDE_KEYS = 452337289,          -- (menu, guide, commands)
+    KEY = @crc:CMD_FUNC1@,              -- Start (keyboard: the game's Start key)
+    RETAIL_START_GLYPH = 3875068402, -- the glyph of the retail guide's Start entry «Equipar rápido judías»
     TELOP = 157759052,               -- team13_18_unlimited_skill_telop
     TELOP_TEXT = 3359986143,         -- _text_sp01
     SET_TEXT = 1083631230,           -- CMND_SET_MENU_TEXT_STRING (layer, node, text)
@@ -130,39 +131,18 @@ do
     end
   end
 
-  -- ---- the guide entry «<key> Subir nivel» -------------------------------------------------------------------------
+  -- ---- the guide entry «<Start> Subir nivel» -----------------------------------------------------------------------
+  -- shown on a move piece while True Hissatsu answers (without a book the press says why: the guide teaches the key)
   function Board.GuideWanted()
     if (Board.mode ~= 0 and Board.mode ~= 1) or Board.chara == nil or not Board.IsMovePiece(Board.Focused()) then
       return false
     end
-    return RankItems.Owned() > 0
+    return RankItems.Active()
   end
 
-  function Board.GuideHook(on)
-    if on then
-      if Board.command_before ~= nil or type(funcLuaMenuCommand) ~= "function" then
-        return
-      end
-      local original = funcLuaMenuCommand
-      Board.command_before = original
-      funcLuaMenuCommand = function(cmd, menu, layer, a, b, c, ...)
-        if layer == Board.GUIDE and cmd == Board.GUIDE_TEXTS and type(a) == "table" and type(b) == "table"
-            and type(c) == "table" then
-          local texts, glyphs, offsets = {table.unpack(a)}, {table.unpack(b)}, {table.unpack(c)}
-          texts[#texts + 1], glyphs[#glyphs + 1] = RankItems.TX.GUIDE, RankItems.TX.KEY
-          offsets[#offsets + 1] = (#c > 0 and type(c[#c]) == "number") and (c[#c] + 18) or 18
-          return original(cmd, menu, layer, texts, glyphs, offsets, ...)
-        elseif layer == Board.GUIDE and cmd == Board.GUIDE_KEYS and type(a) == "table" then
-          local keys = {table.unpack(a)}
-          keys[#keys + 1] = Board.KEY
-          return original(cmd, menu, layer, keys, b, c, ...)
-        end
-        return original(cmd, menu, layer, a, b, c, ...)
-      end
-    elseif Board.command_before ~= nil then
-      funcLuaMenuCommand = Board.command_before
-      Board.command_before = nil
-    end
+  -- Start is ours on a move piece (the retail quick bean equip is withheld there)
+  function Board.StartIsOurs()
+    return Board.chara ~= nil and Board.IsMovePiece(Board.Focused()) and RankItems.Active()
   end
 
   -- ---- the key ----------------------------------------------------------------------------------------------------
@@ -227,7 +207,7 @@ do
         pcall(UpdateFooterButtonGuide, Board.mode)
       end
     end
-    if Board.cooldown == 0 and Board.Pressed() then
+    if Board.cooldown == 0 and Board.Pressed() and Board.StartIsOurs() then
       Board.cooldown = Board.KEY_COOLDOWN
       Board.Press()
     end
@@ -284,21 +264,42 @@ do
     end
   end)
 
+  -- the guide entry through the framework's footer prompts (attached first: the mode wrap below runs before it)
+  if VRFW_FooterPrompts ~= nil then
+    VRFW_FooterPrompts.Add({
+      Name = "TrueHissatsu.RankItemUse",
+      Menu = "ability_learning_board_menu",
+      Text = RankItems.TX.GUIDE,
+      Icon = RankItems.TX.KEY,
+      Command = Board.KEY,
+      Replaces = Board.RETAIL_START_GLYPH,
+      Order = 100,
+      When = function()
+        return Board.guide_on
+      end,
+    })
+    VRFW_FooterPrompts.Attach("ability_learning_board_menu", "UpdateFooterButtonGuide")
+  end
+
   Board.Wrap("UpdateFooterButtonGuide", function(previous)
     return function(mode, ...)
       Board.mode = mode or 0
       local ok, want = pcall(Board.GuideWanted)
       Board.guide_on = ok and want == true
-      if not Board.guide_on then
-        return previous(mode, ...)
+      return previous(mode, ...)
+    end
+  end)
+
+  -- Start on a move piece: the retail quick bean equip (the engine calls this with the bean pieces) is withheld; the
+  -- poll above uses the rank item. A on a bean piece (focus on that piece) and Start elsewhere go on as retail.
+  Board.Wrap("OpenBeansSetMenu", function(previous)
+    return function(...)
+      local ok, ours = pcall(Board.StartIsOurs)
+      if ok and ours then
+        RankItems.Log("board", "quick bean equip withheld (Start on a move piece)")
+        return
       end
-      Board.GuideHook(true)
-      local r = table.pack(pcall(previous, mode, ...))
-      Board.GuideHook(false)
-      if not r[1] then
-        error(r[2], 0)
-      end
-      return table.unpack(r, 2, r.n)
+      return previous(...)
     end
   end)
 

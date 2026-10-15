@@ -1,4 +1,4 @@
--- menu_engine: EXTENDED route node slots (VR-Framework base feature; docs/framework/route-board.md §5, 2026-10-11).
+-- menu_engine: EXTENDED route node slots (VR-Framework base feature).
 -- Definitions only (this file runs in every script VM, lua\_all); no engine call happens while a chunk loads.
 --
 -- The Chronicle board keeps a piece's clear / lock state in three 300-byte save arrays (one byte per statusFlagIndex,

@@ -1,0 +1,13 @@
+# Chronicle Deluxe: #/menu/30_vsroute/vsroute01/vsroute01_15c/vsroute01_15c.g4tx, the blue panel of the Chronicle
+# battle-kind list («MI EQUIPO», normal pieces; docs/game/mods/chronicle-deluxe.md §8.9). Graft chronicle_deluxe_board
+# (cd_command_hooks.lua) cuts its quad to the rows shown; these guides keep the rounded top (shadow + corner, rows 0-43)
+# and bottom (corner + shadow, rows 600-643) at their size, only the hex body between them is resized. Data only: the
+# retail picture is untouched. With Inazuma Fantasy active it declares the same guides with its own panel fit.
+schema = "VRFW.image/1"
+if_not_mod = "inazuma_fantasy"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_15c/vsroute01_15c.g4tx"
+name = "list_base01_2"
+nine_slice = [0, 700, 44, 600]
+design_size = [700, 644]

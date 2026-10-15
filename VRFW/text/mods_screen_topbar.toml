@@ -1,6 +1,5 @@
 schema = "VRFW.text_key/1"
-# Texts of the Mods screen's single top row (tabs | search | Ver | Orden | Perfil, 02/10/2026), in the format of
-# text.toml. The plugin merges every text_*.toml of the mod after text.toml (mods_menu::load_texts).
+# Texts of the Mods screen's top row (tabs, search, view, order, profile); merged after text.toml.
 
 [en.new]
 count_short = "{n}/{t} · {a} on"

@@ -1,14 +1,7 @@
 schema = "VRFW.catalog/1"
-# The 1.x Lua alias table (M4, docs/framework/catalogs.md; norm §7.2, docs/framework/naming.md): every old command
-# name `<old><VERB>` still answers as `<new><VERB>`, with a deprecation WARN once per name. Built into the framework
-# (vr_core::lua::alias_table): the installed copy must stay the same data (else it is reported and not read).
-#
-# [verb_sets]: verb lists shared by several families (`verbs_of = "<name>"`).
-# [[family]]: old / new prefix, route, verbs (`""` = the prefix itself is the whole name). route: "same" (the new
-# command takes the same arguments), "prepend_type" (the new one is a generic command whose first argument is
-# `type`), "report_filter" (a report command filtered by `type`: `<new>(..., mod, "<type>")`).
-# [[owner]]: the node (type) that owns an old name, by prefix, first match wins (else "core"): while that node is a
-# legacy part the part registers the old name itself and the core does not install the alias.
+# Legacy 1.x Lua command names mapped to their VRFW replacements; each old name logs a deprecation warning once.
+# [verb_sets]: shared verb lists. [[family]]: old/new prefix, route (same | prepend_type | report_filter), verbs ("" = bare prefix).
+# [[owner]]: node type that owns an old name by prefix (first match wins, else core).
 
 [verb_sets]
 # the verbs of the `friendly` type's commands
@@ -54,7 +47,7 @@ new = "CMND_VRFW_SOUND_VOICE_"
 route = "same"
 verbs = ["GET", "NAME", "SET"]
 
-# changelog: no alias left (CMND_EVT_CHANGELOG_* removed 2.0.75, every caller migrated; naming.md «Removed Lua aliases»)
+# changelog: no aliases left
 # character
 [[family]]
 old = "CMND_EVT_CHARA_"
@@ -117,8 +110,7 @@ new = "CMND_VRFW_RULE_CHALLENGE_"
 route = "same"
 verbs = ["ARM", "CLAIM", "DISARM", "OPTIONS", "STATE"]
 
-# VERSION stays a type command: the old ones answer a NUMBER (the API version) and the Lua checks
-# `type(v) == "number"` (EvtMode.ready); CMND_VRFW_VERSION answers the framework's version string
+# VERSION stays a type command: legacy names return a number, CMND_VRFW_VERSION returns the version string
 [[family]]
 old = "CMND_EVT_MATCH_ENGINE_"
 new = "CMND_VRFW_RULE_ENGINE_"
@@ -137,7 +129,7 @@ new = "CMND_VRFW_FRIENDLY_"
 route = "same"
 verbs_of = "friendly"
 
-# the type's 2.0-dev names (it was `pachanga` until 2026-10-08)
+# Names used by pre-release 2.0 builds, mapped to their VRFW replacements.
 [[family]]
 old = "CMND_VRFW_PACHANGA_"
 new = "CMND_VRFW_FRIENDLY_"
@@ -150,10 +142,8 @@ new = "CMND_VRFW_RULE_TRIAL_JUDGE"
 route = "same"
 verbs = [""]
 
-# menu: no alias left (CMND_EVT_MENU_*, _SCENE_ARCHIVE_*, _OPPONENT_ROWS removed, every caller migrated;
-# docs/framework/naming.md «Removed Lua aliases»)
+# menu: no aliases left
 # options
-# (TAB / VIEW / CELL removed: every caller migrated)
 [[family]]
 old = "CMND_EVT_OPT_"
 new = "CMND_VRFW_OPTION_"
@@ -236,7 +226,7 @@ new = "CMND_VRFW_SAVE_"
 route = "same"
 verbs = ["COMMIT", "DEL", "GET", "SET", "SET_BOOL", "SLOT", "GLOBAL_DEL", "GLOBAL_GET", "GLOBAL_SET", "GLOBAL_SET_BOOL"]
 
-# save slots (save_engine's slot service registers the old names while it owns the run time)
+# save slots
 [[family]]
 old = "CMND_EVT_SLOT_"
 new = "CMND_VRFW_SLOT_"
@@ -269,14 +259,14 @@ new = "CMND_VRFW_TEAM_"
 route = "same"
 verbs = ["LISTS", "LIST_COUNT", "LIST_GET", "LIST_INFO", "OF"]
 
-# [[VRFW.RouteNode]] (team type): CMND_EVT_ROUTE_{NODE,ROAD}_* -> CMND_VRFW_TEAM_ROUTE_{NODE,ROAD}_*
+# team route nodes and roads
 [[family]]
 old = "CMND_EVT_ROUTE_"
 new = "CMND_VRFW_TEAM_ROUTE_"
 route = "same"
 verbs = ["NODE_COUNT", "NODE_GET", "ROAD_COUNT", "ROAD_GET"]
 
-# [[VRFW.Chain]] (team type): CMND_EVT_CHAIN_* -> CMND_VRFW_TEAM_CHAIN_*
+# team chains
 [[family]]
 old = "CMND_EVT_CHAIN_"
 new = "CMND_VRFW_TEAM_CHAIN_"

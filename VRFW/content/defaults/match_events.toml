@@ -1,11 +1,8 @@
-# Match events service (docs/framework/services.md §4.1): the group of a scripted event, from its name.
-# Prefix (lower case) -> group word. The longest matching prefix wins; no match = "other", no name = "unnamed".
-# A mod may add or override prefixes with its own defaults\match_events.toml (later mods win, key by key).
-# The groups are the game's event families (docs/framework/technique.md: the event group of a technique).
+# Maps scripted event name prefixes (lower case) to a group word; the longest matching prefix wins (no match = "other", no name = "unnamed").
 [groups]
-ev60_ = "shot"       # shot techniques (a mod's new shot events are ev60_8NNNN)
+ev60_ = "shot"       # shot techniques
 ev61_ = "dribble"    # dribble techniques
 ev62_ = "defense"    # block / defence techniques
-ev63_ = "keeper"     # keeper techniques (save / beaten: _1 / _2)
-ev71_31 = "keeper"   # keeper-gauge scenes of basic catches (ev71_31xxx; ev71_32xxx are field duels)
-ev71_ = "scene"      # other match scenes: shoot zone, duels, goal / celebration
+ev63_ = "keeper"     # keeper techniques
+ev71_31 = "keeper"   # keeper-gauge scenes of basic catches
+ev71_ = "scene"      # other match scenes

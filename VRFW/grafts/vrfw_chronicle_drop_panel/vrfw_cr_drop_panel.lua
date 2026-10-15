@@ -1,4 +1,4 @@
--- VR-Framework: the drop mini list of the «Cadena de Crónica» info window (graft vrfw_chronicle_drop_panel, graft.toml).
+-- VR-Framework: the drop mini list of the "Chronicle Chain" info window (graft vrfw_chronicle_drop_panel, graft.toml).
 -- Screen px (1080p, y down); the row object's layout = win05_38.g4pkm (local to _pos_drop01, y up, row 724 x 72 from
 -- x 23). Nothing runs at load but the definitions.
 VRFW_CrDrops = VRFW_CrDrops or {}
@@ -89,7 +89,7 @@ do
     end
   end
 
-  -- the rows' place: the reward block's own (IF's chronicle_redesign moves it up with the panel)
+  -- the rows' place: the reward block's own (a mod may move it up with the panel)
   local function place()
     local top = D.TOP
     local ok, _, y = pcall(funcLuaMenuCommand, 2491463760 --[[node translation get]], D.WIN, 0, D.PRESENT)

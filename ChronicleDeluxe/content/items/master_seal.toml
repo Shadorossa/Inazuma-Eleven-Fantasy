@@ -1,0 +1,41 @@
+schema = "VRFW.item/2"
+# Chronicle Deluxe: the key item «Sello del Maestro» (Master's Seal), docs/game/mods/chronicle-deluxe.md §10. Owned once
+# the save has won the gate battle (difficulty 2) of the Chronicle gate piece Destructores (fbtl_cro12_080_010, piece
+# 0x90185427), the gate battle Chronicle Deluxe keeps on gate pieces; a save that won it before owns it at once. What it
+# does is content\unlimited_copies\master_seal.toml (the VR-Framework's unlimited copies). Its icon: the texture ke000900
+# of the key-item sheet (content\images\menu\200_icon\02_icon_item\icon_item02.toml).
+default_lang = "es"
+
+[[item]]
+name = "master_seal"
+base = "ke000008"
+category = "key"
+icon_key = "ke000900"
+owned_when = [{ chronicle = "0x90185427", difficulty = 2 }]
+  [item.text.es]
+  name = "Sello del Maestro"
+  description = "Una sola copia de una supertécnica sirve\npara todos tus jugadores. Con todas las\nCrónicas completadas, también las auras."
+  [item.text.en]
+  name = "Master's Seal"
+  description = "One copy of a special move serves all\nyour players. With every Chronicle\ncompleted, auras too."
+  [item.text.fr]
+  name = "Sceau du maître"
+  description = "Un seul exemplaire d'une supertechnique\nsert à tous tes joueurs. Avec toutes les\nChroniques terminées, les auras aussi."
+  [item.text.de]
+  name = "Siegel des Meisters"
+  description = "Ein Exemplar einer Spezialtechnik reicht\nfür alle deine Spieler. Mit allen Chroniken\nabgeschlossen auch die Auren."
+  [item.text.it]
+  name = "Sigillo del Maestro"
+  description = "Una sola copia di una supertecnica basta\nper tutti i tuoi giocatori. Con tutte le\nCronache completate, anche le aure."
+  [item.text.pt]
+  name = "Selo do Mestre"
+  description = "Uma só cópia de uma supertécnica serve\npara todos os teus jogadores. Com todas as\nCrónicas concluídas, também as auras."
+  [item.text.ja]
+  name = "マスターの証"
+  description = "必殺技は1つ持っているだけで\n何人の選手にでも装備できる。\nクロニクル全制覇でオーラも同様。"
+  [item.text.zh_hans]
+  name = "大师之印"
+  description = "必杀技只需拥有一份，\n即可装备给所有球员。\n完成全部编年史后，灵气也一样。"
+  [item.text.zh_hant]
+  name = "大師之印"
+  description = "必殺技只需擁有一份，\n即可裝備給所有球員。\n完成全部編年史後，靈氣也一樣。"

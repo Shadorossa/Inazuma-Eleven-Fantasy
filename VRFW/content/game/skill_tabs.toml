@@ -1,31 +1,12 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › skill tab registry (service S3 of VRFW 2.3, docs/framework/card-types.md §3). The run time is
-# scripts\skill_tabs.lua: it reads every mod's content\skill_tabs\*.toml (`VRFW.skill_tab/1`, keys and code units:
-# content\types\skill_tab.toml) and, only when a mod declares tabs or aura list rows, writes the sites below. **Nothing
-# here is written at start** (`apply = "script"` / script patches): with no declaration the game's code stays as it is.
-#
-# 1. The «Habilidades» / «Técnicas» move list (ability_list_menu, viewer group) builds its tab row from a fixed table
-#    of skill categories in the game's data (1-4 = shoot, dribble, block, catch; 100 + k = aura command type k) when
-#    the skill board is not open. The tab count, Z/C cycling, the list filter and the «new» badges all follow it; item
-#    data is untouched. The board's picker (ability_list_menu_on_bluebg) builds its tabs from the board: not affected.
-#    AbilityListMenu tab setup, the fixed-tab branch (profile sites Technique.SkillTabsCount / .SkillTabsTable):
-#      +0x00 mov ebp, <count>            <- the count immediate (SkillTabs.Count)
-#      +0x19 lea rdi, [<table>]          <- the category table (SkillTabs.Table)
-#      +0x20 nop; +0x21 the loop: push_back(*rdi++) ebp times
-#    The stub: lea rdi, [its own table]; rdi += ebp >> 8; ebp &= 0xFF; jmp +0x20. So the count immediate is a WINDOW of
-#    the table, `start << 8 | count` (a skill-table slot's picker shows only that slot's tabs; the reserve calls before
-#    the stub see the whole immediate, a few hundred bytes more capacity, harmless). The script appends the table.
-# 2. The team aura screen (equip_aura_skill_menu, CMenuListViewEquipAuraSkill) list build: for every player and board
-#    slot, skill = ebp, the aura record found at [rsp+78h]; a row is added when the record is not 0. The stub keeps the
-#    game's test and leaves out the declared aura types (record +0x42) and skill ids: the script appends one compare
-#    unit per declared value (content\types\skill_tab.toml [code]). Only rax and the flags are used (both overwritten
-#    right after either target).
+# Skill tab registry (schema VRFW.skill_tab/1, content\skill_tabs\*.toml; run time scripts\skill_tabs.lua). Nothing is written unless a mod declares tabs or aura list rows (`apply = "script"`).
+# 1. Ability list tab row: built from a fixed category table (1-4 = shoot, dribble, block, catch; 100 + k = aura command type k); the count immediate is a window of it, `start << 8 | count`.
+# 2. Team aura screen list: the stub keeps the game's test and leaves out declared aura types (record +0x42) and skill ids through appended compare units.
 
 # ------------------------------------------------------------------------------------------------ the tab table
 
-# lea rdi, [rip+0x13] (the table, right after this code); mov eax, ebp; shr eax, 8; add rdi, rax; and ebp, 0xFF;
-# jmp match + 0x20 (the game's nop before its loop). The script appends the table bytes.
+# Stub: selects the table window from the count immediate; the script appends the table bytes.
 [[VRFW.Patch]]
 name = "SkillTabs.Table"
 game = "Technique.SkillTabsTable"
@@ -35,7 +16,7 @@ code = "48 8D 3D 13 00 00 00 89 E8 C1 E8 08 48 01 C7 81 E5 FF 00 00 00 E9 ?? ?? 
 tail = false
 refs = [{ at = 22, to = 0x20 }]
 
-# the count immediate: `start << 8 | count`, written by the script once the table is in (any window it wrote before)
+# count immediate `start << 8 | count`, written by the script once the table is in
 [[VRFW.Patch]]
 name = "SkillTabs.Count"
 game = "Technique.SkillTabsCount"
@@ -44,8 +25,7 @@ needs = ["SkillTabs.Table"]
 
 # ------------------------------------------------------------------------------------------------ the team aura list
 
-# cmp [rsp+78h], r12; je next slot (11 bytes) -> the stub: mov rax, [rsp+78h]; test rax, rax; je next slot (the game's
-# own test), then the appended compare units (each `je` to the game's next slot), then back to the row add (match + 0x21)
+# Stub: keeps the game's null-record test, then the appended compare units (each `je` to the next slot), then returns to the row add.
 [[VRFW.Patch]]
 name = "SkillTabs.AuraList"
 game = "Technique.AuraListSkip"
@@ -56,13 +36,12 @@ refs = [{ at = 10, branch = 0x1B }]
 
 # ------------------------------------------------------------------------------------------------ commands
 
-# () -> n, category 1, …, category n: the native list's tabs in order (0 = the service is off: the game's own tabs)
+# () -> n, category 1, ..., category n: the native list's tabs in order (0 = service off: the game's own tabs)
 [[VRFW.Command]]
 name = "CMND_VRFW_SKILL_TABS"
 handler = "SkillTabs.CmdTabs"
 
-# ([group]) -> start, count: the window of the tab table in force; with a group name ("" = the whole table) the window
-# the list uses the next time it is built (a picker sets it before it opens and puts "" back when it closes)
+# ([group]) -> start, count: window of the tab table in force; with a group name ("" = whole table) it sets the window used when the list is next built
 [[VRFW.Command]]
 name = "CMND_VRFW_SKILL_TAB_WINDOW"
 handler = "SkillTabs.CmdWindow"
@@ -72,10 +51,7 @@ handler = "SkillTabs.CmdWindow"
 name = "CMND_VRFW_SKILL_TAB_HAS"
 handler = "SkillTabs.CmdHas"
 
-# (category) -> game index, icon, atlas, sprite, sprite off, text id, text, filter, filter group: how the list's Lua
-# draws and filters that tab (menu lua _all/22_skill_tabs.lua, docs/framework/card-types.md §3.3). game index = its
-# place in the game's table (1-based; 0 = a category the game has no tab for); 0 for a value nobody declared (the
-# game's own); text = the title in the game's language as the framework's fallback. Nothing (0) while the service is off.
+# (category) -> game index, icon, atlas, sprite, sprite off, text id, text, filter, filter group: how the list draws and filters that tab (game index 0 = no game tab; nothing while the service is off)
 [[VRFW.Command]]
 name = "CMND_VRFW_SKILL_TAB_INFO"
 handler = "SkillTabs.CmdInfo"

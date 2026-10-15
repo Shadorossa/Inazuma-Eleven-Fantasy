@@ -11,8 +11,9 @@
 -- The black cover of the X skip (fade layer 1, xs_event.lua) stays up while the layers load (Step below; the framework
 -- also holds it against the flow's state 13 fade-in): then the retail fade layer 0 is set black at once and the cover
 -- comes off in the same frame, so the screen stays black and the retail kick-off fade in (layer 0) is the only fade
--- seen. BetterUI 1.21.7 direct jump (JUMP set, no cover): no fade at all, the group is closed by the next Step the
--- way GoToSoccerGame closes it, without its fade out; the kick-off then comes with nothing faded. Wrappers only.
+-- seen. BetterUI 1.21.7 direct jump (JUMP set): the group is closed by the next Step the way GoToSoccerGame closes it,
+-- without its fade out. Since 1.22.3 the jump runs under the cover too, so the same handover applies: layer 0 black,
+-- cover off, and the lineup / kick-off cameras of states 13 -> 14 are not seen. Wrappers only.
 local CHD_XS_MATCH_BGM = 1904593249      -- CMND 0x7185C961: the match BGM (retail: SeqFormationScreen, rival screen)
 local CHD_XS_RIVAL_SHOWN = 1776220081    -- PARAM 0x69DEF7B1 (retail: set when the own screen closes)
 
@@ -28,13 +29,14 @@ function OnLayerLoadCompleted(...)
     CHD_XS.Log("match BGM started (lineup screens skipped)")
     if CHD_XS.Get(CHD_XS.COVER) == 1 then
       pcall(funcLuaCommand, CHD_XS.FADE, 1, 0)   -- layer 0 black now (StartGoToSoccerGame's fade out ends black)
+      CHD_XS.Set(CHD_XS.BLACK0, 1)               -- checked again at the kick-off button (xs_restart.lua)
       CHD_XS.Uncover(0, "lineup screens (layer 0 black)")
     end
   end
   CHD_XS.Disarm("lineup screens")
   if jump then                           -- no fade at all: GoToSoccerGame's close, next Step (not inside this callback)
     chd_xs_close_now = true
-    CHD_XS.Log("lineup screens skipped -> kick-off (direct jump: closed without a fade)")
+    CHD_XS.Log("lineup screens skipped -> kick-off (direct jump: closed under black, kick-off fades in)")
     return
   end
   if go then

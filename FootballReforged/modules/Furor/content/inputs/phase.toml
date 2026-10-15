@@ -1,0 +1,16 @@
+# Furor › the furor button (docs/game/mechanics/furor.md §3.2). Pressed in a match with the
+# own furor gauge full, it starts the team's «Fase de furor» (graft research/grafts/furor_hud polls it
+# with CMND_CHECK_INPUT and asks CMND_VRFW_TEAM_MOMENTUM_START). A rebindable action (docs/framework/types/input.md
+# §2b): its row «Fase de furor» in «Configuración de controles», tab of the match controls. Defaults: pad L3 (index 1)
+# and keyboard R (index 17): neither is bound in the retail PLAYER_SOCCER_CTRL / PLAYER_SOCCER_ZONE_CTRL rows
+# (input_ctrl v7.1.2) nor by another mod's action on these controllers.
+schema = "VRFW.input/1"
+
+[[action]]
+id = "Furor.Phase"
+command = "CMD_FUROR_PHASE"
+ctrl = ["PLAYER_SOCCER_CTRL", "PLAYER_SOCCER_ZONE_CTRL"]
+category = "match"
+label = "furor_phase_action"
+pad = "LS"
+keyboard = "R"

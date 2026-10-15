@@ -1,19 +1,16 @@
--- `[[VRFW.Chain]]`: match chains (the 3DS «Taisen Routes», docs/game/modes/taisen-routes.md; was team_engine
--- chain.rs): an ordered list of matches a host offers (`[[VRFW.Chain.Node]]`), or a chain board of tiles
--- (`[[VRFW.Chain.Tile]]`, docs/framework/chain-board.md). Each match: game `evt_ch_<chain>_<NN>` cloned from the
--- template against the team, its stadium and title; the talks resolved to their built ids.
+-- `[[VRFW.Chain]]`: match chains, either an ordered list of matches (`[[VRFW.Chain.Node]]`) or a board of tiles (`[[VRFW.Chain.Tile]]`).
+-- Each match is game `evt_ch_<chain>_<NN>`, cloned from the template against the team, its stadium and title; talks resolved to built ids.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local CH = {}
 
 local GAME_DIR = "data/common/gamedata/soccer/game/"
--- the pachanga rules a chain uses when it names none (the caller's mod declares it)
+-- Pachanga rules used when a chain names none (the caller's mod declares it).
 local CHAIN_PACHANGA = "chain_match"
--- at most this many nodes per chain (two-digit game suffix); board size limits (the chain board screen's)
+-- Max nodes per chain (two-digit game suffix); chain board size limits.
 local MAX_NODES = 99
 local MAX_BOARD_COLS, MAX_BOARD_ROWS, MAX_HEX_COLS, MAX_BOARD_PAGES = 6, 5, 16, 8
--- SOCCER_GAME_DIFFICULTY prize columns (end-of-match-rewards.md §2): 8 the win prize (every entry, every win), 11-14
--- the bean tables, 34 the first clear
+-- SOCCER_GAME_DIFFICULTY prize columns: 8 win prize, 11-14 bean tables, 34 first clear.
 local D_WIN_PRIZE, D_BEAN_PRIZES, D_FIRST_CLEAR_PRIZE = 8, { 11, 12, 13, 14 }, 34
 
 local function valid_name(s)
@@ -35,7 +32,7 @@ local function norm(x)
   return out
 end
 
--- exactly one of `item` / `player` per reward; `player` only on chest tiles
+-- Exactly one of `item` / `player` per reward; `player` only on chest tiles.
 local function check_rewards(r, allow_player)
   for _, x in ipairs(r or {}) do
     if x.item ~= nil and x.player == nil then
@@ -51,7 +48,7 @@ local function check_rewards(r, allow_player)
   return true
 end
 
--- "item:count,…" (decimal ids; a node's first-win items: players are refused before)
+-- "item:count,..." (decimal ids; players are refused before)
 local function rewards(r)
   local p = {}
   for _, x in ipairs(r or {}) do
@@ -68,7 +65,7 @@ local function rewards(r)
 end
 
 function CH.install(X)
-  -- the team_text names of a team (9 languages; empty when it has none): its declared names, else its team_text row
+  -- team_text names of a team (9 languages; empty when none): declared names, else its team_text row
   function X.team_text_names(t)
     local tid = X.tc:id_of(t)
     local m = X.meta[tid]
@@ -95,7 +92,7 @@ function CH.install(X)
     return ""
   end
 
-  -- a character's chara_text names (the last row of its name id; 9 languages; empty when it has none)
+  -- chara_text names of a character (9 languages; empty when none)
   function X.chara_text_names(chara)
     local out = {}
     local b = X.ch.base[chara]
@@ -107,9 +104,8 @@ function CH.install(X)
     return out
   end
 
-  -- a `blocked` tile's `[[VRFW.Chain.Tile.Requires]]`: the encoded list (`win:<team id>;chain:<key>;team_level:<n>;
-  -- player:<card id>,<card id>`: every card of the character) and each one's name per language (the team's, the chain's title, the player's; empty for a
-  -- level). `titles`: every declared chain's title by key.
+  -- A `blocked` tile's `[[VRFW.Chain.Tile.Requires]]`: encoded list (`win:<team id>;chain:<key>;team_level:<n>;player:<card id>,...`) and each entry's name per language.
+  -- `titles`: every declared chain's title by key.
   function X.chain_requires(m, tw, r, titles)
     local enc, names = {}, {}
     for k, q in ipairs(r or {}) do
@@ -137,7 +133,7 @@ function CH.install(X)
       else
         local card, pe = X.player_ref(q.player, nil, m)
         if not card then return nil, rw .. ": " .. pe end
-        -- every card of the character counts (any of them in the club)
+        -- every card of the character counts
         local x = X.ch.card[card]
         local chara = x and x.chara or 0
         local cards = {}
@@ -149,8 +145,7 @@ function CH.install(X)
     return table.concat(enc, ";"), names
   end
 
-  -- a chest's `[[VRFW.Chain.Tile.Reward]]`s: `item:count` / `player:<card id>` (decimal), `,`-separated; a player is
-  -- resolved like a team member's `player` (an unknown one refuses the chain)
+  -- A chest's `[[VRFW.Chain.Tile.Reward]]`s: `item:count` / `player:<card id>` (decimal), comma-separated; an unknown player refuses the chain.
   function X.chest_rewards(m, r)
     local out = {}
     for k, x in ipairs(r or {}) do
@@ -170,7 +165,7 @@ function CH.install(X)
   -- every mod's `[[VRFW.Chain]]` (load order)
   function X.chains(files, talks)
     local out = {}
-    -- every declared chain's title by key (a blocked tile's `Chain` requirement names any of them)
+    -- every declared chain's title by key
     local titles = {}
     for _, f in ipairs(files) do
       for _, d in ipairs(f.value.vrfw.Chain or {}) do
@@ -262,8 +257,7 @@ function CH.install(X)
     return c
   end
 
-  -- one match of a chain: game `game_key` = every row of the template against the team at the level, its stadium and
-  -- title (talks left empty)
+  -- One match of a chain: game `game_key` = every row of the template against the team at the level, with its stadium and title.
   function X.chain_match(m, nw, game_key, n, tpl, names)
     if names[game_key] then return nil, "game " .. game_key .. " already exists" end
     local t, te = X.team_ref(n.team, m)
@@ -280,7 +274,7 @@ function CH.install(X)
     end
     local gid, ce = X.clone_game(m, nw, t, tpl.name, game_key, n.level, false, true)
     if not gid then return nil, ce end
-    -- the clone copies the template's per-game scripts: a chain game has none (the mod's `trigger` type)
+    -- the clone copies the template's per-game scripts; a chain game has none
     VRFW.team.files_drop(GAME_DIR .. game_key .. "_", nil)
     local g = X.games_t
     local SG = X.SG
@@ -310,7 +304,7 @@ function CH.install(X)
       talk_before = "", talk_after = "", reward = rewards(n.reward) }
   end
 
-  -- the emblem file key (`em030050`) of team id `tid`, "" when none
+  -- emblem file key (`em030050`) of team id `tid`, "" when none
   function X.team_emblem_key(tid)
     local t = X.tc:find(tid)
     if t == nil then return "" end
@@ -392,7 +386,7 @@ function CH.install(X)
       end
     end
     if start == nil then return nil, "no `start` tile" end
-    -- links: both ways, on one page or to the next / previous page
+  -- links: both ways, on one page or to the next / previous page
     local links = {}
     for i = 1, #tiles do links[i] = {} end
     for i, t in ipairs(tiles) do
@@ -492,7 +486,7 @@ function CH.install(X)
           VRFW.log.info(what .. ": chest `" .. t.id .. "`: gives " .. enc .. " once opened")
         end
       elseif t.kind == "dchest" then
-        -- a double chest (chain-board.md §2c): base reward, then the special one with rank S on its branch
+        -- double chest: base reward, then the special one with rank S on its branch
         local enc, re = X.chest_rewards(m, t.reward)
         if not enc then return nil, "tile `" .. t.id .. "`: " .. re end
         local senc, se = X.chest_rewards(m, t.s_reward)

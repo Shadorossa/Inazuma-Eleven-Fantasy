@@ -1,0 +1,35 @@
+schema = "VRFW.game/2"
+
+# Special Players › what scripts\passive_blocks.lua reads to know the game passives a match player carries (the
+# carried_by passives and the CarriesPassive blocks of content\special_passives\): per team passive slot
+# IsTeamPassiveUnlocked then GetTeamPassiveId (Utilities' configured passives included), then the rarity version, as
+# the match builder 0x1604E90 reads them; and his own passive slot.
+
+# ------------------------------------------------------------------------------------------------ functions
+
+# u32* GetTeamPassiveId(u32* out, u32 charaHdl, u8 slot, u8 useCopy) 0xE80A70
+[[VRFW.Function]]
+name = "SpecialPlayers.TeamPassiveId"
+game = "Passive.TeamPassiveId"
+
+# bool IsTeamPassiveUnlocked(u32 charaHdl, u8 slot, u8 useCopy) 0xE80C30
+[[VRFW.Function]]
+name = "SpecialPlayers.TeamPassiveUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+
+# PassiveInfo** ResolvePassiveRarity(PassiveInfo** out, const u32* id, u32 rarity) 0xE6CDA0
+[[VRFW.Function]]
+name = "SpecialPlayers.PassiveRarityVersion"
+game = "Passive.RarityVersion"
+
+# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor (unit +0x370 = the character handle it plays)
+[[VRFW.Function]]
+name = "SpecialPlayers.ActorUnit"
+game = "Match.ActorUnit"
+
+# ------------------------------------------------------------------------------------------------ globals
+
+# `[g_soccerActors]` = the soccer actor array (stride 0x570, 0x3A actors, +0x94 its handle; 0 outside matches)
+[[VRFW.Global]]
+name = "special_players_actors"
+game = "Match.SoccerActors.ViaSkillUsed"

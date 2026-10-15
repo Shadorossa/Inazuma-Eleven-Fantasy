@@ -1,9 +1,5 @@
-# Texts of the VR-Framework's match challenges (`[[VRFW.MatchChallenge]]`, docs/framework/match-challenge.md): rows of
-# menu_text in the framework's 9 languages, read by VRFW_MC (menu part lua\_all\40_match_challenge.lua) with
-# CMND_TEXT_GET by id = crc32(row id). The challenge's own title / description are the declaring mod's rows.
-# %s / %d are filled by the script (string.format). The refusal message is: head, the mod's description, «refused»,
-# one line per failed condition (every / none / at_least / at_most / between, any_of / all_of with indented lines),
-# then «offenders».
+# Match challenge texts (`[[VRFW.MatchChallenge]]`): menu_text rows in the 9 framework languages, read by the match challenge menu part via CMND_TEXT_GET (id = crc32(row id)).
+# The challenge's own title / description are the declaring mod's rows; %s / %d are filled by string.format. A refusal message is: head, mod description, 'refused', one line per failed condition, 'offenders'.
 
 schema = "VRFW.text/2"
 table = "menu_text"
@@ -33,7 +29,7 @@ ja = "チームがチャレンジの条件を満たしていません："
 zh_hans = "你的队伍不符合挑战条件："
 zh_hant = "你的隊伍不符合挑戰條件："
 
-# after «refused» when only the starters count
+# after 'refused' when only the starters count
 [[row]]
 id = "vrfw_mc_starters"
 es = "(solo titulares)"
@@ -131,7 +127,7 @@ ja = "次のすべて："
 zh_hans = "满足以下全部条件："
 zh_hant = "滿足以下全部條件："
 
-# the players who break the challenge (names, «, »-joined)
+# the players who break the challenge (names, comma-joined)
 [[row]]
 id = "vrfw_mc_offenders"
 es = "No cumplen: %s"
@@ -302,7 +298,7 @@ ja = "DF"
 zh_hans = "后卫"
 zh_hant = "後衛"
 
-# ---- filter parts (%s = words joined by «or», %d = numbers) -------------------------------------------------------
+# ---- filter parts (%s = words joined by 'or', %d = numbers) -------------------------------------------------------
 [[row]]
 id = "vrfw_mc_f_element"
 es = "elemento %s"
@@ -447,7 +443,7 @@ ja = "%s以外"
 zh_hans = "非%s"
 zh_hant = "非%s"
 
-# joiners: between the values of one key («Fuego o Aire») and between the keys of one filter
+# joiners: between the values of one key (e.g. Fire or Air) and between the keys of one filter
 [[row]]
 id = "vrfw_mc_or"
 es = " o "
@@ -472,8 +468,7 @@ ja = "、"
 zh_hans = "、"
 zh_hant = "、"
 
-# a required starter's line (`[[VRFW.MatchChallenge.Required]]` without its own Text; VRFW 2.4.35): %s = «N given
-# character(s)» (vrfw_mc_f_chara), then the formation places (position words joined by «or»)
+# a required starter's line (`[[VRFW.MatchChallenge.Required]]` without its own Text): %s = 'N given character(s)' (vrfw_mc_f_chara), then the formation places (position words joined by 'or')
 [[row]]
 id = "vrfw_mc_required"
 es = "Titular obligatorio: %s"

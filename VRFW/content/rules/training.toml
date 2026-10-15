@@ -1,7 +1,6 @@
 schema = "VRFW.rule/1"
-# Reglamento BASE: los entrenamientos y las pruebas de regate (tipos 3 y 4: sin reloj, reglas de prueba).
-# Todas las reglas se dejan como las pone la fila del partido ("row"): el juego original tal cual. Un mod puede
-# sustituir este reglamento (mismo id, carga después) o asignar otro a estos partidos en su rules\matches.toml.
+# Base ruleset for training and dribble trials (types 3 and 4): every rule follows the match row ("row").
+# A mod may replace it (same id, loaded later) or assign another in its rules\matches.toml.
 id = "training"
 name = "Training (original)"   # fallback; shown in the game language from the text key ruleset_training
 version = 1

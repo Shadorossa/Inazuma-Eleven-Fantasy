@@ -1,0 +1,23 @@
+# Special Players › the own passive («Pasiva propia») on Victory Road's skill board and in the game's custom passive
+# equip menu. HOOK files only (graft [[hooks]], shipped as is):
+#   * ability_learning_board_menu: the custom passive piece always holds the player's own passive (or is empty), its
+#     detail window shows it, and the piece never opens the custom passive list (retail «cannot» sound);
+#   * equip_six_sense_menu: «equip» is refused with the same sound.
+# The own passive comes from Special Players' script (CMND_SPECIALPLAYERS_OWN_PASSIVE); the match side is native
+# (content\game\own_passives.toml).
+name = "special_players_board"
+mod = "special_players"
+order = 400
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Special Players: the own passive on the skill board's custom passive piece; the slot cannot be changed"
+
+[[hooks]]
+stem = "ability_learning_board_menu"
+src = "board_own_passive_hooks.lua"
+
+[[hooks]]
+stem = "equip_six_sense_menu"
+src = "six_sense_menu_hooks.lua"

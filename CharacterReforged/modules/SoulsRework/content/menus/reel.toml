@@ -1,0 +1,22 @@
+# Souls Rework › the skill reel on the match HUD (graft research/grafts/souls_rework_reel; docs/game/mods/
+# souls-rework-design.md §5). One layer of 4 instances in the scoreboard's menu (soccer_constant_menu and its battle
+# group): instance 0 = the totem's name and level, 1..3 = the reel's rows (2 = the selected row, on its plate). Its
+# object is the retail corner button (cmn03_01_cmd_back: a plate and a text node), without collision and anchor (the graft
+# places each instance from the scoreboard's position), drawn above the technique banner (305) so the cut-in's banner
+# never covers it. Opened by the graft only while a reel runs.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "souls_rework_reel_row"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 318 } },
+]
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "souls_rework_reel_row", object = "souls_rework_reel_row", count = 4, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

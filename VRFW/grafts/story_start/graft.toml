@@ -1,10 +1,10 @@
-# Story-complete start (docs/framework/save-slots.md §7, docs/game/modes/story-complete-start.md §10; data:
-# research/scripts/story_start_build.py). A VR-Framework feature since 2026-10-08 (was Inazuma Fantasy's): built into
+# Story-complete start (data:
+# research/scripts/story_start_build.py). A VR-Framework feature: built into
 # mod vr_framework (`menu_assemble.py build --mod vr_framework`, packed by framework_pack.py), the commands
 # (CMND_VRFW_STORY_START_*, CMND_VRFW_STORY_SET_PHASE; the 1.x CMND_EVT_STORY_* aliases are gone) are answered by
 # vr_framework.dll's save part (save_engine story_start), so no ModLoader module is named here. Always on with the slot
 # service.
-#   evt_save_slot_menu   the question after «Nueva partida» on an empty slot is part of the slot screen itself
+#   evt_save_slot_menu   the question after "Nueva partida" on an empty slot is part of the slot screen itself
 #                        (graft save_slots, StoryAsk in evt_save_slot_menu.lua, text row evt_slot_story_ask)
 #   title_menu_inc       title_menu_2 OnInit of that slot applies the post-story state once (ss_title_apply.lua +
 #                        the generated table ss_data.lua), then autosaves

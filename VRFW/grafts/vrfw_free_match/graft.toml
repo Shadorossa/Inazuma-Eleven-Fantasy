@@ -1,16 +1,15 @@
-# VR-Framework free-match classes (docs/framework/free-match-tabs.md §8, docs/game/modes/free-match-difficulty.md §21;
-# Nacho 2026-10-09: «these are generic — move them to the framework»): the class menu of «Competir contra bots»
+# VR-Framework free-match classes: the class menu of "Competir contra bots"
 # (soccer_vs_cpu_class_select_menu) lists the classes the opponent offers ([VRFW.FreeMatch] Difficulties of the mods
 # that the game has a row for: CMND_VRFW_FM_DIFFICULTIES of vr_framework.dll), with the retail clear / advantage-win
 # marks and their box only while ClearTicks holds and the retail per-class lock unless Unlock = "together"; each card's
-# title is the class's declared Banner (CMND_VRFW_FM_CLASS, 2.0.47) or its retail one, its level ball the class's Ball
-# (2.2.119: the colour of its title) or its retail one, and its «Nv.» is the level of the team of the game's row of THAT
+# title is the class's declared Banner (CMND_VRFW_FM_CLASS) or its retail one, its level ball the class's Ball
+# (the colour of its title) or its retail one, and its "Lv." is the level of the team of the game's row of THAT
 # class (the retail menu used the game's first row's team): the real level (a mod gives the number 3 digits). With no mod rule the menu
-# is the retail one (4 classes, marks, locks). Was the class half of Inazuma Fantasy's graft fm_build (fm_class_1.lua,
-# Fantasy.Fm*) until 2026-10-09; the list half is the menu part's host handler
+# is the retail one (4 classes, marks, locks).
+# The list half is the menu part's host handler
 # research/mods/VRFW/assets/lua/menu/soccer_vs_cpu_list_menu/110_free_match_difficulty.lua (VRFW_FM).
 # Built by `menu_assemble.py build --mod vr_framework` into the save part's Lua root (framework_pack.py). Nothing else
-# patches this script (Inazuma Fantasy's fm_build keeps only the list's office mode).
+# patches this script.
 name = "vrfw_free_match"
 mod = "vr_framework"
 order = 130

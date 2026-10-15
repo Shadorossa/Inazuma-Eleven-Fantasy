@@ -1,17 +1,8 @@
--- VR-Framework › match resource rules (service S4 of VRFW 2.3, docs/framework/match-resource.md §10). Declarations:
--- every active mod's content\resource_rules\*.toml (`VRFW.resource_rule/1`, keys: content\types\resource_rule.toml);
--- native side: content\game\resource_rules.toml.
---
---   * [[VRFW.ShotSpend]] gauge = "kizuna": spend_on_shot = false keeps the team's kizuna power on a shot (the retail
---     spend is jumped over), return_on_shot = false gives nothing back after it (return rate 0). Each key: the later
---     mod (load order) wins. Written once at start; nothing declared = the game's code.
---   * [[VRFW.OffPitch]]: players a mod keeps off the pitch without a red card. The IsSentOff / IsSentOffById detours
---     answer 0 for the handles of every mod's exported table Resource.OffPitch; ApplyTeamLayout (substitutions,
---     formation commands) signals vrfw.off_pitch.layout before and vrfw.off_pitch.layout_done after the game's code,
---     so the mod clears its own member bits around the call and sets them again (or lets the player go). Installed
---     only when a mod declares the rule.
---   * The cost points (aura cost check, aura release, pending pay, tension pay): providers of the hook bus; the boot
---     log lists them per entry in run order.
+-- Match resource rules. Declarations: every active mod's content\resource_rules\*.toml (`VRFW.resource_rule/1`); native side: content\game\resource_rules.toml.
+--   * [[VRFW.ShotSpend]] gauge = "kizuna": spend_on_shot = false: a shot does not spend the team's kizuna gauge; return_on_shot = false: nothing is returned after a shot (later mod wins per key).
+--   * [[VRFW.OffPitch]]: players kept off the pitch without a red card; IsSentOff / IsSentOffById answer 0 for handles in the exported table Resource.OffPitch.
+--     ApplyTeamLayout is bracketed by signals vrfw.off_pitch.layout and vrfw.off_pitch.layout_done so the mod can clear and restore its member bits.
+--   * Cost points (aura cost check, aura release, pending pay, tension pay) are hook-bus providers listed in the boot log.
 
 local D = require "lib/declarations"
 local E = require "lib/game_entries"
@@ -19,7 +10,7 @@ local E = require "lib/game_entries"
 local function info(...) VRFW.log("resource_rules:", ...) end
 local function warn(...) VRFW.warn("resource_rules:", ...) end
 
--- the gauges a [[VRFW.ShotSpend]] may name: gauge -> { key -> the patch that turns the key's `false` on }
+-- Gauges a [[VRFW.ShotSpend]] may name: gauge -> { key -> patch that turns the key's `false` on }.
 local GAUGES = {
   kizuna = { spend_on_shot = "Resource.KizunaSpendSkip", return_on_shot = "Resource.KizunaReturnSkip" },
 }

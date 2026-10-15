@@ -1,0 +1,40 @@
+id = "goalkeeper_barrier"
+# name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
+name = "Goalkeeper Barrier"
+version = "1.0.3"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Every keeper's barrier is the top 25 % of his bar on the scoreboard, drawn bronze: while his bar is above 75 % the shots he faces lose power (÷ 1.75); below that they keep their full power. A block move of his team makes his next keeper move 30 % cheaper in tension."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-15"
+# This mod's own names (TOML keys [GoalkeeperBarrier.X], Lua GoalkeeperBarrier.X, commands CMND_GOALKEEPERBARRIER_*,
+# tables GoalkeeperBarrier.*); never VRFW.
+prefix = "GoalkeeperBarrier"
+folder = "GoalkeeperBarrier"
+# A module mod of Football Reforged (modules\GoalkeeperBarrier\, docs/framework/mod-families.md §1.3); was its internal
+# module goalkeeper_barrier until FR 1.1.0 (and Inazuma Fantasy's part gk_barrier until 2026-10-14);
+# docs/game/mechanics/gk-barrier.md. Standard layout:
+#   config.toml                              [goalkeeper_barrier]: the barrier's settings
+#   content\game\goalkeeper_barrier.toml   globals, structs, the cost check provider, the HUD command
+#   scripts\goalkeeper_barrier.lua           the run time
+#   content\menus\goalkeeper_barrier_hud.toml + content\images\menu\02_btl\btl06\btl06_13\goalkeeper_barrier.toml
+#                                            the bronze segment layer; graft research/grafts/goalkeeper_barrier_hud
+# Renamed in 1.0.0: CMND_FOOTBALLREFORGED_GOALKEEPER_BARRIER -> CMND_GOALKEEPERBARRIER_GET (the old name answers too),
+# table FootballReforged.KeeperTension -> GoalkeeperBarrier.KeeperTension.
+requires = ["vr_framework>=2.4.6", "football_reforged>=1.2.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["memory", "call", "command", "hook"]
+
+# Other mods read the keeper discount table (GoalkeeperBarrier.KeeperTension (keeper handle, move) -> ok) in their native
+# answers and the barrier through CMND_GOALKEEPERBARRIER_GET(side) -> ok, percent, discount, team, user.
+[exports]
+functions = []
+keys = []
+tables = ["GoalkeeperBarrier.KeeperTension"]
+
+[module]
+of = "football_reforged"
+order = 10

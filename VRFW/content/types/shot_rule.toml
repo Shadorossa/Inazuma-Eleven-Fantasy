@@ -1,14 +1,16 @@
-# The declarations of the shot / zone rules (service S5 of VRFW 2.3, docs/framework/rules.md §8): what a mod's
-# content\shot_rules\*.toml may say. Read by scripts\shot_rules.lua at start (every key is checked against this file:
-# an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a table map.
+# Declares shot / zone rules (kind VRFW.shot_rule/1) in a mod's content\shot_rules\*.toml.
+# Unknown keys, wrong types or out-of-range values drop that declaration with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.shot_rule/1"
 folder = "content/shot_rules"
 
 [entry.ZoneArea]
-doc = "where the shoot zone («Área», scene state ZoneState) may start: the game's full-width band past its zone line, or the penalty box the team attacks"
-# several mods: each key the later mod (load order) gives wins
-area = { type = "string", required = true, doc = "\"retail\" (the game's band: nothing installed) or \"penalty_box\" (inside the box the team attacks, widened by the margin)" }
+doc = "where the shoot zone («Área», scene state ZoneState) may start: the game's full-width band past its zone line, the penalty box or the goal area the team attacks; per side (yours / the rival's) with user_area / rival_area"
+# With several mods, the later mod (load order) wins per key.
+area = { type = "string", required = true, doc = "\"retail\" (the game's band), \"penalty_box\" (inside the penalty box the team attacks, widened by the margin) or \"goal_area\" (inside the goal area, the small box, the team attacks); nothing is installed while every side is \"retail\"" }
+user_area = { type = "string", default = "", doc = "the area of the user's side in a match with a user side (same values as area; empty = area)" }
+rival_area = { type = "string", default = "", doc = "the area of the CPU side in a match with a user side (same values as area; empty = area)" }
+scale = { type = "number", default = 1, min = 0.5, max = 3, doc = "the box's width (about its centre) and depth (from the goal line toward the centre) x this, before the margin (1.05 = 5 % bigger); the retail band is never scaled" }
 margin_m = { type = "number", default = 0, min = 0, max = 20, doc = "metres added around the box (0 = the white lines)" }
 margin_config = { type = "string", default = "", doc = "a dotted path of the declaring mod's config that gives margin_m (a user setting; missing = margin_m)" }
 chain_area = { type = "string", default = "retail", doc = "shot chains (a chain window open / taken, or the chain partner's position): \"retail\" = the game's own band, \"box\" = the box too" }
@@ -18,7 +20,6 @@ when = { type = "when", doc = "conditions on the declaring mod's config: all mus
 
 [entry.LongShot]
 doc = "every shot move may be used as a long shot (outside the zone state the game asks for the move's long-shot flag, effect bit 4 of its slot record): the two checks of SkillSituationOk pass"
-# the rule is on while the named flag (VRFW.set_flag, shared with the rules) is non-zero during a match; it is put back
-# at the end of every match and at the title
+# The rule is on while the named flag (VRFW.set_flag) is non-zero during a match; it is reset at match end and at the title.
 all_moves_flag = { type = "string", required = true, doc = "the flag key that switches the rule on (e.g. a training-match setting row)" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

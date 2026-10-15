@@ -1,0 +1,32 @@
+# Souls Rework's level-up pop on the match play HUD (docs/game/mods/souls-rework-design.md §9.5): each time a totem
+# gains a level, a small plate of the totem's element colour with «+Nv.» pops over that player's head and follows him
+# (the module's scripts\souls_rework.lua queues it; CMND_SOULSREWORK_LEVEL_POP hands the text, colour, timing and sizes
+# of config.toml [level_pop]). Layer souls_rework_level_pop (the module's content\menus\level_pop.toml, 8 instances =
+# 4 pops), its plate sprite content\images\menu\02_btl\souls_rework_pop.toml. Placed as the retail face bubbles over a
+# player (head position through the match camera). Both teams' players. Wrapper of PostStep only; nothing runs at chunk
+# load. Order 320: after Aura Points' HUD bar (310).
+name = "souls_rework_level_pop"
+mod = "souls_rework"
+order = 320
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["PostStep"]
+description = "Souls Rework: the «+Nv.» pop over a player when his totem gains a level"
+
+[[files]]
+stem = "soccer_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "souls_rework_level_pop.lua"
+  marker = "SoulsRework level pop"
+
+# 5v5 / pachanga / battle matches: their play HUD is soccer_battle_inplay_menu (own script, same include)
+[[files]]
+stem = "soccer_battle_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "souls_rework_level_pop.lua"
+  marker = "SoulsRework level pop"

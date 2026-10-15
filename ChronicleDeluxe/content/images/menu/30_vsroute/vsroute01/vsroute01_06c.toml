@@ -1,0 +1,171 @@
+# Chronicle Deluxe: #/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx, the clear-icon layer of a Chronicle
+# piece (the board and the team list). The orb bar with one socket per difficulty the piece offers
+# (docs/game/mods/chronicle-deluxe.md §8.9; graft chronicle_deluxe_board, cd_orb_bar.lua picks the sprite of the count):
+# chronicle_deluxe_orb_bar_<context>_<count>, made at build from the PLAYER'S retail pill (route: clear_base01_02, 6
+# sockets 18 px apart; gate: clear_base02_2, 3 sockets): its left end with the first socket, <count> - 2 copies of one
+# socket period, its right end with the last socket; a 1-socket bar = the halves of the first and the last socket.
+# Width = retail width - 18 per missing socket. No Level-5 pixel ships with the mod.
+# With Inazuma Fantasy active its Chronicle redesign draws the bar (its own pill and layout): this file steps aside.
+schema = "VRFW.image/1"
+if_not_mod = "inazuma_fantasy"
+
+# ---------------------------------------------------------------- route pieces (retail clear_base01_02, 124 x 32, 6 sockets)
+
+[[recipe]]
+name = "orb_bar_route_left"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base01_02"
+ops = [{ op = "crop", box = [0, 0, 26, 32] }]
+
+[[recipe]]
+name = "orb_bar_route_period"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base01_02"
+ops = [{ op = "crop", box = [26, 0, 44, 32] }]
+
+[[recipe]]
+name = "orb_bar_route_right"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base01_02"
+ops = [{ op = "crop", box = [98, 0, 124, 32] }]
+
+[[recipe]]
+name = "orb_bar_route_first_half"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base01_02"
+ops = [{ op = "crop", box = [0, 0, 17, 32] }]
+
+[[recipe]]
+name = "orb_bar_route_last_half"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base01_02"
+ops = [{ op = "crop", box = [107, 0, 124, 32] }]
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_route_1"
+canvas = [34, 32]
+ops = [
+  { op = "paste", image = "orb_bar_route_first_half", at = [0, 0] },
+  { op = "paste", image = "orb_bar_route_last_half", at = [17, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_route_1"
+recipe = "chronicle_deluxe_orb_bar_route_1"
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_route_2"
+canvas = [52, 32]
+ops = [
+  { op = "paste", image = "orb_bar_route_left", at = [0, 0] },
+  { op = "paste", image = "orb_bar_route_right", at = [26, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_route_2"
+recipe = "chronicle_deluxe_orb_bar_route_2"
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_route_3"
+canvas = [70, 32]
+ops = [
+  { op = "paste", image = "orb_bar_route_left", at = [0, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [26, 0] },
+  { op = "paste", image = "orb_bar_route_right", at = [44, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_route_3"
+recipe = "chronicle_deluxe_orb_bar_route_3"
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_route_4"
+canvas = [88, 32]
+ops = [
+  { op = "paste", image = "orb_bar_route_left", at = [0, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [26, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [44, 0] },
+  { op = "paste", image = "orb_bar_route_right", at = [62, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_route_4"
+recipe = "chronicle_deluxe_orb_bar_route_4"
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_route_5"
+canvas = [106, 32]
+ops = [
+  { op = "paste", image = "orb_bar_route_left", at = [0, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [26, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [44, 0] },
+  { op = "paste", image = "orb_bar_route_period", at = [62, 0] },
+  { op = "paste", image = "orb_bar_route_right", at = [80, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_route_5"
+recipe = "chronicle_deluxe_orb_bar_route_5"
+
+# ---------------------------------------------------------------- gate pieces (retail clear_base02_2, 68 x 32, 3 sockets)
+
+[[recipe]]
+name = "orb_bar_gate_left"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base02_2"
+ops = [{ op = "crop", box = [0, 0, 25, 32] }]
+
+[[recipe]]
+name = "orb_bar_gate_period"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base02_2"
+ops = [{ op = "crop", box = [25, 0, 43, 32] }]
+
+[[recipe]]
+name = "orb_bar_gate_right"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base02_2"
+ops = [{ op = "crop", box = [43, 0, 68, 32] }]
+
+[[recipe]]
+name = "orb_bar_gate_first_half"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base02_2"
+ops = [{ op = "crop", box = [0, 0, 16, 32] }]
+
+[[recipe]]
+name = "orb_bar_gate_last_half"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+sprite = "clear_base02_2"
+ops = [{ op = "crop", box = [52, 0, 68, 32] }]
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_gate_1"
+canvas = [32, 32]
+ops = [
+  { op = "paste", image = "orb_bar_gate_first_half", at = [0, 0] },
+  { op = "paste", image = "orb_bar_gate_last_half", at = [16, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_gate_1"
+recipe = "chronicle_deluxe_orb_bar_gate_1"
+
+[[recipe]]
+name = "chronicle_deluxe_orb_bar_gate_2"
+canvas = [50, 32]
+ops = [
+  { op = "paste", image = "orb_bar_gate_left", at = [0, 0] },
+  { op = "paste", image = "orb_bar_gate_right", at = [25, 0] },
+]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+name = "chronicle_deluxe_orb_bar_gate_2"
+recipe = "chronicle_deluxe_orb_bar_gate_2"

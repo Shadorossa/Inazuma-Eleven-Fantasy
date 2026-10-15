@@ -1,0 +1,54 @@
+schema = "CharacterReforged.movesets/1"
+# Character Reforged › the rules of the generated movesets: research/scripts/cr_movesets_build.py reads this table
+# and writes content\characters\movesets\generated.toml (the 4 special moves and their learn levels of every normal
+# card) and content\characters\movesets\starting_grades.generated.toml (the grades a move starts at when the player is
+# obtained). Hand edits go to content\characters\movesets\overrides.toml (loaded after both, wins). Nothing here is
+# read in game; scripts\moveset.lua only reads [CharacterReforged.Mix]. Report: docs/game/mods/character-reforged-movesets.md
+
+[CharacterReforged.MovesetRules]
+# moves per moveset
+Moves = 4
+# the original games in order of release: a character's moveset is the one of the first game he appears in
+Games = ["IE1", "IE2", "IE3", "GO", "CS", "GX"]
+# the sources of a game's learn list, best first: "game" = the game's own files (DS ROMs, the IE3 Team Ogre archive,
+# the GO / Chrono Stone / Galaxy dump), "wiki" = the wiki extraction (research/build/wiki)
+Sources = ["game", "wiki"]
+# characters with no original game (first appearance in Victory Road, Ares or Orion): their Victory Road learn list
+# ordered by the VoiceOrder rule
+VictoryRoadSeries = ["VR", "Ares", "Orion"]
+# special cards (chara_param rarity column, not 0) keep the set they have
+KeepSpecialCards = true
+# learn level = source level × LevelScale. 1.0: the stats curve (config.toml [stats]) keeps Lv 1-99 as the original
+# games' range (Lv 99 values = the games' top) and Lv 100+ as growth past them, so the games' levels stay as they were
+LevelScale = 1.0
+# a move learned through the story (level 100 in the DS files, «E» in the wiki) takes its level in the closest later
+# game where it has one; else the highest level given so far + StoryLevelStep (the first one: level 1)
+StoryLevelStep = 10
+# a talent, a move that Victory Road does not have, or a duplicate is replaced (same slot, same level) by the
+# character's moves of his later games (in order), then by his Victory Road learn list
+ReplaceFrom = ["later", "victory_road"]
+# a move that Victory Road does not have may take the Victory Road move of its name family (the wiki key without its
+# evolution suffix: God Hand V -> God Hand) before it is replaced
+NameFamily = true
+# when a name matches several Victory Road moves (element variants), the one of the character's element wins
+PreferOwnElement = true
+# the grey filler moves (skill_config: element, colorIdx, consumeTp) never enter a moveset
+GreyMove = { Element = 5, ColorIdx = 0, ConsumeTp = 40 }
+
+# Victory Road characters: the moves their voice bank shouts (cue <bank>_<move key>) come first, then the rest by a
+# weighted score (power_max rank, learn list order, learn level rank, a random part seeded by the character key: the
+# result is the same on every run). Levels: the lowest levels of the card's Victory Road learn list (its starter slot
+# included), ascending, in that order.
+[CharacterReforged.MovesetRules.VoiceOrder]
+VoicedFirst = true
+Power = 0.5
+LearnOrder = 0.3
+Level = 0.1
+Random = 0.1
+Seed = "character_reforged.movesets"
+
+# the grades a move starts at when the player is obtained (applied by True Hissatsu through the cards'
+# VRFW.MoveGrades; without True Hissatsu nothing reads them): Inazuma Fantasy's recruit grades, for the moves still
+# in the card's moveset. Every other move starts at its base level.
+[CharacterReforged.MovesetRules.StartingGrades]
+From = "research/mods/_aside/InazumaFantasy/characters/move_grades.toml"

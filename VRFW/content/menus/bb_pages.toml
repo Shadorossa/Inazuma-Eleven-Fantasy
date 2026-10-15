@@ -1,6 +1,6 @@
 # VR-Framework: the Bahía Batalla (Estadio BB) team grid's line of pages, category tabs and season carousel
-# (docs/framework/bb-pages.md; graft research/grafts/vrfw_bb_pages, run time vr_framework.dll bb_pages_rt). Moved from
-# Inazuma Fantasy's menus/107_vs/enjoy_team_select_menu.toml on 2026-10-08 (the layer evt_bb_page_guide and its keys).
+# (docs/framework/bb-pages.md; graft research/grafts/vrfw_bb_pages, run time vr_framework.dll bb_pages_rt). Replaces
+# a mod's copy of menus/107_vs/enjoy_team_select_menu.toml (the layer evt_bb_page_guide and its keys).
 # Added layers only, in the free-match and campaign groups (they open and close with the grid):
 #   vrfw_bb_strip_bg     9 x a cmn01_10 quad: the rows' translucent backgrounds (3 blocks x left cap / middle / right
 #                        cap: page, season, category; vrfw_bb_bg_l / _m / _r)
@@ -10,7 +10,7 @@
 #   vrfw_bb_tab_icon     8 x a cmn01_10 quad: the category glyphs (the categories' `icon`)
 #   vrfw_bb_season_icon  3 x a cmn01_10 quad: previous / current / next season (the player bank's series icons)
 # Keys on the grid layer -> CMD_FUNCTION <crc32 of the name> (the graft's OnFunction): L1 / R1 page, L2 / R2 (Q / E)
-# previous / next season, CMD_FUNC2 (the bank's filter key: Tab on the keyboard) next category (Nacho, 2026-10-08). The retail grid binds ENTER, BACK, arrows,
+# previous / next season, CMD_FUNC2 (the bank's filter key: Tab on the keyboard) next category. The retail grid binds ENTER, BACK, arrows,
 # FUNC1, FUNC3, FUNC4 only.
 schema = "VRFW.menu/2"
 

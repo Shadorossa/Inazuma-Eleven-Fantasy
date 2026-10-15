@@ -1,0 +1,50 @@
+# Furor › how each team's furor gauge fills and is spent (docs/game/mechanics/furor.md §3;
+# the VRFW team momentum service, docs/framework/team-momentum.md). Strikers' rule (GO Strikers 2013,
+# MI_calTensionGauge): the gauge fills with TIME, faster for the team that is BEHIND on the score; full = the «Fase de
+# furor» (Hero Time), started with the furor button (content\inputs\phase.toml) or by the CPU (content\rules\gauge.toml);
+# it drains to 0 over phase_seconds, then ends. On top of Strikers: small gains from actions (owner 2026-10-15).
+# The effects of the levels and the phase are rules (content\rules\gauge.toml). Read at the game's start.
+schema = "VRFW.team_momentum/1"
+
+[[VRFW.TeamMomentum]]
+name = "gauge"                            # key furor.gauge
+resource = "furor.gauge"                  # content\match_resources\gauge.toml (0..100)
+fill_per_s = 0.30                         # + per live second (about 110 in a whole match from time alone)
+behind_per_s = 0.30                       # + per live second more while the team is behind on the score
+levels = 2                                # flags .level1 at 50 %, .level2 at 100 %
+start_at = 1.0                            # the phase can start when the gauge is full
+phase_seconds = 12                        # the phase lasts 12 live seconds (the gauge drains to 0)
+gains_in_phase = false
+
+# small gains from actions (to = actor: the actor's team; goal: the team that scored)
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "goal"
+to = "other"                              # the team that conceded (Strikers' comeback spirit)
+amount = 8
+
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "goal"
+to = "actor"
+amount = 3
+
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "keeper_save"
+amount = 4
+
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "duel_won"
+amount = 1.5
+
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "block_won"
+amount = 1
+
+[[VRFW.MomentumGain]]
+momentum = "gauge"
+on = "technique_result:won"
+amount = 2

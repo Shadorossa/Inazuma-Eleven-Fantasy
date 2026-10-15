@@ -47,30 +47,12 @@ rank = 3
 growth = "normal"
 stats = { kick = 208, control = 189, technique = 200, pressure = 250, physical = 258, intelligence = 290, agility = 197, freedom = 230 }
 
-  [[edit.cards]]
-  id = 0xB9BFBD23                                         # DF/MF · mountain
-  moves = [
-    { move = 0x29728358, level = 1 },                     # Planet Shield
-    { move = 0xAD6E4BF9, level = 1 },                     # Harvest
-    { move = 0x00196EC2, level = 10 },                    # Earthquake
-    { move = 0x7207C577, level = 67 },                    # Boost Glider
-  ]
-
 [[edit]]
 target = "c02021450"                                   # Hauser
 growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 212, control = 190, technique = 208, pressure = 248, physical = 255, intelligence = 293, agility = 193, freedom = 242 }
-
-  [[edit.cards]]
-  id = 0xA0A48C62                                         # DF/MF · mountain
-  moves = [
-    { move = 0x28B0E96F, level = 1 },                     # Heavy Mettle
-    { move = 0x3069B219, level = 38 },                    # Super Sumo Stomp
-    { move = 0x29728358, level = 51 },                    # Planet Shield
-    { move = 0x1B854A64, level = 60 },                    # Cosmic Blast
-  ]
 
 [[edit]]
 target = "c02021460"                                   # Kormer

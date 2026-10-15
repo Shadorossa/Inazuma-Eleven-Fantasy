@@ -1,0 +1,14 @@
+# Declaration schema for [[VRFW.UnlimitedCopies]] (content\unlimited_copies\*.toml); an unknown key, wrong type or out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.unlimited_copy/1"
+folder = "content/unlimited_copies"
+
+[entry.UnlimitedCopies]
+doc = "items of which one owned copy serves every player: equipping one never uses up a copy (the owned count stays) while the rule holds; never in a reserved save slot"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+item_kinds = { type = "ints", required = true, min = 1, max = 65535, doc = "the items: item_config ITEM_SPECIAL_SKILL_INFO sub-categories (col 6), e.g. 161-164 special moves, 171 keshin, 173 Mix-Max, 174 totem, 178 mode change" }
+key_items = { type = "ids", doc = "the rule holds while the save owns one of these items (names or ids); with neither key_items nor cleared_pieces the rule always holds" }
+cleared_pieces = { type = "ids", doc = "the rule also holds while one of these Chronicle board pieces (pieceId, 0x…) is cleared at cleared_difficulty (a key item owned by that condition)" }
+cleared_difficulty = { type = "int", min = 1, max = 20, default = 2, doc = "the difficulty of cleared_pieces (2 = the route-open battle / the gate battle)" }
+chronicles_complete = { type = "int", min = 0, max = 20, default = 0, doc = "when > 0, the rule also needs every Chronicle completed at this difficulty (VRFW_Chronicle.Complete)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

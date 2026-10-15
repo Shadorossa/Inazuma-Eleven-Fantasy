@@ -1,0 +1,11 @@
+# Chronicle Deluxe: #/menu/200_icon/02_icon_item/icon_item02.g4tx, the key-item icon sheet. The Master's Seal's icon
+# (content\items\master_seal.toml icon_key): a new 256 x 256 texture named by the item's key string, which must start
+# with «ke» (the icon manager maps that prefix to this sheet; docs/game/mechanics/unlimited-moves.md §3).
+# With Inazuma Fantasy active its own texture of the same name and picture is used: this file steps aside.
+schema = "VRFW.image/1"
+if_not_mod = "inazuma_fantasy"
+
+[[texture]]
+atlas = "#/menu/200_icon/02_icon_item/icon_item02.g4tx"
+name = "ke000900"
+png = "icon_item02/ke000900.png"

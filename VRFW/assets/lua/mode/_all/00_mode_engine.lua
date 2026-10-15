@@ -1,6 +1,5 @@
 -- mode_engine (VR-Framework): the VRFW_Mode helper, defined in every script VM (lua\_all runs after each retail chunk).
 -- It only defines a table: no engine call happens here (funcLuaCommand does not exist while a chunk loads).
--- docs/app/mode-engine.md §7.
 --
 -- A HOST (the title row, the slot screen, or a mod screen that declares its host with [[host]] in its modes\*.toml)
 -- lists the modes declared for it and starts one:
@@ -235,5 +234,5 @@ if VRFW_Mode == nil then
     return type(id) == "string" and id or ""
   end
 end
--- 1.x name (docs/framework/naming.md): the same table under the old name, so mods written for 1.x keep working
+-- 1.x name: the same table under the old name, so mods written for 1.x keep working
 EvtMode = VRFW_Mode

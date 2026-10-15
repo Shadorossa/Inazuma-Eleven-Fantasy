@@ -17,6 +17,7 @@ end
 local chd_xs_prev_decide = DecideRestartButton
 function DecideRestartButton(...)
   CHD_XS.Uncover(CHD_XS.COVER_IN_S, "kick-off button")
+  CHD_XS.UnblackLayer0("kick-off button")
   return chd_xs_prev_decide(...)
 end
 -- A cover the framework still held when it should have come off (its release went unanswered: the script VM was busy):
@@ -25,6 +26,9 @@ local chd_xs_prev_step = Step
 function Step(...)
   if CHD_XS.Get(CHD_XS.COVER) == 1 and CHD_XS.Get(CHD_XS.GO) ~= 1 then
     CHD_XS.Uncover(CHD_XS.COVER_IN_S, "kick-off (retry)")
+  end
+  if CHD_XS.Get(CHD_XS.GO) ~= 1 then
+    CHD_XS.UnblackLayer0("kick-off guide")
   end
   return chd_xs_prev_step(...)
 end

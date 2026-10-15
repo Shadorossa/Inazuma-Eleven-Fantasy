@@ -1,0 +1,26 @@
+schema = "VRFW.game/2"
+# Character Reforged › partner locks (scripts\partner_lock.lua; docs/game/ui/partner-lock-bank.md): a card used as the
+# partner of another card's pair (a Mix-Max, a mode change, …) stays in the player bank and wears the system's plate.
+
+# () -> { { card, base, sprite, textId, text }, … }: every locked card (the bank's hook file, graft cr_partner_lock)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PARTNER_LOCKS"
+handler = "CharacterReforged.PartnerLock.List"
+
+# (card) -> base (0 = free), sprite, textId, text
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PARTNER_LOCK"
+handler = "CharacterReforged.PartnerLock.Get"
+
+# The game's place check 1730898405(hdl, toSet, pos, fromSet, team) -> ok, code and place / move 193693077(toSet, pos,
+# fromSet, hdl, team): a locked partner taken from the bank (set 16) into a team set is refused before the game's
+# handler (every team screen, the bank's «Añadir al equipo», drags and the mouse go through them).
+[[VRFW.CommandFilter]]
+name = "CharacterReforged.PartnerPlaceCheck"
+command = 1730898405
+handler = "CharacterReforged.PartnerLock.PlaceCheck"
+
+[[VRFW.CommandFilter]]
+name = "CharacterReforged.PartnerMoveChara"
+command = 193693077
+handler = "CharacterReforged.PartnerLock.MoveChara"

@@ -1,14 +1,4 @@
--- The effect build's edits of eff_chr_trigger (scripts\build\effect.lua; docs/app/fx-engine.md §9-§10, RE in
--- docs/game/mechanics/aura-balon-tiro.md):
---
--- * [[shot_aura]]: the mods' rules in load order -> the run time's rule table (later wins, WARN); aura names -> ball
---   trigger ids (read from the ball's list of eff_chr_trigger, the one with the `shoot` row); a pooled effect without
---   a trigger -> one new trigger row (a copy of the `like` row); characters -> their cards (chara_param); rarity keys
---   -> col 41 values (resolved natively, input.rarity). The run time (fx_engine::shot_rt) decides per frame.
--- * [[chr_trigger]]: a new character-effect trigger: the rows of `like` copied right after themselves (their list's
---   count raised), trigger column = crc32(name), some effects replaced.
---
--- The table is served as the script leaves it (`t:raw()`: no sort-index rebuild, as the game file has none to keep).
+-- Effect build edits of eff_chr_trigger: [[shot_aura]] rules (aura -> ball trigger, run-time rule table) and [[chr_trigger]] (new character-effect triggers).
 
 local U = require "lib/util"
 
@@ -17,12 +7,12 @@ local M = {}
 local INFO = "EFFECT_CHR_TRIGGER_DEFINE_DEF_INFO"
 local INFO_BEG = INFO .. "_LIST_BEG"
 local INFO_END = INFO .. "_LIST_END"
--- columns of an INFO row: effect (crc32 of its effect_define name), trigger (crc32 of its name)
+-- INFO row columns: effect (crc32 of its effect_define name), trigger (crc32 of its name)
 local COL_EFFECT = 0
 local COL_TRIGGER = 8
 local TWO32 = 4294967296
 
--- `u32::from_str_radix(h, 16)`: hex digits (an optional `+`), at most 32 bits; nil otherwise.
+-- Hex digits (optional '+'), at most 32 bits; nil otherwise.
 local function parse_hex(h)
   local body = h:match("^%+?(%x+)$")
   if not body then return nil end
@@ -39,25 +29,25 @@ local function list(x)
   return { x }
 end
 
--- A game id as written (`IdRef`): a number (its low 32 bits) or a string (`0x…`, a number, a name's crc32).
+-- A game id as written: a number (low 32 bits) or a string (`0x…`, a number, a name's crc32).
 local function id_of(x)
   return U.id(x)
 end
 
--- `IdRef::text`.
+-- Text form of an id.
 local function text_of(x)
   if type(x) == "number" then return VRFW.hex(x % TWO32) end
   return x
 end
 
--- Rust `{:?}` of a [u8; 2].
+-- Byte pair as text: {1, 2} -> "[1, 2]".
 local function pair(r)
   return "[" .. tostring(r[1]) .. ", " .. tostring(r[2]) .. "]"
 end
 
--- -------------------------------------------------------------------------------- the ball's trigger list
+-- ---- the ball's trigger list
 
--- The ball's list of eff_chr_trigger on handle `t`: `trigger_of(effect)`, `add(effect, like)`, `added`.
+-- Ball list of eff_chr_trigger on handle `t`: `trigger_of(effect)`, `add(effect, like)`, `added`.
 local function triggers(t, D)
   local shoot = VRFW.crc32(D.shoot_trigger)
   local info = t:rows(INFO)
@@ -106,7 +96,7 @@ local function triggers(t, D)
     end
     return false
   end
-  -- a new trigger row for `effect` (game name): a copy of `like`'s row with the effect and a new trigger
+  -- new trigger row for `effect`: a copy of `like`'s row with the effect and a new trigger
   function R.add(effect, like)
     if added[effect] then return added[effect] end
     local eff, like_crc = VRFW.crc32(effect), VRFW.crc32(like)
@@ -143,7 +133,7 @@ local function triggers(t, D)
   return R
 end
 
--- -------------------------------------------------------------------------------- [[shot_aura]]
+-- ---- [[shot_aura]]
 
 local function element_index(X, w)
   local s = U.trim(w):lower()
@@ -171,7 +161,7 @@ local function rule_id(X, mod, name)
   return VRFW.ids.own(mod, name)
 end
 
--- chara id -> its chara_param ids (lazy: only a rule naming a character reads chara_param)
+-- chara id -> its chara_param ids (lazy: read only when a rule names a character)
 local function chara_map(X)
   if X.chara == nil then
     local key = VRFW.rows.key(X.K.chara_param_prefix)
@@ -204,7 +194,7 @@ local function level_sel(v, what)
   return nil, what .. " " .. pair(v) .. ": [min, max] with min <= max"
 end
 
--- The conditions of `w`, resolved (empty list / nil = any).
+-- Resolved conditions of `w` (empty list / nil = any).
 local function cond(X, w, detail)
   local c = { transforms = {}, transform_keys = {}, rarities = {}, elements = {}, cards = {}, techniques = {}, stat_min = {}, stat_max = {} }
   local D = X.D.shot_aura
@@ -372,10 +362,7 @@ local function equal(a, b)
   return true
 end
 
--- `fit` (docs/framework/effect.md §6 «Fit to the flight»): the aura's timeline stretched to the real flight at run
--- time (fx_engine shot_fit / shot_rt). Defaults: `[shot_aura.fit]` of defaults\effect.toml. A `sustain` window not
--- given = the replay without its intro (`intro` frames, at most a third) and its end (`outro` of it, at least
--- `outro_min` frames). nil = no fit (`mode = "off"`); false + error on a bad key.
+-- `fit`: stretches the aura timeline to the real flight at run time. Defaults: `[shot_aura.fit]` of defaults\effect.toml. A `sustain` not given replays without its intro and outro. nil = no fit (`mode = "off"`); false + error on a bad key.
 local function fit(X, d)
   local f = d.fit
   if f == nil then return nil end
@@ -508,7 +495,7 @@ function M.shot_auras(X)
   return rules
 end
 
--- -------------------------------------------------------------------------------- [[chr_trigger]]
+-- ---- [[chr_trigger]]
 
 -- A trigger as written: a number, `0x…`, or a name (crc32).
 local function trigger_id(r)
@@ -527,7 +514,7 @@ local function trigger_id(r)
   return VRFW.crc32(t)
 end
 
--- Adds the trigger of `d` to `t`: report lines, or nil and why (the table unchanged).
+-- Adds the trigger of `d` to `t`: report lines, or nil and why (table unchanged).
 local function add_trigger(t, d, effect_name)
   local name = U.trim(d.name)
   if name == "" then return nil, "`name` is empty" end
@@ -564,7 +551,7 @@ local function add_trigger(t, d, effect_name)
     if not hit then return nil, "effects: `" .. r[3] .. "` is not an effect of the rows of " .. VRFW.hex(like) end
   end
   local detail = { "trigger `" .. name .. "` = " .. VRFW.hex(id) .. ", " .. #rows .. " row(s) of " .. VRFW.hex(like) }
-  -- from the last row backwards: an insert never moves a row still to be copied
+  -- from the last row backwards, so an insert never moves a row still to be copied
   for k = #rows, 1, -1 do
     local i = rows[k]
     local row = U.copy_entry(t:entry(i))

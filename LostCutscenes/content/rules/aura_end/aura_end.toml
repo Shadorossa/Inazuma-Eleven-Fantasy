@@ -1,11 +1,14 @@
 schema = "VRFW.field_clip/1"
 
-# «Desinvocaciones» (aura-end clips): when a player's keshin, armour or miximax ends in open play, he performs a short
-# clip ON THE PITCH where he stands (no cut-in, no camera; the match goes on). The framework watches every player
-# (match engine, docs/framework/types/rule.md «Field clips» [[on_aura_end]]): no code, no option.
-# Causes: time_out = the aura's time ran out (the game's own timer, or a mod that ends it by zeroing its time:
-# Inazuma Fantasy's aura costs when the gauge / PEG / PE is empty); release = it was ended with time left (the release
-# button). An aura that turns into another (a keshin into its armour) and any end outside open play play nothing.
+# «Desinvocaciones» (aura-end clips): when a player's keshin, armour or miximax really ends in open play, he performs
+# a short clip ON THE PITCH where he stands (no cut-in, no camera; the match goes on). The framework announces every
+# aura end with a reason (docs/framework/aura-end.md) and plays the clip of the matching [[on_aura_end]] below: no
+# code, no option.
+# Reasons used here: time_out = the aura's own time ran out (the game's timer); gauge_empty = a mod that runs auras on
+# a gauge ended it because the gauge is empty (Aura Points: PEG / SP at 0); release = ended with time left (the
+# release button). A keshin turning into its armour (transform) and any end outside open play (play_stopped) play
+# nothing.
+# skip_controlled: never on the player the user controls (the clip would stop his run and he would lose the ball).
 # Sources: the Chrono Stone cut-in packs data/chr/motion/waza/<id>.pck (3DS, Level-5), converted on the author's PC by
 # research/scripts/aura_end_clip_build.py (actor only, 4 VR body rigs, root motion baked); the .glb are never
 # committed (README.md «Generated animations»). Moved here from Inazuma Fantasy (rules\field_clips\aura_end.toml,
@@ -34,20 +37,23 @@ name = "aura_end_kneel_hold"
 glb = "assets/anims/aura_end/cs_kka0011_hold.glb"
 loop = "stand"
 
-# A keshin or an armour whose time ran out: the kneel.
+# A keshin or an armour whose time or gauge ran out: the kneel.
 [[on_aura_end]]
 aura = ["keshin", "armour"]
-cause = "time_out"
+reason = ["time_out", "gauge_empty"]
 clip = "aura_end_kneel"
+skip_controlled = true
 
 # A keshin dismissed with the release button: the sweep.
 [[on_aura_end]]
 aura = "keshin"
-cause = "release"
+reason = "release"
 clip = "keshin_release_sweep"
+skip_controlled = true
 
-# A miximax whose time ran out: both arms out.
+# A miximax whose time or gauge ran out: both arms out.
 [[on_aura_end]]
 aura = "miximax"
-cause = "time_out"
+reason = ["time_out", "gauge_empty"]
 clip = "miximax_end_arms"
+skip_controlled = true

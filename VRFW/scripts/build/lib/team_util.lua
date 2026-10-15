@@ -1,5 +1,4 @@
--- Helpers of the team build script (scripts\build\team.lua): numbers as the old Rust builder computed them, sorting
--- (stable, byte order), sets, text forms of values for notes. Pure Lua (no table access).
+-- Helpers for the team build script (scripts/build/team.lua): number formats, stable sorting, sets, text forms of values. Pure Lua.
 local T = {}
 
 local TWO32 = 4294967296
@@ -26,7 +25,7 @@ function T.i16(x)
   return x
 end
 
--- An id of a declaration: a number (`IdRef::Num`: the low 32 bits) or a string (`0x…`, decimal, else crc32 of the name).
+-- An id of a declaration: a number (low 32 bits) or a string (`0x...`, decimal, else crc32 of the name).
 function T.id(x)
   if type(x) == "number" then return x % TWO32 end
   if type(x) == "string" then return VRFW.ids.parse(x) end
@@ -181,7 +180,7 @@ function T.count(t)
   return n
 end
 
--- Stable sort of array `a` by `less(x, y)` (Rust `sort_by` / `sort_by_key`; Lua's table.sort is not stable).
+-- Stable sort of array `a` by `less(x, y)` (Lua's table.sort is not stable).
 function T.sort(a, less)
   local n = #a
   if n < 2 then return a end
@@ -231,7 +230,7 @@ end
 -- Rust `{:?}` of a string.
 local DBG_ESC = { ["\\"] = "\\\\", ['"'] = '\\"', ["\n"] = "\\n", ["\t"] = "\\t", ["\r"] = "\\r", ["\0"] = "\\0" }
 function T.dbg_str(s)
-  -- ASCII control characters only (Rust also escapes non-printable / grapheme-extend Unicode: not in the game's names)
+  -- ASCII control characters only (non-printable Unicode is not escaped)
   local o = s:gsub("[%c\\\"]", function(c)
     return DBG_ESC[c] or string.format("\\u{%x}", c:byte())
   end)

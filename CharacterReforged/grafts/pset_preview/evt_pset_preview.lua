@@ -23,8 +23,9 @@
 -- written): the training part is the player's current one. Page 1's title is the retail «ATRIBUTOS» (as the plate).
 -- Q / E (L1 / R1) and left / right change the page (PL.PopList mode.step, hook in ss2_menus); the cursor stays on the
 -- list and the page is kept while it moves. Empty set: no page frame, two hint lines.
--- The set also stores the configured passives and the role: vr-loader CMND_EVT_PSET_FULL / CMND_EVT_PSET_SET2
--- (board_presets.rs, file v3); an older loader keeps the v2 behaviour (GET / SET, passives and role «not saved»).
+-- The set also stores the configured passives, the role, the kit and the mix slot: Character Reforged's
+-- CMND_CHARACTERREFORGED_PLAYER_SET_FULL / _SAVE_FULL (scripts\player_sets.lua); without them the screen keeps the
+-- short form (GET / SAVE: passives, role and mix «not saved»).
 -- Loading applies them too (PL.SetLoadExtra, called by PL.SetLoad of ss2_menus before EVT_AfterChange).
 -- Without the layers (setting not deployed) PL.SetFocus falls back to the previous summary panel.
 -- No new main-chunk locals (184 already): everything lives in EVT_PSP, installed by one function.
@@ -36,8 +37,8 @@ do
       return
     end
     P.installed = true
-    P.CMD_FULL = @crc:CMND_EVT_PSET_FULL@
-    P.CMD_SET2 = @crc:CMND_EVT_PSET_SET2@
+    P.CMD_FULL = @crc:CMND_CHARACTERREFORGED_PLAYER_SET_FULL@
+    P.CMD_SET2 = @crc:CMND_CHARACTERREFORGED_PLAYER_SET_SAVE_FULL@
     P.CMD_PC_INFO = @crc:CMND_UTIL_PC_INFO@
     P.CMD_PC_SLOT = @crc:CMND_UTIL_PC_SLOT@
     P.CMD_PC_SET = @crc:CMND_UTIL_PC_SET@
@@ -164,6 +165,7 @@ do
             p.role = r[10]
           end
           p.kit = type(r[11]) == "number" and EVT_U32(r[11]) or 0   -- 2026-10-13: the team kit at save time
+          p.mix = type(r[12]) == "number" and EVT_U32(r[12]) or 0   -- the mix slot (0 = empty)
           return p
         end
       end
@@ -243,7 +245,7 @@ do
         at(pv, 1), at(pv, 2), at(pv, 3), at(pv, 4), at(pv, 5),
         at(pv and (cf or {}) or nil, 1), at(pv and (cf or {}) or nil, 2), at(pv and (cf or {}) or nil, 3),
         at(pv and (cf or {}) or nil, 4), at(pv and (cf or {}) or nil, 5),
-        p.role or -1, p.kit or 0)
+        p.role or -1, p.kit or 0, p.mix or 0)
       P.Log("save", i, name, ok, "kit", tostring(p.kit), "passives", tostring(pv ~= nil), "role", tostring(p.role))
       return ok
     end

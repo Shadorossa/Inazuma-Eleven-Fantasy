@@ -1,21 +1,14 @@
 schema = "VRFW.catalog/1"
-# The framework's own hosts (M4, docs/framework/catalogs.md): the places a mod's menu entries and modes show up on
-# the framework's (or the retail) screens. Any other host is declared by the mod whose screen lists them
-# (`[[host]]` in its menu / mode file): its id must not be one of these. Built into the framework: the installed copy
-# must stay the same data (else it is reported and not read). A new framework host needs the screen code that draws
-# it.
+# Framework-owned hosts: where mods' menu entries and modes appear. Other hosts are declared by the mod that owns the screen.
 
 [menu]
-# hosts of `[[entry]]` / `[[hide]]` (menu_engine, docs/app/menu-engine.md §8): the title's two rows and the scene
-# archive (retail screens the framework extends), Options and the top bar (framework screens). `scene_archive_tab`:
-# a tab added to the «Archivo de escenas» after the retail three (docs/game/ui/scene-archive-cap.md §4).
+# Hosts for [[entry]] / [[hide]]; scene_archive_tab adds a tab to the scene archive.
 hosts = ["title_menu_2.upper", "title_menu_2.lower", "options", "top_bar", "scene_archive_tab"]
-# the hosts that take `[entry.title]` and the action `mode` (the title's mode row); the first is the mode row
+# Hosts that accept [entry.title] and the action `mode`; the first is the mode row.
 title_hosts = ["title_menu_2.upper"]
 
 [mode]
-# hosts of `[[mode.entry]]` (mode_engine): a button of the title's upper mode row (title_menu_2), one of its lower
-# row, a card of the slot screen (a mode with its own save slot)
+# Hosts for [[mode.entry]]: upper title row, lower title row, slot-screen card.
 hosts = ["title_row", "title_lower", "slot_screen"]
-# the slot screen host (meant for modes with their own slot)
+# Host for modes with their own save slot.
 slot_screen = "slot_screen"

@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# Legendary Match: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-15): the «Legendary» AI level as a module of Football Reforged.
+lang = "es"
+name = "Legendary Match"
+
+[en]
+name = "Legendary Match"
+
+[fr]
+name = "Legendary Match"
+
+[de]
+name = "Legendary Match"
+
+[it]
+name = "Legendary Match"
+
+[pt]
+name = "Legendary Match"
+
+[ja]
+name = "Legendary Match"
+
+[zh_hans]
+name = "Legendary Match"
+
+[zh_hant]
+name = "Legendary Match"
+
+[[release]]
+icon = "general"
+notes = [
+    "Todos los partidos contra una CPU «Legendaria».",
+    "Solo el rival: reacciona al instante y no espera.",
+    "Elige siempre el elemento que vence al tuyo.",
+    "Tira o encadena al abrir zona; +2 de tensión/s.",
+    "Presiona al receptor y a tus jugadores cansados.",
+    "Ambos equipos: alcance defensivo a la mitad.",
+]
+
+[release.en]
+notes = [
+    "Every match against a «Legendary» CPU.",
+    "Rival only: reacts at once, never waits.",
+    "Always picks the element that beats yours.",
+    "Shoots or chains on its zone; +2 tension/s.",
+    "Presses the receiver and your tired players.",
+    "Both teams: defensive range halved.",
+]
+
+[release.fr]
+notes = [
+    "Tous les matchs contre un CPU « Légendaire ».",
+    "Rival seul : réagit aussitôt, sans attendre.",
+    "Choisit toujours l'élément qui bat le vôtre.",
+    "Tire ou enchaîne en zone ; +2 de tension/s.",
+    "Presse le receveur et vos joueurs fatigués.",
+    "Deux équipes : portée défensive divisée par 2.",
+]
+
+[release.de]
+notes = [
+    "Jedes Spiel gegen eine «legendäre» CPU.",
+    "Nur der Gegner: reagiert sofort, wartet nie.",
+    "Wählt immer das Element, das deines schlägt.",
+    "Schießt / kombiniert in der Zone; +2 Spannung/s.",
+    "Presst den Passempfänger und müde Spieler.",
+    "Beide Teams: Abwehrreichweite halbiert.",
+]
+
+[release.it]
+notes = [
+    "Ogni partita contro una CPU «Leggendaria».",
+    "Solo il rivale: reagisce subito, non aspetta.",
+    "Sceglie sempre l'elemento che batte il tuo.",
+    "Tira o concatena in zona; +2 di tensione/s.",
+    "Pressa chi riceve e i tuoi giocatori stanchi.",
+    "Entrambe le squadre: raggio difensivo dimezzato.",
+]
+
+[release.pt]
+notes = [
+    "Todas as partidas contra um CPU «Lendário».",
+    "Só o rival: reage logo, nunca espera.",
+    "Escolhe sempre o elemento que vence o teu.",
+    "Remata ou encadeia na zona; +2 de tensão/s.",
+    "Pressiona quem recebe e os teus cansados.",
+    "Ambas as equipas: alcance defensivo a metade.",
+]
+
+[release.ja]
+notes = [
+    "全試合で「レジェンド」CPUと対戦。",
+    "相手のみ：即座に反応し、待たない。",
+    "常にあなたの属性に勝つ技を選ぶ。",
+    "ゾーンで即シュートかチェイン。毎秒テンション+2。",
+    "パスを受けた選手と疲れた選手をプレス。",
+    "両チーム：守備範囲が半分。",
+]
+
+[release.zh_hans]
+notes = [
+    "所有比赛对战「传说」级CPU。",
+    "仅限对手：立即反应，从不等待。",
+    "总是选择克制你属性的必杀技。",
+    "开启区域即射门或连锁；每秒气势+2。",
+    "紧逼接球者和你疲劳的球员。",
+    "双方：防守范围减半。",
+]
+
+[release.zh_hant]
+notes = [
+    "所有比賽對戰「傳說」級CPU。",
+    "僅限對手：立即反應，從不等待。",
+    "總是選擇克制你屬性的必殺技。",
+    "開啟區域即射門或連鎖；每秒氣勢+2。",
+    "緊逼接球者和你疲勞的球員。",
+    "雙方：防守範圍減半。",
+]

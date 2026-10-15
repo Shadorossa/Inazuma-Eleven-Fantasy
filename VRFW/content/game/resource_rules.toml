@@ -1,24 +1,10 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › match resource rules (service S4 of VRFW 2.3, docs/framework/match-resource.md §10). The run time is
-# scripts\resource_rules.lua: it reads every mod's content\resource_rules\*.toml (`VRFW.resource_rule/1`, keys:
-# content\types\resource_rule.toml) and, only for what a mod declares, writes the sites / installs the detours below.
-# **Nothing here is written at start** (`apply = "script"`): with no declaration the game's code stays as it is.
-#
-# The cost points a resource's rules ride on (Stamina.AuraCostCheck, Stamina.AuraRelease, Duel.ProcessPending,
-# Stamina.TensionPay) are not declared here: each is ONE detour of the hook bus whose subscribers are the engines
-# (rule engine `move_check` / `tension_pay`, the technique engine's mini-effects) and the mods' providers
-# (`[[VRFW.Hook]]` with `game = "<entry>"` and an explicit `order`); scripts\resource_rules.lua reports them at boot.
+# Match resource rules, applied by scripts\resource_rules.lua only for what a mod declares; nothing is written at start (`apply = "script"`).
 
-# ------------------------------------------------------------------------------------------------ [[VRFW.ShotSpend]] kizuna
+# ---- [[VRFW.ShotSpend]] kizuna ----
 
-# The retail shot handler ShootStart 0x16D7950, after it records the kizuna used (stats key 4):
-#   0x16D8231  call TeamBuildKizunaReturn       the Vínculo archetype's return rate (0 .. 50 %)
-#   0x16D823A  call KizunaRate                  the team's kizuna (%)
-#   0x16D8294  cmp dil, 1; ja +2B               <- spend_on_shot = false: jmp, the gauge is not set to 0
-#   0x16D82B8  mov eax, [min]; mov [team+0x1074], eax     the spend
-#   0x16D82E0  comiss xmm6, xmm8; jbe +ED       <- return_on_shot = false: jmp, nothing comes back
-#   0x16D830D  team kizuna += return x gain multiplier, capped at maxKizunaPower
+# Shot handler patches: skip the kizuna spend on a shot / skip the kizuna return.
 [[VRFW.Patch]]
 name = "Resource.KizunaSpendSkip"
 edit = "Kizuna.SpendOnShot.Skip"
@@ -29,11 +15,9 @@ name = "Resource.KizunaReturnSkip"
 edit = "Kizuna.ReturnOnShot.Skip"
 apply = "script"
 
-# ------------------------------------------------------------------------------------------------ [[VRFW.OffPitch]]
+# ---- [[VRFW.OffPitch]] ----
 
-# bool IsSentOff(actor) / IsSentOffById(u32 hdl): the member's red-card bit (member +0x7A bit 3). Post: 0 for a player
-# a mod keeps off the pitch (`*/Resource.OffPitch`, key the actor handle, value 0: no red-card telop, he can be
-# substituted). Own trampolines (a call / a RIP load in the first bytes: the profile's relocs).
+# Red-card (sent off) queries: answered 0 for players a mod keeps off the pitch (table */Resource.OffPitch, keyed by actor handle).
 [[VRFW.Hook]]
 name = "Resource.IsSentOff"
 game = "Stamina.IsSentOff"
@@ -54,9 +38,7 @@ apply = "script"
 table = "*/Resource.OffPitch"
 key = ["args[1]"]
 
-# ApplyTeamLayout(req) 0x16D51B0 (substitutions / formation commands): pre and post signal the mods
-# (vrfw.off_pitch.layout / vrfw.off_pitch.layout_done) so an off-pitch player's bit is cleared around the call (he can
-# be substituted) and set again when he is still on the pitch. Prologue 19 bytes, chained.
+# Team layout (substitutions / formation commands): pre/post signals let mods clear and restore an off-pitch player's red-card bit around the call.
 [[VRFW.Hook]]
 name = "Resource.TeamLayout"
 game = "Match.TeamLayout"

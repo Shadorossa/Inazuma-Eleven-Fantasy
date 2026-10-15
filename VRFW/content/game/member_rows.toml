@@ -1,153 +1,139 @@
 schema = "VRFW.game/2"
 
-# The framework > member rows past 32767 in every team reader (docs/framework/bb-pages.md §9).
-# The game keeps a team's first member row (team_config SOCCER_TEAM_INFO_REF_MEMBER, runtime record +0x28) as a 32-bit
-# number, but every reader of the member table (container +0x68: rows of 0x54 bytes, +0x70: the row count) goes
-# through the engine's 16-bit row handle: `test r16, r16; js none; movsx; cmp [+0x70]; jge none; movsx; imul 0x54`.
-# The row is read SIGNED, so a team whose members start past row 32767 has no players for that reader (menus: empty
-# pitch, «Nv. 0»; matches built through these readers: an empty roster). Each patch below makes one reader read the
-# row UNSIGNED: `movsx` -> `movzx` (same length) and the sign branch after a 16-bit test -> a nop of the same length (a
-# `jns row` -> `jmp row`). The row count check (`jge none`) stays, so the readers reach 65 535 rows; 0xFFFF (the
-# handle's «none») stays out of reach while the table has fewer rows (the team build warns past 65 535).
-# The sites: every `imul …, 0x54` of the v7.1.2 code (D:\re export) whose base is the member table, plus the sign
-# tests of those rows in the same functions. `expect` = the game's bytes, `bytes` = the same length; the patterns are
-# unique in the clean .text. A site whose signature is not found or whose bytes differ keeps the game's code (logged
-# off, the rest still apply); the team build's front ordering of the menus' teams (scripts/build/team/lists.lua
-# X.front_preview_members) stays as the fallback. The log lists each written patch:
-# `vr_framework: patch MemberRows.<site> at RVA 0x… : <old> -> <new>`.
-# Not patched: the metamorphose member list (+0x30 slice, container +0x88: 0xE1F1B0, 0x15BEA20), a few rows.
+# Makes team-member readers treat the 16-bit member row as unsigned (movsx -> movzx, sign branch -> nop/jmp), so teams whose members start past row 32767 keep their players.
+# `expect` = the game's bytes, `bytes` = same-length replacement. A site not found or with differing bytes keeps the game's code; the log lists each applied patch.
 
-# Lua 0x020C3A31 handler (team member i, field n): the row of member i (0xC2E610): js after `test cx, cx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Team member field handler: row of member i.
 [[VRFW.Patch]]
 name = "MemberRows.MenuMemberField"
 edit = "Squad.MemberRow.LuaMemberFieldUnsigned"
 
-# team info Lua handler, field 5: the captain search over the member slice (0xC2EFD0): js after `add cx, dx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Team info captain search over the member slice.
 [[VRFW.Patch]]
 name = "MemberRows.MenuTeamCaptain"
 edit = "Squad.MemberRow.LuaTeamCaptainUnsigned"
 
-# team member Lua handler 0xC30410: the row of member i (0xC30410): js after `test bx, bx` -> nop; movsx eax, bx -> movzx; movsx rax, bx -> movzx
+# Team member handler: row of member i.
 [[VRFW.Patch]]
 name = "MemberRows.MenuMemberC30410"
 edit = "Squad.MemberRow.LuaTeamMemberUnsigned"
 
-# member level (team level + row offset) 0xE1F440, by row (0xE1F440): js after `test r8w, r8w` -> nop; movsx eax, r8w -> movzx; movsx rax, r8w -> movzx
+# Member level, by row.
 [[VRFW.Patch]]
 name = "MemberRows.MemberLevel"
 edit = "Squad.MemberRow.MemberLevelUnsigned"
 
-# member rarity / step 0xE1F530, by row (0xE1F530): movsx r10, r8w -> movzx; js after `test r10w, r10w` -> nop
+# Member rarity / step, by row.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRarity"
 edit = "Squad.MemberRow.MemberRarityUnsigned"
 
-# member slice lookup 0xE45B40 (0xE45B40): js after `test dx, dx` -> nop; movsx eax, dx -> movzx; movsx rax, dx -> movzx
+# Member slice lookup.
 [[VRFW.Patch]]
 name = "MemberRows.TeamMemberRowE45B40"
 edit = "Squad.MemberRow.SliceLookupUnsigned"
 
-# setup-team roster builder 0xE9AC40 (VS / Chronicle line-up): each member row (0xE9AC40): movsx rax, r13w -> movzx
+# Setup-team roster builder (VS / Chronicle line-up): member rows.
 [[VRFW.Patch]]
 name = "MemberRows.BuildRoster.Rows"
 edit = "Squad.MemberRow.SetupRosterUnsigned"
 
-# setup-team roster builder 0xE9AC40: the member's level offset row (0xE9AC40): js after `test r13w, r13w` -> nop; movsx rax, r13w -> movzx
+# Setup-team roster builder: member level offset row.
 [[VRFW.Patch]]
 name = "MemberRows.BuildRoster.Level"
 edit = "Squad.MemberRow.SetupRosterLevelUnsigned"
 
-# team roster builder 0xE9C190: each member row (0xE9C190): js after `test r12w, r12w` -> nop; movsx eax, r12w -> movzx; movsx rax, r12w -> movzx
+# Team roster builder: member rows.
 [[VRFW.Patch]]
 name = "MemberRows.TeamRoster.Rows"
 edit = "Squad.MemberRow.TeamRosterUnsigned"
 
-# team roster builder 0xE9C190 (filler team): each member row (0xE9C190): movsx rdx, r13w -> movzx
+# Team roster builder (filler team): member rows.
 [[VRFW.Patch]]
 name = "MemberRows.TeamRoster.FillerRows"
 edit = "Squad.MemberRow.FillerRosterUnsigned"
 
-# team roster builder 0xE9C190: `test r13w; jns row` (a negative row = no row) -> always the row (0xE9C190): jns after `test r13w, r13w` -> jmp
+# Team roster builder: sign test of the filler row (negative row = no row) always taken as a row.
 [[VRFW.Patch]]
 name = "MemberRows.TeamRoster.FillerSign"
 edit = "Squad.MemberRow.FillerRosterSignUnsigned"
 
-# team roster builder 0xE9C190: the row of that branch (0xE9C190): movsx rax, r13w -> movzx
+# Team roster builder: row of that branch.
 [[VRFW.Patch]]
 name = "MemberRows.TeamRoster.FillerRow"
 edit = "Squad.MemberRow.FillerRosterBranchUnsigned"
 
-# party / team roster copy 0xEA69E0: the first member row (0xEA69E0): movsx rax, ax -> movzx
+# Party / team roster copy: first member row.
 [[VRFW.Patch]]
 name = "MemberRows.PartyRows.First"
 edit = "Squad.MemberRow.PartyCopyFirstUnsigned"
 
-# party / team roster copy 0xEA69E0: each member row (0xEA69E0): movsx rbx, ax -> movzx
+# Party / team roster copy: each member row.
 [[VRFW.Patch]]
 name = "MemberRows.PartyRows.Row"
 edit = "Squad.MemberRow.PartyCopyUnsigned"
 
-# party / team roster copy 0xEA69E0: `cmp word [row], 0; jl none` (0xEA69E0): jl after `cmp word ptr [rbp - 0x70], 0` -> nop
+# Party / team roster copy: sign test of the row.
 [[VRFW.Patch]]
 name = "MemberRows.PartyRows.Sign"
 edit = "Squad.MemberRow.PartyCopySignUnsigned"
 
-# member slice walk 0xF04910 (0xF04910): js after `test r14w, r14w` -> nop; movsx eax, r14w -> movzx; movsx rax, r14w -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRowF04910"
 edit = "Squad.MemberRow.EventSliceWalkUnsigned"
 
-# event actor setup 0xF1A8E0: a team's member rows (0xF1A8E0): js after `test cx, cx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Event actor setup: team member rows.
 [[VRFW.Patch]]
 name = "MemberRows.EventActorRows"
 edit = "Squad.MemberRow.EventActorsUnsigned"
 
-# member slice walk 0xF3A390 (0xF3A390): js after `test si, si` -> nop; movsx eax, si -> movzx; movsx rax, si -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRowF3A390"
 edit = "Squad.MemberRow.EventSliceReadUnsigned"
 
-# member slice walk 0x1064920 (0x1064920): js after `test bx, bx` -> nop; movsx eax, bx -> movzx; movsx rax, bx -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow1064920"
 edit = "Squad.MemberRow.MenuWalkFirstUnsigned"
 
-# member slice walk 0x1064AD0 (0x1064AD0): js after `test di, di` -> nop; movsx eax, di -> movzx; movsx rax, di -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow1064AD0"
 edit = "Squad.MemberRow.MenuWalkSecondUnsigned"
 
-# member slice walk 0x1064C70 (0x1064C70): js after `test di, di` -> nop; movsx eax, di -> movzx; movsx rax, di -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow1064C70"
 edit = "Squad.MemberRow.MenuWalkThirdUnsigned"
 
-# member slice walk 0x1064E10 (0x1064E10): js after `test bx, bx` -> nop; movsx eax, bx -> movzx; movsx rax, bx -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow1064E10"
 edit = "Squad.MemberRow.MenuWalkFourthUnsigned"
 
-# member slice walk 0x15C7850 (first) (0x15C7850): js after `test cx, cx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Member slice walk (first site).
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15C7850.A"
 edit = "Squad.MemberRow.MatchUnitsTestFirstUnsigned"
 
-# member slice walk 0x15C7850 (second) (0x15C7850): js after `test r14w, r14w` -> nop; movsx eax, r14w -> movzx; movsx rax, r14w -> movzx
+# Member slice walk (second site).
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15C7850.B"
 edit = "Squad.MemberRow.MatchUnitsTestSecondUnsigned"
 
-# member slice walk 0x15C89F0 (0x15C89F0): js after `test r14w, r14w` -> nop; movsx eax, r14w -> movzx; movsx rax, r14w -> movzx
+# Member slice walk.
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15C89F0"
 edit = "Squad.MemberRow.MatchUnitsSetupUnsigned"
 
-# member slice walk 0x15CB8F0 (first) (0x15CB8F0): js after `test cx, cx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Member slice walk (first site).
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15CB8F0.A"
 edit = "Squad.MemberRow.MatchUnitsLookupFirstUnsigned"
 
-# member slice walk 0x15CB8F0 (second) (0x15CB8F0): js after `test cx, cx` -> nop; movsx eax, cx -> movzx; movsx rax, cx -> movzx
+# Member slice walk (second site).
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15CB8F0.B"
 edit = "Squad.MemberRow.MatchUnitsLookupSecondUnsigned"

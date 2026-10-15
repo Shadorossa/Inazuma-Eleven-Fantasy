@@ -1,5 +1,4 @@
--- menu_engine: extra series tabs of the character bank's tab bar (VR-Framework 2.0.3 base feature;
--- docs/framework/card-filter.md §9). Definitions only (this file runs in every script VM, lua\_all): the bank screens'
+-- menu_engine: extra series tabs of the character bank's tab bar (VR-Framework base feature). Definitions only (this file runs in every script VM, lua\_all): the bank screens'
 -- handler files (lua\<stem>\110_bank_tabs.lua) call VRFW_BankTabs.Attach(stem). Nothing here names a series or a mod:
 -- the tabs come from the mods' [[bank_tab]] (type card_filter: CMND_VRFW_CARD_FILTER_TABS / _TAB(i) / _TAB_BAR(total)).
 --
@@ -7,17 +6,16 @@
 --   {tabType = 0, seriesId = <series>, seriesType = 0, tabIconType = <marker>, evtTeam = <team>, vrfwTab = <key>},
 --   added once per VM at the host's first callback (@edit on the retail local `t`). The game's list filter knows
 --   series types 1-9 only, so the tab sends series type 0 («TODO») plus a belong-team filter (listItemType 2, the
---   team, in all 9 series): the characters of that team, whatever their series (the way Inazuma Fantasy's series tabs
---   worked in game, research/scripts/series_build.py; the field name `evtTeam` is theirs, so IF's merged bank code
---   treats these entries as its own).
+--   team, in all 9 series): the characters of that team, whatever their series (the way a mod's series tabs work;
+--   the field name `evtTeam` is theirs, so that mod's merged bank code treats these entries as its own).
 -- * Around SetCharaBankListFilter: the team filter while such a tab is the current one; after OnListTabChanged: the
 --   tab's name (the series' own name text) instead of the retail «TODO» text; around OnOpenLayer: a tab instance past
 --   the table is hidden (the screens get 13 instances: menus\bank_tabs.toml).
 -- * LISTVIEW.SetupTabIcon: a marker icon type draws the tab's two sprites; LISTVIEW.UpdateAttachTabNum(n) on the bar
 --   enables the attach rows of the layout declared for n tabs ([[bank_tab_bar]]; 12 = the framework's own).
--- A mod whose merged bank code keeps its own copy of the tab table (Inazuma Fantasy's fichajes patch) gets the tabs
+-- A mod whose merged bank code keeps its own copy of the tab table (a signings patch) gets the tabs
 -- too: @edit finds every tab-shaped table among the upvalues of the script's functions (BT.Find, EVT_DEBUG) and the
--- live one drives the bar (2026-10-13: only the retail `t` got them, the merged code drew 11 tabs and its 12th tab
+-- live one drives the bar (only the retail `t` got them, the merged code drew 11 tabs and its 12th tab
 -- instance, never configured by OnOpenLayer (t[12] = nil there), stayed unattached: a white square at the top-left).
 -- Never skip OnSetupLayer of a tab instance: the screen counts them there and opens the bar only once all
 -- are set up (OpenListTab). Such a mod may still call VRFW_BankTabs.Apply(its_t, stem) itself before OnInit. Without the framework DLL every command fails: the retail tabs.

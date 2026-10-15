@@ -183,7 +183,7 @@ end
 --              so a redraw / scroll / camera move under a resting pointer never re-selects (retail behaviour)
 -- P.KeyStep(): the menu moved its selection itself (its own key callbacks, a polled stick / D-pad the arrows above do
 -- not see): pointer mode off and the resting position taken as the baseline, so the pad owns the selection until the
--- pointer really moves again or clicks (2026-10-13, contact map: a resting mouse pinned the selection under it).
+-- pointer really moves again or clicks (a resting mouse would otherwise pin the selection under it).
 -- Hover = move the selection to ev.hot with the keyboard highlight; ev.click = select it and decide. The menu's own
 -- Accept callbacks (OnEnter / OnDecideFocus / a polled CMD_ENTER) return early while P.Owns(): in pointer mode the
 -- click belongs to the pointer, so an item not under it is never activated. Zones are only declared for pickable,
@@ -346,7 +346,7 @@ end
 -- kit = function(pid) -> uniform, flags: the kit of that player (uniform 0 = `uniform`; flags 2 = the keeper shirt),
 -- asked once per build (the contact map: his own team's kit, CMND_VRFW_CONTACT_KIT),
 -- bodies = {[body type] = true} the body types the pose has (menu_chara_model_pose_config; the framework's
--- CMND_VRFW_MODEL_POSE_BODIES). CRASH GUARD (2026-10-12, contact map, nie.exe+0x1114F94 read of 0x4C): the pose command
+-- CMND_VRFW_MODEL_POSE_BODIES). CRASH GUARD (nie.exe+0x1114F94 reads 0x4C): the pose command
 -- (2450020144) looks the pose up for the chara's body type (CMND_GET_CHARA_INFO(chara, 3)) and dereferences the result
 -- unchecked: a body type the pose does not list kills the game. Such a player gets no model (log «skip body»); with no
 -- `bodies` the pose command is never sent.

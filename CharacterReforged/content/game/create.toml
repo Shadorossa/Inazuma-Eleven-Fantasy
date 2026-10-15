@@ -14,7 +14,8 @@ handler = "CharacterReforged.Create.Begin"
 name = "CMND_CHARACTERREFORGED_CREATE_ITEMS"
 handler = "CharacterReforged.Create.Items"
 
-# (item) -> row (0 = not a create item), the system's store command id (the «Fantasy» skill table's pick)
+# (item) -> row (0 = not a create item), the system's store command id, plays the creation scene (the «Fantasy» skill
+# table's pick)
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_CREATE_ROW"
 handler = "CharacterReforged.Create.Row"
@@ -23,6 +24,13 @@ handler = "CharacterReforged.Create.Row"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_CREATE_PICKED"
 handler = "CharacterReforged.Create.Picked"
+
+# (row) -> n, confirmId, confirmText, confirmIcon, previewCommand: the partner moves the bank asks for (the pairing rule
+# `moves`; 0 = none), the text of its confirmation window, the sprite between its two cards and the stat preview command (bank_create_moves_hooks.lua of graft
+# character_reforged_board; the cards: pair_confirm_window_hooks.lua)
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_CREATE_MOVES"
+handler = "CharacterReforged.Create.Moves"
 
 # (row, k) -> the system's carrier item id (k = the store's carrier index)
 [[VRFW.Command]]

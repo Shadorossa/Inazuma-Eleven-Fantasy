@@ -371,6 +371,14 @@ do
       if FV.hdl ~= 0 or FV.shown ~= 0 then
         pcall(funcLuaCommand, FV.CLEAR)
       end
+      -- 2026-10-14 (owner: a form look belongs only to the view that chose it): the model last built in a form
+      -- (shown now, or left built when the view closed) is ended first, so the retail build is Normal again
+      if a1 ~= nil and a1 ~= 0 and (FV.shown ~= 0 or FV.leftFormModel) then
+        pcall(EndViewChara3DModel)
+        SetLocal("n3", 0)
+        Log("form reset", a1, "outside the view")
+      end
+      FV.leftFormModel = false
       FV.reset()
       FV.shown = 0
       return nxt(a1, a2, a3)
@@ -381,7 +389,8 @@ do
     FV.dirty = true
     local f = FV.current()
     local m = FV.modelOf(a1, f)   -- arms (or clears) the framework's pick for this player
-    if FV.shown ~= 0 or f ~= 0 then
+    if FV.shown ~= 0 or f ~= 0 or FV.leftFormModel then
+      FV.leftFormModel = false
       FV.dropEntryModel()
       EndViewChara3DModel()
       SetLocal("n3", 0)
@@ -476,6 +485,9 @@ do
       FV.dropEntryModel()
       if FV.hdl ~= 0 or FV.shown ~= 0 then
         pcall(funcLuaCommand, FV.CLEAR)
+        -- leaving the view: the form look stays only there; a model still built in a form is ended before the next
+        -- build (Normal: next visit, or the dock outside the view)
+        FV.leftFormModel = FV.leftFormModel or FV.shown ~= 0
         FV.reset()
         FV.shown = 0
         FV.labelled = false

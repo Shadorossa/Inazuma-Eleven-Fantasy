@@ -1,4 +1,4 @@
--- match_challenge (VR-Framework service; docs/framework/match-challenge.md): the Chronicle board's command menu
+-- match_challenge (VR-Framework service): the Chronicle board's command menu
 -- (vs_route_town_command_select_menu, a VRFW_Host host of the framework's route_board graft) checks the piece's match
 -- challenge before a difficulty row starts the match.
 -- around OnEnter of the row list (vsroute01_16_sub_list): after the retail checks (locked difficulty, team not valid),
@@ -6,11 +6,11 @@
 -- the challenge's `Games`) is refused when the active dock does not meet it: error sound + the message with the
 -- conditions; returning 1 keeps the menu open (the retail refusal), so the player can open «Equipo» and try again.
 -- The piece's game is VRFW_RBC.L.n4, the rows VRFW_RBC.L.t3 (route_board's rbc_common.lua). A chain «C» piece opens the
--- chain board instead: its tiles are checked there. A challenge with `Difficulties` (VRFW 2.4.31) is checked only on
+-- chain board instead: its tiles are checked there. A challenge with `Difficulties` is checked only on
 -- those rows (e.g. a Heroica-only challenge leaves the Crónica, played with its fixed line-up, alone).
--- The match info (VRFW 2.4.31): while a row whose challenge applies is focused, the button guide at the bottom of the
+-- The match info: while a row whose challenge applies is focused, the button guide at the bottom of the
 -- menu shows the challenge's title (its menu_text row) as one more entry (VRFW_RBC_Guide), so the rule is read before
--- the match is chosen. Required starters (`[[VRFW.MatchChallenge.Required]]`, VRFW 2.4.35): the row's clear bit
+-- the match is chosen. Required starters (`[[VRFW.MatchChallenge.Required]]`): the row's clear bit
 -- (CMND_GET_CHRONICLE_CLEAR_STATUS of the piece's save slot VRFW_RBC.L.n2) tells whether the row was won before (a
 -- `UntilFirstClear` one then no longer applies); while one applies, its own text is one more guide entry.
 -- No engine call at load time.

@@ -1,14 +1,6 @@
--- VR-Framework › character stats providers (service S10 of VRFW 2.3, docs/framework/card-look.md §6). Native side:
--- content\game\chara_stats.toml (a state key and a command; nothing is written to the game).
---
--- The three game entries that decide a character's numbers (Chara.GetParamStatus, Chara.GetSpecialtyType,
--- Technique.MatchSkillInstall) are one detour each with ordered subscribers: the framework's item transformations
--- (native, when declared) and every mod's `[[VRFW.Hook]]` on the entry's profile name, chained by the loader in install
--- order (the link installed last runs first). This script reports the order at boot, warns when a provider still names
--- the entry with an inline signature (until VRFW 2.3 P4), and answers who provides what:
---
---   * game_state vrfw.chara_stats.providers = the detour owners of Chara.GetParamStatus among the active mods
---   * CMND_VRFW_CHARA_STATS_PROVIDERS(entry) -> n, "<mod>.<hook>" … in run order
+-- Character stats providers: reports the detour chain of the entries that decide a character's numbers (Chara.GetParamStatus, Chara.GetSpecialtyType,
+-- Technique.MatchSkillInstall; item transformations, then each mod's [[VRFW.Hook]], last installed runs first) and answers who provides what (native side: content\game\chara_stats.toml).
+-- Exposes game_state vrfw.chara_stats.providers (detour owners of Chara.GetParamStatus) and CMND_VRFW_CHARA_STATS_PROVIDERS(entry) -> n, "<mod>.<hook>"... in run order.
 
 CharaStats = CharaStats or {}
 

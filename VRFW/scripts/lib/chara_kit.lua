@@ -1,22 +1,11 @@
--- VR-Framework › a card's own team kit (docs/framework/contact-map.md §18). A menu that builds a card's 3D model with
--- uniform 0 shows the generic kit (Raimon): this library gives the uniform of HIS team instead, derived from the data
--- the game loads (the mods overlay's served tables, so a mod's characters, teams and kits count the same way). Nothing
--- here names a character, a team or a kit.
---
---   Kit.of(card) -> uniform, flags, source        card = chara_param id; uniform 0 = none found (keep the default);
---                                                 flags = 2 for a goalkeeper card (the keeper shirt of that kit);
---                                                 source = "belong" | "roster" | "none" (for the log)
---
--- The chain, first hit wins (every candidate must be a uniform_config id, or a kit item whose model column names one):
---   1. belong: chara_base (chara_param col 1) team_1 / team_2 / team_3 -> belong_team_config teamKit_<era>; the era is
---      the one of the character's series (chara_base series -> chara_series type k; the k-th teamNumber_<x> column of
---      belong_team_config names the era <x>: ie1 -> ie, go2 -> go, ares / orion -> areori, v -> v), then the team's
---      other eras in column order (a team with no kit in his era);
---   2. roster: the first team of team_config (table order: the game's, then the mods' built teams) whose members list
---      the card, its `uniform` (read only on the first card the belong chain cannot dress);
---   3. none: 0, the caller's default.
--- Every table is read once per session (only the needed columns, VRFW.table.raw) by M.prepare() or the first call;
--- answers are cached per card.
+-- Derives the uniform of a card's own team from game data (mod overlays included); names no character, team or kit.
+-- Kit.of(card) -> uniform, flags, source   (card = chara_param id; uniform 0 = none found; flags = 2 for a goalkeeper;
+--   source = "belong" | "roster" | "none")
+-- Lookup chain, first hit wins:
+--   1. belong: the character's teams in belong_team_config, kit column of the series era, then the team's other eras;
+--   2. roster: the first team_config team listing the card, its `uniform`;
+--   3. none: 0 (caller keeps its default).
+-- Tables are read once per session (M.prepare() or the first call); answers are cached per card.
 
 local M = {}
 
@@ -34,14 +23,14 @@ local function col(row, ...)
   return nil
 end
 
--- the served file of a table id (the mods overlay's, else the game's) for VRFW.table.raw
+-- Served file of a table id (mod overlay first, else the game's).
 local function key_of(id, glob)
   local ok, k = pcall(VRFW.table.source, id)
   if ok and type(k) == "string" and k ~= "" then return k end
   return glob
 end
 
--- 1-based position of column `name` of table `id` (schema names; nil = not there)
+-- 1-based position of column `name` in table `id`; nil = absent.
 local function pos_of(id, ...)
   local ok, cols = pcall(VRFW.table.columns, id)
   if not ok or type(cols) ~= "table" then return nil end
@@ -53,7 +42,7 @@ local function pos_of(id, ...)
   return nil
 end
 
-local D = nil          -- the tables, read once
+local D = nil          -- tables, read once
 local CACHE = {}       -- card -> { uniform, flags, source }
 
 local function read_all()
@@ -61,7 +50,7 @@ local function read_all()
   local t0 = VRFW.now()
   D = { uniform = {}, item_uniform = {}, kits = {}, type_era = {}, eras = 0, chara = {}, card = {},
         roster = nil, n_uniform = 0 }
-  -- the uniforms (uniform_config m_UniformInfoList nameId)
+  -- uniforms (uniform_config)
   pcall(function()
     local rows = VRFW.table.raw(key_of("character/uniform", "data/common/gamedata/character/uniform_config_*.cfg.bin"),
       "m_UniformInfoList", { 1 })
@@ -73,7 +62,7 @@ local function read_all()
       end
     end
   end)
-  -- kit items: item id -> its model's uniform (ITEM_FASHION_INFO `uniform`); a team / belong kit may name the item
+  -- kit items: item id -> model uniform
   pcall(function()
     local p = pos_of("item/item_fashion", "uniform")
     if p == nil then return end
@@ -84,7 +73,7 @@ local function read_all()
       if id ~= 0 and u ~= 0 and D.item_uniform[id] == nil then D.item_uniform[id] = u end
     end
   end)
-  -- belong_team_config: the era kit columns, series type k -> era (the k-th teamNumber_<x> column), team -> kits
+  -- belong_team_config: series type -> era (k-th teamNumber_<x> column), team -> kits
   pcall(function()
     local nums, eras = {}, {}
     for i, n in ipairs(VRFW.table.columns("character/belong_team")) do
@@ -111,8 +100,7 @@ local function read_all()
       end
     end
   end)
-  -- the characters' series type and teams, the cards' character and main position: the framework's ONE character
-  -- index (VRFW.chara, read once natively for every script; 2.3, docs/framework/chara-index.md), asked per id
+  -- character index (VRFW.chara): series type, teams, main position, asked per id
   D.chara = setmetatable({}, { __index = function(t, base)
     local ok, c = pcall(VRFW.chara.character, base)
     if not ok or type(c) ~= "table" then return nil end
@@ -133,7 +121,7 @@ local function read_all()
   return D
 end
 
--- a kit value -> a uniform_config id (itself, or the model of a kit item); nil = none
+-- A kit value -> a uniform_config id (itself or the model of a kit item); nil = none.
 local function resolve(v)
   v = u32(v)
   if v == 0 then return nil end
@@ -161,7 +149,7 @@ local function belong_kit(base)
   return nil
 end
 
--- card -> uniform of the first team_config team listing him (built on the first card that needs it)
+-- card -> uniform of the first team_config team listing it (built on first use)
 local function roster_kit(card)
   if D.roster == nil then
     D.roster = {}
@@ -192,7 +180,7 @@ local function roster_kit(card)
   return D.roster[card]
 end
 
--- read the tables now (a script's load: off the game thread); the team rosters stay for the first card that needs them
+-- Reads the tables now (script load, off the game thread); team rosters wait for first use.
 function M.prepare()
   read_all()
 end
@@ -207,7 +195,7 @@ function M.of(card)
   if p ~= nil then
     u = belong_kit(p[1])
     if u then src = "belong" end
-    if p[2] == 1 then flags = 2 end        -- main position 1 = GK (chara_position): the kit's keeper shirt
+    if p[2] == 1 then flags = 2 end        -- main position 1 = goalkeeper
   end
   if u == nil and card ~= 0 then
     u = roster_kit(card)

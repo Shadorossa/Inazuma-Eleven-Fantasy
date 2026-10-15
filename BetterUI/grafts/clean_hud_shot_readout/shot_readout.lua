@@ -1,0 +1,26 @@
+-- ===== BetterUI shot readout switch BEGIN =====
+-- BetterUI › the game's own shot readout («TOTAL AT» of the shot vs the keeper's «PP», opened by the engine through
+-- OpenAtKpPowerInfoTelop) can be hidden: Mods options «AT / PP counter» (clean_hud.shot_readout, read at each shot: no
+-- restart). Off = the call is not passed on, so the plates never open (the zone menu's shooter power stays as it is).
+-- Wrapper only; nothing runs at chunk load.
+local SHOT_READOUT_OPTION_GET = 4082322029         -- CMND_VRFW_OPTION_GET
+local SHOT_READOUT_OPTION_KEY = "clean_hud.shot_readout"
+
+local function BetterUIShotReadout_Enabled()
+  if type(funcLuaCommand) ~= "function" then
+    return true
+  end
+  local ok, v = pcall(funcLuaCommand, SHOT_READOUT_OPTION_GET, SHOT_READOUT_OPTION_KEY)
+  return not ok or (v ~= 0 and v ~= false)
+end
+
+local BetterUIShotReadout_previousOpen = OpenAtKpPowerInfoTelop
+function OpenAtKpPowerInfoTelop(...)
+  if not BetterUIShotReadout_Enabled() then
+    return
+  end
+  if type(BetterUIShotReadout_previousOpen) == "function" then
+    return BetterUIShotReadout_previousOpen(...)
+  end
+end
+-- ===== BetterUI shot readout switch END =====

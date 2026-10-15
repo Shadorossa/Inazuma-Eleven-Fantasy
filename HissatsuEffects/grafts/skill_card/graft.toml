@@ -12,7 +12,7 @@ order = 220
 module = ""
 requires = []
 conflicts = []
-wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction"]
+wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction", "OnChangeFocus", "OnAfterReceiveFilterParam"]
 description = "Move card: Q / E (LT / RT) show the move's ball / shot / keeper mini-effects, with page dots"
 
 [[files]]

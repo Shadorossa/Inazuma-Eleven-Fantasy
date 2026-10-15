@@ -1,0 +1,96 @@
+schema = "VRFW.changelog/1"
+# Goalkeeper Barrier: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-15): Football Reforged's internal module goalkeeper_barrier as a module mod.
+lang = "es"
+name = "Goalkeeper Barrier"
+
+[en]
+name = "Goalkeeper Barrier"
+
+[fr]
+name = "Goalkeeper Barrier"
+
+[de]
+name = "Goalkeeper Barrier"
+
+[it]
+name = "Goalkeeper Barrier"
+
+[pt]
+name = "Goalkeeper Barrier"
+
+[ja]
+name = "Goalkeeper Barrier"
+
+[zh_hans]
+name = "Goalkeeper Barrier"
+
+[zh_hant]
+name = "Goalkeeper Barrier"
+
+[[release]]
+icon = "general"
+notes = [
+    "Barrera del portero: tiros ÷ 1,75 mientras dura.",
+    "La barrera es el 25 % naranja de su barra de cansancio.",
+    "Baja con el cansancio; un bloqueo abarata su técnica.",
+]
+
+[release.en]
+notes = [
+    "Goalkeeper barrier: shots ÷ 1.75 while it lasts.",
+    "The barrier is the orange 25 % of his fatigue bar.",
+    "It falls as he tires; a block makes his move cheaper.",
+]
+
+[release.fr]
+notes = [
+    "Barrière du gardien : tirs ÷ 1,75 tant qu'elle tient.",
+    "La barrière : 25 % orange de sa barre de fatigue.",
+    "Elle baisse avec la fatigue ; un blocage aide le gardien.",
+]
+
+[release.de]
+notes = [
+    "Torwart-Barriere: Schüsse ÷ 1,75, solange sie hält.",
+    "Die Barriere: orange 25 % seines Ermüdungsbalkens.",
+    "Sie sinkt mit Ermüdung; ein Block verbilligt seine Technik.",
+]
+
+[release.it]
+notes = [
+    "Barriera del portiere: tiri ÷ 1,75 finché dura.",
+    "La barriera: il 25 % arancione della barra di fatica.",
+    "Cala con la fatica; un blocco aiuta il portiere.",
+]
+
+[release.pt]
+notes = [
+    "Barreira do guarda-redes: remates ÷ 1,75 enquanto dura.",
+    "A barreira: os 25 % laranja da barra de cansaço.",
+    "Desce com o cansaço; um bloqueio ajuda o guarda-redes.",
+]
+
+[release.ja]
+notes = [
+    "キーパーバリア：残る間シュート威力÷1.75。",
+    "バリアは疲労ゲージのオレンジの25％。",
+    "疲労で減り、ブロック技で次のキーパー技が安くなる。",
+]
+
+[release.zh_hans]
+notes = [
+    "门将屏障：屏障存在时射门威力÷1.75。",
+    "屏障是疲劳条中橙色的25％。",
+    "随疲劳下降；拦截技让门将下一招更便宜。",
+]
+
+[release.zh_hant]
+notes = [
+    "門將屏障：屏障存在時射門威力÷1.75。",
+    "屏障是疲勞條中橙色的25％。",
+    "隨疲勞下降；攔截技讓門將下一招更便宜。",
+]

@@ -1,0 +1,35 @@
+-- All Miximaxed › the MIXIMAX creation scene, top menu part (graft all_miximaxed_scene): while the scene plays over
+-- the menus, the skill table calls EVT_MxSceneBars(true) in this menu (funcLuaCommand(830228314, menu,
+-- "EVT_MxSceneBars", true)) and EVT_MxSceneBars(false) when it ends. Only the header, rank, team plate, tournament icon
+-- and guide lines are hidden (in this menu's own context); the background stays. Only open layers are touched and only
+-- the ones hidden here are shown again. HOOK file (shipped as is); Inazuma Fantasy's own copy wins when it is in this
+-- menu. No engine call at chunk load.
+if rawget(_ENV, "EVT_MxSceneBars") == nil then
+  AllMiximaxed_SceneBars = {
+    LAYERS = {575058101 --[[mainmenu90_01_header]], 2750436121 --[[mainmenu90_03_header_rank]],
+      2279382105 --[[mainmenu90_31_doc_item]], 1699593684 --[[vroad01_51_tournament_team_icon]],
+      3078308064 --[[mainmenu90_05_content_guide_line01]], 1611500684 --[[mainmenu90_06_content_guide_line03]]},
+    hidden = {},
+  }
+
+  function EVT_MxSceneBars(hide)
+    local Bars = AllMiximaxed_SceneBars
+    if hide then
+      Bars.hidden = {}
+      for _, layer in ipairs(Bars.LAYERS) do
+        local okExists, exists = pcall(funcLuaMenuCommand, 262659071 --[[CMND_IS_EXIST_LAYER]], layer)
+        local okOpen, open = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], layer)
+        if okExists and exists == true and okOpen and open == true then
+          pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, 0, false)
+          Bars.hidden[#Bars.hidden + 1] = layer
+        end
+      end
+    else
+      for i = #Bars.hidden, 1, -1 do
+        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], Bars.hidden[i], 0, true)
+      end
+      Bars.hidden = {}
+    end
+    return #Bars.hidden
+  end
+end

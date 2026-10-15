@@ -1,20 +1,15 @@
 schema = "VRFW.rule_catalog/1"
-# The match modes (M7, docs/framework/rule-catalog.md §3): which mode key a match gets from the engine's own fields,
-# the keys of `[modes]` in a mod's rules\bindings.toml (docs/game/modes/match-engine.md §12). Built into the
-# framework (match_engine::assign, like content\defaults\game_rarities.toml).
-#
-# `type` = the match info's type byte (mi+0x16: 1 full, 2 small / short, 3 training, 4 dribble); `play_mode` = the
-# game's play mode byte ([[g_gameRoot]+0x69C8]+0x2CAC6F: 1 VS / friendlies, 2 and 6 story, 3 Kizuna town,
-# 4 Chronicle, 5 Victory Road). The key list is: default, default + small_suffix, then each [[match_mode]] in file
-# order with its small variant, then training.
+# Maps a match's engine fields to the mode key used by `[modes]` in a mod's rules/bindings.toml.
+# `type` = match info type (1 full, 2 small, 3 training, 4 dribble); `play_mode` = game play mode (1 VS / friendlies, 2 and 6 story, 3 Kizuna town, 4 Chronicle, 5 Victory Road).
+# Key list: default, default + small_suffix, each [[match_mode]] (and its small variant) in file order, then training.
 
 [match_modes]
-# a play mode not listed below (or unreadable): VS CPU, friendlies, free matches
+# Mode for a play mode not listed below (or unreadable): VS CPU, friendlies, free matches
 default = "free"
-# a match of one of these types gets `<key><small_suffix>` (5-a-side friendlies, small story matches …)
+# Match types that get `<key><small_suffix>` (small friendlies and story matches)
 small_types = [2]
 small_suffix = "_small"
-# matches of these types are training (whatever the play mode)
+# Match types treated as training whatever the play mode
 training = "training"
 training_types = [3, 4]
 

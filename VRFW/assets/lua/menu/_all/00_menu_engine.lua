@@ -1,7 +1,7 @@
 -- menu_engine: the VRFW_Menu helper, defined in every script VM (lua\_all runs after each retail chunk).
 -- It only defines a table: no engine call happens here (funcLuaCommand does not exist while a chunk loads).
 --
--- The entries the mods declare with [[entry]] / [[hide]] (menu\*.toml, docs/app/menu-engine.md §8), for the Lua of
+-- The entries the mods declare with [[entry]] / [[hide]] (menu\*.toml), for the Lua of
 -- a host (title row, modes hub, Options, dock, bank popup, Sala del club). Inside OnInit / Step / any callback:
 --   local list = VRFW_Menu.entries("title_menu_2.lower")   -- { {key, text, icon, kind, value, owner, value_id, menus}, ... }
 --   if VRFW_Menu.hidden("title_menu_2.lower", "play_guide") then ... end
@@ -50,5 +50,5 @@ if VRFW_Menu == nil then
     return false
   end
 end
--- 1.x name (docs/framework/naming.md): the same table under the old name, so mods written for 1.x keep working
+-- 1.x name: the same table under the old name, so mods written for 1.x keep working
 EvtMenu = VRFW_Menu

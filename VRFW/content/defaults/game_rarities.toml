@@ -1,10 +1,5 @@
-# The game's own rarities (v7.1.2; docs/game/characters/rarity-removal.md, card-types.md §1), in the format of a
-# mod's rarity file (`[[rarity]]`, docs/app/rarity-engine.md §2). The rarity engine reads this file as the base of the
-# effective set (provider `game`, key = `id`): mods remove, edit or add rarities over it.
-#
-# value = chara_param col 41; frame = the sprite group NN of the card frames (`_%02u` of value + 1, Diamante `_10`);
-# order = value × 10. The labels are the game's rarity names (not in a table the build reads).
-# Not a rarity file of this folder's mod: it sits at the root, outside `rarity\` / `rarities\`.
+# The game's own rarities, in the format of a mod's `[[rarity]]` file; mods remove, edit or add over them.
+# value = chara_param column 41; frame = card-frame sprite group; order = value x 10.
 
 [[rarity]]
 id = "normal"

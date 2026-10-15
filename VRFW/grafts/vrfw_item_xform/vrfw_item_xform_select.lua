@@ -1,5 +1,4 @@
--- ===== VRFW item_xform_select BEGIN ===== (docs/framework/types/item.md §13, docs/game/mechanics/item-transformations.md §9.8,
--- research/grafts/vrfw_item_xform)
+-- ===== VRFW item_xform_select BEGIN ===== (research/grafts/vrfw_item_xform)
 -- Equipment screen (equip_menu_select): when a transformation item ([[VRFW.ItemTransform]] of a mod) is equipped, removed or swapped for
 -- another one, the 3D preview and the chara card miniface are rebuilt AT ONCE with the new look. Retail rebuilds the
 -- model on the way back from the item list only when the shoes (or the story costume) changed

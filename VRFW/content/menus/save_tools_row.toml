@@ -1,0 +1,28 @@
+# VR-Framework › the Options row «Ajustar save» (docs/framework/save-tools.md §2): a THIRD small row of Opciones
+# (setting_top_menu), below «Licencias», on the PC list (locator option03_01_list_locator_key_config). The same three
+# edits as a custom Options row (docs/game/ui/options-menu.md §3.1), as data:
+#   * the small list (mainmenu90_12_list_item_small) holds 3 items (retail 2: «ID del usuario», «Licencias");
+#   * the locator mounts small item 2 on joint _list04 (trace name list04, which the retail OnOpenLayer switches on; the
+#     row after the retail item 1 mount);
+#   * _list04 (the console locator's 2nd small row, never traced on PC) moves to the next small-row slot: world y -729 =
+#     _list02_05 (-647) - 82 (the small-row step), local to _pos_list_atc01 (-241): -488. Same file size.
+# The rows themselves are Lua (lua\setting_top_menu\120_save_tools.lua: entry t2[40], placed after «Licencias» when a
+# mod has a save tool). Without the row the third item is hidden by the retail OnSetupLayer (n2 <= index: not shown).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "setting_top_menu"
+layer = "mainmenu90_12_list_item_small"
+count = 3
+
+[[object_set]]
+object = "option03_01_list_locator_key_config"
+add = [
+    # NullLayerName = [trace name list04, joint _list04, layer mainmenu90_12_list_item_small, item 2]
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8E567606, 0x77659185, 0x1FA09B6B, 2], after = { param = "NullLayerName", match = { 3 = 0x1FA09B6B, 4 = 1 } } },
+]
+
+[[layout]]
+file = "common/menu/108_option/option03/option03_01/option03_01.g4pkm"
+joint = "_list04"
+translate = [0.0, -488.0, 0.0]

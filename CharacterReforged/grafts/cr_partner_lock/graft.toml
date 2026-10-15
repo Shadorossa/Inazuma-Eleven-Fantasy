@@ -1,0 +1,22 @@
+# Character Reforged › partner locks in the player bank (docs/game/ui/partner-lock-bank.md; scripts\partner_lock.lua of
+# the mod): a card used as the partner of another card's pair (All Miximaxed's Mix-Max, All Changed's mode change, any
+# system a mod declares as [CharacterReforged.PartnerLock.<system>]) is greyed and disabled in the team dock's «Banco»
+# and wears the system's plate («Mix») in both banks. The lock itself is the mod's filter on the game's place
+# commands (content\game\partner_lock.toml); this file shows it. HOOK file (VRFW_Host handlers), no retail function
+# replaced; the plate layer is content\menus\partner_badge.toml.
+name = "cr_partner_lock"
+mod = "character_reforged"
+order = 345
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "Character Reforged: Mix-Max / mode change partners locked in the player bank, with the system's plate on their card"
+
+[[hooks]]
+stem = "chara_bank_menu"
+src = "partner_lock_bank_hooks.lua"
+
+[[hooks]]
+stem = "chara_bank_menu_for_search"
+src = "partner_lock_bank_hooks.lua"

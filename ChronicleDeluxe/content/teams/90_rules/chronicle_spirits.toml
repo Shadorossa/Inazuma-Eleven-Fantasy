@@ -1,0 +1,16 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (docs/game/mods/chronicle-deluxe.md §11, owner 2026-10-15): the Batalla de crónica (difficulty 1)
+# drops player spirits too, not only the Batalla heroica. Retail gives the Crónica rows the engine's empty default
+# tables (no spirit). The candidates are the engine's own: the players of the row's rival team (col 29 left as it is),
+# the same pool as the Heroica of that team. No list of matches or players here: the rows are derived at build time.
+# Rates: the retail tables of the hidden route-unlock battle (difficulty 2), whose role the Crónica took over in this
+# mod (§8): per drop roll of the common tab 0xBFF860D5 = spirit rarity 1 at 20.75 %, rarity 2 at 4.25 %; per roll of
+# the four group tabs 0x4AA6372E = rarity 1 at 4.15 %, rarity 2 at 0.85 %. The Heroica keeps its own (rarity 3 at
+# 20.5 %, rarity 4 at 4.25 %). Neither table has an Ídolo entry (rarities 5-7), so no_idol_spirits.toml still holds.
+# To tune: point SpiritDrop / SpiritDrop2 at another m_spiritDropTableList id (a retail one, or one this mod adds as
+# a base table of soccer_drop_config).
+[[VRFW.SpiritDrops]]
+Rows = "chronicle"
+Difficulties = [1]
+SpiritDrop = "0xBFF860D5"
+SpiritDrop2 = "0x4AA6372E"

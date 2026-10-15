@@ -1,34 +1,25 @@
 schema = "VRFW.option/2"
-# Rows of the audio_engine mod in Opciones › «Opciones de mods» (plugin mod_options, docs/app/mod-options.md).
-# Texts: this mod's text.toml (9 languages, English fallback).
+# Rows of the audio_engine mod in the Mods options (schema VRFW.option/2).
 
 [[option]]
 id = "voice_pack"
-# values = «Ninguno» + the installed voice packs (CMND_VRFW_SOUND_VOICE_* of the sound type; an older ModLoader's
-# CMND_EVT_VOICE_* when it keeps them): custom behaviour, so the row is
-# driven by lua/setting_menu/110_voice_pack.lua (VRFW_OPT_Register("audio_engine.voice_pack", ...))
+# Values: "None" plus the installed voice packs; custom row driven by lua/setting_menu/110_voice_pack.lua.
 type = "lua"
 label = "voice_pack"
 help = "voice_pack_help"
-# generic content gate (docs/app/mod-options.md §3.7): disabled at «Ninguno» unless an enabled mod declares a voice
-# pack (`voice_language = { code, name }` or `[content.languages] voices = [...]` in its mod.toml)
+# Disabled at "None" unless an enabled mod declares a voice pack in its mod.toml.
 enabled_if = "languages:voices"
-# «Voces personalizadas»: a child of «Ajustes de juego» (off there = the game's own voices, the pack kept)
+# Child of "Game settings"; when off, the game's own voices play.
 parent = "mod_options.game_settings"
-# names the Lua shows (value 0, loader off)
+# Names the Lua shows (value 0, loader off).
 texts = ["voice_pack_none", "voice_pack_off"]
-# the SETTING_INFO id of Inazuma Fantasy's old row: an old copy of it is adopted, never doubled
+# Setting id of an older equivalent row, adopted instead of duplicated.
 row_key = "evt_set_voice_lang"
-# first child of «Ajustes de juego»
+# First child of "Game settings".
 order = 101
 
-# «Música del menú» / "Menu music": which BGM the menus play (the main menu, the team dock, the market: the menu
-# slots of the framework's defaults\audio.toml flagged menu_music, bg10000 in v7.1.2). Native to the framework; the
-# framework owns this ONE row and the mechanism (hook menu_music: lua\_all\60_menu_music.lua asks
-# CMND_VRFW_SOUND_MENU_MUSIC before each menu BGM start and plays the theme's BGM id instead). Only «Original» is
-# declared here (0 = the game's own music, the default); the other values are published at boot by the sound type:
-# every [[VRFW.MenuMusic]] theme the enabled mods declare in their sounds\*.toml (value = the track's BGM id, ▶ plays
-# it). Shown only when some enabled mod declares a theme. docs/framework/menu-music.md
+# Menu music: BGM played by the menus (framework mechanism, hook menu_music). Only the retail value is declared here;
+# the other values are published at boot from the enabled mods' [[VRFW.MenuMusic]] themes. Hidden when none is declared.
 [[option]]
 id = "menu_music"
 type = "list"
@@ -40,6 +31,6 @@ values = [
 ]
 default = 0
 hide_if_unpublished = true
-# a child of «Estilo personalizado», after «Opening personalizado» (121)
+# Child of "Custom style", after the custom opening row.
 parent = "mod_options.custom_style"
 order = 122

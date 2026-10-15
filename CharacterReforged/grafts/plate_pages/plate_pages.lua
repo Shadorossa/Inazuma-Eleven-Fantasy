@@ -144,8 +144,8 @@ EVT_PPG = EVT_PPG or {}
   G.DOT_TRACE = {[0] = @crc:evt_pp_dots0@, @crc:evt_pp_dots1@, @crc:evt_pp_dots2@, @crc:evt_pp_dots3@,
     @crc:evt_pp_dots4@, @crc:evt_pp_dots5@}
   -- round 14 (Nacho): the Pasivas sub-page indicator right of the «Q • • • E» row, on its line: the R3 key glyph
-  -- (instance 5: the copy's _text_btn_r01 moved onto its dot position, text <CMD_FUNC6>) then 3 dots (instances
-  -- 2..4, the page dots' look: the current one lit); only on the Pasivas page. Screen x of each (dot-slot convention)
+  -- (instance 5: the copy's _text_btn_r01 moved onto its dot position, text <CMD_FUNC6>) then one dot per sub-page
+  -- (instances 2.., the page dots' look: the current one lit); only on the Pasivas page. Screen x of each (dot-slot convention)
   G.PSUB_DOT_X = {[2] = 1622, [3] = 1650, [4] = 1678}
   G.PSUB_KEY_X = 1584
   G.N_BTN_R = 59628764                   -- _text_btn_r01 (its parent is the dot meshes' parent _pos_offset01)
@@ -213,6 +213,22 @@ EVT_PPG = EVT_PPG or {}
   -- label group -> row (the layout's GROUP_ROW) and group -> stat (plate_hiper EVT_R9.STAT)
   G.GROUP_ROW = {0, 1, 3, 5, 6, 4, 2, 7}
   G.STAT = {0, 2, 5, 6, 4, 3, 1, 8}
+  -- 2026-10-15: the position tags of a stat idx's row (G.STAT_FILL of its group: "fw", "mf", "df", "gk"; Suerte's
+  -- "all" = the four), for other screens that name the positions a stat serves (the training view's header)
+  function G.StatTags(stat)
+    local tags = {}
+    for g = 1, 8 do
+      if G.STAT[g] == stat then
+        for tag in string.gmatch(G.STAT_FILL[g], "[^_]+") do
+          if tag == "all" then
+            return {"gk", "df", "mf", "fw"}
+          end
+          tags[#tags + 1] = tag
+        end
+      end
+    end
+    return tags
+  end
   local C = {EXIST = 262659071, OPEN = 629267548, IS_OPEN = 2640875187, LOADING = 3057768039, VIS = 711242136,
     IS_VIS = 1262717583, POS = 1389957207, SCALE = 3778714801, MESH = 3405944500, TRACE = 1774843228,
     RATE_INIT = 541357333, RATE = 1595998683, SPRITE = 558735651, TEXT_VIS = 1505208242, NODE_VIS = 2158717427,
@@ -445,9 +461,10 @@ EVT_PPG = EVT_PPG or {}
           Cmd(C.POS, G.DOTS, x - 1362 - 1358, 540 + 34, 0, k)
           Cmd(C.TEXT_VIS, G.DOTS, G.N_BTN_R, false, k)   -- round 14b: the glyph is G.Hint's text node now
         end
-        Cmd(C.MESH, G.DOTS, G.M_DOT_OFF1, k ~= 5, k)
-        Cmd(C.MESH, G.DOTS, G.M_DOT_ON1, k ~= 5 and (G.psub or 0) == k - 2, k)
-        Cmd(C.VIS, G.DOTS, k, k ~= 5)
+        local dot = k ~= 5 and k - 2 < G.PSUB_N
+        Cmd(C.MESH, G.DOTS, G.M_DOT_OFF1, dot, k)
+        Cmd(C.MESH, G.DOTS, G.M_DOT_ON1, dot and (G.psub or 0) == k - 2, k)
+        Cmd(C.VIS, G.DOTS, k, dot)
       end
     end
     for k = 0, 1 do
@@ -533,10 +550,20 @@ EVT_PPG = EVT_PPG or {}
   -- right of the badge. Retail positions back on every other page.
   -- round 10 (Nacho): ONE row of three groups (badge + its two plates stacked) inside the card; plates at 48 %
   -- (253 x 36: the names get small, the trade-off Nacho accepted to try)
-  G.GROUP_AT = {{995, 742}, {1305, 742}, {1615, 742}}
-  G.MOVE_K = 0.48
-  G.BADGE = {44, 58}
-  G.PLATE_DX, G.PLATE_PITCH = 52, 40
+  -- round 16 (Nacho, 2026-10-15: «los de 1 en una fila, los de 2 en la siguiente...»): THREE ROWS, one per slot pair:
+  --   [1] move A  move B
+  --   [2] move C  move D
+  --   [3] move E  move F
+  -- badge at the row's left, the pair's two plates side by side (PLATE_DX2 apart) at 68 % (358 x 51); IA tag and AT
+  -- number scale with the plate (same row scale)
+  G.GROUP_AT = {{995, 732}, {995, 789}, {995, 846}}
+  G.MOVE_K = 0.68
+  -- round 17 (Nacho: badges 10-15 px low, bracket lines running into the next row, too close to the panel edge): the
+  -- badge is 36 x 46 (its bracket lines now end inside the 51 px bar row), its node sits BADGE_CY below the row top
+  -- (mesh centre = node, measured: it sat 10 px low at the old y 6 + 29) and its left edge at BADGE_X (8 px before the bars)
+  G.BADGE = {36, 46}
+  G.BADGE_X, G.BADGE_CY = 1004, 25
+  G.PLATE_DX, G.PLATE_DX2 = 52, 385
   G.M_BADGE = {4182803106, 1616499480, 392094606}               -- _cmd_slot01..03
   G.SK_AT_DMY = 365666709                -- _num_at_cmd_dmy01 (the AT number's placeholder quad: the white square)
   G.GRAPH_NUM = 732343773                -- soccer11_06_p1_formation_status_graph_param_num
@@ -580,7 +607,7 @@ EVT_PPG = EVT_PPG or {}
     for k = 1, 3 do
       local gx, gy = G.GROUP_AT[k][1], G.GROUP_AT[k][2]
       -- badge: node at (X0, Y0) world, the mesh's top-left at node + (0, 40) after its scale (60 x 80)
-      local X0, Y0 = gx, -(gy + 6) - G.BADGE[2] / 2
+      local X0, Y0 = G.BADGE_X, -(gy + G.BADGE_CY)
       Cmd(C.NODE_POS, G.STATUS, 0, G.SLOT_NODES[k], 0, X0 - 1358)
       Cmd(C.NODE_POS, G.STATUS, 0, G.SLOT_NODES[k], 1, Y0 + 540)
       Cmd(C.NODE_SCALE, G.STATUS, 0, G.M_BADGE[k], G.BADGE[1], G.BADGE[2])
@@ -588,7 +615,7 @@ EVT_PPG = EVT_PPG or {}
       for j = 0, 1 do
         local i = (k - 1) * 2 + j
         local Ax, Ay = X0 + 302, Y0 + (j == 0 and 31 or -31)        -- the row's attach locator (world, y up)
-        local tx, ty = gx + G.PLATE_DX, -(gy + 2 + G.PLATE_PITCH * j)   -- the plate's top-left (world, y up)
+        local tx, ty = gx + G.PLATE_DX + G.PLATE_DX2 * j, -(gy + 2)   -- the plate's top-left (world, y up)
         local px, py = tx - Ax - s * (-267), ty - Ay - s * 34
         for _, l in ipairs({G.SKILL, G.SKILL_BLANK}) do
           if Exists(l) and Cmd(C.IS_OPEN, l, i) == true then
@@ -613,6 +640,198 @@ EVT_PPG = EVT_PPG or {}
     end
   end
 
+  -- ---- SUPERTÉCNICAS «Confirmación de supertécnica» navigation (2026-10-15, owner: the D-pad follows the 3-row page) --
+  -- The engine's focus links of the move layer follow the retail column (up / down inside a pair, left / right between
+  -- pairs). On this page (rows = pairs: instance 2r = left plate, 2r + 1 = right plate) a D-pad / arrow / stick step
+  -- goes where the page shows it: LEFT / RIGHT = the other plate of the same row, UP / DOWN = the row above / below in
+  -- the same column (the other column when that plate is empty, empty rows skipped). Stops at the edges (no wrap).
+  -- Empty plates are never focused by a key (Aceptar / X do nothing on them, retail OnEnterCommon). The engine's own
+  -- step is redirected inside OnChangeFocus (before that frame is drawn); a step the engine does not make (an edge of
+  -- the old links) is made from the frame hook on the next frame. The pointer is the engine's: its zones follow the
+  -- moved plates (instance transform); with the Fantasy rows a zone is on only where the row shows a move.
+  G.NAV = {CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303, MENU_CTRL_ANALOG = 2748927068,
+    UP = 1197218715, DOWN = 3259546669, LEFT = 2765147006, RIGHT = 2075023265,
+    FOCUS_MARK = 1778826357, FOCUS_SET = 3466097042, PLAY_ANIME = 3781155141, FOCUS_ANIME = 2734777837,
+    ANIME_KIND = 973515837, ZONE = 855005857, GET_SKILL = 903078840, SOUND = 1917805374, CURSOR_SOUND = 2500047763,
+    GHOST_FRAMES = 3}
+  G.nav = {index = nil, pending = nil, handled = false, busy = false, echo = false, lastDir = nil, ghost = nil}
+
+  -- the move layer holds the control focus on SUPERTÉCNICAS of the player page (the confirmation mode)
+  function G.NavActive()
+    return G.H.pages and On() and G.ptype == 1 and Exists(G.SKILL) and Cmd(G.FOCUS_ACTIVE, G.SKILL) == true
+  end
+
+  -- the direction stepped this frame: "up", "down", "left", "right" or nil
+  function G.NavDirection()
+    local N = G.NAV
+    for _, d in ipairs({{"up", N.UP}, {"down", N.DOWN}, {"left", N.LEFT}, {"right", N.RIGHT}}) do
+      for _, control in ipairs({N.MENU_CTRL, N.MENU_CTRL_ANALOG}) do
+        local ok, on = pcall(funcLuaCommand, N.CHECK_INPUT, control, d[2])
+        if ok and on == true then
+          return d[1]
+        end
+      end
+    end
+    return nil
+  end
+
+  -- instance i shows a move (the Fantasy row's own move when the rows were filled from the skill table)
+  function G.NavFilled(i)
+    if i < 0 or i > 5 or Cmd(C.IS_OPEN, G.SKILL, i) ~= true then
+      return false
+    end
+    local F = EVT_PPG_FANTASY_MOVES
+    if type(F) == "table" and type(F.On) == "function" and type(F.shown) == "table" and F.shown[i] ~= nil and F.On() then
+      return F.shown[i].move ~= 0
+    end
+    if type(GetPersonalPlateSelectCharaStHdlAuto) ~= "function" then
+      return true
+    end
+    local okH, hdl = pcall(GetPersonalPlateSelectCharaStHdlAuto)
+    if not okH or type(hdl) ~= "number" or hdl == 0 then
+      return true
+    end
+    local okS, move = pcall(funcLuaCommand, G.NAV.GET_SKILL, hdl, i)
+    return okS and move ~= nil and move ~= 0
+  end
+
+  -- the instance a step `dir` from instance `from` lands on (from itself at an edge)
+  function G.NavTarget(from, dir)
+    local row, column = math.floor(from / 2), from % 2
+    if dir == "left" or dir == "right" then
+      local toColumn = dir == "left" and 0 or 1
+      if toColumn ~= column and G.NavFilled(row * 2 + toColumn) then
+        return row * 2 + toColumn
+      end
+      return from
+    end
+    local step = dir == "up" and -1 or 1
+    local r = row + step
+    while r >= 0 and r <= 2 do
+      if G.NavFilled(r * 2 + column) then
+        return r * 2 + column
+      elseif G.NavFilled(r * 2 + 1 - column) then
+        return r * 2 + 1 - column
+      end
+      r = r + step
+    end
+    return from
+  end
+
+  -- the focus frame off on an instance that no longer holds the focus
+  function G.NavUnfocus(i)
+    local N = G.NAV
+    Cmd(N.PLAY_ANIME, G.SKILL, i, N.FOCUS_ANIME, 2, N.ANIME_KIND)
+  end
+
+  -- the focus to instance `to` (left: the instance the engine had put it on): the retail mark, the engine's index,
+  -- then the screen's OnChangeFocus (by the engine's echo, else here) for the detail window, cursor and guide
+  function G.NavSetFocus(to, left)
+    local N, S = G.NAV, G.nav
+    S.busy, S.echo = true, false
+    Cmd(N.FOCUS_MARK, G.SKILL, to, true)
+    if Cmd(G.FOCUS_IDX, G.SKILL) ~= to then
+      Cmd(N.FOCUS_SET, G.SKILL, to)
+    end
+    if not S.echo and type(OnChangeFocus) == "function" then
+      pcall(OnChangeFocus, G.SKILL, to)
+    end
+    S.busy = false
+    if left ~= nil and left ~= to then
+      G.NavUnfocus(left)
+      S.ghost = {left, N.GHOST_FRAMES}
+    end
+    S.index = to
+  end
+
+  -- OnChangeFocus of the move layer: a key step of the engine is redirected to this page's target; true = handled
+  function G.NavOnChange(layer, index)
+    local S = G.nav
+    if S.busy then
+      S.echo = true
+      return false
+    end
+    if layer ~= G.SKILL or not G.NavActive() then
+      return false
+    end
+    local dir = G.NavDirection()
+    if dir == nil or S.index == nil then
+      S.index = index                             -- the pointer or the screen moved it
+      S.pending = nil
+      return false
+    end
+    local target = G.NavTarget(S.index, dir)
+    S.pending, S.handled = nil, true
+    if target == index then
+      S.index = index
+      return false
+    end
+    G.NavSetFocus(target, index)
+    return true
+  end
+
+  -- per frame: a step the engine did not make (pending since the last frame) is made here; new steps are noted
+  function G.MovesNav()
+    local S = G.nav
+    if S.ghost ~= nil then
+      local g = S.ghost
+      g[2] = g[2] - 1
+      if g[2] <= 0 then
+        S.ghost = nil
+      end
+      if Cmd(G.FOCUS_IDX, G.SKILL) ~= g[1] then
+        G.NavUnfocus(g[1])
+      else
+        S.ghost = nil
+      end
+    end
+    if not G.NavActive() then
+      S.index, S.pending, S.handled, S.lastDir = nil, nil, false, nil
+      return
+    end
+    local current = Cmd(G.FOCUS_IDX, G.SKILL)
+    if type(current) ~= "number" then
+      return
+    end
+    local dir = G.NavDirection()
+    local lastDir = S.lastDir
+    S.lastDir = dir
+    if S.handled then
+      S.handled, S.pending, S.index = false, nil, current
+      return
+    end
+    local p = S.pending
+    S.pending = nil
+    if p ~= nil and current == p.from then
+      local target = G.NavTarget(p.from, p.dir)
+      if target ~= current then
+        G.NavSetFocus(target, current)
+        pcall(funcLuaCommand, G.NAV.SOUND, G.NAV.CURSOR_SOUND)
+        current = target
+      end
+    end
+    S.index = current
+    if dir ~= nil and dir ~= lastDir then
+      S.pending = {from = current, dir = dir}
+    end
+  end
+
+  -- the pointer zones of the move plates on the Fantasy rows: on where the row shows a move (the retail code reads
+  -- the list position of the same index)
+  function G.NavZones()
+    local F = EVT_PPG_FANTASY_MOVES
+    if not G.H.pages or not On() or G.ptype ~= 1 or not Exists(G.SKILL) or type(F) ~= "table"
+        or type(F.On) ~= "function" or type(F.shown) ~= "table" or not F.On() then
+      return
+    end
+    for i = 0, 5 do
+      local shown = F.shown[i]
+      if shown ~= nil and Cmd(C.IS_OPEN, G.SKILL, i) == true then
+        Cmd(G.NAV.ZONE, G.SKILL, i, shown.move ~= 0)
+      end
+    end
+  end
+
   -- ---- Pasivas (round 9): a row of 5 icon tiles (layout: icons at x 1172..1732, y 880); each strip collapsed to its
   -- icon on its own plate (orange special / blue, passive_config's tint) squashed into a slanted tile; R3 = cursor
   -- mode (left / right, R3 or B leaves): the focused passive opens as its whole strip ABOVE the row (y 770)
@@ -634,6 +853,7 @@ EVT_PPG = EVT_PPG or {}
   G.PR_INHERIT = 27565530
   G.PR_TILE = {-371, 40, 96, 80}         -- collapsed plate node (x, y top, w, h; layer units, icon centre -323, 0)
   G.PR_FULL = {-414, 46, 828, 92}
+  G.PR_TEXT_BOX = {622, 72}              -- the text node's retail box (width, height; left edge -243)
   G.PR_TAB_Y = 770
   G.pcur = G.pcur or nil                 -- focused passive (cursor mode) or nil
   G.pexit = 0
@@ -678,21 +898,27 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.VIS, G.PT, i, true)
   end
 
-  -- ---- round 13 (Nacho): Pasivas in 3 sub-pages, R3 (CMD_FUNC6) = next sub-page (1 -> 2 -> 3 -> 1):
-  --   1 = the special passive (slot 0; none = an empty light-orange box), 2 = the generic ones (slots 1, 2),
-  --   3 = the two archetype ones (slots 3, 4).
+  -- ---- Pasivas in 2 sub-pages, R3 (CMD_FUNC6) = next sub-page (1 -> 2 -> 1):
+  --   1 = the first three passives (slots 0, 1, 2), 2 = the two archetype ones (slots 3, 4).
   -- Each sub-page shows its passives as WHOLE strips (icon, name, description = the detail) centred in the card, one
-  -- under the other; the other strips hidden. The header's hint line says «R3 <sub-page> n/3» (menu_text
-  -- evt_pp_psub_1..3). Round-12 fixes kept: the passive's own icon always, no white boxes (_pos_type01 /
+  -- under the other; the other strips hidden. Three strips are drawn smaller (G.PSUB_SCALE, around each strip's
+  -- centre) so they fit the card. Kept: the passive's own icon always, no white boxes (_pos_type01 /
   -- _pos_position01 / _pos_build01 / _build_ef01 hidden).
-  G.PSUB = {[0] = {0}, {1, 2}, {3, 4}}
-  G.PSUB_Y = {[1] = {815}, [2] = {770, 862}}        -- strip centre rows (screen y) for 1 / 2 strips
+  G.PSUB = {[0] = {0, 1, 2}, {3, 4}}
+  G.PSUB_N = 2                                       -- sub-page count (dots, R3 / click cycle)
+  G.PSUB_Y = {[1] = {815}, [2] = {770, 862}, [3] = {742, 808, 874}}   -- strip centre rows (screen y) per strip count
+  G.PSUB_SCALE = {[3] = 0.7}                         -- strip scale per strip count (default 1)
+  G.PSUB_WIDE = {[3] = 790}                          -- strip screen width per strip count (default: the plate's own
+                                                     -- width x scale): three strips are wide so each text fits one line
   G.PSUB_X = 1452                                    -- strip centre (screen x)
-  G.PSUB_KEYS = {[0] = @crc:evt_pp_psub_1@, @crc:evt_pp_psub_2@, @crc:evt_pp_psub_3@}
-  G.PSUB_TXT = {[0] = "Especial", "Generales", "Arquetipo"}
+  G.PSUB_KEYS = {[0] = @crc:evt_pp_psub_2@, @crc:evt_pp_psub_3@}
+  G.PSUB_TXT = {[0] = "Generales", "Arquetipo"}
   G.SP_TILE_EMPTY = @crc:evt_pp_tile_empty@
   G.EMPTY_BOX = {600, 66}                            -- the empty special's box (screen px)
   G.psub = G.psub or 0
+  if G.psub >= G.PSUB_N then
+    G.psub = 0
+  end
   G.noSpecial = false
   -- round 13 (Nacho): the special passive's title («Limitador activo», CMND_UTIL_PC_SPECIAL's text key) on a pill
   -- (layer evt_pp_ptitle, object evt_ph_peg_pill) centred over the special's strip on sub-page 1, tinted the special
@@ -709,6 +935,13 @@ EVT_PPG = EVT_PPG or {}
   G.PTRULE, G.SP_PTRULE = @crc:evt_pp_ptrule@, @crc:evt_pp_ptrule@
   G.PTRULE_R = {1038, 772, 1866, 775}        -- the rule's screen rect (3 px, over the strip's top)
   G.CMD_SPECIAL, G.CMD_TEXT = @crc:CMND_UTIL_PC_SPECIAL@, @crc:CMND_VRFW_TEXT_GET@
+
+  -- how far the slot-0 strip's top sits below a lone strip's top on sub-page 1 (title and rule move with it)
+  function G.PTitleDy()
+    local n = #G.PSUB[0]
+    local k = G.PSUB_SCALE[n] or 1
+    return (G.PSUB_Y[n][1] - 46 * k) - (G.PSUB_Y[1][1] - 46)
+  end
 
   function G.PTitle(on)
     local T = G.PTITLE
@@ -748,11 +981,11 @@ EVT_PPG = EVT_PPG or {}
           Cmd(C.MESH, l, m, false, 0)
         end
         Cmd(C.SPRITE, l, G.TX_BTL0613, G.SP_PTRULE, G.SP_FRAME, 0, 0)
-        local r = G.PTRULE_R
-        local sx, sy = (r[3] - r[1]) / 476, (r[4] - r[2]) / 44
-        Cmd(C.SCALE, l, sx, sy, 1, 0)
-        Cmd(C.POS, l, r[1] - 94 * sx, -r[2] + 816 * sy, 0, 0)
       end
+      local r, dy = G.PTRULE_R, G.PTitleDy()
+      local sx, sy = (r[3] - r[1]) / 476, (r[4] - r[2]) / 44
+      Cmd(C.SCALE, l, sx, sy, 1, 0)
+      Cmd(C.POS, l, r[1] - 94 * sx, -(r[2] + dy) + 816 * sy, 0, 0)
       Cmd(C.VIS, l, 0, true)
     end
     if not Ready(T, 0) then
@@ -762,11 +995,11 @@ EVT_PPG = EVT_PPG or {}
       G.ready[T * 16] = true
       Cmd(C.TRACE, G.PAGE, 0, T, true)
       Cmd(C.SCALE, T, G.PTITLE_K, G.PTITLE_K, 1, 0)
-      Cmd(C.POS, T, G.PTITLE_X + G.PTITLE_BOX / 2, -(G.PSUB_Y[1][1] - G.PTITLE_DY), 0, 0)
       Cmd(C.MESH, T, 3516146179 --[[_area_base01: the pill]], false, 0)
       pcall(funcLuaMenuCommand, 855211291 --[[CMND_SET_PRIM_COLOR]], T, 0, 1899787537 --[[_text_area01]],
         G.PTITLE_RGB[1], G.PTITLE_RGB[2], G.PTITLE_RGB[3])
     end
+    Cmd(C.POS, T, G.PTITLE_X + G.PTITLE_BOX / 2, -(G.PSUB_Y[1][1] + G.PTitleDy() - G.PTITLE_DY), 0, 0)
     if G.ptitleText ~= text then
       G.ptitleText = text
       -- round 14g (in game: white on the card): red through the game's own text markup [CR] … [C]
@@ -782,7 +1015,7 @@ EVT_PPG = EVT_PPG or {}
     if not okt or type(t) ~= "string" or t == "" then
       t = G.PSUB_TXT[G.psub]
     end
-    return string.format("<CMD_FUNC6> %s  %d/3", t, G.psub + 1)
+    return string.format("<CMD_FUNC6> %s  %d/%d", t, G.psub + 1, G.PSUB_N)
   end
 
   -- the empty special passive's box (tile layer instance 0, light orange), centred where its strip would be
@@ -818,14 +1051,14 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.VIS, G.PT, 0, true)
   end
 
-  -- 2026-10-13 (owner): the strips' slanted plate (_passive_base01) pre-coloured by kind: the player's own (special)
-  -- passive light orange, the archetype passives (slots 3 / 4) light blue, the general ones the retail white.
-  -- CMND_SET_PRIM_COLOR never tints this quad, so the colour is in the pixels: sprites evt_pp_card_orange / _blue of the
+  -- the strips' slanted plate (_passive_base01) pre-coloured by kind: the archetype passives (slots 3 / 4) light blue,
+  -- every other one the retail white.
+  -- CMND_SET_PRIM_COLOR never tints this quad, so the colour is in the pixels: sprite evt_pp_card_blue of the
   -- retail atlas soccer11_20, made at boot from the retail passive_base01 (content/images/menu/00_soccer/soccer11/
   -- evt_passive_plates.toml, no Level-5 pixel ships), swapped into the plate's texture slot (the sprite the retail row
   -- drawer put there) of each open instance every frame the page shows the rows; the retail sprite back when it leaves.
   G.CARD_TEX, G.CARD_SLOT = 4021797290 --[[soccer11_20.g4tx]], 1729678359 --[[passive_base01]]
-  G.CARD_SPR = {[0] = @crc:evt_pp_card_orange@, [3] = @crc:evt_pp_card_blue@, [4] = @crc:evt_pp_card_blue@}
+  G.CARD_SPR = {[3] = @crc:evt_pp_card_blue@, [4] = @crc:evt_pp_card_blue@}
   G.cardOn = G.cardOn or {}
   function G.CardTint(L, i, on)
     local spr = on and G.CARD_SPR[i] or nil
@@ -860,7 +1093,9 @@ EVT_PPG = EVT_PPG or {}
             Cmd(C.NODE_POS, L, i, G.PR_PLATE, 0, f[1])
             Cmd(C.NODE_POS, L, i, G.PR_PLATE, 1, f[2])
             Cmd(C.NODE_SCALE, L, i, G.PR_PLATE, f[3], f[4])
+            Cmd(C.NODE_SCALE, L, i, G.PR_TEXT, G.PR_TEXT_BOX[1], G.PR_TEXT_BOX[2])
             Cmd(C.MESH, L, G.PR_PLATE, true, i)
+            Cmd(C.SCALE, L, 1, 1, 1, i)
             Cmd(C.POS, L, 0, 0, 0, i)
             Cmd(C.NODE_VIS, L, G.PR_TEXT, true, i)
             Cmd(C.TEXT_VIS, L, G.PR_TEXT, true, i)
@@ -881,7 +1116,7 @@ EVT_PPG = EVT_PPG or {}
     local sess = nil
     if type(UTIL_PPC) == "table" and UTIL_PPC.co ~= nil and type(UTIL_PPC.slot) == "number" and UTIL_PPC.slot >= 0 then
       sess = UTIL_PPC.slot
-      local want = sess == 0 and 0 or (sess <= 2 and 1 or 2)
+      local want = sess <= 2 and 0 or 1
       if G.psub ~= want then
         G.psub = want
       end
@@ -891,6 +1126,7 @@ EVT_PPG = EVT_PPG or {}
       shown[#shown + 1] = i
     end
     local rows = G.PSUB_Y[math.max(1, #shown)]
+    local scale = G.PSUB_SCALE[#shown] or 1
     local row = {}
     for n, i in ipairs(shown) do
       row[i] = rows[n]
@@ -913,7 +1149,10 @@ EVT_PPG = EVT_PPG or {}
           local f = G.PR_FULL
           Cmd(C.NODE_POS, L, i, G.PR_PLATE, 0, f[1])
           Cmd(C.NODE_POS, L, i, G.PR_PLATE, 1, f[2])
-          Cmd(C.NODE_SCALE, L, i, G.PR_PLATE, f[3], f[4])
+          local wide = G.PSUB_WIDE[#shown]                -- widened strip: the plate and the text box grow to the
+          local plateW = wide and wide / scale or f[3]    -- right of the icon (layout units), the layer shifts to re-centre
+          Cmd(C.NODE_SCALE, L, i, G.PR_PLATE, plateW, f[4])
+          Cmd(C.NODE_SCALE, L, i, G.PR_TEXT, G.PR_TEXT_BOX[1] + plateW - f[3], G.PR_TEXT_BOX[2])
           Cmd(C.MESH, L, G.PR_PLATE, true, i)
           Cmd(C.MESH, L, G.PR_ICONBASE, true, i)      -- round 12: the icon always
           Cmd(C.MESH, L, G.PR_EF, false, i)
@@ -928,7 +1167,9 @@ EVT_PPG = EVT_PPG or {}
             Cmd(C.NODE_VIS, L, n, false, i)              -- round 12: the white boxes
           end
           local ax = 1172 + 140 * i + 323                -- the strip's attach x (layout PASSIVE_X)
-          Cmd(C.POS, L, G.PSUB_X - ax, 880 - y, 0, i)
+          Cmd(C.SCALE, L, scale, scale, 1, i)            -- around the attach point = the strip's centre
+          local shiftX = (plateW - f[3]) / 2 * scale     -- the strip grows to the right: move it back to the centre
+          Cmd(C.POS, L, G.PSUB_X - ax - shiftX, 880 - y, 0, i)
           Cmd(C.VIS, L, i, true)
         end
       end
@@ -949,7 +1190,7 @@ EVT_PPG = EVT_PPG or {}
       return
     end
     if sess == nil and key(3147328756) then   -- CMD_FUNC6 (R3); in a session the selection picks the sub-page
-      G.psub = (G.psub + 1) % 3
+      G.psub = (G.psub + 1) % G.PSUB_N
       G.plast = G.ptick
       pcall(funcLuaCommand, 1917805374, 2500047763)
     end
@@ -1624,8 +1865,8 @@ EVT_PPG = EVT_PPG or {}
   -- L3 still toggles it too): the numbers are the totals in the retail «goes up» style (EVT_R9.Draw), the gauges
   -- show the gain past the fill in the gain colour (G.Bars, G.gains), the form badge shows the Normal / Mix-Max glyph,
   -- and the 3D model follows: the form viewer's Miximax form (1; 3, its armour form, only when 1 is not listed),
-  -- Normal (0) otherwise (plate_model M.ShowForm). Armour forms are never picked here. Entering ATRIBUTOS takes the
-  -- model's form (Miximax shown on PERFIL = the Miximax view); another player starts Normal.
+  -- Normal (0) otherwise (plate_model M.ShowForm). Armour forms are never picked here. Entering ATRIBUTOS starts
+  -- Normal (since 2026-10-14 a page change resets the model's form: G.Apply); another player starts Normal.
   G.MX_FORMS = {1, 3}
   G.MX_SOUND = 2629173176                -- sy0009, the form viewer's switch sound (as R3 on PERFIL)
   function G.MxHdl()
@@ -2073,7 +2314,7 @@ EVT_PPG = EVT_PPG or {}
   -- place them with): the 8 page dots (slot s: x 1321 + 28 (s - 1) .. + 32, the dots row y 915) and the Q / E glyphs
   -- beside them (if_plate_row_build.py: x 1281 / 1553) = go to that page / one page back / on, through the Q/E path of
   -- the menu that owns the page index (EVT_PPG_PointerPage: banks first, then the team dock / formation parents; with
-  -- none, the plate's own step); on Pasivas the 3 sub-page dots (G.PSUB_DOT_X) and the R3 glyph after them (x 1714)
+  -- none, the plate's own step); on Pasivas the sub-page dots (G.PSUB_DOT_X) and the R3 glyph after them (x 1714)
   -- = that sub-page / the next one; on PERFIL the «R3 Cambiar forma» hint (x 1706.., y 893..947) = next form.
   -- No zone while the page is hidden, over a passive_config session (its own picker) or for hidden controls; a click
   -- on no zone does nothing; the dots have no keyboard focus, so hovering them changes nothing.
@@ -2162,7 +2403,7 @@ EVT_PPG = EVT_PPG or {}
     P.Rect(G.PTR_E[1], G.PTR_E[2], G.PTR_E[3], G.PTR_E[4], "e")
     local psub = G.ptype == 2 and not G.InOffice()
     if psub then
-      for k = 2, 4 do
+      for k = 2, 1 + G.PSUB_N do
         P.Rect(G.PSUB_DOT_X[k] + 2, D.y, D.dx, D.h, "p" .. (k - 2))
       end
       P.Rect(G.PTR_R3[1], G.PTR_R3[2], G.PTR_R3[3], G.PTR_R3[4], "r3")
@@ -2197,7 +2438,7 @@ EVT_PPG = EVT_PPG or {}
     elseif c == "q" or c == "e" then
       G.PtrGo(nil, c == "e" and 1 or -1)
     elseif c == "r3" or string.sub(c, 1, 1) == "p" then
-      local n = c == "r3" and (G.psub + 1) % 3 or tonumber(string.sub(c, 2))
+      local n = c == "r3" and (G.psub + 1) % G.PSUB_N or tonumber(string.sub(c, 2))
       if n ~= nil and n ~= G.psub then
         G.psub = n
         G.plast = G.ptick or 0
@@ -2218,6 +2459,14 @@ EVT_PPG = EVT_PPG or {}
   end
 
   function G.Apply(ptype)
+    -- 2026-10-14 (owner: the armour / miximax look chosen on the Hiper page, ATRIBUTOS or PERFIL stayed on the next
+    -- page): a form look belongs only to the page that chose it. Another page = the model back to Normal, hidden at
+    -- once and rebuilt before the new page draws (plate_model M.ResetForm); the same page again (a player change, a
+    -- refresh) keeps it. Entering ATRIBUTOS / the Hiper page then starts Normal (G.MxStep / G.HiperFormStep read
+    -- the model's form).
+    if G.ptype ~= nil and ptype ~= G.ptype and type(EVT_PPM) == "table" and type(EVT_PPM.ResetForm) == "function" then
+      pcall(EVT_PPM.ResetForm, "page " .. tostring(G.ptype) .. " -> " .. tostring(ptype), true)
+    end
     G.ptype = ptype
     EVT_PPM_PAGE_OK = true                -- round 4: the model on every page, behind the content
     EVT_PPM_PAGE_FORMS = (ptype == EVT_PPG_DESC_TYPE)   -- round 8: R3 cycles the forms on PERFIL
@@ -2459,6 +2708,7 @@ EVT_PPG = EVT_PPG or {}
           pcall(G.Equip)
           pcall(G.HiperL3)
           pcall(G.Moves)
+          pcall(G.MovesNav)
           pcall(G.Hint)
           pcall(G.FormBadge)
           pcall(G.Passives)
@@ -2522,6 +2772,30 @@ EVT_PPG = EVT_PPG or {}
       return table.unpack(r, 1, r.n)
     end
   end)
+
+  -- SUPERTÉCNICAS: the confirmation mode's key steps follow the 3-row page (G.NavOnChange)
+  if G.H.pages then
+    EVT_PPG_Wrap("OnChangeFocus", function(orig)
+      return function(a1, a2, ...)
+        local ok, handled = pcall(G.NavOnChange, a1, a2)
+        if ok and handled then
+          return
+        end
+        return orig(a1, a2, ...)
+      end
+    end)
+    for _, name in ipairs({"SetSkillCollisionEnable", "UpdateSkillItemHitCollision"}) do
+      EVT_PPG_Wrap(name, function(orig)
+        return function(a1, ...)
+          local r = Pack(orig(a1, ...))         -- the original first
+          if name ~= "SetSkillCollisionEnable" or a1 == true then
+            pcall(G.NavZones)
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+    end
+  end
 
   EVT_PPG_Wrap("OnCloseLayer", function(orig)
     return function(a1, ...)

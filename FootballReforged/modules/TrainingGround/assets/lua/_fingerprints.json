@@ -1,0 +1,125 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "bb_stadium_top_menu": {
+  "script": "bb_stadium_top_menu_1.03.98.00",
+  "require": [
+   "FadeIn"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "chronicle_mode_top_menu": {
+  "script": "chronicle_mode_top_menu_6.00.06.00",
+  "require": [
+   "WaitCaravanModelLoad"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "information_top_menu": {
+  "script": "information_top_menu_1.04.09.00",
+  "require": [
+   "PasswordInputFunction"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "item_menu": {
+  "script": "item_menu_2.00.02.00",
+  "require": [
+   "UpdateGuideButtonFunctions"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "market_menu": {
+  "script": "market_menu_4.00.05.00",
+  "require": [
+   "IsCheckNoTokenShopIdx"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "play_guide_top_menu": {
+  "script": "play_guide_top_menu_1.04.09.00",
+  "require": [
+   "GetListButtonLayerIndex"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_menu": {
+  "script": "soccer_battle_menu_0.04.29",
+  "require": [
+   "SetSoccerBattleTeamName"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_menu": {
+  "script": "soccer_menu_0.03.81",
+  "require": [
+   "ChangeTensionMeterLeftTopToRightBottom",
+   "InitializeGlobalValues",
+   "OnCloseLayer"
+  ],
+  "forbid": [
+   "SetSoccerBattleTeamName"
+  ],
+  "ambiguous": [
+   "soccer_menu_replay"
+  ],
+  "chunk_crc": 2036312462,
+  "chunk_size": 1022
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_common_top_menu": {
+  "script": "team_dock_common_top_menu_0.00.00.00",
+  "require": [
+   "AddMemberEquipmentToList",
+   "GetSoccerGameOptionBgmList"
+  ],
+  "forbid": [
+   "FinalizeMenu",
+   "OnOpenEndLayer",
+   "InitItemUseMenuParam",
+   "NameSetting_ItemIcon",
+   "OnChangeLayerGroup",
+   "OnBack",
+   "SetupLockIconPos",
+   "OnEnter",
+   "ConvertTimeFrom32bitInt",
+   "OnChangeFocus"
+  ],
+  "ambiguous": []
+ },
+ "victory_road_top_menu": {
+  "script": "victory_road_top_menu_7.01.07.00",
+  "require": [
+   "RegistPlaySoundHdl"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "vs_route_town_menu": {
+  "script": "vs_route_town_menu_6.00.32.00",
+  "require": [
+   "GetRouteTextureInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

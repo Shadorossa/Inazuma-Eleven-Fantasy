@@ -1,0 +1,42 @@
+schema = "VRFW.game/2"
+
+# Character Reforged › the coach / manager role (the skill board's medal slot) for the «Fantasy» skill table's role
+# slot (graft skill_table_role_slot). The logic is scripts\board_role.lua (CharacterReforged.BoardRole.*).
+
+# ------------------------------------------------------------------------------------------------ functions
+
+# void BadgeEquip(const u32* charaHdl, const u32* itemId) 0xE73630: takes a free copy of the badge item from the
+# inventory and equips it (rec8+0x1BC = its inventory handle)
+[[VRFW.Function]]
+name = "CharacterReforged.BadgeEquip"
+game = "Board.BadgeEquip"
+
+# void BadgeUnequip(const u32* charaHdl, const u32* badgeHdl) 0xE790D0: gives the badge copy back (equipped count - 1)
+# and clears rec8+0x1BC
+[[VRFW.Function]]
+name = "CharacterReforged.BadgeUnequip"
+game = "Board.BadgeUnequip"
+
+# InvRecord* InvRecord(Items* items, u32 invHdl) 0xD8D4B0: an inventory record (item id +4, stock +0x10, equipped +0x14)
+[[VRFW.Function]]
+name = "CharacterReforged.InvRecord"
+game = "Board.InvRecord"
+
+# [g_gameRoot] + 0x69D0 = the inventory InvRecord takes
+[[VRFW.Global]]
+name = "character_reforged_items"
+base = "game_root"
+chain = [0x69D0]
+
+# ------------------------------------------------------------------------------------------------ commands
+# Status codes: 1 ok, 0 refused, -1 bad args, -2 not ready, -4 exception, -5 no record, -10 matches missing.
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_GET_ROLE"     # (charaStHdl) -> role, badgeHdl, playCount, native, lock
+handler = "CharacterReforged.BoardRole.GetRole"
+needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "CharacterReforged.InvRecord", "character_reforged_items"]
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_SET_ROLE"     # (charaStHdl, role 0..2) -> status, roleAfter (-10: the matches missing)
+handler = "CharacterReforged.BoardRole.SetRole"
+needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "CharacterReforged.InvRecord", "character_reforged_items"]

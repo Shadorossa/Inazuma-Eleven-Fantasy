@@ -1,8 +1,7 @@
 # VR-Framework [[VRFW.RouteNode]] (Chronicle board side nodes): the one shared board rule (rn_common.lua) for every mod's
 # nodes, data from team_engine (CMND_VRFW_TEAM_ROUTE_NODE_* / CMND_VRFW_TEAM_ROUTE_ROAD_*; the roads' layer: framework menus/route_roads.toml).
-# docs/game/modes/chronicle-side-branches.md, docs/framework/route-board.md. A framework graft since 2.0.9 (2026-10-09,
-# Nacho: «mueve esos grafts al framework»): any mod's nodes (Chronicles Deluxe's Umbrella, Sally's, Mar de árboles,
-# Team Ogre) are drawn with or without Inazuma Fantasy.
+# A framework graft: any mod's nodes are drawn by it,
+# with no other mod needed.
 # Board: lock a never-used node slot, open nodes whose prerequisites are won (OnInit silently, after a clear with the
 # retail open effect), hide closed nodes, draw the shown nodes' roads (overlay sprites above the map tiles). Command menu:
 # only the node's shown difficulties (VRFW_RN_Rows, called by graft route_board's VRFW_RBC_Rows hook point). The
@@ -35,7 +34,7 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the roads (drawn at run time, 2026-10-12): each instance of the layer vrfw_route_road (framework menus
+  # the roads (drawn at run time): each instance of the layer vrfw_route_road (framework menus
   # route_roads.toml) shows its node's road sprite while the node is shown; the map tiles stay the retail ones
   [[files.ops]]
   type = "insert_before"
@@ -55,8 +54,8 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # Accept on a piece: a shown node is not refused for its locked difficulty 1 (Heroica-only nodes and chain «C» pieces
-  # have no Crónica: the retail «beat the previous square's route-unlock battle» message came up instead of their menu)
+  # Accept on a piece: a shown node is not refused for its locked difficulty 1 (Heroica-only nodes and chain "C" pieces
+  # have no Chronicle difficulty: the retail "beat the previous square's route-unlock battle" message came up instead of their menu)
   [[files.ops]]
   type = "replace"
   point = "vs_route_town_menu.OnEnter.RouteNodes"
@@ -65,8 +64,8 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # a closed node drawn locked (`LockedTitle`, chronicle-side-branches.md §9.20): Accept says what opens it instead of
-  # the retail «beat the previous square's route-unlock battle» message
+  # a closed node drawn locked (`LockedTitle`): Accept says what opens it instead of
+  # the retail "beat the previous square's route-unlock battle" message
   [[files.ops]]
   type = "insert_before"
   point = "vs_route_town_menu.OnEnter.RouteNodesBefore"
@@ -118,7 +117,7 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the d-pad never moves to a closed node (Nacho 2026-10-09: the cursor reached the locked, hidden Ogre 2): the game's
+  # the d-pad never moves to a closed node (the cursor reached the locked, hidden Ogre 2): the game's
   # d-pad handler (native) asks ScrollToPieceByDpad(next piece) along the static move graph; a hidden node is refused
   [[files.ops]]
   type = "insert_after"
@@ -130,8 +129,8 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # nor focused by the free cursor / a click (2026-10-11, owner report: an empty forest spot LU of Raimon equipo B, the
-  # closed Ogre 2 node, took the cursor and Accept gave the retail «beat the previous square's route-unlock battle»
+  # nor focused by the free cursor / a click (an empty forest spot LU of Raimon equipo B, the
+  # closed Ogre 2 node, took the cursor and Accept gave the retail "beat the previous square's route-unlock battle"
   # message): the native piece hit test still knows the hidden piece and calls UpdatePieceFocus with it; a hidden node
   # is focused as empty map (-1, as the retail does off every piece), so it gets no balloon, no Accept, no caravan move
   [[files.ops]]

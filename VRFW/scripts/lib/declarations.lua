@@ -1,15 +1,9 @@
--- VR-Framework › the declarations of a framework service read by its script (docs/framework/card-types.md §4): every
--- active mod's files of one kind (`<folder>\**\*.toml`, schema `<kind>`), each `[[VRFW.<Entry>]]` checked against the
--- service's own schema file content\types\<type>.toml (`VRFW.decl_schema/1`: per entry its keys, with type, range,
--- default, required) and its `when` conditions evaluated on the DECLARING mod's config. A declaration with an unknown
--- key, a wrong type or a value out of range is left out with one warning naming the file.
---
+-- Reads a service's declarations: every active mod's files of one kind (`<folder>\**\*.toml`, schema `<kind>`), each [[VRFW.<Entry>]] checked against
+-- content\types\<type>.toml (VRFW.decl_schema/1) and its `when` conditions against the declaring mod's config; an invalid declaration is left out with one warning.
 --   local D = require "lib/declarations"
 --   local schema = D.schema("card_type")                      -- content\types\card_type.toml (nil, why)
 --   for _, d in ipairs(D.load(schema, warn)) do … end         -- { mod, file, entry, index, key, given, v }
---
--- `d.v` holds every key of the entry (defaults filled), `d.given` the keys the file wrote (a later mod's declaration of
--- the same thing overrides only those), `d.key` = "<mod>.<name>" when the entry has a `name`.
+-- `d.v` = every key of the entry (defaults filled), `d.given` = keys the file wrote (a later mod overrides only those), `d.key` = "<mod>.<name>" when the entry has a `name`.
 
 local M = {}
 
@@ -143,9 +137,7 @@ function M.holds(mod, conds)
   return true
 end
 
--- every declaration of the schema's kind in the active mods (load order, then file order), checked; `warn(text)`
--- gets one line per declaration left out. The `when` conditions are evaluated: a declaration whose conditions do
--- not hold is left out silently (counted in `skipped`).
+-- Declarations of the schema's kind in load order, checked; `warn(text)` gets one line per rejected one (unmet `when` = skipped silently, counted in `skipped`).
 function M.load(schema, warn)
   local out, skipped = {}, 0
   local ok, files = pcall(VRFW.files.declarations, schema.folder)

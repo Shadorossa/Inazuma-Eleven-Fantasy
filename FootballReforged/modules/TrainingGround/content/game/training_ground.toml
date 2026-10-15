@@ -1,0 +1,48 @@
+schema = "VRFW.game/2"
+
+# Training Ground (docs/game/mods/training-ground.md): the commands the game Lua (graft training_ground) asks. The logic
+# is scripts\training_ground.lua (TrainingGround.*); its settings are config.toml [training_ground].
+
+# () -> the rows of the settings window: { { key, label, value, text, map, pending, kind, disabled }, … } (texts as
+# text row ids, resolved by the game Lua with CMND_TEXT_GET; `map` = a stadium's map crc for CMND_GET_MAP_NAME)
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_ROWS"
+handler = "TrainingGround.Rows"
+
+# (key, dir) -> ok, override key ("" none), override value, apply ("live" / "restart" / "action" / "apply" /
+# "picker"): one step of a row
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_STEP"
+handler = "TrainingGround.Step"
+
+# () -> { friendly, friendly_team, players, small, game, difficulty, stadium, overrides = { { key, value }, … } }: the
+# drill to start now (the settings become the running drill's)
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_PLAN"
+handler = "TrainingGround.Plan"
+
+# (how: 1 restart, 0 leave, -1 the launch failed, -2 the match exit was refused) -> ok
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_LEAVE"
+handler = "TrainingGround.Leave"
+
+# (series 1-based, 0 = the chosen team's page) -> { label, index, count, sel, items = { { id, emblem, name }, … } }:
+# a page of the rival team picker
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_TEAMS"
+handler = "TrainingGround.Teams"
+
+# (team id) -> the team's name in the game's language (team_config name text), nil = unknown
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_TEAM_NAME"
+handler = "TrainingGround.TeamName"
+
+# (team id, series) -> ok: the rival team of the next drill (0 = the format row's own)
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_SET_TEAM"
+handler = "TrainingGround.SetTeam"
+
+# () -> running (a training match is on), relaunch pending (0 / 1, read once)
+[[VRFW.Command]]
+name = "CMND_TRAININGGROUND_STATE"
+handler = "TrainingGround.State"

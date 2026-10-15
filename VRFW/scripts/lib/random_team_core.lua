@@ -1,10 +1,5 @@
--- VR-Framework › random team, the pure part (docs/framework/random-team.md): the seed of a draw and the pick of a
--- roster (the card filters are the framework's card sets, VRFW.chara.select). No game memory, no engine call (the
--- generator is the framework's VRFW.rng): plain Lua tables, so the same inputs always give the same team (the
--- determinism the service promises: same rule + seed + node + stage + pool = same roster, same name / emblem / kit).
---
--- Numbers are Lua 5.2 doubles; hashes and seeds are u32 (0 .. 2^32-1). Card positions are chara_param's
--- (1 keeper, 2 forward, 3 midfield, 4 defence); a formation placement is a class of the same numbers.
+-- Random team, pure part: the seed of a draw and the pick of a roster; no game memory or engine call (generator: VRFW.rng), so the same inputs always give the same team.
+-- Numbers are Lua 5.2 doubles; hashes and seeds are u32. Card positions follow chara_param (1 keeper, 2 forward, 3 midfield, 4 defence).
 
 local C = {}
 
@@ -34,8 +29,7 @@ function C.split(v)
 end
 
 -- ------------------------------------------------------------------------------------------------ generator
--- The framework's one seeded generator (VRFW.rng: the daily generator, SplitMix64-seeded PCG32; review 2026-10-13
--- §3). `words` = the seed parts (numbers), `stream` = 1 roster / 2 look.
+-- The framework's seeded generator (VRFW.rng); `words` = seed parts (numbers), `stream` = 1 roster / 2 look.
 function C.rng(words, stream)
   local w = {}
   for i, x in ipairs(words) do w[i] = x end
@@ -101,8 +95,7 @@ end
 
 -- ------------------------------------------------------------------------------------------------ the roster
 
--- The places to fill, in order: { class = POS_* or 0 (any outfield) , row = k } with the keepers first, then the
--- starters by placement order, then the bench (its first place a keeper when `bench_keeper`).
+-- Places to fill in order: { class = POS_* or 0 (any outfield), row = k }: keepers, starters by placement order, then the bench (first place a keeper when `bench_keeper`).
 function C.places(starter_classes, bench_rows, bench_keeper)
   local out = {}
   for k, cls in ipairs(starter_classes) do
@@ -234,7 +227,6 @@ function C.pick(opt)
 end
 
 -- a formation placement's positionId as a card position class: 1 keeper, 2-3 defence, 4-7 midfield, else forward
--- (formation_config's positionId groups, the Battle Bay Draft's reading)
 function C.placement_class(position_id)
   if position_id == 1 then
     return C.POS_GK

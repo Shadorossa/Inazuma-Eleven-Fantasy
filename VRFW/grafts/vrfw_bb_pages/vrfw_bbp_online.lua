@@ -1,5 +1,5 @@
--- VRFW bb_pages, online grid (enjoy_team_select_menu network variant: quick match and private rooms;
--- docs/framework/bb-pages.md §7). This script ALSO runs for the offline grid: the framework decides online from the
+-- VRFW bb_pages, online grid (enjoy_team_select_menu network variant: quick match and private rooms).
+-- This script ALSO runs for the offline grid: the framework decides online from the
 -- game's state (BB mode byte 4 / network predicate) and answers 0 rows offline. The framework's build makes the Estadio BB table longer and regroups / sorts it, so
 -- the grid the game builds would show other teams than an unmodded player's. On open, the framework rebuilds the live
 -- grid with the game's own teams in the game's order (CMND_VRFW_BB_PAGE_RETAIL) and turns its page keys off: the
@@ -25,12 +25,12 @@ function VRFW_BBP_OnlineRetail(why)
       if type(team) == "number" and team ~= 0 then
         pcall(SetupEmblemIcon, i, team, unlocked == true, check == true)
       end
-      -- the rows of the «win it to unlock it» rule are open online (docs/framework/bb-pages.md §8): no padlock
+      -- the rows of the "win it to unlock it" rule are open online: no padlock
       if type(lock) == "number" and lock >= 0 and unlocked == true then
         pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], O.LOCK, lock, false)
       elseif type(lock) == "number" and lock >= 0 then
         -- a locked slot's padlock gets the closed look: an instance the rebuild moved here may still have the gold
-        -- «press to unlock» one (§8.7; _lock_icon01_off / _on, anime Active stopped, type lock)
+        -- "press to unlock" one (_lock_icon01_off / _on, anime Active stopped, type lock)
         pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], O.LOCK, 868450029 --[[_lock_icon01_off]], true, lock)
         pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], O.LOCK, 3251826719 --[[_lock_icon01_on]], false, lock)
         pcall(funcLuaMenuCommand, 3781155141 --[[CMND_PLAY_ANIME_TYPE]], O.LOCK, lock, 1286797620 --[[Active]], 2, 2274335502 --[[lock]])

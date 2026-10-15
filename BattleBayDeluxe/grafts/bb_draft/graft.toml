@@ -16,6 +16,13 @@
 #                                    a band, the cards dealt face down and turned one by one, a unique best card last
 #                                    with a gold glow; Enter / Back = all at once; then pick on the band, the card
 #                                    flies to its slot): layers evt_bbd_pk_quad / _txt, config.toml [draft.pack].
+#   enjoy_team_select_menu_campaign  bbd_roster.lua (1.5.69, owner 2026-10-15; 1.5.71 / 1.5.73 «Formación» look):
+#                                    Y on a tile = the team's «Plantilla»: the picker hidden, the in-match formation
+#                                    screen's background / pitch frame / formation bar opened on this menu, the cards
+#                                    on the frame's pitch, bench and coach places, the retail player page of the
+#                                    focused player on the right (personal_plate_menu, players-universe params);
+#                                    arrows / click move, Q / E its pages, Back / Y close (the page first, then the
+#                                    grid on the same tile). Footer «Plantilla» through VRFW_FooterPrompts.
 #   enjoy_team_select_menu_offline   bbd_offline.lua + bbd_campaign.lua (1.5.42): the Draft in the 1 vs 1 (free match),
 #                                    the Campaña's screen; scripts\campaign.lua routes the Draft tile's decide to it
 #                                    (config.toml [draft] modes), 16 drafted = the tile's retail decide (1P / CPU)
@@ -23,14 +30,14 @@
 #   soccer_top_menu                  Campaña's block or the Torneo's run with the Draft team keeps / restores the
 #                                    drafted squad; else it is discarded). 1.5.42: also on soccer_top_menu, the hub
 #                                    the Battle Bay is entered through now (bb_stadium_top_menu no longer opens)
-# Globals only; nothing runs at chunk load.
+# Globals only; nothing runs at chunk load but bbd_roster.lua's footer prompt declaration (pure Lua).
 name = "bb_draft"
 mod = "bb_chronicle_teams"
 order = 345
 module = "lua_bridge"
 requires = []
 conflicts = []
-wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer"]
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide"]
 description = "Battle Bay: the Draft tile of the Campaña (pitch + bench, 1 of 5 per slot in any order, then the campaign)"
 
 [[files]]
@@ -40,6 +47,11 @@ stem = "enjoy_team_select_menu_campaign"
   type = "append_block"
   src = "bbd_campaign.lua"
   marker = "bb_draft"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_roster.lua"
+  marker = "bb_draft roster"
 
 [[files]]
 stem = "enjoy_team_select_menu_offline"

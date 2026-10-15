@@ -1,19 +1,9 @@
--- VR-Framework › card-type registry (service S2 of VRFW 2.3, docs/framework/card-types.md). Declarations: every active
--- mod's content\card_types\*.toml (`VRFW.card_type/1`, keys: content\types\card_type.toml); native side:
--- content\game\card_types.toml (the «Rareza» tab sites of both filter windows, the bank filter hook, the commands).
---
---   * Off (no mod declares a card type, or none whose `when` holds): nothing is written, the game's tab and filters
---     stay as they are, the commands answer the game's own list.
---   * The «Rareza» tab lists the game's rarities 0 .. end - 1 (end = the loop's own end value, read from the game's
---     code) in order. A card type with `filter = false` below the end hides that rarity: the hidden ones must be the
---     lowest (the loop only starts later: first = the number of hidden rarities from 0; a rarity hidden above a
---     listed one stays listed, with a warning). One card type above the game's rarities (rarity >= end, `filter`
---     true; several: the lowest `order`) becomes one more item, last: the loop's end value is mapped to its rarity
---     (stub `Extra`) and the loop runs once more (`End`). Item values stay rarity values (texture, filter params, the
---     filter state in the save keep their meaning).
---   * `every_filter`: while the player bank filters by a specific rarity set, the rarities of these card types are
---     added to the set (their players pass any rarity filter; a card type the tab does not list).
---   * CMND_VRFW_CARD_TYPE(hdl) -> rarity, listed, every_filter; CMND_VRFW_CARD_TYPE_TAB() -> n, rarities of the tab.
+-- Card-type registry (declarations: content\card_types\*.toml; native side: content\game\card_types.toml).
+-- Off (no active declaration): nothing is written and the game's tab and filters are unchanged.
+-- The rarity tab lists the game's rarities in order; a card type with `filter = false` hides its rarity (hidden ones must be the lowest). One card type above the game's rarities (`filter` true; several: lowest `order`) becomes one extra last item.
+-- `every_filter`: these card types' rarities join any specific rarity filter set of the player bank.
+-- CMND_VRFW_CARD_TYPE(hdl) -> rarity, listed, every_filter
+-- CMND_VRFW_CARD_TYPE_TAB() -> n, rarities of the tab
 
 CardTypes = CardTypes or {}
 
@@ -23,19 +13,19 @@ local D = require "lib/declarations"
 local function info(...) VRFW.log("card_types:", ...) end
 local function warn(...) VRFW.warn("card_types:", ...) end
 
--- the four loops (content\game\card_types.toml CardTypes.<list>.*) and the profile site of each one's end value
+-- the four tab loops (content\game\card_types.toml) and the profile site of each loop's end value
 local LISTS = {
   { name = "CharaTab", end_site = "Card.RarityCharaTab.End" },
   { name = "CharaRebuild", end_site = "Card.RarityCharaRebuild.End" },
   { name = "SpiritTab", end_site = "Card.RaritySpiritTab.End" },
   { name = "SpiritRebuild", end_site = "Card.RaritySpiritRebuild.End" },
 }
--- the player bank filter's rarity set (CharaBankFilter's Filter*): entries, the set (16 bytes)
+-- the player bank filter's rarity set: entries, the set (16 bytes)
 local SET_COUNT, SET_LIST, SET_MAX = 0xA44, 0xA48, 16
 
 local ON = false          -- a card type is declared: the tab follows the registry
-local GAME_END = nil      -- the game's loop end (the rarities it lists are 0 .. GAME_END - 1)
-local TAB = {}            -- the rarities the tab lists, in order (when ON)
+local GAME_END = nil      -- the game's loop end (it lists rarities 0 .. GAME_END - 1)
+local TAB = {}            -- rarities the tab lists, in order (when ON)
 local LISTED = {}         -- rarity -> true (when ON)
 local EVERY = {}          -- rarities of the every_filter card types, in order
 local EVERY_SET = {}
@@ -52,7 +42,7 @@ local function wr(ty, at, v)
   return pcall(VRFW.mem.write, ty, at, v)
 end
 
--- the loop end of the game's code (the byte of `cmp r9d, <end>`): every list must agree
+-- the loop end read from the game's code: every list must agree
 local function game_end()
   local e
   for _, l in ipairs(LISTS) do
@@ -65,7 +55,7 @@ local function game_end()
   return e
 end
 
--- ---------------------------------------------------------------------------------------------- declarations
+-- ---- declarations
 
 local function merged_types()
   local schema, why = D.schema("card_type")
@@ -94,7 +84,7 @@ local function merged_types()
   return out, #decls, skipped
 end
 
--- ---------------------------------------------------------------------------------------------- the tab
+-- ---- the tab
 
 local function u32_hex(v)
   return string.format("%02X %02X %02X %02X", v % 256, math.floor(v / 256) % 256, math.floor(v / 65536) % 256, math.floor(v / 16777216) % 256)
@@ -109,7 +99,7 @@ local function apply(name, arg)
   return r == true
 end
 
--- write the four lists: first rarity listed, the extra card type; true when every list took it
+-- write the four lists (first listed rarity, the extra card type); true when every list took it
 local function write_tab(first, extra)
   local done = 0
   for _, l in ipairs(LISTS) do
@@ -156,7 +146,7 @@ local function start()
       EVERY_SET[t.rarity] = true
     end
   end
-  -- the loop starts at `first`: the hidden rarities must be the lowest ones; at least one game rarity stays
+  -- the loop starts at `first`: hidden rarities must be the lowest; at least one game rarity stays
   local first = 0
   while first < e - 1 and hidden[first] do first = first + 1 end
   for r = first, e - 1 do
@@ -201,10 +191,9 @@ local function start()
     (first > 0 or extra) and n or #LISTS, #LISTS, #ev > 0 and table.concat(ev, " ") or "none"))
 end
 
--- ---------------------------------------------------------------------------------------------- the bank filter
+-- ---- the bank filter
 
--- CharaBankFilter(ctx, hdl, &paramId, filter), pre: the every_filter rarities join a specific rarity set (the hook's
--- pre_when: the service lit it, the filter's rarity test is on, the set has 1..15 entries)
+-- Pre-hook: adds the every_filter rarities to a rarity set that has 1 to 15 entries (installed only when a card type declares every_filter).
 local function bank_pre(ev)
   local f = ev.args[4]
   if type(f) ~= "number" or f < 0x10000 then return nil end
@@ -227,7 +216,7 @@ local function bank_pre(ev)
   return nil
 end
 
--- ---------------------------------------------------------------------------------------------- commands
+-- ---- commands
 
 -- (hdl) -> rarity, listed, every_filter
 function CardTypes.CmdType(hdl)
@@ -244,7 +233,7 @@ function CardTypes.CmdType(hdl)
   return r, listed, EVERY_SET[r] == true
 end
 
--- () -> n, rarity 1 … rarity n (0: the service is off, the game's own list)
+-- () -> n, then the n rarities of the tab, in order (0: the service is off; the game's own list is used).
 function CardTypes.CmdTab()
   if not ON then return 0 end
   return #TAB, table.unpack(TAB)

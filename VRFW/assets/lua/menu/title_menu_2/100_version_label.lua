@@ -1,5 +1,5 @@
 -- version_label (VR-Framework base feature): the title screen's version label reads «ver.7.1.2  Framework 2.00».
--- docs/framework/lua-hosts.md §6.1 (handler of the title_menu_2 host).
+-- (handler of the title_menu_2 host).
 --
 -- Retail label (layer title02_04_version / _ps, opened by OnOpenLayer): «ver.A.B.C  X.YY ZZZ», six bitmap-number
 -- primitives and no text node. A.B.C = the game version (funcLuaCommand 3113844068, kept as the game prints it),

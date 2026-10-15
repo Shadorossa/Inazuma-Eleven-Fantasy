@@ -1,37 +1,64 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › flow toggles (service S8 of VRFW 2.3, docs/framework/flow.md). The run time is scripts\flow.lua: it
-# reads every mod's content\flows\*.toml (`VRFW.flow/1`, keys: content\types\flow.toml) and, only when a mod declares a
-# toggle away from the game's rule, installs the detour below. **Nothing here is installed at start**
-# (`apply = "script"`): with no declaration the game's code stays as it is.
+# Flow toggles (schema VRFW.game/2). Nothing is installed unless a mod declares a toggle away from the game's rule (`apply = "script"`).
 
 # ------------------------------------------------------------------------------------------------ prematch_editor
 
-# The pre-kick-off team editor (soccer_formation_menu between the VS screen and the walk-in): BattleSettingFlow state 6
-# opens it only when the match info flag 0x2000000 is set (`test dword [rax], 2000000h; je <no editor>`). The mid hook
-# runs before the test with rax = the match info; a handler's `skip = true` resumes at the `je` target (the game's own
-# «no editor» path, state 7 goes on to the walk-in); nothing / an error / busy scripts = the game's test runs.
+# Pre-kick-off team editor: opens only when match info flag 0x2000000 is set. A handler's `skip = true` takes the game's «no editor» path.
 [[VRFW.Hook]]
 name = "Flow.PrematchEditor"
 game = "Menu.PrematchEditor"
 apply = "script"
 needs = ["Flow.IsNetworkSession", "Flow.MatchInfo"]
 
-# bool IsNetworkSession(): a network session is up (online / local network match)
+# bool IsNetworkSession(): a network session (online or local) is up.
 [[VRFW.Function]]
 name = "Flow.IsNetworkSession"
 game = "Net.IsSession"
 ret = "bool"
 
-# the match info ([[g_gameRoot] + 0x6A58]): Flags (0x2000000 = the editor opens), MatchType, Observer
+# Match info: Flags (0x2000000 = editor opens), MatchType, Observer.
 [[VRFW.Struct]]
 name = "Flow.MatchInfo"
 game = "MatchInfo"
 
+# ------------------------------------------------------------------------------------------------ match_exit
+
+# The bright-fade object: the game's one full-screen fade (colour + alpha per layer), the target of the Lua fade command 609722083.
+[[VRFW.Global]]
+name = "flow_bright_fade"
+game = "Render.BrightFade"
+
+# FadeLayerTo(obj, layer, start RGBA*, target RGBA*, seconds, from_start): every fade of one layer of the bright-fade object.
+# While the match exit cover is held (the bright-fade object is a key of VRFW.Flow.ExitCover), layer 1's start and target
+# colours become opaque black after the game's code, whatever the caller asked: the game's own fade-ins of the scene and
+# menu changes leave it black. No entry = the game's code as it is.
+[[VRFW.Hook]]
+name = "Flow.ExitCover"
+game = "Render.BrightFadeLayer"
+kind = "function"
+apply = "script"
+
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [
+  { value = "args[2]", equals = 1 },
+  { value = "args[1]", in_table = "VRFW.Flow.ExitCover" },
+]
+each = { count = "8", max = 8 }
+value = "if(i == 3, 1, if(i == 7, 1, 0))"
+write = "[args[1] + 0x3C + i * 4]:f32"
+
 # ------------------------------------------------------------------------------------------------ commands
 
-# (name) -> value: the toggle's value in force ("game" when no mod declares it, nil for an unknown toggle), live (its
-# detour is installed)
+# (name) -> value in force ("game" when no mod declares it, nil for an unknown toggle).
 [[VRFW.Command]]
 name = "CMND_VRFW_FLOW"
 handler = "Flow.Cmd"
+
+# (op, arg): 2 the cover applies to leaving this match (play mode), 1 hold it (play mode), 0 release it (menu stem),
+# -1 query (menu stem) -> 0 / 1 held / 2 held too long and released now, in a match, age ms. See scripts/flow.lua.
+[[VRFW.Command]]
+name = "CMND_VRFW_MATCH_EXIT_COVER"
+handler = "Flow.ExitCover"
+needs = ["flow_bright_fade"]

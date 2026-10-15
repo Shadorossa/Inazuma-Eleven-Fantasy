@@ -1,0 +1,20 @@
+# Chronicle Deluxe: the chain board's background (#/menu/220_img/chronicle_deluxe_chain/chronicle_deluxe_chain_back.g4tx,
+# a NEW atlas; role background of content\screen_art\chain_board.toml): IE3's chain screen background redrawn
+# at 1920 x 1080 (research/scripts/chain_board_art.py, no Level-5 pixel; docs/game/modes/ie3-chains.md §3; the
+# VR-Framework's vrfw_chain_back until 2026-10-14). Generated: rerun the script, do not edit by hand.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/chronicle_deluxe_chain/chronicle_deluxe_chain_back.g4tx"
+name = "chronicle_deluxe_chain_back"
+png = "chronicle_deluxe_chain/chronicle_deluxe_chain_back.png"
+format = "rgba8"
+mips = 1
+
+[[sprite]]
+atlas = "#/menu/220_img/chronicle_deluxe_chain/chronicle_deluxe_chain_back.g4tx"
+name = "chronicle_deluxe_chain_back"
+texture = "chronicle_deluxe_chain_back"
+x = 0
+y = 0
+size = [1920, 1080]

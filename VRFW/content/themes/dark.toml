@@ -1,13 +1,10 @@
 schema = "VRFW.theme/1"
-# The framework's built-in matte dark theme (docs/app/theme-engine.md; study docs/game/ui/dark-mode.md). Pure data:
-# the engine (theme_engine) has no colours of its own. Each accent is one value of the «Tema de la interfaz» row
-# (../options.toml declares only «Desactivado»; the engine adds every theme's accents at boot): `value` 1 / 2 / 3 (the
-# stored option value), `text` = its label in ../text.toml.
+# Built-in matte dark theme. Each [[accent]] is one value of the interface theme option (`value` = stored option value, `text` = label key).
 
 [theme]
 id = "dark"
 name = { ja = "ダーク", en = "Dark", es = "Oscuro", fr = "Sombre", de = "Dunkel", it = "Scuro", pt = "Escuro", zh_hans = "深色", zh_hant = "深色" }
-# phase 1: dialogs / windows, title, main hub, shop, pause, Options (keys relative to data/)
+# Menu groups recolored (keys relative to data/).
 include = [
     "dx11/menu/10_win", "dx11/menu/20_cmn", "dx11/menu/109_system", "dx11/menu/51_save",
     "dx11/menu/50_title",
@@ -16,7 +13,7 @@ include = [
     "dx11/menu/108_option",
     "dx11/menu/00_soccer/soccer00/soccer00_17", "dx11/menu/00_soccer/soccer00/soccer00_18",
 ]
-# icons, faces, art; the title background art (title00: sky, characters, clouds, logos per platform)
+# Excluded: icons, faces, art and the title background.
 exclude = ["dx11/menu/200_icon", "dx11/menu/220_img", "dx11/menu/50_title/title00"]
 
 [palette]
@@ -68,15 +65,15 @@ large_keep = 2048
 panel_area = 160000
 bc7 = "fast"
 
-# first match wins; the rest is `auto` (classified from the sprite's pixels)
-# masks / clipping shapes (their grey levels are coverage, not colour)
+# First match wins; unmatched sprites are classified from their pixels (`auto`).
+# masks / clipping shapes (grey levels are coverage, not colour)
 [[sprite]]
 match = "*msk*"
 class = "keep"
 [[sprite]]
 match = "mask*"
 class = "keep"
-# pictures, rarity / spirit cards (information)
+# pictures, rarity / spirit cards
 [[sprite]]
 match = "img_*"
 class = "keep"
@@ -107,6 +104,6 @@ class = "ink"
 
 [fonts]
 enabled = true
-# colour token of the style name -> palette key (k = grey ink, b = blue ink; w white stays)
+# Colour token of the style name -> palette key (k = grey ink, b = blue ink; w white stays).
 map = { k = "text", b = "accent_hi" }
 keep_styles = []

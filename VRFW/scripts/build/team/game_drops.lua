@@ -1,26 +1,46 @@
--- `[[VRFW.GameDrops]]` (docs/framework/drops.md): the in-match drop tables of a game's difficulty rows,
--- `item_drop_table` (col 30: rarity -> percent per roll, soccer_drop_config m_itemDropTableList) and
--- `item_table_decide` (col 36: rarity -> loot table, m_itemTableDecideTableList) and the player-spirit drops
--- (col 29 m_spiritCharaTableList: players added to the rival's; cols 31 / 33 m_spiritDropTableList: spirit rarity ->
--- percent per roll, 0 = the engine's default of the difficulty), the first-clear prize (col 34 `FirstClear`, a
--- soccer_prize_config ITBL id; VRFW 2.4.31); then [[VRFW.SpiritDrops]] (cols 31 / 33 by
--- difficulty for every row a GameDrops set; docs/framework/drops.md §1b). Run after the route nodes, the
--- chains and the level maps, so every game the team build makes (`evt_rn_<name>`, `evt_ch_<chain>_<NN>`) can be named.
--- Mechanism only: which tables a game gets is the declaring mod's data (e.g. Chronicles Deluxe's generated
--- content\teams\80_drops\chronicle_drops.toml). The tables themselves are the mods' base tables (soccer_drop_config,
--- win_treasure_lot_table_config); an id the served soccer_drop_config does not hold is an error (row left as it was).
+-- `[[VRFW.GameDrops]]`: in-match drop tables per difficulty row: `item_drop_table` (col 30, rarity -> percent per roll), `item_table_decide` (col 36, rarity -> loot table),
+-- player-spirit drops (col 29 added players; cols 31 / 33 spirit rarity -> percent per roll, 0 = engine default) and the first-clear prize (col 34 `FirstClear`, soccer_prize_config ITBL id).
+-- Then `[[VRFW.SpiritDrops]]` (cols 29 / 31 / 33 by difficulty for a set of rows) and its `ExcludeRarities` (spirit tables replaced by copies without those rarities).
+-- Runs after route nodes, chains and level maps so every team-build game can be named; an id missing from the served soccer_drop_config is an error (row left as it was).
 local T = require "lib/team_util"
 local GD = {}
 
 local DROP_PREFIX = "data/common/gamedata/soccer/soccer_drop_config_"
+-- difficulty rows of the Chronicle board; rows 6-9 of the same games belong to the free match
+local CHRONICLE_DIFFS = { [1] = true, [2] = true, [3] = true, [4] = true, [10] = true, [11] = true }
+
+-- spirit drop tables the engine uses for a row whose col 31 / 33 is 0
+local function engine_default_spirit_tables(diff)
+  if diff == 1 or (diff >= 6 and diff <= 9) then return 0x26F1316F, 0xD3AF6694 end
+  if diff == 2 then return 0xBFF860D5, 0x4AA6372E end
+  if diff == 4 then return 0x569BC5E0, 0xA3C5921B end
+  if diff == 10 or diff == 11 then return 0x219CF576, 0xD4C2A28D end
+  return 0xC8FF5043, 0x3DA107B8
+end
+
+-- the id of the copy of spirit table `table` without `rarities` (sorted, unique)
+local function spirit_table_without_id(tbl, rarities)
+  local parts = {}
+  for _, r in ipairs(rarities) do parts[#parts + 1] = string.format("%d", r) end
+  return VRFW.ids.parse(string.format("vrfw.spirit_drop_table.%s.without_rarities.%s", T.hex8(tbl), table.concat(parts, "_")))
+end
 
 -- the ids of the item-drop tables and decide tables of the served soccer_drop_config (nil, err when unreadable)
+-- the served soccer_drop_config (opened once), or nil, err
+local function drop_config(X)
+  if X.gd_rd ~= nil then return X.gd_rd or nil, X.gd_rd_err end
+  local k, e = X.table_key(DROP_PREFIX)
+  local h
+  if k then h, e = VRFW.team.rdbn(k) end
+  X.gd_rd, X.gd_rd_err = h or false, e
+  return h, e
+end
+
 local function drop_ids(X)
   if X.gd_ids ~= nil then return X.gd_ids, X.gd_err end
-  local k, e = X.table_key(DROP_PREFIX)
   local ids
-  if k then
-    local h, he = VRFW.team.rdbn(k)
+  local h, e = drop_config(X)
+  do
     if h then
       ids = { item = {}, decide = {}, spirit = {}, chara = {} }
       for _, x in ipairs { { "m_itemDropTableList", ids.item }, { "m_itemTableDecideTableList", ids.decide },
@@ -33,8 +53,6 @@ local function drop_ids(X)
           end
         end
       end
-    else
-      e = he
     end
   end
   X.gd_ids, X.gd_err = ids or false, e
@@ -54,7 +72,7 @@ local function ref(X, s, set, key, list)
 end
 
 function GD.install(X)
-  function X.game_drops(files)
+  function X.game_drops(files, chains)
     local applied, rows_set = 0, 0
     local set_rows, order = {}, {}       -- row -> { own SpiritDrop, own SpiritDrop2 }
     for _, f in ipairs(files) do
@@ -84,13 +102,156 @@ function GD.install(X)
     if applied > 0 then
       VRFW.log.info(string.format("GameDrops: %d declaration(s), %d difficulty row(s) given their drop tables", applied, rows_set))
     end
-    X.spirit_drops(files, set_rows, order)
+    X.spirit_drops(files, set_rows, order, chains)
   end
 
-  -- every file's [[VRFW.SpiritDrops]] (load order) over the rows GameDrops set
-  function X.spirit_drops(files, set_rows, order)
+  -- difficulty rows of every Chronicle match: board difficulty rows of every game with a match piece (eventType 0 / 5) in chronicle_vs_route_config,
+  -- plus every row of every chain game; sorted row indices, or nil, err
+  function X.chronicle_rows(chains)
+    local r, pl, el = X.route_lists()
+    if not r then return nil, pl end
+    local rl, e0 = r:list("m_chronicleVsRouteInfoList")
+    if not rl then return nil, e0 end
+    local fev, e1 = r:field(pl, "eventType")
+    if not fev then return nil, e1 end
+    local fref, e2 = r:field(pl, "eventInfoRef")
+    if not fref then return nil, e2 end
+    local fg, e3 = r:field(el, "paramCrc1")
+    if not fg then return nil, e3 end
+    local fslice, e4 = r:field(rl, "pieceInfo")
+    if not fslice then return nil, e4 end
+    local board, chain = {}, {}
+    for k = 0, r:len(rl) - 1 do
+      local s, n = r:tuple(rl, k, fslice)
+      if s ~= nil then
+        for i = s, s + n - 1 do
+          local ev = r:u32(pl, i, fev)
+          if ev == 0 or ev == 5 then
+            local a, b = r:tuple(pl, i, fref)
+            if a == nil then a, b = 0, 0 end
+            for j = a, a + b - 1 do
+              local g = r:u32(el, j, fg)
+              if g and g ~= 0 then board[g] = true end
+            end
+          end
+        end
+      end
+    end
+    for _, c in ipairs(chains or {}) do
+      for _, n in ipairs(c.nodes or {}) do
+        if n.game and n.game ~= 0 then chain[n.game] = true end
+      end
+      for _, t in ipairs(c.board and c.board.tiles or {}) do
+        if t.kind == "match" and t.game and t.game ~= 0 then chain[t.game] = true end
+      end
+    end
+    local g, ge = X.games()
+    if not g then return nil, ge end
+    local out, seen = {}, {}
+    local function add(i)
+      if not seen[i] then seen[i] = true out[#out + 1] = i end
+    end
+    for _, gid in ipairs(T.keys(chain)) do
+      local rows = X.game_rows(gid)
+      for _, i in pairs(rows or {}) do add(i) end
+    end
+    for _, gid in ipairs(T.keys(board)) do
+      if not chain[gid] then
+        local rows = X.game_rows(gid)
+        for d, i in pairs(rows or {}) do
+          if CHRONICLE_DIFFS[d] then add(i) end
+        end
+      end
+    end
+    table.sort(out)
+    return out
+  end
+
+  -- copy of spirit table `tbl` without the entries of `rarities`, added to soccer_drop_config once; false = no such entry; nil, err
+  function X.spirit_table_without(tbl, rarities)
+    local copy_id = spirit_table_without_id(tbl, rarities)
+    local r, re = drop_config(X)
+    if not r then return nil, "soccer_drop_config: " .. tostring(re) end
+    local tl, e1 = r:list("m_spiritDropTableList")
+    if not tl then return nil, e1 end
+    local dl, e2 = r:list("m_spiritDropDataList")
+    if not dl then return nil, e2 end
+    local fid, e3 = r:field(tl, "id")
+    if not fid then return nil, e3 end
+    local fdata, e4 = r:field(tl, "data")
+    if not fdata then return nil, e4 end
+    local frarity, e5 = r:field(dl, "rarity")
+    if not frarity then return nil, e5 end
+    local ids = r:col_u32(tl, fid)
+    local t
+    for k = 1, #ids do
+      if ids[k] == tbl then t = k - 1 break end
+    end
+    if t == nil then return nil, "spirit drop table " .. T.hex(tbl) .. " is not in m_spiritDropTableList" end
+    local excluded = {}
+    for _, x in ipairs(rarities) do excluded[x] = true end
+    local s, n = r:tuple(tl, t, fdata)
+    if s == nil then s, n = 0, 0 end
+    local kept = {}
+    for k = s, s + n - 1 do
+      local x = r:u32(dl, k, frarity)
+      if x == nil or not excluded[T.i32(x)] then kept[#kept + 1] = k end
+    end
+    if #kept == n then return false end
+    for k = 1, #ids do
+      if ids[k] == copy_id then return copy_id end
+    end
+    local start = r:len(dl)
+    if start + #kept > 30000 then
+      return nil, string.format("m_spiritDropDataList would pass 30000 rows (%d + %d)", start, #kept)
+    end
+    for _, k in ipairs(kept) do r:push(dl, r:copy(dl, k)) end
+    local sc = r:copy(tl, t)
+    r:set_u32(-1, sc, fid, copy_id)
+    if #kept == 0 then r:set_tuple(-1, sc, fdata, 0, 0) else r:set_tuple(-1, sc, fdata, start, #kept) end
+    r:push(tl, sc)
+    r:touch()
+    return copy_id
+  end
+
+  -- ExcludeRarities over `rows`: rows changed, tables made ({ table, copy }), or nil, err
+  function X.exclude_spirit_rarities(rows, rarities)
+    local g, SG = X.games_t, X.SG
+    local copies, made, changed = {}, {}, 0
+    for _, i in ipairs(rows) do
+      local diff = g:int(i, SG.D_DIFF)
+      if diff ~= nil then
+        local da, db = engine_default_spirit_tables(diff)
+        local row_changed = false
+        for _, x in ipairs { { SG.D_SPIRIT_TABLE, da }, { SG.D_SPIRIT_TABLE_2, db } } do
+          local value = (g:int(i, x[1]) or 0) % 4294967296
+          local tbl = value == 0 and x[2] or value
+          local copy = copies[tbl]
+          if copy == nil then
+            local c, ce = X.spirit_table_without(tbl, rarities)
+            if c == nil then return nil, ce end
+            if c then made[#made + 1] = { tbl, c } end
+            copies[tbl] = c
+            copy = c
+          end
+          if copy and copy ~= value then
+            g:set(i, x[1], T.i32(copy))
+            row_changed = true
+          end
+        end
+        if row_changed then changed = changed + 1 end
+      end
+    end
+    if changed > 0 then g:touch() end
+    return changed, made
+  end
+
+  -- every file's [[VRFW.SpiritDrops]] (load order): first every rule's tables, then every rule's ExcludeRarities
+  function X.spirit_drops(files, set_rows, order, chains)
     local applied, rows_set = 0, 0
     local g, SG = X.games_t, X.SG
+    local chronicle, chronicle_err
+    local exclusions = {}
     for _, f in ipairs(files) do
       for k0, d in ipairs(f.value.vrfw.SpiritDrops or {}) do
         local what = f.file .. ": SpiritDrops[" .. (k0 - 1) .. "]"
@@ -101,14 +262,21 @@ function GD.install(X)
         local a, ae = ref(X, d.spirit_drop, "spirit", "SpiritDrop", "m_spiritDropTableList")
         local b, be = ref(X, d.spirit_drop_2, "spirit", "SpiritDrop2", "m_spiritDropTableList")
         local rows_kind = d.rows and T.trim(d.rows) or "game_drops"
+        local exclude = d.exclude_rarities or {}
+        local bad_rarity
+        for _, x in ipairs(exclude) do
+          if type(x) ~= "number" or x < 0 or x > 255 then bad_rarity = x break end
+        end
         if not active then
           VRFW.log.info(what .. ": if_mod " .. req .. " is not active (skipped)")
-        elseif rows_kind ~= "game_drops" and rows_kind ~= "all" then
-          VRFW.log.error(what .. ": Rows \"" .. rows_kind .. "\": \"game_drops\" or \"all\" (skipped)")
+        elseif rows_kind ~= "game_drops" and rows_kind ~= "all" and rows_kind ~= "chronicle" then
+          VRFW.log.error(what .. ": Rows \"" .. rows_kind .. "\": \"game_drops\", \"all\" or \"chronicle\" (skipped)")
         elseif a == false or b == false or c == false then
           VRFW.log.error(what .. ": " .. tostring(ae or be or ce) .. " (skipped)")
-        elseif a == nil and b == nil and c == nil then
-          VRFW.log.error(what .. ": none of SpiritChara, SpiritDrop, SpiritDrop2 (skipped)")
+        elseif a == nil and b == nil and c == nil and #exclude == 0 then
+          VRFW.log.error(what .. ": none of SpiritChara, SpiritDrop, SpiritDrop2, ExcludeRarities (skipped)")
+        elseif bad_rarity ~= nil then
+          VRFW.log.error(what .. ": ExcludeRarities: " .. tostring(bad_rarity) .. " is not a spirit rarity (0-255) (skipped)")
         else
           local want
           if d.difficulties and #d.difficulties > 0 then
@@ -116,25 +284,62 @@ function GD.install(X)
             for _, x in ipairs(d.difficulties) do want[x] = true end
           end
           local list, own = order, set_rows
-          if rows_kind == "all" then list, own = g:rows("SOCCER_GAME_DIFFICULTY"), {} end
-          local n = 0
-          for _, i in ipairs(list) do
-            if want == nil or want[g:int(i, SG.D_DIFF)] then
-              local o = own[i] or { false, false }
-              if c ~= nil then g:set(i, SG.D_SPIRIT_DROP, T.i32(c)) end
-              if a ~= nil and not o[1] then g:set(i, SG.D_SPIRIT_TABLE, T.i32(a)) end
-              if b ~= nil and not o[2] then g:set(i, SG.D_SPIRIT_TABLE_2, T.i32(b)) end
-              n = n + 1
+          local list_err
+          if rows_kind == "all" then
+            list, own = g:rows("SOCCER_GAME_DIFFICULTY"), {}
+          elseif rows_kind == "chronicle" then
+            if chronicle == nil and chronicle_err == nil then
+              chronicle, chronicle_err = X.chronicle_rows(chains)
+              if chronicle == nil and chronicle_err == nil then chronicle_err = "no Chronicle rows" end
+            end
+            list, list_err = chronicle, chronicle_err
+          end
+          if list == nil then
+            VRFW.log.error(what .. ": " .. tostring(list_err) .. " (skipped)")
+          else
+            local sets_tables = a ~= nil or b ~= nil or c ~= nil
+            local n, covered = 0, {}
+            for _, i in ipairs(list) do
+              if want == nil or want[g:int(i, SG.D_DIFF)] then
+                covered[#covered + 1] = i
+                if sets_tables then
+                  local o = own[i] or { false, false }
+                  if c ~= nil then g:set(i, SG.D_SPIRIT_DROP, T.i32(c)) end
+                  if a ~= nil and not o[1] then g:set(i, SG.D_SPIRIT_TABLE, T.i32(a)) end
+                  if b ~= nil and not o[2] then g:set(i, SG.D_SPIRIT_TABLE_2, T.i32(b)) end
+                  n = n + 1
+                end
+              end
+            end
+            if n > 0 then g:touch() end
+            applied = applied + 1
+            rows_set = rows_set + n
+            if #exclude > 0 then
+              local rarities, seen = {}, {}
+              for _, x in ipairs(exclude) do
+                if not seen[x] then seen[x] = true rarities[#rarities + 1] = x end
+              end
+              table.sort(rarities)
+              exclusions[#exclusions + 1] = { what = what, rows = covered, rarities = rarities }
             end
           end
-          if n > 0 then g:touch() end
-          applied = applied + 1
-          rows_set = rows_set + n
         end
       end
     end
     if applied > 0 then
       VRFW.log.info(string.format("SpiritDrops: %d rule(s), %d difficulty row(s) given spirit tables", applied, rows_set))
+    end
+    for _, x in ipairs(exclusions) do
+      local n, made = X.exclude_spirit_rarities(x.rows, x.rarities)
+      if n == nil then
+        VRFW.log.error(x.what .. ": ExcludeRarities: " .. tostring(made) .. " (skipped)")
+      else
+        local parts, rs = {}, {}
+        for _, m in ipairs(made) do parts[#parts + 1] = T.hex(m[1]) .. " -> " .. T.hex(m[2]) end
+        for _, r in ipairs(x.rarities) do rs[#rs + 1] = string.format("%d", r) end
+        VRFW.log.info(string.format("%s: spirit rarities [%s] left out of the spirit drops of %d of its %d difficulty row(s) (%d table(s) without them%s)",
+          x.what, table.concat(rs, ", "), n, #x.rows, #made, #parts > 0 and (": " .. table.concat(parts, ", ")) or ""))
+      end
     end
   end
 

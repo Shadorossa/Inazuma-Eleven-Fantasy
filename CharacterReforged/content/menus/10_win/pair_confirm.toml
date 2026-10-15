@@ -1,0 +1,127 @@
+# Character Reforged: the confirmation panel of the aura mods' «Crear …» flow (graft character_reforged_board, hook file
+# pair_confirm_window_hooks.lua; owner 2026-10-14: both players' cards with the glyph between them, and «esas
+# estadísticas se tienen que ver a la hora de hacer miximax»). A port of Inazuma Fantasy's menus\10_win\mx_confirm.toml
+# with this mod's own names (the same retail objects / layouts, copied and moved). Declarations over the player's own
+# game files. The bank's move step asks «¿Miximax de X con Y?» in the retail card window of general_window (type 191:
+# the white band, the question in _text_win02, Sí / No); instead of the retail single card the hook file opens these
+# layers in the band, over the window and its dimmer (draw priorities 881-886, set by the Lua; window 880, retail card
+# 882):
+#   character_reforged_pair_card   x2  the base's and the partner's retail chara cards (miniface, name, element, position)
+#   character_reforged_pair_quad   x46 retail / player-page sprites: the stats band, the system's glyph, the move's
+#                                      element plate, its category icon, the «AT» / «DF» glyph, the Ideal / Normal pill,
+#                                      8 gauges (track, base fill, gain fill, rule), the PE row's 4, 4 spare
+#   character_reforged_pair_text   x28 short centred texts: the pill word, 8 stat names, 8 totals, 8 gains, the PE row's 3
+#   character_reforged_pair_line   x2  the move's name and power (fallback of the move plate)
+#   character_reforged_pair_plate  x1  the retail Plantilla move plate (filled by VRFW_UI.MovePlate)
+# All are free objects, not opened with the window, no touch areas. Without these layers the hook falls back to the
+# retail card window.
+schema = "VRFW.menu/2"
+
+# the retail chara card of the general window (team00_01, L size: 212 x 132 plate, face 156 px over its top)
+[[object]]
+name = "character_reforged_pair_card"
+from = "team00_01_chara_card_for_soccer"
+free = true
+remove_block = ["MenuCollisionSetting"]
+
+# the retail 36 x 36 quad (cmn01_10 _icon_new01): every sprite of the panel, scaled by the Lua
+[[object]]
+name = "character_reforged_pair_quad"
+from = "cmn01_10_new_icon"
+free = true
+
+# the retail list row (save01_02): only its text node _text_list01_on, restyled by the Lua (centred / left / right
+# font styles; a «sclw» style squeezes a long word into the box). Short texts: a copy of the row's layout whose text
+# box is 112 x 40 centred on the origin (a stat name fits its column); long texts: a second copy whose box is
+# 380 x 44 from the origin to the right (a long move name never runs into the «AT» glyph)
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_text/character_reforged_pair_text.g4pkm"
+from = "common/menu/51_save/save01/save01_02/save01_02.g4pkm"
+
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_text/character_reforged_pair_text.g4pkm"
+joint = "_text_list01_on"
+translate = [-56.0, 20.0, 0.0]
+scale = [112.0, 40.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_text/character_reforged_pair_text.g4pkm"
+joint = "_text_list01_off"
+translate = [-56.0, 20.0, 0.0]
+scale = [112.0, 40.0, 1.0]
+
+[[object]]
+name = "character_reforged_pair_text"
+from = "save01_02_list_item"
+free = true
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_02/save01_02.g4pkm" }, values = { 1 = "common/menu/51_save/save01/character_reforged_pair_text/character_reforged_pair_text.g4pkm" } },
+]
+
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_line/character_reforged_pair_line.g4pkm"
+from = "common/menu/51_save/save01/save01_02/save01_02.g4pkm"
+
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_line/character_reforged_pair_line.g4pkm"
+joint = "_text_list01_on"
+translate = [0.0, 22.0, 0.0]
+scale = [380.0, 44.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/character_reforged_pair_line/character_reforged_pair_line.g4pkm"
+joint = "_text_list01_off"
+translate = [0.0, 22.0, 0.0]
+scale = [380.0, 44.0, 1.0]
+
+[[object]]
+name = "character_reforged_pair_line"
+from = "save01_02_list_item"
+free = true
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_02/save01_02.g4pkm" }, values = { 1 = "common/menu/51_save/save01/character_reforged_pair_line/character_reforged_pair_line.g4pkm" } },
+]
+
+[[patch]]
+menu = "general_window"
+add_layer = { name = "character_reforged_pair_card", object = "character_reforged_pair_card", count = 2, after = "team00_01_p5_avatar_unlock_basara_ring_for_chara_card", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "team00_01_p5_avatar_unlock_basara_ring_for_chara_card" }] }
+
+[[patch]]
+menu = "general_window"
+add_layer = { name = "character_reforged_pair_quad", object = "character_reforged_pair_quad", count = 46, after = "character_reforged_pair_card", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "character_reforged_pair_card" }] }
+
+[[patch]]
+menu = "general_window"
+add_layer = { name = "character_reforged_pair_text", object = "character_reforged_pair_text", count = 28, after = "character_reforged_pair_quad", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "character_reforged_pair_quad" }] }
+
+# 2026-10-13 (owner: the move as the Plantilla's technique plate): the retail Plantilla move plate
+# (soccer11_09_formation_chara_skill: element plate, category icon, name, badges, AT / DF + power), as the player page's
+# move row (no attach / touch rows), free; filled by VRFW_UI.MovePlate.Fill (hook pair_confirm_window_hooks.lua)
+[[object]]
+name = "character_reforged_pair_plate"
+from = "soccer11_09_formation_chara_skill"
+free = true
+remove_block = ["CMenuAttachLocator", "MenuCollisionSetting"]
+
+[[patch]]
+menu = "general_window"
+add_layer = { name = "character_reforged_pair_line", object = "character_reforged_pair_line", count = 2, after = "character_reforged_pair_text", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "character_reforged_pair_text" }] }
+
+[[patch]]
+menu = "general_window"
+add_layer = { name = "character_reforged_pair_plate", object = "character_reforged_pair_plate", count = 1, after = "character_reforged_pair_line", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "character_reforged_pair_line" }] }
+
+# the panel's atlases: icon_common (Mix-Max glyph, move category icons; Utilities loads it here too), the player
+# page's atlas (btl06_13 + Character Reforged's evt_pp_* sprites: the gauge fills evt_pp_gfill_<colour>, the band, the pill; 60 KB) and
+# the retail training gauge's atlas (team13_16: its grey track, 33 KB). The move plate's atlas (soccer08_10, 2.3 MB)
+# is loaded by the Lua only when the panel opens.
+[[patch]]
+menu = "general_window"
+res = [
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",
+    "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx",
+    "#/menu/102_team/team13/team13_16/team13_16.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_09/<LG>/soccer11_09.g4tx",
+]

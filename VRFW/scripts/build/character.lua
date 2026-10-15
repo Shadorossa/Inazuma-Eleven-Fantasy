@@ -1,24 +1,7 @@
--- Build script of the type `character` (docs/framework/build-scripts.md, docs/framework/types/character.md,
--- docs/app/character-engine.md §4): every active mod's character declarations (load order) -> chara_base /
--- chara_param / chara_model rows, the office rows of shop_config, the texts of the creations for the text type, the
--- recruit conditions, the celebration claims, the trait tags and the pre-evolved moves.
---
--- Order: (0) the EVT layout (`param_columns`), (1) every mod's NEW characters (sorted by name inside a mod: the ids do
--- not depend on the file order), (2) every [[edit]], (3) every `delete_cards` and [[remove]], (4) every [[recruit]]
--- (and the inline [character.recruit]), (5) trait tags, (6) pre-evolved moves, then the office rows and the declared
--- row order; each in load order. A cell two mods set to different values is a conflict: noted, the mod that loads
--- later wins.
---
--- Native (Rust, crates/plugins/character_engine): the `[VRFW.Level]` tables, the learn-level rule (this script
--- returns the cards that declare learn levels), the face icons (this script returns which icon each new character
--- copies) and the transform links.
---
--- input = { files = { { file, mod, load_index, empty, no_characters, value = <characters file> } } (every file, reading
---           order), rarity = <the rarity set>, vocab = { element, element_words, position, gender, growth },
---           consts = { prefixes, chara_text, max_req, learn_slots, learn_max, layout_v2, shop_index_space,
---           shop_index_limit, shop_legacy_from, office_tag } }
+-- Build script of the type `character`: every active mod's character declarations (load order) -> chara_base / chara_param / chara_model rows, shop_config office rows, creation texts, recruit conditions, celebration claims, trait tags and pre-evolved moves.
+-- Order: (0) EVT layout, (1) new characters, (2) [[edit]], (3) `delete_cards` and [[remove]], (4) [[recruit]], (5) trait tags, (6) pre-evolved moves, then office rows and declared row order; each in load order. A cell set differently by two mods is a conflict: noted, the later mod wins.
+-- input = { files = { { file, mod, load_index, empty, no_characters, value } }, rarity, vocab = { element, element_words, position, gender, growth }, consts = { prefixes, chara_text, max_req, learn_slots, learn_max, layout_v2, shop_index_space, shop_index_limit, shop_legacy_from, office_tag } }
 -- returns { created, recruits, hidden, conflicts, gentext, celebrations, traits, move_grades, icons, learn_cards }
--- (character_engine::script::Scripted).
 
 local U = require "lib/util"
 local C = require "lib/character_cols"
@@ -108,8 +91,7 @@ local function stable_sort(list, less)
   return out
 end
 
--- Index (0..7 of stat_kick..stat_speed) of the strongest gameplay stat: highest, then the position's key stat, then
--- engine order. Same rule as research/scripts/stats_99_to_200.py.
+-- Index (0..7 of stat_kick..stat_speed) of the strongest gameplay stat: highest, then the position's key stat, then engine order.
 local function best_stat_index(v, position)
   local best = v[0]
   for k = 1, 7 do
@@ -521,8 +503,7 @@ return function(input)
     int("offpitch_kit", id(c.offpitch_kit))
     int("offpitch_with_kit", id(c.offpitch_with_kit))
     int("card_style", c.card_style)
-    -- goal celebrations: keys checked here, resolved by the celebration builder (performance_genre stays: it is the
-    -- CONCEDING team's reaction, not the scorer's celebration)
+    -- goal celebrations: keys checked here, resolved by the celebration builder (performance_genre stays: it is the conceding team's reaction)
     local keys = {}
     for _, k in ipairs(c.celebrations or {}) do keys[#keys + 1] = k end
     if c.celebration_auto ~= nil then keys[#keys + 1] = c.celebration_auto end
@@ -689,8 +670,7 @@ return function(input)
     end
   end
 
-  -- `new_model`: a chara_model row with a fixed id, cloned from `from` (a model id, or a character's model; default
-  -- the character's current model) as the base had it, `cells` changed; chara_base `model` becomes it.
+  -- `new_model`: a chara_model row with a fixed id, cloned from `from` (a model id or a character's model; default the character's current model), `cells` changed; chara_base `model` becomes it.
   function X.new_model(m, what, chara, nm)
     local id = U.id(nm.id)
     local src
@@ -768,8 +748,7 @@ return function(input)
     return X.set("B", chara, CB.model, id, m, what .. ".look")
   end
 
-  -- The name / description texts for the text type: rows of the character's own text ids (added for a new
-  -- character; replacing an existing one's).
+  -- Name / description texts for the text type: rows of the character's own text ids (added for a new character, replacing for an existing one).
   function X.texts_of(m, what, chara, key, text, default, add)
     local ids = {}
     for k, c in ipairs { CB.name_text, CB.short_name_text, CB.upper_name_text, CB.description_text } do
@@ -997,9 +976,7 @@ return function(input)
     return false
   end
 
-  -- A «pinned» new character (`base.id` given): the template's chara_base row with the `base` cells, its REF_BATTLE
-  -- row per `battle`, and the cards of `cards` with their own ids. Nothing comes from the id registry; no face icon
-  -- unless `icon` is given.
+  -- A pinned new character (`base.id` given): the template's chara_base row with the `base` cells, its REF_BATTLE row per `battle`, and the cards of `cards` with their own ids. No id registry; no face icon unless `icon` is given.
   local function create_pinned(m, file, d, file_default, key, tpl)
     local bi = X.base:find(BASE_ROW, CB.id, tpl)
     if not bi then return "based_on: not in chara_base" end
@@ -1328,8 +1305,7 @@ return function(input)
     end
   end
 
-  -- the declarations of `list` (traits / move grades) of every `[[character]]` and `[[edit]]` of a file:
-  -- { who, card, list }
+  -- declarations of `list` (traits / move grades) of every `[[character]]` and `[[edit]]` of a file: { who, card, list }
   local function vrfw_decls(f, field)
     local o = {}
     for _, d in ipairs(f.value.character or {}) do

@@ -1,0 +1,28 @@
+# Goalkeeper Barrier: its settings (read by scripts\goalkeeper_barrier.lua at the start; restart the game after a
+# change). docs/game/mechanics/gk-barrier.md
+
+# The GOALKEEPER'S BARRIER (scripts\goalkeeper_barrier.lua, docs/game/mechanics/gk-barrier.md;
+# was Inazuma Fantasy's [gk_barrier] until 2026-10-14): the barrier IS the top `barrier_percent` of each keeper's own bar
+# on the scoreboard (the part that drains first, drawn BRONZE: own team's bar its left end, rival's its right end).
+#   barrier = clamp(keeper bar % - (100 - barrier_percent), 0, barrier_percent)
+# (keeper bar % = the bar as the scoreboard draws it, passed by the HUD graft)
+# While the bar is above (100 - barrier_percent) % (75 %), every shot that reaches that keeper has its power divided by
+# `mitigation` for his save (catch, punch or keeper move); with the bar at 75 % or below he saves against the shot's
+# full power and the bar drops as usual.
+# BLOCK -> KEEPER TENSION: a block move of a team (its tension paid) makes that team keeper's NEXT keeper move cost
+# (1 - tension_discount) x its tension (and usable from that tension on); used up by that move, blocks do not stack;
+# discount_expire_seconds > 0 also ends it after that many match seconds (0 = until he uses a keeper move).
+# block_category / keeper_category: the move slot categories of the game (unit slot byte +0x42: 3 block, 4 keeper);
+# keeper_position: the formation position of the keeper (0); rescan_ms: how often the keepers are looked up.
+[goalkeeper_barrier]
+barrier_percent = 25.0
+mitigation = 1.75
+tension_discount = 0.30
+discount_expire_seconds = 0
+block_category = 3
+keeper_category = 4
+keeper_position = 0
+rescan_ms = 1000
+# true: the HUD draws the plain retail gauge (a solid yellow bar, no bronze sprite) over the barrier share of both keeper
+# bars, whatever the barrier: a test of where the segment lands
+hud_debug = false

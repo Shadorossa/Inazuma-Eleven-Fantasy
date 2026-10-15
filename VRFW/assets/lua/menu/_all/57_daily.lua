@@ -1,4 +1,4 @@
--- menu_engine: daily renewal (VR-Framework base service `VRFW.Daily`; docs/framework/daily.md). Definitions only (this
+-- menu_engine: daily renewal (VR-Framework base service `VRFW.Daily`). Definitions only (this
 -- file runs in every script VM, lua\_all; no engine call at load time). Mechanism only: no content, no UI. Every
 -- number comes from the framework's DLL (CMND_VRFW_DAILY_*, the same Rust code as the Rust API), so a draw is the same
 -- on every PC and in Rust and Lua.

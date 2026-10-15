@@ -1,6 +1,6 @@
--- ===== VRFW outfit_dock BEGIN ===== (docs/framework/outfits.md, research/grafts/vrfw_outfit)
--- Team dock (team_dock_formation_menu): the 3D model of the selected player (UpdateViewChara3DModel, «Ver apariencia»
--- InitChara3DModelByUniformNoWindow) wears the outfit he has in the «Atuendo» slot ([[VRFW.Outfit]] of a mod,
+-- ===== VRFW outfit_dock BEGIN ===== (research/grafts/vrfw_outfit)
+-- Team dock (team_dock_formation_menu): the 3D model of the selected player (UpdateViewChara3DModel, "Ver apariencia"
+-- InitChara3DModelByUniformNoWindow) wears the outfit he has in the "Atuendo" slot ([[VRFW.Outfit]] of a mod,
 -- VR-Framework CMND_VRFW_OUTFIT_OF) instead of the team kit. Only the look command of that model (0xC4232044 on
 -- team02_01_attach_formation_frame) is changed, once per call, while the retail function runs: the wrappers swap
 -- funcLuaMenuCommand for the call and put it back (as the form viewer does); coach (16) / manager (32) looks are

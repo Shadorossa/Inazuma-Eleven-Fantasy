@@ -1,4 +1,4 @@
--- menu_engine: the TEAM EMBLEM GRID (VR-Framework UI piece `VRFW_EmblemGrid`; docs/framework/emblem-grid.md). Definitions
+-- menu_engine: the TEAM EMBLEM GRID (VR-Framework UI piece `VRFW_EmblemGrid`). Definitions
 -- only (this file runs in every script VM, lua\_all; no engine call at load time). A picker of teams drawn as the Battle
 -- Bay grid's emblem tiles, several a row, each with its name and a count under it; the caller owns what a team means.
 --
@@ -23,7 +23,7 @@
 --   g:Built(layer, inst)   the menu's OnOpenLayer for those layers (an emblem is asked for once its instance is built,
 --                          else 30 frames after it was opened)
 -- Keys are polled with CMND_CHECK_INPUT_CMD on the menu controls (the caller turns its menu's own input off while the
--- grid shows). `input = "pad"` (2.0.111): no menu controller is active (a grid over a paused match): the game pad and
+-- grid shows). `input = "pad"`: no menu controller is active (a grid over a paused match): the game pad and
 -- the keyboard are read directly (CMND_VRFW_INPUT_PAD / _KEY; L2 / R2 = Q / E, L1 / R1 = Page Up / Down). Positions: layer space from the screen's top left, y up (1920 x 1080); the rows a page uses are
 -- centred on (cx, cy).
 if VRFW_EmblemGrid == nil then
@@ -250,13 +250,15 @@ if VRFW_EmblemGrid == nil then
       M(EG.C.SET_PRIO, L, k, self.prio + (focus and 1 or 0))
     end
     M(EG.C.LAYER_VISIBLE, L, k, true)
-    for _, m in ipairs(EG.TILE_HIDE) do
-      M(EG.C.MESH_VISIBLE, L, crc(m), false, k)
-    end
+    -- a node's visibility is set on every mesh under it: the parent node first, then the hides (shown last, it
+    -- re-showed every plate / add / ok quad under it)
+    M(EG.C.NODE_VISIBLE, L, crc("_pos_enjoy_list01"), true, k)
     for _, m in ipairs(EG.TILE_HIDE_NODES) do
       M(EG.C.NODE_VISIBLE, L, crc(m), false, k)
     end
-    M(EG.C.NODE_VISIBLE, L, crc("_pos_enjoy_list01"), true, k)
+    for _, m in ipairs(EG.TILE_HIDE) do
+      M(EG.C.MESH_VISIBLE, L, crc(m), false, k)
+    end
     M(EG.C.MESH_VISIBLE, L, crc(EG.PLATE), true, k)
     M(EG.C.MESH_VISIBLE, L, crc(EG.OUTLINE), focus, k)
     M(EG.C.MESH_VISIBLE, L, crc(EG.CHECK), it.full == true, k)

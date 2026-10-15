@@ -55,5 +55,5 @@ if VRFW_Save == nil then
     return s
   end
 end
--- 1.x name (docs/framework/naming.md): the same table under the old name, so mods written for 1.x keep working
+-- 1.x name: the same table under the old name, so mods written for 1.x keep working
 EvtSave = VRFW_Save

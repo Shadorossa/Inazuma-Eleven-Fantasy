@@ -10,15 +10,6 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 311, control = 265, technique = 258, pressure = 194, physical = 182, intelligence = 234, agility = 177, freedom = 271 }
 
-  [[edit.cards]]
-  id = 0x2945A978                                         # FW/DF · forest
-  moves = [
-    { move = 0xB27F13ED, level = 3 },                     # Death Zone
-    { move = 0x91FD9611, level = 15 },                    # Penguin Volley
-    { move = 0x16658ADE, level = 25 },                    # Perfect Penguin
-    { move = 0x24D674A2, level = 52 },                    # Last Resort
-  ]
-
 [[edit]]
 target = "c07020020"                                   # Eddy O'Ryan
 
@@ -27,12 +18,6 @@ target = "c07020020"                                   # Eddy O'Ryan
   rank = 3
   growth = "normal"
   stats = { kick = 267, control = 252, technique = 271, pressure = 193, physical = 178, intelligence = 243, agility = 178, freedom = 247 }
-  moves = [
-    { move = 0x5643C944, level = 3 },                     # Killer Slide
-    { move = 0xB27F13ED, level = 19 },                    # Death Zone
-    { move = 0x88E6A750, level = 27 },                    # Centrifugal Blast
-    { move = 0x142DBE2A, level = 51 },                    # Foul Offence
-  ]
 
 [[edit]]
 target = "c07020030"                                   # Oscar Pio
@@ -43,12 +28,6 @@ target = "c07020030"                                   # Oscar Pio
   rank = 3
   growth = "normal"
   stats = { kick = 240, control = 252, technique = 266, pressure = 198, physical = 181, intelligence = 244, agility = 185, freedom = 259 }
-  moves = [
-    { move = 0x245D62F1, level = 5 },                     # Attack Scan
-    { move = 0xB27F13ED, level = 9 },                     # Death Zone
-    { move = 0x88E6A750, level = 34 },                    # Centrifugal Blast
-    { move = 0x6ADE9E01, level = 40 },                    # Illusory Ball
-  ]
 
 [[edit]]
 target = "c07020040"                                   # Oliver Golightly
@@ -59,12 +38,6 @@ target = "c07020040"                                   # Oliver Golightly
   rank = 3
   growth = "normal"
   stats = { kick = 232, control = 254, technique = 271, pressure = 201, physical = 177, intelligence = 247, agility = 184, freedom = 247 }
-  moves = [
-    { move = 0xAAA6489B, level = 2 },                     # Spiral Shot
-    { move = 0x8331F63E, level = 7 },                     # Divine Dummy
-    { move = 0x88E6A750, level = 26 },                    # Centrifugal Blast
-    { move = 0x7DD6FEF8, level = 53 },                    # Athena's Anthem
-  ]
 
 [[edit]]
 target = "c07020050"                                   # Caesar Pike
@@ -74,12 +47,6 @@ target = "c07020050"                                   # Caesar Pike
   rank = 3
   growth = "normal"
   stats = { kick = 215, control = 251, technique = 248, pressure = 201, physical = 194, intelligence = 239, agility = 185, freedom = 301 }
-  moves = [
-    { move = 0x4031A7F5, level = 5 },                     # Mole Fake
-    { move = 0x0A02DF36, level = 10 },                    # Containment Field
-    { move = 0xE8F5C774, level = 32 },                    # Megalodon
-    { move = 0x2EBA803A, level = 48 },                    # Dirt Ball
-  ]
 
 [[edit]]
 target = "c07020060"                                   # Jimmy Nigh
@@ -89,12 +56,6 @@ target = "c07020060"                                   # Jimmy Nigh
   rank = 3
   growth = "normal"
   stats = { kick = 219, control = 255, technique = 267, pressure = 208, physical = 177, intelligence = 251, agility = 186, freedom = 267 }
-  moves = [
-    { move = 0xA81CA5FD, level = 5 },                     # Sparky Spin
-    { move = 0x142DBE2A, level = 12 },                    # Foul Offence
-    { move = 0x0A02DF36, level = 31 },                    # Containment Field
-    { move = 0x5049A011, level = 52 },                    # Spinning Shot
-  ]
 
 [[edit]]
 target = "c07020070"                                   # Acker Reese
@@ -105,12 +66,6 @@ target = "c07020070"                                   # Acker Reese
   rank = 3
   growth = "normal"
   stats = { kick = 215, control = 208, technique = 221, pressure = 240, physical = 232, intelligence = 315, agility = 194, freedom = 375 }
-  moves = [
-    { move = 0x2B343D01, level = 4 },                     # Cyclone
-    { move = 0x0A02DF36, level = 16 },                    # Containment Field
-    { move = 0x7DAF3139, level = 36 },                    # Emperor Penguin No. 2
-    { move = 0x8331F63E, level = 47 },                    # Divine Dummy
-  ]
 
 [[edit]]
 target = "c07020080"                                   # Ari Zimmerman
@@ -121,12 +76,6 @@ target = "c07020080"                                   # Ari Zimmerman
   rank = 3
   growth = "normal"
   stats = { kick = 186, control = 192, technique = 178, pressure = 242, physical = 254, intelligence = 278, agility = 211, freedom = 335 }
-  moves = [
-    { move = 0x01DB04F5, level = 5 },                     # Defence Scan
-    { move = 0x5643C944, level = 18 },                    # Killer Slide
-    { move = 0x0A02DF36, level = 32 },                    # Containment Field
-    { move = 0xA81CA5FD, level = 51 },                    # Sparky Spin
-  ]
 
 [[edit]]
 target = "c07020090"                                   # Cygnus Starkey
@@ -137,12 +86,6 @@ target = "c07020090"                                   # Cygnus Starkey
   rank = 3
   growth = "normal"
   stats = { kick = 171, control = 198, technique = 192, pressure = 246, physical = 227, intelligence = 289, agility = 212, freedom = 343 }
-  moves = [
-    { move = 0x613ABD43, level = 1 },                     # Dawnrise
-    { move = 0x8331F63E, level = 11 },                    # Divine Dummy
-    { move = 0x7A67325B, level = 32 },                    # Flame Dance
-    { move = 0x6ADE9E01, level = 46 },                    # Illusory Ball
-  ]
 
 [[edit]]
 target = "c07020100"                                   # Larry Lyre
@@ -153,12 +96,6 @@ target = "c07020100"                                   # Larry Lyre
   rank = 3
   growth = "normal"
   stats = { kick = 205, control = 196, technique = 182, pressure = 243, physical = 234, intelligence = 285, agility = 204, freedom = 247 }
-  moves = [
-    { move = 0x2B343D01, level = 1 },                     # Cyclone
-    { move = 0x4E9A9232, level = 16 },                    # Spinning Cut
-    { move = 0x7A67325B, level = 35 },                    # Flame Dance
-    { move = 0xABA58912, level = 58 },                    # Ignited Steal
-  ]
 
 [[edit]]
 target = "c07020110"                                   # Mickey Way
@@ -169,12 +106,6 @@ target = "c07020110"                                   # Mickey Way
   rank = 3
   growth = "normal"
   stats = { kick = 196, control = 209, technique = 201, pressure = 254, physical = 213, intelligence = 250, agility = 259, freedom = 247 }
-  moves = [
-    { move = 0x46A71C03, level = 2 },                     # Black Hole
-    { move = 0x4EFA13AE, level = 15 },                    # Fur Trapper
-    { move = 0x57E122EF, level = 25 },                    # Desecrater
-    { move = 0x8DFA4265, level = 35 },                    # Toughness Block
-  ]
 
 [[edit]]
 target = "c07020130"                                   # Holt Northam
@@ -185,12 +116,6 @@ target = "c07020130"                                   # Holt Northam
   rank = 3
   growth = "normal"
   stats = { kick = 171, control = 198, technique = 176, pressure = 240, physical = 227, intelligence = 278, agility = 204, freedom = 321 }
-  moves = [
-    { move = 0x261BDCA8, level = 1 },                     # Moonsault
-    { move = 0x0A02DF36, level = 16 },                    # Containment Field
-    { move = 0x5643C944, level = 27 },                    # Killer Slide
-    { move = 0x01DB04F5, level = 56 },                    # Defence Scan
-  ]
 
 [[edit]]
 target = "c07020140"                                   # Braveon Halvors
@@ -200,12 +125,6 @@ target = "c07020140"                                   # Braveon Halvors
   rank = 3
   growth = "normal"
   stats = { kick = 261, control = 251, technique = 232, pressure = 196, physical = 197, intelligence = 211, agility = 185, freedom = 251 }
-  moves = [
-    { move = 0xC5EF0563, level = 1 },                     # Three-Legged Rush
-    { move = 0xB1FBC783, level = 12 },                    # Reflect Buster
-    { move = 0x574008CD, level = 20 },                    # Kung Fu Fighting
-    { move = 0x4DDFEDE2, level = 43 },                    # Eagle Buster
-  ]
 
 [[edit]]
 target = "c07020150"                                   # Konrad Hardin
@@ -215,12 +134,6 @@ target = "c07020150"                                   # Konrad Hardin
   rank = 3
   growth = "normal"
   stats = { kick = 197, control = 213, technique = 189, pressure = 217, physical = 227, intelligence = 220, agility = 251, freedom = 271 }
-  moves = [
-    { move = 0xC2BBD4A2, level = 3 },                     # Wild Claw
-    { move = 0x025FD09B, level = 10 },                    # Volcano Cut
-    { move = 0x414BA9BD, level = 29 },                    # Pincer Pinch
-    { move = 0x05567847, level = 45 },                    # Runaway Train
-  ]
 
 [[edit]]
 target = "c07020160"                                   # Aren Yarrow
@@ -230,12 +143,6 @@ target = "c07020160"                                   # Aren Yarrow
   rank = 3
   growth = "normal"
   stats = { kick = 224, control = 240, technique = 257, pressure = 220, physical = 177, intelligence = 247, agility = 192, freedom = 259 }
-  moves = [
-    { move = 0x259F08C6, level = 3 },                     # Whirlwind Twister
-    { move = 0x19025F83, level = 12 },                    # Quick Draw
-    { move = 0x73C5AF40, level = 26 },                    # Dash Accelerator
-    { move = 0x55C71D2A, level = 57 },                    # About Face
-  ]
 
 [[edit]]
 target = "c07020120"                                   # Jude Sharp
@@ -245,12 +152,6 @@ target = "c07020120"                                   # Jude Sharp
   growth_pattern = 1
   growth = "normal"
   stats = { kick = 281, control = 258, technique = 282, pressure = 200, physical = 181, intelligence = 259, agility = 157, freedom = 271 }
-  moves = [
-    { move = 0xC42D6F54, level = 1 },                     # Aikido
-    { move = 0x4E9A9232, level = 1 },                     # Spinning Cut
-    { move = 0xB039ADB4, level = 1 },                     # Inazuma Break
-    { move = 0x32EEA7FE, level = 55 },                    # Death Zone 2
-  ]
 
 [[edit]]
 target = "c11807140"                                   # Percival Travis
@@ -260,12 +161,6 @@ target = "c11807140"                                   # Percival Travis
   rank = 3
   growth = "normal"
   stats = { kick = 224, control = 296, technique = 244, pressure = 217, physical = 144, intelligence = 305, agility = 193, freedom = 213 }
-  moves = [
-    { move = 0x4E22F64D, level = 5 },                     # Transporter Device
-    { move = 0x6BA49049, level = 19 },                    # Mystic Mist
-    { move = 0x2296A01A, level = 37 },                    # Southern Cross
-    { move = 0x6ADE9E01, level = 50 },                    # Illusory Ball
-  ]
 
 [[edit]]
 target = "c11807150"                                   # Dominic Hewitt
@@ -275,12 +170,6 @@ target = "c11807150"                                   # Dominic Hewitt
   rank = 3
   growth = "normal"
   stats = { kick = 246, control = 232, technique = 209, pressure = 204, physical = 192, intelligence = 194, agility = 197, freedom = 335 }
-  moves = [
-    { move = 0x1876DB66, level = 3 },                     # Disaster Strike
-    { move = 0x029E7B25, level = 17 },                    # Gaia Break
-    { move = 0xDCA94D3F, level = 31 },                    # Flash Upper
-    { move = 0x2EBA803A, level = 51 },                    # Dirt Ball
-  ]
 
 [[edit]]
 target = "c11807250"                                   # Celia Hills
@@ -289,9 +178,3 @@ target = "c11807250"                                   # Celia Hills
   id = 0xEA936402                                         # MF/DF · wind
   growth = "normal"
   stats = { kick = 257, control = 227, technique = 251, pressure = 223, physical = 165, intelligence = 231, agility = 186, freedom = 375 }
-  moves = [
-    { move = 0x01DB04F5, level = 1 },                     # Defence Scan
-    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
-    { move = 0xC16279D1, level = 50 },                    # Field of Force
-    { move = 0x32EEA7FE, level = 70 },                    # Death Zone 2
-  ]

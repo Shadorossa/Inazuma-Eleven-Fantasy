@@ -1,8 +1,6 @@
 schema = "VRFW.text_key/1"
-# Texts of the changelog part (format of the text_engine plugin: research/mods/text_engine/README.md). New texts get
-# the id crc32("changelog.<name>"): `news` is the label of the FUNC3 key in the button guide of the «Mods» screen.
-# `sheet_title` is the sheet's title, `date_format` the order of a release's date ({y} year, {m} month, {d} day);
-# the part reads both from this file (crates/plugins/changelog/src/pages.rs).
+# Changelog texts (text_engine format; ids are crc32("changelog.<name>")): `news` labels the FUNC3 key of the Mods screen button guide,
+# `sheet_title` titles the sheet, `date_format` orders a release date ({y} year, {m} month, {d} day).
 default_lang = "en"
 
 [ja.new]

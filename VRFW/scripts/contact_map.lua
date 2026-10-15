@@ -1,41 +1,17 @@
--- VR-Framework › contact maps (docs/framework/contact-map.md, VRFW 2.1). Declarations: every active mod's
--- content\contact_maps\*.toml (`VRFW.contact_map/1`): [[VRFW.ContactSet]] (a set a mod's entry opens: its title and the
--- two currencies) and [[VRFW.ContactMap]] (a page of the set: kind "zones" / "network" / "list", its background) with
--- its [[VRFW.ContactMap.Zone]] pins / sections, [[VRFW.ContactMap.Node]] players (and, on a network, gates / open
--- tiles with their positions and links) and [[VRFW.ContactMap.Item]] items for sale. This script only SERVES them to
--- the screen vrfw_contact_map_menu (game Lua) through three commands; recruiting, prices, the per-save record and the
--- strict order of a network are the screen's (VRFW_Recruit, assets\lua\menu\_all\62_recruit.lua). Nothing here names
--- a game, a character or a mod.
---
---   CMND_VRFW_CONTACT_SETS()                      -> { {key, crc, title, maps}, ... } every declared set
---   CMND_VRFW_CONTACT_MAPS(set, lang)             -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex,
---                                                    sprite, players, excl (the cards the set's Exclude took off
---                                                    that map)}, ... }, reveal ([debug] reveal_all: the
---                                                    view-everything mode) } (set = crc32 of "<mod>.<name>" or the
---                                                    text; lang = CMND_GET_LANGUAGE_CODE)
---   CMND_VRFW_CONTACT_MAP(map, lang)              -> { key, kind, title, tex, sprite, strict (a network: false =
---                                                    every tile open, `Strict = false`), zones = { {name, title, x, y,
---                                                    count, tex, sprite, aw, ah (the zone's own map, its size)} }, items = { {item, price, title} }, nodes = { {kind,
---                                                    zone, card, face, level, price, name, x, y, links = {..},
---                                                    reqs = { {kind = "player", ids, count, name} | {kind = "item",
---                                                    id, count, title (the shelf's / a currency's row)} | {kind =
---                                                    "team_level" / "element" / "position" / "wins" / "goals", count,
---                                                    element, position} }, story (StoryOnly: signed in the game,
---                                                    not here), notes = {text, ...} (its Notes, in that language) } } }
---                                                    (map = its key text or crc32)
--- Titles go out as crc32 of their menu_text row id (the screen reads them with CMND_TEXT_GET); character names are read
--- here from the game's chara_text in the asked language.
+-- Contact maps (schema VRFW.contact_map/1): serves every active mod's content\contact_maps\*.toml to the screen vrfw_contact_map_menu.
+-- Declarations: [[VRFW.ContactSet]], [[VRFW.ContactMap]] with its Zone / Node / Item entries. Recruiting, prices and the per-save record are the screen's.
+--   CMND_VRFW_CONTACT_SETS()          -> { {key, crc, title, maps}, ... }  every declared set
+--   CMND_VRFW_CONTACT_MAPS(set, lang) -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex, sprite, players, excl}, ... }, reveal }  (set = crc32 of "<mod>.<name>" or the text)
+--   CMND_VRFW_CONTACT_MAP(map, lang)  -> { key, kind, title, tex, sprite, strict, zones = {...}, items = {...}, nodes = { {kind, zone, card, face, level, price, name, x, y, links, reqs, story, notes} } }  (map = key text or crc32)
+-- Titles are sent as crc32 of their menu_text row id; character names are read from the game's chara_text in the asked language.
 
 ContactMap = ContactMap or {}
 
 local function warn(...) VRFW.warn("contact_map:", ...) end
 local function info(...) VRFW.log("contact_map:", ...) end
 
--- TEMPORARY view-everything mode (owner 2026-10-13, config.toml [debug] reveal_all; OFF for players): the screen draws
--- every tile of every map open (faces, names, links) with a «MODO VISTA» mark; signing keeps its real rules (the
--- strict order, requirements, price) and nothing is written by it. The same key is the game_state
--- vrfw.debug.reveal_all (content\game\contact_map.toml) for the mods' own view-everything parts (Inazuma Fantasy's
--- office hub).
+-- Debug view-everything mode (config.toml [debug] reveal_all): the screen draws every tile open; signing keeps its real rules and writes nothing.
+-- The same key is the game_state vrfw.debug.reveal_all.
 local REVEAL_ALL = VRFW.files.config("debug.reveal_all") == true
 if REVEAL_ALL then
   warn("[debug] reveal_all is ON: view-everything mode (contact maps, office pages) - turn it off for players")
@@ -49,7 +25,7 @@ end
 
 local function crc(s) return u32(VRFW.ui.crc32(s)) end
 
--- "0x…" / decimal text / a number -> the number; nil otherwise
+-- "0x..." / decimal text / a number -> the number; nil otherwise
 local function id_of(v)
   if type(v) == "number" then return u32(v) end
   if type(v) ~= "string" then return nil end
@@ -108,20 +84,14 @@ local function req_list(mod, where, list)
 end
 
 -- ---------------------------------------------------------------------------------------------- own faces
--- A player with no face of his own (no `<internal name>_l.g4tx` face icon in the game's or a mod's files: story filler,
--- characters that barely exist) is drawn by the engine with the default face (Mark Evans') on every plate, pin and
--- card: such players are left out of every map (owner 2026-10-12). Derived from the data: the node's `Face`, else the
--- internal name (chara_base `name`) of its `Base` / of its card's base. Cannot tell (no host, no tables): kept.
+-- A player with no face icon of his own would be drawn with the default face, so such players are left out of every map.
+-- Derived from the data: the node's `Face`, else the internal name (chara_base `name`) of its `Base` / its card's base. Cannot tell: kept.
 local FACE_FILE = "data/dx11/menu/200_icon/10_icon_chr/face/%s_l.g4tx"
 local FACES = { has = {} }
 
--- The framework's ONE character index (VRFW.chara: chara_base / chara_param read once natively, by column name, shared
--- by every script; 2.3, docs/framework/chara-index.md): internal name and name text per chara_base id, chara_base id per
--- card, asked per id and kept here. Before 2.3 this script read both tables itself (~13k rows apiece, columns by
--- position: «character index read in 1458 ms»).
+-- The framework's shared character index (VRFW.chara): internal name and name text per chara_base id, chara_base id per card; asked per id and cached here.
 
--- the key of a game table as the game loads it: `<stem>.cfg.bin` when the file list has it, else the newest
--- `<stem>_<version>.cfg.bin` (VRFW.table.raw takes the highest version of a glob)
+-- Key of a game table as the game loads it: `<stem>.cfg.bin` when listed, else the newest `<stem>_<version>.cfg.bin`.
 local function table_key(stem)
   local plain = stem .. ".cfg.bin"
   local ok, k = pcall(VRFW.table.keys, plain)
@@ -129,7 +99,7 @@ local function table_key(stem)
   return stem .. "_*.cfg.bin"
 end
 
--- a table whose missing keys are asked once from `f` (nil answers are asked again: few, never in a loop)
+-- A table whose missing keys are asked once from `f` (nil answers are asked again)
 local function lazy(f)
   return setmetatable({}, { __index = function(t, k)
     local v = f(k)
@@ -189,24 +159,15 @@ local function own_face(face, base, card)
 end
 
 -- ---------------------------------------------------------------------------------------------- excluded cards
--- [[VRFW.ContactSet]] `Exclude = [ ... ]` (2026-10-13): cards a set keeps OFF all its maps, as a set DERIVED from the
--- game data (never a list of ids). Since 2.3 a card set of the framework (the one selector vocabulary, [[VRFW.CardSet]],
--- evaluated natively over the one character index: docs/framework/chara-index.md §4). Each entry is:
---   "<mod>.<name>"                        a declared [[VRFW.CardSet]] (e.g. Inazuma Fantasy's premade miximax set)
---   { aura_variant = { aura_type = 2 } }  a card-set rule (any key of the vocabulary: series, team, aura_variant,
---                                         ideal_miximax_partner, ...)
---   { AuraVariants = { AuraType = 2 } }   2.2 spelling of { aura_variant = { aura_type = 2 } }: the pre-made variant
---                                         cards of that aura type (0 keshin, 1 armed, 2 miximax, ...)
---   { IdealMiximaxPartners = true }       2.2 spelling of { ideal_miximax_partner = true } (or `{ AuraType = n }`):
---                                         every card of the characters that are only ever the PARTNER of the game's
---                                         ideal (pre-made) miximax pairs (Zeta, Nobunaga, Okita, ...)
--- On every map of the set: a player node of such a card is taken out (a network links the tiles around it to each
--- other, so the strict order runs on as if he were signed: no empty tile, no cut branch); requirements drop such cards
--- (a requirement left without players goes; a gate left without requirements goes, re-linked the same way); zone counts
--- follow, a zone left without players goes. The cards stay what they are in the save (owned, in the club): the record
--- «contact.cards.<map>» may still name one (the screen skips the map's `excl` when it counts).
+-- [[VRFW.ContactSet]] `Exclude = [ ... ]`: cards a set keeps off all its maps, derived from game data. Each entry is:
+--   "<mod>.<name>"                        a declared [[VRFW.CardSet]]
+--   { aura_variant = { aura_type = 2 } }  a card-set rule (any key of the card-set vocabulary)
+--   { AuraVariants = { AuraType = 2 } }   legacy spelling of aura_variant (0 keshin, 1 armed, 2 miximax, ...)
+--   { IdealMiximaxPartners = { AuraType = n } }  legacy spelling of { ideal_miximax_partner = { aura_type = n } }; { IdealMiximaxPartners = true } = { ideal_miximax_partner = true }.
+-- On every map of the set: such player nodes are removed (networks relink the tiles around them), requirements drop such cards, empty gates and zones go.
+-- The cards stay in the save; the screen skips the map's `excl` when counting.
 
--- one Exclude entry as a card-set rule (a set name stays a text) and its text for the log; nil when not one
+-- One Exclude entry as a card-set rule (a set name stays a text) and its log text; nil when not one
 local function exclude_rule(r)
   if type(r) == "string" and r ~= "" then return r, "set " .. r end
   if type(r) ~= "table" then return nil end
@@ -218,13 +179,13 @@ local function exclude_rule(r)
   if r.IdealMiximaxPartners == true or type(r.IdealMiximaxPartners) == "table" then
     local t = type(r.IdealMiximaxPartners) == "table" and tonumber(r.IdealMiximaxPartners.AuraType) or nil
     return { ideal_miximax_partner = t and { aura_type = t } or true },
-      "ideal miximax partners of type " .. tostring(t or 2)
+      "ideal miximax partners of " .. (t and ("type " .. t) or "any type")
   end
   if next(r) ~= nil then return r, "rule" end
   return nil
 end
 
--- the card set of a set's Exclude entries: card -> true, and the entries as text (log)
+-- Card set of a set's Exclude entries: card -> true, and the entries as text (log)
 local function exclusion(s)
   local rules, what = {}, {}
   for k, r in ipairs(s.exclude) do
@@ -250,7 +211,7 @@ local function exclusion(s)
   return ex, table.concat(what, ", ")
 end
 
--- take the excluded cards off one map; returns the cards taken off (sorted)
+-- Take the excluded cards off one map; returns the cards taken off (sorted)
 local function exclude_map(M, ex)
   local gone, taken, took = {}, {}, {}
   for i, n in ipairs(M.nodes) do
@@ -284,7 +245,7 @@ local function exclude_map(M, ex)
   local list = taken
   table.sort(list)
   if next(gone) == nil then return list end
-  -- a network: each group of linked excluded tiles is replaced by links between all the tiles around it
+  -- a network: each group of linked excluded tiles is replaced by links between all tiles around it
   local extra = {}
   if M.kind == "network" then
     local nb = {}
@@ -329,7 +290,7 @@ local function exclude_map(M, ex)
       end
     end
   end
-  -- renumber the kept nodes (links follow), recount players and zones
+  -- renumber kept nodes (links follow), recount players and zones
   local new, kept = {}, {}
   for i, n in ipairs(M.nodes) do
     if not gone[i] then
@@ -405,11 +366,7 @@ end
 
 -- ---------------------------------------------------------------------------------------------- names
 
--- 2026-10-13 perf (owner log: ContactMap.Map 208 ms at the first map): the names came from VRFW.files.text_rows of the
--- whole chara_text (21k rows, every form) on the game thread. Now the text ids the maps name (nodes, player
--- requirements) are listed when the declarations are read (NEED), and one read per language asks only for them
--- (VRFW.files.text_rows(key, ids), VRFW 2.2.155: the other rows are never turned into Lua values; an older framework
--- answers every row, as before). Done at CMND_VRFW_CONTACT_MAPS (the screen's open), kept per language.
+-- Names are read per language for only the text ids the maps name (NEED, collected when declarations are read), at CMND_VRFW_CONTACT_MAPS, and kept per language.
 local NAMES = { lang = nil, of = {} }   -- of[text id] = the name (furigana reduced)
 local NEED = { ids = {}, list = {} }    -- the name text ids the maps use
 
@@ -430,7 +387,7 @@ local function need_card(c)
   if b then need_id(CHARA.text_of[b]) end
 end
 
--- every name a map can serve (ContactMap.Map: a node's base / card, a player requirement's first card)
+-- Every name a map can serve (a node's base / card, a player requirement's first card)
 local function need_texts()
   NEED = { ids = {}, list = {} }
   for _, M in ipairs(MAPS) do
@@ -473,7 +430,7 @@ local function names_for(lang)
   info(string.format("names (%s): %d text ids read in %d ms", lang, #NEED.list, math.floor(VRFW.now() - t0)))
 end
 
--- a game text table's rows in a language (Notes), kept per table and language
+-- A game text table's rows in a language (Notes), kept per table and language
 local GAME_TEXT = {}
 local function game_text(tbl, lang, id)
   local key = tbl .. "/" .. lang
@@ -488,8 +445,7 @@ local function game_text(tbl, lang, id)
   return r and r[0] or nil
 end
 
--- a note's text: <VALUE1> = its value, the progress «<ACHIEVE_COUNT>/» left out (the map does not know it), line
--- breaks as spaces
+-- A note's text: <VALUE1> = its value, the progress «<ACHIEVE_COUNT>/» left out, line breaks as spaces
 local function note_text(nt, lang)
   local s = game_text(nt.table, lang, nt.id)
   if type(s) ~= "string" or s == "" then return nil end
@@ -569,8 +525,7 @@ local function load()
             base = id_of(n.Base) or 0, face = n.Face or "", level = tonumber(n.Level) or 1, price = tonumber(n.Price) or 0,
             x = tonumber(pos[1]) or 0, y = tonumber(pos[2]) or 0, links = links,
             reqs = req_list(f.mod, where .. ": node " .. ni, n.Requires), story = n.StoryOnly == true, notes = {} }
-          -- StoryOnly (2026-10-12): a player the game signs elsewhere (Victory Road's story scouts): shown with his
-          -- conditions (Notes: rows of a game text table, <VALUE1> = Value), never signed from the map
+          -- StoryOnly: a player the game signs elsewhere is shown with his conditions (Notes) but never signed from the map
           for _, t in ipairs(type(n.Notes) == "table" and n.Notes or {}) do
             local id = id_of(t.Id)
             if id and type(t.Text) == "string" and t.Text:match("^[%w_]+$") then
@@ -582,8 +537,7 @@ local function load()
             node.kind = "open"
           end
           if node.kind == "player" and own_face(node.face, node.base, node.card) == false then
-            -- no face of his own: a network keeps the tile as a passage (its links, the strict order); elsewhere the
-            -- node stays in the list (the save's record keeps the node numbers) as «hidden», which no page shows
+            -- no face of his own: a network keeps the tile as a passage; elsewhere the node stays in the list as «hidden»
             node.kind = M.kind == "network" and "open" or "hidden"
             M.faceless = M.faceless or {}
             M.faceless[#M.faceless + 1] = node
@@ -596,7 +550,7 @@ local function load()
         end
         if M.faceless ~= nil then
           if M.players == 0 then
-            -- every player of the map without a face: the check itself is wrong (paths of another game build?), keep them
+            -- Every player of the map lacks a face: the face check is assumed wrong (for example, another game build); keep them.
             warn(key .. ": no player has a face icon (" .. FACE_FILE .. "): the face check is skipped for this map")
             for _, node in ipairs(M.faceless) do
               node.kind = "player"
@@ -719,12 +673,7 @@ function ContactMap.Map(map, code)
   return out
 end
 
--- the body types a menu model pose has (menu_chara_model_pose_config: MENU_CHARA_BODY_TYPE_POSE_INFO id -> a slice of
--- MENU_CHARA_BODY_TYPE_POSE_DATA bodyType). A menu building a 3D model sends the pose only for these: the engine
--- dereferences its lookup unchecked (2026-10-12 crash, docs/framework/contact-map.md §8.4).
--- 2026-10-13 perf (owner log: ContactMap.PoseBodies 180.7 ms, a HITCH of 181 ms, at every first open): the two lists
--- came through VRFW.table.rows (the table index and every column by name); now one VRFW.table.raw read of each list
--- (2 columns) indexes EVERY pose of the file at once, when the script loads (bottom of this file); a call is a lookup.
+-- Body types a menu model pose has (menu_chara_model_pose_config); a menu building a 3D model sends the pose only for these.
 local POSE_STEM = "data/common/gamedata/menu/menu_chara_model_pose_config"
 local POSES = nil                      -- pose id -> { body types }
 local function scalar(v)               -- an RDBN field of length 1 may come as { value }
@@ -765,9 +714,7 @@ local function pose_index()
 end
 
 local POSE_LOGGED = {}
--- Each player in his own team's kit (owner 2026-10-13, docs/framework/contact-map.md §18): the uniform the screen's 3D
--- model is built with, derived per card from the data by lib/chara_kit.lua (his chara_base team's belong_team kit
--- of his series' era, else a team_config roster's kit; 0 = none: the build's default). Cached per card.
+-- Each player in his own team's kit: the uniform for the screen's 3D model, derived per card by lib/chara_kit.lua (0 = none: the build's default). Cached per card.
 --   CMND_VRFW_CONTACT_KIT(card) -> { uniform, flags (2 = the keeper shirt), source (belong / roster / none) }
 local Kit = require "lib/chara_kit"
 function ContactMap.Kit(card)
@@ -785,17 +732,8 @@ function ContactMap.PoseBodies(pose)
   return out
 end
 
--- The declarations, the face check and the character index are kept for the whole session (2026-10-13: dropping them
--- on every title return re-read them all - about 1 s - on the screen's next open); a reload of the mod's scripts runs
--- this file again and starts from nothing.
---
--- 2026-10-13 perf (owner log, install83: «character index read in 1458 ms», «declarations read in 2087 ms»,
--- ContactMap.Maps 2086 ms and PoseBodies 181 ms on the GAME THREAD at the first open): everything that does not depend on
--- the save or the language is built HERE, when the script loads - at boot, on the framework's init thread, while the
--- game shows its splash / title (a reload of the scripts: on the thread that reloads). A first open then only reads
--- the names of its language (one filtered read, names_for) and serves tables. Nothing here calls the game; the inputs
--- (the mods' contact map TOML, chara_base / chara_param, aura_skill_config, menu_chara_model_pose_config) do not change
--- while the game runs. When this fails, the first call builds it as before (its WARN says why).
+-- The declarations, face check and character index are built once at script load (boot, off the game thread) and kept for the session.
+-- Inputs do not change while the game runs; if the build fails, the first call builds it (its WARN says why).
 do
   local t0 = VRFW.now()
   local ok, e = pcall(function()

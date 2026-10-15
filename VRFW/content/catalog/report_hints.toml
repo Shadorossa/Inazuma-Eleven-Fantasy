@@ -1,9 +1,6 @@
 schema = "VRFW.catalog/1"
-# The fix hints of the report codes (M4, docs/framework/catalogs.md): what the Mods panel report, `vrfw check` /
-# `vrfw explain` and the troubleshooting page show next to an entry of that code (vr_core::diagnose::hint). Built
-# into the framework: the installed copy must stay the same data (else it is reported and not read).
-# [[hint]] code, text; the order is the troubleshooting page's. A code without a hint is a type's note: its
-# message says what happened.
+# Fix hints per report code, shown by the Mods panel report, `vrfw check` and `vrfw explain`. Built into the framework.
+# [[hint]] code, text; a code without a hint is a type's own note.
 
 [[hint]]
 code = "unknown_key"
@@ -145,7 +142,7 @@ text = "a mod script failed (an error, its CPU budget or its memory cap) and was
 code = "table_limit"
 text = "the table is near or past what the game engine takes: remove rows (or switch off a mod that adds them); past it the game misbehaves or crashes"
 
-# the types' own codes (their pages in docs/framework/types/)
+# codes owned by individual types
 [[hint]]
 code = "own_whole_file"
 text = "the mod ships the whole game file AND a base table of it: delete one of the two"

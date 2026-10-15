@@ -1,0 +1,187 @@
+schema = "VRFW.technique/3"
+# Special Players › the generic elemental passives: «<element> plus», the carrier's own special moves of that element
+# ×1.15 (config.toml [element_plus] factor; the effect value 15 mirrors it). Assigned like any generic passive
+# (Utilities' «Configuración de pasivas»: content\passive_config\element_plus.toml), not an own passive. The power
+# itself is scripts\element_plus.lua (TechniquePower post-hook). Same keys and text ids as Inazuma Fantasy had, so
+# saved choices keep working.
+default_lang = "none"
+
+[[passive_effect_def]]
+key = "evt_psdef_aire_plus"
+info = [5, 0, 0]
+entries = [
+  ["EXEC_TIMING_DATA", 951],
+  ["TARGET_DATA", 2],
+  ["EXEC_DATA", 1, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_BEG", 1],
+  ["EFFECT_DATA", 0x713C7D84, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_END"],
+  ["GRAND_TOTAL_INFO", 0, 0, 0],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_BEG", 1],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA", 2],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_END"],
+]
+
+[[passive]]
+key = "evt_ps_aire_plus"
+from = "ps10020"
+cells = { desc_text = 0xB2F9BD34 }
+effects = [[0xAB05C0F1, 15, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A]]
+
+[[text]]
+id = 0xB2F9BD34
+kind = "noun"
+add = true
+es = "Poder de las supertécnicas propias de aire [CPASSIVE01]×1,15[C]"
+en = "Power of his own Wind special moves [CPASSIVE01]×1.15[C]"
+fr = "Puissance de ses supertechniques de vent [CPASSIVE01]×1,15[C]"
+de = "Stärke seiner eigenen Wind-Techniken [CPASSIVE01]×1,15[C]"
+it = "Potenza delle sue supertecniche di vento [CPASSIVE01]×1,15[C]"
+pt = "Poder das próprias supertécnicas de vento [CPASSIVE01]×1,15[C]"
+ja = "自分の風属性の必殺技の威力[CPASSIVE01]×1.15[C]"
+zh_hans = "自身风属性必杀技的威力[CPASSIVE01]×1.15[C]"
+zh_hant = "自身風屬性必殺技的威力[CPASSIVE01]×1.15[C]"
+
+[[passive_effect_def]]
+key = "evt_psdef_bosque_plus"
+info = [5, 0, 0]
+entries = [
+  ["EXEC_TIMING_DATA", 951],
+  ["TARGET_DATA", 2],
+  ["EXEC_DATA", 1, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_BEG", 1],
+  ["EFFECT_DATA", 0x713C7D84, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_END"],
+  ["GRAND_TOTAL_INFO", 0, 0, 0],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_BEG", 1],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA", 2],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_END"],
+]
+
+[[passive]]
+key = "evt_ps_bosque_plus"
+from = "ps10020"
+cells = { desc_text = 0x6BAA288C }
+effects = [[0xC9DB1884, 15, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A]]
+
+[[text]]
+id = 0x6BAA288C
+kind = "noun"
+add = true
+es = "Poder de las supertécnicas propias de bosque [CPASSIVE01]×1,15[C]"
+en = "Power of his own Forest special moves [CPASSIVE01]×1.15[C]"
+fr = "Puissance de ses supertechniques de forêt [CPASSIVE01]×1,15[C]"
+de = "Stärke seiner eigenen Wald-Techniken [CPASSIVE01]×1,15[C]"
+it = "Potenza delle sue supertecniche di foresta [CPASSIVE01]×1,15[C]"
+pt = "Poder das próprias supertécnicas de floresta [CPASSIVE01]×1,15[C]"
+ja = "自分の林属性の必殺技の威力[CPASSIVE01]×1.15[C]"
+zh_hans = "自身林属性必杀技的威力[CPASSIVE01]×1.15[C]"
+zh_hant = "自身林屬性必殺技的威力[CPASSIVE01]×1.15[C]"
+
+[[passive_effect_def]]
+key = "evt_psdef_fuego_plus"
+info = [5, 0, 0]
+entries = [
+  ["EXEC_TIMING_DATA", 951],
+  ["TARGET_DATA", 2],
+  ["EXEC_DATA", 1, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_BEG", 1],
+  ["EFFECT_DATA", 0x713C7D84, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_END"],
+  ["GRAND_TOTAL_INFO", 0, 0, 0],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_BEG", 1],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA", 2],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_END"],
+]
+
+[[passive]]
+key = "evt_ps_fuego_plus"
+from = "ps10020"
+cells = { desc_text = 0x45101513 }
+effects = [[0x805FE360, 15, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A]]
+
+[[text]]
+id = 0x45101513
+kind = "noun"
+add = true
+es = "Poder de las supertécnicas propias de fuego [CPASSIVE01]×1,15[C]"
+en = "Power of his own Fire special moves [CPASSIVE01]×1.15[C]"
+fr = "Puissance de ses supertechniques de feu [CPASSIVE01]×1,15[C]"
+de = "Stärke seiner eigenen Feuer-Techniken [CPASSIVE01]×1,15[C]"
+it = "Potenza delle sue supertecniche di fuoco [CPASSIVE01]×1,15[C]"
+pt = "Poder das próprias supertécnicas de fogo [CPASSIVE01]×1,15[C]"
+ja = "自分の火属性の必殺技の威力[CPASSIVE01]×1.15[C]"
+zh_hans = "自身火属性必杀技的威力[CPASSIVE01]×1.15[C]"
+zh_hant = "自身火屬性必殺技的威力[CPASSIVE01]×1.15[C]"
+
+[[passive_effect_def]]
+key = "evt_psdef_montana_plus"
+info = [5, 0, 0]
+entries = [
+  ["EXEC_TIMING_DATA", 951],
+  ["TARGET_DATA", 2],
+  ["EXEC_DATA", 1, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_BEG", 1],
+  ["EFFECT_DATA", 0x713C7D84, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_END"],
+  ["GRAND_TOTAL_INFO", 0, 0, 0],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_BEG", 1],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA", 2],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_END"],
+]
+
+[[passive]]
+key = "evt_ps_montana_plus"
+from = "ps10020"
+cells = { desc_text = 0xDF6D12C1 }
+effects = [[0xC334E131, 15, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A]]
+
+[[text]]
+id = 0xDF6D12C1
+kind = "noun"
+add = true
+es = "Poder de las supertécnicas propias de montaña [CPASSIVE01]×1,15[C]"
+en = "Power of his own Mountain special moves [CPASSIVE01]×1.15[C]"
+fr = "Puissance de ses supertechniques de montagne [CPASSIVE01]×1,15[C]"
+de = "Stärke seiner eigenen Berg-Techniken [CPASSIVE01]×1,15[C]"
+it = "Potenza delle sue supertecniche di montagna [CPASSIVE01]×1,15[C]"
+pt = "Poder das próprias supertécnicas de montanha [CPASSIVE01]×1,15[C]"
+ja = "自分の山属性の必殺技の威力[CPASSIVE01]×1.15[C]"
+zh_hans = "自身山属性必杀技的威力[CPASSIVE01]×1.15[C]"
+zh_hant = "自身山屬性必殺技的威力[CPASSIVE01]×1.15[C]"
+
+[[passive_effect_def]]
+key = "evt_psdef_neutro_plus"
+info = [5, 0, 0]
+entries = [
+  ["EXEC_TIMING_DATA", 951],
+  ["TARGET_DATA", 2],
+  ["EXEC_DATA", 1, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_BEG", 1],
+  ["EFFECT_DATA", 0x713C7D84, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A],
+  ["EFFECT_DATA_LIST_END"],
+  ["GRAND_TOTAL_INFO", 0, 0, 0],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_BEG", 1],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA", 2],
+  ["GRAND_TOTAL_INFO_BUFF_ICON_DATA_LIST_END"],
+]
+
+[[passive]]
+key = "evt_ps_neutro_plus"
+from = "ps10020"
+cells = { desc_text = 0xD85DCFFC }
+effects = [[0x8B25708C, 15, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A, 0xC4DC849A]]
+
+[[text]]
+id = 0xD85DCFFC
+kind = "noun"
+add = true
+es = "Poder de las supertécnicas propias de neutro [CPASSIVE01]×1,15[C]"
+en = "Power of his own Void special moves [CPASSIVE01]×1.15[C]"
+fr = "Puissance de ses supertechniques de néant [CPASSIVE01]×1,15[C]"
+de = "Stärke seiner eigenen Neutral-Techniken [CPASSIVE01]×1,15[C]"
+it = "Potenza delle sue supertecniche neutre [CPASSIVE01]×1,15[C]"
+pt = "Poder das próprias supertécnicas de neutro [CPASSIVE01]×1,15[C]"
+ja = "自分の無属性の必殺技の威力[CPASSIVE01]×1.15[C]"
+zh_hans = "自身无属性必杀技的威力[CPASSIVE01]×1.15[C]"
+zh_hant = "自身無屬性必殺技的威力[CPASSIVE01]×1.15[C]"

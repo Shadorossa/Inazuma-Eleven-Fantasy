@@ -1,42 +1,44 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › locked shop rows (service S12 of VRFW 2.3, docs/framework/types/shop.md §13). The run time is
-# scripts\shop_rows.lua: it reads every mod's content\shop_locks\*.toml (`VRFW.shop_lock/1`, keys:
-# content\types\shop_lock.toml) and, only when a mod declares locked rows, installs the two detours below. **Nothing
-# here is installed at start** (`apply = "script"`): with no declaration the shops list their rows as the game does.
-#
-# The shop list builder asks EvalCondition for the compiled condition (SHOP_INFO_ITEM +0x58) of every row with lineup
-# flag 0 (r14 = the row, rbx = SHOP_INFO): a row whose condition fails is never listed. After the game's answer, a
-# hidden row of a declared shop whose condition is a progress gate is answered «visible» and recorded as locked. The
-# list item fill hands each row to the generic list-view fill (layerItem, &args, &row): layer instance -> row id, so the
-# menu Lua asks which of its recycled row instances shows a locked row.
+# Locked shop rows. Runtime: scripts/shop_rows.lua reads each mod's content/shop_locks/*.toml and installs the two hooks below only when a mod declares locked rows (`apply = "script"`).
+# Condition hook: a hidden row of a declared shop whose condition is a progress gate is shown as visible and recorded as locked.
+# Fill hook: maps each list-item layer instance to its row id so menu Lua can tell which instance shows a locked row.
 
-# bool EvalCondition(const u8* compiled) at the shop list builder's call: post
+# bool EvalCondition(const u8* compiled), post hook.
 [[VRFW.Hook]]
 name = "ShopRows.Condition"
 game = "Shop.RowCondition"
 apply = "script"
 
-# u64 ListViewFill(layerItem, args*, row**) at the shop list item fill's call: pre
+# u64 ListViewFill(layerItem, args*, row**), pre hook.
 [[VRFW.Hook]]
 name = "ShopRows.Fill"
 game = "Shop.RowFill"
 apply = "script"
 
-# ------------------------------------------------------------------------------------------------ commands
+# --- commands ---
 
-# (shop ids…) -> live: the shops whose rows are locked from now on (replaces the declared list until a title return;
-# no argument = ask)
+# (shop ids...) -> live: shops whose rows are locked from now on (no argument = query).
 [[VRFW.Command]]
 name = "CMND_VRFW_SHOP_LOCK_SHOPS"
 handler = "ShopRows.Shops"
 
-# (inst) -> locked, row id, kind, a, b: the row a layer instance of the shop list shows (shop01_02_list_item instance)
+# (inst) -> locked, row id, kind, a, b: the row a shop list layer instance shows.
 [[VRFW.Command]]
 name = "CMND_VRFW_SHOP_LOCKED"
 handler = "ShopRows.Locked"
 
-# (item) -> locked, kind, a, b: a row selling this item is locked
+# (item) -> locked, kind, a, b: whether a row selling this item is locked.
 [[VRFW.Command]]
 name = "CMND_VRFW_SHOP_LOCKED_ITEM"
 handler = "ShopRows.LockedItem"
+
+# (shop id) -> whether rows of this shop are listed as locked.
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_LOCK_ON"
+handler = "ShopRows.On"
+
+# (kind, a, b, language code) -> form, name, number, text id: what a locked row waits for, named from the game's tables.
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_LOCK_SOURCE"
+handler = "ShopRows.Source"

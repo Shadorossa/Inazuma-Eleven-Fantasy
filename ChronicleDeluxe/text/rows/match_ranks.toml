@@ -1,0 +1,43 @@
+# Chronicle Deluxe: the lines of its match ranks S / A / B in the chain board's help window (Tab «Ayuda»), the Text of
+# content\defaults\match_rank.toml (were the VR-Framework's rows vrfw_chain_help_s / _a / _b until 2026-10-14).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the help window (Tab «Ayuda»): the rank S line, right of its badge (content\defaults\match_rank.toml Text)
+[[row]]
+id = "chronicle_deluxe_rank_help_s"
+es = "Gana por 5 goles y sin encajar"
+en = "Win by 5 goals without conceding"
+fr = "Gagnez par 5 buts sans en encaisser"
+de = "Gewinne mit 5 Toren ohne Gegentor"
+it = "Vinci con 5 gol di scarto senza subirne"
+pt = "Vence por 5 golos sem sofrer"
+ja = "5点差以上・無失点で勝利"
+zh_hans = "净胜5球以上且零失球"
+zh_hant = "淨勝5球以上且零失球"
+
+# the help window (Tab «Ayuda»): the rank A line, right of its badge (content\defaults\match_rank.toml Text)
+[[row]]
+id = "chronicle_deluxe_rank_help_a"
+es = "Gana por 3 goles y sin encajar"
+en = "Win by 3 goals without conceding"
+fr = "Gagnez par 3 buts sans en encaisser"
+de = "Gewinne mit 3 Toren ohne Gegentor"
+it = "Vinci con 3 gol di scarto senza subirne"
+pt = "Vence por 3 golos sem sofrer"
+ja = "3点差以上・無失点で勝利"
+zh_hans = "净胜3球以上且零失球"
+zh_hant = "淨勝3球以上且零失球"
+
+# the help window (Tab «Ayuda»): the rank B line, right of its badge (content\defaults\match_rank.toml Text)
+[[row]]
+id = "chronicle_deluxe_rank_help_b"
+es = "Gana el partido"
+en = "Win the match"
+fr = "Gagnez le match"
+de = "Gewinne das Spiel"
+it = "Vinci la partita"
+pt = "Vence a partida"
+ja = "試合に勝利"
+zh_hans = "赢得比赛"
+zh_hant = "贏得比賽"

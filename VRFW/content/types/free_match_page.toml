@@ -1,7 +1,4 @@
-# The declaration `[[VRFW.FreeMatchPage]]` of the free-match tab pages (service S8 of VRFW 2.3, docs/framework/
-# free-match-tabs.md §11): what a mod's content\free_match_pages\*.toml may say. Read by scripts\free_match_pages.lua at
-# start (every key is checked against this file: an unknown key, a wrong type or a value out of range leaves that
-# declaration out with a warning). Not a table map.
+# Declaration [[VRFW.FreeMatchPage]] for free-match tab pages (content/free_match_pages/*.toml); invalid entries are skipped with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.free_match_page/1"
 folder = "content/free_match_pages"

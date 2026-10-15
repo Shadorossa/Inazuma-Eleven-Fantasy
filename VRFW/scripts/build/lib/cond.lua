@@ -1,6 +1,4 @@
--- Unlock conditions (shop row condition, loot entry condition, key-item ownership) from readable clauses: each
--- `[[unlock]]` clause is one comparison group of the game's condition bytecode, written by the one encoder
--- (VRFW.cond = vr_tables::cond). Same rules as the old item engine's cond.rs.
+-- Unlock conditions (shop row, loot entry, key-item ownership) from readable `[[unlock]]` clauses, encoded by VRFW.cond.
 local U = require "lib/util"
 local C = {}
 

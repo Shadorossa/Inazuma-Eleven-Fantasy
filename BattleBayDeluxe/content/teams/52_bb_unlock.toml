@@ -1,0 +1,9 @@
+schema = "vr_framework.team/2"
+# The Battle Bay unlock rule's declared equivalents of this mod's grid (docs/framework/bb-pages.md §8.1, [VRFW.BbUnlock]
+# Same): rows the rule would otherwise match to a Chronicle rival by name only.
+# * the game's own first row, Raimon (bb_01_team_raimon, season series_01): its name matched five Chronicle Raimons
+#   (IE2 tm_cro_ie2_1700 / _1720 and Victory Road tm_cro_victory_0600 / _0605 / _0620). Its era's Raimon among the
+#   Chronicle rivals is the IE2 one; Victory Road's Raimon is another club.
+
+[VRFW.BbUnlock]
+Same = { bb_01_team_raimon = ["tm_cro_ie2_1700", "tm_cro_ie2_1720"] }

@@ -28,12 +28,15 @@
 --   * the branch rule: while the new set is on every owned card's skill board stays on branch 1 (record +0x1AC
 --     currentRouteType = 0): set when the option goes on (one summary line), again at every save load and every few
 --     seconds (a recruited card, a branch switched on the retail board). Switching the option off restores nothing.
+--   * the effective skill set: CharacterReforged.EffectiveSkillSet(card) is the provider of the VR-Framework's skill set
+--     service (VRFW.skill_set.provide): with the new set on, the card's aura / mix / 6 rows as the skill table shows them.
 --
 -- Commands (content\game\mix_slots.toml): CMND_CHARACTERREFORGED_MIX_GET(card) -> move, _MIX_SET(card, move | 0) -> ok,
 -- code (0 ok, 1 not a mix move, 2 not written), _SLOT_OF(move) -> kind (0 aura, 1 mix, 2 armour, -1 none), keshin.
 -- CMND_CHARACTERREFORGED_PROJECT_SKILL_SET(card) -> aura, mix, aura_from, mix_from, then the 6 rows' list positions
 -- (0..5; -1 none) (from: 0..5 a list position, 8 board slot 8 = the aura slot's own, 100 the mix store, 200 the board, -1 none).
 -- Exports (one value or one list each): MixGet(card), MixSet(card, move) -> { ok, code }, SlotOf(move) -> { kind, keshin },
+-- MixAddsStats(card) -> whether his mix slot's kind adds stats (mix_stat_types),
 -- ProjectSkillSet(card) -> { techniques = {6}, rows = {6 list positions}, aura, mix, aura_from, mix_from, hidden = {…} }.
 
 CharacterReforged = CharacterReforged or {}
@@ -77,9 +80,9 @@ end
 local RULES = nil
 local function rules()
   if RULES then return RULES end
-  local r = { aura = {}, mix = {}, carriers = {}, moveset_export = "" }
+  local r = { aura = {}, mix = {}, mix_stats = {}, carriers = {}, moveset_export = "" }
   local okd, decl = pcall(VRFW.files.declarations, "content/skill_set")
-  local merged = { aura_types = { 0, 3 }, mix_types = { 2, 6 } }
+  local merged = { aura_types = { 0, 3 }, mix_types = { 2, 6 }, mix_stat_types = { 2 } }
   for _, f in ipairs(okd and type(decl) == "table" and decl or {}) do
     local d = type(f) == "table" and f.data or nil
     local t = type(d) == "table" and type(d.CharacterReforged) == "table" and d.CharacterReforged.SkillSet or nil
@@ -89,6 +92,7 @@ local function rules()
   end
   for _, x in ipairs(merged.aura_types or {}) do r.aura[tonumber(x) or -1] = true end
   for _, x in ipairs(merged.mix_types or {}) do r.mix[tonumber(x) or -1] = true end
+  for _, x in ipairs(merged.mix_stat_types or {}) do r.mix_stats[tonumber(x) or -1] = true end
   r.moveset_export = tostring(merged.moveset_export or "")
   local oks, slots = pcall(VRFW.files.declarations, "content/extra_slots")
   for _, f in ipairs(oks and type(slots) == "table" and slots or {}) do
@@ -110,17 +114,22 @@ local function rules()
   return r
 end
 
+-- a move's aura type and slot kind never change while the game runs: read once per move (cleared at game_reset)
+local AURA_TYPE_OF, SLOT_OF = {}, {}
+
 local function aura_type(id)
   if not id or id == 0 then return nil end
+  local known = AURA_TYPE_OF[id]
+  if known ~= nil then return known or nil end
   local ok, t = pcall(VRFW.extra_slot.aura_type, id)
-  if ok and type(t) == "number" then return t end
-  return nil
+  if not ok then return nil end
+  if type(t) ~= "number" then t = false end
+  AURA_TYPE_OF[id] = t
+  return t or nil
 end
 
 -- "aura", "mix", "armour" (+ its keshin, 0 = none) or nil (a special move / nothing)
-local function slot_of(id)
-  id = u32(id or 0)
-  if id == 0 then return nil end
+local function read_slot_of(id)
   local r = rules()
   if r.carriers[id] then return "mix" end
   local t = aura_type(id)
@@ -133,6 +142,18 @@ local function slot_of(id)
     return "armour", k
   end
   return "other"
+end
+
+local function slot_of(id)
+  id = u32(id or 0)
+  if id == 0 then return nil end
+  local known = SLOT_OF[id]
+  if known == nil then
+    local what, k = read_slot_of(id)
+    known = { what or false, k }
+    SLOT_OF[id] = known
+  end
+  return known[1] or nil, known[2]
 end
 
 local KIND = { aura = 0, mix = 1, armour = 2 }
@@ -178,7 +199,10 @@ local function list(addr)
   return out
 end
 
-local function owned()
+local OWNED_MAX_AGE_MS = 6000
+local OWNED = { at = nil, list = nil }
+
+local function read_owned()
   local out = {}
   local ok, v = pcall(VRFW.chara.saved)
   for _, r in ipairs(ok and type(v) == "table" and v or {}) do
@@ -186,6 +210,16 @@ local function owned()
     if h ~= 0 and r.addr and r.addr >= 0x10000 then out[#out + 1] = { hdl = h, param = u32(r.param), addr = r.addr } end
   end
   return out
+end
+
+-- the owned cards, read again at most every OWNED_MAX_AGE_MS (the sweep and the branch rule share one read; a save
+-- load, a slot switch and game_reset read them again)
+local function owned()
+  local now = VRFW.now()
+  if not OWNED.list or now - OWNED.at >= OWNED_MAX_AGE_MS then
+    OWNED.list, OWNED.at = read_owned(), now
+  end
+  return OWNED.list
 end
 
 -- ---------------------------------------------------------------------------------------------- the projection
@@ -196,7 +230,7 @@ end
 -- first Mix-Max / «Modo cambio» of the list (list order), else (none in the list) the first of his board. Every other
 -- aura of the list is hidden (kept where it is in the save).
 local AURA_FROM_BOARD_SLOT, MIX_FROM_STORE, MIX_FROM_BOARD = 8, 100, 200
-local function project(hdl, addr)
+local function project_with_board(hdl, addr)
   local l, b = list(addr), board(addr)
   local out = { techniques = {}, rows = {}, aura = 0, mix = 0, aura_from = -1, mix_from = -1, hidden = {} }
   local empty = {}
@@ -244,6 +278,11 @@ local function project(hdl, addr)
     out.techniques[#out.techniques + 1] = 0
     out.rows[#out.rows + 1] = -1
   end
+  return out, b
+end
+
+local function project(hdl, addr)
+  local out = project_with_board(hdl, addr)
   return out
 end
 
@@ -254,7 +293,11 @@ function CharacterReforged.ProjectSkillSet(card)
 end
 
 function CharacterReforged.ProjectSkillSetCmd(card)
+  card = u32(card or 0)
+  -- the menu-time step of the tables and the shown card's rows at once, whatever the sweep's progress (both below)
+  if CharacterReforged.CommandStep then pcall(CharacterReforged.CommandStep) end
   local p = CharacterReforged.ProjectSkillSet(card)
+  if p and CharacterReforged.PublishCardRows then pcall(CharacterReforged.PublishCardRows, card, p) end
   if not p then return 0, 0, -1, -1, -1, -1, -1, -1, -1, -1 end
   local r = p.rows
   return p.aura, p.mix, p.aura_from, p.mix_from, r[1], r[2], r[3], r[4], r[5], r[6]
@@ -326,6 +369,18 @@ end
 function CharacterReforged.MixStored(card)
   local st = ST.st or load()
   return st.mix[key(card)] or 0
+end
+
+-- Does the mix slot of a saved card add stats? The projected mix move's aura type against [CharacterReforged.SkillSet]
+-- mix_stat_types (Mix-Max yes, «Modo cambio» no: it only swaps him into the partner). No mix move or an unknown type:
+-- true (the stat owner's own rules decide).
+function CharacterReforged.MixAddsStats(card)
+  local p = CharacterReforged.ProjectSkillSet(u32(card or 0))
+  local m = p and u32(p.mix or 0) or 0
+  if m == 0 then return true end
+  local t = aura_type(m)
+  if t == nil then return true end
+  return rules().mix_stats[t] == true
 end
 
 function CharacterReforged.MixSetCmd(card, id)
@@ -436,9 +491,18 @@ end
 
 local function sweep_start(on, report_why)
   local st = load()
+  local cards = owned()
+  -- the roster is not readable yet (boot, a save loading): nothing is written, the sweep runs again in ROUTE_EVERY_MS
+  -- with a fresh read
+  if #cards == 0 then
+    OWNED.list = nil
+    SWEEP.running, SWEEP.dirty = false, false
+    SWEEP.report_next = SWEEP.report_next or report_why
+    return
+  end
   SWEEP.running, SWEEP.dirty = true, false
   SWEEP.on, SWEEP.report_why = on, report_why
-  SWEEP.cards, SWEEP.next_card = owned(), 1
+  SWEEP.cards, SWEEP.next_card = cards, 1
   SWEEP.mix_rows, SWEEP.context_rows = {}, {}
   SWEEP.stored, SWEEP.projected = 0, 0
   SWEEP.with_aura, SWEEP.with_mix = 0, 0
@@ -452,14 +516,8 @@ local function sweep_start(on, report_why)
   end
 end
 
-local function sweep_card(st, c)
-  local p = project(c.hdl, c.addr)
-  local b = board(c.addr)
-  local on = SWEEP.on
-  if not st.mix[key(c.hdl)] and p.mix ~= 0 then
-    SWEEP.mix_rows[#SWEEP.mix_rows + 1] = { c.hdl, p.mix }
-    SWEEP.projected = SWEEP.projected + 1
-  end
+-- the form context row of one card: { aura, mix, aura_from, mix_from } as the view in use (`on` = the new set) shows it
+local function context_row(c, p, b, on)
   local aura, aura_from, mix, mix_from = 0, -1, 0, -1
   if on then
     aura = spirit(p.aura)
@@ -485,7 +543,18 @@ local function sweep_card(st, c)
     if aura == 0 and (d.aura or 0) ~= 0 then aura, aura_from = d.aura, 200 end
     if mix == 0 and (d.mix or 0) ~= 0 then mix, mix_from = d.mix, 200 end
   end
-  SWEEP.context_rows[#SWEEP.context_rows + 1] = { c.hdl, { aura = aura, mix = mix, aura_from = aura_from, mix_from = mix_from } }
+  return { aura = aura, mix = mix, aura_from = aura_from, mix_from = mix_from }
+end
+
+local function sweep_card(st, c)
+  local p, b = project_with_board(c.hdl, c.addr)
+  if not st.mix[key(c.hdl)] and p.mix ~= 0 then
+    SWEEP.mix_rows[#SWEEP.mix_rows + 1] = { c.hdl, p.mix }
+    SWEEP.projected = SWEEP.projected + 1
+  end
+  local row = context_row(c, p, b, SWEEP.on)
+  local aura, mix = row.aura, row.mix
+  SWEEP.context_rows[#SWEEP.context_rows + 1] = { c.hdl, row }
   if aura ~= 0 then SWEEP.with_aura = SWEEP.with_aura + 1 end
   if mix ~= 0 then SWEEP.with_mix = SWEEP.with_mix + 1 end
   if SWEEP.report_why and #p.hidden > 0 then
@@ -519,6 +588,75 @@ local function sweep_finish()
       SWEEP.report_players - SWEEP.report_lines))
   end
   SWEEP.cards, SWEEP.mix_rows, SWEEP.context_rows = nil, nil, nil
+end
+
+-- one card's rows at once (the card a menu shows: the skill table, the player page, the dock card ask for its
+-- projection): FormContext as the view in use shows it, MixSlot = his stored mix, else the projected one
+local CARD_ROWS_EVERY_MS = 500
+local CARD_ROWS_AT = {}
+function CharacterReforged.PublishCardRows(card, p)
+  local now = VRFW.now()
+  if (CARD_ROWS_AT[card] or -CARD_ROWS_EVERY_MS) + CARD_ROWS_EVERY_MS > now then return end
+  CARD_ROWS_AT[card] = now
+  local r = record(card)
+  if not r then return end
+  local row = context_row({ hdl = card, param = u32(r.param or 0) }, p, board(r.addr), CharacterReforged.SkillSetOnNow())
+  pcall(VRFW.native.table_set, CONTEXT, card, row)
+  local st = ST.st or load()
+  local stored = st.mix[key(card)] or 0
+  if stored ~= 0 then
+    pcall(VRFW.native.table_set, TABLE, card, stored)
+  elseif p.mix ~= 0 then
+    pcall(VRFW.native.table_set, TABLE, card, p.mix)
+  end
+end
+
+-- THE EFFECTIVE SKILL SET (the VR-Framework's skill set service, VRFW.skill_set): every reader of a player's equipped
+-- moves (the form viewer «Cambiar forma», the miximax partner aura, other mods' menus through CMND_VRFW_SKILL_SET) asks
+-- the framework, which asks this provider. New set on: the skill table's view of the card (aura slot = the projection's
+-- aura move, else his moveset default; mix slot = the stored / projected mix, else his moveset default; techniques =
+-- the 6 rows in table order, an empty list position taking the board slot of the same position when it holds a special
+-- move not already listed, as the match's list_board_fill; filled rows first, empty rows last). Victory Road: nil (the retail data).
+function CharacterReforged.EffectiveSkillSet(card)
+  if not CharacterReforged.SkillSetOnNow() then return nil end
+  card = u32(card or 0)
+  local r = record(card)
+  if not r then return nil end
+  local p, b = project_with_board(card, r.addr)
+  local aura, aura_from, mix, mix_from = p.aura, p.aura_from, p.mix, p.mix_from
+  local d = DEF.map[u32(r.param or 0)]
+  if d then
+    if aura == 0 and (d.aura or 0) ~= 0 then aura, aura_from = d.aura, 200 end
+    if mix == 0 and (d.mix or 0) ~= 0 then mix, mix_from = d.mix, 200 end
+  end
+  local listed, techniques = {}, {}
+  for _, x in ipairs(p.techniques) do
+    if x ~= 0 then listed[x] = true end
+  end
+  local filled, empty = {}, {}
+  for i, x in ipairs(p.techniques) do
+    local pos = p.rows[i]
+    if x == 0 and pos and pos >= 0 then
+      local m = b[pos] or 0
+      if m ~= 0 and aura_type(m) == nil and not listed[m] then
+        x = m
+        listed[m] = true
+      end
+    end
+    if x ~= 0 then
+      filled[#filled + 1] = { x, pos }
+    else
+      empty[#empty + 1] = { x, pos }
+    end
+  end
+  -- the filled rows first, then the empty ones (the skill table's row order)
+  local rows = {}
+  for _, e in ipairs(filled) do techniques[#techniques + 1], rows[#rows + 1] = e[1], e[2] end
+  for _, e in ipairs(empty) do techniques[#techniques + 1], rows[#rows + 1] = e[1], e[2] end
+  return { aura = aura, mix = mix, aura_from = aura_from, mix_from = mix_from, techniques = techniques, rows = rows }
+end
+if type(VRFW.skill_set) == "table" and type(VRFW.skill_set.provide) == "function" then
+  VRFW.skill_set.provide("CharacterReforged.EffectiveSkillSet")
 end
 
 -- one slice of the running sweep -> true when it has finished
@@ -561,6 +699,7 @@ local function tick()
   local now = VRFW.now()
   if VRFW.slots.ready() and ST.slot ~= VRFW.slots.active() then
     ST.slot, ST.st = -1, nil
+    OWNED.list = nil
     SWEEP.running = false
     pcall(load)
   end
@@ -612,9 +751,36 @@ local function tick()
   end
 end
 
+-- WHO DRIVES THE STEP (2026-10-14, owner: Jade Beor wore Metis' armour with Magister in the table's aura half): the
+-- trigger "tick" is the match's unit tick (Match.UnitTick), so it never fires in the menus, and in a match the step
+-- waits for the menus (`idle`): the option edge, the branch rule, MixSlot and FormContext never ran (no «form
+-- context» / «branch rule» line in loader.log; the form viewer fell back to its board scan and found Metis on board
+-- slot 2). The menus drive it now: every menu that opens (the hook bus event menu:open, MENU_SLICES slices) and
+-- this mod's own commands (at most one slice every COMMAND_STEP_EVERY_MS: the skill table, the player page and the
+-- dock card ask for the shown card's projection while they are open). "tick" stays (harmless in a match).
+-- a menu open runs at most MENU_SLICES slices and stops after MENU_STEP_BUDGET_MS (the rest on the next opens / commands)
+local MENU_SLICES, MENU_STEP_BUDGET_MS, COMMAND_STEP_EVERY_MS = 8, 16, 250
+local LAST_COMMAND_STEP = { at = -COMMAND_STEP_EVERY_MS }
+local function menu_step()
+  local started = VRFW.now()
+  tick()
+  for _ = 2, MENU_SLICES do
+    if not SWEEP.running or VRFW.now() - started >= MENU_STEP_BUDGET_MS then break end
+    sweep_step()
+  end
+end
+function CharacterReforged.CommandStep()
+  local now = VRFW.now()
+  if LAST_COMMAND_STEP.at + COMMAND_STEP_EVERY_MS > now then return end
+  LAST_COMMAND_STEP.at = now
+  tick()
+end
+
 VRFW.on("tick", function() pcall(tick) end)
+VRFW.on("menu:open:post", function() pcall(menu_step) end)
 VRFW.on("slot_load", function()
   ST.slot, ST.st = -1, nil
+  OWNED.list = nil
   RT.next_route = 0
   if RT.on then RT.edge, RT.why = true, "save loaded" end
   pcall(publish_defaults)
@@ -622,6 +788,8 @@ VRFW.on("slot_load", function()
 end)
 VRFW.on("game_reset", function()
   ST.slot, ST.st, RULES = -1, nil, nil
+  AURA_TYPE_OF, SLOT_OF = {}, {}
+  OWNED.list = nil
   DEF.done = false
   SWEEP.dirty, SWEEP.running = true, false
 end)

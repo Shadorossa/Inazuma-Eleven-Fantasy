@@ -1,10 +1,5 @@
 schema = "VRFW.text_key/1"
-# Texts of the audio_engine mod (format of the text_engine plugin: research/mods/text_engine/README.md).
-# New texts get the id crc32("audio_engine.<name>"): the row «Pack de voces» of Opciones › «Opciones de mods»
-# (options.toml) and its Lua (lua/setting_menu/110_voice_pack.lua) and the row «Música del menú» (menu_music*) use these
-# ids. With the text_engine plugin active,
-# text_engine merges this file with the other mods' texts; without it, the mod_options plugin adds the texts the
-# options.toml names (label, help, texts) to menu_text itself. A language missing here falls back to English.
+# Texts of the audio_engine mod; ids are crc32("audio_engine.<name>"). A missing language falls back to English.
 default_lang = "en"
 
 [en.new]

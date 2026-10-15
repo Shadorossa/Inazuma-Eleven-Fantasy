@@ -1,30 +1,10 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › team synergies declared by mods (docs/framework/synergy.md). The run time is scripts\synergy.lua: it
-# reads every mod's content\synergies\*.toml (`VRFW.synergy/1`) and recomputes the game's synergy check for the
-# synergies a mod declares (a NEXUS character + N players of a POOL, or N players of a pool). Synergies no mod declares
-# keep the game's check.
-#
-# How the game checks a synergy (docs/game/mechanics/synergy-rework.md §1.2): u8* SynergyCheck(out, &synergyId, team)
-# 0x1447AC0 fills a 0x80-byte answer: +0x00 29 member handles (u32, index = the team member's index: the members that
-# satisfied a condition row), +0x74 one byte per condition row (8), +0x7C the «active» byte. It counts the team's
-# starters (11 / 5) and its staff slots (managers 0x10-0x12, coach 0x13) only (TeamInfo +0x80 + i × 0x10: +0 handle,
-# +0xE slot class; +0x2CF the team kind, < 2). Every reader goes through it: the per-member synergy flag recount
-# (RecountTeamInfo 0xDA76F0, which also keeps the active byte per equipped slot), the team dock, the menus' «is this
-# member in the synergy» checks and the synergy detail panel. One post hook therefore changes the answer everywhere.
-#
-# The detail panel (team16_02 / team16_03, game::SynergyDetailProperty): 0x11B69D0 reads up to 3 condition values
-# (chara_base ids) into a { u32* ids, u64 count } list (room for 3) and calls the row builder 0x11B6490(property,
-# &list, answer): one row per id (face, name, series icons from the chara_base id; the check = some answered member
-# is that character), the 3-row layout when 3 rows were drawn. A pre hook on the row builder puts the declared
-# synergy's rows in the list (the nexus, the members that fill the slots, a pool character for an empty slot).
+# Team synergies declared by mods: scripts\synergy.lua recomputes the game's synergy check for declared synergies only; others keep the game's check.
 
-# ------------------------------------------------------------------------------------------------ the check
+# ---- the check ----
 
-# u8* SynergyCheck(u8 out[0x80], const u32* synergyId, TeamInfo* team) 0x1447AC0 (callers: 0xDA76F0, 0x1447A50,
-# 0x14479F0, 0x10F47E0, 0x10F4A40, 0x10F4AF0, 0x1129550, 0x11B6840 / 6900 / 6D70 / 6E40, 0xCADB10). Entry:
-# mov [rsp+10h], rbx; mov [rsp+18h], rsi; push rdi; sub rsp, 0C0h (18 bytes, no RIP operand). Post: the script
-# rewrites the answer of a declared synergy (only those: post_when, the table the script fills at load).
+# Synergy check: post hook rewrites the answer of a declared synergy (`post_when` against table Synergy.Declared).
 [[VRFW.Hook]]
 name = "SynergyCheck"
 game = "Team.CheckSynergy"
@@ -34,13 +14,9 @@ ret = "ptr"
 wait_ms = 250
 post_when = { value = "[args[2]]:u32", in_table = "Synergy.Declared" }
 
-# ------------------------------------------------------------------------------------------------ the detail panel
+# ---- the detail panel ----
 
-# void SynergyDetail(SynergyDetailProperty*, const u32* itemId, const u8 answer[0x80]) 0x11B69D0 (a synergy item id
-# is its SYNERGY_FLAG_INFO id: crc32 of the key, «sp04003»). Its callers make the answer with SynergyCheck just
-# before. Entry: push rbp; push rsi; push r13; push r14; mov rbp, rsp; sub rsp, 68h (14 bytes, no RIP operand).
-# Pre: the script marks this answer for the row builder below (table Synergy.Answers); post: unmarks it, so a later
-# panel of another synergy whose answer sits at the same stack address never gets these rows.
+# Detail panel entry: pre marks the answer for the row builder (table Synergy.Answers), post unmarks it.
 [[VRFW.Hook]]
 name = "SynergyDetail"
 game = "Menu.SynergyDetailShow"
@@ -50,13 +26,7 @@ wait_ms = 250
 pre_when = { value = "[args[2]]:u32", in_table = "Synergy.Declared" }
 post_when = { value = "[args[2]]:u32", in_table = "Synergy.Declared" }
 
-# void SynergyDetailRows(SynergyDetailProperty*, { u32* ids; u64 count }* list, const u8 answer[0x80]) 0x11B6490,
-# called by SynergyDetail only. Entry: push rbx; push rsi; push rdi; push r13; push r15; sub rsp, 30h (12 bytes:
-# 40 53 56 57 41 55 41 57 48 83 EC 30), then mov eax, [rcx+4Ch] (8B 41 4C): 15 bytes, no RIP operand. The loader's
-# inline hook needs >= 14 stolen bytes (12 was refused: «steal length < 14», code -6), so the steal takes the next whole
-# instruction too. The retail bytes are still checked (the profile's pattern): another head = one error, hook off.
-# Pre (only for an answer SynergyDetail marked): the script writes the declared synergy's rows into the list (≤ 3, the
-# caller's room) and the count.
+# Detail panel row builder: pre writes the declared synergy's rows (up to 3) into the list, only for answers marked above.
 [[VRFW.Hook]]
 name = "SynergyDetailRows"
 game = "Menu.SynergyDetailRows"
@@ -65,10 +35,9 @@ args = ["ptr", "ptr", "ptr"]
 wait_ms = 250
 pre_when = { value = "args[3]", in_table = "Synergy.Answers" }
 
-# ------------------------------------------------------------------------------------------------ commands
+# ---- commands ----
 
-# The synergy menu's patch (assets\lua\synergy\equip_synergy_menu_list\): the rows of the panel just drawn, to mark
-# the nexus, write the empty slots' hints and grey an inactive synergy.
+# Used by the synergy menu patch to mark the nexus, write slot hints and grey an inactive synergy.
 [[VRFW.Command]]
-name = "CMND_VRFW_SYNERGY_PANEL"    # (language code) -> nil (not a declared synergy) or { active, extra, rows = { { kind, name, hint } } }
+name = "CMND_VRFW_SYNERGY_PANEL"    # (item id, language code) -> nil, or { active, extra, team, rows = { { kind, name, hint, team_name, crests, faces } } }
 handler = "Synergy.CmdPanel"

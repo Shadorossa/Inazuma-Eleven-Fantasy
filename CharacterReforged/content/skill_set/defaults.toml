@@ -12,6 +12,9 @@ moves_refuse_auras = true
 aura_types = [0, 3]
 # the mix slot: Mix-Max and «Modo cambio» (their creation entries and carriers have these types too)
 mix_types = [2, 6]
+# the mix slot kinds that add stats (a stat rule such as All Miximaxed's transfer applies only while the mix slot holds
+# one of these): Mix-Max; a «Modo cambio» (6) only swaps the player into his partner, no stats of its own
+mix_stat_types = [2]
 # a character's own moveset (owner 2026-10-14: his keshin / totem and his Mix-Max / «Modo cambio» go to the aura / mix
 # slot by default, unless the player or his team's data already filled it): scripts/mix_slots.lua publishes the native
 # table MovesetDefault (chara_param -> { aura, mix }; read by content/extra_slots/skill_set.toml [source] default_table)

@@ -11,6 +11,8 @@
 # 1.21.7: a direct jump instead (BetterUI CMND_BETTERUI_XSKIP_JUMP: the event ended in that frame, no fade; hook
 # PrematchSecondEntrance: no second entrance event; the lineup group closed unopened without a fade); the cover is the
 # fallback when the jump is not available.
+# 1.22.3: the jump runs under one fade to black (layer 1 cover, held natively); the lineups hand it to the retail
+# kick-off fade in of layer 0, so the lineup / kick-off cameras of the flow are not seen.
 # Wrappers only; nothing runs at chunk load.
 name = "clean_hud_prematch_skip"
 mod = "clean_hud"

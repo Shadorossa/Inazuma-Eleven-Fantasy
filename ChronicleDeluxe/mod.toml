@@ -2,13 +2,13 @@ id = "chronicle_deluxe"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Chronicle Deluxe"
-version = "1.2.3"
+version = "1.6.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner. Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 (Royal Academy) to Lv 200 (Victory Road's last match), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), and its first win gives the rival's crest, its kit and the stadium of the match. Works on the base game with the VRFW. Always on: the mod has no options."
+description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner; the Crónica battle drops the rival's player spirits too (at the rates of the old route-unlock battle, below the Heroica's); and the match ranks S / A / B of a won board or chain match, with their badges on the board pieces, the chain tiles and the chain board's help; and the chain board's IE3 look (its background, plates, chests and icons). Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 (Royal Academy) to Lv 200 (Victory Road's last match), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), and its first win gives the rival's crest, its kit and the stadium of the match. Winning the Destructores gate battle gives the key item «Master's Seal»: one copy of a special move serves all your players (with every Chronicle completed, auras too; in Character Reforged's skill table). Works on the base game with the VRFW. Always on: the mod has no options."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-14"
+updated = "2026-10-15"
 # NOT the older mod «Chronicles Deluxe» (id chronicles_deluxe, folder ChroniclesDeluxe, with an «s»): that mod is set aside
 # (owner 2026-10-14) and is neither edited nor needed by this one. Where both declare the same thing (the Umbrella /
 # Sally's nodes and teams), this mod's files carry `if_not_mod = "chronicles_deluxe"`: with the old mod active, its
@@ -65,5 +65,35 @@ folder = "ChronicleDeluxe"
 # 1.2.2 (2026-10-14, owner): every Batalla heroica asks for Victorio Cryptix (normal form, config.toml
 # [heroic.required]) as a starting forward / midfielder until its first win ([[VRFW.MatchChallenge.Required]], VRFW
 # 2.4.35); he is exempt from the cap and counts toward the ramp only in Victory Road heroics (his series).
-requires = ["vr_framework>=2.4.35"]
+# 1.2.4 (2026-10-14, owner screenshots): the orb bar under a piece's crest and on each team-list row has one socket per
+# battle the piece offers (2 / 1 on gates, from match_difficulty.toml), centred; the team list's info window shows only
+# those rows and ends under them; the «MI EQUIPO» blue panel is cut to its rows (docs/game/mods/chronicle-deluxe.md §8.9):
+#   research/grafts/chronicle_deluxe_board          + cd_orb_bar.lua, cd_list_menu.lua (team list), panel fit
+#   content\images\menu\30_vsroute\vsroute01\         the pills made at build from the player's retail pill (06c), the
+#                                                  panels' nine-slice guides (15c / 15d); all if_not_mod inazuma_fantasy
+# 1.2.5 (2026-10-14, owner: «Idols must not be able to drop in ANY chronicle match»): no Ídolo spirit (rarities 5-7)
+# from any Chronicle match, its rates shown truthfully (the Ídolo chance is dropped, not moved; §9):
+#   content\teams\90_rules\no_idol_spirits.toml   [[VRFW.SpiritDrops]] Rows = "chronicle", ExcludeRarities (VRFW 2.4.43)
+# 1.3.0 (2026-10-14, owner: «the chain ranks belong to Chronicle Deluxe»): the match ranks S / A / B and their art,
+# moved from the VR-Framework (which now declares no rank):
+#   content\defaults\match_rank.toml               [MatchRank.S / A / B]: thresholds, badges, help lines (VRFW 2.4.48
+#                                                  loads a rank's BadgeAtlas on the chain board)
+#   content\images\menu\220_img\chronicle_deluxe_rank.toml   the chain board's square badges (own atlas)
+#   content\images\menu\30_vsroute\vsroute01\vsroute01_06b.toml  the board pieces' round badges (dots' atlas)
+#   text\rows\match_ranks.toml                    the ranks' lines of the chain board's «Ayuda» window
+# 1.4.0 (2026-10-14, owner: «the chain board's art belongs to Chronicle Deluxe»): the chain board's whole look, moved
+# from the VR-Framework (whose screen now draws roles a mod declares, else plain shapes):
+#   content\screen_art\chain_board.toml             [[VRFW.ScreenArt]] Screen = "chain_board": every role
+#   content\images\menu\220_img\chronicle_deluxe_chain.toml   the IE3 plates, chests, icons, card, cursor (own atlas)
+#   content\images\menu\220_img\chronicle_deluxe_chain_back.toml   the IE3 background (own atlas)
+#   (research/scripts/chain_board_art.py draws them; the framework's vrfw_chain atlas before)
+# 1.5.0 (docs/game/mods/chronicle-deluxe.md §10): the key item «Sello del Maestro», owned from the Destructores gate
+# battle win, and its rules as data of the VR-Framework's unlimited copies (VRFW 2.4.58,
+# docs/framework/unlimited-copies.md):
+#   content\items\master_seal.toml                  the key item (clone of ke000008, its ownership condition, 9 languages)
+#   content\images\menu\200_icon\02_icon_item\icon_item02.toml   its icon ke000900 (if_not_mod inazuma_fantasy)
+#   content\unlimited_copies\master_seal.toml       special moves with the Seal; auras with the Seal + every Chronicle
+#   research/grafts/chronicle_deluxe_master_seal    hook file of the VRFW board script: the one-time «Seal obtained»
+#                                                  notice (text\rows\master_seal.toml)
+requires = ["vr_framework>=2.4.58"]
 conflicts = []

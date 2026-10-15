@@ -1,10 +1,10 @@
 # VR-Framework 2.0.3: the bank family's tab bar takes extra series tabs declared by mods ([[bank_tab]] of
-# card_filters\, docs/framework/card-filter.md §9; first user iecross: «Inazuma Eleven Cross»). The two bank screens get
+# card_filters\, docs/framework/card-filter.md §9; e.g. a series mod). The two bank screens get
 # 13 tab instances (retail 11; the framework's Lua hides the ones past the table), and the bar layout for 12 tabs:
 # 12 locator joints in the retail cmn06_04 layout (the blue part of its bar, x -401..479 of _pos_offset01, split in 12
 # slots of 73.3 px; each joint scaled 73.3 / 80 like the retail 80 px slot) and their 12 attach rows
 # vrfw_bank_tab12_NN of cmn06_04_list_tab_attach_11_only, enabled by name by the Lua (card_filters\bank.toml
-# [[bank_tab_bar]] tabs = 12). No new art: the retail bar. 13 tabs need a mod's layout (Inazuma Fantasy ships one).
+# [[bank_tab_bar]] tabs = 12). No new art: the retail bar. 13 tabs need a mod's layout.
 schema = "VRFW.menu/2"
 
 [[patch]]

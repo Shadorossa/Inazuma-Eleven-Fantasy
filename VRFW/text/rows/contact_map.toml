@@ -1,7 +1,4 @@
-# Texts of the VR-Framework's contact map screen (vrfw_contact_map_menu, docs/framework/contact-map.md): rows of
-# menu_text in the framework's 9 languages, read by the screen with CMND_TEXT_GET by id = crc32(row id). Map / zone
-# titles, item names and character names come from the mods' declarations and the game's tables, not from here.
-# %s / %d are filled by the script (string.format).
+# Contact map screen texts: menu_text rows read by id = crc32(row id); %s / %d are filled by the script.
 
 schema = "VRFW.text/2"
 table = "menu_text"
@@ -19,7 +16,7 @@ ja = "アイテム"
 zh_hans = "道具"
 zh_hant = "道具"
 
-# the card's requirement rows (round 4): a player to sign / an item to get (%s = his name / its name)
+# the card's requirement rows: a player to sign / an item to get (%s = its name)
 [[row]]
 id = "vrfw_cm_req_sign"
 es = "Ficha a %s"
@@ -565,7 +562,7 @@ zh_hans = "后卫"
 zh_hant = "後衛"
 
 
-# a player the game signs elsewhere (StoryOnly: Victory Road's story scouts): the card's line and the notice on Accept
+# a player signed only in story mode: the card's line and the notice on Accept
 [[row]]
 id = "vrfw_cm_story_only"
 es = "Se ficha en el modo historia"
@@ -578,8 +575,7 @@ ja = "ストーリーモードでスカウト"
 zh_hans = "在剧情模式中招募"
 zh_hant = "在劇情模式中招募"
 
-# the view-everything mark (config.toml [debug] reveal_all, temporary): the contact map's header and the Inazuma
-# Fantasy office hub show it while the mode is on
+# mark shown in the header while the debug reveal_all mode is on
 [[row]]
 id = "vrfw_reveal_all_mark"
 es = "MODO VISTA"

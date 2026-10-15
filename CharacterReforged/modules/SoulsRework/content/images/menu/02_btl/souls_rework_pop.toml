@@ -1,0 +1,21 @@
+# Souls Rework › the plate of the level-up pop (graft research/grafts/souls_rework_level_pop): one white rounded
+# rectangle of its own atlas, nine-sliced (only its middle columns stretch), tinted at run time with the totem's
+# element colour (CMND_SET_PRIM_COLOR multiplies, so the white body takes the colour and the grey rim a darker shade).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_pop"
+size = [96, 48]
+png = "souls_rework_pop/souls_rework_pop.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_pop_plate"
+texture = "souls_rework_pop"
+x = 0
+y = 0
+size = [96, 48]
+nine_slice = [44, 52, 0, 48]
+design_size = [96, 48]
+flags = 1

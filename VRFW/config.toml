@@ -31,8 +31,8 @@ poll_ms = 1000
 
 # ---------------------------------------------------------------- debug
 [debug]
-# TEMPORARY view-everything mode (owner 2026-10-13, review only; OFF for players): true = every contact map tile drawn
-# open (faces, names, links) and every Inazuma Fantasy office team page listed in its tab, with a «MODO VISTA» mark on
+# Review view (off for players): true = every contact map tile drawn
+# open (faces, names, links) and every office team page listed in its tab, with a «MODO VISTA» (view mode) mark on
 # both screens. View only: signing / buying keep their real rules (strict order, requirements, prices) and nothing is
 # written to the save by it. Turn it on for one install without touching the mod: in evt_loader\config.toml
 #   [mods.vr_framework.debug]
@@ -74,7 +74,7 @@ report = true
 # the mods' `goal_event` rules (a goal scored with a move plays its goal event, e.g. the goal smash ev71_00070, whoever
 # scores): false = no hook, only the game's own per-player rows (docs/app/technique-engine.md §3.5)
 goal_events = true
-# the mods' `[[keeper_scene]]` pairs (more random keeper-gauge scenes, e.g. the «Nuevas animaciones» mod, new_animations): false = the
+# the mods' `[[keeper_scene]]` pairs (more random keeper-gauge scenes, e.g. a mod with extra animations): false = the
 # game's own 5 pairs only (docs/app/technique-engine.md §3.6)
 keeper_scenes = true
 
@@ -165,11 +165,9 @@ ask_on_boot = false
 # relaunch URI of CMND_VRFW_SLOT_RESTART; unset = steam://rungameid/<the running game's Steam app id> (SteamAppId,
 # steam_appid.txt or the library's appmanifest), else the game's exe
 # restart_uri = "steam://rungameid/<app id>"
-# mods whose old slot names (slot_names.json) and story-complete start markers (story_start.json) are imported once
-# into the framework's own (only while it has none; their copies are left as they are): Inazuma Fantasy kept them
-# before the slots moved to the framework
-import_from = ["inazuma_fantasy"]
-# (1.4.0) the save part also adds the mods' [[flag]] (flags.toml: global save flags) to flag_config at start
+# No import list here: a mod that kept the slot names / story-complete markers before the slots moved to the framework
+# imports them itself with [[VRFW.SaveImport]] (into = "vr_framework").
+# The save part also adds the mods' [[flag]] (flags.toml: global save flags) to flag_config at start
 
 # ---------------------------------------------------------------- system (system\)
 [param]

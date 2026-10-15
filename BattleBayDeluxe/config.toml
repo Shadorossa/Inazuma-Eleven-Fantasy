@@ -16,6 +16,9 @@ seed = 0
 # (the team the game uses outside the Battle Bay), no draft and no team pick. The tile: the [[team]] of this mod's
 # content\teams folder with this name (content/teams/51_active_team.toml; its players are placeholders, never played).
 team = "active_team"
+# 1.5.66: the level sync of the active team's matches (players above it play with its stats, as the Battle Bay rooms'
+# level sync; every move stays usable). 0 = no sync.
+level_sync = 40
 
 [draft]
 # The Draft's pool is derived when the game starts, from the Battle Bay as the game loads it (no fixed list): every

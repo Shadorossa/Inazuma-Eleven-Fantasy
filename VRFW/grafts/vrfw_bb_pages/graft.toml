@@ -1,8 +1,8 @@
-# VR-Framework: pages, category tabs and the season carousel of the Bahía Batalla (Estadio BB) team grid
-# (docs/framework/bb-pages.md). Run time: vr_framework.dll bb_pages_rt (CMND_VRFW_BB_PAGE*; the 1.x CMND_EVT_BB_PAGE*
+# VR-Framework: pages, category tabs and the season carousel of the Battle Bay (BB Stadium) team grid.
+# Run time: vr_framework.dll bb_pages_rt (CMND_VRFW_BB_PAGE*; CMND_EVT_BB_PAGE*
 # names are aliases); layers / keys: research/mods/VRFW/content/menus/bb_pages.toml; texts: text\rows\bb_pages.toml;
-# tab art: images\menu\107_vs\vrfw_bb_pages.toml (made from the player's game files). Moved from Inazuma Fantasy's
-# graft bb_pages on 2026-10-08 (its turn in place, crest preload and 1P handling are unchanged).
+# tab art: images\menu\107_vs\vrfw_bb_pages.toml (made from the player's game files). Turn in place, crest preload and 1P
+# handling are unchanged from retail.
 #   enjoy_team_select_menu_offline   vrfw_bbp_grid.lua: L1 / R1 pages, L2 / R2 categories, the bank's filter key
 #   enjoy_team_select_menu_campaign  (CMD_FUNC2, Tab) seasons; the line above the grid; empty slots of a short page
 #                                    hidden; campaign + vrfw_bbp_campaign.lua (redraw after the difficulty window)
@@ -41,7 +41,7 @@ stem = "enjoy_team_select_menu_campaign"
   crc = "none"
 
 
-# the online grid (quick match / private rooms): the game's own list only (vrfw_bbp_online.lua, docs/framework/bb-pages.md §7)
+# the online grid (quick match / private rooms): the game's own list only (vrfw_bbp_online.lua)
 [[files]]
 stem = "enjoy_team_select_menu"
 

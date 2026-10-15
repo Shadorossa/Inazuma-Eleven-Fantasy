@@ -1,6 +1,6 @@
 -- title_row (VR-Framework, menu engine): the title's mode row (the upper buttons of title_menu_2) holds the buttons the
--- mods DECLARE, at the place their `order` gives them among the game's own buttons. docs/framework/title-row.md;
--- handlers of the framework's title_menu_2 host (VRFW_Host, docs/framework/lua-hosts.md). No engine call at load time.
+-- mods DECLARE, at the place their `order` gives them among the game's own buttons.;
+-- handlers of the framework's title_menu_2 host (VRFW_Host). No engine call at load time.
 --
 -- A mod declares a button in its menus\*.toml (menu type, host "title_menu_2.upper"):
 --   [[entry]] host = "title_menu_2.upper"  id  text (label key)  icon ("<atlas>:<sprite>")  order / after  action
@@ -22,7 +22,7 @@
 --              the title focuses the button again when it comes back
 --   mode       VRFW_Mode.start(mode key, "title_row", position)
 -- Public: VRFW_TitleRow.stays(id) = a declared button that runs inside the title; .item(key) = its title item id;
--- .position(key) = its place in the row.
+-- .position(key) = its place in the row; .retail(fn, ...) = fn with the row's handlers passing on.
 
 local function TR_Crc(s)
   local crc = 0xFFFFFFFF
@@ -463,6 +463,19 @@ function VRFW_TitleRow.item(key)
     end
   end
   return nil
+end
+
+-- runs fn(...) with the row's handlers passing on: the game's own tables answer at their own retail positions
+-- (the «Guardar» button on the lower row reads its art and runs its press that way)
+function VRFW_TitleRow.retail(fn, ...)
+  local was = tr.raw
+  tr.raw = true
+  local r = table.pack(pcall(fn, ...))
+  tr.raw = was
+  if not r[1] then
+    error(r[2], 0)
+  end
+  return table.unpack(r, 2, r.n)
 end
 
 function VRFW_TitleRow.position(key)

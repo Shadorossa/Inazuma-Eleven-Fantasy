@@ -1,12 +1,11 @@
--- `team_config` in sections (the old team_create_build.TeamCfg / team_engine tables.rs): skill loadouts, members (+
--- their role ref), tactics, team info rows with their four `_REF_*` slices. The rows are cell arrays (1-based Lua
--- arrays of the cells, column c at [c + 1]); team and member positions are 0-based like the tables' own slices.
--- Read and written by the native part (VRFW.team.tc_read / tc_write: counts and sort runs regenerated on write).
+-- `team_config` in sections: skill loadouts, members (+ role ref), tactics, team info rows with their four `_REF_*` slices.
+-- Rows are cell arrays (1-based Lua arrays, column c at [c + 1]); team and member positions are 0-based like the tables' slices.
+-- Read and written natively (VRFW.team.tc_read / tc_write: counts and sort runs are regenerated on write).
 local T = require "lib/team_util"
 local TC = {}
 TC.__index = TC
 
--- columns (by name, schemas/team/*.toml; the numbers are the old builder's, used when a schema lacks the name)
+-- columns by name (schemas/team/*.toml); the numbers are used when a schema lacks the name
 local function col(key, row, name, n)
   local c = VRFW.team.col(key, row, name)
   if c == nil then return n end
@@ -48,7 +47,7 @@ function TC.columns(key)
   return TI, TM, LO
 end
 
--- ------------------------------------------------------------------------------------------------- cells
+-- ---- cells
 
 -- Cell `c` (0-based) of row `v`: an int (signed), nil when it is not one.
 function TC.int(v, c)
@@ -87,7 +86,7 @@ function TC.copy_row(v)
   return o
 end
 
--- ------------------------------------------------------------------------------------------------- the sections
+-- ---- sections
 
 -- `raw` = VRFW.team.tc_read's sections.
 function TC.new(raw, TI, TM, LO)
@@ -97,7 +96,7 @@ function TC.new(raw, TI, TM, LO)
   return tc
 end
 
--- The id / key / loadout indices and the member rows' coverage (how many teams' slices hold each row number).
+-- Id / key / loadout indices and member row coverage (how many teams' slices hold each row number).
 function TC:reindex()
   self.by_id, self.by_key = {}, {}
   for t = #self.teams - 1, 0, -1 do
@@ -187,8 +186,7 @@ function TC:members_shared(t)
   return false
 end
 
--- Replace the roster of team `t` by `rows` (member cell arrays): in place when the slice is its own and the count is
--- the same, else as a new slice at the end (the old rows stay for whoever shares them).
+-- Replace the roster of team `t` by `rows`: in place when the slice is its own and the count is equal, else as a new slice at the end.
 function TC:set_members(t, rows, role)
   local s, n = self:slice(t, 0)
   local own = not self:members_shared(t)
@@ -235,12 +233,11 @@ function TC:team_copy(t)
   return TC.copy_row(x.info), refs
 end
 
--- ------------------------------------------------------------------------------------------------- loadouts
+-- ---- loadouts
 
 local MOVES = 6
 
--- How many loadouts hold each value in their 6th slot: counted once, then kept up to date by `put_loadout` (a scan
--- per loadout made the team build quadratic: ~3 min at a start with a few thousand loadouts).
+-- How many loadouts hold each value in their 6th slot: counted once, kept current by `put_loadout`.
 function TC:filler_counts()
   local c = self.filler_n
   if c then return c end
@@ -253,7 +250,7 @@ function TC:filler_counts()
   return c
 end
 
--- The usual empty move of the loadouts (the most common value of their 6th slot; ties: the higher value).
+-- The usual empty move of the loadouts (most common 6th-slot value; ties: the higher value).
 function TC:loadout_filler()
   local c = self:filler_counts()
   local best, bn
@@ -263,8 +260,7 @@ function TC:loadout_filler()
   return best or 0
 end
 
--- A loadout row (id, 6 skills, 6 levels) shaped like the first one; the table's filler fills the empty slots.
--- `moves` = { {move, level}, … }.
+-- A loadout row (id, 6 skills, 6 levels) shaped like the first one; the table's filler fills empty slots. `moves` = { {move, level}, ... }.
 function TC:loadout(id, moves)
   local proto = self.skill_cfg[1]
   if not proto then return nil end
@@ -283,8 +279,7 @@ function TC:loadout(id, moves)
   return e
 end
 
--- A `[[loadout]]` row exactly as declared: `moves` (≤ 6, {technique, level}; a level 0 is kept), the missing slots
--- `filler` at level 0.
+-- A `[[loadout]]` row as declared: `moves` (<= 6, {technique, level}; level 0 is kept), missing slots take `filler` at level 0.
 function TC:loadout_exact(id, moves, filler)
   local proto = self.skill_cfg[1]
   if not proto then return nil end
@@ -332,10 +327,9 @@ function TC:loadout_row(id)
   return k and self.skill_cfg[k]
 end
 
--- ------------------------------------------------------------------------------------------------- removal, order
+-- ---- removal, order
 
--- Remove team `t` (info + refs) and its own member / tactics rows (never rows another team's slice uses); the other
--- teams' slices are re-indexed.
+-- Remove team `t` (info + refs) and its own member / tactics rows (never rows another team uses); other teams' slices are re-indexed.
 function TC:remove_team(t)
   local ms, mn = self:slice(t, 0)
   local ts, tn = self:slice(t, 1)
@@ -382,17 +376,13 @@ function TC:remove_team(t)
   self:reindex()
 end
 
--- The member rows the game's team readers reach: a 16-bit row (slice start + member index), read signed by the game
--- (32768 rows); VRFW's content\game\member_rows.toml patches every reader to read it unsigned (65535 rows; 0xFFFF
--- stays the readers' «none»). The build cannot see whether those patches applied (they are written at the start,
--- after the cached build), so it keeps the menus' previewed teams within the signed reach as the fallback
--- (`front_members`) and warns when the whole table outgrows the unsigned reach.
+-- Member rows are 16-bit (slice start + member index), read signed by the game (32768 rows); content/game/member_rows.toml makes readers unsigned (65535).
+-- The build cannot tell whether those patches applied, so it keeps the menus' previewed teams within the signed reach (`front_members`) and warns when the table outgrows the unsigned reach.
 TC.MENU_MEMBER_ROWS = 32768
 TC.MEMBER_ROWS_MAX = 65535
 
--- Reorder the member rows so that the menus' team readers reach every team of `first` (a set of team ids): their
--- slices first, then the rows of the table as read, then the rest, each group in its old order; every slice is
--- re-pointed. Returns `late, front` (teams of `first` out of reach, rows of the first group), nil when nothing moves.
+-- Reorder member rows so the menu readers reach every team of `first` (set of team ids): their slices first, then the rest in old order; slices are re-pointed.
+-- Returns `late, front` (teams of `first` out of reach, rows of the first group), nil when nothing moves.
 function TC:front_members(first)
   local len = #self.members
   local wanted = {}
@@ -412,7 +402,7 @@ function TC:front_members(first)
     local s, e = self:member_range(t)
     for i = s, e - 1 do tier[i] = 0 end
   end
-  -- a slice keeps its rows together: all of them take the lowest group any of them has (overlapping slices)
+  -- a slice keeps its rows together: all take the lowest group any of them has
   local ranges = {}
   for t = 0, #self.teams - 1 do
     local s, e = self:member_range(t)
@@ -450,7 +440,7 @@ function TC:front_members(first)
   return late, front
 end
 
--- Write the table (VRFW.team.tc_write: the native part serializes and serves it).
+-- Write the table (VRFW.team.tc_write serializes and serves it).
 function TC:write()
   return VRFW.team.tc_write({ skill_cfg = self.skill_cfg, members = self.members, tactics = self.tactics, teams = self.teams })
 end

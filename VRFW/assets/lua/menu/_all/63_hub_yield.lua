@@ -1,4 +1,4 @@
--- menu_engine: HUB YIELD (VR-Framework 2.2, 2026-10-12; docs/framework/contact-map.md §6). Definitions only: this file
+-- menu_engine: HUB YIELD. Definitions only: this file
 -- runs in every menu VM (lua\_all) after the retail chunk; no engine call at load time.
 --
 -- A full screen of its own (header, button guide, background) opened over a hub that stays open under it (the

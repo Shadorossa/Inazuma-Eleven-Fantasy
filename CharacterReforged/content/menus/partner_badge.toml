@@ -1,0 +1,64 @@
+# Character Reforged › the partner plate on the player bank's cards (scripts\partner_lock.lua, graft cr_partner_lock;
+# docs/game/ui/partner-lock-bank.md). Hand-maintained.
+# * Layer `cr_partner_badge`, one instance per bank card (chara_bank_menu, chara_bank_menu_for_search), hidden at open
+#   like the retail check mark; card instance i carries plate instance i: the card object's attach row of the check
+#   mark (`team00_01_p4_check_mark` at `_pos_base01`) copied for this layer, on the retail card and on BetterUI's
+#   compact bank card.
+# * Object = the retail «kizuna / mode» plate (team11_05_kizuna_trans_plate: one plate quad, one text node, no touch
+#   area) on a copied layout sized for a small card: plate 80 x 26 centred on the card's top edge, text box 72 x 24
+#   (style fs_22_w_cc_2d2_001_nr_sclw: white, dark outline, centred). Drawn over the card (priority 654; card 652,
+#   check mark 653).
+# * Colour and word come from the system that locks the card ([CharacterReforged.PartnerLock.<system>] badge_sprite /
+#   badge_text): the Lua swaps the plate quad's sprite (slot kizuna_base01 of team11_05.g4tx) for the system's sprite,
+#   which the declaring mod adds to that atlas (image type).
+schema = "VRFW.menu/2"
+
+# ---- the plate's layout
+[[layout]]
+file = "common/menu/102_team/team11/cr_partner_badge/cr_partner_badge.g4pkm"
+from = "common/menu/102_team/team11/team11_05/team11_05.g4pkm"
+
+[[layout]]
+file = "common/menu/102_team/team11/cr_partner_badge/cr_partner_badge.g4pkm"
+joint = "_kizuna_base01"
+translate = [-40.0, 65.0, 0.0]
+scale = [80.0, 26.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team11/cr_partner_badge/cr_partner_badge.g4pkm"
+joint = "_text_plate01"
+translate = [-36.0, 64.0, 0.0]
+scale = [72.0, 24.0, 1.0]
+
+# ---- the plate object
+[[object]]
+name = "cr_partner_badge"
+from = "team11_05_kizuna_trans_plate"
+priority = 654
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team11/team11_05/team11_05.g4pkm" }, values = { 1 = "common/menu/102_team/team11/cr_partner_badge/cr_partner_badge.g4pkm" } },
+    { param = "_text_plate01", values = { 1 = 0x73C0E406 } },
+]
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team11/team11_05/team11_05.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team11/cr_partner_badge/cr_partner_badge.g4pkm" } } },
+]
+
+# ---- card instance i carries plate instance i (the check mark's attach row, copied: attach id, joint, layer)
+[[object_set]]
+object = "team00_01_chara_card_for_list"
+copy = [{ param = "NullLayerIndexName", match = { 3 = 0x01D1DDB0 }, values = { 1 = 0xC1CFC48C, 3 = 0xC1CFC48C } }]
+
+# BetterUI's compact bank card (its redirect of the card in both banks)
+[[object_set]]
+object = "team00_01_chara_card_for_list_evt_fcg"
+if_mod = "clean_hud"
+copy = [{ param = "NullLayerIndexName", match = { 3 = 0x01D1DDB0 }, values = { 1 = 0xC1CFC48C, 3 = 0xC1CFC48C } }]
+
+# ---- the layer in both banks (72 = BetterUI's 8-column grid; the retail grid uses 54)
+[[patch]]
+menu = "chara_bank_menu"
+add_layer = { name = "cr_partner_badge", object = "cr_partner_badge", count = 72, after = "team00_01_p4_check_mark", groups = [{ group = "chara_bank_menu", flags = [0, 0, 0, 0, 1, 0], after = "team00_01_p4_check_mark" }] }
+
+[[patch]]
+menu = "chara_bank_menu_for_search"
+add_layer = { name = "cr_partner_badge", object = "cr_partner_badge", count = 72, after = "team00_01_p4_check_mark", groups = [{ group = "chara_bank_menu_for_search", flags = [0, 0, 0, 0, 1, 0], after = "team00_01_p4_check_mark" }] }

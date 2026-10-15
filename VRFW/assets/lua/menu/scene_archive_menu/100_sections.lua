@@ -1,5 +1,5 @@
 -- scene_archive_sections (VR-Framework base feature): the «Archivo de escenas» tabs past the retail three and the
--- per-language movie of a row. docs/framework/scene-archive.md (handler of the scene_archive_menu host).
+-- per-language movie of a row. (handler of the scene_archive_menu host).
 --
 -- * Tabs: the mods declare sections (`scenes\*.toml`, kind vr_framework.scene_archive/1; shared by id between mods);
 --   the framework numbers them as game categories 3, 4, … (then the legacy `[[entry]] host = "scene_archive_tab"`
@@ -12,7 +12,6 @@
 --   when CMND_GET_MOVIE_INFO knows it, else the event itself (retail behaviour). The swap of funcLuaCommand lasts only
 --   until that first call (it runs before the coroutine's first yield).
 -- Without the framework DLL every command fails and the retail script runs as is. No engine call at load time.
--- (Inazuma Fantasy's graft `videoteca` did this until 2026-10-08; it is gone.)
 
 local SA = {
   TABS = 3191468502,         -- CMND_VRFW_SCENE_ARCHIVE_TABS () -> tabs the engine has

@@ -1,0 +1,38 @@
+# Aura Points' PEG / SP bars on the match buff row (docs/game/mechanics/aura-costs.md §12.8; docs/refactor/
+# aura-mods-split.md «Aura Points»): in soccer_team_buff_icon_list_menu (the bottom bar of team passives and active
+# auras: AT / DF / ... and the aura user's portrait with its circular time gauge, the stopwatch) the entry of a keshin /
+# armour shows the purple PEG bar of its pool and a totem's the blue SP bar, where the stopwatch was (hidden for that
+# entry). Ported 2026-10-14 from Inazuma Fantasy's graft mx_popup (its EVT_AURA_PEG part; IF's PE / mode change bars
+# and its miximax faces stay IF's). Layer aura_points_buff_bar (the mod's content\menus\buff_bar.toml), value from the
+# mod's command CMND_AURAPOINTS_PEG (scripts\aura_points.lua).
+# The row itself has one entry per aura user up to the VR-Framework's team limit of transformed players ([rules]
+# team_aura_max, CMND_VRFW_FORM_TEAM_MAX) instead of the retail 3 (aura_points_buff_row.lua, ported from mx_popup's
+# mx_popup_bar: the retail UpdateAuraBuffCharaIcon with a per-pass table as long as the grown retail local t5, bound to
+# the retail locals through lua_patch's EVT_DEBUG; layer counts in the mod's content\menus\buff_row.toml); with the
+# miximax's PE (the mod Stamina Points) the miximax entry gets its bar too, two bars on an entry with two auras.
+# Wrappers of UpdateAuraBuffCharaIcon (the retail entries just built: who is in which entry) and Step (every frame:
+# the bars follow their portraits). Nothing at chunk load but the debug library's upvalue search. While Inazuma Fantasy's mx_popup draws its own bars in the
+# same script (its global EVT_AP with EVT_AURA_PEG on) this one draws nothing, so a bar is never drawn twice.
+name = "aura_points_buff_bar"
+mod = "aura_points"
+order = 860
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateAuraBuffCharaIcon", "Step"]
+description = "Aura Points: the buff row widened to the team aura limit; PE / PEG / SP bars instead of the stopwatch on its aura entries"
+
+[[files]]
+stem = "soccer_team_buff_icon_list_menu"
+
+  # first: the bars' wrapper below wraps the widened UpdateAuraBuffCharaIcon
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "aura_points_buff_row.lua"
+  marker = "AuraPoints buff row"
+  include = { "@UPV@" = "../_lib/evt_upvalues.lua" }
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "aura_points_buff_bar.lua"
+  marker = "AuraPoints buff bar"

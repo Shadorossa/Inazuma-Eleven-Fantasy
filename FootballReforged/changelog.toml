@@ -2,8 +2,8 @@ schema = "VRFW.changelog/1"
 # Football Reforged: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
 # Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
-# Do not touch it on a version bump. Rewrite it only when what the mod offers changes (a new module).
-# 1.0.0 (2026-10-14): the module base + the goalkeeper barrier (moved out of Inazuma Fantasy).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.2.0 (2026-10-15): the modules are module mods in modules\<Module>\ (Character Reforged's layout).
 lang = "es"
 name = "Football Reforged"
 
@@ -34,81 +34,54 @@ name = "Football Reforged"
 [[release]]
 icon = "general"
 notes = [
-    "Mecánicas de partido en módulos, cada uno activable.",
-    "Grupo «Football Reforged» en Opciones de mods.",
-    "Barrera del portero: tiros ÷ 1,75 mientras dura.",
-    "La barrera es el 25 % naranja de su barra de cansancio.",
-    "Baja con el cansancio; un bloqueo abarata su técnica.",
+    "Mecánicas de partido en módulos, cada uno una tarjeta.",
+    "Barrera del portero y Furor, activados por defecto.",
 ]
 
 [release.en]
 notes = [
-    "Match mechanics in modules, each one switchable.",
-    "Group «Football Reforged» in Mod options.",
-    "Goalkeeper barrier: shots ÷ 1.75 while it lasts.",
-    "The barrier is the orange 25 % of his fatigue bar.",
-    "It falls as he tires; a block makes his move cheaper.",
+    "Match mechanics in modules, each one a card.",
+    "Goalkeeper barrier and Furor, on by default.",
 ]
 
 [release.fr]
 notes = [
-    "Mécaniques de match en modules, chacun activable.",
-    "Groupe «Football Reforged» dans Options des mods.",
-    "Barrière du gardien : tirs ÷ 1,75 tant qu'elle tient.",
-    "La barrière : 25 % orange de sa barre de fatigue.",
-    "Elle baisse avec la fatigue ; un blocage aide le gardien.",
+    "Mécaniques de match en modules, chacun une carte.",
+    "Barrière du gardien et Furie, actifs par défaut.",
 ]
 
 [release.de]
 notes = [
-    "Spielmechaniken in Modulen, jedes einzeln schaltbar.",
-    "Gruppe «Football Reforged» in den Mod-Optionen.",
-    "Torwart-Barriere: Schüsse ÷ 1,75, solange sie hält.",
-    "Die Barriere: orange 25 % seines Ermüdungsbalkens.",
-    "Sie sinkt mit Ermüdung; ein Block verbilligt seine Technik.",
+    "Spielmechaniken in Modulen, jedes eine Karte.",
+    "Torwart-Barriere und Furor, standardmäßig an.",
 ]
 
 [release.it]
 notes = [
-    "Meccaniche di partita in moduli, ognuno attivabile.",
-    "Gruppo «Football Reforged» in Opzioni dei mod.",
-    "Barriera del portiere: tiri ÷ 1,75 finché dura.",
-    "La barriera: il 25 % arancione della barra di fatica.",
-    "Cala con la fatica; un blocco aiuta il portiere.",
+    "Meccaniche di partita in moduli, ognuno una carta.",
+    "Barriera del portiere e Furore, attivi di base.",
 ]
 
 [release.pt]
 notes = [
-    "Mecânicas de partida em módulos, cada um ativável.",
-    "Grupo «Football Reforged» nas Opções de mods.",
-    "Barreira do guarda-redes: remates ÷ 1,75 enquanto dura.",
-    "A barreira: os 25 % laranja da barra de cansaço.",
-    "Desce com o cansaço; um bloqueio ajuda o guarda-redes.",
+    "Mecânicas de partida em módulos, cada um um cartão.",
+    "Barreira do guarda-redes e Furor, ativos por defeito.",
 ]
 
 [release.ja]
 notes = [
-    "試合メカニクスをモジュールで追加、個別にオンオフ。",
-    "MODオプションにグループ「Football Reforged」。",
-    "キーパーバリア：残る間シュート威力÷1.75。",
-    "バリアは疲労ゲージのオレンジの25％。",
-    "疲労で減り、ブロック技で次のキーパー技が安くなる。",
+    "試合メカニクスをモジュールで追加、各モジュールはカード。",
+    "キーパーバリアとフューラー、初期状態でオン。",
 ]
 
 [release.zh_hans]
 notes = [
-    "以模块加入比赛机制，每个模块可单独开关。",
-    "模组选项中的分组「Football Reforged」。",
-    "门将屏障：屏障存在时射门威力÷1.75。",
-    "屏障是疲劳条中橙色的25％。",
-    "随疲劳下降；拦截技让门将下一招更便宜。",
+    "以模块加入比赛机制，每个模块是一张卡片。",
+    "门将屏障与怒火，默认开启。",
 ]
 
 [release.zh_hant]
 notes = [
-    "以模組加入比賽機制，每個模組可單獨開關。",
-    "模組選項中的分組「Football Reforged」。",
-    "門將屏障：屏障存在時射門威力÷1.75。",
-    "屏障是疲勞條中橙色的25％。",
-    "隨疲勞下降；攔截技讓門將下一招更便宜。",
+    "以模組加入比賽機制，每個模組是一張卡片。",
+    "門將屏障與怒火，預設開啟。",
 ]

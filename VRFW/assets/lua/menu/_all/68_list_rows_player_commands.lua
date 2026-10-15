@@ -1,5 +1,5 @@
 -- menu_engine: LIST ROWS, the adapter of the team dock's player popup «PERSONAJE» (menu "team_dock.player_commands",
--- docs/framework/list-rows.md; the library is lua\_all\67_list_rows.lua). Definitions only (this file runs in every
+-- the library is lua\_all\67_list_rows.lua). Definitions only (this file runs in every
 -- menu VM, lua\_all): the team dock script calls VRFW_ListRows.AttachPlayerCommands() from its handler file
 -- (lua\team_dock_formation_menu\130_list_rows.lua), which registers the handlers on the VRFW_Host host of the script.
 --

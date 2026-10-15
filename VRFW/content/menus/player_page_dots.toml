@@ -1,6 +1,6 @@
 # VR-Framework 2.0.93: the page dots of the player plate built from the player page registry (docs/framework/
 # player-pages.md §7; Lua assets\lua\menu\personal_plate_menu\121_player_page_dots.lua). When the mods' pages change
-# the retail order (Utilities' TRAYECTORIA, ...), the status base's four dots are hidden and the row is drawn by the
+# the retail order (e.g. an extra page placed first), the status base's four dots are hidden and the row is drawn by the
 # layer vrfw_pp_dots: two copies of the retail status base (each shows its own four dot meshes, nothing else; up to 8
 # dots), attached to the status base's _pos_base01 so they follow the plate's animation. With only the retail pages
 # the copies stay closed.

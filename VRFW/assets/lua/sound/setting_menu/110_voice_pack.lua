@@ -1,5 +1,4 @@
--- audio_engine: row «Pack de voces» / "Voice pack" of Opciones › «Opciones de mods» (setting_menu), docs/game/media/
--- voice-packs.md §12 and docs/app/mod-options.md. Owned by the audio_engine mod since 29/09/2026; the tab and the row
+-- audio_engine: row «Pack de voces» / "Voice pack" of Opciones › «Opciones de mods» (setting_menu). Owned by the audio_engine mod; the tab and the row
 -- framework (VRFW_SET / VRFW_OPT) belong to the mod_options mod (VR-Framework), which is the only copy of it.
 --
 -- * The ROW is declared in mods\audio_engine\options.toml (type lua, SETTING_INFO id crc32("evt_set_voice_lang"),
@@ -7,13 +6,11 @@
 --   files and serves it. Texts (9 languages, English fallback): mods\audio_engine\text.toml, merged by text_engine
 --   when it is active, else served by mod_options.
 -- * VALUES: Ninguno (0) or one of the installed voice-pack languages (1..): CMND_VRFW_SOUND_VOICE_GET / _NAME / _SET
---   of the framework's sound type (VR-Framework owns the voice packs since 02/10/2026, docs/framework/types/sound.md
---   §7); with an older ModLoader that keeps them, its CMND_EVT_VOICE_GET / _NAME / _SET (`mods` module) answer
+--   of the framework's sound type (VR-Framework owns the voice packs); with an older ModLoader that keeps them, its CMND_EVT_VOICE_GET / _NAME / _SET (`mods` module) answer
 --   instead. The retail «Idioma de voz» row (日本語 / English) is untouched and decides the language of what a pack
 --   does not dub. Left / right / A change a draft; the retail «¿Aplicar los
 --   cambios?» window stores it on «Sí» and drops it on «No» (mod_options' framework).
--- * This file only gives the row's behaviour: an item of the setting_menu host's list "option_rows" (VRFW_Host.add,
---   docs/framework/lua-hosts.md), which mod_options registers at the menu's first callback, whatever the load order.
+-- * This file only gives the row's behaviour: an item of the setting_menu host's list "option_rows" (VRFW_Host.add), which mod_options registers at the menu's first callback, whatever the load order.
 --   Without VRFW_Host: VRFW_OPT_Register, or VRFW_OPT_QUEUE before mod_options' Lua. Nothing calls the engine while the
 --   chunk loads.
 
@@ -91,7 +88,7 @@ AE_VP_ROW = {
     return AE_VP_Text(AE_VP_OFF_ID, "Needs the VR ModLoader")
   end
 }
-if VRFW_Host ~= nil then              -- the setting_menu host's list of rows (docs/framework/lua-hosts.md)
+if VRFW_Host ~= nil then              -- the setting_menu host's list of rows
   VRFW_Host.add("setting_menu", "option_rows", {id = AE_VP_KEY, value = AE_VP_ROW})
 elseif VRFW_OPT_Register ~= nil then
   VRFW_OPT_Register(AE_VP_KEY, AE_VP_ROW)

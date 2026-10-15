@@ -1,0 +1,398 @@
+# Souls Rework › the totems (kind SoulsRework.soul/1, schema content\types\soul.toml): one per totem aura, its SP
+# route (Galaxy's SP per level, level 1 first) and its 6 reel slots in Galaxy's order ("<skill>:<level>" of
+# content\souls\skills.toml). First written by research/scripts/souls_rework_build.py from the wiki export
+# (wiki/souls.csv, the totem <-> soul matching of docs/game/mechanics/soul-table.csv); edited in place since (ModManager
+# «Auras», a totem's page). `souls_rework_build.py --check` lists what differs from the wiki.
+schema = "SoulsRework.soul/1"
+
+[[SoulsRework.Totem]]
+aura = "wsd000040"
+galaxy = "Fox"
+name = "souls_rework.totem_wsd000040"
+sp = [100, 120, 150, 200, 270]
+roulette = ["stamina_recovery:1", "super_dash:2", "miss", "tension_recovery:2", "miss", "stamina_tension_recovery:2"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000080"
+galaxy = "Mimizuku"
+name = "souls_rework.totem_wsd000080"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:2", "miss", "miss", "block_up:2", "level_points_plus:2", "sp_saving:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000090"
+galaxy = "Dolphanus"
+name = "souls_rework.totem_wsd000090"
+sp = [100, 120, 150, 200, 270]
+roulette = ["stamina_recovery:1", "sp_saving:1", "tension_recovery:1", "miss", "block_up:1", "sp_saving:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000110"
+galaxy = "Buffalo"
+name = "souls_rework.totem_wsd000110"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:3", "miss", "knockdown:2", "miss", "knockdown:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000160"
+galaxy = "Ratel"
+name = "souls_rework.totem_wsd000160"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:2", "miss", "invincible:2", "block_up:1", "knockdown:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000170"
+galaxy = "Gandran"
+name = "souls_rework.totem_wsd000170"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:2", "super_dash:1", "block_up:1", "miss", "level_points_plus:1", "super_dash:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000190"
+galaxy = "Garyuu"
+name = "souls_rework.totem_wsd000190"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:3", "miss", "miss", "stamina_recovery:1", "block_up:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000290"
+galaxy = "Clupe"
+name = "souls_rework.totem_wsd000290"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:3", "miss", "block_up:2", "miss", "super_dash:2", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000330"
+galaxy = "Flamey"
+name = "souls_rework.totem_wsd000330"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:2", "block_up:2", "miss", "miss", "block_up:2", "super_dash:2"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000370"
+galaxy = "Dandorl"
+name = "souls_rework.totem_wsd000370"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:3", "miss", "block_up:2", "miss", "knockdown:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000470"
+galaxy = "Fukurou"
+name = "souls_rework.totem_wsd000470"
+sp = [100, 120, 150, 200, 270]
+roulette = ["tension_recovery:3", "miss", "level_points_plus:1", "miss", "stamina_recovery:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000480"
+galaxy = "Gyorom"
+name = "souls_rework.totem_wsd000480"
+sp = [100, 120, 150, 200, 270]
+roulette = ["miss", "stamina_tension_recovery:3", "miss", "stamina_recovery:1", "tension_recovery:1", "knockdown:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsd000490"
+galaxy = "Jinryuu"
+name = "souls_rework.totem_wsd000490"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:2", "super_dash:2", "miss", "level_points_plus:1", "sp_saving:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000100"
+galaxy = "Delpinus"
+name = "souls_rework.totem_wsk000100"
+sp = [100, 120, 150, 200, 250]
+roulette = ["catch_up:2", "miss", "catch_up:2", "catch_up:1", "numbness_minus:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000130"
+galaxy = "Mammoth"
+name = "souls_rework.totem_wsk000130"
+sp = [110, 140, 170, 200, 230]
+roulette = ["numbness_minus:3", "catch_up:2", "miss", "miss", "catch_up:2", "numbness_minus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000200"
+galaxy = "Gouryuu"
+name = "souls_rework.totem_wsk000200"
+sp = [120, 130, 150, 180, 200]
+roulette = ["numbness_minus:2", "catch_up:1", "numbness_minus:1", "catch_up:2", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000230"
+galaxy = "Mossphee"
+name = "souls_rework.totem_wsk000230"
+sp = [110, 140, 170, 200, 230]
+roulette = ["tension_recovery:2", "catch_up:1", "miss", "miss", "numbness_minus:2", "level_points_plus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000250"
+galaxy = "Angydra"
+name = "souls_rework.totem_wsk000250"
+sp = [100, 120, 150, 200, 250]
+roulette = ["catch_up:2", "sp_saving:3", "miss", "catch_up:2", "catch_up:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000300"
+galaxy = "Gigiras"
+name = "souls_rework.totem_wsk000300"
+sp = [110, 140, 170, 200, 230]
+roulette = ["catch_up:1", "catch_up:2", "level_points_plus:1", "miss", "catch_up:2", "sp_saving:2"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000340"
+galaxy = "Magnatas"
+name = "souls_rework.totem_wsk000340"
+sp = [100, 120, 150, 200, 250]
+roulette = ["miss", "catch_up:3", "miss", "level_points_plus:2", "catch_up:1", "numbness_minus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000380"
+galaxy = "Saranarja"
+name = "souls_rework.totem_wsk000380"
+sp = [120, 130, 150, 180, 200]
+roulette = ["catch_up:2", "miss", "miss", "sp_saving:2", "numbness_minus:2", "numbness_minus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000500"
+galaxy = "Dolmega"
+name = "souls_rework.totem_wsk000500"
+sp = [120, 130, 150, 180, 200]
+roulette = ["numbness_minus:3", "miss", "sp_saving:2", "numbness_minus:3", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000510"
+galaxy = "Dalphonus"
+name = "souls_rework.totem_wsk000510"
+sp = [110, 140, 170, 200, 230]
+roulette = ["catch_up:2", "miss", "catch_up:1", "numbness_minus:1", "catch_up:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000520"
+galaxy = "Cossphee"
+name = "souls_rework.totem_wsk000520"
+sp = [120, 130, 150, 180, 200]
+roulette = ["catch_up:3", "miss", "miss", "numbness_minus:2", "numbness_minus:2", "level_points_plus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000530"
+galaxy = "Grimron"
+name = "souls_rework.totem_wsk000530"
+sp = [100, 120, 150, 200, 250]
+roulette = ["level_points_plus:1", "miss", "level_points_plus:1", "catch_up:3", "level_points_plus:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wsk000540"
+galaxy = "Cerbegyra"
+name = "souls_rework.totem_wsk000540"
+sp = [110, 140, 170, 200, 230]
+roulette = ["catch_up:3", "miss", "stamina_recovery:2", "numbness_minus:3", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000010"
+galaxy = "Horse"
+name = "souls_rework.totem_wso000010"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:2", "dribble_up:1", "miss", "invincible:1", "miss", "super_dash:2"]
+
+[[SoulsRework.Totem]]
+aura = "wso000060"
+galaxy = "Dohma"
+name = "souls_rework.totem_wso000060"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:1", "miss", "dribble_up:1", "super_dash:2", "miss", "super_dash:2"]
+
+[[SoulsRework.Totem]]
+aura = "wso000120"
+galaxy = "Kujaku"
+name = "souls_rework.totem_wso000120"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:2", "miss", "knockdown:2", "invincible:1", "miss", "dribble_up:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000140"
+galaxy = "Kamoshika"
+name = "souls_rework.totem_wso000140"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:2", "dribble_up:1", "miss", "knockdown:1", "dribble_up:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000150"
+galaxy = "Grizzly"
+name = "souls_rework.totem_wso000150"
+sp = [100, 120, 150, 200, 270]
+roulette = ["invincible:2", "miss", "dribble_up:2", "miss", "invincible:1", "dribble_up:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000180"
+galaxy = "Phoenichias"
+name = "souls_rework.totem_wso000180"
+sp = [100, 120, 150, 200, 270]
+roulette = ["invincible:1", "super_dash:1", "invincible:1", "miss", "invincible:1", "super_dash:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000220"
+galaxy = "Gussphee"
+name = "souls_rework.totem_wso000220"
+sp = [120, 130, 150, 170, 220]
+roulette = ["dribble_up:3", "miss", "dribble_up:2", "knockdown:2", "miss", "knockdown:2"]
+
+[[SoulsRework.Totem]]
+aura = "wso000280"
+galaxy = "Redio"
+name = "souls_rework.totem_wso000280"
+sp = [100, 120, 150, 200, 270]
+roulette = ["invincible:2", "miss", "level_points_plus:2", "level_points_plus:1", "miss", "invincible:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000310"
+galaxy = "Gryphbang"
+name = "souls_rework.totem_wso000310"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:3", "invincible:3", "miss", "dribble_up:2", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000320"
+galaxy = "Univolt"
+name = "souls_rework.totem_wso000320"
+sp = [100, 120, 150, 200, 270]
+roulette = ["invincible:2", "level_points_plus:1", "miss", "knockdown:1", "invincible:1", "sp_saving:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000430"
+galaxy = "Pamerio"
+name = "souls_rework.totem_wso000430"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:1", "super_dash:1", "super_dash:1", "knockdown:1", "miss", "dribble_up:1"]
+
+[[SoulsRework.Totem]]
+aura = "wso000440"
+galaxy = "Brachias"
+name = "souls_rework.totem_wso000440"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:3", "miss", "miss", "super_dash:2", "dribble_up:2", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000450"
+galaxy = "Tsukinowaguma"
+name = "souls_rework.totem_wso000450"
+sp = [120, 130, 150, 170, 220]
+roulette = ["invincible:2", "dribble_up:1", "miss", "knockdown:2", "knockdown:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000460"
+galaxy = "Zooma"
+name = "souls_rework.totem_wso000460"
+sp = [100, 120, 150, 200, 270]
+roulette = ["invincible:3", "miss", "dribble_up:1", "invincible:3", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000550"
+galaxy = "PegasusRed"
+name = "souls_rework.totem_wso000550"
+sp = [120, 130, 150, 170, 220]
+roulette = ["knockdown:3", "dribble_up:2", "miss", "miss", "level_points_plus:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wso000560"
+galaxy = "Pegasus"
+name = "souls_rework.totem_wso000560"
+sp = [110, 130, 150, 180, 250]
+roulette = ["super_dash:3", "dribble_up:2", "miss", "miss", "dribble_up:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000020"
+galaxy = "Ookami"
+name = "souls_rework.totem_wss000020"
+sp = [90, 120, 150, 180, 230]
+roulette = ["shoot_up:2", "numbness_plus:1", "shoot_up:3", "miss", "numbness_plus:1", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000030"
+galaxy = "Hayabusa"
+name = "souls_rework.totem_wss000030"
+sp = [100, 120, 140, 170, 200]
+roulette = ["sp_saving:1", "numbness_plus:2", "miss", "numbness_plus:2", "shoot_up:1", "numbness_plus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wss000050"
+galaxy = "Lion"
+name = "souls_rework.totem_wss000050"
+sp = [80, 100, 140, 190, 250]
+roulette = ["shoot_up:3", "miss", "shoot_up:2", "miss", "shoot_up:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000070"
+galaxy = "Gooma"
+name = "souls_rework.totem_wss000070"
+sp = [80, 100, 140, 190, 250]
+roulette = ["shoot_up:2", "shoot_up:1", "miss", "shoot_up:1", "sp_saving:1", "shoot_up:1"]
+
+[[SoulsRework.Totem]]
+aura = "wss000210"
+galaxy = "Dorouga"
+name = "souls_rework.totem_wss000210"
+sp = [100, 120, 140, 170, 200]
+roulette = ["numbness_plus:2", "miss", "numbness_plus:3", "miss", "miss", "level_points_plus:2"]
+
+[[SoulsRework.Totem]]
+aura = "wss000240"
+galaxy = "Belion"
+name = "souls_rework.totem_wss000240"
+sp = [90, 120, 150, 180, 230]
+roulette = ["shoot_up:2", "numbness_plus:2", "level_points_plus:1", "miss", "numbness_plus:1", "sp_saving:1"]
+
+[[SoulsRework.Totem]]
+aura = "wss000260"
+galaxy = "Ixaal"
+name = "souls_rework.totem_wss000260"
+sp = [80, 100, 140, 190, 250]
+roulette = ["shoot_up:2", "miss", "shoot_up:2", "level_points_plus:2", "miss", "shoot_up:3"]
+
+[[SoulsRework.Totem]]
+aura = "wss000270"
+galaxy = "Begiran"
+name = "souls_rework.totem_wss000270"
+sp = [100, 120, 140, 170, 200]
+roulette = ["numbness_plus:1", "numbness_plus:2", "numbness_plus:1", "miss", "sp_saving:1", "level_points_plus:1"]
+
+[[SoulsRework.Totem]]
+aura = "wss000350"
+galaxy = "Dragnova"
+name = "souls_rework.totem_wss000350"
+sp = [90, 120, 150, 180, 230]
+roulette = ["numbness_plus:3", "shoot_up:3", "miss", "level_points_plus:1", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000360"
+galaxy = "Goliger"
+name = "souls_rework.totem_wss000360"
+sp = [90, 120, 150, 180, 230]
+roulette = ["sp_saving:3", "shoot_up:2", "numbness_plus:1", "numbness_plus:2", "miss", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000390"
+galaxy = "Ginrou"
+name = "souls_rework.totem_wss000390"
+sp = [100, 120, 140, 170, 200]
+roulette = ["numbness_plus:3", "miss", "miss", "numbness_plus:3", "miss", "numbness_plus:2"]
+
+[[SoulsRework.Totem]]
+aura = "wss000400"
+galaxy = "Hakutouwashi"
+name = "souls_rework.totem_wss000400"
+sp = [80, 100, 140, 190, 250]
+roulette = ["miss", "shoot_up:3", "miss", "shoot_up:3", "miss", "sp_saving:2"]
+
+[[SoulsRework.Totem]]
+aura = "wss000410"
+galaxy = "Pelion"
+name = "souls_rework.totem_wss000410"
+sp = [90, 120, 150, 180, 230]
+roulette = ["numbness_plus:3", "miss", "numbness_plus:1", "miss", "shoot_up:3", "miss"]
+
+[[SoulsRework.Totem]]
+aura = "wss000420"
+galaxy = "Vairaas"
+name = "souls_rework.totem_wss000420"
+sp = [100, 120, 140, 170, 200]
+roulette = ["level_points_plus:2", "numbness_plus:1", "miss", "level_points_plus:2", "numbness_plus:2", "miss"]

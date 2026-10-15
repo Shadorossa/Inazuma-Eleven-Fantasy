@@ -1,22 +1,16 @@
--- VR-Framework › locked shop rows (service S12 of VRFW 2.3, docs/framework/types/shop.md §13). Declarations: every
--- active mod's content\shop_locks\*.toml (`VRFW.shop_lock/1`, keys: content\types\shop_lock.toml); native side:
--- content\game\shop_rows.toml (hooks ShopRows.Condition / ShopRows.Fill, installed only when a mod declares locked rows).
---
--- The game's shop list builder never lists a row whose compiled condition (SHOP_INFO_ITEM +0x58) fails. For the
--- declared shops, a row whose condition fails is answered «visible» and recorded as locked when the condition is a real
--- progress gate (it mentions none of the declared `keep_hidden` flags), the row sells one of the declared `items` (when
--- given) and no other visible row of the shop sells the same item. A row whose condition holds leaves the set again
--- (self-correcting on every rebuild). The list item fill records layer instance -> row id (the menu's recycled
--- instances), so the menu Lua greys the locked rows and shows what they wait for.
---
+-- Locked shop rows. Declarations: every active mod's content\shop_locks\*.toml (`VRFW.shop_lock/1`); native side: content\game\shop_rows.toml.
+-- Rows whose compiled condition fails are normally never listed. For declared shops such a row is shown and recorded as locked when the condition is a real
+-- progress gate (none of the declared `keep_hidden` flags), it sells a declared `items` entry (when given), and no other visible row sells the same item.
+-- The list item fill records layer instance -> row id so the menu Lua greys locked rows and shows what they wait for.
 -- | Command | Args | Returns |
 -- |---|---|---|
 -- | CMND_VRFW_SHOP_LOCK_SHOPS | shop ids (SHOP_INFO col 0); none = ask | live (replaces the shop list until a title return) |
 -- | CMND_VRFW_SHOP_LOCKED | inst (layer instance of shop01_02_list_item) | locked, row_id, kind, a, b |
 -- | CMND_VRFW_SHOP_LOCKED_ITEM | item (SHOP_INFO_ITEM col 2) | locked, kind, a, b |
---
--- kind, a, b = what the row waits for, decoded from its compiled condition: 1 story phase (a), 2 Chronicle piece (a,
--- difficulty b), 3 global bit flag (a), 4 soccer game (a, difficulty b), 0 anything else.
+-- | CMND_VRFW_SHOP_LOCK_ON | shop id | whether rows of this shop are listed as locked |
+-- | CMND_VRFW_SHOP_LOCK_SOURCE | kind, a, b, language code | form, name, number, text id: what a locked row waits for, named from the game's tables |
+-- kind, a, b = what the row waits for: 1 story phase (a), 2 Chronicle piece (a, difficulty b), 3 global bit flag (a), 4 soccer game (a, difficulty b), 0 other.
+-- A row whose condition mentions the framework's hide flag (VRFW_ROW_HIDDEN) is never listed.
 
 ShopRows = ShopRows or {}
 
@@ -28,18 +22,22 @@ local KEY_RESETS = "vrfw.game_resets"
 local function info(...) VRFW.log("shop_rows:", ...) end
 local function warn(...) VRFW.warn("shop_rows:", ...) end
 
--- SHOP_INFO_ITEM row (0xB8 bytes): id +0, item +4, compiled condition +0x58, lineup flag +0x60; SHOP_INFO rows / count
+-- SHOP_INFO_ITEM row layout (stride 0xB8) and SHOP_INFO row fields.
 local ROW_STRIDE, ROW_ITEM, ROW_COND, ROW_LINEUP = 0xB8, 0x4, 0x58, 0x60
 local SHOP_ROWS, SHOP_COUNT = 0x38, 0x40
 local LAYER_INST = 0x110
 local MAX_BLOB, MAX_INST = 4096, 64
 
 local KIND_UNKNOWN, KIND_PHASE, KIND_CHRONICLE, KIND_FLAG, KIND_GAME = 0, 1, 2, 3, 4
--- the condition functions the decoder names (crc32 of the game's condition function names)
+-- Condition functions the decoder names (crc32 of their names)
 local FN_GET_PHASE, FN_CHRONICLE_CLEAR, FN_GLOBAL_BIT, FN_GAME_CLEAR = 0xB91936DA, 0xC9783DBF, 0x2A3D4543, 0xB817C9C5
 
 local DECLARED = {}      -- shop id -> { items = set | nil, keep = { flag … }, key }
+local DECLARED_ALL = nil -- the rule of `all_shops` declarations (every shop without its own rule)
 local shops = {}         -- shop id -> rule in force (the declared ones, or the command's list)
+local all_rule = nil     -- the `all_shops` rule in force (nil after CMND_VRFW_SHOP_LOCK_SHOPS replaced the list)
+local FLAG_TEXT = {}     -- global bit flag -> text id declared by a [[VRFW.ShopLockText]]
+local HIDE_FLAG = nil    -- crc32 of the framework's hide flag
 local LIVE = false
 
 -- row id -> cond, item -> cond, layer instance -> row id
@@ -53,7 +51,7 @@ local function rd(ty, at)
   return nil
 end
 
--- a title return since the last call: nothing listed yet, the recorded rows go; the declared shops again
+-- After a title return: nothing listed yet, recorded rows are dropped, declared shops apply again
 local seen_epoch = nil
 local function check_reset()
   local ok, e = pcall(VRFW.state.get, KEY_RESETS)
@@ -63,6 +61,7 @@ local function check_reset()
       locked_rows, locked_items, inst_row = {}, {}, {}
       shops = {}
       for id, r in pairs(DECLARED) do shops[id] = r end
+      all_rule = DECLARED_ALL
     end
     seen_epoch = e
   end
@@ -70,7 +69,7 @@ end
 
 -- ---------------------------------------------------------------------------------------------- conditions
 
--- the payload bytes (after the 3-byte header `00 | u16 LE len`) of a compiled condition; nil when not a compiled one
+-- Payload bytes of a compiled condition blob (format: u8 0, u16 LE payload length, payload); nil when not compiled
 local function payload_of(blob)
   if rd("u8", blob) ~= 0 then return nil end
   local n = rd("u16", blob + 1) or 0
@@ -90,7 +89,7 @@ local function be32(p, i)
   return ((a * 256 + b) * 256 + c) * 256 + d
 end
 
--- the payload references `flag` as a hash literal (34 <crc32 big-endian>)
+-- The payload references `flag` as a hash literal (34 <crc32 big-endian>)
 local function mentions(p, flag)
   for i = 1, #p - 4 do
     if p[i] == 0x34 and be32(p, i + 1) == flag then return true end
@@ -98,15 +97,14 @@ local function mentions(p, flag)
   return false
 end
 
--- a literal (32 int / 34 hash, big-endian) at i
+-- A literal (32 int / 34 hash, big-endian) at i
 local function lit(p, i)
   local t = p[i]
   if t ~= 0x32 and t ~= 0x34 then return nil end
   return be32(p, i + 1)
 end
 
--- where the RPN tokens start: the engine's payload is `u16 BE len | nodes | tokens` (index 4 here, 1-based); a payload
--- without the BE length falls back to index 2
+-- Index (1-based) where the RPN tokens start in a payload (format: u16 BE length, nodes, tokens): 4 when that layout is detected, else 2
 local function token_start(p)
   if #p >= 4 then
     local be = p[1] * 256 + p[2]
@@ -115,7 +113,7 @@ local function token_start(p)
   return 2
 end
 
--- the first group whose function is a known gate gives kind, a, b
+-- First group whose function is a known gate gives kind, a, b
 local function decode(p)
   local i = token_start(p)
   while i <= #p do
@@ -150,13 +148,13 @@ local function decode(p)
   return { KIND_UNKNOWN, 0, 0 }
 end
 
--- the game's own answer for a compiled condition
+-- The game's own answer for a compiled condition
 local function eval(c)
   local ok, r = pcall(VRFW.hook.original, "ShopRows.Condition", c)
   return ok and r ~= nil and r ~= 0 and r ~= false
 end
 
--- another row of the shop sells `item` with lineup flag 0 and a condition that holds (or none)
+-- Another row of the shop sells `item` with lineup flag 0 and a holding condition (or none)
 local function twin_visible(shop, row, item)
   local rows, n = rd("ptr", shop + SHOP_ROWS), rd("u32", shop + SHOP_COUNT)
   if not rows or not n then return false end
@@ -188,11 +186,12 @@ local function row_cond_post(ev)
   end
   if row_id == 0 then return nil end
   local shop_id = rd("u32", shop) or 0
-  local rule = shops[shop_id]
+  local rule = shops[shop_id] or all_rule
   if not rule then return nil end
   if rule.items and not rule.items[item] then return nil end
   local p = payload_of(blob)
   if not p then return nil end
+  if HIDE_FLAG and mentions(p, HIDE_FLAG) then return nil end
   for _, f in ipairs(rule.keep) do
     if mentions(p, f) then return nil end
   end
@@ -207,7 +206,7 @@ local function row_cond_post(ev)
   return { ret = 1 }
 end
 
--- the list item fill (layerItem, &args, &row): layer instance -> row id
+-- List item fill (layerItem, &args, &row): layer instance -> row id
 local function row_fill_pre(ev)
   local inst = rd("u32", ev.args[1] and ev.args[1] + LAYER_INST)
   local row = rd("ptr", ev.args[3])
@@ -224,34 +223,59 @@ local function start()
     return
   end
   local decls, skipped = D.load(schema, warn)
+  local okh, h = pcall(D.id_of, "VRFW_ROW_HIDDEN")
+  HIDE_FLAG = okh and h or nil
   local n_shops, parts = 0, {}
+  local function join(r, d, items)
+    -- a second declaration of the shop: item filters join (none = every row), kept flags add up
+    r.key = r.key .. "+" .. d.key
+    if r.items and items then
+      for x in pairs(items) do r.items[x] = true end
+    else
+      r.items = nil
+    end
+  end
   for _, d in ipairs(decls) do
+    if d.entry == "ShopLockText" then
+      local tid = D.id_of(d.v.text)
+      for _, f in ipairs(d.v.flags) do FLAG_TEXT[f] = tid end
+      goto next_decl
+    end
+    if #(d.v.shops or {}) == 0 and not d.v.all_shops then
+      warn(string.format("%s: neither `shops` nor `all_shops = true`: left out", d.where or d.key))
+      goto next_decl
+    end
     local items
     if d.v.items and #d.v.items > 0 then
       items = {}
       for _, x in ipairs(d.v.items) do items[x] = true end
     end
-    for _, id in ipairs(d.v.shops) do
+    if d.v.all_shops then
+      if not DECLARED_ALL then
+        DECLARED_ALL = { key = d.key, keep = {}, items = items }
+      else
+        join(DECLARED_ALL, d, items)
+      end
+      for _, f in ipairs(d.v.keep_hidden or {}) do DECLARED_ALL.keep[#DECLARED_ALL.keep + 1] = f end
+    end
+    for _, id in ipairs(d.v.shops or {}) do
       local r = DECLARED[id]
       if not r then
         r = { key = d.key, keep = {}, items = items }
         DECLARED[id] = r
         n_shops = n_shops + 1
       else
-        -- a second declaration of the shop: the item filters join (none = every row), the kept flags add up
-        r.key = r.key .. "+" .. d.key
-        if r.items and items then
-          for x in pairs(items) do r.items[x] = true end
-        else
-          r.items = nil
-        end
+        join(r, d, items)
       end
       for _, f in ipairs(d.v.keep_hidden or {}) do r.keep[#r.keep + 1] = f end
     end
-    parts[#parts + 1] = string.format("%s (%d shop(s)%s)", d.key, #d.v.shops, items and string.format(", %d item(s)", #d.v.items) or "")
+    parts[#parts + 1] = string.format("%s (%s%s)", d.key, d.v.all_shops and "all shops" or string.format("%d shop(s)", #d.v.shops),
+      items and string.format(", %d item(s)", #d.v.items) or "")
+    ::next_decl::
   end
   for id, r in pairs(DECLARED) do shops[id] = r end
-  if n_shops == 0 then
+  all_rule = DECLARED_ALL
+  if n_shops == 0 and not DECLARED_ALL then
     if #decls > 0 or (skipped or 0) > 0 then
       info(string.format("off: %d declaration(s) (%d left out by `when`), no shop: the shops list their rows as the game does", #decls, skipped or 0))
     else
@@ -263,7 +287,8 @@ local function start()
   local okf, rf, ef = pcall(VRFW.hook.apply, "ShopRows.Fill")
   LIVE = okc and rc == true and okf and rf == true
   if LIVE then
-    info(string.format("on: rows with an unmet progress condition listed as locked in %d shop(s): %s", n_shops, table.concat(parts, ", ")))
+    info(string.format("on: rows with an unmet progress condition listed as locked in %s: %s",
+      DECLARED_ALL and "every shop" or string.format("%d shop(s)", n_shops), table.concat(parts, ", ")))
   else
     warn(string.format("detours not installed (condition: %s, fill: %s): the shops list their rows as the game does",
       tostring(okc and (rc == true and "ok" or ec) or rc), tostring(okf and (rf == true and "ok" or ef) or rf)))
@@ -282,6 +307,7 @@ function ShopRows.Shops(...)
   end
   if #ids > 0 then
     shops = {}
+    all_rule = nil
     for _, id in ipairs(ids) do shops[id] = DECLARED[id] or { key = "CMND_VRFW_SHOP_LOCK_SHOPS", keep = {}, items = nil } end
     info(string.format("CMND_VRFW_SHOP_LOCK_SHOPS: %d shop(s) until the title (live %s)", #ids, tostring(LIVE)))
   end
@@ -306,6 +332,198 @@ function ShopRows.LockedItem(item)
   local c = item ~= 0 and locked_items[item] or nil
   local k = c or { 0, 0, 0 }
   return c ~= nil, k[1], k[2], k[3]
+end
+
+-- CMND_VRFW_SHOP_LOCK_ON(shop id) -> whether rows of this shop are listed as locked
+function ShopRows.On(shop)
+  check_reset()
+  shop = tonumber(shop) or 0
+  if shop ~= 0 then shop = band(shop, 0xFFFFFFFF) end
+  return LIVE and (shops[shop] ~= nil or all_rule ~= nil)
+end
+
+-- ---------------------------------------------------------------------------------------------- what a row waits for
+
+local function u32(v)
+  v = tonumber(v)
+  if not v or v ~= v then return 0 end
+  return math.floor(v) % 4294967296
+end
+
+local function slice(v)
+  if type(v) ~= "table" then return nil end
+  local s, n = tonumber(v.start or v[1]), tonumber(v.count or v[2])
+  if s == nil or n == nil then return nil end
+  return s, n
+end
+
+local function rows_of(id)
+  local ok, t = pcall(VRFW.table.rows, id)
+  if ok and type(t) == "table" then return t end
+  warn(string.format("table %s not readable (%s): its names are left out", id, tostring(t)))
+  return {}
+end
+
+-- Games, pieces and chapters as text ids, read once on the first locked row that is named
+local SOURCES = nil
+local function sources()
+  if SOURCES then return SOURCES end
+  local t0 = VRFW.now()
+  local S = { game = {}, piece = {}, chapter = {} }
+  -- soccer game id -> { title = text id, teams = { [difficulty] = team id }, first = team id }
+  local games = rows_of("soccer/soccer_game_info")
+  local refs = rows_of("soccer/soccer_game_info_ref_difficulty")
+  local diffs = rows_of("soccer/soccer_game_difficulty")
+  for i, g in ipairs(games) do
+    local id = u32(g.id or g[1])
+    if id ~= 0 then
+      local e = { title = u32(g.title_text or g[5]), teams = {}, first = 0 }
+      local r = refs[i]
+      local st, n = tonumber(r and (r.start or r[1])), tonumber(r and (r.count or r[2]))
+      if st and n then
+        for k = st, st + n - 1 do
+          local d = diffs[k + 1]
+          if type(d) == "table" then
+            local team = u32(d.opponent_team or d[2])
+            local lvl = tonumber(d.difficulty or d[1]) or 0
+            if team ~= 0 then
+              e.teams[lvl] = e.teams[lvl] or team
+              if e.first == 0 then e.first = team end
+            end
+          end
+        end
+      end
+      S.game[id] = e
+    end
+  end
+  -- team id -> name text id
+  S.team = {}
+  for _, t in ipairs(rows_of("team/team")) do
+    local id = u32(t.id or t[1])
+    if id ~= 0 then S.team[id] = u32(t.name_text or t[4]) end
+  end
+  -- Chronicle piece id -> its games in order
+  local events = rows_of("vsroute/vs_route_piece_event")
+  for _, p in ipairs(rows_of("vsroute/vs_route_piece")) do
+    local id = u32(p.pieceId or p[2])
+    local st, n = slice(p.eventInfoRef or p[24])
+    if id ~= 0 and st then
+      local list = {}
+      for k = st, st + n - 1 do
+        local ev = events[k + 1]
+        local g = type(ev) == "table" and u32(ev.paramCrc1 or ev[1]) or 0
+        if g ~= 0 and S.game[g] then list[#list + 1] = g end
+      end
+      if #list > 0 then S.piece[id] = list end
+    end
+  end
+  -- chapter -> title text id
+  for _, c in ipairs(rows_of("phase/phase_title")) do
+    local ch = tonumber(c.chapter or c[1])
+    if ch then S.chapter[ch] = u32(c.title_text or c[2]) end
+  end
+  SOURCES = S
+  local function count(t) local n = 0 for _ in pairs(t) do n = n + 1 end return n end
+  info(string.format("sources: %d game(s), %d Chronicle piece(s) with games, %d chapter(s), read in %d ms",
+    count(S.game), count(S.piece), count(S.chapter), math.floor(VRFW.now() - t0)))
+  return S
+end
+
+local function lang_of(code)
+  code = tonumber(code)
+  if code and code >= 0 and type(VRFW.files.game_languages) == "function" then
+    local ok, t = pcall(VRFW.files.game_languages)
+    local l = ok and type(t) == "table" and t[math.floor(code) + 1] or nil
+    if type(l) == "string" then return l end
+  end
+  return "en"
+end
+
+-- A game text in a language (English when that language has no such file), kept per file and language
+local TEXTS = {}
+local function text_of(file, lang, id)
+  if not id or id == 0 then return nil end
+  local key = file .. "/" .. lang
+  local t = TEXTS[key]
+  if t == nil then
+    local ok, rows = pcall(VRFW.files.text_rows, "data/common/text/" .. lang .. "/" .. file .. ".cfg.bin")
+    if (not ok or type(rows) ~= "table") and lang ~= "en" then
+      ok, rows = pcall(VRFW.files.text_rows, "data/common/text/en/" .. file .. ".cfg.bin")
+    end
+    t = (ok and type(rows) == "table") and rows or {}
+    TEXTS[key] = t
+  end
+  local r = t[id]
+  local s = r and r[0]
+  if type(s) ~= "string" then return nil end
+  s = s:gsub("\n", " "):gsub("\n", " ")
+  if s == "" then return nil end
+  return s
+end
+
+local function game_title(S, g, lang)
+  local e = S.game[g]
+  return e and text_of("soccer_game_title", lang, e.title) or nil
+end
+
+-- The opponent of a game at difficulty d (else the most common story / Chronicle difficulties, else its first)
+local function game_team(S, g, d, lang)
+  local e = S.game[g]
+  if not e then return nil end
+  local team = e.teams[tonumber(d) or -1] or e.teams[2] or e.teams[1] or e.first
+  return text_of("team_text", lang, S.team[team]) or nil
+end
+
+local SOURCE_CACHE = {}
+
+-- CMND_VRFW_SHOP_LOCK_SOURCE(kind, a, b, language code) -> form, name, number, text id
+-- form: "chapter" (number = chapter, name = its title or ""), "match" (name = the game's title), "beat_chronicle" / "beat"
+-- (name = the opponent), "chronicle", "text" (text id = a [[VRFW.ShopLockText]] text) or "later" (nothing known)
+function ShopRows.Source(kind, a, b, code)
+  kind, a, b = tonumber(kind) or 0, u32(a), tonumber(b) or 0
+  local lang = lang_of(code)
+  local ck = string.format("%d/%d/%d/%s", kind, a, b, lang)
+  local c = SOURCE_CACHE[ck]
+  if c then return c[1], c[2], c[3], c[4] end
+  local form, name, number, text = "later", nil, 0, 0
+  local ok, err = pcall(function()
+    if kind == KIND_FLAG then
+      if FLAG_TEXT[a] then form, text = "text", FLAG_TEXT[a] end
+    elseif kind == KIND_PHASE then
+      local ch = math.floor(a / 10000)
+      if ch >= 1 then
+        form, number = "chapter", ch
+        name = text_of("quest_title_text", lang, sources().chapter[ch])
+      end
+    elseif kind == KIND_CHRONICLE then
+      local S = sources()
+      local list = S.piece[a] or {}
+      for _, g in ipairs(list) do
+        name = game_title(S, g, lang)
+        if name then form = "match" break end
+      end
+      if not name and list[1] then
+        name = game_team(S, list[1], b, lang)
+        if name then form = "beat_chronicle" end
+      end
+      if not name then form = "chronicle" end
+    elseif kind == KIND_GAME then
+      local S = sources()
+      name = game_title(S, a, lang)
+      if name then
+        form = "match"
+      else
+        name = game_team(S, a, b, lang)
+        if name then form = "beat" end
+      end
+    end
+  end)
+  if not ok then
+    warn("source: " .. tostring(err))
+    form, name, number, text = "later", nil, 0, 0
+  end
+  SOURCE_CACHE[ck] = { form, name or "", number, text }
+  return form, name or "", number, text
 end
 
 start()

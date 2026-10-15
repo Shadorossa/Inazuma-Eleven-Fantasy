@@ -1,0 +1,72 @@
+schema = "VRFW.item/2"
+# Inazuma Fantasy's two currencies are two retail items renamed (docs/game/modes/tienda-general.md §6): the most widely
+# earned currency and the rare one, every balance kept 1:1. Every shop that uses them shows the new names.
+# * Puntos de amistad = tk_hr000008 (retail «Estrella de la victoria»; True Hissatsu's retail-shop prices use it).
+# * Puntos de pasión  = tk_bb000001 (retail «Medalla rara BB»; the only currency of the Tienda general).
+# 1 Punto de pasión = 10 Puntos de amistad. Icons: content/images/menu/200_icon/02_icon_item/currencies.toml.
+# Earned: the game's own sources (match prizes, item tables, trophies, gifts) and the match rules below.
+default_lang = "en"
+
+[[edit]]
+target = "tk_hr000008"
+  [edit.text.es]
+  name = "Puntos de amistad"
+  [edit.text.en]
+  name = "Friendship Points"
+  [edit.text.fr]
+  name = "Points d'amitié"
+  [edit.text.de]
+  name = "Freundschaftspunkte"
+  [edit.text.it]
+  name = "Punti amicizia"
+  [edit.text.pt]
+  name = "Pontos de amizade"
+  [edit.text.ja]
+  name = "友情ポイント"
+  [edit.text.zh_hans]
+  name = "友情点数"
+  [edit.text.zh_hant]
+  name = "友情點數"
+
+[[edit]]
+target = "tk_bb000001"
+  [edit.text.es]
+  name = "Puntos de pasión"
+  [edit.text.en]
+  name = "Passion Points"
+  [edit.text.fr]
+  name = "Points de passion"
+  [edit.text.de]
+  name = "Leidenschaftspunkte"
+  [edit.text.it]
+  name = "Punti passione"
+  [edit.text.pt]
+  name = "Pontos de paixão"
+  [edit.text.ja]
+  name = "情熱ポイント"
+  [edit.text.zh_hans]
+  name = "热情点数"
+  [edit.text.zh_hant]
+  name = "熱情點數"
+
+# The points a goal drops in a match are not picked up on the pitch: held and paid at the end (win = the sum of the
+# goal rolls, draw = one roll's worth, loss = nothing). Same rolls, odds and tables (docs/game/mechanics/end-of-match-rewards.md).
+[VRFW.EndOfMatchRewards]
+HeldDrops = ["tk_hr000008", "tk_bb000001"]   # Puntos de amistad, Puntos de pasión
+
+# No in-match drop gives an item the retail shops take as payment (story tokens, Chronicle pages, Vs coins, BB tags...,
+# derived by the VR-Framework): such an entry gives Puntos de amistad instead (same count and weight). The two
+# currencies themselves are kept (docs/game/mechanics/chronicle-drops.md §4).
+[[VRFW.DropFilter]]
+Exclude = "shop_currencies"
+Keep = [
+    "tk_hr000008",                                # Puntos de amistad
+    "tk_bb000001",                                # Puntos de pasión
+]
+ReplaceWith = "tk_hr000008"
+
+# The Chronicle drop-rate list («Tasa de aparición»): Puntos de pasión first; Puntos de amistad are not listed (paid at
+# the end of the match).
+[VRFW.DropList]
+First = ["tk_bb000001"]                     # Puntos de pasión
+Hide = ["tk_hr000008"]                      # Puntos de amistad

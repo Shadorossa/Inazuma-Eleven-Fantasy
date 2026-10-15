@@ -1,5 +1,5 @@
-# Inazuma Fantasy: the player page's Pasivas strips, their slanted plate pre-coloured by kind (owner 2026-10-13: the
-# player's own passive light orange, the archetype passives light blue; graft plate_pages G.CardTint). Made at the first
+# Inazuma Fantasy: the player page's Pasivas strips, their slanted plate pre-coloured by kind (the archetype passives
+# light blue, the others the retail white; graft plate_pages G.CardTint). Made at the first
 # start (and after a game update) from the PLAYER'S own game files: the retail plate passive_base01 of soccer11_20
 # (near white) multiplied per channel, so its shape and shading stay. CMND_SET_PRIM_COLOR never tints this quad, which
 # is why the colour is in the pixels. No Level-5 pixel ships. A recipe that cannot be made is an ERROR in the log and the
@@ -13,20 +13,9 @@ sprite = "passive_base01"
 ops = [{ op = "resize", size = [72, 92] }]
 
 [[recipe]]
-name = "pp_card_orange"
-from = "pp_card"
-ops = [{ op = "affine", mul = [1.0, 0.86, 0.68], add = [0, 0, 0] }]
-
-[[recipe]]
 name = "pp_card_blue"
 from = "pp_card"
 ops = [{ op = "affine", mul = [0.78, 0.89, 1.0], add = [0, 0, 0] }]
-
-[[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
-name = "evt_pp_card_orange"
-size = [72, 92]
-recipe = "pp_card_orange"
 
 [[sprite]]
 atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"

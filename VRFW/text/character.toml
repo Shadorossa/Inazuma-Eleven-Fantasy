@@ -1,8 +1,5 @@
 schema = "VRFW.text_key/1"
-# Texts of the character part (format of the text engine: research/mods/text_engine/README.md). Ids
-# crc32("character_engine.<name>"). The sentences of a recruit trial with a match challenge (`challenge = …` in a
-# character's [character.recruit] trials: the office line and the creator), {secs} = seconds, {count} = times / goals.
-# The part reads them from here (crates/plugins/character_engine/src/decl.rs `challenge_text`).
+# Challenge sentences of recruit trials ({secs} = seconds, {count} = times / goals); ids = crc32("character_engine.<name>").
 default_lang = "en"
 
 [ja.new]

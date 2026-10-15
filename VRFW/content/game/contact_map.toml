@@ -1,8 +1,6 @@
 schema = "VRFW.game/1"
 
-# VR-Framework › contact maps (docs/framework/contact-map.md, VRFW 2.1): the commands the contact map screen
-# (vrfw_contact_map_menu) reads the mods' declarations with (content\contact_maps\*.toml, `VRFW.contact_map/1`).
-# The run time is scripts\contact_map.lua; recruiting is the game Lua's VRFW_Recruit (docs/framework/recruit.md).
+# Commands read by the contact map screen from mods' content\contact_maps\*.toml (schema VRFW.contact_map/1).
 
 [[VRFW.Command]]
 name = "CMND_VRFW_CONTACT_SETS"     # () -> { {key, crc, title, maps}, ... }
@@ -13,20 +11,18 @@ name = "CMND_VRFW_CONTACT_MAPS"     # (set crc / key, lang code) -> the set: tit
 handler = "ContactMap.Maps"
 
 [[VRFW.Command]]
-name = "CMND_VRFW_CONTACT_MAP"      # (map crc / key, lang code) -> zones, items for sale, nodes (players, gates, links)
+name = "CMND_VRFW_CONTACT_MAP"  # (map crc / key, lang code) -> zones, items for sale, nodes (players, gates, links)
 handler = "ContactMap.Map"
 
 [[VRFW.Command]]
-name = "CMND_VRFW_CONTACT_KIT"      # (card) -> { uniform, flags, source }: the kit of his own team (lib/chara_kit.lua)
+name = "CMND_VRFW_CONTACT_KIT"  # (card) -> { uniform, flags, source }: kit of the card's own team
 handler = "ContactMap.Kit"
 
 [[VRFW.Command]]
-name = "CMND_VRFW_MODEL_POSE_BODIES"   # (menu model pose id) -> { body types the pose has } (menu_chara_model_pose_config)
+name = "CMND_VRFW_MODEL_POSE_BODIES"  # (menu model pose id) -> { body types the pose has }
 handler = "ContactMap.PoseBodies"
 
-# TEMPORARY view-everything mode (owner 2026-10-13): 1 = config.toml [debug] reveal_all is on. Read by the mods'
-# view-everything parts (Inazuma Fantasy: every office team page listed, «MODO VISTA» on the office hub); view only,
-# nothing is written to the save by it.
+# 1 when config.toml [debug] reveal_all is on (view-only debug mode; writes nothing to the save).
 [[VRFW.State]]
 key = "vrfw.debug.reveal_all"
 value = { config = "debug.reveal_all", default = 0, min = 0, max = 1 }

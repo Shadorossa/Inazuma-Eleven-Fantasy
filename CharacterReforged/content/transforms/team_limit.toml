@@ -1,0 +1,9 @@
+schema = "VRFW.transform/2"
+# Character Reforged › how many players of a team may run an aura at once (keshin, armour, totem, miximax, mode
+# change, ...). The game allows 2 per team (CanUseAuraSkill 0x154E880: team record +0x1108 < 2); every player of the
+# team may run one here, as in Inazuma Fantasy. The per-player rules stay the game's (one summon and one
+# metamorphosis at a time, the team sequence lock of a shooting zone). The framework's transform run time applies it
+# ([rules] team_aura_max, merged over the other mods' rules key by key).
+
+[rules]
+team_aura_max = 11

@@ -16,7 +16,39 @@
 #
 # Native answer, no script on the game thread: the table BattleBayDeluxe.ActiveTeam holds the tile's team id
 # (scripts\active_team.lua fills it at start). No entry = the request as the game made it.
+#
+# 1.5.66 (owner 2026-10-15: the VS screen showed another team, «Punishement»; the tile's crest and model kit were
+# Raimon's; the active team should play at the Battle Bay's level sync 40 with every move usable):
+# * The team set: the match setup takes the player's team set from the request's +0xC0 (u8, `0x16B59D0`: setup +4,
+#   read by the team builder `0xE9C190` as `FUN_140da20a0(party, set)`). Every Battle Bay request fills it with
+#   party +0x9F11, the online / Battle Bay team set (3..5), not the VS team set the team dock calls active
+#   (party +0x9F10, CMND_GET_VS_USE_TEAM_SET; +0x9F13 in play mode 2). The answer below writes the active set
+#   (table BattleBayDeluxe.ActiveSet, filled by the mirror); scripts\active_team.lua also writes it from the party
+#   block itself on hook:StartMatchRequest.
+# * Level sync: MatchCharaBuild `0x16058F0` computes an owned player's match stats with `GetLevel` of his saved
+#   character (`0x1606121`, call to `0xD85710`, then `0x16053F0(stats, level)`). The call hook MatchStatLevel answers
+#   min(level, sync) while the table BattleBayDeluxe.LevelSync holds the sync of an active-team match (set by the
+#   script on that match's request, removed on any other request). Only the stats level is synced: the saved
+#   characters keep their level, so their boards, learn levels and moves stay as they are (no move is held back by
+#   the sync; the retail level-sync flag 0xFEAE6211 would cap GetLevel everywhere and close board pieces above it).
 schema = "VRFW.game/1"
+
+[[VRFW.Global]]
+# the party block (CGDDPartyStatus): +0x9F10 the VS team set in use, +0x9F13 the same in play mode 2
+name = "active_team_party"
+base = "game_root"
+chain = [0x69A8]
+
+[[VRFW.State]]
+# the address of the native block the StartMatchRequest answers mark a tile request in (set by scripts\active_team.lua)
+key = "BattleBayDeluxe.active_team.request_mark"
+
+[[VRFW.Struct]]
+# the team record FindTeamConfig answers (team_config row in memory): kit (uniform_config id) and emblem (item id),
+# as CMND 0x804100A6 fields 4 / 6 read them
+name = "ActiveTeamRecord"
+size = 0x30
+fields = { uniform = { at = 0x1C, type = "u32" }, emblem = { at = 0x20, type = "u32" } }
 
 [[VRFW.Hook]]
 # StartMatchRequest(scene, request) 0x17B7260: the generic «start this match» of every mode (15 callers). Stolen bytes:
@@ -29,6 +61,36 @@ rva = 0x17B7260
 steal = 14
 args = ["ptr", "ptr"]
 ret = "u64"
+# the script's handler writes the team set and the level sync of the match: it waits for a busy script VM
+wait_ms = 500
+
+# 1.5.67: which request carries the tile, for scripts\active_team.lua (an answer below turns the tile into 0, so the
+# handler alone cannot tell it from a mode whose own request has player's team 0, e.g. a free match): the request's
+# address for a tile request, else 0 (same target: the first answer that applies wins), in the script's native block
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [
+  { value = "[args[2] + 0xA0]:u8", equals = 1 },
+  { value = "[args[2] + 0xA4]:u32", in_table = "BattleBayDeluxe.ActiveTeam" },
+]
+value = "args[2]"
+write = "[state(BattleBayDeluxe.active_team.request_mark)]:u64"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+value = "0"
+write = "[state(BattleBayDeluxe.active_team.request_mark)]:u64"
+
+# 1.5.66: the player's team set of an active-team request = the active VS team set (first: its condition reads +0xA4
+# before the next answer writes 0)
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [
+  { value = "[args[2] + 0xA0]:u8", equals = 1 },
+  { value = "[args[2] + 0xA4]:u32", in_table = "BattleBayDeluxe.ActiveTeam" },
+]
+value = "lookup(BattleBayDeluxe.ActiveSet, 0)"
+write = "[args[2] + 0xC0]:u8"
 
 # the player's team of a Battle Bay request (+0xA0 = 1) is the Active team tile: 0 = the player's active team
 [[VRFW.Hook.answer]]
@@ -39,3 +101,29 @@ when = [
 ]
 value = "0"
 write = "[args[2] + 0xA4]:u32"
+
+# 1.5.64 (owner 2026-10-14: the tile previewed Raimon / Mark Evans): the active team set mirrored onto the tile. The
+# graft research/grafts/bb_active_team reads the active team set (CMND_GET_VS_USE_TEAM_SET and its members) and sends
+# (captain chara_param, "position:chara_param,…"); scripts\active_team.lua writes them over the tile's member rows
+# and its Battle Bay row leader in memory -> ok, what was done.
+[[VRFW.Command]]
+name = "CMND_BBD_ACTIVE_TEAM_MIRROR"
+handler = "BattleBayDeluxe.ActiveTeamMirror"
+needs = ["FindTeamConfig", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow", "ActiveTeamRecord"]
+
+# 1.5.66: the level sync of the active team's match stats. MatchCharaBuild's GetLevel call (0x1606121) before
+# 0x16053F0(stats, level); unique pattern in the v7.1.2 dump.
+[[VRFW.Hook]]
+name = "MatchStatLevel"
+kind = "call"
+pattern = "4C 8B 65 6F 48 8D 55 6F 41 89 B7 74 03 00 00 48 8B CB C6 45 6F 00 E8 ?? ?? ?? ?? 45 8B 45 00 44 0F B7 C8 49 8B D7 E8"
+offset = 0x16
+rva = 0x160610B
+target_rva = 0xD85710
+args = ["ptr", "ptr"]
+ret = "u16"
+
+# no table entry = the game's level
+[[VRFW.Hook.answer]]
+phase = "post"
+value = "min(ret, lookup(BattleBayDeluxe.LevelSync, 0))"

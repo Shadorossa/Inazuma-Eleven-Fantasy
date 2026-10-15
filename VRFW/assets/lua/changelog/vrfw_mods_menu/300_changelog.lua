@@ -1,4 +1,4 @@
--- changelog (VR-Framework): «Novedades de mods» on demand from the «Mods» screen (docs/game/ui/update-notes.md §2.3).
+-- changelog (VR-Framework): «Novedades de mods» on demand from the «Mods» screen.
 -- Adds the FUNC3 key «Novedades» through the screen's VRFW_MM_EXTRA hook (research/mods/mods_menu/lua/vrfw_mods_menu/
 -- 100_mods_screen.lua): it opens the retail update-notes sheet (title_tutorial_menu) with the latest versions of every
 -- active mod that has a changelog.toml. Nothing is marked seen. Without the part's commands the key is not offered.

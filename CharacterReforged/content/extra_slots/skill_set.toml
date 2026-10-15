@@ -11,7 +11,8 @@
 #                        under its armour), a fusion's partner move; when both grant one, the selected slot's
 #
 # The match move list (the 6 techniques) leaves out every aura of the user's players' technique list ([source]
-# list_auras_out): those positions stay empty this match (no base rule fills them); the save is not touched.
+# list_auras_out): those positions stay empty this match; an EMPTY position takes his board slot of the same position
+# ([source] list_board_fill), the table's rule, so the match uses the table's 6 rows; the save is not touched.
 #
 # The VR-Framework's plates slot (one in all mods) with an option gate: while the option is off the matches run the
 # fallback plates slot of another mod instead (All Changed's RB+B «Modo cambio», `all_changed.change`) or none, so
@@ -91,6 +92,10 @@ default_table = "MovesetDefault"
 # VRFW 2.4.29: the user's players' match move list leaves out the auras of their technique list (they are this slot's;
 # the positions stay empty); only while this slot's option is on; rivals keep their list
 list_auras_out = true
+# VRFW 2.4.43 (owner 2026-10-14: «with the Fantasy option the match uses exactly the 6 rows the table shows»): an EMPTY
+# position of their technique list takes, in the match only, the move on the board slot of the same position (the
+# table's rule: an empty list position shows its board slot; an aura there is not taken); nothing saved
+list_board_fill = true
 
 # around the running keshin: plate 0 its armour, its own move on plate 1 while the mix slot is idle
 [VRFW.ExtraSlot.spirit]

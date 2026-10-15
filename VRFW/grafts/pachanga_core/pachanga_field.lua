@@ -1,5 +1,5 @@
 -- ===== EVT pachanga field BEGIN =====
--- Fallback of return = "title" (docs/game/modes/pachangas-sistema.md §3, rules field_net): a pachanga is a street
+-- Fallback of return = "title" (rules field_net): a pachanga is a street
 -- battle, and when the loader's route did not send the match straight to the title (the patch is not live) the engine
 -- goes back to a story field. On the three menus that only exist there (activity_telop_menu = the field HUD, main_menu =
 -- Start, map_menu = Select): with a pachanga still running (its save sink is on: nothing of this field is written) and

@@ -1,8 +1,6 @@
--- The run-time rules of the technique build (scripts/build/technique.lua): goal events, ball mini-effects, shot /
--- keeper mini-effects, dual elements, effect-variant event copies, hand-off scenes, keeper-gauge scenes and the row
--- icons. Each rule is a table the technique type's hooks read (crates/plugins/technique_engine: ball, minifx,
--- performers, handoff, keeper, icons); the ranges and vocabularies come from the engine (input.consts, VRFW.technique).
--- Installs its functions on the build context X.
+-- Run-time rules of the technique build (scripts/build/technique.lua): goal events, ball and shot/keeper mini-effects, dual elements,
+-- effect-variant event copies, hand-off scenes, keeper-gauge scenes and row icons. Each rule is a table the technique hooks read;
+-- ranges and vocabularies come from the engine (input.consts, VRFW.technique). Installs its functions on the build context X.
 
 local TWO32 = 4294967296
 
@@ -26,7 +24,7 @@ return function(X)
     end
     return nil
   end
-  -- a game move (`wh…`, not a creation, not a variant itself) covers its `_or` / `_mm` ids
+  -- a game move (`wh...`, not a creation or variant) covers its `_or` / `_mm` ids
   local function covers(self, id, key)
     return not (self.created_by_id[id] or variant_key(key) or key:sub(1, 2) ~= "wh")
   end
@@ -37,7 +35,7 @@ return function(X)
     return tostring(v)
   end
 
-  -- ------------------------------------------------------------------------------------------------- goal events
+  -- ---- goal events
   local function goal_template()
     local k = X.keys.goal_replace
     if not k.key then return nil, k.err end
@@ -129,7 +127,7 @@ return function(X)
     return out
   end
 
-  -- ------------------------------------------------------------------------------------------------- ball effects
+  -- ---- ball effects
   local function amount(a, key, kind, r, unit, presets)
     if a == nil then return nil end
     local v
@@ -227,7 +225,7 @@ return function(X)
     return X.sort_rules(out)
   end
 
-  -- ------------------------------------------------------------------------------------------------- mini-effects
+  -- ---- mini-effects
   local function mini(self, id)
     local d = self.minis[id]
     if not d then
@@ -451,9 +449,8 @@ return function(X)
       end)
     end
     if f.trajectory ~= nil then
-      -- the shot's flight as heights over distances (crates/plugins/technique_engine/src/minifx_flight.rs, the run
-      -- time's data shape: move_fx[].dive = { height, unblockable, flight = { points, goal_points, smooth, start_height,
-      -- start_kick, behind, side, speed, time, alias } }); the old archetypes are deprecated aliases expanded into points
+      -- shot flight as heights over distances: move_fx[].dive = { height, unblockable, flight = { points, goal_points, smooth, start_height,
+      -- start_kick, behind, side, speed, time, alias } }. Legacy named flight shapes (the `alias` values, e.g. angled_dive) are deprecated and expanded into points.
       run("trajectory", 7, function(w)
         local t = f.trajectory
         local FL = MINI.flight
@@ -538,8 +535,7 @@ return function(X)
               fl.fall = st.fall
             end
           end
-          -- the declaring mod's default start height (its own content/defaults/technique.toml [trajectory]): every
-          -- flight of points of that mod without its own start.height
+          -- the declaring mod's default start height (content/defaults/technique.toml [trajectory]) for flights of points without start.height
           if fl.start_height == nil and not fl.start_kick then
             local ms = (X.input.defaults.trajectory_start or {})[m]
             if ms ~= nil then
@@ -560,7 +556,7 @@ return function(X)
           local unb = false
           if t.unblockable ~= nil then unb = t.unblockable end
           v = rule(fl, unb)
-          -- the shooter fall (technique.md 4e): start.fall, else a start height that is a number; never "kick"
+          -- shooter fall: start.fall, else a numeric start height; never "kick"
           local falls = fl.fall
           if falls == nil then falls = fl.start_height ~= nil end
           local g = dflt.shooter_fall_gravity
@@ -602,7 +598,7 @@ return function(X)
             local s0 = h + R
             local en = math.min(end_height or dflt.level_end_height, s0)
             local run = (s0 - en) / math.tan(math.rad(angle))
-            -- the old bend: from the level start (the whole level piece) into the line, `bend` of it down the line
+            -- dive line: from the start height `run` m before the goal down to the end height at the goal; the start corner is rounded over `bend` x `run` along the line
             v = rule({ goal_points = { pt(0, en), pt(run, s0, FL.round_full, b * run) }, alias = "angled_dive" }, dflt_u(true))
           elseif x == "drop_skim" then
             local h = height or dflt.dive_height
@@ -663,15 +659,14 @@ return function(X)
             parts[#parts + 1] = table.concat(l, ",")
           end
           local fl = v.flight
-          -- the alias is not compared: an alias and the points it expands into are the same flight (no conflict)
+          -- the alias is not compared: an alias and the points it expands into are the same flight
           show = string.format("Some(%s/%s/%s/%s/%s/%s/%s/%s/%s/%s/%s)", parts[1], parts[2], tostring(fl.smooth == true), tostring(fl.start_height), tostring(fl.start_kick == true),
             string.format("%g", fl.behind or 0), string.format("%g", fl.side or 0), tostring(fl.speed), tostring(fl.time), tostring(v.unblockable), tostring(fl.fall))
         end
         return { v = v, show = show }
       end)
     end
-    -- `[edit.VRFW.MoveEffect]` (docs/framework/technique.md §4g): the generic per-move duel effects, one table per
-    -- move (a later mod's table replaces the whole table; `Off = true` drops it)
+    -- `[edit.VRFW.MoveEffect]`: generic per-move duel effects, one table per move (a later mod's table replaces it; `Off = true` drops it)
     local me = f.vrfw and f.vrfw.MoveEffect
     if me ~= nil then
       run("effect", 10, function(w)
@@ -811,8 +806,7 @@ return function(X)
     return errs
   end
 
-  -- the final mini-effect rules, key by key: a game move's keys also cover its `_or` / `_mm` ids for the keys those
-  -- do not declare themselves
+  -- final mini-effect rules, key by key: a game move's keys also cover its `_or` / `_mm` ids for keys those do not declare
   local KEYS = { "distance_falloff", "lock", "pe_sacrifice", "power_per_participant", "steal", "trajectory", "split_shot", "ground_trail", "effect" }
   local FIELD = { distance_falloff = "distance", pe_sacrifice = "pe", power_per_participant = "participants", steal = "steal_tension",
     trajectory = "dive", split_shot = "split", ground_trail = "trail", effect = "effect" }
@@ -881,7 +875,7 @@ return function(X)
     return res
   end
 
-  -- ------------------------------------------------------------------------------------------------- dual elements
+  -- ---- dual elements
   function X:dual_element_rule(m, what, id, e)
     local w = what .. ".vrfw.DualElement"
     if e.Off then
@@ -963,9 +957,8 @@ return function(X)
     return X.sort_rules(out)
   end
 
-  -- ------------------------------------------------------------------------------------------------- effect variants
-  -- one copy of the move's event per `[[edit.effect_variant]]` case (`<event>_v<element ids>`): its evt and snd lists
-  -- byte for byte, its eff list with the objects swapped, an env row cloned from the base's
+  -- ---- effect variants
+  -- one copy of the move's event per `[[edit.effect_variant]]` case (`<event>_v<element ids>`): evt/snd lists byte for byte, eff list with objects swapped, env row cloned from the base
   function X:event_variants()
     local decls = self.variant_decls
     self.variant_decls = {}
@@ -1059,7 +1052,7 @@ return function(X)
     return out
   end
 
-  -- ------------------------------------------------------------------------------------------------- row icons
+  -- ---- row icons
   function X:move_icons()
     local out = {}
     for ri = 0, S:len(sc.li) - 1 do
@@ -1081,7 +1074,7 @@ return function(X)
     return res
   end
 
-  -- ------------------------------------------------------------------------------------------------- keeper scenes
+  -- ---- keeper scenes
   function X.describe_keeper(p)
     local function side(s) return s or "(retail)" end
     local cond = {}
@@ -1143,7 +1136,7 @@ return function(X)
       keeper_save = keeper_save, priority = d.priority or 0 }
   end
 
-  -- ------------------------------------------------------------------------------------------------- hand-offs
+  -- ---- hand-offs
   function X:handoff_ref(r, m)
     if type(r) == "number" then
       local id = r % TWO32
@@ -1200,7 +1193,7 @@ return function(X)
           if handoff == event then E("event: " .. handoff .. " is the move's own full scene") end
           local ids = {}
           for k, x in ipairs(after) do ids[k] = VRFW.crc32(x) end
-          -- after_moves (VRFW 2.1): the moves the chain record's last shot link must name (the run time's «C chains A»)
+          -- after_moves: moves the chain record's last shot link must name
           return { key = key, mod_id = m, event_id = VRFW.crc32(event), event = event, after_ids = ids, after = after, after_moves = moves,
             handoff_id = VRFW.crc32(handoff), handoff = handoff, within_ms = X.round(within * 1000), seat = seat }
         end)

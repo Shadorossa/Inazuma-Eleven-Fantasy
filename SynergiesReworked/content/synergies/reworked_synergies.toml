@@ -9,22 +9,24 @@ schema = "VRFW.synergy/1"
 
 # ------------------------------------------------------------------------------------------------ El linaje oscuro
 
-# Every player of Royal Academy (every era: IE1, GO, Ares «Royal Academy» and VR share this belong team), Royal Academy
-# Redux, Zeus, Orfeo (Orpheus), Eclipse de Orión and «Equipo D» (Team K): 164 characters with a card (v7.1.2 data).
+# Every player of Royal Academy (every era: IE1, GO, Ares «Royal Academy» and VR share this belong team), Zeus, Royal
+# Academy Redux, «Equipo D» (Team K), Orfeo (Orpheus) and Eclipse de Orión: 164 characters with a card (v7.1.2 data).
+# The order is the panel's crest order (owner 2026-10-14: Royal Academy (IE1) > Zeus (IE1) > Royal Redux > Team K >
+# Orfeo > the Orión team); belong team keys and names checked in belong_team_config + team_text (v7.1.2).
 [[VRFW.SynergyPool]]
 name = "dark_lineage"
 teams = [
-    "0x699E68EC",   # Royal Academy
+    "0x699E68EC",   # Royal Academy (crest: the IE emblem)
+    "0x9BAD3311",   # Zeus (crest: the IE emblem)
     "0xF1E3E365",   # Royal Academy Redux
-    "0x9BAD3311",   # Zeus
-    "0x0F3CD0F1",   # Orfeo
-    "0x9E96B18A",   # Eclipse de Orión
     "0xB95A1DDD",   # «Equipo D» (Team K, IE3; Spanish name of チームＫ, confirmed by the owner 2026-10-13)
+    "0x0F3CD0F1",   # Orfeo
+    "0x9E96B18A",   # Eclipse de Orión (Orion Eclipse: the only Orión team of this pool; the owner's «Sombra de Orión»)
 ]
 
 [[VRFW.Synergy]]
 key = "sp04003"                                  # El linaje oscuro (retail: Ray Dark + Lucian Dark)
-nexus = ["c11801020", "c11807230"]               # Ray Dark (IE1, Ares): he counts as coach too
+nexus = ["c11801020", "c11807230", "c11803050"]   # Ray Dark (IE1, Ares) or «Mr. D» (his IE3 coach alias): counts as coach too
 pool = "dark_lineage"
 count = 2
 rule = "min"

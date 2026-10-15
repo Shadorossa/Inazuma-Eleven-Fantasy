@@ -1256,6 +1256,11 @@ BBT.GM = {
   MENU = 3003171228,
   P_PAGE = 3658435887,   -- parameter: the view page the child draws
   P_HOST = 19065074,   -- parameter: this host (the child closes itself when it is gone)
+  -- 1.5.64: parameter: this host no longer shows the group page (the child hides everything and closes itself). The
+  -- host's CMND_CLOSE_MENU_OBJECT of the child alone left it open: its tables stayed drawn over the team grid after
+  -- leaving the Torneo, and the next team pick froze on the options window (owner 2026-10-14)
+  P_CLOSE = 2205194670,
+  WATCH_STEPS = 30,   -- the watchdog: every this many Steps, a child that exists while no group page is wanted closes
 }
 
 -- the child opened once it is wanted and an earlier one has finished closing (Step and BBT_GroupsShow)
@@ -1266,12 +1271,17 @@ function BBT_GroupsStep()
   end
   if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GM.MENU) == true then
     S.gm_wait = (S.gm_wait or 0) + 1
-    if S.gm_wait == 300 then
-      BBT_Log("groups menu: an earlier one still exists after 300 Steps; waiting")
+    -- 1.5.64: an earlier one still closing (or one whose close did not take): it comes back with this page and host
+    if S.gm_wait == 30 then
+      pcall(funcLuaCommand, 3363400568 --[[param delete]], BBT.GM.P_CLOSE)
+      pcall(funcLuaCommand, 830228314 --[[cross-menu call]], BBT.GM.MENU, "BBG_Revive", S.gm_want, BBT_HOST.menu)
+      S.gm_open, S.gm_wait = true, 0
+      BBT_Log("groups menu: the earlier one still existed; shown again over", BBT_HOST.name, "page", S.gm_want)
     end
     return
   end
   S.gm_wait = 0
+  pcall(funcLuaCommand, 3363400568 --[[param delete]], BBT.GM.P_CLOSE)
   pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GM.P_PAGE, 0, S.gm_want, 1)
   pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GM.P_HOST, 0, BBT_HOST.menu, 1)
   funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], BBT.GM.MENU)
@@ -1290,14 +1300,59 @@ function BBT_GroupsShow(page)
   BBT_GroupsStep()
 end
 
--- the child closed (another page shown, the overlay closed)
+-- the child asked to close, three ways (1.5.64): the close parameter (read by its Step), the cross-menu call (it hides
+-- every piece at once and closes itself) and the engine's close of the menu object
+function BBT_GroupsRequestClose(why)
+  pcall(funcLuaCommand, 3363400568 --[[param delete]], BBT.GM.P_CLOSE)
+  pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GM.P_CLOSE, 0, 1, 1)
+  pcall(funcLuaCommand, 830228314 --[[cross-menu call]], BBT.GM.MENU, "BBG_Close", why)
+  pcall(funcLuaCommand, 320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBT.GM.MENU)
+end
+
+-- the child closed (another page shown, the overlay closed); also when this host's state lost track of it (a child
+-- that exists is always asked to close)
 function BBT_GroupsHide()
   local S = BBT_S
   S.gm_want = nil
-  if S.gm_open then
+  local exists = funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GM.MENU) == true
+  if S.gm_open or exists then
     S.gm_open = false
-    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBT.GM.MENU)
-    BBT_Log("groups menu closed")
+    S.gm_watch = 0
+    BBT_GroupsRequestClose("the overlay left the group page")
+    BBT_Log("groups menu closed (overlay open " .. tostring(S.open) .. ", child existed " .. tostring(exists) .. ")")
+  end
+end
+
+-- 1.5.64 watchdog (Step): the group page is only ever shown in the Torneo overlay's group view; a child that still
+-- exists while this host wants none (another page, the overlay closed, the team grid or any other screen on top) is
+-- asked to close again, logged once per leftover
+function BBT_GroupsWatch()
+  local S = BBT_S
+  if S.gm_want ~= nil and S.open then
+    -- the group page wanted: a child closed from elsewhere (the team grid's own watchdog while it was closing) is
+    -- opened again
+    S.gm_watch = (S.gm_watch or 0) + 1
+    if S.gm_open and S.gm_watch % BBT.GM.WATCH_STEPS == 0
+      and funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GM.MENU) ~= true then
+      S.gm_open = false
+      BBT_Log("groups menu: gone while its page is shown; opened again")
+    end
+    return
+  end
+  S.gm_watch = (S.gm_watch or 0) + 1
+  if S.gm_watch % BBT.GM.WATCH_STEPS ~= 0 then
+    return
+  end
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GM.MENU) ~= true then
+    S.gm_left = nil
+    return
+  end
+  S.gm_open = false
+  BBT_GroupsRequestClose("left over: the overlay shows no group page")
+  if not S.gm_left then
+    S.gm_left = true
+    BBT_Log("groups menu: left over while the overlay is " .. (S.open and "on another page" or "closed") ..
+      ": asked to close again")
   end
 end
 
@@ -1553,6 +1608,9 @@ function BBT_Diag(when)
 end
 
 function BBT_Close()
+  -- 1.5.64: the view's open / close state in the log (owner 2026-10-14: the group tables left over the team grid)
+  BBT_Log("overlay closing on " .. tostring(BBT_HOST.name) .. ": page " .. tostring(BBT_S.page) .. ", group page menu " ..
+    (BBT_S.gm_open and "open" or "not open"))
   BBT_S.champ, BBT_S.champ_done, BBT_S.anim = nil, false, nil
   BBT_GroupsHide()   -- 1.5.60: the group stage's own menu
   BBT_EachInstance(function(l, i)
@@ -2075,6 +2133,11 @@ do
     if S.open and S.champ then
       pcall(BBT_ChampStep)
     end
+    -- 1.5.64: no group-stage menu outside the overlay's group page
+    local okw, errw = pcall(BBT_GroupsWatch)
+    if not okw then
+      BBT_Log("groups menu watchdog error", tostring(errw))
+    end
     -- 1.5.60: the group stage's own menu, once an earlier one finished closing
     if S.gm_want ~= nil and not S.gm_open then
       local okg, errg = pcall(BBT_GroupsStep)
@@ -2162,15 +2225,15 @@ end
 -- screen's header bar (the dark bar «BB | Estadio BB · Campaña» with the top bar shortcuts on its right) carries a
 -- CENTRED selector of two pills «Campaña» | «Torneo» (the active one lit), with the key glyph left of them:
 --   * the key: Battle Bay Deluxe's own rebindable action CMD_BBD_MODE_SWITCH (content\inputs\mode_switch.toml: the row
---     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default Y / B (owner 2026-10-13); 1.5.47
+--     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default RS / B (owner 2026-10-15: Y
+--     opens the focused team's «Plantilla», research/grafts/bb_draft/bbd_roster.lua; Y / B from 2026-10-13; 1.5.47
 --     had L3 = retail CMD_FUNC5, which the VR-Framework top bar's open button took on 2026-10-13), polled with
 --     CMND_CHECK_INPUT (MENU_CTRL) so it works whatever has the focus; its glyph <CMD_BBD_MODE_SWITCH> follows the
---     player's binding. Y is also retail CMD_FUNC3 (keyboard V) there: in bb_stadium_top_menu the list items' «Guía de
---     controles» window (function 1643904886), in the Campaña grid the ready balloon's button (layer
---     cmn03_04_cmn_button_b_graphic_text, function 3859022927; the grid's own Y function 756653130 has no handler in
---     the campaign script). While the selector is shown, a retail OnFunction that comes with a press of the selector's
---     key is left out (the wrap at the end), and the selector is locked while that balloon button is open; the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input:
---     without Utilities only the key).
+--     player's binding. R3 has no retail command on these screens. While the selector is shown, a retail OnFunction
+--     that comes with a press of the selector's key is left out (the wrap at the end: a binding over a retail key),
+--     and the selector is locked while the ready balloon's button (layer cmn03_04_cmn_button_b_graphic_text) is open;
+--     the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input: without Utilities only the
+--     key).
 --   * the Campaña grid (enjoy_team_select_menu_campaign, opened from the top menu's «Campaña» row): «Torneo» arms the
 --     tournament (CMND_BBD_TOURN_ARM with the defaults: the team, then the options popup, the difficulty, the bracket:
 --     bbt_grid.lua), «Campaña» disarms it. With a tournament already running (or ended, not shown yet) «Torneo» closes
@@ -2191,7 +2254,7 @@ BBT_MODE = {
   TXT = 1807063543,
   ATLAS = "#/menu/220_img/bbd_md/bbd_md.g4tx",
   SPR_BG = 2993196901, SPR_ON = 2115651980, SPR_OFF = 1517974698,
-  KEY = 2413565140,       -- the mod's action (MENU_CTRL; default Y / B, rebindable)
+  KEY = 2413565140,       -- the mod's action (MENU_CTRL; default RS / B, rebindable)
   READY_BTN = 2055576472 --[[cmn03_04_cmn_button_b_graphic_text: the ready balloon's button, retail Y there]],
   CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]],
   -- geometry, screen px (y down) of the 1920 x 1080 menu camera: the strip centred on CX at the bar's middle Y (the
@@ -2377,6 +2440,7 @@ function BBT_ModeGridState()
   local info = BBT_INFO or {}
   local show = funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], M.TOP) == true
     and info.active ~= true and info.ended ~= true
+    and not (type(BBD_ROSTER) == "table" and BBD_ROSTER.state ~= nil) -- hidden under the «Plantilla» viewer (bb_draft)
   local mode = info.armed and "tournament" or "campaign"
   local locked = (BBT_G and BBT_G.co ~= nil)
     or funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], BBT.SUB_WINDOW) == true
@@ -2487,8 +2551,8 @@ do
     end
     return setup(a1, a2, ...)
   end
-  -- the selector's key pressed while it is shown: a retail function the same press fires (Y = retail CMD_FUNC3:
-  -- the hub's «Guía de controles», the ready balloon's button) is left out, the selector has the press
+  -- the selector's key pressed while it is shown: a retail function the same press fires (a binding over a retail
+  -- key) is left out, the selector has the press
   local fn = OnFunction
   if type(fn) == "function" then
     function OnFunction(a1, a2, ...)

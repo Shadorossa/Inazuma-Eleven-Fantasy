@@ -1,4 +1,4 @@
--- VR-Framework: the «AURAS» section of the drop-rate list (graft vrfw_drop_list, graft.toml). Layer
+-- VR-Framework: the "AURAS" section of the drop-rate list (graft vrfw_drop_list, graft.toml). Layer
 -- win05_38_drop_rate_list_item (one instance per visible row); node positions / sizes = the retail layout
 -- (win05_38.g4pkm, local to _pos_drop01, y up; node scale = the quad's size in px). Nothing runs at load but the
 -- definitions.
@@ -6,7 +6,7 @@ VRFW_DropList = VRFW_DropList or {}
 do
   local D = VRFW_DropList
   D.ROW = @crc:CMND_VRFW_DROP_ROW@                  -- () -> section (1 header, 2 aura item, 0 other, -1 none), kind, id
-  D.TEXT_AURAS = @crc:vrfw_drop_list_auras@          -- menu_text «AURAS»
+  D.TEXT_AURAS = @crc:vrfw_drop_list_auras@          -- menu_text "AURAS"
   D.TEXT_GET = 4074371074                            -- CMND_TEXT_GET (textId) -> text
   D.SET_TEXT = 1083631230                            -- (layer, text node, string, instance)
   D.TEXT_VISIBLE = 1505208242                        -- (layer, text node, on, instance)
@@ -23,7 +23,7 @@ do
   D.W38 = 2268931645                                 -- #/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx
   D.T30_PATH = "#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx"
   D.T30 = 2815298114                                 -- crc of D.T30_PATH (the aura cards' atlas)
-  D.HEADER = 3948576367 --[[vrfw_gtxt_auras01]]      -- VRFW image: the «AURAS» label in the «Objetos» style
+  D.HEADER = 3948576367 --[[vrfw_gtxt_auras01]]      -- VRFW image: the "AURAS" label in the "Items" style
   -- nodes and their retail layout {node, x, y, w, h}
   D.N = {
     name = {1704438437 --[[_text_name01]], 131, 27},
@@ -110,7 +110,7 @@ do
     D.styled[i] = nil
   end
 
-  -- the «AURAS» header = the game's own header row (the «Objetos» pill, its size and place, the partition line) with
+  -- the "AURAS" header = the game's own header row (the "Items" pill, its size and place, the partition line) with
   -- only its label picture changed: vrfw_gtxt_auras01 of win05_38, one per language (VRFW image win05_38_auras.toml,
   -- research/scripts/vrfw_drop_list_header_build.py from menu_text vrfw_drop_list_auras)
   function D.Header(L, i)
@@ -150,7 +150,7 @@ do
     end
     D.styled[i] = "aura"
     cmd(D.LOC_VISIBLE, L, D.CHR, true, i)
-    -- the spirit rows' «POTENCIADOR» tag lives under the same locator: not for items (their boost = the yellow rate)
+    -- the spirit rows' "POTENCIADOR" tag lives under the same locator: not for items (their boost = the yellow rate)
     cmd(D.LOC_VISIBLE, L, D.BOOST, false, i)
     cmd(D.MESH_VISIBLE, L, D.BOOST, false, i)
     cmd(D.MESH_VISIBLE, L, D.BASE, false, i)
@@ -161,7 +161,7 @@ do
     size(L, i, N.band, A.band[3], A.band[4])
     pos(L, i, N.percent, A.percent[1], A.percent[2])
     pos(L, i, N.icon, A.icon[1], A.icon[2])
-    -- Mix-Max / mode change: the label without the player («Miximax Trans: X» -> «Miximax Trans»), the art shows who
+    -- Mix-Max / mode change: the label without the player ("Miximax Trans: X" -> "Miximax Trans"), the art shows who
     if kind == 2 or kind == 6 then
       local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
       if okn and type(name) == "string" then
@@ -274,7 +274,7 @@ function UpdateListItem_CharaLine(a1, a2, a3, ...)
 end
 
 -- [VRFW.DropList] HideTabs: those tab types are left out of the tab list (a mod without player-spirit drops hides the
--- «Grupo A-D» tabs); one tab left = no switcher (its icon row hidden)
+-- "Grupo A-D" tabs); one tab left = no switcher (its icon row hidden)
 local vrfw_dl_tabs = OnUpdateTabData
 function OnUpdateTabData(a1, ...)
   local D = VRFW_DropList

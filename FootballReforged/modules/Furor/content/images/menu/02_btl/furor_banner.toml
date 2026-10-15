@@ -1,0 +1,17 @@
+# Furor › the red strip of the «Fase de furor activa» banner (graft research/grafts/furor_banner): one sprite of its own
+# atlas, a 48 px band (deep red, brighter in the middle, light edges) stretched wider than the screen by the graft.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/02_btl/furor_banner/furor_banner.g4tx"
+name = "furor_banner"
+size = [256, 64]
+png = "furor_banner/furor_banner.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_banner/furor_banner.g4tx"
+name = "furor_banner_strip"
+texture = "furor_banner"
+x = 0
+y = 8
+size = [256, 48]

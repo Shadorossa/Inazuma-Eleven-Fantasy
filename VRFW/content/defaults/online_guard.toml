@@ -1,23 +1,14 @@
-# Online guard (VR-Framework, always on; owner decision 2026-10-11): the game modes below are hidden from the title row
-# and unreachable in every way, so a modded game never plays online. docs/framework/online-guard.md.
-#
-# Every active mod's content\defaults\online_guard.toml is read; the lists are a UNION (a mod can add a blocked mode,
-# never remove one). Keys of one [[VRFW.BlockedMode]]:
-#   key                a name for the logs (two files with the same key: their lists are joined)
+# Online guard: modes below are hidden from the title row and refused everywhere (schema VRFW.online_guard).
+# Every active mod's content\defaults\online_guard.toml is read; lists are a union (a mod can add a blocked mode, never remove one).
+# Keys of one [[VRFW.BlockedMode]]:
+#   key                name for logs (files sharing a key have their lists joined)
 #   label              what the mode is (logs)
-#   title_items        the title row's request ids of the mode (title_menu_2 table t8; the value 0x449E298B stores):
-#                      its button leaves the row (the served row has one upper button less), the request is refused
-#   menus              menu objects that ARE the online mode (names or crc32): CMND_OPEN_MENU_OBJECT,
-#                      CMND_RESERVE_MENU and the title's next-menu reserve of them are refused, whoever asks.
-#                      List only the mode's entry screen: its inner screens (bracket, schedule, results) stay free for
-#                      mods that reuse them offline (they are reached only through the entry screen online).
-#   title_silence      global functions of title_menu_2 that only serve the mode (notices, balloons, the resume
-#                      prompt): they do not run
-#   title_hide_layers  layers of title_menu_2 that only serve the mode: kept hidden
-#   title_functions    title_menu_2 OnFunction ids (a function key) that only serve the mode: swallowed
-#   when               "always" (default) or "gameplay_mods": blocked only while a mod that affects the match is
-#                      enabled ([VRFW.Mod] AffectsMatch, default true) and our own private room session is not up
-#                      (docs/game/modes/bb-online-ownnet.md §6); no title_items then (block the mode's menus)
+#   title_items        title-row request ids of the mode; its button is removed and the request refused
+#   menus              menu objects (names or crc32) that ARE the mode; open/reserve commands for them are refused. List only the entry screen
+#   title_silence      title_menu_2 global functions that only serve the mode; they do not run
+#   title_hide_layers  title_menu_2 layers that only serve the mode; kept hidden
+#   title_functions    title_menu_2 OnFunction ids that only serve the mode; swallowed
+#   when               "always" (default) or "gameplay_mods": blocked only while a mod with [VRFW.Mod] AffectsMatch (default true) is enabled and no private room session is up. For such a mode, list only `menus` (title_items is refused with this value).
 
 [[VRFW.BlockedMode]]
 key = "victory_road"
@@ -25,36 +16,34 @@ label = "Victory Road (online ranked tournaments)"
 title_items = [127937052]
 menus = ["victory_road_top_menu"]
 title_silence = [
-    "OpenVroadNoticeWindow",                   # «Victory Road update» notice at the title
-    "OpenTournamentDeliveryUpdate",            # ranking reward / bug-fix notices of the tournaments
-    "OpenRematchConfirmGeneralWin_Coroutine",  # «resume the interrupted tournament match?» -> jumps into the mode
-    "SetupVroadTournamentInfoBalloon",         # the tournament balloon over its button
+    "OpenVroadNoticeWindow",                   # update notice at the title
+    "OpenTournamentDeliveryUpdate",            # tournament reward / fix notices
+    "OpenRematchConfirmGeneralWin_Coroutine",  # resume-interrupted-match prompt
+    "SetupVroadTournamentInfoBalloon",         # tournament balloon
 ]
 title_hide_layers = [
     "title00_15_vroad_tournament_info_balloon",
     "vroad01_72_vroad_tournament_notice_button_guide",
 ]
-title_functions = [0x05EB102D]                 # CMD_FUNC6: the tournament notice
+title_functions = [0x05EB102D]                 # tournament notice
 
-# --- with gameplay mods enabled, the retail EOS rooms are off: a modded game plays online only in our private rooms
-# (the net service, Steam transport; docs/game/modes/bb-online-ownnet.md §6). With only UI mods (AffectsMatch = false)
-# or none, every entry below stays open. The Battle Bay «Multijugador» row opens Battle Bay Deluxe's «Sala privada».
+# --- with gameplay mods enabled, retail online rooms are blocked; only private rooms remain
 
 [[VRFW.BlockedMode]]
 key = "competition_online"
-label = "Competición online rooms and rank match (EOS)"
+label = "Competition online rooms and rank match (EOS)"
 when = "gameplay_mods"
 menus = ["network_top_menu", "network_room_match_top", "network_rank_match_setting_menu"]
-title_silence = ["CheckInviteReceive"]         # a retail invite received at the title opens an EOS room
+title_silence = ["CheckInviteReceive"]         # retail invites open an EOS room
 
 [[VRFW.BlockedMode]]
 key = "battle_bay_online"
-label = "Estadio BB retail online rooms (EOS)"
+label = "Battle Bay online rooms (EOS)"
 when = "gameplay_mods"
 menus = ["network_menu"]
 
 [[VRFW.BlockedMode]]
 key = "kizuna_online"
-label = "Estación Kizuna online sessions (EOS)"
+label = "Kizuna Station online sessions (EOS)"
 when = "gameplay_mods"
 menus = ["kizuna_town_network_menu", "kizuna_town_online_menu"]

@@ -1,0 +1,65 @@
+id = "all_miximaxed"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text/keys.toml)
+name = "All Miximaxed"
+version = "1.1.3"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "A miximax between any two of your players, as in Chrono Stone, on the base game. On the skill board, an aura piece offers «Create Miximax»: pick the partner and the player becomes his Mix-Max, applied like a retail one (the team's aura row fires it, the Mix-Max boosts, cost and cut-in): he stays himself in the partner's hair, skin and eye colours, learns one of the partner's special moves and gains part of the partner's stats while it runs (the Chrono Stone transfer). Works with the VR-Framework alone; game modes such as Inazuma Fantasy add their own rules on top."
+priority = 0
+tags = ["Gameplay", "Characters"]
+updated = "2026-10-15"
+# This mod's own names (TOML keys, Lua AllMiximaxed.X, commands CMND_ALLMIXIMAXED_*); never VRFW.
+prefix = "AllMiximaxed"
+folder = "AllMiximaxed"
+# Split out of Inazuma Fantasy on 2026-10-14 (docs/game/mods/all-miximaxed.md): IF requires it and keeps only its
+# rules. A «plugin» of Character Reforged (the pairing rules and board helpers, docs/refactor/aura-mods-split.md).
+# Standard mod layout (docs/framework/mod-layout.md):
+#   content/transforms/miximax.toml        [miximax] free (the any-pair generator) + colours + carriers + validity,
+#                                          [ability_list], the base game's miximax transform
+#   content/techniques/carriers.toml       the aura rows wmm_evt_create («Crear miximax») / wmm_evt (the carrier)
+#   content/base_tables/.../item_config    their items (by key)
+#   content/characters/carrier.toml        the carrier's variant character (evt_mx)
+#   content/telops/<lang>/                 the «Miximax Trans» cut-in name of the carrier
+#   content/pairing/miximax.toml           the pairing rules of system `miximax` + its «Crear miximax» row (Character Reforged)
+#   content/game/miximax.toml              the store command + the import of IF's fusion store
+#   scripts/miximax.lua                    the store of a created pair, the fusion rules, the exports
+#   scripts/lib/stat_transfer.lua          the Chrono Stone stat transfer (numbers: content/stat_transfer/miximax.toml;
+#                                          off when another mod owns the rule: Inazuma Fantasy)
+#   content/menus/player_page_slots.toml   the transfer's gains on Character Reforged's player page
+#   content/miximax_palettes/              each character's colours of the generated look (hair, face, iris, skin;
+#                                          schema content/types/miximax_palette.toml; docs/game/mods/miximax-palettes.md)
+#   assets/evt_mx/                         iris masks of the generated look (data/common/evt_mx)
+#   assets/chr/_face/evt_mx/, assets/menu/200_icon/10_icon_chr/face/evt_mx_*   the look's texture slots
+#   content/anims/mx_scene.toml            the Chrono Stone MIXIMAX creation scene (events ev99_97010 / ev99_97020)
+#   content/techniques/events/mx_scene_env.toml, content/game/mx_scene.toml   its event rows and commands
+#   scripts/lib/scene.lua                  the scene's lists filled with the pair before each play
+#   assets/event/ev99/, assets/effect/event/ev99/   its packs, cameras and effect objects
+#   (graft all_miximaxed_scene)            its menu parts: A skips it, header bars hidden, the partner's model kept
+#                                          loaded; the scene and its parts are left out while Inazuma Fantasy is active
+# «Crear miximax» on the retail skill board's aura list: Character Reforged's create entry (graft character_reforged_board,
+# 1.1.0) with this mod's row [CharacterReforged.Create.miximax] (content/pairing/miximax.toml).
+# vr_framework 2.2.219: the transform run time activates a stored fusion fired from the game's own aura row.
+requires = ["vr_framework>=2.4.71", "character_reforged>=1.3.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+# command: the creation flow's commands (content/game/miximax.toml); hook: the scene's menu parts (graft
+# all_miximaxed_scene)
+permissions = ["command", "hook"]
+
+# For other mods: the stored fusions and the store's saved text (AllMiximaxed.Fusions / StoreBlob).
+[exports]
+functions = ["Fusions", "StoreBlob"]
+keys = []
+
+# its own content/ folder read only by scripts (Character Reforged's pairing rules): vrfw check's layout lint accepts it
+[layout]
+script_folders = ["pairing", "stat_transfer"]
+
+# A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
+# ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
+# of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 20

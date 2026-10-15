@@ -1,15 +1,7 @@
 schema = "VRFW.rule_catalog/1"
-# The behaviour rules' vocabulary (M7, docs/framework/rule-catalog.md): every trigger (`on`), effect (`do`) and
-# condition (`when`) of `vr_framework.behaviour/1` (docs/framework/rules.md) and what each one allows. Built into
-# the framework (rule_engine::catalog, like content\defaults\game_rarities.toml): the rule compile reads its checks
-# from here, the scripts' `vrfw.triggers` list and the boot report its names. A trigger needs a fire point in the
-# framework's code (its `id` is that point's number, `SinkCall::trigger`, frozen: never renumber, only append);
-# everything else about it (its name, its facts, the effects it takes, its argument words) is this file.
-#
-# [[trigger]]: name (the `on` word), id (frozen number), actor / move (the facts the trigger has: the actor / move
-# conditions hold only on a trigger that has them), args (the words `on = "<name>:<arg>"` takes; absent = any text,
-# checked by the trigger's own code when it has a format: button command, clock seconds, state id, set piece kind),
-# fired_by (where it fires: the hook bus point or the game function, docs/framework/hook-bus.md).
+# Vocabulary of the behaviour rules: every trigger (`on`), effect (`do`) and condition (`when`) and what each allows.
+# [[trigger]]: name (the `on` word), id (frozen number: never renumber, only append), actor / move (facts the trigger provides, required by actor / move conditions),
+# args (words `on = "<name>:<arg>"` takes; absent = any text), fired_by (hook bus point or game function that fires it).
 
 [[trigger]]
 name = "tick"
@@ -298,9 +290,15 @@ move = true
 args = ["move", "basic"]
 fired_by = "hook bus battle_build pre, keeper battle types 10 / 11 / 14 (KeeperBattleRequestBuild 0x14CF230): every shot that reaches the keeper; the keeper and his move; power_mult / power_add change the shot's power for that battle"
 
-# [[effect]]: a `do` key. on = the triggers it acts on (absent = every trigger); min = the lowest value; words = the
-# values it takes (the first is the default); sink = a built-in sink (rule_engine::builtin; a mod's sink of the same
-# name overrides it; `sink.<name>` is any sink a mod's code registers).
+[[trigger]]
+name = "technique_result"
+id = 47
+actor = true
+move = true
+args = ["won", "lost"]
+fired_by = "the outcome of a special move: the move its player used last (Technique.Power, within 8 s) and the focus duel that decided it (match events duel_won / duel_lost), or the keeper's move in a keeper battle (keeper_scene: saved = won)"
+
+# [[effect]]: a `do` key. on = triggers it acts on (absent = all); min = lowest value; words = accepted values (first is default); sink = built-in sink, overridable by a mod sink of the same name.
 
 [[effect]]
 name = "power_mult"
@@ -396,7 +394,12 @@ name = "zone_area"
 sink = true
 summary = "built-in sink: the shot zone's area"
 
-# [[condition]]: a `when` key. needs = the fact it reads ("actor" / "move": it holds only on a trigger that has it).
+[[effect]]
+name = "ai_rate"
+sink = true
+summary = "built-in sink: match AI knob values on a team (docs/framework/match-ai.md)"
+
+# [[condition]]: a `when` key. needs = the fact it reads ("actor" / "move"; only holds on a trigger that provides it).
 
 [[condition]]
 name = "mode"

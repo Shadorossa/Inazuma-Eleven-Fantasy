@@ -1,4 +1,4 @@
--- VRFW › archetypes declared by mods (docs/framework/archetype.md §6): the match HUD. The controlled player's circle
+-- VRFW › archetypes declared by mods: the match HUD. The controlled player's circle
 -- shows his side's build gauge icon (retail: only builds 0-5); for a side whose archetype is a declared one the
 -- declared gauge icon is put there, and each rank it gains plays the circle's charge-up animation (the game's
 -- PlayBuildChargeUpEffectAnime), polled from StepSoccerMenu. No engine call at load time.

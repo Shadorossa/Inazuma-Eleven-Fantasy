@@ -1,9 +1,6 @@
 schema = "VRFW.text_key/1"
-# Texts of the mod page's «Problemas» / «Conflictos» views (Phase H, docs/framework/troubleshooting.md), in the format
-# of text.toml; the plugin merges every text_*.toml after text.toml (mods_menu::load_texts). `rc_<code>` = the header
-# of a group of report entries of one code: what happened and how to fix it (the entries keep the core's English
-# message). A code without a row shows the core's English hint. `rl_<mode>` = a type's reload mode (Phase G).
-# Placeholders: {r} list, {w} mod, {o} other mods.
+# Texts of the mod page's Problems / Conflicts views, merged after text.toml. `rc_<code>` = header of a group of report entries of one code;
+# a code without a row shows the core's English hint. `rl_<mode>` = a type's reload mode. Placeholders: {r} list, {w} mod, {o} other mods.
 
 [en.new]
 rc_native_update = "Not found in this game version: the mod needs an update for it (only this part is off; see game_update_report.md in the ModLoader folder)."

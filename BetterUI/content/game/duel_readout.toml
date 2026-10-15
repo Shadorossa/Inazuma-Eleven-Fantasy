@@ -1,0 +1,45 @@
+schema = "VRFW.game/2"
+
+# BetterUI › duel readout: the totals the game compares when a focus duel is decided by a special move against a
+# special move, or by a power charge / power block (the «rough attacks») against a special move. The mid hook below
+# reads the resolver's result block right before it is posted (game profile site Duel.SkillClashResult: the resolver
+# 0x14E1910, FocusBtlState sub-state 0xB, after the cut-ins); scripts\duel_readout.lua keeps the last result and
+# answers CMND_BETTERUI_DUEL_READOUT, which the graft clean_hud_duel_readout (match HUD) polls to show it.
+# Plain line duels never reach this resolver.
+
+# The resolver's result block (on its stack, rbp - 0x30 at the site). Powers = the values compared (x 1e-4, truncated).
+# kind: 5 a special move won, 6 a power charge / power block won, 9 no clash (one side without a command).
+[[VRFW.Struct]]
+name = "ClashResultBlock"
+size = 0x70
+fields = { winner_side = { at = 0x00, type = "u8" }, winner_power = { at = 0x28, type = "i32" }, loser_power = { at = 0x48, type = "i32" }, kind = { at = 0x68, type = "u8" } }
+
+# The focus manager (r13 at the site): the offense side and each side's command slot (+0xC44 + side x 0x30), whose
+# byte +0x1E marks a power charge / power block instead of a special move.
+[[VRFW.Struct]]
+name = "FocusDuel"
+size = 0xCA0
+fields = { offense_side = { at = 0x906, type = "u8" }, power_action_side0 = { at = 0xC62, type = "u8" }, power_action_side1 = { at = 0xC92, type = "u8" } }
+
+# The match data ([g_gameRoot] + 0x6A58): the side the player controls (0 / 1; another value = none, e.g. a CPU match).
+[[VRFW.Global]]
+name = "DuelMatchData"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+[[VRFW.Struct]]
+name = "DuelMatchSides"
+size = 0x2C30
+fields = { user_side = { at = 0x2C29, type = "u8" } }
+
+[[VRFW.Hook]]
+name = "DuelClashResult"
+game = "Duel.SkillClashResult"
+kind = "mid"
+needs = ["ClashResultBlock", "FocusDuel"]
+
+# CMND_BETTERUI_DUEL_READOUT(last) -> sequence, left power, left label, right power, right label (0 = nothing newer than
+# `last`). Left = the player's side, right = the rival's; labels 1 dribble, 2 defense, 3 power charge, 4 power block.
+[[VRFW.Command]]
+name = "CMND_BETTERUI_DUEL_READOUT"
+handler = "BetterUI.DuelReadout"

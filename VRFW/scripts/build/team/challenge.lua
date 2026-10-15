@@ -1,8 +1,6 @@
--- Match challenges («desafíos», `[[VRFW.MatchChallenge]]`; docs/framework/match-challenge.md; was team_engine
--- challenge.rs, build part): the declarations, the matches that name them (route nodes, chain tiles, free-match
--- tabs, the challenges' own `Games`) and the player attributes their conditions read. The check itself is the run
--- time's (team_engine challenge.rs `call`). VRFW 2.4.35: `[[VRFW.MatchChallenge.Required]]`, required starters
--- (`Characters` in formation places `Positions`, optionally `UntilFirstClear`).
+-- Match challenges (`[[VRFW.MatchChallenge]]`): the declarations, the matches that name them (route nodes, chain tiles,
+-- free-match tabs, the challenges' own `Games`) and the player attributes their conditions read.
+-- `[[VRFW.MatchChallenge.Required]]`: required starters (`Characters` in formation places `Positions`, optionally `UntilFirstClear`).
 local T = require "lib/team_util"
 local Q = {}
 

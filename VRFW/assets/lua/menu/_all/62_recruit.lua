@@ -1,4 +1,4 @@
--- menu_engine: the RECRUIT service (VR-Framework 2.1; docs/framework/recruit.md). Definitions only: this file runs in
+-- menu_engine: the RECRUIT service. Definitions only: this file runs in
 -- every menu VM (lua\_all) after the retail chunk; no engine call at load time.
 --
 -- ONE place that signs a character card into the player's club without a shop row, checks recruitment requirements
@@ -25,7 +25,7 @@
 -- (CMND_VRFW_RECRUIT_CLUB, scripts\recruit.lua), cached until VRFW_Recruit.Refresh(); the career counters are the
 -- save service's keys stats.matches_won / stats.goals (owner vr_framework, the same script counts them).
 --
--- The add-character path (docs/framework/recruit.md §1; D:\re: the CMND_ADD_PARTY handler 0xC57140 -> 0xEA4920): the
+-- The add-character path (CMND_ADD_PARTY): the
 -- retail summon screen's AddSummonChara call (20 arguments: card, level, ..., team set 16 = the normal bank, rarity,
 -- ..., source), then 0xB349C762 as AddSummonChara does, then CMND_SYSTEM_AUTO_SAVE. Safe in the menus of a loaded save
 -- (the office, the Mercado); never in free walk (the autosave is blocked there).

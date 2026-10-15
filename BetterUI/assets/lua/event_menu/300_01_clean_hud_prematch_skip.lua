@@ -12,6 +12,7 @@ CHD_XS.HOLD = 3626036482                 -- param crc32("clean_hud_xskip_hold"):
 CHD_XS.HOLD_CMD = 3788104116             -- CMND_BETTERUI_XSKIP_COVER(on) -> 1 (BetterUI content\game\prematch_skip.toml)
 CHD_XS.JUMP = 1616504339                 -- param crc32("clean_hud_xskip_jump"): 1 = the direct jump ended the event (no cover)
 CHD_XS.JUMP_CMD = 1614912098             -- CMND_BETTERUI_XSKIP_JUMP(on) -> 1 (BetterUI content\game\prematch_skip.toml)
+CHD_XS.BLACK0 = 479863734                -- param crc32("clean_hud_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
 CHD_XS.PARAM_HAS = 2947612279
 CHD_XS.PARAM_GET = 3522198769
 CHD_XS.PARAM_DEL = 3363400568
@@ -101,10 +102,18 @@ function CHD_XS.Arm(src)                 -- a VS screen closes: the pre-match ev
     return
   end
   CHD_XS.Uncover(0, src .. " (stale)")
+  CHD_XS.Del(CHD_XS.BLACK0)
   CHD_XS.JumpEnd()
   CHD_XS.Del(CHD_XS.GO)
   CHD_XS.Set(CHD_XS.ARMED, 1)
   CHD_XS.Log("armed", src)
+end
+function CHD_XS.UnblackLayer0(src)      -- the kick-off fade in did not lift layer 0: faded in here (no-op when already in)
+  if CHD_XS.Get(CHD_XS.BLACK0) ~= 0 then
+    CHD_XS.Del(CHD_XS.BLACK0)
+    pcall(funcLuaCommand, CHD_XS.FADE, 0, CHD_XS.COVER_IN_S)
+    CHD_XS.Log("layer 0 faded in", src)
+  end
 end
 function CHD_XS.Disarm(src)              -- the lineups / kick-off / half time: nothing pre-match is left
   CHD_XS.Uncover(CHD_XS.COVER_IN_S, src)
@@ -136,6 +145,9 @@ end
 -- (CMND_BETTERUI_XSKIP_JUMP: sounds stopped, timeline run to its end, no fade); the native flow then starts no second
 -- entrance event and the lineups close unopened (xs_lineup.lua): no cover, no chained skips. The cover path above is
 -- the fallback when the jump is not available (asked CHD_XS_JUMP_TRIES Steps first).
+-- BetterUI 1.22.3: the jump runs under one fade to black. X full -> the cover fades layer 1 to black
+-- (CHD_XS_COVER_OUT_S), is held natively, then the event is ended; the flow's states 12 -> 13 -> 14 (lineup cameras,
+-- formations, BGM) run under it and the lineups hand it to the retail kick-off fade in (xs_lineup.lua): no camera cuts.
 -- Wrappers only (OnSetupLayer, OpenButtonGuideUI, ResetSkippedState, Step); no engine call at chunk load.
 local CHD_XS_GUIDE = 3123960154          -- clean_hud_xskip_guide (crc32 of the layer name)
 local CHD_XS_BAR = 1996459178            -- bar (MenuRateSetting of the guide: the hold ring)
@@ -151,11 +163,11 @@ local CHD_XS_CTRLS = {2917185202 --[[EVENT_CTRL_VISUAL]], 3237690481 --[[EVENT_C
 local CHD_XS_SHOW_S = 3                  -- s the guide stays after the last input (retail n = 3)
 local CHD_XS_BUSY_S = 3.0                -- s before the same event may be skipped again (fade out + seek + fade in)
 local CHD_XS_DEFAULT_HOLD = 1.0
-local CHD_XS_COVER_OUT_S = 0.5           -- the cover's fade out = the retail skip's fade to black (0.5 s)
+local CHD_XS_COVER_OUT_S = 0.4           -- the cover's fade out before the jump / the cover path's skips
 local CHD_XS_STUCK_S = 6.0               -- s an event may stay unskippable under the cover before it is lifted
 local CHD_XS_JUMP_TRIES = 5              -- Steps the direct jump is asked again (BetterUI's script busy) before the cover path
 local chd_xs = {hold = 0, holdT = nil, open = false, showT = 0, busy = false, busyT = 0, coverT = nil, stuckT = 0,
-                jumpTries = nil}
+                jumpTries = nil, coverPath = false}
 
 local function ChdXsHoldTime()
   if chd_xs.holdT == nil then
@@ -231,15 +243,6 @@ local function ChdXsText()
   return type(s) == "string" and s or ""
 end
 
-local function ChdXsCoverPath(src)      -- fallback (no direct jump): one fade to black, the events skipped under it
-  CHD_XS.Set(CHD_XS.COVER, 1)
-  CHD_XS.Cover(CHD_XS_COVER_OUT_S)       -- the one fade out; black from here to the kick-off
-  chd_xs.coverT = 0
-  chd_xs.stuckT = 0
-  CHD_XS.Log(src, ": straight to the kick-off (cover up)")
-  ChdXsSkip(src)
-end
-
 local function ChdXsJumped(src)          -- the direct jump ended the event: nothing else to do here
   chd_xs.jumpTries = nil
   chd_xs.busy = true
@@ -247,7 +250,7 @@ local function ChdXsJumped(src)          -- the direct jump ended the event: not
   chd_xs.hold = 0
   ChdXsBar(0)
   ChdXsClose()
-  CHD_XS.Log(src, ": direct jump to the kick-off (no fade, no cover)")
+  CHD_XS.Log(src, ": direct jump to the kick-off (event ended under the black cover)")
 end
 
 local function ChdXsHoldCover(dt, can)  -- GO: keep the black cover up (layer 1) once its fade out is over
@@ -273,6 +276,34 @@ local function ChdXsHoldCover(dt, can)  -- GO: keep the black cover up (layer 1)
   end
 end
 
+local function ChdXsKeepBlack()         -- the cover stays black while the flow runs on to the lineups
+  if CHD_XS.Get(CHD_XS.COVER) == 1 then
+    CHD_XS.Cover(0)
+    CHD_XS.Hold()
+  end
+end
+
+local function ChdXsJumpUnderCover(dt, can)  -- the fade to black first, then the direct jump (else the cover path)
+  ChdXsHoldCover(dt, can)
+  if CHD_XS.Get(CHD_XS.COVER) == 1 and chd_xs.coverT < CHD_XS_COVER_OUT_S then
+    return                               -- still fading to black
+  end
+  if not can then                        -- no event to end yet (a later event loading): kept black, asked next Step
+    return
+  end
+  local src = "X held (" .. (chd_xs.jumpTries or 0) .. ")"
+  if CHD_XS.Jump(src) then
+    ChdXsJumped(src)
+    return
+  end
+  chd_xs.jumpTries = (chd_xs.jumpTries or 0) + 1
+  if chd_xs.jumpTries >= CHD_XS_JUMP_TRIES then
+    chd_xs.coverPath = true
+    CHD_XS.Log("direct jump not answered: cover path")
+    ChdXsSkip("X held (no direct jump)")
+  end
+end
+
 local function ChdXsStep()
   if CHD_XS.Get(CHD_XS.ARMED) ~= 1 then
     ChdXsClose()
@@ -284,6 +315,7 @@ local function ChdXsStep()
   if CHD_XS.Get(CHD_XS.GO) == 1 then      -- X was held: every pre-match event goes as soon as it can
     ChdXsClose()
     if CHD_XS.Get(CHD_XS.JUMP) == 1 then  -- direct jump: a later pre-match event (if any) is ended the same way
+      ChdXsKeepBlack()
       if chd_xs.busy then
         if not can then
           chd_xs.busy = false
@@ -297,15 +329,8 @@ local function ChdXsStep()
       end
       return
     end
-    if chd_xs.jumpTries ~= nil then       -- the jump was not answered yet: asked again, then the cover path
-      if CHD_XS.Jump("X held (retry " .. chd_xs.jumpTries .. ")") then
-        ChdXsJumped("X held")
-      elseif chd_xs.jumpTries >= CHD_XS_JUMP_TRIES then
-        chd_xs.jumpTries = nil
-        ChdXsCoverPath("X held (no direct jump)")
-      else
-        chd_xs.jumpTries = chd_xs.jumpTries + 1
-      end
+    if not chd_xs.coverPath then         -- the jump waits for the fade to black (also in a later event's menu)
+      ChdXsJumpUnderCover(dt, can)
       return
     end
     ChdXsHoldCover(dt, can)
@@ -335,16 +360,15 @@ local function ChdXsStep()
     ChdXsBar(math.min(1, chd_xs.hold / holdT))
     if chd_xs.hold >= holdT then
       CHD_XS.Set(CHD_XS.GO, 1)
-      CHD_XS.Log("X held", holdT, "s")
-      if CHD_XS.Jump("X held") then      -- BetterUI ended the event in this frame (CMND_BETTERUI_XSKIP_JUMP)
-        ChdXsJumped("X held")
-      else
-        chd_xs.jumpTries = 1             -- asked again next Steps (script busy), then ChdXsCoverPath
-        chd_xs.hold = 0
-        ChdXsBar(0)
-        ChdXsClose()
-        CHD_XS.Log("direct jump not answered: asked again")
-      end
+      CHD_XS.Set(CHD_XS.COVER, 1)
+      CHD_XS.Cover(CHD_XS_COVER_OUT_S)   -- the one fade to black; the event is ended once it is black
+      chd_xs.coverT = 0
+      chd_xs.stuckT = 0
+      chd_xs.jumpTries = nil
+      chd_xs.hold = 0
+      ChdXsBar(0)
+      ChdXsClose()
+      CHD_XS.Log("X held", holdT, "s: fade to black, then the direct jump")
     end
     return
   end

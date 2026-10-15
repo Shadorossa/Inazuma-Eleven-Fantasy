@@ -1,4 +1,4 @@
--- community_link (VRFW mechanism, docs/framework/community-link.md; no content of its own): the retail «Inazuma Post»
+-- community_link (VRFW mechanism; no content of its own): the retail «Inazuma Post»
 -- window (qrcode_menu, opened from the title with Alt) shows the community invite a mod DECLARES
 -- ([[VRFW.CommunityLink]] in its content\community_links\), and Accept / a left click opens it.
 --

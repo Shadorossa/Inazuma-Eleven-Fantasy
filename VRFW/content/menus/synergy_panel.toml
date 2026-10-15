@@ -2,13 +2,17 @@
 # §5, §10), drawn by the menu patch assets\lua\synergy\equip_synergy_menu_list\300_synergy.lua over the retail rows
 # (team16_03_synergy_chara_condition_list):
 #   vrfw_syn_crest   an empty slot's allowed teams: their crests in a row on the right of the row, or a slot_members row's team crest in its big square (the framework's
-#                    emblem tile vrfw_emblem_tile, emblem_grid.toml, with only its emblem quad shown); 3 rows x 6
-#   vrfw_syn_face    a missing nexus: the allowed nexus characters' minifaces in a row on the right (the retail row
-#                    object itself with only its face plate and face shown); 30 minifaces (a missing nexus: 3; a slot_members empty row: up to 11) + 3 orange status squares
-# A one-person nexus row uses one crest instance for its orange plate (the flat sprite) and one face instance at full
-# size for his face above it (this layer is added after the crest layer).
+#                    emblem tile vrfw_emblem_tile, emblem_grid.toml, with only its emblem quad shown: node
+#                    _pos_enjoy_list01 shown first, then its plates / outline hidden (synergy.md §14)); 3 rows x 6
+#   vrfw_syn_face    a missing several-person nexus: the other allowed nexus characters' minifaces in a row after his
+#                    face (the retail row object itself with only its face plate and face shown); 30 minifaces (a
+#                    missing nexus: 2; a slot_members empty row: up to 11)
+#   vrfw_syn_icon    series and staff role icons drawn by the patch (an empty staff slot: the role icon in the face
+#                    square + the required series; a filled row with crests: its series left of the crests): the retail
+#                    row object with only its first series quad shown, the sprite set with the sprite command; 24 icons
+# The nexus row itself is the game's row (face, name, check box), only its line orange: no extra instance (the orange status square and the one-person nexus's orange plate are not used).
 # Not opened with the group (flags [0, 0, 0, 0, 1, 0]): the patch opens, places (screen px from the top left, y up,
-# from the rows' own positions) and hides each instance. 51 instances in all.
+# from the rows' own positions) and hides each instance. 72 instances in all.
 schema = "VRFW.menu/2"
 
 [[patch]]
@@ -17,8 +21,8 @@ add_layer = { name = "vrfw_syn_crest", object = "vrfw_emblem_tile", count = 18, 
 
 [[patch]]
 menu = "equip_synergy_menu"
-add_layer = { name = "vrfw_syn_face", object = "team16_03_synergy_chara_condition_list", count = 33, groups = [{ group = "equip_synergy_menu_list", flags = [0, 0, 0, 0, 1, 0] }] }
-# the framework's synergy atlas (nexus icon, orange square / plate: content\images\menu\220_img\vrfw_syn.toml), loaded
-# with the menu as the friends panel's art; asked for only by CMND_LOAD_MENU_RES_TEXTURE it was never requested
-# (in-game 2026-10-13: no «served» line for it, the sprites bound to a missing texture drew white quads)
-res = ["#/menu/220_img/vrfw_syn/vrfw_syn.g4tx"]
+add_layer = { name = "vrfw_syn_face", object = "team16_03_synergy_chara_condition_list", count = 30, groups = [{ group = "equip_synergy_menu_list", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "equip_synergy_menu"
+add_layer = { name = "vrfw_syn_icon", object = "team16_03_synergy_chara_condition_list", count = 24, groups = [{ group = "equip_synergy_menu_list", flags = [0, 0, 0, 0, 1, 0] }] }

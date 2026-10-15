@@ -1,0 +1,1578 @@
+# Furor › the fire gauge sprites of the furor HUD: Inazuma Eleven GO Strikers 2013's own gauge (GUI_TG texture,
+# UI.BIN file 100), rebuilt by research/scripts/furor_strikers_build.py (do not edit by hand). Left bars x 0-255, the
+# flipped right bars x 256-511; the rising / falling frames are cut in 12 clip steps from the crest side.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge"
+size = [512, 512]
+png = "furor_gauge/furor_gauge.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_max"
+texture = "furor_gauge"
+x = 0
+y = 0
+size = [224, 44]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_max"
+texture = "furor_gauge"
+x = 256
+y = 0
+size = [224, 44]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_trough"
+texture = "furor_gauge"
+x = 0
+y = 48
+size = [204, 28]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_trough"
+texture = "furor_gauge"
+x = 256
+y = 48
+size = [204, 28]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_01"
+texture = "furor_gauge"
+x = 176
+y = 80
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_02"
+texture = "furor_gauge"
+x = 160
+y = 80
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_03"
+texture = "furor_gauge"
+x = 144
+y = 80
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_04"
+texture = "furor_gauge"
+x = 128
+y = 80
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_05"
+texture = "furor_gauge"
+x = 112
+y = 80
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_06"
+texture = "furor_gauge"
+x = 96
+y = 80
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_07"
+texture = "furor_gauge"
+x = 80
+y = 80
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_08"
+texture = "furor_gauge"
+x = 64
+y = 80
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_09"
+texture = "furor_gauge"
+x = 48
+y = 80
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_10"
+texture = "furor_gauge"
+x = 32
+y = 80
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_11"
+texture = "furor_gauge"
+x = 16
+y = 80
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up1_12"
+texture = "furor_gauge"
+x = 0
+y = 80
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_01"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_02"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_03"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_04"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_05"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_06"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_07"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_08"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_09"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_10"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_11"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up1_12"
+texture = "furor_gauge"
+x = 256
+y = 80
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_01"
+texture = "furor_gauge"
+x = 176
+y = 108
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_02"
+texture = "furor_gauge"
+x = 160
+y = 108
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_03"
+texture = "furor_gauge"
+x = 144
+y = 108
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_04"
+texture = "furor_gauge"
+x = 128
+y = 108
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_05"
+texture = "furor_gauge"
+x = 112
+y = 108
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_06"
+texture = "furor_gauge"
+x = 96
+y = 108
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_07"
+texture = "furor_gauge"
+x = 80
+y = 108
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_08"
+texture = "furor_gauge"
+x = 64
+y = 108
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_09"
+texture = "furor_gauge"
+x = 48
+y = 108
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_10"
+texture = "furor_gauge"
+x = 32
+y = 108
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_11"
+texture = "furor_gauge"
+x = 16
+y = 108
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up2_12"
+texture = "furor_gauge"
+x = 0
+y = 108
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_01"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_02"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_03"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_04"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_05"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_06"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_07"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_08"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_09"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_10"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_11"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up2_12"
+texture = "furor_gauge"
+x = 256
+y = 108
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_01"
+texture = "furor_gauge"
+x = 176
+y = 136
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_02"
+texture = "furor_gauge"
+x = 160
+y = 136
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_03"
+texture = "furor_gauge"
+x = 144
+y = 136
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_04"
+texture = "furor_gauge"
+x = 128
+y = 136
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_05"
+texture = "furor_gauge"
+x = 112
+y = 136
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_06"
+texture = "furor_gauge"
+x = 96
+y = 136
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_07"
+texture = "furor_gauge"
+x = 80
+y = 136
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_08"
+texture = "furor_gauge"
+x = 64
+y = 136
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_09"
+texture = "furor_gauge"
+x = 48
+y = 136
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_10"
+texture = "furor_gauge"
+x = 32
+y = 136
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_11"
+texture = "furor_gauge"
+x = 16
+y = 136
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up3_12"
+texture = "furor_gauge"
+x = 0
+y = 136
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_01"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_02"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_03"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_04"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_05"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_06"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_07"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_08"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_09"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_10"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_11"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up3_12"
+texture = "furor_gauge"
+x = 256
+y = 136
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_01"
+texture = "furor_gauge"
+x = 176
+y = 164
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_02"
+texture = "furor_gauge"
+x = 160
+y = 164
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_03"
+texture = "furor_gauge"
+x = 144
+y = 164
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_04"
+texture = "furor_gauge"
+x = 128
+y = 164
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_05"
+texture = "furor_gauge"
+x = 112
+y = 164
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_06"
+texture = "furor_gauge"
+x = 96
+y = 164
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_07"
+texture = "furor_gauge"
+x = 80
+y = 164
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_08"
+texture = "furor_gauge"
+x = 64
+y = 164
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_09"
+texture = "furor_gauge"
+x = 48
+y = 164
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_10"
+texture = "furor_gauge"
+x = 32
+y = 164
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_11"
+texture = "furor_gauge"
+x = 16
+y = 164
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_up4_12"
+texture = "furor_gauge"
+x = 0
+y = 164
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_01"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_02"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_03"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_04"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_05"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_06"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_07"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_08"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_09"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_10"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_11"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_up4_12"
+texture = "furor_gauge"
+x = 256
+y = 164
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_01"
+texture = "furor_gauge"
+x = 176
+y = 192
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_02"
+texture = "furor_gauge"
+x = 160
+y = 192
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_03"
+texture = "furor_gauge"
+x = 144
+y = 192
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_04"
+texture = "furor_gauge"
+x = 128
+y = 192
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_05"
+texture = "furor_gauge"
+x = 112
+y = 192
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_06"
+texture = "furor_gauge"
+x = 96
+y = 192
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_07"
+texture = "furor_gauge"
+x = 80
+y = 192
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_08"
+texture = "furor_gauge"
+x = 64
+y = 192
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_09"
+texture = "furor_gauge"
+x = 48
+y = 192
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_10"
+texture = "furor_gauge"
+x = 32
+y = 192
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_11"
+texture = "furor_gauge"
+x = 16
+y = 192
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down1_12"
+texture = "furor_gauge"
+x = 0
+y = 192
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_01"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_02"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_03"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_04"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_05"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_06"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_07"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_08"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_09"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_10"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_11"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down1_12"
+texture = "furor_gauge"
+x = 256
+y = 192
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_01"
+texture = "furor_gauge"
+x = 176
+y = 220
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_02"
+texture = "furor_gauge"
+x = 160
+y = 220
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_03"
+texture = "furor_gauge"
+x = 144
+y = 220
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_04"
+texture = "furor_gauge"
+x = 128
+y = 220
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_05"
+texture = "furor_gauge"
+x = 112
+y = 220
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_06"
+texture = "furor_gauge"
+x = 96
+y = 220
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_07"
+texture = "furor_gauge"
+x = 80
+y = 220
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_08"
+texture = "furor_gauge"
+x = 64
+y = 220
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_09"
+texture = "furor_gauge"
+x = 48
+y = 220
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_10"
+texture = "furor_gauge"
+x = 32
+y = 220
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_11"
+texture = "furor_gauge"
+x = 16
+y = 220
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down2_12"
+texture = "furor_gauge"
+x = 0
+y = 220
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_01"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_02"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_03"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_04"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_05"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_06"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_07"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_08"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_09"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_10"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_11"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down2_12"
+texture = "furor_gauge"
+x = 256
+y = 220
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_01"
+texture = "furor_gauge"
+x = 176
+y = 248
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_02"
+texture = "furor_gauge"
+x = 160
+y = 248
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_03"
+texture = "furor_gauge"
+x = 144
+y = 248
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_04"
+texture = "furor_gauge"
+x = 128
+y = 248
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_05"
+texture = "furor_gauge"
+x = 112
+y = 248
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_06"
+texture = "furor_gauge"
+x = 96
+y = 248
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_07"
+texture = "furor_gauge"
+x = 80
+y = 248
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_08"
+texture = "furor_gauge"
+x = 64
+y = 248
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_09"
+texture = "furor_gauge"
+x = 48
+y = 248
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_10"
+texture = "furor_gauge"
+x = 32
+y = 248
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_11"
+texture = "furor_gauge"
+x = 16
+y = 248
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down3_12"
+texture = "furor_gauge"
+x = 0
+y = 248
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_01"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_02"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_03"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_04"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_05"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_06"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_07"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_08"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_09"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_10"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_11"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down3_12"
+texture = "furor_gauge"
+x = 256
+y = 248
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_01"
+texture = "furor_gauge"
+x = 176
+y = 276
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_02"
+texture = "furor_gauge"
+x = 160
+y = 276
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_03"
+texture = "furor_gauge"
+x = 144
+y = 276
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_04"
+texture = "furor_gauge"
+x = 128
+y = 276
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_05"
+texture = "furor_gauge"
+x = 112
+y = 276
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_06"
+texture = "furor_gauge"
+x = 96
+y = 276
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_07"
+texture = "furor_gauge"
+x = 80
+y = 276
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_08"
+texture = "furor_gauge"
+x = 64
+y = 276
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_09"
+texture = "furor_gauge"
+x = 48
+y = 276
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_10"
+texture = "furor_gauge"
+x = 32
+y = 276
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_11"
+texture = "furor_gauge"
+x = 16
+y = 276
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_l_down4_12"
+texture = "furor_gauge"
+x = 0
+y = 276
+size = [192, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_01"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [16, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_02"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [32, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_03"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [48, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_04"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [64, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_05"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [80, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_06"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [96, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_07"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [112, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_08"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [128, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_09"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [144, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_10"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [160, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_11"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [176, 24]
+
+[[sprite]]
+atlas = "#/menu/02_btl/furor_gauge/furor_gauge.g4tx"
+name = "furor_gauge_r_down4_12"
+texture = "furor_gauge"
+x = 256
+y = 276
+size = [192, 24]

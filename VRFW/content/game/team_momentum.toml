@@ -1,0 +1,13 @@
+schema = "VRFW.game/2"
+
+# Team momentum gauges (scripts\team_momentum.lua, docs/framework/team-momentum.md).
+
+# (key, side) -> ok, ratio 0..1, phase 0/1, level, team, user 0/1, full 0/1; side 0 / 1, -1 = the user's team, -2 = the rival's
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_MOMENTUM"
+handler = "TeamMomentum.Get"
+
+# (key, side) -> started: starts that team's phase when its gauge is full
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_MOMENTUM_START"
+handler = "TeamMomentum.Start"

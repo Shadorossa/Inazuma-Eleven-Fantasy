@@ -1,0 +1,35 @@
+# BetterUI › its rows in Opciones › «Opciones de mods» and on the Mods screen's «Ajustes» (format: docs/app/mod-options.md
+# §3, parent rows §3.8). Values: <data dir>\mod_options\clean_hud.json. Every other BetterUI feature is always on; only
+# the match readouts can be hidden. One group row «BetterUI modules» and its child rows; Desactivado on the group = both
+# readouts hidden (their own values are kept, shown greyed). Read live by the grafts (CMND_VRFW_OPTION_GET once per
+# readout): no restart.
+
+# «BetterUI modules»: the group (only shown while one of its rows is on the tab)
+[[option]]
+id = "modules"                                # row key clean_hud.modules
+type = "toggle"
+label = "modules"                             # text\keys.toml, 9 languages
+help = "modules_help"
+default = 1
+group = true
+order = 410
+
+# «Duel counter»: after a special-move or power-action duel, each player's total (graft clean_hud_duel_readout)
+[[option]]
+id = "duel_readout"                           # row key clean_hud.duel_readout
+type = "toggle"
+label = "duel_readout"
+help = "duel_readout_help"
+default = 1
+parent = "clean_hud.modules"
+order = 100
+
+# «AT / PP counter»: the game's own shot readout, total AT of the shot vs the keeper's PP (graft clean_hud_shot_readout)
+[[option]]
+id = "shot_readout"                           # row key clean_hud.shot_readout
+type = "toggle"
+label = "shot_readout"
+help = "shot_readout_help"
+default = 1
+parent = "clean_hud.modules"
+order = 200

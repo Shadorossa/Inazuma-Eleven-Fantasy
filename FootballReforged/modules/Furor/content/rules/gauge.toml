@@ -1,0 +1,186 @@
+# Furor › what the furor does, as behaviour rules (docs/framework/rules.md) on the flags and
+# signals of the team momentum furor.gauge (content\team_momentum\gauge.toml; docs/game/mechanics/furor.md
+# §3). Flags: furor.gauge.<side>.level1 (50 %), .full, .phase (side = user / rival, the actor's side in
+# `when.team`). Signals (actor = a player of that team): furor.gauge.phase / .phase_end / .start.
+schema = "VRFW.behaviour/1"
+
+# ---------------------------------------------------------------- level 1 (half gauge): special moves a little stronger
+
+[[rule]]
+id = "furor_level1_power_user"
+on = "move_power"
+[rule.when]
+team = "user"
+flag = "furor.gauge.user.level1"
+not_flag = "furor.gauge.user.phase"
+[rule.do]
+power_mult = 1.03
+
+[[rule]]
+id = "furor_level1_power_rival"
+on = "move_power"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.level1"
+not_flag = "furor.gauge.rival.phase"
+[rule.do]
+power_mult = 1.03
+
+# ---------------------------------------------------------------- the phase («Fase de furor», Strikers' Hero Time)
+
+# its special moves hit harder
+[[rule]]
+id = "furor_phase_power_user"
+on = "move_power"
+[rule.when]
+team = "user"
+flag = "furor.gauge.user.phase"
+[rule.do]
+power_mult = 1.15
+
+[[rule]]
+id = "furor_phase_power_rival"
+on = "move_power"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.phase"
+[rule.do]
+power_mult = 1.15
+
+# its players run faster (Strikers: a Hero Time player counts as dashing)
+[[rule]]
+id = "furor_phase_speed_user"
+on = "move_speed"
+[rule.when]
+team = "user"
+flag = "furor.gauge.user.phase"
+[rule.do]
+speed_mult = 1.08
+
+[[rule]]
+id = "furor_phase_speed_rival"
+on = "move_speed"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.phase"
+[rule.do]
+speed_mult = 1.08
+
+# its keeper faces weaker shots (the shot's power for that save battle)
+[[rule]]
+id = "furor_phase_keeper_user"
+on = "keeper_duel"
+[rule.when]
+team = "user"
+flag = "furor.gauge.user.phase"
+[rule.do]
+power_mult = 0.9
+
+[[rule]]
+id = "furor_phase_keeper_rival"
+on = "keeper_duel"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.phase"
+[rule.do]
+power_mult = 0.9
+
+# ---------------------------------------------------------------- the phase's awakening, one per position
+# The furor phase is the only awakening (content\techniques\no_awakenings.toml): every player of the team that starts
+# it (the user's or the CPU's) wears the awakening look of his position (content\effects\awakening.toml: the
+# triggers furor_awakening_gk / _df / _mf / _fw, recoloured copies of the retail awakening aura) and gets its stats,
+# until the phase ends. It is no aura: no aura bit, no aura slot, no aura limit, a keshin / totem / armour / Mix-Max
+# keeps running with it; at the end the look fades out (no withdraw animation, no aura-end signal). Position: gk = the
+# team's keeper, the others by their card's main position (docs/framework/rules.md, `position`). Stats are multiplied
+# from each player's base (they never compound) and put back at the end. Tunables: the `mult` values below (all
+# weaker than a retail awakening: 11 players at once), the hues in content\effects\awakening.toml.
+
+[[rule]]
+id = "furor_awakening_gk"
+on = "signal:furor.gauge.phase"
+[rule.do]
+char_effect = { trigger = "furor_awakening_gk", who = "team", position = "gk" }
+set_stat = { stat = ["agility", "physical"], mult = 1.12, who = "team", position = "gk" }
+
+[[rule]]
+id = "furor_awakening_df"
+on = "signal:furor.gauge.phase"
+[rule.do]
+char_effect = { trigger = "furor_awakening_df", who = "team", position = "df" }
+set_stat = { stat = ["pressure", "physical"], mult = 1.15, who = "team", position = "df" }
+
+[[rule]]
+id = "furor_awakening_mf"
+on = "signal:furor.gauge.phase"
+[rule.do]
+char_effect = { trigger = "furor_awakening_mf", who = "team", position = "mf" }
+set_stat = { stat = ["control", "technique", "agility"], mult = 1.1, who = "team", position = "mf" }
+
+[[rule]]
+id = "furor_awakening_fw"
+on = "signal:furor.gauge.phase"
+[rule.do]
+char_effect = { trigger = "furor_awakening_fw", who = "team", position = "fw" }
+set_stat = { stat = ["kick", "agility"], mult = 1.15, who = "team", position = "fw" }
+
+# the end: every look off (each trigger on the whole team: a player who changed place keeps none), the stats back
+[[rule]]
+id = "furor_awakening_end_gk"
+on = "signal:furor.gauge.phase_end"
+[rule.do]
+char_effect = { clear = true, trigger = "furor_awakening_gk", who = "team" }
+set_stat = { stat = ["kick", "control", "technique", "pressure", "physical", "agility"], restore = true, who = "team" }
+
+[[rule]]
+id = "furor_awakening_end_df"
+on = "signal:furor.gauge.phase_end"
+[rule.do]
+char_effect = { clear = true, trigger = "furor_awakening_df", who = "team" }
+
+[[rule]]
+id = "furor_awakening_end_mf"
+on = "signal:furor.gauge.phase_end"
+[rule.do]
+char_effect = { clear = true, trigger = "furor_awakening_mf", who = "team" }
+
+[[rule]]
+id = "furor_awakening_end_fw"
+on = "signal:furor.gauge.phase_end"
+[rule.do]
+char_effect = { clear = true, trigger = "furor_awakening_fw", who = "team" }
+
+# ---------------------------------------------------------------- the CPU starts its phase (Strikers' AI: by chance,
+# the player nearest the ball, more likely when losing): when a rival player gets the ball with a full gauge
+
+[[rule]]
+id = "furor_cpu_start_trailing"
+on = "possession"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.full"
+score = "trailing"
+chance = 0.6
+[rule.do]
+signal = "furor.gauge.start"
+
+[[rule]]
+id = "furor_cpu_start_level"
+on = "possession"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.full"
+score = "level"
+chance = 0.35
+[rule.do]
+signal = "furor.gauge.start"
+
+[[rule]]
+id = "furor_cpu_start_leading"
+on = "possession"
+[rule.when]
+team = "rival"
+flag = "furor.gauge.rival.full"
+score = "leading"
+chance = 0.15
+[rule.do]
+signal = "furor.gauge.start"

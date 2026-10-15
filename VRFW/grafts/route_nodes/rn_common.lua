@@ -1,7 +1,6 @@
 -- VRFW route_nodes BEGIN
--- VR-Framework [[route_node]]: optional side nodes of the Chronicle board (docs/game/modes/chronicle-side-branches.md,
--- docs/framework/route-board.md). Any mod declares them (team type); the framework draws them, with or without
--- Inazuma Fantasy. The engine (team_engine) builds the pieces, games and road sprites; this is the one shared rule that
+-- VR-Framework [[route_node]]: optional side nodes of the Chronicle board. Any mod declares them (team type); the framework draws them, with or without
+-- another mod. The engine (team_engine) builds the pieces, games and road sprites; this is the one shared rule that
 -- runs them:
 --   * a node's save slot (271-299) that no save has used yet (nothing cleared, nothing locked) is locked like a new
 --     piece of the retail board (all six difficulties);
@@ -10,8 +9,8 @@
 --     (retail open effect); several are opened here with the same effect (WaitPieceOpenEffect);
 --   * a closed node is not drawn (no piece, no lock ring) and its road stays hidden; a node with a
 --     `LockedTitle` (lockedGuide ~= 0) is drawn while closed as a retail locked piece (lock ring, its road), its
---     balloon and the Accept message show that text (what opens it; chronicle-side-branches.md §9.20);
---   * its command menu lists only its shown difficulties (VRFW_RN_Rows); a mod's «Ir al campo» reads node.field;
+--     balloon and the Accept message show that text (what opens it);
+--   * its command menu lists only its shown difficulties (VRFW_RN_Rows); a mod's "Go to the field" reads node.field;
 --   * `gates` (a node inserted before retail pieces): a gated piece opens from the node's win (native unlock link on
 --     the node, moved there by the build). Saves from before the node: while the node is not won, a gated piece that
 --     has nothing cleared is locked again (all six difficulties); a gated piece already played (any clear) is never
@@ -30,7 +29,7 @@ VRFW_RN_CMD_LOCK = 3394595467      -- CMND_GET_CHRONICLE_LOCK_STATUS (slot, diff
 VRFW_RN_CMD_SET_LOCK = 1778321182  -- CMND_SET_CHRONICLE_LOCK_STATUS (slot, locked, difficulty)
 VRFW_RN_CMD_PIECE_IDX = 1064555639 -- pieceId -> ok, piece index
 
--- loader.log lines «LUAPRINT … VRFW_RN …» (PRINT exists only under the lua_patch loader)
+-- loader.log lines "LUAPRINT … VRFW_RN …" (PRINT exists only under the lua_patch loader)
 function VRFW_RN_Log(...)
   if PRINT ~= nil then
     pcall(PRINT, "VRFW_RN", ...)
@@ -60,7 +59,7 @@ function VRFW_RN_Load()
   end
   VRFW_RN = {nodes = {}, bySlot = {}, byIdx = {}, roads = {}}
   if VRFW_RouteSlots ~= nil then
-    VRFW_RouteSlots.Install() -- extended slots (route-board.md §5): normally in already, from the script's OnInit
+    VRFW_RouteSlots.Install() -- extended slots: normally in already, from the script's OnInit
   end
   local ok, n = VRFW_RN_Call(VRFW_RN_CMD.NODE_COUNT)
   if not ok or type(n) ~= "number" then
@@ -202,7 +201,7 @@ function VRFW_RN_GuideText(idx, id)
 end
 
 -- Accept on a locked piece (retail OnEnter, the lock message `s`): a closed node drawn locked says its `LockedTitle`
--- instead of the retail «beat the previous square's route-unlock battle» (slot = the piece's save slot).
+-- instead of the retail "beat the previous square's route-unlock battle" (slot = the piece's save slot).
 function VRFW_RN_LockedText(slot, s)
   local node = VRFW_RN_BySlot(slot)
   if node ~= nil and node.lockedGuide ~= 0 and not VRFW_RN_Shown(node) then
@@ -222,9 +221,9 @@ function VRFW_RN_BySlot(slot)
   return VRFW_RN_Load().bySlot[slot]
 end
 
--- The board's Accept on a piece (retail OnEnter) refuses a piece whose difficulty 1 (Crónica) is locked with the retail
--- message «Necesitas superar la batalla de desbloqueo de ruta de la casilla anterior…». A shown node may have no
--- Crónica at all (Heroica-only side nodes, chain «C» pieces: their difficulty 1 stays locked), so a shown node is
+-- The board's Accept on a piece (retail OnEnter) refuses a piece whose difficulty 1 (Chronicle) is locked with the retail
+-- message "You must beat the previous square's route-unlock battle...". A shown node may have no
+-- Chronicle difficulty at all (Heroica-only side nodes, chain "C" pieces: their difficulty 1 stays locked), so a shown node is
 -- enterable whatever its difficulty 1 says (its command menu / chain board lists what it has). Unknown slots: false.
 function VRFW_RN_Enterable(slot)
   local node = VRFW_RN_BySlot(slot)
@@ -333,7 +332,7 @@ function VRFW_RN_Sync(effect)
   return opened
 end
 
--- The nodes' roads, drawn at RUN TIME above the map tiles (2026-10-12; the per-combination tile copies are gone): each
+-- The nodes' roads, drawn at RUN TIME above the map tiles (the per-combination tile copies are gone): each
 -- road is one overlay sprite of the emblem atlas (team type: CMND_VRFW_TEAM_ROUTE_ROAD_GET -> node, sprite, centre x / y
 -- in the route map layer, w, h) shown on an instance of the layer vrfw_route_road (framework menus\route_roads.toml: a
 -- one-quad object attached to the map's _pos_base01 like the pieces, so it pans and zooms with the map; priority 50,
@@ -358,7 +357,7 @@ function VRFW_RN_RoadPool()
   return nil
 end
 
--- Instance `i` (0-based) shows road `road` (nil / not shown: hidden; the quad's own sprite is the retail «new» badge).
+-- Instance `i` (0-based) shows road `road` (nil / not shown: hidden; the quad's own sprite is the retail "new" badge).
 function VRFW_RN_RoadSet(i, road, shown)
   if road == nil or not shown then
     pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_RN_ROAD_LAYER, i, false)
@@ -444,7 +443,7 @@ function VRFW_RN_RevealPieces(idxs)
   end
 end
 
--- The caravan's rails (Nacho 2026-10-09: the bus drove straight from Big Waves to C1 across the houses). The game's
+-- The caravan's rails (the bus drove straight from Big Waves to C1 across the houses). The game's
 -- move path between two pieces (vs_route_town_menu: t9 = funcLuaMenuVSRouteTownCommand(111188339, from, to), a flat
 -- list x1, y1, x2, y2, … of the map layer's positions) joins the pieces of the d-pad graph with straight lines, so a
 -- node's own road (a fork from the middle of another road, bends) was not followed. VRFW_RN_Path puts every node's
@@ -599,7 +598,7 @@ function VRFW_RN_Path(t)
   return t
 end
 
--- The board cursor follows the same rails (Nacho 2026-10-09: the green cursor still slid straight from Big Waves to
+-- The board cursor follows the same rails (the green cursor still slid straight from Big Waves to
 -- C1). The cursor stays in the middle of the screen while the map scrolls to the next piece: the game's scroll
 -- (UpdateMapScroll -> CMND_SCROLL_MAP) moves the map on the straight line and reports each frame's position through
 -- UpdateScrollPos(x, y) (n5 = -x, n6 = -y; a piece P is centred at x = n23 * P, the map's zoom). VRFW_RN_ScrollStart

@@ -1,25 +1,14 @@
--- Build script of the type `technique` (docs/framework/build-scripts.md §3.4-§3.6, docs/framework/types/technique.md,
--- docs/app/technique-engine.md §4): every active mod's technique declarations (load order) -> the game's special-move
--- tables, the texts of the moves for the text type, the learn lists, the item type's offers and the run-time rules.
---
--- Order: the model checks, (1) every mod's NEW moves (sorted by `order`, then name, inside a file: the ids do not depend
--- on the file order), (2) every [[edit]], (3) every [[aura_command]] then every [[aura]], (3b) keshin changes,
--- overrides, passive effect definitions, boards, skill_text rows, (3c) chain overrides, passives (edits, twins, new,
--- twins of new), the compaction of the RDBN child lists, (4) every [[remove]], (5) every [[learn]], (6) every [[shop]],
--- (7) every [[keeper_scene]], (8) every [[event_env]], (9) the env rows of the anim engine's events, then the final
--- checks and the event -> move index, the run-time rules, the effect-variant event copies and the hand-offs. Each in
--- load order. A cell two mods set to different values is a conflict: noted, the mod that loads later wins.
---
--- Tables: skill_config, skill_by_event_id_config, change_aura_skill_config, override_skill_config (RDBN, VRFW.rdbn);
--- event_env_config_*, event_tag_word_replace_config, item_config, chara_param, chara_base, aura_skill_config,
--- passive_skill_config, passive_skill_effect_config, ability_learning_config (T2B, served raw: this script keeps the
--- sort runs of the lists it changes). Only the tables that change are served; untouched rows stay byte-identical.
---
--- Native (Rust): the binary checks of a mod's events and models, the eff-list object swap of an effect variant, the
--- run-time vocabularies (VRFW.technique.*); the hooks that use the rules (crates/plugins/technique_engine).
---
--- input = { files = { { file, mod, load_index, empty, value = <technique file> } } (reading order), characters =
---           { { key, chara } }, events = <the anim engine's created events>, vocab, consts, defaults }
+-- Build script of the `technique` type: every active mod's technique declarations (load order) -> the game's special-move tables,
+-- move texts, learn lists, the item type's offers and the run-time rules.
+-- Order: model checks, (1) NEW moves, (2) [[edit]], (3) [[aura_command]] (new aura commands) then [[aura]] (edits of existing ones), (3b) keshin/overrides/passive effects/boards/texts,
+-- (3c) chain overrides and passives, (4) [[remove]], (5) [[learn]], (6) [[shop]], (7) [[keeper_scene]], (8) [[event_env]], (9) anim-engine events,
+-- then final checks, the event -> move index, run-time rules, effect-variant copies and hand-offs; each in load order.
+-- A cell two mods set to different values is a conflict: noted, the later mod wins.
+-- Tables: RDBN (skill_config, skill_by_event_id_config, change_aura_skill_config, override_skill_config) and T2B served raw
+-- (event_env_config_*, event_tag_word_replace_config, item_config, chara_param, chara_base, aura_skill_config, passive_skill_*, ability_learning_config);
+-- only changed tables are served and untouched rows stay byte-identical.
+-- Native (Rust): binary checks of events and models, the eff-list object swap of effect variants, run-time vocabularies (VRFW.technique.*).
+-- input = { files = { { file, mod, load_index, empty, value } }, characters = { { key, chara } }, events, vocab, consts, defaults }
 -- returns technique_engine::script::Scripted.
 
 local U = require "lib/util"
@@ -37,7 +26,7 @@ return function(input)
   local BOARD_COL = 10
   local SKILL_LIST, BYEV_LIST, BYEV_FAIL_LIST = "m_skillInfoList", "m_skillByEventIdList", "m_skillByEventIdFailList"
 
-  -- ------------------------------------------------------------------------------------------------- the context
+  -- ---- the context
   local X = {
     input = input, consts = consts, vocab = vocab, U = U, P = P,
     t2b = {}, rdbn = {}, keys = {},
@@ -67,7 +56,7 @@ return function(input)
   X.E, X.try, X.need = E, try, need
 
   local hex = U.hex
-  -- %.0f of the truncated number: %d of the game's Lua 5.2 (MSVC: a 32-bit long) rejects u32 ids >= 2^31
+  -- %.0f of the truncated number (the game's Lua %d rejects u32 ids >= 2^31)
   local function int_str(n) return string.format("%.0f", n >= 0 and math.floor(n) or math.ceil(n)) end
   -- Rust `{}` of an IdRef (a number as written, or the string)
   local function idref_str(x)
@@ -133,8 +122,7 @@ return function(input)
   function X:env() return self:t("env", "events cannot be checked or added") end
   function X:item() return self:t("item", "the moves' manuals (items) are not changed") end
 
-  -- the catalog number of a new move's manual: the item type's allocator in the shared space (VRFW.ids.next with
-  -- spill): above the highest number of the GAME's own item_config, below CATALOG_LIMIT, then the game's holes
+  -- catalog number of a new move's manual: item allocator in the shared space, above the game's highest item_config number, below CATALOG_LIMIT, then holes
   function X:manual_catalog(m, key)
     if self.catalog_lo == nil then
       local k = self.keys.item
@@ -229,8 +217,7 @@ return function(input)
     return self:skill_str(id, sc.key) or hex(id)
   end
 
-  -- the id of a move reference: a creation key (`<mod>.<name>`, or `<name>` of the same mod), an internal key
-  -- (`whs00030`), or a number
+  -- id of a move reference: a creation key (`<mod>.<name>`, or `<name>` of the same mod), an internal key (`whs00030`), or a number
   function X:tech_ref(s, m)
     s = U.trim(s)
     local c = self.created[s] or self.created[m .. "." .. s]
@@ -312,8 +299,7 @@ return function(input)
     return true
   end
 
-  -- Resolve an event name (an anim engine event `<mod>.<name>` / its id, a game event, a mod's own event): the
-  -- lower-case name, or nil, err. `tpl` = the env row template of a mod's own event (nil: `tpl_err` says why).
+  -- Resolve an event name (anim engine `<mod>.<name>`, game event, or a mod's own event) to the lower-case name, or nil, err; `tpl` = env row template of a mod's own event
   function X:event(m, what, name, tpl, tpl_err)
     local r = U.trim(name)
     local own = m .. "." .. r
@@ -384,8 +370,7 @@ return function(input)
     g.rows[#g.rows + 1] = { key = key, t = t }
   end
 
-  -- the name / description rows of a move (or an aura command): `skill_text` noun (name) and text (description) of
-  -- the row's own ids
+  -- name / description rows of a move (or aura command): `skill_text` noun and text of the row's own ids
   function X:texts_of(m, what, key, name, desc, text, default, add)
     for _, l in ipairs(U.keys(text)) do
       if VRFW.lang.norm_or_all(l) == nil then
@@ -440,7 +425,7 @@ return function(input)
     return h, s
   end
 
-  -- ------------------------------------------------------------------------------------------------- the build
+  -- ---- the build
   local out = { mods = {}, gentext = {}, created = {}, hidden = {}, deleted = {}, learned = {}, shop = {}, goal_events = {},
     ball_effects = {}, performer_elements = {}, event_variants = {}, handoffs = {}, move_fx = {}, keeper_scenes = {},
     aura_compat = {}, move_icons = {}, icons_ready = false, conflicts = {}, problems = {} }
@@ -732,8 +717,7 @@ return function(input)
     S:row_str(row, sc.key, internal)
     need(S:row_set(row, sc.name, t_name))
     need(S:row_set(row, sc.desc, t_desc))
-    -- its manual (item_config): `manual = false` none; the move's own row when the item table already has it (pins
-    -- applied); else a clone of the base's
+    -- its manual (item_config): `manual = false` none; the move's own row if present; else a clone of the base's
     local catalog
     if d.manual ~= false then
       local pin = type(d.manual) == "table" and d.manual or {}
@@ -743,8 +727,7 @@ return function(input)
       if src ~= nil then
         local t = self:item()
         local cat
-        -- a catalog number is a bit of the save's 8192-bit m_globalItemGetFlag: a pinned / own number outside 0..8192
-        -- is replaced by the item type's allocator (as the native builder)
+        -- a catalog number is a bit of the 8192-bit item-get flag: out-of-range numbers are replaced by the allocator
         if pin.catalog ~= nil and pin.catalog >= 0 and pin.catalog < CATALOG_LIMIT then
           local c = pin.catalog
           if own == nil and self.used_catalog[c] then self:info(string.format("%s: %s: manual catalog %s is also another item's", file, key, int_str(c))) end
@@ -1024,7 +1007,7 @@ return function(input)
     return true
   end
 
-  -- ------------------------------------------------------------------------------------------------- the steps
+  -- ---- the steps
   -- item ids + catalog numbers in use (every item list shares both spaces)
   local any_new = false
   for _, f in ipairs(files) do
@@ -1131,8 +1114,7 @@ return function(input)
       if ok == nil then X:err(c.m, c.what .. ": " .. e .. " (left as it was)") end
     end
   end
-  -- passives: the edits of every mod, the twins rule (it copies the passives as edited), the new passives, the twins
-  -- of new passives
+  -- passives: edits of every mod, the twins rule, new passives, twins of new passives
   local function passive_step(f, new)
     for _, d in ipairs(f.value.passive or {}) do
       if (d.key ~= nil) == new then
@@ -1231,7 +1213,7 @@ return function(input)
   -- 9. the anim engine's events no declaration named
   X:anim_env_rows()
 
-  -- ------------------------------------------------------------------------------------------------- final checks
+  -- ---- final checks
   local function finish()
     -- power order, category <-> event group
     for _, id in ipairs(U.keys(X.touched)) do
@@ -1248,7 +1230,12 @@ return function(input)
         local ev = S:str(sc.li, ri, sc.evn) or ""
         local bc = vocab.by_category[cat + 1]
         local g = bc and bc.group
-        if g ~= nil and ev ~= "" and ev:sub(1, #g) ~= g then
+        -- the group check only where a mod set the category or the cutscene, or made the move
+        local set_by_mod = X.created_by_id[id] ~= nil
+        for _, col in ipairs({ sc.category, sc.ev, sc.evn }) do
+          if X.claims["skill|" .. string.format("%.0f", id) .. "|" .. tostring(col)] ~= nil then set_by_mod = true end
+        end
+        if g ~= nil and set_by_mod and ev ~= "" and ev:sub(1, #g) ~= g then
           X:warn(owner, string.format("%s: a %s move with the cutscene %s (a %s_ event is expected: the animation may not fit the duel)", label, bc.word, ev, g))
         end
       end
@@ -1327,7 +1314,7 @@ return function(input)
   end
   finish()
 
-  -- ------------------------------------------------------------------------------------------------- run-time rules
+  -- ---- run-time rules
   local goals = X:goal_rules()
   if #goals > 0 then
     local list, nv = {}, 0
@@ -1364,7 +1351,7 @@ return function(input)
     X:info("hand-off scenes: " .. table.concat(list, "; "))
   end
 
-  -- ------------------------------------------------------------------------------------------------- outputs
+  -- ---- outputs
   -- texts: groups by (mod, default language) in byte order (no default first), then stable by load order
   local gks = U.keys(X.texts)
   local glist = {}

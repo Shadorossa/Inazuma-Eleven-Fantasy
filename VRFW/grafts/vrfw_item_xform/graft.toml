@@ -1,14 +1,12 @@
-# Item transformations, UI side (VR-Framework 2.0.13; docs/framework/types/item.md §13,
-# docs/game/mechanics/item-transformations.md §9). Always on: it acts only on the items a mod declares with
-# [[VRFW.ItemTransform]] (the framework answers «not ours» for every other item, and nothing changes).
+# Item transformations, UI side. Always on: it acts only on the items a mod declares with
+# [[VRFW.ItemTransform]] (the framework answers "not ours" for every other item, and nothing changes).
 # * equip_menu_list: a transformation item chosen for a player it cannot transform is refused with the error sound
 #   and the declaring mod's reason text (CMND_VRFW_ITEM_XFORM_CAN: 1 incompatible, 2 locked by its unlock flag; the
 #   text id comes with the answer, {item} = the item's name; no text declared = the sound only). Taking the item off is
 #   never refused. The item's native equip condition (built by the item type) already limits it to compatible players.
-# * equip_menu_select (§9.8): after an equip / remove / swap the 3D preview and the chara card miniface are rebuilt at
+# * equip_menu_select: after an equip / remove / swap the 3D preview and the chara card miniface are rebuilt at
 #   once when the transformation target of the shown player changed (CMND_VRFW_ITEM_XFORM_STATE).
-# Was Inazuma Fantasy's graft item_xform (2026-09-28 .. 2026-10-09; it required IF's graft outfit only for its place in
-# the chain: nothing of the outfit slot is used). Lua globals EVT_IX -> VRFW_ItemXform (no alias: nothing else read it).
+# Lua globals VRFW_ItemXform.
 name = "vrfw_item_xform"
 mod = "vr_framework"
 order = 300

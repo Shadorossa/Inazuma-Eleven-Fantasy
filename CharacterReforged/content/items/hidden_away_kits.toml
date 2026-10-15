@@ -1,0 +1,26 @@
+schema = "VRFW.item/2"
+# Character Reforged › the game's «E. visitante …» team kits out of the shops (owner 2026-10-15: «quita estas 5
+# equipaciones de los saves»). They are the only away copies of a team kit the game sells as kit items
+# (ITEM_FASHION_INFO, key = the home kit's key + `_20`, uniform = the home kit's swapped twin; item_text «E. visitante
+# <team>»): the Tienda de entrenamiento and the Tienda del torneo sell them, no reward, drop, box, gift or mission
+# gives them (docs/game/modes/fm-kit-drops.md §3). The away look of every kit stays reachable through the kit picker's
+# «Local / Visitante» switch (docs/game/mechanics/away-kit.md). `uni_u041401_20` «Equipación Revolucionarios» is not
+# one of them (its own name, a match prize, no shop row).
+# [[hide]]: the item stays in item_config (old saves keep loading), its shop rows are hidden and it leaves the reward
+# tables. The save adjust «Quitar equipaciones ocultas» (scripts\save_tools.lua, lib\purge_kits.lua) reads these
+# targets: the teams that wear one go back to their home kit and the owned copies go.
+
+[[hide]]
+target = "uni_u011001_20"    # E. visitante Zeus
+
+[[hide]]
+target = "uni_u020101_20"    # E. visitante Servicio Secreto
+
+[[hide]]
+target = "uni_u061301_20"    # E. visitante Flota Ixar
+
+[[hide]]
+target = "uni_u070901_20"    # E. visitante Alpino (Ares)
+
+[[hide]]
+target = "uni_u070101_20"    # E. visitante Raimon Isla Remota

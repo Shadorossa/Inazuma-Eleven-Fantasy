@@ -1,7 +1,4 @@
-# The VR-Framework's own name and description on the «Mods» screen, in the game's language: rows of menu_text
-# with id = crc32("vr_framework.mod_name") / crc32("vr_framework.mod_description") (the keys the screen asks for:
-# docs/framework/mods-panel.md §3.2). The framework's root text.toml is not read (its parts own their namespaces),
-# so its keys live here as rows.
+# Framework name and description for the Mods screen: menu_text rows with id = crc32 of "vr_framework.mod_name" / "vr_framework.mod_description".
 
 schema = "VRFW.text/2"
 table = "menu_text"

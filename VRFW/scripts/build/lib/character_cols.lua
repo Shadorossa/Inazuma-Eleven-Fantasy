@@ -1,11 +1,6 @@
--- The column names a character declaration may write (`cells`, `base`, `model_row`, `new_model.cells`, a rarity's
--- `cells`; docs/framework/types/character.md): the names of schemas/character/chara_param.toml, chara_base.toml and
--- chara_model.toml (old names stay there as `aliases`, but a declaration uses the current ones), `col_<n>` for any
--- column by index, and (chara_param) the `[[param_column]]` names the mods declare. Cols 57, 59 and 60 of chara_param
--- are free for a mod's layout (named by `[[param_column]]`).
---
--- The lists are 0-based in meaning: entry k + 1 names column k. The build checks them against the schemas when it
--- opens the tables (a mismatch is a WARN).
+-- Column names a character declaration may use (`cells`, `base`, `model_row`, `new_model.cells`): schemas/character/chara_param, chara_base, chara_model names,
+-- `col_<n>` for any column index, and the `[[param_column]]` names mods declare (cols 57, 59, 60 of chara_param are free for mods).
+-- Lists are 0-based in meaning (entry k + 1 names column k); a mismatch with the schema is a WARN.
 local C = {}
 
 C.PARAM = {

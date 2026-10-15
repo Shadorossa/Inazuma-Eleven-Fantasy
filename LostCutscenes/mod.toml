@@ -3,13 +3,13 @@ id = "new_animations"
 # «Lost Cutscenes» since 1.3.2 (2026-10-11; «Lost Scenes» 1.3.0-1.3.1, «New Animations» / «Nuevas animaciones» before;
 # repo / install folder LostScenes until 1.3.1): the same name in every language; the id stays.
 name = "Lost Cutscenes"
-version = "1.4.6"
+version = "1.4.7"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Lost scenes back in matches: animations the game ships but never plays and scenes from earlier Inazuma Eleven games. Keeper: three save / goal pairs the game ships but never plays (standing catch and dives to both sides, each with its beaten version) join the random keeper-gauge scenes; «Effortless save»: a shot that takes at most 15 % of the gauge from a keeper without a move is stopped one-handed over his head (Galileo's catch from Chronicle Mode, played by the match's keeper). Duels: a Power Charge or Power Block won without a hyper move plays a Chrono Stone / Galaxy duel scene. De-summons: when a Keshin, a Keshin armour or a Miximax ends in open play, the player kneels, sweeps the spirit away or throws his arms out (Chrono Stone). Celebrations: the Inazuma Eleven Cross intros as goal celebrations of their characters (Mark Evans, Axel Blaze, Arion Sherwind…) and four open poses. Override chains: when a shot is chained into its combined move (Dragon Crash → Fire Tornado = Dragon Tornado, Cosmic Blaster, Wyvern Blizzard, Tiger Storm, Icebreaker, Emperor Penguin No. 2 feat. Shark, Beyond the Death Zone), the combined scene starts at the pass instead of repeating the first shot. Always on: the mod has no options."
 priority = 0
 tags = ["Visual"]
-updated = "2026-10-14"
+updated = "2026-10-15"
 # This mod's own names (TOML keys [[LostCutscenes.X]], Lua LostCutscenes.X, any later text, command or key); never VRFW.
 prefix = "LostCutscenes"
 folder = "LostCutscenes"
@@ -48,6 +48,6 @@ folder = "LostCutscenes"
 # folder). Content keys are unchanged (effortless_save keeps its pinned event ev71_80030; the duel cut-ins are named by
 # key; the keeper pairs are retail events); an old stored keeper_scenes option value was already ignored since 1.3.x.
 # Mechanism: docs/game/mechanics/basic-move-cutscenes.md, docs/framework/types/rule.md «Duel clips».
-requires = ["vr_framework>=2.1.0"]
+requires = ["vr_framework>=2.4.94"]
 provides = ["keeper_scenes=1.4.0"]
 conflicts = []

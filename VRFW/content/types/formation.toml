@@ -1,19 +1,16 @@
-# How the type `formation` (formations\**\*.toml, kind vr_framework.formation/1) becomes rows of the game's
-# formation_config. Read by the framework at every start that is not served from the cache: changing this file needs
-# no compile. Format: docs/framework/table-map.md. Columns are schema names (schemas/formation/formation.toml).
+# Maps the `formation` type (formations/**/*.toml) to rows of the game's formation_config.
 schema = "VRFW.table_map/1"
 
-# [[formation]]: a NEW formation row.
-#   name      own name (a-z 0-9 _); its row key is the number of `<mod>.<name>` in id space `formation`
-#             (crc32("<mod>.<name>"), `#1`… on a clash with the game's formations; pinned in ids\formation.json)
-#   id        a fixed row key, kept as written (number, 0x…, or a name hashed with crc32) and pinned
-#   based_on  the formation it clones (powers, name, description, the placements `places` does not replace)
-#   after     insert the row after this formation (default: at the end)
-#   places    the placement rows (slice placement_info, replaced): position_no, position_id, pass_no, b_kickoff,
-#             b_follow, defense_pos … bustup_pos
-#   cells     other cells of the row, by column name (power_offense, power_defense, noun_id …)
-# A reference (based_on, after, an [[edit]] / [[remove]] target) is a game id (number / 0x…), a name (crc32), or
-# `<mod>.<name>` / an own `<name>` of a formation of this start.
+# [[formation]]: a new formation row.
+#   name      own name (a-z 0-9 _); row key = crc32("<mod>.<name>"), pinned in ids/formation.json
+#   id        fixed row key (number, 0x…, or a name hashed with crc32)
+#   based_on  formation to clone
+#   after     insert after this formation (default: at the end)
+#   places    placement rows (replaces slice placement_info)
+#   cells     other cells by column name
+#   title     the name shown in the formation menu, per language (`{ es = "…", en = "…" }`): a new item_text noun row
+#   description  its description per language: a new item_text text row
+# References (based_on, after, targets) are a game id, a name (crc32), or `<mod>.<name>`.
 [[map]]
 entry = "formation"
 table = "formation/formation"
@@ -27,11 +24,14 @@ cells = "cells"
 count = "new"
 [map.fields]
 places = { column = "placement_info", type = "list", slice = true }
+title = { column = "noun_id", text = "item_text", text_id = "{mod}.{key}", text_field = "noun" }
+description = { column = "desc_id", text = "item_text", text_id = "{mod}.{key}.description", text_field = "text" }
 [map.refs]
 based_on = "formation"
 after = "formation"
 
-# [[edit]]: cells of an existing formation (`target`), `places` = all its placement rows.
+# [[edit]]: cells of an existing formation (`target`), `places` = all its placement rows, `title` / `description` =
+# new texts of its own (the other formations sharing the old text rows keep them).
 [[map]]
 entry = "edit"
 table = "formation/formation"
@@ -41,6 +41,8 @@ cells = "cells"
 count = "edited"
 [map.fields]
 places = { column = "placement_info", type = "list", slice = true }
+title = { column = "noun_id", text = "item_text", text_id = "{mod}.{key}", text_field = "noun" }
+description = { column = "desc_id", text = "item_text", text_id = "{mod}.{key}.description", text_field = "text" }
 [map.refs]
 target = "formation"
 

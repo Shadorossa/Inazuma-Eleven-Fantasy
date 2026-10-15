@@ -1,0 +1,18 @@
+schema = "VRFW.behaviour/1"
+# No retail auto-run in a focus battle: in the focus battle's control state (input_ctrl PLAYER_SOCCER_FOCUS_CTRL)
+# LB / RB are CMD_FOCUS_AUTO_RUN_LEFT / CMD_FOCUS_AUTO_RUN_RIGHT, which make the engine run the user's player to that
+# side by itself. These rules answer both commands «off» on every frame (button_hold + block), so LB / RB do nothing
+# in a focus battle. They have no other meaning in that control state, and no other control state asks these
+# two commands, so no state condition is needed. docs/game/mechanics/focus-input.md
+
+[[rule]]
+id = "focus_no_auto_run_left"
+on = "button_hold:CMD_FOCUS_AUTO_RUN_LEFT"
+[rule.do]
+block = true
+
+[[rule]]
+id = "focus_no_auto_run_right"
+on = "button_hold:CMD_FOCUS_AUTO_RUN_RIGHT"
+[rule.do]
+block = true

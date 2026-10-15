@@ -1,0 +1,9 @@
+# All Miximaxed's piece on Character Reforged's player page (CharacterReforged\content\menus\player_page_host.toml):
+# the stats a created miximax adds (scripts\lib\stat_transfer.lua): the ATRIBUTOS Normal / Miximax view and the Hiper
+# page's gains. The command answers nothing when another mod owns the miximax stat rule (Inazuma Fantasy: its own entry).
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "character_reforged.page_stat_gain"
+id = "all_miximaxed_gains"
+action = { command = "CMND_ALLMIXIMAXED_GAINS" }

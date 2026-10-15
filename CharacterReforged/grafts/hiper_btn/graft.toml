@@ -45,6 +45,14 @@ stem = "soccer_command_action_menu"
   src = "hiper_btn_cmd_1.lua"
   crc = "none"
 
+  # the card portrait rules EVT_HC (shared with the player page and the skill table; was Inazuma Fantasy's graft
+  # hiper_btn_face): the aura's portrait at the plate's right end, layer evt_hiper_chr_icon (content\menus\hiper_plates.toml)
+  [[files.ops]]
+  type = "append_block"
+  src = "../plate_hiper_plate/evt_hiper_card.lua"
+  marker = "hiper_card"
+  crc = "none"
+
 [[files]]
 stem = "soccer_battle_command_action_menu"
 
@@ -75,4 +83,12 @@ stem = "soccer_battle_command_action_menu"
   [[files.ops]]
   type = "append_block"
   src = "hiper_btn_battle_1.lua"
+  crc = "none"
+
+  # the card portrait rules EVT_HC (shared with the player page and the skill table; was Inazuma Fantasy's graft
+  # hiper_btn_face): the aura's portrait at the plate's right end, layer evt_hiper_chr_icon (content\menus\hiper_plates.toml)
+  [[files.ops]]
+  type = "append_block"
+  src = "../plate_hiper_plate/evt_hiper_card.lua"
+  marker = "hiper_card"
   crc = "none"

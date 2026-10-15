@@ -1,9 +1,7 @@
 schema = "VRFW.text_key/1"
-# Texts of the «Mods» screen and its title button (text_engine format). The mods_menu plugin hands them to the Lua
-# (CMND_VRFW_MM_TEXT, English when a language lacks one). The three button-guide labels (g_*) are also merged into
-# menu_text by text_engine when it is installed (ids crc32("mods_menu.<name>")); without it the guide falls back to the
-# game's «Aceptar». Placeholders: {a} author, {r} list / reason, {c} list / version rule, {n} number, {t} total,
-# {o} other mod, {v} version, {p} profile.
+# Texts of the Mods screen and its title button (text_engine format); English is used when a language lacks a key.
+# The button-guide labels (g_*) are also merged into menu_text (ids crc32("mods_menu.<name>")) when text_engine is installed.
+# Placeholders: {a} author, {r} list / reason, {c} list / version rule, {n} number, {t} total, {o} other mod, {v} version, {p} profile.
 
 [en.new]
 badge_update = "REQUIRES UPDATE"
@@ -98,14 +96,14 @@ au_note = "Audio: {t}"
 toast_order = "«{n}» is now {p} of {t} in the load order"
 pinned_short = "Base mod: always first"
 more_warnings = "… and {n} more warnings (the «Load order» tab lists them all)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Information"
 page_problems = "Problems ({n})"
 page_conflicts = "Conflicts ({n})"
 report_no_problems = "No problems: every file of this mod loaded."
 report_no_conflicts = "No conflicts: no other mod changes the same values."
 page_settings = "Settings ({n})"
-# the «Modules» of a mod family (docs/framework/mod-families.md): view 4 of a parent's page, its rows and toasts
+# mod family «Modules» view (parent page view 4): rows and toasts
 page_modules = "Modules ({n})"
 module_on = "On"
 module_off = "Off"
@@ -128,7 +126,7 @@ list_count = "{n} of {t}"
 list_empty = "Nothing found."
 g_details = "Details"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Skip boot screens"
 skip_boot_screens_help = "Skips the logos and notices shown before the opening."
 
@@ -225,7 +223,7 @@ au_note = "Audio: {t}"
 toast_order = "«{n}» es ahora el {p} de {t} en el orden de carga"
 pinned_short = "Mod base: siempre el primero"
 more_warnings = "… y {n} avisos más (la pestaña «Orden de carga» los lista todos)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Información"
 page_problems = "Problemas ({n})"
 page_conflicts = "Conflictos ({n})"
@@ -254,7 +252,7 @@ list_count = "{n} de {t}"
 list_empty = "No se ha encontrado nada."
 g_details = "Detalles"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Saltar avisos de inicio"
 skip_boot_screens_help = "Omite los logos y avisos que salen antes del opening."
 
@@ -351,7 +349,7 @@ au_note = "Audio : {t}"
 toast_order = "«{n}» est maintenant {p} sur {t}"
 pinned_short = "Mod de base : toujours en premier"
 more_warnings = "… et {n} autres avertissements (l’onglet « Ordre de chargement » les liste tous)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Informations"
 page_problems = "Problèmes ({n})"
 page_conflicts = "Conflits ({n})"
@@ -380,7 +378,7 @@ list_count = "{n} sur {t}"
 list_empty = "Rien trouvé."
 g_details = "Détails"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Passer les écrans de démarrage"
 skip_boot_screens_help = "Passe les logos et avertissements avant l'opening."
 
@@ -477,7 +475,7 @@ au_note = "Audio: {t}"
 toast_order = "„{n}“ ist jetzt {p} von {t}"
 pinned_short = "Basis-Mod: immer zuerst"
 more_warnings = "… und {n} weitere Warnungen (der Reiter „Ladereihenfolge“ listet alle auf)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Informationen"
 page_problems = "Probleme ({n})"
 page_conflicts = "Konflikte ({n})"
@@ -506,7 +504,7 @@ list_count = "{n} von {t}"
 list_empty = "Nichts gefunden."
 g_details = "Details"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Startbildschirme überspringen"
 skip_boot_screens_help = "Überspringt Logos und Hinweise vor dem Opening."
 
@@ -603,7 +601,7 @@ au_note = "Audio: {t}"
 toast_order = "«{n}» ora è {p} di {t}"
 pinned_short = "Mod di base: sempre per primo"
 more_warnings = "… e altri {n} avvisi (la scheda «Ordine di caricamento» li elenca tutti)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Informazioni"
 page_problems = "Problemi ({n})"
 page_conflicts = "Conflitti ({n})"
@@ -632,7 +630,7 @@ list_count = "{n} di {t}"
 list_empty = "Nessun risultato."
 g_details = "Dettagli"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Salta schermate iniziali"
 skip_boot_screens_help = "Salta loghi e avvisi mostrati prima della sigla."
 
@@ -729,7 +727,7 @@ au_note = "Áudio: {t}"
 toast_order = "«{n}» é agora o {p} de {t}"
 pinned_short = "Mod base: sempre o primeiro"
 more_warnings = "… e mais {n} avisos (a aba «Ordem de carregamento» lista todos)"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "Informações"
 page_problems = "Problemas ({n})"
 page_conflicts = "Conflitos ({n})"
@@ -758,7 +756,7 @@ list_count = "{n} de {t}"
 list_empty = "Nada encontrado."
 g_details = "Detalhes"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "Pular telas de início"
 skip_boot_screens_help = "Pula os logotipos e avisos exibidos antes da abertura."
 
@@ -855,7 +853,7 @@ au_note = "オーディオ：{t}"
 toast_order = "「{n}」は{t}個中{p}番目になりました"
 pinned_short = "基盤MOD：常に最初"
 more_warnings = "…ほか{n}件の警告（「読み込み順」タブにすべて表示）"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "情報"
 page_problems = "問題（{n}）"
 page_conflicts = "競合（{n}）"
@@ -884,7 +882,7 @@ list_count = "{t}件中{n}件"
 list_empty = "見つかりませんでした。"
 g_details = "詳細"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "起動画面をスキップ"
 skip_boot_screens_help = "オープニング前のロゴと注意画面を飛ばします。"
 
@@ -981,7 +979,7 @@ au_note = "音频：{t}"
 toast_order = "「{n}」现在是 {t} 个中第 {p} 个"
 pinned_short = "基础 MOD：始终第一"
 more_warnings = "… 另有 {n} 条警告（「加载顺序」标签页列出全部）"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "信息"
 page_problems = "问题（{n}）"
 page_conflicts = "冲突（{n}）"
@@ -1010,7 +1008,7 @@ list_count = "{t} 个中 {n} 个"
 list_empty = "未找到任何内容。"
 g_details = "详情"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "跳过启动画面"
 skip_boot_screens_help = "跳过片头动画前的标志和提示画面。"
 
@@ -1107,7 +1105,7 @@ au_note = "音訊：{t}"
 toast_order = "「{n}」現在是 {t} 個中第 {p} 個"
 pinned_short = "基礎 MOD：永遠第一"
 more_warnings = "… 另有 {n} 則警告（「載入順序」分頁列出全部）"
-# the mod page's report views (VR-Framework report.json: «Problemas» / «Conflictos»)
+# mod page report views (Problems / Conflicts)
 page_info = "資訊"
 page_problems = "問題（{n}）"
 page_conflicts = "衝突（{n}）"
@@ -1136,6 +1134,6 @@ list_count = "{t} 個中 {n} 個"
 list_empty = "找不到任何內容。"
 g_details = "詳情"
 
-# «Opciones de mods» row skip_boot_screens (options.toml: the framework boot skip)
+# Mod options row `skip_boot_screens`
 skip_boot_screens = "跳過啟動畫面"
 skip_boot_screens_help = "跳過片頭動畫前的標誌和提示畫面。"

@@ -1,6 +1,5 @@
 -- anim_engine (VR-Framework), celebrations: the goal-celebration picker («Ajustes de celebración de gol»,
--- soccer_performance_change_menu) hides a mod's EXCLUSIVE celebration from the players that may not use it
--- (docs/app/anim-engine.md «Celebraciones», docs/game/mechanics/celebraciones.md §2.3).
+-- soccer_performance_change_menu) hides a mod's EXCLUSIVE celebration from the players that may not use it.
 --
 -- Own code: wrappers of two retail globals, each one calls the original.
 -- * UpdateListItem: remembers the player of the focused row (the same handle the retail list keeps in `l1`).

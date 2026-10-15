@@ -1,9 +1,5 @@
--- The /2 tables of the technique build (scripts/build/technique.lua; docs/app/technique-engine.md §3.7-§3.12):
--- SKILL_EX pairs of a move, new aura commands and the child lists of any command (aura_skill_config), keshin changes
--- (change_aura_skill_config), override moves and shot chains (override_skill_config), passives and their twins rule
--- (passive_skill_config), passive effect definitions (passive_skill_effect_config), ability boards
--- (ability_learning_config), skill_text rows by id, and `[[event_env]]` (event_env_config_* rows and their tag-word
--- groups in event_tag_word_replace_config). Installs its functions on the build context X.
+-- Build of the technique "/2" tables: SKILL_EX pairs, aura commands and child lists, keshin changes, override moves and shot chains,
+-- passives and twins, passive effects, ability boards, skill_text rows and `[[event_env]]`. Installs its functions on the build context X.
 
 local TWO32 = 4294967296
 
@@ -274,8 +270,7 @@ return function(X)
     return true
   end
 
-  -- `chain = true` of an `[[override]]` (after every mod's overrides and edits): its single two-part condition becomes
-  -- a shot chain (docs/game/mechanics/override-skills.md §10.5)
+  -- `chain = true` of an `[[override]]` (after every mod's overrides and edits): its single two-part condition becomes a shot chain
   function X:override_chain(m, what, id, any_order)
     local kind = any_order and 2 or 1
     local t = need(self:over(), "override_skill_config not available")

@@ -1,4 +1,4 @@
--- menu_engine: match challenges («desafíos», VR-Framework service; docs/framework/match-challenge.md).
+-- menu_engine: match challenges («desafíos», VR-Framework service).
 -- Definitions only (this file runs in every script VM, lua\_all; no engine call at load time). The ONE place that
 -- checks the player's team against a match's challenge (`[[VRFW.MatchChallenge]]` of the team type, named by a route
 -- node, a chain tile, a free-match tab or by the challenge's own `Games`). Called where a match is chosen: the
@@ -44,7 +44,7 @@ if VRFW_MC == nil then
     STATUS = 1131797651,      -- (hdl, 0 level / 4 chara_param / 12 rarity)
     TEAM_SET_INFO = 1033065575, -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formation id
     FORMATION_INFO = 2649030357, -- CMND_GET_SOCCER_FORMATION_INFO (6, formation, place) -> ok, scPosType bits
-    -- scPosType bit (16 GK, 32 DF, 64 MF, 128 FW; docs/game/characters/position-cards.md §4c) -> position code
+    -- scPosType bit (16 GK, 32 DF, 64 MF, 128 FW) -> position code
     PLACE_BITS = {{16, 1}, {32, 4}, {64, 3}, {128, 2}},
     NAME = 1915015278,        -- CMND_GET_CHARA_NAME_TEXT (hdl)
     SERIES = 964991930,       -- CMND_GET_CHARA_SERIES_INFO (1, series) -> ok, name (menu VMs)

@@ -1,10 +1,8 @@
-# VR-Framework chain boards on the Chronicle board (docs/framework/chain-board.md, docs/framework/route-board.md; Nacho
-# 2026-10-09): a [[VRFW.RouteNode]] with `chain = …` (a «C» piece) opens the framework's chain board screen
+# VR-Framework chain boards on the Chronicle board: a [[VRFW.RouteNode]] with `chain = …` (a "C" piece) opens the framework's chain board screen
 # (vrfw_chain_board_menu) instead of its command menu, the match tile picked there is launched by the board as the
 # piece's match (its own game and difficulty), and the result is the chain's (VRFW_Chain progress + rank; the piece
-# clears when every match of the chain is won). Generic (every mod's chain nodes, no list). A framework graft since
-# 2026-10-09 (it was Inazuma Fantasy's): Chronicles Deluxe's chain C1 works without IF. The rank of a chain match is
-# route_board's VRFW_RB_MatchRank (since 2.0.48 the framework's S / A / B score rule VRFW_MatchRank); the «C» crest's badge is route_board's VRFW_RB_Badge, VRFW_RCH_RankOf its default rank.
+# clears when every match of the chain is won). Generic (every mod's chain nodes, no list). A framework graft: a mod's chain works without any other mod. The rank of a chain match is
+# route_board's VRFW_RB_MatchRank (the framework's S / A / B score rule VRFW_MatchRank); the "C" crest's badge is route_board's VRFW_RB_Badge, VRFW_RCH_RankOf its default rank.
 # Order after route_nodes (160: VRFW_RN_Load); route_board (190) adds the hook points and the host call after it.
 name = "route_chains"
 mod = "vr_framework"
@@ -79,10 +77,10 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # a chain node's balloon: its name only, no player face over it (Nacho 2026-10-10). The face is dropped before the
-  # retail face call (chara 0: the retail «no face» branch, as the story pieces): hiding the face meshes and still
-  # drawing the face (2026-10-10) flashed the placeholder team's player on the first hover, since the face draw shows
-  # the mesh once it is built and a later draw of the same face is a cache hit (2026-10-11, owner report)
+  # a chain node's balloon: its name only, no player face over it. The face is dropped before the
+  # retail face call (chara 0: the retail "no face" branch, as the story pieces): hiding the face meshes and still
+  # drawing the face flashed the placeholder team's player on the first hover, since the face draw shows
+  # the mesh once it is built and a later draw of the same face is a cache hit
   [[files.ops]]
   type = "insert_after"
   point = "vs_route_town_menu.UpdatePieceAtcBalloon.RouteChains"
@@ -93,7 +91,7 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the retail «new» badge (the red «!» top left) stays hidden on the whole Chronicle board (Nacho 2026-10-10); each
+  # the retail "new" badge (the red "!" top left) stays hidden on the whole Chronicle board; each
   # instance's own visibility is put back when the board closes
   [[files.ops]]
   type = "insert_after"

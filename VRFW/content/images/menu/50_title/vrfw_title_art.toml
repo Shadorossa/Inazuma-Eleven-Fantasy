@@ -1,7 +1,7 @@
-# VR-Framework: the framework's own title screen art (Nacho, 2026-10-13): the «INAZUMA ELEVEN Victory Road
+# VR-Framework: the framework's own title screen art (the «INAZUMA ELEVEN Victory Road
 # Framework» logo and a press-start key art (a night stadium + the two title characters), shown with VRFW alone.
 #
-# The two pictures are OWNER ART derived from Level-5 assets: never committed. They live in the git-ignored folder
+# The two pictures are derived from Level-5 assets: never committed. They live in the git-ignored folder
 # research/build/owner_art/ (or the folder of the env VRFW_OWNER_ART): vrfw_logo.png + vrfw_title_screen.webp (or
 # .png). research/scripts/vrfw_title_art.py (called by framework_pack.py) writes them as PNGs under the packed mod's
 # assets\images\menu\50_title\vrfw_title_art\; without them this file is left out of the pack with a warning and the
@@ -15,10 +15,9 @@
 # is fitted into the box the retail logo uses inside its 1600 x 1200 texture (logo02), for every language file of the
 # press-start logo (title00_03_02) and of the mode-menu logo (title02_01).
 #
-# Inazuma Fantasy serves its own title art (part title_art: whole title00_01_st / title00_03_02 / title02_01 files).
+# A mod can serve its own title art (whole title00_01_st / title00_03_02 / title02_01 files).
 # A mod's whole file is only the BASE of an image declaration (docs/framework/types/image.md §5), so this file would
-# paint over it: it is off while IF says so in its config ([title_art] own = true, research/mods/InazumaFantasy/
-# config.toml). Without IF the path reads the framework's own config (no such key) -> default false -> on.
+# paint over it: it is off while such a mod says so in its config ([title_art] own = true). Without that mod the path reads the framework's own config (no such key) -> default false -> on.
 schema = "VRFW.image/1"
 when = { config = "inazuma_fantasy.title_art.own", equals = false, default = false }
 

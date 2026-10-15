@@ -1,13 +1,7 @@
--- VR-Framework › input actions (docs/framework/types/input.md §2b). The mods declare rebindable actions in their
--- input files (`[[action]]`: id, command, ctrl, category, label, pad, keyboard); the type `input` adds the commands
--- (listed in the key configuration) and mod_options their row in the game's «Configuración de controles». The game
--- keeps the player's own binding (its system save) and answers the command with it (CMND_CHECK_INPUT_CMD, the markup
--- <CMD_…>). This script answers the declaration itself for the menus' Lua (CMND_VRFW_INPUT_ACTION):
---   { declared = 1, id, command = crc32(command), ctrl, category, pad = <pad index>, key = <keyboard index>,
---     pad_mask = 1 << pad (vr_sigs::input::mask), vk = <Windows virtual key of a letter key, 0 = none> }
--- or { declared = 0 } when no mod declares it. pad_mask / vk are the DEFAULT binding: a menu that reads the devices
--- straight (a `standalone` top bar host, where MENU_CTRL answers nothing) uses them; a rebinding made in the game's
--- screen reaches the command, not these values.
+-- Input actions declared by mods ([[action]]: id, command, ctrl, category, label, pad, keyboard).
+-- CMND_VRFW_INPUT_ACTION(name) -> { declared = 1, id, command = crc32(command), ctrl, category, pad = <pad index>,
+--   key = <keyboard index>, pad_mask = 1 << pad, vk = <virtual key of a letter key, 0 = none> } or { declared = 0 }.
+-- pad_mask / vk are the default binding; a rebinding made in the game's key configuration does not change them.
 
 InputActions = InputActions or {}
 
@@ -60,7 +54,7 @@ local function load_all()
           vk = (key ~= nil and key <= 25) and (string.byte("A") + key) or 0,
           mod = f.mod,
         }
-        -- the last mod in load order wins (its declaration is the one the input type adds last)
+        -- later mods in load order win
         cache.by_id[a.id] = e
         cache.by_command[a.command] = e
       end
@@ -69,7 +63,7 @@ local function load_all()
   return cache
 end
 
--- an action by its id or its command name; nil = none declared
+-- An action by id or command name; nil = none declared.
 function InputActions.Binding(name)
   local c = load_all()
   if type(name) ~= "string" then

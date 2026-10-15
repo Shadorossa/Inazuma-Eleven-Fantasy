@@ -1,0 +1,51 @@
+# Aura Points: the PEG / SP bars of the match buff row (docs/game/mechanics/aura-costs.md §12.8; ported from Inazuma
+# Fantasy's menus\00_soccer\aura_peg_bar.toml + graft mx_popup's EVT_AURA_PEG on 2026-10-14, owner report: with Aura
+# Points an armour's entry showed the retail stopwatch).
+# In the row where the team passives and the active auras show (soccer_team_buff_icon_list_menu, the bottom bar with
+# AT / DF / ...: soccer00_53_aura_buff_chara_icon + soccer00_54_aura_recast_gauge), the entry of a keshin / armour
+# (aura attr 0x01 / 0x02) shows a purple PEG bar and a totem's (0x08) the blue SP bar, instead of the retail circular
+# time gauge (the stopwatch), which is hidden for that entry. A new layer aura_points_buff_bar, one instance per aura
+# entry and bar (two per entry of buff_row.toml, which widens the retail row to the team aura limit; an entry with two
+# auras shows two bars: the miximax's PE (the mod Stamina Points) or the mode change's recharge (the mod All Changed)
+# first, then the keshin / totem pool), of this mod's object
+# aura_points_peg_bar (content\menus\peg_bar.toml:
+# the retail stamina gauge of the stairs race), not opened by the screen: the Lua of
+# research/grafts/aura_points_buff_bar opens, fills and places it on the hidden gauge. Without Aura Points nothing of
+# this exists: the stopwatch stays.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_team_buff_icon_list_menu"
+add_layer = { name = "aura_points_buff_bar", object = "aura_points_peg_bar", count = 22, after = "soccer00_54_aura_recast_gauge", groups = [
+    { group = "soccer_team_buff_icon_list_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+res = ["#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"]
+
+# every bar follows its portrait: copies of the attach row of the aura portrait (soccer00_53_aura_buff_chara_icon
+# instance 0) for aura_points_buff_bar (crc32 0xE951D3B0) instances 0..21
+[[object_set]]
+object = "soccer00_50_team_buff_icon_attach_locator"
+copy = [
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 0 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 1 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 2 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 4 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 5 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 6 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 7 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 8 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 9 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 10 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 11 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 12 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 13 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 14 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 15 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 16 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 17 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 18 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 19 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 20 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 0xE951D3B0, 4 = 21 } },
+]

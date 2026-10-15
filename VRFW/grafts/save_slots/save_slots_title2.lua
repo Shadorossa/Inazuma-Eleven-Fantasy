@@ -1,10 +1,10 @@
--- EVT save_slots, title_menu_2 side (docs/game/engine/save-slots.md "Fix 2026-09-28"). title_menu_inc wraps OnInit
+-- EVT save_slots, title_menu_2 side. title_menu_inc wraps OnInit
 -- through a __newindex on _G when the menu chunk defines it, so VRFW_SS_CommitPending lifts the write fence of a slot
 -- switch on the next title. A lua_patch that redefines OnInit (mm_entry: "function OnInit()" after the chunk ran) only
 -- replaces an existing global: __newindex never fires, the commit was lost, and the fence stayed on. The first save
--- after the switch then failed forever ("Guardando..." after Back in the «MODO CRÓNICA» hub, log 28/09 11:15:
+-- after the switch then failed forever ("Saving..." after Back in a mode hub:
 -- FileWriteAsync BLOCKED (slot switch in progress)).
--- Since 2026-10-07 a handler of the framework's title_menu_2 host (docs/framework/lua-hosts.md): `before` OnInit with
+-- A handler of the framework's title_menu_2 host: `before` OnInit with
 -- priority -1000, so the commit runs first, before every other handler and before whatever OnInit the patches under
 -- the host defined. Committing twice is harmless (STATE 0 = nothing to do). Nothing runs at chunk load.
 if VRFW_Host ~= nil then

@@ -1,8 +1,8 @@
--- menu_engine: chain boards (VR-Framework base feature; docs/framework/chain-board.md).
+-- menu_engine: chain boards (VR-Framework base feature).
 -- Definitions only (this file runs in every script VM, lua\_all): the ONE place that reads a chain board's data (the
 -- team type, CMND_VRFW_TEAM_CHAIN_*) and its per-save progress (the save service, owner "vr_framework"). Used by the
 -- framework's chain board screen (vrfw_chain_board_menu) and by the board that opens it (a mod's Chronicle board graft:
--- Inazuma Fantasy's route_chains). Nothing here names a chain, a team or a mod: the tiles come from the mods' TOML
+-- a route_chains graft). Nothing here names a chain, a team or a mod: the tiles come from the mods' TOML
 -- ([[chain]] with [[chain.tile]]).
 --
 -- Progress (per save slot): key "chain.<chain key>" of owner "vr_framework", a string with one character per tile in
@@ -10,13 +10,13 @@
 -- start tile is always done. A tile is OPEN when it is done or a tile linked to it is done. The chain's rank = the
 -- average of its match tiles' ranks (S = 3, A = 2, B = 1), rounded half up, once every match tile is won.
 -- A chest's declared rewards are given once (CH.Pay; key "chain.<chain key>.paid" = the paid chests' tile ids).
--- A DOUBLE chest (kind "dchest", chain-board.md §2c): a base reward and a special one (rank S on its branch). Opened
+-- A DOUBLE chest (kind "dchest"): a base reward and a special one (rank S on its branch). Opened
 -- without S: the base reward, then it closes again ("h"); opened with S: the special one (and the base one if never
 -- taken), then it stays open ("o"). No base reward: it waits for the S. No reward at all: disabled, never opens. Paid
 -- parts: "<tile id>" (base) and "<tile id>+s" (special) in "chain.<chain key>.paid".
 -- The match being played from a board: key "chain.pending" = "<chain key>|<tile>|<slot>" (slot = the opener's own
 -- number, e.g. the Chronicle node's save slot; in memory, never committed).
--- A BLOCKED tile (the 3DS chains' red «prohibited» sign, chain-board.md §9): its requirements (a win against a team on
+-- A BLOCKED tile (the 3DS chains' red «prohibited» sign): its requirements (a win against a team on
 -- any chain board, a chain completed, the team's level, a player in the club) are checked when a board is shown
 -- (CH.Sync); once they are all met and a tile linked to it is done it is marked done ("o", kept: it never closes
 -- again), so the tiles behind it open as after a chest.
@@ -40,7 +40,7 @@ if VRFW_Chain == nil then
     MENU = 2748171433,       -- crc32("vrfw_chain_board_menu"): the chain board screen
     P_CHAIN = 75385505,      -- crc32("vrfw_chain_board"): parameter, the chain index the screen opens
     P_PICK = 46591264,       -- crc32("vrfw_chain_pick"): parameter, the match tile picked (absent = back)
-    -- a chain HUB ([[VRFW.RouteNode]] Kind = "chain_hub", chain-board.md §8): the screen opens on the list of its chains
+    -- a chain HUB ([[VRFW.RouteNode]] Kind = "chain_hub"): the screen opens on the list of its chains
     P_HUB = 659670413,       -- crc32("vrfw_chain_hub"): parameter, the hub node's save slot
     P_PICK_CHAIN = 3161495482, -- crc32("vrfw_chain_pick_chain"): parameter out, the picked tile's chain index + 1
     NODE = {COUNT = {1208701503, 3004181703}, GET = {3986876567, 1705651873}},   -- CMND_VRFW_TEAM_ROUTE_NODE_*
@@ -180,7 +180,7 @@ if VRFW_Chain == nil then
     return out
   end
 
-  -- an S chest (IE3's «S» chest, docs/game/modes/ie3-chains.md) is ready once every match of its branch is won with S
+  -- an S chest (IE3's «S» chest) is ready once every match of its branch is won with S
   function CH.SReady(b, t)
     local ms = CH.Branch(b, t)
     -- «S» = the rank S's Order (a mod's better ranks count too); without a rank S: the best declared rank
@@ -279,7 +279,7 @@ if VRFW_Chain == nil then
     return false
   end
 
-  -- the rank Ids of won tiles that are not S / A / B (2.0.49): save key chain.<chain key>.ranks = "<tile>=<Id>;..." (the
+  -- the rank Ids of won tiles that are not S / A / B: save key chain.<chain key>.ranks = "<tile>=<Id>;..." (the
   -- tile's character is "r"); S / A / B stay the digits 3 / 2 / 1 older saves have
   local function rank_map(b)
     local ok, s = pcall(funcLuaCommand, CH.SAVE_GET, CH.OWNER, "chain." .. b.key .. ".ranks", "")
@@ -328,7 +328,7 @@ if VRFW_Chain == nil then
 
   -- the win counter's floor for older saves (VRFW_Stats, 34_stats.lua, loaded after this file: registered on first
   -- use): every won match tile of the boards this VM has read counts one win against its team; the counter starts from
-  -- it at its first win, so a save from before 2026-10-11 never shows 0 for a team it already beat
+  -- it at its first win, so a save from before never shows 0 for a team it already beat
   local floor_on = false
   local function stats()
     if VRFW_Stats == nil then
@@ -379,7 +379,7 @@ if VRFW_Chain == nil then
     return old
   end
 
-  -- a chest opened (its rewards: CH.Pay, chain-board.md §2b). A double chest (§2c): "o" when its branch is all S, else
+  -- a chest opened (its rewards: CH.Pay). A double chest: "o" when its branch is all S, else
   -- "h" (base reward taken, closed again); "h" -> "o" once the branch is all S. Returns the tile's state now.
   function CH.OpenChest(b, t)
     local tile = b.tiles[t]
@@ -419,7 +419,7 @@ if VRFW_Chain == nil then
     return st == "0" and tile.reward ~= ""
   end
 
-  -- ---- chest rewards (chain-board.md §2b) ---------------------------------------------------------------------------
+  -- ---- chest rewards ---------------------------------------------------------------------------
   -- A chest / S chest pays its declared [[VRFW.Chain.Tile.Reward]]s ONCE, when it is opened (or, for a chest opened
   -- before the payout existed, the next time its board is shown). Paid chests: save key "chain.<chain key>.paid" of
   -- owner "vr_framework" = their tile ids, ";"-separated (kept with the game's own save: the screen asks for the
@@ -609,7 +609,7 @@ if VRFW_Chain == nil then
     return n
   end
 
-  -- ---- chain hubs (chain-board.md §8) ----------------------------------------------------------------------------------
+  -- ---- chain hubs ----------------------------------------------------------------------------------
   -- the boards of the chain hub whose node has save slot `slot`, in the hub's order (nil = not a hub)
   function CH.Hub(slot)
     if type(slot) ~= "number" then

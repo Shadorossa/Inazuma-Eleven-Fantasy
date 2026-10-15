@@ -1,4 +1,4 @@
--- changelog (VR-Framework): the automatic «Novedades de mods» sheet at the title (docs/game/ui/update-notes.md).
+-- changelog (VR-Framework): the automatic «Novedades de mods» sheet at the title.
 -- Own code: two handlers of the framework's title_menu_2 host (VRFW_Host), each one calls the next (nxt).
 --
 -- * IsNeedToDisplaySystemUpdateMess (title_menu_inc): the retail answer OR «a mod has versions not seen yet»
@@ -71,7 +71,7 @@ local function CLT_Sheet()
   -- the title's input comes back right after this (StartTitleMenu2_Coroutine: menu active title_menu_2)
 end
 
--- handlers of the framework's title_menu_2 host (VRFW_Host, docs/framework/lua-hosts.md)
+-- handlers of the framework's title_menu_2 host (VRFW_Host)
 if VRFW_Host ~= nil then
   -- the game's own answer: what is under the host (retail / the merge-path patches), without this handler
   local clt_retail_need = VRFW_Host.original("title_menu_2", "IsNeedToDisplaySystemUpdateMess")

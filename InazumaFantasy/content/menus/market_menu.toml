@@ -1,0 +1,14 @@
+schema = "VRFW.menu/2"
+# The Mercado with 7 bars: entry 1 is the «Tienda general» (graft inazuma_fantasy_general_store), the 6 retail entries
+# follow. The layout's joint _list07 is assets/menu/150_shop/shop01/shop01_20/shop01_20.g4pkm.
+
+[[patch]]
+menu = "market_menu"
+layer = "shop01_21_market_list_item"
+count = 7
+
+# attach locator list07 -> joint _list07 for instance 6 of shop01_21_market_list_item: a copy of the retail row of
+# instance 5 (NullLayerName [list06, _list06, shop01_21_market_list_item, 5]; the object stores names as crc32)
+[[object_set]]
+object = "shop01_20_market_list_base"
+copy = [{ param = "NullLayerName", match = { 3 = 536841765, 4 = 5 }, values = { 1 = 392112060, 2 = -294862785, 4 = 6 } }]

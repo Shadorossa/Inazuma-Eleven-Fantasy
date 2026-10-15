@@ -1,0 +1,21 @@
+# Furor › the «Fase de furor activa» banner on the match HUD (docs/game/mechanics/furor.md §3.4): one layer of 2
+# instances, not opened by the screen: the graft research/grafts/furor_banner opens it, measures each instance's
+# local -> screen mapping and slides it in under the scoreboard when a team's furor phase starts (then out again):
+#   instance 0  the strip: the quad's sprite swapped for content\images\menu\02_btl\furor_banner.toml, stretched
+#   instance 1  the text: the quad hidden, the text key furor.phase_banner
+# Its object is the retail AI-camera telop (soccer00_71: one quad _camera_telop01 and one text node _text_telop01),
+# with its own draw priority (the retail telop's). In both groups that show the scoreboard. No retail byte.
+# Anchored on a retail layer: this file is read before furor_hud.toml, so `after = "furor_gauge"` named a layer not
+# added yet and the menu type refused every patch of soccer_constant_menu (no furor / barrier layers at all).
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "furor_banner"
+from = "soccer00_71_camera_change_telop"
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_banner", object = "furor_banner", count = 2, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

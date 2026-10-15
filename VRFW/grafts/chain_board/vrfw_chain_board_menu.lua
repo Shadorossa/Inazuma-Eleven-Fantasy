@@ -1,44 +1,49 @@
 -- vrfw_chain_board_menu (plain Lua 5.2 source): the VR-Framework's CHAIN BOARD screen (graft chain_board, mod
 -- vr_framework; declared in the framework's menus\chain_board.toml, served as common/script/lua/menu/
--- vrfw_chain_board_menu.lua.bin). docs/framework/chain-board.md.
--- The 3DS «Cadenas» board of a [[chain]] with [[chain.tile]]s (team type): a grid of tiles on one or more pages, two
+-- vrfw_chain_board_menu.lua.bin).
+-- The 3DS "Cadenas" board of a [[chain]] with [[chain.tile]]s (team type): a grid of tiles on one or more pages, two
 -- pages side by side (panels with their title), links between tiles (straight bars; an arrow between the panels for a
--- link to the next page), the start tile («Inicio»), match tiles (the rival's crest; S / A / B badge of the best rank),
+-- link to the next page), the start tile ("Inicio"), match tiles (the rival's crest; S / A / B badge of the best rank),
 -- chests (closed / opened). A tile OPENS when a tile linked to it is done (the start is always done); locked tiles show
--- a padlock. Keys / pad: arrows move over every tile (the view follows the cursor's page), Aceptar decides, X / FUNC2 =
--- help, Atrás = back. Mouse / free cursor: hover focuses, click decides (evt_menu_kit.lua#Pointer).
---   match (open) .. the question «¿Jugar contra X (Nv. N)?»; yes = the screen closes with that tile as its result: the
---                   board that opened it launches the match (Inazuma Fantasy's Chronicle board: graft route_chains)
+-- a padlock. Keys / pad: arrows move over every tile (the view follows the cursor's page), Accept decides, X / FUNC2 =
+-- help, Back = back. Mouse / free cursor: hover focuses, click decides (evt_menu_kit.lua#Pointer).
+--   match (open) .. the question "Play against X (Lv. N)?"; yes = the screen closes with that tile as its result: the
+--                   board that opened it launches the match (e.g. a chronicle board using graft route_chains)
 --   chest (open) .. opened, marked done, its links open; its declared rewards are given once (VRFW_Chain.Pay: the
---                   retail «item get» window per item; a chest opened before the payout existed pays the next time
+--                   retail "item get" window per item; a chest opened before the payout existed pays the next time
 --                   its board is shown; bag full: a message, retried later)
---   S chest ....... IE3's «S» chest (kind schest): opens like a chest once every match of its branch is won with S
---   double chest .. (kind dchest, chain-board.md §2c) opened without S: its base reward, closed again (drawn as the S
+--   S chest ....... IE3's "S" chest (kind schest): opens like a chest once every match of its branch is won with S
+--   double chest .. (kind dchest) opened without S: its base reward, closed again (drawn as the S
 --                   chest); opened again once its branch is all S: the special reward, then open. No reward: disabled
 --   locked ........ a message; start: nothing
---   slot .......... a placeholder of a board shaped like an IE3 original (no team yet): the «?» plate, «Próximamente»
---   blocked ....... the 3DS chains' red «prohibited» sign: the card shows its requirements (a win against a team, a
+--   slot .......... a placeholder of a board shaped like an IE3 original (no team yet): the "?" plate, "Coming soon"
+--   blocked ....... the 3DS chains' red "prohibited" sign: the card shows its requirements (a win against a team, a
 --                   chain completed, the team's level, a player in the club); Accept says them; once they are met and a
 --                   tile linked to it is done it opens by itself (VRFW_Chain.Sync when the board is shown: the open
 --                   gate sign) and the tiles behind it open
--- Look (2026-10-09, Nacho: «hazlo más parecido» to the original IE3 chain screen, docs/game/modes/ie3-chains.md §3):
--- the IE3 background (vrfw_chain_back, a full-screen redraw replacing the menu background), the board drawn straight on
--- it (no page titles: Nacho 2026-10-09 in game), the pages side by side as ONE continuous board (16:9 fits it: links cross between pages, no ▶◀ arrow; an arrow
+-- Art (the framework ships no other mod's pictures): every plate, icon and the background is a ROLE
+-- (VRFW_ScreenArt) a mod declares for the screen "chain_board" (e.g. a chronicle mod's IE3
+-- look); a role nobody declares is drawn as a plain tinted shape of the framework's neutral atlas vrfw_plain, an
+-- undeclared background keeps the retail menu background.
+-- Look (to the original IE3 chain screen):
+-- the IE3 background (role background, a full-screen picture replacing the menu background), the board drawn straight on
+-- it (no page titles), the pages side by side as ONE continuous board (16:9 fits it: links cross between pages, no ▶◀ arrow; an arrow
 -- only towards a page that is not on screen), light-blue plates, an
--- orange «?» plate for a match not open yet, chests on lavender plates (padlocked until they open), square B / A / S
+-- orange "?" plate for a match not open yet, chests on lavender plates (padlocked until they open), square B / A / S
 -- badges at the plate's bottom-right, yellow corner brackets as the cursor.
--- The team card (2.0.49, Nacho 2026-10-09 in game): above the board (moved down for it), the focused tile's card in
--- IE3's info panel style: the team's name (large), «Nv. N» (+ its best rank), «Requisito: <match challenge>» / «Requisito:
--- ninguno», the crest on the right; a «?» slot, a chest, the S chest, the start and a match not open yet get their own
+-- The team card: above the board (moved down for it), the focused tile's card in
+-- IE3's info panel style: the team's name (large), "Lv. N" (+ its best rank), "Requisito: <match challenge>" / "Requisito:
+-- ninguno", the crest on the right; a "?" slot, a chest, the S chest, the start and a match not open yet get their own
 -- card. The retail guide line at the bottom is hidden (the card says it all). The help window (X / FUNC2) lists the
 -- DECLARED match ranks (VRFW_MatchRank, defaults\match_rank.toml): one line per rank, its badge + its text row.
 -- Opened by a mod's screen as a child: parameter crc32("vrfw_chain_board") = the chain index (team type order) before
 -- CMND_OPEN_MENU_OBJECT(crc32("vrfw_chain_board_menu")); result: parameter crc32("vrfw_chain_pick") = the match tile
 -- (1-based) to play, 0 = back. Data and progress: VRFW_Chain (menu part lua\_all\30_chain.lua).
--- A CHAIN HUB (chain-board.md §8, 2026-10-11): parameter crc32("vrfw_chain_hub") = the hub node's save slot: the screen
+-- A CHAIN HUB: parameter crc32("vrfw_chain_hub") = the hub node's save slot: the screen
 -- opens on the chooser list of the hub's chains (VRFW_Chain.Hub), Accept opens a chain's board, Back returns to the
 -- list; a match picked there also answers crc32("vrfw_chain_pick_chain") = its chain index + 1.
--- Art: #/menu/220_img/vrfw_chain/vrfw_chain.g4tx (research/scripts/chain_board_art.py; G = its GEOM); crests: the
+-- Art: roles a mod declares (VRFW_ScreenArt, screen "chain_board"; a mod's research/scripts/
+-- chain_board_art.py draws them, G = its GEOM), else vrfw_plain shapes; crests: the
 -- rival's own emblem texture #/menu/200_icon/01_icon_emblem/<em>_s.g4tx (loaded on demand).
 -- Texts: the framework's menu_text rows (text\rows\chain_board.toml), never literals.
 -- Rule: no engine call at top level; funcLuaCommand only exists inside callbacks.
@@ -48,7 +53,7 @@ INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc)
 local MENU = 2748171433           -- crc32("vrfw_chain_board_menu")
 local KEY_CHAIN = 75385505        -- crc32("vrfw_chain_board"): parameter in, the chain index
 local KEY_RESULT = 46591264       -- crc32("vrfw_chain_pick"): parameter out, the match tile (1-based), 0 = back
--- a chain HUB (chain-board.md §8): parameter in crc32("vrfw_chain_hub") = the hub node's save slot (the screen opens
+-- a chain HUB: parameter in crc32("vrfw_chain_hub") = the hub node's save slot (the screen opens
 -- on the chooser list of its chains); out crc32("vrfw_chain_pick_chain") = the picked tile's chain index + 1
 local KEY_HUB = 659670413
 local KEY_PICK_CHAIN = 3161495482
@@ -59,19 +64,19 @@ local T = {
   RANK = 2512483472, LOCKED = 1092847605,
   START = 3205195936, CHAIN_RANK = 2653903958, CHEST = 3677785752, CHEST_OPEN = 1469045648, ASK = 3261041561,
   CHEST_OPENED = 38741007, LOCKED_MSG = 1210977422, SCHEST = 2867057922, SLOT = 923124444,
-  -- chest rewards (2026-10-13): vrfw_chain_chest_full (bag full, retried later) / vrfw_chain_chest_player (a player joined)
+  -- chest rewards: vrfw_chain_chest_full (bag full, retried later) / vrfw_chain_chest_player (a player joined)
   CHEST_FULL = 2499750840, CHEST_PLAYER = 922777905,
-  -- the team card (2.0.49): vrfw_chain_card_level / _req / _req_none / _unknown / _chest_rule / _schest / _schest_rule
+  -- the team card: vrfw_chain_card_level / _req / _req_none / _unknown / _chest_rule / _schest / _schest_rule
   CARD_LEVEL = 2793446092, CARD_REQ = 594567671, CARD_REQ_NONE = 2976084942, CARD_UNKNOWN = 697218748,
   CARD_CHEST = 3849747250, CARD_SCHEST = 390217589, CARD_SCHEST_RULE = 4095379111,
-  CARD_WINS = 3412778781,   -- vrfw_chain_card_wins (2026-10-11): the wins against the tile's team
-  -- a double chest (2026-10-14): vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty
+  CARD_WINS = 3412778781,   -- vrfw_chain_card_wins: the wins against the tile's team
+  -- a double chest: vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty
   CARD_DCHEST = 160501078, DCHEST_RULE = 979975818, DCHEST_HALF = 2280379239, DCHEST_EMPTY = 4144261363,
-  -- a blocked tile (2026-10-12): vrfw_chain_card_blocked / _blocked_rule / _blocked_open / _blocked_msg and one row per
+  -- a blocked tile: vrfw_chain_card_blocked / _blocked_rule / _blocked_open / _blocked_msg and one row per
   -- requirement kind vrfw_chain_req_win / _chain / _team_level / _player
   CARD_BLOCKED = 1593703163, BLOCKED_RULE = 1769468095, BLOCKED_OPEN = 2346704855, BLOCKED_MSG = 2829757331,
   REQ = {win = 2489642486, chain = 3845247950, team_level = 4057630989, player = 2669710775},
-  -- the chain hub's list (2026-10-11): vrfw_chain_hub_title / _matches / _open
+  -- the chain hub's list: vrfw_chain_hub_title / _matches / _open
   HUB_TITLE = 1818676472, HUB_MATCHES = 2420571302, HUB_OPEN = 1175154506,
 }
 
@@ -90,12 +95,12 @@ local L_EMB = 2912079495        -- vrfw_chain_emb    x60   (457) crest / icon
 local L_TAG = 1823063107        -- vrfw_chain_tag    x60   (458) rank badge / check
 local L_UI = 3078842214         -- vrfw_chain_ui     x12   (459) 0 ring, 1-2 title plates, 3-11 page arrows
 local L_TITLE = 1998461325      -- vrfw_chain_title  x6    (save01_02_list_item, 551) the help window's lines
-local L_BACK = 4140114828       -- vrfw_chain_back   x1    (450) the IE3 background (full screen)
-local L_RETAIL_BG = 367379312   -- mainmenu90_00_background (450): hidden, vrfw_chain_back replaces it
+local L_BACK = 4140114828       -- vrfw_chain_back   x1    (450) the declared background (role background, full screen)
+local L_RETAIL_BG = 367379312   -- mainmenu90_00_background (450): hidden while a declared background replaces it
 local L_HELP = 938197549       -- vrfw_chain_helpwin x1    (460) the help window's panel
 local L_CARD = 2367650408       -- vrfw_chain_card   x1    (459) the team card's panel
 local L_CARDTXT = 36395481      -- vrfw_chain_cardtxt x3   (save01_02_list_item, 551) the team card's lines
--- vrfw_chain_icon x12 (461, 2026-10-11): what sits ON a panel, in its own layer above both panels (drawn in the panel's
+-- vrfw_chain_icon x12 (461): what sits ON a panel, in its own layer above both panels (drawn in the panel's
 -- own layer the crest / the rank badges came out faded): 0 the card's crest / icon, 1-6 the help window's rank badges,
 -- 7-11 its row separators
 local L_ICON = 4271885152
@@ -112,6 +117,8 @@ local C = {
   ATTACH_TRACE = 1774843228,
   OPEN_LAYER = 629267548,
   FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  HIT_ZONE = 855005857,        -- (layer, idx, bool): the instance's engine mouse zone
+  HOVER_FOCUS = 2206938151,   -- (layer, idx, bool): CMND_SET_ON_CHANGE_FOCUS_MOUSE
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
   SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
   FADE = 609722083, FADE_DONE = 2259183189,
@@ -127,7 +134,7 @@ local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
 local CUR = 3313461902          -- crc32("cursor")
 local FN = {UP = 3555250086, DOWN = 2280944256, LEFT = 3781952979, RIGHT = 3907130610, HELP = 2475474455}
-local G_ACCEPT = 1847312674 --[[Aceptar]]
+local G_ACCEPT = 1847312674 --[[Accept]]
 local I_ENTER, I_FUNC2 = 2750714971 --[[<CMD_ENTER>]], 2387151820 --[[<CMD_FUNC2>]]
 local K_ENTER, K_FUNC2 = 1981080283, 3170216173
 local SE_OK, SE_DECIDE, SE_BACK = 3848881948, 4235359837, 202039849
@@ -135,8 +142,21 @@ local SE_NG = 2086672038 --[[sy0003]]
 local ROW_MESHES = {3025401186, 486732393, 376662541, 3232607807, 1516082254, 3292070381, 1712955010}
 local TEXT_ON, TEXT_OFF = 931545948 --[[_text_list01_on]], 3705682548 --[[_text_list01_off]]
 
-local TEX = "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx"
-local BACK_TEX = "#/menu/220_img/vrfw_chain/vrfw_chain_back.g4tx"
+local ART_SCREEN = "chain_board"   -- VRFW_ScreenArt: the screen whose roles the mods declare
+-- a role nobody declares: a shape of the framework's plain atlas (VRFW_ScreenArt.Plain) and its tint (IE3's palette)
+local FALLBACK = {
+  card = {"square", {0.34, 0.40, 0.63}}, help_panel = {"square", {0.25, 0.31, 0.53}}, line = {"square", {1, 1, 1}},
+  ring = {"ring", {1, 0.78, 0.2}}, arrow_l = {"arrow_l", {1, 1, 1}}, arrow_r = {"arrow_r", {1, 1, 1}},
+  tile_open = {"square", {0.38, 0.80, 0.90}}, tile_done = {"square", {0.38, 0.84, 0.55}},
+  tile_hidden = {"square", {0.90, 0.42, 0.22}}, tile_start = {"square", {0.84, 0.29, 0.29}},
+  tile_chest = {"square", {0.45, 0.42, 0.74}}, tile_locked = {"square", {0.60, 0.64, 0.72}},
+  icon_chest = {"circle", {0.75, 0.78, 0.85}}, icon_chest_locked = {"circle", {0.45, 0.47, 0.52}},
+  icon_chest_open = {"circle", {0.95, 0.95, 0.95}}, icon_schest = {"circle", {1, 0.77, 0}},
+  icon_schest_locked = {"circle", {0.55, 0.45, 0.15}}, icon_schest_open = {"circle", {1, 0.9, 0.5}},
+  icon_start = {"circle", {0.9, 0.3, 0.3}}, icon_blocked = {"circle", {0.85, 0.15, 0.15}},
+  icon_unblocked = {"circle", {0.3, 0.75, 0.4}}, icon_unknown = {"circle", {0.2, 0.22, 0.3}},
+  icon_lock = {"circle", {0.6, 0.62, 0.7}}, icon_check = {"circle", {0.3, 0.75, 0.4}},
+}
 local EMB_DIR = "#/menu/200_icon/01_icon_emblem/"
 -- chain_board_art.py GEOM (screen px, y down): keep in sync
 -- the board: the pages on screen side by side as one grid centred on CX (a GAP of cells between two pages), cell =
@@ -146,9 +166,9 @@ local G = {Q = 36, CX = 960, BOARD_W = 1760, GRID_H = 540, GRID_CY = 680, CELL_M
            HEX_DX = 0.92}       -- a hex board's column pitch in cells (the CS board: 64 px columns, 64 px rows)
 -- the team card (chain_board_art.py CARD): panel centre / size, the crest right, text lines (left x, centre y; the
 -- name's text scale)
--- (2026-10-10, Nacho: narrower, 1040 -> 900; the requirement on the level's line after a «|», so 2 lines, the second
--- one at LINE_S so «Nv. · rango | Requisito» fits left of the crest)
--- (2026-10-11, Nacho: square corners, a thinner outline, flat like the cells, the crest opaque, the card tighter, a third
+-- (narrower, 1040 -> 900; the requirement on the level's line after a "|", so 2 lines, the second
+-- one at LINE_S so "Lv. · rango | Requisito" fits left of the crest)
+-- (square corners, a thinner outline, flat like the cells, the crest opaque, the card tighter, a third
 -- line with the wins against the team: 860 x 176 drawn 1:1, the crest 144 px, 16 px from the right edge; the first line
 -- in the plate's lighter upper band)
 local CARD = {CX = 960, CY = 236, W = 860, H = 176, CREST = 144, CREST_DX = 88, TEXT_X = 562, NAME_Y = 186,
@@ -169,7 +189,7 @@ local slot_of = {}     -- tile -> pool instance (tile / emb / tag) while on scre
 local tex_asked, tex_frames = {}, {}
 local tex_wait = false
 local ready = false
--- the input that opened this screen (Accept on the board) must not reach it (as IF's coach selector, 07/10)
+-- the input that opened this screen (Accept on the board) must not reach it.
 local open_guard = 20
 local evt_co = nil
 local help_open = false
@@ -213,10 +233,6 @@ local function QuadTex(layer, idx, texCrc, spriteCrc, x, y, w, h)
   funcLuaMenuCommand(C.SCALE, layer, w / G.Q, h / G.Q, 1, idx)
   funcLuaMenuCommand(C.SPRITE, layer, texCrc, spriteCrc, NODE_QUAD, 0, idx)
   Place(layer, idx, x, y)
-end
-
-local function Quad(layer, idx, sprite, x, y, w, h)
-  QuadTex(layer, idx, CRC32(TEX), CRC32(sprite), x, y, w, h)
 end
 
 local function Tint(layer, idx, c)
@@ -284,13 +300,14 @@ local function Layout()
 end
 
 -- ---- drawing --------------------------------------------------------------------------------------------------------
-local function Emblem(tile)
-  if tile.emblem == "" then
-    return nil
+-- a texture the screen's res does not load (a crest, a mod's rank badge atlas): asked once; its crc, false while it
+-- is still loading (Step redraws when it comes in) or nil when it never came in
+local function Atlas(path)
+  if path == VRFW_ScreenArt.PLAIN then
+    return CRC32(path)            -- in the screen's res
   end
-  local path = EMB_DIR .. tile.emblem .. "_s.g4tx"
   if tex_frames[path] == -1 then
-    return nil                    -- never came in: the «?» icon
+    return nil
   end
   if not tex_asked[path] then
     tex_asked[path] = true
@@ -302,21 +319,79 @@ local function Emblem(tile)
     tex_wait = true
     return false
   end
+  return tc
+end
+
+-- a picture by ROLE: the sprite a mod declares for it (VRFW_ScreenArt, its atlas loaded on demand: hidden while it
+-- loads, Step redraws), else the role's plain fallback shape, tinted
+local function Quad(layer, idx, role, x, y, w, h)
+  local a = VRFW_ScreenArt.Role(ART_SCREEN, role)
+  if a ~= nil then
+    local tc = Atlas(a.atlas)
+    if tc then
+      QuadTex(layer, idx, tc, a.crc, x, y, w, h)
+      return
+    elseif tc == false then
+      Hide(layer, idx)
+      return
+    end                           -- the atlas never came in: the fallback
+  end
+  local f = FALLBACK[role] or {"square", {1, 1, 1}}
+  local tc, sc = VRFW_ScreenArt.Plain(f[1])
+  QuadTex(layer, idx, tc, sc, x, y, w, h)
+  Tint(layer, idx, f[2])
+end
+
+-- the background: the declared role "background" over the hidden retail menu background; none (or never loaded): the
+-- retail background stays
+local function DrawBackground()
+  local a = VRFW_ScreenArt.Role(ART_SCREEN, "background")
+  local tc = a ~= nil and Atlas(a.atlas) or nil
+  if tc then
+    QuadTex(L_BACK, 0, tc, a.crc, G.CX, 540, 1920, 1080)
+  else
+    Hide(L_BACK, 0)
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_RETAIL_BG, 0, a == nil or tc == nil)
+end
+
+local function Emblem(tile)
+  if tile.emblem == "" then
+    return nil
+  end
+  local tc = Atlas(EMB_DIR .. tile.emblem .. "_s.g4tx")
+  if not tc then
+    return tc                     -- false: still loading; nil: never came in (the "?" icon)
+  end
   return tc, CRC32(tile.emblem .. "_s01")
 end
 
--- a double chest's icon (chain-board.md §2c): disabled = the padlocked chest; open = the open chest; base taken («h»)
+-- a rank's badge (defaults\match_rank.toml Badge of its BadgeAtlas, a mod's own art; the framework declares no rank):
+-- hidden when the rank has none or its atlas is not in (yet)
+local function RankBadge(layer, idx, rdef, x, y, size)
+  local tc = nil
+  if rdef ~= nil and rdef.badge ~= "" and rdef.atlas ~= "" then
+    tc = Atlas(rdef.atlas)
+  end
+  if tc then
+    QuadTex(layer, idx, tc, CRC32(rdef.badge), x, y, size, size)
+  else
+    Hide(layer, idx)
+  end
+end
+
+-- a double chest's icon: disabled = the padlocked chest; open = the open chest; base taken ("h")
 -- = the S chest (padlocked until its branch is all S); not opened yet = the chest (padlocked until reached)
 local function DChestIcon(t)
   local st = VRFW_Chain.TileState(B, t)
   if VRFW_Chain.DChestEmpty(B, t) then
-    return "vrfw_chain_icon_chest_locked"
+    return "icon_chest_locked"
   elseif st == "o" then
-    return "vrfw_chain_icon_chest_open"
+    return "icon_chest_open"
   elseif st == "h" then
-    return VRFW_Chain.DChestReady(B, t) and "vrfw_chain_icon_schest" or "vrfw_chain_icon_schest_locked"
+    return VRFW_Chain.DChestReady(B, t) and "icon_schest" or "icon_schest_locked"
   end
-  return VRFW_Chain.Open(B, t) and "vrfw_chain_icon_chest" or "vrfw_chain_icon_chest_locked"
+  return VRFW_Chain.Open(B, t) and "icon_chest" or "icon_chest_locked"
 end
 
 local function DrawTile(t)
@@ -327,26 +402,26 @@ local function DrawTile(t)
   local st = VRFW_Chain.TileState(B, t)
   local plate, icon
   if tile.kind == "start" then
-    plate, icon = "vrfw_chain_tile_start", "vrfw_chain_icon_start"
+    plate, icon = "tile_start", "icon_start"
   elseif tile.kind == "slot" then
-    plate, icon = "vrfw_chain_tile_hidden", false   -- a placeholder (no team yet): always the «?» plate
+    plate, icon = "tile_hidden", false   -- a placeholder (no team yet): always the "?" plate
   elseif tile.kind == "blocked" then
-    -- the 3DS «prohibited» sign on the chests' lavender plate; opened: the board's open gate
-    plate = "vrfw_chain_tile_chest"
-    icon = st ~= "0" and "vrfw_chain_icon_unblocked" or "vrfw_chain_icon_blocked"
+    -- the 3DS "prohibited" sign on the chests' lavender plate; opened: the board's open gate
+    plate = "tile_chest"
+    icon = st ~= "0" and "icon_unblocked" or "icon_blocked"
   elseif tile.kind == "chest" or tile.kind == "schest" then
     -- a chest shows what it is from the start (IE3): on its lavender plate, padlocked until it opens, closed, open
-    local pre = tile.kind == "schest" and "vrfw_chain_icon_schest" or "vrfw_chain_icon_chest"
-    plate = "vrfw_chain_tile_chest"
+    local pre = tile.kind == "schest" and "icon_schest" or "icon_chest"
+    plate = "tile_chest"
     icon = st == "o" and pre .. "_open" or (open and pre or pre .. "_locked")
   elseif tile.kind == "dchest" then
-    -- a double chest: the chest; once its base reward is taken («h») the S chest, padlocked until the branch is all S
-    plate = "vrfw_chain_tile_chest"
+    -- a double chest: the chest; once its base reward is taken ("h") the S chest, padlocked until the branch is all S
+    plate = "tile_chest"
     icon = DChestIcon(t)
   elseif not open then
-    plate, icon = "vrfw_chain_tile_hidden", false   -- a match not open yet: the «?» plate, no crest (IE3)
+    plate, icon = "tile_hidden", false   -- a match not open yet: the "?" plate, no crest (IE3)
   else
-    plate = st ~= "0" and "vrfw_chain_tile_done" or "vrfw_chain_tile_open"
+    plate = st ~= "0" and "tile_done" or "tile_open"
   end
   Quad(L_TILE, s, plate, x, y, ts, ts)
   Tint(L_TILE, s, COLOUR.WHITE)   -- a hub's list tints its rows (the same pool)
@@ -357,7 +432,7 @@ local function DrawTile(t)
     if tc == false then
       Hide(L_EMB, s)              -- still loading: Step draws it
     elseif tc == nil then
-      Quad(L_EMB, s, "vrfw_chain_icon_unknown", x, y, ic, ic)
+      Quad(L_EMB, s, "icon_unknown", x, y, ic, ic)
     else
       QuadTex(L_EMB, s, tc, sc, x, y, ic, ic)
     end
@@ -368,11 +443,7 @@ local function DrawTile(t)
   -- the best rank's badge (defaults\match_rank.toml Badge / BadgeAtlas: a mod's own ranks bring their art)
   local rid = tile.kind == "match" and VRFW_Chain.RankId(B, t) or nil
   local rdef = rid ~= nil and VRFW_MatchRank ~= nil and VRFW_MatchRank.ById(rid) or nil
-  if rdef ~= nil and rdef.badge ~= "" then
-    QuadTex(L_TAG, s, CRC32(rdef.atlas), CRC32(rdef.badge), x + ts * 0.33, y + ts * 0.33, bd, bd)
-  else
-    Hide(L_TAG, s)
-  end
+  RankBadge(L_TAG, s, rdef, x + ts * 0.33, y + ts * 0.33, bd)
 end
 
 local function LinkColour(a, b)
@@ -390,9 +461,9 @@ local function Bar(li, x1, x2, y1, y2, c)
   end
   funcLuaMenuCommand(C.ROTATE, L_LINE, 0, 0, 0, li)   -- a pool bar may have been a diagonal before
   if math.abs(y1 - y2) < 1 then
-    Quad(L_LINE, li, "vrfw_chain_line", (x1 + x2) / 2, y1, math.abs(x2 - x1), G.LINE)
+    Quad(L_LINE, li, "line", (x1 + x2) / 2, y1, math.abs(x2 - x1), G.LINE)
   else
-    Quad(L_LINE, li, "vrfw_chain_line", x1, (y1 + y2) / 2, G.LINE, math.abs(y2 - y1))
+    Quad(L_LINE, li, "line", x1, (y1 + y2) / 2, G.LINE, math.abs(y2 - y1))
   end
   Tint(L_LINE, li, c)
   return li + 1
@@ -405,7 +476,7 @@ local function Link(li, ax, ay, bx, by, c)
       return li
     end
     local len = math.sqrt((bx - ax) ^ 2 + (by - ay) ^ 2)
-    Quad(L_LINE, li, "vrfw_chain_line", (ax + bx) / 2, (ay + by) / 2, len, G.LINE)
+    Quad(L_LINE, li, "line", (ax + bx) / 2, (ay + by) / 2, len, G.LINE)
     -- the layer's local z rotation (radians, y up as the layer positions): retail SetLayerLocalRotate
     funcLuaMenuCommand(C.ROTATE, L_LINE, 0, 0, math.atan2(-(by - ay), bx - ax), li)
     Tint(L_LINE, li, c)
@@ -434,7 +505,7 @@ local function DrawLinks()
           local edge = PageLeft(k) + (right and B.cols * cell or 0)
           li = Bar(li, pos[u][1], edge, pos[u][2], pos[u][2], c)
           if ai < N.UI then
-            Quad(L_UI, ai, right and "vrfw_chain_arrow_r" or "vrfw_chain_arrow_l", edge + (right and 30 or -30), pos[u][2], G.ARROW, G.ARROW)
+            Quad(L_UI, ai, right and "arrow_r" or "arrow_l", edge + (right and 30 or -30), pos[u][2], G.ARROW, G.ARROW)
             ai = ai + 1
           end
         end
@@ -450,7 +521,7 @@ local function DrawLinks()
 end
 
 local function DrawPanels()
-  -- no panels and no page titles (Nacho 2026-10-09: the board sits on the IE3 background, nothing above it)
+  -- no panels and no page titles (the board sits on the IE3 background, nothing above it)
   for k = 1, N.BG do
     Hide(L_BG, k - 1)
     Hide(L_UI, k)
@@ -463,7 +534,7 @@ local function DrawPanels()
 end
 
 -- ---- the help window: the rank legend, one line per DECLARED rank (VRFW_MatchRank: its Badge left of its Text) ------
--- (2026-10-11, Nacho: opaque badges, a square flat panel as the card's): rows of LINE px, PAD above / below, the badge
+-- (opaque badges, a square flat panel as the card's): rows of LINE px, PAD above / below, the badge
 -- centred BADGE_X px from the panel's left edge, the text from TEXT_X, a SEP px separator between two rows (the link
 -- bar, tinted the plate's rim colour)
 local HELP = {CX = 960, CY = 600, W = 860, LINE = 88, PAD = 20, BADGE = 64, BADGE_X = 56, TEXT_X = 642, SEP = 2,
@@ -483,19 +554,14 @@ local function DrawHelp()
   local list = VRFW_MatchRank ~= nil and VRFW_MatchRank.List() or {}
   local n = math.min(#list, N.TITLE, ICON_SEP0 - ICON_BADGE0)
   local left = HELP.CX - HELP.W / 2
-  Quad(L_HELP, 0, "vrfw_chain_help_panel", HELP.CX, HELP.CY, HELP.W, n * HELP.LINE + 2 * HELP.PAD)
+  Quad(L_HELP, 0, "help_panel", HELP.CX, HELP.CY, HELP.W, n * HELP.LINE + 2 * HELP.PAD)
   for i = 1, n do
     local r = list[i]
     local y = HELP.CY + (i - (n + 1) / 2) * HELP.LINE
-    local bi = ICON_BADGE0 + i - 1
-    if r.badge ~= "" then
-      QuadTex(L_ICON, bi, CRC32(r.atlas), CRC32(r.badge), left + HELP.BADGE_X, y, HELP.BADGE, HELP.BADGE)
-    else
-      Hide(L_ICON, bi)
-    end
+    RankBadge(L_ICON, ICON_BADGE0 + i - 1, r, left + HELP.BADGE_X, y, HELP.BADGE)
     local si = ICON_SEP0 + i - 2   -- the separator above every row but the first
     if i > 1 and si < N.ICON then
-      Quad(L_ICON, si, "vrfw_chain_line", HELP.CX, y - HELP.LINE / 2, HELP.W - 32, HELP.SEP)
+      Quad(L_ICON, si, "line", HELP.CX, y - HELP.LINE / 2, HELP.W - 32, HELP.SEP)
       Tint(L_ICON, si, HELP.SEP_COLOUR)
     end
     funcLuaMenuCommand(C.LAYER_VISIBLE, L_TITLE, i - 1, true)
@@ -527,10 +593,10 @@ local function DrawCursor()
     return
   end
   local r = cell * G.TILE * G.RING * 1.08
-  Quad(L_UI, 0, "vrfw_chain_ring", p[1], p[2], r, r)
+  Quad(L_UI, 0, "ring", p[1], p[2], r, r)
 end
 
--- the retail guide line (bottom left) stays hidden: the team card says it all (Nacho 2026-10-09)
+-- the retail guide line (bottom left) stays hidden: the team card says it all
 local function HideGuideLine()
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_GUIDE_LINE, 0, false)
 end
@@ -548,7 +614,7 @@ local function CardLine(i, s, x, y, scale)
   Place(L_CARDTXT, i, x - TEXT_DX * scale, y)
 end
 
--- a blocked tile's requirements as one line: «Gana a X · Nivel de equipo 80 (tienes 45)» (menu_text rows per kind)
+-- a blocked tile's requirements as one line: "Win against X · Team level 80 (you have 45)" (menu_text rows per kind)
 local function ReqText(tile)
   local parts = {}
   for _, r in ipairs(tile.requires or {}) do
@@ -575,21 +641,21 @@ local function DrawCard()
     end
     return
   end
-  Quad(L_CARD, 0, "vrfw_chain_card", CARD.CX, CARD.CY, CARD.W, CARD.H)
+  Quad(L_CARD, 0, "card", CARD.CX, CARD.CY, CARD.W, CARD.H)
   local open = VRFW_Chain.Open(B, focus)
   local st = VRFW_Chain.TileState(B, focus)
-  local lines, icon = {}, "vrfw_chain_icon_unknown"
+  local lines, icon = {}, "icon_unknown"
   if tile.kind == "match" and open then
     lines = {tile.rival, Fmt(T.CARD_LEVEL, tile.level)}
     local r = VRFW_Chain.RankId(B, focus)
     if r ~= nil then
       lines[2] = lines[2] .. "  ·  " .. Fmt(T.RANK, VRFW_MatchRank.Label(r))
     end
-    -- the tile's match challenge ([[VRFW.MatchChallenge]], docs/framework/match-challenge.md): on the level's line,
-    -- right of it after a «|» (Nacho 2026-10-10)
+    -- the tile's match challenge ([[VRFW.MatchChallenge]]): on the level's line,
+    -- right of it after a "|"
     local mc = VRFW_MC and VRFW_MC.TitleOf(tile.game)
     lines[2] = lines[2] .. "  |  " .. (mc ~= nil and Fmt(T.CARD_REQ, mc) or Text(T.CARD_REQ_NONE))
-    -- the save's wins against this team (VRFW_Stats, at least 1 once the tile is won: docs/framework/chain-board.md §4)
+    -- the save's wins against this team (VRFW_Stats, at least 1 once the tile is won)
     lines[3] = Fmt(T.CARD_WINS, VRFW_Chain.WinsVs(B, focus))
     icon = nil
   elseif tile.kind == "match" then
@@ -606,10 +672,10 @@ local function DrawCard()
       status = Text(T.BLOCKED_RULE)
     end
     lines = {Text(T.CARD_BLOCKED), Fmt(T.CARD_REQ, ReqText(tile)), status}
-    icon = st ~= "0" and "vrfw_chain_icon_unblocked" or "vrfw_chain_icon_blocked"
+    icon = st ~= "0" and "icon_unblocked" or "icon_blocked"
   elseif tile.kind == "schest" then
     lines = {Text(T.CARD_SCHEST), st == "o" and Text(T.CHEST_OPEN) or Text(T.CARD_SCHEST_RULE)}
-    icon = st == "o" and "vrfw_chain_icon_schest_open" or (open and "vrfw_chain_icon_schest" or "vrfw_chain_icon_schest_locked")
+    icon = st == "o" and "icon_schest_open" or (open and "icon_schest" or "icon_schest_locked")
   elseif tile.kind == "dchest" then
     local status
     if VRFW_Chain.DChestEmpty(B, focus) then
@@ -632,14 +698,14 @@ local function DrawCard()
     icon = DChestIcon(focus)
   elseif tile.kind == "chest" then
     lines = {Text(T.CHEST), st == "o" and Text(T.CHEST_OPEN) or Text(open and T.CARD_CHEST or T.LOCKED)}
-    icon = st == "o" and "vrfw_chain_icon_chest_open" or (open and "vrfw_chain_icon_chest" or "vrfw_chain_icon_chest_locked")
+    icon = st == "o" and "icon_chest_open" or (open and "icon_chest" or "icon_chest_locked")
   else
     lines = {Text(T.START)}
     local avg = VRFW_Chain.Average(B)
     if avg ~= nil then
       lines[2] = Fmt(T.CHAIN_RANK, VRFW_MatchRank.Label(avg))
     end
-    icon = "vrfw_chain_icon_start"
+    icon = "icon_start"
   end
   -- the first line always in the plate's lighter upper band; two lines: the second one centred in the lower part
   local ys = {CARD.NAME_Y, CARD.LINE1_Y, CARD.LINE2_Y}
@@ -656,7 +722,7 @@ local function DrawCard()
     if tc == false then
       Hide(L_ICON, ICON_CREST)     -- still loading: Step redraws
     elseif tc == nil then
-      Quad(L_ICON, ICON_CREST, "vrfw_chain_icon_unknown", ix, CARD.CY, CARD.CREST, CARD.CREST)
+      Quad(L_ICON, ICON_CREST, "icon_unknown", ix, CARD.CY, CARD.CREST, CARD.CREST)
     else
       QuadTex(L_ICON, ICON_CREST, tc, sc, ix, CARD.CY, CARD.CREST, CARD.CREST)
     end
@@ -684,9 +750,9 @@ local function UpdateButtonGuide()
   funcLuaMenuCommand(C.GUIDE_OPT, MENU, L_BTN_GUIDE, false)
 end
 
--- ---- the chain hub's list (chain-board.md §8, 2026-10-11) ------------------------------------------------------------
+-- ---- the chain hub's list ------------------------------------------------------------
 -- One row per chain of the hub, ROWS at a time (scrolling): a flat plate (the team card's sprite), the crest of the
--- chain's last match tile (its final rival), «<title>   n / m» (won match tiles / match tiles) and the chain's rank
+-- chain's last match tile (its final rival), "<title>   n / m" (won match tiles / match tiles) and the chain's rank
 -- badge once it is complete; the focused row is tinted, its card above the list. Accept opens that chain's board (as a
 -- board opened on its own); Back on the board returns here, Back here closes the screen.
 local LIST = {CX = 960, TOP = 380, ROW = 86, W = 1040, H = 74, ROWS = 7, CREST = 62, CREST_DX = 52, TEXT_DX = 104,
@@ -715,7 +781,7 @@ local function DrawCrest(layer, idx, tile, x, y, size)
   if tc == false then
     Hide(layer, idx)                -- still loading: Step redraws
   elseif tc == nil then
-    Quad(layer, idx, "vrfw_chain_icon_unknown", x, y, size, size)
+    Quad(layer, idx, "icon_unknown", x, y, size, size)
   else
     QuadTex(layer, idx, tc, sc, x, y, size, size)
   end
@@ -723,11 +789,11 @@ end
 
 local function DrawHubCard()
   local b = HUB[hfocus]
-  Quad(L_CARD, 0, "vrfw_chain_card", CARD.CX, CARD.CY, CARD.W, CARD.H)
+  Quad(L_CARD, 0, "card", CARD.CX, CARD.CY, CARD.W, CARD.H)
   local line2 = Fmt(T.HUB_MATCHES, VRFW_Chain.Won(b), b.matches)
   local avg = VRFW_Chain.Average(b)
   if avg ~= nil then
-    line2 = Fmt(T.CHAIN_RANK, VRFW_MatchRank.Label(avg))   -- «Cadena superada · Rango: X»
+    line2 = Fmt(T.CHAIN_RANK, VRFW_MatchRank.Label(avg))   -- "Cadena superada · Rango: X"
   end
   local lines = {b.title, line2, Text(T.HUB_OPEN)}
   local ys = {CARD.NAME_Y, CARD.LINE1_Y, CARD.LINE2_Y}
@@ -740,7 +806,7 @@ end
 DrawList = function()
   tex_wait = false
   pos, slot_of = {}, {}
-  QuadTex(L_BACK, 0, CRC32(BACK_TEX), CRC32("vrfw_chain_back"), G.CX, 540, 1920, 1080)
+  DrawBackground()
   for s = 0, N.TILE - 1 do
     Hide(L_TILE, s)
     Hide(L_EMB, s)
@@ -768,7 +834,7 @@ DrawList = function()
       Hide(L_TITLE, k)
     else
       local y = LIST.TOP + k * LIST.ROW
-      Quad(L_TILE, k, "vrfw_chain_card", LIST.CX, y, LIST.W, LIST.H)
+      Quad(L_TILE, k, "card", LIST.CX, y, LIST.W, LIST.H)
       Tint(L_TILE, k, i == hfocus and LIST_TINT.FOCUS or (VRFW_Chain.Complete(b) and LIST_TINT.DONE or LIST_TINT.PLAIN))
       DrawCrest(L_EMB, k, ChainCrestTile(b), left + LIST.CREST_DX, y, LIST.CREST)
       funcLuaMenuCommand(C.LAYER_VISIBLE, L_TITLE, k, true)
@@ -778,11 +844,7 @@ DrawList = function()
       Place(L_TITLE, k, left + LIST.TEXT_DX - TEXT_DX, y)
       local avg = VRFW_Chain.Average(b)
       local rdef = avg ~= nil and VRFW_MatchRank ~= nil and VRFW_MatchRank.ById(avg) or nil
-      if rdef ~= nil and rdef.badge ~= "" then
-        QuadTex(L_TAG, k, CRC32(rdef.atlas), CRC32(rdef.badge), left + LIST.W - LIST.BADGE_DX, y, LIST.BADGE, LIST.BADGE)
-      else
-        Hide(L_TAG, k)
-      end
+      RankBadge(L_TAG, k, rdef, left + LIST.W - LIST.BADGE_DX, y, LIST.BADGE)
       pos[i] = {LIST.CX, y}
     end
   end
@@ -792,12 +854,12 @@ DrawList = function()
   -- more chains above / below: the board's page arrow, turned up / down
   local ai = N.ARROW0
   if htop > 1 then
-    Quad(L_UI, ai, "vrfw_chain_arrow_r", LIST.CX, LIST.TOP - LIST.ROW * 0.62, G.ARROW, G.ARROW)
+    Quad(L_UI, ai, "arrow_r", LIST.CX, LIST.TOP - LIST.ROW * 0.62, G.ARROW, G.ARROW)
     funcLuaMenuCommand(C.ROTATE, L_UI, 0, 0, math.pi / 2, ai)
     ai = ai + 1
   end
   if htop + rows - 1 < #HUB then
-    Quad(L_UI, ai, "vrfw_chain_arrow_r", LIST.CX, LIST.TOP + (rows - 0.38) * LIST.ROW, G.ARROW, G.ARROW)
+    Quad(L_UI, ai, "arrow_r", LIST.CX, LIST.TOP + (rows - 0.38) * LIST.ROW, G.ARROW, G.ARROW)
     funcLuaMenuCommand(C.ROTATE, L_UI, 0, 0, -math.pi / 2, ai)
   end
   HideGuideLine()
@@ -876,7 +938,7 @@ DrawAll = function()
     return
   end
   tex_wait = false
-  QuadTex(L_BACK, 0, CRC32(BACK_TEX), CRC32("vrfw_chain_back"), G.CX, 540, 1920, 1080)
+  DrawBackground()
   Layout()
   DrawPanels()
   for s = 0, N.TILE - 1 do
@@ -995,7 +1057,7 @@ local function Decide()
     end
     return
   end
-  -- the tile's match challenge: the active dock must meet it (VRFW_MC, docs/framework/match-challenge.md)
+  -- the tile's match challenge: the active dock must meet it (VRFW_MC)
   local refusal = VRFW_MC and VRFW_MC.Refusal(tile.game, 0)
   if refusal ~= nil then
     funcLuaCommand(C.SE, SE_NG)
@@ -1091,8 +1153,8 @@ local function PollPointer()
     return
   end
   if mode == "list" then
-    if type(ev.hot) == "number" and ev.changed then
-      SetHubFocus(ev.hot, true)
+    if type(ev.hover) == "number" and ev.hover ~= hfocus then
+      SetHubFocus(ev.hover, true)
     end
     if type(ev.click) == "number" then
       SetHubFocus(ev.click, false)
@@ -1107,8 +1169,8 @@ local function PollPointer()
     end
     return
   end
-  if type(ev.hot) == "number" and ev.changed then
-    SetFocus(ev.hot, true)
+  if type(ev.hover) == "number" and ev.hover ~= focus then
+    SetFocus(ev.hover, true)
   end
   if type(ev.click) == "number" then
     SetFocus(ev.click, false)
@@ -1120,8 +1182,9 @@ end
 function OnInit()
   funcLuaCommand(C.P_CLEAR, KEY_RESULT)
   funcLuaCommand(C.P_CLEAR, KEY_PICK_CHAIN)
-  funcLuaMenuCommand(C.LOAD_TEX, TEX)
-  funcLuaMenuCommand(C.LOAD_TEX, BACK_TEX)
+  for _, path in ipairs(VRFW_ScreenArt.Atlases(ART_SCREEN)) do
+    Atlas(path)                   -- the declared art's atlases, asked now (drawn once in)
+  end
   ready = false
   open_guard = 20
   B = nil
@@ -1167,6 +1230,13 @@ function OnInit()
   Log("open", B.key, "tiles", #B.tiles, "pages", Pages(), "state", VRFW_Chain.State(B), "focus", B.tiles[focus].id, "rank", VRFW_Chain.Average(B))
 end
 
+-- the tile plates keep no engine mouse zone: the Lua hit test (Ptr) owns hover and click, so the engine never moves
+-- its focus (and plays its focus sound) on a hovered plate
+local function DropEngineZone(layer, idx)
+  pcall(funcLuaMenuCommand, C.HIT_ZONE, layer, idx, false)
+  pcall(funcLuaMenuCommand, C.HOVER_FOCUS, layer, idx, false)
+end
+
 local function OpenOwnLayers()
   for i = 0, N.BG - 1 do
     funcLuaMenuCommand(C.OPEN_LAYER, L_BG, i)
@@ -1176,6 +1246,7 @@ local function OpenOwnLayers()
   end
   for i = 0, N.TILE - 1 do
     funcLuaMenuCommand(C.OPEN_LAYER, L_TILE, i)
+    DropEngineZone(L_TILE, i)
     funcLuaMenuCommand(C.OPEN_LAYER, L_EMB, i)
     funcLuaMenuCommand(C.OPEN_LAYER, L_TAG, i)
   end
@@ -1220,10 +1291,14 @@ function OnSetupLayer(a1, a2)
       Hide(a1, a2)
     end
   elseif a1 == L_RETAIL_BG then
-    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)   -- the IE3 background (vrfw_chain_back) replaces it
+    -- hidden when a mod declares the background (role background, DrawBackground); else the retail one stays
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, VRFW_ScreenArt.Role(ART_SCREEN, "background") == nil)
   elseif a1 == L_BG or a1 == L_LINE or a1 == L_TILE or a1 == L_EMB or a1 == L_TAG or a1 == L_UI or a1 == L_BACK or a1 == L_HELP
       or a1 == L_CARD or a1 == L_ICON then
     Hide(a1, a2)                -- DrawAll draws what is used when the anchor opens
+    if a1 == L_TILE then
+      DropEngineZone(a1, a2)
+    end
   elseif a1 == L_GUIDE_LINE then
     HideGuideLine()
   elseif a1 == L_BTN_GUIDE then
@@ -1366,7 +1441,8 @@ function Step()
   if ready and open_guard > 0 then
     open_guard = open_guard - 1
   end
-  -- crests still loading: redraw their tiles when they arrive (600 frames at most, then the «?» icon)
+  -- crests / rank badge atlases still loading: redraw when they arrive (600 frames at most, then the "?" icon / no
+  -- badge)
   -- (tex_frames: frames waited, -1 = never came in, -2 = loaded)
   if ready and tex_wait then
     local changed, still = false, false
@@ -1375,7 +1451,7 @@ function Step()
         if funcLuaCommand(C.TEX_LOADING, CRC32(path)) == true then
           if f + 1 > 600 then
             tex_frames[path] = -1
-            Log("crest not loaded", path)
+            Log("texture not loaded", path)
             changed = true
           else
             tex_frames[path] = f + 1

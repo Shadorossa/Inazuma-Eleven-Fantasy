@@ -1,0 +1,19 @@
+schema = "VRFW.skill_tab/1"
+
+# Character Reforged › no list shows the auras no player can obtain (content\techniques\unobtainable_auras.toml:
+# aura command types 4 bond transformation, 5 awakening power, 7 awakening change). The «Habilidades» / «Técnicas»
+# list (ability_list_menu) without its tabs «Transformación de vínculo» (category 104 = aura command type 4) and
+# «Despertar» (105 = type 5; type 7 has no tab in the game's row), and the team aura screen without rows of those
+# types. The VR-Framework's skill tab registry writes both (docs/framework/card-types.md §3); with a mod that writes
+# the tab row itself (Inazuma Fantasy) the registry leaves the row to it.
+
+[[VRFW.SkillTab]]
+category = 104
+hidden = true
+
+[[VRFW.SkillTab]]
+category = 105
+hidden = true
+
+[[VRFW.AuraListHide]]
+aura_types = [4, 5, 7]

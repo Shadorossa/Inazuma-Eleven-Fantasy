@@ -1,11 +1,11 @@
 # «Set de jugador» preview (docs/game/skill-slots.md "Set preview panel"): while the Sets list of the Supertécnicas
 # screen is open, the right page lists everything the focused set stores (role, Hipertécnica, moves, custom passive,
 # equipment, the 5 configured passives) in retail passive rows; sets also store / load the passives and the role
-# (vr-loader CMND_EVT_PSET_FULL / SET2, board_presets.rs v3). Layers + setting: research/scripts/pset_preview_build.py;
+# (CMND_CHARACTERREFORGED_PLAYER_SET_FULL / _SAVE_FULL, Character Reforged's scripts\player_sets.lua). Layers + setting: research/scripts/pset_preview_build.py;
 # texts: research/scripts/ss2_popup_text_build.py (PL.TX of ss2_menus). Overrides PL.SetGet / SetCurrent / SetSame /
 # SetWrite / SetFocus / DetailHideAll / SetsCoroutine and defines PL.SetLoadExtra (hook in ss2_menus' PL.SetLoad).
-# Mod Character Reforged since 2026-10-14 (the skill table moved there with graft ss2_menus); the sets themselves are
-# Inazuma Fantasy's store (CMND_EVT_PSET_*, scripts\board_presets.lua): without IF the Sets button answers nothing.
+# Mod Character Reforged (the skill table moved there with graft ss2_menus); the set store is Character Reforged's
+# scripts\player_sets.lua (CMND_CHARACTERREFORGED_PLAYER_SET_*).
 name = "pset_preview"
 mod = "character_reforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)

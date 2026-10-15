@@ -1,11 +1,9 @@
-# Texts of the VR-Framework's character bank filter header (docs/framework/card-filter.md): rows of menu_text in the
-# framework's 9 languages, read by menu_engine lua\_all\20_card_filter.lua with CMND_TEXT_GET by id = crc32(row id).
-# The value names come from the declarations (rarity labels, series name texts), not from here.
+# Character bank filter header texts (menu_text rows, 9 languages, read with CMND_TEXT_GET by id = crc32(row id)); value names come from the declarations.
 
 schema = "VRFW.text/2"
 table = "menu_text"
 
-# the value «all cards»; crc32("vrfw_card_filter_all") = 3288464882
+# the value «all cards»
 [[row]]
 id = "vrfw_card_filter_all"
 es = "Todas"
@@ -18,7 +16,7 @@ ja = "すべて"
 zh_hans = "全部"
 zh_hant = "全部"
 
-# the header: key glyphs (pad L2 / R2, keyboard Q / E) around the value (%s); crc32("vrfw_card_filter_header") = 2923353700
+# the header: key glyphs (pad L2 / R2, keyboard Q / E) around the value (%s)
 [[row]]
 id = "vrfw_card_filter_header"
 es = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
@@ -31,7 +29,7 @@ ja = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
 zh_hans = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
 zh_hant = "<CMD_FUNCL2> ‹ %s › <CMD_FUNCR2>"
 
-# a value with a tier (a rarity's `tier`): %d = the tier, %s = its name; crc32("vrfw_card_filter_tier") = 2410722143
+# a value with a tier (a rarity's `tier`): %d = the tier, %s = its name
 [[row]]
 id = "vrfw_card_filter_tier"
 es = "%d★ %s"

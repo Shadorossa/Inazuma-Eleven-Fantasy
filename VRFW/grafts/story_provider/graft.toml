@@ -1,10 +1,9 @@
-# The story-cleared provider of the VR-Framework mode engine (docs/framework/mode.md §7,
-# docs/refactor/if-adaptation-after-e3.md §11): the global VRFW_STORY_PROVIDER (sp_provider.lua) in the VMs of the mode
+# The story-cleared provider of the VR-Framework mode engine: the global VRFW_STORY_PROVIDER (sp_provider.lua) in the VMs of the mode
 # hosts, so `[mode.unlock] story_cleared` asks CMND_VRFW_STORY_START_GET (the VR-Framework's save part):
 #   title_menu_2          title rows / lower buttons
-#   soccer_top_menu       «Modos de juego»
+#   soccer_top_menu       "Game Modes"
 #   evt_save_slot_menu    the slot screen (the framework's own script: graft save_slots, new_file; order after it)
-# A VR-Framework graft since 2026-10-09 (was Inazuma Fantasy's): the clause works with no Inazuma Fantasy installed.
+# A VR-Framework graft: the clause works with no other mod installed.
 # Built by `menu_assemble.py build --mod vr_framework` (framework_pack.py: the save part's Lua root). Only a definition:
 # nothing runs at chunk load.
 name = "story_provider"

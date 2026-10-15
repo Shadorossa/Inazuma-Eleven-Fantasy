@@ -1,0 +1,69 @@
+# Texts of All Miximaxed (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("all_miximaxed.<name>"): the mod's name and description on the «Mods» screen, in the game's language.
+# «All Miximaxed» is not translated. A language missing here falls back to English.
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "All Miximaxed"
+mod_description = "A miximax between any two of your players, as in Chrono Stone. On the skill board, an aura piece offers «Create Miximax»: choose the partner among your players and the player gets his Mix-Max, applied like a retail one: set it in the team's aura commands and fire it from the aura row in a match, with the Mix-Max boosts, cost and cut-in. He stays himself in the partner's hair, skin and eye colours. Works with the VR-Framework alone; game modes such as Inazuma Fantasy add their own rules on top."
+create_label = "Create Miximax"
+create_confirm = "Miximax of {base} with {partner}?"
+partner_badge = "Mix"
+
+[es.new]
+mod_name = "All Miximaxed"
+mod_description = "Un miximax entre dos jugadores cualesquiera, como en Chrono Stone. En la tabla de habilidades, una pieza de aura ofrece «Crear miximax»: elige el compañero entre tus jugadores y el jugador recibe su Mix-Max, que funciona como uno del juego: ponlo en los comandos de hipertécnicas del equipo y actívalo desde la fila de auras en el partido, con las mejoras, el coste y la escena del Mix-Max. Sigue siendo él mismo con el pelo, la piel y los ojos del compañero. Funciona solo con el VR-Framework; modos como Inazuma Fantasy añaden sus propias reglas."
+create_label = "Crear miximax"
+create_confirm = "¿Miximax de {base} con {partner}?"
+partner_badge = "Mix"
+
+[fr.new]
+mod_name = "All Miximaxed"
+mod_description = "Un miximax entre deux de vos joueurs, comme dans Chrono Stone. Au tableau des capacités, une pièce d'aura propose «Créer un miximax» : choisissez le partenaire parmi vos joueurs et le joueur reçoit son Mix-Max, appliqué comme celui du jeu : mettez-le dans les commandes d'aura de l'équipe et lancez-le depuis la ligne des auras en match, avec les bonus, le coût et la scène du Mix-Max. Il reste lui-même avec les cheveux, la peau et les yeux du partenaire. Fonctionne avec le seul VR-Framework ; des modes comme Inazuma Fantasy ajoutent leurs propres règles."
+create_label = "Créer un miximax"
+create_confirm = "Miximax de {base} avec {partner} ?"
+partner_badge = "Mix"
+
+[de.new]
+mod_name = "All Miximaxed"
+mod_description = "Ein Miximax zwischen zwei beliebigen deiner Spieler, wie in Chrono Stone. Auf der Fähigkeitentafel bietet ein Aura-Feld «Miximax erstellen»: Wähle den Partner unter deinen Spielern, und der Spieler erhält sein Mix-Max, angewendet wie ein Original: In die Aura-Befehle des Teams setzen und im Spiel aus der Aura-Reihe auslösen, mit den Boni, Kosten und der Szene des Mix-Max. Er bleibt er selbst, mit Haar-, Haut- und Augenfarbe des Partners. Läuft allein mit dem VR-Framework; Modi wie Inazuma Fantasy fügen eigene Regeln hinzu."
+create_label = "Miximax erstellen"
+create_confirm = "Miximax von {base} mit {partner}?"
+partner_badge = "Mix"
+
+[it.new]
+mod_name = "All Miximaxed"
+mod_description = "Un miximax tra due tuoi giocatori qualsiasi, come in Chrono Stone. Nella tabella abilità, un pezzo aura offre «Crea miximax»: scegli il compagno tra i tuoi giocatori e il giocatore riceve il suo Mix-Max, applicato come quello del gioco: mettilo nei comandi aura della squadra e attivalo dalla riga delle aure in partita, con i bonus, il costo e la scena del Mix-Max. Resta se stesso con capelli, pelle e occhi del compagno. Funziona con il solo VR-Framework; modalità come Inazuma Fantasy aggiungono le proprie regole."
+create_label = "Crea miximax"
+create_confirm = "Miximax di {base} con {partner}?"
+partner_badge = "Mix"
+
+[pt.new]
+mod_name = "All Miximaxed"
+mod_description = "Um miximax entre dois dos teus jogadores, como em Chrono Stone. No quadro de habilidades, uma peça de aura oferece «Criar miximax»: escolhe o parceiro entre os teus jogadores e o jogador recebe o seu Mix-Max, aplicado como um do jogo: põe-no nos comandos de aura da equipa e ativa-o na fila de auras durante o jogo, com os bónus, o custo e a cena do Mix-Max. Continua a ser ele mesmo, com o cabelo, a pele e os olhos do parceiro. Funciona só com o VR-Framework; modos como Inazuma Fantasy acrescentam as suas próprias regras."
+create_label = "Criar miximax"
+create_confirm = "Miximax de {base} com {partner}?"
+partner_badge = "Mix"
+
+[ja.new]
+mod_name = "All Miximaxed"
+mod_description = "クロノ・ストーンのように、好きな二人の選手でミキシマックス。スキルボードのオーラのピースに「ミキシマックスを作る」が表示されます：自分の選手からパートナーを選ぶと、その選手にミキシマックスが付き、本編と同じように使えます：チームのオーラコマンドにセットし、試合中にオーラの列から発動。ミキシマックスの強化・コスト・演出つき。本人のまま、パートナーの髪・肌・瞳の色になります。VR-Frameworkだけで動作し、Inazuma Fantasyなどのモードは独自のルールを追加します。"
+create_label = "ミキシマックスを作る"
+create_confirm = "{base}と{partner}でミキシマックスしますか？"
+partner_badge = "ミックス"
+
+[zh_hans.new]
+mod_name = "All Miximaxed"
+mod_description = "像《时空之石》一样，任意两名球员都能混合最大化。在技能盘上，灵气棋子提供“创建混合最大化”：从你的球员中选择搭档，该球员就获得混合最大化，用法与原版相同：放入队伍的灵气指令，比赛中从灵气栏发动，带有混合最大化的加成、消耗和演出。他仍是他自己，换上搭档的发色、肤色和瞳色。只需VR-Framework即可运行；Inazuma Fantasy等模式会加入自己的规则。"
+create_label = "创建混合最大化"
+create_confirm = "让{base}与{partner}混合最大化吗？"
+partner_badge = "合体"
+
+[zh_hant.new]
+mod_name = "All Miximaxed"
+mod_description = "像《時空之石》一樣，任意兩名球員都能混合最大化。在技能盤上，靈氣棋子提供「建立混合最大化」：從你的球員中選擇搭檔，該球員就獲得混合最大化，用法與原版相同：放入隊伍的靈氣指令，比賽中從靈氣欄發動，帶有混合最大化的加成、消耗和演出。他仍是他自己，換上搭檔的髮色、膚色和瞳色。只需VR-Framework即可運行；Inazuma Fantasy等模式會加入自己的規則。"
+create_label = "建立混合最大化"
+create_confirm = "讓{base}與{partner}混合最大化嗎？"
+partner_badge = "合體"
+

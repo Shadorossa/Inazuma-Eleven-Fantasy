@@ -1,17 +1,6 @@
--- Build script of the type `effect` (docs/framework/build-scripts.md «effect», docs/framework/types/effect.md,
--- docs/app/fx-engine.md §4): every active mod's effect declarations (load order).
---
--- Asset stage (the `effect` type): (1) every [[recolor]] (copies exist before anything names them), (2) every
--- [[effect]]: new pooled effects (ids in sorted order of their `<mod>.<name>`, whatever the load order; one row file of
--- `effect/effect_define` per run of a mod's declarations, through the table map), (3) [[shot_aura]] rules and their new
--- ball trigger rows, (4) [[chr_trigger]] rows (both edit eff_chr_trigger), (5) the check of the effect packs the mods
--- ship. Event stage (run by the `technique` type after it built its events): per file in load order, every
--- [[event_effect]], [[attach]], [[event_timing]], [[event_command]] on the served event lists. One declaration's problem
--- skips that declaration only.
---
--- Native (Rust, crates/plugins/fx_engine/src/script.rs, `VRFW.effect.*`): the g4 work of a recolour, the event lists
--- (evlist), the effect objects and the checks of the packs; `effect_define` rows go through the one table map.
---
+-- Build script of the type `effect`: every active mod's effect declarations, in load order.
+-- Assets stage: [[recolor]], [[effect]] (new pooled effects), [[shot_aura]], [[chr_trigger]], then the check of shipped effect packs.
+-- Events stage (run by the `technique` type): [[event_effect]], [[attach]], [[event_timing]], [[event_command]]. A bad declaration skips only itself.
 -- input = { stage = "assets" | "events", files = { { file, mod, load_index, value = <effects file> } } (each
 --           [[recolor]] / [[event_command]] also has `json`), carry = { defined, copies } (event stage),
 --           rarity = { [<rarity as written>] = { values = {…} } | { error = "…" } }, consts = { self_id, dir,
@@ -32,7 +21,7 @@ local function defaults(path)
   return v
 end
 
--- The run's state, shared with the libraries.
+-- Run state shared with the libraries.
 local function context(input)
   local X = {
     K = input.consts,
@@ -40,18 +29,18 @@ local function context(input)
     files = input.files or {},
     rarity = input.rarity or {},
     report = {},
-    -- own id -> game name of the new pooled effects (the asset stage's for the event stage)
+    -- own id -> game name of the new pooled effects
     defined = {},
-    -- game name -> objbin path under common/ (effect_define rows + the new rows)
+    -- game name -> objbin path under common/
     define_paths = {},
-    -- the ids effect_define has (the new effects avoid them)
+    -- ids effect_define already has (new effects avoid them)
     retail = {},
     has_define = false,
     mod_ids = {},
   }
   for _, m in ipairs(VRFW.mods) do X.mod_ids[#X.mod_ids + 1] = m.id end
 
-  -- one report line (and its notes): `detail` = the lines of a declaration that worked, else `err`
+  -- One report line: `detail` = lines of a declaration that worked, else `err`.
   function X.item(f, kind, what, detail, err)
     if err == nil then
       for _, d in ipairs(detail) do
@@ -64,7 +53,7 @@ local function context(input)
     end
   end
 
-  -- a pooled effect as the modder wrote it -> the game name: own (`<mod>.<name>`), a full own id, else the game's
+  -- Pooled effect as written -> game name: own (`<mod>.<name>`), a full own id, else the game's.
   function X.effect_name(mod, s)
     local own = VRFW.ids.own(mod, s)
     if own and X.defined[own] then return X.defined[own] end
@@ -75,7 +64,7 @@ local function context(input)
   return X
 end
 
--- effect_define: the base the other types / the ModLoader left (retail ids, every name's path)
+-- effect_define base: retail ids and every name's path.
 local function read_define(X)
   local key = VRFW.rows.key(X.K.define_prefix)
   if not key then
@@ -114,7 +103,7 @@ local function recolor(X, d)
   return VRFW.effect.recolor(d.json, k.objbin)
 end
 
--- The string whose crc32 is `id` among `own`, `own#1`, `own#2`… (what the id registry probed).
+-- The string whose crc32 is `id` among `own`, `own#1`, `own#2`...
 local function game_name(own, id)
   if VRFW.crc32(own) == id then return own end
   for n = 1, 999 do
@@ -180,7 +169,7 @@ local function effects(X)
   for _, o in ipairs(owns) do
     X.defined[o] = game_name(o, VRFW.ids.assign(o, X.retail))
   end
-  -- the rows: one row file per run of one mod's declarations
+  -- one row file per run of one mod's declarations
   local edits = {}
   for _, f in ipairs(X.files) do
     for _, d in ipairs(f.value.effect or {}) do
@@ -213,7 +202,7 @@ local function effects(X)
   end
 end
 
--- 5. the effect packs the mods ship (checked, reported)
+-- 5. shipped effect packs (checked, reported)
 local function shipped(X)
   for _, s in ipairs(VRFW.effect.shipped()) do
     local file = "mods/" .. s.mod .. "/files/" .. s.rel

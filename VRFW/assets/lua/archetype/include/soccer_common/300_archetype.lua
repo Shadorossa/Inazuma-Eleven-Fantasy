@@ -1,4 +1,4 @@
--- VRFW › archetypes declared by mods (docs/framework/archetype.md §6): the small build icon (plate rows, the player's
+-- VRFW › archetypes declared by mods: the small build icon (plate rows, the player's
 -- archetype badge) of a declared archetype's number 7+ (CMND_VRFW_ARCHETYPE_INFO); the game's builds keep theirs.
 -- No engine call at load time; wrapped again when the include runs again.
 

@@ -1,11 +1,7 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › input actions (docs/framework/types/input.md §2b): the rebindable actions the mods declare in their
-# input files (`[[action]]`: a command, its tab and label in the game's «Configuración de controles», its default pad
-# button / keyboard key). The type `input` adds the commands, mod_options the controls screen row; the player's own
-# binding is kept by the game (its system save). scripts\input_actions.lua answers what a menu's Lua needs to know.
+# Rebindable input actions declared by mods' input files; player bindings are kept by the game. Runtime: scripts/input_actions.lua.
 
 [[VRFW.Command]]
-name = "CMND_VRFW_INPUT_ACTION"     # (command name or action id) -> { declared = 1 / 0, id, command (crc32), pad, key,
-                                    #   pad_mask, vk } of the action (the last mod in load order wins); 0 = none declared
+name = "CMND_VRFW_INPUT_ACTION"     # (command name or action id) -> table of the action (last mod in load order wins); 0 = none declared
 handler = "InputActions.Get"

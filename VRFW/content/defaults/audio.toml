@@ -1,13 +1,8 @@
-# Audio defaults of the VR-Framework (crates/plugins/audio_engine, library.rs): data the game's files cannot give.
-# Any mod may ship its own defaults\audio.toml; a later mod's key wins (an array is replaced whole).
+# Audio defaults (schema-less). A later mod's defaults\audio.toml key wins; arrays are replaced whole.
 
-# Menu music slots: the places where exactly ONE song plays, in the order the in-game audio creator lists them
-# (docs/game/media/custom-bgm.md §1). `target` is what a mod's `[[music]] replace` names: a context of the name index
-# (`title`) or the BGM id the menu starts with CMND_EXEC_CRAFT_OBJ_ID in its Lua (a bg##### cue name or 0x<crc32>).
-# `text` = the slot's text name. A target the game's bgm_config has no row for gets one when a mod redirects it.
-# Chosen by hand because the menus' Lua (compiled) and the grouping of several menus into one slot are not table data.
-# `menu_music = true`: the framework's «Música del menú» row (audio_engine.menu_music) swaps this slot's BGM id at run
-# time for the theme the player picked among the mods' [[VRFW.MenuMusic]] (docs/framework/menu-music.md).
+# Menu music slots: one song each, in the order the audio creator lists them.
+# target: a name-index context (`title`) or a BGM id (bg##### cue name or 0x<crc32>); text: the slot's text key.
+# menu_music = true: the slot's BGM follows the player's «Menu music» choice.
 
 [[menu_slot]]
 key = "title"            # title_main, scene_archive_menu (bg00010)

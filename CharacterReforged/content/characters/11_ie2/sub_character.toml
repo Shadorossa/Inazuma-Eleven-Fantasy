@@ -11,12 +11,6 @@ target = "c02024700"                                   # Canon Evans
   id = 0xE84B364C                                         # FW/MF · wind
   growth = "normal"
   stats = { kick = 248, control = 259, technique = 220, pressure = 203, physical = 161, intelligence = 219, agility = 185, freedom = 289 }
-  moves = [
-    { move = 0x07D16DA0, level = 1 },                     # Inazuma-1
-    { move = 0x6C6C932B, level = 1 },                     # Megaton Head
-    { move = 0x31ABD82E, level = 30 },                    # Circus Block
-    { move = 0x7E2BE557, level = 45 },                    # Legendary Wolf
-  ]
 
 [[edit]]
 target = "c02024710"                                   # Syon Blaze
@@ -25,12 +19,6 @@ target = "c02024710"                                   # Syon Blaze
   id = 0xF150070D                                         # FW/MF · fire
   growth = "normal"
   stats = { kick = 297, control = 261, technique = 267, pressure = 219, physical = 161, intelligence = 242, agility = 193, freedom = 335 }
-  moves = [
-    { move = 0x41F3CDC2, level = 1 },                     # Scorching Tackle
-    { move = 0x63BDA8A4, level = 1 },                     # Inazuma Drop
-    { move = 0x427719AC, level = 30 },                    # Gale Dash
-    { move = 0xEAB3792D, level = 45 },                    # Grand Fire
-  ]
 
 [[edit]]
 target = "c02029240"                                   # In Chikita
@@ -41,12 +29,6 @@ target = "c02029240"                                   # In Chikita
   rank = 3
   growth = "normal"
   stats = { kick = 271, control = 239, technique = 219, pressure = 203, physical = 186, intelligence = 207, agility = 194, freedom = 317 }
-  moves = [
-    { move = 0xACAC21CE, level = 1 },                     # Fake Ball
-    { move = 0x6C6C932B, level = 15 },                    # Megaton Head
-    { move = 0x7A67325B, level = 27 },                    # Flame Dance
-    { move = 0xDD365E15, level = 48 },                    # Mole Shuffle
-  ]
 
 [[edit]]
 target = "c11902070"                                   # Stewart Vanguard
@@ -57,9 +39,3 @@ target = "c11902070"                                   # Stewart Vanguard
   rank = 3
   growth = "normal"
   stats = { kick = 254, control = 254, technique = 278, pressure = 208, physical = 173, intelligence = 255, agility = 171, freedom = 293 }
-  moves = [
-    { move = 0x74B5C85D, level = 1 },                     # Security Shot
-    { move = 0xAF28F5A0, level = 11 },                    # The Tower
-    { move = 0x49933AEE, level = 32 },                    # Perfect Tower
-    { move = 0xC42D6F54, level = 51 },                    # Aikido
-  ]

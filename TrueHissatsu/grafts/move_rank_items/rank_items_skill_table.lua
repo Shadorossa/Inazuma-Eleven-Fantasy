@@ -5,8 +5,10 @@
 -- The screen is Character Reforged's; this mod adds a ROW ACTION as data (content\menus\skill_table_rank_items.toml:
 -- [[entry]] host = "character_reforged.skill_table.row_action", action = { lua = "TrueHissatsu.SkillTableRankItem" })
 -- and the screen's host (graft skill_table_host) calls TrueHissatsu.SkillTableRankItem(phase, ctx) on the focused row:
---   "available" -> a move row (1-6) with a move while True Hissatsu's script answers: the CMD_FUNC1 key is this action;
---   "guide"     -> the guide entry «Subir nivel» only while the player holds a book or a manual;
+--   "available" -> a move row (1-6) with a move while True Hissatsu's script answers: the CMD_FUNC1 key (Start, as in
+--                  Inazuma Fantasy's table) is this action;
+--   "guide"     -> the guide entry «<Start> Subir nivel» on every such row (owner 2026-10-14: the guide teaches the key;
+--                  without a book or a manual the press says why, with the retail «cannot» sound);
 --   "press"     -> the item that applies to the move's grade (book below the second-to-last level, manual from the
 --                  second-to-last to the last), the Sí / No window «¿Usar X con Y? old → new (tienes N)», then the rules
 --                  apply it and one copy leaves the bag; a refusal says why. One log line per use / refusal.
@@ -216,7 +218,7 @@ do
     if phase == "available" then
       return type(ctx.row) == "number" and ctx.row >= 1 and (ctx.move or 0) ~= 0 and RankItems.Active()
     elseif phase == "guide" then
-      return RankItems.Owned() > 0
+      return RankItems.Active()
     elseif phase ~= "press" then
       return nil
     end

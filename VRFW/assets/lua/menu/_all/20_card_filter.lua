@@ -1,4 +1,4 @@
--- menu_engine: the character bank filter header (VR-Framework base feature; docs/framework/card-filter.md).
+-- menu_engine: the character bank filter header (VR-Framework base feature).
 -- Definitions only (this file runs in every script VM, lua\_all): the bank screens' handler files
 -- (lua\<stem>\100_card_filter.lua) call VRFW_CardFilter.Attach(stem). Nothing here names a rarity, a series or a mod:
 -- the values, their names, the screens, the keys' OnFunction call and the header's offset come from the framework
@@ -12,7 +12,7 @@
 -- framework's post-filter on CharaBankFilter keeps the cards of the value). Step pings ALIVE: the value applies only
 -- while a bank screen runs; a ping after a pause (a sub-screen) rebuilds the list once. FinalizeMenu -> LEAVE: the
 -- last bank screen closing resets the value to «All» at once (the bank list is a shared engine list: the team dock
--- reads its count right after, and a value left behind showed as ~3000 players missing, 2026-10-08 beta report).
+-- reads its count right after, and a value left behind showed as ~3000 players missing, beta report).
 -- The keys are taken only when the retail script would use them (its select mode local, `idle_local` of the
 -- [[screen]], is 0), and while a value is chosen the list counter shows «shown / total» like the retail filter.
 -- No engine call at load time.

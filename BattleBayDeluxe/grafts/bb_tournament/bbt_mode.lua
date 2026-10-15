@@ -3,15 +3,15 @@
 -- screen's header bar (the dark bar «BB | Estadio BB · Campaña» with the top bar shortcuts on its right) carries a
 -- CENTRED selector of two pills «Campaña» | «Torneo» (the active one lit), with the key glyph left of them:
 --   * the key: Battle Bay Deluxe's own rebindable action CMD_BBD_MODE_SWITCH (content\inputs\mode_switch.toml: the row
---     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default Y / B (owner 2026-10-13); 1.5.47
+--     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default RS / B (owner 2026-10-15: Y
+--     opens the focused team's «Plantilla», research/grafts/bb_draft/bbd_roster.lua; Y / B from 2026-10-13; 1.5.47
 --     had L3 = retail CMD_FUNC5, which the VR-Framework top bar's open button took on 2026-10-13), polled with
 --     CMND_CHECK_INPUT (MENU_CTRL) so it works whatever has the focus; its glyph <CMD_BBD_MODE_SWITCH> follows the
---     player's binding. Y is also retail CMD_FUNC3 (keyboard V) there: in bb_stadium_top_menu the list items' «Guía de
---     controles» window (function 1643904886), in the Campaña grid the ready balloon's button (layer
---     cmn03_04_cmn_button_b_graphic_text, function 3859022927; the grid's own Y function 756653130 has no handler in
---     the campaign script). While the selector is shown, a retail OnFunction that comes with a press of the selector's
---     key is left out (the wrap at the end), and the selector is locked while that balloon button is open; the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input:
---     without Utilities only the key).
+--     player's binding. R3 has no retail command on these screens. While the selector is shown, a retail OnFunction
+--     that comes with a press of the selector's key is left out (the wrap at the end: a binding over a retail key),
+--     and the selector is locked while the ready balloon's button (layer cmn03_04_cmn_button_b_graphic_text) is open;
+--     the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input: without Utilities only the
+--     key).
 --   * the Campaña grid (enjoy_team_select_menu_campaign, opened from the top menu's «Campaña» row): «Torneo» arms the
 --     tournament (CMND_BBD_TOURN_ARM with the defaults: the team, then the options popup, the difficulty, the bracket:
 --     bbt_grid.lua), «Campaña» disarms it. With a tournament already running (or ended, not shown yet) «Torneo» closes
@@ -32,7 +32,7 @@ BBT_MODE = {
   TXT = @crc:evt_bbd_mode_txt@,
   ATLAS = "#/menu/220_img/bbd_md/bbd_md.g4tx",
   SPR_BG = @crc:bbd_md_bg@, SPR_ON = @crc:bbd_md_on@, SPR_OFF = @crc:bbd_md_off@,
-  KEY = @crc:CMD_BBD_MODE_SWITCH@,       -- the mod's action (MENU_CTRL; default Y / B, rebindable)
+  KEY = @crc:CMD_BBD_MODE_SWITCH@,       -- the mod's action (MENU_CTRL; default RS / B, rebindable)
   READY_BTN = 2055576472 --[[cmn03_04_cmn_button_b_graphic_text: the ready balloon's button, retail Y there]],
   CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]],
   -- geometry, screen px (y down) of the 1920 x 1080 menu camera: the strip centred on CX at the bar's middle Y (the
@@ -218,6 +218,7 @@ function BBT_ModeGridState()
   local info = BBT_INFO or {}
   local show = funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], M.TOP) == true
     and info.active ~= true and info.ended ~= true
+    and not (type(BBD_ROSTER) == "table" and BBD_ROSTER.state ~= nil) -- hidden under the «Plantilla» viewer (bb_draft)
   local mode = info.armed and "tournament" or "campaign"
   local locked = (BBT_G and BBT_G.co ~= nil)
     or funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], BBT.SUB_WINDOW) == true
@@ -328,8 +329,8 @@ do
     end
     return setup(a1, a2, ...)
   end
-  -- the selector's key pressed while it is shown: a retail function the same press fires (Y = retail CMD_FUNC3:
-  -- the hub's «Guía de controles», the ready balloon's button) is left out, the selector has the press
+  -- the selector's key pressed while it is shown: a retail function the same press fires (a binding over a retail
+  -- key) is left out, the selector has the press
   local fn = OnFunction
   if type(fn) == "function" then
     function OnFunction(a1, a2, ...)

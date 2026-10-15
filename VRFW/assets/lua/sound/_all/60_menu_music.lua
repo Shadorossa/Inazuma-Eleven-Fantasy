@@ -1,4 +1,4 @@
--- audio_engine (VR-Framework, sound type): the menu music swap, VRFW_MenuMusic (docs/framework/menu-music.md).
+-- audio_engine (VR-Framework, sound type): the menu music swap, VRFW_MenuMusic.
 -- Definitions only (this file runs in every script VM, lua\_all); no engine call happens while a chunk loads.
 --
 -- The framework's row «Música del menú» (audio_engine.menu_music, options.toml of this part) offers «Original» and

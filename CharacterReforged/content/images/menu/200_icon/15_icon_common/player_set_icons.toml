@@ -1,0 +1,31 @@
+# Character Reforged › the player-set icons in icon_common (graft ss2_menus):
+#   character_reforged_player_sets_icon   the save icon of the skill table's player-sets button (PL.SAVE_BUTTON), own art
+#   evt_vrm_up_* / evt_vrm_down_*          the «Exportar» / «Importar» button icons of the set list (PL.VrmDef): a plain
+#                                          outline cloud with an up / down arrow, one thin stroke, white (the focused blue
+#                                          plate) and dark (the light plates); drawn by research/scripts/save_icon_build.py.
+schema = "VRFW.image/1"
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "character_reforged_player_sets_icon"
+png = "character_reforged_player_sets_icon.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_vrm_up_white"
+png = "evt_vrm_up_white.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_vrm_up_dark"
+png = "evt_vrm_up_dark.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_vrm_down_white"
+png = "evt_vrm_down_white.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "evt_vrm_down_dark"
+png = "evt_vrm_down_dark.png"

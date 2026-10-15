@@ -1,6 +1,6 @@
-# VR-Framework: the ranks of a won match (2.0.49, Nacho 2026-10-09; docs/framework/route-board.md §3). Read by the team
+# VRFW: the ranks of a won match. Read by the team
 # type (vr-core types/team.rs) at every start and served to the game's Lua (CMND_VRFW_TEAM_MATCH_RANK_COUNT / _GET):
-# the Chronicle board's piece badges, the chain boards' tiles and their «Ayuda» window use them.
+# the Chronicle board's piece badges, the chain boards' tiles and their «Ayuda» (Help) window use them.
 #
 # One table per rank, keyed by its Id: [MatchRank.<Id>]. Every active mod's defaults\match_rank.toml is merged by Id in
 # load order (a later mod's keys win): redeclare an Id to change it (e.g. [MatchRank.S] GoalsFor = 6), declare a new
@@ -11,30 +11,13 @@
 #   GoalsFor     goals scored, at least
 #   MaxConceded  goals conceded, at most
 #   GoalDiff     scored - conceded, at least
-#   Badge        sprite of BadgeAtlas drawn on a chain tile (default atlas: the chain board's)
-#   BadgeAtlas   «#/menu/...g4tx» of Badge (a mod's own art: its image type atlas)
+#   Badge        sprite of BadgeAtlas drawn on a chain tile, a hub list row and the «Ayuda» window
+#   BadgeAtlas   «#/menu/...g4tx» of Badge (a mod's own art: its image type atlas; the chain board screen loads it
+#                when it draws the badge; no default: no badge without it)
 #   PieceBadge   sprite of the Chronicle board's dot atlas vsroute01_06b (a mod adds sprites to it with the image type)
 #   Text         menu_text row id: the rank's line in the chain board's «Ayuda» window
-# Saves keep the rank Id of every won piece / tile; S / A / B of older saves stay valid.
-
-[MatchRank.S]
-Order = 3
-GoalsFor = 5
-MaxConceded = 0
-Badge = "vrfw_chain_rank_s"
-PieceBadge = "vrfw_rank_s"
-Text = "vrfw_chain_help_s"
-
-[MatchRank.A]
-Order = 2
-GoalsFor = 3
-MaxConceded = 0
-Badge = "vrfw_chain_rank_a"
-PieceBadge = "vrfw_rank_a"
-Text = "vrfw_chain_help_a"
-
-[MatchRank.B]
-Order = 1
-Badge = "vrfw_chain_rank_b"
-PieceBadge = "vrfw_rank_b"
-Text = "vrfw_chain_help_b"
+# Saves keep the rank Id of every won piece / tile; the digits 1 / 2 / 3 of older saves read as the Ids B / A / S.
+#
+# The framework declares no rank (the ranks and their badges are a mod's content): with no rank
+# declared a win is unranked (no piece / tile badge, an empty «Ayuda» window; the menu log says «no ranks declared»).
+# A mod declares its ranks (e.g. S / A / B) in its own content\defaults\match_rank.toml, with its own badges.

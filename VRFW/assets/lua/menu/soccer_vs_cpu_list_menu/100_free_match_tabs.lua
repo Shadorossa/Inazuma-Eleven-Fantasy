@@ -1,5 +1,5 @@
--- free_match_tabs (VR-Framework 2.0.1 base feature): the extra tabs of «Competir contra bots» / «Partido libre»
--- after the retail nine (IE1 … Victory Road). docs/framework/free-match-tabs.md (handler of the
+-- free_match_tabs (VR-Framework base feature): the extra tabs of «Competir contra bots» / «Partido libre»
+-- after the retail nine (IE1 … Victory Road). (handler of the
 -- soccer_vs_cpu_list_menu host).
 --
 -- * The mods declare the tabs (`[[free_match_tab]]` of the team type: id, name, icon, order, pieces); the team build

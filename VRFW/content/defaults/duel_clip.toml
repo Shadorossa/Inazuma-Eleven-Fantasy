@@ -1,25 +1,21 @@
-# Framework defaults of the duel / field clips (crates/vr-core/src/types/duel_clip.rs, `rule` type). Names of retail
-# clips and rows only: the banks come from `chara_motion` and the values from `chara_act_soccer_cfg`. A mod may ship
-# its own `defaults\duel_clip.toml` to override keys (load order).
+# Defaults for duel / field clips (retail clip and row names only); a mod may override keys in its own defaults\duel_clip.toml.
 
-# The built clips go to the bank (among each body rig's `chara_motion` preset banks) that holds this retail clip: the
-# focus duel clips' bank. The other banks of the same preset are the gameplay banks a `retail` field clip must be in.
+# Retail clip identifying the `chara_motion` bank that receives the built clips.
 bank_clip = "戦1フォーカス突破前1入"
 
-# Per playback: the retail candidate row (action of chara_act_soccer_cfg, by name or hash, and the clip it plays) whose
-# attribute rows (BASE_ACT_INFO_CHR_MOT_ATTR) every new action of that playback copies.
+# Per playback: retail candidate row (action name or hash, and its clip) whose attribute rows new actions copy.
 
-# a one-shot clip (duel clips, field clips without `loop`): the breakthrough of a won focus duel
+# One-shot clip (duel clips, field clips without `loop`).
 [playback.oneshot]
 action = 0x2BA3EFF8
 clip = "戦1突破1"
 
-# `loop = "move"`: the game's own tired run (a loop with the locomotion blend)
+# `loop = "move"`.
 [playback.move]
 action = "WALK"
 clip = "戦1疲れ走り1L"
 
-# `loop = "stand"`: the match idle
+# `loop = "stand"`.
 [playback.stand]
 action = "STAND"
 clip = "戦1立ち1L"

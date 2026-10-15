@@ -1,24 +1,13 @@
--- Build script of the type `team` (docs/framework/build-scripts.md, docs/framework/types/team.md): every active mod's
--- team declarations (load order) -> the game's team tables (team_config, soccer_game_config, soccer_opponent_info,
--- chronicle_vs_route_config, enjoy_mode_team_config, item_config, uniform_config, shop_config,
--- soccer_game_bgm_config, the declared pool tables), the texts for the text type, the match-rule assignments, the
--- lists for the Lua, and the services built on them (route nodes, talks, chains, match challenges, level maps, the
--- free match's tabs and rules, the Estadio BB grid's categories, seasons and unlocks).
---
--- Order: (0) every mod's [[list]] (extension points), (0b) [[loadout]], (1) every NEW team, (2) every [[edit]],
--- (3) every appearance ([[team.appears]], [[append]]), (3b) orders, free-match tabs, route nodes, talks, chains,
--- challenges, level maps, the free match's class levels, game drop tables, the grid's home stadiums, (4) every
--- [[remove]], (5) the grid's
--- seasons / categories / unlocks, (6) the previewed rosters within the menus' reach; each in load order. A field two
--- mods set to different values is a conflict: noted, the mod that loads later wins.
---
--- input = { files = { { file, mod, load_index, value = <teams file> } }, mods = { { id, load_index, requires } },
+-- Build script of the `team` type: every active mod's team declarations (load order) -> the game's team tables, texts, match-rule assignments,
+-- Lua lists, and the services built on them (route nodes, talks, chains, challenges, level maps, free-match tabs and rules, Estadio BB grid).
+-- Order: (0) [[list]], (0b) [[loadout]], (1) new teams, (2) [[edit]], (3) appearances and dependent services, (4) [[remove]], (5) grid, (6) previewed rosters; each in load order.
+-- A field two mods set to different values is a conflict: noted, the later mod wins.
+-- input = { files = { { file, mod, load_index, value } }, mods = { { id, load_index, requires } },
 --           characters = { { key, chara, param } }, music = { { "<mod>.<song>", bgm } },
 --           defaults = { team = <defaults\team.toml> | team_err, talk = … | talk_err },
 --           difficulties = { declared, list = { { id, difficulty, contexts, badge, level, order, name } } },
 --           fm_classes = { classes = { … } | nil, notes = { { lvl, msg } } }, lang = { source, build_default } }
--- returns the team type's value (team_engine::Built without `files`: the T2B tables are served by the row API, the
--- other files by the native part).
+-- returns the team type's value (team_engine::Built without `files`).
 
 local T = require "lib/team_util"
 local U = require "lib/util"
@@ -36,7 +25,7 @@ local GameDrops = require "team/game_drops"
 
 local LIST_FREE, LIST_BB = Lists.LIST_FREE, Lists.LIST_BB
 
--- `defaults\team.toml` value at `path` (dotted), or nil, the reader's error
+-- `defaults/team.toml` value at dotted `path`, or nil, the reader's error
 local function dval(team, err, path)
   if team == nil then return nil, err end
   local cur = team
@@ -81,11 +70,11 @@ local function is_empty(f)
   return #(f.list or {}) == 0 and only_lists(f)
 end
 
--- ------------------------------------------------------------------------------------------------- characters
+-- ---- characters
 
 local CHARA_BASE_PREFIX = "data/common/gamedata/character/chara_base_"
 local CHARA_PARAM_PREFIX = "data/common/gamedata/character/chara_param_"
--- chara_param: the 9 move slots (move, learn level) from col 11; the off-pitch kit (the character type's columns)
+-- chara_param: the 9 move slots (move, learn level) from col 11; the off-pitch kit
 local CP_MOVES, CP_MOVE_SLOTS, CP_OFFPITCH_KIT = 11, 9, 66
 
 local function load_charas(created, cols)
@@ -158,9 +147,9 @@ local function load_charas(created, cols)
   return c
 end
 
--- ------------------------------------------------------------------------------------------------- difficulties
+-- ---- difficulties
 
--- the match difficulties of the active mods (team_engine difficulty.rs, read natively): exists / of / ids_text / retain
+-- match difficulties of the active mods (read natively): exists / of / ids_text / retain
 local function difficulties(d)
   local D = { declared = d.declared, list = d.list or {} }
   function D.exists(ctx, n)
@@ -199,7 +188,7 @@ local function difficulties(d)
   return D
 end
 
--- ------------------------------------------------------------------------------------------------- the build
+-- ---- build
 
 local function build_teams(input, X, out, fm)
   local raw = {}
@@ -411,9 +400,9 @@ local function build_teams(input, X, out, fm)
   local fm_tabs, fm_bars = X.free_match_tabs(files)
   -- (3b'') [[VRFW.GameTab]]: retail games filed under another retail tab (after the tabs and their difficulty rows)
   local game_tabs = X.game_tabs(files)
-  -- (3c) Chronicle board side nodes (their teams exist now; before removals: a hidden team keeps its node)
+  -- (3c) Chronicle board side nodes (before removals: a hidden team keeps its node)
   local route_nodes, route_roads = X.route_nodes(files)
-  -- (3d) talk scenes ([[VRFW.Talk]]) and the nodes' pre-match / post-win talks
+  -- (3d) talk scenes ([[VRFW.Talk]]) and node talks
   local talks = X.talks(files)
   X.node_talks(files, route_nodes, talks)
   -- (3d') match chains ([[VRFW.Chain]]): their node games and talk ids
@@ -426,7 +415,7 @@ local function build_teams(input, X, out, fm)
   X.free_match_copy(fm)
   X.free_match_levels(fm)
   -- (3e'') [[VRFW.GameDrops]]: the drop tables of the games' rows (every game exists now: nodes, chains)
-  X.game_drops(files)
+  X.game_drops(files, chains)
   -- (3f) the Estadio BB rows' stadium = their team's home stadium (after every edit and appearance)
   X.bb_home_stadiums()
   -- (4) removals
@@ -562,12 +551,10 @@ return function(input)
     bb_season_all_icon = "", bb_retail = {}, bb_unlock = {}, free_match_tabs = {}, free_match_bars = {}, challenges = {},
     challenge_games = {}, challenge_data = { cards = {}, charas = {} }, talks = {} }
 
-  -- [VRFW.FreeMatch]: read from every file (also the ones that declare nothing else); its class levels re-level the
-  -- free-match games' rows inside the team build
+  -- [VRFW.FreeMatch]: read from every file; its class levels re-level the free-match rows inside the team build
   FreeMatch.install_rules(X)
   local rules = X.fm_rules(input.files or {})
-  -- the classes offered: only the ones that exist with the active mods (VRFW.MatchDifficulty, context free_match); no
-  -- mod declaring [VRFW.FreeMatch] Difficulties = the classes ARE the effective set (levels, badges)
+  -- classes offered: those existing with the active mods (context free_match); with no [VRFW.FreeMatch] Difficulties the classes are the effective set
   local declared = false
   for _, f in ipairs(input.files or {}) do
     local fm = f.value.vrfw and f.value.vrfw.FreeMatch

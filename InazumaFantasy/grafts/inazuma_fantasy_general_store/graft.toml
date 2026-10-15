@@ -1,0 +1,56 @@
+# Inazuma Fantasy (inazuma_fantasy_2): the «Tienda general» bar at the top of the Mercado (market_menu). The shop itself
+# is data (research/mods/InazumaFantasy/content/shops/general_store.toml); its id is the framework's
+# (CMND_VRFW_REG_FIND("shop", "inazuma_fantasy_2.general_store")), read in OnInit. The 7th bar: content/menus/market_menu.toml
+# (layer count, locator list07) and assets/menu/150_shop/shop01/shop01_20/shop01_20.g4pkm (joint _list07; written by
+# research/scripts/inazuma_fantasy_market_bar.py). Art: the Tienda vínculo set (market04).
+# Merge-path patch (the per-entry tables are locals of the script): the mod is lua_early, so later wrappers of
+# market_menu (VRFW menu music, BetterUI shop shortcuts) sit on top of it.
+name = "inazuma_fantasy_general_store"
+mod = "inazuma_fantasy_2"
+order = 210
+module = ""
+requires = []
+conflicts = []
+wraps = ["OnInit"]
+description = "Inazuma Fantasy: «Tienda general» entry at the top of the Mercado"
+
+[[files]]
+stem = "market_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  text = '''
+
+-- ===== InazumaFantasy general_store BEGIN =====
+-- Entry 1 of the Mercado = Inazuma Fantasy's «Tienda general»; the retail entries move down one.
+do
+  local REG_FIND = 2175579023           -- CMND_VRFW_REG_FIND (type, key) -> id (-1)
+  local LOG = 3661580131                -- CMND_EVT_LOG
+  local SHOP_KEY = "inazuma_fantasy_2.general_store"
+  local NAME_TEXT = 713514104           -- shop_text row "InazumaFantasy.general_store_name"
+  table.insert(t, 1, 0)                 -- the shop id, filled in OnInit
+  table.insert(t2, 1, 428357293)        -- icon_header_market04
+  table.insert(t3, 1, 2854327783)       -- bg_img04
+  table.insert(t4, 1, 1416979514)       -- list_base_l04
+  table.insert(t5, 1, NAME_TEXT)
+  table.insert(t8, 1, 1290312194)       -- icon_list_l04
+  local on_init = OnInit
+  function OnInit(...)
+    if t[1] == 0 then
+      local ok, id = pcall(funcLuaCommand, REG_FIND, "shop", SHOP_KEY)
+      if ok and type(id) == "number" and id ~= -1 and id ~= 0 then
+        if id < 0 then
+          id = id + 4294967296
+        end
+        t[1] = id
+      else
+        pcall(funcLuaCommand, LOG, "InazumaFantasy: shop " .. SHOP_KEY .. " not found: the Mercado bar is left empty")
+      end
+    end
+    return on_init(...)
+  end
+end
+-- ===== InazumaFantasy general_store END =====
+'''
+  marker = "inazuma_fantasy_general_store"
+  crc = "none"

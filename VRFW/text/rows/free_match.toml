@@ -1,12 +1,9 @@
-# Texts of the VR-Framework's free-match rules ([VRFW.FreeMatch], docs/framework/free-match-tabs.md §8): rows of
-# menu_text in the framework's 9 languages, read by the list handler soccer_vs_cpu_list_menu/110_free_match_difficulty.lua
-# with CMND_TEXT_GET by id = crc32(row id). Were Inazuma Fantasy's Fantasy.FreeMatchAskTeam / Fantasy.FreeMatchRivalLocked
-# until 2026-10-09. Missing rows: the retail «start match?» text / the buzzer only.
+# Free-match rule texts ([VRFW.FreeMatch]): menu_text rows read by id = crc32(row id). Missing rows fall back to the retail text / the buzzer.
 
 schema = "VRFW.text/2"
 table = "menu_text"
 
-# Direct = true: the confirm of an opponent that offers one class; %s = the team name. crc32 4268189860
+# Confirm of an opponent that offers one class (Direct = true); %s = team name. crc32 4268189860
 [[row]]
 id = "vrfw_fm_ask_team"
 es = "¿Jugar contra %s?"
@@ -19,7 +16,7 @@ ja = "%sと対戦しますか？"
 zh_hans = "要与%s对战吗？"
 zh_hant = "要與%s對戰嗎？"
 
-# Unlock = "together": deciding an opponent that is still locked. crc32 2350615877
+# Opponent that is still locked (Unlock = "together"). crc32 2350615877
 [[row]]
 id = "vrfw_fm_rival_locked"
 es = "Este rival todavía no está disponible."

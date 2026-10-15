@@ -1,16 +1,13 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › menu input diagnostics (docs/app/contact-map-fichajes-2026-10-12.md §7, VRFW 2.2.25). The game's menu
-# controller (game::CMenuController, singleton [0x21F6EC0], vtable 0x1A03068) gives the pad each frame only to the
-# entries of its input list with the highest priority (slot 3 0x54D8F0 -> 0x5510A0; list at controller + 0x50).
-# scripts\menu_input.lua reads that list for the input trace of lua\menu\_all\64_input_trace.lua.
+# Menu input diagnostics: reads the menu controller's input list (used by the input trace menu script).
 
-# the controller: MenuFind's first instruction reads it (mov rbx, [rip + disp])
+# Menu controller singleton.
 [[VRFW.Global]]
 name = "menu_controller"
 game = "Menu.Controller"
 
-# CMenu* MenuFind(u32 nameCrc) 0x4F8F60: the open menu object of that name, or null
+# CMenu* MenuFind(u32 nameCrc): the open menu object of that name, or null.
 [[VRFW.Function]]
 name = "MenuFind"
 game = "Menu.Find"
@@ -22,7 +19,7 @@ name = "CMND_VRFW_MENU_INPUT_DUMP"     # () -> "crc pPRIO oORDER alive|gone actN
 handler = "MenuInput.Dump"
 needs = ["menu_controller", "MenuFind"]
 
-# VRFW 2.2.74: the global menu input controller (CMenuController +0xA8 / +0xB0 / +0xB8) and its input switch (+0x29)
+# Global menu input controller and its input switch.
 [[VRFW.Command]]
 name = "CMND_VRFW_MENU_INPUT_CTRL"     # () -> "ctrl <name> on<0|1>"
 handler = "MenuInput.Ctrl"

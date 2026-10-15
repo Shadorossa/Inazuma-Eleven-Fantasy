@@ -1,0 +1,14 @@
+schema = "VRFW.shop_lock/1"
+# Inazuma Fantasy: every shop lists the rows it does not sell yet as locked (padlock, greyed, not buyable, what unlocks
+# them as their name), as the earlier Inazuma Fantasy did. The framework names chapters, matches and Chronicle pieces;
+# the text below names the one global flag the shops wait for that has no match of its own.
+
+[[VRFW.ShopLock]]
+name = "all_shops"
+all_shops = true
+
+# GetGlobalBitFlag(0x2CB86A25): the story's ending
+[[VRFW.ShopLockText]]
+name = "story_complete"
+flags = ["0x2CB86A25"]
+text = "InazumaFantasy.shop_lock_story_complete"

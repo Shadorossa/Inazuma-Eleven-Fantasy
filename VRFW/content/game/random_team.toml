@@ -1,41 +1,26 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › random team (docs/framework/random-team.md). The run time is scripts\random_team.lua (+ the pure part
-# scripts\lib\random_team_core.lua): it reads every mod's content\random_teams\*.toml (`VRFW.random_team/1`), draws a
-# roster from a seed and writes it, before a match, over the member rows of a SLOT TEAM (an ordinary team a mod
-# declares with placeholder players) in game memory, with that team's level, formation, name, emblem and kit.
-#
-# Why rewriting team_config in memory is enough (static RE of v7.1.2, D:\re export; docs §2): every match setup builds
-# the rival through TeamBuild 0xE9C190 → FindTeamConfig 0xE6BEE0 (the record of the setup's team id) → BuildRoster
-# 0xE9AC40, which reads the member rows `[container+0x68]` (stride 0x54) of the record's slice at that moment, and
-# 0xE9B760 (called by BuildRoster) reads the record's name text +0x14, formation +0x18, kit +0x1C and emblem +0x20. The
-# member level is (difficulty row level if ≥ 1, else record +4) + row +0x44 (level-cap.md §7.9). Nothing of it is ever
-# saved. Battle Bay Deluxe's Draft writes the same member rows (content\game\draft.toml of that mod).
+# Random team (schema VRFW.random_team/1, content\random_teams\*.toml; run time scripts\random_team.lua).
+# Draws a roster from a seed and writes it, before a match, over the member rows of a slot team (an ordinary team with placeholder players), with that team's level, formation, name, emblem and kit.
 
-# FindTeamConfig(&record, &container, const u32* teamHash) 0xE6BEE0: the team_config record of a team (no side effect)
+# FindTeamConfig(&record, &container, teamHash): team_config record of a team (no side effect)
 [[VRFW.Function]]
 name = "RandomTeamFind"
 game = "Team.FindConfig"
 
-# the team_config record (0x50 bytes in the container's record array `+0x48`, count `+0x50`): +0x28 / +0x2C its member
-# slice (profile fields First / Count). Mod-only fields, read by 0xE9AC40 / 0xE9B760 / 0xE1F440: +4 default level
-# (u16, used when the difficulty row's level is 0), +0x14 name (team_text id), +0x18 formation, +0x1C kit (uniform
-# id), +0x20 emblem (item id). The script writes them only after it found the slot team's own team_config cells there.
+# team_config record: +0x28 / +0x2C member slice; script-written fields: +4 default level, +0x14 name text, +0x18 formation, +0x1C kit (uniform id), +0x20 emblem (item id).
 [[VRFW.Struct]]
 name = "RandomTeamRecord"
 game = "TeamRecord"
 fields = { Level = { at = 0x4, type = "u16" }, NameText = { at = 0x14, type = "u32" }, Formation = { at = 0x18, type = "u32" }, Uniform = { at = 0x1C, type = "u32" }, Emblem = { at = 0x20, type = "u32" } }
 
-# the team_config container `[g_gameRoot]+0x8E8`: member rows +0x68 / +0x70 (profile fields Members / MemberCount),
-# the record array +0x48 (stride 0x50) and its count +0x50 (FUN_140E1EE80, mod-only fields: the slice sharing check)
+# team_config container: record array +0x48 (stride 0x50), count +0x50.
 [[VRFW.Struct]]
 name = "RandomTeamConfig"
 game = "TeamConfig"
 fields = { Records = { at = 0x48, type = "ptr" }, RecordCount = { at = 0x50, type = "i32" } }
 
-# one member row (stride 0x54; profile fields Param +0x20, Uid +0x24, Slot +0x47). Mod-only: +0x28 the loadout
-# (TEAM_MEMBER_SKILL_CONFIG id; 0 = the card's own learn list), +0x44 the level offset (i16, added to the team level),
-# +0x46 the AI step (i8, added to the row's AI tier, capped at 4: 0xE1F530)
+# member row (stride 0x54); script-written fields: +0x28 loadout (TEAM_MEMBER_SKILL_CONFIG id; 0 = the card's own learn list), +0x44 level offset (i16), +0x46 AI step (i8, capped at 4).
 [[VRFW.Struct]]
 name = "RandomTeamMember"
 game = "MemberRow"
@@ -52,7 +37,7 @@ handler = "RandomTeam.Preview"
 needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
 
 [[VRFW.Command]]
-name = "CMND_VRFW_RANDOM_TEAM_MEMBER"    # (i, 1-based) -> card, roster slot, card position (last build / preview)
+name = "CMND_VRFW_RANDOM_TEAM_MEMBER"    # (i) -> card id, roster slot, card position (member i, 1-based, of the last build / preview)
 handler = "RandomTeam.Member"
 
 [[VRFW.Command]]

@@ -1,4 +1,4 @@
--- menu_engine: LIST ROWS, VRFW.ListRows (VR-Framework 2.4.24, ordering 2.4.37, 2026-10-14; docs/framework/list-rows.md). One shared
+-- menu_engine: LIST ROWS, VRFW.ListRows. One shared
 -- extension point for the rows of the game's own list menus: mods HIDE retail rows, ADD rows of their own, TAKE OVER
 -- what a retail row does and ORDER the rows, each by registering a rule; no mod redefines the menu's functions or its row list any more,
 -- so the rules of every mod apply together whatever the load order.
@@ -23,7 +23,7 @@
 --                            run = function(context) ... end})
 --   VRFW_ListRows.Handle(menu, {id = "<mod>.<name>", row = <retail row id>, when = fn | nil, run = function(context) end})
 --   VRFW_ListRows.Order(menu, {id = "<mod>.<name>", rows = {<row id>, <row id>, ...}, when = fn | nil})
---     (2.4.37) the rows named in `rows` go first, in that order (absent / hidden ones skipped); every other row follows
+--     the rows named in `rows` go first, in that order (absent / hidden ones skipped); every other row follows
 --     in the order it had (retail order, added rows after their anchors). ONE order applies per menu: the order rule
 --     registered LAST (mod load order) whose `when` holds wins; the others are ignored (logged once).
 -- `when` (optional): the rule applies only while it returns true (asked each time the menu is built / picked).
@@ -32,6 +32,10 @@
 -- A second rule with the same id replaces the first. Several Hide rules may name the same row. Handle rules: the first
 -- registered whose `when` holds runs (logged when two claim a row). Order rules: the last registered whose `when` holds.
 -- Definitions only (this file runs in every menu VM, lua\_all); no engine call at load.
+-- Registering before this file ran (the `_all` of a lua_early mod runs before the framework's `_all`, so
+-- VRFW_ListRows is still nil there): queue a function that gets the library and registers its rules,
+--   VRFW_LIST_ROWS_Q = VRFW_LIST_ROWS_Q or {}; table.insert(VRFW_LIST_ROWS_Q, function(Rows) Rows.Hide(...) end)
+-- drained at the end of this file (an error is logged, the other queued functions still run).
 if VRFW_ListRows == nil then
   local R = {
     LOG = 3661580131,                 -- CMND_EVT_LOG
@@ -535,4 +539,20 @@ if VRFW_ListRows == nil then
       [5] = function() return funcLuaCommand(545705220) == true end,   -- «[x] Autoequipar judías» (retail flag48)
     },
   })
+end
+
+-- rules queued by patches that ran before this file (VRFW_LIST_ROWS_Q, see the header)
+do
+  local queue = rawget(_ENV, "VRFW_LIST_ROWS_Q")
+  if type(queue) == "table" and VRFW_ListRows ~= nil then
+    rawset(_ENV, "VRFW_LIST_ROWS_Q", nil)
+    for _, register in ipairs(queue) do
+      if type(register) == "function" then
+        local ok, problem = pcall(register, VRFW_ListRows)
+        if not ok then
+          VRFW_ListRows.Log("queued registration failed", tostring(problem))
+        end
+      end
+    end
+  end
 end

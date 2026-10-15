@@ -1,0 +1,12 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (docs/game/mods/chronicle-deluxe.md §9, owner 2026-10-14): no Ídolo spirit drops in ANY Chronicle
+# match. The Ídolo cards are the spirit rarities 5-7 (the hero spirits); the retail spirit drop tables give rarity 5
+# entries (e.g. the Heroica's default 0x569BC5E0: rarity 5 weight 0.25, its second table 0xA3C5921B: 0.05; the
+# classes 10 / 11: 1.0 / 0.5). The framework's rule (docs/framework/drops.md §1b, VRFW 2.4.43): every Chronicle match
+# row (the board's routes, this mod's side nodes and chains included; not the «Competir contra bots» class rows of the
+# same games) gets copies of its spirit tables without those entries. Nothing else changes: the other spirits keep
+# their rates (the Ídolo entries' chance is lost, not moved), so «Tasa de aparición» lists no Ídolo row and every rate
+# it shows is the roll's. No list of matches or tables here: the rows and tables are derived at build time.
+[[VRFW.SpiritDrops]]
+Rows = "chronicle"
+ExcludeRarities = [5, 6, 7]

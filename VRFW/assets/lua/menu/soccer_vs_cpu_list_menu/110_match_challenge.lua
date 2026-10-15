@@ -1,4 +1,4 @@
--- match_challenge (VR-Framework service; docs/framework/match-challenge.md): the free-match list («Competir contra
+-- match_challenge (VR-Framework service): the free-match list («Competir contra
 -- bots» / «Partido libre», soccer_vs_cpu_list_menu) checks a row's match challenge before the match is chosen.
 -- * around OnEnter of the opponent list (team05_03_soccer_cpu_opponent_list): after the retail team check, a row whose
 --   game has a [[VRFW.MatchChallenge]] (the tab's `Challenge`, or the challenge's `Games`) is refused when the active

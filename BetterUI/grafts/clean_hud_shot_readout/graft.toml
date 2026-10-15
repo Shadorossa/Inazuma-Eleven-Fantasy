@@ -1,0 +1,18 @@
+# BetterUI: the game's shot readout («TOTAL AT» vs «PP», soccer_shoot_catch_info_menu) behind the Mods options row
+# «AT / PP counter» (clean_hud.shot_readout, default on, read at each shot). Wrapper only; nothing runs at chunk load.
+name = "clean_hud_shot_readout"
+mod = "clean_hud"
+order = 330
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OpenAtKpPowerInfoTelop"]
+description = "BetterUI: the shot readout (TOTAL AT / PP) can be hidden from Mods options"
+
+[[files]]
+stem = "soccer_shoot_catch_info_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "shot_readout.lua"
+  marker = "BetterUI shot readout switch"

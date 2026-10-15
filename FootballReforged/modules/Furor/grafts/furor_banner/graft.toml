@@ -1,0 +1,32 @@
+# Furor (a module mod of Football Reforged) on the match HUD (docs/game/mechanics/furor.md §3.4): while a team's furor
+# phase runs, a full-width red strip under the scoreboard with «Fase de furor activa» (Inazuma Eleven 3's phase banner,
+# no scene, no cut-in). Layer furor_banner (the mod's content\menus\furor_banner.toml: the strip and the text), its own
+# strip sprite (content\images\menu\02_btl\furor_banner.toml), the text key furor.phase_banner (text\keys.toml).
+# Placed by measurement from the scoreboard's keeper bar locators (as research/grafts/furor_hud). Value:
+# CMND_VRFW_TEAM_MOMENTUM of the VR-Framework's team momentum service; no answer (no match) = hidden. Wrapper only
+# (UpdateScoreboardKeeperHp, every frame from StepSoccerConstantMenu); nothing at chunk load but globals.
+name = "furor_banner"
+mod = "furor"
+order = 331
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateScoreboardKeeperHp"]
+description = "Furor: the «Fase de furor activa» banner while a team's furor phase runs"
+
+[[files]]
+stem = "soccer_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "furor_banner.lua"
+  marker = "Furor banner"
+
+# 5v5 / pachanga / battle matches: their HUD is soccer_battle_constant_menu (own script, same include)
+[[files]]
+stem = "soccer_battle_constant_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "furor_banner.lua"
+  marker = "Furor banner"

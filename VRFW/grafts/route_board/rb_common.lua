@@ -1,5 +1,5 @@
 -- VRFW route_board BEGIN
--- VR-Framework: the Chronicle route board's hook points (docs/framework/route-board.md; Nacho 2026-10-09: the board
+-- VR-Framework: the Chronicle route board's hook points (the board
 -- grafts move to the framework). The framework owns the one patch of vs_route_town_menu (route_nodes, route_chains,
 -- this graft: one merged file, so the board's main-chunk locals exist once) and makes the script a VRFW_Host host
 -- (the host call at the end of this graft's file). A mod changes the board's rules with VRFW_Host handlers on the
@@ -16,15 +16,15 @@
 --                                                first, the board waits, state 4) or c.force (cleared again even when
 --                                                that difficulty was cleared before)
 --   VRFW_RB_Cleared(c)                           the clear bit was set (before the clear effect)
---   VRFW_RB_UnlockNext(c) -> bool                true = the mod unlocked what this clear opens (the retail «next
+--   VRFW_RB_UnlockNext(c) -> bool                true = the mod unlocked what this clear opens (the retail "next
 --                                                difficulty» unlock is skipped)
 --   VRFW_RB_OpenEffect(open) -> bool             the route-open effect after the clear (retail: the difficulty-2 clear)
 --   VRFW_RB_DotShown(kind, difficulty) -> bool   a cleared difficulty's dot on the piece (kind 0 normal, 5 gate)
---   VRFW_RB_Rank(slot) -> rank Id | nil           the rank badge of a piece's save slot (a VRFW_MatchRank Id, 2.0.49);
+--   VRFW_RB_Rank(slot) -> rank Id | nil           the rank badge of a piece's save slot (a VRFW_MatchRank Id);
 --                                                default: a chain node's chain rank (route_chains), else the piece's
 --                                                best rank (VRFW_RB_Ranks, recorded by VRFW_RB_Won)
 --   VRFW_RB_MatchRank() -> rank Id, for, against the rank of the match just won (pieces and chain tiles); default:
---                                                the declared ranks VRFW_MatchRank (defaults\match_rank.toml, 2.0.49)
+--                                                the declared ranks VRFW_MatchRank (defaults\match_rank.toml)
 -- The board's locals a handler may read / write: VRFW_RB.L.<name> (decompile names of the retail chunk, served by
 -- this patch: the locals it promoted). A mod that needs another one asks for it here (one line in VRFW_RB_LOCALS).
 -- Retail globals of the script (OnInit, PreStep, ...) are hook points too (VRFW_Host.on(stem, "OnInit", ...)).
@@ -64,11 +64,11 @@ end
 function VRFW_RB_BackOnBoard()
 end
 
--- ---- piece ranks (2.0.48: the framework's; Inazuma Fantasy's chronicle_rank graft until then) -----------------------
+-- ---- piece ranks (the framework's) -----------------------
 -- The best rank of every board piece, per save slot: save service owner vr_framework, key rb_ranks, one character per
 -- statusFlagIndex (index + 1; "0" none, "1" B, "2" A, "3" S, "r" another rank: its Id in key rb_rank_ids,
--- "<slot>=<Id>;..." (2.0.49, mods' own ranks). Old saves: Inazuma Fantasy kept the same string under
--- owner inazuma_fantasy, key chr_ranks (IF 1.3.0 - 1.21.x); it is read once per slot and merged (the better rank of the
+-- "<slot>=<Id>;..." (mods' own ranks). Legacy saves: a mod's string under
+-- another owner, key chr_ranks, is read once per slot and merged (the better rank of the
 -- two per piece) the first time the framework's string is read, then written as the framework's.
 VRFW_RB_RANK_ON = true -- kill switch: false = no piece rank recorded or drawn (a chain node keeps its chain's rank)
 VRFW_RB_RANK_SLOTS = 300 -- the board's save status arrays (statusFlagIndex 0-299)
@@ -131,7 +131,7 @@ function VRFW_RB_RankGet(sfi)
     return nil
   end
   if sfi >= VRFW_RB_RANK_SLOTS then
-    return vrfw_rb_id_map()[sfi]   -- an extended slot (route-board.md §5): only in the Id map
+    return vrfw_rb_id_map()[sfi]   -- an extended slot: only in the Id map
   end
   local c = string.sub(VRFW_RB_Ranks(), sfi + 1, sfi + 1)
   if c == "r" then
@@ -144,7 +144,7 @@ function VRFW_RB_RankSet(sfi, rank)
   if rank == nil or sfi == nil or sfi < 0 or vrfw_rb_order(rank) <= vrfw_rb_order(VRFW_RB_RankGet(sfi)) then
     return false
   end
-  local ext = sfi >= VRFW_RB_RANK_SLOTS   -- an extended slot (route-board.md §5): kept in the Id map, not in the string
+  local ext = sfi >= VRFW_RB_RANK_SLOTS   -- an extended slot: kept in the Id map, not in the string
   local s = VRFW_RB_Ranks()
   if string.len(s) < VRFW_RB_RANK_SLOTS then
     s = s .. string.rep("0", VRFW_RB_RANK_SLOTS - string.len(s))
@@ -228,16 +228,12 @@ end
 -- The rank badge of a piece (end of UpdatePieceClearIcon(layer, instance, piece)): the clear-icon layer of the piece
 -- (vsroute01_06c, attached at the piece's origin) has a 6th difficulty dot (_pos_clear08_01, Legendaria;
 -- _pos_clear08_02 on gate pieces). With a rank it becomes the badge: moved over the crest's lower-right corner, its
--- picture = the rank sprite (the framework's sprites vrfw_rank_{b,a,s} in the dots' atlas vsroute01_06b,
--- research/mods/VRFW/images/menu/30_vsroute/vsroute01/vsroute01_06b.toml). Without a rank nothing changes.
+-- picture = the rank's PieceBadge (defaults\match_rank.toml: a sprite a mod adds to the dots' atlas vsroute01_06b,
+-- e.g. a mod's chronicle_deluxe_rank_{s,a,b}; the framework declares no rank and ships no badge).
+-- Without a rank, or a rank without a PieceBadge, nothing changes.
 VRFW_RB_BADGE_ON = true -- kill switch: false = no badge
 VRFW_RB_BADGE_POS = {x = 40, y = -6} -- badge centre, piece coordinates (crest: 128 px centred at (0, 38))
 VRFW_RB_BADGE_TEX = 2855820778 --[[crc32("#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx")]]
-VRFW_RB_BADGE_SPRITE = {
-  [1] = 813797929, --[[vrfw_rank_b]]
-  [2] = 2844312467, --[[vrfw_rank_a]]
-  [3] = 1513206491 --[[vrfw_rank_s]]
-}
 VRFW_RB_BADGE_TEXREF = 516486421 --[[clear_icon08: the picture of both Legendaria dots]]
 -- per eventType of the piece: the dot used as badge and the effect / ring meshes kept hidden on it
 VRFW_RB_BADGE_DOT = {
@@ -264,8 +260,6 @@ function VRFW_RB_Badge(a1, a2, a3)
   local sprite = nil
   if def ~= nil and def.piece ~= "" then
     sprite = CRC32(def.piece)
-  elseif type(rank) == "string" then
-    sprite = VRFW_RB_BADGE_SPRITE[({B = 1, A = 2, S = 3})[rank] or 0]
   end
   if sprite == nil then
     return -- no rank (or a rank without a piece badge): the retail loop already set the dot
@@ -281,7 +275,7 @@ end
 
 -- The retail invite check at the end of PreStep (CheckAndReserveGeneralWindowForInviteNotJoined, include
 -- network_invite_menu_inc) waits with coroutine.yield while a general window is busy (CMND 682363669 false). PreStep is
--- not a coroutine here, so every frame a message window was up logged «LUAERR … attempt to yield from outside a
+-- not a coroutine here, so every frame a message window was up logged "LUAERR … attempt to yield from outside a
 -- coroutine» (e.g. hundreds of lines in 30 s while the board's lock message showed). Called when it can wait (inside a
 -- coroutine) or will not wait (no window busy); otherwise it runs again next frame, as the retail wait would.
 function VRFW_RB_InviteCheck()

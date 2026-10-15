@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# Training Ground: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-15): split out of Inazuma Fantasy (a module of Football Reforged).
+lang = "es"
+name = "Campo de entrenamiento"
+
+[en]
+name = "Training Ground"
+
+[fr]
+name = "Terrain d'entraînement"
+
+[de]
+name = "Trainingsplatz"
+
+[it]
+name = "Campo di allenamento"
+
+[pt]
+name = "Campo de treino"
+
+[ja]
+name = "練習場"
+
+[zh_hans]
+name = "训练场"
+
+[zh_hant]
+name = "訓練場"
+
+[[release]]
+icon = "general"
+notes = [
+    "Campo libre para practicar técnicas, sin partido real.",
+    "Barra superior «Partido» › «Modo libre».",
+    "5c5 u 11c11, estadio, equipo rival y número de rivales.",
+    "SELECT: ajustes (cooldowns, tensión, PE, tiros largos…).",
+    "Sin reloj, sin guardado, sin resultado ni premios.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "A free pitch to rehearse moves, with no real match.",
+    "Top bar «Match» › «Free Mode».",
+    "5v5 or 11v11, stadium, rival team and rival count.",
+    "SELECT: settings (cooldowns, tension, PE, long shots…).",
+    "No clock, no saving, no result or rewards.",
+    "A module of Football Reforged.",
+]
+
+[release.fr]
+notes = [
+    "Un terrain libre pour répéter tes techniques.",
+    "Barre du haut «Match» › «Mode libre».",
+    "5c5 ou 11c11, stade, équipe et nombre d'adversaires.",
+    "SELECT : réglages (recharges, tension, PE…).",
+    "Sans chrono, sans sauvegarde, ni résultat ni récompense.",
+    "Un module de Football Reforged.",
+]
+
+[release.de]
+notes = [
+    "Freier Platz zum Üben der Techniken, ohne echtes Spiel.",
+    "Obere Leiste «Spiel» › «Freier Modus».",
+    "5v5 oder 11v11, Stadion, Gegnerteam und Gegnerzahl.",
+    "SELECT: Einstellungen (Abklingzeit, Spannung, PE…).",
+    "Keine Uhr, kein Speichern, kein Ergebnis, kein Preis.",
+    "Ein Modul von Football Reforged.",
+]
+
+[release.it]
+notes = [
+    "Campo libero per le tecniche, senza una vera partita.",
+    "Barra in alto «Partita» › «Modalità libera».",
+    "5c5 o 11c11, stadio, squadra e numero di avversari.",
+    "SELECT: impostazioni (ricariche, tensione, PE…).",
+    "Senza cronometro, salvataggio, risultato né premi.",
+    "Un modulo di Football Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Um campo livre para praticar técnicas, sem jogo a sério.",
+    "Barra superior «Jogo» › «Modo livre».",
+    "5c5 ou 11c11, estádio, equipa e nº de adversários.",
+    "SELECT: definições (recargas, tensão, PE…).",
+    "Sem relógio, sem gravação, sem resultado nem prémios.",
+    "Um módulo de Football Reforged.",
+]
+
+[release.ja]
+notes = [
+    "試合なしで必殺技を練習できる自由なフィールド。",
+    "上部バー「試合」›「フリーモード」。",
+    "5対5か11対11、スタジアム、相手チームと人数。",
+    "SELECT：設定（リキャスト、テンション、PE等）。",
+    "時計なし、セーブなし、結果も報酬もなし。",
+    "Football Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "自由球场练习必杀技，没有正式比赛。",
+    "顶部栏「比赛」›「自由模式」。",
+    "5对5或11对11、球场、对手队伍和人数。",
+    "SELECT：设置（冷却、斗志、PE、远射等）。",
+    "不计时、不保存、没有结果和奖励。",
+    "Football Reforged 的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "自由球場練習必殺技，沒有正式比賽。",
+    "頂部欄「比賽」›「自由模式」。",
+    "5對5或11對11、球場、對手隊伍和人數。",
+    "SELECT：設定（冷卻、鬥志、PE、遠射等）。",
+    "不計時、不儲存、沒有結果和獎勵。",
+    "Football Reforged 的模組。",
+]

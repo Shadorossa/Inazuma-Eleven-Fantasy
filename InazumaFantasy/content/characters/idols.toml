@@ -1,0 +1,635 @@
+schema = "VRFW.character/2"
+# Inazuma Fantasy's Idol cards. Each one replaces a game Idol card of the same player in place (same card id): the
+# card moves to the Idol's own character (`adopt`), which holds its look, voice, series and description.
+# Card fields: Inazuma Fantasy's values; the fields it left as its template's are written where the replaced card differs.
+# The replaced card keeps its game rarity (5 / 6 / 7): the game's office rows, Players Universe and Diamante recipes name it.
+# Hidetoshi Nakata has no game Idol card: his Idol is a new card (last block).
+default_lang = "en"
+
+[[character]]
+name = "axel_blaze_idol"  # Axel Blaze
+based_on = "c01000100"  # template: Axel Blaze
+order = 48
+
+  [character.base]
+  id = 0xC8C4BD85
+  name = "c90000140"
+  voice_bank = 0x81789A26
+  series = 0xFBE11535
+  team_2 = 0x00000000
+  description_text = 0x03C5EFB0
+  in_ie1 = 0
+  in_ie2 = 1
+  in_ie3 = 0
+
+  [character.text.ja]
+  description = "イプシロンに[立/た]ち[向/む]かうため\n[雷門/らいもん]のエースストライカーが[帰/かえ]ってきた。"
+
+  [character.text.en]
+  description = "Raimon's star striker returns\nto stand up to Epsilon."
+
+  [character.text.es]
+  description = "El regreso del delantero estrella del Raimon\npara plantar cara al Épsilon."
+
+  [character.text.fr]
+  description = "Le retour de l'attaquant vedette de Raimon\npour affronter Epsilon."
+
+  [character.text.de]
+  description = "Raimons Starstürmer kehrt zurück,\num sich Epsilon zu stellen."
+
+  [character.text.it]
+  description = "Il ritorno dell'attaccante di punta della Raimon\nper affrontare l'Epsilon."
+
+  [character.text.pt]
+  description = "O retorno do atacante estrela do Raimon\npara enfrentar o Epsilon."
+
+  [character.text.zh_hans]
+  description = "雷门的王牌前锋回归了，\n为了对抗伊普西龙。"
+
+  [character.text.zh_hant]
+  description = "雷門的王牌前鋒回歸了，\n為了對抗伊普西龍。"
+
+  [[character.cards]]
+  id = 0x9634AFB0  # replaces the game's Axel Blaze Idol card, rarity 6
+  adopt = true
+  build_type = 0
+  ability_board = 0xF9120266
+  title = "inazuma_fantasy_2.axel_blaze_idol_title"
+  growth = "normal"
+  stats = { kick = 358, control = 244, technique = 228, pressure = 184, physical = 228, intelligence = 185, agility = 185, luck = 189, freedom = 0 }
+  moves = [
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x41F3CDC2, level = 17 },                    # Scorching Tackle
+    { move = 0x19025F83, level = 26 },                    # Quick Draw
+    { move = 0xDC0B2991, level = 35 },                    # Inazuma Drop
+    { move = 0x00D8C57C, level = 52 },                    # Fireball Storm
+  ]
+  moment_kit = 0x252CE113
+  own_passives = [0x09865884]                             # Shot AT [CPASSIVE01]+<VALUE>%[C] if the player comes\noff the bench in the second half [passive]
+
+[[character]]
+name = "nathan_swift_idol"  # Nathan Swift
+based_on = "c02024300"  # template: Nathan Swift
+order = 50
+
+  [character.base]
+  id = 0x0C61B7F6
+  name = "c90000142"
+  voice_bank = 0x46B690E2
+  description_text = 0xC760E5C3
+
+  [character.text.ja]
+  description = "エイリア[石/せき]の[力/ちから]で\n[人/ひと]の[限界/げんかい]を[超/こ]えるスピードを[手/て]に[入/い]れた。"
+
+  [character.text.en]
+  description = "The power of the Alius crystal has\ngiven him superhuman speed."
+
+  [character.text.es]
+  description = "Ha superado los límites humanos de la velocidad gracias a la piedra Alius."
+
+  [character.text.fr]
+  description = "Grâce à la pierre Alius, sa rapidité dépasse l'entendement."
+
+  [character.text.de]
+  description = "Der Alius-Stein verlieh ihm\nübermenschliche Schnelligkeit."
+
+  [character.text.it]
+  description = "Grazie alla Pietra di Alius ha acquisito\nuna velocità supersonica."
+
+  [character.text.pt]
+  description = "O poder do Meteorito Alien deu a ele\numa velocidade sobre-humana."
+
+  [character.text.zh_hans]
+  description = "凭借宇宙晶石的力量，\n获得了超越人类极限的速度。"
+
+  [character.text.zh_hant]
+  description = "憑藉宇宙晶石的力量，\n獲得了超越人類極限的速度。"
+
+  [[character.cards]]
+  id = 0xA5C0A705  # replaces the game's Nathan Swift Idol card, rarity 6
+  adopt = true
+  position = "fw"
+  build_type = 4
+  growth_pattern = 1
+  rank = 3
+  element = "wind"
+  play_style = 1
+  ability_board = 0xDFFE8786
+  title = "inazuma_fantasy_2.nathan_swift_idol_title"
+  special_rarity = 6
+  growth = "normal"
+  stats = { kick = 344, control = 254, technique = 281, pressure = 201, physical = 186, intelligence = 228, agility = 193, luck = 104, freedom = 0 }
+  moves = [
+    { move = 0x1A868BED, level = 15 },                    # Clone Defence
+    { move = 0x17A96A44, level = 28 },                    # Clone Faker
+    { move = 0x3BF45E9A, level = 38 },                    # Triple Boost
+    { move = 0x22EF6FDB, level = 55 },                    # Dark Phoenix
+  ]
+  moment_kit = 0x95BBF710
+  cells = { c6 = 6, performance_genre = 0xE5FB31A6 }
+
+[[character]]
+name = "arion_sherwind_idol"  # Arion Sherwind
+based_on = "c05028130"  # template: Arion Sherwind
+order = 51
+
+  [character.base]
+  id = 0x811A1F11
+  name = "c90000143"
+  voice_bank = 0x1A5B55BE
+  team_1 = 0xE7EAEBA2
+  team_2 = 0x00000000
+  team_3 = 0x00000000
+  description_text = 0x4A1B4D24
+  flag_31 = 0
+
+  [character.text.ja]
+  description = "[天馬/てんま]とアーサー[王/おう]がミキシマックスした[姿/すがた]。\n[絶対的/ぜったいてき]な[勇気/ゆうき]を[持/も]った　キングオブＭＦ。"
+
+  [character.text.en]
+  description = "<FST:TENMA> and <FUL:ARTHUR>'s miximaxed\nform is the king of midfielders!"
+
+  [character.text.es]
+  description = "El Miximax Trans de <FST:TENMA> y Arturo es el rey de los centrocampistas."
+
+  [character.text.fr]
+  description = "Le Miximax <FUL:DE2><FST:TENMA> et du <FUL:ARTHUR>.\nLe véritable roi des milieux de terrain !"
+
+  [character.text.de]
+  description = "Der Miximax von <FST:TENMA> und <FUL:ARTHUR>:\nEin Monarch im Mittelfeld!"
+
+  [character.text.it]
+  description = "<FST:TENMA> accoglie l'aura di <FUL:ARTHUR>.\nA centrocampo comanda lui!"
+
+  [character.text.pt]
+  description = "A forma resultante do Miximax entre <FST:TENMA> e <FUL:ARTHUR>.\nÉ a personificação da coragem em campo."
+
+  [character.text.zh_hans]
+  description = "天马与亚瑟王极限合体的形态。\n胸怀绝对勇气的中场之王。"
+
+  [character.text.zh_hant]
+  description = "天馬和亞瑟王極限合體後的姿態。\n擁有絕對勇氣的中場之王。"
+
+  [[character.cards]]
+  id = 0x0D176028  # replaces the game's Arion Sherwind Idol card, rarity 6
+  adopt = true
+  rank = 3
+  ability_board = 0x4F99BE34
+  title = "inazuma_fantasy_2.arion_sherwind_idol_title"
+  special_rarity = 6
+  growth = "normal"
+  stats = { kick = 248, control = 198, technique = 327, pressure = 200, physical = 197, intelligence = 219, agility = 192, luck = 220, freedom = 0 }
+  moves = [
+    { move = 0x9D236FA3, level = 1 },                     # Sword of the King
+    { move = 0xA37D1A41, level = 12 },                    # Hyper-Swiper
+    { move = 0x7C1494CF, level = 35 },                    # Tornado Tunnel
+    { move = 0xAF9E1B72, level = 70 },                    # Ultimate Eleven Assault
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x62256EE2, level = 1 },                     # Arch Pegasus [aura]
+  ]
+  moment_kit = 0xAECB5B3E
+  cells = { c6 = 12, performance_genre = 0x0BF5508A }
+
+[[character]]
+name = "victor_blade_idol"  # Victor Blade
+based_on = "c04000100"  # template: Victor Blade
+order = 52
+
+  [character.base]
+  id = 0xA946A136
+  name = "c90000144"
+  voice_bank = 0xD340B581
+  series = 0x7C97E023
+  team_1 = 0xCE977381
+  team_2 = 0x00000000
+  team_3 = 0x00000000
+  description_text = 0x6247F303
+  in_go1 = 0
+  in_go2 = 0
+  in_go3 = 1
+
+  [character.text.ja]
+  description = "ずば[抜/ぬ]けた[才能/さいのう]で[周/まわ]りを[圧倒/あっとう]する\nダークサイドストライカー。"
+
+  [character.text.en]
+  description = "A dark side striker whose incredible talents\noverwhelm all who witness them."
+
+  [character.text.es]
+  description = "Un delantero afín a la oscuridad.\nSus increíbles talentos abruman a aliados y rivales por igual."
+
+  [character.text.fr]
+  description = "Un attaquant du côté obscur dont les incroyables talents\nsubmergent tous ceux qui en sont témoins."
+
+  [character.text.de]
+  description = "Ein Stürmer der dunklen Seite,\ndessen unglaublichen Talente jeden beeindrucken."
+
+  [character.text.it]
+  description = "Un attaccante votato all'oscurità le cui\nincredibili doti travolgono tutti coloro\nche vi posano sopra gli occhi."
+
+  [character.text.pt]
+  description = "É um atacante da escuridão, cujos incríveis talentos\nimpressionam a todos que os testemunham."
+
+  [character.text.zh_hans]
+  description = "以超人般的实力碾压全场的强力前锋，\n却也隐藏着不为人知的黑暗面。"
+
+  [character.text.zh_hant]
+  description = "同時擁有壓倒眾人的突出實力\n與黑暗面的前鋒。"
+
+  [[character.cards]]
+  id = 0xEDC434E5  # replaces the game's Victor Blade Idol card, rarity 6
+  adopt = true
+  rank = 3
+  build_type = 0
+  ability_board = 0x79D7E960
+  title = "inazuma_fantasy_2.victor_blade_idol_title"
+  special_rarity = 6
+  growth = "normal"
+  stats = { kick = 385, control = 261, technique = 207, pressure = 189, physical = 182, intelligence = 225, agility = 185, luck = 180, freedom = 0 }
+  moves = [
+    { move = 0x1F7F73BA, level = 13 },                    # Bicycle Slash
+    { move = 0x90CD25B4, level = 20 },                    # Supernatural Strike
+    { move = 0x910F4F83, level = 47 },                    # Fire Tornado DD
+    { move = 0xA955D999, level = 85 },                    # The Earth: Infinity
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x372620B0, level = 1 },                     # Wolf Totem [aura]
+  ]
+  moment_kit = 0x38766052
+  cells = { c6 = 11 }
+
+[[character]]
+name = "hector_helio_idol"  # Hector Helio
+based_on = "c03032210"  # template: Hector Helio
+order = 53
+
+  [character.base]
+  id = 0x00164CDB
+  name = "c90000145"
+  voice_bank = 0xE013B64C
+  description_text = 0xCB171EEE
+
+  [character.text.ja]
+  description = "リトルギガントのキャプテンでＧＫ。\nコトアールという[国/くに]の[田舎/いなか]で[育/そだ]った。"
+
+  [character.text.en]
+  description = "Captain and keeper of the Little Gigantes,\nraised deep in Côte-Victoire's countryside."
+
+  [character.text.es]
+  description = "Es el capitán y el portero de los Pequeños Gigantes, se crió en el campo,\nen Costail."
+
+  [character.text.fr]
+  description = "Capitaine et gardien des Petits géants,\nélevé dans la campagne profonde de Costail."
+
+  [character.text.de]
+  description = "Kapitän und Torwart der Little Gigantes,\ntief in der Landschaft von Côte-Victoire aufgewachsen."
+
+  [character.text.it]
+  description = "Capitano e portiere dei Piccoli Giganti,\nnato e cresciuto nelle profondità del Cotarl."
+
+  [character.text.pt]
+  description = "Capitão e goleiro dos Pequenos Gigantes.\nCriado no interior, na pequena vila de Côte-Victoire."
+
+  [character.text.zh_hans]
+  description = "小巨人队长兼门将。\n在风光淳朴的科特亚鲁乡下长大。"
+
+  [character.text.zh_hant]
+  description = "小巨人的隊長兼守門員。\n成長於科特亞魯的鄉村地區。"
+
+  [[character.cards]]
+  id = 0xDE973728  # replaces the game's Hector Helio Idol card, rarity 6
+  adopt = true
+  rank = 3
+  ability_board = 0x29F1D72E
+  title = "inazuma_fantasy_2.hector_helio_idol_title"
+  growth = "normal"
+  stats = { kick = 189, control = 204, technique = 181, pressure = 235, physical = 232, intelligence = 240, agility = 297, luck = 223, freedom = 0 }
+  moves = [
+    { move = 0xA1DEB97A, level = 1 },                     # Soul Hand
+    { move = 0xEB71131A, level = 12 },                    # X Blast
+    { move = 0xB8C5883B, level = 25 },                    # God Hand X
+    { move = 0x7EEA4EE9, level = 55 },                    # Blade Attack
+  ]
+  moment_kit = 0xA8764C5A
+  cells = { c6 = 3 }
+
+[[character]]
+name = "byron_love_idol"  # Byron Love
+based_on = "c01001900"  # template: Byron Love
+order = 54
+
+  [character.base]
+  id = 0x793600FC
+  name = "c90000146"
+  voice_bank = 0x37D7ACFB
+  series = 0x8CE625A3
+  team_1 = 0x1F3FF22B
+  team_2 = 0x00000000
+  description_text = 0xB23752C9
+  in_ie1 = 0
+
+  [character.text.ja]
+  description = "[芸術的/げいじゅつてき]なプレイで[敵/てき]をも[魅了/みりょう]する。\nその[姿/すがた]は[神/かみ]のように[美/うつく]しい。"
+
+  [character.text.en]
+  description = "Captivating the opposition with artistic grace,\nhe plays with the aura of a deity from on high."
+
+  [character.text.es]
+  description = "Su destreza artística cautiva a sus rivales, juega divinamente."
+
+  [character.text.fr]
+  description = "Captivant ses adversaires avec une grâce artistique,\nil joue avec une aura divine."
+
+  [character.text.de]
+  description = "Er zieht Gegner mit artistischer Eleganz in seinen Bann.\nSeine Spielweise wird von einer göttlichen Aura begleitet."
+
+  [character.text.it]
+  description = "La sua grazia affascina anche gli avversari. Quando gioca,\nemana un'aura che sembra provenire da una divinità celeste."
+
+  [character.text.pt]
+  description = "Cativa até os adversários com seu charme e jogadas artísticas.\nSua aura exala um ar quase divino."
+
+  [character.text.zh_hans]
+  description = "如同艺术般的球技令对手都为之倾倒，\n优美的姿态宛如神明降临。"
+
+  [character.text.zh_hant]
+  description = "總是以極具藝術性的球技吸引敵人目光。\n其身姿猶如神一般優美。"
+
+  [[character.cards]]
+  id = 0x209B996D  # replaces the game's Byron Love Idol card, rarity 7
+  adopt = true
+  rank = 3
+  growth_pattern = 1
+  ability_board = 0x149056FA
+  title = "inazuma_fantasy_2.byron_love_idol_title"
+  growth = "normal"
+  stats = { kick = 317, control = 227, technique = 301, pressure = 211, physical = 153, intelligence = 263, agility = 143, luck = 211, freedom = 0 }
+  moves = [
+    { move = 0x1C8CE2B8, level = 1 },                     # God Knows
+    { move = 0x0D368F6B, level = 5 },                     # Heaven's Time
+    { move = 0xBCE9DEAB, level = 30 },                    # Chaos Break
+  ]
+  moment_kit = 0x1813F4FF
+  cells = { flag_36 = 0, c6 = 6 }
+
+[[character]]
+name = "mark_evans_idol"  # Mark Evans
+based_on = "c01000010"  # template: Mark Evans
+order = 55
+
+  [character.base]
+  id = 0x8E9B2189
+  name = "c90000147"
+  voice_bank = 0x99A1C150
+  series = 0x8CE625A3
+  team_1 = 0x6E8EFF55
+  team_2 = 0x00000000
+  description_text = 0x459A73BC
+  in_ie1 = 0
+
+  [character.text.ja]
+  description = "サッカーへの[情熱/じょうねつ]は[誰/だれ]にも[負/ま]けない。\nどんな[時/とき]でも[諦/あきら]めない　[強/つよ]い[心/こころ]を[持/も]つ。"
+
+  [character.text.en]
+  description = "Has more passion for football than anyone else.\nHis mighty heart will never give up, no matter what."
+
+  [character.text.es]
+  description = "Su pasión por el fútbol es insuperable.\nPase lo que pase, su valiente corazón nunca se rendirá."
+
+  [character.text.fr]
+  description = "La passion du football l'emportera toujours.\nSon cœur puissant n'abandonnera jamais, quoi qu'il arrive."
+
+  [character.text.de]
+  description = "Hat mehr Leidenschaft für Fußball als alle anderen.\nSein mächtiges Herz wird niemals aufgeben,\negal was passiert."
+
+  [character.text.it]
+  description = "La sua passione per il calcio è inarrestabile.\nQualunque cosa accada, non è disposto\na mollare per nulla al mondo."
+
+  [character.text.pt]
+  description = "A paixão pelo futebol não perde para nada nem ninguém!\nUm coração de aço inabalável, não importa o conflito."
+
+  [character.text.zh_hans]
+  description = "比任何人都要热爱足球。 \n无论何时都绝不会放弃，拥有坚定的意志。"
+
+  [character.text.zh_hant]
+  description = "對足球的熱情不輸給任何人。\n擁有堅強的內心，無論何時都絕不放棄。"
+
+  [[character.cards]]
+  id = 0x8EEDF4C6  # replaces the game's Mark Evans Idol card, rarity 6
+  adopt = true
+  rank = 3
+  ability_board = 0xA847AF43
+  title = "inazuma_fantasy_2.mark_evans_idol_title"
+  special_rarity = 6
+  growth = "normal"
+  stats = { kick = 247, control = 216, technique = 142, pressure = 201, physical = 282, intelligence = 204, agility = 290, luck = 236, freedom = 0 }
+  moves = [
+    { move = 0xF64674CB, level = 1 },                     # Fist of Justice
+    { move = 0x8AF3EAB9, level = 19 },                    # Hammer of Fury
+    { move = 0x93E8DBF8, level = 35 },                    # Dimensional Hand
+    { move = 0xEE9F2FBD, level = 54 },                    # God Catch
+  ]
+  moment_kit = 0xC68FF352
+  cells = { flag_36 = 0, c6 = 8 }
+
+[[character]]
+name = "joseph_king_idol"  # Joseph King
+based_on = "c02023610"  # template: Joseph King
+order = 57
+
+  [character.base]
+  id = 0xEB031684
+  name = "c90000149"
+  voice_bank = 0xC4B15BF1
+  description_text = 0x200244B1
+
+  [character.text.ja]
+  description = "[王/おう]を[超/こ]えた\nエンペラー・オブ・ゴールキーパー。"
+
+  [character.text.en]
+  description = "The Emperor of Goal Keepers surpasses\nall other shot-stoppers."
+
+  [character.text.es]
+  description = "Ha superado al rey: es el emperador de los porteros."
+
+  [character.text.fr]
+  description = "Le seul, l'unique, le terrible\nEmpereur des gardiens."
+
+  [character.text.de]
+  description = "Der König? Nein, der Kaiser der Torwarte!"
+
+  [character.text.it]
+  description = "L'imperatore incontrastato dei\nportieri."
+
+  [character.text.pt]
+  description = "O Imperador dos Goleiros que supera todos os rivais."
+
+  [character.text.zh_hans]
+  description = "超越王者，\n登顶门将之帝！"
+
+  [character.text.zh_hant]
+  description = "超越王者，君臨天下的守門員帝王！"
+
+  [[character.cards]]
+  id = 0x8D6920A8  # replaces the game's Joseph King Idol card, rarity 7
+  adopt = true
+  build_type = 0
+  rank = 3
+  ability_board = 0x345E9DF4
+  title = "inazuma_fantasy_2.joseph_king_idol_title"
+  growth = "normal"
+  stats = { kick = 177, control = 173, technique = 170, pressure = 261, physical = 252, intelligence = 212, agility = 284, luck = 196, freedom = 0 }
+  moves = [
+    { move = 0xA7157B91, level = 1 },                     # Power Shield
+    { move = 0xA6D711A6, level = 32 },                    # Full Power Shield
+    { move = 0x9765A74A, level = 55 },                    # Beast Fang
+  ]
+  moment_kit = 0xCA2D2A5D
+  cells = { flag_39 = 0 }
+
+[[character]]
+name = "zanark_avalonic_idol"  # Zanark Avalonic
+based_on = "c05021500"  # template: Zanark Avalonic
+order = 58
+
+  [character.base]
+  id = 0x4A786599
+  name = "c90000150"
+  voice_bank = 0xB04222EC
+  team_2 = 0x00000000
+  team_3 = 0x00000000
+  description_text = 0x817937AC
+
+  [character.text.ja]
+  description = "ムゲン[牢獄/ろうごく]からの[脱獄者/だつごくしゃ]。\n[型/かた]にはまるのを[嫌/きら]い　[自由奔放/じゆうほんぽう]に[行動/こうどう]する。"
+
+  [character.text.en]
+  description = "An escapee from the CONTRA Facility.\nHe hates to fit any given mold and simply does whatever he pleases."
+
+  [character.text.es]
+  description = "Joven que se fugó de la prisión CONTRA.\nOdia seguir las normas y hace lo que le da la gana."
+
+  [character.text.fr]
+  description = "Un évadé de la prison Z.E.R.O.\nIl a horreur de suivre les normes et fait ce qui lui plaît."
+
+  [character.text.de]
+  description = "Ein Ausbrecher aus der KONTRA-Anstalt.\nEr hasst es, sich anpassen zu müssen und tut stets nur, wozu er Lust hat."
+
+  [character.text.it]
+  description = "Un evaso dal Centro di detenzione. Odia essere etichettato\ne fa sempre e solo quel che gli passa per la testa."
+
+  [character.text.pt]
+  description = "Um fugitivo da Prisão de Mugen.\nEle detesta se encaixar em padrões e só faz o que quer."
+
+  [character.text.zh_hans]
+  description = "无限监狱的越狱者。\n讨厌受制于人，行事肆意妄为。"
+
+  [character.text.zh_hant]
+  description = "無限監獄的逃獄者。\n討厭被束縛，行動自由奔放。"
+
+  [[character.cards]]
+  id = 0xA70E177A  # replaces the game's Zanark Avalonic Idol card, rarity 5
+  adopt = true
+  rank = 3
+  ability_board = 0xD91CA783
+  title = "inazuma_fantasy_2.zanark_avalonic_idol_title"
+  growth = "normal"
+  stats = { kick = 367, control = 273, technique = 215, pressure = 135, physical = 251, intelligence = 176, agility = 174, luck = 209, freedom = 0 }
+  moves = [
+    { move = 0x1876DB66, level = 15 },                    # Disaster Strike
+    { move = 0xD0A1DBC3, level = 28 },                    # Bungee Ball Burst
+    { move = 0x93885A64, level = 47 },                    # Fire Drill
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0xD99B5FA1, level = 1 },                     # Mix 'n' Match: Zeta [aura]
+  ]
+  moment_kit = 0x9EE88F14
+  cells = { flag_36 = 0, c6 = 12 }
+
+# Hidetoshi Nakata: a new Idol card (no game Idol of his exists). Its names are its own (the game has no Nakata).
+[[character]]
+name = "nakata_hidetoshi_idol"  # Nakata Hidetoshi
+based_on = "c03031700"  # template: Paolo Bianchi
+order = 49
+
+  [character.base]
+  id = 0x841DD0E8
+  name = "c90000141"
+  name_text = 0x64B207D9
+  short_name_text = 0x523427CD
+  upper_name_text = 0x523427CD
+  model = 0x8EC2F9F9
+  voice_bank = 0x17E59FB8
+  description_text = 0x4F1C82DD
+
+  [character.text.ja]
+  name = "中田英寿"
+  short = "中田"
+  description = "[世界中/せかいじゅう]で[知/し]られる\n[伝説/でんせつ]のプレーヤー。"
+
+  [character.text.en]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "This icon of international football is an undisputed legend!"
+
+  [character.text.es]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "Este chico es una leyenda en todo el mundo."
+
+  [character.text.fr]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "Cette icône du football international est une légende incontestée !"
+
+  [character.text.de]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "Diese Ikone des internationalen Fußballs ist eine unbestrittene Legende!"
+
+  [character.text.it]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "Questa icona del calcio internazionale è una leggenda indiscussa!"
+
+  [character.text.pt]
+  name = "Nakata Hidetoshi"
+  short = "Hide Nakata"
+  description = "Este ícone do futebol internacional é uma lenda incontestável!"
+
+  [character.text.zh_hans]
+  name = "中田英寿"
+  short = "中田"
+  description = "享誉世界的传奇球员。"
+
+  [character.text.zh_hant]
+  name = "中田英壽"
+  short = "中田"
+  description = "享譽世界的傳奇球員。"
+
+  [[character.cards]]
+  id = 0x9D63CA7B  # new card: MF/FW · mountain · rarity 6
+  from = 0x50F8C717  # template: Simeon Ayp (c05023300_5000)
+  order = 61
+  position = "mf"
+  sub_position = "fw"
+  build_type = 3
+  ability_board = 0xCDB050A6
+  title = "inazuma_fantasy_2.nakata_hidetoshi_idol_title"
+  special_rarity = 6
+  growth = "normal"
+  stats = { kick = 282, control = 227, technique = 294, pressure = 186, physical = 189, intelligence = 262, agility = 190, luck = 212, freedom = 0 }
+  moves = [
+    { move = 0xA5F2EFEA, level = 1 },                     # Brave Shot
+    { move = 0x31ABD82E, level = 20 },                    # Circus Block
+    { move = 0x15EFD41D, level = 48 },                    # Dual Pass
+    { move = 0x5E233E68, level = 60 },                    # Super Elastico
+  ]
+  moment_kit = 0xCCA74C04  # Orpheus kit

@@ -1,0 +1,12 @@
+# VR-Framework › «Equipamiento» (equip_menu): Aceptar on an item row no longer switches to the item list by itself.
+# The row layer's focus (MENU_FOCUS_BASE_INFO 0, retail [0x3A06AC3D, equip_menu_list, 0]) targets no group; the row
+# script (graft vrfw_outfit, equip_menu_select OnDecideFocus) opens the list group for the item rows and the «Atuendo»
+# row, and switches a card look in place on its row (docs/framework/outfits.md §4.2), as retail
+# equip_tactics_menu_select opens its list from Lua.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "equip_menu"
+set_row = [
+    { list = "MENU_FOCUS_BASE_INFO", index = 0, values = [0x3A06AC3D, 0, 0] },
+]

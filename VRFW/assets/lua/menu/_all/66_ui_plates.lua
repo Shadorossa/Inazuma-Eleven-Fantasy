@@ -1,4 +1,4 @@
--- VRFW_UI: the shared UI plates of the VR-Framework (docs/framework/ui-plates.md; owner 2026-10-13: ONE player header
+-- VRFW_UI: the shared UI plates of the VR-Framework (ONE player header
 -- row and ONE move plate for every screen, so a fix reaches all of them). Definitions only (this file runs in every
 -- script VM, lua\_all, after the retail chunk): screens call it from their callbacks; no engine call at load.
 -- Layout numbers: VRFW_UI_LAYOUT (65_ui_plates_layout.lua, GENERATED from content\defaults\ui_plates.toml).
@@ -108,7 +108,7 @@ if VRFW_UI == nil then
   --                     (coach / manager: nil, true); else his card's main position (hdl, 4 -> ParamType); else the
   --                     status' own (hdl, 9) when it is 0..3; else nil (unknown). (hdl, 9) is not a number for a status
   --                     outside the team (bank, lists), and a non-number given to the retail icon function is «0» = GK:
-  --                     the card's position comes first (2026-10-13, the position_cards rule and the header's merged).
+  --                     the card's position comes first (the position_cards rule and the header's merged).
   --   Natural(hdl)      false, icon (a player and his badge sprite) / true (staff) / nil (unknown)
   HR.POS_TYPE_ICON = {[1] = 0, [2] = 3, [3] = 2, [4] = 1}
   C.CHARA_INFO = 4060384944
@@ -230,7 +230,7 @@ if VRFW_UI == nil then
     return v
   end
 
-  -- a dual archetype: the pair command `cmd` (the caller's: Utilities' CMND_UTIL_PC_INFO) answers got, _, a, b
+  -- a dual archetype: the pair command `cmd` (the caller's own command) answers got, _, a, b
   function HR.Dual(hdl, cmd)
     if hdl == nil or cmd == nil then
       return false
@@ -452,7 +452,7 @@ if VRFW_UI == nil then
     return fresh or funcLuaMenuCommand(MP.LOADING, row) == true
   end
 
-  -- 2026-10-13 (owner, Tabla de habilidades: a purple «Armadura» tag and a white square at the right of EVERY row plate):
+  -- (Tabla de habilidades: a purple «Armadura» tag and a white square at the right of EVERY row plate):
   -- a layer instance opened in this frame (or still loading) does not keep mesh / number commands: the plate came up
   -- with its layout's defaults (the armed logo and the AT placeholder shown, no AT digits). Such a fill is queued and
   -- done again once the instance is ready: MovePlate.Pump() (the screens call it from their Step) redoes it; a later
@@ -493,7 +493,7 @@ if VRFW_UI == nil then
     end
   end
 
-  -- 2026-10-13 (owner, second report: «Sigue saliendo lo de armadura, el cuadro blanco» with the refill installed): the
+  -- (with the refill installed): the
   -- row's own animation (the lock / AT clip the retail fill plays on every row) shows the armed logo and the AT
   -- number's placeholder again after any one-off hide (the player page hides that placeholder every frame for the
   -- same reason, plate_pages G.Moves). So the state of every filled plate is HELD: each frame (Pump(true)) the armed
@@ -516,7 +516,7 @@ if VRFW_UI == nil then
         end
         funcLuaMenuCommand(C.MESH, e.row, MP.ARMED, e.armed == true or MP.SecondBadge(e.row, e.inst), e.inst)
         funcLuaMenuCommand(C.MESH, e.row, MP.AT_DMY, false, e.inst)
-        -- 2026-10-13 (owner: «Se ve el cuadrado blanco, si no tiene efecto no debería salir»): the property badge slot
+        -- the property badge slot
         -- is held as the fill left it (shown only with a badge drawn: retail's / move_icons' first badge); the row's
         -- animation re-showed the empty slot (its white placeholder sprite) on moves without a property
         funcLuaMenuCommand(C.MESH, e.row, MP.SUB, e.sub == true, e.inst)
@@ -526,7 +526,7 @@ if VRFW_UI == nil then
 
   -- the graft move_icons draws a row's SECOND badge (a move with two properties: long + counter shot, a move and its
   -- also_as twin) on this same mesh (EVT_MI.armed[layer][inst] set while it does): the mesh stays shown then, else
-  -- the held armed rule hid the 2nd badge every frame (owner 2026-10-13: Excálibur showed only «Tiro largo»)
+  -- the held armed rule hid the 2nd badge every frame (Excálibur showed only «Tiro largo»)
   function MP.SecondBadge(row, inst)
     return EVT_MI ~= nil and type(EVT_MI.Get) == "function" and EVT_MI.armed ~= nil
       and EVT_MI.Get(EVT_MI.armed, row, inst) ~= nil
@@ -565,7 +565,7 @@ if VRFW_UI == nil then
     if Open(o, row, inst) and o.redo ~= true and o.queued ~= true then
       Queue(MP.Fill, row, inst, chara, move, o)
     end
-    -- 2026-10-13 (owner: Excálibur's row showed only «Tiro largo», not «contratiro»; loader.log «move_icons row
+    -- (not «contratiro»; loader.log «move_icons row
     -- 3A3634AD 3 2650954806 nil»): the move icons service (graft move_icons, EVT_MI) draws a row's SECOND badge only on
     -- layers whose geometry it knows (EVT_MI.GEOM). Every move plate is a soccer11_09 row: its layer is registered as
     -- such («b») before the fill, so a move with two properties shows both badges (MovePlate.SecondBadge keeps the
@@ -753,7 +753,7 @@ if VRFW_UI == nil then
   end
 
   -- the first tension scale the given teams answer (a table.pack: nil entries are skipped). Team 255 with the flag set
-  -- answers the menus' global scale (handler 0xC2C150, what the retail menus get outside a match)
+  -- answers the menus' global scale (what the retail menus get outside a match)
   function MP.TensionScale(teams)
     teams = teams or {255, n = 1}
     for i = 1, teams.n or #teams do

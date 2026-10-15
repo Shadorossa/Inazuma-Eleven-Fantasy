@@ -34,6 +34,16 @@ add_cmd = [
     { layer = "evt_bb_draft_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xC1A9A956 },
 ]
 
+# 1.5.69: the «Plantilla» viewer (Y on a tile of the Campaña grid, graft bbd_roster.lua) uses the same anchor: Y closes
+# it (1.5.70), Q / E (LT / RT) turn the player page's pages; the Draft ignores these functions
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_cmd = [
+    { layer = "evt_bb_draft_anchor", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0xB2129CCE },    # evt_bbd_roster_y
+    { layer = "evt_bb_draft_anchor", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x87509B6F },   # evt_bbd_roster_page_prev
+    { layer = "evt_bb_draft_anchor", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x3F9D0306 },   # evt_bbd_roster_page_next
+]
+
 # ---- the candidates' «pack opening» (1.5.26, graft bbd_campaign.lua; config.toml [draft.pack]) ---------------------
 # When a slot's 5 candidates are opened the screen darkens, a band opens across it, the 5 cards (evt_bb_draft_card,
 # moved onto the band and drawn larger) are dealt face down and turned one by one with a flash, their names under
@@ -71,3 +81,19 @@ add_layer = { name = "evt_bbd_pk_quad", object = "evt_bbd_pk_quad", count = 16, 
 [[patch]]
 menu = "enjoy_team_select_menu"
 add_layer = { name = "evt_bbd_pk_txt", object = "evt_bbd_pk_txt", count = 7, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_pk_quad", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }] }
+
+# 1.5.71: the «Plantilla» viewer's look (graft bbd_roster.lua), the in-match «Formación» screen's own objects
+# (soccer_formation_menu): its background, its pitch frame with the bench and coach places, its formation bar. Campaña
+# grid only, opened by the Lua (not with the group); priorities and places set by the Lua (just above the picker's
+# background).
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_bg", object = "soccer11_01_formation_bg", count = 1, after = "vrfw_bb_page_guide", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "vrfw_bb_page_guide" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_frame", object = "soccer11_02_formation_frame", count = 1, after = "evt_bbd_roster_bg", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_bg" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_title", object = "soccer11_12_formation_button", count = 1, after = "evt_bbd_roster_frame", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_frame" }] }

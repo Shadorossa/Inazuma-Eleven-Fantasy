@@ -1,0 +1,44 @@
+# Synergies Reworked › the declaration schema of the reworked synergies (kind VRFW.synergy/1, any mod's
+# content\synergies\*.toml). The run time is the framework's (VRFW scripts\synergy.lua, docs/framework/synergy.md);
+# this file lists every key it reads, so `vrfw check` validates the files and the ModManager «Sinergias» editor draws
+# its forms from it. A declaration replaces the condition characters of one game synergy; its name, slot, icon and
+# effects stay the game's.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.synergy/1"
+folder = "content/synergies"
+
+# How this format changes the game's synergy (the editor's model). Read by the editor only.
+[model]
+extends = "game.synergy"                       # the game's synergies: skill/synergy_flag + item/item_synergy_flag
+record = "Synergy"                             # the entry that reworks one game synergy
+record_key = "key"                             # its key naming the game synergy
+group = "SynergyPool"                          # the entry the slots draw their players from
+replaces = ["conditions"]                      # the game's condition characters (SYNERGY_FLAG_EXEC_COND)
+keeps = ["name", "kind", "icon", "effects"]    # what stays the game's
+panel_rows = 3                                 # the detail panel's rows: nexus + slots ≤ 3
+one_per_synergy = true                         # one declaration per game synergy (the first mod in load order)
+
+[entry.SynergyPool]
+doc = "a pool of players: criteria over the game's data (all given criteria must hold; at least one)"
+name = { type = "name", required = true, doc = "the pool's name (a-z 0-9 _), key <mod>.<name>" }
+teams = { type = "ids", ref = "team", doc = "belong team ids (chara_base team_1..team_3: any of the three); the order is the panel's crest order" }
+series = { type = "strings", ref = "series", doc = "source series (chara_base series): ie1 ie2 ie3 go1 go2 go3 ares orion victory_road or an alias of content\\defaults\\series_names.toml" }
+role = { type = "string", values = ["manager", "coach"], doc = "a staff card: the character has a manager / coach card" }
+gender = { type = "string", values = ["male", "female"], doc = "chara_base gender" }
+charas = { type = "ids", ref = "character", doc = "characters always in the pool (chara_base keys)" }
+exclude = { type = "ids", ref = "character", doc = "characters never in the pool" }
+hint = { type = "string", ref = "text_key", doc = "text key of an empty slot of this pool; {team} = the name of the pool's first team" }
+
+[entry.Synergy]
+doc = "a game synergy whose condition characters are replaced by a nexus and slots filled from pools"
+key = { type = "string", required = true, ref = "synergy", doc = "the game synergy's key (sp04003, sf02002…)" }
+nexus = { type = "ids", ref = "character", person = true, doc = "one of these characters must be in the team (versions of one person); empty = no nexus" }
+pool = { type = "string", ref = "pool", doc = "one pool for every slot (with count); a pool of this mod, or <mod>.<name>" }
+count = { type = "int", min = 1, max = 3, doc = "slots filled from pool (with pool); nexus + count ≤ 3" }
+slots = { type = "strings", ref = "pool", doc = "one pool per slot (replaces pool + count); each slot filled by a different person" }
+rule = { type = "string", default = "min", values = ["min", "exact"], doc = "min: at least count players; exact: exactly count (slots need min)" }
+distinct = { type = "string", default = "person", values = ["person", "character"], doc = "person: two versions of one person count once" }
+skip_nexus_team = { type = "bool", default = false, doc = "with slots and a nexus: the slots whose pool names a belong team of the nexus are not in play" }
+slot_members = { type = "bool", default = false, doc = "with slots: each slot row shows its team's crest and players (every slot pool needs teams)" }
+hint = { type = "string", ref = "text_key", doc = "text key of an empty slot (when its pool has no hint)" }
+placeholder = { type = "string", ref = "character", doc = "the character an empty slot's row is drawn with (default: a pool character not in the team)" }

@@ -1,13 +1,6 @@
--- VR-Framework › free-match tab pages (service S8 of VRFW 2.3, docs/framework/free-match-tabs.md §11). Declarations:
--- every active mod's content\free_match_pages\*.toml (`VRFW.free_match_page/1`, keys:
--- content\types\free_match_page.toml); native side: content\game\free_match_pages.toml (hook FreeMatch.SetTab, installed
--- only when a mod declares a paged tab; its answer is native, table VRFW.FreeMatch.Page).
---
---   * A paged tab: the bar shows one tab; page k lists the rows of the tab index `pages[k]` (the routeType of that
---     page's pieces). The game Lua turns the pages (CMND_VRFW_FM_PAGE(tab, ±1)) and redraws the list; the bar's tab
---     index (the list's focused-tab field, the saved tab) never changes.
---   * Page 1 at every return to the title (the answer is keyed by the framework's title-return count).
---   * CMND_VRFW_FM_PAGE(tab, delta) -> page (1-based), pages, live.
+-- Paged free-match tabs (content/free_match_pages/*.toml, schema VRFW.free_match_page/1); native hook FreeMatch.SetTab is installed only when a mod declares a paged tab.
+--   * Page k of a tab lists the rows of tab index `pages[k]`; every title return resets to page 1.
+--   * CMND_VRFW_FM_PAGE(tab, delta) -> page (1-based), pages, live
 
 FreeMatchPages = FreeMatchPages or {}
 
@@ -30,7 +23,7 @@ local function epoch()
   return nil
 end
 
--- a title return since the last call: every tab back on page 1
+-- after a title return every tab goes back to page 1
 local function check_reset()
   local e = epoch()
   if e ~= seen_epoch then
@@ -40,7 +33,7 @@ local function check_reset()
   return e
 end
 
--- the native answer: the bar's tab -> the tab index of its page in force (nothing for page 1 = the tab itself)
+-- native answer: bar tab -> tab index of its current page (nothing for page 1)
 local function publish()
   pcall(VRFW.native.table_clear, T_PAGE)
   local e = check_reset()

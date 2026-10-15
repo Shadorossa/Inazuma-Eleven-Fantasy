@@ -1,15 +1,16 @@
 # The VR-Framework's chain board screen vrfw_chain_board_menu (docs/framework/chain-board.md): the 3DS «Cadenas» board
-# of a [[VRFW.Chain]] with [[VRFW.Chain.Tile]]s (team type), opened by a mod's board (Inazuma Fantasy: the Chronicle board's «C»
-# pieces, graft route_chains). Written from Inazuma Fantasy's INAROGUE coach selector (menus\rogue_coaches.toml): base
+# of a [[VRFW.Chain]] with [[VRFW.Chain.Tile]]s (team type), opened by a mod's board (graft route_chains). Written from a coach selector menu: base
 # savedata_management_menu (background, header, guide line, cursor, button guides, the off-screen input anchor) + quad
 # pools of the framework's own objects (below), by draw priority: vrfw_chain_bg (451: the page panels), vrfw_chain_line
 # (453: the links), vrfw_chain_tile (455: tile plates, the mouse's hit areas), vrfw_chain_emb (457: crest / icon on the
 # tile), vrfw_chain_tag (458: rank badge / check), vrfw_chain_ui (459: cursor ring, page title plates, page arrows), and
 # vrfw_chain_title (the retail list item, 551: the help window's lines and a chain hub's list rows, its plate meshes hidden), vrfw_chain_card (459)
-# + vrfw_chain_cardtxt (551): the team card above the board (2.0.49), vrfw_chain_icon (461, 2026-10-11): the card's crest
+# + vrfw_chain_cardtxt (551): the team card above the board, vrfw_chain_icon (461): the card's crest
 # and the help window's badges / separators above their panels. Board pool counts = two pages
-# of at most 6 x 5 tiles (team type MAX_BOARD_COLS / ROWS). Art: images\menu\220_img\vrfw_chain.toml (the framework's
-# own drawings, research/scripts/chain_board_art.py). The script is the Lua build's full file (graft chain_board,
+# of at most 6 x 5 tiles (team type MAX_BOARD_COLS / ROWS). Art: ROLES a mod declares for the screen
+# "chain_board" (content\screen_art\, docs/framework/screen-art.md), loaded on demand: a
+# mod's atlas is never in `res` (it may not exist); a role nobody declares is a plain tinted shape of the framework's
+# neutral atlas vrfw_plain (in `res`), an undeclared background keeps the retail menu background. The script is the Lua build's full file (graft chain_board,
 # `menu_assemble.py build --mod vr_framework`), packed by framework_pack.py as menus\scripts\vrfw_chain_board_menu.lua.
 # Harmless when no mod declares a chain board: nothing opens the screen.
 schema = "VRFW.menu/2"
@@ -24,8 +25,8 @@ layout = [
 ]
 
 # ---- objects ----------------------------------------------------------------------------------------------------------
-# the input anchor's attach base: save01_01_list_attach_base with only instance 0's attach row (as IF's
-# evt_rogue_bank_rows) and the system line / time text moved off screen (layout below)
+# the input anchor's attach base: save01_01_list_attach_base with only instance 0's attach row (as a coach selector's
+# rogue_bank_rows) and the system line / time text moved off screen (layout below)
 [[object]]
 name = "vrfw_chain_rows"
 from = "save01_01_list_attach_base"
@@ -40,7 +41,7 @@ set = [
     { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" }, values = { 1 = "common/menu/51_save/save01/vrfw_chain_rows/vrfw_chain_rows.g4pkm" } },
 ]
 
-# the IE3 chain screen's background (2.0.37): a full-screen quad at the retail background's priority (450, under the
+# the declared background (role background; 2.0.37: IE3's chain screen background): a full-screen quad at the retail background's priority (450, under the
 # header 452); the script hides mainmenu90_00_background
 [[object]]
 name = "vrfw_chain_back"
@@ -60,7 +61,7 @@ name = "vrfw_chain_card"
 from = "cmn01_10_new_icon"
 set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
 
-# what sits ON the card / the help window (2026-10-11): the card's crest, the help window's rank badges and row
+# what sits ON the card / the help window: the card's crest, the help window's rank badges and row
 # separators, in their own layer above both panels (461; drawn in the panel's own layer they came out faded)
 [[object]]
 name = "vrfw_chain_icon"
@@ -157,8 +158,7 @@ res = [
     "#/menu/220_img/savedata_img/savedata_ch_img01.g4tx",
     "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
     "#/menu/200_icon/100_num/num_victory.g4tx",
-    "#/menu/220_img/vrfw_chain/vrfw_chain.g4tx",
-    "#/menu/220_img/vrfw_chain/vrfw_chain_back.g4tx",
+    "#/menu/220_img/vrfw_plain/vrfw_plain.g4tx",
 ]
 group_base = [
     { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },

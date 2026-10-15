@@ -9,9 +9,12 @@
 --   * old saves: every normal piece with a Crónica clear gets its Heroica unlocked when the board comes back
 --     (VRFW_RB_BackOnBoard); clear bits are never removed
 --   * dots: a piece shows only the difficulties that exist (VRFW_MatchDifficulty, this mod's
---     content\defaults\match_difficulty.toml)
+--     content\defaults\match_difficulty.toml), on a bar with one socket per difficulty, centred under the crest
+--     (ChronicleDeluxe.OrbBar, cd_orb_bar.lua; before the framework's rank badge, VRFW_RB_Badge, which may take the
+--     6th dot)
 -- With Inazuma Fantasy's Chronicle redesign in the same script (its global EVT_ChrClear, graft chronicle_redesign) the
 -- clear flow is IF's: these handlers pass (one trigger 506 per win).
+@ORB_BAR@
 ChronicleDeluxe = ChronicleDeluxe or {}
 ChronicleDeluxe.Board = ChronicleDeluxe.Board or {}
 local B = ChronicleDeluxe.Board
@@ -127,5 +130,15 @@ if VRFW_Host ~= nil then
       return false
     end
     return nxt(kind, difficulty)
+  end})
+  -- the orb bar of a piece, after the retail dots of UpdatePieceClearIcon(layer, instance, piece)
+  VRFW_Host.on(stem, "VRFW_RB_Badge", {id = id .. "_orb_bar", phase = "before", fn = function(layer, instance, piece)
+    if B.IfOwnsFlow() or piece == nil or piece == -1 then
+      return
+    end
+    local ok, kind = GetTownMapResourceEvent(piece, 1, true)
+    if ok then
+      ChronicleDeluxe.OrbBar.Fit(layer, instance, kind, GetGameDifficultyArray(kind), GetClearIconLocatorNameArray(kind))
+    end
   end})
 end

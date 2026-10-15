@@ -116,7 +116,18 @@ local function EVT_McIndex(skill)
   return nil
 end
 
+-- the shared create-entry rules of Character Reforged (its lua\_all\character_reforged_create_card.lua), nil without it
+local function EVT_CreateCard()
+  local cr = rawget(_G, "CharacterReforged")
+  return type(cr) == "table" and type(cr.CreateCard) == "table" and cr.CreateCard or nil
+end
+
 local function EVT_MxCompatible(skill)
+  -- 2026-10-14 (owner): the VR-Framework's rule of the retail Mix-Max rows (owners / whitelist of the loaded data)
+  local card = EVT_CreateCard()
+  if card ~= nil and EVT_MX.hdl ~= nil and EVT_MX.hdl ~= 0 and not card.Allowed(skill, EVT_MX.hdl) then
+    return false
+  end
   local list = EVT_MX.COMPAT[skill]
   if list == nil then
     return true                                 -- not a retail miximax row
@@ -148,13 +159,19 @@ function OnInit()
   if EVT_SS2_PICK_GEN ~= EVT_PICK_GEN then -- an earlier copy of this block: pass through (see the top)
     return EVT_RetailOnInit()
   end
+  if type(VRFW_Copies) == "table" then
+    pcall(VRFW_Copies.Reset)                  -- unlimited copies: asked again per list open
+  end
   if funcLuaCommand(2947612279, EVT_KEY_PICK) then
     local m = tonumber(funcLuaCommand(3522198769, EVT_KEY_PICK)) or 1
     evt_pick = true
     evt_mode = (m == 3 and "P") or (m == 2 and "S") or "N"   -- try 26: 3 = six sense ("Pasiva personalizada")
     EVT_MX.prime = funcLuaCommand(2947612279, EVT_MX.KEY_PRIME) == true
     EVT_MX.fused = funcLuaCommand(2947612279, EVT_MX.KEY_FUSED) == true
-    EVT_MX.chara, EVT_MX.param, EVT_MX.forbid = 0, 0, false
+    EVT_MX.chara, EVT_MX.param, EVT_MX.forbid, EVT_MX.hdl = 0, 0, false, 0
+    if EVT_CreateCard() ~= nil then
+      pcall(EVT_CreateCard().Reset)
+    end
     local function pget(k)
       return funcLuaCommand(2947612279, k) and EVT_U32(funcLuaCommand(3522198769, k)) or 0
     end
@@ -166,6 +183,7 @@ function OnInit()
     end
     if funcLuaCommand(2947612279, EVT_MX.KEY_BASE) then
       local h = funcLuaCommand(3522198769, EVT_MX.KEY_BASE)
+      EVT_MX.hdl = type(h) == "number" and h or 0
       EVT_MX.chara = EVT_U32(funcLuaCommand(1131797651, h, 1))
       EVT_MX.param = EVT_U32(funcLuaCommand(1131797651, h, 4))
       local okf, fb = pcall(funcLuaCommand, 3835898462 --[[CMND_EVT_MX_FORBIDDEN]], h)
@@ -246,21 +264,29 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
     return EVT_RetailUpdateListItem(a1, a2, a3, a4, a5, a6, a7)
   end
   EVT_RetailUpdateListItem(a1, a2, a3, a4, a5, a6, a7)
+  -- an item with unlimited copies (VR-Framework VRFW_Copies: a rule a mod declares holds in this save) serves every
+  -- player from one copy: its row has no copy counters and its owned copy is always free
+  local unlimited = false
+  if a1 == EVT_ITEM and type(VRFW_Copies) == "table" then
+    local okU, u = pcall(VRFW_Copies.ListRow, a1, a2, EVT_U32(funcLuaCommand(901208644, a3)))
+    unlimited = okU and u == true
+  end
   if evt_pick and a1 == EVT_ITEM then
     local skill = EVT_U32(funcLuaCommand(901208644, a3))
     evt_rows[a2] = skill
     if skill ~= 0 then
       evt_inv[skill] = EVT_U32(a3)
-      evt_free[skill] = (tonumber(a5) or 0) > (tonumber(a6) or 0)
+      evt_free[skill] = (tonumber(a5) or 0) > (tonumber(a6) or 0) or (unlimited and (tonumber(a5) or 0) >= 1)
     end
     local usable = skill ~= 0 and EVT_Allowed(skill) and (evt_free[skill] or evt_used[skill] ~= nil)
     if skill ~= 0 and skill ~= EVT_MX.FUSION then
       funcLuaMenuCommand(711242136, a1, a2, true)  -- list instances are reused: undo a hidden carrier row
     end
-    if skill == EVT_MX.CREATE then
+    if skill == EVT_MX.CREATE and EVT_CreateCard() ~= nil then
       usable = not EVT_MX.prime
-      funcLuaMenuCommand(1083631230, a1, 931545948 --[[_text_list01_on]], "Crear miximax", a2)
-      funcLuaMenuCommand(1083631230, a1, 3705682548 --[[_text_list01_off]], "Crear miximax", a2)
+      pcall(EVT_CreateCard().Row, a1, a2, skill)  -- the item's own name, no counts, the Mix-Max icon (one rule)
+    elseif skill == EVT_MX.CREATE then
+      usable = not EVT_MX.prime
       -- neutral row: not the template's element / category icon, no counts
       for _, m in ipairs({1255155594 --[[_icon_cmd_type_dmy01]], 2172872396 --[[_icon_cmd_type_base01]],
           2164615260 --[[_icon_sp_area_dmy01]], 559600405 --[[_icon_sp_sub_dmy01]]}) do
@@ -591,7 +617,15 @@ function UpdateSkillDetailWindow(a1, a2, a3)
   EVT_ListState.focus = (okInfo and type(a1) == "number") and a1 or 0
   local skill = EVT_U32(a1)
   if evt_pick and skill == EVT_MX.CREATE then
-    pcall(EVT_MxDetail, skill)
+    -- the item's own card (Character Reforged's shared rule: its name and text, no template portrait / move)
+    local card = EVT_CreateCard()
+    local okc, done = false, false
+    if card ~= nil then
+      okc, done = pcall(card.Detail, skill)
+    end
+    if not (okc and done) then
+      pcall(EVT_MxDetail, skill)
+    end
   elseif evt_pick and skill == EVT_MX.FUSION then
     funcLuaMenuCommand(711242136, 3679282495 --[[the miximax window]], 0, false)   -- the hidden carrier: no detail
   end

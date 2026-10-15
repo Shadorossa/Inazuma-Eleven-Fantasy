@@ -30,6 +30,7 @@
 -- | CMND_BBCR_DRAFT_PICK | k, i -> ok, done, slot, param, filled: candidate i of place k taken, the rows written |
 -- | CMND_BBCR_DRAFT_ABANDON | -> true: placeholders back, no draft (a running draft campaign is kept) |
 -- | CMND_BBD_DRAFT_PACK | -> ok, 12 numbers, 4 sound hashes: the candidates' «pack opening» look ([draft.pack]) |
+-- | CMND_BBD_FORMATION_PLACE | formation, slot -> ok, pos, x, y: a starter slot's placement (the «Plantilla» viewer) |
 -- | CMND_BBCR_DRAFT_SYNC | active (1/0), playerTeam (the BB top menu's campaign info) -> phase |
 
 local U = require "lib/util"
@@ -575,6 +576,16 @@ local function write_row(row, id)
     m.uid = id
   end)
   return a and b
+end
+
+-- 1.5.64: a team's member rows in memory ({ { slot, param, uid, addr } … }; nil, why) and one row written (param = uid =
+-- id), for the Active team tile's mirror (active_team.lua): one reader / writer of the rows
+function D.member_rows(team)
+  return read_rows(team)
+end
+
+function D.write_member(row, id)
+  return write_row(row, id)
 end
 
 local function placeholder_of(pool, slot)
@@ -1468,6 +1479,33 @@ function BattleBayDeluxe.DraftSlot(k)
   end
   local s = e.spec
   return true, s.slot, s.pos, s.x, s.y, e.pick or 0, s.placeholder
+end
+
+-- CMND_BBD_FORMATION_PLACE formation, slot -> ok, pos, x, y: the placement of a starter slot (0-10) of any formation
+-- (formation_config, the units of CMND_BBCR_DRAFT_SLOT); the «Plantilla» viewer of the Campaña grid lays a team's
+-- starters out with it (graft bb_draft, bbd_roster.lua). Each formation is read once.
+local PLACES = {}
+
+function BattleBayDeluxe.FormationPlace(formation, slot)
+  local id = U.u32(formation)
+  slot = U.int(slot, -1)
+  if id == 0 or slot < 0 then
+    return false
+  end
+  local places = PLACES[id]
+  if places == nil then
+    local ok, got = pcall(formation_places, id)
+    places = ok and got or false
+    PLACES[id] = places
+    if not ok then
+      warn("formation place: " .. tostring(got))
+    end
+  end
+  local p = places and places[slot]
+  if not p then
+    return false
+  end
+  return true, p.pos, p.x, p.y
 end
 
 function BattleBayDeluxe.DraftCands(k)

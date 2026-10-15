@@ -1,19 +1,15 @@
--- «Competir contra bots» / «Partido libre» (was team_engine fm_rules.rs, fm_tabs.rs, fm_difficulty.rs;
--- docs/framework/free-match-tabs.md): the rules of `[VRFW.FreeMatch]` (merged per key in load order), the extra tabs
--- `[[VRFW.FreeMatchTab]]` (numbered 9, 10, … and written as the routeType of their pieces) and their difficulty rows /
--- clear bits (`VRFW.Difficulties`), and the class levels of every free-match game. The single-orb layout of
--- `Orb = "best"` is the native part VRFW.team.orb_layout (a menu layout file).
+-- Free match: `[VRFW.FreeMatch]` rules (merged per key in load order), extra tabs `[[VRFW.FreeMatchTab]]` (numbered 9, 10, … and written as the routeType of their pieces), their difficulty rows / clear bits (`VRFW.Difficulties`) and class levels of every free-match game.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local GAME_DIR = "data/common/gamedata/soccer/game/"
 local FM = {}
 
--- the classes of the free match (rows 6..9 of SOCCER_GAME_DIFFICULTY)
+-- the free-match classes (rows 6..9 of SOCCER_GAME_DIFFICULTY)
 local CLASS_LO, CLASS_HI = 6, 9
--- the shared number space of the clear bits
+-- the shared clear-bit number space
 local CLEAR_SPACE = "vrfw.clear_bit"
 
--- `"<atlas>:<sprite>"` (the atlas a `#/` path; split at the last `:`)
+-- `"<atlas>:<sprite>"` (atlas = everything before the last `:`)
 local function banner(v)
   local a, s = T.rsplit_once(v, ":")
   if a == nil then return nil end
@@ -32,7 +28,7 @@ local function same_classes(a, b)
   return true
 end
 
--- `[7 (Nv. 50), 8 (Nv. 125, banner atlas:sprite), 9]` for the logs
+-- `[7 (Nv. 50), 8 (Nv. 125, banner atlas:sprite), 9]` for logs
 local function describe(classes)
   local parts = {}
   for _, c in ipairs(classes) do
@@ -44,7 +40,7 @@ local function describe(classes)
   return "[" .. table.concat(parts, ", ") .. "]"
 end
 
--- ------------------------------------------------------------------------------------------------- the rules
+-- ---- rules
 
 function FM.install_rules(X)
   local function default_rules()
@@ -64,7 +60,7 @@ function FM.install_rules(X)
     return nil
   end
 
-  -- the classes of `v`: 6..9 only, unique (the first declaration of a class wins), ascending
+  -- classes of `v`: 6..9 only, unique (first declaration wins), ascending
   local function classes(file, v)
     local out = {}
     for _, c in ipairs(v) do
@@ -101,7 +97,7 @@ function FM.install_rules(X)
     return out
   end
 
-  -- every file's `[VRFW.FreeMatch]` merged (all files, also the ones that declare nothing else)
+  -- every file's `[VRFW.FreeMatch]` merged (also files that declare nothing else)
   function X.fm_rules(files)
     local order = {}
     for _, f in ipairs(files) do
@@ -167,7 +163,7 @@ function FM.install_rules(X)
           r.preview_class = d.PreviewClass
         end
         if d.Copy ~= nil then
-          -- class rows that take another row's content; the later mod's entry for a class replaces the earlier
+          -- class rows that take another row's content; a later mod's entry for a class replaces the earlier
           for _, c in ipairs(d.Copy) do
             if c.class < CLASS_LO or c.class > CLASS_HI or c.from == c.class or c.from < 1 then
               VRFW.log.warn(string.format("%s: [vrfw.FreeMatch] Copy { Class = %d, From = %d }: Class must be %d..%d and From another row (left out)", file, c.class, c.from, CLASS_LO, CLASS_HI))
@@ -192,7 +188,7 @@ function FM.install_rules(X)
   end
 end
 
--- ------------------------------------------------------------------------------------------------- tabs, rows
+-- ---- tabs, rows
 
 function FM.install(X)
   local D = X.D.free_match_tabs
@@ -200,7 +196,7 @@ function FM.install(X)
   local LIM = (X.input.limits or {})
   local NATIVE_CLEAR_BITS, CLEAR_BITS = LIM.native_clear_bits or 2560, LIM.clear_bits or 32768
 
-  -- `"<atlas>:<sprite>"` → crc32 atlas, crc32 sprite (the atlas is everything before the LAST `:`)
+  -- `"<atlas>:<sprite>"` -> crc32 atlas, crc32 sprite
   local function split_icon(s)
     local a, b = T.rsplit_once(s, ":")
     if a == nil then return nil end
@@ -209,7 +205,7 @@ function FM.install(X)
     return VRFW.crc32(a), VRFW.crc32(b)
   end
 
-  -- the tab-bar layouts declared by the mods (later mods win per tab count)
+  -- tab-bar layouts declared by mods (later mods win per tab count)
   function X.free_match_bars(files)
     local by = {}
     for _, f in ipairs(files) do
@@ -235,7 +231,7 @@ function FM.install(X)
     return out
   end
 
-  -- the free-match tabs (bar order) and layouts; writes the routeType of the kept tabs' pieces
+  -- free-match tabs (bar order) and layouts; writes the routeType of the kept tabs' pieces
   function X.free_match_tabs(files)
     local bars = X.free_match_bars(files)
     local decls = {}
@@ -259,7 +255,7 @@ function FM.install(X)
             for _, p in ipairs(pieces) do
               if not T.contains(b.pieces, p) then b.pieces[#b.pieces + 1] = p end
             end
-            -- the first declaration's `VRFW.Difficulties`, else the first later one that has them
+            -- first declaration's `VRFW.Difficulties`, else the first later one that has them
             local dd = (d.vrfw or {}).Difficulties or {}
             if #hit.diffs == 0 and #dd > 0 then hit.diffs = dd end
           else
@@ -343,16 +339,12 @@ function FM.install(X)
       if #x.diffs > 0 then ladders[#ladders + 1] = { b.id, T.acopy(b.pieces), x.diffs } end
       out[#out + 1] = b
     end
-    -- VRFW.Difficulties: the difficulty rows and clear bits of the kept tabs' games
+    -- VRFW.Difficulties: difficulty rows and clear bits of the kept tabs' games
     for _, l in ipairs(ladders) do X.free_match_difficulties(l[1], l[2], l[3]) end
     return out, bars
   end
 
-  -- `[[VRFW.GameTab]]` (docs/framework/free-match-tabs.md §9): a retail game filed under another retail tab of the
-  -- free-match list and the office. The native list builder files a category-1 row under the routeType of the FIRST
-  -- piece whose event slice holds its game; the Chronicle board keeps that piece untouched, so the game is copied (same
-  -- rows, same clear bits and scripts, name `<game>_t<tab>`), the list rows of the original point at the copy, and the
-  -- copy sits in a hidden piece (a copy of the board piece: same unlock) of the wanted tab. -> { {copy, original, tab} }
+  -- `[[VRFW.GameTab]]`: files a retail game under another retail tab of the free-match list and the office. The game is copied (name `<game>_t<tab>`), the original's list rows point at the copy, and the copy sits in a hidden piece of the wanted tab. -> { {copy, original, tab} }
   function X.game_tabs(files)
     local out, done = {}, {}
     for _, f in ipairs(files) do
@@ -378,7 +370,7 @@ function FM.install(X)
           local r, pl, el = X.route_lists()
           if not r then fail(pl) goto next end
           local fid, fref, fg, frt = r:field(pl, "pieceId"), r:field(pl, "eventInfoRef"), r:field(el, "paramCrc1"), r:field(pl, "routeType")
-          -- the board piece holding the game (the first, as the native list builder reads)
+          -- board piece holding the game (the first)
           local src, ev
           local ids = r:col_u32(pl, fid)
           for p = 0, #ids - 1 do
@@ -393,7 +385,7 @@ function FM.install(X)
           local gid = VRFW.crc32(name)
           local G = X.gcache()
           if G.by_id[gid] then fail("game id of `" .. name .. "` already used") goto next end
-          -- the game copy: every difficulty row as it is (rival, level, clear bit), the info row renamed
+          -- game copy: every difficulty row as is (rival, level, clear bit), info row renamed
           local drows = {}
           for _, i in ipairs(X.grows(tg)) do drows[#drows + 1] = g:entry(i) end
           local info = g:entry(tg.info)
@@ -404,10 +396,9 @@ function FM.install(X)
           X.touched.games = true
           local nf, e4 = VRFW.team.files_copy(GAME_DIR .. d.game .. "_", GAME_DIR .. name .. "_", d.game, name)
           if not nf then fail(e4) goto next end
-          -- the list rows (free match and office) now play the copy
+          -- list rows (free match and office) now play the copy
           for _, i in ipairs(rows) do o:set_u32(0, i, fb, gid) end
-          -- `After`: each row moves right after the row of that game nearest in sortOrder (the free-match rows and the
-          -- office rows are two blocks of the one table, each with its own sortOrder range)
+          -- `After`: each row moves right after the row of that game nearest in sortOrder (free-match and office rows are two blocks with their own sortOrder range)
           if d.after ~= nil then
             local ag = X.gcache().by_name[d.after]
             if not ag then
@@ -444,7 +435,7 @@ function FM.install(X)
           end
           o:touch()
           X.touched.opp = true
-          -- the hidden piece: the board piece's row, no moves / unlocks, one event (the game's row, the copy's id)
+          -- hidden piece: the board piece's row, no moves / unlocks, one event (the game's row, the copy's id)
           local ev_row = r:copy(el, ev)
           r:set_u32(-1, ev_row, fg, gid)
           local start = r:len(el)
@@ -492,15 +483,15 @@ function FM.install(X)
     return true
   end
 
-  -- a clear bit for `key`: a free native one first, else an extended one
+  -- clear bit for `key`: a free native one first, else an extended one
   local function clear_bit(key, used)
     local n, w = VRFW.ids.next(CLEAR_SPACE, key, used, 1, NATIVE_CLEAR_BITS)
     if n then return n, w end
-    -- the native bits are full: the «no free number» note of that range is not a problem
+    -- native bits full: the "no free number" note of that range is expected
     return VRFW.ids.next(CLEAR_SPACE, key, used, NATIVE_CLEAR_BITS, CLEAR_BITS)
   end
 
-  -- the most common (c3, opponent_ai) per difficulty over `rows` ({difficulty, c3, ai}); ties: the lower pair
+  -- most common (c3, opponent_ai) per difficulty over `rows` ({difficulty, c3, ai}); ties: the lower pair
   local function class_ai(rows)
     local count = {}
     for _, r in ipairs(rows) do
@@ -646,7 +637,7 @@ function FM.install(X)
           end
           if changed then
             T.sort(rows, function(a, b) return (TC.int(a.values, SG.D_DIFF) or 0) < (TC.int(b.values, SG.D_DIFF) or 0) end)
-            -- the old rows' bits move to the new block (unless another game's slice shares a row)
+            -- old rows' bits move to the new block (unless another game's slice shares a row)
             local shared = {}
             for _, o in ipairs(G.list) do
               if o.id ~= gid then
@@ -656,7 +647,7 @@ function FM.install(X)
             for _, i in ipairs(old_rows) do
               if not shared[i] then t:set(i, SG.D_CLEAR_BIT, 0) end
             end
-            -- the rows as one new block at the end of the list; the game's slice points there
+            -- rows as one new block at the end of the list; the game's slice points there
             local start = #G.diffs
             local n = #rows
             local ok, e = X.g_append("SOCCER_GAME_DIFFICULTY", { "SOCCER_GAME_DIFFICULTY" }, rows, n)
@@ -693,8 +684,7 @@ function FM.install(X)
     end
   end
 
-  -- `[VRFW.FreeMatch] Copy`: on every free-match game the class row takes the content of its `From` row (all columns but
-  -- the difficulty number and the clear bit); a game without the `From` row keeps its class row
+  -- `[VRFW.FreeMatch] Copy`: on every free-match game the class row takes the content of its `From` row (all columns but the difficulty number and clear bit); a game without the `From` row keeps its class row
   function X.free_match_copy(rules)
     for _, c in ipairs(rules.copy or {}) do
       local o, oe = X.opp()

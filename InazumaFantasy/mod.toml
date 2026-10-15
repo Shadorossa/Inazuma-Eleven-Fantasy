@@ -1,0 +1,40 @@
+id = "inazuma_fantasy_2"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml).
+name = "Inazuma Fantasy"
+version = "1.3.2"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Inazuma Fantasy. A «General Store» at the top of the Market sells every team emblem, ticket (stadiums, Kizuna areas), Kizuna decoration and sticker of every shop in the game, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-15"
+prefix = "InazumaFantasy"
+folder = "InazumaFantasy"
+# A new mod (2026-10-14). The earlier Inazuma Fantasy (id inazuma_fantasy) is kept apart in research/mods/_aside/; this
+# id is new so that its saved data, its grafts and the other mods' `if_mod = "inazuma_fantasy"` rows stay with it.
+#   _general_store.toml                 the store's rule (developer file, not installed)
+#   content\shops\general_store.toml    GENERATED: research/scripts/inazuma_fantasy_general_store.py
+#   content\menus\market_menu.toml      the Mercado's 7th bar (layer count, attach locator)
+#   assets\menu\150_shop\...\shop01_20.g4pkm   GENERATED: research/scripts/inazuma_fantasy_market_bar.py
+#   text\rows\shop_text.toml            the bar's name
+#   content\items\currencies.toml       Puntos de amistad (tk_hr000008) / Puntos de pasión (tk_bb000001): retail items
+#                                       renamed, the match rules that pay them; their icons in content\images\...\currencies*
+#   content\characters\idols.toml       the Idol cards: each replaces a game Idol card of the same player (same card id);
+#                                       Hidetoshi Nakata (no game Idol) is a new card, not obtainable yet
+#   content\techniques\idols.toml       their move whs00010_solo and their ability boards
+#   content\items\idol_titles.toml      their titles
+#   assets\menu\200_icon\10_icon_chr\face\c900001*_l.g4tx   their face icons
+#   content\shop_locks\all_shops.toml  every shop lists its locked rows (VRFW shop locks); text\rows\shop_locks.toml
+# Graft (research/grafts): inazuma_fantasy_general_store (the Mercado entry, market_menu).
+# lua_early: the graft is a merge-path patch of market_menu; early, the later wrappers of that script stay on top of it.
+lua_early = true
+requires = ["vr_framework>=2.4.76"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = []
+
+[exports]
+functions = []
+keys = []

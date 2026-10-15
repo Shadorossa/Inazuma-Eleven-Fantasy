@@ -1,18 +1,12 @@
--- VR-Framework › shared game entries (VRFW 2.3 services S6 / S7: docs/framework/archetype.md §4, team.md §8). Who
--- declares a game profile function / site (game\<build>\functions.toml, sites.toml) in its content\game\*.toml: as a
--- hook (a detour: `[[VRFW.Hook]]`) or as a function (a call: `[[VRFW.Function]]`), every active mod in load order.
---
--- A declaration names the entry with `game = "<profile name>"` (VRFW.game/2) or, until the mod is migrated (VRFW 2.3
--- P4), with an inline signature whose `rva` (+ `offset`) is the entry's in the reference profile (inline signatures
--- were written for that build). The hooks of one entry are ONE detour of the loader (one jump at the entry, a chain of links): the link
--- installed last runs first. The native declarations are installed mod by mod in load order (VRFW loads first:
--- mod.toml priority -10), file by file, in declaration order, so the run order is the reverse of that list.
---
+-- Shared game entries: which mods declare a game profile function / site (game/<build>/functions.toml, sites.toml) in their content/game/*.toml,
+-- as a hook (`[[VRFW.Hook]]`, a detour) or a function (`[[VRFW.Function]]`), every active mod in load order.
+-- An entry is named with `game = "<profile name>"` (VRFW.game/2) or an inline signature whose `rva` (+ `offset`) refers to the reference profile.
+-- Hooks of one entry share ONE loader detour; the link installed last runs first (installed mod by mod in load order, file by file, declaration order).
 --   local E = require "lib/game_entries"
 --   local subs = E.declarers("Passive.ResolveExecCondition")   -- { { mod, file, kind, name, decl }, … } install order
 --   local chain = E.run_order(subs)                            -- the hooks, first to run first
 --
--- Read once (the declarations do not change while the game runs; a mod reload re-runs the scripts).
+-- Read once; a mod reload re-runs the scripts.
 
 local M = {}
 
@@ -29,8 +23,7 @@ end
 local PROFILE = nil      -- name -> { rva, offset, kind = "function" | "site" }
 local LABEL = nil
 
--- The reference profile (the build.toml with no `inherits`: the build every inline signature of VRFW.game/1 was
--- written for) from the framework's own game\ folder.
+-- The reference profile (the build.toml with no `inherits`) from the framework's own game/ folder.
 local function read_profile()
   if PROFILE then return PROFILE end
   PROFILE = {}
@@ -62,8 +55,7 @@ local function read_profile()
   return PROFILE
 end
 
--- The reference profile's label (nil when the framework's game\ folder was not readable: then only `game =`
--- declarations match).
+-- The reference profile's label (nil when the framework's game/ folder is unreadable: then only `game =` declarations match).
 function M.reference()
   read_profile()
   return LABEL
@@ -128,8 +120,7 @@ function M.run_order(subs)
   return out
 end
 
--- The values a hook's `pre` / `post` answers compare argument N with (`when = { value = "args[N]", equals = x }`, a
--- single condition or one of a list): the ids it answers. Sorted, unique.
+-- The ids a hook's `pre` / `post` answers compare argument N with (`when = { value = "args[N]", equals = x }`, single or list). Sorted, unique.
 function M.answered_values(decl, arg)
   local want = "args[" .. tostring(arg or 1) .. "]"
   local seen, out = {}, {}
@@ -158,8 +149,7 @@ end
 
 local MANIFESTS = nil
 
--- The mods that list `name` in their mod.toml [exports] tables, in the order a `*/<name>` answer reads them (the mod
--- that loads last first: docs/framework/native.md §2.7).
+-- The mods that list `name` in their mod.toml [exports] tables, in the order a `*/<name>` answer reads them (last loaded first).
 function M.exporters(name)
   if not MANIFESTS then
     local ok, list = pcall(VRFW.files.declarations, "mod.toml")
@@ -179,8 +169,7 @@ function M.exporters(name)
   return out
 end
 
--- The first key part of every row of mod `mod`'s [[VRFW.Table]] `name` (sorted, unique; {} = rows filled by its
--- scripts only).
+-- The first key part of every row of mod `mod`'s [[VRFW.Table]] `name` (sorted, unique; {} = rows filled by scripts only).
 function M.table_keys(mod, name)
   local seen, out = {}, {}
   for _, f in ipairs(files()) do

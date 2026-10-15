@@ -1,0 +1,35 @@
+# Furor › the furor gauges on the match HUD (docs/game/mechanics/furor.md §3.2): GO Strikers 2013's fire gauge, one per
+# team, level with the score, growing OUTWARD from its team's crest. Two layers of 2 instances (0 = own team, left;
+# 1 = rival, right), not opened by the screen: the graft research/grafts/furor_hud opens them, measures each instance's
+# local -> screen mapping and places it every frame from the scoreboard's keeper bar locators (as Goalkeeper Barrier):
+#   furor_trough   the dark navy outline of the empty gauge (priority 302)
+#   furor_gauge    the bar: the rising / falling flame frames clipped from the crest side, the glowing Max bar when full
+#                  (priority 303, over the trough)
+# Their object is the retail stamina gauge of the stairs race (btl06_13_stamina_gauge): only its fill shown (frame, red
+# trail, label hidden by the graft), the fill's sprite swapped for the gauge sprites of
+# content\images\menu\02_btl\furor_gauge.toml (its own atlas). In both groups that show the scoreboard. No retail byte.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "furor_trough"
+from = "btl06_13_stamina_gauge"
+priority = 302
+
+[[object]]
+name = "furor_gauge"
+from = "btl06_13_stamina_gauge"
+priority = 303
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_trough", object = "furor_trough", count = 2, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_gauge", object = "furor_gauge", count = 2, after = "furor_trough", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

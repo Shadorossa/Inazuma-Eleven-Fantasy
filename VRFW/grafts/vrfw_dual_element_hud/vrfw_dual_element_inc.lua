@@ -1,6 +1,6 @@
--- VRFW vrfw_dual_element_hud (docs/framework/technique.md §4d): the versus HUDs show EVERY element of a dual-element
+-- VRFW vrfw_dual_element_hud: the versus HUDs show EVERY element of a dual-element
 -- move ([edit.VRFW.DualElement] of the technique type) side by side: icon 1 | icon 2 | …, every icon at the retail
--- size (Nacho 2026-10-09: «crezca y mantenga su tamaño»). Wraps the shared include functions every versus HUD calls:
+-- size. Wraps the shared include functions every versus HUD calls:
 --   SetupVsElementIconLayerMenu(layer, index, type, chara, skill): instance 1 = the move's icon; instances 2-4 = the
 --     extra icons the framework's menus\dual_element_hud.toml adds (hung on the same locator). A dual move of n
 --     elements: n icons of the retail size, VRFW_DualElementPitch apart (icon width + gap), left to right in the move's

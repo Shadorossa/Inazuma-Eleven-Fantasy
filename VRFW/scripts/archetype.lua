@@ -1,26 +1,11 @@
--- VR-Framework › archetypes declared by mods (docs/framework/archetype.md). Declarations: every active mod's
--- content\archetypes\*.toml (`VRFW.archetype/1`); native side: content\game\archetype.toml (team build pick hooks,
--- battle getter answers, exec conditions 910 / 911 on the shared exec condition detour of service S6 (VRFW 2.3),
--- CMND_VRFW_ARCHETYPE_*, state keys); menus / HUD: the Lua patches of assets\lua\archetype\.
---
---   * Pick: when the engine picks a team's build (TeamBuildType 0xD9E2D0) a declared archetype gets one point per
---     carrier of one of its passives (the engine's own passive list: starters + staff, entries of definitions with a
---     team cap). It wins with strictly more points than each of the game's six builds and every other declared one
---     (at least 1); then the six counts are zeroed and the engine answers 6 (no game build effect, no build AI
---     personality). A tie at the top stays «Libertad», as the game does.
---   * Charge (match): per side, from match events: `shot_on_target` (a shot of the side reaches the rival keeper),
---     `goal`, `conceded`, `shot` (a shot of the side starts), `no_shot` (every `every_s` live seconds without a shot of
---     the side). Rank = how many `rank_charges` thresholds the charge reaches (0-5); the charge stays 0..the last.
---   * Effects (passive effect rows with the loader event 951, target as declared; never run by the engine):
---       vrfw_eff_focus_per_team_event   the carrier's focus AT / DF + value % per event of his side this match
---                                       (EFFECT_DATA p1: 1 shot_on_target, 2 goal, 3 shot)
---       vrfw_eff_team_shot_at_per_rank  his side's players on the pitch: shot AT + value % × rank, while the side's
---                                       archetype is the passive's (its archetype's `passives`; else p1 = the number)
---       vrfw_eff_resource_drain_per_rank  the carrier's match resource drain × (1 − value % × rank), same condition
---                                       (p1 = crc32 of the resource key, e.g. inazuma_fantasy.pe)
---     applied through the battle getters' native answers (tables Archetype.ShotAt / Archetype.Focus, keyed by the
---     actor handle) and VRFW.resource.set_mult (source "archetype"). A definition's team cap (GRAND_TOTAL_INFO column
---     2, the effect's unit; 0 = none) is the most one player gets from it, however many carriers.
+-- Archetypes declared by mods: reads every mod's content/archetypes/*.toml (`VRFW.archetype/1`); native side in content/game/archetype.toml, menus / HUD in assets/lua/archetype/.
+-- Pick: when the engine picks a team's build, a declared archetype scores the sum of the engine's per-passive counts (the u32 at +0xC of each list entry) over its passives (starters + staff).
+--   It wins with strictly more points than each of the game's six builds and every other declared one (at least 1); a tie at the top stays «Libertad» (Freedom).
+-- Charge (match): per side, from events `shot_on_target`, `goal`, `conceded`, `shot`, `no_shot` (every `every_s` live seconds without a shot); rank = `rank_charges` thresholds reached (0-5).
+-- Effects (passive effect rows with loader event 951; a definition's team cap limits what one player gets):
+--   vrfw_eff_focus_per_team_event     carrier's focus AT / DF + value % per event of his side (EFFECT_DATA p1: 1 shot_on_target, 2 goal, 3 shot)
+--   vrfw_eff_team_shot_at_per_rank    side's players on the pitch: shot AT + value % x rank while the side's archetype is the passive's
+--   vrfw_eff_resource_drain_per_rank  carrier's match resource drain x (1 - value % x rank), same condition (p1 = crc32 of the resource key)
 
 Archetype = Archetype or {}
 
@@ -31,7 +16,7 @@ local INVALID = 0xC4DC849A
 local LOADER_EVENT = 951
 local ACTOR_STRIDE, ACTOR_MAX, ACTOR_HDL, ACTOR_TEAM, UNIT_CHARA = 0x570, 0x3A, 0x94, 0xD0, 0x370
 local N_SLOTS = 5
-local N_GAME = 6                     -- the game's builds 0-5; 6 = «Libertad»
+local N_GAME = 6                     -- the game's builds 0-5; 6 = «Libertad» (Freedom)
 local FREEDOM = 6
 local MAX_NUMBER = 63
 local LIVE = { [9] = true, [14] = true, [15] = true, [16] = true }
@@ -664,14 +649,9 @@ if ON then
 end
 
 -- ---------------------------------------------------------------------------------------------- S6: shared passive entries
--- VRFW 2.3 service S6 «passives & team builds» (docs/framework/archetype.md §4.1-4.2). VRFW owns one detour on each
--- passive entry (content\game\archetype.toml); what they answer comes from the tables other mods export
--- (mod.toml [exports] tables, read natively as `*/<name>`, the mod that loads last first). The exec condition resolver
--- (Passive.ResolveExecCondition) runs, in today's order: a not yet migrated mod's own detour on the entry (the loader
--- chains it first: installed after VRFW's), then the exported Passive.ExecCondition tables, then VRFW's 910 / 911, then
--- the game's table. The boot log shows that order with each subscriber's ids and warns when one id is answered twice
--- (the first in run order wins). For the slot readers and the rarity version it lists the exporters of their tables and
--- the mods that still keep their own detour.
+-- Service S6: VRFW owns one detour on each passive entry (content/game/archetype.toml); answers come from tables other mods export (mod.toml [exports], read as `*/<name>`, last loaded first).
+-- Exec condition resolver (Passive.ResolveExecCondition) order: unmigrated mods' own detours, exported Passive.ExecCondition tables, VRFW's 910 / 911, then the game's table.
+-- The boot log shows that order and warns when an id is answered twice (first in run order wins).
 
 local E = require "lib/game_entries"
 
@@ -739,8 +719,7 @@ end
 
 -- ---------------------------------------------------------------------------------------------- commands
 
--- CMND_VRFW_ARCHETYPE_TEAM(dock, party) -> build (0-6 the game's, 7+ declared), points; no args = the last menu pick.
--- -1 = not picked yet (the menus ask the game's command first: that pick is the one answered).
+-- CMND_VRFW_ARCHETYPE_TEAM(dock, party) -> build (0-6 the game's, 7+ declared), points; no args = last menu pick; -1 = not picked yet
 function Archetype.CmdTeam(dock, party)
   local key = LAST_MENU
   if dock ~= nil and party ~= nil then key = "d" .. math.floor(tonumber(dock) or 0) .. "_" .. math.floor(tonumber(party) or 0) end

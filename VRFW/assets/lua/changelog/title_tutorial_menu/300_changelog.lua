@@ -1,6 +1,4 @@
--- changelog (VR-Framework): «Novedades de mods» on the retail update-notes sheet (menu title_tutorial_menu,
--- docs/game/ui/update-notes.md). Own code: `around` handlers of the framework's title_tutorial_menu host (VRFW_Host,
--- docs/framework/lua-hosts.md) on the retail callbacks of this menu.
+-- changelog (VR-Framework): «Novedades de mods» on the retail update-notes sheet (menu title_tutorial_menu). Own code: `around` handlers of the framework's title_tutorial_menu host (VRFW_Host) on the retail callbacks of this menu.
 --
 -- While the changelog part has a sheet open (CMND_VRFW_CHANGELOG_SESSION, opened by the title or the «Mods» screen
 -- right before they open this menu), the callbacks do what the retail ones do for the update notes with the welcome

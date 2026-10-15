@@ -1,0 +1,109 @@
+# Locked shop rows (scripts\shop_rows.lua, assets\lua\menu\shop_menu_buy\130_shop_locks.lua): what a locked row waits for, read with CMND_TEXT_GET by id = crc32(row id).
+# <NUM> = a chapter, <NAME> = a title or a team named from the game's own texts, <TEXT> = the row's sentence.
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# a story chapter with its title: <NUM> = the chapter, <NAME> = its title
+[[row]]
+id = "vrfw_shop_lock_chapter_title"
+es = "Se desbloquea en el capítulo <NUM>: «<NAME>»"
+en = "Unlocks in Chapter <NUM>: “<NAME>”"
+fr = "Se débloque au chapitre <NUM> : « <NAME> »"
+de = "Wird in Kapitel <NUM> („<NAME>“) freigeschaltet"
+it = "Si sblocca nel capitolo <NUM>: “<NAME>”"
+pt = "Desbloqueia no capítulo <NUM>: “<NAME>”"
+ja = "第<NUM>章「<NAME>」で解放"
+zh_hans = "第<NUM>章“<NAME>”中解锁"
+zh_hant = "第<NUM>章「<NAME>」中解鎖"
+
+# a story chapter without a title: <NUM> = the chapter
+[[row]]
+id = "vrfw_shop_lock_chapter"
+es = "Se desbloquea en el capítulo <NUM>"
+en = "Unlocks in Chapter <NUM>"
+fr = "Se débloque au chapitre <NUM>"
+de = "Wird in Kapitel <NUM> freigeschaltet"
+it = "Si sblocca nel capitolo <NUM>"
+pt = "Desbloqueia no capítulo <NUM>"
+ja = "第<NUM>章で解放"
+zh_hans = "第<NUM>章解锁"
+zh_hant = "第<NUM>章解鎖"
+
+# a match by its title (story match or Chronicle piece): <NAME> = the title
+[[row]]
+id = "vrfw_shop_lock_match"
+es = "Se desbloquea en «<NAME>»"
+en = "Unlocks in “<NAME>”"
+fr = "Se débloque dans « <NAME> »"
+de = "Wird in „<NAME>“ freigeschaltet"
+it = "Si sblocca in “<NAME>”"
+pt = "Desbloqueia em “<NAME>”"
+ja = "「<NAME>」で解放"
+zh_hans = "在“<NAME>”中解锁"
+zh_hant = "在「<NAME>」中解鎖"
+
+# a Chronicle piece by its opponent: <NAME> = the team
+[[row]]
+id = "vrfw_shop_lock_beat_chronicle"
+es = "Se desbloquea al ganar a <NAME> en la Crónica"
+en = "Unlocks by beating <NAME> in Chronicle Mode"
+fr = "Se débloque en battant <NAME> en mode Chronique"
+de = "Wird mit einem Sieg gegen <NAME> im Chronik-Modus freigeschaltet"
+it = "Si sblocca battendo <NAME> in Modalità Cronache"
+pt = "Desbloqueia ao vencer <NAME> no Modo Crônica"
+ja = "クロニクルモードで<NAME>に勝つと解放"
+zh_hans = "在编年史模式中战胜<NAME>后解锁"
+zh_hant = "在編年史模式中戰勝<NAME>後解鎖"
+
+# a match by its opponent: <NAME> = the team
+[[row]]
+id = "vrfw_shop_lock_beat"
+es = "Se desbloquea al ganar a <NAME>"
+en = "Unlocks by beating <NAME>"
+fr = "Se débloque en battant <NAME>"
+de = "Wird mit einem Sieg gegen <NAME> freigeschaltet"
+it = "Si sblocca battendo <NAME>"
+pt = "Desbloqueia ao vencer <NAME>"
+ja = "<NAME>に勝つと解放"
+zh_hans = "战胜<NAME>后解锁"
+zh_hant = "戰勝<NAME>後解鎖"
+
+# a Chronicle piece that cannot be named
+[[row]]
+id = "vrfw_shop_lock_chronicle"
+es = "Se desbloquea al avanzar en la Crónica"
+en = "Unlocks as you progress in Chronicle Mode"
+fr = "Se débloque en progressant en mode Chronique"
+de = "Wird im Verlauf des Chronik-Modus freigeschaltet"
+it = "Si sblocca avanzando in Modalità Cronache"
+pt = "Desbloqueia ao avançar no Modo Crônica"
+ja = "クロニクルモードを進めると解放"
+zh_hans = "推进编年史模式后解锁"
+zh_hant = "推進編年史模式後解鎖"
+
+# any other condition
+[[row]]
+id = "vrfw_shop_lock_later"
+es = "Se desbloquea más adelante"
+en = "Unlocks later on"
+fr = "Se débloque plus tard"
+de = "Wird später freigeschaltet"
+it = "Si sblocca più avanti"
+pt = "Desbloqueia mais adiante"
+ja = "この先で解放"
+zh_hans = "稍后解锁"
+zh_hant = "稍後解鎖"
+
+# the notice on Accept over a locked row: <TEXT> = what unlocks it
+[[row]]
+id = "vrfw_shop_lock_notice"
+es = "Este objeto todavía no está disponible.\n<TEXT>."
+en = "This item is not available yet.\n<TEXT>."
+fr = "Cet objet n'est pas encore disponible.\n<TEXT>."
+de = "Dieser Gegenstand ist noch nicht verfügbar.\n<TEXT>."
+it = "Questo oggetto non è ancora disponibile.\n<TEXT>."
+pt = "Este item ainda não está disponível.\n<TEXT>."
+ja = "このアイテムはまだ購入できません。\n<TEXT>。"
+zh_hans = "该道具尚不可购买。\n<TEXT>。"
+zh_hant = "該道具尚不可購買。\n<TEXT>。"

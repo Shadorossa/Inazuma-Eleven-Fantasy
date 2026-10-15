@@ -1,0 +1,20 @@
+# Goalkeeper Barrier: the orange-bronze fill of the barrier segment drawn inside each keeper's
+# fatigue bar (content\menus\goalkeeper_barrier_hud.toml, graft research/grafts/goalkeeper_barrier_hud,
+# docs/game/mechanics/gk-barrier.md §4). The PNG is the one Inazuma Fantasy's hud_gk_barrier.toml shipped until
+# 2026-10-14 (made by research/scripts/hud_gk_barrier_build.py from Aura Points' PEG fill, turned orange; recoloured
+# orange-bronze on 2026-10-15: dark bronze edge, light-to-dark bronze core; not game data). Pre-coloured because CMND_SET_PRIM_COLOR does not tint these quads.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "football_reforged_barrier_fill"
+size = [512, 32]
+png = "goalkeeper_barrier/barrier_fill.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "football_reforged_barrier_fill01"
+texture = "football_reforged_barrier_fill"
+x = 0
+y = 4
+size = [448, 24]

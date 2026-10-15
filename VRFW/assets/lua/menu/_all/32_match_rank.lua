@@ -1,10 +1,9 @@
--- menu_engine: the ranks of a won match, VRFW_MatchRank (VR-Framework base feature, 2.0.48; DECLARED in TOML since
--- 2.0.49: Nacho 2026-10-09 «mods must be able to add custom ranks»; docs/framework/route-board.md §3). Definitions only
+-- menu_engine: the ranks of a won match, VRFW_MatchRank (VR-Framework base feature; DECLARED in TOML). Definitions only
 -- (this file runs in every script VM, lua\_all; no engine call at load: the ranks are read at the first use).
 -- The ranks are the active mods' defaults\match_rank.toml ([MatchRank.<Id>]: Order, Won, GoalsFor, MaxConceded,
 -- GoalDiff, Badge, BadgeAtlas, PieceBadge, Text; merged by Id in load order, so a mod redeclares S / A / B or adds its
--- own), served best first by the team type: CMND_VRFW_TEAM_MATCH_RANK_COUNT() / _GET(i). Framework defaults:
---   S (Order 3) = scored >= 5 and conceded <= 0, A (2) = scored >= 3 and conceded <= 0, B (1) = any other win.
+-- own), served best first by the team type: CMND_VRFW_TEAM_MATCH_RANK_COUNT() / _GET(i). The framework declares none
+-- (a mod's content, e.g. S / A / B with badges): with none, wins are unranked.
 -- A rank is an Id string ("S", "Fantasy.SS"); its Order compares ranks and scales averages. Saves keep Ids; the digits
 -- 1 / 2 / 3 of older saves are B / A / S (FromLegacy).
 -- The score of the last match: the framework's mod script scripts\match_score.lua (save service, owner vr_framework,

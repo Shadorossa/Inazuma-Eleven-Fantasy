@@ -49,17 +49,6 @@ target = "c04002410"                                   # Abram Cadabra
   rank = 3
   growth = "normal"
   stats = { kick = 230, control = 182, technique = 204, pressure = 250, physical = 292, intelligence = 205, agility = 167, freedom = 267 }
-  moves = [
-    { move = 0x9B3048AB, level = 5 },                     # Shadow Catch
-    { move = 0xCCA8851A, level = 14 },                    # Lucky Dice
-    { move = 0xA3980723, level = 44 },                    # Colosseum Guard
-    { move = 0xD471DE6C, level = 64 },                    # Snakebite
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0xEA48FF7E, level = 1 },                     # Lot [aura]
-  ]
 
 [[edit]]
 target = "c04002420"                                   # Jaymes Randie
@@ -70,12 +59,6 @@ target = "c04002420"                                   # Jaymes Randie
   rank = 3
   growth = "normal"
   stats = { kick = 176, control = 230, technique = 215, pressure = 212, physical = 228, intelligence = 302, agility = 151, freedom = 230 }
-  moves = [
-    { move = 0x0E0A3F7A, level = 1 },                     # Spatial Portal
-    { move = 0x6BA49049, level = 20 },                    # Mystic Mist
-    { move = 0x179492C5, level = 42 },                    # Center Scythe Slice
-    { move = 0x660EED1E, level = 52 },                    # Low Scythe Slice
-  ]
 
 [[edit]]
 target = "c04002430"                                   # Daffyd Blayne
@@ -86,12 +69,6 @@ target = "c04002430"                                   # Daffyd Blayne
   rank = 3
   growth = "normal"
   stats = { kick = 186, control = 243, technique = 194, pressure = 185, physical = 231, intelligence = 300, agility = 163, freedom = 221 }
-  moves = [
-    { move = 0x0E0A3F7A, level = 1 },                     # Spatial Portal
-    { move = 0xCABBA212, level = 26 },                    # Menacing Glare
-    { move = 0x5DA7EA06, level = 35 },                    # Boomerang Bluff
-    { move = 0x7D6E9A87, level = 65 },                    # The Wall
-  ]
 
 [[edit]]
 target = "c04002440"                                   # Al Kazam
@@ -102,12 +79,6 @@ target = "c04002440"                                   # Al Kazam
   rank = 3
   growth = "normal"
   stats = { kick = 181, control = 159, technique = 251, pressure = 161, physical = 321, intelligence = 163, agility = 166, freedom = 217 }
-  moves = [
-    { move = 0xAC91D94F, level = 10 },                    # Major Miner
-    { move = 0xCABBA212, level = 25 },                    # Menacing Glare
-    { move = 0xD8794890, level = 29 },                    # Kangaroo Kick
-    { move = 0x7F15DC5F, level = 57 },                    # Desert Drift
-  ]
 
 [[edit]]
 target = "c04002450"                                   # Sigfryd Roi
@@ -118,12 +89,6 @@ target = "c04002450"                                   # Sigfryd Roi
   rank = 3
   growth = "normal"
   stats = { kick = 207, control = 209, technique = 239, pressure = 153, physical = 250, intelligence = 224, agility = 169, freedom = 247 }
-  moves = [
-    { move = 0x8917BF4B, level = 1 },                     # Willy-Willy
-    { move = 0x0E0A3F7A, level = 20 },                    # Spatial Portal
-    { move = 0x81FC5E34, level = 32 },                    # Driving Header
-    { move = 0x7F15DC5F, level = 53 },                    # Desert Drift
-  ]
 
 [[edit]]
 target = "c04002460"                                   # Dave Coppfielder
@@ -133,12 +98,6 @@ target = "c04002460"                                   # Dave Coppfielder
   rank = 3
   growth = "normal"
   stats = { kick = 227, control = 300, technique = 228, pressure = 242, physical = 136, intelligence = 309, agility = 134, freedom = 217 }
-  moves = [
-    { move = 0xDBFD9CFE, level = 1 },                     # Big Ball Trick
-    { move = 0xA37D1A41, level = 16 },                    # Hyper-Swiper
-    { move = 0xB58AE80E, level = 41 },                    # Silk Road
-    { move = 0xB0BC314A, level = 58 },                    # Spin Meister
-  ]
 
 [[edit]]
 target = "c04002470"                                   # Launce Berton
@@ -148,12 +107,6 @@ target = "c04002470"                                   # Launce Berton
   rank = 3
   growth = "normal"
   stats = { kick = 158, control = 306, technique = 246, pressure = 197, physical = 161, intelligence = 309, agility = 154, freedom = 301 }
-  moves = [
-    { move = 0xCABBA212, level = 1 },                     # Menacing Glare
-    { move = 0xDBFD9CFE, level = 17 },                    # Big Ball Trick
-    { move = 0x141046AB, level = 53 },                    # Overnight Fortress
-    { move = 0xB0BC314A, level = 59 },                    # Spin Meister
-  ]
 
 [[edit]]
 target = "c04002480"                                   # Ledger Demain
@@ -163,12 +116,6 @@ target = "c04002480"                                   # Ledger Demain
   rank = 3
   growth = "normal"
   stats = { kick = 205, control = 296, technique = 239, pressure = 190, physical = 178, intelligence = 271, agility = 142, freedom = 209 }
-  moves = [
-    { move = 0xDBFD9CFE, level = 5 },                     # Big Ball Trick
-    { move = 0xC66BD10D, level = 23 },                    # Zigzag Spark
-    { move = 0x24E5068E, level = 34 },                    # Fractal Repeller
-    { move = 0x2296A01A, level = 45 },                    # Southern Cross
-  ]
 
 [[edit]]
 target = "c04002490"                                   # Harrold Houdini
@@ -179,17 +126,6 @@ target = "c04002490"                                   # Harrold Houdini
   rank = 3
   growth = "normal"
   stats = { kick = 286, control = 270, technique = 275, pressure = 170, physical = 155, intelligence = 243, agility = 171, freedom = 343 }
-  moves = [
-    { move = 0x15138722, level = 1 },                     # Will-o'-the-Wisp Shot
-    { move = 0x6ADE9E01, level = 20 },                    # Illusory Ball
-    { move = 0x322F0C40, level = 36 },                    # Spider Web
-    { move = 0x1876DB66, level = 64 },                    # Disaster Strike
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0x43EFDFEA, level = 1 },                     # Phantasma [aura]
-  ]
 
 [[edit]]
 target = "c04002500"                                   # Hocus Sesame
@@ -199,17 +135,6 @@ target = "c04002500"                                   # Hocus Sesame
   rank = 3
   growth = "normal"
   stats = { kick = 278, control = 240, technique = 236, pressure = 159, physical = 205, intelligence = 165, agility = 174, freedom = 305 }
-  moves = [
-    { move = 0xDBFD9CFE, level = 5 },                     # Big Ball Trick
-    { move = 0xEFFC6FA8, level = 28 },                    # Warhead
-    { move = 0xDDCA0D2A, level = 34 },                    # Bouncing Bomb
-    { move = 0x65766A4F, level = 57 },                    # Meteor Blade
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0x66A81250, level = 1 },                     # Sand Man [aura]
-  ]
 
 [[edit]]
 target = "c04002510"                                   # Pocus Sesame
@@ -219,17 +144,6 @@ target = "c04002510"                                   # Pocus Sesame
   rank = 3
   growth = "normal"
   stats = { kick = 228, control = 284, technique = 238, pressure = 189, physical = 116, intelligence = 230, agility = 189, freedom = 301 }
-  moves = [
-    { move = 0xDBFD9CFE, level = 2 },                     # Big Ball Trick
-    { move = 0x035C1112, level = 21 },                    # Gungnir
-    { move = 0x6BA49049, level = 51 },                    # Mystic Mist
-    { move = 0x568262FA, level = 57 },                    # Dark Tornado
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0, level = 0 },                              # (empty)
-    { move = 0x282BEEA0, level = 1 },                     # Jester [aura]
-  ]
 
 [[edit]]
 target = "c04002520"                                   # Pen Teller
@@ -239,12 +153,6 @@ target = "c04002520"                                   # Pen Teller
   rank = 3
   growth = "normal"
   stats = { kick = 186, control = 208, technique = 227, pressure = 203, physical = 177, intelligence = 186, agility = 243, freedom = 242 }
-  moves = [
-    { move = 0x822B79EA, level = 1 },                     # Somersault Stamp
-    { move = 0xA9062A29, level = 19 },                    # Ultrasonic
-    { move = 0x4AF2F3E2, level = 42 },                    # Bridge to Nowhere
-    { move = 0x9B3048AB, level = 53 },                    # Shadow Catch
-  ]
 
 [[edit]]
 target = "c04002530"                                   # Petey Sorcar
@@ -255,12 +163,6 @@ target = "c04002530"                                   # Petey Sorcar
   rank = 3
   growth = "normal"
   stats = { kick = 193, control = 171, technique = 159, pressure = 216, physical = 308, intelligence = 205, agility = 182, freedom = 238 }
-  moves = [
-    { move = 0x5DA7EA06, level = 14 },                    # Boomerang Bluff
-    { move = 0xCABBA212, level = 22 },                    # Menacing Glare
-    { move = 0x141046AB, level = 34 },                    # Overnight Fortress
-    { move = 0xDBFD9CFE, level = 58 },                    # Big Ball Trick
-  ]
 
 [[edit]]
 target = "c04002540"                                   # Trump Loyal
@@ -271,12 +173,6 @@ target = "c04002540"                                   # Trump Loyal
   rank = 3
   growth = "normal"
   stats = { kick = 203, control = 230, technique = 194, pressure = 240, physical = 186, intelligence = 235, agility = 151, freedom = 263 }
-  moves = [
-    { move = 0x928B9BED, level = 3 },                     # Optimal Trajectory
-    { move = 0x20D01E43, level = 24 },                    # Hey Presto
-    { move = 0x6B1CF436, level = 34 },                    # Bewildered
-    { move = 0xA9E3374B, level = 42 },                    # Cyclone Sprint
-  ]
 
 [[edit]]
 target = "c04002550"                                   # Daren Blakh
@@ -286,12 +182,6 @@ target = "c04002550"                                   # Daren Blakh
   rank = 3
   growth = "normal"
   stats = { kick = 230, control = 239, technique = 212, pressure = 190, physical = 192, intelligence = 185, agility = 165, freedom = 301 }
-  moves = [
-    { move = 0x650FA58E, level = 13 },                    # Spin Out
-    { move = 0xB0BC314A, level = 22 },                    # Spin Meister
-    { move = 0xF88DC090, level = 46 },                    # Z Slash
-    { move = 0x7E2BE557, level = 48 },                    # Legendary Wolf
-  ]
 
 [[edit]]
 target = "c04002560"                                   # Billy Lingsoo
@@ -302,12 +192,6 @@ target = "c04002560"                                   # Billy Lingsoo
   rank = 3
   growth = "normal"
   stats = { kick = 165, control = 208, technique = 213, pressure = 231, physical = 275, intelligence = 170, agility = 162, freedom = 221 }
-  moves = [
-    { move = 0x3663DB4C, level = 8 },                     # Utter Gutsiness Bat
-    { move = 0x660EED1E, level = 20 },                    # Low Scythe Slice
-    { move = 0xC2E6ADBF, level = 32 },                    # Log Roll
-    { move = 0xEFFC6FA8, level = 56 },                    # Warhead
-  ]
 
 [[edit]]
 target = "c11804070"                                   # Hans Sleight
@@ -317,9 +201,3 @@ target = "c11804070"                                   # Hans Sleight
   rank = 3
   growth = "normal"
   stats = { kick = 177, control = 184, technique = 174, pressure = 228, physical = 266, intelligence = 238, agility = 186, freedom = 234 }
-  moves = [
-    { move = 0x72BFA108, level = 1 },                     # Wall of Atlantis
-    { move = 0xBBA44137, level = 14 },                    # Great Wall
-    { move = 0xED1BFBD3, level = 19 },                    # Fingers of Gaia
-    { move = 0x737DCB3F, level = 57 },                    # Pancake Defence
-  ]

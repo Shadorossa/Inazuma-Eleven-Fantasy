@@ -1,11 +1,5 @@
--- VR-Framework › menu input diagnostics (docs/app/contact-map-fichajes-2026-10-12.md §7). The game's menu controller
--- keeps an input list (controller + 0x50: entry pool +0x10, node offset +0x24, head index +0x18, end index +0x2C;
--- entry i at pool + i * 0xC = { u32 menu crc, u16 priority, u16 order }, its node at pool + offset + i * 6 with the next
--- index at +2). Each frame only the entries with the highest priority get the pad; an entry whose menu is gone is
--- dropped by that pass. MenuInput.Dump answers the list as text for the input trace (lua\menu\_all\64_input_trace.lua):
---   «<crc hex> p<priority> o<order> alive|gone act<byte +0x17C of MenuFind's object> [top]; ...»  (top = gets the pad)
--- VRFW 2.2.56: the act byte read this way is 0 for every menu, also right after its own MENU_ACTIVE(true) (17:10 log):
--- it is not the menu's active state as read here; kept in the line for reference only, never a diagnosis.
+-- Menu input diagnostics. MenuInput.Dump answers the menu controller's input list as text for the input trace:
+--   «<crc hex> p<priority> o<order> alive|gone act<byte> [top]; ...»  (top = gets the pad; act is for reference only)
 
 MenuInput = MenuInput or {}
 
@@ -49,11 +43,7 @@ function MenuInput.Dump()
   return (#out > 0 and table.concat(out, "; ") or "empty") .. " | " .. MenuInput.Ctrl()
 end
 
--- VRFW 2.2.74 (shop freeze watchdog): the engine's global menu input controller. CMenuController keeps the
--- controllers of input_ctrl.cfg.bin at +0xA8 (count +0xB0; entry = { ptr controller, u32 name crc, ..., u8 default
--- +0xC }, 16 bytes) and the selected one at +0xB8. CMND_CHANGE_MENU_INPUT_CTRL (438207617, nie.exe 0xCE45A0 ->
--- 0x1125BF0) selects one by name and switches every other one off; only the selected one delivers commands. Its byte
--- +0x29 is the global input switch (Lua command 0x95EC37B0 sets it; a controller change carries it over).
+-- The global menu input controller: the selected controller is the only one delivering commands; its byte +0x29 is the global input switch.
 MenuInput.CTRL_NAMES = {[0x4F6EB0DF] = "MENU_CTRL", [0xA3D94C5C] = "MENU_CTRL_WITH_ANALOG_MOVE_FOCUS",
   [0xD2365D36] = "MENU_CTRL_SEPARATE_CROSS_KEY", [0x3752594D] = "MENU_CTRL_SETPLAY", [0x01490CDA] = "LUA_CTRL",
   [0x1D917FB1] = "RPG_AREA_MAP_INPUT_CTRL", [0xC0FB3C71] = "EVENT_CTRL_TALK"}
@@ -89,7 +79,7 @@ function MenuInput.Ctrl()
   return "ctrl " .. label .. " on" .. tostring(rd("u8", cur + 0x29))
 end
 
--- CMND_VRFW_MENU_INPUT_CTRL_ON() -> previous switch byte (the selected controller's input switched on again)
+-- CMND_VRFW_MENU_INPUT_CTRL_ON() -> previous switch byte (switches the selected controller's input on)
 function MenuInput.CtrlOn()
   local cur = current_ctrl()
   if cur == nil then

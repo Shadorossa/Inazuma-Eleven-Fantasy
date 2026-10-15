@@ -1,0 +1,35 @@
+schema = "VRFW.rule/1"
+# The rulebook of the Training Ground (docs/game/mods/training-ground.md): a training match (the framework's state key
+# match.training = 1 while it runs: no result, records or rewards) with an endless period (the clock stopped, the match
+# never ends by itself: the drill is left from the settings window). Chosen by the friendly training_ground
+# (content\friendlies\training_ground.toml); the player counts, the referee and the special tactics of each drill are
+# next-match overrides the graft training_ground sets from the settings (config.toml [training_ground]), so one
+# rulebook serves every combination.
+id = "training_ground"
+name = "Training Ground (endless, no result)"
+version = 1
+training = true
+
+# the user kicks off every kick-off (start, after every goal of either side): a drill with no rival player never waits
+# for a rival kick-off
+[kickoff]
+always = "user"
+
+[time]
+endless = true
+
+# a hole of the user's line-up (an incomplete 5v5 template of the VS team) is filled from the bench, the keeper's spot
+# first; the launch also prefers a complete 5v5 team (graft training_ground): this is the safety net
+[teams]
+fill = true
+
+[play]
+# no coach mode in a drill: SELECT only opens the drill's settings window (match.coach_mode = 0)
+coach_mode = false
+# no goal scenes in a drill: after a goal straight back to the kick-off (match.goal_scenes = 0)
+goal_scenes = false
+
+[end]
+extra_time = false
+golden_goal = false
+penalties = false

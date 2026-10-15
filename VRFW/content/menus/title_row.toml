@@ -1,0 +1,10 @@
+# The game's title buttons the framework takes out of the upper row (docs/framework/title-row.md).
+# victory_road_mode: the Victory Road button never shows on the title.
+# save: «Guardar» leaves the upper row and the framework puts it in the lower row, right before «Mods» (§6).
+schema = "VRFW.menu/2"
+
+[[hide]]
+target = "title_menu_2.upper/victory_road_mode"
+
+[[hide]]
+target = "title_menu_2.upper/save"

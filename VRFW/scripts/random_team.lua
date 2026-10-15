@@ -1,25 +1,11 @@
--- VR-Framework › random team (docs/framework/random-team.md). A mod declares, in content\random_teams\*.toml
--- (`VRFW.random_team/1`), a player pool (card filters), rules (slot teams, formations, strength per stage, element mix)
--- and a presentation pool (name text + emblem + kit per entry). Before a match the mod asks for «the random team of
--- rule R for seed S and node N»: this service draws the roster deterministically and writes it over the member rows of
--- one of the rule's SLOT TEAMS in game memory (an ordinary team the mod declares with placeholder players), plus that
--- team's formation, level, name, emblem and kit. The match then plays the slot team (a game whose rival it is, or the
--- next-match override `teams.rival.team`). Nothing is saved: the same inputs give the same team after a reload.
---
--- Why this works (risk 7b of docs/refactor/roguelite-split-map.md, static RE of v7.1.2, docs §2): every match setup
--- builds the rival from the team_config records the game keeps in memory (TeamBuild 0xE9C190 → FindTeamConfig 0xE6BEE0
--- → BuildRoster 0xE9AC40): member rows `[cfg+0x68]` (0x54 bytes: +0x20 card, +0x24 uid, +0x28 loadout, +0x44 level
--- offset, +0x46 AI step, +0x47 slot) and the record (0x50 bytes: +4 level, +0x14 name text, +0x18 formation, +0x1C kit,
--- +0x20 emblem, +0x28 / +0x2C member slice) are read again at every setup (BuildRoster's 0xE9B760 reads the four
--- record fields), so rows rewritten before the setup are the team the match builds. Battle Bay Deluxe's Draft writes
--- the same member rows the same way.
---
--- Commands (content\game\random_team.toml):
+-- Random team service. A mod declares in content/random_teams/*.toml (`VRFW.random_team/1`) a player pool (card filters), rules (slot teams, formations, strength per stage, element mix) and a presentation pool.
+-- A build draws the roster deterministically for (rule, seed, node) and writes it over the member rows of one of the rule's slot teams in game memory, plus that team's formation, level, name, emblem and kit. Nothing is saved.
+-- Commands (content/game/random_team.toml):
 --   CMND_VRFW_RANDOM_TEAM_BUILD(rule, seed, node, stage, slot) -> ok, team, level, members, why
 --   CMND_VRFW_RANDOM_TEAM_PREVIEW(rule, seed, node, stage, slot) -> the same, nothing written
---   CMND_VRFW_RANDOM_TEAM_MEMBER(i)  -> card, slot, position class (member i, 1-based, of the last build / preview)
+--   CMND_VRFW_RANDOM_TEAM_MEMBER(i) -> card id, roster slot, card position (member i, 1-based, of the last build / preview)
 --   CMND_VRFW_RANDOM_TEAM_LOOK()     -> name text, emblem, kit, formation, theme element (the last build / preview)
---   CMND_VRFW_RANDOM_TEAM_INFO(rule) -> ok, version, slot teams, stages
+--   CMND_VRFW_RANDOM_TEAM_INFO(rule) -> ok, version, slot teams, stage rows
 --   CMND_VRFW_RANDOM_TEAM_RESTORE(team) -> ok, rows: the slot team's placeholders back (team 0 = every slot touched)
 
 RandomTeam = RandomTeam or {}
@@ -141,10 +127,7 @@ local function keys_of(set)
   return a
 end
 
--- a filter row as a card-set rule of the framework (the one selector vocabulary, docs/framework/chara-index.md §4,
--- evaluated natively by VRFW.chara.select); nil when IfMod names a mod that is not active. Series = the character's
--- source series (names or numbers; one meaning framework-wide since 2.3), AppearsIn = his in_* membership flags (what
--- Series meant before 2.3), Set = declared [[VRFW.CardSet]] names.
+-- a filter row as a framework card-set rule, evaluated by VRFW.chara.select; nil when IfMod names an inactive mod. Series = source series, AppearsIn = in_* membership flags, Set = [[VRFW.CardSet]] names.
 local function compile_filter(where, f)
   unknown_keys(where, f, FILTER_KEYS)
   if type(f.IfMod) == "string" and f.IfMod ~= "" and not MODS[f.IfMod] then
@@ -335,9 +318,7 @@ local CARDS = nil         -- every playable card, by id order
 local FORMS = {}          -- formation id -> { [positionNo] = class } (false = not found)
 local TEAM_ROWS = nil     -- team id -> { name, formation, kit, emblem, level } (team_config as served)
 
--- The cards from the framework's ONE character index (VRFW.chara.cards: chara_param / chara_base read once natively,
--- by column name, shared by every script; 2.3, docs/framework/chara-index.md), with the chara_param column the tiers
--- name (`TierColumn`: a schema name or a 0-based number). Playable = a main position 1..4.
+-- The cards from the framework's character index (VRFW.chara.cards), with the chara_param column the tiers name (`TierColumn`). Playable = a main position 1..4.
 local function load_cards()
   if CARDS then return CARDS end
   CARDS = {}

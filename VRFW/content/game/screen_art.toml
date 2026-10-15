@@ -1,0 +1,9 @@
+schema = "VRFW.game/1"
+
+# VR-Framework › screen art (docs/framework/screen-art.md, VRFW 2.4.51): the command the framework's own screens (chain
+# board, contact map) read the art the mods declare with (content\screen_art\*.toml, `VRFW.screen_art/1`). The run time
+# is scripts\screen_art.lua; the game Lua side is VRFW_ScreenArt (assets\lua\menu\_all\38_screen_art.lua).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_SCREEN_ART"       # (screen) -> { [role] = { atlas, sprite, mod } } (empty: the plain fallback)
+handler = "ScreenArt.Get"

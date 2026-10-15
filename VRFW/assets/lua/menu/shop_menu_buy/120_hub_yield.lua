@@ -1,10 +1,9 @@
--- VR-Framework › a shop over a hub other than the Mercado (2026-10-12, VRFW 2.2.29; docs/app/contact-map-fichajes-2026-10-12.md
--- §8). Handlers of the framework's shop_menu_buy host (VRFW_Host, 000_host.lua); no engine call at load time.
+-- VR-Framework › a shop over a hub other than the Mercado. Handlers of the framework's shop_menu_buy host (VRFW_Host, 000_host.lua); no engine call at load time.
 --
 -- A shop opened from the Mercado draws no header of its own (retail OnSetupLayer hides shop_menu's header when the
 -- Mercado's background exists) and the Mercado hides itself. Opened from any other hub (the Chronicle hub's «Tienda
 -- general», «Modos de juego», a top bar shortcut...), the shop shows its own header and button guide and the hub stays
--- drawn under it: with BetterUI's compact header the hub's big mode title («MODO CRÓNICA»), its header and its prompts
+-- drawn under it: with a compact header the hub's big mode title, its header and its prompts
 -- showed through. The hub now yields its chrome (VRFW_HubYield, lua\menu\_all\63_hub_yield.lua, run in the hub's own
 -- VM) while the shop is up, and gets exactly that back when the shop's background closes or the menu ends. The Mercado
 -- (839500579) is left alone: the shop uses its header.

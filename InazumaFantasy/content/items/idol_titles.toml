@@ -1,0 +1,244 @@
+schema = "VRFW.item/2"
+# The titles of Inazuma Fantasy's Idol cards (content\characters\idols.toml, card field `title`). Each is cloned from a game
+# title (rarity and badge icon); `icon_key` gives it its own key.
+default_lang = "en"
+
+[[item]]
+name = "axel_blaze_idol_title"  # Axel Blaze Idol
+base = "ti01000100"
+category = "title"
+icon_key = "ti90000140"
+  [item.text.ja]
+  name = "帰還"
+  [item.text.en]
+  name = "The Return"
+  [item.text.es]
+  name = "El regreso"
+  [item.text.fr]
+  name = "Le Retour"
+  [item.text.de]
+  name = "Die Rückkehr"
+  [item.text.it]
+  name = "Il ritorno"
+  [item.text.pt]
+  name = "O Retorno"
+  [item.text.zh_hans]
+  name = "回归"
+  [item.text.zh_hant]
+  name = "回歸"
+
+[[item]]
+name = "nathan_swift_idol_title"  # Nathan Swift Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000142"
+  [item.text.ja]
+  name = "渇望の皇帝"
+  [item.text.en]
+  name = "Thirsting Emperor"
+  [item.text.es]
+  name = "Emperador sediento"
+  [item.text.fr]
+  name = "Empereur assoiffé"
+  [item.text.de]
+  name = "Durstiger Kaiser"
+  [item.text.it]
+  name = "Imperatore assetato"
+  [item.text.pt]
+  name = "Imperador sedento"
+  [item.text.zh_hans]
+  name = "渴望的皇帝"
+  [item.text.zh_hant]
+  name = "渴望的皇帝"
+
+[[item]]
+name = "arion_sherwind_idol_title"  # Arion Sherwind Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000143"
+  [item.text.ja]
+  name = "最後の突撃"
+  [item.text.en]
+  name = "One Last Charge"
+  [item.text.es]
+  name = "Un último asalto"
+  [item.text.fr]
+  name = "Un dernier assaut"
+  [item.text.de]
+  name = "Ein letzter Ansturm"
+  [item.text.it]
+  name = "Un ultimo assalto"
+  [item.text.pt]
+  name = "Um último ataque"
+  [item.text.zh_hans]
+  name = "最后的冲锋"
+  [item.text.zh_hant]
+  name = "最後的衝鋒"
+
+[[item]]
+name = "victor_blade_idol_title"  # Victor Blade Idol
+base = "ti04000100"
+category = "title"
+icon_key = "ti90000144"
+  [item.text.ja]
+  name = "オルビウス"
+  [item.text.en]
+  name = "Orbius"
+  [item.text.es]
+  name = "Orbius"
+  [item.text.fr]
+  name = "Orbius"
+  [item.text.de]
+  name = "Orbius"
+  [item.text.it]
+  name = "Orbius"
+  [item.text.pt]
+  name = "Orbius"
+  [item.text.zh_hans]
+  name = "奥尔比乌斯"
+  [item.text.zh_hant]
+  name = "奧爾比烏斯"
+
+[[item]]
+name = "hector_helio_idol_title"  # Hector Helio Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000145"
+  [item.text.ja]
+  name = "究極のライバル"
+  [item.text.en]
+  name = "Ultimate Rival"
+  [item.text.es]
+  name = "Rival definitivo"
+  [item.text.fr]
+  name = "Rival ultime"
+  [item.text.de]
+  name = "Ultimativer Rivale"
+  [item.text.it]
+  name = "Rivale definitivo"
+  [item.text.pt]
+  name = "Rival definitivo"
+  [item.text.zh_hans]
+  name = "终极对手"
+  [item.text.zh_hant]
+  name = "終極對手"
+
+[[item]]
+name = "byron_love_idol_title"  # Byron Love Idol
+base = "ti01001900"
+category = "title"
+icon_key = "ti90000146"
+  [item.text.ja]
+  name = "神竜"
+  [item.text.en]
+  name = "Divine Dragon"
+  [item.text.es]
+  name = "Dragón divino"
+  [item.text.fr]
+  name = "Dragon divin"
+  [item.text.de]
+  name = "Göttlicher Drache"
+  [item.text.it]
+  name = "Drago divino"
+  [item.text.pt]
+  name = "Dragão divino"
+  [item.text.zh_hans]
+  name = "神龙"
+  [item.text.zh_hant]
+  name = "神龍"
+
+[[item]]
+name = "mark_evans_idol_title"  # Mark Evans Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000147"
+  [item.text.ja]
+  name = "伝説のキーパー"
+  [item.text.en]
+  name = "Legendary Keeper"
+  [item.text.es]
+  name = "Portero Legendario"
+  [item.text.fr]
+  name = "Gardien légendaire"
+  [item.text.de]
+  name = "Legendärer Torwart"
+  [item.text.it]
+  name = "Portiere leggendario"
+  [item.text.pt]
+  name = "Goleiro lendário"
+  [item.text.zh_hans]
+  name = "传奇门将"
+  [item.text.zh_hant]
+  name = "傳奇守門員"
+
+[[item]]
+name = "joseph_king_idol_title"  # Joseph King Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000149"
+  [item.text.ja]
+  name = "帝国の盾"
+  [item.text.en]
+  name = "Royal Shield"
+  [item.text.es]
+  name = "Escudo de la Royal"
+  [item.text.fr]
+  name = "Bouclier de la Royal"
+  [item.text.de]
+  name = "Schild der Royal"
+  [item.text.it]
+  name = "Scudo della Royal"
+  [item.text.pt]
+  name = "Escudo da Royal"
+  [item.text.zh_hans]
+  name = "帝国之盾"
+  [item.text.zh_hant]
+  name = "帝國之盾"
+
+[[item]]
+name = "zanark_avalonic_idol_title"  # Zanark Avalonic Idol
+base = "ti05021500"
+category = "title"
+icon_key = "ti90000150"
+  [item.text.ja]
+  name = "解き放たれた獣"
+  [item.text.en]
+  name = "Beast Unleashed"
+  [item.text.es]
+  name = "Bestia liberada"
+  [item.text.fr]
+  name = "Bête déchaînée"
+  [item.text.de]
+  name = "Entfesselte Bestie"
+  [item.text.it]
+  name = "Bestia scatenata"
+  [item.text.pt]
+  name = "Fera libertada"
+  [item.text.zh_hans]
+  name = "解放的野兽"
+  [item.text.zh_hant]
+  name = "解放的野獸"
+
+[[item]]
+name = "nakata_hidetoshi_idol_title"  # Hidetoshi Nakata Idol
+base = "ti01000010"
+category = "title"
+icon_key = "ti90000141"
+  [item.text.ja]
+  name = "真のキャプテン"
+  [item.text.en]
+  name = "True Captain"
+  [item.text.es]
+  name = "Verdadero Capitán"
+  [item.text.fr]
+  name = "Vrai capitaine"
+  [item.text.de]
+  name = "Wahrer Kapitän"
+  [item.text.it]
+  name = "Vero capitano"
+  [item.text.pt]
+  name = "Verdadeiro Capitão"
+  [item.text.zh_hans]
+  name = "真正的队长"
+  [item.text.zh_hant]
+  name = "真正的隊長"

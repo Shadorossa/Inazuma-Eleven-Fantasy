@@ -1,8 +1,6 @@
 schema = "VRFW.text_key/1"
-# Texts of the telop_engine mod (format of the text_engine plugin: research/mods/text_engine/README.md).
-# New texts get the id crc32("telop_engine.<name>"): the «Rótulos personalizados» row of the «Opciones de mods» tab
-# (options.toml: label / help) uses these keys. `_off` / `_game` / `_lang_<code>` are the value texts of «Rótulos personalizados»
-# (the `_lang_` ones for the languages the engine adds at boot). A language missing here falls back to English.
+# Texts of the telop_engine mod (text_engine plugin format). New texts get the id crc32("telop_engine.<name>").
+# The custom-telops option row (options.toml label / help) uses these keys; `_off` / `_game` / `_lang_<code>` are its value texts. A missing language falls back to English.
 default_lang = "en"
 
 [en.new]

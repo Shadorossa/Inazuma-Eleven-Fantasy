@@ -1,5 +1,5 @@
--- Computed values of the type `flag` (content/types/flag.toml). Each function gets one table: the fields of the
--- [[flag]] (`name`, `id`, `bank`, `bit`) plus `mod`, `key`, `file`. `crc32(text)` is the game's hash of a name.
+-- Computed values of the type `flag`. Each function gets the [[flag]] fields (`name`, `id`, `bank`, `bit`) plus `mod`, `key`, `file`.
+-- `crc32(text)` is the game's name hash.
 
 local M = {}
 

@@ -1,0 +1,14 @@
+schema = "VRFW.game/2"
+
+# Menu icons by meaning (scripts\menu_icons.lua, data content\defaults\menu_icons.toml, docs/framework/menu-icons.md).
+# A menu script draws the answer on any quad with the sprite command 558735651(layer, sheet, sprite, texture node, 0, instance).
+
+# (series name, alias or number) -> ok, sheet hash, sprite hash
+[[VRFW.Command]]
+name = "CMND_VRFW_SERIES_ICON"
+handler = "MenuIcons.CmdSeries"
+
+# (role: "manager" / "coach") -> ok, sheet hash, sprite hash
+[[VRFW.Command]]
+name = "CMND_VRFW_ROLE_ICON"
+handler = "MenuIcons.CmdRole"

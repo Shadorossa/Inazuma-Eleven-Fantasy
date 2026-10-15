@@ -1,8 +1,5 @@
--- `[[VRFW.RouteNode]]`: optional side nodes of the Chronicle board (docs/game/modes/chronicle-side-branches.md; was
--- team_engine route.rs). A node is a new piece of chronicle_vs_route_config (a dead end), a game cloned from a board
--- game against the node's team, and a road: an overlay sprite the board draws above the map tiles while the node is
--- shown (the native part VRFW.team.node_roads: the board's art; no tile is copied), its board icon and the road sprites
--- on the emblem atlas (VRFW.team.node_icons).
+-- `[[VRFW.RouteNode]]`: optional side nodes of the Chronicle board. A node is a new piece of chronicle_vs_route_config (a dead end), a game cloned from a board
+-- game against the node's team, and a road (an overlay sprite drawn above the map tiles while the node is shown), plus its board icon; sprites go on the emblem atlas.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local R = {}
@@ -10,7 +7,7 @@ local R = {}
 local GAME_DIR = "data/common/gamedata/soccer/game/"
 local ICON_ATLAS_GAME = "#/menu/200_icon/01_icon_emblem/vsroute/icon_vsroute_emblem/vsroute_emblem.g4tx"
 local PRIZE_PREFIX = "data/common/gamedata/soccer/soccer_prize_config_"
--- a node's difficulties when it declares none: Crónica and Heroica
+-- a node's difficulties when it declares none: «Crónica» (Chronicle) and «Heroica» (Heroic)
 local ROUTE_NODE_DEFAULT = { 1, 4 }
 local BOARD_DIFFS = { [1] = true, [2] = true, [3] = true, [4] = true, [10] = true, [11] = true }
 
@@ -19,11 +16,8 @@ local DIR_FIELD = { LU = "moveRouteLU", LD = "moveRouteLD", RU = "moveRouteRU", 
 local OPPOSITE = { LU = "RD", RD = "LU", LD = "RU", RU = "LD" }
 local STEP = { LU = { -1, 1 }, LD = { -1, -1 }, RU = { 1, 1 }, RD = { 1, -1 } }
 
--- A node's road on the board's iso grid: the retail roads only run along the board's two axes (grid steps (±1, ±1)),
--- so every segment of `pts` (grid points: start, bends, node) whose |dx| and |dy| differ gets ONE bend that splits it
--- into two axis legs (an L; consecutive ones make a stair). The first leg keeps the axis the road arrives on (`dir`,
--- beside's d-pad direction, for the first segment; the previous leg's axis after that), like the retail roads that
--- leave a pad along its move direction and turn once. Returns the new point list and the bends added.
+-- A node's road on the board's iso grid: retail roads only run along the two axes, so every segment of `pts` (start, bends, node) whose |dx| and |dy| differ
+-- gets ONE bend splitting it into two axis legs; the first leg keeps the axis the road arrives on (`dir` for the first segment). Returns the new points and the bends added.
 local function iso_route(pts, dir)
   local out, added = { { pts[1][1], pts[1][2] } }, {}
   local ax = STEP[dir] or { 1, 1 }
@@ -94,7 +88,7 @@ function R.fields(r)
     field("p_upd_lock", "pl", "updateLockPieceId")
     field("p_locked_flag", "pl", "lockedGlobalBitFlagId")
     field("p_guide", "pl", "guideTextId")
-    F.p_list_tab = r:field(F.pl, "opponentListTab")   -- optional (nil on older tables)
+    F.p_list_tab = r:field(F.pl, "opponentListTab")   -- optional
     F.p_conds = {}
     for _, n in ipairs { "condition", "showCondition", "openCondition" } do
       local f = r:field(F.pl, n)
@@ -128,7 +122,7 @@ function R.board_slots(r)
   return set
 end
 
--- `{:?}` of a list of strings
+-- Debug text of a list of strings
 local function dbg_strs(a)
   local p = {}
   for i, s in ipairs(a) do p[i] = T.dbg_str(s) end
@@ -276,8 +270,7 @@ function R.install(X)
     return { lo = lo, hi = hi, taken = taken }
   end
 
-  -- an EXTENDED slot (docs/framework/route-board.md §5): slot_limit .. ext_slot_limit - 1, kept by the framework's save
-  -- service (graft route_nodes' VRFW_RouteSlots); its piece's retail statusFlagIndex is the shared proxy_slot
+  -- an EXTENDED slot (slot_limit .. ext_slot_limit - 1) is kept by the framework's save service; its piece's retail statusFlagIndex is the shared proxy_slot
   function X.ext_slot(slot)
     local D = X.D.route_nodes
     return slot >= D.slot_limit and slot < (D.ext_slot_limit or D.slot_limit)
@@ -350,9 +343,8 @@ function R.install(X)
     return nid
   end
 
-  -- a new prize table crc32(name) holding `items` ({{item, count}}: rows [item, count, weight 1, condition 0, 0], the
-  -- game gives every entry), shaped like the file's first rows; an existing table of that id is kept (the Rust twin:
-  -- chain.rs chain_new_prize). Used by the chains' match tile rewards (chain.lua).
+  -- a new prize table crc32(name) holding `items` ({{item, count}}: rows [item, count, weight 1, condition 0, 0], the game gives every entry),
+  -- shaped like the file's first rows; an existing table of that id is kept. Used by the chains' match tile rewards (chain.lua).
   function X.new_prize(items, name)
     if not X.prize_t then
       local k, e = X.table_key(PRIZE_PREFIX)
@@ -521,7 +513,7 @@ function R.install(X)
     return made, road_list
   end
 
-  -- Rust `u32::from_str_radix(h, 16)`: an optional `+`, hex digits, the value below 2^32
+  -- hex digits (optional `+`) to a number below 2^32
   local function hex32(h)
     h = h:gsub("^%+", "", 1)
     if h == "" or not h:find("^[0-9a-fA-F]+$") then return nil end
@@ -1016,7 +1008,7 @@ function R.install(X)
     r:set_u32(-1, row, F.p_icon, icon)
     r:set_u32(-1, row, F.p_icon_idx, 0)
     r:set_u32(-1, row, F.p_guide, guide)
-    -- a chain node is no team of the «Cadena de Crónica» list (its game is never played): a tab that list has not
+    -- a chain node is no team of the «Cadena de Crónica» (Chronicle chain) list (its game is never played): a tab that list has not
     if is_chain and F.p_list_tab and X.D.route_nodes.chain_list_tab then
       r:set_u32(-1, row, F.p_list_tab, X.D.route_nodes.chain_list_tab)
     end

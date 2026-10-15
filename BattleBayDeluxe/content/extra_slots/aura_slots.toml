@@ -1,0 +1,17 @@
+# Battle Bay Deluxe › with Character Reforged, the Battle Bay players' auras go to the aura / mix slots
+# (docs/framework/extra-slot.md §8, `[source] list_auras_out_modes`).
+#
+# Every Battle Bay team plays a fixed set (its team loadouts and member moves, content\teams\80_movesets.toml), and the
+# awakening and bond auras are still played here only. While Character Reforged's new skill set runs the match (its
+# option «Tabla de habilidades»), in the Battle Bay every player of both teams (this mod's teams, the game's, the Draft
+# squad, the rival) has the 6 rows for techniques only: the auras of his set leave his match move list and are his
+# plates slot's (RB + B): a keshin, totem, armour or awakening in the AURA slot, a Mix-Max or «Modo cambio» in the MIX
+# slot, by the slot's own rule (the first of each kind in list order). Nothing in the movesets or the save changes.
+# Without Character Reforged (or with its option off) this extension is left out and the Battle Bay plays as before.
+schema = "VRFW.extra_slot/1"
+
+[[VRFW.ExtraSlotExtend]]
+slot = "character_reforged.skill_set"
+
+[VRFW.ExtraSlotExtend.source]
+list_auras_out_modes = ["battle_bay"]

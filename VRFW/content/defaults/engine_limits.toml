@@ -1,38 +1,29 @@
-# Known engine limits of nie.exe v7.1.2 (vr_core::limits, docs/framework/troubleshooting.md «Engine limits»). After a
-# start the core measures every served table named here and reports `table_limit` (warn) when it nears or passes a
-# limit. Data, not code: a mod that patches the engine to raise a limit ships `defaults\engine_limits.toml` with the
-# same `[limit.<id>]` and a new `max` (merged key by key, later mod wins).
-#
+# Known engine limits; the core reports `table_limit` (warn) when a served table nears or passes one (schema VRFW.engine_limits).
+# A mod that raises a limit ships the same `[limit.<id>]` with a new `max` (merged key by key, later mod wins).
 # Keys of a limit:
-#   table     = the table index id (schemas/<folder>/<table>.toml, `folder/id`)
-#   measure   = "rows" (rows of the table's list), "max_value" (largest value of `column`: it uses value + 1 slots) or
-#               "rows_per_group" (rows per group, see [limit.<id>.group])
-#   column    = column name of the schema (measure "max_value")
-#   where     = optional { column = int, ... }: only the rows whose cells equal these values
-#   max       = capacity the engine has (rows; max_value: slots, so the largest valid value is max - 1)
-#   declared  = optional [limits] key of defaults\limits.toml (docs/framework/limits.md): its effective value (maximum
-#               over the framework and the mods, as the raise code reads it) raises `max`
-#   max_state = optional ModLoader game_state key whose value (> 0) replaces `max` this session (a loader patch)
-#   ceiling   = optional: the most the engine takes whatever is declared (a declaration the framework cannot apply)
-#   retail    = optional: the retail limit, shown in the message when the limit differs
-#   what      = what breaks past it (English, shown in the message)
+#   table     = table index id (`folder/id`)
+#   measure   = "rows", "max_value" (largest value of `column`; uses value + 1 slots) or "rows_per_group" (see [limit.<id>.group])
+#   column    = schema column name (measure "max_value")
+#   where     = optional { column = int, ... }: only rows whose cells equal these values
+#   max       = engine capacity (max_value: slots, so the largest valid value is max - 1)
+#   declared  = optional [limits] key of defaults\limits.toml whose effective value raises `max`
+#   max_state = optional game_state key whose value (> 0) replaces `max` for the session
+#   ceiling   = optional: the most the engine takes whatever is declared
+#   retail    = optional: the retail limit, shown in the message when it differs
+#   what      = what breaks past the limit (shown in the message)
 #   doc       = page with the evidence
 # [limit.<id>.group] (rows_per_group):
-#   fixed  = [{ column, value, group }]: rows whose `column` = `value` are in `group`
-#   join   = { key, table, slice, match, value }: the row's `key` cell is looked up in the `match` cell of the child
-#            rows of the `slice` column of RDBN table `table`; the group is that parent row's `value` (first parent)
-#   ignore = groups the engine never shows (not reported)
+#   fixed  = [{ column, value, group }]: rows whose `column` = `value` belong to `group`
+#   join   = { key, table, slice, match, value }: group = `value` of the parent row of `table` whose `slice` child rows hold the row's `key` in `match`
+#   ignore = groups never reported
 # Measured only when the table (or the joined table) was served this start.
 
 [settings]
-# A table at or above this share of its limit is reported as near it.
+# Share of a limit at or above which a table is reported as near it.
 warn_ratio = 0.9
 
 [limit.opponent_tab]
-# The CPU opponent list (builder 0xD68B20) keeps at most `opponent_rows` rows of the OPEN tab (0xD68E7F, retail 256;
-# raised by the framework when a mod declares more, docs/framework/limits.md §1). A category-0 row goes to tab 8; a
-# category-1 row to the tab = routeType of the Chronicle piece whose event list holds its game (no clamp). Category-1
-# rows are counted whether or not their Chronicle difficulty is cleared (the most the tab can list).
+# Rows of one tab of the CPU opponent list.
 table = "soccer/soccer_opponent_info"
 measure = "rows_per_group"
 max = 256
@@ -45,13 +36,11 @@ doc = "docs/framework/limits.md"
 [limit.opponent_tab.group]
 fixed = [{ column = "category", value = 0, group = 8 }]
 join = { key = "battleId", table = "vsroute/vs_route_piece", slice = "eventInfoRef", match = "paramCrc1", value = "routeType" }
-# 255 = a normal board piece (not a route start): its games list in no tab
+# 255 = normal board piece, listed in no tab
 ignore = [255]
 
 [limit.clear_bits]
-# sort_no (SOCCER_GAME_DIFFICULTY col 35) indexes the match clear bits. Retail: the save member
-# m_globalSoccerGameClearBitFlag (2560 bits). Since VR-Framework 2.0.22 the save engine keeps sort_no 2560..32767 in
-# its per-slot blob (docs/framework/clear-bits.md); the limit is the framework's (a declaration cannot pass it).
+# sort_no indexes the match clear bits.
 table = "soccer/soccer_game_difficulty"
 measure = "max_value"
 column = "sort_no"
@@ -72,8 +61,7 @@ what = "every registered menu takes a slot of a fixed pool at boot; past it the 
 doc = "docs/game/ui/menu-layer-limits.md"
 
 [limit.scene_archive]
-# The scene-archive cap patch (menu_engine scene_archive.rs) raises the retail 128 rows to the served table's rows,
-# at most i16::MAX (its MAX_ROWS): the list index is a 16-bit value.
+# Retail list capacity is raised to the served table's rows (16-bit index).
 table = "scene_archive/scene_archive"
 measure = "rows"
 max = 32767

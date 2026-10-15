@@ -1,0 +1,46 @@
+schema = "VRFW.game/2"
+# Character Reforged › player sets: named builds of one player (scripts\player_sets.lua). The skill table's save button
+# opens the list (grafts ss2_menus and pset_preview). Arguments and answers: the header of scripts\player_sets.lua.
+
+# Inazuma Fantasy kept the sets in its blob ss_player_sets.json (same layout): copied once per save slot into this mod's
+# folder; Inazuma Fantasy's file is left as it is
+[[VRFW.SaveImport]]
+name = "CharacterReforged.PlayerSetsFromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["ss_player_sets.json"]
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_GET"           # (charaStHdl, i) -> used, name, m1 … m6, aura, e1 … e5, sixsense
+handler = "CharacterReforged.PlayerSets.Get"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_FULL"          # (charaStHdl, i) -> used, name, {moves}, aura, {equip}, sixsense, {p} | false, {c} | false, role, kit, mix
+handler = "CharacterReforged.PlayerSets.Full"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_SAVE"          # (charaStHdl, i, name, m1 … m6, aura, e1 … e5, sixsense) -> ok
+handler = "CharacterReforged.PlayerSets.Save"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_SAVE_FULL"     # (charaStHdl, i, name, m1 … m6, aura, e1 … e5, sixsense, p1 … p5, c1 … c5, role[, kit[, mix]]) -> ok
+handler = "CharacterReforged.PlayerSets.SaveFull"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_DELETE"        # (charaStHdl, i) -> ok
+handler = "CharacterReforged.PlayerSets.Delete"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_EXPORT"        # (charaStHdl, name, level, m1 … m6, aura, e1 … e5, sixsense, role, set name, p1 … p5, c1 … c5, kit[, mix]) -> ok, file | why, area
+handler = "CharacterReforged.PlayerSets.Export"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_LIST"   # () -> count, area (the area's .vrmod files, newest first)
+handler = "CharacterReforged.PlayerSets.ImportList"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_ENTRY"  # (i) -> file, label
+handler = "CharacterReforged.PlayerSets.ImportEntry"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PLAYER_SET_IMPORT_READ"   # (i, charaStHdl) -> ok, set name, chara_param, checksum ok, missing, m1 … mix | false, why
+handler = "CharacterReforged.PlayerSets.ImportRead"

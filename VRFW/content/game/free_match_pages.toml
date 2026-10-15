@@ -1,16 +1,9 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › free-match tab pages (service S8 of VRFW 2.3, docs/framework/free-match-tabs.md §11). The run time is
-# scripts\free_match_pages.lua: it reads every mod's content\free_match_pages\*.toml (`VRFW.free_match_page/1`, keys:
-# content\types\free_match_page.toml) and, only when a mod declares a paged tab, installs the detour below. **Nothing
-# here is installed at start** (`apply = "script"`): with no declaration the list builds every tab as the game does.
-#
-# CMenuListViewSoccerVsCpu::SetTab(this, u8 tab) (vtable slot, wrapped): builds the list's rows for a tab index (the
-# rows of the pieces whose routeType is that index). While page k of a paged tab is selected, the tab is built as the
-# page's tab index; the list's own focused-tab field stays the bar's tab. The answer is native (table
-# VRFW.FreeMatch.Page, keyed by the title-return count so a return to the title brings page 1 back without the script).
+# Paged tabs for the free-match list; installs the SetTab detour only when a mod declares a paged tab (`apply = "script"`).
+# While page k of a paged tab is shown, the list builds the page's tab index; the answer table is keyed by the title-return count.
 
-# bool SetTab(this, u8 tab): the list's own function (the vtable slot should hold it; another mod's wrap is chained)
+# bool SetTab(this, u8 tab): the list's own function
 [[VRFW.Function]]
 name = "FreeMatch.ListSetTab"
 game = "Menu.VsCpuListSetTab"
@@ -24,7 +17,7 @@ expect_fn = "FreeMatch.ListSetTab"
 apply = "script"
 needs = ["FreeMatch.ListSetTab"]
 
-# the tab index the list builds for the bar's tab on the page in force (set by scripts\free_match_pages.lua)
+# tab index built for the bar's tab on the current page
 [[VRFW.Hook.answer]]
 phase = "pre"
 table = "VRFW.FreeMatch.Page"
@@ -33,8 +26,7 @@ write = "args[2]"
 
 # ------------------------------------------------------------------------------------------------ commands
 
-# (tab, delta) -> page (1-based), pages, live: delta 0 = ask, ±1 = turn (wraps), anything beyond ±pages = page 1. A tab
-# without pages answers 1, 1, live.
+# (tab, delta) -> page (1-based), pages, live; delta 0 = query, +-1 = turn (wraps); a tab without pages answers 1, 1, live.
 [[VRFW.Command]]
 name = "CMND_VRFW_FM_PAGE"
 handler = "FreeMatchPages.Cmd"

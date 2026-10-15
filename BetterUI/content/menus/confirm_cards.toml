@@ -1,0 +1,32 @@
+# BetterUI: the player cards of the general window's confirmations use the Plantilla's compact card (owner
+# 2026-10-14: «si tienes el BetterUI, que se pongan las tarjetas de jugadores que implementa BetterUI»). The same layout
+# swap and Hero / Diamond effect locator as the formation object of player_cards.toml, applied to the card objects other
+# mods declare for those windows; their hook files add the layers to EVT_FC_EXTRA, so this mod's compact-card graft (no
+# name / level, element left, position right) draws them as Plantilla cards. Each row only when its mod is installed.
+#   util_cp_card                  Utilities: the combo partners' confirm popup (was declared by Inazuma Fantasy until
+#                                 its split; with Inazuma Fantasy its own declaration applies)
+#   character_reforged_pair_card  Character Reforged: the «Crear miximax» / «Crear nuevo cambio» confirmation
+schema = "VRFW.menu/2"
+
+[[object_set]]
+object = "util_cp_card"
+if_mod = "utilities"
+if_not_mod = "inazuma_fantasy"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+
+[[object_set]]
+object = "character_reforged_pair_card"
+if_mod = "character_reforged"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]

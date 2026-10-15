@@ -1,58 +1,44 @@
-# Framework defaults of the shot aura inside defence cut-ins (crates/plugins/fx_engine/src/cutin_rt.rs; RE in
-# docs/game/mechanics/shot-aura-in-cutins.md). When a shot dressed by a [[shot_aura]] rule with `cutin_scale` meets a
-# keeper / block technique, the defence cut-in draws its own ball (an event actor, not the match ball); at the frame
-# where the cut-in's effect list glows that ball (`ATTACH_AURA b000001…, ball_aura_*`), the shot's aura effect is played
-# attached to the ball actor's joint, and removed when the list takes the glow off (the catch), when the cut-in ends, or
-# after `max_life` seconds.
-# These are the quirks of the game's cut-ins (which events, which actor is the ball, which joint moves with it): the
-# mechanism is generic, the content (which auras, their size) is the mods' `cutin_scale`. A mod may ship its own
-# `defaults\cutin_aura.toml` to override keys (load order; tables merge key by key).
-
-# A shot counts as «the incoming shot» of a cut-in for this long after it was last dressed (seconds); a newer shot
-# (match events shot_start) always replaces it.
+# Defaults for the shot aura drawn on the ball of defence cut-ins; a mod may override keys in its own defaults\cutin_aura.toml.
+# Seconds after a shot was last dressed during which it counts as the incoming shot of a cut-in.
 max_age = 30.0
-# Safety net: an aura played in a cut-in is removed after this many seconds even if no detach / cut-in end was seen.
+# Seconds after which an aura played in a cut-in is removed even without a detach or cut-in end.
 max_life = 20.0
 
-# Which auras show in cut-ins (content: the mods' own copy of this file, or the rule key `cutin_scale`): rule id or id
-# prefix → the aura's scale on the cut-in's ball (a rule's own `cutin_scale` wins; the longest key wins). Empty here.
+# Rule id or id prefix -> aura scale on the cut-in ball (a rule's own `cutin_scale` wins; longest key wins).
 [rules]
 
-# Every event entry starts from these values.
+# Base values for every event entry.
 [ball]
-# Actor name prefix of the cut-in's ball (`b000001_s00_p<VARIATION>`, `b000001_s01_…` for a second ball).
+# Actor name prefix of the cut-in ball.
 actor = "b000001"
-# The joint the aura follows: `c_c_1_0` carries the ball's flight in every ev62 / ev63 ball pack (it also spins and
-# holds the cut-in's 2.5x ball scale); `c_add_1_0` / `c_global_0_0` are the other nodes of the ball rig.
+# Joint the aura follows.
 joint = "c_c_1_0"
 # Multiplier of the rule's `cutin_scale` for this event family.
 scale = 1.0
-# Offset (m, joint space) and rotation (degrees, x y z) of the aura on the joint.
+# Offset (m, joint space) and rotation (degrees, x y z) on the joint.
 offset = [0.0, 0.0, 0.0]
 rotation = [0.0, 0.0, 0.0]
-# Effect clip played in the loop slot (empty = the effect's own default, as the event lists' REGISTER_EFFECT does).
+# Effect clip for the loop slot (empty = the effect's default).
 clip = ""
-# Replace the retail colour glow of the ball (the `ball_aura_*` status ATTACH_AURA sets) while the aura plays.
+# Hide the retail colour glow of the ball while the aura plays.
 hide_glow = true
-# The match ball must still be in the shot state (4) when the cut-in attaches: a block cut-in on a shot, not a dribble
-# defence played after the shot ended.
+# Require the match ball to still be in the shot state when the cut-in attaches.
 in_shot = false
-# After this cut-in the incoming shot is spent (it reached the keeper).
+# The incoming shot is spent after this cut-in.
 ends_shot = false
 
-# Event name prefix → overrides (the longest matching prefix wins; no match = the cut-in is left alone).
+# Event name prefix -> overrides (longest matching prefix wins; no match leaves the cut-in alone).
 [events."ev63_"]
-# keeper techniques (save `_1` / beaten `_2`)
+# Keeper techniques.
 ends_shot = true
 
 [events."ev71_31"]
-# keeper-gauge scenes of basic catches
+# Keeper-gauge scenes of basic catches.
 ends_shot = true
 
 [events."ev62_"]
-# block / defence techniques: only while the match ball is still a shot (not a dribble defence)
+# Block / defence techniques, only while the match ball is still a shot.
 in_shot = true
 
 [events."ev63_00120_"]
-# «Escudo de fuerza total» (Full Power Shield, whk00120): ball shown in cut c0301 / c0302 (frames 238-341), glow
-# attached at 238, taken off at 302 in the save (`_1`); the first cut-in this was built for.
+# Full Power Shield (whk00120).

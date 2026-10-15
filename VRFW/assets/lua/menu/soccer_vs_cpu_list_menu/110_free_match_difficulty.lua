@@ -1,6 +1,6 @@
--- free_match_difficulty (VR-Framework 2.0.17 base feature; was Inazuma Fantasy's graft fm_build until 2026-10-09):
+-- free_match_difficulty (VR-Framework base feature):
 -- the rules of «Competir contra bots» the mods declare (`[VRFW.FreeMatch]` of the team type), on the list
--- soccer_vs_cpu_list_menu. docs/framework/free-match-tabs.md §8, docs/game/modes/free-match-difficulty.md §21
+-- soccer_vs_cpu_list_menu.
 -- (handlers of the soccer_vs_cpu_list_menu host). The class menu's part is the graft vrfw_free_match.
 --
 -- * CMND_VRFW_FM_RULES () -> true, clear ticks, orb «best», direct, unlock «together», preview «top», preview class;
@@ -13,14 +13,14 @@
 --   clear bits; the team build put the four class orbs on the single-orb slot of vsroute01_06b).
 -- * OnChangeFocus of a row (after) and OpenClassSelect (around): the preview (team, levels, class badge) at the
 --   lowest offered class (retail: 6) or, Preview = "top", the highest (retail UpdateDifficult). The team is the one
---   of the game's row OF THAT CLASS (0x836C9C28(game, class); 2.0.47): retail asks 0x836C9C28(game) with no class,
+--   of the game's row OF THAT CLASS (0x836C9C28(game, class)): retail asks 0x836C9C28(game) with no class,
 --   which falls back to the game's FIRST row (a Chronicle row: difficulty 1), and a Chronicle level map gives that row a
 --   copy team the preview cannot draw (empty line-up, no coach, «Nv.0» on the IE3 / CS / Galaxy / Orion tabs). The
 --   retail chunk's team local (n2) is set to it, so every later redraw (nickname button) uses it too.
 -- * UpdateFormation (after), PreviewClass = false: the preview's «Nv.» level and class badge hidden (the class menu
 --   shows them).
 -- Rules are read once per VM; with no answer from the DLL every handler leaves the retail code alone.
--- A mod that uses the list for something else (Inazuma Fantasy's office hub) switches these rules off while it does:
+-- A mod that uses the list for something else (e.g. an office hub) switches these rules off while it does:
 -- VRFW_FM.Bypass("<mod>.<name>", true / false), called from its code inside the callbacks (never at load).
 -- No engine call at load time.
 

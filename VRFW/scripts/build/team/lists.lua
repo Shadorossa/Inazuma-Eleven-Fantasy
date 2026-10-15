@@ -1,7 +1,6 @@
--- The lists a team appears in (was team_engine build.rs): soccer_game_config games (a cache of the games kept in step
--- with every row this build adds), cloned games and their match music, soccer_opponent_info rows, Chronicle piece
--- event rows, pool tables, the character shop, the Estadio BB grid (enjoy_mode_team_config), list orders and the
--- removals. Positions are 0-based; functions return `nil, err` where the old builder returned `Err`.
+-- Lists a team appears in: soccer_game_config games (cache kept in step with this build), cloned games and match music,
+-- soccer_opponent_info rows, Chronicle piece event rows, pool tables, the character shop, the Estadio BB grid, list orders and removals.
+-- Positions are 0-based; functions return `nil, err` on failure.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local L = {}
@@ -36,8 +35,7 @@ function L.install(X)
 
   -- ------------------------------------------------------------------------------------------------ the games
 
-  -- columns of soccer_game_config (schemas/soccer/soccer_game_info / _difficulty; the old builder's numbers when a
-  -- schema lacks the name)
+  -- columns of soccer_game_config (fallback numbers when a schema lacks the name)
   function X.sg_columns(t)
     local function c(row, name, n)
       local ok, x = pcall(t.col, t, row, name)
@@ -58,8 +56,7 @@ function L.install(X)
     }
   end
 
-  -- every game of soccer_game_config (team_engine tables.rs `games`): `{ info, name, id, s, n }` in table order (an
-  -- info row followed by its REF_DIFFICULTY row; its rows = the DIFFICULTY entries s .. s + n of the whole file)
+  -- every game of soccer_game_config: `{ info, name, id, s, n }` in table order (an info row followed by its REF_DIFFICULTY row)
   function X.gcache()
     if X.G then return X.G end
     local t = assert(X.games())
@@ -102,8 +99,7 @@ function L.install(X)
     return X.gcache().names
   end
 
-  -- `t:append_rows` on the games table with the cache kept in step: `names` = the row names of `list` (DIFF, or INFO +
-  -- REF), `entries` the new entries (INFO + REF pairs for INFO), `n` the rows. Returns true or nil, err.
+  -- `t:append_rows` on the games table with the cache kept in step: `names` = row names of `list`, `entries` the new entries, `n` the rows; true or nil, err
   function X.g_append(list, names, entries, n)
     local t = X.games_t
     local G = X.gcache()
@@ -173,7 +169,7 @@ function L.install(X)
     g.s, g.n = s, n
   end
 
-  -- add a game: `info` (its id / name set) and its difficulty rows (team_engine tables.rs `add_game`)
+  -- add a game: `info` (id / name set) and its difficulty rows
   function X.add_game(info, rows)
     local G = X.gcache()
     local t = X.games_t
@@ -280,9 +276,8 @@ function L.install(X)
 
   -- ------------------------------------------------------------------------------------------------ games of lists
 
-  -- a new game against team `t`: `template` cloned (its rows: only difficulty 9 when `only9`; `ladder` = one level per
-  -- row), rival / level / AI / stadium / title set, no clear bit, no win table of its own (unless `keep_win`); the
-  -- template's per-game files copied renamed
+  -- a new game against team `t`: `template` cloned (only difficulty 9 when `only9`; `ladder` = one level per row), with rival / level / AI / stadium / title set,
+  -- no clear bit, no win table of its own (unless `keep_win`); the template's per-game files are copied renamed
   function X.clone_game(m, what, t, template, name, level, only9, keep_win, ladder)
     ladder = ladder or {}
     local tid = X.tc:id_of(t)
@@ -366,8 +361,8 @@ function L.install(X)
     return prefix .. T.pad(n % 1000000, 6)
   end
 
-  -- `soccer_opponent_info` row for game `gid`: a clone of the first row of `like` games under the list's condition
-  -- `base`, else any of them, else the first row of `category`; battleId / sortOrder set; with `base`, cond1-4 = it
+  -- `soccer_opponent_info` row for game `gid`: a clone of the first row of `like` games under condition `base`, else any of them, else the first of `category`;
+  -- battleId / sortOrder set; with `base`, cond1-4 = it
   function X.opp_row(gid, like, category, base)
     local o, e = X.opp()
     if not o then return nil, e end
@@ -1024,9 +1019,8 @@ function L.install(X)
     return tid
   end
 
-  -- the home stadium of team `id` and its Estadio BB card art: the first `stadium` of the team and the teams it is
-  -- `based_on` (a few levels up); none = the first `stadium_fallback` of that chain. The art = the `stadium_image` of
-  -- the declaration that gave the stadium, else the first `stadium_image` of the chain (nil = none)
+  -- home stadium of team `id` and its Estadio BB card art: the first `stadium` of the team and its `based_on` chain, else the first `stadium_fallback`;
+  -- art = the `stadium_image` of the declaration that gave the stadium, else the first of the chain (nil = none)
   function X.home_stadium(id)
     local chain = {}
     for _ = 1, 8 do
@@ -1091,9 +1085,8 @@ function L.install(X)
     VRFW.log.info(string.format("%s: %d row(s) play at their team's home stadium (team key `stadium` / `stadium_fallback`), %d with its card art (`stadium_image`)", LIST_BB, #set, art))
   end
 
-  -- the menus' previewed teams (the Estadio BB list's, every game's rivals and fixed own line-ups) within the menus'
-  -- member rows. The own line-up (col 5, the Chronicle difficulty 1 `pltm_cro_*` or its level-map copy) is drawn on the Chronicle VS
-  -- screen through the same readers: past row 32767 it showed the name and an empty pitch at level 0
+  -- the menus' previewed teams (Estadio BB list, game rivals, fixed own line-ups) within the menus' member rows
+  -- (row indices above 32767 show the name and an empty pitch at level 0)
   function X.front_preview_members()
     local first = {}
     local en = X.enjoy()

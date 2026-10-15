@@ -1,0 +1,18 @@
+# Aura Points: the entries of the match buff row (soccer_team_buff_icon_list_menu, the bottom bar of team passives and
+# active auras). The retail row has 3 aura entries (portrait soccer00_53_aura_buff_chara_icon + circular time gauge
+# soccer00_54_aura_recast_gauge); research/grafts/aura_points_buff_bar (aura_points_buff_row.lua) shows one entry per
+# aura user up to the VR-Framework's team limit of transformed players ([rules] team_aura_max) and as many as these
+# layers have instances: one per player on the pitch. Ported from Inazuma Fantasy's
+# menus\00_soccer\soccer_team_buff_icon_list_menu.toml (2026-10-15). The bars under them: buff_bar.toml (two instances
+# per entry).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_team_buff_icon_list_menu"
+layer = "soccer00_53_aura_buff_chara_icon"
+count = 11
+
+[[patch]]
+menu = "soccer_team_buff_icon_list_menu"
+layer = "soccer00_54_aura_recast_gauge"
+count = 11

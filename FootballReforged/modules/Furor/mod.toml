@@ -1,0 +1,41 @@
+id = "furor"
+# name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
+name = "Furor"
+version = "1.1.4"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "GO Strikers' furor gauge: each team's fire bar beside its crest fills with time (faster when losing) and a little with goals, saves and duels; full, the furor button (L3 / R) starts the furor phase for 12 s: every player wears his position's awakening (look and stats), moves hit harder, players run faster. The CPU starts its own. Awakenings exist only in the furor phase."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-15"
+# This mod's own names (TOML keys [Furor.X], game Lua FUROR_HUD_* / FurorHud_* / FUROR_BANNER_* / FurorBanner_*, flags / signals furor.gauge.*, input
+# command CMD_FUROR_PHASE, action Furor.Phase); never VRFW.
+prefix = "Furor"
+folder = "Furor"
+# A module mod of Football Reforged (modules\Furor\, docs/framework/mod-families.md §1.3); was its internal module furor
+# in FR 1.1.0. GO Strikers 2013's tension gauge (docs/game/mechanics/furor.md), data only on the VR-Framework's team
+# momentum service (docs/framework/team-momentum.md):
+#   content\match_resources\gauge.toml    the team gauge furor.gauge (0..100)
+#   content\team_momentum\gauge.toml      time / comeback / action fill, levels, the 12 s phase
+#   content\rules\gauge.toml              the effects of the levels and the phase (the awakening of each position), the
+#                                         CPU's start
+#   content\effects\awakening.toml        the phase's awakening look per position (GK / DF / MF / FW): character
+#                                         triggers with recoloured copies of the retail awakening aura (1.1.0)
+#   content\techniques\no_awakenings.toml no player has an awakening (aura types 5 / 7) anywhere, matches included:
+#                                         the furor phase is the only awakening (1.1.0)
+#   content\menus\furor_banner.toml + content\images\menu\02_btl\furor_banner.toml   the «Fase de furor activa»
+#                                         entry banner when a phase starts; graft research/grafts/furor_banner (1.1.0)
+#   config.toml [furor_banner] + scripts\banner.lua + content\game\banner.toml   the banner's slide in from the left,
+#                                         its 2 s on screen and slide out to the right (command CMND_FUROR_BANNER, 1.1.1)
+#   content\inputs\phase.toml + text\rows\menu_text.toml   the furor button (L3 / R, rebindable)
+#   content\menus\furor_hud.toml + content\images\menu\02_btl\furor_gauge.toml (its own atlas)   the HUD layers and GO Strikers'
+#                                         own gauge sprites (research/scripts/furor_strikers_build.py); graft research/grafts/furor_hud
+requires = ["vr_framework>=2.4.97", "football_reforged>=1.2.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["command"]
+
+[module]
+of = "football_reforged"
+order = 20

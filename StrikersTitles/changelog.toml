@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Strikers Titles: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "Strikers Titles"
+
+[en]
+name = "Strikers Titles"
+
+[fr]
+name = "Strikers Titles"
+
+[de]
+name = "Strikers Titles"
+
+[it]
+name = "Strikers Titles"
+
+[pt]
+name = "Strikers Titles"
+
+[ja]
+name = "Strikers Titles"
+
+[zh_hans]
+name = "Strikers Titles"
+
+[zh_hant]
+name = "Strikers Titles"
+
+[[release]]
+icon = "general"
+notes = [
+    "Rótulos de supertécnicas de GO Strikers 2013.",
+    "Del parche de fans en español.",
+    "En las técnicas y espíritus guerreros del juego.",
+    "Incluye los rótulos de Inazuma Fantasy (es, ja, en).",
+    "Títulos: @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.en]
+notes = [
+    "Special move banners from GO Strikers 2013.",
+    "From the Spanish fan translation.",
+    "On the game's own moves and keshin.",
+    "Includes Inazuma Fantasy's banners (es, ja, en).",
+    "Titles: @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.fr]
+notes = [
+    "Bandeaux de techniques de GO Strikers 2013.",
+    "Issus de la traduction espagnole des fans.",
+    "Sur les techniques et esprits du jeu.",
+    "Avec les bandeaux d'Inazuma Fantasy (es, ja, en).",
+    "Titres : @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.de]
+notes = [
+    "Technik-Banner aus GO Strikers 2013.",
+    "Aus der spanischen Fan-Übersetzung.",
+    "Auf den Techniken und Geistern des Spiels.",
+    "Mit den Bannern von Inazuma Fantasy (es, ja, en).",
+    "Titel: @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.it]
+notes = [
+    "Titoli delle tecniche di GO Strikers 2013.",
+    "Dalla traduzione spagnola dei fan.",
+    "Sulle tecniche e sugli spiriti del gioco.",
+    "Include i titoli di Inazuma Fantasy (es, ja, en).",
+    "Titoli: @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.pt]
+notes = [
+    "Letreiros de técnicas de GO Strikers 2013.",
+    "Da tradução espanhola feita por fãs.",
+    "Nas técnicas e espíritos do jogo.",
+    "Inclui os letreiros de Inazuma Fantasy (es, ja, en).",
+    "Títulos: @IEGOStrikersESP (x.com/IEGOStrikersESP)",
+]
+
+[release.ja]
+notes = [
+    "GOストライカーズ2013の必殺技タイトル。",
+    "スペイン語ファン翻訳より。",
+    "ゲームの必殺技と化身に表示。",
+    "Inazuma Fantasyのタイトルも収録（es/ja/en）。",
+    "タイトル：@IEGOStrikersESP",
+]
+
+[release.zh_hans]
+notes = [
+    "GO Strikers 2013的必杀技标题。",
+    "来自西班牙语粉丝翻译。",
+    "用于游戏中的必杀技与化身。",
+    "包含Inazuma Fantasy的标题（es/ja/en）。",
+    "标题：@IEGOStrikersESP",
+]
+
+[release.zh_hant]
+notes = [
+    "GO Strikers 2013的必殺技標題。",
+    "來自西班牙語粉絲翻譯。",
+    "用於遊戲中的必殺技與化身。",
+    "包含Inazuma Fantasy的標題（es/ja/en）。",
+    "標題：@IEGOStrikersESP",
+]

@@ -6,11 +6,13 @@
 # *.src.lua sources + rank_items_core.src.lua):
 #   * evt_skill_slot_menu (Character Reforged's «Fantasy» skill table): the function TrueHissatsu.SkillTableRankItem of
 #     the row action this mod declares on that screen's host (content\menus\skill_table_rank_items.toml, host
-#     character_reforged.skill_table.row_action, Character Reforged's graft skill_table_host): CMD_FUNC1 on a move row,
-#     Sí / No window, the rows redrawn;
-#   * ability_learning_board_menu (Victory Road's own board): this mod's rebindable key TrueHissatsu.RankItems.Use
-#     (content\inputs\rank_items.toml) on a move piece, two presses through the board's telop (the native board keeps
-#     its input: no window over it), the guide entry «<key> Subir nivel».
+#     character_reforged.skill_table.row_action, Character Reforged's graft skill_table_host): CMD_FUNC1 (Start) on a
+#     move row, Sí / No window, the rows redrawn;
+#   * ability_learning_board_menu (Victory Road's own board): Start (CMD_FUNC1) on a move piece (the retail quick bean
+#     equip, the screen's OpenBeansSetMenu, is withheld there; elsewhere it stays), two presses through the board's
+#     telop (the native board keeps its input: no window over it), the guide entry «<Start> Subir nivel» over the
+#     retail Start entry through VRFW_FooterPrompts (Replaces, Attach). Owner 2026-10-14: Start in both views, as in
+#     Inazuma Fantasy (until True Hissatsu 1.0.5 the board used a rebindable LT / U action).
 # Until 2026-10-14 this was a text block built into the skill table script by Character Reforged (mod =
 # character_reforged, rebuilt by Inazuma Fantasy), which put True Hissatsu's code in the screen's mod; now the screen
 # only offers the place and True Hissatsu owns the use. Without True Hissatsu nothing is declared or loaded.

@@ -1,7 +1,7 @@
--- mods_menu (VR-Framework): the «Mods» screen (menu vrfw_mods_menu, opened from the title menu), v2 (30/09/2026):
+-- mods_menu (VR-Framework): the «Mods» screen (menu vrfw_mods_menu, opened from the title menu):
 -- a mod manager with the structure of Baldur's Gate 3's (tabs, a grid of cards, search / filter / sort, a page per
 -- mod, a profile at the top right) in the look of the game's menus. Own code; runs in the VM of the stub script
--- (menu/vrfw_mods_menu.lua of the mod) and replaces its callbacks. docs/game/engine/mods-menu.md §10.
+-- (menu/vrfw_mods_menu.lua of the mod) and replaces its callbacks.
 --
 -- Screen (setting built at boot by the mods_menu plugin from the player's own «Guardar» screen,
 -- crates/plugins/mods_menu/src/screen.rs): retail background, header, button guides and return arrow; one retail list
@@ -12,7 +12,7 @@
 --   vrfw_mm_tl / _tc / _tr  texts (left / centre / right)
 --   vrfw_mm_pd, _p0, _p1    popup: dim, window, its quads;  vrfw_mm_pl / _pc / _pr: its texts
 -- Tabs: «Instalados» (grid of cards, 3 a row, search / filter / sort) and «Orden de carga» (the load order as a list).
--- The in-game creators («Crear»: special moves, events) left the screen on 2026-10-12: they live in the ModManager app.
+-- The screen has no in-game creators; content is edited in an external editor.
 -- Keys (pad / keyboard): arrows move; A: the card's button (switch on / off); Start: the mod's page; L1 / R1 (Z / C):
 -- load order; L2 / R2 (Q / E): tabs; Select (Tab): sort; L3 (B): filter; R3 (N): search; X: profile; Y (V): the key of
 -- another framework part (VRFW_MM_EXTRA: «Novedades»); B / Esc / right click: back. Mouse: hover selects, click = the
@@ -78,8 +78,8 @@ local M = {
   TEXT = Crc("CMND_VRFW_MM_TEXT"),              -- (name, language code) -> text
   STATE = Crc("CMND_VRFW_MM_STATE"),            -- () -> title, screen, version, menu (crc32), ...
   THUMB = Crc("CMND_VRFW_MM_THUMB"),            -- (mod id) -> texture path, card sprite, large sprite ("" = none)
-  TEXT_ID = Crc("CMND_EVT_TEXT_ID"),            -- text_engine: (key) -> id of a new text
-  -- the VR-Framework core's report of this start (<data dir>\cache\report.json; docs/app/vr-framework-norm.md §9)
+  TEXT_ID = Crc("CMND_VRFW_TEXT_ID"),           -- text_engine: (key) -> id of a new text
+  -- the VR-Framework core's report of this start (<data dir>\cache\report.json)
   REPORT_COUNT = Crc("CMND_VRFW_REPORT_COUNT"), -- (mod) -> entries
   REPORT_ROW = Crc("CMND_VRFW_REPORT_ROW"),     -- (i, mod) -> severity, type, code, location, message, mod, key, id, winner, others, category, hint
   REPORT_RELOAD = Crc("CMND_VRFW_REPORT_RELOAD"), -- (mod) -> "type=live|next_load|restart;..."
@@ -95,7 +95,7 @@ local M = {
   MOD_TAGS = Crc("CMND_VRFW_MM_MOD_TAGS"),      -- (mod id) -> its tag ids, one per line
   PERMS = Crc("CMND_VRFW_MM_PERMS"),            -- (mod id) -> its native permissions (mod.toml permissions), ", "-joined
   -- (mod id) -> parent ("" = not a module), order, name key, internal modules (option row ids, one per line): the mod
-  -- families of mod.toml [module] / [modules] (docs/framework/mod-families.md)
+  -- families of mod.toml [module] / [modules]
   MODULE = Crc("CMND_VRFW_MM_MODULE"),
 }
 -- the screen's background: the retail Guardar one (screen.rs BG_LAYER), hidden until the first full drawing shows it
@@ -174,13 +174,13 @@ local C = {
   FADE = 609722083, FADE_DONE = 2259183189,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
   TEX_LOADING = 1506186496,   -- (texture crc) -> true while still loading (kizuna_town_menu_inc)
-  -- the mouse, read here (docs/game/modes/inarogue.md §27: the engine does not send hover to free layers)
+  -- the mouse, read here (the engine does not send hover to free layers)
   MOVED = 3272825600,         -- funcLuaMenuCommand () -> the mouse moved this frame
   POINTER = 558229292,        -- funcLuaMenuCommand () -> x, y (screen px, y down)
   CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303, CLICK = 1651523701,  -- CMND_CHECK_INPUT_CMD(MENU_CTRL, CMD_ENTER_CLICK)
   ENTER = 1981080283,         -- CMD_ENTER (A / Enter) for the same poll
   LEFT = 218912913,           -- CMD_EVT_MOUSE_LEFT: the mouse's left button alone (CMD_ENTER_CLICK also fires on Enter / A)
-  W_UP = 1942756954, W_DOWN = 1623431741,   -- CMD_EVT_WHEEL_UP / _DOWN (docs/game/ui/mouse-support.md §2.1)
+  W_UP = 1942756954, W_DOWN = 1623431741,   -- CMD_EVT_WHEEL_UP / _DOWN
 }
 local FN = {UP = Crc("vrfw_mm_up"), DOWN = Crc("vrfw_mm_down"), LEFT = Crc("vrfw_mm_left"), RIGHT = Crc("vrfw_mm_right"),
             ORDER_UP = Crc("vrfw_mm_order_up"), ORDER_DOWN = Crc("vrfw_mm_order_down"),
@@ -202,15 +202,15 @@ local K = {A = "<CMD_ENTER>", B = "<CMD_BACK>", L1 = "<CMD_FUNCL1>", R1 = "<CMD_
 
 -- ---- geometry (screen px, y down) -------------------------------------------------------------------------------------
 local G = {
-  -- Every y below is laid out for the RETAIL header (mainmenu90_01: blue bar 0-122 px + shadow to 145; Nacho, 07/10:
+  -- Every y below is laid out for the RETAIL header (mainmenu90_01: blue bar 0-122 px + shadow to 145;
   -- the top row sat half under it). A mod that restyles the header moves the whole screen with the global
-  -- VRFW_MM_LAYOUT = {top_dy = n} (read in OnInit, CE.ApplyLayout): clean_hud sets top_dy = -55, the layout of the
+  -- VRFW_MM_LAYOUT = {top_dy = n} (read in OnInit, CE.ApplyLayout): e.g. top_dy = -55, the layout of the
   -- short header (bar 67 px). The keys moved are G.SHIFT_Y.
-  -- ONE top row (Nacho, 02/10): tabs | search | Ver | Orden | Perfil, lower and higher up than before; the mod count
+  -- ONE top row: tabs | search | Ver | Orden | Perfil, lower and higher up than before; the mod count
   -- inside the search box; the restart notice above the row, right of the header
   TAB_X = 64, TAB_Y = 163, TAB_W = 250, TAB_H = 44, TAB_STEP = 236,
   ROW_SEARCH_X = 820, ROW_SEARCH_W = 380, ROW_TOOL_W = 186, ROW_FILTER_X = 1210, ROW_SORT_X = 1406,
-  -- the profile button: narrow (Nacho 09/10)
+  -- the profile button: narrow
   PROF_X = 1660, PROF_Y = 163, PROF_W = 220, PROF_H = 44,
   NOTICE_X = 1260, NOTICE_Y = 111, NOTICE_W = 620, NOTICE_H = 44,
   -- «Instalados»: horizontal cards (picture left; name, version · author, the switch right), 3 x 5; right under the row
@@ -519,7 +519,7 @@ local function ReadAll()
       if ln ~= "" then
         m.name = ln
       end
-      -- its family (docs/framework/mod-families.md): the parent it is a module of, its place and short name there,
+      -- its family: the parent it is a module of, its place and short name there,
       -- and its own internal modules (option rows, keys "<mod>.<id>")
       local par, ord, nkey, internal = Call(M.MODULE, m.id)
       m.parent, m.morder, m.internal = Str(par), Int(ord), {}
@@ -641,7 +641,7 @@ local function Shown()
   local f = FILTERS[ui.filter]
   local out = {}
   for _, m in ipairs(mods) do
-    -- a module mod is a row of its parent's page, not a card (docs/framework/mod-families.md)
+    -- a module mod is a row of its parent's page, not a card
     local ok = m.family == nil
     if ok and q ~= "" then
       local hay = m.name .. " " .. m.id .. " " .. m.author .. " " .. Text(m, 8)
@@ -909,7 +909,7 @@ local function SortLabel()
   return T("sort_" .. SORTS[ui.sort])
 end
 
--- ---- the top row's pieces (Nacho, 02/10 + 03/10): ONE search box, ONE tool, used by every tab and every list page: the
+-- ---- the top row's pieces: ONE search box, ONE tool, used by every tab and every list page: the
 -- same places, the count inside the search box -------------------------------------------------------------------------
 
 -- the search box: s = {query, hint (text key), count (nil = none), foc, on, id (hit id), act (click)}
@@ -983,7 +983,7 @@ local function Badge(m)
   if m.enabled and m.state == 1 then
     return "pill_red", T("badge_skip")
   elseif m.enabled and M.NeedsUpdate ~= nil and M.NeedsUpdate(m.id) then
-    -- an unknown game build: some of the mod's code sites were not found (docs/framework/game-updates.md)
+    -- an unknown game build: some of the mod's code sites were not found
     return "pill_amber", T("badge_update")
   elseif m.pending then
     return "pill_amber", T(m.enabled and "badge_will_on" or "badge_will_off")
@@ -994,7 +994,7 @@ local function Badge(m)
 end
 
 -- a mod of «Instalados»: picture left; name, version · size · author and ONE switch right (green «Activado» / red
--- «Desactivado»: A / a click flips it); the load number, the padlock, ⚠ and ⟳ as small corner marks (Nacho, 30/09)
+-- «Desactivado»: A / a click flips it); the load number, the padlock, ⚠ and ⟳ as small corner marks
 local function DrawCard(k, m, focused)
   local x, y = CardXY(k)
   local off = not m.enabled
@@ -1055,7 +1055,7 @@ local function DrawScrollbar(total_rows, first, visible, x, y0, h, set)
   local ty = y0 + (h - th) * first / math.max(1, total_rows - visible)
   Quad("Q1", SP("thumb"), x, ty, G.SB_W, th)
   if set ~= nil then
-    -- the mouse (Nacho 09/10): a click on the bar jumps there, holding the button drags it (PollMouse: mouse.drag);
+    -- the mouse: a click on the bar jumps there, holding the button drags it (PollMouse: mouse.drag);
     -- set(first row) moves the page
     local n = total_rows - visible
     Hit(x - 10, y0, G.SB_W + 20, h, "sbar", function()
@@ -1117,7 +1117,7 @@ local function DrawPanel(title, lines)
   end
 end
 
--- ---- the mod info block (Nacho, 30/09): labelled fields, shared by the «Orden de carga» panel and a mod's page --------
+-- ---- the mod info block: labelled fields, shared by the «Orden de carga» panel and a mod's page --------
 -- L: the layers to draw on, {q = quad layer, l = left text layer, c = centred text layer}
 local INFO = {MAIN = {q = "Q1", l = "TL", c = "TC"}, POPUP = {q = "P1", l = "PL", c = "PC"},
               LABEL_W = 196, STEP = 36, DASH = "—"}
@@ -1144,7 +1144,7 @@ function INFO.Value(s)
   return (s ~= nil and s ~= "") and s or INFO.DASH
 end
 
--- «Requiere» in words (Nacho, 01/10): a requirement on a part of the framework (any name VR-Framework provides:
+-- «Requiere» in words: a requirement on a part of the framework (any name VR-Framework provides:
 -- mod_options, technique_engine, telop_engine…) is a requirement on the framework itself, shown once as «VR-Framework
 -- (x.y+)»; another mod by its name (a minimum version as «(1.0+)»: the game font has no «≥»). The ModLoader resolves those names through the framework's `provides` (old
 -- manifests keep working).
@@ -1192,7 +1192,7 @@ function INFO.Requires(m)
   return table.concat(out, ", ")
 end
 
--- The cover of a mod: its picture, else a generated one (Nacho, 01/10: the huge grey tile with a letter looked cheap):
+-- The cover of a mod: its picture, else a generated one (the huge grey tile with a letter looked cheap):
 -- the colour of its first tag, the tag in small capitals at the top and the mod's name in large type at the bottom.
 INFO.TAG_TILE = {framework = 0, interface = 1, interfaz = 1, gameplay = 2, jugabilidad = 2, story = 3, historia = 3,
                  audio = 4, graphics = 5, ["gráficos"] = 5, tools = 6, herramientas = 6}
@@ -1215,8 +1215,7 @@ function INFO.Cover(m, x, y, w, h, L)
   end
 end
 
--- the mod's native permissions (mod.toml `permissions`: memory, call, patch, command, state, hook; docs/framework/
--- native.md §4), "" = none; asked once per mod
+-- the mod's native permissions (mod.toml `permissions`: memory, call, patch, command, state, hook), "" = none; asked once per mod
 INFO.PERMS = {}
 function INFO.Perms(m)
   local p = INFO.PERMS[m.id]
@@ -1227,8 +1226,8 @@ function INFO.Perms(m)
   return p
 end
 
--- The mod's page: one column of labelled fields (labels in one column, values in the next, one row step; Nacho, 01/10:
--- «etiquetas y valores desalineados»), the state as its pill in the «Estado» row. Returns the line under the last row.
+-- The mod's page: one column of labelled fields (labels in one column, values in the next, one row step), the state as its pill in the «Estado» row.
+-- Returns the line under the last row.
 function INFO.List(m, x, y, w, L)
   local lw, step = 210, 38
   local bs, bt = Badge(m)
@@ -1484,7 +1483,7 @@ local function PopupWindow(title, right)
       ClosePopup()
     end
   end)
-  -- the list behind stays visible, dimmed (owner 14/10: «oscurecer un poco», no opaque cover)
+  -- the list behind stays visible, dimmed (no opaque cover)
   Quad("PD", SP("dim"), 0, 0, 1920, 1080, G.DIM_ALPHA)
   Quad("P0", SP("bar"), G.WIN_X, G.WIN_Y, G.WIN_W, G.WIN_BAR)
   Quad("P0", SP("white"), G.WIN_X, G.WIN_Y + G.WIN_BAR, G.WIN_W, G.WIN_H - G.WIN_BAR, 1)
@@ -1518,8 +1517,7 @@ function PopupButtons(m)
 end
 
 -- The VR-Framework report of mod `id` (CMND_VRFW_REPORT_*, the start's report.json): {problems, conflicts, np, nc}.
--- `problems` is what the «Problemas» view lists: the entries grouped by what they mean (Phase H,
--- docs/framework/troubleshooting.md: why the mod may not load, files left out, rows left out, warnings), each group
+-- `problems` is what the «Problemas» view lists: the entries grouped by what they mean (why the mod may not load, files left out, rows left out, warnings), each group
 -- of one code under a header row in the player's language (text_report.toml `rc_<code>`: what it is and how to fix
 -- it); the entries keep the core's English message, by file. `np` = entries (headers not counted). Read once per
 -- screen opening. (one table: the main chunk is at Lua's limit of 200 locals)
@@ -1607,7 +1605,7 @@ function RV.Of(id)
 end
 
 -- «Cambios en caliente: telop en vivo · table al reiniciar» (CMND_VRFW_REPORT_RELOAD, the reload mode of each type
--- the mod has content of, Phase G); "" when the core gives none
+-- the mod has content of); "" when the core gives none
 function RV.Reload(id)
   local ck = "reload:" .. id
   if RV.cache[ck] == nil then
@@ -1624,7 +1622,7 @@ function RV.Label(m, k)
   if k == 1 then
     return T("page_info")
   elseif k == 4 then
-    -- short enough for the view tab (owner 14/10: «Módulos y aju…» was cut): «Módulos (n)» counts the modules,
+    -- short enough for the view tab: «Módulos (n)» counts the modules,
     -- «Ajustes (n)» the settings of a mod without modules
     if RV.HasModules(m) then
       return T("page_modules", {n = #(m.modules or {}) + #(m.internal or {})})
@@ -1723,7 +1721,7 @@ function RV.Draw(m, which)
   end
 end
 
--- ---- «¿Quién lo toca?»: the conflict explorer of `vrfw who` in the panel (Phase H) ------------------------------------
+-- ---- «¿Quién lo toca?»: the conflict explorer of `vrfw who` in the panel ------------------------------------
 -- From «Conflictos»: R3 (the first conflict on the page, else an empty search) or a click on a conflict opens a list
 -- page with the id in its search box (the top row, like the other tabs): every mod that touches the id, in load
 -- order, one header per mod (its load position; «gana» on the winner), its lines under it (file:line on the right;
@@ -1743,7 +1741,7 @@ function RV.OpenWho(id)
   StartCo(function() RV.WhoFlow(id) end)
 end
 
--- ---- «Ajustes»: the mod's own settings (docs/framework/mods-panel.md §3) ---------------------------------------------------
+-- ---- «Ajustes»: the mod's own settings ---------------------------------------------------
 -- The rows a mod declares in its options.toml (mod_options, CMND_EVT_OPT_*), the ones whose key starts with "<mod>.":
 -- the same rows, values and storage as Opciones › «Opciones de mods» (one store: <data dir>\mod_options\<mod>.json, or
 -- the owner's get / set commands). Only the mods active at this start have rows (the registry is built at boot).
@@ -1768,7 +1766,7 @@ function RV.Settings(id)
                          get = Int(get), set = Int(set)}
     end
   end
-  -- the «Modules» first (docs/framework/mod-families.md): the module mods of its family (on / off = the mod switched
+  -- the «Modules» first: the module mods of its family (on / off = the mod switched
   -- on / off), then its internal modules (option rows named in [modules] options), then the other settings
   r = {}
   local m = ModById(id)
@@ -1878,7 +1876,7 @@ function RV.Change(m, dir)
   Draw()
 end
 
--- The «Módulos» view as cards (owner 14/10): each module (a module mod of the family, or an internal module = an option
+-- The «Módulos» view as cards: each module (a module mod of the family, or an internal module = an option
 -- row named in [modules] options) is a card with its name, a short description and a tick box that shows whether it is
 -- on; two cards a line. The mod's own settings follow as rows with their current value in a ◀ ▶ box. The page scrolls
 -- by lines. RV.Layout(m) -> lines {kind = "head" | "cards" | "row", h = height, items = {row numbers}, text}
@@ -2166,8 +2164,7 @@ local function DrawDetails()
     end
     return
   end
-  -- the cover (16:9) at the left, one column of labelled fields at its right, the description under both (Nacho, 01/10:
-  -- a smaller cover, aligned fields, the state in its row)
+  -- the cover (16:9) at the left, one column of labelled fields at its right, the description under both (a smaller cover, aligned fields, the state in its row)
   local px, py = G.WIN_X + 40, G.WIN_Y + G.WIN_BAR + 32
   local cw, ch = G.COVER_W, G.COVER_H
   INFO.Cover(m, px, py, cw, ch, INFO.POPUP)
@@ -2243,7 +2240,7 @@ local function UpdateButtonGuide()
     -- a list page or the top row: A (a text the game lacks: «Aceptar»)
     add(G_ACCEPT, I_ENTER, Crc("CMD_ENTER"), 0)
   elseif ui.popup ~= nil then
-    -- the page's own buttons show their keys (A, Y, L1 / R1): no second copy at the bottom (Nacho, 01/10)
+    -- the page's own buttons show their keys (A, Y, L1 / R1): no second copy at the bottom
   elseif have and m ~= nil then
     if m.enabled and ui.tab == 2 then
       texts, icons, offs, cmds = {0, TextId("g_order") or RT_MOVE}, {I_L1, I_R1}, {0, 54}, {Crc("CMD_FUNCL1"), Crc("CMD_FUNCR1")}
@@ -2339,7 +2336,7 @@ local function Message(text)
     coroutine.yield()
   end
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-  CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+  CE.bg_dirty = true       -- a window / keyboard closed: the background again
 end
 
 -- yes / no window: true = yes
@@ -2357,7 +2354,7 @@ local function Ask(text)
     coroutine.yield()
   end
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-  CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+  CE.bg_dirty = true       -- a window / keyboard closed: the background again
   return r == 0
 end
 
@@ -2371,7 +2368,7 @@ function StartCo(fn)
     Log("error", tostring(err))
     co = nil
     funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-    CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+    CE.bg_dirty = true       -- a window / keyboard closed: the background again
   elseif coroutine.status(co) == "dead" then
     co = nil
   end
@@ -2395,7 +2392,7 @@ local function Keyboard(initial, title_name, fallback_title, max)
   end
   local s = funcLuaCommand(KB.RESULT)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-  CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+  CE.bg_dirty = true       -- a window / keyboard closed: the background again
   if type(s) ~= "string" then
     return nil
   end
@@ -2459,7 +2456,7 @@ function Toggle()
   Draw()
 end
 
--- Switch mod `m` on / off with its family (docs/framework/mod-families.md): a parent switched off takes its module
+-- Switch mod `m` on / off with its family: a parent switched off takes its module
 -- mods with it, a module switched on brings its parent. The ModLoader's own switch does the same
 -- (evt_modfmt::ModsState::toggled); it is repeated here for an older ModLoader. Reads the list again.
 -- -> ok, the toast's text
@@ -2521,7 +2518,7 @@ function RV.ToggleModule(mm)
 end
 
 function Order(delta)
-  -- the load order is edited only in «Orden de carga» (Nacho, 30/09): not from «Instalados» or its pages
+  -- the load order is edited only in «Orden de carga»: not from «Instalados» or its pages
   if ui.tab ~= 2 then
     funcLuaCommand(C.SE, SE_NG)
     return
@@ -2676,7 +2673,7 @@ function RunExtra(e)
       funcLuaCommand(C.SE, SE_NG)
     end
     funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-    CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+    CE.bg_dirty = true       -- a window / keyboard closed: the background again
     Draw()
   end)
 end
@@ -2751,7 +2748,7 @@ local function DrawList(p)
       else
         Quad("Q0", SP(sel and "row_sel" or (it.off and "row_off" or "row")), G.LIST_X, y, LW, G.ROW_H)
         if sel then
-          CE.Focus("Q1", G.LIST_X, y, LW, G.ROW_H, 3)   -- the cursor of every list (Nacho, 02/10)
+          CE.Focus("Q1", G.LIST_X, y, LW, G.ROW_H, 3)   -- the cursor of every list
         end
         local lx = G.LIST_X + 28
         Txt("TL", (it.off and "[CWG]" or "[CB]") .. Cut(it.label, math.min(it.sub and 44 or 64, Fit(LW - (lx - G.LIST_X) - (it.sub and 230 or 30), 0.9))) .. "[C]", lx, y + G.ROW_H / 2, 0.9)
@@ -2855,9 +2852,8 @@ function RV.WhoFlow(id)
   Draw()
 end
 
--- The header adaptation (Nacho, 07/10): G is laid out for the retail header; a mod that restyles the header sets the
--- global VRFW_MM_LAYOUT = {top_dy = n} in a Lua patch of this script (clean_hud: -55, its foreign patch
--- research/grafts/ui_clean_mods_menu). Applied in OnInit from the retail values, so any order of the patches and any
+-- The header adaptation: G is laid out for the retail header; a mod that restyles the header sets the
+-- global VRFW_MM_LAYOUT = {top_dy = n} in a Lua patch of this script (e.g. -55). Applied in OnInit from the retail values, so any order of the patches and any
 -- number of visits give the same layout. top_dy is clamped to ±160 px.
 function CE.ApplyLayout()
   if G.BASE_Y == nil then
@@ -2893,7 +2889,7 @@ function CE.DrawPageRow(p)
   end
 end
 
--- ---- the first frame (Nacho, 01/10: a grey full-screen frame when the Mods screen opened) ------------------------------------
+-- ---- the first frame (a grey full-screen frame when the Mods screen opened) ------------------------------------
 -- The screen showed its background a frame or more before its content (the free layers are set up after the anchor
 -- opened): the clear colour, then a bare background. Nothing of the screen shows until every free layer is set up (or
 -- REVEAL_MAX frames passed): the first drawing shows the background and the content together.
@@ -2906,7 +2902,7 @@ function CE.RevealReset()
   CE.rv = {need = need, got = {}, n = 0, ready = false, opened = nil, done = false, init = frame, per = {}, stuck = false}
 end
 
--- the anchor layer never opened (2.0.69, Nacho 09/10: the menu built forever, nothing drawn, the title stuck under
+-- the anchor layer never opened (the menu built forever, nothing drawn, the title stuck under
 -- it): one line with how far the engine got setting up each free layer, so a pool the game cannot build shows
 CE.STUCK_FRAMES = 300
 function CE.RevealStuck()
@@ -2969,7 +2965,7 @@ function CE.Focus(layer, x, y, w, h, t)
   Quad(layer, SP("cyan"), x + w, y, t, h)
 end
 
--- ---- mod tags (Nacho 09/10): the tags the mods declare ([[VRFW.ModTag]] of their mod.toml, CMND_VRFW_MM_TAG_DEFS), read
+-- ---- mod tags: the tags the mods declare ([[VRFW.ModTag]] of their mod.toml, CMND_VRFW_MM_TAG_DEFS), read
 -- once per opening of the screen (keyed on this opening's text-id cache), their labels from the declaring mod's text
 -- rows (menu_text); a mod's tags come from the plugin (derived from its content + [VRFW.Mod] Tags)
 
@@ -3335,9 +3331,9 @@ function OnInit()
   tex_asked, tex_wait, tex_frames, thumbs = {}, false, 0, {}
   mouse = {on = false, x = -1, y = -1, logs = 0}
   dbg, extras, decided = 0, nil, false
-  BG.on, BG.page = nil, nil  -- the background asserted again at the first drawing (§27)
+  BG.on, BG.page = nil, nil  -- the background asserted again at the first drawing
   CE.RevealReset()
-  -- no game photos anywhere in the Mods panel (Nacho 09/10: D-pad left took pictures; the game's own photo input,
+  -- no game photos anywhere in the Mods panel (D-pad left took pictures; the game's own photo input,
   -- anim engine photo_rt.rs); given back in Close()
   Call(Crc("CMND_VRFW_NO_PHOTO"), "mods_menu", 1)
   ReadAll()
@@ -3432,8 +3428,8 @@ function OnChangeFocus(a1, a2)
   Trace("focus", tostring(a1), tostring(a2))
 end
 
--- A / Enter on the pad or keyboard (docs/game/engine/mods-menu.md §12.1): the off-screen anchor row gets the retail
--- «Enter» (OnEnter) but in the game no «decide» follows it (loader.log of 30/09: not one OnDecideFocus), so any of
+-- A / Enter on the pad or keyboard: the off-screen anchor row gets the retail
+-- «Enter» (OnEnter) but in the game no «decide» follows it (not one OnDecideFocus), so any of
 -- the three is the press: OnEnter, OnDecideFocus, or the polled CMD_ENTER (Step). One press = one action
 -- (`decided` in the frame, DEBOUNCE after it). The pad acts on the SELECTION, never on the pointer.
 function PadDecide(src)
@@ -3617,7 +3613,7 @@ function Step()
         co = nil
         ui.page = nil
         funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
-        CE.bg_dirty = true       -- a window / keyboard closed: the background again (§27)
+        CE.bg_dirty = true       -- a window / keyboard closed: the background again
         Draw()
       elseif coroutine.status(co) == "dead" then
         co = nil

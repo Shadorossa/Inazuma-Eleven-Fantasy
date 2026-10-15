@@ -19,45 +19,6 @@ ja = "ヘルプ"
 zh_hans = "帮助"
 zh_hant = "說明"
 
-# the help window (Tab «Ayuda»): the rank S line, right of its badge (the framework's rule VRFW_MatchRank)
-[[row]]
-id = "vrfw_chain_help_s"
-es = "Gana por 5 goles y sin encajar"
-en = "Win by 5 goals without conceding"
-fr = "Gagnez par 5 buts sans en encaisser"
-de = "Gewinne mit 5 Toren ohne Gegentor"
-it = "Vinci con 5 gol di scarto senza subirne"
-pt = "Vence por 5 golos sem sofrer"
-ja = "5点差以上・無失点で勝利"
-zh_hans = "净胜5球以上且零失球"
-zh_hant = "淨勝5球以上且零失球"
-
-# the help window (Tab «Ayuda»): the rank A line, right of its badge (the framework's rule VRFW_MatchRank)
-[[row]]
-id = "vrfw_chain_help_a"
-es = "Gana por 3 goles y sin encajar"
-en = "Win by 3 goals without conceding"
-fr = "Gagnez par 3 buts sans en encaisser"
-de = "Gewinne mit 3 Toren ohne Gegentor"
-it = "Vinci con 3 gol di scarto senza subirne"
-pt = "Vence por 3 golos sem sofrer"
-ja = "3点差以上・無失点で勝利"
-zh_hans = "净胜3球以上且零失球"
-zh_hant = "淨勝3球以上且零失球"
-
-# the help window (Tab «Ayuda»): the rank B line, right of its badge (the framework's rule VRFW_MatchRank)
-[[row]]
-id = "vrfw_chain_help_b"
-es = "Gana el partido"
-en = "Win the match"
-fr = "Gagnez le match"
-de = "Gewinne das Spiel"
-it = "Vinci la partita"
-pt = "Vence a partida"
-ja = "試合に勝利"
-zh_hans = "赢得比赛"
-zh_hant = "贏得比賽"
-
 # guide line: a match tile (rival name, level)
 [[row]]
 id = "vrfw_chain_guide_match"
@@ -235,7 +196,7 @@ ja = "このマスはまだ閉じています。\nつながったマスで勝つ
 zh_hans = "这个格子尚未打开。\n赢下与之相连的格子即可打开。"
 zh_hant = "這個格子尚未打開。\n贏下與之相連的格子即可打開。"
 
-# ---- the team card above the board (2.0.49, Nacho 2026-10-09): the focused tile's card --------------------------------
+# ---- the team card above the board the focused tile's card --------------------------------
 # a match tile's level (under the team's name)
 [[row]]
 id = "vrfw_chain_card_level"
@@ -275,7 +236,7 @@ ja = "条件：なし"
 zh_hans = "条件：无"
 zh_hant = "條件：無"
 
-# an open match tile's third line: the save's wins against its team (VRFW_Stats.WinsVs, 2026-10-11)
+# an open match tile's third line: the save's wins against its team (VRFW_Stats.WinsVs)
 [[row]]
 id = "vrfw_chain_card_wins"
 es = "Victorias: %d"
@@ -339,7 +300,7 @@ ja = "この枝の全試合でSを取ろう。"
 zh_hans = "在整条分支中取得S。"
 zh_hant = "在整條分支中取得S。"
 
-# a CHAIN HUB (chain-board.md §8, 2026-10-11): the header of its chooser list
+# a CHAIN HUB (chain-board.md §8): the header of its chooser list
 [[row]]
 id = "vrfw_chain_hub_title"
 es = "Cadenas"
@@ -378,7 +339,7 @@ ja = "決定でチェーンを表示"
 zh_hans = "按确定查看连战"
 zh_hant = "按確定查看連戰"
 
-# a blocked tile (2026-10-12, the 3DS chains' «prohibited» sign; chain-board.md §9): the card's first line
+# a blocked tile (the 3DS chains' «prohibited» sign; chain-board.md §9): the card's first line
 [[row]]
 id = "vrfw_chain_card_blocked"
 es = "Paso bloqueado"
@@ -482,7 +443,7 @@ ja = "%sをスカウト"
 zh_hans = "招募%s"
 zh_hant = "招募%s"
 
-# a double chest (kind dchest, 2026-10-14, chain-board.md §2c): the team card's name line
+# a double chest (kind dchest, chain-board.md §2c): the team card's name line
 [[row]]
 id = "vrfw_chain_card_dchest"
 es = "Cofre doble"

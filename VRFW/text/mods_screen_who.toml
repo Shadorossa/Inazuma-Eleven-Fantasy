@@ -1,8 +1,6 @@
 schema = "VRFW.text_key/1"
-# Texts of «¿Quién lo toca?», the conflict explorer of a mod page's «Conflictos» view (Phase H,
-# docs/framework/troubleshooting.md): the same explorer as `vrfw who` (vr_core::diagnose::who_in, CMND_VRFW_REPORT_WHO).
-# Format of text.toml; the plugin merges every text_*.toml after text.toml (mods_menu::load_texts).
-# who_hint follows the R3 glyph. Placeholders: {n} load position, {w} mod, {i} id.
+# Texts of the conflict explorer ("who touches this") in a mod page's Conflicts view; same explorer as `vrfw who`.
+# Placeholders: {n} load position, {w} mod, {i} id; who_hint follows the R3 glyph.
 
 [en.new]
 who_hint = "Who touches its id (or click a conflict)"

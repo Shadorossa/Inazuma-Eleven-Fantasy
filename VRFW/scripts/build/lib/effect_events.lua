@@ -1,7 +1,4 @@
--- The effect build's event stage (scripts\build\effect.lua; docs/app/fx-engine.md §5-§8): per file in load order,
--- every [[event_effect]], [[attach]], [[event_timing]], [[event_command]] on the served event lists (`eff` = the
--- event's effect list, `evt` = its main list). The decisions are here; the list edits are native (`VRFW.effect.*`:
--- vr_fx::evlist), and the lists that changed are served at the end.
+-- Effect build event stage: applies [[event_effect]], [[attach]], [[event_timing]] and [[event_command]] to the served event lists via native `VRFW.effect.*`.
 
 local T = require "lib/effect_triggers"
 
@@ -11,15 +8,15 @@ local function list_key(X, kind, event)
   return string.format(X.D.event_lists[kind], event:lower())
 end
 
--- Rust `{:?}` of a list of whole numbers.
+-- Formats a list of whole numbers as Rust `{:?}`.
 local function show(list)
   local s = {}
-  -- %.0f: %d of the game's Lua 5.2 (MSVC: a 32-bit long) rejects u32 ids >= 2^31
+  -- %.0f because the game's Lua 5.2 %d rejects u32 ids >= 2^31
   for i, v in ipairs(list) do s[i] = string.format("%.0f", v) end
   return "[" .. table.concat(s, ", ") .. "]"
 end
 
--- The cuts `names` of `event` (every cut when empty): `{ name, start, end }`, or nil and why.
+-- Cuts named in `names` of `event` (all when empty): `{ name, start, end }`, or nil and why.
 local function cut_ranges(X, event, names)
   local all, err = VRFW.effect.cuts(list_key(X, "evt", event))
   if not all then return nil, err end
@@ -43,7 +40,7 @@ local function cut_ranges(X, event, names)
   return out
 end
 
--- The frame ranges of `cuts` (none = every frame).
+-- Frame ranges of `cuts` (none = every frame).
 local function ranges(X, event, cuts)
   if cuts == nil or #cuts == 0 then return {} end
   local c, err = cut_ranges(X, event, cuts)
@@ -61,7 +58,7 @@ local function event_effect(X, mod, d)
   local offset = d.offset or 0
   local DE = X.D.event_effect
   if d.aura ~= nil then
-    -- an aura on an event actor between two frames (ATTACH_AURA on / off; docs/framework/effect.md §3)
+    -- aura on an event actor between two frames (ATTACH_AURA on / off)
     if d.effect ~= nil or d.object ~= nil then return nil, "write one of `effect` / `object` / `aura`" end
     if d.actor == nil then return nil, "aura: `actor` (the event actor it goes on: b000001_s00_p<VARIATION>…)" end
     local start = d.frame
@@ -152,7 +149,7 @@ local function timing(X, d)
   return { n .. " command(s) moved " .. string.format("%+d", d.shift) .. " frame(s)" }
 end
 
--- Id of a command as the modder wrote it: `CMD_XXXXXXXX` / `0xXXXXXXXX` (hex id) or a name (its crc32).
+-- Command id as written by the modder: `CMD_XXXXXXXX` / `0xXXXXXXXX` (hex id) or a name (its crc32).
 local function command_id(s)
   local h = s:match("^CMD_(.*)$") or s:match("^0x(.*)$")
   local n = h and T.parse_hex(h)

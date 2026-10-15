@@ -1,12 +1,12 @@
 -- VRFW route_board BEGIN
--- VR-Framework: the hook points of the Chronicle board's command menu, vs_route_town_command_select_menu
--- (docs/framework/route-board.md). The framework owns the one patch of the script (route_nodes + this graft) and makes
+-- VR-Framework: the hook points of the Chronicle board's command menu, vs_route_town_command_select_menu.
+-- The framework owns the one patch of the script (route_nodes + this graft) and makes
 -- it a VRFW_Host host (the host call at the end of this graft's file); a mod hooks the points below, or the script's
 -- retail globals (OnInit, OnFunction, ...), from its own hook file ([[hooks]] stem = "vs_route_town_command_select_menu").
 --   VRFW_RBC_Rows(rows, kind, slot) -> rows   the piece's rows (difficulties) of the menu (OnInit; kind 0 normal piece,
 --                                             1 gate piece; slot = the piece's save slot). Default: route_nodes' node
 --                                             filter (a [[route_node]] lists only its shown difficulties). A mod's
---                                             «around» handler filters first and passes its rows on with nxt(...)
+--                                             "around" handler filters first and passes its rows on with nxt(...)
 --   VRFW_RBC_Guide(item, icons, texts, cmds)  the button guide of a focused row (SetupButtonGuide; item = the row,
 --                                             {} when none): append entries to the three lists
 --   VRFW_RBC_ListLayer(layer, kind, rows)     the battle-kind list panel (layer 14202445 normal / 1695882381 gate) is

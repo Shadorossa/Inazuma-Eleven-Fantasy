@@ -1,16 +1,7 @@
--- VR-Framework › coach clothes rules (service S13 of VRFW 2.3, docs/framework/outfits.md §8). Declarations: every
--- active mod's content\coach_looks\*.toml (`VRFW.coach_look/1`, keys: content\types\coach_look.toml); native side:
--- content\game\coach_looks.toml (hook CoachLooks.CostumeLookup, installed only when a mod declares a rule).
---
--- SoccerCostumeLookup(out*, &charaId, lookFlags, &uniform) dresses a model. On a VS screen / pitch a coach is looked
--- up twice: with the coach flag 0x10 (his coach clothes) and then without the coach / manager flags (the player-kit
--- path: that call dresses the model). Every character answered with a costume under the coach flag is remembered (with
--- the uniform of that call); while a declared rule holds, a call WITHOUT the coach / manager flags for such a character
--- is run again with the coach flag (and his coach call's uniform when the caller passes none), and that answer is
--- returned when it finds a costume. A rule holds while one of its game_state keys is 1, one of its UI flags has one of
--- its values, or always.
---
---   * CMND_VRFW_COACH_LOOK() -> active, live.
+-- Coach clothes rules (content/coach_looks/*.toml, schema VRFW.coach_look/1); native hook CoachLooks.CostumeLookup is installed only when a mod declares a rule.
+-- While a rule holds (a game_state key is 1, a UI flag has one of its values, or always), a costume lookup without the coach/manager flags is re-run with the coach flag
+-- for characters previously dressed under it, and that costume is returned when found.
+--   CMND_VRFW_COACH_LOOK() -> active, live
 
 CoachLooks = CoachLooks or {}
 
@@ -27,7 +18,7 @@ local function warn(...) VRFW.warn("coach_looks:", ...) end
 local RULES = {}         -- { key, states, flags, values (set | nil), always }
 local LIVE = false
 
--- chara id -> the uniform of his coach call (0 = the caller passed none)
+-- chara id -> uniform of his coach call (0 = none passed)
 local coaches = {}
 local fix_lines = 0
 
@@ -43,7 +34,7 @@ local function wr32(at, v)
   return (pcall(VRFW.mem.write, "u32", at, v))
 end
 
--- "%08X" of a u32 (Lua 5.2 on Windows formats integers through a 32-bit long: split in halves)
+-- "%08X" of a u32 (split in halves: Lua 5.2 on Windows formats through a 32-bit long)
 local function hex(v)
   v = v or 0
   return string.format("%04X%04X", math.floor(v / 65536) % 65536, v % 65536)
@@ -75,7 +66,7 @@ local function active()
   return false
 end
 
--- ---------------------------------------------------------------------------------------------- the hook
+-- ---- hook
 
 local function on_lookup_post(ev)
   local out, pchara, flags, puni = ev.args[1], ev.args[2], ev.args[3] or 0, ev.args[4]
@@ -117,7 +108,7 @@ local function on_lookup_post(ev)
   return nil
 end
 
--- ---------------------------------------------------------------------------------------------- declarations
+-- ---- declarations
 
 local function start()
   local schema, why = D.schema("coach_look")

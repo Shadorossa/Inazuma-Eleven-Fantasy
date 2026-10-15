@@ -128,6 +128,16 @@ EVT_PPM = EVT_PPM or {}
   -- plain menu-camera model is never drawn there. Chosen while no model layer is open; every other screen keeps
   -- evt_pp_model untouched. EVT_PPM_CAPTURE = false: never; true: always (test). loader.log «EVT_PPM layer capture |
   -- normal», «EVT_PPM capture setup», «EVT_PPM capture swap».
+  -- 2026-10-15 (owner, match «Formación»: the white slanted quad again, with the RT pool type 3 objbin of 10-13
+  -- installed; loader.log: capture setup / swap build / fit / swap ready all fine): the render texture is still never
+  -- bound in a match, so the capture is opt-in only (EVT_PPM_CAPTURE = true: in a match; "always": every screen, test)
+  -- and by default a match page (plate type 1) shows no model of ours, as the retail match plate (no model object
+  -- there). loader.log «EVT_PPM match: no model».
+  -- 2026-10-15 third attempt (Character Reforged 1.8.27): the capture object takes a per-model render texture as every
+  -- retail in-match capture (soccer08_47 keeper gauge, soccer01_06 VS skill telop) instead of the VS screen's shared
+  -- one, and the build follows the keeper gauge's order (regist type 3, chara, kit, motion, capture camera, change,
+  -- swap). On again by default in a match; EVT_PPM_CAPTURE = false: never (the match page then shows no model).
+  -- loader.log «EVT_PPM capture swap <why> <ret> model <handle> complete <bool> prebuilt <bool>».
   M.NORMAL = M.LAYER
   M.CAP = @crc:evt_pp_model_cap@
   M.CAP_KEY = @crc:evt_pp_model_cap@     -- the model's unique key (CMND_CHARA_MODEL_CHANGE arg 6, the swap's key)
@@ -136,6 +146,14 @@ EVT_PPM = EVT_PPM or {}
   M.CAP_BOX = EVT_PPM_CAP_BOX or {1203, 270, 515}   -- quad top-left (screen px) and side: 245 px / m, feet y ~773
   M.CAP_REGIST = EVT_PPM_CAP_REGIST or 3 -- CMND_SET_SCN_CHARA_REGIST_TYPE of the retail capture talk window (4 here
   -- for the menu-camera model)
+  M.CAP_CAM = EVT_PPM_CAP_CAM or 3085867494   -- capture camera of the model: the VS camera 0xB7EE99E6 (512 x 512, FOV 20)
+  -- Character Reforged 1.8.34: the capture's settings come from config.toml [player_page] (match_model "match" /
+  -- "always" / "off", match_camera "vs" / "bust", capture_report) through CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG;
+  -- EVT_PPM_CAPTURE / EVT_PPM_CAP_CAM still override them. After each capture build the report command logs the
+  -- engine's render-texture pool, render targets and camera (loader.log «player_page_capture:»), again 60 Steps later.
+  M.CFG_CMD = @crc:CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG@
+  M.REPORT_CMD = @crc:CMND_CHARACTERREFORGED_PAGE_CAPTURE_REPORT@
+  M.REPORT_AGAIN = 60
   M.capReady = false
   M.PLATE = 1844915256                   -- soccer11_04_formation_chara_status (the plate of this screen)
   M.PAGE = 878737202                     -- team11_01_personal_plate
@@ -200,12 +218,59 @@ EVT_PPM = EVT_PPM or {}
     return M.LAYER == M.CAP
   end
 
+  function M.InMatch()
+    return type(EVT_PPG) == "table" and EVT_PPG.plateType == 1
+  end
+  -- a match page without the opt-in capture: no model (the retail match plate has none)
+  -- the capture settings, read once: mode 0 off / 1 in a match / 2 every screen, camera crc, report, bust camera
+  function M.Settings()
+    if M.cfg then
+      return M.cfg
+    end
+    local c = {mode = 1, cam = 3085867494, report = false, bust = false}
+    local ok, mode, cam, report, bust = pcall(funcLuaCommand, M.CFG_CMD)
+    if ok and type(mode) == "number" then
+      c.mode = mode
+      c.cam = type(cam) == "number" and cam ~= 0 and cam or c.cam
+      c.report = report == 1
+      c.bust = bust == 1
+    end
+    if EVT_PPM_CAPTURE == false then
+      c.mode = 0
+    elseif EVT_PPM_CAPTURE == true then
+      c.mode = 1
+    elseif EVT_PPM_CAPTURE == "always" then
+      c.mode = 2
+    end
+    if EVT_PPM_CAP_CAM then
+      c.cam = EVT_PPM_CAP_CAM
+    end
+    M.CAP_CAM = c.cam
+    M.cfg = c
+    pcall(funcLuaCommand, LOG, "EVT_PPM capture settings", "mode", tostring(c.mode), "camera", tostring(c.cam),
+      "report", tostring(c.report), "bust", tostring(c.bust), "from config", tostring(ok and type(mode) == "number"))
+    return c
+  end
+
+  function M.Report(when)
+    if M.Capture() and M.Settings().report then
+      pcall(funcLuaCommand, M.REPORT_CMD, when, M.CAP_KEY, M.CAP_CAM)
+    end
+  end
+
+  function M.MatchOff()
+    local off = M.Settings().mode == 0 and M.InMatch()
+    if off and not M.matchOffLogged then
+      M.matchOffLogged = true
+      pcall(funcLuaCommand, LOG, "EVT_PPM match: no model")
+    end
+    return off
+  end
+
   -- which model layer this page uses (only while none is open)
   function M.ChooseLayer()
-    local cap = EVT_PPM_CAPTURE == true
-    if EVT_PPM_CAPTURE ~= false and not cap then
-      cap = type(EVT_PPG) == "table" and EVT_PPG.plateType == 1
-    end
+    local mode = M.Settings().mode
+    local cap = mode == 2 or (mode == 1 and M.InMatch())
     if cap and Cmd(CMD_EXIST, M.CAP) ~= true then
       if not M.capMissLogged then
         M.capMissLogged = true
@@ -250,7 +315,8 @@ EVT_PPM = EVT_PPM or {}
     if why ~= "ready" or not M.swapLogged then
       M.swapLogged = why == "ready"
       pcall(funcLuaCommand, LOG, "EVT_PPM capture swap", tostring(why), tostring(r),
-        "model", tostring(Cmd(GET_MODEL, M.LAYER, 0, 0)))
+        "model", tostring(Cmd(GET_MODEL, M.LAYER, 0, 0)), "complete", tostring(Cmd(COMPLETE, M.LAYER, 0, 0)),
+        "prebuilt", tostring(Cmd(2787787510, M.LAYER, 0)))     -- the component's resources are built (state 5)
     end
   end
 
@@ -537,8 +603,13 @@ EVT_PPM = EVT_PPM or {}
       Cmd(SET_MODEL, M.LAYER, 0, m)
       M.entryModel = true
     end
+    if M.Capture() then
+      Cmd(REGIST, M.LAYER, 0, M.CAP_REGIST, 0)   -- before the chara, as the retail keeper gauge
+    end
     Cmd(SET_CHARA, M.LAYER, 0, chara, 0)
-    Cmd(REGIST, M.LAYER, 0, M.Capture() and M.CAP_REGIST or 4, 0)
+    if not M.Capture() then
+      Cmd(REGIST, M.LAYER, 0, 4, 0)
+    end
     local u, number, flags, src, team = M.Kit(hdl)
     Cmd(KIT, M.LAYER, 0, u, number, flags, 0)
     if team >= 0 then
@@ -558,6 +629,12 @@ EVT_PPM = EVT_PPM or {}
     end
     M.body = body
     M.fit, M.fitLog = nil, nil            -- the fit is written on the model once it is built (M.ApplyFit)
+    if M.Capture() then
+      if M.Settings().bust then
+        Cmd(1088067423, M.LAYER, 0, 0, 0, 0, 0)  -- CMND_SET_CHARA_MODEL_POS: the bust camera looks at the origin
+      end
+      Cmd(3986622543, M.LAYER, 0, 0, M.CAP_CAM)  -- the model's capture camera (SetupSoccereMenuCharaModel arg 14)
+    end
     Cmd(CHANGE, M.LAYER, 0, 0, 9, 0, M.Capture() and M.CAP_KEY or 0)
     pcall(M.CapSwap, "build")
     M.Framing()
@@ -673,7 +750,7 @@ EVT_PPM = EVT_PPM or {}
     if M.hold ~= nil and M.tick < M.hold then   -- R3 / the click asked for the retail view
       return false
     end
-    if EVT_PPM_PAGE_OK == false or InOffice() or M.RuleHidden() then
+    if EVT_PPM_PAGE_OK == false or M.MatchOff() or InOffice() or M.RuleHidden() then
       return false
     end
     if Lc(CMD_IS_OPEN_OBJ, M.MENU, M.PAGE) == false then
@@ -733,6 +810,37 @@ EVT_PPM = EVT_PPM or {}
       end
     end
     return false
+  end
+
+  -- 2026-10-14 (owner: Apolo's armour chosen on the Hiper page stayed on the moves page; the miximax look the same):
+  -- a form look belongs only to the page / view where it was chosen. Leaving that page (Q / E: plate_pages G.Apply),
+  -- closing the page or finalizing the menu puts the model back to the Normal form; another player already starts
+  -- Normal (M.LoadForms). As the retired IF form_view did on close / player change.
+  function M.NormalFormIndex()
+    for i, x in ipairs(type(M.forms) == "table" and M.forms or {}) do
+      if x == 0 then
+        return i
+      end
+    end
+    return 1
+  end
+  -- back to Normal; rebuild = the model is hidden at once (before the next page draws) and rebuilt Normal on a fresh
+  -- layer, else only the choice (the page is gone: the next build is Normal). true = a form look was chosen.
+  function M.ResetForm(why, rebuild)
+    local normal = M.NormalFormIndex()
+    if (M.fidx or 1) == normal then
+      return false
+    end
+    M.fidx = normal
+    Lc(LOG, "EVT_PPM form reset", tostring(why), tostring(M.fhdl))
+    if rebuild then
+      if M.shown then
+        Vis(false)
+      end
+      M.last = M.tick
+      M.Fresh()
+    end
+    return true
   end
 
   -- 2026-10-06 (in game: a stuck screen after leaving Plantilla, a tiny model in the middle): our model / layer are
@@ -891,6 +999,8 @@ EVT_PPM = EVT_PPM or {}
           M.Capture() and "capture" or "normal")
         pcall(M.CapSwap, "ready")
         Vis(up)
+        pcall(M.Report, 1)
+        M.reportIn = M.REPORT_AGAIN
       end
       return
     end
@@ -900,6 +1010,13 @@ EVT_PPM = EVT_PPM or {}
       end
       pcall(M.StickTurn)
       pcall(M.KeepCam)
+      if M.reportIn then
+        M.reportIn = M.reportIn - 1
+        if M.reportIn <= 0 then
+          M.reportIn = nil
+          pcall(M.Report, 2)
+        end
+      end
     end
   end
 
@@ -1019,6 +1136,7 @@ EVT_PPM = EVT_PPM or {}
       if a1 == M.PAGE then
         M.want = nil
         pcall(M.Release, "page closed")
+        pcall(M.ResetForm, "page closed", false)   -- the next visit starts Normal
       end
       return table.unpack(r, 1, r.n)
     end
@@ -1029,6 +1147,7 @@ EVT_PPM = EVT_PPM or {}
       local r = Pack(M.prevFinal(...))
       M.want = nil
       pcall(M.Release, "finalize")
+      pcall(M.ResetForm, "finalize", false)
       return table.unpack(r, 1, r.n)
     end
   end

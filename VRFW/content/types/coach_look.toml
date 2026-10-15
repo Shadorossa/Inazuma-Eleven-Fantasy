@@ -1,7 +1,4 @@
-# The declaration `[[VRFW.CoachLook]]` of the coach clothes rules (service S13 of VRFW 2.3, docs/framework/outfits.md
-# §8): what a mod's content\coach_looks\*.toml may say. Read by scripts\coach_looks.lua at start (every key is checked
-# against this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning).
-# Not a table map.
+# Declares `[[VRFW.CoachLook]]` keys for content\coach_looks\*.toml; unknown keys, wrong types or out-of-range values drop that declaration with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.coach_look/1"
 folder = "content/coach_looks"

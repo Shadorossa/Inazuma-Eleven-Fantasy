@@ -1,0 +1,1321 @@
+schema = "VRFW.rule_catalog/1"
+# The match AI knob catalogue (docs/framework/match-ai.md): every value a `VRFW.match_ai/1` profile (content\rules\ai\*.toml),
+# the behaviour sink `ai_rate` and a challenge's `keepaway_ai` may name. Built into the framework
+# (match_engine::match_ai::KNOBS_TOML); a new lever = a new entry here (+ its code for `[[team]]` keys).
+#
+# [[knob]]: a game value.
+#   name      the member name (game_param / soccer_ai_property spelling)
+#   where     property        = a member of every player's AI property object ([0x21F6908] + 0x1D28 + index x 0x200),
+#                               one value per player (written for one side only)
+#             ai_global       = CSoccerAIGlobalParam (.data), one value for both teams
+#             strategy_global = SoccerStrategyGlobalParam (.data), one value for both teams
+#             team_ai         = a field of the team's TeamAI block, written before that team's AI pass
+#             shared          = a game value the scene code reads for both teams: one value for the match
+#             Global values are written per team: the side's value while that team's AI runs (AIManager_Update's
+#             TeamAIUpdate call), the game's value outside the AI pass (or the common value when both sides agree).
+#   offset    property: the member's offset in the object; team_ai: the field's offset in the TeamAI block
+#   rva       globals: the member's RVA (reference build v7.1.2); written only while memory holds `retail`
+#   type      f32 | u32 (globals: the encoding is taken from memory when it holds the retail value)
+#   retail    globals: the game's value (checked before every first write)
+#   min, max  the range a profile value is clamped to
+#   verified  true = offset read in the game's code (the property class registration 0xA1260, command handlers,
+#             readers); false = inferred (docs/game/engine/match-ai.md §3.6)
+#
+# [[team]]: a per-team behaviour of the run time (`[VRFW.MatchAI.Team]`); `kind` number | bool | range | table,
+#   `keys` the table's keys, `hook` the mechanism that applies it (documentation and the boot log).
+#
+# [[class]]: the game's property classes a profile may load (`Level` / `Personality` / `Class.Inherit`).
+# [[condition]]: the situations of `[[VRFW.MatchAI.If]]`; [elements] / [[element]]: the element wheel of the move choice.
+
+# ------------------------------------------------------------------------------------------------ property members
+
+[[knob]]
+name = "dribbleSpdRateMin"
+where = "property"
+offset = 0x38
+type = "f32"
+min = 0.0
+max = 2.0
+verified = true
+summary = "slowest dribble speed rate"
+
+[[knob]]
+name = "dribbleSpdRateMax"
+where = "property"
+offset = 0x3C
+type = "f32"
+min = 0.0
+max = 2.0
+verified = true
+summary = "fastest dribble speed rate"
+
+[[knob]]
+name = "passEnableRate"
+where = "property"
+offset = 0x40
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chance to pass when a pass is possible"
+
+[[knob]]
+name = "slidingEnableRate"
+where = "property"
+offset = 0x44
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chance to slide-tackle"
+
+[[knob]]
+name = "focusCatchActInterval"
+where = "property"
+offset = 0x48
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between catch attempts in a duel"
+
+[[knob]]
+name = "focusCatchActRate"
+where = "property"
+offset = 0x4C
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "catch attempt rate in a duel"
+
+[[knob]]
+name = "normalDashEnableRate"
+where = "property"
+offset = 0x50
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chance to sprint in open play"
+
+[[knob]]
+name = "attackDashEnableRate"
+where = "property"
+offset = 0x54
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chance to use the dash attack"
+
+[[knob]]
+name = "allCourtJustAvoidRate"
+where = "property"
+offset = 0x58
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chance to dodge a tackle at the right moment"
+
+[[knob]]
+name = "focusAtkSkillRate"
+where = "property"
+offset = 0x74
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "attacker uses a move in a duel"
+
+[[knob]]
+name = "focusDefSkillRate"
+where = "property"
+offset = 0x78
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "defender uses a move in a duel"
+
+[[knob]]
+name = "focusAtkOpponentSkillRate"
+where = "property"
+offset = 0x7C
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "attacker answers a move the opponent committed"
+
+[[knob]]
+name = "focusDefOpponentSkillRate"
+where = "property"
+offset = 0x80
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "defender answers a move the opponent committed"
+
+[[knob]]
+name = "focusAtkImmediateSkillRate"
+where = "property"
+offset = 0x84
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "attacker uses a move at the start of the duel"
+
+[[knob]]
+name = "focusDefImmediateSkillRate"
+where = "property"
+offset = 0x88
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "defender uses a move at the start of the duel"
+
+[[knob]]
+name = "focusActionIntervalA"
+where = "property"
+offset = 0x8C
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "duel action interval (first value, s)"
+
+[[knob]]
+name = "focusActionIntervalB"
+where = "property"
+offset = 0x90
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "duel action interval (second value, s)"
+
+[[knob]]
+name = "focusActionIntervalC"
+where = "property"
+offset = 0x94
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "duel action interval (third value, s)"
+
+[[knob]]
+name = "focusFramePerfectReactRate"
+where = "property"
+offset = 0x98
+type = "f32"
+min = 0.0
+max = 100.0
+verified = true
+summary = "percent: reacts at once to a side step / breakthrough"
+
+[[knob]]
+name = "focusKeepDistanceDribbleRate"
+where = "property"
+offset = 0xA8
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "keeps its distance while dribbling in a duel"
+
+[[knob]]
+name = "focusBreakThroughDisableTime"
+where = "property"
+offset = 0xB0
+type = "f32"
+min = 0.0
+max = 99.0
+verified = true
+summary = "seconds before a breakthrough is allowed"
+
+[[knob]]
+name = "focusBreakThroughEscapeRate"
+where = "property"
+offset = 0xB4
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "breakthrough escape rate"
+
+[[knob]]
+name = "focusPassEnableRate"
+where = "property"
+offset = 0xB8
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "passes out of a duel"
+
+[[knob]]
+name = "focusPowerChargeUseRate"
+where = "property"
+offset = 0xBC
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses the power charge in a duel"
+
+[[knob]]
+name = "focusPowerBlockUseRate"
+where = "property"
+offset = 0xC0
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses the power block in a duel"
+
+[[knob]]
+name = "zoneKeeperSkillRateVsSkill"
+where = "property"
+offset = 0xC4
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "keeper uses a move against a special shot"
+
+[[knob]]
+name = "zoneKeeperSkillRateVsNormal"
+where = "property"
+offset = 0xC8
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "keeper uses a move against a normal shot"
+
+[[knob]]
+name = "zoneShootBlockSkillRate"
+where = "property"
+offset = 0xCC
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses a block move against a shot"
+
+[[knob]]
+name = "zoneShootChainUseRate"
+where = "property"
+offset = 0xD0
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "chains a teammate's shot"
+
+[[knob]]
+name = "zoneShootSkillRate"
+where = "property"
+offset = 0xD4
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses a shot move in the zone"
+
+[[knob]]
+name = "zoneShootDisableTime"
+where = "property"
+offset = 0xDC
+type = "f32"
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds after the zone starts before it may shoot"
+
+[[knob]]
+name = "zonePassEnableRate"
+where = "property"
+offset = 0xE0
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "passes inside the zone"
+
+[[knob]]
+name = "directFreeKickSkillRate"
+where = "property"
+offset = 0xE4
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses a shot move on a direct free kick"
+
+[[knob]]
+name = "spTacticsUseRate"
+where = "property"
+offset = 0xE8
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses a special tactic"
+
+[[knob]]
+name = "suTacticsUseRate"
+where = "property"
+offset = 0xEC
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "uses a super tactic"
+
+[[knob]]
+name = "keepTention"
+where = "property"
+offset = 0xF0
+type = "f32"
+min = 0.0
+max = 300.0
+verified = true
+summary = "tension it keeps after a move (a move that would drop below is skipped)"
+
+[[knob]]
+name = "scrambleJustRate"
+where = "property"
+offset = 0xF4
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "hits the scramble gauge at the right moment"
+
+[[knob]]
+name = "auraSkillRate"
+where = "property"
+offset = 0xF8
+type = "f32"
+min = 0.0
+max = 1.0
+verified = true
+summary = "summons an aura (keshin, armour, miximax...)"
+
+# ------------------------------------------------------------------------------------------------ CSoccerAIGlobalParam
+
+[[knob]]
+name = "passLotteryIntervalMin"
+where = "ai_global"
+rva = 0x22ABF70
+type = "f32"
+retail = 0.5
+min = 0.0
+max = 10.0
+summary = "seconds between pass decisions (shortest)"
+
+[[knob]]
+name = "passLotteryIntervalMax"
+where = "ai_global"
+rva = 0x22ABF74
+type = "f32"
+retail = 3.0
+min = 0.0
+max = 10.0
+summary = "seconds between pass decisions (longest)"
+
+[[knob]]
+name = "tacticsPassEvaluationSuccessRateWeight"
+where = "ai_global"
+rva = 0x22AC0C4
+type = "f32"
+retail = 50.0
+min = 0.0
+max = 1000.0
+summary = "pass choice: weight of the success rate"
+
+[[knob]]
+name = "tacticsPassEvaluationPhaseEvaluationWeight"
+where = "ai_global"
+rva = 0x22AC0C8
+type = "f32"
+retail = 35.0
+min = 0.0
+max = 1000.0
+summary = "pass choice: weight of the phase value"
+
+[[knob]]
+name = "tacticsDribbleEvaluationSuccessRateWeight"
+where = "ai_global"
+rva = 0x22AC0CC
+type = "f32"
+retail = 30.0
+min = 0.0
+max = 1000.0
+summary = "dribble choice: weight of the success rate"
+
+[[knob]]
+name = "tacticsDribbleEvaluationPhaseEvaluationWeight"
+where = "ai_global"
+rva = 0x22AC0D0
+type = "f32"
+retail = 50.0
+min = 0.0
+max = 1000.0
+summary = "dribble choice: weight of the phase value"
+
+[[knob]]
+name = "autoRunFocusBtlProbabilityMin"
+where = "ai_global"
+rva = 0x22ABF14
+type = "f32"
+retail = 50.0
+min = 0.0
+max = 100.0
+summary = "percent: the team starts a duel (forced roll)"
+
+[[knob]]
+name = "autoRunFocusBtlProbabilityMax"
+where = "ai_global"
+rva = 0x22ABF18
+type = "f32"
+retail = 50.0
+min = 0.0
+max = 100.0
+summary = "percent: the team starts a duel (each roll)"
+
+
+[[knob]]
+name = "defaultWaitTimeMax"
+where = "ai_global"
+rva = 0x22ABE60
+type = "f32"
+retail = 2.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds a wait action without its own duration lasts (the CPU's idle pauses; read by the action executors)"
+
+[[knob]]
+name = "fAutoPassIntervalTime"
+where = "ai_global"
+rva = 0x22ABE64
+type = "f32"
+retail = 1.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds the ball owner holds the ball before an automatic pass"
+
+[[knob]]
+name = "uPressCharaNumMax"
+where = "ai_global"
+rva = 0x22ABE74
+type = "u32"
+retail = 3.0
+min = 0.0
+max = 11.0
+verified = true
+summary = "players that press the ball owner at once"
+
+[[knob]]
+name = "uNoStopPressCharaNumMax"
+where = "ai_global"
+rva = 0x22ABE78
+type = "u32"
+retail = 1.0
+min = 0.0
+max = 11.0
+verified = true
+summary = "players that press without stopping"
+
+[[knob]]
+name = "gkAutoPassTime"
+where = "ai_global"
+rva = 0x22ABEB8
+type = "f32"
+retail = 4.0
+min = 0.0
+max = 20.0
+verified = true
+summary = "seconds the keeper holds the ball before passing"
+
+[[knob]]
+name = "gkHaveBallTimeMax"
+where = "ai_global"
+rva = 0x22ABEBC
+type = "f32"
+retail = 6.0
+min = 0.0
+max = 20.0
+verified = true
+summary = "longest time the keeper keeps the ball"
+
+[[knob]]
+name = "autoRunShootProbabilityMin"
+where = "ai_global"
+rva = 0x22ABF00
+type = "u32"
+retail = 100.0
+min = 0.0
+max = 100.0
+verified = true
+summary = "percent: the team decides to shoot (forced roll)"
+
+[[knob]]
+name = "autoRunShootProbabilityMax"
+where = "ai_global"
+rva = 0x22ABF04
+type = "u32"
+retail = 100.0
+min = 0.0
+max = 100.0
+verified = true
+summary = "percent: the team decides to shoot (each roll)"
+
+[[knob]]
+name = "autoRunShootIntervalMin"
+where = "ai_global"
+rva = 0x22ABF08
+type = "f32"
+retail = 0.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds before a shot decision may go through"
+
+[[knob]]
+name = "autoRunShootIntervalMax"
+where = "ai_global"
+rva = 0x22ABF0C
+type = "f32"
+retail = 10.0
+min = 0.0
+max = 120.0
+verified = true
+summary = "seconds after which a shot decision is forced"
+
+[[knob]]
+name = "autoRunFocusBtlIntervalMin"
+where = "ai_global"
+rva = 0x22ABF1C
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds before the team may start a duel"
+
+[[knob]]
+name = "autoRunFocusBtlIntervalMax"
+where = "ai_global"
+rva = 0x22ABF20
+type = "f32"
+retail = 30.0
+min = 0.0
+max = 120.0
+verified = true
+summary = "seconds after which a duel start is forced"
+
+[[knob]]
+name = "autoRunFocusBtlLotIntervalTime"
+where = "ai_global"
+rva = 0x22ABF24
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between two duel-start rolls"
+
+[[knob]]
+name = "autoRunZoneProbabilityMin"
+where = "ai_global"
+rva = 0x22ABF28
+type = "u32"
+retail = 30.0
+min = 0.0
+max = 100.0
+verified = true
+summary = "percent: the team starts a shoot zone (forced roll)"
+
+[[knob]]
+name = "autoRunZoneProbabilityMax"
+where = "ai_global"
+rva = 0x22ABF2C
+type = "u32"
+retail = 30.0
+min = 0.0
+max = 100.0
+verified = true
+summary = "percent: the team starts a shoot zone (each roll)"
+
+[[knob]]
+name = "autoRunZoneIntervalMin"
+where = "ai_global"
+rva = 0x22ABF30
+type = "f32"
+retail = 3.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds before the team may start a zone"
+
+[[knob]]
+name = "autoRunZoneIntervalMax"
+where = "ai_global"
+rva = 0x22ABF34
+type = "f32"
+retail = 15.0
+min = 0.0
+max = 120.0
+verified = true
+summary = "seconds after which a zone start is forced"
+
+[[knob]]
+name = "autoRunZoneLotIntervalTime"
+where = "ai_global"
+rva = 0x22ABF38
+type = "f32"
+retail = 3.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between two zone-start rolls"
+
+[[knob]]
+name = "dashLineDashLotteryIntervalMin"
+where = "ai_global"
+rva = 0x22ABF68
+type = "f32"
+retail = 0.2
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between dash decisions of the ball carrier (shortest)"
+
+[[knob]]
+name = "dashLineDashLotteryIntervalMax"
+where = "ai_global"
+rva = 0x22ABF6C
+type = "f32"
+retail = 2.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between dash decisions of the ball carrier (longest)"
+
+[[knob]]
+name = "slidingLotteryIntervalMin"
+where = "ai_global"
+rva = 0x22ABF80
+type = "f32"
+retail = 1.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between slide-tackle decisions (shortest)"
+
+[[knob]]
+name = "slidingLotteryIntervalMax"
+where = "ai_global"
+rva = 0x22ABF84
+type = "f32"
+retail = 3.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between slide-tackle decisions (longest)"
+
+[[knob]]
+name = "spTacticsAutoUseIntervalMin"
+where = "ai_global"
+rva = 0x22ABFA8
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between special tactic checks (shortest)"
+
+[[knob]]
+name = "spTacticsAutoUseIntervalMax"
+where = "ai_global"
+rva = 0x22ABFAC
+type = "f32"
+retail = 10.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between special tactic checks (longest)"
+
+[[knob]]
+name = "suTacticsAutoUseIntervalMin"
+where = "ai_global"
+rva = 0x22ABFB4
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between super tactic checks (shortest)"
+
+[[knob]]
+name = "suTacticsAutoUseIntervalMax"
+where = "ai_global"
+rva = 0x22ABFB8
+type = "f32"
+retail = 10.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between super tactic checks (longest)"
+
+[[knob]]
+name = "auraSkillAutoUseIntervalMin"
+where = "ai_global"
+rva = 0x22ABFBC
+type = "f32"
+retail = 3.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between aura checks (shortest)"
+
+[[knob]]
+name = "auraSkillAutoUseIntervalMax"
+where = "ai_global"
+rva = 0x22ABFC0
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 60.0
+verified = true
+summary = "seconds between aura checks (longest)"
+
+[[knob]]
+name = "fCharaTacticsUpdateIntervalTime"
+where = "ai_global"
+rva = 0x22ABFDC
+type = "f32"
+retail = 2.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between two re-plans of a player"
+
+[[knob]]
+name = "fCharaTacticsUpdateMoreNumMax"
+where = "ai_global"
+rva = 0x22ABFF0
+type = "u32"
+retail = 5.0
+min = 0.0
+max = 11.0
+verified = true
+summary = "players near the ball that re-plan twice as often"
+
+[[knob]]
+name = "charaTacticsDelayTime"
+where = "ai_global"
+rva = 0x22ABFF4
+type = "f32"
+retail = 0.1
+min = 0.0
+max = 5.0
+verified = true
+summary = "seconds of reaction delay before a new plan starts"
+
+[[knob]]
+name = "charaTacticsDelaySlowTimeRate"
+where = "ai_global"
+rva = 0x22ABFF8
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 20.0
+verified = true
+summary = "reaction delay factor in slow motion / zone"
+
+[[knob]]
+name = "charaTacticsDelayFluctuationTime"
+where = "ai_global"
+rva = 0x22ABFFC
+type = "f32"
+retail = 0.2
+min = 0.0
+max = 5.0
+verified = true
+summary = "random extra reaction delay (seconds)"
+
+[[knob]]
+name = "fCharaTacticsResetIntervalTime"
+where = "ai_global"
+rva = 0x22AC004
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 30.0
+verified = true
+summary = "seconds before a player's tactic is reset"
+
+[[knob]]
+name = "fCharaTacticsStateChangeUpdateTime"
+where = "ai_global"
+rva = 0x22AC008
+type = "f32"
+retail = 0.5
+min = 0.0
+max = 5.0
+verified = true
+summary = "seconds a player re-plans at once after a state change"
+
+# ------------------------------------------------------------------------------------------------ TeamAI fields
+
+# The strategy / team tactics re-plan intervals: the per-team AI tick copies fStrategyUpdateIntervalTime /
+# fTeamTacticsUpdateIntervalTime here every frame; StrategyUpdate compares its timers with these copies.
+
+[[knob]]
+name = "teamStrategyUpdateInterval"
+where = "team_ai"
+offset = 0x123F0
+type = "f32"
+retail = 2.0
+min = 0.0
+max = 10.0
+verified = true
+summary = "seconds between two strategy choices of the team"
+
+[[knob]]
+name = "teamTacticsUpdateInterval"
+where = "team_ai"
+offset = 0x123F4
+type = "f32"
+retail = 5.0
+min = 0.0
+max = 30.0
+verified = true
+summary = "seconds between two team tactic choices"
+
+# ------------------------------------------------------------------------------------------------ shared (both teams)
+
+# GameScaleGlobalParam: read by the scene code for both teams (never per team).
+
+[[knob]]
+name = "canDefenseActionLen2"
+where = "shared"
+rva = 0x22AFDC0
+type = "f32"
+retail = 25.0
+min = 0.0
+max = 400.0
+verified = false
+summary = "squared distance (m2) from the ball owner at which a defender's action is possible (25 = 5 m)"
+
+# ------------------------------------------------------------------------------------------------ SoccerStrategyGlobalParam
+
+[[knob]]
+name = "passNearEnemyNumSuccessRateRatio"
+where = "strategy_global"
+rva = 0x22AE1AC
+type = "f32"
+retail = 0.3
+min = 0.0
+max = 10.0
+summary = "pass success lost per nearby rival"
+
+[[knob]]
+name = "passWeightBackPasss"
+where = "strategy_global"
+rva = 0x22AE1E0
+type = "f32"
+retail = 15.0
+min = 0.0
+max = 1000.0
+summary = "weight of back passes"
+
+[[knob]]
+name = "passDisableBackPassPosRateZ"
+where = "strategy_global"
+rva = 0x22AE1E4
+type = "f32"
+retail = 0.75
+min = -1.0
+max = 1.0
+summary = "pitch depth beyond which back passes stop"
+
+[[knob]]
+name = "passPotentialToGoal"
+where = "strategy_global"
+rva = 0x22AE204
+type = "f32"
+retail = 10000.0
+min = 0.0
+max = 100000.0
+summary = "pass target value toward the goal"
+
+[[knob]]
+name = "passPotentialFromOpp"
+where = "strategy_global"
+rva = 0x22AE208
+type = "f32"
+retail = 500.0
+min = 0.0
+max = 100000.0
+summary = "pass target value away from rivals"
+
+# ------------------------------------------------------------------------------------------------ per-team behaviours
+
+[[team]]
+name = "StatPercent"
+kind = "number"
+min = -50.0
+max = 200.0
+hook = "stats"
+summary = "percent added to every stat of the side's players on the pitch (match stats, from their base)"
+
+[[team]]
+name = "TensionPerSecond"
+kind = "number"
+min = 0.0
+max = 50.0
+hook = "tension"
+summary = "tension points (HUD units) the side gains every second of play"
+
+[[team]]
+name = "KeeperTpReserve"
+kind = "number"
+min = 0.0
+max = 300.0
+hook = "keeper_reserve"
+summary = "tension kept for the side's keeper (the game keeps 20 for one side only)"
+
+[[team]]
+name = "StrategyLevel"
+kind = "number"
+min = 1.0
+max = 9.0
+hook = "strategy_level"
+summary = "the AI level the side's strategy and player tactic gates read (enableLv of strategy_ai_config / tactics_ai_config, 1-4 in retail): the side plays every strategy up to that level; its class loads keep the match row's level"
+
+[[team]]
+name = "ZoneShootNow"
+kind = "table"
+keys = ["replan_s", "elapsed_s", "direct"]
+min = 0.0
+max = 30.0
+hook = "zone"
+summary = "in the side's own shoot zone: the shot lock is lifted every frame, the team re-plans every `replan_s` seconds, its strategy conditions read the zone as at least `elapsed_s` seconds old (the shot / chain strategies gated by the zone's age hold at once) and, with `direct` = 1, a direct shot as needed"
+
+[[team]]
+name = "FocusHurry"
+kind = "table"
+keys = ["scale", "force_at"]
+min = 0.0
+max = 10.0
+hook = "conditions"
+summary = "as the duel's attacker the side's strategy conditions read the duel's elapsed time rate x `scale`, and 1 (the time is up) from `force_at`: it breaks through or passes out before the time runs out"
+
+[[team]]
+name = "StaminaResource"
+kind = "text"
+hook = "stamina"
+summary = "the match resource that is a player's stamina (a `<mod>.<key>` of a mod's match_resources, e.g. Stamina Points' PE)"
+
+[[team]]
+name = "SprintByStamina"
+kind = "table"
+keys = ["above", "below", "rate", "attack_rate"]
+min = 0.0
+max = 1.0
+hook = "stamina"
+summary = "per player: sprint rate `rate` (dash attack `attack_rate`) while his stamina ratio is above `above`, 0 below `below`, in between linear"
+
+[[team]]
+name = "SubstituteAtStamina"
+kind = "number"
+min = 0.0
+max = 1.0
+hook = "substitution"
+summary = "at a dead ball the side substitutes its outfield player whose stamina ratio is below this (the most tired one)"
+
+[[team]]
+name = "BestMoveChance"
+kind = "number"
+min = 0.0
+max = 1.0
+hook = "move_choice"
+summary = "chance that a move choice takes the best move of the slots (power, element, tension) instead of the game's pick"
+
+[[team]]
+name = "ElementCounter"
+kind = "bool"
+hook = "move_choice"
+summary = "a move choice always takes a move whose element beats the other side's (its committed move, else the one it is expected to use) when one is usable"
+
+[[team]]
+name = "MoveCostWeight"
+kind = "number"
+min = 0.0
+max = 2.0
+hook = "move_choice"
+summary = "best move = power / cost ^ weight (0 = the strongest, 1 = the most power per tension point)"
+
+[[team]]
+name = "PowerAware"
+kind = "table"
+keys = ["margin", "save_tension", "force", "keeper_free_save", "keeper", "blocks", "shots", "duels"]
+min = 0.0
+max = 10.0
+hook = "move_choice"
+summary = "the side computes the power of every option of both players (stats, move power with the mod rules, element wheel, the shot's power in flight, [power]) and picks the cheapest one that wins: its power >= the other side's x `margin`; in a duel the best chance of the [power] duel table. Keeper (`keeper` = 1): against the shot in flight. Shot block (`blocks` = 1): a counter shot that returns the shot, else a block move that stops it or weakens it enough for its keeper. Shot (`shots` = 1): a shot the other keeper cannot stop with his best affordable option. Duel (`duels` = 1): against the other side's committed move, else his strongest affordable one. `save_tension` = 1: no move when no option wins. `force` = 1: a picked keeper / block / shot move skips the game's use-rate roll. `keeper_free_save` = 1: the keeper reads the rolls made at the kick: a «parada» (critical catch) saves without a move, a «brecha» (force-win shot) cannot be stopped: no move in both"
+
+[[team]]
+name = "LearnUserMoves"
+kind = "bool"
+hook = "learning"
+summary = "the side remembers the elements of the moves the other side used this match, per category, and expects the most used one"
+
+[[team]]
+name = "AuraElementCounter"
+kind = "bool"
+hook = "aura_choice"
+summary = "an aura choice takes the aura whose element beats most of the other side's players on the pitch"
+
+[[team]]
+name = "KeeperBarSource"
+kind = "text"
+hook = "conditions"
+summary = "what the condition opponent_keeper_bar_above reads: keeper_hp (the scoreboard keeper bar) or a match resource key"
+
+[[team]]
+name = "PassLaneCut"
+kind = "table"
+keys = ["receivers", "at", "seconds", "range_m"]
+min = 0.0
+max = 60.0
+hook = "pass_lane_cut"
+summary = "when the other side presses a pass command, its `receivers` teammates nearest to the passer (within `range_m`) are the likely receivers: for each lane the nearest free player of this side moves to the point `at` (0-1) along it for `seconds`"
+
+[[team]]
+name = "SubstituteForElement"
+kind = "table"
+keys = ["after_s", "max"]
+min = 0.0
+max = 10000.0
+hook = "substitution"
+summary = "at a dead ball (and at half-time) without a tired change, a bench forward whose element beats the other side's keeper comes on for the side's forward on the pitch without that advantage (the most tired, else the weakest shooter); never before `after_s` game seconds of the first half (default 600), at most `max` such changes per match (default 2); the game's own limits stand (bench players not subbed off before, the change list)"
+
+[[team]]
+name = "PressCarrier"
+kind = "table"
+keys = ["forwards", "midfielders", "defenders", "range_m", "max", "speed_mult"]
+min = 0.0
+max = 100.0
+hook = "press_carrier"
+summary = "in play, while the other side holds the ball, the side's players of the chosen roles (`forwards` default 1, `midfielders` / `defenders` default 0; 1 = on) nearest to the ball carrier, within `range_m` (default 30) and at most `max` (default 3), take the carrier as the target of their move action (the catalogue's [passing] move_actions) and run at `speed_mult` (default 1; a move_speed match modifier of the rule engine) while they chase him"
+
+[[team]]
+name = "PassBeforeShot"
+kind = "table"
+keys = ["margin", "max_passes", "max_hold_s", "free_m", "range_m", "goal_half_m"]
+min = 0.0
+max = 100.0
+hook = "pass_before_shot"
+summary = "carrying the ball in its own zone, the side scores the shot of the carrier and of each teammate on the pitch within `range_m` (default 30): the goal's opening angle from him (`goal_half_m` = half the goal width, default 3.75) x the element against the other keeper (the [elements] advantage, or its inverse) x his best shot power against the keeper's best answer (the PowerAware computation) x how free he is (nearest rival / `free_m`, default 3, at least 0.3). While a teammate's score is at least the carrier's x `margin` (default 1.25), the carrier holds the shot (the zone shot lock) and its pass rates are 1, at most `max_hold_s` (default 1.5) per carrier; at most `max_passes` (default 1) passes per zone; else it shoots. The receiver is the game's pass choice"
+
+[[team]]
+name = "ZoneWallGuards"
+kind = "table"
+keys = ["extra", "from_m", "spacing_m", "range_m"]
+min = 0.0
+max = 50.0
+hook = "zone_wall_guards"
+summary = "in the other side's shoot zone, besides the game's two walls (a fixed 2-slot array), `extra` (default 2, at most 8) outfield players of the side that are not standing as walls take points on the line from the shooter to the goal, from `from_m` (default 3) every `spacing_m` (default 2.5), the nearest free player within `range_m` (default 25) per point, as the target of their move action ([passing] move_actions): blockers in the shot's path. Positioning only: a player on the path gets the game's own shot block"
+
+[[team]]
+name = "FocusRetreat"
+kind = "table"
+keys = ["back", "lateral"]
+min = 0.0
+max = 5.0
+hook = "focus_retreat"
+summary = "the side's ball carrier in a duel never moves toward the defender: the part of each duel move (RequestFocusAction kind 3) toward the nearest rival is turned backward x `back` (default 1), the sideways part kept x `lateral` (default 1); side steps, breakthroughs and pass-outs are left to the game (that is how it breaks out by a side)"
+
+# ------------------------------------------------------------------------------------------------ situations
+
+[[condition]]
+name = "opponent_keeper_bar_above"
+min = 0.0
+max = 1.0
+summary = "the other side's keeper bar (KeeperBarSource) is above Value (a ratio)"
+
+[[condition]]
+name = "opponent_ball_owner_stamina_below"
+min = 0.0
+max = 1.0
+summary = "the other side holds the ball and its owner's stamina ratio (StaminaResource) is below Value"
+
+[[condition]]
+name = "opponent_received_pass_within"
+min = 0.0
+max = 30.0
+summary = "a player of the other side received a pass from a teammate less than Value seconds ago (he still holds the ball)"
+
+[[condition]]
+name = "own_zone"
+summary = "the side's own shoot zone is running"
+
+# ------------------------------------------------------------------------------------------------ passing
+
+# PassLaneCut: the pass commands watched (input_ctrl names) and the AI actions that move a player to his target
+# (executor 0 = move to the record's target position: `0x14664F0`, docs/game/engine/match-ai.md §9.5).
+[passing]
+commands = ["CMD_PASS_01"]
+move_actions = [0]
+
+[[condition]]
+name = "opponent_duel_side_bias_above"
+min = 0.5
+max = 1.0
+summary = "the other side's duel side steps / angled breakthroughs go to one side (of its attack) more than Value of the time (LearnUserMoves)"
+
+[[condition]]
+name = "opponent_duel_pass_out_above"
+min = 0.0
+max = 1.0
+summary = "the other side passes out of a duel more than Value of its duel actions (LearnUserMoves)"
+
+[[condition]]
+name = "opponent_passes_often"
+min = 0.0
+max = 1.0
+summary = "more than Value of the other side's possessions end in a pass to a teammate (LearnUserMoves)"
+
+[[condition]]
+name = "opponent_dribbles_often"
+min = 0.0
+max = 1.0
+summary = "more than Value of the other side's possessions end otherwise (carried on, lost, shot) (LearnUserMoves)"
+
+# LearnUserMoves: samples a tendency needs before its situation can hold
+[learning]
+min_samples = 4
+
+# ------------------------------------------------------------------------------------------------ power
+
+# PowerAware: the battle values besides the stat and move parts (game_param, retail values; a mod that changes these
+# game_param members changes them here too). Formula: docs/framework/match-ai.md §4b.
+[power]
+counter_shot_power_rate = 0.5
+counter_shot_tension_rate = 2.0
+shot_block_basic_rate = 0.1
+keeper_level_rate = 0.01
+# skillBattleWinPercent: [stronger / weaker <= ratio, the stronger side's chance]; beyond the last row it always wins
+duel_win_table = [[1.2, 0.5], [1.5, 0.6]]
+
+# ------------------------------------------------------------------------------------------------ the element wheel
+
+# Elements of the game (ids of the unit and move records); a beats b. Factors of the battle code
+# (Technique.ElementAdvantage 0x1671320: 1.2 at 0x1E62F5C; own element 1.2 at 0x1E62F60).
+[elements]
+advantage = 1.2
+own_element = 1.2
+# [own move category, the category the other side answers with]: 1 shot, 2 dribble, 3 block, 4 keeper
+answers = [[1, 4], [2, 3], [3, 2], [4, 1]]
+
+[[element]]
+id = 1
+name = "wind"
+beats = 4
+
+[[element]]
+id = 2
+name = "forest"
+beats = 1
+
+[[element]]
+id = 3
+name = "fire"
+beats = 2
+
+[[element]]
+id = 4
+name = "mountain"
+beats = 3
+
+[[element]]
+id = 5
+name = "void"
+
+# ------------------------------------------------------------------------------------------------ the game's classes
+
+[[class]]
+name = "SoccerAIProperty"
+
+[[class]]
+name = "SoccerAIProperty_0"
+
+[[class]]
+name = "SoccerAIProperty_1"
+
+[[class]]
+name = "SoccerAIProperty_2"
+
+[[class]]
+name = "SoccerAIProperty_3"
+
+[[class]]
+name = "SoccerAIProperty_4"
+
+[[class]]
+name = "SoccerAIProperty_5"
+
+[[class]]
+name = "SoccerAIProperty_6"
+
+[[class]]
+name = "SoccerAIProperty_7"
+
+[[class]]
+name = "SoccerAIProperty_8"
+
+[[class]]
+name = "SoccerAIProperty_9"
+
+[[class]]
+name = "SoccerAIProperty_Coach"
+
+[[class]]
+name = "SoccerAIProperty_Tutorial"
+
+[[class]]
+name = "SoccerAIProperty_ForceWin"
+personality = "ForceWin"
+
+[[class]]
+name = "SoccerAIProperty_Counter"
+personality = "Counter"
+
+[[class]]
+name = "SoccerAIProperty_Kizuna"
+personality = "Kizuna"
+
+[[class]]
+name = "SoccerAIProperty_Tension"
+personality = "Tension"
+
+[[class]]
+name = "SoccerAIProperty_RoughPlay"
+personality = "RoughPlay"
+
+[[class]]
+name = "SoccerAIProperty_FairPlay"
+personality = "FairPlay"

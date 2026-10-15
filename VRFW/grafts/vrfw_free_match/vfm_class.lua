@@ -1,10 +1,9 @@
--- VRFW free-match classes (VR-Framework 2.0.17; was Inazuma Fantasy's fm_class_1.lua of graft fm_build until
--- 2026-10-09; docs/framework/free-match-tabs.md §8, docs/game/modes/free-match-difficulty.md §21) -----------------
+-- VRFW free-match classes -----------------
 -- The class menu lists the classes the opponent offers (CMND_VRFW_FM_DIFFICULTIES: the mods' [VRFW.FreeMatch]
--- Difficulties that the game has a SOCCER_GAME_DIFFICULTY row for, ascending; HÉROE LEGENDARIO, row 9, last). Row k
+-- Difficulties that the game has a SOCCER_GAME_DIFFICULTY row for, ascending; LEGENDARY HERO, row 9, last). Row k
 -- shows the retail class of its difficulty (ball: the class's declared Ball, else lv_base00..03; title: the class's
--- declared Banner, CMND_VRFW_FM_CLASS, else gtxt_class01..04; "Nv." average of the team of the game's row of that class,
--- VRFW_FMC.Team: the real level, 3 digits with Inazuma Fantasy's number settings); the clear /
+-- declared Banner, CMND_VRFW_FM_CLASS, else gtxt_class01..04; "Lv." average of the team of the game's row of that class,
+-- VRFW_FMC.Team: the real level, 3 digits with number settings); the clear /
 -- advantage-win marks and their box only with ClearTicks (default: retail); locks: the retail rule per class, or none with
 -- Unlock = "together" (the list already checked the opponent). Without an answer from the DLL: the 4 retail rows.
 -- No engine call at load time; the functions take the game / story bytes from the callbacks (no chunk local here).

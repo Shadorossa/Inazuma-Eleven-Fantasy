@@ -128,44 +128,32 @@ ja = "がLv.{n}にレベルアップ"
 zh_hans = "升至Lv.{n}"
 zh_hant = "升至Lv.{n}"
 
-# Victory Road's own board (graft move_rank_items, rank_items_board.lua): the rebindable key of content\inputs\
-# rank_items.toml. Its row in «Configuración de controles» (Controles básicos)...
-[[row]]
-id = "TrueHissatsu.RankItemUseAction"
-es = "Usar libro de supertécnica"
-en = "Use special move book"
-fr = "Utiliser un livre de technique"
-de = "Technikbuch verwenden"
-it = "Usa libro della tecnica"
-pt = "Usar livro de técnica"
-ja = "必殺技の書を使う"
-zh_hans = "使用必杀技之书"
-zh_hant = "使用必殺技之書"
-
-# ...its glyph in the board's bottom guide («<key> Subir nivel»): only the markup of the action's command, so it follows
-# the player's binding and the device...
+# Victory Road's own board (graft move_rank_items, rank_items_board.lua): the key is Start (CMD_FUNC1), as on the
+# «Fantasy» skill table (owner 2026-10-14; until True Hissatsu 1.0.5 a rebindable action of its own, LT / U). Its glyph
+# in the board's bottom guide («<Start> Subir nivel», over the retail «Equipar rápido judías» entry on a move piece):
+# only the command's markup, so it follows the device (pad button or the keyboard key)...
 [[row]]
 id = "TrueHissatsu.RankItemUseKey"
-es = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-en = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-fr = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-de = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-it = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-pt = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-ja = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-zh_hans = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
-zh_hant = "<CMD_TRUEHISSATSU_RANK_ITEM_USE>"
+es = "<CMD_FUNC1>"
+en = "<CMD_FUNC1>"
+fr = "<CMD_FUNC1>"
+de = "<CMD_FUNC1>"
+it = "<CMD_FUNC1>"
+pt = "<CMD_FUNC1>"
+ja = "<CMD_FUNC1>"
+zh_hans = "<CMD_FUNC1>"
+zh_hant = "<CMD_FUNC1>"
 
-# ...and the second line of the board's question (the board keeps its own keys, so the use is a second press of the
-# key on the same move instead of a Sí / No window)
+# ...and the second line of the board's question (the native board keeps its input: no window can go over it, so the
+# confirmation is a second press of Start on the same move instead of a Sí / No window)
 [[row]]
 id = "TrueHissatsu.RankItemPressAgain"
-es = "Pulsa <CMD_TRUEHISSATSU_RANK_ITEM_USE> otra vez para usarlo."
-en = "Press <CMD_TRUEHISSATSU_RANK_ITEM_USE> again to use it."
-fr = "Appuie de nouveau sur <CMD_TRUEHISSATSU_RANK_ITEM_USE> pour l'utiliser."
-de = "Drücke erneut <CMD_TRUEHISSATSU_RANK_ITEM_USE>, um ihn zu verwenden."
-it = "Premi di nuovo <CMD_TRUEHISSATSU_RANK_ITEM_USE> per usarlo."
-pt = "Prime <CMD_TRUEHISSATSU_RANK_ITEM_USE> outra vez para o usar."
-ja = "もう一度<CMD_TRUEHISSATSU_RANK_ITEM_USE>で使用"
-zh_hans = "再按一次<CMD_TRUEHISSATSU_RANK_ITEM_USE>使用"
-zh_hant = "再按一次<CMD_TRUEHISSATSU_RANK_ITEM_USE>使用"
+es = "Pulsa <CMD_FUNC1> otra vez para usarlo."
+en = "Press <CMD_FUNC1> again to use it."
+fr = "Appuie de nouveau sur <CMD_FUNC1> pour l'utiliser."
+de = "Drücke erneut <CMD_FUNC1>, um ihn zu verwenden."
+it = "Premi di nuovo <CMD_FUNC1> per usarlo."
+pt = "Prime <CMD_FUNC1> outra vez para o usar."
+ja = "もう一度<CMD_FUNC1>で使用"
+zh_hans = "再按一次<CMD_FUNC1>使用"
+zh_hant = "再按一次<CMD_FUNC1>使用"

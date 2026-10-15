@@ -1,0 +1,15 @@
+# Furor › the command the «Fase de furor activa» banner asks every frame (graft research/grafts/furor_banner):
+# scripts\banner.lua times the entry banner from the phase signal furor.gauge.phase (both teams) with the settings of
+# config.toml [furor_banner].
+schema = "VRFW.game/2"
+
+# CMND_FUROR_BANNER() -> shown (true / false), offset (0 = in place, -1 / 1 = fully off to the left / right), slide_units,
+# top_units, height_units
+[[VRFW.Command]]
+name = "CMND_FUROR_BANNER"
+handler = "Furor.Banner"
+
+# CMND_FUROR_HUD_DEBUG() -> 1 / 0: config.toml [furor_hud] debug (graft research/grafts/furor_hud draws plain test bars)
+[[VRFW.Command]]
+name = "CMND_FUROR_HUD_DEBUG"
+handler = "Furor.HudDebug"

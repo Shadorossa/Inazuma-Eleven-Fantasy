@@ -1,16 +1,6 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › option rows (service S8 of VRFW 2.3, docs/framework/flow.md §2). The run time is scripts\option_rows.lua:
-# it reads every mod's content\option_rows\*.toml (`VRFW.option_row/1`, keys: content\types\option_row.toml) and, only
-# when a mod declares a row value, installs the two detours below. **Nothing here is installed at start**
-# (`apply = "script"`): with no declaration the game's settings rows stay as they are.
-#
-# The settings menu (setting_menu) copies a row's value list (row +0x10 text ids, +0x18 u16 count) and then reads the
-# row's value from the game settings (Option.SettingRowRead: index +0x1C, base +0x20); when the player leaves the row it
-# writes the value back (Option.SettingRowWrite: index + base -> the game settings). After the read the service puts its
-# own value list in (the declared value inserted) and the index of the value in force; before the write the chosen
-# value becomes the game's own (`stores`), the declaring mod's option keeps «chosen», and the row's index is put back
-# right after the write.
+# Option rows: detours installed only when a mod declares a row value (`apply = "script"`); see scripts\option_rows.lua.
 
 # void SettingRowRead(menu, Row* row): post
 [[VRFW.Hook]]
@@ -24,12 +14,9 @@ name = "OptionRows.Write"
 game = "Option.SettingRowWrite"
 apply = "script"
 
-# ------------------------------------------------------------------------------------------------ commands
+# --- commands
 
-# (key) -> chosen, index, live: the declared value `<mod>.<name>` (or `<name>` of any mod) is the one in force (the
-# declaring mod's option), its place in the row's list, the detours are installed. Nothing for an unknown key.
-# Not CMND_VRFW_OPTION_ROW: that name is vr_core's Mods options row command (CMND_VRFW_OPTION_ROW(i), the Mods
-# screen's option rows); this binding took it first and the core's registration failed (2026-10-13 loader.log).
+# (key) -> chosen, index, live: the declared value `<mod>.<name>` (or `<name>` of any mod) in force, its index in the row list, detours installed. Nothing for an unknown key.
 [[VRFW.Command]]
 name = "CMND_VRFW_SETTING_ROW"
 handler = "OptionRows.Cmd"

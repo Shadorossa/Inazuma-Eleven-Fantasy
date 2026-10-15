@@ -1,14 +1,6 @@
--- skill_telop_info_config from the telop TOMLs (docs/game/engine/telop-engine.md §10): `margins` (this language's
--- `<lang>_left` / `<lang>_right` of the row's blank_size_info), `eldorado` (eldorado_id) and `info` (which row). The
--- game reads the row of the move's skill_config telopInfoId when the telop loads.
---
---   * The row: `info`, else the telopInfoId of the move `technique` (default: a move whose key is the telop id) as the
---     technique type served it. A row several moves share is changed for all of them (a WARN).
---   * A row the table lacks is added: a clone of the move's current row (else zeros) with the cells written.
---   * One row delta per mod (load order), applied by the one row engine (VRFW.telop.apply_rows) on the table the
---     technique type made so far, else the game's.
--- (The run time's in-memory margins decide natively: telop_engine::info::edits.)
---
+-- Builds skill_telop_info_config edits from the telop TOMLs: `margins` (per-language left/right of blank_size_info), `eldorado` (eldorado_id), `info` (target row).
+-- The row is `info`, else the telopInfoId of move `technique` (default: the move keyed by the telop id); a row shared by several moves changes for all (WARN).
+-- A missing row is added as a clone of the move's current row (else zeros). One row delta per mod in load order, applied by VRFW.telop.apply_rows.
 -- input = { picks = { { lang, id, mod, origin, technique, margins = { left, right }, eldorado, info } } (key order),
 --           order = { mod ids in load order }, framework, consts = { table, prefix, skill_prefix, ext } }
 
@@ -18,7 +10,7 @@ local function has_info(p)
   return p.margins ~= nil or p.eldorado ~= nil
 end
 
--- the row edits per mod in load order: { { mod, rows = { [row] = { margins = { [lang] = { l, r } }, eldorado, from } } } }
+-- row edits per mod in load order: { { mod, rows = { [row] = { margins = { [lang] = { l, r } }, eldorado, from } } } }
 local function edits(picks, moves, order)
   local pos = {}
   for i, m in ipairs(order) do

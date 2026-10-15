@@ -81,18 +81,15 @@ Scripts = false                        # no per-game match scripts
 # Crónica»). The rule of every retail Chronicle board row (v7.1.2 soccer_game_config, all IE1 pieces): col 29
 # spirit_chara_table = 0 and cols 31 / 33 spirit_drop_table(_2) = 0. With 0 the engine (nie.exe 0x15C7850 /
 # 0x15CC810, docs/framework/drops.md §1b) offers the players of the row's own rival team (team_config: the node's
-# Umbrella / Sally's roster) with the default odds of the difficulty: Heroica 0x569BC5E0 + 0xA3C5921B, the higher classes 0x219CF576 / 0xD4C2A28D; the Crónica default
-# is the game's empty table (no retail Crónica drops a spirit). Declared here so the node rows keep that rule
-# whatever template game, `DropsFrom` game or later rule the build meets (a GameDrops key of the row wins over a
-# `[[VRFW.SpiritDrops]] Rows = "game_drops"` rule). No ids of players or tables: the roster is the team's own.
+# Umbrella / Sally's roster) with the default odds of the difficulty: Heroica 0x569BC5E0 + 0xA3C5921B, the higher classes 0x219CF576 / 0xD4C2A28D.
+# The candidates are declared here (the rival roster only, whatever template or `DropsFrom` game the build meets); the
+# odds are left to the mod's Chronicle rules like every other piece: the Crónica gets the spirit tables of
+# 90_rules/chronicle_spirits.toml (since 1.6.0), the Ídolo entries leave every row (no_idol_spirits.toml). No ids of
+# players or tables: the roster is the team's own.
 [[VRFW.GameDrops]]
 Game = "evt_rn_ie1_umbrella"
 SpiritChara = "0"                      # the rival roster only (no extra players)
-SpiritDrop = "0"                       # the engine's default odds of each difficulty, as retail
-SpiritDrop2 = "0"
 
 [[VRFW.GameDrops]]
 Game = "evt_rn_ie1_sallys"
 SpiritChara = "0"
-SpiritDrop = "0"
-SpiritDrop2 = "0"

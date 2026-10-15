@@ -1,0 +1,13 @@
+# Furor › no player has an awakening: the furor phase is the only awakening (owner 2026-10-15: «que ningún jugador en el
+# juego tenga awakening y que solo funcione por la barra de furor»). The VR-Framework's [[VRFW.Unobtainable]]
+# (docs/framework/types/technique.md §2.0) over the two awakening families of aura_skill_config (AURA_CMD_INFO col 10):
+# 5 awakening power (the «Despertar» powers: Sobrecarga ardiente, Determinación de portero, Guardián férreo,
+# Catalizador elemental, Impulso temporal, the story ones…) and 7 awakening change. While Furor is active they leave
+# every learn list, board cell, shop and reward table, and with Matches = true no player of any team gets one in his
+# match move list (CPU loadouts, preset teams, Battle Bay sets, old saves), nor an extra slot. The awakening look lives
+# on as the furor phase's (content\effects\awakening.toml, content\rules\gauge.toml). With Furor off: as before.
+schema = "VRFW.technique/3"
+
+[[VRFW.Unobtainable]]
+AuraTypes = [5, 7]
+Matches = true

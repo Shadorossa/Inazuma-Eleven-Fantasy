@@ -25,12 +25,6 @@ target = "c07010020"                                   # Basile Hardy
   rank = 3
   growth = "normal"
   stats = { kick = 300, control = 254, technique = 251, pressure = 207, physical = 180, intelligence = 234, agility = 180, freedom = 279 }
-  moves = [
-    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
-    { move = 0xF5915315, level = 13 },                    # Flying Colours
-    { move = 0xBAD0C5D2, level = 30 },                    # Daruma Boomer
-    { move = 0x00D8C57C, level = 52 },                    # Fireball Storm
-  ]
 
 [[edit]]
 target = "c07010030"                                   # Adriano Donati
@@ -41,12 +35,6 @@ target = "c07010030"                                   # Adriano Donati
   rank = 3
   growth = "normal"
   stats = { kick = 308, control = 258, technique = 236, pressure = 198, physical = 177, intelligence = 227, agility = 181, freedom = 315 }
-  moves = [
-    { move = 0xEC8A6254, level = 2 },                     # Hot Head
-    { move = 0xA3CBF493, level = 14 },                    # Fire Lemonade
-    { move = 0x35E70F22, level = 20 },                    # Grenade Shot
-    { move = 0x728CD324, level = 49 },                    # Fizzy Fire Lemonade
-  ]
 
 [[edit]]
 target = "c07010040"                                   # Sandra Fischer
@@ -57,12 +45,6 @@ target = "c07010040"                                   # Sandra Fischer
   rank = 3
   growth = "normal"
   stats = { kick = 207, control = 213, technique = 205, pressure = 251, physical = 217, intelligence = 257, agility = 251, freedom = 301 }
-  moves = [
-    { move = 0x1B246046, level = 1 },                     # Majin the Wave
-    { move = 0x2A96D6AA, level = 19 },                    # Maelstrom the Hand
-    { move = 0x338DE7EB, level = 35 },                    # Mermaid's Veil
-    { move = 0x422A60B1, level = 58 },                    # Barrier Reef
-  ]
 
 [[edit]]
 target = "c07010050"                                   # Kiko Calavento
@@ -72,12 +54,6 @@ target = "c07010050"                                   # Kiko Calavento
   rank = 3
   growth = "normal"
   stats = { kick = 192, control = 200, technique = 201, pressure = 265, physical = 217, intelligence = 316, agility = 205, freedom = 335 }
-  moves = [
-    { move = 0x592A96B4, level = 2 },                     # Afterimage
-    { move = 0x8D9AC3F9, level = 8 },                     # Twister Trap
-    { move = 0x9481F2B8, level = 17 },                    # Gravity Cage
-    { move = 0xDEBC00D6, level = 58 },                    # Flash Dance
-  ]
 
 [[edit]]
 target = "c07010060"                                   # César Montalbán
@@ -88,12 +64,6 @@ target = "c07010060"                                   # César Montalbán
   rank = 3
   growth = "normal"
   stats = { kick = 236, control = 250, technique = 269, pressure = 211, physical = 194, intelligence = 255, agility = 186, freedom = 284 }
-  moves = [
-    { move = 0x01DB04F5, level = 1 },                     # Defence Scan
-    { move = 0x9481F2B8, level = 14 },                    # Gravity Cage
-    { move = 0xFE46027B, level = 29 },                    # Short Circuit
-    { move = 0x245D62F1, level = 42 },                    # Attack Scan
-  ]
 
 [[edit]]
 target = "c07010070"                                   # Maxime Dassier
@@ -103,12 +73,6 @@ target = "c07010070"                                   # Maxime Dassier
   rank = 3
   growth = "normal"
   stats = { kick = 231, control = 257, technique = 284, pressure = 213, physical = 173, intelligence = 269, agility = 185, freedom = 301 }
-  moves = [
-    { move = 0x73C5AF40, level = 1 },                     # Dash Accelerator
-    { move = 0xA81CA5FD, level = 12 },                    # Sparky Spin
-    { move = 0xDEBC00D6, level = 26 },                    # Flash Dance
-    { move = 0xF5915315, level = 47 },                    # Flying Colours
-  ]
 
 [[edit]]
 target = "c07010080"                                   # Trevor Cook
@@ -116,15 +80,6 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 213, control = 198, technique = 215, pressure = 248, physical = 223, intelligence = 302, agility = 198, freedom = 267 }
-
-  [[edit.cards]]
-  id = 0xBF2768E1                                         # DF/FW · wind
-  moves = [
-    { move = 0x7F2824DE, level = 2 },                     # Dual Storm
-    { move = 0xA81CA5FD, level = 8 },                     # Sparky Spin
-    { move = 0x4E9A9232, level = 32 },                    # Spinning Cut
-    { move = 0x2B343D01, level = 47 },                    # Cyclone
-  ]
 
 [[edit]]
 target = "c07010090"                                   # Cliff Parker
@@ -135,12 +90,6 @@ target = "c07010090"                                   # Cliff Parker
   rank = 3
   growth = "normal"
   stats = { kick = 209, control = 193, technique = 189, pressure = 261, physical = 239, intelligence = 306, agility = 209, freedom = 325 }
-  moves = [
-    { move = 0x5A255489, level = 1 },                     # Triple G Strike
-    { move = 0x7D6E9A87, level = 14 },                    # The Wall
-    { move = 0x166B0073, level = 35 },                    # Super Armadillo
-    { move = 0x65B7C1F1, level = 50 },                    # Sumo Stomp
-  ]
 
 [[edit]]
 target = "c07010100"                                   # Valentin Eisner
@@ -151,12 +100,6 @@ target = "c07010100"                                   # Valentin Eisner
   rank = 3
   growth = "normal"
   stats = { kick = 244, control = 257, technique = 273, pressure = 213, physical = 170, intelligence = 267, agility = 180, freedom = 305 }
-  moves = [
-    { move = 0xC7A73197, level = 2 },                     # Polar Pike
-    { move = 0xBB97331B, level = 9 },                     # Cold Snap
-    { move = 0x1D39CDE3, level = 26 },                    # Meteor Strike
-    { move = 0xDCF43422, level = 43 },                    # Aurora Dribble
-  ]
 
 [[edit]]
 target = "c07010110"                                   # Nino Nango
@@ -166,12 +109,6 @@ target = "c07010110"                                   # Nino Nango
   rank = 3
   growth = "normal"
   stats = { kick = 224, control = 255, technique = 284, pressure = 212, physical = 173, intelligence = 262, agility = 186, freedom = 293 }
-  moves = [
-    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
-    { move = 0x9481F2B8, level = 17 },                    # Gravity Cage
-    { move = 0x0422FCA2, level = 25 },                    # Ninja Toad
-    { move = 0x592A96B4, level = 35 },                    # Afterimage
-  ]
 
 [[edit]]
 target = "c07010120"                                   # Rolland Bowlby
@@ -182,12 +119,6 @@ target = "c07010120"                                   # Rolland Bowlby
   rank = 3
   growth = "normal"
   stats = { kick = 240, control = 216, technique = 221, pressure = 220, physical = 213, intelligence = 232, agility = 235, freedom = 312 }
-  moves = [
-    { move = 0xBE0E4AD0, level = 1 },                     # Fireball Knuckle
-    { move = 0x8C382852, level = 19 },                    # God Hand
-    { move = 0xC636A810, level = 27 },                    # Combustion Catch
-    { move = 0x8FBCFC3C, level = 57 },                    # Blazing Knuckle
-  ]
 
 [[edit]]
 target = "c07120070"                                   # Jim Wraith
@@ -198,12 +129,6 @@ target = "c07120070"                                   # Jim Wraith
   rank = 3
   growth = "normal"
   stats = { kick = 196, control = 215, technique = 236, pressure = 231, physical = 220, intelligence = 317, agility = 180, freedom = 238 }
-  moves = [
-    { move = 0x10A0C298, level = 1 },                     # Warp Drive
-    { move = 0x55C71D2A, level = 22 },                    # About Face
-    { move = 0xB5B7108F, level = 34 },                    # Shadow Stitch
-    { move = 0x38094535, level = 60 },                    # Sub-Terfuge
-  ]
 
 [[edit]]
 target = "c07120040"                                   # Tod Ironside
@@ -214,12 +139,6 @@ target = "c07120040"                                   # Tod Ironside
   rank = 3
   growth = "normal"
   stats = { kick = 174, control = 211, technique = 197, pressure = 223, physical = 173, intelligence = 284, agility = 185, freedom = 267 }
-  moves = [
-    { move = 0x70417B2E, level = 1 },                     # Deceptor Dribble
-    { move = 0x1F0836D6, level = 7 },                     # Comet Shot
-    { move = 0xDEB28A7B, level = 20 },                    # Monkey Turn
-    { move = 0x31ABD82E, level = 42 },                    # Circus Block
-  ]
 
 [[edit]]
 target = "c07120020"                                   # Steve Grim
@@ -230,12 +149,6 @@ target = "c07120020"                                   # Steve Grim
   rank = 3
   growth = "normal"
   stats = { kick = 217, control = 240, technique = 279, pressure = 167, physical = 180, intelligence = 201, agility = 197, freedom = 271 }
-  moves = [
-    { move = 0xC66BD10D, level = 1 },                     # Zigzag Spark
-    { move = 0x06130797, level = 12 },                    # Rolling Kick
-    { move = 0x4CDC2C6B, level = 30 },                    # Shooting Star
-    { move = 0x8D5B6847, level = 66 },                    # Odin Sword
-  ]
 
 [[edit]]
 target = "c07120050"                                   # Tim Saunders
@@ -246,12 +159,6 @@ target = "c07120050"                                   # Tim Saunders
   rank = 3
   growth = "normal"
   stats = { kick = 262, control = 243, technique = 258, pressure = 201, physical = 177, intelligence = 243, agility = 212, freedom = 417 }
-  moves = [
-    { move = 0x427719AC, level = 1 },                     # Gale Dash
-    { move = 0x011AAF4B, level = 18 },                    # Gyro Head
-    { move = 0x574008CD, level = 35 },                    # Kung Fu Fighting
-    { move = 0x316A7390, level = 48 },                    # Land Dragon
-  ]
 
 [[edit]]
 target = "c07120080"                                   # Sam Kincaid
@@ -262,12 +169,6 @@ target = "c07120080"                                   # Sam Kincaid
   rank = 3
   growth = "normal"
   stats = { kick = 236, control = 269, technique = 257, pressure = 165, physical = 153, intelligence = 212, agility = 157, freedom = 339 }
-  moves = [
-    { move = 0x35E70F22, level = 1 },                     # Grenade Shot
-    { move = 0x6B1CF436, level = 14 },                    # Bewildered
-    { move = 0x4D1E465C, level = 23 },                    # Fake Bomber
-    { move = 0x0597D3F9, level = 37 },                    # Dragon Tornado
-  ]
 
 [[edit]]
 target = "c07120010"                                   # Maxwell Carson
@@ -277,12 +178,6 @@ target = "c07120010"                                   # Maxwell Carson
   rank = 3
   growth = "normal"
   stats = { kick = 166, control = 270, technique = 225, pressure = 224, physical = 208, intelligence = 239, agility = 194, freedom = 209 }
-  moves = [
-    { move = 0x19025F83, level = 1 },                     # Quick Draw
-    { move = 0x6ADE9E01, level = 20 },                    # Illusory Ball
-    { move = 0x3F00EDE9, level = 38 },                    # Dash Storm
-    { move = 0xAAA6489B, level = 55 },                    # Spiral Shot
-  ]
 
 [[edit]]
 target = "c07120030"                                   # William Glass
@@ -293,12 +188,6 @@ target = "c07120030"                                   # William Glass
   rank = 3
   growth = "normal"
   stats = { kick = 238, control = 279, technique = 282, pressure = 197, physical = 146, intelligence = 240, agility = 165, freedom = 417 }
-  moves = [
-    { move = 0x0F703132, level = 1 },                     # Black Magic
-    { move = 0x29B328E6, level = 30 },                    # Spectacle Crash
-    { move = 0x01DB04F5, level = 50 },                    # Defence Scan
-    { move = 0xBCE9DEAB, level = 75 },                    # Chaos Break
-  ]
 
 [[edit]]
 target = "c07120060"                                   # Erik Eagle
@@ -309,12 +198,6 @@ target = "c07120060"                                   # Erik Eagle
   rank = 3
   growth = "normal"
   stats = { kick = 293, control = 257, technique = 250, pressure = 207, physical = 153, intelligence = 254, agility = 171, freedom = 393 }
-  moves = [
-    { move = 0x5049A011, level = 1 },                     # Spinning Shot
-    { move = 0x261BDCA8, level = 18 },                    # Moonsault
-    { move = 0x7A67325B, level = 30 },                    # Flame Dance
-    { move = 0xAE2B3429, level = 53 },                    # Atomic Flare
-  ]
 
 [[edit]]
 target = "c07120090"                                   # Bobby Shearer
@@ -325,12 +208,6 @@ target = "c07120090"                                   # Bobby Shearer
   rank = 3
   growth = "normal"
   stats = { kick = 165, control = 216, technique = 186, pressure = 247, physical = 242, intelligence = 319, agility = 208, freedom = 375 }
-  moves = [
-    { move = 0x5643C944, level = 1 },                     # Killer Slide
-    { move = 0x025FD09B, level = 21 },                    # Volcano Cut
-    { move = 0x4AD6453E, level = 32 },                    # Back Tornado
-    { move = 0xA9229CF5, level = 55 },                    # The Galaxy
-  ]
 
 [[edit]]
 target = "c11807010"                                   # Regina Mulgrave
@@ -340,12 +217,6 @@ target = "c11807010"                                   # Regina Mulgrave
   rank = 3
   growth = "normal"
   stats = { kick = 196, control = 213, technique = 201, pressure = 207, physical = 227, intelligence = 212, agility = 243, freedom = 335 }
-  moves = [
-    { move = 0x7DD6FEF8, level = 1 },                     # Athena's Anthem
-    { move = 0xC636A810, level = 19 },                    # Combustion Catch
-    { move = 0xC13F00CC, level = 29 },                    # Flower Power
-    { move = 0xDDCA0D2A, level = 58 },                    # Bouncing Bomb
-  ]
 
 [[edit]]
 target = "c11807020"                                   # Mister Yi
@@ -355,12 +226,6 @@ target = "c11807020"                                   # Mister Yi
   rank = 3
   growth = "normal"
   stats = { kick = 227, control = 255, technique = 216, pressure = 200, physical = 176, intelligence = 211, agility = 193, freedom = 335 }
-  moves = [
-    { move = 0x0E394D56, level = 2 },                     # Avenging Eagle
-    { move = 0x5049A011, level = 13 },                    # Spinning Shot
-    { move = 0xDF70E04C, level = 25 },                    # Rodeo Clown
-    { move = 0x63BDA8A4, level = 35 },                    # Inazuma Drop
-  ]
 
 [[edit]]
 target = "c11807030"                                   # Dean Rush
@@ -371,12 +236,6 @@ target = "c11807030"                                   # Dean Rush
   rank = 3
   growth = "normal"
   stats = { kick = 196, control = 250, technique = 239, pressure = 185, physical = 177, intelligence = 213, agility = 193, freedom = 375 }
-  moves = [
-    { move = 0x3A4FFB6C, level = 1 },                     # The Ikaros
-    { move = 0x05567847, level = 12 },                    # Runaway Train
-    { move = 0xB60E3C60, level = 23 },                    # Plasma Cut
-    { move = 0x41F3CDC2, level = 34 },                    # Scorching Tackle
-  ]
 
 [[edit]]
 target = "c11807210"                                   # Aurelia Dingle
@@ -386,12 +245,6 @@ target = "c11807210"                                   # Aurelia Dingle
   rank = 3
   growth = "normal"
   stats = { kick = 269, control = 270, technique = 304, pressure = 219, physical = 155, intelligence = 281, agility = 201, freedom = 335 }
-  moves = [
-    { move = 0x6ADE9E01, level = 1 },                     # Illusory Ball
-    { move = 0x2C3D95DD, level = 10 },                    # Sleeping Dust
-    { move = 0x530CDFC1, level = 25 },                    # Mystifying Mist
-    { move = 0xDBFD9CFE, level = 50 },                    # Big Ball Trick
-  ]
 
 [[edit]]
 target = "c11808150"                                   # Li Kobun
@@ -402,9 +255,3 @@ target = "c11808150"                                   # Li Kobun
   rank = 3
   growth = "normal"
   stats = { kick = 182, control = 254, technique = 234, pressure = 198, physical = 180, intelligence = 232, agility = 200, freedom = 379 }
-  moves = [
-    { move = 0x3EC287DE, level = 1 },                     # Bubble Gum
-    { move = 0xBA221C40, level = 19 },                    # Dragon's Tail
-    { move = 0x259F08C6, level = 33 },                    # Whirlwind Twister
-    { move = 0xC0A013E6, level = 39 },                    # Liar Shot
-  ]

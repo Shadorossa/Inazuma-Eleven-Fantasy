@@ -1,0 +1,26 @@
+# Declaration schema for team momentum gauges (content\team_momentum\*.toml); an unknown key, wrong type or out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.team_momentum/1"
+folder = "content/team_momentum"
+
+[entry.TeamMomentum]
+doc = "a team gauge (a per = \"team\" match resource) driven by time and match events, with levels and a phase started at full"
+name = { type = "name", required = true, doc = "the momentum's name; key <mod>.<name> (commands, flags, signals)" }
+resource = { type = "string", required = true, doc = "the match resource key of the team gauge (<mod>.<name>, per = \"team\")" }
+option = { type = "string", default = "", doc = "an option row key (<mod>.<row>) that switches it; empty = always on" }
+fill_per_s = { type = "number", default = 0, min = 0, max = 1000, doc = "+ per live second, outside the phase" }
+behind_per_s = { type = "number", default = 0, min = 0, max = 1000, doc = "+ per live second more while the team is behind on the score" }
+live_states = { type = "ints", default = [9, 14, 15, 16], min = 0, max = 255, doc = "soccer states of live play (time fill and phase drain)" }
+levels = { type = "number", default = 0, min = 0, max = 16, doc = "number of equal levels of the gauge (flag <key>.<side>.level<N> while the value reaches N / levels of max)" }
+start_at = { type = "number", default = 1.0, min = 0.01, max = 1.0, doc = "share of max from which the phase may start" }
+phase_seconds = { type = "number", default = 0, min = 0, max = 600, doc = "live seconds the phase lasts (the gauge drains to 0 over it); 0 = no phase" }
+gains_in_phase = { type = "bool", default = false, doc = "event gains and the time fill also count during the phase" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.MomentumGain]
+doc = "an amount added to a team momentum when a rule trigger fires"
+momentum = { type = "string", required = true, doc = "the momentum's key <mod>.<name> (or <name> of the same mod)" }
+on = { type = "string", required = true, doc = "the rule trigger, optionally with its argument (goal, keeper_save, duel_won, block_won, technique_result:won …)" }
+to = { type = "string", default = "actor", doc = "actor = the actor's team (goal: the team that scored), other = the other team, both = both teams" }
+amount = { type = "number", required = true, min = -1000, max = 1000, doc = "added to the gauge (the resource's units)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

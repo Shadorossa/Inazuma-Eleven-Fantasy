@@ -1,0 +1,41 @@
+# BetterUI › duel readout on the match HUD (graft research/grafts/clean_hud_duel_readout, scripts\duel_readout.lua).
+# The same two plates as the game's shot readout («TOTAL AT» left / «PP» right, layout soccer10_25 with BetterUI's
+# smaller, raised banners): the retail objects of soccer_shoot_catch_info_menu's layers, added again as layers of the
+# match HUD (soccer_constant_menu, both its groups), opened by the graft after a special-move / power-action duel.
+# Left plate = the player's side, right plate = the rival's. The plates' picture labels («TOTAL AT» / «PP») are hidden
+# and replaced by text labels (clean_hud_duel_label, one per plate: «Dribbling» / «Defending» / «Power Charge» /
+# «Power Block», text keys of text\keys.toml) that the graft keeps on the label slot of each plate every frame, so they
+# follow the plates' slide in / out. The number fonts are the shot menu's own resources.
+schema = "VRFW.menu/2"
+
+# the label: the retail corner button's text node only (its plates hidden by the graft), no collision and no anchor
+# (placed by the graft), drawn over the plates (310)
+[[object]]
+name = "clean_hud_duel_label"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 312 } },
+]
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "clean_hud_duel_telop_self", object = "soccer10_25_breach_save_probability_telop", count = 1, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+res = ["#/menu/200_icon/100_num/num_at.g4tx", "#/menu/200_icon/100_num/num_breach.g4tx"]
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "clean_hud_duel_telop_enemy", object = "soccer10_25_breach_save_probability_telop_enemy", count = 1, after = "clean_hud_duel_telop_self", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "clean_hud_duel_label", object = "clean_hud_duel_label", count = 2, after = "clean_hud_duel_telop_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

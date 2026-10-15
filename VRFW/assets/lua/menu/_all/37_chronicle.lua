@@ -1,4 +1,4 @@
--- menu_engine: CHRONICLE COMPLETION (VR-Framework base feature; docs/framework/chronicle-complete.md, 2026-10-13).
+-- menu_engine: CHRONICLE COMPLETION (VR-Framework base feature).
 -- Definitions only (this file runs in every script VM, lua\_all); no engine call happens while a chunk loads.
 --
 -- «Every Chronicle completed» in the save in use, from the data only (nothing here names a piece, a chain or a mod):

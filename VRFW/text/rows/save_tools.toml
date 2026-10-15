@@ -1,0 +1,179 @@
+# Texts of the save adjust (Options screen), menu_text rows in 9 languages; %s / %d are filled by the menu script.
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# Options row and its help line.
+[[row]]
+id = "vrfw_save_tools_row"
+es = "Ajustar save"
+en = "Adjust save"
+fr = "Ajuster la sauvegarde"
+de = "Spielstand anpassen"
+it = "Sistema salvataggio"
+pt = "Ajustar gravação"
+ja = "セーブデータ調整"
+zh_hans = "调整存档"
+zh_hant = "調整存檔"
+
+[[row]]
+id = "vrfw_save_tools_row_help"
+es = "Arregla la partida actual con los ajustes de tus mods."
+en = "Fix the current save with your mods' adjustments."
+fr = "Corrige la partie actuelle avec les ajustements de tes mods."
+de = "Repariert den aktuellen Spielstand mit den Anpassungen deiner Mods."
+it = "Sistema la partita attuale con le regolazioni delle tue mod."
+pt = "Corrige o jogo atual com os ajustes dos teus mods."
+ja = "MODの調整で今のセーブデータを修正します。"
+zh_hans = "用模组的调整修正当前存档。"
+zh_hant = "用模組的調整修正目前存檔。"
+
+# Line above the labels of the actions in the confirmation.
+[[row]]
+id = "vrfw_save_tools_confirm_all"
+es = "Se aplicará a tu partida actual:"
+en = "This will be applied to your current save:"
+fr = "Ceci sera appliqué à ta partie actuelle :"
+de = "Das wird auf deinen aktuellen Spielstand angewendet:"
+it = "Verrà applicato alla partita attuale:"
+pt = "Isto será aplicado ao teu jogo atual:"
+ja = "今のセーブデータに次の調整を行います："
+zh_hans = "将对当前存档进行以下调整："
+zh_hant = "將對目前存檔進行以下調整："
+
+# Confirmation question: %s = the line above and the labels of the actions.
+[[row]]
+id = "vrfw_save_tools_confirm"
+es = "%s\n\nAntes se hace una copia de seguridad y después vuelves al título.\n¿Aplicar?"
+en = "%s\n\nA backup is made first, then you return to the title screen.\nApply?"
+fr = "%s\n\nUne sauvegarde est faite d'abord, puis tu reviens à l'écran titre.\nAppliquer ?"
+de = "%s\n\nZuerst wird eine Sicherung erstellt, dann geht es zurück zum Titelbildschirm.\nAnwenden?"
+it = "%s\n\nPrima viene fatto un backup, poi torni alla schermata del titolo.\nApplicare?"
+pt = "%s\n\nPrimeiro é feita uma cópia de segurança e depois voltas ao ecrã de título.\nAplicar?"
+ja = "%s\n\n先にバックアップを作成し、その後タイトル画面に戻ります。\n実行しますか？"
+zh_hans = "%s\n\n会先备份，然后返回标题画面。\n要执行吗？"
+zh_hant = "%s\n\n會先備份，然後返回標題畫面。\n要執行嗎？"
+
+# Result text for an action without its own: %d = what it changed.
+[[row]]
+id = "vrfw_save_tools_done"
+es = "Hecho: %d cambio(s)."
+en = "Done: %d change(s)."
+fr = "Terminé : %d modification(s)."
+de = "Fertig: %d Änderung(en)."
+it = "Fatto: %d modifica/he."
+pt = "Feito: %d alteração(ões)."
+ja = "完了：%d件変更しました。"
+zh_hans = "完成：%d处更改。"
+zh_hant = "完成：%d處變更。"
+
+# Shown after an action that changed the save.
+[[row]]
+id = "vrfw_save_tools_to_title"
+es = "El juego vuelve a la pantalla de título para cargar la partida ajustada."
+en = "The game goes back to the title screen to load the adjusted save."
+fr = "Le jeu revient à l'écran titre pour charger la partie ajustée."
+de = "Das Spiel kehrt zum Titelbildschirm zurück, um den angepassten Spielstand zu laden."
+it = "Il gioco torna alla schermata del titolo per caricare la partita sistemata."
+pt = "O jogo volta ao ecrã de título para carregar o jogo ajustado."
+ja = "調整したセーブデータを読み込むため、タイトル画面に戻ります。"
+zh_hans = "游戏将返回标题画面以读取调整后的存档。"
+zh_hant = "遊戲將返回標題畫面以讀取調整後的存檔。"
+
+[[row]]
+id = "vrfw_save_tools_nothing"
+es = "No había nada que cambiar: la partida queda como estaba."
+en = "There was nothing to change: the save stays as it was."
+fr = "Il n'y avait rien à modifier : la partie reste telle quelle."
+de = "Es gab nichts zu ändern: Der Spielstand bleibt, wie er war."
+it = "Non c'era niente da cambiare: la partita resta com'era."
+pt = "Não havia nada para mudar: o jogo fica como estava."
+ja = "変更する箇所はありませんでした。セーブデータはそのままです。"
+zh_hans = "没有需要更改的内容，存档保持原样。"
+zh_hant = "沒有需要變更的內容，存檔保持原樣。"
+
+# %s = reason.
+[[row]]
+id = "vrfw_save_tools_failed"
+es = "No se ha podido ajustar la partida (%s). La partida queda como estaba."
+en = "The save could not be adjusted (%s). The save stays as it was."
+fr = "La partie n'a pas pu être ajustée (%s). Elle reste telle quelle."
+de = "Der Spielstand konnte nicht angepasst werden (%s). Er bleibt, wie er war."
+it = "Non è stato possibile sistemare la partita (%s). Resta com'era."
+pt = "Não foi possível ajustar o jogo (%s). Fica como estava."
+ja = "セーブデータを調整できませんでした（%s）。セーブデータはそのままです。"
+zh_hans = "无法调整存档（%s），存档保持原样。"
+zh_hant = "無法調整存檔（%s），存檔保持原樣。"
+
+[[row]]
+id = "vrfw_save_tools_none"
+es = "Ninguno de tus mods tiene ajustes para esta partida."
+en = "None of your mods has adjustments for this save."
+fr = "Aucun de tes mods n'a d'ajustement pour cette partie."
+de = "Keiner deiner Mods hat Anpassungen für diesen Spielstand."
+it = "Nessuna delle tue mod ha regolazioni per questa partita."
+pt = "Nenhum dos teus mods tem ajustes para este jogo."
+ja = "このセーブデータに使える調整はありません。"
+zh_hans = "你的模组没有可用于此存档的调整。"
+zh_hant = "你的模組沒有可用於此存檔的調整。"
+
+[[row]]
+id = "vrfw_save_tools_unavailable"
+es = "Este ajuste no tiene nada que hacer con tus mods actuales."
+en = "This adjustment has nothing to do with your current mods."
+fr = "Cet ajustement n'a rien à faire avec tes mods actuels."
+de = "Diese Anpassung hat mit deinen aktuellen Mods nichts zu tun."
+it = "Questa regolazione non ha nulla da fare con le tue mod attuali."
+pt = "Este ajuste não tem nada a fazer com os teus mods atuais."
+ja = "今のMODではこの調整は使えません。"
+zh_hans = "以你当前的模组，此调整无事可做。"
+zh_hant = "以你目前的模組，此調整無事可做。"
+
+[[row]]
+id = "vrfw_save_tools_locked"
+es = "La partida original está protegida: duplícala en otra ranura y ajusta la copia."
+en = "The original save is protected: duplicate it into another slot and adjust the copy."
+fr = "La partie d'origine est protégée : duplique-la dans un autre emplacement et ajuste la copie."
+de = "Der Original-Spielstand ist geschützt: Kopiere ihn in einen anderen Slot und passe die Kopie an."
+it = "La partita originale è protetta: duplicala in un altro slot e sistema la copia."
+pt = "O jogo original está protegido: duplica-o noutro espaço e ajusta a cópia."
+ja = "元のセーブデータは保護されています。別のスロットに複製してから調整してください。"
+zh_hans = "原始存档受保护：请复制到其他存档位后调整副本。"
+zh_hant = "原始存檔受保護：請複製到其他存檔位後調整副本。"
+
+[[row]]
+id = "vrfw_save_tools_reserved"
+es = "Esta partida es de un modo de un mod y no se puede ajustar aquí."
+en = "This save belongs to a mod's mode and cannot be adjusted here."
+fr = "Cette partie appartient au mode d'un mod et ne peut pas être ajustée ici."
+de = "Dieser Spielstand gehört zum Modus eines Mods und kann hier nicht angepasst werden."
+it = "Questa partita appartiene alla modalità di una mod e non può essere sistemata qui."
+pt = "Este jogo pertence ao modo de um mod e não pode ser ajustado aqui."
+ja = "このセーブデータはMODのモード専用のため、ここでは調整できません。"
+zh_hans = "此存档属于模组的模式，无法在此调整。"
+zh_hant = "此存檔屬於模組的模式，無法在此調整。"
+
+[[row]]
+id = "vrfw_save_tools_busy"
+es = "Ahora no se puede ajustar la partida. Inténtalo de nuevo en unos segundos."
+en = "The save cannot be adjusted right now. Try again in a few seconds."
+fr = "La partie ne peut pas être ajustée pour l'instant. Réessaie dans quelques secondes."
+de = "Der Spielstand kann gerade nicht angepasst werden. Versuche es in ein paar Sekunden erneut."
+it = "Ora non è possibile sistemare la partita. Riprova tra qualche secondo."
+pt = "Agora não é possível ajustar o jogo. Tenta de novo daqui a alguns segundos."
+ja = "今はセーブデータを調整できません。数秒後にもう一度お試しください。"
+zh_hans = "现在无法调整存档，请几秒后再试。"
+zh_hant = "現在無法調整存檔，請幾秒後再試。"
+
+# The action found nothing, but a mod's on-load rules already changed the save during the same reload.
+[[row]]
+id = "vrfw_save_tools_by_load_rules"
+es = "Las reglas de carga de tus mods ya han ajustado esta partida al volver a cargarla."
+en = "Your mods' load rules had already adjusted this save when it was loaded again."
+fr = "Les règles de chargement de tes mods ont déjà ajusté cette partie en la rechargeant."
+de = "Die Laderegeln deiner Mods haben diesen Spielstand beim erneuten Laden bereits angepasst."
+it = "Le regole di caricamento delle tue mod hanno già sistemato questa partita ricaricandola."
+pt = "As regras de carregamento dos teus mods já ajustaram este jogo ao voltar a carregá-lo."
+ja = "再読み込みの際に、MODの読み込みルールでこのセーブデータはすでに調整されました。"
+zh_hans = "重新读取时，你的模组的读取规则已调整了此存档。"
+zh_hant = "重新讀取時，你的模組的讀取規則已調整了此存檔。"

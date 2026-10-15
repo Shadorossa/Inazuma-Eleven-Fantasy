@@ -1,7 +1,6 @@
 -- mod_options (VR-Framework): the «Opciones de mods» / "Mod options" tab of Opciones › Ajustes (setting_menu), to the
--- right of the graphics tab, and the ONLY copy of the VRFW_SET / VRFW_OPT row framework (docs/app/mod-options.md).
--- Own-written handlers of the framework's setting_menu host (VRFW_Host, menu part's lua/setting_menu/000_host.lua;
--- docs/framework/lua-hosts.md), each passing on to the retail globals; nothing of the retail chunk is copied. Nothing
+-- right of the graphics tab, and the ONLY copy of the VRFW_SET / VRFW_OPT row framework.
+-- Own-written handlers of the framework's setting_menu host (VRFW_Host, menu part's lua/setting_menu/000_host.lua), each passing on to the retail globals; nothing of the retail chunk is copied. Nothing
 -- runs at chunk load but table setup: every engine call happens inside the engine's callbacks.
 --
 -- * The tab: the plugin (mod_options.dll) serves the data at boot (the mod rows in engine tab 0 after its retail rows,
@@ -22,14 +21,14 @@
 --     else VRFW_OPT_QUEUE = VRFW_OPT_QUEUE or {}; VRFW_OPT_QUEUE[#VRFW_OPT_QUEUE + 1] = {key = key, row = row} end
 --   The old label API VRFW_SET_Register(label, row) still works. A framework loaded before this one (an old Inazuma
 --   Fantasy build left in evt_loader\lua_patches) is replaced; its rows are adopted, so nothing is doubled.
--- * Preview (docs/app/mod-options.md §3.6): a list row whose CURRENT value (draft or stored) declares `preview` shows
+-- * Preview: a list row whose CURRENT value (draft or stored) declares `preview` shows
 --   «  ▶» after its name; Select / Tab (CMD_FUNC2, polled in Step: the retail menu binds no FUNC2) or a mouse click on
 --   the name side of the row (left of the ◀ arrow) plays it, «  ■» while it plays, the same key / click again stops it.
 --   Retail BGM-preview path (enjoy_team_select_menu's stadium music list): CMND_BGM_PAUSE pauses the music the menu
 --   inherited (title or main menu), CMND_SND_PLAY(<bgm id>) plays the track, CMND_SND_STOP + CMND_BGM_RESUME bring the
 --   menu's own music back. Stopped when another preview starts, the row's value changes, the tab is left, the drafts
 --   are applied / dropped, or the menu closes.
--- * «Llaves» (docs/app/mod-options.md §3.8): a row declared with `parent = "<row key>"` is a CHILD row: drawn with the
+-- * «Llaves»: a row declared with `parent = "<row key>"` is a CHILD row: drawn with the
 --   retail child-row look of the Sound tab's «Música» group (the list item's _pos_summary02 part: └ + inset plate,
 --   label in _text_option_list04, as the retail UpdateListContentCustomText draws it) right below its parent. While
 --   the parent's value (its draft, else the stored one) is 0 the child is greyed at its real value and refuses changes
@@ -572,7 +571,7 @@ function VRFW_OPT_PreviewStep()         -- per frame: the preview key, the end o
   VRFW_OPT_PV.key_down = down
 end
 
--- ---- handlers of the framework's setting_menu host (VRFW_Host, docs/framework/lua-hosts.md) ---------------------------
+-- ---- handlers of the framework's setting_menu host (VRFW_Host) ---------------------------
 -- Every handler has the id "mod_options.tab". The order of the old wrappers is kept: `before` = our code first, then
 -- the retail (or the patches under the host); `after` = the retail first; `around` = ours decides, nxt goes on.
 local VRFW_OPT_HOST = "setting_menu"
@@ -765,7 +764,7 @@ if VRFW_Host ~= nil then
 end
 
 -- ---- rows registered before this file ran ---------------------------------------------------------------------------
-if type(VRFW_OPT_LEGACY_ROWS) == "table" then -- an older framework (old Inazuma Fantasy build): adopt its rows
+if type(VRFW_OPT_LEGACY_ROWS) == "table" then -- an older framework build: adopt its rows
   for _, label in ipairs(VRFW_OPT_LEGACY_ORDER or {}) do
     if VRFW_OPT_LEGACY_ROWS[label] ~= nil and VRFW_SET_ROWS[label] == nil then
       VRFW_OPT_Register(label, VRFW_OPT_LEGACY_ROWS[label])
@@ -787,7 +786,7 @@ for _, qname in ipairs({"VRFW_OPT_QUEUE", "EVT_OPT_QUEUE"}) do
   rawset(_ENV, qname, nil)
 end
 
--- 1.x names (docs/framework/naming.md): every function of the row framework and its row tables under the old
+-- 1.x names: every function of the row framework and its row tables under the old
 -- EVT_OPT_* / EVT_SET_* names too (the same objects)
 for _, prefix in ipairs({"VRFW_OPT_", "VRFW_SET_"}) do
   for k, v in pairs(_ENV) do

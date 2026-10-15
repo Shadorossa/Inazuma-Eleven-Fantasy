@@ -24,8 +24,12 @@
 -- moves the row: its centre in card px from the card's centre (x right, y up; default 0, -150 = 20 px above the
 -- white area's bottom edge).
 -- The card's drop shadow is gone in the atlas (images/menu/102_team/team02/team02_02/card_flat.toml), not here.
--- Chunk locals used: n2 (the move the card shows, 0 = none). Nothing calls the engine at chunk load; the wrappers
--- forward every argument and return every result.
+-- No chunk local of the retail script is read (2026-10-14): a block that reads one makes the build re-declare the
+-- script's locals and REDEFINE every retail function using them (OnInit, OnBack, UpdateButtonGuide, ...), which threw
+-- away the wrappers of the mods patched before this one (Character Reforged's skill table picker, graft ss2_menus: its
+-- pick mode never started, so a chosen move was never equipped). The move the card shows (the retail n2) is followed
+-- here instead (SKC.focus): set by UpdateSkillDetailWindow, cleared by an empty tab and a new filter, as the retail
+-- does. Nothing calls the engine at chunk load; the wrappers forward every argument and return every result.
 do
   local SKC = {
     CMD = @crc:CMND_VRFW_TECHNIQUE_BALL_EFFECT@,
@@ -145,7 +149,17 @@ do
     args = nil,        -- its arguments (to refill the description)
     page = 0,          -- 0 description, 1 mini-effect
     cache = {},        -- move -> effect table or false (the framework's answer does not change while the menu lives)
+    focus = 0,         -- the move the card shows (0 = none): the retail's n2, followed by the wrappers below
+    SKILL_INFO = 2580586398,          -- CMND_GET_SOCCER_SKILL_INFO (move, 9) -> ok, category
+    LIST = 571205469,                 -- team05_03_ability_list
+    TAB = 4044286600,                 -- cmn06_20_list_tab_item
+    LIST_COUNT = 2389020234,          -- the list layer's item count
   }
+
+  -- the card shows a move and it is the one of the last fill
+  function SKC.Focused()
+    return SKC.focus ~= 0 and SKC.focus == SKC.skill
+  end
 
   local function Text(key, subs)
     local s = nil
@@ -267,6 +281,26 @@ do
     funcLuaMenuCommand(SKC.SET_TEXT, SKC.CARD, SKC.FLAVOR, title .. "\n" .. EffectText(e), 0)
   end
 
+  -- a tab whose list is empty shows no move (retail OnChangeFocus); a new filter neither (OnAfterReceiveFilterParam)
+  local SKC_RetailOnChangeFocus = OnChangeFocus
+  function OnChangeFocus(a1, ...)
+    local r = table.pack(SKC_RetailOnChangeFocus(a1, ...))
+    if a1 == SKC.TAB then
+      local count = funcLuaMenuCommand(SKC.LIST_COUNT, SKC.LIST)
+      if type(count) ~= "number" or count <= 0 then
+        SKC.focus = 0
+      end
+    end
+    return table.unpack(r, 1, r.n)
+  end
+
+  local SKC_RetailOnAfterReceiveFilterParam = OnAfterReceiveFilterParam
+  function OnAfterReceiveFilterParam(...)
+    SKC.focus = 0
+    SKC.page = 0
+    return SKC_RetailOnAfterReceiveFilterParam(...)
+  end
+
   local SKC_RetailUpdateSkillDetailWindow = UpdateSkillDetailWindow
   function UpdateSkillDetailWindow(...)
     local skill = ...
@@ -274,6 +308,9 @@ do
       SKC.page = 0
     end
     SKC.skill, SKC.args = skill, table.pack(...)
+    -- the move the card shows (the retail's own focus: a move with skill info, else none)
+    local okInfo = type(skill) == "number" and funcLuaCommand(SKC.SKILL_INFO, skill, 9)
+    SKC.focus = okInfo and skill or 0
     -- (the aura windows' page guide reset of 2026-10-07 stays in Inazuma Fantasy: graft aura_guide_reset)
     local r = table.pack(SKC_RetailUpdateSkillDetailWindow(...))
     if SKC.page ~= 1 then
@@ -287,6 +324,13 @@ do
         SKC.page = 0
       end
     end
+    -- a move with one page only (no mini-effect): back to page 1 and the «Q • • E» row hidden at once, not one frame later
+    if not (SKC.focus ~= 0 and Effect(SKC.focus)) then
+      SKC.page = 0
+      if SKC.HideRowNow then
+        pcall(SKC.HideRowNow)
+      end
+    end
     return table.unpack(r, 1, r.n)
   end
 
@@ -294,7 +338,7 @@ do
   -- an earlier wrapper) shows, by catching its two guide calls while it runs (funcLuaMenuCommand is restored after)
   local SKC_RetailUpdateButtonGuide = UpdateButtonGuide
   function UpdateButtonGuide(...)
-    local e = (n2 ~= nil and n2 ~= 0 and n2 == SKC.skill) and Effect(n2)
+    local e = SKC.Focused() and Effect(SKC.focus)
     local real = funcLuaMenuCommand
     if not e or type(real) ~= "function" then
       return SKC_RetailUpdateButtonGuide(...)
@@ -426,14 +470,53 @@ do
   end
 
   -- the «Q • • E» row: shown for a move with a mini-effect while the card is up, the current page's dot lit
+  -- hides every instance of the row that is still open (a move with one page only, the menu leaving)
+  -- (the dots' meshes go too, so the row cannot stay lit if the engine re-shows the layer on its own)
+  local function HideRow()
+    for k in pairs(SKC.opened) do
+      if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true then
+        Cmd(SKC.LVIS, SKC.DOTS, k, false)
+        if k == 1 or k == 2 then
+          Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, false, k)
+          Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, false, k)
+        end
+      end
+    end
+    SKC.shown = ""
+  end
+
+  -- the move on the card has a second page (a mini-effect) and the card is up
+  SKC.HideRowNow = HideRow
+
+  local function WantRow()
+    return (SKC.Focused() and Effect(SKC.focus)
+      and Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false) and true or false
+  end
+
   local function Row()
-    if SKC.gone or Cmd(SKC.EXIST, SKC.DOTS) ~= true then
+    local want = WantRow()
+    if SKC.gone then
+      -- the engine closed an instance: the row is never shown again, but the instances still open must not stay lit
+      if not want and SKC.shown ~= "" then
+        HideRow()
+      end
       return
     end
-    local want = (n2 ~= nil and n2 ~= 0 and n2 == SKC.skill and Effect(n2)
-      and Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false) and true or false
+    if Cmd(SKC.EXIST, SKC.DOTS) ~= true then
+      return
+    end
     if not want and next(SKC.opened) == nil then
       return                                      -- never opened: nothing to hide
+    end
+    if not want and SKC.shown == "" then
+      -- hidden already: keep it so every frame (a row the engine lit again is hidden again)
+      for k in pairs(SKC.opened) do
+        if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true and Cmd(SKC.VISIBLE, SKC.DOTS, k) ~= false then
+          HideRow()
+          break
+        end
+      end
+      return
     end
     local state = want and tostring(SKC.page) or ""
     for k = 0, 3 do
@@ -484,10 +567,10 @@ do
   end
 
   local function Poll()
-    if n2 == nil or n2 == 0 or n2 ~= SKC.skill then
+    if not SKC.Focused() then
       return
     end
-    local e = Effect(n2)
+    local e = Effect(SKC.focus)
     if not e then
       return
     end

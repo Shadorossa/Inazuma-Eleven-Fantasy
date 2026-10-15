@@ -12,12 +12,6 @@ target = "c02020810"                                   # Grent
   rank = 3
   growth = "normal"
   stats = { kick = 215, control = 205, technique = 192, pressure = 257, physical = 223, intelligence = 250, agility = 250, freedom = 251 }
-  moves = [
-    { move = 0xEF5D458A, level = 1 },                     # Burnout
-    { move = 0x4D1E465C, level = 1 },                     # Fake Bomber
-    { move = 0x8FBCFC3C, level = 1 },                     # Blazing Knuckle
-    { move = 0xABA58912, level = 75 },                    # Ignited Steal
-  ]
 
 [[edit]]
 target = "c02020820"                                   # Baller
@@ -27,12 +21,6 @@ target = "c02020820"                                   # Baller
   rank = 3
   growth = "normal"
   stats = { kick = 205, control = 198, technique = 212, pressure = 238, physical = 238, intelligence = 292, agility = 197, freedom = 221 }
-  moves = [
-    { move = 0xABA58912, level = 1 },                     # Ignited Steal
-    { move = 0xB13A6C3D, level = 38 },                    # Zigzag Flame
-    { move = 0x3B8D915B, level = 44 },                    # Meteor Shower
-    { move = 0xEF5D458A, level = 69 },                    # Burnout
-  ]
 
 [[edit]]
 target = "c02020850"                                   # Bomber
@@ -43,12 +31,6 @@ target = "c02020850"                                   # Bomber
   rank = 3
   growth = "normal"
   stats = { kick = 238, control = 251, technique = 259, pressure = 201, physical = 192, intelligence = 247, agility = 186, freedom = 225 }
-  moves = [
-    { move = 0xABA58912, level = 1 },                     # Ignited Steal
-    { move = 0x585098FC, level = 1 },                     # Slice and Dice
-    { move = 0x166B0073, level = 8 },                     # Super Armadillo
-    { move = 0x79E3E635, level = 15 },                    # Racing Flame
-  ]
 
 [[edit]]
 target = "c02020860"                                   # Heat
@@ -58,12 +40,6 @@ target = "c02020860"                                   # Heat
   rank = 3
   growth = "normal"
   stats = { kick = 259, control = 247, technique = 289, pressure = 213, physical = 177, intelligence = 265, agility = 173, freedom = 221 }
-  moves = [
-    { move = 0x029E7B25, level = 1 },                     # Gaia Break
-    { move = 0x3B8D915B, level = 1 },                     # Meteor Shower
-    { move = 0x9765A74A, level = 10 },                    # Beast Fang
-    { move = 0x30A819A7, level = 63 },                    # Twin Boost F
-  ]
 
 [[edit]]
 target = "c02020900"                                   # Torch
@@ -82,15 +58,6 @@ rank = 3
 growth = "normal"
 stats = { kick = 270, control = 248, technique = 246, pressure = 215, physical = 181, intelligence = 228, agility = 180, freedom = 238 }
 
-  [[edit.cards]]
-  id = 0x74ACBD50                                         # FW/MF · forest
-  moves = [
-    { move = 0x30A819A7, level = 1 },                     # Twin Boost F
-    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
-    { move = 0xAE2B3429, level = 50 },                    # Atomic Flare
-    { move = 0x7FE98F60, level = 60 },                    # Ganymede Ray
-  ]
-
 [[edit]]
 target = "c02022430"                                   # Balcke
 
@@ -99,12 +66,6 @@ target = "c02022430"                                   # Balcke
   rank = 3
   growth = "normal"
   stats = { kick = 211, control = 193, technique = 203, pressure = 236, physical = 246, intelligence = 282, agility = 197, freedom = 255 }
-  moves = [
-    { move = 0x6633159F, level = 1 },                     # Gravitation
-    { move = 0x2296A01A, level = 1 },                     # Southern Cross
-    { move = 0x29728358, level = 45 },                    # Planet Shield
-    { move = 0xD9477198, level = 60 },                    # Emperor Penguin X
-  ]
 
 [[edit]]
 target = "c02022440"                                   # Seats
@@ -114,12 +75,6 @@ target = "c02022440"                                   # Seats
   rank = 3
   growth = "normal"
   stats = { kick = 207, control = 193, technique = 216, pressure = 238, physical = 236, intelligence = 284, agility = 197, freedom = 225 }
-  moves = [
-    { move = 0x087999EE, level = 1 },                     # Heel Drop
-    { move = 0xABA58912, level = 1 },                     # Ignited Steal
-    { move = 0xA5777314, level = 35 },                    # Assault Shot
-    { move = 0x6DAEF91C, level = 65 },                    # Supernova
-  ]
 
 [[edit]]
 target = "c02022470"                                   # Lean
@@ -129,12 +84,6 @@ target = "c02022470"                                   # Lean
   rank = 3
   growth = "normal"
   stats = { kick = 244, control = 251, technique = 263, pressure = 203, physical = 182, intelligence = 250, agility = 185, freedom = 252 }
-  moves = [
-    { move = 0x41F3CDC2, level = 1 },                     # Scorching Tackle
-    { move = 0xBDAE2862, level = 25 },                    # Hellfire
-    { move = 0x7C6D5B0E, level = 60 },                    # Astro Break
-    { move = 0xEAB3792D, level = 75 },                    # Grand Fire
-  ]
 
 [[edit]]
 target = "c02022480"                                   # Bountine
@@ -144,12 +93,6 @@ target = "c02022480"                                   # Bountine
   rank = 3
   growth = "normal"
   stats = { kick = 227, control = 248, technique = 278, pressure = 208, physical = 178, intelligence = 250, agility = 181, freedom = 217 }
-  moves = [
-    { move = 0x27D9B69F, level = 1 },                     # Prima Donna
-    { move = 0x5FE1545F, level = 1 },                     # Flame Veil
-    { move = 0x035C1112, level = 50 },                    # Gungnir
-    { move = 0xABA58912, level = 55 },                    # Ignited Steal
-  ]
 
 [[edit]]
 target = "c02022490"                                   # Sidern
@@ -159,9 +102,3 @@ target = "c02022490"                                   # Sidern
   rank = 3
   growth = "normal"
   stats = { kick = 279, control = 248, technique = 236, pressure = 194, physical = 193, intelligence = 212, agility = 181, freedom = 251 }
-  moves = [
-    { move = 0x7C6D5B0E, level = 1 },                     # Astro Break
-    { move = 0x4BD584B7, level = 22 },                    # Power Charge
-    { move = 0x37A1B17B, level = 40 },                    # Fire Rooster
-    { move = 0xAE2B3429, level = 60 },                    # Atomic Flare
-  ]

@@ -1,0 +1,45 @@
+schema = "VRFW.skill_tab/1"
+
+# Character Reforged › which tabs each picker of the «Fantasy» skill table shows (owner 2026-10-14: «en el selector de
+# aura deberían salir solo Keshin y Tótem, en el selector de mix solo miximax y modo cambio y en el selector de
+# supertécnicas solo las supertécnicas de tiro, regate, defensa y portero»). The skill table's pickers (graft
+# ss2_menus, PL.TabWindow) open the «Habilidades» / «Técnicas» list with the window of their slot's group:
+#   * a special-move row  -> group "moves": tiro, regate, defensa (bloqueo), portero (parada) = categories 1-4;
+#   * the aura slot       -> group "aura": keshin (100) and tótem (103);
+#   * the mix slot        -> group "mix": Mix-Max (102) and «Modo cambio» (106, All Changed's tab: its declaration
+#     content\skill_tabs\mode_change_tab.toml of All Changed puts it in this group, right after Mix-Max).
+# The other tabs are not built in a picker (VR-Framework skill tab registry, docs/framework/card-types.md §3: native
+# row, Z / C, icons, filters, mouse zones); the team list outside the pickers keeps every tab. A group's tabs must
+# follow each other in the list, so the tótem tab moves next to keshin (order 55): the list reads tiro, regate,
+# bloqueo, parada, keshin, tótem, Mix-Max, «Modo cambio», then the other aura tabs (Armadura is hidden by
+# armour_tab.toml). With Inazuma Fantasy (it writes the tab row itself) these declarations wait and its own windows
+# answer. To change a picker: move a category into or out of its group here.
+
+[[VRFW.SkillTab]]
+category = 1      # tiro
+group = "moves"
+
+[[VRFW.SkillTab]]
+category = 2      # regate
+group = "moves"
+
+[[VRFW.SkillTab]]
+category = 3      # defensa (bloqueo)
+group = "moves"
+
+[[VRFW.SkillTab]]
+category = 4      # portero (parada)
+group = "moves"
+
+[[VRFW.SkillTab]]
+category = 100    # keshin
+group = "aura"
+
+[[VRFW.SkillTab]]
+category = 103    # tótem: next to keshin
+order = 55
+group = "aura"
+
+[[VRFW.SkillTab]]
+category = 102    # Mix-Max
+group = "mix"

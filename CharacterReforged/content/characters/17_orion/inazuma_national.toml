@@ -11,12 +11,6 @@ target = "c08010030"                                   # Basile Hardy
   id = 0xAA9BC1C3                                         # FW/MF · fire
   growth = "normal"
   stats = { kick = 367, control = 246, technique = 235, pressure = 186, physical = 163, intelligence = 209, agility = 165, freedom = 213 }
-  moves = [
-    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
-    { move = 0xA897B3AE, level = 7 },                     # Fire Tornado A
-    { move = 0x1564C24E, level = 35 },                    # Brawl of the Wild
-    { move = 0x24D674A2, level = 51 },                    # Last Resort
-  ]
 
 [[edit]]
 target = "c08010240"                                   # Sandra Fischer
@@ -27,12 +21,6 @@ target = "c08010240"                                   # Sandra Fischer
   rank = 3
   growth = "normal"
   stats = { kick = 265, control = 211, technique = 186, pressure = 186, physical = 215, intelligence = 198, agility = 227, freedom = 259 }
-  moves = [
-    { move = 0xC13F00CC, level = 1 },                     # Flower Power
-    { move = 0x2A96D6AA, level = 15 },                    # Maelstrom the Hand
-    { move = 0x338DE7EB, level = 36 },                    # Mermaid's Veil
-    { move = 0x1B246046, level = 53 },                    # Majin the Wave
-  ]
 
 [[edit]]
 target = "c08010010"                                   # Philip Star
@@ -42,12 +30,6 @@ target = "c08010010"                                   # Philip Star
   growth_pattern = 1
   growth = "normal"
   stats = { kick = 305, control = 242, technique = 258, pressure = 201, physical = 154, intelligence = 240, agility = 166, freedom = 225 }
-  moves = [
-    { move = 0x0CF4E55C, level = 3 },                     # Double Touch
-    { move = 0x2296A01A, level = 19 },                    # Southern Cross
-    { move = 0xA9E3374B, level = 32 },                    # Cyclone Sprint
-    { move = 0x3E49918D, level = 52 },                    # Orion's Shade
-  ]
 
 [[edit]]
 target = "c08010020"                                   # Lucas Star
@@ -56,12 +38,6 @@ target = "c08010020"                                   # Lucas Star
   id = 0xB380F082                                         # MF/FW · wind
   growth = "normal"
   stats = { kick = 297, control = 243, technique = 267, pressure = 197, physical = 167, intelligence = 243, agility = 169, freedom = 225 }
-  moves = [
-    { move = 0x2296A01A, level = 4 },                     # Southern Cross
-    { move = 0xCC7060F9, level = 10 },                    # Starstruck
-    { move = 0x40BAB1A6, level = 29 },                    # Starstriker
-    { move = 0xA34E686D, level = 42 },                    # Last Resort Σ
-  ]
 
 [[edit]]
 target = "c11808160"                                   # Jim Trainer
@@ -72,9 +48,3 @@ target = "c11808160"                                   # Jim Trainer
   rank = 3
   growth = "normal"
   stats = { kick = 236, control = 189, technique = 169, pressure = 171, physical = 227, intelligence = 153, agility = 238, freedom = 325 }
-  moves = [
-    { move = 0xA23AEC88, level = 1 },                     # Copy Cut
-    { move = 0x8C382852, level = 7 },                     # God Hand
-    { move = 0x65D7406D, level = 13 },                    # Grabber Arm
-    { move = 0x922AB1CF, level = 34 },                    # Safety First
-  ]

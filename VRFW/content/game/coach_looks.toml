@@ -1,24 +1,14 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › coach clothes rules (service S13 of VRFW 2.3, docs/framework/outfits.md §8). The run time is
-# scripts\coach_looks.lua: it reads every mod's content\coach_looks\*.toml (`VRFW.coach_look/1`, keys:
-# content\types\coach_look.toml) and, only when a mod declares a rule, installs the detour below. **Nothing here is
-# installed at start** (`apply = "script"`): with no declaration every model is dressed as the game dresses it.
-#
-# SoccerCostumeLookup(out*, &charaId, lookFlags, &uniform) dresses a model. A coach on a VS screen / pitch is looked up
-# twice: with the coach flag 0x10 (his coach clothes) and then without the coach / manager flags 0x30 (the player-kit
-# path, the call that dresses the model). Post: every character answered with a costume under the coach flag is
-# remembered (with that call's uniform); while a declared rule holds, a call without the coach / manager flags for such
-# a character is run again with the coach flag (and his coach call's uniform when the caller passes none) and that
-# answer is returned when it finds a costume.
+# Coach clothes rules: the detour is installed only when a mod declares a rule (`apply = "script"`); see scripts\coach_looks.lua.
 [[VRFW.Hook]]
 name = "CoachLooks.CostumeLookup"
 game = "Render.CoachCostume"
 apply = "script"
 
-# ------------------------------------------------------------------------------------------------ commands
+# --- commands
 
-# () -> active, live: a declared rule holds now, the detour is installed
+# () -> active, live: a declared rule holds and the detour is installed
 [[VRFW.Command]]
 name = "CMND_VRFW_COACH_LOOK"
 handler = "CoachLooks.Cmd"

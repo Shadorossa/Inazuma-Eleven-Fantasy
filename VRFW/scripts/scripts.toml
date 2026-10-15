@@ -1,12 +1,7 @@
-# Settings of VRFW's own scripts (kind vr_framework.script/1, docs/framework/scripts.md §2). No [[script]] list: every
-# top-level scripts\*.lua is an entry point (name order), every .lua below (lib\, build\) a library for `require`.
+# Settings of VRFW's own scripts. Every top-level scripts\*.lua is an entry point (name order); every .lua below (lib\, build\) is a `require` library.
 schema = "VRFW.script/1"
 
-# The contact map service (contact_map.lua) reads every mod's content\contact_maps\*.toml on its first call (Inazuma
-# Fantasy: ~2000 nodes with their requirements, 10 maps) and a map's names from chara_base / chara_param (~13k rows):
-# far more than the default 200k instructions. With the default, CMND_VRFW_CONTACT_MAPS used up its budget, the script
-# was switched off and the screen closed at once («not declared: closing», 2026-10-12). The other scripts (archetype,
-# match_score, recruit) only get a higher ceiling.
+# Higher instruction budget: the contact map service loads every mod's contact maps and name tables on first call, far above the 200k default.
 [settings]
 budget = 5000000
 memory_kb = 65536

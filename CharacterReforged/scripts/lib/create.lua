@@ -10,10 +10,18 @@
 --   [CharacterReforged.Create.<system>]       # <system> = the pairing rules' system name (CharacterReforged.PairCheck)
 --   item = "wmm_evt_create"                 # the «create» row of the aura list (the item's own name is the row)
 --   label = "all_miximaxed.create_label"    # text key: the system's name in the refusal window (default: the item's name)
---   store = "CMND_ALLMIXIMAXED_SET"         # command (base, partner) -> code (0 = stored)[, carrier index k]
+--   store = "CMND_ALLMIXIMAXED_SET"         # command (base, partner[, move1, move2]) -> code (0 = stored)[, carrier index k]
 --   carrier = "wmm_evt"                     # the carrier put on the slot ("wmc_evt{k}": k = the store's 2nd value)
 --   pair_codes = 10                         # store code = pair_codes + PairCheck code (1..9) for a pair-rule refusal
 --   order = 10                              # row order of the systems (lower first; then the system's name)
+--   confirm = "all_miximaxed.create_confirm" # text key of the bank's Sí / No after the partner's moves ({base}
+--                                           # {partner} {moves}; default character_reforged.create_confirm)
+--   confirm_icon = "icon_sp_area07"         # sprite of icon_common drawn between the two players' cards of that
+--                                           # confirmation (the base and the partner; none = the cards only)
+--   preview = "CMND_ALLMIXIMAXED_PREVIEW"   # command (base, partner, move) -> ok, favouredMask, g0 .. g8, kind, peGain,
+--                                           # peFavoured, peBase: the stats the confirmation panel shows (none = no stats)
+--   scene = true                            # the skill table plays the miximax creation scene after a stored pair
+--                                           # (its PL.MxScenePlay; the scene's commands are the declaring mod's)
 --   off = false                             # true: this system has no row (a game mode may switch one off)
 --   [CharacterReforged.Create.<system>.refusals]
 --   "20" = "character_reforged.create_refused_not_allowed"   # the store's own codes -> text keys
@@ -21,6 +29,14 @@
 -- Keys merge over the mods in load order (the later mod wins key by key, `refusals` code by code), as PairRules do.
 -- The store is a COMMAND (not a Lua export): this base does not `require` its plugins, so it can not see their
 -- exports; the game-Lua graft calls the command by its id.
+--
+-- Partner moves (1.7.22, owner 2026-10-14: «no me deja elegir las supertécnicas como en IF»): a system whose pairing
+-- rules ask `moves = n` (> 0; All Miximaxed's miximax: 1) picks them in the retail bank, as Inazuma Fantasy's «Crear
+-- miximax» did: Aceptar on a card puts the cursor on that card's special moves on the plate, Aceptar on a move (not a
+-- hyper technique / aura, a goalkeeper move only for a goalkeeper base, not one the base has) asks the system's
+-- confirmation (card window, Sí / No); Sí closes the bank with the partner and the moves. The graft passes the base and
+-- the row to the bank (param keys character_reforged_create_base / _row; bank_create_moves_hooks.lua) and the picked
+-- moves to the store command: (base, partner, move1, move2). CMND_CHARACTERREFORGED_CREATE_MOVES(row) answers n.
 --
 -- Refusal window text: the system's label, then the reason: PairCheck code n -> character_reforged.create_refused_<n>,
 -- a declared `refusals` code -> its key, anything else -> character_reforged.create_refused_other; the carrier not
@@ -57,8 +73,7 @@ local SYSTEMS = nil
 local function load_systems()
   if SYSTEMS then return SYSTEMS end
   local merged, from = {}, {}
-  local ok, decl = pcall(VRFW.files.declarations, "content/pairing")
-  for _, f in ipairs(ok and type(decl) == "table" and decl or {}) do
+  for _, f in ipairs(A.PairingDeclarations()) do
     local d = type(f) == "table" and f.data or nil
     local root = type(d) == "table" and type(d.CharacterReforged) == "table" and d.CharacterReforged.Create or nil
     if type(root) == "table" then
@@ -90,7 +105,9 @@ local function load_systems()
         system = system, pair_system = tostring(s.system or system), mod = from[system],
         item = item, item_key = tostring(s.item), label = s.label and tostring(s.label) or nil,
         store_name = store, store = id_of(store), carrier = s.carrier, pair_codes = math.floor(tonumber(s.pair_codes) or -1),
-        order = tonumber(s.order) or 100, refusals = s.refusals,
+        order = tonumber(s.order) or 100, refusals = s.refusals, confirm = s.confirm and tostring(s.confirm) or nil,
+        confirm_icon = s.confirm_icon and tostring(s.confirm_icon) or nil, preview = s.preview and tostring(s.preview) or nil,
+        scene = s.scene == true,
       }
     end
   end
@@ -102,6 +119,8 @@ local function load_systems()
     info(string.format("row %d: system %s (%s): item %s %s, store %s, carrier %s, pair codes %d", i, s.system, s.mod, s.item_key, hex(s.item), s.store_name, tostring(s.carrier), s.pair_codes))
   end
   SYSTEMS = list
+  -- the pair rules of each system read now (the list is opening), not inside the store command later
+  for _, s in ipairs(list) do A.PairRules(s.pair_system) end
   return list
 end
 
@@ -156,10 +175,10 @@ function CharacterReforged.Create.Row(item)
   for i, s in ipairs(load_systems()) do
     if s.item == item then
       info(string.format("row of %s: %d (%s, store %s)", hex(item), i, s.system, s.store_name))
-      return i, s.store
+      return i, s.store, s.scene == true
     end
   end
-  return 0, 0
+  return 0, 0, false
 end
 
 -- (charaHdl) -> row (0 = no create item was picked), board slot, store command id
@@ -239,6 +258,23 @@ local function text_of(key)
   local ok, s = pcall(VRFW.text, key)
   if ok and type(s) == "string" then return s end
   return ""
+end
+
+-- the most partner moves a pair carries (the framework's miximax keeps 1 or 2)
+local MAX_MOVES = 2
+
+-- (row) -> n (partner moves to pick in the bank, 0 = none), confirmId, confirmText, confirmIcon, previewCommand: the
+-- system's pairing rule `moves`, the text of the bank's confirmation (id for the game's own lookup, the text as the
+-- fallback), the sprite between the two cards of that window (crc32 of `confirm_icon`, 0 = none) and the command id of
+-- its stat preview (crc32 of `preview`, 0 = none)
+function CharacterReforged.Create.Moves(i)
+  local s = load_systems()[math.floor(tonumber(i) or 0)]
+  if not s then return 0, 0, "", 0, 0 end
+  local n = math.floor(tonumber(A.PairRules(s.pair_system).moves) or 0)
+  n = math.max(0, math.min(MAX_MOVES, n))
+  local key = s.confirm or (MOD .. ".create_confirm")
+  info(string.format("moves of row %s (%s): %d, confirmation %s", tostring(i), s.system, n, key))
+  return n, id_of(key), text_of(key), id_of(s.confirm_icon), id_of(s.preview)
 end
 
 -- (row, code) -> labelId, reasonId, labelText, reasonText: the refusal window's two texts (ids for the game's own text

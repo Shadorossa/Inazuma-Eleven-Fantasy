@@ -1,11 +1,11 @@
--- EVT boot_skip (VR-Framework; docs/game/ui/boot-skip.md) ------------------------------------------------------------
--- Skips the boot logos and the warning screens of a cold boot, behind the framework option «Saltar avisos de inicio»
+-- EVT boot_skip (VR-Framework) ------------------------------------------------------------
+-- Skips the boot logos and the warning screens of a cold boot, behind the framework option "Skip start-up notices"
 -- (mods_menu.skip_boot_screens, toggle, default ON). A wrapper only: no retail function is redefined, no retail local
 -- is read and no movie id is written here. What is skipped comes from the script's own structure, decided while
 -- LogoStart runs (the native title state calls LogoStart on a cold boot only):
 --   * movies: LogoStart plays the logo movies first, then asks GetPlayOpeningEventId() for the opening and plays it.
 --     While LogoStart runs, PlayTitleMovie plays only the id GetPlayOpeningEventId() answered (whatever the game, the
---     «Opening del título» hook or a mod chose); every movie before that answer (the logos, whatever ids the game data
+--     title-opening hook or a mod chose); every movie before that answer (the logos, whatever ids the game data
 --     gives them) is skipped.
 --   * warnings: DisplayWarningSentence (the caution image) does nothing; DrawWarningSentence (cautionary note, gamepad
 --     recommendation, save notice) becomes VRFW_BootSkipWarnings(), which leaves the screen as the retail one ends.

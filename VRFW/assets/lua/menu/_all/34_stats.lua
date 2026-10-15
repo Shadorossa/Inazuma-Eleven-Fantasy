@@ -1,4 +1,4 @@
--- menu_engine: per-save match statistics (VR-Framework base feature, 2026-10-11; docs/framework/chain-board.md §2).
+-- menu_engine: per-save match statistics (VR-Framework base feature).
 -- Definitions only (this file runs in every script VM, lua\_all). The ONE place that keeps how many times the player beat
 -- a team, per save slot: the save service (owner "vr_framework"), key "stats.wins.<team id>" (the team's numeric id as
 -- the team type gives it, e.g. a chain tile's `team`), a decimal string.

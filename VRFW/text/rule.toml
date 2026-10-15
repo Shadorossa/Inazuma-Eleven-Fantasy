@@ -1,11 +1,9 @@
 schema = "VRFW.text_key/1"
-# Texts of the match part (format of the text engine: research/mods/text_engine/README.md); new texts get the id
-# crc32("match_engine.<name>"): the part's name and description for the «Mods» screen, in the game's language.
-# A language missing here falls back to English.
+# Texts of the match part; ids are crc32("match_engine.<name>"). A missing language falls back to English.
 default_lang = "en"
 
 [en.new]
-# ruleset_<id>: the name of the ruleset <id> on the Mods screen (rules editor), in the game language
+# ruleset_<id>: display name of ruleset <id> in the rules editor.
 ruleset_chronicle = "Chronicle (original)"
 ruleset_free_match = "Free match (original)"
 ruleset_friendly_5v5 = "5-a-side friendly (original)"
@@ -21,9 +19,7 @@ ruleset_training = "Training (original)"
 ruleset_victory_road = "Victory Road (original)"
 mod_name = "Match engine"
 mod_description = "Match engine: the rules of every offline match (length, halves, players on the pitch, ExRule, extra time, golden goal, penalty shoot-out) come from a ruleset. The base rulesets reproduce the original game; other mods add rulesets in their rules/ folder and assign them by mode, match or rival team. Each half lasts 30' (the «Half length» option was removed in 1.2.1). A part of VR-Framework."
-# break_*: the half-time screen before a period of the ruleset's end phases (soccer_half_time_menu, VRFW
-# assets/lua/menu/soccer_half_time_menu/300_match_break.lua via CMND_VRFW_RULE_ENGINE_BREAK): its title and its
-# kick-off button; the game only has «HALF TIME» / «2ND HALF KICK-OFF»
+# break_*: title and kick-off button of the break screen before each end-phase period of a ruleset.
 break_title_extra_time = "EXTRA TIME"
 break_title_extra_time_half = "EXTRA TIME - HALF TIME"
 break_title_golden_goal = "GOLDEN GOAL"

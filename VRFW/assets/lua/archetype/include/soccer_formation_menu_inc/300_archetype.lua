@@ -1,4 +1,4 @@
--- VRFW › archetypes declared by mods (docs/framework/archetype.md §6): the team dock's build plate and balloon
+-- VRFW › archetypes declared by mods: the team dock's build plate and balloon
 -- (UpdateTeamBuildTypeInfo: icon, name, explanation), the team parameter guide's large icon and the build info the
 -- formation screens read, for a team whose last pick is a declared archetype (CMND_VRFW_ARCHETYPE_TEAM / _MATCH).
 -- The game's code runs first (the team stays build 6 for its tables); then the declared archetype is drawn over it.

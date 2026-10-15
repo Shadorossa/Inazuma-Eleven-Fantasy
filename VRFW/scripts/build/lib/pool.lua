@@ -1,19 +1,8 @@
--- T2B pool trees (docs/framework/build-scripts.md §3.5): the game's T2B tables where an info list keeps its child
--- rows in shared «pool» lists, each info row followed by one `<INFO>_REF_<X>` entry `(start, count)` per pool:
---
--- * aura_skill_config: AURA_CMD_INFO -> AURA_CMD_UNIQUE_EFFECT, AURA_CMD_EFFECT, AURA_CMD_CHARA;
--- * passive_skill_config: PASSIVE_SKILL_INFO -> PASSIVE_SKILL_BUFF_ICON, PASSIVE_SKILL_EFFECT;
--- * ability_learning_config: ABILITY_LEARNING_BOARD_INFO -> ABILITY_LEARNING_BOARD_EFFECT;
--- * event_tag_word_replace_config: EVENT_ASSIGN_[SND_]TAG_WORD_REPLACE_INFO -> ..._TARGET.
---
--- What a declaration states is the materialized list of an info row's children; P.set_children writes it with the
--- fewest changes: nothing when equal, in place when the slice has the same length and no other info row points into
--- it, else an identical run already in the pool (shared, as the game's own tables do), else appended at the end of
--- the pool. Old rows nobody points at stay (the game never reads them). New info rows (P.add_info) are clones of a
--- template (its ref entries too) appended after the last info row, the list count raised and its sort run
--- regenerated.
---
--- Cells: an integer (signed 32-bit), `{ float = x }`, a text or VRFW.null (the row API's cells).
+-- T2B pool trees: tables where an info list keeps child rows in shared pool lists, each info row followed by one `<INFO>_REF_<X>` entry `(start, count)` per pool
+-- (aura_skill_config, passive_skill_config, ability_learning_config, event_tag_word_replace_config).
+-- P.set_children writes an info row's children with the fewest changes: nothing if equal, in place if the slice has the same length and is not shared, else an identical run already in the pool, else appended.
+-- P.add_info clones a template info row (and its ref entries) after the last info row.
+-- Cells: an integer (signed 32-bit), `{ float = x }`, a text or VRFW.null.
 
 local U = require "lib/util"
 
@@ -41,7 +30,7 @@ P.TAG_ASSIGN = group("EVENT_ASSIGN_TAG_WORD_REPLACE_INFO",
 P.TAG_SND = group("EVENT_ASSIGN_SND_TAG_WORD_REPLACE_INFO",
   { { "EVENT_ASSIGN_SND_TAG_WORD_REPLACE_INFO_REF_TARGET", "EVENT_ASSIGN_SND_TAG_WORD_REPLACE_TARGET" } })
 
--- ---------------------------------------------------------------------------------------------------- cells
+-- ---- cells
 
 -- Two cells equal (as the table would store them).
 function P.cell_eq(a, b)
@@ -96,7 +85,7 @@ function P.rows(rows, what)
   return out
 end
 
--- ------------------------------------------------------------------------------------------------ the tree
+-- ---- the tree
 
 function P.infos(t, g)
   return t:rows(g.info)
@@ -131,7 +120,7 @@ local function slice_of(t, e)
   return a, b
 end
 
--- The values of the children of the info row at `info` in pool k.
+-- Values of the children of the info row at `info` in pool k.
 function P.children(t, g, info, k)
   local r = P.ref_entry(t, g, info, k)
   if not r then return {} end
@@ -168,7 +157,7 @@ local function set_ref(t, r, s, c)
   t:splice(r, r + 1, { e })
 end
 
--- Point the info row at `info` at `rows` in pool k (see the header). True when something changed; `nil, err`.
+-- Point the info row at `info` at `rows` in pool k. True when something changed; `nil, err`.
 function P.set_children(t, g, info, k, rows)
   local r = P.ref_entry(t, g, info, k)
   if not r then return nil, string.format("%s: the %s row has no %s", t:key(), g.info, g.refs[k][1]) end
@@ -208,7 +197,7 @@ function P.set_children(t, g, info, k, rows)
       return true
     end
   end
-  -- an identical run already in the pool
+  -- identical run already in the pool
   local vals = {}
   for j, i in ipairs(p) do vals[j] = t:entry(i).values end
   for a = 0, #vals - n do
@@ -236,8 +225,7 @@ function P.set_children(t, g, info, k, rows)
   return true
 end
 
--- Append a new info row: a clone of the info row at `template` (with its ref entries) with `values`, after the last
--- info row (count raised, sort run regenerated). Returns its entry index.
+-- Append a new info row: a clone of the info row at `template` (with its ref entries) with `values`, after the last info row. Returns its entry index.
 function P.add_info(t, g, template, values)
   local b, e, err = t:span(g.info)
   if b == nil then return nil, err end

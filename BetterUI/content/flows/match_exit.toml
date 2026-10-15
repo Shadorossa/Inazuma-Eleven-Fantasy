@@ -1,0 +1,10 @@
+schema = "VRFW.flow/1"
+
+# Leaving a free match (play mode 1: Partido libre, Competir contra mis equipos, Estadio BB) with «Finalizar partido»
+# (the pause prompt or the end-of-match prompt): one fade to black, black through the match-end transition and the
+# loading, then the menu the match was started from fades in (for Partido libre: the team list). The framework's flow
+# toggle match_exit does it (docs/framework/flow.md §1.1); online matches keep the game's transition.
+[[VRFW.Flow]]
+name = "match_exit"
+value = "black_to_menu"
+play_modes = [1]

@@ -1,21 +1,18 @@
--- The shops and reward tables of the type `shop` (docs/framework/types/shop.md), built in the item build's single
--- pass (item.lua steps 5 and 6: a hidden item hides its shop rows, a shop sells the new items with their default
--- price): shop_config (new shops, token groups, rows, prices, conditions, hidden rows) and the ITBL reward tables of
--- common_item_table / soccer_prize_config. `X` is the item build's context (item.lua).
+-- Shops and reward tables of the `shop` type, built in the item build's single pass (item.lua steps 5 and 6): shop_config (shops, token groups, rows, prices, conditions, hidden rows)
+-- and the ITBL reward tables of common_item_table / soccer_prize_config. `X` is the item build's context.
 
 local U = require "lib/util"
 local C = require "lib/cond"
 local S = {}
 
--- engine limits (fichajes.md §4.1, tienda-general.md §4)
+-- engine limits
 local SHOP_ROWS_MAX = 628
 local TAB_ROWS_MAX = 320
 local SHOPS_MAX = 64
 local TOKENS_MAX = 9
 local TOKENS_SHOWN = 8
 local PRICE_SLOTS = 10
--- number space of a shop row's purchase counter / «new» flag index (shared with the office rows of the character
--- and team builds)
+-- number space of a shop row's purchase counter / "new" flag index (shared with the office rows of the character and team builds)
 local COUNTER_SPACE = "shop_index"
 local COUNTER_LIMIT = 8192
 
@@ -308,7 +305,7 @@ function S.build(X, sfiles)
     local used_ctr = shop_counters(t)
     local rid = VRFW.ids.assign(rkey, used_ids)
     local nkey = m .. "." .. rkey
-    -- migration only: the counter the old rule gave (registered for old saves, never written)
+    -- migration only: the counter of the former rule (registered for old saves, never written)
     if X.legacy_counter == nil then X.legacy_counter = U.copy(used_ctr) end
     local old = VRFW.ids.slot("counter:" .. rkey, 7800, 8192, X.legacy_counter) or VRFW.ids.slot("counter:" .. rkey, 3000, 7800, X.legacy_counter)
     if old then

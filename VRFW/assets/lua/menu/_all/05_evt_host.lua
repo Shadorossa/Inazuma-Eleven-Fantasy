@@ -1,4 +1,4 @@
--- menu_engine: VRFW_Host, the hook points of the framework's host patches (docs/framework/lua-hosts.md). Defined in every
+-- menu_engine: VRFW_Host, the hook points of the framework's host patches. Defined in every
 -- script VM (lua\_all runs after each retail chunk, before every stem folder of every mod root). It only defines tables
 -- and functions: no engine call happens here (funcLuaCommand does not exist while a chunk loads).
 --
@@ -30,7 +30,7 @@ if type(H) ~= "table" then
   H = type(EVT_Host) == "table" and EVT_Host or {}   -- a 1.x early patch that made the table under the old name
   VRFW_Host = H
 end
--- 1.x name (docs/framework/naming.md): the same table under the old name, so mods written for 1.x keep working
+-- 1.x name: the same table under the old name, so mods written for 1.x keep working
 EVT_Host = H
 
 -- the retail closures of this VM's chunk(s), before any stem patch replaced them (the locals map reads their upvalues)
@@ -293,8 +293,8 @@ end
 -- new function may be a wrapper over the dispatcher that calls it through something the host could not see (a table
 -- field: `S.origInit = OnInit; OnInit = function(...) ... return S.origInit(...) end`). The call into it is counted
 -- per coroutine; the dispatcher entered again from inside it goes on with what was under the FIRST hook (p.base),
--- never through the handlers and the new function again (that loop was the team dock's Lua stack overflow,
--- 2026-10-14). Errors keep going up (rethrown).
+-- never through the handlers and the new function again (that loop was the team dock's Lua stack overflow).
+-- Errors keep going up (rethrown).
 local function call_under_rehooked(p, f, ...)
   local co = coroutine.running()
   local inside = p.inside
@@ -511,7 +511,7 @@ local function holder(f, nup, dbg, depth, seen)
 end
 
 -- A merge-path patch that PROMOTED the retail locals (declared them again and redefined every function using them:
--- Utilities' passive_config_dispatch, Character Reforged's ss2_dock on team_dock_formation_menu) runs on its OWN copy;
+-- e.g. a passive dispatch or a dock patch on team_dock_formation_menu) runs on its OWN copy;
 -- the retail closures' upvalues then never change. Such a patch is compiled from text, so its closures keep their
 -- upvalue names (stripped retail bytecode has none): the closure live now for the map's function that captures every
 -- local the map gives that function (`names`) holds the live copy. Searched from the global (and from what is under
@@ -662,7 +662,7 @@ hook_point = function(h, name, create)
   install(h, p)
 end
 
--- A named list of a host (H.add items; docs/framework/lua-hosts.md §4), declared by the mod that consumes it:
+-- A named list of a host (H.add items), declared by the mod that consumes it:
 -- def = { apply = function(items, L, host) end }, items = { {id, mod, value}, ... } in order; apply runs once per VM
 -- at the host's first callback.
 function H.list(stem, name, def)

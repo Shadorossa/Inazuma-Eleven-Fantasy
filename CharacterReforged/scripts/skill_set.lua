@@ -5,6 +5,8 @@
 --
 -- Slots: 1..6 the move rows, 7 the aura slot, 8 the mix slot. The base rules are data (content\skill_set\*.toml
 -- [CharacterReforged.SkillSet]: the move rows refuse auras, the aura slot takes aura_types, the mix slot mix_types).
+-- A move no player can obtain ([[VRFW.Unobtainable]], lib/unobtainable_moves.lua) is refused in every slot (reason
+-- "unobtainable").
 -- Other mods veto on top of them (e.g. a «no duplicate move» or «levels by use» plugin):
 --
 --   CharacterReforged.AddPlaceRule(name, fn)   fn(hdl, slot, move) -> false [, reason] refuses; anything else allows.
@@ -18,6 +20,7 @@
 
 CharacterReforged = CharacterReforged or {}
 local CR = CharacterReforged
+local Unobtainable = require "lib/unobtainable_moves"
 
 local BUILTIN = { moves_refuse_auras = true, aura_types = { 0, 3 }, mix_types = { 2, 6 } }
 local RULES = nil
@@ -85,6 +88,9 @@ function CR.CanPlace(hdl, slot, move)
   slot, move = tonumber(slot) or 0, tonumber(move) or 0
   if move == 0 then
     return true, ""                               -- emptying a slot is always allowed
+  end
+  if Unobtainable.has(move) then
+    return false, "unobtainable"
   end
   if not base_ok(slot, move) then
     return false, "type"

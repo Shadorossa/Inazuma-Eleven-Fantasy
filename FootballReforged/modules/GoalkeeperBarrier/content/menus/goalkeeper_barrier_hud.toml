@@ -1,0 +1,37 @@
+# Goalkeeper Barrier: the barrier on the match HUD (docs/game/mechanics/gk-barrier.md §4).
+# The barrier is NOT a bar of its own: it is drawn INSIDE each goalkeeper's fatigue bar of the scoreboard (layer
+# soccer00_01_kp_scoreboard_kp of soccer_constant_menu: the white-blue bars _keeper_hp_gauge01_s (own team, left) and
+# _keeper_hp_gauge02_s (rival, right) under the team names, 364 x 24 each), as its first segment at the GOAL SIDE: on
+# the own team's bar the segment at the LEFT end, on the rival's bar the segment at the RIGHT end (the outer ends). The
+# segment is ORANGE and as long as the barrier: 25 % of the bar for a fresh keeper, shorter as he tires, gone at 0.
+# A new layer football_reforged_barrier (2 instances: 0 = own, 1 = rival), not opened by the screen: the Lua of
+# research/grafts/goalkeeper_barrier_hud opens it and sets each instance's position / length every frame.
+# Its object is the retail stamina gauge of the stairs race (btl06_13_stamina_gauge), of which only the fill is shown
+# (frame _hp_base01, red trail _hp_empty01 and label _gtxt_stamina01 hidden by the graft) with its sprite hp_bar02
+# swapped for the orange football_reforged_barrier_fill01 (content\images\menu\02_btl\btl06\btl06_13\
+# goalkeeper_barrier.toml), drawn over the scoreboard (priority 302 > its 300). Instance 0 hangs on the keeper bar
+# layer at the own bar's locator _pos_hp01, instance 1 at the rival's _pos_hp02: the layer's attach rows of those
+# locators (NullLayerName [locator, …, layer, instance]: retail soccer00_02_kp2_kp_empty_self / _enemy) copied for
+# football_reforged_barrier (0x46D4A92B = crc32("football_reforged_barrier")). One layer, 2 instances in each of the
+# two groups that show the keeper bars (soccer_constant_menu, soccer_battle_constant_menu). No retail byte in the mod.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "football_reforged_barrier"
+from = "btl06_13_stamina_gauge"
+priority = 302
+
+# 0x89429195 = crc32("_pos_hp01"), 0x25C96AC9 = soccer00_02_kp2_kp_empty_self; 0x104BC02F = _pos_hp02, 0xCDC2920C = _enemy
+[[object_set]]
+object = "soccer00_01_kp_scoreboard_kp"
+copy = [
+    { param = "NullLayerName", match = { 2 = 0x89429195, 3 = 0x25C96AC9 }, values = { 3 = 0x46D4A92B, 4 = 0 } },
+    { param = "NullLayerName", match = { 2 = 0x104BC02F, 3 = 0xCDC2920C }, values = { 3 = 0x46D4A92B, 4 = 1 } },
+]
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "football_reforged_barrier", object = "football_reforged_barrier", count = 2, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

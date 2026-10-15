@@ -745,8 +745,11 @@ function BBCR_DRAFT_GridBack()
   B.refresh = B.REFRESH_FRAMES
 end
 
-function BBCR_DRAFT_Refresh()
+-- tile / panel: the tile the focus goes back to and the panel's redraw (default: the Draft tile, BBCR_DRAFT_PanelBack;
+-- the «Plantilla» viewer, bbd_roster.lua, passes the team it showed)
+function BBCR_DRAFT_Refresh(tile, panel)
   local B = BBCR_DRAFT
+  tile = tile or B.tile
   local page = funcLuaCommand(B.PAGE_REFRESH)
   local redrawn = false
   if type(page) == "number" and EVT_BBP ~= nil and EVT_BBP_Query ~= nil and EVT_BBP_Redraw ~= nil then
@@ -767,15 +770,19 @@ function BBCR_DRAFT_Refresh()
       funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, a[2][1] ~= 0, a[1])
     end
   end
-  -- focus and cursor on the Draft tile; its panel
-  if B.tile >= 0 then
+  -- focus and cursor on the tile; its panel
+  if tile >= 0 then
     local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.GRID) or 0
     funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.GRID, true)
-    funcLuaMenuCommand(1778826357, B.GRID, B.tile, true)
-    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], B.GRID, B.GRID_CURSOR, B.tile, n)
+    funcLuaMenuCommand(1778826357, B.GRID, tile, true)
+    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], B.GRID, B.GRID_CURSOR, tile, n)
   end
-  BBCR_DRAFT_PanelBack()
-  BBCR_DRAFT_Log("grid refreshed", page, redrawn, B.tile)
+  if panel ~= nil then
+    panel()
+  else
+    BBCR_DRAFT_PanelBack()
+  end
+  BBCR_DRAFT_Log("grid refreshed", page, redrawn, tile)
 end
 
 -- the left panel = the Draft team (the UpdateFormation wrapper: held while the Draft screen is open, else its players

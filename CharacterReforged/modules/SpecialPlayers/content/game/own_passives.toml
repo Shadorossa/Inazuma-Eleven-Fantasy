@@ -1,0 +1,56 @@
+schema = "VRFW.game/2"
+
+# Special Players › the own passive of each player in the custom passive slot (board equip slot 9, «Pasiva propia»).
+# The declarations are content\own_passives\*.toml of any active mod; scripts\own_passives.lua reads them and fills the
+# tables below. The two engine readers of that slot are answered natively, so the save's custom passive item is never
+# read: a player with a declared own passive gets it, every other player gets none.
+
+# ------------------------------------------------------------------------------------------------ hooks
+
+# u32* SixSensePassiveId(u32* out, u32 charaHdl) 0xE7B390: the passive of a player's custom passive slot (match passive
+# builder 0x1604E90 group 5, the formation passive totals 0xD67A80 / 0xD776D0, the parameter screen 0xFE1770 /
+# 0xFE2BA0). Post: out = the own passive of the player's card, else 0. Stolen bytes: mov [rsp+10h],rbx; push rdi;
+# sub rsp,20h; mov ebx,edx; mov rdi,rcx (15).
+[[VRFW.Hook]]
+name = "SpecialPlayers.SixSensePassiveId"
+kind = "function"
+pattern = "48 89 5C 24 10 57 48 83 EC 20 8B DA 48 8B F9 85 D2 74 71 8B C2 C1 E8 0C 83 E0 0F 83 F8 0D 73 64 8B D0 48 8B 05 ?? ?? ?? ?? 48 8B 88 D8 69 00 00 48 8B 4C D1 08 48 85 C9 74 4A"
+rva = 0xE7B390
+steal = 15
+args = ["ptr", "u32"]
+ret = "ptr"
+
+# the own passive of the player's card (key: chara_param id)
+[[VRFW.Hook.answer]]
+table = "SpecialPlayers.OwnPassive"
+key = ["[record(args[2]) + 4]:u32"]
+write = "[args[1]]:u32"
+
+# no own passive: the slot is empty whatever item the save holds there
+[[VRFW.Hook.answer]]
+value = "0"
+when = { value = "args[2]", not = 0 }
+write = "[args[1]]:u32"
+
+# bool SixSensePieceOpen(const u32* charaHdl) 0x165EBF0: whether the custom passive piece of the player's board is open
+# (the match counts group 5 only then). Post: 1 for a card whose own passive is declared with unlock = "always".
+# Stolen bytes: mov [rsp+8],rbx; mov [rsp+10h],dx; push rbp; push rsi; push rdi; push r12; push r13; push r14;
+# push r15 (21).
+[[VRFW.Hook]]
+name = "SpecialPlayers.SixSensePieceOpen"
+kind = "function"
+pattern = "48 89 5C 24 08 66 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 48 8B 05 ?? ?? ?? ?? 4C 8D 44 24 68 48 8B D9 C7 44 24 68 D7 9B 55 0D"
+rva = 0x165EBF0
+steal = 21
+args = ["ptr"]
+ret = "u8"
+
+[[VRFW.Hook.answer]]
+table = "SpecialPlayers.AlwaysOpen"
+key = ["[record([args[1]]:u32) + 4]:u32"]
+
+# ------------------------------------------------------------------------------------------------ commands
+
+[[VRFW.Command]]
+name = "CMND_SPECIALPLAYERS_OWN_PASSIVE"   # (charaStHdl) -> passive id (0 = none), always open (bool), declaring mod
+handler = "SpecialPlayers.Cmd.OwnPassive"

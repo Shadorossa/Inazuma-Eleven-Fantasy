@@ -2,13 +2,15 @@
 --
 -- A combo / cooperative move (SKILL_INFO partnerType 2-4 = performers) is cast with the executor plus partnerType - 1
 -- teammates; the game picks them itself (BuildEventCast). The player chooses, per player and move, which teammates
--- perform it with him: the free slots only (SKILL_INFO partner1..3 = the move's named partners, never offered, never
--- replaced). In a match, right after the cast is built, every free slot whose chosen partner is on the pitch gets him;
--- a chosen partner not on the pitch keeps the engine's pick for that slot.
+-- perform it with him, for every partner slot: the move's named partners (SKILL_INFO partner1..3) are only the
+-- defaults of the first slots and can be replaced like any other pick. In a match, right after the cast is built,
+-- every slot whose chosen partner is on the pitch gets him; a chosen partner not on the pitch (or no choice) keeps the
+-- engine's pick for that slot (a named partner when he is there).
 --
 -- Save: blob skill_partners.json of mod utilities, one per slot:
---   { version = 1, players = { ["<executor handle, 8 hex>"] = { param_id = <chara_param>, moves = { ["<skill, 8 hex>"] = { p1, p2, p3 } } } } }
--- (0 = random). A handle reused by another card (another param_id) starts empty.
+--   { version = 2, players = { ["<executor handle, 8 hex>"] = { param_id = <chara_param>, moves = { ["<skill, 8 hex>"] = { p1, p2, p3 } } } } }
+-- p<k> = partner slot k (0 = the engine's pick). Version 1 listed the free slots only (after the named ones); its lists
+-- are moved behind the named slots when read. A handle reused by another card (another param_id) starts empty.
 --
 -- 2026-10-12 (Nacho): a coach or a manager is never a partner. Staff = the card's role in its record (attribute byte
 -- REC_ROLE, bits ROLE_COACH / ROLE_MANAGER: what the game sets for a staff card and turns into its abl_000002 /
@@ -17,7 +19,7 @@
 -- the game's own badge test.
 
 local BLOB = "skill_partners.json"
-local FILE_VERSION = 1
+local FILE_VERSION = 2
 local MAX_PARTNERS = 3
 local CACHE_MS = 30000
 local HELD_STALE_MS = 250
@@ -102,6 +104,28 @@ end
 
 -- ---------------------------------------------------------------------------------------------- the saved choices
 
+-- version 1 kept the free slots only: each list moves behind the move's named slots (left to the engine's pick)
+local function upgrade_free_slot_lists(f)
+  for _, e in pairs(f.players) do
+    for k, v in pairs(e.moves or {}) do
+      local sp = type(v) == "table" and #v > 0 and skill_partners(tonumber(k, 16) or 0) or nil
+      if sp and #sp.named > 0 then
+        local moved = {}
+        for i = 1, #sp.named do
+          moved[i] = 0
+        end
+        for i = 1, sp.slots - #sp.named do
+          moved[#sp.named + i] = v[i] or 0
+        end
+        while #moved > 0 and moved[#moved] == 0 do
+          moved[#moved] = nil
+        end
+        e.moves[k] = (#moved > 0) and moved or nil
+      end
+    end
+  end
+end
+
 local function load_file()
   local text, err = VRFW.save.blob(BLOB)
   if text == nil then
@@ -115,8 +139,11 @@ local function load_file()
     VRFW.error(BLOB .. ": " .. tostring(e) .. " (starting empty)")
     return { version = FILE_VERSION, players = {} }
   end
-  f.version = f.version or FILE_VERSION
   f.players = f.players or {}
+  if (f.version or 1) < 2 then
+    upgrade_free_slot_lists(f)
+  end
+  f.version = FILE_VERSION
   return f
 end
 
@@ -253,40 +280,35 @@ local function teammates(team, exec)
   return v
 end
 
--- swap the chosen partners into cast[1..slots] (cast[0] = executor); locked[k] = a named partner (never touched, never
--- a source); wants[i] = the i-th free slot: false = random, { owner, actor or nil }
-local function apply(cast, slots, locked, wants)
-  local out, placed, free_i = {}, {}, 0
+-- swap the chosen partners into cast[1..slots] (cast[0] = executor); wants[slot]: false / nil = the engine's pick,
+-- { owner, actor or nil }. A named partner's slot is replaced like any other: the named partner is only the default.
+local function apply(cast, slots, wants)
+  local out, placed = {}, {}
   for slot = 1, slots do
-    if locked[slot] then
-      out[#out + 1] = string.format("slot %d named 0x%X", slot, cast[slot])
+    local w = wants[slot]
+    if not w then
+      out[#out + 1] = string.format("slot %d random 0x%X", slot, cast[slot])
+    elseif not w[2] then
+      out[#out + 1] = string.format("slot %d 0x%08X not on the pitch -> engine pick 0x%X", slot, w[1], cast[slot])
     else
-      free_i = free_i + 1
-      local w = wants[free_i]
-      if not w then
-        out[#out + 1] = string.format("slot %d random 0x%X", slot, cast[slot])
-      elseif not w[2] then
-        out[#out + 1] = string.format("slot %d 0x%08X not on the pitch -> engine pick 0x%X", slot, w[1], cast[slot])
+      local a = w[2]
+      local src
+      for j = 0, #cast do
+        if cast[j] == a and src == nil then
+          src = j
+        end
+      end
+      local bad = a == 0 or placed[a] or src == 0
+      if bad then
+        out[#out + 1] = string.format("slot %d 0x%08X fallback -> engine pick 0x%X", slot, w[1], cast[slot])
       else
-        local a = w[2]
-        local src
-        for j = 0, #cast do
-          if cast[j] == a and src == nil then
-            src = j
-          end
+        if src ~= nil and src ~= slot then
+          cast[slot], cast[src] = cast[src], cast[slot]
+        elseif src == nil then
+          cast[slot] = a
         end
-        local bad = a == 0 or placed[a] or src == 0 or (src ~= nil and src <= slots and locked[src])
-        if bad then
-          out[#out + 1] = string.format("slot %d 0x%08X fallback -> engine pick 0x%X", slot, w[1], cast[slot])
-        else
-          if src ~= nil and src ~= slot then
-            cast[slot], cast[src] = cast[src], cast[slot]
-          elseif src == nil then
-            cast[slot] = a
-          end
-          placed[a] = true
-          out[#out + 1] = string.format("slot %d chosen 0x%08X (actor 0x%X)", slot, w[1], a)
-        end
+        placed[a] = true
+        out[#out + 1] = string.format("slot %d chosen 0x%08X (actor 0x%X)", slot, w[1], a)
       end
     end
   end
@@ -329,16 +351,6 @@ local function on_cast(cast_at, len, rec_at)
     return
   end
   local slots = math.min(sp.slots, len - 1)
-  local locked = {}
-  for k = 1, slots do
-    local a = actor_of_handle(cast[k])
-    local cid = a and a.chara_id or 0
-    local named = false
-    for _, n in ipairs(sp.named) do
-      named = named or (cid ~= 0 and n == cid)
-    end
-    locked[k] = named
-  end
   local team = ea.team
   local mates = teammates(team, exec)
   local wants = {}
@@ -359,7 +371,7 @@ local function on_cast(cast_at, len, rec_at)
   for k = 1, slots do
     before[k] = string.format("%X", cast[k])
   end
-  local what = apply(cast, slots, locked, wants)
+  local what = apply(cast, slots, wants)
   local after = {}
   for k = 1, slots do
     after[k] = string.format("%X", cast[k])
@@ -401,10 +413,8 @@ function Utilities.ComboGet(hdl, skill)
   return true, v[1] or 0, v[2] or 0, v[3] or 0
 end
 
--- charaStHdl, skill, p1[, p2, p3] -> ok (the list is cut to the move's partner slots; all 0 = the move's entry removed).
--- 2026-10-13: cut to every partner slot, not only the retail free ones: a picker (Inazuma Fantasy's skill table) frees
--- the slot of a named partner who is not in the player's team; in the match a named partner is locked only when he
--- is in the cast, so these picks fill the slots of the missing ones (apply: free slots in cast order).
+-- charaStHdl, skill, p1[, p2, p3] -> ok: p<k> = partner slot k, named slots included (0 = the engine's pick; the list
+-- is cut to the move's partner slots; all 0 = the move's entry removed)
 function Utilities.ComboSet(hdl, skill, p1, p2, p3)
   hdl, skill = arg_u32(hdl), arg_u32(skill)
   local v = { arg_u32(p1), arg_u32(p2), arg_u32(p3) }

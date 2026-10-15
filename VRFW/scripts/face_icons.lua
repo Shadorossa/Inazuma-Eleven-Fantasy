@@ -1,12 +1,6 @@
--- VR-Framework › face icon rules (service S13 of VRFW 2.3, docs/framework/card-look.md §5). Declarations: every
--- active mod's content\face_icons\*.toml (`VRFW.face_icon/1`, keys: content\types\face_icon.toml); native side:
--- content\game\face_icons.toml (hook FaceIcons.Composite, installed only when a mod declares a rule; answered natively
--- from the tables VRFW.FaceIcon.Rarity / VRFW.FaceIcon.Key, no Lua per icon).
---
---   * mode "face_only": a menu face icon the game draws with the kit bust (icon type 9) is drawn face only (type 10,
---     the engine's own «no kit» icon) for a card of a declared rarity, or for a declared character key when the icon
---     is asked without a card (shop / office rows, plates by key).
---   * CMND_VRFW_FACE_ICON(hdl[, key]) -> mode (0 = the game's, 10 = face only), live.
+-- Face icon rules: reads every mod's content/face_icons/*.toml (`VRFW.face_icon/1`) and feeds the native hook FaceIcons.Composite (content/game/face_icons.toml).
+-- mode "face_only": a menu face icon drawn with the kit bust (type 9) is drawn face only (type 10) for a declared rarity, or a declared character key when asked without a card.
+-- CMND_VRFW_FACE_ICON(hdl[, key]) -> mode (0 = the game's, 10 = face only), live
 
 FaceIcons = FaceIcons or {}
 
@@ -74,7 +68,6 @@ local function start()
   info(string.format("on: face only for rarities %s and %d character key(s) (%s)", #rs > 0 and table.concat(rs, " ") or "none", n_k, table.concat(keys, ", ")))
 end
 
--- CMND_VRFW_FACE_ICON(hdl[, key]) -> mode, live
 function FaceIcons.Cmd(hdl, key)
   hdl = tonumber(hdl) or 0
   if hdl ~= 0 then

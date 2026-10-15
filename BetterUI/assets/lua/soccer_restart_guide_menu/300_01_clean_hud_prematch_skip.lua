@@ -12,6 +12,7 @@ CHD_XS.HOLD = 3626036482                 -- param crc32("clean_hud_xskip_hold"):
 CHD_XS.HOLD_CMD = 3788104116             -- CMND_BETTERUI_XSKIP_COVER(on) -> 1 (BetterUI content\game\prematch_skip.toml)
 CHD_XS.JUMP = 1616504339                 -- param crc32("clean_hud_xskip_jump"): 1 = the direct jump ended the event (no cover)
 CHD_XS.JUMP_CMD = 1614912098             -- CMND_BETTERUI_XSKIP_JUMP(on) -> 1 (BetterUI content\game\prematch_skip.toml)
+CHD_XS.BLACK0 = 479863734                -- param crc32("clean_hud_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
 CHD_XS.PARAM_HAS = 2947612279
 CHD_XS.PARAM_GET = 3522198769
 CHD_XS.PARAM_DEL = 3363400568
@@ -101,10 +102,18 @@ function CHD_XS.Arm(src)                 -- a VS screen closes: the pre-match ev
     return
   end
   CHD_XS.Uncover(0, src .. " (stale)")
+  CHD_XS.Del(CHD_XS.BLACK0)
   CHD_XS.JumpEnd()
   CHD_XS.Del(CHD_XS.GO)
   CHD_XS.Set(CHD_XS.ARMED, 1)
   CHD_XS.Log("armed", src)
+end
+function CHD_XS.UnblackLayer0(src)      -- the kick-off fade in did not lift layer 0: faded in here (no-op when already in)
+  if CHD_XS.Get(CHD_XS.BLACK0) ~= 0 then
+    CHD_XS.Del(CHD_XS.BLACK0)
+    pcall(funcLuaCommand, CHD_XS.FADE, 0, CHD_XS.COVER_IN_S)
+    CHD_XS.Log("layer 0 faded in", src)
+  end
 end
 function CHD_XS.Disarm(src)              -- the lineups / kick-off / half time: nothing pre-match is left
   CHD_XS.Uncover(CHD_XS.COVER_IN_S, src)
@@ -134,6 +143,7 @@ end
 local chd_xs_prev_decide = DecideRestartButton
 function DecideRestartButton(...)
   CHD_XS.Uncover(CHD_XS.COVER_IN_S, "kick-off button")
+  CHD_XS.UnblackLayer0("kick-off button")
   return chd_xs_prev_decide(...)
 end
 -- A cover the framework still held when it should have come off (its release went unanswered: the script VM was busy):
@@ -142,6 +152,9 @@ local chd_xs_prev_step = Step
 function Step(...)
   if CHD_XS.Get(CHD_XS.COVER) == 1 and CHD_XS.Get(CHD_XS.GO) ~= 1 then
     CHD_XS.Uncover(CHD_XS.COVER_IN_S, "kick-off (retry)")
+  end
+  if CHD_XS.Get(CHD_XS.GO) ~= 1 then
+    CHD_XS.UnblackLayer0("kick-off guide")
   end
   return chd_xs_prev_step(...)
 end

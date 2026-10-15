@@ -1,4 +1,4 @@
--- VRFW bb_pages, campaign grid only (enjoy_team_select_menu_campaign; docs/framework/bb-pages.md). Deciding a team
+-- VRFW bb_pages, campaign grid only (enjoy_team_select_menu_campaign). Deciding a team
 -- hides the grid and opens the difficulty window; its retail OnCloseEndLayer shows every grid slot and every lock icon
 -- again. On a short page that would bring the empty slots back: the grid is redrawn from the live slots after it (empty
 -- slots hidden, lock icons only on locked slots). The campaign takes the player's team from the slot under the cursor,

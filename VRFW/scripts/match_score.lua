@@ -1,9 +1,5 @@
--- VR-Framework: the score of the match being played, from the user's side, for the match rank rule (VRFW_MatchRank,
--- menu part lua\_all\32_match_rank.lua; docs/framework/route-board.md §3). Moved here from Inazuma Fantasy's
--- scripts\chronicle_rank.lua (2.0.48). The board's Lua reads it after a won match (CMND_VRFW_SAVE_GET("vr_framework",
--- "mr_last_for" / "mr_last_against")). match_start resets it to 0 - 0; every goal (scripted goals and forfeits too)
--- stores the new score. ev.match.score = { team 0, team 1 }, ev.match.user_team = 0 / 1 (scripts.md §3.1). In memory
--- only: never committed.
+-- Stores the score of the match being played, from the user's side, for the match rank rule (save keys mr_last_for / mr_last_against).
+-- match_start resets it to 0 - 0; every goal stores the new score. ev.match.score = { team 0, team 1 }, ev.match.user_team = 0 / 1.
 
 local function store(m)
   if m == nil or m.score == nil or m.user_team == nil then

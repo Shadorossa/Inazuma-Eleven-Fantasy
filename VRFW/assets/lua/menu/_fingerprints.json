@@ -105,10 +105,26 @@
   "forbid": [],
   "ambiguous": []
  },
+ "setting_top_menu": {
+  "script": "setting_top_menu_3.00.18.00",
+  "require": [
+   "IsFromChronicleModeTop"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "shop_menu_buy": {
   "script": "shop_menu_buy_7.00.05.00",
   "require": [
    "ResetFreeCursor"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_vs_menu": {
+  "script": "soccer_battle_vs_menu_1.04.02.00",
+  "require": [
+   "OnOpenVsBackgroundLayer"
   ],
   "forbid": [],
   "ambiguous": []
@@ -133,6 +149,14 @@
   "script": "soccer_team_dock_menu_7.01.06.00",
   "require": [
    "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
   ],
   "forbid": [],
   "ambiguous": []

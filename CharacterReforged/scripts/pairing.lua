@@ -32,12 +32,21 @@ local function info(...) VRFW.log("pairing:", ...) end
 -- what a system gets when no mod declares a key (the same values as content\pairing\defaults.toml)
 local BUILTIN = { same_character = false, one_partner_per_base = true, base_may_be_partner = false, base_rarities_denied = {}, partner_rarities_denied = {}, moves = 0 }
 local RULES = nil
+local DECLARATIONS = nil
+
+-- every mod's content\pairing\*.toml, read once per session (the pair rules and the create rows both come from them;
+-- the create entry reads them when its list opens, so a store command never reads files on the game thread)
+function A.PairingDeclarations()
+  if DECLARATIONS then return DECLARATIONS end
+  local ok, decl = pcall(VRFW.files.declarations, "content/pairing")
+  DECLARATIONS = ok and type(decl) == "table" and decl or {}
+  return DECLARATIONS
+end
 
 local function load_rules()
   if RULES then return RULES end
   RULES = {}
-  local ok, decl = pcall(VRFW.files.declarations, "content/pairing")
-  for _, f in ipairs(ok and type(decl) == "table" and decl or {}) do
+  for _, f in ipairs(A.PairingDeclarations()) do
     local d = type(f) == "table" and f.data or nil
     local root = type(d) == "table" and type(d.CharacterReforged) == "table" and d.CharacterReforged.PairRules or nil
     if type(root) == "table" then
@@ -73,6 +82,20 @@ end
 
 -- ---------------------------------------------------------------------------------------- cards
 
+-- the character of each card id (VRFW.chara.card(param).base), read once per session: the card data does not change
+-- while the game runs (cleared at game_reset with the rules)
+local CHARA_OF_PARAM = {}
+
+local function chara_of(param)
+  local chara = CHARA_OF_PARAM[param]
+  if chara ~= nil then return chara end
+  local okc, c = pcall(VRFW.chara.card, param)
+  if not okc or type(c) ~= "table" then return 0 end
+  chara = u32(c.base)
+  CHARA_OF_PARAM[param] = chara
+  return chara
+end
+
 -- an owned card (container kind 0 / 7 with a save record): { hdl, param, chara, rarity, addr }; nil otherwise
 function A.Card(hdl)
   hdl = u32(hdl)
@@ -83,21 +106,30 @@ function A.Card(hdl)
   if not ok or type(r) ~= "table" or not r.addr then return nil end
   local param = u32(r.param)
   if param == 0 then return nil end
-  local okc, c = pcall(VRFW.chara.card, param)
-  local chara = okc and type(c) == "table" and u32(c.base) or 0
-  return { hdl = hdl, param = param, chara = chara, rarity = tonumber(r.rarity) or 0, addr = r.addr }
+  return { hdl = hdl, param = param, chara = chara_of(param), rarity = tonumber(r.rarity) or 0, addr = r.addr }
 end
 
 -- ---------------------------------------------------------------------------------------- pairs
 
 -- may `partner` be paired with `base` under `system`'s rules? `pairs` = the system's stored pairs
 -- { { base = hdl, partner = hdl, partner_chara = id }, … } (other bases' pairs; the base's own is replaced)
+-- a PairCheck slower than this logs the time of each step (it runs inside a store command, on the game thread)
+local SLOW_CHECK_MS = 20
+
 function A.PairCheck(system, base, partner, pairs)
+  local started = VRFW.now()
   local r = A.PairRules(system)
+  local rules_ms = VRFW.now() - started
   base, partner = u32(base), u32(partner)
   local b = A.Card(base)
+  local base_ms = VRFW.now() - started
+  local p = b and A.Card(partner) or nil
+  local total = VRFW.now() - started
+  if total >= SLOW_CHECK_MS then
+    info(string.format("pair check %s + %s (%s) slow: rules %d ms, base card %d ms, partner card %d ms", hex(base), hex(partner),
+      tostring(system), rules_ms, base_ms - rules_ms, total - base_ms))
+  end
   if not b then return 1, 0 end
-  local p = A.Card(partner)
   if not p then return 2, 0 end
   if base == partner then return 3, 0 end
   if r.same_character ~= true and b.chara ~= 0 and b.chara == p.chara then return 4, 0 end
@@ -202,7 +234,11 @@ function A.BoardPlace(hdl, slot, inv)
 end
 
 -- the rules are read again after a hot reload of the mods' files
-VRFW.on("game_reset", function() RULES = nil end)
+VRFW.on("game_reset", function()
+  RULES = nil
+  DECLARATIONS = nil
+  CHARA_OF_PARAM = {}
+end)
 
 -- the base game's «Crear …» entry of the aura mods (graft character_reforged_board; commands content\game\create.toml)
 require "lib/create"

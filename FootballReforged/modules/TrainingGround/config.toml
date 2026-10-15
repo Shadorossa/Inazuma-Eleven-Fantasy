@@ -1,0 +1,206 @@
+# Training Ground: the drill's settings (read by scripts\training_ground.lua at the start; restart the game after a
+# change). docs/game/mods/training-ground.md
+#
+# The drill is the friendly `friendly` (content\friendlies\training_ground.toml: no save, back to the hub it was started
+# from) on the rulebook `ruleset` (content\rules\training_ground.toml: endless, a training match), with the settings
+# below as next-match overrides of the framework's match engine. In the match, SELECT opens the settings window (the
+# framework's VRFW_MatchPanel).
+# Row kinds: stadium (the free-match stadium list, mods' included), choice (`values`), count (the rivals:
+# min_rivals..the format's players), level (the `difficulties` of the format's row), toggle (on / off), team (the rival
+# team: A opens a team picker, the framework's VRFW_EmblemGrid over the window), apply, action.
+# `apply`: live (at once), restart (at «Aplicar cambios» / «Reiniciar el entrenamiento»). `override` = the match engine
+# knob the row drives (play.* act on the running match too); `flag` = the rule flag it sets while a drill runs.
+[training_ground]
+friendly = "training_ground"
+# the same drill with the player's active pachanga team (the friendly's team = "active_friendly", swapped back on the
+# way back): a 5v5 drill takes it when the mode's VS team has no complete 5v5 line-up (graft training_ground)
+friendly_team = "training_ground_pachanga"
+ruleset = "training_ground"
+min_rivals = 0              # 0 = an empty field is offered (no rival at all); set 1 if a drill without rivals misbehaves
+refill_every_ms = 400       # PE / tension top-ups while «no cost» / «always full» are on
+# the window's look: no `style` = the framework's default, the retail options screen's sprites (VRFW_MatchPanel,
+# docs/framework/match-panel.md); a style here = { <part> = ["#/menu/…g4tx", "<sprite>"], … } (parts panel, row,
+# title, hint, focus, frame, arrow_l, arrow_r)
+
+# the match rows a drill is played on, per format: the row's rival team fills the rival side (its first `rivals` on
+# the pitch); `difficulties` = the classes «Nivel de la CPU» steps through (VS CPU 6..9 on a free-match row). A row
+# of a small match (game type 2) gets the stadiums with the 5v5 lines (the maps the game plays its 5v5 matches on).
+[training_ground.formats.f5v5]
+label = "training_ground_val_5v5"
+game = "sbtl_rojiura_01"
+players = 5
+difficulties = [1]
+[training_ground.formats.f11v11]
+label = "training_ground_val_11v11"
+game = "fbtl_free_001"
+players = 11
+difficulties = [6, 7, 8, 9]
+
+# the defaults of a first visit (the player's choices are kept in the global save data afterwards)
+[training_ground.defaults]
+stadium = 0                 # 0 = the first stadium of the list
+rival_team = 0              # 0 = the format row's own rival team; else a team_config id (the picker writes it)
+rival_series = 1            # the picker's series page it opens on
+format = "f5v5"
+rivals = 5
+level = 1
+cooldown_moves = true
+cooldown_long_shots = true
+tension_full = false
+free_pe = false
+free_peg = false
+free_sp = false
+long_shots_all = false
+fouls = false
+offside = false
+tactics = true
+
+# the window's rows, in order (label = text row of text\rows\training_ground.toml)
+[[training_ground.row]]
+key = "stadium"
+kind = "stadium"
+label = "training_ground_row_stadium"
+apply = "restart"
+[[training_ground.row]]
+key = "format"
+kind = "choice"
+values = ["f5v5", "f11v11"]
+label = "training_ground_row_format"
+apply = "restart"
+[[training_ground.row]]
+key = "rival_team"
+kind = "team"
+label = "training_ground_row_rival"
+apply = "restart"
+override = "teams.rival.team"
+[[training_ground.row]]
+key = "rivals"
+kind = "count"
+label = "training_ground_row_rivals"
+apply = "restart"
+override = "teams.rival.players"
+[[training_ground.row]]
+key = "level"
+kind = "level"
+label = "training_ground_row_cpu"
+apply = "restart"
+[[training_ground.row]]
+key = "cooldown_moves"
+kind = "toggle"
+label = "training_ground_row_cooldown_moves"
+apply = "restart"
+[[training_ground.row]]
+key = "cooldown_long_shots"
+kind = "toggle"
+label = "training_ground_row_cooldown_long_shots"
+apply = "restart"
+[[training_ground.row]]
+key = "tension_full"
+kind = "toggle"
+label = "training_ground_row_tension"
+apply = "live"
+# the PE of the mod Stamina Points (resource stamina_points.pe; nothing without it)
+[[training_ground.row]]
+key = "free_pe"
+kind = "toggle"
+label = "training_ground_row_free_pe"
+apply = "live"
+[[training_ground.row]]
+key = "free_peg"
+kind = "toggle"
+label = "training_ground_row_free_peg"
+apply = "live"
+flag = "aura_points.free_peg"          # the mod Aura Points' flag (its pools; nothing without it)
+[[training_ground.row]]
+key = "free_sp"
+kind = "toggle"
+label = "training_ground_row_free_sp"
+apply = "live"
+flag = "aura_points.free_sp"
+[[training_ground.row]]
+key = "long_shots_all"
+kind = "toggle"
+label = "training_ground_row_long_shots_all"
+apply = "live"
+# the framework's shot rules make every shot move a long shot while this flag is on (content\shot_rules\long_shots.toml)
+flag = "training_ground.long_shots_all"
+[[training_ground.row]]
+key = "fouls"
+kind = "toggle"
+label = "training_ground_row_fouls"
+apply = "live"
+override = "play.fouls"
+[[training_ground.row]]
+key = "offside"
+kind = "toggle"
+label = "training_ground_row_offside"
+apply = "live"
+override = "play.offside"
+[[training_ground.row]]
+key = "tactics"
+kind = "toggle"
+label = "training_ground_row_tactics"
+apply = "live"
+override = "play.tactics"
+# «Aplicar cambios»: restarts the drill when a restart row changed (the live rows act at once)
+[[training_ground.row]]
+key = "apply"
+kind = "apply"
+label = "training_ground_row_apply"
+[[training_ground.row]]
+key = "restart"
+kind = "action"
+label = "training_ground_row_restart"
+[[training_ground.row]]
+key = "exit"
+kind = "action"
+label = "training_ground_row_exit"
+
+# The rival team picker (row kind team): every team of the game's team table as the game loads it (team_config, the
+# mods' teams included), grouped in series pages by the prefix of the team's key (L2 / R2 = Q / E change the page); a
+# team no series names goes to the page with `rest`. `exclude` = key prefixes never offered (tutorial / trial / demo
+# squads). Emblem = the team's own (team_config col 6).
+[training_ground.picker]
+cols = 6
+rows = 3
+exclude = ["trial_", "tm_tutorial", "start_team", "tgs24_", "tm_rpg", "tm_trng"]
+
+[[training_ground.picker.series]]
+label = "training_ground_series_ie1"
+prefixes = ["tm_cro_ie1_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_ie2"
+prefixes = ["tm_cro_ie2_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_ie3"
+prefixes = ["tm_cro_ie3_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_go"
+prefixes = ["tm_cro_go1_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_chrono_stone"
+prefixes = ["tm_cro_go2_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_galaxy"
+prefixes = ["tm_cro_go3_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_ares"
+prefixes = ["tm_cro_ares_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_orion"
+prefixes = ["tm_cro_orion_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_victory"
+prefixes = ["tm_cro_victory_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_original"
+prefixes = ["tm_cro_original_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_legend"
+prefixes = ["tm_cro_legend_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_battle_bay"
+prefixes = ["bb_"]
+[[training_ground.picker.series]]
+label = "training_ground_series_rest"
+rest = true

@@ -1,9 +1,9 @@
 -- mods_menu (VR-Framework): the «Mods» button of the title menu (title_menu_2) and the way into the «Mods» screen
 -- (vrfw_mods_menu). Own code: handlers of the framework's title_menu_2 host (VRFW_Host, menu part's
--- lua/title_menu_2/000_host.lua; docs/framework/lua-hosts.md), each one passes on to the next (nxt) for anything that
+-- lua/title_menu_2/000_host.lua), each one passes on to the next (nxt) for anything that
 -- is not our button. No engine call at load time: everything below runs from the game's callbacks.
 --
--- Two cases, decided by the mods_menu plugin at boot (CMND_VRFW_MM_STATE; docs/framework/mods-panel.md §2):
+-- Two cases, decided by the mods_menu plugin at boot (CMND_VRFW_MM_STATE):
 --   1 = the plugin served the title files with ONE MORE LOWER BUTTON, at the end of the lower row, whatever the mods
 --       did to the rows (retail: the 4th, right of Información; a mod that freed a retail place: there).
 --       The plugin says where: lower position MM.POS, label name instance MM.NAME, the upper button above it and the
@@ -151,7 +151,7 @@ local function MM_Busy()
   return mm_co ~= nil
 end
 
--- ---- handlers of the framework's title_menu_2 host (docs/framework/lua-hosts.md) -------------------------------------
+-- ---- handlers of the framework's title_menu_2 host -------------------------------------
 -- Every handler has the id "mods_menu.title_button" (other mods order against it: after = "mods_menu.title_button").
 -- `around` handlers answer for our button and pass everything else on (nxt); the order of the old wrappers is kept.
 local T, ID = "title_menu_2", "mods_menu.title_button"

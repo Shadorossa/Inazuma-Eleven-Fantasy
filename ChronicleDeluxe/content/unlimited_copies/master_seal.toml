@@ -1,0 +1,26 @@
+schema = "VRFW.unlimited_copy/1"
+# Chronicle Deluxe: what the «Sello del Maestro» (content\items\master_seal.toml) does, as rules of the VR-Framework's
+# unlimited copies (docs/framework/unlimited-copies.md; docs/game/mods/chronicle-deluxe.md §10). While a rule holds,
+# one owned copy of an item of its sub-categories serves every player: equipping it on another player never uses up a
+# copy and the owned count stays. Never in a reserved save slot. Where it applies: Character Reforged's skill table
+# (its move list and equip); the retail ability board keeps the game's one-copy rule.
+# The Seal is owned from the Destructores gate battle win (the piece below) or from its item.
+
+# Special moves (item_config ITEM_SPECIAL_SKILL_INFO sub-categories 161 shoot, 162 offense, 163 defense, 164 keeper):
+# with the Seal.
+[[VRFW.UnlimitedCopies]]
+name = "master_seal_moves"
+item_kinds = [161, 162, 163, 164]
+key_items = ["chronicle_deluxe.master_seal"]
+cleared_pieces = ["0x90185427"]
+cleared_difficulty = 2
+
+# Auras (171 keshin, 173 Mix-Max, 174 totem, 178 mode change; the keshin armour 172 always comes with its keshin): with
+# the Seal AND every Chronicle completed (every board piece's Crónica / gate battle won, every chain board complete).
+[[VRFW.UnlimitedCopies]]
+name = "master_seal_auras"
+item_kinds = [171, 173, 174, 178]
+key_items = ["chronicle_deluxe.master_seal"]
+cleared_pieces = ["0x90185427"]
+cleared_difficulty = 2
+chronicles_complete = 2

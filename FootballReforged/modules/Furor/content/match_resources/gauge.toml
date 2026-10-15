@@ -1,0 +1,17 @@
+# Furor › the furor gauge of each team (docs/game/mechanics/furor.md), a VRFW team match
+# resource (docs/framework/match-resource.md §9), key furor.gauge, 0..100. What fills and spends it is the
+# team momentum declaration content\team_momentum\gauge.toml (time, comeback, events, the phase). Read once at the
+# framework's init: restart the game after a change.
+schema = "VRFW.match_resource/1"
+
+[[VRFW.MatchResource]]
+name = "gauge"                    # key furor.gauge
+per = "team"
+max = 100
+start = 0.0                       # empty at kick-off and at a new match
+
+# a team gauge needs its [team] table (match-resource.md §9): no possession fill / decay (time and events come from
+# content\team_momentum\gauge.toml)
+[VRFW.MatchResource.team]
+possession_per_s = 0.0
+decay_per_s = 0.0

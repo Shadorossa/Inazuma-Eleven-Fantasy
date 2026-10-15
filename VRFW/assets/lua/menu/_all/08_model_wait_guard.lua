@@ -1,6 +1,6 @@
--- model_wait_guard (VR-Framework, retail bug fix; docs/framework/model-wait-guard.md): a cap on the retail
+-- model_wait_guard (VR-Framework, retail bug fix): a cap on the retail
 -- coroutines that wait, frame after frame, for a menu 3D model component to say «complete» (CMND 1583438030
--- (layer, idx)) with no way out. When the model never completes (seen 2026-10-11 after closing the shop opened from
+-- (layer, idx)) with no way out. When the model never completes (after closing the shop opened from
 -- Modo Crónica's START box: chronicle_mode_top_menu's WaitCaravanModelLoad waited for the caravan forever: no fade-in,
 -- no menu input, no HANG) the menu stays frozen. With the guard the wait ends after `max` frames and the retail goes
 -- on as if the model were complete (the model shows up by itself when it completes later).

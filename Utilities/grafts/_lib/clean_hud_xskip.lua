@@ -1,7 +1,7 @@
 -- Shared head of Clean HUD's pre-match X skip (research/grafts/clean_hud_prematch_skip): `--@lib clean_hud_xskip.lua#Head`
 -- at the top of each snippet (graft_lib.expand_lib). The menus run in separate Lua states, so the state lives in the
 -- game's parameter store: ARMED while a pre-match flow is between its VS screen and the kick-off, GO once X was held,
--- JUMP when BetterUI's direct jump ended the event (1.21.7: no cover, no chained skips; the cover is the fallback).
+-- JUMP when BetterUI's direct jump ended the event (1.21.7; since 1.22.3 under the cover's one fade to black).
 -- Only definitions: nothing here calls the engine at chunk load.
 --@section Head
 -- Clean HUD pre-match X skip: shared helpers ----------------------------------------------------------------------
@@ -16,6 +16,7 @@ CHD_XS.HOLD = 3626036482                 -- param crc32("clean_hud_xskip_hold"):
 CHD_XS.HOLD_CMD = 3788104116             -- CMND_BETTERUI_XSKIP_COVER(on) -> 1 (BetterUI content\game\prematch_skip.toml)
 CHD_XS.JUMP = 1616504339                 -- param crc32("clean_hud_xskip_jump"): 1 = the direct jump ended the event (no cover)
 CHD_XS.JUMP_CMD = 1614912098             -- CMND_BETTERUI_XSKIP_JUMP(on) -> 1 (BetterUI content\game\prematch_skip.toml)
+CHD_XS.BLACK0 = 479863734                -- param crc32("clean_hud_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
 CHD_XS.PARAM_HAS = 2947612279
 CHD_XS.PARAM_GET = 3522198769
 CHD_XS.PARAM_DEL = 3363400568
@@ -105,10 +106,18 @@ function CHD_XS.Arm(src)                 -- a VS screen closes: the pre-match ev
     return
   end
   CHD_XS.Uncover(0, src .. " (stale)")
+  CHD_XS.Del(CHD_XS.BLACK0)
   CHD_XS.JumpEnd()
   CHD_XS.Del(CHD_XS.GO)
   CHD_XS.Set(CHD_XS.ARMED, 1)
   CHD_XS.Log("armed", src)
+end
+function CHD_XS.UnblackLayer0(src)      -- the kick-off fade in did not lift layer 0: faded in here (no-op when already in)
+  if CHD_XS.Get(CHD_XS.BLACK0) ~= 0 then
+    CHD_XS.Del(CHD_XS.BLACK0)
+    pcall(funcLuaCommand, CHD_XS.FADE, 0, CHD_XS.COVER_IN_S)
+    CHD_XS.Log("layer 0 faded in", src)
+  end
 end
 function CHD_XS.Disarm(src)              -- the lineups / kick-off / half time: nothing pre-match is left
   CHD_XS.Uncover(CHD_XS.COVER_IN_S, src)

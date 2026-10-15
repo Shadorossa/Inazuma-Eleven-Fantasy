@@ -1,10 +1,5 @@
--- Which telop each (language, technique) gets (Nacho's rule, 29/09/2026), for every text language:
---   1. the entries written for that language win; between mods, the one that loads later;
---   2. else the language-neutral entries (`lang = "any"`), the one that loads later;
---   3. else the retail telop (nothing is served).
--- A mod's whole-file override of a telop is an entry of its folder's language. Two mods at the same level over the
--- same (language, technique) = a conflict note (an `any` entry losing to a language entry is the rule).
---
+-- Picks the telop for each (language, technique): 1. entries for that language (later mod wins); 2. language-neutral entries (`lang = "any"`, later mod wins); 3. retail (nothing served).
+-- A mod's whole-file telop override counts as an entry of its folder's language. Two mods at the same level for the same (language, technique) give a conflict note.
 -- entries (load order, then file order): { mod, load_index, technique, langs = "any" | { codes }, source, has_layout,
 -- origin, from, value } (`value` = the claim's value as text: equal values of two mods are no conflict).
 
@@ -77,8 +72,7 @@ function M.resolve(entries)
   return picks
 end
 
--- The values of «Rótulos personalizados» (the declared languages: `[content.languages] telops` of the enabled mods,
--- in the row's value order), and a WARN for a language the mods wrote telops for that no enabled mod declares.
+-- Values of the custom telops option (languages declared by `[content.languages] telops` of enabled mods), plus a WARN for a language with telops but no declaring mod.
 function M.choices(input, picks)
   local declared = {}
   for _, l in ipairs(input.declared) do declared[l] = true end

@@ -1,12 +1,6 @@
 schema = "VRFW.catalog/1"
-# The icons of a mod's changelog summary on the «Novedades de mods» sheet (M4, docs/framework/catalogs.md;
-# changelog::format::Icon, docs/game/ui/update-notes.md §3): the retail mode icons of the update notes
-# (win04_33.g4tx) and the colour tag the retail texts give them. Built into the framework: the installed copy must
-# stay the same data (else it is reported and not read).
-#
-# [icon.<name>]: `<name>` is the `icon` word of changelog.toml (story, chronicle, general, stadium, shop, tournament);
-# texture = textureName of the retail update notes (update_notice_config m_updateNoticeDataList), color = the
-# colour tag of the retail texts with that icon.
+# Icons for mod changelog summaries (retail update-notes textures and colour tags). Built into the framework.
+# [icon.<name>]: <name> is the `icon` value in changelog.toml; texture = retail textureName, color = retail colour tag.
 
 [icon.story]
 texture = 840982734

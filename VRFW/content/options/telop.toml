@@ -1,25 +1,15 @@
 schema = "VRFW.option/2"
-# Settings of the telop engine in the Opciones tab «Opciones de mods» (format: docs/app/mod-options.md §3; parser
-# vr_framework::options, the one the mod_options tab uses). Value kept in evt_loader\mod_options\telop_engine.json
-# ({"format": 1, "owner": "telop_engine", "values": {"show_banners": 1, "custom_banners": 1}}), read live by
-# telop_engine.dll.
-
-# «Mostrar rótulos» (13/10/2026; until then the one row «Ocultar rótulos» = hide_banners 0 / 1 / 2, moved into these
-# rows once by the engine: 0 -> Activado, 1 -> Activado + «Ocultar rótulo en aura», 2 -> Desactivado). A «llave»
-# (docs/app/mod-options.md §3.8): Activado = the telops show (default); Desactivado = every name banner is hidden
-# (the level badges stay) and its children do not apply. Hiding by kind (crates/plugins/telop_engine/src/kind.rs): the
-# path hook sends the menu object of a hidden telop to one hidden object (the picture off the screen and
-# transparent): the event still loads and plays it on its own frames, so nothing of its timing changes. Live, from the
-# next telop.
+# Telop engine settings (Mods options tab); values are stored in mod_options/telop_engine.json and read live.
+# Master switch: off hides every name banner (level badges stay) and disables its children; takes effect from the next telop.
 [[option]]
 id = "show_banners"                           # row key telop_engine.show_banners
 type = "toggle"
-label = "show_banners"                        # «Mostrar rótulos» (text.toml, 9 languages)
+label = "show_banners"                        # text key
 help = "show_banners_help"
 default = 1
 order = 110
 
-# «Ocultar rótulo en aura»: the aura banners (aura_*: miximax, armour, kizuna, power-up) hidden.
+# Hide aura banners (aura_*: miximax, armour, kizuna, power-up).
 [[option]]
 id = "hide_aura"                              # row key telop_engine.hide_aura
 type = "toggle"
@@ -29,7 +19,7 @@ default = 0
 parent = "telop_engine.show_banners"
 order = 111
 
-# «Ocultar rótulo en supertécnicas»: the special moves' name banners hidden (keshin, totems, auras keep theirs).
+# Hide special-move name banners (keshin, totems and auras keep theirs).
 [[option]]
 id = "hide_technique"                         # row key telop_engine.hide_technique
 type = "toggle"
@@ -39,28 +29,21 @@ default = 0
 parent = "telop_engine.show_banners"
 order = 112
 
-# Values: 0 «Desactivado» (the original telops), 1 «Idioma del juego» (the mods' telops of the game's text language;
-# the old «Activado», so a value saved before stays), and one value per text language the ENABLED mods declare in their
-# mod.toml (`[content.languages] telops = [...]`, docs/framework/content-languages.md), added by the engine at boot
-# (2 es, 3 en, 4 fr, 5 de, 6 it, 7 pt, 8 ja, 9 zh_hans, 10 zh_hant; texts custom_banners_lang_<code>): that language's
-# telops whatever the game's language, a technique without one keeps the game language's telop.
-# No enabled mod declares a telop language: the row is shown DISABLED at «Desactivado» (enabled_if below) and the
-# engine keeps the original telops. A stored value no longer offered reads as «Desactivado» (logged).
+# Custom telop language: 0 = original telops, 1 = game language, plus one value per language declared by enabled mods (`[content.languages] telops`), added at boot; shown disabled when no mod declares one.
 [[option]]
 id = "custom_banners"                         # row key telop_engine.custom_banners
 type = "list"
-label = "custom_banners"                      # «Rótulos personalizados» (text.toml, 9 languages)
+label = "custom_banners"                      # text key
 help = "custom_banners_help"
 values = [
     { value = 0, name = "custom_banners_off", text = "Off" },
     { value = 1, name = "custom_banners_game", text = "Game language" },
 ]
 default = 1
-# generic content gate (docs/app/mod-options.md §3.7): disabled unless an enabled mod declares telop languages
+# Disabled unless an enabled mod declares telop languages.
 enabled_if = "languages:telops"
-# a child of «Mostrar rótulos» (off there = the original telops, the value kept)
+# Child of show_banners.
 parent = "telop_engine.show_banners"
 order = 113
 
-# «Nivel de supertécnica personalizado» (the level badges' style) is Utilities' row utilities.level_badges, a child
-# of «Mostrar rótulos» too (order 114).
+# The level badge row (order 114) is declared by a mod as a child of show_banners.

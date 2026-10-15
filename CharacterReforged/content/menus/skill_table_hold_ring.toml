@@ -1,11 +1,13 @@
-# Character Reforged › the skill table's V / Y hold (tap = «Restablecer», held 1.5 s = «Eliminar»; owner 2026-10-14:
-# as Inazuma Fantasy had it) drawn as the game's own long-press button: the retail ring of the general window's
-# «mantener» buttons (object win04_12_long_press_button: an 88 px ring whose rate «bar» fills, the key glyph in its
-# middle), one instance laid by the screen's Lua (graft ss2_menus, PL.HoldRing) over the V glyph of «Restablecer» in
-# the bottom guide. Inazuma Fantasy's own copy of the screen draws its ring on its layer evt_ss_hold instead.
+# Character Reforged › the skill table's V / Y hold (tap = «Restablecer», held 2 s = «Eliminar»; owner 2026-10-14):
+# the retail long-press ring of the general window's «mantener» buttons (object win04_12_long_press_button: an 88 px
+# ring whose rate «bar» fills, the key glyph in its middle), one instance driven by the framework's hold prompt
+# (VRFW_FooterPrompts.AddHold / WaitHold, graft ss2_menus PL.TapOrHold; docs/framework/footer-prompts.md §6). No
+# opening group (flags [0, 0, 0, 0, 1, 0]): the layer stays closed while idle, so the guide shows only «Y Restablecer»;
+# the ring is opened and shown over that glyph only while the key is held. Inazuma Fantasy's own copy of the screen
+# draws its ring on its layer evt_ss_hold instead.
 schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "evt_skill_slot_menu"
-add_layer = { name = "cr_skill_table_hold", object = "win04_12_long_press_button", count = 1, align = [0, 0], scale = 1, after = "mainmenu90_05_content_guide_line01", groups = [{ group = "common", flags = [0, 1, 1, 0, 1, 0], after = "mainmenu90_05_content_guide_line01" }] }
+add_layer = { name = "cr_skill_table_hold", object = "win04_12_long_press_button", count = 1, align = [0, 0], scale = 1, after = "mainmenu90_05_content_guide_line01", groups = [{ group = "common", flags = [0, 0, 0, 0, 1, 0], after = "mainmenu90_05_content_guide_line01" }] }
 res = ["#/menu/10_win/win04/win04_12/win04_12.g4tx"]

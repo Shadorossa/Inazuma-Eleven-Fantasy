@@ -1,13 +1,10 @@
-# Texts of the VR-Framework's save slot screen (evt_save_slot_menu, graft save_slots, mod vr_framework) and of the
-# slot switch on the title screen (save_slots_inc): rows of menu_text in the framework's 9 languages. The scripts
-# read them with CMND_TEXT_GET by id = crc32(row id) (the ids are written next to each row and in the scripts'
-# TXT_ID tables); a missing row falls back to the English literal in the script. Placeholders are Lua
-# string.format ones (%d, %s), in the same order in every language.
+# Save slot screen texts (evt_save_slot_menu, save_slots) and the title-screen slot switch (save_slots_inc): menu_text rows in the 9 framework languages.
+# Read with CMND_TEXT_GET by id = crc32(row id); a missing row falls back to the English literal in the script. Placeholders are string.format ones, in the same order in every language.
 
 schema = "VRFW.text/2"
 table = "menu_text"
 
-# the button guide's «Duplicar» (X / CMD_FUNC4); crc32("evt_slot_dup_text") = 3316700371
+# the button guide's 'Duplicate' entry (X / CMD_FUNC4)
 [[row]]
 id = "evt_slot_dup_text"
 es = "Duplicar"
@@ -20,7 +17,7 @@ ja = "複製"
 zh_hans = "复制"
 zh_hant = "複製"
 
-# screen header; crc32("evt_slot_header") = 2375238204
+# screen header
 [[row]]
 id = "evt_slot_header"
 es = "Ranuras de guardado"
@@ -33,7 +30,7 @@ ja = "セーブスロット"
 zh_hans = "存档栏位"
 zh_hant = "存檔欄位"
 
-# guide line under the header; crc32("evt_slot_guide") = 1216293053
+# guide line under the header
 [[row]]
 id = "evt_slot_guide"
 es = "Elige la ranura con la que quieres jugar."
@@ -46,7 +43,7 @@ ja = "プレイするスロットを選んでください。"
 zh_hans = "请选择要游玩的存档栏位。"
 zh_hant = "請選擇要遊玩的存檔欄位。"
 
-# card band: %d = slot number; crc32("evt_slot_tab") = 185540618
+# card band: %d = slot number
 [[row]]
 id = "evt_slot_tab"
 es = "Ranura %d"
@@ -59,7 +56,7 @@ ja = "スロット%d"
 zh_hans = "栏位%d"
 zh_hant = "欄位%d"
 
-# card band of the unnamed locked slot: %d = slot number; crc32("evt_slot_tab_locked") = 3849086394
+# card band of the unnamed locked slot: %d = slot number
 [[row]]
 id = "evt_slot_tab_locked"
 es = "Ranura %d · Original"
@@ -72,7 +69,7 @@ ja = "スロット%d・オリジナル"
 zh_hans = "栏位%d · 原始"
 zh_hant = "欄位%d · 原始"
 
-# empty card title; crc32("evt_slot_new_game") = 906752550
+# empty card title
 [[row]]
 id = "evt_slot_new_game"
 es = "Nueva partida"
@@ -85,7 +82,7 @@ ja = "ニューゲーム"
 zh_hans = "新游戏"
 zh_hant = "新遊戲"
 
-# empty card line / empty date; crc32("evt_slot_empty") = 3928412748
+# empty card line / empty date
 [[row]]
 id = "evt_slot_empty"
 es = "Ranura vacía"
@@ -98,7 +95,7 @@ ja = "空きスロット"
 zh_hans = "空栏位"
 zh_hant = "空欄位"
 
-# empty card hint line; crc32("evt_slot_hint_empty") = 4045326116
+# empty card hint line
 [[row]]
 id = "evt_slot_hint_empty"
 es = "Aceptar: nueva partida · X: duplicar aquí"
@@ -111,7 +108,7 @@ ja = "決定：ニューゲーム・X：ここに複製"
 zh_hans = "确定：新游戏 · X：复制到此处"
 zh_hant = "確定：新遊戲 · X：複製到此處"
 
-# locked card hint line; crc32("evt_slot_hint_locked") = 1245836051
+# locked card hint line
 [[row]]
 id = "evt_slot_hint_locked"
 es = "Solo lectura · X: duplicar para jugar"
@@ -124,7 +121,7 @@ ja = "読み取り専用・X：複製してプレイ"
 zh_hans = "只读 · X：复制后游玩"
 zh_hant = "唯讀 · X：複製後遊玩"
 
-# card title when the save names no team; crc32("evt_slot_no_team") = 592386843
+# card title when the save names no team
 [[row]]
 id = "evt_slot_no_team"
 es = "Sin equipo"
@@ -137,7 +134,7 @@ ja = "チームなし"
 zh_hans = "无队伍"
 zh_hant = "無隊伍"
 
-# card level line: %d = highest level, %d = average level; crc32("evt_slot_level_line") = 372155780
+# card level line: %d = highest level, %d = average level
 [[row]]
 id = "evt_slot_level_line"
 es = "Nv. máx. %d · media %d"
@@ -150,7 +147,7 @@ ja = "最高Lv.%d・平均%d"
 zh_hans = "最高Lv.%d · 平均%d"
 zh_hant = "最高Lv.%d · 平均%d"
 
-# card row label 1; crc32("evt_slot_story") = 1773661104
+# card row label 1
 [[row]]
 id = "evt_slot_story"
 es = "Historia"
@@ -163,7 +160,7 @@ ja = "ストーリー"
 zh_hans = "剧情"
 zh_hant = "劇情"
 
-# card row label 2; crc32("evt_slot_chronicle") = 303165956
+# card row label 2
 [[row]]
 id = "evt_slot_chronicle"
 es = "Crónica"
@@ -176,7 +173,7 @@ ja = "クロニクル"
 zh_hans = "编年史"
 zh_hant = "編年史"
 
-# card row 2 value: %d = chronicle matches; crc32("evt_slot_matches") = 3318315761
+# card row 2 value: %d = chronicle matches
 [[row]]
 id = "evt_slot_matches"
 es = "%d partidos"
@@ -189,7 +186,7 @@ ja = "%d試合"
 zh_hans = "%d场比赛"
 zh_hant = "%d場比賽"
 
-# card row label 3; crc32("evt_slot_victories") = 44950118
+# card row label 3
 [[row]]
 id = "evt_slot_victories"
 es = "Victorias"
@@ -202,7 +199,7 @@ ja = "勝利数"
 zh_hans = "胜场"
 zh_hant = "勝場"
 
-# card row label 4; crc32("evt_slot_play_time") = 2853261180
+# card row label 4
 [[row]]
 id = "evt_slot_play_time"
 es = "Tiempo total"
@@ -215,7 +212,7 @@ ja = "プレイ時間"
 zh_hans = "游戏时间"
 zh_hant = "遊戲時間"
 
-# card row label 5; crc32("evt_slot_saved") = 2063744173
+# card row label 5
 [[row]]
 id = "evt_slot_saved"
 es = "Guardado"
@@ -228,7 +225,7 @@ ja = "セーブ日時"
 zh_hans = "保存时间"
 zh_hant = "儲存時間"
 
-# question: %d = slot number; crc32("evt_slot_ask_load") = 2568773135
+# question: %d = slot number
 [[row]]
 id = "evt_slot_ask_load"
 es = "¿Cargar la Ranura %d?\nLo que no hayas guardado en la ranura actual se perderá."
@@ -241,7 +238,7 @@ ja = "スロット%dをロードしますか？\n現在のスロットでセー�
 zh_hans = "要读取栏位%d吗？\n当前栏位中未保存的内容将会丢失。"
 zh_hant = "要讀取欄位%d嗎？\n目前欄位中未儲存的內容將會遺失。"
 
-# question: %d = slot number; crc32("evt_slot_ask_new") = 400182516
+# question: %d = slot number
 [[row]]
 id = "evt_slot_ask_new"
 es = "La Ranura %d está vacía.\n¿Empezar una partida nueva en esta ranura?"
@@ -254,7 +251,7 @@ ja = "スロット%dは空です。\nこのスロットでニューゲームを�
 zh_hans = "栏位%d为空。\n要在此栏位开始新游戏吗？"
 zh_hant = "欄位%d為空。\n要在此欄位開始新遊戲嗎？"
 
-# message on Confirm over the locked slot (older save engine); crc32("evt_slot_locked_msg") = 3798942196
+# message on Confirm over the locked slot (older save engine)
 [[row]]
 id = "evt_slot_locked_msg"
 es = "La Ranura 1 (partida original) está bloqueada. Duplícala en la Ranura 2 o 3 para jugar con mods."
@@ -267,7 +264,7 @@ ja = "スロット1（元のセーブデータ）はロックされています�
 zh_hans = "栏位1（原始存档）已锁定。请将其复制到栏位2或3后再使用模组游玩。"
 zh_hant = "欄位1（原始存檔）已鎖定。請將其複製到欄位2或3後再使用模組遊玩。"
 
-# question on Confirm over the locked slot; crc32("evt_slot_ask_dup_locked") = 1155934384
+# question on Confirm over the locked slot
 [[row]]
 id = "evt_slot_ask_dup_locked"
 es = "La Ranura 1 (partida original) está bloqueada: solo se puede duplicar.\n¿Duplicarla en otra ranura?"
@@ -280,7 +277,7 @@ ja = "スロット1（元のセーブデータ）はロックされているた�
 zh_hans = "栏位1（原始存档）已锁定，只能复制。\n要复制到其他栏位吗？"
 zh_hant = "欄位1（原始存檔）已鎖定，只能複製。\n要複製到其他欄位嗎？"
 
-# message: %d = source slot; crc32("evt_slot_no_empty_for") = 1775499394
+# message: %d = source slot
 [[row]]
 id = "evt_slot_no_empty_for"
 es = "No hay ninguna ranura vacía donde copiar la Ranura %d."
@@ -293,7 +290,7 @@ ja = "スロット%dをコピーできる空きスロットがありません。
 zh_hans = "没有可复制栏位%d的空栏位。"
 zh_hant = "沒有可複製欄位%d的空欄位。"
 
-# message; crc32("evt_slot_no_empty") = 1867339360
+# message
 [[row]]
 id = "evt_slot_no_empty"
 es = "No hay ninguna ranura vacía.\nElimina antes la partida de la Ranura 2 o 3 (Eliminar)."
@@ -306,7 +303,7 @@ ja = "空きスロットがありません。\n先にスロット2か3のセー�
 zh_hans = "没有空栏位。\n请先删除栏位2或3的存档（删除）。"
 zh_hant = "沒有空欄位。\n請先刪除欄位2或3的存檔（刪除）。"
 
-# question: both %d = target slot; crc32("evt_slot_copied") = 3108879526
+# question: both %d = target slot
 [[row]]
 id = "evt_slot_copied"
 es = "Partida duplicada en la Ranura %d.\n¿Jugar ahora con la Ranura %d?"
@@ -319,7 +316,7 @@ ja = "スロット%dに複製しました。\n今すぐスロット%dでプレ�
 zh_hans = "已复制到栏位%d。\n现在使用栏位%d游玩吗？"
 zh_hant = "已複製到欄位%d。\n現在使用欄位%d遊玩嗎？"
 
-# message: %d = result code (a reason row evt_slot_code_<n> follows); crc32("evt_slot_copy_fail") = 2580091485
+# message: %d = result code (a reason row evt_slot_code_<n> follows)
 [[row]]
 id = "evt_slot_copy_fail"
 es = "No se ha podido duplicar la partida (código %d)."
@@ -332,7 +329,7 @@ ja = "セーブデータを複製できませんでした（コード%d）。"
 zh_hans = "无法复制存档（代码%d）。"
 zh_hant = "無法複製存檔（代碼%d）。"
 
-# question (cursor on No); crc32("evt_slot_ask_delete") = 1767041756
+# question (cursor on No)
 [[row]]
 id = "evt_slot_ask_delete"
 es = "¿Seguro que quieres eliminar esta partida guardada? Esta acción no se puede deshacer."
@@ -345,7 +342,7 @@ ja = "このセーブデータを削除しますか？この操作は取り消�
 zh_hans = "确定要删除此存档吗？此操作无法撤销。"
 zh_hant = "確定要刪除此存檔嗎？此操作無法復原。"
 
-# message: %d = slot number (the save engine backs the save up first); crc32("evt_slot_deleted") = 684990840
+# message: %d = slot number (the save engine backs the save up first)
 [[row]]
 id = "evt_slot_deleted"
 es = "Partida de la Ranura %d eliminada.\n(Se ha guardado una copia de seguridad.)"
@@ -358,7 +355,7 @@ ja = "スロット%dのセーブデータを削除しました。\n（バック�
 zh_hans = "已删除栏位%d的存档。\n（已保留备份。）"
 zh_hant = "已刪除欄位%d的存檔。\n（已保留備份。）"
 
-# message: %d = result code (a reason row evt_slot_code_<n> follows); crc32("evt_slot_delete_fail") = 389263003
+# message: %d = result code (a reason row evt_slot_code_<n> follows)
 [[row]]
 id = "evt_slot_delete_fail"
 es = "No se ha podido eliminar la partida (código %d)."
@@ -371,7 +368,7 @@ ja = "セーブデータを削除できませんでした（コード%d）。"
 zh_hans = "无法删除存档（代码%d）。"
 zh_hant = "無法刪除存檔（代碼%d）。"
 
-# message: the save engine lacks the slot commands; crc32("evt_slot_need_update") = 886148033
+# message: the save engine lacks the slot commands
 [[row]]
 id = "evt_slot_need_update"
 es = "Esta función necesita una versión más reciente del VRFW."
@@ -384,7 +381,7 @@ ja = "この機能にはより新しいバージョンのVRFWが必要です。"
 zh_hans = "此功能需要更新版本的VRFW。"
 zh_hant = "此功能需要更新版本的VRFW。"
 
-# keyboard guide: %d = the name's maximum length; crc32("evt_slot_kb_guide") = 3827548981
+# keyboard guide: %d = the name's maximum length
 [[row]]
 id = "evt_slot_kb_guide"
 es = "Nombre de la ranura (máx. %d caracteres)"
@@ -397,7 +394,7 @@ ja = "スロットの名前（最大%d文字）"
 zh_hans = "栏位名称（最多%d个字符）"
 zh_hant = "欄位名稱（最多%d個字元）"
 
-# message before the preset name list; crc32("evt_slot_kb_failed") = 2661621363
+# message before the preset name list
 [[row]]
 id = "evt_slot_kb_failed"
 es = "No se ha podido abrir el teclado.\nElige un nombre de la lista."
@@ -410,7 +407,7 @@ ja = "キーボードを開けませんでした。\nリストから名前を選
 zh_hans = "无法打开键盘。\n请从列表中选择名称。"
 zh_hant = "無法開啟鍵盤。\n請從列表中選擇名稱。"
 
-# question: %s = the name typed; crc32("evt_slot_use_name") = 549624501
+# question: %s = the name typed
 [[row]]
 id = "evt_slot_use_name"
 es = "¿Usar «%s» como nombre de la ranura?"
@@ -423,7 +420,7 @@ ja = "「%s」をスロットの名前にしますか？"
 zh_hans = "将“%s”用作栏位名称吗？"
 zh_hant = "將「%s」用作欄位名稱嗎？"
 
-# list option; crc32("evt_slot_cancel") = 3052875663
+# list option
 [[row]]
 id = "evt_slot_cancel"
 es = "Cancelar"
@@ -436,7 +433,7 @@ ja = "キャンセル"
 zh_hans = "取消"
 zh_hant = "取消"
 
-# list option: %d = slot number, %s = " · name" or nothing; crc32("evt_slot_option") = 3110595149
+# list option: %d = slot number, %s = " · name" or nothing
 [[row]]
 id = "evt_slot_option"
 es = "Ranura %d%s"
@@ -449,7 +446,7 @@ ja = "スロット%d%s"
 zh_hans = "栏位%d%s"
 zh_hant = "欄位%d%s"
 
-# fallback list as chained Yes/No questions: %s = the option; crc32("evt_slot_option_ask") = 1883754692
+# fallback list as chained Yes/No questions: %s = the option
 [[row]]
 id = "evt_slot_option_ask"
 es = "¿%s?"
@@ -462,7 +459,7 @@ ja = "%s？"
 zh_hans = "%s？"
 zh_hant = "%s？"
 
-# preset slot name 1 (keyboard unavailable); crc32("evt_slot_preset_1") = 2264824422
+# preset slot name 1 (keyboard unavailable)
 [[row]]
 id = "evt_slot_preset_1"
 es = "Principal"
@@ -475,7 +472,7 @@ ja = "メイン"
 zh_hans = "主存档"
 zh_hant = "主存檔"
 
-# preset slot name 2; crc32("evt_slot_preset_2") = 536292316
+# preset slot name 2
 [[row]]
 id = "evt_slot_preset_2"
 es = "Historia"
@@ -488,7 +485,7 @@ ja = "ストーリー"
 zh_hans = "剧情"
 zh_hant = "劇情"
 
-# preset slot name 3; crc32("evt_slot_preset_3") = 1760566090
+# preset slot name 3
 [[row]]
 id = "evt_slot_preset_3"
 es = "Crónica"
@@ -501,7 +498,7 @@ ja = "クロニクル"
 zh_hans = "编年史"
 zh_hant = "編年史"
 
-# preset slot name 4; crc32("evt_slot_preset_4") = 4136931049
+# preset slot name 4
 [[row]]
 id = "evt_slot_preset_4"
 es = "Pruebas"
@@ -514,7 +511,7 @@ ja = "テスト"
 zh_hans = "测试"
 zh_hant = "測試"
 
-# preset slot name 5; crc32("evt_slot_preset_5") = 2173943423
+# preset slot name 5
 [[row]]
 id = "evt_slot_preset_5"
 es = "Secundaria"
@@ -527,7 +524,7 @@ ja = "サブ"
 zh_hans = "副存档"
 zh_hant = "副存檔"
 
-# preset slot name 6; crc32("evt_slot_preset_6") = 412807109
+# preset slot name 6
 [[row]]
 id = "evt_slot_preset_6"
 es = "Partida nueva"
@@ -540,7 +537,7 @@ ja = "ニューゲーム"
 zh_hans = "新游戏"
 zh_hant = "新遊戲"
 
-# list option: back to the default name; crc32("evt_slot_clear_name") = 4212585362
+# list option: back to the default name
 [[row]]
 id = "evt_slot_clear_name"
 es = "(sin nombre)"
@@ -553,7 +550,7 @@ ja = "（名前なし）"
 zh_hans = "（无名称）"
 zh_hant = "（無名稱）"
 
-# name shown for the unnamed locked slot; crc32("evt_slot_original") = 3468625906
+# name shown for the unnamed locked slot
 [[row]]
 id = "evt_slot_original"
 es = "Partida original"
@@ -566,7 +563,7 @@ ja = "元のセーブデータ"
 zh_hans = "原始存档"
 zh_hant = "原始存檔"
 
-# reason of save engine result code 2; crc32("evt_slot_code_2") = 3364728754
+# reason of save engine result code 2
 [[row]]
 id = "evt_slot_code_2"
 es = "la Ranura 1 está bloqueada"
@@ -579,7 +576,7 @@ ja = "スロット1はロックされています"
 zh_hans = "栏位1已锁定"
 zh_hant = "欄位1已鎖定"
 
-# reason of result code 3; crc32("evt_slot_code_3") = 3213532964
+# reason of result code 3
 [[row]]
 id = "evt_slot_code_3"
 es = "la ranura de destino no está vacía"
@@ -592,7 +589,7 @@ ja = "コピー先のスロットが空ではありません"
 zh_hans = "目标栏位不为空"
 zh_hant = "目標欄位不為空"
 
-# reason of result code 4; crc32("evt_slot_code_4") = 569248391
+# reason of result code 4
 [[row]]
 id = "evt_slot_code_4"
 es = "la ranura de origen está vacía"
@@ -605,7 +602,7 @@ ja = "コピー元のスロットが空です"
 zh_hans = "来源栏位为空"
 zh_hant = "來源欄位為空"
 
-# reason of result code 5; crc32("evt_slot_code_5") = 1458125329
+# reason of result code 5
 [[row]]
 id = "evt_slot_code_5"
 es = "el juego está guardando o cargando"
@@ -618,7 +615,7 @@ ja = "ゲームがセーブ中またはロード中です"
 zh_hans = "游戏正在保存或读取"
 zh_hant = "遊戲正在儲存或讀取"
 
-# reason of result code 6; crc32("evt_slot_code_6") = 3487591339
+# reason of result code 6
 [[row]]
 id = "evt_slot_code_6"
 es = "error de lectura"
@@ -631,7 +628,7 @@ ja = "読み込みエラー"
 zh_hans = "读取错误"
 zh_hant = "讀取錯誤"
 
-# reason of result code 7; crc32("evt_slot_code_7") = 3102169917
+# reason of result code 7
 [[row]]
 id = "evt_slot_code_7"
 es = "error de escritura (¿cuota de Steam Cloud?)"
@@ -644,7 +641,7 @@ ja = "書き込みエラー（Steamクラウドの容量？）"
 zh_hans = "写入错误（Steam 云存储配额？）"
 zh_hant = "寫入錯誤（Steam 雲端儲存配額？）"
 
-# reason of result code 8; crc32("evt_slot_code_8") = 676873900
+# reason of result code 8
 [[row]]
 id = "evt_slot_code_8"
 es = "la copia no coincide al releerla"
@@ -657,7 +654,7 @@ ja = "読み直したコピーが一致しません"
 zh_hans = "重新读取时副本不一致"
 zh_hant = "重新讀取時副本不一致"
 
-# reason of result code 9; crc32("evt_slot_code_9") = 1600091706
+# reason of result code 9
 [[row]]
 id = "evt_slot_code_9"
 es = "Steam no está listo"
@@ -670,7 +667,7 @@ ja = "Steamの準備ができていません"
 zh_hans = "Steam 尚未就绪"
 zh_hant = "Steam 尚未就緒"
 
-# title screen (save_slots_inc): the switch was refused while a save job runs; crc32("evt_slot_switch_busy") = 511273385
+# title screen (save_slots_inc): the switch was refused while a save job runs
 [[row]]
 id = "evt_slot_switch_busy"
 es = "El juego está guardando o cargando. Inténtalo de nuevo en unos segundos."
@@ -683,7 +680,7 @@ ja = "ゲームがセーブ中またはロード中です。数秒後にもう�
 zh_hans = "游戏正在保存或读取。请几秒后再试。"
 zh_hant = "遊戲正在儲存或讀取。請幾秒後再試。"
 
-# title screen: the save engine refused the switch, %d = slot number; crc32("evt_slot_switch_refused") = 909275936
+# title screen: the save engine refused the switch, %d = slot number
 [[row]]
 id = "evt_slot_switch_refused"
 es = "No se ha podido cambiar a la Ranura %d."
@@ -696,7 +693,7 @@ ja = "スロット%dに切り替えられませんでした。"
 zh_hans = "无法切换到栏位%d。"
 zh_hant = "無法切換到欄位%d。"
 
-# title screen: loading the slot failed, %d = slot number; crc32("evt_slot_switch_load_failed") = 3641072355
+# title screen: loading the slot failed, %d = slot number
 [[row]]
 id = "evt_slot_switch_load_failed"
 es = "No se han podido cargar los datos de la Ranura %d. Se mantiene la ranura actual."
@@ -709,8 +706,7 @@ ja = "スロット%dのデータをロードできませんでした。現在の
 zh_hans = "无法读取栏位%d的数据。保持当前栏位。"
 zh_hant = "無法讀取欄位%d的資料。保持目前欄位。"
 
-# screen header while the player slots take more than one page (config [save.slots] count > 3): %d = page, %d = pages;
-# crc32("evt_slot_header_page") = 1838932901
+# screen header while the player slots take more than one page (config [save.slots] count > 3): %d = page, %d = pages
 [[row]]
 id = "evt_slot_header_page"
 es = "Ranuras de guardado · %d/%d"
@@ -723,9 +719,8 @@ ja = "セーブスロット · %d/%d"
 zh_hans = "存档栏位 · %d/%d"
 zh_hant = "存檔欄位 · %d/%d"
 
-# the story-complete start's question after «Nueva partida» on an empty slot (yes = the slot starts with the Victory
-# Road story completed, docs/game/modes/story-complete-start.md; one short line per item: the popup does not wrap);
-# crc32("evt_slot_story_ask") = 40002370
+# the story-complete start's question after 'New game' on an empty slot (yes = the slot starts with the Victory Road story completed);
+# one short line per item: the popup does not wrap
 [[row]]
 id = "evt_slot_story_ask"
 es = "¿Te has pasado la historia de Victory Road?\n・Historia completada (Nv. 50).\n・Logros de historia completados.\n・Los 15 jugadores opcionales de la selección.\nTodo lo demás empieza de cero."

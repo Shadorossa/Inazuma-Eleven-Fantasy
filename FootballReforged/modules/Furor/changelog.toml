@@ -1,0 +1,96 @@
+schema = "VRFW.changelog/1"
+# Furor: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-15): Football Reforged's internal module furor as a module mod; GO Strikers' own gauge sprites.
+lang = "es"
+name = "Furor"
+
+[en]
+name = "Furor"
+
+[fr]
+name = "Furor"
+
+[de]
+name = "Furor"
+
+[it]
+name = "Furor"
+
+[pt]
+name = "Furor"
+
+[ja]
+name = "Furor"
+
+[zh_hans]
+name = "Furor"
+
+[zh_hant]
+name = "Furor"
+
+[[release]]
+icon = "general"
+notes = [
+    "Barra de furor de GO Strikers junto a cada escudo.",
+    "Se llena con el tiempo, más si vas perdiendo.",
+    "Llena, L3 / R inicia la fase de furor (12 s).",
+]
+
+[release.en]
+notes = [
+    "GO Strikers' furor gauge beside each crest.",
+    "It fills with time, faster when losing.",
+    "Full, L3 / R starts the furor phase (12 s).",
+]
+
+[release.fr]
+notes = [
+    "La jauge de fureur de GO Strikers près de chaque blason.",
+    "Elle monte avec le temps, plus vite si l'on perd.",
+    "Pleine, L3 / R lance la phase de fureur (12 s).",
+]
+
+[release.de]
+notes = [
+    "Die Furor-Leiste aus GO Strikers an jedem Wappen.",
+    "Sie füllt sich mit der Zeit, schneller bei Rückstand.",
+    "Voll startet L3 / R die Furor-Phase (12 s).",
+]
+
+[release.it]
+notes = [
+    "La barra di furore di GO Strikers accanto agli stemmi.",
+    "Si riempie col tempo, più in fretta se perdi.",
+    "Piena, L3 / R avvia la fase di furore (12 s).",
+]
+
+[release.pt]
+notes = [
+    "A barra de furor de GO Strikers junto a cada emblema.",
+    "Enche com o tempo, mais depressa se perdes.",
+    "Cheia, L3 / R inicia a fase de furor (12 s).",
+]
+
+[release.ja]
+notes = [
+    "GOストライカーズの炎ゲージをエンブレム横に。",
+    "時間で溜まり、負けていると速い。",
+    "満タンでL3 / Rでヒーロータイム（12秒）。",
+]
+
+[release.zh_hans]
+notes = [
+    "GO Strikers的怒火槽显示在队徽旁。",
+    "随时间增长，落后时更快。",
+    "满时按L3 / R进入怒火时刻（12秒）。",
+]
+
+[release.zh_hant]
+notes = [
+    "GO Strikers的怒火槽顯示在隊徽旁。",
+    "隨時間增長，落後時更快。",
+    "滿時按L3 / R進入怒火時刻（12秒）。",
+]

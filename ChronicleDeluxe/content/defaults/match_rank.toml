@@ -1,0 +1,33 @@
+# Chronicle Deluxe: the ranks of a won match, S / A / B (moved from the VR-Framework on 2026-10-14, owner: «the chain
+# ranks belong to Chronicle Deluxe»). The mechanism is the framework's (VRFW_MatchRank, defaults\match_rank.toml keys,
+# docs/framework/route-board.md §3): the Chronicle board's piece badges, the chain boards' tile badges, a chain's average
+# rank and its «S» chest, the chain board's «Ayuda» window. The art is this mod's own (research/scripts/
+# chronicle_rank_badges.py): Badge = a sprite of its atlas chronicle_deluxe_rank.g4tx
+# (content\images\menu\220_img\chronicle_deluxe_rank.toml), PieceBadge = a sprite it adds to the board's dot atlas
+# vsroute01_06b (content\images\menu\30_vsroute\vsroute01\vsroute01_06b.toml). Saves keep the rank Id of every won piece
+# / tile (S / A / B, the same Ids as before).
+
+[MatchRank.S]
+Order = 3
+GoalsFor = 5
+MaxConceded = 0
+Badge = "chronicle_deluxe_chain_rank_s"
+BadgeAtlas = "#/menu/220_img/chronicle_deluxe_rank/chronicle_deluxe_rank.g4tx"
+PieceBadge = "chronicle_deluxe_rank_s"
+Text = "chronicle_deluxe_rank_help_s"
+
+[MatchRank.A]
+Order = 2
+GoalsFor = 3
+MaxConceded = 0
+Badge = "chronicle_deluxe_chain_rank_a"
+BadgeAtlas = "#/menu/220_img/chronicle_deluxe_rank/chronicle_deluxe_rank.g4tx"
+PieceBadge = "chronicle_deluxe_rank_a"
+Text = "chronicle_deluxe_rank_help_a"
+
+[MatchRank.B]
+Order = 1
+Badge = "chronicle_deluxe_chain_rank_b"
+BadgeAtlas = "#/menu/220_img/chronicle_deluxe_rank/chronicle_deluxe_rank.g4tx"
+PieceBadge = "chronicle_deluxe_rank_b"
+Text = "chronicle_deluxe_rank_help_b"

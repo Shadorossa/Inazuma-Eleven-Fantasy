@@ -1,7 +1,5 @@
-# The declaration `[[VRFW.FaceIcon]]` of the face icon rules (service S13 of VRFW 2.3, docs/framework/card-look.md §5):
-# what a mod's content\face_icons\*.toml may say. Read by scripts\face_icons.lua at start (every key is checked against
-# this file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a
-# table map.
+# Declares [[VRFW.FaceIcon]] (kind VRFW.face_icon/1): face icon rules in a mod's content\face_icons\*.toml.
+# Unknown keys, wrong types or out-of-range values drop that declaration with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.face_icon/1"
 folder = "content/face_icons"

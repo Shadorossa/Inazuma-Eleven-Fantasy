@@ -1,0 +1,169 @@
+# Furor › the awakening look of the furor phase, one per position (docs/game/mechanics/furor.md §3.3). The retail
+# awakening power («Despertar») draws its body aura through ONE character-effect trigger (0x9627F4F7: the effects
+# ega0550a-ega0553a and the body aura ega0550a; docs/game/hiper/mode-change-aura.md §1), asserted by the engine while
+# the unit's awakening bit is set. Here every position gets a new trigger with recoloured COPIES of three of them (ega0550a,
+# ega0551a, ega0553a; the retail ones stay untouched; the particle sparks ega0552a and the body aura keep the retail
+# colour); the rules of content\rules\gauge.toml hold it on the team's players during the
+# phase with the framework's char_effect (no aura bit: not an aura, no aura slot, no aura limit, stacks with a keshin
+# / totem / armour / Mix-Max, fades out at the end without a withdraw animation). The hues are the tunables here.
+schema = "VRFW.effect/1"
+
+# ---------------------------------------------------------------- GK (keeper: golden yellow, hue 45)
+
+[[recolor]]
+effect = "ega0550a"
+copy = "egk0550a"
+hue = 45
+mode = "set"
+
+[[recolor]]
+effect = "ega0551a"
+copy = "egk0551a"
+hue = 45
+mode = "set"
+
+[[recolor]]
+effect = "ega0553a"
+copy = "egk0553a"
+hue = 45
+mode = "set"
+
+[[effect]]
+name = "awakening_gk_0"
+from = "ega0550a"
+object = "egk0550a"
+
+[[effect]]
+name = "awakening_gk_1"
+from = "ega0551a"
+object = "egk0551a"
+
+[[effect]]
+name = "awakening_gk_3"
+from = "ega0553a"
+object = "egk0553a"
+
+[[chr_trigger]]
+name = "furor_awakening_gk"
+like = "0x9627F4F7"
+effects = { ega0550a = "awakening_gk_0", ega0551a = "awakening_gk_1", ega0553a = "awakening_gk_3" }
+
+# ---------------------------------------------------------------- DF (defender: blue, hue 215)
+
+[[recolor]]
+effect = "ega0550a"
+copy = "egd0550a"
+hue = 215
+mode = "set"
+
+[[recolor]]
+effect = "ega0551a"
+copy = "egd0551a"
+hue = 215
+mode = "set"
+
+[[recolor]]
+effect = "ega0553a"
+copy = "egd0553a"
+hue = 215
+mode = "set"
+
+[[effect]]
+name = "awakening_df_0"
+from = "ega0550a"
+object = "egd0550a"
+
+[[effect]]
+name = "awakening_df_1"
+from = "ega0551a"
+object = "egd0551a"
+
+[[effect]]
+name = "awakening_df_3"
+from = "ega0553a"
+object = "egd0553a"
+
+[[chr_trigger]]
+name = "furor_awakening_df"
+like = "0x9627F4F7"
+effects = { ega0550a = "awakening_df_0", ega0551a = "awakening_df_1", ega0553a = "awakening_df_3" }
+
+# ---------------------------------------------------------------- MF (midfielder: green, hue 125)
+
+[[recolor]]
+effect = "ega0550a"
+copy = "egm0550a"
+hue = 125
+mode = "set"
+
+[[recolor]]
+effect = "ega0551a"
+copy = "egm0551a"
+hue = 125
+mode = "set"
+
+[[recolor]]
+effect = "ega0553a"
+copy = "egm0553a"
+hue = 125
+mode = "set"
+
+[[effect]]
+name = "awakening_mf_0"
+from = "ega0550a"
+object = "egm0550a"
+
+[[effect]]
+name = "awakening_mf_1"
+from = "ega0551a"
+object = "egm0551a"
+
+[[effect]]
+name = "awakening_mf_3"
+from = "ega0553a"
+object = "egm0553a"
+
+[[chr_trigger]]
+name = "furor_awakening_mf"
+like = "0x9627F4F7"
+effects = { ega0550a = "awakening_mf_0", ega0551a = "awakening_mf_1", ega0553a = "awakening_mf_3" }
+
+# ---------------------------------------------------------------- FW (forward: red, hue 0)
+
+[[recolor]]
+effect = "ega0550a"
+copy = "egf0550a"
+hue = 0
+mode = "set"
+
+[[recolor]]
+effect = "ega0551a"
+copy = "egf0551a"
+hue = 0
+mode = "set"
+
+[[recolor]]
+effect = "ega0553a"
+copy = "egf0553a"
+hue = 0
+mode = "set"
+
+[[effect]]
+name = "awakening_fw_0"
+from = "ega0550a"
+object = "egf0550a"
+
+[[effect]]
+name = "awakening_fw_1"
+from = "ega0551a"
+object = "egf0551a"
+
+[[effect]]
+name = "awakening_fw_3"
+from = "ega0553a"
+object = "egf0553a"
+
+[[chr_trigger]]
+name = "furor_awakening_fw"
+like = "0x9627F4F7"
+effects = { ega0550a = "awakening_fw_0", ega0551a = "awakening_fw_1", ega0553a = "awakening_fw_3" }

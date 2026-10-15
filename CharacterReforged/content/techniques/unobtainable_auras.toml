@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# Character Reforged › the awakening and bond-transformation auras are never a player's (owner 2026-10-15: «ningún
+# personaje las tenga en ningún set de jugador obtenible»). The rule is the VR-Framework's technique type rule
+# [[VRFW.Unobtainable]] (docs/framework/types/technique.md): at build time every aura command of these types leaves
+# every learn list (chara_param cols 11-28: the generic and Diamond boards, the plate, the movesets), every explicit
+# board cell that gives one becomes the board's empty wildcard piece (the Hero boards: v7.1.2, 87 cells), it is listed
+# hidden, and its item leaves the shops and the reward tables. Team loadouts and team member moves keep them: the
+# Battle Bay teams that play one (Battle Bay Deluxe's movesets, the game's loadouts) still use it as opponents.
+# This mod's scripts read the same rule: the skill table refuses them (scripts\skill_set.lua) and the save adjust
+# «Quitar auras de despertar y vínculo» takes them out of a save (scripts\save_tools.lua).
+#
+# Aura command types (aura_skill_config AURA_CMD_INFO col 10), v7.1.2: 4 bond transformation («Transformación de
+# vínculo»: 3 commands), 5 awakening power (the generic «Despertar» powers: Catalizador elemental, Sobrecarga ardiente,
+# Determinación de portero, Guardián férreo, Impulso temporal…: 10), 7 awakening change (1). None has an owning
+# character (no AURA_CMD_CHARA row): every character-bound family (keshin 0, armour 1, Mix-Max 2, totem 3, «Modo
+# cambio» 6) stays.
+
+[[VRFW.Unobtainable]]
+AuraTypes = [4, 5, 7]

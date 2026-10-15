@@ -1,11 +1,10 @@
-# Texts of the VR-Framework's outfits ([[VRFW.Outfit]], docs/framework/outfits.md): rows of menu_text in the
-# framework's 9 languages, read by the graft vrfw_outfit (equip_menu_select) with CMND_TEXT_GET by id = crc32(row id).
-# Missing row: the empty «Atuendo» row stays blank (retail).
+# Texts for outfits ([[VRFW.Outfit]]) and switchable card looks ([[VRFW.CardLook]]): menu_text rows in 9 languages;
+# a missing row leaves the label blank.
 
 schema = "VRFW.text/2"
 table = "menu_text"
 
-# The label of the empty «Atuendo» row of «Equipamiento» (equip slot 4, no outfit worn; shown at half alpha).
+# Label of the empty outfit row in the equipment menu.
 [[row]]
 id = "vrfw_outfit_slot"
 es = "Atuendo"
@@ -17,3 +16,41 @@ pt = "Traje"
 ja = "コスチューム"
 zh_hans = "服装"
 zh_hant = "服裝"
+
+# Row of a card look the player can switch ([[VRFW.CardLook]] with switch_bit) in the equipment menu; {label} = the
+# rule's label text (vrfw_card_look_name when it declares none).
+[[row]]
+id = "vrfw_card_look_on"
+es = "{label}: Activada"
+en = "{label}: On"
+fr = "{label} : activée"
+de = "{label}: An"
+it = "{label}: attiva"
+pt = "{label}: ativado"
+ja = "{label}：ON"
+zh_hans = "{label}：开启"
+zh_hant = "{label}：開啟"
+
+[[row]]
+id = "vrfw_card_look_off"
+es = "{label}: Desactivada"
+en = "{label}: Off"
+fr = "{label} : désactivée"
+de = "{label}: Aus"
+it = "{label}: disattiva"
+pt = "{label}: desativado"
+ja = "{label}：OFF"
+zh_hans = "{label}：关闭"
+zh_hant = "{label}：關閉"
+
+[[row]]
+id = "vrfw_card_look_name"
+es = "Equipación de la carta"
+en = "Card kit"
+fr = "Tenue de la carte"
+de = "Karten-Trikot"
+it = "Divisa della carta"
+pt = "Uniforme da carta"
+ja = "カードのユニフォーム"
+zh_hans = "卡牌球衣"
+zh_hant = "卡牌球衣"

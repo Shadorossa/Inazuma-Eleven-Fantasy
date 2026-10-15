@@ -5,9 +5,10 @@
 # slot y 1 mix slot) o dejar la de Victory Road»). 0 = Victory Road's own view (the team dock's «Tabla de habilidades»
 # opens the game's skill board, «Mover» listed), the default; 1 = «Fantasy» (named «Set nuevo» until 2026-10-14), the
 # new set (the skill table screen
-# evt_skill_slot_menu: 6 special moves + the aura slot + the mix slot). Read when the entry is used (grafts ss2_dock,
-# cr_bank_skill_table, board_entry; one log line per use: «Character Reforged skill table entry»): no restart. Switching never loses anything: both views show the
-# same saved data (docs/refactor/aura-mods-split.md «Skill table», the 6 + 1 + 1 mapping).
+# evt_skill_slot_menu: 6 special moves + the aura slot + the mix slot). restart = true (owner 2026-10-15): every reader
+# gets the value the game started with, so no screen mixes Victory Road's board with the Fantasy table in one session;
+# a change applies after restarting the game. Switching never loses anything: both views show the same saved data
+# (docs/refactor/aura-mods-split.md «Skill table», the 6 + 1 + 1 mapping).
 [[option]]
 id = "skill_set_view"                         # row key character_reforged.skill_set_view
 type = "toggle"
@@ -18,3 +19,4 @@ on = { name = "skill_set_view_on", text = "Fantasy" }
 default = 0
 parent = "mod_options.game_settings"
 order = 140
+restart = true                                # the value applies after a game restart

@@ -1,4 +1,4 @@
--- The Estadio BB / Bahía Batalla grid (`bb_stadium`, docs/framework/bb-pages.md; was team_engine bb_category.rs and
+-- The Estadio BB grid (`bb_stadium`): season groups, categories (tabs) with each one's rows in order (a mod's copy of a team an earlier category lists leaves the table), and win-to-unlock conditions.
 -- bb_unlock.rs): its season groups, its categories (tabs) with each one's rows in order (a mod's copy of a team an
 -- earlier category lists leaves the table), and «win it to unlock it» (every row whose team has a Chronicle
 -- equivalent locked until the player wins that match).
@@ -10,12 +10,11 @@ local LIST_BB = "bb_stadium"
 local ENJOY_ROW = "ENJOY_MODE_TEAM_INFO"
 local DEFAULTS_OWNER = "vr_framework"
 local SERIES_KEY = "data/common/gamedata/character/chara_series_config.cfg.bin"
--- the rules a category takes rows by, and the sort keys of its rows (vr_framework::bb_pages)
+-- rules a category takes rows by, and the sort keys of its rows
 local RULES = { "game", "chain", "mod" }
 local SORT_SEASON, SORT_SOURCE, SORT_NAME = "season", "source_order", "name"
 local SORT_KEYS = { SORT_SEASON, SORT_SOURCE, SORT_NAME }
--- the framework's byte flag of the «never true» condition of a chain-only row (never written: it reads 0), and the
--- id prefix of a locked row's own hint text (menu_text row `vrfw_bb_unlock_<team hex>`, built per team)
+-- byte flag of the never-true condition of a chain-only row, and the id prefix of a locked row's hint text (menu_text row `vrfw_bb_unlock_<team hex>`)
 local CHAIN_LOCK_FLAG, CHAIN_LOCK_VALUE = "VRFW_BB_CHAIN_LOCK", 211
 local TEXT_ROW = "vrfw_bb_unlock"
 
@@ -321,9 +320,7 @@ function B.install(X)
     return out
   end
 
-  -- the grid without duplicates (`[bb_pages] dedupe`): a row a mod added whose team is the same team as a row of an
-  -- EARLIER category is removed from the table; returns the kept rows (`ids`, `cat_of`; cat_of 1-based) and prunes
-  -- the removed teams from `seasons`
+  -- grid without duplicates (`[bb_pages] dedupe`): a mod-added row whose team equals a row of an earlier category is removed; returns kept rows (`ids`, `cat_of`, 1-based) and prunes removed teams from `seasons`
   function X.bb_dedupe(decls, ids, cat_of, game, seasons)
     local lang = X.lang.build_default
     local names = X.bb_row_names(ids, { lang })[lang]
@@ -468,8 +465,7 @@ function B.install(X)
     return ids2, cat2
   end
 
-  -- every row of the grid a category, and the categories with rows, each with its teams in its order; returns them
-  -- and the (pruned) seasons
+  -- assign every grid row a category; returns the categories with rows (teams in order) and the pruned seasons
   function X.bb_categories(files, chains, seasons)
     local decls = X.bb_category_decls(files)
     if #decls == 0 then return {}, seasons end
@@ -637,8 +633,7 @@ function B.install(X)
     return n >= U.min_shared
   end
 
-  -- the teams «the same team» as `t` by identity: itself, its BB copy's source, the teams it declares `same_as`, the
-  -- team it is `based_on` when it keeps that team's squad, a few levels up (a set)
+  -- teams that are "the same team" as `t`: itself, its BB copy's source, its `same_as` teams, and the team it is `based_on` when it keeps that squad, a few levels up (a set)
   function X.bb_roots(t)
     local copy_src = {}
     for s, c in pairs(X.bb_copies) do copy_src[c] = s end
@@ -694,11 +689,8 @@ function B.install(X)
     return out
   end
 
-  -- The hint of a locked row (docs/framework/bb-pages.md §8.2): a menu_text row of its own per team, so the game shows
-  -- it filled wherever it draws the row's lock text (the padlock's balloon, for each cursor): the template of
-  -- defaults\team.toml [bb_unlock.hint] (`chain` when one of its unlock sources is a chain tile, else `chronicle`)
-  -- with {team} = the team's shown name and {chain} = that chain's title, in every text language. Returns the row's
-  -- text id, or nil when the templates are missing.
+  -- Hint of a locked row: a per-team menu_text row filled from the [bb_unlock.hint] template of defaults\team.toml (`chain` if an unlock source is a chain tile, else `chronicle`),
+  -- with {team} = team name and {chain} = chain title in every text language. Returns the text id, or nil when templates are missing.
   local function hint_row(team, tile, chain_titles)
     local H = X.D.bb_unlock.hint
     local tpl = type(H) == "table" and H[tile and "chain" or "chronicle"] or nil
@@ -831,8 +823,7 @@ function B.install(X)
     return a[2] < b[2]
   end
 
-  -- the condition of a locked row: the pieces ORed (at most max_terms: then the lowest difficulty of each piece, then
-  -- the first ones), or «never» when there is none (a chain-only row). condition, kept pairs, dropped
+  -- condition of a locked row: pieces ORed (at most max_terms: lowest difficulty of each piece, then the first ones), or never when none; returns condition, kept pairs, dropped
   local function unlock_condition(pieces)
     local U = X.D.bb_unlock
     local pairs_ = {}

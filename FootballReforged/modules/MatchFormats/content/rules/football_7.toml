@@ -1,0 +1,16 @@
+schema = "VRFW.rule/1"
+# Ruleset «Football 7» (module MatchFormats of Football Reforged; docs/game/modes/formatos-3v3-7v7.md): 7 vs 7
+# (keeper + 6) on a full-match row (type 1, the 11-a-side stadium and squad). Places 0-6 of formation 0xA293A98E =
+# crc32("if_form_7_1231") (content\formations\formation_config.toml): 1-2-3-1, keeper, 2 centre backs, 2 wide
+# midfielders, the centre midfielder who kicks off (5) and the striker who receives (6). Pitch, clock, halves and end:
+# the row's. Used by a mode (CMND_EVT_MATCH_ENGINE_SELECT("football_7")), a friendly (`ruleset = "football_7"`)
+# or a binding ([games] / [teams]). The id has not changed since it left Inazuma Fantasy (2026-10-15).
+id = "football_7"
+aliases = ["futbol_7"]   # its id before 2026-10-08
+name = "7-a-side football (7 vs 7)"   # fallback; the game shows the text key match_formats.ruleset_football_7
+version = 1
+
+[teams]
+players = 7
+user  = { formation = 0xA293A98E }   # if_form_7_1231
+rival = { formation = 0xA293A98E }

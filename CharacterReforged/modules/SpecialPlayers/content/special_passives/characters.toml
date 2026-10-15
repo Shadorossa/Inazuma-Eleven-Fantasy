@@ -1,0 +1,21 @@
+# Special Players › the special passives of the characters (ModManager «Pasivas» edits this file). One
+# [[SpecialPlayers.Character]] per character (or card) names his own passive (one per player). This mod gives
+# none to real players.
+# Example (not active: commented out):
+#
+# [[SpecialPlayers.Character]]
+# character = "c01000010"
+# passive = "example_midfield_wall"
+
+schema = "SpecialPlayers.special_passive/1"
+
+# Coral (Gemini Storm, c02021020): «This passive increases the Technique parameter of Midfielder team members by X when
+# the user's dribble technique is successful. Its effect is nullified whenever a team member scores a goal.» Each
+# success adds X again (stacks, no limit) until the reset; X per passive level (base.toml mf_team_technique_up).
+[[SpecialPlayers.Passive]]
+name = "dribble_success_mf_technique"
+blocks = ["self_uses_technique", "dribble_technique", "outcome_succeeds", "stack_no_limit", "mf_team_technique_up", "team_scores"]
+
+[[SpecialPlayers.Character]]
+character = "c02021020"
+passive = "dribble_success_mf_technique"

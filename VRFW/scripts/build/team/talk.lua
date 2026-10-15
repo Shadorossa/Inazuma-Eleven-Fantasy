@@ -1,8 +1,5 @@
--- `[[VRFW.Talk]]`: Chronicle-style talk scenes (the retail «bust-up talks») declared by mods, and their use as the
--- pre-match / post-win talk of a `[[VRFW.RouteNode]]` (was team_engine talk.rs; docs/game/engine/bustup-talks.md).
--- One CONFIG row → one BODY row per line → per line one CHR row per cast member, appended to the chapter file
--- `event_bustup_talk_data_config_c<N>`; the texts `text/<lg>/event/<talk>.cfg.bin` + `text/event/<talk>_map.cfg.bin`;
--- lip sync = a silent voice bank and viseme tracks (the native part VRFW.team.talk_voice: sound formats).
+-- `[[VRFW.Talk]]`: Chronicle-style talk scenes declared by mods, also usable as the pre-match / post-win talk of a `[[VRFW.RouteNode]]`.
+-- One CONFIG row, one BODY row per line, one CHR row per cast member and line, appended to the chapter file `event_bustup_talk_data_config_c<N>`; texts go to `text/<lg>/event/<talk>.cfg.bin` and `text/event/<talk>_map.cfg.bin`.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local K = {}
@@ -18,7 +15,7 @@ local L_SBODY = "EV_BUSTUP_TALK_SOUND_DATA_BODY"
 -- cast lists of a chapter file (EV_BUSTUP_TALK_DATA_CHR_1..6), pose packs a character loads on its first row
 local MAX_CAST, MAX_PACKS = 6, 3
 
--- the chapter numbers N of the chapter files (`<DATA_PREFIX><N>_<version>.cfg.bin`), sorted
+-- chapter numbers N of the chapter files (`<DATA_PREFIX><N>_<version>.cfg.bin`), sorted
 function K.chapter_numbers()
   local set = {}
   for _, k in ipairs(VRFW.team.keys_prefix(DATA_PREFIX)) do
@@ -52,9 +49,9 @@ local function bg_of(s)
   return { path, name }
 end
 
--- a float cell (0 = an int 0, as the retail rows write it)
+-- a float cell (0 = int 0, as the retail rows write it)
 local function f32v(x)
-  -- (a value that is 0 as an f32: the int 0, as Rust tests it after the f32 conversion)
+  -- a value that is 0 as an f32 counts as the int 0
   if x == 0 or math.abs(x) < 7.006492321624085e-46 then return 0 end
   return { float = x }
 end
@@ -100,7 +97,7 @@ function K.install(X)
     return t
   end
 
-  -- the chapter of a retail talk and its first BODY row (+ the one after it, a plain line)
+  -- the chapter of a retail talk and its first BODY row (and the plain line after it)
   function X.talk_scene(scene, chapters)
     local id = VRFW.crc32(T.trim(scene))
     local all = K.chapter_numbers()
@@ -731,8 +728,7 @@ function K.install(X)
           end
         end
       end
-      -- the cast lists of this line: a cast of at most 6 keeps member k on list k; a larger cast puts the members
-      -- on stage on this line on lists 1.. in cast order
+      -- cast lists of this line: a cast of at most 6 keeps member k on list k; a larger cast puts the members on stage on lists 1.. in cast order
       local by_list = {}
       if #cast <= MAX_CAST then
         for mi = 1, #cast do by_list[mi] = member_rows[mi] end
@@ -847,8 +843,7 @@ function K.install(X)
     return { key = key, id = id, chapter = ch, lines = n_beats, first_label = first_label }
   end
 
-  -- columns of a chapter file (schemas/event/event_bustup_talk_data_*; the old builder's numbers when a schema
-  -- lacks the name)
+  -- columns of a chapter file (schemas/event/event_bustup_talk_data_*; fallback numbers when a schema lacks the name)
   function X.talk_cols(t)
     local function c(row, name, n)
       local ok, x = pcall(t.col, t, row, name)
@@ -940,8 +935,7 @@ function K.install(X)
     return true
   end
 
-  -- `[[VRFW.Talk]] bgm`: an event_bustup_talk_sound_data_config CONFIG row (crc32(talk)) + one BODY row on its first
-  -- line with the BGM cue (c1)
+  -- `[[VRFW.Talk]] bgm`: an event_bustup_talk_sound_data_config CONFIG row (crc32(talk)) plus one BODY row on its first line with the BGM cue (c1)
   function X.talk_bgm(b, cue)
     if not cue:find("^[A-Za-z0-9_]+$") or #cue > 60 then return nil, "a BGM cue name: A-Z a-z 0-9 _" end
     if not X.talk_sound then
@@ -949,7 +943,7 @@ function K.install(X)
       if not k then return nil, e end
       local t, e2 = VRFW.rows.open(k)
       if not t then return nil, e2 end
-      -- served whenever it was read (the old builder served its copy)
+      -- served whenever it was read
       t:touch()
       X.talk_sound = t
     end

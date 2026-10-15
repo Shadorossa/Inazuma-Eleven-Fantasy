@@ -1,4 +1,4 @@
--- menu_engine: the Lua side of the skill tab registry (VR-Framework service S3, docs/framework/card-types.md §3.3).
+-- menu_engine: the Lua side of the skill tab registry (VR-Framework service S3).
 -- Definitions only (this file runs in every script VM, lua\_all): the move list's handler file
 -- (lua\ability_list_menu\110_skill_tabs.lua) calls VRFW_SkillTabs.Attach(stem). Nothing here names a tab or a mod: the
 -- tabs come from the mods' content\skill_tabs\*.toml through the framework's commands.

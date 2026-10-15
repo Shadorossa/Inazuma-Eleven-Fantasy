@@ -1,15 +1,9 @@
--- VR-Framework › recruit service, script side (docs/framework/recruit.md §2.1, VRFW 2.1). The game Lua side is
--- assets\lua\menu\_all\62_recruit.lua (VRFW_Recruit); this script answers what game Lua cannot see:
---
---   CMND_VRFW_RECRUIT_CLUB() -> { total, element = { [1..5] = n }, position = { [1..4] = n } }: the saved club's
---                               characters (VRFW.chara.saved) counted by their card's element (chara_param col 2:
---                               1 wind, 2 forest, 3 fire, 4 mountain, 5 void) and main position (col 3: 1 GK, 2 FW,
---                               3 MF, 4 DF)
---   career counters (per save slot, owner vr_framework, read by VRFW_Recruit with CMND_VRFW_SAVE_GET):
---     "stats.matches_won"  every match the user's side ends ahead (goals counted by the `goal` trigger since
---                          `match_start`; a match left early counts as it stood)
---     "stats.goals"        every goal of the user's side
---   Counting starts when this script first runs: older saves start at 0.
+-- Recruit service, script side (game Lua side: assets/lua/menu/_all/62_recruit.lua).
+--   CMND_VRFW_RECRUIT_CLUB() -> { total, element = { [1..5] = n }, position = { [1..4] = n } }: saved club characters counted by card element
+--     (chara_param col 2: 1 wind, 2 forest, 3 fire, 4 mountain, 5 void) and main position (col 3: 1 GK, 2 FW, 3 MF, 4 DF)
+--   career counters (per save slot, read with CMND_VRFW_SAVE_GET), counted from first run:
+--     "stats.matches_won"  matches the user's side ends ahead
+--     "stats.goals"        goals of the user's side
 
 Recruit = Recruit or {}
 
@@ -21,8 +15,7 @@ end
 
 local PARAM = nil   -- card -> { element, position }
 
--- a card's element and main position: the framework's ONE character index (VRFW.chara, read once natively for every
--- script; 2.3, docs/framework/chara-index.md), asked per card and kept
+-- a card's element and main position, from the framework's character index (VRFW.chara), cached per card
 local function params()
   if PARAM then return PARAM end
   PARAM = setmetatable({}, { __index = function(t, card)
@@ -54,7 +47,7 @@ function Recruit.Club()
   return out
 end
 
--- ---------------------------------------------------------------------------------------------- career counters
+-- ---- career counters
 
 local match = nil   -- { user, rival } goals of the match being played
 

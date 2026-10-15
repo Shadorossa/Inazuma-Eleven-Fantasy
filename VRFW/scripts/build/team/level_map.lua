@@ -1,18 +1,15 @@
--- `[[VRFW.LevelMap]]`: re-levels Chronicle-style difficulty rows (docs/game/modes/chronicle-level-continuity.md; was
--- team_engine level_map.rs). Per row: Δ = round(map(level)) − level (at the line-up's level, col 6, or the rival's),
--- then the rival level (col 2) and the line-up level (col 6) + Δ (capped); with `moves` the row plays copies of its
--- teams whose loadouts' learn levels are + Δ too (every player keeps exactly the moves of his original level); `sync`
--- sets the row's level sync (col 39) to the new rival level + `sync`; `exp` the match EXP (col 9) to `exp` × needExp of the
--- new rival level; `clones` also re-levels the route-node games cloned from a matched game (the rows they inherited).
+-- `[[VRFW.LevelMap]]`: re-levels Chronicle-style difficulty rows. Per row: delta = round(map(level)) - level; the rival level (col 2) and line-up level (col 6) get + delta (capped).
+-- `moves`: the row plays team copies whose learn levels are also + delta; `sync`: level sync (col 39) = new rival level + `sync`; `exp`: match EXP (col 9) = `exp` x needExp of the new rival level;
+-- `clones`: also re-levels route-node games cloned from a matched game.
 local T = require "lib/team_util"
 local TC = require "team/tc"
 local LM = {}
 
--- learn levels are written at most this (above any player level: a move locked before stays locked)
+-- learn levels are capped at this value (above any player level: a move locked before stays locked)
 local LEARN_MAX = 255
 local SLOT_COACH = 19
 local LOADOUT_MOVES = 6
--- the row's level sync (col 39: the cap of the player's own team; Heroica's), set by `sync`
+-- the row's level sync (col 39), set by `sync`
 local D_SYNC = 39
 -- the row's match EXP (col 9), set by `exp` (× needExp of the new rival level)
 local D_EXP = 9

@@ -1,38 +1,30 @@
-# Framework defaults of the match challenges («Desafíos», crates/plugins/match_engine/src/challenge). Used by every
-# challenge (a ruleset's [challenge] or a Lua arm: CMND_EVT_CHALLENGE_ARM / CMND_EVT_TRIAL_JUDGE); a ruleset's
-# [challenge] may override `outfield_formation` and single `keepaway_ai` knobs for its own match. A mod may ship its
-# own defaults\challenge.toml to override keys (load order).
+# Framework defaults for match challenges; a ruleset's [challenge] or a mod's defaults/challenge.toml may override keys.
 
-# `outfield` challenges (5v5, no goalkeeper): `outfield_formation` = the formation the teams are moved to, a
-# formation_config row by name (positionNo 1-5, all outfield). No framework default: the mod that ships such a
-# formation names it in its own defaults\challenge.toml (or a ruleset's [challenge]); without one the teams keep
-# their own formation (the outfield swap is skipped).
+# `outfield_formation`: formation_config row name used by 5v5 outfield challenges; unset keeps the teams' own formation.
 
-# `keepaway` challenges: the rival's AI while the challenge match lasts (knob name -> value). The global knobs are
-# written only when the game holds their retail value, and put back at the end of the match; the per-player knobs go
-# into every rival player's AI property object. A knob not listed keeps the game's value.
+# `keepaway_ai`: knob name -> value for the rival AI during keepaway challenges; global knobs are restored afterwards, unlisted knobs keep the game value.
 [keepaway_ai]
-# the ball carrier looks for a pass every 0.1-0.4 s instead of 0.5-3 s: he never holds the ball into pressure
+# Ball carrier looks for a pass every 0.1-0.4 s (seconds).
 passLotteryIntervalMin = 0.1
 passLotteryIntervalMax = 0.4
-# passes are chosen by their success rate only (no attacking value)
+# Passes are chosen by success rate only.
 tacticsPassEvaluationSuccessRateWeight = 100.0
 tacticsPassEvaluationPhaseEvaluationWeight = 0.0
-# a dribble is never worth anything: no carrying the ball at the user
+# Dribbling is never rated as worthwhile.
 tacticsDribbleEvaluationSuccessRateWeight = 0.0
 tacticsDribbleEvaluationPhaseEvaluationWeight = 0.0
-# the AI team never decides to start a focus battle
+# The AI team never starts a focus battle.
 autoRunFocusBtlProbabilityMin = 0.0
 autoRunFocusBtlProbabilityMax = 0.0
-# each defender near a pass target cuts its success rate hard: passes go to free players, away from the user
+# Defenders near a pass target sharply lower its success rate.
 passNearEnemyNumSuccessRateRatio = 1.0
-# back passes are welcome anywhere on the pitch (retreat instead of forcing forward)
+# Back passes are allowed anywhere on the pitch.
 passWeightBackPasss = 60.0
 passDisableBackPassPosRateZ = 1.0
-# pass-target potential field: no pull to the goal, ten times the push away from opponents
+# Pass-target potential field: no pull to goal, strong push away from opponents.
 passPotentialToGoal = 0.0
 passPotentialFromOpp = 5000.0
-# the rival players (AI property objects)
+# Per-player knobs applied to every rival player.
 passEnableRate = 1.0
 slidingEnableRate = 0.0
 attackDashEnableRate = 0.0

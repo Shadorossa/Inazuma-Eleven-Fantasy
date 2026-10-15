@@ -1,6 +1,5 @@
-# The declaration `[[VRFW.OptionRow]]` of the option rows (service S8 of VRFW 2.3, docs/framework/flow.md §2): what a
-# mod's content\option_rows\*.toml may say. Read by scripts\option_rows.lua at start (every key is checked against this
-# file: an unknown key, a wrong type or a value out of range leaves that declaration out with a warning). Not a table map.
+# Declares `[[VRFW.OptionRow]]` entries (content/option_rows/*.toml): extra values for a row of the game's settings menu.
+# Each key is checked against this file; an unknown key, wrong type or out-of-range value drops the declaration with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.option_row/1"
 folder = "content/option_rows"

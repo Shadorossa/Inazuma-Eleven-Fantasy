@@ -1,5 +1,4 @@
--- menu_engine: the player page's page registry, VRFW.PlayerPages (VR-Framework base feature, 2026-10-09;
--- docs/framework/player-pages.md). Definitions only (this file runs in every script VM, lua\_all): the screens that
+-- menu_engine: the player page's page registry, VRFW.PlayerPages (VR-Framework base feature). Definitions only (this file runs in every script VM, lua\_all): the screens that
 -- page the player plate call VRFW_PlayerPages.Attach() from their handler file (lua\<stem>\120_player_pages.lua).
 --
 -- The player plate (personal_plate_menu, «Ficha») shows one page per page INDEX (the parents' / the plate's page

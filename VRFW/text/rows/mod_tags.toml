@@ -1,6 +1,4 @@
-# The labels of the mod tags the VR-Framework declares (its mod.toml [[VRFW.ModTag]] Text / Short keys), rows of
-# menu_text in the framework's 9 languages; the Mods panel shows the labels in a mod's «Etiquetas» field. A mod
-# that declares tags of its own writes their texts the same way in its own text rows (`<mod>.<key>`).
+# Labels of the mod tags declared by the framework's mod.toml ([[VRFW.ModTag]] Text / Short keys), as menu_text rows.
 
 schema = "VRFW.text/2"
 table = "menu_text"

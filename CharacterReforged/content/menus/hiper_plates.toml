@@ -11,11 +11,21 @@
 # «RB + LB» guide soccer08_19b, evt_hiper_input.objbin + its art); the move selector's extra attach locators
 # (assets\menu\00_soccer\soccer08\soccer08_07\soccer08_07.g4pkm) and attach rows (object_set below). Built by
 # research/scripts/hiper_btn_build.py (its --deploy still writes Inazuma Fantasy's folder: copy the outputs here).
+# The aura's portrait at the plate's right end (owner 2026-10-15, moved from Inazuma Fantasy's
+# menus\00_soccer\soccer_command_action_menu_hiper_face.toml): layer evt_hiper_chr_icon x2 = this mod's object
+# evt_ph_face (the player page's card: the retail team00_30 aura window with its masked portrait quads), attached to the
+# plates' _atc_chr01_r; the graft hiper_btn scales it onto the plate's painted band and draws the card's portrait rule
+# (EVT_HC.Portrait: the miximax / «Modo cambio» partner, the keshin / armour aura art, the totem art).
 schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_command_action_menu"
 add_layer = { name = "soccer08_10_cmd_act_hiper_slot", object = "soccer08_10_cmd_act_hiper_slot", count = 2, after = "soccer08_10_cmd_act_aura_slot", groups = [{ group = "soccer_command_action_menu", after = "soccer08_17_cancel_guide" }, { group = "soccer_battle_command_action_menu", after = "soccer08_17_cancel_guide" }] }
+
+[[patch]]
+menu = "soccer_command_action_menu"
+add_layer = { name = "evt_hiper_chr_icon", object = "evt_ph_face", count = 2, after = "soccer08_10_p5_aura_skill_chara_icon", groups = [{ group = "soccer_command_action_menu", after = "soccer08_17_cancel_guide" }, { group = "soccer_battle_command_action_menu", after = "soccer08_17_cancel_guide" }] }
+res = ["#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx"]
 
 [[patch]]
 menu = "soccer_command_action_menu"

@@ -1,6 +1,6 @@
-# The drop-rate list («Tasa de aparición», vs_route_town_drop_rate_list_menu, list view CMenuListViewDropRateList):
-# the look of the «AURAS» section a mod declares ([VRFW.DropList.Auras] of the item type; docs/framework/drops.md §5,
-# docs/game/ui/drop-rate-list-order.md §5). The rows themselves are native: item_engine (drop_list_rt) moves the
+# The drop-rate list ("Drop Rate", vs_route_town_drop_rate_list_menu, list view CMenuListViewDropRateList):
+# the look of the "AURAS" section a mod declares ([VRFW.DropList.Auras] of the item type).
+# The rows themselves are native: item_engine (drop_list_rt) moves the
 # section's items under an inserted header row at the end of every tab and marks the row being drawn
 # (CMND_VRFW_DROP_ROW). This graft draws them:
 # * the header: the game's header row with its label picture changed (VRFW image vrfw_gtxt_auras01 of win05_38,

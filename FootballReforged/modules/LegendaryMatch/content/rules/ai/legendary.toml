@@ -1,0 +1,225 @@
+schema = "VRFW.match_ai/1"
+# Legendary Match › the «Legendary» AI level (docs/game/mods/legendary-match.md; format: docs/framework/match-ai.md).
+# The knob names, units and ranges: the framework's catalogue content\rules\catalog\ai_knobs.toml.
+# No Modes / AiLevels / Teams / Games list = every offline match (online and observed matches are never touched).
+# Side "rival" = the CPU team only; your AI teammates keep the game's AI.
+
+# ------------------------------------------------------------------------------------------------ the class
+
+# The game's «Batalla legendaria» class (SoccerAIProperty_8: AI level 8 of the Legendary rows; Heroica+ = 7) as the
+# base: it dodges every sliding tackle, passes and slides often, catches often in duels. Every other rate up.
+[[VRFW.MatchAIClass]]
+Name = "LegendaryMatch.Legendary"
+Inherit = "SoccerAIProperty_8"
+
+[VRFW.MatchAIClass.Rates]
+passEnableRate = 0.6
+slidingEnableRate = 0.8
+normalDashEnableRate = 0.9
+attackDashEnableRate = 0.5
+# the ball carrier dodges a sliding tackle at the right moment: 1.0 = every tackle (Heroica+ / Legendaria: 1.0)
+allCourtJustAvoidRate = 1.0
+# duels: a catch attempt every second, at the Legendary rate
+focusCatchActInterval = 1.0
+focusCatchActRate = 10.0
+focusKeepDistanceDribbleRate = 0.7
+focusAtkSkillRate = 1.0
+focusDefSkillRate = 1.0
+focusAtkOpponentSkillRate = 1.0
+focusDefOpponentSkillRate = 1.0
+focusAtkImmediateSkillRate = 0.9
+focusDefImmediateSkillRate = 0.9
+focusActionIntervalA = 0.2
+focusActionIntervalB = 0.05
+focusActionIntervalC = 0.05
+focusBreakThroughDisableTime = 0.1
+focusBreakThroughEscapeRate = 1.0
+focusPassEnableRate = 1.0
+focusPowerChargeUseRate = 0.9
+focusPowerBlockUseRate = 0.9
+zoneKeeperSkillRateVsNormal = 0.7
+zoneShootBlockSkillRate = 1.0
+zoneShootChainUseRate = 1.0
+zoneShootSkillRate = 1.0
+zoneShootDisableTime = 0.0
+zonePassEnableRate = 0.0
+directFreeKickSkillRate = 1.0
+spTacticsUseRate = 0.9
+suTacticsUseRate = 0.7
+scrambleJustRate = 1.0
+auraSkillRate = 1.0
+
+# ------------------------------------------------------------------------------------------------ the rival
+
+[[VRFW.MatchAI]]
+Name = "LegendaryMatch.Rival"
+Side = "rival"
+Class = "LegendaryMatch.Legendary"
+
+# The «inhuman» reactions, at the top on purpose (owner choice 2026-10-15). Lower them here for a softer rival:
+# focusFramePerfectReactRate 0-100 (percent: answers a side step / breakthrough at once; 95 feels fairer),
+# zoneKeeperSkillRateVsSkill 0-1 (the keeper answers a special shot with a move; 0.9 feels fairer).
+[VRFW.MatchAI.Rates]
+focusFramePerfectReactRate = 100
+zoneKeeperSkillRateVsSkill = 1.0
+
+# No waits: re-plans, reaction delay, idle «wait» actions, passing and the duel / zone / shot intentions.
+[VRFW.MatchAI.Global]
+defaultWaitTimeMax = 0.2
+fCharaTacticsUpdateIntervalTime = 0.3
+fCharaTacticsUpdateMoreNumMax = 11
+charaTacticsDelayTime = 0.02
+charaTacticsDelayFluctuationTime = 0.03
+fCharaTacticsStateChangeUpdateTime = 1.0
+fCharaTacticsResetIntervalTime = 2.0
+teamStrategyUpdateInterval = 0.3
+teamTacticsUpdateInterval = 1.0
+passLotteryIntervalMin = 0.1
+passLotteryIntervalMax = 0.4
+fAutoPassIntervalTime = 0.3
+gkAutoPassTime = 1.5
+dashLineDashLotteryIntervalMin = 0.1
+dashLineDashLotteryIntervalMax = 0.6
+slidingLotteryIntervalMin = 0.5
+slidingLotteryIntervalMax = 1.5
+spTacticsAutoUseIntervalMin = 2.0
+spTacticsAutoUseIntervalMax = 4.0
+suTacticsAutoUseIntervalMin = 2.0
+suTacticsAutoUseIntervalMax = 4.0
+auraSkillAutoUseIntervalMin = 1.0
+auraSkillAutoUseIntervalMax = 2.0
+autoRunFocusBtlProbabilityMax = 80
+autoRunFocusBtlIntervalMin = 2.0
+autoRunFocusBtlIntervalMax = 15.0
+autoRunFocusBtlLotIntervalTime = 2.0
+autoRunZoneProbabilityMax = 60
+autoRunZoneIntervalMin = 1.0
+autoRunZoneIntervalMax = 8.0
+autoRunZoneLotIntervalTime = 1.0
+uPressCharaNumMax = 4
+uNoStopPressCharaNumMax = 2
+
+[VRFW.MatchAI.Team]
+# the AI level its strategies and tactics read (Legendaria: 8; the game's tables gate theirs at 2-4): it plays the
+# duel pass-out, the «before the time runs out» and long-range breakthroughs, the super-reaction side step, the
+# sideways dribble, the forced striker shot and the wall marking in every match, also when the row's level is lower
+StrategyLevel = 8
+# percent added to every stat of the rival's players on the pitch
+StatPercent = 10
+# tension per second of play (HUD points; the game gives none by time, max 300)
+TensionPerSecond = 2
+# tension kept for the keeper's move (the game: 20, for one side only)
+KeeperTpReserve = 30
+# its own shoot zone: no shot lock, re-plans every 0.1 s, its conditions read the zone as 9 s old and a direct shot as
+# needed: it shoots (or chains) in the first frames
+ZoneShootNow = { replan_s = 0.1, elapsed_s = 9.0, direct = 1 }
+# before shooting in its zone it looks at its teammates: when one has a clearly better shot (25 % better: the angle to
+# the goal, the element against your keeper, its shot power against your keeper's best stop, free of markers) it holds
+# the shot and passes (once per zone, at most 1.5 s), else it shoots at once
+# in your shoot zone, 2 more defenders besides the game's 2 walls stand on the line from your shooter to the goal
+# (3 m and 5.5 m in front of him) as blockers
+ZoneWallGuards = { extra = 2, from_m = 3, spacing_m = 2.5, range_m = 25 }
+PassBeforeShot = { margin = 1.25, max_passes = 1, max_hold_s = 1.5, free_m = 3, range_m = 30 }
+# attacking in a duel: it reads the duel's time as twice as used, and as over from 60 %: it always breaks through or
+# passes out before the time runs out
+FocusHurry = { scale = 2.0, force_at = 0.6 }
+# carrying the ball in a duel it never walks into the defender (that is how you close its space): the part of each duel
+# move toward him is turned backward (x back), the sideways part kept (x lateral); it leaves by a side step or a
+# breakthrough to one side
+FocusRetreat = { back = 1.0, lateral = 1.0 }
+# the players' stamina: the PE of Stamina Points (Character Reforged); without that mod the stamina rules do nothing
+StaminaResource = "stamina_points.pe"
+# sprints at full rate above 45 % stamina, never below 20 % (so it does not reach the substitution line too early)
+SprintByStamina = { above = 0.45, below = 0.20, rate = 0.95, attack_rate = 0.5 }
+# substitutes its most tired outfield player at a dead ball once his stamina is below 15 %
+SubstituteAtStamina = 0.15
+# a bench forward whose element beats your keeper comes on for a forward without that advantage (dead balls, never in
+# the first 900 game seconds of the first half; at most 2 per match; a tired change at that dead ball goes first)
+SubstituteForElement = { after_s = 900, max = 2 }
+# move choice: always the best move (power, element, tension), always an element that beats yours when it has one
+BestMoveChance = 1.0
+ElementCounter = true
+MoveCostWeight = 0.5
+LearnUserMoves = true
+# it computes the power of every option of both players (stats, move power with the mods' rules, elements, the shot
+# in flight) and plays the cheapest one that wins: the keeper / blocker uses no move against a shot it cannot stop;
+# a blocker with a counter shot returns your shot when its counter is stronger, else blocks; it shoots with the
+# cheapest shot your keeper cannot stop; in duels the move with the best chance against yours (or your strongest).
+# margin: its power must be at least yours x this; save_tension = 1: no move when nothing wins; force = 1: a picked
+# keeper / block / shot move is always used. keeper_free_save (on unless 0): the keeper knows the kick's rolls: with a
+# «parada» it saves without a move, against a «brecha» it spends nothing. Switch a part off with keeper / blocks /
+# shots / duels = 0.
+PowerAware = { margin = 1.05, save_tension = 1, force = 1 }
+AuraElementCounter = true
+# the keeper bar the long-shot situation reads: the scoreboard's keeper bar
+KeeperBarSource = "keeper_hp"
+# when you press pass, the rivals nearest to the lanes to your 2 nearest teammates (25 m) run to the middle of
+# those lanes for 0.8 s, before the ball leaves
+PassLaneCut = { receivers = 2, at = 0.5, seconds = 0.8, range_m = 25 }
+# its forwards hunt your ball carrier: the 3 nearest to him (35 m) run at him, 25 % faster while they chase
+PressCarrier = { forwards = 1, midfielders = 0, defenders = 0, range_m = 35, max = 3, speed_mult = 1.25 }
+
+# A player of yours just received a pass from a teammate: more rivals press him (2 s).
+[[VRFW.MatchAI.If]]
+When = "opponent_received_pass_within"
+Value = 2.0
+[VRFW.MatchAI.If.Global]
+uPressCharaNumMax = 6
+uNoStopPressCharaNumMax = 4
+
+# Your ball owner is tired (stamina below 35 %): more rivals press him.
+[[VRFW.MatchAI.If]]
+When = "opponent_ball_owner_stamina_below"
+Value = 0.35
+[VRFW.MatchAI.If.Global]
+uPressCharaNumMax = 5
+uNoStopPressCharaNumMax = 3
+
+# Your keeper's bar is above half: the rival decides to shoot more often and sooner (long shots).
+[[VRFW.MatchAI.If]]
+When = "opponent_keeper_bar_above"
+Value = 0.5
+[VRFW.MatchAI.If.Global]
+autoRunShootProbabilityMax = 100
+autoRunShootIntervalMax = 3.0
+
+# Learned this match (at least 4 samples): you carry the ball more than you pass -> more pressers, more tackles.
+[[VRFW.MatchAI.If]]
+When = "opponent_dribbles_often"
+Value = 0.6
+[VRFW.MatchAI.If.Global]
+uPressCharaNumMax = 5
+[VRFW.MatchAI.If.Rates]
+slidingEnableRate = 0.95
+
+# You pass more than you carry -> the receivers are pressed without stopping.
+[[VRFW.MatchAI.If]]
+When = "opponent_passes_often"
+Value = 0.6
+[VRFW.MatchAI.If.Global]
+uNoStopPressCharaNumMax = 3
+
+# In duels you mostly go to one side, or pass out: the defender uses its move and its power block at once.
+[[VRFW.MatchAI.If]]
+When = "opponent_duel_side_bias_above"
+Value = 0.65
+[VRFW.MatchAI.If.Rates]
+focusDefImmediateSkillRate = 1.0
+focusPowerBlockUseRate = 1.0
+
+[[VRFW.MatchAI.If]]
+When = "opponent_duel_pass_out_above"
+Value = 0.4
+[VRFW.MatchAI.If.Rates]
+focusDefImmediateSkillRate = 1.0
+
+# ------------------------------------------------------------------------------------------------ both teams
+
+# The defensive action range of both teams halved (owner choice: on purpose for both). The game keeps it squared
+# (25 = 5 m), so half the distance = x 0.25.
+[[VRFW.MatchAI]]
+Name = "LegendaryMatch.FieldRange"
+Side = "both"
+
+[VRFW.MatchAI.Global]
+canDefenseActionLen2 = { mult = 0.25 }

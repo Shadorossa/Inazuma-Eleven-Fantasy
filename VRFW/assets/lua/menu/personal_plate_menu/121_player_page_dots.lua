@@ -1,6 +1,6 @@
--- player page dots (VR-Framework base feature, docs/framework/player-pages.md §7): the page dots of the player plate
--- (personal_plate_menu) built from the registry's actual page list, so a page any mod declares (Utilities'
--- TRAYECTORIA, ...) gets its own dot and the lit dot follows it.
+-- player page dots (VR-Framework base feature): the page dots of the player plate
+-- (personal_plate_menu) built from the registry's actual page list, so a page any mod declares
+-- gets its own dot and the lit dot follows it.
 --
 -- * Retail order (the four retail pages only): nothing changes, the status base draws its own four dots.
 -- * Any other order: the status base's four dots are hidden and the row is drawn by the layer vrfw_pp_dots (copies of
@@ -9,9 +9,9 @@
 --   The copies hang from the status base's _pos_base01 (attach rows vrfw_pp_dots0 / 1), so they follow its animation.
 --   The row keeps the retail centre (x 1420) and pitch (28 px) whatever the page count.
 -- * A mod that draws its own dots on its own plate sets VRFW_PlayerPages.DotsOwner = "<ModPrefix>" (any time, plain
---   field): the framework then leaves the dots alone. Inazuma Fantasy's paged plate (it defines EVT_PH_Decor) is
+--   field): the framework then leaves the dots alone. A paged plate that defines EVT_PH_Decor is
 --   treated the same way until it sets the field.
--- * VRFW_PlayerPages.DotRow() gives the row as drawn (for the mods that place things next to it, BetterUI's Q / E
+-- * VRFW_PlayerPages.DotRow() gives the row as drawn (for the mods that place things next to it, e.g. Q / E
 --   glyphs); VRFW_PlayerPages.StatusCopy(...) is the shared set-up of a status base copy (open once, attach, every
 --   part hidden but the ones kept).
 -- No engine call at load time.

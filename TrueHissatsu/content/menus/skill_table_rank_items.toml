@@ -1,7 +1,7 @@
 # True Hissatsu › the move-rank items on Character Reforged's «Fantasy» skill table (docs/game/mechanics/
-# move-rank-items.md; docs/framework/skill-table-host.md): a ROW ACTION of that screen's host. CMD_FUNC1 on a move row
-# uses the Libro de mejora de supertécnica or the Cuaderno de evolución definitiva on the row's move; the guide entry
-# «Subir nivel» shows while the player holds one. The function is this mod's hook file of the screen (graft
+# move-rank-items.md; docs/framework/skill-table-host.md): a ROW ACTION of that screen's host. CMD_FUNC1 (Start) on a
+# move row uses the Libro de mejora de supertécnica or the Cuaderno de evolución definitiva on the row's move; the
+# guide entry «<Start> Subir nivel» shows on every move row (without an item the press says why). The function is this mod's hook file of the screen (graft
 # move_rank_items, rank_items_skill_table.lua). The [[host]] is Character Reforged's (content\menus\
 # skill_table_host.toml); it is declared here too (same id, same list) so the entry is valid while Character Reforged
 # is off (True Hissatsu does not require it: nothing reads the entry then).

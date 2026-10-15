@@ -1,0 +1,75 @@
+schema = "SpecialPlayers.passive_block/1"
+# Special Players › the shared blocks of its passives (block types: content\types\passive_block.toml). Other mods use
+# them as special_players.<name>.
+
+[[SpecialPlayers.MoveElement]]
+name = "wind_move"
+elements = ["wind"]
+
+[[SpecialPlayers.MoveElement]]
+name = "forest_move"
+elements = ["forest"]
+
+[[SpecialPlayers.MoveElement]]
+name = "fire_move"
+elements = ["fire"]
+
+[[SpecialPlayers.MoveElement]]
+name = "mountain_move"
+elements = ["mountain"]
+
+[[SpecialPlayers.MoveElement]]
+name = "void_move"
+elements = ["void"]
+
+# the factor the elemental passives' texts show (×1.15: content\techniques\element_plus.toml)
+[[SpecialPlayers.TechniquePower]]
+name = "own_power_15"
+mode = "percent"
+value = 15
+
+# ---- when a technique ends: the event, its kind and its outcome are separate blocks
+
+# he uses a special move and it is decided (a focus duel, a keeper battle)
+[[SpecialPlayers.Trigger]]
+name = "self_uses_technique"
+on = "technique_result"
+by = "self"
+wording = "when"
+
+[[SpecialPlayers.MoveKind]]
+name = "dribble_technique"
+kinds = ["dribble"]
+
+[[SpecialPlayers.Outcome]]
+name = "outcome_succeeds"
+result = "succeeds"
+
+[[SpecialPlayers.Outcome]]
+name = "outcome_fails"
+result = "fails"
+
+# ---- stacks and resets
+
+# one stack each time, no limit
+[[SpecialPlayers.Stack]]
+name = "stack_no_limit"
+max = 0
+
+# nullified whenever a team member scores
+[[SpecialPlayers.Reset]]
+name = "team_scores"
+on = "goal"
+by = "team"
+
+# ---- effects
+
+# the Technique parameter of the midfielders of his team (him too when he is one), per passive level
+[[SpecialPlayers.Stat]]
+name = "mf_team_technique_up"
+stats = ["technique"]
+mode = "flat"
+value = 189
+value_by_level = [189, 252, 316, 379, 442, 505, 568, 600, 632, 695, 758, 790, 821, 853]
+target = "team"
+positions = ["mf"]

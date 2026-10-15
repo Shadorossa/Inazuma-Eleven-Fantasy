@@ -412,6 +412,9 @@ BBT.GRID = 106197494 --[[vs01_43_enjoy_team_select_emblem_icon]]
 BBT.START_BTN = 336167129 --[[cmn03_05_cmn_button_b_graphic_text]]
 BBT.GRID_MENU = 786045682 --[[enjoy_team_select_menu]]
 BBT_G = { co = nil, frames = 0, fmt = 0, size = 16, filter = 0 }
+-- 1.5.64: the Torneo's group-stage menu (bbt_top.lua BBT.GM) never belongs over this grid: closed when found here
+BBT.GROUPS_MENU = 3003171228
+BBT.GROUPS_CLOSE = 2205194670
 BBT.OPT_ROWS = 3   -- the options' L / R rows: group stage, team count, minor teams filter (1.5.16)
 
 BBT.SUB_LR_TEXT = 348737310   -- a row's value text of the L / R sub window (row, text id, "", true)
@@ -557,8 +560,16 @@ function BBT_GridOptions()
   -- 1.5.12: the online window's leftovers off (the rank icon slot of each row drew a white box) and its title
   -- «EQUIPOS» swapped for the retail «settings» title (bbt_common.lua BBT_SW_PanelDress)
   pcall(funcLuaCommand, 830228314 --[[cross-menu call]], BBT.SUB_WINDOW, "BBT_SW_PanelDress", BBT.OPT_ROWS)
+  local waited = 0
   while G.opt_result == nil and funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.SUB_WINDOW) do
     BBT_GridCursor(false)
+    -- 1.5.64: the options window waiting for the player; every 5 s the state in the log (a freeze is seen there)
+    waited = waited + 1
+    if waited % 300 == 0 then
+      BBT_Log("options: window still open after", waited, "frames; group tables menu open",
+        funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GROUPS_MENU) == true)
+      pcall(BBT_GridCloseGroups, "options window waiting")
+    end
     local ok, has = pcall(funcLuaCommand, 2947612279 --[[param has]], BBT.P_ENTER)
     if ok and has == true then
       local okv, v = pcall(funcLuaCommand, 3522198769 --[[param get]], BBT.P_ENTER)
@@ -628,6 +639,25 @@ function BBT_GridStart(a1, a2, prev)
   BBT_GridFail("no tournament after the start (log of scripts/tournament.lua)")
 end
 
+-- 1.5.64 (owner 2026-10-14: after the Torneo, its group tables stayed drawn over this grid and the next team pick
+-- froze): the group-stage menu found open over the grid is closed (its close parameter, its own close call, the
+-- engine's close); logged once per leftover. true = it was there.
+function BBT_GridCloseGroups(why)
+  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.GROUPS_MENU) ~= true then
+    BBT_G.groups_left = nil
+    return false
+  end
+  pcall(funcLuaCommand, 3363400568 --[[param delete]], BBT.GROUPS_CLOSE)
+  pcall(funcLuaCommand, 3860611758 --[[param set]], BBT.GROUPS_CLOSE, 0, 1, 1)
+  pcall(funcLuaCommand, 830228314 --[[cross-menu call]], BBT.GROUPS_MENU, "BBG_Close", "over the team grid")
+  pcall(funcLuaCommand, 320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBT.GROUPS_MENU)
+  if not BBT_G.groups_left then
+    BBT_G.groups_left = true
+    BBT_Log("grid: the Torneo's group tables were still open over the team grid (" .. tostring(why) .. "): closed")
+  end
+  return true
+end
+
 -- a failed start: logged and shown (the retail message window), never a silent no-op
 function BBT_GridFail(why)
   BBT_Log("start failed:", tostring(why))
@@ -638,6 +668,16 @@ do
   local decide = OnDecideFocus
   function OnDecideFocus(a1, a2, ...)
     local info = BBT_INFO or {}
+    -- 1.5.64: the accept path in the log (layer, index, the tournament's state, menus over the grid)
+    if a1 == BBT.GRID or a1 == BBT.START_BTN then
+      pcall(function()
+        local groups = BBT_GridCloseGroups("team accept")
+        BBT_Log("grid accept: layer " .. tostring(a1) .. " index " .. tostring(a2) .. ", armed " .. tostring(info.armed) ..
+          ", configured " .. tostring(info.configured) .. ", pending " .. tostring(info.pending) .. ", running coroutine " ..
+          tostring(BBT_G.co ~= nil) .. ", group tables were open " .. tostring(groups) .. ", sub window open " ..
+          tostring(funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], BBT.SUB_WINDOW) == true))
+      end)
+    end
     if BBT_G.co == nil and info.armed then
       if a1 == BBT.GRID and not info.configured then
         local args = table.pack(a1, a2, ...)
@@ -663,6 +703,13 @@ do
   function Step(...)
     local r = table.pack(step(...))
     local G = BBT_G
+    G.watch = (G.watch or 0) + 1
+    if G.watch % 30 == 0 then
+      local okw, errw = pcall(BBT_GridCloseGroups, "grid watchdog")
+      if not okw then
+        BBT_Log("grid: group tables watchdog error", tostring(errw))
+      end
+    end
     if G.co ~= nil then
       local ok, err = coroutine.resume(G.co)
       if not ok then
@@ -712,15 +759,15 @@ end
 -- screen's header bar (the dark bar «BB | Estadio BB · Campaña» with the top bar shortcuts on its right) carries a
 -- CENTRED selector of two pills «Campaña» | «Torneo» (the active one lit), with the key glyph left of them:
 --   * the key: Battle Bay Deluxe's own rebindable action CMD_BBD_MODE_SWITCH (content\inputs\mode_switch.toml: the row
---     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default Y / B (owner 2026-10-13); 1.5.47
+--     «Cambiar Campaña / Torneo» in the game's «Configuración de controles»; default RS / B (owner 2026-10-15: Y
+--     opens the focused team's «Plantilla», research/grafts/bb_draft/bbd_roster.lua; Y / B from 2026-10-13; 1.5.47
 --     had L3 = retail CMD_FUNC5, which the VR-Framework top bar's open button took on 2026-10-13), polled with
 --     CMND_CHECK_INPUT (MENU_CTRL) so it works whatever has the focus; its glyph <CMD_BBD_MODE_SWITCH> follows the
---     player's binding. Y is also retail CMD_FUNC3 (keyboard V) there: in bb_stadium_top_menu the list items' «Guía de
---     controles» window (function 1643904886), in the Campaña grid the ready balloon's button (layer
---     cmn03_04_cmn_button_b_graphic_text, function 3859022927; the grid's own Y function 756653130 has no handler in
---     the campaign script). While the selector is shown, a retail OnFunction that comes with a press of the selector's
---     key is left out (the wrap at the end), and the selector is locked while that balloon button is open; the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input:
---     without Utilities only the key).
+--     player's binding. R3 has no retail command on these screens. While the selector is shown, a retail OnFunction
+--     that comes with a press of the selector's key is left out (the wrap at the end: a binding over a retail key),
+--     and the selector is locked while the ready balloon's button (layer cmn03_04_cmn_button_b_graphic_text) is open;
+--     the mouse: a left click on a pill (CMD_EVT_MOUSE_LEFT, Utilities' top bar input: without Utilities only the
+--     key).
 --   * the Campaña grid (enjoy_team_select_menu_campaign, opened from the top menu's «Campaña» row): «Torneo» arms the
 --     tournament (CMND_BBD_TOURN_ARM with the defaults: the team, then the options popup, the difficulty, the bracket:
 --     bbt_grid.lua), «Campaña» disarms it. With a tournament already running (or ended, not shown yet) «Torneo» closes
@@ -741,7 +788,7 @@ BBT_MODE = {
   TXT = 1807063543,
   ATLAS = "#/menu/220_img/bbd_md/bbd_md.g4tx",
   SPR_BG = 2993196901, SPR_ON = 2115651980, SPR_OFF = 1517974698,
-  KEY = 2413565140,       -- the mod's action (MENU_CTRL; default Y / B, rebindable)
+  KEY = 2413565140,       -- the mod's action (MENU_CTRL; default RS / B, rebindable)
   READY_BTN = 2055576472 --[[cmn03_04_cmn_button_b_graphic_text: the ready balloon's button, retail Y there]],
   CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]],
   -- geometry, screen px (y down) of the 1920 x 1080 menu camera: the strip centred on CX at the bar's middle Y (the
@@ -927,6 +974,7 @@ function BBT_ModeGridState()
   local info = BBT_INFO or {}
   local show = funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], M.TOP) == true
     and info.active ~= true and info.ended ~= true
+    and not (type(BBD_ROSTER) == "table" and BBD_ROSTER.state ~= nil) -- hidden under the «Plantilla» viewer (bb_draft)
   local mode = info.armed and "tournament" or "campaign"
   local locked = (BBT_G and BBT_G.co ~= nil)
     or funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], BBT.SUB_WINDOW) == true
@@ -1037,8 +1085,8 @@ do
     end
     return setup(a1, a2, ...)
   end
-  -- the selector's key pressed while it is shown: a retail function the same press fires (Y = retail CMD_FUNC3:
-  -- the hub's «Guía de controles», the ready balloon's button) is left out, the selector has the press
+  -- the selector's key pressed while it is shown: a retail function the same press fires (a binding over a retail
+  -- key) is left out, the selector has the press
   local fn = OnFunction
   if type(fn) == "function" then
     function OnFunction(a1, a2, ...)

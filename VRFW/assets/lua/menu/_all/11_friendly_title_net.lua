@@ -1,12 +1,11 @@
--- friendly way back (VR-Framework, match engine friendlies; docs/framework/match-start.md, docs/game/modes/pachangas-
--- sistema.md §3). Any menu that opens asks the match engine whether a played friendly's way back ends here:
+-- friendly way back (VR-Framework, match engine friendlies). Any menu that opens asks the match engine whether a played friendly's way back ends here:
 --
--- * return = "menus" (VRFW 2.2.x, the match start service VRFW_MATCH): the match ended (the clock, the retail
+-- * return = "menus" (VRFW, the match start service VRFW_MATCH): the match ended (the clock, the retail
 --   hold-to-leave, CMND_VRFW_MATCH_EXIT) and the soccer state's own way to the menus reopened the hub the friendly was
 --   started from, with the in-memory game untouched (no game reset anywhere). CMND_VRFW_FRIENDLY_MENU_BACK(this menu's
 --   stem) says go when this is that hub (no match running, the game in the menus): the friendly is closed here with
 --   BACK(3) (sink off, VS team back, its rewards).
--- * return = "title" (the title net, 2.1.2; fixed 2.2.x): the way back is a game reset right after the match. When the
+-- * return = "title" (the title net): the way back is a game reset right after the match. When the
 --   soccer state's own way to the menus took that reset over (a friendly played from the menus), the title never ran
 --   and the menus opened on the game the reset wiped. CMND_VRFW_FRIENDLY_TITLE_NET (a played return-to-title friendly,
 --   a game reset since its match, no match running, once per friendly) sends the game to the title at once (black,

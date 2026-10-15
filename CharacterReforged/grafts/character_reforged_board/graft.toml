@@ -19,6 +19,9 @@
 # The «Fantasy» skill table (evt_skill_slot_menu, 2026-10-14): table_create_entry_hooks.lua gives its aura / mix row's
 # picker the same rows without Inazuma Fantasy (a free copy of each «create» item before the picker opens; a picked one
 # -> the bank picker, the system's store, its carrier in the player's mix slot); with Inazuma Fantasy its own flow runs.
+# The partner's special moves (1.7.22, owner 2026-10-14): a system whose pairing rules ask `moves` (All Miximaxed's
+# miximax) picks them in the bank as Inazuma Fantasy's «Crear miximax» did (bank_create_moves_hooks.lua: Aceptar on a
+# card -> his moves on the plate -> the system's Sí / No); the moves go to the system's store command.
 name = "character_reforged_board"
 mod = "character_reforged"
 order = 965
@@ -26,7 +29,7 @@ module = "lua_bridge"
 requires = []
 conflicts = []
 wraps = []
-description = "Character Reforged: the aura mods' «Crear …» rows on the skill board's aura pieces and in the skill table's aura / mix picker (partner from the bank, carrier on the slot)"
+description = "Character Reforged: the aura mods' «Crear …» rows on the skill board's aura pieces and in the skill table's aura / mix picker (partner and his moves from the bank, carrier on the slot)"
 
 [[hooks]]
 stem = "ability_learning_board_menu"
@@ -36,3 +39,27 @@ src = "board_create_entry_hooks.lua"
 stem = "evt_skill_slot_menu"
 src = "table_create_entry_hooks.lua"
 require = ["EVT_OpenOriginalBoard", "EVT_PickCoroutine"]
+
+# the partner's special moves in the bank picker (a system with pairing rule `moves` > 0)
+[[hooks]]
+stem = "chara_bank_menu_for_search"
+src = "bank_create_moves_hooks.lua"
+
+# the board's aura list while the create rows are listed: the create rows' look and card, the Mix-Max rows the player
+# can not take greyed and refused (owner 2026-10-14; shared rules: lua\_all\character_reforged_create_card.lua)
+[[hooks]]
+stem = "ability_list_menu_on_bluebg"
+src = "board_list_create_hooks.lua"
+
+# the «Crear …» confirmation window: the base's and the partner's cards with the system's glyph, the move and the
+# stats the pair adds (a port of Inazuma Fantasy's Mix-Max confirmation panel; owner
+# 2026-10-14; layers: content\menus\10_win\pair_confirm.toml)
+[[hooks]]
+stem = "general_window"
+src = "pair_confirm_window_hooks.lua"
+
+# the skill table's move picker: a picked «Crear …» row opens the partner bank at once (no skill table in between;
+# owner 2026-10-14)
+[[hooks]]
+stem = "ability_list_menu"
+src = "table_picker_create_hooks.lua"

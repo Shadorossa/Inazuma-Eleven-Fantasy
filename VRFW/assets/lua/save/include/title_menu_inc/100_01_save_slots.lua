@@ -616,10 +616,10 @@ end
 -- CMND_VRFW_SLOT_RESERVED) is entered only while its owner's mode is enterable; its owner may hook the entry
 -- (VRFW_SS_RESERVED_ENTER["<owner>"] = function(slot) ... end, from its own Lua patch of title_menu_inc).
 -- This file is included by title_menu AND title_menu_2 (and the platform variants); only globals prefixed VRFW_SS_
--- are added. Docs: docs/game/save-slots.md §9-§10, docs/game/vr-loader.md §1.3.
+-- are added.
 -- ================================================================================================================
 
--- ---- vr-loader commands (docs/game/vr-loader.md §1, API 1). Filled by slot_build.py from LOADER_CMDS. -------------
+-- ---- vr-loader commands (API 1). Filled by slot_build.py from LOADER_CMDS. -------------
 -- Loader absent / module off: unknown hash -> the call returns a single false.
 local VRFW_SS_LOADER = {
   VERSION = 2217361807,   -- () -> api (>= 1), modules bitmask (bit1 = value 2 = save_slots: the framework's slot service)
@@ -634,18 +634,18 @@ local VRFW_SS_LOADER = {
   LOG = 3661580131,                  -- (...) -> true: evt_loader\loader.log
   SLOT_RESERVED = 1380583127, -- (n) -> reserved, ownerModId, enterable (CMND_VRFW_SLOT_RESERVED)
   REARM = 1609225498,         -- NOT in API 1 (proposed): reset the InitTitleState "loaded" guard
-                                             -- [[0x21F62A0]+0x69C8]+0x2CABF0 = 0; only used by VRFW_SS_FLOW "reentry"
+                                             -- [[ ]+0x69C8]+ = 0; only used by VRFW_SS_FLOW "reentry"
 }
 local VRFW_SS_LOCKED_SLOT = 1                 -- the vanilla save: never continued / switched to (VRFW_SS_Layout reads it)
 -- "apply":   slot with data = LOAD_HEADER + LOAD_GAME_DATA + APPLY_LOADED_DATA here (frozen API 1 commands only),
 --            then CMND_GAME_RESET re-enters the title (retail return-to-title path) and skips EMPEZAR.
--- "reentry": save-slots.md §9.5: HeaderClear + ResetAllGameData + LOAD_HEADER, then CMND_GAME_RESET; the load itself
+-- "reentry": HeaderClear + ResetAllGameData + LOAD_HEADER, then CMND_GAME_RESET; the load itself
 --            runs in InitTitleState as at boot. Needs a loader that re-arms the guard (REARM above, or inside RELOAD).
 local VRFW_SS_FLOW = "apply"
 local VRFW_SS_MAX_SLOT = 99   -- highest slot number (save engine MAX_SLOT); a slot that is not a player one is a reserved one
 -- the owners' entry hooks (title VM): VRFW_SS_RESERVED_ENTER["<owner mod id>"] = function(slot) end
 VRFW_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER or EVT_SS_RESERVED_ENTER or {}
-EVT_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER   -- 1.x name (docs/framework/naming.md): same object
+EVT_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER   -- 1.x name: same object
 local VRFW_SS_MENU = 3561559540
 local VRFW_SS_KEY_RESULT = 2449975398
 local VRFW_SS_WAIT_FRAMES = 3600     -- give up on a save job after ~60 s
@@ -668,7 +668,7 @@ function VRFW_SS_Text(key)
   end
   return VRFW_SS_TXT[key]
 end
--- retail commands (docs/game/save-slots.md §2.2, §9)
+-- retail commands
 local VRFW_SS_G = {
   LOAD_HEADER = 4179471494,       -- 0xF91DAC86
   IS_SAVE_WORKING = 1979970074,   -- 0x7603F21A
@@ -752,7 +752,7 @@ function VRFW_SS_CommitPending()
     VRFW_SS_Log("commit", ok == true)
   end
 end
-EVT_SS_CommitPending = VRFW_SS_CommitPending   -- 1.x name (docs/framework/naming.md): same function
+EVT_SS_CommitPending = VRFW_SS_CommitPending   -- 1.x name: same function
 
 local function VRFW_SS_WaitSaveJob()
   local k = 0
@@ -777,7 +777,7 @@ local function VRFW_SS_Message(text)
   end
 end
 
--- Every fade wait is bounded (VRFW_SS_FADE_FRAMES): 2026-09-28 19:35 a switch to a deleted reserved-slot save stopped
+-- Every fade wait is bounded (VRFW_SS_FADE_FRAMES): a switch to a deleted reserved-slot save stopped
 -- right after "switch" with the screen black and nothing else (a fade that never reported done); now the switch
 -- goes on after the bound and a failure always fades back in.
 local VRFW_SS_FADE_FRAMES = 240
@@ -821,15 +821,14 @@ function VRFW_SS_Switch(k, exists)
   local owner = VRFW_SS_Reserved(k)
   local reserved = owner ~= nil
   if reserved then
-    -- entered from this screen: the owner's hook (e.g. its «back» returns here)
+    -- entered from this screen: the owner's hook (e.g. its "back" returns here)
     local hook = VRFW_SS_RESERVED_ENTER[owner]
     if type(hook) == "function" then
       local okh, err = pcall(hook, k)
       if not okh then VRFW_SS_Log("reserved enter hook of", owner, "failed:", tostring(err)) end
     end
   end
-  -- the loader may just have found the slot empty although its card said otherwise (a save deleted behind the card:
-  -- 2026-09-28 19:35): ask again, so an empty slot is started as a new game instead of loading nothing
+  -- the loader may just have found the slot empty although its card said otherwise (a save deleted behind the card): ask again, so an empty slot is started as a new game instead of loading nothing
   if exists then
     local now = VRFW_SS_Call(VRFW_SS_LOADER.SLOT_INFO, k)
     if now ~= true then
@@ -955,7 +954,7 @@ function VRFW_SS_BeforeGameStart(gamestartLayer)
 end
 
 -- CommitPending must run AFTER the engine registered funcLuaCommand, i.e. not at the top level of this include
--- (INCLUDEs run before registration: docs/game/position-cards.md §4b; there pcall(nil) made the old top-level call
+-- (INCLUDEs run before registration:; there pcall(nil) made the old top-level call
 -- a silent no-op). The menu chunk defines OnInit after its INCLUDEs, so a __newindex on the globals table wraps it:
 -- the wrapper runs VRFW_SS_CommitPending (protected) and then the menu's own OnInit. Any previous __newindex is kept.
 do

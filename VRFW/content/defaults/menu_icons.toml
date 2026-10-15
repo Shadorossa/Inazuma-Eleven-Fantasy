@@ -1,0 +1,20 @@
+# Menu icons for series and staff roles, answered by CMND_VRFW_SERIES_ICON / CMND_VRFW_ROLE_ICON (scripts\menu_icons.lua,
+# docs/framework/menu-icons.md). A mod's content\defaults\menu_icons.toml overrides keys (load order) or adds icons.
+# An icon is a sprite of a texture sheet: `sheet` = the sheet's path, `sprite` = the sprite's name (both hashed by the script).
+
+# Series icons: the game's grey list-tab series icons (the ones the synergy panel rows show). `{type}` is the series
+# number (1 ie1 … 9 vr, the character index's numbering), written with two digits.
+[series_icons]
+sheet = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+sprite = "icon_list_tab_series{type}_off"
+
+# One series' own icon (a mod's new series, or a different picture for one): by series name or alias.
+# [series_icons.by_series.fantasy]
+# sheet = "#/menu/…/my_icons.g4tx"
+# sprite = "my_series_icon"
+
+# Staff role icons: the game's list-tab icon of the coaches / managers filter (a megaphone), grey like the series icons.
+[role_icons]
+sheet = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+manager = "icon_list_tab_coach_chr01_off"
+coach = "icon_list_tab_coach_chr01_off"

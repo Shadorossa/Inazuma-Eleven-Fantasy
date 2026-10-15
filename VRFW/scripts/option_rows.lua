@@ -1,14 +1,6 @@
--- VR-Framework › option rows (service S8 of VRFW 2.3, docs/framework/flow.md §2). Declarations: every active mod's
--- content\option_rows\*.toml (`VRFW.option_row/1`, keys: content\types\option_row.toml); native side:
--- content\game\option_rows.toml (hooks OptionRows.Read / OptionRows.Write, installed only when a mod declares a row).
---
---   * A declaration adds one value to a row of the game's settings menu (by its setting type): the value is listed at
---     `at` and chosen like the game's own. The game's settings (and the save) only ever keep the game's own values:
---     while the new value is chosen the game keeps `stores`, and the declaring mod's option value `option`
---     (mod_options\<mod>.json) says «chosen» (1). The mod reads that option as it reads any of its options.
---   * Shown value: the new one when the mod's option says chosen and the game's value is `stores`; else the game's
---     value (moved one place on when it is at or after `at`).
---   * CMND_VRFW_SETTING_ROW(key) -> chosen, index, live.
+-- Option rows: a declaration adds one value to a row of the game's settings menu (declarations: content\option_rows\*.toml; native side: content\game\option_rows.toml).
+-- The game keeps `stores` while the new value is chosen; the declaring mod's option `option` reads 1 (chosen).
+-- CMND_VRFW_SETTING_ROW(key) -> chosen, index, live
 
 OptionRows = OptionRows or {}
 
@@ -17,14 +9,13 @@ local D = require "lib/declarations"
 local function info(...) VRFW.log("option_rows:", ...) end
 local function warn(...) VRFW.warn("option_rows:", ...) end
 
--- the settings row (setting_menu's row record): setting type, value list (text ids), its u16 count, the shown index
--- and its base (value = index + base)
+-- settings row record: setting type, value list (text ids), u16 count, shown index and base (value = index + base)
 local ROW_TYPE, ROW_LIST, ROW_COUNT, ROW_INDEX, ROW_BASE = 0x08, 0x10, 0x18, 0x1C, 0x20
 
-local ROWS = {}          -- setting type -> the declaration in force (+ list = our value list buffer)
-local KEYS = {}          -- "<mod>.<name>" / "<name>" -> that row
+local ROWS = {}          -- setting type -> declaration in force (+ our value list buffer)
+local KEYS = {}          -- "<mod>.<name>" / "<name>" -> row
 local LIVE = false
-local pending = nil      -- the write in progress
+local pending = nil      -- write in progress
 
 local function rd(ty, at)
   if type(at) ~= "number" or at < 0x10000 then return nil end
@@ -43,7 +34,7 @@ local function crc(s)
   return f(s) % 4294967296
 end
 
--- the declaring mod's option: the new value is chosen
+-- declaring mod's option: the new value is chosen
 local function chosen(r)
   local ok, t = pcall(VRFW.options.values, r.mod)
   if not ok or type(t) ~= "table" then return false end
@@ -60,7 +51,7 @@ local function set_chosen(r, on)
   return true
 end
 
--- ---------------------------------------------------------------------------------------------- declarations
+-- --- declarations
 
 local function start()
   local schema, why = D.schema("option_row")
@@ -115,7 +106,7 @@ local function start()
   end
 end
 
--- our value list for row r whose game list is at `list` (game_values entries), built once
+-- our value list for row r whose game list is at `list`, built once
 local function our_list(r, list)
   if r.list ~= 0 then return r.list end
   local ids = {}
@@ -133,14 +124,14 @@ local function our_list(r, list)
   return p
 end
 
--- the shown place of game value g (the new value when it is chosen)
+-- shown place of game value g (the new value when chosen)
 local function shown(r, g)
   if chosen(r) and g == r.stores then return r.at end
   if g >= r.at then return g + 1 end
   return g
 end
 
--- after the engine read the row: our list, the shown index
+-- after the engine read the row: install our list and shown index
 local function on_read(ev)
   local row = ev.args[2]
   local r = ROWS[rd("u32", row and row + ROW_TYPE) or -1]
@@ -148,7 +139,7 @@ local function on_read(ev)
   local list, count = rd("ptr", row + ROW_LIST), rd("u16", row + ROW_COUNT)
   if not list or not count then return nil end
   if list ~= r.list then
-    if count ~= r.game_values then return nil end   -- not the game's list as declared: left as it is
+    if count ~= r.game_values then return nil end   -- not the declared game list: left as is
     local p = our_list(r, list)
     if not p then return nil end
     wr("ptr", row + ROW_LIST, p)
@@ -161,7 +152,7 @@ local function on_read(ev)
   return nil
 end
 
--- the engine writes the row: the chosen place -> the game's value; the shown index put back after the write
+-- on engine write: chosen place -> game value; shown index restored afterwards
 local function on_write(ev)
   pending = nil
   local row = ev.args[2]
@@ -188,7 +179,7 @@ local function on_write_post()
   return nil
 end
 
--- ---------------------------------------------------------------------------------------------- command
+-- --- command
 
 -- CMND_VRFW_SETTING_ROW(key) -> chosen, index, live
 function OptionRows.Cmd(key)

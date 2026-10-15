@@ -119,9 +119,32 @@ end
 -- imported) and back; a player with only a mix slot shows it directly. No chain: a Mix-Max no longer brings the
 -- partner's keshin onto this page. A copy of a card (a mod's fusion copy) asks its owner card through
 -- CMND_EVT_CHARA_OWNER when a mod declares it (no answer = no owner).
+-- 2026-10-14 (owner: Jade Beor's table showed Magister in the aura half, her page tagged Metis' «Armadura»): while the
+-- option «Tabla de habilidades» shows the new set, the page's aura / mix = THE projection (CharacterReforged.Page.
+-- Projection: the skill table's and the match's rule; an armour or aura left on a board branch or in the technique
+-- list is never the page's); a copy of a card asks its owner card. nil = the option on Victory Road / no answer.
+function EVT_PH_Projection(chara)
+  local page = type(CharacterReforged) == "table" and CharacterReforged.Page or nil
+  if chara == nil or chara == 0 or type(page) ~= "table" or type(page.Projection) ~= "function" then
+    return nil
+  end
+  local p = page.Projection(chara)
+  if p == nil then
+    local oko, owner = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_CHARA_OWNER"), chara)
+    if oko and type(owner) == "number" and owner ~= 0 and owner ~= chara then
+      p = page.Projection(owner)
+    end
+  end
+  return p
+end
+
 function EVT_PH_MixOf(chara)
   if chara == nil or chara == 0 then
     return 0
+  end
+  local proj = EVT_PH_Projection(chara)
+  if proj ~= nil then
+    return EVT_PH_U32(proj.mix)
   end
   local page = type(CharacterReforged) == "table" and CharacterReforged.Page or nil
   if type(page) ~= "table" or type(page.MixOf) ~= "function" then
@@ -158,6 +181,10 @@ end
 function EVT_PH_AuraOf(chara)
   if chara == nil or chara == 0 then
     return 0
+  end
+  local proj = EVT_PH_Projection(chara)
+  if proj ~= nil then
+    return EVT_PH_U32(proj.aura)
   end
   local s = EVT_PH_Board(chara, 8)
   if EVT_PH_IsSpecial(s) then
@@ -499,17 +526,32 @@ EVT_PH_TYPE_ICON = EVT_HC.TYPE_ICON
 -- layer (retail team00_30 meshes in their own draw order): band _fs_base01, type icon _icon_fs_area_dmy01, name
 -- _text_fs01, masked portrait. The panel's own band / name stay hidden (they are used for the empty page only).
 -- Miximax fusion of a base card (module miximax): nil or {partner = param, move, phdl, face, chara, name, best}
+-- Asked: Inazuma Fantasy's CMND_EVT_MX_GET, else the page slot CMND_CHARACTERREFORGED_PAGE_FUSION (All Miximaxed's
+-- running fusion of the card, the same answer + the partner's handle; 2026-10-14, owner: without Inazuma Fantasy the
+-- card showed the generic carrier «Miximax Trans» and its row's move instead of the partner and his move).
 EVT_PH_MX_CARRIER = 2450842569 --[[wmm_evt]]
+function EVT_PHI.MxAsk(chara)
+  local ok, exists, partner, m1, m2, pchara, best = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_MX_GET"), chara)
+  if ok and exists then
+    return ok, exists, partner, m1, m2, pchara, best, nil
+  end
+  local okp, pexists, ppartner, pm1, pm2, ppchara, pbest, phdl = pcall(funcLuaCommand, CALC_CRC("CMND_CHARACTERREFORGED_PAGE_FUSION"), chara)
+  if okp and pexists == true then
+    return okp, pexists, ppartner, pm1, pm2, ppchara, pbest, phdl
+  end
+  return ok, exists, partner, m1, m2, pchara, best, nil
+end
+
 function EVT_PHI.MxGet(chara)
   if chara == nil or chara == 0 then
     return nil
   end
-  local ok, exists, partner, m1, m2, pchara, best = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_MX_GET"), chara)
+  local ok, exists, partner, m1, m2, pchara, best, page_phdl = EVT_PHI.MxAsk(chara)
   if not ok or not exists then
     -- in a match the character is a copy: fusions are keyed by the saved card (the loader maps it back)
     local oko, owner = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_CHARA_OWNER"), chara)
     if oko and type(owner) == "number" and owner ~= 0 and owner ~= chara then
-      ok, exists, partner, m1, m2, pchara, best = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_MX_GET"), owner)
+      ok, exists, partner, m1, m2, pchara, best, page_phdl = EVT_PHI.MxAsk(owner)
       if ok and exists then
         chara = owner
       end
@@ -519,8 +561,12 @@ function EVT_PHI.MxGet(chara)
     return nil
   end
   local f = {partner = partner or 0, move = m1 or 0, chara = pchara or 0, best = best == true or best == 1}
-  local okh, phdl = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_MIXIMAX_GET"), chara)
-  f.phdl = okh and type(phdl) == "number" and phdl or 0
+  if type(page_phdl) == "number" and page_phdl ~= 0 then
+    f.phdl = page_phdl
+  else
+    local okh, phdl = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_MIXIMAX_GET"), chara)
+    f.phdl = okh and type(phdl) == "number" and phdl or 0
+  end
   -- the face-icon key retail uses for a miximax partner (the retail miximax window path), not the chara id
   local okk, face = pcall(funcLuaCommand, 347353059, f.partner)
   f.face = (okk and type(face) == "number" and face ~= 0) and face or f.chara
@@ -1042,7 +1088,46 @@ EVT_PHI.TENS_NODE = 923022909            -- _pos_tension01
 EVT_PHI.TENS_LABEL = CALC_CRC("_gtxt_tension01")
 EVT_PHI.TENS_X0 = 225                    -- plate_hiper_build.py PH_TENS_X: the retail place of the move gauge
 EVT_PHI.PoolGaugeOn = false
-function EVT_PHI.PoolGauge(L, peg)
+-- 2026-10-15 (owner: a totem's SP per level under its SP gauges): one text line «Lv1 80 · Lv2 100 · … SP» from whichever
+-- mod answers CMND_EVT_PEG_LEVELS(aura) (Souls Rework); layer evt_ph_pool_levels (content\menus\player_page_layers.toml:
+-- the corner button's text node, plates hidden; hung at the same joint as evt_ph_peg_pool), centred under the two
+-- gauges, LEVELS_DY under their line, scaled LEVELS_K. No answer = no line.
+EVT_PHI.LEVELS = 2813924048              -- crc32("evt_ph_pool_levels")
+EVT_PHI.LEVELS_TEXT = 378327766          -- _text_cmd_back01
+EVT_PHI.LEVELS_PLATES = {298211823 --[[_cmd_back_base01]], 2853207670 --[[_cmd_back_base01_add]]}
+EVT_PHI.LEVELS_K, EVT_PHI.LEVELS_DY = 0.55, 30
+function EVT_PHI.PoolLevels(skill, x0, x1, y)
+  local T = EVT_PHI.LEVELS
+  if not EVT_PH_Exists(T) then
+    return false
+  end
+  local text = nil
+  if skill ~= nil and x0 ~= nil then
+    local ok, s = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_PEG_LEVELS"), skill)
+    if ok and type(s) == "string" and s ~= "" then
+      text = s
+    end
+  end
+  if text == nil then
+    if funcLuaMenuCommand(C.IS_OPEN_LAYER, T, 0) then
+      funcLuaMenuCommand(C.LAYER_VISIBLE, T, 0, false)
+    end
+    return false
+  end
+  EVT_PH_Open(T, 0)
+  local tj = EVT_PHI.GEO.TENS_J[1]
+  for _, m in ipairs(EVT_PHI.LEVELS_PLATES) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, T, m, false, 0)
+  end
+  funcLuaMenuCommand(C.TEXT, T, EVT_PHI.LEVELS_TEXT, text, 0)
+  funcLuaMenuCommand(C.LOCAL_SCALE, T, EVT_PHI.LEVELS_K, EVT_PHI.LEVELS_K, 1, 0)
+  funcLuaMenuCommand(C.LOCAL_POS, T, (x0 + x1) / 2 - tj[1], y - EVT_PHI.LEVELS_DY - tj[2], 0, 0)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, T, 0, true)
+  EVT_PH_Log("hiper pool levels", text)
+  return true
+end
+
+function EVT_PHI.PoolGauge(L, peg, skill)
   local P, G = EVT_PHI.POOL, EVT_PHI.GEO
   local on = peg ~= nil and EVT_PH_POOL_GAUGE ~= false and EVT_PH_Exists(P) and type(VRFW_UI) == "table"
   if not on then
@@ -1055,6 +1140,7 @@ function EVT_PHI.PoolGauge(L, peg)
       funcLuaMenuCommand(2885415772 --[[NODE_SCALE]], L, 0, EVT_PHI.TENS_NODE, 1, 1)
       funcLuaMenuCommand(C.MESH_VISIBLE, L, EVT_PHI.TENS_LABEL, true, 0)
     end
+    pcall(EVT_PHI.PoolLevels, nil)
     return false
   end
   local k, w = EVT_PHI.POOL_ROW_K, EVT_PHI.POOL_ROW_W * EVT_PHI.POOL_ROW_K
@@ -1078,6 +1164,7 @@ function EVT_PHI.PoolGauge(L, peg)
     funcLuaMenuCommand(C.MESH_VISIBLE, l, EVT_PHI.TENS_LABEL, false, i)
   end})
   funcLuaMenuCommand(C.LAYER_VISIBLE, P, 0, true)
+  pcall(EVT_PHI.PoolLevels, skill, xm, right, mainY)
   local okp, px, py = pcall(funcLuaMenuCommand, C.MESH_POSE, P, 0, EVT_PHI.TENS_NODE)
   local okm, mx, my = pcall(funcLuaMenuCommand, C.MESH_POSE, L, 0, EVT_PHI.TENS_NODE)
   EVT_PH_Log("hiper pool gauge", math.floor(peg.pool + 0.5), tostring(peg.kind), "main", string.format("%.0f", xm),
@@ -1228,7 +1315,7 @@ function EVT_PHI.ShowSkill(skill, chara)
   -- the pool on the header card (after HideExtras, which hides it with the extra layers)
   pcall(EVT_PHI.PoolTag, (fusion == nil and mc == nil) and EVT_PHI.PegInfo(skill) or nil)
   -- 2026-10-12: the keshin's pool as a second gauge right of its move's PEG (after PoolTag, which hides instance 0)
-  pcall(EVT_PHI.PoolGauge, L, (fusion == nil and mc == nil and EVT_PHI.spiritRow) and EVT_PHI.PegInfo(skill) or nil)
+  pcall(EVT_PHI.PoolGauge, L, (fusion == nil and mc == nil and EVT_PHI.spiritRow) and EVT_PHI.PegInfo(skill) or nil, skill)
   pcall(EVT_PHI.QuoteBar, L, true)
   if fusion == nil then
     -- a keshin Hiper that arms on this player's body: «Armadura» tag on the header card's bottom edge

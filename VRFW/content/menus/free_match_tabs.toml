@@ -1,8 +1,7 @@
 # VR-Framework 2.0.1: the free-match list («Competir contra bots» / «Partido libre», soccer_vs_cpu_list_menu) gets 12
 # tab instances (retail 9) for the extra tabs the mods declare ([[VRFW.FreeMatchTab]] of the team type,
 # docs/framework/free-match-tabs.md). The framework's Lua (menu_engine soccer_vs_cpu_list_menu/100_free_match_tabs.lua)
-# sets the tab count and hides the instances past it, so with no declared tab the bar is the retail one. Was Inazuma
-# Fantasy's (menus/107_vs/soccer_vs_cpu_list_menu.toml, graft fantasy_tab) until 2026-10-08.
+# sets the tab count and hides the instances past it, so with no declared tab the bar is the retail one.
 schema = "VRFW.menu/2"
 
 [[patch]]

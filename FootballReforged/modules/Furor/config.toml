@@ -1,0 +1,25 @@
+# Furor: its settings (read by scripts\banner.lua at the start; restart the game after a change).
+# docs/game/mechanics/furor.md §3.4
+
+# The «Fase de furor activa» ENTRY banner (graft research/grafts/furor_banner): when a team's furor phase starts it
+# slides in from the left, stays, then slides out to the right (Inazuma Eleven 3's phase banner).
+#   enter_from / exit_to                      "left" or "right"
+#   in_seconds / hold_seconds / out_seconds   the slide in, the time it stays, the slide out
+#   slide_units      how far right it starts and ends (layout units of the scoreboard: more than the strip's half width
+#                    plus half the screen, so it starts fully off screen)
+#   top_units        the strip's top under the scoreboard's keeper bar locators
+#   height_units     the strip's height
+[furor_banner]
+enter_from = "left"
+exit_to = "right"
+in_seconds = 0.35
+hold_seconds = 2.0
+out_seconds = 0.35
+slide_units = 3000
+top_units = 40
+height_units = 56
+
+# The fire gauge HUD (graft research/grafts/furor_hud): debug = true draws the plain retail gauge (a solid yellow bar,
+# no Strikers sprite) at every slot, the fire slots full: a test of where the bars land
+[furor_hud]
+debug = false

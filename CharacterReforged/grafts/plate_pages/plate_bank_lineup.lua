@@ -101,28 +101,6 @@ do
     end
   end
 
-  for _, fname in ipairs({"PostStep", "Step"}) do
-    if EVT_PPG_Wrap(fname, function(orig)
-      return function(...)
-        local r = table.pack(orig(...))          -- the original first; ours after it
-        pcall(B.Step)
-        return table.unpack(r, 1, r.n)
-      end
-    end) then
-      break
-    end
-  end
-  for _, fname in ipairs({"FinalizeMenu", "OnCloseLayer"}) do
-    EVT_PPG_Wrap(fname, function(orig)
-      return function(...)
-        local r = table.pack(orig(...))
-        if next(B.hid) ~= nil then
-          pcall(B.Restore, fname)
-        end
-        return table.unpack(r, 1, r.n)
-      end
-    end)
-  end
 
   -- 2026-10-12 (owner, bank with «Mostrar estadísticas» on). Two retail moves of the bank leave the stats view in a
   -- state IF's page was never laid out for:
@@ -142,8 +120,9 @@ do
   --     bank's right-side offset (PlayOffsetAnimCharaBankPersonalPlate(true), the retail list-side call).
   -- EVT_PPB_KEEP_ON_SEARCH = false / EVT_PPB_FORMATION_HIDE = false give the retail behaviour back. loader.log
   -- «EVT_PPB ui <n>», «EVT_PPB formation suspend» / «EVT_PPB formation resume», «EVT_PPB search keep».
-  B.ui = B.ui or 0
-  B.open = B.open or false
+  B.ui = 0                -- the retail n13 (0 list, 1 lineup) and flag (stats view on) start again with the chunk
+  B.open = false
+  B.late = false
   B.formSusp = false
   B.leftOpen = false
 
@@ -179,44 +158,140 @@ do
     end
   end
 
-  EVT_PPG_Wrap("ChangeActiveUI", function(orig)
-    return function(a1, ...)
-      local r = table.pack(orig(a1, ...))     -- the original first
-      if type(a1) == "number" and a1 ~= B.ui then
-        B.ui = a1
-        Log("EVT_PPB ui", a1)
+
+  -- 2026-10-15 (owner: the lineup showed behind the stats view again). Every wrapper of this block is set in
+  -- B.Install: once while the chunk loads and once more at the bank's first engine command, when every patch of
+  -- every mod has run. A later patch that defines the bank's functions again (a promoted copy of the retail script,
+  -- e.g. InaRogue's rogue_dock, loads after this mod) replaced Step / ChangeActiveUI / OpenPersonalPlate ... and
+  -- none of the rules below ran; the second pass wraps those fresh definitions (EVT_PPG_Wrap: one wrapper per
+  -- definition, a function already wrapped is left alone). loader.log «EVT_PPB install late».
+  function B.Install()
+    for _, fname in ipairs({"PostStep", "Step"}) do
+      if type(_ENV[fname]) == "function" then
+        EVT_PPG_Wrap(fname, function(orig)
+          return function(...)
+            B.inStep = true
+            local r = table.pack(orig(...))        -- the original first; ours after it
+            B.inStep = false
+            pcall(B.Step)
+            return table.unpack(r, 1, r.n)
+          end
+        end)
+        break
       end
-      pcall(B.UiSync)
-      return table.unpack(r, 1, r.n)
     end
-  end)
-  EVT_PPG_Wrap("OpenPersonalPlate", function(orig)
-    return function(...)
-      local r = table.pack(orig(...))
-      B.open = true
-      B.leftOpen = B.ui == 1
-      pcall(B.UiSync)
-      return table.unpack(r, 1, r.n)
+    for _, fname in ipairs({"FinalizeMenu", "OnCloseLayer"}) do
+      EVT_PPG_Wrap(fname, function(orig)
+        return function(...)
+          local r = table.pack(orig(...))
+          if next(B.hid) ~= nil then
+            pcall(B.Restore, fname)
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
     end
-  end)
-  EVT_PPG_Wrap("ClosePersonalPlate", function(orig)
-    return function(...)
-      B.open = false
-      B.formSusp = false
-      B.leftOpen = false
-      return orig(...)
-    end
-  end)
-  EVT_PPG_Wrap("SetNameSearchInputEnabled", function(orig)
-    return function(a1, ...)
-      local keep = a1 == true and EVT_PPB_KEEP_ON_SEARCH ~= false and B.ui ~= 1 and PageShown()
-      local r = table.pack(orig(a1, ...))
-      if keep then
-        L(1453710531, B.PLATE_MENU)                                -- the retail suspend undone: the page stays
-        Log("EVT_PPB search keep")
+    EVT_PPG_Wrap("ChangeActiveUI", function(orig)
+      return function(a1, ...)
+        local r = table.pack(orig(a1, ...))     -- the original first
+        if type(a1) == "number" and a1 ~= B.ui then
+          B.ui = a1
+          Log("EVT_PPB ui", a1)
+        end
+        pcall(B.UiSync)
+        return table.unpack(r, 1, r.n)
       end
-      return table.unpack(r, 1, r.n)
+    end)
+    EVT_PPG_Wrap("OpenPersonalPlate", function(orig)
+      return function(...)
+        local r = table.pack(orig(...))
+        B.open = true
+        B.leftOpen = B.ui == 1
+        pcall(B.UiSync)
+        return table.unpack(r, 1, r.n)
+      end
+    end)
+    EVT_PPG_Wrap("ClosePersonalPlate", function(orig)
+      return function(...)
+        B.open = false
+        B.formSusp = false
+        B.leftOpen = false
+        return orig(...)
+      end
+    end)
+    EVT_PPG_Wrap("SetNameSearchInputEnabled", function(orig)
+      return function(a1, ...)
+        local keep = a1 == true and EVT_PPB_KEEP_ON_SEARCH ~= false and B.ui ~= 1 and PageShown()
+        local r = table.pack(orig(a1, ...))
+        if keep then
+          L(1453710531, B.PLATE_MENU)                                -- the retail suspend undone: the page stays
+          Log("EVT_PPB search keep")
+        end
+        return table.unpack(r, 1, r.n)
+      end
+    end)
+  end
+
+  -- The bank's engine command entry (funcLuaMenuCommand) is set by the engine after the chunk and every patch ran:
+  -- its first call installs the wrappers again over the final definitions. The same entry answers «not moved» to
+  -- the retail «pointer moved» test (3272825600) inside Step while the stats view is shown on the list side and the
+  -- pointer is on the right half: the retail Step moves the bank to the lineup side whenever the pointer crosses
+  -- the middle of the screen, i.e. as soon as it goes over the player page, which suspended the page (B.UiSync).
+  -- The lineup side stays reachable with the pad (right off the list), «Añadir al equipo» and with the pointer once
+  -- the stats view is hidden (V).
+  -- EVT_PPB_POINTER_KEEP = false gives the retail pointer rule back.
+  B.POINTER_MOVED = 3272825600
+  B.cmdWrapped = B.cmdWrapped or {}
+  local function WrapMenuCommand(f)
+    if type(f) ~= "function" or B.cmdWrapped[f] then
+      return f
     end
-  end)
+    local w = function(id, ...)
+      if not B.late then
+        B.late = true
+        local ok, err = pcall(B.Install)
+        Log("EVT_PPB install late", tostring(ok), tostring(err))
+      end
+      if id == B.POINTER_MOVED and B.inStep and B.ui == 0 and EVT_PPB_POINTER_KEEP ~= false then
+        local moved = f(id, ...)
+        if moved and Want() then
+          -- the retail test that follows: pointer x (558229292, flags 2 | 8) against half the screen width
+          local okx, x = pcall(f, 558229292, 10)
+          local okw, w = pcall(funcLuaCommand, 4207852906, 2)
+          if okx and okw and type(x) == "number" and type(w) == "number" and x - w / 2 >= 0 then
+            return false                                             -- right half: no switch to the lineup
+          end
+        end
+        return moved
+      end
+      return f(id, ...)
+    end
+    B.cmdWrapped[w] = true
+    return w
+  end
+  local cur = rawget(_ENV, "funcLuaMenuCommand")
+  if type(cur) == "function" then
+    rawset(_ENV, "funcLuaMenuCommand", WrapMenuCommand(cur))
+  else
+    local mt = getmetatable(_ENV)
+    if mt == nil then
+      mt = {}
+      setmetatable(_ENV, mt)
+    end
+    local prev = mt.__newindex
+    mt.__newindex = function(t, k, v)
+      if k == "funcLuaMenuCommand" then
+        v = WrapMenuCommand(v)
+      end
+      if prev == nil then
+        rawset(t, k, v)
+      elseif type(prev) == "function" then
+        prev(t, k, v)
+      else
+        prev[k] = v
+      end
+    end
+  end
+  B.Install()
 end
 -- ===== EVT plate_pages bank END =====

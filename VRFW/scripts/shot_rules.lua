@@ -1,24 +1,14 @@
--- VR-Framework › shot / zone rules (service S5 of VRFW 2.3, docs/framework/rules.md §8). Declarations: every active
--- mod's content\shot_rules\*.toml (`VRFW.shot_rule/1`, keys: content\types\shot_rule.toml); native side:
--- content\game\shot_rules.toml. (Was Inazuma Fantasy's scripts\shoot_zone.lua and the long-shot row of its
--- training_field.lua until VRFW 2.3.)
---
---   * [[VRFW.ZoneArea]] area = "penalty_box": IsInZoneArea / IsInAnyZoneArea are replaced whole and answered natively
---     (no Lua call per query: the AI asks them many times per frame). This script only keeps their data current, once
---     per match frame (`tick`):
---       - table ShotZone.Box: team 0 / 1 = the penalty box that team attacks (the one on its attacking side of the
---         centre, by its attack sign), 10 / 11 = the field's own boxes 0 / 1; { x0, x1, z0, z1 } with the margin;
---         team records also { cz, sg, hz } (centre z, attack sign, half length) for the retail chain answers;
---       - state keys vrfw.shot_zone.ball / .setpiece (where the answers look for the vector the z was read from),
---         .play_ctrl (the zone / chain flags), .line (the address of the game's zone line), .chain_retail (chain_area).
---     No valid field data (no match, a loading pitch) = an empty table: every query answers false, as retail does then.
---     The margin: margin_m, or the declaring mod's config value at margin_config (0..20 m). extra_state = a state key
---     prefix of the declaring mod: <prefix>.0 / .1 = extra metres around the box team 0 / 1 attacks (its passives; a
---     field box gets the extra of the team that attacks it); the total stays within 0..20 m. Several mods: each key the
---     later mod (load order) gives wins.
---   * [[VRFW.LongShot]] all_moves_flag = "<flag>": while that flag is non-zero during a match, the two long-shot checks of
---     SkillSituationOk pass (every shot move may be a long shot); the game's bytes come back when the flag is 0, at the
---     end of the match and at the title.
+-- Shot / zone rules (content/shot_rules/*.toml, schema VRFW.shot_rule/1); native side: content/game/shot_rules.toml.
+--   * [[VRFW.ZoneArea]] area = "penalty_box" / "goal_area" (both teams; user_area / rival_area per side when the match has a user side):
+--     IsInZoneArea / IsInAnyZoneArea are answered natively; this script refreshes their data once per match frame:
+--       - table ShotZone.Box: team 0 / 1 = the area that team attacks, 10 / 11 = the field's halves 0 / 1 ({ x0, x1, z0, z1 } with margin; team records add { cz, sg, hz });
+--         a side on "retail" gets the game's full-width band past the zone line (zoneLineFieldRateZ) as its rectangle;
+--       - scale: the box's width (about its centre) and depth (from the goal line toward the centre) x this, before the margin;
+--       - state keys vrfw.shot_zone.ball / .setpiece / .play_ctrl / .line / .chain_retail feed the retail chain answers.
+--     No valid field data (no match, loading pitch) = empty table: every query answers false.
+--     Margin: margin_m, or the mod's config value at margin_config (0..20 m); extra_state = state key prefix, <prefix>.0 / .1 = extra metres around the box team 0 / 1 attacks (total within 0..20 m).
+--     With several mods, each key the later mod (load order) gives wins.
+--   * [[VRFW.LongShot]] all_moves_flag = "<flag>": while the flag is non-zero in a match, every shot move passes the long-shot checks of SkillSituationOk; the game's bytes return when it is 0, at match end and at the title.
 
 local D = require "lib/declarations"
 
@@ -31,15 +21,18 @@ local KEY_PLAY_CTRL, KEY_LINE, KEY_CHAIN = "vrfw.shot_zone.play_ctrl", "vrfw.sho
 local ZONE_HOOKS = { "ShotZone.Area", "ShotZone.AreaAny" }
 local ANY_FIRST = 10
 
--- field data: valid byte, half length z, centre z, the two boxes (+0x16884 + i x 0x28 = {x0, z0, x1, z1, …, cz +0x1C})
+-- field data: valid byte, half length z, centre z, the two boxes (+0x16884 + i x 0x28 = {x0, z0, x1, z1, ..., cz +0x1C})
 local FIELD_VALID, FIELD_HALF_Z, FIELD_CENTRE_Z = 0x7BF92, 0x4, 0x70
 local FIELD_BOX, FIELD_BOX_STRIDE, BOX_CZ = 0x16884, 0x28, 0x1C
+-- field boxes 0 / 1 = the penalty boxes, 2 / 3 = the goal areas (FieldBuild 0x1615350)
+local GOAL_AREA_FIRST = 2
+local AREAS = { retail = true, penalty_box = true, goal_area = true }
+local BAND = 1e9
 -- match info: team block + 0x60 + team x 0x1130, attack sign i8 at + 0x1102
 local MI_TEAMS, TEAM_STRIDE, TEAM_SIGN = 0x60, 0x1130, 0x1102
 local MAX_FIELD_LOGS = 20
 
--- the long-shot sites: the bytes that make the check pass (`on`) and the game's (`off`), as the expect lists of
--- content\game\shot_rules.toml
+-- long-shot sites: bytes that pass the check (`on`) and the game's (`off`), as in content/game/shot_rules.toml
 local LONG_PATCHES = {
   { name = "ShotRules.LongShotZone", on = "0C 01 90 90", off = "F6 46 08 04" },
   { name = "ShotRules.LongShotKeep", on = "B0 01 90 90 90 90 90 90", off = "8B 46 08 C1 E8 02 24 01" },
@@ -58,9 +51,9 @@ local function global(name)
   return nil
 end
 
--- ---------------------------------------------------------------------------------------------- declarations
+-- ---- declarations
 
-local ZONE = nil        -- { margin, chain_retail, extra = prefix or nil, by = { key -> mod } } while area = penalty_box
+local ZONE = nil        -- { margin, scale, area, user_area, rival_area, chain_retail, extra = prefix or nil } while some side is not "retail"
 local LONG_FLAGS = {}   -- { flag, mod } of every [[VRFW.LongShot]]
 
 local function config_value(mod, path)
@@ -77,17 +70,21 @@ local function start()
     return
   end
   local decls, skipped = D.load(schema, warn)
-  -- ZoneArea: each key the later mod gives wins; the config paths are read on the mod that gave them
+  -- ZoneArea: the later mod wins per key; config paths are read on the mod that gave them
   local z = {}
   for _, d in ipairs(decls) do
     if d.entry == "ZoneArea" then
       local v = d.v
-      if v.area ~= "retail" and v.area ~= "penalty_box" then
-        warn(string.format("%s: area = %q: \"retail\" or \"penalty_box\": left out", d.where, v.area))
+      local bad = nil
+      for _, k in ipairs({ "area", "user_area", "rival_area" }) do
+        if (k == "area" or (v[k] or "") ~= "") and not AREAS[v[k]] then bad = k end
+      end
+      if bad then
+        warn(string.format("%s: %s = %q: \"retail\", \"penalty_box\" or \"goal_area\": left out", d.where, bad, tostring(v[bad])))
       elseif v.chain_area ~= "retail" and v.chain_area ~= "box" then
         warn(string.format("%s: chain_area = %q: \"retail\" or \"box\": left out", d.where, v.chain_area))
       else
-        for _, k in ipairs({ "area", "margin_m", "margin_config", "chain_area", "chain_area_config", "extra_state" }) do
+        for _, k in ipairs({ "area", "user_area", "rival_area", "scale", "margin_m", "margin_config", "chain_area", "chain_area_config", "extra_state" }) do
           if d.given[k] or z[k] == nil then z[k] = { value = v[k], mod = d.mod, given = d.given[k] } end
         end
       end
@@ -95,7 +92,13 @@ local function start()
       LONG_FLAGS[#LONG_FLAGS + 1] = { flag = d.v.all_moves_flag, mod = d.mod }
     end
   end
-  if z.area and z.area.value == "penalty_box" then
+  local function side_area(k)
+    local v = z[k] and z[k].value
+    if type(v) == "string" and v ~= "" then return v end
+    return z.area and z.area.value or "retail"
+  end
+  local user_area, rival_area = side_area("user_area"), side_area("rival_area")
+  if z.area and (z.area.value ~= "retail" or user_area ~= "retail" or rival_area ~= "retail") then
     local m = tonumber(z.margin_m.value) or 0
     local cm = config_value(z.margin_config.mod, z.margin_config.value)
     if cm ~= nil then m = tonumber(cm) or 0 end
@@ -105,7 +108,11 @@ local function start()
     local cc = config_value(z.chain_area_config.mod, z.chain_area_config.value)
     if cc ~= nil then chain = tostring(cc) end
     local extra = z.extra_state.value
-    ZONE = { margin = m, chain_retail = chain ~= "box", extra = (type(extra) == "string" and extra ~= "") and extra or nil }
+    local scale = tonumber(z.scale and z.scale.value) or 1
+    if scale ~= scale or scale < 0.5 then scale = 0.5 end
+    if scale > 3 then scale = 3 end
+    ZONE = { margin = m, scale = scale, area = z.area.value, user_area = user_area, rival_area = rival_area,
+      chain_retail = chain ~= "box", extra = (type(extra) == "string" and extra ~= "") and extra or nil }
     local parts, all = {}, true
     for _, h in ipairs(ZONE_HOOKS) do
       local ok, done, e = pcall(VRFW.hook.apply, h)
@@ -113,7 +120,8 @@ local function start()
       all = all and live
       parts[#parts + 1] = h .. (live and " installed" or (" NOT installed (" .. tostring(ok and e or done) .. ")"))
     end
-    info(string.format("zone area: penalty box (%s), margin %.1f m, chains on %s%s; %s", z.area.mod, m,
+    info(string.format("zone area: %s (%s; with a user side: yours %s, the rival's %s), scale %.2f, margin %.1f m, chains on %s%s; %s",
+      z.area.value, z.area.mod, user_area, rival_area, scale, m,
       ZONE.chain_retail and "the game's own area" or "the box", ZONE.extra and (", extra metres from " .. ZONE.extra .. ".0 / .1") or "",
       table.concat(parts, ", ")))
     if not all then
@@ -133,7 +141,7 @@ end
 
 start()
 
--- ---------------------------------------------------------------------------------------------- zone area
+-- ---- zone area
 
 local chain_published = false
 
@@ -154,7 +162,7 @@ local function read_field()
   if not f or (rd("u8", f + FIELD_VALID) or 0) == 0 then return nil end
   local field = { half_z = rd("f32", f + FIELD_HALF_Z), centre_z = rd("f32", f + FIELD_CENTRE_Z), boxes = {} }
   if not field.half_z or not field.centre_z then return nil end
-  for i = 0, 1 do
+  for i = 0, 3 do
     local a = f + FIELD_BOX + i * FIELD_BOX_STRIDE
     local b = { x0 = rd("f32", a), z0 = rd("f32", a + 4), x1 = rd("f32", a + 8), z1 = rd("f32", a + 0xC), cz = rd("f32", a + BOX_CZ) }
     if not (b.x0 and b.z0 and b.x1 and b.z1 and b.cz) then return nil end
@@ -168,31 +176,66 @@ local function sign_of(mi, team)
   return rd("i8", mi + MI_TEAMS + team * TEAM_STRIDE + TEAM_SIGN) or 0
 end
 
--- the box a team with attack sign `sign` shoots at: the one on its attacking side of the centre
-local function attacked(field, sign)
+-- the box of one kind (first = 0: penalty boxes, GOAL_AREA_FIRST: goal areas) a team with attack sign `sign` shoots at
+-- (its attacking side of the centre)
+local function attacked(field, sign, first)
   if sign == 0 then return nil end
-  for _, b in ipairs(field.boxes) do
+  for i = (first or 0) + 1, (first or 0) + 2 do
+    local b = field.boxes[i]
     if (b.cz - field.centre_z) * sign > 0 then return b end
   end
   return nil
 end
 
-local function rect(b, extra)
+-- the game's zone line (zoneLineFieldRateZ, f32)
+local LINE_ADDR = nil
+local function zone_line()
+  if not LINE_ADDR then
+    local ok, a = pcall(VRFW.mem.global_addr, "shot_zone_line")
+    if ok and type(a) == "number" and a >= 0x10000 then LINE_ADDR = a end
+  end
+  return rd("f32", LINE_ADDR)
+end
+
+-- a box x the scale (width about its centre, depth from the goal line toward the centre), widened by the margin + extra
+local function rect(b, extra, field)
   local m = math.min(ZONE.margin + (extra or 0), 20)
-  return {
-    x0 = math.min(b.x0, b.x1) - m, x1 = math.max(b.x0, b.x1) + m,
-    z0 = math.min(b.z0, b.z1) - m, z1 = math.max(b.z0, b.z1) + m,
-  }
+  local s = ZONE.scale or 1
+  local xl, xh = math.min(b.x0, b.x1), math.max(b.x0, b.x1)
+  local zl, zh = math.min(b.z0, b.z1), math.max(b.z0, b.z1)
+  if s ~= 1 then
+    local cx, hw = (xl + xh) / 2, (xh - xl) / 2 * s
+    xl, xh = cx - hw, cx + hw
+    local grow = (zh - zl) * (s - 1)
+    -- the goal line is the edge farther from the pitch's centre
+    if math.abs(zh - field.centre_z) >= math.abs(zl - field.centre_z) then zl = zl - grow else zh = zh + grow end
+  end
+  return { x0 = xl - m, x1 = xh + m, z0 = zl - m, z1 = zh + m }
 end
 
--- a team record: its box plus the game's own depth test data (ShotZone.Retail)
-local function team_rect(b, extra, field, sign)
-  local r = rect(b, extra)
-  r.cz, r.sg, r.hz = field.centre_z, sign, field.half_z
-  return r
+-- the game's own band for attack sign `sign`: every x, the depth past the zone line (nil: line unknown)
+local function band(field, sign)
+  local line = zone_line()
+  if not line or sign == 0 then return nil end
+  local edge = field.centre_z + sign * line * field.half_z
+  if sign > 0 then return { x0 = -BAND, x1 = BAND, z0 = edge, z1 = BAND } end
+  return { x0 = -BAND, x1 = BAND, z0 = -BAND, z1 = edge }
 end
 
--- the keys the chain answers read: the play controller every frame, the line address and the switch once
+-- the rectangle of an area kind for a team with attack sign `sign`
+local function area_rect(kind, field, sign, extra)
+  if kind == "retail" then return band(field, sign) end
+  local b = attacked(field, sign, kind == "goal_area" and GOAL_AREA_FIRST or 0)
+  return b and rect(b, extra, field) or nil
+end
+
+-- the area kind of a team: the user's / the rival's when the match has a user side, else `area`
+local function kind_of(team, user)
+  if user == 0 or user == 1 then return team == user and ZONE.user_area or ZONE.rival_area end
+  return ZONE.area
+end
+
+-- keys read by the chain answers: play controller (every frame), line address and switch (once)
 local function publish_chain()
   pcall(VRFW.state.set, KEY_PLAY_CTRL, global("shot_zone_play_ctrl"))
   if chain_published then return end
@@ -221,7 +264,7 @@ local function fmt_box(b)
   return string.format("x %.2f..%.2f z %.2f..%.2f", math.min(b.x0, b.x1), math.max(b.x0, b.x1), math.min(b.z0, b.z1), math.max(b.z0, b.z1))
 end
 
-local function refresh()
+local function refresh(ev)
   pcall(VRFW.state.set, KEY_BALL, global("shot_zone_ball"))
   pcall(VRFW.state.set, KEY_SETPIECE, global("shot_zone_setpiece"))
   publish_chain()
@@ -234,19 +277,28 @@ local function refresh()
   local s0, s1 = sign_of(mi, 0), sign_of(mi, 1)
   local b1, b2 = field.boxes[1], field.boxes[2]
   local ex = extras()
-  local sig = table.concat({ s0, s1, field.centre_z, field.half_z, b1.x0, b1.z0, b1.x1, b1.z1, b2.x0, b2.z0, b2.x1, b2.z1, ex[0], ex[1] }, ",")
+  local user = ev and ev.match and ev.match.user_team
+  local k0, k1 = kind_of(0, user), kind_of(1, user)
+  local line = zone_line() or 0
+  local sig = table.concat({ s0, s1, field.centre_z, field.half_z, b1.x0, b1.z0, b1.x1, b1.z1, b2.x0, b2.z0, b2.x1, b2.z1, ex[0], ex[1], k0, k1, line }, ",")
   if sig == last_sig then return end
   last_sig = sig
-  -- a field box gets the extra of the team that attacks it
-  local by_box = {}
+  -- the field half a team attacks gets that team's rectangle (IsInAnyZoneArea); a half nobody attacks: `area`
+  local entries, halves, parts = {}, {}, {}
   for team, s in pairs({ [0] = s0, [1] = s1 }) do
-    local b = attacked(field, s)
-    if b then by_box[b] = math.max(by_box[b] or 0, ex[team] or 0) end
+    local kind = team == 0 and k0 or k1
+    local r = area_rect(kind, field, s, ex[team])
+    local b = attacked(field, s, 0)
+    if r and b then
+      halves[b == b1 and 0 or 1] = r
+      entries[#entries + 1] = { team, { x0 = r.x0, x1 = r.x1, z0 = r.z0, z1 = r.z1, cz = field.centre_z, sg = s, hz = field.half_z } }
+    end
+    parts[#parts + 1] = string.format("team %d %s %s", team, kind, r and string.format("x %.2f..%.2f z %.2f..%.2f", r.x0, r.x1, r.z0, r.z1) or "none")
   end
-  local entries = { { ANY_FIRST, rect(b1, by_box[b1]) }, { ANY_FIRST + 1, rect(b2, by_box[b2]) } }
-  for team, s in pairs({ [0] = s0, [1] = s1 }) do
-    local b = attacked(field, s)
-    if b then entries[#entries + 1] = { team, team_rect(b, ex[team], field, s) } end
+  for half, b in pairs({ [0] = b1, [1] = b2 }) do
+    local r = halves[half]
+    if not r then r = area_rect(ZONE.area, field, (b.cz - field.centre_z) >= 0 and 1 or -1, 0) end
+    if r then entries[#entries + 1] = { ANY_FIRST + half, { x0 = r.x0, x1 = r.x1, z0 = r.z0, z1 = r.z1 } } end
   end
   local ok, err = pcall(VRFW.native.table_replace, BOX, nil, entries)
   filled = ok
@@ -256,12 +308,12 @@ local function refresh()
   end
   if field_logs < MAX_FIELD_LOGS then
     field_logs = field_logs + 1
-    info(string.format("zone area: pitch half length %.2f centre z %.2f; box 0 %s, box 1 %s; attack signs %d / %d; margin %.1f m (+ extra: team 0 %.2f m, team 1 %.2f m)",
-      field.half_z, field.centre_z, fmt_box(b1), fmt_box(b2), s0, s1, ZONE.margin, ex[0] or 0, ex[1] or 0))
+    info(string.format("zone area: pitch half length %.2f centre z %.2f; box 0 %s, box 1 %s; attack signs %d / %d; user side %s; zone line %.2f; scale %.2f, margin %.1f m (+ extra: team 0 %.2f m, team 1 %.2f m); %s",
+      field.half_z, field.centre_z, fmt_box(b1), fmt_box(b2), s0, s1, tostring(user), line, ZONE.scale, ZONE.margin, ex[0] or 0, ex[1] or 0, table.concat(parts, "; ")))
   end
 end
 
--- ---------------------------------------------------------------------------------------------- long shots
+-- ---- long shots
 
 local long_on = false
 
@@ -283,11 +335,11 @@ local function set_long(on, why)
   info("long shots: every shot move " .. (on and "ON" or "off") .. " (" .. why .. ")")
 end
 
--- ---------------------------------------------------------------------------------------------- events
+-- ---- events
 
 if ZONE or #LONG_FLAGS > 0 then
-  VRFW.on("tick", function()
-    if ZONE then refresh() end
+  VRFW.on("tick", function(ev)
+    if ZONE then refresh(ev) end
     if #LONG_FLAGS > 0 then
       local want, flag = long_wanted()
       set_long(want, want and ("flag " .. flag) or "flags off")

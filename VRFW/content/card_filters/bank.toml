@@ -1,14 +1,8 @@
-# The VR-Framework's character bank filter (docs/framework/card-filter.md): the bank screens that show the header
-# «Q ‹ value › E» above their lists. The values themselves are not here: they are the rarities and series the game and
-# the active mods declare (rarities\, the game's series table + [[series]] of any mod's card_filters\).
+# Character bank filter header («Q ‹ value › E» above the bank lists); values come from the rarities and series declared by the game and mods.
 schema = "VRFW.card_filter/1"
 
-# The keys: pad L2 / R2, keyboard Q / E. Both bank settings send them from the list (and the formation cards) as
-# OnFunction(3959000859, prev 3168962645 | next 70193212); the screens use them only for the personal plate's pages
-# (and, in chara_bank_menu, to jump list <-> formation with the plate closed): the header takes them while the plate
-# is closed. offset = from the retail filter plate (team14_02_filter_guide, instance 0), layout px, y up.
-# idle_local = the script's select mode local (host locals map): the header takes the keys only while it is 0, as the
-# retail script does (chara_bank_menu n18: 0 = browsing; member change / multi-remove modes ignore L2 / R2).
+# Per screen: function/args = prev/next key events (L2/R2, Q/E); offset = layout px from the retail filter plate (y up).
+# idle_local = screen local that must be 0 for the header to take the keys (0 = browsing).
 [[screen]]
 stem = "chara_bank_menu"
 offset = [0.0, -52.0]
@@ -16,16 +10,14 @@ function = 3959000859
 args = [3168962645, 70193212]
 idle_local = "n18"
 
-# the bank opened from searches, shops and the team dock's pickers
+# Bank opened from searches, shops and team pickers.
 [[screen]]
 stem = "chara_bank_menu_for_search"
 offset = [0.0, -52.0]
 function = 3959000859
 args = [3168962645, 70193212]
 
-# 2.0.3: the bar layout for 12 bank tabs (the retail 11 + one [[bank_tab]] of a mod): the attach rows vrfw_bank_tab12_NN
-# of cmn06_04_list_tab_attach_11_only and their locator joints (menus/bank_tabs.toml). A mod that brings a 13-tab
-# layout declares its own [[bank_tab_bar]] tabs = 13.
+# Tab bar layout for 12 bank tabs (retail 11 + one mod tab); a mod with 13 tabs declares its own [[bank_tab_bar]].
 [[bank_tab_bar]]
 tabs = 12
 attach = "vrfw_bank_tab12_{nn}"

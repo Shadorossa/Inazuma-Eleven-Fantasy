@@ -1,15 +1,6 @@
--- Build script of the type `item` (docs/framework/build-scripts.md, docs/framework/types/item.md): every active mod's
--- item / shop declarations (load order) -> item_config, shop_config, common_item_table / soccer_prize_config rows,
--- the texts, the currencies, the reward tables and a per-mod report.
---
--- Order: (1) every mod's NEW items (sorted by name inside a mod: the ids do not depend on the file order), (2) every
--- [[edit]], (3) every [[remove]], (4) every [[currency]], (5) every [[shop]] and (6) every [[reward]] (shop.lua),
--- (7) the match loot tables' [[VRFW.DropPool]] / [[VRFW.DropAdd]] / [[VRFW.DropFilter]] (drops.lua),
--- each in load order. A cell two mods set to different values is a conflict: noted, the mod that loads later wins.
---
--- input = { items = { { file, mod, load_index, value = <items file> } }, shops = { … shops files … },
---           techniques = { { key, item, mod_id } }, drops = { … drops.lua's input … } }
--- returns the item type's value (item_engine::Built without its native parts).
+-- Build script of the `item` type: every active mod's item / shop declarations -> item_config, shop_config, loot / prize rows, texts, currencies, reward tables and a per-mod report.
+-- Order: new items (sorted by name within a mod), [[edit]], [[remove]], [[currency]], [[shop]] and [[reward]] (shop.lua), then loot tables (drops.lua); each in load order. Conflicting cells: the later mod wins.
+-- input = { items = { { file, mod, load_index, value } }, shops, techniques = { { key, item, mod_id } }, drops }; returns the item type's value.
 
 local U = require "lib/util"
 local C = require "lib/cond"
@@ -21,7 +12,7 @@ local SHOP_PREFIX = "data/common/gamedata/shop/shop_config_"
 local LOOT_PREFIX = "data/common/gamedata/item/common_item_table_"
 local PRIZE_PREFIX = "data/common/gamedata/soccer/soccer_prize_config_"
 
--- the item_config number space of catalog numbers (an item's bit in the 8192-bit item-get flags)
+-- item_config number space of catalog numbers (an item's bit in the 8192-bit item-get flags)
 local CATALOG_SPACE = "item_catalog"
 local CATALOG_LIMIT = 8192
 
@@ -54,8 +45,7 @@ local function of_list(l) return WORD[l] or "other" end
 -- the stats of an equipment item: its _REGULAR_UNIQUE_BASE companion row, in this order
 local STATS = { "kick", "control", "technique", "pressure", "physical", "agility", "intelligence" }
 
--- The shared layout of the 21 ITEM_*_INFO lists (schemas/item/item_*.toml): a column by its schema name; a list
--- whose schema does not name it falls back to the shared layout's position.
+-- Shared layout of the 21 ITEM_*_INFO lists: a column by its schema name, falling back to the shared position.
 local LAYOUT = { id = 0, reserved_1 = 1, name_text = 2, desc_text = 3, catalog_no = 4, max_stack = 7, key = 11,
   rarity = 12, base_item = 14, icon_index = 15, uniform = 18 }
 
@@ -351,7 +341,7 @@ return function(input)
       if name_id == 0 and has_name then errs[#errs + 1] = "this item has no name row" end
       X.texts_of(m, what, "item_text", name_id, desc_id, f.text, d, is_new, add_desc)
     end
-    -- sorted, duplicates once (Rust sort + dedup)
+    -- sorted, duplicates once
     VRFW.sort(errs)
     local last
     for _, e in ipairs(errs) do
@@ -363,8 +353,7 @@ return function(input)
     end
   end
 
-  -- Key item ownership: a new ITEM_IMPORTANT_CND_ARY row (the clauses OR the item's own item-get flag) and the
-  -- item's _REF_CND_ARY slice pointed at it.
+  -- Key item ownership: a new ITEM_IMPORTANT_CND_ARY row (clauses OR the item's item-get flag), pointed at by the item's _REF_CND_ARY slice.
   function X.key_condition(m, what, id, clauses)
     local groups = {}
     local resolver = function(r) return X.item_ref(r, m) end
@@ -433,7 +422,7 @@ return function(input)
     local name_text = X.new_text_id(key .. "#name")
     local desc_text = 0
     if any_text(d.text, "description") then desc_text = X.new_text_id(key .. "#desc") end
-    -- migration only: the catalog number the old rule gave (registered for old saves, never written)
+    -- migration only: the catalog number of the former rule (registered for old saves, never written)
     local old = VRFW.ids.slot("catalog:" .. key, 7700, 8100, X.legacy_catalog)
     if old then
       X.legacy_catalog[old] = true

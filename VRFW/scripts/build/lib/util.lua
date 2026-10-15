@@ -1,5 +1,4 @@
--- Shared helpers of the build scripts (docs/framework/build-scripts.md): ids, sorted iteration, texts, notes,
--- and the row helpers (find / where / clone / add / set / set_where / remove / move_slice) over the table methods.
+-- Shared helpers of the build scripts: ids, sorted iteration, texts, notes and row helpers (find / where / clone / add / set / set_where / remove / move_slice).
 local U = {}
 
 local TWO32 = 4294967296
@@ -120,8 +119,7 @@ function U.norm_default(d, text)
   return nil
 end
 
--- Text groups per (mod, default language), emitted in the order the Rust builds did: groups by (mod, default
--- language) in byte order (no default first), then stable-sorted by the mods' load order.
+-- Text groups per (mod, default language) in byte order (no default first), then stable-sorted by mod load order.
 function U.text_groups()
   local G = { groups = {}, order = {} }
   function G.push(m, d, row)
@@ -167,7 +165,6 @@ function U.text_groups()
 end
 
 -- ------------------------------------------------------------------------------------------------- row helpers
--- (docs/framework/build-scripts.md §3)
 
 -- First row of list `row` whose column `col` holds `value` (an id or a string).
 function U.find(t, row, col, value)

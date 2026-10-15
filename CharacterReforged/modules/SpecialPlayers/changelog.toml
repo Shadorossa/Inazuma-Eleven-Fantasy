@@ -1,0 +1,131 @@
+schema = "VRFW.changelog/1"
+# Special Players: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+lang = "es"
+name = "Special Players"
+
+[en]
+name = "Special Players"
+
+[fr]
+name = "Special Players"
+
+[de]
+name = "Special Players"
+
+[it]
+name = "Special Players"
+
+[pt]
+name = "Special Players"
+
+[ja]
+name = "Special Players"
+
+[zh_hans]
+name = "Special Players"
+
+[zh_hant]
+name = "Special Players"
+
+[[release]]
+icon = "general"
+notes = [
+    "La pasiva personalizada pasa a ser la «Pasiva propia».",
+    "Cada jugador trae la suya, fijada por los mods.",
+    "En el tablero se ve siempre y no se puede cambiar.",
+    "Los partidos usan la pasiva propia del jugador.",
+    "Tablero Fantasy: sin botón de pasiva personalizada.",
+    "Pasivas «<elemento> plus»: ×1,15 a sus técnicas.",
+    "Pasivas hechas de bloques que se editan en ModManager.",
+]
+
+  [release.en]
+  notes = [
+      "The custom passive becomes the «Signature Passive».",
+      "Each player brings his own, set by the mods.",
+      "The board always shows it; it cannot be changed.",
+      "Matches use the player's Signature Passive.",
+      "Fantasy table: no custom passive button.",
+      "Generic «<element> plus» passives: ×1.15 to those moves.",
+      "Passives made of blocks, edited in ModManager.",
+  ]
+
+  [release.fr]
+  notes = [
+      "Le passif personnalisé devient le « passif exclusif ».",
+      "Chaque joueur a le sien, fixé par les mods.",
+      "Le tableau l'affiche toujours, sans modification.",
+      "Les matchs utilisent le passif exclusif du joueur.",
+      "Tableau Fantasy : plus de bouton de passif.",
+      "Passifs «<élément> plus» : ×1,15 aux techniques.",
+      "Passifs faits de blocs, modifiables dans ModManager.",
+  ]
+
+  [release.de]
+  notes = [
+      "Die angepasste Passivfähigkeit wird persönlich.",
+      "Jeder Spieler hat seine eigene, von den Mods gesetzt.",
+      "Die Tafel zeigt sie immer; sie ist nicht änderbar.",
+      "Spiele nutzen die persönliche Passivfähigkeit.",
+      "Fantasy-Tafel: keine Passiv-Schaltfläche mehr.",
+      "Allgemeine Passiv «<Element> plus»: ×1,15 für Techniken.",
+      "Passive aus Bausteinen, in ModManager editierbar.",
+  ]
+
+  [release.it]
+  notes = [
+      "La passiva personalizzata diventa «esclusiva».",
+      "Ogni giocatore ha la sua, fissata dalle mod.",
+      "La tabella la mostra sempre; non si può cambiare.",
+      "Le partite usano la passiva esclusiva del giocatore.",
+      "Tabella Fantasy: niente pulsante della passiva.",
+      "Passive «<elemento> plus»: ×1,15 alle tecniche.",
+      "Passive fatte di blocchi, modificabili in ModManager.",
+  ]
+
+  [release.pt]
+  notes = [
+      "A Passiva Personalizada passa a ser «Própria».",
+      "Cada jogador traz a sua, definida pelos mods.",
+      "O tabuleiro mostra-a sempre; não pode ser trocada.",
+      "As partidas usam a Passiva Própria do jogador.",
+      "Tabuleiro Fantasy: sem botão da passiva.",
+      "Passivas genéricas «<elemento> plus»: ×1,15 às técnicas.",
+      "Passivas feitas de blocos, editadas no ModManager.",
+  ]
+
+  [release.ja]
+  notes = [
+      "カスタムパッシブが「固有パッシブ」に。",
+      "選手ごとにModが決めた固有のパッシブ。",
+      "ボードに常に表示され、変更はできない。",
+      "試合では選手の固有パッシブを使用。",
+      "Fantasyボード：カスタムパッシブのボタンなし。",
+      "汎用パッシブ「属性プラス」：その属性の技×1.15。",
+      "パッシブはブロックで構成、ModManagerで編集。",
+  ]
+
+  [release.zh_hans]
+  notes = [
+      "自定义被动技能改为「专属被动技能」。",
+      "每名球员都有由模组设定的专属技能。",
+      "面板上始终显示，且无法更换。",
+      "比赛中使用球员的专属被动技能。",
+      "Fantasy面板：移除自定义被动技能按钮。",
+      "通用被动「属性加成」：该属性技能×1.15。",
+      "被动由模块组成，可在ModManager编辑。",
+  ]
+
+  [release.zh_hant]
+  notes = [
+      "自訂被動技能改為「專屬被動技能」。",
+      "每名球員都有由模組設定的專屬技能。",
+      "面板上始終顯示，且無法更換。",
+      "比賽中使用球員的專屬被動技能。",
+      "Fantasy面板：移除自訂被動技能按鈕。",
+      "通用被動「屬性加成」：該屬性技能×1.15。",
+      "被動由模組組成，可在ModManager編輯。",
+  ]

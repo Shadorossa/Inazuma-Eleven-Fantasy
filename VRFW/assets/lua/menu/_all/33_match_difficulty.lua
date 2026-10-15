@@ -1,10 +1,9 @@
--- menu_engine: the match difficulties that exist with the active mods, VRFW_MatchDifficulty (VR-Framework 2.0.x,
--- Nacho 2026-10-09: «una sola definición centralizada»; docs/framework/match-difficulties.md). Definitions only (this
+-- menu_engine: the match difficulties that exist with the active mods, VRFW_MatchDifficulty (VR-Framework). Definitions only (this
 -- file runs in every script VM, lua\_all; no engine call at load: the set is read at the first use).
 -- The difficulties are the active mods' defaults\match_difficulty.toml ([MatchDifficulty.<Id>]: Difficulty, Contexts,
 -- Enabled, Badge, BadgeAtlas, Name, Level, Order; merged by Id in load order), served per context by the team type:
 -- CMND_VRFW_TEAM_DIFFICULTY_COUNT(ctx) / _GET(ctx, i). Contexts: "route" (normal board pieces), "gate" (gate pieces),
--- "chain", "free_match". Readers: a mod's board rules (Inazuma Fantasy's chronicle_redesign: dots, battle-kind rows,
+-- "chain", "free_match". Readers: a mod's board rules (e.g. a chronicle redesign: dots, battle-kind rows,
 -- team-list orbs) instead of their own copies.
 if VRFW_MatchDifficulty == nil then
   local D = {

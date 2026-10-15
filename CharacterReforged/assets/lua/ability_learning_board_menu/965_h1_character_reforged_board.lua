@@ -11,8 +11,9 @@
 --     every system's «create» item listed, a free copy owned (BeforeList);
 --   * the list closed (right after the coroutine's first wait, the one for the list; the board is still inactive:
 --     the retail coroutine re-activates it afterwards, this file never touches the menu's active state): a «create»
---     row picked -> the partner from the retail bank picker, the system stores the pair, the carrier goes on the slot;
---     cancelled / refused -> the slot gets back what it held (+ the info window for a refusal) (AfterList).
+--     row picked -> the partner (a system with partner moves: also his moves, bank_create_moves_hooks.lua) from the
+--     retail bank picker, the system stores the pair, the carrier goes on the slot;
+--     cancelled / refused -> the slot gets back what it held (+ the retail error sound for a refusal) (AfterList).
 -- One row per system the active mods declare (All Miximaxed «Crear miximax», All Changed «Crear nuevo cambio»): ids,
 -- store commands and carriers come from Character Reforged's script (CMND_CHARACTERREFORGED_CREATE_*), never written
 -- here. The player and the piece come from the screen's own calls (OnInit's parameters, OnChangeTargetChara,
@@ -45,16 +46,24 @@ do
   Board.PLATE_MENU = 1427722143                      -- personal_plate_menu (the bank's CloseMenu closes it)
   -- the bank's pick: retail temp int 2524660062 (OnInit sets 0, OnDecideFocus sets the card's handle then CloseMenu
   -- when its parent is not the passive inherit menu; read with 3185911119, written with 2565779025)
+  -- the partner's moves (1.7.22): the bank picker reads the base and the row (bank_create_moves_hooks.lua: Aceptar on a
+  -- card -> his special moves on the plate -> the system's confirmation) and writes the picked moves back
+  Board.PARAM_DELETE = 3363400568                     -- parameter store: delete (key)
+  Board.PARAM_SET = 3860611758                        -- parameter store: set (key, 0, value, 1)
+  Board.KEY_BASE = 2918576166                         -- character_reforged_create_base: the base (the bank reads and clears it)
+  Board.KEY_EARLY = 1743709088                        -- character_reforged_create_bank_early: the list already opened the bank
+  Board.KEY_ROW = 416963278                           -- character_reforged_create_row: the system's row
+  Board.KEY_MOVES = {892911027, 2888952841}           -- character_reforged_create_move1 / _move2: the picked moves (0 = none)
+  -- the list's player while the create rows are listed (board_list_create_hooks.lua: the create rows' look and card, the
+  -- Mix-Max rows he can not take greyed and refused)
+  Board.KEY_LIST_BASE = 938944415                   -- character_reforged_list_base
   Board.TEMP_GET = 3185911119
   Board.TEMP_SET = 2565779025
   Board.BANK_RESULT = 2524660062
   Board.TEXT_GET = 4074371074                        -- CMND_TEXT_GET (text id) -> the text in the game's language
-  Board.MSG_OPEN = 2289627655                        -- general (system) window: open
-  Board.MSG_KIND = 2351835063
-  Board.MSG_BUSY = 898725220
-  Board.MSG_DONE = 682363669
+  Board.SOUND = 1917805374                           -- play a system sound effect
+  Board.SOUND_REFUSED = 2086672038                   -- sy0003 (the retail «cannot» sound)
   Board.OPEN_WAIT = 90                               -- frames the bank may take to open
-  Board.MSG_WAIT = 600                               -- frames the info window may take before it is left alone
   Board.aura = false
   Board.chara = nil                                  -- the shown player (charaStHdl)
   Board.piece = -1                                   -- the piece whose list opens next
@@ -66,6 +75,8 @@ do
   -- an aura piece is about to list its auras: every system's «create» item listed, a free copy owned
   function Board.BeforeList(hdl, piece)
     Board.aura = false
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_LIST_BASE)
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_EARLY)     -- a flag left by an earlier list is never this one's
     if type(piece) ~= "number" or piece < 0 or type(hdl) ~= "number" or hdl == 0 then
       return
     end
@@ -79,6 +90,7 @@ do
       return                                         -- no system declared, or Character Reforged's script is not running
     end
     Board.aura = true
+    funcLuaCommand(Board.PARAM_SET, Board.KEY_LIST_BASE, 0, hdl, 1)
     for i = 1, count do
       local create = answer[i + 1]
       if type(create) == "number" and create ~= 0 then
@@ -102,46 +114,64 @@ do
     funcLuaCommand(Board.FLAG_SET, Board.FLAG, 1)
   end
 
-  -- the info window of a refusal: the system's name, then the reason (retail message window, kind 1 = info)
-  function Board.Refusal(row, code)
-    local label_id, reason_id, label_s, reason_s = funcLuaCommand(Board.REFUSAL, row, code)
-    local function text_of(id, fallback)
-      local s = nil
-      if type(id) == "number" and id ~= 0 then
-        local ok, v = pcall(funcLuaCommand, Board.TEXT_GET, id)
-        if ok and type(v) == "string" and v ~= "" then s = v end
+  -- before the bank opens: the base and the row for its move step (a system without `moves` leaves the bank retail)
+  function Board.BankKeys(hdl, row)
+    for _, key in ipairs(Board.KEY_MOVES) do
+      funcLuaCommand(Board.PARAM_DELETE, key)
+    end
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_BASE)
+    funcLuaCommand(Board.PARAM_SET, Board.KEY_BASE, 0, hdl, 1)
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_ROW)
+    funcLuaCommand(Board.PARAM_SET, Board.KEY_ROW, 0, row, 1)
+  end
+
+  -- after the bank closed: the picked moves (0 = none); every key of this flow cleared
+  function Board.BankMoves()
+    local moves = {}
+    for i, key in ipairs(Board.KEY_MOVES) do
+      local move = 0
+      if funcLuaCommand(Board.PARAM_HAS, key) == true then
+        move = funcLuaCommand(Board.PARAM_GET, key)
       end
-      if s == nil and type(fallback) == "string" then s = fallback end
-      return s or ""
+      moves[i] = type(move) == "number" and move or 0
+      funcLuaCommand(Board.PARAM_DELETE, key)
     end
-    local label, reason = text_of(label_id, label_s), text_of(reason_id, reason_s)
-    if reason == "" then
-      Board.Log("7 refusal", "row", row, "code", code, "no text: no window")
-      return
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_BASE)
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_ROW)
+    return moves[1], moves[2]
+  end
+
+  -- the system's store: (base, partner), or (base, partner, move1, move2) when moves were picked
+  function Board.Store(store, hdl, partner, move1, move2)
+    if move1 ~= 0 then
+      return funcLuaCommand(store, hdl, partner, move1, move2)
     end
-    local message = label ~= "" and (label .. "\n" .. reason) or reason
-    funcLuaCommand(Board.MSG_OPEN, message, 0, 0, 0, 0, 0, false)
-    funcLuaCommand(Board.MSG_KIND, 1, 0)
-    local frames = 0
-    waitFalse(function()
-      frames = frames + 1
-      return funcLuaCommand(Board.MSG_BUSY) and frames < Board.MSG_WAIT
-    end)
-    waitTrue(function()
-      frames = frames + 1
-      return funcLuaCommand(Board.MSG_DONE) or frames >= Board.MSG_WAIT
-    end)
-    Board.Log("7 refusal", "row", row, "code", code, "window shown, closed after frames", frames)
+    return funcLuaCommand(store, hdl, partner)
+  end
+
+  -- a refusal: the retail error sound only, no blocking window (owner 2026-10-14); the reason goes to loader.log
+  function Board.Refusal(row, code)
+    local _, reason_id, label_s, reason_s = funcLuaCommand(Board.REFUSAL, row, code)
+    local reason = type(reason_s) == "string" and reason_s or ""
+    if reason == "" and type(reason_id) == "number" and reason_id ~= 0 then
+      local ok, v = pcall(funcLuaCommand, Board.TEXT_GET, reason_id)
+      if ok and type(v) == "string" then
+        reason = v
+      end
+    end
+    funcLuaCommand(Board.SOUND, Board.SOUND_REFUSED)
+    Board.Log("7 refusal", "row", row, "code", code, "label", type(label_s) == "string" and label_s or "", "reason", reason)
   end
 
   -- the list closed: a «create» row picked -> the partner from the bank, the system stores the pair, the carrier goes
-  -- on the slot; cancelled / refused -> the slot gets back what it held (+ the info window for a refusal)
+  -- on the slot; cancelled / refused -> the slot gets back what it held (+ the retail error sound for a refusal)
   function Board.AfterList(hdl)
     if not Board.aura then
       return
     end
     Board.aura = false
     funcLuaCommand(Board.FLAG_SET, Board.FLAG, 0)
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_LIST_BASE)
     local row, slot, store = funcLuaCommand(Board.PICKED, hdl)
     if type(row) ~= "number" or row <= 0 or type(slot) ~= "number" or slot < 0 then
       Board.Log("2 picked", "none")
@@ -149,25 +179,32 @@ do
     end
     Board.Log("2 picked", "row", row, "slot", slot, "store", store)
     local plate_before = funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true
-    funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
-    funcLuaCommand(Board.OPEN_MENU, Board.BANK_MENU)
+    -- the list opened the bank itself (CharacterReforged.CreateCard.OpenBankEarly): only wait for it
+    local early = funcLuaCommand(Board.PARAM_HAS, Board.KEY_EARLY) == true
+    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_EARLY)
+    if not early then
+      Board.BankKeys(hdl, row)
+      funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
+      funcLuaCommand(Board.OPEN_MENU, Board.BANK_MENU)
+    end
     local frames = 0
     waitTrue(function()
       frames = frames + 1
       return funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU) or frames > Board.OPEN_WAIT
     end)
-    Board.Log("3 bank open", "exists", funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU) == true, "after frames", frames, "plate before", plate_before)
+    Board.Log("3 bank open", "exists", funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU) == true, "after frames", frames, "plate before", plate_before, "opened by the list", early)
     waitFalse(function()
       return funcLuaMenuCommand(Board.EXIST_MENU, Board.BANK_MENU)
     end)
     local partner = funcLuaCommand(Board.TEMP_GET, Board.BANK_RESULT)
     funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
-    Board.Log("4 bank closed", "temp int 2524660062 =", partner, "plate after", funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true)
+    local move1, move2 = Board.BankMoves()
+    Board.Log("4 bank closed", "temp int 2524660062 =", partner, "moves", move1, move2, "plate after", funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true)
     local code = -1                                  -- -1 cancelled (no window)
     if type(partner) == "number" and partner ~= 0 then
-      local stored, k = funcLuaCommand(store, hdl, partner)
+      local stored, k = Board.Store(store, hdl, partner, move1, move2)
       code = type(stored) == "number" and stored or -3  -- -3: the store command did not answer a code
-      Board.Log("5 store", "base", hdl, "partner", partner, "code", code, "k", k)
+      Board.Log("5 store", "base", hdl, "partner", partner, "moves", move1, move2, "code", code, "k", k)
       if code == 0 then
         local carrier = funcLuaCommand(Board.CARRIER, row, k)
         local inv = 0

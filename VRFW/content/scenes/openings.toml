@@ -1,11 +1,5 @@
-# Nicer labels for the game's own openings (docs/framework/opening.md §2). This file is NOT the source of which
-# openings exist: the framework detects them every start from the game's data (rule 1: the movie ids the title
-# script's opening picker GetPlayOpeningEventId holds; rule 2: the scene archive movies whose title carries the same
-# tag as those). An entry here only renames / orders a detected movie; an entry for a movie that is not detected is
-# ignored (INFO). Without this file the detected openings show «Opening 1», «Opening 2»… (9 languages, options part
-# texts opening_game_<N>).
-# «VR | <song>»: the release titles of the songs as the game's own English scene archive / credits name them; the same
-# text in every language (literal, no text row).
+# Display names and order for detected game openings; entries for undetected movies are ignored.
+# «VR | <song>» titles are literal text, identical in every language.
 schema = "VRFW.opening/1"
 
 [[opening]]

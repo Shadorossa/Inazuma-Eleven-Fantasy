@@ -1,14 +1,5 @@
--- VR-Framework › Chronicle completion, script side (docs/framework/chronicle-complete.md). The game Lua side is
--- assets\lua\menu\_all\37_chronicle.lua (VRFW_Chronicle); this script answers what game Lua cannot read itself:
---
---   CMND_VRFW_CHRONICLE_PIECES() -> { { pieceId, statusFlagIndex, eventType }, ... }: every board piece of the
---       Chronicle routes as the game loads them (chronicle_vs_route_config, the mods' route nodes included: the team
---       type serves the table): the pieces inside a route's `pieceInfo` slice (m_chronicleVsRouteInfoList) whose
---       eventType is 0 (a match) or 5 (a gate battle), each piece once, statusFlagIndex > 0. The hidden legend pieces
---       (outside every slice) and the story / warp / start pieces are not in it. Nothing is named here: the list is the
---       data's.
---
--- Read once per start (the table does not change while the game runs).
+-- Chronicle completion, script side (game Lua side: assets\lua\menu\_all\37_chronicle.lua).
+-- CMND_VRFW_CHRONICLE_PIECES() -> { { pieceId, statusFlagIndex, eventType }, ... }: board pieces of the Chronicle routes with eventType 0 (match) or 5 (gate battle) and statusFlagIndex > 0, each once.
 
 Chronicle = Chronicle or {}
 
@@ -27,7 +18,7 @@ local function slice(v)
   return s, n
 end
 
--- `quiet` (the script-load read): an unreadable table only leaves the read to the first ask, no warning
+-- `quiet`: an unreadable table leaves the read to the first ask, without a warning
 local function load(quiet)
   if PIECES ~= nil then return PIECES end
   local okR, routes = pcall(VRFW.table.rows, "vsroute/vs_route")
@@ -65,9 +56,6 @@ function Chronicle.Pieces()
   return load() or {}
 end
 
--- read at script load (the boot thread) instead of the first menu that asks (2026-10-13: «Chronicle.Pieces took
--- 96.7 ms» when the move picker of «Crear miximax» opened, then 134.2 ms: the save engine's slot_load only runs on a
--- slot switch, never for the boot's own load): the same tables, once per start; still unreadable: the save load, else
--- the first ask
+-- read at script load instead of the first ask; if still unreadable, retried on save load, then on the first ask
 pcall(load, true)
 VRFW.on("slot_load", function() pcall(load, true) end)

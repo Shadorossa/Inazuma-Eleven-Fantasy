@@ -99,18 +99,30 @@ function EVT_HC.Desc(skill)
   return (okt and type(s) == "string") and s or ""
 end
 
--- ---- «Modo cambio»: the equipped change of the player (vr-loader CMND_EVT_MC_GET; a copy asks its owner) ----------
--- nil or {face = face key, name = partner name, chara = partner chara id}
+-- ---- «Modo cambio»: the equipped change of the player (a copy asks its owner) ------------------------------------
+-- The partner comes from the mods declared on Character Reforged's host character_reforged.mode_change_partner
+-- (CharacterReforged.Page.ModeChangePartner). nil or {face = face key, name = partner name, chara = partner chara id}
+function EVT_HC.McAsk(chara)
+  local page = type(CharacterReforged) == "table" and CharacterReforged.Page or nil
+  if type(page) ~= "table" or type(page.ModeChangePartner) ~= "function" then
+    return false
+  end
+  local ok, pparam, pchara = pcall(page.ModeChangePartner, chara)
+  if ok and type(pparam) == "number" and pparam ~= 0 then
+    return true, true, pparam, pchara
+  end
+  return false
+end
+
 function EVT_HC.McGet(chara, skill)
   if chara == nil or chara == 0 or not EVT_HC.IsModeChange(skill) then
     return nil
   end
-  local cmd = CALC_CRC("CMND_EVT_MC_GET")
-  local ok, exists, pparam, pchara = pcall(funcLuaCommand, cmd, chara)
-  if not ok or not exists then
+  local ok, exists, pparam, pchara = EVT_HC.McAsk(chara)
+  if not ok then
     local oko, owner = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_CHARA_OWNER"), chara)
     if oko and type(owner) == "number" and owner ~= 0 and owner ~= chara then
-      ok, exists, pparam, pchara = pcall(funcLuaCommand, cmd, owner)
+      ok, exists, pparam, pchara = EVT_HC.McAsk(owner)
     end
   end
   if not ok or not exists or type(pparam) ~= "number" or pparam == 0 then

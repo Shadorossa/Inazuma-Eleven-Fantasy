@@ -1,29 +1,17 @@
 schema = "VRFW.game/2"
 
-# VR-Framework › character stats providers (service S10 of VRFW 2.3, docs/framework/card-look.md §6). The run time is
-# scripts\chara_stats.lua. Nothing here writes to the game: the framework holds the names and the order of the providers.
-#
-# Three game entries decide a character's numbers; each is ONE detour of the loader with ordered subscribers (the link
-# installed last runs first; the native declarations are installed mod by mod in load order, VRFW first):
-#
-#   Chara.GetParamStatus        GetCharaParamStatus(int out[8], u16 level, const u32* paramId, const StatusOpts* opts):
-#                               the 8 values of a card at a level (the owned players, the Lua command, the match NPCs)
-#   Chara.GetSpecialtyType      CharaParam_GetSpecialtyType(const u32* paramId, u16 level) -> u8: the specialty type
-#   Technique.MatchSkillInstall MatchSkillInstall(Unit*, u8 slot, const u32* skillId, const InstallArgs*) -> bool: a move
-#                               put in a match slot (its recast, a variant's own move)
-#
-# Providers: the framework's item transformations (variant stats / variant moves, `[[VRFW.ItemTransform]]` with
-# `stats` / `moves`: native detours, installed only when such a transformation is declared, docs/framework/types/
-# item.md §13), then every mod's `[[VRFW.Hook]]` with `game = "<entry>"` (a per-player stat curve, a skill rank). A
-# provider reads only its own mod's tables; the run order is reported at boot (scripts\chara_stats.lua).
+# Character stats providers: ordered subscribers on three game entries (runtime: scripts/chara_stats.lua).
+# Entries (one loader detour each):
+#   Chara.GetParamStatus        the 8 stat values of a card at a level
+#   Chara.GetSpecialtyType      the specialty type of a card
+#   Technique.MatchSkillInstall a move put in a match slot
+# Providers: native item transformations (`stats` / `moves`), then each mod's `[[VRFW.Hook]]` with `game = "<entry>"`.
 
-# the number of detour owners of Chara.GetParamStatus declared by the active mods (set by scripts\chara_stats.lua;
-# the framework's native item transformations not counted)
+# Number of Chara.GetParamStatus detour owners declared by active mods (native item transformations excluded).
 [[VRFW.State]]
 key = "vrfw.chara_stats.providers"
 
-# (entry) -> n, provider 1 … provider n: the declared providers of a stats entry (`Chara.GetParamStatus`,
-# `Chara.GetSpecialtyType`, `Technique.MatchSkillInstall`) in run order, as "<mod>.<hook name>"; nothing for another name
+# (entry) -> n, provider 1..n: declared providers of a stats entry in run order, as "<mod>.<hook name>".
 [[VRFW.Command]]
 name = "CMND_VRFW_CHARA_STATS_PROVIDERS"
 handler = "CharaStats.Providers"

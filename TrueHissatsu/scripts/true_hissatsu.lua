@@ -29,8 +29,9 @@
 --   CMND_TRUEHISSATSU_RANK_ITEMS() -> raise item id, last-grade item id, use cap, last grade (0 = not configured)
 --   CMND_TRUEHISSATSU_RANK_ITEM(charaStHdl, skillId, itemId, apply) -> code, old grade, new grade: code 0 = applicable
 --        (applied when `apply`), 1 not a rank item, 2 the move has no grade (aura / spirit), 3 the item's cap is reached,
---        4 the last-grade item needs the second-to-last grade, 5 the move is not in the player's list, -1 bad args, -2
---        not active. The caller (the skill table screen, graft move_rank_items) takes the item off the bag.
+--        4 the last-grade item needs the second-to-last grade, 5 the move is in neither the player's list nor his
+--        board, -1 bad args, -2 not active. The caller (the skill views, graft move_rank_items) takes the item off
+--        the bag.
 --   CMND_TRUEHISSATSU_CAN_PLACE(charaStHdl, boardSlot, itemId) -> ok, the other slot holding it (-1 = none)
 --   CMND_TRUEHISSATSU_RETAIL_STOCK(count) -> count -1: the active save slot still needs its line; count >= 0
 --        (the save's abl_000001 stock, from the graft sr_popup): logs it once per slot. The retail «Nueva posibilidad»
@@ -926,13 +927,24 @@ end
 -- ------------------------------------------------------------------------------------------------ rank items
 local IT_OK, IT_NOT_ITEM, IT_NO_GRADE, IT_CAPPED, IT_NEEDS_PREV, IT_NOT_LISTED = 0, 1, 2, 3, 4, 5
 
-local function in_list(hdl, skill)
+-- is `skill` one of the player's moves as a skill view shows them? Where it is: "list" (the saved skill_list), "board"
+-- (a board slot's placed or native item: Victory Road's board, and the «Fantasy» table's rows that show a board
+-- slot's move, which the match also fills from the board); nil = none. Character Reforged's projection adds nothing
+-- to these two (its rows are list positions, its board-only rows board slots). Until 1.0.5 only the list counted, so a
+-- row of the «Fantasy» table showing a board move (e.g. after «Restablecer») was refused «not_in_set».
+local function in_set(hdl, skill)
   local r = record(hdl)
-  if not r or not r.addr then return false end
+  if not r or not r.addr then return nil end
   for i = 0, SKILL_SLOTS - 1 do
-    if rd("u32", r.addr + REC_SKILL_LIST + i * SKILL_ENTRY) == skill then return true end
+    if rd("u32", r.addr + REC_SKILL_LIST + i * SKILL_ENTRY) == skill then return "list" end
   end
-  return false
+  for s = 0, BOARD_SLOTS - 1 do
+    for _, at in ipairs({ REC_PLACED, REC_NATIVE }) do
+      local inv = u32(rd("u32", r.addr + at + s * 4) or 0)
+      if inv ~= 0 and item_of(inv) == skill then return "board" end
+    end
+  end
+  return nil
 end
 
 function TrueHissatsu.Items()
@@ -948,7 +960,11 @@ function TrueHissatsu.Cmd.Item(hdl, skill, item, apply)
   if not ON then return ERR_NOT_READY, 0, 0 end
   if item ~= ITEM_RAISE and item ~= ITEM_LAST then return IT_NOT_ITEM, 0, 0 end
   if A.type(skill) ~= nil or A.is_spirit_move(skill) then return IT_NO_GRADE, 0, 0 end
-  if not in_list(hdl, skill) then return IT_NOT_LISTED, 0, 0 end
+  local where = in_set(hdl, skill)
+  if not where then
+    info(string.format("rank item %s: chara %s skill %s refused: in neither the skill list nor the board", hex(item), hex(hdl), hex(skill)))
+    return IT_NOT_LISTED, 0, 0
+  end
   local r = record(hdl)
   local param = r and u32(r.param) or 0
   local base = grades_of(param)[skill]
@@ -968,8 +984,8 @@ function TrueHissatsu.Cmd.Item(hdl, skill, item, apply)
   put(st, hdl, skill, math.max(uses, uses_for(want)), want)
   commit(st, "rank item", true)
   local saved, live = apply_grade(hdl, skill, want)
-  info(string.format("rank item %s: chara %s (card %s) skill %s grade %d -> %d (slot %d store), saved %s, live units %d",
-    hex(item), hex(hdl), hex(param), hex(skill), old, want, st.slot, saved, live))
+  info(string.format("rank item %s: chara %s (card %s) skill %s (from the %s) grade %d -> %d (slot %d store), saved %s, live units %d",
+    hex(item), hex(hdl), hex(param), hex(skill), where, old, want, st.slot, saved, live))
   return IT_OK, old, want
 end
 

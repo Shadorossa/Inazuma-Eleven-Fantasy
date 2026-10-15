@@ -1,0 +1,197 @@
+# All Miximaxed: the Chrono Stone MIXIMAX creation scene (docs/game/media/miximax-cutscene-cs.md §8-§10), copied from
+# Inazuma Fantasy on 2026-10-14. Played over the menus after «Crear miximax» on Character Reforged's skill table:
+# ev99_97010 (the two players, the CS clip, the white flash), then ev99_97020 (the fused base alone). The framework
+# builds the lists at boot; the two evt lists are templates (template = true, served as <list>.template.cfg.bin):
+# scripts\lib\scene.lua serves the real lists and, before each play, writes the players' chara_base names over
+# c99999901_mx_scene_base_ / c99999902_mx_scene_aura_ and their body rigs over c000101 in the pack paths (keep those
+# placeholders). The packs, cameras and effect objects are this mod's assets (event\ev99, effect\event\ev99); the
+# main event's eff list also plays the retail Mix-Max cut-in effect ev82000100.
+# Inazuma Fantasy declares the same events: this file is left out when it is active (one owner).
+schema = "VRFW.anim/2"
+if_not_mod = "inazuma_fantasy"
+
+[[script]]
+event = "ev99_97010"
+list = "evt"
+template = true
+commands = [
+  [0, "CUT_DEFINE", "c0010", 0, 284, "NONE"],
+  [0, "LOAD_CAMERA", "common/event/ev99/ev99_97010/ev99_97010_camera.g4cm"],
+  [0, "LOAD_ACTOR_RESOURCE", "point_eff", "common/event/ev_point/point_eff/point_eff.g4sk", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "point_s00", "common/event/ev_point/point/point.g4sk", 1, 0],
+  [0, "LOAD_LIGHT_LIST", "common\\event\\ev99/ev99_97010\\ev99_97010_light\\light_list.cfg.bin"],
+  [0, "LOAD_ACTOR_CHARA", "c99999800_s00_p00", "c99999901_mx_scene_base_", 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, -1, "NONE", 0, 0, 0, 65535],
+  [0, "LOAD_ACTOR_CHARA", "c99999800_s01_p00", "c99999902_mx_scene_aura_", 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, -1, "NONE", 0, 0, 0, 65535],
+  [0, "LOAD_ACTOR_MOTION", "point_eff", "common/event/ev99/ev99_97010/ev99_97010_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/", "c0010"],
+  [0, "LOAD_ACTOR_MOTION", "c99999800_s00_p00", "common/event/ev99/ev99_97010/ev99_97010_c000101_s00_p00_c0010.g4pk", "/scene/c0010/load/c99999800_s00_p00##ミキシマックス（ベース）/", "c0010"],
+  [0, "LOAD_ACTOR_MOTION", "c99999800_s01_p00", "common/event/ev99/ev99_97010/ev99_97010_c000101_s01_p00_c0010.g4pk", "/scene/c0010/load/c99999800_s01_p00##ミキシマックス（オーラ）/", "c0010"],
+  [0, "LOAD_ACTOR_MOTION", "point_s00", "common/event/ev99/ev99_97010/ev99_97010_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_s00##配置ポイント/", "c0010"],
+  [0, "SECTION_LOAD_BEGIN"],
+  [0, "SECTION_LOAD_BEGIN"],
+  [0, "ACTOR_CHARA_REGISTER", "c99999800_s00_p00", 0],
+  [0, "ACTOR_DECLARE", "c99999800_s00_p00"],
+  [0, "ACTOR_CHARA_REGISTER", "c99999800_s01_p00", 0],
+  [0, "ACTOR_DECLARE", "c99999800_s01_p00"],
+  [0, "SECTION_SETUP_BEGIN"],
+  [0, "CUT_RESET_MODE", "c0010", "RESET_DEF"],
+  [0, "ACTOR_VISIBLE", "point_eff", 1],
+  [0, "ACTOR_VISIBLE", "point_s00", 1],
+  [0, "ACTOR_SHADOW", "c99999800_s00_p00", 0],
+  [0, "ACTOR_OPTION_A", "c99999800_s00_p00", 0],
+  [0, "ACTOR_SCALE", "c99999800_s00_p00", 1.0, 1.0, 1.0, 0],
+  [0, "ACTOR_OPTION_B", "c99999800_s00_p00", 0, 1],
+  [0, "ACTOR_OPTION_C", "c99999800_s00_p00", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s00_p00", 0],
+  [0, "ACTOR_SHADOW", "c99999800_s01_p00", 0],
+  [0, "ACTOR_OPTION_A", "c99999800_s01_p00", 0],
+  [0, "ACTOR_SCALE", "c99999800_s01_p00", 1.0, 1.0, 1.0, 0],
+  [0, "ACTOR_OPTION_B", "c99999800_s01_p00", 0, 1],
+  [0, "ACTOR_OPTION_C", "c99999800_s01_p00", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s01_p00", 0],
+  [0, "CAMERA_PROPERTY_FLOAT", "CCameraCtrlEvent", 0.10000000149011612],
+  [0, "CAMERA_PROPERTY_INT", "CCameraCtrlEvent", 3000],
+  [0, "FADE", 0, 20],
+  [0, "FADE", 2, 0],
+  [0, "ACTOR_ATTACH_POINT", "c99999800_s00_p00", "point_s00", "evp01", 0.0, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "c99999800_s00_p00", 0.0, 0.0, 0.0],
+  [0, "ACTOR_ATTACH_POINT", "c99999800_s01_p00", "point_s00", "evp02", 0.0, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "c99999800_s01_p00", 0.0, 0.0, 0.0],
+  [0, "CUT_SETTING", "c0010", 2, 0],
+  [0, "ACTOR_PLAY_ANIM", "point_eff", "c0010", 272, 0, 0, "common/event/ev99/ev99_97010/ev99_97010_<CHARA>_<CUT>.g4pk", 0],
+  [0, "ACTOR_PLAY_ANIM", "c99999800_s00_p00", "c0010", 272, 0, 0, "common/event/ev99/ev99_97010/ev99_97010_c000101_s00_p00_c0010.g4pk", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s00_p00", 1],
+  [0, "ACTOR_CUT_LIGHT", "c99999800_s00_p00", "c0010"],
+  [0, "ACTOR_PLAY_ANIM", "c99999800_s01_p00", "c0010", 272, 0, 0, "common/event/ev99/ev99_97010/ev99_97010_c000101_s01_p00_c0010.g4pk", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s01_p00", 1],
+  [0, "ACTOR_CUT_LIGHT", "c99999800_s01_p00", "c0010"],
+  [0, "ACTOR_PLAY_ANIM", "point_s00", "c0010", 272, 0, 0, "common/event/ev99/ev99_97010/ev99_97010_<CHARA>_<CUT>.g4pk", 0],
+  [0, "ACTOR_CUT_LIGHT", "EventMap", "c0010"],
+  [0, "ACTOR_CUT_LIGHT", "point_light", "c0010"],
+  [256, "FADE", 3, 24],
+  [284, "RELEASE_ACTOR_MOTION", "point_eff", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/"],
+  [284, "RELEASE_ACTOR_MOTION", "c99999800_s00_p00", "/scene/c0010/load/c99999800_s00_p00##ミキシマックス（ベース）/"],
+  [284, "RELEASE_ACTOR_MOTION", "c99999800_s01_p00", "/scene/c0010/load/c99999800_s01_p00##ミキシマックス（オーラ）/"],
+  [284, "RELEASE_ACTOR_MOTION", "point_s00", "/scene/c0010/load/point_s00##配置ポイント/"],
+  [284, "EVENT_LENGTH", 284],
+]
+
+[[script]]
+event = "ev99_97010"
+list = "eff"
+commands = [
+  [0, "LOAD_ACTOR_RESOURCE", "ev99970100", "common/effect/event/ev99/ev99970100/ev99970100.objbin", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "ev99970200", "common/effect/event/ev99/ev99970200/ev99970200.objbin", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "ev99970300", "common/effect/event/ev99/ev99970300/ev99970300.objbin", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "ev99970400", "common/effect/event/ev99/ev99970400/ev99970400.objbin", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "ev82000100", "common/effect/event/ev82/ev82000100/ev82000100.objbin", 1, 0],
+  [0, "ACTOR_DECLARE", "ev99970100"],
+  [0, "ACTOR_DECLARE", "ev99970200"],
+  [0, "ACTOR_DECLARE", "ev99970300"],
+  [0, "ACTOR_DECLARE", "ev99970400"],
+  [0, "ACTOR_DECLARE", "ev82000100"],
+  [0, "ACTOR_VISIBLE", "ev82000100", 0],
+  [0, "ACTOR_VISIBLE", "ev99970100", 0],
+  [0, "ACTOR_ATTACH_POINT", "ev99970100", "point_eff", "evp_eff01", 1.0883020162582397, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "ev99970100", 0.0, 0.0, 0.0],
+  [0, "ACTOR_OPTION_A", "ev99970100", 0],
+  [0, "ACTOR_PLAY_ANIM", "ev99970100", "c0010", 272, 0, 0, "NONE", 0],
+  [0, "ACTOR_VISIBLE", "ev99970100", 1],
+  [0, "ACTOR_VISIBLE", "ev99970200", 0],
+  [0, "ACTOR_ATTACH_POINT", "ev99970200", "point_eff", "evp_eff01", 1.0883020162582397, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "ev99970200", 0.0, 0.0, 0.0],
+  [0, "ACTOR_OPTION_A", "ev99970200", 0],
+  [0, "ACTOR_PLAY_ANIM", "ev99970200", "c0010", 272, 0, 0, "NONE", 0],
+  [0, "ACTOR_VISIBLE", "ev99970300", 0],
+  [0, "ACTOR_ATTACH_POINT", "ev99970300", "point_eff", "evp_eff01", -1.081908941268921, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "ev99970300", 0.0, 0.0, 0.0],
+  [0, "ACTOR_OPTION_A", "ev99970300", 0],
+  [0, "ACTOR_PLAY_ANIM", "ev99970300", "c0010", 272, 0, 0, "NONE", 0],
+  [0, "ACTOR_VISIBLE", "ev99970300", 1],
+  [0, "ACTOR_VISIBLE", "ev99970400", 0],
+  [0, "ACTOR_ATTACH_POINT", "ev99970400", "point_eff", "evp_eff01", -1.081908941268921, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "ev99970400", 0.0, 0.0, 0.0],
+  [0, "ACTOR_OPTION_A", "ev99970400", 0],
+  [0, "ACTOR_PLAY_ANIM", "ev99970400", "c0010", 272, 0, 0, "NONE", 0],
+  [104, "ACTOR_ATTACH_POINT", "ev82000100", "point_eff", "evp_eff01", 1.0883020162582397, 0.0, 0.0, 1],
+  [104, "ACTOR_ATTACH_ROTATION", "ev82000100", 0.0, 0.0, 0.0],
+  [104, "ACTOR_OPTION_A", "ev82000100", 0],
+  [104, "ACTOR_PLAY_ANIM", "ev82000100", "c0010", 272, 0, 0, "NONE", 0],
+  [104, "ACTOR_VISIBLE", "ev82000100", 1],
+  [130, "ACTOR_VISIBLE", "ev99970100", 0],
+  [130, "ACTOR_VISIBLE", "ev99970200", 1],
+  [130, "ACTOR_VISIBLE", "ev99970300", 0],
+  [130, "ACTOR_VISIBLE", "ev99970400", 1],
+  [280, "ACTOR_VISIBLE", "ev99970200", 0],
+  [280, "ACTOR_VISIBLE", "ev99970400", 0],
+  [280, "ACTOR_VISIBLE", "ev82000100", 0],
+]
+
+[[script]]
+event = "ev99_97010"
+list = "snd"
+strings = "shared"
+commands = [
+  [0, "VOICE_PLAY", "waza_se_141", 0, "ev82_00010_me", 1.0, 0, 0.0, -1, "NONE", 0],
+]
+
+[[script]]
+event = "ev99_97020"
+list = "evt"
+template = true
+commands = [
+  [0, "CUT_DEFINE", "c0010", 0, 89, "NONE"],
+  [0, "LOAD_CAMERA", "common/event/ev99/ev99_97020/ev99_97020_camera.g4cm"],
+  [0, "LOAD_ACTOR_RESOURCE", "point_eff", "common/event/ev_point/point_eff/point_eff.g4sk", 1, 0],
+  [0, "LOAD_ACTOR_RESOURCE", "point_s00", "common/event/ev_point/point/point.g4sk", 1, 0],
+  [0, "LOAD_LIGHT_LIST", "common\\event\\ev99/ev99_97020\\ev99_97020_light\\light_list.cfg.bin"],
+  [0, "LOAD_ACTOR_CHARA", "c99999800_s00_p00", "c99999901_mx_scene_base_", 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, -1, "NONE", 0, 0, 0, 65535],
+  [0, "LOAD_ACTOR_MOTION", "point_eff", "common/event/ev99/ev99_97020/ev99_97020_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/", "c0010"],
+  [0, "LOAD_ACTOR_MOTION", "c99999800_s00_p00", "common/event/ev99/ev99_97020/ev99_97020_c000101_s00_p00_c0010.g4pk", "/scene/c0010/load/c99999800_s00_p00##ミキシマックス（ベース）/", "c0010"],
+  [0, "LOAD_ACTOR_MOTION", "point_s00", "common/event/ev99/ev99_97020/ev99_97020_<CHARA>_<CUT>.g4pk", "/scene/c0010/load/point_s00##配置ポイント/", "c0010"],
+  [0, "SECTION_LOAD_BEGIN"],
+  [0, "SECTION_LOAD_BEGIN"],
+  [0, "ACTOR_CHARA_REGISTER", "c99999800_s00_p00", 0],
+  [0, "ACTOR_DECLARE", "c99999800_s00_p00"],
+  [0, "SECTION_SETUP_BEGIN"],
+  [0, "CUT_RESET_MODE", "c0010", "RESET_DEF"],
+  [0, "ACTOR_VISIBLE", "point_eff", 1],
+  [0, "ACTOR_VISIBLE", "point_s00", 1],
+  [0, "ACTOR_SHADOW", "c99999800_s00_p00", 0],
+  [0, "ACTOR_OPTION_A", "c99999800_s00_p00", 0],
+  [0, "ACTOR_SCALE", "c99999800_s00_p00", 1.0, 1.0, 1.0, 0],
+  [0, "ACTOR_OPTION_B", "c99999800_s00_p00", 0, 1],
+  [0, "ACTOR_OPTION_C", "c99999800_s00_p00", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s00_p00", 0],
+  [0, "CAMERA_PROPERTY_FLOAT", "CCameraCtrlEvent", 0.10000000149011612],
+  [0, "CAMERA_PROPERTY_INT", "CCameraCtrlEvent", 3000],
+  [0, "FADE", 3, 0],
+  [0, "ACTOR_ATTACH_POINT", "c99999800_s00_p00", "point_s00", "evp01", 0.0, 0.0, 0.0, 1],
+  [0, "ACTOR_ATTACH_ROTATION", "c99999800_s00_p00", 0.0, 0.0, 0.0],
+  [0, "CUT_SETTING", "c0010", 2, 0],
+  [0, "ACTOR_PLAY_ANIM", "point_eff", "c0010", 272, 0, 0, "common/event/ev99/ev99_97020/ev99_97020_<CHARA>_<CUT>.g4pk", 0],
+  [0, "ACTOR_PLAY_ANIM", "c99999800_s00_p00", "c0010", 272, 0, 0, "common/event/ev99/ev99_97020/ev99_97020_c000101_s00_p00_c0010.g4pk", 0],
+  [0, "ACTOR_VISIBLE", "c99999800_s00_p00", 1],
+  [0, "ACTOR_CUT_LIGHT", "c99999800_s00_p00", "c0010"],
+  [0, "ACTOR_PLAY_ANIM", "point_s00", "c0010", 272, 0, 0, "common/event/ev99/ev99_97020/ev99_97020_<CHARA>_<CUT>.g4pk", 0],
+  [0, "ACTOR_CUT_LIGHT", "EventMap", "c0010"],
+  [0, "ACTOR_CUT_LIGHT", "point_light", "c0010"],
+  [6, "FADE", 2, 20],
+  [89, "RELEASE_ACTOR_MOTION", "point_eff", "/scene/c0010/load/point_eff##エフェクト用配置ポイント/"],
+  [89, "RELEASE_ACTOR_MOTION", "c99999800_s00_p00", "/scene/c0010/load/c99999800_s00_p00##ミキシマックス（ベース）/"],
+  [89, "RELEASE_ACTOR_MOTION", "point_s00", "/scene/c0010/load/point_s00##配置ポイント/"],
+  [89, "EVENT_LENGTH", 89],
+]
+
+[[script]]
+event = "ev99_97020"
+list = "eff"
+strings = "shared"
+commands = [
+]
+
+[[script]]
+event = "ev99_97020"
+list = "snd"
+strings = "shared"
+commands = [
+]

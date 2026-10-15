@@ -1,9 +1,6 @@
-# Talk scene aliases of the team engine ([[VRFW.Talk]], crates/plugins/team_engine/src/talk.rs; vr_framework::defaults,
-# `defaults/talk.toml` of every mod, merged in load order: a mod may add aliases or override one).
-# A cast member's `motion` / `idle` / `expression` may also be a retail name or a 0x… id; these are the short names.
+# Talk scene aliases for [[VRFW.Talk]]; merged across mods in load order. Motion, idle and expression may also be a retail name or 0x id.
 
-# Motions: alias = { name = <retail motion name (its crc32 is the id)>, pack = <pose pack suffix the retail talks load
-# for it: p020 battle, p250 «B» event stands, p200 «T» event, p060 NPC; empty = always there> }.
+# [motion]: alias = { name = retail motion name, pack = pose pack suffix (empty = always available) }.
 [motion]
 stand = { name = "立ち1L", pack = "" }
 stand_event = { name = "イベント立ち3L", pack = "" }
@@ -24,17 +21,17 @@ knocked_down = { name = "戦1うつ伏せダウン1L", pack = "p020" }
 stun = { name = "戦1スタン3L", pack = "p020" }
 fall_back = { name = "NPC腰ぬかし1L", pack = "p060" }
 recoil = { name = "NPCのけぞり驚き1L", pack = "p060" }
-# military / formal (retail clips of the c000101 body; c000401 has parade_rest(_talk) but no salute / chest_out)
+# military / formal
 salute = { name = "Bイベ敬礼1L", pack = "p250" }
 arms_crossed_still = { name = "Bイベ腕組み立ち1L", pack = "p250" }
 parade_rest = { name = "NPC後ろ手組立ち1L", pack = "p060" }
 parade_rest_talk = { name = "NPC後ろ手組立ち会話1L", pack = "p060" }
 chest_out = { name = "NPC胸張り立ち1L", pack = "p060" }
-# hand to the ear: listening on a phone / radio (no prop is attached)
+# hand to the ear (no prop attached)
 phone_ear = { name = "NPC電話立ち1L", pack = "p060" }
 on_call = { name = "Tイベ通話立ち1L", pack = "p200" }
 
-# Expressions: alias = <retail face name> (chr column 25: its crc32).
+# [face]: alias = retail face name.
 [face]
 normal = "普通1L"
 normal2 = "普通2L"

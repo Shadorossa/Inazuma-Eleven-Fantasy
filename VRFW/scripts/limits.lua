@@ -1,22 +1,14 @@
--- VR-Framework › squad card types of mods (service S1 of VRFW 2.3, docs/framework/limits.md §3.3). Native side:
--- content\game\limits_squad.toml (the Diamond counter's post hook). The game's own card types (Hero, Diamond) are
--- lifted by the limits plan (menu_engine, profile edits); this script counts a mod's OWN card type with a native one:
---
+-- Squad card limit for a mod's own card type (native side: content\game\limits_squad.toml), declared in <mod>\content\defaults\limits.toml:
 --   [limits.squad.card_type.prime]          # <mod>\content\defaults\limits.toml
 --   rarities = [10]                         # the card rarities of the type
 --   counts_as = "diamond"                   # the game's check it shares (its retail limit: 1 per squad)
 --   when = { state = "fantasy.prime.team_limit" }   # optional: on while that game_state key is non-zero
---
--- The Diamond counter (the starters of a team set: 11, or 5 for party type 1) then answers the largest of the
--- game's count and each such type's starters, so a second card of the type trips the game's «1 Diamond» check (team
--- dock code 6, match start). When Diamonds are lifted (`max_per_card_type.diamond = "unlimited"`) the game counts 0
--- Diamonds and the type's own limit stays.
+-- The Diamond counter then answers the largest of the game's count and each such type's starters, so a second card of the type trips the game's 1-Diamond check; when Diamonds are lifted (`max_per_card_type.diamond = "unlimited"`) the type's own limit stays.
 
 local function info(...) VRFW.log("limits:", ...) end
 local function warn(...) VRFW.warn("limits:", ...) end
 
--- The team set the counter walks (Card.CountBasaraInTeam's loop on v7.1.2: 29 member entries from +0x80, stride
--- 0x10, +0 handle, +0xE slot; starters = slot < 11, < 5 for party type 1). The same layout as synergy.lua.
+-- Team set layout the counter walks: 29 member entries from +0x80, stride 0x10, +0 handle, +0xE slot (starters = slot < 11, < 5 for party type 1); same as synergy.lua.
 local N_MEMBERS, MEMBER_BASE, MEMBER_STRIDE, MEMBER_SLOT = 0x1D, 0x80, 0x10, 0x0E
 local STARTERS, STARTERS_PARTY1 = 11, 5
 local HOOK = "LimitsDiamondCounter"

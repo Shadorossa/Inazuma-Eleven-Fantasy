@@ -1,11 +1,6 @@
--- The match loot tables' services of the type `item` (docs/framework/drops.md), run by item.lua after the shops and
--- rewards: `[[VRFW.DropPool]]` (a mod names a group of its loot tables), `[[VRFW.DropAdd]]` (another mod appends an
--- item to every table of a pool) and `[[VRFW.DropFilter]]` (while the declaring mod is active, no match drop gives the
--- excluded items). The tables are `win_treasure_lot_table_config`'s ITBL tables (what an in-match drop rarity
--- resolves to through the game's decide tables), as the game, the base tables and the earlier types served them.
---
--- input.drops = { { file, mod, load_index, pools = { { name, tables } }, adds = { { pool, item, count, weight,
---                   if_mod } }, filters = { { exclude, categories, items, keep, replace_with } } } }   (load order)
+-- Loot-table services of the `item` type: [[VRFW.DropPool]], [[VRFW.DropAdd]], [[VRFW.DropFilter]]; run by item.lua after shops and rewards.
+-- input.drops = { { file, mod, load_index, pools = { { name, tables } }, adds = { { pool, item, count, weight, if_mod } },
+--   filters = { { exclude, categories, items, keep, replace_with } } } }  (load order)
 local U = require "lib/util"
 local D = {}
 
@@ -13,8 +8,7 @@ local LOOT_PREFIX = "data/common/gamedata/item/win_treasure_lot_table_config_"
 local SHOP_PREFIX = "data/common/gamedata/shop/shop_config_"
 local PRICE_SLOTS = 9
 
--- every loot table: { { id, base = <ITBL_BASE entry>, entries = { { item, count, weight, cond, extra } } } } in file
--- order, or nil, err
+-- every loot table as { id, base = <ITBL_BASE entry>, entries = { { item, count, weight, cond, extra } } } in file order, or nil, err
 local function read_tables(t)
   local items = t:rows("ITBL_ITEMS")
   local out = {}
@@ -33,7 +27,7 @@ local function read_tables(t)
   return out
 end
 
--- write `tabs` back: one ITBL_ITEMS run per table, in order (tables that share a slice get their own copy)
+-- write `tabs` back: one ITBL_ITEMS run per table (tables sharing a slice get their own copy)
 local function write_tables(t, tabs)
   local beg, fin = t:list("ITBL_ITEMS")
   if not beg then return "no ITBL_ITEMS list" end
@@ -56,9 +50,7 @@ local function write_tables(t, tabs)
   t:touch()
 end
 
--- the items a shop of the GAME charges as its price: the token group of every shop (SHOP_INFO col 17 ->
--- SHOP_TOKEN_GROUP rows -> SHOP_TOKEN_GROUP_TOKEN), the slots (cols 7-15) its rows put a price in. Two passes: the file
--- lists the shops BEFORE the token groups, so the groups are read first (one pass found no group: an empty set)
+-- items a game shop charges as price (token groups first, since the file lists shops before groups)
 local function shop_currencies()
   local k, e = VRFW.rows.key(SHOP_PREFIX)
   if not k then return nil, e end
@@ -98,8 +90,7 @@ local function shop_currencies()
   return used
 end
 
--- the items of the item categories `cats` (col 5 of every ITEM_*_INFO list, schemas/enums.toml item_category: e.g.
--- 210 = the stat beans) in the served item_config
+-- items of the item categories `cats` (col 5 of every ITEM_*_INFO list) in the served item_config
 local function items_of_categories(X, cats)
   local want, out, any = {}, {}, false
   for _, c in ipairs(cats) do want[c] = true end

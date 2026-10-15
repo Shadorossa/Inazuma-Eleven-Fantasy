@@ -34,6 +34,9 @@ INCLUDE("LUA_PROG_BASE")
 local MENU = 3003171228            -- crc32("evt_bbd_tn_groups_menu")
 local P_PAGE = 3658435887          -- crc32("evt_bbd_tn_groups_page"): parameter in, the view page
 local P_HOST = 19065074            -- crc32("evt_bbd_tn_groups_host"): parameter in, the host menu (crc32 of its name)
+-- 1.5.64: crc32("evt_bbd_tn_groups_close"): parameter in, set by the host when it no longer shows the group page (the
+-- host's CMND_CLOSE_MENU_OBJECT of this menu alone left it open and drawn over the next screens, owner 2026-10-14)
+local P_CLOSE = 2205194670
 local CMD_VIEW = 2584538108        -- crc32("CMND_BBD_TOURN_VIEW") (the mod's scripts\tournament.lua)
 local LOG = 3661580131             -- CMND_EVT_LOG
 local ART = 2658588602             -- crc32("#/menu/220_img/bbd_tn/bbd_tn.g4tx"): the mod's drawings
@@ -120,7 +123,7 @@ local G = {
 
 -- state of this opening
 local S = { page = nil, host = nil, need = 0, got = 0, per = {}, seen = {}, frame = 0, drawn = false, logged = false,
-  want = false, used = {}, miss = {}, emb = {}, groups = 0, mode = "", stuck = false }
+  want = false, used = {}, miss = {}, emb = {}, groups = 0, mode = "", stuck = false, closing = false, close_tries = 0 }
 
 local function Log(...)
   pcall(funcLuaCommand, LOG, "bb_chronicle_teams tournament", ...)
@@ -531,13 +534,53 @@ local function Draw()
   return true
 end
 
+-- every instance of every pool hidden (nothing of the tables left on screen)
+local function HideAll()
+  for k, l in pairs(L) do
+    for i = 0, N[k] - 1 do
+      pcall(Hide, l, i)
+    end
+  end
+  S.used = {}
+end
+
+-- 1.5.64: closing: every piece hidden at once (whatever the engine does with the close, nothing stays drawn), no
+-- draw any more, then this menu closes itself (again every 30 Steps while it still exists)
+local function BeginClose(why)
+  if not S.closing then
+    Log("groups menu: closing (" .. tostring(why) .. ")")
+  end
+  S.closing, S.want, S.drawn = true, false, false
+  HideAll()
+  S.close_tries = S.close_tries + 1
+  pcall(funcLuaCommand, C.CLOSE_MENU, MENU)
+end
+
 -- ---- the host's calls (cross-menu call 830228314) --------------------------------------------------------------------
 -- the page again (the view changed, or the host drew the group page once more)
 function BBG_Redraw(page)
   if page ~= nil then
     S.page = page
   end
+  if S.closing then
+    -- the host shows the group page again while this menu had not finished closing: it stays and draws
+    Log("groups menu: shown again before it closed (tries " .. S.close_tries .. ")")
+    S.closing, S.close_tries = false, 0
+  end
   S.want = true
+end
+
+-- the host left the group page (another page, the overlay closed, another screen): hidden and closed
+function BBG_Close(why)
+  BeginClose(why or "the host left the group page")
+end
+
+-- the host shows the group page again while this menu still exists (closing): it comes back with that host
+function BBG_Revive(page, host)
+  if host ~= nil then
+    S.host = host
+  end
+  BBG_Redraw(page)
 end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
@@ -553,6 +596,11 @@ function OnInit()
   end
   S.need, S.got, S.per, S.seen, S.frame = 0, 0, {}, {}, 0
   S.drawn, S.logged, S.want, S.stuck, S.emb = false, false, true, false, {}
+  S.closing, S.close_tries = false, 0
+  -- a close request of an earlier opening is not this one's
+  if funcLuaCommand(C.P_EXISTS, P_CLOSE) then
+    funcLuaCommand(C.P_CLEAR, P_CLOSE)
+  end
   for _, n in pairs(N) do
     S.need = S.need + n
   end
@@ -584,11 +632,26 @@ end
 
 function Step()
   S.frame = S.frame + 1
+  if S.closing then
+    if S.frame % 30 == 0 then
+      if S.close_tries == 10 then
+        Log("groups menu: still open after", S.close_tries, "close requests (hidden meanwhile)")
+      end
+      BeginClose("again")
+    end
+    return
+  end
+  -- 1.5.64: the host's close request (parameter): it no longer shows the group page
+  local okc, asked = pcall(funcLuaCommand, C.P_EXISTS, P_CLOSE)
+  if okc and asked == true then
+    pcall(funcLuaCommand, C.P_CLEAR, P_CLOSE)
+    BeginClose("the host's close request")
+    return
+  end
   -- the host gone (closed without closing this menu): this menu closes too
   if S.host ~= nil and S.frame % 30 == 0 and funcLuaMenuCommand(C.IS_EXIST, S.host) ~= true then
-    Log("groups menu: host gone, closing")
     S.host = nil
-    funcLuaCommand(C.CLOSE_MENU, MENU)
+    BeginClose("host gone")
     return
   end
   -- draw once every instance is set up (or after STUCK_FRAMES with what there is)

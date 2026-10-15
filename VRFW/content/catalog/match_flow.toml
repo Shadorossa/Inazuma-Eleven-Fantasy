@@ -1,17 +1,9 @@
 schema = "VRFW.catalog/1"
-# The node kinds of a match flow (M4, docs/framework/catalogs.md; vr_core::types::match_flow, kind
-# `VRFW.match_flow/1` of the trigger type): every kind a flow may use, its category, ports and arguments. The
-# interpreter (match_flow.lua) implements each kind by its name: a new kind needs its code there. Built into the
-# framework: the installed copy must stay the same data (else it is reported and not read).
-#
-# [category.<cat>]: the input / output ports of a kind of that category unless the kind says (`ins` / `outs`);
-# every port is a flow port. Categories: trigger, cond, action, scene, rule, end, note (the editor's header
-# colours). The editor labels a kind with the text key `nf_k_<kind with _>`, a port `nf_p_<port>`, an argument
-# `nf_a_<arg>`.
-# [[kind]]: kind, cat, row (a trigger's game trigger type: one DATA_ITEM row, docs/game/engine/
-# match-scripting.md; -1 = the node's own `type` argument), args = [{ name, type, default }] with type int, num,
-# bool, team (user / rival), member (a soccer member id), id (number, 0x..., or a text -> its crc32), text,
-# enum (+ values).
+# Node kinds of a match flow (schema VRFW.catalog/1): category, ports and arguments of each kind. Built into the framework.
+# Each kind is implemented by name in the framework's match_flow.lua; a new kind needs code there.
+# [category.<cat>]: default ins/outs ports (all flow ports): trigger, cond, action, scene, rule, end, note.
+# [[kind]]: kind, cat, row (trigger type; -1 = the node's own `type` argument), args = [{ name, type, default }].
+# Argument types: int, num, bool, team (user/rival), member (soccer member id), id (number, 0x.. or text -> crc32), text, enum (+ values).
 
 [category.trigger]
 ins = []
@@ -41,7 +33,7 @@ outs = ["out"]
 ins = []
 outs = []
 
-# ---- triggers: one DATA_ITEM row each (docs/game/engine/match-scripting.md, the trigger table)
+# ---- triggers
 [[kind]]
 kind = "trigger.match_init"
 cat = "trigger"
@@ -310,7 +302,7 @@ args = [
     { name = "on", type = "bool", default = true },
 ]
 
-# every duel won: the whole team (`member` 0), or only that member (a keeper nobody can beat)
+# Every duel won by the whole team (member 0), or by only the given member.
 [[kind]]
 kind = "act.force_win"
 cat = "action"
@@ -338,9 +330,8 @@ args = [
     { name = "on", type = "bool", default = true },
 ]
 
-# an aura skill (keshin, armour, miximax, mode change: an aura command id) started (`on`) or ended on a player through
-# the game's own scripted path (`ExecAuraSkill`, as the story scripts do); `slot` 1-6 first puts the skill in that
-# match slot (its variant is prepared there), `event` plays its cut-in, `refill` fills the team's HDP gauge first
+# aura skill started (`on`) or ended on a player; `slot` 1-6 first equips it in that match slot,
+# `event` plays its cut-in, `refill` fills the team's HDP gauge first
 [[kind]]
 kind = "act.aura"
 cat = "action"
@@ -369,7 +360,7 @@ args = [
     { name = "text", type = "text", default = "" },
 ]
 
-# ---- rules: lasting match states (run like actions, usually from the match init / kick-off)
+# ---- rules: lasting match states
 [[kind]]
 kind = "rule.add_status"
 cat = "rule"

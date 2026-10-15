@@ -1,4 +1,4 @@
--- community_label (VRFW mechanism, docs/framework/community-link.md; no content of its own): the title corner label of
+-- community_label (VRFW mechanism; no content of its own): the title corner label of
 -- the community window (layer title00_10_inazuma_post, retail «<Alt> Inazuma Post») reads the `label` text row of the
 -- community link a mod declares ([[VRFW.CommunityLink]], CMND_VRFW_COMMUNITY_INFO; {title} / {creator} / {url} filled)
 -- when the layer opens; its text plate is refitted. No declaration / no label row: the retail label stays. The icon
@@ -24,7 +24,7 @@ local function CLB_Call(f, ...)
   return table.unpack(r, 2, r.n)
 end
 
--- an unknown game build (docs/framework/game-updates.md): the label reads the game-update notice instead
+-- an unknown game build: the label reads the game-update notice instead
 local function CLB_Update()
   local unknown, n = CLB_Call(funcLuaCommand, CLB.UPDATE)
   if unknown ~= true then

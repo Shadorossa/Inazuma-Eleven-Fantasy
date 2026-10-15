@@ -1,0 +1,22 @@
+# Chronicle Deluxe: #/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx, the Chronicle board's clear-dot atlas.
+# The board pieces' rank badges (PieceBadge of this mod's ranks, content\defaults\match_rank.toml): new sprites of the
+# dots' atlas (packed into a new texture of it); the VR-Framework's graft route_board (VRFW_RB_Badge,
+# docs/framework/route-board.md) sets one on the 6th dot of a ranked piece (a chain «C» piece's chain rank, or the
+# piece's best rank). Our own drawing (research/scripts/chronicle_rank_badges.py; the framework's vrfw_rank_* until
+# 2026-10-14). Other mods may declare other sprites of this atlas; sprite names differ, so they merge.
+schema = "VRFW.image/1"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "chronicle_deluxe_rank_s"
+png = "vsroute01_06b/chronicle_deluxe_rank_s.png"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "chronicle_deluxe_rank_a"
+png = "vsroute01_06b/chronicle_deluxe_rank_a.png"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "chronicle_deluxe_rank_b"
+png = "vsroute01_06b/chronicle_deluxe_rank_b.png"

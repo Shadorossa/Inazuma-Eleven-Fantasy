@@ -1,9 +1,9 @@
-# VR-Framework chain boards (docs/framework/chain-board.md; Nacho 2026-10-09): the new screen vrfw_chain_board_menu
-# (src vrfw_chain_board_menu.lua), the 3DS «Cadenas» board of a [[VRFW.Chain]] with [[VRFW.Chain.Tile]]s. Declared in the
+# VR-Framework chain boards: the new screen vrfw_chain_board_menu
+# (src vrfw_chain_board_menu.lua), the 3DS "Cadenas" board of a [[VRFW.Chain]] with [[VRFW.Chain.Tile]]s. Declared in the
 # framework's menus\chain_board.toml (layers, objects, art), built with `menu_assemble.py build --mod vr_framework` and
 # packed by framework_pack.py as menus\scripts\vrfw_chain_board_menu.lua (the menu type serves it as
 # common/script/lua/menu/vrfw_chain_board_menu.lua.bin). Data and per-save progress: VRFW_Chain of the menu part
-# (research/mods/VRFW/assets/lua/menu/_all/30_chain.lua). Opened by a mod's screen (Inazuma Fantasy: graft route_chains on
+# (research/mods/VRFW/assets/lua/menu/_all/30_chain.lua). Opened by a mod's screen (e.g. a graft on route_chains for
 # the Chronicle board); nothing opens it when no mod declares a chain board.
 name = "chain_board"
 order = 120

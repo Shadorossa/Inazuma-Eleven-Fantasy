@@ -178,10 +178,11 @@ file = "common/menu/00_soccer/soccer11/evt_soccer11_05/evt_soccer11_05.g4pkm"
 joint = "_text_btn_r01"
 translate = [195.0, -367.0, 0.0]
 
-[[layout]]  # «Confirmación de supertécnica» guide, right, the row above the dots
+[[layout]]  # «Confirmación de supertécnica» guide, right of the E on the dots row
 file = "common/menu/00_soccer/soccer11/evt_soccer11_05/evt_soccer11_05.g4pkm"
 joint = "_atc_sp_guide01"
-translate = [533.0, -345.0, 0.0]
+translate = [550.0, -385.0, 0.0]
+scale = [0.8, 0.8, 1.0]
 
 [[layout]]  # radar backdrop (octagon)
 file = "common/menu/00_soccer/soccer11/evt_soccer11_06_9/evt_soccer11_06_9.g4pkm"
@@ -490,18 +491,21 @@ add_layer = { name = "evt_pp_model", object = "evt_pp_model", count = 1, align =
 # win01_15...: 2 models each); with both cells taken FUN_14176f270 returns handle 0 and the model is never captured.
 # Now the RT is pool type 3 (index 1: only btl04_02, an RPG cut-in, uses it, with the same 1 x 1 grid), one square
 # 1024 x 1024 cell = the VS cell size and aspect (camera 512 x 512), so the framing / CAP_BOX stay as they were.
+# 2026-10-15 (still white in a match): a per-model RT like every retail in-match capture (soccer08_47 keeper gauge,
+# soccer01_06 VS skill telop: no m_isShareRenderTexture). The cell is taken when the model is built (key = the model's
+# CMND_CHARA_MODEL_CHANGE key), not once when the object is created with the menu. Pool type 3 keeps its default 2 x 1
+# grid (a rebuild takes the second cell while the old one is freed) and the VS atlas 2048 x 1024 (1024 x 1024 cells).
 [[object]]
 name = "evt_pp_model_cap"
 from = "soccer20_04_vs_team_info_self"
 set = [
     { param = "m_drawPriority", values = { 1 = 299 } },
     { param = "m_useObjectNum", values = { 1 = 1 } },
-    { param = "m_renderTargetWidth", values = { 1 = 1024 } },
-    { param = "m_renderTargetHeight", values = { 1 = 1024 } },
 ]
 remove = [
     { param = "m_drawType" },
     { param = "m_screenStretch" },
+    { param = "m_isShareRenderTexture" },
 ]
 add = [
     { block = "CMenuCharaModelComponent", param = "m_startX", values = [0.0] },
@@ -509,8 +513,6 @@ add = [
     { block = "CMenuCharaModelComponent", param = "m_startZ", values = [4.05] },
     { block = "CMenuCharaModelComponent", param = "m_startRotY", values = [-7.5] },
     { block = "CMenuCharaModelComponent", param = "m_useCharaRenderTextureIndex", values = [1] },
-    { block = "CMenuCharaModelComponent", param = "m_menuCharaRTDivideNumX", values = [1] },
-    { block = "CMenuCharaModelComponent", param = "m_menuCharaRTDivideNumY", values = [1] },
 ]
 
 [[patch]]

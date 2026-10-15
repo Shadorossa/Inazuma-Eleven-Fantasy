@@ -1,6 +1,6 @@
--- VRFW match break labels (rule engine, docs/game/modes/prorroga-penaltis.md §8.9): the half-time screen
+-- VRFW match break labels (rule engine): the half-time screen
 -- (soccer_half_time_menu) before a period of a ruleset's end phases. The game only knows two halves: before the extra
--- time, its second half or the shoot-out it still read «MEDIO TIEMPO» and «COMENZAR 2.ª PARTE» (owner report 13/10).
+-- time, its second half or the shoot-out it still read «MEDIO TIEMPO» and «COMENZAR 2.ª PARTE».
 -- The rule engine says what comes next (CMND_VRFW_RULE_ENGINE_BREAK -> phase, number in the phase, periods of the
 -- phase; "" = a regular half / no ruleset / the result screen: retail labels untouched) and the title
 -- (soccer22_03_result_title / _text_results01) and the kick-off button (cmn03_01_cmd_back / _text_cmd_back01) get the

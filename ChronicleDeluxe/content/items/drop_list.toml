@@ -12,3 +12,7 @@ schema = "VRFW.item/2"
 # changes (178).
 [VRFW.DropList.Auras]
 Subs = [171, 174, 173, 178]
+
+# The player-spirit rows («ESPÍRITUS») go forwards, midfielders, defenders, goalkeepers, then by name: the VRFW's
+# default order of the drop-rate list ([VRFW.DropList.SpiritOrder], docs/framework/drops.md §5c), from the game's
+# character data; nothing to declare here.

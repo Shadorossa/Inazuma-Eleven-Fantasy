@@ -1,18 +1,9 @@
-# The game modes of the retail game, for the current-mode service (docs/framework/services.md §2). The engine has no
-# names for its modes: these rules say which of its own values mean what. Any mod may ship a game_modes.toml with more
-# rules (a mode its plugin publishes as a game_state key) or contexts; the code knows none of these keys.
-#
-# [[rule]]: `key` holds while every condition given holds. Conditions:
-#   play_mode = [..]   the engine's play-mode byte ([[g_gameRoot]+0x69C8]+0x2CAC6F; unreadable = 0, no save loaded)
-#   scene = "Name"     a scene with this class name runs (the scene manager's slots)
-#   state = "key"      game_state(key) == state_is (default 1): a ModLoader key or any plugin's
-# The rules are checked by `order` (lower first, default 100); the first that holds is the game-detected key, and every
-# rule that holds answers `is(key)` (a story match: `story`, and `match` too).
-# [[context]]: a key the game has no value for; the screens that run it enter / leave it
-# (CMND_VRFW_MODE_CURRENT_ENTER / _LEAVE), or the menus that open (enter_menus / leave_menus = menu script stems: every
-# menu VM reports its opening, lua/menu/_all/13_mode_menus.lua, CMND_VRFW_MODE_CURRENT_MENU).
-# Play-mode values: docs/game/mechanics/outfit-slot.md §2 (1 VS / free / menus, 2 and 6 story, 3 Kizuna town, 4
-# Chronicle, 5 Victory Road).
+# Retail game modes for the current-mode service (schema VRFW.game_modes/1). Mods may add rules or contexts in their own game_modes.toml.
+# [[rule]]: `key` holds while every given condition holds; rules are checked by `order` (lower first, default 100), the first that holds is the detected key.
+#   play_mode = [..]  engine play-mode byte (1 VS / free / menus, 2 and 6 story, 3 Kizuna town, 4 Chronicle, 5 Victory Road; 0 = unreadable)
+#   scene = "Name"    a scene with this class name is running
+#   state = "key"     game_state(key) == state_is (default 1)
+# [[context]]: a key with no game value; entered / left by CMND_VRFW_MODE_CURRENT_ENTER / _LEAVE or by opening the listed menus (enter_menus / leave_menus).
 schema = "VRFW.game_modes/1"
 
 [[rule]]
@@ -25,7 +16,7 @@ key = "boot"
 order = 20
 play_mode = [0]
 
-# a framework pachanga (match_engine), wherever it is played
+# Framework pachanga (friendly match), wherever it is played
 [[rule]]
 key = "pachanga"
 order = 30
@@ -52,9 +43,7 @@ key = "victory_road"
 order = 50
 play_mode = [5]
 
-# Battle Bay (menus and matches): play mode 1 like every free match, so no game value tells it. Its menus enter the
-# context, the other hubs leave it (a match keeps it: no menu opens). Mods hide features in it with is("battle_bay")
-# (e.g. the player page Utilities.Career).
+# Battle Bay (menus and matches): play mode 1 like any free match, so it is tracked as a context; mods test it with is("battle_bay").
 [[context]]
 key = "battle_bay"
 enter_menus = ["bb_stadium_top_menu", "enjoy_team_select_menu"]

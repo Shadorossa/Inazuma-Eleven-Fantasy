@@ -1,8 +1,4 @@
--- The character build's recruit conditions and office rows (scripts/build/character.lua; docs/app/character-engine.md
--- §4, fichajes.md): `[[recruit]]` / `[character.recruit]` -> the recruit entries the office Lua reads, a clone of an
--- office row for `beside`, and the office rows of shop_config (hidden cards leave every shop; prices and player
--- requirements go into the rows that sell the card).
---
+-- Recruit conditions and office rows of the character build: `[[recruit]]` / `[character.recruit]` -> recruit entries, a clone of an office row for `beside`, and shop_config office rows.
 -- Every function takes the build's context `X` (character.lua).
 local U = require "lib/util"
 local O = {}
@@ -96,8 +92,7 @@ local function begin_of(t, i)
   return nil
 end
 
--- MIGRATION ONLY (old saves): the number the rule before deterministic numbering gave the row `key` (sequential from
--- the first free index), registered and never written.
+-- MIGRATION ONLY (old saves): the number the former sequential rule gave row `key`; registered, never written.
 local function legacy_give(X, key)
   for k = X.K.shop_legacy_from, X.K.shop_index_limit - 1 do
     if not X.legacy_used[k] then
@@ -108,8 +103,7 @@ local function legacy_give(X, key)
   end
 end
 
--- The shop index of the office row `key`: a deterministic number of the space, above the game's own indices; the
--- indices `t` has now are taken.
+-- Shop index of office row `key`: a deterministic number above the game's own indices, skipping those `t` has.
 local function shop_index(X, t, key, warns)
   local n, w = VRFW.ids.next(X.K.shop_index_space, key, indices(X, t, false), X.shop_lo, X.shop_hi)
   if w then warns[#warns + 1] = w end

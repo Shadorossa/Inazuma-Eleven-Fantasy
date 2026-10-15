@@ -1,0 +1,26 @@
+# The padlock of locked shop rows (#/menu/150_shop/vrfw_shop_lock/vrfw_shop_lock.g4tx, a new atlas; docs/framework/shop-locks.md):
+# dark for the row's light card, light for dark cards; the shop alternates them so the engine always redraws the sprite.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/150_shop/vrfw_shop_lock/vrfw_shop_lock.g4tx"
+name = "vrfw_shop_lock"
+size = [128, 64]
+
+[[sprite]]
+atlas = "#/menu/150_shop/vrfw_shop_lock/vrfw_shop_lock.g4tx"
+name = "vrfw_shop_lock_dark"
+texture = "vrfw_shop_lock"
+x = 0
+y = 0
+size = [48, 52]
+png = "vrfw_shop_lock/vrfw_shop_lock_dark.png"
+
+[[sprite]]
+atlas = "#/menu/150_shop/vrfw_shop_lock/vrfw_shop_lock.g4tx"
+name = "vrfw_shop_lock_light"
+texture = "vrfw_shop_lock"
+x = 52
+y = 0
+size = [48, 52]
+png = "vrfw_shop_lock/vrfw_shop_lock_light.png"

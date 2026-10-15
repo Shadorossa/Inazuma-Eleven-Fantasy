@@ -104,6 +104,7 @@ layout = [
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list04", translate = [0.0, -306.0, 0.0] },
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list05", translate = [0.0, -408.0, 0.0] },
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list06", translate = [0.0, -510.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list06_right", parent = "_pos_list_atc01", translate = [490.0, -510.0, 0.0] },  # 2026-10-15: the «Importar» button (evt_pset_file_btn 1)
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list07", translate = [0.0, -612.0, 0.0] },
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list08", translate = [0.0, -714.0, 0.0] },
     { file = "common/menu/102_team/team08/evt_pc_list/evt_pc_list.g4pkm", joint = "_list09", translate = [0.0, -816.0, 0.0] },
@@ -122,12 +123,24 @@ layout = [
     { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_text_list01_on", translate = [158.0, 44.0, 0.0], scale = [653.0, 88.0, 1.0] },
     { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_icon_check01", translate = [819.0, 28.0, 0.0] },
     { file = "common/menu/102_team/team08/evt_pc_row/evt_pc_row.g4pkm", joint = "_touch_list01", translate = [-89.0, 43.0, 0.0], scale = [982.0, 86.0, 1.0] },
+    # evt_pset_file_btn.g4pkm (2026-10-15: the player-sets «Exportar» / «Importar» buttons, two half-width plates of the
+    # evt_pc_row look side by side over the list row slot 5: plate 480 x 104 at x -98, icon 46 px at x -49 (centred where the 64 px one was), text at x 22)
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", from = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_list_base_xs01_on", translate = [-98.0, 52.0, 0.0], scale = [480.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_list_base_xs01_off", translate = [-98.0, 52.0, 0.0], scale = [480.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_list_base_xs01_ol", translate = [-98.0, 52.0, 0.0], scale = [480.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_list_base_xs01_ok", translate = [-98.0, 52.0, 0.0], scale = [480.0, 104.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_icon_sp_area_dmy01", translate = [-49.0, 23.0, 0.0], scale = [46.0, 46.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_text_list01_off", translate = [22.0, 44.0, 0.0], scale = [340.0, 88.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_text_list01_on", translate = [22.0, 44.0, 0.0], scale = [340.0, 88.0, 1.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_pos_atc_cur", translate = [-42.0, 0.0, 0.0] },
+    { file = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm", joint = "_touch_list01", translate = [-89.0, 43.0, 0.0], scale = [462.0, 86.0, 1.0] },
     # evt_ss_listbg.g4pkm
     { file = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm", from = "common/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4pkm" },
     { file = "common/menu/20_cmn/cmn02/evt_ss_listbg/evt_ss_listbg.g4pkm", joint = "_bg_black00", scale = [971.0, 1096.0, 1.0] },
 ]
 
-# evt_skill_slot_menu (ss2_build.py): 59 layers; base equip_menu
+# evt_skill_slot_menu (ss2_build.py): 61 layers; base equip_menu
 [[screen]]
 name = "evt_skill_slot_menu"
 like = "network_room_match_offer"
@@ -151,7 +164,7 @@ layer = [
     { layer = "team00_02_chara_card" },
     { layer = "soccer11_08_equip_list_item", object = "evt_ss_equip_row", count = 7 },  # 2026-10-13: the retail row + the move plate attach
     { layer = "mainmenu01_08_chara_3d_shadow" },
-    { layer = "cmn03_07_cmn_button_equip", object = "evt_cmn03_07_btn_long" },
+    { layer = "cmn03_07_cmn_button_equip", object = "evt_cmn03_07_btn_sets" },  # the player-sets button: square skin, save icon (graft ss2_menus PL.SAVE_BUTTON)
     { layer = "evt_cmn03_07_btn_ss", object = "evt_cmn03_07_btn_ss", align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_cmn03_07_btn_icon", object = "evt_cmn03_07_btn_icon", align = [1, 8], scale = 0.20000000298023224 },
     { layer = "cmn02_01_blackbg", from = "bb_stadium_campaign_end_window", count = 4, align = [1, 8], scale = 0.20000000298023224 },
@@ -194,6 +207,8 @@ layer = [
     { layer = "evt_cpk_list", object = "evt_cpk_list", align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-13: the combo partner picker's own list frame (step 76)
     { layer = "evt_cpk_row", object = "evt_cpk_row", count = 9, align = [1, 8], scale = 0.20000000298023224 },  # its rows (75 high, step 68, 9 visible)
     { layer = "evt_cpk_arrow", object = "evt_cpk_arrow", align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-13: the picker list's scroll arrows (retail item list arrows)
+    { layer = "team13_05c_effect_grid_director_manager_slot", from = "ability_learning_board_menu", object = "evt_role_medal_slot" },  # the role medal slot above the player card (graft skill_table_role_slot); its object adds the click zone
+    { layer = "evt_pset_file_btn", object = "evt_pset_file_btn", count = 2, align = [1, 8], scale = 0.20000000298023224 },  # 2026-10-15: the player-sets «Exportar» / «Importar» buttons (graft ss2_menus PL.VrmRow)
 ]
 cmd = [
     { layer = "soccer11_08_equip_list_item", input = "CMD_UP", command = "CMD_FCS_BACK" },
@@ -249,6 +264,13 @@ cmd = [
     { layer = "evt_cmn03_07_btn_train", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0x440FDBD6 },
     { layer = "evt_cmn03_07_btn_train", input = "CMD_LEFT", command = "CMD_FCS_BACK" },
     { layer = "evt_cmn03_07_btn_train", input = "CMD_RIGHT", command = "CMD_FCS_NEXT" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_ENTER", command = "CMD_ENTER" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_UP", command = "CMD_FCS_BACK" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_DOWN", command = "CMD_FCS_NEXT" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_BACK", command = "CMD_BACK" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x7342DAD0 },
+    { layer = "team13_05c_effect_grid_director_manager_slot", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x2AFF2704 },
 ]
 res = [
     "#/menu/200_icon/100_num/num_menu01.g4tx",
@@ -330,10 +352,12 @@ group_base = [
     { layer = "evt_cpk_list", flags = [0, 1, 1, 0, 1, 0] },
     { layer = "evt_cpk_row", flags = [0, 1, 1, 0, 1, 0] },
     { layer = "evt_cpk_arrow", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "team13_05c_effect_grid_director_manager_slot", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "evt_pset_file_btn", flags = [0, 1, 1, 0, 1, 0] },
 ]
 group = [
     { group = "common", flags = [0, 0], slice = [0, 11] },
-    { group = "evt_skill_slot_menu", flags = [1, 0], slice = [11, 48] },
+    { group = "evt_skill_slot_menu", flags = [1, 0], slice = [11, 50] },
 ]
 focus_base = [
     [0x3A06AC3D, 0, 0],  # button
@@ -342,6 +366,7 @@ focus_base = [
     [0x3A06AC3D, 0, 0],  # button
     [0x3A06AC3D, 0, 0],  # button
     [0x3A06AC3D, 0, 0],  # button
+    [0x3A06AC3D, 0, 0],  # button (role medal slot)
 ]
 focus_group = [
     { layer = "soccer11_08_equip_list_item", flags = [0, 0, 0], slice = [0, 1] },
@@ -350,9 +375,10 @@ focus_group = [
     { layer = "evt_cmn03_07_btn_icon", flags = [0, 0, 0], slice = [3, 1] },
     { layer = "evt_cmn03_07_btn_role", flags = [0, 0, 0], slice = [4, 1] },
     { layer = "evt_cmn03_07_btn_train", flags = [0, 0, 0], slice = [5, 1] },
+    { layer = "team13_05c_effect_grid_director_manager_slot", flags = [0, 0, 0], slice = [6, 1] },
 ]
 shift_base = [
-    ["CMD_FCS_BACK", 0, 0x1E057607, -1],  # cmn03_07_cmn_button_equip
+    ["CMD_FCS_BACK", 0, 0xE9EE6361, 0],  # the first row, Up: the role medal slot above the player card
     ["CMD_FCS_NEXT", -1, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
     ["CMD_FCS_BACK", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
     ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # evt_cmn03_07_btn_train
@@ -365,8 +391,10 @@ shift_base = [
     ["CMD_FCS_BACK", 0, 0x241778A4, 0],  # evt_cmn03_07_btn_ss (was the removed «Pasivas de la rama» button)
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
     ["CMD_FCS_BACK", 0, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
-    ["CMD_FCS_NEXT", -1, 0x241778A4, 0],
+    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # Entrenar is the last button (custom passive and role buttons removed)
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
+    ["CMD_FCS_NEXT", -1, 0xFD6BC152, 0],  # role medal slot, Down: the first row
+    ["CMD_FCS_BACK", 0, 0x1E057607, -1],  # role medal slot, Up: the bottom buttons
 ]
 shift = [
     { layer = "soccer11_08_equip_list_item", slice = [0, 2] },
@@ -375,6 +403,7 @@ shift = [
     { layer = "evt_cmn03_07_btn_icon", slice = [7, 3] },
     { layer = "evt_cmn03_07_btn_role", slice = [10, 2] },
     { layer = "evt_cmn03_07_btn_train", slice = [12, 3] },
+    { layer = "team13_05c_effect_grid_director_manager_slot", slice = [15, 2] },
 ]
 
 [[object]]
@@ -389,15 +418,16 @@ add = [
 ]
 
 [[object]]
-name = "evt_cmn03_07_btn_long"
+# the player-sets button (the screen's bottom button layer): the square skin of the other icon buttons; its locator
+# _pos_btn_atc01 sits at the left of the button row, the save icon on _pos_btn_ico02 (evt_team05_01_skill layout)
+name = "evt_cmn03_07_btn_sets"
 from = "cmn03_07_cmn_button_equip"
 keep_name = true
 set = [
-    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_long/evt_cmn03_07_btn_long.g4pkm" } },
-    { param = "_text_cmd01", match = { 1 = 0x21187163 }, values = { 1 = 0x17CA5988 } },
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } },
 ]
 add = [
-    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_long/evt_cmn03_07_btn_long.g4pkm" } } },
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/20_cmn/cmn03/cmn03_07/cmn03_07.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn03/evt_cmn03_07_btn_icon/evt_cmn03_07_btn_icon.g4pkm" } } },
 ]
 
 [[object]]
@@ -544,6 +574,20 @@ add = [
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1F4D729B, 0x77659185, 0x47DADFA7, 3], after = { param = "NullLayerName", match = { 1 = 0x684A420D, 2 = 0xE9010426, 3 = 0x47DADFA7, 4 = 2 } } },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8129E738, 0x0062A113, 0x47DADFA7, 4], after = { param = "NullLayerName", match = { 1 = 0x1F4D729B, 2 = 0x77659185, 3 = 0x47DADFA7, 4 = 3 } } },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF62ED7AE, 0x996BF0A9, 0x47DADFA7, 5], after = { param = "NullLayerName", match = { 1 = 0x8129E738, 2 = 0x0062A113, 3 = 0x47DADFA7, 4 = 4 } } },
+    # 2026-10-15: the player-sets buttons evt_pset_file_btn 0 / 1 over row slot 5 (_list06) and 490 right of it (_list06_right)
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x65C3DA1F, 0x996BF0A9, 0xBA2C89D8, 0], after = { param = "NullLayerName", match = { 1 = 0xF62ED7AE, 2 = 0x996BF0A9, 3 = 0x47DADFA7, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x12C4EA89, 0x56307A8E, 0xBA2C89D8, 1], after = { param = "NullLayerName", match = { 1 = 0x65C3DA1F, 2 = 0x996BF0A9, 3 = 0xBA2C89D8, 4 = 0 } } },
+]
+
+[[object]]
+# 2026-10-15: the player-sets «Exportar» / «Importar» buttons: evt_pc_row's recipe (row text styles) on the half-width
+# layout evt_pset_file_btn; two instances attached by evt_pc_list (graft ss2_menus PL.VrmRow / PL.FILE_BTN)
+name = "evt_pset_file_btn"
+from = "team08_02_ability_list_item"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" }, values = { 1 = "common/menu/102_team/team08/evt_pset_file_btn/evt_pset_file_btn.g4pkm" } },
+    { param = "_text_list01_on", match = { 1 = 0xCEA5440D }, values = { 1 = 0xF95C4E77 } },
+    { param = "_text_list01_off", match = { 1 = 0x52DBA785 }, values = { 1 = 0x79D8048A } },
 ]
 
 [[object]]
@@ -963,4 +1007,18 @@ from = "soccer11_04pp_chara_status_info"
 remove_block = [
     "CMenuEffectAttachComponent",
     "CMenuAttachLocator",
+]
+
+[[object]]
+# the role medal slot (graft skill_table_role_slot): the skill board's coach / manager slot with a click zone on its
+# layout's _touch_sp01 (122 x 122, the retail object has none), so hovering focuses it and a click opens the role picker
+# (OnChangeFocus / OnDecideFocus, as with the pad)
+name = "evt_role_medal_slot"
+from = "team13_05c_effect_grid_director_manager_slot"
+keep_name = true
+add_block = [
+    { block = "MenuCollisionSetting", values = [0], after = "CMenuAttachLocator" },
+]
+add = [
+    { block = "MenuCollisionSetting", param = "_touch_sp01", values = [0, 1, 1] },
 ]

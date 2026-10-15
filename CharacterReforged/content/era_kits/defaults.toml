@@ -1,0 +1,31 @@
+# Character Reforged › how scripts\era_kits.lua derives an ídolo card's era kit from the game's tables (the card look
+# rule content\card_looks\era_kit.toml). Every active mod's content\era_kits\*.toml may declare
+# [CharacterReforged.EraKit] keys (later mods win key by key; eras and team_kits entry by entry). A card that declares
+# its own `moment_kit` (character TOML, chara_param column moment_kit) is not derived.
+schema = "CharacterReforged.era_kit/1"
+
+[CharacterReforged.EraKit]
+# the cards that get an era kit: chara_param special_rarity (5, 6, 7 = the three Ídolo builds, 8 = Diamond)
+card_rarities = [5, 6, 7, 8]
+# chara_base columns of the character's teams (belong_team_config ids), asked in this order
+team_columns = ["team_1", "team_2", "team_3"]
+# when the team has no kit of the character's era: its first kit in era_order
+any_era = true
+era_order = ["team_kit_ie", "team_kit_go", "team_kit_areori", "team_kit_v"]
+
+# the character's era: his series (chara_base series -> chara_series_config chara_series_type) -> the belong_team_config
+# kit column of that era
+[CharacterReforged.EraKit.eras]
+1 = "team_kit_ie"        # Inazuma Eleven
+2 = "team_kit_ie"        # Inazuma Eleven 2
+3 = "team_kit_ie"        # Inazuma Eleven 3
+4 = "team_kit_go"        # GO
+5 = "team_kit_go"        # Chrono Stone
+6 = "team_kit_go"        # Galaxy
+7 = "team_kit_areori"    # Ares
+8 = "team_kit_areori"    # Orion
+9 = "team_kit_v"         # Victory Road
+
+# a team without kits of its own -> the team whose kits it wears
+[CharacterReforged.EraKit.team_kits]
+"0x4C23CC4C" = "0x45B66234"   # Protocol Omega 3.0 -> Protocol Omega (Gamma's ídolos, as Alfa's and Beta's)

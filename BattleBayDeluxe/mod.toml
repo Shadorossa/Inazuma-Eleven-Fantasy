@@ -3,13 +3,13 @@ id = "bb_chronicle_teams"
 # «Battle Bay Deluxe» since 1.2.0 (2026-10-10; «Chronicle Teams in Battle Bay» / «Equipos de Crónica en Bahía Batalla»
 # before): the same name in every language; the id stays (team names bb_chronicle_teams.<name>, saved data, config).
 name = "Battle Bay Deluxe"
-version = "1.5.61"
+version = "1.5.73"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Adds the Chronicle mode teams to the Battle Bay as a selectable team and rival: 221 teams (the opponent of each Chronicle match and the legend teams), at level 40, with their original players, kits, formations and emblems, and the special moves and tactics of their legend versions. The match rivals are listed in the «Main teams» category and the legend teams in «Secondary teams», grouped by season. The Campaign draws its 7 rivals from every team of the Battle Bay, not only the page on screen. Active team: the first tile of «Main teams»; play with your active team as it is (the team the game uses outside the Battle Bay), no draft and no team pick. Draft: the second tile of «Main teams»; in the Campaign, pick 1 of 5 players for each of the 16 places of your squad (the 11 positions of the formation and 5 substitutes, in any order) and play the Campaign with that team. Tournament: a mode of the Campaign screen (Campaign / Tournament in its header bar, L3 or a click), a knockout or a group stage + knockout of 4 to 64 Battle Bay teams (always a power of two) on one screen with the whole bracket and every crest (option: filter minor teams, the teams of each game's story / Chronicle mode first, then the strongest); you play your matches (knockout ones with extra time and penalties), the others are simulated (after an elimination, round by round). Multiplayer (in testing, needs two players with the same gameplay mods): the «Multiplayer» row (and the «Multi» box of Inazuma Fantasy's «Game modes») opens a private 1v1 room on the VR-Framework's Steam transport (create, join with a code or a Steam invite) and, once both are ready, the game's own online Battle Bay team select and match over that transport, never the game's own online rooms. No game file is replaced."
+description = "Adds the Chronicle mode teams to the Battle Bay as a selectable team and rival: 221 teams (the opponent of each Chronicle match and the legend teams), at level 40, with their original players, kits, formations and emblems, and the special moves and tactics of their legend versions. The match rivals are listed in the «Main teams» category and the legend teams in «Secondary teams», grouped by season. The Campaign draws its 7 rivals from every team of the Battle Bay, not only the page on screen. Active team: the first tile of «Main teams»; play with your active team as it is (the team the game uses outside the Battle Bay), no draft and no team pick. Draft: the second tile of «Main teams»; in the Campaign, pick 1 of 5 players for each of the 16 places of your squad (the 11 positions of the formation and 5 substitutes, in any order) and play the Campaign with that team. Tournament: a mode of the Campaign screen (Campaign / Tournament in its header bar, RS or a click), a knockout or a group stage + knockout of 4 to 64 Battle Bay teams (always a power of two) on one screen with the whole bracket and every crest (option: filter minor teams, the teams of each game's story / Chronicle mode first, then the strongest); you play your matches (knockout ones with extra time and penalties), the others are simulated (after an elimination, round by round). Multiplayer (in testing, needs two players with the same gameplay mods): the «Multiplayer» row (and the «Multi» box of Inazuma Fantasy's «Game modes») opens a private 1v1 room on the VR-Framework's Steam transport (create, join with a code or a Steam invite) and, once both are ready, the game's own online Battle Bay team select and match over that transport, never the game's own online rooms. No game file is replaced."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-14"
+updated = "2026-10-15"
 # This mod's own names (TOML keys [[BattleBayDeluxe.X]], Lua BattleBayDeluxe.X, any later text, command or key); never
 # VRFW. The names it had before keep working: commands CMND_BBCR_DRAFT_*, team names bb_chronicle_teams.<name>, the
 # Draft team key evt_bbd_draft, the old roster files bb_draft_slot<N>.json (imported once), config.toml [campaign] / [draft].
@@ -29,6 +29,8 @@ folder = "BattleBayDeluxe"
 #   content\rules\     bbd_knockout.toml: the Torneo's knockout rulebook (extra time + penalties, the framework rule engine).
 #   content\menus\     bb_draft.toml: the Draft screen's layers (menu type); its cards are Clean HUD's formation card
 #                      object (team00_01_chara_card_for_formation_evt, clean_hud 1.14.5).
+#   content\extra_slots\ aura_slots.toml (1.5.68): with Character Reforged, every Battle Bay player's auras leave his
+#                      match move list for the aura / mix slots of its plates slot (`list_auras_out_modes`, VRFW 2.4.93).
 #   content\game\      active_team.toml (1.5.61): the hook StartMatchRequest that plays the «Active team» tile
 #                      (content\teams\51_active_team.toml) as the player's active team (scripts\active_team.lua; graft
 #                      research/grafts/bb_active_team).
@@ -44,7 +46,7 @@ folder = "BattleBayDeluxe"
 #   text\              keys.toml (the mod's name / description), rows\ (the Draft's texts, text engine).
 # `requires` also makes it load after them (the Decide hook chains on top of the framework's BB pages service;
 # vr_framework 2.0.88: VRFW.bb.unlock_rule, VRFW.data.import_once, hook:VRFW.BbRecord).
-requires = ["vr_framework>=2.0.101", "text_engine>=1.1.0", "menu_engine>=1.0.0", "clean_hud>=1.14.5"]
+requires = ["vr_framework>=2.4.93", "text_engine>=1.1.0", "menu_engine>=1.0.0", "clean_hud>=1.14.5"]
 conflicts = []
 # native access of content\game (docs/framework/native.md §4)
 permissions = ["memory", "call", "command", "state", "hook"]

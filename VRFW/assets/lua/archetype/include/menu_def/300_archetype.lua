@@ -1,4 +1,4 @@
--- VRFW › archetypes declared by mods (docs/framework/archetype.md §6): the menus' name / large icon / explanation of a
+-- VRFW › archetypes declared by mods: the menus' name / large icon / explanation of a
 -- build number. A declared archetype has a number 7+ (CMND_VRFW_ARCHETYPE_INFO answers its texts and icons); the
 -- game's builds 0-6 keep the game's answers. The team's build the menus ask stays 0-6 (6 when a declared one won: the
 -- retail tables are indexed by it); the patches that draw a team's build ask CMND_VRFW_ARCHETYPE_TEAM / _MATCH.

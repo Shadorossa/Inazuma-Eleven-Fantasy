@@ -1,11 +1,15 @@
 # Battle Bay «Active team» tile (1.5.61; docs/game/modes/estadio-bb.md §16) of the mod bb_chronicle_teams (Battle Bay
 # Deluxe): the first tile of «Equipos principales», before the Draft (the team evt_bbd_active_team,
 # research/mods/BattleBayDeluxe/content/teams/51_active_team.toml). Its matches play the player's active team as it is
-# (the mod's content\game\active_team.toml + scripts\active_team.lua); its own team_config players are placeholders,
-# so this block keeps them off the grid's panel (the panel's 11 player cards of the side that shows the tile are
-# hidden after the retail UpdateFormation; name, crest, description and tactics stay).
-#   enjoy_team_select_menu_campaign   bbd_active_team.lua (the Campaña / Torneo grid)
-#   enjoy_team_select_menu_offline    bbd_active_team.lua (the 1 vs 1 grid)
+# (the mod's content\game\active_team.toml + scripts\active_team.lua). 1.5.64 (owner 2026-10-14: the tile previewed
+# Raimon / Mark Evans): the active team set (CMND_GET_VS_USE_TEAM_SET) is read whenever the tile is drawn or a hub
+# opens and mirrored onto the tile's member rows and its row's leader (CMND_BBD_ACTIVE_TEAM_MIRROR); the panel shows
+# that team's players on its formation, its tactics, emblem and name; the big portrait / pre-match talk speaker is its
+# captain. 1.5.66 (owner 2026-10-15: the tile's crest / model kit and the VS screen were not the active team): the mirror
+# also writes the tile's team record emblem and kit, and SetupEmblemIcon mirrors before the tile's slot is drawn.
+#   enjoy_team_select_menu_campaign   common + bbd_active_team.lua (the Campaña / Torneo grid)
+#   enjoy_team_select_menu_offline    common + bbd_active_team.lua (the 1 vs 1 grid)
+#   bb_stadium_top_menu, soccer_top_menu   common + bbd_active_team_top.lua (the mirror at each hub opening)
 # Globals only (BBD_ACTIVE_TEAM, BBD_ACTIVE_TEAM_*); nothing runs at chunk load.
 name = "bb_active_team"
 mod = "bb_chronicle_teams"
@@ -13,11 +17,16 @@ order = 348
 module = "lua_bridge"
 requires = []
 conflicts = []
-wraps = ["UpdateFormation"]
-description = "Battle Bay: the Active team tile's panel shows no placeholder players"
+wraps = ["UpdateFormation", "UpdateTacticsLayer", "UpdateBackgroundIcon", "UpdateTeamNameText", "SetupEmblemIcon", "OnInit"]
+description = "Battle Bay: the Active team tile previews and mirrors the player's active team"
 
 [[files]]
 stem = "enjoy_team_select_menu_campaign"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_active_team_common.lua"
+  marker = "bb_active_team common"
 
   [[files.ops]]
   type = "append_block"
@@ -29,5 +38,36 @@ stem = "enjoy_team_select_menu_offline"
 
   [[files.ops]]
   type = "append_block"
+  src = "bbd_active_team_common.lua"
+  marker = "bb_active_team common"
+
+  [[files.ops]]
+  type = "append_block"
   src = "bbd_active_team.lua"
   marker = "bb_active_team"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_active_team_common.lua"
+  marker = "bb_active_team common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_active_team_top.lua"
+  marker = "bb_active_team top"
+
+[[files]]
+stem = "soccer_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_active_team_common.lua"
+  marker = "bb_active_team common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_active_team_top.lua"
+  marker = "bb_active_team top"

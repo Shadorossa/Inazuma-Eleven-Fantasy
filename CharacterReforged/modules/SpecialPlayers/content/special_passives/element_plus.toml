@@ -1,0 +1,30 @@
+schema = "SpecialPlayers.special_passive/1"
+# Special Players › the GENERIC elemental passives «<element> plus» (evt_ps_<element>_plus, content\techniques\
+# element_plus.toml, equipped in the normal passive slots through Utilities' «Configuración de pasivas»): a carrier's
+# special moves of that element get +15 % power. The game passive gives the name, text and buff icon; these give the
+# power. No trigger: always on.
+
+[[SpecialPlayers.Passive]]
+name = "wind_plus"
+blocks = ["wind_move", "own_power_15"]
+carried_by = ["evt_ps_aire_plus"]
+
+[[SpecialPlayers.Passive]]
+name = "forest_plus"
+blocks = ["forest_move", "own_power_15"]
+carried_by = ["evt_ps_bosque_plus"]
+
+[[SpecialPlayers.Passive]]
+name = "fire_plus"
+blocks = ["fire_move", "own_power_15"]
+carried_by = ["evt_ps_fuego_plus"]
+
+[[SpecialPlayers.Passive]]
+name = "mountain_plus"
+blocks = ["mountain_move", "own_power_15"]
+carried_by = ["evt_ps_montana_plus"]
+
+[[SpecialPlayers.Passive]]
+name = "void_plus"
+blocks = ["void_move", "own_power_15"]
+carried_by = ["evt_ps_neutro_plus"]

@@ -21,6 +21,9 @@
 # * character_reforged.page_stat_gain: (charaStHdl) -> ok, favouredMask, gain0 .. gain8 (stat idx order). The stats a
 #   form (a Mix-Max) adds: the ATRIBUTOS Normal / Miximax view (form key), the Hiper page's gains. Default: none (no
 #   Miximax view).
+# * character_reforged.mode_change_partner: (card) -> exists, partnerParam, partnerChara, partnerHdl. The partner of the
+#   card's equipped «Modo cambio» (the Hiper cards' and plates' partner portrait and the title «Modo cambio: <partner>»;
+#   CharacterReforged.Page.ModeChangePartner). Default: no partner.
 # Pages of other mods are declared to the VR-Framework's player page registry (VRFW_PlayerPages.Add,
 # docs/framework/player-pages.md); the header row's free strip is the host character_reforged.header
 # (player_header_host.toml).
@@ -41,3 +44,7 @@ label = { es = "Página del jugador: tope de estadística", en = "Player page: s
 [[host]]
 id = "character_reforged.page_stat_gain"
 label = { es = "Página del jugador: aumentos de forma", en = "Player page: form gains", fr = "Page du joueur : gains de forme", de = "Spielerseite: Formbonus", it = "Pagina del giocatore: aumenti di forma", pt = "Página do jogador: ganhos de forma", ja = "選手ページ：形態の上昇値", zh_hans = "球员页面：形态加成", zh_hant = "球員頁面：形態加成" }
+
+[[host]]
+id = "character_reforged.mode_change_partner"
+label = { es = "Modo cambio: compañero", en = "Mode change: partner", fr = "Mode changement : partenaire", de = "Wechselmodus: Partner", it = "Modalità cambio: compagno", pt = "Modo troca: parceiro", ja = "モードチェンジ：相手", zh_hans = "模式变换：搭档", zh_hant = "模式變換：搭檔" }

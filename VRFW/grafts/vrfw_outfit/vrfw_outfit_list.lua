@@ -1,7 +1,7 @@
--- ===== VRFW outfit_list BEGIN ===== (docs/framework/outfits.md, research/grafts/vrfw_outfit)
--- Item list of «Equipamiento» (equip_menu_list): its costume tab (tab 4, the game's own inventory list of costumes)
--- opens from the «Atuendo» row outside the story too (equip_menu_select passes 363718978 = true). An outfit a mod
--- declared ([[VRFW.Outfit]], VR-Framework CMND_VRFW_OUTFIT_IS) skips the retail «first costume change» warning (a
+-- ===== VRFW outfit_list BEGIN ===== (research/grafts/vrfw_outfit)
+-- Item list of "Equipamiento" (equip_menu_list): its costume tab (tab 4, the game's own inventory list of costumes)
+-- opens from the "Atuendo" row outside the story too (equip_menu_select passes 363718978 = true). An outfit a mod
+-- declared ([[VRFW.Outfit]], VR-Framework CMND_VRFW_OUTFIT_IS) skips the retail "first costume change" warning (a
 -- story notice). Every other item, and an older framework (pcall fails): retail. Nothing runs at load time; no new
 -- main-chunk locals.
 do

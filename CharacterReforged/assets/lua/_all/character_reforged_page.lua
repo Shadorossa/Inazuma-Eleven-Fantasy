@@ -16,13 +16,17 @@
 --   character_reforged.page_stat_gain  (charaStHdl) -> ok, favouredMask, gain0 .. gain8 (stat idx order)
 --                                      the stats a form adds (the ATRIBUTOS Normal / Miximax view, the Hiper page's
 --                                      gains text); without an answer: no Miximax view
+--   character_reforged.mode_change_partner (card) -> exists, partnerParam, partnerChara, partnerHdl
+--                                      the partner of the card's equipped «Modo cambio» (the Hiper cards' and plates'
+--                                      partner portrait and title); without an answer: no partner
 --
 -- The last declared entry is asked first (load order: a mod loaded later overrides), then the earlier ones, then the
 -- default. Asked only at run time (never while a chunk loads); every call goes through pcall.
 -- Also here: Page.SkillSetOn() (the option «Tabla de habilidades» on the new set: the Hiper page is the page of the new
--- set's aura / mix slots, shown only then) and Page.MixOf(card) (the base's mix-slot store, scripts\mix_slots.lua).
+-- set's aura / mix slots, shown only then), Page.MixOf(card) (the base's mix-slot store, scripts\mix_slots.lua) and
+-- Page.Projection(card) (the new set's aura / mix of a card, the skill table's and the match's rule).
 -- For other mods' menu Lua: CharacterReforged.Page.Stat / LuckBonus / StatTop / GainsRaw / Providers / SkillSetOn /
--- MixOf.
+-- MixOf / ModeChangePartner.
 CharacterReforged = type(CharacterReforged) == "table" and CharacterReforged or {}
 if CharacterReforged.Page == nil then
   local Page = {}
@@ -31,6 +35,7 @@ if CharacterReforged.Page == nil then
   Page.HOST_LUCK_BONUS = "character_reforged.page_luck_bonus"
   Page.HOST_STAT_MAX = "character_reforged.page_stat_max"
   Page.HOST_STAT_GAIN = "character_reforged.page_stat_gain"
+  Page.HOST_MODE_CHANGE_PARTNER = "character_reforged.mode_change_partner"
   Page.CMD_CHARA_STAT = 1938088826         -- crc32("CMND_CHARACTERREFORGED_CHARA_STAT")
   Page.LUCK = 8                            -- stat idx of Suerte
   Page.CMD_MIX_GET = 358194355             -- crc32("CMND_CHARACTERREFORGED_MIX_GET")
@@ -144,6 +149,64 @@ if CharacterReforged.Page == nil then
     end
     local ok, value = pcall(funcLuaCommand, Page.CMD_OPTION_GET, Page.SKILL_SET_OPTION)
     return ok and (value == 1 or value == true)
+  end
+
+  -- THE projection of a saved card while the option shows the new set (scripts\mix_slots.lua
+  -- CMND_CHARACTERREFORGED_PROJECT_SKILL_SET, the rule the skill table and the match use): { aura, mix, aura_from,
+  -- mix_from }; nil = the option on Victory Road, no answer (Character Reforged's scripts off) or no such card. Every
+  -- place that shows a player's aura / mix (the Hiper page, the page's form badge, the 3D model's forms) reads this.
+  Page.CMD_PROJECT = 2177163225            -- crc32("CMND_CHARACTERREFORGED_PROJECT_SKILL_SET")
+  Page.projectionCache = {}                -- card -> {at, value}: one command per card per PROJECTION_CACHE_S
+  Page.PROJECTION_CACHE_S = 0.25
+  local function Clock()
+    if type(os) == "table" and type(os.clock) == "function" then
+      local ok, t = pcall(os.clock)
+      if ok and type(t) == "number" then
+        return t
+      end
+    end
+    return nil
+  end
+  local function U32(v)
+    v = tonumber(v) or 0
+    if v < 0 then
+      v = v + 4294967296
+    end
+    return v
+  end
+  function Page.Projection(card)
+    if not EngineReady() or type(card) ~= "number" or card == 0 or not Page.SkillSetOn() then
+      return nil
+    end
+    local now = Clock()
+    local hit = Page.projectionCache[card]
+    if hit ~= nil and now ~= nil and now - hit.at < Page.PROJECTION_CACHE_S then
+      return hit.value
+    end
+    local ok, aura, mix, auraFrom, mixFrom = pcall(funcLuaCommand, Page.CMD_PROJECT, card)
+    local value = nil
+    if ok and type(aura) == "number" then
+      value = {aura = U32(aura), mix = U32(mix), aura_from = tonumber(auraFrom) or -1, mix_from = tonumber(mixFrom) or -1}
+    end
+    if now ~= nil then
+      Page.projectionCache[card] = {at = now, value = value}
+    end
+    return value
+  end
+
+  -- the partner of a card's equipped «Modo cambio»: the first mode_change_partner entry that answers
+  -- (exists, partnerParam, partnerChara); nil = none answers
+  function Page.ModeChangePartner(card)
+    if not EngineReady() or type(card) ~= "number" or card == 0 then
+      return nil
+    end
+    for _, id in ipairs(Page.Providers(Page.HOST_MODE_CHANGE_PARTNER)) do
+      local ok, exists, partnerParam, partnerChara = pcall(funcLuaCommand, id, card)
+      if ok and exists == true and type(partnerParam) == "number" and partnerParam ~= 0 then
+        return partnerParam, partnerChara
+      end
+    end
+    return nil
   end
 
   -- the mix-slot move of a saved card (Character Reforged's store); 0 = empty / no answer

@@ -1,4 +1,4 @@
--- VRFW › archetypes declared by mods (docs/framework/archetype.md §6): «Bonificaciones de equipo» (soccer_parameter_menu,
+-- VRFW › archetypes declared by mods: «Bonificaciones de equipo» (soccer_parameter_menu,
 -- layer soccer11_21_formation_team_passive_list_base): the build name and large icon of a team whose archetype is a
 -- declared one. Outside a match: the last menu pick (this menu picks its team set at OnInit); in a match: the side
 -- of the user (CMND_GET_SOCCER_TEAM_INFO 0). The game's code runs first (it draws build 6), then the declared one.

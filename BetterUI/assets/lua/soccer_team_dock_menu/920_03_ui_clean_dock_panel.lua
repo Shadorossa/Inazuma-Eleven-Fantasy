@@ -310,6 +310,8 @@ local CHD = {
   FOCUS_MARK = 1778826357,        -- (layer, idx, bool): what the retail dock sends to move its focus
   FOCUS_ENABLE = 3518307824,      -- (layer, bool)
   CURSOR_LOC = 381797568,         -- (layer, crc32("cursor"), idx, count)
+  CURSOR_TRACE = 1774843228,      -- (layer, idx, locator, bool): the green cursor (cmn05_01_cursor) follows that locator
+  CARD_CURSOR = 945715707,        -- the card objbin's cursor locator (retail traces it on a focused card)
   CREATE_NUM = 1175615627,        -- (layer) -> instances
   IS_OPEN = 2640875187,           -- (layer[, idx]) -> bool
   LAYER_ACTIVE = 782642007,       -- (layer) -> bool (false while the dock's layer group is suspended by a child menu)
@@ -801,6 +803,11 @@ end
 -- the focus onto pitch card `ci` the way the retail moves there from the panel (control focus, cursor, mark, the
 -- dock's selected card, its guide line, no build balloon); `from` = the layer the engine / this graft left
 local function CHD_ToCard(from, fi, ci)
+  -- the green cursor leaves `from` for the card, as the retail OnFocusLayerShift does (else it stays on the kit)
+  for i = 0, CHD_Num(from) - 1 do
+    CHD_Cmd(CHD.CURSOR_TRACE, from, i, CHD.CURSOR, false)
+  end
+  CHD_Cmd(CHD.CURSOR_TRACE, CHD.CARDS, ci, CHD.CARD_CURSOR, true)
   CHD_Cmd(CHD.FOCUS_ENABLE, from, false)
   CHD_Cmd(CHD.FOCUS_ENABLE, CHD.CARDS, true)
   CHD_Cmd(CHD.CURSOR_LOC, CHD.CARDS, CHD.CURSOR, ci, CHD_Num(CHD.CARDS))
@@ -950,6 +957,7 @@ end
 -- row of CHD_FORM / CHD_CONF: top-left + size) measured in global units, the scale from its _pos_atc_free01 row.
 CHD.FREE_NODE = 4293674698        -- _pos_atc_free01
 CHD.boxOff = {}
+CHD.boxLogs = 0
 function CHD.Drawn(layer, rows)
   local base, ref = rows[1], nil
   for _, r in ipairs(rows) do
@@ -973,34 +981,59 @@ function CHD.Drawn(layer, rows)
   return {math.min(gx, x1), math.max(gx, x1), math.min(gy, y1), math.max(gy, y1)}
 end
 
+-- the pointer against the two drawn boxes: inForm, inConf (false, false when unmeasurable or the pointer is unknown)
+function CHD.PointerBoxes()
+  local ok, x, y = CHD_Cmd(CHD.POINTER)
+  if not ok or type(x) ~= "number" or type(y) ~= "number" then
+    return nil
+  end
+  local f, c = CHD.Drawn(CHD.FORM, CHD_FORM), CHD.Drawn(CHD.CONF, CHD_CONF)
+  if f == nil or c == nil then
+    return nil
+  end
+  local function inside(b)
+    return x >= b[1] and x <= b[2] and -y >= b[3] and -y <= b[4]
+  end
+  return inside(f), inside(c), x, y
+end
+
+-- each zone is on only while the pointer is on its own drawn box (2026-10-15, owner: the pointer on CONF. DE EQUIPO
+-- still lit FORMACIÓN): the retail rectangles overlap each other and the gap between the boxes
 function CHD.BoxGuard()
   if not CHD_PanelOn() or CHD_Get(CHD.LAYER_ACTIVE, CHD.FORM) == false then
     return                        -- a child menu is up / the dock is moving: the retail owns the zones
   end
   local off = {}
   if CHD_ConfShown() then
-    local ok, x, y = CHD_Cmd(CHD.POINTER)
-    if ok and type(x) == "number" and type(y) == "number" then
-      local f, c = CHD.Drawn(CHD.FORM, CHD_FORM), CHD.Drawn(CHD.CONF, CHD_CONF)
-      local function inside(b)
-        return b ~= nil and x >= b[1] and x <= b[2] and -y >= b[3] and -y <= b[4]
-      end
-      local inF, inC = inside(f), inside(c)
-      off[CHD.FORM] = inC and not inF
-      off[CHD.CONF] = inF and not inC
+    local inF, inC, x, y = CHD.PointerBoxes()
+    if inF ~= nil then
+      off[CHD.FORM] = not inF
+      off[CHD.CONF] = not inC
+      CHD.boxPointer = {x, y}
     end
   end
   for _, layer in ipairs({CHD.FORM, CHD.CONF}) do
     local o, was = off[layer] == true, CHD.boxOff[layer] == true
     if o or was then              -- never touches a zone this guard did not switch off
-      if was ~= o and CHD.zoneLogs < 16 then
-        CHD.zoneLogs = CHD.zoneLogs + 1
-        CHD_Log("pointer box guard: zone of " .. tostring(layer) .. (o and " off" or " on"))
+      if was ~= o and CHD.boxLogs < 40 then
+        CHD.boxLogs = CHD.boxLogs + 1
+        local p = CHD.boxPointer
+        CHD_Log("pointer box guard: zone of " .. tostring(layer) .. (o and " off" or " on") .. (p and string.format(
+          " (pointer %.0f,%.0f)", p[1], p[2]) or ""))
       end
       CHD.boxOff[layer] = o
       CHD_Cmd(CHD.ZONE, layer, 0, not o)
     end
   end
+end
+
+-- true while the pointer is on the drawn box of FORMACIÓN / CONF. DE EQUIPO (layer)
+function CHD.PointerOnBox(layer)
+  local inF, inC = CHD.PointerBoxes()
+  if layer == CHD.FORM then
+    return inF == true
+  end
+  return inC == true
 end
 
 -- ---- wrappers --------------------------------------------------------------------------------------------------------------
@@ -1351,6 +1384,8 @@ if type(chd_prev_shift) == "function" then
         if not ok then
           CHD_Log("error shift redirect " .. tostring(err))
         end
+      elseif (a1 == CHD.FORM or a1 == CHD.CONF) and (a3 == CHD.FORM or a3 == CHD.CONF) and CHD.PointerOnBox(a3) then
+        CHD.shift = nil           -- the pointer's group switch onto the box under it: not a key move, kept as it is
       else
         CHD.shift = sh
       end

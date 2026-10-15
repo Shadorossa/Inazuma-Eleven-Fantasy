@@ -133,4 +133,4 @@ VRFW.MoveEffect.OnUse = { CooldownRefund = 0.25, Filter = { Team = "own", Elemen
 # user -> rival, kept on the pitch), after its cut-in (Nacho 2026-10-11).
 [[edit]]
 target = "who00200"
-VRFW.MoveEffect.OnSuccess = { PushAffected = { RadiusM = 18 } }
+VRFW.MoveEffect.OnSuccess = { PushAffected = { RadiusM = 7 } }

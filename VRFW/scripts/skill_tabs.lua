@@ -1,23 +1,13 @@
--- VR-Framework › skill tab registry (service S3 of VRFW 2.3, docs/framework/card-types.md §3). Declarations: every
--- active mod's content\skill_tabs\*.toml (`VRFW.skill_tab/1`, keys and compare units: content\types\skill_tab.toml);
--- native side: content\game\skill_tabs.toml (the tab table stub, the tab count, the team aura list stub, commands).
---
---   * Off (no mod declares a tab or an aura list row, or none whose `when` holds): nothing is written, the move list
---     keeps the game's tabs, the team aura screen the game's rows.
---   * Tabs: the game's own table (read from its code: the `lea` of the fixed-tab branch, the count immediate) with
---     order 10, 20, … in table order; a declaration changes a game tab (`order`, `group`, `hidden`) or adds a category.
---     The native list = the tabs not hidden, by order (ties: the game's order, then declaration order). The stub's
---     table is that list (padded with zeros up to the game's table size); the count immediate is a window
---     `start << 8 | count`: CMND_VRFW_SKILL_TAB_WINDOW(group) narrows it to the tabs of one group (a picker sets it
---     before it opens, "" puts the whole list back). A group's tabs must follow each other (else its first run).
---   * Team aura list: the declared aura types and skills (`[[VRFW.AuraListHide]]`, every mod's, in load order, once
---     each) are left out of the rows; the game's own test (no record = no row) stays first.
---   * CMND_VRFW_SKILL_TABS() -> n, categories; CMND_VRFW_SKILL_TAB_WINDOW([group]) -> start, count;
---     CMND_VRFW_SKILL_TAB_HAS(category) -> bool; CMND_VRFW_SKILL_TAB_INFO(category) -> game index, icon, atlas, sprite,
---     sprite off, text id, text, filter, filter group (the list's Lua part, menu lua _all/22_skill_tabs.lua: icons,
---     titles and filters follow the native list; docs/framework/card-types.md §3.3).
---   * A mod that patches the tab sites itself (its own stub) keeps them: the registry stays off and says so once (info),
---     so a tab is never removed or added twice.
+-- Skill tab registry: reads every mod's content/skill_tabs/*.toml (`VRFW.skill_tab/1`; keys in content/types/skill_tab.toml) and patches the move list tabs via content/game/skill_tabs.toml.
+-- Off (no applicable tab or aura list declaration): nothing is written; the game's tabs and team aura rows stay.
+-- Tabs: a declaration changes a game tab (`order`, `group`, `hidden`) or adds a category; the list is the non-hidden tabs by order (ties: game order, then declaration order).
+-- A group's tabs must be contiguous (else its first run is used); CMND_VRFW_SKILL_TAB_WINDOW narrows the list to one group ("" restores it).
+-- Team aura list: aura types and skills declared in `[[VRFW.AuraListHide]]` are left out of the rows.
+-- A mod that patches the tab sites itself keeps them: the registry stays off and logs it once.
+-- CMND_VRFW_SKILL_TABS() -> n, categories
+-- CMND_VRFW_SKILL_TAB_WINDOW([group]) -> start, count
+-- CMND_VRFW_SKILL_TAB_HAS(category) -> bool
+-- CMND_VRFW_SKILL_TAB_INFO(category) -> game index, icon, atlas, sprite, sprite off, text id, text, filter, filter group
 
 SkillTabs = SkillTabs or {}
 
@@ -52,8 +42,7 @@ local function apply(name, arg)
   return r == true
 end
 
--- the game's tab table: the fixed-tab branch's `lea rdi, [rip + disp32]` (profile site Technique.SkillTabsTable) and
--- the count immediate (Technique.SkillTabsCount); nil, why when another mod changed them or the build has no such site
+-- the game's tab table and count sites (profile sites Technique.SkillTabsTable / SkillTabsCount); nil, why when another mod changed them or the build lacks them
 local function game_tabs()
   if GAME then return GAME end
   local ok1, lea = pcall(VRFW.game.sym, "Technique.SkillTabsTable")
@@ -158,8 +147,7 @@ local function start_tabs(d)
   if #d.tabs == 0 then return "no tab declarations" end
   local game, why = game_tabs()
   if not game then
-    -- another mod's own patch of the same sites (its stub) is not a fault: it keeps the tab row, the declarations
-    -- wait (a tab is removed / added once, never twice)
+    -- another mod's own patch of the same sites keeps the tab row; the declarations wait
     info(why .. ": the move list keeps that tab row; the declared tabs are not applied")
     return "off (" .. why .. ")"
   end

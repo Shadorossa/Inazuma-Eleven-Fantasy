@@ -1,13 +1,19 @@
 # Chronicle Deluxe › the Chronicle board with only the Crónica and the Batalla heroica (docs/game/mods/chronicle-deluxe.md
 # §8, owner 2026-10-14: «each team keeps only the chronicle battle … remove every rarity but the heroic battle»). HOOK
-# files of the VR-Framework's two board scripts (graft route_board, docs/framework/route-board.md §3): no text patch, no
-# retail function replaced, nothing runs at chunk load but definitions and VRFW_Host registrations.
+# files of the VR-Framework's two board scripts (graft route_board, docs/framework/route-board.md §3: no text patch of
+# them) and one block appended to the team list script (wrappers of three retail globals); nothing runs at chunk load
+# but definitions, wrapper assignments and VRFW_Host registrations.
 #   cd_board_hooks.lua    vs_route_town_menu: a Crónica win of a normal piece also counts as its route-unlock clear
 #                         (difficulty 2: story trigger 506, neighbours, gate keys, trigger 507), the Heroica (4) opens
 #                         with it, old saves get the Heroica of every piece whose Crónica they won, the board's clear
 #                         dots show only the difficulties that exist
+#                         (1.2.4: on an orb bar with one socket per difficulty, cd_orb_bar.lua)
 #   cd_command_hooks.lua  vs_route_town_command_select_menu: the battle-kind rows that exist (normal piece: Crónica,
-#                         Heroica; gate piece: its gate battle)
+#                         Heroica; gate piece: its gate battle); 1.2.4: the «MI EQUIPO» blue panel cut to those rows
+#   cd_list_menu.lua      vs_route_town_list_menu (1.2.4; no framework host there: wrappers appended to the script):
+#                         each team row's orb bar, the info window's battle-kind rows and its height
+#   cd_orb_bar.lua        the orb bar (shared by the board and the team list, included in both)
+# docs/game/mods/chronicle-deluxe.md §8.9 (the orb bars and panels).
 # Which difficulties exist is the mod's data (content\defaults\match_difficulty.toml, the framework's
 # VRFW_MatchDifficulty); levels, rewards and the heroic player rules are team-type data
 # (content\teams\90_rules\heroic.toml). With Inazuma Fantasy's Chronicle redesign active (the same rules, its graft
@@ -18,13 +24,24 @@ order = 155
 module = ""
 requires = []
 conflicts = []
-wraps = []
+wraps = ["UpdateItem", "SetInfoWindowClassName", "OpenCloseInfoWindow"]
 description = "Chronicle Deluxe: Crónica + Heroica only on the Chronicle board (the Crónica win opens the route)"
 
 [[hooks]]
 stem = "vs_route_town_menu"
 src = "cd_board_hooks.lua"
+include = { "@ORB_BAR@" = "cd_orb_bar.lua" }
 
 [[hooks]]
 stem = "vs_route_town_command_select_menu"
 src = "cd_command_hooks.lua"
+
+[[files]]
+stem = "vs_route_town_list_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cd_list_menu.lua"
+  marker = "chronicle_deluxe_list"
+  include = { "@ORB_BAR@" = "cd_orb_bar.lua" }
+  crc = "none"

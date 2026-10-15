@@ -7,7 +7,7 @@
 # captain's. Each side, in this order: the lines a mod declares for its team (below), else the team's own retail talk
 # (a game row: its line, voice and pose), else these defaults. Every side then gets what a retail captain has, derived
 # from its captain (the row's leader): the name panel (its chara_base name), a retail captain's talk pose for its motion
-# set (when the team has none of its own), and a moving mouth (its own voice line, else a silent lip cue below).
+# set (when the team has none of its own), and a moving mouth (its own voice line, else a silent lip cue a mod declares, `lip` below).
 
 [bb_talk]
 # Line of a team with no line of its own: a line of a retail talk (`talk` = its text file, `line` = 1 the player
@@ -28,11 +28,11 @@ resident = ["p010"]
 synthetic = { first = 100, count = 100, rival = 99 }
 # The retail talk whose files shape the built ones (default: the `player` line's talk).
 # proto = "ev40_07070"
-# Lip sync of a line with no voice of its own: the silent cues the framework adds to the talks' voice bank `ev40`
-# (content/sounds/bb_talk_lip.toml, with their viseme tracks assets/data/common/sound/<ja|en>/<cue>.p3lip), one per
-# length; `{tenths}` = the length in tenths of a second. A line takes the shortest length that covers it (about 13
-# characters a second). Leave it out and those mouths stay still.
-lip = { cue = "ev40_vrfw_lip_{tenths}", seconds = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0] }
+# Lip sync of a line with no voice of its own: `lip = { cue = "<cue with {tenths}>", seconds = [...] }`, the silent cues a
+# mod adds to the talks' voice bank `ev40` (its content/sounds/*.toml, with their viseme tracks
+# assets/sound/<ja|en>/<cue>.p3lip), one per length; `{tenths}` = the length in tenths of a second. A line takes the
+# shortest length that covers it (about 13 characters a second). The framework ships none (mods declare
+# them): with no `lip` those mouths stay still.
 
 # A team's own lines (any mod, in its own defaults/bb_talk.toml). Key = a framework team key "<mod>.<name>", a game
 # team key (also matches its Estadio BB copy "<key>_bb") or a "0x..." team id. Each field optional:
