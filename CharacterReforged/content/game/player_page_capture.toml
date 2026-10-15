@@ -4,12 +4,17 @@ schema = "VRFW.game/2"
 # (config.toml [player_page]) and a loader.log report of the engine's capture state. The logic is
 # scripts\player_page_capture.lua (CharacterReforged.PageCapture.*); the engine side: docs/game/engine/menu-chara-capture.md.
 # The report reads the profile names Render.SetCaptureGrid (render-texture pool), Render.GetTarget (render targets)
-# and Camera.GetConfig (external camera config) through VRFW.game.sym.
+# Camera.GetConfig (external camera config), Render.GetSystem / Render.GetSettings (pause freeze) and Scene.GameState
+# (scene chara records) through VRFW.game.sym.
 
 [[VRFW.Command]]
-name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG"   # () -> mode (0 off, 1 match, 2 always), camera crc, report (0 / 1), bust (0 / 1)
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG"   # () -> mode (0 off, 1 match, 2 always), camera crc, report (0 / 1), bust (0 / 1), live pause (0 / 1)
 handler = "CharacterReforged.PageCapture.Config"
 
 [[VRFW.Command]]
-name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_REPORT"   # (when, model key, camera crc) -> 1; loader.log «player_page_capture: …» lines
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_REPORT"   # (when, model key, camera crc, model handle) -> 1; loader.log «player_page_capture: …» lines
 handler = "CharacterReforged.PageCapture.Report"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE"     # (on 1 / 0) -> 1 done, 0 nothing to do, -1 not reachable: the pause freeze flag off / back
+handler = "CharacterReforged.PageCapture.Live"

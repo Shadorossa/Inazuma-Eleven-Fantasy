@@ -1,0 +1,23 @@
+schema = "VRFW.team/2"
+# Rivals of the office trial games (5v5, office_trial_plan.py; module Challenges of Football Reforged, Inazuma Fantasy's
+# until 2026-10-15). Hand-maintained. Members play their card's own moves (loadout = 0, as Inazuma Fantasy's
+# teams\00_loadouts\30_card_movesets.toml sets them).
+default_lang = "en"
+
+[[team]]
+name = "trial_tm_01"                      # Alpine
+key = "evt_trial_tm_01"
+based_on = "tm_st_scbattle_0106"          # Sumo Club (its tactics / team skills)
+name_text = 0xB9003DCC                    # Alpine
+level = 1
+formation = 0xC478B909
+kit = 0x1ED7F450
+emblem = 0x27425D40
+roster = "exact"
+member = [
+  { card = 0x6A4CFD5F, slot = 0, loadout = 0, uid = 0x506C7965 },  # Adam Ropes · GK
+  { card = 0xBB8E4616, slot = 1, number = 8, loadout = 0, uid = 0x81AEC22C },  # Robert Skipolson · MF
+  { card = 0xA2957757, slot = 2, number = 9, captain = true, loadout = 0, uid = 0x98B5F36D, rarity_step = 1 },  # Shawn Froste · DF
+  { card = 0x0E20385B, slot = 3, number = 5, loadout = 0, uid = 0x3400BC61 },  # Sean Snowfield · MF
+  { card = 0x7295A629, slot = 4, number = 10, loadout = 0, uid = 0x48B52213 },  # Roland Climbstein · FW
+]

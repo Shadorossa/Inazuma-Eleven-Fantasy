@@ -1,0 +1,61 @@
+id = "new_recruitment"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "New Recruitment"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). A spirit drop is the player himself: recruited into the bank, his spirit taken back; a player you own no longer drops nor shows in the drop lists (one row per character); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove them from the current save. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
+priority = 0
+tags = ["Gameplay", "Characters"]
+updated = "2026-10-15"
+# This mod's own names (TOML keys [NewRecruitment.X], Lua NewRecruitment.X); never VRFW.
+prefix = "NewRecruitment"
+folder = "NewRecruitment"
+# Split out of No More Rarities on 2026-10-15 (owner request: «Para el mod de No More Rarities aparta el tema del límite
+# de personajes de 1 a un mod nuevo de "NewRecruitment" que sea también módulo de Character Reforged»; docs/game/mods/
+# new-recruitment.md). No More Rarities keeps the rarity removal; this module the one-copy-per-character limit and the
+# spirit-free recruitment. Each works alone; with both on, the behaviour is No More Rarities 1.0.13's. Standard mod
+# layout (docs/framework/mod-layout.md):
+#   content\duplicate_rules\new_recruitment.toml   [CharacterReforged.DuplicateRules.new_recruitment] (Character
+#                                     Reforged's duplicate-players hook): one card per character on a duplicated save,
+#                                     which copy is kept, element spirits per released copy; apply_on_load: the same on
+#                                     every load of a player slot (Character Reforged keeps a backup of the save first)
+#   content\team_planner\rule.toml    Utilities' team planner: any owned copy of a character counts
+#   content\items\drop_list.toml      [VRFW.DropList.Spirits]: a player the user owns is no spirit candidate (never
+#                                     dropped, not listed), one drop-list row per character; not in a reserved slot
+#   assets\lua\_all\new_recruitment_spirits.lua   no spirit «!» notices, no «Espíritu» row in the team docks, and a
+#                                     spirit drop of a normal card = the player: noted on the match result screen,
+#                                     recruited into the bank on the first step of a menu of the save (VRFW_Recruit), his
+#                                     spirit taken back (at No More Rarities' normal card rarity when it is on, else at
+#                                     the spirit's own rarity)
+#   scripts\spirit_purge.lua + scripts\lib\spirit_purge.lua   a save duplicated through the slot screen (the
+#                                     VR-Framework's slot_duplicate event) loses every player spirit in the NEW copy; the
+#                                     source save is never touched
+#   scripts\save_tools.lua            the function of its save adjust action (Options › «Ajustar save», declared in
+#                                     content\save_adjust\new_recruitment.toml): «Quitar los espíritus de jugador» on the
+#                                     CURRENT save (lib\spirit_purge.lua; text\rows\save_tools.toml)
+# Saved state: none under this mod's id. The pending spirit recruits are loader UI flags whose key names were kept from
+# No More Rarities (no_more_rarities_spirit_pending*), so recruits noted before the split still happen; the on-load
+# backup blobs are Character Reforged's. No save import is needed.
+# vr_framework 2.4.32: [VRFW.DropList.Spirits]; 2.4.36: the slot_duplicate event; 2.4.40: the save tools.
+# character_reforged 1.7.8: the duplicate rules' apply_on_load.
+requires = ["vr_framework>=2.4.40", "character_reforged>=1.7.8"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+
+# its own content\ folders read by other mods' scripts: Character Reforged's duplicate hook (duplicate_rules) and
+# Utilities' team planner (team_planner); vrfw check's layout lint accepts them (docs/framework/mod-layout.md)
+[layout]
+script_folders = ["duplicate_rules", "team_planner"]
+
+# A MODULE of Character Reforged (docs/framework/mod-families.md): the Mods screen, the ModManager and `vrfw list` show it
+# inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod of its own; switching Character
+# Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
+[module]
+of = "character_reforged"
+order = 75
+
+# Nothing other mods call.
+[exports]
+game_lua = []

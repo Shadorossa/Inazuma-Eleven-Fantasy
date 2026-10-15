@@ -1,0 +1,6 @@
+schema = "utilities.team_planner/1"
+# New Recruitment's rule for Utilities' team planner («Planificador de equipo», docs/game/ui/team-planner.md §2.4; from
+# No More Rarities 2026-10-15): one card per character, so the character itself replaces his ghost: any owned copy of
+# his card counts, whatever its rarity value. The rarity the picker and the ghosts are drawn at is No More Rarities'
+# (its content\team_planner\rule.toml); declarations apply key by key in load order.
+owned_rarities = "any"

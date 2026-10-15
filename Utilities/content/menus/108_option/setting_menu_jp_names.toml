@@ -29,3 +29,16 @@ add_layer = { name = "util_jpn_emblem", object = "vrfw_emblem_tile", count = 24,
 [[patch]]
 menu = "setting_menu"
 add_layer = { name = "util_jpn_label", object = "vrfw_tile_label", count = 48, groups = [{ group = "setting_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The picker's backdrop (2026-10-15): the retail black backdrop of the game's windows (cmn02_01_blackbg, full screen)
+# drawn at 653: over the settings list (651 / 652, also hidden and sunk under the screen's background while the
+# picker shows) and the guide box (651, raised over it by the Lua), under the footer's button guide (654 / 655) and the
+# grids (700). Opened by the Lua when the picker opens, hidden when it closes.
+[[object]]
+name = "util_jpn_backdrop"
+from = "cmn02_01_blackbg"
+priority = 653
+
+[[patch]]
+menu = "setting_menu"
+add_layer = { name = "util_jpn_backdrop", object = "util_jpn_backdrop", count = 1, groups = [{ group = "setting_menu", flags = [0, 0, 0, 0, 1, 0] }] }

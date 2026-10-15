@@ -2,7 +2,7 @@ id = "character_reforged"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Character Reforged"
-version = "1.8.44"
+version = "1.8.51"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The shared base of the mods split out of Inazuma Fantasy: every character's own stats (Lv 200 values, growth, level curve), moveset (4 special moves + aura) and the level cap 200 (config.toml [level] cap, 99..999: EXP and stats follow it); the custom pairing / creation flow of the aura mods (All Miximaxed, All Changed, Aura Points, All Keshin Armed), the pairing rules as data and the common texts; the one-row player header of the player page («Ficha» and every screen with the player header: portrait, nickname and «SIGUIENTE» gone; name, element, position, gender, level and number on one band) with a slot where other mods hang their pieces (Stamina Points: the max PE); the paged player page (PERFIL with the player's 3D model and description, ATRIBUTOS with the stats as gauge rows and the Normal / Miximax view, SUPERTÉCNICAS, the Hiper page of the new set's aura / mix slots, Pasivas, the page dots; other mods add their values through its slots); the optional skill table (6 special moves + an aura slot + a mix slot; off by default, row «Tabla de habilidades» of the mod options); the duplicate-players hook (a save duplicated into another slot gets the duplicate rules other mods declare: one card per character with No More Rarities; a rule may ask for the same pass on every load of a player slot, after a one-time backup of that save). The ídolos' «Equipación del momento»: each Ídolo and Diamond card wears the kit of its moment (its team's kit of its era, derived from the game's tables, or the moment_kit its card declares) in matches, menus, face icons and Kizuna town, switched on or off per player in «Equipamiento». Works with the VR-Framework alone."
@@ -73,7 +73,7 @@ lua_early = true
 #                                system any mod declares ([CharacterReforged.Create.<system>] in content\pairing\*.toml;
 #                                graft character_reforged_board), the refusal window's texts (text\keys.toml create_refused_*)
 #   options.toml                 the row «Tabla de habilidades» (character_reforged.skill_set_view): Victory Road's board
-#                                (default) or the new skill set, value «Fantasy» (docs/refactor/aura-mods-split.md «Skill table»)
+#                                or the new skill set, value «Fantasy» (default) (docs/refactor/aura-mods-split.md «Skill table»)
 #   content\menus\skill_table.toml the skill table screen evt_skill_slot_menu (registry row, setting, objects, layouts)
 #   assets\menu\                  its art (+ content\images\menu\102_team\team02\team02_02\plate_peg.toml: the PEG look of
 #                                its move panels); text\rows\skill_table.toml its texts (table menu_text); grafts (research/grafts, mod =
@@ -131,7 +131,7 @@ lua_early = true
 #                                declare as data ([CharacterReforged.DuplicateRules.<name>] in their
 #                                content\duplicate_rules\*.toml, schema CharacterReforged.duplicate_rules/1: keys in
 #                                lib\duplicate_players\rules.lua); no rule = nothing done. Report: blob duplicate_players.txt.
-#                                With a rule's apply_on_load = true (No More Rarities) also on the save engine's slot load
+#                                With a rule's apply_on_load = true (No More Rarities, New Recruitment) also on the save engine's slot load
 #                                (a player slot, before the game reads it): a durable copy of the save first, once per
 #                                save (global blob save-backup-slot<N>-<stamp>-before-duplicate-rules.bin, marker
 #                                duplicate_players_backup.txt), report blob duplicate_players_load.txt; left to Inazuma
@@ -175,7 +175,7 @@ lua_early = true
 #                                docs/game/ui/partner-lock-bank.md)
 #   modules\<Module>\           the embedded module mods, shipped in this folder (docs/framework/mod-families.md
 #                                «Embedded module mods»): AllKeshinArmed, AllMiximaxed, AllChanged, AuraPoints,
-#                                GroupSummons, StaminaPoints, NoMoreRarities, PlayerTraining, SoulsRework, SpecialPlayers. Each keeps its own mod.toml
+#                                GroupSummons, StaminaPoints, NoMoreRarities, NewRecruitment, PlayerTraining, SoulsRework, SpecialPlayers. Each keeps its own mod.toml
 #                                (id, prefix, saves, options, grafts) and is switched on / off on this mod's «Mods» page
 #                                (enabled.toml; applies after a restart); a module that is off loads nothing
 

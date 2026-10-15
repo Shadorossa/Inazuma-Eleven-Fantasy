@@ -20,6 +20,8 @@
 --   NoMoreRarities.RarityRemovalApplies()   true unless the loaded save is a RESERVED slot (a mode's own save: INAROGUE's,
 --     or any mode that reserves one through the VR-Framework's slot service: CMND_VRFW_SLOT_ACTIVE ->
 --     CMND_VRFW_SLOT_RESERVED(n) -> reserved). The same rule as the save pass on load. No framework answer = it applies.
+--   NoMoreRarities.NormalCardRarity()       the rarity every normal card has (4, the 5★ card) while the removal applies,
+--     nil otherwise (New Recruitment recruits a spirit drop's player at it).
 --
 --   NoMoreRarities.STAFF_LOOKS[role]        the staff look ("coach" white, "manager" pink; Inazuma Fantasy's staff
 --     colours, owner rule 2026-10-14): card_frame (the card frame the engine draws). NoMoreRarities.StaffLookOf(role).
@@ -177,6 +179,17 @@ if NoMoreRarities.RarityRemovalApplies == nil then
     end
     local okReserved, reserved = pcall(funcLuaCommand, SLOT_RESERVED, active)
     return not (okReserved and reserved == true)
+  end
+end
+
+if NoMoreRarities.NormalCardRarity == nil then
+  local NORMAL_CARD_RARITY = 4         -- the 5★ «Leyenda» card (content\duplicate_rules\no_more_rarities.toml)
+
+  function NoMoreRarities.NormalCardRarity()
+    if NoMoreRarities.RarityRemovalApplies() then
+      return NORMAL_CARD_RARITY
+    end
+    return nil
   end
 end
 

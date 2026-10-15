@@ -64,11 +64,21 @@ if CharacterReforged.CreateCard == nil then
 
   -- may player `hdl` take aura `skill`? true for anything that is not a restricted retail Mix-Max row
   function Card.Allowed(skill, hdl)
+    local _, allowed = Card.Rule(skill, hdl)
+    return allowed
+  end
+
+  -- the VR-Framework's rule for player `hdl` and aura `skill` -> answered, allowed (answered = false: no framework
+  -- answer, allowed = true)
+  function Card.Rule(skill, hdl)
     if type(skill) ~= "number" or skill == 0 or type(hdl) ~= "number" or hdl == 0 then
-      return true
+      return false, true
     end
     local ok, restricted, allowed = pcall(funcLuaCommand, Card.ITEM_ALLOWED, skill, hdl)
-    return not (ok and restricted == true and allowed == false)
+    if not ok or type(restricted) ~= "boolean" then
+      return false, true
+    end
+    return true, not (restricted and allowed == false)
   end
 
   function Card.Name(skill)

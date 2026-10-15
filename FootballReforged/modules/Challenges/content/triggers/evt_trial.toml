@@ -1,0 +1,55 @@
+# The match scripts of the office trial games evt_trial_01..04 (module Challenges of Football Reforged; the games are
+# Inazuma Fantasy's office rows; docs/framework/types/trigger.md). Hand-maintained; Inazuma Fantasy's until 2026-10-15.
+schema = "VRFW.trigger/1"
+
+[[script]]
+name = "evt_trial"
+file = "evt_trial.lua"
+
+[[trigger]]
+name = "evt_trial_01"
+script = "evt_trial"
+vars = { v1 = 1314008643, v2 = "01", v3 = 1, v4 = 3611176409, t1 = "Mantén el balón 15 s sin perderlo", t2 = "true" }
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+]
+
+[[trigger]]
+name = "evt_trial_02"
+script = "evt_trial"
+vars = { v1 = 3613097977, v2 = "02", v3 = 2, v4 = 3314254391, t1 = "Mantén el balón 15 s sin perderlo", t2 = "true" }
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+]
+
+[[trigger]]
+name = "evt_trial_03"
+script = "evt_trial"
+vars = { v1 = 2690404207, v2 = "03", v3 = 3, v4 = 2100815186, t1 = "Marca 3 goles antes de 45 s", t2 = "false" }
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+]
+
+[[trigger]]
+name = "evt_trial_04"
+script = "evt_trial"
+vars = { v1 = 1043913420, v2 = "04", v3 = 4, v4 = 3772833259, t1 = "Roba el balón 3 veces", t2 = "true" }
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+]

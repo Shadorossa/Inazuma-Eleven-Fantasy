@@ -10,11 +10,14 @@
 --   local g = VRFW_EmblemGrid.New{ tile = crc32(tile layer), label = crc32(label layer) | nil,
 --     cols = 8, rows = 3, px = 210, py = 236, cx = 960, cy = 540, scale = 1, prio = nil | draw priority base,
 --     log = function(...) end }
---   g:Open(items[, sel])   items[i] = { name = "Raimon", count = "5/16", emblem = <item_emblem id, 0 = neutral plate>,
+--   g:Open(items[, sel])   items[i] = { name = "Raimon", count = "5/16", emblem = <item_emblem id, 0 = none>,
 --                                       full = <the check mark>, dim = <greyed>,
---                                       image = { texture = "#/menu/…/x.g4tx", sprite = "name" } | nil };
+--                                       image = { texture = "#/menu/…/x.g4tx", sprite = "name" } | nil,
+--                                       generic = false | nil };
 --                          sel = 1-based (default 1). `image` (a picture the caller serves, e.g. a Steam avatar) takes
---                          the emblem's place: the texture is loaded and its sprite set on the emblem's texture slot
+--                          the emblem's place: the texture is loaded and its sprite set on the emblem's texture slot.
+--                          No emblem and no image = the framework's generic emblem (GENERIC_EMBLEM; generic = false:
+--                          the plain plate). A name wider than the tile pitch is drawn smaller, then cut («...»)
 --   g:Set(i, item)         one item changed (redrawn)
 --   g:Step() -> ev | nil   per frame: moves (arrows, L1 / R1 page, wheel, pointer hover) are handled here; returns
 --                          { act = "decide" | "all" | "series" | "back", index = i, dir = -1 / 1 } for the caller:
@@ -58,6 +61,14 @@ if VRFW_EmblemGrid == nil then
     -- the label (team00_01 card): only its name text _text_chr01 (190 x 34, centre (0, -39) from the card's origin)
     LABEL_TEXT = 170976702,
     LABEL_DY = 39,
+    -- name fitting: the text box is LABEL_W px wide and the game squeezes a longer text into it; a name wider than the
+    -- tile pitch (minus LABEL_GAP) is drawn smaller with its own proportions, down to LABEL_MIN_SCALE, then cut with
+    -- CUT_MARK. GLYPH_W = average glyph width at scale 1 (a CJK / full-width glyph counts twice)
+    LABEL_W = 190, LABEL_GAP = 12, LABEL_MIN_SCALE = 0.66, GLYPH_W = 13.5, CUT_MARK = "...",
+    -- the picture of a tile without an emblem: the framework's own generic emblem (the save slot screen's atlas,
+    -- research/mods/VRFW/content/images/menu/220_img/evt_slot/evt_slot_base.toml); an item with generic = false keeps
+    -- the plain plate
+    GENERIC_EMBLEM = {texture = "#/menu/220_img/evt_slot/evt_slot_base.g4tx", sprite = "evt_slot_emblem_generic"},
     LABEL_HIDE = {"_icon_chr_base_l01", "_icon_chr_dmy_l01", "_icon_chr_gradation_l01", "_seasonal_frame_l01",
       "_avatar_frame_l01", "_icon_chr_focus_l01", "_icon_chr_position_dmy_l01", "_icon_base_l01", "_icon_chr_type_dmy_l01",
       "_icon_lock01", "_icon_captain01", "_icon_ai_role_dmy01", "_gtxt_lv_l01", "_icon_card01", "_icon_chr_def01_l",
@@ -193,7 +204,48 @@ if VRFW_EmblemGrid == nil then
     return self.cx + (c - (self.cols - 1) / 2) * self.px, -(self.cy + (r - (used - 1) / 2) * self.py)
   end
 
-  function G:Label(j, x, y, s)
+  -- display width of s in average glyphs (a CJK / full-width glyph = 2)
+  local function GlyphUnits(s)
+    local n = 0
+    for ch in s:gmatch("[\1-\127\194-\244][\128-\191]*") do
+      n = n + (ch:byte(1) >= 0xE3 and 2 or 1)
+    end
+    return n
+  end
+
+  -- s cut to at most `units` glyph units, CUT_MARK included
+  local function CutToUnits(s, units)
+    local out, n = {}, GlyphUnits(EG.CUT_MARK)
+    for ch in s:gmatch("[\1-\127\194-\244][\128-\191]*") do
+      local w = ch:byte(1) >= 0xE3 and 2 or 1
+      if n + w > units then
+        break
+      end
+      out[#out + 1] = ch
+      n = n + w
+    end
+    return (table.concat(out):gsub("%s+$", "")) .. EG.CUT_MARK
+  end
+
+  -- a name that fits the tile pitch: the text, its x and y scale (the box is scaled with the text, so x makes up for
+  -- the game's own squeeze into LABEL_W)
+  function G:FitName(s)
+    local room = math.max(EG.LABEL_W, self.px - EG.LABEL_GAP)
+    local width = GlyphUnits(s) * EG.GLYPH_W
+    if width <= 0 or width <= EG.LABEL_W then
+      return s, 1, 1
+    end
+    local sy = math.min(1, room / width)
+    if sy < EG.LABEL_MIN_SCALE then
+      s = CutToUnits(s, math.floor(room / (EG.LABEL_MIN_SCALE * EG.GLYPH_W)))
+      width = GlyphUnits(s) * EG.GLYPH_W
+      sy = math.min(1, room / width)
+    end
+    local squeeze = math.min(1, EG.LABEL_W / width)
+    return s, sy / squeeze, sy
+  end
+
+  function G:Label(j, x, y, s, fit)
     local L = self.label
     if L == nil or not self.label_ok then
       return
@@ -208,8 +260,12 @@ if VRFW_EmblemGrid == nil then
       M(EG.C.OPEN_LAYER, L, j)
       self.lopened[j] = true
     end
-    M(EG.C.LOCAL_SCALE, L, 1, 1, 1, j)
-    M(EG.C.LOCAL_POS, L, x, y + EG.LABEL_DY, 0, j)
+    local sx, sy = 1, 1
+    if fit then
+      s, sx, sy = self:FitName(s)
+    end
+    M(EG.C.LOCAL_SCALE, L, sx, sy, 1, j)
+    M(EG.C.LOCAL_POS, L, x, y + EG.LABEL_DY * sy, 0, j)
     if self.prio then
       M(EG.C.SET_PRIO, L, j, self.prio + 2)
     end
@@ -267,6 +323,9 @@ if VRFW_EmblemGrid == nil then
     local emblem = type(it.emblem) == "number" and it.emblem or 0
     local img = type(it.image) == "table" and type(it.image.texture) == "string" and type(it.image.sprite) == "string"
       and it.image or nil
+    if img == nil and emblem == 0 and it.generic ~= false then
+      img = EG.GENERIC_EMBLEM
+    end
     local want = img and ("img:" .. img.texture .. ":" .. img.sprite) or emblem
     if self.drawn[k] ~= want then
       self.drawn[k], self.asked[k], self.wait[k] = want, nil, nil
@@ -275,7 +334,7 @@ if VRFW_EmblemGrid == nil then
     end
     self:Ask(k)
     local ly = y - EG.TILE_HALF * s
-    self:Label(2 * k, x, ly - 22, it.name or "")
+    self:Label(2 * k, x, ly - 22, it.name or "", true)
     self:Label(2 * k + 1, x, ly - 52, it.count or "")
   end
 

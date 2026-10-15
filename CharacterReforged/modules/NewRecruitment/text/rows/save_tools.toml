@@ -1,0 +1,41 @@
+# New Recruitment › its action of the VR-Framework's save tools (Options › «Ajustar save», scripts\save_tools.lua,
+# docs/framework/save-tools.md): title, description (shown in the question before the action) and result (%d = the
+# player spirit entries removed). Rows of menu_text, read by id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "new_recruitment_save_tools_remove_spirits"
+es = "Quitar los espíritus de jugador"
+en = "Remove player spirits"
+fr = "Retirer les esprits de joueur"
+de = "Spielergeister entfernen"
+it = "Rimuovi gli spiriti dei giocatori"
+pt = "Remover os espíritos de jogador"
+ja = "選手のスピリットを削除"
+zh_hans = "移除球员精魂"
+zh_hant = "移除球員精魂"
+
+[[row]]
+id = "new_recruitment_save_tools_remove_spirits_desc"
+es = "Vacía los espíritus de jugador de la partida (normales, Ídolo, Diamante y de temporada); los espíritus de elemento y las fichas se quedan."
+en = "Empties the save's player spirits (normal, Idol, Diamond and seasonal); element spirits and tokens stay."
+fr = "Vide les esprits de joueur de la partie (normaux, Idole, Diamant et saisonniers) ; les esprits d'élément et les jetons restent."
+de = "Leert die Spielergeister des Spielstands (normal, Idol, Diamant und saisonal); Elementgeister und Marken bleiben."
+it = "Svuota gli spiriti dei giocatori della partita (normali, Idolo, Diamante e stagionali); gli spiriti elementali e i gettoni restano."
+pt = "Esvazia os espíritos de jogador do jogo (normais, Ídolo, Diamante e sazonais); os espíritos de elemento e as fichas ficam."
+ja = "セーブデータの選手スピリット（通常・アイドル・ダイヤモンド・季節限定）を空にします。属性スピリットとトークンは残ります。"
+zh_hans = "清空存档中的球员精魂（普通、偶像、钻石和季节限定）；属性精魂和代币保留。"
+zh_hant = "清空存檔中的球員精魂（普通、偶像、鑽石和季節限定）；屬性精魂和代幣保留。"
+
+[[row]]
+id = "new_recruitment_save_tools_remove_spirits_done"
+es = "Hecho: %d espíritus de jugador quitados."
+en = "Done: %d player spirits removed."
+fr = "Terminé : %d esprits de joueur retirés."
+de = "Fertig: %d Spielergeister entfernt."
+it = "Fatto: %d spiriti dei giocatori rimossi."
+pt = "Feito: %d espíritos de jogador removidos."
+ja = "完了：選手のスピリットを%d個削除しました。"
+zh_hans = "完成：移除了%d个球员精魂。"
+zh_hant = "完成：移除了%d個球員精魂。"

@@ -7,19 +7,25 @@
 --    a. TEAM GRID: the series' teams as Battle Bay emblem tiles (the VR-Framework's VRFW_EmblemGrid, lua\_all\
 --       58_emblem_grid.lua) on Utilities' layers util_jpn_emblem / util_jpn_label (menus\108_option), [original_names
 --       .team_grid] cols x rows a page, the team's name and «k/n» (players chosen / players) under each tile, the check
---       mark when every player is chosen, a neutral plate for a team without an emblem. One page per series: Q / E
---       (CMD_FUNCL2 / R2) change it. Arrows / mouse move, L1 / R1 (wheel) the grid page, A opens the team's player grid,
---       Y switches the whole team (all on, or all off when all are on), B saves the selection
+--       mark when every player is chosen, the framework's generic emblem for a team without one. One page per series:
+--       Q / E (CMD_FUNCL2 / R2) change it. Arrows / mouse move, L1 / R1 (wheel) the grid page, A opens the team's player
+--       grid, Y switches the whole team (all on, or all off when all are on), B saves the selection
 --       (CMND_UTIL_NAMES_PICK_CLOSE: mod_options\utilities.json, the row's draft becomes «Por equipos» when something is
 --       chosen) and the retail «¿Aplicar los cambios?» follows as for any change. The guide box shows «‹ series k/n ›
---       · team k/n» and the keys. The settings list is hidden while the grids show.
+--       · team k/n».
 --    b. PLAYER GRID: the team's players as faces on Utilities' layer util_jpn_face (menus\108_option), [original_names
 --       .grid] cols x rows a page: GREY = keeps the dub name, normal colour = shows the original name; the name each
 --       one shows now under the face. Keys (polled: the settings menu's input is off while the picker is open):
 --       arrows move, A toggles, Y (CMD_FUNC3) the whole team (all on, or all off when all are on), L1 / R1 the grid
 --       page, B / right click back to the team grid. Mouse: hover moves, click toggles, the wheel turns the page. The
---       guide box at the bottom shows «team  k/n», the player under the cursor (dub → original) and the keys. The
---       settings list is hidden while the grid shows. No face layer installed (Instalar) = the grid refuses (logged).
+--       guide box at the bottom shows «team  k/n» and the player under the cursor (dub → original). No face layer
+--       installed (Instalar) = the grid refuses (logged).
+--    While a grid shows (the PICKER CHROME): the black backdrop util_jpn_backdrop (menus\108_option) dims the screen,
+--    the settings list and its cursor are hidden (every frame, and drawn under the screen's background), the guide box
+--    is drawn over the backdrop, and the screen's system button guide (the footer: Aceptar / Aplicar / ...) shows the
+--    grid's keys instead (the settings script's own ResetSystemButtonGuideArray / AddSystemButtonGuideInfo /
+--    UpdateSystemButtonGuideParam; back with its ChangeButtonGuideBySettingType). Without that footer the keys are a
+--    second line of the guide box.
 --    The data comes from the mod's script (CMND_UTIL_NAMES_PICK_*: the game's series / team / character tables + the
 --    mods' card-filter declarations).
 -- 2. The RELOAD. The names are text tables (Utilities serves them and redirects the engine's opens of chara_text /
@@ -75,12 +81,23 @@ Utilities.OriginalNames = {
     LOADING = 1277042906,      -- the instance's textures are still loading (layer, instance)
     POINTER = 558229292,       -- the pointer's position (screen px, y down)
     POINTER_MOVED = 3272825600,
+    IS_OPEN_LAYER = 2640875187, -- CMND_IS_OPEN_LAYER (layer, instance)
+    GET_PRIO = 1018283794,     -- CMND_GET_DRAW_PRIORITY (layer, instance)
+    SET_PRIO = 1491630496,     -- CMND_SET_DRAW_PRIORITY (layer, instance, priority)
+    -- the settings script's own test of its system button guide (the footer of the PC layout): (SYSTEM_GUIDE) -> bool
+    HAS_SYSTEM_GUIDE = 264888438,
   },
+  SYSTEM_GUIDE = 1936716961,   -- the system button guide the settings script tests for (its flag7 / n28)
   SUB_WINDOW = 968210065,      -- sub_window
   CURSOR = 2296367164,         -- cmn05_01_cursor
   LIST_ATTACH = 2081113831,    -- option01_01_list_attach
-  LIST_ITEM = 3344436024,      -- option01_02_list_item (10 instances)
-  LIST_ITEMS = 10,
+  LIST_ITEM = 3344436024,      -- option01_02_list_item (the recycled row cells)
+  LIST_ITEMS = 10,             -- its cells when the menu does not say (CMND_GET_CREATE_LAYER_NUM)
+  -- the picker chrome: the black backdrop (menus\108_option\setting_menu_jp_names.toml, cmn02_01_blackbg drawn over the
+  -- settings list and under the grids), the list sunk under the screen's background (LIST_SINK below its own
+  -- priority), the guide box raised over the backdrop
+  BACKDROP_LAYER = 1046671343, -- util_jpn_backdrop
+  LIST_SINK = 50,
   GUIDE = 2794225234,          -- option01_05_guide_base
   GUIDE_TEXT = 378156699,      -- _text_guide01
   SUB_ITEM = 224873246,        -- win05_02_sub_list_item15 (the items of sub window type 12)
@@ -100,8 +117,25 @@ Utilities.OriginalNames = {
           back = 3011112225 --[[CMD_BACK]], all = 3421673595 --[[CMD_FUNC3]], l1 = 3966226594 --[[CMD_FUNCL1]],
           r1 = 942075773 --[[CMD_FUNCR1]], rclick = 3473063670 --[[CMD_MOUSE_RIGHT_CLICK]],
           click = 218912913 --[[CMD_EVT_MOUSE_LEFT]], wup = 1942756954 --[[CMD_EVT_WHEEL_UP]],
-          wdown = 1623431741 --[[CMD_EVT_WHEEL_DOWN]]},
-  REPEAT_FIRST, REPEAT_EVERY = 18, 5,
+          wdown = 1623431741 --[[CMD_EVT_WHEEL_DOWN]], r2 = 2704260807 --[[CMD_FUNCR2]]},
+  REPEAT_FIRST = 18,
+  REPEAT_EVERY = 5,
+  -- the footer buttons while a grid shows: the label and glyph texts (crc32("utilities.<key>") at run time), the
+  -- glyph's room in px (as the settings script's own buttons) and the input a click on the button sends
+  FOOTER = {
+    teams = {
+      {text = "names_btn_open", glyph = "names_glyph_open", room = 0, input = "enter"},
+      {text = "names_btn_team", glyph = "names_glyph_team", room = 18, input = "all"},
+      {text = "names_btn_series", glyph = "names_glyph_series", room = 36, input = "r2"},
+      {text = "names_btn_save", glyph = "names_glyph_back", room = 18, input = "back"},
+    },
+    grid = {
+      {text = "names_btn_toggle", glyph = "names_glyph_open", room = 0, input = "enter"},
+      {text = "names_btn_team", glyph = "names_glyph_team", room = 18, input = "all"},
+      {text = "names_btn_page", glyph = "names_glyph_page", room = 36, input = "r1"},
+      {text = "names_btn_back", glyph = "names_glyph_back", room = 18, input = "back"},
+    },
+  },
   -- the face layer (menus\108_option\setting_menu_jp_names.toml): a copy of the retail character card team00_01;
   -- only its portrait (a 156 px quad whose centre is (59, 11) from the card's origin) and its name text show
   FACE_LAYER = 3286503273,     -- util_jpn_face
@@ -110,7 +144,9 @@ Utilities.OriginalNames = {
   FACE_FOCUS = 3345942320,     -- _icon_chr_focus_l01 (the card's own focus frame: the cursor)
   FACE_NAME = 170976702,       -- _text_chr01
   GRAY = 643056375,            -- gray_out (the card's grey-out material)
-  FACE_RH, FACE_OX, FACE_OY = 156, 59, 11,
+  FACE_RH = 156,
+  FACE_OX = 59,
+  FACE_OY = 11,
   FOCUS_SCALE = 1.12,
   FACE_WAIT = 120,             -- frames a requested face waits for its textures before it is shown anyway
   BUILD_WAIT = 30,             -- frames an opened instance may take to be built before its face is asked for anyway
@@ -230,7 +266,10 @@ function Utilities.OriginalNames.TeamsGuide()
   if pages > 1 then
     head = head .. string.format("  (%d/%d)", page + 1, pages)
   end
-  N.Guide(head .. "\n" .. N.Text(N.TEAMS_HINT, "A / Y / Q E / B"))
+  if N.footer ~= "teams" then
+    head = head .. "\n" .. N.Text(N.TEAMS_HINT, "A / Y / Q E / B")
+  end
+  N.Guide(head)
 end
 
 -- the page `dir` away (0 = the same one), its teams on the grid
@@ -252,7 +291,8 @@ function Utilities.OriginalNames.ShowTab(dir)
   for i = 1, rows do
     items[i] = N.TeamItem(i)
   end
-  N.ListVisible(false)
+  N.Chrome(true)
+  N.Footer("teams")
   N.state = "teams"
   eg:Open(items, N.focus or 1)
   N.TeamsGuide()
@@ -331,7 +371,8 @@ function Utilities.OriginalNames.Finish()
   N.grid, N.list = nil, nil
   N.ListRestore()
   N.Guide("")
-  N.ListVisible(true)
+  N.Footer(nil)
+  N.Chrome(false)
   SetInputEnbaleMenuObject(true)
   local ok, changed, idx, text, last = pcall(funcLuaCommand, N.C.CLOSE)
   if ok and changed == true and type(idx) == "number" and idx >= 0 then
@@ -407,7 +448,8 @@ function Utilities.OriginalNames.RowsShow(dir)
     strs[#strs + 1] = it.name .. "  " .. it.count
     ticks[#ticks + 1] = it.full == true
   end
-  N.ListVisible(true)
+  N.Footer(nil)
+  N.Chrome(false)
   N.ListOpen("teams", strs, ticks, N.focus or 0)
   return true
 end
@@ -426,6 +468,8 @@ function Utilities.OriginalNames.PlayersShow(i)
     strs[j] = (orig ~= "" and orig ~= dub) and (dub .. "  →  " .. orig) or dub
     ticks[j] = okP and pon == true
   end
+  N.Footer(nil)
+  N.Chrome(false)
   N.ListOpen("players", strs, ticks, 0)
   return true
 end
@@ -521,10 +565,115 @@ end
 function Utilities.OriginalNames.ListVisible(on)
   local N = Utilities.OriginalNames
   N.M(N.C.LAYER_VISIBLE, N.LIST_ATTACH, 0, on)
-  for k = 0, N.LIST_ITEMS - 1 do
+  for k = 0, N.ListCells() - 1 do
     N.M(N.C.LAYER_VISIBLE, N.LIST_ITEM, k, on)
   end
   N.M(N.C.LAYER_VISIBLE, N.CURSOR, 0, on)
+end
+
+-- the settings list's row cells (the menu's own count)
+function Utilities.OriginalNames.ListCells()
+  local N = Utilities.OriginalNames
+  local n = N.M(N.C.LAYER_NUM, N.LIST_ITEM)
+  return (type(n) == "number" and n > 0) and n or N.LIST_ITEMS
+end
+
+-- the picker chrome on (backdrop up, settings list hidden and sunk under the screen's background, guide box over the
+-- backdrop) or off (everything as it was). On again while on = the list hidden again (the list shows its own cells
+-- again as it updates: called every frame)
+function Utilities.OriginalNames.Chrome(on)
+  local N = Utilities.OriginalNames
+  if not on then
+    local ch = N.chrome
+    N.chrome = nil
+    if ch == nil then
+      return
+    end
+    for _, r in ipairs(ch.prio) do
+      N.M(N.C.SET_PRIO, r.layer, r.inst, r.prio)
+    end
+    if ch.backdrop then
+      N.M(N.C.LAYER_VISIBLE, N.BACKDROP_LAYER, 0, false)
+    end
+    N.ListVisible(true)
+    return
+  end
+  if N.chrome ~= nil then
+    N.ListVisible(false)
+    return
+  end
+  local ch = {prio = {}, backdrop = false}
+  N.chrome = ch
+  local backdrop_prio = nil
+  local have = N.M(N.C.LAYER_NUM, N.BACKDROP_LAYER)
+  if type(have) == "number" and have >= 1 then
+    if N.M(N.C.IS_OPEN_LAYER, N.BACKDROP_LAYER, 0) ~= true then
+      N.M(N.C.OPEN_LAYER, N.BACKDROP_LAYER, 0)
+    end
+    N.M(N.C.LAYER_VISIBLE, N.BACKDROP_LAYER, 0, true)
+    ch.backdrop = true
+    backdrop_prio = N.M(N.C.GET_PRIO, N.BACKDROP_LAYER, 0)
+  else
+    N.Log("chrome: backdrop layer util_jpn_backdrop not in the settings menu (" .. tostring(have) .. "): Instalar")
+  end
+  local function set_prio(layer, inst, prio_of)
+    local was = N.M(N.C.GET_PRIO, layer, inst)
+    if type(was) == "number" then
+      ch.prio[#ch.prio + 1] = {layer = layer, inst = inst, prio = was}
+      N.M(N.C.SET_PRIO, layer, inst, prio_of(was))
+    end
+  end
+  local function sunk(was)
+    return was - N.LIST_SINK
+  end
+  set_prio(N.LIST_ATTACH, 0, sunk)
+  for k = 0, N.ListCells() - 1 do
+    set_prio(N.LIST_ITEM, k, sunk)
+  end
+  if type(backdrop_prio) == "number" then
+    set_prio(N.GUIDE, 0, function(was) return math.max(was, backdrop_prio + 1) end)
+  end
+  N.ListVisible(false)
+end
+
+-- the settings script's system button guide (the footer) shows the keys of `kind` ("teams" / "grid"), or its own
+-- buttons again (nil). False: the screen has no such footer (the keys go to the guide box)
+function Utilities.OriginalNames.Footer(kind)
+  local N = Utilities.OriginalNames
+  if kind == N.footer then
+    return kind ~= nil
+  end
+  local okH, has = pcall(funcLuaCommand, N.C.HAS_SYSTEM_GUIDE, N.SYSTEM_GUIDE)
+  if not okH or has ~= true or type(ResetSystemButtonGuideArray) ~= "function"
+      or type(AddSystemButtonGuideInfo) ~= "function" or type(UpdateSystemButtonGuideParam) ~= "function" then
+    N.footer = nil
+    return false
+  end
+  if kind == nil then
+    N.footer = nil
+    if type(ChangeButtonGuideBySettingType) == "function" then
+      pcall(ChangeButtonGuideBySettingType)
+    end
+    return false
+  end
+  local ok, err = pcall(function()
+    ResetSystemButtonGuideArray()
+    for _, b in ipairs(N.FOOTER[kind]) do
+      AddSystemButtonGuideInfo(CRC32("utilities." .. b.text), CRC32("utilities." .. b.glyph), b.room, 0, 0,
+        N.KEYS[b.input])
+    end
+    UpdateSystemButtonGuideParam()
+  end)
+  if not ok then
+    N.Log("footer: not set (" .. tostring(err) .. ")")
+    N.footer = nil
+    if type(ChangeButtonGuideBySettingType) == "function" then
+      pcall(ChangeButtonGuideBySettingType)
+    end
+    return false
+  end
+  N.footer = kind
+  return true
 end
 
 function Utilities.OriginalNames.Guide(s)
@@ -560,7 +709,8 @@ function Utilities.OriginalNames.GridOpen(i)
                     orig = okP and tostring(orig or "") or ""}
   end
   N.grid = G
-  N.ListVisible(false)
+  N.Chrome(true)
+  N.Footer("grid")
   N.state = "grid"
   N.GridKeysReset()
   N.GridDraw()
@@ -712,7 +862,10 @@ function Utilities.OriginalNames.GridDraw()
   if pages > 1 then
     head = head .. string.format("  (%d/%d)", G.page + 1, pages)
   end
-  N.Guide(head .. "\n" .. N.Text(N.HINT_TEXT, "A / Y / L1 R1 / B"))
+  if N.footer ~= "grid" then
+    head = head .. "\n" .. N.Text(N.HINT_TEXT, "A / Y / L1 R1 / B")
+  end
+  N.Guide(head)
   G.drawn = true
 end
 
@@ -871,6 +1024,9 @@ end
 function Utilities.OriginalNames.Step()
   local N = Utilities.OriginalNames
   N.frame = N.frame + 1
+  if N.chrome ~= nil and (N.state == "teams" or N.state == "grid") then
+    N.Chrome(true)
+  end
   if N.state == "teams" and N.eg ~= nil then
     N.TeamsStep()
   elseif N.state == "grid" and N.grid ~= nil then
@@ -959,6 +1115,7 @@ do
       local N = Utilities.OriginalNames
       N.labels, N.row_text, N.state, N.grid, N.built, N.opened, N.frame = {}, nil, nil, nil, {}, {}, 0
       N.eg = nil                        -- a new menu: new layer instances
+      N.chrome, N.footer = nil, nil
     end})
     -- a1 = the list cell, a2 = the label text it shows now
     H.on("setting_menu", "UpdateListItem", {id = id, phase = "before", fn = function(a1, a2)

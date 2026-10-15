@@ -1,22 +1,27 @@
 -- mods_menu (VR-Framework): the «Mods» screen (menu vrfw_mods_menu, opened from the title menu):
--- a mod manager with the structure of Baldur's Gate 3's (tabs, a grid of cards, search / filter / sort, a page per
--- mod, a profile at the top right) in the look of the game's menus. Own code; runs in the VM of the stub script
--- (menu/vrfw_mods_menu.lua of the mod) and replaces its callbacks.
+-- a mod manager (tabs, a one-column list of mods, search / filter / sort, an info panel and a page per mod, a profile)
+-- in the look of the game's menus. Own code; runs in the VM of the stub script (menu/vrfw_mods_menu.lua of the mod)
+-- and replaces its callbacks.
 --
 -- Screen (setting built at boot by the mods_menu plugin from the player's own «Guardar» screen,
 -- crates/plugins/mods_menu/src/screen.rs): retail background, header, button guides and return arrow; one retail list
 -- row off screen = the INPUT ANCHOR (it holds the engine's focus: every key comes here as OnFunction / OnEnter /
 -- OnBack); everything else is drawn here on free layers:
---   vrfw_mm_q0 / _q1        quads of the screen's atlas (vrfw_mm_ui.g4tx): plates, tabs, bars, badges, buttons…
---   vrfw_mm_card            the retail photo frame of the album: the card pictures (mod picture / placeholder tile)
+--   vrfw_mm_q0 / _q2 / _q1  quads of the screen's atlas (vrfw_mm_ui.g4tx), back to front: boxes and bars, list plates,
+--                           badges / icons / tags (two quads of one layer have no fixed order)
+--   vrfw_mm_card            the retail photo frame of the album (kept for other mods' pages; the list does not use it)
 --   vrfw_mm_tl / _tc / _tr  texts (left / centre / right)
 --   vrfw_mm_pd, _p0, _p1    popup: dim, window, its quads;  vrfw_mm_pl / _pc / _pr: its texts
--- Tabs: «Instalados» (grid of cards, 3 a row, search / filter / sort) and «Orden de carga» (the load order as a list).
+-- Layout: the tab bar (Q / Instalados / Orden de carga / E) and under it the search box, «Ver», «Orden», «Perfil»; the
+-- list of mods (one plate a mod: load number, icon, name, version · size · author, the state tag) in a navy box at the
+-- left; the selected mod's info panel at the right (header bar, icon and fields, description, «Necesita», «Lo
+-- necesitan»). Both tabs use the same rows and panel; «Orden de carga» groups them by on / off.
 -- The screen has no in-game creators; content is edited in an external editor.
--- Keys (pad / keyboard): arrows move; A: the card's button (switch on / off); Start: the mod's page; L1 / R1 (Z / C):
--- load order; L2 / R2 (Q / E): tabs; Select (Tab): sort; L3 (B): filter; R3 (N): search; X: profile; Y (V): the key of
--- another framework part (VRFW_MM_EXTRA: «Novedades»); B / Esc / right click: back. Mouse: hover selects, click = the
--- thing under the pointer (a card opens its page, a card's button switches it, tabs, bars, the page's buttons).
+-- Keys (pad / keyboard): up / down move (left / right a page); A: switch the mod on / off; Start (Alt): the mod's
+-- page (information, problems, conflicts, settings); L1 / R1 (Z / C): load order; L2 / R2 (Q / E): tabs; Select (Tab):
+-- sort; L3 (B): filter; R3 (N): search; X: profile; Y (V): the key of another framework part (VRFW_MM_EXTRA:
+-- «Novedades»); B / Esc / right click: back. Mouse: hover selects, click = the thing under the pointer (a row opens
+-- its page, its state tag switches it, tabs, bars, the panel's «Detalles», the page's buttons), the wheel scrolls.
 -- Data: the ModLoader's CMND_EVT_MODS_* (module mods); texts and pictures: the plugin's CMND_VRFW_MM_*. Every change is a file in <game>\mods and applies at the next start. No engine call at load time.
 
 -- CRC32 of a name / path. Every drawing hashes the same few hundred strings again (sprite names, textures, the
@@ -78,6 +83,7 @@ local M = {
   TEXT = Crc("CMND_VRFW_MM_TEXT"),              -- (name, language code) -> text
   STATE = Crc("CMND_VRFW_MM_STATE"),            -- () -> title, screen, version, menu (crc32), ...
   THUMB = Crc("CMND_VRFW_MM_THUMB"),            -- (mod id) -> texture path, card sprite, large sprite ("" = none)
+  ICON = Crc("CMND_VRFW_MM_ICON"),              -- (mod id) -> texture path, sprite of its mod.toml `icon` ("" = none)
   TEXT_ID = Crc("CMND_VRFW_TEXT_ID"),           -- text_engine: (key) -> id of a new text
   -- the VR-Framework core's report of this start (<data dir>\cache\report.json)
   REPORT_COUNT = Crc("CMND_VRFW_REPORT_COUNT"), -- (mod) -> entries
@@ -118,13 +124,13 @@ local L_BTN = Crc("mainmenu01_07_button_guide")
 local L_RET = Crc("mainmenu01_10_return_arrow_button_guide")
 -- free layers (screen.rs FREE): name -> instances
 local FREE = {
-  Q0 = {Crc("vrfw_mm_q0"), 80}, CARD = {Crc("vrfw_mm_card"), 16}, Q1 = {Crc("vrfw_mm_q1"), 144},
+  Q0 = {Crc("vrfw_mm_q0"), 80}, CARD = {Crc("vrfw_mm_card"), 16}, Q2 = {Crc("vrfw_mm_q2"), 48}, Q1 = {Crc("vrfw_mm_q1"), 144},
   TL = {Crc("vrfw_mm_tl"), 128}, TC = {Crc("vrfw_mm_tc"), 96}, TR = {Crc("vrfw_mm_tr"), 40},
   PD = {Crc("vrfw_mm_pd"), 1}, P0 = {Crc("vrfw_mm_p0"), 16}, P1 = {Crc("vrfw_mm_p1"), 28},
   PL = {Crc("vrfw_mm_pl"), 40}, PC = {Crc("vrfw_mm_pc"), 12}, PR = {Crc("vrfw_mm_pr"), 8},
 }
 -- the layers of THIS menu (set up with it, counted by the reveal, hidden by Finish)
-local FREE_ORDER = {"Q0", "CARD", "Q1", "TL", "TC", "TR", "PD", "P0", "P1", "PL", "PC", "PR"}
+local FREE_ORDER = {"Q0", "CARD", "Q2", "Q1", "TL", "TC", "TR", "PD", "P0", "P1", "PL", "PC", "PR"}
 local N = {
   ROW_ON = Crc("_text_list01_on"), ROW_OFF = Crc("_text_list01_off"),
   ROW_MESHES = {Crc("_list_icon_dmy_s01_on"), Crc("_list_icon_dmy_s01_off"), Crc("_list_icon_dmy_s01_ok"), Crc("_list_base_s01_ok"),
@@ -206,33 +212,33 @@ local G = {
   -- the top row sat half under it). A mod that restyles the header moves the whole screen with the global
   -- VRFW_MM_LAYOUT = {top_dy = n} (read in OnInit, CE.ApplyLayout): e.g. top_dy = -55, the layout of the
   -- short header (bar 67 px). The keys moved are G.SHIFT_Y.
-  -- ONE top row: tabs | search | Ver | Orden | Perfil, lower and higher up than before; the mod count
-  -- inside the search box; the restart notice above the row, right of the header
-  TAB_X = 64, TAB_Y = 163, TAB_W = 250, TAB_H = 44, TAB_STEP = 236,
-  ROW_SEARCH_X = 820, ROW_SEARCH_W = 380, ROW_TOOL_W = 186, ROW_FILTER_X = 1210, ROW_SORT_X = 1406,
-  -- the profile button: narrow
-  PROF_X = 1660, PROF_Y = 163, PROF_W = 220, PROF_H = 44,
-  NOTICE_X = 1260, NOTICE_Y = 111, NOTICE_W = 620, NOTICE_H = 44,
-  -- «Instalados»: horizontal cards (picture left; name, version · author, the switch right), 3 x 5; right under the row
-  -- (the tabs' own content: Instalados, Orden de carga)
-  TOP_Y = 221,
-  GRID_X = 40, GRID_Y = 221, CARD_W = 580, CARD_H = 128, GAP_X = 16, GAP_Y = 12, COLS = 3, ROWS = 5,
-  THUMB_SC = 0.55,           -- the photo frame (332 x 204 at scale 1) on the card: 183 x 112
-  PHOTO_W = 332, PHOTO_H = 204,
-  -- a list page's list / panel (and the «Orden de carga» list): right under the top row
-  LIST_X = 40, LIST_Y = 221, ROW_W = 1100, ROW_H = 62, ROW_STEP = 68, LIST_ROWS = 10,
-  PANEL_X = 1170, PANEL_Y = 221, PANEL_W = 710, PANEL_H = 682,
+  -- the tab bar (Q, tabs, E) at the top left; under it the search box (the mod count inside) and «Ver», «Orden»,
+  -- «Perfil»; the restart notice above the panel, right of the header
+  TABBAR_X = 0, TABBAR_W = 990,
+  TAB_X = 55, TAB_Y = 137, TAB_W = 270, TAB_H = 50, TAB_STEP = 270,
+  TOOLS_Y = 202, TOOLS_H = 42,
+  ROW_SEARCH_X = 25, ROW_SEARCH_W = 397, ROW_FILTER_X = 447, ROW_FILTER_W = 172, ROW_SORT_X = 627, ROW_SORT_W = 194,
+  PROF_X = 828, PROF_Y = 202, PROF_W = 204, PROF_H = 42,
+  NOTICE_X = 1260, NOTICE_Y = 104, NOTICE_W = 620, NOTICE_H = 40,
+  -- the list of mods (both tabs, and a list page): one plate a row in a navy box; the box ends above the button
+  -- guide whatever the header (BOX_BOTTOM is not moved), so LIST_ROWS is counted in CE.ApplyLayout
+  BOX_X = 0, BOX_Y = 260, BOX_W = 1000, BOX_BOTTOM = 1003, BOX_PAD = 15, BOX_R = 14,
+  LIST_X = 22, LIST_Y = 275, ROW_W = 950, ROW_H = 46, ROW_STEP = 50, LIST_ROWS = 14,
+  COLS = 1,                  -- «Instalados» is one column (ui.sel / ui.top count rows)
+  SB_X = 980, SB_W = 6,
+  -- the info panel of the selected mod: its header bar (stripes, name, version), the white body under it
+  PANEL_X = 1040, PANEL_Y = 151, PANEL_W = 864, PANEL_HEAD = 54, PANEL_BODY_Y = 225, PANEL_BODY_H = 612, PANEL_H = 686,
+  PANEL_R = 14,
   WIN_X = 240, WIN_Y = 138, WIN_W = 1440, WIN_H = 832, WIN_BAR = 64,
   DIM_ALPHA = 0.55,          -- the dim behind a mod's page: the Mods list still shows through
   COVER_W = 400, COVER_H = 225,   -- a mod's page: its cover (16:9)
-  SB_X = 1840, SB_W = 10,
   Q = 36,                    -- the cmn01_10 quad side
   TXT_X = 48, TXT_Y = 915, TXT_W = 800, TXT_MID = 949,   -- the text node of the text layers (mainmenu90_05)
   PX = 14.5,                 -- width of one Latin character at text scale 1 (28 px font)
   -- tabs: Instalados, Orden de carga
   NTABS = 2,
   -- the top-anchored y keys a header mod's top_dy moves (CE.ApplyLayout); WIN_Y (popups) and TXT_Y stay
-  SHIFT_Y = {"TAB_Y", "PROF_Y", "NOTICE_Y", "TOP_Y", "GRID_Y", "LIST_Y", "PANEL_Y"},
+  SHIFT_Y = {"TAB_Y", "TOOLS_Y", "PROF_Y", "NOTICE_Y", "BOX_Y", "LIST_Y", "PANEL_Y", "PANEL_BODY_Y"},
 }
 
 -- ---- state --------------------------------------------------------------------------------------------------------------
@@ -726,10 +732,38 @@ local function TileOf(id)
   return Crc(id) % NTILES
 end
 
-local function Initial(m)
+-- the mod's initials for its icon frame: the first letters of its first two words («Character Reforged» -> «CR»),
+-- else its first two letters («InaRogue» -> «IN»)
+local function Initials(m)
   local s = m.name ~= "" and m.name or m.id
-  local c = Chars(s)[1]
-  return c and string.upper(c.ch) or "?"
+  local words = {}
+  for w in string.gmatch(s, "[^%s%-_]+") do
+    words[#words + 1] = Chars(w)
+  end
+  local out = {}
+  if #words >= 2 then
+    out = {words[1][1].ch, words[2][1].ch}
+  elseif #words == 1 then
+    out = {words[1][1].ch, words[1][2] and words[1][2].ch or nil}
+  end
+  local t = string.upper(table.concat(out))
+  return t ~= "" and t or "?"
+end
+
+-- the icon of a mod's mod.toml (`icon`): (texture crc, sprite crc) or nil (the initials in the grey frame)
+local icons = {}
+local function IconOf(m)
+  if icons[m.id] == nil then
+    local path, sprite = Call(M.ICON, m.id)
+    icons[m.id] = (type(path) == "string" and path ~= "") and {Crc(path), Crc(Str(sprite)), path} or false
+  end
+  local t = icons[m.id]
+  if t and not tex_asked[t[3]] then
+    tex_asked[t[3]] = true
+    tex_wait, tex_frames = true, 0
+    funcLuaMenuCommand(C.LOAD_TEX, t[3])
+  end
+  return t or nil
 end
 
 -- ---- drawing: free layer instances, set only when something changed -------------------------------------------------------
@@ -808,26 +842,6 @@ local function Txt(key, s, x, y, sc)
   return i
 end
 
--- a card picture: the retail photo frame centred at (cx, cy); the mod's picture or a placeholder tile
-local function Photo(cx, cy, tex, sprite, focused, alpha, scale)
-  local i = Slot("CARD")
-  if i == nil then
-    return nil
-  end
-  local L = FREE.CARD[1]
-  local sc = scale or 1
-  Show("CARD", i)
-  Set(L, i, "sc", C.SCALE, L, sc, sc, 1, i)
-  Set(L, i, "pos", C.POS, L, cx, -cy, 0, i)
-  Set(L, i, "sp", C.SPRITE, L, tex, sprite, N.PHOTO, 0, i)
-  Set(L, i, "pin", C.MESH_VISIBLE, L, N.PHOTO_PIN, false, i)
-  Set(L, i, "fav", C.MESH_VISIBLE, L, N.PHOTO_FAV, false, i)
-  Set(L, i, "ok", C.MESH_VISIBLE, L, N.PHOTO_OK, false, i)
-  Set(L, i, "ring", C.MESH_VISIBLE, L, N.PHOTO_RING, focused == true, i)
-  Set(L, i, "a", C.ALPHA, L, i, 0, alpha or 1)
-  return i
-end
-
 local function Hit(x0, y0, w, h, id, act)
   hits[#hits + 1] = {x0, y0, x0 + w, y0 + h, id, act}
 end
@@ -870,34 +884,34 @@ local function TabLabel(k)
 end
 
 local function DrawTabs()
+  -- the navy bar (Q, the tabs, E) at the top left
+  Quad("Q0", SP("tabbar"), G.TABBAR_X, G.TAB_Y, G.TABBAR_W, G.TAB_H)
   for k = 1, G.NTABS do
     local x = G.TAB_X + (k - 1) * G.TAB_STEP
     local sel = ui.tab == k
     local hot = mouse.on and mouse.hot == "tab" .. k and not sel
     local locked = ui.page ~= nil and not sel
-    Quad("Q0", SP(sel and "tab_sel" or (hot and "tab_hot" or "tab")), x, G.TAB_Y, G.TAB_W, G.TAB_H, locked and 0.45 or 1)
-    Txt("TC", (sel and "" or "[CWG]") .. Cut(TabLabel(k), Fit(G.TAB_W - 50, 0.76)) .. (sel and "" or "[C]"), x + G.TAB_W / 2, G.TAB_Y + G.TAB_H / 2, 0.76)
+    if sel or hot then
+      Quad("Q2", SP(sel and "tab_sel" or "tab_hot"), x, G.TAB_Y, G.TAB_W, G.TAB_H, locked and 0.45 or 1)
+    end
+    Txt("TC", (sel and "" or "[CWG]") .. Cut(TabLabel(k), Fit(G.TAB_W - 40, 0.82)) .. (sel and "" or "[C]"), x + G.TAB_W / 2, G.TAB_Y + G.TAB_H / 2, 0.82)
     if ui.page == nil then
       Hit(x + 10, G.TAB_Y, G.TAB_W - 20, G.TAB_H, "tab" .. k, function() SwitchTab(k) end)
     end
   end
   if ui.page == nil then
-    Txt("TC", K.L2, G.TAB_X - 30, G.TAB_Y + G.TAB_H / 2, 0.8)
-    Txt("TC", K.R2, G.TAB_X + G.NTABS * G.TAB_STEP + 30, G.TAB_Y + G.TAB_H / 2, 0.8)
+    Txt("TC", K.L2, G.TAB_X - 22, G.TAB_Y + G.TAB_H / 2, 0.8)
+    Txt("TC", K.R2, G.TAB_X + G.NTABS * G.TAB_STEP + 28, G.TAB_Y + G.TAB_H / 2, 0.8)
   end
-  -- the profile (top right)
+  -- the profile (the last button of the row under the tabs)
   if have then
     local s = T("profile", {p = ProfileName()})
     if cnt.profiles > 1 then
       s = s .. " (" .. (cnt.profile + 1) .. "/" .. cnt.profiles .. ")"
     end
     local pfoc = mouse.hot == "profile" or (ui.tab == 1 and ui.zone == "bar" and ui.bar == 4 and ui.popup == nil and ui.page == nil)
-    Quad("Q0", SP(pfoc and "tool_sel" or "tool"), G.PROF_X, G.PROF_Y, G.PROF_W, G.PROF_H)
-    Txt("TL", K.X, G.PROF_X + 12, G.PROF_Y + G.PROF_H / 2, 0.72)
-    Txt("TL", Cut(s, Fit(G.PROF_W - 60, 0.64)), G.PROF_X + 48, G.PROF_Y + G.PROF_H / 2, 0.64)
-    if ui.page == nil then
-      Hit(G.PROF_X, G.PROF_Y, G.PROF_W, G.PROF_H, "profile", function() StartCo(ProfileFlow) end)
-    end
+    CE.RowTool(G.PROF_X, {id = "profile", key = K.X, text = s, value = ProfileName(), w = G.PROF_W,
+                          act = function() StartCo(ProfileFlow) end}, ui.page == nil, pfoc)
   end
 end
 
@@ -914,39 +928,39 @@ end
 
 -- the search box: s = {query, hint (text key), count (nil = none), foc, on, id (hit id), act (click)}
 function CE.RowSearch(s)
-  local x, y, w, h = G.ROW_SEARCH_X, G.TAB_Y, G.ROW_SEARCH_W, G.TAB_H
+  local x, y, w, h = G.ROW_SEARCH_X, G.TOOLS_Y, G.ROW_SEARCH_W, G.TOOLS_H
   local cy = y + h / 2
-  Quad("Q0", SP(s.foc and "search_sel" or "search"), x, y, w, h, s.on and 1 or 0.45)
+  Quad("Q0", SP(s.foc and "search2_sel" or "search2"), x, y, w, h, s.on and 1 or 0.45)
   local q = (s.query or "") ~= "" and ("[CB]" .. Cut(s.query, 14) .. "[C]") or ("[CWG]" .. T(s.hint) .. "[C]")
-  Txt("TL", q, x + 50, cy, 0.72)
+  Txt("TL", q, x + 20, cy, 0.72)
   if not s.on then
     return
   end
-  Txt("TR", "[CWG]" .. K.R3 .. "[C]", x + w - 14, cy, 0.72)
+  Txt("TR", "[CWG]" .. K.R3 .. "[C]", x + w - 12, cy, 0.66)
   if s.count ~= nil then
     -- the count, small, inside the box
-    Txt("TR", "[CWG]" .. Cut(s.count, Fit(w / 2 - 40, 0.56)) .. "[C]", x + w - 54, cy, 0.56)
+    Txt("TR", "[CWG]" .. Cut(s.count, Fit(w / 2 - 30, 0.56)) .. "[C]", x + w - 50, cy, 0.56)
   end
   Hit(x, y, w, h, s.id or "search", s.act)
 end
 
--- a tool (Ver / Orden) at x: t = {id, key, text («Ver: Todos»), value («Todos»), act}; live = acts
--- (else drawn off: the row never moves)
+-- a slanted button of the row (Ver / Orden / Perfil) at x: t = {id, key, text («Ver: Todos»), value («Todos»), w, act};
+-- live = acts (else drawn off: the row never moves)
 function CE.RowTool(x, t, live, foc)
-  local y, h, tw = G.TAB_Y, G.TAB_H, t.w or G.ROW_TOOL_W
+  local y, h, tw = G.TOOLS_Y, G.TOOLS_H, t.w or G.ROW_FILTER_W
   local cy = y + h / 2
-  Quad("Q0", SP(foc and "tool_sel" or "tool"), x, y, tw, h, live and 1 or 0.45)
-  Txt("TL", (live and "" or "[CWG]") .. t.key .. (live and "" or "[C]"), x + 12, cy, 0.72)
+  Quad("Q0", SP(foc and "tool2_sel" or "tool2"), x, y, tw, h, live and 1 or 0.45)
+  Txt("TL", (live and "" or "[CWG]") .. t.key .. (live and "" or "[C]"), x + 16, cy, 0.68)
   -- «Ver: Todos» when it fits, else the value alone after its key (the key is the control's icon)
-  local label = Units(t.text) <= Fit(tw - 56, 0.64) and t.text or t.value
-  Txt("TL", (live and "" or "[CWG]") .. Cut(label, Fit(tw - 56, 0.64)) .. (live and "" or "[C]"), x + 48, cy, 0.64)
+  local label = Units(t.text) <= Fit(tw - 64, 0.66) and t.text or t.value
+  Txt("TL", (live and "" or "[CWG]") .. Cut(label, Fit(tw - 64, 0.66)) .. (live and "" or "[C]"), x + 50, cy, 0.66)
   if live then
     Hit(x, y, tw, h, t.id, t.act)
   end
 end
 
--- the tools of the top row: search | Ver | Orden, in the same places on both tabs. «Instalados» uses all three (and
--- shows the count inside the search box); «Orden de carga» shows them off. A list page («¿Quién lo toca?») puts its
+-- the row under the tabs: search | Ver | Orden (| Perfil, DrawTabs), in the same places on both tabs. «Instalados» uses
+-- all three (and shows the count inside the search box); «Orden de carga» shows them off. A list page («¿Quién lo toca?») puts its
 -- own search there (CE.DrawPageRow).
 local function DrawToolbar(shown)
   if have and cnt.changes > 0 then
@@ -965,17 +979,12 @@ local function DrawToolbar(shown)
              count = (tab == 1 and have) and T("count_short", {n = #shown, t = #mods, a = cnt.active}) or nil,
              act = function() StartCo(SearchFlow) end})
   -- Ver / Orden: «Instalados» only (drawn off elsewhere: the row never moves)
-  local tools = {{x = G.ROW_FILTER_X, id = "filter", key = K.L3, text = T("filter", {f = FilterLabel()}), value = FilterLabel(), bar = 2, act = function() CycleFilter(1) end},
-                 {x = G.ROW_SORT_X, id = "sort", key = K.SELECT, text = T("sort", {s = SortLabel()}), value = SortLabel(), bar = 3, act = function() CycleSort(1) end}}
+  local tools = {{x = G.ROW_FILTER_X, w = G.ROW_FILTER_W, id = "filter", key = K.L3, text = T("filter", {f = FilterLabel()}), value = FilterLabel(), bar = 2, act = function() CycleFilter(1) end},
+                 {x = G.ROW_SORT_X, w = G.ROW_SORT_W, id = "sort", key = K.SELECT, text = T("sort", {s = SortLabel()}), value = SortLabel(), bar = 3, act = function() CycleSort(1) end}}
   for _, t in ipairs(tools) do
     local live = tab == 1
     CE.RowTool(t.x, t, live, live and ((focus and ui.bar == t.bar) or mouse.hot == t.id))
   end
-end
-
-local function CardXY(k)            -- k: 0-based position on screen
-  local c, r = k % G.COLS, math.floor(k / G.COLS)
-  return G.GRID_X + c * (G.CARD_W + G.GAP_X), G.GRID_Y + r * (G.CARD_H + G.GAP_Y)
 end
 
 -- state badge of a mod: sprite, text
@@ -993,64 +1002,11 @@ local function Badge(m)
   return "pill_grey", T("badge_off")
 end
 
--- a mod of «Instalados»: picture left; name, version · size · author and ONE switch right (green «Activado» / red
--- «Desactivado»: A / a click flips it); the load number, the padlock, ⚠ and ⟳ as small corner marks
-local function DrawCard(k, m, focused)
-  local x, y = CardXY(k)
-  local off = not m.enabled
-  Quad("Q0", SP((off and "hcard_off" or "hcard") .. (focused and "_sel" or "")), x, y, G.CARD_W, G.CARD_H)
-  local pw, ph = G.PHOTO_W * G.THUMB_SC, G.PHOTO_H * G.THUMB_SC
-  local cx, cy = x + 12 + pw / 2, y + G.CARD_H / 2
-  local t = Thumb(m)
-  if t ~= nil then
-    Photo(cx, cy, t[1], t[2], focused, off and 0.7 or 1, G.THUMB_SC)
-  else
-    Photo(cx, cy, ATLAS, SP("tile" .. TileOf(m.id)), focused, off and 0.7 or 1, G.THUMB_SC)
-    Txt("TC", Initial(m), cx, cy - 4, 1.9)
-  end
-  -- corner marks: load position (switched-on mods), the pinned base, warnings, pending restart
-  if m.enabled and m.pos > 0 then
-    Quad("Q1", SP("num"), x + 8, y + 6, 34, 34)
-    Txt("TC", tostring(m.pos), x + 25, y + 23, m.pos >= 10 and 0.5 or 0.62)
-  end
-  if m.id == BASE then
-    Quad("Q1", SP("lock"), x + 46, y + 6, 32, 32)
-  end
-  local ix = x + G.CARD_W - 42
-  if m.level >= 2 or (m.enabled and m.state == 1) then
-    Quad("Q1", SP("warn_r"), ix, y + 8, 30, 30)
-    ix = ix - 34
-  elseif m.level == 1 or m.nwarn > 0 then
-    Quad("Q1", SP("warn_a"), ix, y + 8, 30, 30)
-    ix = ix - 34
-  end
-  if m.pending then
-    Quad("Q1", SP("pend"), ix, y + 8, 30, 30)
-  end
-  -- name, version · size · author
-  local rx = x + 24 + pw
-  local rw = G.CARD_W - (rx - x) - 84
-  Txt("TL", "[CB]" .. Cut(m.name ~= "" and m.name or m.id, Fit(rw, 0.9)) .. "[C]", rx, y + 28, 0.9)
-  local meta = {}
-  if m.version ~= "" then meta[#meta + 1] = "v" .. Cut(m.version, 10) end
-  local sz = Size(m.size)
-  if sz ~= "" then meta[#meta + 1] = sz end
-  if m.author ~= "" then meta[#meta + 1] = m.author end
-  Txt("TL", "[CWG]" .. Cut(table.concat(meta, "  ·  "), Fit(G.CARD_W - (rx - x) - 20, 0.64)) .. "[C]", rx, y + 58, 0.64)
-  -- the switch: its colour is the state; pressing it flips it
-  local bsel = focused and (ui.zone == "grid" or mouse.hot == "btn" .. m.id)
-  Quad("Q1", SP((m.enabled and "tog_on" or "tog_off") .. (bsel and "_sel" or "")), rx, y + 78, 200, 40)
-  Txt("TC", T(m.enabled and "card_on" or "card_off"), rx + 100, y + 98, 0.7)
-  -- mouse: the card opens its page; its switch (on top: the later zone wins) flips the mod
-  Hit(x + 4, y + 4, G.CARD_W - 8, G.CARD_H - 8, "card" .. m.id, function() SelectMod(m.id) OpenDetails() end)
-  Hit(rx, y + 78, 200, 40, "btn" .. m.id, function() SelectMod(m.id) StartCo(Toggle) end)
-end
-
 local function DrawScrollbar(total_rows, first, visible, x, y0, h, set)
   if total_rows <= visible then
     return
   end
-  Quad("Q0", SP("track"), x, y0, G.SB_W, h)
+  Quad("Q2", SP("track"), x, y0, G.SB_W, h)
   local th = math.max(40, h * visible / total_rows)
   local ty = y0 + (h - th) * first / math.max(1, total_rows - visible)
   Quad("Q1", SP("thumb"), x, ty, G.SB_W, th)
@@ -1067,49 +1023,54 @@ end
 
 local function DrawGrid()
   local shown = Shown()
-  if not have then
-    Quad("Q0", SP("white"), G.GRID_X, G.GRID_Y, 1672, 200)
-    for i, l in ipairs(Wrap(T("noloader"), 80, 3)) do
-      Txt("TL", "[CB]" .. l .. "[C]", G.GRID_X + 40, G.GRID_Y + 50 + (i - 1) * 40, 0.9)
+  CE.ListBox()
+  if not have or #shown == 0 then
+    -- one white plate with the reason, the panel empty
+    local title = (not have) and "" or (#mods == 0 and T("empty_title") or T("no_match_title"))
+    local desc = (not have) and T("noloader") or (#mods == 0 and T("empty_desc") or T("no_match_desc"))
+    Quad("Q2", SP("white"), G.LIST_X, G.LIST_Y, G.ROW_W - 12, 200)
+    local y = G.LIST_Y + 44
+    if title ~= "" then
+      Txt("TL", "[CN]" .. Cut(title, Fit(G.ROW_W - 80, 1.0)) .. "[C]", G.LIST_X + 30, y, 1.0)
+      y = y + 46
     end
+    for i, l in ipairs(Wrap(desc, Fit(G.ROW_W - 80, 0.78), 3)) do
+      Txt("TL", "[CB]" .. l .. "[C]", G.LIST_X + 30, y + (i - 1) * 34, 0.78)
+    end
+    CE.InfoPanel(nil)
     return shown
   end
-  if #shown == 0 then
-    Quad("Q0", SP("white"), G.GRID_X, G.GRID_Y, 1672, 200)
-    local title = #mods == 0 and T("empty_title") or T("no_match_title")
-    local desc = #mods == 0 and T("empty_desc") or T("no_match_desc")
-    Txt("TL", "[CN]" .. title .. "[C]", G.GRID_X + 40, G.GRID_Y + 50, 1.1)
-    for i, l in ipairs(Wrap(desc, 90, 3)) do
-      Txt("TL", "[CB]" .. l .. "[C]", G.GRID_X + 40, G.GRID_Y + 96 + (i - 1) * 36, 0.8)
-    end
-    return shown
-  end
-  local per = G.COLS * G.ROWS
-  for k = 0, per - 1 do
-    local n = ui.top * G.COLS + k + 1
+  for k = 0, G.LIST_ROWS - 1 do
+    local n = ui.top + k + 1
     local m = shown[n]
     if m ~= nil then
-      DrawCard(k, m, ui.zone == "grid" and n == ui.sel and ui.popup == nil)
+      CE.ListRow(k, m, ui.zone == "grid" and n == ui.sel and ui.popup == nil, "card" .. m.id, "btn" .. m.id,
+                 function() SelectMod(m.id) OpenDetails() end)
     end
   end
-  DrawScrollbar(math.ceil(#shown / G.COLS), ui.top, G.ROWS, G.SB_X, G.GRID_Y, G.ROWS * G.CARD_H + (G.ROWS - 1) * G.GAP_Y)
+  DrawScrollbar(#shown, ui.top, G.LIST_ROWS, G.SB_X, G.LIST_Y, G.LIST_ROWS * G.ROW_STEP - (G.ROW_STEP - G.ROW_H), function(f)
+    ui.top = f
+    ui.sel = math.max(ui.top + 1, math.min(ui.sel, ui.top + G.LIST_ROWS))
+    ui.zone = "grid"
+  end)
+  CE.InfoPanel(shown[ui.sel])
   return shown
 end
 
 -- right-hand information panel of the list pages: title bar + lines {text, scale}
 local function DrawPanel(title, lines)
-  Quad("Q0", SP("bar"), G.PANEL_X, G.PANEL_Y, G.PANEL_W, 60)
-  Quad("Q0", SP("white"), G.PANEL_X, G.PANEL_Y + 60, G.PANEL_W, G.PANEL_H - 60)
-  Txt("TL", Cut(title, Fit(G.PANEL_W - 60, 1.0)), G.PANEL_X + 28, G.PANEL_Y + 30, 1.0)
-  local y = G.PANEL_Y + 96
+  CE.PanelFrame()
+  Txt("TL", Cut(title, Fit(G.PANEL_W - 160, 1.0)), G.PANEL_X + 96, G.PANEL_Y + G.PANEL_HEAD / 2, 1.0)
+  local x, w = G.PANEL_X + 30, G.PANEL_W - 60
+  local y = G.PANEL_BODY_Y + 36
   for _, l in ipairs(lines) do
     if l.gap then
       y = y + l.gap
     else
       local sc = l.sc or 0.78
-      for _, w in ipairs(Wrap(l.t, Fit(G.PANEL_W - 60, sc), l.max or 3)) do
-        if y < G.PANEL_Y + G.PANEL_H - 24 then
-          Txt("TL", (l.c or "[CB]") .. w .. "[C]", G.PANEL_X + 28, y, sc)
+      for _, t in ipairs(Wrap(l.t, Fit(w, sc), l.max or 3)) do
+        if y < G.PANEL_BODY_Y + G.PANEL_BODY_H - 24 then
+          Txt("TL", (l.c or "[CB]") .. t .. "[C]", x, y, sc)
         end
         y = y + math.floor(34 * sc / 0.78)
       end
@@ -1287,116 +1248,304 @@ function INFO.Description(m)
   return s, false
 end
 
--- the badge (state pill) and, for the base, the padlock tag; y = the centre line
-function INFO.Tags(m, x, y, L)
-  local bs, bt = Badge(m)
-  Quad(L.q, SP(bs), x, y - 17, 150, 34)
-  Txt(L.c, Cut(bt, Fit(140, 0.62)), x + 75, y, 0.62)
-  if m.id == BASE then
-    Quad(L.q, SP("lock"), x + 166, y - 16, 32, 32)
-    Txt(L.l, "[CN]" .. Cut(T("pinned_short"), Fit(420, 0.72)) .. "[C]", x + 206, y, 0.72)
+-- ---- the list and the info panel (both tabs) -----------------------------------------------------------------------------
+-- A box with rounded corners from stretched flat quads: the body in three strips, a disc at each corner (all of one
+-- opaque colour, so their order on the layer does not show)
+function CE.RoundBox(layer, flat, disc, x, y, w, h, r)
+  Quad(layer, SP(flat), x + r, y, w - 2 * r, h)
+  Quad(layer, SP(flat), x, y + r, r, h - 2 * r)
+  Quad(layer, SP(flat), x + w - r, y + r, r, h - 2 * r)
+  for _, c in ipairs({{x, y}, {x + w - 2 * r, y}, {x, y + h - 2 * r}, {x + w - 2 * r, y + h - 2 * r}}) do
+    Quad(layer, SP(disc), c[1], c[2], 2 * r, 2 * r)
   end
 end
 
--- the fields from the centre line y, w wide: Autor | Versión, Tamaño | Actualizado, then one per line: Puesto en el
--- orden, Estado, Requiere, (Incompatible con, Etiquetas, Carpeta: opt.full), Proporciona, (Avisos: opt.warnings).
--- Long values wrap to opt.lines (default 2) lines. Returns the centre line under the last field.
-function INFO.Fields(m, x, y, w, L, opt)
-  opt = opt or {}
-  local lw, step, half = INFO.LABEL_W, INFO.STEP, math.floor(w / 2)
-  local grid = {
-    {T("f_author"), m.author ~= "" and m.author or T("no_author_short")}, {T("f_version"), INFO.Value(m.version)},
-    {T("f_size"), INFO.Value(Size(m.size))}, {T("f_updated"), INFO.Value(Text(m, 9))},
-  }
-  for i, f in ipairs(grid) do
-    local cx, cy = x + ((i - 1) % 2) * half, y + math.floor((i - 1) / 2) * step
-    Txt(L.l, "[CWG]" .. Cut(f[1], Fit(lw - 12, 0.7)) .. "[C]", cx, cy, 0.7)
-    Txt(L.l, "[CB]" .. Cut(f[2], Fit(half - lw - 12, 0.76)) .. "[C]", cx + lw, cy, 0.76)
+-- the navy box of the list (it ends above the button guide)
+function CE.ListBox()
+  CE.RoundBox("Q0", "navy", "disc_navy", G.BOX_X, G.BOX_Y, G.BOX_W, G.BOX_BOTTOM - G.BOX_Y, G.BOX_R)
+end
+
+-- a mod's icon: its mod.toml `icon`, else its initials in the neutral frame; s = side (36 a row, 96 the panel)
+function CE.Icon(m, x, y, s)
+  local big = s >= 60
+  local a = (m.enabled or big) and 1 or 0.75
+  local ic = IconOf(m)
+  if ic ~= nil then
+    Quad("Q1", ic[2], x, y, s, s, a, ic[1])
+    return
   end
-  y = y + 2 * step
-  local st, sc = INFO.State(m)
-  local rows = {
-    {T("f_position"), (m.enabled and m.pos > 0) and T("pos_of", {n = m.pos, t = cnt.active}) or INFO.DASH},
-    {T("f_state"), st, sc},
-    {T("f_requires"), INFO.Value(INFO.Requires(m))},
-  }
-  if opt.full then
-    rows[#rows + 1] = {T("f_conflicts"), INFO.Value(string.gsub(Text(m, 3), "\n", ", "))}
+  Quad("Q1", SP(big and "iconbox_l" or "iconbox"), x, y, s, s, a)
+  Txt("TC", "[CWG]" .. Initials(m) .. "[C]", x + s / 2, y + s / 2 - (big and 3 or 1), big and 1.45 or 0.5)
+end
+
+-- a group title of the «Orden de carga» list (on / off), its note at the right
+function CE.HeadRow(k, text, note)
+  local y = G.LIST_Y + k * G.ROW_STEP
+  Quad("Q2", SP("row_head"), G.LIST_X, y, G.ROW_W - 12, G.ROW_H)
+  Txt("TL", Cut(text, Fit(G.ROW_W / 2, 0.8)), G.LIST_X + 24, y + G.ROW_H / 2, 0.8)
+  if note ~= nil then
+    Txt("TR", Cut(note, Fit(G.ROW_W / 2 - 60, 0.62)), G.LIST_X + G.ROW_W - 40, y + G.ROW_H / 2, 0.62)
   end
-  if INFO.Provides(m) ~= "" then
-    rows[#rows + 1] = {T("f_provides"), INFO.Provides(m)}
+end
+
+-- One mod of the list (visible row k): its plate (dimmed when off; the cyan frame and the green arrow when focused),
+-- the load number in its square (none when off), the icon, the name, «version · size · author», the warning / restart
+-- marks and the state tag at the right. A click on the row = `open`; a click on the tag switches the mod.
+-- `family` = show a module mod as «Parent › Module» («Orden de carga» lists them all).
+function CE.ListRow(k, m, focused, row_id, tag_id, open, family)
+  local x, y, w, h = G.LIST_X, G.LIST_Y + k * G.ROW_STEP, G.ROW_W, G.ROW_H
+  local cy = y + h / 2
+  local off = not m.enabled
+  Quad("Q2", SP((off and "lplate_off" or "lplate") .. (focused and "_sel" or "")), x, y, w, h)
+  if focused then
+    Quad("Q1", SP("arrow_g"), x - 20, cy - 14, 18, 28)
   end
-  if opt.full then
-    rows[#rows + 1] = {T("f_tags"), INFO.Value(CE.ModTagsText(m))}
-    rows[#rows + 1] = {T("f_folder"), "mods\\" .. m.id}
+  if m.enabled and m.pos > 0 then
+    Quad("Q1", SP("numbox"), x + 18, cy - 17, 34, 34)
+    Txt("TC", "[CN]" .. m.pos .. "[C]", x + 35, cy, m.pos >= 100 and 0.5 or (m.pos >= 10 and 0.66 or 0.76))
+  else
+    Quad("Q1", SP("numbox_off"), x + 18, cy - 17, 34, 34)
   end
-  for _, r in ipairs(rows) do
-    Txt(L.l, "[CWG]" .. Cut(r[1], Fit(lw - 12, 0.7)) .. "[C]", x, y, 0.7)
-    for i, l in ipairs(Wrap(r[2], Fit(w - lw, 0.76), opt.lines or 2)) do
-      Txt(L.l, (r[3] or "[CB]") .. l .. "[C]", x + lw, y + (i - 1) * 28, 0.76)
-      if i > 1 then
-        y = y + 28
+  CE.Icon(m, x + 70, cy - 17, 34)
+  local nm = m.name ~= "" and m.name or m.id
+  if family and m.family ~= nil then
+    nm = m.family.name .. " › " .. (m.mname or nm)
+  end
+  local tx, mx = x + w - 150, x + 440
+  Txt("TL", (off and "[CWG]" or "[CB]") .. Cut(nm, Fit(mx - x - 134, 0.9)) .. "[C]", x + 122, cy, 0.9)
+  -- warnings and the pending restart: small marks left of the tag
+  local ix = tx - 34
+  if m.level >= 2 or (m.enabled and m.state == 1) then
+    Quad("Q1", SP("warn_r"), ix, cy - 14, 28, 28)
+    ix = ix - 32
+  elseif m.level == 1 or m.nwarn > 0 then
+    Quad("Q1", SP("warn_a"), ix, cy - 14, 28, 28)
+    ix = ix - 32
+  end
+  if m.pending then
+    Quad("Q1", SP("pend"), ix, cy - 14, 28, 28)
+    ix = ix - 32
+  end
+  local meta = {}
+  if m.version ~= "" then meta[#meta + 1] = "v" .. Cut(m.version, 10) end
+  local sz = Size(m.size)
+  if sz ~= "" then meta[#meta + 1] = sz end
+  if m.author ~= "" then meta[#meta + 1] = m.author end
+  Txt("TL", "[CWG]" .. Cut(table.concat(meta, "  ·  "), Fit(ix + 20 - mx, 0.62)) .. "[C]", mx, cy + 1, 0.62)
+  -- the state tag: green «Activado» / grey «Desactivado»; the other states (restart, not loaded, update) in words
+  local bs, bt = Badge(m)
+  if bs == "pill_green" or bs == "pill_grey" then
+    bt = T(m.enabled and "card_on" or "card_off")
+  end
+  Quad("Q1", SP(bs), tx, cy - 13, 122, 26, off and 0.9 or 1)
+  Txt("TC", Cut(bt, Fit(114, 0.6)), tx + 61, cy, 0.6)
+  if mouse.on and mouse.hot == tag_id then
+    CE.Focus("Q1", tx, cy - 13, 122, 26, 2)
+  end
+  Hit(x, y, w, h, row_id, open)
+  Hit(tx - 4, cy - 17, 130, 34, tag_id, function() SelectMod(m.id) StartCo(Toggle) end)
+end
+
+-- the info panel's frame: the header bar (diagonal stripes, the blue bar to the screen's edge) and the white body
+function CE.PanelFrame()
+  local x, y, hh = G.PANEL_X, G.PANEL_Y, G.PANEL_HEAD
+  Quad("Q0", SP("hstripes"), x, y, 64, hh)
+  Quad("Q0", SP("hbar_l"), x + 44, y, 40, hh)
+  Quad("Q0", SP("hbar"), x + 84, y, 1920 - (x + 84), hh)
+  CE.RoundBox("Q0", "white", "disc_white", x, G.PANEL_BODY_Y, G.PANEL_W, G.PANEL_BODY_H, G.PANEL_R)
+end
+
+-- the framework's parts (the names its mod.toml `provides`): a requirement on one is a requirement on the framework
+function INFO.BaseParts()
+  local parts = {}
+  if base_mod ~= nil then
+    for item in string.gmatch(INFO.Provides(base_mod), "[^,%s]+") do
+      local n = string.match(item, "^([%w_%.%-]+)")
+      if n ~= nil then
+        parts[n] = true
       end
     end
-    y = y + step
   end
-  if opt.warnings then
-    local ws = Warnings(m)
-    local n = math.min(#ws, opt.warnings)
-    for i = 1, n do
-      if i == 1 then
-        Txt(L.l, "[CWG]" .. Cut(T("f_warnings"), Fit(lw - 12, 0.7)) .. "[C]", x, y, 0.7)
+  return parts
+end
+
+-- the installed mod that answers requirement `name`: the mod of that id, else one whose `provides` names it
+function INFO.Provider(name)
+  local d = ModById(name)
+  if d ~= nil then
+    return d
+  end
+  for _, o in ipairs(mods) do
+    for item in string.gmatch(INFO.Provides(o), "[^,%s]+") do
+      if string.match(item, "^([%w_%.%-]+)") == name then
+        return o
       end
-      local more = i == n and #ws > n
-      local tx = more and T("more_warnings", {n = #ws - n + 1}) or ws[i][2]
-      Quad(L.q, SP(ws[i][1] and "warn_r" or "warn_a"), x + lw, y - 15, 30, 30)
-      -- one warning may take two lines, several take one each
-      for j, l in ipairs(Wrap(tx, Fit(w - lw - 40, 0.72), n == 1 and 2 or 1)) do
-        Txt(L.l, (ws[i][1] and "[CR]" or "[CY]") .. l .. "[C]", x + lw + 40, y + (j - 1) * 28, 0.72)
-        if j > 1 then
-          y = y + 28
+    end
+  end
+  return nil
+end
+
+-- «Necesita»: one row a requirement {name, state, colour}; a framework part is the framework, once and first; a
+-- minimum version as «(1.0+)»; the state: on, off or not installed. Read once per mod (the list is read again after
+-- every change).
+function INFO.Needs(m)
+  if m.needs ~= nil then
+    return m.needs
+  end
+  local out, seen, parts = {}, {}, INFO.BaseParts()
+  for req in string.gmatch(Text(m, 2), "[^,\n]+") do
+    local name, op, ver = string.match(req, "^%s*([%w_%.%-]+)%s*([<>=!~]*)%s*([^%s]*)%s*$")
+    if name ~= nil then
+      local key = (name == BASE or parts[name]) and BASE or name
+      if not seen[key] then
+        seen[key] = true
+        local d = key == BASE and base_mod or INFO.Provider(key)
+        local label = (d ~= nil and d.name ~= "") and d.name or (key == BASE and "VR-Framework" or name)
+        if key == name and ver ~= "" then
+          label = label .. ((op == "" or op == ">=") and (" (" .. ver .. "+)") or (" (" .. op .. " " .. ver .. ")"))
+        end
+        local row
+        if d == nil then
+          row = {label, T("dep_missing"), "[CR]"}
+        else
+          row = {label, T(d.enabled and "st_on" or "st_off"), d.enabled and "[CG]" or "[CWG]"}
+        end
+        if key == BASE then
+          table.insert(out, 1, row)
+        else
+          out[#out + 1] = row
         end
       end
-      y = y + step
     end
   end
-  return y
+  m.needs = out
+  return out
 end
 
--- the «Orden de carga» panel: the picture, the name, its tags, the fields, the description (no key hints: the footer
--- has them)
-function INFO.Panel(m, top)
-  local x0, y0, w, h = G.PANEL_X, top or G.PANEL_Y, G.PANEL_W, G.PANEL_H
-  Quad("Q0", SP("white"), x0, y0, w, h)
+-- «Lo necesitan»: the names of the installed mods whose `requires` names this mod (its id or a name it provides)
+function INFO.NeededBy(m)
+  if m.needed_by ~= nil then
+    return m.needed_by
+  end
+  local mine = {[m.id] = true}
+  for item in string.gmatch(INFO.Provides(m), "[^,%s]+") do
+    local n = string.match(item, "^([%w_%.%-]+)")
+    if n ~= nil then
+      mine[n] = true
+    end
+  end
+  local out = {}
+  for _, o in ipairs(mods) do
+    if o ~= m then
+      for req in string.gmatch(Text(o, 2), "[^,\n]+") do
+        local name = string.match(req, "^%s*([%w_%.%-]+)")
+        if name ~= nil and mine[name] then
+          out[#out + 1] = o.name ~= "" and o.name or o.id
+          break
+        end
+      end
+    end
+  end
+  m.needed_by = out
+  return out
+end
+
+-- The info panel of mod `m` (nil = the frame alone): the header (initials, name, version), the icon and the sheet
+-- (version, size, author, place in the load order, state), the description, «Necesita» (each requirement and its
+-- state), «Lo necesitan» (the mods that require it), one warning line when there is one, and the hint of the mod's
+-- page («Detalles», a click opens it too).
+function CE.InfoPanel(m)
+  CE.PanelFrame()
   if m == nil then
     return
   end
-  Quad("Q0", SP("night"), x0, y0, w, 236)
-  local pw, ph = 377, 212
-  local px, py = x0 + math.floor((w - pw) / 2), y0 + 12
-  INFO.Cover(m, px, py, pw, ph, INFO.MAIN)
-  local x, iw = x0 + 28, w - 56
-  local y = y0 + 272
-  Txt("TL", "[CN]" .. Cut(m.name ~= "" and m.name or m.id, Fit(iw, 1.05)) .. "[C]", x, y, 1.05)
-  y = y + 44
-  INFO.Tags(m, x, y, INFO.MAIN)
-  y = y + 28
-  Quad("Q1", SP("line"), x, y, iw, 2)
-  y = INFO.Fields(m, x, y + 26, iw, INFO.MAIN, {warnings = 2})
-  -- the description: what is left of the panel
-  local bottom = y0 + h - 20
-  if y + 14 < bottom then
-    Quad("Q1", SP("line"), x, y - 8, iw, 2)
-    local desc = Text(m, 0)
-    local n = math.max(1, math.floor((bottom - (y + 22)) / 28) + 1)
-    for i, l in ipairs(Wrap(desc ~= "" and desc or T("no_desc"), Fit(iw, 0.72), n)) do
-      Txt("TL", (desc ~= "" and "[CB]" or "[CWG]") .. l .. "[C]", x, y + 22 + (i - 1) * 28, 0.72)
-    end
+  local x, w = G.PANEL_X, G.PANEL_W
+  local hc = G.PANEL_Y + G.PANEL_HEAD / 2
+  local name = m.name ~= "" and m.name or m.id
+  Quad("Q1", SP("night"), x + 92, hc - 17, 46, 34)
+  Txt("TC", Initials(m), x + 115, hc, 0.6)
+  Txt("TL", Cut(name, Fit(w - 330, 1.12)), x + 152, hc, 1.12)
+  if m.version ~= "" then
+    Txt("TR", "v" .. Cut(m.version, 12), x + w - 30, hc, 0.78)
   end
-end
-
-local function RowY(k)              -- k: 0-based visible row («Orden de carga»: right under the top row)
-  return G.TOP_Y + k * G.ROW_STEP
+  local bx, by, iw = x + 30, G.PANEL_BODY_Y, w - 60
+  CE.Icon(m, bx, by + 26, 96)
+  local st, sc = INFO.State(m)
+  if sc == "[CB]" then
+    sc = "[CG]"
+  end
+  local sheet = {
+    {T("f_version"), INFO.Value(m.version ~= "" and ("v" .. m.version) or "")},
+    {T("f_size"), INFO.Value(Size(m.size))},
+    {T("f_author"), m.author ~= "" and m.author or T("no_author_short")},
+    {T("f_load_order"), (m.enabled and m.pos > 0) and T("pos_of", {n = m.pos, t = cnt.active}) or INFO.DASH},
+    {T("f_state"), st, sc},
+  }
+  for i, r in ipairs(sheet) do
+    local ry = by + 38 + (i - 1) * 21
+    Txt("TL", "[CWG]" .. Cut(r[1], Fit(170, 0.6)) .. "[C]", bx + 120, ry, 0.6)
+    Txt("TL", (r[3] or "[CB]") .. Cut(r[2], Fit(iw - 310, 0.62)) .. "[C]", bx + 300, ry, 0.62)
+  end
+  local y = by + 147
+  Quad("Q2", SP("line"), bx, y, iw, 2)
+  -- the description (its first paragraph, four lines at most)
+  y = y + 23
+  Txt("TL", "[CN]" .. T("f_description") .. "[C]", bx, y, 0.66)
+  local desc = INFO.Description(m)
+  Quad("Q2", SP("paper"), bx, y + 18, iw, 130)
+  for i, l in ipairs(Wrap(desc ~= "" and desc or T("no_desc"), Fit(iw - 40, 0.7), 4)) do
+    Txt("TL", (desc ~= "" and "[CB]" or "[CWG]") .. l .. "[C]", bx + 18, y + 45 + (i - 1) * 29, 0.7)
+  end
+  -- «Necesita»: a row a requirement and its state (three rows; more: the last says how many are left)
+  y = y + 176
+  Txt("TL", "[CN]" .. T("f_needs") .. "[C]", bx, y, 0.66)
+  y = y + 20
+  local needs = INFO.Needs(m)
+  if #needs == 0 then
+    Txt("TL", "[CWG]" .. T("needs_none") .. "[C]", bx + 2, y + 16, 0.68)
+    y = y + 36
+  end
+  local MAXN = 3
+  for i = 1, math.min(#needs, MAXN) do
+    local d = needs[i]
+    Quad("Q2", SP("paper2"), bx, y, iw, 32)
+    if i == MAXN and #needs > MAXN then
+      Txt("TL", "[CWG]" .. T("more_mods", {n = #needs - MAXN + 1}) .. "[C]", bx + 16, y + 16, 0.68)
+    else
+      Txt("TL", "[CB]" .. Cut(d[1], Fit(iw - 230, 0.7)) .. "[C]", bx + 16, y + 16, 0.7)
+      Txt("TR", d[3] .. Cut(d[2], Fit(190, 0.6)) .. "[C]", bx + iw - 12, y + 16, 0.6)
+    end
+    y = y + 36
+  end
+  -- «Lo necesitan»: one line with the names
+  y = y + 14
+  Txt("TL", "[CN]" .. T("f_needed_by") .. "[C]", bx, y, 0.66)
+  local users = INFO.NeededBy(m)
+  if #users == 0 then
+    Txt("TL", "[CWG]" .. T("needed_by_none") .. "[C]", bx, y + 35, 0.7)
+  else
+    Txt("TL", "[CB]" .. Cut(table.concat(users, "  ·  "), Fit(iw, 0.7)) .. "[C]", bx, y + 35, 0.7)
+  end
+  -- one warning (not loaded, incompatible, versions, shared files) above the hint, when there is one
+  local hint_y = by + G.PANEL_BODY_H - 30
+  local warn = nil
+  if m.enabled and m.state == 1 then
+    warn = {true, T("state_skip", {r = Text(m, 1)})}
+  else
+    warn = Warnings(m)[1]
+  end
+  if warn ~= nil and y + 70 < hint_y then
+    Quad("Q1", SP(warn[1] and "warn_r" or "warn_a"), bx, y + 70 - 13, 26, 26)
+    Txt("TL", (warn[1] and "[CR]" or "[CY]") .. Cut(warn[2], Fit(iw - 40, 0.62)) .. "[C]", bx + 36, y + 70, 0.62)
+  end
+  -- the mod's page (information, problems, conflicts, settings): Start / Alt, or a click on the hint
+  Txt("TR", "[CWG]" .. K.START .. " " .. Cut(T("panel_details"), Fit(300, 0.62)) .. "[C]", x + w - 30, hint_y, 0.62)
+  Hit(x + w - 380, hint_y - 18, 360, 36, "pdetails", function()
+    if ui.tab == 1 then
+      ui.zone = "grid"
+    end
+    OpenDetails()
+  end)
 end
 
 local function DrawOrder()
@@ -1412,65 +1561,27 @@ local function DrawOrder()
     ui.otop = ui.osel - G.LIST_ROWS + 1
   end
   ui.otop = math.max(1, math.min(ui.otop, math.max(1, #rows - G.LIST_ROWS + 1)))
+  CE.ListBox()
   for k = 0, G.LIST_ROWS - 1 do
-    local r = rows[ui.otop + k]
+    local n = ui.otop + k
+    local r = rows[n]
     if r ~= nil then
-      local y = RowY(k)
       if r.head then
-        Quad("Q0", SP("row_head"), G.LIST_X, y, G.ROW_W, G.ROW_H)
-        Txt("TL", r.text, G.LIST_X + 28, y + G.ROW_H / 2, 0.85)
-        if r.first then
-          Txt("TR", "[CWG]" .. Cut(T("order_sub"), Fit(460, 0.72)) .. "[C]", G.LIST_X + G.ROW_W - 28, y + G.ROW_H / 2, 0.72)
-        end
+        CE.HeadRow(k, r.text, r.first and T("order_sub") or nil)
       else
         local m = r.m
-        local sel = ui.otop + k == ui.osel and ui.popup == nil
-        Quad("Q0", SP(sel and "row_sel" or (m.enabled and "row" or "row_off")), G.LIST_X, y, G.ROW_W, G.ROW_H)
-        if m.enabled then
-          Quad("Q1", SP("num"), G.LIST_X + 22, y + 9, 44, 44)
-          Txt("TC", tostring(m.pos), G.LIST_X + 44, y + 31, m.pos >= 10 and 0.62 or 0.8)
-        end
-        local t = Thumb(m)
-        if t ~= nil then
-          Quad("Q1", t[2], G.LIST_X + 78, y + 7, 78, 48, m.enabled and 1 or 0.7, t[1])
-        else
-          Quad("Q1", SP("tile" .. TileOf(m.id)), G.LIST_X + 78, y + 7, 78, 48, m.enabled and 1 or 0.7)
-          Txt("TC", Initial(m), G.LIST_X + 117, y + 31, 1.0)
-        end
-        local nm = m.name ~= "" and m.name or m.id
-        if m.family ~= nil then
-          nm = m.family.name .. " › " .. (m.mname or nm)     -- a module mod: in its parent's family
-        end
-        nm = (m.enabled and "[CB]" or "[CWG]") .. Cut(nm, 34) .. "[C]"
-        Txt("TL", nm, G.LIST_X + 176, y + 31, 0.92)
-        local vx = G.LIST_X + 820
-        if m.id == BASE then
-          Quad("Q1", SP("lock"), G.LIST_X + 786, y + 11, 40, 40)   -- pinned: the base, always #1
-          vx = vx - 48
-        end
-        if m.version ~= "" then
-          Txt("TR", "[CWG]v" .. Cut(m.version, 10) .. "[C]", vx, y + 31, 0.72)
-        end
-        local bs, bt = Badge(m)
-        Quad("Q1", SP(bs), G.LIST_X + 840, y + 14, 150, 34)
-        Txt("TC", Cut(bt, Fit(140, 0.62)), G.LIST_X + 915, y + 31, 0.62)
-        if m.level >= 2 or (m.enabled and m.state == 1) then
-          Quad("Q1", SP("warn_r"), G.LIST_X + 1004, y + 11, 40, 40)
-        elseif m.level == 1 or m.nwarn > 0 then
-          Quad("Q1", SP("warn_a"), G.LIST_X + 1004, y + 11, 40, 40)
-        end
-        if m.pending then
-          Quad("Q1", SP("pend"), G.LIST_X + 1048, y + 11, 40, 40)
-        end
-        local n = ui.otop + k
-        Hit(G.LIST_X, y, G.ROW_W, G.ROW_H, "orow" .. n, function() ui.osel = n SelectMod(m.id) OpenDetails() end)
+        CE.ListRow(k, m, n == ui.osel and ui.popup == nil, "orow" .. n, "otag" .. n,
+                   function() ui.osel = n SelectMod(m.id) OpenDetails() end, true)
       end
     end
   end
-  DrawScrollbar(#rows, ui.otop - 1, G.LIST_ROWS, G.LIST_X + G.ROW_W + 10, G.TOP_Y, G.LIST_ROWS * G.ROW_STEP - 6)
-  -- the panel: the selected mod (level with the list)
+  DrawScrollbar(#rows, ui.otop - 1, G.LIST_ROWS, G.SB_X, G.LIST_Y, G.LIST_ROWS * G.ROW_STEP - (G.ROW_STEP - G.ROW_H), function(f)
+    ui.otop = f + 1
+    ui.osel = math.max(ui.otop, math.min(ui.osel, ui.otop + G.LIST_ROWS - 1))
+  end)
+  -- the panel: the selected mod
   local r = rows[ui.osel]
-  INFO.Panel(r ~= nil and r.m or nil, G.TOP_Y)
+  CE.InfoPanel(r ~= nil and r.m or nil)
 end
 
 
@@ -2280,17 +2391,18 @@ local function ClampGrid(shown)
   local row = math.floor((ui.sel - 1) / G.COLS)
   if row < ui.top then
     ui.top = row
-  elseif row >= ui.top + G.ROWS then
-    ui.top = row - G.ROWS + 1
+  elseif row >= ui.top + G.LIST_ROWS then
+    ui.top = row - G.LIST_ROWS + 1
   end
-  ui.top = math.max(0, math.min(ui.top, math.max(0, math.ceil(n / G.COLS) - G.ROWS)))
+  ui.top = math.max(0, math.min(ui.top, math.max(0, math.ceil(n / G.COLS) - G.LIST_ROWS)))
 end
 
 local function DrawToast()
   if ui.toast ~= nil then
-    -- above the top row (the row itself is full): left of the restart notice
-    Quad("Q0", SP("night"), 760, G.NOTICE_Y, 480, 44)
-    Txt("TC", Cut(ui.toast, Fit(460, 0.64)), 1000, G.NOTICE_Y + 22, 0.64)
+    -- under the info panel (the top rows are full)
+    local y = G.PANEL_BODY_Y + G.PANEL_BODY_H + 14
+    Quad("Q0", SP("night"), G.PANEL_X, y, G.PANEL_W, 44)
+    Txt("TC", Cut(ui.toast, Fit(G.PANEL_W - 30, 0.64)), G.PANEL_X + G.PANEL_W / 2, y + 22, 0.64)
   end
 end
 
@@ -2443,6 +2555,11 @@ function Toggle()
     return
   end
   local id = m.id
+  local active_modules = RV.ActiveModules(m)
+  if m.enabled and active_modules > 0 and not Ask(T("confirm_family_off", {n = NameOf(id), c = active_modules})) then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
   local ok, msg = RV.SwitchMod(m, not m.enabled)
   if ok ~= true then
     funcLuaCommand(C.SE, SE_NG)
@@ -2456,9 +2573,19 @@ function Toggle()
   Draw()
 end
 
--- Switch mod `m` on / off with its family: a parent switched off takes its module
--- mods with it, a module switched on brings its parent. The ModLoader's own switch does the same
--- (evt_modfmt::ModsState::toggled); it is repeated here for an older ModLoader. Reads the list again.
+-- the module mods of family parent `m` that are on
+function RV.ActiveModules(m)
+  local n = 0
+  for _, mm in ipairs(m.modules or {}) do
+    if mm.enabled then n = n + 1 end
+  end
+  return n
+end
+
+-- Switch mod `m` on / off with its family: a parent switched off takes its module mods with it (the ModLoader
+-- remembers which were on and brings exactly those back when the parent is switched on again), a module switched on
+-- brings its parent. The ModLoader's own switch does this (evt_modfmt::ModsState::toggled_family); the off and
+-- parent rules are repeated here for an older ModLoader. Reads the list again.
 -- -> ok, the toast's text
 function RV.SwitchMod(m, on)
   local ok = Call(M.SET_ENABLED, m.idx, on and 1 or 0)
@@ -2466,10 +2593,7 @@ function RV.SwitchMod(m, on)
   if ok ~= true then
     return false
   end
-  local id, nmods, parent = m.id, 0, nil
-  for _, mm in ipairs(m.modules or {}) do
-    if mm.enabled then nmods = nmods + 1 end
-  end
+  local id, nmods, parent = m.id, RV.ActiveModules(m), nil
   if on and m.family ~= nil and not m.family.enabled then
     parent = m.family.id
   end
@@ -2494,6 +2618,7 @@ function RV.SwitchMod(m, on)
     now = ModById(id)
   end
   local n = NameOf(id)
+  local restored = (on and now ~= nil) and RV.ActiveModules(now) or 0
   -- back to how the game started (off -> on): nothing to restart for
   if now ~= nil and not now.pending then
     return true, T("toast_same", {n = n})
@@ -2501,6 +2626,8 @@ function RV.SwitchMod(m, on)
     return true, T("toast_family_off", {n = n, c = nmods})
   elseif parent ~= nil then
     return true, T("toast_parent_on", {n = n, o = NameOf(parent)})
+  elseif restored > 0 then
+    return true, T("toast_family_on", {n = n, c = restored})
   end
   return true, T(on and "toast_on" or "toast_off", {n = n})
 end
@@ -2556,7 +2683,9 @@ function OpenDetails()
   end
   funcLuaCommand(C.SE, SE_OK)
   RV.cache = {}              -- the report as it is now (read again at every page)
-  ui.popup = {kind = "mod", id = m.id, btn = 1, view = 1, top = 0, srow = 1, stop = 0, szone = "rows"}
+  -- a mod with modules opens on its «Modules» list: the focus starts on the first module, not on the buttons
+  local view = RV.HasModules(m) and 4 or 1
+  ui.popup = {kind = "mod", id = m.id, btn = 1, view = view, top = 0, srow = 1, stop = 0, szone = "rows"}
   Draw()
 end
 
@@ -2732,8 +2861,9 @@ local function DrawList(p)
     p.top = p.sel - rows + 1
   end
   p.top = math.max(1, math.min(p.top, math.max(1, #p.items - rows + 1)))
+  CE.ListBox()
   if #p.items == 0 then
-    Quad("Q0", SP("row_off"), G.LIST_X, y0, LW, G.ROW_H)
+    Quad("Q2", SP("row_off"), G.LIST_X, y0, LW, G.ROW_H)
     Txt("TL", "[CWG]" .. T("list_empty") .. "[C]", G.LIST_X + 28, y0 + G.ROW_H / 2, 0.85)
   end
   for k = 0, rows - 1 do
@@ -2743,15 +2873,15 @@ local function DrawList(p)
       local y = y0 + k * G.ROW_STEP
       local sel = n == p.sel and p.zone == "list"
       if it.head then
-        Quad("Q0", SP("row_head"), G.LIST_X, y, LW, G.ROW_H)
-        Txt("TL", Cut(it.label, math.min(64, Fit(LW - 56, 0.85))), G.LIST_X + 28, y + G.ROW_H / 2, 0.85)
+        Quad("Q2", SP("row_head"), G.LIST_X, y, LW, G.ROW_H)
+        Txt("TL", Cut(it.label, math.min(64, Fit(LW - 56, 0.8))), G.LIST_X + 28, y + G.ROW_H / 2, 0.8)
       else
-        Quad("Q0", SP(sel and "row_sel" or (it.off and "row_off" or "row")), G.LIST_X, y, LW, G.ROW_H)
+        Quad("Q2", SP(sel and "row_sel" or (it.off and "row_off" or "row")), G.LIST_X, y, LW, G.ROW_H)
         if sel then
           CE.Focus("Q1", G.LIST_X, y, LW, G.ROW_H, 3)   -- the cursor of every list
         end
         local lx = G.LIST_X + 28
-        Txt("TL", (it.off and "[CWG]" or "[CB]") .. Cut(it.label, math.min(it.sub and 44 or 64, Fit(LW - (lx - G.LIST_X) - (it.sub and 230 or 30), 0.9))) .. "[C]", lx, y + G.ROW_H / 2, 0.9)
+        Txt("TL", (it.off and "[CWG]" or "[CB]") .. Cut(it.label, math.min(it.sub and 44 or 64, Fit(LW - (lx - G.LIST_X) - (it.sub and 230 or 30), 0.84))) .. "[C]", lx, y + G.ROW_H / 2, 0.84)
         if it.sub ~= nil and it.sub ~= "" then
           Txt("TR", "[CWG]" .. Cut(it.sub, 30) .. "[C]", G.LIST_X + LW - 24, y + G.ROW_H / 2, 0.72)
         end
@@ -2759,7 +2889,7 @@ local function DrawList(p)
       end
     end
   end
-  DrawScrollbar(#p.items, p.top - 1, rows, G.LIST_X + LW + 10, y0, rows * G.ROW_STEP - 6, function(f)
+  DrawScrollbar(#p.items, p.top - 1, rows, G.SB_X, y0, rows * G.ROW_STEP - (G.ROW_STEP - G.ROW_H), function(f)
     p.top = f + 1
     p.sel = math.max(p.top, math.min(p.sel, p.top + rows - 1))
   end)
@@ -2867,6 +2997,8 @@ function CE.ApplyLayout()
   for _, k in ipairs(G.SHIFT_Y) do
     G[k] = G.BASE_Y[k] + dy
   end
+  -- the rows that fit between the list's top and the box's bottom (fixed: the button guide does not move)
+  G.LIST_ROWS = math.max(4, math.floor((G.BOX_BOTTOM - G.BOX_PAD - G.LIST_Y + (G.ROW_STEP - G.ROW_H)) / G.ROW_STEP))
   G.TOP_DY = dy
   return dy
 end
@@ -3116,7 +3248,7 @@ local function MoveGrid(dx, dy)
   end
   local s = ui.sel
   if dx ~= 0 then
-    s = s + dx
+    s = math.max(1, math.min(n, s + dx * G.LIST_ROWS))
   else
     s = s + dy * G.COLS
   end
@@ -3160,6 +3292,16 @@ local function MoveOrder(d)
   Draw()
 end
 
+-- A on a list row: a mod with modules opens its page (the modules first) instead of switching
+local function DecideRow()
+  local m = Focused()
+  if m ~= nil and RV.HasModules(m) then
+    OpenDetails()
+  else
+    StartCo(Toggle)
+  end
+end
+
 -- A / Enter / a click without the mouse: the selected thing
 local function Decide()
   if ui.popup ~= nil then
@@ -3185,10 +3327,10 @@ local function Decide()
         StartCo(ProfileFlow)
       end
     else
-      StartCo(Toggle)
+      DecideRow()
     end
   else
-    StartCo(Toggle)
+    DecideRow()
   end
 end
 
@@ -3232,7 +3374,7 @@ local function Hover(h)
       redraw = redraw or before ~= ui.sel or ui.zone ~= "grid"
       ui.zone = "grid"
     end
-    local on = tonumber(string.match(id, "^orow(%d+)$") or "")
+    local on = tonumber(string.match(id, "^orow(%d+)$") or string.match(id, "^otag(%d+)$") or "")
     if on ~= nil and on ~= ui.osel then
       ui.osel, redraw = on, true
     end
@@ -3328,7 +3470,7 @@ function OnInit()
   Reset()
   changed, co, frame, last_act, lang, text_ids = false, nil, 0, -1000, nil, {}
   sent, used, was, hits = {}, {}, {}, {}
-  tex_asked, tex_wait, tex_frames, thumbs = {}, false, 0, {}
+  tex_asked, tex_wait, tex_frames, thumbs, icons = {}, false, 0, {}, {}
   mouse = {on = false, x = -1, y = -1, logs = 0}
   dbg, extras, decided = 0, nil, false
   BG.on, BG.page = nil, nil  -- the background asserted again at the first drawing

@@ -345,7 +345,7 @@ local function eligible(squad, params, rule, st)
     elseif inf.pos < POS_GK or inf.pos > POS_DF then
       st.no_position = st.no_position + 1
     else
-      out[#out + 1] = { p, k }
+      out[#out + 1] = { p, k, m[3] }
     end
   end
   return out
@@ -361,7 +361,7 @@ local function pool_from(lists, params, keys)
       local p = e[1]
       count[p] = (count[p] or 0) + 1
       if not first[p] then
-        first[p] = { t, e[2] }
+        first[p] = { t, e[2], e[3] }
         order[#order + 1] = p
       end
     end
@@ -376,13 +376,14 @@ local function pool_from(lists, params, keys)
       if not b then
         nbest = nbest + 1
       end
-      best[ch] = { n = n, t = f[1], k = f[2], p = p }
+      best[ch] = { n = n, t = f[1], k = f[2], p = p, lo = f[3] }
     end
   end
   local out = {}
   for ch, b in pairs(best) do
     local inf = params[b.p]
-    out[#out + 1] = { param = b.p, pos = inf.pos, chara = ch, element = inf.element }
+    -- loadout (1.5.76): the move set of the squad row the variant was taken from (its own team's moves)
+    out[#out + 1] = { param = b.p, pos = inf.pos, chara = ch, element = inf.element, loadout = b.lo }
   end
   table.sort(out, function(a, b)
     if a.pos ~= b.pos then
@@ -546,12 +547,13 @@ local function read_rows(team)
     if slot == nil or param == nil or uid == nil then
       return nil, "row unreadable"
     end
-    out[#out + 1] = { slot = slot, param = param, uid = uid, addr = a }
+    out[#out + 1] = { slot = slot, param = param, uid = uid, loadout = m.loadout, addr = a }
   end
   return out
 end
 
--- any team's member rows as the match builder reads them: { { slot, param } … }; nil, why (the campaign's match check)
+-- any team's member rows as the match builder reads them: { { slot, param, loadout } … }; nil, why (the campaign's
+-- match check, the pool's squads)
 function D.roster(team)
   local rows, why = read_rows(team)
   if not rows then
@@ -559,12 +561,14 @@ function D.roster(team)
   end
   local out = {}
   for i, r in ipairs(rows) do
-    out[i] = { r.slot, r.param }
+    out[i] = { r.slot, r.param, r.loadout }
   end
   return out
 end
 
-local function write_row(row, id)
+-- one row written: param = uid = id; loadout (1.5.76, owner: the drafted players played the placeholders' moves, the
+-- Draft team's own loadouts built from Raimon's cards) = the move set to play, nil = left as it is
+local function write_row(row, id, loadout)
   local m = U.struct("MemberRow", row.addr)
   if not m then
     return false
@@ -575,7 +579,13 @@ local function write_row(row, id)
   local b = pcall(function()
     m.uid = id
   end)
-  return a and b
+  local c = true
+  if type(loadout) == "number" then
+    c = pcall(function()
+      m.loadout = loadout
+    end)
+  end
+  return a and b and c
 end
 
 -- 1.5.64: a team's member rows in memory ({ { slot, param, uid, addr } … }; nil, why) and one row written (param = uid =
@@ -600,6 +610,9 @@ end
 -- the writes that make the rows hold `want` (slot -> id; other places their placeholder): { { row, id } … }.
 -- Layout guard: refused (nil, why) unless the rows are exactly the pool's places, each once, and every row holds
 -- param == uid equal to its placeholder or to what was written last (`written`).
+-- each placeholder row's own move set (slot -> loadout id), as the team build left it
+local PH_LOADOUT = {}
+
 local function plan_writes(rows, pool, written, want)
   if #rows ~= #pool.slots then
     return nil, #rows .. " member rows, the pool has " .. #pool.slots .. " slots"
@@ -623,8 +636,20 @@ local function plan_writes(rows, pool, written, want)
     if to == 0 then
       return nil, "slot " .. r.slot .. ": id 0"
     end
-    if to ~= r.param then
-      out[#out + 1] = { row = r, id = to }
+    -- the move set: a placeholder its own row's (kept the first time the row is seen holding it; unknown = left as
+    -- it is), a drafted player the set of the squad row he was taken from (0 = his card's own learn list)
+    if r.param == ph and PH_LOADOUT[r.slot] == nil and type(r.loadout) == "number" then
+      PH_LOADOUT[r.slot] = r.loadout
+    end
+    local lo
+    if to == ph then
+      lo = PH_LOADOUT[r.slot]
+    else
+      local p = pool.by and pool.by[to]
+      lo = (p and type(p.loadout) == "number") and p.loadout or 0
+    end
+    if to ~= r.param or (lo ~= nil and lo ~= r.loadout) then
+      out[#out + 1] = { row = r, id = to, loadout = lo }
     end
   end
   return out
@@ -1054,7 +1079,7 @@ local function apply(r, want)
     return nil, perr
   end
   for _, w in ipairs(plan) do
-    if not write_row(w.row, w.id) then
+    if not write_row(w.row, w.id, w.loadout) then
       return nil, "write of row at " .. U.hex(w.row.addr) .. " failed"
     end
   end

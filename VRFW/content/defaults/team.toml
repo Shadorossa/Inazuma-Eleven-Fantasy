@@ -178,3 +178,5 @@ crest_box = 104
 crest_top = 12
 # opponentListTab given to a chain node's piece, a tab the Chronicle chain team list does not have.
 chain_list_tab = 9
+# The first piece index a node may take: the engine reads the board's first pieces by index (0 the start, 1 the piece a first Chronicle visit opens on).
+first_node_index = 2

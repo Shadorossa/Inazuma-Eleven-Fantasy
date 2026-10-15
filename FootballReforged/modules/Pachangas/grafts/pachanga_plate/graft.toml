@@ -1,0 +1,19 @@
+# Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
+# «Plantilla de equipo» in «Tipo: Pachanga»: the player plate looks up the focused card in the same team as the pitch
+# (team 1 in Pachanga). The dock calls EVT_PT_PlateKind(kind, dock) on the plate VM (docs/game/ui/pachanga-templates.md §3.4).
+name = "pachanga_plate"
+mod = "pachangas"
+order = 318
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "Pachanga templates: the player plate follows the dock's team kind"
+
+[[files]]
+stem = "personal_plate_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_plate.lua"
+  marker = "pachanga plate"

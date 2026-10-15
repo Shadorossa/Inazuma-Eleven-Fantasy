@@ -1,0 +1,150 @@
+# Pachangas (module of Football Reforged): the texts of the template types of «Plantilla de equipo» (graft
+# pachanga_dock; ids crc32(label), read by the graft as @crc:<label>@). Inazuma Fantasy's menu_text rows until 2026-10-15.
+schema = "VRFW.text/2"
+[[row]]
+id = "evt_pt_row_match"
+es = "Tipo: Partido"
+en = "Type: Match"
+fr = "Type : Match"
+de = "Typ: Match"
+it = "Tipo: Partita"
+pt = "Tipo: Partida"
+ja = "タイプ：試合"
+zh_hans = "类型：比赛"
+zh_hant = "類型：比賽"
+
+[[row]]
+id = "evt_pt_row_pachanga"
+es = "Tipo: Pachanga"
+en = "Type: 5-a-side"
+fr = "Type : Foot à 5"
+de = "Typ: 5 gegen 5"
+it = "Tipo: Calcetto"
+pt = "Tipo: Pelada"
+ja = "タイプ：5人制"
+zh_hans = "类型：五人制"
+zh_hant = "類型：五人制"
+
+[[row]]
+id = "evt_pt_row_help"
+es = "Elige el tipo de plantilla: Partido (11 contra 11) o Pachanga (5 contra 5). Cada tipo tiene su propio equipo activo."
+en = "Choose the Team Dock type: Match (11 vs 11) or 5-a-side (5 vs 5). Each type has its own active team."
+fr = "Choisis le type de composition : Match (11 contre 11) ou Foot à 5 (5 contre 5). Chaque type a sa propre équipe active."
+de = "Wähle den Team-Bank-Typ: Match (11 gegen 11) oder 5 gegen 5. Jeder Typ hat sein eigenes aktives Team."
+it = "Scegli il tipo di slot squadra: Partita (11 contro 11) o Calcetto (5 contro 5). Ogni tipo ha la sua squadra attiva."
+pt = "Escolha o tipo de clube: Partida (11 contra 11) ou Pelada (5 contra 5). Cada tipo tem seu próprio time ativo."
+ja = "チームドックのタイプを選択：試合（11対11）または5人制（5対5）。タイプごとにアクティブチームがあります。"
+zh_hans = "选择编组队伍的类型：比赛（11对11）或五人制（5对5）。每种类型都有各自的出场队伍。"
+zh_hant = "選擇編組隊伍的類型：比賽（11對11）或五人制（5對5）。每種類型都有各自的出場隊伍。"
+
+[[row]]
+id = "evt_pt_active_line"
+es = "Equipo activo de partido: {match} · Equipo activo de pachanga: {pachanga}"
+en = "Active match team: {match} · Active 5-a-side team: {pachanga}"
+fr = "Équipe active (match) : {match} · Équipe active (foot à 5) : {pachanga}"
+de = "Aktives Match-Team: {match} · Aktives 5-gegen-5-Team: {pachanga}"
+it = "Squadra attiva (partita): {match} · Squadra attiva (calcetto): {pachanga}"
+pt = "Time ativo de partida: {match} · Time ativo de pelada: {pachanga}"
+ja = "試合のアクティブチーム：{match}・5人制のアクティブチーム：{pachanga}"
+zh_hans = "比赛出场队伍：{match}・五人制出场队伍：{pachanga}"
+zh_hant = "比賽出場隊伍：{match}・五人制出場隊伍：{pachanga}"
+
+[[row]]
+id = "evt_pt_none"
+es = "ninguno"
+en = "none"
+fr = "aucune"
+de = "keines"
+it = "nessuna"
+pt = "nenhum"
+ja = "なし"
+zh_hans = "无"
+zh_hant = "無"
+
+[[row]]
+id = "evt_pt_header"
+es = "Pachanga"
+en = "5-a-side"
+fr = "Foot à 5"
+de = "5 gegen 5"
+it = "Calcetto"
+pt = "Pelada"
+ja = "5人制"
+zh_hans = "五人制"
+zh_hant = "五人制"
+
+[[row]]
+id = "evt_pt_now_active"
+es = "La plantilla {n} «{team}» es ahora el equipo activo de pachanga."
+en = "Team Dock {n} \"{team}\" is now the active 5-a-side team."
+fr = "La composition {n} « {team} » est maintenant l'équipe active de foot à 5."
+de = "Team-Bank {n} „{team}“ ist jetzt das aktive 5-gegen-5-Team."
+it = "Lo slot squadra {n} \"{team}\" è ora la squadra attiva di calcetto."
+pt = "O clube {n} \"{team}\" agora é o time ativo de pelada."
+ja = "チームドック{n}「{team}」を5人制のアクティブチームにしました。"
+zh_hans = "编组队伍{n}「{team}」现在是五人制的出场队伍。"
+zh_hant = "編組隊伍{n}「{team}」現在是五人制的出場隊伍。"
+
+[[row]]
+id = "evt_pt_need_five"
+es = "Esta plantilla de pachanga no está completa. Coloca a 5 jugadores para poder usarla como equipo activo de pachanga."
+en = "This 5-a-side Team Dock is not complete. Place 5 players to use it as the active 5-a-side team."
+fr = "Cette composition de foot à 5 n'est pas complète. Place 5 joueurs pour en faire l'équipe active de foot à 5."
+de = "Diese 5-gegen-5-Team-Bank ist nicht vollständig. Stelle 5 Spieler auf, um sie als aktives 5-gegen-5-Team zu nutzen."
+it = "Questo slot squadra di calcetto non è completo. Schiera 5 giocatori per usarlo come squadra attiva di calcetto."
+pt = "Este clube de pelada não está completo. Escale 5 jogadores para usá-lo como time ativo de pelada."
+ja = "この5人制のチームドックはまだ完成していません。5人の選手を配置すると、5人制のアクティブチームにできます。"
+zh_hans = "该五人制编组队伍尚未完成。请安排5名球员，才能将其设为五人制的出场队伍。"
+zh_hant = "該五人制編組隊伍尚未完成。請安排5名選手，才能將其設為五人制的出場隊伍。"
+
+[[row]]
+id = "evt_pt_only_title"
+es = "El tipo de plantilla solo se puede cambiar en Plantilla de equipo, entrando desde el menú principal."
+en = "The Team Dock type can only be changed in Team Dock, opened from the main menu."
+fr = "Le type de composition ne peut être changé que dans Composition d'équipe, ouverte depuis le menu principal."
+de = "Der Team-Bank-Typ kann nur in der Team-Bank geändert werden, die über das Hauptmenü geöffnet wird."
+it = "Il tipo di slot squadra si può cambiare solo in Slot squadra, aperto dal menu principale."
+pt = "O tipo de clube só pode ser alterado em Clube, aberto pelo menu principal."
+ja = "チームドックのタイプは、メインメニューから開いたチームドックでのみ変更できます。"
+zh_hans = "编组队伍的类型只能在从主菜单打开的编组队伍中更改。"
+zh_hant = "編組隊伍的類型只能在從主選單開啟的編組隊伍中更改。"
+
+[[row]]
+id = "evt_pt_no_loader"
+es = "El equipo activo de pachanga necesita el cargador del mod (módulo team_banks)."
+en = "The active 5-a-side team needs the mod loader (team_banks module)."
+fr = "L'équipe active de foot à 5 nécessite le chargeur du mod (module team_banks)."
+de = "Das aktive 5-gegen-5-Team benötigt den Mod-Loader (Modul team_banks)."
+it = "La squadra attiva di calcetto richiede il loader della mod (modulo team_banks)."
+pt = "O time ativo de pelada precisa do carregador do mod (módulo team_banks)."
+ja = "5人制のアクティブチームにはMODローダー（team_banksモジュール）が必要です。"
+zh_hans = "五人制出场队伍需要模组加载器（team_banks模块）。"
+zh_hant = "五人制出場隊伍需要模組載入器（team_banks模組）。"
+
+[[row]]
+id = "evt_pt_kind_11"
+all = "11v11"
+
+[[row]]
+id = "evt_pt_kind_7"
+all = "7v7"
+
+[[row]]
+id = "evt_pt_kind_5"
+all = "5v5"
+
+[[row]]
+id = "evt_pt_kind_3"
+all = "3v3"
+
+[[row]]
+id = "evt_pt_kind_locked"
+es = "Este tipo de plantilla todavía no está disponible."
+en = "This Team Dock type is not available yet."
+fr = "Ce type de composition n'est pas encore disponible."
+de = "Dieser Team-Bank-Typ ist noch nicht verfügbar."
+it = "Questo tipo di slot squadra non è ancora disponibile."
+pt = "Este tipo de clube ainda não está disponível."
+ja = "このチームドックのタイプはまだ使用できません。"
+zh_hans = "该编组队伍类型尚未开放。"
+zh_hant = "該編組隊伍類型尚未開放。"

@@ -122,9 +122,16 @@ local function EVT_CreateCard()
 end
 
 local function EVT_MxCompatible(skill)
-  -- 2026-10-14 (owner): the VR-Framework's rule of the retail Mix-Max rows (owners / whitelist of the loaded data)
+  -- 2026-10-14 (owner): the VR-Framework's rule of the retail Mix-Max rows (owners / whitelist of the loaded data, and
+  -- the players an item serves through its per-card changes: «Zhuge Liang», «Tezcat»). When the framework answers, its
+  -- rule is the only one; the built-in list below is the fallback of an older framework.
   local card = EVT_CreateCard()
-  if card ~= nil and EVT_MX.hdl ~= nil and EVT_MX.hdl ~= 0 and not card.Allowed(skill, EVT_MX.hdl) then
+  if card ~= nil and card.Rule ~= nil and EVT_MX.hdl ~= nil and EVT_MX.hdl ~= 0 then
+    local answered, allowed = card.Rule(skill, EVT_MX.hdl)
+    if answered then
+      return allowed
+    end
+  elseif card ~= nil and EVT_MX.hdl ~= nil and EVT_MX.hdl ~= 0 and not card.Allowed(skill, EVT_MX.hdl) then
     return false
   end
   local list = EVT_MX.COMPAT[skill]
@@ -158,6 +165,7 @@ function OnInit()
   if funcLuaCommand(2947612279, EVT_KEY_PICK) then
     local m = tonumber(funcLuaCommand(3522198769, EVT_KEY_PICK)) or 1
     evt_pick = true
+    EVT_ListState.latched = true                 -- the press that opened the picker never chooses in it
     evt_mode = (m == 3 and "P") or (m == 2 and "S") or "N"   -- try 26: 3 = six sense ("Pasiva personalizada")
     EVT_MX.prime = funcLuaCommand(2947612279, EVT_MX.KEY_PRIME) == true
     EVT_MX.fused = funcLuaCommand(2947612279, EVT_MX.KEY_FUSED) == true
@@ -274,6 +282,7 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
     local usable = skill ~= 0 and EVT_Allowed(skill) and (evt_free[skill] or evt_used[skill] ~= nil)
     if skill ~= 0 and skill ~= EVT_MX.FUSION then
       funcLuaMenuCommand(711242136, a1, a2, true)  -- list instances are reused: undo a hidden carrier row
+      EVT_ListState.RowZone(a1, a2, true)
     end
     if skill == EVT_MX.CREATE and EVT_CreateCard() ~= nil then
       usable = not EVT_MX.prime
@@ -296,6 +305,7 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
       -- cannot open this picker): its row is not drawn and cannot be chosen; the item data sorts it last in the tab
       usable = false
       funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      EVT_ListState.RowZone(a1, a2, false)
     end
     if skill == EVT_MX.FUSION and not EVT_MX.fused then
       usable = false                            -- no fusion yet: the fusion aura cannot be the Hiper
@@ -319,6 +329,7 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
     if mck ~= nil then
       usable = false -- equipped carriers are internal, never selectable presets
       funcLuaMenuCommand(711242136, a1, a2, false)
+      EVT_ListState.RowZone(a1, a2, false)
     end
     if skill ~= 0 and EVT_MX.chara ~= 0 and not EVT_MxCompatible(skill) then
       usable = false                            -- a retail miximax of another player: greyed (normal name, no suffix)
@@ -417,6 +428,14 @@ local function EVT_PickEntry(src, a1, a2)
   if not evt_pick or (a1 ~= EVT_LIST and a1 ~= EVT_ITEM) then
     return
   end
+  -- a popup of the picker is open (or its closing press is still down), or a confirm already ran this frame
+  if EVT_ListState.Quiet() or EVT_ListState.decided_frame == EVT_ListState.frame then
+    return
+  end
+  EVT_ListState.decided_frame = EVT_ListState.frame
+  if src == "OnDecideFocus" and a1 == EVT_ITEM then
+    EVT_ListState.FocusRowSkill(a2)              -- the clicked row, even before the detail card followed it
+  end
   local ok, err = pcall(EVT_PickCommit, src, a1, a2)
   if not ok then
     PRINT("ability_list_menu EVT pick: " .. tostring(err))
@@ -441,11 +460,136 @@ function OnDecideFocus(a1, a2)
   end
 end
 
+-- The picker's input over its popups and the pointer (owner 2026-10-15: with the pad, Accept / Back inside the filter
+-- window chose a move or closed the picker behind it; the mouse chose the focused move on a click anywhere).
+-- * Popups: the retail filter window (OpenFilter -> item_filter_menu) and the sort window (OpenSortSubWindow ->
+--   sub_window) take every press while they are open: the picker's polled Accept / click / Eliminar and its confirm
+--   callbacks do nothing then. After a popup closed (and after the picker opened) they wait for a frame with none of
+--   those presses down, so the press that closed the popup never reaches the list.
+-- * Pointer: a click chooses a move only when the pointer is inside the focused row's own click zone (_touch_list01
+--   of team08_02_ability_list_item, the engine's hit test); a click on a tab, the button guide, the detail card or an
+--   empty area never chooses. Rows the picker hides (carrier items) lose their click zone and hover focus, so the
+--   pointer never focuses an invisible row.
+EVT_ListState.frame = 0                          -- Step count of this list
+EVT_ListState.decided_frame = -1                 -- the frame a confirm last ran (one per frame)
+EVT_ListState.popup_running = false             -- inside OpenFilter, or while the sort window opens
+EVT_ListState.sort_open = false                  -- the sort window opened and not closed yet
+EVT_ListState.latched = true                     -- waiting for a frame without a latched press
+EVT_ListState.LATCHED_KEYS = {1981080283 --[[CMD_ENTER]], 1651523701 --[[CMD_ENTER_CLICK]],
+  218912913 --[[CMD_EVT_MOUSE_LEFT]], 3421673595 --[[CMD_FUNC3]]}
+EVT_ListState.FILTER_MENU = 4116121052           -- item_filter_menu
+EVT_ListState.SORT_WINDOW = 968210065            -- sub_window
+EVT_ListState.TOUCH_NODE = 688754292             -- _touch_list01 (the row's click zone)
+EVT_ListState.MENU = 2897322950                  -- ability_list_menu
+function EVT_ListState.PopupOpen()
+  if EVT_ListState.popup_running then
+    return true
+  end
+  local okf, exists = pcall(funcLuaMenuCommand, 2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], EVT_ListState.FILTER_MENU)
+  if okf and exists == true then
+    return true
+  end
+  if EVT_ListState.sort_open then
+    local okc, closed = pcall(funcLuaCommand, 1521844538 --[[CMND_IS_CLOSE_MENU_OBJECT]], EVT_ListState.SORT_WINDOW)
+    if okc and closed == false then
+      return true
+    end
+    EVT_ListState.sort_open = false
+    EVT_ListState.latched = true
+  end
+  return false
+end
+function EVT_ListState.LatchedKeyDown()
+  for _, key in ipairs(EVT_ListState.LATCHED_KEYS) do
+    if funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD]], 1332654303 --[[MENU_CTRL]], key) == true then
+      return true
+    end
+  end
+  return false
+end
+-- once per Step: true while the picker's own input stays quiet (a popup is open, or its closing press is down)
+function EVT_ListState.InputBlocked()
+  if EVT_ListState.PopupOpen() then
+    EVT_ListState.latched = true
+    return true
+  end
+  if EVT_ListState.latched then
+    if EVT_ListState.LatchedKeyDown() then
+      return true
+    end
+    EVT_ListState.latched = false
+  end
+  return false
+end
+-- the confirm callbacks (OnEnter / OnDecideFocus): the same rule, without releasing the latch
+function EVT_ListState.Quiet()
+  return EVT_ListState.latched or EVT_ListState.PopupOpen()
+end
+-- a list row's click zone and hover focus (on for a shown row, off for a hidden one)
+function EVT_ListState.RowZone(layer, instance, on)
+  pcall(funcLuaMenuCommand, 855005857 --[[click zone]], layer, instance, on)
+  pcall(funcLuaMenuCommand, 2206938151 --[[CMND_SET_ON_CHANGE_FOCUS_MOUSE]], layer, instance, on)
+end
+-- the move of list row `instance` becomes the focused move (a click decides that row)
+function EVT_ListState.FocusRowSkill(instance)
+  if type(instance) == "number" and evt_rows[instance] ~= nil and evt_rows[instance] ~= 0 then
+    EVT_ListState.focus = evt_rows[instance]
+  end
+end
+-- is the pointer inside the focused row's click zone? true / false, nil = the engine gave no answer
+function EVT_ListState.PointerOnFocusedRow()
+  local instance = funcLuaMenuCommand(2603265800 --[[focused index]], EVT_ITEM)
+  if type(instance) ~= "number" or instance < 0 then
+    return false, nil
+  end
+  local ok, inside = pcall(funcLuaMenuCommand, 2418128616 --[[pointer inside a zone]], EVT_ListState.MENU, EVT_ITEM,
+    instance, EVT_ListState.TOUCH_NODE)
+  if not ok or type(inside) ~= "boolean" then
+    return nil, instance
+  end
+  return inside, instance
+end
+-- the popups: the filter window runs inside the retail OpenFilter (it returns once the window is gone); the sort
+-- window is open from OpenSortSubWindow until the engine reports it closed
+if type(OpenFilter) == "function" then
+  EVT_ListState.RetailOpenFilter = OpenFilter
+  function OpenFilter(...)
+    if EVT_SS2_PICK_GEN ~= EVT_PICK_GEN then -- an earlier copy of this block: pass through (see the top)
+      return EVT_ListState.RetailOpenFilter(...)
+    end
+    EVT_ListState.popup_running = true
+    local r = table.pack(pcall(EVT_ListState.RetailOpenFilter, ...))
+    EVT_ListState.popup_running = false
+    EVT_ListState.latched = true
+    if not r[1] then
+      error(r[2], 0)
+    end
+    return table.unpack(r, 2, r.n)
+  end
+end
+if type(OpenSortSubWindow) == "function" then
+  EVT_ListState.RetailOpenSortSubWindow = OpenSortSubWindow
+  function OpenSortSubWindow(...)
+    if EVT_SS2_PICK_GEN ~= EVT_PICK_GEN then -- an earlier copy of this block: pass through (see the top)
+      return EVT_ListState.RetailOpenSortSubWindow(...)
+    end
+    EVT_ListState.popup_running = true          -- the retail call returns once the window is open
+    local r = table.pack(pcall(EVT_ListState.RetailOpenSortSubWindow, ...))
+    EVT_ListState.popup_running = false
+    EVT_ListState.sort_open = r[1] == true
+    EVT_ListState.latched = true
+    if not r[1] then
+      error(r[2], 0)
+    end
+    return table.unpack(r, 2, r.n)
+  end
+end
+
 -- Try 7 showed that no confirm callback reaches Lua in this list (the viewer group handles CMD_ENTER natively).
 -- Try 8: poll the input like retail scripts do (CMND_CHECK_INPUT_CMD 0xFE429D08 (MENU_CTRL, CMD_ENTER) and
 -- CMD_ENTER_CLICK for the mouse) every frame while pick mode is on, and commit the focused move.
--- Mouse: a click that lands on a new row first moves the focus; only a click while the focused move has been
--- stable for >= 2 frames commits (= click the highlighted row again), so a click on a tab never picks a move.
+-- Mouse: a click commits the focused row when the pointer is inside its click zone (the hover already focused it);
+-- without an answer from the engine's hit test, only a click while the focused move has been stable for >= 2 frames.
 local EVT_MENU_CTRL, EVT_CMD_ENTER, EVT_CMD_ENTER_CLICK = 1332654303, 1981080283, 1651523701
 local evt_last_focus, evt_stable, evt_frames = 0, 0, 0
 local EVT_RetailOnChangeFocus = OnChangeFocus
@@ -633,11 +777,13 @@ function Step()
     EVT_RetailStep()
   end
   pcall(EVT_DW_Step)
+  EVT_ListState.frame = EVT_ListState.frame + 1
   if not evt_pick then
     return
   end
   EVT_Mark(EVT_BIT.STEP)
   evt_frames = evt_frames + 1
+  local blocked = EVT_ListState.InputBlocked()   -- a popup is open, or its closing press is still down
   if evt_frames == 2 and evt_mode == "S" then
     -- 2026-09-25: "Crear miximax" (item sort 6800, before the retail 6873...) must be FIRST in the MIXIMAX tab: the
     -- Hiper picker always uses the number order (sort type 8, the list's default t3[1]), whatever sort was saved
@@ -659,6 +805,9 @@ function Step()
   else
     evt_last_focus, evt_stable = focus, 0
   end
+  if blocked then
+    return
+  end
   if focus == EVT_MX.FUSION and not funcLuaCommand(4265778440, EVT_MENU_CTRL, EVT_CMD_ENTER)
       and not funcLuaCommand(4265778440, EVT_MENU_CTRL, EVT_CMD_ENTER_CLICK)
       and funcLuaCommand(4265778440, EVT_MENU_CTRL, 3421673595 --[[CMD_FUNC3]]) then
@@ -675,7 +824,11 @@ function Step()
     EVT_PickEntry("Step-Enter", EVT_LIST, 0)
   elseif funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD?]], EVT_MENU_CTRL, EVT_CMD_ENTER_CLICK) then
     EVT_Mark(EVT_BIT.CLICK)
-    if evt_stable >= 2 then
+    local inside, instance = EVT_ListState.PointerOnFocusedRow()
+    if inside == true then
+      EVT_ListState.FocusRowSkill(instance)      -- the row under the pointer, even before the detail card followed
+      EVT_PickEntry("Step-Click", EVT_LIST, 0)
+    elseif inside == nil and evt_stable >= 2 then
       EVT_PickEntry("Step-Click", EVT_LIST, 0)
     end
   end

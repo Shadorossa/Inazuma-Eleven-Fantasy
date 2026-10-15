@@ -4,9 +4,13 @@
 --   CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG()  -> mode, camera, report, bust
 --        mode 0 off / 1 in a match / 2 every screen; camera = the capture camera's name crc; report 1 = log the
 --        report after each build; bust 1 = the bust camera (the model is placed at the origin for it)
---   CMND_CHARACTERREFORGED_PAGE_CAPTURE_REPORT(when, key, camera)  -> 1
+--   CMND_CHARACTERREFORGED_PAGE_CAPTURE_REPORT(when, key, camera, model)  -> 1
 --        loader.log: the menu capture render-texture pool (types 2 / 3: every cell, «ours» = the model key), the
---        render targets of slots 2 / 3 and whether the camera is in the external camera config
+--        render targets of slots 2 / 3, whether the camera is in the external camera config, the pause freeze state
+--        and the model's CharaRenderProperty (model = its scene chara handle)
+--   CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE(on)  -> status
+--        on 1: the render settings' pause freeze flag (+0xD8) saved and cleared; 0: put back (1 done, 0 nothing to do,
+--        -1 not reachable)
 
 CharacterReforged = CharacterReforged or {}
 CharacterReforged.PageCapture = CharacterReforged.PageCapture or {}
@@ -19,6 +23,9 @@ local ENTRY_SIZE, TARGET_SIZE, CAMERA_SIZE = 0x38, 0x70, 0x5C
 local MAX_ENTRIES, MAX_CAMERAS = 64, 4096
 
 local function log(...) VRFW.log("player_page_capture:", ...) end
+local RECORD_SIZE, RECORD_HANDLE, RECORD_FLAGS, RECORD_RENDER = 0x1460, 0x80, 0x70, 0x7D0   -- scene chara records
+local FREEZE_FLAG = 0xD8                                                                     -- render settings
+local saved_freeze = nil
 
 local function setting(path, default)
   local ok, value = pcall(VRFW.files.config, path)
@@ -39,6 +46,11 @@ local function hex(v)
   return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
 end
 
+local function hex64(v)
+  if type(v) ~= "number" then return tostring(v) end
+  return string.format("0x%X%08X", math.floor(v / 4294967296), v % 4294967296)
+end
+
 -- the variable a RIP-relative instruction at `at` addresses (disp32 at +3, 7-byte instruction)
 local function rip_target(at)
   local disp = read("i32", at + 3)
@@ -57,7 +69,8 @@ function P.Config()
   local camera_name = setting("player_page.match_camera", "vs")
   local camera = CAMERAS[camera_name] or (type(camera_name) == "number" and camera_name) or CAMERAS.vs
   local report = setting("player_page.capture_report", true) == true and 1 or 0
-  return mode, camera, report, camera == CAMERAS.bust and 1 or 0
+  local live = setting("player_page.match_live_pause", true) == true and 1 or 0
+  return mode, camera, report, camera == CAMERAS.bust and 1 or 0, live
 end
 
 local function report_pool(key)
@@ -85,10 +98,10 @@ local function report_pool(key)
       if t == 2 or t == 3 then
         local mine = k == key
         if mine then ours = ours + 1 end
-        log(string.format("cell %d handle %s type %d key %s%s cell %s live %s shown %s freeing %s users %s texture %s scale %s",
+        log(string.format("cell %d handle %s type %d key %s%s cell %s live %s shown %s freeing %s users %s scale %s",
           i, hex(handle), t, hex(k), mine and " (ours)" or "", tostring(read("u8", e + 0x30)), tostring(read("u8", e + 0x31)),
           tostring(read("u8", e + 0x32)), tostring(read("u8", e + 0x33)), tostring(read("u32", e + 0x2C)),
-          (read("ptr", e) or 0) ~= 0 and "yes" or "no", tostring(read("f32", e + 0x28))))
+          tostring(read("f32", e + 0x28))))
       end
     end
   end
@@ -129,7 +142,74 @@ local function report_camera(camera)
     found and ("entry " .. found) or "MISSING"))
 end
 
-function P.Report(when, key, camera)
+-- the render settings object (the static the getter at Render.GetSettings returns: `lea rax` at +0x20)
+local function render_settings()
+  return profile_address("Render.GetSettings", 0x20)
+end
+
+local function report_pause()
+  local system = profile_address("Render.GetSystem", 0x20)
+  local view = read("ptr", system and system + 0x808)
+  local settings = render_settings()
+  log(string.format("pause: time scale %s, render settings +0xD7 %s +0xD8 %s +0xD9 %s (all of time scale <= 0, D7, D8 = the pause freeze: a CharaRenderProperty's +0x2AE goes 0)",
+    tostring(read("f32", view and view + 0x734)), tostring(read("u8", settings and settings + 0xD7)),
+    tostring(read("u8", settings and settings + FREEZE_FLAG)), tostring(read("u8", settings and settings + 0xD9))))
+end
+
+local function report_model(model)
+  if type(model) ~= "number" or model == 0 then
+    log("model: no handle")
+    return
+  end
+  local ok, at = pcall(VRFW.game.sym, "Scene.GameState")
+  local manager = ok and read("ptr", at)
+  local records = manager and read("ptr", manager + 0x50)
+  local index = model % 65536
+  local record = records and index < 0x280 and records + index * RECORD_SIZE
+  local handle = read("u32", record and record + RECORD_HANDLE)
+  if handle ~= model then
+    log(string.format("model %s: no scene chara record (found %s)", hex(model), hex(handle)))
+    return
+  end
+  local p = read("ptr", record + RECORD_RENDER)
+  log(string.format("model %s: record flags %s, CharaRenderProperty %s", hex(model),
+    hex(read("u8", record + RECORD_FLAGS)), p and hex64(p) or "nil"))
+  if not p or p == 0 then return end
+  local b = function(o) return tostring(read("u8", p + o)) end
+  log(string.format("render property: camera %s view %s handle %s capture +2AC %s last +2AD %s drawn +2AE %s cell on +2AF %s mask +2B0 %s slot +2B1 %s mask slot +2B2 %s viewport %s %s %s %s",
+    hex(read("u32", p + 0x2A0)), tostring(read("u16", p + 0x2A4)), hex(read("u32", p + 0x2A8)), b(0x2AC), b(0x2AD), b(0x2AE),
+    b(0x2AF), b(0x2B0), b(0x2B1), b(0x2B2), tostring(read("u32", p + 0x290)), tostring(read("u32", p + 0x294)),
+    tostring(read("u32", p + 0x298)), tostring(read("u32", p + 0x29C))))
+  local proxy = read("ptr", p + 0x2C0)
+  if proxy and proxy ~= 0 then
+    log(string.format("render proxy: slot +2A4 %s mode +2A6 %s +2B0 %s flags +2B1 %s", tostring(read("u8", proxy + 0x2A4)),
+      tostring(read("u16", proxy + 0x2A6)), tostring(read("u8", proxy + 0x2B0)), hex(read("u8", proxy + 0x2B1))))
+  else
+    log("render proxy: none")
+  end
+end
+
+function P.Live(on)
+  local settings = render_settings()
+  if not settings or not read("u8", settings + FREEZE_FLAG) then return -1 end
+  if on == 1 then
+    if saved_freeze == nil then
+      saved_freeze = read("u8", settings + FREEZE_FLAG)
+      log("pause freeze flag " .. tostring(saved_freeze) .. " -> 0 while the capture page shows")
+    end
+    if read("u8", settings + FREEZE_FLAG) ~= 0 then
+      pcall(VRFW.mem.write, "u8", settings + FREEZE_FLAG, 0)
+    end
+    return 1
+  end
+  if saved_freeze == nil then return 0 end
+  pcall(VRFW.mem.write, "u8", settings + FREEZE_FLAG, saved_freeze)
+  log("pause freeze flag back to " .. tostring(saved_freeze))
+  saved_freeze = nil
+  return 1
+end
+
+function P.Report(when, key, camera, model)
   local ok, err = pcall(function()
     key = type(key) == "number" and key % 4294967296 or 0
     camera = type(camera) == "number" and camera % 4294967296 or CAMERAS.vs
@@ -137,9 +217,11 @@ function P.Report(when, key, camera)
     report_pool(key)
     report_targets()
     report_camera(camera)
+    report_pause()
+    report_model(type(model) == "number" and model % 4294967296 or 0)
   end)
   if not ok then log("report failed: " .. tostring(err)) end
   return 1
 end
 
-log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT)")
+log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT / _LIVE)")

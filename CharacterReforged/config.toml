@@ -51,8 +51,12 @@ export_area = "vrmod/characters"
 # match_model: "match" = in a match the model is drawn into a render texture (default); "always" = that capture on every
 # screen (test: Plantilla outside a match); "off" = no model in a match. match_camera: "vs" = the VS screen camera (full
 # body) or "bust" = the keeper gauge's bust camera (the model stands at the origin for it), or a camera name crc.
-# capture_report: loader.log «player_page_capture:» lines (render-texture pool, render targets, camera) after each build.
+# capture_report: loader.log «player_page_capture:» lines (render-texture pool, render targets, camera, pause state,
+# the model's render property) after each build.
 [player_page]
 match_model = "match"
 match_camera = "vs"
 capture_report = true
+# match_live_pause: true = while the capture page shows in a pause, the render settings' pause freeze flag is off (the
+# game freezes the 3D scene in a pause, and a frozen scene does not draw menu characters); put back when the page closes.
+match_live_pause = true

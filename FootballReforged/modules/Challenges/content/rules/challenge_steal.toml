@@ -1,0 +1,15 @@
+schema = "VRFW.rule/1"
+# Challenge ruleset (module Challenges of Football Reforged; docs/game/modes/match-engine.md §13): steal the ball
+# once. 5v5 without keepers; the rival always restarts (kick-offs, throw-ins, corners, goal kicks, free kicks) and
+# plays keep-away; no shoot zone (except after a focus battle). Inazuma Fantasy's until 2026-10-15; the id has not
+# changed.
+id = "challenge_steal"
+name = "Challenge: steal the ball"   # fallback; the game shows the text key challenges.ruleset_challenge_steal
+version = 1
+
+[teams]
+players = 5
+
+[challenge]
+kind = "steals"
+count = 1

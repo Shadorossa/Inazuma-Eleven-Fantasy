@@ -59,6 +59,11 @@ allow = []
 [[script]]
 file = "route_map_speed.lua"
 
+# Team name length (the settings of config.toml [team_name])
+[[script]]
+file = "team_name.lua"
+allow = []
+
 # Skill board: the old [skill_board] armour_without_item key, ignored with a log line (moved to Character Reforged)
 [[script]]
 file = "skill_board.lua"

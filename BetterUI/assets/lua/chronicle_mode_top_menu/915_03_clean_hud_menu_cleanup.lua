@@ -114,14 +114,16 @@ end
 
 -- EVT ui_clean, Clean HUD «menu cleanup» (graft clean_hud_menu_cleanup; docs/game/ui/ui-redesign.md «Mode top menus cleanup»). Appended to
 -- the mode top menus that carry the retail corner buttons (soccer_top_menu = Modo Competición / «Modos de juego»,
--- chronicle_mode_top_menu = Modo Crónica); everything below works from the declared tables, so the same block serves
--- both menus.
+-- chronicle_mode_top_menu = Modo Crónica, bb_stadium_top_menu = Estadio BB); everything below works from the declared
+-- tables, so the same block serves every menu.
 --   * corner buttons «V Guía de controles» (mainmenu90_24_02_play_guide_button) and «Alt Tutorial»
 --     (mainmenu90_24_tutorial_button), flag corner_buttons: still created (the retail code addresses them) but
 --     invisible, without control focus, mouse zone or cursor; their retail functions (list -> corner, corner -> list,
 --     corner up / down, V, Alt) and Accept on them do nothing. The tutorial's «come back on the tutorial button» temp
---     value is cleared before the retail OnInit reads it, so the menu always opens on its lists. The tutorial still
---     runs from the retail first-play notice.
+--     value is cleared before the retail OnInit reads it, so the menu always opens on its lists. A retail helper that
+--     shows a list of layers again (SwitchLayerVisible, bb_stadium_top_menu after its stadium window) leaves them
+--     hidden. The tutorial still runs from the retail first-play notice. Where graft clean_hud_controls_guide declares
+--     the footer «Guía de controles», that graft (outside this block) takes the V key before it gets here.
 -- The icon boxes of Modo Crónica are graft clean_hud_chr_boxes; Inazuma Fantasy's comp_menu boxes («Modos de juego»)
 -- run before this block and are not touched.
 
@@ -130,10 +132,11 @@ local UI_MC_CORNERS = {
   [4096284290] = "controls guide",
   [3687874606] = "tutorial",
 }
--- retail OnFunction ids of the corner buttons (soccer_top_menu / chronicle_mode_top_menu)
+-- retail OnFunction ids of the corner buttons (soccer_top_menu / chronicle_mode_top_menu / bb_stadium_top_menu)
 local UI_MC_CORNER_FN = {
   [1055436260] = true, -- list -> corner buttons
   [3860297742] = true, -- corner buttons -> list
+  [1169567619] = true, -- corner buttons -> list (bb_stadium_top_menu)
   [3517640427] = true, -- corner up / down
   [1643904886] = true, -- V: the controls guide window
   [2666587639] = true, -- Alt: the tutorial
@@ -224,6 +227,20 @@ do
         return
       end
       return enter(a1, ...)
+    end)
+  end
+  local switch = rawget(_ENV, "SwitchLayerVisible")
+  if type(switch) == "function" then
+    rawset(_ENV, "SwitchLayerVisible", function(a1, a2, ...)
+      local r = Pack(switch(a1, a2, ...))
+      if a2 == true and type(a1) == "table" and UiOn("corner_buttons") then
+        for _, layer in ipairs(a1) do
+          if UI_MC_CORNERS[layer] ~= nil then
+            UiMcCmd(CMND_SET_LAYER_VISIBLE, layer, 0, false)
+          end
+        end
+      end
+      return table.unpack(r, 1, r.n)
     end)
   end
   local fn = rawget(_ENV, "OnFunction")

@@ -14,7 +14,7 @@
 -- and returns true for the skill table, false for the game's board. CharacterReforged.SkillTableViewOn() is the same
 -- read without the log line (the entry's greying: not an entry). Definitions only, no engine call at load.
 CharacterReforged = type(CharacterReforged) == "table" and CharacterReforged or {}
-CharacterReforged.SKILL_TABLE_OPTION = "character_reforged.skill_set_view"   -- options.toml row (toggle, default 0)
+CharacterReforged.SKILL_TABLE_OPTION = "character_reforged.skill_set_view"   -- options.toml row (toggle, default 1 = Fantasy)
 CharacterReforged.OPTION_GET_COMMAND = 4082322029                            -- crc32("CMND_VRFW_OPTION_GET")
 CharacterReforged.LOG_COMMAND = 3661580131                                   -- crc32("CMND_EVT_LOG"): the loader log
 CharacterReforged.SKILL_TABLE_MENU = 1041963128                              -- evt_skill_slot_menu

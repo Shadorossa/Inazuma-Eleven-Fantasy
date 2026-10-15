@@ -1,0 +1,41 @@
+# Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
+# «Plantilla de equipo» in «Tipo: Pachanga»: the emblem / kit pickers and «Conf. de equipo» work on the dock's 5v5 team (teamInfo[1])
+# instead of its 11v11 team (docs/game/ui/pachanga-templates.md §3, Nacho 2026-09-28: emblem did not apply, the
+# pachanga match wore the default kit and the coach the Raimon outfit). The retail pickers read the team kind the dock
+# passes (param 4081600465) but address team 0; with kind 1 (not story) the block sends their team-0 calls about
+# the dock to team 1. After away_kit (its Local / Visitante commit goes through the same wrapper).
+name = "pachanga_equip"
+mod = "pachangas"
+order = 316
+module = ""
+requires = []
+conflicts = []
+wraps = ["OnInit"]
+description = "Pachanga templates: emblem / kit pickers and Conf. de equipo use the 5v5 team"
+
+[[files]]
+stem = "equip_emblem_menu_list"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_equip.lua"
+  marker = "pachanga equip"
+  crc = "none"
+
+[[files]]
+stem = "equip_uniform_menu_list"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_equip.lua"
+  marker = "pachanga equip"
+  crc = "none"
+
+[[files]]
+stem = "soccer_parameter_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_equip.lua"
+  marker = "pachanga equip"
+  crc = "none"

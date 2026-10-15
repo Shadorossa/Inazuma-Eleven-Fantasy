@@ -4,7 +4,7 @@
 --
 -- Both actions run the SAME pass as the duplicate-players hook (scripts\duplicate_players.lua: a duplicated save, and
 -- every load of a player slot when a rule asks for it) with the POLICY the mods declare in content\duplicate_rules\
--- (No More Rarities: one card per character, every normal card -> rarity 4), split in two:
+-- (New Recruitment: one card per character; No More Rarities: every normal card -> rarity 4), split in two:
 --
 --   remove_duplicates   one card per character / card (keep_first decides which copy stays; the others are merged
 --                       into it and leave the club and every team), the policy's rarity left out. Offered while a

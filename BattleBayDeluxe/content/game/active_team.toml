@@ -50,6 +50,30 @@ name = "ActiveTeamRecord"
 size = 0x30
 fields = { uniform = { at = 0x1C, type = "u32" }, emblem = { at = 0x20, type = "u32" } }
 
+# 1.5.77 (owner 2026-10-15: the Draft played as «Draft» with a generic crest and kit): the Draft team carries the active
+# team's identity. Its crest and kit: the mirror writes them over the Draft's team record too (scripts\active_team.lua;
+# the match setup reads the record at every build, the game's own kit clash rule still applies). Its name:
+# TeamLookBuild(out, record, …) 0xE9B760 resolves the record's name text (+0x14) to the name string the match team set
+# keeps (out +0x60, a char*: 0xE9B580 stores its 9th argument there), which the VS screen and the scoreboard show. The
+# answer points it at the active team's name (a native block of the mod; table BattleBayDeluxe.TeamName: team id -> the
+# block's address) for the teams in the table only, so the grid keeps the tile's own «Draft» text.
+# Stolen bytes: mov [rsp+20h],rbx / push rbp / push rsi / push rdi / push r12 / push r13 / push r14 = 14 bytes, no
+# relative operand (unique pattern in the v7.1.2 dump).
+[[VRFW.Hook]]
+name = "TeamLookBuild"
+kind = "function"
+pattern = "48 89 5C 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E9 48 81 EC A0 00 00 00 45 33 ED 33 C0 4C 89 29 0F 57 C0 4C 89 69 08 4C 8B F1"
+rva = 0xE9B760
+steal = 14
+args = ["ptr", "ptr"]
+ret = "ptr"
+
+# the record's team id (+0) has a name in the table: that name as the match team set's name
+[[VRFW.Hook.answer]]
+phase = "post"
+value = "lookup(BattleBayDeluxe.TeamName, [args[2]]:u32)"
+write = "[ret + 0x60]:u64"
+
 [[VRFW.Hook]]
 # StartMatchRequest(scene, request) 0x17B7260: the generic «start this match» of every mode (15 callers). Stolen bytes:
 # mov [rsp+18h],rbx / mov [rsp+20h],rsi / push rbp / push rdi / push r14 = 14 bytes, no relative operand (unique

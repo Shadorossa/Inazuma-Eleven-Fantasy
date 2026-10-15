@@ -67,10 +67,12 @@ size = 0x78
 fields = { members = { at = 0x68, type = "ptr" }, member_count = { at = 0x70, type = "i32" } }
 
 [[VRFW.Struct]]
-# one member row (stride 0x54): chara_param id (written by the Draft) and its copy, the roster slot
+# one member row (stride 0x54): chara_param id (written by the Draft) and its copy, the move loadout (1.5.76: written
+# with the pick, TEAM_MEMBER_SKILL_CONFIG_INFO id, 0 = the card's own learn list; BuildRoster 0xE9AC40 reads +0x28,
+# docs/framework/random-team.md), the roster slot
 name = "MemberRow"
 size = 0x54
-fields = { param = { at = 0x20, type = "u32" }, uid = { at = 0x24, type = "u32" }, slot = { at = 0x47, type = "u8" } }
+fields = { param = { at = 0x20, type = "u32" }, uid = { at = 0x24, type = "u32" }, loadout = { at = 0x28, type = "u32" }, slot = { at = 0x47, type = "u8" } }
 
 [[VRFW.Struct]]
 name = "Kizuna"

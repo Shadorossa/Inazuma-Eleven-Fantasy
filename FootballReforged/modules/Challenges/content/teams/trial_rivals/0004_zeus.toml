@@ -1,0 +1,23 @@
+schema = "VRFW.team/2"
+# Rivals of the office trial games (5v5, office_trial_plan.py; module Challenges of Football Reforged, Inazuma Fantasy's
+# until 2026-10-15). Hand-maintained. Members play their card's own moves (loadout = 0, as Inazuma Fantasy's
+# teams\00_loadouts\30_card_movesets.toml sets them).
+default_lang = "en"
+
+[[team]]
+name = "trial_tm_04"                      # Zeus
+key = "evt_trial_tm_04"
+based_on = "trial_tm_02"                  # Zeus (its tactics / team skills)
+name_text = 0xB728E16D                    # Zeus
+level = 1
+formation = 0xC478B909
+kit = 0xE17C3465
+emblem = 0xBBB7E027
+roster = "exact"
+member = [
+  { card = 0x86FAF9FF, slot = 0, loadout = 0, uid = 0x1373300F, rarity_step = 1 },  # Paul Siddon · GK
+  { card = 0xD0A05E79, slot = 1, number = 7, loadout = 0, uid = 0x45299789, rarity_step = 1 },  # Arion Matlock · MF
+  { card = 0xFB8D0DBA, slot = 2, number = 4, loadout = 0, uid = 0x6E04C44A },  # Lane War · DF
+  { card = 0x9E23A289, slot = 3, number = 10, captain = true, loadout = 0, uid = 0x0BAA6B79, rarity_step = 1 },  # Byron Love · MF
+  { card = 0x4E2373F7, slot = 4, number = 9, loadout = 0, uid = 0xDBAABA07, rarity_step = 1 },  # Jonas Demetrius · FW
+]

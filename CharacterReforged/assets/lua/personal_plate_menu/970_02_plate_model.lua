@@ -48,7 +48,13 @@ end
 -- G.PtrForm, the CMND_EVT_FORM_LIST / _MODEL path). view_in_menus = {} turns the retail offer off (the mechanism and
 -- research/grafts/form_appearance stay; {2049316981, 935586083} brings it back).
 if EVT_PPM_VIEW_RULES == nil then
-  EVT_PPM_VIEW_RULES = {hide_in_menus = {}, view_in_menus = {}, view_key = 3515054872}
+  -- 2026-10-15 (owner, «Espíritu»: on the summon result «¡ENHORABUENA!» our model stood next to the retail one, and it
+  -- stayed over the spirit list and the next summon scene): the spirit screens (soccer_summon_menu, soccer_spirit_menu)
+  -- show their own model and hide personal_plate_menu by suspending it (CMND 1129326309), which stops its Step, so a
+  -- model of ours built there is never released. No model of ours while one of them exists (loader.log «EVT_PPM rules
+  -- hide <menu crc>»; 369188769 = soccer_summon_menu, 3384996521 = soccer_spirit_menu).
+  EVT_PPM_VIEW_RULES = {hide_in_menus = {369188769, 3384996521}, view_in_menus = {},
+    view_key = 3515054872}
 end
 -- Fit (Nacho: «ajusta la cámara para cada tipo de cuerpo, porque algunos salen muy altos en comparación al tamaño que
 -- hay en la interfaz»; Garreau's hair went over the name band and the top bar, Baek Bull-wo fitted): once a model is
@@ -155,6 +161,11 @@ EVT_PPM = EVT_PPM or {}
   M.CFG_CMD = 4099239448
   M.REPORT_CMD = 3840947936
   M.REPORT_AGAIN = 60
+  -- Character Reforged 1.8.46: the report also logs the model's CharaRenderProperty (the capture redirect) and the
+  -- pause freeze state; config.toml [player_page] match_live_pause = true clears the pause freeze flag while the capture
+  -- page shows (CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE, restored on release). The game's log command keeps only 8
+  -- arguments, so the capture lines are written as one text (M.Line).
+  M.LIVE_CMD = 1195400181
   M.capReady = false
   M.PLATE = 1844915256                   -- soccer11_04_formation_chara_status (the plate of this screen)
   M.PAGE = 878737202                     -- team11_01_personal_plate
@@ -312,8 +323,34 @@ EVT_PPM = EVT_PPM or {}
     return table.unpack(r, 2, r.n)
   end
 
+  -- one loader.log line: a label and the rest joined into one text (the log command keeps 8 arguments)
+  function M.Line(label, ...)
+    local parts = {}
+    for i = 1, select("#", ...) do
+      parts[#parts + 1] = tostring((select(i, ...)))
+    end
+    pcall(funcLuaCommand, LOG, label, table.concat(parts, " "))
+  end
+
   function M.Capture()
     return M.LAYER == M.CAP
+  end
+
+  -- 2026-10-15 (owner, «Universo de jugadores › Personajes disponibles», menu chara_pack_probability_list_menu: no
+  -- model, and a stuck screen after leaving the page): that screen's constellation is a 2D layer over the 3D pass, so
+  -- the menu-camera model is never seen there, and the screen waits for personal_plate_menu to report closed
+  -- (CMND 1521844538) before it takes input again. On the screens of EVT_PPM_CAPTURE_MENUS the model is built on the
+  -- capture layer (a 2D layer of its own, its own camera: the shared menu camera offset is never written there) and
+  -- the page close leaves our layer to the menu's own close. loader.log «EVT_PPM layer capture plate type 0»,
+  -- «EVT_PPM release page closed … menu closed <bool>».
+  M.CAPTURE_MENUS = EVT_PPM_CAPTURE_MENUS or {4033966098}
+  function M.InCaptureMenu()
+    for _, menu in ipairs(M.CAPTURE_MENUS) do
+      if Lc(264888438, menu) == true then                  -- CMND_IS_EXIST_MENU
+        return true
+      end
+    end
+    return false
   end
 
   function M.InMatch()
@@ -325,13 +362,14 @@ EVT_PPM = EVT_PPM or {}
     if M.cfg then
       return M.cfg
     end
-    local c = {mode = 1, cam = 3085867494, report = false, bust = false}
-    local ok, mode, cam, report, bust = pcall(funcLuaCommand, M.CFG_CMD)
+    local c = {mode = 1, cam = 3085867494, report = false, bust = false, live = false}
+    local ok, mode, cam, report, bust, live = pcall(funcLuaCommand, M.CFG_CMD)
     if ok and type(mode) == "number" then
       c.mode = mode
       c.cam = type(cam) == "number" and cam ~= 0 and cam or c.cam
       c.report = report == 1
       c.bust = bust == 1
+      c.live = live == 1
     end
     if EVT_PPM_CAPTURE == false then
       c.mode = 0
@@ -345,14 +383,14 @@ EVT_PPM = EVT_PPM or {}
     end
     M.CAP_CAM = c.cam
     M.cfg = c
-    pcall(funcLuaCommand, LOG, "EVT_PPM capture settings", "mode", tostring(c.mode), "camera", tostring(c.cam),
-      "report", tostring(c.report), "bust", tostring(c.bust), "from config", tostring(ok and type(mode) == "number"))
+    M.Line("EVT_PPM capture settings", "mode", c.mode, "camera", c.cam, "report", c.report, "bust", c.bust,
+      "live pause", c.live, "from config", ok and type(mode) == "number")
     return c
   end
 
   function M.Report(when)
     if M.Capture() and M.Settings().report then
-      pcall(funcLuaCommand, M.REPORT_CMD, when, M.CAP_KEY, M.CAP_CAM)
+      pcall(funcLuaCommand, M.REPORT_CMD, when, M.CAP_KEY, M.CAP_CAM, Cmd(GET_MODEL, M.LAYER, 0, 0) or 0)
     end
   end
 
@@ -368,7 +406,7 @@ EVT_PPM = EVT_PPM or {}
   -- which model layer this page uses (only while none is open)
   function M.ChooseLayer()
     local mode = M.Settings().mode
-    local cap = mode == 2 or (mode == 1 and M.InMatch())
+    local cap = mode == 2 or (mode == 1 and M.InMatch()) or (mode ~= 0 and M.InCaptureMenu())
     if cap and Cmd(CMD_EXIST, M.CAP) ~= true then
       if not M.capMissLogged then
         M.capMissLogged = true
@@ -401,8 +439,7 @@ EVT_PPM = EVT_PPM or {}
     Cmd(2885415772, M.LAYER, 0, M.CAP_MESH, b[3], b[3])    -- node scale = the quad's size
     Cmd(3405944500, M.LAYER, M.CAP_MESH, true, 0)
     local okg, gx, gy = pcall(funcLuaMenuCommand, GPOS, M.LAYER, 0, M.CAP_MESH)
-    pcall(funcLuaCommand, LOG, "EVT_PPM capture setup", "box", tostring(b[1]), tostring(b[2]), tostring(b[3]),
-      "node", tostring(gx), tostring(gy), "drawprio", tostring(Cmd(1018283794, M.LAYER, 0)))
+    M.Line("EVT_PPM capture setup", "box", b[1], b[2], b[3], "node", gx, gy, "drawprio", (Cmd(1018283794, M.LAYER, 0)))
   end
 
   function M.CapSwap(why)
@@ -412,9 +449,8 @@ EVT_PPM = EVT_PPM or {}
     local r = Cmd(3747175963, M.LAYER, 0, M.CAP_MESH, M.CAP_KEY)
     if why ~= "ready" or not M.swapLogged then
       M.swapLogged = why == "ready"
-      pcall(funcLuaCommand, LOG, "EVT_PPM capture swap", tostring(why), tostring(r),
-        "model", tostring(Cmd(GET_MODEL, M.LAYER, 0, 0)), "complete", tostring(Cmd(COMPLETE, M.LAYER, 0, 0)),
-        "prebuilt", tostring(Cmd(2787787510, M.LAYER, 0)))     -- the component's resources are built (state 5)
+      M.Line("EVT_PPM capture swap", why, r, "model", (Cmd(GET_MODEL, M.LAYER, 0, 0)), "complete",
+        (Cmd(COMPLETE, M.LAYER, 0, 0)), "prebuilt", (Cmd(2787787510, M.LAYER, 0)))   -- prebuilt: resources built (state 5)
     end
   end
 
@@ -745,6 +781,12 @@ EVT_PPM = EVT_PPM or {}
   -- (one offset for everybody, per-body offsets / scales, the office camera): docs/game/ui/ui-redesign.md rounds
   -- 11..14 and docs/game/ui/menu-model-view.md. EVT_PPM_CAM_OFS = {x, y, z} stays as a tuning override.
   function M.Framing()
+    if M.Capture() then                    -- own camera: the retail turn, stand motion and pose only
+      Cmd(MV.ROT, M.LAYER, 0, 0, MV.RETAIL.rot_y, 0)
+      Cmd(MV.MOTION, M.LAYER, 0, MV.STAND, 0, 0, 0, 0, 0)
+      Cmd(MV.POSE_UPD, M.LAYER, 0, MV.POSE_ARG)
+      return
+    end
     local c = type(EVT_PPM_CAM_OFS) == "table" and EVT_PPM_CAM_OFS or MV.RETAIL.cam
     M.SetCam(c[1] or 0, c[2] or 0, c[3] or 0)
     MV.Frame(M.LAYER, 0)
@@ -994,7 +1036,12 @@ EVT_PPM = EVT_PPM or {}
       Clear()
       did = true
     end
-    if not M.closing and Cmd(CMD_EXIST, M.LAYER) == true and Cmd(CMD_IS_OPEN, M.LAYER) == true then
+    local menuCloses = (why ~= "hidden" or M.want == nil) and M.InCaptureMenu()
+    if menuCloses then                    -- the page's menu closes: its own close takes our layer too
+      if why ~= "hidden" then
+        M.Line("EVT_PPM release", why, "layer left to the menu, menu closed", Lc(1521844538, M.MENU))
+      end
+    elseif not M.closing and Cmd(CMD_EXIST, M.LAYER) == true and Cmd(CMD_IS_OPEN, M.LAYER) == true then
       Cmd(1273612389, M.LAYER)          -- CMND_CLOSE_LAYER (our own layer evt_pp_model), once
       M.closing = true
       did = true
@@ -1006,6 +1053,11 @@ EVT_PPM = EVT_PPM or {}
         did = true
       end
       M.camSaved, M.camMine = nil, nil
+    end
+    if M.liveOn then
+      M.liveOn = nil
+      pcall(funcLuaCommand, M.LIVE_CMD, 0)
+      did = true
     end
     if did then
       pcall(funcLuaCommand, LOG, "EVT_PPM release", tostring(why))
@@ -1041,6 +1093,10 @@ EVT_PPM = EVT_PPM or {}
     end
     pcall(M.CapSetup)
     local up = shownNow
+    if up and M.Capture() and M.Settings().live then   -- the pause freeze off while the capture page shows
+      M.liveOn = true
+      pcall(funcLuaCommand, M.LIVE_CMD, 1)
+    end
     if not up then                        -- hidden (page closed, appearance view, office): none of ours
       M.Release("hidden")
       return
@@ -1092,8 +1148,7 @@ EVT_PPM = EVT_PPM or {}
         -- «EVT_PAV» line of research/grafts/plate_view_log)
         local okc, has, cx, cy, cz = pcall(funcLuaCommand, CAM_GET, CAM)
         local okg, gx, gy, gz = pcall(funcLuaMenuCommand, GPOS, M.LAYER, 0, 1517329426)
-        pcall(funcLuaCommand, LOG, "EVT_PPM cam", tostring(M.chara), "body", tostring(M.body), "view", "retail", "camofs", tostring(has), tostring(cx),
-          tostring(cy), tostring(cz), "layer", tostring(gx), tostring(gy), tostring(gz),
+        M.Line("EVT_PPM cam", M.chara, "body", M.body, "view retail camofs", has, cx, cy, cz, "layer", gx, gy, gz,
           M.Capture() and "capture" or "normal")
         pcall(M.CapSwap, "ready")
         Vis(up)
@@ -1124,7 +1179,7 @@ EVT_PPM = EVT_PPM or {}
   -- build, followed it. While our model is up its offset is the framing's own (EVT_PPM_CAM_OFS, else the retail
   -- view's): put back whenever it differs. loader.log «EVT_PPM cam restore <x> <y> <z>» (first times only).
   function M.KeepCam()
-    if EVT_PPM_KEEP_CAM == false then
+    if EVT_PPM_KEEP_CAM == false or M.Capture() then
       return
     end
     local c = type(EVT_PPM_CAM_OFS) == "table" and EVT_PPM_CAM_OFS or MV.RETAIL.cam

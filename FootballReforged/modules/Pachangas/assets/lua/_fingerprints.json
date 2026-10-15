@@ -1,0 +1,73 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "chara_bank_menu": {
+  "script": "chara_bank_menu_6.00.09.00",
+  "require": [
+   "OnClubRoomMoveFaild"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_emblem_menu_list": {
+  "script": "equip_emblem_menu_list_5.01.07.00",
+  "require": [
+   "CheckTeamDockEmblemEquip"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "equip_uniform_menu_list": {
+  "script": "equip_uniform_menu_list_5.01.07.00",
+  "require": [
+   "CheckTeamDockUniformEquip"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "personal_plate_menu": {
+  "script": "personal_plate_menu_6.00.09.00",
+  "require": [
+   "GetPersonalPlateSelectCharaStHdl"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_formation_menu": {
+  "script": "soccer_formation_menu_0.06.94",
+  "require": [
+   "UpdateSkillCollision"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_parameter_menu": {
+  "script": "soccer_parameter_menu_6.00.22.00",
+  "require": [
+   "InitializeTabInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_team_dock_menu": {
+  "script": "soccer_team_dock_menu_7.01.06.00",
+  "require": [
+   "SetupLockIconPos"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_formation_menu": {
+  "script": "team_dock_formation_menu_7.00.09.00",
+  "require": [
+   "OpenSubWinSelectCharaSetting"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ }
+}

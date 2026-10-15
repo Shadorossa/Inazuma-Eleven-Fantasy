@@ -1,0 +1,24 @@
+schema = "VRFW.team/2"
+# Hand-written. Home stadiums of the office trial rivals (module Challenges): the trial friendlies
+# (content\friendlies\challenges.toml, office_trial: rival_home = true) are played at the
+# rival's own stadium. The team engine hands `stadium` to the match engine as [home_stadiums]
+# (docs/framework/types/friendly.md). The stadiums are the ones of each team's own Chronicle match
+# (docs/game/world/chronicle-field-stadiums.md): Alpino `fbtl_cro02_040_010` = s30g001 «Campo del Alpino»,
+# Zeus `fbtl_cro01_120_010` = s11g001 «Estadio Zeus». Every retail stadium has its 5v5 pachanga layout.
+# A trial rival not listed here plays where it played before (the row's own stadium, b10g004).
+
+[[edit]]
+target = "trial_tm_01"                    # Alpino (evt_trial_01)
+stadium = "s30g001"
+
+[[edit]]
+target = "trial_tm_02"                    # Zeus (evt_trial_02)
+stadium = "s11g001"
+
+[[edit]]
+target = "trial_tm_03"                    # Zeus (evt_trial_03)
+stadium = "s11g001"
+
+[[edit]]
+target = "trial_tm_04"                    # Zeus (evt_trial_04)
+stadium = "s11g001"

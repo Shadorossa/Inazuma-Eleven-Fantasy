@@ -1,0 +1,22 @@
+# Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
+# «Banco» of a Pachanga dock: the bank shows / edits the 5v5 team of every dock it shows on the dock's own 5v5 pitch
+# (layer evt_bank5_field from research/scripts/pachanga_bank_build.py; docs/game/ui/pachanga-templates.md §3.6).
+name = "pachanga_bank"
+mod = "pachangas"
+order = 318
+module = ""
+requires = []
+conflicts = []
+wraps = ["OnInit", "ChangeTeamDock", "SearchEmptyFormationPosition", "OnOpenLayer", "OnDecideFocus", "OnEnter", "Step",
+         "UpdateTeamDockNoCommon", "UpdateTeamNameCommon", "OpenAndWaitTeamSkillParameterMenu",
+         "OpenTeamBuildExplanationMenu"]
+description = "Pachanga templates: the bank on the 5v5 team and pitch"
+
+[[files]]
+stem = "chara_bank_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_bank.lua"
+  include = { "@BONUS5@" = "bonus5.lua" }
+  marker = "pachanga bank"

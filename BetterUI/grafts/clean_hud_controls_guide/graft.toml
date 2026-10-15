@@ -1,0 +1,36 @@
+# BetterUI: the controls guide of the mode top menus as a footer prompt «<Y> Guía de controles» (owner request
+# 2026-10-15). Graft clean_hud_menu_cleanup hides the big corner buttons «V Guía de controles» / «Alt Tutorial» (and
+# ignores their functions); on the screens listed here the guide comes back in the bottom button guide, after the retail
+# entries, through the VR-Framework's footer prompts (attached to the screen's UpdateButtonGuide, default guide layer
+# mainmenu01_06_base_button_guide), and the lists' retail CMD_FUNC3 key (Y on a pad, V on the keyboard) opens it again:
+# the wrapper runs before the cleanup block (higher order = outer) and calls the screen's own WaitExecHelpWindow. The
+# tutorial gets no prompt. Chronicle's icon boxes get the CMD_FUNC3 row in menus\chronicle_boxes.toml. One [[files]] per
+# screen (the menu as vars @MENU@). No engine call at load.
+name = "clean_hud_controls_guide"
+order = 916
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["UpdateButtonGuide", "OnFunction"]
+description = "BetterUI: «Y Guía de controles» in the footer of Estadio BB and Crónica instead of the corner button"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "controls_guide.lua"
+  marker = "clean_hud_controls_guide"
+  crc = "none"
+  vars = { "@MENU@" = "bb_stadium_top_menu" }
+
+[[files]]
+stem = "chronicle_mode_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "controls_guide.lua"
+  marker = "clean_hud_controls_guide"
+  crc = "none"
+  vars = { "@MENU@" = "chronicle_mode_top_menu" }

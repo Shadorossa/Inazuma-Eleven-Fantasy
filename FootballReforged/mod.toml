@@ -2,7 +2,7 @@ id = "football_reforged"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Football Reforged"
-version = "1.2.13"
+version = "1.2.15"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "A base of match mechanics in modules: each module is a card on this mod's page in Mods (on / off, applies after a restart). Goalkeeper barrier: keepers resist shots while an orange part of their fatigue bar lasts. Furor: the GO Strikers tension gauge, a fire bar by each crest; full, L3 / R starts the furor phase. Both on by default."
@@ -25,6 +25,10 @@ folder = "FootballReforged"
 #                                (was Inazuma Fantasy's; docs/game/mods/training-ground.md)
 #   modules\MatchFormats\        match_formats (MatchFormats.X): the rulebooks Football 7, Inazuma Street and the 5v5
 #                                friendly without tactics or referee, their formations (were Inazuma Fantasy's)
+#   modules\Pachangas\           pachangas (Pachangas.X): the type row of «Plantilla de equipo» and every dock's own 5v5
+#                                team, the active pachanga team (was Inazuma Fantasy's)
+#   modules\Challenges\          challenges (Challenges.X): the match challenge rulesets, their defaults and formation,
+#                                the office trial friendlies, triggers and rivals (were Inazuma Fantasy's)
 # Until 1.1.0 they were internal modules (option rows of «Opciones de mods»); those rows are gone.
 requires = ["vr_framework>=2.4.75"]
 conflicts = []

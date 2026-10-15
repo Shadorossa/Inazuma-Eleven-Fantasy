@@ -1,25 +1,17 @@
 schema = "CharacterReforged.duplicate_rules/1"
 # No More Rarities › its policy for Character Reforged's duplicate-players hook (scripts\duplicate_players.lua of
 # Character Reforged; docs/refactor/aura-mods-split.md «Duplicate players hook»): when a save is duplicated into
-# another slot («X: duplicar» of the slot screen), the copy keeps ONE card per character and every normal card is the
-# 5★ card; with apply_on_load, the same on every load of a player slot. Was Inazuma Fantasy's «Ajustar save al mod»
-# rules `one_card` and `legend` (docs/game/engine/savefix.md); Inazuma Fantasy's own load repair («Reparar duplicados»)
-# reads this same policy.
+# another slot («X: duplicar» of the slot screen), every normal card of the copy is the 5★ card; with apply_on_load, the
+# same on every load of a player slot. Was Inazuma Fantasy's «Ajustar save al mod» rule `legend`
+# (docs/game/engine/savefix.md); Inazuma Fantasy's own load repair («Reparar duplicados») reads the merged policy.
+# The one-card-per-character limit is the module New Recruitment's (its content\duplicate_rules\new_recruitment.toml,
+# since 2026-10-15); rules merge key by key across mods.
 
 [CharacterReforged.DuplicateRules.no_more_rarities]
-# "character": one normal card (chara_param col 41 = 0) per character (chara_base), one special card (Héroe,
-# Diamante...) per card; "card": one per chara_param
-one_card_per = "character"
-# which copy stays: the first of these that tells two copies apart decides; the other copies are merged into it (his
-# team slots, captain, team aura, dock bits and bank lists) and leave the club
-keep_first = ["in_a_fusion", "highest_level", "most_experience", "most_special_move_uses", "in_a_team", "oldest", "lowest_handle"]
 # the saved rarity every normal card gets (4 = the 5★ «Leyenda» card)
 normal_card_rarity = 4
-# element spirits (the story's «fichas» of the player's element) given back for each copy that leaves
-element_spirits_per_released_card = 3
 # also on every load of a player slot (owner request 2026-10-14: «al entrar en la partida convierta a todos los jugadores
-# a la misma rareza … y elimine los duplicados»): every normal card -> rarity 4 and one card per character, the other
-# copies merged into the kept one and removed from the save and from every team. Before the first rewrite of a save a
-# durable copy of its file is kept (Character Reforged's scripts\duplicate_players.lua «slot_load», blob
+# a la misma rareza …»): every normal card -> rarity 4. Before the first rewrite of a save a durable copy of its file is
+# kept (Character Reforged's scripts\duplicate_players.lua «slot_load», blob
 # save-backup-slot<N>-<stamp>-before-duplicate-rules.bin); the locked retail slot and reserved slots are never touched
 apply_on_load = true

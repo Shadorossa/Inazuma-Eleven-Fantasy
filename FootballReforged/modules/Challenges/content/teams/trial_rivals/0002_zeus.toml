@@ -1,0 +1,23 @@
+schema = "VRFW.team/2"
+# Rivals of the office trial games (5v5, office_trial_plan.py; module Challenges of Football Reforged, Inazuma Fantasy's
+# until 2026-10-15). Hand-maintained. Members play their card's own moves (loadout = 0, as Inazuma Fantasy's
+# teams\00_loadouts\30_card_movesets.toml sets them).
+default_lang = "en"
+
+[[team]]
+name = "trial_tm_02"                      # Zeus
+key = "evt_trial_tm_02"
+based_on = "tm_st_scbattle_0106"          # Sumo Club (its tactics / team skills)
+name_text = 0xB728E16D                    # Zeus
+level = 1
+formation = 0xC478B909
+kit = 0xE17C3465
+emblem = 0xBBB7E027
+roster = "exact"
+member = [
+  { card = 0xAC15C00B, slot = 0, number = 12, loadout = 0, uid = 0x399C09FB },  # Iggy Russ · GK
+  { card = 0xC9BB6F38, slot = 1, number = 6, loadout = 0, uid = 0x5C32A6C8 },  # Artie Mishman · MF
+  { card = 0xADD7AA3C, slot = 2, number = 2, loadout = 0, uid = 0x385E63CC },  # Apollo Light · DF
+  { card = 0x9E23A289, slot = 3, number = 10, captain = true, loadout = 0, uid = 0x0BAA6B79, rarity_step = 1 },  # Byron Love · MF
+  { card = 0xB50EF14A, slot = 4, number = 13, loadout = 0, uid = 0x208738BA },  # Gus Heeley · FW
+]

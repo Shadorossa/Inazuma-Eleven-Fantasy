@@ -1,0 +1,8 @@
+# Pachangas (module of Football Reforged): the 5v5 pitch of the character bank (layer evt_bank5_field: the object
+# assets\gamedata\menu\obj\evt_bank5_field.objbin + its model assets\menu\100_mainmenu\mainmenu04\evt_bank5_field,
+# research/scripts/pachanga_bank_build.py), shown by the graft pachanga_bank in the bank's Pachanga view.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "chara_bank_menu"
+add_layer = { name = "evt_bank5_field", object = "evt_bank5_field", count = 1, scale = 1.0, after = "team14_03_formation_frame", groups = [{ group = "chara_bank_menu", flags = [0, 0, 0, 0, 1, 0], after = "team14_03_formation_frame" }] }

@@ -3,7 +3,7 @@ schema = "VRFW.changelog/1"
 # Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
-# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy. 1.0.14 (2026-10-15): the one-card limit moved to New Recruitment.
 lang = "es"
 name = "No More Rarities"
 
@@ -38,7 +38,7 @@ notes = [
     "Sin bonus de rareza, sin subir rareza ni fusionar.",
     "Drops, premios, regalos y tiendas dan la carta 5★.",
     "El filtro «Rareza» solo lista las cartas especiales.",
-    "Partida duplicada: una carta por personaje.",
+    "Cartas normales con el color de la posición.",
 ]
 
   [release.en]
@@ -47,7 +47,7 @@ notes = [
       "No rarity stat bonus, no rarity-up, no fusion.",
       "Drops, rewards, gifts and shops give the 5★ card.",
       "The «Rarity» filter lists only the special cards.",
-      "Duplicated save: one card per character.",
+      "Normal cards in the colour of the position.",
   ]
 
   [release.fr]
@@ -56,7 +56,7 @@ notes = [
       "Ni bonus de rareté, ni montée de rareté, ni fusion.",
       "Butins, prix, cadeaux, boutiques : la carte 5★.",
       "Le filtre « Rareté » ne liste que les cartes spéciales.",
-      "Partie dupliquée : une carte par personnage.",
+      "Cartes normales à la couleur du poste.",
   ]
 
   [release.de]
@@ -65,7 +65,7 @@ notes = [
       "Kein Seltenheitsbonus, kein Aufstufen, keine Fusion.",
       "Beute, Preise, Geschenke, Läden: die 5★-Karte.",
       "Der Filter „Seltenheit“ zeigt nur Spezialkarten.",
-      "Kopierter Spielstand: eine Karte pro Figur.",
+      "Normale Karten in der Farbe der Position.",
   ]
 
   [release.it]
@@ -74,7 +74,7 @@ notes = [
       "Niente bonus di rarità, aumento di rarità o fusione.",
       "Bottini, premi, regali e negozi danno la carta 5★.",
       "Il filtro «Rarità» elenca solo le carte speciali.",
-      "Salvataggio duplicato: una carta per personaggio.",
+      "Carte normali del colore del ruolo.",
   ]
 
   [release.pt]
@@ -83,7 +83,7 @@ notes = [
       "Sem bónus de raridade, sem subir raridade nem fundir.",
       "Saques, prémios, ofertas e lojas dão a carta 5★.",
       "O filtro «Raridade» só lista as cartas especiais.",
-      "Jogo duplicado: uma carta por personagem.",
+      "Cartas normais com a cor da posição.",
   ]
 
   [release.ja]
@@ -92,7 +92,7 @@ notes = [
       "レアリティボーナス・レアリティアップ・合成なし。",
       "ドロップ・報酬・プレゼント・ショップは★5カード。",
       "「レアリティ」フィルターは特別なカードだけ。",
-      "複製したセーブはキャラ1人につきカード1枚。",
+      "通常のカードはポジションの色。",
   ]
 
   [release.zh_hans]
@@ -101,7 +101,7 @@ notes = [
       "没有稀有度加成，不能升级稀有度或合成。",
       "掉落、奖励、礼物和商店都给★5卡。",
       "「稀有度」筛选只列出特殊卡。",
-      "复制的存档：每个角色一张卡。",
+      "普通卡显示位置的颜色。",
   ]
 
   [release.zh_hant]
@@ -110,5 +110,5 @@ notes = [
       "沒有稀有度加成，不能升級稀有度或合成。",
       "掉落、獎勵、禮物和商店都給★5卡。",
       "「稀有度」篩選只列出特殊卡。",
-      "複製的存檔：每個角色一張卡。",
+      "普通卡顯示位置的顏色。",
   ]

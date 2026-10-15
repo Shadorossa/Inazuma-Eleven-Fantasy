@@ -1,0 +1,90 @@
+# The office trial friendlies (module Challenges of Football Reforged; docs/game/modes/pachangas-sistema.md): a 5v5
+# (or 7v7 / 3v3) friendly with the active pachanga team (module Pachangas) whose challenge the caller arms (the office
+# of Inazuma Fantasy: office_requires / office_fantasy). The framework's match engine launches them, guards the save,
+# brings the player back and records «superada» (office.{tag}.{sub}). Inazuma Fantasy's until 2026-10-15; ids unchanged.
+schema = "VRFW.friendly/1"
+
+[[friendly]]
+id = "office_trial"
+name = "Oficina: pachanga de prueba"
+ruleset = "if_pachanga_5v5"  # no special tactics or referee (module MatchFormats); the caller arms the challenge
+team = "active_friendly"
+kit_from_11 = true
+pre_match = true
+stadium = 0                 # the row's own (fallback: a rival without a home stadium)
+rival_home = true           # 2026-10-06: at the rival's home stadium (content\teams\trial_rivals\home_stadiums.toml)
+challenge = "ctx"
+steals_once = true          # a steal trial passes with one steal
+save = "sink"
+return = "title"
+keep_game = false
+origin = 1806468555         # the title request that opens the Market (the Market reopens the office)
+pass = "challenge"
+passed_key = "office.{tag}.{sub}"
+before = [{ op = "fade_encounter" }]
+after = [
+  { op = "key", key = "EVT_TRIAL_GO", value = 1 },          # the Market (top menu) closes when it sees it
+  { op = "deactivate", menu = "shop_menu" },
+  { op = "close", menu = "soccer_vs_cpu_list_menu" },      # the office hub
+  { op = "wait_gone", menu = "soccer_vs_cpu_list_menu", frames = 900 },
+  { op = "close", menu = "shop_menu" },
+  { op = "watchdog", frames = 900, key = "EVT_TRIAL_GO" }, # nobody started the match: everything back
+]
+
+# docs/game/modes/fichajes.md §31: the office trial with another rulebook, for the trial rows that name it
+# (EVT_TRIALS 12th field, graft office_fantasy). Same hand-off, sink, return and «superada» key as office_trial (the
+# office treats every friendly whose id starts with office_trial as its trial). On an 11-a-side match row the active
+# pachanga dock's 11-a-side team plays (VS team = that dock): the rulebook fields its first places.
+[[friendly]]
+id = "office_trial_football_7"
+name = "Oficina: prueba de Fútbol 7"
+ruleset = "football_7"  # 7 vs 7, the 1-2-3-1 of module MatchFormats (places 0-6)
+team = "active_friendly"
+kit_from_11 = true
+pre_match = true
+stadium = 0                 # the row's own (fallback: a rival without a home stadium)
+rival_home = true           # 2026-10-06: at the rival's home stadium (content\teams\trial_rivals\home_stadiums.toml)
+challenge = "ctx"
+steals_once = true          # a steal trial passes with one steal
+save = "sink"
+return = "title"
+keep_game = false
+origin = 1806468555         # the title request that opens the Market (the Market reopens the office)
+pass = "challenge"
+passed_key = "office.{tag}.{sub}"
+before = [{ op = "fade_encounter" }]
+after = [
+  { op = "key", key = "EVT_TRIAL_GO", value = 1 },          # the Market (top menu) closes when it sees it
+  { op = "deactivate", menu = "shop_menu" },
+  { op = "close", menu = "soccer_vs_cpu_list_menu" },      # the office hub
+  { op = "wait_gone", menu = "soccer_vs_cpu_list_menu", frames = 900 },
+  { op = "close", menu = "shop_menu" },
+  { op = "watchdog", frames = 900, key = "EVT_TRIAL_GO" }, # nobody started the match: everything back
+]
+
+[[friendly]]
+id = "office_trial_street"
+name = "Oficina: prueba de Inazuma Street"
+ruleset = "inazuma_street"  # 3 vs 3, no keepers / referee (places 1-3)
+team = "active_friendly"
+kit_from_11 = true
+pre_match = true
+stadium = 0                 # the row's own (fallback: a rival without a home stadium)
+rival_home = true           # 2026-10-06: at the rival's home stadium (content\teams\trial_rivals\home_stadiums.toml)
+challenge = "ctx"
+steals_once = true          # a steal trial passes with one steal
+save = "sink"
+return = "title"
+keep_game = false
+origin = 1806468555         # the title request that opens the Market (the Market reopens the office)
+pass = "challenge"
+passed_key = "office.{tag}.{sub}"
+before = [{ op = "fade_encounter" }]
+after = [
+  { op = "key", key = "EVT_TRIAL_GO", value = 1 },          # the Market (top menu) closes when it sees it
+  { op = "deactivate", menu = "shop_menu" },
+  { op = "close", menu = "soccer_vs_cpu_list_menu" },      # the office hub
+  { op = "wait_gone", menu = "soccer_vs_cpu_list_menu", frames = 900 },
+  { op = "close", menu = "shop_menu" },
+  { op = "watchdog", frames = 900, key = "EVT_TRIAL_GO" }, # nobody started the match: everything back
+]

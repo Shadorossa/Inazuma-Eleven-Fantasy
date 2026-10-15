@@ -434,13 +434,16 @@ end
 -- an empty slot: a normal player card (the slot's placeholder drawn by the retail card command sets the card's state:
 -- position colour, no coach frame) with everything of the player hidden and the «?» glyph centred at its native size;
 -- a bench slot gets the grey card base. Without a placeholder the card is only cleared (grey base). Small card only
--- (SZ): its base and centred mesh on, the large card's off, no focus frame.
-function BBCR_DRAFT_Empty_Card(layer, i, ph, grey)
+-- (SZ): its base and centred mesh on, the large card's off, no focus frame. kind (1.5.75): the formation slot's own
+-- position (formation info 6, as the retail formation panels pass it), so the colour is the slot's, never the
+-- placeholder player's (owner 2026-10-15: a FW placeholder showed a red card on a midfield place); 0 = the card's own.
+function BBCR_DRAFT_Empty_Card(layer, i, ph, grey, kind)
   local B = BBCR_DRAFT
   local sz = BBCR_DRAFT_Sz(layer)
   funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, true)
   if type(ph) == "number" and ph ~= 0 then
-    funcLuaMenuCommand(2339877830, layer, i, ph, sz == 1, false, 0, 0, B.LEVEL, false, false, 4, 0)
+    funcLuaMenuCommand(2339877830, layer, i, ph, sz == 1, false, type(kind) == "number" and kind or 0, 0, B.LEVEL, false,
+                       false, 4, 0)
   else
     grey = true
   end
@@ -488,7 +491,12 @@ function BBCR_DRAFT_DrawSlot(k)
   if rec.param ~= 0 then
     BBCR_DRAFT_Filled_Card(layer, i, rec.param)
   else
-    BBCR_DRAFT_Empty_Card(layer, i, rec.ph, B.BENCH_GREY and not rec.field)
+    local kind = 0
+    if rec.field and B.formation ~= 0 then
+      local okk, kk = funcLuaCommand(2649030357 --[[formation info]], 6, B.formation, rec.slot)
+      kind = (okk == true and type(kk) == "number") and kk or 0
+    end
+    BBCR_DRAFT_Empty_Card(layer, i, rec.ph, B.BENCH_GREY and not rec.field, kind)
     B.reapply = B.REAPPLY_FRAMES
   end
   funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], layer, B.pos[k][1], B.pos[k][2], 0, i)

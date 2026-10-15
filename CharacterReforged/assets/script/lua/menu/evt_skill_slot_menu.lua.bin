@@ -10149,7 +10149,8 @@ function OnFunction(...)
 end
 PL.MxGuardPrevPollR3 = PL.MxPollR3
 function PL.MxPollR3(...)
-  if PL.mx_scene_busy or PL.MxGuardPrevPollR3 == nil then
+  -- also while an action runs (evt_co: the move / aura picker or a popup over this screen): its R3 is not this screen's
+  if PL.mx_scene_busy or evt_co ~= nil or PL.MxGuardPrevPollR3 == nil then
     return
   end
   return PL.MxGuardPrevPollR3(...)

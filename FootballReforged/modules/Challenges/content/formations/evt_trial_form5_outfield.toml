@@ -1,0 +1,19 @@
+# The all-outfield 5v5 formation of the possession challenges (module Challenges of Football Reforged;
+# docs/game/modes/fichajes-ie3.md 5.2m): five places with positionNo 1-5 and no keeper place; the match engine points
+# the teams at it only in keep-the-ball / steal challenges (content\defaults\challenge.toml). Made by
+# research/scripts/trial_formation_build.py (row 89's powers / texts, places of rows 86 / 89). Inazuma Fantasy's until
+# 2026-10-15; the id has not changed.
+schema = "VRFW.formation/1"
+
+# 0x892736BB = crc32("evt_trial_form5_outfield")
+[[formation]]
+name = "evt_trial_form5_outfield"
+id = 0x892736BB
+based_on = 0x54C7A498
+places = [
+  { position_no = 1, position_id = 6, pass_no = 0, b_kickoff = false, b_follow = false, defense_pos = [0.0, 0.4], offense_pos = [0.0, -0.3], start_pos = [0.0, 0.35000002], ck_defense_left_pos = [0.05, 0.85], ck_defense_right_pos = [0.85, 0.85], ck_offense_left_pos = [0.25, -0.375], ck_offense_right_pos = [0.85, -0.375], pk_defense_pos = [0.65000004, 0.7], pk_offense_pos = [0.75, -0.25], bustup_pos = [0.0, 0.0] },
+  { position_no = 2, position_id = 2, pass_no = 0, b_kickoff = false, b_follow = false, defense_pos = [0.35000002, 0.5], offense_pos = [0.6, 0.1], start_pos = [0.4, 0.5], ck_defense_left_pos = [-0.85, 0.85], ck_defense_right_pos = [-0.05, 0.85], ck_offense_left_pos = [-0.85, -0.375], ck_offense_right_pos = [-0.25, -0.375], pk_defense_pos = [-0.65000004, 0.7], pk_offense_pos = [-0.75, -0.25], bustup_pos = [0.0, -45.0] },
+  { position_no = 3, position_id = 2, pass_no = 0, b_kickoff = false, b_follow = false, defense_pos = [-0.35000002, 0.5], offense_pos = [-0.6, 0.1], start_pos = [-0.4, 0.5], ck_defense_left_pos = [0.05, 0.85], ck_defense_right_pos = [0.85, 0.85], ck_offense_left_pos = [0.25, -0.375], ck_offense_right_pos = [0.85, -0.375], pk_defense_pos = [0.65000004, 0.7], pk_offense_pos = [0.75, -0.25], bustup_pos = [0.0, -45.0] },
+  { position_no = 4, position_id = 8, pass_no = 0, b_kickoff = false, b_follow = true, defense_pos = [0.35000002, 0.1], offense_pos = [0.6, -0.65000004], start_pos = [0.4, 0.15], ck_defense_left_pos = [-0.5, 0.825], ck_defense_right_pos = [0.15, 0.825], ck_offense_left_pos = [-0.45000002, -0.1], ck_offense_right_pos = [-0.1, 0.2], pk_defense_pos = [-0.35000002, 0.625], pk_offense_pos = [-0.4, -0.05], bustup_pos = [0.0, 0.0] },
+  { position_no = 5, position_id = 8, pass_no = 0, b_kickoff = true, b_follow = false, defense_pos = [-0.35000002, 0.1], offense_pos = [-0.6, -0.65000004], start_pos = [-0.4, 0.15], ck_defense_left_pos = [0.2, 0.175], ck_defense_right_pos = [0.75, 0.3], ck_offense_left_pos = [0.2, -0.8], ck_offense_right_pos = [0.7, -0.9], pk_defense_pos = [0.4, 0.05], pk_offense_pos = [0.35000002, -0.65000004], bustup_pos = [0.0, 0.0] },
+]

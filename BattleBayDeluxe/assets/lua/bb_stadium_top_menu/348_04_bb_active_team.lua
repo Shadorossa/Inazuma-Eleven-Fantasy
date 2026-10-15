@@ -7,9 +7,10 @@
 -- tactics, and the pre-match talk two Mark Evans):
 --   * BBD_ACTIVE_TEAM_Read: the active team set's line-up (position -> chara_param), captain, formation, emblem,
 --     tactics, name and kit, from the game's own team-set commands (as the team dock reads them);
---   * BBD_ACTIVE_TEAM_Sync: the line-up, captain, team set, emblem and kit sent to the mod's scripts
+--   * BBD_ACTIVE_TEAM_Sync: the line-up, captain, team set, emblem, kit and name sent to the mod's scripts
 --     (CMND_BBD_ACTIVE_TEAM_MIRROR, scripts\active_team.lua), which write them over the tile's member rows, its Battle
---     Bay row's leader and its team record (crest, kit) in memory: every reader of the tile (the grid's crest and model,
+--     Bay row's leader and its team record (crest, kit) in memory, and the crest, kit and match name onto the Draft
+--     team (1.5.77: the Draft plays as the active team's club): every reader of the tile (the grid's crest and model,
 --     the panel cards, the big portrait = the row's leader, the campaign scene and its pre-match talk speaker) then
 --     sees the active team. The match itself plays that team set (content\game\active_team.toml: its players, moves,
 --     kit and crest, at the Battle Bay's level sync).
@@ -108,9 +109,10 @@ do
     end
     B.read_error = nil
     -- %.0f: the game's %d stops at 2^31
-    local key = string.format("%s|%.0f|%d|%.0f|%.0f", d.text, d.captain, d.set, d.emblem or 0, d.uniform or 0)
+    local key = string.format("%s|%.0f|%d|%.0f|%.0f|%s", d.text, d.captain, d.set, d.emblem or 0, d.uniform or 0, d.name)
     if B.sent ~= key then
-      local ok, done, info = pcall(funcLuaCommand, B.MIRROR, d.captain, d.text, d.set, d.emblem or 0, d.uniform or 0)
+      local ok, done, info = pcall(funcLuaCommand, B.MIRROR, d.captain, d.text, d.set, d.emblem or 0, d.uniform or 0,
+        d.name)
       if ok and done == true then
         B.sent = key
       end

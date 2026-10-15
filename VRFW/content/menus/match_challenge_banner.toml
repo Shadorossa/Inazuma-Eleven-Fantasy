@@ -1,0 +1,11 @@
+# VR-Framework: the match challenge label of the Chronicle board's command menu (docs/framework/match-challenge.md §4;
+# Lua assets\lua\menu\vs_route_town_command_select_menu\110_match_challenge.lua). While a row with a match challenge
+# is focused, one line under the battle-kind list says the challenge's condition, blue when the active dock meets it
+# and red when not.
+#   vrfw_mc_text  1 x the match panel's text (vrfw_mp_label, match_panel.toml): the condition line
+# Not opened with the group: the Lua opens it on the first draw.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+add_layer = { name = "vrfw_mc_text", object = "vrfw_mp_label", count = 1, after = "vsroute01_18_legend_telop", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "vsroute01_18_legend_telop" }] }

@@ -16,7 +16,7 @@ label = "skill_set_view"                      # text\keys.toml, 9 languages
 help = "skill_set_view_help"
 off = { name = "skill_set_view_off", text = "Victory Road" }
 on = { name = "skill_set_view_on", text = "Fantasy" }
-default = 0
+default = 1
 parent = "mod_options.game_settings"
 order = 140
 restart = true                                # the value applies after a game restart

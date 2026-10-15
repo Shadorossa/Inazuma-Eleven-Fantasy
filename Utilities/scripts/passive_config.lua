@@ -814,7 +814,7 @@ function PC.List(h, slot, cat)
   local pr, eff = view(h, 0)
   if not pr then return 0, 0 end
   local kind = C.kind(RULES, slot)
-  local ex = C.other_defs(CAT, eff, slot)
+  local ex = C.other_defs(CAT, eff, slot, CFG.allow_duplicates)
   local cats = C.kind_categories(CAT, kind, ex)
   local category = C.CAT_ALL
   for _, c in ipairs(cats) do
@@ -842,7 +842,7 @@ function PC.CatNext(h, slot, cur, dir)
   dir = arg_int(dir) or 1
   local pr, eff = view(h, 0)
   if not pr then return 0 end
-  local cats = C.kind_categories(CAT, C.kind(RULES, slot), C.other_defs(CAT, eff, slot))
+  local cats = C.kind_categories(CAT, C.kind(RULES, slot), C.other_defs(CAT, eff, slot, CFG.allow_duplicates))
   local i = 0
   for j, c in ipairs(cats) do
     if c == cur then i = j - 1; break end
@@ -864,7 +864,7 @@ function PC.Set(h, slot, id)
   follow_slots()
   local pr, eff, cfgd = view(h, 0)
   if not pr or pr.owner ~= h then return false, C.E_NOT_ALLOWED end -- only the saved character itself, never a match copy
-  local code = C.check_set(CAT, subject(pr, eff, false), eff, cfgd, k, id, LAYOUT, RULES)
+  local code = C.check_set(CAT, subject(pr, eff, false), eff, cfgd, k, id, LAYOUT, RULES, CFG.allow_duplicates)
   if code then return false, code end
   if C.store_set(STORE, pr.owner, pr.param, k, id) then save_store() end
   local _, after = view(h, 0)

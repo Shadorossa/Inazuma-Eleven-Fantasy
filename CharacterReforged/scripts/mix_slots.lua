@@ -383,6 +383,16 @@ function CharacterReforged.MixAddsStats(card)
   return rules().mix_stats[t] == true
 end
 
+-- the command a retail Mix-Max / «Modo cambio» item becomes for this card (the game's per-card changes: one item serves
+-- several players, each with his own row and look); the item itself without a change or an answer
+local function own_row(card, id)
+  local ok, row = pcall(VRFW.miximax.call, { op = "item_row", aura = id, hdl = card })
+  row = ok and u32(row or 0) or 0
+  if row == 0 or row == id or slot_of(row) ~= "mix" then return id end
+  info(string.format("mix slot of %s: item %s is %s for this card", hex(card), hex(id), hex(row)))
+  return row
+end
+
 function CharacterReforged.MixSetCmd(card, id)
   card, id = u32(card or 0), u32(id or 0)
   if card == 0 then return false, 1 end
@@ -390,6 +400,7 @@ function CharacterReforged.MixSetCmd(card, id)
     info(string.format("mix slot of %s: %s refused: not a Mix-Max / «Modo cambio» move", hex(card), hex(id)))
     return false, 1
   end
+  if id ~= 0 then id = own_row(card, id) end
   local st = load()
   local old = st.mix[key(card)] or 0
   st.mix[key(card)] = id ~= 0 and id or nil

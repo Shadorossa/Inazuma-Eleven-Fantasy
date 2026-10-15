@@ -192,7 +192,7 @@ function Q.install(X)
           if bad then
             VRFW.log.error(what .. ": " .. bad .. ": skipped")
           else
-            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", scope = d.Scope or "squad", require = req, difficulties = diffs, required = required }
+            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", short = T.trim(d.Short or ""), scope = d.Scope or "squad", require = req, difficulties = diffs, required = required }
             local idx
             for k, c in ipairs(out.list) do if c.name == d.Name then idx = k break end end
             if idx then

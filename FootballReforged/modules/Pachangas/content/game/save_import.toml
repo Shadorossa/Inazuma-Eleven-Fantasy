@@ -1,0 +1,9 @@
+schema = "VRFW.game/2"
+
+# Inazuma Fantasy (id inazuma_fantasy, research/mods/_aside) kept the active pachanga team of each save slot in its blob
+# pachanga.json until 2026-10-15: copied once into this mod's slot data, same file (IF's own data is left as it is; this
+# mod's own file always wins)
+[[VRFW.SaveImport]]
+name = "Pachangas.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["pachanga.json"]

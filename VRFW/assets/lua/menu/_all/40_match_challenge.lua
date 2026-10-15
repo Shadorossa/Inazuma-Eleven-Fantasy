@@ -2,15 +2,16 @@
 -- Definitions only (this file runs in every script VM, lua\_all; no engine call at load time). The ONE place that
 -- checks the player's team against a match's challenge (`[[VRFW.MatchChallenge]]` of the team type, named by a route
 -- node, a chain tile, a free-match tab or by the challenge's own `Games`). Called where a match is chosen: the
--- Chronicle board's command menu (vs_route_town_command_select_menu/110_match_challenge.lua), the chain board screen
--- (vrfw_chain_board_menu) and the free-match list (soccer_vs_cpu_list_menu/110_match_challenge.lua). Nothing here
+-- Chronicle board's command menu (its label line, vs_route_town_command_select_menu/110_match_challenge.lua) and VS screen
+-- (the kick-off, vs_route_town_vs_team_menu/110_match_challenge.lua), the chain board screen (vrfw_chain_board_menu)
+-- and the free-match list (soccer_vs_cpu_list_menu/110_match_challenge.lua). Nothing here
 -- names a challenge, a team or a mod: the conditions come from the mods' TOML, the texts from the framework's
--- menu_text rows (text\rows\match_challenge.toml) and the mod's own rows (the challenge's Title / Description).
+-- menu_text rows (text\rows\match_challenge.toml) and the mod's own rows (the challenge's Title / Description / Short).
 --
 --   VRFW_MC.Of(game, diff)         -> challenge index (0-based) of a match game, nil = none. A challenge with
 --                                     `Difficulties` applies only to those rows: nil when `diff` (the row's
 --                                     difficulty, when the caller knows it) is not listed or not given
---   VRFW_MC.Info(i)                -> {i, name, mod, title, description (text ids), scope, nreq, diffs, required} (cached;
+--   VRFW_MC.Info(i)                -> {i, name, mod, title, description, short (text ids), scope, nreq, diffs, required} (cached;
 --                                     required = {{count, places = {codes}, until_first_clear, text}, ...})
 --   VRFW_MC.TitleOf(game, diff)    -> the challenge's title text of a match, nil = none (guide lines)
 --   VRFW_MC.RequiredTexts(i, cleared) -> the text ids of its required starters that apply (a `UntilFirstClear` one
@@ -24,6 +25,9 @@
 --                                     the failed conditions, who breaks them)
 --   VRFW_MC.Gate(game, tt, diff, cleared) -> true = play; false = refused (error sound + the message window, fire and
 --                                     forget like the retail team check, for OnEnter handlers that return 1)
+--   VRFW_MC.Status(game, tt, diff, cleared) -> nil when the match has no challenge, else {ok, label (the challenge's
+--                                     `Short` text, else its title), offenders (count), i}: the Chronicle board's
+--                                     command menu (its label line) and the VS screen's kick-off
 -- tt = the dock's team (0 = the 11-a-side team, default; 1 = the 5-a-side team). cleared = the launcher knows the
 -- match row was won before (true); nil / false = not won or unknown (a `UntilFirstClear` required starter applies).
 -- A team the framework cannot read (no DLL, no command) is never refused.
@@ -32,7 +36,7 @@ if VRFW_MC == nil then
     CMD = {
       OF = 721571515,         -- CMND_VRFW_TEAM_CHALLENGE_OF (game) -> i / -1
       GET = 3349286993,       -- CMND_VRFW_TEAM_CHALLENGE_GET (i) -> name, mod, title, description, scope, conditions,
-                              --   difficulties ("4", "1,4"; "" = every row)
+                              --   difficulties ("4", "1,4"; "" = every row), required starters, short (0 = the title)
       REQ = 2904917317,       -- CMND_VRFW_TEAM_CHALLENGE_REQ (i, "2/1") -> kind, at least, at most, text, inner, filter
       CHECK = 3751451304,     -- CMND_VRFW_TEAM_CHALLENGE_CHECK (i, "card:level:rarity[:place];...", cleared 0 / 1)
                               --   -> ok, failed, offenders
@@ -133,7 +137,7 @@ if VRFW_MC == nil then
     if MC.info[i] ~= nil then
       return MC.info[i] or nil
     end
-    local name, mod, title, desc, scope, nreq, diffs, nrequired = call(MC.CMD.GET, i)
+    local name, mod, title, desc, scope, nreq, diffs, nrequired, short = call(MC.CMD.GET, i)
     if type(name) ~= "string" or name == "" then
       MC.info[i] = false
       return nil
@@ -151,7 +155,8 @@ if VRFW_MC == nil then
       end
       required[k] = {count = count or 0, places = codes, until_first_clear = until_first_clear == true, text = own or 0}
     end
-    local c = {i = i, name = name, mod = mod, title = title or 0, description = desc or 0, scope = scope or "squad", nreq = nreq or 0,
+    local c = {i = i, name = name, mod = mod, title = title or 0, description = desc or 0,
+               short = type(short) == "number" and short or 0, scope = scope or "squad", nreq = nreq or 0,
                diffs = set, required = required}
     MC.info[i] = c
     return c
@@ -450,6 +455,23 @@ if VRFW_MC == nil then
       lines[#lines + 1] = fmt(MC.T.OFFENDERS, s)
     end
     return table.concat(lines, "\n")
+  end
+
+  function MC.Status(game, tt, diff, cleared)
+    local i = MC.Of(game, diff)
+    local c = i ~= nil and MC.Info(i) or nil
+    if c == nil then
+      return nil
+    end
+    local ok, _, bad = MC.Check(i, tt, cleared)
+    local label = text(c.short)
+    if label == "" then
+      label = text(c.title)
+    end
+    if label == "" then
+      label = c.name
+    end
+    return {i = i, ok = ok, offenders = #bad, label = label}
   end
 
   function MC.Gate(game, tt, diff, cleared)

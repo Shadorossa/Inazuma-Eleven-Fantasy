@@ -1,40 +1,41 @@
 schema = "VRFW.text_key/1"
 # Texts of «No More Rarities» (mod no_more_rarities, 2026-10-14) (format: docs/framework/types/text.md): the «Mods»
-# screen's name and description. A language missing here falls back to English.
+# screen's name and description. A language missing here falls back to English. The one-card-per-character limit is the
+# module New Recruitment's since 2026-10-15 (its text\keys.toml).
 default_lang = "en"
 
 [en.new]
 mod_name = "No More Rarities"
-mod_description = "One card per player, as in the classic Inazuma Eleven games: every normal player is a 5★ Legend (no 1★-4★ rarities, no rarity stat bonus, no rarity-up or fusion), every spirit source gives the 5★ card and the «Rarity» filter lists only the special cards. A save duplicated into another slot keeps one card per character: the best copy stays and the others are merged into it. Héroe and Diamante cards stay as they are."
+mod_description = "Every normal player is a 5★ Legend, as in the classic Inazuma Eleven games: no 1★-4★ rarities, no rarity stat bonus, no rarity-up or fusion. Every spirit source gives the 5★ card and the «Rarity» filter lists only the special cards. The normal cards are coloured by the player's position. Héroe and Diamante cards stay as they are."
 
 [es.new]
 mod_name = "No More Rarities"
-mod_description = "Una carta por jugador, como en los Inazuma Eleven clásicos: todo jugador normal es Leyenda 5★ (sin rarezas 1★-4★, sin bonus de rareza, sin subir rareza ni fusionar), todas las fuentes de espíritus dan la carta 5★ y el filtro «Rareza» solo lista las cartas especiales. Al duplicar una partida en otra ranura queda una carta por personaje: se conserva la mejor copia y las demás se funden en ella. Las cartas Héroe y Diamante siguen igual."
+mod_description = "Todo jugador normal es Leyenda 5★, como en los Inazuma Eleven clásicos: sin rarezas 1★-4★, sin bonus de rareza, sin subir rareza ni fusionar. Todas las fuentes de espíritus dan la carta 5★ y el filtro «Rareza» solo lista las cartas especiales. Las cartas normales llevan el color de la posición del jugador. Las cartas Héroe y Diamante siguen igual."
 
 [fr.new]
 mod_name = "No More Rarities"
-mod_description = "Une carte par joueur, comme dans les Inazuma Eleven classiques : chaque joueur normal est une Légende 5★ (plus de raretés 1★-4★, plus de bonus de rareté, ni montée de rareté ni fusion), toutes les sources d'esprits donnent la carte 5★ et le filtre « Rareté » ne liste que les cartes spéciales. Une partie dupliquée dans un autre emplacement garde une carte par personnage : la meilleure copie reste et les autres y sont fusionnées. Les cartes Héros et Diamant restent telles quelles."
+mod_description = "Chaque joueur normal est une Légende 5★, comme dans les Inazuma Eleven classiques : plus de raretés 1★-4★, plus de bonus de rareté, ni montée de rareté ni fusion. Toutes les sources d'esprits donnent la carte 5★ et le filtre « Rareté » ne liste que les cartes spéciales. Les cartes normales prennent la couleur du poste du joueur. Les cartes Héros et Diamant restent telles quelles."
 
 [de.new]
 mod_name = "No More Rarities"
-mod_description = "Eine Karte pro Spieler, wie in den klassischen Inazuma-Eleven-Spielen: Jeder normale Spieler ist eine 5★-Legende (keine Seltenheiten 1★-4★, kein Seltenheitsbonus, kein Aufstufen und keine Fusion), jede Geisterquelle gibt die 5★-Karte und der Filter „Seltenheit“ zeigt nur die Spezialkarten. Ein in einen anderen Slot kopierter Spielstand behält eine Karte pro Figur: Die beste Kopie bleibt, die anderen werden mit ihr verschmolzen. Helden- und Diamantkarten bleiben, wie sie sind."
+mod_description = "Jeder normale Spieler ist eine 5★-Legende, wie in den klassischen Inazuma-Eleven-Spielen: keine Seltenheiten 1★-4★, kein Seltenheitsbonus, kein Aufstufen und keine Fusion. Jede Geisterquelle gibt die 5★-Karte und der Filter „Seltenheit“ zeigt nur die Spezialkarten. Die normalen Karten tragen die Farbe der Position des Spielers. Helden- und Diamantkarten bleiben, wie sie sind."
 
 [it.new]
 mod_name = "No More Rarities"
-mod_description = "Una carta per giocatore, come negli Inazuma Eleven classici: ogni giocatore normale è una Leggenda 5★ (niente rarità 1★-4★, niente bonus di rarità, niente aumento di rarità né fusione), ogni fonte di spiriti dà la carta 5★ e il filtro «Rarità» elenca solo le carte speciali. Un salvataggio duplicato in un altro slot tiene una carta per personaggio: resta la copia migliore e le altre vi vengono fuse. Le carte Eroe e Diamante restano come sono."
+mod_description = "Ogni giocatore normale è una Leggenda 5★, come negli Inazuma Eleven classici: niente rarità 1★-4★, niente bonus di rarità, niente aumento di rarità né fusione. Ogni fonte di spiriti dà la carta 5★ e il filtro «Rarità» elenca solo le carte speciali. Le carte normali hanno il colore del ruolo del giocatore. Le carte Eroe e Diamante restano come sono."
 
 [pt.new]
 mod_name = "No More Rarities"
-mod_description = "Uma carta por jogador, como nos Inazuma Eleven clássicos: todo jogador normal é uma Lenda 5★ (sem raridades 1★-4★, sem bónus de raridade, sem subir raridade nem fundir), todas as fontes de espíritos dão a carta 5★ e o filtro «Raridade» só lista as cartas especiais. Um jogo duplicado noutro espaço fica com uma carta por personagem: a melhor cópia fica e as outras fundem-se nela. As cartas Herói e Diamante ficam como estão."
+mod_description = "Todo jogador normal é uma Lenda 5★, como nos Inazuma Eleven clássicos: sem raridades 1★-4★, sem bónus de raridade, sem subir raridade nem fundir. Todas as fontes de espíritos dão a carta 5★ e o filtro «Raridade» só lista as cartas especiais. As cartas normais levam a cor da posição do jogador. As cartas Herói e Diamante ficam como estão."
 
 [ja.new]
 mod_name = "No More Rarities"
-mod_description = "昔のイナズマイレブンのように、選手1人につきカード1枚：通常の選手はすべて★5レジェンド（★1～★4のレアリティ、レアリティによる能力ボーナス、レアリティアップ・合成はなし）。スピリットの入手先はすべて★5のカードになり、「レアリティ」フィルターには特別なカードだけが並ぶ。セーブを別のスロットに複製すると、キャラクター1人につきカード1枚になる（一番良いカードを残し、ほかはそこに統合）。ヒーローとダイヤモンドのカードはそのまま。"
+mod_description = "昔のイナズマイレブンのように、通常の選手はすべて★5レジェンド（★1～★4のレアリティ、レアリティによる能力ボーナス、レアリティアップ・合成はなし）。スピリットの入手先はすべて★5のカードになり、「レアリティ」フィルターには特別なカードだけが並ぶ。通常のカードは選手のポジションの色になる。ヒーローとダイヤモンドのカードはそのまま。"
 
 [zh_hans.new]
 mod_name = "No More Rarities"
-mod_description = "像经典的闪电十一人一样，每名球员只有一张卡：所有普通球员都是★5传奇（没有★1～★4稀有度、没有稀有度能力加成、不能升级稀有度或合成），所有灵魂来源都给★5卡，「稀有度」筛选只列出特殊卡。把存档复制到其他栏位时，每个角色只保留一张卡：保留最好的一张，其余合并到它身上。英雄卡和钻石卡保持不变。"
+mod_description = "像经典的闪电十一人一样，所有普通球员都是★5传奇（没有★1～★4稀有度、没有稀有度能力加成、不能升级稀有度或合成）。所有灵魂来源都给★5卡，「稀有度」筛选只列出特殊卡。普通卡显示球员位置的颜色。英雄卡和钻石卡保持不变。"
 
 [zh_hant.new]
 mod_name = "No More Rarities"
-mod_description = "像經典的閃電十一人一樣，每名球員只有一張卡：所有普通球員都是★5傳奇（沒有★1～★4稀有度、沒有稀有度能力加成、不能升級稀有度或合成），所有靈魂來源都給★5卡，「稀有度」篩選只列出特殊卡。把存檔複製到其他欄位時，每個角色只保留一張卡：保留最好的一張，其餘合併到它身上。英雄卡和鑽石卡保持不變。"
+mod_description = "像經典的閃電十一人一樣，所有普通球員都是★5傳奇（沒有★1～★4稀有度、沒有稀有度能力加成、不能升級稀有度或合成）。所有靈魂來源都給★5卡，「稀有度」篩選只列出特殊卡。普通卡顯示球員位置的顏色。英雄卡和鑽石卡保持不變。"

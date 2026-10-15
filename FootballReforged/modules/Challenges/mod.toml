@@ -1,0 +1,44 @@
+id = "challenges"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Challenges"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Match challenges other mods can arm: score 3 goals in 45 s, keep the ball for 15 s, steal the ball. With the all-outfield 5v5 formation of the possession challenges and the office trial friendlies (5v5, 7v7, 3v3) Inazuma Fantasy's office launches."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-15"
+# This mod's own names: TOML keys Challenges.X, text keys challenges.<key>; never VRFW. Ruleset, friendly, formation,
+# trigger and team ids are global and kept as they were in Inazuma Fantasy.
+prefix = "Challenges"
+folder = "Challenges"
+# Moved out of Inazuma Fantasy (id inazuma_fantasy, research/mods/_aside, its part office) on 2026-10-15 (owner request:
+# the match challenges live in Football Reforged). Ids unchanged: the office (Inazuma Fantasy's office_requires /
+# office_fantasy grafts, the character engine's trial requirements) and the Chronicle side node of Chronicles Deluxe
+# keep naming them. Standard mod layout (docs/framework/mod-layout.md):
+#   content\rules\challenge_goals.toml, challenge_hold.toml, challenge_steal.toml   the challenge rulesets
+#                                          (docs/game/modes/match-engine.md §13)
+#   content\defaults\challenge.toml        outfield_formation = evt_trial_form5_outfield (over the framework's defaults)
+#   content\formations\evt_trial_form5_outfield.toml   the all-outfield 5v5 formation (0x892736BB)
+#   content\friendlies\challenges.toml     office_trial, office_trial_football_7, office_trial_street
+#   content\triggers\evt_trial.toml (+ .lua)   the match scripts of the office trial games evt_trial_01..04
+#   content\teams\trial_rivals\            the trial rivals evt_trial_tm_01..04 and their home stadiums
+#   text\keys.toml                         the mod's name / description and the rulesets' names, 9 languages
+# The framework's match engine runs the challenges; the office that offers the trials (games evt_trial_NN, texts, HUD)
+# stays Inazuma Fantasy's.
+requires = ["vr_framework>=2.4.75", "football_reforged>=1.2.0", "match_formats>=1.0.0", "pachangas>=1.0.0"]
+conflicts = []
+loader_modules = []
+permissions = []
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "football_reforged"
+order = 80

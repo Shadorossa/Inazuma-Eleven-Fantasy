@@ -1,0 +1,16 @@
+schema = "VRFW.rule/1"
+# Challenge ruleset (module Challenges of Football Reforged; docs/game/modes/match-engine.md §13): score 3 goals in
+# 45 s. 5v5; the clock runs in real seconds up to 0:45; a rival goal loses; the deciding goal ends the match. Bound
+# to no mode: a mode asks for it (CMND_EVT_MATCH_ENGINE_SELECT("challenge_goals")) or a friendly arms the challenge
+# (`challenge = "ctx"`, CMND_EVT_CHALLENGE_ARM). Inazuma Fantasy's until 2026-10-15; the id has not changed.
+id = "challenge_goals"
+name = "Challenge: 3 goals in 45 s"   # fallback; the game shows the text key challenges.ruleset_challenge_goals
+version = 1
+
+[teams]
+players = 5
+
+[challenge]
+kind = "goals"
+seconds = 45
+count = 3

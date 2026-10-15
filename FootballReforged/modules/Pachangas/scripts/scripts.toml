@@ -1,0 +1,7 @@
+# Settings of the module Pachangas' scripts (kind VRFW.script/1, docs/framework/scripts.md §2). No [[script]] list:
+# every top-level scripts\*.lua is an entry point.
+schema = "VRFW.script/1"
+
+# the team docks (0x874-byte team sets read / written word by word) need more than the default budget per call
+[settings]
+budget = 5000000

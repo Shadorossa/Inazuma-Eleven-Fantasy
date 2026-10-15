@@ -941,6 +941,11 @@ end
 --                                             {} when none): append entries to the three lists
 --   VRFW_RBC_ListLayer(layer, kind, rows)     the battle-kind list panel (layer 14202445 normal / 1695882381 gate) is
 --                                             placed and about to open with `rows` rows
+--   VRFW_RBC_PanelExtra(layer, kind, rows, extra)  the panel must reach `extra` px further down under its last row (a
+--                                             band of the framework, e.g. the match challenge line; 0 = fitted to the
+--                                             rows again): a mod that sizes the panel re-sizes it ("after" handler)
+-- VRFW_RBC.panel = {layer, kind, rows, extra, x, y}: the list panel as placed (x, y = its layer's local position then,
+-- CMND_GET_LAYER_LOCAL_POS), extra = the band asked for last (reset to 0 when the panel is placed).
 -- The script's locals a handler may read / write: VRFW_RBC.L.<name> (decompile names; one line in VRFW_RBC_LOCALS
 -- when a mod needs another one).
 VRFW_RBC = VRFW_RBC or {}
@@ -979,7 +984,18 @@ end
 function VRFW_RBC_Guide(item, icons, texts, cmds)
 end
 
+VRFW_RBC.panel = VRFW_RBC.panel or {extra = 0}
+
 function VRFW_RBC_ListLayer(layer, kind, rows)
+  local p = VRFW_RBC.panel
+  p.layer, p.kind, p.rows, p.extra = layer, kind, rows, 0
+  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], layer, 0)
+  p.x = ok and type(x) == "number" and x or nil
+  p.y = ok and type(y) == "number" and y or nil
+end
+
+function VRFW_RBC_PanelExtra(layer, kind, rows, extra)
+  VRFW_RBC.panel.extra = extra
 end
 -- VRFW route_board END
 function FinalizeMenu()

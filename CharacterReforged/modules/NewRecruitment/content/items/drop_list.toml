@@ -1,0 +1,21 @@
+schema = "VRFW.item/2"
+# New Recruitment: the player spirits of the match drops (owner request 2026-10-14: «una vez tengas a un jugador, que ya
+# no salga en esas listas», and that he cannot drop again; No More Rarities' until 2026-10-15). With this mod a player
+# is one card, so the spirit of a player the user already has is only a duplicate.
+# The mechanism is the VR-Framework's (item type [VRFW.DropList.Spirits], item_engine drop_list_rt; docs/framework/
+# drops.md §5b): this mod only declares the rule.
+# * ExcludeOwned: a character the user has in the club (any of his cards) is no longer a spirit candidate of a drop of
+#   the normal cards: he never drops (the drop roll's own candidate check refuses him: the other candidates of the same
+#   drop entry share his chance, the game picks evenly among them) and his rows leave «Tasa de aparición» (the list's
+#   rate per candidate = the entry's rate over the candidates left, so the shown percentages stay those of the roll). A
+#   drop entry left with no candidate gives no spirit (its chance is lost, not moved to another entry).
+# * Rarities 0-4: the normal cards. The Ídolo variants (5) keep the game's own «owned» rule.
+# * OneRowPerCharacter: a character listed from several drop entries is one row with the summed rate.
+# * ExceptReservedSlots: a mode's own save (INAROGUE's) keeps the game's spirits, as it keeps its rarities
+#   (the same rule as NewRecruitment.Applies, assets\lua\_all\new_recruitment_spirits.lua).
+# The rows' position colour is No More Rarities' Lua (its assets\lua\vs_route_town_drop_rate_list_menu\no_more_rarities_drop_list.lua).
+[VRFW.DropList.Spirits]
+ExcludeOwned = true
+Rarities = [0, 1, 2, 3, 4]
+OneRowPerCharacter = true
+ExceptReservedSlots = true

@@ -1,0 +1,30 @@
+# Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
+# «Plantilla de equipo» in «Tipo: Pachanga»: every formation list of the formation screen shows only the 5 pachanga
+# formations (Nacho 2026-09-28: «solo tienen que salirte las 5»). The dock leaves one key per VM (value = dock); the
+# block re-runs the retail 5v5 OnInitFormationCommon after OnInit (docs/game/ui/pachanga-templates.md §3.1).
+name = "pachanga_formation"
+mod = "pachangas"
+order = 317
+module = ""
+requires = []
+conflicts = []
+wraps = ["OnInit", "OpenAndWaitTeamSkillParameterMenu"]
+description = "Pachanga templates: formation screen in 5v5 mode (5 formations)"
+
+[[files]]
+stem = "soccer_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "pf_menu.lua"
+  marker = "pachanga formation"
+  include = { "@BODY@" = "evt_pachanga_formation.lua", "@BONUS5@" = "../pachanga_bank/bonus5.lua" }
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "pf_group.lua"
+  marker = "pachanga formation"
+  include = { "@BODY@" = "evt_pachanga_formation.lua", "@BONUS5@" = "../pachanga_bank/bonus5.lua" }

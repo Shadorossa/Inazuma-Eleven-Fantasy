@@ -632,6 +632,16 @@ function R.install(X)
     if ro == nil then return nil, re end
     if ro == false then return nil, "beside is on no route of the board (a hidden piece)" end
     local route, rs, rn = ro[1], ro[2], ro[3]
+    -- the node's row: never the route's last piece (its final): right after beside, or right before it when beside is last; never
+    -- before first_node_index (the engine reads the board's first pieces by index: 0 the start, 1 the piece a first Chronicle visit opens on)
+    local at = (bi + 1 < rs + rn) and (bi + 1) or bi
+    local first_node_index = X.D.route_nodes.first_node_index or 2
+    if at < first_node_index then
+      if first_node_index >= rs + rn then
+        return nil, string.format("its route has no piece index from %d on before the final (the board's first pieces keep their indices)", first_node_index)
+      end
+      at = first_node_index
+    end
     -- template and field
     local tpl_gid
     if d.template_game ~= nil then
@@ -1018,8 +1028,6 @@ function R.install(X)
     for _, c in ipairs { F.p_new, F.p_gate_key, F.p_open_event, F.p_need_update } do r:set_u32(-1, row, c, 0) end
     for _, c in ipairs { F.p_gate_use, F.p_gate_open, F.p_upd_lock, F.p_locked_flag } do r:set_u32(-1, row, c, 0) end
     for _, c in ipairs(F.p_conds) do r:set_str(-1, row, c, nil) end
-    -- never the route's last piece (its final): right after beside, or right before it when beside is last
-    local at = (bi + 1 < rs + rn) and (bi + 1) or bi
     r:insert(F.pl, at, row)
     for k = 0, r:len(F.rl) - 1 do
       local s, n = r:tuple(F.rl, k, F.r_slice)

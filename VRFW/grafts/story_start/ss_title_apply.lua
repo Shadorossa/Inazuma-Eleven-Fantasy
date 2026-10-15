@@ -6,6 +6,7 @@
 -- title_menu_2 host handler of ss_title2.lua, or the wrapper below), with retail commands only:
 --   story flags / byte flags / help / quests / search words -> story team set (kit, emblem, formation)
 --   -> story roster at Lv 50 (story bank) -> the 15 scouts joined -> shirt numbers -> normal copies (Chronicle / VS)
+--   (every card only when the slot owns no card of its character yet: one player per character, VRFW_STS_Grant)
 --   -> story matches won -> story trophies (no Steam: notify = false + loader guard) -> story end walk
 --   -> phase 9/80 (loader) -> the story-clear flag b0:1 LAST -> autosave.
 -- The save part turns the marker "done" once the slot's SAVED file shows the story cleared; until then a game that quit
@@ -27,6 +28,7 @@ local VRFW_STS = {
   GAME_CLEAR = 919659808, TROPHY = 4020813944, ITEM_CAN = 765340069, ITEM_ADD = 1897915498,
   STORY_END = 823922180, UPDATE_PARTY = 2983896291, AUTO_SAVE = 3673719958,
   FLAG_AVATAR = 2113473044, FLAG_STORY_CLEAR = 750283301,
+  OWNED = 1052152255,                                                           -- (card, 0) -> ok, n / n: saved copies of that card
 }
 local VRFW_STS_ran = false        -- once per VM (the OnInit chain may be wrapped twice)
 
@@ -40,6 +42,49 @@ end
 
 local function VRFW_STS_Log(...)
   VRFW_STS_Call(VRFW_STS.LOG, "story_start", ...)
+end
+
+-- saved copies of one card (story and normal bank); 0 when the command does not answer
+local function VRFW_STS_CardCopies(card)
+  local a, b = VRFW_STS_Call(VRFW_STS.OWNED, card, 0)
+  local n = type(a) == "number" and a or b
+  if type(n) ~= "number" then
+    return 0
+  end
+  return n
+end
+
+-- One player per character: a card is granted only when the slot owns no card of its character (CHARACTER_OF /
+-- CHARACTER_CARDS of the data, from chara_param) and this apply has not granted him yet (granted[character]).
+local function VRFW_STS_CharacterOwned(card, granted)
+  local character = SS_DATA.CHARACTER_OF[card] or card
+  if granted[character] then
+    return true, character
+  end
+  for _, other in ipairs(SS_DATA.CHARACTER_CARDS[character] or {card}) do
+    if VRFW_STS_CardCopies(other) > 0 then
+      return true, character
+    end
+  end
+  return false, character
+end
+
+-- Calls give() for card unless its character is owned already; returns true when given.
+local function VRFW_STS_Grant(card, granted, skipped, give)
+  local owned, character = VRFW_STS_CharacterOwned(card, granted)
+  if owned then
+    skipped[#skipped + 1] = string.format("%08X", card)
+    return false
+  end
+  give()
+  granted[character] = true
+  return true
+end
+
+local function VRFW_STS_LogSkipped(section, skipped)
+  if #skipped > 0 then
+    VRFW_STS_Log(section, "skipped", #skipped, "card(s): character already owned", table.concat(skipped, " "))
+  end
 end
 
 -- one section of the apply: never stops the others; returns the number of calls made
@@ -56,6 +101,7 @@ end
 local function VRFW_STS_Apply()
   local D = SS_DATA
   local F = funcLuaCommand
+  local granted = {}                 -- characters given by this apply
   VRFW_STS_Section("flags", function()
     local n = 0
     for i = 1, #D.BITS - 1 do        -- the last entry (b0:1 story clear) is set at the very end
@@ -105,26 +151,33 @@ local function VRFW_STS_Apply()
     return n
   end)
   VRFW_STS_Section("story roster", function()
-    local n = 0
+    local n, skipped = 0, {}
     for _, a in ipairs(D.ADDS) do
       -- prog_common AddPartyCore: CMND_ADD_PARTY(param, lv, a4, a6, 0, 0, story, flag2, flag3, set, slot, n3, 0,
       -- false, false, flag4, 0, false, flag5)
-      F(VRFW_STS.ADD_PARTY, a[1], D.LEVEL, a[2], a[3], 0, 0, a[4], a[5], a[6], a[7], a[8], a[9], 0, false, false, a[10], 0, false, a[11])
-      n = n + 1
+      if VRFW_STS_Grant(a[1], granted, skipped, function()
+        F(VRFW_STS.ADD_PARTY, a[1], D.LEVEL, a[2], a[3], 0, 0, a[4], a[5], a[6], a[7], a[8], a[9], 0, false, false, a[10], 0, false, a[11])
+      end) then
+        n = n + 1
+      end
     end
+    VRFW_STS_LogSkipped("story roster", skipped)
     return n
   end)
   VRFW_STS_Section("scouts", function()
-    local n = 0
+    local n, skipped = 0, {}
     for _, s in ipairs(D.SCOUTS) do
       -- the retail join (rpg_select_scout_chara_menu ConfirmCharaExec + the recipe's DbgPhCmd_4_90): temp chara,
-      -- ADD_PARTY into the story bank (source 2 = scout), join flag, join status 6; the developers' 5 go to set 0
-      local tmp = F(VRFW_STS.TEMP_CHARA, s[1], D.LEVEL)
-      if type(tmp) ~= "number" then
-        tmp = 0
-      end
-      F(VRFW_STS.ADD_PARTY, s[1], D.LEVEL, false, false, 0, tmp, true, false, false, s[4] and 0 or 16, 255, 255, 0, false, false, false, 2)
-      F(VRFW_STS.CLEAR_CAT, 8)
+      -- ADD_PARTY into the story bank (source 2 = scout), join flag, join status 6; the developers' 5 go to set 0.
+      -- An owned character keeps his card; the join flag and status are set all the same
+      VRFW_STS_Grant(s[1], granted, skipped, function()
+        local tmp = F(VRFW_STS.TEMP_CHARA, s[1], D.LEVEL)
+        if type(tmp) ~= "number" then
+          tmp = 0
+        end
+        F(VRFW_STS.ADD_PARTY, s[1], D.LEVEL, false, false, 0, tmp, true, false, false, s[4] and 0 or 16, 255, 255, 0, false, false, false, 2)
+        F(VRFW_STS.CLEAR_CAT, 8)
+      end)
       F(VRFW_STS.SET_BIT, s[3], true)
       local ok, idx = F(VRFW_STS.SCOUT_IDX, s[2], 7)
       if ok and type(idx) == "number" then
@@ -132,6 +185,7 @@ local function VRFW_STS_Apply()
       end
       n = n + 1
     end
+    VRFW_STS_LogSkipped("scouts", skipped)
     return n
   end)
   VRFW_STS_Section("team set info", function()
@@ -143,11 +197,15 @@ local function VRFW_STS_Apply()
     return n
   end)
   VRFW_STS_Section("normal copies", function()
-    local n = 0
-    for _, p in ipairs(D.NORMAL) do          -- normal bank, no team set (logical 16): Chronicle / VS (decision 1)
-      F(VRFW_STS.ADD_PARTY, p, D.NORMAL_LEVEL, false, false, 0, 0, false, false, false, 16, 255, 255, 0, false, false, false, 0, false, false)
-      n = n + 1
+    local n, skipped = 0, {}
+    for _, p in ipairs(D.NORMAL) do          -- normal bank, no team set (logical 16): only a character not owned yet
+      if VRFW_STS_Grant(p, granted, skipped, function()
+        F(VRFW_STS.ADD_PARTY, p, D.NORMAL_LEVEL, false, false, 0, 0, false, false, false, 16, 255, 255, 0, false, false, false, 0, false, false)
+      end) then
+        n = n + 1
+      end
     end
+    VRFW_STS_LogSkipped("normal copies", skipped)
     return n
   end)
   VRFW_STS_Section("story matches", function()

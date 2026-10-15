@@ -32,17 +32,17 @@ add_layer = { name = "clean_hud_chr_box_notice", object = "cmn01_11_blue_exclama
 menu = "chronicle_mode_top_menu"
 add_layer = { name = "clean_hud_chr_box", object = "clean_hud_chr_box_item", count = 4, align = ["left", "middle"], after = "clean_hud_chr_box_notice", groups = [{ group = "chronicle_mode_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "clean_hud_chr_box_notice" }], focus = {} }
 
-# keys: the corner-button rows of the lists go (RIGHT -> corner 0x3EE8ADE4, Alt tutorial, V controls guide); the boxes
-# get Back / Accept / left / right (engine list focus) / up (CMD_FUNCTION clean_hud_chr_box_up) / right click
+# keys: the corner-button rows of the lists go (RIGHT -> corner 0x3EE8ADE4, Alt tutorial); V / Y (CMD_FUNC3, the
+# controls guide 0x61FBFF76) stays on the lists and the boxes get it too (the footer «Y Guía de controles», graft
+# clean_hud_controls_guide, BetterUI 1.22.6); the boxes get Back / Accept / left / right (engine list focus) / up
+# (CMD_FUNCTION clean_hud_chr_box_up) / right click
 [[patch]]
 menu = "chronicle_mode_top_menu"
 remove_cmd = [
     { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x3EE8ADE4 },
     { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0x9EF0E5F7 },
-    { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x61FBFF76 },
     { layer = "mainmenu90_12_list_item_small", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x3EE8ADE4 },
     { layer = "mainmenu90_12_list_item_small", input = "CMD_FUNC1", command = "CMD_FUNCTION", arg = 0x9EF0E5F7 },
-    { layer = "mainmenu90_12_list_item_small", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x61FBFF76 },
 ]
 add_cmd = [
     { layer = "clean_hud_chr_box", input = "CMD_BACK", command = "CMD_FUNCTION", arg = 0x6DCEC137, flag = 1, after = "mainmenu90_12_list_item_small" },
@@ -51,6 +51,7 @@ add_cmd = [
     { layer = "clean_hud_chr_box", input = "CMD_RIGHT", command = "CMD_FCS_NEXT", flag = 1 },
     { layer = "clean_hud_chr_box", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x9B2B25A5, flag = 1 },
     { layer = "clean_hud_chr_box", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_FUNCTION", arg = 0x6DCEC137, flag = 1 },
+    { layer = "clean_hud_chr_box", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x61FBFF76, flag = 1 },
 ]
 
 # focus shifts: «Universo del jugador» down and «Cadena de Crónica» up (retail: wrap to «Guardar») land on box 0

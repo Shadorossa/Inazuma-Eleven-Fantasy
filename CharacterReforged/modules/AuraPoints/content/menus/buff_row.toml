@@ -4,7 +4,9 @@
 # aura user up to the VR-Framework's team limit of transformed players ([rules] team_aura_max) and as many as these
 # layers have instances: one per player on the pitch. Ported from Inazuma Fantasy's
 # menus\00_soccer\soccer_team_buff_icon_list_menu.toml (2026-10-15). The bars under them: buff_bar.toml (two instances
-# per entry).
+# per entry). The retail attach locator holds rows for portrait instances 0..2 only: the copies below hang instances
+# 3..10 on the same locator (the gauge follows its portrait through the portrait's own index attach), otherwise they
+# draw at the screen origin (top-left, above the tension gauge).
 schema = "VRFW.menu/2"
 
 [[patch]]
@@ -16,3 +18,18 @@ count = 11
 menu = "soccer_team_buff_icon_list_menu"
 layer = "soccer00_54_aura_recast_gauge"
 count = 11
+
+# attach rows of the portrait (soccer00_53_aura_buff_chara_icon, crc32 0x5B80C29B) for instances 3..10: copies of
+# instance 0's row on soccer00_50_team_buff_icon_attach_locator (_atc_teambuff01); the Lua places them 68 apart
+[[object_set]]
+object = "soccer00_50_team_buff_icon_attach_locator"
+copy = [
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 3 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 4 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 5 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 6 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 7 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 8 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 9 } },
+    { param = "NullLayerName", match = { 3 = 1535165083, 4 = 0 }, values = { 3 = 1535165083, 4 = 10 } },
+]

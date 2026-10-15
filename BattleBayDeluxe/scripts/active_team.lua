@@ -24,7 +24,9 @@
 --     active team set (table BattleBayDeluxe.ActiveSet); the request handler writes the active VS team set into the
 --     request's team set byte (+0xC0: the Battle Bay fills it with its own online team set) and sets the level sync
 --     of the match (config.toml [active_team] level_sync, table BattleBayDeluxe.LevelSync: the stats level of the
---     active team's players, content\game\active_team.toml MatchStatLevel; their moves stay as they are).
+--     active team's players, content\game\active_team.toml MatchStatLevel; their moves stay as they are);
+--   * 1.5.77 (owner 2026-10-15: the Draft played as «Draft» with a generic crest and kit): the mirror also gives the
+--     Draft team the active team's crest and kit (its team record) and its name in the match (hook TeamLookBuild).
 
 local U = require "lib/util"
 local G = require "lib/game"
@@ -125,8 +127,8 @@ end
 -- the active VS team set last mirrored (0..15), nil before the first mirror
 local ACTIVE_SET = nil
 
--- the tile's team record in memory (FindTeamConfig), nil + why
-local function tile_record()
+-- a team's record in memory (FindTeamConfig; default the tile's), nil + why
+local function team_record(team)
   if not VRFW.is_on("FindTeamConfig") then
     return nil, "FindTeamConfig not resolved"
   end
@@ -138,28 +140,29 @@ local function tile_record()
   end
   U.wr("u64", recb, 0)
   U.wr("u64", contb, 0)
-  U.wr("u32", hashb, TEAM)
+  U.wr("u32", hashb, team or TEAM)
   local ok, e = U.call("FindTeamConfig", recb, contb, hashb)
   if not ok then
     return nil, "FindTeamConfig faulted (" .. tostring(e) .. ")"
   end
   local rec = U.rd("ptr", recb) or 0
   if rec < 0x10000 then
-    return nil, "the tile is not in team_config"
+    return nil, "team " .. U.hex(team or TEAM) .. " is not in team_config"
   end
   return rec
 end
 
--- the active team's emblem and kit over the tile's team record (the grid's crest and model read it) -> note
-local function write_look(emblem, uniform)
+-- the active team's emblem and kit over a team record (the tile's, the Draft's: the grid's crest and model and the
+-- match setup read it) -> note; `label` names the team in the log
+local function write_look(team, label, emblem, uniform)
   if emblem == 0 and uniform == 0 then
     return "no emblem / kit to write"
   end
-  local rec, why = tile_record()
+  local rec, why = team_record(team)
   local r = rec and U.struct("ActiveTeamRecord", rec)
   if not r then
-    warn("mirror: the tile's team record not read: " .. tostring(why or "struct off"))
-    return "team record not read"
+    warn("mirror: the " .. label .. "'s team record not read: " .. tostring(why or "struct off"))
+    return label .. " team record not read"
   end
   local done = {}
   for _, f in ipairs({ { "emblem", emblem }, { "uniform", uniform } }) do
@@ -170,19 +173,85 @@ local function write_look(emblem, uniform)
       end) then
         done[#done + 1] = field .. " " .. U.hex(value)
       else
-        warn("mirror: the tile's " .. field .. " NOT written")
+        warn("mirror: the " .. label .. "'s " .. field .. " NOT written")
       end
     end
   end
   if #done == 0 then
-    return "crest and kit unchanged"
+    return label .. " crest and kit unchanged"
   end
-  return table.concat(done, ", ")
+  return label .. " " .. table.concat(done, ", ")
 end
 
--- CMND_BBD_ACTIVE_TEAM_MIRROR(captain, lineup[, set, emblem, uniform]): the active team set onto the tile's member
--- rows, row leader and team record (crest, kit). -> ok, what was done (text)
-function BattleBayDeluxe.ActiveTeamMirror(captain, lineup, set, emblem, uniform)
+-- 1.5.77 (owner 2026-10-15: the Draft played as «Draft» with a generic crest and kit): the Draft team carries the
+-- active team's identity in its matches. Crest and kit: write_look over the Draft's record. Name: the hook
+-- TeamLookBuild (content\game\active_team.toml) gives the match team set of every team in the table
+-- BattleBayDeluxe.TeamName the name held in this native block (NUL-terminated); the grid keeps the tile's own text.
+local NAME_TABLE = "BattleBayDeluxe.TeamName"
+local NAME_BLOCK, NAME_BYTES = "bbd_active_team_name", 128
+local name_written = nil
+
+-- `text` cut to at most `max` bytes without splitting a UTF-8 character
+local function utf8_cut(text, max)
+  if #text <= max then
+    return text
+  end
+  local n = max
+  while n > 0 do
+    local b = text:byte(n + 1)
+    if b == nil or b < 0x80 or b >= 0xC0 then
+      break
+    end
+    n = n - 1
+  end
+  return text:sub(1, n)
+end
+
+-- the active team's name as the match name of `team` -> note
+local function write_name(team, name)
+  if type(name) ~= "string" or name == "" then
+    return "no team name to write"
+  end
+  if not VRFW.is_on("TeamLookBuild") then
+    return "name: the hook TeamLookBuild is off"
+  end
+  name = utf8_cut(name, NAME_BYTES - 1)
+  if name_written == name then
+    return "name unchanged"
+  end
+  local okb, block = pcall(VRFW.mem.buffer, NAME_BLOCK, NAME_BYTES)
+  if not okb or type(block) ~= "number" then
+    warn("mirror: no native block for the team name")
+    return "name NOT written"
+  end
+  local bytes = { name:byte(1, -1) }
+  bytes[#bytes + 1] = 0
+  local okw, written = pcall(VRFW.mem.write_array, "u8", block, bytes)
+  if not okw or written == false then
+    warn("mirror: the team name NOT written")
+    return "name NOT written"
+  end
+  if not pcall(VRFW.native.table_set, NAME_TABLE, team, block) then
+    warn("mirror: the team name table NOT written")
+    return "name NOT written"
+  end
+  name_written = name
+  return "name «" .. name .. "»"
+end
+
+-- the active team's emblem, kit and name onto the Draft team -> note
+local function write_draft_identity(emblem, uniform, name)
+  local draft = Draft.team()
+  if draft == 0 then
+    return "no Draft team"
+  end
+  return write_look(draft, "Draft", emblem, uniform) .. ", Draft " .. write_name(draft, name)
+end
+
+-- CMND_BBD_ACTIVE_TEAM_MIRROR(captain, lineup[, set, emblem, uniform, name]): the active team set onto the tile's member
+-- rows, row leader and team record (crest, kit), and its crest, kit and name onto the Draft team. -> ok, what was done
+-- (text)
+function BattleBayDeluxe.ActiveTeamMirror(captain, lineup, set, emblem, uniform, name)
   if TEAM == 0 then
     return false, "no Active team tile"
   end
@@ -191,7 +260,9 @@ function BattleBayDeluxe.ActiveTeamMirror(captain, lineup, set, emblem, uniform)
     ACTIVE_SET = math.floor(set)
     pcall(VRFW.native.table_set, "BattleBayDeluxe.ActiveSet", 0, ACTIVE_SET)
   end
-  local look = write_look(U.u32(tonumber(emblem) or 0) or 0, U.u32(tonumber(uniform) or 0) or 0)
+  emblem, uniform = U.u32(tonumber(emblem) or 0) or 0, U.u32(tonumber(uniform) or 0) or 0
+  local look = write_look(TEAM, "tile", emblem, uniform)
+  local draft_look = write_draft_identity(emblem, uniform, name)
   captain = U.u32(tonumber(captain) or 0) or 0
   local want = parse_lineup(lineup)
   if next(want) == nil then
@@ -258,9 +329,10 @@ function BattleBayDeluxe.ActiveTeamMirror(captain, lineup, set, emblem, uniform)
   elseif lead then
     leader_note = "no Battle Bay row of the tile in memory (leader not written)"
   end
-  local note = string.format("%d of %d member rows written, %d place(s) the active team leaves empty, %s, %s, team set %s",
-    written, #rows, empty, leader_note, look, tostring(ACTIVE_SET))
-  if written > 0 or leader_note ~= "leader unchanged" or look ~= "crest and kit unchanged" then
+  local note = string.format("%d of %d member rows written, %d place(s) the active team leaves empty, %s, %s, %s, team set %s",
+    written, #rows, empty, leader_note, look, draft_look, tostring(ACTIVE_SET))
+  if written > 0 or leader_note ~= "leader unchanged" or look ~= "tile crest and kit unchanged"
+    or draft_look ~= "Draft crest and kit unchanged, Draft name unchanged" then
     info("mirror: the active team onto the tile: " .. note)
   end
   return true, note

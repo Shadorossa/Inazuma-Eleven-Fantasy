@@ -15,8 +15,8 @@
 --   midfielder  list_drop_chr_rarity01 (green)                  forward   DROP_BAND_FORWARD_SPRITE (red: the game's
 --                                                                         green band with its hue turned, made by
 --                                                                         no_more_rarities_build.py)
--- Owned players' spirits leave the list and the drop itself through the VR-Framework ([VRFW.DropList.Spirits] of
--- content\items\drop_list.toml, docs/framework/drops.md §5b): nothing of that here.
+-- Owned players' spirits leave the list and the drop itself through the VR-Framework when the module New Recruitment
+-- is on ([VRFW.DropList.Spirits] of its content\items\drop_list.toml, docs/framework/drops.md §5b): nothing of that here.
 -- Defines functions only; engine calls only when a row is drawn; every call goes through pcall.
 local DROP_BAND_FORWARD_SPRITE = "no_more_rarities_drop_band_forward"
 

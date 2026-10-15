@@ -94,7 +94,7 @@ end
 
 -- [passives] of the mod's merged config (absent keys = defaults)
 function M.config(raw)
-  local c = { max_slots = 3, enabled = true, unlock = "", always_unlocked = true, build_rarities = { 5, 6, 7, 8 }, build_slots = { 4, 5 }, log_first = 20 }
+  local c = { max_slots = 3, enabled = true, unlock = "", always_unlocked = true, build_rarities = { 5, 6, 7, 8 }, build_slots = { 4, 5 }, log_first = 20, allow_duplicates = true }
   if type(raw) ~= "table" then return c, nil end
   local warn
   for k, v in pairs(raw) do
@@ -781,8 +781,8 @@ function M.effective(c, s, cfg, l, r)
 end
 
 -- may slot k of player s (current slots eff, stored choices stored) take id (0 = back to the default)? nil = yes,
--- else the error code
-function M.check_set(c, s, eff, stored, k, id, l, r)
+-- else the error code; allow_duplicates = the same passive definition may sit in several slots
+function M.check_set(c, s, eff, stored, k, id, l, r, allow_duplicates)
   if s.card == M.BLOCKED then return M.E_NOT_ALLOWED end
   if k < 1 or k > M.N_SLOTS then return M.E_BAD_SLOT end
   if not M.slot_open_in(r, s.card, s.rarity, k, l) then return M.E_LOCKED end
@@ -799,6 +799,7 @@ function M.check_set(c, s, eff, stored, k, id, l, r)
     if not p or not M.is_pickable(c, id) then return M.E_UNKNOWN end
     if (kind == M.GENERAL and p.archetype ~= nil) or (kind == M.ARCHETYPE and p.archetype == nil) then return M.E_WRONG_CLASS end
   end
+  if allow_duplicates then return nil end
   for j = 1, M.N_SLOTS do
     if j ~= k and eff[j] ~= 0 and M.def_of(c, eff[j]) == p.def then return M.E_DUPLICATE end
   end
@@ -814,8 +815,10 @@ function M.current_index(c, ids, current)
   return nil
 end
 
-function M.other_defs(c, eff, k)
+-- the passive definitions slot k's picker leaves out: those of the other slots, none when allow_duplicates
+function M.other_defs(c, eff, k, allow_duplicates)
   local v = {}
+  if allow_duplicates then return v end
   for j = 1, M.N_SLOTS do
     if j ~= k and eff[j] ~= 0 then
       local d = M.def_of(c, eff[j])

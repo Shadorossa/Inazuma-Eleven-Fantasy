@@ -1,0 +1,140 @@
+-- Utilities, team name length of «Plantilla de equipo» (graft util_team_name, docs/game/ui/team-name-length.md).
+-- Hook file (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the VR-Framework's host of soccer_team_dock_menu,
+-- never merged with other grafts. Nothing runs at load but the registration (no engine call).
+-- * Length: the game's OnEnter of the name frame opens the keyboard with a literal 12
+--   (funcLuaCommand(962493425, 0, name, 1956827977 [title], 0, 12, ...)); the keyboard's «n/m» counter and the native
+--   IME limit both read that argument. While that OnEnter runs, a filter on funcLuaCommand (installed at the first name
+--   edit, never at load) gives the next keyboard call with that title the length of CMND_UTIL_TEAM_NAME_SETTINGS.
+-- * Fit: after the name is drawn (SetupTeamDockTeamName, or the name edit itself), a name wider than the room is
+--   drawn in the next fit style (same colour and alignment, smaller); a short name gets the dock's own style back.
+--   UTILITIES_TEAM_NAME_ROOM (px), when another mod's layout of the header sets it, replaces the room of config.toml.
+
+UTIL_TN = UTIL_TN or {}
+local TN = UTIL_TN
+
+TN.STEM = "soccer_team_dock_menu"
+TN.NAME_FRAME = 1922851874        -- team01_04_p1_team_name_frame
+TN.NAME_TEXT = 1990181784         -- _text_team01
+TN.KEYBOARD_OPEN = 962493425      -- the game's keyboard (keyboard_input_menu)
+TN.KEYBOARD_TITLE = 1956827977    -- its title for the team name
+TN.LENGTH_ARG = 6                 -- the keyboard call's argument that holds the length
+TN.TEXT_SIZE = 3549540977         -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node[, text]) -> width, height
+TN.TEXT_STYLE = 2333948100        -- CMND_SET_TEXT_FONTSTYLE (layer, idx, node, style)
+TN.SETTINGS = 1378891637          -- crc32("CMND_UTIL_TEAM_NAME_SETTINGS")
+TN.RETAIL_LENGTH = 12
+TN.LOG = 3661580131               -- CMND_EVT_LOG
+
+function TN.log(...)
+  pcall(funcLuaCommand, TN.LOG, "UTIL team_name", ...)
+end
+
+-- the settings, asked once per menu VM (the script answers; without it: the game's length and no fit)
+function TN.settings()
+  if TN.loaded then
+    return
+  end
+  TN.loaded = true
+  TN.length, TN.room, TN.baseStyle, TN.fitStyles = TN.RETAIL_LENGTH, nil, 0, {}
+  local ok, length, room, base, list = pcall(funcLuaCommand, TN.SETTINGS)
+  if not ok or type(length) ~= "number" then
+    TN.log("no settings (Utilities' script did not answer): the game's length")
+    return
+  end
+  TN.length = math.max(1, math.min(31, math.floor(length)))
+  TN.room = type(room) == "number" and room or nil
+  TN.baseStyle = type(base) == "number" and base or 0
+  if type(list) == "string" then
+    for key in string.gmatch(list, "%d+") do
+      TN.fitStyles[#TN.fitStyles + 1] = tonumber(key)
+    end
+  end
+  TN.log("length", TN.length, "room", TN.room, "fit styles", #TN.fitStyles)
+end
+
+-- the keyboard call of the name edit gets the length: a filter on funcLuaCommand, armed for that one call only.
+-- The caller's arguments go on unchanged (docs/framework/lua-hosts.md §3).
+function TN.installFilter()
+  if TN.base ~= nil or type(funcLuaCommand) ~= "function" then
+    return
+  end
+  local base = funcLuaCommand
+  TN.base = base
+  funcLuaCommand = function(...)
+    if TN.armed and (...) == TN.KEYBOARD_OPEN then
+      local args = table.pack(...)
+      if args[4] == TN.KEYBOARD_TITLE and type(args[TN.LENGTH_ARG]) == "number" then
+        TN.armed = false
+        TN.log("keyboard length", args[TN.LENGTH_ARG], "->", TN.length)
+        args[TN.LENGTH_ARG] = TN.length
+        return base(table.unpack(args, 1, args.n))
+      end
+    end
+    return base(...)
+  end
+end
+
+local function command(...)
+  local ok, a, b = pcall(funcLuaMenuCommand, ...)
+  if ok then
+    return a, b
+  end
+  return nil
+end
+
+-- the name's width in the node's current style; nil = not measurable
+local function width()
+  local w = command(TN.TEXT_SIZE, TN.NAME_FRAME, 0, TN.NAME_TEXT)
+  if type(w) == "number" and w > 0 then
+    return w
+  end
+  return nil
+end
+
+-- the dock's own style first, then each fit style until the name fits the room (the last one stays)
+function TN.fit()
+  TN.settings()
+  if TN.baseStyle == 0 or #TN.fitStyles == 0 then
+    return
+  end
+  local room = tonumber(UTILITIES_TEAM_NAME_ROOM) or TN.room
+  if room == nil or room <= 0 then
+    return
+  end
+  local open = command(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], TN.NAME_FRAME)
+  if type(open) ~= "number" or open < 1 then
+    return
+  end
+  command(TN.TEXT_STYLE, TN.NAME_FRAME, 0, TN.NAME_TEXT, TN.baseStyle)
+  local w = width()
+  if w == nil or w <= room then
+    return
+  end
+  local first = w
+  for i, style in ipairs(TN.fitStyles) do
+    command(TN.TEXT_STYLE, TN.NAME_FRAME, 0, TN.NAME_TEXT, style)
+    w = width()
+    if w == nil or w <= room or i == #TN.fitStyles then
+      TN.log("name width", first, "room", room, "-> fit style", i, "width", w)
+      return
+    end
+  end
+end
+
+local host = VRFW_Host or EVT_Host
+if type(host) == "table" and type(host.on) == "function" then
+  host.on(TN.STEM, "OnEnter", {id = "utilities.team_name.length", phase = "around", fn = function(nxt, a1, ...)
+    if a1 ~= TN.NAME_FRAME then
+      return nxt(a1, ...)
+    end
+    TN.settings()
+    TN.installFilter()
+    TN.armed = TN.length ~= TN.RETAIL_LENGTH
+    local r = table.pack(nxt(a1, ...))
+    TN.armed = false
+    pcall(TN.fit)
+    return table.unpack(r, 1, r.n)
+  end})
+  host.on(TN.STEM, "SetupTeamDockTeamName", {id = "utilities.team_name.fit", phase = "after", fn = function()
+    TN.fit()
+  end})
+end

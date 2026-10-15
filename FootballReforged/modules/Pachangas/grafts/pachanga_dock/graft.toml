@@ -1,0 +1,53 @@
+# Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
+# «Plantilla de equipo»: Partido (11v11) / Pachanga (5v5) templates (docs/game/ui/pachanga-templates.md).
+# «Equipar todo» leaves the list, the first row is the type selector; in pachanga mode the retail dock shows / edits the
+# docks' teamInfo[1] (the retail n10 = 1 mode, the story's 5v5 field) and «Establecer como equipo activo» sets the active
+# pachanga team kept by Inazuma Fantasy's plugin (module pachanga: CMND_EVT_PACHANGA_*). Texts: menu_text rows of
+# research/scripts/pachanga_text_build.py (9 languages, ids = @crc:<label>@). Utilities' team bank pages (mod
+# utilities, hook graft team_banks, lua_early and loaded before IF) define UTIL_TB first: the block wraps
+# UTIL_TB.refresh / UTIL_TB.header (or queues the wrapping in UTIL_TB_HOOKS; no build-time requires). Before rogue_dock (INAROGUE
+# blocks the active-team key before this block sees it).
+name = "pachanga_dock"
+mod = "pachangas"
+order = 315
+module = ""
+requires = []
+conflicts = []
+wraps = []
+description = "Team dock: Partido / Pachanga selector, 5v5 templates sharing the dock's identity (name, emblem, kit, supertácticas, coach, managers), active pachanga team, Partido team restored on exit; «Equipar todo» removed"
+
+[[files]]
+stem = "soccer_team_dock_menu"
+expect = [
+  '^local t = \{12, 0, 10, 1, 2, 7, 9, 8\}$',
+  '^local t2 = \{$',
+  '^local n = 0$',
+  '^local n4 = 2$',
+  '^local n5 = 2$',
+  '^local n6 = 0$',
+  '^local n10 = 0$',
+  '^local n11 = 3321884270 --\[\[soccer11_02_formation_frame\]\]$',
+  '^local flag3 = false$',
+  '^local flag4 = false$',
+  '^function OnInit\(\)$',
+  '^function OnSetupLayer\(a1, a2\)$',
+  '^function SetupTeamDockListItemText\(a1, a2\)$',
+  '^function UpdateViewTeamDockListItem\(r0\)$',
+  '^function UpdateViewMenuByLock\(\)$',
+  '^function OnChangeFocus\(r0, r1\)$',
+  '^function OnEnter\(a1, a2\)$',
+  '^function OnDecideFocus\(a1, a2\)$',
+  '^function OnFunction\(a1, a2\)$',
+  '^function FuncOnBack\(a1\)$',
+  '^function SetupTeamPower\(a1\)$',
+  '^function OnCloseLayer\(a1, a2\)\n  if a1 == 1044086265 --\[\[team01_04_team_name_bar\]\] then',
+  '    n10 = funcLuaCommand\(3522198769, 4081600465\)\n    n11 = 3518110933',
+  '    elseif l8 == 10 then\n      l6 = coroutine.create\(OpenSelectTeamMemberControlSubWindowSoccerTeamDock\)',
+]
+
+  [[files.ops]]
+  type = "append_block"
+  src = "evt_pachanga_dock.lua"
+  include = { "@BONUS5@" = "../pachanga_bank/bonus5.lua" }
+  marker = "pachanga dock"
+

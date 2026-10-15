@@ -1,0 +1,73 @@
+# Pachangas (module of Football Reforged): the template-type boxes of «Plantilla de equipo» (written by hand).
+# docs/game/ui/pachanga-templates.md §11, graft research/grafts/pachanga_dock.
+# The first row of the dock list shows the types (EVT_PT_KINDS of the graft: 11v11, 7v7, 5v5, 3v3) as 4 boxes:
+# * evt_pt_box (4): the plates. The retail list tab cmn06_20_list_tab_item (the slanted blue tab _icon_base01, 92 x 52,
+#   drawn at its own size so the slant stays; the row plates of the lists are 392 px textures that lose their slant when
+#   squeezed), cloned; the Lua hides its icon slots and swaps the base's sprite per state (558735651): the retail blue
+#   icon_base01 for the selected box, evt_pt_box_white (below) for the others.
+# * evt_pt_box_white: a white plate of the tab's shape, added to the tab's atlas cmn06_20.g4tx (the tab is flat blue
+#   in its texture and a tint cannot make it white). Drawn by research/scripts/pachanga_box_sprite.py, no retail pixel.
+# * evt_pt_box_text (4): the labels. The list row object team01_02_list_item, cloned; the Lua hides its plates and
+#   scales it evenly (0.66).
+# Both clones: draw priority above the row (452 -> 453 / 454), no attach rows (the cursor and the row icons stay on the
+# real rows; the tab's index attaches dropped) and no hit zone. They hang on the type row: the dock's list item
+# becomes evt_pt_list_item, the retail object + 8 attach rows (trace evt_pt_box at the row's _pos_base01, like the retail cursor's trace «cursor» at
+# _pos_atc_cur01); the Lua keeps the trace on for the type row only. No retail byte in the mod: the engine derives the
+# objects and the setting rows from the player's own game files.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "evt_pt_list_item"
+from = "team01_02_list_item"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0xC98CDE3B, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0xC98CDE3B, 1] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0xC98CDE3B, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0xC98CDE3B, 3] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0x84C31E02, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0x84C31E02, 1] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0x84C31E02, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC98CDE3B, 0x5A709C12, 0x84C31E02, 3] },
+]
+
+[[object]]
+name = "evt_pt_box"
+from = "cmn06_20_list_tab_item"
+priority = 453
+drop_index_attach = true
+remove = [
+    { param = "_icon_list_tab_dmy01_off" },
+    { param = "MOUSE_ON_CHAMGE_FOCUS" },
+]
+
+[[object]]
+name = "evt_pt_box_text"
+from = "team01_02_list_item"
+priority = 454
+remove = [
+    { param = "NullLayerName" },
+    { param = "IsUseParentMenuRenderComponentAlignment" },
+    { param = "_touch_list01" },
+]
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+layer = "team01_02_list_item"
+object = "evt_pt_list_item"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "evt_pt_box", object = "evt_pt_box", count = 4, after = "team01_02_list_item", groups = [
+    { group = "soccer_team_dock_menu", flags = [0, 1, 3, 0, 1, 0], after = "team01_02_list_item" },
+] }
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "evt_pt_box_text", object = "evt_pt_box_text", count = 4, after = "evt_pt_box", groups = [
+    { group = "soccer_team_dock_menu", flags = [0, 1, 3, 0, 1, 0], after = "evt_pt_box" },
+] }
+
+[[sprite]]
+atlas = "#/menu/20_cmn/cmn06/cmn06_20/cmn06_20.g4tx"
+name = "evt_pt_box_white"
+png = "content/menus/sprites/evt_pt_box_white.png"

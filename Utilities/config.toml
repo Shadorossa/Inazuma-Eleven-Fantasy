@@ -14,6 +14,18 @@ verify = true
 # for its own squads. Other mods can add modes with a utilities\team_banks.toml in their own folder.
 blocked_modes = ["story"]
 
+[team_name]
+# Team name of «Plantilla de equipo» (docs/game/ui/team-name-length.md). Always on (no Mod options row).
+# max_length: characters the name keyboard accepts, 1..31 (default 24; the game: 12). The save keeps 128 bytes of UTF-8
+# per name, so 31 characters always fit.
+max_length = 24
+# room: the width (screen px of a 1920 x 1080 menu) the name may take in the Team Dock's header (the game's text box: 436).
+# A wider name is drawn in the next style of fit_styles (smaller, same blue, left-aligned) until it fits; the last
+# one squeezes it into the box. style = the header's own style (a name that fits gets it back).
+room = 436
+style = "fs_teamdock_name01"
+fit_styles = ["fs2_32_b_lc_2d0_002", "fs2_28_b_lc_2d0_002_sclw"]
+
 [passives]
 # «Configuración de pasivas» (docs/game/mechanics/pasivas-configurables.md).
 # max_slots: how many of a player's 5 passive slots can be configured, 3..5 (out of range: clamped, with a warning in
@@ -32,6 +44,9 @@ build_rarities = [5, 6, 7, 8]
 build_slots = [4, 5]
 # log_first: log the first N slot replacements (0 = none).
 log_first = 20
+# allow_duplicates: the same passive may be chosen in several slots of a player (archetype and general slots alike);
+# each copy applies, as the game adds every slot's passive. false = each passive once per player.
+allow_duplicates = true
 # enabled = false: retail passives (no configurator; the team dock keeps «Pasivas heredadas»).
 enabled = true
 

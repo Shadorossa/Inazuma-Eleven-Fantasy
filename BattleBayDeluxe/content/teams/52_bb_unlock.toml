@@ -7,3 +7,6 @@ schema = "vr_framework.team/2"
 
 [VRFW.BbUnlock]
 Same = { bb_01_team_raimon = ["tm_cro_ie2_1700", "tm_cro_ie2_1720"] }
+# 2026-10-15 (owner): Umbrella and Sally's (Chronicle Deluxe adds them as side nodes, so the name rule matched their legend
+# rows to nodes and showed them locked) are always available in the Battle Bay.
+Open = ["legend_ie2_01", "legend_ie1_06"]

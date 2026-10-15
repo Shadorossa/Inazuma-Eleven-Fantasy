@@ -6,13 +6,13 @@
 -- docs/framework/save-slots.md), the framework hands the copy's bytes to the `slot_copy` handlers before it writes
 -- them. This handler runs the pass of lib/duplicate_players/merge_pass.lua with the POLICY other mods declare as data:
 -- [CharacterReforged.DuplicateRules.<name>] in their content\duplicate_rules\*.toml (keys: lib/duplicate_players/
--- rules.lua; No More Rarities declares one card per character and the 5★ normal card). No rule declared = nothing is
+-- rules.lua; New Recruitment declares one card per character, No More Rarities the 5★ normal card). No rule declared = nothing is
 -- done (the copy is written as the framework copies it).
 --
 --   slot_copy   the copy's bytes, converted before they are written; a failure refuses the copy (the source slot is
 --               untouched). The report (blob duplicate_players.txt of this mod) is written into the target slot at the
 --               save engine's «copied» event (the engine resets the target's mod data when the copy is written).
---   slot_load   only when a rule asks for it (apply_on_load = true; No More Rarities does, owner request 2026-10-14: «al
+--   slot_load   only when a rule asks for it (apply_on_load = true; No More Rarities and New Recruitment do, owner request 2026-10-14: «al
 --               entrar en la partida convierta a todos los jugadores a la misma rareza … y elimine los duplicados»): the
 --               same pass on a player slot the save engine is about to load (its safe point: before the game reads the
 --               file). Before the first rewrite of a save, a durable copy of the slot's file (global blob

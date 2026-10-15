@@ -931,7 +931,7 @@ do
     NAME_X = -261,                                 -- _text_name01 x in evt_team02_02_detail (from the locator)
     BAND_Y = 188, BAND_H = 88, ICON_Y = 176,       -- layout units from the locator, y up
     BAND_INSET = 5,                                -- band right end inside the card
-    TAG_RIGHT = 90,                                -- the position tags' centre, from the band's right end
+    TAG_RIGHT = 110,                               -- the position tags' centre, from the band's right end
     LOCATOR = 1,                                   -- PL.LAYOUT_LOCS index of _pos_evt_detail01
     BAND_NODES = {1125548721 --[[_sp_base01]], 3384915402 --[[_wlv_base01]]},
     ICON_NODE = 2164615260,                        -- _icon_sp_area_dmy01
@@ -967,13 +967,22 @@ do
       end
       funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, D.FLAVOR, false, 0)
     end
-    if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
-      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 0, x1 - D.BAND_INSET - D.TAG_RIGHT - lx)
-      funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 1, D.BAND_Y - D.BAND_H / 2)
-    end
+    T.PlaceTag()
     if type(EVT_PPG_HOST) == "table" then
       EVT_PPG_HOST.card = D.CARD
     end
+  end
+
+  -- the position tag (the retail tag's locator) at the bar's right end, centred on the bar. Called every frame of the
+  -- mode: the retail tag slides to its own place when it opens and would leave it there
+  function PlayerTraining.TrainingMode.PlaceTag()
+    local T, D = PlayerTraining.TrainingMode, PlayerTraining.TrainingMode.DETAIL
+    if not T.on or PL.layout_mode ~= "training" or not funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
+      return
+    end
+    local lx = D.CARD[1] + D.PAD + D.ICON + D.GAP - D.NAME_X
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 0, D.CARD[3] - D.BAND_INSET - D.TAG_RIGHT - lx)
+    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 1, D.BAND_Y - D.BAND_H / 2)
   end
 
   -- wraps the screen's PL.ApplyDetailLayout once per VM (it runs on every state change and for a few frames after)
@@ -1245,6 +1254,7 @@ do
     while true do
       coroutine.yield()
       T.frame = T.frame + 1
+      pcall(T.PlaceTag)
       if PL.Key(EVT_CMD_BACK) then
         if T.Back() then
           break
