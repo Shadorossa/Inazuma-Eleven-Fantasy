@@ -1,0 +1,153 @@
+# ev62_92149 eff list: ev62_01490's (whd01490) with the effect object renamed (ev62014900 -> ev62921490, the recoloured copy)
+schema = "VRFW.base_table/1"
+file = "data/common/event_cfg/eff/ev62_92149_eff.cfg.bin"
+from = "data/common/event_cfg/eff/ev62_01490_eff.cfg.bin"
+
+[[entry]]
+command = "LOAD_ACTOR_RESOURCE"
+at = 0
+args = ["ev62921490", "common/effect/event/ev62/ev62921490/ev62921490.objbin", 1, 0]
+
+[[entry]]
+command = "ACTOR_DECLARE"
+at = 3
+args = ["ev62921490"]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 5
+args = ["ev62921490", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 6
+args = ["ev62921490", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 7
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 8
+args = ["ev62921490", "c0100", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 9
+args = ["ev62921490", 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 11
+frame = 106
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 12
+frame = 106
+args = ["ev62921490", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 13
+frame = 106
+args = ["ev62921490", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 14
+frame = 106
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 15
+frame = 106
+args = ["ev62921490", "c0200", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 16
+frame = 106
+args = ["ev62921490", 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 18
+frame = 182
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 19
+frame = 182
+args = ["ev62921490", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 20
+frame = 182
+args = ["ev62921490", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 21
+frame = 182
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 22
+frame = 182
+args = ["ev62921490", "c0300", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 23
+frame = 182
+args = ["ev62921490", 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 26
+frame = 366
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_ATTACH_POINT"
+at = 27
+frame = 366
+args = ["ev62921490", "point_eff", "evp_eff01", 0.0, 0.0, 0.0, 1]
+
+[[entry]]
+command = "ACTOR_ATTACH_ROTATION"
+at = 28
+frame = 366
+args = ["ev62921490", 0.0, 0.0, 0.0]
+
+[[entry]]
+command = "ACTOR_OPTION_A"
+at = 29
+frame = 366
+args = ["ev62921490", 0]
+
+[[entry]]
+command = "ACTOR_PLAY_ANIM"
+at = 30
+frame = 366
+args = ["ev62921490", "c0400", 272, 0, 0, "NONE", 0]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 31
+frame = 366
+args = ["ev62921490", 1]
+
+[[entry]]
+command = "ACTOR_VISIBLE"
+at = 33
+frame = 511
+args = ["ev62921490", 0]

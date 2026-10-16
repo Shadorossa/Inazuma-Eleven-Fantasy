@@ -12,9 +12,9 @@
 # Scenes:
 #   ev71_00070  retail: fire (Harper Evans' Meteor)
 #   ev71_00071  retail: ev71_00070 with the Inazuma Break beams (effect of story scene ev09_04570)
-#   ev71_00080  retail: Blaine Westbrook's, its eff list fixed by content\base_tables\common\event_cfg\eff\ev71_00080_eff.toml
+#   ev71_00080  retail: Blaine Westbrook's, its eff list fixed by content\base_tables\event_cfg\eff\ev71_00080_eff.toml
 #   ev71_00090  this mod: ev71_00070 in GOLD (effect ev71000900; research/scripts/goal_smash_build.py SMASHES)
-#               its lists: content\base_tables\common\event_cfg\{evt,eff,snd}\ev71_00090*.toml (readable deltas of ev71_00070's)
+#               its lists: content\base_tables\event_cfg\{evt,eff,snd}\ev71_00090*.toml (readable deltas of ev71_00070's)
 schema = "VRFW.technique/3"
 
 # ---------------------------------------------------------------- ev71_00070 (fire)
@@ -37,7 +37,7 @@ goal_event = "ev71_00071"   # loaded by the event itself; retail plays it in Chr
 
 [[edit]]
 target = "whs10090"      # Emperatriz oscura (Blaine Westbrook): the retail eff-list actor bug is fixed in
-goal_event = "ev71_00080"   # content\base_tables\common\event_cfg\eff\ev71_00080_eff.toml
+goal_event = "ev71_00080"   # content\base_tables\event_cfg\eff\ev71_00080_eff.toml
 
 # ---------------------------------------------------------------- ev71_00090 (gold, this mod)
 

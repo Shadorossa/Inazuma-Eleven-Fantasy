@@ -1,0 +1,20 @@
+# INAROGUE album book (research/scripts/rogue_album_book_build.py; docs/game/modes/inarogue.md §14.5): the new menu
+# evt_rogue_album_menu = research/test-mods/rogue_album/src/evt_rogue_album_menu.lua with its @crc / @num / @GEOM@
+# placeholders filled (written by the build script). Registry row: rogue_album_build.py; setting / layouts / texture /
+# texts: rogue_album_book_build.py.
+name = "rogue_album"
+mod = "inarogue"
+order = 101
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE album book menu (evt_rogue_album_menu)"
+
+[[files]]
+path = "common/script/lua/menu/evt_rogue_album_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_rogue_album_menu.lua"
+  crc = "none"

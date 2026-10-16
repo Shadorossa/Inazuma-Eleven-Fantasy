@@ -1,0 +1,20 @@
+# INAROGUE player bank (research/scripts/rogue_build.py build_lua; docs/game/modes/inarogue.md): the new menu
+# evt_rogue_bank_menu = src/evt_rogue_bank_menu.lua with its @crc placeholders filled (copy of the committed output
+# research/test-mods/rogue_bank/data). Rarity / texture / registry / setting / layouts stay in rogue_build.py.
+name = "rogue_bank"
+mod = "inarogue"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE bank menu (evt_rogue_bank_menu)"
+
+[[files]]
+path = "common/script/lua/menu/evt_rogue_bank_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_rogue_bank_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "evt_rogue_bank_menu" }   # --@lib evt_menu_kit.lua#StartCo

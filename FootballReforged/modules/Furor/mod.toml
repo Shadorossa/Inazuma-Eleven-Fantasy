@@ -1,10 +1,10 @@
 id = "furor"
 # name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Furor"
-version = "1.1.7"
+version = "1.1.9"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "GO Strikers' furor gauge: each team's fire bar beside its crest fills with time (faster when losing) and a little with goals, saves and duels; full, the furor button (L3 / R) starts the furor phase for 12 s: every player wears his position's awakening (look and stats), moves hit harder, players run faster. The CPU starts its own. Awakenings exist only in the furor phase."
+description = "GO Strikers' furor gauge: each team's fire bar beside its crest fills with time (faster when losing) and a little with goals, saves and duels; full, the furor button (L3 / R) starts the furor phase for 24 s: every player wears his position's awakening (look and stats), moves hit harder, players run faster. The CPU starts its own. Awakenings exist only in the furor phase."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-15"
@@ -16,11 +16,11 @@ folder = "Furor"
 # in FR 1.1.0. GO Strikers 2013's tension gauge (docs/game/mechanics/furor.md), data only on the VR-Framework's team
 # momentum service (docs/framework/team-momentum.md):
 #   content\match_resources\gauge.toml    the team gauge furor.gauge (0..100)
-#   content\team_momentum\gauge.toml      time / comeback / action fill, levels, the 12 s phase
+#   content\team_momentum\gauge.toml      time / comeback / action fill, levels, the 24 s phase
 #   content\rules\gauge.toml              the effects of the levels and the phase (the awakening of each position), the
 #                                         CPU's start
-#   content\effects\awakening.toml        the phase's awakening look per position (GK / DF / MF / FW): character
-#                                         triggers with recoloured copies of the retail awakening aura (1.1.0)
+#   content\effects\awakening.toml        empty since 1.1.9: the phase wears the retail awakening look (trigger
+#                                         0x9627F4F7, its own colour; content\rules\gauge.toml)
 #   content\techniques\no_awakenings.toml no player has an awakening (aura types 5 / 7) anywhere, matches included:
 #                                         the furor phase is the only awakening (1.1.0)
 #   content\menus\furor_banner.toml + content\images\menu\02_btl\furor_banner.toml   the «Fase de furor activa»

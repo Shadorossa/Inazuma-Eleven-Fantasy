@@ -134,7 +134,7 @@ SprintByStamina = { above = 0.45, below = 0.20, rate = 0.95, attack_rate = 0.5 }
 # substitutes its most tired outfield player at a dead ball once his stamina is below 15 %
 SubstituteAtStamina = 0.15
 # a bench forward whose element beats your keeper comes on for a forward without that advantage (dead balls, never in
-# the first 900 game seconds of the first half; at most 2 per match; a tired change at that dead ball goes first)
+# the first 900 game seconds of the first half; at most 2 per match; a tired change at that dead ball goes first; the team captain is never the player taken off, by this rule or the tired one)
 SubstituteForElement = { after_s = 900, max = 2 }
 # move choice: always the best move (power, element, tension), always an element that beats yours when it has one
 BestMoveChance = 1.0

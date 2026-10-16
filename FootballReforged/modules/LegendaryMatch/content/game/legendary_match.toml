@@ -1,0 +1,41 @@
+# Legendary Match › what scripts\legendary_match.lua touches of the game: the foul chance of the rival's power charges /
+# power blocks (docs/game/mechanics/cards.md §2.2, docs/game/mods/legendary-match.md).
+schema = "VRFW.game/2"
+
+# ------------------------------------------------------------------------------------------------ globals
+
+# [g_soccerActors]: the soccer actors ([g_soccerActors] + index x 0x570: +0x94 the handle, +0xD0 the team)
+[[VRFW.Global]]
+name = "legendary_actors"
+game = "Match.SoccerActors.ViaSkillUsed"
+
+# The match info block [[g_gameRoot]+0x6A58] (+0x2C29 the user's team)
+[[VRFW.Global]]
+name = "legendary_match_info"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+# [g_focusMgr]: the focus battle manager (+0xB08 the duel's result kind: 6 = a power charge / power block)
+[[VRFW.Global]]
+name = "legendary_duel"
+game = "Duel.Manager"
+
+# ------------------------------------------------------------------------------------------------ the foul chance
+
+# f32 GetFoulRate(const FoulRequest* req) 0x1665B90: the chance that a contact is a foul. req +0 the kind (1 = a duel),
+# +4 the offender's handle, +8 the victim's. In a duel the game reads the duel's result kind: 6 (a power charge /
+# power block) = focusFoulBaseRatePowerAction (0.15) x the offender's foul-rate passives; 0 when he is immune.
+# Prologue: mov rax,rsp; sub rsp,0F8h; mov rdx,[rip+x] = 17 bytes (the RIP operand relocated).
+# Post: scripts\legendary_match.lua answers config [legendary_match] rival_power_action_foul_rate for the rival's
+# power actions (the scripts run only for a duel foul with a non-zero chance).
+[[VRFW.Hook]]
+name = "LegendaryMatch.FoulRate"
+kind = "function"
+pattern = "48 8B C4 48 81 EC F8 00 00 00 48 8B 15 ?? ?? ?? ?? 44 0F 29 5C 24 70 44 0F 29 64 24 60 45 0F 57 E4 48 89 58 10 8B 59 04"
+rva = 0x1665B90
+steal = 17
+relocs = [{ at = 13, next = 17 }]
+args = ["ptr"]
+ret = "f32"
+wait_ms = 100
+post_when = [{ value = "[args[1]]:u8", equals = 1 }, { value = "ret", not = 0 }]

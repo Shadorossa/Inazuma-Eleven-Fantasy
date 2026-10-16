@@ -41,34 +41,45 @@ do
     return true
   end
 end
--- The page (v5, 2026-10-10: the design Nacho approved on Inazuma Fantasy's player page, rounds 13 / 14 / 14c of
--- 2026-10-06, commits 7f6fb69284, 9bd0baf82e, 61e33e2c5a; v4's 4 x 5 grid of 2026-09-30 is gone):
---   two rows of three columns, each row on a slanted light-blue band (2 instances of the layer util_cs_band, a copy of
---   the retail stamina gauge btl06_13 whose frame shows Utilities' sprite util_cs_band, 780 x 72 px):
---     row 1 = FICHADO | ORIGEN | PARTIDOS          row 2 = V-E-D · % | GOLES | GOLES/PART.
---   numbers from CMND_UTIL_CAREER_EX(chara, 0) (signed, before, source, matches, wins, draws, losses, goals); the ratio
---   with the language's decimal comma, «-» without matches; a player without a save record: «Sin datos».
--- * The page shows as page type 2 (PASIVAS DE EQUIPO) with its 5 retail strips hidden; the six cells are instances of
---   util_cs_cellt (row 1) / util_cs_cell (row 2), mounted by the panel util_cs_panel (attached at the status base's
---   _atc_passive01, screen (1440, 576) on the retail plate) and moved (layer position, y up) onto the bands' columns;
---   the other cells stay hidden. The bands hang from the same locator (attach rows util_cs_band0 / 1 on the retail
---   status base; Utilities' menus\102_team\career.toml).
--- * Retail plate: the bands centred in the passives area under the title (x 1050..1830, y 666..738 / 754..826), the
---   columns 260 px apart. Inazuma Fantasy's paged plate lays the same rows out on its own card (its plate_pages
---   G.Career, own bands evt_pp_csband); there this file only fills the cells (same texts) and leaves the layout alone.
+-- The page (v6, 2026-10-16: a timeline on top, a card-back table below; v5's two rows of three cells are gone):
+--   top    a timeline from the signing date to today: one icon per milestone (signing, first goal, first «Jugador del
+--          partido»; milestones of one day side by side) with its date below, a dot for today at the line's end; on the
+--          right three chips (matches, W-D-L, goals)
+--   bottom a card-back table: header row «position · since <date>» with the column titles (matches, goals, assists,
+--          MVP, + saves for keepers), one row per mode the player played (at most 3: the 2 most played + «others»),
+--          the total row (bigger font, darker band) and one record line (best match: goals, or saves for a keeper)
+--   numbers from CMND_UTIL_CAREER_EX groups 0 (career), 2 (milestones, best match, today) and 10 + m (modes); dates
+--   unknown to the store (-1: a record from before its version 2) are left out; a player without a save record:
+--   «Sin datos».
+-- * Layers: the free text layers util_cs_text (22 px, 32 instances) / util_cs_textb (26 px, 8; the total row), both
+--   mounted by the panel util_cs_panel at its locator of cell (0, 0); the chips are util_cs_cellt 0..2 (label + value);
+--   the sprite quads are copies of the retail stamina gauge btl06_13 whose frame shows one of Utilities' sprites:
+--   util_cs_band 0..5 (row bands, timeline line, chip backs; priority 302, under the texts) and util_cs_icon 0..3
+--   (milestone icons, today's dot; priority 304), attached at the status base's _atc_passive01 (Utilities'
+--   menus\102_team\career.toml, images\menu\career_band.toml).
+-- * Geometry: every place is (x from the page centre, y from the page top) in screen px; UTIL_CS.Apply(geo) maps them
+--   with geo = {origin = the _atc_passive01 screen point, center = page centre x, top = page top y, height = page
+--   height (the mode rows that fit)}. The retail plate
+--   uses UTIL_CS.GEO_RETAIL (this file, each frame); a paged plate (plate_pages) calls UTIL_CS.OwnLayout(on, geo) with
+--   its own geometry each frame.
+-- * The page shows as page type 2 (PASIVAS DE EQUIPO) with its 5 retail strips hidden.
 -- * Title: the six-sense title mesh with the sprite util_gtxt_career01 (Utilities' images, 9 languages).
 -- * Page change: on the retail plate this file wraps ChangePersonalPlatePageByCharaHdl / ...ByCharaParamId itself; on
---   Inazuma Fantasy's paged plate IF's plate_pages block calls UTIL_CS.PageChange from a wrapper UNDER its own (so its
---   Trayectoria rows see type 6) and this file leaves those two functions alone.
--- Texts: menu_text utilities.cs_* (Utilities' text\rows\career.toml, 9 languages; Spanish fallbacks below). No
+--   a paged plate (plate_pages) that block calls UTIL_CS.PageChange from a wrapper UNDER its own and this file leaves
+--   those two functions alone.
+-- Texts: menu_text utilities.cs_* (Utilities' text\rows\career.toml, 9 languages; English fallbacks below). No
 -- funcLuaCommand runs while the chunk loads.
 UTIL_CS.CMD_EX = 2247015077
 UTIL_CS.PANEL = 3640197796
-UTIL_CS.CELL = 4111238249     -- cells of rows 2-5 (16 instances; row 2 used)
-UTIL_CS.CELLT = 2985398224   -- cells of row 1 (4 instances)
+UTIL_CS.CELL = 4111238249     -- cells of rows 2-5 (16 instances; unused since v6)
+UTIL_CS.CELLT = 2985398224   -- cells of row 1 (4 instances; v6: the chips 0..2)
+UTIL_CS.TEXT = 83928140     -- v6 free texts, 22 px (label node grey, value node blue)
+UTIL_CS.TEXTB = 248636134   -- v6 free texts, 26 px
+UTIL_CS.TEXT_COUNT, UTIL_CS.TEXTB_COUNT = 32, 8
 UTIL_CS.N_LABEL = 2765163497
 UTIL_CS.N_VALUE = 3605894127
 UTIL_CS.ROW_CELLS = {[0] = 4, 4, 4, 4, 4}
+UTIL_CS.CHIPS = 3                    -- util_cs_cellt instances 0..2
 UTIL_CS.ROWS = 811691761             -- soccer11_20_formation_team_passive (the retail strips, hidden on our page)
 UTIL_CS.L_STATUS = 730911947         -- soccer11_05_formation_status_base
 UTIL_CS.TX_S1105 = 1156047165        -- #/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx
@@ -79,43 +90,93 @@ UTIL_CS.M_T_PARAM1 = 254458604       -- _gtxt_parameters01 (ATRIBUTOS, page type
 UTIL_CS.M_T_PARAM2 = 2518936406      -- _gtxt_parameters02 (ATRIBUTOS, equipment page, type 0)
 UTIL_CS.M_T_TEAMPASS = 301770119     -- _gtxt_teampassives01 (PASIVAS DE EQUIPO, type 2)
 UTIL_CS.M_DOT4_ON = 1030719410       -- _page03_on (lit dot of the passives page, child of _pos_page03)
--- the row bands: 2 instances of util_cs_band (btl06_13_stamina_gauge copy) attached at _atc_passive01
+-- the sprite quads: btl06_13_stamina_gauge copies attached at _atc_passive01, our sprite in the gauge frame
 UTIL_CS.BAND = 1985257824
-UTIL_CS.BAND_TRACE = {[0] = 3105876696, 3457735246}
-UTIL_CS.SP_BAND = 1985257824
+UTIL_CS.ICON = 1528769104
+UTIL_CS.QUAD_TRACE = {
+  [1985257824] = {[0] = 3105876696, 3457735246, 1460767732, 538360674,
+    3195154113, 3379895895},
+  [1528769104] = {[0] = 2683015679, 3907821929, 1910894803, 115523653},
+}
+-- the sprite of each quad instance
+UTIL_CS.QUAD_SPRITE = {
+  [1985257824] = {[0] = 4252166691, 2578173535, 4020221821, 2493693744,
+    2493693744, 2493693744},
+  [1528769104] = {[0] = 2631301207, 407927670, 342982049,
+    3773179972},
+}
+UTIL_CS.Q_HEAD, UTIL_CS.Q_TOTAL, UTIL_CS.Q_LINE, UTIL_CS.Q_CHIP = 0, 1, 2, 3      -- util_cs_band instances
+UTIL_CS.I_SIGNED, UTIL_CS.I_GOAL, UTIL_CS.I_MVP, UTIL_CS.I_TODAY = 0, 1, 2, 3     -- util_cs_icon instances
 UTIL_CS.TX_BTL0613 = 1191797350      -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
 UTIL_CS.SP_FRAME = 538967808         -- the gauge frame's sprite slot (_hp_base01)
 UTIL_CS.BAND_HIDE = {1257514352 --[[_gtxt_stamina01]], 2609329121 --[[_hp_empty01]], 2043683848 --[[_hp_bar02]]}
 UTIL_CS.FRAME = {94, 816, 476, 44}   -- the gauge frame _hp_base01 in its layout: x, -y, w, h
--- retail plate geometry (screen px, y down): the locator, the cells' default centres, the bands and the columns
-UTIL_CS.ORG = {1440, 576}            -- _atc_passive01 of soccer11_05_formation_status_base
-UTIL_CS.CELL_X0, UTIL_CS.CELL_DX, UTIL_CS.CELL_DY = -290.5, 195, 84   -- cell (r, c) default = ORG + (x0 + dx c, dy r)
-UTIL_CS.BAND_RECT = {[0] = {1050, 666, 1830, 738}, [1] = {1050, 754, 1830, 826}}
-UTIL_CS.COL_X = {1180, 1440, 1700}
+-- the cells' / free texts' default place: the panel's locator of cell (r, c) = origin + (x0 + dx c, dy r)
+UTIL_CS.CELL_X0, UTIL_CS.CELL_DX, UTIL_CS.CELL_DY = -290.5, 195, 84
+-- the retail plate: _atc_passive01 of soccer11_05_formation_status_base, the passives area under the title
+UTIL_CS.GEO_RETAIL = {origin = {1440, 576}, center = 1440, top = 600, height = 330}
+-- the page's places (x from the page centre, y from its top, screen px)
+UTIL_CS.L = {
+  half = 420,                                    -- half width of the content
+  line_y = 16,                                   -- timeline: the line (from the first group to today)
+  first_x = -380, last_x = 20,                   -- the first group's and today's centres
+  icon = 32, icon_pitch = 36, dot = 14, date_y = 46, gap = 14, char_px = 16,
+  chip_gap = 6, chip_h = 62,                     -- chips: matches, W-D-L, goals (widths below), right-aligned
+  head_top = 68, row_h = 28, total_h = 30, record_h = 28, max_rows = 4,
+  name_x = -290, num_x0 = -130,                  -- name column centre; the number columns span num_x0 .. half
+}
+UTIL_CS.CHIP_W = {96, 136, 96}
 UTIL_CS.C = {LAYER_VISIBLE = 711242136, EXIST_LAYER = 262659071, IS_OPEN_LAYER = 2640875187, OPEN_LAYER = 629267548,
   LOADING = 3057768039, POS = 1389957207, SCALE = 3778714801, TRACE = 1774843228,
   LOC_VISIBLE = 2158717427, MESH_VISIBLE = 3405944500, TEXT = 1083631230, TEXT_VISIBLE = 1505208242,
   SPRITE = 558735651, TEXT_GET = 4074371074, EVT_LOG = 3661580131}
 UTIL_CS.DEBUG = false               -- true: lines «util_career_page …» in the loader log (CMND_EVT_LOG)
 UTIL_CS.shown = false
-UTIL_CS.bandReady = UTIL_CS.bandReady or {}
--- menu_text rows (crc32 of the key) and their Spanish fallback
+UTIL_CS.visible = true               -- something of the page may be on screen (Guard hides it on other pages)
+UTIL_CS.quadReady = UTIL_CS.quadReady or {}
+UTIL_CS.plan = nil
+-- the mode groups of CMND_UTIL_CAREER_EX (10 + index) and their text keys
+UTIL_CS.MODES = {[0] = "mode_story", "mode_chronicle", "mode_free", "mode_vroad", "mode_kizuna", "mode_battle_bay"}
+-- menu_text rows (crc32 of the key) and their English fallback
 UTIL_CS.TX = {
   date = {1360559103, "{d}/{m}/{yy}"},
-  no_data = {911924896, "Sin datos"},
+  date_short = {2533703131, "{d}/{m}"},
+  no_data = {911924896, "No data"},
   none = {2216053834, "-"},
-  dec = {783218097, ","},
-  l_signed = {2083761239, "FICHADO"},
-  l_source = {1023544295, "ORIGEN"},
-  l_matches = {4045851283, "PARTIDOS"},
-  l_record = {4189907717, "V-E-D"},
-  l_goals = {2454541683, "GOLES"},
-  l_gpm = {3305323248, "GOLES/PART."},
+  dec = {783218097, "."},
+  l_signed = {2083761239, "SIGNED"},
+  l_source = {1023544295, "ORIGIN"},
+  l_matches = {4045851283, "MATCHES"},
+  l_record = {4189907717, "W-D-L"},
+  l_goals = {2454541683, "GOALS"},
+  l_gpm = {3305323248, "GOALS/GAME"},
+  l_mvp = {4257772665, "MVP"},
   v_record = {348636902, "{1}-{2}-{3}"},
-  src1 = {3945994379, "Fichaje"},
-  src2 = {1916422449, "Historia"},
+  src1 = {3945994379, "Signing"},
+  src2 = {1916422449, "Story"},
   src3 = {87914919, "Avatar"},
   src4 = {2606361604, "INAROGUE"},
+  before = {3785738141, "before {1}"},
+  header = {1475097330, "{1} · since {2}"},
+  pos1 = {2814022935, "GK"},
+  pos2 = {1051968685, "FW"},
+  pos3 = {1236595771, "MF"},
+  pos4 = {3620757912, "DF"},
+  col_matches = {3795033312, "MP"},
+  col_goals = {2161174906, "G"},
+  col_assists = {4122609393, "A"},
+  col_saves = {1036296631, "SV"},
+  total = {1594233021, "TOTAL"},
+  mode_story = {3138873394, "Story"},
+  mode_chronicle = {1894262396, "Chronicle"},
+  mode_free = {154400696, "Free match"},
+  mode_vroad = {1416992213, "Victory Road"},
+  mode_kizuna = {807739088, "Kizuna Town"},
+  mode_battle_bay = {519572719, "Battle Bay"},
+  mode_other = {2300139818, "Others"},
+  best_goals = {1150749822, "Best: {1} goals in one match ({2})"},
+  best_goal_one = {205101698, "Best: 1 goal in one match ({2})"},
+  best_saves = {4186129587, "Best: {1} saves in one match ({2})"},
 }
 
 function UTIL_CS.Log(...)
@@ -146,14 +207,15 @@ function UTIL_CS.Fmt(key, ...)
   return s
 end
 
-function UTIL_CS.Date(v)
+-- a yyyymmdd day in the language's date text (key: "date" = day / month / year, "date_short" = day / month)
+function UTIL_CS.Date(v, key)
   if type(v) ~= "number" or v <= 0 then
     return nil
   end
   local y = math.floor(v / 10000)
   local m = math.floor(v / 100) % 100
   local d = v % 100
-  local s = UTIL_CS.Text("date")
+  local s = UTIL_CS.Text(key or "date")
   s = string.gsub(s, "{yy}", string.format("%02d", y % 100))
   s = string.gsub(s, "{y}", string.format("%04d", y))
   s = string.gsub(s, "{m}", string.format("%02d", m))
@@ -201,7 +263,7 @@ function UTIL_CS.Ex(chara, group)
   return v
 end
 
--- ---- the panel and its cells -----------------------------------------------------------------------------------
+-- ---- the panel and its cells (the chips; the old cell API stays for a paged plate of an older Character Reforged) --
 function UTIL_CS.Open(L, k)
   if not UTIL_CS.IsOpen(L, k) then
     funcLuaMenuCommand(UTIL_CS.C.OPEN_LAYER, L, k)
@@ -229,71 +291,416 @@ function UTIL_CS.EachCell(fn)
   end
 end
 
--- the cells this page uses: rows 0 / 1, columns 0..2
-function UTIL_CS.Used(r, c)
-  return r <= 1 and c <= 2
+
+-- ---- the page's plan: what to draw where (filled by Show, placed by Apply) ------------------------------------------
+-- plan = {texts = {{L, k, x, y, grey, blue}}, chips = {{k, x, label, value}}, quads = {{L, i, x0, y0, x1, y1}}}
+-- (places relative to the page: x from its centre, y from its top)
+
+-- day number of a yyyymmdd date (days from the civil calendar's epoch: only differences are used)
+function UTIL_CS.DayNumber(v)
+  local y = math.floor(v / 10000)
+  local m = math.floor(v / 100) % 100
+  local d = v % 100
+  if m <= 2 then
+    y = y - 1
+  end
+  local era = math.floor(y / 400)
+  local yoe = y - era * 400
+  local mp = (m + 9) % 12
+  local doy = math.floor((153 * mp + 2) / 5) + d - 1
+  local doe = yoe * 365 + math.floor(yoe / 4) - math.floor(yoe / 100) + doy
+  return era * 146097 + doe
 end
 
-function UTIL_CS.PanelShow(on)
-  local C = UTIL_CS.C
-  if not UTIL_CS.Exists(UTIL_CS.PANEL) or not UTIL_CS.Exists(UTIL_CS.CELL) or not UTIL_CS.Exists(UTIL_CS.CELLT) then
-    return false
+-- rough drawn width of a 22 px text (the timeline only keeps its dates apart with it)
+function UTIL_CS.Width(s)
+  local n = #(string.gsub(s, "[\128-\191]", ""))
+  return n * UTIL_CS.L.char_px
+end
+
+function UTIL_CS.Known(day)
+  return type(day) == "number" and day > 0
+end
+
+-- the timeline groups: {{day, icons = {instance...}, date = text}} by date, today's dot last
+function UTIL_CS.Milestones(signed, before, first_goal, first_mvp, today)
+  local items = {}
+  local short = function(v)
+    return UTIL_CS.Date(v, "date_short")
   end
-  if on then
-    UTIL_CS.Open(UTIL_CS.PANEL, 0)
+  if UTIL_CS.Known(signed) then
+    items[#items + 1] = {signed, UTIL_CS.I_SIGNED, short(signed)}
+  elseif UTIL_CS.Known(before) then
+    items[#items + 1] = {before, UTIL_CS.I_SIGNED, UTIL_CS.Fmt("before", short(before))}
   end
-  funcLuaMenuCommand(C.LAYER_VISIBLE, UTIL_CS.PANEL, 0, on)
-  UTIL_CS.EachCell(function(L, k, r, c)
-    local mine = on and UTIL_CS.Used(r, c)
-    if mine then
-      UTIL_CS.Open(L, k)
+  if UTIL_CS.Known(first_goal) then
+    items[#items + 1] = {first_goal, UTIL_CS.I_GOAL, short(first_goal)}
+  end
+  if UTIL_CS.Known(first_mvp) then
+    items[#items + 1] = {first_mvp, UTIL_CS.I_MVP, short(first_mvp)}
+  end
+  table.sort(items, function(a, b)
+    if a[1] ~= b[1] then
+      return a[1] < b[1]
     end
-    if mine or UTIL_CS.IsOpen(L, k) then
-      funcLuaMenuCommand(C.LAYER_VISIBLE, L, k, mine)
-    end
+    return a[2] < b[2]
   end)
-  return true
+  local groups = {}
+  for _, it in ipairs(items) do
+    local g = groups[#groups]
+    if g ~= nil and g.day == it[1] then
+      g.icons[#g.icons + 1] = it[2]
+    else
+      groups[#groups + 1] = {day = it[1], icons = {it[2]}, date = it[3]}
+    end
+  end
+  if UTIL_CS.Known(today) and (#groups == 0 or groups[#groups].day < today) then
+    groups[#groups + 1] = {day = today, icons = {UTIL_CS.I_TODAY}, date = UTIL_CS.Date(today, "date_short"), today = true}
+  end
+  return groups
 end
 
-function UTIL_CS.Set(row, col, label, value)
-  local L, k = UTIL_CS.Cell(row, col)
+-- x centre of each group: by date between the first group and today, then pushed apart so icons and dates never touch
+function UTIL_CS.TimelineX(groups)
+  local L = UTIL_CS.L
+  local n = #groups
+  local xs, half = {}, {}
+  if n == 0 then
+    return xs
+  end
+  local d0 = UTIL_CS.DayNumber(groups[1].day)
+  local span = UTIL_CS.DayNumber(groups[n].day) - d0
+  for i, g in ipairs(groups) do
+    local w = g.today and L.dot or (#g.icons * L.icon_pitch - (L.icon_pitch - L.icon))
+    half[i] = math.max(w, UTIL_CS.Width(g.date or "")) / 2
+    if span > 0 then
+      xs[i] = L.first_x + (UTIL_CS.DayNumber(g.day) - d0) / span * (L.last_x - L.first_x)
+    else
+      xs[i] = L.first_x
+    end
+  end
+  xs[1] = math.max(xs[1], half[1] - L.half)       -- a wide first date stays inside the page
+  for i = 2, n do
+    xs[i] = math.max(xs[i], xs[i - 1] + half[i - 1] + half[i] + L.gap)
+  end
+  if n > 1 and xs[n] > L.last_x then
+    xs[n] = L.last_x
+    for i = n - 1, 1, -1 do
+      xs[i] = math.min(xs[i], xs[i + 1] - half[i] - half[i + 1] - L.gap)
+    end
+  end
+  return xs
+end
+
+-- the table's rows: {{name, matches, goals, assists, mvp, saves}} of the modes played, the most played first; more
+-- than max_rows: the first max_rows - 1 and one «others» row with the rest
+function UTIL_CS.ModeRows(chara, max)
+  local rows = {}
+  for m = 0, #UTIL_CS.MODES do
+    local v = UTIL_CS.Ex(chara, 10 + m)
+    if v ~= nil and v[1] > 0 then
+      rows[#rows + 1] = {UTIL_CS.Text(UTIL_CS.MODES[m]), v[1], v[5], v[6], v[7] or 0, v[8] or 0, order = m}
+    end
+  end
+  table.sort(rows, function(a, b)
+    if a[2] ~= b[2] then
+      return a[2] > b[2]
+    end
+    return a.order < b.order
+  end)
+  if #rows > max then
+    local other = {UTIL_CS.Text("mode_other"), 0, 0, 0, 0, 0}
+    for i = max, #rows do
+      for c = 2, 6 do
+        other[c] = other[c] + rows[i][c]
+      end
+    end
+    for i = #rows, max, -1 do
+      rows[i] = nil
+    end
+    rows[max] = other
+  end
+  return rows
+end
+
+-- the number columns' centres: matches, goals, assists, MVP (+ saves for a keeper)
+function UTIL_CS.Columns(keeper)
+  local L = UTIL_CS.L
+  local n = keeper and 5 or 4
+  local w = (L.half - L.num_x0) / n
+  local xs = {}
+  for i = 1, n do
+    xs[i] = L.num_x0 + w * (i - 0.5)
+  end
+  return xs
+end
+
+-- how many mode rows fit a page of `height` px (at least 1, at most L.max_rows)
+function UTIL_CS.RowsFit(height)
+  local L = UTIL_CS.L
+  local fixed = L.head_top + L.row_h + L.total_h + L.record_h
+  return math.max(1, math.min(L.max_rows, math.floor((height - fixed) / L.row_h)))
+end
+
+-- the plan of a player for a page of `height` px (no save record: «no data» only)
+function UTIL_CS.Plan(chara, height)
+  local T, L = UTIL_CS.Text, UTIL_CS.L
+  local plan = {texts = {}, chips = {}, quads = {}, chara = chara, height = height}
+  local nt, nb = 0, 0
+  local function text(x, y, grey, blue)
+    plan.texts[#plan.texts + 1] = {UTIL_CS.TEXT, nt, x, y, grey or "", blue or ""}
+    nt = nt + 1
+  end
+  local function big(x, y, blue)
+    plan.texts[#plan.texts + 1] = {UTIL_CS.TEXTB, nb, x, y, "", blue}
+    nb = nb + 1
+  end
+  local function quad(L_, i, x0, y0, x1, y1)
+    plan.quads[#plan.quads + 1] = {L_, i, x0, y0, x1, y1}
+  end
+  local v = UTIL_CS.Ex(chara, 0)
+  if v == nil then
+    text(0, L.head_top, T("no_data"), "")
+    return plan
+  end
+  local x = UTIL_CS.Ex(chara, 2) or {0, 0, 1, 0, 0, 1, 0, 0}
+  local signed, before, role = v[1], v[2], v[4]
+  local m, w, d, l, g, a, mvp, saves, first_goal = v[5], v[6], v[7], v[8], v[9], v[10], v[11], v[14], v[20]
+  local first_mvp, best_goals, best_goals_exact, best_goals_day = x[1], x[2], x[3], x[4]
+  local best_saves, best_saves_exact, best_saves_day, today = x[5], x[6], x[7], x[8]
+  local keeper = role == 1
+
+  -- timeline
+  local groups = UTIL_CS.Milestones(signed, before, first_goal, first_mvp, today)
+  local xs = UTIL_CS.TimelineX(groups)
+  if #groups > 0 then
+    local t = L.line_y
+    if #xs > 1 then
+      quad(UTIL_CS.BAND, UTIL_CS.Q_LINE, xs[1], t - 2, xs[#xs], t + 2)
+    end
+    for i, grp in ipairs(groups) do
+      local n = #grp.icons
+      for j, icon in ipairs(grp.icons) do
+        local cx = xs[i] + (j - (n + 1) / 2) * L.icon_pitch
+        local s = grp.today and L.dot or L.icon
+        quad(UTIL_CS.ICON, icon, cx - s / 2, t - s / 2, cx + s / 2, t + s / 2)
+      end
+      text(xs[i], L.date_y, grp.date or "", "")
+    end
+  end
+
+  -- chips: matches, W-D-L, goals (right to left from the content's right edge)
+  local chips = {{T("col_matches"), tostring(m)}, {T("l_record"), UTIL_CS.Fmt("v_record", w, d, l)},
+    {T("col_goals"), tostring(g)}}
+  local right = L.half
+  for i = #chips, 1, -1 do
+    local cw = UTIL_CS.CHIP_W[i]
+    local cx = right - cw / 2
+    plan.chips[#plan.chips + 1] = {i - 1, cx, L.chip_h / 2, chips[i][1], chips[i][2]}
+    quad(UTIL_CS.BAND, UTIL_CS.Q_CHIP + i - 1, cx - cw / 2, 0, cx + cw / 2, L.chip_h)
+    right = right - cw - L.chip_gap
+  end
+
+  -- the card back: header row, mode rows, total row, record line
+  local cols = UTIL_CS.Columns(keeper)
+  local y = L.head_top
+  quad(UTIL_CS.BAND, UTIL_CS.Q_HEAD, -L.half, y, L.half, y + L.row_h)
+  local pos = type(role) == "number" and role >= 1 and role <= 4 and T("pos" .. role) or nil
+  local since = UTIL_CS.Date(signed) or UTIL_CS.Date(before)
+  local head = pos or ""
+  if pos and since then
+    head = UTIL_CS.Fmt("header", pos, since)
+  elseif since then
+    head = since
+  end
+  text(L.name_x, y + L.row_h / 2, "", head)
+  local titles = {T("col_matches"), T("col_goals"), T("col_assists"), T("l_mvp"), T("col_saves")}
+  for i, cx in ipairs(cols) do
+    text(cx, y + L.row_h / 2, titles[i], "")
+  end
+  y = y + L.row_h
+  for _, r in ipairs(UTIL_CS.ModeRows(chara, UTIL_CS.RowsFit(height))) do
+    local cy = y + L.row_h / 2
+    text(L.name_x, cy, r[1], "")
+    local nums = {r[2], r[3], r[4], r[5], r[6]}
+    for i, cx in ipairs(cols) do
+      text(cx, cy, "", tostring(nums[i]))
+    end
+    y = y + L.row_h
+  end
+  quad(UTIL_CS.BAND, UTIL_CS.Q_TOTAL, -L.half, y, L.half, y + L.total_h)
+  local cy = y + L.total_h / 2
+  big(L.name_x, cy, T("total"))
+  local totals = {m, g, a, mvp, saves}
+  for i, cx in ipairs(cols) do
+    big(cx, cy, tostring(totals[i]))
+  end
+  y = y + L.total_h
+  local record = nil
+  if keeper and best_saves_exact == 1 and best_saves > 0 then
+    record = UTIL_CS.Fmt("best_saves", best_saves, UTIL_CS.Date(best_saves_day) or T("none"))
+  elseif best_goals_exact == 1 and best_goals > 0 then
+    record = UTIL_CS.Fmt(best_goals == 1 and "best_goal_one" or "best_goals", best_goals,
+      UTIL_CS.Date(best_goals_day) or T("none"))
+  end
+  if record then
+    text(0, y + L.record_h / 2, record, "")
+  end
+  return plan
+end
+
+-- ---- layers -----------------------------------------------------------------------------------------------------
+function UTIL_CS.Count(L)
+  if L == UTIL_CS.TEXT then
+    return UTIL_CS.TEXT_COUNT
+  elseif L == UTIL_CS.TEXTB then
+    return UTIL_CS.TEXTB_COUNT
+  elseif L == UTIL_CS.CELLT then
+    return UTIL_CS.ROW_CELLS[0]
+  elseif L == UTIL_CS.PANEL then
+    return 1
+  elseif UTIL_CS.QUAD_TRACE[L] ~= nil then
+    return #UTIL_CS.QUAD_TRACE[L] + 1
+  end
+  local n = 0
+  for r = 1, 4 do
+    n = n + UTIL_CS.ROW_CELLS[r]
+  end
+  return n
+end
+
+-- every layer of the page (the panel first)
+function UTIL_CS.Layers()
+  return {UTIL_CS.PANEL, UTIL_CS.CELL, UTIL_CS.CELLT, UTIL_CS.TEXT, UTIL_CS.TEXTB, UTIL_CS.BAND, UTIL_CS.ICON}
+end
+
+function UTIL_CS.HideAll(except)
   local C = UTIL_CS.C
-  funcLuaMenuCommand(C.TEXT, L, UTIL_CS.N_LABEL, label or "", k)
-  funcLuaMenuCommand(C.TEXT, L, UTIL_CS.N_VALUE, value or "", k)
+  for _, L in ipairs(UTIL_CS.Layers()) do
+    if UTIL_CS.Exists(L) then
+      for k = 0, UTIL_CS.Count(L) - 1 do
+        if not (except and except[L] and except[L][k]) and UTIL_CS.IsOpen(L, k) then
+          funcLuaMenuCommand(C.LAYER_VISIBLE, L, k, false)
+        end
+      end
+    end
+  end
+end
+
+function UTIL_CS.SetText(L, k, grey, blue)
+  local C = UTIL_CS.C
+  funcLuaMenuCommand(C.TEXT, L, UTIL_CS.N_LABEL, grey or "", k)
+  funcLuaMenuCommand(C.TEXT, L, UTIL_CS.N_VALUE, blue or "", k)
   funcLuaMenuCommand(C.TEXT_VISIBLE, L, UTIL_CS.N_LABEL, true, k)
   funcLuaMenuCommand(C.TEXT_VISIBLE, L, UTIL_CS.N_VALUE, true, k)
 end
 
-function UTIL_CS.Clear()
-  for r = 0, 1 do
-    for c = 0, 2 do
-      UTIL_CS.Set(r, c, "", "")
-    end
-  end
+-- (kept for a paged plate of an older Character Reforged: its own two rows on the cells)
+function UTIL_CS.Set(row, col, label, value)
+  local L, k = UTIL_CS.Cell(row, col)
+  UTIL_CS.SetText(L, k, label, value)
 end
 
--- the two rows: FICHADO | ORIGEN | PARTIDOS / V-E-D · % | GOLES | GOLES/PART.
-function UTIL_CS.Fill(chara)
-  local T = UTIL_CS.Text
-  UTIL_CS.Clear()
-  local v = UTIL_CS.Ex(chara, 0)
-  if v == nil then
-    UTIL_CS.Set(0, 0, T("no_data"), T("none"))
+-- the plan's layers opened and their texts set, everything hidden until Apply places it
+function UTIL_CS.Prepare(plan)
+  if not UTIL_CS.Exists(UTIL_CS.PANEL) or not UTIL_CS.Exists(UTIL_CS.TEXT) or not UTIL_CS.Exists(UTIL_CS.TEXTB)
+      or not UTIL_CS.Exists(UTIL_CS.CELLT) then
     return false
   end
-  local signed, before, source = v[1], v[2], v[3]
-  local m, w, d, l, g = v[5], v[6], v[7], v[8], v[9]
-  local src = type(source) == "number" and source >= 1 and source <= 4 and T("src" .. source) or T("none")
-  UTIL_CS.Set(0, 0, T("l_signed"), UTIL_CS.Date(signed) or UTIL_CS.Date(before) or T("none"))
-  UTIL_CS.Set(0, 1, T("l_source"), src)
-  UTIL_CS.Set(0, 2, T("l_matches"), tostring(m))
-  UTIL_CS.Set(1, 0, T("l_record") .. " · %", UTIL_CS.Fmt("v_record", w, d, l) .. " · " .. UTIL_CS.Pct(w, m))
-  UTIL_CS.Set(1, 1, T("l_goals"), tostring(g))
-  UTIL_CS.Set(1, 2, T("l_gpm"), UTIL_CS.Ratio(g, m, 2))
+  UTIL_CS.Open(UTIL_CS.PANEL, 0)
+  local used = {}
+  local function mark(L, k)
+    used[L] = used[L] or {}
+    used[L][k] = true
+  end
+  for _, t in ipairs(plan.texts) do
+    UTIL_CS.Open(t[1], t[2])
+    UTIL_CS.SetText(t[1], t[2], t[5], t[6])
+    mark(t[1], t[2])
+  end
+  for _, c in ipairs(plan.chips) do
+    UTIL_CS.Open(UTIL_CS.CELLT, c[1])
+    UTIL_CS.SetText(UTIL_CS.CELLT, c[1], c[4], c[5])
+    mark(UTIL_CS.CELLT, c[1])
+  end
+  for _, q in ipairs(plan.quads) do
+    mark(q[1], q[2])
+  end
+  mark(UTIL_CS.PANEL, 0)
+  plan.used = used
+  UTIL_CS.HideAll(nil)
   return true
 end
 
--- ---- the retail plate's layout: strips hidden, bands, the six cells on the bands' columns ----------------------
+-- quad instance i of layer L shown on the screen rect (x0, y0, x1, y1), or opened / still loading (false)
+function UTIL_CS.Quad(L, i, x0, y0, x1, y1, origin)
+  local C = UTIL_CS.C
+  if not UTIL_CS.Exists(L) then
+    return false
+  end
+  local key = L * 16 + i
+  if not UTIL_CS.IsOpen(L, i) then
+    UTIL_CS.quadReady[key] = nil
+    funcLuaMenuCommand(C.OPEN_LAYER, L, i)
+    return false
+  end
+  if funcLuaMenuCommand(C.LOADING, L) == true then
+    return false
+  end
+  local ready = UTIL_CS.quadReady[key]
+  if ready == nil then
+    pcall(funcLuaMenuCommand, C.TRACE, UTIL_CS.L_STATUS, 0, UTIL_CS.QUAD_TRACE[L][i], true)
+    for _, m in ipairs(UTIL_CS.BAND_HIDE) do
+      funcLuaMenuCommand(C.MESH_VISIBLE, L, m, false, i)
+    end
+    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_BTL0613, UTIL_CS.QUAD_SPRITE[L][i], UTIL_CS.SP_FRAME, 0, i)
+    ready = {}
+    UTIL_CS.quadReady[key] = ready
+  end
+  local f, o = UTIL_CS.FRAME, origin
+  local place = x0 .. "," .. y0 .. "," .. x1 .. "," .. y1 .. "," .. o[1] .. "," .. o[2]
+  if ready.place ~= place then
+    ready.place = place
+    local sx, sy = (x1 - x0) / f[3], (y1 - y0) / f[4]
+    funcLuaMenuCommand(C.SCALE, L, sx, sy, 1, i)
+    funcLuaMenuCommand(C.POS, L, x0 - o[1] - f[1] * sx, o[2] - y0 + f[2] * sy, 0, i)
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L, i, true)
+  return true
+end
+
+-- the plan placed on the screen with geo (see the file head); each frame while the page shows
+function UTIL_CS.Apply(geo)
+  local plan = UTIL_CS.plan
+  if plan == nil or plan.used == nil then
+    return
+  end
+  local C, o = UTIL_CS.C, geo.origin
+  local x0 = o[1] + UTIL_CS.CELL_X0               -- default place of the free texts (the locator of cell (0, 0))
+  UTIL_CS.visible = true
+  UTIL_CS.Strips(false)
+  if UTIL_CS.IsOpen(UTIL_CS.PANEL, 0) then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, UTIL_CS.PANEL, 0, true)
+  end
+  for _, t in ipairs(plan.texts) do
+    if UTIL_CS.IsOpen(t[1], t[2]) then
+      funcLuaMenuCommand(C.POS, t[1], geo.center + t[3] - x0, o[2] - (geo.top + t[4]), 0, t[2])
+      funcLuaMenuCommand(C.LAYER_VISIBLE, t[1], t[2], true)
+    end
+  end
+  for _, c in ipairs(plan.chips) do
+    local k = c[1]
+    if UTIL_CS.IsOpen(UTIL_CS.CELLT, k) then
+      local dx = geo.center + c[2] - (x0 + UTIL_CS.CELL_DX * k)
+      funcLuaMenuCommand(C.POS, UTIL_CS.CELLT, dx, o[2] - (geo.top + c[3]), 0, k)
+      funcLuaMenuCommand(C.LAYER_VISIBLE, UTIL_CS.CELLT, k, true)
+    end
+  end
+  for _, q in ipairs(plan.quads) do
+    UTIL_CS.Quad(q[1], q[2], geo.center + q[3], geo.top + q[4], geo.center + q[5], geo.top + q[6], o)
+  end
+end
+
 function UTIL_CS.Strips(on)
   if not UTIL_CS.Exists(UTIL_CS.ROWS) then
     return
@@ -305,86 +712,33 @@ function UTIL_CS.Strips(on)
   end
 end
 
--- band i shown (opened, its gauge parts hidden, our sprite in the frame, placed on BAND_RECT[i]) or hidden
-function UTIL_CS.Band(i, on)
-  local L, C = UTIL_CS.BAND, UTIL_CS.C
-  if not UTIL_CS.Exists(L) then
-    return
-  end
-  if not on then
-    if UTIL_CS.IsOpen(L, i) then
-      funcLuaMenuCommand(C.LAYER_VISIBLE, L, i, false)
-    end
-    return
-  end
-  if not UTIL_CS.IsOpen(L, i) then
-    UTIL_CS.bandReady[i] = false
-    funcLuaMenuCommand(C.OPEN_LAYER, L, i)
-    return
-  end
-  if funcLuaMenuCommand(C.LOADING, L) == true then
-    return
-  end
-  if not UTIL_CS.bandReady[i] then
-    UTIL_CS.bandReady[i] = true
-    pcall(funcLuaMenuCommand, C.TRACE, UTIL_CS.L_STATUS, 0, UTIL_CS.BAND_TRACE[i], true)
-    for _, m in ipairs(UTIL_CS.BAND_HIDE) do
-      funcLuaMenuCommand(C.MESH_VISIBLE, L, m, false, i)
-    end
-    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_BTL0613, UTIL_CS.SP_BAND, UTIL_CS.SP_FRAME, 0, i)
-    local r, f, o = UTIL_CS.BAND_RECT[i], UTIL_CS.FRAME, UTIL_CS.ORG
-    local sx, sy = (r[3] - r[1]) / f[3], (r[4] - r[2]) / f[4]
-    funcLuaMenuCommand(C.SCALE, L, sx, sy, 1, i)
-    funcLuaMenuCommand(C.POS, L, r[1] - o[1] - f[1] * sx, o[2] - r[2] + f[2] * sy, 0, i)
-  end
-  funcLuaMenuCommand(C.LAYER_VISIBLE, L, i, true)
-end
-
-function UTIL_CS.Layout()
-  local C, o = UTIL_CS.C, UTIL_CS.ORG
-  UTIL_CS.Strips(false)
-  UTIL_CS.Band(0, true)
-  UTIL_CS.Band(1, true)
-  for r = 0, 1 do
-    local band = UTIL_CS.BAND_RECT[r]
-    local cy = (band[2] + band[4]) / 2
-    for c = 0, 2 do
-      local L, k = UTIL_CS.Cell(r, c)
-      if UTIL_CS.IsOpen(L, k) then
-        local dx = UTIL_CS.COL_X[c + 1] - (o[1] + UTIL_CS.CELL_X0 + UTIL_CS.CELL_DX * c)
-        local dy = (o[2] + UTIL_CS.CELL_DY * r) - cy
-        funcLuaMenuCommand(C.POS, L, dx, dy, 0, k)
-      end
-    end
-  end
-end
-
 function UTIL_CS.Show(chara)
-  if not UTIL_CS.PanelShow(true) then
-    UTIL_CS.Log("cell layers missing (Utilities' menus\\102_team\\career.toml: util_cs_panel / util_cs_cell / util_cs_cellt)")
+  local geo = UTIL_CS.IfPlate() and UTIL_CS.hostGeo or UTIL_CS.GEO_RETAIL
+  local plan = UTIL_CS.Plan(chara, geo and geo.height or UTIL_CS.GEO_RETAIL.height)
+  if not UTIL_CS.Prepare(plan) then
+    UTIL_CS.Log("layers missing (Utilities' menus\\102_team\\career.toml: util_cs_panel / util_cs_text / util_cs_textb / util_cs_cellt)")
     return
   end
+  UTIL_CS.plan = plan
   UTIL_CS.shown = true
   UTIL_CS.Strips(false)
-  local ok = UTIL_CS.Fill(chara)
   if not UTIL_CS.IfPlate() then
-    UTIL_CS.Layout()
+    UTIL_CS.Apply(UTIL_CS.GEO_RETAIL)
   end
-  UTIL_CS.Log("show", chara or 0, ok and "data" or "no data")
+  UTIL_CS.Log("show", chara or 0, #plan.texts, #plan.quads)
 end
 
 function UTIL_CS.Hide()
   UTIL_CS.shown = false
-  UTIL_CS.PanelShow(false)
-  UTIL_CS.Band(0, false)
-  UTIL_CS.Band(1, false)
+  UTIL_CS.plan = nil
+  UTIL_CS.HideAll(nil)
 end
 
 function UTIL_CS.Mine(ptype)
   return ptype == UTIL_CS.TYPE
 end
 
--- Inazuma Fantasy's plate (its EVT_PH_Decor: the dots / titles of its layout copy) or the retail one
+-- a paged plate (plate_hiper's EVT_PH_Decor: the dots / titles of its layout copy) or the retail one
 function UTIL_CS.IfPlate()
   return type(EVT_PH_Decor) == "function"
 end
@@ -393,35 +747,43 @@ function UTIL_CS.Current()
   return GetNowPageIdx ~= nil and GetNowPageIdx() == UTIL_CS.PAGE
 end
 
--- the panel, the cells and the bands stay hidden unless our page is the current page (after every layer setup / open
--- and each frame; a cell opened by the engine with the group would otherwise show over another page)
-function UTIL_CS.Guard()
+-- every layer of the page stays hidden unless our page is the current page: after every layer setup / open (force: a
+-- layer opened by the engine with the group would otherwise show over another page) and each frame after the page
+-- placed something (UTIL_CS.visible)
+function UTIL_CS.Guard(force)
   if GetNowPageIdx == nil or UTIL_CS.Current() then
     return
   end
   UTIL_CS.shown = false
-  local C = UTIL_CS.C
-  local n = {[UTIL_CS.PANEL] = 1, [UTIL_CS.CELLT] = UTIL_CS.ROW_CELLS[0], [UTIL_CS.CELL] = 0, [UTIL_CS.BAND] = 2}
-  for r = 1, 4 do
-    n[UTIL_CS.CELL] = n[UTIL_CS.CELL] + UTIL_CS.ROW_CELLS[r]
-  end
-  for _, L in ipairs({UTIL_CS.PANEL, UTIL_CS.CELL, UTIL_CS.CELLT, UTIL_CS.BAND}) do
-    if UTIL_CS.Exists(L) then
-      for k = 0, n[L] - 1 do
-        if UTIL_CS.IsOpen(L, k) then
-          funcLuaMenuCommand(C.LAYER_VISIBLE, L, k, false)
-        end
-      end
-    end
+  if force or UTIL_CS.visible then
+    UTIL_CS.visible = false
+    UTIL_CS.HideAll(nil)
   end
 end
 
--- every frame on our page (retail plate): the bands finish loading, the strips stay hidden, the cells stay placed
+-- every frame on our page of the retail plate: the quads finish loading, the strips stay hidden, everything placed
 function UTIL_CS.Frame()
   if not UTIL_CS.shown or UTIL_CS.IfPlate() or not UTIL_CS.Current() then
     return
   end
-  UTIL_CS.Layout()
+  UTIL_CS.Apply(UTIL_CS.GEO_RETAIL)
+end
+
+-- a paged plate's frame step (plate_pages G.Career): on = our page shows there; geo = its geometry (file head)
+-- (the geometry is kept: the next Show plans as many mode rows as its height holds)
+function UTIL_CS.OwnLayout(on, geo)
+  if type(geo) ~= "table" then
+    return
+  end
+  UTIL_CS.hostGeo = geo
+  if not on or not UTIL_CS.shown then
+    return
+  end
+  local plan = UTIL_CS.plan
+  if plan ~= nil and plan.height ~= geo.height then
+    UTIL_CS.Show(plan.chara)
+  end
+  UTIL_CS.Apply(geo)
 end
 
 -- titles and dots of every page type (on IF's plate after EVT_PH_Decor; IF draws its page dots from the framework's
@@ -511,7 +873,7 @@ for _, fname in ipairs({"OnSetupLayer", "OnOpenLayer", "OnOpenEndLayer"}) do
   UTIL_CS.Wrap(fname, function(orig)
     return function(...)
       local r = orig(...)
-      pcall(UTIL_CS.Guard)
+      pcall(UTIL_CS.Guard, true)
       return r
     end
   end)

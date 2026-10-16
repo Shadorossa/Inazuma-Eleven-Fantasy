@@ -2,13 +2,13 @@ id = "souls_rework"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Souls Rework"
-version = "0.5.1"
+version = "0.5.2"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Totems work as the souls of Inazuma Eleven GO Galaxy. A totem gains levels (1 to 5) during the match while it is out, faster when its player wins duels or scores: with Aura Points each level raises its SP bar along the soul's Galaxy route; without it each summon lasts longer for the level reached. The totem cannot be released by hand. Its own special move spins a skill reel over the cut-in, under the scoreboard: it stops by itself on one of the soul's 6 Galaxy skills (power, SP saving, recovery, speed, invincibility, knock-down or a miss), which lasts while the totem is out. The rival's rolls apply too, without a reel. Works with the VR-Framework and Character Reforged; Aura Points is optional."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [[SoulsRework.X]], Lua SoulsRework.X, commands CMND_SOULSREWORK_*, tables
 # SoulsRework.*); never VRFW.
 prefix = "SoulsRework"

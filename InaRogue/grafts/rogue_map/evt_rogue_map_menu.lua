@@ -1,0 +1,2167 @@
+-- evt_rogue_map_menu (plain Lua 5.2 source, Expanded Victory Tool, INAROGUE step 2: the run's ROUTE MAP).
+-- Opened by evt_inarogue_menu ("Empezar" / "Continuar") as a child menu. Built by research/scripts/rogue_map_build.py:
+-- tokens "crc:name", "num:NAME", "count:NAME" and "EMBLEMS" between at-signs -> crc32(name), the build's geometry,
+-- instance counts and the emblem list.
+-- Design: docs/game/inarogue.md §11 (Trails through Daybreak "Area Select" style).
+-- Screen (the "Guardar" screen frame: background, header, guide line, cursor, button guides, input anchor) plus:
+--   evt_rogue_map_bg    x1   backdrop quad (1920 x 1080)
+--   evt_rogue_map_line  x90  dotted connections (one sprite per row difference, plain / walked)
+--   evt_rogue_map_plat  x50  our platforms (normal / next / clear / boss / start / fog)
+--   evt_rogue_map_piece x50  retail Chronicle board piece (vsroute00_05) at 80 %: rival emblem ("?" in the fog), focus
+--                            ring, cursor and "you are here" bubble attach points; its own small base is hidden
+--   evt_rogue_map_tag   x50  CLEAR / JEFE / SALIDA labels
+--   evt_rogue_map_here  x1   retail destination bubble (vsroute01_08), traced to the current piece
+--   evt_rogue_map_hint  x6   "more map" arrows at the screen edges, «Fase N»
+--   evt_rogue_map_runner x2  the «you are here» runner (0 shadow, 1 an IE3 pixel-art match sprite, idle / run): it
+--                            stands on the current platform and runs along the road to the next one when the run moves
+--                            there (rogue_map_marker_build.py, inarogue.md §27.1 / §27.2)
+-- Long maps (phase 25+) are wider than the screen: the camera follows the cursor's column and only the columns on
+-- screen get instances (pools of 50 / 90). Columns more than 3 ahead of the current one are fogged.
+-- The map comes from the vr-loader (module rogue, CMND_EVT_RL_RUN_*): it is a pure function of the run's seed and
+-- phase; rogue_run_slot<N>.json keeps the seed, the phase and the path. Matches are not played yet: choosing a match
+-- platform moves there and marks it CLEAR with a placeholder result ("partido pendiente").
+-- Rule (position-cards.md §4b): no engine call at top level; funcLuaCommand only exists inside callbacks.
+INCLUDE("LUA_PROG_BASE")
+INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
+
+local TXT = {
+  -- 2026-10-06: the header shows only our mode plate (evt_map_mode_icon, no text); «Fase N» is drawn under it with
+  -- atlas sprites (DrawTitle); the bottom-left guide line (phase / column / node / rival) is gone
+  KIND = {[0] = "Salida", [1] = "Pachanga 5 vs 5", [2] = "Partido 11 vs 11", [3] = "JEFE de la fase",
+          [4] = "Cofre", [5] = "Evento", [6] = "Fichaje", [7] = "ÉLITE",
+          [8] = "JEFE ÉPICO", [9] = "JEFE DE PUERTA"},     -- boss tiers (inarogue.md §33, rogue/bosses.toml)
+  -- map content (docs/game/inarogue.md §12.3): the effects come in later steps; placeholders say what will happen
+  CONTENT = {
+    [5] = "Evento\nUna escena con varias opciones: premio o riesgo.\n(Contenido pendiente: esta casilla cuenta como superada.)",
+  },
+  -- matches (§14): the node's rival comes from the loader's seeded pool; the match is played by the engine
+  NO_MATCH = "Esta casilla no tiene partido asignado (mira evt_loader\\loader.log).",
+  -- Fichaje (§14): a player from the pool offers to join (bank + bench)
+  RECRUIT_ASK = "¡%s (%d estrella%s, coste %d) quiere unirse a tu equipo!\nEntrará en tu banco y en el banquillo. ¿Aceptar?",
+  RECRUIT_ASK_BANK = "¡%s (%d estrella%s, coste %d) quiere unirse!\nEl banquillo está lleno: entrará solo en tu banco. ¿Aceptar?",
+  RECRUIT_JOIN = "%s se une a tu equipo y a tu banco de INAROGUE.",
+  RECRUIT_BANK = "%s se une a tu banco de INAROGUE.",
+  RECRUIT_DECLINED = "%s se marcha.",
+  RECRUIT_NONE = "Nadie quiere unirse esta vez.",
+  -- «Vestigio» (What if) card offered by the Fichaje (docs/game/modes/inarogue-whatif.md)
+  RECRUIT_WHATIF = "¡Un Vestigio! %s, de otro universo (%d estrella%s, coste %d), quiere unirse a tu equipo.\nEntrará en tu banco y en el banquillo. ¿Aceptar?",
+  RECRUIT_WHATIF_BANK = "¡Un Vestigio! %s, de otro universo (%d estrella%s, coste %d), quiere unirse.\nEl banquillo está lleno: entrará solo en tu banco. ¿Aceptar?",
+  GACHA_NEW = "%s se une a tu banco de INAROGUE.\n(Moneda de %s)",
+  GACHA_DUPE = "%s ya estaba en tu banco: recibe fragmentos.\n(Moneda de %s)",
+  GACHA_NONE = "La moneda de %s no dio ningún jugador.",
+  LINE = {
+    [1] = "Tienda\nPor el camino encuentras una tienda (se paga con Puntos de la partida).\n(Pendiente.)",
+    [2] = "Gacha\nEncuentras una moneda de constelación para el Players Universe.\n(Pendiente.)",
+    [3] = "Tragaperras\nUna máquina tragaperras: apuesta Puntos y prueba suerte.\n(Pendiente.)",
+  },
+  PENDING = "%s\n(Contenido pendiente: esta casilla cuenta como superada.)",
+  BOSS_DONE = "¡Has superado al jefe de la fase %d!\nSigues en la fase %d con un mapa nuevo.",
+  ASK_QUIT = "¿Abandonar esta partida de INAROGUE?\nEl banco de jugadores no cambia.",
+  ERROR = "No se pudo guardar la partida (código %d).\nMira evt_loader\\loader.log.",
+  NO_LOADER = "El mapa de INAROGUE necesita el vr-loader con el módulo \"rogue\" activado\n(app: Proyecto > Loader).",
+}
+
+local MENU = 2533083129
+local KEY_RESULT = 1333012321     -- 0 back (run kept), 2 run abandoned, 3 a match is reserved (INAROGUE launches it),
+                                                  -- 4 a match node was chosen: INAROGUE shows the VS preview (§28)
+
+local RL = {
+  VERSION = 2217361807,
+  LOG = 3661580131,
+  INFO = 3112916915,       -- () -> exists, phase, cols, nodes, edges, cur, curCol, seed, done, budget, slot, stage, pnode
+  START = 50483520,     -- (seed) -> code, seed
+  NODE = 4152200865,       -- (i) -> ok, col, slot, kind, pick, state
+  EDGE = 117749122,       -- (i) -> ok, from, to, walked
+  MOVE = 2637975964,       -- (to) -> code (the node becomes the one in progress, stage 1)
+  STAGE = 1577555878,     -- (stage) -> code (2 = the line event is done)
+  RESUME = 1357403213,   -- () -> stage, node, kind, event, coin, game, diff, stadium, level, rival
+  MATCH = 3860906442,     -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
+  RESERVE = 4194663851, -- () -> code, game, diff, stadium, level, rival (stage 3 in the run file)
+  CLEAR = 2043344329,     -- () -> code, isBoss
+  NEXT = 1175064779, -- () -> code, phase
+  ABANDON = 1752049649, -- () -> code
+  RECRUIT = 4119772646, -- (0) -> ok, param, tier, cost, freeSlot; (1, param) -> code, uid, slot
+  SET_HDL = 3245339429, -- (slot, hdl) -> code
+  SLOT_ROGUE = 2087918688,  -- () -> rogueSlot, active, returnSlot, hasGame
+}
+-- run players in the INAROGUE save (slot 4): created at Lv 5 into no team set (ADD_PARTY arg 10 = 16), tagged, and
+-- placed in the VS dock with the retail place command (docs/game/modes/inarogue.md §14 stages 2-3)
+local PL = {
+  ADD_PARTY = 1885323816, SET_ATTR = 1525180681, GET_VS = 3713813716,
+  -- the retail SwapChara pair (docs/game/modes/inarogue.md §26): 1730898405 only checks (it never placed anybody),
+  -- 193693077 places and keeps the 11v11 and 5v5 teams of the dock linked (the recruit joins both)
+  CHECK = 1730898405,          -- (hdl, set, pos, fromSet, team) -> ok, code
+  MOVE = 193693077,            -- (toSet, pos, fromSet = 16: the bank, hdl, team)
+  POS_IDX = 1721292418, IDX_HDL = 1720957768,
+  TAG = 268435456,             -- 0x10000000: INAROGUE player
+  LEVEL = 5,
+  NO_ROLE = 3766629437,        -- CMND_EVT_RL_NO_ROLE (hdl): no creation-time coach / manager role (party_rt.rs)
+}
+local CMD_CHARA_INFO = 4060384944   -- CMND_GET_CHARA_INFO (param, 0) -> ok, name
+local ST_ARRIVED, ST_NODE, ST_MATCH = 1, 2, 3   -- stages of the node in progress (run file; audit A19)
+local MOD_ROGUE = 32768
+local ST_LOCKED, ST_NEXT, ST_CLEAR, ST_CUR, ST_VISITED = 0, 1, 2, 3, 4
+local K_START, K_SMALL, K_FULL, K_BOSS = 0, 1, 2, 3
+-- §33 boss tiers (loader rogue::bosses): «Jefe épico» (an optional side match easier than the phase boss) and «Jefe de
+-- puerta» (an optional match harder than the phase boss, just before it). Both are match nodes, shown like the boss:
+-- their emblem stays in view in the fog
+local K_EPIC, K_GATE = 8, 9
+local function IsMatchKind(k)
+  return k == K_SMALL or k == K_FULL or k == K_BOSS or k == 7 or k == K_EPIC or k == K_GATE
+end
+local function AlwaysShown(k)
+  return k == K_BOSS or k == K_EPIC or k == K_GATE
+end
+
+-- ---- layers ---------------------------------------------------------------------------------------------------------
+local L_ROW = 3455690937        -- save01_02_list_item (1 instance: the input anchor, off screen)
+local L_HEADER = 575058101      -- mainmenu90_01_header
+local L_GUIDE_LINE = 3078308064 -- mainmenu90_05_content_guide_line01
+local L_CURSOR = 2296367164     -- cmn05_01_cursor
+local L_BTN_GUIDE = 1138543975  -- mainmenu01_06_base_button_guide
+local L_BTN = 9396745           -- mainmenu01_07_button_guide
+local L_RET = 2005383485        -- mainmenu01_10_return_arrow_button_guide
+local L_BG = 16936625
+local L_LINE = 988432796
+local L_PLAT = 3418775405
+local L_PIECE = 3913711000
+local L_TAG = 4081246790
+local L_HERE = 1524988658
+local L_LEV = 4021024120         -- line-event icons (Tienda / Gacha / Tragaperras)
+local L_EMB = 846827650         -- §23: the emblem / node icon ON the platform (a quad: it renders)
+local N_LEV = 24
+local L_HINT = 3745054265       -- 2 instances: "more map" arrows (0 left, 1 right)
+local L_RUNNER = 2771742028     -- evt_rogue_map_runner: 0 shadow, 1 the runner sprite
+local N_PIECES, N_LINES = 50, 90
+
+local C = {
+  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
+  LOAD_TEX = 839427544,
+  SCALE = 3778714801,         -- (layer, sx, sy, sz, idx)
+  POS = 1389957207,           -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, idx); layout units, y up
+  ATTACH_TRACE = 1774843228,  -- (layer, idx, label, bool)
+  OPEN_LAYER = 629267548,
+  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  CURSOR_LOC = 381797568,     -- (layer, label, idx, count)
+  GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
+  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  FADE = 609722083, FADE_DONE = 2259183189,
+  P_SET = 3860611758, P_CLEAR = 3363400568,
+  MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
+  TEXT_VISIBLE = 1505208242,
+  OPEN_MENU = 433545986, EXIST_MENU = 2231168902,
+}
+local CUR = 3313461902                          -- crc32("cursor"): the anchor row's cursor label
+local PIECE_CURSOR = 3673682654                 -- piece objbin label: cmn05_01_cursor on _pos_atc_cur01
+local PIECE_HERE = 3760256869                   -- piece objbin label: the destination bubble on _pos_base01
+local FN = {QUIT = 2824088319, UP = 2270326752, DOWN = 4144065873,
+            LEFT = 2442729986, RIGHT = 424018863}
+local G_ACCEPT, G_QUIT = 1847312674 --[[Aceptar]], 1330251112 --[[Abandonar]]
+-- §27.3: the action on the node the runner stands on (menu_text rows text/rows/rogue_map_actions.toml)
+local G_ACT = {fight = 1511595519 --[[evt_rm_act_fight: Enfrentarte]], open = 2785182830 --[[evt_rm_act_open: Abrir]],
+               enter = 3267598791 --[[evt_rm_act_enter: Entrar]], talk = 2639712881 --[[evt_rm_act_talk: Hablar]]}
+local I_ENTER, I_FUNC2 = 2750714971 --[[<CMD_ENTER>]], 2387151820 --[[<CMD_FUNC2>]]
+local K_ENTER, K_FUNC2 = 1981080283, 3170216173
+local SE_OK, SE_DECIDE, SE_BACK = 3848881948, 4235359837, 202039849
+local ROW_MESHES = {3025401186, 486732393, 376662541, 3232607807, 1516082254, 3292070381, 1712955010}
+
+-- art
+local TEX = "#/menu/220_img/evt_rogue/evt_rogue_map.g4tx"
+local TEX_EMBLEM = "#/menu/200_icon/01_icon_emblem/vsroute/icon_vsroute_emblem/vsroute_emblem.g4tx"
+local TEX_PIECE = 933907036     -- #/menu/30_vsroute/vsroute00/vsroute00_05/<LG>/vsroute00_05.g4tx
+-- the runner (rogue_map_marker_build.py): IE3 match sprites, 96 x 96 cells (3x), sprites <prefix>_cNN + mk_shadow
+local TEX_MARKER = "#/menu/220_img/evt_rogue/evt_rogue_marker.g4tx"
+local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
+local NODE_EMBLEM, MESH_EMBLEM = 2277724875 --[[icon_em_dmy01]], 680727269 --[[_icon_em_dmy01]]
+local MESH_BASE = 2181755403    -- _route_base01 (hidden: our wide platform replaces it)
+local MESH_RING = 3992580706
+local PIECE_HIDE = {4033576563, 431580479, 564911402, 2438876636,
+                    139926630, 2869361241, 503243207, 2230825085, 3321580}
+local EMBLEMS = {"em110032_t01", "em010001_t01", "em010002_t01", "em010003_t01", "em010004_t01", "em010005_t01", "em010006_t01", "em010007_t01", "em010008_t01", "em010009_t01", "em010010_t01", "em010011_t01", "em010014_t01", "em020031_t01", "em020032_t01", "em020033_t01", "em020034_t01", "em020035_t01", "em020036_t01", "em020037_t01", "em020038_t01", "em020039_t01", "em020040_t01", "em020041_t01", "em020042_t01", "em020047_t01", "em020048_t01", "em020049_t01", "em030015_t01", "em030017_t01", "em030018_t01", "em030019_t01", "em030021_t01", "em030027_t01", "em030028_t01", "em030029_t01", "em030050_t01", "em030051_t01", "em030052_t01", "em030053_t01", "em030054_t01", "em030055_t01", "em030056_t01", "em030057_t01", "em030059_t01", "em030062_t01", "em030063_t01", "em030064_t01", "em030065_t01", "em040001_t01", "em040002_t01", "em040003_t01", "em040004_t01", "em040005_t01", "em040006_t01", "em040007_t01", "em040008_t01", "em040010_t01", "em040011_t01", "em040012_t01", "em040014_t01", "em040015_t01", "em040016_t01", "em040017_t01", "em040018_t01", "em040019_t01", "em040021_t01", "em040023_t01", "em040024_t01", "em040025_t01", "em040026_t01", "em040027_t01", "em050202_t01", "em050204_t01", "em050205_t01", "em050206_t01", "em050207_t01", "em050208_t01", "em050210_t01", "em050211_t01", "em050212_t01", "em050213_t01", "em050214_t01", "em050215_t01", "em050216_t01", "em050217_t01", "em050218_t01", "em050235_t01", "em050236_t01", "em050241_t01", "em060302_t01", "em060303_t01", "em060304_t01", "em060305_t01", "em060306_t01", "em060307_t01", "em060308_t01", "em060309_t01", "em060310_t01", "em060311_t01", "em060312_t01", "em060313_t01", "em060314_t01", "em060315_t01", "em060316_t01", "em070002_t01", "em070003_t01", "em070004_t01", "em070005_t01", "em070006_t01", "em070007_t01", "em070008_t01", "em070009_t01", "em070010_t01", "em070011_t01", "em070016_t01", "em070018_t01", "em080002_t01", "em080003_t01", "em080004_t01", "em080005_t01", "em080006_t01", "em080007_t01", "em080008_t01", "em080009_t01", "em080010_t01", "em080011_t01", "em080012_t01", "em110021_t01", "em110022_t01", "em110023_t01", "em110025_t01", "em110029_t01", "em110030_t01", "em110031_t01", "em110015_t01", "em110001_t01", "em110002_t01", "em110003_t01", "em110005_t01", "em110006_t01", "em110007_t01", "em110008_t01"}     -- the Chronicle board's team emblems (vsroute_emblem.g4tx)
+-- §20 M2: every platform shows its REAL rival (CMND_EVT_RL_RUN_MATCH -> the rival team's emblem crc): the vsroute
+-- atlas sprite when the board has that emblem, else the team's own small emblem texture
+-- dx11/menu/200_icon/01_icon_emblem/<em>_s.g4tx (sprite <em>_s01), loaded on demand (CMND_LOAD_MENU_RES_TEXTURE is
+-- asynchronous: the node shows nothing until it is in, then the map is drawn again). crc32("emNNNNNN") -> name
+local EMB_ALL = {
+  [3531712334] = "em0001",
+  [1267267316] = "em0002",
+  [1016055394] = "em0003",
+  [2733331393] = "em0004",
+  [3589038935] = "em0005",
+  [1004667515] = "em0007",
+  [2875006954] = "em0008",
+  [3584811504] = "em010001",
+  [1285730378] = "em010002",
+  [1000702172] = "em010003",
+  [2780894591] = "em010004",
+  [3536201193] = "em010005",
+  [1271886931] = "em010006",
+  [1019757765] = "em010007",
+  [2893502804] = "em010008",
+  [3681577410] = "em010009",
+  [3149389863] = "em010010",
+  [3434139825] = "em010011",
+  [1438220555] = "em010012",
+  [582922653] = "em010013",
+  [3168412734] = "em010014",
+  [184732314] = "em020002",
+  [3106326755] = "em020031",
+  [539990361] = "em020032",
+  [1462282703] = "em020033",
+  [3377216620] = "em020034",
+  [3192589562] = "em020035",
+  [658660672] = "em020036",
+  [1346727382] = "em020037",
+  [3237638215] = "em020038",
+  [3086827729] = "em020039",
+  [2170580658] = "em020040",
+  [4133969444] = "em020041",
+  [1869483934] = "em020042",
+  [409550600] = "em020043",
+  [2249042603] = "em020044",
+  [4044003901] = "em020045",
+  [520420113] = "em020047",
+  [2411456128] = "em020048",
+  [4173125142] = "em020049",
+  [912450346] = "em030002",
+  [2971486152] = "em030015",
+  [672405106] = "em030016",
+  [1595090660] = "em030017",
+  [3484171125] = "em030018",
+  [3098217443] = "em030019",
+  [2640171026] = "em030021",
+  [1950250279] = "em030027",
+  [3833686198] = "em030028",
+  [2475055136] = "em030029",
+  [2770040387] = "em030050",
+  [3525068501] = "em030051",
+  [1259673455] = "em030052",
+  [1007822841] = "em030053",
+  [2725687898] = "em030054",
+  [3580986060] = "em030055",
+  [1282986870] = "em030056",
+  [998237152] = "em030057",
+  [2881551985] = "em030058",
+  [3704082151] = "em030059",
+  [2385913216] = "em030060",
+  [4180743446] = "em030061",
+  [1614300332] = "em030062",
+  [390034490] = "em030063",
+  [2304500121] = "em030064",
+  [4267495695] = "em030065",
+  [491482752] = "em040001",
+  [2218934074] = "em040002",
+  [4081389484] = "em040003",
+  [1830918671] = "em040004",
+  [438741657] = "em040005",
+  [2200959779] = "em040006",
+  [4096314293] = "em040007",
+  [1687672356] = "em040008",
+  [1935109975] = "em040010",
+  [72376257] = "em040011",
+  [2639859323] = "em040012",
+  [1950001998] = "em040014",
+  [54369240] = "em040015",
+  [2587150946] = "em040016",
+  [3979606772] = "em040017",
+  [2106386277] = "em040018",
+  [176936947] = "em040019",
+  [1484405908] = "em040020",
+  [796724226] = "em040021",
+  [3061079480] = "em040022",
+  [3245567278] = "em040023",
+  [1595406477] = "em040024",
+  [672188443] = "em040025",
+  [2971244961] = "em040026",
+  [3323898167] = "em040027",
+  [598709086] = "em050201",
+  [3131491044] = "em050202",
+  [3449942642] = "em050203",
+  [1405446097] = "em050204",
+  [616716103] = "em050205",
+  [3184199421] = "em050206",
+  [3402380907] = "em050207",
+  [1517497338] = "em050208",
+  [1303614089] = "em050210",
+  [984916511] = "em050211",
+  [2747134885] = "em050212",
+  [3569009459] = "em050213",
+  [1256085136] = "em050214",
+  [1037657606] = "em050215",
+  [2765109180] = "em050216",
+  [3554084650] = "em050217",
+  [1130896059] = "em050218",
+  [295301596] = "em050221",
+  [2441842983] = "em050232",
+  [3867976113] = "em050233",
+  [267322500] = "em050235",
+  [2531677502] = "em050236",
+  [3789645224] = "em050237",
+  [1902016569] = "em050238",
+  [106514607] = "em050239",
+  [1203983962] = "em050241",
+  [3737782240] = "em050242",
+  [2848798582] = "em050243",
+  [933864149] = "em050244",
+  [1085182531] = "em050245",
+  [3651650553] = "em050246",
+  [2929783663] = "em050247",
+  [1591240475] = "em050251",
+  [557759386] = "em060220",
+  [1707967417] = "em060301",
+  [4240757251] = "em060302",
+  [2344870549] = "em060303",
+  [363296566] = "em060304",
+  [1654671264] = "em060305",
+  [4222162458] = "em060306",
+  [2360223372] = "em060307",
+  [470891293] = "em060308",
+  [1796606859] = "em060309",
+  [198279790] = "em060310",
+  [2094445304] = "em060311",
+  [3856655170] = "em060312",
+  [2463683540] = "em060313",
+  [213665399] = "em060314",
+  [2075883233] = "em060315",
+  [3803326299] = "em060316",
+  [2511673293] = "em060317",
+  [1525355600] = "em070001",
+  [3286386154] = "em070002",
+  [3034936700] = "em070003",
+  [713154783] = "em070004",
+  [1569116233] = "em070005",
+  [3297739251] = "em070006",
+  [3012079973] = "em070007",
+  [590851316] = "em070008",
+  [1412471906] = "em070009",
+  [888608135] = "em070010",
+  [1139811601] = "em070011",
+  [3673781419] = "em070012",
+  [3717509298] = "em070016",
+  [2861793316] = "em070017",
+  [976002485] = "em070018",
+  [3636167553] = "em080001",
+  [1102238267] = "em080002",
+  [917889709] = "em080003",
+  [2832299790] = "em080004",
+  [3755362200] = "em080005",
+  [1189025314] = "em080006",
+  [836249268] = "em080007",
+  [2707897125] = "em080008",
+  [3596618675] = "em080009",
+  [3064431190] = "em080010",
+  [3248534208] = "em080011",
+  [1487528826] = "em080012",
+  [799986668] = "em080013",
+  [2982823503] = "em080014",
+  [3335354073] = "em080015",
+  [1606690659] = "em080016",
+  [519516757] = "em110001",
+  [2281595887] = "em110002",
+  [4042871673] = "em110003",
+  [1855833818] = "em110004",
+  [429585996] = "em110005",
+  [2157160438] = "em110006",
+  [4153710432] = "em110007",
+  [1730906865] = "em110008",
+  [271366759] = "em110009",
+  [1894462338] = "em110010",
+  [132907796] = "em110011",
+  [2665829038] = "em110012",
+  [3923927608] = "em110013",
+  [2005333915] = "em110014",
+  [8505101] = "em110015",
+  [2575865527] = "em110016",
+  [4002391585] = "em110017",
+  [2117122992] = "em110018",
+  [154635046] = "em110019",
+  [1539727425] = "em110020",
+  [750866647] = "em110021",
+  [3049783661] = "em110022",
+  [3268358651] = "em110023",
+  [1554752600] = "em110024",
+  [732730574] = "em110025",
+  [2997208436] = "em110026",
+  [572184805] = "em110029",
+  [1121800448] = "em110030",
+  [903504278] = "em110031",
+  [2899521580] = "em110032",
+  [2789954864] = "em111001",
+  [1061291146] = "em111002",
+  [1212494876] = "em111003",
+  [3592528319] = "em111004",
+  [2703659305] = "em111005",
+  [942653587] = "em111006",
+  [1328082949] = "em111007",
+  [3751275924] = "em111008",
+  [2828066050] = "em111009",
+  [3361166567] = "em111010",
+  [3209716849] = "em111011",
+  [643380683] = "em111012",
+  [1365116253] = "em111013",
+  [3476721918] = "em111014",
+  [3091046504] = "em111015",
+  [557117906] = "em111016",
+  [1446232388] = "em111017",
+  [3331120341] = "em111018",
+  [2978737219] = "em111019",
+  [3816425252] = "em111020",
+  [2491234226] = "em111021",
+  [225732104] = "em111022",
+  [2054379166] = "em111023",
+  [3826762557] = "em111024",
+  [2467361707] = "em111025",
+  [169452049] = "em111026",
+  [2099155591] = "em111027",
+  [3986788118] = "em111028",
+  [2594619264] = "em111029",
+  [4200674917] = "em111030",
+  [2372273907] = "em111031",
+  [342841161] = "em111032",
+  [1667786719] = "em111033",
+  [4245484156] = "em111034",
+  [2316026602] = "em111035",
+  [318935888] = "em111036",
+  [1678091206] = "em111037",
+  [862644787] = "em510488",
+  [3003840750] = "em520500",
+  [1560582594] = "em520502",
+  [3026664695] = "em520504",
+  [762211661] = "em520507",
+  [2853292463] = "em520510",
+  [3709270329] = "em520511",
+  [1142925443] = "em520512",
+  [857249813] = "em520513",
+  [3665509664] = "em520515",
+  [880106508] = "em520517",
+  [4131105530] = "em520521",
+  [406178774] = "em520523",
+  [2253479541] = "em520524",
+  [525864911] = "em520527",
+  [1408553986] = "em530026",
+  [827577325] = "em530566",
+  [3326509952] = "em530574",
+  [3488665515] = "em530578",
+  [833907648] = "em530581",
+  [2830973562] = "em530582",
+  [1105108815] = "em530584",
+  [682580609] = "em530591",
+  [1366549029] = "em530598",
+  [4126201763] = "em530609",
+  [205393916] = "em530613",
+  [2965472695] = "em530628",
+  [1132435771] = "em530663",
+  [2853977102] = "em530665",
+  [2815128369] = "em541038",
+  [371849648] = "em541056",
+  [1630456102] = "em541057",
+  [3563523910] = "em541060",
+  [3447471623] = "em541070",
+  [3128626833] = "em541071",
+  [3282548277] = "em541078",
+  [859347564] = "em541089",
+  [2224162542] = "em541104",
+  [4086642296] = "em541105",
+  [740561945] = "em551052",
+  [1529029775] = "em551053",
+  [2990571962] = "em551055",
+  [3438411015] = "em551058",
+  [3909560054] = "em551060",
+  [2650805856] = "em551061",
+  [118048730] = "em551062",
+  [4043026330] = "em551097",
+  [3818943672] = "em561310",
+  [229512596] = "em561312",
+  [2057905410] = "em561313",
+  [2479521847] = "em561315",
+  [3984325770] = "em561318",
+  [646137431] = "em561322",
+  [1367635649] = "em561323",
+  [3606827555] = "em561334",
+  [2823466654] = "em561339",
+  [2008294856] = "em561346",
+  [2278339004] = "em561350",
+  [516284422] = "em561353",
+  [1553236906] = "em571003",
+  [3529337699] = "em571018",
+  [2774162421] = "em571019",
+  [2158788612] = "em571021",
+  [430297534] = "em571022",
+  [3923592650] = "em571034",
+  [131278054] = "em571036",
+  [1892947056] = "em571037",
+  [2716931860] = "em571040",
+  [2795295501] = "em571044",
+  [3516654491] = "em571045",
+  [1217573409] = "em571046",
+  [1066762935] = "em571047",
+  [3626872752] = "em571049",
+  [3102352981] = "em571050",
+  [3488421571] = "em571051",
+  [818574679] = "em581001",
+  [2848138477] = "em581002",
+  [3737392251] = "em581003",
+  [1084260824] = "em581004",
+  [229268711] = "em591001",
+  [3485768072] = "em900001",
+  [1456326706] = "em900002",
+  [566950052] = "em900003",
+  [3215879431] = "em900004",
+  [3366542737] = "em900005",
+  [1369443371] = "em900006",
+  [648494269] = "em900007",
+  [3055034668] = "em900008",
+  [3240038842] = "em900009",
+  [2715326559] = "em900010",
+  [3604981961] = "em900011",
+  [1339488627] = "em900012",
+  [953272805] = "em900013",
+  [2796903494] = "em900014",
+  [3518131408] = "em900015",
+  [1220230506] = "em900016",
+  [1069288956] = "em900017",
+  [2936213613] = "em900018",
+  [3624149243] = "em900019",
+  [2331364252] = "em900020",
+  [4070879288] = "em910001",
+  [1806557570] = "em910002",
+  [480956692] = "em910003",
+  [2194556087] = "em910004",
+  [4123620385] = "em910005",
+  [1824531867] = "em910006",
+}
+local EMB_DIR = "#/menu/200_icon/01_icon_emblem/"
+local TEX_LOADING = 1506186496  -- (textureCrc) -> true while still loading (kizuna_town_menu_inc)
+local U32 = 4294967296
+local vsr = nil                 -- crc32("emNNNNNN") -> vsroute sprite name (built at first use)
+local tex_asked = {}            -- path -> true: CMND_LOAD_MENU_RES_TEXTURE sent
+local tex_wait, tex_frames = false, 0
+local tex_dead = {}             -- path -> true: never came in (600 frames): the node keeps the board emblem
+-- texts of the rival line (menu_text rows of the 9 languages, research/scripts/rogue_play_text_build.py)
+local RT = {
+  RIVAL = {4028447128, "{1} (Nv. {2})"},
+  -- §20 M4: the Cofre (the retail «item get» window shows gear / moves; these are the other cases)
+  COFRE = {2363720240, "¡Un cofre! Dentro hay…"},
+  FORM = {2884409743, "¡Nueva formación: {1}!\nRareza {2} de 4. Ya puedes elegirla en «Formación».\nFormaciones: {3} de {4}."},
+  FULL = {421245024, "No cabe en tu inventario: el objeto se queda en el cofre."},
+  EMPTY = {4082801424, "El cofre estaba vacío."},
+  USE_GEAR = {1745594814, "Equípalo a un jugador en «Plantilla de equipo» (jugador → Equipo)."},
+  USE_MOVE = {2356268381, "Colócala a un jugador en «Plantilla de equipo» (jugador → Supertécnicas)."},
+}
+-- the loot of a Cofre / a won boss (loader §20 M4) and the retail item calls (prog_common AddItem,
+-- multi_mission_result_menu callGetItemDialog)
+local LOOT = {
+  CMD = 3559964435,   -- (node, salt) -> kind (1 gear, 2 move, 3 formation, 0 none), id, tier, name, owned, total
+  CAN_ADD = 765340069,                -- (item, n) -> the inventory has room for n
+  ADD = 1897915498,                   -- CMND_ADD_ITEM_ONLY (item, n)
+  ITEM_GET = 3675423478,              -- sysmes_item_get: «¡Has conseguido <item>!» (message kind 11 = item parameter)
+  SALT_COFRE = 1,
+}
+local G = {CY = 540, DX = 234, DY = 72, X0 = 200, FOCUS_X = 700, REVEAL = 3,
+           SW = 1920, TAG_DY = 50, PAD = 12, Q = 36, PW = 160,
+           PH = 86, PDY = 11, TW = 150, TH = 38, HW = 64,
+           HH = 112, PS = 0.8, LEV = 72, EMB = 76, EMB_DY = -12,
+           -- «Fase N» (rogue_map_build.py TITLE): centre y, sprite height, word sprite width / advance, digit sprite
+           -- width, gap word -> number; TITLE_ADV = the advance of each digit 0..9 (index digit + 1)
+           TY = 112, TH = 64, TWW = 140, TWA = 103, TDW = 60, TGAP = 13}
+local TITLE_ADV = {29, 23, 29, 29, 30, 29, 29, 29, 29, 29}
+local TITLE_I0, TITLE_DIGITS = 2, 3   -- evt_rogue_map_hint instances: 2 = «Fase», 3..5 = the phase digits
+local MODE_ICON_NODE = 3293713115     -- mainmenu90_01_header node mode_base01 (retail plate mode_base02 goes there)
+local CONTENT_NAME = {[4] = "cofre", [5] = "evento", [6] = "fichaje", [7] = "elite"}
+-- THE gacha table (rogue_map_build.py gacha_table): constellation no. -> {star-sign id, name}. Coin weights / phases
+-- are the loader's [rogue] gacha_coins; a Gacha line's coin comes with CMND_EVT_RL_RUN_EDGE.
+local GACHA = {
+  [1] = {3470114373, "Bolarrozana"},
+  [2] = {2306196629, "Metallicus"},
+  [3] = {3021335845, "Inazumis"},
+  [4] = {104149301, "Caravanis"},
+  [5] = {995432581, "Instructus Notara"},
+  [6] = {2096456277, "Pinguinus"},
+  [7] = {1100303333, "Ovnius"},
+  [8] = {3284524084, "Ferrus"},
+  [9] = {4272289156, "Meteorica"},
+  [10] = {954811472, "Tornadus"},
+  [11] = {92892640, "Demonis"},
+  [12] = {1109989168, "Extraterrestris"},
+  [13] = {2135506560, "Draconis"},
+  [14] = {3446268560, "Ocularium"},
+  [15] = {4027173664, "Pneumaticus"},
+  [16] = {3081351664, "Manus"},
+  [17] = {2328467520, "Dinosaurum"},
+  [18] = {144248721, "Academius"},
+  [19] = {905520673, "Odentum"},
+  [20] = {3195877118, "Judicium"},
+  [21] = {2199723854, "Animare"},
+  [22] = {3300746654, "Trophaeum"},
+  [23] = {4192029742, "Sortilaza"},
+  [24] = {1274908734, "Ramenae"},
+  [25] = {1990048142, "Silbilus"},
+  [26] = {826131294, "Victoria"},
+  [27] = {207481582, "Amicitia"},
+  [28] = {2383248703, "Calceus"},
+  [29] = {3010286735, "Cuspis"},
+  [30] = {1965155675, "Diamantis"},
+}
+local PU = {DRAW = 1637876476,  -- (sign) -> ok, param, charaRarity, rarityType, index: the loader draws from
+            -- the game data of the star sign; the retail lottery (normal-mode state) is never called (inarogue.md rule #1, V3)
+            RESULT_MENU = 2721949403, COUNT_KEY = 1872993680, PRE_RESULT = 2490454692,
+            GRANT = 3603871645, TRIES = 20}
+local LEV_NAME = {[1] = "tienda", [2] = "gacha", [3] = "tragaperras"}
+
+-- ---- state --------------------------------------------------------------------------------------------------------
+local has_loader = false
+local run = nil        -- {phase, cols, cur, curCol, seed, budget}
+local nodes = {}       -- 0-based: {col, slot, kind, pick, state}
+local edges = {}       -- 0-based: {from, to, walked}
+local n_nodes, n_edges = 0, 0
+local reach = {}       -- 1-based list of reachable node indices (top to bottom)
+local focus = 1        -- index into reach
+local shown = -1       -- piece INSTANCE that has the cursor
+local cam = 0          -- camera: screen x = world x - cam (long maps scroll, docs/game/inarogue.md §11.4)
+local inst_node = {}   -- piece / plat / tag instance -> node index (this layout)
+local node_inst = {}   -- node index -> instance (visible nodes only)
+local line_edge = {}   -- line instance -> edge index
+local lev_edge = {}    -- line-event instance -> edge index
+local evt_co = nil
+local pending = 0      -- stage of the node in progress (0 none): the current platform is the only reachable one
+local resume_at_open = false
+
+-- ---- mouse (docs/game/ui/mouse-support.md) ---------------------------------------------------------------------------
+-- evt_rogue_map_plat is a focus group with a MenuCollisionSetting on its quad (rogue_map_build.py MOUSE_LAYERS): the
+-- engine sends hover as OnChangeFocus(L_PLAT, k) and a left click as OnDecideFocus(L_PLAT, k). Only the platforms the
+-- player can walk to have their collision on, so the mouse cannot pick anything else. Right click = Atrás (setting
+-- row CMD_MOUSE_RIGHT_CLICK -> CMD_BACK on the anchor and on the platforms); the button guides are clickable (retail).
+-- The wheel pans long maps one column (CMD_EVT_WHEEL_UP / _DOWN: our two MENU_CTRL commands in input_ctrl, built by
+-- research/scripts/menu_mouse_build.py; without them the poll is always false).
+local MS = {
+  HIT = 855005857,          -- (layer, idx, bool): hit collision of one instance on / off (retail SetupActiveHitCollision)
+  HOVER = 2206938151,       -- CMND_SET_ON_CHANGE_FOCUS_MOUSE (layer, idx, bool): hover moves the focus (chara_bank)
+  FOCUS_ENABLE = 3518307824, FOCUS_ACTIVE = 102308320, FOCUS_IDX = 2603265800, FOCUS_SET = 3466097042,
+  CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303,        -- CMND_CHECK_INPUT_CMD (ctrl, cmd) -> bool
+  WHEEL_UP = 1942756954, WHEEL_DOWN = 1623431741,          -- crc32("CMD_EVT_WHEEL_UP" / "CMD_EVT_WHEEL_DOWN")
+  -- Lua hit test (the retail players_universe_menu GetCursorPos / GetHitStarLocator way; the engine did not move the
+  -- cursor on hover in game, 30/09): the pointer (x, -y) against the layer global position of each walkable platform
+  MOVED = 3272825600,       -- funcLuaMenuCommand () -> the mouse moved this frame
+  POINTER = 558229292,      -- funcLuaMenuCommand () -> x, y (y down; players_universe compares x, -y with layer positions)
+  GPOS = 4002164178,        -- funcLuaMenuCommand (layer, idx) -> x, y, z global position of the instance
+  CLICK = 1651523701,   -- MENU_CTRL command: left click (also Enter / A: used only after the mouse moved)
+  HIT_W = 84, HIT_UP = 88, HIT_DOWN = 48,               -- hit box around the platform centre (layout units, y up)
+}
+local decided = false  -- one decide per frame (a click / Enter may reach both OnEnter and OnDecideFocus)
+local pan = 0          -- columns the wheel moved the camera away from the cursor's column (0 = follow the cursor)
+local mouse_mode = false   -- the last cursor move came from the mouse (a click / Enter then decides the pointed node)
+local mouse_logs = 0
+-- the selected node's look (inarogue.md §27): emblem bobbing, platform pulse, walkable / locked tint, blue path
+local FX = {
+  PRIM_COLOR = 855211291,   -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b): retail grey-out of the formation cards
+  MESH_QUAD = 312193881,   -- the cmn01_10 quad's mesh (platforms, emblems, lines)
+  BOB = 5, PULSE = 0.045, PERIOD = 72,                  -- px up / down, scale +-4.5 %, frames per cycle
+  LOCKED = {0.55, 0.55, 0.62}, CLEARED = {0.9, 0.9, 0.9}, WALK = {1, 1, 1},
+  -- §27.2: a branch the run left behind (no road from the current platform reaches it any more): darker, its roads too
+  DEAD = {0.3, 0.3, 0.36},
+  BLUE = {0.28, 0.6, 1.0},  -- the chosen path's dotted lines (multiplies the pale plain dots: a clear blue)
+}
+local anim_k, anim_t = -1, 0   -- platform instance being animated, frame counter
+-- «you are here» runner (inarogue.md §27.1 / §27.2): an IE3 (Team Ogre) pixel-art match sprite on the current
+-- platform. IE3 directions run clockwise from the back: 0 up, 1 up-right, 2 right, 3 down-right, 4 down (facing the
+-- camera), 5 down-left, 6 left, 7 up-left; the pack draws 5 / 6 / 7 facing left and plays 1 / 2 / 3 as their mirror
+-- (baked as <prefix>_cNN_m). Idle = g0 direction 4 (anim id 4): the breathing loop facing the camera. Run = g1 (anim ids
+-- 8..15) in the direction of the move along the dotted road. Cells / durations (1/60 s = game frames) are the pack's,
+-- the same for every IE3 match sprite (rogue_map_marker_build.py RN_ANIM checks this table). World coords: screen
+-- x = rn.x - cam.
+local RN = {
+  BOX = 96, FOOT = 93,          -- cell box (3x of 32) and its feet line
+  SPEED = 9,                    -- px per frame while running
+  OFF_X = -66, OFF_Y = 22,      -- feet: left of the platform centre, on its surface
+  SHADOW = 3616371808, SHADOW_W = 60, SHADOW_H = 20,   -- crc32("mk_shadow")
+  UNKNOWN = 2783535388,         -- crc32("mk_unknown"): the fog-of-war «?» plate (§27.4), same atlas
+  DEFAULT = "mk_mark_raimon",   -- Mark Evans (GK) in the Raimon home GK kit (rogue_map_marker_build.py AVATARS)
+  -- the chosen avatar (Rogue-points avatar shop): CMND_EVT_RL_AVATAR_GET () -> texture path, sprite prefix (an atlas
+  -- with <prefix>_cNN / <prefix>_cNN_m for the cells below, same 96 px box / feet line); nothing = the default
+  AVATAR_GET = 3729018318,
+  IDLE_DIR = 4,
+  MIRROR = {[1] = true, [2] = true, [3] = true},
+  TAN = 0.41421356,             -- tan(22.5 deg): the 8 direction sectors
+}
+local RN_ANIM = {
+  idle = {[4] = {{1, 16}, {2, 2}, {53, 16}, {3, 2}}},
+  run = {
+    [0] = {{37, 2}, {36, 6}, {37, 2}, {18, 4}, {38, 2}, {39, 6}, {38, 2}, {18, 4}},
+    [1] = {{33, 2}, {32, 6}, {33, 2}, {14, 4}, {34, 2}, {35, 6}, {34, 2}, {14, 4}},
+    [2] = {{29, 2}, {28, 6}, {29, 2}, {10, 4}, {30, 2}, {31, 6}, {30, 2}, {10, 4}},
+    [3] = {{25, 2}, {24, 6}, {25, 2}, {6, 4}, {26, 2}, {27, 6}, {26, 2}, {6, 4}},
+    [4] = {{21, 2}, {20, 6}, {21, 2}, {0, 4}, {22, 2}, {23, 6}, {22, 2}, {0, 4}},
+    [5] = {{25, 2}, {24, 6}, {25, 2}, {6, 4}, {26, 2}, {27, 6}, {26, 2}, {6, 4}},
+    [6] = {{29, 2}, {28, 6}, {29, 2}, {10, 4}, {30, 2}, {31, 6}, {30, 2}, {10, 4}},
+    [7] = {{33, 2}, {32, 6}, {33, 2}, {14, 4}, {34, 2}, {35, 6}, {34, 2}, {14, 4}},
+  },
+}
+-- {tex, prefix, map, x, y, at (last node reached), goal (node it heads to), way (node queue), kind, dir, fi, ft, drawn}
+local rn = nil
+local rn_ready = false -- the map layers are open (the runner draws from then on)
+
+-- ---- helpers --------------------------------------------------------------------------------------------------------
+--@lib evt_menu_kit.lua#Call
+
+local function Log(...)
+  Call(RL.LOG, "rogue_map", ...)
+end
+
+--@lib evt_menu_kit.lua#Int
+
+local function WorldX(col)
+  return G.X0 + col * G.DX
+end
+
+local function XY(n)
+  return WorldX(n.col) - cam, G.CY + (n.slot - 4) * G.DY
+end
+
+-- [rogue.board] (loader config, CMND_EVT_RL_RUN_INFO values 16 / 17; an older loader = the defaults)
+local board = {fog = true, reveal_boss = true}
+
+-- the older column fog (3 columns ahead: «fog» platform, kinds hidden); off with the fog of war (§27.4), where every
+-- node keeps showing its kind and only WHO is hidden
+local function Fogged(n)
+  return not board.fog and run ~= nil and n.col > run.curCol + G.REVEAL
+end
+
+-- §27.4 fog of war: a match node shows its rival only when it is a choosable exit of the current (cleared) node or
+-- already walked; every other one shows the «?» plate (left-behind branches too). [rogue.board] reveal_boss keeps the
+-- phase boss in view (the goal); épico / puerta stay hidden like the rest. Content nodes (cofre / evento / fichaje)
+-- have no rival: their icon stays.
+local function Hidden(i)
+  local n = nodes[i]
+  if n == nil or n.kind == K_START or not IsMatchKind(n.kind) then
+    return false
+  end
+  if not board.fog then
+    return Fogged(n) and not AlwaysShown(n.kind)
+  end
+  if n.state == ST_CLEAR or n.state == ST_CUR or n.state == ST_VISITED then
+    return false
+  end
+  if n.kind == K_BOSS and board.reveal_boss then
+    return false
+  end
+  if pending == 0 then
+    for _, r in ipairs(reach) do
+      if r == i then
+        return false
+      end
+    end
+  end
+  return true
+end
+
+-- maps that fit are centred; longer ones keep the cursor's column at FOCUS_X ("descubrir más mapa" to the right)
+local function MaxCam()
+  return WorldX(run.cols - 1) + G.X0 - G.SW
+end
+
+local function UpdateCamera()
+  local span = (run.cols - 1) * G.DX
+  if span + 2 * G.X0 <= G.SW then
+    cam = G.X0 - (G.SW - span) / 2
+    return
+  end
+  local col = run.curCol
+  if reach[focus] ~= nil then
+    col = nodes[reach[focus]].col
+  end
+  cam = math.max(0, math.min(WorldX(col) - G.FOCUS_X + pan * G.DX, MaxCam()))
+end
+
+-- screen px (y down) -> layer local position (y up)
+local function Place(layer, idx, x, y)
+  funcLuaMenuCommand(C.POS, layer, x, -y, 0, idx)
+end
+
+--@lib evt_menu_kit.lua#Hide
+
+-- a quad with any texture / sprite (crc values): rival emblems of another texture
+local function QuadTex(layer, idx, tex, sprite, x, y, w, h)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
+  funcLuaMenuCommand(C.SCALE, layer, w / G.Q, h / G.Q, 1, idx)
+  funcLuaMenuCommand(C.SPRITE, layer, tex, sprite, NODE_QUAD, 0, idx)
+  Place(layer, idx, x, y)
+end
+
+local function Quad(layer, idx, sprite, x, y, w, h)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
+  funcLuaMenuCommand(C.SCALE, layer, w / G.Q, h / G.Q, 1, idx)
+  funcLuaMenuCommand(C.SPRITE, layer, CRC32(TEX), CRC32(sprite), NODE_QUAD, 0, idx)
+  Place(layer, idx, x, y)
+end
+
+local function ReadRun()
+  run, nodes, edges, reach, n_nodes, n_edges = nil, {}, {}, {}, 0, 0
+  local api, mods = Call(RL.VERSION)
+  has_loader = type(api) == "number" and type(mods) == "number" and math.floor(mods / MOD_ROGUE) % 2 == 1
+  if not has_loader then
+    return
+  end
+  local exists, phase, cols, nn, ne, cur, curCol, seed, _, budget, _, stage, _, _, _, fog, rboss = Call(RL.INFO)
+  if exists ~= true then
+    local code, s = Call(RL.START, 0)
+    Log("no run: new run, code", Int(code), "seed", tostring(s))
+    exists, phase, cols, nn, ne, cur, curCol, seed, _, budget, _, stage, _, _, _, fog, rboss = Call(RL.INFO)
+    if exists ~= true then
+      return
+    end
+  end
+  run = {phase = Int(phase), cols = Int(cols), cur = Int(cur), curCol = Int(curCol), seed = seed, budget = Int(budget)}
+  board.fog = type(fog) ~= "number" or fog ~= 0
+  board.reveal_boss = type(rboss) ~= "number" or rboss ~= 0
+  n_nodes, n_edges = Int(nn), Int(ne)
+  pending = Int(stage)
+  for i = 0, n_nodes - 1 do
+    local ok, col, slot, kind, pick, state = Call(RL.NODE, i)
+    if ok == true then
+      nodes[i] = {col = Int(col), slot = Int(slot), kind = Int(kind), pick = pick, state = Int(state), idx = i}
+      local k = Int(kind)
+      if IsMatchKind(k) then   -- the node's rival (seeded, pure: §20 M2)
+        local okm, _, _, _, _, level, rival, emblem = Call(RL.MATCH, i)
+        if okm == true then
+          nodes[i].rival = type(rival) == "string" and rival or nil
+          nodes[i].level = Int(level)
+          nodes[i].emblem = type(emblem) == "number" and emblem % U32 or 0
+        end
+      end
+      if Int(state) == ST_NEXT then
+        table.insert(reach, i)
+      end
+    end
+  end
+  for i = 0, n_edges - 1 do
+    local ok, a, b, walked, ev, coin = Call(RL.EDGE, i)
+    if ok == true then
+      edges[i] = {from = Int(a), to = Int(b), walked = walked == true, ev = Int(ev), coin = Int(coin)}
+    end
+  end
+  if pending > 0 and nodes[run.cur] ~= nil then
+    reach = {run.cur}              -- the node in progress: Aceptar continues it (audit A19)
+  end
+  table.sort(reach, function(a, b) return nodes[a].slot < nodes[b].slot end)
+  focus = math.max(1, math.min(focus, #reach))
+  Log("run phase", run.phase, "cols", run.cols, "nodes", n_nodes, "edges", n_edges, "cur", run.cur, "reach", #reach,
+      "seed", tostring(seed))
+end
+
+-- "<rival> (Nv. N)" in the game's language (fallback: the Spanish literal)
+local function RivalText(n)
+  local s = Call(4074371074 --[[CMND_TEXT_GET]], RT.RIVAL[1])
+  if type(s) ~= "string" or s == "" then
+    s = RT.RIVAL[2]
+  end
+  local v = {tostring(n.rival or "?"), tostring(n.level or 0)}
+  return (s:gsub("{(%d)}", function(k)
+    return v[tonumber(k)] or ""
+  end))
+end
+
+-- one loader.log line per node and emblem source (§23): "emblem", node, kind, source, name
+local function EmbLog(n, src, name)
+  if n.emb_src ~= src then
+    n.emb_src = src
+    Log("emblem", n.idx, n.kind, src, tostring(name))
+  end
+end
+
+-- the node's emblem as (textureCrc, spriteCrc), or nil (nothing to show yet: its texture is still loading)
+local function Emblem(n)
+  if type(n.emblem) == "number" and n.emblem ~= 0 then
+    if vsr == nil then
+      vsr = {}
+      for _, s in ipairs(EMBLEMS) do
+        vsr[CRC32((s:gsub("_t01$", ""))) % U32] = s
+      end
+    end
+    local v = vsr[n.emblem]
+    if v ~= nil then
+      EmbLog(n, "board", v)
+      return CRC32(TEX_EMBLEM), CRC32(v)
+    end
+    local name = EMB_ALL[n.emblem]
+    if name ~= nil and not tex_dead[EMB_DIR .. name .. "_s.g4tx"] then
+      local path = EMB_DIR .. name .. "_s.g4tx"
+      if not tex_asked[path] then
+        tex_asked[path] = true
+        funcLuaMenuCommand(C.LOAD_TEX, path)
+      end
+      local tc = CRC32(path)
+      if funcLuaCommand(TEX_LOADING, tc) == true then
+        tex_wait = true
+        EmbLog(n, "loading", name)
+        return nil
+      end
+      EmbLog(n, "own", name .. "_s01")
+      return tc, CRC32(name .. "_s01")
+    end
+  end
+  -- no rival emblem known (a node kind without a match, or an emblem with no texture): the seeded board emblem
+  if #EMBLEMS == 0 or type(n.pick) ~= "number" then
+    return nil
+  end
+  local s = EMBLEMS[(n.pick % #EMBLEMS) + 1]
+  EmbLog(n, "seeded", s)
+  return CRC32(TEX_EMBLEM), CRC32(s)
+end
+
+-- §27.2 branching: the nodes still reachable from the current platform (forward along the roads, itself included).
+-- Anything else that was not walked is a branch left behind: dimmed (DEAD), never selectable (reach only holds the
+-- current platform's exits), the runner never goes there.
+local alive = {}
+local function UpdateAlive()
+  alive = {}
+  if run == nil then
+    return
+  end
+  alive[run.cur] = true
+  local todo = {run.cur}
+  while #todo > 0 do
+    local a = table.remove(todo)
+    for i = 0, n_edges - 1 do
+      local e = edges[i]
+      if e ~= nil and e.from == a and not alive[e.to] then
+        alive[e.to] = true
+        todo[#todo + 1] = e.to
+      end
+    end
+  end
+end
+
+local function Dead(i)
+  local n = nodes[i]
+  return n ~= nil and not alive[i] and n.kind ~= K_START and n.state ~= ST_CLEAR and n.state ~= ST_CUR and
+      n.state ~= ST_VISITED
+end
+
+-- a road nobody can walk any more: not walked and it ends in a dead node or starts behind the current platform
+local function DeadEdge(e)
+  return not e.walked and (Dead(e.to) or not alive[e.from])
+end
+
+-- which nodes / edges are on screen now -> instance tables (the pools are smaller than a long map)
+local function Layout()
+  inst_node, node_inst, line_edge, lev_edge = {}, {}, {}, {}
+  if run == nil then
+    return
+  end
+  UpdateAlive()
+  UpdateCamera()
+  local k = 0
+  for i = 0, n_nodes - 1 do
+    local n = nodes[i]
+    if n ~= nil and k < N_PIECES then
+      local x = XY(n)
+      if x > -G.DX and x < G.SW + G.DX then
+        inst_node[k], node_inst[i] = i, k
+        k = k + 1
+      end
+    end
+  end
+  local l = 0
+  for i = 0, n_edges - 1 do
+    local e = edges[i]
+    if e ~= nil and l < N_LINES and nodes[e.from] ~= nil and nodes[e.to] ~= nil then
+      local xa, xb = XY(nodes[e.from]), XY(nodes[e.to])
+      if math.max(xa, xb) > -G.DX and math.min(xa, xb) < G.SW + G.DX then
+        line_edge[l] = i
+        l = l + 1
+        local v = 0
+        while lev_edge[v] ~= nil do
+          v = v + 1
+        end
+        if e.ev > 0 and not e.walked and not Fogged(nodes[e.to]) and v < N_LEV then
+          lev_edge[v] = i
+        end
+      end
+    end
+  end
+end
+
+-- ---- drawing ----------------------------------------------------------------------------------------------------------
+local function DrawBg()
+  Quad(L_BG, 0, "evt_map_bg", 960, 540, 1920, 1080)
+end
+
+-- «Fase N» centred under the header: the word and up to 3 digit sprites on the hint layer (instances 2..5); the
+-- ribbon behind them is part of the backdrop
+local function DrawTitle()
+  local digits = {}
+  if run ~= nil then
+    for c in tostring(run.phase):gmatch("%d") do
+      digits[#digits + 1] = tonumber(c)
+    end
+  end
+  if #digits == 0 or #digits > TITLE_DIGITS then
+    for i = 0, TITLE_DIGITS do
+      Hide(L_HINT, TITLE_I0 + i)
+    end
+    return
+  end
+  local total = G.TWA + G.TGAP
+  for _, d in ipairs(digits) do
+    total = total + TITLE_ADV[d + 1]
+  end
+  local x = G.SW / 2 - total / 2
+  Quad(L_HINT, TITLE_I0, "evt_map_title_word", x + G.TWA / 2, G.TY, G.TWW, G.TH)
+  x = x + G.TWA + G.TGAP
+  for i = 1, TITLE_DIGITS do
+    local d = digits[i]
+    if d ~= nil then
+      Quad(L_HINT, TITLE_I0 + i, "evt_map_title_d" .. d, x + TITLE_ADV[d + 1] / 2, G.TY, G.TDW, G.TH)
+      x = x + TITLE_ADV[d + 1]
+    else
+      Hide(L_HINT, TITLE_I0 + i)
+    end
+  end
+end
+
+local function DrawHints()
+  DrawTitle()
+  if run == nil or (run.cols - 1) * G.DX + 2 * G.X0 <= G.SW then
+    Hide(L_HINT, 0)
+    Hide(L_HINT, 1)
+    return
+  end
+  if cam > 1 then
+    Quad(L_HINT, 0, "evt_map_hint_l", 8 + G.HW / 2, G.CY, G.HW, G.HH)
+  else
+    Hide(L_HINT, 0)
+  end
+  if cam < MaxCam() - 1 then
+    Quad(L_HINT, 1, "evt_map_hint_r", G.SW - 8 - G.HW / 2, G.CY, G.HW, G.HH)
+  else
+    Hide(L_HINT, 1)
+  end
+end
+
+local function DrawLine(li)
+  local e = edges[line_edge[li] or -1]
+  if run == nil or e == nil then
+    Hide(L_LINE, li)
+    return
+  end
+  local a, b = nodes[e.from], nodes[e.to]
+  local xa, ya = XY(a)
+  local xb, yb = XY(b)
+  local d = b.slot - a.slot
+  -- §27: the chosen path is BLUE: every walked segment plus the segment to the platform under the cursor; the other
+  -- lines keep their pale dots. Blue = the plain dots tinted with the retail prim colour (the gold «walked» sprite is
+  -- no longer used)
+  local blue = e.walked or (pending == 0 and run ~= nil and e.from == run.cur and e.to == reach[focus])
+  local name = string.format("evt_map_line_p_%s%d", d < 0 and "u" or "d", math.abs(d))
+  Quad(L_LINE, li, name, (xa + xb) / 2, (ya + yb) / 2, G.DX, math.abs(d) * G.DY + 2 * G.PAD)
+  local c = blue and FX.BLUE or (DeadEdge(e) and FX.DEAD or FX.WALK)
+  funcLuaMenuCommand(FX.PRIM_COLOR, L_LINE, li, FX.MESH_QUAD, c[1], c[2], c[3])
+end
+
+-- §27: only the lines leaving the current platform change when the cursor moves
+local function DrawPathLines()
+  if run == nil then
+    return
+  end
+  for li = 0, N_LINES - 1 do
+    local e = edges[line_edge[li] or -1]
+    if e ~= nil and e.from == run.cur then
+      DrawLine(li)
+    end
+  end
+end
+
+local function DrawLev(li)
+  local e = edges[lev_edge[li] or -1]
+  if run == nil or e == nil or LEV_NAME[e.ev] == nil then
+    Hide(L_LEV, li)
+    return
+  end
+  local xa, ya = XY(nodes[e.from])
+  local xb, yb = XY(nodes[e.to])
+  local sprite = "evt_map_lev_" .. LEV_NAME[e.ev]
+  if e.ev == 2 and GACHA[e.coin] ~= nil then
+    sprite = string.format("evt_map_coin_%02d", e.coin)      -- the constellation's coin
+  end
+  Quad(L_LEV, li, sprite, (xa + xb) / 2, (ya + yb) / 2, G.LEV, G.LEV)
+  local c = DeadEdge(e) and FX.DEAD or FX.WALK            -- §27.2: a left-behind road's icon goes dark too
+  funcLuaMenuCommand(FX.PRIM_COLOR, L_LEV, li, FX.MESH_QUAD, c[1], c[2], c[3])
+end
+
+-- §27: the current platform is CLEAR only once it is resolved. A node still in progress (pending > 0: arrived, effect
+-- pending, or a match reserved and never played / never resolved) is the platform to play: "next" look, no CLEAR tag
+-- (it read «CLEAR» before, and the cursor seemed stuck on a cleared node, 30/09)
+local function InProgress(n)
+  return n.state == ST_CUR and pending > 0
+end
+
+local function PlatSprite(n)
+  if n.kind == K_START then
+    return "evt_map_plat_start"
+  elseif n.kind == K_BOSS then
+    return "evt_map_plat_boss"
+  elseif n.kind == K_EPIC and not (n.state == ST_CLEAR or n.state == ST_VISITED) then
+    return "evt_map_plat_epic"
+  elseif n.kind == K_GATE and not (n.state == ST_CLEAR or n.state == ST_VISITED) then
+    return "evt_map_plat_gate"
+  elseif InProgress(n) then
+    return n.kind == 7 and "evt_map_plat_elite" or "evt_map_plat_next"
+  elseif n.state == ST_CLEAR or n.state == ST_CUR or n.state == ST_VISITED then
+    return "evt_map_plat_clear"
+  elseif Fogged(n) then
+    return "evt_map_plat_fog"
+  elseif n.kind == 7 then
+    return "evt_map_plat_elite"
+  elseif n.state == ST_NEXT then
+    return "evt_map_plat_next"
+  end
+  return "evt_map_plat_normal"
+end
+
+local function TagSprite(n)
+  if n.kind == K_START then
+    return "evt_map_tag_exit"
+  elseif n.state == ST_CLEAR or (n.state == ST_CUR and n.kind ~= K_START and not InProgress(n)) then
+    return "evt_map_tag_clear"
+  elseif n.kind == K_BOSS then
+    return "evt_map_tag_boss"
+  elseif n.kind == K_EPIC then
+    return "evt_map_tag_epic"
+  elseif n.kind == K_GATE then
+    return "evt_map_tag_gate"
+  elseif CONTENT_NAME[n.kind] ~= nil and not Fogged(n) then
+    return "evt_map_tag_" .. CONTENT_NAME[n.kind]
+  end
+  return nil
+end
+
+-- mouse: index into reach of the node drawn by platform instance k (nil = not reachable / not a node)
+local function ReachOf(k)
+  local i = type(k) == "number" and inst_node[k] or nil
+  if i == nil then
+    return nil
+  end
+  for j, r in ipairs(reach) do
+    if r == i then
+      return j
+    end
+  end
+  return nil
+end
+
+-- mouse: platform instance k takes hover / click only while it is a platform the player can walk to
+local function SetHit(k, on)
+  funcLuaMenuCommand(MS.HIT, L_PLAT, k, on)
+  funcLuaMenuCommand(MS.HOVER, L_PLAT, k, on)
+end
+
+-- keys moved the cursor: if the mouse left the engine focus on a platform, move it along (Enter then decides the
+-- same platform whichever callback the engine uses)
+local function SyncFocus()
+  local k = reach[focus] ~= nil and node_inst[reach[focus]] or nil
+  if k ~= nil and funcLuaMenuCommand(MS.FOCUS_ACTIVE, L_PLAT) then
+    funcLuaMenuCommand(MS.FOCUS_SET, L_PLAT, k)
+  end
+end
+
+-- draw piece / plat / tag instance k
+local function DrawNode(k)
+  local i = inst_node[k]
+  local n = i ~= nil and nodes[i] or nil
+  SetHit(k, run ~= nil and n ~= nil and ReachOf(k) ~= nil)
+  if run == nil or n == nil then
+    Hide(L_PLAT, k)
+    Hide(L_EMB, k)
+    Hide(L_PIECE, k)
+    Hide(L_TAG, k)
+    funcLuaMenuCommand(C.ATTACH_TRACE, L_PIECE, k, PIECE_HERE, false)
+    funcLuaMenuCommand(C.ATTACH_TRACE, L_PIECE, k, PIECE_CURSOR, false)
+    return
+  end
+  local x, y = XY(n)
+  Quad(L_PLAT, k, PlatSprite(n), x, y + G.PDY, G.PW, G.PH)
+  -- §27: walkable platforms (and the one in progress) at full light, locked ones dimmed, the path behind slightly
+  local walk = ReachOf(k) ~= nil or InProgress(n)
+  local tint = walk and FX.WALK or ((n.state == ST_CLEAR or n.state == ST_CUR or n.state == ST_VISITED or
+      n.kind == K_START) and FX.CLEARED or (Dead(i) and FX.DEAD or FX.LOCKED))
+  funcLuaMenuCommand(FX.PRIM_COLOR, L_PLAT, k, FX.MESH_QUAD, tint[1], tint[2], tint[3])
+  funcLuaMenuCommand(FX.PRIM_COLOR, L_EMB, k, FX.MESH_QUAD, tint[1], tint[2], tint[3])
+  -- §23: what the platform shows, on our quad layer (normal draw pass, like the platforms). In game (21:18) the
+  -- retail piece showed nothing: its objbin kept the retail m_drawType 1 («draw before» pass), so the backdrop quad
+  -- covered it (emblem, INICIO, focus ring)
+  -- §27.4: a hidden rival = our «?» plate (marker atlas mk_unknown) in the emblem's place; the kind stays visible
+  local hid = Hidden(i)
+  if n.kind ~= K_START and (hid or AlwaysShown(n.kind) or not Fogged(n)) then
+    local ex, ey = x, y + G.EMB_DY
+    if hid then
+      QuadTex(L_EMB, k, CRC32(TEX_MARKER), RN.UNKNOWN, ex, ey, G.EMB, G.EMB)
+    elseif n.kind >= 4 and n.kind <= 6 then
+      Quad(L_EMB, k, "evt_map_icon_" .. CONTENT_NAME[n.kind], ex, ey, G.EMB, G.EMB)
+    else
+      local etex, esprite = Emblem(n)
+      if etex ~= nil then
+        QuadTex(L_EMB, k, etex, esprite, ex, ey, G.EMB, G.EMB)
+      else
+        Hide(L_EMB, k)
+      end
+    end
+  else
+    Hide(L_EMB, k)
+  end
+  -- the retail piece at 80 %: emblem (INICIO icon, "?" in the fog), focus ring on the platforms you can go to
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_PIECE, k, true)
+  funcLuaMenuCommand(C.SCALE, L_PIECE, G.PS, G.PS, 1, k)
+  Place(L_PIECE, k, x, y)
+  funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, MESH_BASE, false, k)
+  for _, m in ipairs(PIECE_HIDE) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, m, false, k)
+  end
+  funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, MESH_RING, n.state == ST_NEXT or InProgress(n), k)
+  -- §23: the piece's own emblem node only carries the retail INICIO icon (SALIDA) and the "?" of the fog; rival
+  -- emblems and node-type icons are on L_EMB (above), so the piece's emblem is off there (no double emblem now that
+  -- the piece is drawn in the normal pass: rogue_map_build.py drops the retail m_drawType 1 of its objbin)
+  if n.kind == K_START then
+    funcLuaMenuCommand(C.SPRITE, L_PIECE, TEX_PIECE, 1487269733, NODE_EMBLEM, 0, k)
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, MESH_EMBLEM, true, k)
+  elseif Fogged(n) and not hid and not AlwaysShown(n.kind) then   -- older column fog: a content node's retail «?»
+    funcLuaMenuCommand(C.SPRITE, L_PIECE, TEX_PIECE, 1180773247, NODE_EMBLEM, 0, k)
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, MESH_EMBLEM, true, k)
+  else
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_PIECE, MESH_EMBLEM, false, k)
+  end
+  funcLuaMenuCommand(C.ATTACH_TRACE, L_PIECE, k, PIECE_HERE, i == run.cur)
+  local tag = TagSprite(n)
+  if tag ~= nil then
+    Quad(L_TAG, k, tag, x, y + G.TAG_DY, G.TW, G.TH)
+  else
+    Hide(L_TAG, k)
+  end
+end
+
+local function ShowCursor()
+  local node = reach[focus]
+  local k = node ~= nil and node_inst[node] or nil
+  if shown >= 0 and shown ~= k then
+    funcLuaMenuCommand(C.ATTACH_TRACE, L_PIECE, shown, PIECE_CURSOR, false)
+  end
+  if k == nil then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, false)
+    shown = -1
+    return
+  end
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, true)    -- the cursor (retail arrow); the runner marks «you are here»
+  funcLuaMenuCommand(C.ATTACH_TRACE, L_PIECE, k, PIECE_CURSOR, true)
+  funcLuaMenuCommand(C.CURSOR_LOC, L_PIECE, PIECE_CURSOR, k, N_PIECES)
+  shown = k
+end
+
+-- the retail guide line (bottom-left bar) is not used on this screen (2026-10-06): hidden, no text
+local function UpdateGuideLine()
+  funcLuaMenuCommand(C.TEXT, L_GUIDE_LINE, 378156699 --[[_text_guide01]], "", 0)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_GUIDE_LINE, 0, false)
+end
+
+-- the header: INAROGUE's mode plate (evt_rogue_mode.g4tx evt_rogue_mode_plate, 496 x 248 like the retail plates) on the
+-- plate node, no title text (the phase is DrawTitle's «Fase N»)
+local function UpdateMapHeader()
+  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], "", 0)
+  funcLuaMenuCommand(C.SPRITE, L_HEADER, 3139293835 --[[#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx]], 2610480106 --[[evt_rogue_mode_plate: INAROGUE's phoenix plate]], MODE_ICON_NODE, 0, 0)
+end
+
+local function UpdateButtonGuide()
+  local texts, icons, offs, cmds = {G_ACCEPT}, {I_ENTER}, {0}, {K_ENTER}
+  if run ~= nil then
+    local act = G_ACCEPT
+    local n = nodes[run.cur]
+    if pending > 0 and n ~= nil then          -- §27.3: standing on a node not cleared yet: its action
+      act = (n.kind == 4 and G_ACT.open) or (n.kind == 5 and G_ACT.enter) or (n.kind == 6 and G_ACT.talk) or G_ACT.fight
+    end
+    texts, icons, offs, cmds = {G_QUIT, act}, {I_FUNC2, I_ENTER}, {0, 18}, {K_FUNC2, K_ENTER}
+  end
+  funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, texts, icons, offs, {}, {})
+  funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, cmds)
+  funcLuaMenuCommand(C.GUIDE_OPT, MENU, L_BTN_GUIDE, false)
+end
+
+local function DrawAll()
+  Layout()
+  DrawBg()
+  DrawHints()
+  for i = 0, N_LINES - 1 do
+    DrawLine(i)
+  end
+  for i = 0, N_LEV - 1 do
+    DrawLev(i)
+  end
+  for k = 0, N_PIECES - 1 do
+    DrawNode(k)
+  end
+  shown = -1
+  ShowCursor()
+  UpdateMapHeader()
+  UpdateGuideLine()
+  UpdateButtonGuide()
+  anim_k = -1                 -- every platform is at rest now; Animate picks the cursor's one again
+  if rn ~= nil then
+    rn.drawn = nil            -- §27.1: the runner is drawn again next frame (the camera may have moved)
+  end
+end
+
+-- §27: the platform under the cursor comes alive (subtle, retail-like): its emblem / icon bobs up and down, the
+-- platform breathes (scale + a cool light pulse). The one it leaves goes back to rest (DrawNode). No new material,
+-- layer or draw priority: only the retail per-instance position / scale / prim colour commands.
+local function Animate()
+  if run == nil then
+    return
+  end
+  local node = reach[focus]
+  local k = node ~= nil and node_inst[node] or nil
+  if k ~= anim_k then
+    if anim_k >= 0 and inst_node[anim_k] ~= nil then
+      DrawNode(anim_k)
+    end
+    anim_k, anim_t = k or -1, 0
+  end
+  if k == nil then
+    return
+  end
+  anim_t = anim_t + 1
+  local n = nodes[node]
+  local x, y = XY(n)
+  local w = math.sin(anim_t * 2 * math.pi / FX.PERIOD)
+  local s = 1 + FX.PULSE * (0.5 + 0.5 * w)
+  funcLuaMenuCommand(C.SCALE, L_PLAT, G.PW * s / G.Q, G.PH * s / G.Q, 1, k)
+  local c = 0.86 + 0.14 * (0.5 + 0.5 * w)
+  funcLuaMenuCommand(FX.PRIM_COLOR, L_PLAT, k, FX.MESH_QUAD, c, c, 1)
+  if n.kind ~= K_START and (Hidden(node) or AlwaysShown(n.kind) or not Fogged(n)) then
+    Place(L_EMB, k, x, y + G.EMB_DY - FX.BOB * w)
+  end
+end
+
+-- ---- the runner («you are here», §27.1) ---------------------------------------------------------------------------------
+-- which sprite set: the chosen avatar when the loader names one, else the default marker
+local function RunnerSource()
+  if has_loader then
+    local tex, prefix = Call(RN.AVATAR_GET)
+    if type(tex) == "string" and tex ~= "" and type(prefix) == "string" and prefix ~= "" then
+      return tex, prefix
+    end
+  end
+  return TEX_MARKER, RN.DEFAULT
+end
+
+-- the runner's feet (world x, y) next to node i
+local function RunnerAt(i)
+  local n = i ~= nil and nodes[i] or nil
+  if n == nil then
+    return nil
+  end
+  return WorldX(n.col) + RN.OFF_X, G.CY + (n.slot - 4) * G.DY + RN.OFF_Y
+end
+
+local function RunnerHide()
+  Hide(L_RUNNER, 0)
+  Hide(L_RUNNER, 1)
+  if rn ~= nil then
+    rn.drawn = nil
+  end
+end
+
+local function RunnerSet(kind, dir)
+  if rn.kind ~= kind or rn.dir ~= dir then
+    rn.kind, rn.dir, rn.fi, rn.ft = kind, dir, 1, 0
+  end
+end
+
+-- screen move (y down) -> IE3 direction: the nearest of 8 sectors clockwise from up (rogue_map_marker_build.direction)
+local function RunnerDir(dx, dy)
+  local ax, ay = math.abs(dx), math.abs(dy)
+  if ay <= RN.TAN * ax then
+    return dx > 0 and 2 or 6
+  elseif ax <= RN.TAN * ay then
+    return dy < 0 and 0 or 4
+  elseif dx > 0 then
+    return dy < 0 and 1 or 3
+  end
+  return dy < 0 and 7 or 5
+end
+
+-- node a -> node b: a move (Aceptar) is always along one road (the current platform's exit), so straight there
+local function RunnerRoute(a, b)
+  if a == b then
+    return {}
+  end
+  return {b}
+end
+
+-- one game frame: stand on the current platform (idle); after a move (Aceptar) run there along the road it took;
+-- the cursor never moves the runner (§27.2: it would walk into branches the run did not take)
+local function RunnerStep()
+  if not rn_ready or run == nil then
+    return
+  end
+  local target = run.cur
+  if RunnerAt(target) == nil then
+    RunnerHide()
+    return
+  end
+  local map = tostring(run.seed) .. ":" .. tostring(run.phase)
+  if rn == nil or rn.map ~= map then              -- opening the map / a new map: from the current platform
+    local tex, prefix = RunnerSource()
+    if tex ~= TEX_MARKER then
+      funcLuaMenuCommand(C.LOAD_TEX, tex)
+    end
+    local sx, sy = RunnerAt(run.cur)
+    rn = {tex = tex, prefix = prefix, map = map, x = sx, y = sy, at = run.cur, goal = run.cur, way = {},
+          kind = "idle", dir = RN.IDLE_DIR, fi = 1, ft = 0}
+    Log("runner", tex, prefix)
+  end
+  if target ~= rn.goal then
+    rn.way, rn.goal = RunnerRoute(rn.at, target), target   -- from the last platform reached (a turn mid-road goes back)
+  end
+  local step = RN.SPEED
+  while step > 0 and #rn.way > 0 do
+    local wx, wy = RunnerAt(rn.way[1])
+    local dx, dy = wx - rn.x, wy - rn.y
+    local dist = math.sqrt(dx * dx + dy * dy)
+    if dist <= step then
+      rn.x, rn.y, rn.at = wx, wy, rn.way[1]
+      table.remove(rn.way, 1)
+      step = 0
+    else
+      RunnerSet("run", RunnerDir(dx, dy))
+      rn.x, rn.y = rn.x + dx * step / dist, rn.y + dy * step / dist
+      step = 0
+    end
+  end
+  if #rn.way == 0 then
+    RunnerSet("idle", RN.IDLE_DIR)                -- arrived: the IE3 idle loop facing the camera
+  end
+  local fr = RN_ANIM[rn.kind][rn.dir]
+  rn.ft = rn.ft + 1
+  if rn.ft >= fr[rn.fi][2] then
+    rn.ft, rn.fi = 0, rn.fi % #fr + 1
+  end
+  local cell = fr[rn.fi][1]
+  local suffix = string.format("_c%02d", cell)
+  if rn.kind == "run" and RN.MIRROR[rn.dir] then
+    suffix = suffix .. "_m"
+  end
+  local x, y = math.floor(rn.x - cam + 0.5), math.floor(rn.y + 0.5)
+  local key = x .. " " .. y .. suffix
+  if key == rn.drawn then
+    return
+  end
+  if x < -RN.BOX or x > G.SW + RN.BOX then
+    RunnerHide()
+    return
+  end
+  rn.drawn = key
+  QuadTex(L_RUNNER, 0, CRC32(TEX_MARKER), RN.SHADOW, x, y, RN.SHADOW_W, RN.SHADOW_H)
+  QuadTex(L_RUNNER, 1, CRC32(rn.tex), CRC32(rn.prefix .. suffix), x, y - RN.FOOT + RN.BOX / 2, RN.BOX, RN.BOX)
+end
+
+-- ---- windows ------------------------------------------------------------------------------------------------------------
+--@lib evt_menu_kit.lua#Ask,Message
+
+-- a menu_text row of RT in the game's language (fallback: the Spanish literal); {1}.. = values
+local function RTx(t, ...)
+  local s = Call(4074371074 --[[CMND_TEXT_GET]], t[1])
+  if type(s) ~= "string" or s == "" then
+    s = t[2]
+  end
+  local v = table.pack(...)
+  return (s:gsub("{(%d)}", function(k)
+    local x = v[tonumber(k)]
+    return x == nil and "" or tostring(x)
+  end))
+end
+
+-- the retail «item get» window for a game item (callGetItemDialog: text sysmes_item_get, kind 11 = item parameter)
+local function ItemGet(id)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
+  funcLuaCommand(C.MSG_OPEN, LOOT.ITEM_GET, 11, 0, id)
+  coroutine.yield()
+  while funcLuaCommand(C.MSG_BUSY) do
+    coroutine.yield()
+  end
+  while not funcLuaCommand(C.MSG_DONE) do
+    coroutine.yield()
+  end
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+end
+
+-- §20 M4: the Cofre of the node in progress: a random item of the run's loot table (loader, seeded by the node),
+-- given into the INAROGUE save with the retail add-item call; a formation goes to the profile's formation book
+local function Cofre()
+  local kind, id, tier, name, owned, total = Call(LOOT.CMD, run.cur, LOOT.SALT_COFRE)
+  kind = Int(kind)
+  Log("cofre", run.cur, "kind", kind, "id", tostring(id), "tier", Int(tier), "name", tostring(name))
+  Message(RTx(RT.COFRE))
+  if kind == 3 then
+    funcLuaCommand(C.SE, SE_OK)
+    Message(RTx(RT.FORM, tostring(name), Int(tier), Int(owned), Int(total)))
+  elseif (kind == 1 or kind == 2) and type(id) == "number" and id ~= 0 then
+    if Call(LOOT.CAN_ADD, id, 1) == false then
+      Message(RTx(RT.FULL))
+      return
+    end
+    Call(LOOT.ADD, id, 1)
+    Call(3673719958 --[[CMND_SYSTEM_AUTO_SAVE: the item is in the INAROGUE save before the node counts as cleared]])
+    funcLuaCommand(C.SE, SE_OK)
+    ItemGet(id)
+    Message(RTx(kind == 1 and RT.USE_GEAR or RT.USE_MOVE))
+  else
+    Message(RTx(RT.EMPTY))
+  end
+end
+
+--@lib evt_menu_kit.lua#Close
+
+-- ---- actions ----------------------------------------------------------------------------------------------------------
+-- The node in progress lives in the run file (docs/game/modes/inarogue.md §14; audit A19): MOVE writes "node N, stage
+-- 1 (arrived)", the line event walked to reach it runs, STAGE(2) marks it done, then the node's own effect runs. A
+-- match writes stage 3 (RESERVE) BEFORE the launch; INAROGUE resolves the result when it reopens. A game closed at any
+-- point resumes the node from its stage the next time the map opens (Resume, also Aceptar on the platform).
+local function LineEvent(ev, coin)
+  if ev == 2 and GACHA[coin] ~= nil then
+    GachaPull(coin)
+  elseif TXT.LINE[ev] ~= nil then
+    Log("line event", ev)
+    Message(TXT.LINE[ev])
+  end
+end
+
+local function InRogueSlot()
+  local rs, act = Call(RL.SLOT_ROGUE)
+  return type(rs) == "number" and act == rs
+end
+
+-- a run player created in the INAROGUE save (slot 4) for team slot `slot`: Lv 5, no team set (arg 10 = 16), tagged,
+-- handle stored in the run file, placed in the VS dock (team 0, position = slot). Returns the handle or 0.
+local function CreatePlayer(param, slot)
+  if not InRogueSlot() then
+    return 0
+  end
+  local hdl = Call(PL.ADD_PARTY, param, PL.LEVEL, false, false, 0, 0, false, false, false, 16, 255, 255, 0, false, false, false, 0, false, false)
+  if type(hdl) ~= "number" or hdl == 0 then
+    Log("create player FAILED", param, "slot", slot, tostring(hdl))
+    return 0
+  end
+  Call(PL.SET_ATTR, hdl, PL.TAG, true)
+  Call(PL.NO_ROLE, hdl)                -- granted players arrive «Sin rol» ([rogue] grant_without_role)
+  Call(RL.SET_HDL, slot, hdl)
+  local vs = Int(Call(PL.GET_VS))
+  local ok, code = Call(PL.CHECK, hdl, vs, slot, 16, 0)
+  local placed = false
+  if ok == true then
+    Call(PL.MOVE, vs, slot, 16, hdl, 0)
+    local oki, idx = Call(PL.POS_IDX, vs, 0, slot)
+    local okh, h = Call(PL.IDX_HDL, vs, 0, oki == true and idx or slot, 0)
+    placed = okh == true and h == hdl
+  end
+  Log("create player", param, "hdl", hdl, "slot", slot, "vs set", vs, "check", tostring(ok), tostring(code), "placed",
+      tostring(placed))
+  return hdl
+end
+
+-- Fichaje (§14 step 4): the loader's seeded offer (not owned, tier by phase) -> bank + the first free bench slot
+local function Recruit()
+  local ok, param, tier, cost, slot, whatif = Call(RL.RECRUIT, 0)
+  if ok ~= true then
+    Message(TXT.RECRUIT_NONE)
+    return
+  end
+  local _, name = Call(CMD_CHARA_INFO, param, 0)
+  name = type(name) == "string" and name or "?"
+  tier, cost, slot = Int(tier), Int(cost), Int(slot)
+  local q = slot >= 0 and TXT.RECRUIT_ASK or TXT.RECRUIT_ASK_BANK
+  if whatif == true then
+    q = slot >= 0 and TXT.RECRUIT_WHATIF or TXT.RECRUIT_WHATIF_BANK
+    Log("fichaje what-if offer", param)
+  end
+  if not Ask(string.format(q, name, tier, tier == 1 and "" or "s", cost)) then
+    Log("fichaje declined", param)
+    Message(string.format(TXT.RECRUIT_DECLINED, name))
+    return
+  end
+  local code, uid, s = Call(RL.RECRUIT, 1, param)
+  code, uid, s = Int(code), Int(uid), Int(s)
+  Log("fichaje", param, "code", code, "uid", uid, "slot", s)
+  if code ~= 0 and code ~= 3 then
+    Message(string.format(TXT.ERROR, code))
+    return
+  end
+  if s >= 0 then
+    CreatePlayer(param, s)
+    Message(string.format(TXT.RECRUIT_JOIN, name))
+  else
+    Message(string.format(TXT.RECRUIT_BANK, name))
+  end
+end
+
+local function AfterClear(boss)
+  ReadRun()
+  DrawAll()
+  if not boss then
+    return
+  end
+  local done = run.phase
+  local c3, phase = Call(RL.NEXT)
+  Log("next phase code", Int(c3), "phase", Int(phase))
+  if Int(c3) == 0 then
+    Message(string.format(TXT.BOSS_DONE, done, Int(phase)))
+    focus = 1
+    ReadRun()
+    DrawAll()
+  else
+    Message(string.format(TXT.ERROR, Int(c3)))
+  end
+end
+
+-- a match node (§28, 2026-09-30): no «¿Ir al partido?» window. This menu closes with result 4 and INAROGUE opens the
+-- retail Chronicle VS screen (the run's team against this node's rival); «Empezar partido» there writes stage 3 +
+-- the match to the run file (RESERVE) and the dock launches it; Back there reopens this map with the node still in
+-- progress (Aceptar on it = the VS screen again). After the match the title reopens INAROGUE (slot 4), which reads
+-- the result flags, resolves the node and opens this map again. Returns true when the menu is closing.
+local function PlayMatch(n)
+  local ok, game, diff, stadium, kind, level, rival = Call(RL.MATCH, run.cur)
+  if ok ~= true then
+    Message(TXT.NO_MATCH)
+    return false
+  end
+  Log("match node", run.cur, "kind", Int(n.kind), "game", tostring(game), "rival", tostring(rival), "level",
+      Int(level), "-> the VS preview")
+  funcLuaCommand(C.SE, SE_DECIDE)
+  Close(4)
+  return true
+end
+
+-- the node's own effect (stage 2). Returns true when the menu is closing for a match.
+local function NodeEffect(n)
+  local k = n.kind
+  if IsMatchKind(k) then
+    return PlayMatch(n)
+  end
+  if k == 6 then
+    Recruit()
+  elseif k == 4 then
+    Cofre()
+  elseif TXT.CONTENT[k] ~= nil then
+    Message(TXT.CONTENT[k])
+  else
+    Message(string.format(TXT.PENDING, TXT.KIND[k] or "?"))
+  end
+  local c2, boss = Call(RL.CLEAR)
+  Log("clear", run.cur, "code", Int(c2), "boss", tostring(boss))
+  if Int(c2) ~= 0 then
+    Message(string.format(TXT.ERROR, Int(c2)))
+  end
+  AfterClear(boss == true and Int(c2) == 0)
+  return false
+end
+
+-- continue the node in progress from its stage (map open, or Aceptar on the platform)
+local function Resume()
+  local stage, node, kind, ev, coin = Call(RL.RESUME)
+  stage = Int(stage)
+  if stage == 0 or run == nil or Int(node) ~= run.cur or nodes[run.cur] == nil then
+    return false
+  end
+  Log("resume node", run.cur, "stage", stage, "kind", Int(kind), "event", Int(ev))
+  if stage == ST_ARRIVED then
+    LineEvent(Int(ev), Int(coin))
+    local c = Int(Call(RL.STAGE, ST_NODE))
+    if c ~= 0 then
+      Message(string.format(TXT.ERROR, c))
+      return true
+    end
+  end
+  -- stage 3 here = the match was reserved but never resolved (INAROGUE found no result): offered again
+  NodeEffect(nodes[run.cur])
+  return true
+end
+
+local function Go()
+  if not has_loader or run == nil then
+    Message(TXT.NO_LOADER)
+    return
+  end
+  if pending > 0 then
+    Resume()
+    return
+  end
+  local to = reach[focus]
+  if to == nil then
+    return
+  end
+  local n = nodes[to]
+  local ev, coin = 0, 0
+  for i = 0, n_edges - 1 do
+    local e = edges[i]
+    if e ~= nil and e.from == run.cur and e.to == to then
+      ev, coin = e.ev, e.coin
+    end
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  local code = Int(Call(RL.MOVE, to))
+  Log("move", run.cur, "->", to, "kind", n.kind, "code", code)
+  if code ~= 0 then
+    Message(string.format(TXT.ERROR, code))
+    return
+  end
+  focus = 1
+  ReadRun()
+  DrawAll()                                   -- the bubble is on the new platform
+  -- §27.3 two steps: the runner walks the road first (the node is now the current one, «arrived, not cleared»)...
+  local t = 0
+  repeat
+    coroutine.yield()
+    t = t + 1
+  until t > 180 or (rn ~= nil and rn.goal == run.cur and #rn.way == 0)
+  LineEvent(ev, coin)                         -- what he finds on the road (shop / gacha / slot machine)
+  local c = Int(Call(RL.STAGE, ST_NODE))
+  if c ~= 0 then
+    Message(string.format(TXT.ERROR, c))
+    return
+  end
+  -- ... then he stands there: «Enfrentarte» / «Abrir» / «Entrar» / «Hablar» (Aceptar on the platform) is Resume ->
+  -- NodeEffect; the exits stay locked until the node is cleared (loader: MOVE needs the current node cleared)
+  pending = ST_NODE
+  UpdateButtonGuide()
+end
+
+-- one generic handler for the 30 coins: that constellation's retail lottery, free; each result goes to the INAROGUE
+-- bank (CMND_EVT_RL_GACHA_GRANT, never the spirit box); an owned player is re-drawn, and only if every try is owned he
+-- gives fragments. The retail result screen (chara_pack_result_menu) shows the cards.
+function GachaPull(no)
+  local g = GACHA[no]
+  local res, want = {}, 1
+  local dupe = nil
+  local tries = 0
+  while #res < want and tries < PU.TRIES * want do
+    tries = tries + 1
+    local ok, param, rarity, bucket = Call(PU.DRAW, g[1])
+    if ok == true and type(param) == "number" and param ~= 0 then
+      local code, uid, _, n = Call(PU.GRANT, param, 0)
+      want = math.max(1, Int(n))
+      code = Int(code)
+      if code == 0 then
+        table.insert(res, {param, bucket, rarity, true})
+      elseif code == 3 and dupe == nil then
+        dupe = {param, bucket, rarity, false}
+      end
+    end
+  end
+  if #res < want and dupe ~= nil then
+    Call(PU.GRANT, dupe[1], 1)             -- every try was owned: fragments for the first one
+    table.insert(res, dupe)
+  end
+  Log("gacha coin", no, g[2], "results", #res)
+  if #res == 0 then
+    Message(string.format(TXT.GACHA_NONE, g[2]))
+    return
+  end
+  local keys = {PU.COUNT_KEY}
+  funcLuaCommand(PU.PRE_RESULT, #res)
+  funcLuaCommand(C.P_CLEAR, PU.COUNT_KEY)
+  funcLuaCommand(C.P_SET, PU.COUNT_KEY, 0, #res, 1)
+  for i, r in ipairs(res) do
+    for k, v in ipairs({{"cpr_chara_param_id_", r[1]}, {"cpr_pack_rarity_type_", r[2]}, {"cpr_pack_chara_rarity_", r[3]}}) do
+      local key = CRC32(v[1] .. i)
+      funcLuaCommand(C.P_CLEAR, key)
+      funcLuaCommand(C.P_SET, key, 0, v[2], 1)
+      table.insert(keys, key)
+    end
+  end
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
+  funcLuaCommand(C.OPEN_MENU, PU.RESULT_MENU)
+  coroutine.yield()
+  coroutine.yield()
+  while funcLuaMenuCommand(C.EXIST_MENU, PU.RESULT_MENU) do
+    coroutine.yield()
+  end
+  for _, k in ipairs(keys) do
+    funcLuaCommand(C.P_CLEAR, k)
+  end
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+  for _, r in ipairs(res) do
+    local _, name = Call(4060384944 --[[CMND_GET_CHARA_INFO]], r[1], 0)
+    Message(string.format(r[4] and TXT.GACHA_NEW or TXT.GACHA_DUPE, type(name) == "string" and name or "?", g[2]))
+  end
+end
+
+local function Quit()
+  if run == nil or not Ask(TXT.ASK_QUIT) then
+    return
+  end
+  local code = Int(Call(RL.ABANDON))
+  Log("abandon code", code)
+  if code ~= 0 then
+    Message(string.format(TXT.ERROR, code))
+    return
+  end
+  funcLuaCommand(C.SE, SE_BACK)
+  Close(2)
+end
+
+local function MoveFocus(delta)
+  local old = cam
+  pan = 0                     -- keys bring a camera the wheel moved back to the cursor
+  mouse_mode = false          -- Enter now decides the platform the keys chose, wherever the pointer rests
+  if #reach < 2 then
+    UpdateCamera()
+    if cam ~= old then
+      DrawAll()
+      SyncFocus()
+    end
+    return
+  end
+  focus = ((focus - 1 + delta) % #reach) + 1
+  funcLuaCommand(C.SE, SE_OK)
+  UpdateCamera()
+  if cam ~= old then
+    DrawAll()                 -- the camera follows the cursor on long maps
+  else
+    ShowCursor()
+    UpdateGuideLine()
+    DrawPathLines()           -- §27: the blue segment follows the cursor
+  end
+  SyncFocus()
+end
+
+-- mouse: the pointer is over platform instance k (only reachable platforms have their collision on)
+local function HoverFocus(k)
+  local j = ReachOf(k)
+  mouse_mode = true
+  if j == nil or j == focus then
+    return
+  end
+  focus = j
+  funcLuaCommand(C.SE, SE_OK)
+  ShowCursor()                -- same column as the old cursor: the camera does not move under the pointer
+  UpdateGuideLine()
+  DrawPathLines()
+end
+
+-- §27 mouse, Lua hit test (retail players_universe_menu GetCursorPos + GetHitStarLocator): the platform instance
+-- under the pointer among the WALKABLE ones, or nil. The pointer is (x, -y) in the layers' global space; each
+-- platform's global position comes from the engine, so no screen size / scale is assumed here.
+local function PointedPlatform()
+  if run == nil then
+    return nil
+  end
+  local mx, my = funcLuaMenuCommand(MS.POINTER)
+  if type(mx) ~= "number" or type(my) ~= "number" then
+    return nil
+  end
+  local py = -my
+  for _, i in ipairs(reach) do
+    local k = node_inst[i]
+    if k ~= nil then
+      local gx, gy = funcLuaMenuCommand(MS.GPOS, L_PLAT, k)
+      if type(gx) == "number" and type(gy) == "number" and math.abs(mx - gx) <= MS.HIT_W
+          and py - gy <= MS.HIT_UP and gy - py <= MS.HIT_DOWN then
+        return k
+      end
+      if mouse_logs < 6 then
+        mouse_logs = mouse_logs + 1
+        Log("mouse", string.format("pointer %.0f %.0f  platform %d at %s %s", mx, py, k, tostring(gx), tostring(gy)))
+      end
+    end
+  end
+  return nil
+end
+
+
+-- mouse wheel: long maps scroll one column per notch (keys or a new cursor position bring the camera back)
+local function Pan(d)
+  if run == nil or (run.cols - 1) * G.DX + 2 * G.X0 <= G.SW then
+    return                    -- the map fits the screen
+  end
+  local old = cam
+  pan = pan + d
+  UpdateCamera()
+  if cam == old then
+    pan = pan - d             -- already at that edge
+    return
+  end
+  funcLuaCommand(C.SE, SE_OK)
+  DrawAll()
+  SyncFocus()
+end
+
+local function PollWheel()
+  if evt_co ~= nil then
+    return
+  end
+  if Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_DOWN) == true then
+    Pan(1)
+  elseif Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_UP) == true then
+    Pan(-1)
+  end
+end
+
+--@lib evt_menu_kit.lua#StartCo
+
+-- ---- engine callbacks -----------------------------------------------------------------------------------------------
+function OnInit()
+  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  funcLuaMenuCommand(C.LOAD_TEX, TEX)
+  funcLuaMenuCommand(C.LOAD_TEX, TEX_MARKER)
+  focus, shown = 1, -1
+  rn, rn_ready = nil, false
+  ReadRun()
+  Layout()
+  -- §28 (Nacho, 30/09): opening the map shows the map, nothing pops up; a node in progress is marked «la que toca»
+  -- (§27) and Aceptar on it continues it (Resume). Before, it continued by itself here (audit A19).
+  resume_at_open = false
+  Log("open", has_loader, run ~= nil, "pending stage", pending)
+end
+
+local function OpenMapLayers()
+  funcLuaMenuCommand(C.OPEN_LAYER, L_BG, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_HERE, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_RUNNER, 0)
+  funcLuaMenuCommand(C.OPEN_LAYER, L_RUNNER, 1)
+  for i = 0, TITLE_I0 + TITLE_DIGITS - 1 do     -- 0 / 1 edge arrows, 2.. «Fase N»
+    funcLuaMenuCommand(C.OPEN_LAYER, L_HINT, i)
+  end
+  for i = 0, N_LEV - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_LEV, i)
+  end
+  for i = 0, N_LINES - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_LINE, i)
+  end
+  for i = 0, N_PIECES - 1 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_PLAT, i)
+    funcLuaMenuCommand(C.OPEN_LAYER, L_PIECE, i)
+    funcLuaMenuCommand(C.OPEN_LAYER, L_EMB, i)
+    funcLuaMenuCommand(C.OPEN_LAYER, L_TAG, i)
+  end
+end
+
+function OnSetupLayer(a1, a2)
+  if a1 == L_HEADER then
+    SetupSoccerTopCommonHeaderLayerInfo(a1, 4153539961, 253801632, 3969848060, 1144161661, 3293713115, 253801632, 1152304044, 305955024, 3007971317)
+    SwapSoccerTopCommonHeaderMenuModeIconTexture(1566262113 --[[mode_base02, as the INAROGUE menu]])
+    UpdateHeader(3586861540)
+    UpdateMapHeader()
+    OpenMapLayers()
+  elseif a1 == L_ROW then
+    funcLuaMenuCommand(C.TEXT, a1, 931545948 --[[_text_list01_on]], "", a2)
+    funcLuaMenuCommand(C.TEXT, a1, 3705682548 --[[_text_list01_off]], "", a2)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, a1, 931545948, false, a2)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, a1, 3705682548, false, a2)
+    for _, m in ipairs(ROW_MESHES) do
+      funcLuaMenuCommand(C.MESH_VISIBLE, a1, m, false, a2)
+    end
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, a2, CUR, false)
+  elseif a1 == L_PIECE then
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, a2, PIECE_CURSOR, false)
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, a2, PIECE_HERE, false)
+    DrawNode(a2)
+  elseif a1 == L_LINE then
+    DrawLine(a2)
+  elseif a1 == L_EMB then
+    if inst_node[a2] == nil then
+      Hide(a1, a2)
+    else
+      DrawNode(a2)
+    end
+  elseif a1 == L_PLAT or a1 == L_TAG then
+    if inst_node[a2] == nil then
+      Hide(a1, a2)
+      if a1 == L_PLAT then
+        SetHit(a2, false)
+      end
+    end
+  elseif a1 == L_HINT then
+    DrawHints()
+  elseif a1 == L_LEV then
+    DrawLev(a2)
+  elseif a1 == L_BG then
+    DrawBg()
+  elseif a1 == L_RUNNER then
+    Hide(a1, a2)              -- §27.1: RunnerStep draws it (next frame)
+    if rn ~= nil then
+      rn.drawn = nil
+    end
+  elseif a1 == L_GUIDE_LINE then
+    UpdateGuideLine()
+  end
+end
+
+function OnOpenLayer(a1, a2)
+  if a1 == L_ROW and a2 == 0 then
+    funcLuaMenuCommand(C.OPEN_LAYER, L_CURSOR, 0)
+    funcLuaMenuCommand(MS.FOCUS_ENABLE, L_PLAT, true)   -- mouse: the platforms take hover / click (MOUSE_LAYERS)
+    funcLuaMenuCommand(C.FOCUS_ENABLE, a1, true)        -- ... but the keys start on the anchor
+    funcLuaMenuCommand(C.LIST_NUM, a1, 1)
+    funcLuaMenuCommand(C.FOCUS_SET, a1, 0)
+    funcLuaMenuCommand(C.ATTACH_TRACE, a1, 0, CUR, false)
+    funcLuaMenuCommand(C.POS, a1, -4000, 4000, 0, 0)
+    DrawAll()
+    rn_ready = true             -- §27.1: the runner starts on the current platform and runs to the cursor
+    if funcLuaCommand(C.FADE_DONE) then
+      funcLuaCommand(C.FADE, 0, 0.3)
+    end
+    if resume_at_open then
+      resume_at_open = false
+      StartCo(Resume)
+    end
+  elseif a1 == L_PIECE then
+    DrawNode(a2)
+    if reach[focus] ~= nil and node_inst[reach[focus]] == a2 then
+      shown = -1
+      ShowCursor()
+    end
+  elseif a1 == L_LINE then
+    DrawLine(a2)
+  elseif a1 == L_GUIDE_LINE then
+    UpdateGuideLine()
+  end
+end
+
+-- mouse hover (engine focus moved onto a platform); the anchor row never moves
+function OnChangeFocus(a1, a2)
+  if a1 ~= L_PLAT or evt_co ~= nil then
+    return
+  end
+  local k = funcLuaMenuCommand(MS.FOCUS_IDX, L_PLAT)
+  HoverFocus(type(k) == "number" and k or a2)
+end
+
+-- decide: keys on the anchor row (the cursor's platform) or a click / Enter on a platform instance k
+local function DecideAt(k)
+  if evt_co ~= nil or decided then
+    return
+  end
+  if k ~= nil then
+    local j = ReachOf(k)
+    if j == nil then
+      return
+    end
+    focus = j
+    ShowCursor()
+  end
+  decided = true
+  StartCo(Go)
+end
+
+-- every frame without a window open: the pointer moved over a walkable platform = the cursor goes there (hover);
+-- a left click on it = Aceptar there (the same flow as the keys: partido, fichaje, cofre…)
+local function PollMouse()
+  if evt_co ~= nil or run == nil then
+    return
+  end
+  if funcLuaMenuCommand(MS.MOVED) == true then
+    mouse_mode = true
+    local k = PointedPlatform()
+    if k ~= nil then
+      HoverFocus(k)
+    end
+  end
+  if mouse_mode and not decided and Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.CLICK) == true then
+    local k = PointedPlatform()
+    if k ~= nil then
+      Log("mouse click on platform", k)
+      DecideAt(k)
+    end
+  end
+end
+
+function OnDecideFocus(a1, a2)
+  if a1 == L_ROW then
+    DecideAt(nil)
+  elseif a1 == L_PLAT then
+    DecideAt(ReachOf(a2) ~= nil and a2 or funcLuaMenuCommand(MS.FOCUS_IDX, L_PLAT))
+  end
+end
+
+function OnFunction(a1, a2)
+  if evt_co ~= nil then
+    return 1
+  end
+  local id = a1
+  if a1 ~= FN.QUIT and a1 ~= FN.UP and a1 ~= FN.DOWN and a1 ~= FN.LEFT and a1 ~= FN.RIGHT then
+    id = a2
+  end
+  if id == FN.UP or id == FN.LEFT then
+    MoveFocus(-1)
+  elseif id == FN.DOWN or id == FN.RIGHT then
+    MoveFocus(1)
+  elseif id == FN.QUIT then
+    StartCo(Quit)
+  else
+    return
+  end
+  return 1
+end
+
+function OnEnter(a1, a2)
+  if a1 == L_BTN or a1 == L_RET then
+    return 1
+  end
+  if a1 == L_ROW then
+    OnDecideFocus(a1, a2)
+  elseif a1 == L_PLAT then
+    DecideAt(ReachOf(a2) ~= nil and a2 or nil)   -- Enter after the mouse left the engine focus on a platform
+  end
+end
+
+function OnBack(a1)
+  if evt_co ~= nil then
+    return 1
+  end
+  funcLuaCommand(C.SE, SE_BACK)
+  Close(0)
+  return 1
+end
+
+function Step()
+  if evt_co ~= nil then
+    if coroutine.status(evt_co) == "dead" then
+      evt_co = nil
+    else
+      local ok, err = coroutine.resume(evt_co)
+      if not ok then
+        PRINT("evt_rogue_map_menu: " .. tostring(err))
+        Log("error", tostring(err))
+        evt_co = nil
+        funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+      elseif coroutine.status(evt_co) == "dead" then
+        evt_co = nil
+      end
+    end
+  end
+  PollMouse()                 -- §27: before `decided` is cleared (a click already decided by a callback this frame)
+  decided = false
+  PollWheel()
+  if evt_co == nil then
+    Animate()                 -- §27: the platform under the cursor
+  end
+  RunnerStep()                -- §27.1: the «you are here» runner (also behind windows: it keeps breathing)
+  -- §20 M2: a rival emblem texture was still loading when the map was drawn: draw again once they are all in
+  if tex_wait and evt_co == nil then
+    tex_frames = tex_frames + 1
+    if tex_frames % 10 == 0 then
+      local busy = false
+      for path in pairs(tex_asked) do
+        if not tex_dead[path] and funcLuaCommand(TEX_LOADING, CRC32(path)) == true then
+          busy = true
+          if tex_frames > 600 then
+            tex_dead[path] = true
+            Log("rival emblem never loaded", path)
+          end
+        end
+      end
+      if not busy or tex_frames > 600 then
+        tex_wait, tex_frames = false, 0
+        Log("rival emblems in, redraw", busy and "(gave up waiting)" or "")
+        DrawAll()
+      end
+    end
+  end
+end

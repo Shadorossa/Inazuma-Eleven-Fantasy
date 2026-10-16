@@ -1,0 +1,43 @@
+schema = "VRFW.item/2"
+# Hand-written: «Puntos de rogue», the INAROGUE currency (docs/game/modes/inarogue-avatars.md). A consumable token like
+# the retail point currencies (Puntos de amistad = tk_hr000008, Puntos de pasión = tk_bb000001): cloned from the
+# Puntos de amistad token, held in the bag of the INAROGUE save (slot 4) only. INAROGUE earns it (loader module rogue,
+# [rogue.points] of config.toml) and spends it in its «Tienda» (avatars). Own green icon tk_rg000001 (new texture of
+# icon_item10.g4tx: images\menu\200_icon\02_icon_item\rogue_points.toml, research/scripts/rogue_points_icon.py).
+default_lang = "es"
+
+# The Rogue points were Inazuma Fantasy's item until 2026-10-14: the alias keeps its 32-bit id (slot-4 bag), its
+# item_catalog bit and its texts (docs/framework/ids-and-numbers.md §3).
+[[alias]]
+old = "inazuma_fantasy.puntos_rogue"
+new = "inarogue.puntos_rogue"
+
+[[item]]
+name = "puntos_rogue"
+base = "tk_hr000008"
+category = "currency"
+icon_key = "tk_rg000001"
+max_stack = 99999
+  [item.text.es]
+  name = "Puntos de rogue"
+  description = "Se ganan en INAROGUE: partidos ganados, jefes de fase y al terminar una partida.\nSirven para desbloquear avatares."
+  [item.text.en]
+  name = "Rogue Points"
+  description = "Earned in INAROGUE: won matches, phase bosses and at the end of a run.\nSpend them on avatars."
+  [item.text.fr]
+  name = "Points rogue"
+  description = "Gagnés dans INAROGUE : matchs gagnés, boss de phase et fin de partie.\nIls débloquent des avatars."
+  [item.text.de]
+  name = "Rogue-Punkte"
+  description = "Gibt es in INAROGUE: gewonnene Spiele, Phasenbosse und am Ende eines Laufs.\nSchalten Avatare frei."
+  [item.text.it]
+  name = "Punti rogue"
+  description = "Si ottengono in INAROGUE: partite vinte, boss di fase e a fine partita.\nSbloccano gli avatar."
+  [item.text.pt]
+  name = "Pontos rogue"
+  description = "Ganhos no INAROGUE: partidas vencidas, chefes de fase e no fim de uma partida.\nDesbloqueiam avatares."
+
+[[currency]]
+name = "rogue"
+item = "puntos_rogue"
+label = { es = "Puntos de rogue", en = "Rogue Points", fr = "Points rogue", de = "Rogue-Punkte", it = "Punti rogue", pt = "Pontos rogue" }

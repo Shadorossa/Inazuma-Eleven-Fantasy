@@ -1,0 +1,1581 @@
+# Hand-maintained; first converted by research/scripts/if_triggers_to_toml.py (retired 2026-10-05 in e48d6f17e3) from IF's shipped match scripts (docs/framework/types/trigger.md)
+schema = "VRFW.trigger/1"
+
+[[script]]
+name = "evt_rl"
+file = "evt_rl.lua"
+
+[[trigger]]
+name = "evt_rl_f_cro01_020"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_030"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_040"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_050"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_060"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_090"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_100"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_110"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_120"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro01_130"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_010"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_020"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_040"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_070"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_090"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_150"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_160"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_180"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_190"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro02_200"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_050"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_060"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_080"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_090"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_100"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_110"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro03_180"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_010"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_030"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_040"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_050"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_070"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro04_140"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro05_010"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro05_080"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro05_190"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro05_230"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro06_130"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro06_160"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro07_020"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro07_130"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_f_cro08_120"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_art_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_bareboru_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_basketball_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_batominntonn_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_bodybuild_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_dance_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_dennshikeisannki_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_enngeki_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_esport_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_gasshou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_hakuren_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_handball_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_houreikan_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_hyakuninnisshu_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_idol_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_igo_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_ijin_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_juudou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_kaiyouseibutsu_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_kakutougi_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_kamome_02"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_keionngaku_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_kenndou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_kuizu_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_magic_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_manga_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_metal_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_news_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_nihonnbuyou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_okaruto_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_ragubi_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_rikujou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_rojiura_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_sadou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_safinn_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_shopkeeper_02"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_space_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_suiei_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_suikyuu_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_suisougaku_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_sumou_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_takkyuu_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_s_tennis_01"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_l5_heroes_cs"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_l5_heroes_gx"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_chrono_crisis"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_autenticas_leyendas"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_heroes_fuego"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_heroes_aire"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_heroes_bosque"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_heroes_montana"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_arminos_invernales"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_osos_dorados"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_aves_acuaticas"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_viboras_nocturnas"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_canes_escarlata"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_ultramegahiedra"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_dinastia_galactica"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_criaturas_noche"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_caos"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_angel_oscuro"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_equipo_zero"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_prominence_c"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_polvo_diamantes_c"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_sky_team"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_dark_team"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_luz_eterna"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_oscuridad_ancestral"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_nosfanaticos"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_aullido_lunar"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_big_bang"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_supernova"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_cuerno_demoniaco"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_colmillo_norte"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_garra_sur"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_ragnah"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_zan"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_gir"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+[[trigger]]
+name = "evt_rl_b_gar"
+script = "evt_rl"
+rows = [
+  { type = 249 },
+  { type = 248 },
+  { type = 202, target = 0xF4DBDF21 },
+  { type = 202, target = 0x83DCEFB7 },
+  { type = 202, target = 255 },
+  { type = 248, cond = "AAAAABIFNZUacXoAAQA1to9NcQABAHA=" },
+  { type = 248, cond = "AAAAABIFNbaPTXEAAQA1lRpxegABAHA=" },
+]
+
+# <<< rlboss

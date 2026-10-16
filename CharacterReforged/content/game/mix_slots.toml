@@ -31,3 +31,8 @@ handler = "CharacterReforged.MixSetCmd"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_PROJECT_SKILL_SET"
 handler = "CharacterReforged.ProjectSkillSetCmd"
+
+# (saved card) -> aura, mix of his basic set (the moveset defaults, 0 = none): the skill table's «Restablecer»
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_DEFAULT_SET"
+handler = "CharacterReforged.DefaultSetCmd"

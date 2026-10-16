@@ -1,11 +1,15 @@
 # Utilities: the career page «TRAYECTORIA» of the player plate (feature career; Lua research/grafts/util_career_page,
 # docs/game/mechanics/player-career-stats.md §4). Since 2026-10-08 (before: Inazuma Fantasy's layers evt_cs_*).
-#   util_cs_cellt   x4, the cells of row 1 (dates, origin, last result)
-#   util_cs_cell    x16, the cells of rows 2-5 (numbers)
+#   util_cs_cellt   x4, label + value cells (v6: the 3 chips of the timeline row)
+#   util_cs_cell    x16, label + value cells (unused since v6)
+#   util_cs_text    x32 / util_cs_textb x8 (v6), free texts of 22 / 26 px placed one by one by the page Lua
 #   util_cs_panel   the panel (soccer11_20 with its meshes off screen + 20 locators _atc_cs<r><c>) that mounts the cells
-#   util_cs_band    x2, the slanted light-blue row bands of the page (v5, 2026-10-10: a copy of the retail stamina gauge
-#                   btl06_13 whose frame shows Utilities' sprite util_cs_band; under the cells: priority 302 < 303)
-# The page shows two rows of three cells (FICHADO | ORIGEN | PARTIDOS / V-E-D · % | GOLES | GOLES/PART.) on the bands;
+#                   and the free texts
+#   util_cs_band    x6, sprite quads: a copy of the retail stamina gauge btl06_13 whose frame shows one of Utilities'
+#                   sprites (v6: table row bands, timeline line, chip backs; under the texts: priority 302 < 303)
+#   util_cs_icon    x4 (v6), the same quad over the texts (priority 304): milestone icons, today's dot
+# v6 (2026-10-16): a timeline (signing, first goal, first MVP, today) with three chips, then a card-back table (modes,
+# total, record line); see the graft's util_cs_plate.src.lua.
 # Layouts / objbins: assets\ (research/scripts/career_panel.py --utilities, from the player's retail objects). The
 # panel hangs from the status base's _atc_passive01 (where the retail passive strips hang): the attach row below is
 # added to the retail status base; Inazuma Fantasy's plate uses its own copy of the status base
@@ -45,6 +49,16 @@ add = [
     # v5: the row bands [util_cs_band0 / 1, _atc_passive01, util_cs_band, 0 / 1]
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB91FEAD8, 0x73029157, 0x7654A160, 0] },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xCE18DA4E, 0x73029157, 0x7654A160, 1] },
+    # v6: band instances 2..5 (timeline line, chip backs) [util_cs_band<i>, _atc_passive01, util_cs_band, i]
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x57118BF4, 0x73029157, 0x7654A160, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2016BB62, 0x73029157, 0x7654A160, 3] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xBE722EC1, 0x73029157, 0x7654A160, 4] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC9751E57, 0x73029157, 0x7654A160, 5] },
+    # v6: the milestone icons / today's dot [util_cs_icon<i>, _atc_passive01, util_cs_icon, i]
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9FEB91FF, 0x73029157, 0x5B1F2A50, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xE8ECA169, 0x73029157, 0x5B1F2A50, 1] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x71E5F0D3, 0x73029157, 0x5B1F2A50, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x06E2C045, 0x73029157, 0x5B1F2A50, 3] },
 ]
 
 # v5 (2026-10-10): the row bands (attach rows on the retail status base above); the Lua scales / places them.
@@ -55,8 +69,42 @@ priority = 302
 
 [[patch]]
 menu = "personal_plate_menu"
-add_layer = { name = "util_cs_band", object = "util_cs_band", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }
+add_layer = { name = "util_cs_band", object = "util_cs_band", count = 6, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }
 
 [[patch]]
 menu = "personal_plate_menu_for_datafile"
-add_layer = { name = "util_cs_band", object = "util_cs_band", count = 2, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }
+add_layer = { name = "util_cs_band", object = "util_cs_band", count = 6, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_panel", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_panel" }] }
+
+# v6 (2026-10-16, timeline + card-back table; graft util_career_page): band instances 0..5 (row bands, timeline line,
+# chip backs), the milestone icons util_cs_icon (4: signing, first goal, first MVP, today's dot; a second copy of the
+# gauge, drawn over the line: priority 304 > the texts' 303 > the bands' 302) and the free text layers util_cs_text (32,
+# 22 px) / util_cs_textb (8, 26 px) that the panel mounts at its locator of cell (0, 0) (research/scripts/
+# career_panel.py --utilities). Opened by the page Lua only.
+[[object]]
+name = "util_cs_icon"
+from = "btl06_13_stamina_gauge"
+priority = 304
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_icon", object = "util_cs_icon", count = 4, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_band", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_band" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_text", object = "util_cs_text", count = 32, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_icon", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_icon" }] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "util_cs_textb", object = "util_cs_textb", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_text", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_text" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_icon", object = "util_cs_icon", count = 4, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_band", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_band" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_text", object = "util_cs_text", count = 32, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_icon", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_icon" }] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "util_cs_textb", object = "util_cs_textb", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_text", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_text" }] }

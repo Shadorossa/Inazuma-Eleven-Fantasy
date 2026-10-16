@@ -55,6 +55,7 @@ local evt_cd = {tex = 0, t = 0, swapped = false, shown = nil, geo = nil, total =
 -- armour logo
 local evt_fold = {
   full_width = 436, input_x = -184, name_left = -163, logo_left = -103,
+  quad_right = 185, band_margin = 19, visible_right = 172, icon_x = -246, icon_size = 43,
   quads = {
     {4282364172 --[[_cmd_base_sp01]], -251, 436, 68},
     {1851880983 --[[_cmd_base_sp_add01]], -251, 436, 68},
@@ -668,6 +669,42 @@ local function EVT_HO_CrossX()
 end
 
 -- x offset of a running slide-in of plate `inst` (0 when none; ends the slide after its last frame)
+-- 2026-10-16 (owner: «que el RB+A y RB+B estén centrados abajo de ¡Subid!»): the collapsed pair (or the one shown
+-- plate) is centred under the «¡Subid!» guide (soccer08_17_go_ahead_guide, centred on its root soccer08_17_output),
+-- measured against the cross like EVT_HO_CrossX; the right plate's right end stays there while the plates stretch left.
+-- No measure: the global EVT_HL_GOAHEAD_X of the HUD layout, else the plates stay flush with the screen edge.
+EVT_HIPER_CENTER_UNDER_GO_AHEAD = true
+EVT_HIPER_PAIR_GAP = 10             -- gap between the two plates' visible bands (layout units)
+local EVT_GO_AHEAD = 4104611069 --[[soccer08_17_go_ahead_guide]]
+local EVT_GO_AHEAD_ROOT = 2966568918 --[[soccer08_17_output]]
+
+-- the «¡Subid!» centre x from the right screen edge (layout units), nil = unknown
+local function EVT_HO_GoAheadX(cross)
+  local gp = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+  local ok1, gx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 708999887 --[[_pos_gaiji01]])
+  local ok2, cx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 1816929598 --[[_cmd01_01]])
+  local ok3, sx = pcall(funcLuaMenuCommand, gp, EVT_GO_AHEAD, 0, EVT_GO_AHEAD_ROOT)
+  if ok1 and ok2 and ok3 and type(gx) == "number" and type(cx) == "number" and type(sx) == "number" then
+    local k = (cx - gx) / 128
+    if k > 0.25 and k < 4 then
+      local x = cross + (sx - gx) / k
+      if x < 0 and x > -1920 then
+        return x
+      end
+    end
+  end
+  if type(EVT_HL_GOAHEAD_X) == "number" then
+    return EVT_HL_GOAHEAD_X
+  end
+  return nil
+end
+
+-- visible band of a plate at band quad width `width`: left and right ends (plate layer units)
+local function EVT_BandEnds(width)
+  local f = width / evt_fold.full_width
+  return evt_fold.quad_right - width + evt_fold.band_margin * f, evt_fold.visible_right
+end
+
 local function EVT_SlideDx(inst)
   local start = evt_ho_slide[inst + 1]
   if start == nil then
@@ -704,14 +741,29 @@ function EVT_HiperOpenPlace()
   end
   local cross = want and EVT_HO_CrossX() or EVT_HO_CROSS
   local scale = EVT_HIPER_PLATE_SCALE or 1
+  local unit = 0.72 * scale            -- plate layer unit -> layout units (the layout's 0.72, the plate scale)
   -- the left plate follows the right plate's band while it collapses / stretches (EVT_FoldApply)
-  local band = (evt_fold.width or evt_fold.full_width) / evt_fold.full_width
-  local row_dx = math.floor(314 * band * scale + (EVT_HIPER_OPEN_GAP or 0) + 0.5)
+  local left_now, right_end = EVT_BandEnds(evt_fold.width or evt_fold.full_width)
+  local row_dx = math.floor((right_end - left_now) * unit + EVT_HIPER_PAIR_GAP + 0.5)
+  -- the right plate's right end: centred pair (collapsed widths) under «¡Subid!», else the screen edge
+  local shown0 = EVT_last[1] ~= nil and EVT_last[1].shown
+  local shown1 = EVT_last[2] ~= nil and EVT_last[2].shown
+  local right = EVT_HIPER_OPEN_RIGHT - (EVT_HO_HALF_R - right_end * 0.72) * scale
+  local go_ahead = want and EVT_HIPER_CENTER_UNDER_GO_AHEAD and EVT_HO_GoAheadX(cross) or nil
+  if go_ahead ~= nil then
+    local left_folded = EVT_BandEnds(EVT_HIPER_COLLAPSED_WIDTH)
+    local folded = (right_end - left_folded) * unit
+    local total = folded
+    if shown0 and shown1 then
+      total = 2 * folded + EVT_HIPER_PAIR_GAP
+    end
+    right = go_ahead + total / 2
+  end
   for inst = 0, 1 do
     local dx, dy = 0, 0
     if want then
-      dx = math.floor(EVT_HIPER_OPEN_RIGHT - EVT_HO_HALF_R * scale - (cross + EVT_HO_ATC_X) + 0.5)
-      if inst == 1 and EVT_HIPER_OPEN_Y[1] == EVT_HIPER_OPEN_Y[2] then
+      dx = math.floor(right - right_end * unit - (cross + EVT_HO_ATC_X) + 0.5)
+      if inst == 1 and shown0 and EVT_HIPER_OPEN_Y[1] == EVT_HIPER_OPEN_Y[2] then
         dx = dx - row_dx
       end
       dy = EVT_HIPER_OPEN_Y[inst + 1] - EVT_HO_ATC_Y[inst + 1]
@@ -764,8 +816,16 @@ local function EVT_FoldApply()
         end
         funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_HL, 1123081621 --[[_text_cmd_sp01]],
           band_left <= evt_fold.name_left - 12, inst)
+        -- a plate without a portrait (a plain move, or its portrait not resolved) shows its type icon in the
+        -- portrait's place while folded, never an empty band
+        local folded_icon = evt_fold.progress <= 0 and not last.face
+        local icon_x = evt_fold.icon_x
+        if folded_icon then
+          icon_x = math.floor((evt_fold.visible_right + EVT_HIPER_COLLAPSED_INPUT_X) / 2 + 12 - evt_fold.icon_size / 2 + 0.5)
+        end
+        funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, inst, 2164615260 --[[_icon_sp_area_dmy01]], 0, icon_x)
         funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 2164615260 --[[_icon_sp_area_dmy01]],
-          full and evt_fold.icon[inst + 1] == true, inst)
+          (full or folded_icon) and evt_fold.icon[inst + 1] == true, inst)
         funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 1206374040 --[[_gtxt_cmd_armed01]],
           band_left <= evt_fold.logo_left - 12 and evt_fold.logo[inst + 1] == true, inst)
         evt_fold.band[inst + 1] = width

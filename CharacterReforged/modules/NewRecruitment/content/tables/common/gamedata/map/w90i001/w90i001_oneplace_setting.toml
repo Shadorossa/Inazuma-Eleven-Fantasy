@@ -1,0 +1,8 @@
+schema = "VRFW.table/1"
+# The Chronicle hub map's function points (OP_FUNC, schemas/map/function_point.toml): the gacha point
+# «run_players_universe_menu» is removed, so the map spawns neither its interaction zone nor its marker.
+# The other three points stay as retail. The hub's trigger script (content/triggers/w90i001.toml) keeps its row.
+table = "map/function_point"
+
+[[delete]]
+key = 0xFD055ABA                     # crc32("run_players_universe_menu")

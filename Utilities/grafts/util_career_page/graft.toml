@@ -1,9 +1,8 @@
 # Career page «TRAYECTORIA» of the mod Utilities (docs/game/mechanics/player-career-stats.md §4; feature career,
-# scripts\career.lua answers CMND_UTIL_CAREER_EX): one more page of the player plate (personal_plate_menu), two rows of
-# three cells (FICHADO | ORIGEN | PARTIDOS / V-E-D · % | GOLES | GOLES/PART.) on two slanted light-blue bands (v5,
-# 2026-10-10: the design approved on Inazuma Fantasy's player page, round 14c; layers util_cs_cell / util_cs_cellt
-# mounted by the panel layer util_cs_panel, bands util_cs_band, the retail PASIVAS DE EQUIPO strips hidden; Utilities'
-# menus\102_team\career.toml, images\menu\career_band.toml).
+# scripts\career.lua answers CMND_UTIL_CAREER_EX): one more page of the player plate (personal_plate_menu); v6
+# (2026-10-16): a timeline (signing, first goal, first MVP, today) with three chips over a card-back table (modes,
+# total, record line), on the free text layers util_cs_text / util_cs_textb, the chips util_cs_cellt and the sprite
+# quads util_cs_band / util_cs_icon (Utilities' menus\102_team\career.toml, images\menu\career_band.toml).
 # * The page (Utilities.Career, index 5, type 6, Last) is declared to the VR-Framework's player page registry
 #   (VRFW_PlayerPages, docs/framework/player-pages.md): always the last page, after the retail four or after Inazuma
 #   Fantasy's pages; the framework maps the type and steps Q/E (formation / team dock screens, the plate). The retail

@@ -56,6 +56,7 @@ do
   UTIL_PPC.CMD_CAT_NEXT = @crc:CMND_UTIL_PC_CAT_NEXT@
   UTIL_PPC.CMD_SET = @crc:CMND_UTIL_PC_SET@
   UTIL_PPC.CMD_SPECIAL = @crc:CMND_UTIL_PC_SPECIAL@
+  UTIL_PPC.CMD_OFF = @crc:CMND_UTIL_PC_OFF@
   UTIL_PPC.TX_QUITAR = @crc:evt_pc_quitar@
   UTIL_PPC.TX_CHANGE = @crc:evt_pc_g_change@
   UTIL_PPC.TX_CLEAR = @crc:evt_pc_g_clear@
@@ -260,8 +261,34 @@ do
     end
   end
 
+  -- a mode without player passives (a mod's [[off_mode]] in Utilities' passive declarations): the plate's passive rows
+  -- stay hidden; the plugin is asked on every row update and every OFF_EVERY frames
+  UTIL_PPC.OFF_EVERY = 30
+  function UTIL_PPC.OffNow()
+    local ok, off = pcall(funcLuaCommand, UTIL_PPC.CMD_OFF)
+    UTIL_PPC.off = ok and off == true
+    UTIL_PPC.offAt = 0
+    return UTIL_PPC.off
+  end
+
+  function UTIL_PPC.HideRows()
+    local L = UTIL_PPC.ROWS
+    if funcLuaMenuCommand(262659071, L) ~= true then
+      return
+    end
+    for i = 0, 4 do
+      if funcLuaMenuCommand(2640875187, L, i) == true and funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, i) == true then
+        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+      end
+    end
+  end
+
   UTIL_PPC.Wrap("UpdatePassiveLayer", function(prev)
     return function(L, i, ...)
+      if L == UTIL_PPC.ROWS and UTIL_PPC.co == nil and UTIL_PPC.OffNow() then
+        pcall(funcLuaMenuCommand, 711242136, L, i, false)
+        return
+      end
       local r = table.pack(prev(L, i, ...))
       if L == UTIL_PPC.ROWS then
         pcall(UTIL_PPC.Decorate)
@@ -923,6 +950,13 @@ do
         r = prev(...)
       end
       pcall(UTIL_PPC.Poll)
+      UTIL_PPC.offAt = (UTIL_PPC.offAt or 0) + 1
+      if UTIL_PPC.offAt >= UTIL_PPC.OFF_EVERY then
+        UTIL_PPC.OffNow()
+      end
+      if UTIL_PPC.off and UTIL_PPC.co == nil then
+        pcall(UTIL_PPC.HideRows)
+      end
       pcall(UTIL_PPC.Decorate)
       return r
     end

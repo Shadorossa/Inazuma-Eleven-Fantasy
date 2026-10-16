@@ -1,0 +1,21 @@
+# INAROGUE's button on the title's mode row: a VRFW title row entry (docs/framework/title-row.md). The framework places
+# it by `order` among the game's buttons (100 x their retail place: «Modos de juego» = the Victory Road place 600,
+# Mercado 700), sizes the row and draws it; no list index, no table row. A = EVT_IR_TitlePress (graft inarogue: its
+# own coroutine opens evt_inarogue_menu as a child of the title). Locked while [modes] inarogue is off (graft
+# modes_switch's EVT_MS_Locked; phase 1). `item` keeps the title item the top bar's INAROGUE shortcut presses.
+# Part inarogue of _phases.toml (it moves with INAROGUE to its own mod).
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "title_menu_2.upper"
+id = "inarogue"
+text = "InaRogue.Title"
+icon = "title00_07:icon_btn12"
+order = 660
+action = { lua = "EVT_IR_TitlePress" }
+
+[entry.title]
+plate = ["btn_base06_on", "btn_base06_off"]
+flavor = "InaRogue.TitleFlavor"
+players = 1
+item = "evt_title_menu_custom_item"

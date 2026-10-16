@@ -138,6 +138,12 @@ end
 local function players()
   local now = VRFW.now()
   if PLAYERS and now - PLAYERS_AT < PLAYERS_TTL_MS then return PLAYERS end
+  -- a mode without player passives (Utilities' game_state key, a mod's [[off_mode]]): nobody carries a passive
+  local okoff, off = pcall(VRFW.state.get, "Utilities.passives_off")
+  if okoff and tonumber(off) == 1 then
+    PLAYERS, PLAYERS_AT = {}, now
+    return PLAYERS
+  end
   if BY_CHARACTER == nil then index_characters() end
   local out = {}
   local actors = VRFW.game.special_players_actors()

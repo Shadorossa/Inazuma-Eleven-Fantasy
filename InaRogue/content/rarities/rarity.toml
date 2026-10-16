@@ -1,0 +1,87 @@
+schema = "VRFW.rarity/1"
+# InaRogue's rarities (moved from Inazuma Fantasy 2026-10-14): the «¿Y si…?» Vestigio cards and the five
+# INAROGUE tiers, scoped to the mode inarogue.run (docs/framework/card-filter.md).
+
+[[rarity]]
+id = "vestige"
+value = 5
+frame = 13
+also_frames = [14, 15]
+group = "idol"
+texture = "evt_whatif_atl"
+banner = "own"
+banner_text = { es = "VESTIGIO", it = "VESTIGIO", en = "VESTIGE", fr = "VESTIGE", de = "ÜBERREST", pt = "VESTÍGIO", ja = "名残", zh_hans = "遗迹", zh_hant = "遺跡" }
+label = { es = "¿Y si…? (Vestigio)", en = "What if…? (Vestige)" }
+order = 70
+scope = "inarogue.run"   # the INAROGUE mode only
+
+  [rarity.bonus]
+  moment_tilt = 0.08
+
+# ---------------------------------------------------------------- INAROGUE tiers (col 57 = 1-5, normal cards, slot 4 only)
+# sprites evt_rg_base/color/frame_{l,s}01..05 (research/scripts/rogue_frames_build.py)
+[[rarity]]
+id = "rogue_bronze"
+value = 4
+frame = 1
+tier = 1
+cells = { rogue_rarity = 1 }        # chara_param col 57 (characters/layout.toml)
+group = "rogue_tier"
+group_label = { es = "Niveles de INAROGUE", en = "INAROGUE tiers", fr = "Rangs INAROGUE", de = "INAROGUE-Stufen", it = "Livelli INAROGUE", pt = "Níveis do INAROGUE", ja = "INAROGUEランク", zh_hans = "INAROGUE 等级", zh_hant = "INAROGUE 等級" }
+texture = "evt_rg_frames"
+banner = "none"
+label = { es = "Bronce", en = "Bronze" }
+order = 41
+scope = "inarogue.run"   # the INAROGUE mode only
+
+[[rarity]]
+id = "rogue_silver"
+value = 4
+frame = 2
+tier = 2
+cells = { rogue_rarity = 2 }        # chara_param col 57 (characters/layout.toml)
+group = "rogue_tier"
+texture = "evt_rg_frames"
+banner = "none"
+label = { es = "Plata", en = "Silver" }
+order = 42
+scope = "inarogue.run"   # the INAROGUE mode only
+
+[[rarity]]
+id = "rogue_gold"
+value = 4
+frame = 3
+tier = 3
+cells = { rogue_rarity = 3 }        # chara_param col 57 (characters/layout.toml)
+group = "rogue_tier"
+texture = "evt_rg_frames"
+banner = "none"
+label = { es = "Oro", en = "Gold" }
+order = 43
+scope = "inarogue.run"   # the INAROGUE mode only
+
+[[rarity]]
+id = "rogue_platinum"
+value = 4
+frame = 4
+tier = 4
+cells = { rogue_rarity = 4 }        # chara_param col 57 (characters/layout.toml)
+group = "rogue_tier"
+texture = "evt_rg_frames"
+banner = "none"
+label = { es = "Platino", en = "Platinum" }
+order = 44
+scope = "inarogue.run"   # the INAROGUE mode only
+
+[[rarity]]
+id = "rogue_prismatic"
+value = 4
+frame = 5
+tier = 5
+cells = { rogue_rarity = 5 }        # chara_param col 57 (characters/layout.toml)
+group = "rogue_tier"
+texture = "evt_rg_frames"
+banner = "none"
+label = { es = "Prismático", en = "Prismatic" }
+order = 45
+scope = "inarogue.run"   # the INAROGUE mode only

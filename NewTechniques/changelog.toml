@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# New Techniques: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "New Techniques"
+
+[en]
+name = "New Techniques"
+
+[fr]
+name = "New Techniques"
+
+[de]
+name = "New Techniques"
+
+[it]
+name = "New Techniques"
+
+[pt]
+name = "New Techniques"
+
+[ja]
+name = "New Techniques"
+
+[zh_hans]
+name = "New Techniques"
+
+[zh_hant]
+name = "New Techniques"
+
+[[release]]
+icon = "general"
+notes = [
+    "Cinco supertécnicas nuevas con escena, efectos y rótulo.",
+    "Tiros: Golpe del abismo y Vuelo angelical.",
+    "Bloqueos: Campo nuclear y Zona oscura.",
+    "Parada: Dispersión. Cada una con su manual.",
+    "Con Inazuma Fantasy: en su Tienda de entrenamiento.",
+]
+
+[release.en]
+notes = [
+    "Five new special moves with scene, effects and banner.",
+    "Shots: Golpe del abismo and Vuelo angelical.",
+    "Blocks: Campo nuclear and Zona oscura.",
+    "Catch: Dispersión. Each one with its manual.",
+    "With Inazuma Fantasy: sold in its training shop.",
+]
+
+[release.fr]
+notes = [
+    "Cinq nouvelles techniques : scène, effets et bandeau.",
+    "Tirs : Golpe del abismo et Vuelo angelical.",
+    "Contres : Campo nuclear et Zona oscura.",
+    "Arrêt : Dispersión. Chacune avec son manuel.",
+    "Avec Inazuma Fantasy : en boutique d'entraînement.",
+]
+
+[release.de]
+notes = [
+    "Fünf neue Techniken mit Szene, Effekten und Banner.",
+    "Schüsse: Golpe del abismo und Vuelo angelical.",
+    "Blocks: Campo nuclear und Zona oscura.",
+    "Parade: Dispersión. Jede mit ihrem Handbuch.",
+    "Mit Inazuma Fantasy: in dessen Trainingsshop.",
+]
+
+[release.it]
+notes = [
+    "Cinque nuove tecniche con scena, effetti e titolo.",
+    "Tiri: Golpe del abismo e Vuelo angelical.",
+    "Blocchi: Campo nuclear e Zona oscura.",
+    "Parata: Dispersión. Ognuna con il suo manuale.",
+    "Con Inazuma Fantasy: nel suo negozio di allenamento.",
+]
+
+[release.pt]
+notes = [
+    "Cinco técnicas novas com cena, efeitos e letreiro.",
+    "Chutes: Golpe del abismo e Vuelo angelical.",
+    "Bloqueios: Campo nuclear e Zona oscura.",
+    "Defesa: Dispersión. Cada uma com seu manual.",
+    "Com Inazuma Fantasy: na sua loja de treino.",
+]
+
+[release.ja]
+notes = [
+    "新しい必殺技5種：演出、エフェクト、タイトル。",
+    "シュート：Golpe del abismo、Vuelo angelical。",
+    "ブロック：Campo nuclear、Zona oscura。",
+    "キャッチ：Dispersión。すべて技の書つき。",
+    "Inazuma Fantasyでは特訓ショップで販売。",
+]
+
+[release.zh_hans]
+notes = [
+    "五种新必杀技：演出、特效与标题。",
+    "射门：Golpe del abismo与Vuelo angelical。",
+    "封堵：Campo nuclear与Zona oscura。",
+    "扑救：Dispersión。每种都附秘籍。",
+    "搭配Inazuma Fantasy：在特训商店出售。",
+]
+
+[release.zh_hant]
+notes = [
+    "五種新必殺技：演出、特效與標題。",
+    "射門：Golpe del abismo與Vuelo angelical。",
+    "封堵：Campo nuclear與Zona oscura。",
+    "撲救：Dispersión。每種都附秘笈。",
+    "搭配Inazuma Fantasy：在特訓商店販售。",
+]

@@ -1,0 +1,28 @@
+# Inazuma Fantasy: INAROGUE's button on the title's mode row (menus/50_title/title_row_inarogue.toml, a VRFW title row
+# entry): its label and its balloon. Were literal strings of graft inarogue until 2026-10-13. Written by hand.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "InaRogue.Title"
+es = "Inarogue"
+en = "Inarogue"
+fr = "Inarogue"
+de = "Inarogue"
+it = "Inarogue"
+pt = "Inarogue"
+ja = "Inarogue"
+zh_hans = "Inarogue"
+zh_hant = "Inarogue"
+
+[[row]]
+id = "InaRogue.TitleFlavor"
+es = "Modo roguelite: forma un equipo desde cero y supera fase tras fase."
+en = "Roguelite mode: build a team from scratch and beat stage after stage."
+fr = "Mode roguelite : forme une équipe à partir de rien et franchis les phases une à une."
+de = "Roguelite-Modus: Stell ein Team von null auf und meistere Phase um Phase."
+it = "Modalità roguelite: crea una squadra da zero e supera una fase dopo l'altra."
+pt = "Modo roguelite: forma uma equipa do zero e supera fase após fase."
+ja = "ローグライトモード：ゼロからチームを作り、ステージを次々に突破しよう。"
+zh_hans = "肉鸽模式：从零组建球队，一关接一关地突破。"
+zh_hant = "肉鴿模式：從零組建球隊，一關接一關地突破。"

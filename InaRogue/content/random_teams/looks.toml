@@ -1,0 +1,509 @@
+schema = "VRFW.random_team/1"
+# InaRogue › the presentation pool of INAROGUE's random rivals (docs/framework/random-team.md §3; decisions 10-12 of
+# docs/refactor/roguelite-split-map.md): each random team takes ONE entry (name text + crest + kit, drawn from the run
+# seed and the node) and different players every run. Generated ONCE on 2026-10-14 from the 100 numbered rival teams
+# evt_rl_tm_001..100 (Inazuma Fantasy's teams\50_pachangas\inarogue\, removed the same day); hand-maintained since.
+# Names: text\rows\team_text.toml (evt_rl_tmname_NNN, 9 languages). Crests: retail item_emblem ids. Kits: uniform ids.
+
+[[VRFW.RandomTeamLook]]
+Name = "rival_looks"
+
+[[VRFW.RandomTeamLook.Entry]]   # Leones Errantes (was rl_tm_001)
+Text = "evt_rl_tmname_001"
+Emblem = 0xBCDA243E
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Guepardos Blancos (was rl_tm_002)
+Text = "evt_rl_tmname_002"
+Emblem = 0x46DF1622
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Linces de Monteclaro (was rl_tm_003)
+Text = "evt_rl_tmname_003"
+Emblem = 0x41DE9F4F
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Colosos Indomables (was rl_tm_004)
+Text = "evt_rl_tmname_004"
+Emblem = 0xA8D1770E
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Guepardos de Torre Vieja (was rl_tm_005)
+Text = "evt_rl_tmname_005"
+Emblem = 0xE9DD45CA
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tornados de Llano Verde (was rl_tm_006)
+Text = "evt_rl_tmname_006"
+Emblem = 0xA7CB7331
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Gigantes de Valle Umbrío (was rl_tm_007)
+Text = "evt_rl_tmname_007"
+Emblem = 0x4845341C
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Robles de Barrio Alto (was rl_tm_008)
+Text = "evt_rl_tmname_008"
+Emblem = 0xDD94B0B2
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Gavilanes de Fuente Fría (was rl_tm_009)
+Text = "evt_rl_tmname_009"
+Emblem = 0xD82DAFB0
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Gigantes de Isla Brisa (was rl_tm_010)
+Text = "evt_rl_tmname_010"
+Emblem = 0x7D1E9287
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Titanes de Isla Brisa (was rl_tm_011)
+Text = "evt_rl_tmname_011"
+Emblem = 0x04505FC1
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Bisontes de Fuente Fría (was rl_tm_012)
+Text = "evt_rl_tmname_012"
+Emblem = 0x8CAE268C
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Relámpagos de Barrio Alto (was rl_tm_013)
+Text = "evt_rl_tmname_013"
+Emblem = 0xEDA18F16
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Búhos Errantes (was rl_tm_014)
+Text = "evt_rl_tmname_014"
+Emblem = 0x636867DF
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Vencejos Nocturnos (was rl_tm_015)
+Text = "evt_rl_tmname_015"
+Emblem = 0x7D8CE765
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Ciclones de la Bahía (was rl_tm_016)
+Text = "evt_rl_tmname_016"
+Emblem = 0xBFAE6D07
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Muros de Paso Estrella (was rl_tm_017)
+Text = "evt_rl_tmname_017"
+Emblem = 0x3F42048A
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Soles de Villa Trueno (was rl_tm_018)
+Text = "evt_rl_tmname_018"
+Emblem = 0x28AF5A81
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Meteoros Salvajes (was rl_tm_019)
+Text = "evt_rl_tmname_019"
+Emblem = 0x070947DA
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Gigantes Furiosos (was rl_tm_020)
+Text = "evt_rl_tmname_020"
+Emblem = 0x998896B7
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Cóndores Azules (was rl_tm_021)
+Text = "evt_rl_tmname_021"
+Emblem = 0xA9C324ED
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Golems de la Bahía (was rl_tm_022)
+Text = "evt_rl_tmname_022"
+Emblem = 0x3153D3ED
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tigres Eléctricos (was rl_tm_023)
+Text = "evt_rl_tmname_023"
+Emblem = 0xAA1C3C0E
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tejones Furiosos (was rl_tm_024)
+Text = "evt_rl_tmname_024"
+Emblem = 0xC3E245EA
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Linces Invictos (was rl_tm_025)
+Text = "evt_rl_tmname_025"
+Emblem = 0x3AB4A21F
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mirlos de Monteclaro (was rl_tm_026)
+Text = "evt_rl_tmname_026"
+Emblem = 0x9AA6BF80
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mirlos de Paso Estrella (was rl_tm_027)
+Text = "evt_rl_tmname_027"
+Emblem = 0xB8EA2655
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Linces de Villaverde (was rl_tm_028)
+Text = "evt_rl_tmname_028"
+Emblem = 0x947D37B2
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Rayos de Alameda (was rl_tm_029)
+Text = "evt_rl_tmname_029"
+Emblem = 0x849206EE
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Escorpiones de Villaverde (was rl_tm_030)
+Text = "evt_rl_tmname_030"
+Emblem = 0x48BB3D6A
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Jabalíes Azules (was rl_tm_031)
+Text = "evt_rl_tmname_031"
+Emblem = 0xB926C8E3
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Leones Salvajes (was rl_tm_032)
+Text = "evt_rl_tmname_032"
+Emblem = 0x4FD6F973
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Colosos de Campo Viejo (was rl_tm_033)
+Text = "evt_rl_tmname_033"
+Emblem = 0x832FFB23
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Lobos de Villaverde (was rl_tm_034)
+Text = "evt_rl_tmname_034"
+Emblem = 0xEE8FA621
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Albatros de Paso Estrella (was rl_tm_035)
+Text = "evt_rl_tmname_035"
+Emblem = 0x41B2D23B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Pumas Azules (was rl_tm_036)
+Text = "evt_rl_tmname_036"
+Emblem = 0x8E362580
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Toros de Paso Estrella (was rl_tm_037)
+Text = "evt_rl_tmname_037"
+Emblem = 0x51A00C2B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Fénix de Alameda (was rl_tm_038)
+Text = "evt_rl_tmname_038"
+Emblem = 0xCACC366B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Rayos de Paso Estrella (was rl_tm_039)
+Text = "evt_rl_tmname_039"
+Emblem = 0x19A5D1BE
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tornados Eléctricos (was rl_tm_040)
+Text = "evt_rl_tmname_040"
+Emblem = 0xD5ABE1F0
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Escorpiones Blancos (was rl_tm_041)
+Text = "evt_rl_tmname_041"
+Emblem = 0xDD16F939
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Bisontes Rojos (was rl_tm_042)
+Text = "evt_rl_tmname_042"
+Emblem = 0x77B425C8
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Cometas de Llano Verde (was rl_tm_043)
+Text = "evt_rl_tmname_043"
+Emblem = 0x8A0BC2EA
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Jabalíes de Sierra Alta (was rl_tm_044)
+Text = "evt_rl_tmname_044"
+Emblem = 0xA3BDF3A5
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Carneros de Costa Sur (was rl_tm_045)
+Text = "evt_rl_tmname_045"
+Emblem = 0x7786F79B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tigres de Llano Verde (was rl_tm_046)
+Text = "evt_rl_tmname_046"
+Emblem = 0xD2C625E9
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Búhos Rojos (was rl_tm_047)
+Text = "evt_rl_tmname_047"
+Emblem = 0x0A8BD7F3
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Pumas de Lomas Rojas (was rl_tm_048)
+Text = "evt_rl_tmname_048"
+Emblem = 0x0A19A211
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Carneros de Lomas Rojas (was rl_tm_049)
+Text = "evt_rl_tmname_049"
+Emblem = 0xD57182CC
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Vendavales Invictos (was rl_tm_050)
+Text = "evt_rl_tmname_050"
+Emblem = 0x7BBB76E1
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Halcones de Isla Brisa (was rl_tm_051)
+Text = "evt_rl_tmname_051"
+Emblem = 0x9D5DD012
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mamuts Rebeldes (was rl_tm_052)
+Text = "evt_rl_tmname_052"
+Emblem = 0xC0FA7047
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Rinocerontes Negros (was rl_tm_053)
+Text = "evt_rl_tmname_053"
+Emblem = 0xFA613665
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Robles Carmesí (was rl_tm_054)
+Text = "evt_rl_tmname_054"
+Emblem = 0xDB7069C2
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Linces Negros (was rl_tm_055)
+Text = "evt_rl_tmname_055"
+Emblem = 0x62A047A0
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Castores de Villa Arena (was rl_tm_056)
+Text = "evt_rl_tmname_056"
+Emblem = 0x8BC3E295
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Osos de Barrio Alto (was rl_tm_057)
+Text = "evt_rl_tmname_057"
+Emblem = 0xCCB0D0B1
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mamuts Furiosos (was rl_tm_058)
+Text = "evt_rl_tmname_058"
+Emblem = 0x146F5749
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Cometas de Fuente Fría (was rl_tm_059)
+Text = "evt_rl_tmname_059"
+Emblem = 0xA8BD3A7A
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Milanos Dorados (was rl_tm_060)
+Text = "evt_rl_tmname_060"
+Emblem = 0x1F04FB11
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Zorros de Valle Umbrío (was rl_tm_061)
+Text = "evt_rl_tmname_061"
+Emblem = 0xD3D7072A
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Castores de Fuente Fría (was rl_tm_062)
+Text = "evt_rl_tmname_062"
+Emblem = 0xE5DFE342
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Relámpagos de Aldea Roble (was rl_tm_063)
+Text = "evt_rl_tmname_063"
+Emblem = 0x0081C70D
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Ciervos de Isla Brisa (was rl_tm_064)
+Text = "evt_rl_tmname_064"
+Emblem = 0x4ADE5690
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Gigantes de la Bahía (was rl_tm_065)
+Text = "evt_rl_tmname_065"
+Emblem = 0xDF97ED94
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Linces de Isla Brisa (was rl_tm_066)
+Text = "evt_rl_tmname_066"
+Emblem = 0x4F28F005
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Jabalíes de Costa Sur (was rl_tm_067)
+Text = "evt_rl_tmname_067"
+Emblem = 0x1EF73255
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Volcanes Plateados (was rl_tm_068)
+Text = "evt_rl_tmname_068"
+Emblem = 0xAEA0F36F
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mamuts de Vega Clara (was rl_tm_069)
+Text = "evt_rl_tmname_069"
+Emblem = 0x55B9810B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Lobos Furiosos (was rl_tm_070)
+Text = "evt_rl_tmname_070"
+Emblem = 0x2A81E0DF
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Mamuts Veloces (was rl_tm_071)
+Text = "evt_rl_tmname_071"
+Emblem = 0x9A34CA62
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Albatros Azules (was rl_tm_072)
+Text = "evt_rl_tmname_072"
+Emblem = 0xA69CD30D
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Titanes de Barrio Alto (was rl_tm_073)
+Text = "evt_rl_tmname_073"
+Emblem = 0x2810C81B
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Albatros de Vega Clara (was rl_tm_074)
+Text = "evt_rl_tmname_074"
+Emblem = 0xCFAC3B75
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Rayos de Barrio Alto (was rl_tm_075)
+Text = "evt_rl_tmname_075"
+Emblem = 0x0B02CA9A
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Golems Furiosos (was rl_tm_076)
+Text = "evt_rl_tmname_076"
+Emblem = 0xC61EA937
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Colosos Negros (was rl_tm_077)
+Text = "evt_rl_tmname_077"
+Emblem = 0xD4670F46
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Cóndores de Paso Estrella (was rl_tm_078)
+Text = "evt_rl_tmname_078"
+Emblem = 0xA1673B25
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Diablos de la Bahía (was rl_tm_079)
+Text = "evt_rl_tmname_079"
+Emblem = 0xB4E5757C
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tornados de Alameda (was rl_tm_080)
+Text = "evt_rl_tmname_080"
+Emblem = 0x199AF64C
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Cometas de Villa Trueno (was rl_tm_081)
+Text = "evt_rl_tmname_081"
+Emblem = 0x9E001660
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Relámpagos Errantes (was rl_tm_082)
+Text = "evt_rl_tmname_082"
+Emblem = 0xAA938024
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Castores Negros (was rl_tm_083)
+Text = "evt_rl_tmname_083"
+Emblem = 0xF7949760
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Vendavales de Alameda (was rl_tm_084)
+Text = "evt_rl_tmname_084"
+Emblem = 0xED33FAF4
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Tejones Negros (was rl_tm_085)
+Text = "evt_rl_tmname_085"
+Emblem = 0xB18BEC43
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Pinos Indomables (was rl_tm_086)
+Text = "evt_rl_tmname_086"
+Emblem = 0xDFD64798
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Albatros de Torre Vieja (was rl_tm_087)
+Text = "evt_rl_tmname_087"
+Emblem = 0xDCC7CEE7
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Colosos de Villa Arena (was rl_tm_088)
+Text = "evt_rl_tmname_088"
+Emblem = 0xCFF0CFAB
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Jabalíes de Aldea Roble (was rl_tm_089)
+Text = "evt_rl_tmname_089"
+Emblem = 0xAA11C9AF
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Pumas Furiosos (was rl_tm_090)
+Text = "evt_rl_tmname_090"
+Emblem = 0xFCC4D203
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Muros de Pico Nevado (was rl_tm_091)
+Text = "evt_rl_tmname_091"
+Emblem = 0xE37A0724
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Colosos de Monteclaro (was rl_tm_092)
+Text = "evt_rl_tmname_092"
+Emblem = 0xC3A7B635
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Fénix de Valle Umbrío (was rl_tm_093)
+Text = "evt_rl_tmname_093"
+Emblem = 0xC85754E7
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Guepardos Dorados (was rl_tm_094)
+Text = "evt_rl_tmname_094"
+Emblem = 0x15A77736
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Meteoros de la Bahía (was rl_tm_095)
+Text = "evt_rl_tmname_095"
+Emblem = 0x24C25747
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Volcanes Furiosos (was rl_tm_096)
+Text = "evt_rl_tmname_096"
+Emblem = 0xB7FD40D1
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Halcones Salvajes (was rl_tm_097)
+Text = "evt_rl_tmname_097"
+Emblem = 0xCFED16C3
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Halcones de la Bahía (was rl_tm_098)
+Text = "evt_rl_tmname_098"
+Emblem = 0x7AA92502
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Milanos Azules (was rl_tm_099)
+Text = "evt_rl_tmname_099"
+Emblem = 0x9310F3AB
+Kit = 0xC1F231A9
+
+[[VRFW.RandomTeamLook.Entry]]   # Céfiros de Monteclaro (was rl_tm_100)
+Text = "evt_rl_tmname_100"
+Emblem = 0x441FA883
+Kit = 0xC1F231A9

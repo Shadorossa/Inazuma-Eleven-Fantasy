@@ -4,12 +4,17 @@
 local S = {}
 
 S.BLOB = "career.json"
-S.FILE_VERSION = 1
+-- 2: per-mode «Jugador del partido» and saves, the first MVP date, the best match (goals / saves); a version 1 file
+-- is migrated on read (S.decode): what can be derived from its numbers, unknown dates -1 (the page leaves them out)
+S.FILE_VERSION = 2
+S.UNKNOWN_DAY = -1
 S.MATCH_TYPE_TRAINING = 3
 S.CHAIN_LEN = 8
--- mode groups of the per-mode split (plate page TRAYECTORIA 2/2); group 10 + i of CMND_UTIL_CAREER_EX
-S.MODES = { "story", "chronicle", "free", "vroad", "kizuna" }
+-- mode groups of the per-mode split (the table of the plate page TRAYECTORIA); group 10 + i of CMND_UTIL_CAREER_EX.
+-- "battle_bay" = a free match (play mode 1) while the framework's mode context battle_bay holds (career.lua).
+S.MODES = { "story", "chronicle", "free", "vroad", "kizuna", "battle_bay" }
 S.MODE_FREE = 3 -- 1-based index of "free"
+S.MODE_BATTLE_BAY = 6
 
 -- Mode group (1-based index into S.MODES) of the engine's play-mode byte ([[g_gameRoot]+0x69C8]+0x2CAC6F:
 -- 1 VS / other, 2 story, 3 Kizuna town, 4 Chronicle, 5 Victory Road, 6 story).
@@ -171,17 +176,48 @@ local function fresh_stats(param, order, signed)
     param = param, order = order, signed = signed,
     matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, mvp = 0,
     shots = 0, steals = 0, saves = 0, conceded = 0, clean_sheets = 0, gk_matches = 0,
-    skill_uses = 0, hiper_uses = 0, first_goal = 0,
+    skill_uses = 0, hiper_uses = 0, first_goal = 0, first_mvp = 0,
+    best_goals = 0, best_goals_day = 0, best_goals_exact = 1, best_saves = 0, best_saves_day = 0, best_saves_exact = 1,
     last = { day = 0, result = 0, gf = 0, ga = 0, goals = 0, assists = 0 },
     modes = {},
   }
 end
 
+local function fresh_mode()
+  return { matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, mvp = 0, saves = 0 }
+end
+
 local NUM_FIELDS = { "param", "order", "signed", "matches", "wins", "draws", "losses", "goals", "assists", "mvp",
   "shots", "steals", "saves", "conceded", "clean_sheets", "gk_matches", "skill_uses", "hiper_uses", "first_goal" }
+local NUM_FIELDS_V2 = { "first_mvp", "best_goals", "best_goals_day", "best_goals_exact", "best_saves", "best_saves_day",
+  "best_saves_exact" }
 
--- A record read from JSON with every field present (files of v1 have no v2 counters: 0).
-local function normalize(s)
+-- Version 1 -> 2 of one record: the first goal / first MVP dates and the best match from what the counters tell.
+-- One match only: its numbers are the best and its day is every first. All goals in the last match: that match is
+-- the best. Anything else: the best is at least the last match's (shown only once exact), the dates are unknown.
+local function migrate_v1(d)
+  local one = d.matches == 1 and d.last.day > 0
+  if d.goals > 0 and d.first_goal == 0 then d.first_goal = one and d.last.day or S.UNKNOWN_DAY end
+  if d.mvp > 0 then d.first_mvp = one and d.last.day or S.UNKNOWN_DAY end
+  if d.goals == 0 then
+    d.best_goals, d.best_goals_day, d.best_goals_exact = 0, 0, 1
+  elseif one or d.goals == d.last.goals then
+    d.best_goals, d.best_goals_day, d.best_goals_exact = d.goals, d.last.day, 1
+  else
+    d.best_goals, d.best_goals_day, d.best_goals_exact = d.last.goals, d.last.day, 0
+  end
+  if d.saves == 0 then
+    d.best_saves, d.best_saves_day, d.best_saves_exact = 0, 0, 1
+  elseif one then
+    d.best_saves, d.best_saves_day, d.best_saves_exact = d.saves, d.last.day, 1
+  else
+    d.best_saves, d.best_saves_day, d.best_saves_exact = 0, 0, 0
+  end
+end
+
+-- A record read from JSON with every field present (a version 1 file: migrate_v1; per-mode MVP / saves of the
+-- matches before version 2 are unknown and stay 0: the page's total row has the career numbers).
+local function normalize(s, version)
   local d = fresh_stats(0, 0, 0)
   for _, k in ipairs(NUM_FIELDS) do d[k] = tonumber(s[k]) or 0 end
   if type(s.last) == "table" then
@@ -190,10 +226,16 @@ local function normalize(s)
   if type(s.modes) == "table" then
     for m, x in pairs(s.modes) do
       if type(x) == "table" then
-        d.modes[m] = { matches = tonumber(x.matches) or 0, wins = tonumber(x.wins) or 0, draws = tonumber(x.draws) or 0,
-          losses = tonumber(x.losses) or 0, goals = tonumber(x.goals) or 0, assists = tonumber(x.assists) or 0 }
+        local e = fresh_mode()
+        for k in pairs(e) do e[k] = tonumber(x[k]) or 0 end
+        d.modes[m] = e
       end
     end
+  end
+  if version < 2 then
+    migrate_v1(d)
+  else
+    for _, k in ipairs(NUM_FIELDS_V2) do d[k] = tonumber(s[k]) or d[k] end
   end
   return d
 end
@@ -204,15 +246,17 @@ function S.decode(text, slot)
   local j, err = VRFW.json.decode(text)
   if type(j) ~= "table" then return nil, err or "not a JSON object" end
   local f = S.new_file(slot)
-  f.version = tonumber(j.version) or S.FILE_VERSION
+  local version = tonumber(j.version) or 1
   f.watermark = tonumber(j.watermark)
   f.since = tonumber(j.since) or 0
   f.recorded = tonumber(j.recorded) or 0
   if type(j.players) == "table" then
     for k, s in pairs(j.players) do
-      if type(s) == "table" then f.players[k] = normalize(s) end
+      if type(s) == "table" then f.players[k] = normalize(s, version) end
     end
   end
+  -- the migrated file is written back with the next change (f.version = the current one)
+  f.migrated_from = version < S.FILE_VERSION and version or nil
   return f
 end
 
@@ -285,8 +329,12 @@ function S.apply_match(f, m, ident, today)
       local g, a = c[1], c[2]
       e.goals = e.goals + g
       e.assists = e.assists + a
-      if mvp == p then e.mvp = e.mvp + 1 end
+      if mvp == p then
+        e.mvp = e.mvp + 1
+        if e.first_mvp == 0 then e.first_mvp = today end
+      end
       if g > 0 and e.first_goal == 0 then e.first_goal = today end
+      if g > e.best_goals then e.best_goals, e.best_goals_day = g, today end
       local pm = m.per[p]
       if pm then
         e.shots = e.shots + pm.shots
@@ -296,19 +344,22 @@ function S.apply_match(f, m, ident, today)
         e.skill_uses = e.skill_uses + pm.skill_uses
         e.hiper_uses = e.hiper_uses + pm.hiper_uses
         if pm.keeper then e.gk_matches = e.gk_matches + 1 end
+        if pm.saves > e.best_saves then e.best_saves, e.best_saves_day = pm.saves, today end
       end
       if m.ga == 0 then e.clean_sheets = e.clean_sheets + 1 end
       e.last = { day = today, result = code, gf = m.gf, ga = m.ga, goals = g, assists = a }
       local name = S.MODES[math.min(m.mode, #S.MODES)]
       local ms = e.modes[name]
       if not ms then
-        ms = { matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0 }
+        ms = fresh_mode()
         e.modes[name] = ms
       end
       ms.matches = ms.matches + 1
       if m.outcome == "win" then ms.wins = ms.wins + 1 elseif m.outcome == "draw" then ms.draws = ms.draws + 1 else ms.losses = ms.losses + 1 end
       ms.goals = ms.goals + g
       ms.assists = ms.assists + a
+      if mvp == p then ms.mvp = ms.mvp + 1 end
+      if pm then ms.saves = ms.saves + pm.saves end
       n = n + 1
     end
   end

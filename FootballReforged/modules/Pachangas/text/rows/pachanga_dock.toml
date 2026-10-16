@@ -1,5 +1,6 @@
 # Pachangas (module of Football Reforged): the texts of the template types of «Plantilla de equipo» (graft
-# pachanga_dock; ids crc32(label), read by the graft as @crc:<label>@). Inazuma Fantasy's menu_text rows until 2026-10-15.
+# pachanga_dock; ids crc32(label), read by the graft as @crc:<label>@). evt_pt_format_row = the format row «< 11 v 11 >»
+# ({a} / {b} = the format's player numbers). Inazuma Fantasy's menu_text rows until 2026-10-15.
 schema = "VRFW.text/2"
 [[row]]
 id = "evt_pt_row_match"
@@ -27,15 +28,15 @@ zh_hant = "類型：五人制"
 
 [[row]]
 id = "evt_pt_row_help"
-es = "Elige el tipo de plantilla: Partido (11 contra 11) o Pachanga (5 contra 5). Cada tipo tiene su propio equipo activo."
-en = "Choose the Team Dock type: Match (11 vs 11) or 5-a-side (5 vs 5). Each type has its own active team."
-fr = "Choisis le type de composition : Match (11 contre 11) ou Foot à 5 (5 contre 5). Chaque type a sa propre équipe active."
-de = "Wähle den Team-Bank-Typ: Match (11 gegen 11) oder 5 gegen 5. Jeder Typ hat sein eigenes aktives Team."
-it = "Scegli il tipo di slot squadra: Partita (11 contro 11) o Calcetto (5 contro 5). Ogni tipo ha la sua squadra attiva."
-pt = "Escolha o tipo de clube: Partida (11 contra 11) ou Pelada (5 contra 5). Cada tipo tem seu próprio time ativo."
-ja = "チームドックのタイプを選択：試合（11対11）または5人制（5対5）。タイプごとにアクティブチームがあります。"
-zh_hans = "选择编组队伍的类型：比赛（11对11）或五人制（5对5）。每种类型都有各自的出场队伍。"
-zh_hant = "選擇編組隊伍的類型：比賽（11對11）或五人制（5對5）。每種類型都有各自的出場隊伍。"
+es = "Elige el formato con ← / →: 11 v 11 (Partido) o 5 v 5 (Pachanga), y confirma para cambiar la plantilla. Cada formato tiene su propio equipo activo."
+en = "Pick the format with ← / →: 11 v 11 (Match) or 5 v 5 (5-a-side), then confirm to switch the Team Dock. Each format has its own active team."
+fr = "Choisis le format avec ← / → : 11 v 11 (Match) ou 5 v 5 (Foot à 5), puis valide pour changer la composition. Chaque format a sa propre équipe active."
+de = "Wähle das Format mit ← / →: 11 v 11 (Match) oder 5 v 5 (5 gegen 5) und bestätige, um die Team-Bank zu wechseln. Jedes Format hat sein eigenes aktives Team."
+it = "Scegli il formato con ← / →: 11 v 11 (Partita) o 5 v 5 (Calcetto), poi conferma per cambiare lo slot squadra. Ogni formato ha la sua squadra attiva."
+pt = "Escolha o formato com ← / →: 11 v 11 (Partida) ou 5 v 5 (Pelada) e confirme para trocar o clube. Cada formato tem seu próprio time ativo."
+ja = "← / →で形式を選択：11 v 11（試合）または5 v 5（5人制）。決定でチームドックを切り替えます。形式ごとにアクティブチームがあります。"
+zh_hans = "用 ← / → 选择赛制：11 v 11（比赛）或 5 v 5（五人制），确认后切换编组队伍。每种赛制都有各自的出场队伍。"
+zh_hant = "用 ← / → 選擇賽制：11 v 11（比賽）或 5 v 5（五人制），確認後切換編組隊伍。每種賽制都有各自的出場隊伍。"
 
 [[row]]
 id = "evt_pt_active_line"
@@ -120,6 +121,10 @@ pt = "O time ativo de pelada precisa do carregador do mod (módulo team_banks)."
 ja = "5人制のアクティブチームにはMODローダー（team_banksモジュール）が必要です。"
 zh_hans = "五人制出场队伍需要模组加载器（team_banks模块）。"
 zh_hant = "五人制出場隊伍需要模組載入器（team_banks模組）。"
+
+[[row]]
+id = "evt_pt_format_row"
+all = "< {a} v {b} >"
 
 [[row]]
 id = "evt_pt_kind_11"

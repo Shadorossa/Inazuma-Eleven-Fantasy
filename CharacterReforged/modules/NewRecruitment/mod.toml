@@ -2,13 +2,13 @@ id = "new_recruitment"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "New Recruitment"
-version = "1.0.1"
+version = "1.0.7"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). Matches drop no players: no player spirit drops in any match and the drop-rate list shows only its items tab (players come from other sources); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove them from the current save. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
+description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove them from the current save. The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [NewRecruitment.X], Lua NewRecruitment.X); never VRFW.
 prefix = "NewRecruitment"
 folder = "NewRecruitment"
@@ -31,6 +31,15 @@ folder = "NewRecruitment"
 #                                     recruited into the bank on the first step of a menu of the save (VRFW_Recruit), his
 #                                     spirit taken back (at No More Rarities' normal card rarity when it is on, else at
 #                                     the spirit's own rarity)
+#   assets\lua\vs_route_town_command_select_menu\new_recruitment_idol_toggle.lua   the Chronicle board's «Quitar
+#                                     aparición de ÍDOLOS ya obtenidos» guide entry removed and its key off (hooks of the
+#                                     board host: SetupButtonGuide, IsHeroDropControlActived); not in a reserved slot
+#   assets\lua\chronicle_mode_top_menu\new_recruitment_players_universe.lua   the Chronicle gacha «Universo del
+#                                     jugador» covered: its row of the Chronicle top menu hidden and its enter does nothing
+#                                     (wrappers of GetNumUsedButtons, OnDecideFocus, OnEnter, IsReservedPlayersUniverseEvent; with BetterUI its four icon boxes move up one row so no gap is left)
+#   content\triggers\w90i001.toml + w90i001.lua   the Chronicle hub map's trigger script: the gacha map point does nothing
+#   content\tables\common\gamedata\map\w90i001\w90i001_oneplace_setting.toml   the gacha function point (OP_FUNC
+#                                     run_players_universe_menu) deleted from the hub map: no marker, no zone
 #   scripts\spirit_purge.lua + scripts\lib\spirit_purge.lua   a save duplicated through the slot screen (the
 #                                     VR-Framework's slot_duplicate event) loses every player spirit in the NEW copy; the
 #                                     source save is never touched
@@ -44,7 +53,11 @@ folder = "NewRecruitment"
 # character_reforged 1.7.8: the duplicate rules' apply_on_load.
 # 1.0.1 (vr_framework 2.4.133: [VRFW.DropList.Spirits] ExcludeAll): no player drops in matches, no player groups in the
 # drop-rate list (owner request 2026-10-15).
-requires = ["vr_framework>=2.4.133", "character_reforged>=1.7.8"]
+# 1.0.7: no shop sells a player spirit or a Victory crate (content\shops\no_player_spirits.toml, hide_spirits), so
+# nothing is paid for a card the stock refuses.
+# 1.0.6 (vr_framework 2.4.142: [VRFW.DropList.Spirits] AllSources): no player spirit from any source in any mode
+# (rewards, gifts, boxes, events, packs, retire); a reserved slot keeps the game's rules.
+requires = ["vr_framework>=2.4.142", "character_reforged>=1.7.8"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 

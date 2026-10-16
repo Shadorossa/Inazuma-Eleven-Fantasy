@@ -1,0 +1,109 @@
+# InaRogue: the INAROGUE «Tienda» screen evt_rogue_shop_menu (written by hand;
+# docs/game/modes/inarogue-avatars.md §2.3). The route map's frame (base savedata_management_menu: background, header,
+# guide line (hidden), cursor, button guides, the off-screen input anchor), the route map's quad objects
+# (screen_objects.toml) as pools and two retail layers of shop_menu for the top row (07/10: cmn06_01_list_tab_attach,
+# the tab bar with its L1 / R1 glyphs; shop01_04d_token_item_5dig, the currency pill). The pool COUNTS are written by
+# research/scripts/rogue_shop_build.py from its GEOM (one page of the adaptive hex grid), by draw priority:
+# evt_rogue_map_plat (455, hexagons), evt_rogue_map_emb (457, shadows), evt_rogue_map_tag (458, 8 per hex: prices /
+# locks / «EN USO» / team counter + the team crest), evt_rogue_map_hint (459, cursor ring, page arrows / dots),
+# evt_rogue_map_runner (460, the IE3 avatars). The Lua is the graft research/grafts/rogue_shop/evt_rogue_shop_menu.lua
+# (menu_assemble.py new_file). Art: evt_rogue_shop.g4tx (research/scripts/rogue_shop_build.py) + the avatar and crest
+# atlases (evt_rogue/avatars/, evt_rogue/crests/, loaded by the Lua).
+schema = "VRFW.menu/2"
+
+[[screen]]
+name = "evt_rogue_shop_menu"
+like = "language_option_menu"
+# the registry is full at 384 rows (the game dies at boot past that, docs/game/ui/menu-layer-limits.md):
+# this screen takes over the row of a trial-build title menu that the PC game never opens
+replaces = "title_menu_trial_thankyou_tgs2025"
+base = "savedata_management_menu"
+
+[screen.rows]
+layer = [
+    { layer = "save01_01_list_attach_base", object = "evt_rogue_bank_rows" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "mainmenu90_00_background" },
+    { layer = "evt_rogue_map_plat", object = "evt_rogue_map_plat", count = 53, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_emb", object = "evt_rogue_map_emb", count = 53, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_tag", object = "evt_rogue_map_tag", count = 424, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_hint", object = "evt_rogue_map_hint", count = 27, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_runner", object = "evt_rogue_map_runner", count = 53, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "cmn06_01_list_tab_attach", from = "shop_menu", count = 3 },
+    { layer = "cmn06_20_list_tab_item", from = "shop_menu" },
+    { layer = "shop01_04d_token_item_5dig", from = "shop_menu" },
+    { layer = "mainmenu90_01_header" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu01_10_return_arrow_button_guide" },
+    { layer = "mainmenu01_06_base_button_guide" },
+    { layer = "mainmenu01_07_button_guide" },
+]
+# arrows move between hexes; L1 / R1 (Z / C) switch tabs (evt_shop_tab_prev / _next); L2 / R2 (Q / E, the glyphs next
+# to the page dots) change page (evt_shop_page_prev / _next, 07/10 round 2)
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x87526FE0, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xF7016D51, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x91991A02, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x194603AF, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0xE9004A22, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x51CDD24B, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x85C6A473, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x3D0B3C1A, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x87526FE0, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xF7016D51, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x91991A02, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x194603AF, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0xE9004A22, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x51CDD24B, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x85C6A473, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x3D0B3C1A, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+]
+res = [
+    "#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx",
+    "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_ch_img01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
+    "#/menu/200_icon/100_num/num_victory.g4tx",
+    "#/menu/220_img/evt_rogue/evt_rogue_map.g4tx",
+    "#/menu/220_img/evt_rogue/evt_rogue_marker.g4tx",
+    "#/menu/220_img/evt_rogue/evt_rogue_shop.g4tx",
+    "#/menu/200_icon/02_icon_item/icon_item10.g4tx",
+    "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx",
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "save01_01_list_attach_base", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_10_return_arrow_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_06_base_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_07_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "cmn06_01_list_tab_attach", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "cmn06_20_list_tab_item", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "shop01_04d_token_item_5dig", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_plat", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_emb", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_tag", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_hint", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_runner", flags = [0, 0, 0, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 3] },
+    { group = "evt_rogue_shop_menu", flags = [1], slice = [3, 14] },
+]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+    { layer = "evt_rogue_map_plat", flags = [0, 0, 0], slice = [1, 1] },
+]
+shift_base = []
+shift = []

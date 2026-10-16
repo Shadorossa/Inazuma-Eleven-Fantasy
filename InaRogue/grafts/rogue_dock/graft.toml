@@ -1,0 +1,43 @@
+# INAROGUE: the retail team dock ("Plantilla de equipo") IS the squad screen in the INAROGUE save, slot 4
+# (docs/game/modes/inarogue.md §16). Each part inlines ird_common.lua at @COMMON@; active only while slot 4 is the
+# loaded game. Wraps OnInit of soccer_team_dock_menu and switches UTIL_TEAM_BANKS off there: Utilities' team bank pages
+# (mod utilities: an around handler of the framework host, outside this wrapper) read the flag after the wrapped OnInit
+# returned, so the pages stay off there. Sources mirrored in research/test-mods/rogue_dock/src (research/scripts/rogue_dock_build.py is the
+# pre-assembler patcher, no longer used).
+name = "rogue_dock"
+mod = "inarogue"
+order = 320
+module = "lua_bridge"
+# VRFW_PACHANGA = the VR-Framework's graft pachanga_core (another mod: no build `requires`; the framework's Lua root
+# runs after IF's lua_early root in every menu, and VRFW_PACHANGA is only called inside menu callbacks / coroutines).
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE squad = retail team dock in slot 4: no team switching, INAROGUE players only, points budget before the run"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ird_formation.lua"
+  marker = "inarogue dock"
+  include = { "@COMMON@" = "ird_common.lua" }
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ird_dock.lua"
+  marker = "inarogue dock"
+  include = { "@COMMON@" = "ird_common.lua" }
+
+[[files]]
+stem = "chara_bank_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ird_bank.lua"
+  marker = "inarogue dock"
+  include = { "@COMMON@" = "ird_common.lua" }

@@ -22,11 +22,21 @@ ChronicleDeluxe.Command = ChronicleDeluxe.Command or {}
 -- Nothing runs at load but the definitions (no engine call).
 -- Under the battle rows of the «MI EQUIPO» panel, after the match challenge line, one band of the framework
 -- (VRFW_RBC_PanelBand "chronicle_deluxe.lineup") shows:
---   * the active team's formation name;
---   * its eleven starters on the game's formation pitch (the VS screen's field, layout vsroute02_06), each the game's
---     small player card (face, position colour: the team dock's own card fill), placed by the formation's slot
---     positions with the retail rule of CalcFormationIconPosition (soccer_common);
+--   * the lineup of the focused row's battle (switched with the focus): the Batalla de crónica (difficulty 1 of a
+--     normal piece) is played with the piece's own Chronicle team (retail IsChronicleBattle of the VS screen: team
+--     CMND 634509816 (game, 8)), every other battle with the user's active team (CMND_GET_VS_USE_TEAM_SET);
+--   * its formation name and its eleven starters on the game's formation pitch (the VS screen's field, layout
+--     vsroute02_06), each the game's small player card (the VS screen's own fills: 2339877830 for a team's member,
+--     2329292196 for a team dock player; a fill the game refuses is drawn from the card's own sprites: the slot's
+--     position colour and the player's face), placed by the formation's slot positions with the retail rule of
+--     CalcFormationIconPosition (soccer_common);
+--   * on the user's own lineup, when the focused row has a match challenge: the game's red «!» notice on the
+--     top-right corner of each starter the challenge check names as an offender (VRFW_MC.Check, the same rule as
+--     the VS screen's kick-off gate, e.g. a player of another series than the challenge asks for);
 --   * the button «Y Plantilla de equipo».
+-- The cards are the team dock's large player cards (position colour, face, element, position label, captain), filled
+-- by the game once the card layer has the retail name setting of a soccer card (NameSetting_CharaCardForSoccer of
+-- soccer_formation_menu_inc, which this script does not include: P.CARD_NAMES, sent at the layer's setup).
 -- Y (CMD_FUNC3: the list's input row of content\menus\team_lineup.toml, function FUNCTION_TEAM_DOCK) or a mouse click
 -- on the button closes the menu with the retail «Plantilla de equipo» item (listItemType 0): the board opens the team
 -- dock as retail did from that row and opens this menu again when the dock closes, so the lineup is read again.
@@ -40,7 +50,7 @@ local P = ChronicleDeluxe.Lineup
 P.BAND_ID = "chronicle_deluxe.lineup"
 P.BAND_ORDER = 20                  -- after the match challenge line (10)
 P.LAYER = {PITCH = 3017938276 --[[chronicle_deluxe_lineup_pitch]], CARD = 260350298 --[[chronicle_deluxe_lineup_card]],
-  TEXT = 572235342 --[[chronicle_deluxe_lineup_text]]}
+  TEXT = 572235342 --[[chronicle_deluxe_lineup_text]], MARK = 2145700856 --[[chronicle_deluxe_lineup_mark]]}
 P.TEXT_FORMATION, P.TEXT_BUTTON = 0, 1
 P.STARTERS = 11                    -- formation slots 0..10
 P.MEMBER_SLOTS = 29                -- team set members 0..28 (as the VS screen reads them)
@@ -48,6 +58,8 @@ P.FUNCTION_TEAM_DOCK = 1238658383  -- crc32("chronicle_deluxe_team_dock"): the Y
 P.BUTTON_TEXT = 1601543300         -- menu_text row chronicle_deluxe_team_dock_button («<CMD_FUNC3> Plantilla de equipo»)
 P.ITEM_TEAM_DOCK = 0               -- the retail list item «Plantilla de equipo»: the board opens soccer_team_dock_menu
 P.MENU = 1193383590                -- vs_route_town_command_select_menu
+P.ROWS = 284009563                 -- vsroute01_16_sub_list (the battle rows)
+P.CHRONICLE_DIFFICULTY = 1         -- the Batalla de crónica: played with the piece's Chronicle team
 P.RESULT = 2612514222              -- the menu's result parameter (the board reads it)
 P.C = {
   OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, MESH_VISIBLE = 3405944500,
@@ -66,6 +78,15 @@ P.C = {
   ENTER_CLICK = 1651523701,        -- CMD_ENTER_CLICK: mouse, Enter, A
   ENTER = 1981080283,              -- CMD_ENTER: Enter, A (so a click is ENTER_CLICK without ENTER)
   SE = 1917805374, SE_DECIDE = 3848881948 --[[sy0000]],
+  LOG = 3661580131,                -- CMND_EVT_LOG
+  FOCUS_GET = 2603265800,          -- (layer) -> the focused row index (0-based)
+  CHRONICLE_TEAM = 634509816,      -- (game, 8) -> ok, the team the user plays a Chronicle battle with
+  TEAM_PARAM = 2151743654,         -- (team, what): 3 formation, 4 uniform, 8 member count
+  FILL_MEMBER_CARD = 2339877830,   -- (layer, instance, chara, big, ..., position, 0, level, captain, false, kit, uniform)
+  SPRITE = 558735651,              -- (layer, texture, sprite, texture slot, 0, instance)
+  NODE_VISIBLE = 2158717427,       -- (layer, node, on, instance)
+  FACE = 552280324, RESET_FACE = 4176779611, CHARA_OF_PARAM = 347353059,
+  CLEAR_GET = 4034518619,          -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
   CLOSE_MENU = 320421347, P_CLEAR = 3363400568, P_SET = 3860611758,
 }
 -- the formation pitch (layout vsroute02_06, v7.1.2; px, layer axes y up): the field quad's top edge and height, the
@@ -76,9 +97,50 @@ P.PITCH = {CENTRE_X = 1394, CENTRE_Y = -533, TOP_Y = -296, BOTTOM_Y = -856, TOP_
 -- data, its base set and the offset set, the offset scale, the keeper's lift
 P.FORMATION = {WIDTH_UNITS = 60, DEPTH_UNITS = 90, BASE_SET = 2, OFFSET_SET = 10, OFFSET_SCALE = 0.85, KEEPER_LIFT = 20}
 -- the band (screen px): gap, name line, gap, pitch (scaled), gap, button line
-P.LAYOUT = {TOP_GAP = 10, NAME_HEIGHT = 30, NAME_GAP = 10, PITCH_SCALE_X = 0.75, PITCH_SCALE_Y = 0.45, PITCH_GAP = 16,
-  BUTTON_HEIGHT = 44, CARD_SCALE = 0.40, NAME_SCALE = 0.7, BUTTON_SCALE = 0.66,
-  PRIORITY_PITCH = 850, PRIORITY_CARD = 852, PRIORITY_TEXT = 856}   -- over the panel (845) and its rows (847)
+P.LAYOUT = {TOP_GAP = 10, NAME_HEIGHT = 30, NAME_GAP = 14, PITCH_SCALE_X = 0.75, PITCH_SCALE_Y = 0.435, PITCH_GAP = 20,
+  BUTTON_HEIGHT = 44, CARD_SCALE = 0.42, NAME_SCALE = 0.7, BUTTON_SCALE = 0.66,
+  PRIORITY_PITCH = 850, PRIORITY_CARD = 852, PRIORITY_TEXT = 856, PRIORITY_MARK = 858,   -- over the panel (845), rows (847)
+  -- the «!» notice (cmn01_10 quad, 36 px, centred): its scale, its centre on the large card's top-right corner (card
+  -- px from the card's origin, y up: the large card spans x -101..111, y -72..60)
+  MARK_SCALE = 0.62, MARK_X = 104, MARK_Y = 54}
+-- the retail name setting of a soccer player card (NameSetting_CharaCardForSoccer, soccer_formation_menu_inc v7.1.2):
+-- the card fills find the card's parts by these tags
+P.CARD_NAMES = {
+  {"text_charaname", "_text_chr01"}, {"locator_base_pos_L", "_pos_base01"}, {"locator_base_pos_S", "_pos_base02"},
+  {"numprim_level_L", "num_chr_l01"}, {"numprim_level_S", "num_chr_s01"},
+  {"numprim_level_q_L", "num_chr_l01_q"}, {"numprim_level_q_S", "num_chr_s01_q"},
+  {"numprim_level_gray_L", "num_chr_l01_gray"}, {"numprim_level_gray_S", "num_chr_s01_gray"},
+  {"numprim_level_cap_L", "num_chr_l01_cup"}, {"numprim_level_cap_S", "num_chr_s01_cup"},
+  {"numprim_level_basara_L", "num_chr_l01_basara"}, {"numprim_level_basara_S", "num_chr_s01_basara"},
+  {"rate_anim_exp", "exp_gauge01"}, {"rate_group_exp", "bar"},
+  {"locator_gp_gauge_L", "_pos_gauge_gp_l01"}, {"locator_gp_gauge_S", "_pos_gauge_gp_s01"},
+  {"rate_anim_gp", "gp_gauge01"}, {"rate_group_gp", "bar"},
+  {"locator_kp_gauge_L", "_pos_gauge_kp_l01"}, {"locator_kp_gauge_S", "_pos_gauge_kp_s01"},
+  {"rate_anim_kp", "kp_gauge01"}, {"rate_group_kp", "bar"},
+  {"tex_chara_face_L", "icon_chr_dmy_l01"}, {"tex_chara_face_S", "icon_chr_dmy_s01"},
+  {"mesh_chara_face_L", "_icon_chr_dmy_l01"}, {"mesh_chara_face_S", "_icon_chr_dmy_s01"},
+  {"mesh_icon_element_L", "_icon_chr_type_dmy_l01"}, {"mesh_icon_element_S", "_icon_chr_type_dmy_s01"},
+  {"mesh_base_element_L", "_icon_base_l01"}, {"mesh_base_element_S", "_icon_base_s01"},
+  {"tex_element_L", "icon_chr_type_dmy_l01"}, {"tex_element_S", "icon_chr_type_dmy_s01"},
+  {"tex_file_element", "#/menu/200_icon/15_icon_common/icon_common.g4tx"},
+  {"mesh_icon_position_L", "_icon_chr_position_dmy_l01"}, {"mesh_icon_position_S", "_icon_chr_position_dmy_s01"},
+  {"tex_position_L", "icon_chr_position_dmy_l01"}, {"tex_position_S", "icon_chr_position_dmy_s01"},
+  {"tex_file_position", "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx"},
+  {"tex_file_rarity", "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"},
+  {"mesh_base_rarity_L", "_icon_chr_base_l01"}, {"mesh_base_rarity_S", "_icon_chr_base_s01"},
+  {"tex_base_rarity_L", "icon_chr_base01_l01"}, {"tex_base_rarity_S", "icon_chr_base01_s01"},
+  {"mesh_color_rarity_L", "_icon_chr_dmy_l01"}, {"mesh_color_rarity_S", "_icon_chr_dmy_s01"},
+  {"tex_color_rarity_L", "icon_chr_color01_l01"}, {"tex_color_rarity_S", "icon_chr_color01_s01"},
+  {"tex_gradation_rarity_L", "icon_chr_gradation_l01"}, {"tex_gradation_rarity_S", "icon_chr_gradation_s01"},
+  {"mesh_captain_L", "_icon_captain01"}, {"mesh_captain_S", "_icon_captain02"},
+  {"mesh_seasonal_flame_L", "_seasonal_frame_l01"}, {"mesh_seasonal_flame_S", "_seasonal_frame_s01"},
+  {"mesh_ai_role_setting_icon_L", "_icon_ai_role_dmy01"}, {"mesh_ai_role_setting_icon_S", "_icon_ai_role_dmy02"},
+  {"tex_ai_role_setting_icon_L", "icon_ai_role_dmy01"}, {"tex_ai_role_setting_icon_S", "icon_ai_role_dmy01"},
+  {"tex_file_ai_role", "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx"},
+  {"pos_leader_L", "_pos_leader01"}, {"pos_leader_S", "_pos_leader02"},
+  {"pos_gauge_exp_L", "_pos_gauge_exp_l01"}, {"pos_gauge_exp_S", "_pos_gauge_exp_s01"},
+  {"hidden_exp_gauge", "true"}, {"material_rarity_color", "rarity_color"},
+}
 -- the text object (the framework's vrfw_mp_label, the retail corner button cmn03_01): its text node, plates, the
 -- node's left edge and centre line, the width of one Latin character at scale 1, the plate's box
 P.LABEL = {TEXT_NODE = 378327766 --[[_text_cmd_back01]], PLATE = 298211823 --[[_cmd_back_base01]],
@@ -87,10 +149,28 @@ P.LABEL = {TEXT_NODE = 378327766 --[[_text_cmd_back01]], PLATE = 298211823 --[[_
 -- the small card's pieces the board does not show (the VS screen hides the same)
 P.CARD_HIDE = {2635558741 --[[_icon_card01]], 69091055 --[[_icon_card02]], 814224422 --[[_icon_lock01]],
   2843821468 --[[_icon_lock02]]}
+-- a card drawn from its own sprites (a fill the game refused): the small card's plate in the slot's position colour and
+-- the player's face; the large card, the leader frames and every other small piece off
+P.SPRITE_CARD = {
+  TEXTURE = 4225297828,            -- #/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx
+  PLATE = 3124533534, PLATE_SLOT = 627420056,   -- _icon_chr_base_s01, icon_chr_base01_s01
+  FACE = 3220507922, FACE_SLOT = 372537510,     -- _icon_chr_dmy_s01, icon_chr_dmy_s01
+  -- the formation slot's position bit (formation info 6: 16 GK, 32 DF, 64 MF, 128 FW) -> plate sprite (GK gold,
+  -- DF blue, MF green, FW red)
+  PLATES = {{16, 570978177 --[[icon_chr_base01_s05]]}, {32, 3161258530 --[[icon_chr_base01_s02]]},
+    {64, 627420056 --[[icon_chr_base01_s01]]}, {128, 3137420859 --[[icon_chr_base01_s06]]}},
+  NODES_OFF = {1517329426 --[[_pos_base01]], 1387831794 --[[_pos_leader01]], 3417436232 --[[_pos_leader02]],
+    3662440288 --[[_pos_gauge_exp_s01]], 1260240154 --[[_pos_ai_role02]], 2423840957 --[[_num_chr_s01]],
+    158445831 --[[_num_chr_s02]]},
+  MESHES_OFF = {2494321055, 775876763, 2197319787, 3491095421, 1910176454, 4283246729, 378264806, 1054577830,
+    430313174, 670064111, 1198450632, 3690620419, 3364549413, 55677738, 1107078292, 3639999790, 3899116140,
+    3397635553, 570644301, 3137996535},   -- _icon_chr_gradation_s01 .. _icon_synergy_s02 (small card pieces)
+}
 
 local function reset()
   P.on, P.pending, P.shown, P.opened = false, false, false, {}
-  P.cards, P.base, P.shift, P.button, P.click_prev = {}, {}, nil, nil, false
+  P.cards, P.base, P.shift, P.button, P.click_prev, P.source, P.logged = {}, {}, nil, nil, false, nil, {}
+  P.named = {}
 end
 reset()
 
@@ -110,6 +190,10 @@ local function F(...)
   return table.unpack(r, 2, r.n)
 end
 
+local function log(...)
+  pcall(funcLuaCommand, P.C.LOG, "ChronicleDeluxe.Lineup", ...)
+end
+
 local function instances(layer)
   local n = M(P.C.LAYER_NUM, layer)
   return type(n) == "number" and n or 0
@@ -118,6 +202,24 @@ end
 -- the menu has the layers of content\menus\team_lineup.toml
 local function layers_ready()
   return instances(P.LAYER.PITCH) >= 1 and instances(P.LAYER.CARD) >= P.STARTERS and instances(P.LAYER.TEXT) >= 2
+end
+
+-- the retail name setting of a soccer card on instance `slot` of the card layer (once per instance)
+local function name_card(slot)
+  if P.named[slot] or MENU_DEF == nil or MENU_DEF.NameSettingBegin == nil then
+    return
+  end
+  P.named[slot] = true
+  local ok, err = pcall(function()
+    MENU_DEF.NameSettingBegin(P.LAYER.CARD, slot)
+    for _, entry in ipairs(P.CARD_NAMES) do
+      MENU_DEF.AddName(entry[1], entry[2])
+    end
+    MENU_DEF.NameSettingEnd()
+  end)
+  if not ok then
+    log("card name setting failed", slot, tostring(err))
+  end
 end
 
 P.BAND_HEIGHT = math.ceil(P.LAYOUT.TOP_GAP + P.LAYOUT.NAME_HEIGHT + P.LAYOUT.NAME_GAP
@@ -180,8 +282,17 @@ function P.SlotOffset(formation, slot)
   return px, py
 end
 
--- the active team: its set, formation, formation name and starters {slot -> card table}
-function P.ReadTeam()
+local function formation_name(formation)
+  local ok, text = F(P.C.FORMATION_INFO, 7, formation)
+  if ok == true and text ~= nil then
+    local name = F(P.C.TEXT_OF_ID, text)
+    return type(name) == "string" and name or ""
+  end
+  return ""
+end
+
+-- the user's active team: formation, its name and starters {slot -> card}
+function P.ReadDockTeam()
   local set = F(P.C.TEAM_SET)
   if type(set) ~= "number" then
     return nil
@@ -191,13 +302,7 @@ function P.ReadTeam()
     return nil
   end
   local okU, uniform = F(P.C.TEAM_SET_INFO, set, 0, 7)
-  local name = ""
-  local okN, text = F(P.C.FORMATION_INFO, 7, formation)
-  if okN == true and text ~= nil then
-    local s = F(P.C.TEXT_OF_ID, text)
-    name = type(s) == "string" and s or ""
-  end
-  local team = {set = set, formation = formation, name = name, starters = {}}
+  local team = {key = "dock:" .. set, formation = formation, name = formation_name(formation), starters = {}}
   for i = 0, P.MEMBER_SLOTS - 1 do
     local okH, handle = F(P.C.TEAM_MEMBER, set, 0, i, 0)
     local okS, slot = F(P.C.TEAM_MEMBER, set, 0, i, 1)
@@ -206,18 +311,97 @@ function P.ReadTeam()
       local okP, position = F(P.C.FORMATION_INFO, 6, formation, slot)
       local okC, captain = F(P.C.TEAM_SET_INFO, set, 0, 8, handle)
       local level = F(P.C.CHARA_INFO, handle, 0)
-      team.starters[slot] = {
-        layerName = P.LAYER.CARD, layerIdx = slot, charaStHdl = handle, isBigCardType = false,
-        isForceLeader = false, overwritePosType = okP == true and position or 0, charaFaceType = 0,
+      position = okP == true and position or 0
+      team.starters[slot] = {handle = handle, position = position, fill = {
+        layerName = P.LAYER.CARD, layerIdx = slot, charaStHdl = handle, isBigCardType = true,
+        isForceLeader = false, overwritePosType = position, charaFaceType = 0,
         level = type(level) == "number" and level or 0, isCaptain = okC == true and captain == true,
         uniformId = okU == true and uniform or 0, isMainMember = true, titleAttr = 0, isForceUpdateBustup = false,
         isManager = false, isGrayout = false, isDisableTeamUniform = false, rarityFrameEffectDrawType = 0,
         isTeamDockIconVisible = false, isForcePlayerUniform = true, teamSet = set, faceIconChrStHdl = 0,
         isUpdateTempAvatar = true,
-      }
+      }}
     end
   end
   return team
+end
+
+-- the piece's Chronicle team (the user's side of a Batalla de crónica), read as the VS screen's SetFormation does
+function P.ReadChronicleTeam(game, difficulty)
+  local okT, id = F(P.C.CHRONICLE_TEAM, game, 8)
+  if okT ~= true or type(id) ~= "number" or id == 0 then
+    return nil
+  end
+  local okF, formation = F(P.C.TEAM_PARAM, id, 3)
+  if okF ~= true or type(formation) ~= "number" or formation == 0 then
+    return nil
+  end
+  local okN, count = F(P.C.TEAM_PARAM, id, 8)
+  local okU, uniform = F(P.C.TEAM_PARAM, id, 4)
+  local team = {key = "chronicle:" .. id, formation = formation, name = formation_name(formation), starters = {}}
+  if okN ~= true or type(count) ~= "number" or GetTeamMemberInfo == nil then
+    return team
+  end
+  for i = 0, count - 1 do
+    local ok, chara, slot, level, captain, kit = GetTeamMemberInfo(id, i, game, difficulty, true)
+    if ok and type(slot) == "number" and slot >= 0 and slot < P.STARTERS then
+      local okP, position = F(P.C.FORMATION_INFO, 6, formation, slot)
+      team.starters[slot] = {chara = chara, position = okP == true and position or 0, level = level,
+        captain = captain, kit = kit, uniform = okU == true and uniform or 0}
+    end
+  end
+  return team
+end
+
+-- the team of the focused row's battle
+function P.ReadFocusedTeam()
+  local L = VRFW_RBC.L
+  local rows = L.t3
+  local index = M(P.C.FOCUS_GET, P.ROWS)
+  local row = type(rows) == "table" and type(index) == "number" and rows[index + 1] or nil
+  if row ~= nil and row.difficultyType == P.CHRONICLE_DIFFICULTY and P.kind == 0 then
+    local team = P.ReadChronicleTeam(L.n4, P.CHRONICLE_DIFFICULTY)
+    if team ~= nil then
+      return team
+    end
+    log("no Chronicle team for game", L.n4, "- the active team is shown")
+  end
+  local team = P.ReadDockTeam()
+  if team ~= nil and row ~= nil then
+    P.MarkOffenders(team, L.n4, L.n2, row.difficultyType or 0)
+  end
+  return team
+end
+
+-- the starters of the user's team that the focused row's challenge names as offenders (the same check as the VS
+-- screen's kick-off gate); the team's key gets the challenge so a row with another one redraws
+function P.MarkOffenders(team, game, slot, difficulty)
+  if VRFW_MC == nil or difficulty <= 0 or type(game) ~= "number" then
+    return
+  end
+  local i = VRFW_MC.Of(game, difficulty)
+  if i == nil then
+    return
+  end
+  local cleared = type(slot) == "number" and F(P.C.CLEAR_GET, slot, difficulty) == true
+  local ok, _, offenders, players = pcall(VRFW_MC.Check, i, 0, cleared)
+  if not ok or type(offenders) ~= "table" or type(players) ~= "table" then
+    return
+  end
+  local bad, count = {}, 0
+  for _, k in ipairs(offenders) do
+    local player = players[k]
+    if player ~= nil then
+      bad[player.hdl] = true
+    end
+  end
+  for _, card in pairs(team.starters) do
+    if card.handle ~= nil and bad[card.handle] then
+      card.offender = true
+      count = count + 1
+    end
+  end
+  team.key = team.key .. ":challenge" .. i .. ":" .. count
 end
 
 local function place(layer, k)
@@ -241,20 +425,95 @@ local function open(layer, k, priority)
   M(P.C.DRAW_PRIORITY, layer, k, priority, true)
 end
 
--- one card: the game's fill, the extra pieces off (again when its instance is built: OnOpenLayer)
+-- a card from its own sprites: the plate in the slot's position colour, the player's face
+local function sprite_card(slot, card)
+  local L, S = P.LAYER.CARD, P.SPRITE_CARD
+  for _, node in ipairs(S.NODES_OFF) do
+    M(P.C.NODE_VISIBLE, L, node, false, slot)
+  end
+  for _, mesh in ipairs(S.MESHES_OFF) do
+    M(P.C.MESH_VISIBLE, L, mesh, false, slot)
+  end
+  local plate = S.PLATE_SLOT
+  for _, entry in ipairs(S.PLATES) do
+    if math.floor((card.position or 0) / entry[1]) % 2 == 1 then
+      plate = entry[2]
+      break
+    end
+  end
+  M(P.C.SPRITE, L, S.TEXTURE, plate, S.PLATE_SLOT, 0, slot)
+  M(P.C.MESH_VISIBLE, L, S.PLATE, true, slot)
+  M(P.C.RESET_FACE, L, slot, S.FACE_SLOT)
+  if card.handle ~= nil then
+    M(P.C.FACE, L, slot, false, S.FACE, S.FACE_SLOT, card.handle, 0, 0, 0, false, false, 0)
+  else
+    local chara = F(P.C.CHARA_OF_PARAM, card.chara)
+    if type(chara) ~= "number" or chara == 0 then
+      chara = card.chara
+    end
+    M(P.C.FACE, L, slot, false, S.FACE, S.FACE_SLOT, 0, 0, chara, 0, false, true)
+  end
+  M(P.C.MESH_VISIBLE, L, S.FACE, true, slot)
+end
+
+-- one card: the game's fill (its own sprites when refused), the extra pieces off (again when its instance is built:
+-- OnOpenLayer)
 local function fill_card(slot)
   local card = P.cards[slot]
   if card == nil then
     M(P.C.VISIBLE, P.LAYER.CARD, slot, false)
     return
   end
-  local shown = M(P.C.FILL_CARD, card)
+  M(P.C.VISIBLE, P.LAYER.CARD, slot, true)
+  name_card(slot)
+  pcall(SetDisableForceCharaInvalidUseTarget)
+  local filled
+  if card.handle ~= nil then
+    filled = M(P.C.FILL_CARD, card.fill)
+  else
+    filled = M(P.C.FILL_MEMBER_CARD, P.LAYER.CARD, slot, card.chara, true, false, card.position, 0, card.level,
+      card.captain, false, card.kit, card.uniform)
+  end
+  if filled == false then
+    sprite_card(slot, card)
+  end
+  pcall(SetEnableForceCharaInvalidUseTarget)
+  local logged = P.source .. ":" .. slot
+  if not P.logged[logged] then
+    P.logged[logged] = true
+    log("slot", slot, card.handle ~= nil and "dock" or "chronicle", "fill", tostring(filled), "position", card.position)
+  end
   for _, mesh in ipairs(P.CARD_HIDE) do
     M(P.C.MESH_VISIBLE, P.LAYER.CARD, mesh, false, slot)
   end
   M(P.C.SCALE, P.LAYER.CARD, P.LAYOUT.CARD_SCALE, P.LAYOUT.CARD_SCALE, 1, slot)
   place(P.LAYER.CARD, slot)
-  M(P.C.VISIBLE, P.LAYER.CARD, slot, shown ~= false)
+  M(P.C.DRAW_PRIORITY, P.LAYER.CARD, slot, P.LAYOUT.PRIORITY_CARD, true)
+  M(P.C.VISIBLE, P.LAYER.CARD, slot, true)
+  P.Mark(slot, card.offender == true)
+end
+
+-- the red «!» on a starter who breaks the focused row's challenge
+function P.Mark(slot, on)
+  if instances(P.LAYER.MARK) <= slot then
+    return
+  end
+  if not on then
+    if P.opened[P.LAYER.MARK .. ":" .. slot] then
+      M(P.C.VISIBLE, P.LAYER.MARK, slot, false)
+    end
+    return
+  end
+  local A = P.LAYOUT
+  local b = P.base[P.LAYER.CARD .. ":" .. slot]
+  if b == nil then
+    return
+  end
+  open(P.LAYER.MARK, slot, A.PRIORITY_MARK)
+  M(P.C.SCALE, P.LAYER.MARK, A.MARK_SCALE, A.MARK_SCALE, 1, slot)
+  P.base[P.LAYER.MARK .. ":" .. slot] = {b[1] + A.MARK_X * A.CARD_SCALE, b[2] + A.MARK_Y * A.CARD_SCALE}
+  place(P.LAYER.MARK, slot)
+  M(P.C.VISIBLE, P.LAYER.MARK, slot, true)
 end
 
 -- a text line: `s` at `scale`, centred on (cx, cy) (screen px); plate = the corner button's plate behind it
@@ -287,14 +546,24 @@ function P.Hide()
   end
   M(P.C.VISIBLE, P.LAYER.TEXT, P.TEXT_FORMATION, false)
   M(P.C.VISIBLE, P.LAYER.TEXT, P.TEXT_BUTTON, false)
+  for slot = 0, P.STARTERS - 1 do
+    P.Mark(slot, false)
+  end
 end
 
--- the band's content, from the active team as it is now
+-- the band's content, from the focused row's team as it is now
 function P.Draw()
-  local team = P.ReadTeam()
-  if team == nil or VRFW_RBC_PanelBandTop == nil then
+  local team = VRFW_RBC_PanelBandTop ~= nil and P.ReadFocusedTeam() or nil
+  if team == nil then
+    P.source = nil
     return P.Hide()
   end
+  P.source = team.key
+  local count = 0
+  for _ in pairs(team.starters) do
+    count = count + 1
+  end
+  log("draw", team.key, "formation", team.formation, team.name, "starters", count)
   local A, G = P.LAYOUT, P.PITCH
   local top = VRFW_RBC_PanelBandTop(P.BAND_ID)
   local cx = VRFW_RBC.GEOMETRY.PANEL_MID_X
@@ -385,6 +654,7 @@ function P.Step()
     place(P.LAYER.PITCH, 0)
     for slot = 0, P.STARTERS - 1 do
       place(P.LAYER.CARD, slot)
+      place(P.LAYER.MARK, slot)
     end
     place(P.LAYER.TEXT, P.TEXT_FORMATION)
     place(P.LAYER.TEXT, P.TEXT_BUTTON)
@@ -405,10 +675,17 @@ function P.Register(stem, owns)
   end})
   -- the panel is placed: the band, then the drawing on the next Step (the layers open outside the setup callback)
   VRFW_Host.on(stem, "VRFW_RBC_ListLayer", {id = id, phase = "after", fn = function(r, layer, kind, rows)
+    P.kind = kind
     P.on = owns(kind) and VRFW_RBC_PanelBand ~= nil and layers_ready()
     if P.on then
       VRFW_RBC_PanelBand(P.BAND_ID, P.BAND_HEIGHT, P.BAND_ORDER)
       P.pending = true
+    end
+  end})
+  -- a card instance is set up: the soccer card's name setting (the game's fills need it)
+  VRFW_Host.on(stem, "OnSetupLayer", {id = id, phase = "after", fn = function(r, a1, a2)
+    if a1 == P.LAYER.CARD and type(a2) == "number" and a2 < P.STARTERS then
+      name_card(a2)
     end
   end})
   -- an instance is built: its draw priority again, a card's fill again
@@ -423,6 +700,16 @@ function P.Register(stem, owns)
       M(P.C.DRAW_PRIORITY, a1, a2, P.LAYOUT.PRIORITY_PITCH, true)
     elseif a1 == P.LAYER.TEXT then
       M(P.C.DRAW_PRIORITY, a1, a2, P.LAYOUT.PRIORITY_TEXT, true)
+    end
+  end})
+  -- another row focused: its battle's lineup (redrawn only when the team changes)
+  VRFW_Host.on(stem, "OnChangeFocus", {id = id, phase = "after", fn = function(r, a1)
+    if a1 ~= P.ROWS or not P.on or P.pending or VRFW_RBC.L.flag then
+      return
+    end
+    local team = P.ReadFocusedTeam()
+    if team == nil or team.key ~= P.source then
+      P.Draw()
     end
   end})
   VRFW_Host.on(stem, "Step", {id = id, phase = "after", fn = function()

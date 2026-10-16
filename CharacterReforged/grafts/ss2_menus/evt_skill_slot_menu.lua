@@ -8622,6 +8622,18 @@ function PL.RowGuide(removable)
   local i = {PL.I_ENTER, PL.I_FUNC3}
   local c = {PL.K_ENTER, PL.K_FUNC3}
   local o = {0, 18}
+  -- 2026-10-16 (owner): both actions in the guide on their real button: Y «Restablecer» (tap), Y «Eliminar» (held;
+  -- the hold ring fills over this entry, PL.HOLD.GUIDE_ENTRY)
+  local row = funcLuaMenuCommand(C.FOCUS_IDX, L_ROW)
+  if not removable and row == 0 and PL.RowRemovable ~= nil then
+    removable = PL.RowRemovable(0) == true
+  end
+  if removable then
+    t[#t + 1] = PL.TX.BTN_REMOVE
+    i[#i + 1] = PL.I_FUNC3
+    c[#c + 1] = PL.K_FUNC3
+    o[#o + 1] = 18
+  end
   pcall(PL.MxGuideAdd, t, i, c, o)
   funcLuaMenuCommand(2209673388, n12, 1138543975 --[[mainmenu01_06_base_button_guide]], t, i, o)
   funcLuaMenuCommand(452337289, n12, 1138543975 --[[mainmenu01_06_base_button_guide]], c)
@@ -10190,7 +10202,7 @@ end
 
 -- ===== V tap / hold (2026-10-14) =====
 -- V / Y on a row (CMD_FUNC3; owner 2026-10-14: as Inazuma Fantasy had it): a tap = «Restablecer» (the row's basic
--- kit move back), held PL.HOLD.SECONDS = «Eliminar» (the row emptied). The guide shows «Y Restablecer» only; the hold
+-- kit move back), held PL.HOLD.SECONDS = «Eliminar» (the row emptied). The guide shows «Y Restablecer» and «Y Eliminar»; the hold
 -- is the framework's hold prompt (VRFW_FooterPrompts.AddHold / WaitHold, docs/framework/footer-prompts.md §6): no
 -- ring while idle, the retail long-press ring (layer cr_skill_table_hold, Character Reforged
 -- content\menus\skill_table_hold_ring.toml) over its glyph only while the key is held, filling with the hold. With
@@ -10203,7 +10215,7 @@ PL.HOLD = {
   PAD_HELD = 1960855917,                           -- crc32("CMND_UTIL_PAD_HELD") (mask) -> seconds held, -1 / false
   PAD_MASK = 4096,                                 -- the pad's Y (CMD_FUNC3)
   RING = 4275388294,                               -- layer cr_skill_table_hold
-  GUIDE_ENTRY = 1,                                 -- «Restablecer» (Aceptar 0)
+  GUIDE_ENTRY = 2,                                 -- «Eliminar» (Aceptar 0, Restablecer 1)
 }
 
 -- the hold prompt, declared on first use (the framework's Lua may load after this chunk); false = no framework
@@ -10468,7 +10480,7 @@ end
 -- Restablecer (tap) on the aura half with its own slot empty: a shown list fallback goes as with Eliminar; nothing to
 -- restore and nothing shown: the error sound, no board write
 PL.FbPrevReset = PL.BaseResetCoroutine
-function EVT_ResetCoroutine(row)
+function PL.FallbackResetCoroutine(row)
   if row ~= 0 or not PL.HS_ON or EVT_Skill(0) ~= 0 or (PL.hs_half == 1 and PL.HsMix() ~= 0) then
     return PL.FbPrevReset(row)
   end
@@ -10484,3 +10496,75 @@ function EVT_ResetCoroutine(row)
   return PL.FbPrevReset(row)
 end
 -- ===== Fantasy slot fallbacks END =====
+
+-- ===== Hiper row: Restablecer / Eliminar act on the focused half (2026-10-16) =====
+-- Owner: «Restablecer debe ser a como lo tiene el personaje en su set básico, y Eliminar es para dejar el espacio
+-- vacío». On the Hiper row the half under the cursor (PL.hs_half: 0 aura, 1 mix) is the target of both: the mix half's
+-- Restablecer puts back the mix of the player's basic set (CMND_CHARACTERREFORGED_DEFAULT_SET; none = the slot ends
+-- empty), Eliminar empties that half only. Nothing to change: the error sound.
+PL.HALF_CMD_DEFAULT = 2076075108                  -- crc32("CMND_CHARACTERREFORGED_DEFAULT_SET") (card) -> aura, mix
+
+function PL.HalfDefaultMix()
+  if n == nil or n == 0 then
+    return 0
+  end
+  local ok, _, mix = pcall(funcLuaCommand, PL.HALF_CMD_DEFAULT, n)
+  return (ok and type(mix) == "number") and EVT_U32(mix) or 0
+end
+
+PL.HalfPrevRestore = EVT_RestoreCoroutine
+function EVT_RestoreCoroutine(row)
+  if row ~= 0 or not PL.HS_ON or PL.mx_removing then
+    return PL.HalfPrevRestore(row)
+  end
+  if PL.hs_half == 1 then
+    if PL.HsMix() == 0 then
+      funcLuaCommand(C.SE, SE_NG)                  -- the mix half is already empty
+      return
+    end
+    return PL.HalfPrevRestore(0)                   -- the mix slot's removal (fusion / change questions)
+  end
+  if EVT_Skill(0) == 0 then
+    local okp, proj = pcall(PL.CrProjection)
+    if not (okp and proj ~= nil and #PL.FbSources("aura") > 0) then
+      funcLuaCommand(C.SE, SE_NG)                  -- the aura half shows nothing: the mix slot is never touched here
+      return
+    end
+  end
+  return PL.HalfPrevRestore(0)
+end
+
+PL.HalfPrevReset = PL.FallbackResetCoroutine
+function EVT_ResetCoroutine(row)
+  if row ~= 0 or not PL.HS_ON or PL.hs_half ~= 1 then
+    return PL.HalfPrevReset(row)
+  end
+  if EVT_IsPrime() or PL.readonly then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  local cur, want = PL.HsMix(), PL.HalfDefaultMix()
+  if cur == want then
+    funcLuaCommand(C.SE, SE_NG)                    -- already the basic set's mix
+    return
+  end
+  if cur ~= 0 then
+    EVT_RestoreCoroutine(0)                        -- the current mix off first (its own questions)
+    if PL.HsMix() ~= 0 then
+      return                                       -- the player kept it
+    end
+  end
+  if want ~= 0 then
+    if PL.HsMixPut(want) then
+      funcLuaCommand(C.SE, SE_DECIDE)
+    else
+      funcLuaCommand(C.SE, SE_NG)
+    end
+  end
+  pcall(EVT_Call, C.EVT_LOG, "skill_slots", "Restablecer mix", string.format("%08X", EVT_U32(cur)),
+    string.format("%08X", EVT_U32(want)), string.format("%08X", PL.HsMix()))
+  EVT_RefreshRows()
+  UpdateEquipItemInfo()
+  EVT_FocusRow(0)
+end
+-- ===== Hiper row: Restablecer / Eliminar END =====

@@ -1,0 +1,25 @@
+schema = "VRFW.shop/2"
+# New Recruitment: no shop sells a player spirit (owner request 2026-10-16: no player can pay and get nothing). With this
+# mod the game's spirit stock refuses every player card (content\items\drop_list.toml AllSources), so a spirit bought in
+# a shop would be paid and never given: those rows are hidden here, whatever other mod is on (VR-Framework 2.4.141
+# `hide_spirits`: every row of the shop with a player spirit, shop_config SHOP_INFO_ITEM col 24).
+# The shops are the retail v7.1.2 shops with player spirit rows (shop_config, col 24 not 0): no other retail shop has one.
+# The Victory crates (ex0006-ex0008, «Caja de la victoria») of the Tienda del torneo open into player spirits
+# (soccer_fixed_reward_spirit_config m_victoryBoxEmmitSpiritDataList): their rows are hidden too.
+
+[[edit]]
+target = "0x5B032CEA"           # Mercado de espíritus (57 player spirit rows)
+hide_spirits = true
+
+[[edit]]
+target = "0x66B2F9E6"           # El atrio de los indomables (71 Diamond player rows)
+hide_spirits = true
+
+[[edit]]
+target = "0xB13B2BD5"           # Tienda vínculo (2 player spirit rows)
+hide_spirits = true
+
+[[edit]]
+target = "0xAF9EA088"           # Tienda del torneo (3 player spirit rows, the Victory crates)
+hide_spirits = true
+hide = ["ex0006", "ex0007", "ex0008"]

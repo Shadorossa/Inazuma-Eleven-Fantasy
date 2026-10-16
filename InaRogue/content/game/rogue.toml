@@ -1,0 +1,553 @@
+# InaRogue › INAROGUE (docs/game/modes/inarogue.md; docs/framework/new-core/if-wave6a.md). Logic: scripts\inarogue.lua +
+# scripts\lib\rogue\. Was the Rust module rogue of inazuma_fantasy.dll until 2026-10-10. Commands CMND_INAROGUE_RL_* /
+# CMND_INAROGUE_RU_* with the old names as aliases (the grafts and menus call those). The session wrappers
+# CMND_EVT_RL_SESSION_*, the «Sin rol» commands CMND_EVT_RL_NO_ROLE / _NO_ROLE_ALL / _ROLE_CARRY and the coaches'
+# stat_mult on the match copy were the plugin's until 2026-10-11 (IF final round, docs/framework/new-core/if-final-misc.md).
+schema = "VRFW.game/2"
+
+# ---------------------------------------------------------------------------------------------------- game code
+
+# void SetOrganizedFlagBit(TeamMember* m, u8 logicalSet, bool on) 0xE796F0 (the debug probes: set 13's members)
+[[VRFW.Function]]
+name = "RL_SetOrganizedFlagBit"
+game = "Party.SetOrganizedFlagBit"
+
+# TeamInfo& TeamInfo::operator=(TeamInfo* dst, const TeamInfo* src) 0x20D440 (0x2D0 bytes with its sub-arrays)
+[[VRFW.Function]]
+name = "RL_TeamInfoAssign"
+game = "Party.TeamInfoAssign"
+
+# TeamInfo* GetTeamInfo(CGDDPartyStatus* party, u8 logicalSet, u8 team) 0xDA20A0 (0xDA2000 is a byte-identical copy: the
+# pattern runs into the padding and the next prologue to stay unique)
+[[VRFW.Function]]
+name = "RL_GetTeamInfo"
+game = "Team.SetStruct"
+
+# [[g_gameRoot] + 0x69A8] = CGDDPartyStatus (charaBank at +0x9F70, rpgCharaBank at +0xF24C, team sets at +0x17B8)
+[[VRFW.Global]]
+name = "rl_party"
+base = "game_root"
+chain = ["ROOT_PARTY"]
+
+# ---------------------------------------------------------------------------------------------------- the INAROGUE save
+
+# INAROGUE is the game in memory: the active save slot is INAROGUE's reserved slot (the native table InaRogue.Slot,
+# filled by scripts\inarogue.lua from [save_slots] slot). Computed at each read: native answers of other IF
+# pieces and other mods' scripts read it (was the plugin's rogue::game_active until 2026-10-11).
+[[VRFW.State]]
+key = "inarogue.active"
+formula = "lookup_or(InaRogue.Slot, 0, slot)"
+
+# Utilities' away_kit kit-less extension point: the one kit INAROGUE may write on a team that has no kit yet, the
+# retail «Equipación estándar» uni_u119101 (0x9EDB7BFC), only while the INAROGUE save is loaded (docs/game/modes/
+# inarogue.md §21; was the plugin's if_boot answer)
+[[VRFW.State]]
+key = "utilities.away_kit.kitless.uniform"
+formula = "if(lookup_or(InaRogue.Slot, 0, slot) == 1, 0x9EDB7BFC, 0)"
+
+# The run coach's stat_mult effects on the match copy of the run's own players (docs/game/modes/inarogue.md
+# «Entrenadores»): the multipliers are the native table InaRogue.CoachMult (scripts\lib\rogue\svc_meta.lua coach_sync:
+# key (handle, stat) of a listed run handle, (0, stat) when the run lists none); d = round(f32(stat × f32(k − 1))),
+# clamped to 1..9999 with the stat. After the trained points (10), before the run speed (100).
+[[VRFW.MatchStat]]
+name = "InaRogue.Coach"
+order = 20
+when = { value = ["slot"], in_table = "InaRogue.Slot" }
+stat = "let(k, f32(lookup_or(InaRogue.CoachMult, lookup(InaRogue.CoachMult, 0, i), args[2], i)), clamp(args[4] + round(f32(args[4] * f32(k - 1))), 1, 9999))"
+
+# void SetTrophyTier(const u32* trophyId, u32 tier, bool notify) 0xE89BE0: the retail «logros» setter (the banner, the
+# trophy count, the Steam achievement). A pre handler skips it while the INAROGUE save is the loaded game
+# (docs/game/modes/inarogue.md §21). Stolen bytes: mov [rsp+8],rbx; mov [rsp+10h],rbp; mov [rsp+18h],rsi (15, fixed).
+[[VRFW.Hook]]
+name = "RL_TrophySetTier"
+game = "Chronicle.TrophySetTier"
+kind = "function"
+
+# ---------------------------------------------------------------------------------------------------- commands
+
+# CMND_EVT_RL_BANK_COUNT -> count, capacity, slot, starter budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_BANK_COUNT"
+aliases = ["CMND_EVT_RL_BANK_COUNT"]
+handler = "InaRogue.Mode.BankCount"
+
+# CMND_EVT_RL_BANK_GET (i, sort) -> ok, uid, param, level, tier, cost, runs, added, card, starterCost, frags, whatif
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_BANK_GET"
+aliases = ["CMND_EVT_RL_BANK_GET"]
+handler = "InaRogue.Mode.BankGet"
+
+# CMND_EVT_RL_BANK_ADD (param) -> code, uid
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_BANK_ADD"
+aliases = ["CMND_EVT_RL_BANK_ADD"]
+handler = "InaRogue.Mode.BankAdd"
+
+# CMND_EVT_RL_CHARA (param) -> tier, cost, inPool, statTotal99, card, element, position, whatif
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_CHARA"
+aliases = ["CMND_EVT_RL_CHARA"]
+handler = "InaRogue.Mode.Chara"
+
+# CMND_EVT_RL_BUDGET (phase) -> squad budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_BUDGET"
+aliases = ["CMND_EVT_RL_BUDGET"]
+handler = "InaRogue.Mode.Budget"
+
+# CMND_EVT_RL_BANK_DEBUG_FILL (n) -> added ([rogue] debug_tools)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_BANK_DEBUG_FILL"
+aliases = ["CMND_EVT_RL_BANK_DEBUG_FILL"]
+handler = "InaRogue.Mode.BankDebugFill"
+
+# CMND_EVT_RL_STARTER_INFO -> budget, bestPhase, giftPending, bankCount, squadSize, pickOn
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_STARTER_INFO"
+aliases = ["CMND_EVT_RL_STARTER_INFO"]
+handler = "InaRogue.Mode.StarterInfo"
+
+# CMND_EVT_RL_STARTER_GIFT -> added (-1 = not pending)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_STARTER_GIFT"
+aliases = ["CMND_EVT_RL_STARTER_GIFT"]
+handler = "InaRogue.Mode.StarterGift"
+
+# CMND_EVT_RL_PICK_RESET -> budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PICK_RESET"
+aliases = ["CMND_EVT_RL_PICK_RESET"]
+handler = "InaRogue.Mode.PickReset"
+
+# CMND_EVT_RL_PICK_TOGGLE (uid) -> code, picked, count, spent, budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PICK_TOGGLE"
+aliases = ["CMND_EVT_RL_PICK_TOGGLE"]
+handler = "InaRogue.Mode.PickToggle"
+
+# CMND_EVT_RL_PICK_STATE (uid) -> picked, cost, frags, nextStep, minCost, count, spent, budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PICK_STATE"
+aliases = ["CMND_EVT_RL_PICK_STATE"]
+handler = "InaRogue.Mode.PickState"
+
+# CMND_EVT_RL_PICK_COMMIT (seed) -> code, seed
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PICK_COMMIT"
+aliases = ["CMND_EVT_RL_PICK_COMMIT"]
+handler = "InaRogue.Mode.PickCommit"
+
+# CMND_EVT_RL_FRAGS_ADD (uid, n) -> total (debug_tools)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_FRAGS_ADD"
+aliases = ["CMND_EVT_RL_FRAGS_ADD"]
+handler = "InaRogue.Mode.FragsAdd"
+
+# CMND_EVT_RL_GACHA_GRANT (param, allowFrags) -> code, uid, frags, players
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_GACHA_GRANT"
+aliases = ["CMND_EVT_RL_GACHA_GRANT"]
+handler = "InaRogue.Mode.GachaGrant"
+
+# CMND_EVT_RL_TEAM_RESET -> budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_RESET"
+aliases = ["CMND_EVT_RL_TEAM_RESET"]
+handler = "InaRogue.Mode.TeamReset"
+
+# CMND_EVT_RL_TEAM_SET (slot, uid) -> code, spent, budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_SET"
+aliases = ["CMND_EVT_RL_TEAM_SET"]
+handler = "InaRogue.Mode.TeamSet"
+
+# CMND_EVT_RL_TEAM_CLEAR (slot) -> spent, budget
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_CLEAR"
+aliases = ["CMND_EVT_RL_TEAM_CLEAR"]
+handler = "InaRogue.Mode.TeamClear"
+
+# CMND_EVT_RL_TEAM_SLOT (slot) -> uid, param, cost, tier
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_SLOT"
+aliases = ["CMND_EVT_RL_TEAM_SLOT"]
+handler = "InaRogue.Mode.TeamSlot"
+
+# CMND_EVT_RL_TEAM_INFO -> starters, bench, managers, coach, spent, budget, formation, ready
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_INFO"
+aliases = ["CMND_EVT_RL_TEAM_INFO"]
+handler = "InaRogue.Mode.TeamInfo"
+
+# CMND_EVT_RL_TEAM_FORMATION (formId) -> formId
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_FORMATION"
+aliases = ["CMND_EVT_RL_TEAM_FORMATION"]
+handler = "InaRogue.Mode.TeamFormation"
+
+# CMND_EVT_RL_TEAM_FITS (uid, slot) -> fits, inSlot, cost
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_FITS"
+aliases = ["CMND_EVT_RL_TEAM_FITS"]
+handler = "InaRogue.Mode.TeamFits"
+
+# CMND_EVT_RL_TEAM_COMMIT (seed) -> code, seed
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TEAM_COMMIT"
+aliases = ["CMND_EVT_RL_TEAM_COMMIT"]
+handler = "InaRogue.Mode.TeamCommit"
+
+# CMND_EVT_RL_GACHA_DRAW (sign) -> ok, param, charaRarity, rarityType, index, whatif
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_GACHA_DRAW"
+aliases = ["CMND_EVT_RL_GACHA_DRAW"]
+handler = "InaRogue.Mode.GachaDraw"
+
+# CMND_EVT_RL_CARD -> the INAROGUE save's data for the slot screen card
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_CARD"
+aliases = ["CMND_EVT_RL_CARD"]
+handler = "InaRogue.Mode.Card"
+
+# CMND_EVT_RL_RUN_END (result, phase) -> runs played
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_END"
+aliases = ["CMND_EVT_RL_RUN_END"]
+handler = "InaRogue.Mode.RunEnd"
+
+# CMND_EVT_RL_ALBUM_INFO (op, ...) -> the album (ops 0-10)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ALBUM_INFO"
+aliases = ["CMND_EVT_RL_ALBUM_INFO"]
+handler = "InaRogue.Mode.AlbumInfo"
+
+# CMND_EVT_RL_RUN_INFO -> exists, phase, cols, nodes, edges, cur, curCol, seed, phasesDone, budget, slot, stage, pendingNode, won, lost, fog, revealBoss
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_INFO"
+aliases = ["CMND_EVT_RL_RUN_INFO"]
+handler = "InaRogue.Mode.RunInfo"
+
+# CMND_EVT_RL_RUN_START (seed) -> code, seed
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_START"
+aliases = ["CMND_EVT_RL_RUN_START"]
+handler = "InaRogue.Mode.RunStart"
+
+# CMND_EVT_RL_RUN_NODE (i) -> ok, col, slot, kind, pick, state
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_NODE"
+aliases = ["CMND_EVT_RL_RUN_NODE"]
+handler = "InaRogue.Mode.RunNode"
+
+# CMND_EVT_RL_RUN_EDGE (i) -> ok, from, to, walked, event, coin
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_EDGE"
+aliases = ["CMND_EVT_RL_RUN_EDGE"]
+handler = "InaRogue.Mode.RunEdge"
+
+# CMND_EVT_RL_RUN_MOVE (to) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_MOVE"
+aliases = ["CMND_EVT_RL_RUN_MOVE"]
+handler = "InaRogue.Mode.RunMove"
+
+# CMND_EVT_RL_RUN_STAGE (stage) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_STAGE"
+aliases = ["CMND_EVT_RL_RUN_STAGE"]
+handler = "InaRogue.Mode.RunStage"
+
+# CMND_EVT_RL_RUN_RIVAL (node, -1 = pending) -> rule, seed, nodeKey, stage, slot of the node's random-team rival (nil: not one)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RIVAL"
+aliases = ["CMND_EVT_RL_RUN_RIVAL"]
+handler = "InaRogue.Mode.RunRival"
+
+# CMND_EVT_RL_RUN_RESUME -> stage, node, kind, event, coin, gameId, diff, stadium, level, rival
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RESUME"
+aliases = ["CMND_EVT_RL_RUN_RESUME"]
+handler = "InaRogue.Mode.RunResume"
+
+# CMND_EVT_RL_RUN_MATCH (node) -> ok, gameId, diff, stadium, kind, level, rival, emblem
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_MATCH"
+aliases = ["CMND_EVT_RL_RUN_MATCH"]
+handler = "InaRogue.Mode.RunMatch"
+
+# CMND_EVT_RL_RUN_RESERVE -> code, gameId, diff, stadium, level, rival
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RESERVE"
+aliases = ["CMND_EVT_RL_RUN_RESERVE"]
+handler = "InaRogue.Mode.RunReserve"
+
+# CMND_EVT_RL_RUN_RESULT (result, gf, ga) -> code, outcome, isBoss, fragsEach, players, formation x5, points
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RESULT"
+aliases = ["CMND_EVT_RL_RUN_RESULT"]
+handler = "InaRogue.Mode.RunResult"
+
+# CMND_EVT_RL_RUN_CLEAR -> code, isBoss
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_CLEAR"
+aliases = ["CMND_EVT_RL_RUN_CLEAR"]
+handler = "InaRogue.Mode.RunClear"
+
+# CMND_EVT_RL_RUN_NEXT_PHASE -> code, phase
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_NEXT_PHASE"
+aliases = ["CMND_EVT_RL_RUN_NEXT_PHASE"]
+handler = "InaRogue.Mode.RunNextPhase"
+
+# CMND_EVT_RL_RUN_ABANDON -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_ABANDON"
+aliases = ["CMND_EVT_RL_RUN_ABANDON"]
+handler = "InaRogue.Mode.RunAbandon"
+
+# CMND_EVT_RL_RUN_SQUAD (slot) -> ok, uid, param, hdl, tier, cost
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_SQUAD"
+aliases = ["CMND_EVT_RL_RUN_SQUAD"]
+handler = "InaRogue.Mode.RunSquad"
+
+# CMND_EVT_RL_RUN_SET_HDL (slot, hdl) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_SET_HDL"
+aliases = ["CMND_EVT_RL_RUN_SET_HDL"]
+handler = "InaRogue.Mode.RunSetHdl"
+
+# CMND_EVT_RL_RUN_SET_SLOT (slot, uid, hdl) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_SET_SLOT"
+aliases = ["CMND_EVT_RL_RUN_SET_SLOT"]
+handler = "InaRogue.Mode.RunSetSlot"
+
+# CMND_EVT_RL_RUN_RECRUIT (op[, param]) -> the Fichaje offer / accept
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RECRUIT"
+aliases = ["CMND_EVT_RL_RUN_RECRUIT"]
+handler = "InaRogue.Mode.RunRecruit"
+
+# CMND_EVT_RL_RUN_LAUNCH (op) -> a match launch in flight
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_LAUNCH"
+aliases = ["CMND_EVT_RL_RUN_LAUNCH"]
+handler = "InaRogue.Mode.RunLaunch"
+
+# CMND_EVT_RL_RUN_LOOT (node, salt) -> kind, id, tier, name, owned, total
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_LOOT"
+aliases = ["CMND_EVT_RL_RUN_LOOT"]
+handler = "InaRogue.Mode.RunLoot"
+
+# CMND_EVT_RU_INFO -> enabled, count, unlockedCount, showLocked, shopCrc, slot, gameCrc, title
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RU_INFO"
+aliases = ["CMND_EVT_RU_INFO"]
+handler = "InaRogue.Mode.UnlockInfo"
+
+# CMND_EVT_RU_CARD (i) -> ok, param, unlocked, name, hint, price, level, id
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RU_CARD"
+aliases = ["CMND_EVT_RU_CARD"]
+handler = "InaRogue.Mode.UnlockCard"
+
+# CMND_EVT_RU_STATE (chara_param) -> true, inCatalogue, unlocked, hint, name
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RU_STATE"
+aliases = ["CMND_EVT_RU_STATE"]
+handler = "InaRogue.Mode.UnlockState"
+
+# CMND_EVT_RU_NEWS (0 INAROGUE / 1 office) -> n, names
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RU_NEWS"
+aliases = ["CMND_EVT_RU_NEWS"]
+handler = "InaRogue.Mode.UnlockNews"
+
+# CMND_EVT_RL_COACH_LIST (-1 / i) -> the selector's coaches
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_COACH_LIST"
+aliases = ["CMND_EVT_RL_COACH_LIST"]
+handler = "InaRogue.Mode.CoachList"
+
+# CMND_EVT_RL_COACH_PICK (i) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_COACH_PICK"
+aliases = ["CMND_EVT_RL_COACH_PICK"]
+handler = "InaRogue.Mode.CoachPick"
+
+# CMND_EVT_RL_COACH_RUN -> index, id, name, face
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_COACH_RUN"
+aliases = ["CMND_EVT_RL_COACH_RUN"]
+handler = "InaRogue.Mode.CoachRun"
+
+# CMND_EVT_RL_COACH_ITEMS -> n, key, id, count x n
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_COACH_ITEMS"
+aliases = ["CMND_EVT_RL_COACH_ITEMS"]
+handler = "InaRogue.Mode.CoachItems"
+
+# CMND_EVT_RL_AVATAR_GET -> texture, prefix, index, unit, name, id
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_AVATAR_GET"
+aliases = ["CMND_EVT_RL_AVATAR_GET"]
+handler = "InaRogue.Mode.AvatarGet"
+
+# CMND_EVT_RL_AVATAR_LIST (-1 / i) -> the avatars
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_AVATAR_LIST"
+aliases = ["CMND_EVT_RL_AVATAR_LIST"]
+handler = "InaRogue.Mode.AvatarList"
+
+# CMND_EVT_RL_AVATAR_TEAM (-1 / t[, j]) -> the shop's team grid
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_AVATAR_TEAM"
+aliases = ["CMND_EVT_RL_AVATAR_TEAM"]
+handler = "InaRogue.Mode.AvatarTeam"
+
+# CMND_EVT_RL_AVATAR_UNLOCK (i, paid) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_AVATAR_UNLOCK"
+aliases = ["CMND_EVT_RL_AVATAR_UNLOCK"]
+handler = "InaRogue.Mode.AvatarUnlock"
+
+# CMND_EVT_RL_AVATAR_SELECT (i) -> code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_AVATAR_SELECT"
+aliases = ["CMND_EVT_RL_AVATAR_SELECT"]
+handler = "InaRogue.Mode.AvatarSelect"
+
+# CMND_EVT_RL_POINTS -> pending, earned, given, spent, itemKey, itemIdGuess, enabled, rogueActive
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_POINTS"
+aliases = ["CMND_EVT_RL_POINTS"]
+handler = "InaRogue.Mode.Points"
+
+# CMND_EVT_RL_POINTS_GIVEN (n) -> code, pendingLeft
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_POINTS_GIVEN"
+aliases = ["CMND_EVT_RL_POINTS_GIVEN"]
+handler = "InaRogue.Mode.PointsGiven"
+
+# CMND_EVT_RL_FORM_OWNED (formId) -> locked, owned, rarity, ownedCount, total
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_FORM_OWNED"
+aliases = ["CMND_EVT_RL_FORM_OWNED"]
+handler = "InaRogue.Mode.FormOwned"
+
+# CMND_EVT_RL_FORM_LIST (-1 / i) -> the loot formations
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_FORM_LIST"
+aliases = ["CMND_EVT_RL_FORM_LIST"]
+handler = "InaRogue.Mode.FormList"
+
+# CMND_EVT_RL_PARTY_COUNT (bank) -> owned handles (INAROGUE save only)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PARTY_COUNT"
+aliases = ["CMND_EVT_RL_PARTY_COUNT"]
+handler = "InaRogue.Mode.PartyCount"
+needs = ["rl_party"]
+
+# CMND_EVT_RL_PARTY_HDL (bank, i) -> handle
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PARTY_HDL"
+aliases = ["CMND_EVT_RL_PARTY_HDL"]
+handler = "InaRogue.Mode.PartyHdl"
+needs = ["rl_party"]
+
+# «Sin rol» ([rogue] grant_without_role; scripts\lib\rogue\svc_misc.lua over scripts\board_role.lua's SET_ROLE; was the
+# plugin's rogue::party_rt until 2026-10-11)
+# CMND_EVT_RL_NO_ROLE (hdl) -> 1 cleared, 0 nothing to clear, -1 rule off / not slot 4 / not an INAROGUE player, < -1 error
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_NO_ROLE"
+aliases = ["CMND_EVT_RL_NO_ROLE"]
+handler = "InaRogue.Mode.NoRole"
+
+# CMND_EVT_RL_NO_ROLE_ALL -> players cleared (-1 rule off / not slot 4)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_NO_ROLE_ALL"
+aliases = ["CMND_EVT_RL_NO_ROLE_ALL"]
+handler = "InaRogue.Mode.NoRoleAll"
+needs = ["rl_party"]
+
+# CMND_EVT_RL_ROLE_CARRY (oldHdl, newHdl) -> the new character's role now (-1 not slot 4 / not INAROGUE players)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ROLE_CARRY"
+aliases = ["CMND_EVT_RL_ROLE_CARRY"]
+handler = "InaRogue.Mode.RoleCarry"
+
+# CMND_EVT_RL_PROBE_INFO -> slot, replaced, source, n0, n1, n2 (debug_tools)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROBE_INFO"
+aliases = ["CMND_EVT_RL_PROBE_INFO"]
+handler = "InaRogue.Mode.ProbeInfo"
+
+# CMND_EVT_RL_PROBE_COUNT (set) -> code, n0, n1, n2
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROBE_COUNT"
+aliases = ["CMND_EVT_RL_PROBE_COUNT"]
+handler = "InaRogue.Mode.ProbeCount"
+
+# CMND_EVT_RL_PROBE_SET13 (source set) -> code, n0, n1
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROBE_SET13"
+aliases = ["CMND_EVT_RL_PROBE_SET13"]
+handler = "InaRogue.Mode.ProbeSet13"
+
+# CMND_EVT_RL_PROBE_RESTORE13 -> code, n0, n1
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROBE_RESTORE13"
+aliases = ["CMND_EVT_RL_PROBE_RESTORE13"]
+handler = "InaRogue.Mode.ProbeRestore13"
+
+# CMND_EVT_RL_PROBE_KV (op, key, value) -> ok, value
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROBE_KV"
+aliases = ["CMND_EVT_RL_PROBE_KV"]
+handler = "InaRogue.Mode.ProbeKv"
+
+# ---------------------------------------------------------------------------------------------------- overlay session
+# scripts\lib\rogue\svc_session.lua over VRFW.session (INAROGUE's reserved slot, journal rogue_session.json)
+
+# CMND_EVT_RL_SESSION_BEGIN (kind 0 INAROGUE swap / 1 test) -> ok, code, imageKiB, ms (code 12 = no game yet)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_BEGIN"
+aliases = ["CMND_EVT_RL_SESSION_BEGIN"]
+handler = "InaRogue.Mode.SessionBegin"
+
+# CMND_EVT_RL_SESSION_END (mode 0..3) -> ok, code, dirtyBlocks, ms
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_END"
+aliases = ["CMND_EVT_RL_SESSION_END"]
+handler = "InaRogue.Mode.SessionEnd"
+
+# CMND_EVT_RL_SESSION_STATE -> open, slot, discardedWrites, imageKiB, reloadArmed, enabled, debug, swapped
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_STATE"
+aliases = ["CMND_EVT_RL_SESSION_STATE"]
+handler = "InaRogue.Mode.SessionState"
+
+# CMND_EVT_RL_SESSION_RELOAD -> ok, code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_RELOAD"
+aliases = ["CMND_EVT_RL_SESSION_RELOAD"]
+handler = "InaRogue.Mode.SessionReload"
+
+# CMND_EVT_RL_SESSION_DISK_CHECK -> ok, same, dirtyBlocks
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_DISK_CHECK"
+aliases = ["CMND_EVT_RL_SESSION_DISK_CHECK"]
+handler = "InaRogue.Mode.SessionDiskCheck"
+
+# CMND_EVT_RL_SESSION_ORPHAN -> wasOpen, code
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SESSION_ORPHAN"
+aliases = ["CMND_EVT_RL_SESSION_ORPHAN"]
+handler = "InaRogue.Mode.SessionOrphan"
+
+# module bit 32768 of CMND_EVT_LOADER_VERSION (was the plugin's MOD_ROGUE: INAROGUE's commands answer): on with the mod
+[[VRFW.ModuleMask]]
+bit = 15
+needs = ["CMND_INAROGUE_RL_BANK_COUNT"]

@@ -1,0 +1,113 @@
+schema = "VRFW.changelog/1"
+# InaRogue: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Rewrite it only when what the mod offers changes.
+lang = "es"
+name = "InaRogue"
+
+[en]
+name = "InaRogue"
+
+[fr]
+name = "InaRogue"
+
+[de]
+name = "InaRogue"
+
+[it]
+name = "InaRogue"
+
+[pt]
+name = "InaRogue"
+
+[ja]
+name = "InaRogue"
+
+[zh_hans]
+name = "InaRogue"
+
+[zh_hant]
+name = "InaRogue"
+
+[[release]]
+icon = "general"
+notes = [
+    "INAROGUE, el modo roguelite, ahora es un mod propio.",
+    "Tu partida sigue en la ranura 4: nada se pierde.",
+    "Rivales aleatorios: otros jugadores en cada run.",
+    "100 nombres, escudos y equipaciones de rival.",
+    "Jefes especiales, invitados y cartas «¿Y si…?».",
+]
+
+[release.en]
+notes = [
+    "INAROGUE, the roguelite mode, is now its own mod.",
+    "Your save stays in slot 4: nothing is lost.",
+    "Random rivals: different players every run.",
+    "100 rival names, crests and kits.",
+    "Special bosses, guests and «What if…?» cards.",
+]
+
+[release.fr]
+notes = [
+    "INAROGUE, le mode roguelite, devient un mod à part.",
+    "Ta partie reste dans l'emplacement 4 : rien ne se perd.",
+    "Rivaux aléatoires : d'autres joueurs à chaque run.",
+    "100 noms, blasons et tenues de rivaux.",
+    "Boss spéciaux, invités et cartes « Et si… ? ».",
+]
+
+[release.de]
+notes = [
+    "INAROGUE, der Roguelite-Modus, ist jetzt ein eigener Mod.",
+    "Dein Spielstand bleibt in Platz 4: nichts geht verloren.",
+    "Zufällige Gegner: in jedem Lauf andere Spieler.",
+    "100 Gegnernamen, Wappen und Trikots.",
+    "Spezialbosse, Gäste und «Was wäre, wenn…?»-Karten.",
+]
+
+[release.it]
+notes = [
+    "INAROGUE, la modalità roguelite, ora è un mod a sé.",
+    "La tua partita resta nello slot 4: non si perde nulla.",
+    "Rivali casuali: giocatori diversi in ogni run.",
+    "100 nomi, stemmi e divise dei rivali.",
+    "Boss speciali, ospiti e carte «E se…?».",
+]
+
+[release.pt]
+notes = [
+    "INAROGUE, o modo roguelite, agora é um mod próprio.",
+    "O teu jogo fica na ranhura 4: nada se perde.",
+    "Rivais aleatórios: jogadores diferentes em cada run.",
+    "100 nomes, emblemas e equipamentos de rivais.",
+    "Chefes especiais, convidados e cartas «E se…?».",
+]
+
+[release.ja]
+notes = [
+    "ローグライトモードINAROGUEが独立したMODに。",
+    "セーブはスロット4のまま。データは失われない。",
+    "ランダムな対戦相手：ランごとに違う選手。",
+    "100種類のチーム名・エンブレム・ユニフォーム。",
+    "特別なボス、ゲスト、「もしも…？」カード。",
+]
+
+[release.zh_hans]
+notes = [
+    "肉鸽模式INAROGUE现在是独立的模组。",
+    "存档仍在第4格：什么都不会丢失。",
+    "随机对手：每次挑战都有不同的球员。",
+    "100个对手队名、队徽和球衣。",
+    "特殊头目、客串球员和“如果……？”卡牌。",
+]
+
+[release.zh_hant]
+notes = [
+    "肉鴿模式INAROGUE現在是獨立的模組。",
+    "存檔仍在第4格：什麼都不會遺失。",
+    "隨機對手：每次挑戰都有不同的球員。",
+    "100個對手隊名、隊徽和球衣。",
+    "特殊頭目、客串球員和「如果……？」卡牌。",
+]

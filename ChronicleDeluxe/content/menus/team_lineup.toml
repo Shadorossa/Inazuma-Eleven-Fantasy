@@ -4,6 +4,8 @@
 #   chronicle_deluxe_lineup_pitch  1 x the VS screen's formation pitch (vsroute02_06), without its card attachments
 #   chronicle_deluxe_lineup_card   11 x the VS screen's player card (team00_01), one per formation slot, no click area
 #   chronicle_deluxe_lineup_text   2 x the framework's text object (vrfw_mp_label): the formation name, the button
+#   chronicle_deluxe_lineup_mark   11 x the game's red «!» notice (cmn01_10_new_icon): a starter who breaks the row's
+#                                  match challenge
 # Not opened with the group (flags [0, 0, 0, 0, 1, 0]): the Lua opens, places and fills them. Draw priorities are set
 # by the Lua over the panel (845) and its rows (847).
 # Y (CMD_FUNC3) on the battle list calls OnFunction with crc32("chronicle_deluxe_team_dock") = 1238658383: the Lua
@@ -16,11 +18,14 @@ name = "chronicle_deluxe_lineup_pitch"
 from = "vsroute02_06_enemy_formation_base"
 remove_block = ["CMenuAttachLocator"]
 
-# a player card: the VS screen's card, no collision (a click stays with the menu)
+# a player card: the VS screen's card under its retail object name (the game's card fills know its cards by it), no
+# collision (a click stays with the menu) and no attach rows (they took the menu's list cursor, cmn05_01_cursor, onto
+# a card: the arrow showed over the pitch)
 [[object]]
 name = "chronicle_deluxe_lineup_card"
 from = "team00_01_chara_card_for_vsroute"
-remove_block = ["MenuCollisionSetting"]
+keep_name = true
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
 
 [[patch]]
 menu = "vs_route_town_command_select_menu"
@@ -34,10 +39,16 @@ add_layer = { name = "chronicle_deluxe_lineup_card", object = "chronicle_deluxe_
 menu = "vs_route_town_command_select_menu"
 add_layer = { name = "chronicle_deluxe_lineup_text", object = "vrfw_mp_label", count = 2, after = "chronicle_deluxe_lineup_card", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "chronicle_deluxe_lineup_card" }] }
 
-# the card's level digits (the VS screen's number atlas; num_menu01 is already a resource of the menu)
 [[patch]]
 menu = "vs_route_town_command_select_menu"
-res = ["#/menu/200_icon/100_num/num_menu02.g4tx"]
+add_layer = { name = "chronicle_deluxe_lineup_mark", object = "cmn01_10_new_icon", count = 11, after = "chronicle_deluxe_lineup_text", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "chronicle_deluxe_lineup_text" }] }
+
+# the cards' resources as the VS screen has them: the level digits (num_menu01 is already one of the menu's) and the
+# cards' rarity effects (kind 1)
+[[patch]]
+menu = "vs_route_town_command_select_menu"
+res = ["#/menu/200_icon/100_num/num_menu02.g4tx", { path = "ega1400a_1", kind = 1 }, { path = "ega1400a_2", kind = 1 },
+       { path = "ega1450a_1", kind = 1 }, { path = "ega1450a_3", kind = 1 }]
 
 # Y on the battle list: the team dock
 [[patch]]

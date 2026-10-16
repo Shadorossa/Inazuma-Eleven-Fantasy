@@ -1,0 +1,31 @@
+# INAROGUE VS preview (docs/game/modes/inarogue.md §28): a match node of the route map opens the retail Chronicle VS
+# screen (vs_route_town_vs_team_menu + vs_route_town_vs_enemy_formation_menu, Nacho's «BATALLA HEROICA · ¡Hacia la
+# cima!» screen) as a child of evt_inarogue_menu: the run's team against the node's rival, «Empezar partido» launches
+# the match (through the dock, request 5, rogue_dock). Inert unless the INAROGUE save is loaded AND INAROGUE set the
+# parameter evt_ir_vs_node: the Chronicle board keeps its retail screen.
+name = "rogue_vs"
+mod = "inarogue"
+order = 340
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE: the Chronicle VS screen as the pre-match preview of a route-map node"
+
+[[files]]
+stem = "vs_route_town_vs_team_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rv_team.lua"
+  marker = "rogue vs"
+  include = { "@COMMON@" = "rv_common.lua" }
+
+[[files]]
+stem = "vs_route_town_vs_enemy_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rv_enemy.lua"
+  marker = "rogue vs"
+  include = { "@COMMON@" = "rv_common.lua" }

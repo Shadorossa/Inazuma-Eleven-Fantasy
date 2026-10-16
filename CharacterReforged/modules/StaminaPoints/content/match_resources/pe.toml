@@ -25,18 +25,32 @@ pe_provider = true                # the technique type's pe_sacrifice moves (Pin
 live_states = [9, 14, 15, 16]     # in play, focus battle, scramble, zone
 duel_states = [14, 15]            # the exhausted speed in a duel: focus battle, scramble
 
-# PE per real second of live play (was drain_base / drain_run / drain_dash / drain_dash x dash_attack_mult / drain_trans)
+# The drain follows the length of the match being played (per_match): the framework reads the match's length at play
+# (2 halves x half length / clock rate, one period without the two-halves rule; extra time not counted) and drains per
+# live second base x 134 / that length x (1 + what he does), x Físico, level, keeper, transformation and the mods'
+# multipliers. 134 = the bar of pe_max.toml's default (the median player).
+#   base: the share of the bar the base drain alone spends over the whole match (0.45 = 45 %, whatever the length:
+#     a 2 x 30' match, a 2 x 45' one, a 15' 5-a-side or a short ruleset)
+#   running / dash / dash_attack / transformed: x base ADDED while he does it (dash 8.5: a dashing second costs 9.5
+#     base seconds), so they follow the base and the match length
+# Median player (134 PE, Físico 150, level 99, 2 x 30', half-time +15 %): only the base -> about 76 % left at the end;
+# dashing 10 % of the time -> about 43 %; 16 % (a heavy match) -> about 23 %. Físico 100: 70 / 32 / 9 %. Keepers x0.5.
+# Before 2026-10-16 (PE per second x 383 / match length): 88 / 58 / 38 % (Físico 150).
 [VRFW.MatchResource.drain]
-base = 0.085
-running = 0.06                    # unused while consume_is_dash
-dash = 1.2
-dash_attack = 2.4                 # dash x 2.0
+per_match = true
+base = 0.45
+running = 0.7                     # unused while consume_is_dash
+dash = 8.5                        # per second as before (0.45 x 9.5 = 4.28 bars per match of dashing; was 4.10)
+dash_attack = 17.0                # about dash x 2.0, as before
+# the match length without a match clock (2 x 30' at the clock rate 14.1) and the shortest one used (real seconds)
+match_seconds_fallback = 255
+match_seconds_min = 30
 # the hidden DP consume state is the engine's dash state (first in-game log, 2026-09-28): a consume tick without a
 # manual dash drains like a dash (CPU / AI-driven dashes)
 consume_is_dash = true
 # the flat transformation drain: only for the forms the transformation costs ([pe] of config.toml) do not pay themselves
 # (keshin, armour and miximax pay through [pe]; the mode change drains nothing: mode-change.md §5.5)
-transformed = 0.6
+transformed = 4.0                 # was 0.6 PE/s: 0.45 x 5.0 = 2.25 bars per match transformed
 transformed_auras = ["soul", "bond"]
 
 # Físico makes the PE drain slower: every drain is multiplied by F = max(floor, (1 - step) ^ (Físico - ref)): each Físico
@@ -51,12 +65,8 @@ floor = 0.01
 [VRFW.MatchResource.scale]
 keeper = 0.5                      # goalkeepers (formation position 0)
 rival = 1.0                       # the CPU team
-# manual tuning. 1.117 = the per-player max's median 134 / the old flat 120 (2026-10-12): the median player empties his
-# bar exactly as fast as everybody did with 120 PE (the match-stamina.md §7 balance); a bigger tank lasts longer
-global = 1.117
-# scale the drain to the real length of the match: x 383 / (2 x half length / clock rate), so a 30' half drains as much
-# per match as the 45' reference (90' at rate 14.1 = 383 live seconds)
-match_length_ref_s = 383
+# manual tuning on top of the drain (1.0: the shares above are what a match spends; a bigger tank than 134 lasts longer)
+global = 1.0
 
 # half-time: + max x (0.15 ± 0.07), drawn per player (8 % to 22 % of the max back; never above max). Other mods add
 # their bonuses on top (Inazuma Fantasy's passives «+x % de PE recuperados en el descanso»)

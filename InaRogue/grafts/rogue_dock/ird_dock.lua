@@ -1,0 +1,525 @@
+-- ===== EVT inarogue dock BEGIN =====
+-- INAROGUE mode of the retail team dock (docs/game/modes/inarogue.md §16, §20): in the INAROGUE save (slot 4) the
+-- game's own "Plantilla de equipo" is the run's squad screen. The screen stays the retail one (list, pitch, bench,
+-- coach, managers, tactics, kit, formation, Ficha, Habilidades, Banco...). Only what makes no sense in a run is off:
+-- team switching (L1/R1 "Cambio de plantilla de equipo"), "Establecer como equipo activo", the tournament team, moving
+-- the dock and the team banks window. The header and the guide line show the INAROGUE counters.
+-- §20 (M1): the «Tipo: Partido / Pachanga» row of the pachanga_dock graft works here too: the run's team is the VS
+--   dock (dock 01 of the INAROGUE save), whose 11v11 and 5v5 teams keep the retail link (same players; the loader never
+--   splits them in slot 4). The Pachanga view is the retail 5v5 field with the 5 retail 5v5 formations.
+-- §20 (M3): opened by INAROGUE before a match (request 3) the dock is the pre-match screen: it opens in the view of
+--   the match (Pachanga for a 5v5) and its Back asks «¿Jugar ya?»; Sí reserves the match here and closes the dock the
+--   way soccer_top_menu closes after the VS CPU class select (769636339(1.5) + close): the engine only starts a
+--   reserved match when the mode's top menu closes, and the dock IS the top menu the title reserved. Byte 606 = 23
+--   marks «match launched» (the parameter store does not survive the match); if the engine re-creates the dock after
+--   the match, it goes straight back to the title (black), which reopens INAROGUE to read the result.
+-- §28 (request 5): «Empezar partido» in the VS preview of the map. The dock opens under a black screen and launches
+--   the reserved match by itself after a few frames (the same launch as «¿Jugar ya?» Sí). A team that cannot play
+--   (starters, foreign players) turns it into the visible pre-match dock of request 3 with the reason.
+-- Outside slot 4 the menu is untouched. Wraps the functions defined above.
+do
+@COMMON@
+  EVT_IRD = IRD
+  local BLOCKED = {[2294853123] = true, [4219711668] = true, [3620553157] = true}  -- L1/R1, active team, tournament
+  local GUIDE_LINE, GUIDE_NODE = 3078308064, 378156699   -- mainmenu90_05_content_guide_line01 / _text_guide01
+  local SET_HEADER, HEADER_TEXT = 2865764598, 1923260944 -- retail header text "Plantilla de equipo"
+  local L1R1 = {[3966226594] = true, [942075773] = true, [3421673595] = true}   -- CMD_FUNCL1 / R1 / FUNC3 guides
+  local DOCK_MENU, COMMON_TOP = 937147172, 91676902      -- soccer_team_dock_menu / team_dock_common_top_menu
+  local KEY_KIND = 4081600465                            -- retail team kind the dock opens with (1 = 5v5)
+  local PLAYED = 23                                      -- byte 606: the match was reserved from this dock
+  local M = {   -- the INAROGUE flag block (docs/game/modes/inarogue.md §5; flag_config rows of Inazuma Fantasy)
+    RESULT = 504862522, GF = 3095885530, GA = 652469113, PROBE = 3345119360, STATE = 3014640977,
+    PRE_MATCH = 3014583614,      -- CMND_SET_PRE_MATCH_SOCCER_GAME_ID (game)
+    DIFF_HELPER = 1104380539,    -- 0x41D3827B (difficulty): the retail VS flow calls it before RESERVE
+    RESERVE = 1620561217,        -- CMND_RESERVE_SOCCER (game, stadium, difficulty)
+    RETURN = 3094129190,         -- CMND_EVT_TRIAL_RETURN (1 arm / 0 disarm): the 5v5 street battle ends in the menus
+    UNIFORM = 1598711521,        -- CMND_EVT_TEAM_UNIFORM (set, team [, uniform [, src_team]]) -> ok, uniformId
+    CLOSE = 320421347, ACTIVE = 1558704558, FADE = 609722083, FADE_DONE = 2259183189, FADE_BUSY = 2736534827,
+    MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
+    SE_OK = 3848881948,
+  }
+  local TM = {  -- pre-match texts (9 languages: research/scripts/rogue_play_text_build.py)
+    ASK = {@crc:evt_ird_ask_play@, "{1}: {2} (Nv. {3}).\n¿Jugar el partido ahora con este equipo?\n(No = volver al mapa sin jugar.)"},
+    FEW11 = {@crc:evt_ird_few11@, "Faltan titulares para el partido: {1}/11.\nColoca a 11 jugadores en «Tipo: Partido»."},
+    FEW5 = {@crc:evt_ird_few5@, "Faltan titulares para la pachanga: {1}/5.\nColoca a 5 jugadores en «Tipo: Pachanga»."},
+    FOREIGN = {@crc:evt_ird_foreign_play@, "Hay {1} jugador(es) que no son de INAROGUE en el equipo."},
+    FAIL = {@crc:evt_ird_fail@, "El juego no aceptó el partido (mira el loader.log del vr-loader).\nLa casilla sigue pendiente."},
+    K5 = {@crc:evt_ird_kind5@, "Pachanga 5 contra 5"},
+    K11 = {@crc:evt_ird_kind11@, "Partido 11 contra 11"},
+    KBOSS = {@crc:evt_ird_kindboss@, "JEFE de la fase"},
+    KELITE = {@crc:evt_ird_kindelite@, "ÉLITE"},
+  }
+
+  --@lib evt_menu_kit.lua#call
+
+  -- §26: the 5v5 follows the 11v11 (IRD.link5) and the pitch on screen is redrawn when it changed
+  local function relink(why)
+    local ok, n = pcall(IRD.link5)
+    if not ok then
+      IRD.log("link error", tostring(n))
+      return 0
+    end
+    if n > 0 then
+      IRD.log("5v5 linked to the 11v11", why, n)
+      if type(EVT_PT) == "table" and type(EVT_PT.refreshAll) == "function" then
+        pcall(EVT_PT.refreshAll)
+        if IRD.pachanga() and type(EVT_PT.hideTS) == "function" then
+          pcall(EVT_PT.hideTS)
+        end
+      end
+    end
+    return n
+  end
+
+  local function header()
+    IRD.points()
+    local ok, base = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], HEADER_TEXT)
+    base = (ok and type(base) == "string") and base or "Plantilla de equipo"
+    if IRD.pachanga() and type(EVT_PT) == "table" and type(EVT_PT.text) == "function" then
+      local ok2, p = pcall(EVT_PT.text, "HEADER")
+      if ok2 and type(p) == "string" and p ~= "" then
+        base = base .. " · " .. p
+      end
+    end
+    pcall(funcLuaMenuCommand, SET_HEADER, 5, base .. " · " .. IRD.points_text())
+  end
+
+  -- the «Tipo» row (pachanga_dock, order 315, wrapped before this block) in slot 4: allowed; the run's team is the VS
+  -- dock, which is also «the active pachanga team» (no other dock to move to, no pointer to set)
+  if type(EVT_PT) == "table" and not EVT_PT.ird_patched then
+    EVT_PT.ird_patched = true
+    local can, move, refresh, switch = EVT_PT.canSwitch, EVT_PT.moveTo, EVT_PT.refresh, EVT_PT.switch
+    if type(can) == "function" then
+      EVT_PT.canSwitch = function(...)
+        if IRD.on then
+          if EVT_PACHANGA == false then
+            return false, "off"
+          end
+          return true
+        end
+        return can(...)
+      end
+    end
+    if type(move) == "function" then
+      EVT_PT.moveTo = function(...)
+        if IRD.on then
+          return
+        end
+        return move(...)
+      end
+    end
+    if type(refresh) == "function" then
+      EVT_PT.refresh = function(...)
+        local r = table.pack(refresh(...))
+        if IRD.on and IRD.set ~= 0 then
+          EVT_PT.active = IRD.set
+        end
+        return table.unpack(r, 1, r.n)
+      end
+    end
+    -- §26: every time the dock shows the 5v5 view (switch, Pachanga open, page) the 5v5 is the 11v11's roster first
+    -- (IRD.link5); true = something changed, so the pachanga_dock callers redraw the pitch
+    local ensure5 = EVT_PT.ensure5
+    if type(ensure5) == "function" then
+      EVT_PT.ensure5 = function(set, ...)
+        local r = ensure5(set, ...)
+        if IRD.on and set == IRD.set then
+          local ok, n = pcall(IRD.link5)
+          if ok and type(n) == "number" and n > 0 then
+            IRD.log("5v5 linked to the 11v11 on show", n)
+            return true
+          elseif not ok then
+            IRD.log("link error", tostring(n))
+          end
+        end
+        return r
+      end
+    end
+    if type(switch) == "function" then
+      EVT_PT.switch = function(...)
+        if IRD.on then
+          pcall(IRD.fix_forms)     -- the type switched to is built on a formation of its own kind
+        end
+        local r = table.pack(switch(...))
+        if IRD.on then
+          pcall(header)
+          IRD.frames = 0           -- the guide line follows the new view at once
+          IRD.log("tipo", IRD.pachanga() and "pachanga" or "partido", "starters5", IRD.starters5())
+        end
+        return table.unpack(r, 1, r.n)
+      end
+    end
+  end
+
+  -- ---- M3: the match from the pre-match dock ---------------------------------------------------------------------
+  local function ask(text, yesno)
+    funcLuaMenuCommand(M.ACTIVE, DOCK_MENU, false)
+    funcLuaCommand(M.MSG_OPEN, text, 0, 0, 0, 0, 0, false)
+    funcLuaCommand(M.MSG_KIND, yesno and 2 or 1, 0)
+    coroutine.yield()
+    local r = -1
+    if yesno then
+      while r == nil or r < 0 do
+        r = funcLuaCommand(M.MSG_RESULT)
+        coroutine.yield()
+      end
+    else
+      while funcLuaCommand(M.MSG_BUSY) do
+        coroutine.yield()
+      end
+    end
+    while not funcLuaCommand(M.MSG_DONE) do
+      coroutine.yield()
+    end
+    funcLuaMenuCommand(M.ACTIVE, DOCK_MENU, true)
+    return r == 0
+  end
+
+  local function kind_text()
+    local k = IRD.kind
+    return IRD.tx(k == 1 and TM.K5 or k == 3 and TM.KBOSS or k == 7 and TM.KELITE or TM.K11)
+  end
+
+  -- the team can play the reserved match? nil = yes, else the reason
+  local function problem()
+    relink("before the match")
+    IRD.points()
+    if IRD.foreign > 0 then
+      return IRD.tx(TM.FOREIGN, IRD.foreign)
+    end
+    if IRD.kind == 1 then
+      local n = IRD.starters5()
+      if n < 5 then
+        return IRD.tx(TM.FEW5, n)
+      end
+    else
+      local n = 0
+      for pos = 0, 10 do
+        if IRD.hdl(pos) ~= 0 then
+          n = n + 1
+        end
+      end
+      if n < 11 then
+        return IRD.tx(TM.FEW11, n)
+      end
+    end
+    return nil
+  end
+
+  -- the dock order goes to the run file (fragments, the Fichaje bench slot and the album follow the dock)
+  local function write_slots()
+    for pos = 0, 19 do
+      local h = IRD.hdl(pos)
+      local e = IRD.entry(h)
+      local c = call(IRD.SET_SLOT, pos, e and e.uid or 0, e and h or 0)
+      if type(c) == "number" and c ~= 0 then
+        IRD.log("RUN_SET_SLOT pos", pos, "code", c)
+      end
+    end
+  end
+
+  -- reserve the pending match and hand the scene to the engine: the VR-Framework's one pachanga function
+  -- (docs/game/modes/pachangas-sistema.md). The rules inarogue_5v5 / inarogue_11v11 (research/mods/InazumaFantasy/
+  -- rules/pachangas) declare what this function did by hand until 30/09: the five's kit, the way back straight to the
+  -- title keeping INAROGUE's in-memory game, the dock off, black, byte 606 = 23, the VS-CPU pre-match sequence, the
+  -- reservation and the closes (team_dock_common_top_menu, settle, 769636339(1.5), the dock). INAROGUE plays in its
+  -- own save: save = "game".
+  local function launch()
+    write_slots()
+    -- the rival of a random-team node is written into its slot team now (InaRogue; nil answer = not a random team)
+    local rok, rule, seed, key, stage, slot = pcall(funcLuaCommand, @crc:CMND_EVT_RL_RUN_RIVAL@, -1)
+    if rok and type(rule) == "string" and rule ~= "" then
+      local bok, built, team, _, _, why = pcall(funcLuaCommand, @crc:CMND_VRFW_RANDOM_TEAM_BUILD@, rule, seed, key, stage, slot)
+      IRD.log("random rival", rule, "->", tostring(bok), tostring(built), tostring(team), tostring(why))
+    end
+    for _, f in ipairs({M.RESULT, M.GF, M.GA, M.PROBE}) do
+      call(IRD.SET_BYTE, f, 0)
+    end
+    call(IRD.SET_BYTE, M.STATE, 2)
+    if type(VRFW_PACHANGA) ~= "table" then
+      IRD.log("match: no pachanga engine (graft pachanga_core missing)")
+      ask(IRD.tx(TM.FAIL), false)
+      return
+    end
+    local ok = VRFW_PACHANGA.start(IRD.kind == 1 and "inarogue_5v5" or "inarogue_11v11", {
+      game = IRD.game, difficulty = IRD.diff, stadium = IRD.stadium, set = IRD.set,
+      on_reserved = function()
+        IRD.launched = true
+        IRD.log("match: reserved, closing the dock, the engine starts the match")
+      end,
+      on_failed = function()
+        call(IRD.SET_BYTE, IRD.F_DOCK, 10 + IRD.why)
+        call(IRD.SET_BYTE, M.STATE, 1)
+      end,
+    })
+    IRD.log("match: pachanga", tostring(IRD.game), tostring(IRD.stadium), tostring(IRD.diff), "->", tostring(ok))
+    if not ok then
+      ask(IRD.tx(TM.FAIL), false)
+    end
+  end
+
+  -- §28 request 5: straight to the match (the screen is black since OnInit); a team that cannot play shows the dock
+  local function autoplay()
+    local why = problem()
+    if why ~= nil then
+      IRD.log("auto launch refused:", why, "- the pre-match dock instead")
+      IRD.why = 3
+      funcLuaCommand(M.FADE, 0, 0.3)
+      ask(why, false)
+      return
+    end
+    IRD.log("auto launch: «Empezar partido» of the VS preview")
+    launch()
+  end
+
+  -- Back in the pre-match dock: «¿Jugar ya?» Sí = the match, No = back to INAROGUE / the map (the node stays pending)
+  local function prematch()
+    if ask(IRD.tx(TM.ASK, kind_text(), IRD.rival or "?", IRD.level or 0), true) then
+      local why = problem()
+      if why ~= nil then
+        IRD.log("match refused:", why)
+        ask(why, false)
+        return
+      end
+      launch()
+      return
+    end
+    IRD.leaving = true
+    FuncOnBack()
+  end
+
+  IRD.wrap("OnInit", function(orig)
+    return function(...)
+      if IRD.check() then
+        IRD.saved_tb = UTIL_TEAM_BANKS
+        UTIL_TEAM_BANKS = false
+        local p = call(IRD.GET_BYTE, IRD.F_DOCK)
+        IRD.after = p == PLAYED   -- re-created by the engine after the INAROGUE match: back to the title at once
+        if IRD.after then
+          funcLuaCommand(M.FADE, 1, 0)
+          IRD.log("after the match: back to the title")
+        else
+          IRD.seen()
+        end
+        if not IRD.after then
+          local okF, nf = pcall(IRD.fix_forms) -- each team on a formation of its own kind before the pitch is built
+          if not okF then
+            IRD.log("formation fix error", tostring(nf))
+          end
+          local ok, n = pcall(IRD.link5)       -- §26: linked before the retail OnInit builds the pitch
+          IRD.log("open: 5v5 linked to the 11v11", ok and tostring(n) or ("error " .. tostring(n)))
+        end
+        if (IRD.why == 3 or IRD.why == 5) and not IRD.after then
+          local stage, _, kind, _, _, game, diff, stadium, level, rival = call(IRD.RESUME)
+          IRD.kind, IRD.game, IRD.diff, IRD.stadium = kind or 0, game or 0, diff or 0, stadium or 0
+          IRD.level, IRD.rival = level or 0, type(rival) == "string" and rival or "?"
+          IRD.log("pre-match dock: stage", tostring(stage), "kind", IRD.kind, "game", tostring(game), "rival", IRD.rival)
+          if stage ~= 3 or type(game) ~= "number" or game == 0 then
+            IRD.why = 2                  -- no reserved match in the run file: an ordinary run dock (Back = continue)
+          else
+            if IRD.kind == 1 then
+              funcLuaCommand(3860611758, KEY_KIND, 0, 1, 1)   -- the retail OnInit opens the 5v5 view (n10 = 1)
+            end
+            if IRD.why == 5 then
+              IRD.auto = true            -- §28: launched from Step, the dock never shows
+              IRD.faded = true
+              funcLuaCommand(M.FADE, 1, 0)
+            end
+          end
+        end
+      end
+      local r = table.pack(orig(...))
+      if IRD.on then
+        header()
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  IRD.wrap("OnFunction", function(orig)
+    return function(a1, a2, ...)
+      if IRD.on and (BLOCKED[a1] or IRD.co ~= nil or IRD.after) then
+        funcLuaCommand(IRD.SE, IRD.SE_NG)
+        return
+      end
+      return orig(a1, a2, ...)
+    end
+  end)
+
+  IRD.wrap("StartMoveTeamDock", function(orig)
+    return function(...)
+      if IRD.on then
+        return
+      end
+      return orig(...)
+    end
+  end)
+
+  -- the button guide without "Cambio de plantilla de equipo" (L1/R1) and "Establecer como equipo activo" (FUNC3).
+  -- The retail SetupButtonGuideText sends the guide as two menu commands: the columns (text, gaiji, offset, 0, enable)
+  -- first, then the input commands. While it runs, the first one is held back; when the input commands arrive, the
+  -- L1/R1/FUNC3 entries are dropped from both and both are sent in the retail order.
+  local GUIDE_COLUMNS, GUIDE_INPUTS = 2209673388, 452337289
+  IRD.wrap("SetupButtonGuideText", function(orig)
+    return function(...)
+      if not IRD.on then
+        return orig(...)
+      end
+      local send = funcLuaMenuCommand
+      local held = nil
+      funcLuaMenuCommand = function(cmd, ...)
+        if cmd == GUIDE_COLUMNS and held == nil then
+          held = table.pack(cmd, ...)
+          return
+        end
+        if cmd == GUIDE_INPUTS and held ~= nil then
+          local a = table.pack(cmd, ...)
+          local inputs = a[4]
+          if type(inputs) == "table" then
+            local drop = {}
+            for i, c in ipairs(inputs) do
+              drop[i] = L1R1[c] == true
+            end
+            local function keep(list)
+              if type(list) ~= "table" then
+                return list
+              end
+              local out = {}
+              for i, v in ipairs(list) do
+                if not drop[i] then
+                  out[#out + 1] = v
+                end
+              end
+              return out
+            end
+            for k = 4, 8 do
+              held[k] = keep(held[k])
+            end
+            a[4] = keep(inputs)
+          end
+          local h = held
+          held = nil
+          send(table.unpack(h, 1, h.n))
+          return send(table.unpack(a, 1, a.n))
+        end
+        return send(cmd, ...)
+      end
+      local r = table.pack(pcall(orig, ...))
+      funcLuaMenuCommand = send
+      if held ~= nil then
+        send(table.unpack(held, 1, held.n))   -- the input commands never came: the columns go out unchanged
+      end
+      if not r[1] then
+        IRD.log("button guide error", tostring(r[2]))
+        return
+      end
+      return table.unpack(r, 2, r.n)
+    end
+  end)
+
+  -- the retail Back refuses to leave while the active team is incomplete; the INAROGUE menu checks it instead
+  IRD.wrap("OnBack", function(orig)
+    return function(a1, ...)
+      if IRD.on and not (a1 == 2141963976 and IsChangeMemberMode()) then
+        if IRD.co ~= nil or IRD.launched then
+          return 1
+        end
+        IRD.log("back", IRD.text)
+        return FuncOnBack()
+      end
+      return orig(a1, ...)
+    end
+  end)
+
+  IRD.wrap("FuncOnBack", function(orig)
+    return function(...)
+      if IRD.on and (IRD.why == 3 or IRD.why == 5) and not IRD.after and not IRD.leaving then
+        if IRD.co == nil and not IRD.launched then
+          IRD.co = coroutine.create(prematch)
+        end
+        return 1
+      end
+      if IRD.on and IRD.saved_tb ~= nil then
+        UTIL_TEAM_BANKS = IRD.saved_tb
+      end
+      return orig(...)
+    end
+  end)
+
+  IRD.wrap("SwapHeaderTextBack", function(orig)
+    return function(...)
+      local r = table.pack(orig(...))
+      if IRD.on then
+        header()
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  -- guide line with the counters while the dock list has the focus (the cards / tactics keep their retail help);
+  -- the pre-match question runs here; after the match the dock leaves by itself
+  IRD.wrap("Step", function(orig)
+    return function(...)
+      local r = table.pack(orig(...))
+      if IRD.on then
+        IRD.frames = IRD.frames + 1
+        if IRD.co ~= nil then
+          local ok, err = coroutine.resume(IRD.co)
+          if not ok then
+            IRD.log("pre-match error", tostring(err))
+            IRD.co = nil
+            funcLuaMenuCommand(M.ACTIVE, DOCK_MENU, true)
+          elseif coroutine.status(IRD.co) == "dead" then
+            IRD.co = nil
+          end
+        end
+        -- §28: the title faded to BLACK in slot 4 (inarogue graft on title_main, no white flash): once the dock is
+        -- open, the black goes away (a no-op when nothing is black); not for request 5 (it stays black) / after a match
+        if not IRD.faded and not IRD.auto and not IRD.after and IRD.co == nil and IRD.frames >= 8 then
+          IRD.faded = true
+          funcLuaCommand(M.FADE, 0, 0.3)
+        end
+        if IRD.auto and IRD.co == nil and not IRD.launched and IRD.frames > 20 then
+          IRD.auto = false
+          funcLuaCommand(M.FADE, 1, 0)
+          IRD.co = coroutine.create(autoplay)
+        end
+        if IRD.after then
+          if not IRD.backing and IRD.frames > 45 then
+            IRD.backing = true
+            IRD.leaving = true
+            FuncOnBack()
+          end
+        else
+          -- §26: back on the dock after a sub-menu (Formación, Banco, Ficha…): the 5v5 follows what was edited there
+          local at_top = IRD.co == nil and (type(IsTeamDockTop) ~= "function" or IsTeamDockTop())
+              and not (type(IsSubMenuBusy) == "function" and IsSubMenuBusy())
+          if at_top and IRD.was_top == false then
+            local okF, nf = pcall(IRD.fix_forms)
+            if okF and type(nf) == "number" and nf > 0 and type(EVT_PT) == "table"
+                and type(EVT_PT.refreshAll) == "function" then
+              pcall(EVT_PT.refreshAll)       -- the pitch on screen follows the fixed formation
+              if IRD.pachanga() and type(EVT_PT.hideTS) == "function" then
+                pcall(EVT_PT.hideTS)
+              end
+            end
+            relink("after a sub-menu")
+            IRD.frames = 0                   -- the guide line counters follow at once
+          end
+          IRD.was_top = at_top
+          -- the guide line stays empty on the INAROGUE dock (Nacho 2026-10-07: no summary text);
+          -- a blank is written so the retail line does not show either
+          IRD.text = " "
+          if IRD.frames % 10 == 1 and IRD.text ~= "" and IRD.co == nil then
+            local top = type(IsTeamDockTop) ~= "function" or IsTeamDockTop()
+            if top and not (type(IsSubMenuBusy) == "function" and IsSubMenuBusy()) then
+              pcall(funcLuaMenuCommand, IRD.TEXT, GUIDE_LINE, GUIDE_NODE, IRD.text, 0)
+            end
+          end
+        end
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+end
+-- ===== EVT inarogue dock END =====

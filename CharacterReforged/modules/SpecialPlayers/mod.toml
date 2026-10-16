@@ -2,18 +2,20 @@ id = "special_players"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Special Players"
-version = "1.2.3"
+version = "1.2.6"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The custom passive becomes each player's Signature Passive: a passive of his own, declared per character by the mods, instead of one you equip. On Victory Road's board the slot always shows it and cannot be changed; matches use it. On Character Reforged's Fantasy table the custom passive button is gone. Adds the generic elemental passives (Wind, Forest, Fire, Mountain, Void plus: own moves of that element ×1.15), assigned like any generic passive. Every passive is built from reusable blocks (when / whose event, stacks, effects on chosen players, what nullifies it), edited per character in ModManager «Pasivas». Needs Character Reforged."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [SpecialPlayers.X], Lua SpecialPlayers.X, commands CMND_SPECIALPLAYERS_*); never VRFW.
 prefix = "SpecialPlayers"
 folder = "SpecialPlayers"
 # Character Reforged: the family base (its «Fantasy» skill table has no custom passive button).
-requires = ["vr_framework>=2.4.73", "character_reforged>=1.7.35"]
+# 1.2.5 (vr_framework 2.4.142): no custom passive item (item sub-category 177) from matches or any other grant but a
+# shop purchase (content\items\no_custom_passive_drops.toml).
+requires = ["vr_framework>=2.4.142", "character_reforged>=1.7.35"]
 conflicts = []
 # hook: the custom passive slot's two engine readers answered natively; memory: the player's card (record) behind a
 # handle; command: CMND_SPECIALPLAYERS_OWN_PASSIVE; call: the passive slot readers (the passives a player carries)
@@ -38,6 +40,7 @@ loader_min = "1.7.0"
 #   content\game\carried_passives.toml   the passive slot readers the interpreter asks
 #   content\own_passives\*.toml          older own passive declarations of other mods (SpecialPlayers.own_passives/1),
 #                                        still read
+#   content\items\no_custom_passive_drops.toml   [[VRFW.MatchDropRemove]]: the game's custom passive items never given
 #   text\rows\own_passive.toml           the game's custom passive texts renamed «Pasiva propia» (9 languages)
 #   text\keys.toml                       the block descriptions (9 languages) ModManager composes a passive's text from
 #   content\techniques\element_plus.toml   the generic elemental passives «<element> plus» (name, text, buff icon),

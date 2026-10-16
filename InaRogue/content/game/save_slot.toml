@@ -1,0 +1,98 @@
+schema = "VRFW.game/2"
+
+# InaRogue on the VR-Framework's slot service (docs/framework/save-slots.md §5, §6, §12): INAROGUE's own save in the
+# reserved slot ([save_slots] slot of config.toml, default 4), the slot's commands (scripts\slot.lua) and its three
+# filters on retail commands. Moved from Inazuma Fantasy's content\game\save_slots.toml on 2026-10-14.
+
+# ------------------------------------------------------------------------------------------------ reserved slot
+
+# INAROGUE's save (its data never meets a normal save). Inazuma Fantasy owned this reservation until 2026-10-14: the
+# hand-over is declared (takes_over), the save file USERDATALIVE_4 and every mod folder of slot4\ stay where they are.
+[[VRFW.SaveSlot]]
+name = "InaRogue.SaveSlot"
+slot = { config = "save_slots.slot", default = 4, min = 2, max = 99 }
+takes_over = ["inazuma_fantasy"]
+
+# ------------------------------------------------------------------------------------------------ save import
+
+# INAROGUE's saved files of the time it was part of Inazuma Fantasy, copied ONCE into InaRogue's folders (the old copies
+# stay untouched; a file InaRogue already has is never replaced): per slot the bank, the run, the formations, the
+# avatars and the probes; global the unlock counters, the rivals met and the overlay session's journal (copied before
+# the session registers, so an open journal is recovered by InaRogue).
+[[VRFW.SaveImport]]
+name = "InaRogue.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["rogue_bank.json", "rogue_run.json", "rogue_formations.json", "rogue_avatars.json", "rogue_probe.json"]
+global = ["rogue_unlocks.json", "rogue_rivals_seen.json", "rogue_session.json"]
+
+# ------------------------------------------------------------------------------------------------ globals
+
+# [[g_gameRoot]+0x69C0]: the story phase status (+0x08 the saved record m_Parmanent, +0x14058 the live one: u16 chapter,
+# u16 sub-phase; +4 / +8 of each = m_nextPhase / m_CheckedFreePhase; GetPhase 0xDCC270)
+[[VRFW.Global]]
+name = "inarogue_phase_status"
+base = "game_root"
+chain = [0x69C0]
+
+# ------------------------------------------------------------------------------------------------ commands
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_SLOT_ROGUE"          # () -> rogueSlot, active, returnSlot, rogueHasGame
+aliases = ["CMND_EVT_SLOT_ROGUE"]
+handler = "InaRogue.Slot.Info"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_SLOT_ROGUE_RESET"    # () -> ok, code (the framework's reserved-slot reset, file backed up)
+aliases = ["CMND_EVT_SLOT_ROGUE_RESET"]
+handler = "InaRogue.Slot.Reset"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_SLOT_ROGUE_RETURN"   # (n) -> ok: where «back» goes from the INAROGUE save (2..3, 0 = the slot screen)
+aliases = ["CMND_EVT_SLOT_ROGUE_RETURN"]
+handler = "InaRogue.Slot.Return"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_S1P_LOAD"            # () -> ok, chapter, subPhase (the locked slot's progress, read-only; INAROGUE only)
+aliases = ["CMND_EVT_S1P_LOAD"]
+handler = "InaRogue.Slot.S1pLoad"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_S1P_FLAG"            # (bank 0 bit / 1 byte / 9 soccer clear, index) -> value
+aliases = ["CMND_EVT_S1P_FLAG"]
+handler = "InaRogue.Slot.S1pFlag"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_S1P_CHRON"           # (kind 0 clear / 1 lock / 2 new, statusFlagIndex) -> byte (-1 past the end)
+aliases = ["CMND_EVT_S1P_CHRON"]
+handler = "InaRogue.Slot.S1pChron"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_S1P_PHASE"           # ([chapter, sub]) -> old, new (raises the INAROGUE save's story phase)
+aliases = ["CMND_EVT_S1P_PHASE"]
+handler = "InaRogue.Slot.S1pPhase"
+needs = ["inarogue_phase_status"]
+
+# ------------------------------------------------------------------------------------------------ filters (INAROGUE save)
+
+# the title's mode request 0x449E298B(id): refused in the INAROGUE save except the options and «Mi equipo»
+[[VRFW.CommandFilter]]
+name = "InaRogue.SlotModes"
+command = 1151216011
+handler = "InaRogue.Slot.TitleRequest"
+
+# GET_GLOBAL_BIT_FLAG: «avatar created» / «title tutorial seen» read as set in the INAROGUE save
+[[VRFW.CommandFilter]]
+name = "InaRogue.SlotAvatar"
+command = 941426960
+handler = "InaRogue.Slot.AvatarFlag"
+
+# the first-run team step: done in the INAROGUE save
+[[VRFW.CommandFilter]]
+name = "InaRogue.SlotFirstRun"
+command = 3209006376
+handler = "InaRogue.Slot.FirstRun"
+
+# module bit 2 of CMND_EVT_LOADER_VERSION (the slot service is up: the slot screen's own check, VRFW graft save_slots)
+[[VRFW.ModuleMask]]
+bit = 1
+needs = ["CMND_INAROGUE_SLOT_ROGUE"]

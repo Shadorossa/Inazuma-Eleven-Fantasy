@@ -59,10 +59,16 @@ end
 
 local SYSTEMS = nil
 
+-- every mod's content\pairing\*.toml, read here: each script has its own VM, so pairing.lua's reader is not reachable
+local function declarations()
+  local ok, decl = pcall(VRFW.files.declarations, "content/pairing")
+  return ok and type(decl) == "table" and decl or {}
+end
+
 local function systems()
   if SYSTEMS then return SYSTEMS end
   local merged = {}
-  for _, f in ipairs(A.PairingDeclarations()) do
+  for _, f in ipairs(declarations()) do
     local d = type(f) == "table" and f.data or nil
     local root = type(d) == "table" and type(d.CharacterReforged) == "table" and d.CharacterReforged.PartnerLock or nil
     if type(root) == "table" then

@@ -1,0 +1,18 @@
+schema = "VRFW.character/2"
+# InaRogue · the INAROGUE tier of Chronicles Deluxe's cards (chara_param col 57 `rogue_rarity`, 1-5: the bank / album / pool tier;
+# docs/game/modes/inarogue.md §17). One cell per card, merged per cell over the other mods' edits of the card.
+# Moved from Inazuma Fantasy's characters\ (the `cells = { rogue_rarity = N }` of 2 card(s)) on 2026-10-14.
+# Only while that mod is active (docs/framework/if-mod.md): its cards do not exist without it.
+if_mod = "chronicles_deluxe"
+
+[[edit]]
+target = "c11903030"
+  [[edit.cards]]
+  id = 0xFFF7C50B
+  cells = { rogue_rarity = 3 }
+
+[[edit]]
+target = "c11902340"
+  [[edit.cards]]
+  id = 0xFFF7C516
+  cells = { rogue_rarity = 4 }

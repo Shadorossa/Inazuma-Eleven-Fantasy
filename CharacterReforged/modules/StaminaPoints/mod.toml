@@ -2,13 +2,13 @@ id = "stamina_points"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Stamina Points"
-version = "1.1.3"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Every player gets a stamina bar (PE) for the whole match, as in Chrono Stone: running and above all dashing spend it, Físico makes it last longer, half-time gives some back, and an exhausted player slows down, cannot dash and staggers. Each character's PE is his Inazuma Eleven GO Galaxy TP (or the closest game's), growing with his level. A miximax has no time limit and does not spend the hyper gauge: it burns PE faster and ends at 0 PE; a keshin or an armour stops the drain while it is out and costs PE when it ends. A yellow PE bar shows under the controlled player's face, and every player's max PE in the player header (Character Reforged's header slot). Without this mod there is no PE. Works with the VR-Framework and Character Reforged; Inazuma Fantasy adds its own rules on top."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [StaminaPoints.X], Lua StaminaPoints.X, commands CMND_STAMINAPOINTS_*, tables
 # StaminaPoints.*, resource stamina_points.pe); never VRFW.
 prefix = "StaminaPoints"
@@ -36,7 +36,7 @@ folder = "StaminaPoints"
 # OffPitch rule, field clips / locomotion sets, the extra slot state (VRFW.extra_slot.players / fusion_end).
 # character_reforged: the shared base of the character / aura mods (owner decision 2026-10-14); its player header slot
 # (1.5.0) holds the max PE.
-requires = ["vr_framework>=2.4.3", "character_reforged>=1.5.0"]
+requires = ["vr_framework>=2.4.138", "character_reforged>=1.5.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

@@ -1,0 +1,7 @@
+# Legendary Match: its settings (read by scripts\legendary_match.lua at the start; restart the game after a change).
+# docs/game/mods/legendary-match.md
+
+# The foul chance of the rival's power charges / power blocks in a duel (the game: focusFoulBaseRatePowerAction 0.15 for
+# both teams). 0..1; your own power actions keep the game's chance.
+[legendary_match]
+rival_power_action_foul_rate = 0.05

@@ -30,6 +30,13 @@ name = "GetTeamPassiveId"
 game = "Passive.TeamPassiveId"
 kind = "function"
 
+# first: a mode a mod declares without player passives ([[off_mode]], scripts/passive_config.lua) is the current mode:
+# every slot of every player reads 0 (no passive); key = the current mode id, entry 0
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.OffMode"
+key = ["state(mode.current)"]
+write = "[args[1]]:u32"
+
 # a saved player's slot the configurator decides (his applied choice; with declared slot rules also his defaults):
 # key (save slot, saved owner of the handle, slot 0-4); a match copy reads its owner's
 [[VRFW.Hook.answer]]
@@ -56,6 +63,11 @@ game = "Passive.TeamPassiveUnlocked"
 kind = "function"
 ret = "bool"
 
+# first: in a declared off mode no slot is unlocked (entry 0)
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.OffMode"
+key = ["state(mode.current)"]
+
 # 0 = an empty special slot the player cannot change (locked), 1 = a configured slot works although its board piece
 # is closed ([passives] unlock = "configured" / "all")
 [[VRFW.Hook.answer]]
@@ -81,6 +93,16 @@ when = [
   { value = "[record(args[1]) + 0x1BC]:u32", equals = 0 },
   { value = ["[record(args[1]) + 0x10]:u32", "args[2]"], not_in_table = "PassiveConfig.OwnKept" },
 ]
+
+# ------------------------------------------------------------------------------------------------ what other readers see
+
+# 1 while a declared off mode is the current mode, else 0 (no value before the mode service answers): the one test
+# every reader of «no passives here» uses (this mod's plate and formation hook files, other mods' own passive slots,
+# script-driven passives, team bonus screens): native answers `when = { state = "Utilities.passives_off", equals = 1 }`,
+# scripts `VRFW.state.get("Utilities.passives_off") == 1`
+[[VRFW.State]]
+key = "Utilities.passives_off"
+formula = "lookup_or(PassiveConfig.OffMode, 1, state(mode.current)) == 0"
 
 # ------------------------------------------------------------------------------------------------ retail command filters
 # handler = a function of scripts/passive_config.lua; it answers `handled, values…` (handled false = the game's own
@@ -147,6 +169,11 @@ needs = ["GetTeamPassiveId"]
 # ------------------------------------------------------------------------------------------------ commands
 # The configurator screen's commands (research/grafts/passive_config calls them; same names, arguments and answers
 # as utilities.dll before 2026-10-10).
+
+[[VRFW.Command]]
+name = "CMND_UTIL_PC_OFF"         # () -> true while a declared off mode runs (the plate hides its passive rows)
+handler = "Utilities.PassiveConfig.Off"
+needs = ["GetTeamPassiveId"]
 
 [[VRFW.Command]]
 name = "CMND_UTIL_PC_INFO"        # (hdl) -> ok, mode, archetype 1, archetype 2, max slots, inactive count

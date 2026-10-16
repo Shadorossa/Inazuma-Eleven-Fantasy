@@ -280,6 +280,30 @@ function S.build(X, sfiles)
     return #hits
   end
 
+  -- hide every player spirit row (a row with a spirit variant) of shop `sid`; how many
+  local function hide_spirit_rows(sid, m, what)
+    local never = C.never()
+    local t = shop_table()
+    if not t then return 0 end
+    local _, b, e = shop_span(t, sid)
+    if not b then return 0 end
+    local hits = {}
+    for _, r in ipairs(shop_rows(t, b, e)) do
+      local i = r[1]
+      if (t:uint(i, "spirit_param") or 0) ~= 0 and not is_hidden(t, i) then
+        hits[#hits + 1] = { i = i, rid = t:uint(i, "id") or 0 }
+      end
+    end
+    for _, h in ipairs(hits) do t:set(h.i, "condition", never) end
+    for _, h in ipairs(hits) do
+      X.claim("row", h.rid, "condition", m, never, what .. ": row " .. U.hex(h.rid) .. ".condition")
+      local o = X.shops_out[sid]
+      local so = X.shop_out(sid, o and o.key or U.hex(sid), m, false)
+      so.rows_hidden = so.rows_hidden + 1
+    end
+    return #hits
+  end
+
   -- shop_config's counters (SHOP_INFO_ITEM counter / new_flag of every row)
   local function shop_counters(t)
     local used = {}
@@ -551,6 +575,9 @@ function S.build(X, sfiles)
       else
         X.err(m, what .. ": hide: " .. he)
       end
+    end
+    if d.hide_spirits and hide_spirit_rows(id, m, what) == 0 then
+      X.warn(m, what .. ": hide_spirits: the shop sells no player spirit")
     end
     for k, en in ipairs(d.entry or {}) do
       local ee = entry(m, what, id, key, en)

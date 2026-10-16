@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the visual half of Diluvio letal's split shot (Doom Rain, whs01390). The split itself (7 balls,
+# the blocks that take balls away) is GAMEPLAY and belongs to the mod Hissatsu Effects (hissatsu_effects); this file only
+# adds hide_ball: the real match ball is not drawn while the split shot flies, because the rain of 7 balls of
+# effects\doom_rain_ball.toml is what shows (one of them covers the white ball).
+# Only with Hissatsu Effects: without it Doom Rain is not a split shot and nothing is hidden. The technique type merges
+# split_shot key by key across mods (VRFW 2.4.7), so this rule gives only hide_ball; the split numbers stay Hissatsu
+# Effects'.
+
+[[edit]]
+target = "whs01390"
+if_mod = "hissatsu_effects"
+split_shot = { hide_ball = true }

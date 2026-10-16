@@ -1,0 +1,148 @@
+# INAROGUE (research/scripts/inarogue_build.py; docs/game/modes/inarogue.md): the title button «Inarogue» is a VRFW
+# title row entry (menus/50_title/title_row_inarogue.toml, docs/framework/title-row.md: no fixed list index; its
+# action is EVT_IR_TitlePress below) and opens the new menu evt_inarogue_menu (src/evt_inarogue_menu.lua + the dock flow
+# evt_inarogue_dock.lua; the debug probe block evt_inarogue_probes.lua and its «Pruebas (debug)» row are no longer
+# merged, 2026-09-28); slot 4 hosts only INAROGUE (evt_title_rogue_slot.lua, OnOpenLayer wrapper). Screen (§30):
+# Continuar-Empezar + the Nueva partida icon (§28) / tiles Álbum (§14.5), Plantilla de equipo (§21), Tienda (hook
+# EVT_IR_EXTRA.shop) / Ayuda (§30.3). The menu Lua is edited in place (the src mirror is no longer regenerated into it;
+# texts: rogue_play_text_build.py). The rogue_probes test mod is discarded (decision 2026-09-26). Registry / setting /
+# objbin stay in the script. Until 2026-10-13 the button was the 9th button of graft mm_entry (tables t3 / t5-t12,
+# list index 12); that graft is gone.
+name = "inarogue"
+mod = "inarogue"
+order = 300
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE: title entry + evt_inarogue_menu"
+
+[[files]]
+stem = "title_menu_2"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "title_menu_2.OnInit.Inarogue"
+  src = "inarogue_title_1.lua"
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "title_menu_2.OnInit.InarogueBefore"
+  text = '''
+  evt_ir_frames = 0 -- EVT INAROGUE
+  evt_ir_live = false
+  EVT_IR_MarkTitle() -- EVT INAROGUE: built over INAROGUE's game = rebuilt when the overlay closes
+  if EVT_IR_InRogueSlot() then -- EVT INAROGUE: slot 4 stays black until INAROGUE opens over it
+    funcLuaCommand(609722083, 1, 0)
+  end
+'''
+  crc = "none"
+
+  [[files.ops]]
+  type = "insert_before"
+  point = "title_menu_2.Step.Inarogue"
+  text = '''
+  EVT_IR_AutoOpen() -- EVT INAROGUE
+'''
+  crc = "none"
+
+  # The INAROGUE button's press (the action of its VRFW title row entry, menus\50_title\title_row_inarogue.toml:
+  # `action = { lua = "EVT_IR_TitlePress" }`): runs as the title's own coroutine l1 (resumed by Step(); OnBack /
+  # OnFunction ignore input meanwhile). [rogue] session_debug (inarogue-no-game.md §8.7) runs the title-only session
+  # checklist instead; [rogue] session_entry swaps INAROGUE's save in right here (§10); after evt_inarogue_menu closes,
+  # EVT_IR_AfterMenu handles its result (4 enter slot 4 / 5 back to the normal slot / 6 options).
+  [[files.ops]]
+  type = "append_block"
+  text = '''
+-- EVT INAROGUE: the title button's press (VRFW title row, lua action); the menu opens as a child of the title
+function EVT_IR_TitlePress()
+  if l1 ~= nil then
+    return 1
+  end
+  funcLuaCommand(1917805374, 766561556 --[[sy0080]])
+  l1 = coroutine.create(EVT_IR_TitleCoroutine)
+end
+function EVT_IR_TitleCoroutine()
+  funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], false)
+  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, false)
+  coroutine.yield()
+  if EVT_IR_SessionDebug() then -- EVT INAROGUE: session checklist (debug)
+    funcLuaMenuCommand(711242136, 24113234, 0, true)
+    funcLuaMenuCommand(1558704558, 3874253475, true)
+    l1 = nil
+    return
+  end
+  EVT_IR_SeamlessEnter() -- EVT INAROGUE: [rogue] session_entry: INAROGUE's save swapped in here, no fade / reload (§10)
+  local menu = 1301289148 --[[evt_inarogue_menu]]
+  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], menu)
+  funcLuaCommand(2039986631, false)
+  coroutine.yield()
+  while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], menu) do
+    coroutine.yield()
+  end
+  funcLuaCommand(2039986631, true)
+  if EVT_IR_AfterMenu() then -- EVT INAROGUE: 4 enter slot 4 / 5 back to the normal slot / 6 options
+    l1 = nil
+    return
+  end
+  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, true)
+  funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], true)
+  l1 = nil
+end
+'''
+  marker = "inarogue title press"
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  text = '''
+
+-- EVT INAROGUE: in slot 4 (the INAROGUE save) the title's mode list is never shown, not even for one frame
+do
+  local evt_ir_open_layer = OnOpenLayer
+  function OnOpenLayer(a1, a2)
+    local r = table.pack(evt_ir_open_layer(a1, a2))
+    if EVT_IR_InRogueSlot() and not EVT_IR_InSession() then
+      EVT_IR_HideLayer(a1)
+    end
+    return table.unpack(r, 1, r.n)
+  end
+  for _, name in ipairs({"OpenVroadNoticeWindow", "OpenTournamentDeliveryUpdate", "UpdateTitleMenuFirstOpen",
+                         "CheckInviteReceive"}) do
+    EVT_IR_BlockInRogueSlot(name)
+  end
+end
+'''
+  crc = "none"
+
+[[files]]
+path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_inarogue_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "evt_inarogue_menu" }   # --@lib evt_menu_kit.lua#StartCo
+
+# §28 (Nacho, 30/09: a WHITE flash while «Plantilla de equipo» loads from INAROGUE): the title's mode transition uses
+# the retail bright (white) fade 4011714927; INAROGUE leaves the screen black (609722083). In the INAROGUE save (slot 4)
+# the title fades with the black one instead, so the dock (and any other slot-4 request) loads under black; the dock
+# block (rogue_dock) fades the black away once the dock is open.
+[[files]]
+stem = "title_main"
+
+  [[files.ops]]
+  type = "replace"
+  point = "title_main.SwitchCaseTitleFade.Inarogue"
+  text = '''
+  local evt_ir_rs, evt_ir_act = nil, nil -- EVT INAROGUE: slot 4 = black fade (no white flash)
+  pcall(function() evt_ir_rs, evt_ir_act = funcLuaCommand(2087918688 --[[CMND_EVT_SLOT_ROGUE]]) end)
+  if type(evt_ir_rs) == "number" and evt_ir_rs == evt_ir_act then
+    funcLuaCommand(609722083, 1, 0.3)
+  else
+    funcLuaCommand(4011714927, 1, 0.3)
+  end
+  n16 = 9
+'''
+  crc = "none"

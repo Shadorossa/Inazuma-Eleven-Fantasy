@@ -1,0 +1,20 @@
+# INAROGUE route map (research/scripts/rogue_map_build.py build_lua(emblems); docs/game/modes/inarogue.md): the new
+# menu evt_rogue_map_menu, data-driven (emblem table): the snippet is the committed output of
+# research/test-mods/rogue_map/data; rebuild it with rogue_map_build.py when the emblems change.
+name = "rogue_map"
+mod = "inarogue"
+order = 100
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE route map menu (evt_rogue_map_menu)"
+
+[[files]]
+path = "common/script/lua/menu/evt_rogue_map_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_rogue_map_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "evt_rogue_map_menu" }   # --@lib evt_menu_kit.lua#StartCo

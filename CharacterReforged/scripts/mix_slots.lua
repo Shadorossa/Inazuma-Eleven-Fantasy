@@ -479,6 +479,19 @@ local function publish_defaults()
   return n
 end
 
+-- (saved card) -> aura, mix of his basic set (the moveset defaults; 0 = none): what «Restablecer» puts back
+function CharacterReforged.DefaultSetCmd(card)
+  card = u32(card or 0)
+  if card == 0 then return 0, 0 end
+  local ok, r = pcall(VRFW.chara.record, card)
+  local param = (ok and type(r) == "table") and u32(r.param or 0) or 0
+  if param == 0 then return 0, 0 end
+  pcall(publish_defaults)
+  local d = DEF.map[param]
+  if not d then return 0, 0 end
+  return u32(d.aura or 0), u32(d.mix or 0)
+end
+
 -- ---------------------------------------------------------------------------------------------- the sweep
 
 -- The FORM CONTEXT of every owned card (native table FormContext; declared to the VR-Framework's form viewer by

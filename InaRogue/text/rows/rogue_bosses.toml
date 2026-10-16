@@ -1,0 +1,28 @@
+# INAROGUE boss tiers (docs/game/modes/inarogue.md §33, rogue/bosses.toml): the node kind of a «Jefe épico» / «Jefe de
+# puerta» on the VS preview (research/grafts/rogue_vs/rv_common.lua EVT_RV.T.KEPIC / KGATE). Hand-written.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "evt_ird_kindepic"
+es = "JEFE ÉPICO"
+en = "EPIC BOSS"
+fr = "BOSS ÉPIQUE"
+de = "EPISCHER BOSS"
+it = "BOSS EPICO"
+pt = "CHEFE ÉPICO"
+ja = "エピックボス"
+zh_hans = "史诗首领"
+zh_hant = "史詩首領"
+
+[[row]]
+id = "evt_ird_kindgate"
+es = "JEFE DE PUERTA"
+en = "GATE BOSS"
+fr = "BOSS DE LA PORTE"
+de = "TORWÄCHTER"
+it = "BOSS DEL PORTALE"
+pt = "CHEFE DO PORTÃO"
+ja = "門番ボス"
+zh_hans = "守门首领"
+zh_hant = "守門首領"

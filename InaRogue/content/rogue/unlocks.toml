@@ -1,0 +1,157 @@
+# INAROGUE unlocks → the Oficina de fichajes (docs/game/modes/inarogue-unlocks.md). Hand-edited: Nacho, change cards,
+# prices and conditions here. Read by the loader (module rogue, [rogue.unlocks] of config.toml) and by
+# research/scripts/rogue_unlocks_office_build.py, which writes the office page from it (rerun it after editing cards,
+# prices, levels or [office]; hints and conditions need no rebuild).
+#
+# A card is UNLOCKED by playing INAROGUE (save slot 4) and is then SIGNED in the normal game's office, page «INAROGUE»
+# (Historia tab, first row), with fichas of its element like any office player. Nothing is granted for free. Unlocks
+# are global: they count for every normal save slot.
+#
+# [[card.when]] rules (all of a card's rules must hold; progress counts across runs, since this feature exists; the
+# runs / best phase the INAROGUE bank already had are copied once):
+#   phase        { phase }                         reach phase N in a run
+#   boss_phase   { phase }                         beat the boss of phase N or a later one
+#   beat         { rival, node?, phase? }          beat a rival: Spanish team name (case-insensitive) or evt_rl_* row;
+#                                                  node = "boss" (default) / "elite" / "boss_or_elite" / "any"
+#   with_player  { params, label?, node?, phase? } win a node (default: a boss) with any of these cards in the team
+#   wins         { count }                         matches won
+#   bosses       { count }                         phase bosses beaten
+#   runs         { count }                         runs finished (lost, abandoned or won)
+#   runs_won     { count }                         runs won
+#   album        { count }                         cards owned in the INAROGUE album
+#   rival_with_player { rival, params, label?, node?, phase? }  beat that rival while one of these cards plays for it
+#                                                  (a guest of [[rogue.rivals.guest]] in config.toml: a rare line-up)
+#   beat_era     { era, node?, phase? }            beat a rival of that era ([rogue.rivals] eras: ie1 … cs … orion)
+# enabled = false: the card stays listed but is inactive (never unlocks, not in the office at all).
+#
+# Nacho 2026-10-06: only Byron Love, Nakata Hidetoshi and Arion Sherwind (Ídolos) are active; the rest «pending — Nacho».
+# hint = the line the office shows on a locked card (empty = built from the rules); counters add their progress.
+schema = "inazuma_fantasy.rogue_unlocks/1"
+
+[office]
+shop = "evt_oficina_4"        # office shop of the page (rows appended there)
+slot = 51                     # EVT_OFI_TEAM page slot in that shop (evt_oficina_4 uses 0-50 today)
+game = "evt_ofi_inarogue"     # fake game id of the hub row (like the old Ojeadores row)
+title = "INAROGUE"
+show_locked = true            # true: locked cards as silhouettes with their hint; false: only unlocked cards
+
+# ---- Prime (rarity 10) ------------------------------------------------------------------------------------------
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "axel_prime"
+param = 0x253EC9E5            # Axel Blaze PRIME (Raimon, moment kit Inazuma Japón)
+name = "Axel Blaze PRIME"
+hint = "Supera a tu primer jefe de fase en INAROGUE"
+price = 80
+level = 1
+enabled = false
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "mark_prime"
+param = 0xC8529644            # Mark Evans PRIME «Leyenda viva»
+name = "Mark Evans PRIME"
+hint = "Supera al jefe de la fase 10 en INAROGUE"
+price = 80
+level = 1
+enabled = false
+
+# ---- Ídolo / Héroe ----------------------------------------------------------------------------------------------
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "axel_idol"
+param = 0xDE3FACEA            # Axel Blaze, Ídolo rojo (Raimon IE2)
+name = "Axel Blaze (Ídolo)"
+hint = "Supera a 3 jefes de fase en INAROGUE"
+price = 40
+level = 1
+enabled = false
+
+[[card]]
+id = "byron_idol"
+param = 0xEE6C12B6            # Byron Love, Ídolo (Dragones de Fuego)
+name = "Byron Love (Ídolo)"
+hint = "Gana a los Dragones de Fuego en INAROGUE"
+price = 40
+level = 1
+[[card.when]]
+type = "beat"
+rival = "Dragones de Fuego"
+node = "any"
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "nathan_idol"
+param = 0x3AF184EA            # Nathan Swift, Ídolo (Emperadores Oscuros)
+name = "Nathan Swift (Ídolo)"
+hint = "Gana a los Emperadores Oscuros en INAROGUE con Nathan Swift en tu equipo"
+price = 40
+level = 1
+enabled = false
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "mark_idol"
+param = 0x1579A0F2            # Mark Evans, Ídolo (Inazuma Japón)
+name = "Mark Evans (Ídolo)"
+hint = "Gana a los Pequeños Gigantes en un jefe o Élite de INAROGUE"
+price = 40
+level = 1
+enabled = false
+
+[[card]]
+id = "nakata_idol"
+param = 0x9D63CA7B            # Nakata Hidetoshi, Ídolo (Orfeo)
+name = "Nakata Hidetoshi (Ídolo)"
+hint = "Gana a Orfeo en INAROGUE cuando Nakata Hidetoshi juegue con ellos (¡rara vez!)"
+price = 40
+level = 1
+[[card.when]]
+type = "rival_with_player"   # Nakata plays for Orfeo only on ~5 % of its nodes ([[rogue.rivals.guest]] in config.toml)
+rival = "Orfeo"
+label = "Nakata Hidetoshi"
+params = [0xFFF7C4EE]
+node = "any"
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "joseph_idol"
+param = 0x7F8316F0            # Joseph King, Ídolo (Royal Academy Redux)
+name = "Joseph King (Ídolo)"
+hint = "Gana 25 partidos en INAROGUE"
+price = 40
+level = 1
+enabled = false
+
+[[card]]
+id = "arion_idol"
+param = 0xEBEBB493            # Arion Sherwind, Ídolo (Chrono Storm)
+name = "Arion Sherwind (Ídolo)"
+hint = "Supera a un jefe de la era Chrono Stone en INAROGUE"
+price = 40
+level = 1
+[[card.when]]
+type = "beat_era"            # a boss node whose rival is a Chrono Stone team ([rogue.rivals] eras: cs = cro05)
+era = "cs"
+node = "boss"
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "zanark_idol"
+param = 0x734935CF            # Zanark Avalonic, Ídolo (Dominio de Zanark)
+name = "Zanark Avalonic (Ídolo)"
+hint = "Gana al Protocolo Omega 3.0 en un jefe o Élite de INAROGUE"
+price = 40
+level = 1
+enabled = false
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "victor_idol"
+param = 0x2200983A            # Victor Blade, Ídolo (Falam Medius)
+name = "Victor Blade (Ídolo)"
+hint = "Llega a la fase 20 de INAROGUE"
+price = 40
+level = 1
+enabled = false
+
+[[card]]    # pending — Nacho (inactive: no rule, not in the office)
+id = "hector_idol"
+param = 0x3E62E170            # Héctor Helio, Ídolo (Pequeños Gigantes)
+name = "Héctor Helio (Ídolo)"
+hint = "Termina 10 partidas de INAROGUE"
+price = 40
+level = 1
+enabled = false

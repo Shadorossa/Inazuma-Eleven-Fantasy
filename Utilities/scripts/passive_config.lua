@@ -14,6 +14,7 @@
 --       PassiveConfig.Unlock   (save slot, owner, slot)         -> 0 / 1         forced locked / open
 --       PassiveConfig.AllOpen  (save slot)                      -> 1             [passives] unlock = "all"
 --       PassiveConfig.OwnOpen  (param, slot)                    -> 1             [passives] always_unlocked
+--       PassiveConfig.OffMode  (current mode id)                -> 0             [[off_mode]]: no passive at all
 --   * the retail commands that read the slots themselves (the plate, the inheritance gate / trash, the archetype
 --     getters) are filtered here ([[VRFW.CommandFilter]]), and the screen's commands CMND_UTIL_PC_* are functions here.
 --
@@ -485,6 +486,63 @@ end
 local T_SLOTS, T_OWN, T_KEPT, T_UNLOCK, T_ALL, T_OWN_OPEN =
   "PassiveConfig.Slots", "PassiveConfig.Own", "PassiveConfig.OwnKept", "PassiveConfig.Unlock", "PassiveConfig.AllOpen", "PassiveConfig.OwnOpen"
 
+-- ---------------------------------------------------------------------------------------------- modes without passives
+-- [[off_mode]] mode = "<key>" in any mod's declaration file: while that mode is the current mode, every slot of every
+-- player reads «no passive» (the slot readers' first answers, keyed by the current mode id) and the plate rows hide.
+-- Nothing in the store changes: outside the mode the configuration applies as before.
+
+local T_OFF = "PassiveConfig.OffMode"
+local OFF_KEYS = {}         -- mode key -> declaring mod
+local OFF_IDS = {}          -- mode id (this session) -> mode key
+local OFF_FILLED = 0        -- how many keys have an id in T_OFF
+local OFF_SIGNATURE = nil   -- the ids last written to T_OFF
+
+local function load_off_modes()
+  local files = VRFW.files.declarations({ "passive_config", "content/passive_config", "features/*/content/passive_config" })
+  for _, f in ipairs(files) do
+    local keys, w = C.off_modes(f.data)
+    for _, x in ipairs(w) do warn("declarations: " .. f.mod .. "/" .. f.file .. ": " .. x) end
+    for _, k in ipairs(keys) do
+      if OFF_KEYS[k] == nil then OFF_KEYS[k] = f.mod end
+    end
+  end
+end
+
+-- the ids of the off modes (known once the mode service registered the keys; retried on every mode change)
+local function fill_off_modes()
+  local entries, ids, n, total, sig = {}, {}, 0, 0, {}
+  for k in pairs(OFF_KEYS) do
+    total = total + 1
+    local id = tonumber(VRFW.state.get("mode.id." .. k))
+    if id and id ~= 0 then
+      ids[id] = k
+      entries[#entries + 1] = { { id }, 0 }
+      sig[#sig + 1] = k .. "=" .. id
+      n = n + 1
+    end
+  end
+  table.sort(sig)
+  local signature = table.concat(sig, ",")
+  if signature == OFF_SIGNATURE then return end
+  OFF_SIGNATURE = signature
+  VRFW.native.table_replace(T_OFF, nil, entries)
+  OFF_IDS, OFF_FILLED = ids, n
+  if total > 0 then
+    local names = {}
+    for id, k in pairs(ids) do names[#names + 1] = string.format("%s (%s, id %d)", k, OFF_KEYS[k], id) end
+    table.sort(names)
+    info(string.format("player passives off in %d of %d declared mode(s): %s", n, total, n > 0 and table.concat(names, ", ") or "none known yet"))
+  end
+end
+
+-- a declared off mode is the current mode: the game_state key Utilities.passives_off (content/game/passive_config.toml),
+-- the one test every reader uses
+local function passives_off()
+  if OFF_FILLED == 0 then return false end
+  local ok, v = pcall(VRFW.state.get, "Utilities.passives_off")
+  return ok and tonumber(v) == 1
+end
+
 -- the slot rules need every saved player's slots in the tables (a special slot holds his own special, the archetype
 -- mode derives defaults), not only the configured ones
 local function rules_touch_everyone()
@@ -723,11 +781,15 @@ end
 
 -- CMND_GET_CHARA_TEAM_PASSIVE_INFO(hdl, slot, field, useCopy, preview)
 function PC.PlateInfo(h, slot, field, _copy, preview)
-  if not ACTIVE then return false end
   h, slot, field = arg_u32(h), arg_u32(slot), arg_u32(field)
   if not (h and slot and field) or field > 2 then return false end
-  follow_slots()
   local li = C.list_index(h)
+  if not li and slot < N and passives_off() then
+    if field == 2 then return true, true, false end
+    return true, true, 0
+  end
+  if not ACTIVE then return false end
+  follow_slots()
   if li then
     local id = LIST and LIST.ids[li + 1] or 0
     local ver = id == 0 and 0 or resolve_version(id, LIST and LIST.rarity or 0)
@@ -768,6 +830,11 @@ function PC.PlateInfo(h, slot, field, _copy, preview)
 end
 
 -- ---------------------------------------------------------------------------------------------- commands
+
+-- CMND_UTIL_PC_OFF() → true while a declared off mode runs (the plate hides its passive rows)
+function PC.Off()
+  return passives_off()
+end
 
 -- CMND_UTIL_PC_INFO(hdl) → ok, mode, archetype 1, archetype 2, max slots, inactive count
 function PC.Info(h)
@@ -1012,6 +1079,18 @@ end
 
 -- ---------------------------------------------------------------------------------------------- start
 
+-- the off modes need only the slot reader hooks, not the configurator ([passives] enabled = false keeps them)
+local function start_off_modes()
+  if not (VRFW.is_on("GetTeamPassiveId") and VRFW.is_on("IsTeamPassiveUnlocked")) then return end
+  local ok, e = pcall(load_off_modes)
+  if not ok then
+    err("off modes: " .. tostring(e) .. " (player passives apply in every mode)")
+    OFF_KEYS = {}
+    return
+  end
+  fill_off_modes()
+end
+
 local function start()
   local raw = VRFW.files.config("passives")
   local w
@@ -1041,10 +1120,12 @@ local function start()
 end
 
 start()
+start_off_modes()
 
 -- the active save slot's tables follow the game: a mode change (title, menus, a match), a match start
 for _, trig in ipairs({ "mode_enter", "mode_leave", "match_start" }) do
   VRFW.on(trig, function()
+    if next(OFF_KEYS) ~= nil then fill_off_modes() end
     if not ACTIVE then return end
     local seq = VRFW.slots.event_seq()
     if seq ~= LAST_SEQ or not STORE or STORE.slot ~= VRFW.slots.active() or rules_touch_everyone() then

@@ -3,7 +3,8 @@
 -- While a match row (difficultyType > 0) of a piece whose game has a [[VRFW.MatchChallenge]] for that row (the route
 -- node's `Challenge`, or the challenge's `Games` + `Difficulties`) is focused, the blue list panel grows by one band
 -- under its last row (band "match_challenge" of VRFW_RBC_PanelBand, the first one: the mod that sizes the panel
--- re-sizes it) and the band shows the
+-- re-sizes it; the band's place is reserved on every row of such a piece, VRFW_RBC_PanelBandReserve, so the panel
+-- keeps one height) and the band shows the
 -- challenge's condition centred (its `Short` text, else its title: VRFW_MC.Status label), shrunk to the panel's width,
 -- light blue when the active dock meets it and light red when not (the same check the VS screen gates the kick-off
 -- with). On any other row the band is gone. The line follows the panel's layer when it moves (Step).
@@ -209,6 +210,31 @@ if VRFW_Host ~= nil then
     fn = function(r, a1)
       if a1 == ROWS then
         update()
+      end
+    end,
+  })
+
+  -- the panel is placed: a piece with a challenge on any row keeps the band's place on every row (one panel height,
+  -- nothing below moves when the focus changes; the band is empty on a row without one)
+  VRFW_Host.on("vs_route_town_command_select_menu", "VRFW_RBC_ListLayer", {
+    id = "menu_engine.match_challenge", phase = "after",
+    fn = function()
+      if VRFW_MC == nil or VRFW_RBC_PanelBandReserve == nil then
+        return
+      end
+      local game = piece_game()
+      local ok, rows = pcall(function()
+        return VRFW_RBC.L.t3
+      end)
+      if game == nil or not ok or type(rows) ~= "table" then
+        return
+      end
+      for _, row in ipairs(rows) do
+        local diff = row.difficultyType or 0
+        if diff > 0 and VRFW_MC.Of(game, diff) ~= nil then
+          pcall(VRFW_RBC_PanelBandReserve, BAND_ID, LABEL.ROW_GAP + LABEL.BAND_HEIGHT, BAND_ORDER)
+          return
+        end
       end
     end,
   })

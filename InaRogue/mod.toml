@@ -1,0 +1,35 @@
+id = "inarogue"
+name = "InaRogue"
+version = "1.0.5"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "INAROGUE: el modo roguelite de Inazuma Eleven. Forma un equipo desde cero, recorre el mapa fase tras fase y colecciona cartas, avatares y formaciones en tu propia partida (ranura 4)."
+priority = 0
+tags = ["Mode"]
+updated = "2026-10-15"
+# INAROGUE (docs/game/modes/inarogue.md) out of Inazuma Fantasy as a mod of its own (owner 2026-10-13/14,
+# docs/refactor/roguelite-split-map.md). It runs on the VR-Framework alone: Chronicles Deluxe (remastered crests),
+# Inazuma Fantasy (office unlocks, IF's cards in the tiers / rival pool), Utilities and BetterUI are optional
+# companions (if_mod gates, soft commands). Inazuma Fantasy requires InaRogue, never the other way round.
+# vr_framework 2.2.205: the save import service ([[VRFW.SaveImport]]: INAROGUE's saved files of mod inazuma_fantasy) and the
+# reserved-slot hand-over (`takes_over`); 2.2.159: if_mod gates; 2.2.x: the title row host, the random team service.
+requires = ["vr_framework>=2.4.0"]
+# its title press / menus run before the other mods' patches, as INAROGUE did inside Inazuma Fantasy
+lua_early = true
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+prefix = "InaRogue"
+folder = "InaRogue"
+# RL_* game functions, the RL_TrophySetTier hook, the slot / mode commands and state keys (content\game\)
+permissions = ["memory", "call", "patch", "command", "state", "hook"]
+
+[exports]
+# called by Inazuma Fantasy's scripts (it requires InaRogue): INAROGUE's save slot and the Rogue points item id. Phase 2 of the split adds the collectibles' read API here.
+functions = ["SaveSlot", "PointsItem"]
+keys = []
+tables = []
+
+# its own content\ folders read only by its scripts (no framework type): the catalogues (content\rogue\) and its growth
+# (content\growth\), its rule for the mod True Hissatsu (content\true_hissatsu\: no move rank-up by use in INAROGUE)
+[layout]
+script_folders = ["rogue", "growth", "true_hissatsu"]

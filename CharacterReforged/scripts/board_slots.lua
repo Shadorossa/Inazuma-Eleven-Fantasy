@@ -16,6 +16,12 @@
 -- PlaceByHandle, the board definition); nothing else of the board (layout, branch, list) is touched: the table's
 -- rows stay the projection of the list (scripts\mix_slots.lua).
 --
+-- The aura slot on every card (owner 2026-10-16): a card whose board definition has no ninth skill piece (an explicit
+-- hero / legend board with 6 pieces: PLACE answered -3) gets a free aura slot by rule: board slot 8's piece byte is
+-- opened with an effect index his board does not use, and the item goes straight on the slot through Board.EquipSlot
+-- 0xE7AA10 (PlaceByHandle maps a piece to a slot through the definition, so it can not reach that slot). His own
+-- pieces are untouched; the slot is open at once, as the definition's own aura piece is when PLACE opens it.
+--
 -- Record rec8 = VRFW.chara.record(hdl).addr: +0x94 + 4*slot placed item, +0xC8 + 4*slot native item, +0x165 + slot
 -- piece effect index (byte; >= 0x80 closed). docs/game/ui/skill-board-original.md.
 
@@ -80,8 +86,8 @@ end
 local function is_closed(s) return s.piece >= 0x80 end
 local function effective(s) if s.placed ~= 0 then return s.placed end return s.native end
 
--- the board definition's piece of a board slot (opens a closed slot), nil when unreadable / none
-local function definition_piece(hdl, slot)
+-- the board definition: { [slot] = piece } of its skill pieces and their count (.n), nil when unreadable
+local function definition(hdl)
   buffers()
   pcall(VRFW.mem.write, "u32", handle_buffer, hdl)
   pcall(VRFW.mem.write, "u64", pieces_buffer, 0)
@@ -89,9 +95,63 @@ local function definition_piece(hdl, slot)
   local ok = pcall(VRFW.call, "CharacterReforged.BoardSkillPieces", pieces_buffer, handle_buffer)
   if not ok then return nil end
   local list, count = read("ptr", pieces_buffer), read("u64", pieces_buffer + 8)
-  if not list or not count or list < 0x10000 or count == 0 or count > 16 or slot >= count then return nil end
-  local p = read("u8", list + slot * 2)
+  if not list or not count or list < 0x10000 or count > 16 then return nil end
+  local def = { n = count }
+  for k = 0, count - 1 do
+    local p = read("u8", list + k * 2)
+    if p == nil then return nil end
+    def[k] = p
+  end
+  return def
+end
+
+-- the board definition's piece of a board slot (opens a closed slot), nil when unreadable / none
+local function definition_piece(hdl, slot)
+  local def = definition(hdl)
+  if not def or slot >= def.n then return nil end
+  local p = def[slot]
   if p ~= nil and p < 0x80 then return p end
+  return nil
+end
+
+-- ---------------------------------------------------------------------------------------- the free aura slot
+local AURA_SLOT = LAST_SLOT
+local LAST_EFFECT = 59                -- openedEffectPieceList holds 60 effects: the free piece stays inside it
+
+-- is `piece` on board slot 8 the free aura piece (not a piece of the card's board definition)?
+local function is_free_aura(hdl, slot, piece)
+  if slot ~= AURA_SLOT or piece >= 0x80 then return false end
+  local def = definition(hdl)
+  if not def or def.n > AURA_SLOT then return false end
+  for k = 0, def.n - 1 do
+    if def[k] == piece then return false end
+  end
+  return true
+end
+
+-- an effect index neither the definition nor the other save bytes use, nil when the board has an aura piece or no room
+local function free_aura_piece(data, hdl)
+  local def = definition(hdl)
+  if not def or def.n > AURA_SLOT then return nil end
+  local used = {}
+  for k = 0, def.n - 1 do used[def[k]] = true end
+  for k = 0, LAST_SLOT do
+    local b = read("u8", data + OFFSET_PIECES + k)
+    if b ~= nil then used[b] = true end
+  end
+  for p = LAST_EFFECT, 0, -1 do
+    if not used[p] then return p end
+  end
+  return nil
+end
+
+-- Board.EquipSlot(hdl, inv, slot, native): the item on the slot itself (the old one's use given back)
+local function equip_slot(hdl, inv, slot, native)
+  local ok, e = pcall(VRFW.call, "CharacterReforged.BoardEquipSlot", hdl, inv, slot, native and 1 or 0)
+  if not ok then
+    warn(string.format("EquipSlot(%s, %s, slot %d, native %s) raised: %s", hex(hdl), hex(inv), slot, tostring(native), tostring(e)))
+    return STATUS_EXCEPTION
+  end
   return nil
 end
 
@@ -110,14 +170,28 @@ local function put(data, hdl, inv, slot)
   local before = read_slot(data, slot)
   if not before then return STATUS_NOT_READY, 0 end
   local piece = before.piece
+  local free = not is_closed(before) and is_free_aura(hdl, slot, piece)
   if is_closed(before) then
     piece = definition_piece(hdl, slot)
+    if not piece and slot == AURA_SLOT then
+      piece = free_aura_piece(data, hdl)
+      free = piece ~= nil
+    end
     if not piece then return STATUS_CLOSED, effective(before) end
   end
   local okc, can = pcall(VRFW.call, "CharacterReforged.BoardCanEquip", hdl, inv, 1, 1, slot)
   if not okc then return STATUS_EXCEPTION, effective(before) end
   if (tonumber(can) or 0) % 256 == 0 then return STATUS_REFUSED, effective(before) end
-  local st = place_by_handle(hdl, piece, inv, false)
+  local st
+  if free then
+    if is_closed(before) then
+      pcall(VRFW.mem.write, "u8", data + OFFSET_PIECES + slot, piece)
+      info(string.format("aura slot of %s opened with the free piece %d (his board has no aura piece)", hex(hdl), piece))
+    end
+    st = equip_slot(hdl, inv, slot, false)
+  else
+    st = place_by_handle(hdl, piece, inv, false)
+  end
   if st then return st, effective(before) end
   local after = read_slot(data, slot)
   if not after then return STATUS_NOT_READY, 0 end
@@ -134,6 +208,21 @@ local function clear(data, hdl, slot, keep_open, drop_native)
   if not before then return STATUS_NOT_READY, 0 end
   if is_closed(before) then return STATUS_CLOSED, effective(before) end
   local piece = before.piece
+  if is_free_aura(hdl, slot, piece) then
+    -- the free aura piece: the slot itself is emptied; the piece stays open (no native item to fall back to)
+    if drop_native and before.native ~= 0 then
+      local st = equip_slot(hdl, 0, slot, true)
+      if st then return st, effective(before) end
+    end
+    if before.placed ~= 0 then
+      local st = equip_slot(hdl, 0, slot, false)
+      if st then return st, effective(before) end
+    end
+    local after = read_slot(data, slot)
+    if not after then return STATUS_NOT_READY, 0 end
+    local ok = after.placed == 0 and (not drop_native or after.native == 0)
+    return ok and STATUS_OK or STATUS_MISMATCH, effective(after)
+  end
   if drop_native and before.native ~= 0 then
     local st = place_by_handle(hdl, piece, 0, true)
     if st then return st, effective(before) end

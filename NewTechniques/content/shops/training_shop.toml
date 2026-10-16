@@ -1,0 +1,43 @@
+schema = "VRFW.shop/2"
+# The five manuals in Inazuma Fantasy's (inazuma_fantasy_2) move shops: the shots in «Supertécnicas: tiro»
+# (inazuma_fantasy_2.technique_shop_shots), the blocks and the catch in «Supertécnicas: regate y defensa»
+# (inazuma_fantasy_2.technique_shop_skills), with the retail moves of their kind. Their only currency is Puntos de
+# pasión (tk_bb000001); prices on the earlier Inazuma Fantasy's tier for its training shop (docs/game/modes/
+# cross-teams.md §7b: block 440 = 65, solo shot 520 = 90, solo shot 640 = 110, Remate Fénix 140 Puntos de amistad: the
+# higher the max power, the dearer) converted by Inazuma Fantasy's rule (_general_store.toml [price]: 10 Puntos de
+# amistad = 1 Punto de pasión, rounded up). The download sold them in the retail Tienda Vs (four, 2-3 tokens each) and
+# in shop 0x471559B5 (Vuelo angelical, no cost); not kept. Without Inazuma Fantasy these edits are left out
+# (`if_mod`) and the moves are only learnable where other mods / the game teach them.
+
+[[edit]]
+target = "inazuma_fantasy_2.technique_shop_shots"   # Supertécnicas: tiro (Inazuma Fantasy)
+if_mod = "inazuma_fantasy_2"
+
+  [[edit.entry]]
+  technique = "abyss_strike"    # Golpe del abismo: shot, 640
+  price = 11
+  currency = "tk_bb000001"
+
+  [[edit.entry]]
+  technique = "angel_flight"    # Vuelo angelical: shot, 800 («El Dorado»)
+  price = 14
+  currency = "tk_bb000001"
+
+[[edit]]
+target = "inazuma_fantasy_2.technique_shop_skills"  # Supertécnicas: regate y defensa (Inazuma Fantasy)
+if_mod = "inazuma_fantasy_2"
+
+  [[edit.entry]]
+  technique = "dark_zone"       # Zona oscura: block, 440
+  price = 7
+  currency = "tk_bb000001"
+
+  [[edit.entry]]
+  technique = "nuclear_field"   # Campo nuclear: block, 540
+  price = 9
+  currency = "tk_bb000001"
+
+  [[edit.entry]]
+  technique = "dispersion"      # Dispersión: catch, 640
+  price = 11
+  currency = "tk_bb000001"

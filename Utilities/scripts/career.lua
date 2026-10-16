@@ -1,6 +1,7 @@
 -- Career stats of Utilities (docs/game/mechanics/player-career-stats.md): per player and save slot, the signing date,
 -- matches, wins / draws / losses, goals, assists, «Jugador del partido», shots, balls won, saves, clean sheets, the
--- last match and a per-mode split, shown on the player plate's page «TRAYECTORIA» (graft util_career_page).
+-- last match, the first goal / first MVP dates, the best match and a per-mode split, shown on the player plate's page
+-- «TRAYECTORIA» (graft util_career_page).
 --
 -- Fed by the match HUD (graft util_career_match): CMND_UTIL_CAREER_MATCH 1 kick-off (soccer_menu OnInit), 0 every
 -- frame (soccer_menu Step), 2 half time, 3 full-time result. Each call reads the engine's own match data (no hook):
@@ -178,6 +179,10 @@ local function load_store(slot)
   local wm = "not set yet"
   if f.watermark then wm = "get_order " .. f.watermark .. " (since " .. f.since .. ")" end
   info("slot " .. slot .. ": " .. n .. " players, " .. f.recorded .. " matches recorded, watermark " .. wm)
+  if f.migrated_from then
+    info("slot " .. slot .. ": " .. S.BLOB .. " version " .. f.migrated_from .. " read as version " .. S.FILE_VERSION
+      .. " (first goal / first MVP dates and best matches derived where the numbers allow; written with the next change)")
+  end
   return f
 end
 
@@ -293,6 +298,10 @@ local function begin(why)
   local pd = global("play_data")
   local play_mode = (pd and rd("u8", pd + PLAY_MODE)) or 0xFF
   t.mode = S.mode_index(play_mode)
+  if t.mode == S.MODE_FREE then
+    local ok, bb = pcall(VRFW.mode_is, "battle_bay")
+    if ok and bb == true then t.mode = S.MODE_BATTLE_BAY end
+  end
   -- goals already on the board (scripted starting score) belong to nobody
   t.seen = { score(mi, 0), score(mi, 1) }
   local note = ""
@@ -588,8 +597,10 @@ end
 -- * group 0: signed, before, source, role, matches, wins, draws, losses, goals, assists, mvp, shots, steals, saves,
 --   conceded, cleanSheets, gkMatches, skillUses, hiperUses, firstGoal, lastDay, lastResult, lastGf, lastGa;
 -- * group 1: skill1, uses1, skill2, uses2, skill3, uses3 (zeros: no move-use counter);
--- * group 10 + m (m = 0 Historia, 1 Cronica, 2 libres, 3 Victory Road, 4 Ciudad vinculo): matches, wins, draws,
---   losses, goals, assists.
+-- * group 2: firstMvp, bestGoals, bestGoalsExact, bestGoalsDay, bestSaves, bestSavesExact, bestSavesDay, today
+--   (days as yyyymmdd; 0 = not yet, -1 = unknown: a record from before the store's version 2);
+-- * group 10 + m (m = 0 story, 1 Chronicle, 2 free matches, 3 Victory Road, 4 Kizuna town, 5 Battle Bay): matches,
+--   wins, draws, losses, goals, assists, mvp, saves (mvp / saves of the matches before version 2 are not split).
 -- ok = false (and zeros) in a mod's reserved slot, for players without a saved record.
 function Utilities.Career.Ex(hdl, group)
   group = tonumber(group) or 0
@@ -602,8 +613,14 @@ function Utilities.Career.Ex(hdl, group)
   local s = S.get(st, o, param, order)
   if group >= 10 and group < 10 + #S.MODES then
     local m = s and s.modes[S.MODES[group - 9]]
-    if not m then return true, 0, 0, 0, 0, 0, 0 end
-    return true, m.matches, m.wins, m.draws, m.losses, m.goals, m.assists
+    if not m then return true, 0, 0, 0, 0, 0, 0, 0, 0 end
+    return true, m.matches, m.wins, m.draws, m.losses, m.goals, m.assists, m.mvp, m.saves
+  end
+  if group == 2 then
+    local today = VRFW.ui.today()
+    if not s then return true, 0, 0, 1, 0, 0, 1, 0, today end
+    return true, s.first_mvp, s.best_goals, s.best_goals_exact, s.best_goals_day, s.best_saves, s.best_saves_exact,
+      s.best_saves_day, today
   end
   local v = S.view(st, o, param, order)
   local x = s or { signed = 0, matches = 0, wins = 0, draws = 0, losses = 0, goals = 0, assists = 0, mvp = 0, shots = 0,

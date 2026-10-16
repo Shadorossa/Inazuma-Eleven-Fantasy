@@ -1,0 +1,12 @@
+schema = "VRFW.game_modes/1"
+
+# The INAROGUE save (InaRogue's reserved slot: config.toml [save_slots] slot, default 4) is the mode inarogue.run
+# for the framework (docs/framework/services.md §2): the rarities scoped to it (content\rarities\rarity.toml: the
+# INAROGUE tiers, Vestigio) are offered by the character bank filter only there (docs/framework/card-filter.md).
+# Order 900: never the detected key while another rule holds (is() is true all the same). Was Inazuma Fantasy's
+# inarogue.run until 2026-10-14.
+[[rule]]
+key = "inarogue.run"
+order = 900
+state = "save.active_slot"
+state_is = 4

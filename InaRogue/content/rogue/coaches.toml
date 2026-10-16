@@ -1,0 +1,109 @@
+# INAROGUE coaches (docs/game/modes/inarogue.md «Entrenadores»). Hand-edited: Nacho, fill taglines and effects here.
+# Read by the loader (module rogue, [rogue.coaches] of config.toml) and by research/scripts/rogue_coaches_build.py,
+# which builds the selector's art (faces + name plates, evt_rogue_coach.g4tx): rerun it after adding a coach or
+# changing a name / face. Taglines, unlock rules and effects need no rebuild.
+#
+# The coach picked when a NEW run starts is the run's «class»; it is saved in the run (rogue_run.json `coach`). A run
+# from before coaches gets the default coach = the first coach without unlock rules.
+#
+# Fields: id (a-z 0-9 _), name, face (chara_base key of the retail face icon, 10_icon_chr/face/<face>_l.g4tx), bust
+# (the retail kit-bust icon 10_icon_chr/uniform/<bust>_l.g4tx the face is composed over, like the game's own
+# character icons: the coach's upper body and outfit; Hillman's Ares coach face has none, his IE tracksuit u01002610
+# is used), param
+# (the coach's retail card, chara_param), tagline (one line under the name; empty = nothing shown), hint (locked
+# text; empty = built from the rules).
+#
+# [[coach.unlock]] (all must hold; none = free). Counters of the global INAROGUE unlock store (inarogue-unlocks.md):
+#   coach_runs_won   { coach, count }   runs won with that coach (a run is only «won» once the mode reports it)
+#   coach_boss_phase { coach, phase }   the boss of phase N (or later) beaten in a run led by that coach
+#   coach_wins       { coach, count }   matches won in runs led by that coach
+#   wins / bosses / runs / runs_won { count }, phase { phase }, album { count }   (global counters)
+# «Win a run with the previous coach» = coach_boss_phase phase 10 today: INAROGUE runs have no end yet (phases are
+# infinite); switch to coach_runs_won once a run can be won.
+#
+# effects = [...] (typed; an unknown kind is a warning in loader.log, never an error):
+#   { kind = "stat_mult", target = "team" | "position" | "element", position = "GK|DF|MF|FW",
+#     element = "viento|bosque|fuego|montaña", stat = "all|kick|control|technique|pressure|physical|intelligence|agility",
+#     value = 1.10 }                                   the run's players' match stats × value
+#   { kind = "node_weight", node = "cofre|tienda|evento|fichaje|gacha|elite|tragaperras", mult = 1.5 }
+#                                                      that content's map_content weight × mult on this coach's boards
+#   { kind = "reward_mult", reward = "frags|points|all", value = 1.25 }   fragments / Rogue points of the run × value
+#   { kind = "start_points", value = 50 }              Rogue points at the run start
+#   { kind = "start_item", item = "<registry key>" | id = <item id>, count = 1 }   items at the run start
+#   { kind = "technique_cost", mult = 0.9 }            declared, no engine hook yet
+#   { kind = "match_rule", rule = "..." }              declared, no engine hook yet
+schema = "inazuma_fantasy.rogue_coaches/1"
+
+[[coach]]
+id = "hillman"
+name = "Seymour Hillman"
+face = "c11807270"
+bust = "u01002610"
+param = 0xD8A50680
+tagline = ""
+effects = []
+
+[[coach]]
+id = "travis"
+name = "Percival Travis"
+face = "c11807140"
+bust = "u11807140"
+param = 0xF1CEEB1A
+tagline = ""
+effects = []
+[[coach.unlock]]
+type = "coach_boss_phase"
+coach = "hillman"
+phase = 10
+
+[[coach]]
+id = "ray_dark"
+name = "Ray Dark"
+face = "c11801020"
+bust = "u11801020"
+param = 0x833D7977
+tagline = ""
+effects = []
+[[coach.unlock]]
+type = "coach_boss_phase"
+coach = "travis"
+phase = 10
+
+[[coach]]
+id = "david_evans"
+name = "David Evans"
+face = "c11801010"
+bust = "u11801010"
+param = 0xA8102AB4
+tagline = ""
+effects = []
+[[coach.unlock]]
+type = "coach_boss_phase"
+coach = "ray_dark"
+phase = 10
+
+[[coach]]
+id = "jude_coach"
+name = "Jude Sharp"
+face = "c11500520"
+bust = "u11500520"
+param = 0x81D4CF27
+tagline = ""
+effects = []
+[[coach.unlock]]
+type = "coach_boss_phase"
+coach = "david_evans"
+phase = 10
+
+[[coach]]
+id = "mark_coach"
+name = "Mark Evans"
+face = "c11500500"
+bust = "u11500500"
+param = 0xB3E2ADA5
+tagline = ""
+effects = []
+[[coach.unlock]]
+type = "coach_boss_phase"
+coach = "jude_coach"
+phase = 10

@@ -1,0 +1,74 @@
+schema = "VRFW.character/2"
+# The models the IECross special moves load as actors (LOAD_ACTOR_RESOURCE '<name>'): the game finds a `_waza` model
+# through its chara_base row (id = crc32(name)) and that row's chara_model row (the objbin path); every retail ev6x
+# `_waza` model has both (213 / 213 in v7.1.2). Without them the actor is not drawn. One [[character]] per model in
+# content\models\props; ids fixed (chara_base = crc32(name); chara_model = crc32(name) ^ 0x0A0B78D5, as before).
+default_lang = "en"
+
+[[character]]
+name = "move_model_inferno_penguin"                       # Inferno Penguin's red penguins
+based_on = "ev60_00400"                                   # template: Emperor Penguin No. 2's penguins
+order = 68
+battle = false
+
+  [character.base]
+  id = 0xF7D4693C
+  name = "ev60_95000"
+
+  [character.new_model]
+  id = 0xFDDF11E9
+  from = 0xCB5105C3                                       # model of ev60_00400
+  order = 11
+  [character.new_model.cells]
+  skeleton_path = "_waza/ev60_95000/ev60_95000.objbin"
+
+[[character]]
+name = "move_model_samurai_penguin_2"                     # Samurai Penguin No. 2's blue penguins
+based_on = "ev60_00400"                                   # template: Emperor Penguin No. 2's penguins
+order = 69
+battle = false
+
+  [character.base]
+  id = 0xF616030B
+  name = "ev60_95100"
+
+  [character.new_model]
+  id = 0xFC1D7BDE
+  from = 0xCB5105C3                                       # model of ev60_00400
+  order = 12
+  [character.new_model.cells]
+  skeleton_path = "_waza/ev60_95100/ev60_95100.objbin"
+
+[[character]]
+name = "move_model_god_knows_machina"                     # God Knows Machina's mechanical wings
+based_on = "ev60_00340"                                   # template: God Knows' wings
+order = 70
+battle = false
+
+  [character.base]
+  id = 0xC5E20BBE
+  name = "ev60_95020"
+
+  [character.new_model]
+  id = 0xCFE9736B
+  from = 0xAA72D642                                       # model of ev60_00340
+  order = 13
+  [character.new_model.cells]
+  skeleton_path = "_waza/ev60_95020/ev60_95020.objbin"
+
+[[character]]
+name = "move_model_chaos_illusion"                        # Chaos Illusion's circus bunting
+based_on = "ev60_00340"                                   # template: God Knows' wings (the model's clone_of)
+order = 71
+battle = false
+
+  [character.base]
+  id = 0xDCF93AFF
+  name = "ev60_95030"
+
+  [character.new_model]
+  id = 0xD6F2422A
+  from = 0xAA72D642                                       # model of ev60_00340
+  order = 14
+  [character.new_model.cells]
+  skeleton_path = "_waza/ev60_95030/ev60_95030.objbin"

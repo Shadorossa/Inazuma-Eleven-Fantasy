@@ -594,6 +594,18 @@ function SoulsRework.SpLevels(aura)
   return (text("souls_rework.sp_levels", nil):gsub("{levels}", (table.concat(parts, " · "):gsub("%%", "%%%%"))))
 end
 
+-- CMND_SOULSREWORK_TOTEM_LEVEL(hdl) -> true, level, «Lv.3» (text key souls_rework.reel_level) of the totem the match player
+-- has out now; nothing when he has none. The handle may come signed or unsigned: both forms are tried.
+function SoulsRework.TotemLevel(hdl)
+  local h = tonumber(hdl)
+  if not h then return nil end
+  local p = players[h] or players[h % 4294967296] or players[h - 4294967296]
+  if not p or not p.active then return nil end
+  local st = p.pairs[p.active.aura]
+  if not st then return nil end
+  return true, st.level, text("souls_rework.reel_level", st.level)
+end
+
 -- again after a return to the title (a load-time flag write may be refused: then the first one is here)
 VRFW.on("game_reset", function(ev)
   publish_start_max()

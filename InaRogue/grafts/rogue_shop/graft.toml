@@ -1,0 +1,31 @@
+# INAROGUE «Tienda» and Rogue points (docs/game/modes/inarogue-avatars.md): the new menu evt_rogue_shop_menu (screen
+# menus\rogue_shop.toml of Inazuma Fantasy; art research/scripts/rogue_shop_build.py; avatar catalogue rogue\avatars.toml
+# from research/scripts/rogue_avatars_build.py) and, appended to evt_inarogue_menu, the hook of its «Tienda» tile
+# (EVT_IR_EXTRA.shop) and the hand-over of the run's Rogue points to the INAROGUE save's bag (EVT_RP_Flush before the
+# map / after a match / when the shop opens).
+name = "rogue_shop"
+mod = "inarogue"
+order = 310
+module = "lua_bridge"
+requires = ["inarogue"]
+conflicts = []
+wraps = []
+description = "INAROGUE «Tienda» (evt_rogue_shop_menu: tabs, avatars hex panel) + Rogue points hand-over"
+
+[[files]]
+path = "common/script/lua/menu/evt_rogue_shop_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_rogue_shop_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "evt_rogue_shop_menu" }   # --@lib evt_menu_kit.lua#StartCo
+
+[[files]]
+path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "irm_shop.lua"
+  marker = "rogue_shop"
+  crc = "none"

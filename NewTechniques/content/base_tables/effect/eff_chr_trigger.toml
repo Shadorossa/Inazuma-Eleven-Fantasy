@@ -1,0 +1,28 @@
+schema = "VRFW.base_table/1"
+# Golpe del abismo (whs90208)'s ball auras: the definition rows that play rw90208a / b / c (effect_define.toml, same
+# folder) on the ball (CB_SkillShootBallAura) while its colour row's statuses are on (skill_config colour row 10:
+# shot 0x1C3B48D5, chain shot 0x6C4651B6, long shot 0x03F85230). Each row is the void aura's row (ega0075e /
+# ega0080e / ega0085e) with the effect (#0) and the status (#8) changed. The table has no schema: columns by index.
+# The file holds one DEF_INFO list per definition (119): the void aura rows are in the ball's definition (DEF #0 =
+# 0x6439C5A6), so the rows are added `within` it (without it the first definition was searched and the three rows were
+# skipped: «`from` row ega0075e not found», 2026-10-12).
+
+[[keyed]]
+list = "EFFECT_CHR_TRIGGER_DEFINE_DEF_INFO"
+key_columns = ["#0"]
+within = { list = "EFFECT_CHR_TRIGGER_DEFINE_DEF", column = "#0", key = 0x6439C5A6 }
+
+  [[keyed.add]]
+  key = "rw90208a"
+  from = "ega0075e"
+  cells = { "#8" = 0x1C3B48D5 }
+
+  [[keyed.add]]
+  key = "rw90208b"
+  from = "ega0080e"
+  cells = { "#8" = 0x6C4651B6 }
+
+  [[keyed.add]]
+  key = "rw90208c"
+  from = "ega0085e"
+  cells = { "#8" = 0x03F85230 }

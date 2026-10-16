@@ -1,5 +1,5 @@
 -- Plantilla de equipo: «Partido» (11v11) / «Pachanga» (5v5) templates (docs/game/ui/pachanga-templates.md).
--- * «Equipar todo» leaves the list; the first row is the type selector «Tipo: Partido» / «Tipo: Pachanga».
+-- * «Equipar todo» leaves the list; the first row is the format row «< 11 v 11 >» / «< 5 v 5 >».
 -- * The 5v5 templates are the retail teamInfo[1] of the same 11 docks. The retail menu already shows / edits them when
 --   it is opened with the team kind param (4081600465) = 1 (the story 5v5 look: mainmenu04_10_formation_base, 5 cards),
 --   The selector switches IN PLACE (v3): the pitch layers are closed and built again for the other kind; the dock never
@@ -9,12 +9,10 @@
 --   (CMND_EVT_PACHANGA_*, evt_loader\pachanga_slot<N>.json, one per bank). «Establecer como equipo activo» sets the one of
 --   the type on screen; the dock number check mark, the header mark and the selector's help line show them.
 -- * Only in the standalone dock (opened from the title) outside INAROGUE / story / Crónica; elsewhere the row is grey.
--- * 2026-10-02 (Nacho): the first row shows the template types as columns «11v11  7v7  5v5  3v3» (EVT_PT_KINDS, the one
---   declaration of the types: 7v7 / 3v3 locked). Left / right move a column cursor on that row, decide switches to the
---   cursor's type. Every refusal goes through PT.gate (one guard: OnEnter refuses at once, PT.switch checks again).
---   Since 14:05 the same day: 4 boxes (layers evt_pt_box / evt_pt_box_text of IF's menus/102_team/pachanga_dock.toml) instead of
---   one text line; the column decided is the one OnEnter accepted (PT.pick) and the cursor is reset only by a real
---   focus move (n6 / list index), not by the list's control focus going off during a decide.
+-- * The first row is the format row «< 11 v 11 >» (EVT_PT_KINDS, the one declaration of the formats; only the enabled
+--   ones are offered). Left / right (and a click on its arrows) cycle the value without leaving the list; Accept on the
+--   row switches the dock to the format shown. Every refusal goes through PT.gate (one guard: OnEnter refuses at once,
+--   PT.switch checks again).
 -- * 2026-09-30 (doc §9): the two templates of a dock share name, emblem, kit, supertácticas, coach and managers
 --   (PT.link); leaving the dock puts the Partido team of the visit back in vsUseTeamSet (PT.leave).
 -- Uses the file locals t, t2, n, n4, n5, n10, n11, flag3, flag4 (graft.toml expect). Wraps once per definition (EVT_PT_WRAPPED).
@@ -78,6 +76,7 @@ do
       HEADER = @crc:evt_pt_header@,
       KIND_11 = @crc:evt_pt_kind_11@, KIND_7 = @crc:evt_pt_kind_7@, KIND_5 = @crc:evt_pt_kind_5@,
       KIND_3 = @crc:evt_pt_kind_3@, KIND_LOCKED = @crc:evt_pt_kind_locked@,
+      FORMAT = @crc:evt_pt_format_row@,
     },
     FALLBACK = {
       MATCH = "Tipo: Partido",
@@ -91,6 +90,7 @@ do
       HEADER = "Pachanga",
       KIND_11 = "11v11", KIND_7 = "7v7", KIND_5 = "5v5", KIND_3 = "3v3",
       KIND_LOCKED = "Este tipo de plantilla todavía no está disponible.",
+      FORMAT = "< {a} v {b} >",
     },
     active = -1, loader = false, start = nil, logs = 0,
   }
@@ -242,104 +242,63 @@ do
   end
 
   -- ================================================================================================================
-  -- The template types of the first row, in column order (Nacho 2026-10-02: «11v11  7v7  5v5  3v3»). The ONE place
-  -- that declares them; everything below reads this list. kind = the retail team kind the dock shows for that type
-  -- (n10: 0 = teamInfo[0], the 11v11 team; 1 = teamInfo[1], the 5v5 team; retail has no other kind). A type with
-  -- enabled = false or without a kind is drawn locked and refused (NG). text = a key of PT.T (or a menu_text id).
-  -- A mode that adds a type sets EVT_PT_KINDS (same fields) before this block.
+  -- The match formats of the first row, in cycle order. The ONE place that declares them; everything below reads this
+  -- list. kind = the retail team kind the dock shows for that format (n10: 0 = teamInfo[0], the 11v11 team; 1 =
+  -- teamInfo[1], the 5v5 team; retail has no other kind). players / rivals = the numbers of the row text «< 11 v 11 >»
+  -- (default: the numbers of id). A format with enabled = false or without a kind is skipped by the row. text = a key of
+  -- PT.T (or a menu_text id), used when the format has no numbers. A mode that adds a format sets EVT_PT_KINDS (same
+  -- fields) before this block.
   if EVT_PT_KINDS == nil then
     EVT_PT_KINDS = {
-      {id = "11v11", text = "KIND_11", kind = 0, enabled = true},
-      {id = "7v7", text = "KIND_7", enabled = false},
-      {id = "5v5", text = "KIND_5", kind = 1, enabled = true},
-      {id = "3v3", text = "KIND_3", enabled = false},
+      {id = "11v11", text = "KIND_11", players = 11, rivals = 11, kind = 0, enabled = true},
+      {id = "7v7", text = "KIND_7", players = 7, rivals = 7, enabled = false},
+      {id = "5v5", text = "KIND_5", players = 5, rivals = 5, kind = 1, enabled = true},
+      {id = "3v3", text = "KIND_3", players = 3, rivals = 3, enabled = false},
     }
   end
 
-  -- The team name's length is Utilities' (graft util_team_name, docs/game/ui/team-name-length.md; 2026-10-15): this
-  -- block only keeps the other template in step after the retail name edit.
+  -- The team name's length is Utilities' (graft util_team_name, docs/game/ui/team-name-length.md): this block only keeps
+  -- the other template in step after the retail name edit.
 
-  -- colours of the text fallback (one colour-tagged line in the row's own text nodes, used only when the menu data
-  -- has no box layers: an older install). font_color rows, docs/game/ui/fonts.md §4.
-  PT.STYLE = {
-    CURSOR = "[CY]",                 -- the column the cursor is on (focused row only): yellow
-    OTHER = "[CGRAYOUT]",            -- a type that can be chosen: grey 160
-    LOCKED = "[CGRAYOUT05]",         -- a locked type, or every other type when the row cannot switch: grey 89
-    OFF = "[C]",
-  }
-  PT.GAP = "  "
+  -- The format row (docs/game/ui/pachanga-templates.md §11): a normal list row whose text is «< 11 v 11 >». Left / right
+  -- (and a click on its arrows) cycle the enabled formats, wrapping; the value is only a preview until Accept on the
+  -- row, which switches the dock to that format (PT.switch). Leaving the row puts the value back on the format on screen.
   PT.ARG_RIGHT = 2682339866          -- OnChangeFocus arg of CMD_RIGHT on the list (retail: move to the pitch)
   PT.CTRL, PT.CMD_LEFT = 1332654303, 2765147006   -- CMND_CHECK_INPUT_CMD(MENU_CTRL, crc32("CMD_LEFT")): not in the setting
+  PT.MOUSE_LEFT = 218912913          -- CMD_EVT_MOUSE_LEFT: the mouse's left button is down
+  PT.CHECK_INPUT = 4265778440        -- CMND_CHECK_INPUT_CMD (ctrl, cmd) -> bool
   PT.SE_MOVE = 2500047763            -- sy0005
-  PT.cur = nil                       -- the cursor column of the row (nil = the active type's)
-  PT.pick = nil                      -- the column OnEnter accepted, for the OnDecideFocus of the same press
-
-  -- ================================================================================================================
-  -- The boxes (Nacho 2026-10-02: «4 cajas»; second pass: «inclinadas, sin la placa de la fila detrás»). Menu data of
-  -- Inazuma Fantasy (research/mods/InazumaFantasy/menus/102_team/pachanga_dock.toml), two layers of 4 instances attached to the
-  -- type row's _pos_base01 through the trace evt_pt_box of the dock's list item (evt_pt_list_item):
-  -- * evt_pt_box = the plates: a clone of the retail list tab cmn06_20_list_tab_item, whose base _icon_base01 is a
-  --   slanted blue tab drawn at its own size (92 x 52, 7 px slant; the row plates of the lists are 392 px textures and
-  --   lose their slant when squeezed). Its icon slots hidden. The tab is flat blue in its texture and a tint only
-  --   multiplies (it cannot make it white), so the states swap the base's sprite (558735651, the retail sprite swap):
-  --   the selected box keeps the retail blue icon_base01, every other box draws evt_pt_box_white, a white plate of the
-  --   same 92 x 52 shape that IF's menu data adds to the tab's atlas (menus/102_team/pachanga_dock.toml [[sprite]]).
-  -- * evt_pt_box_text = the labels: a clone of the list row (team01_02_list_item), plates hidden, scaled evenly.
-  -- The row's own plate (white / blue, cyan focus frame) is hidden on the type row: only the boxes show; the retail
-  -- cursor (green arrow at x -19..45 of the row) stays left of the first box (x >= 60).
-  -- Without those layers (older menu data) the row falls back to the colour-tagged text line.
-  PT.BOX, PT.BOX_TEXT = @crc:evt_pt_box@, @crc:evt_pt_box_text@
-  PT.TRACE_BOX = @crc:evt_pt_box@    -- trace name of the 8 attach rows of evt_pt_list_item
-  PT.TRACE = 1774843228              -- CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, trace, bool)
-  PT.MESH_VIS = 3405944500           -- CMND_SET_MESH_VISIBLE (layer, mesh, bool, idx)
-  PT.SCALE = 3778714801              -- CMND_SET_LAYER_LOCAL_SCALE (layer, sx, sy, sz, idx)
-  PT.PRIM_COLOR = 855211291          -- CMND_SET_PRIM_COLOR (layer, idx, mesh, r, g, b): retail grey-out tint
-  PT.MODEL_ALPHA, PT.TEXT_ALPHA = 4231609516, 1126837159
-  PT.TXT_ON, PT.TXT_OFF = 931545948, 3705682548   -- _text_list01_on / _off
-  PT.PLATE = {ON = 1525181930, OFF = 4270801635, OK = 713202021, OL = 3034975430}   -- the row plates _list_base01_*
-  PT.TAB = {BASE = @crc:_icon_base01@, ICON_ON = @crc:_icon_list_tab_dmy01_on@, ICON_OFF = @crc:_icon_list_tab_dmy01_off@}
-  -- geometry (item units of the row, x right): boxes between x 60 and 462 (the row plate ends at 471; the retail cursor
-  -- ends at 45); the tab base is 92 x 52 centred on its origin; at most 1:1, gaps >= 6 px, even gaps.
-  -- pop: the cursor box's scale (2026-10-13, owner: «al pasar el cursor por una se tiene que marcar seleccionada
-  -- haciéndose más grande, pero la que corresponda»: back to 10 % bigger, for the pointer and the keys alike)
-  PT.G = {x0 = 60, x1 = 462, tabW = 92, tabH = 52, gapMin = 6, textX = 47, ts = 0.66, pop = 1.1}
-  -- The boxes as cells (Nacho 2026-10-02, fourth pass: «cada caja su propia celda, sin selección de la fila entera»):
-  -- the list row's own focus visuals are switched off on the type row (its Active animation slides _pos_base01, which
-  -- carried the four boxes as one; the green list cursor is hidden while the row has the focus) and the cursor box
-  -- gets the retail per-item animation instead: Focus of its tab (cmn06_20 «button» set: base + on icon; round 3: the
-  -- label's Active slide is no longer played, it moved the text off-centre). The tab's Focus «out» hides the base, so
-  -- it is never played on the white boxes.
-  -- CMND_PLAY_ANIME_TYPE 3781155141 (layer, idx, type, event 0 in / 2 out, set); 1352645570 (layer, type, idx) -> the
-  -- running anime id; CMND_SKIP_ANIME 2702699282 (layer, id, set, 0, idx): the retail dock's own calls (OnChangeFocus).
-  PT.ANIME, PT.ANIME_ID, PT.SKIP = 3781155141, 1352645570, 2702699282
-  PT.A = {ACTIVE = 1286797620, FOCUS = 2734777837, SET = 973515837}   -- Active / Focus / «button»
-  PT.CURSOR_LAYER = 2296367164      -- cmn05_01_cursor (the green list cursor)
-  PT.TEXT_SIZE = 3549540977         -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node, string) -> w, h
-  PT.ADV = {v = 18.8, other = 20}    -- glyph advance at 32 px (digits 24.4: font_def / font_ja mean), to centre labels
-  PT.SPRITE = 558735651              -- sprite swap (layer, sheet, sprite, node, 0, idx): docs/game/characters/face-icon-uniform.md
-  PT.SHEET = 3558631217              -- crc32("#/menu/20_cmn/cmn06/cmn06_20/cmn06_20.g4tx"), the tab's atlas
-  PT.SPR = {NODE = 2978480988, BLUE = 2978480988, WHITE = @crc:evt_pt_box_white@}   -- icon_base01 (node and retail blue sprite) / IF's white plate
-  PT.TINT = {1, 1, 1}                -- the plates are not tinted (resets the tint of the earlier builds)
-  -- 2026-10-13 (owner: the blue highlight follows the cursor): tints of the box states (CMND_SET_PRIM_COLOR multiplies)
-  -- LIGHT_BLUE: the cursor on a type that is not enabled = the white plate tinted a lighter shade of the retail blue
-  -- (label N = 55, 145, 255 -> about 158, 201, 255); ACTIVE_AWAY: the type on screen while the cursor is on another
-  -- box = the retail blue plate darkened (navy, white label), so it is still recognisable but not the highlight
-  PT.TINT_LIGHT_BLUE = {0.62, 0.79, 1}
-  PT.TINT_ACTIVE_AWAY = {0.45, 0.5, 0.62}
-  -- labels: white on the blue box, blue on a white box (like the retail «off» rows), grey on a locked box
-  -- (font_color: N = 55,145,255; GRAYOUT05 = grey 89, readable on the light plate)
-  PT.LABEL = {ON = "[CW]", WHITE_BOX = "[CN]", LOCKED = "[CGRAYOUT05]", OFF = "[C]"}
-  PT.LOCKED_ALPHA = 0.55
+  PT.POINTER = 558229292             -- the pointer's screen px (y down; compared as x, -y with global positions)
+  PT.GPOS = 4002164178               -- global position of a layer instance (layer, idx)
+  PT.MESH_GPOS = 499270986           -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, mesh)
+  PT.TEXT_SIZE = 3549540977          -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node, string) -> w, h
+  PT.TXT_ON = 931545948              -- _text_list01_on
+  PT.TEXT_X = 47                     -- x of the row's text node from the row origin (item units)
+  PT.ARROW_PART = 0.25               -- share of the text width, at each end, that counts as its arrow for a click
+  PT.cur = nil                       -- the previewed format (index in PT.kinds(); nil = the format on screen)
+  PT.pick = nil                      -- the format OnEnter accepted, for the OnDecideFocus of the same press
 
   function PT.kinds()
     if type(EVT_PT_KINDS) == "table" and #EVT_PT_KINDS > 0 then
       return EVT_PT_KINDS
     end
-    return {{id = "11v11", text = "KIND_11", kind = 0, enabled = true}, {id = "5v5", text = "KIND_5", kind = 1, enabled = true}}
+    return {{id = "11v11", text = "KIND_11", players = 11, rivals = 11, kind = 0, enabled = true},
+            {id = "5v5", text = "KIND_5", players = 5, rivals = 5, kind = 1, enabled = true}}
   end
 
   function PT.kindOn(k)
     return type(k) == "table" and k.enabled ~= false and (k.kind == 0 or k.kind == 1)
+  end
+
+  -- the indexes of the enabled formats, in cycle order
+  function PT.options()
+    local list = {}
+    for i, k in ipairs(PT.kinds()) do
+      if PT.kindOn(k) then
+        list[#list + 1] = i
+      end
+    end
+    return list
   end
 
   function PT.kindLabel(k)
@@ -354,7 +313,21 @@ do
     return tostring(k.label or k.id or "?")
   end
 
-  -- the column of the type on screen (n10)
+  -- the row text of a format: «< 11 v 11 >» (text key evt_pt_format_row), else «< label >»
+  function PT.formatText(k)
+    if type(k) ~= "table" then
+      return ""
+    end
+    local id = tostring(k.id or "")
+    local a = tonumber(k.players) or tonumber(string.match(id, "^(%d+)"))
+    local b = tonumber(k.rivals) or tonumber(string.match(id, "(%d+)$")) or a
+    if a ~= nil and b ~= nil then
+      return PT.text("FORMAT", {a = math.floor(a), b = math.floor(b)})
+    end
+    return "< " .. PT.kindLabel(k) .. " >"
+  end
+
+  -- the format on screen (n10)
   function PT.activeCol()
     for i, k in ipairs(PT.kinds()) do
       if PT.kindOn(k) and k.kind == (n10 or 0) then
@@ -366,7 +339,7 @@ do
 
   function PT.curCol()
     local c = PT.cur
-    if type(c) ~= "number" or c < 1 or c > #PT.kinds() then
+    if type(c) ~= "number" or not PT.kindOn(PT.kinds()[c]) then
       c = PT.activeCol()
     end
     return c
@@ -389,8 +362,8 @@ do
 
   -- the dock's focus is on the row. n6 = the retail «layer with the focus» (OnChangeFocus / MoveToOtherLayer keep it;
   -- 0 before the first focus change, when the list has it). Not CMND_IS_CTRL_FOCUS_ACTIVE: the retail OnEnter turns
-  -- the list's control focus off for the decide, and a cursor reset on that loss sent every decide to the type on
-  -- screen (bug 2026-10-02 14:05: «switch refused same (decide)» while the cursor showed 5v5).
+  -- the list's control focus off for the decide, and a reset on that loss would send every decide to the format on
+  -- screen.
   function PT.rowFocused()
     local i = PT.rowIndex()
     if i < 0 or (n6 ~= nil and n6 ~= 0 and n6 ~= PT.LIST) then
@@ -399,182 +372,10 @@ do
     return PT.listIndex() == i
   end
 
-  -- «11v11  7v7  5v5  3v3»: the text fallback (no box layers)
+  -- the row's text: the previewed format while the row can switch, else the format on screen
   function PT.rowText()
-    local can = PT.canSwitch()
-    local act = PT.activeCol()
-    local cur = (can and PT.rowFocused()) and PT.curCol() or nil
-    local parts = {}
-    for i, k in ipairs(PT.kinds()) do
-      local s = PT.kindLabel(k)
-      local tag = nil
-      if i == cur then
-        tag = PT.STYLE.CURSOR
-      elseif i ~= act then
-        tag = (can and PT.kindOn(k)) and PT.STYLE.OTHER or PT.STYLE.LOCKED
-      end
-      parts[#parts + 1] = tag and (tag .. s .. PT.STYLE.OFF) or s
-    end
-    return table.concat(parts, PT.GAP)
-  end
-
-  -- the box layers are there and have an instance per type
-  function PT.hasBoxes()
-    local m = #PT.kinds()
-    for _, L in ipairs({PT.BOX, PT.BOX_TEXT}) do
-      local ok, e = pcall(funcLuaMenuCommand, PT.EXISTS_LAYER, L, m - 1)
-      if not ok or e ~= true then
-        return false
-      end
-    end
-    return true
-  end
-
-  -- the boxes follow the type row only (the 8 list items carry the attach rows; retail does the same for its cursor)
-  function PT.traceBoxes()
-    local r = PT.rowIndex()
-    for i = 0, (n or 0) - 1 do
-      pcall(funcLuaMenuCommand, PT.TRACE, PT.LIST, i, PT.TRACE_BOX, i == r)
-    end
-  end
-
-  function PT.labelW(s)
-    local w = 0
-    for c in string.gmatch(s, ".") do
-      if c:match("%d") then
-        w = w + 24.4
-      else
-        w = w + (PT.ADV[c] or PT.ADV.other)
-      end
-    end
-    return w
-  end
-
-  -- box k (1-based) of m: centre x and scale (item units)
-  function PT.boxAt(k, m)
-    local G = PT.G
-    local span = G.x1 - G.x0
-    local sc = math.min(1, (span - G.gapMin * (m - 1)) / (m * G.tabW))
-    local w = G.tabW * sc
-    local gap = m > 1 and (span - m * w) / (m - 1) or 0
-    return G.x0 + w / 2 + (k - 1) * (w + gap), sc
-  end
-
-  -- one box: plate sprite (blue = selected, white = the others) and alpha, scale (the cursor box a little bigger), its
-  -- label centred
-  function PT.drawBox(k, m, blue, tag, alpha, cursor, label, tint)
-    tint = tint or PT.TINT
-    local G, i = PT.G, k - 1
-    local cx, sc = PT.boxAt(k, m)
-    local s = sc * (cursor and G.pop or 1)
-    pcall(funcLuaMenuCommand, PT.SCALE, PT.BOX, s, s, 1, i)
-    pcall(funcLuaMenuCommand, PT.SET_POS, PT.BOX, cx, 0, 0, i)
-    pcall(funcLuaMenuCommand, PT.MESH_VIS, PT.BOX, PT.TAB.BASE, true, i)
-    pcall(funcLuaMenuCommand, PT.MESH_VIS, PT.BOX, PT.TAB.ICON_ON, false, i)
-    pcall(funcLuaMenuCommand, PT.MESH_VIS, PT.BOX, PT.TAB.ICON_OFF, false, i)
-    pcall(funcLuaMenuCommand, PT.SPRITE, PT.BOX, PT.SHEET, blue and PT.SPR.BLUE or PT.SPR.WHITE, PT.SPR.NODE, 0, i)
-    pcall(funcLuaMenuCommand, PT.PRIM_COLOR, PT.BOX, i, PT.TAB.BASE, tint[1], tint[2], tint[3])
-    pcall(funcLuaMenuCommand, PT.MODEL_ALPHA, PT.BOX, i, 0, alpha)
-    local ts = G.ts * s
-    -- centred on the tab: the label's real width (the engine's text rectangle), else the font estimate; the text node
-    -- is vertically centred on the row origin (style «lc», rect y 27..-27), as the tab
-    local okW, w = pcall(funcLuaMenuCommand, PT.TEXT_SIZE, PT.BOX_TEXT, i, PT.TXT_ON, label)
-    if not okW or type(w) ~= "number" or w <= 0 then
-      w = PT.labelW(label)
-    end
-    local x = cx - (G.textX + w / 2) * ts
-    pcall(funcLuaMenuCommand, PT.SCALE, PT.BOX_TEXT, ts, ts, 1, i)
-    pcall(funcLuaMenuCommand, PT.SET_POS, PT.BOX_TEXT, x, 0, 0, i)
-    for _, mesh in pairs(PT.PLATE) do
-      pcall(funcLuaMenuCommand, PT.MESH_VIS, PT.BOX_TEXT, mesh, false, i)
-    end
-    local str = tag .. label .. PT.LABEL.OFF
-    for _, node in ipairs({PT.TXT_ON, PT.TXT_OFF}) do
-      pcall(funcLuaMenuCommand, PT.SET_TEXT, PT.BOX_TEXT, node, str, i)
-      pcall(funcLuaMenuCommand, PT.TEXT_ALPHA, PT.BOX_TEXT, i, node, alpha < 1 and 0.9 or 1)
-    end
-  end
-
-  -- the four boxes (Nacho 2026-10-02, third pass; 2026-10-13: the blue follows the cursor). While the row has the
-  -- focus the CURSOR's box is the highlight, bigger by G.pop: retail blue with a white label when its type can be
-  -- chosen, the lighter blue (PT.TINT_LIGHT_BLUE on the white plate) with a grey label when it cannot (7v7, 3v3...;
-  -- deciding it still answers NG, PT.gate). The type on screen, when the cursor is on another box, keeps the blue
-  -- plate darkened to navy (PT.TINT_ACTIVE_AWAY, white label); with no cursor (row not focused) it is the plain blue
-  -- box as before. Every other type that can be chosen = white plate, blue label (like the retail row plates); locked
-  -- (or every other type when the row cannot switch) = white plate at 55 %, dark grey label.
-  function PT.drawBoxes()
-    local kinds = PT.kinds()
-    local m = #kinds
-    local can = PT.canSwitch()
-    local act = PT.activeCol()
-    local cur = (can and PT.rowFocused()) and PT.curCol() or nil
-    for k, kd in ipairs(kinds) do
-      local on = PT.kindOn(kd) and (can or k == act)
-      local blue, tag, alpha, tint = false, PT.LABEL.WHITE_BOX, 1, PT.TINT
-      if k == cur then
-        if on then
-          blue, tag = true, PT.LABEL.ON
-        else
-          tag, tint = PT.LABEL.LOCKED, PT.TINT_LIGHT_BLUE
-        end
-      elseif k == act and on then
-        blue, tag = true, PT.LABEL.ON
-        if cur ~= nil then
-          tint = PT.TINT_ACTIVE_AWAY
-        end
-      elseif not on then
-        tag, alpha = PT.LABEL.LOCKED, PT.LOCKED_ALPHA
-      end
-      PT.drawBox(k, m, blue, tag, alpha, k == cur, PT.kindLabel(kd), tint)
-    end
-    PT.shown = cur
-    PT.cellFocus(cur, PT.rowFocused())
-  end
-
-  -- the row as a list item stays still and without the list cursor while the cursor is on a box (focused row)
-  function PT.rowQuiet(on)
-    local i = PT.rowIndex()
-    if i < 0 then
-      return
-    end
-    if on then
-      local okI, id = pcall(funcLuaMenuCommand, PT.ANIME_ID, PT.LIST, PT.A.ACTIVE, i)
-      pcall(funcLuaMenuCommand, PT.ANIME, PT.LIST, i, PT.A.ACTIVE, 2, PT.A.SET)
-      if okI and id ~= nil then
-        pcall(funcLuaMenuCommand, PT.SKIP, PT.LIST, id, PT.A.SET, 0, i)
-      end
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], PT.CURSOR_LAYER, 0, false)
-      PT.cursorHidden = true
-    elseif PT.cursorHidden then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], PT.CURSOR_LAYER, 0, true)
-      PT.cursorHidden = false
-    end
-  end
-
-  -- the cursor box (column, nil = no cursor) plays its tab's retail Focus «in». The labels are NEVER animated (round 3,
-  -- Nacho's screenshot: the label's Active «in» — the list row clip _mt_list_in_01 on _pos_base01 — slid the selected
-  -- «11v11» right, out of its tab): on every cursor change all four labels get Active «out», whose clip
-  -- (_smt_default_01) is the rest pose, so a label slid by an older build or by the retail is put back. The row is kept
-  -- still whenever it has the focus (also when it cannot switch: Crónica, no cursor)
-  function PT.cellFocus(cur, focused)
-    if PT.animCur ~= cur or PT.labelsReset ~= true then
-      for k = 0, #PT.kinds() - 1 do
-        pcall(funcLuaMenuCommand, PT.ANIME, PT.BOX_TEXT, k, PT.A.ACTIVE, 2, PT.A.SET)
-      end
-      PT.labelsReset = true
-      if cur ~= nil and cur ~= PT.animCur then
-        pcall(funcLuaMenuCommand, PT.ANIME, PT.BOX, cur - 1, PT.A.FOCUS, 0, PT.A.SET)
-      end
-      PT.animCur = cur
-    end
-    PT.rowQuiet(focused == true)
-  end
-
-  -- the type row's own plate (white / blue, cyan focus frame) is hidden: only the boxes show
-  function PT.hideRowPlate(i)
-    for _, mesh in pairs(PT.PLATE) do
-      pcall(funcLuaMenuCommand, PT.MESH_VIS, PT.LIST, mesh, false, i)
-    end
+    local col = PT.canSwitch() and PT.curCol() or PT.activeCol()
+    return PT.formatText(PT.kinds()[col])
   end
 
   function PT.drawRow()
@@ -582,99 +383,68 @@ do
     if not EVT_PACHANGA or i < 0 or type(SetTeamDockListItemText) ~= "function" then
       return
     end
-    if PT.hasBoxes() then
-      if not PT.traced then
-        PT.traceBoxes()
-        PT.traced = true
-        PT.log("type boxes", #PT.kinds(), "row", i, "cursor", tostring(PT.cur), "on screen", PT.activeCol())
-      end
-      pcall(SetTeamDockListItemText, i, "")
-      PT.hideRowPlate(i)
-      pcall(PT.drawBoxes)
-    else
-      pcall(SetTeamDockListItemText, i, PT.rowText())
+    local s = PT.rowText()
+    if s ~= PT.drawn then
+      PT.drawn = s
+      pcall(SetTeamDockListItemText, i, s)
     end
   end
 
-  -- 2026-10-13 pointer (owner: «Esto tiene que estar dividido, al pasar el cursor por una se tiene que marcar
-  -- seleccionada haciéndose más grande, pero la que corresponda»): the engine's only zone here is the whole list row
-  -- (team01_02_list_item), so hovering any box just focused the row and the cursor stayed on the type on screen. Each
-  -- box is hit-tested in Lua from what is drawn (its global position 4002164178, the tab's 92 x 52 at the row's box
-  -- scale; px per item unit measured from the first and last box): a pointer move onto a box puts the cursor there
-  -- (the box turns blue and pops, sound), off every box the cursor goes back to the type on screen. A click is the
-  -- row's own decide (OnEnter / OnDecideFocus read PT.curCol()), so it picks the box under the pointer.
-  PT.PTR_POS, PT.PTR_MOVED, PT.GPOS = 558229292, 3272825600, 4002164178
-
-  function PT.boxUnder(x, y)
-    local m = #PT.kinds()
-    if m < 2 or not PT.hasBoxes() then
-      return nil
-    end
-    local okA, ax = pcall(funcLuaMenuCommand, PT.GPOS, PT.BOX, 0)
-    local okB, bx = pcall(funcLuaMenuCommand, PT.GPOS, PT.BOX, m - 1)
-    local ca, sc = PT.boxAt(1, m)
-    local cb = PT.boxAt(m, m)
-    if not okA or not okB or type(ax) ~= "number" or type(bx) ~= "number" or math.abs(cb - ca) < 1 then
-      return nil
-    end
-    local k = math.abs(bx - ax) / math.abs(cb - ca)
-    if k < 0.05 or k > 20 then
-      return nil
-    end
-    local hw, hh = PT.G.tabW / 2 * sc * k, PT.G.tabH / 2 * sc * k
-    for c = 1, m do
-      local ok, gx, gy = pcall(funcLuaMenuCommand, PT.GPOS, PT.BOX, c - 1)
-      if ok and type(gx) == "number" and type(gy) == "number" and math.abs(x - gx) <= hw and math.abs(-y - gy) <= hh then
-        return c
-      end
-    end
-    return nil
-  end
-
-  -- every Step: the pointer moved -> the box under it gets the cursor; off the boxes -> the type on screen
-  function PT.pointer()
-    local okP, x, y = pcall(funcLuaMenuCommand, PT.PTR_POS)
-    if not okP or type(x) ~= "number" or type(y) ~= "number" then
-      return
-    end
-    local okM, mv = pcall(funcLuaMenuCommand, PT.PTR_MOVED)
-    local moved = (okM and mv == true) or (PT.px ~= nil and (math.abs(x - PT.px) > 1 or math.abs(y - PT.py) > 1))
-    PT.px, PT.py = x, y
-    if not moved or PT.busy or PT.co ~= nil or PT.child or PT.pick ~= nil or not PT.canSwitch() then
-      return
-    end
-    local c = PT.boxUnder(x, y)
-    if c ~= nil then
-      if not PT.hover or c ~= PT.curCol() then
-        if c ~= PT.curCol() then
-          funcLuaCommand(PT.SOUND, PT.SE_MOVE)
-        end
-        PT.hover, PT.cur = true, c
-        PT.drawRow()
-        PT.activeLine()
-      end
-    elseif PT.hover then
-      PT.hover, PT.cur = false, nil
-      PT.drawRow()
-      PT.activeLine()
-    end
-  end
-
-  -- left / right on the row: the cursor moves over every column (locked ones too: deciding them answers NG). false =
-  -- not moved (end of the row, or the row cannot switch)
+  -- left / right on the row: the next enabled format, wrapping. false = not moved (fewer than two formats, or the row
+  -- cannot switch)
   function PT.moveCur(d)
     if PT.busy or PT.co ~= nil or not PT.canSwitch() then
       return false
     end
-    local c = PT.curCol() + d
-    if c < 1 or c > #PT.kinds() then
+    local opts = PT.options()
+    if #opts < 2 then
       return false
     end
-    PT.cur = c
+    local cur, at = PT.curCol(), 1
+    for p, i in ipairs(opts) do
+      if i == cur then
+        at = p
+      end
+    end
+    PT.cur = opts[(at - 1 + d) % #opts + 1]
     funcLuaCommand(PT.SOUND, PT.SE_MOVE)
     PT.drawRow()
     PT.activeLine()
     return true
+  end
+
+  -- a mouse click on the row: -1 / 1 = on its left / right arrow, nil = elsewhere (or not a mouse click). The text node
+  -- is left-aligned at PT.TEXT_X of the row; the scale from item units to global units is measured from it.
+  function PT.clickArrow()
+    local okL, down = pcall(funcLuaCommand, PT.CHECK_INPUT, PT.CTRL, PT.MOUSE_LEFT)
+    if not okL or down ~= true then
+      return nil
+    end
+    local i = PT.rowIndex()
+    local okP, px, py = pcall(funcLuaMenuCommand, PT.POINTER)
+    local okR, rx = pcall(funcLuaMenuCommand, PT.GPOS, PT.LIST, i)
+    local okT, tx = pcall(funcLuaMenuCommand, PT.MESH_GPOS, PT.LIST, i, PT.TXT_ON)
+    if i < 0 or not okP or not okR or not okT or type(px) ~= "number" or type(rx) ~= "number"
+        or type(tx) ~= "number" then
+      return nil
+    end
+    local k = (tx - rx) / PT.TEXT_X
+    if k < 0.3 or k > 3 then
+      k = 1
+    end
+    local s = PT.rowText()
+    local okW, w = pcall(funcLuaMenuCommand, PT.TEXT_SIZE, PT.LIST, i, PT.TXT_ON, s)
+    if not okW or type(w) ~= "number" or w <= 0 then
+      w = 20 * #s
+    end
+    w = w * k
+    local pad = 24 * k
+    if px >= tx - pad and px <= tx + w * PT.ARROW_PART then
+      return -1
+    elseif px >= tx + w * (1 - PT.ARROW_PART) and px <= tx + w + pad then
+      return 1
+    end
+    return nil
   end
 
   -- THE guard of the type switch (every path: OnEnter on the row, PT.switch from OnDecideFocus or a wrapper).
@@ -1145,7 +915,8 @@ do
     end
     PT.log("switched", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4)
     back()
-    PT.cur = nil                     -- the cursor stays on the type now on screen
+    PT.cur = nil                     -- the row shows the format now on screen
+    PT.drawn = nil
     PT.drawRow()
   end
 
@@ -1577,7 +1348,7 @@ do
         pcall(SetActiveDockBackground, n4 == n5)
       end
       PT.flags()
-      PT.cur, PT.pick, PT.child, PT.traced = nil, nil, false, false
+      PT.cur, PT.pick, PT.child, PT.drawn = nil, nil, false, nil
       PT.log("open", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4, "pachanga", PT.active,
         "loader", tostring(PT.loader))
       return table.unpack(r, 1, r.n)
@@ -1591,10 +1362,6 @@ do
       if PT.pachanga() and a1 == n11 then
         pcall(PT.close11)
       end
-      if EVT_PACHANGA and (a1 == PT.BOX or a1 == PT.BOX_TEXT) then
-        PT.traced = false
-        pcall(PT.drawRow)
-      end
       if PT.pachanga() and PT.NO5[a1] then
         pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false)
         pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, false)
@@ -1606,8 +1373,9 @@ do
   PT.wrap("SetupTeamDockListItemText", function(orig)
     return function(a1, a2, ...)
       if EVT_PACHANGA and a2 == PT.ROW then
-        SetTeamDockListItemText(a1, PT.hasBoxes() and "" or PT.rowText())
-        pcall(PT.drawRow)
+        local s = PT.rowText()
+        SetTeamDockListItemText(a1, s)
+        PT.drawn = s
         return
       end
       return orig(a1, a2, ...)
@@ -1632,9 +1400,9 @@ do
 
   PT.wrap("OnChangeFocus", function(orig)
     return function(a1, a2, ...)
-      -- right on the row: the next column; from the last column (or a row that cannot switch) the retail move to the
-      -- pitch. OnChangeFocus is where the retail list moves the focus for CMD_RIGHT (MoveToOtherLayer), so the focus
-      -- stays when the original is not called. a1 = the list: the input came from it.
+      -- right on the row: the next format (wrapping); a row that cannot switch keeps the retail move to the pitch.
+      -- OnChangeFocus is where the retail list moves the focus for CMD_RIGHT (MoveToOtherLayer), so the focus stays
+      -- when the original is not called. a1 = the list: the input came from it.
       if EVT_PACHANGA and a1 == PT.LIST and a2 == PT.ARG_RIGHT and PT.listIndex() == PT.rowIndex()
           and PT.moveCur(1) then
         return
@@ -1645,7 +1413,7 @@ do
         pcall(OnChangeFocusCommon, PT.FORM_BOX, 0, true)
       end
       if EVT_PACHANGA then
-        -- the focus left the row (list up / down, to the pitch): the cursor goes back to the type on screen. Only a
+        -- the focus left the row (list up / down, to the pitch): the value goes back to the format on screen. Only a
         -- real focus move resets it (never a control focus switched off for a decide, see PT.rowFocused)
         local on = PT.rowFocused()
         if not on then
@@ -1664,44 +1432,33 @@ do
   end)
 
   -- left on the row: not in the list's input rows (retail: nothing), read from the pad (CMND_CHECK_INPUT_CMD, as the
-  -- skill-slot picker); the queued messages of OnEnter (PT.say) run here. The cursor is not reset here (the decide of
-  -- a press switches the list's control focus off until OnDecideFocus; bug 2026-10-02 14:05).
+  -- skill-slot picker); the queued messages of OnEnter (PT.say) run here. The value is not reset here (the decide of
+  -- a press switches the list's control focus off until OnDecideFocus).
   PT.wrap("Step", function(orig)
     return function(...)
       local r = PT.pack(orig(...))
       if EVT_PACHANGA then
-        local okL, left = pcall(funcLuaCommand, 4265778440 --[[CMND_CHECK_INPUT_CMD]], PT.CTRL, PT.CMD_LEFT)
+        local okL, left = pcall(funcLuaCommand, PT.CHECK_INPUT, PT.CTRL, PT.CMD_LEFT)
         left = okL and left == true
         if left and not PT.left and PT.co == nil and not PT.busy and not PT.child and PT.pick == nil
             and PT.rowFocused() then
           PT.moveCur(-1)
         end
         PT.left = left
-        if left then
-          PT.hover = false             -- the keys own the cursor again
-        end
-        PT.pointer()
-        -- focus in / out of the row by any path: the cursor box shown or hidden; the boxes are put back now and then
-        -- (a refresh of the list may have touched their meshes)
+        -- focus in / out of the row by any path: the value shown follows; the text is put back now and then (a
+        -- refresh of the list may have rewritten it)
         local on = PT.rowFocused()
+        if not on and PT.cur ~= nil and not PT.busy and PT.pick == nil then
+          PT.cur = nil
+        end
         PT.frames = (PT.frames or 0) + 1
         if on ~= (PT.onRow == true) or PT.frames >= 30 then
           PT.onRow = on
           PT.frames = 0
+          PT.drawn = nil
           PT.drawRow()
         end
         PT.stepSay()
-      end
-      return table.unpack(r, 1, r.n)
-    end
-  end)
-
-  -- the list items carry the boxes' attach rows: only the type row keeps the trace on
-  PT.wrap("OnSetupLayer", function(orig)
-    return function(a1, a2, ...)
-      local r = PT.pack(orig(a1, a2, ...))
-      if EVT_PACHANGA and a1 == PT.LIST and type(a2) == "number" and type(t) == "table" then
-        pcall(funcLuaMenuCommand, PT.TRACE, PT.LIST, a2, PT.TRACE_BOX, t[a2 + 1] == PT.ROW)
       end
       return table.unpack(r, 1, r.n)
     end
@@ -1713,14 +1470,19 @@ do
         funcLuaCommand(PT.SOUND, PT.SE_NG)
         return 1
       end
-      -- the row: refused here, at once (no yield: an OnEnter that yields is taken as accepted), sound and message
-      -- by PT.gate; the message opens from Step
+      -- the row: a click on one of its arrows cycles the value (no decide); otherwise refused here, at once (no
+      -- yield: an OnEnter that yields is taken as accepted), sound and message by PT.gate; the message opens from Step
       if EVT_PACHANGA and a1 == PT.LIST and type(a2) == "number" and t[a2 + 1] == PT.ROW then
+        local arrow = PT.clickArrow()
+        if arrow ~= nil then
+          PT.moveCur(arrow)
+          return 1
+        end
         local col = PT.curCol()
         if PT.busy or PT.co ~= nil or not PT.gate(col) then
           return 1
         end
-        PT.pick = col                -- the column of this press, for its OnDecideFocus (bug 2026-10-02 14:05)
+        PT.pick = col                -- the format of this press, for its OnDecideFocus
       end
       if a1 == PT.NAME_FRAME then
         -- the retail name edit writes (n5, n10, 0): the other template of the dock takes the new name (§9); the
@@ -1740,8 +1502,19 @@ do
         kind = t[a2 + 1]
       end
       if kind == PT.ROW then
-        local col = PT.pick or PT.curCol()
+        local col = PT.pick
         PT.pick = nil
+        if col == nil then
+          -- a decide without our OnEnter (a mouse click): its arrows cycle the value, the dock gets its input back
+          local arrow = PT.clickArrow()
+          if arrow ~= nil then
+            PT.moveCur(arrow)
+            funcLuaMenuCommand(1558704558, PT.MENU_ID, true)
+            funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, true)
+            return
+          end
+          col = PT.curCol()
+        end
         PT.switch(a1, col)           -- PT.gate again inside: a press OnEnter refused never switches
         return
       end

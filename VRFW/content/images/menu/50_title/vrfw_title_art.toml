@@ -1,5 +1,5 @@
 # VR-Framework: the framework's own title screen art (the «INAZUMA ELEVEN Victory Road
-# Framework» logo and a press-start key art (a night stadium + the two title characters), shown with VRFW alone.
+# Framework» logo and a press-start key art (a night stadium + the title characters), shown with VRFW alone.
 #
 # The two pictures are derived from Level-5 assets: never committed. They live in the git-ignored folder
 # research/build/owner_art/ (or the folder of the env VRFW_OWNER_ART): vrfw_logo.png + vrfw_title_screen.webp (or
@@ -10,8 +10,9 @@
 # The sheet (vrfw_title_screen, 1762 x 2000) is the retail title00_01_st texture's layout (5280 x 5992) at 1/3 scale:
 # the background where bg_sky01_st is (the layer drawn full screen, 2640 x 1200 around the 1920 x 1080 screen), the
 # two characters where bg_chr02_st (left, the girl with the ball) and bg_chr01_st (right, the boy upside down) are.
-# Each sprite is repainted with its box of the sheet scaled back to the sprite's size (aspect kept); the sprites the
-# sheet leaves empty (bg_green_eff01_st, bg_lens_flare01_st) and the cloud textures stay retail. The logo (any size)
+# Each sprite is repainted with its box of the sheet scaled back to the sprite's size (aspect kept; a box the sheet
+# leaves transparent makes that sprite empty, as when the characters are painted into the background); the sprites
+# outside the sheet: bg_green_eff01_st stays retail, bg_lens_flare01_st (the sun flare at the top right) is cleared. The two cloud textures: vrfw_title_clouds.toml. The logo (any size)
 # is fitted into the box the retail logo uses inside its 1600 x 1200 texture (logo02), for every language file of the
 # press-start logo (title00_03_02) and of the mode-menu logo (title02_01).
 #
@@ -38,6 +39,13 @@ atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
 name = "bg_chr01_st"
 recipe = "character_right"
 
+# ---- no sun flare: bg_lens_flare01_st (2356 x 1200, drawn additive) made transparent black ------------------------
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_lens_flare01_st"
+recipe = "no_flare"
+
 # ---- the logo (title_menu layer title00_03_02_title_logo, title_menu_2 layer title02_01_title_logo_2) --------------
 
 [[sprite]]
@@ -51,6 +59,10 @@ name = "logo02"
 recipe = "logo"
 
 # ---- recipes -------------------------------------------------------------------------------------------------------
+
+[[recipe]]
+name = "no_flare"
+canvas = [2356, 1200]
 
 [[recipe]]
 name = "sheet"

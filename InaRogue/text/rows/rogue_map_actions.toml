@@ -1,0 +1,52 @@
+# INAROGUE route map (research/grafts/rogue_map/evt_rogue_map_menu.lua G_ACT, docs/game/modes/inarogue.md §27.3): the
+# button-guide action on the node the runner stands on before it is cleared. Hand-written (not a converter output).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "evt_rm_act_fight"
+es = "Enfrentarte"
+en = "Face them"
+fr = "Affronter"
+de = "Antreten"
+it = "Affronta"
+pt = "Enfrentar"
+ja = "対戦する"
+zh_hans = "对战"
+zh_hant = "對戰"
+
+[[row]]
+id = "evt_rm_act_open"
+es = "Abrir"
+en = "Open"
+fr = "Ouvrir"
+de = "Öffnen"
+it = "Apri"
+pt = "Abrir"
+ja = "開ける"
+zh_hans = "打开"
+zh_hant = "打開"
+
+[[row]]
+id = "evt_rm_act_enter"
+es = "Entrar"
+en = "Enter"
+fr = "Entrer"
+de = "Betreten"
+it = "Entra"
+pt = "Entrar"
+ja = "入る"
+zh_hans = "进入"
+zh_hant = "進入"
+
+[[row]]
+id = "evt_rm_act_talk"
+es = "Hablar"
+en = "Talk"
+fr = "Parler"
+de = "Sprechen"
+it = "Parla"
+pt = "Falar"
+ja = "話す"
+zh_hans = "交谈"
+zh_hant = "交談"

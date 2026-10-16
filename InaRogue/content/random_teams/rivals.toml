@@ -1,0 +1,66 @@
+schema = "VRFW.random_team/1"
+# InaRogue › the rivals of INAROGUE's normal nodes (docs/framework/random-team.md; decisions 10-12 of
+# docs/refactor/roguelite-split-map.md): a node whose drawn pool row is a slot team (tag `random`) plays a team built from
+# the run seed + the node, the same after a reload, different in another run. Stage = the pool tier of the node's row
+# (1-4: the tier window of the phase, scripts\lib\rogue\matches.lua); the level is the ladder rung the run picks
+# (a difficulty row level wins over the team level). Slot k of a rule = the tier-k slot team (content\teams\random_slots.toml).
+
+# every card with an INAROGUE tier 1-5 (chara_param col 57 rogue_rarity, content\characters\rogue_tiers*.toml): the
+# cards of an absent mod are not served, so they never join (the «¿Y si…?» cards, 13-15, stay out)
+[[VRFW.RandomTeamPool]]
+Name = "rivals"
+[[VRFW.RandomTeamPool.Include]]
+Columns = { rogue_rarity = [1, 5] }
+
+[[VRFW.RandomTeam]]
+Name = "minor_5v5"
+Pool = "rivals"
+Look = "rival_looks"
+Slots = ["inarogue.rt_slot_5v5_t1", "inarogue.rt_slot_5v5_t2", "inarogue.rt_slot_5v5_t3", "inarogue.rt_slot_5v5_t4"]
+Unique = "character"
+Version = 1
+TierColumn = "rogue_rarity"
+MaxSame = 3
+Theme = { Chance = 0.2, Weight = 5 }
+[[VRFW.RandomTeam.Stage]]
+Stage = 1
+Tier = [1, 2]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 2
+Tier = [1, 3]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 3
+Tier = [2, 4]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 4
+Tier = [3, 5]
+
+[[VRFW.RandomTeam]]
+Name = "rival_11v11"
+Pool = "rivals"
+Look = "rival_looks"
+Slots = ["inarogue.rt_slot_11v11_t1", "inarogue.rt_slot_11v11_t2", "inarogue.rt_slot_11v11_t3", "inarogue.rt_slot_11v11_t4"]
+Unique = "character"
+Version = 1
+TierColumn = "rogue_rarity"
+MaxSame = 5
+Theme = { Chance = 0.2, Weight = 4 }
+[[VRFW.RandomTeam.Stage]]
+Stage = 1
+Tier = [1, 2]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 2
+Tier = [1, 3]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 3
+Tier = [2, 4]
+
+[[VRFW.RandomTeam.Stage]]
+Stage = 4
+Tier = [3, 5]
+

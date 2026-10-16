@@ -663,33 +663,17 @@ end
 -- ------------------------------------------------------------------------------------------------ H2
 local swept_slot, swept_at = nil, 0
 local build_kinds = {}
+-- the sweep walks the saved characters a few at a time (one list build = one step): a whole save in one hook call
+-- used up the script's CPU budget and switched the script off
+local SWEEP_STEP = 200
+local sweep_list, sweep_pos, sweep_todo = nil, 1, nil
 
 -- recruit grades of saved characters whose list is not rebuilt (existing saves): every saved character whose card
 -- declares move_grades and whose saved skill_list holds such a move with no record gets it seeded and the saved rank
 -- raised to it (never lowered); at a slot change and at most once a minute
-local function sweep()
-  local slot = current_slot()
-  local now = now_ms()
-  if swept_slot == slot and now - swept_at < SWEEP_EVERY_MS then return end
-  swept_slot, swept_at = slot, now
-  local ok, saved = pcall(VRFW.chara.saved)
-  if not ok or type(saved) ~= "table" then return end
-  local todo = {}
-  for _, k in ipairs(saved) do
-    local param = u32(k.param)
-    local declared = grades_of(param)
-    if next(declared) ~= nil then
-      local r = record(u32(k.handle))
-      if r and r.addr then
-        for i = 0, SKILL_SLOTS - 1 do
-          local id = rd("u32", r.addr + REC_SKILL_LIST + i * SKILL_ENTRY)
-          if id and id ~= 0 and not A.is_spirit_move(id) and declared[id] then
-            todo[#todo + 1] = { u32(k.handle), param, id, declared[id] }
-          end
-        end
-      end
-    end
-  end
+local function sweep_finish(slot, total)
+  local todo = sweep_todo or {}
+  sweep_list, sweep_pos, sweep_todo = nil, 1, nil
   if #todo == 0 then return end
   local st = cur()
   local seeded, charas, raised = 0, {}, 0
@@ -710,8 +694,43 @@ local function sweep()
   local nc = 0
   for _ in pairs(charas) do nc = nc + 1 end
   info(string.format("recruit grades sweep (slot %d): %d move(s) seeded on %d saved character(s), %d saved rank(s) raised (%d saved records scanned)",
-    slot, seeded, nc, raised, #saved))
+    slot, seeded, nc, raised, total))
   commit(st, "recruit grades sweep")
+end
+
+local function sweep()
+  local slot = current_slot()
+  if sweep_list == nil then
+    local now = now_ms()
+    if swept_slot == slot and now - swept_at < SWEEP_EVERY_MS then return end
+    swept_slot, swept_at = slot, now
+    local ok, saved = pcall(VRFW.chara.saved)
+    if not ok or type(saved) ~= "table" then return end
+    sweep_list, sweep_pos, sweep_todo = saved, 1, {}
+  elseif swept_slot ~= slot then
+    sweep_list, sweep_pos, sweep_todo = nil, 1, nil   -- the slot changed mid-walk: start again on the next build
+    return
+  end
+  local saved, todo = sweep_list, sweep_todo
+  local last = math.min(#saved, sweep_pos + SWEEP_STEP - 1)
+  for n = sweep_pos, last do
+    local k = saved[n]
+    local param = u32(k.param)
+    local declared = grades_of(param)
+    if next(declared) ~= nil then
+      local r = record(u32(k.handle))
+      if r and r.addr then
+        for i = 0, SKILL_SLOTS - 1 do
+          local id = rd("u32", r.addr + REC_SKILL_LIST + i * SKILL_ENTRY)
+          if id and id ~= 0 and not A.is_spirit_move(id) and declared[id] then
+            todo[#todo + 1] = { u32(k.handle), param, id, declared[id] }
+          end
+        end
+      end
+    end
+  end
+  sweep_pos = last + 1
+  if sweep_pos > #saved then sweep_finish(slot, #saved) end
 end
 
 local function on_build(ev)

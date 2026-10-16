@@ -15,6 +15,8 @@
 --     _atc_guide01) is kept with its left edge on the plate's left edge, one gap above it, at scale 1 (plate 52 units
 --     = «Reanudar»'s 72 x 0.72), by a measured closed loop in Step (CMND_GET_MESH_GLOBAL_POSITION of known nodes):
 --     it does not matter whether the engine passes the restart layer's scale on to the attached layer.
+-- 2026-10-16 (Nacho: centre «Formación» on «Reanudar»): the plate is centred horizontally on «Reanudar»'s plate, not
+--   left-aligned (its width follows its text, read with CMND_GET_LAYER_WIDTH).
 EVT_KO_ON = true
 EVT_KO_SCALE = 0.72        -- size (retail 1.0)
 EVT_KO_SQUARE = false      -- (the plate picture is repainted at build; true = the old run-time cmd_base01 swap)
@@ -42,6 +44,7 @@ local EVT_PP_N_FBASE = 1517329426 --[[_pos_base01 of soccer01_33: the plate's to
 local EVT_PP_N_FTEXT = 378156699 --[[_text_guide01 of soccer01_33: 56 units right of it]]
 local EVT_PP_FTEXT_DX = 56
 local EVT_PP_FORM_H = 52
+local EVT_PP_REST_W = 388            -- «Reanudar»'s plate width in layout units (content\menus\pause_prompts.toml)
 local evt_pp_idx = nil
 local evt_pp_s = 1
 local evt_pp_lx, evt_pp_ly = 0, 0
@@ -104,7 +107,14 @@ local function EVT_PP_Place()
     return
   end
   local dir = (ty >= py) and 1 or -1 -- screen y direction of "up" (the touch node is above _pos_btn01)
-  local ex = tx - fx0
+  -- centred on «Reanudar»'s plate: its left edge + half the difference of the two plate widths (the text plate grows
+  -- with its text: width from CMND_GET_LAYER_WIDTH; «Reanudar»'s plate is EVT_PP_REST_W layout units x its scale)
+  local targetX = tx
+  local okW, fw = pcall(funcLuaMenuCommand, 1775716383 --[[CMND_GET_LAYER_WIDTH]], EVT_PP_FORM, evt_pp_idx, true, true)
+  if okW and type(fw) == "number" and fw > 0 then
+    targetX = tx + (EVT_PP_REST_W * kr - fw * kf) / 2
+  end
+  local ex = targetX - fx0
   local ey = ty + dir * (EVT_PP_GAP + EVT_PP_FORM_H * kf) - fy0
   if math.abs(ex) < 0.75 and math.abs(ey) < 0.75 then
     return

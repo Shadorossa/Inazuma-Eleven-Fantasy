@@ -1,0 +1,206 @@
+schema = "VRFW.character/2"
+# InaRogue's «¿Y si…?» (Vestigio) cards: three INAROGUE-only cards (rarity vestige, content\rarities\rarity.toml;
+# frames 13-15; docs/game/modes/inarogue-whatif.md). Moved from Inazuma Fantasy 2026-10-14: the aliases keep their
+# full ids (the card ids are fixed numbers, saves name them by card id).
+default_lang = "en"
+
+[[alias]]
+old = "inazuma_fantasy.axel_blaze_5"
+new = "inarogue.axel_blaze_5"
+
+[[alias]]
+old = "inazuma_fantasy.mark_evans_2"
+new = "inarogue.mark_evans_2"
+
+[[alias]]
+old = "inazuma_fantasy.vladimir_blade"
+new = "inarogue.vladimir_blade"
+
+# from Inazuma Fantasy's characters/10_ie1/kirkwood.toml
+[[character]]
+name = "axel_blaze_5"                                     # Axel Blaze
+based_on = "c01000100"                                    # template: Axel Blaze
+order = 60
+
+  [character.base]
+  id = 0x8FE1504D
+  name = "c90000201"
+  voice_bank = 0x81789A26
+  team_1 = 0x49AF2634
+  team_2 = 0x00000000
+  description_text = 0x44E00278
+  in_ie3 = 0
+
+  [character.text.ja]
+  description = "もしも[豪炎寺/ごうえんじ]が[木戸川清修/きどがわせいしゅう]を[去/さ]らなかったら…。\nその[炎/ほのお]は[今/いま]、[木戸川/きどがわ]の[色/いろ]に[燃/も]える。"
+
+  [character.text.en]
+  description = "What if Axel had never left Kirkwood?\nHis fire now burns in Kirkwood's colours."
+
+  [character.text.es]
+  description = "¿Y si Axel nunca hubiera dejado el Kirkwood?\nSu fuego arde ahora con los colores del Kirkwood."
+
+  [character.text.fr]
+  description = "Et si Axel n'avait jamais quitté Kirkwood ?\nSa flamme brûle désormais aux couleurs de Kirkwood."
+
+  [character.text.de]
+  description = "Was, wenn Axel Kirkwood nie verlassen hätte?\nSein Feuer brennt jetzt in Kirkwoods Farben."
+
+  [character.text.it]
+  description = "E se Axel non avesse mai lasciato la Kirkwood?\nIl suo fuoco ora arde con i colori della Kirkwood."
+
+  [character.text.pt]
+  description = "E se Axel nunca tivesse deixado a Kirkwood?\nSeu fogo agora arde com as cores da Kirkwood."
+
+  [character.text.zh_hans]
+  description = "如果豪炎寺从未离开木户川清修……\n他的火焰如今燃烧着木户川的颜色。"
+
+  [character.text.zh_hant]
+  description = "如果豪炎寺從未離開木戶川清修……\n他的火焰如今燃燒著木戶川的顏色。"
+
+  [[character.cards]]
+  id = 0x0AE9D1ED                                         # FW/MF · fire · rarity 5
+  from = 0x85363312                                       # template: Axel Blaze (c01000100)
+  order = 72
+  build_type = 0
+  ability_board = 0x097C646D
+  special_rarity = 5
+  growth = "normal"
+  stats = { kick = 351, control = 244, technique = 235, pressure = 184, physical = 224, intelligence = 189, agility = 185, luck = 189, freedom = 0 }
+  moves = [
+    { move = 0x518BCA26, level = 1 },                     # Fire Tornado
+    { move = 0x41F3CDC2, level = 12 },                    # Scorching Tackle
+    { move = 0xDC0B2991, level = 22 },                    # Inazuma Drop
+    { move = 0x087999EE, level = 32 },                    # Heel Drop
+    { move = 0x00D8C57C, level = 44 },                    # Fireball Storm
+    { move = 0x8F1DD61E, level = 58 },                    # Maximum Fire
+  ]
+  moment_kit = 0xBF8BEEE3
+  cells = { rogue_rarity = 15, flag_36 = 0 }
+# from Inazuma Fantasy's characters/10_ie1/royal_academy.toml
+[[character]]
+name = "mark_evans_2"                                     # Mark Evans
+based_on = "c01000010"                                    # template: Mark Evans
+order = 61
+
+  [character.base]
+  id = 0x3FC02B8A
+  name = "c90000203"
+  voice_bank = 0x99A1C150
+  team_1 = 0x699E68EC
+  team_2 = 0x00000000
+  description_text = 0xF4C179BF
+  in_ie3 = 0
+
+  [character.text.ja]
+  description = "もしも[円堂/えんどう]が[帝国学園/ていこくがくえん]に[入/はい]っていたら…。\n[皇帝/こうてい]に[仕/つか]えるゴッドハンド。"
+
+  [character.text.en]
+  description = "What if Mark had joined Royal Academy?\nThe God Hand in the emperor's service."
+
+  [character.text.es]
+  description = "¿Y si Mark hubiera ingresado en la Royal Academy?\nLa Mano celestial al servicio del emperador."
+
+  [character.text.fr]
+  description = "Et si Mark avait rejoint la Royal Academy ?\nLa Main céleste au service de l'empereur."
+
+  [character.text.de]
+  description = "Was, wenn Mark der Royal Academy beigetreten wäre?\nDie Hand Gottes im Dienst des Kaisers."
+
+  [character.text.it]
+  description = "E se Mark fosse entrato nella Royal Academy?\nLe sue mani leggendarie al servizio dell'imperatore."
+
+  [character.text.pt]
+  description = "E se Mark tivesse entrado na Royal Academy?\nSuas mãos lendárias a serviço do imperador."
+
+  [character.text.zh_hans]
+  description = "如果圆堂进入了帝国学园……\n为皇帝效力的神之手。"
+
+  [character.text.zh_hant]
+  description = "如果圓堂進入了帝國學園……\n為皇帝效力的神之手。"
+
+  [[character.cards]]
+  id = 0xC2ADA4F0                                         # GK/FW · mountain · rarity 5
+  from = 0x3D9ED3F0                                       # template: Mark Evans (c01000010)
+  order = 73
+  ability_board = 0x4E11A833
+  special_rarity = 5
+  growth = "normal"
+  stats = { kick = 247, control = 216, technique = 146, pressure = 201, physical = 239, intelligence = 247, agility = 286, luck = 236, freedom = 0 }
+  moves = [
+    { move = 0x8C382852, level = 1 },                     # God Hand
+    { move = 0xA7157B91, level = 12 },                    # Power Shield
+    { move = 0xA6D711A6, level = 26 },                    # Full Power Shield
+    { move = 0xA491AFFF, level = 36 },                    # Majin the Hand
+    { move = 0x6730D416, level = 46 },                    # Emperor Penguin No. 1
+    { move = 0x406CDEE8, level = 60 },                    # Omega Hand
+  ]
+  moment_kit = 0xD6ABDBB4
+  cells = { rogue_rarity = 15, flag_36 = 0 }
+# from Inazuma Fantasy's characters/13_go/raimon_first_squad.toml
+[[character]]
+name = "vladimir_blade"                                   # Vladimir Blade
+based_on = "c05020120"                                    # template: Vladimir Blade
+order = 62
+
+  [character.base]
+  id = 0xFA3411B0
+  name = "c90000202"
+  voice_bank = 0x3DC18FD7
+  series = 0x9299810F
+  team_1 = 0x4B51EDE4
+  description_text = 0x31354385
+  in_go1 = 1
+  in_go2 = 0
+
+  [character.text.ja]
+  description = "もしも[優一/ゆういち]がケガをしなかったら…。\n[剣城京介/つるぎきょうすけ]と[並/なら]ぶ[雷門/らいもん]の[司令塔/しれいとう]。"
+
+  [character.text.en]
+  description = "What if Vladimir had never been hurt?\nAlongside <FFC:TSURUGI>, he is Raimon's mastermind."
+
+  [character.text.es]
+  description = "¿Y si Vladimir nunca se hubiera lesionado?\nJunto a Víctor, cerebro del Raimon."
+
+  [character.text.fr]
+  description = "Et si Vladimir ne s'était jamais blessé ?\nAux côtés de <FFC:TSURUGI>, le cerveau de Raimon."
+
+  [character.text.de]
+  description = "Was, wenn Vladimir sich nie verletzt hätte?\nMit <FFC:TSURUGI> der Kopf von Raimon."
+
+  [character.text.it]
+  description = "E se Vladimir non si fosse mai infortunato?\nAccanto a <FFC:TSURUGI>, la mente della Raimon."
+
+  [character.text.pt]
+  description = "E se Vladimir nunca tivesse se machucado?\nAo lado do <FFC:TSURUGI>, o cérebro do Raimon."
+
+  [character.text.zh_hans]
+  description = "如果优一从未受伤……\n与剑城京介并肩的雷门司令塔。"
+
+  [character.text.zh_hant]
+  description = "如果優一從未受傷……\n與劍城京介並肩的雷門司令塔。"
+
+  [[character.cards]]
+  id = 0x21D04850                                         # MF/FW · fire · rarity 5
+  from = 0x943581A5                                       # template: Vladimir Blade (c05020120)
+  order = 74
+  position = "mf"
+  sub_position = "fw"
+  build_type = 2
+  ability_board = 0xD572D172
+  special_rarity = 5
+  growth = "normal"
+  stats = { kick = 267, control = 297, technique = 248, pressure = 182, physical = 205, intelligence = 271, agility = 169, luck = 135, freedom = 0 }
+  moves = [
+    { move = 0x3C843987, level = 1 },                     # Flurry Dash
+    { move = 0x0C08B663, level = 12 },                    # Doom Dive Drive
+    { move = 0x0CF4E55C, level = 22 },                    # Double Touch
+    { move = 0x0B011EBF, level = 34 },                    # Fireball Screw
+    { move = 0x427719AC, level = 46 },                    # Gale Dash
+    { move = 0x79E3E635, level = 56 },                    # Racing Flame
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x29E98497, level = 1 },                     # Pendragon [aura]
+  ]
+  moment_kit = 0xAECB5B3E
+  cells = { rogue_rarity = 14 }

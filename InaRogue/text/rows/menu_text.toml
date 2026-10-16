@@ -1,0 +1,1057 @@
+schema = "VRFW.text/2"
+# INAROGUE's menu_text rows (moved from Inazuma Fantasy's text\rows\menu_text.toml 2026-10-14).
+
+[[row]]
+id = "evt_album_title"
+es = "ÁLBUM"
+en = "ALBUM"
+fr = "ALBUM"
+de = "ALBUM"
+it = "ALBUM"
+pt = "ÁLBUM"
+ja = "アルバム"
+zh_hans = "卡册"
+zh_hant = "卡冊"
+
+[[row]]
+id = "evt_album_guide"
+es = "Álbum: {1} / {2} ({3} %)"
+en = "Album: {1} / {2} ({3}%)"
+fr = "Album : {1} / {2} ({3} %)"
+de = "Album: {1} / {2} ({3} %)"
+it = "Album: {1} / {2} ({3}%)"
+pt = "Álbum: {1} / {2} ({3}%)"
+ja = "アルバム：{1} / {2}（{3}%）"
+zh_hans = "卡册：{1} / {2}（{3}%）"
+zh_hant = "卡冊：{1} / {2}（{3}%）"
+
+[[row]]
+id = "evt_album_order_fmt"
+es = "Orden: {1}"
+en = "Order: {1}"
+fr = "Tri : {1}"
+de = "Sortierung: {1}"
+it = "Ordine: {1}"
+pt = "Ordem: {1}"
+ja = "並び順：{1}"
+zh_hans = "排序：{1}"
+zh_hant = "排序：{1}"
+
+[[row]]
+id = "evt_album_order_0"
+es = "Equipos"
+en = "Teams"
+fr = "Équipes"
+de = "Teams"
+it = "Squadre"
+pt = "Equipes"
+ja = "チーム別"
+zh_hans = "按球队"
+zh_hant = "按球隊"
+
+[[row]]
+id = "evt_album_order_1"
+es = "Rareza"
+en = "Rarity"
+fr = "Rareté"
+de = "Seltenheit"
+it = "Rarità"
+pt = "Raridade"
+ja = "レア度"
+zh_hans = "稀有度"
+zh_hant = "稀有度"
+
+[[row]]
+id = "evt_album_order_2"
+es = "Faltan"
+en = "Missing"
+fr = "Manquantes"
+de = "Fehlend"
+it = "Mancanti"
+pt = "Faltando"
+ja = "未入手"
+zh_hans = "未获得"
+zh_hant = "未獲得"
+
+[[row]]
+id = "evt_album_order_3"
+es = "Conseguidas"
+en = "Collected"
+fr = "Obtenues"
+de = "Gesammelt"
+it = "Ottenute"
+pt = "Obtidas"
+ja = "入手済み"
+zh_hans = "已获得"
+zh_hant = "已獲得"
+
+[[row]]
+id = "evt_album_order_4"
+es = "Recientes"
+en = "Recent"
+fr = "Récentes"
+de = "Neueste"
+it = "Recenti"
+pt = "Recentes"
+ja = "最近"
+zh_hans = "最近获得"
+zh_hant = "最近獲得"
+
+[[row]]
+id = "evt_album_order_5"
+es = "Coste"
+en = "Cost"
+fr = "Coût"
+de = "Kosten"
+it = "Costo"
+pt = "Custo"
+ja = "コスト"
+zh_hans = "费用"
+zh_hant = "費用"
+
+[[row]]
+id = "evt_album_sec_tier"
+es = "{1} estrellas"
+en = "{1} stars"
+fr = "{1} étoiles"
+de = "{1} Sterne"
+it = "{1} stelle"
+pt = "{1} estrelas"
+ja = "★{1}"
+zh_hans = "{1}星"
+zh_hant = "{1}星"
+
+[[row]]
+id = "evt_album_sec_date"
+es = "Fichados el {1}"
+en = "Signed on {1}"
+fr = "Recrutés le {1}"
+de = "Verpflichtet am {1}"
+it = "Ingaggiati il {1}"
+pt = "Contratados em {1}"
+ja = "{1} 加入"
+zh_hans = "{1} 签约"
+zh_hant = "{1} 簽約"
+
+[[row]]
+id = "evt_album_sec_cost"
+es = "Coste {1}"
+en = "Cost {1}"
+fr = "Coût {1}"
+de = "Kosten {1}"
+it = "Costo {1}"
+pt = "Custo {1}"
+ja = "コスト{1}"
+zh_hans = "费用 {1}"
+zh_hant = "費用 {1}"
+
+[[row]]
+id = "evt_album_sec_cont"
+es = "{1} (sigue)"
+en = "{1} (cont.)"
+fr = "{1} (suite)"
+de = "{1} (Forts.)"
+it = "{1} (segue)"
+pt = "{1} (cont.)"
+ja = "{1}（続き）"
+zh_hans = "{1}（续）"
+zh_hant = "{1}（續）"
+
+[[row]]
+id = "evt_album_others"
+es = "Otros"
+en = "Others"
+fr = "Autres"
+de = "Weitere"
+it = "Altri"
+pt = "Outros"
+ja = "その他"
+zh_hans = "其他"
+zh_hant = "其他"
+
+[[row]]
+id = "evt_album_number"
+es = "Nº {1}"
+en = "No. {1}"
+fr = "N° {1}"
+de = "Nr. {1}"
+it = "N. {1}"
+pt = "Nº {1}"
+ja = "No.{1}"
+zh_hans = "No.{1}"
+zh_hant = "No.{1}"
+
+[[row]]
+id = "evt_album_missing"
+es = "Sin conseguir"
+en = "Not collected"
+fr = "Pas obtenue"
+de = "Nicht gesammelt"
+it = "Non ottenuta"
+pt = "Não obtida"
+ja = "未入手"
+zh_hans = "未获得"
+zh_hant = "未獲得"
+
+[[row]]
+id = "evt_album_missing_hint"
+es = "Todavía no lo tienes: consíguelo en las partidas de INAROGUE."
+en = "You don't have this one yet: get it in INAROGUE runs."
+fr = "Tu ne l'as pas encore : obtiens-le dans les parties d'INAROGUE."
+de = "Noch nicht in deinem Besitz: Hol ihn dir in INAROGUE."
+it = "Non ce l'hai ancora: ottienilo nelle partite di INAROGUE."
+pt = "Você ainda não o tem: consiga-o nas partidas de INAROGUE."
+ja = "まだ持っていません。INAROGUEで入手しよう。"
+zh_hans = "尚未拥有：在INAROGUE中获得吧。"
+zh_hant = "尚未擁有：在INAROGUE中獲得吧。"
+
+[[row]]
+id = "evt_album_rarity"
+es = "Rareza INAROGUE: {1}★"
+en = "INAROGUE rarity: {1}★"
+fr = "Rareté INAROGUE : {1}★"
+de = "INAROGUE-Seltenheit: {1}★"
+it = "Rarità INAROGUE: {1}★"
+pt = "Raridade INAROGUE: {1}★"
+ja = "INAROGUEレア度：★{1}"
+zh_hans = "INAROGUE稀有度：{1}★"
+zh_hant = "INAROGUE稀有度：{1}★"
+
+[[row]]
+id = "evt_album_cost"
+es = "Coste: {1}"
+en = "Cost: {1}"
+fr = "Coût : {1}"
+de = "Kosten: {1}"
+it = "Costo: {1}"
+pt = "Custo: {1}"
+ja = "コスト：{1}"
+zh_hans = "费用：{1}"
+zh_hant = "費用：{1}"
+
+[[row]]
+id = "evt_album_games"
+es = "Partidas jugadas: {1}"
+en = "Runs played: {1}"
+fr = "Parties jouées : {1}"
+de = "Gespielte Runs: {1}"
+it = "Partite giocate: {1}"
+pt = "Partidas jogadas: {1}"
+ja = "プレイ回数：{1}"
+zh_hans = "参与局数：{1}"
+zh_hant = "參與局數：{1}"
+
+[[row]]
+id = "evt_album_goals"
+es = "Goles marcados: {1}"
+en = "Goals scored: {1}"
+fr = "Buts marqués : {1}"
+de = "Erzielte Tore: {1}"
+it = "Gol segnati: {1}"
+pt = "Gols marcados: {1}"
+ja = "得点数：{1}"
+zh_hans = "进球数：{1}"
+zh_hant = "進球數：{1}"
+
+[[row]]
+id = "evt_album_obtained"
+es = "Obtención"
+en = "Obtained"
+fr = "Obtention"
+de = "Erhalten"
+it = "Ottenuto"
+pt = "Obtenção"
+ja = "入手日"
+zh_hans = "获得日期"
+zh_hant = "獲得日期"
+
+[[row]]
+id = "evt_album_source"
+es = "Origen"
+en = "Source"
+fr = "Origine"
+de = "Herkunft"
+it = "Origine"
+pt = "Origem"
+ja = "入手方法"
+zh_hans = "获得方式"
+zh_hant = "獲得方式"
+
+[[row]]
+id = "evt_album_src_1"
+es = "Inicial"
+en = "Starter"
+fr = "Initial"
+de = "Start"
+it = "Iniziale"
+pt = "Inicial"
+ja = "初期メンバー"
+zh_hans = "初始成员"
+zh_hant = "初始成員"
+
+[[row]]
+id = "evt_album_src_2"
+es = "Fichaje"
+en = "Signing"
+fr = "Recrutement"
+de = "Transfer"
+it = "Ingaggio"
+pt = "Contratação"
+ja = "スカウト"
+zh_hans = "招募"
+zh_hant = "招募"
+
+[[row]]
+id = "evt_album_src_3"
+es = "Sorteo"
+en = "Lottery"
+fr = "Tirage"
+de = "Lotterie"
+it = "Lotteria"
+pt = "Sorteio"
+ja = "くじ"
+zh_hans = "抽奖"
+zh_hant = "抽獎"
+
+[[row]]
+id = "evt_album_src_4"
+es = "Prueba"
+en = "Debug"
+fr = "Test"
+de = "Test"
+it = "Prova"
+pt = "Teste"
+ja = "テスト"
+zh_hans = "测试"
+zh_hant = "測試"
+
+[[row]]
+id = "evt_album_src_5"
+es = "Otro"
+en = "Other"
+fr = "Autre"
+de = "Andere"
+it = "Altro"
+pt = "Outro"
+ja = "その他"
+zh_hans = "其他"
+zh_hant = "其他"
+
+[[row]]
+id = "evt_album_signed"
+es = "Fichado el"
+en = "Signed on"
+fr = "Recruté le"
+de = "Verpflichtet am"
+it = "Ingaggiato il"
+pt = "Contratado em"
+ja = "加入日"
+zh_hans = "签约日期"
+zh_hant = "簽約日期"
+
+[[row]]
+id = "evt_album_collected"
+es = "Conseguida"
+en = "Collected"
+fr = "Obtenue"
+de = "Gesammelt"
+it = "Ottenuta"
+pt = "Obtida"
+ja = "入手済み"
+zh_hans = "已获得"
+zh_hant = "已獲得"
+
+[[row]]
+id = "evt_album_pos_1"
+es = "Portero"
+en = "Goalkeeper"
+fr = "Gardien"
+de = "Torwart"
+it = "Portiere"
+pt = "Goleiro"
+ja = "ゴールキーパー"
+zh_hans = "守门员"
+zh_hant = "守門員"
+
+[[row]]
+id = "evt_album_pos_2"
+es = "Delantero"
+en = "Forward"
+fr = "Attaquant"
+de = "Stürmer"
+it = "Attaccante"
+pt = "Atacante"
+ja = "フォワード"
+zh_hans = "前锋"
+zh_hant = "前鋒"
+
+[[row]]
+id = "evt_album_pos_3"
+es = "Centrocampista"
+en = "Midfielder"
+fr = "Milieu"
+de = "Mittelfeldspieler"
+it = "Centrocampista"
+pt = "Meio-campista"
+ja = "ミッドフィルダー"
+zh_hans = "中场"
+zh_hant = "中場"
+
+[[row]]
+id = "evt_album_pos_4"
+es = "Defensa"
+en = "Defender"
+fr = "Défenseur"
+de = "Verteidiger"
+it = "Difensore"
+pt = "Zagueiro"
+ja = "ディフェンダー"
+zh_hans = "后卫"
+zh_hant = "後衛"
+
+[[row]]
+id = "evt_album_empty"
+es = "No hay cartas en esta vista. Pulsa <CMD_FUNC2> para cambiar el orden."
+en = "There are no cards in this view. Press <CMD_FUNC2> to change the order."
+fr = "Aucune carte dans cette vue. Appuie sur <CMD_FUNC2> pour changer le tri."
+de = "In dieser Ansicht gibt es keine Karten. Drücke <CMD_FUNC2>, um die Sortierung zu ändern."
+it = "Nessuna carta in questa vista. Premi <CMD_FUNC2> per cambiare l'ordine."
+pt = "Não há cartas nesta vista. Pressione <CMD_FUNC2> para mudar a ordem."
+ja = "この表示にはカードがありません。<CMD_FUNC2>で並び順を変更できます。"
+zh_hans = "此视图中没有卡片。按<CMD_FUNC2>更改排序。"
+zh_hant = "此視圖中沒有卡片。按<CMD_FUNC2>更改排序。"
+
+[[row]]
+id = "evt_album_no_loader"
+es = "El álbum necesita el vr-loader con el módulo «rogue» activado (app: Proyecto > Loader)."
+en = "The album needs the vr-loader with the «rogue» module enabled (app: Project > Loader)."
+fr = "L'album nécessite le vr-loader avec le module « rogue » activé (app : Projet > Loader)."
+de = "Das Album braucht den vr-loader mit aktiviertem Modul „rogue“ (App: Projekt > Loader)."
+it = "L'album richiede il vr-loader con il modulo «rogue» attivo (app: Progetto > Loader)."
+pt = "O álbum precisa do vr-loader com o módulo «rogue» ativado (app: Projeto > Loader)."
+ja = "アルバムには「rogue」モジュールを有効にしたvr-loaderが必要です（アプリ：プロジェクト > Loader）。"
+zh_hans = "卡册需要启用“rogue”模块的vr-loader（应用：项目 > Loader）。"
+zh_hant = "卡冊需要啟用「rogue」模組的vr-loader（應用：專案 > Loader）。"
+
+[[row]]
+id = "evt_album_team"
+es = "Otros"
+en = "Others"
+fr = "Autres"
+de = "Weitere"
+it = "Altri"
+pt = "Outros"
+ja = "その他"
+zh_hans = "其他"
+zh_hant = "其他"
+
+[[row]]
+id = "evt_ird_match11"
+es = "INAROGUE · Partido 11 contra 11 · Titulares {1}/11 · Equipo {2}/16"
+en = "INAROGUE · 11 vs 11 match · Starters {1}/11 · Squad {2}/16"
+fr = "INAROGUE · Match 11 contre 11 · Titulaires {1}/11 · Effectif {2}/16"
+de = "INAROGUE · Spiel 11 gegen 11 · Startelf {1}/11 · Kader {2}/16"
+it = "INAROGUE · Partita 11 contro 11 · Titolari {1}/11 · Rosa {2}/16"
+pt = "INAROGUE · Partida 11 contra 11 · Titulares {1}/11 · Plantel {2}/16"
+ja = "INAROGUE・11対11の試合・スタメン {1}/11・チーム {2}/16"
+zh_hans = "INAROGUE・11对11比赛・首发 {1}/11・阵容 {2}/16"
+zh_hant = "INAROGUE・11對11比賽・先發 {1}/11・陣容 {2}/16"
+
+[[row]]
+id = "evt_ird_match5"
+es = "INAROGUE · Pachanga 5 contra 5 (el mismo equipo) · Titulares {1}/5 · Equipo {2}/16"
+en = "INAROGUE · 5 vs 5 street match (same team) · Starters {1}/5 · Squad {2}/16"
+fr = "INAROGUE · Match de rue 5 contre 5 (même équipe) · Titulaires {1}/5 · Effectif {2}/16"
+de = "INAROGUE · Straßenspiel 5 gegen 5 (dasselbe Team) · Startelf {1}/5 · Kader {2}/16"
+it = "INAROGUE · Partitella 5 contro 5 (stessa squadra) · Titolari {1}/5 · Rosa {2}/16"
+pt = "INAROGUE · Pelada 5 contra 5 (a mesma equipa) · Titulares {1}/5 · Plantel {2}/16"
+ja = "INAROGUE・5対5のストリート戦（同じチーム）・スタメン {1}/5・チーム {2}/16"
+zh_hans = "INAROGUE・5对5街头赛（同一支队伍）・首发 {1}/5・阵容 {2}/16"
+zh_hant = "INAROGUE・5對5街頭賽（同一支隊伍）・先發 {1}/5・陣容 {2}/16"
+
+[[row]]
+id = "evt_ird_points"
+es = "Puntos {1}/{2}"
+en = "Points {1}/{2}"
+fr = "Points {1}/{2}"
+de = "Punkte {1}/{2}"
+it = "Punti {1}/{2}"
+pt = "Pontos {1}/{2}"
+ja = "ポイント {1}/{2}"
+zh_hans = "点数 {1}/{2}"
+zh_hant = "點數 {1}/{2}"
+
+[[row]]
+id = "evt_ird_over"
+es = "Puntos {1}/{2} (te pasas)"
+en = "Points {1}/{2} (over the limit)"
+fr = "Points {1}/{2} (trop)"
+de = "Punkte {1}/{2} (zu viele)"
+it = "Punti {1}/{2} (troppi)"
+pt = "Pontos {1}/{2} (passas do limite)"
+ja = "ポイント {1}/{2}（オーバー）"
+zh_hans = "点数 {1}/{2}（超出）"
+zh_hant = "點數 {1}/{2}（超出）"
+
+[[row]]
+id = "evt_ird_foreign"
+es = "quita a quien no es de INAROGUE"
+en = "remove anyone who is not an INAROGUE player"
+fr = "retire qui n'est pas d'INAROGUE"
+de = "entferne alle, die nicht aus INAROGUE sind"
+it = "togli chi non è di INAROGUE"
+pt = "retira quem não é do INAROGUE"
+ja = "INAROGUE以外の選手を外してください"
+zh_hans = "请移除非INAROGUE球员"
+zh_hant = "請移除非INAROGUE球員"
+
+[[row]]
+id = "evt_ird_back_map"
+es = "Atrás: continuar"
+en = "Back: continue"
+fr = "Retour : continuer"
+de = "Zurück: weiter"
+it = "Indietro: continua"
+pt = "Voltar: continuar"
+ja = "戻る：続ける"
+zh_hans = "返回：继续"
+zh_hant = "返回：繼續"
+
+[[row]]
+id = "evt_ird_back_play"
+es = "Atrás: jugar el partido"
+en = "Back: play the match"
+fr = "Retour : jouer le match"
+de = "Zurück: das Spiel spielen"
+it = "Indietro: gioca la partita"
+pt = "Voltar: jogar a partida"
+ja = "戻る：試合をする"
+zh_hans = "返回：开始比赛"
+zh_hant = "返回：開始比賽"
+
+[[row]]
+id = "evt_ird_next"
+es = "Rival: {1} (Nv. {2})"
+en = "Opponent: {1} (Lv. {2})"
+fr = "Adversaire : {1} (Nv. {2})"
+de = "Gegner: {1} (Lv. {2})"
+it = "Avversario: {1} (Liv. {2})"
+pt = "Adversário: {1} (Nv. {2})"
+ja = "対戦相手：{1}（Lv.{2}）"
+zh_hans = "对手：{1}（Lv.{2}）"
+zh_hant = "對手：{1}（Lv.{2}）"
+
+[[row]]
+id = "evt_ird_ask_play"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "{1}: {2} (Nv. {3}).\n¿Jugar el partido ahora con este equipo?\n(No = volver al mapa sin jugar.)"
+en = "{1}: {2} (Lv. {3}).\nPlay the match now with this team?\n(No = back to the map without playing.)"
+fr = "{1} : {2} (Nv. {3}).\nJouer le match maintenant avec cette équipe ?\n(Non = retour à la carte sans jouer.)"
+de = "{1}: {2} (Lv. {3}).\nDas Spiel jetzt mit diesem Team spielen?\n(Nein = ohne Spiel zurück zur Karte.)"
+it = "{1}: {2} (Liv. {3}).\nGiocare ora la partita con questa squadra?\n(No = torna alla mappa senza giocare.)"
+pt = "{1}: {2} (Nv. {3}).\nJogar a partida agora com esta equipa?\n(Não = voltar ao mapa sem jogar.)"
+ja = "{1}：{2}（Lv.{3}）\nこのチームで試合をしますか？\n（いいえ＝試合をせずにマップに戻る）"
+zh_hans = "{1}：{2}（Lv.{3}）\n现在用这支队伍进行比赛吗？\n（否＝不比赛，返回地图）"
+zh_hant = "{1}：{2}（Lv.{3}）\n現在用這支隊伍進行比賽嗎？\n（否＝不比賽，返回地圖）"
+
+[[row]]
+id = "evt_ird_few11"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Faltan titulares para el partido: {1}/11.\nColoca a 11 jugadores en «Tipo: Partido»."
+en = "Not enough starters for the match: {1}/11.\nPlace 11 players in «Type: Match»."
+fr = "Il manque des titulaires pour le match : {1}/11.\nPlace 11 joueurs dans « Type : Match »."
+de = "Zu wenige Startspieler für das Spiel: {1}/11.\nStelle 11 Spieler unter „Typ: Spiel“ auf."
+it = "Mancano titolari per la partita: {1}/11.\nSchiera 11 giocatori in «Tipo: Partita»."
+pt = "Faltam titulares para a partida: {1}/11.\nColoca 11 jogadores em «Tipo: Partida»."
+ja = "試合のスタメンが足りません：{1}/11\n「タイプ：試合」で11人を配置してください。"
+zh_hans = "比赛首发不足：{1}/11\n请在「类型：比赛」中安排11名球员。"
+zh_hant = "比賽先發不足：{1}/11\n請在「類型：比賽」中安排11名球員。"
+
+[[row]]
+id = "evt_ird_few5"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Faltan titulares para la pachanga: {1}/5.\nColoca a 5 jugadores en «Tipo: Pachanga»."
+en = "Not enough starters for the street match: {1}/5.\nPlace 5 players in «Type: Street match»."
+fr = "Il manque des titulaires pour le match de rue : {1}/5.\nPlace 5 joueurs dans « Type : Match de rue »."
+de = "Zu wenige Startspieler für das Straßenspiel: {1}/5.\nStelle 5 Spieler unter „Typ: Straßenspiel“ auf."
+it = "Mancano titolari per la partitella: {1}/5.\nSchiera 5 giocatori in «Tipo: Partitella»."
+pt = "Faltam titulares para a pelada: {1}/5.\nColoca 5 jogadores em «Tipo: Pelada»."
+ja = "ストリート戦のスタメンが足りません：{1}/5\n「タイプ：ストリート戦」で5人を配置してください。"
+zh_hans = "街头赛首发不足：{1}/5\n请在「类型：街头赛」中安排5名球员。"
+zh_hant = "街頭賽先發不足：{1}/5\n請在「類型：街頭賽」中安排5名球員。"
+
+[[row]]
+id = "evt_ird_foreign_play"
+es = "Hay {1} jugador(es) que no son de INAROGUE en el equipo."
+en = "{1} player(s) in the team are not INAROGUE players."
+fr = "{1} joueur(s) de l'équipe ne sont pas d'INAROGUE."
+de = "{1} Spieler im Team sind keine INAROGUE-Spieler."
+it = "{1} giocatore/i della squadra non sono di INAROGUE."
+pt = "Há {1} jogador(es) na equipa que não são do INAROGUE."
+ja = "チームにINAROGUE以外の選手が{1}人います。"
+zh_hans = "队伍中有{1}名非INAROGUE球员。"
+zh_hant = "隊伍中有{1}名非INAROGUE球員。"
+
+[[row]]
+id = "evt_ird_fail"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "El juego no aceptó el partido (mira el loader.log del vr-loader).\nLa casilla sigue pendiente."
+en = "The game did not accept the match (see the vr-loader's loader.log).\nThe node is still pending."
+fr = "Le jeu n'a pas accepté le match (voir le loader.log du vr-loader).\nLa case reste en attente."
+de = "Das Spiel hat das Match nicht angenommen (siehe loader.log des vr-loader).\nDas Feld bleibt offen."
+it = "Il gioco non ha accettato la partita (vedi il loader.log del vr-loader).\nLa casella resta in sospeso."
+pt = "O jogo não aceitou a partida (vê o loader.log do vr-loader).\nA casa continua pendente."
+ja = "試合を開始できませんでした（vr-loaderのloader.logを確認してください）。\nマスは未完了のままです。"
+zh_hans = "游戏未接受这场比赛（请查看vr-loader的loader.log）。\n该格子仍未完成。"
+zh_hant = "遊戲未接受這場比賽（請查看vr-loader的loader.log）。\n該格子仍未完成。"
+
+[[row]]
+id = "evt_ird_kind5"
+es = "Pachanga 5 contra 5"
+en = "5 vs 5 street match"
+fr = "Match de rue 5 contre 5"
+de = "Straßenspiel 5 gegen 5"
+it = "Partitella 5 contro 5"
+pt = "Pelada 5 contra 5"
+ja = "5対5のストリート戦"
+zh_hans = "5对5街头赛"
+zh_hant = "5對5街頭賽"
+
+[[row]]
+id = "evt_ird_kind11"
+es = "Partido 11 contra 11"
+en = "11 vs 11 match"
+fr = "Match 11 contre 11"
+de = "Spiel 11 gegen 11"
+it = "Partita 11 contro 11"
+pt = "Partida 11 contra 11"
+ja = "11対11の試合"
+zh_hans = "11对11比赛"
+zh_hant = "11對11比賽"
+
+[[row]]
+id = "evt_ird_kindboss"
+es = "JEFE de la fase"
+en = "Phase BOSS"
+fr = "BOSS de la phase"
+de = "BOSS der Phase"
+it = "BOSS della fase"
+pt = "CHEFE da fase"
+ja = "フェーズのボス"
+zh_hans = "阶段首领"
+zh_hant = "階段首領"
+
+[[row]]
+id = "evt_ird_kindelite"
+es = "ÉLITE"
+en = "ELITE"
+fr = "ÉLITE"
+de = "ELITE"
+it = "ÉLITE"
+pt = "ELITE"
+ja = "エリート"
+zh_hans = "精英"
+zh_hant = "精英"
+
+[[row]]
+id = "evt_rmap_rival"
+es = "{1} (Nv. {2})"
+en = "{1} (Lv. {2})"
+fr = "{1} (Nv. {2})"
+de = "{1} (Lv. {2})"
+it = "{1} (Liv. {2})"
+pt = "{1} (Nv. {2})"
+ja = "{1}（Lv.{2}）"
+zh_hans = "{1}（Lv.{2}）"
+zh_hant = "{1}（Lv.{2}）"
+
+[[row]]
+id = "evt_rmap_cofre"
+es = "¡Un cofre! Dentro hay…"
+en = "A chest! Inside there is…"
+fr = "Un coffre ! À l'intérieur…"
+de = "Eine Truhe! Darin ist…"
+it = "Un forziere! Dentro c'è…"
+pt = "Um baú! Lá dentro há…"
+ja = "宝箱だ！中身は……"
+zh_hans = "宝箱！里面有……"
+zh_hant = "寶箱！裡面有……"
+
+[[row]]
+id = "evt_rmap_form"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "¡Nueva formación: {1}!\nRareza {2} de 4. Ya puedes elegirla en «Formación».\nFormaciones: {3} de {4}."
+en = "New formation: {1}!\nRarity {2} of 4. You can now pick it in «Formation».\nFormations: {3} of {4}."
+fr = "Nouvelle formation : {1} !\nRareté {2} sur 4. Tu peux la choisir dans « Formation ».\nFormations : {3} sur {4}."
+de = "Neue Formation: {1}!\nSeltenheit {2} von 4. Du kannst sie jetzt unter „Formation“ wählen.\nFormationen: {3} von {4}."
+it = "Nuova formazione: {1}!\nRarità {2} su 4. Ora puoi sceglierla in «Formazione».\nFormazioni: {3} su {4}."
+pt = "Nova formação: {1}!\nRaridade {2} de 4. Já a podes escolher em «Formação».\nFormações: {3} de {4}."
+ja = "新しいフォーメーション：{1}！\nレア度 {2}/4。「フォーメーション」で選べます。\nフォーメーション：{3}/{4}"
+zh_hans = "新阵型：{1}！\n稀有度 {2}/4。现在可以在「阵型」中选择。\n阵型：{3}/{4}"
+zh_hant = "新陣型：{1}！\n稀有度 {2}/4。現在可以在「陣型」中選擇。\n陣型：{3}/{4}"
+
+[[row]]
+id = "evt_rmap_full"
+es = "No cabe en tu inventario: el objeto se queda en el cofre."
+en = "Your inventory is full: the item stays in the chest."
+fr = "Ton inventaire est plein : l'objet reste dans le coffre."
+de = "Dein Inventar ist voll: Der Gegenstand bleibt in der Truhe."
+it = "L'inventario è pieno: l'oggetto resta nel forziere."
+pt = "O inventário está cheio: o objeto fica no baú."
+ja = "持ち物がいっぱいです。アイテムは宝箱に残ります。"
+zh_hans = "背包已满：物品留在宝箱中。"
+zh_hant = "背包已滿：物品留在寶箱中。"
+
+[[row]]
+id = "evt_rmap_empty"
+es = "El cofre estaba vacío."
+en = "The chest was empty."
+fr = "Le coffre était vide."
+de = "Die Truhe war leer."
+it = "Il forziere era vuoto."
+pt = "O baú estava vazio."
+ja = "宝箱は空っぽだった。"
+zh_hans = "宝箱是空的。"
+zh_hant = "寶箱是空的。"
+
+[[row]]
+id = "evt_rmap_use_gear"
+es = "Equípalo a un jugador en «Plantilla de equipo» (jugador → Equipo)."
+en = "Equip it on a player in «Team roster» (player → Gear)."
+fr = "Équipe-le sur un joueur dans « Effectif » (joueur → Équipement)."
+de = "Rüste einen Spieler damit aus in „Teamaufstellung“ (Spieler → Ausrüstung)."
+it = "Equipaggialo a un giocatore in «Rosa della squadra» (giocatore → Equipaggiamento)."
+pt = "Equipa-o num jogador em «Plantel da equipa» (jogador → Equipamento)."
+ja = "「チーム編成」で選手に装備しましょう（選手→装備）。"
+zh_hans = "在「队伍阵容」中给球员装备（球员→装备）。"
+zh_hant = "在「隊伍陣容」中給球員裝備（球員→裝備）。"
+
+[[row]]
+id = "evt_rmap_use_move"
+es = "Colócala a un jugador en «Plantilla de equipo» (jugador → Supertécnicas)."
+en = "Give it to a player in «Team roster» (player → Special moves)."
+fr = "Donne-la à un joueur dans « Effectif » (joueur → Techniques spéciales)."
+de = "Gib sie einem Spieler in „Teamaufstellung“ (Spieler → Spezialtechniken)."
+it = "Assegnala a un giocatore in «Rosa della squadra» (giocatore → Supertecniche)."
+pt = "Dá-a a um jogador em «Plantel da equipa» (jogador → Supertécnicas)."
+ja = "「チーム編成」で選手にセットしましょう（選手→必殺技）。"
+zh_hans = "在「队伍阵容」中交给球员（球员→必杀技）。"
+zh_hant = "在「隊伍陣容」中交給球員（球員→必殺技）。"
+
+[[row]]
+id = "evt_ir_loot_boss"
+es = "¡El jefe deja un premio!"
+en = "The boss leaves a reward!"
+fr = "Le boss laisse une récompense !"
+de = "Der Boss hinterlässt eine Belohnung!"
+it = "Il boss lascia una ricompensa!"
+pt = "O chefe deixa um prémio!"
+ja = "ボスがごほうびを残していった！"
+zh_hans = "首领留下了奖励！"
+zh_hant = "首領留下了獎勵！"
+
+[[row]]
+id = "evt_ir_team_guide"
+es = "Tu equipo de INAROGUE: formación, titulares, banquillo, equipación y escudo. Se conserva entre partidas."
+en = "Your INAROGUE team: formation, starters, bench, kit and emblem. It is kept between runs."
+fr = "Ton équipe INAROGUE : formation, titulaires, remplaçants, tenue et écusson. Elle est conservée entre les parties."
+de = "Dein INAROGUE-Team: Formation, Startelf, Bank, Trikot und Wappen. Es bleibt zwischen den Läufen erhalten."
+it = "La tua squadra INAROGUE: formazione, titolari, panchina, divisa e stemma. Resta tra una partita e l'altra."
+pt = "A tua equipa INAROGUE: formação, titulares, banco, equipamento e emblema. Mantém-se entre partidas."
+ja = "INAROGUEのチーム：フォーメーション、スタメン、ベンチ、ユニフォーム、エンブレム。ラン間で保存されます。"
+zh_hans = "你的INAROGUE队伍：阵型、首发、替补、球衣和队徽。会在各局之间保留。"
+zh_hant = "你的INAROGUE隊伍：陣型、先發、替補、球衣和隊徽。會在各局之間保留。"
+
+[[row]]
+id = "evt_ir_team_saved"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Equipo guardado: {1} titulares, {2} suplentes. Puntos {3}/{4}.\nEmpezar usará este equipo."
+en = "Team saved: {1} starters, {2} substitutes. Points {3}/{4}.\nStart will use this team."
+fr = "Équipe enregistrée : {1} titulaires, {2} remplaçants. Points {3}/{4}.\nCommencer utilisera cette équipe."
+de = "Team gespeichert: {1} Startspieler, {2} Ersatzspieler. Punkte {3}/{4}.\nStarten verwendet dieses Team."
+it = "Squadra salvata: {1} titolari, {2} riserve. Punti {3}/{4}.\nInizia userà questa squadra."
+pt = "Equipa guardada: {1} titulares, {2} suplentes. Pontos {3}/{4}.\nComeçar usará esta equipa."
+ja = "チームを保存しました：スタメン{1}人、控え{2}人。ポイント {3}/{4}\n「はじめる」でこのチームを使います。"
+zh_hans = "队伍已保存：首发{1}人，替补{2}人。点数 {3}/{4}\n「开始」将使用这支队伍。"
+zh_hant = "隊伍已儲存：先發{1}人，替補{2}人。點數 {3}/{4}\n「開始」將使用這支隊伍。"
+
+[[row]]
+id = "evt_ir_team_fix"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "{1}\nAjústalo en «Plantilla de equipo» antes de empezar."
+en = "{1}\nFix it in «Team roster» before starting."
+fr = "{1}\nCorrige-le dans « Effectif » avant de commencer."
+de = "{1}\nKorrigiere es unter „Teamaufstellung“, bevor du startest."
+it = "{1}\nSistemalo in «Rosa della squadra» prima di iniziare."
+pt = "{1}\nAjusta-o em «Plantel da equipa» antes de começar."
+ja = "{1}\n始める前に「チーム編成」で調整してください。"
+zh_hans = "{1}\n开始前请在「队伍阵容」中调整。"
+zh_hant = "{1}\n開始前請在「隊伍陣容」中調整。"
+
+[[row]]
+id = "evt_ir_team_ask_open"
+es = "¿Abrir la «Plantilla de equipo»?"
+en = "Open the «Team roster»?"
+fr = "Ouvrir l'« Effectif » ?"
+de = "„Teamaufstellung“ öffnen?"
+it = "Aprire la «Rosa della squadra»?"
+pt = "Abrir o «Plantel da equipa»?"
+ja = "「チーム編成」を開きますか？"
+zh_hans = "要打开「队伍阵容」吗？"
+zh_hant = "要打開「隊伍陣容」嗎？"
+
+[[row]]
+id = "evt_ir_reset_btn"
+es = "Reiniciar"
+en = "Reset"
+fr = "Réinitialiser"
+de = "Zurücksetzen"
+it = "Reimposta"
+pt = "Reiniciar"
+ja = "リセット"
+zh_hans = "重置"
+zh_hant = "重置"
+
+[[row]]
+id = "evt_ir_reset_ask"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "¿Reiniciar INAROGUE desde cero?\nSe archivan la partida del modo (ranura 4), el banco, la run, las formaciones y el equipo.\nLa próxima vez empezarás como la primera. (Copia en evt_loader/backups/slot4)"
+en = "Reset INAROGUE from zero?\nThe mode's save (slot 4), bank, run, formations and team are archived.\nNext time you start as on the first time. (Copy in evt_loader/backups/slot4)"
+fr = "Réinitialiser INAROGUE depuis zéro ?\nLa sauvegarde du mode (emplacement 4), la banque, la partie, les formations et l'équipe sont archivées.\nLa prochaine fois, tu commenceras comme la première. (Copie dans evt_loader/backups/slot4)"
+de = "INAROGUE von vorne beginnen?\nDer Spielstand des Modus (Platz 4), Spielerbank, Lauf, Formationen und Team werden archiviert.\nBeim nächsten Mal beginnst du wie beim ersten Mal. (Kopie in evt_loader/backups/slot4)"
+it = "Reimpostare INAROGUE da zero?\nIl salvataggio della modalità (slot 4), la banca, la partita, le formazioni e la squadra vengono archiviati.\nLa prossima volta inizierai come la prima. (Copia in evt_loader/backups/slot4)"
+pt = "Reiniciar o INAROGUE do zero?\nO jogo guardado do modo (ranhura 4), o banco, a partida, as formações e a equipa são arquivados.\nDa próxima vez começarás como na primeira. (Cópia em evt_loader/backups/slot4)"
+ja = "INAROGUEを最初からやり直しますか？\nモードのセーブ（スロット4）、バンク、ラン、フォーメーション、チームは保管されます。\n次回は初めてのように始まります。（コピー：evt_loader/backups/slot4）"
+zh_hans = "要从头重置INAROGUE吗？\n模式存档（第4栏）、球员库、本局、阵型和队伍将被归档。\n下次将像第一次一样开始。（副本：evt_loader/backups/slot4）"
+zh_hant = "要從頭重置INAROGUE嗎？\n模式存檔（第4欄）、球員庫、本局、陣型和隊伍將被歸檔。\n下次將像第一次一樣開始。（副本：evt_loader/backups/slot4）"
+
+[[row]]
+id = "evt_ir_reset_done"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "INAROGUE reiniciado. Al entrar empezarás desde cero.\nTodo lo anterior está guardado en evt_loader/backups/slot4."
+en = "INAROGUE reset. You will start from zero when you enter.\nEverything before is kept in evt_loader/backups/slot4."
+fr = "INAROGUE réinitialisé. Tu recommenceras de zéro en entrant.\nTout le reste est conservé dans evt_loader/backups/slot4."
+de = "INAROGUE zurückgesetzt. Beim Betreten beginnst du von vorne.\nAlles Bisherige liegt in evt_loader/backups/slot4."
+it = "INAROGUE reimpostato. Entrando ricomincerai da zero.\nTutto il resto è conservato in evt_loader/backups/slot4."
+pt = "INAROGUE reiniciado. Ao entrar começarás do zero.\nTudo o anterior está guardado em evt_loader/backups/slot4."
+ja = "INAROGUEをリセットしました。次に入ると最初から始まります。\nそれまでのデータはevt_loader/backups/slot4に保管されています。"
+zh_hans = "INAROGUE已重置。进入时将从头开始。\n之前的一切保存在evt_loader/backups/slot4。"
+zh_hant = "INAROGUE已重置。進入時將從頭開始。\n之前的一切保存在evt_loader/backups/slot4。"
+
+[[row]]
+id = "evt_ir_reset_fail"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "No se ha podido reiniciar INAROGUE (código {1}).\nSal de INAROGUE a tu partida y vuelve a intentarlo."
+en = "INAROGUE could not be reset (code {1}).\nLeave INAROGUE to your game and try again."
+fr = "Impossible de réinitialiser INAROGUE (code {1}).\nQuitte INAROGUE pour ta partie et réessaie."
+de = "INAROGUE konnte nicht zurückgesetzt werden (Code {1}).\nVerlasse INAROGUE zu deinem Spielstand und versuche es erneut."
+it = "Impossibile reimpostare INAROGUE (codice {1}).\nEsci da INAROGUE verso la tua partita e riprova."
+pt = "Não foi possível reiniciar o INAROGUE (código {1}).\nSai do INAROGUE para o teu jogo e tenta outra vez."
+ja = "INAROGUEをリセットできませんでした（コード{1}）。\nINAROGUEから自分のデータに戻って、もう一度お試しください。"
+zh_hans = "无法重置INAROGUE（代码{1}）。\n请从INAROGUE返回你的存档后再试。"
+zh_hant = "無法重置INAROGUE（代碼{1}）。\n請從INAROGUE返回你的存檔後再試。"
+
+[[row]]
+id = "evt_ir_run_new"
+es = "Nueva partida"
+en = "New run"
+fr = "Nouvelle partie"
+de = "Neuer Lauf"
+it = "Nuova partita"
+pt = "Nova partida"
+ja = "新しいラン"
+zh_hans = "新的一局"
+zh_hant = "新的一局"
+
+[[row]]
+id = "evt_ir_run_new_guide"
+es = "Empieza una partida nueva desde la fase 1 con tu «Plantilla de equipo»."
+en = "Start a new run from phase 1 with your «Team roster»."
+fr = "Commence une nouvelle partie depuis la phase 1 avec ton « Effectif »."
+de = "Starte einen neuen Lauf ab Phase 1 mit deiner „Teamaufstellung“."
+it = "Inizia una nuova partita dalla fase 1 con la tua «Rosa della squadra»."
+pt = "Começa uma partida nova a partir da fase 1 com o teu «Plantel»."
+ja = "「チーム編成」のチームでフェーズ1から新しいランを始めます。"
+zh_hans = "使用你的「队伍编成」从第1阶段开始新的一局。"
+zh_hant = "使用你的「隊伍編成」從第1階段開始新的一局。"
+
+[[row]]
+id = "evt_ir_run_new_ask"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Se perderá la partida en curso (fase {1}).\n¿Empezar una partida nueva?"
+en = "The run in progress (phase {1}) will be lost.\nStart a new run?"
+fr = "La partie en cours (phase {1}) sera perdue.\nCommencer une nouvelle partie ?"
+de = "Der laufende Lauf (Phase {1}) geht verloren.\nEinen neuen Lauf starten?"
+it = "La partita in corso (fase {1}) andrà persa.\nIniziare una nuova partita?"
+pt = "A partida em curso (fase {1}) vai perder-se.\nComeçar uma partida nova?"
+ja = "進行中のラン（フェーズ{1}）は失われます。\n新しいランを始めますか？"
+zh_hans = "进行中的一局（第{1}阶段）将会丢失。\n要开始新的一局吗？"
+zh_hant = "進行中的一局（第{1}階段）將會遺失。\n要開始新的一局嗎？"
+
+[[row]]
+id = "evt_ir_vs_title"
+es = "INAROGUE · Fase {1} · {2}"
+en = "INAROGUE · Phase {1} · {2}"
+fr = "INAROGUE · Phase {1} · {2}"
+de = "INAROGUE · Phase {1} · {2}"
+it = "INAROGUE · Fase {1} · {2}"
+pt = "INAROGUE · Fase {1} · {2}"
+ja = "INAROGUE・フェーズ{1}・{2}"
+zh_hans = "INAROGUE・第{1}阶段・{2}"
+zh_hant = "INAROGUE・第{1}階段・{2}"
+
+[[row]]
+id = "evt_ir_help_label"
+es = "Ayuda"
+en = "Help"
+
+[[row]]
+id = "evt_ir_shop_label"
+es = "Tienda"
+en = "Shop"
+
+# INAROGUE menu guide line (docs/game/modes/inarogue.md §30.5): one short line on the lit button; es + en.
+
+[[row]]
+id = "evt_ir_desc_continue"
+es = "Vuelve al tablero de la partida en curso."
+en = "Back to the board of the current run."
+
+[[row]]
+id = "evt_ir_desc_start"
+es = "Empieza una partida: fases de tableros que acaban en un jefe."
+en = "Start a run: stages of boards, each ending in a boss."
+
+[[row]]
+id = "evt_ir_desc_enter"
+es = "Abre la partida de INAROGUE: una sola, aparte de tu partida normal."
+en = "Open the INAROGUE save: a single one, apart from your normal game."
+
+[[row]]
+id = "evt_ir_desc_new"
+es = "Abandona la partida en curso y empieza otra."
+en = "Abandon the current run and start another."
+
+[[row]]
+id = "evt_ir_desc_album"
+es = "Los jugadores del modo, por equipo, y los que ya tienes."
+en = "The mode's players by team, and the ones you own."
+
+[[row]]
+id = "evt_ir_desc_team"
+es = "Tu equipo de INAROGUE: formación, titulares y equipación."
+en = "Your INAROGUE team: formation, starters and kit."
+
+[[row]]
+id = "evt_ir_desc_shop"
+es = "Gasta tus Puntos de rogue en avatares desbloqueables."
+en = "Spend your Rogue points on unlockable avatars."
+
+[[row]]
+id = "evt_ir_desc_help"
+es = "Cómo se juega, página a página."
+en = "How to play, page by page."
+
+[[row]]
+id = "evt_ir_help_1_t"
+es = "La partida"
+en = "The run"
+
+[[row]]
+id = "evt_ir_help_1_b"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Una partida es una serie de fases; cada fase es un tablero que acaba en un jefe.\nSi pierdes un partido, la partida termina."
+en = "A run is a series of phases; each phase is a board that ends with a boss.\nLose a match and the run is over."
+
+[[row]]
+id = "evt_ir_help_2_t"
+es = "El tablero"
+en = "The board"
+
+[[row]]
+id = "evt_ir_help_2_b"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Avanzas columna a columna: elige una casilla unida a la tuya.\nHay partidos, cofres, tiendas, fichajes y eventos."
+en = "You move one column at a time: pick a node linked to yours.\nThere are matches, chests, shops, signings and events."
+
+[[row]]
+id = "evt_ir_help_3_t"
+es = "Tu equipo"
+en = "Your team"
+
+[[row]]
+id = "evt_ir_help_3_b"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Juegas con tu «Plantilla de equipo»: 11 titulares y hasta 5 suplentes, todos a Nv. 5.\nCada jugador cuesta según su rareza (★); el total no puede pasar del presupuesto."
+en = "You play with your team: 11 starters and up to 5 subs, all at Lv. 5.\nEach player costs points by rarity (★); the total cannot go over the budget."
+
+[[row]]
+id = "evt_ir_help_4_t"
+es = "Partidos"
+en = "Matches"
+
+[[row]]
+id = "evt_ir_help_4_b"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "Las casillas de partido son pachangas 5 contra 5 o partidos 11 contra 11.\nGanar despeja la casilla y da fragmentos a tus jugadores; empatar obliga a repetirla."
+en = "Match nodes are 5-a-side or 11-a-side games.\nA win clears the node and gives your players fragments; a draw means playing it again."
+
+[[row]]
+id = "evt_ir_help_5_t"
+es = "Álbum"
+en = "Album"
+
+[[row]]
+id = "evt_ir_help_5_b"
+raw = true                # real line breaks in the cell (kept as they are)
+es = "El Álbum reúne a todos los jugadores del modo, por equipo.\nLos que consigues se quedan en tu banco para siempre."
+en = "The Album holds every player of the mode, by team.\nThe ones you get stay in your bank for good."
+
+# the album's element names (copies of Inazuma Fantasy's evt_album_elem_1..4, which its skill card keeps)
+[[row]]
+id = "evt_ir_album_elem_1"
+es = "Viento"
+en = "Wind"
+fr = "Vent"
+de = "Wind"
+it = "Vento"
+pt = "Vento"
+ja = "風"
+zh_hans = "风"
+zh_hant = "風"
+
+[[row]]
+id = "evt_ir_album_elem_2"
+es = "Bosque"
+en = "Forest"
+fr = "Forêt"
+de = "Wald"
+it = "Foresta"
+pt = "Floresta"
+ja = "林"
+zh_hans = "林"
+zh_hant = "林"
+
+[[row]]
+id = "evt_ir_album_elem_3"
+es = "Fuego"
+en = "Fire"
+fr = "Feu"
+de = "Feuer"
+it = "Fuoco"
+pt = "Fogo"
+ja = "火"
+zh_hans = "火"
+zh_hant = "火"
+
+[[row]]
+id = "evt_ir_album_elem_4"
+es = "Montaña"
+en = "Mountain"
+fr = "Montagne"
+de = "Berg"
+it = "Montagna"
+pt = "Montanha"
+ja = "山"
+zh_hans = "山"
+zh_hant = "山"

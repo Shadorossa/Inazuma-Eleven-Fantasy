@@ -1,6 +1,6 @@
 # Football Reforged's module Pachangas since 2026-10-15 (was Inazuma Fantasy's, module pachanga).
 # «Plantilla de equipo»: Partido (11v11) / Pachanga (5v5) templates (docs/game/ui/pachanga-templates.md).
-# «Equipar todo» leaves the list, the first row is the type selector; in pachanga mode the retail dock shows / edits the
+# «Equipar todo» leaves the list, the first row is the format row «< 11 v 11 >» (left / right cycle, decide switches); in pachanga mode the retail dock shows / edits the
 # docks' teamInfo[1] (the retail n10 = 1 mode, the story's 5v5 field) and «Establecer como equipo activo» sets the active
 # pachanga team kept by Inazuma Fantasy's plugin (module pachanga: CMND_EVT_PACHANGA_*). Texts: menu_text rows of
 # research/scripts/pachanga_text_build.py (9 languages, ids = @crc:<label>@). Utilities' team bank pages (mod
@@ -14,7 +14,7 @@ module = ""
 requires = []
 conflicts = []
 wraps = []
-description = "Team dock: Partido / Pachanga selector, 5v5 templates sharing the dock's identity (name, emblem, kit, supertácticas, coach, managers), active pachanga team, Partido team restored on exit; «Equipar todo» removed"
+description = "Team dock: format row «< 11 v 11 >» (Partido / Pachanga), 5v5 templates sharing the dock's identity (name, emblem, kit, supertácticas, coach, managers), active pachanga team, Partido team restored on exit; «Equipar todo» removed"
 
 [[files]]
 stem = "soccer_team_dock_menu"

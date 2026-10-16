@@ -1,0 +1,14 @@
+schema = "VRFW.base_table/1"
+# Golpe del abismo (whs90208)'s colour: a new row 10 of the move colours (m_skillColorInfoList; the technique sets
+# colorIdx = 10 through `cells`: the type's `color` key stops at 9). Row 4 (void: its gradation) with the effect tag
+# rw90208 and three new ball-aura statuses, which eff_chr_trigger maps to rw90208a / b / c
+# (content\base_tables\effect\). The moves themselves are the technique type's (content\techniques\).
+
+[[keyed]]
+list = "m_skillColorInfoList"
+key_columns = ["colorIdx"]
+
+  [[keyed.add]]
+  key = 10
+  from = 4
+  cells = { effectTag = "rw90208", skillShootEffStatus = 0x1C3B48D5, skillShootChainEffStatus = 0x6C4651B6, skillLongShootEffStatus = 0x03F85230 }

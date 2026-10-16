@@ -1,0 +1,92 @@
+# InaRogue: the INAROGUE coach selector evt_rogue_coach_menu (docs/game/modes/inarogue.md «Entrenadores»;
+# written from menus/rogue_shop.toml, the same frame and pools). Base savedata_management_menu (background, header,
+# guide line, cursor, button guides, the off-screen input anchor) + the route map's quad objects as pools, by draw
+# priority: evt_rogue_map_bg (451, backdrop), evt_rogue_map_plat (455, card plates), evt_rogue_map_emb (457, faces),
+# evt_rogue_map_tag (458, name plate + lock per card), evt_rogue_map_hint (459, cursor ring); _lev / _runner unused
+# (1 each). Pool counts = research/scripts/rogue_coaches_build.py GEOM (MAX_CARDS). The Lua is the graft
+# research/grafts/rogue_coaches/evt_rogue_coach_menu.lua (menu_assemble.py new_file). Art: evt_rogue_coach.g4tx
+# (rogue_coaches_build.py: card plates, ring, lock, the coaches' retail face icons and name plates).
+schema = "VRFW.menu/2"
+
+[[screen]]
+name = "evt_rogue_coach_menu"
+like = "language_option_menu"
+# the registry is full at 384 rows (the game dies at boot past that, docs/game/ui/menu-layer-limits.md):
+# this screen takes over the row of a trial-build title menu that the PC game never opens
+replaces = "title_menu_trial_thankyou_tgs2024"
+base = "savedata_management_menu"
+
+[screen.rows]
+layer = [
+    { layer = "save01_01_list_attach_base", object = "evt_rogue_bank_rows" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "mainmenu90_00_background" },
+    { layer = "evt_rogue_map_bg", object = "evt_rogue_map_bg", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_lev", object = "evt_rogue_map_lev", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_plat", object = "evt_rogue_map_plat", count = 12, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_emb", object = "evt_rogue_map_emb", count = 12, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_tag", object = "evt_rogue_map_tag", count = 24, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_hint", object = "evt_rogue_map_hint", count = 2, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_rogue_map_runner", object = "evt_rogue_map_runner", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "mainmenu90_01_header" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu01_10_return_arrow_button_guide" },
+    { layer = "mainmenu01_06_base_button_guide" },
+    { layer = "mainmenu01_07_button_guide" },
+]
+# arrows move between the coach cards
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x87526FE0, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xF7016D51, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x91991A02, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x194603AF, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x87526FE0, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xF7016D51, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x91991A02, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x194603AF, flag = 1 },
+    { layer = "evt_rogue_map_plat", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+]
+res = [
+    "#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx",
+    "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_ch_img01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
+    "#/menu/200_icon/100_num/num_victory.g4tx",
+    "#/menu/220_img/evt_rogue/evt_rogue_map.g4tx",
+    "#/menu/220_img/evt_rogue/evt_rogue_coach.g4tx",
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "save01_01_list_attach_base", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_10_return_arrow_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_06_base_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_07_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_bg", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_lev", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_plat", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_emb", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_tag", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_hint", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_rogue_map_runner", flags = [0, 0, 0, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 3] },
+    { group = "evt_rogue_coach_menu", flags = [1], slice = [3, 13] },
+]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+    { layer = "evt_rogue_map_plat", flags = [0, 0, 0], slice = [1, 1] },
+]
+shift_base = []
+shift = []

@@ -91,6 +91,7 @@ do
     B.on, B.base, B.row, B.moves, B.confirm_id, B.confirm_text, B.confirm_icon = false, 0, 0, 0, 0, "", 0
     B.preview = 0
     B.keep_plate, B.plate_done, B.co, B.pick, B.quiet, B.busy = false, false, nil, 0, 0, false
+    B.created = false                                -- opened by a «Crear …» flow (any row, with or without moves)
   end
   B.Reset()
 
@@ -454,10 +455,12 @@ do
     B.Log("plate released", "move mode after", tostring(B.InMoveMode()), "suspended", tostring(opened))
   end
 
-  -- the bank's close (Sí, or the player left it): our state off; a plate the team dock owned is kept
+  -- the bank's close (Sí, or the player left it): our state off; a plate the team dock owned is kept. The retail
+  -- CloseMenu / FinalizeCharaBankForSearch close personal_plate_menu unless `flag2`: every bank a create flow opened
+  -- over the team dock keeps the dock's plate, also a row without partner moves (All Changed's mode change)
   function B.Close(nxt, ...)
     B.co = nil
-    if not (B.on and B.keep_plate) or B.Get("flag2") == nil then
+    if not ((B.on or B.created) and B.keep_plate) or B.Get("flag2") == nil then
       if B.on then
         pcall(B.MoveMode, false)
       end
@@ -492,6 +495,7 @@ do
       B.confirm_icon = type(confirm_icon) == "number" and confirm_icon or 0
       B.preview = type(preview) == "number" and preview or 0
       B.on = B.moves > 0
+      B.created = true
       B.keep_plate = funcLuaMenuCommand(B.EXIST_MENU, B.PLATE) == true
       B.Log("open", "base", base, "row", row, "moves", B.moves, "keep plate", B.keep_plate)
     end})
@@ -565,7 +569,7 @@ do
 
     VRFW_Host.on(B.STEM, "FinalizeCharaBankForSearch", {id = B.ID .. ".finalize", phase = "around", fn = function(nxt, ...)
       local r = table.pack(B.Close(nxt, ...))
-      B.on = false
+      B.on, B.created = false, false
       return table.unpack(r, 1, r.n)
     end})
   end

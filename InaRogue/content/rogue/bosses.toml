@@ -1,0 +1,517 @@
+# INAROGUE boss tiers and special bosses (docs/game/modes/inarogue.md §33 «Jefes especiales»). Hand-written data:
+# the loader module rogue::bosses reads it ([rogue.bosses] file in config.toml); research/scripts/rogue_bosses_build.py
+# turns every [[special]] into its match game evt_rl_b_<id> (soccer_game_config base table + result trigger).
+#
+# Three boss tiers per phase, all match nodes of the route map:
+#   [boss]  the phase boss (last column, mandatory): the 11v11 pool as before; with special_chance a [[special]] whose
+#           roles include "boss" takes its place (from its min_phase).
+#   [epic]  «Jefe épico»: an OPTIONAL side node in a middle column, EASIER than the phase boss (level_offset below it).
+#           Pool: the 11v11 rows that are not emblematic + [[special]] with role "epic"; rows tagged "minor" (the
+#           original minor story teams) weigh minor_weight times more.
+#   [gate]  «Jefe de puerta»: an OPTIONAL node in the column right before the phase boss, HARDER than the boss
+#           (level_offset above it). Pool: the emblematic rivals ([rogue.rivals] emblematic) + [[special]] with role
+#           "gate" (special_weight each, x their own weight).
+# Board rule: an optional node never closes the way (a path that avoids every Élite / épico / puerta always exists);
+# from_phase = the first phase it can appear (that phase always gets one: the «new thing» moment), then `chance` per
+# phase. Saved runs keep their current board; the rule applies from their next phase.
+# Rewards: [rogue.points] win[4] (épico) / win[5] (puerta, + boss_per_phase x phase like the boss); a won puerta gives
+# the boss fragments (frags_boss).
+schema = "inazuma_fantasy.rogue_bosses/1"
+# Fusion / successor bosses ([[special]] requires_defeated): "run" = the components must be beaten in the current run
+# (as seen when the phase began), "lifetime" = beaten in any INAROGUE run (the unlock store).
+requires_scope = "run"
+
+[boss]
+special_chance = 0.30        # a phase boss is a [[special]] (role "boss") this often, when one is available
+special_level_bonus = 4      # extra levels of a special boss over the phase boss level
+
+[epic]
+enabled = true
+from_phase = 2
+chance = 0.45
+level_offset = 5             # levels below the phase boss
+minor_weight = 4.0           # rows tagged "minor" weigh this many times more
+special_weight = 1.0
+
+[gate]
+enabled = true
+from_phase = 4
+chance = 0.35
+level_offset = 8             # levels above the phase boss
+emblematic_weight = 1.0
+special_weight = 2.0
+
+# The difficulty ladder of every special boss game (one difficulty row per level, AI class rising with the level);
+# a [[special]] may give its own `ladder`. The loader takes the first level at or above the node's target.
+[ladder]
+levels = [8, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 90, 100, 110, 125, 140, 160, 180, 200]
+template_game = "fbtl_free_001"     # builder: info row + AI classes of the free match
+stadium = 0x22E965A5                # the free match's stadium (a [[special]] may name its own)
+
+# Tier tags of rivals (shared vocabulary with the 5v5 rival pools, inarogue.md §33.4): tag -> rival names (Spanish
+# team_text, case-insensitive) or evt_rl_* row names. Tags in use: minor (the original minor story teams: favoured
+# as «Jefe épico»), boss_only (only a phase boss or a gate boss may draw them: never a normal, Élite or épico node),
+# special, crossover, legend (read from the [[special]] entries).
+[tags]
+# Nacho 06/10: boss / gate-boss teams only (the fusion bosses below)
+boss_only = ["Dinastía Galáctica", "Criaturas de la Noche", "Caos", "Ángel Oscuro", "Equipo Zero", "Cuerno Demoníaco",
+             "Ragnah"]
+minor = [
+  "Inazuma Kids FC", "Occult", "Wild", "Brain", "Otaku", "Shuriken", "Farm", "Kirkwood", "Servicio Secreto",
+  "Caballeros Templarios", "Empollones", "Vía Láctea", "Poderosa Fe", "Alpino", "Cala Pirata", "Ultramegahiedra",
+]
+
+# ---- special bosses (3DS event / guest / crossover matches) -----------------------------------------------------
+# id (game evt_rl_b_<id>), team (team key: retail or an IF team's `key`), rival (board / VS name, es), emblem (crc of
+# the emNNNNNN item; 0 = the board's own emblem until PNG emblems reach the map), stadium (optional), roles (boss /
+# gate / epic), tags, min_phase, weight, level_bonus (optional, over the tier's level), rules (the boss's own match
+# rules: a ruleset name; empty = none yet, «jefes con reglas propias» is planned), source (where it comes from).
+
+[[special]]
+id = "l5_heroes_cs"
+team = "evt_ct_wk_l5_heroes"        # teams/14_cs/0075_l5_heroes.toml + the 3 guests of teams/72_rogue_bosses
+rival = "Héroes de L5"
+emblem = 0
+roles = ["boss", "gate"]
+tags = ["special", "crossover"]
+min_phase = 10
+weight = 1.0
+level_bonus = 6
+rules = ""
+source = "CS · Cadena Definitiva (scr_br_0014) · Nv. 99 · «Las estrellas de cinco estrellas»"
+
+[[special]]
+id = "l5_heroes_gx"
+team = "evt_rb_l5_heroes_gx"        # teams/72_rogue_bosses/l5_heroes_gx.toml
+rival = "Héroes de L5 (Galaxy)"
+emblem = 0
+roles = ["boss", "gate"]
+tags = ["special", "crossover"]
+min_phase = 12
+weight = 1.0
+level_bonus = 6
+rules = ""
+source = "Galaxy · Cadena del Abuelo (scr_br_0015) · Nv. 99 · team 1C62DB24"
+
+[[special]]
+id = "chrono_crisis"
+team = "tm_cro_legend_GO2_05"       # retail: «ＣＳボスキャラズ», the CS villains together
+rival = "Chrono Crisis"
+emblem = 0x5B23248F
+stadium = 0x2FF907D4
+roles = ["boss", "gate"]
+tags = ["special", "legend"]
+min_phase = 6
+weight = 1.5
+rules = ""
+source = "CS · Cadena de la Verdad (scr_br_0005) · Nv. 51 · «Todos los villanos juntos»"
+
+[[special]]
+id = "autenticas_leyendas"
+team = "tm_cro_legend_GO2_03"       # retail: «リアルレジェンズ», the historical greats
+rival = "Auténticas Leyendas"
+emblem = 0x2C241419
+roles = ["boss", "gate"]
+tags = ["special", "legend"]
+min_phase = 8
+weight = 1.0
+rules = ""
+source = "CS · Cadena de la Verdad (scr_br_0005) · Nv. 61 · «El dream team definitivo»; Galaxy Cadena Decisiva Nv. 42"
+
+[[special]]
+id = "heroes_fuego"
+team = "evt_ct_wk_hi_no_eiyuutachi"
+rival = "Héroes del Fuego"
+emblem = 0
+roles = ["boss"]
+tags = ["special"]
+min_phase = 5
+weight = 1.0
+rules = ""
+source = "CS · Cadena Nostalgia (scr_br_0007) · Nv. 53"
+
+[[special]]
+id = "heroes_aire"
+team = "evt_ct_wk_kaze_no_eiyuutachi"
+rival = "Héroes del Aire"
+emblem = 0
+roles = ["boss"]
+tags = ["special"]
+min_phase = 5
+weight = 1.0
+rules = ""
+source = "CS · Cadena Nostalgia (scr_br_0007) · Nv. 55"
+
+[[special]]
+id = "heroes_bosque"
+team = "evt_ct_wk_hayashi_no_eiyuutachi"
+rival = "Héroes del Bosque"
+emblem = 0
+roles = ["boss"]
+tags = ["special"]
+min_phase = 7
+weight = 1.0
+rules = ""
+source = "CS · Cadena Nostalgia (scr_br_0007) · Nv. 64"
+
+[[special]]
+id = "heroes_montana"
+team = "evt_ct_wk_yama_no_eiyuutachi"
+rival = "Héroes de la Montaña"
+emblem = 0
+roles = ["boss"]
+tags = ["special"]
+min_phase = 8
+weight = 1.0
+rules = ""
+source = "CS · Cadena Nostalgia (scr_br_0007) · Nv. 70"
+
+# CS «Cadena del Abuelo» (scr_br_0015, no NPC on the maps, all Nv. 99): the five legend squads, gate bosses only
+[[special]]
+id = "arminos_invernales"
+team = "tm_cro_legend_GO2_06"
+rival = "Armiños Invernales"
+emblem = 0xA9CD3776
+roles = ["gate"]
+tags = ["special", "legend"]
+min_phase = 15
+weight = 0.6
+rules = ""
+source = "CS · Cadena del Abuelo (scr_br_0015) · Nv. 99 · «Los sirvientes níveos»"
+
+[[special]]
+id = "osos_dorados"
+team = "tm_cro_legend_GO2_07"
+rival = "Osos Dorados"
+emblem = 0x37A9A2D5
+roles = ["gate"]
+tags = ["special", "legend"]
+min_phase = 15
+weight = 0.6
+rules = ""
+source = "CS · Cadena del Abuelo (scr_br_0015) · Nv. 99 · «Los profetas de oro puro»"
+
+[[special]]
+id = "aves_acuaticas"
+team = "tm_cro_legend_GO2_08"
+rival = "Aves Acuáticas"
+emblem = 0x40AE9243
+roles = ["gate"]
+tags = ["special", "legend"]
+min_phase = 15
+weight = 0.6
+rules = ""
+source = "CS · Cadena del Abuelo (scr_br_0015) · Nv. 99 · «Los discípulos de azul marino»"
+
+[[special]]
+id = "viboras_nocturnas"
+team = "tm_cro_legend_GO2_09"
+rival = "Víboras Nocturnas"
+emblem = 0xD9A7C3F9
+roles = ["gate"]
+tags = ["special", "legend"]
+min_phase = 15
+weight = 0.6
+rules = ""
+source = "CS · Cadena del Abuelo (scr_br_0015) · Nv. 99 · «Los mensajeros de negro azabache»"
+
+[[special]]
+id = "canes_escarlata"
+team = "tm_cro_legend_GO2_10"
+rival = "Canes Escarlata"
+emblem = 0xAEA0F36F
+roles = ["gate"]
+tags = ["special", "legend"]
+min_phase = 15
+weight = 0.6
+rules = ""
+source = "CS · Cadena del Abuelo (scr_br_0015) · Nv. 99 · «Los heraldos de rojo como la sangre»"
+
+# a minor story team not in the 11v11 pool: an épico candidate (tagged minor)
+[[special]]
+id = "ultramegahiedra"
+team = "tm_cro_legend_GO1_01"
+rival = "Ultramegahiedra"
+emblem = 0xB6745DB8
+roles = ["epic"]
+tags = ["minor"]
+min_phase = 2
+weight = 1.0
+rules = ""
+source = "GO / CS · Cadena Inicial (scr_br_0001) · «Siempre vivos, siempre mezquinos»"
+
+# Nacho 06/10: boss / gate-boss teams only (tag boss_only above keeps them off normal, Élite and épico nodes)
+[[special]]
+id = "dinastia_galactica"
+team = "tm_cro_go3_1600"            # retail: Galaxy endgame team (also the 11v11 row evt_rl_f_cro06_160, emblematic)
+rival = "Dinastía Galáctica"
+emblem = 0xE2B2275B
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 10
+weight = 1.0
+requires_defeated = ["Big Bang", "Supernova"]   # the two Grand Celesta finalists it merges (Galaxy)
+rules = ""
+source = "VR Crónicas cro06_160 (Galaxy endgame: Big Bang + Supernova)"
+
+[[special]]
+id = "criaturas_noche"
+team = "tm_cro_go2_2000"            # retail «Criaturas de la Noche» (Kuro no Kishidan, CS); IF copy bb_045
+rival = "Criaturas de la Noche"
+emblem = 0xA4D037BC
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 8
+weight = 1.0
+requires_defeated = ["Nosfanáticos", "Aullido Lunar"]   # Nacho: the vampires + Wolfram Vulpeen's werewolves
+rules = ""
+source = "CS · Cadena Ultrasecreta (scr_br_0010) · Nv. 90 · «Terrores en la noche»"
+
+# ---- fusion bosses (Nacho 06/10): boss / gate only, after their component teams are beaten ----------------------
+[[special]]
+id = "caos"
+team = "tm_cro_ie2_1800"            # retail; also the 11v11 row evt_rl_f_cro02_180 (held back the same way)
+rival = "Caos"
+emblem = 0xF8BCD616
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 6
+weight = 1.0
+requires_defeated = ["Prominence", "Polvo de Diamantes"]   # Nacho
+rules = ""
+source = "IE2 · Chaos = Prominence + Diamond Dust (VR Crónicas cro02_180)"
+
+[[special]]
+id = "angel_oscuro"
+team = "tm_cro_ie3_1400"
+rival = "Ángel Oscuro"
+emblem = 0xE48168B6
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 8
+weight = 1.0
+requires_defeated = ["Sky Team", "Dark Team"]   # IE3 Dark Angel = Tenkuu no Shito + Makai Gundan Z (to confirm)
+rules = ""
+source = "IE3 · Dark Angel; CS Cadena Definitiva Nv. 99 «Regresan los ángeles y los demonios»"
+
+[[special]]
+id = "equipo_zero"
+team = "tm_cro_go1_1400"            # retail; also the 11v11 row evt_rl_f_cro04_140
+rival = "Equipo Zero"
+emblem = 0x0A8BD7F3
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 6
+weight = 1.0
+requires_defeated = ["Luz Eterna", "Oscuridad Ancestral"]   # GO Zero = Unlimited Shining + Ancient Dark (to confirm)
+rules = ""
+source = "GO · Team Zero (God Eden: Hakuryuu's Shining + Shuu's Ancient Dark); CS Cadena Definitiva Nv. 99"
+
+# ---- the components (so the chains are reachable): épico candidates and phase bosses ------------------------------
+[[special]]
+id = "prominence_c"
+team = "tm_cro_ie2_1500"
+rival = "Prominence"
+emblem = 0x1F04FB11
+roles = ["epic"]
+tags = ["component"]
+min_phase = 3
+weight = 1.0
+rules = ""
+source = "component of Caos (also the 11v11 row evt_rl_f_cro02_150: Élite / boss)"
+
+[[special]]
+id = "polvo_diamantes_c"
+team = "tm_cro_ie2_1600"
+rival = "Polvo de Diamantes"
+emblem = 0x8FBBE680
+roles = ["epic"]
+tags = ["component"]
+min_phase = 3
+weight = 1.0
+rules = ""
+source = "component of Caos (also the 11v11 row evt_rl_f_cro02_160: Élite / boss)"
+
+[[special]]
+id = "sky_team"
+team = "tm_cro_ie3_1200"
+rival = "Sky Team"
+emblem = 0x603844AC
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "IE3 · Tenkuu no Shito; component of Ángel Oscuro"
+
+[[special]]
+id = "dark_team"
+team = "tm_cro_ie3_1300"
+rival = "Dark Team"
+emblem = 0x173F743A
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "IE3 · Makai Gundan Z; component of Ángel Oscuro"
+
+[[special]]
+id = "luz_eterna"
+team = "tm_cro_go1_1200"
+rival = "Luz Eterna"
+emblem = 0xED33FAF4
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 3
+weight = 1.0
+rules = ""
+source = "GO · Unlimited Shining; component of Equipo Zero"
+
+[[special]]
+id = "oscuridad_ancestral"
+team = "tm_cro_go1_1300"
+rival = "Oscuridad Ancestral"
+emblem = 0x7D8CE765
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 3
+weight = 1.0
+rules = ""
+source = "GO · Ancient Dark; component of Equipo Zero"
+
+[[special]]
+id = "nosfanaticos"
+team = "tm_cro_go2_1900"
+rival = "Nosfanáticos"
+emblem = 0x3DD96606
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "CS · the vampires (Desmodus Drakul); component of Criaturas de la Noche"
+
+[[special]]
+id = "aullido_lunar"
+team = "tm_cro_go2_1800"
+rival = "Aullido Lunar"
+emblem = 0x4ADE5690
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "CS · Wolfram Vulpeen's werewolves; component of Criaturas de la Noche"
+
+[[special]]
+id = "big_bang"
+team = "tm_cro_go3_1400"
+rival = "Big Bang"
+emblem = 0x0CBC4677
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 6
+weight = 1.0
+rules = ""
+source = "Galaxy · Grand Celesta finalist; component of Dinastía Galáctica"
+
+[[special]]
+id = "supernova"
+team = "tm_cro_go3_1500"
+rival = "Supernova"
+emblem = 0x7BBB76E1
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 6
+weight = 1.0
+rules = ""
+source = "Galaxy · Grand Celesta finalist; component of Dinastía Galáctica"
+
+# ---- more fusion bosses (Nacho 06/10) -------------------------------------------------------------------------
+
+[[special]]
+id = "cuerno_demoniaco"
+team = "tm_cro_go2_2700"
+rival = "Cuerno Demoníaco"
+emblem = 0xC61EA937
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 8
+weight = 1.0
+requires_defeated = ["Colmillo del Norte", "Garra del Sur"]   # confirmar the second team (roster overlap: 8 Garra del Sur players)
+rules = ""
+source = "GO · Demon's Horn = Northern Fang + Southern Claw (3DS roster: 7 Colmillo + 8 Garra players); CS Cadena Ultrasecreta Nv. 80 «Cuando colisionan el frío y el calor»"
+
+[[special]]
+id = "colmillo_norte"
+team = "tm_cro_go2_2500"
+rival = "Colmillo del Norte"
+emblem = 0xB11999A1
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "GO · Northern Fang (3DS Colmillos del Norte); component of Cuerno Demoníaco"
+
+[[special]]
+id = "garra_sur"
+team = "tm_cro_go2_2600"
+rival = "Garra del Sur"
+emblem = 0x2810C81B
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 4
+weight = 1.0
+rules = ""
+source = "GO · Southern Claw (3DS Garras del Sur); component of Cuerno Demoníaco"
+
+[[special]]
+id = "ragnah"
+team = "tm_cro_go2_1700"
+rival = "Ragnah"
+emblem = 0xD4BAC333
+roles = ["boss", "gate"]
+tags = ["special", "boss_only"]
+min_phase = 9
+weight = 1.0
+requires_defeated = ["Zan", "Gir", "Gar"]   # Nacho
+rules = ""
+source = "CS · Ragnarok final team (Feida); also the 11v11 row evt_rl_f_cro05_190 (held back the same way)"
+
+[[special]]
+id = "zan"
+team = "tm_cro_go2_1400"
+rival = "Zan"
+emblem = 0x4DB39289
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 5
+weight = 1.0
+rules = ""
+source = "CS · Ragnarok team Zan; component of Ragnah"
+
+[[special]]
+id = "gir"
+team = "tm_cro_go2_1500"
+rival = "Gir"
+emblem = 0x3AB4A21F
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 5
+weight = 1.0
+rules = ""
+source = "CS · Ragnarok team Gir; component of Ragnah"
+
+[[special]]
+id = "gar"
+team = "tm_cro_go2_1600"
+rival = "Gar"
+emblem = 0xA3BDF3A5
+roles = ["epic", "boss"]
+tags = ["component"]
+min_phase = 5
+weight = 1.0
+rules = ""
+source = "CS · Ragnarok team Gar; component of Ragnah"

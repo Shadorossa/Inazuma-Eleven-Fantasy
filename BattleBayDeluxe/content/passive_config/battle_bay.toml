@@ -1,0 +1,12 @@
+# Battle Bay Deluxe › no player passives in the Battle Bay (Utilities' passive declarations, schema
+# utilities.passive_config/1, docs/game/mechanics/pasivas-configurables.md «Modes without passives»).
+# While the Battle Bay runs (its menus and matches, the current-mode key battle_bay), no player of either team has a
+# passive: the generic slots 1-3 and the archetype slots 4-5 read empty, so the team has no «Bonificaciones de equipo»
+# (its archetype is «Libertad»); with Special Players its own passive (board slot 9) and the script-driven character
+# passives are off too. Nothing applies in the match; the player plate hides its passive rows and the formation screen
+# its «Bonific. de equipo» guide. The saved configuration is not touched: outside the Battle Bay everything is as before.
+# Without Utilities this file is not read.
+schema = "utilities.passive_config/1"
+
+[[off_mode]]
+mode = "battle_bay"

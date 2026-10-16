@@ -1,0 +1,327 @@
+schema = "VRFW.menu/2"
+# The menu objects of INAROGUE's screens (moved from Inazuma Fantasy's menus\screen_objects.toml 2026-10-14).
+
+[[object]]
+name = "evt_album_book"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } },
+]
+
+[[object]]
+name = "evt_album_emblem"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } },
+]
+
+[[object]]
+name = "evt_album_info"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } },
+]
+
+[[object]]
+name = "evt_album_info_bg"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 456 } },
+]
+
+[[object]]
+name = "evt_album_leaf"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 654 } },
+]
+
+[[object]]
+name = "evt_album_over"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 653 } },
+]
+
+[[object]]
+name = "evt_album_plate"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 458 } },
+]
+
+[[object]]
+name = "evt_album_slot"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 457 } },
+]
+
+[[object]]
+name = "evt_album_text"
+from = "mainmenu90_08_content_guide_line_long"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/100_mainmenu/mainmenu90/mainmenu90_08/mainmenu90_08.g4pkm" }, values = { 1 = "common/menu/100_mainmenu/mainmenu90/evt_album_text/evt_album_text.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 452 }, values = { 1 = 460 } },
+]
+
+[[object]]
+name = "evt_inarogue_info_base"
+from = "save01_03_detail_window_attach_base"
+remove = [
+    { param = "NullLayerName", match = { 1 = 0x7A67E768, 2 = 0xC3FEC174, 3 = 0x1FF36340, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xB4CA7514, 2 = 0x5AF790CE, 3 = 0x1FF36340, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x40F0EB24, 2 = 0x7B42A611, 3 = 0x1FF36340, 4 = 0 } },
+]
+set = [
+    { param = "NullLayerName", match = { 1 = 0xC674E474, 2 = 0xD14B6E9A, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0xAC196D0A } },
+]
+
+[[object]]
+name = "evt_inarogue_bg"
+from = "cmn01_10_new_icon"
+# §30 INAROGUE menu backdrop quad (1920x1080 sprite evt_ir_menu_bg): over the retail background (450), under the rows (452)
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 451 } },
+]
+
+[[object]]
+name = "evt_inarogue_ol"
+from = "cmn01_10_new_icon"
+# §30 INAROGUE menu: the lit quad button's outline
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } },
+]
+
+[[object]]
+name = "evt_inarogue_pic"
+from = "cmn01_10_new_icon"
+# §30 INAROGUE menu: the quad buttons' glyphs
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 454 } },
+]
+
+[[object]]
+name = "evt_inarogue_plate"
+from = "cmn01_10_new_icon"
+# §30 INAROGUE menu: the quad buttons' plates (the big row's art at its slant), level with the retail rows (452)
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 453 } },
+]
+
+[[object]]
+name = "evt_inarogue_text"
+from = "mainmenu90_07_content_guide_line_short02"
+# §30 INAROGUE tile captions: free centred text (the evt_mods_t_c layout) in the retail small-row style, centred:
+# fs_36_w_cc_2d0_003 (white 38 px, font_ja)
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/100_mainmenu/mainmenu90/mainmenu90_07/mainmenu90_07.g4pkm" }, values = { 1 = "common/menu/100_mainmenu/mainmenu90/evt_mods_tc/evt_mods_tc.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 452 }, values = { 1 = 600 } },
+    { param = "_text_guide01", match = { 1 = 0x72220D0E }, values = { 1 = 0xED82E90E } },
+]
+
+[[object]]
+name = "evt_rogue_album_win"
+from = "save01_03_detail_window_attach_base"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_03/save01_03.g4pkm" }, values = { 1 = "common/menu/51_save/save01/evt_rogue_album03/evt_rogue_album03.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0xC674E474, 2 = 0xD14B6E9A, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0xE0EB1F24 } },
+    { param = "NullLayerName", match = { 1 = 0x7A67E768, 2 = 0xC3FEC174, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0x7F69B43F, 2 = 0x5D9096C5, 3 = 0x6ACCF257, 4 = 42 } },
+    { param = "NullLayerName", match = { 1 = 0xB4CA7514, 2 = 0x5AF790CE, 3 = 0x1FF36340, 4 = 1 }, values = { 1 = 0x44A0CBE5, 2 = 0x5B691306, 3 = 0x6ACCF257, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x40F0EB24, 2 = 0x7B42A611, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0xDDA99A5F, 2 = 0xC26042BC, 3 = 0x6ACCF257, 4 = 1 } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xAAAEAAC9, 0xB567722A, 0x6ACCF257, 2], after = { param = "NullLayerName", match = { 1 = 0xDDA99A5F, 2 = 0xC26042BC, 3 = 0x6ACCF257, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x34CA3F6A, 0x2B03E789, 0x6ACCF257, 3], after = { param = "NullLayerName", match = { 1 = 0xAAAEAAC9, 2 = 0xB567722A, 3 = 0x6ACCF257, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x43CD0FFC, 0x5C04D71F, 0x6ACCF257, 4], after = { param = "NullLayerName", match = { 1 = 0x34CA3F6A, 2 = 0x2B03E789, 3 = 0x6ACCF257, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDAC45E46, 0xC50D86A5, 0x6ACCF257, 5], after = { param = "NullLayerName", match = { 1 = 0x43CD0FFC, 2 = 0x5C04D71F, 3 = 0x6ACCF257, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xADC36ED0, 0xB20AB633, 0x6ACCF257, 6], after = { param = "NullLayerName", match = { 1 = 0xDAC45E46, 2 = 0xC50D86A5, 3 = 0x6ACCF257, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x3D7C7341, 0x22B5ABA2, 0x6ACCF257, 7], after = { param = "NullLayerName", match = { 1 = 0xADC36ED0, 2 = 0xB20AB633, 3 = 0x6ACCF257, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4A7B43D7, 0x55B29B34, 0x6ACCF257, 8], after = { param = "NullLayerName", match = { 1 = 0x3D7C7341, 2 = 0x22B5ABA2, 3 = 0x6ACCF257, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2ABCCA32, 0x357512D1, 0x6ACCF257, 9], after = { param = "NullLayerName", match = { 1 = 0x4A7B43D7, 2 = 0x55B29B34, 3 = 0x6ACCF257, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5DBBFAA4, 0x42722247, 0x6ACCF257, 10], after = { param = "NullLayerName", match = { 1 = 0x2ABCCA32, 2 = 0x357512D1, 3 = 0x6ACCF257, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC4B2AB1E, 0xDB7B73FD, 0x6ACCF257, 11], after = { param = "NullLayerName", match = { 1 = 0x5DBBFAA4, 2 = 0x42722247, 3 = 0x6ACCF257, 4 = 10 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB3B59B88, 0xAC7C436B, 0x6ACCF257, 12], after = { param = "NullLayerName", match = { 1 = 0xC4B2AB1E, 2 = 0xDB7B73FD, 3 = 0x6ACCF257, 4 = 11 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2DD10E2B, 0x3218D6C8, 0x6ACCF257, 13], after = { param = "NullLayerName", match = { 1 = 0xB3B59B88, 2 = 0xAC7C436B, 3 = 0x6ACCF257, 4 = 12 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5AD63EBD, 0x451FE65E, 0x6ACCF257, 14], after = { param = "NullLayerName", match = { 1 = 0x2DD10E2B, 2 = 0x3218D6C8, 3 = 0x6ACCF257, 4 = 13 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xC3DF6F07, 0xDC16B7E4, 0x6ACCF257, 15], after = { param = "NullLayerName", match = { 1 = 0x5AD63EBD, 2 = 0x451FE65E, 3 = 0x6ACCF257, 4 = 14 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB4D85F91, 0xAB118772, 0x6ACCF257, 16], after = { param = "NullLayerName", match = { 1 = 0xC3DF6F07, 2 = 0xDC16B7E4, 3 = 0x6ACCF257, 4 = 15 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x24674200, 0x3BAE9AE3, 0x6ACCF257, 17], after = { param = "NullLayerName", match = { 1 = 0xB4D85F91, 2 = 0xAB118772, 3 = 0x6ACCF257, 4 = 16 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x53607296, 0x4CA9AA75, 0x6ACCF257, 18], after = { param = "NullLayerName", match = { 1 = 0x24674200, 2 = 0x3BAE9AE3, 3 = 0x6ACCF257, 4 = 17 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x019199F1, 0x1E584112, 0x6ACCF257, 19], after = { param = "NullLayerName", match = { 1 = 0x53607296, 2 = 0x4CA9AA75, 3 = 0x6ACCF257, 4 = 18 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x7696A967, 0x695F7184, 0x6ACCF257, 20], after = { param = "NullLayerName", match = { 1 = 0x019199F1, 2 = 0x1E584112, 3 = 0x6ACCF257, 4 = 19 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xEF9FF8DD, 0xF056203E, 0x6ACCF257, 21], after = { param = "NullLayerName", match = { 1 = 0x7696A967, 2 = 0x695F7184, 3 = 0x6ACCF257, 4 = 20 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9898C84B, 0x875110A8, 0x6ACCF257, 22], after = { param = "NullLayerName", match = { 1 = 0xEF9FF8DD, 2 = 0xF056203E, 3 = 0x6ACCF257, 4 = 21 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x06FC5DE8, 0x1935850B, 0x6ACCF257, 23], after = { param = "NullLayerName", match = { 1 = 0x9898C84B, 2 = 0x875110A8, 3 = 0x6ACCF257, 4 = 22 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x71FB6D7E, 0x6E32B59D, 0x6ACCF257, 24], after = { param = "NullLayerName", match = { 1 = 0x06FC5DE8, 2 = 0x1935850B, 3 = 0x6ACCF257, 4 = 23 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xE8F23CC4, 0xF73BE427, 0x6ACCF257, 25], after = { param = "NullLayerName", match = { 1 = 0x71FB6D7E, 2 = 0x6E32B59D, 3 = 0x6ACCF257, 4 = 24 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9FF50C52, 0x803CD4B1, 0x6ACCF257, 26], after = { param = "NullLayerName", match = { 1 = 0xE8F23CC4, 2 = 0xF73BE427, 3 = 0x6ACCF257, 4 = 25 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x0F4A11C3, 0x1083C920, 0x6ACCF257, 27], after = { param = "NullLayerName", match = { 1 = 0x9FF50C52, 2 = 0x803CD4B1, 3 = 0x6ACCF257, 4 = 26 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x784D2155, 0x6784F9B6, 0x6ACCF257, 28], after = { param = "NullLayerName", match = { 1 = 0x0F4A11C3, 2 = 0x1083C920, 3 = 0x6ACCF257, 4 = 27 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x188AA8B0, 0x07437053, 0x6ACCF257, 29], after = { param = "NullLayerName", match = { 1 = 0x784D2155, 2 = 0x6784F9B6, 3 = 0x6ACCF257, 4 = 28 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x6F8D9826, 0x704440C5, 0x6ACCF257, 30], after = { param = "NullLayerName", match = { 1 = 0x188AA8B0, 2 = 0x07437053, 3 = 0x6ACCF257, 4 = 29 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF684C99C, 0xE94D117F, 0x6ACCF257, 31], after = { param = "NullLayerName", match = { 1 = 0x6F8D9826, 2 = 0x704440C5, 3 = 0x6ACCF257, 4 = 30 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8183F90A, 0x9E4A21E9, 0x6ACCF257, 32], after = { param = "NullLayerName", match = { 1 = 0xF684C99C, 2 = 0xE94D117F, 3 = 0x6ACCF257, 4 = 31 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1FE76CA9, 0x002EB44A, 0x6ACCF257, 33], after = { param = "NullLayerName", match = { 1 = 0x8183F90A, 2 = 0x9E4A21E9, 3 = 0x6ACCF257, 4 = 32 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x68E05C3F, 0x772984DC, 0x6ACCF257, 34], after = { param = "NullLayerName", match = { 1 = 0x1FE76CA9, 2 = 0x002EB44A, 3 = 0x6ACCF257, 4 = 33 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF1E90D85, 0xEE20D566, 0x6ACCF257, 35], after = { param = "NullLayerName", match = { 1 = 0x68E05C3F, 2 = 0x772984DC, 3 = 0x6ACCF257, 4 = 34 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x86EE3D13, 0x9927E5F0, 0x6ACCF257, 36], after = { param = "NullLayerName", match = { 1 = 0xF1E90D85, 2 = 0xEE20D566, 3 = 0x6ACCF257, 4 = 35 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x16512082, 0x0998F861, 0x6ACCF257, 37], after = { param = "NullLayerName", match = { 1 = 0x86EE3D13, 2 = 0x9927E5F0, 3 = 0x6ACCF257, 4 = 36 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x61561014, 0x7E9FC8F7, 0x6ACCF257, 38], after = { param = "NullLayerName", match = { 1 = 0x16512082, 2 = 0x0998F861, 3 = 0x6ACCF257, 4 = 37 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x57CB3E77, 0x4802E694, 0x6ACCF257, 39], after = { param = "NullLayerName", match = { 1 = 0x61561014, 2 = 0x7E9FC8F7, 3 = 0x6ACCF257, 4 = 38 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x20CC0EE1, 0x3F05D602, 0x6ACCF257, 40], after = { param = "NullLayerName", match = { 1 = 0x57CB3E77, 2 = 0x4802E694, 3 = 0x6ACCF257, 4 = 39 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB9C55F5B, 0xA60C87B8, 0x6ACCF257, 41], after = { param = "NullLayerName", match = { 1 = 0x20CC0EE1, 2 = 0x3F05D602, 3 = 0x6ACCF257, 4 = 40 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x4E3F9272, 0x2DF0FC67, 0xBF8C0ED3, 0], after = { param = "NullLayerName", match = { 1 = 0xB9C55F5B, 2 = 0xA60C87B8, 3 = 0x6ACCF257, 4 = 41 } } },
+]
+
+[[object]]
+name = "evt_rogue_bank_rows"
+from = "save01_01_list_attach_base"
+remove = [
+    { param = "NullLayerName", match = { 1 = 0x6735D333, 2 = 0x9E0634B0, 3 = 0xCDF9A8B9, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x1032E3A5, 2 = 0xE9010426, 3 = 0xCDF9A8B9, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x8E567606, 2 = 0x77659185, 3 = 0xCDF9A8B9, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0xF9514690, 2 = 0x0062A113, 3 = 0xCDF9A8B9, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x6058172A, 2 = 0x996BF0A9, 3 = 0x1FA09B6B, 4 = 0 } },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" }, values = { 1 = "common/menu/51_save/save01/evt_rogue_bank01/evt_rogue_bank01.g4pkm" } },
+]
+
+[[object]]
+name = "evt_rogue_bank_win"
+from = "save01_03_detail_window_attach_base"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_03/save01_03.g4pkm" }, values = { 1 = "common/menu/51_save/save01/evt_rogue_bank03/evt_rogue_bank03.g4pkm" } },
+    { param = "NullLayerName", match = { 1 = 0xC674E474, 2 = 0xD14B6E9A, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0x151F5093 } },
+    { param = "NullLayerName", match = { 1 = 0x7A67E768, 2 = 0xC3FEC174, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0x2A99665F, 2 = 0xB708E520, 3 = 0x6ACCF257, 4 = 12 } },
+    { param = "NullLayerName", match = { 1 = 0xB4CA7514, 2 = 0x5AF790CE, 3 = 0x1FF36340, 4 = 1 }, values = { 1 = 0x11501985, 2 = 0x8CC19AFA, 3 = 0x6ACCF257, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0x40F0EB24, 2 = 0x7B42A611, 3 = 0x1FF36340, 4 = 0 }, values = { 1 = 0x8859483F, 2 = 0x15C8CB40, 3 = 0x6ACCF257, 4 = 1 } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xFF5E78A9, 0x62CFFBD6, 0x6ACCF257, 2], after = { param = "NullLayerName", match = { 1 = 0x8859483F, 2 = 0x15C8CB40, 3 = 0x6ACCF257, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x613AED0A, 0xFCAB6E75, 0x6ACCF257, 3], after = { param = "NullLayerName", match = { 1 = 0xFF5E78A9, 2 = 0x62CFFBD6, 3 = 0x6ACCF257, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x163DDD9C, 0x8BAC5EE3, 0x6ACCF257, 4], after = { param = "NullLayerName", match = { 1 = 0x613AED0A, 2 = 0xFCAB6E75, 3 = 0x6ACCF257, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8F348C26, 0x12A50F59, 0x6ACCF257, 5], after = { param = "NullLayerName", match = { 1 = 0x163DDD9C, 2 = 0x8BAC5EE3, 3 = 0x6ACCF257, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF833BCB0, 0x65A23FCF, 0x6ACCF257, 6], after = { param = "NullLayerName", match = { 1 = 0x8F348C26, 2 = 0x12A50F59, 3 = 0x6ACCF257, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x688CA121, 0xF51D225E, 0x6ACCF257, 7], after = { param = "NullLayerName", match = { 1 = 0xF833BCB0, 2 = 0x65A23FCF, 3 = 0x6ACCF257, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1F8B91B7, 0x821A12C8, 0x6ACCF257, 8], after = { param = "NullLayerName", match = { 1 = 0x688CA121, 2 = 0xF51D225E, 3 = 0x6ACCF257, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x7F4C1852, 0xE2DD9B2D, 0x6ACCF257, 9], after = { param = "NullLayerName", match = { 1 = 0x1F8B91B7, 2 = 0x821A12C8, 3 = 0x6ACCF257, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x084B28C4, 0x95DAABBB, 0x6ACCF257, 10], after = { param = "NullLayerName", match = { 1 = 0x7F4C1852, 2 = 0xE2DD9B2D, 3 = 0x6ACCF257, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9142797E, 0x0CD3FA01, 0x6ACCF257, 11], after = { param = "NullLayerName", match = { 1 = 0x084B28C4, 2 = 0x95DAABBB, 3 = 0x6ACCF257, 4 = 10 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1BCF4012, 0x865EC36D, 0xBF8C0ED3, 0], after = { param = "NullLayerName", match = { 1 = 0x9142797E, 2 = 0x0CD3FA01, 3 = 0x6ACCF257, 4 = 11 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x82C611A8, 0x1F5792D7, 0xBF8C0ED3, 1], after = { param = "NullLayerName", match = { 1 = 0x1BCF4012, 2 = 0x865EC36D, 3 = 0xBF8C0ED3, 4 = 0 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF5C1213E, 0x6850A241, 0xBF8C0ED3, 2], after = { param = "NullLayerName", match = { 1 = 0x82C611A8, 2 = 0x1F5792D7, 3 = 0xBF8C0ED3, 4 = 1 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x6BA5B49D, 0xF63437E2, 0xBF8C0ED3, 3], after = { param = "NullLayerName", match = { 1 = 0xF5C1213E, 2 = 0x6850A241, 3 = 0xBF8C0ED3, 4 = 2 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1CA2840B, 0x81330774, 0xBF8C0ED3, 4], after = { param = "NullLayerName", match = { 1 = 0x6BA5B49D, 2 = 0xF63437E2, 3 = 0xBF8C0ED3, 4 = 3 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x85ABD5B1, 0x183A56CE, 0xBF8C0ED3, 5], after = { param = "NullLayerName", match = { 1 = 0x1CA2840B, 2 = 0x81330774, 3 = 0xBF8C0ED3, 4 = 4 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF2ACE527, 0x6F3D6658, 0xBF8C0ED3, 6], after = { param = "NullLayerName", match = { 1 = 0x85ABD5B1, 2 = 0x183A56CE, 3 = 0xBF8C0ED3, 4 = 5 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x6213F8B6, 0xFF827BC9, 0xBF8C0ED3, 7], after = { param = "NullLayerName", match = { 1 = 0xF2ACE527, 2 = 0x6F3D6658, 3 = 0xBF8C0ED3, 4 = 6 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x1514C820, 0x88854B5F, 0xBF8C0ED3, 8], after = { param = "NullLayerName", match = { 1 = 0x6213F8B6, 2 = 0xFF827BC9, 3 = 0xBF8C0ED3, 4 = 7 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x75D341C5, 0xE842C2BA, 0xBF8C0ED3, 9], after = { param = "NullLayerName", match = { 1 = 0x1514C820, 2 = 0x88854B5F, 3 = 0xBF8C0ED3, 4 = 8 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x02D47153, 0x9F45F22C, 0xBF8C0ED3, 10], after = { param = "NullLayerName", match = { 1 = 0x75D341C5, 2 = 0xE842C2BA, 3 = 0xBF8C0ED3, 4 = 9 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x9BDD20E9, 0x064CA396, 0xBF8C0ED3, 11], after = { param = "NullLayerName", match = { 1 = 0x02D47153, 2 = 0x9F45F22C, 3 = 0xBF8C0ED3, 4 = 10 } } },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xECDA107F, 0x714B9300, 0xBF8C0ED3, 12], after = { param = "NullLayerName", match = { 1 = 0x9BDD20E9, 2 = 0x064CA396, 3 = 0xBF8C0ED3, 4 = 11 } } },
+]
+
+[[object]]
+name = "evt_rogue_map_bg"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 451 } },
+]
+
+[[object]]
+name = "evt_rogue_map_emb"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 457 } },
+]
+
+[[object]]
+name = "evt_rogue_map_here"
+from = "vsroute01_08_destination_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 105 }, values = { 1 = 458 } },
+]
+
+[[object]]
+name = "evt_rogue_map_hint"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } },
+]
+
+[[object]]
+name = "evt_rogue_map_lev"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 454 } },
+]
+
+[[object]]
+name = "evt_rogue_map_line"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 453 } },
+]
+
+[[object]]
+name = "evt_rogue_map_piece"
+from = "vsroute00_05_town_map_piece"
+remove = [
+    { param = "m_drawType", match = { 1 = 1 } },
+    { param = "NullLayerIndexName", match = { 1 = 0x259B9EC2, 2 = 0xB2A0DE37, 3 = 0x614EB865 } },
+    { param = "NullLayerIndexName", match = { 1 = 0x96C6BAE5, 2 = 0x5A709C12, 3 = 0x9D3D2D27 } },
+    { param = "NullLayerName", match = { 1 = 0xDD054823, 2 = 0x7CEFA2CA, 3 = 0x4906B213, 4 = 0 } },
+    { param = "NullLayerName", match = { 1 = 0xD1C6A101, 2 = 0xE5E6F370, 3 = 0x03708F5B, 4 = 0 } },
+]
+set = [
+    { param = "m_drawPriority", match = { 1 = 100 }, values = { 1 = 456 } },
+    { param = "NullLayerName", match = { 1 = 0xE020F765, 2 = 0x5A709C12, 3 = 0xC63DCE4E, 4 = 0 }, values = { 3 = 0x5AE57AF2 } },
+]
+
+[[object]]
+name = "evt_rogue_map_plat"
+from = "cmn01_10_new_icon"
+add_block = [
+    { block = "MenuCollisionSetting", values = [0], after = "CMenuAnimation" },
+]
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } },
+]
+add = [
+    { block = "MenuCollisionSetting", param = "_icon_new01", values = [0, 1, 1] },
+]
+
+[[object]]
+name = "evt_rogue_map_runner"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 460 } },
+]
+
+[[object]]
+name = "evt_rogue_map_tag"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 458 } },
+]
+
+[[object]]
+name = "evt_rogue_mark"
+from = "cmn01_10_new_icon"
+
+# The bank and album card: BetterUI's compact layout team00_01_evt_fc when clean_hud is active, else the retail one.
+[[object]]
+name = "inarogue_card_for_list"
+from = "team00_01_chara_card_for_list"
+if_mod = "clean_hud"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+]
+
+[[object]]
+name = "inarogue_card_for_list"
+from = "team00_01_chara_card_for_list"
+if_not_mod = "clean_hud"

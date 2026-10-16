@@ -1,0 +1,52 @@
+schema = "VRFW.friendly/1"
+# INAROGUE's node matches (moved from Inazuma Fantasy 2026-10-14; docs/game/modes/inarogue.md §20, §28).
+
+[[friendly]]
+id = "inarogue_5v5"
+name = "INAROGUE: pachanga 5 contra 5"
+team = "current"            # el dock VS de la run (contexto: set = IRD.set)
+kit_from_11 = true
+pre_match = true
+save = "game"
+return = "title"
+keep_game = true
+field_net = false           # INAROGUE tiene su propia red (rogue_field)
+before = [
+  { op = "deactivate", menu = "soccer_team_dock_menu" },
+  { op = "fade_black", secs = 0.3, frames = 60 },
+  { op = "byte", key = "EVT_IR_LAYER", value = 23 },   # byte 606 = 23: partido lanzado desde el dock
+]
+after = [
+  { op = "close", menu = "team_dock_common_top_menu" },
+  { op = "wait_settled", frames = 120 },
+  { op = "top_wait", secs = 1.5 },
+  { op = "close", menu = "soccer_team_dock_menu" },
+]
+
+[[friendly]]
+id = "inarogue_11v11"
+name = "INAROGUE: partido 11 contra 11"
+team = "current"
+pre_match = true
+save = "game"
+return = "title"
+keep_game = true
+field_net = false           # INAROGUE tiene su propia red (rogue_field)
+before = [
+  { op = "deactivate", menu = "soccer_team_dock_menu" },
+  { op = "fade_black", secs = 0.3, frames = 60 },
+  { op = "byte", key = "EVT_IR_LAYER", value = 23 },
+]
+after = [
+  { op = "close", menu = "team_dock_common_top_menu" },
+  { op = "wait_settled", frames = 120 },
+  { op = "top_wait", secs = 1.5 },
+  { op = "close", menu = "soccer_team_dock_menu" },
+]
+
+# Oficina de fichajes: las pruebas («Prueba», pruebas fijas EVT_TRIALS, pruebas con desafío de los mods [[recruit.trials]],
+# prueba de robo). Se juegan DENTRO de la partida del jugador, desde el Mercado: sumidero (ningún guardado llega a su
+# fichero desde el lanzamiento hasta la vuelta) y el título vuelve a leer la partida del disco (keep_game = false). El
+# «superada» va por carta en el save engine (office.<carta>.<n.º de requisito>), nunca en un bit global de la partida.
+# Contexto: tag = carta (chara_param), sub = n.º del requisito de la carta (1..4), game / difficulty de la prueba,
+# objective = código del desafío; aux1 = fila del Mercado + 1, aux2 = partido de la página, aux3 = NN de EVT_TRIALS.

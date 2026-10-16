@@ -1,0 +1,32 @@
+# INAROGUE coaches (docs/game/modes/inarogue.md «Entrenadores»): the coach selector before a NEW run (the coach is the
+# run's «class»; loader module rogue: catalogue rogue\coaches.toml of Inazuma Fantasy, CMND_EVT_RL_COACH_*).
+#   evt_rogue_coach_menu.lua  the new menu evt_rogue_coach_menu (screen menus\rogue_coaches.toml of Inazuma Fantasy;
+#                             art research/scripts/rogue_coaches_build.py: evt_rogue_coach.g4tx)
+#   irm_coach.lua             evt_inarogue_menu: NewRun opens the selector first (Atrás = no run); the run coach's
+#                             start items reach the bag before the route map opens (wraps IRM_OpenMap)
+name = "rogue_coaches"
+mod = "inarogue"
+order = 330
+module = "lua_bridge"
+requires = ["inarogue"]
+conflicts = []
+wraps = ["IRM_OpenMap"]
+description = "INAROGUE coach selector (evt_rogue_coach_menu) before a new run + the coach's start items"
+
+[[files]]
+path = "common/script/lua/menu/evt_rogue_coach_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "evt_rogue_coach_menu.lua"
+  crc = "none"
+  vars = { "@MENU_FILE@" = "evt_rogue_coach_menu" }   # --@lib evt_menu_kit.lua#StartCo
+
+[[files]]
+path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "irm_coach.lua"
+  marker = "rogue_coaches"
+  crc = "none"

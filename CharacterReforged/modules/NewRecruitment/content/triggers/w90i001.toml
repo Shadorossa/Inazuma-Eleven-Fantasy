@@ -1,0 +1,16 @@
+# The Chronicle hub map's trigger script with the gacha point closed (w90i001.lua; docs/framework/types/trigger.md): the
+# four retail rows (type 22, the map points) and the retail functions, RunCmd_Map2 (the gacha) doing nothing while New
+# Recruitment's rules apply.
+schema = "VRFW.trigger/1"
+
+[[trigger]]
+name = "w90i001"
+part = "map_trigger"
+folder = "common/gamedata/map/w90i001"
+lua = "w90i001.lua"
+rows = [
+  { type = 22, target = 0x3CCD020B },
+  { type = 22, target = 0xFD055ABA },
+  { type = 22, target = 0x8BCE3C17 },
+  { type = 22, target = 0x47DD1326 },
+]

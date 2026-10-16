@@ -386,30 +386,81 @@ end
 
 -- ===== EVT inazuma_fantasy_general_store BEGIN =====
 -- ===== InazumaFantasy general_store BEGIN =====
--- Entry 1 of the Mercado = Inazuma Fantasy's «Tienda general»; the retail entries move down one.
+-- Entries 1-4 of the Mercado = Inazuma Fantasy's shops; the retail entries move down. A retail entry whose shop has
+-- every row hidden by a mod is taken out.
 do
   local REG_FIND = 2175579023           -- CMND_VRFW_REG_FIND (type, key) -> id (-1)
+  local REG_COUNT = 3298114773          -- CMND_VRFW_REG_COUNT (type) -> shops the item build touched
+  local REG_GET = 1306193655            -- CMND_VRFW_REG_GET (type, i) -> key, id, mod, new, added, changed, hidden, total
   local LOG = 3661580131                -- CMND_EVT_LOG
-  local SHOP_KEY = "inazuma_fantasy_2.general_store"
-  local NAME_TEXT = 713514104           -- shop_text row "InazumaFantasy.general_store_name"
-  table.insert(t, 1, 0)                 -- the shop id, filled in OnInit
-  table.insert(t2, 1, 428357293)        -- icon_header_market04
-  table.insert(t3, 1, 2854327783)       -- bg_img04
-  table.insert(t4, 1, 1416979514)       -- list_base_l04
-  table.insert(t5, 1, NAME_TEXT)
-  table.insert(t8, 1, 1290312194)       -- icon_list_l04
+  -- the bars of this mod, in Mercado order: shop key, bar name (shop_text row "InazumaFantasy.<name>_name"), art set
+  local BARS = {
+    { key = "inazuma_fantasy_2.general_store", name = 713514104,          -- art market04 (Tienda vínculo)
+      header = 428357293, background = 2854327783, base = 1416979514, icon = 1290312194 },
+    { key = "inazuma_fantasy_2.training_shop", name = 343889320,          -- art market02 (Tienda Vs)
+      header = 4041970584, background = 1128411346, base = 3172385039, icon = 2777366327 },
+    { key = "inazuma_fantasy_2.technique_shop_shots", name = 585277308,   -- art market03 (Mercado BB)
+      header = 2280432398, background = 876937284, base = 3390173593, icon = 3532394401 },
+    { key = "inazuma_fantasy_2.technique_shop_skills", name = 1696700067, -- art market01 (Tienda de Crónica)
+      header = 1776468514, background = 3662373224, base = 606048437, icon = 1015180941 },
+  }
+  local function unsigned(id)
+    if id < 0 then
+      return id + 4294967296
+    end
+    return id
+  end
+  for k = #BARS, 1, -1 do
+    local bar = BARS[k]
+    table.insert(t, 1, 0)               -- the shop id, filled in OnInit
+    table.insert(t2, 1, bar.header)
+    table.insert(t3, 1, bar.background)
+    table.insert(t4, 1, bar.base)
+    table.insert(t5, 1, bar.name)
+    table.insert(t8, 1, bar.icon)
+  end
+  local function remove_entry(k)
+    table.remove(t, k)
+    table.remove(t2, k)
+    table.remove(t3, k)
+    table.remove(t4, k)
+    table.remove(t5, k)
+    table.remove(t8, k)
+  end
+  local ready = false
   local on_init = OnInit
   function OnInit(...)
-    if t[1] == 0 then
-      local ok, id = pcall(funcLuaCommand, REG_FIND, "shop", SHOP_KEY)
-      if ok and type(id) == "number" and id ~= -1 and id ~= 0 then
-        if id < 0 then
-          id = id + 4294967296
+    if not ready then
+      ready = true
+      for k, bar in ipairs(BARS) do
+        local ok, id = pcall(funcLuaCommand, REG_FIND, "shop", bar.key)
+        if ok and type(id) == "number" and id ~= -1 and id ~= 0 then
+          t[k] = unsigned(id)
+        else
+          pcall(funcLuaCommand, LOG, "InazumaFantasy: shop " .. bar.key .. " not found: its Mercado bar is left out")
         end
-        t[1] = id
-      else
-        pcall(funcLuaCommand, LOG, "InazumaFantasy: shop " .. SHOP_KEY .. " not found: the Mercado bar is left empty")
       end
+      -- the shops whose every row a mod hides
+      local empty = {}
+      local ok, count = pcall(funcLuaCommand, REG_COUNT, "shop")
+      if ok and type(count) == "number" then
+        for i = 0, count - 1 do
+          local got, key, id, _, new, _, _, hidden, total = pcall(funcLuaCommand, REG_GET, "shop", i)
+          if got and type(id) == "number" and not new and type(total) == "number" and type(hidden) == "number"
+            and total > 0 and hidden >= total then
+            empty[unsigned(id)] = key
+          end
+        end
+      end
+      for k = #t, 1, -1 do
+        if t[k] == 0 then
+          remove_entry(k)
+        elseif empty[t[k]] ~= nil then
+          pcall(funcLuaCommand, LOG, "InazumaFantasy: shop " .. tostring(empty[t[k]]) .. " has no row left: its Mercado bar is left out")
+          remove_entry(k)
+        end
+      end
+      pcall(funcLuaCommand, LOG, "InazumaFantasy: the Mercado lists " .. #t .. " shops")
     end
     return on_init(...)
   end

@@ -1,0 +1,20 @@
+# InaRogue › the unlock notices (docs/game/modes/inarogue-unlocks.md): «¡Desbloqueado: X!» inside evt_inarogue_menu
+# before the route map opens again and after a match, for the cards INAROGUE unlocked for Inazuma Fantasy's office
+# (CMND_EVT_RU_NEWS; the office page that signs them is IF's graft rogue_unlocks). Split from rogue_unlocks on
+# 2026-10-14 (a graft cannot patch another mod's graft). Wraps IRM_OpenMap / IRM_AfterMatch of graft inarogue.
+name = "inarogue_unlock_notices"
+mod = "inarogue"
+order = 320
+module = "lua_bridge"
+requires = ["inarogue"]
+conflicts = []
+wraps = ["IRM_OpenMap", "IRM_AfterMatch"]
+description = "INAROGUE: the «¡Desbloqueado!» notices of the office unlocks inside the INAROGUE menu"
+
+[[files]]
+path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
+  [[files.ops]]
+  type = "append_block"
+  src = "iru_inarogue.lua"
+  marker = "rogue_unlocks"
+  crc = "none"

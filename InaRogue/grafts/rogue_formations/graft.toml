@@ -1,0 +1,40 @@
+# INAROGUE formations as loot (docs/game/modes/inarogue.md §18): in the INAROGUE save (slot 4) the formation picker
+# greys the 54 loot formations not won yet (retail disabled row look), shows how to get them in the description box and
+# refuses them on Aceptar; the team dock resets a locked saved formation to 4-4-2 Diamante. Ownership comes from the
+# loader (CMND_EVT_RL_FORM_OWNED, rogue_formations_slot4.json). Normal slots / no loader: retail. The picker's list is
+# soccer_formation_menu_inc (INCLUDE'd by the three menus below); its functions are wrapped by name at run time.
+name = "rogue_formations"
+mod = "inarogue"
+order = 330
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE: loot formations locked (grey + refused) in the formation picker of slot 4"
+
+[[files]]
+stem = "team_dock_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfm_dock.lua"
+  marker = "rogue formations"
+  include = { "@COMMON@" = "rfm_common.lua" }
+
+[[files]]
+stem = "soccer_team_dock_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfm_dock.lua"
+  marker = "rogue formations"
+  include = { "@COMMON@" = "rfm_common.lua" }
+
+[[files]]
+stem = "soccer_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfm_match.lua"
+  marker = "rogue formations"
+  include = { "@COMMON@" = "rfm_common.lua" }

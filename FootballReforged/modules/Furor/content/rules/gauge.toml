@@ -85,69 +85,53 @@ flag = "furor.gauge.rival.phase"
 [rule.do]
 power_mult = 0.9
 
-# ---------------------------------------------------------------- the phase's awakening, one per position
+# ---------------------------------------------------------------- the phase's awakening
 # The furor phase is the only awakening (content\techniques\no_awakenings.toml): every player of the team that starts
-# it (the user's or the CPU's) wears the awakening look of his position (content\effects\awakening.toml: the
-# triggers furor_awakening_gk / _df / _mf / _fw, recoloured copies of the retail awakening aura) and gets its stats,
-# until the phase ends. It is no aura: no aura bit, no aura slot, no aura limit, a keshin / totem / armour / Mix-Max
-# keeps running with it; at the end the look fades out (no withdraw animation, no aura-end signal). Position: gk = the
-# team's keeper, the others by their card's main position (docs/framework/rules.md, `position`). Stats are multiplied
-# from each player's base (they never compound) and put back at the end. Tunables: the `mult` values below (all
-# weaker than a retail awakening: 11 players at once), the hues in content\effects\awakening.toml.
+# it (the user's or the CPU's) wears the retail awakening look, its own colour (the awakening's character-effect
+# trigger 0x9627F4F7: rows ega0550a-ega0553a, the body aura ega0550a; owner 2026-10-16), and gets his position's
+# awakening stats, until the phase ends. It is no aura: no aura bit, no aura slot, no aura limit, a keshin / totem /
+# armour / Mix-Max keeps running with it; at the end the look fades out (no withdraw animation, no aura-end signal).
+# Position (stats only): gk = the team's keeper, the others by their card's main position (docs/framework/rules.md,
+# `position`). Stats are multiplied from each player's base (they never compound) and put back at the end. Tunables:
+# the `mult` values below (all weaker than a retail awakening: 11 players at once).
+
+[[rule]]
+id = "furor_awakening_look"
+on = "signal:furor.gauge.phase"
+[rule.do]
+char_effect = { trigger = "0x9627F4F7", who = "team" }
 
 [[rule]]
 id = "furor_awakening_gk"
 on = "signal:furor.gauge.phase"
 [rule.do]
-char_effect = { trigger = "furor_awakening_gk", who = "team", position = "gk" }
 set_stat = { stat = ["agility", "physical"], mult = 1.12, who = "team", position = "gk" }
 
 [[rule]]
 id = "furor_awakening_df"
 on = "signal:furor.gauge.phase"
 [rule.do]
-char_effect = { trigger = "furor_awakening_df", who = "team", position = "df" }
 set_stat = { stat = ["pressure", "physical"], mult = 1.15, who = "team", position = "df" }
 
 [[rule]]
 id = "furor_awakening_mf"
 on = "signal:furor.gauge.phase"
 [rule.do]
-char_effect = { trigger = "furor_awakening_mf", who = "team", position = "mf" }
 set_stat = { stat = ["control", "technique", "agility"], mult = 1.1, who = "team", position = "mf" }
 
 [[rule]]
 id = "furor_awakening_fw"
 on = "signal:furor.gauge.phase"
 [rule.do]
-char_effect = { trigger = "furor_awakening_fw", who = "team", position = "fw" }
 set_stat = { stat = ["kick", "agility"], mult = 1.15, who = "team", position = "fw" }
 
-# the end: every look off (each trigger on the whole team: a player who changed place keeps none), the stats back
+# the end: the look off on the whole team (a player who changed place keeps none), the stats back
 [[rule]]
-id = "furor_awakening_end_gk"
+id = "furor_awakening_end"
 on = "signal:furor.gauge.phase_end"
 [rule.do]
-char_effect = { clear = true, trigger = "furor_awakening_gk", who = "team" }
+char_effect = { clear = true, trigger = "0x9627F4F7", who = "team" }
 set_stat = { stat = ["kick", "control", "technique", "pressure", "physical", "agility"], restore = true, who = "team" }
-
-[[rule]]
-id = "furor_awakening_end_df"
-on = "signal:furor.gauge.phase_end"
-[rule.do]
-char_effect = { clear = true, trigger = "furor_awakening_df", who = "team" }
-
-[[rule]]
-id = "furor_awakening_end_mf"
-on = "signal:furor.gauge.phase_end"
-[rule.do]
-char_effect = { clear = true, trigger = "furor_awakening_mf", who = "team" }
-
-[[rule]]
-id = "furor_awakening_end_fw"
-on = "signal:furor.gauge.phase_end"
-[rule.do]
-char_effect = { clear = true, trigger = "furor_awakening_fw", who = "team" }
 
 # ---------------------------------------------------------------- the CPU starts its phase (Strikers' AI: by chance,
 # the player nearest the ball, more likely when losing): when a rival player gets the ball with a full gauge

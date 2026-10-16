@@ -70,6 +70,9 @@ end
 function SP.Cmd.OwnPassive(hdl)
   hdl = u32(hdl)
   if hdl == 0 then return 0, false, "" end
+  -- a mode without player passives (Utilities.passives_off): the boards show the slot empty
+  local okoff, off = pcall(VRFW.state.get, "Utilities.passives_off")
+  if okoff and tonumber(off) == 1 then return 0, false, "" end
   local ok, r = pcall(VRFW.chara.record, hdl)
   if not ok or type(r) ~= "table" or type(r.param) ~= "number" then return 0, false, "" end
   local passive, always, mod = SP.OwnPassiveOfCard(r.param)

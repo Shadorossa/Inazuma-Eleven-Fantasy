@@ -1056,12 +1056,16 @@ end
 -- Bands under the last row (stacked by order, lowest first; their sum is the panel's extra):
 --   VRFW_RBC_PanelBand(id, height, order)     asks for band `id` of `height` px (0 / nil = gone); calls
 --                                             VRFW_RBC_PanelExtra with the new sum when it changed
+--   VRFW_RBC_PanelBandReserve(id, height, order)  keeps band `id` at least `height` px while the panel stays placed,
+--                                             shown or not (a row-dependent band reserves its place so the panel
+--                                             keeps one height and nothing moves when the focus changes)
 --   VRFW_RBC_PanelBandTop(id) -> y            the screen y (1920 x 1080, y down) of the band's top edge (the panel as
 --                                             placed; a caller adds the panel's shift while it moves)
 --   VRFW_RBC_PanelShift() -> dx, dy           how far the panel's layer moved since it was placed (its open / close
 --                                             slide; layer axes, y up)
--- The match challenge line is band "match_challenge" (order 10). Bands are cleared when the panel is placed: a module
--- asks for its band again from an "after" handler of VRFW_RBC_ListLayer.
+-- The match challenge line is band "match_challenge" (order 10, reserved on a piece with a challenge on any row).
+-- Bands and reserves are cleared when the panel is placed: a module asks again from an "after" handler of
+-- VRFW_RBC_ListLayer.
 -- VRFW_RBC.panel = {layer, kind, rows, extra, x, y, bands}: the list panel as placed (x, y = its layer's local position
 -- then, CMND_GET_LAYER_LOCAL_POS), extra = the sum of the bands (reset to 0 when the panel is placed).
 -- VRFW_RBC.GEOMETRY: the battle-kind list of both piece kinds as placed (screen px): the first row's centre line, the
@@ -1109,7 +1113,7 @@ VRFW_RBC.GEOMETRY = {FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30,
 
 function VRFW_RBC_ListLayer(layer, kind, rows)
   local p = VRFW_RBC.panel
-  p.layer, p.kind, p.rows, p.extra, p.bands = layer, kind, rows, 0, {}
+  p.layer, p.kind, p.rows, p.extra, p.bands, p.reserved = layer, kind, rows, 0, {}, {}
   local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], layer, 0)
   p.x = ok and type(x) == "number" and x or nil
   p.y = ok and type(y) == "number" and y or nil
@@ -1117,6 +1121,42 @@ end
 
 function VRFW_RBC_PanelExtra(layer, kind, rows, extra)
   VRFW_RBC.panel.extra = extra
+end
+
+-- a band's height as laid out: asked, or its reserve when larger
+function VRFW_RBC.BandHeight(p, id)
+  local band = (p.bands or {})[id]
+  local reserve = (p.reserved or {})[id]
+  local h = band ~= nil and band.height or 0
+  if reserve ~= nil and reserve.height > h then
+    h = reserve.height
+  end
+  return h
+end
+
+function VRFW_RBC.BandOrder(p, id)
+  local band = (p.bands or {})[id] or (p.reserved or {})[id]
+  return band ~= nil and band.order or 0
+end
+
+function VRFW_RBC.BandsChanged(p)
+  local total, seen = 0, {}
+  for _, list in ipairs({p.bands or {}, p.reserved or {}}) do
+    for id in pairs(list) do
+      if not seen[id] then
+        seen[id] = true
+        total = total + VRFW_RBC.BandHeight(p, id)
+      end
+    end
+  end
+  if total == p.extra then
+    return
+  end
+  if p.layer ~= nil then
+    VRFW_RBC_PanelExtra(p.layer, p.kind, p.rows, total)
+  else
+    p.extra = total
+  end
 end
 
 function VRFW_RBC_PanelBand(id, height, order)
@@ -1135,25 +1175,35 @@ function VRFW_RBC_PanelBand(id, height, order)
   else
     p.bands[id] = {height = height, order = order}
   end
-  local total = 0
-  for _, band in pairs(p.bands) do
-    total = total + band.height
-  end
-  if p.layer ~= nil then
-    VRFW_RBC_PanelExtra(p.layer, p.kind, p.rows, total)
+  VRFW_RBC.BandsChanged(p)
+end
+
+function VRFW_RBC_PanelBandReserve(id, height, order)
+  local p = VRFW_RBC.panel
+  p.reserved = p.reserved or {}
+  if (height or 0) <= 0 then
+    p.reserved[id] = nil
   else
-    p.extra = total
+    p.reserved[id] = {height = height, order = order or 0}
   end
+  VRFW_RBC.BandsChanged(p)
 end
 
 function VRFW_RBC_PanelBandTop(id)
   local p = VRFW_RBC.panel
   local g = VRFW_RBC.GEOMETRY
   local y = g.FIRST_ROW_MID_Y + g.ROW_STEP * (math.max(p.rows or 1, 1) - 1) + g.ROW_HALF_HEIGHT
-  local own = (p.bands or {})[id]
-  for other, band in pairs(p.bands or {}) do
-    if own ~= nil and other ~= id and (band.order < own.order or (band.order == own.order and other < id)) then
-      y = y + band.height
+  local own = VRFW_RBC.BandOrder(p, id)
+  local seen = {[id] = true}
+  for _, list in ipairs({p.bands or {}, p.reserved or {}}) do
+    for other in pairs(list) do
+      if not seen[other] then
+        seen[other] = true
+        local o = VRFW_RBC.BandOrder(p, other)
+        if o < own or (o == own and other < id) then
+          y = y + VRFW_RBC.BandHeight(p, other)
+        end
+      end
     end
   end
   return y

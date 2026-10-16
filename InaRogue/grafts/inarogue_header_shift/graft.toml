@@ -1,0 +1,23 @@
+# Inazuma Fantasy's INAROGUE menu (evt_inarogue_menu) under Clean HUD's compact top bar (flag header_short of
+# clean_hud; docs/game/ui/ui-redesign.md §3.3): its root layers move up by the height the bar saves, with Clean HUD's
+# header_shift block (../ui_clean_header_shift/hs_common.lua). Split from ui_clean_header_shift on 2026-10-08 when that
+# graft moved to clean_hud (docs/refactor/if-adaptation-after-e3.md §35): the menu is IF's own, so its patch stays IF's.
+name = "inarogue_header_shift"
+mod = "inarogue"
+order = 900
+module = "lua_bridge"
+requires = ["inarogue"]
+conflicts = []
+wraps = []
+description = "INAROGUE menu content moved up under Clean HUD's compact top bar"
+
+[[files]]
+path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
+
+  [[files.ops]]
+  type = "bytecode_child"
+  src = "../ui_clean_header_shift/hs_common.lua"
+  marker = "ui_clean header_shift"
+  crc = "none"
+  include = { "@UI_WRAP@" = "../_lib/evt_ui_wrap.lua" }
+  vars = { "@TAG@" = "hs_inarogue", "@HS_LAYERS@" = "[3903826878] = 1, [234014212] = 1", "@HS_STRETCH@" = "" }

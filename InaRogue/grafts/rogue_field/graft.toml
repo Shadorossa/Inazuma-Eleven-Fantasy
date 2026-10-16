@@ -1,0 +1,49 @@
+# INAROGUE: nothing of the story field in the INAROGUE save (slot 4) — docs/game/modes/inarogue.md §21, rule «no
+# story-mode leaks». A 5v5 street battle ends on its battle map (the story field); there, and in any story field menu
+# (Start main_menu, Select map_menu, X / M rpg_area_map_menu), the game goes straight back to the title (black), which
+# reopens INAROGUE and reads the match result. The «logros» banner (activity_telop_menu) never shows in slot 4 (the
+# loader drops the achievement itself too: rogue::achieve). Every block is inert outside slot 4.
+name = "rogue_field"
+mod = "inarogue"
+order = 335
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE: story field / field menus / achievement banner never shown in slot 4 (back to INAROGUE)"
+
+[[files]]
+stem = "activity_telop_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfl_telop.lua"
+  marker = "inarogue field"
+  include = { "@COMMON@" = "rfl_common.lua" }
+
+[[files]]
+stem = "main_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfl_menu.lua"
+  marker = "inarogue field"
+  include = { "@COMMON@" = "rfl_common.lua" }
+
+[[files]]
+stem = "map_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfl_menu.lua"
+  marker = "inarogue field"
+  include = { "@COMMON@" = "rfl_common.lua" }
+
+[[files]]
+path = "common/script/lua/menu/rpg_area_map_menu.lua.bin"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "rfl_menu.lua"
+  marker = "inarogue field"
+  include = { "@COMMON@" = "rfl_common.lua" }

@@ -22,6 +22,11 @@ game = "Board.CanEquip"
 name = "CharacterReforged.BoardSkillPieces"
 game = "Board.SkillPieces"
 
+# the item on one board slot itself (the free aura slot of a board without an aura piece, scripts/board_slots.lua)
+[[VRFW.Function]]
+name = "CharacterReforged.BoardEquipSlot"
+game = "Board.EquipSlot"
+
 # The skill table's aura slot (board slot 8) without Inazuma Fantasy's board service (scripts\board_slots.lua; the
 # same arguments and answers as IF's CMND_EVT_BOARD_PIECE / PLACE / CLEAR, which the table uses when they answer).
 # Status codes (first answer): 1 ok, 0 refused, 2 mismatch, -1 bad args, -2 not ready, -3 closed, -4 exception,
@@ -33,9 +38,9 @@ handler = "CharacterReforged.BoardSlots.Piece"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_BOARD_PLACE"   # (charaStHdl, invHdl, boardSlot) -> status, effectiveInv
 handler = "CharacterReforged.BoardSlots.Place"
-needs = ["CharacterReforged.BoardCanEquip", "CharacterReforged.BoardPlaceByHandle", "CharacterReforged.BoardSkillPieces"]
+needs = ["CharacterReforged.BoardCanEquip", "CharacterReforged.BoardPlaceByHandle", "CharacterReforged.BoardSkillPieces", "CharacterReforged.BoardEquipSlot"]
 
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_BOARD_CLEAR"   # (charaStHdl, boardSlot[, keepOpen 0 / 1 / 3]) -> status, effectiveInv
 handler = "CharacterReforged.BoardSlots.Clear"
-needs = ["CharacterReforged.BoardPlaceByHandle"]
+needs = ["CharacterReforged.BoardPlaceByHandle", "CharacterReforged.BoardSkillPieces", "CharacterReforged.BoardEquipSlot"]

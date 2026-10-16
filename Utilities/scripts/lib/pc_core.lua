@@ -390,6 +390,22 @@ function M.add_decl(d, mod_id, doc)
   return warn
 end
 
+-- the game modes a declaration file switches the player passives off in ([[off_mode]] mode = "<mode key>"): every
+-- slot reads «no passive» while one of them is the current mode; the saved configuration is not touched
+function M.off_modes(doc)
+  local keys, warn = {}, {}
+  if type(doc) ~= "table" or doc.schema ~= "utilities.passive_config/1" then return keys, warn end
+  for k, t in ipairs(type(doc.off_mode) == "table" and doc.off_mode or {}) do
+    local m = type(t) == "table" and t.mode or nil
+    if type(m) == "string" and m:match("^[%w_%.%-]+$") then
+      keys[#keys + 1] = m
+    else
+      warn[#warn + 1] = string.format("[[off_mode]] #%d: mode must be a mode key (ignored)", k)
+    end
+  end
+  return keys, warn
+end
+
 -- the mods' passives an own-passive column carries become exclusive unless declared exclusive = false
 function M.exclusive(d, own_ids)
   local out = {}

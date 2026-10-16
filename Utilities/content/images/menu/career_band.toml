@@ -7,3 +7,66 @@ schema = "VRFW.image/1"
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "util_cs_band"
 png = "02_btl/btl06/btl06_13/util_cs_band.png"
+
+# v6 (2026-10-16, «línea de vida» + «reverso de cromo»): the quads of the page (util_cs_band / util_cs_icon instances,
+# graft util_career_page UTIL_CS.QUAD_SPRITE): row bands of the card-back table, the timeline line, the chips' backs
+# and today's dot (Utilities' own pictures, research/scripts/career_page_sprites.py) and the three milestone icons,
+# made on the player's PC from the retail icons of icon_common (signing: a player, first goal: the golden ball, first
+# «Jugador del partido»: the star badge).
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_row_head"
+png = "02_btl/btl06/btl06_13/util_cs_row_head.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_row_total"
+png = "02_btl/btl06/btl06_13/util_cs_row_total.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_line"
+png = "02_btl/btl06/btl06_13/util_cs_line.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_chip"
+png = "02_btl/btl06/btl06_13/util_cs_chip.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_dot"
+png = "02_btl/btl06/btl06_13/util_cs_dot.png"
+
+[[recipe]]
+name = "career_icon_signed"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_body_type06"
+
+[[recipe]]
+name = "career_icon_goal"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_btl02_parameter02"
+
+[[recipe]]
+name = "career_icon_mvp"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_abilear_title02"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_icon_signed"
+recipe = "career_icon_signed"
+size = [84, 84]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_icon_goal"
+recipe = "career_icon_goal"
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "util_cs_icon_mvp"
+recipe = "career_icon_mvp"
+size = [72, 72]

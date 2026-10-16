@@ -1,0 +1,55 @@
+schema = "VRFW.team/2"
+# InaRogue › the rival pool tables (docs/game/modes/inarogue.md §15; was Inazuma Fantasy's teams\teams.toml lists until
+# 2026-10-14): an entry = a new evt_rl_t_te* / evt_rl_t_tf* game cloned from its template (ladder and result trigger)
+# + a row of roguelite_team.cfg.bin, which scripts\lib\rogue\pool.lua reads. Since the split only the random-team slot
+# teams (content\teams\random_slots.toml) are listed; the old keys inazuma_fantasy.inarogue_rivals[_full] follow them.
+
+[[alias]]
+old = "inazuma_fantasy.inarogue_rivals"
+new = "inarogue.inarogue_rivals"
+
+[[alias]]
+old = "inazuma_fantasy.inarogue_rivals_full"
+new = "inarogue.inarogue_rivals_full"
+
+# the 5v5 rivals: 5 players in slots 0-4, the keeper in slot 0
+[[list]]
+id = "inarogue_rivals"
+kind = "pool_table"
+template_game = "evt_rl_s_shopkeeper_02"
+format = "5v5"
+tier = 1
+label = { es = "Rivales de INAROGUE", en = "INAROGUE rivals" }
+description = "INAROGUE's 5v5 rival pool"
+[list.pool]
+file = "data/common/gamedata/roguelite/roguelite_team.cfg.bin"
+info = "ROGUE_TEAM_INFO"
+member = "ROGUE_TEAM_MEMBER"
+difficulty = "ROGUE_TEAM_DIFFICULTY"
+header = "ROGUE_TEAM_HEADER"
+template_prefix = "evt_rl_"
+game_prefix = "evt_rl_t_te"
+numbers = [600, 300]                      # pool number = 600 + crc32(game) % 300, then the next free one
+tiers = [1, 4]
+star_column = 57                          # chara_param col 57: a member's INAROGUE tier (content\characters\layout.toml)
+
+# the 11v11 rivals: 11 players in slots 0-10, the keeper in slot 0
+[[list]]
+id = "inarogue_rivals_full"
+kind = "pool_table"
+template_game = "evt_rl_f_cro03_050"
+format = "11v11"
+tier = 2
+label = { es = "Rivales 11v11 de INAROGUE", en = "INAROGUE 11v11 rivals" }
+description = "INAROGUE's 11v11 rival pool"
+[list.pool]
+file = "data/common/gamedata/roguelite/roguelite_team.cfg.bin"
+info = "ROGUE_TEAM_INFO"
+member = "ROGUE_TEAM_MEMBER"
+difficulty = "ROGUE_TEAM_DIFFICULTY"
+header = "ROGUE_TEAM_HEADER"
+template_prefix = "evt_rl_"
+game_prefix = "evt_rl_t_tf"
+numbers = [600, 300]
+tiers = [1, 4]
+star_column = 57

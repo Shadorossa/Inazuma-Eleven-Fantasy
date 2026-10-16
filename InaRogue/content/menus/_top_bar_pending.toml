@@ -1,0 +1,51 @@
+schema = "VRFW.menu/2"
+# NOT READ (file name starts with "_"): INAROGUE's top bar shortcut and the bar inside evt_inarogue_menu as
+# Inazuma Fantasy declared them (moved 2026-10-14). They never shipped in IF's rebuild phase 1 and need IF's atlas
+# evt_topbar.g4tx (glyph evt_tb_inarogue) and IF's title hand-off: InaRogue needs its own glyph and an `open_menu` /
+# `mode` action before this can be turned on (rename the file without the «_»).
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_plate", object = "evt_topbar_plate", count = 11, align = [1, 8], scale = 0.2, after = "mainmenu90_01_header", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_01_header" }] }
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_icon", object = "evt_topbar_icon", count = 10, align = [1, 8], scale = 0.2, after = "evt_topbar_plate", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_topbar_plate" }] }
+res = ["#/menu/100_mainmenu/mainmenu90/utilities_topbar/utilities_topbar.g4tx", "#/menu/100_mainmenu/mainmenu90/evt_topbar/evt_topbar.g4tx"]
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_hint", object = "evt_topbar_hint", count = 1, align = [1, 8], after = "evt_topbar_icon", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_topbar_icon" }] }
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_drop_plate", object = "evt_topbar_drop_plate", count = 2, align = [1, 8], scale = 0.2, after = "evt_topbar_hint", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_topbar_hint" }] }
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_drop_icon", object = "evt_topbar_drop_icon", count = 6, align = [1, 8], scale = 0.2, after = "evt_topbar_drop_plate", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_topbar_drop_plate" }] }
+
+[[patch]]
+menu = "evt_inarogue_menu"
+add_layer = { name = "evt_topbar_drop_label", object = "evt_topbar_drop_label", count = 6, align = [1, 8], after = "evt_topbar_drop_icon", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_topbar_drop_icon" }] }
+
+[[entry]]
+host = "top_bar"
+id = "inarogue"
+text = { all = "INAROGUE" }
+icon = "#/menu/100_mainmenu/mainmenu90/evt_topbar/evt_topbar.g4tx:evt_tb_inarogue"
+order = 50
+action = { title = "evt_title_menu_custom_item" }
+menus = ["evt_inarogue_menu"]
+
+# the group «Partido» (2026-10-12, docs/game/modes/training-field.md): «Partido libre» and the «Campo de
+# entrenamiento», each the title's «Modos de juego» request + a step of graft training_field (soccer_top_menu)
+
+[[top_bar_host]]
+menu = "evt_inarogue_menu"
+leave = "IRM_LeaveRogue"
+session = true
+dpad = false
+open = true
+open_yield = ["soccer_team_dock_menu", "team_dock_menu", "team_dock_formation_menu", "personal_plate_menu"]
+

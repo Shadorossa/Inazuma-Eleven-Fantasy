@@ -1,0 +1,7 @@
+schema = "VRFW.model/1"
+# Effect object ev60902080: game files served as they are (docs/framework/mod-layout.md «Models»), from
+# assets\models\effects\ev60902080\{common,dx11}\ to data\{common,dx11}\effect\event\ev60\ev60902080\. Native, not .glb: an effect
+# object carries its own animation banks (G4MT / G4MA / G4TP) and recoloured materials a .glb does not hold
+# (docs/framework/types/model.md §12.2). Written by research/scripts/new_techniques_build.py.
+format = "native"
+game_path = "effect/event/ev60/ev60902080"

@@ -1,0 +1,19 @@
+schema = "VRFW.character/2"
+# InaRogue · the chara_param columns INAROGUE reads (docs/framework/types/character.md §2.8 [[param_column]]): col 57
+# = the card's INAROGUE tier (1-5; 11-15 the Vestigio cards), 59 / 60 = the gacha constellation / featured marks.
+# Every card is widened to 58 columns (the EVT layout; the largest param_columns of all mods wins). Moved from
+# Inazuma Fantasy's characters\layout.toml 2026-10-14.
+param_columns = 58
+
+[[param_column]]
+col = 57
+name = "rogue_rarity"                                     # INAROGUE rarity / tier of the card
+[[param_column]]
+col = 59
+name = "rogue_constellation"
+[[param_column]]
+col = 60
+name = "rogue_featured"
+
+# The Oficina de fichajes price rule of recruit rows (`tier = "<id>"`; fichajes_build.py PRICE):
+# price = base + level / level_step (fichas).

@@ -1,0 +1,24 @@
+schema = "VRFW.base_table/1"
+# Golpe del abismo (whs90208)'s ball auras: three pooled effects rw90208a / b / c (shot, chain shot, long shot), the
+# void ball auras ega0075e / ega0080e / ega0085e cloned onto the recoloured copies the mod ships
+# (content\models\effects\rw90208{a,b,c}.toml). Effect id = crc32(name) (the game looks rows up by it); the rows of
+# eff_chr_trigger (same folder) and the colour row 10 of skill_config (gamedata\skill\skill_config.toml) point here.
+# Rows by key, after every mod's edition of the table (Inazuma Fantasy ships effect_define as a base table too).
+
+[[keyed]]
+table = "effect/effect_define"
+
+  [[keyed.add]]
+  key = "rw90208a"
+  from = "ega0075e"
+  cells = { path = { text = "effect/battle/common/rw90208a/rw90208a.objbin" }, name = { text = "rw90208a" } }
+
+  [[keyed.add]]
+  key = "rw90208b"
+  from = "ega0080e"
+  cells = { path = { text = "effect/battle/common/rw90208b/rw90208b.objbin" }, name = { text = "rw90208b" } }
+
+  [[keyed.add]]
+  key = "rw90208c"
+  from = "ega0085e"
+  cells = { path = { text = "effect/battle/common/rw90208c/rw90208c.objbin" }, name = { text = "rw90208c" } }

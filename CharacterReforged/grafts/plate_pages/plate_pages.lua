@@ -1331,11 +1331,22 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.VIS, l, i, true)
   end
 
+  -- Utilities' career page v6 (timeline + card-back table) lays itself out: this plate only gives its geometry (the
+  -- status base's _atc_passive01 on screen, the page centre, top and height); the two rows below stay for an older
+  -- Utilities
+  G.CS_GEO = {origin = {1495, 880}, center = 1450, top = 704, height = 214}
+
   function G.Career()
     if type(UTIL_CS) ~= "table" or type(UTIL_CS.Cell) ~= "function" then
       return
     end
     local mine = On() and G.ptype == 6
+    if type(UTIL_CS.OwnLayout) == "function" then
+      CsBand(0, false)
+      CsBand(1, false)
+      UTIL_CS.OwnLayout(mine, G.CS_GEO)
+      return
+    end
     if not mine then
       CsBand(0, false)
       CsBand(1, false)

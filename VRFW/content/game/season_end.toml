@@ -1,0 +1,22 @@
+schema = "VRFW.game/2"
+
+# The season-end conversion is off: seasonal cards and spirits are never turned into normal ones and the «La temporada
+# ha finalizado» notice never shows (the game is played offline; its calendar says every season has ended).
+#
+# u8 SeasonState(u8, u8) 0x1789CF0 answers 2 when the season has ended. The season-end check SeasonEndCheck::Update
+# 0x143F0D0 (run on entering the main-menu scene after a boot or a save load) asks (0, 0) right before it converts the
+# season players and the seasonal spirit stock and opens the notice.
+[[VRFW.Hook]]
+name = "SeasonEndState"
+game = "Chronicle.SeasonState"
+kind = "function"
+
+# SeasonState(0, 0) = 2 («season ended») is answered 0: the check finds no ended season.
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [
+  { value = "mask(args[1], 0xFF)", equals = 0 },
+  { value = "mask(args[2], 0xFF)", equals = 0 },
+  { value = "ret", equals = 2 },
+]
+value = "0"

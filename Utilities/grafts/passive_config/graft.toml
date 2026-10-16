@@ -28,3 +28,8 @@ src = "util_pc_dock.lua"
 [[hooks]]
 stem = "personal_plate_menu"
 src = "util_pc_plate.lua"
+
+# a mode without player passives ([[off_mode]]): the formation screen hides «Bonificaciones de equipo»
+[[hooks]]
+stem = "soccer_formation_menu"
+src = "util_pc_formation.lua"

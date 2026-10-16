@@ -1,0 +1,42 @@
+# Texts of New Techniques (mod id new_techniques; format of the text engine: docs/framework/types/text.md);
+# new texts get the id crc32("new_techniques.<name>"): the mod's name and description on the «Mods» screen, in the
+# game's language. A language missing here falls back to English. The move names stay Spanish in every language until
+# they are translated (text\rows\skill_text.toml).
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "New Techniques"
+mod_description = "Five new special moves, each with its own scene, effects, name banner and manual: Golpe del abismo (void shot), Vuelo angelical (wind shot), Campo nuclear (void block), Zona oscura (forest block) and Dispersión (void catch). With Inazuma Fantasy their manuals are sold in its training shop. Names in Spanish for now. Always on: the mod has no options."
+
+[es.new]
+mod_name = "New Techniques"
+mod_description = "Cinco supertécnicas nuevas, cada una con su escena, sus efectos, su rótulo y su manual: Golpe del abismo (tiro, vacío), Vuelo angelical (tiro, viento), Campo nuclear (bloqueo, vacío), Zona oscura (bloqueo, bosque) y Dispersión (parada, vacío). Con Inazuma Fantasy sus manuales se venden en su Tienda de entrenamiento. Nombres en español por ahora. Siempre activo: el mod no tiene opciones."
+
+[fr.new]
+mod_name = "New Techniques"
+mod_description = "Cinq nouvelles supertechniques, chacune avec sa scène, ses effets, sa bannière et son manuel : Golpe del abismo (tir, vide), Vuelo angelical (tir, vent), Campo nuclear (blocage, vide), Zona oscura (blocage, forêt) et Dispersión (arrêt, vide). Avec Inazuma Fantasy, leurs manuels sont vendus dans sa boutique d'entraînement. Noms en espagnol pour l'instant. Toujours actif : le mod n'a pas d'options."
+
+[de.new]
+mod_name = "New Techniques"
+mod_description = "Fünf neue Spezialtechniken, jede mit eigener Szene, eigenen Effekten, Namensbanner und Handbuch: Golpe del abismo (Schuss, Leere), Vuelo angelical (Schuss, Wind), Campo nuclear (Block, Leere), Zona oscura (Block, Wald) und Dispersión (Parade, Leere). Mit Inazuma Fantasy werden ihre Handbücher in dessen Trainingsladen verkauft. Namen vorerst auf Spanisch. Immer aktiv: Der Mod hat keine Optionen."
+
+[it.new]
+mod_name = "New Techniques"
+mod_description = "Cinque nuove supertecniche, ciascuna con la sua scena, i suoi effetti, il suo banner e il suo manuale: Golpe del abismo (tiro, vuoto), Vuelo angelical (tiro, vento), Campo nuclear (blocco, vuoto), Zona oscura (blocco, bosco) e Dispersión (parata, vuoto). Con Inazuma Fantasy i loro manuali si vendono nel suo negozio di allenamento. Nomi in spagnolo per ora. Sempre attivo: la mod non ha opzioni."
+
+[pt.new]
+mod_name = "New Techniques"
+mod_description = "Cinco novas supertécnicas, cada uma com a sua cena, os seus efeitos, o seu letreiro e o seu manual: Golpe del abismo (remate, vazio), Vuelo angelical (remate, vento), Campo nuclear (bloqueio, vazio), Zona oscura (bloqueio, floresta) e Dispersión (defesa, vazio). Com Inazuma Fantasy, os seus manuais são vendidos na sua loja de treino. Nomes em espanhol por agora. Sempre ativo: o mod não tem opções."
+
+[ja.new]
+mod_name = "New Techniques"
+mod_description = "新しい必殺技5つ。それぞれ専用の演出・エフェクト・技名テロップ・技の書付き：Golpe del abismo（シュート・無）、Vuelo angelical（シュート・風）、Campo nuclear（ブロック・無）、Zona oscura（ブロック・林）、Dispersión（キャッチ・無）。Inazuma Fantasyがあれば、技の書はそのトレーニングショップで販売されます。技名は今のところスペイン語です。常に有効：このMODに設定はありません。"
+
+[zh_hans.new]
+mod_name = "New Techniques"
+mod_description = "五个新必杀技，各有专属演出、特效、技名字幕和秘籍：Golpe del abismo（射门・虚）、Vuelo angelical（射门・风）、Campo nuclear（拦截・虚）、Zona oscura（拦截・林）和 Dispersión（扑救・虚）。启用 Inazuma Fantasy 时，其秘籍在它的训练商店出售。技名暂为西班牙语。始终开启：本模组没有选项。"
+
+[zh_hant.new]
+mod_name = "New Techniques"
+mod_description = "五個新必殺技，各有專屬演出、特效、技名字幕和秘笈：Golpe del abismo（射門・虛）、Vuelo angelical（射門・風）、Campo nuclear（攔截・虛）、Zona oscura（攔截・林）和 Dispersión（撲救・虛）。啟用 Inazuma Fantasy 時，其秘笈在它的訓練商店出售。技名暫為西班牙語。始終開啟：本模組沒有選項。"

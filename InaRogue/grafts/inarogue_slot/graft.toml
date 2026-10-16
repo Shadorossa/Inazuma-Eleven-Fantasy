@@ -1,0 +1,31 @@
+# INAROGUE's card on the VR-Framework's save slot screen (docs/refactor/if-adaptation-after-e3.md §5 / §21;
+# docs/game/modes/inarogue.md §13, §22). The slot screen, the reserved-slot card and its layout are the framework's
+# (graft save_slots, mod vr_framework); IF reserves slot 4 (vrfw_slots_reserve) and declares the card's content here:
+#   evt_save_slot_menu   EVT_SS_RESERVED.inazuma_fantasy: band / title texts, the entry question, IF's own art (the
+#                        violet atlas evt_rogue/evt_slot_rogue.g4tx, generated at pack time by slot_rogue_art.py,
+#                        never committed), the card rows from CMND_EVT_RL_CARD and «Reiniciar» (CMND_EVT_RL_ROGUE_RESET)
+#   title_menu_inc       EVT_SS_RESERVED_ENTER.inazuma_fantasy: entered from the slot screen, INAROGUE's «back»
+#                        returns there (CMND_EVT_ROGUE_RETURN 0)
+# Nothing calls the engine at chunk load.
+name = "inarogue_slot"
+mod = "inarogue"
+order = 305
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "INAROGUE: the reserved slot card's provider + its slot-screen entry hook"
+
+[[foreign_patches]]
+stem = "evt_save_slot_menu"
+src = "inarogue_slot_card.lua"
+require = ["EVT_SlotMenu_OnSubWindow"]
+
+[[files]]
+stem = "title_menu_inc"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "inarogue_slot_enter.lua"
+  marker = "inarogue slot enter"
+  crc = "none"

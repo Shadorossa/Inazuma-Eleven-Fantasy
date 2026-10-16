@@ -1,0 +1,30 @@
+schema = "VRFW.telop_list/2"
+# The five name banners: <key>.png beside this list (research/scripts/new_techniques_build.py). Golpe del abismo and
+# Vuelo angelical: the download's Spanish banners (decoded from its G4TX). Campo nuclear, Zona oscura and Dispersión:
+# the download's banners showed other names («Rocas magmáticas», «Zona de contención», «Repulsión»), so their names are
+# drawn in the retail style by research/scripts/telop_render.py (Impact; an approximation, TO REPLACE with hand-made
+# banners). New banners: each one clones its base move's banner (`from`: menu object
+# soccer10_01_<base>, same layout, the picture named like the id), so the mod ships no soccer10_01_<key>.objbin; the
+# events' TELOP_OBJ_* commands name soccer10_01_<key>. Folder `any`: every text language shows the Spanish banner
+# (the names are Spanish in every language for now, text\rows\skill_text.toml; a translated banner goes to
+# telops\<lang>\ and wins over this one). No layout key: the game's layout.
+
+[[telop]]
+id = "whs90208"                 # Golpe del abismo
+from = "whs02080"
+
+[[telop]]
+id = "whs90236"                 # Vuelo angelical
+from = "whs02360"
+
+[[telop]]
+id = "whd92114"                 # Campo nuclear
+from = "whd01140"
+
+[[telop]]
+id = "whd92149"                 # Zona oscura
+from = "whd01490"
+
+[[telop]]
+id = "whk93113"                 # Dispersión
+from = "whk01130"
