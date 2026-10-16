@@ -20,11 +20,13 @@ local function bool(v, d)
   return v == true
 end
 
-function M.points(t)
+-- `parts`: the option rows «peg» / «sp» (false = that pool is off; the config keys peg / sp can switch it off too)
+function M.points(t, parts)
   t = t or {}
+  parts = parts or {}
   local c = {
-    peg_on = bool(t.peg, true),
-    sp_on = bool(t.sp, true),
+    peg_on = bool(t.peg, true) and parts.peg ~= false,
+    sp_on = bool(t.sp, true) and parts.sp ~= false,
     cpu = bool(t.cpu, true),
     move_tension_free = bool(t.move_tension_free, true),
     cost_model = string.lower(tostring(t.cost_model or "cs")),

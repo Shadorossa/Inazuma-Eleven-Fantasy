@@ -1,0 +1,46 @@
+schema = "VRFW.field_clip/1"
+
+# The mod Stamina Points (stamina_points) is part of this mod since 2026-10-16: its ids (the sets stamina_points.tired_cs
+# …) are read as this mod's (docs/framework/ids-and-numbers.md §3, a whole mod renamed).
+[[alias]]
+old = "stamina_points"
+new = "aura_points"
+
+# Aura Points' tired locomotion (docs/game/media/cs-exhausted-walk.md §9): the clips and the locomotion sets
+# scripts\stamina.lua switches per player at low PE ([tired_motion] of config.toml names the sets:
+# aura_points.<set>). The framework replaces the retail STAND / WALK / RUN rows of a player while his set is on.
+# Was Inazuma Fantasy's rules\field_clips\tired.toml until 2026-10-14.
+# Sources: Chrono Stone's match bank data/chr/motion/rpg/mot_uz_game01.xc, converted by
+# research/scripts/cs_tired_clip_build.py (uz body -> the 4 VR body rigs, in place, loop without the duplicate frame).
+
+# ふらふら走り01 (CS): the staggering run of a player out of TP. 110 frames at 60 fps, loop.
+[[field_clip]]
+name = "tired_run_cs"
+glb = "assets/anims/field_clips/cs_tired_run.glb"
+loop = "move"
+
+# 戦1疲れ走り1L (VR, c000N01_p020): the game's own tired run, unused by retail matches (its WALK row needs the actor
+# flag COND 7 11). 105 frames, loop.
+[[field_clip]]
+name = "tired_run_vr"
+retail = "戦1疲れ走り1L"
+loop = "move"
+
+# 疲労01 (CS): bent over, out of breath, hands low. 60 frames at 60 fps, loop.
+[[field_clip]]
+name = "tired_idle_cs"
+glb = "assets/anims/field_clips/cs_tired_idle.glb"
+loop = "stand"
+
+[[locomotion]]
+name = "tired_cs"
+actions = { WALK = "tired_run_cs", RUN = "tired_run_cs" }
+
+[[locomotion]]
+name = "tired_vr"
+actions = { WALK = "tired_run_vr", RUN = "tired_run_vr" }
+
+# the exhausted pause: whatever the engine asks for (stand, walk, run), the idle; the speed is 0 meanwhile
+[[locomotion]]
+name = "tired_idle"
+actions = { STAND = "tired_idle_cs", WALK = "tired_idle_cs", RUN = "tired_idle_cs" }

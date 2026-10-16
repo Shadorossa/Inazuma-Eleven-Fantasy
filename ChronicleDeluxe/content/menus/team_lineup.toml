@@ -24,8 +24,27 @@ remove_block = ["CMenuAttachLocator"]
 [[object]]
 name = "chronicle_deluxe_lineup_card"
 from = "team00_01_chara_card_for_vsroute"
+if_not_mod = "clean_hud"
 keep_name = true
 remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+
+# with BetterUI: the same card on BetterUI's compact formation layout (its served file team00_01_evt_fc.g4pkm: card
+# 0.78 wide, face centred, element bottom left, position bottom right) and its Hero / Diamond effect locator
+# (_evt_pos_eff01), as BetterUI's own rival-squad card team00_01_chara_card_for_vsroute_evt; BetterUI's compact-card
+# graft hides the name and level (cd_lineup.lua lists the layer in EVT_FC_EXTRA)
+[[object]]
+name = "chronicle_deluxe_lineup_card"
+from = "team00_01_chara_card_for_vsroute"
+if_mod = "clean_hud"
+keep_name = true
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
 
 [[patch]]
 menu = "vs_route_town_command_select_menu"

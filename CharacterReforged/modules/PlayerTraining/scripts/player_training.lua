@@ -308,6 +308,19 @@ local function start()
       if type(r) == "number" then LOCKED[math.floor(r)] = true end
     end
   end
+  local derived = {}
+  local dr = cfg("training.derived_freedom_rarities", {})
+  if type(dr) == "table" then
+    for _, r in ipairs(dr) do
+      if type(r) == "number" then derived[math.floor(r)] = true end
+    end
+  end
+  CS.configure_freedom({
+    rarities = derived,
+    ceiling = math.floor(cfg("training.freedom_ceiling", 1180)),
+    min = math.floor(cfg("training.freedom_min", 100)),
+    max = math.floor(cfg("training.freedom_max", 350)),
+  })
   if not V.ready() then
     err("FindCharaRecord / GetLevel / the character containers not resolved: the training commands answer false")
     return

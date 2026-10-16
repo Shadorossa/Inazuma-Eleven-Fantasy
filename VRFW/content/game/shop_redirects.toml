@@ -1,0 +1,9 @@
+schema = "VRFW.game/2"
+
+# Shop redirect. Runtime: scripts/shop_redirects.lua reads each mod's content/shop_redirects/*.toml; menu side
+# assets/lua/menu/_all/70_shop_redirect.lua (the shop id a menu hands to shop_menu, swapped).
+
+# () -> n, from 1, to 1, … from n, to n: a shop id (number) or a mod's shop key (text) each.
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_REDIRECTS"
+handler = "ShopRedirects.List"

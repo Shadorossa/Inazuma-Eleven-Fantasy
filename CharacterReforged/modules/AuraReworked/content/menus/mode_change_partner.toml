@@ -1,0 +1,9 @@
+# All Changed's piece on Character Reforged's host character_reforged.mode_change_partner
+# (CharacterReforged\content\menus\player_page_host.toml): the partner of a card's equipped change, drawn by the Hiper
+# cards and plates as the partner portrait and the title «Modo cambio: <partner>».
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "character_reforged.mode_change_partner"
+id = "mode_change_partner"
+action = { command = "CMND_AURAREWORKED_CHANGE_GET" }

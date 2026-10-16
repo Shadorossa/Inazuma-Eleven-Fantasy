@@ -877,17 +877,6 @@ do
     funcLuaMenuCommand(C.LAYER_VISIBLE, L, k, true)
   end
 
-  -- the position labels of stat i («POR DF», «DL MC»), from the player page's row tags; "" = none (Rapidez)
-  function PlayerTraining.TrainingMode.PositionTags(i)
-    local T = PlayerTraining.TrainingMode
-    local tags = type(EVT_PPG) == "table" and type(EVT_PPG.StatTags) == "function" and EVT_PPG.StatTags(i) or {}
-    local words = {}
-    for _, tag in ipairs(tags) do
-      words[#words + 1] = T.T("POS_" .. string.upper(tag))
-    end
-    return table.concat(words, " ")
-  end
-
   -- right: the screen's detail panel (band = the focused stat, its icon big) + 2 cells in its text area
   function PlayerTraining.TrainingMode.DrawPanel()
     local T = PlayerTraining.TrainingMode
@@ -897,12 +886,9 @@ do
       funcLuaMenuCommand(C.SPRITE, L, T.ICON_TEX, icon, PL.SLOT_AREA, 0, 0)
     end or nil)
     PL.hiper_wide = false
-    -- 2026-10-15 (owner): the focused stat's name on the purple bar and, at its right end, the positions the stat
-    -- serves (the tags of the player page's ATRIBUTOS row, EVT_PPG.StatTags) on the retail tag text (placed by ApplyCard)
+    -- the focused stat's name on the purple bar (PanelPlain leaves it hidden); the retail position tag stays hidden
     funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, 1704438437 --[[_text_name01]], true, 0)
-    funcLuaMenuCommand(C.TEXT, L_DETAIL, PL.TYPE_TAG_TEXT, T.PositionTags(i), 0)
-    funcLuaMenuCommand(2158717427 --[[locator visible]], L_DETAIL, PL.TYPE_TAG_POS, true, 0)
-    funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, PL.TYPE_TAG_TEXT, true, 0)
+    PL.TypeTagOff()
     pcall(EVT_DetailGraphSync)
     local s = T.st[i]
     if not T.info.ok or s == nil then
@@ -925,14 +911,13 @@ do
   -- does not move by node translation, so the stat name stays at its layout x (NAME_X from the detail locator): the
   -- locator itself is placed so the name lands right of the icon, and the band / icon meshes are placed back from it.
   PlayerTraining.TrainingMode.DETAIL = {
-    CARD = {985, 640, 1890, 852},                  -- x0, y0, x1, y1: inside the screen, right margin 30
+    CARD = {985, 640, 1920, 852},                  -- x0, y0, x1, y1: flush to the screen's right edge, as the player page's cards
     PAD = 12,                                      -- card left edge -> icon
     ICON = 64,                                     -- icon size
     GAP = 10,                                      -- icon -> name
     NAME_X = -261,                                 -- _text_name01 x in evt_team02_02_detail (from the locator)
     BAND_Y = 188, BAND_H = 88, ICON_Y = 176,       -- layout units from the locator, y up
-    BAND_INSET = 5,                                -- band right end inside the card
-    TAG_RIGHT = 110,                               -- the position tags' centre, from the band's right end
+    BAND_INSET = 0,                                -- band right end inside the card
     LOCATOR = 1,                                   -- PL.LAYOUT_LOCS index of _pos_evt_detail01
     BAND_NODES = {1125548721 --[[_sp_base01]], 3384915402 --[[_wlv_base01]]},
     ICON_NODE = 2164615260,                        -- _icon_sp_area_dmy01
@@ -968,22 +953,9 @@ do
       end
       funcLuaMenuCommand(2735666188 --[[text visible]], L_DETAIL, D.FLAVOR, false, 0)
     end
-    T.PlaceTag()
     if type(EVT_PPG_HOST) == "table" then
       EVT_PPG_HOST.card = D.CARD
     end
-  end
-
-  -- the position tag (the retail tag's locator) at the bar's right end, centred on the bar. Called every frame of the
-  -- mode: the retail tag slides to its own place when it opens and would leave it there
-  function PlayerTraining.TrainingMode.PlaceTag()
-    local T, D = PlayerTraining.TrainingMode, PlayerTraining.TrainingMode.DETAIL
-    if not T.on or PL.layout_mode ~= "training" or not funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L_DETAIL) then
-      return
-    end
-    local lx = D.CARD[1] + D.PAD + D.ICON + D.GAP - D.NAME_X
-    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 0, D.CARD[3] - D.BAND_INSET - D.TAG_RIGHT - lx)
-    funcLuaMenuCommand(PL.LAYOUT_NODE_POS, L_DETAIL, 0, PL.TYPE_TAG_POS, 1, D.BAND_Y - D.BAND_H / 2)
   end
 
   -- wraps the screen's PL.ApplyDetailLayout once per VM (it runs on every state change and for a few frames after)
@@ -1255,7 +1227,6 @@ do
     while true do
       coroutine.yield()
       T.frame = T.frame + 1
-      pcall(T.PlaceTag)
       if PL.Key(EVT_CMD_BACK) then
         if T.Back() then
           break

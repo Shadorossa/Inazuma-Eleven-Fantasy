@@ -8,7 +8,7 @@ schema = "VRFW.game/2"
 # (scene chara records) through VRFW.game.sym.
 
 [[VRFW.Command]]
-name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG"   # () -> mode (0 off, 1 match, 2 always), camera crc, report (0 / 1), bust (0 / 1), live pause (0 / 1)
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG"   # () -> mode (0 off, 1 match, 2 always), camera crc, report (0 / 1), bust (0 / 1), live pause (0 / 1), quad until drawn (0 / 1)
 handler = "CharacterReforged.PageCapture.Config"
 
 [[VRFW.Command]]
@@ -18,3 +18,7 @@ handler = "CharacterReforged.PageCapture.Report"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE"     # (on 1 / 0) -> 1 done, 0 nothing to do, -1 not reachable: the pause freeze flag off / back
 handler = "CharacterReforged.PageCapture.Live"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN"    # (reset 1 / 0) -> 1 drawn, 0 no draw (hide the quad), 2 waiting, -1 no probe: VRFW.render.capture_pause()
+handler = "CharacterReforged.PageCapture.Drawn"

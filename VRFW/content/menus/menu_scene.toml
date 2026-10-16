@@ -1,0 +1,15 @@
+schema = "VRFW.menu/2"
+
+# Menu scenes (docs/framework/menu-scene.md §2.2.3): the outline of the selected hotspot. Four instances of the 36 px
+# quad of the retail «new» icon (cmn01_10), re-skinned by the title's Lua with the white square of the framework's
+# neutral atlas (vrfw_plain), tinted, scaled to thin bars and rotated along the hotspot's edges on screen. Drawn just
+# under the hotspot texts (vrfw_mp_label, 672); a 5th instance is the light flood of a hotspot with
+# light_flood_seconds. A mod with hotspots adds the layer to its menu, with the atlas:
+#   add_layer = { name = "vrfw_ms_frame", object = "vrfw_ms_frame", count = 5, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+#   res = ["#/menu/220_img/vrfw_plain/vrfw_plain.g4tx"]
+[[object]]
+name = "vrfw_ms_frame"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 671 } },
+]

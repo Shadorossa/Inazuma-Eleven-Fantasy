@@ -26,6 +26,8 @@ New = "content/teams/70_route_nodes/chains_added.toml"
   TemplateGame = "fbtl_cro01_120_010"
   Difficulty = 4
   Board = { Cols = 5, Rows = 3 }
+  RivalStats = "normal"
+  RankReward = [{ Rank = "A", Rival = "emblem" }, { Rank = "S", Item = "abl_ub000001", IfMod = "true_hissatsu", Text = "chronicle_deluxe_chain_prize_upgrade_book" }]
   Tile = [{ Id = "start", Kind = "start", Pos = [1, 2] }]
   # its node on the Chronicle board (placed afterwards with the board editor)
   [Editor.Companion]
@@ -73,6 +75,19 @@ Id = "chain"
   Type = "ref"
   Ref = "map"
   Label = { es = "Estadio", en = "Stadium" }
+  [[Shape.Field]]
+  Key = "RivalStats"
+  Type = "enum"
+  Values = ["team", "normal"]
+  Label = { es = "Estadísticas de los rivales", en = "Rivals' stats" }
+  Help = { es = "«Normales»: cada rival juega con las estadísticas de un equipo corriente (los equipos legendarios del juego llevan multiplicadores de 6 a 10). Una casilla puede elegir otra cosa.", en = "«Normal»: every rival plays with an ordinary team's stats (the game's legend teams carry 6-10 multipliers). A tile can choose otherwise." }
+  ValueLabels = { team = { es = "Las del equipo", en = "The team's own" }, normal = { es = "Normales", en = "Normal" } }
+  [[Shape.Field]]
+  Key = "RankReward"
+  Type = "list"
+  Of = "rank_reward"
+  Label = { es = "Premios por rango (cada partido)", en = "Rank rewards (every match)" }
+  Help = { es = "Lo que da la primera victoria de cada partido con ese rango o uno mejor, una vez. Una casilla con premios por rango propios usa solo los suyos.", en = "What the first win of each match at that rank or a better one gives, once. A tile with its own rank rewards uses only those." }
   [[Shape.Field]]
   Key = "Board"
   Type = "table"
@@ -208,6 +223,21 @@ Id = "tile"
   When = { Kind = ["match", "chest", "dchest", "schest"] }
   Label = { es = "Premios (partido: cada victoria; cofre: al abrirlo)", en = "Rewards (match: every win; chest: when opened)" }
   [[Shape.Field]]
+  Key = "RivalStats"
+  Type = "enum"
+  Values = ["team", "normal"]
+  When = { Kind = ["match"] }
+  Label = { es = "Estadísticas del rival", en = "Rival's stats" }
+  Help = { es = "Vacío: las de la cadena.", en = "Empty: the chain's." }
+  ValueLabels = { team = { es = "Las del equipo", en = "The team's own" }, normal = { es = "Normales", en = "Normal" } }
+  [[Shape.Field]]
+  Key = "RankReward"
+  Type = "list"
+  Of = "rank_reward"
+  When = { Kind = ["match"] }
+  Label = { es = "Premios por rango (solo esta casilla)", en = "Rank rewards (this tile only)" }
+  Help = { es = "Vacío: los de la cadena. Con alguno, solo estos.", en = "Empty: the chain's. With any, only these." }
+  [[Shape.Field]]
   Key = "SReward"
   Type = "list"
   Of = "reward"
@@ -237,6 +267,46 @@ Id = "reward"
   Min = 1
   Max = 99
   Label = { es = "Cantidad", en = "Count" }
+
+[[Shape]]
+Id = "rank_reward"
+  [[Shape.Field]]
+  Key = "Rank"
+  Type = "enum"
+  Required = true
+  Values = ["S", "A", "B"]
+  Label = { es = "Rango", en = "Rank" }
+  ValueLabels = { S = { es = "S", en = "S" }, A = { es = "A", en = "A" }, B = { es = "B", en = "B" } }
+  [[Shape.Field]]
+  Key = "Rival"
+  Type = "enum"
+  Values = ["emblem", "kit"]
+  Label = { es = "Del rival", en = "From the rival" }
+  Help = { es = "El escudo o la equipación del rival de la casilla (sin objeto si no tiene). O elige un objeto.", en = "The tile rival's crest or kit (nothing when it has none). Or pick an item." }
+  ValueLabels = { emblem = { es = "Su escudo", en = "Its crest" }, kit = { es = "Su equipación", en = "Its kit" } }
+  [[Shape.Field]]
+  Key = "Item"
+  Type = "ref"
+  Ref = "item"
+  Label = { es = "Objeto", en = "Item" }
+  [[Shape.Field]]
+  Key = "Count"
+  Type = "int"
+  Min = 1
+  Max = 99
+  Label = { es = "Cantidad", en = "Count" }
+  [[Shape.Field]]
+  Key = "IfMod"
+  Type = "string"
+  More = true
+  Label = { es = "Solo con el mod", en = "Only with the mod" }
+  Help = { es = "Id del mod que declara el objeto (p. ej. true_hissatsu): sin él activo, este premio no se da.", en = "Id of the mod that declares the item (e.g. true_hissatsu): without it active, this reward is not given." }
+  [[Shape.Field]]
+  Key = "Text"
+  Type = "string"
+  More = true
+  Label = { es = "Texto en la tarjeta", en = "Card text" }
+  Help = { es = "Fila de menu_text que la tarjeta del tablero muestra para el objeto (vacío: su nombre o su tipo).", en = "The menu_text row the board's card shows for the item (empty: its name or its kind)." }
 
 [[Shape]]
 Id = "requirement"

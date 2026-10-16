@@ -11,12 +11,16 @@
 --   CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE(on)  -> status
 --        on 1: the render settings' pause freeze flag (+0xD8) saved and cleared; 0: put back (1 done, 0 nothing to do,
 --        -1 not reachable)
+--   CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN(reset)  -> state
+--        reset 1: a new wait starts (the capture quad was just set up), answers 2; reset 0: 1 = the framework's capture
+--        probe saw a mesh of a capture model drawn into its render texture since then, 0 = none in
+--        [player_page] match_no_draw_polls calls, 2 = still waiting, -1 = no probe (VRFW [debug] capture_pause_probe off)
 
 CharacterReforged = CharacterReforged or {}
 CharacterReforged.PageCapture = CharacterReforged.PageCapture or {}
 local P = CharacterReforged.PageCapture
 
-local MODES = {off = 0, match = 1, always = 2}
+local MODES = {off = 0, match = 1, always = 2}   -- "auto": "match" while the framework's capture probe runs, else "off"
 local CAMERAS = {vs = 0xB7EE99E6, bust = 0x059B5FFD}   -- VS screen full body (512 x 512, FOV 20); keeper gauge bust
 local POOL_TYPES = {2, 3}
 local ENTRY_SIZE, TARGET_SIZE, CAMERA_SIZE = 0x38, 0x70, 0x5C
@@ -64,13 +68,62 @@ local function profile_address(name, offset)
   return rip_target(at + (offset or 0))
 end
 
+-- the framework's menu capture probe (VRFW [debug] capture_pause_probe), or nil when it is not running
+local function probe()
+  if type(VRFW.render) ~= "table" or type(VRFW.render.capture_pause) ~= "function" then return nil end
+  local ok, s = pcall(VRFW.render.capture_pause)
+  if ok and type(s) == "table" and s.installed then return s end
+  return nil
+end
+
 function P.Config()
-  local mode = MODES[setting("player_page.match_model", "off")] or MODES.off
+  local name = setting("player_page.match_model", "auto")
+  local mode = MODES[name] or MODES.off
+  local has_probe = probe() ~= nil
+  if name == "auto" then mode = has_probe and MODES.match or MODES.off end
   local camera_name = setting("player_page.match_camera", "vs")
   local camera = CAMERAS[camera_name] or (type(camera_name) == "number" and camera_name) or CAMERAS.vs
   local report = setting("player_page.capture_report", true) == true and 1 or 0
   local live = setting("player_page.match_live_pause", false) == true and 1 or 0
-  return mode, camera, report, camera == CAMERAS.bust and 1 or 0, live
+  -- the quad stays hidden until the probe sees the model drawn (no white placeholder); only with the probe
+  local gate = (has_probe and setting("player_page.match_quad_until_drawn", true) == true) and 1 or 0
+  if mode ~= MODES.off or name == "auto" then
+    log(string.format("config: match_model %s -> mode %d, capture probe %s, quad until drawn %d", tostring(name), mode,
+      has_probe and "running" or "off", gate))
+  end
+  return mode, camera, report, camera == CAMERAS.bust and 1 or 0, live, gate
+end
+
+local wait = nil   -- the current wait for a drawn capture: probe session / drawn frames at its start, polls, answer
+
+local function probe_line(s, why)
+  log(string.format("probe %s: session %d frames %d paused %d drawn %d since draw %d idle %d ms | last frame queued %d into target %d type-1 pass %d no target %d draw flag off %d",
+    why, s.session, s.frames, s.paused_frames, s.drawn_frames, s.frames_since_draw, s.idle_ms, s.queued, s.into_target,
+    s.type1_pass, s.no_target, s.flag_off))
+end
+
+function P.Drawn(reset)
+  local s = probe()
+  if not s then return -1 end
+  if reset == 1 or wait == nil then
+    wait = {session = s.session, drawn = s.drawn_frames, polls = 0, answer = 2}
+    probe_line(s, "wait start")
+    return 2
+  end
+  wait.polls = wait.polls + 1
+  local drawn = s.session ~= wait.session and s.drawn_frames or (s.drawn_frames - wait.drawn)
+  local lost = setting("player_page.match_lost_frames", 30)
+  local answer = 2
+  if drawn > 0 and s.frames_since_draw <= lost then
+    answer = 1
+  elseif drawn > 0 or wait.polls >= setting("player_page.match_no_draw_polls", 24) then
+    answer = 0
+  end
+  if answer ~= wait.answer then
+    wait.answer = answer
+    probe_line(s, answer == 1 and "drawn: quad shown" or (answer == 0 and "no draw: quad hidden" or "waiting"))
+  end
+  return answer
 end
 
 local function report_pool(key)
@@ -224,4 +277,4 @@ function P.Report(when, key, camera, model)
   return 1
 end
 
-log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT / _LIVE)")
+log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT / _LIVE / _DRAWN)")

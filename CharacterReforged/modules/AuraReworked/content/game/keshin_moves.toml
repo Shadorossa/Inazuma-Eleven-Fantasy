@@ -1,0 +1,22 @@
+schema = "VRFW.game/2"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# Aura Reworked › All Keshin Armed › what scripts\keshin_moves.lua reads of the game for the option «Only the keshin's
+# move while it is out» (keshin_own_move_only): the soccer actors (the summon machine: the aura out, its state) and
+# their units (the aura bits). Read only, nothing written.
+
+# [g_soccerActors]: `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60
+[[VRFW.Global]]
+name = "km_actors"
+game = "Match.SoccerActors.ViaSkillUsed"
+
+# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor (its aura bits at +0x2B4)
+[[VRFW.Function]]
+name = "KmActorUnit"
+game = "Match.ActorUnit"
+
+# A soccer actor ([g_soccerActors] + index x 0x570): its handle, team and the summon machine (the aura out, state 2 =
+# out); docs/game/mechanics/keshin-armed.md §2.2.
+[[VRFW.Struct]]
+name = "KmActor"
+size = 0x570
+fields = { hdl = { at = 0x94, type = "u32" }, team = { at = 0xD0, type = "u8" }, summon_skill = { at = 0x358, type = "u32" }, summon_state = { at = 0x374, type = "u8" } }

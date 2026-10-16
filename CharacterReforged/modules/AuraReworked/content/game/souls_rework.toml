@@ -1,0 +1,73 @@
+# Souls Rework › what scripts\souls_rework.lua touches of the game: the soccer actors (the summon machine: totem, its
+# time), their units (the aura bits), the release button's answer, the reel command and the level-up pop command.
+schema = "VRFW.game/2"
+if_mod = "souls_rework"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+
+# ------------------------------------------------------------------------------------------------ globals / structs
+
+# [g_soccerActors]: `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60
+[[VRFW.Global]]
+name = "sr_actors"
+game = "Match.SoccerActors.ViaSkillUsed"
+
+# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor (its aura bits at +0x2B4)
+[[VRFW.Function]]
+name = "SrActorUnit"
+game = "Match.ActorUnit"
+
+# A soccer actor ([g_soccerActors] + index x 0x570): its handle, team, the summon machine (aura, full time, time left,
+# state 2 = out) and the in-play byte (docs/game/mechanics/keshin-armed.md §2.2).
+[[VRFW.Struct]]
+name = "SrActor"
+size = 0x570
+fields = { hdl = { at = 0x94, type = "u32" }, team = { at = 0xD0, type = "u8" }, summon_skill = { at = 0x358, type = "u32" }, summon_full = { at = 0x360, type = "f32" }, summon_left = { at = 0x370, type = "f32" }, summon_state = { at = 0x374, type = "u8" }, in_play = { at = 0x497, type = "u8" } }
+
+# ------------------------------------------------------------------------------------------------ release button
+
+# bool RequestAuraRelease(?, ctrl) 0x15702F0 (the aura release button; actor = [ctrl + 0x78]). Pre: a player whose
+# totem is out (table AuraReworked.SoulsPlayer, field no_release = 0, filled by the script while LevelRule no_release holds)
+# is not released: answer 0, the game's code skipped. Prologue 15 bytes (the profile's steal), chained.
+[[VRFW.Hook]]
+name = "Sr_AuraRelease"
+game = "Stamina.AuraRelease"
+kind = "function"
+order = 12
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "AuraReworked.SoulsPlayer"
+field = "no_release"
+key = ["[[args[2] + 0x78] + 0x94]:u32"]
+
+# ------------------------------------------------------------------------------------------------ reel command
+
+# CMND_AURAREWORKED_SOULS_REEL(seen) -> seq, title, level, slot, label1..label6, missMask, open, spin, stop, result, close,
+# rowsPerSecond (graft souls_rework_reel: the next shown roll after `seen`; 0 = none)
+# CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> ok, level, text («Lv.3» / «Nv.3»: the text key reel_level in the game's language) of
+# the totem the player has out now, nothing when he has none (Aura Points' graft aura_points_buff_bar: the label on the
+# totem tile's top edge in the match buff row).
+# CMND_AURAREWORKED_SOULS_SP_LEVELS(aura) -> text of a totem's SP per level («Lv1 80 · Lv2 100 · … SP»), nil = no record.
+# Alias CMND_EVT_PEG_LEVELS: the generic name Character Reforged's player page asks under its SP gauges.
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_SOULS_SP_LEVELS"
+aliases = ["CMND_SOULSREWORK_SP_LEVELS", "CMND_EVT_PEG_LEVELS"]
+handler = "AuraReworked.Souls.SpLevels"
+
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_SOULS_TOTEM_LEVEL"
+aliases = ["CMND_SOULSREWORK_TOTEM_LEVEL"]
+handler = "AuraReworked.Souls.TotemLevel"
+
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_SOULS_REEL"
+aliases = ["CMND_SOULSREWORK_REEL"]
+handler = "AuraReworked.Souls.Reel"
+
+# ------------------------------------------------------------------------------------------------ level-up pop command
+
+# CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, hdl, text, r, g, b, appear, hold, out, width, height, textScale, lift, rise
+# (graft souls_rework_level_pop: the next level-up pop after `seen`; 0 = none)
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_SOULS_LEVEL_POP"
+aliases = ["CMND_SOULSREWORK_LEVEL_POP"]
+handler = "AuraReworked.Souls.LevelPop"

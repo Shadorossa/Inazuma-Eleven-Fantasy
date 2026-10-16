@@ -1149,6 +1149,14 @@ max = 5.0
 hook = "focus_retreat"
 summary = "the side's ball carrier in a duel never moves toward the defender: the part of each duel move (RequestFocusAction kind 3) toward the nearest rival is turned backward x `back` (default 1), the sideways part kept x `lateral` (default 1); side steps, breakthroughs and pass-outs are left to the game (that is how it breaks out by a side)"
 
+[[team]]
+name = "PassSpeed"
+kind = "number"
+min = 0.5
+max = 3.0
+hook = "pass_speed"
+summary = "the side's passes (a kick whose receiver is a teammate) reach the receiver this x sooner: the kick's arrival time / PassSpeed, its ground speed covers the distance in that time and its vertical speed / PassSpeed (a flatter lob that lands in that time); the target moves along the receiver's run (the part of the way he covers in the new time), so the ball never gets there before him. Shots, clearances and dribbles are not passes; 1 = the game's passes"
+
 # ------------------------------------------------------------------------------------------------ situations
 
 [[condition]]

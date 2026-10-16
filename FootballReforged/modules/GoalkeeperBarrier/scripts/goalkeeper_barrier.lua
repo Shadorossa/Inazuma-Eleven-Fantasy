@@ -11,7 +11,7 @@
 --    research/grafts/goalkeeper_barrier_hud passes it with every CMND_GOALKEEPERBARRIER_GET, no bar reported = no barrier):
 --      barrier = clamp(bar % - (100 - barrier_percent), 0, barrier_percent)
 --    A full bar = 25 %, the bar at 75 % or below = 0. While it is > 0 (the bar above 75 %) every shot that reaches that
---    keeper has its power ÷ mitigation (1.75) for his save duel (catch, punch or keeper move: the VR-Framework's rule
+--    keeper has its power ÷ mitigation (1.4) for his save duel (catch, punch or keeper move: the VR-Framework's rule
 --    trigger `keeper_duel`, power_mult = 1 / mitigation); with the bar at 75 % or below the shots keep their full power.
 --    One INFO line per whole-percent change of a barrier and per shot on a keeper.
 -- 2. BLOCK -> KEEPER TENSION. When a player uses a block move (its tension is paid: trigger `tension_pay:skill`, the
@@ -44,7 +44,7 @@ local SETTINGS = {
   hud_debug = RAW.hud_debug == true,
   -- start_percent: the key's name until 1.0.1
   barrier_percent = number_setting(RAW, "barrier_percent", number_setting(RAW, "start_percent", 25, 0, 100), 0, 100),
-  mitigation = number_setting(RAW, "mitigation", 1.75, 1, 100),
+  mitigation = number_setting(RAW, "mitigation", 1.4, 1, 100),
   tension_discount = number_setting(RAW, "tension_discount", 0.30, 0, 1),
   discount_expire_seconds = number_setting(RAW, "discount_expire_seconds", 0, 0, 100000),
   block_category = math.floor(number_setting(RAW, "block_category", 3, 0, 255)),

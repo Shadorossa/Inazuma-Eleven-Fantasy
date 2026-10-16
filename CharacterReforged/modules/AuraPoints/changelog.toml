@@ -3,7 +3,8 @@ schema = "VRFW.changelog/1"
 # Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
-# 1.0.0 (2026-10-14): split out of Inazuma Fantasy.
+# 1.0.0 (2026-10-14): split out of Inazuma Fantasy. 1.1.0 (2026-10-16): the mod Stamina Points (the match PE) merged
+# in, the option rows peg / sp / pe.
 lang = "es"
 name = "Aura Points"
 
@@ -34,81 +35,99 @@ name = "Aura Points"
 [[release]]
 icon = "general"
 notes = [
-    "Keshin, armaduras y tótems usan puntos, no tiempo.",
-    "PEG por keshin y SP por tótem para todo el partido.",
+    "Keshin, armaduras y tótems usan PEG o SP, no tiempo.",
     "Invocar es gratis; su supertécnica gasta PEG o SP.",
-    "La armadura consume el PEG de su keshin mientras dura.",
-    "Barra morada (azul en SP) bajo la cara del jugador.",
+    "Cada jugador tiene PE; agotado, va lento y se tambalea.",
+    "PE de cada personaje: su valor de GO Galaxy.",
+    "Miximax sin tiempo: gasta PE y termina a 0 PE.",
+    "Barras bajo la cara del jugador; PE máximo en su ficha.",
+    "Ajustes: activa o desactiva PEG, SP y PE por separado.",
 ]
 
 [release.en]
 notes = [
-    "Keshin, armours and totems run on points, not time.",
-    "PEG per keshin and SP per totem for the whole match.",
+    "Keshin, armours and totems run on PEG / SP, not time.",
     "Summoning is free; its special move costs PEG or SP.",
-    "An armour drains its keshin's PEG while it is worn.",
-    "A purple bar (blue for SP) under the player's face.",
+    "Every player has GP; exhausted, he slows and staggers.",
+    "Each character's GP: his GO Galaxy value.",
+    "Untimed miximax: it burns GP and ends at 0 GP.",
+    "Bars under the player's face; max GP on his page.",
+    "Settings: switch PEG, SP and GP on or off one by one.",
 ]
 
 [release.fr]
 notes = [
-    "Keshin, armures et totems utilisent des points.",
-    "PEG par keshin et SP par totem pour tout le match.",
-    "Invoquer est gratuit ; sa technique coûte PEG ou SP.",
-    "Une armure consomme le PEG de son keshin.",
-    "Une barre violette (bleue en SP) sous le visage.",
+    "Keshin, armures et totems : des PG / SP, plus de temps.",
+    "Invoquer est gratuit ; sa technique coûte PG ou SP.",
+    "Chaque joueur a des PE ; épuisé, il ralentit.",
+    "PE de chaque personnage : sa valeur de GO Galaxy.",
+    "Miximax sans limite : il brûle les PE, fin à 0.",
+    "Barres sous le visage ; PE max sur la fiche du joueur.",
+    "Réglages : activez PG, SP et PE séparément.",
 ]
 
 [release.de]
 notes = [
-    "Keshin, Rüstungen und Totems nutzen Punkte statt Zeit.",
-    "KGP pro Keshin und SP pro Totem für das ganze Spiel.",
+    "Keshin, Rüstungen und Totems nutzen KGP / SP statt Zeit.",
     "Beschwören ist gratis; seine Technik kostet KGP o. SP.",
-    "Eine Rüstung verbraucht die KGP ihres Keshin.",
-    "Ein violetter Balken (blau für SP) unter dem Gesicht.",
+    "Jeder Spieler hat GP; erschöpft wird er langsam.",
+    "GP jeder Figur: ihr Wert aus GO Galaxy.",
+    "Miximax ohne Zeitlimit: verbraucht GP, endet bei 0.",
+    "Balken unter dem Gesicht; max. GP auf der Spielerseite.",
+    "Einstellungen: KGP, SP und GP einzeln abschaltbar.",
 ]
 
 [release.it]
 notes = [
-    "Keshin, armature e totem usano punti, non tempo.",
-    "PSG per keshin e SP per totem per tutta la partita.",
+    "Keshin, armature e totem usano PSG / SP, non tempo.",
     "Evocare è gratis; la sua tecnica costa PSG o SP.",
-    "Un'armatura consuma il PSG del suo keshin.",
-    "Una barra viola (blu per SP) sotto il volto.",
+    "Ogni giocatore ha PE; esausto, rallenta e barcolla.",
+    "PE di ogni personaggio: il suo valore di GO Galaxy.",
+    "Miximax senza tempo: consuma PE e finisce a 0.",
+    "Barre sotto il volto; PE massimi nella scheda.",
+    "Impostazioni: PSG, SP e PE si disattivano a parte.",
 ]
 
 [release.pt]
 notes = [
-    "Keshin, armaduras e totens usam pontos, não tempo.",
-    "PEG por keshin e SP por totem para toda a partida.",
+    "Keshin, armaduras e totens usam PEG / SP, não tempo.",
     "Invocar é grátis; a sua técnica custa PEG ou SP.",
-    "Uma armadura consome o PEG do seu keshin.",
-    "Uma barra roxa (azul em SP) sob o rosto do jogador.",
+    "Cada jogador tem PE; esgotado, fica lento.",
+    "PE de cada personagem: o seu valor de GO Galaxy.",
+    "Miximax sem tempo: gasta PE e termina a 0.",
+    "Barras sob o rosto; PE máximo na ficha do jogador.",
+    "Definições: liga ou desliga PEG, SP e PE à parte.",
 ]
 
 [release.ja]
 notes = [
-    "化身・化身アームド・ソウルが時間でなくポイント制に。",
-    "試合を通して化身ごとのFSP、ソウルごとのSP。",
+    "化身・アームド・ソウルが時間でなくFSP/SP制に。",
     "召喚は無料、その必殺技はFSPかSPを消費。",
-    "アームド中は化身のFSPが減っていく。",
-    "選手の顔の下に紫のバー（SPは青）。",
+    "全選手がGPを持つ。ダッシュで消費、ばてると遅い。",
+    "各キャラのGPはGOギャラクシーの値。",
+    "ミキシマックスは時間無制限、GP0で終了。",
+    "顔の下にゲージ、選手ページに最大GP。",
+    "設定でFSP・SP・GPを個別にオン／オフ。",
 ]
 
 [release.zh_hans]
 notes = [
-    "化身、化身铠甲与灵魂改用点数，不再计时。",
-    "整场比赛每个化身一条FSP，每个灵魂一条SP。",
+    "化身、铠甲与灵魂改用FSP/SP，不再计时。",
     "召唤免费；其必杀技消耗FSP或SP。",
-    "铠甲穿着期间持续消耗其化身的FSP。",
-    "球员头像下方显示紫色条（SP为蓝色）。",
+    "每名球员拥有GP：冲刺消耗，耗尽变慢。",
+    "每个角色的GP取自GO银河的数值。",
+    "混合最大化不限时：消耗GP，归零结束。",
+    "头像下方显示条；资料页显示最大GP。",
+    "设置中可分别开关FSP、SP与GP。",
 ]
 
 [release.zh_hant]
 notes = [
-    "化身、化身鎧甲與靈魂改用點數，不再計時。",
-    "整場比賽每個化身一條FSP，每個靈魂一條SP。",
+    "化身、鎧甲與靈魂改用FSP/SP，不再計時。",
     "召喚免費；其必殺技消耗FSP或SP。",
-    "鎧甲穿著期間持續消耗其化身的FSP。",
-    "球員頭像下方顯示紫色條（SP為藍色）。",
+    "每名球員擁有GP：衝刺消耗，耗盡變慢。",
+    "每個角色的GP取自GO銀河的數值。",
+    "混合最大化不限時：消耗GP，歸零結束。",
+    "頭像下方顯示條；資料頁顯示最大GP。",
+    "設定中可分別開關FSP、SP與GP。",
 ]

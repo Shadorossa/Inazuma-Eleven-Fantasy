@@ -9,16 +9,16 @@
 --
 --   [CharacterReforged.Create.<system>]       # <system> = the pairing rules' system name (CharacterReforged.PairCheck)
 --   item = "wmm_evt_create"                 # the «create» row of the aura list (the item's own name is the row)
---   label = "all_miximaxed.create_label"    # text key: the system's name in the refusal window (default: the item's name)
---   store = "CMND_ALLMIXIMAXED_SET"         # command (base, partner[, move1, move2]) -> code (0 = stored)[, carrier index k]
+--   label = "aura_reworked.miximax_create_label" # text key: the system's name in the refusal window (default: the item's name)
+--   store = "CMND_AURAREWORKED_MIXIMAX_SET"  # command (base, partner[, move1, move2]) -> code (0 = stored)[, carrier index k]
 --   carrier = "wmm_evt"                     # the carrier put on the slot ("wmc_evt{k}": k = the store's 2nd value)
 --   pair_codes = 10                         # store code = pair_codes + PairCheck code (1..9) for a pair-rule refusal
 --   order = 10                              # row order of the systems (lower first; then the system's name)
---   confirm = "all_miximaxed.create_confirm" # text key of the bank's Sí / No after the partner's moves ({base}
+--   confirm = "aura_reworked.miximax_create_confirm" # text key of the bank's Sí / No after the partner's moves ({base}
 --                                           # {partner} {moves}; default character_reforged.create_confirm)
 --   confirm_icon = "icon_sp_area07"         # sprite of icon_common drawn between the two players' cards of that
 --                                           # confirmation (the base and the partner; none = the cards only)
---   preview = "CMND_ALLMIXIMAXED_PREVIEW"   # command (base, partner, move) -> ok, favouredMask, g0 .. g8, kind, peGain,
+--   preview = "CMND_AURAREWORKED_MIXIMAX_PREVIEW" # command (base, partner, move) -> ok, favouredMask, g0 .. g8, kind, peGain,
 --                                           # peFavoured, peBase: the stats the confirmation panel shows (none = no stats)
 --   scene = true                            # the skill table plays the miximax creation scene after a stored pair
 --                                           # (its PL.MxScenePlay; the scene's commands are the declaring mod's)

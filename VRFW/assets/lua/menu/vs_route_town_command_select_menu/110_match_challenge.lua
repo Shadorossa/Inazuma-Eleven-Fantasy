@@ -5,7 +5,9 @@
 -- under its last row (band "match_challenge" of VRFW_RBC_PanelBand, the first one: the mod that sizes the panel
 -- re-sizes it; the band's place is reserved on every row of such a piece, VRFW_RBC_PanelBandReserve, so the panel
 -- keeps one height) and the band shows the
--- challenge's condition centred (its `Short` text, else its title: VRFW_MC.Status label), shrunk to the panel's width,
+-- challenge's condition centred in the panel (its `Short` text, else its title: VRFW_MC.Status label) and sized to the
+-- panel's inner width (the game's measured text width: a short line grows up to the normal size, a long one shrinks
+-- only as much as it needs),
 -- light blue when the active dock meets it and light red when not (the same check the VS screen gates the kick-off
 -- with). On any other row the band is gone. The line follows the panel's layer when it moves (Step).
 -- Accept opens the VS screen as retail; the kick-off is refused there while the dock does not meet the challenge
@@ -32,15 +34,22 @@ if VRFW_Host ~= nil then
       OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, GET_POS = 2834507455,
       MESH_VISIBLE = 3405944500, TEXT = 1083631230, LAYER_NUM = 1175615627,
       DRAW_PRIORITY = 1491630496,   -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
+      NODE_SCALE = 2885415772,      -- (layer, instance, node, width, height): the text node's box
+      TEXT_SIZE = 3549540977,       -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
     },
     -- screen px (1920 x 1080, y down) of the battle-kind list of a normal piece as placed: the first row's centre
     -- line, the rows' spacing (vsroute01_15c `_atc_listNN`, 70 px apart), half a row's height, the gap between two
     -- rows, the panel's centre line (x)
     FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30, ROW_GAP = 11, PANEL_MID_X = 436,
-    -- the band under the last row: its height (the panel grows by ROW_GAP + BAND_HEIGHT), the text's widest box
-    BAND_HEIGHT = 44, TEXT_MAX_WIDTH = 540,
-    -- text scale: the largest, the smallest; the width of one Latin character at scale 1 (a CJK one counts twice)
-    MAX_SCALE = 0.8, MIN_SCALE = 0.45, CHAR_WIDTH = 12.5,
+    -- the band under the last row: its height (the panel grows by ROW_GAP + BAND_HEIGHT); the text's width = the
+    -- panel's inner width (700 px panel, 40 px margin each side)
+    BAND_HEIGHT = 44, TEXT_MAX_WIDTH = 620,
+    -- the text node's box while measuring and drawing (wide enough that the game never squeezes the line; retail
+    -- 368 x 76), its height
+    TEXT_BOX_WIDTH = 1600, TEXT_BOX_HEIGHT = 76,
+    -- text scale: the normal (largest) size, the smallest; the width of one Latin character at scale 1 (a CJK one
+    -- counts twice) when the game cannot measure the line
+    MAX_SCALE = 0.8, MIN_SCALE = 0.3, CHAR_WIDTH = 12.5,
     -- font_color markup (common/font/font_color.cfg.bin): AIMARK01 light blue, R light red, then the reset
     COLOUR_MET = "[CAIMARK01]", COLOUR_UNMET = "[CR]", COLOUR_RESET = "[C]",
     opened = false, shown = false, x = 0, y = 0,
@@ -149,7 +158,18 @@ if VRFW_Host ~= nil then
     end
     panel_band(LABEL.ROW_GAP + LABEL.BAND_HEIGHT)
     LABEL.shown = true
-    local width_at_one = math.max(text_units(status.label), 1) * LABEL.CHAR_WIDTH
+    local colour = status.ok and LABEL.COLOUR_MET or LABEL.COLOUR_UNMET
+    for _, mesh in ipairs(LABEL.TEXT_MESHES) do
+      M(LABEL.C.MESH_VISIBLE, LABEL.LAYER, mesh, false, k)
+    end
+    -- the line in a box wider than any line, measured at scale 1 by the game
+    M(LABEL.C.NODE_SCALE, LABEL.LAYER, k, LABEL.TEXT_NODE, LABEL.TEXT_BOX_WIDTH, LABEL.TEXT_BOX_HEIGHT)
+    M(LABEL.C.SCALE, LABEL.LAYER, 1, 1, 1, k)
+    M(LABEL.C.TEXT, LABEL.LAYER, LABEL.TEXT_NODE, colour .. status.label .. LABEL.COLOUR_RESET, k)
+    local width_at_one = M(LABEL.C.TEXT_SIZE, LABEL.LAYER, k, LABEL.TEXT_NODE)
+    if type(width_at_one) ~= "number" or width_at_one <= 0 then
+      width_at_one = math.max(text_units(status.label), 1) * LABEL.CHAR_WIDTH
+    end
     local scale = math.max(LABEL.MIN_SCALE, math.min(LABEL.MAX_SCALE, LABEL.TEXT_MAX_WIDTH / width_at_one))
     local left = LABEL.PANEL_MID_X - width_at_one * scale / 2
     local last_row_mid = LABEL.FIRST_ROW_MID_Y + LABEL.ROW_STEP * (math.max(row_count, 1) - 1)
@@ -160,11 +180,6 @@ if VRFW_Host ~= nil then
         y = top + LABEL.ROW_GAP + LABEL.BAND_HEIGHT / 2
       end
     end
-    local colour = status.ok and LABEL.COLOUR_MET or LABEL.COLOUR_UNMET
-    for _, mesh in ipairs(LABEL.TEXT_MESHES) do
-      M(LABEL.C.MESH_VISIBLE, LABEL.LAYER, mesh, false, k)
-    end
-    M(LABEL.C.TEXT, LABEL.LAYER, LABEL.TEXT_NODE, colour .. status.label .. LABEL.COLOUR_RESET, k)
     M(LABEL.C.SCALE, LABEL.LAYER, scale, scale, 1, k)
     LABEL.x, LABEL.y = left - LABEL.TEXT_LEFT * scale, -y - LABEL.TEXT_MID_Y * scale
     place()

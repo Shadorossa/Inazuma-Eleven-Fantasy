@@ -12,13 +12,14 @@
 --   vrfw_mm_card            the retail photo frame of the album (kept for other mods' pages; the list does not use it)
 --   vrfw_mm_tl / _tc / _tr  texts (left / centre / right)
 --   vrfw_mm_pd, _p0, _p1    popup: dim, window, its quads;  vrfw_mm_pl / _pc / _pr: its texts
--- Layout: the tab bar (Q / Instalados / Orden de carga / E) and under it the search box, «Ver», «Orden», «Perfil»; the
+-- Layout: the title tab («Instalados», top-level mods only) and under it the search box, «Ver», «Orden», «Perfil»; the
 -- list of mods (one plate a mod: load number, icon, name, version · size · author, the state tag) in a navy box at the
--- left; the selected mod's info panel at the right (header bar, icon and fields, description, «Necesita», «Lo
--- necesitan»). Both tabs use the same rows and panel; «Orden de carga» groups them by on / off.
+-- left, in load order by default (switched-on mods by number, then the others); the selected mod's info panel at the
+-- right (header bar, icon and fields, description, «Necesita», «Lo necesitan»). Module mods are rows of their parent's
+-- page: they load right after their parent and move with it. L1 / R1 set the load order from this list.
 -- The screen has no in-game creators; content is edited in an external editor.
 -- Keys (pad / keyboard): up / down move (left / right a page); A: switch the mod on / off; Start (Alt): the mod's
--- page (information, problems, conflicts, settings); L1 / R1 (Z / C): load order; L2 / R2 (Q / E): tabs; Select (Tab):
+-- page (layout A: information, modules, problems, conflicts, settings, what's new); L1 / R1 (Z / C): load order; L2 / R2 (Q / E): tabs; Select (Tab):
 -- sort; L3 (B): filter; R3 (N): search; X: profile; Y (V): the key of another framework part (VRFW_MM_EXTRA:
 -- «Novedades»); B / Esc / right click: back. Mouse: hover selects, click = the thing under the pointer (a row opens
 -- its page, its state tag switches it, tabs, bars, the panel's «Detalles», the page's buttons), the wheel scrolls.
@@ -103,6 +104,8 @@ local M = {
   -- (mod id) -> parent ("" = not a module), order, name key, internal modules (option row ids, one per line): the mod
   -- families of mod.toml [module] / [modules]
   MODULE = Crc("CMND_VRFW_MM_MODULE"),
+  FOLDER = Crc("CMND_VRFW_MM_FOLDER"),          -- (mod id) -> its folder under mods\, "/"-separated ("" = unknown)
+  NOTES = Crc("CMND_VRFW_MM_NOTES"),            -- (mod id, language code) -> title, notes of its changelog summary
 }
 -- the screen's background: the retail Guardar one (screen.rs BG_LAYER), hidden until the first full drawing shows it
 -- with the content (CE.Ready) and asserted again whenever the page changed or a window / keyboard closed (CE.bg_dirty)
@@ -126,8 +129,8 @@ local L_RET = Crc("mainmenu01_10_return_arrow_button_guide")
 local FREE = {
   Q0 = {Crc("vrfw_mm_q0"), 80}, CARD = {Crc("vrfw_mm_card"), 16}, Q2 = {Crc("vrfw_mm_q2"), 48}, Q1 = {Crc("vrfw_mm_q1"), 144},
   TL = {Crc("vrfw_mm_tl"), 128}, TC = {Crc("vrfw_mm_tc"), 96}, TR = {Crc("vrfw_mm_tr"), 40},
-  PD = {Crc("vrfw_mm_pd"), 1}, P0 = {Crc("vrfw_mm_p0"), 16}, P1 = {Crc("vrfw_mm_p1"), 28},
-  PL = {Crc("vrfw_mm_pl"), 40}, PC = {Crc("vrfw_mm_pc"), 12}, PR = {Crc("vrfw_mm_pr"), 8},
+  PD = {Crc("vrfw_mm_pd"), 1}, P0 = {Crc("vrfw_mm_p0"), 24}, P1 = {Crc("vrfw_mm_p1"), 40},
+  PL = {Crc("vrfw_mm_pl"), 40}, PC = {Crc("vrfw_mm_pc"), 28}, PR = {Crc("vrfw_mm_pr"), 8},
 }
 -- the layers of THIS menu (set up with it, counted by the reveal, hidden by Finish)
 local FREE_ORDER = {"Q0", "CARD", "Q2", "Q1", "TL", "TC", "TR", "PD", "P0", "P1", "PL", "PC", "PR"}
@@ -204,7 +207,7 @@ local G_ACCEPT = 1847312674 --[[«Aceptar»]]
 -- key glyphs inside our texts (the game draws them like in its own strings)
 local K = {A = "<CMD_ENTER>", B = "<CMD_BACK>", L1 = "<CMD_FUNCL1>", R1 = "<CMD_FUNCR1>", L2 = "<CMD_FUNCL2>",
            R2 = "<CMD_FUNCR2>", START = "<CMD_FUNC1>", SELECT = "<CMD_FUNC2>", Y = "<CMD_FUNC3>", X = "<CMD_FUNC4>",
-           L3 = "<CMD_FUNC5>", R3 = "<CMD_FUNC6>"}
+           L3 = "<CMD_FUNC5>", R3 = "<CMD_FUNC6>", LEFT = "<CMD_LEFT>", RIGHT = "<CMD_RIGHT>"}
 
 -- ---- geometry (screen px, y down) -------------------------------------------------------------------------------------
 local G = {
@@ -229,14 +232,15 @@ local G = {
   -- the info panel of the selected mod: its header bar (stripes, name, version), the white body under it
   PANEL_X = 1040, PANEL_Y = 151, PANEL_W = 864, PANEL_HEAD = 54, PANEL_BODY_Y = 225, PANEL_BODY_H = 612, PANEL_H = 686,
   PANEL_R = 14,
-  WIN_X = 240, WIN_Y = 138, WIN_W = 1440, WIN_H = 832, WIN_BAR = 64,
+  WIN_X = 240, WIN_Y = 138, WIN_W = 1440, WIN_H = 832,
   DIM_ALPHA = 0.55,          -- the dim behind a mod's page: the Mods list still shows through
-  COVER_W = 400, COVER_H = 225,   -- a mod's page: its cover (16:9)
+  COVER_W = 256, COVER_H = 144,   -- a mod's page: its cover (16:9) in the header band
+  BAND_H = 184, VTABS_H = 56, FOOT_H = 64,   -- a mod's page: header band, view tabs, shortcut bar
   Q = 36,                    -- the cmn01_10 quad side
   TXT_X = 48, TXT_Y = 915, TXT_W = 800, TXT_MID = 949,   -- the text node of the text layers (mainmenu90_05)
   PX = 14.5,                 -- width of one Latin character at text scale 1 (28 px font)
-  -- tabs: Instalados, Orden de carga
-  NTABS = 2,
+  -- tabs: one list («Instalados», in load order by default, where the load order is also set)
+  NTABS = 1,
   -- the top-anchored y keys a header mod's top_dy moves (CE.ApplyLayout); WIN_Y (popups) and TXT_Y stay
   SHIFT_Y = {"TAB_Y", "TOOLS_Y", "PROF_Y", "NOTICE_Y", "BOX_Y", "LIST_Y", "PANEL_Y", "PANEL_BODY_Y"},
 }
@@ -245,7 +249,7 @@ local G = {
 local have = false          -- the ModLoader answers CMND_EVT_MODS_COUNT
 local mods = {}             -- visible CMND_EVT_MODS_GET rows, load order (top = highest priority)
 local base_mod = nil        -- framework metadata, never a card or load-order row
-local cnt = {installed = 0, active = 0, changes = 0, profiles = 1, profile = 0}
+local cnt = {installed = 0, mods = 0, active = 0, changes = 0, profiles = 1, profile = 0}
 local profiles = {}
 local ui = nil              -- see Reset()
 local changed = false
@@ -506,7 +510,7 @@ local function ReadAll()
   local installed, active, _skipped, _conflicts, _dirty, changes, np, p = Call(M.COUNT)
   have = type(installed) == "number"
   if not have then
-    cnt = {installed = 0, active = 0, changes = 0, profiles = 1, profile = 0}
+    cnt = {installed = 0, mods = 0, active = 0, changes = 0, profiles = 1, profile = 0}
     return
   end
   cnt = {installed = Int(installed), active = Int(active), changes = Int(changes), profiles = math.max(1, Int(np)), profile = Int(p)}
@@ -570,6 +574,26 @@ local function ReadAll()
       if m.pos > 0 then m.pos = m.pos - 1 end
     end
   end
+  -- the counts and load numbers are of top-level mods only: a module mod loads right after its parent (the
+  -- ModLoader's load order) and shares its number; cnt.mods = installed top-level mods, cnt.active = numbered ones
+  local top_mods, place = 0, 0
+  for _, m in ipairs(mods) do
+    if m.family == nil then
+      top_mods = top_mods + 1
+      if m.enabled and m.pos > 0 then
+        place = place + 1
+        m.pos = place
+      else
+        m.pos = 0
+      end
+    end
+  end
+  for _, m in ipairs(mods) do
+    if m.family ~= nil then
+      m.pos = (m.enabled and m.pos > 0) and m.family.pos or 0
+    end
+  end
+  cnt.mods, cnt.active = top_mods, place
   profiles = {}
   for k = 0, cnt.profiles - 1 do
     profiles[k + 1] = Str(Call(M.PROFILE_NAME, k))
@@ -670,7 +694,14 @@ local function Shown()
     end
   end
   local s = SORTS[ui.sort]
-  if s == "name" then
+  if s == "order" then
+    -- the load order: the numbered (switched-on) mods by their number, then the others (greyed, no number)
+    table.sort(out, function(a, b)
+      local pa, pb = a.pos > 0 and a.pos or math.huge, b.pos > 0 and b.pos or math.huge
+      if pa ~= pb then return pa < pb end
+      return a.order < b.order
+    end)
+  elseif s == "name" then
     table.sort(out, function(a, b)
       local fa, fb = Fold(a.name), Fold(b.name)
       if fa == fb then return a.order < b.order end
@@ -695,7 +726,10 @@ end
 local function OrderRows()
   local on, off = {}, {}
   for _, m in ipairs(mods) do
-    if m.enabled then on[#on + 1] = m else off[#off + 1] = m end
+    -- a module mod is not a row of its own: it loads with its parent and moves with it
+    if m.family == nil then
+      if m.enabled then on[#on + 1] = m else off[#off + 1] = m end
+    end
   end
   local rows = {{head = true, first = true, text = T("order_on", {n = #on})}}
   for _, m in ipairs(on) do rows[#rows + 1] = {m = m} end
@@ -878,7 +912,7 @@ end
 
 local function TabLabel(k)
   if k == 1 then
-    return T("tab_installed", {n = #mods})
+    return T("tab_installed", {n = cnt.mods or #mods})
   end
   return T("tab_order", {n = cnt.active})
 end
@@ -899,7 +933,7 @@ local function DrawTabs()
       Hit(x + 10, G.TAB_Y, G.TAB_W - 20, G.TAB_H, "tab" .. k, function() SwitchTab(k) end)
     end
   end
-  if ui.page == nil then
+  if ui.page == nil and G.NTABS > 1 then
     Txt("TC", K.L2, G.TAB_X - 22, G.TAB_Y + G.TAB_H / 2, 0.8)
     Txt("TC", K.R2, G.TAB_X + G.NTABS * G.TAB_STEP + 28, G.TAB_Y + G.TAB_H / 2, 0.8)
   end
@@ -976,7 +1010,7 @@ local function DrawToolbar(shown)
   local tab = ui.tab
   local focus = tab == 1 and ui.zone == "bar"
   CE.RowSearch({on = tab == 1, query = ui.query, hint = "search_hint", foc = (focus and ui.bar == 1) or mouse.hot == "search",
-             count = (tab == 1 and have) and T("count_short", {n = #shown, t = #mods, a = cnt.active}) or nil,
+             count = (tab == 1 and have) and T("count_short", {n = #shown, t = cnt.mods or #mods, a = cnt.active}) or nil,
              act = function() StartCo(SearchFlow) end})
   -- Ver / Orden: «Instalados» only (drawn off elsewhere: the row never moves)
   local tools = {{x = G.ROW_FILTER_X, w = G.ROW_FILTER_W, id = "filter", key = K.L3, text = T("filter", {f = FilterLabel()}), value = FilterLabel(), bar = 2, act = function() CycleFilter(1) end},
@@ -1157,6 +1191,12 @@ end
 -- the colour of its first tag, the tag in small capitals at the top and the mod's name in large type at the bottom.
 INFO.TAG_TILE = {framework = 0, interface = 1, interfaz = 1, gameplay = 2, jugabilidad = 2, story = 3, historia = 3,
                  audio = 4, graphics = 5, ["gráficos"] = 5, tools = 6, herramientas = 6}
+-- the mod's colour: the tile of its first tag, else one picked by its id
+function INFO.Tile(m)
+  local tag = string.match(Text(m, 8), "^([^\n]+)") or ""
+  return INFO.TAG_TILE[string.lower(tag)] or TileOf(m.id)
+end
+
 function INFO.Cover(m, x, y, w, h, L)
   local t = Thumb(m)
   if t ~= nil then
@@ -1164,7 +1204,7 @@ function INFO.Cover(m, x, y, w, h, L)
     return
   end
   local tag = string.match(Text(m, 8), "^([^\n]+)") or ""
-  Quad(L.q, SP("tile" .. (INFO.TAG_TILE[string.lower(tag)] or TileOf(m.id))), x, y, w, h)
+  Quad(L.q, SP("tile" .. INFO.Tile(m)), x, y, w, h)
   local pad = math.floor(w * 0.06)
   if tag ~= "" then
     Txt(L.l, Cut(string.upper(tag), Fit(w - 2 * pad, 0.6)), x + pad, y + pad + 8, 0.6)
@@ -1187,53 +1227,9 @@ function INFO.Perms(m)
   return p
 end
 
--- The mod's page: one column of labelled fields (labels in one column, values in the next, one row step), the state as its pill in the «Estado» row.
--- Returns the line under the last row.
-function INFO.List(m, x, y, w, L)
-  local lw, step = 210, 38
-  local bs, bt = Badge(m)
-  local rows = {
-    {T("f_state"), pill = true},
-    {T("f_author"), m.author ~= "" and m.author or T("no_author_short")},
-    {T("f_version"), INFO.Value(m.version)},
-    {T("f_updated"), INFO.Value(Text(m, 9))},
-    {T("f_size"), INFO.Value(Size(m.size))},
-    {T("f_position"), (m.enabled and m.pos > 0) and T("pos_of", {n = m.pos, t = cnt.active}) or INFO.DASH},
-    {T("f_requires"), INFO.Value(INFO.Requires(m))},
-    {T("f_conflicts"), INFO.Value((string.gsub(Text(m, 3), "\n", ", ")))},
-    {T("f_tags"), INFO.Value(CE.ModTagsText(m))},
-  }
-  if INFO.Provides(m) ~= "" then
-    rows[#rows + 1] = {T("f_provides"), INFO.Provides(m)}
-  end
-  if INFO.Perms(m) ~= "" then
-    rows[#rows + 1] = {T("f_permissions"), INFO.Perms(m)}
-  end
-  rows[#rows + 1] = {T("f_folder"), "mods\\" .. m.id}
-  for _, r in ipairs(rows) do
-    Txt(L.l, "[CWG]" .. Cut(r[1], Fit(lw - 16, 0.7)) .. "[C]", x, y, 0.7)
-    if r.pill then
-      Quad(L.q, SP(bs), x + lw, y - 17, 150, 34)
-      Txt(L.c, Cut(bt, Fit(140, 0.62)), x + lw + 75, y, 0.62)
-      if m.id == BASE then
-        Quad(L.q, SP("lock"), x + lw + 164, y - 16, 32, 32)
-        Txt(L.l, "[CN]" .. Cut(T("pinned_short"), Fit(w - lw - 210, 0.7)) .. "[C]", x + lw + 204, y, 0.7)
-      end
-    else
-      local ls = Wrap(r[2], Fit(w - lw, 0.76), 2)
-      for i, l in ipairs(ls) do
-        Txt(L.l, "[CB]" .. l .. "[C]", x + lw, y + (i - 1) * 28, 0.76)
-      end
-      y = y + (#ls - 1) * 28
-    end
-    y = y + step
-  end
-  return y
-end
-
 -- The description a player reads: the mod's own text in the screen's language (key `<mod>.mod_description` of its
 -- text.toml, 9 languages), else the manifest's `description`; only its first paragraph (long technical notes belong in
--- the mod's README.md). Returns the text and whether more was left out.
+-- the mod's README.md). Returns the text, whether more was left out and the whole text.
 function INFO.Description(m)
   local id = TextIdKey(m.id .. ".mod_description")
   local s = id ~= nil and Str(Call(C.TEXT_GET, id)) or ""
@@ -1243,9 +1239,9 @@ function INFO.Description(m)
   s = string.gsub(s, "\r", "")
   local first, rest = string.match(s, "^(.-)\n%s*\n(.*)$")
   if first ~= nil and string.find(rest, "%S") ~= nil then
-    return first, true
+    return first, true, s
   end
-  return s, false
+  return s, false, s
 end
 
 -- ---- the list and the info panel (both tabs) -----------------------------------------------------------------------------
@@ -1385,12 +1381,20 @@ function INFO.Provider(name)
   return nil
 end
 
--- «Necesita»: one row a requirement {name, state, colour}; a framework part is the framework, once and first; a
--- minimum version as «(1.0+)»; the state: on, off or not installed. Read once per mod (the list is read again after
--- every change).
+-- «Necesita»: one row a requirement {label, state, colour; key, mod, name, ok, reason}; a framework part is the
+-- framework, once and first; a minimum version as «(1.0+)»; the state: on, off or not installed; `ok` = installed,
+-- on and not too old (the ModLoader's «version» warnings), else `reason` says why. Read once per mod (the list is read
+-- again after every change).
 function INFO.Needs(m)
   if m.needs ~= nil then
     return m.needs
+  end
+  local old = {}
+  for line in string.gmatch(Text(m, 7), "[^\n]+") do
+    local kind, other = string.match(line, "^(%a+)|([^|]*)|")
+    if kind == "version" and other ~= nil then
+      old[other] = true
+    end
   end
   local out, seen, parts = {}, {}, INFO.BaseParts()
   for req in string.gmatch(Text(m, 2), "[^,\n]+") do
@@ -1400,7 +1404,8 @@ function INFO.Needs(m)
       if not seen[key] then
         seen[key] = true
         local d = key == BASE and base_mod or INFO.Provider(key)
-        local label = (d ~= nil and d.name ~= "") and d.name or (key == BASE and "VR-Framework" or name)
+        local short = (d ~= nil and d.name ~= "") and d.name or (key == BASE and "VR-Framework" or name)
+        local label = short
         if key == name and ver ~= "" then
           label = label .. ((op == "" or op == ">=") and (" (" .. ver .. "+)") or (" (" .. op .. " " .. ver .. ")"))
         end
@@ -1410,6 +1415,10 @@ function INFO.Needs(m)
         else
           row = {label, T(d.enabled and "st_on" or "st_off"), d.enabled and "[CG]" or "[CWG]"}
         end
+        local too_old = old[name] or old[key] or (d ~= nil and old[d.id])
+        row.key, row.mod, row.name = key, d, short
+        row.ok = d ~= nil and d.enabled and not too_old
+        row.reason = (d == nil and T("dep_missing")) or (too_old and T("dep_old")) or ((not d.enabled) and T("st_off")) or ""
         if key == BASE then
           table.insert(out, 1, row)
         else
@@ -1585,9 +1594,50 @@ local function DrawOrder()
 end
 
 
--- ---- the mod's page (popup) ----------------------------------------------------------------------------------------------
-local function PopupWindow(title, right)
-  -- modal: nothing under the popup takes the mouse; a click outside the window closes it
+-- ---- the mod's page (popup, layout A) -----------------------------------------------------------------------------------
+-- The window: a header band in the mod's colour (its cover, name and version, «author · updated · size · place», the
+-- state pill, «Cerrar»), the row of view tabs (Información · Módulos · Problemas · Conflictos · Ajustes · Novedades),
+-- the view's body and one shortcut bar (the view's keys and the main action button) at the bottom. A module's page and
+-- a requirement's page open over the page they came from (ui.popup.back): B goes back to it.
+-- The VR-Framework report of mod `id` (CMND_VRFW_REPORT_*, the start's report.json): {problems, conflicts, np, nc}.
+-- `problems` is what the «Problemas» view lists: the entries grouped by what they mean (why the mod may not load, files left out, rows left out, warnings), each group
+-- of one code under a header row in the player's language (text_report.toml `rc_<code>`: what it is and how to fix
+-- it); the entries keep the core's English message, by file. `np` = entries (headers not counted). Read once per
+-- screen opening. (one table: the main chunk is at Lua's limit of 200 locals)
+local RV = {cache = {}, MAX = 400, ROWS = 13, ORDER = {dependency = 1, error = 2, skipped = 3, warning = 4}}
+RV.NEWS_ROWS, RV.MOD_ROWS, RV.FULL_ROWS = 13, 9, 14
+
+-- the body of a mod's page: under the header band and the view tabs, above the shortcut bar
+function RV.BodyY()
+  return G.WIN_Y + G.BAND_H + G.VTABS_H
+end
+
+function RV.FootY()
+  return G.WIN_Y + G.WIN_H - G.FOOT_H
+end
+
+-- «author · updated · size · place in the load order» (a module: «Module of <parent>» first)
+function RV.Meta(m)
+  local out = {}
+  if m.family ~= nil then
+    out[#out + 1] = T("module_of", {o = m.family.name})
+  end
+  out[#out + 1] = m.author ~= "" and m.author or T("no_author_short")
+  local d, sz = Text(m, 9), Size(m.size)
+  if d ~= "" then
+    out[#out + 1] = d
+  end
+  if sz ~= "" then
+    out[#out + 1] = sz
+  end
+  if m.enabled and m.pos > 0 and m.family == nil then
+    out[#out + 1] = T("meta_position", {n = m.pos, t = cnt.active})
+  end
+  return table.concat(out, "  ·  ")
+end
+
+-- The window of mod `m`'s page: the dim, the header band and the white body. Modal: a click outside closes it.
+local function PopupWindow(m)
   Hit(0, 0, 1920, 1080, "modal", function()
     local x, y = mouse.x, mouse.y
     if x < G.WIN_X or x >= G.WIN_X + G.WIN_W or y < G.WIN_Y or y >= G.WIN_Y + G.WIN_H then
@@ -1596,43 +1646,643 @@ local function PopupWindow(title, right)
   end)
   -- the list behind stays visible, dimmed (no opaque cover)
   Quad("PD", SP("dim"), 0, 0, 1920, 1080, G.DIM_ALPHA)
-  Quad("P0", SP("bar"), G.WIN_X, G.WIN_Y, G.WIN_W, G.WIN_BAR)
-  Quad("P0", SP("white"), G.WIN_X, G.WIN_Y + G.WIN_BAR, G.WIN_W, G.WIN_H - G.WIN_BAR, 1)
-  Txt("PL", title, G.WIN_X + 32, G.WIN_Y + G.WIN_BAR / 2, 1.2)
-  Txt("PR", right or (K.B .. " " .. T("hint_close")), G.WIN_X + G.WIN_W - 28, G.WIN_Y + G.WIN_BAR / 2, 0.8)
-  Hit(G.WIN_X + G.WIN_W - 220, G.WIN_Y, 220, G.WIN_BAR, "pclose", function() ClosePopup() end)
-end
-
-local function PopupButton(k, label, filled, sel, act, id)
-  local bx = G.WIN_X + 40 + (k - 1) * 330
-  local by = G.WIN_Y + G.WIN_H - 78
-  Quad("P1", SP((filled and "btn_on" or "btn_off") .. (sel and "_sel" or "")), bx, by, 310, 52)
-  Txt("PC", (filled and "" or "[CN]") .. label .. (filled and "" or "[C]"), bx + 155, by + 26, 0.8)
-  Hit(bx, by, 310, 52, id, act)
-end
-
--- the buttons of a mod's page, left to right: {slot, id, label, filled, act}
-function PopupButtons(m)
-  local out = {}
-  out[#out + 1] = {slot = 1, id = "pb1", label = K.A .. " " .. T(m.enabled and "btn_disable" or "btn_enable"), filled = not m.enabled,
-                   act = function() StartCo(Toggle) end}
-  if m.enabled and m.id ~= BASE and ui.tab == 2 then
-    out[#out + 1] = {slot = 2, id = "pb2", label = K.L1 .. " " .. T("btn_up"), filled = false, act = function() Order(-1) end}
-    out[#out + 1] = {slot = 3, id = "pb3", label = K.R1 .. " " .. T("btn_down"), filled = false, act = function() Order(1) end}
+  local x, y, w, h = G.WIN_X, G.WIN_Y, G.WIN_W, G.BAND_H
+  Quad("P0", SP("tile" .. INFO.Tile(m)), x, y, w, h)
+  Quad("P0", SP("white"), x, y + h, w, G.WIN_H - h)
+  -- the cover: the mod's picture (mod.toml `cover`, thumbnail.png, preview.png), else one drawn in its colour, framed
+  local cx, cy, cw, ch = x + 28, y + (h - G.COVER_H) / 2, G.COVER_W, G.COVER_H
+  INFO.Cover(m, cx, cy, cw, ch, INFO.POPUP)
+  if Thumb(m) == nil then
+    for _, e in ipairs({{cx - 3, cy - 3, cw + 6, 3}, {cx - 3, cy + ch, cw + 6, 3}, {cx - 3, cy, 3, ch}, {cx + cw, cy, 3, ch}}) do
+      Quad("P1", SP("white"), e[1], e[2], e[3], e[4])
+    end
   end
-  local e = Extras()[1]
-  if e ~= nil then
-    out[#out + 1] = {slot = 4, id = "pb4", label = K.Y .. " " .. T("btn_news"), filled = false, act = function() RunExtra(e) end}
+  local tx = cx + cw + 32
+  local tw = x + w - 300 - tx
+  local name = m.name ~= "" and m.name or m.id
+  Txt("PL", Cut(name, Fit(tw - 150, 1.3)) .. (m.version ~= "" and ("   v" .. Cut(m.version, 12)) or ""), tx, y + 66, 1.3)
+  Txt("PL", Cut(RV.Meta(m), Fit(tw, 0.74)), tx, y + 120, 0.74)
+  -- the state pill and «Cerrar» (B, Esc or a click); a page opened over another goes back to it
+  local bs, bt = Badge(m)
+  local pw = 230
+  Quad("P1", SP(bs), x + w - 28 - pw, y + 100, pw, 42)
+  Txt("PC", Cut(bt, Fit(pw - 20, 0.66)), x + w - 28 - pw / 2, y + 121, 0.66)
+  Txt("PR", K.B .. " " .. T(ui.popup.back ~= nil and "hint_back" or "hint_close"), x + w - 28, y + 40, 0.76)
+  Hit(x + w - 240, y, 240, 72, "pclose", function() ClosePopup() end)
+end
+
+-- the main action button at the right of the shortcut bar
+local function PopupButton(label, filled, sel, act, id)
+  local bw, bh = 300, 48
+  local bx, by = G.WIN_X + G.WIN_W - 28 - bw, RV.FootY() + (G.FOOT_H - bh) / 2
+  Quad("P1", SP((filled and "btn_on" or "btn_off") .. (sel and "_sel" or "")), bx, by, bw, bh)
+  Txt("PC", (filled and "" or "[CN]") .. Cut(label, Fit(bw - 24, 0.78)) .. (filled and "" or "[C]"), bx + bw / 2, by + bh / 2, 0.78)
+  Hit(bx, by, bw, bh, id, act)
+end
+
+-- the page's main action, the one button of the shortcut bar: switch the mod on / off
+function PopupButtons(m)
+  return {{id = "pb1", label = T(m.enabled and "btn_disable" or "btn_enable"), filled = not m.enabled,
+           act = function() StartCo(Toggle) end}}
+end
+
+-- the views of mod `m`'s page, in tab order: «Módulos» only for a mod with modules, «Novedades» only for a mod with
+-- a changelog summary
+function RV.Views(m)
+  local v = {"info"}
+  if RV.HasModules(m) then
+    v[#v + 1] = "modules"
+  end
+  v[#v + 1] = "problems"
+  v[#v + 1] = "conflicts"
+  v[#v + 1] = "settings"
+  if #RV.Notes(m).notes > 0 then
+    v[#v + 1] = "news"
+  end
+  return v
+end
+
+function RV.View()
+  return ui.popup ~= nil and ui.popup.view or "info"
+end
+
+-- the place of the open view among the page's tabs (0 = no page)
+function RV.ViewIndex()
+  local p = ui.popup
+  local m = p and ModById(p.id)
+  if m == nil then
+    return 0
+  end
+  for k, v in ipairs(RV.Views(m)) do
+    if v == p.view then
+      return k
+    end
+  end
+  return 0
+end
+
+-- open view `v` of the page (its scroll and focus from the start)
+function RV.Go(v)
+  local p = ui.popup
+  if p == nil then
+    return
+  end
+  funcLuaCommand(C.SE, SE_MOVE)
+  p.view, p.top, p.full, p.srow, p.szone, p.stop = v, 0, nil, 1, "rows", 0
+  Draw()
+end
+
+-- the changelog summary of mod `m` in the game's language: {title, notes} (read once per page opening)
+function RV.Notes(m)
+  local ck = "notes:" .. m.id
+  local r = RV.cache[ck]
+  if r == nil then
+    if lang == nil then
+      lang = Call(C.LANG) or 1
+    end
+    local title, notes = Call(M.NOTES, m.id, lang)
+    r = {title = Str(title), notes = CE.Lines(Str(notes))}
+    RV.cache[ck] = r
+  end
+  return r
+end
+
+-- the shortcuts of the open view, one per entry: «<glyphs> <what it does>»
+function RV.Keys(m)
+  local p, v, out = ui.popup, RV.View(), {}
+  local function add(glyphs, key)
+    out[#out + 1] = (glyphs ~= "" and (glyphs .. " ") or "") .. T(key)
+  end
+  if p.full then
+    add("", "sc_scroll")
+    add(K.B, "hint_back")
+    return out
+  end
+  if v == "info" then
+    add(K.A, "sc_select")
+    add(K.X, "sc_description")
+  elseif v == "modules" then
+    add(K.A, "sc_module_toggle")
+    add(K.Y, "sc_module_page")
+  elseif v == "settings" then
+    add(K.A, "sc_change")
+  elseif v == "conflicts" then
+    add(K.R3, "sc_who")
+  end
+  add(K.L2 .. K.R2, "sc_tabs")
+  if m.enabled and m.family == nil and m.id ~= BASE then
+    add(K.L1 .. K.R1, "sc_order")
+  end
+  add(K.B, p.back ~= nil and "hint_back" or "hint_close")
+  return out
+end
+
+-- A presses the main action button in this view (lit)
+function RV.ActionFocused(m)
+  local p, v = ui.popup, RV.View()
+  if p.full or v == "modules" then
+    return false
+  end
+  if v == "info" then
+    return RV.InfoTarget(m).kind == "action"
+  end
+  if v == "settings" then
+    return p.szone == "buttons" or #RV.SetRows(m) == 0
+  end
+  return true
+end
+
+-- The shortcut bar: the view's keys in one line (the game draws each key as the pad's or the keyboard's glyph; a
+-- toast takes the line for a while) and the main action button
+function RV.Footer(m)
+  local y = RV.FootY()
+  Quad("P0", SP("night"), G.WIN_X, y, G.WIN_W, G.FOOT_H)
+  local s = ui.toast or table.concat(RV.Keys(m), "     ")
+  Txt("PL", Cut(s, Fit(G.WIN_W - 400, 0.7)), G.WIN_X + 32, y + G.FOOT_H / 2, 0.7)
+  local pb = PopupButtons(m)[1]
+  local hot = (mouse.on and mouse.hot == pb.id) or (not mouse.on and RV.ActionFocused(m))
+  PopupButton(pb.label, pb.filled, hot, pb.act, pb.id)
+end
+
+-- One line of chips from x (wrapping into at most `maxrows` rows of width w): {text, sprite, icon, id, act, foc}.
+-- The chip on P0, its icon on P1, its text on PL. Returns the y under the last row.
+function RV.Chips(items, x, y, w, maxrows)
+  local cx, rows = x, 1
+  for _, it in ipairs(items) do
+    local tw = math.min(w, math.floor(Units(it.text) * G.PX * 0.68) + (it.icon and 64 or 34))
+    if cx > x and cx + tw > x + w then
+      rows = rows + 1
+      if rows > maxrows then
+        break
+      end
+      cx, y = x, y + 50
+    end
+    Quad("P0", SP(it.sprite), cx, y, tw, 40)
+    local t0 = cx + 17
+    if it.icon then
+      Quad("P1", SP(it.icon), cx + 10, y + 6, 28, 28)
+      t0 = cx + 46
+    end
+    Txt("PL", Cut(it.text, Fit(tw - (t0 - cx) - 10, 0.68)), t0, y + 20, 0.68)
+    if it.foc then
+      CE.Focus("P1", cx, y, tw, 40, 3)
+    end
+    if it.act ~= nil then
+      Hit(cx, y, tw, 40, it.id, it.act)
+    end
+    cx = cx + tw + 10
+  end
+  return y + 50
+end
+
+-- «keeper_scenes» -> «Keeper scenes»: the words of an id
+function RV.Words(id)
+  local s = string.gsub(id, "[_%.%-]+", " ")
+  return (string.gsub(s, "^%l", string.upper))
+end
+
+-- «Ofrece a otros mods»: what the mod.toml `provides` (the names other mods can require), in words: the text key
+-- `<mod>.provides_<name>` of its text rows, else the installed mod of that id, else the name's words
+function RV.Offers(m)
+  local out = {}
+  for item in string.gmatch(INFO.Provides(m), "[^,]+") do
+    local name = string.match(item, "^%s*([%w_%.%-]+)")
+    if name ~= nil and name ~= m.id then
+      local s = CE.KeyText(m.id .. ".provides_" .. name)
+      if s == "" then
+        local o = ModById(name)
+        s = (o ~= nil and o.name ~= "") and o.name or RV.Words(name)
+      end
+      out[#out + 1] = s
+    end
   end
   return out
 end
 
--- The VR-Framework report of mod `id` (CMND_VRFW_REPORT_*, the start's report.json): {problems, conflicts, np, nc}.
--- `problems` is what the «Problemas» view lists: the entries grouped by what they mean (why the mod may not load, files left out, rows left out, warnings), each group
--- of one code under a header row in the player's language (text_report.toml `rc_<code>`: what it is and how to fix
--- it); the entries keep the core's English message, by file. `np` = entries (headers not counted). Read once per
--- screen opening. (one table: the main chunk is at Lua's limit of 200 locals)
-local RV = {cache = {}, MAX = 400, ROWS = 17, ORDER = {dependency = 1, error = 2, skipped = 3, warning = 4}}
+-- what the pad can focus in «Información», in its order: the chips of the requirements that are installed, «Ver
+-- descripción completa», the main action (the first focus)
+function RV.InfoTargets(m)
+  local out = {}
+  for i, d in ipairs(INFO.Needs(m)) do
+    if d.mod ~= nil and i <= 5 then
+      out[#out + 1] = {kind = "chip", id = d.mod.id}
+    end
+  end
+  out[#out + 1] = {kind = "desc"}
+  out[#out + 1] = {kind = "action"}
+  return out
+end
+
+function RV.InfoTarget(m)
+  local t = RV.InfoTargets(m)
+  local p = ui.popup
+  p.ifoc = math.max(1, math.min(p.ifoc or #t, #t))
+  return t[p.ifoc]
+end
+
+-- the pad in «Información»: left / up the previous target, right / down the next
+function RV.InfoMove(m, d)
+  local t = RV.InfoTargets(m)
+  local p = ui.popup
+  local k = math.max(1, math.min(#t, (p.ifoc or #t) + d))
+  funcLuaCommand(C.SE, k ~= p.ifoc and SE_MOVE or SE_NG)
+  p.ifoc = k
+  Draw()
+end
+
+-- «Información»: «Qué hace» (the changelog summary's first points, else the description) at the left with one
+-- warning and «Ver descripción completa»; «Necesita» (a chip per requirement: green = met, red = missing / off / too
+-- old; A or a click opens that mod's page), «Ofrece a otros mods» and «Etiquetas» at the right
+function RV.DrawInfo(m)
+  if ui.popup.full then
+    RV.DrawFull(m)
+    return
+  end
+  local top, foot = RV.BodyY() + 34, RV.FootY()
+  local lx, lw = G.WIN_X + 40, 700
+  local rx = G.WIN_X + 800
+  local rw = G.WIN_X + G.WIN_W - 40 - rx
+  local target = RV.InfoTarget(m)
+  local pad = not mouse.on
+  Quad("P0", SP("line"), rx - 32, top - 14, 2, foot - top - 10)
+  Txt("PL", "[CN]" .. T("what_it_does") .. "[C]", lx, top, 0.86)
+  local y, ylim = top + 46, foot - 130
+  local notes = RV.Notes(m).notes
+  if #notes > 0 then
+    for i = 1, math.min(5, #notes) do
+      local ls = Wrap(notes[i], Fit(lw - 30, 0.74), 2)
+      if y + (#ls - 1) * 30 > ylim then
+        break
+      end
+      for j, l in ipairs(ls) do
+        Txt("PL", (j == 1 and "[CN]›[C]  " or "") .. "[CB]" .. l .. "[C]", lx + (j == 1 and 0 or 25), y + (j - 1) * 30, 0.74)
+      end
+      y = y + #ls * 30 + 10
+    end
+  else
+    local desc = INFO.Description(m)
+    for _, l in ipairs(Wrap(desc ~= "" and desc or T("no_desc"), Fit(lw, 0.74), 8)) do
+      Txt("PL", (desc ~= "" and "[CB]" or "[CWG]") .. l .. "[C]", lx, y, 0.74)
+      y = y + 30
+    end
+  end
+  -- one warning (not loaded, a requirement, shared files) above the button; «Ver descripción completa» lists them all
+  local warn = (m.enabled and m.state == 1) and {true, T("state_skip", {r = Text(m, 1)})} or Warnings(m)[1]
+  if warn ~= nil then
+    local wy = foot - 110
+    Quad("P1", SP(warn[1] and "warn_r" or "warn_a"), lx, wy - 14, 28, 28)
+    Txt("PL", (warn[1] and "[CR]" or "[CY]") .. Cut(warn[2], Fit(lw - 40, 0.66)) .. "[C]", lx + 38, wy, 0.66)
+  end
+  local bw, bh, by = 430, 46, foot - 74
+  local foc = (mouse.on and mouse.hot == "pfull") or (pad and target.kind == "desc")
+  Quad("P1", SP(foc and "btn_off_sel" or "btn_off"), lx, by, bw, bh)
+  Txt("PC", "[CN]" .. K.X .. " " .. Cut(T("full_desc"), Fit(bw - 70, 0.72)) .. "[C]", lx + bw / 2, by + bh / 2, 0.72)
+  Hit(lx, by, bw, bh, "pfull", function() RV.OpenFull() end)
+  -- «Necesita»
+  Txt("PL", "[CN]" .. T("f_needs") .. "[C]", rx, top, 0.86)
+  y = top + 26
+  local needs = INFO.Needs(m)
+  if #needs == 0 then
+    Txt("PL", "[CWG]" .. T("needs_none") .. "[C]", rx, y + 20, 0.72)
+    y = y + 50
+  else
+    local items = {}
+    for i, d in ipairs(needs) do
+      if i > 5 then
+        break
+      end
+      local it = {text = d.ok and d[1] or (d[1] .. "  ·  " .. d.reason), sprite = d.ok and "pill_green" or "pill_red",
+                  icon = d.ok and "ok" or "no"}
+      if d.mod ~= nil then
+        local id = d.mod.id
+        it.id = "need" .. i
+        it.act = function() RV.OpenChild(id) end
+        it.foc = (mouse.on and mouse.hot == it.id) or (pad and target.kind == "chip" and target.id == id)
+      end
+      items[#items + 1] = it
+    end
+    y = RV.Chips(items, rx, y, rw, 2)
+  end
+  -- «Ofrece a otros mods»
+  y = y + 18
+  Txt("PL", "[CN]" .. T("offers") .. "[C]", rx, y, 0.86)
+  local offers = RV.Offers(m)
+  local ls = Wrap(#offers > 0 and table.concat(offers, "  ·  ") or T("offers_none"), Fit(rw, 0.72), 3)
+  for i, l in ipairs(ls) do
+    Txt("PL", (#offers > 0 and "[CB]" or "[CWG]") .. l .. "[C]", rx, y + 40 + (i - 1) * 30, 0.72)
+  end
+  y = y + 40 + #ls * 30 + 10
+  -- «Etiquetas»
+  Txt("PL", "[CN]" .. T("f_tags") .. "[C]", rx, y, 0.86)
+  local tags = {}
+  for i, t in ipairs(CE.ModTags(m)) do
+    if i > 4 then
+      break
+    end
+    tags[#tags + 1] = {text = t, sprite = "pill_blue"}
+  end
+  if #tags == 0 then
+    Txt("PL", "[CWG]" .. INFO.DASH .. "[C]", rx, y + 40, 0.72)
+  else
+    RV.Chips(tags, rx, y + 22, rw, 2)
+  end
+end
+
+-- «Ver descripción completa» (X, or A / a click on the button): the page's body shows the whole description, then the
+-- technical details (folder, requirements, incompatibilities, what it provides, native permissions) and every
+-- warning; up / down or the wheel scroll (left / right a page), B goes back to «Información»
+function RV.OpenFull()
+  local p = ui.popup
+  if p == nil or p.view ~= "info" then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  funcLuaCommand(C.SE, SE_OK)
+  p.full, p.ftop = true, 1
+  Draw()
+end
+
+-- the mod's folder under the game's mods folder, with «/» (the game's text reads a backslash as an escape: «\n» of
+-- «mods\new_animations» was a line break)
+function RV.Folder(m)
+  local f = Str(Call(M.FOLDER, m.id))
+  return "mods/" .. (f ~= "" and f or m.id)
+end
+
+-- the lines of the whole description and the technical details (read once per page opening)
+function RV.FullLines(m)
+  local ck = "full:" .. m.id
+  if RV.cache[ck] ~= nil then
+    return RV.cache[ck]
+  end
+  local w = Fit(G.WIN_W - 100, 0.74)
+  local out = {}
+  local _, _, all = INFO.Description(m)
+  for _, l in ipairs(Wrap(all ~= "" and all or T("no_desc"), w, 1000)) do
+    out[#out + 1] = l ~= "" and ((all ~= "" and "[CB]" or "[CWG]") .. l .. "[C]") or ""
+  end
+  out[#out + 1] = ""
+  out[#out + 1] = "[CN]" .. T("details_tech") .. "[C]"
+  local function field(label, value)
+    if value ~= "" then
+      for _, l in ipairs(Wrap(label .. ": " .. value, w, 6)) do
+        out[#out + 1] = "[CWG]" .. l .. "[C]"
+      end
+    end
+  end
+  field(T("f_folder"), RV.Folder(m))
+  field(T("f_requires"), INFO.Requires(m))
+  field(T("f_conflicts"), (string.gsub(Text(m, 3), "\n", ", ")))
+  field(T("f_provides"), INFO.Provides(m))
+  field(T("f_permissions"), INFO.Perms(m))
+  local ws = {}
+  if m.enabled and m.state == 1 then
+    ws[#ws + 1] = {true, T("state_skip", {r = Text(m, 1)})}
+  end
+  for _, x in ipairs(Warnings(m)) do
+    ws[#ws + 1] = x
+  end
+  for l in string.gmatch(Str(Call(M.AU_NOTES, m.id)), "[^\n]+") do
+    local wf, tx = string.match(l, "^(%d)|(.*)$")
+    if tx ~= nil then
+      ws[#ws + 1] = {wf == "1", T("au_note", {t = tx})}
+    end
+  end
+  for _, x in ipairs(ws) do
+    for _, l in ipairs(Wrap(x[2], w, 3)) do
+      out[#out + 1] = (x[1] and "[CR]" or "[CY]") .. l .. "[C]"
+    end
+  end
+  RV.cache[ck] = out
+  return out
+end
+
+-- The page control of a paged list, right-aligned at xr on line y: «↑ <left key>  1-9 de 11  <right key> ↓» (the arrow
+-- blue when there is a page that way, grey when not; nothing when everything fits). A click on its left half goes a
+-- page back, on its right half a page forward (its width estimated: the text layers anchor on the right).
+function RV.Pager(xr, y, first, last, total, prev, next)
+  if total <= last - first + 1 then
+    return
+  end
+  local back, fwd = first > 1, last < total
+  local s = (back and "[CN]↑[C]" or "[CWG]↑[C]") .. " " .. K.LEFT .. "  [CB]" ..
+            T("report_rows", {n = first, c = last, t = total}) .. "[C]  " .. K.RIGHT .. " " .. (fwd and "[CN]↓[C]" or "[CWG]↓[C]")
+  Txt("PR", s, xr, y, 0.66)
+  local w = math.floor(Units(s) * G.PX * 0.66 * 0.82)
+  Hit(xr - w, y - 20, w / 2, 40, "pgback", function()
+    if back then prev() else funcLuaCommand(C.SE, SE_NG) end
+  end)
+  Hit(xr - w / 2, y - 20, w / 2, 40, "pgnext", function()
+    if fwd then next() else funcLuaCommand(C.SE, SE_NG) end
+  end)
+end
+
+function RV.DrawFull(m)
+  local p = ui.popup
+  local lines = RV.FullLines(m)
+  local x, top = G.WIN_X + 40, RV.BodyY() + 34
+  local y0, vis = top + 50, RV.FULL_ROWS
+  p.ftop = math.max(1, math.min(p.ftop or 1, math.max(1, #lines - vis + 1)))
+  Txt("PL", "[CN]" .. T("full_desc_title") .. "[C]", x, top, 0.86)
+  RV.Pager(G.WIN_X + G.WIN_W - 40, top, p.ftop, math.min(#lines, p.ftop + vis - 1), #lines, function()
+    p.ftop = math.max(1, p.ftop - vis)
+    funcLuaCommand(C.SE, SE_MOVE)
+    Draw()
+  end, function()
+    p.ftop = p.ftop + vis
+    funcLuaCommand(C.SE, SE_MOVE)
+    Draw()
+  end)
+  for i = 0, vis - 1 do
+    local l = lines[p.ftop + i]
+    if l == nil then
+      break
+    end
+    Txt("PL", l, x, y0 + i * 30, 0.74)
+  end
+end
+
+-- ---- «Módulos»: one row per module (a module mod of the family, or an internal module = an option row named in
+-- [modules] options): its badge (icon or two letters), name, version and Sí / No; a module whose requirement is not
+-- met shows it in red next to its state and is greyed (it cannot be switched on). A or a click on Sí / No switches
+-- it, Y or a click on the row opens a module mod's own page.
+
+-- the module rows of mod `m`: {mod = module mod} or {opt = option row} (read once per page opening)
+function RV.ModuleRows(m)
+  local ck = "mrows:" .. m.id
+  local r = RV.cache[ck]
+  if r == nil then
+    r = {}
+    for _, o in ipairs(RV.Settings(m.id)) do
+      if o.module ~= nil then
+        r[#r + 1] = {mod = o.module}
+      elseif o.imodule then
+        r[#r + 1] = {opt = o}
+      end
+    end
+    RV.cache[ck] = r
+  end
+  return r
+end
+
+function RV.ModuleOn(r)
+  if r.mod ~= nil then
+    return r.mod.enabled
+  end
+  local v = RV.Value(r.opt)
+  return v ~= nil and v ~= 0
+end
+
+function RV.ModulesOn(m)
+  local n = 0
+  for _, r in ipairs(RV.ModuleRows(m)) do
+    if RV.ModuleOn(r) then
+      n = n + 1
+    end
+  end
+  return n
+end
+
+-- the first requirement of module mod `mm` that is not met (missing, off or too old), by name; nil = all met. Its
+-- parent is not counted (switching the module on brings its parent)
+function RV.ModuleNeed(mm)
+  for _, d in ipairs(INFO.Needs(mm)) do
+    if not d.ok and (mm.family == nil or d.key ~= mm.family.id) then
+      return d.name
+    end
+  end
+  return nil
+end
+
+function RV.DrawModuleRow(m, n, r, x, y, w, h, foc)
+  local mm = r.mod
+  local name
+  if mm ~= nil then
+    name = mm.mname or (mm.name ~= "" and mm.name or mm.id)
+  else
+    name = RV.TextOf(r.opt.label, r.opt.fallback ~= "" and r.opt.fallback or r.opt.key)
+  end
+  local on = RV.ModuleOn(r)
+  local need = mm ~= nil and RV.ModuleNeed(mm) or nil
+  local grey = need ~= nil and not on
+  local cy = y + h / 2
+  Quad("P0", SP(foc and "row_sel" or (grey and "row_off" or "row")), x, y, w, h)
+  Hit(x, y, w, h, "mrow" .. n, function()
+    ui.popup.mrow = n
+    if mm ~= nil then
+      RV.OpenChild(mm.id)
+    else
+      RV.ModuleToggle(m, n)
+    end
+  end)
+  -- the badge: the module's icon, else its two letters
+  local ic = mm ~= nil and IconOf(mm) or nil
+  if ic ~= nil then
+    Quad("P1", ic[2], x + 14, cy - 17, 34, 34, grey and 0.6 or 1, ic[1])
+  else
+    Quad("P1", SP("iconbox"), x + 14, cy - 17, 34, 34, grey and 0.6 or 1)
+    Txt("PC", "[CWG]" .. Initials({name = name, id = name}) .. "[C]", x + 31, cy - 1, 0.5)
+  end
+  Txt("PL", (grey and "[CWG]" or "[CB]") .. Cut(name, Fit(w * 0.5 - 80, 0.8)) .. "[C]", x + 64, cy, 0.8)
+  if mm ~= nil and mm.version ~= "" then
+    Txt("PL", "[CWG]v" .. Cut(mm.version, 12) .. "[C]", x + math.floor(w * 0.52), cy, 0.66)
+  end
+  local pw = 150
+  local px = x + w - 16 - pw
+  if need ~= nil then
+    -- a short red tag right before the state (its width estimated: the text layers anchor on the left)
+    local x0 = x + math.floor(w * 0.62)
+    local tag = Cut(T("module_needs", {o = need}), Fit(px - 24 - x0, 0.62))
+    Txt("PL", "[CR]" .. tag .. "[C]", math.max(x0, px - 18 - math.floor(Units(tag) * G.PX * 0.62 * 0.82)), cy, 0.62)
+  end
+  local pend = mm ~= nil and mm.pending
+  Quad("P1", SP(pend and "pill_amber" or (on and "pill_green" or "pill_grey")), px, cy - 16, pw, 32, grey and 0.7 or 1)
+  Txt("PC", T(on and "module_yes" or "module_no"), px + pw / 2, cy, 0.64)
+  Hit(px - 4, cy - 20, pw + 8, 40, "mtog" .. n, function()
+    ui.popup.mrow = n
+    RV.ModuleToggle(m, n)
+  end)
+end
+
+function RV.DrawModules(m)
+  local p = ui.popup
+  local rows = RV.ModuleRows(m)
+  local x, w = G.WIN_X + 32, G.WIN_W - 64
+  local top = RV.BodyY() + 30
+  -- «N módulos (K activos) · size + the modules' size»
+  local msize = 0
+  for _, mm in ipairs(m.modules or {}) do
+    msize = msize + (mm.size or 0)
+  end
+  local head = T("modules_head", {n = #rows, k = RV.ModulesOn(m)}) .. "  ·  " ..
+               (msize > 0 and T("modules_size", {s = Size(m.size), z = Size(msize)}) or Size(m.size))
+  Txt("PL", "[CB]" .. Cut(head, Fit(w - 200, 0.74)) .. "[C]", x, top, 0.74)
+  local vis, y0, step, h = RV.MOD_ROWS, top + 28, 51, 45
+  p.mrow = math.max(1, math.min(p.mrow or 1, #rows))
+  local mtop = math.max(1, math.min(p.mtop or 1, p.mrow))
+  if p.mrow >= mtop + vis then
+    mtop = p.mrow - vis + 1
+  end
+  p.mtop = mtop
+  for k = 0, vis - 1 do
+    local n = mtop + k
+    local r = rows[n]
+    if r == nil then
+      break
+    end
+    local foc = (mouse.on and (mouse.hot == "mrow" .. n or mouse.hot == "mtog" .. n)) or (not mouse.on and n == p.mrow)
+    RV.DrawModuleRow(m, n, r, x, y0 + k * step, w, h, foc)
+  end
+  -- the pages of the list above the rows: ↑ / ↓ and the keys that turn them (left / right)
+  RV.Pager(x + w, top, mtop, math.min(#rows, mtop + vis - 1), #rows, function()
+    p.mtop = math.max(1, mtop - vis)
+    p.mrow = p.mtop
+    funcLuaCommand(C.SE, SE_MOVE)
+    Draw()
+  end, function()
+    p.mtop = math.min(mtop + vis, #rows - vis + 1)
+    p.mrow = p.mtop
+    funcLuaCommand(C.SE, SE_MOVE)
+    Draw()
+  end)
+end
+
+-- ---- «Novedades»: the mod's changelog summary (its title and every point), scrolled with up / down
+function RV.NewsLines(m)
+  local out = {}
+  for _, n in ipairs(RV.Notes(m).notes) do
+    for i, l in ipairs(Wrap(n, Fit(G.WIN_W - 120, 0.74), 8)) do
+      out[#out + 1] = {first = i == 1, text = l}
+    end
+  end
+  return out
+end
+
+function RV.DrawNews(m)
+  local p = ui.popup
+  local r = RV.Notes(m)
+  local x, w = G.WIN_X + 40, G.WIN_W - 80
+  local y = RV.BodyY() + 34
+  Txt("PL", "[CN]" .. Cut(r.title ~= "" and r.title or T("btn_news"), Fit(w - 200, 0.86)) .. "[C]", x, y, 0.86)
+  local lines = RV.NewsLines(m)
+  if #lines == 0 then
+    Txt("PL", "[CWG]" .. T("news_none") .. "[C]", x, y + 50, 0.78)
+    return
+  end
+  p.top = math.max(0, math.min(p.top or 0, #lines - RV.NEWS_ROWS))
+  for i = 1, math.min(RV.NEWS_ROWS, #lines - p.top) do
+    local l = lines[p.top + i]
+    local ly = y + 46 + (i - 1) * 32
+    if l.first then
+      Txt("PL", "[CN]›[C]", x, ly, 0.74)
+    end
+    Txt("PL", "[CB]" .. l.text .. "[C]", x + 26, ly, 0.74)
+  end
+  if #lines > RV.NEWS_ROWS then
+    Txt("PR", "[CWG]" .. T("report_rows", {n = p.top + 1, c = math.min(p.top + RV.NEWS_ROWS, #lines), t = #lines}) .. "[C]",
+        G.WIN_X + G.WIN_W - 40, y, 0.62)
+  end
+end
 
 -- the mod has report entries `native_update` (a code site not found on an unknown game build)
 function M.NeedsUpdate(id)
@@ -1729,40 +2379,58 @@ function RV.Reload(id)
   return RV.cache[ck]
 end
 
-function RV.Label(m, k)
-  if k == 1 then
-    return T("page_info")
-  elseif k == 4 then
-    -- short enough for the view tab: «Módulos (n)» counts the modules,
-    -- «Ajustes (n)» the settings of a mod without modules
-    if RV.HasModules(m) then
-      return T("page_modules", {n = #(m.modules or {}) + #(m.internal or {})})
-    end
-    return T("page_settings", {n = #RV.Settings(m.id)})
+-- the label of view `v` in the page's tab row: its name and count («Módulos 6/8», «Problemas 3» with the count in red
+-- when there are problems)
+function RV.Label(m, v, sel, units)
+  local name, n, red = "", nil, false
+  if v == "info" then
+    name = T("page_info")
+  elseif v == "modules" then
+    name, n = T("tab_modules"), RV.ModulesOn(m) .. "/" .. #RV.ModuleRows(m)
+  elseif v == "problems" then
+    name, n = T("tab_problems"), RV.Of(m.id).np
+    red = n > 0
+  elseif v == "conflicts" then
+    name, n = T("tab_conflicts"), #RV.Of(m.id).conflicts
+  elseif v == "settings" then
+    name, n = T("tab_settings"), #RV.SetRows(m)
+  else
+    name = T("btn_news")
   end
-  local r = RV.Of(m.id)
-  return T(k == 2 and "page_problems" or "page_conflicts", {n = k == 2 and r.np or #r.conflicts})
+  local base = sel and "" or "[CWG]"
+  local out = base .. Cut(name, units - (n ~= nil and 6 or 0)) .. (sel and "" or "[C]")
+  if n ~= nil then
+    out = out .. " " .. (red and "[CR]" or base) .. tostring(n) .. ((red or not sel) and "[C]" or "")
+  end
+  return out
 end
 
--- the view tabs in the page's bar (L2 / R2 like the screen's tabs)
+-- the row of view tabs under the header band (L2 / R2 like the screen's tabs, or a click)
 function RV.Tabs(m)
-  local nv = RV.VIEWS or 3
-  local w, x0 = 170, G.WIN_X + G.WIN_W - 236 - nv * 176
-  local y, h = G.WIN_Y + 10, G.WIN_BAR - 20
-  for k = 1, nv do
-    local x = x0 + (k - 1) * 176
-    local sel = (ui.popup.view or 1) == k
+  local views = RV.Views(m)
+  local nv = #views
+  local y, h = G.WIN_Y + G.BAND_H, G.VTABS_H
+  Quad("P0", SP("tabbar"), G.WIN_X, y, G.WIN_W, h)
+  local gx = 60
+  local step = math.floor((G.WIN_W - 2 * gx) / nv)
+  local w = math.min(260, step - 8)
+  local cur = RV.View()
+  for k, v in ipairs(views) do
+    local x = G.WIN_X + gx + (k - 1) * step + (step - w) / 2
+    local sel = v == cur
     local hot = mouse.on and mouse.hot == "view" .. k and not sel
-    Quad("P1", SP(sel and "tab_sel" or (hot and "tab_hot" or "tab")), x, y, w, h)
-    Txt("PC", (sel and "" or "[CWG]") .. Cut(RV.Label(m, k), Fit(w - 16, 0.66)) .. (sel and "" or "[C]"), x + w / 2, y + h / 2, 0.66)
+    if sel or hot then
+      Quad("P1", SP(sel and "tab_sel" or "tab_hot"), x, y + 6, w, h - 12)
+    end
+    Txt("PC", RV.Label(m, v, sel, Fit(w - 16, 0.7)), x + w / 2, y + h / 2, 0.7)
     Hit(x, y, w, h, "view" .. k, function()
-      if (ui.popup.view or 1) ~= k then
-        RV.Switch(k - (ui.popup.view or 1))
+      if RV.View() ~= v then
+        RV.Go(v)
       end
     end)
   end
-  Txt("PC", K.L2, x0 - 30, y + h / 2, 1.0)
-  Txt("PC", K.R2, x0 + nv * 176 + 24, y + h / 2, 1.0)
+  Txt("PC", K.L2, G.WIN_X + 30, y + h / 2, 0.9)
+  Txt("PC", K.R2, G.WIN_X + G.WIN_W - 30, y + h / 2, 0.9)
 end
 
 -- «Problemas» / «Conflictos»: one row per entry (file:line, then the message), a header row per kind of problem in
@@ -1770,7 +2438,7 @@ end
 function RV.Draw(m, which)
   local r = RV.Of(m.id)
   local list = which == 2 and r.problems or r.conflicts
-  local px, py = G.WIN_X + 36, G.WIN_Y + G.WIN_BAR + 40
+  local px, py = G.WIN_X + 36, RV.BodyY() + 34
   local foot = py + RV.ROWS * 36
   local rl = which == 2 and RV.Reload(m.id) or ""
   if #list == 0 then
@@ -1857,7 +2525,6 @@ end
 -- the same rows, values and storage as Opciones › «Opciones de mods» (one store: <data dir>\mod_options\<mod>.json, or
 -- the owner's get / set commands). Only the mods active at this start have rows (the registry is built at boot).
 -- (functions of RV: the main chunk is at Lua's limit of 200 locals)
-RV.VIEWS = 4
 RV.OPT = {ROWS = Crc("CMND_VRFW_OPTION_ROWS"), ROW = Crc("CMND_VRFW_OPTION_ROW"), GET = Crc("CMND_VRFW_OPTION_GET"),
           SET = Crc("CMND_VRFW_OPTION_SET"), STEP = Crc("CMND_VRFW_OPTION_STEP"), TEXT = Crc("CMND_VRFW_OPTION_TEXT")}
 
@@ -1959,9 +2626,9 @@ function RV.Fmt(r, v)
   return s ~= "" and s or tostring(v)
 end
 
--- the selected row's value one step in direction `dir` (±1), stored where the row keeps it
-function RV.Change(m, dir)
-  local r = RV.Settings(m.id)[ui.popup.srow or 1]
+-- the selected row's (or `row`'s) value one step in direction `dir` (±1), stored where the row keeps it
+function RV.Change(m, dir, row)
+  local r = row or RV.SetRows(m)[ui.popup.srow or 1]
   if r ~= nil and r.module ~= nil then
     return RV.ToggleModule(r.module)
   end
@@ -1994,7 +2661,7 @@ end
 RV.CARD_H, RV.CARD_GAP, RV.HEAD_H, RV.ROW_H = 100, 12, 44, 62
 
 function RV.Layout(m)
-  local rows = RV.Settings(m.id)
+  local rows = RV.SetRows(m)
   local lines, pending = {}, nil
   local function flush()
     if pending ~= nil then
@@ -2049,7 +2716,7 @@ end
 
 -- A / a click on row n: a module card switches on / off, a setting moves one step
 function RV.Activate(m, n)
-  local r = RV.Settings(m.id)[n]
+  local r = RV.SetRows(m)[n]
   if r == nil then
     funcLuaCommand(C.SE, SE_NG)
     return
@@ -2068,7 +2735,7 @@ end
 -- walking the buttons as in the other views).
 function RV.SettingsKey(id)
   local m = ModById(ui.popup.id)
-  local rows = m and RV.Settings(m.id) or {}
+  local rows = m and RV.SetRows(m) or {}
   if #rows == 0 then
     return false
   end
@@ -2184,8 +2851,8 @@ function RV.DrawRow(m, n, r, x, y, w, focused)
 end
 
 function RV.DrawSettings(m)
-  local rows = RV.Settings(m.id)
-  local px, py = G.WIN_X + 40, G.WIN_Y + G.WIN_BAR + 24
+  local rows = RV.SetRows(m)
+  local px, py = G.WIN_X + 40, RV.BodyY() + 24
   local w = G.WIN_W - 80
   if #rows == 0 then
     local why = (m.enabled and m.state == 0 and not m.pending) and "set_none" or "set_inactive"
@@ -2198,7 +2865,7 @@ function RV.DrawSettings(m)
   local sel = math.max(1, math.min(p.srow or 1, #rows))
   p.srow = sel
   local lines = RV.Layout(m)
-  local bottom = G.WIN_Y + G.WIN_H - 78 - 44     -- above the note line and the footer buttons
+  local bottom = RV.FootY() - 44     -- above the note line and the shortcut bar
   local avail = bottom - py
   -- scroll: the selected line on the page (with its section title when it is right above)
   local sl = RV.Where(lines, sel) or 1
@@ -2250,82 +2917,54 @@ function RV.DrawSettings(m)
   Txt("PL", "[CWG]" .. Cut(note, Fit(w, 0.62)) .. "[C]", px, bottom + 22, 0.62)
 end
 
+-- the «Ajustes» rows of mod `m`: its settings without the modules (those are the «Módulos» view)
+function RV.SetRows(m)
+  local ck = "setrows:" .. m.id
+  local r = RV.cache[ck]
+  if r == nil then
+    r = {}
+    for _, o in ipairs(RV.Settings(m.id)) do
+      if o.module == nil and not o.imodule then
+        r[#r + 1] = o
+      end
+    end
+    RV.cache[ck] = r
+  end
+  return r
+end
+
 local function DrawDetails()
   local m = ModById(ui.popup.id)
+  while m == nil and ui.popup ~= nil do
+    -- the mod is gone from the list (a rescan): the page under it, else none
+    ui.popup = ui.popup.back
+    m = ui.popup and ModById(ui.popup.id)
+  end
   if m == nil then
-    ui.popup = nil
     return
   end
-  local title = Cut(m.name ~= "" and m.name or m.id, 30) .. (m.version ~= "" and ("   [CWG]v" .. Cut(m.version, 12) .. "[C]") or "")
-  PopupWindow(title)
+  local known = false
+  for _, v in ipairs(RV.Views(m)) do
+    known = known or v == ui.popup.view
+  end
+  if not known then
+    ui.popup.view = "info"
+  end
+  PopupWindow(m)
   RV.Tabs(m)
-  if (ui.popup.view or 1) ~= 1 then
-    if ui.popup.view == 4 then
-      RV.DrawSettings(m)
-    else
-      RV.Draw(m, ui.popup.view)
-    end
-    local bs = PopupButtons(m)
-    ui.popup.btn = math.max(1, math.min(#bs, ui.popup.btn or 1))
-    -- «Módulos» / «Ajustes» with rows: the pad reaches the buttons from the last line (szone "buttons")
-    local pad_on_buttons = ui.popup.view ~= 4 or ui.popup.szone == "buttons" or #RV.Settings(m.id) == 0
-    for k, pb in ipairs(bs) do
-      local hot = mouse.on and mouse.hot == pb.id or (not mouse.on and pad_on_buttons and ui.popup.btn == k)
-      PopupButton(pb.slot, pb.label, pb.filled, hot, pb.act, pb.id)
-    end
-    return
+  local v = ui.popup.view
+  if v == "info" then
+    RV.DrawInfo(m)
+  elseif v == "modules" then
+    RV.DrawModules(m)
+  elseif v == "settings" then
+    RV.DrawSettings(m)
+  elseif v == "news" then
+    RV.DrawNews(m)
+  else
+    RV.Draw(m, v == "problems" and 2 or 3)
   end
-  -- the cover (16:9) at the left, one column of labelled fields at its right, the description under both (a smaller cover, aligned fields, the state in its row)
-  local px, py = G.WIN_X + 40, G.WIN_Y + G.WIN_BAR + 32
-  local cw, ch = G.COVER_W, G.COVER_H
-  INFO.Cover(m, px, py, cw, ch, INFO.POPUP)
-  local rx = px + cw + 48
-  local fy = INFO.List(m, rx, py + 18, G.WIN_X + G.WIN_W - 40 - rx, INFO.POPUP)
-  local ws = Warnings(m)
-  -- description
-  local dy = math.max(py + ch + 40, fy + 10)
-  Txt("PL", "[CN]" .. T("f_description") .. "[C]", px, dy, 0.85)
-  local lines = {}
-  if m.enabled and m.state == 1 then
-    lines[#lines + 1] = {true, T("state_skip", {r = Text(m, 1)})}
-  end
-  for _, w in ipairs(ws) do
-    lines[#lines + 1] = w
-  end
-  for l in string.gmatch(Str(Call(M.AU_NOTES, m.id)), "[^\n]+") do
-    local w, tx = string.match(l, "^(%d)|(.*)$")
-    if tx ~= nil then
-      lines[#lines + 1] = {w == "1", T("au_note", {t = tx})}
-    end
-  end
-  -- description, then every warning (state, pending, problems): the lines left above the buttons between them, the
-  -- warnings first
-  local room = math.max(2, math.floor((G.WIN_Y + G.WIN_H - 100 - (dy + 36)) / 32))
-  local nw = math.min(#lines, room - 1)
-  local nd = math.max(1, room - nw)
-  local desc, more = INFO.Description(m)
-  local dl = Wrap(desc ~= "" and desc or T("no_desc"), Fit(G.WIN_W - 80, 0.78), more and math.max(1, nd - 1) or nd)
-  if more then
-    dl[#dl + 1] = "[CWG]" .. T("desc_more") .. "[C]"
-  end
-  for i, l in ipairs(dl) do
-    Txt("PL", "[CB]" .. l .. "[C]", px, dy + 36 + (i - 1) * 32, 0.78)
-  end
-  local wy = dy + 36 + #dl * 32 + 10
-  for i = 1, nw do
-    local more = i == nw and #lines > nw
-    local tx = more and T("more_warnings", {n = #lines - nw + 1}) or lines[i][2]
-    Quad("P1", SP(lines[i][1] and "warn_r" or "warn_a"), px, wy + (i - 1) * 34 - 16, 32, 32)
-    Txt("PL", (lines[i][1] and "[CR]" or "[CY]") .. Cut(tx, Fit(G.WIN_W - 130, 0.74)) .. "[C]", px + 44, wy + (i - 1) * 34, 0.74)
-  end
-  -- buttons: switch, load order (on, not the pinned base), Novedades (a part offers it); the pad walks them with
-  -- left / right and A presses the focused one
-  local bs = PopupButtons(m)
-  ui.popup.btn = math.max(1, math.min(#bs, ui.popup.btn or 1))
-  for k, pb in ipairs(bs) do
-    local hot = mouse.on and mouse.hot == pb.id or (not mouse.on and ui.popup.btn == k)
-    PopupButton(pb.slot, pb.label, pb.filled, hot, pb.act, pb.id)
-  end
+  RV.Footer(m)
 end
 
 -- ---- a page in the content area (the «¿Quién lo toca?» list; the tabs are locked) -------------------------------------------
@@ -2353,7 +2992,7 @@ local function UpdateButtonGuide()
   elseif ui.popup ~= nil then
     -- the page's own buttons show their keys (A, Y, L1 / R1): no second copy at the bottom
   elseif have and m ~= nil then
-    if m.enabled and ui.tab == 2 then
+    if m.enabled and m.family == nil and ui.tab == 1 and ui.zone == "grid" then
       texts, icons, offs, cmds = {0, TextId("g_order") or RT_MOVE}, {I_L1, I_R1}, {0, 54}, {Crc("CMD_FUNCL1"), Crc("CMD_FUNCR1")}
     end
     add(TextId("g_toggle") or (m.enabled and RT_OFF or RT_ON), I_ENTER, Crc("CMD_ENTER"))
@@ -2645,15 +3284,25 @@ function RV.ToggleModule(mm)
 end
 
 function Order(delta)
-  -- the load order is edited only in «Orden de carga»: not from «Instalados» or its pages
-  if ui.tab ~= 2 then
+  -- the load order is edited from the mods list (its rows or a mod's page), not from the top row or a list page
+  if ui.page ~= nil or (ui.tab == 1 and ui.zone ~= "grid") then
     funcLuaCommand(C.SE, SE_NG)
     return
   end
 
   local m = Focused()
-  if not have or m == nil or not m.enabled then
+  -- a module mod has no place of its own: it moves with its parent
+  if not have or m == nil or not m.enabled or m.family ~= nil then
     funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  if SORTS[ui.sort] ~= "order" then
+    -- another sort shows the list out of load order: it returns to load order first, the move happens on the next press
+    ui.sort = 1
+    SelectMod(m.id)
+    funcLuaCommand(C.SE, SE_MOVE)
+    Toast(T("sort", {s = SortLabel()}))
+    Draw()
     return
   end
   if delta < 0 and m.pos <= 1 then
@@ -2684,32 +3333,187 @@ function OpenDetails()
   funcLuaCommand(C.SE, SE_OK)
   RV.cache = {}              -- the report as it is now (read again at every page)
   -- a mod with modules opens on its «Modules» list: the focus starts on the first module, not on the buttons
-  local view = RV.HasModules(m) and 4 or 1
-  ui.popup = {kind = "mod", id = m.id, btn = 1, view = view, top = 0, srow = 1, stop = 0, szone = "rows"}
-  Draw()
-end
-
--- The mod page's views: 1 = its information, 2 = «Problemas» (errors and warnings of the VR-Framework report, by
--- file), 3 = «Conflictos» (claims of the same field by several mods). L2 / R2 or a click on a view tab.
-function RV.Switch(d)
-  local p = ui.popup
-  if p == nil then
-    return
-  end
-  local v = ((p.view or 1) - 1 + d) % (RV.VIEWS or 3) + 1
-  funcLuaCommand(C.SE, SE_MOVE)
-  p.view, p.top = v, 0
+  local view = RV.HasModules(m) and "modules" or "info"
+  ui.popup = {kind = "mod", id = m.id, btn = 1, view = view, top = 0, srow = 1, stop = 0, szone = "rows", mrow = 1}
   Draw()
 end
 
 function ClosePopup()
   funcLuaCommand(C.SE, SE_BACK)
+  if ui.popup ~= nil and ui.popup.back ~= nil then
+    ui.popup = ui.popup.back
+    Draw()
+    return
+  end
   local id = ui.popup and ui.popup.id
   ui.popup = nil
   if id then
     SelectMod(id)
   end
   Draw()
+end
+
+-- The mod page's tabs: L2 / R2 move to the previous / next view of RV.Views (the full description closes first)
+function RV.Switch(d)
+  local p = ui.popup
+  local m = p and ModById(p.id)
+  if m == nil then
+    return
+  end
+  local views = RV.Views(m)
+  local k = 1
+  for i, v in ipairs(views) do
+    if v == p.view then
+      k = i
+    end
+  end
+  RV.Go(views[(k - 1 + d) % #views + 1])
+end
+
+-- open mod `id`'s page over the one on screen (a requirement chip, a module row); B comes back
+function RV.OpenChild(id)
+  local o = ModById(id)
+  if o == nil or ui.popup == nil or o.id == ui.popup.id then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  funcLuaCommand(C.SE, SE_OK)
+  ui.popup = {kind = "mod", id = o.id, btn = 1, view = "info", top = 0, srow = 1, stop = 0, szone = "rows", mrow = 1,
+              back = ui.popup}
+  Draw()
+end
+
+-- A / a click on module row n: a module mod switched on / off (with the family rules of RV.SwitchMod; one whose
+-- requirement is not met is not switched on), an internal module one step
+function RV.ModuleToggle(m, n)
+  local r = RV.ModuleRows(m)[n]
+  if r == nil then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  if r.mod == nil then
+    RV.Change(m, 1, r.opt)
+    return
+  end
+  local need = RV.ModuleNeed(r.mod)
+  if need ~= nil and not r.mod.enabled then
+    funcLuaCommand(C.SE, SE_NG)
+    Toast(T("module_needs", {o = need}))
+    Draw()
+    return
+  end
+  RV.ToggleModule(r.mod)
+end
+
+-- the pad in «Módulos»: up / down a row, left / right a page
+function RV.ModulesMove(m, id)
+  local p, n = ui.popup, #RV.ModuleRows(m)
+  local d = (id == FN.UP and -1) or (id == FN.DOWN and 1) or (id == FN.LEFT and -RV.MOD_ROWS) or RV.MOD_ROWS
+  local k = math.max(1, math.min(n, (p.mrow or 1) + d))
+  funcLuaCommand(C.SE, k ~= p.mrow and SE_MOVE or SE_NG)
+  p.mrow = k
+  Draw()
+end
+
+-- Y in «Módulos»: the focused module mod's own page
+function RV.ModuleOpen(m)
+  local r = RV.ModuleRows(m)[ui.popup.mrow or 1]
+  if r == nil or r.mod == nil then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  RV.OpenChild(r.mod.id)
+end
+
+-- A / Enter on the mod's page: what the view focuses (a requirement chip, «Ver descripción completa», a module, a
+-- setting), else the main action (switch the mod)
+function RV.Decide()
+  local p = ui.popup
+  local m = ModById(p.id)
+  local v = RV.View()
+  if m == nil or p.full then
+    funcLuaCommand(C.SE, SE_NG)
+    return
+  end
+  if v == "info" then
+    local t = RV.InfoTarget(m)
+    if t.kind == "chip" then
+      RV.OpenChild(t.id)
+    elseif t.kind == "desc" then
+      RV.OpenFull()
+    else
+      StartCo(Toggle)
+    end
+  elseif v == "modules" then
+    RV.ModuleToggle(m, p.mrow or 1)
+  elseif v == "settings" and #RV.SetRows(m) > 0 and p.szone ~= "buttons" then
+    RV.Activate(m, p.srow or 1)
+  else
+    StartCo(Toggle)
+  end
+end
+
+-- the keys on the mod's page (OnFunction): L2 / R2 tabs, Start closes, L1 / R1 load order, the arrows by view, X the
+-- full description, Y a module's page (in «Módulos») or «Novedades», R3 «¿Quién lo toca?» (in «Conflictos»)
+function RV.Key(id)
+  local p = ui.popup
+  local m = ModById(p.id)
+  if m == nil then
+    return
+  end
+  local v = RV.View()
+  local arrow = id == FN.UP or id == FN.DOWN or id == FN.LEFT or id == FN.RIGHT
+  if id == FN.TAB_PREV or id == FN.TAB_NEXT then
+    RV.Switch(id == FN.TAB_PREV and -1 or 1)
+  elseif id == FN.DETAILS then
+    ClosePopup()
+  elseif id == FN.ORDER_UP or id == FN.ORDER_DOWN then
+    if frame - last_act >= 4 then
+      last_act = frame
+      Order(id == FN.ORDER_UP and -1 or 1)
+    end
+  elseif p.full then
+    if arrow then
+      local d = (id == FN.UP and -1) or (id == FN.DOWN and 1) or (id == FN.LEFT and -RV.FULL_ROWS) or RV.FULL_ROWS
+      local n = #RV.FullLines(m)
+      local t = math.max(1, math.min((p.ftop or 1) + d, math.max(1, n - RV.FULL_ROWS + 1)))
+      funcLuaCommand(C.SE, t ~= p.ftop and SE_MOVE or SE_NG)
+      p.ftop = t
+      Draw()
+    else
+      funcLuaCommand(C.SE, SE_NG)
+    end
+  elseif arrow and v == "info" then
+    RV.InfoMove(m, (id == FN.LEFT or id == FN.UP) and -1 or 1)
+  elseif id == FN.PROFILE and v == "info" then
+    RV.OpenFull()
+  elseif arrow and v == "modules" then
+    RV.ModulesMove(m, id)
+  elseif id == FN.EXTRA3 and v == "modules" then
+    RV.ModuleOpen(m)
+  elseif arrow and v == "settings" and RV.SettingsKey(id) then
+    -- «Ajustes»: the keys went to the setting rows
+  elseif (id == FN.UP or id == FN.DOWN) and (v == "problems" or v == "conflicts" or v == "news") then
+    local n, rows = 0, RV.ROWS
+    if v == "news" then
+      n, rows = #RV.NewsLines(m), RV.NEWS_ROWS
+    else
+      local r = RV.Of(m.id)
+      n = #(v == "problems" and r.problems or r.conflicts)
+    end
+    local t = math.max(0, math.min((p.top or 0) + (id == FN.UP and -1 or 1), n - rows))
+    funcLuaCommand(C.SE, t ~= p.top and SE_MOVE or SE_NG)
+    p.top = t
+    Draw()
+  elseif id == FN.SEARCH and v == "conflicts" then
+    -- «Conflictos»: R3 = who touches the first conflict's id on the page (the search box takes another)
+    local e = RV.Of(m.id).conflicts[(p.top or 0) + 1]
+    RV.OpenWho(e and RV.WhoId(e) or "")
+  elseif id == FN.EXTRA3 and v ~= "news" and #RV.Notes(m).notes > 0 then
+    RV.Go("news")
+  else
+    funcLuaCommand(C.SE, SE_NG)
+  end
 end
 
 function SwitchTab(k)
@@ -3141,9 +3945,9 @@ function CE.TagLabel(t)
   return t.label
 end
 
--- «Etiquetas» of a mod's info: the tags of its mod.toml (`tags`) and its mod tags (CMND_VRFW_MM_MOD_TAGS), in words
-function CE.ModTagsText(m)
-  if m.tag_text == nil then
+-- «Etiquetas» of a mod: the tags of its mod.toml (`tags`) and its mod tags (CMND_VRFW_MM_MOD_TAGS), in words
+function CE.ModTags(m)
+  if m.tag_list == nil then
     local out = CE.Lines(Text(m, 8))
     local _, by = CE.TagDefs()
     for _, id in ipairs(CE.Lines(Str(Call(M.MOD_TAGS, m.id)))) do
@@ -3151,9 +3955,9 @@ function CE.ModTagsText(m)
         out[#out + 1] = CE.TagLabel(by[id])
       end
     end
-    m.tag_text = table.concat(out, ", ")
+    m.tag_list = out
   end
-  return m.tag_text
+  return m.tag_list
 end
 
 -- the scrollbar held by the mouse: its page follows the pointer's y (DrawScrollbar's `set`)
@@ -3305,15 +4109,7 @@ end
 -- A / Enter / a click without the mouse: the selected thing
 local function Decide()
   if ui.popup ~= nil then
-    local m = ModById(ui.popup.id)
-    local pb = m and PopupButtons(m)[ui.popup.btn or 1]
-    if m ~= nil and ui.popup.view == 4 and #RV.Settings(m.id) > 0 and ui.popup.szone ~= "buttons" then
-      RV.Activate(m, ui.popup.srow or 1)   -- «Módulos» / «Ajustes»: A switches the focused card / steps the setting
-    elseif pb ~= nil then
-      pb.act()
-    else
-      StartCo(Toggle)
-    end
+    RV.Decide()
   elseif ui.tab == 1 then
     if ui.zone == "bar" then
       if ui.bar == 1 then
@@ -3449,7 +4245,7 @@ local function PollMouse()
     Click()                 -- on no zone: nothing
   elseif enter_edge then
     PadDecide("poll")       -- A / Enter when the anchor gave no callback this frame
-  elseif mouse.on and (ui.popup == nil or (ui.popup.view or 1) ~= 1) then
+  elseif mouse.on and (ui.popup == nil or ui.popup.full or ui.popup.view ~= "info") then
     -- the wheel scrolls what the arrows scroll (lists, the grid, report views); the pointer keeps the lead
     local d = (Call(C.CHECK_INPUT, C.MENU_CTRL, C.W_DOWN) == true and 1) or (Call(C.CHECK_INPUT, C.MENU_CTRL, C.W_UP) == true and -1) or 0
     if d ~= 0 then
@@ -3633,44 +4429,7 @@ function OnFunction(a1, a2)
     return 1
   end
   if ui.popup ~= nil then
-    if ui.popup.view == 4 and (id == FN.UP or id == FN.DOWN or id == FN.LEFT or id == FN.RIGHT) and RV.SettingsKey(id) then
-      -- «Ajustes»: the keys went to the setting rows
-    elseif (id == FN.UP or id == FN.DOWN) and (ui.popup.view or 1) ~= 1 and ui.popup.view ~= 4 then
-      -- the report views scroll; left / right still walk the buttons
-      local m = ModById(ui.popup.id)
-      local r = m and RV.Of(m.id)
-      local n = r and #((ui.popup.view == 2) and r.problems or r.conflicts) or 0
-      local t = math.max(0, math.min((ui.popup.top or 0) + (id == FN.UP and -1 or 1), n - RV.ROWS))
-      funcLuaCommand(C.SE, t ~= ui.popup.top and SE_MOVE or SE_NG)
-      ui.popup.top = t
-      Draw()
-    elseif id == FN.TAB_PREV or id == FN.TAB_NEXT then
-      RV.Switch(id == FN.TAB_PREV and -1 or 1)
-    elseif id == FN.SEARCH and ui.popup.view == 3 then
-      -- «Conflictos»: R3 = who touches the first conflict's id on the page (the search box takes another)
-      local m = ModById(ui.popup.id)
-      local e = m and RV.Of(m.id).conflicts[(ui.popup.top or 0) + 1]
-      RV.OpenWho(e and RV.WhoId(e) or "")
-    elseif id == FN.LEFT or id == FN.RIGHT or id == FN.UP or id == FN.DOWN then
-      local m = ModById(ui.popup.id)
-      local n = m and #PopupButtons(m) or 1
-      local d = (id == FN.LEFT or id == FN.UP) and -1 or 1
-      local b = math.max(1, math.min(n, (ui.popup.btn or 1) + d))
-      funcLuaCommand(C.SE, b ~= ui.popup.btn and SE_MOVE or SE_NG)
-      ui.popup.btn = b
-      Draw()
-    elseif id == FN.ORDER_UP or id == FN.ORDER_DOWN then
-      if frame - last_act >= 4 then
-        last_act = frame
-        Order(id == FN.ORDER_UP and -1 or 1)
-      end
-    elseif ExtraFor(id) ~= nil then
-      RunExtra(ExtraFor(id))
-    elseif id == FN.DETAILS then
-      ClosePopup()
-    else
-      funcLuaCommand(C.SE, SE_NG)
-    end
+    RV.Key(id)
     return 1
   end
   if id == FN.UP or id == FN.DOWN or id == FN.LEFT or id == FN.RIGHT then
@@ -3727,7 +4486,13 @@ function OnBack(a1)
     return 1
   end
   if ui.popup ~= nil then
-    ClosePopup()
+    if ui.popup.full then
+      funcLuaCommand(C.SE, SE_BACK)
+      ui.popup.full = nil
+      Draw()
+    else
+      ClosePopup()
+    end
     return 1
   end
   if ui.tab == 1 and (ui.query ~= "" or ui.filter ~= 1) and ui.zone == "grid" then
@@ -3830,7 +4595,8 @@ VRFW_MM = {
             query = ui.query, filter = FILTERS[ui.filter], sort = SORTS[ui.sort], shown = ids,
             selected = shown[ui.sel] and shown[ui.sel].id or "", popup = ui.popup and ui.popup.id or "",
             popup_btn = ui.popup and ui.popup.btn or 0,
-            popup_view = ui.popup and ui.popup.view or 0, popup_top = ui.popup and ui.popup.top or 0,
+            popup_view = ui.popup and RV.ViewIndex() or 0, popup_view_key = ui.popup and ui.popup.view or "",
+            popup_top = ui.popup and ui.popup.top or 0,
             page = ui.page and ui.page.kind or "", page_sel = ui.page and ui.page.sel or 0, page_zone = ui.page and ui.page.zone or "",
             page_items = ui.page and ui.page.items and #ui.page.items or 0, page_title = ui.page and ui.page.title or "",
             toast = ui.toast or "", overflow = overflow}

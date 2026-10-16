@@ -3,7 +3,8 @@
 
 # The GOALKEEPER'S BARRIER (scripts\goalkeeper_barrier.lua, docs/game/mechanics/gk-barrier.md;
 # was Inazuma Fantasy's [gk_barrier] until 2026-10-14): the barrier IS the top `barrier_percent` of each keeper's own bar
-# on the scoreboard (the part that drains first, drawn BRONZE: own team's bar its left end, rival's its right end).
+# on the scoreboard: the top barrier_percent of the bar's own fill, drawn BRONZE as a part of that fill (it drains
+# with the fill's edge and is gone once the bar is at 100 - barrier_percent %).
 #   barrier = clamp(keeper bar % - (100 - barrier_percent), 0, barrier_percent)
 # (keeper bar % = the bar as the scoreboard draws it, passed by the HUD graft)
 # While the bar is above (100 - barrier_percent) % (75 %), every shot that reaches that keeper has its power divided by
@@ -16,13 +17,21 @@
 # keeper_position: the formation position of the keeper (0); rescan_ms: how often the keepers are looked up.
 [goalkeeper_barrier]
 barrier_percent = 25.0
-mitigation = 1.75
+mitigation = 1.4
 tension_discount = 0.30
 discount_expire_seconds = 0
 block_category = 3
 keeper_category = 4
 keeper_position = 0
 rescan_ms = 1000
+# hud_fill_from: the end each keeper bar's fill is anchored at (own, rival), "left" or "right"; the bronze is the fill's
+# part at its moving edge. Retail: both bars fill from their left end and empty toward the right. Baked into the sprites
+# with barrier_percent: rebuild them after a change of either (research/scripts/goalkeeper_barrier_segment_build.py).
+hud_fill_from = ["left", "left"]
+# hud_step_pixels: bar pixels per bronze step (one sprite each). The sprites live in the btl06_13 atlas that other mods
+# share (at most 256 entries, past that the whole atlas fails and every mod's sprite in it renders black): 3 keeps this
+# mod at 59 entries. Baked into the sprites too: rebuild them after a change.
+hud_step_pixels = 3
 # true: the HUD draws the plain retail gauge (a solid yellow bar, no bronze sprite) over the barrier share of both keeper
 # bars, whatever the barrier: a test of where the segment lands
 hud_debug = false

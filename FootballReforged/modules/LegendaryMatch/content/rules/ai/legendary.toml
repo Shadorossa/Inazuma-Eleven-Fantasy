@@ -104,10 +104,8 @@ uNoStopPressCharaNumMax = 2
 # duel pass-out, the «before the time runs out» and long-range breakthroughs, the super-reaction side step, the
 # sideways dribble, the forced striker shot and the wall marking in every match, also when the row's level is lower
 StrategyLevel = 8
-# percent added to every stat of the rival's players on the pitch
-StatPercent = 10
 # tension per second of play (HUD points; the game gives none by time, max 300)
-TensionPerSecond = 2
+TensionPerSecond = 0.5
 # tension kept for the keeper's move (the game: 20, for one side only)
 KeeperTpReserve = 30
 # its own shoot zone: no shot lock, re-plans every 0.1 s, its conditions read the zone as 9 s old and a direct shot as
@@ -127,8 +125,9 @@ FocusHurry = { scale = 2.0, force_at = 0.6 }
 # move toward him is turned backward (x back), the sideways part kept (x lateral); it leaves by a side step or a
 # breakthrough to one side
 FocusRetreat = { back = 1.0, lateral = 1.0 }
-# the players' stamina: the PE of Stamina Points (Character Reforged); without that mod the stamina rules do nothing
-StaminaResource = "stamina_points.pe"
+# the players' stamina: the PE of Aura Points (Character Reforged; its option «pe»); without it the stamina rules do
+# nothing
+StaminaResource = "aura_points.pe"
 # sprints at full rate above 45 % stamina, never below 20 % (so it does not reach the substitution line too early)
 SprintByStamina = { above = 0.45, below = 0.20, rate = 0.95, attack_rate = 0.5 }
 # substitutes its most tired outfield player at a dead ball once his stamina is below 15 %
@@ -158,6 +157,9 @@ KeeperBarSource = "keeper_hp"
 PassLaneCut = { receivers = 2, at = 0.5, seconds = 0.8, range_m = 25 }
 # its forwards hunt your ball carrier: the 3 nearest to him (35 m) run at him, 25 % faster while they chase
 PressCarrier = { forwards = 1, midfielders = 0, defenders = 0, range_m = 35, max = 3, speed_mult = 1.25 }
+# its passes reach the receiver 25 % sooner than the game's (the arrival time x 1/1.25; your passes keep the game's):
+# ground passes roll faster, lobs fly flatter, and the ball meets the receiver on his run
+PassSpeed = 1.25
 
 # A player of yours just received a pass from a teammate: more rivals press him (2 s).
 [[VRFW.MatchAI.If]]

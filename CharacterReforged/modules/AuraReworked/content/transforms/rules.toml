@@ -1,0 +1,19 @@
+schema = "VRFW.transform/2"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Keshin Armed's transformation policy (merged over the mods key by key, docs/framework/types/transform.md §3; moved
+# here from Inazuma Fantasy's if_rules.toml, 2026-10-13): every armour may be worn by anyone whose body has a mesh for it
+# (the mod ships the armour clothes of every body group). Nothing else: how and when an armour starts is the game's own
+# (the skill board's armed slot, the aura row) unless another mod declares its own rules (Inazuma Fantasy: if_rules.toml).
+
+[rules]
+# every player whose body has a mesh for the armour (assets/chr/_armd, content/looks/armour_clothes.toml)
+armour_wearers = "anyone"
+# group 8 (the c000401 skeleton + sh000106 body mesh, the same body row as group 5) takes the group-5 armour mesh;
+# group 17 (no player uses it) never wears an armour (docs/game/mechanics/armed-body-types.md, armour-port.md §12)
+armour_mesh_fallback = [[8, 5]]
+armour_no_mesh_groups = [17]
+# who the wearer IS while the armour runs: himself (his name, portraits, telop render, voice bank and stats; the armour
+# changes only his look and adds its aura effects), not the retail armoured card of the armour's owner. The armour sits
+# in its slot from the kick-off (the board's armed slot): the framework has the engine build it again as the wearer
+# once the match plays (docs/game/mechanics/armed-body-types.md §7.1). The armours' owners keep their retail card.
+armour_identity = "wearer"

@@ -1,10 +1,11 @@
 -- Aura Points › the PEG / SP pools of the warrior spirits (docs/game/mechanics/aura-costs.md §12 / §14 / §18;
 -- docs/refactor/aura-mods-split.md «Aura Points»). Declarations: content\game\aura_points.toml; settings: [points] of
 -- config.toml; pools: content\match_resources\peg.toml / sp.toml (the VR-Framework's per-aura match resources
--- aura_points.peg / aura_points.sp). Split out of Inazuma Fantasy's scripts\stamina.lua on 2026-10-14.
+-- aura_points.peg / aura_points.sp). Split out of Inazuma Fantasy's scripts\stamina.lua on 2026-10-14. The mod's PE
+-- (match stamina) is its option feature features\pe\ (scripts\stamina.lua there).
 --
--- Without this mod keshin, keshin armours and totems run on their time (retail). With it, once per match frame
--- (`tick`), per player on the pitch:
+-- The option rows «peg» and «sp» (options.toml, restart = true) choose which pools run: off = those auras run on their
+-- time (retail). With them, once per match frame (`tick`), per player on the pitch:
 --   * a keshin / armour runs on its keshin's PEG pool, a totem on its SP bar: free start, no time limit (its time left
 --     follows the pool, 0 at an empty pool in open play = the engine ends it); the armour's PEG per second of play
 --     (Chrono Stone model: (KP + ATK) x k x scale, the first armour of a pool refills part of it; "if" model: boost,
@@ -15,7 +16,7 @@
 --   * the tables the native answers of AuraCostCheck read (content\game\aura_points.toml), exported for other mods:
 --     AuraPoints.Aura (aura -> pool), AuraPoints.Player, AuraPoints.Pair, AuraPoints.Team;
 --   * the HUD commands CMND_AURAPOINTS_PEG / _PEG_INFO (graft aura_points_hud; aliases CMND_EVT_PEG / _PEG_INFO for
---     the screens of other mods that ask them).
+--     the screens of other mods that ask them) and CMND_AURAPOINTS_ACTIVE_PARTS (the mod's grafts: which parts run).
 --
 -- Inputs other mods give through rule flags (no `requires` needed; docs/refactor/aura-mods-split.md):
 --   aura_points.free_peg / aura_points.free_sp  (non-zero) the user's pools of that resource never go down
@@ -34,8 +35,16 @@ local ROUTE = require "lib/route"
 local function info(...) VRFW.log("aura_points:", ...) end
 local function warn(...) VRFW.warn("aura_points:", ...) end
 
+-- the mod's option rows (options.toml; restart = true: the values the game started with). No answer = on (default).
+local function option_on(id)
+  local ok, v = pcall(VRFW.option, id)
+  if not ok or v == nil then return true end
+  return v ~= 0 and v ~= false
+end
+local PARTS = { peg = option_on("peg"), sp = option_on("sp"), pe = option_on("pe") }
+
 local RAW = VRFW.files.config("points") or {}
-local P = C.points(RAW)
+local P = C.points(RAW, PARTS)
 local PEG, SP = "aura_points.peg", "aura_points.sp"
 
 -- game layout (docs/game/mechanics/match-stamina.md §6 / §10, aura-costs.md)
@@ -839,11 +848,17 @@ function AuraPoints.PegInfo(aura)
     (A.type(aura) == 1 and P.armour_moves_free()) and 1 or 0
 end
 
+-- CMND_AURAPOINTS_ACTIVE_PARTS() -> ok, peg, sp, pe (1 / 0): the mod's parts this start (its option rows; the grafts
+-- aura_points_buff_bar draw nothing and keep the retail buff row while PEG and SP are both off)
+function AuraPoints.ActiveParts()
+  return true, P.peg() and 1 or 0, P.sp() and 1 or 0, PARTS.pe and 1 or 0
+end
+
 -- ---------------------------------------------------------------------------------------------- start
 
 local function start()
   if not P.any() then
-    info("[points] peg = false and sp = false: keshin, armours and totems run on their time (retail)")
+    info("options «peg» and «sp» off: keshin, armours and totems run on their time (retail)")
     return
   end
   A.load()

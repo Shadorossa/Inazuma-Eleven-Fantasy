@@ -6,7 +6,7 @@
 # (aura attr 0x01 / 0x02) shows a purple PEG bar and a totem's (0x08) the blue SP bar, instead of the retail circular
 # time gauge (the stopwatch), which is hidden for that entry. A new layer aura_points_buff_bar, one instance per aura
 # entry and bar (two per entry of buff_row.toml, which widens the retail row to the team aura limit; an entry with two
-# auras shows two bars: the miximax's PE (the mod Stamina Points) or the mode change's recharge (the mod All Changed)
+# auras shows two bars: the miximax's PE (the mod's PE part) or the mode change's recharge (the mod All Changed)
 # first, then the keshin / totem pool), of this mod's object
 # aura_points_peg_bar (content\menus\peg_bar.toml:
 # the retail stamina gauge of the stairs race), not opened by the screen: the Lua of

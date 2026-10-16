@@ -1,0 +1,59 @@
+# All Changed › the mode change in a match on the base game (docs/game/mods/all-changed.md; framework:
+# docs/framework/extra-slot.md §7): the VR-Framework's plates slot with only its MIX slot (`mix_only`): a player whose
+# change is equipped (scripts\all_changed.lua publishes ModeChangeMix: base card -> carrier wmc_evt0, and ModeChange:
+# base card -> partner card) swaps with RB+B (key J) into the partner card and back with RB+B again: 60 s cooldown
+# after each swap (either way), no time limit, no cost. Every other aura (keshin, armour, totem, miximax, the retail
+# mode changes) stays the game's own: this slot never takes it.
+#
+# `fallback = true`: one plates slot exists in all mods; a mod with its own (Inazuma Fantasy's Hiper) takes its place
+# and carries the same swap in its own slot (its [VRFW.ExtraSlot.swap] with these carriers and the change table it
+# fills from this mod's exports). The cooldown is the owner's tunable: `cooldown_s` below.
+schema = "VRFW.extra_slot/1"
+if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+
+[[VRFW.ExtraSlot]]
+name = "change"                      # key aura_reworked.change
+kind = "plates"
+fallback = true
+states = [9, 14, 16]                 # open play, duel, zone
+plate_states = [9, 14, 16]
+lend_slot = "auto"
+start_timeout_s = 15
+restore_delay_s = 1.0
+disguise = true
+preload = true
+
+# plate 0 (the aura slot's move): none, this slot has no aura slot
+[VRFW.ExtraSlot.input]
+key = ""
+pad = ""
+
+# plate 1: the swap, both ways
+[[VRFW.ExtraSlot.plate]]
+key = "J"
+pad = "RB+B"
+xinput = true
+
+# who has a change: his saved card in ModeChangeMix (this mod's native table), or the carrier in his team aura row
+# (the retail «Comandos de hipertécnicas» list offers it: team_commands); nothing else is read
+[VRFW.ExtraSlot.source]
+team_aura = true
+mix_only = true
+mix_table = "ModeChangeMix"
+team_commands = ["mix"]
+
+# the swap's recharge for the game's Lua (Aura Points' buff row bar): (hdl) -> active, recovered 0..1 of the cooldown
+[VRFW.ExtraSlot.commands]
+swap_gauge = "CMND_ALLCHANGED_SWAP_GAUGE"
+
+[VRFW.ExtraSlot.swap]
+carriers = "wmc_evt{k}"
+count = 8
+cooldown_s = 60.0                    # seconds between two swaps, either way
+permanent = true                     # no time limit: the partner form stays until the next press
+states = [9, 14, 16]
+free_lent_slot = true
+cpu = false
+become_partner = true                # he becomes the partner card: look, stats and moves
+release_button = false               # only the plate swaps him back; the retail «Desactivar» guide hidden
+change_table = "ModeChange"

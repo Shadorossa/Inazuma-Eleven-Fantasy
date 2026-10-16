@@ -12,10 +12,11 @@
 --                                     `Difficulties` applies only to those rows: nil when `diff` (the row's
 --                                     difficulty, when the caller knows it) is not listed or not given
 --   VRFW_MC.Info(i)                -> {i, name, mod, title, description, short (text ids), scope, nreq, diffs, required} (cached;
---                                     required = {{count, places = {codes}, until_first_clear, text}, ...})
+--                                     required = {{count, places = {codes}, until_first_clear, text, label}, ...})
 --   VRFW_MC.TitleOf(game, diff)    -> the challenge's title text of a match, nil = none (guide lines)
 --   VRFW_MC.RequiredTexts(i, cleared) -> the text ids of its required starters that apply (a `UntilFirstClear` one
---                                     stops once the row is won), for the match info; generated ones are left out
+--                                     stops once the row is won), for the match info; generated ones and those with a
+--                                     `Label` (shown in the challenge's one-line label instead) are left out
 --   VRFW_MC.Players(scope, tt)     -> the active dock's players in scope: {{hdl, card, level, rarity, pos, place}, ...}
 --                                     (place: a starter's formation place, 1 GK / 2 FW / 3 MF / 4 DF, 0 unknown; nil
 --                                     on the bench)
@@ -23,10 +24,14 @@
 --                                     {players}, players
 --   VRFW_MC.Refusal(game, tt, diff, cleared) -> nil when the team may play, else the message text (title, description,
 --                                     the failed conditions, who breaks them)
---   VRFW_MC.Gate(game, tt, diff, cleared) -> true = play; false = refused (error sound + the message window, fire and
---                                     forget like the retail team check, for OnEnter handlers that return 1)
+--   VRFW_MC.Gate(game, tt, diff, cleared) -> true = play (the match's aura rule armed, VRFW_MC.ArmAuras); false =
+--                                     refused (error sound + the message window, fire and forget like the retail team
+--                                     check, for OnEnter handlers that return 1)
+--   VRFW_MC.ArmAuras(game, diff)   -> the kick-off of a match: its challenge's aura rule (`[VRFW.MatchChallenge.Auras]`)
+--                                     is armed for the match (CMND_VRFW_MATCH_AURAS_ARM), else none (_DISARM)
 --   VRFW_MC.Status(game, tt, diff, cleared) -> nil when the match has no challenge, else {ok, label (the challenge's
---                                     `Short` text, else its title), offenders (count), i}: the Chronicle board's
+--                                     `Short` text, else its title, plus « + <Label>» of each required starter that
+--                                     applies and of the aura rule), offenders (count), i}: the Chronicle board's
 --                                     command menu (its label line) and the VS screen's kick-off
 -- tt = the dock's team (0 = the 11-a-side team, default; 1 = the 5-a-side team). cleared = the launcher knows the
 -- match row was won before (true); nil / false = not won or unknown (a `UntilFirstClear` required starter applies).
@@ -41,8 +46,12 @@ if VRFW_MC == nil then
       CHECK = 3751451304,     -- CMND_VRFW_TEAM_CHALLENGE_CHECK (i, "card:level:rarity[:place];...", cleared 0 / 1)
                               --   -> ok, failed, offenders
       REQUIRED = 754037657,   -- CMND_VRFW_TEAM_CHALLENGE_REQUIRED (i, k) -> characters, places "2,3", until first
-                              --   clear, own text id
+                              --   clear, own text id, label suffix text id
+      AURAS = 1058671019,     -- CMND_VRFW_TEAM_CHALLENGE_AURAS (i) -> ruled, allowed kinds "keshin,totem" ("" = none),
+                              --   sides, label suffix text id
     },
+    AURAS_ARM = 3967972526,   -- CMND_VRFW_MATCH_AURAS_ARM (allowed kinds, sides): the next match's aura rule
+    AURAS_DISARM = 1656817130, -- CMND_VRFW_MATCH_AURAS_DISARM (): the next match has none
     VS_SET = 3713813716,      -- CMND_GET_VS_USE_TEAM_SET
     MEMBER = 1720957768,      -- (set, team, i, 0 hdl / 1 position)
     STATUS = 1131797651,      -- (hdl, 0 level / 4 chara_param / 12 rarity)
@@ -67,7 +76,7 @@ if VRFW_MC == nil then
       F_ELEMENT = 3685919861, F_POSITION = 970726332, F_SERIES = 2001861548, F_TEAM = 3863514637, F_CHARA = 2064652193,
       F_LEVEL_MIN = 2369649544, F_LEVEL_MAX = 2972763345, F_LEVEL = 1769018739, F_RARITY_MIN = 266945921,
       F_RARITY_MAX = 870611672, F_RARITY = 4202775751, F_NOT = 2721797827, OR = 2007264933, AND = 3539978642,
-      REQUIRED = 3122860320, REQUIRED_PLACES = 4094007390,
+      REQUIRED = 3122860320, REQUIRED_PLACES = 4094007390, WITH_REQUIRED = 206140731,
     },
     -- the dock's positions (team 0: 0-10 starters, 11-18 bench, 19 coach, 20-28 reserves; team 1: 0-4, 5-15)
     LAST = {[0] = {starters = 10, squad = 18}, [1] = {starters = 4, squad = 15}},
@@ -148,16 +157,23 @@ if VRFW_MC == nil then
     end
     local required = {}
     for k = 1, (type(nrequired) == "number" and nrequired or 0) do
-      local count, places, until_first_clear, own = call(MC.CMD.REQUIRED, i, k)
+      local count, places, until_first_clear, own, label = call(MC.CMD.REQUIRED, i, k)
       local codes = {}
       for x in string.gmatch(type(places) == "string" and places or "", "%d+") do
         codes[#codes + 1] = tonumber(x)
       end
-      required[k] = {count = count or 0, places = codes, until_first_clear = until_first_clear == true, text = own or 0}
+      required[k] = {count = count or 0, places = codes, until_first_clear = until_first_clear == true, text = own or 0,
+                     label = type(label) == "number" and label or 0}
+    end
+    local auras = nil
+    local ruled, allowed, sides, alabel = call(MC.CMD.AURAS, i)
+    if ruled == true then
+      auras = {allowed = type(allowed) == "string" and allowed or "", sides = type(sides) == "string" and sides or "both",
+               label = type(alabel) == "number" and alabel or 0}
     end
     local c = {i = i, name = name, mod = mod, title = title or 0, description = desc or 0,
                short = type(short) == "number" and short or 0, scope = scope or "squad", nreq = nreq or 0,
-               diffs = set, required = required}
+               diffs = set, required = required, auras = auras}
     MC.info[i] = c
     return c
   end
@@ -179,7 +195,7 @@ if VRFW_MC == nil then
     local c = MC.Info(i)
     local out = {}
     for _, r in ipairs(c and c.required or {}) do
-      if not (r.until_first_clear and cleared) and type(r.text) == "number" and r.text ~= 0 then
+      if not (r.until_first_clear and cleared) and r.label == 0 and type(r.text) == "number" and r.text ~= 0 then
         out[#out + 1] = r.text
       end
     end
@@ -471,12 +487,34 @@ if VRFW_MC == nil then
     if label == "" then
       label = c.name
     end
+    for _, r in ipairs(c.required) do
+      local suffix = r.label ~= 0 and not (r.until_first_clear and cleared) and text(r.label) or ""
+      if suffix ~= "" then
+        label = fmt(MC.T.WITH_REQUIRED, label, suffix)
+      end
+    end
+    local aura_suffix = c.auras ~= nil and text(c.auras.label) or ""
+    if aura_suffix ~= "" then
+      label = fmt(MC.T.WITH_REQUIRED, label, aura_suffix)
+    end
     return {i = i, ok = ok, offenders = #bad, label = label}
+  end
+
+  function MC.ArmAuras(game, diff)
+    local i = MC.Of(game, diff)
+    local c = i ~= nil and MC.Info(i) or nil
+    if c ~= nil and c.auras ~= nil then
+      MC.Log("auras", c.name, "game", game, "allowed", c.auras.allowed == "" and "none" or c.auras.allowed, "sides", c.auras.sides)
+      pcall(funcLuaCommand, MC.AURAS_ARM, c.auras.allowed, c.auras.sides)
+    else
+      pcall(funcLuaCommand, MC.AURAS_DISARM)
+    end
   end
 
   function MC.Gate(game, tt, diff, cleared)
     local msg = MC.Refusal(game, tt, diff, cleared)
     if msg == nil then
+      MC.ArmAuras(game, diff)
       return true
     end
     pcall(funcLuaCommand, MC.SE, MC.SE_NG)

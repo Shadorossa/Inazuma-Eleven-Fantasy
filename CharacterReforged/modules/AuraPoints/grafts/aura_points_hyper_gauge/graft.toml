@@ -1,0 +1,33 @@
+# Aura Points: match HUD layers hidden while its PE and its PEG or SP points are both on (owner 2026-10-16: the PEG / SP
+# bar under the PE bar takes the role of the retail hyper gauge under the tension bar, both teams:
+# soccer08_26_hyperdimensional_power_gauge_base(_enemy) and soccer08_26_p1_hyperdimensional_power_one_gauge(_enemy),
+# every instance). The layers come from the mod's command CMND_AURAPOINTS_HUD_HIDDEN_LAYERS (config.toml
+# [hud_hidden_layers]; declared in features\pe\content\game\stamina.toml, so absent with the option «pe» off; false with
+# «peg» and «sp» off). Drawing only: the gauge's value, pays and inputs stay retail. Was the mod Stamina Points' graft
+# stamina_points_hyper_gauge until 2026-10-16. Wrappers of the gauge updates (called every frame by
+# PostStepSoccerMenu); nothing at chunk load.
+name = "aura_points_hyper_gauge"
+mod = "aura_points"
+order = 320
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateHyperdimensionalPowerGauge", "UpdateEnemyHyperdimensionalPowerGauge"]
+description = "Aura Points: the retail hyper gauge hidden while PE and PEG or SP are on"
+
+[[files]]
+stem = "soccer_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hyper_gauge.lua"
+  marker = "AuraPoints hyper gauge"
+
+# a small (5 v 5) match draws its HUD with soccer_battle_menu: the same include and layer group as soccer_menu
+[[files]]
+stem = "soccer_battle_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_hyper_gauge.lua"
+  marker = "AuraPoints hyper gauge"

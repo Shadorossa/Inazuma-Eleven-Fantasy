@@ -1,0 +1,105 @@
+{
+ "_markers": [
+  "OnOpenLayer",
+  "OnSetupLayer",
+  "OnInit",
+  "Step",
+  "OnFunction"
+ ],
+ "soccer_battle_constant_menu": {
+  "script": "soccer_battle_constant_menu_0.00.00",
+  "require": [
+   "InitializeGlobalValues",
+   "CREATE_SOCCER_TRAINING_PERFORMANCE_TEXT"
+  ],
+  "forbid": [
+   "PlayStampPopupCoroutine"
+  ],
+  "ambiguous": [
+   "soccer_training_constant_menu"
+  ],
+  "chunk_crc": 1522934058,
+  "chunk_size": 1308
+ },
+ "soccer_battle_inplay_menu": {
+  "script": "soccer_battle_inplay_menu_1.00.51",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_inplay_menu",
+   "soccer_training_inplay_menu",
+   "soccer_zigzag_dribble_training_inplay_menu"
+  ],
+  "chunk_crc": 392231094,
+  "chunk_size": 845
+ },
+ "soccer_constant_menu": {
+  "script": "soccer_constant_menu_1.03.19.00",
+  "require": [
+   "PlayStampPopupCoroutine",
+   "InitializeGlobalValues"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_inplay_menu": {
+  "script": "soccer_inplay_menu_1.00.48",
+  "require": [
+   "CalTargetCharaScreenPos"
+  ],
+  "forbid": [],
+  "ambiguous": [
+   "soccer_battle_inplay_menu",
+   "soccer_training_inplay_menu",
+   "soccer_zigzag_dribble_training_inplay_menu"
+  ],
+  "chunk_crc": 108364872,
+  "chunk_size": 793
+ },
+ "chara_model_only_view_menu": {
+  "script": "chara_model_only_view_menu_1.02.01.00",
+  "require": [
+   "SetCharaModelInfo"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "event_menu": {
+  "script": "event_menu_6.00.28.00",
+  "require": [
+   "ResetSkippedState"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_top_menu": {
+  "script": "soccer_top_menu_1.03.98.00",
+  "require": [
+   "MoveToVsCpuMenuCoroutine"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "team_dock_common_top_menu": {
+  "script": "team_dock_common_top_menu_0.00.00.00",
+  "require": [
+   "AddMemberEquipmentToList",
+   "GetSoccerGameOptionBgmList"
+  ],
+  "forbid": [
+   "FinalizeMenu",
+   "OnOpenEndLayer",
+   "InitItemUseMenuParam",
+   "NameSetting_ItemIcon",
+   "OnChangeLayerGroup",
+   "OnBack",
+   "SetupLockIconPos",
+   "OnEnter",
+   "ConvertTimeFrom32bitInt",
+   "OnChangeFocus"
+  ],
+  "ambiguous": []
+ }
+}

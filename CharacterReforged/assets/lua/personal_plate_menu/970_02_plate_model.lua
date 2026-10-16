@@ -166,6 +166,12 @@ EVT_PPM = EVT_PPM or {}
   -- page shows (CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE, restored on release). The game's log command keeps only 8
   -- arguments, so the capture lines are written as one text (M.Line).
   M.LIVE_CMD = 1195400181
+  -- Character Reforged 1.8.61: with the framework's menu capture probe running (VRFW [debug] capture_pause_probe), a
+  -- match capture keeps its quad hidden until the probe sees the model drawn into its render texture
+  -- (CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN, one check every M.DRAWN_EVERY Steps): no white placeholder.
+  -- loader.log «EVT_PPM capture quad hidden until drawn», «EVT_PPM capture quad shown | hidden <answer>».
+  M.DRAWN_CMD = 1476631467
+  M.DRAWN_EVERY = 10
   M.capReady = false
   M.PLATE = 1844915256                   -- soccer11_04_formation_chara_status (the plate of this screen)
   M.PAGE = 878737202                     -- team11_01_personal_plate
@@ -366,14 +372,15 @@ EVT_PPM = EVT_PPM or {}
     if M.cfg then
       return M.cfg
     end
-    local c = {mode = 0, cam = 3085867494, report = false, bust = false, live = false}
-    local ok, mode, cam, report, bust, live = pcall(funcLuaCommand, M.CFG_CMD)
+    local c = {mode = 0, cam = 3085867494, report = false, bust = false, live = false, gate = false}
+    local ok, mode, cam, report, bust, live, gate = pcall(funcLuaCommand, M.CFG_CMD)
     if ok and type(mode) == "number" then
       c.mode = mode
       c.cam = type(cam) == "number" and cam ~= 0 and cam or c.cam
       c.report = report == 1
       c.bust = bust == 1
       c.live = live == 1
+      c.gate = gate == 1
     end
     if EVT_PPM_CAPTURE == false then
       c.mode = 0
@@ -388,7 +395,7 @@ EVT_PPM = EVT_PPM or {}
     M.CAP_CAM = c.cam
     M.cfg = c
     M.Line("EVT_PPM capture settings", "mode", c.mode, "camera", c.cam, "report", c.report, "bust", c.bust,
-      "live pause", c.live, "from config", ok and type(mode) == "number")
+      "live pause", c.live, "quad until drawn", c.gate, "from config", ok and type(mode) == "number")
     return c
   end
 
@@ -441,7 +448,13 @@ EVT_PPM = EVT_PPM or {}
     Cmd(2575768773, M.LAYER, 0, M.CAP_MESH, 0, b[1])       -- node position x (parent _pos_chr01 sits at 0, 0)
     Cmd(2575768773, M.LAYER, 0, M.CAP_MESH, 1, -b[2])      -- y (up)
     Cmd(2885415772, M.LAYER, 0, M.CAP_MESH, b[3], b[3])    -- node scale = the quad's size
-    Cmd(3405944500, M.LAYER, M.CAP_MESH, true, 0)
+    M.gated = M.InMatch() and M.Settings().gate
+    M.quadOn, M.drawnIn = not M.gated, M.DRAWN_EVERY
+    Cmd(3405944500, M.LAYER, M.CAP_MESH, M.quadOn, 0)
+    if M.gated then
+      pcall(funcLuaCommand, M.DRAWN_CMD, 1)                -- a new wait for the probe's first draw
+      pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden until drawn")
+    end
     local okg, gx, gy = pcall(funcLuaMenuCommand, GPOS, M.LAYER, 0, M.CAP_MESH)
     M.Line("EVT_PPM capture setup", "box", b[1], b[2], b[3], "node", gx, gy, "drawprio", (Cmd(1018283794, M.LAYER, 0)))
   end
@@ -455,6 +468,26 @@ EVT_PPM = EVT_PPM or {}
       M.swapLogged = why == "ready"
       M.Line("EVT_PPM capture swap", why, r, "model", (Cmd(GET_MODEL, M.LAYER, 0, 0)), "complete",
         (Cmd(COMPLETE, M.LAYER, 0, 0)), "prebuilt", (Cmd(2787787510, M.LAYER, 0)))   -- prebuilt: resources built (state 5)
+    end
+  end
+
+  -- the gated quad (M.gated): shown once the probe reports the model drawn into its render texture, hidden again when
+  -- it reports no draw
+  function M.QuadGate()
+    if not M.gated or not M.Capture() then
+      return
+    end
+    M.drawnIn = (M.drawnIn or M.DRAWN_EVERY) - 1
+    if M.drawnIn > 0 then
+      return
+    end
+    M.drawnIn = M.DRAWN_EVERY
+    local ok, r = pcall(funcLuaCommand, M.DRAWN_CMD, 0)
+    local on = ok and r == 1
+    if on ~= M.quadOn then
+      M.quadOn = on
+      Cmd(3405944500, M.LAYER, M.CAP_MESH, on, 0)          -- CMND_SET_MESH_VISIBLE
+      pcall(funcLuaCommand, LOG, "EVT_PPM capture quad", on and "shown" or "hidden", tostring(r))
     end
   end
 
@@ -1167,6 +1200,7 @@ EVT_PPM = EVT_PPM or {}
       end
       pcall(M.StickTurn)
       pcall(M.KeepCam)
+      pcall(M.QuadGate)
       if M.reportIn then
         M.reportIn = M.reportIn - 1
         if M.reportIn <= 0 then

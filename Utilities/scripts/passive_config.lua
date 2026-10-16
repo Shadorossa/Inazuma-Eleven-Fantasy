@@ -43,6 +43,8 @@ local CFG, LAYOUT, RULES, UNLOCK = nil, nil, nil, "configured"
 local PLAYER = nil
 local CAT, DECL, VALUES = nil, nil, {}
 local OWN, POS, BASES = {}, {}, {}
+local ROLE_OF_ITEM = {}     -- role badge item id -> staff role (pc_core ROLES) whose passives the catalogue offers
+local ROLE_OF_BADGE = {}    -- badge inventory handle -> staff role (false = not a role badge)
 local ACTIVE = false
 local STORE = nil           -- the active save slot's store
 local LIST = nil            -- the list the menu pages through { hdl, slot, category, rarity, ids }
@@ -214,6 +216,49 @@ local function load_tables()
   for _, id in ipairs(C.set_restricted_specials(cat, d.restricted_specials)) do
     warn(string.format("declared special 0x%08X is not a passive of passive_skill_config (ignored)", id))
   end
+  -- the staff roles' passives: the passives of the items their role equips (item_config ITEM_SPECIAL_SKILL_INFO:
+  -- col 0 id, col 6 item kind, col 16 the passive)
+  local role_of_kind, staff_ids, role_of_item = {}, {}, {}
+  for role, r in pairs(C.ROLES) do
+    role_of_kind[r.item_kind] = role
+    staff_ids[role] = {}
+  end
+  local oki, items = pcall(VRFW.table.raw, "data/common/gamedata/item/item_config_*.cfg.bin", "ITEM_SPECIAL_SKILL_INFO", { 1, 7, 17 })
+  if oki and type(items) == "table" then
+    for _, r in ipairs(items) do
+      local role = type(r[7]) == "number" and role_of_kind[r[7]] or nil
+      if role and type(r[17]) == "number" and r[17] ~= 0 then table.insert(staff_ids[role], C.u32(r[17])) end
+    end
+  else
+    warn("item_config not readable: coaches and managers keep their equipped passives (" .. tostring(items) .. ")")
+  end
+  -- rarity versions of the passives (m_passiveSkillRarityTableList idList[0..5], keyed by idList[0]): the grade a
+  -- staff card gets from his rarity
+  local versions = {}
+  local okv, vrows = pcall(VRFW.table.raw, "data/common/gamedata/skill/passive_skill_rarity_table_config_*.cfg.bin", "m_passiveSkillRarityTableList")
+  if okv and type(vrows) == "table" then
+    for _, r in ipairs(vrows) do
+      local l = r.idList or r[1]
+      if type(l) == "table" and type(l[1]) == "number" and l[1] ~= 0 then
+        local row = {}
+        for i = 1, 6 do row[i] = type(l[i]) == "number" and C.u32(l[i]) or 0 end
+        if versions[row[1]] == nil then versions[row[1]] = row end
+      end
+    end
+  else
+    warn("passive_skill_rarity_table not readable (" .. tostring(vrows) .. "): staff passives at their base value")
+  end
+  C.set_versions(cat, versions)
+  local staff_log = {}
+  for role, r in pairs(C.ROLES) do
+    local unknown = C.set_staff(cat, role, staff_ids[role])
+    if #unknown > 0 then warn(string.format("%d %s passive(s) of item_config are not match passives (not offered)", #unknown, r.name)) end
+    if C.staff_count(cat, role) > 0 then role_of_item[C.id_of(r.badge)] = role end
+    staff_log[#staff_log + 1] = string.format("%s %d at rarity 4, %d at Diamante (of %d items)", r.name, #(C.staff_list(cat, role, 4)),
+      #(C.staff_list(cat, role, C.BASARA_RARITY)), #staff_ids[role])
+  end
+  ROLE_OF_ITEM, ROLE_OF_BADGE = role_of_item, {}
+  info("staff passives: " .. table.concat(staff_log, ", "))
   local values = {}
   for _, r in ipairs(raws) do
     if #r.defs > 0 then values[r.id] = r.value end
@@ -287,6 +332,25 @@ local function extra(rec)
   local okr, b1 = pcall(function() return x.build end)
   local okd, b2 = pcall(function() return x.diamond_build end)
   return okb and badge or 0, okr and b1 or 6, okd and b2 or 6
+end
+
+-- the staff role of a badge (its inventory handle -> the item it holds), nil = no role whose passives are offered
+local function role_of_badge(badge)
+  if badge == 0 or next(ROLE_OF_ITEM) == nil then return nil end
+  local known = ROLE_OF_BADGE[badge]
+  if known ~= nil then return known or nil end
+  if not VRFW.is_on("Utilities.InventoryRecord") then return nil end
+  local ok, p = pcall(function()
+    local items = VRFW.game.utilities_inventory()
+    if not items or items < 0x10000 then return nil end
+    return VRFW.call("Utilities.InventoryRecord", items, badge)
+  end)
+  if not ok or not p or p < 0x10000 then return nil end
+  local okr, item = pcall(VRFW.mem.read, "u32", p + 4)
+  if not okr or not item then return nil end
+  local role = ROLE_OF_ITEM[item] or false
+  ROLE_OF_BADGE[badge] = role
+  return role or nil
 end
 
 -- own passive of (handle, slot 1-5): id, param — or nil
@@ -433,14 +497,15 @@ local function probe(hdl)
   local rarity = rec.rarity or 0
   local rolled = (rarity == DIAMOND_RARITY) and b2 or b1
   if rolled >= C.N_ARCHETYPES then rolled = nil end
-  local card = mode_slot() and C.BLOCKED or C.card_of(rarity, badge)
+  local role = role_of_badge(badge)
+  local card = mode_slot() and C.BLOCKED or C.card_of(rarity, badge, role)
   local special = own_for(owner, 1) or 0
-  return { owner = owner, param = rec.param, rarity = rarity, card = card, rolled = rolled, get_order = rec.get_order or 0,
+  return { owner = owner, param = rec.param, rarity = rarity, card = card, role = role, rolled = rolled, get_order = rec.get_order or 0,
     main_position = POS[rec.param] or 0, special = special, who = { rec.param, BASES[rec.param] or 0 } }
 end
 
 local function subject(pr, base, old)
-  return { card = pr.card, rarity = pr.rarity, base = base, rolled = pr.rolled, old = old, main_position = pr.main_position, special = pr.special, who = pr.who }
+  return { card = pr.card, role = pr.role, rarity = pr.rarity, base = base, rolled = pr.rolled, old = old, main_position = pr.main_position, special = pr.special, who = pr.who }
 end
 
 local function open_of(pr)
@@ -574,11 +639,14 @@ local function fill_static()
 end
 
 -- the entries of one saved player (slot entries + unlock entries) into `slots` / `unlock`
+-- false = the character's record cannot be read now (nothing computed); true = `slots` / `unlock` hold his entries
 local function player_entries(S, hdl, slots, unlock)
   local pr, eff, cfgd = view(hdl, 0)
-  if not pr or pr.card == C.BLOCKED or pr.owner ~= hdl then return end
+  if not pr then return false end
+  if pr.card == C.BLOCKED or pr.owner ~= hdl then return true end
   local act = active_of(pr, cfgd)
-  local everyone = rules_touch_everyone()
+  -- a coach / manager keeps his equipped passives in the slots he did not configure
+  local everyone = rules_touch_everyone() and pr.card ~= C.STAFF
   for k = 1, N do
     local applied = cfgd and act[k] and C.kind_accepts(CAT, subject(pr, eff, false), RULES, k, cfgd[k])
     if everyone or applied then
@@ -590,6 +658,7 @@ local function player_entries(S, hdl, slots, unlock)
       unlock[#unlock + 1] = { { S, hdl, k - 1 }, 1 }
     end
   end
+  return true
 end
 
 -- The tables of the active save slot are kept INCREMENTALLY (2026-10-11: a full rebuild on every mode_enter /
@@ -600,7 +669,13 @@ end
 -- SLICE_MS per mode / match trigger, up to SLICE_GAME_MS at most every PUMP_EVERY_MS from the commands on the game
 -- thread. A changed choice (set / reset / clear) rewrites that player at once. The cache restarts when the slot's
 -- store is read again or its watermark is set (both change every player's defaults).
-local SLICE_MS, SLICE_GAME_MS, PUMP_EVERY_MS = 40, 3, 100
+-- A player whose record cannot be read at that moment (the game reading / writing the save around a match) keeps the
+-- entries he had: they are rewritten only from a readable record, and he is scanned again (RETRY_EVERY_MS from the
+-- commands, every mode / match trigger). Every trigger scans (match_end too: a Chronicle match changes no mode).
+local SLICE_MS, SLICE_GAME_MS, PUMP_EVERY_MS, RETRY_EVERY_MS = 40, 3, 100, 1000
+local RETRY = false         -- a player could not be written: scan again
+local LAST_RETRY = 0
+local UNREADABLE_LOGGED = 0
 local CACHE = {}            -- [save slot] = { store, wm, sig = {hdl -> signature}, todo = {}, head, tail, queued = {}, done, why }
 local LAST_PUMP = -PUMP_EVERY_MS
 local PUMPING = false       -- a game-thread command nested in a parked mode handler leaves the queue to it
@@ -638,19 +713,43 @@ local function cache_of(S)
 end
 
 -- one player's entries again (after a change of his choices, or a changed signature)
-local function write_player(S, hdl, c)
-  clear_player(S, hdl)
+-- false only when the saved list is readable and does not hold the handle (the player left the save)
+local function still_saved(hdl)
+  local ok, all = pcall(VRFW.chara.saved)
+  if not ok or type(all) ~= "table" or #all == 0 then return true end
+  for _, r in ipairs(all) do
+    if r.handle == hdl then return true end
+  end
+  return false
+end
+
+local function write_player(S, hdl, c, why)
   local slots, unlock = {}, {}
-  player_entries(S, hdl, slots, unlock)
+  if not player_entries(S, hdl, slots, unlock) then
+    if c then c.sig[hdl] = nil end
+    if not still_saved(hdl) then
+      clear_player(S, hdl)
+      return false
+    end
+    -- unreadable now: his entries stay as they are (never cleared from a failed read), scanned again later
+    RETRY = true
+    UNREADABLE_LOGGED = UNREADABLE_LOGGED + 1
+    if UNREADABLE_LOGGED <= 12 then
+      info(string.format("chara 0x%08X: record not readable (%s): his native entries are kept, written again at the next scan", hdl, tostring(why)))
+    end
+    return false
+  end
+  clear_player(S, hdl)
   for _, x in ipairs(slots) do VRFW.native.table_set(T_SLOTS, x[1], x[2]) end
   for _, x in ipairs(unlock) do VRFW.native.table_set(T_UNLOCK, x[1], x[2]) end
   if c then c.sig[hdl] = signature(hdl) end
+  return true
 end
 
 local function refresh_player(hdl)
   local S = VRFW.slots.active()
   local c = CACHE[S]
-  write_player(S, hdl, c ~= nil and c.store == STORE and c or nil)
+  write_player(S, hdl, c ~= nil and c.store == STORE and c or nil, "choice changed")
 end
 
 -- work off the queue for up to `ms` milliseconds
@@ -665,8 +764,7 @@ local function pump(S, ms)
       c.todo[c.head] = nil
       c.head = c.head + 1
       c.queued[hdl] = nil
-      write_player(S, hdl, c)
-      c.done = c.done + 1
+      if write_player(S, hdl, c, c.why) then c.done = c.done + 1 end
       if VRFW.now() - t0 >= ms then break end
     end
   end)
@@ -685,6 +783,8 @@ end
 -- rules: every saved player); queued, then a first slice
 local function refresh(why, ms)
   if not ACTIVE then return end
+  RETRY = false
+  LAST_RETRY = VRFW.now()
   local S = VRFW.slots.active()
   local ok, e = pcall(function()
     if mode_slot() then
@@ -697,12 +797,17 @@ local function refresh(why, ms)
     end
     ensure_store()
     local c = cache_of(S)
-    local present, queued = {}, 0
+    local present, queued, changed = {}, 0, {}
     local function consider(hdl)
       if present[hdl] then return end
       present[hdl] = true
       if c.queued[hdl] then return end
-      if c.sig[hdl] == nil or c.sig[hdl] ~= signature(hdl) then
+      local old = c.sig[hdl]
+      local now = old ~= nil and signature(hdl) or nil
+      if old == nil or old ~= now then
+        if old ~= nil and #changed < 3 then
+          changed[#changed + 1] = string.format("0x%08X %s -> %s", hdl, old, tostring(now))
+        end
         c.queued[hdl] = true
         c.tail = c.tail + 1
         c.todo[c.tail] = hdl
@@ -713,22 +818,29 @@ local function refresh(why, ms)
       local hdl = tonumber(key, 16)
       if hdl then consider(hdl) end
     end
+    local saved_read = true
     if rules_touch_everyone() then
-      for _, r in ipairs(VRFW.chara.saved()) do consider(r.handle) end
+      local all = VRFW.chara.saved()
+      -- no saved character readable (the save being read): nobody is «gone» now
+      if #all == 0 then saved_read = false; RETRY = true end
+      for _, r in ipairs(all) do consider(r.handle) end
     end
     local gone = 0
-    for hdl, _ in pairs(c.sig) do
-      if not present[hdl] then
-        clear_player(S, hdl)
-        c.sig[hdl] = nil
-        gone = gone + 1
+    if saved_read then
+      for hdl, _ in pairs(c.sig) do
+        if not present[hdl] then
+          clear_player(S, hdl)
+          c.sig[hdl] = nil
+          gone = gone + 1
+        end
       end
     end
     VRFW.native.table_set(T_ALL, S, UNLOCK == "all" and 1 or nil)
     if queued > 0 or gone > 0 then
       c.why = why
-      info(string.format("native tables of slot %d (%s): %d player(s) to update, %d gone%s", S, why, queued, gone,
-        UNLOCK == "all" and ", every non-empty slot of a configurable player unlocked" or ""))
+      info(string.format("native tables of slot %d (%s): %d player(s) to update, %d gone%s%s", S, why, queued, gone,
+        UNLOCK == "all" and ", every non-empty slot of a configurable player unlocked" or "",
+        #changed > 0 and ("; changed (param:rarity:level:get_order:badge:build:diamond_build:engine slots 1-5) " .. table.concat(changed, "; ")) or ""))
     end
   end)
   if not ok then err("refresh (" .. why .. "): " .. tostring(e)) end
@@ -744,6 +856,8 @@ local function follow_slots()
     refresh("slot event", SLICE_GAME_MS)
   elseif STORE and STORE.slot ~= VRFW.slots.active() then
     refresh("slot changed", SLICE_GAME_MS)
+  elseif RETRY and VRFW.now() - LAST_RETRY >= RETRY_EVERY_MS then
+    refresh("retry", SLICE_GAME_MS)
   else
     local now = VRFW.now()
     if now - LAST_PUMP >= PUMP_EVERY_MS then
@@ -751,6 +865,159 @@ local function follow_slots()
       pump(VRFW.slots.active(), SLICE_GAME_MS)
     end
   end
+end
+
+-- ---------------------------------------------------------------------------------------------- live check
+-- What the two slot readers really answer (their hooked entry points, these native answers included) against the
+-- entries the tables should hold. After every mode / match trigger: the saved configured players (a difference is
+-- logged and the player written again). At match start / end also the match copies of the configured players (the
+-- match builder reads the copies): the log says whether the configuration is what the match reads.
+
+-- team sets [[g_gameRoot]+0x69A8] + 0x1E0 + team * 0x4A8, members at +0x80 (29 x 0x10 B, +0 the handle); the user's
+-- match team [[g_gameRoot]+0x6A58] + 0x2C29 (the framework's VRFW.chara layout, nie.exe v7.1.2)
+local TEAM_SETS_FIRST, TEAM_STRIDE, TEAM_MEMBERS, MEMBER_STRIDE, MEMBER_COUNT = 0x1E0, 0x4A8, 0x80, 0x10, 29
+local USER_TEAM_AT = 0x2C29
+local LIVE_BUF, LIVE_ON = nil, nil
+
+local function live_ready()
+  if LIVE_ON == nil then
+    LIVE_ON = VRFW.is_on("Utilities.TeamPassiveIdLive") and VRFW.is_on("Utilities.TeamPassiveUnlockedLive")
+    if LIVE_ON then LIVE_BUF = VRFW.mem.buffer("pc_live_out", 8) end
+  end
+  return LIVE_ON
+end
+
+local function truthy(v)
+  return v == true or (type(v) == "number" and v ~= 0)
+end
+
+-- the readers' answer for (handle, slot 1-5): id, unlocked; nil when a call failed
+local function live_slot(hdl, k, copy)
+  local oku, u = pcall(VRFW.call, "Utilities.TeamPassiveUnlockedLive", hdl, k - 1, copy)
+  VRFW.mem.write("u32", LIVE_BUF, 0)
+  local oki = pcall(VRFW.call, "Utilities.TeamPassiveIdLive", LIVE_BUF, hdl, k - 1, copy)
+  if not (oku and oki) then return nil end
+  return VRFW.mem.read("u32", LIVE_BUF), truthy(u)
+end
+
+-- the entries `owner` should have: id by slot, unlocked by slot (nil = no entry); nil when his record is unreadable
+local function expected_of(S, owner)
+  local slots, unlock = {}, {}
+  if not player_entries(S, owner, slots, unlock) then return nil end
+  local id, open = {}, {}
+  for _, x in ipairs(slots) do id[x[1][3] + 1] = x[2] end
+  for _, x in ipairs(unlock) do open[x[1][3] + 1] = x[2] == 1 end
+  return id, open
+end
+
+-- the readers through `hdl` (the saved player or his match copy) against `owner`'s entries: slots checked, differing
+local function compare(S, hdl, owner, copy, details)
+  local id, open = expected_of(S, owner)
+  if not id then return 0, 0 end
+  local checked, bad = 0, 0
+  for k = 1, N do
+    if id[k] ~= nil or open[k] ~= nil then
+      local got, unlocked = live_slot(hdl, k, copy)
+      if got ~= nil then
+        checked = checked + 1
+        if (id[k] ~= nil and got ~= id[k]) or (open[k] ~= nil and unlocked ~= open[k]) then
+          bad = bad + 1
+          if #details < 6 then
+            local okt, entry = pcall(VRFW.native.table_get, T_SLOTS, { S, owner, k - 1 })
+            entry = okt and tonumber(entry) or nil
+            details[#details + 1] = string.format("0x%08X%s slot %d: the reader answers 0x%08X %s, expected 0x%08X %s (table entry %s)",
+              hdl, hdl ~= owner and string.format(" (copy of 0x%08X)", owner) or "", k, got, unlocked and "unlocked" or "locked",
+              id[k] or got, open[k] == false and "locked" or "unlocked", entry and string.format("0x%08X", entry) or "none")
+          end
+        end
+      end
+    end
+  end
+  return checked, bad
+end
+
+local function team_members(team)
+  local okg, sets = pcall(VRFW.game.utilities_team_sets)
+  if not okg or not sets or sets < 0x10000 then return nil end
+  local okb, base = pcall(VRFW.mem.read, "ptr", sets + TEAM_SETS_FIRST)
+  if not okb or not base or base < 0x10000 then return nil end
+  base = base + team * TEAM_STRIDE
+  local out = {}
+  for j = 0, MEMBER_COUNT - 1 do
+    local okm, h = pcall(VRFW.mem.read, "u32", base + TEAM_MEMBERS + j * MEMBER_STRIDE)
+    if okm and h and h ~= 0 then out[#out + 1] = h end
+  end
+  return out
+end
+
+local function user_team()
+  local okg, mi = pcall(VRFW.game.utilities_match_info)
+  if not okg or not mi or mi < 0x10000 then return nil end
+  local ok, t = pcall(VRFW.mem.read, "u8", mi + USER_TEAM_AT)
+  if ok and t and t <= 1 then return t end
+  return nil
+end
+
+-- the match copies of the configured players: is what the match reads their configuration?
+local function match_check(why, S, configured)
+  local details, copies, checked, bad, unowned, seen = {}, 0, 0, 0, 0, 0
+  for team = 0, 1 do
+    for _, m in ipairs(team_members(team) or {}) do
+      seen = seen + 1
+      local kind = C.kind_of_handle(m)
+      local okc, owner = pcall(VRFW.chara.owner, m)
+      owner = okc and owner or nil
+      if owner and configured[owner] then
+        copies = copies + 1
+        local c1, b1 = compare(S, m, owner, (kind == 0 or kind == 7) and 0 or 1, details)
+        checked, bad = checked + c1, bad + b1
+      elseif not owner then
+        local okw, weak = pcall(VRFW.chara.owner_weak, m)
+        if okw and weak and configured[weak] then
+          unowned = unowned + 1
+          if #details < 6 then
+            details[#details + 1] = string.format("0x%08X (team %d): only a card match with the configured 0x%08X, no owner: the readers answer the game's own passives for it", m, team, weak)
+          end
+        end
+      end
+    end
+  end
+  if seen == 0 then
+    info(string.format("match check (%s): no match team yet", why))
+    return
+  end
+  local ut = user_team()
+  info(string.format("match check (%s): %d member(s), user team %s: %d copy(ies) of configured players, %d slot(s) checked, %s%s%s",
+    why, seen, ut and tostring(ut) or "?", copies, checked,
+    bad == 0 and "all answer the configuration" or string.format("%d differ", bad),
+    unowned > 0 and string.format(", %d configured player(s) without an owner match", unowned) or "",
+    #details > 0 and (": " .. table.concat(details, "; ")) or ""))
+end
+
+local function live_check(why, in_match)
+  if not ACTIVE or not STORE or passives_off() or mode_slot() or not live_ready() then return end
+  local S = VRFW.slots.active()
+  if STORE.slot ~= S then return end
+  local configured = {}
+  for key, _ in pairs(STORE.players) do
+    local hdl = tonumber(key, 16)
+    if hdl then configured[hdl] = true end
+  end
+  if next(configured) == nil then return end
+  local details, checked, bad, rewrite = {}, 0, 0, {}
+  for hdl in pairs(configured) do
+    local c1, b1 = compare(S, hdl, hdl, 0, details)
+    checked, bad = checked + c1, bad + b1
+    if b1 > 0 then rewrite[#rewrite + 1] = hdl end
+  end
+  if bad > 0 then
+    warn(string.format("live check (%s): %d of %d configured slot(s) answer something else: %s; written again", why, bad, checked, table.concat(details, "; ")))
+    local c = CACHE[S]
+    for _, hdl in ipairs(rewrite) do
+      write_player(S, hdl, c ~= nil and c.store == STORE and c or nil, "live check")
+    end
+  end
+  if in_match then match_check(why, S, configured) end
 end
 
 -- ---------------------------------------------------------------------------------------------- views of one slot
@@ -809,7 +1076,9 @@ function PC.PlateInfo(h, slot, field, _copy, preview)
   local pr, eff, cfgd = view(h, 0)
   local conf = (pr and pr.card ~= C.BLOCKED) and eff[k] or nil
   local forced = false
-  if pr and pr.card ~= C.BLOCKED then
+  if pr and pr.card == C.STAFF then
+    forced = cfgd ~= nil and active_of(pr, cfgd)[k] == true and C.kind_accepts(CAT, subject(pr, eff, false), RULES, k, cfgd[k])
+  elseif pr and pr.card ~= C.BLOCKED then
     if UNLOCK == "all" then forced = eff[k] ~= 0 else forced = active_of(pr, cfgd)[k] == true end
   end
   local id, what
@@ -854,15 +1123,20 @@ function PC.Info(h)
 end
 
 -- CMND_UTIL_PC_SLOT(hdl, slot) → id, configured, locked, inactive stored id, kind code, lock reason (0 open, 1 the
--- card / slot rules: coach, Ídolo, Prime..., 2 only the configurable-slot limit [passives] max_slots keeps it closed)
+-- card / slot rules: Ídolo, Prime, an unresolved staff badge..., 2 only the configurable-slot limit [passives] max_slots keeps it closed)
 function PC.Slot(h, slot)
   h, slot = arg_u32(h), arg_slot(slot)
   if not (h and slot) then return 0, false, true, 0, 0, 1 end
   local pr, eff, cfgd = view(h, 0)
   if not pr then return 0, false, true, 0, 0, 1 end
   local stored = cfgd and cfgd[slot] or 0
-  local kind = C.kind(RULES, slot)
-  local fits = stored == 0 or kind == C.SPECIAL or (kind == C.GENERAL and not C.is_archetype(CAT, stored)) or (kind == C.ARCHETYPE and C.is_archetype(CAT, stored)) or kind == C.ANY
+  local kind = C.slot_kind(RULES, pr.card, slot)
+  local fits
+  if pr.card == C.STAFF then
+    fits = stored == 0 or C.staff_allowed(CAT, pr.role, pr.rarity, stored)
+  else
+    fits = stored == 0 or kind == C.SPECIAL or (kind == C.GENERAL and not C.is_archetype(CAT, stored)) or (kind == C.ARCHETYPE and C.is_archetype(CAT, stored)) or kind == C.ANY
+  end
   local on = active_of(pr, cfgd)[slot] == true and fits
   local reason = 0
   if not C.slot_open(RULES, pr.card, pr.rarity, slot) then
@@ -880,15 +1154,22 @@ function PC.List(h, slot, cat)
   local want = math.min(math.max(arg_int(cat) or 0, 0), 255)
   local pr, eff = view(h, 0)
   if not pr then return 0, 0 end
-  local kind = C.kind(RULES, slot)
+  local kind = C.slot_kind(RULES, pr.card, slot)
   local ex = C.other_defs(CAT, eff, slot, CFG.allow_duplicates)
-  local cats = C.kind_categories(CAT, kind, ex)
+  local staff = pr.card == C.STAFF
+  local cats = staff and C.staff_categories(CAT, pr.role, pr.rarity, ex) or C.kind_categories(CAT, kind, ex)
   local category = C.CAT_ALL
   for _, c in ipairs(cats) do
     if c == want then category = want end
   end
   local ids
-  if kind == C.SPECIAL then ids = C.special_list(CAT, pr.special, pr.who, ex) else ids = C.pick(CAT, kind, category, ex) end
+  if staff then
+    ids = C.staff_pick(CAT, pr.role, pr.rarity, category, ex)
+  elseif kind == C.SPECIAL then
+    ids = C.special_list(CAT, pr.special, pr.who, ex)
+  else
+    ids = C.pick(CAT, kind, category, ex)
+  end
   local cur = C.current_index(CAT, ids, eff[slot])
   LIST = { hdl = h, slot = slot, category = category, rarity = pr.rarity, ids = ids }
   return #ids, category, cur and (cur - 1) or -1
@@ -909,7 +1190,8 @@ function PC.CatNext(h, slot, cur, dir)
   dir = arg_int(dir) or 1
   local pr, eff = view(h, 0)
   if not pr then return 0 end
-  local cats = C.kind_categories(CAT, C.kind(RULES, slot), C.other_defs(CAT, eff, slot, CFG.allow_duplicates))
+  local ex = C.other_defs(CAT, eff, slot, CFG.allow_duplicates)
+  local cats = pr.card == C.STAFF and C.staff_categories(CAT, pr.role, pr.rarity, ex) or C.kind_categories(CAT, C.kind(RULES, slot), ex)
   local i = 0
   for j, c in ipairs(cats) do
     if c == cur then i = j - 1; break end
@@ -971,7 +1253,7 @@ function PC.Special(h)
   local id
   if sp and ACTIVE and h ~= 0 then
     local pr, eff = view(h, 0)
-    if pr and pr.card ~= C.BLOCKED and eff[sp] ~= 0 then id = eff[sp] end
+    if pr and pr.card ~= C.BLOCKED and pr.card ~= C.STAFF and eff[sp] ~= 0 then id = eff[sp] end
   end
   local title = id and DECL and DECL.titles[id] or ""
   return id ~= nil, title, RULES and RULES.special_tile or 0, sp and (sp - 1) or -1
@@ -1122,17 +1404,16 @@ end
 start()
 start_off_modes()
 
--- the active save slot's tables follow the game: a mode change (title, menus, a match), a match start
-for _, trig in ipairs({ "mode_enter", "mode_leave", "match_start" }) do
+-- the active save slot's tables follow the game: a mode change (title, menus, a match), a match start and end (a
+-- Chronicle match changes no mode); each trigger scans (a scan + one slice; what is left goes on at the next trigger /
+-- command), then checks what the readers answer
+for _, trig in ipairs({ "mode_enter", "mode_leave", "match_start", "match_end" }) do
   VRFW.on(trig, function()
     if next(OFF_KEYS) ~= nil then fill_off_modes() end
     if not ACTIVE then return end
-    local seq = VRFW.slots.event_seq()
-    if seq ~= LAST_SEQ or not STORE or STORE.slot ~= VRFW.slots.active() or rules_touch_everyone() then
-      LAST_SEQ = seq
-      refresh(trig)              -- a scan + one slice; what is left goes on at the next trigger / command
-    else
-      pump(VRFW.slots.active(), SLICE_MS)
-    end
+    LAST_SEQ = VRFW.slots.event_seq()
+    refresh(trig)
+    local ok, e = pcall(live_check, trig, trig == "match_start" or trig == "match_end")
+    if not ok then err("live check (" .. trig .. "): " .. tostring(e)) end
   end)
 end

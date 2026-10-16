@@ -1,0 +1,16 @@
+# Schema of the shop tab split: a tab of a shop's list shown as several tabs, one per group of item sub-kinds.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.shop_tab/1"
+folder = "content/shop_tabs"
+
+[entry.ShopTab]
+doc = "one of the tabs a shop's game tab is split into: the rows of that game tab whose item sub-kind is listed here"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+shop = { type = "string", required = true, doc = "the shop: a mod's shop key (<mod>.<name>) or a SHOP_INFO id (0x…)" }
+split = { type = "int", min = 1, max = 20, required = true, doc = "the game tab split (the shop slot type: 16 special moves, 17 auras, 4-7 equipment, …)" }
+order = { type = "int", default = 0, doc = "the tab's place among the shop's split tabs (lower first; ties keep the declaration order)" }
+item_subs = { type = "ints", min = 0, max = 65535, required = true, doc = "item sub-kinds (item_config column 6: 161 shot, 162 dribble, 163 block, 164 catch moves, …) of the tab's rows; a row of the game tab in no declared tab goes to the first one" }
+icon = { type = "int", min = 0, max = 65535, required = true, doc = "the tab icon type (27-30 the move categories shot / dribble / block / catch, as the move list)" }
+text = { type = "string", required = true, doc = "the tab's title: a text key (<mod>.<name>, a [[row]] of the mod's text) or a text id (0x…)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

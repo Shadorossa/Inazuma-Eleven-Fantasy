@@ -1,6 +1,7 @@
 -- Match challenges (`[[VRFW.MatchChallenge]]`): the declarations, the matches that name them (route nodes, chain tiles,
 -- free-match tabs, the challenges' own `Games`) and the player attributes their conditions read.
--- `[[VRFW.MatchChallenge.Required]]`: required starters (`Characters` in formation places `Positions`, optionally `UntilFirstClear`).
+-- `[[VRFW.MatchChallenge.Required]]`: required starters (`Characters` in formation places `Positions`, optionally `UntilFirstClear`, `Label`).
+-- `[VRFW.MatchChallenge.Auras]`: the match aura rule (`Allowed` kinds, `Sides`, `Label`).
 local T = require "lib/team_util"
 local Q = {}
 
@@ -9,6 +10,8 @@ local MAX_DEPTH = 6
 local GENDER = { male = 1, female = 2 }
 local ELEMENT = { neutral = 0, wind = 1, wood = 2, fire = 3, earth = 4 }
 local POSITION = { gk = 1, fw = 2, mf = 3, df = 4 }
+-- the aura kinds of `[VRFW.MatchChallenge.Auras]` Allowed
+local AURA_KINDS = { keshin = true, armour = true, miximax = true, totem = true, bond = true, awakening = true, own_mode_change = true, created_mode_change = true }
 
 -- a name of a challenge: `<Prefix>.<Name>`, letters / digits / `_` per part, never the framework's `vrfw.`
 local function valid_name(s)
@@ -186,13 +189,28 @@ function Q.install(X)
             else
               local positions = {}
               for _, x in ipairs(items(r.Positions)) do positions[#positions + 1] = POSITION[x] end
-              required[#required + 1] = { charas = charas, positions = positions, until_first_clear = r.UntilFirstClear == true, text = r.Text or "" }
+              required[#required + 1] = { charas = charas, positions = positions, until_first_clear = r.UntilFirstClear == true, text = r.Text or "", label = r.Label or "" }
             end
           end
           if bad then
             VRFW.log.error(what .. ": " .. bad .. ": skipped")
           else
-            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", short = T.trim(d.Short or ""), scope = d.Scope or "squad", require = req, difficulties = diffs, required = required }
+            -- `Auras`: the match aura rule (the allowed kinds' words, sorted, once each)
+            local auras = nil
+            if d.Auras ~= nil then
+              local words, seen_word = {}, {}
+              for _, k in ipairs(d.Auras.Allowed or {}) do
+                if AURA_KINDS[k] == nil then
+                  VRFW.log.error(what .. ": Auras: `" .. tostring(k) .. "` is not an aura kind (left out)")
+                elseif not seen_word[k] then
+                  seen_word[k] = true
+                  words[#words + 1] = k
+                end
+              end
+              table.sort(words)
+              auras = { allowed = words, sides = d.Auras.Sides or "both", label = T.trim(d.Auras.Label or "") }
+            end
+            local b = { name = d.Name, mod_id = f.mod, title = T.trim(d.Title), description = d.Description or "", short = T.trim(d.Short or ""), scope = d.Scope or "squad", require = req, difficulties = diffs, required = required, auras = auras }
             local idx
             for k, c in ipairs(out.list) do if c.name == d.Name then idx = k break end end
             if idx then

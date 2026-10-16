@@ -86,6 +86,8 @@ P.C = {
   SPRITE = 558735651,              -- (layer, texture, sprite, texture slot, 0, instance)
   NODE_VISIBLE = 2158717427,       -- (layer, node, on, instance)
   FACE = 552280324, RESET_FACE = 4176779611, CHARA_OF_PARAM = 347353059,
+  NODE_SCALE = 2885415772,         -- (layer, instance, node, width, height): a text node's box
+  TEXT_SIZE = 3549540977,          -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
   CLEAR_GET = 4034518619,          -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
   CLOSE_MENU = 320421347, P_CLEAR = 3363400568, P_SET = 3860611758,
 }
@@ -145,10 +147,12 @@ P.CARD_NAMES = {
 -- node's left edge and centre line, the width of one Latin character at scale 1, the plate's box
 P.LABEL = {TEXT_NODE = 378327766 --[[_text_cmd_back01]], PLATE = 298211823 --[[_cmd_back_base01]],
   PLATE_ADD = 2853207670 --[[_cmd_back_base01_add]], TEXT_LEFT = -384, TEXT_MID_Y = 144, CHAR_WIDTH = 12.5,
-  PLATE_LEFT = -397, PLATE_WIDTH = 416, PLATE_HEIGHT = 76}
--- the small card's pieces the board does not show (the VS screen hides the same)
+  PLATE_LEFT = -397, PLATE_WIDTH = 416, PLATE_HEIGHT = 76,
+  TEXT_BOX_WIDTH = 1600, TEXT_BOX_HEIGHT = 76}   -- a centred line's box: wide enough that the game never squeezes it
+-- the card's pieces the board does not show: the card / lock icons (the VS screen hides the same) and the cyan focus
+-- frame of the large and small card (owner: no blue outline on the lineup's cards)
 P.CARD_HIDE = {2635558741 --[[_icon_card01]], 69091055 --[[_icon_card02]], 814224422 --[[_icon_lock01]],
-  2843821468 --[[_icon_lock02]]}
+  2843821468 --[[_icon_lock02]], 3345942320 --[[_icon_chr_focus_l01]], 3491095421 --[[_icon_chr_focus_s01]]}
 -- a card drawn from its own sprites (a fill the game refused): the small card's plate in the slot's position colour and
 -- the player's face; the large card, the leader frames and every other small piece off
 P.SPRITE_CARD = {
@@ -170,7 +174,7 @@ P.SPRITE_CARD = {
 local function reset()
   P.on, P.pending, P.shown, P.opened = false, false, false, {}
   P.cards, P.base, P.shift, P.button, P.click_prev, P.source, P.logged = {}, {}, nil, nil, false, nil, {}
-  P.named = {}
+  P.named, P.row = {}, nil
 end
 reset()
 
@@ -522,13 +526,21 @@ local function text_line(k, s, scale, cx, cy, plate)
   open(P.LAYER.TEXT, k, P.LAYOUT.PRIORITY_TEXT)
   M(P.C.MESH_VISIBLE, P.LAYER.TEXT, L.PLATE, plate == true, k)
   M(P.C.MESH_VISIBLE, P.LAYER.TEXT, L.PLATE_ADD, false, k)
+  if not plate then
+    M(P.C.NODE_SCALE, P.LAYER.TEXT, k, L.TEXT_NODE, L.TEXT_BOX_WIDTH, L.TEXT_BOX_HEIGHT)
+  end
+  M(P.C.SCALE, P.LAYER.TEXT, 1, 1, 1, k)
   M(P.C.TEXT, P.LAYER.TEXT, L.TEXT_NODE, s, k)
   M(P.C.SCALE, P.LAYER.TEXT, scale, scale, 1, k)
   local x
   if plate then
     x = cx - (L.PLATE_LEFT + L.PLATE_WIDTH / 2) * scale   -- the plate centred, the text at its left as retail
   else
-    x = cx - text_width(s) * scale / 2 - L.TEXT_LEFT * scale
+    local width = M(P.C.TEXT_SIZE, P.LAYER.TEXT, k, L.TEXT_NODE)   -- the game's measure (scale 1)
+    if type(width) ~= "number" or width <= 0 then
+      width = text_width(s)
+    end
+    x = cx - width * scale / 2 - L.TEXT_LEFT * scale
   end
   P.base[P.LAYER.TEXT .. ":" .. k] = {x, -cy - L.TEXT_MID_Y * scale}
   place(P.LAYER.TEXT, k)
@@ -633,17 +645,35 @@ local function button_clicked()
   return math.abs(mx - (b.x + dx)) <= b.half_w and math.abs(my - (b.y - dy)) <= b.half_h
 end
 
+-- the focused row changed (polled: the list's first focus is set without OnChangeFocus): its battle's lineup when the
+-- team or the challenge differs
+function P.FollowFocus()
+  local index = M(P.C.FOCUS_GET, P.ROWS)
+  if index == P.row then
+    return
+  end
+  P.row = index
+  local team = P.ReadFocusedTeam()
+  if team == nil or team.key ~= P.source then
+    P.Draw()
+  end
+end
+
 function P.Step()
   if P.pending then
     P.pending = false
     if VRFW_RBC.L.flag then
       return
     end
+    P.row = M(P.C.FOCUS_GET, P.ROWS)
     P.Draw()
     return
   end
   if not P.shown then
     return
+  end
+  if not VRFW_RBC.L.flag then
+    P.FollowFocus()
   end
   local dx, dy = 0, 0
   if VRFW_RBC_PanelShift ~= nil then
@@ -670,6 +700,11 @@ function P.Register(stem, owns)
     return
   end
   local id = "chronicle_deluxe.lineup"
+  -- with BetterUI (clean_hud) the card object uses its compact formation layout (content\menus\team_lineup.toml,
+  -- if_mod); its compact-card graft (soccer_common, every menu VM) then hides the name and level of the layers listed
+  -- in EVT_FC_EXTRA, its public hook for other mods' card layers. Without BetterUI the table is never read.
+  EVT_FC_EXTRA = EVT_FC_EXTRA or {}
+  EVT_FC_EXTRA[P.LAYER.CARD] = true
   VRFW_Host.on(stem, "OnInit", {id = id, phase = "before", fn = function()
     reset()
   end})
@@ -707,10 +742,7 @@ function P.Register(stem, owns)
     if a1 ~= P.ROWS or not P.on or P.pending or VRFW_RBC.L.flag then
       return
     end
-    local team = P.ReadFocusedTeam()
-    if team == nil or team.key ~= P.source then
-      P.Draw()
-    end
+    P.FollowFocus()
   end})
   VRFW_Host.on(stem, "Step", {id = id, phase = "after", fn = function()
     if P.on then

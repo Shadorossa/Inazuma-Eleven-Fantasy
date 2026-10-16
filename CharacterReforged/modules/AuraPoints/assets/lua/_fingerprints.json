@@ -19,6 +19,14 @@
   "chunk_crc": 392231094,
   "chunk_size": 845
  },
+ "soccer_battle_menu": {
+  "script": "soccer_battle_menu_0.04.29",
+  "require": [
+   "SetSoccerBattleTeamName"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "soccer_inplay_menu": {
   "script": "soccer_inplay_menu_1.00.48",
   "require": [
@@ -32,6 +40,22 @@
   ],
   "chunk_crc": 108364872,
   "chunk_size": 793
+ },
+ "soccer_menu": {
+  "script": "soccer_menu_0.03.81",
+  "require": [
+   "ChangeTensionMeterLeftTopToRightBottom",
+   "InitializeGlobalValues",
+   "OnCloseLayer"
+  ],
+  "forbid": [
+   "SetSoccerBattleTeamName"
+  ],
+  "ambiguous": [
+   "soccer_menu_replay"
+  ],
+  "chunk_crc": 2036312462,
+  "chunk_size": 1022
  },
  "soccer_team_buff_icon_list_menu": {
   "script": "soccer_team_buff_icon_list_menu_1.01.60.00",

@@ -20,6 +20,10 @@
 -- any chain board, a chain completed, the team's level, a player in the club) are checked when a board is shown
 -- (CH.Sync); once they are all met and a tile linked to it is done it is marked done ("o", kept: it never closes
 -- again), so the tiles behind it open as after a chest.
+-- RANK REWARDS of a match tile ([[VRFW.Chain.RankReward]] / [[VRFW.Chain.Tile.RankReward]]): each entry is paid ONCE per
+-- tile, at the first win with its rank or a better one (CH.PayRank, from CH.Win; paid marks "<tile id>@<rank>" in
+-- "chain.<chain key>.paid"); the items given are kept in "chain.<chain key>.news" until the board screen shows their
+-- windows (CH.News / CH.ClearNews). A bag without room: nothing given, retried when the board is shown.
 -- No engine call at load time.
 if VRFW_Chain == nil then
   local CH = {
@@ -86,6 +90,23 @@ if VRFW_Chain == nil then
     return out
   end
 
+  -- a match tile's rank rewards: "<rank>:<item>:<count>:<kind>:<text id>,..." + their item names ("a|b") ->
+  -- {{rank, id, count, kind ("emblem" / "kit" / "item"), name, text (a menu_text id for the card, 0 = none)}}
+  function CH.ParseRankRewards(enc, names)
+    local out, nm = {}, {}
+    for x in string.gmatch((names or "") .. "|", "([^|]*)|") do
+      nm[#nm + 1] = x
+    end
+    for part in string.gmatch(enc or "", "[^,]+") do
+      local r, id, n, k, tx = string.match(part, "^([%w_]+):(%d+):(%d+):(%a+):?(%d*)$")
+      if r ~= nil then
+        out[#out + 1] = {rank = r, id = tonumber(id), count = math.max(1, tonumber(n) or 1), kind = k, name = nm[#out + 1] or "",
+                         text = tonumber(tx) or 0}
+      end
+    end
+    return out
+  end
+
   -- chain i (0-based) as a board table, nil when it has no board:
   -- {i, key, title, cols, rows, layout ("square" / "hex"), pages = {titles}, start (1-based), tiles = {[1..n] = {id, kind, page, col, row (0-based),
   --  links = {1-based}, game, team, level, difficulty, title, rival, emblem, reward, requires = {{kind, value, name}}}}}
@@ -108,7 +129,7 @@ if VRFW_Chain == nil then
       b.pages[p + 1] = call(CH.CMD.PAGE, i, p) or ""
     end
     for t = 0, ntiles - 1 do
-      local id, kind, page, col, row, links, game, team, level, diff, ttl, rival, emblem, reward, req, reqn, sreward = call(CH.CMD.TILE, i, t)
+      local id, kind, page, col, row, links, game, team, level, diff, ttl, rival, emblem, reward, req, reqn, sreward, rrw, rrn = call(CH.CMD.TILE, i, t)
       local links1 = {}
       for _, x in ipairs(csv(links)) do
         links1[#links1 + 1] = x + 1
@@ -117,7 +138,8 @@ if VRFW_Chain == nil then
                         game = game or 0, team = team or 0, level = level or 0, difficulty = diff or 0, title = ttl or "",
                         rival = rival or "", emblem = emblem or "", reward = reward or "",
                         sreward = type(sreward) == "string" and sreward or "",
-                        requires = requires(type(req) == "string" and req or "", type(reqn) == "string" and reqn or "")}
+                        requires = requires(type(req) == "string" and req or "", type(reqn) == "string" and reqn or ""),
+                        rank_rewards = CH.ParseRankRewards(type(rrw) == "string" and rrw or "", type(rrn) == "string" and rrn or "")}
     end
     CH.boards[i] = b
     CH.Log("board", i, b.key, cols, rows, #b.pages, #b.tiles, "start", b.start)
@@ -376,6 +398,10 @@ if VRFW_Chain == nil then
       old = id
     end
     CH.Log("win", b.key, b.tiles[t].id, "rank", id, "best", old)
+    -- the rank rewards this win earns (first win at that rank or better; a full bag: paid when the board is shown)
+    if #((b.tiles[t] or {}).rank_rewards or {}) > 0 then
+      CH.PayRank(b, t)
+    end
     return old
   end
 
@@ -568,6 +594,108 @@ if VRFW_Chain == nil then
     pcall(funcLuaCommand, CH.AUTO_SAVE)
     CH.Log("chest paid", b.key, table.concat(marks, "/"), table.concat(parts, ", "))
     return given
+  end
+
+  -- ---- rank rewards ---------------------------------------------------------------------------
+  -- the Order of a rank Id (0 = not declared)
+  local function order_of(id)
+    return VRFW_MatchRank ~= nil and VRFW_MatchRank.Order(id) or (({B = 1, A = 2, S = 3})[id] or 0)
+  end
+
+  -- match tile t's rank rewards: {{rank, id, count, kind, name, paid (true / false), earned (its rank or better won)}}
+  function CH.RankRewards(b, t)
+    local tile = b.tiles[t]
+    local out = {}
+    if tile == nil or tile.kind ~= "match" then
+      return out
+    end
+    local m = paid_set(b)
+    local best = CH.Rank(b, t)
+    for _, r in ipairs(tile.rank_rewards or {}) do
+      local o = order_of(r.rank)
+      out[#out + 1] = {rank = r.rank, id = r.id, count = r.count, kind = r.kind, name = r.name, text = r.text or 0,
+                       paid = m[tile.id .. "@" .. r.rank] == true, earned = o > 0 and best >= o}
+    end
+    return out
+  end
+
+  -- the rank rewards of tile t earned and not paid yet
+  local function rank_due(b, t)
+    local out = {}
+    for _, r in ipairs(CH.RankRewards(b, t)) do
+      if r.earned and not r.paid then
+        out[#out + 1] = r
+      end
+    end
+    return out
+  end
+
+  -- the match tiles of board b with earned rank rewards never given (a full bag at the win)
+  function CH.RankUnpaid(b)
+    local out = {}
+    for t, tile in ipairs(b.tiles) do
+      if tile.kind == "match" and #(tile.rank_rewards or {}) > 0 and #rank_due(b, t) > 0 then
+        out[#out + 1] = t
+      end
+    end
+    return out
+  end
+
+  -- give tile t's earned rank rewards once. Returns the rewards given ({} = none due), or nil + "full" (the bag has no
+  -- room for every item: nothing given, retried later). The items join "chain.<key>.news" (CH.News) for the windows.
+  -- `save`: ask for the game's autosave after it (the board screen; after a match the items and the marks are
+  -- committed together with the game's own save)
+  function CH.PayRank(b, t, save)
+    local tile = b.tiles[t]
+    local due = rank_due(b, t)
+    if #due == 0 then
+      return {}
+    end
+    for _, r in ipairs(due) do
+      local ok, fits = pcall(funcLuaCommand, CH.ITEM_FITS, r.id, r.count)
+      if ok and fits == false then
+        CH.Log("rank reward waits: bag full", b.key, tile.id, r.rank, hex(r.id), "x", r.count)
+        return nil, "full"
+      end
+    end
+    local m = paid_set(b)
+    local parts, news = {}, CH.NewsText(b)
+    for _, r in ipairs(due) do
+      pcall(funcLuaCommand, CH.ITEM_ADD, r.id, r.count)
+      m[tile.id .. "@" .. r.rank] = true
+      parts[#parts + 1] = r.rank .. " item " .. hex(r.id) .. " x" .. r.count
+      news = news .. (news ~= "" and "," or "") .. string.format("%d:%d", r.id, r.count)
+    end
+    local ids = {}
+    for id in pairs(m) do
+      ids[#ids + 1] = id
+    end
+    table.sort(ids)
+    pcall(funcLuaCommand, CH.SAVE_SET, CH.OWNER, "chain." .. b.key .. ".paid", table.concat(ids, ";"), 0)
+    pcall(funcLuaCommand, CH.SAVE_SET, CH.OWNER, "chain." .. b.key .. ".news", news, 0)
+    if save then
+      pcall(funcLuaCommand, CH.AUTO_SAVE)
+    end
+    CH.Log("rank reward paid", b.key, tile.id, table.concat(parts, ", "))
+    return due
+  end
+
+  function CH.NewsText(b)
+    local ok, s = pcall(funcLuaCommand, CH.SAVE_GET, CH.OWNER, "chain." .. b.key .. ".news", "")
+    return (ok and type(s) == "string") and s or ""
+  end
+
+  -- the rank-reward items given since the board was last shown: {{id, count}}
+  function CH.News(b)
+    local out = {}
+    for id, n in string.gmatch(CH.NewsText(b), "(%d+):(%d+)") do
+      out[#out + 1] = {id = tonumber(id), count = tonumber(n)}
+    end
+    return out
+  end
+
+  function CH.ClearNews(b)
+    pcall(funcLuaCommand, CH.SAVE_SET, CH.OWNER, "chain." .. b.key .. ".news", "", 0)
   end
 
   -- every match tile won

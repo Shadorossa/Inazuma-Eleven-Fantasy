@@ -1,13 +1,13 @@
 # Goalkeeper Barrier: the bronze barrier sections of each keeper's bar on the scoreboard (content\menus\
 # goalkeeper_barrier_hud.toml, graft research/grafts/goalkeeper_barrier_hud, docs/game/mechanics/gk-barrier.md §4):
-# only the bar's core turns bronze, both ends slanted as the bar's own; one sprite per clip step, all the same quad.
+# the top barrier share of the bar's own fill, only its core bronze, both ends slanted; one sprite per clip step.
 # Built by research/scripts/goalkeeper_barrier_segment_build.py (do not edit by hand).
 schema = "VRFW.image/1"
 
 [[texture]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_segment"
-size = [256, 320]
+size = [256, 256]
 png = "goalkeeper_barrier/barrier_segment.png"
 
 [[sprite]]
@@ -16,207 +16,231 @@ name = "goalkeeper_barrier_own_01"
 texture = "goalkeeper_barrier_segment"
 x = 0
 y = 0
-size = [100, 7]
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_02"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 12
-size = [100, 7]
+y = 8
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_03"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 24
-size = [100, 7]
+y = 16
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_04"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 36
-size = [100, 7]
+y = 24
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_05"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 48
-size = [100, 7]
+y = 32
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_06"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 60
-size = [100, 7]
+y = 40
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_07"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 72
-size = [100, 7]
+y = 48
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_08"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 84
-size = [100, 7]
+y = 56
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_09"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 96
-size = [100, 7]
+y = 64
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_10"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 108
-size = [100, 7]
+y = 72
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_11"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 120
-size = [100, 7]
+y = 80
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_12"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 132
-size = [100, 7]
+y = 88
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_13"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 144
-size = [100, 7]
+y = 96
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_14"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 156
-size = [100, 7]
+y = 104
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_15"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 168
-size = [100, 7]
+y = 112
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_16"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 180
-size = [100, 7]
+y = 120
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_17"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 192
-size = [100, 7]
+y = 128
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_18"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 204
-size = [100, 7]
+y = 136
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_19"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 216
-size = [100, 7]
+y = 144
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_20"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 228
-size = [100, 7]
+y = 152
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_21"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 240
-size = [100, 7]
+y = 160
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_22"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 252
-size = [100, 7]
+y = 168
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_23"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 264
-size = [100, 7]
+y = 176
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_24"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 276
-size = [100, 7]
+y = 184
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_25"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 288
-size = [100, 7]
+y = 192
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_own_26"
 texture = "goalkeeper_barrier_segment"
 x = 0
-y = 300
-size = [100, 7]
+y = 200
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_own_27"
+texture = "goalkeeper_barrier_segment"
+x = 0
+y = 208
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_own_28"
+texture = "goalkeeper_barrier_segment"
+x = 0
+y = 216
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_own_29"
+texture = "goalkeeper_barrier_segment"
+x = 0
+y = 224
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
@@ -224,204 +248,228 @@ name = "goalkeeper_barrier_rival_01"
 texture = "goalkeeper_barrier_segment"
 x = 128
 y = 0
-size = [100, 7]
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_02"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 12
-size = [100, 7]
+y = 8
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_03"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 24
-size = [100, 7]
+y = 16
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_04"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 36
-size = [100, 7]
+y = 24
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_05"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 48
-size = [100, 7]
+y = 32
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_06"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 60
-size = [100, 7]
+y = 40
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_07"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 72
-size = [100, 7]
+y = 48
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_08"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 84
-size = [100, 7]
+y = 56
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_09"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 96
-size = [100, 7]
+y = 64
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_10"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 108
-size = [100, 7]
+y = 72
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_11"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 120
-size = [100, 7]
+y = 80
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_12"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 132
-size = [100, 7]
+y = 88
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_13"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 144
-size = [100, 7]
+y = 96
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_14"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 156
-size = [100, 7]
+y = 104
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_15"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 168
-size = [100, 7]
+y = 112
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_16"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 180
-size = [100, 7]
+y = 120
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_17"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 192
-size = [100, 7]
+y = 128
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_18"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 204
-size = [100, 7]
+y = 136
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_19"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 216
-size = [100, 7]
+y = 144
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_20"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 228
-size = [100, 7]
+y = 152
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_21"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 240
-size = [100, 7]
+y = 160
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_22"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 252
-size = [100, 7]
+y = 168
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_23"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 264
-size = [100, 7]
+y = 176
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_24"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 276
-size = [100, 7]
+y = 184
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_25"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 288
-size = [100, 7]
+y = 192
+size = [89, 7]
 
 [[sprite]]
 atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
 name = "goalkeeper_barrier_rival_26"
 texture = "goalkeeper_barrier_segment"
 x = 128
-y = 300
-size = [100, 7]
+y = 200
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_rival_27"
+texture = "goalkeeper_barrier_segment"
+x = 128
+y = 208
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_rival_28"
+texture = "goalkeeper_barrier_segment"
+x = 128
+y = 216
+size = [89, 7]
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "goalkeeper_barrier_rival_29"
+texture = "goalkeeper_barrier_segment"
+x = 128
+y = 224
+size = [89, 7]

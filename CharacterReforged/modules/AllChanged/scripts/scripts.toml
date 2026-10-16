@@ -1,8 +1,0 @@
-# Settings of All Changed's script (kind VRFW.script/1, docs/framework/scripts.md §2): scripts/all_changed.lua is the
-# entry point, lib/cards.lua its library. A creation screen's candidate list reads chara_param (about 6000 rows) once.
-schema = "VRFW.script/1"
-
-[settings]
-budget = 2000000
-memory_kb = 32768
-allow = ["effects", "save"]

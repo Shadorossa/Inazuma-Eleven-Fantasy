@@ -469,6 +469,19 @@ zh_hans = "、"
 zh_hant = "、"
 
 # a required starter's line (`[[VRFW.MatchChallenge.Required]]` without its own Text): %s = 'N given character(s)' (vrfw_mc_f_chara), then the formation places (position words joined by 'or')
+# the challenge's one-line label plus a required starter's `Label` while he applies («Mínimo 2 de GO + Victorio»)
+[[row]]
+id = "vrfw_mc_with_required"
+es = "%s + %s"
+en = "%s + %s"
+fr = "%s + %s"
+de = "%s + %s"
+it = "%s + %s"
+pt = "%s + %s"
+ja = "%s＋%s"
+zh_hans = "%s＋%s"
+zh_hant = "%s＋%s"
+
 [[row]]
 id = "vrfw_mc_required"
 es = "Titular obligatorio: %s"

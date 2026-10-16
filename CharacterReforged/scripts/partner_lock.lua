@@ -10,7 +10,7 @@
 --   badge_sprite = "all_miximaxed_partner_badge"   # the plate's sprite on the badge atlas
 --                                                 # #/menu/102_team/team11/team11_05/team11_05.g4tx (160 x 52 px PNG,
 --                                                 # drawn at 80 x 26; the declaring mod adds it with the image type)
---   badge_text = "all_miximaxed.partner_badge"     # text key of the plate's word
+--   badge_text = "aura_reworked.miximax_partner_badge" # text key of the plate's word
 --   order = 10                                     # a card locked by two systems shows the lower order's plate
 --   off = false                                    # true: no lock for this system (a game mode may switch one off)
 --

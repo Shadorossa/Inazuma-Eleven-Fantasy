@@ -64,36 +64,44 @@ if type(retail_reserved) == "function" then
   end
 end
 
--- The gap. With BetterUI the two big rows sit above four square boxes (layer clean_hud_chr_box, its «!» layer
--- clean_hud_chr_box_notice) placed by its locator; with the gacha row gone the boxes would hang one row lower than they
--- need. After the retail / BetterUI setup of each box instance, the instance is moved up by the row pitch of that
--- locator (CMND_GET_LAYER_LOCAL_POS read, CMND_SET_LAYER_LOCAL_POS written back one pitch higher; an instance already
--- moved is left alone). Without BetterUI there are no such layers and nothing moves.
-local BOX_LAYERS = {
-  [1676790659] = true,                -- clean_hud_chr_box
-  [791190873] = true,                 -- clean_hud_chr_box_notice
-}
-local GET_LOCAL_POS = 2834507455      -- CMND_GET_LAYER_LOCAL_POS (layer, instance) -> x, y, z
-local SET_LOCAL_POS = 1389957207      -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, instance)
-local ROW_PITCH = 108                 -- layout px between the two big rows (Cadena de Crónica -222, Universo -330)
-local moved = {}                      -- layer .. ":" .. instance -> the y it was moved to
+-- The gap. The gacha row was the second big row; everything under it hangs one row lower than it needs.
+--   * With BetterUI the four square boxes (layer clean_hud_chr_box) sit under the big rows: each box instance moves up
+--     one row pitch after its setup. Its «!» notice (layer clean_hud_chr_box_notice) is attached to its box, so it follows
+--     by itself and is NOT moved here (moving it too put the notices one pitch above their boxes).
+--   * Without BetterUI the retail small rows (layer mainmenu90_12_list_item_small, their «!» is part of the row) move up
+--     the same way.
+-- The position is written as the instance's first-seen position plus the pitch (never read again after a move), so the
+-- setup and the open of a layer, or a reopen of the menu, move an instance exactly once. Nothing moves while the
+-- gacha is not covered.
+local BOX_LAYER = 1676790659              -- clean_hud_chr_box
+local SMALL_LIST = 530619243              -- mainmenu90_12_list_item_small
+local GET_LOCAL_POS = 2834507455          -- CMND_GET_LAYER_LOCAL_POS (layer, instance) -> x, y, z
+local SET_LOCAL_POS = 1389957207          -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, instance)
+local ROW_PITCH = 108                     -- layout px between the two big rows (Cadena de Crónica -222, Universo -330)
+local first_seen = {}                     -- layer .. ":" .. instance -> {x, y, z} before any move
+
+local function moves_with_gap(layer)
+  if layer == BOX_LAYER then
+    return true
+  end
+  return layer == SMALL_LIST and rawget(_ENV, "CLEAN_HUD_CHR_BOXES") ~= true
+end
 
 local function close_gap(layer, instance)
-  if not BOX_LAYERS[layer] or type(instance) ~= "number" or not covered() then
-    return
-  end
-  local ok, x, y, z = pcall(funcLuaMenuCommand, GET_LOCAL_POS, layer, instance)
-  if not ok or type(x) ~= "number" or type(y) ~= "number" then
+  if type(instance) ~= "number" or not moves_with_gap(layer) or not covered() then
     return
   end
   local key = layer .. ":" .. instance
-  if moved[key] ~= nil and math.abs(y - moved[key]) < 0.5 then
-    return
+  local base = first_seen[key]
+  if base == nil then
+    local ok, x, y, z = pcall(funcLuaMenuCommand, GET_LOCAL_POS, layer, instance)
+    if not ok or type(x) ~= "number" or type(y) ~= "number" then
+      return
+    end
+    base = {x, y, type(z) == "number" and z or 0}
+    first_seen[key] = base
   end
-  local target = y + ROW_PITCH
-  if pcall(funcLuaMenuCommand, SET_LOCAL_POS, layer, x, target, type(z) == "number" and z or 0, instance) then
-    moved[key] = target
-  end
+  pcall(funcLuaMenuCommand, SET_LOCAL_POS, layer, base[1], base[2] + ROW_PITCH, base[3], instance)
 end
 
 for _, name in ipairs({"OnSetupLayer", "OnOpenLayer"}) do

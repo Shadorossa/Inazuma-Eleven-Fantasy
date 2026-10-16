@@ -1,0 +1,48 @@
+schema = "VRFW.character/2"
+if_mod = "all_miximaxed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Miximaxed › the character the miximax carrier wmm_evt names as its variant (techniques/carriers.toml, card
+# 0x8493F412, chara_base evt_mx 0x92599887): a copy of the retail Mix-Max variant of Mark Evans + Arion (c05029460),
+# used only when the carrier runs WITHOUT a stored fusion (with one, the framework builds the base himself in the
+# partner's colours, docs/framework/types/transform.md §7.6). Never a roster card. Moved from Inazuma Fantasy's
+# characters/14_cs/sub_character.toml on 2026-10-14 (same ids; the alias below keeps any number derived from the
+# old full id, docs/framework/ids-and-numbers.md §3).
+default_lang = "en"
+
+[[character]]
+name = "miximax_carrier"                                     # Mark Evans
+based_on = "c05029460"                                    # template: Mark Evans
+order = 46
+
+  [character.base]
+  id = 0x92599887
+  name = "evt_mx"
+  flag_31 = 0
+
+  [[character.cards]]
+  id = 0x8493F412                                         # MF/DF · mountain
+  from = 0x8B9AC9C0                                       # template: Mark Evans (c05029460)
+  order = 58
+  growth_pattern = 1
+  growth = "normal"
+  stats = { kick = 247, control = 269, technique = 213, pressure = 235, physical = 184, intelligence = 278, agility = 215, luck = 186, freedom = 225 }  # own stats: copy of c05029460 (GX)
+  moves = [
+    { move = 0x501F2F12, level = 1 },                     # Heel Flick
+    { move = 0x6F918884, level = 13 },                    # Easy Breezy
+    { move = 0x6C6C932B, level = 20 },                    # Megaton Head
+    { move = 0x9349F1DA, level = 30 },                    # Zephyr Shot
+    { move = 0xA9E3374B, level = 38 },                    # Cyclone Sprint
+    { move = 0xC755E805, level = 43 },                    # Triple Threat
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0, level = 0 },                              # (empty)
+    { move = 0x62256EE2, level = 1 },                     # Arch Pegasus [aura]
+  ]
+
+# All Miximaxed's id (2026-10-14 .. 2026-10-16) -> Aura Reworked's, then Inazuma Fantasy's older id (the chain is
+# followed both ways)
+[[alias]]
+old = "all_miximaxed.miximax_carrier"
+new = "aura_reworked.miximax_carrier"
+
+[[alias]]
+old = "inazuma_fantasy.mark_evans_4"
+new = "all_miximaxed.miximax_carrier"

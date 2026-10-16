@@ -7,12 +7,15 @@
 -- * rows = min(team limit, the portrait layer's open instances: content\menus\buff_row.toml), never below the retail
 --   count; t5 grows inside the wrapper (match time), never at chunk load. No limit (-1): every open instance.
 -- * AuraPoints_BuffRow.Rows(): the entries of the row now (read by aura_points_buff_bar.lua for its bars).
+-- * AuraPoints_BuffRow.PoolsOn(): the mod's PEG or SP part is on (CMND_AURAPOINTS_ACTIVE_PARTS): while not, or not
+--   known yet, the row keeps the retail count and aura_points_buff_bar.lua draws nothing.
 -- Nothing at chunk load but the debug library's upvalue search; engine calls only inside the wrapper, through pcall.
 @UPV@
 AuraPoints_BuffRow = AuraPoints_BuffRow or {}
 local R = AuraPoints_BuffRow
 
 local CMD_TEAM_MAX = @crc:CMND_VRFW_FORM_TEAM_MAX@
+local CMD_PARTS = @crc:CMND_AURAPOINTS_ACTIVE_PARTS@ --[[the mod's parts this start: ok, peg, sp, pe]]
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
@@ -30,10 +33,26 @@ function R.Instances()
   return n
 end
 
+-- the mod's PEG or SP part is on; asked until the command answers (a busy script answers nothing for that frame: false
+-- meanwhile), 600 frames without an answer: on
+function R.PoolsOn()
+  if R.pools_on ~= nil then
+    return R.pools_on
+  end
+  R.asks = (R.asks or 0) + 1
+  local ok, answered, peg, sp = pcall(funcLuaCommand, CMD_PARTS)
+  if ok and answered == true then
+    R.pools_on = peg == 1 or peg == true or sp == 1 or sp == true
+  elseif R.asks >= 600 then
+    R.pools_on = true
+  end
+  return R.pools_on == true
+end
+
 -- the entries the row may show now
 function R.Rows()
   local base = R.retail or 0
-  if R.t5 == nil then
+  if R.t5 == nil or not R.PoolsOn() then
     return base
   end
   if R.cap == nil then

@@ -1,0 +1,35 @@
+# Aura Reworked › its scripts (kind VRFW.script/1, docs/framework/scripts.md §2): one entry point per part, run only
+# while that part is on (the `if_mod` of each entry is the part's switch, docs/framework/merged-mods.md); the
+# libraries (lib\) are required by them. Each entry also checks its switch itself.
+schema = "VRFW.script/1"
+
+[settings]
+budget = 2000000
+memory_kb = 32768
+allow = ["effects", "save", "flags"]
+
+# Souls Rework: totem levels, the skill reel, the level-up pop
+[[script]]
+file = "souls_rework.lua"
+if_mod = "souls_rework"
+
+# All Changed: the custom «Modo cambio» store and swap (a creation screen's candidate list reads chara_param once)
+[[script]]
+file = "all_changed.lua"
+allow = ["effects", "save"]
+if_mod = "all_changed"
+
+# All Miximaxed: the store of a created pair, the fusion rules, the creation scene
+[[script]]
+file = "miximax.lua"
+if_mod = "all_miximaxed"
+
+# All Keshin Armed: the «Armadura» tag of Character Reforged's player page
+[[script]]
+file = "armour_tag.lua"
+if_mod = "all_keshin_armed"
+
+# All Keshin Armed: the option «Only the keshin's move while it is out»
+[[script]]
+file = "keshin_moves.lua"
+if_mod = "all_keshin_armed"

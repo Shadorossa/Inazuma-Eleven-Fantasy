@@ -1,0 +1,25 @@
+# VR-Framework: the focus battle HUD hidden during an aura cut-in. Retail closes the focus battle menu's layers (the
+# stopwatch / «¡ELIGE!» guide, the passout limit marker, the player plates, the cover line numbers) in
+# OnDecideFocusActionSkill before a special move's cut-in; an aura summon (keshin / armour / miximax / totem / mode
+# change) taken out of the duel's choice by [VRFW.DuelAura] plays its cut-in with the duel still on, so those layers
+# stayed drawn over it. While the framework's focus hold reports its cut-in playing (CMND_VRFW_FOCUS_HOLD, the same
+# hold that freezes the focus timer), every visible instance of this menu's layers is hidden and remembered; when the
+# cut-in ends they are shown again (only those still open), so the duel resumes with the HUD as it was.
+# Without the command (hold not installed) nothing changes. Wrapper only (PostStep, after the other wrappers).
+name = "vrfw_focus_hud_cutin"
+mod = "vr_framework"
+order = 950
+module = ""
+requires = []
+conflicts = []
+wraps = ["PostStep"]
+description = "Focus battle: the focus HUD is hidden while an aura summon's cut-in plays, restored after it"
+
+[[files]]
+stem = "soccer_focus_battle_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "vrfw_focus_hud_cutin.lua"
+  marker = "vrfw_focus_hud_cutin"
+  crc = "none"

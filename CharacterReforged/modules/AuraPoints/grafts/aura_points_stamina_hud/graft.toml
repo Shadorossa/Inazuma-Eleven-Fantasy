@@ -1,0 +1,55 @@
+# Aura Points' PE bar on the match HUD (the match resource aura_points.pe; docs/game/mechanics/match-stamina.md
+# §13, docs/game/mechanics/entrenamiento-chrono-stone.md §4): a thin yellow PE bar under the controlled player's face
+# bubble (layers stamina_points_pe_bar / _shine / _label of the mod's content\menus\pe_bar.toml, sprites in btl06_13:
+# content\images\menu\02_btl\btl06\btl06_13\stamina_points_bars.toml), that bubble at 0.82 with its pointer kept on
+# the player, and no team dash ring (no team dash fuel: content\params\pe_no_dash_gauge.toml). Value from the mod's
+# command CMND_AURAPOINTS_STAMINA (features\pe\scripts\stamina.lua). With the mod's option «pe» off
+# (CMND_AURAPOINTS_ACTIVE_PARTS) the bubble, the ring and the bar stay retail. The keshin PEG / totem SP bar under it is
+# the graft aura_points_hud (it reads this block's globals EVT_PE_FRAME / EVT_PE_BarPos / EVT_PE_BAR_SHOWN /
+# EVT_PE_FACE_SCALE). Was Inazuma Fantasy's graft stamina_hud until 2026-10-14 and the mod Stamina Points' graft
+# stamina_points_hud until 2026-10-16 (docs/refactor/aura-mods-split.md «Stamina Points»). Wrappers only; nothing at
+# chunk load.
+name = "aura_points_stamina_hud"
+mod = "aura_points"
+order = 300
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["UpdateDashRecastMeter", "UpdateScreenOutCtrlCharaIcon", "PostStep"]
+description = "Aura Points: PE bar under the controlled player's face bubble (smaller bubble), no team dash ring"
+
+[[files]]
+stem = "soccer_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_stamina_hud.lua"
+  marker = "AuraPoints stamina hud"
+
+# twins of soccer_inplay_menu (same include, same setting): the loader may hand the match VM any of these folders
+# (hud_layout round 3 finding; menu_assemble.py lists them as AMBIGUOUS fingerprints). The battle group also has the
+# face bubble and the bar layer.
+[[files]]
+stem = "soccer_battle_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_stamina_hud.lua"
+  marker = "AuraPoints stamina hud"
+
+[[files]]
+stem = "soccer_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_stamina_hud.lua"
+  marker = "AuraPoints stamina hud"
+
+# twin of soccer_inplay_menu: the loader may hand the match VM this folder (hud_layout round 3 finding)
+[[files]]
+stem = "soccer_zigzag_dribble_training_inplay_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_points_stamina_hud.lua"
+  marker = "AuraPoints stamina hud"

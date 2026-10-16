@@ -130,3 +130,9 @@ handler = "AuraPoints.Peg"
 name = "CMND_AURAPOINTS_PEG_INFO"
 aliases = ["CMND_EVT_PEG_INFO"]
 handler = "AuraPoints.PegInfo"
+
+# CMND_AURAPOINTS_ACTIVE_PARTS() -> ok, peg, sp, pe (1 / 0): the mod's parts this start (options.toml rows peg / sp /
+# pe). The buff row grafts (aura_points_buff_bar) keep the retail row and draw no bar while PEG and SP are both off.
+[[VRFW.Command]]
+name = "CMND_AURAPOINTS_ACTIVE_PARTS"
+handler = "AuraPoints.ActiveParts"

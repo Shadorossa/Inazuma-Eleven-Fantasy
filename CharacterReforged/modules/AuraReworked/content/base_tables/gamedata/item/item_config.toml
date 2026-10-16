@@ -1,0 +1,66 @@
+schema = "VRFW.base_table/1"
+# Aura Reworked › the items of its parts, added BY KEY to the game's special-skill item list
+# (docs/framework/types/base_table.md §3); each [[keyed]] block belongs to one part (its `if_mod`).
+
+# ---------------------------------------------------------------- All Changed
+# All Changed: the items of the «Modo cambio» commands (content\techniques\auras\mode_change.toml), added BY KEY to the
+# game's special-skill item list (docs/framework/types/base_table.md §3), so they stand on the base game and on top of
+# any mod's whole edition of item_config. Moved from Inazuma Fantasy's item_config splice on 2026-10-14: the same ids
+# (crc32 of the keys) and catalog numbers (6960-6968), so the saves that own them keep them. sub (skill_kind) 178 =
+# mode change; icon 4006 = the mode change's; linked = the command itself.
+
+[[keyed]]
+table = "item/item_special_skill"
+if_mod = "all_changed"                      # the part's switch (Mods options)
+  [[keyed.add]]                         # wmc_evt_create
+  key = 0xD4A87F7F
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6960, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt_create", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0xD4A87F7F, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt0
+  key = 0x2CFBD0A6
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6961, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt0", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0x2CFBD0A6, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt1
+  key = 0x5BFCE030
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6962, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt1", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0x5BFCE030, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt2
+  key = 0xC2F5B18A
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6963, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt2", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0xC2F5B18A, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt3
+  key = 0xB5F2811C
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6964, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt3", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0xB5F2811C, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt4
+  key = 0x2B9614BF
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6965, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt4", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0x2B9614BF, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt5
+  key = 0x5C912429
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6966, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt5", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0x5C912429, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt6
+  key = 0xC5987593
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6967, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt6", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0xC5987593, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmc_evt7
+  key = 0xB29F4505
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6968, category = 160, skill_kind = 178, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "wmc_evt7", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 4006, linked = 0xB29F4505, flag_17 = 0 }
+
+# ---------------------------------------------------------------- All Miximaxed
+# All Miximaxed › the items of the two miximax carriers (techniques/carriers.toml): a technique id is also its item id
+# (ITEM_SPECIAL_SKILL_INFO). Rows by key, added after every mod's positional edition of item_config. Moved from
+# Inazuma Fantasy's item_config splice on 2026-10-14: the same ids, keys and catalog numbers (6800 «Crear miximax»
+# sorts before the retail miximax items 6873…; the carrier has none: never listed), so saves keep their copies.
+
+[[keyed]]
+table = "item/item_special_skill"
+if_mod = "all_miximaxed"                    # the part's switch (Mods options)
+  [[keyed.add]]                         # wmm_evt_create
+  key = 0x3D99AC61
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 6800, category = 160, skill_kind = 173, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = { text = "wmm_evt_create" }, rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 1154, linked = 0x3D99AC61, flag_17 = 0 }
+
+  [[keyed.add]]                         # wmm_evt
+  key = 0x9214E3C9
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 0, category = 160, skill_kind = 173, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = { text = "wmm_evt" }, rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 1154, linked = 0x9214E3C9, flag_17 = 0 }

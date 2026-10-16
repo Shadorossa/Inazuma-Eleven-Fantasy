@@ -34,6 +34,7 @@ Chain = "ie1_sonny"
 Name = "ie1_sonny"
 TemplateGame = "fbtl_cro01_120_010"
 Difficulty = 4
+RivalStats = "normal"            # every rival with an ordinary team's stats (the legend teams' rates 9.3-9.6 out)
   [VRFW.Chain.Title]
   es = "Ruta prémium de Sonny"
   en = "Sonny's Premium Route"
@@ -47,6 +48,18 @@ Difficulty = 4
   [VRFW.Chain.Board]
   Cols = 5
   Rows = 3
+
+  # the first win of each match at rank A gives the rival's crest (from the rival team at boot), at rank S one True
+  # Hissatsu «Libro de mejora de supertécnica» (a special move + 1 grade; only with True Hissatsu active); once each,
+  # a win at S gives both (VRFW chain-board.md §2d). A tile can declare its own.
+  [[VRFW.Chain.RankReward]]
+  Rank = "A"
+  Rival = "emblem"
+  [[VRFW.Chain.RankReward]]
+  Rank = "S"
+  Item = "abl_ub000001"                  # true_hissatsu.technique_upgrade_book (key_id: crc32 of its key)
+  IfMod = "true_hissatsu"
+  Text = "chronicle_deluxe_chain_prize_upgrade_book"
 
   [[VRFW.Chain.Tile]]
   Id = "start"

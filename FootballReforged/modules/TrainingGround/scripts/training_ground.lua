@@ -26,7 +26,7 @@
 -- (rule flag training_ground.panel); the cooldown rows set the recast of the moves installed at kick-off (rule engine
 -- trigger `recast`, long shots = skill effect bit 4 of the game's skill table); «tensión siempre al máximo» tops the
 -- user's tension up; «sin gasto de PE» holds the user's players' PE drain at 0 and refills it (VRFW.resource, the mod
--- Stamina Points' PE); PEG / SP and «todos los tiros como tiros largos»: rule flags (the mod Aura Points' pools, the
+-- Aura Points' PE); PEG / SP and «todos los tiros como tiros largos»: rule flags (the mod Aura Points' pools, the
 -- framework's shot rules). Every effect stops at the end of the match. The way out: the window's «Salir» /
 -- «Reiniciar» leave the match the retail way (CMND_VRFW_MATCH_EXIT) and the friendly's return = "menus" brings the
 -- player back to the hub he started from with the in-memory game untouched; the drill never writes the save while it
@@ -44,7 +44,7 @@ local CFG = (VRFW.files and VRFW.files.config and VRFW.files.config("training_gr
 local SAVE_KEY = "training_field.settings"
 local PANEL_FLAG = "training_ground.panel"
 local ARMED_FLAG = "training_ground.armed"  -- 1 while a training match runs (the HUD polls the panel key only then)
-local PE = "stamina_points.pe"           -- the mod Stamina Points' match PE (none without it)
+local PE = "aura_points.pe"              -- the mod Aura Points' match PE (none without it or with its option «pe» off)
 local LONG_SHOT_BIT = 4                    -- skill_effect_bit_flag: long shot (hissatsu-balance.md §col 9)
 local TENSION_UNITS = 300                  -- a full gauge in the HUD's units (maxTensionPower)
 local REFILL_MS = tonumber(CFG.refill_every_ms) or 400
@@ -564,7 +564,7 @@ VRFW.on("actor_tick", function(ev)
 end)
 
 -- a move's PE price (pe_sacrifice moves) comes straight back
-VRFW.on("resource:stamina_points.pe:paid", function(ev)
+VRFW.on("resource:aura_points.pe:paid", function(ev)
   if not armed or ev.actor == nil or ev.actor.side ~= "user" or load_settings().free_pe ~= true then return nil end
   local ok, v = pcall(VRFW.resource.get, PE, ev.actor.handle)
   if ok and type(v) == "table" and type(v.max) == "number" then

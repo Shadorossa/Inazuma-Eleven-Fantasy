@@ -2,13 +2,13 @@ id = "player_training"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml). «Player Training» is a provisional name (owner may rename it).
 name = "Player Training"
-version = "1.0.13"
+version = "1.0.15"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training, no training beans come from matches, boxes, quests, trophies or gifts, and the bean exchange («Canjear judías») is gone from every screen. Hero, Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
+description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training, no training beans come from matches, boxes, quests, trophies or gifts, and the bean exchange («Canjear judías») is gone from every screen. Hero cards train like any player; Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [PlayerTraining.X], Lua PlayerTraining.X, commands CMND_PLAYERTRAINING_*, state
 # player_training.*); never VRFW. The old names CMND_EVT_TRAIN_* stay as command aliases (the game Lua calls them).
 prefix = "PlayerTraining"
@@ -18,6 +18,7 @@ folder = "PlayerTraining"
 # rules docs/game/mechanics/training-classic.md, stat-training.md). Standard mod layout (docs/framework/mod-layout.md):
 #   config.toml                          [training]: the rule (trade / pool / pairs), the floor, the max value, the
 #                                        rarities that cannot be trained
+#                                        (Diamond, Prime) and the Hero rule for a card with no stored Libertad
 #   scripts\player_training.lua (+ lib\) the run time: sessions, rules (lib\training_rules.lua), the Suerte blob
 #                                        training.json (lib\training_store.lua), the game's character objects
 #                                        (lib\chara_view.lua); the per-card values (Libertad = chara_param col 54,
@@ -61,6 +62,8 @@ folder = "PlayerTraining"
 # de tu jugador» (text evt_tr_mode_guide_short); position labels evt_tr_pos_gk / df / mf / fw.
 # 1.0.9: the position tag re-placed every frame at the bar's right end (the retail tag slid to its own place when it opened).
 lua_early = true
+# 1.0.15: Hero cards (rarity 5-7) can be trained: config.toml locked_rarities = Diamond, Prime only; the retail Hero rows
+# store Libertad 0, so their Freedom is derived (derived_freedom_rarities, lib/card_stats.lua) and grows with the level.
 # 1.0.10 (vr_framework 2.4.133: [[VRFW.MatchDropRemove]]): Chronicle matches drop no training beans.
 # 1.0.13: the «Canjear judías» button guide is not drawn on any screen (bag, Mercado, spirit list, rarity-up screen,
 # skill board): the same _all file takes its entry out of the footer guide lists.

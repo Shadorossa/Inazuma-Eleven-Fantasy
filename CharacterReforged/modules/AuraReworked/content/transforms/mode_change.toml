@@ -1,0 +1,13 @@
+schema = "VRFW.transform/2"
+if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Changed › the mode change's pseudo-items in the game's ability lists (docs/game/mods/all-changed.md; the
+# transform type's [ability_list], merged over every mod): the carriers a player's change uses (wmc_evt0..7) are never
+# listed (the swap holds them, not the player's moves); the mode change items pass the move type / element filter of a
+# picker that lists mode changes (their linked move is themselves, no SKILL_INFO row). «Crear nuevo cambio»
+# (wmc_evt_create) is listed only while a creation screen asks for it (UI flag evt_mx_list_create: Character Reforged's
+# create entry on the skill board, content\pairing\change.toml; Inazuma Fantasy's Hiper picker).
+[ability_list]
+create = ["wmc_evt_create"]
+create_flag = "evt_mx_list_create"
+hide = ["wmc_evt0", "wmc_evt1", "wmc_evt2", "wmc_evt3", "wmc_evt4", "wmc_evt5", "wmc_evt6", "wmc_evt7"]
+filter_pass = ["wmc_evt_create", "wmc_evt0", "wmc_evt1", "wmc_evt2", "wmc_evt3", "wmc_evt4", "wmc_evt5", "wmc_evt6", "wmc_evt7"]

@@ -17,6 +17,14 @@
   ],
   "ambiguous": []
  },
+ "activity_telop_menu": {
+  "script": "activity_telop_menu_1.03.30.00",
+  "require": [
+   "PlayStampAnime"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "chara_bank_menu": {
   "script": "chara_bank_menu_6.00.09.00",
   "require": [
@@ -37,6 +45,14 @@
   "script": "chronicle_mode_top_menu_6.00.06.00",
   "require": [
    "WaitCaravanModelLoad"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "notification_log": {
+  "script": "notification_log_3.00.07.00",
+  "require": [
+   "SetupLogTextFontStyle"
   ],
   "forbid": [],
   "ambiguous": []
@@ -87,6 +103,14 @@
    "OnChangeFocus",
    "newSwapBgTextureInfo"
   ],
+  "ambiguous": []
+ },
+ "rpg_info_window": {
+  "script": "rpg_info_window_1.04.23.01",
+  "require": [
+   "SetPurposeText"
+  ],
+  "forbid": [],
   "ambiguous": []
  },
  "scene_archive_menu": {
@@ -165,6 +189,22 @@
   "script": "soccer_vs_cpu_list_menu_5.00.22.00",
   "require": [
    "UpdateDifficult"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "story_mode_top_menu": {
+  "script": "story_mode_top_menu_7.00.10.00",
+  "require": [
+   "GoToStory"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "talk_icon": {
+  "script": "talk_icon_0.08.93",
+  "require": [
+   "OnOpenButtonGuideLayer"
   ],
   "forbid": [],
   "ambiguous": []

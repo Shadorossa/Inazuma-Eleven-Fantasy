@@ -1,13 +1,13 @@
 id = "goalkeeper_barrier"
 # name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Goalkeeper Barrier"
-version = "1.0.7"
+version = "1.0.11"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Every keeper's barrier is the top 25 % of his bar on the scoreboard, drawn bronze: while his bar is above 75 % the shots he faces lose power (÷ 1.75); below that they keep their full power. A block move of his team makes his next keeper move 30 % cheaper in tension."
+description = "Every keeper's barrier is the top 25 % of his bar on the scoreboard, drawn bronze: while his bar is above 75 % the shots he faces lose power (÷ 1.4); below that they keep their full power. A block move of his team makes his next keeper move 30 % cheaper in tension."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [GoalkeeperBarrier.X], Lua GoalkeeperBarrier.X, commands CMND_GOALKEEPERBARRIER_*,
 # tables GoalkeeperBarrier.*); never VRFW.
 prefix = "GoalkeeperBarrier"

@@ -3,8 +3,9 @@
 -- util_pc_dock.lua (research/grafts/passive_config/gen_hooks.py fills the @crc / @ICONS@ placeholders; edit this
 -- file, then run the script).
 -- 2026-10-08 back to the ORIGINAL design (Inazuma Fantasy 2026-09-28, ff3bb93934): setting type 9 («Pasivas
--- heredadas», renamed «Configuración de pasivas») is offered to every player the plugin configures and hidden for
--- coaches, managers and players of a mode's reserved slot; type 10 (the inheritance trash button) is gone. Choosing
+-- heredadas», renamed «Configuración de pasivas») is offered to every player the configurator handles (also a coach,
+-- the leader card, and a manager: their slots take their role's passives) and hidden for players of a mode's reserved
+-- slot; type 10 (the inheritance trash button) is gone. Choosing
 -- type 9 never opens the inherit menu: a Handle rule of the VR-Framework's list rows (docs/framework/list-rows.md,
 -- since Utilities 1.15.10; until then one line inserted into the retail OnDecideFocus by the graft
 -- passive_config_dispatch, which redefined that whole function) runs UTIL_PCD.Plate in the dock's own per-player
@@ -179,9 +180,6 @@ do
     return function(...)
       local src = orig(...)
       if type(src) ~= "table" then
-        return src
-      end
-      if type(IsSelectLeaderCard) == "function" and IsSelectLeaderCard() then
         return src
       end
       if type(GetFormationSelectCharaStHdl) ~= "function" then

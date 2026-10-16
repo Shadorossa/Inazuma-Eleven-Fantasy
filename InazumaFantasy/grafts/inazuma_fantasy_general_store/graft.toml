@@ -1,9 +1,9 @@
 # Inazuma Fantasy (inazuma_fantasy_2): its shops' bars at the top of the Mercado (market_menu): «Tienda general»,
-# «Tienda de entrenamiento» and the two move shops. The shops themselves are data (research/mods/InazumaFantasy/
+# «Tienda de entrenamiento» and «Supertécnicas». The shops themselves are data (research/mods/InazumaFantasy/
 # content/shops/*.toml, written by research/scripts/inazuma_fantasy_general_store.py from _general_store.toml); their
 # ids are the framework's (CMND_VRFW_REG_FIND("shop", "inazuma_fantasy_2.<name>")), read in OnInit. A retail shop
 # whose every row a mod hides (CMND_VRFW_REG_GET("shop", i): rows hidden = rows total) leaves the Mercado in the same
-# OnInit (with Inazuma Fantasy: all but the Tienda de Crónica). The bar count: content/menus/market_menu.toml (layer
+# OnInit (with Inazuma Fantasy: every retail shop of the Mercado). The bar count: content/menus/market_menu.toml (layer
 # count) and assets/menu/150_shop/shop01/shop01_20/shop01_20.g4pkm (research/scripts/inazuma_fantasy_market_bar.py).
 # Merge-path patch (the per-entry tables are locals of the script): the mod is lua_early, so later wrappers of
 # market_menu (VRFW menu music, BetterUI shop shortcuts) sit on top of it.
@@ -24,7 +24,7 @@ stem = "market_menu"
   text = '''
 
 -- ===== InazumaFantasy general_store BEGIN =====
--- Entries 1-4 of the Mercado = Inazuma Fantasy's shops; the retail entries move down. A retail entry whose shop has
+-- Entries 1-3 of the Mercado = Inazuma Fantasy's shops; the retail entries move down. A retail entry whose shop has
 -- every row hidden by a mod is taken out.
 do
   local REG_FIND = 2175579023           -- CMND_VRFW_REG_FIND (type, key) -> id (-1)
@@ -37,10 +37,8 @@ do
       header = 428357293, background = 2854327783, base = 1416979514, icon = 1290312194 },
     { key = "inazuma_fantasy_2.training_shop", name = 343889320,          -- art market02 (Tienda Vs)
       header = 4041970584, background = 1128411346, base = 3172385039, icon = 2777366327 },
-    { key = "inazuma_fantasy_2.technique_shop_shots", name = 585277308,   -- art market03 (Mercado BB)
+    { key = "inazuma_fantasy_2.technique_shop", name = 674756040,         -- art market03 (Mercado BB)
       header = 2280432398, background = 876937284, base = 3390173593, icon = 3532394401 },
-    { key = "inazuma_fantasy_2.technique_shop_skills", name = 1696700067, -- art market01 (Tienda de Crónica)
-      header = 1776468514, background = 3662373224, base = 606048437, icon = 1015180941 },
   }
   local function unsigned(id)
     if id < 0 then

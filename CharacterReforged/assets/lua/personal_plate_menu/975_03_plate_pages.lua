@@ -2082,8 +2082,14 @@ EVT_PPG = EVT_PPG or {}
   -- 2026-10-12 (owner): ATRIBUTOS = TWO COLUMNS x 4 ROWS, each row  NAME | gauge | VALUE | position pills (the 8 vertical
   -- 3D bars and the line chart retired). The gauge is the retail per-player training gauge (team13_16_beans_gauge, the
   -- «Entrenar» screen's bar: grey track + fill by its rate gauge01), cloned as layer evt_pp_stat_bar (Character
-  -- Reforged content/menus/player_page_layout.toml), one instance per row, attached to the graph base; its icon, «value / max» numbers,
-  -- slash and navy plate hidden, its fill sprite swapped for the stat's colour (evt_pp_gfill_<colour>, btl06_13 atlas).
+  -- Reforged content/menus/player_page_layout.toml), one instance per row, attached to the graph base; its icon and
+  -- «value / max» numbers hidden. The bar is drawn by the gauge's plain textured quads, no rate: the retail fill
+  -- _beans_bar01 is a masked material moved by the rate gauge01, which does not advance while a match is paused (an
+  -- empty bar in the match pause's Formación). Meshes draw in their order (navy plate, slash, track, fill):
+  --   navy plate _beans_param_base01 = the track (sprite beans_bar_base01, the track's rect);
+  --   slash _beans_bar_slash01      = the miximax gain (evt_pp_gfill_gain), from the fill's left to value + gain;
+  --   track _beans_bar_base01       = the fill (evt_pp_gfill_<tags>, btl06_13 atlas), the fill's rect cut to the value.
+  -- Mesh node translation = the quad's top-left, node scale = its size (gauge units).
   -- Fill = the shown value / the stat's max for this player (a training mod's «value / max» max: base + max of the
   -- page slot character_reforged.page_stat_max, CharacterReforged.Page.StatTop); without an answer, one common scale (the training screen's: the largest value
   -- + 15 %, rounded up to 50, at least 100). Names, values and pills are the graph base's own nodes, placed by the layout
@@ -2093,14 +2099,20 @@ EVT_PPG = EVT_PPG or {}
   G.ROW_Y = {[0] = 746 - 740, 746 - 785, 746 - 830, 746 - 875}     -- row centres
   G.GAUGE = {X = 124, W = 180, H = 28}                             -- track: x from the column's left, width, height
   -- team13_16 layout: _pos_bar01 holds the track _beans_bar_base01 (176 x 16 at -64, -13) and the fill _beans_bar01
+  -- (166 x 16 at -59, -13)
   G.GG = {NODE = 3407907417 --[[_pos_bar01]], TRACK_X = -64, TRACK_Y = -13, TRACK_W = 176, TRACK_H = 16,
-    HIDE = {3904782638 --[[_beans_param_base01]], 3653430537 --[[_icon_parameter_dmy01]],
-      3341153111 --[[_beans_bar_slash01]], 156590433 --[[_num_param_dmy01]], 2421960923 --[[_num_param_dmy02]]},
+    FILL_X = -59, FILL_W = 166,
+    HIDE = {3653430537 --[[_icon_parameter_dmy01]], 156590433 --[[_num_param_dmy01]], 2421960923 --[[_num_param_dmy02]],
+      501779097 --[[_beans_bar01: the masked fill]]},
     PRIMS = {3484572139, 1455097937, 1533119290},                  -- its number prims: value, next, max
-    RATE = 1200811757, RATE_RED = 2611748497, GROUP = 1996459178,  -- gauge01, gauge01_red, "bar"
-    FILL = 1129658471,                                             -- beans_bar01 (the fill's sprite)
-    FILL2 = 3663489501,                                            -- beans_bar02 (gauge01_red's part: the gain)
-    GROUP_INDEX = 112302847, PRIM_VIS = 1233047821}
+    TRACK_QUAD = 3904782638 --[[_beans_param_base01]], GAIN_QUAD = 3341153111 --[[_beans_bar_slash01]],
+    FILL_QUAD = 720708095 --[[_beans_bar_base01]],
+    -- sprite slots of those three meshes and the retail track sprite (team13_16 atlas)
+    SLOT_TRACK_QUAD = 1215825632 --[[beans_param_base01]], SLOT_GAIN_QUAD = 192955831 --[[beans_bar_slash01]],
+    SLOT_FILL_QUAD = 2201244747 --[[beans_bar_base01]], SP_TRACK = 2201244747 --[[beans_bar_base01]],
+    TX_GAUGE = 995892987 --[[#/menu/102_team/team13/team13_16/team13_16.g4tx]],
+    MIN_W = 0.5,                                                   -- narrower quads are hidden (gauge units)
+    PRIM_VIS = 1233047821}
 
   local function BarsVisible(on)
     if not Exists(G.BAR) then
@@ -2141,6 +2153,31 @@ EVT_PPG = EVT_PPG or {}
     G.tops = t
   end
 
+  -- instance k's three quads (see «the stat rows»): the track over the whole track rect (the layer's origin = its
+  -- top-left), the gain from the fill's left to r2, the fill from the fill's left to r (r, r2 = 0..1). Set every frame:
+  -- the gauge's open animation may move them.
+  function G.BarQuads(k, r, r2, sx, sy)
+    local GG = G.GG
+    for _, m in ipairs(GG.HIDE) do
+      Cmd(C.MESH, G.BAR, m, false, k)
+    end
+    Cmd(C.NODE_POS, G.BAR, k, GG.TRACK_QUAD, 0, 0)
+    Cmd(C.NODE_POS, G.BAR, k, GG.TRACK_QUAD, 1, 0)
+    Cmd(C.NODE_SCALE, G.BAR, k, GG.TRACK_QUAD, GG.TRACK_W * sx, GG.TRACK_H * sy)
+    Cmd(C.MESH, G.BAR, GG.TRACK_QUAD, true, k)
+    -- the gain quad lies in the layer's space (as the track quad), the fill quad inside _pos_bar01 (as the retail fill)
+    local gain_w = GG.FILL_W * r2 * sx
+    Cmd(C.NODE_POS, G.BAR, k, GG.GAIN_QUAD, 0, (GG.FILL_X - GG.TRACK_X) * sx)
+    Cmd(C.NODE_POS, G.BAR, k, GG.GAIN_QUAD, 1, 0)
+    Cmd(C.NODE_SCALE, G.BAR, k, GG.GAIN_QUAD, math.max(gain_w, GG.MIN_W), GG.TRACK_H * sy)
+    Cmd(C.MESH, G.BAR, GG.GAIN_QUAD, r2 > r and gain_w >= GG.MIN_W, k)
+    local fill_w = GG.FILL_W * r
+    Cmd(C.NODE_POS, G.BAR, k, GG.FILL_QUAD, 0, GG.FILL_X)
+    Cmd(C.NODE_POS, G.BAR, k, GG.FILL_QUAD, 1, GG.TRACK_Y)
+    Cmd(C.NODE_SCALE, G.BAR, k, GG.FILL_QUAD, math.max(fill_w, GG.MIN_W), GG.TRACK_H)
+    Cmd(C.MESH, G.BAR, GG.FILL_QUAD, fill_w * sx >= GG.MIN_W, k)
+  end
+
   function G.Bars()
     if not On() or not Exists(G.BAR) or not Exists(G.GRAPH) then
       return
@@ -2178,11 +2215,9 @@ EVT_PPG = EVT_PPG or {}
         for _, p in ipairs(GG.PRIMS) do
           Cmd(GG.PRIM_VIS, G.BAR, k, p, false)
         end
-        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, CALC_CRC("evt_pp_gfill_" .. G.STAT_FILL[g]), GG.FILL, 0, k)
-        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, G.SP_GAIN, GG.FILL2, 0, k)
-        local grp = Cmd(GG.GROUP_INDEX, G.BAR, k, GG.GROUP)
-        Cmd(C.RATE_INIT, G.BAR, GG.RATE, grp, k)
-        Cmd(C.RATE_INIT, G.BAR, GG.RATE_RED, grp, k)
+        Cmd(C.SPRITE, G.BAR, GG.TX_GAUGE, GG.SP_TRACK, GG.SLOT_TRACK_QUAD, 0, k)
+        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, CALC_CRC("evt_pp_gfill_" .. G.STAT_FILL[g]), GG.SLOT_FILL_QUAD, 0, k)
+        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, G.SP_GAIN, GG.SLOT_GAIN_QUAD, 0, k)
         Cmd(C.SCALE, G.BAR, 1, 1, 1, k)
         -- the bar node scaled to the row's track size, the track's top-left on the layer's origin
         Cmd(C.NODE_POS, G.BAR, k, GG.NODE, 0, -GG.TRACK_X * sx)
@@ -2191,15 +2226,14 @@ EVT_PPG = EVT_PPG or {}
       end
       local col, row = math.floor(k / 4), k % 4
       Cmd(C.POS, G.BAR, G.ROW_X0[col] + Q.X, G.ROW_Y[row] + Q.H / 2, 0, k)
-      -- 2026-10-13: in the Miximax view (G.gains) the max grows by the gain and the gain is the gauge's second part
-      -- (gauge01_red, drawn past the fill: the training screen's «lowered» part) in the gain colour
+      -- 2026-10-13: in the Miximax view (G.gains) the max grows by the gain and the gain is drawn past the fill in the
+      -- gain colour
       local gain = G.Gain(g)
       local top = (G.tops ~= nil and G.tops[g] or scale) + gain
       local v = G.vals[g] or 0
       local r = math.max(0, math.min(1, v / top))
       local r2 = math.max(0, math.min(1, (v + gain) / top))
-      Cmd(C.RATE, G.BAR, GG.RATE, 0, r, k, false, GG.GROUP)
-      Cmd(C.RATE, G.BAR, GG.RATE_RED, 0, r2, k, false, GG.GROUP)
+      G.BarQuads(k, r, r2, sx, sy)
       Cmd(C.VIS, G.BAR, k, true)
     end
   end

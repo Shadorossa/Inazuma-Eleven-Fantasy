@@ -70,6 +70,10 @@ local T = {
   CARD_LEVEL = 2793446092, CARD_REQ = 594567671, CARD_REQ_NONE = 2976084942, CARD_UNKNOWN = 697218748,
   CARD_CHEST = 3849747250, CARD_SCHEST = 390217589, CARD_SCHEST_RULE = 4095379111,
   CARD_WINS = 3412778781,   -- vrfw_chain_card_wins: the wins against the tile's team
+  -- a match tile's rank rewards (vrfw_chain_card_rank_prize / _got, vrfw_chain_prize_emblem / _kit / _item) and the
+  -- bag-full message of a late one (vrfw_chain_rank_full)
+  RANK_PRIZE = 2948352931, RANK_PRIZE_GOT = 1740067847, PRIZE_EMBLEM = 3984245770, PRIZE_KIT = 2896219202,
+  PRIZE_ITEM = 2488379808, RANK_FULL = 1667156185,
   -- a double chest: vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty
   CARD_DCHEST = 160501078, DCHEST_RULE = 979975818, DCHEST_HALF = 2280379239, DCHEST_EMPTY = 4144261363,
   -- a blocked tile: vrfw_chain_card_blocked / _blocked_rule / _blocked_open / _blocked_msg and one row per
@@ -630,6 +634,27 @@ local function ReqText(tile)
   return table.concat(parts, "  ·  ")
 end
 
+-- a match tile's rank rewards as one line: "A: Crest  ·  S: <item> (received)" (VRFW_Chain.RankRewards): the entry's
+-- `Text` row, else an emblem / kit by its kind, else the item's name; "" = none
+local function RankPrizeText(t)
+  local parts = {}
+  for _, r in ipairs(VRFW_Chain.RankRewards ~= nil and VRFW_Chain.RankRewards(B, t) or {}) do
+    local what = r.name
+    if (r.text or 0) ~= 0 and Text(r.text) ~= "" then
+      what = Text(r.text)                 -- the declared label (`Text`: a menu_text row)
+    elseif r.kind == "emblem" then
+      what = Text(T.PRIZE_EMBLEM)
+    elseif r.kind == "kit" then
+      what = Text(T.PRIZE_KIT)
+    elseif what == nil or what == "" then
+      what = Text(T.PRIZE_ITEM)
+    end
+    local label = VRFW_MatchRank ~= nil and VRFW_MatchRank.Label(r.rank) or r.rank
+    parts[#parts + 1] = Fmt(r.paid and T.RANK_PRIZE_GOT or T.RANK_PRIZE, label, what)
+  end
+  return table.concat(parts, "  ·  ")
+end
+
 -- the focused tile's card above the board: panel, up to 3 lines (the first one large), the crest / icon on the right
 local function DrawCard()
   local tile = B and B.tiles[focus]
@@ -657,6 +682,11 @@ local function DrawCard()
     lines[2] = lines[2] .. "  |  " .. (mc ~= nil and Fmt(T.CARD_REQ, mc) or Text(T.CARD_REQ_NONE))
     -- the save's wins against this team (VRFW_Stats, at least 1 once the tile is won)
     lines[3] = Fmt(T.CARD_WINS, VRFW_Chain.WinsVs(B, focus))
+    -- the rank rewards of its first win at each rank, after the wins
+    local prizes = RankPrizeText(focus)
+    if prizes ~= "" then
+      lines[3] = lines[3] .. "  ·  " .. prizes
+    end
     icon = nil
   elseif tile.kind == "match" then
     lines = {Text(T.CARD_UNKNOWN), Fmt(T.CARD_LEVEL, tile.level), Text(T.LOCKED)}   -- not open yet: the team stays hidden
@@ -983,11 +1013,34 @@ local function PayChest(t)
   return #given > 0
 end
 
--- chests opened before their rewards were paid (an older save, a full bag): paid when the board is shown
+-- chests opened before their rewards were paid (an older save, a full bag): paid when the board is shown; then the
+-- rank rewards of matches won since the board was last shown (VRFW_Chain.News: already given, one window per item)
+-- and the ones a full bag held back (VRFW_Chain.RankUnpaid: paid now)
 local function PayPending()
   for _, t in ipairs(VRFW_Chain.Unpaid(B)) do
     Log("chest pays late", B.key, B.tiles[t].id)
     PayChest(t)
+  end
+  if VRFW_Chain.News == nil then
+    return
+  end
+  for _, t in ipairs(VRFW_Chain.RankUnpaid(B)) do
+    Log("rank reward pays late", B.key, B.tiles[t].id)
+    local given = VRFW_Chain.PayRank(B, t, true)
+    if given == nil then
+      funcLuaCommand(C.SE, SE_NG)
+      Message(Text(T.RANK_FULL))
+      break
+    end
+  end
+  local news = VRFW_Chain.News(B)
+  VRFW_Chain.ClearNews(B)
+  for _, r in ipairs(news) do
+    funcLuaCommand(C.SE, SE_DECIDE)
+    ItemGet(r.id)
+  end
+  if #news > 0 then
+    DrawCard()
   end
 end
 
@@ -1470,7 +1523,8 @@ function Step()
   -- chests opened but never paid (VRFW_Chain.Unpaid): paid once the board is up and idle
   if ready and open_guard <= 0 and evt_co == nil and mode == "board" and B ~= nil and pay_check ~= B then
     pay_check = B
-    if VRFW_Chain.Unpaid ~= nil and #VRFW_Chain.Unpaid(B) > 0 then
+    local rank_due = VRFW_Chain.News ~= nil and (#VRFW_Chain.News(B) > 0 or #VRFW_Chain.RankUnpaid(B) > 0)
+    if (VRFW_Chain.Unpaid ~= nil and #VRFW_Chain.Unpaid(B) > 0) or rank_due then
       StartCo(PayPending)
     end
   end

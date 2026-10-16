@@ -41,6 +41,14 @@ reveal_all = false
 # the BB P2P phase-1 probes (docs/game/modes/bb-p2p-lockstep.md §8: fixed dt, seeded RNG, input record / replay, state
 # hash lines): "off" for players; "record" | "replay" | "replay_p2" only in a test install's loader config
 p2p_probe = "off"
+# Menu capture probe (docs/game/engine/menu-chara-capture.md «Pause screens»): true = three detours count, once per
+# frame, each stage of a menu capture model's draw (draw items queued with the capture callback, meshes drawn into the
+# render texture, meshes that were not and why) and log them as «capture pause probe:» lines; scripts read them with
+# VRFW.render.capture_pause(). Nothing is changed in the game's drawing. Off for players: a test install sets it in
+# evt_loader\config.toml
+#   [mods.vr_framework.debug]
+#   capture_pause_probe = true
+capture_pause_probe = false
 
 # ---------------------------------------------------------------- chara (chara\)
 [character]

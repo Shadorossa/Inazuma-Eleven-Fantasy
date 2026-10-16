@@ -1,0 +1,42 @@
+schema = "VRFW.game/2"
+
+# Shop tab split. Runtime: scripts/shop_tabs.lua reads each mod's content/shop_tabs/*.toml and installs the two hooks
+# below only when a mod declares split tabs (`apply = "script"`). Menu side: assets/lua/menu/shop_menu_buy/140_shop_tabs.lua.
+# Tab list hook: after the shop list view built its tab list, the split game tab becomes one entry per declared tab
+# (the first keeps the game tab's slot type, the others a marker value).
+# Row hook: while a tab is built, a row of the split game tab is listed only in the declared tab of its item sub-kind.
+
+# void ShopListView::BuildTabList(view), post hook: view + 0x2040 shop id, + 0x1FE8 tab count, + 0x1FEC tab slot types.
+[[VRFW.Hook]]
+name = "ShopTabs.List"
+game = "Shop.BuildTabList"
+kind = "function"
+args = ["ptr"]
+ret = "u64"
+apply = "script"
+
+# The tab builder's row test (before `test r9d, r9d`): r9d = slot type of the tab being built, r13 = the view,
+# [rsp + 0x68] = the row's item record (+0x3C category, +0x3E sub-kind). skip = the row is not listed.
+[[VRFW.Hook]]
+name = "ShopTabs.Row"
+game = "Shop.TabRowTest"
+kind = "mid"
+apply = "script"
+wait_ms = 100
+
+# --- commands ---
+
+# () -> n, key 1 … key n: the declared shops given as keys (the menu resolves them with CMND_VRFW_REG_FIND).
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_TAB_KEYS"
+handler = "ShopTabs.Keys"
+
+# (key, shop id) -> bound: the id of a declared shop key.
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_TAB_BIND"
+handler = "ShopTabs.Bind"
+
+# (shop id) -> split, n, icon 1, text id 1, … icon n, text id n (split 0 = the shop's tabs are the game's).
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_TABS"
+handler = "ShopTabs.Of"

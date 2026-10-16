@@ -1,0 +1,11 @@
+schema = "VRFW.field_clip/1"
+
+# The battery out of the trait rules ([pe.trait.*] of config.toml, docs/game/mechanics/aura-costs.md §11): after the
+# kneel (battery_clip = new_animations.aura_end_kneel) the player stays on one knee until the end of the match.
+# Whatever the engine asks for (stand, walk, run), the held kneel; scripts\stamina.lua switches it on the inert
+# player (set aura_points.battery_out). The clips are «Lost Cutscenes»' (new_animations,
+# content\rules\aura_end\aura_end.toml): without that mod the set has no clip. Was Inazuma Fantasy's
+# rules\field_clips\battery_out.toml until 2026-10-14.
+[[locomotion]]
+name = "battery_out"
+actions = { STAND = "new_animations.aura_end_kneel_hold", WALK = "new_animations.aura_end_kneel_hold", RUN = "new_animations.aura_end_kneel_hold" }

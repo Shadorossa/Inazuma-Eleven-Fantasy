@@ -1,0 +1,13 @@
+schema = "VRFW.game/2"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Keshin Armed › the «Armadura» tag on Character Reforged's player page (the hyper card's bottom edge), moved from
+# Inazuma Fantasy's content\game\miximax.toml (CMND_FANTASY_HIPER_ARMOUR) on 2026-10-14. The page's layer, art (the
+# game's own per-language armed badge _gtxt_cmd_armed01) and placement are Character Reforged's (graft
+# plate_hiper_plate, layer evt_ph_armour_tag); this mod only answers its page slot. docs/game/mods/all-keshin-armed.md §6.
+
+# CMND_AURAREWORKED_KESHIN_HIPER_ARMOUR(chara, keshin) -> armour, card: the armour this player can wear with that keshin
+# (0 = none) under this mod's rules (scripts\armour_tag.lua). Alias: Character Reforged's page slot.
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_KESHIN_HIPER_ARMOUR"
+aliases = ["CMND_ALLKESHINARMED_HIPER_ARMOUR", "CMND_EVT_HIPER_ARMOUR"]
+handler = "AuraReworked.KeshinArmed.HiperArmour"

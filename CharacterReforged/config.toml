@@ -48,19 +48,27 @@ shape = 2.0
 export_area = "vrmod/characters"
 
 # The player page's 3D model in a match (graft plate_model, capture layer evt_pp_model_cap; scripts\player_page_capture.lua).
-# match_model: "off" = no model in a match (default: the match «Formación» is a pause screen, and a model built there
-# is never drawn into its render texture, which left a white quad; docs/game/engine/menu-chara-capture.md «Pause
-# screens»); "match" = in a match the model is drawn into a render texture (test only); "always" = that capture on
-# every screen (test: Plantilla outside a match). The capture screens outside a match (the gacha pool list) keep their
-# capture with any value. match_camera: "vs" = the VS screen camera (full body) or "bust" = the keeper gauge's bust
-# camera (the model stands at the origin for it), or a camera name crc.
+# match_model: "auto" (default) = "match" while the framework's menu capture probe runs (VRFW [debug]
+# capture_pause_probe = true), else "off"; "off" = no model in a match (the match «Formación» is a pause screen, and a
+# model built there was never seen drawn into its render texture: a white quad; docs/game/engine/menu-chara-capture.md
+# «Pause screens»); "match" = in a match the model is drawn into a render texture (test only); "always" = that capture
+# on every screen (test: Plantilla outside a match). The capture screens outside a match (the gacha pool list) keep
+# their capture with any value. match_camera: "vs" = the VS screen camera (full body) or "bust" = the keeper gauge's
+# bust camera (the model stands at the origin for it), or a camera name crc.
 # capture_report: loader.log «player_page_capture:» lines (render-texture pool, render targets, camera, pause state,
 # the model's render property) after each build.
 [player_page]
-match_model = "off"
+match_model = "auto"
 match_camera = "vs"
 capture_report = true
 # match_live_pause: true = while the capture page shows in a pause, the render settings' pause freeze flag (+0xD8) is
-# off; put back when the page closes. Test only, default false: in a pause the main 3D pass skips the draw groups
-# 10..19 and only the freeze pass, which needs this flag, draws them.
+# off; put back when the page closes. Test only, default false: it removes the pause's freeze pass and draws nothing
+# more.
 match_live_pause = false
+# With the framework's capture probe running: the capture quad stays hidden until the probe sees a mesh of the model
+# drawn into its render texture (no white placeholder). match_no_draw_polls: checks (one every 10 Steps) without a
+# draw before loader.log says «no draw: quad hidden»; match_lost_frames: frames without a draw after which a shown
+# quad is hidden again. match_quad_until_drawn = false shows the quad at once (test).
+match_quad_until_drawn = true
+match_no_draw_polls = 24
+match_lost_frames = 30

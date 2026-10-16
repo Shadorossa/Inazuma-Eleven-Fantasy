@@ -17,21 +17,24 @@ curve_exponent = 1.0
 # `level_sync_below_percent` % below the rival's: sync = rival × (100 − percent) / 100, rounded DOWN, at least 1.
 level_sync_below_percent = 7
 
-# The heroic player rules (owner 2026-10-14). The «first game» of a player is his character's source series in the
-# game's data (chara_base series → chara_series_config type: Inazuma Eleven, 2, 3, GO, GO 2, GO Galaxy, Ares, Orion,
-# Victory Road); a Chronicle route's game is the series most of its Crónica rivals' players belong to.
-#   cap:  every player of the squad (starters and bench; the coach and the reserves never count) is from the node's game
-#         or an earlier one
-#   ramp: from the second game on, at least N players of the squad are from the node's game; N climbs over that game's
-#         heroic battles in Chronicle order: N = ramp_start + (ramp_end − ramp_start) × t ^ ramp_exponent, rounded UP
-#         (t = 0 at the game's first heroic battle, 1 at its last, which asks ramp_end)
-#   max_per_series: from the second game on, at most this many players of the squad from any one game (season); the
-#         first game's battles have none (no other season is allowed there). 0 = no maximum. (owner 2026-10-14: 7)
+# The heroic player rules (owner 2026-10-14, simplified 2026-10-16). The «first game» of a player is his character's
+# source series in the game's data (chara_base series → chara_series_config type: Inazuma Eleven, 2, 3, GO, GO 2, GO
+# Galaxy, Ares, Orion, Victory Road); a Chronicle route's game is the series most of its Crónica rivals' players belong to.
+#   first game: every player of the squad (starters and bench; the coach and the reserves never count) is from that game
+#         (its text says so: «Solo jugadores de …»)
+#   ramp: from the second game on, at least N players of the squad are from the node's game, and nothing else is asked;
+#         N climbs over that game's heroic battles in Chronicle order: N = ramp_start + (ramp_end − ramp_start) ×
+#         t ^ ramp_exponent, rounded UP (t = 0 at the game's first heroic battle, 1 at its last, which asks ramp_end)
+#   cap_after_first_game: true = from the second game on the squad may also only hold players of the node's game or
+#         earlier ones (owner 2026-10-16: false)
+#   max_per_series: from the second game on, at most this many players of the squad from any one game (season). 0 = no
+#         maximum (owner 2026-10-16: 0)
 [heroic.players]
 ramp_start = 1
 ramp_end = 7
 ramp_exponent = 1.0
-max_per_series = 7
+cap_after_first_game = false
+max_per_series = 0
 
 # The required starter of every Batalla heroica (owner 2026-10-14), from the first one (Royal Academy) to Victory
 # Road's last: the player's starting line-up must have this character (any card of his: the normal cards and the
@@ -44,6 +47,25 @@ max_per_series = 7
 character = "c11600010"   # Victorio Cryptix, normal form (the one of the starting teams, content/teams/05_start_teams.toml)
 positions = ["fw", "mf"]
 until_first_clear = true
+
+# The auras BOTH teams may start in a Batalla heroica, per the battle's game (owner 2026-10-16): each game lists its
+# allowed kinds (the games' keys of [heroic.players.short_names]); every kind not listed is refused (the plates, the
+# duel aura picks, the game's aura rows and the CPU: the framework's match aura rule, [VRFW.MatchChallenge.Auras]). A
+# game not listed here allows everything (no rule). The Crónica and every other match are not ruled.
+#   keshin = fighting spirits; armour = keshin armed; bond = bond transformations; awakening = awakening powers and
+#   changes; own_mode_change = a mode change of the card's own kit (the game's own, e.g. Shawn Froste's);
+#   created_mode_change = a mode change a player created (All Changed's «Modo cambio»)
+# Owner: no aura in IE1-IE3, Ares and Orion except the cards' own mode changes; fighting spirits in GO; + armours and
+# miximax in Chrono Stone; + totems in Galaxy; Victory Road allows everything (bond, awakening, created mode changes).
+[heroic.auras]
+ie1 = ["own_mode_change"]
+ie2 = ["own_mode_change"]
+ie3 = ["own_mode_change"]
+go1 = ["keshin", "own_mode_change"]
+go2 = ["keshin", "armour", "miximax", "own_mode_change"]
+go3 = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+ares = ["own_mode_change"]
+orion = ["own_mode_change"]
 
 # The short names the match info uses for the games (series names of chara_base's in_<name> columns). A game missing
 # here is written with the game's own full name (chara_series_config's name text, every language).

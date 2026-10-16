@@ -1,0 +1,246 @@
+# Aura Points › PE: the player's max PE in the player header (Character Reforged's one-row header, its slot between the
+# gender icon and the rarity banner; docs/game/mechanics/match-stamina.md §15, docs/refactor/aura-mods-split.md «Player
+# header»). Outside a match PE is full: the «PE» tag on top of a full bar and the max PE right of it, the same pieces as
+# the match HUD's PE bar (content\menus\pe_bar.toml). Was Inazuma Fantasy's menus\pe_card.toml + graft pe_card until
+# 2026-10-14 (layers evt_pe_card_*).
+# * stamina_points_plate_bar: the retail stamina gauge of the stairs race (btl06_13_stamina_gauge), the HUD bar's object;
+#   the Lua hides its «ENERGÍA» label and red trail and sets it full.
+# * stamina_points_plate_tag: the same gauge, only its frame shown, the frame's sprite swapped for the «PE» / «GP» tag
+#   stamina_points_pe_tag01 (content\images\menu\02_btl\btl06\btl06_13\stamina_points_bars.toml).
+# * stamina_points_plate_num / _num2 / _num3 (units, tens, hundreds of the max PE): the same gauge again, frame only,
+#   its sprite swapped for Chrono Stone's digit stamina_points_pe_num<d> (...\btl06_13\stamina_points_pe_num.toml);
+#   a leading zero's layer hidden.
+# Draw priority above the plate (303): 304 / 305. The five are attached to the plate at its root locator _pos_base01
+# (attach rows, trace = the layer's name), so they move with it: here on the retail header object; on Character
+# Reforged's one-row header object evt_soccer11_04pp_pp in pe_plate_header.toml (with the slot entry). The Lua
+# (assets\lua\_all\aura_points_stamina_plate.lua, AuraPoints_Stamina.PlatePe, called by the header slot) places them at the slot
+# x it is given. The layers sit right after the plate in every group the plate is in, not opened by the screen (the Lua
+# opens them). No retail byte in the mod. The skill table (evt_skill_slot_menu) is Character Reforged's [[screen]].
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "stamina_points_plate_bar"
+from = "btl06_13_stamina_gauge"
+priority = 304
+
+[[object]]
+name = "stamina_points_plate_tag"
+from = "btl06_13_stamina_gauge"
+priority = 305
+
+[[object]]
+name = "stamina_points_plate_num"
+from = "btl06_13_stamina_gauge"
+priority = 305
+
+[[object]]
+name = "stamina_points_plate_num2"
+from = "btl06_13_stamina_gauge"
+priority = 305
+
+[[object]]
+name = "stamina_points_plate_num3"
+from = "btl06_13_stamina_gauge"
+priority = 305
+
+# the five attach rows (trace, locator _pos_base01 0x5A709C12, layer, instance 0): crc32 of stamina_points_plate_bar /
+# stamina_points_plate_tag / stamina_points_plate_num / stamina_points_plate_num2 / stamina_points_plate_num3
+[[object_set]]
+object = "soccer11_04pp_chara_status_info"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xFEB13517, 0x5A709C12, 0xFEB13517, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8BC70E3E, 0x5A709C12, 0x8BC70E3E, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x540D16D3, 0x5A709C12, 0x540D16D3, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x055B3075, 0x5A709C12, 0x055B3075, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x725C00E3, 0x5A709C12, 0x725C00E3, 0] },
+]
+
+# team dock (formation screen, team dock plate): the plate is in the groups common and team_dock_menu_rpg_battle
+[[patch]]
+menu = "team_dock_menu"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_formation_chara_status", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_formation_chara_status" },
+    { group = "team_dock_menu_rpg_battle", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_formation_chara_status" },
+] }
+
+[[patch]]
+menu = "team_dock_menu"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+    { group = "team_dock_menu_rpg_battle", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "team_dock_menu"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+    { group = "team_dock_menu_rpg_battle", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "team_dock_menu"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+    { group = "team_dock_menu_rpg_battle", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "team_dock_menu"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+    { group = "team_dock_menu_rpg_battle", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }
+
+# player plate «Ficha» (team dock, bank, formation), the data-file and mode-change variants
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_formation_chara_status", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_formation_chara_status" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_formation_chara_status", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_formation_chara_status" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_formation_chara_status", groups = [
+    { group = "personal_plate_menu_for_mode_change", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_formation_chara_status" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "personal_plate_menu_for_mode_change", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "personal_plate_menu_for_mode_change", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "personal_plate_menu_for_mode_change", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "personal_plate_menu_for_mode_change", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }
+
+# accessories screen (equip_menu, team dock -> Equipamiento): the plate soccer11_04_chara_status is in group common
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_chara_status", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_chara_status" },
+] }
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }
+
+# «Set de habilidades» / skill table (evt_skill_slot_menu, Character Reforged's [[screen]] cloned from equip_menu:
+# plate soccer11_04_chara_status in group common)
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "stamina_points_plate_bar", object = "stamina_points_plate_bar", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "soccer11_04_chara_status", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_chara_status" },
+] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "stamina_points_plate_tag", object = "stamina_points_plate_tag", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_bar", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_bar" },
+] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "stamina_points_plate_num", object = "stamina_points_plate_num", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_tag", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_tag" },
+] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "stamina_points_plate_num2", object = "stamina_points_plate_num2", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num" },
+] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "stamina_points_plate_num3", object = "stamina_points_plate_num3", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num2", groups = [
+    { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num2" },
+] }

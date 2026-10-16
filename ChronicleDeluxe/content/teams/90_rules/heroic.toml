@@ -1482,10 +1482,11 @@ Sync = -1                        # level sync 11
 Clones = false
 
 # ---------------------------------------------------------------------------------------------- players
-# The squad (starters + bench; never the coach or the reserves) of a Batalla heroica: every player from the
-# node's game or an earlier one (Series = the character's source series), and from the second game on at
-# least N players from the node's game and at most M players of each game (season). The Crónica (fixed
-# line-up) has no rule: Difficulties = [4].
+# The squad (starters + bench; never the coach or the reserves) of a Batalla heroica: the first game's battles
+# take only players of that game (Series = the character's source series); from the second game on, at least N
+# players from the node's game (config.toml [heroic.players]: cap_after_first_game adds the cap of the node's
+# game or earlier ones, max_per_series a per-season maximum). The Crónica (fixed line-up) has no rule:
+# Difficulties = [4]. The auras both teams may start (config.toml [heroic.auras]): [VRFW.MatchChallenge.Auras].
 # Required starter (config.toml [heroic.required]): c11600010 (Victorio Cryptix, series victory_road, card(s) 0x020D20F7, 0x13BE3226, 0x23FA933B, 0x2AA62CA1, 0xBDD6A3B7) in a FW / MF place of the
 # starting line-up until the battle's first win; exempt from the cap, counted by the ramp and the per-season maximum only where his
 # series is allowed (the node's game or an earlier one).
@@ -1505,2302 +1506,1147 @@ Games = ["fbtl_cro01_010_010", "fbtl_cro01_020_010", "evt_rn_ie1_umbrella", "fbt
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_1"
-Title = "chronicle_deluxe_heroic_ie2_min_1_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_1"
 Short = "chronicle_deluxe_heroic_short_ie2_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_ie2_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_2"
-Title = "chronicle_deluxe_heroic_ie2_min_2_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_2"
 Short = "chronicle_deluxe_heroic_short_ie2_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_020_010", "fbtl_cro02_030_010", "fbtl_cro02_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_ie2_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_3"
-Title = "chronicle_deluxe_heroic_ie2_min_3_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_3"
 Short = "chronicle_deluxe_heroic_short_ie2_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_050_010", "fbtl_cro02_060_010", "fbtl_cro02_070_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_ie2_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_4"
-Title = "chronicle_deluxe_heroic_ie2_min_4_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_4"
 Short = "chronicle_deluxe_heroic_short_ie2_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_080_010", "fbtl_cro02_090_010", "fbtl_cro02_100_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_ie2_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_5"
-Title = "chronicle_deluxe_heroic_ie2_min_5_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_5"
 Short = "chronicle_deluxe_heroic_short_ie2_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_110_010", "fbtl_cro02_120_010", "fbtl_cro02_130_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_ie2_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_6"
-Title = "chronicle_deluxe_heroic_ie2_min_6_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_6"
 Short = "chronicle_deluxe_heroic_short_ie2_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_140_010", "fbtl_cro02_150_010", "fbtl_cro02_160_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_ie2_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_7"
-Title = "chronicle_deluxe_heroic_ie2_min_7_max_7"
+Title = "chronicle_deluxe_heroic_ie2_min_7"
 Short = "chronicle_deluxe_heroic_short_ie2_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro02_170_010", "fbtl_cro02_180_010", "fbtl_cro02_190_010", "fbtl_cro02_200_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from ie2
   Count = { Series = "0xFBE11535" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_ie2_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_1"
-Title = "chronicle_deluxe_heroic_ie3_min_1_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_1"
 Short = "chronicle_deluxe_heroic_short_ie3_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_ie3_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_2"
-Title = "chronicle_deluxe_heroic_ie3_min_2_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_2"
 Short = "chronicle_deluxe_heroic_short_ie3_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_020_010", "fbtl_cro03_030_010", "fbtl_cro03_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_ie3_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_3"
-Title = "chronicle_deluxe_heroic_ie3_min_3_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_3"
 Short = "chronicle_deluxe_heroic_short_ie3_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_050_010", "fbtl_cro03_060_010", "fbtl_cro03_070_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_ie3_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_4"
-Title = "chronicle_deluxe_heroic_ie3_min_4_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_4"
 Short = "chronicle_deluxe_heroic_short_ie3_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_080_010", "fbtl_cro03_090_010", "fbtl_cro03_100_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_ie3_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_5"
-Title = "chronicle_deluxe_heroic_ie3_min_5_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_5"
 Short = "chronicle_deluxe_heroic_short_ie3_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_110_010", "fbtl_cro03_120_010", "fbtl_cro03_130_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_ie3_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_6"
-Title = "chronicle_deluxe_heroic_ie3_min_6_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_6"
 Short = "chronicle_deluxe_heroic_short_ie3_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_140_010", "fbtl_cro03_150_010", "fbtl_cro03_160_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_ie3_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_7"
-Title = "chronicle_deluxe_heroic_ie3_min_7_max_7"
+Title = "chronicle_deluxe_heroic_ie3_min_7"
 Short = "chronicle_deluxe_heroic_short_ie3_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro03_170_010", "fbtl_cro03_180_010", "fbtl_cro03_190_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ie3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from ie3
   Count = { Series = "0x8CE625A3" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_ie3_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_1"
-Title = "chronicle_deluxe_heroic_go1_min_1_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_1"
 Short = "chronicle_deluxe_heroic_short_go1_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_go1_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_2"
-Title = "chronicle_deluxe_heroic_go1_min_2_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_2"
 Short = "chronicle_deluxe_heroic_short_go1_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_020_010", "fbtl_cro04_030_010", "fbtl_cro04_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_go1_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_3"
-Title = "chronicle_deluxe_heroic_go1_min_3_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_3"
 Short = "chronicle_deluxe_heroic_short_go1_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_050_010", "fbtl_cro04_060_010", "fbtl_cro04_070_010", "fbtl_cro04_080_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_go1_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_4"
-Title = "chronicle_deluxe_heroic_go1_min_4_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_4"
 Short = "chronicle_deluxe_heroic_short_go1_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_090_010", "fbtl_cro04_100_010", "fbtl_cro04_110_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_go1_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_5"
-Title = "chronicle_deluxe_heroic_go1_min_5_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_5"
 Short = "chronicle_deluxe_heroic_short_go1_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_120_010", "fbtl_cro04_130_010", "fbtl_cro04_140_010", "fbtl_cro04_150_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_go1_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_6"
-Title = "chronicle_deluxe_heroic_go1_min_6_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_6"
 Short = "chronicle_deluxe_heroic_short_go1_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_160_010", "fbtl_cro04_170_010", "fbtl_cro04_180_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_go1_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_7"
-Title = "chronicle_deluxe_heroic_go1_min_7_max_7"
+Title = "chronicle_deluxe_heroic_go1_min_7"
 Short = "chronicle_deluxe_heroic_short_go1_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro04_190_010", "fbtl_cro04_200_010", "fbtl_cro04_210_010", "fbtl_cro04_220_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go1"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_go1_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
+  Allowed = ["keshin", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_1"
-Title = "chronicle_deluxe_heroic_go2_min_1_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_1"
 Short = "chronicle_deluxe_heroic_short_go2_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_go2_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_2"
-Title = "chronicle_deluxe_heroic_go2_min_2_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_2"
 Short = "chronicle_deluxe_heroic_short_go2_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_020_010", "fbtl_cro05_030_010", "fbtl_cro05_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_go2_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_3"
-Title = "chronicle_deluxe_heroic_go2_min_3_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_3"
 Short = "chronicle_deluxe_heroic_short_go2_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_050_010", "fbtl_cro05_060_010", "fbtl_cro05_070_010", "fbtl_cro05_080_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_go2_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_4"
-Title = "chronicle_deluxe_heroic_go2_min_4_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_4"
 Short = "chronicle_deluxe_heroic_short_go2_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_090_010", "fbtl_cro05_090_110", "fbtl_cro05_100_010", "fbtl_cro05_100_110", "fbtl_cro05_110_010", "fbtl_cro05_110_110", "fbtl_cro05_120_010", "fbtl_cro05_120_110"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_go2_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_5"
-Title = "chronicle_deluxe_heroic_go2_min_5_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_5"
 Short = "chronicle_deluxe_heroic_short_go2_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_130_010", "fbtl_cro05_130_110", "fbtl_cro05_140_010", "fbtl_cro05_140_110", "fbtl_cro05_150_010", "fbtl_cro05_150_110", "fbtl_cro05_160_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_go2_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_6"
-Title = "chronicle_deluxe_heroic_go2_min_6_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_6"
 Short = "chronicle_deluxe_heroic_short_go2_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_170_010", "fbtl_cro05_180_010", "fbtl_cro05_180_110", "fbtl_cro05_190_010", "fbtl_cro05_190_110", "fbtl_cro05_200_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_go2_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_7"
-Title = "chronicle_deluxe_heroic_go2_min_7_max_7"
+Title = "chronicle_deluxe_heroic_go2_min_7"
 Short = "chronicle_deluxe_heroic_short_go2_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro05_210_010", "fbtl_cro05_220_010", "fbtl_cro05_230_010", "fbtl_cro05_240_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go2"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_go2_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_1"
-Title = "chronicle_deluxe_heroic_go3_min_1_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_1"
 Short = "chronicle_deluxe_heroic_short_go3_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_go3_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_2"
-Title = "chronicle_deluxe_heroic_go3_min_2_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_2"
 Short = "chronicle_deluxe_heroic_short_go3_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_020_010", "fbtl_cro06_030_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_go3_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_3"
-Title = "chronicle_deluxe_heroic_go3_min_3_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_3"
 Short = "chronicle_deluxe_heroic_short_go3_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_040_010", "fbtl_cro06_050_010", "fbtl_cro06_060_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_go3_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_4"
-Title = "chronicle_deluxe_heroic_go3_min_4_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_4"
 Short = "chronicle_deluxe_heroic_short_go3_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_070_010", "fbtl_cro06_080_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_go3_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_5"
-Title = "chronicle_deluxe_heroic_go3_min_5_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_5"
 Short = "chronicle_deluxe_heroic_short_go3_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_090_010", "fbtl_cro06_100_010", "fbtl_cro06_110_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_go3_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_6"
-Title = "chronicle_deluxe_heroic_go3_min_6_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_6"
 Short = "chronicle_deluxe_heroic_short_go3_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_120_010", "fbtl_cro06_130_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_go3_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_7"
-Title = "chronicle_deluxe_heroic_go3_min_7_max_7"
+Title = "chronicle_deluxe_heroic_go3_min_7"
 Short = "chronicle_deluxe_heroic_short_go3_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro06_140_010", "fbtl_cro06_150_010", "fbtl_cro06_160_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_go3"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_go3_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
+  Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_1"
-Title = "chronicle_deluxe_heroic_ares_min_1_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_1"
 Short = "chronicle_deluxe_heroic_short_ares_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_ares_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_2"
-Title = "chronicle_deluxe_heroic_ares_min_2_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_2"
 Short = "chronicle_deluxe_heroic_short_ares_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_020_010", "fbtl_cro07_030_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_ares_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_3"
-Title = "chronicle_deluxe_heroic_ares_min_3_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_3"
 Short = "chronicle_deluxe_heroic_short_ares_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_040_010", "fbtl_cro07_050_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_ares_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_4"
-Title = "chronicle_deluxe_heroic_ares_min_4_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_4"
 Short = "chronicle_deluxe_heroic_short_ares_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_060_010", "fbtl_cro07_070_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_ares_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_5"
-Title = "chronicle_deluxe_heroic_ares_min_5_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_5"
 Short = "chronicle_deluxe_heroic_short_ares_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_080_010", "fbtl_cro07_090_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_ares_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_6"
-Title = "chronicle_deluxe_heroic_ares_min_6_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_6"
 Short = "chronicle_deluxe_heroic_short_ares_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_100_010", "fbtl_cro07_110_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_ares_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_7"
-Title = "chronicle_deluxe_heroic_ares_min_7_max_7"
+Title = "chronicle_deluxe_heroic_ares_min_7"
 Short = "chronicle_deluxe_heroic_short_ares_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro07_120_010", "fbtl_cro07_130_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_ares"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from ares
   Count = { Series = "0x6461BCB4" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_ares_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_1"
-Title = "chronicle_deluxe_heroic_orion_min_1_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_1"
 Short = "chronicle_deluxe_heroic_short_orion_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_orion_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_2"
-Title = "chronicle_deluxe_heroic_orion_min_2_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_2"
 Short = "chronicle_deluxe_heroic_short_orion_min_2"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_020_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 2
   Text = "chronicle_deluxe_heroic_orion_at_least_2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_3"
-Title = "chronicle_deluxe_heroic_orion_min_3_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_3"
 Short = "chronicle_deluxe_heroic_short_orion_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_030_010", "fbtl_cro08_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_orion_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_4"
-Title = "chronicle_deluxe_heroic_orion_min_4_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_4"
 Short = "chronicle_deluxe_heroic_short_orion_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_050_010", "fbtl_cro08_060_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_orion_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_5"
-Title = "chronicle_deluxe_heroic_orion_min_5_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_5"
 Short = "chronicle_deluxe_heroic_short_orion_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_070_010", "fbtl_cro08_080_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_orion_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_6"
-Title = "chronicle_deluxe_heroic_orion_min_6_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_6"
 Short = "chronicle_deluxe_heroic_short_orion_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_090_010", "fbtl_cro08_100_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_orion_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_7"
-Title = "chronicle_deluxe_heroic_orion_min_7_max_7"
+Title = "chronicle_deluxe_heroic_orion_min_7"
 Short = "chronicle_deluxe_heroic_short_orion_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro08_110_010", "fbtl_cro08_120_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion
-  Every = { AnyOf = [{ Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3"] }, { Characters = "c11600010" }] }
-  Text = "chronicle_deluxe_heroic_cap_orion"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from orion
   Count = { Series = "0xE43DAFA3" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_orion_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
+  [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
+  Allowed = ["own_mode_change"]
+  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_1"
-Title = "chronicle_deluxe_heroic_victory_road_min_1_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_1"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_1"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_010_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 1 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 1
   Text = "chronicle_deluxe_heroic_victory_road_at_least_1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_3"
-Title = "chronicle_deluxe_heroic_victory_road_min_3_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_3"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_3"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_020_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 3
   Text = "chronicle_deluxe_heroic_victory_road_at_least_3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_4"
-Title = "chronicle_deluxe_heroic_victory_road_min_4_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_4"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_4"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_030_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 4
   Text = "chronicle_deluxe_heroic_victory_road_at_least_4"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_5"
-Title = "chronicle_deluxe_heroic_victory_road_min_5_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_5"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_5"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_040_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 5
   Text = "chronicle_deluxe_heroic_victory_road_at_least_5"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_6"
-Title = "chronicle_deluxe_heroic_victory_road_min_6_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_6"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_6"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_050_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 6
   Text = "chronicle_deluxe_heroic_victory_road_at_least_6"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_7"
-Title = "chronicle_deluxe_heroic_victory_road_min_7_max_7"
+Title = "chronicle_deluxe_heroic_victory_road_min_7"
 Short = "chronicle_deluxe_heroic_short_victory_road_min_7"
 Scope = "squad"
 Difficulties = [4]
 Games = ["fbtl_cro09_060_010"]
-  [[VRFW.MatchChallenge.Require]]     # cap: ie1, ie2, ie3, go1, go2, go3, ares, orion, victory_road
-  Every = { Series = ["0x62E8448F", "0xFBE11535", "0x8CE625A3", "0x9299810F", "0x0B90D0B5", "0x7C97E023", "0x6461BCB4", "0xE43DAFA3", "0xE177FC30"] }
-  Text = "chronicle_deluxe_heroic_cap_victory_road"
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from victory_road
   Count = { Series = "0xE177FC30" }
   AtLeast = 7
   Text = "chronicle_deluxe_heroic_victory_road_at_least_7"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie1
-  Count = { Series = "0x62E8448F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie2
-  Count = { Series = "0xFBE11535" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ie3
-  Count = { Series = "0x8CE625A3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ie3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go1
-  Count = { Series = "0x9299810F" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go1"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go2
-  Count = { Series = "0x0B90D0B5" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go2"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from go3
-  Count = { Series = "0x7C97E023" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_go3"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from ares
-  Count = { Series = "0x6461BCB4" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_ares"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from orion
-  Count = { Series = "0xE43DAFA3" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_orion"
-  [[VRFW.MatchChallenge.Require]]     # at most 7 from victory_road
-  Count = { Series = "0xE177FC30" }
-  AtMost = 7
-  Text = "chronicle_deluxe_heroic_at_most_7_victory_road"
   [[VRFW.MatchChallenge.Required]]    # c11600010 (Victorio Cryptix) as a starter
   Characters = "c11600010"
   Positions = ["fw", "mf"]
   UntilFirstClear = true
   Text = "chronicle_deluxe_heroic_required"
+  Label = "chronicle_deluxe_heroic_required_label"
 
 # ---------------------------------------------------------------------------------------------- rewards
 # FirstClear (col 34) of the Heroica row = the table chronicle_deluxe.heroic_<game> (base_tables

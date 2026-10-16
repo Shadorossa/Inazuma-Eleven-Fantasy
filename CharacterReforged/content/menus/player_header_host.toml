@@ -8,7 +8,7 @@
 #   host = "character_reforged.header"
 #   id = "pe"                                  # key <mod>.<id>
 #   order = 100                                # left to right by `order` (default 1000), then load order
-#   action = { lua = "StaminaPoints.PlatePe" } # the menu-VM global function ("A.B" paths) drawing the piece
+#   action = { lua = "AuraPoints_Stamina.PlatePe" } # the menu-VM global function ("A.B" paths) drawing the piece
 #
 # The function is called as f(phase, ctx): phase "fill" on every refresh of a header plate (ctx.layer, ctx.inst,
 # ctx.hdl = the chara status handle; ctx.x = the piece's left edge, ctx.top / ctx.height = the band, ctx.room = the
@@ -17,8 +17,8 @@
 # asynchronous draw, follow the plate's visibility). Its layers attach to the header object with an
 # [[object_set]] object = "evt_soccer11_04pp_pp" (trace = the layer's name, locator _pos_base01) and are added to
 # the screens with [[patch]] add_layer after the header layer (soccer11_04_formation_chara_status /
-# soccer11_04_chara_status). Example: Stamina Points' PE (content\menus\pe_plate*.toml, assets\lua\_all\
-# stamina_points_plate.lua).
+# soccer11_04_chara_status). Example: Aura Points' PE (modules\AuraPoints\features\pe\content\menus\pe_plate*.toml,
+# assets\lua\_all\aura_points_stamina_plate.lua).
 schema = "VRFW.menu/2"
 
 [[host]]

@@ -1,0 +1,31 @@
+# Souls Rework › the level-up pop over a player on the pitch (graft research/grafts/souls_rework_level_pop; docs/game/
+# mods/souls-rework-design.md §9.5). One layer of 8 instances in the match play HUD (soccer_inplay_menu and its battle
+# group, where the retail face bubbles and the catch gauge over the players live): 4 pops at once, each of 2 instances
+#   instance 2k    the plate: the quad's sprite swapped for the module's own white plate (content\images\menu\02_btl\
+#                  souls_rework_pop.toml), tinted with the totem's colour, text empty
+#   instance 2k+1  the text: the quad hidden, the text key aura_reworked.level_pop
+# Its object is the retail AI-camera telop (soccer00_71: one quad and one text node), with the face bubble's anchoring
+# (top left, as soccer02_22_chara_face_balloon and soccer02_24_focus_skill_exec_balloon) instead of the telop's own, so
+# its layer position means the same as the retail positions over a player (GetCharaScreenPos of the play HUD's
+# include). Not opened by the screen: the graft opens it. No retail byte in the mod.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "souls_rework_level_pop"
+from = "soccer00_71_camera_change_telop"
+remove_block = ["MenuAnchorComponent"]
+add_block = [{ block = "MenuAnchorComponent", values = [], after = "CMenuTextPlateUpdateProperty" }]
+add = [
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_autoCalcPos", values = [0] },
+]
+
+[[patch]]
+menu = "soccer_inplay_menu"
+add_layer = { name = "souls_rework_level_pop", object = "souls_rework_level_pop", count = 8, after = "soccer08_27_catch_bomb_recast_gauge", groups = [
+    { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

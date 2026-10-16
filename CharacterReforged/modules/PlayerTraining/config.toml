@@ -10,5 +10,12 @@ rule = "trade"
 floor_percent = 0
 # the highest trained base value of a stat
 max_value = 9999
-# card rarities that cannot be trained (no Libertad): Héroe 5-6, Diamante 7-8, Prime 10 (Inazuma Fantasy's rule)
-locked_rarities = [5, 6, 7, 8, 10]
+# card rarities that cannot be trained (no Libertad): Diamante 8, Prime 10 (Héroe 5-7 trains like any player)
+locked_rarities = [8, 10]
+# card rarities whose Libertad is derived when the card stores none (the retail Hero rows hold 0 in chara_param col 54):
+# Libertad at Lv 99 = clamp(freedom_ceiling - the sum of the card's Lv 99 stats, freedom_min, freedom_max), then grown
+# with the level along the card's stat curve (Character Reforged's LevelFactor), as the normal cards' stored Libertad
+derived_freedom_rarities = [5, 6, 7]
+freedom_ceiling = 1180
+freedom_min = 100
+freedom_max = 350

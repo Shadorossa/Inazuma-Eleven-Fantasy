@@ -215,6 +215,7 @@ local function load_tables()
       end
     end
   end
+  -- every mod's match resources, each by its key and by its aliases
   local okr, res = pcall(VRFW.files.declarations, "content/match_resources")
   if okr and type(res) == "table" then
     for _, f in ipairs(res) do
@@ -223,6 +224,9 @@ local function load_tables()
         if type(r.name) == "string" then
           local key = tostring(f.mod) .. "." .. r.name
           RES_KEY[crc(key)] = key
+          for _, alias in ipairs(type(r.aliases) == "table" and r.aliases or {}) do
+            if type(alias) == "string" and RES_KEY[crc(alias)] == nil then RES_KEY[crc(alias)] = key end
+          end
         end
       end
     end

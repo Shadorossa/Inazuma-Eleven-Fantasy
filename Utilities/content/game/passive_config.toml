@@ -14,11 +14,47 @@ name = "ResolvePassiveRarity"
 game = "Passive.RarityVersion"
 
 # Character record ([charaObj+8]) fields the configurator reads besides VRFW.chara.record: the old random archetype
-# (+0x49, +0x4B for a Diamante) and the coach / manager badge (+0x1BC).
+# (+0x49, +0x4B for a Diamante) and the coach / manager badge (+0x1BC, the inventory handle of the role badge item).
 [[VRFW.Struct]]
 name = "PassiveCharaRecord"
 size = 0x1C0
 fields = { build = { at = 0x49, type = "u8" }, diamond_build = { at = 0x4B, type = "u8" }, badge = { at = 0x1BC, type = "u32" } }
+
+# InvRecord* InventoryRecord(Items* items, u32 invHdl) 0xD8D4B0: the inventory record of a handle (item id +4); the
+# configurator reads which role badge (coach / manager) a staff player's badge handle holds
+[[VRFW.Function]]
+name = "Utilities.InventoryRecord"
+game = "Board.InvRecord"
+
+# [g_gameRoot] + 0x69D0 = the inventory InventoryRecord takes
+[[VRFW.Global]]
+name = "utilities_inventory"
+base = "game_root"
+chain = [0x69D0]
+
+# The two slot readers called through their hooked entry points (the native answers below included): the script's
+# live check compares what they answer with its tables after every mode / match trigger (scripts/passive_config.lua)
+# u32* GetTeamPassiveId(u32* out, u32 charaHdl, u8 slot, u8 useCopy) 0xE80A70
+[[VRFW.Function]]
+name = "Utilities.TeamPassiveIdLive"
+game = "Passive.TeamPassiveId"
+
+# bool IsTeamPassiveUnlocked(u32 charaHdl, u8 slot, u8 useCopy) 0xE80C30
+[[VRFW.Function]]
+name = "Utilities.TeamPassiveUnlockedLive"
+game = "Passive.TeamPassiveUnlocked"
+
+# [g_gameRoot] + 0x69A8 = the team sets (+0x1E0 + team * 0x4A8, members at +0x80): the match teams the live check reads
+[[VRFW.Global]]
+name = "utilities_team_sets"
+base = "game_root"
+chain = [0x69A8]
+
+# [g_gameRoot] + 0x6A58 = the match info (+0x2C29 the user's match team, 0 / 1)
+[[VRFW.Global]]
+name = "utilities_match_info"
+base = "game_root"
+chain = [0x6A58]
 
 # ------------------------------------------------------------------------------------------------ slot readers
 

@@ -7,7 +7,8 @@
 -- difficulty 2968810192; retail default 1), read here before it runs; the piece's game and save slot from the
 -- piece info command (126049514: 2 -> ok, kind, game; 6 -> ok, slot; VRFW_RouteSlots answers an extended node's
 -- slot). Without a piece (another mod's use of the
--- screen) or without a challenge nothing changes.
+-- screen) or without a challenge nothing changes. An accepted kick-off arms the match's aura rule (the challenge's
+-- `[VRFW.MatchChallenge.Auras]`, VRFW_MC.ArmAuras); opening the screen disarms it.
 -- Wraps global functions only; no engine call at load time.
 if VRFW_MC ~= nil then
   local S = type(VRFW_MC_VsScreen) == "table" and VRFW_MC_VsScreen or {game = 0, diff = 1, slot = nil}
@@ -39,6 +40,7 @@ if VRFW_MC ~= nil then
   if type(init) == "function" and init ~= S.init_wrap then
     S.init_wrap = function(...)
       S.game, S.diff, S.slot = 0, 1, nil
+      pcall(funcLuaCommand, VRFW_MC.AURAS_DISARM)
       if VRFW_RouteSlots ~= nil then
         pcall(VRFW_RouteSlots.Install)   -- an extended node's slot and clear bits (36_route_slots.lua)
       end
@@ -73,6 +75,7 @@ if VRFW_MC ~= nil then
           pcall(funcLuaCommand, VRFW_MC.SE, VRFW_MC.SE_NG)
           return
         end
+        VRFW_MC.ArmAuras(S.game, S.diff)
       end
       return decide(...)
     end

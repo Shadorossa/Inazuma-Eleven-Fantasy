@@ -1,0 +1,37 @@
+# All Changed › the green aura of a CREATED mode change (docs/game/mods/all-changed.md; moved from Inazuma Fantasy
+# 2026-10-14, docs/game/hiper/mode-change-aura.md). Nacho 07/10: «Deja el retail para los predefinidos y el verde para
+# los custom»: only the change a player creates (carrier wmc_evt<k>) gets this aura, green; the retail mode changes stay
+# exactly retail. The retail bond-transform effects ega0540a / ega0541a are NOT touched (no in-place recolour): green
+# COPIES of them are played through a new character trigger, lit by scripts/all_changed.lua on the plates slot's
+# swap_on and cleared on swap_off.
+schema = "VRFW.effect/1"
+if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+
+# Green copies of the two effects, two pooled effects that play them, and a new character trigger: the rows of the
+# bond trigger (0xEDB6AD9B) with the copies (id = crc32 of the trigger's name).
+[[recolor]]
+effect = "ega0540a"
+copy = "egv0540a"
+hue = 125
+mode = "set"
+
+[[recolor]]
+effect = "ega0541a"
+copy = "egv0541a"
+hue = 125
+mode = "set"
+
+[[effect]]
+name = "all_changed_aura_a"
+from = "ega0540a"
+object = "egv0540a"
+
+[[effect]]
+name = "all_changed_aura_b"
+from = "ega0541a"
+object = "egv0541a"
+
+[[chr_trigger]]
+name = "all_changed_custom_aura"
+like = "0xEDB6AD9B"
+effects = { ega0540a = "all_changed_aura_a", ega0541a = "all_changed_aura_b" }

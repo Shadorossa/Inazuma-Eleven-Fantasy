@@ -1,0 +1,113 @@
+# Aura Reworked › its rows in Opciones › «Opciones de mods» and on the Mods screen's «Ajustes» (format:
+# docs/app/mod-options.md §3). Values: <data dir>\mod_options\aura_reworked.json.
+#
+# One switch per part (its id = the id the part had as a mod of its own: mod.toml [[merged]] option). A part that is
+# off loads nothing of its own: its content files, commands and scripts are left out (their `if_mod = "<part>"`,
+# docs/framework/merged-mods.md). restart = true: a part switched on or off applies after restarting the game. Each
+# part's own settings are child rows of its switch (greyed while the part is off).
+
+# ---------------------------------------------------------------- Souls Rework
+
+[[option]]
+id = "souls_rework"                           # row key aura_reworked.souls_rework
+type = "toggle"
+label = "part_souls_rework"
+help = "part_souls_rework_help"
+default = 1
+restart = true
+order = 150
+
+# every totem at its top level (5) from the start of each match: no level points, no level-up (read at every match start)
+[[option]]
+id = "souls_top_level"
+type = "toggle"
+label = "souls_top_level"
+help = "souls_top_level_help"
+default = 0
+parent = "aura_reworked.souls_rework"
+order = 151
+
+# the skill reel under the scoreboard (off: the rolls apply without it; config.toml [souls.reel])
+[[option]]
+id = "souls_reel"
+type = "toggle"
+label = "souls_reel"
+help = "souls_reel_help"
+default = 1
+parent = "aura_reworked.souls_rework"
+order = 152
+
+# the rival team's totems level up and roll the reel too (config.toml [souls.levels] cpu)
+[[option]]
+id = "souls_rival_levels"
+type = "toggle"
+label = "souls_rival_levels"
+help = "souls_rival_levels_help"
+default = 1
+parent = "aura_reworked.souls_rework"
+order = 153
+
+# ---------------------------------------------------------------- All Changed
+
+[[option]]
+id = "all_changed"                            # row key aura_reworked.all_changed
+type = "toggle"
+label = "part_all_changed"
+help = "part_all_changed_help"
+default = 1
+restart = true
+order = 160
+
+# the green aura while a created change runs (read at every swap)
+[[option]]
+id = "change_aura"
+type = "toggle"
+label = "change_aura"
+help = "change_aura_help"
+default = 1
+parent = "aura_reworked.all_changed"
+order = 161
+
+# ---------------------------------------------------------------- All Miximaxed
+
+[[option]]
+id = "all_miximaxed"                          # row key aura_reworked.all_miximaxed
+type = "toggle"
+label = "part_all_miximaxed"
+help = "part_all_miximaxed_help"
+default = 1
+restart = true
+order = 170
+
+# the Chrono Stone stat transfer: the base gains part of the partner's stats while the miximax runs
+# (content\stat_transfer\miximax.toml)
+[[option]]
+id = "miximax_stats"
+type = "toggle"
+label = "miximax_stats"
+help = "miximax_stats_help"
+default = 1
+restart = true
+parent = "aura_reworked.all_miximaxed"
+order = 171
+
+# ---------------------------------------------------------------- All Keshin Armed
+
+[[option]]
+id = "all_keshin_armed"                       # row key aura_reworked.all_keshin_armed
+type = "toggle"
+label = "part_all_keshin_armed"
+help = "part_all_keshin_armed_help"
+default = 1
+restart = true
+order = 180
+
+# while a player's keshin (or its armour) is out, only the keshin's own move can be used (read at every match start)
+[[option]]
+id = "keshin_own_move_only"
+type = "toggle"
+label = "keshin_own_move_only"
+help = "keshin_own_move_only_help"
+default = 0
+parent = "aura_reworked.all_keshin_armed"
+order = 181

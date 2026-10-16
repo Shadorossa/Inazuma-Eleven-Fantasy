@@ -1,13 +1,13 @@
 id = "furor"
 # name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Furor"
-version = "1.1.9"
+version = "1.1.10"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "GO Strikers' furor gauge: each team's fire bar beside its crest fills with time (faster when losing) and a little with goals, saves and duels; full, the furor button (L3 / R) starts the furor phase for 24 s: every player wears his position's awakening (look and stats), moves hit harder, players run faster. The CPU starts its own. Awakenings exist only in the furor phase."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-16"
 # This mod's own names (TOML keys [Furor.X], game Lua FUROR_HUD_* / FurorHud_* / FUROR_BANNER_* / FurorBanner_*, flags / signals furor.gauge.*, input
 # command CMD_FUROR_PHASE, action Furor.Phase); never VRFW.
 prefix = "Furor"

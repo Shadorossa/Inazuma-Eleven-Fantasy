@@ -1,0 +1,137 @@
+# Declares `[[VRFW.MenuScene]]` keys for content\menu_scenes\*.toml; unknown keys, wrong types or out-of-range values drop that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.menu_scene/1"
+folder = "content/menu_scenes"
+
+[entry.MenuScene]
+doc = "a 3D field map kept loaded under a game menu: the map, where its walker stands, the menu layers hidden while it is up"
+# Read by scripts\menu_scene.lua (docs/framework/menu-scene.md). One scene per menu: with several, the later mod in load order wins.
+name = { type = "name", required = true, doc = "the scene (key <mod>.<name>)" }
+menu = { type = "string", required = true, doc = "the menu drawn over the map: title_menu_2 (the main menu, the only one supported)" }
+map = { type = "string", required = true, doc = "the field map: its folder name (w50i001)" }
+field_mode = { type = "name", required = true, doc = "a [[VRFW.FieldMode]] of the same mod, entered while the map is loaded (walker, autosaves, its mode context for a camera drive)" }
+entry_point = { type = "string", default = "", doc = "a layout point of the map (its name or 0x… id, the map's config\\<map>_layout: the arrivals of its doors): the walker arrives there as through a door. Empty = entry_x / y / z / rot" }
+entry_x = { type = "number", default = 0.0, doc = "where the walker arrives on the map (metres), without entry_point" }
+entry_y = { type = "number", default = 0.0, doc = "arrival height (metres)" }
+entry_z = { type = "number", default = 0.0, doc = "arrival depth (metres)" }
+entry_rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "arrival facing (degrees, 0 = +z, 90 = +x)" }
+hide_layers = { type = "strings", doc = "layers of the menu kept hidden while the map is under it (names or 0x… ids): its full-screen background" }
+map_tags_on = { type = "strings", doc = "map tags switched on once the menu is open over the map (the token in the map's mesh names, e.g. SC: meshes named …_SC_ show; CMND_SET_MAP_TAG)" }
+map_tags_off = { type = "strings", doc = "map tags switched off once the menu is open over the map (e.g. a backdrop's tag)" }
+close_menus = { type = "strings", doc = "menus closed when the menu opens over the map (names or 0x… ids): the field's own HUD (rpg_info_window and its pop-ups)" }
+title_play_mode = { type = "int", min = -1, max = 255, default = 6, doc = "the play-mode byte written when the field hands over to the title (6 = what the game's own title start writes, -1 = keep the field's)" }
+settle_frames = { type = "int", min = 1, max = 600, default = 30, doc = "frames of the field state with the map up before the hand-over to the title" }
+timeout_seconds = { type = "number", min = 2, max = 60, default = 10, doc = "a step that takes longer fails: the retail menu for the rest of the session" }
+people = { type = "string", default = "none", doc = "who stands in the map: active_team (the active team's starters on the scene's spots, captain first), none (no NPCs: the map's own are removed) or map (the map's own NPC file, untouched: a control test)" }
+people_seconds = { type = "number", min = 0, max = 30, default = 8, doc = "with people: at most these seconds of field after the map is up before the hand-over (the NPCs are made by the field state, not by the title; their models load first), the screen held black meanwhile" }
+people_min_seconds = { type = "number", min = 0, max = 30, default = 1.5, doc = "with people: at least these seconds of field after the map is up" }
+people_quiet_seconds = { type = "number", min = 0, max = 10, default = 0.5, doc = "with people: seconds after the field's NPC update is done (the retail NPCUpdate: NPCs made, their models loaded) before the hand-over" }
+people_kit = { type = "string", default = "team", doc = "team = the active team's kit on the people, default = each character's default look" }
+camera = { type = "string", default = "", doc = "the engine camera the scene's shots drive (its name: RpgCamera, the field camera); empty = no shots (a camera drive or the game's camera)" }
+default_shot = { type = "name", default = "default", doc = "the [[VRFW.MenuSceneShot]] while no tile with a shot of its own is focused" }
+home_shot = { type = "string", default = "", doc = "with shots_select_modes: a home entry without a tile, on this [[VRFW.MenuSceneShot]]: the menu always opens on it, it is the first place of the previous / next mode cycle, A does nothing there and the game param vrfw_menu_scene_home is set while it is shown (a mode header hides its name); empty = no home entry" }
+shot_seconds = { type = "number", min = 0, max = 5, default = 0.5, doc = "time of the move from one shot to the next" }
+shot_ease = { type = "string", default = "smooth", doc = "smooth (ease in and out), smoother (softer start and stop) or linear" }
+drift_metres = { type = "number", min = 0, max = 2, default = 0.0, doc = "idle drift of the eye around the shot (metres, 0 = still)" }
+drift_seconds = { type = "number", min = 1, max = 120, default = 20, doc = "one drift cycle" }
+shots_select_modes = { type = "bool", default = false, doc = "the shots are the mode selection: the menu's mode row is not drawn (list its layers in hide_layers), the previous / next shot keys move its focus, up / down go between the scene and the lower row, a focus move to a hidden layer is refused, and the focused mode's name is drawn at mode_label_x / y (title_menu_2: the menu needs the layer vrfw_ms_label, docs/framework/menu-scene.md)" }
+mode_label = { type = "bool", default = true, doc = "with shots_select_modes: draw the focused mode's name on vrfw_ms_label 0 (false: the mod draws its own mode header)" }
+mode_label_x = { type = "number", min = 0, max = 1920, default = 64, doc = "with shots_select_modes: the left edge of the mode's name (menu px, 1920 x 1080)" }
+mode_label_y = { type = "number", min = 0, max = 1080, default = 880, doc = "with shots_select_modes: the centre line of the mode's name (menu px from the top)" }
+mode_label_scale = { type = "number", min = 0.2, max = 3, default = 0.75, doc = "with shots_select_modes: the size of the mode's name (1 = the game's button text)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.MenuSceneShot]
+doc = "a camera shot of a menu scene: the eye, the point looked at, the field of view, and the menu tiles that call it"
+scene = { type = "name", required = true, doc = "the scene" }
+name = { type = "name", required = true, doc = "the shot (the scene's default_shot is the shot without a focused tile of its own)" }
+eye_x = { type = "number", required = true, doc = "metres" }
+eye_y = { type = "number", required = true, doc = "metres" }
+eye_z = { type = "number", required = true, doc = "metres" }
+target_x = { type = "number", required = true, doc = "metres" }
+target_y = { type = "number", required = true, doc = "metres" }
+target_z = { type = "number", required = true, doc = "metres" }
+fov = { type = "number", min = 5, max = 120, default = 50, doc = "vertical field of view, degrees" }
+tiles = { type = "ids", doc = "the menu items that call this shot while focused (the title's own item ids, 0x… or decimal); the menu decides which of its tiles report a focus" }
+order = { type = "int", min = 0, max = 999, default = 0, doc = "the place of the shot in the list the menu's previous / next shot keys cycle (then declaration order)" }
+move_seconds = { type = "number", min = -1, max = 10, default = -1, doc = "time of the move into this shot; -1 = the scene's shot_seconds" }
+ease = { type = "string", default = "", doc = "the move into this shot: smooth, smoother or linear; empty = the scene's shot_ease" }
+then_shot = { type = "string", default = "", doc = "a shot the camera moves on to by itself once this shot's move is done and then_after_seconds have passed (a move in two steps); empty = none" }
+then_after_seconds = { type = "number", min = 0, max = 10, default = 0.0, doc = "seconds the camera holds this shot before it moves on to then_shot" }
+
+[entry.MenuSceneAction]
+doc = "what a tile of the menu does over the scene instead of the game's own: continue_story = straight into the story as «Continuar» (no story submenu), chronicle_map = straight to the Chronicle map (no Chronicle top menu), after a move to a shot"
+scene = { type = "name", required = true, doc = "the scene" }
+tile = { type = "string", required = true, doc = "the menu item (the title's own item id, 0x… or decimal)" }
+action = { type = "string", required = true, doc = "continue_story: when a story save exists, A goes straight into the story as the story submenu's «Continuar» does; without one, the game's own submenu. chronicle_map (the «Modo Crónica» tile): the Chronicle top menu is not shown, its «Cadena de Crónica» path runs (the map); the top menu when its tutorial question is not answered yet or Players Universe is reserved" }
+shot = { type = "string", default = "", doc = "a [[VRFW.MenuSceneShot]] the camera moves to first (a push-in), empty = none" }
+seconds = { type = "number", min = 0, max = 5, default = 0.8, doc = "time given to that move before the screen fades out" }
+leave_fade = { type = "string", default = "black", doc = "the screen's fade when the title leaves for the action: black (the default) or white (the title's own white fade, e.g. after a shot that ends in a white space); a value other than white is black" }
+
+[entry.MenuSceneSpot]
+doc = "a place for one person of a menu scene: slot 1 = the captain, then the team's starters in position order"
+scene = { type = "name", required = true, doc = "the scene (a [[VRFW.MenuScene]] name of the same mod)" }
+slot = { type = "int", required = true, min = 1, max = 32, doc = "the order the spots are filled in (1..N, no gaps)" }
+pose = { type = "string", default = "stand", doc = "a label for the log: stand, sit…" }
+who = { type = "string", default = "team", doc = "team = the next starter of the active team; avatar = the save's avatar (its character on the NPC system: the character's default look)" }
+x = { type = "number", required = true, doc = "metres" }
+y = { type = "number", default = 0.0, doc = "metres (the floor the spot stands on)" }
+z = { type = "number", required = true, doc = "metres" }
+rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "facing, degrees (0 = +z, 90 = +x)" }
+clips = { type = "strings", required = true, doc = "idle clips of the skeleton's NPC motion pack (common/chr/<set>/<set>_p060.g4pk), the first one the member's set holds" }
+
+[entry.MenuScenePeople]
+doc = "GENERATED (research/scripts/menu_scene_people_build.py): the scene's npc_setting template for `count` people, hex, with the sentinels the run time patches"
+scene = { type = "name", required = true, doc = "the scene" }
+count = { type = "int", required = true, min = 0, max = 32, doc = "people in this template" }
+template = { type = "string", required = true, doc = "the npc_setting bytes, hex" }
+clip_sets = { type = "strings", doc = "<motion set>:<clip hash>,… : the spots' clips each NPC pack holds (on the count 0 template)" }
+
+[entry.MenuSceneHotspot]
+doc = "a button in the scene: a rectangle of the map seen by a shot, drawn as a menu text where the camera sees it (title_menu_2 with shots_select_modes); left / right move between a shot's hotspots, A runs the first available of its actions"
+scene = { type = "name", required = true, doc = "the scene" }
+shot = { type = "name", required = true, doc = "the [[VRFW.MenuSceneShot]] that shows it (only once the camera has arrived)" }
+name = { type = "name", required = true, doc = "the hotspot (for the log)" }
+order = { type = "int", min = 0, max = 999, default = 0, doc = "left / right order among the shot's hotspots (then declaration order)" }
+start = { type = "bool", default = false, doc = "selected when the shot comes (else the first one)" }
+x = { type = "number", required = true, doc = "the rectangle's centre, metres" }
+y = { type = "number", required = true, doc = "metres" }
+z = { type = "number", required = true, doc = "metres" }
+width = { type = "number", min = 0.01, max = 50, required = true, doc = "metres, across `rot`" }
+height = { type = "number", min = 0.01, max = 50, required = true, doc = "metres: up on a wall, along `rot` on the floor" }
+surface = { type = "string", default = "wall", doc = "wall (standing, facing `rot`) or floor (lying flat)" }
+rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "degrees: the way a wall rectangle faces (0 = +z, 180 = -z), the turn of a floor one" }
+actions = { type = "strings", required = true, doc = "what A does, the first available one: story_continue (a story save: «Continuar»), story_new_game (no story save: «Partida nueva»), story_plus («Historia+»), story_extended («Historia extendida»), chronicle_map (on the «Modo Crónica» tile's shot: «Cadena de Crónica», straight to the Chronicle map); none available = greyed, A refused" }
+text = { type = "string", default = "", doc = "the text (a text id, 0x… or decimal, or a text key); empty = the game's own text of the action that runs" }
+push_shot = { type = "string", default = "", doc = "a shot the camera moves to on A before the action (empty = none)" }
+seconds = { type = "number", min = 0, max = 5, default = 0.8, doc = "time given to that move before the screen fades out" }
+light_flood_seconds = { type = "number", min = 0, max = 5, default = 0.0, doc = "on A: a warm white light grows from the rectangle over the whole screen during the last these seconds before the action (a door opening onto daylight); 0 = none" }
+open_door = { type = "string", default = "", doc = "on A: a door of the map opened with its own clip (CMND_DOOR_OPEN): the scene node name of its instance (its id is the name's crc32; 0x… / decimal ids too); a node that is not a registered door logs why and leaves the rest of the action (the light flood) as it is; empty = none" }
+open_door_after_seconds = { type = "number", min = 0, max = 5, default = 0.0, doc = "seconds after A before the door opens (during the push-in)" }
+open_door_reverse = { type = "bool", default = false, doc = "open with the door's reverse clips (start2 / loop2: it swings the other way)" }
+leave_fade = { type = "string", default = "black", doc = "the screen's fade when the title leaves for the action: black (the default) or white (the title's own white fade, e.g. after a shot that ends in a white space); a value other than white is black" }
+
+[entry.MenuSceneFile]
+doc = "a map file served in place of the game's while the scene runs (from the request to the reset that leaves it): e.g. the map's node tree without its exterior backdrop"
+scene = { type = "name", required = true, doc = "the scene" }
+filter = { type = "string", required = true, doc = "a part of the engine's path of the game file (w50i001/w50i001.g4pk): every open whose path contains it gets `key`" }
+key = { type = "string", required = true, doc = "the file served instead: its game path in the mod's assets (data/common/map/w/w50i001/<own folder>/<file>), never the game file's own path" }
+
+[entry.MenuSceneScreen]
+doc = "a screen in the scene: a rectangle of the map (a painting, a monitor) that shows layers of the scene's menu while a shot is on: the layers are placed and scaled so that their design area covers the rectangle where the camera sees it, fade in once the camera has arrived and out when it moves to another shot (title_menu_2; the layers are the mod's, added to the menu by its menus TOML and opened here)"
+scene = { type = "name", required = true, doc = "the scene" }
+shot = { type = "name", required = true, doc = "the [[VRFW.MenuSceneShot]] that shows it" }
+keep_shots = { type = "strings", doc = "other shots it stays on during (and after) the camera's move into them: e.g. a hotspot's push-in toward it" }
+name = { type = "name", required = true, doc = "the screen (for the log and the mod's Lua: CMND_VRFW_MENU_SCENE_SCREENS)" }
+x = { type = "number", required = true, doc = "the rectangle's centre, metres" }
+y = { type = "number", required = true, doc = "metres" }
+z = { type = "number", required = true, doc = "metres" }
+width = { type = "number", min = 0.01, max = 50, required = true, doc = "metres, across `rot`" }
+height = { type = "number", min = 0.01, max = 50, required = true, doc = "metres, up" }
+rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "degrees: the way the rectangle faces (0 = +z, 180 = -z); it stands up like a wall hotspot" }
+layers = { type = "strings", required = true, doc = "layers of the menu (names or 0x… ids), instance 0 of each, in the order they are fitted; drawn in the menu's own order (the menus TOML's draw priorities)" }
+design_x = { type = "number", default = 0.0, doc = "the layers' design area that covers the rectangle: its left edge in the layers' own menu px (a full-screen layer: 0, 0, 1920, 1080)" }
+design_y = { type = "number", default = 0.0, doc = "its top edge (menu px, y down)" }
+design_width = { type = "number", min = 1, max = 20000, default = 1920.0, doc = "its width (menu px); the layers are stretched to the rectangle's width" }
+design_height = { type = "number", min = 1, max = 20000, default = 1080.0, doc = "its height (menu px); the layers are stretched to the rectangle's height" }
+fade_seconds = { type = "number", min = 0, max = 5, default = 0.3, doc = "the fade in once the camera has arrived on the shot, and out when it leaves" }

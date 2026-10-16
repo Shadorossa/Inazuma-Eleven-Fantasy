@@ -1,0 +1,7 @@
+schema = "VRFW.model/1"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# own model common/chr/_armd/ka000101/ka000101_g1.g4md (research/scripts/if_models_to_glb.py)
+target = "chr/_armd/ka000101/ka000101_g1.g4md"
+template = "chr/_armd/ka000101/ka000101.g4md"
+# the game ships this file: the model replaces it
+replace = true

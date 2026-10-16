@@ -2,7 +2,7 @@ id = "new_techniques"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml). «New Techniques» in every language for now (the owner may rename it).
 name = "New Techniques"
-version = "1.0.5"
+version = "1.0.6"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Five new special moves, each with its own scene, effects, name banner and manual: Golpe del abismo (void shot), Vuelo angelical (wind shot), Campo nuclear (void block), Zona oscura (forest block) and Dispersión (void catch). With Inazuma Fantasy their manuals are sold in its training shop. Names in Spanish for now. Always on: the mod has no options."
@@ -26,7 +26,7 @@ folder = "NewTechniques"
 #                                               the recoloured effect objects (native models)
 #   content\base_tables\effect\, gamedata\skill\skill_config.toml
 #                                               Golpe del abismo's ball auras (effect rows, triggers, colour row 10)
-#   content\shops\training_shop.toml            the manuals in Inazuma Fantasy's move shops
+#   content\shops\training_shop.toml            the manuals in Inazuma Fantasy's move shop
 # README.md is a developer file, never installed. Generated parts: research/scripts/new_techniques_build.py.
 requires = ["vr_framework>=2.0.88"]
 conflicts = []

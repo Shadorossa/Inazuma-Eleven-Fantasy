@@ -494,3 +494,81 @@ pt = "Este baú está vazio por agora."
 ja = "この宝箱は今のところ空っぽだ。"
 zh_hans = "这个宝箱目前是空的。"
 zh_hant = "這個寶箱目前是空的。"
+
+# a match tile's rank reward on the team card: «<rank>: <item>» (the rank's label, the item's name or its kind)
+[[row]]
+id = "vrfw_chain_card_rank_prize"
+es = "%s: %s"
+en = "%s: %s"
+fr = "%s : %s"
+de = "%s: %s"
+it = "%s: %s"
+pt = "%s: %s"
+ja = "%s：%s"
+zh_hans = "%s：%s"
+zh_hant = "%s：%s"
+
+# the same, already received in this save
+[[row]]
+id = "vrfw_chain_card_rank_prize_got"
+es = "%s: %s (obtenido)"
+en = "%s: %s (received)"
+fr = "%s : %s (obtenu)"
+de = "%s: %s (erhalten)"
+it = "%s: %s (ottenuto)"
+pt = "%s: %s (obtido)"
+ja = "%s：%s（入手済み）"
+zh_hans = "%s：%s（已获得）"
+zh_hant = "%s：%s（已獲得）"
+
+# the kind of a rank reward when the item has no name of its own: the rival's crest
+[[row]]
+id = "vrfw_chain_prize_emblem"
+es = "Escudo"
+en = "Crest"
+fr = "Écusson"
+de = "Wappen"
+it = "Stemma"
+pt = "Emblema"
+ja = "エンブレム"
+zh_hans = "队徽"
+zh_hant = "隊徽"
+
+# the rival's kit
+[[row]]
+id = "vrfw_chain_prize_kit"
+es = "Equipación"
+en = "Kit"
+fr = "Tenue"
+de = "Trikot"
+it = "Divisa"
+pt = "Equipamento"
+ja = "ユニフォーム"
+zh_hans = "队服"
+zh_hant = "隊服"
+
+# any other item
+[[row]]
+id = "vrfw_chain_prize_item"
+es = "Objeto"
+en = "Item"
+fr = "Objet"
+de = "Gegenstand"
+it = "Oggetto"
+pt = "Item"
+ja = "アイテム"
+zh_hans = "道具"
+zh_hant = "道具"
+
+# a rank reward the bag has no room for (shown when the board opens)
+[[row]]
+id = "vrfw_chain_rank_full"
+es = "No tienes sitio para el premio de rango.\nHaz hueco y vuelve a abrir esta cadena."
+en = "You have no room for the rank reward.\nMake some room and open this chain again."
+fr = "Vous n'avez pas de place pour la récompense de rang.\nFaites de la place et rouvrez cette chaîne."
+de = "Du hast keinen Platz für die Rangbelohnung.\nSchaffe Platz und öffne diese Kette erneut."
+it = "Non hai spazio per il premio di grado.\nFai spazio e riapri questa catena."
+pt = "Não tens espaço para o prémio de nível.\nFaz espaço e volta a abrir esta cadeia."
+ja = "ランク報酬を受け取る空きがありません。\n空きを作ってからこのルートを開き直してください。"
+zh_hans = "没有空间领取评级奖励。\n请腾出空间后重新打开此路线。"
+zh_hant = "沒有空間領取評級獎勵。\n請騰出空間後重新開啟此路線。"

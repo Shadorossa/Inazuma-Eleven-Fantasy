@@ -386,7 +386,7 @@ end
 
 -- ===== EVT inazuma_fantasy_general_store BEGIN =====
 -- ===== InazumaFantasy general_store BEGIN =====
--- Entries 1-4 of the Mercado = Inazuma Fantasy's shops; the retail entries move down. A retail entry whose shop has
+-- Entries 1-3 of the Mercado = Inazuma Fantasy's shops; the retail entries move down. A retail entry whose shop has
 -- every row hidden by a mod is taken out.
 do
   local REG_FIND = 2175579023           -- CMND_VRFW_REG_FIND (type, key) -> id (-1)
@@ -399,10 +399,8 @@ do
       header = 428357293, background = 2854327783, base = 1416979514, icon = 1290312194 },
     { key = "inazuma_fantasy_2.training_shop", name = 343889320,          -- art market02 (Tienda Vs)
       header = 4041970584, background = 1128411346, base = 3172385039, icon = 2777366327 },
-    { key = "inazuma_fantasy_2.technique_shop_shots", name = 585277308,   -- art market03 (Mercado BB)
+    { key = "inazuma_fantasy_2.technique_shop", name = 674756040,         -- art market03 (Mercado BB)
       header = 2280432398, background = 876937284, base = 3390173593, icon = 3532394401 },
-    { key = "inazuma_fantasy_2.technique_shop_skills", name = 1696700067, -- art market01 (Tienda de Crónica)
-      header = 1776468514, background = 3662373224, base = 606048437, icon = 1015180941 },
   }
   local function unsigned(id)
     if id < 0 then

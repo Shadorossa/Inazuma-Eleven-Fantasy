@@ -10,6 +10,8 @@ local EVT_Child = function()
 -- * rows = min(team limit, the portrait layer's open instances: content\menus\buff_row.toml), never below the retail
 --   count; t5 grows inside the wrapper (match time), never at chunk load. No limit (-1): every open instance.
 -- * AuraPoints_BuffRow.Rows(): the entries of the row now (read by aura_points_buff_bar.lua for its bars).
+-- * AuraPoints_BuffRow.PoolsOn(): the mod's PEG or SP part is on (CMND_AURAPOINTS_ACTIVE_PARTS): while not, or not
+--   known yet, the row keeps the retail count and aura_points_buff_bar.lua draws nothing.
 -- Nothing at chunk load but the debug library's upvalue search; engine calls only inside the wrapper, through pcall.
 -- EVT upvalue helpers for lua_patch files (docs/game/engine/lua-patches.md "Locales del chunk retail"). A retail
 -- chunk is stripped bytecode: its main-chunk locals are reachable only as upvalues of its global functions. The
@@ -84,6 +86,7 @@ AuraPoints_BuffRow = AuraPoints_BuffRow or {}
 local R = AuraPoints_BuffRow
 
 local CMD_TEAM_MAX = 407899857
+local CMD_PARTS = 1040362010 --[[the mod's parts this start: ok, peg, sp, pe]]
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
@@ -101,10 +104,26 @@ function R.Instances()
   return n
 end
 
+-- the mod's PEG or SP part is on; asked until the command answers (a busy script answers nothing for that frame: false
+-- meanwhile), 600 frames without an answer: on
+function R.PoolsOn()
+  if R.pools_on ~= nil then
+    return R.pools_on
+  end
+  R.asks = (R.asks or 0) + 1
+  local ok, answered, peg, sp = pcall(funcLuaCommand, CMD_PARTS)
+  if ok and answered == true then
+    R.pools_on = peg == 1 or peg == true or sp == 1 or sp == true
+  elseif R.asks >= 600 then
+    R.pools_on = true
+  end
+  return R.pools_on == true
+end
+
 -- the entries the row may show now
 function R.Rows()
   local base = R.retail or 0
-  if R.t5 == nil then
+  if R.t5 == nil or not R.PoolsOn() then
     return base
   end
   if R.cap == nil then
@@ -214,12 +233,13 @@ local EVT_Child = function()
 --   place among the team's aura users, as the retail UpdateAuraBuffCharaIcon builds it).
 -- * For a keshin / armour entry (aura attr 0x01 / 0x02) the purple PEG bar of his pool, for a totem (0x08) the blue SP
 --   bar: pool left / max of CMND_AURAPOINTS_PEG(hdl) (scripts\aura_points.lua). For a miximax entry (0x04) the PE bar
---   of the mod Stamina Points (CMND_STAMINAPOINTS_GP(hdl), the retail fill), as Inazuma Fantasy drew it. A mode change
+--   of the mod's PE part (CMND_AURAPOINTS_STAMINA(hdl), the retail fill), as Inazuma Fantasy drew it. A mode change
 --   of the mod All Changed (its swap running: CMND_ALLCHANGED_SWAP_GAUGE(hdl) -> active, recovered 0..1) shows an
 --   orange recharge bar that fills over the swap's cooldown (real time, its slot's cooldown_s): full = he may swap
 --   again. A player with two auras at once gets both bars, the second one under the first. The entry's stopwatch is
---   hidden while a bar shows. No pool for him (a team the pools do not apply to, no Stamina Points / All Changed):
---   nothing changes.
+--   hidden while a bar shows. No pool for him (a team the pools do not apply to, no PE / All Changed): nothing
+--   changes. While the mod's options «peg» and «sp» are both off (AuraPoints_BuffRow.PoolsOn() of
+--   aura_points_buff_row.lua) nothing is drawn: the retail row.
 -- * Layer aura_points_buff_bar (2 instances per entry: k for the first bar of entry k, k + rows for its second, rows =
 --   the row's entries now, AuraPoints_BuffRow.Rows() of aura_points_buff_row.lua; the mod's content\menus\buff_bar.toml:
 --   object aura_points_peg_bar, hung on the portrait's locator by copies of its attach rows), placed every frame under
@@ -229,7 +249,7 @@ local EVT_Child = function()
 -- * Under every bar the pool as a number «current / max» (whole numbers, the row's own «55 %» font: the white digits with a
 --   dark outline; layer aura_points_buff_digit, 7 glyph slots per bar instance = 3 digits, a slash, 3 digits, the
 --   mod's content\menus\buff_digits.toml, sprites content\images\...\btl06_13\aura_points_buff_num.toml), centred under
---   the bar; the PE bar of Stamina Points gets it too, an entry with two bars shows both (the second one a bar + number
+--   the bar; the PE bar gets it too, an entry with two bars shows both (the second one a bar + number
 --   block lower). The mode change's recharge bar has no number. A glyph is swapped only when it changes, a slot is moved
 --   only when the portrait moved.
 -- * A totem's entry (aura attr 0x08) also shows its level on the tile's top edge, «Lv.3» / «Nv.3» (layer
@@ -247,16 +267,16 @@ B.BAR_W, B.BAR_H = 60, 12              -- bar frame size (layout units; retail f
 B.DX, B.DY = 0, 0                      -- extra offset from the portrait's position (layout units)
 B.GAP = 2                              -- gap between an entry's two bars (layout units)
 B.PITCH = 21                           -- distance between an entry's two bar + number blocks (layout units)
-B.NUM_H = 11                           -- height of a number glyph cell (layout units); the cell is 44 x 36
-B.NUM_W = 11 * 44 / 36                 -- its width
-B.NUM_ADV, B.SLASH_ADV = 10.8, 7.5     -- advance of a digit / of the slash (the cells overlap a little: the outlines)
+B.NUM_H = 9                            -- height of a number glyph cell (layout units); the cell is 44 x 36
+B.NUM_W = 9 * 44 / 36                 -- its width
+B.NUM_ADV, B.SLASH_ADV, B.ONE_ADV = 7.8, 4.5, 4.8     -- advance of a digit / of the slash / of the narrow «1» (tight: two tiles' numbers never touch)
 B.NUM_GAP = 0.5                        -- gap between the bar and its number
 B.LEVEL_SCALE = 0.28                   -- the level label's text scale (the telop's text box is 334 x 70)
 B.LEVEL_DY = 1                         -- the level label's middle this far below the tile's top edge (layout units)
 B.LOGS = B.LOGS or 0                   -- first placements logged (loader.log «aura_points buff bar»)
 
 local CMD_PEG = 2798170173
-local CMD_PE = 4090369368 --[[the mod Stamina Points' PE of a match player]]
+local CMD_PE = 3590013386 --[[the mod's PE of a match player]]
 local CMD_CHANGE = 4219664075 --[[the mod All Changed's swap: active, recovered 0..1]]
 local CMD_LOG = 3661580131 --[[the loader's log line]]
 local LAYER = 3914453936
@@ -336,6 +356,16 @@ end
 
 local function Log(...)
   pcall(funcLuaCommand, CMD_LOG, "aura_points buff bar", ...)
+end
+
+-- the mod's PEG or SP part is on (aura_points_buff_row.lua asks it; without that block: on)
+local function PoolsOn()
+  local row = rawget(_ENV, "AuraPoints_BuffRow")
+  if type(row) == "table" and type(row.PoolsOn) == "function" then
+    local ok, on = pcall(row.PoolsOn)
+    return ok and on == true
+  end
+  return true
 end
 
 -- Inazuma Fantasy's mx_popup draws these bars itself in this script
@@ -473,14 +503,14 @@ function B.DrawNumber(k, cur, max, cx, cy, scale)
   end
   local width = 0
   for _, g in ipairs(glyphs) do
-    width = width + (g == "/" and B.SLASH_ADV or B.NUM_ADV)
+    width = width + (g == "/" and B.SLASH_ADV or (g == 1 and B.ONE_ADV or B.NUM_ADV))
   end
   local w, h = B.NUM_W * scale, B.NUM_H * scale
   local sx, sy = w / FRAME_W, h / FRAME_H
   local x = cx - width * scale / 2
   for i, g in ipairs(glyphs) do
     local inst = k * K.SLOTS + i - 1
-    local adv = (g == "/" and B.SLASH_ADV or B.NUM_ADV) * scale
+    local adv = (g == "/" and B.SLASH_ADV or (g == 1 and B.ONE_ADV or B.NUM_ADV)) * scale
     if not D.ready[inst] then
       D.ready[inst] = true
       D.glyph[inst] = nil
@@ -763,7 +793,7 @@ end
 
 -- every frame: the bars follow the live portraits (cut-ins / a hidden row hide them)
 function B.Frame()
-  if not B.ON then
+  if not B.ON or not PoolsOn() then
     return
   end
   if IfDraws() then

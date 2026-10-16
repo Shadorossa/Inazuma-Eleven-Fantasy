@@ -1,0 +1,37 @@
+schema = "VRFW.option/2"
+# Aura Points › which of its point systems run (owner decision 2026-10-16), on the Mods screen's «Ajustes» of the mod
+# and in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3). Values:
+# <data dir>\mod_options\aura_points.json. restart = true: every reader gets the value the game started with; a change
+# applies after restarting the game. Off = that part keeps the game's own rules, as without the mod.
+#   peg  keshin and keshin armours on PEG pools (scripts\aura_points.lua)
+#   sp   totems on SP bars (scripts\aura_points.lua)
+#   pe   the match PE of every player: the option feature features\pe\ (read only while this row is on,
+#        evt_modfmt::layout::feature_switch)
+# With PE and PEG or SP on, the retail hyper gauge under the tension bar is hidden (config.toml [hud_hidden_layers]).
+
+[[option]]
+id = "peg"                                    # row key aura_points.peg
+type = "toggle"
+label = "option_peg"                          # text\keys.toml, 9 languages
+help = "option_peg_help"
+default = 1
+order = 100
+restart = true
+
+[[option]]
+id = "sp"                                     # row key aura_points.sp
+type = "toggle"
+label = "option_sp"
+help = "option_sp_help"
+default = 1
+order = 101
+restart = true
+
+[[option]]
+id = "pe"                                     # row key aura_points.pe; switches the folder features\pe\
+type = "toggle"
+label = "option_pe"
+help = "option_pe_help"
+default = 1
+order = 102
+restart = true

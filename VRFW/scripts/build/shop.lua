@@ -280,8 +280,8 @@ function S.build(X, sfiles)
     return #hits
   end
 
-  -- hide every player spirit row (a row with a spirit variant) of shop `sid`; how many
-  local function hide_spirit_rows(sid, m, what)
+  -- hide every row of shop `sid` of one kind ("spirit": player spirit rows, "unknown": rows of an item not in item_config); how many
+  local function hide_rows_where(sid, m, what, kind)
     local never = C.never()
     local t = shop_table()
     if not t then return 0 end
@@ -290,7 +290,15 @@ function S.build(X, sfiles)
     local hits = {}
     for _, r in ipairs(shop_rows(t, b, e)) do
       local i = r[1]
-      if (t:uint(i, "spirit_param") or 0) ~= 0 and not is_hidden(t, i) then
+      local spirit = (t:uint(i, "spirit_param") or 0) ~= 0
+      local item = t:uint(i, "item") or 0
+      local wanted
+      if kind == "spirit" then
+        wanted = spirit
+      else
+        wanted = not spirit and item ~= 0 and X.list_of[item] == nil
+      end
+      if wanted and not is_hidden(t, i) then
         hits[#hits + 1] = { i = i, rid = t:uint(i, "id") or 0 }
       end
     end
@@ -576,8 +584,11 @@ function S.build(X, sfiles)
         X.err(m, what .. ": hide: " .. he)
       end
     end
-    if d.hide_spirits and hide_spirit_rows(id, m, what) == 0 then
+    if d.hide_spirits and hide_rows_where(id, m, what, "spirit") == 0 then
       X.warn(m, what .. ": hide_spirits: the shop sells no player spirit")
+    end
+    if d.hide_unknown_items and hide_rows_where(id, m, what, "unknown") == 0 then
+      X.warn(m, what .. ": hide_unknown_items: every row of the shop sells a known item")
     end
     for k, en in ipairs(d.entry or {}) do
       local ee = entry(m, what, id, key, en)

@@ -1,0 +1,18 @@
+schema = "VRFW.game/2"
+
+# Utilities › Neutral element icon in the shop rows (docs/game/ui/neutral-element-icon.md). The shop row fill hides a
+# move / aura row's element icon when the element is 5 (void) or 0 and never asks the menu Lua for it, so void moves
+# showed an empty gap before their name. Each site's compare with 5 becomes a compare with 0xFF (no element has it):
+# element 5 rows then call the menu Lua SetElementIcon like elements 1-4, and its GetElementIconTexture (graft
+# neutral_element) answers the neutral sprite icon_cmd_type00. Element 0 (no element) stays hidden. A site whose bytes
+# are not the game's keeps the game's code (the row stays without icon).
+
+[[VRFW.Patch]]
+name = "NeutralElement.ShopMoveRowVoid"
+game = "Shop.RowMoveElement.HideVoid"
+bytes = "FF"
+
+[[VRFW.Patch]]
+name = "NeutralElement.ShopAuraRowVoid"
+game = "Shop.RowAuraElement.HideVoid"
+bytes = "FF"

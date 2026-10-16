@@ -24,8 +24,15 @@ M.LIST_HDL_MAX = 0x0FFF
 M.BLOB = "passive_config.json"
 M.FILE_VERSION = 1
 
--- card classes
-M.FULL, M.IDOL, M.BUILD, M.PRIME, M.BLOCKED = "full", "idol", "build", "prime", "blocked"
+-- card classes (staff = a coach or a manager whose role the badge item names: his slots take his role's passives)
+M.FULL, M.IDOL, M.BUILD, M.PRIME, M.BLOCKED, M.STAFF = "full", "idol", "build", "prime", "blocked", "staff"
+-- the staff roles: the game's role badge item (record +0x1BC holds its inventory handle) and the item kind of the
+-- passive items that role equips (item_config ITEM_SPECIAL_SKILL_INFO col 6; col 16 = the passive)
+M.ROLE_COACH, M.ROLE_MANAGER = 1, 2
+M.ROLES = {
+  [1] = { name = "coach", badge = "abl_000002", item_kind = 122 },
+  [2] = { name = "manager", badge = "abl_000003", item_kind = 123 },
+}
 -- slot kinds (code = CMND_UTIL_PC_SLOT's 5th answer)
 M.ANY, M.SPECIAL, M.GENERAL, M.ARCHETYPE = "any", "special", "general", "archetype"
 M.KIND_CODE = { any = 0, special = 1, general = 2, archetype = 3 }
@@ -626,18 +633,137 @@ function M.archetype_defaults(c, a)
   return v
 end
 
+-- ---------------------------------------------------------------------------------------------- staff passives
+
+-- The grade of a staff passive is the game's own: a role item names a base passive and the card's rarity picks its
+-- version (ResolvePassiveRarity: idList[min(rarity, 5)] of the passive's rarity row, 0 = idList[4]). The rows with an
+-- idList[5] of their own are the Basara (Diamante) items' passives; a Basara card is rarity 8 (the game's
+-- CheckBasaraCharaByCharaStHdl), so only a Diamante coach / manager is offered them.
+M.BASARA_RARITY = 8
+
+-- rows = { [base id] = { idList[0] .. idList[5] } } of passive_skill_rarity_table
+function M.set_versions(c, rows)
+  c.versions = rows
+end
+
+-- the version of `id` a card of `rarity` uses (the id itself without a rarity row)
+function M.version_at(c, id, rarity)
+  local row = c.versions and c.versions[id]
+  if not row then return id end
+  local v = row[math.min(math.max(rarity or 0, 0), 5) + 1] or 0
+  if v == 0 then v = row[5] or 0 end
+  if v == 0 then return id end
+  return v
+end
+
+function M.value_at(c, id, rarity)
+  local p = c.by_id[M.version_at(c, id, rarity)] or c.by_id[id]
+  return p and p.value or 0
+end
+
+function M.is_basara(c, id)
+  local row = c.versions and c.versions[id]
+  return row ~= nil and (row[6] or 0) ~= 0
+end
+
+-- the passives of a staff role (ids = the passives of that role's items): known match passives only (the ids not in
+-- the catalogue are returned); the list a card sees is built per rarity (M.staff_list)
+function M.set_staff(c, role, ids)
+  c.staff_all = c.staff_all or {}
+  c.staff_cache = {}
+  local v, has, unknown = {}, {}, {}
+  for _, id in ipairs(ids) do
+    if not c.by_id[id] then
+      unknown[#unknown + 1] = id
+    elseif not has[id] then
+      has[id] = true
+      v[#v + 1] = id
+    end
+  end
+  c.staff_all[role] = v
+  return unknown
+end
+
+function M.staff_count(c, role)
+  return c.staff_all and c.staff_all[role] and #c.staff_all[role] or 0
+end
+
+-- what a coach / manager of `rarity` may choose: per effect definition the role item whose version at that rarity is
+-- the strongest (Basara items only for a Basara card), sorted by category then key -> list, set
+function M.staff_list(c, role, rarity)
+  rarity = rarity or 0
+  local key = role * 256 + rarity
+  local hit = c.staff_cache and c.staff_cache[key]
+  if hit then return hit[1], hit[2] end
+  local best = {}
+  for _, id in ipairs(c.staff_all and c.staff_all[role] or {}) do
+    if rarity == M.BASARA_RARITY or not M.is_basara(c, id) then
+      local p = c.by_id[id]
+      local val = M.value_at(c, id, rarity)
+      local b = best[p.def]
+      if b == nil or val > b[1] or (val == b[1] and p.key < b[2]) then best[p.def] = { val, p.key, id } end
+    end
+  end
+  local list, set = {}, {}
+  for _, b in pairs(best) do
+    list[#list + 1] = b[3]
+    set[b[3]] = true
+  end
+  table.sort(list, function(a, b)
+    local x, y = c.by_id[a], c.by_id[b]
+    if x.category ~= y.category then return x.category < y.category end
+    return x.key < y.key
+  end)
+  c.staff_cache = c.staff_cache or {}
+  c.staff_cache[key] = { list, set }
+  return list, set
+end
+
+function M.staff_allowed(c, role, rarity, id)
+  if id == 0 or role == nil then return false end
+  local _, set = M.staff_list(c, role, rarity)
+  return set[id] == true
+end
+
+function M.staff_pick(c, role, rarity, cat, exclude)
+  local v = {}
+  for _, id in ipairs((M.staff_list(c, role, rarity))) do
+    local p = c.by_id[id]
+    if (cat == M.CAT_ALL or p.category == cat) and not exclude[p.def] then v[#v + 1] = id end
+  end
+  return v
+end
+
+function M.staff_categories(c, role, rarity, exclude)
+  local v = { M.CAT_ALL }
+  for _, cats in ipairs({ M.GENERAL_CATS, M.ARCH_CATS }) do
+    for _, cat in ipairs(cats) do
+      if #M.staff_pick(c, role, rarity, cat, exclude) > 0 then v[#v + 1] = cat end
+    end
+  end
+  return v
+end
+
 -- ---------------------------------------------------------------------------------------------- slots
 
-function M.card_of(rarity, badge)
-  if badge ~= 0 then return M.BLOCKED end
+-- role = the staff role of a badge (nil: no badge, or a badge whose role has no passives)
+function M.card_of(rarity, badge, role)
+  if badge ~= 0 then return role and M.STAFF or M.BLOCKED end
   if rarity >= 5 and rarity <= 7 then return M.IDOL end
   if rarity == 8 then return M.BUILD end
   if rarity == 10 then return M.PRIME end
   return M.FULL
 end
 
+-- a staff card's slots follow no slot rule (no kind, no rarity lock)
 function M.slot_open(r, card, rarity, k)
-  return card ~= M.BLOCKED and k >= 1 and k <= M.N_SLOTS and not M.locks(r, rarity, k)
+  return card ~= M.BLOCKED and k >= 1 and k <= M.N_SLOTS and (card == M.STAFF or not M.locks(r, rarity, k))
+end
+
+-- the kind of slot k of a card: a staff card's slots take any passive of his role
+function M.slot_kind(r, card, k)
+  if card == M.STAFF then return M.ANY end
+  return M.kind(r, k)
 end
 
 function M.open_slots(r, card, rarity)
@@ -686,7 +812,7 @@ end
 -- the slots of a player who configured nothing (s = subject: card, rarity, base, rolled, old, main_position,
 -- special, who)
 function M.default_slots(c, s, r)
-  if s.card == M.BLOCKED then return copy5(s.base) end
+  if s.card == M.BLOCKED or s.card == M.STAFF then return copy5(s.base) end
   if not M.archetype_mode(r) then
     local out = copy5(s.base)
     for k = 1, M.N_SLOTS do
@@ -777,6 +903,7 @@ function M.default_slots(c, s, r)
 end
 
 function M.kind_accepts(c, s, r, k, id)
+  if s.card == M.STAFF then return M.staff_allowed(c, s.role, s.rarity, id) end
   local kind = M.kind(r, k)
   if kind == M.SPECIAL then return M.special_allowed(c, s.special, s.who, id) end
   if kind == M.GENERAL then return not M.is_archetype(c, id) end
@@ -806,7 +933,11 @@ function M.check_set(c, s, eff, stored, k, id, l, r, allow_duplicates)
   if not M.can_set(l, stored, M.open_slots(r, s.card, s.rarity), k) then return M.E_LIMIT end
   local kind = M.kind(r, k)
   local p
-  if kind == M.SPECIAL then
+  if s.card == M.STAFF then
+    p = c.by_id[id]
+    if not p then return M.E_UNKNOWN end
+    if not M.staff_allowed(c, s.role, s.rarity, id) then return M.E_WRONG_CLASS end
+  elseif kind == M.SPECIAL then
     p = c.by_id[id]
     if not p then return M.E_UNKNOWN end
     if not M.special_allowed(c, s.special, s.who, id) then return M.E_WRONG_CLASS end

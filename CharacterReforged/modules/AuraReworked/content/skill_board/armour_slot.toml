@@ -1,0 +1,10 @@
+schema = "CharacterReforged.skill_board/1"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Keshin Armed › switches on Character Reforged's «armour slot without the item» (scripts\armour_slot.lua of
+# Character Reforged; was Utilities' [skill_board] armour_without_item until 2026-10-14): setting the skill board's
+# armour slot beside a keshin piece adds one copy of the armour item when the player owns none (keshin items owned
+# before this mod was installed never got their armour item). Without this mod the slot needs the item, as in the
+# retail game. docs/game/mods/all-keshin-armed.md §2.2.
+
+[CharacterReforged.SkillBoard]
+armour_without_item = true

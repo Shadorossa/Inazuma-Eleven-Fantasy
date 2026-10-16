@@ -1,0 +1,76 @@
+# Aura Points › PE: the PE bar of the match HUD (written by hand; docs/game/mechanics/match-stamina.md §13.3).
+# A new layer stamina_points_pe_bar in soccer_inplay_menu (and its battle group, where the face bubble also lives), not
+# opened by the screen (flags like the dash ring's): the Lua of the graft aura_points_stamina_hud opens it, sets its value
+# from CMND_AURAPOINTS_STAMINA and puts it under the controlled player's face bubble every frame.
+# Its object is the retail stamina gauge of the stairs race (btl06_13_stamina_gauge: dark frame 476 x 44, yellow bar
+# 448 x 24, rate settings hp_bar / hp_bar_red), renamed, with the face bubble's anchoring (top left, like
+# soccer02_22_chara_face_balloon) so its layer position means the same as the bubble's. The «ENERGÍA» label and the red
+# trail are hidden from Lua. No retail byte in the mod: the engine derives the object from the player's own game files.
+# Two more layers, set up by the same Lua (docs/game/mechanics/aura-costs.md §6):
+# * stamina_points_pe_shine: the same gauge again laid exactly over the bar with the bar's own fill rate (the gauge
+#   mask clips it to the remaining fill), only its fill shown, its sprite swapped for the gloss frames
+#   stamina_points_gloss_NN while the player's PE drains faster (a transformation's multiplier); draw priority 201.
+# * stamina_points_pe_label: the same gauge again, only its frame shown, the frame's sprite swapped for the Chrono Stone
+#   «PE» / «GP» tag stamina_points_pe_tag01 (content\images\menu\02_btl\btl06\btl06_13\stamina_points_bars.toml, per
+#   language) and scaled to the bar's height, left of the bar.
+# Was Inazuma Fantasy's menus\00_soccer\pe_hud.toml (layers evt_pe_bar / evt_pe_shine / evt_pe_label) until 2026-10-14.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "stamina_points_pe_bar"
+from = "btl06_13_stamina_gauge"
+add_block = [{ block = "MenuAnchorComponent", values = [], after = "CMenuAnimation" }]
+add = [
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_autoCalcPos", values = [0] },
+]
+
+[[patch]]
+menu = "soccer_inplay_menu"
+add_layer = { name = "stamina_points_pe_bar", object = "stamina_points_pe_bar", count = 1, after = "soccer08_27_catch_bomb_recast_gauge", groups = [
+    { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[object]]
+name = "stamina_points_pe_shine"
+from = "btl06_13_stamina_gauge"
+priority = 201
+add_block = [{ block = "MenuAnchorComponent", values = [], after = "CMenuAnimation" }]
+add = [
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_autoCalcPos", values = [0] },
+]
+
+[[object]]
+name = "stamina_points_pe_label"
+from = "btl06_13_stamina_gauge"
+priority = 201
+add_block = [{ block = "MenuAnchorComponent", values = [], after = "CMenuAnimation" }]
+add = [
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_autoCalcPos", values = [0] },
+]
+
+[[patch]]
+menu = "soccer_inplay_menu"
+add_layer = { name = "stamina_points_pe_shine", object = "stamina_points_pe_shine", count = 1, after = "stamina_points_pe_bar", groups = [
+    { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_inplay_menu"
+add_layer = { name = "stamina_points_pe_label", object = "stamina_points_pe_label", count = 1, after = "stamina_points_pe_shine", groups = [
+    { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

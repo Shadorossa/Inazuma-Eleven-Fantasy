@@ -2,10 +2,10 @@ id = "legendary_match"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Legendary Match"
-version = "1.0.16"
+version = "1.0.19"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Every offline match is played against a «Legendary» CPU (the game's «Batalla legendaria» AI as the base). The rival team only (never your AI teammates): dodges every sliding tackle, plays every strategy of the game's top AI level, reacts at once in duels, computes the power of every move of both players and plays the cheapest one that wins (no move against a shot it cannot stop or that a «parada» will save, a counter shot when it returns yours), always picks the move whose element beats yours, remembers the moves you use and counters them, keeps tension for its keeper and gains 2 tension per second, passes and decides without waits, shoots or chains as soon as it starts a shoot zone, presses the player who just received a pass and your tired players, tries long shots when your keeper's bar is above half, sprints while it has stamina and substitutes players at 15 % (with Stamina Points) and for elemental advantage, never the captain, plays with 10 % more stats, and its power charges / power blocks are a foul 5 % of the time (the game: 15 %). Both teams: the defensive action range is halved. Every value is data (content\\rules\\ai\\legendary.toml)."
+description = "Every offline match is played against a «Legendary» CPU (the game's «Batalla legendaria» AI as the base). The rival team only (never your AI teammates): dodges every sliding tackle, plays every strategy of the game's top AI level, reacts at once in duels, computes the power of every move of both players and plays the cheapest one that wins (no move against a shot it cannot stop or that a «parada» will save, a counter shot when it returns yours), always picks the move whose element beats yours, remembers the moves you use and counters them, keeps tension for its keeper and gains 0.5 tension per second, passes and decides without waits, shoots or chains as soon as it starts a shoot zone, presses the player who just received a pass and your tired players, tries long shots when your keeper's bar is above half, sprints while it has stamina and substitutes players at 15 % (with Aura Points) and for elemental advantage, never the captain, and its power charges / power blocks are a foul 5 % of the time (the game: 15 %). Both teams: the defensive action range is halved. Every value is data (content\\rules\\ai\\legendary.toml)."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-16"
@@ -23,7 +23,7 @@ folder = "LegendaryMatch"
 # The framework provides the mechanisms (VRFW.MatchAI); this module only declares the values. Switching the module off
 # (its card on Football Reforged's Mods page) leaves every match to the game's AI.
 # vr_framework 2.4.100: the match AI profiles (match_ai/1), the per-team knobs, the move choice, the situations, the pass lane cut, the learned tendencies, the zone / duel conditions, the strategy level, the power-aware move choice.
-requires = ["vr_framework>=2.4.109", "football_reforged>=1.2.0"]
+requires = ["vr_framework>=2.4.181", "football_reforged>=1.2.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

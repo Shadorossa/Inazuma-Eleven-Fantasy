@@ -48,6 +48,25 @@ local function check_rewards(r, allow_player)
   return true
 end
 
+-- `RivalStats`: "team" (default) or "normal"
+local function check_rival_stats(v)
+  if v == nil or v == "team" or v == "normal" then return true end
+  return nil, "RivalStats = \"" .. tostring(v) .. "\": \"team\" or \"normal\""
+end
+
+-- `[[VRFW.Chain.RankReward]]` / `[[VRFW.Chain.Tile.RankReward]]`: a rank Id and exactly one of `Item` / `Rival`
+local function check_rank_rewards(r)
+  for k, x in ipairs(r or {}) do
+    local rw = "rank reward " .. k
+    if type(x.rank) ~= "string" or not x.rank:find("^[%w_]+$") then return nil, rw .. ": `Rank` = a declared rank Id (S, A, B...)" end
+    if (x.item == nil) == (x.rival == nil) then return nil, rw .. ": exactly one of `Item` / `Rival`" end
+    if x.rival ~= nil and x.rival ~= "emblem" and x.rival ~= "kit" then
+      return nil, rw .. ": Rival = \"" .. tostring(x.rival) .. "\": \"emblem\" or \"kit\""
+    end
+  end
+  return true
+end
+
 -- "item:count,..." (decimal ids; players are refused before)
 local function rewards(r)
   local p = {}
@@ -162,6 +181,121 @@ function CH.install(X)
     return table.concat(out, ",")
   end
 
+  -- the kind (`emblem`, `kit`, `item`) and the item_text name per language of item `id` (no name: empty)
+  function X.chain_item_info(id)
+    local item = X.item()
+    if not item then return "item", {} end
+    local kind, list = "item", nil
+    if item:find("ITEM_EMBLEM_INFO", X.EM.ID, id) ~= nil then
+      kind, list = "emblem", "ITEM_EMBLEM_INFO"
+    elseif item:find("ITEM_FASHION_INFO", 0, id) ~= nil then
+      kind, list = "kit", "ITEM_FASHION_INFO"
+    end
+    local names = {}
+    if list == nil then return kind, names end
+    local i = item:find(list, 0, id)
+    local ok, c = pcall(item.col, item, list, "name_text")
+    local text = i and item:uint(i, (ok and c) or 2) or 0
+    if text ~= 0 then
+      for _, lang in ipairs(VRFW.lang.list()) do
+        local nouns = X.nouns(lang, "item_text")
+        if nouns and nouns[text] then names[lang] = nouns[text] end
+      end
+    end
+    return kind, names
+  end
+
+  -- a match tile's rank rewards: `<rank>:<item id>:<count>:<kind>:<text id>,...` (decimal; text id = crc32 of `Text`,
+  -- 0 = none) and each item's names; an entry whose `IfMod` is not active is left out; `Rival` resolved
+  -- from the tile's team `tid` (its crest / the kit item of its uniform; none = the entry is left out, INFO)
+  function X.chain_rank_rewards(what, list, tid)
+    local enc, names = {}, {}
+    for _, x in ipairs(list or {}) do
+      local id, skip
+      local req = x.if_mod ~= nil and T.trim(x.if_mod) or ""
+      if req ~= "" then
+        skip = true
+        for _, md in ipairs(X.mods or {}) do if md.id == req then skip = false break end end
+        if skip then VRFW.log.info(what .. ": rank " .. x.rank .. ": if_mod " .. req .. " is not active (left out)") end
+      end
+      if skip then
+        -- left out
+      elseif x.item ~= nil then
+        id = T.id(x.item)
+      else
+        local ek, e = X.emblem_and_kit(tid)
+        if not ek then return nil, e end
+        if x.rival == "emblem" then
+          if ek.emblem ~= 0 and X.emblem_exists(ek.emblem) then id = ek.emblem end
+        else
+          local kit = X.kit_item(ek.kit)
+          if kit then id = kit end
+        end
+        if id == nil then
+          VRFW.log.info(what .. ": rank " .. x.rank .. ": the rival has no " .. x.rival .. " item (nothing given for it)")
+        end
+      end
+      if id ~= nil and id ~= 0 then
+        local c = x.count or 1
+        if c < 1 then c = 1 end
+        local kind, nm = X.chain_item_info(id)
+        local label = (x.text ~= nil and T.trim(x.text) ~= "") and VRFW.crc32(T.trim(x.text)) or 0
+        enc[#enc + 1] = x.rank .. ":" .. T.d(id) .. ":" .. T.d(c) .. ":" .. kind .. ":" .. T.d(label)
+        names[#names + 1] = nm
+      end
+    end
+    return table.concat(enc, ","), names
+  end
+
+  -- the ordinary-profile copy of team `t` (made once): key `<key>_normal`, every member's stat rates (cols 20-27) 1 and
+  -- cols 14-19 -1 (an ordinary team's values; the retail legend teams have rates 6-10); `t` itself when it has them
+  function X.chain_normal_copy(t)
+    local tc, TM = X.tc, X.TM
+    local s, e = tc:member_range(t)
+    local plain = true
+    for i = s, e - 1 do
+      local row = tc:member(i).m
+      for k = 0, 7 do
+        local v = row[TM.RATE + k + 1]
+        if type(v) == "table" then v = v.float end
+        if tonumber(v) ~= nil and tonumber(v) ~= 1 then plain = false end
+      end
+      for k = 0, 5 do
+        local v = TC.int(row, TM.C14 + k)
+        if v ~= nil and v ~= -1 then plain = false end
+      end
+    end
+    if plain then return t end
+    local key = tc:key_of(t) .. "_normal"
+    local id = VRFW.crc32(key)
+    local have = tc:find(id)
+    if have ~= nil then return have end
+    local rows = {}
+    for i = s, e - 1 do
+      local x = tc:member(i)
+      local row = TC.copy_row(x.m)
+      for k = 0, 5 do TC.set_int(row, TM.C14 + k, -1) end
+      for k = 0, 7 do TC.set_int(row, TM.RATE + k, 1) end
+      rows[#rows + 1] = { m = row, r = TC.copy_row(x.r) }
+    end
+    local src = tc:id_of(t)
+    local info, refs = tc:team_copy(t)
+    TC.set_int(info, X.TI.ID, id)
+    info[X.TI.KEY + 1] = key
+    tc:push_team(info, refs)
+    local nt = #tc.teams - 1
+    local start = #tc.members
+    for _, r in ipairs(rows) do tc.members[#tc.members + 1] = r end
+    tc:set_slice(nt, 0, start, #rows)
+    local m = X.meta[src]
+    if m then
+      X.meta[id] = { stadium = m.stadium, stadium_fallback = m.stadium_fallback, stadium_image = m.stadium_image, music = m.music, ai = m.ai, rules = m.rules, series = m.series, names = T.copy(m.names),
+        short = T.copy(m.short), default_lang = m.default_lang }
+    end
+    VRFW.log.info("chain rival " .. key .. ": copy of " .. X.label(t) .. " with the ordinary stat profile (rates 1, cols 14-19 -1)")
+    return nt
+  end
+
   -- every mod's `[[VRFW.Chain]]` (load order)
   function X.chains(files, talks)
     local out = {}
@@ -236,6 +370,10 @@ function CH.install(X)
     local names, ne = X.game_names()
     if not names then return nil, ne end
     local tref = { name = tpl, rows = tpl_rows, top = top, difficulty = d.difficulty, stadium = d.stadium }
+    local rsok, rse = check_rival_stats(d.rival_stats)
+    if not rsok then return nil, rse end
+    local rrok, rre = check_rank_rewards(d.rank_reward)
+    if not rrok then return nil, "[[VRFW.Chain.RankReward]]: " .. rre end
     if #tiles > 0 then
       local b, be = X.chain_board(m, what, name, d, tref, names, titles)
       if not b then return nil, be end
@@ -247,7 +385,7 @@ function CH.install(X)
       local ok, re = check_rewards(n.reward, false)
       if not ok then return nil, "node " .. i .. ": " .. re end
       local game_key = string.format("evt_ch_%s_%02d", name, i)
-      local spec = { team = n.team, level = n.level, difficulty = n.difficulty, stadium = n.stadium, title = n.title or {}, reward = n.reward or {} }
+      local spec = { team = n.team, level = n.level, difficulty = n.difficulty, stadium = n.stadium, title = n.title or {}, reward = n.reward or {}, rival_stats = d.rival_stats }
       local node, err = X.chain_match(m, nw, game_key, spec, tref, names)
       if not node then return nil, "node " .. i .. ": " .. err end
       node.talk_before = X.chain_talk(m, nw, n.talk_before, talks)
@@ -272,7 +410,14 @@ function CH.install(X)
     if not T.contains(tpl.rows, diff) then
       return nil, string.format("the template `%s` has no difficulty-%d row (rows %s)", tpl.name, diff, T.dbg_list(tpl.rows))
     end
-    local gid, ce = X.clone_game(m, nw, t, tpl.name, game_key, n.level, false, true)
+    -- `RivalStats = "normal"`: the match plays the team's ordinary-profile copy (the tile keeps the team itself)
+    local play = t
+    if n.rival_stats == "normal" then
+      local c, cpe = X.chain_normal_copy(t)
+      if c == nil then return nil, cpe end
+      play = c
+    end
+    local gid, ce = X.clone_game(m, nw, play, tpl.name, game_key, n.level, false, true)
     if not gid then return nil, ce end
     -- the clone copies the template's per-game scripts; a chain game has none
     VRFW.team.files_drop(GAME_DIR .. game_key .. "_", nil)
@@ -361,6 +506,10 @@ function CH.install(X)
         if T.trim(t.team or "") == "" then return nil, tw .. ": a match tile needs `team`" end
         local ok, re = check_rewards(t.reward, false)
         if not ok then return nil, tw .. ": " .. re .. " (a match tile's rewards are items)" end
+        ok, re = check_rival_stats(t.rival_stats)
+        if not ok then return nil, tw .. ": " .. re end
+        ok, re = check_rank_rewards(t.rank_reward)
+        if not ok then return nil, tw .. ": RankReward: " .. re end
       elseif t.kind == "chest" or t.kind == "schest" then
         local ok, re = check_rewards(t.reward, true)
         if not ok then return nil, tw .. ": " .. re end
@@ -380,6 +529,9 @@ function CH.install(X)
       end
       if not (t.kind == "chest" or t.kind == "schest" or t.kind == "dchest" or t.kind == "match") and #(t.reward or {}) > 0 then
         VRFW.log.warn(what .. ": " .. tw .. ": `reward` only applies to chest and match tiles (ignored)")
+      end
+      if t.kind ~= "match" and (#(t.rank_reward or {}) > 0 or t.rival_stats ~= nil) then
+        VRFW.log.warn(what .. ": " .. tw .. ": `RankReward` / `RivalStats` only apply to match tiles (ignored)")
       end
       if t.kind ~= "dchest" and #(t.s_reward or {}) > 0 then
         VRFW.log.warn(what .. ": " .. tw .. ": `SReward` only applies to double chests (Kind = \"dchest\") (ignored)")
@@ -443,18 +595,29 @@ function CH.install(X)
     for i, t in ipairs(tiles) do
       local tb = { id = t.id, kind = t.kind, page = (t.page or 1) - 1, col = t.pos[1] - 1, row = t.pos[2] - 1, links = T.keys(links[i]),
         game = 0, game_key = "", team = 0, level = 0, difficulty = 0, title = {}, rival = {}, emblem = "", reward = "",
-        s_reward = "", requires = "", requires_names = {} }
+        s_reward = "", requires = "", requires_names = {}, rank_reward = "", rank_reward_names = {} }
       if t.kind == "match" then
         nmatch = nmatch + 1
         if nmatch > MAX_NODES then return nil, string.format("more than %d match tiles", MAX_NODES) end
         local tw = what .. ": tile " .. t.id
         local game_key = string.format("evt_ch_%s_%02d", name, nmatch)
-        local spec = { team = t.team or "", level = t.level, difficulty = t.difficulty, stadium = t.stadium, title = t.title or {}, reward = {} }
+        local spec = { team = t.team or "", level = t.level, difficulty = t.difficulty, stadium = t.stadium, title = t.title or {}, reward = {},
+          rival_stats = t.rival_stats or d.rival_stats }
         local n, err = X.chain_match(m, tw, game_key, spec, tpl, names)
         if not n then return nil, "tile `" .. t.id .. "`: " .. err end
         tb.emblem = X.team_emblem_key(n.team)
         tb.game, tb.game_key, tb.team, tb.level, tb.difficulty = n.game, n.game_key, n.team, n.level, n.difficulty
         tb.title, tb.rival = n.title, n.rival
+        -- the first win at each rank: the tile's own rank rewards, else the chain's
+        local rr = (#(t.rank_reward or {}) > 0) and t.rank_reward or (d.rank_reward or {})
+        if #rr > 0 then
+          local enc, rn = X.chain_rank_rewards(tw, rr, n.team)
+          if not enc then return nil, "tile `" .. t.id .. "`: RankReward: " .. rn end
+          tb.rank_reward, tb.rank_reward_names = enc, rn
+          if enc ~= "" then
+            VRFW.log.info(what .. ": match `" .. t.id .. "`: the first win at each rank gives " .. enc .. " (once per rank)")
+          end
+        end
         if #(t.reward or {}) > 0 then
           -- the tile's rewards: a new win prize table (col 8) on every row of its game; bean / first-clear prizes cleared
           local items = {}

@@ -9,7 +9,8 @@
 # team_aura_max, CMND_VRFW_FORM_TEAM_MAX) instead of the retail 3 (aura_points_buff_row.lua, ported from mx_popup's
 # mx_popup_bar: the retail UpdateAuraBuffCharaIcon with a per-pass table as long as the grown retail local t5, bound to
 # the retail locals through lua_patch's EVT_DEBUG; layer counts in the mod's content\menus\buff_row.toml); with the
-# miximax's PE (the mod Stamina Points) the miximax entry gets its bar too, two bars on an entry with two auras.
+# miximax's PE (the mod's PE part) the miximax entry gets its bar too, two bars on an entry with two auras. While the
+# mod's options «peg» and «sp» are both off (CMND_AURAPOINTS_ACTIVE_PARTS) the row stays retail and no bar is drawn.
 # Wrappers of UpdateAuraBuffCharaIcon (the retail entries just built: who is in which entry) and Step (every frame:
 # the bars follow their portraits). Nothing at chunk load but the debug library's upvalue search. While Inazuma Fantasy's mx_popup draws its own bars in the
 # same script (its global EVT_AP with EVT_AURA_PEG on) this one draws nothing, so a bar is never drawn twice.
