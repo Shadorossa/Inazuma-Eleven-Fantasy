@@ -1,4 +1,5 @@
 schema = "VRFW.anim/2"
+owner = "match"   # the hand-off rules play them (content\techniques\overrides\handoff.toml), no single technique
 
 # Override chain hand-off scenes (1.2.0, from Inazuma Fantasy; docs/game/mechanics/override-skills.md §10). In the
 # retail chain combos (override condition type 2: a player shoots move A, a teammate holding B chains it and the shot

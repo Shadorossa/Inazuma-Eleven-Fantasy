@@ -128,6 +128,30 @@ pitch_y = 236
 cx = 960
 cy = 520
 
+[team_planner.list]
+# the season list «Planificar equipo» opens (the bank's look: the bank's series tabs over a card list on the left, the
+# pitch on the right; layers util_tp_tab / util_tp_card of the formation screen): cards a row, rows a page (at most
+# 24), the pitch between cards (px), the card scale, the list's centre, the card's centre offset (px at scale 1, y
+# down); the tab bar: the first tab's centre, the pitch between tabs, their scale; the dark panel behind the list (the
+# formation's cmn02_01_blackbg layer): its position and scale. Screen px, 1920 x 1080, y down.
+cols = 5
+rows = 3
+pitch_x = 180
+pitch_y = 215
+scale = 1.0
+cx = 500
+cy = 610
+ox = 0
+oy = 0
+tab_x = 110
+tab_y = 230
+tab_pitch = 78
+tab_scale = 1.0
+back_x = 0
+back_y = 0
+back_sx = 0.54
+back_sy = 1.0
+
 [team_planner.grid]
 # the picker's card grid (layer util_tp_card of the formation screen, small cards): cards a row, rows a page (at most
 # 24 cards), the pitch between cards (px), the card scale, the grid's centre (screen px, 1920 x 1080, y down) and the
@@ -154,10 +178,9 @@ keys = ["E"]
 log = true
 
 [friends]
-# Friends panel («Lista de amigos», docs/game/ui/friends.md): the top bar entry slides a panel in on the right of the
-# menu with every Steam friend (in the game: same mods / other mods / without the mod; the mod friends added by code;
-# online; offline), this player's friend code and «Añadir amigo por código»; a friend with the mod opens his details
-# (active team, career summary) and the actions (invite to my Battle Bay private room, join his, send my team code, the
+# Friends panel («Lista de amigos», docs/game/ui/friends.md): the top bar entry slides a narrow panel in on the right of
+# the menu with the player's Steam friends in one list (in the game, online, away, offline; then by name); a friend
+# with the mod opens his details (active team, career summary) and the actions (invite to my Battle Bay private room, join his, send my team code, the
 # mods we differ in, Steam profile). Steam only (the game's steam_api64.dll) and the VR-Framework's own transport;
 # nothing goes through EOS.
 enabled = true
@@ -165,13 +188,13 @@ enabled = true
 profile_refresh_s = 30
 
 [friends.panel]
-# the panel (screen px, 1920 x 1080, y down): left edge and width, top (under the top bar), row heights, the details
-# pane's width (left of the panel), frames of the slide-in
-x = 1380
-width = 540
+# the panel (screen px, 1920 x 1080, y down): left edge and width, top (under the top bar), the row height, the
+# title bar's height, the details pane's width (left of the panel), frames of the slide-in
+x = 1500
+width = 420
 top = 72
-row_h = 72
-head_h = 44
+row_h = 40
+head_h = 56
 details_w = 560
 slide_frames = 10
 
@@ -251,3 +274,10 @@ tile_gap = 6
 key_scale = 0.9
 key_dx = 0
 key_dy = 0
+
+[match_clock]
+# «Segundos por minuto de partido» (options.toml utilities.match_clock, scripts\match_clock.lua): the game's clock rate
+# at its normal match speed (game seconds per real second: game_param CSoccerGlobalParam soccerElapsedTimeRate_Normal,
+# 14.1 on v7.1.2). The chosen seconds per minute give rate = current × (60 / seconds) / game_rate, so the normal
+# speed gets exactly 60 / seconds and the slow speed (12) or a mode's own clock keep their proportion.
+game_rate = 14.1

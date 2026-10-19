@@ -27,7 +27,6 @@ function M.points(t, parts)
   local c = {
     peg_on = bool(t.peg, true) and parts.peg ~= false,
     sp_on = bool(t.sp, true) and parts.sp ~= false,
-    cpu = bool(t.cpu, true),
     move_tension_free = bool(t.move_tension_free, true),
     cost_model = string.lower(tostring(t.cost_model or "cs")),
     armour_boost = num(t.armour_boost, 1.05),

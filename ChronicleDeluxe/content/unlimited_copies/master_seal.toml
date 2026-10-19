@@ -16,11 +16,12 @@ cleared_pieces = ["0x90185427"]
 cleared_difficulty = 2
 
 # Auras (171 keshin, 173 Mix-Max, 174 totem, 178 mode change; the keshin armour 172 always comes with its keshin): with
-# the Seal AND every Chronicle completed (every board piece's Crónica / gate battle won, every chain board complete).
+# the Seal alone (owner 2026-10-19; before: also every Chronicle completed). Only the copy limit: which auras a
+# Batalla heroica allows is its own rule ([VRFW.MatchChallenge.Auras], content/teams/90_rules/heroic.toml), untouched.
 [[VRFW.UnlimitedCopies]]
 name = "master_seal_auras"
 item_kinds = [171, 173, 174, 178]
 key_items = ["chronicle_deluxe.master_seal"]
 cleared_pieces = ["0x90185427"]
 cleared_difficulty = 2
-chronicles_complete = 2
+chronicles_complete = 0             # the Seal alone (owner 2026-10-19)

@@ -1,26 +1,8 @@
 # Character Reforged › its actions of the VR-Framework's save adjust (Options › «Ajustar save»,
 # docs/framework/save-adjust.md). The functions live in scripts\save_tools.lua; the texts in text\rows\save_tools.toml.
+# The duplicates and the rarity actions are declared by their owners (New Recruitment, No More Rarities) and run here
+# (script = "character_reforged:save_tools.lua": the duplicate-players pass is this mod's mechanism).
 schema = "VRFW.save_adjust/1"
-
-[[VRFW.SaveAdjust]]
-id = "remove_duplicates"
-label = "character_reforged_save_tools_remove_duplicates"
-description = "character_reforged_save_tools_remove_duplicates_desc"
-result = "character_reforged_save_tools_remove_duplicates_done"
-order = 100
-script = "save_tools.lua"
-run = "CharacterReforged.SaveAdjust.remove_duplicates"
-available = "CharacterReforged.SaveAdjust.can_remove_duplicates"
-
-[[VRFW.SaveAdjust]]
-id = "normal_rarity"
-label = "character_reforged_save_tools_normal_rarity"
-description = "character_reforged_save_tools_normal_rarity_desc"
-result = "character_reforged_save_tools_normal_rarity_done"
-order = 110
-script = "save_tools.lua"
-run = "CharacterReforged.SaveAdjust.normal_rarity"
-available = "CharacterReforged.SaveAdjust.can_set_normal_rarity"
 
 [[VRFW.SaveAdjust]]
 id = "remove_unobtainable_moves"

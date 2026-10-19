@@ -5,11 +5,11 @@ schema = "VRFW.team/2"
 #
 # SLOT MANIFEST: `Slot` is the node's byte in the save's Chronicle arrays (271-299). Never change or reuse a released
 # slot: it IS that node's clear / lock state in every save.
-#   271  ie1_umbrella        274  ie1_sallys
+#   271  ie1_umbrella        274  ie1_sallys          275  ie2_forest
 # Same names and slots as the older mod Chronicles Deluxe (chronicles_deluxe, set aside 2026-10-14) and Inazuma Fantasy
 # before it: the piece (evt_rn_piece_<name>), the game (evt_rn_<name>) and the slot are derived from the node's name,
-# not from the mod, so every save's progress of these two nodes is kept as it is.
-# While chronicles_deluxe is active this file is left out: that mod declares the same two nodes (same slots).
+# not from the mod, so every save's progress of these nodes is kept as it is.
+# While chronicles_deluxe is active this file is left out: that mod declares the same nodes (same slots).
 if_not_mod = "chronicles_deluxe"
 default_lang = "es"
 
@@ -77,6 +77,40 @@ Scripts = false                        # no per-game match scripts
   zh_hans = "对决街头莎莉斯！"
   zh_hant = "對決街頭莎莉斯！"
 
+# IE2 (owner 2026-10-19; was Inazuma Fantasy's and Chronicles Deluxe's node, same name and slot 275): Mar de Árboles
+# (Forest Team), a dead end after the IE2 final, Emperadores Oscuros (fbtl_cro02_200_010, (16.5, -8)): up the board
+# (LU) first, then left (LD), to the forest edge (16.15, -8.85). Its rival is the game's own Mar de Árboles team, the
+# legend team tm_cro_legend_IE2_09 (no copy); spirits and match setup from its own game, fbtl_cro02_legend_IE2_06 (the
+# game that plays that team). A plain Crónica battle (no talks, no in-match events) with the Raimon line-up of the
+# Emperadores Oscuros match (pltm_cro_ie2_20 at its retail level 41), Mar de Árboles at 44 = Emperadores Oscuros (43)
+# + 1; its win unlocks the Heroica (level from the heroic curve, content/teams/90_rules/heroic.toml).
+[[VRFW.RouteNode]]
+Name = "ie2_forest"
+Slot = 275
+After = "fbtl_cro02_200_010"           # Emperadores Oscuros
+Dir = "LU"
+Pos = [16.15, -8.85]
+Via = [[17.5, -7.5]]                   # map-up (LU) first, then map-left (LD)
+Team = "chronicle_deluxe.cro_ie2_forest"        # Mar de Árboles: the legend roster with an ordinary team's stats
+                                       # (content/teams/11_ie2/2100_forest_ie2.toml)
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+DropsFrom = "fbtl_cro02_legend_IE2_06" # Mar de Árboles's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 44                           # Emperadores Oscuros (43) + 1
+  OwnTeam = "pltm_cro_ie2_20"          # the Raimon line-up of the Emperadores Oscuros match
+  OwnLevel = 41                        # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Duelo en el Mar de árboles!"
+  en = "Showdown in the Sea of Trees!"
+  fr = "Duel dans la Mer d'arbres !"
+  de = "Duell im Baummeer!"
+  it = "Sfida nel Mare d'alberi!"
+  pt = "Duelo no Mar de Árvores!"
+  ja = "樹海での対決！"
+  zh_hans = "树海对决！"
+  zh_hant = "樹海對決！"
+
 # Player spirits (owner 2026-10-14: «Umbrella y Sally's deben poder dropear espíritus como el resto de partidos de
 # Crónica»). The rule of every retail Chronicle board row (v7.1.2 soccer_game_config, all IE1 pieces): col 29
 # spirit_chara_table = 0 and cols 31 / 33 spirit_drop_table(_2) = 0. With 0 the engine (nie.exe 0x15C7850 /
@@ -92,4 +126,8 @@ SpiritChara = "0"                      # the rival roster only (no extra players
 
 [[VRFW.GameDrops]]
 Game = "evt_rn_ie1_sallys"
+SpiritChara = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_ie2_forest"
 SpiritChara = "0"

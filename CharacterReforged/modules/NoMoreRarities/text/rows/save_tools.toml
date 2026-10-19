@@ -1,0 +1,42 @@
+# No More Rarities › its action of the VR-Framework's save adjust (Options › «Ajustar save», content\save_adjust\
+# no_more_rarities.toml, run by Character Reforged's scripts\save_tools.lua; docs/framework/save-adjust.md): title,
+# description (shown in the question before the action) and result (%d = the count the action answers). Rows of
+# menu_text, read by id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity"
+es = "Igualar la rareza de los jugadores"
+en = "Same rarity for every player"
+fr = "Même rareté pour tous les joueurs"
+de = "Gleiche Seltenheit für alle Spieler"
+it = "Stessa rarità per tutti i giocatori"
+pt = "Mesma raridade para todos os jogadores"
+ja = "選手のレア度をそろえる"
+zh_hans = "统一球员稀有度"
+zh_hant = "統一球員稀有度"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity_desc"
+es = "Todas las cartas normales pasan a 5★ Leyenda. Las cartas Ídolo (Héroe) y Diamante solo cambian si el ajuste «Rarezas eliminadas» de No More Rarities también elimina su rareza."
+en = "Every normal card becomes a 5★ Legend. Idol (Hero) and Diamond cards change only if No More Rarities' «Rarities removed» setting removes their rarity too."
+fr = "Toutes les cartes normales deviennent Légende 5★. Les cartes Idole (Héros) et Diamant ne changent que si le réglage « Raretés supprimées » de No More Rarities supprime aussi leur rareté."
+de = "Alle normalen Karten werden zur 5★-Legende. Idol- (Helden-) und Diamantkarten ändern sich nur, wenn die Einstellung „Entfernte Seltenheiten“ von No More Rarities auch ihre Seltenheit entfernt."
+it = "Tutte le carte normali diventano Leggenda 5★. Le carte Idolo (Eroe) e Diamante cambiano solo se l'impostazione «Rarità rimosse» di No More Rarities rimuove anche la loro rarità."
+pt = "Todas as cartas normais passam a Lenda 5★. As cartas Ídolo (Herói) e Diamante só mudam se a definição «Raridades removidas» do No More Rarities também remover a sua raridade."
+ja = "通常カードをすべて★5レジェンドにします。アイドル（ヒーロー）とダイヤモンドのカードは、No More Raritiesの「削除するレアリティ」でそれらも外す場合だけ変わります。"
+zh_hans = "所有普通卡变为5★传奇。偶像（英雄）卡和钻石卡只有在No More Rarities的「移除的稀有度」也移除其稀有度时才会改变。"
+zh_hant = "所有普通卡變為5★傳奇。偶像（英雄）卡和鑽石卡只有在No More Rarities的「移除的稀有度」也移除其稀有度時才會改變。"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity_done"
+es = "Hecho: %d jugadores cambiados de rareza."
+en = "Done: %d players changed rarity."
+fr = "Terminé : %d joueurs ont changé de rareté."
+de = "Fertig: Bei %d Spielern wurde die Seltenheit geändert."
+it = "Fatto: %d giocatori hanno cambiato rarità."
+pt = "Feito: %d jogadores mudaram de raridade."
+ja = "完了：%d人の選手のレア度を変更しました。"
+zh_hans = "完成：%d名球员的稀有度已更改。"
+zh_hant = "完成：%d名球員的稀有度已變更。"

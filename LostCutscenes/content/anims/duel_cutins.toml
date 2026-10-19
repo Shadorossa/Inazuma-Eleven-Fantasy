@@ -12,6 +12,7 @@
 # research/scripts/duel_cutin_build.py, ignored by git, installed through _deploy.toml `overlays` and left out of every
 # release (release_exclude.L5_DERIVED["new_animations"], together with this file and content\rules\duel_cutins\).
 schema = "VRFW.anim/2"
+owner = "match"   # the power duel rules play these cut-ins (content\rules\duel_cutins), no technique
 
 # vca0005 01 attacker wins (charge, 2.68 s): strong dodge past the block, 20 m run
 [[event]]

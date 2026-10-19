@@ -1,7 +1,7 @@
 schema = "VRFW.base_table/1"
 # The free-match rows of the Cross games (category 1, under the Cross tab; their conditions: listed while the office
-# is off), one row per game: the team type orders them and writes the unlock chain (content/teams/cross_tab.toml:
-# order, unlock = "chain"). Key = [battleId, sortOrder]. 1.3.21: the second rows of Piratas Inazuma Japón, Shin Zeus
+# is off), one row per game: the team type orders them (content/teams/cross_tab.toml
+# order; no unlock chain since 1.3.23: every game is listed from the start). Key = [battleId, sortOrder]. 1.3.21: the second rows of Piratas Inazuma Japón, Shin Zeus
 # and Circo Caos (the old chain's «listed again after the previous win» copies) are gone: each game is listed once.
 # Moved from Inazuma Fantasy's whole soccer_opponent_info on 2026-10-08 (docs/release/iecross.md §6).
 

@@ -11,6 +11,8 @@ option = { type = "string", default = "", doc = "an option row key (<mod>.<row>)
 fill_per_s = { type = "number", default = 0, min = 0, max = 1000, doc = "+ per live second, outside the phase" }
 behind_per_s = { type = "number", default = 0, min = 0, max = 1000, doc = "+ per live second more while the team is behind on the score" }
 live_states = { type = "ints", default = [9, 14, 15, 16], min = 0, max = 255, doc = "soccer states of live play (time fill and phase drain)" }
+play_states = { type = "ints", default = [9], min = 0, max = 255, doc = "soccer states with the ball in open play (drain_only_in_play)" }
+drain_only_in_play = { type = "bool", default = false, doc = "the phase drains only in play_states: it stands still in half time, goal scenes, duels / cut-ins and restarts" }
 levels = { type = "number", default = 0, min = 0, max = 16, doc = "number of equal levels of the gauge (flag <key>.<side>.level<N> while the value reaches N / levels of max)" }
 start_at = { type = "number", default = 1.0, min = 0.01, max = 1.0, doc = "share of max from which the phase may start" }
 phase_seconds = { type = "number", default = 0, min = 0, max = 600, doc = "live seconds the phase lasts (the gauge drains to 0 over it); 0 = no phase" }

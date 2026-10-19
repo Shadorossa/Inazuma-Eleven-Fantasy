@@ -47,6 +47,8 @@
 -- the grid are hidden and put back exactly as they were (CMND_IS_LAYER_VISIBLE, BBCR_DRAFT.stash); the start
 -- question is «¿Jugar con este equipo?» and Enter makes the tile's retail decide (CMND_BBD_DRAFT_DECIDE, after the
 -- page is rebuilt): the Draft team becomes 1P / CPU and the match is set up as with any team.
+-- 1.5.89 (owner): the mouse on the Draft screen (BBCR_DRAFT_Mouse: hover selects a slot / a candidate, a click
+-- confirms as Enter; config.toml [draft] mouse) and the input anchor hidden (a stray white bar at the left edge).
 BBCR_DRAFT = {
   INFO = 621556080,
   BEGIN = 3826222518,
@@ -181,6 +183,27 @@ BBCR_DRAFT = {
   REAPPLY_FRAMES = 30, -- an empty card is re-hidden for this many frames (a late texture load may show a mesh again)
   PROBE_FRAMES = 12, -- the frame's pose is logged this many frames after the screen opened (layout check in the log)
   LEVEL = 40,
+  -- 1.5.89 (owner: the mouse did nothing on the Draft screen): hover selects a slot / a candidate as the arrows do, a
+  -- left click confirms as Enter does (BBCR_DRAFT_Mouse, config.toml [draft] mouse). The cards are free layers placed
+  -- with CMND_SET_LAYER_LOCAL_POS in no focus group: the engine's own hover never reaches such layers
+  -- (docs/game/ui/mouse-support.md §2 item 4), so the hit test is the framework's pointer helper (EVT_PointerNew)
+  -- around each drawn card's centre (the card's origin). Half sizes on screen: the small card at SLOT_SCALE (136 x 100
+  -- at 1), the large one at CARD_SCALE (154 x 116 at 1)
+  MOUSE = 2632013514,
+  HALF_SLOT = {72, 53}, HALF_CAND = {81, 61},
+  -- 1.5.89 (owner: a thin white bar at the left edge, x ~29 y ~606): the stray-layer scan of BBCR_DRAFT_Probe logs every
+  -- visible instance of these layers within STRAY_X px of the left edge (once per screen)
+  STRAY_X = 120,
+  STRAY_LAYERS = {
+    {"evt_bb_draft_anchor", 129396923}, {"evt_bb_draft_slot", 732469779},
+    {"evt_bb_draft_card", 2444370599}, {"evt_bbd_pk_quad", 1407122472},
+    {"evt_bbd_pk_txt", 3166515453}, {"cmn05_01_cursor", 2296367164},
+    {"evt_bbd_mode_bg", 1077070624}, {"evt_bbd_mode_pill", 2770982545},
+    {"evt_bbd_mode_txt", 1807063543}, {"vrfw_bb_page_guide", 2558530431},
+    {"evt_bbd_roster_bg", 3565956551}, {"evt_bbd_roster_frame", 2573003936},
+    {"evt_bbd_roster_title", 127051782}, {"evt_bbd_roster_blank", 277812232},
+    {"evt_bbd_roster_card", 1801092717},
+  },
   -- state
   mode = nil, tile = -1, sel = 0, csel = 0, k = -1, shown = nil, formation = 0,
   slots = {}, cands = {}, pos = {}, where = {}, ready = {}, slotArgs = {}, opened = false, used = false, bypass = false,
@@ -190,6 +213,9 @@ BBCR_DRAFT = {
   -- free match (1.5.42): the side being chosen (true = 1P, left), the team each side's panel last showed (native
   -- draws), our own panel calls in progress, the hidden layers to put back, the tile's retail decide pending
   side = true, drawn = {}, ours = false, stash = {}, autoDecide = false,
+  -- 1.5.89: the pointer (EVT_PointerNew, made at the first screen), the mouse switch of this screen, whether the
+  -- pointer was polled last frame (a screen / window coming back resets it: a held button is no click)
+  ptr = nil, mouse = true, polled = false, mouseDecided = false,
 }
 
 -- the screen runs on the free-match grid (bbd_offline.lua sets BBCR_DRAFT_HOST before this block)
@@ -685,6 +711,25 @@ function BBCR_DRAFT_Probe()
   local sx, sy = funcLuaMenuCommand(2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], B.SLOT, 0)
   BBCR_DRAFT_Log("layout probe: frame nodes cc/ld/ru", table.concat(parts, " "), "frame at", tostring(fx), tostring(fy),
               "slot 0 at", tostring(sx), tostring(sy))
+  pcall(BBCR_DRAFT_StrayScan)
+end
+
+-- 1.5.89: which of the screen's layers draws something at the left edge (the owner's stray white bar): every visible
+-- instance of B.STRAY_LAYERS whose global position is within STRAY_X px of the left edge, in one log line per screen
+function BBCR_DRAFT_StrayScan()
+  local B = BBCR_DRAFT
+  local hits = {}
+  for _, e in ipairs(B.STRAY_LAYERS) do
+    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], e[2])
+    for i = 0, (type(n) == "number" and n or 0) - 1 do
+      local okv, vis = pcall(funcLuaMenuCommand, 1262717583 --[[is visible]], e[2], i)
+      local okp, gx, gy = pcall(funcLuaMenuCommand, 4002164178 --[[global position]], e[2], i)
+      if okv and vis == true and okp and type(gx) == "number" and gx >= -B.STRAY_X and gx <= B.STRAY_X then
+        hits[#hits + 1] = string.format("%s[%d] at %d,%d", e[1], i, math.floor(gx), math.floor(-(gy or 0)))
+      end
+    end
+  end
+  BBCR_DRAFT_Log("left-edge scan: " .. (#hits > 0 and table.concat(hits, "; ") or "no visible layer of the list there"))
 end
 
 -- open the Draft layers (once per screen) and give the control focus to the anchor
@@ -698,6 +743,9 @@ function BBCR_DRAFT_Open()
     funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], B.ANCHOR)
     B.opened = true
   end
+  -- 1.5.89: the anchor (a button object) off screen AND invisible, as the Torneo's anchor (it keeps the keys)
+  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.ANCHOR, B.ANCHOR_X, B.ANCHOR_Y, 0, 0)
+  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.ANCHOR, 0, false)
   funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.ANCHOR, true)
   funcLuaMenuCommand(1778826357, B.ANCHOR, 0, true)
 end
@@ -878,12 +926,16 @@ function BBCR_DRAFT_Start(tile)
   BBCR_DRAFT_Cursor()
   BBCR_DRAFT_ShowGuide()
   B.probe = B.PROBE_FRAMES
+  BBCR_DRAFT_MouseOpen()
   BBCR_DRAFT_Log("screen", #B.slots, "slots, formation", B.formation)
 end
 
 -- nearest slot in the direction (dx, dy) (screen, y up) from the selected one
 function BBCR_DRAFT_Move(dx, dy)
   local B = BBCR_DRAFT
+  if B.ptr ~= nil then
+    B.ptr.KeyStep() -- the keys own the selection until the pointer really moves again
+  end
   if B.mode == "cands" then
     if BBCR_DRAFT_PackBusy() then
       return -- the pack is still being turned (Enter shows all)
@@ -1138,6 +1190,11 @@ function BBCR_DRAFT_Step()
   if B.quitCo ~= nil then
     BBCR_DRAFT_QuitStep()
   end
+  local okm, errm = pcall(BBCR_DRAFT_Mouse)
+  if not okm then
+    B.polled = false
+    BBCR_DRAFT_Log("mouse error", tostring(errm))
+  end
   if B.refresh ~= nil then
     B.refresh = B.refresh - 1
     if B.refresh <= 0 then
@@ -1175,6 +1232,290 @@ function BBCR_DRAFT_Step()
         BBCR_DRAFT_Log("probe error", tostring(err))
       end
     end
+  end
+end
+
+-- ---------------------------------------------------------------- the mouse (1.5.89)
+
+-- EVT_PointerNew(): a pointer helper for menus that draw their own selectable items (docs/game/ui/mouse-support.md §5).
+-- Mouse and VR's free cursor (the stick-driven «virtual mouse», CMND_SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE) are
+-- the same pointer: the engine's pointer position (558229292, screen px, y down) is read every frame and any change
+-- (or the engine's «mouse moved», 3272825600) puts the menu in pointer mode; a menu arrow (CMD_UP/DOWN/LEFT/RIGHT)
+-- ends it. The menu declares its zones each time it draws, from the same positions it draws with:
+--   P.Begin()                              forget the zones of the last drawing
+--   P.Rect(x, y, w, h, id[, edge])         top-left + size, screen px (y down)
+--   P.Box(cx, cy, hw, hh, id[, edge])      centre + half sizes, screen px (y down)
+--   P.Inst(layer, idx, hw, hh, id[, edge]) around a layer instance's global position (read at hit-test time)
+--   (edge = -1 / 1: a scroll band; hovering it scrolls every P.REPEAT frames: ev.edge)
+-- The last zone declared wins (popups / buttons drawn over cards). Per frame (Step): local ev = P.Poll() with
+--   ev.moved   the pointer moved (pointer mode on)          ev.hot / ev.changed  zone id under the pointer / it changed
+--   ev.click   id clicked (mouse left button, or Accept / the free cursor's A in pointer mode) on a zone
+--   ev.miss    a mouse click on no zone (do nothing; Enter / A there = the menu's key Accept, pointer mode off)
+--   ev.wheel   -1 up / 1 down (CMD_EVT_WHEEL_*)
+--   ev.edge    -1 / 1 from a scroll band                     ev.keys   a menu arrow was pressed (pointer mode off)
+--   ev.hover   the zone under the pointer, only on a frame the pointer MOVED (or was clicked): hover by movement only,
+--              so a redraw / scroll / camera move under a resting pointer never re-selects (retail behaviour)
+-- P.KeyStep(): the menu moved its selection itself (its own key callbacks, a polled stick / D-pad the arrows above do
+-- not see): pointer mode off and the resting position taken as the baseline, so the pad owns the selection until the
+-- pointer really moves again or clicks (a resting mouse would otherwise pin the selection under it).
+-- Hover = move the selection to ev.hot with the keyboard highlight; ev.click = select it and decide. The menu's own
+-- Accept callbacks (OnEnter / OnDecideFocus / a polled CMD_ENTER) return early while P.Owns(): in pointer mode the
+-- click belongs to the pointer, so an item not under it is never activated. Zones are only declared for pickable,
+-- shown items (never hidden ones). P.Forget() after a redraw under a still pointer re-focuses the zone beneath it.
+EVT_PointerNew = EVT_PointerNew or function()
+  local P = {zones = {}, on = false, x = nil, y = nil, hot = nil, prev = {}, edge_t = 0, REPEAT = 10}
+  local MOVED, POS, GPOS, CHECK, CTRL = 3272825600, 558229292, 4002164178, 4265778440, 1332654303
+  local LEFT, CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]], 1651523701 --[[CMD_ENTER_CLICK]]
+  local W_UP, W_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[CMD_EVT_WHEEL_DOWN]]
+  local NAV = {1197218715, 3259546669, 2765147006, 2075023265} -- CMD_UP / DOWN / LEFT / RIGHT
+  local CTRLS = {CTRL, 2748927068 --[[analog-move control: the stick's menu moves]]}
+  local function M(cmd, ...)
+    local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
+    if ok then return a, b end
+    return nil
+  end
+  local function In(cmd, ctrl)
+    local ok, r = pcall(funcLuaCommand, CHECK, ctrl or CTRL, cmd)
+    return ok and r == true
+  end
+  local function Edge(cmd, ctrl)
+    local key = ctrl and (tostring(ctrl) .. ":" .. tostring(cmd)) or cmd
+    local now = In(cmd, ctrl)
+    local was = P.prev[key]
+    P.prev[key] = now
+    return now and not was
+  end
+  function P.Begin()
+    P.zones = {}
+  end
+  function P.Rect(x, y, w, h, id, edge)
+    P.zones[#P.zones + 1] = {x, y, x + w, y + h, id = id, edge = edge}
+  end
+  function P.Box(cx, cy, hw, hh, id, edge)
+    P.zones[#P.zones + 1] = {cx - hw, cy - hh, cx + hw, cy + hh, id = id, edge = edge}
+  end
+  function P.Inst(layer, idx, hw, hh, id, edge)
+    P.zones[#P.zones + 1] = {layer = layer, idx = idx, hw = hw, hh = hh, id = id, edge = edge}
+  end
+  function P.Pos()
+    local x, y = M(POS)
+    if type(x) == "number" and type(y) == "number" then return x, y end
+    return nil
+  end
+  function P.At(x, y)
+    if x == nil then x, y = P.x, P.y end
+    if x == nil then return nil end
+    for i = #P.zones, 1, -1 do
+      local z = P.zones[i]
+      if z.layer ~= nil then
+        local gx, gy = M(GPOS, z.layer, z.idx)
+        if type(gx) == "number" and type(gy) == "number" and math.abs(x - gx) <= z.hw and math.abs(-y - gy) <= z.hh then
+          return z
+        end
+      elseif x >= z[1] and x < z[3] and y >= z[2] and y < z[4] then
+        return z
+      end
+    end
+    return nil
+  end
+  -- the Accept being pressed now is a pointer click: the mouse button, or Accept / A in pointer mode ON an item
+  -- (Enter / A with the pointer resting on empty space is a key Accept on the current selection)
+  function P.Owns()
+    return In(LEFT) or (P.on and In(CLICK) and P.At() ~= nil)
+  end
+  -- forget the hovered zone: the next Poll reports the zone under a still pointer as changed (after a redraw)
+  function P.Forget()
+    P.hot = nil
+  end
+  function P.KeyStep()
+    P.on, P.hot = false, nil
+    local x, y = P.Pos()
+    if x ~= nil then P.x, P.y = x, y end
+  end
+  function P.Reset()
+    P.zones, P.on, P.hot, P.prev, P.edge_t = {}, false, nil, {}, 0
+    P.x, P.y = P.Pos()
+    -- a press / wheel / arrow held from the screen before is no click, no scroll, no key
+    for _, c in ipairs({LEFT, CLICK, W_UP, W_DOWN}) do Edge(c) end
+    for _, ctrl in ipairs(CTRLS) do
+      for _, c in ipairs(NAV) do Edge(c, ctrl) end
+    end
+  end
+  function P.Poll()
+    local ev = {}
+    local x, y = P.Pos()
+    if x ~= nil then
+      local moved = M(MOVED) == true
+      if not moved and P.x ~= nil and (math.abs(x - P.x) > 1 or math.abs(y - P.y) > 1) then
+        moved = true    -- the free cursor (stick) moves the pointer without the mouse's «moved» flag
+      end
+      P.x, P.y = x, y
+      if moved then
+        P.on, ev.moved = true, true
+      end
+    end
+    for _, ctrl in ipairs(CTRLS) do
+      for _, c in ipairs(NAV) do
+        if Edge(c, ctrl) then
+          ev.keys = true
+        end
+      end
+    end
+    if ev.keys and not ev.moved then
+      P.on = false
+    end
+    local left, click = Edge(LEFT), Edge(CLICK)
+    if left then
+      P.on = true
+    end
+    local z = P.on and P.At() or nil
+    local id = z and z.id or nil
+    ev.changed = id ~= P.hot
+    P.hot, ev.hot = id, id
+    if z ~= nil and (ev.moved or left) then
+      ev.hover = id
+    end
+    if left then
+      if z ~= nil then
+        ev.click = id
+      else
+        ev.miss = true                 -- a mouse click on empty space: nothing
+      end
+    elseif click and P.on then
+      if z ~= nil then
+        ev.click = id
+      else
+        P.on, P.hot = false, nil       -- Enter / A on empty space: the menu's key Accept takes it (selection kept)
+      end
+    end
+    if In(W_DOWN) then
+      ev.wheel = 1
+    elseif In(W_UP) then
+      ev.wheel = -1
+    end
+    if z ~= nil and z.edge ~= nil then
+      P.edge_t = P.edge_t - 1
+      if P.edge_t <= 0 then
+        ev.edge, P.edge_t = z.edge, P.REPEAT
+      end
+    else
+      P.edge_t = 0
+    end
+    return ev
+  end
+  return P
+end
+
+-- the screen opened: its mouse switch (config.toml [draft] mouse, CMND_BBD_DRAFT_MOUSE; on without an answer) and a
+-- fresh pointer (a button held from the grid is no click)
+function BBCR_DRAFT_MouseOpen()
+  local B = BBCR_DRAFT
+  local ok, okc, on = pcall(funcLuaCommand, B.MOUSE)
+  B.mouse = not (ok and okc == true and on == false)
+  if B.ptr == nil then
+    B.ptr = EVT_PointerNew()
+  end
+  B.ptr.Reset()
+  B.polled = false
+  BBCR_DRAFT_Log("mouse " .. (B.mouse and "on" or "off (config.toml [draft] mouse)"))
+end
+
+-- the selection moved to slot k / candidate i by the pointer: the same drawing and sound as the arrows
+function BBCR_DRAFT_SelectSlot(k)
+  local B = BBCR_DRAFT
+  if k == B.sel then
+    return
+  end
+  B.sel = k
+  BBCR_DRAFT_Cursor()
+  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+end
+
+function BBCR_DRAFT_SelectCand(i)
+  local B = BBCR_DRAFT
+  if i == B.csel then
+    return
+  end
+  local old = B.csel
+  B.csel = i
+  BBCR_DRAFT_DrawCand(old)
+  BBCR_DRAFT_DrawCand(i)
+  BBCR_DRAFT_Cursor()
+  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+end
+
+-- the zones of what is drawn now: the 16 slots (pitch, the start question), or the 5 candidates (on the pack's band
+-- once it is turned; the plain column without a pack); none while the pack is dealt (a click there = all 5 at once)
+function BBCR_DRAFT_MouseZones()
+  local B, P = BBCR_DRAFT, BBCR_DRAFT_PK
+  local Ptr = B.ptr
+  Ptr.Begin()
+  if B.mode == "pitch" or B.mode == "start" then
+    for k = 0, #B.slots - 1 do
+      local w = B.where[k]
+      if w ~= nil and B.ready[w[1] .. ":" .. w[2]] then
+        Ptr.Inst(w[1], w[2], B.HALF_SLOT[1], B.HALF_SLOT[2], k)
+      end
+    end
+  elseif B.mode == "cands" and not BBCR_DRAFT_PackBusy() then
+    local pk = B.pk
+    for i = 0, #B.cands - 1 do
+      if pk ~= nil and pk.phase == "pick" then
+        -- the card's place on the band (the chosen one is lifted a little: the zone covers both)
+        local x, y = BBCR_DRAFT_PkSpot(i, pk.n)
+        local hw, hh = P.CARD_W * P.scale / 2, P.CARD_H * P.scale / 2
+        Ptr.Box(x + P.CARD_OX * P.scale, y + P.CARD_OY * P.scale - P.SEL_LIFT / 2, hw, hh + P.SEL_LIFT / 2, i)
+      elseif pk == nil and B.ready[B.CARD .. ":" .. i] then
+        Ptr.Inst(B.CARD, i, B.HALF_CAND[1], B.HALF_CAND[2], i)
+      end
+    end
+  end
+end
+
+-- once a frame (Step) while the Draft screen takes input: hover selects, a click confirms (BBCR_DRAFT_Decide, as Enter)
+function BBCR_DRAFT_Mouse()
+  local B = BBCR_DRAFT
+  local live = B.mouse and B.ptr ~= nil and B.quitCo == nil
+    and (B.mode == "pitch" or B.mode == "start" or B.mode == "cands")
+    and not (B.pk ~= nil and B.pk.phase == "outro")
+  if not live then
+    B.polled = false
+    return
+  end
+  B.mouseDecided = false
+  local Ptr = B.ptr
+  if not B.polled then
+    -- back from a window / an animation: what is held now is no click
+    B.polled = true
+    Ptr.Reset()
+    return
+  end
+  BBCR_DRAFT_MouseZones()
+  local ev = Ptr.Poll()
+  if B.mode == "cands" and BBCR_DRAFT_PackBusy() then
+    if ev.click ~= nil or ev.miss then
+      B.mouseDecided = true
+      BBCR_DRAFT_Decide() -- a click during the deal: all 5 at once, as Enter
+    end
+    return
+  end
+  if ev.hover ~= nil then
+    if B.mode == "cands" then
+      BBCR_DRAFT_SelectCand(ev.hover)
+    else
+      BBCR_DRAFT_SelectSlot(ev.hover)
+    end
+  end
+  if ev.click ~= nil then
+    if B.mode == "cands" then
+      BBCR_DRAFT_SelectCand(ev.click)
+    else
+      BBCR_DRAFT_SelectSlot(ev.click)
+    end
+    B.mouseDecided = true
+    BBCR_DRAFT_Decide()
+    -- the screen may change under the pointer (the pack, the pitch again): the next drawing re-reads it
+    Ptr.Forget()
   end
 end
 
@@ -1708,6 +2049,7 @@ do
       end
     elseif a1 == BBCR_DRAFT.ANCHOR then
       pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false) -- 1.5.89: never drawn
     elseif a1 == BBCR_DRAFT_PK.QUAD or a1 == BBCR_DRAFT_PK.TXT then
       pcall(BBCR_DRAFT_PkPrio, a1, a2)
     end
@@ -1740,6 +2082,7 @@ do
       end
     elseif a1 == BBCR_DRAFT.ANCHOR then
       pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
+      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false) -- 1.5.89: never drawn
     elseif (a1 == BBCR_DRAFT_PK.QUAD or a1 == BBCR_DRAFT_PK.TXT) and BBCR_DRAFT.pk == nil then
       pcall(BBCR_DRAFT_PkPrio, a1, a2) -- hidden until a pack opens
     end
@@ -1749,6 +2092,12 @@ do
   local decide = OnDecideFocus
   function OnDecideFocus(a1, a2, ...)
     if a1 == BBCR_DRAFT.ANCHOR then
+      -- 1.5.89: an Accept that is a pointer click is handled once, by BBCR_DRAFT_Mouse, on the card under the pointer
+      local B = BBCR_DRAFT
+      -- (a click on the footer's own Accept guide, over no card, still decides here: once a frame)
+      if B.mode ~= nil and B.mouse and B.ptr ~= nil and (B.mouseDecided or (B.ptr.Owns() and B.ptr.At() ~= nil)) then
+        return
+      end
       if BBCR_DRAFT.mode ~= nil then
         local ok, err = pcall(BBCR_DRAFT_Decide)
         if not ok then

@@ -14,6 +14,7 @@
 # (another mod's [[cut]] / [[camera]] event, a registry) reads these events.
 
 schema = "VRFW.anim/2"
+owner = "match"   # the aura rules play these summon cut-ins (content\transforms\group_summons.toml), no technique
 
 [[alias]]
 old = "new_animations.grifo_trio"

@@ -4,15 +4,11 @@
 --                      the squad's member order): what a friend gets when he asks to see this player's team
 --   share code         "VRT1-" .. Crockford base-32 of the description's bytes (copied / sent to a friend; decoded back
 --                      by M.decode_code)
---   groups             the order and text keys of the list's groups (same / different / no_mod / offline)
 
 local M = {}
 
 M.CODE_PREFIX = "VRT1-"
 M.DESC_TAG = "t1"
-M.GROUPS = { "same", "different", "no_mod", "mod", "online", "offline" }
--- the top bar entry the pending-request badge marks (VRFW_TopBarBadges key: <mod id>.<entry id>)
-M.BADGE_ENTRY = "utilities.friends"
 -- the most members a description carries (the squad's 29 member slots)
 M.MAX_MEMBERS = 29
 
@@ -121,33 +117,14 @@ function M.status_of_menu(map, stem)
   return nil
 end
 
--- the counts per group of `list` (VRFW.net.friends().list) -> { same = n, … } and the first index of each group
-function M.group_counts(list)
-  local n, first = {}, {}
-  for _, g in ipairs(M.GROUPS) do n[g] = 0 end
-  for i, f in ipairs(list or {}) do
-    local g = f.group
-    if n[g] ~= nil then
-      n[g] = n[g] + 1
-      if first[g] == nil then first[g] = i end
-    end
-  end
-  return n, first
-end
-
 -- the actions a friend's details offer (keys; the panel names them with text keys): `mine` = this player's room
 -- status (VRFW.net.status()), `f` = the friend's row (VRFW.net.friends().list[i])
 function M.actions(f, mine)
   local a = {}
-  local not_steam = f.mod_friend == true and f.steam_friend ~= true
-  -- a request this player sent and the other has not answered: take it back, or ask on Steam too
-  if f.request ~= nil and f.request ~= "" then
-    return { "cancel", "steam_add", "profile" }
-  end
   local hosting = type(mine) == "table" and mine.role == "host" and (mine.phase == "waiting" or mine.phase == "joined")
   local with_mod = f.in_game and f.vrfw ~= nil and f.vrfw ~= ""
   if with_mod then
-    if f.group == "same" or f.group == "mod" then
+    if f.group == "same" then
       if hosting then a[#a + 1] = "invite" end
       if f.room == true then a[#a + 1] = "join" end
     end
@@ -155,16 +132,7 @@ function M.actions(f, mine)
     if f.group ~= "same" then a[#a + 1] = "mods" end
   end
   a[#a + 1] = "profile"
-  if not_steam then
-    a[#a + 1] = "steam_add"
-    a[#a + 1] = "remove"
-  end
   return a
-end
-
--- the actions of a friend request this player got (a row of «Solicitudes»)
-function M.request_actions()
-  return { "accept", "decline", "block", "steam_add" }
 end
 
 return M

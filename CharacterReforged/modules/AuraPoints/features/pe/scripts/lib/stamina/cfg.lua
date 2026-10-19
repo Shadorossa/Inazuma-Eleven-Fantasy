@@ -27,7 +27,10 @@ local function list(v, d)
   return v
 end
 
-local AURA_WORD = { [0] = "keshin", [1] = "armour", [2] = "miximax", [3] = "soul" }
+local AURA_WORD = { [0] = "keshin", [1] = "armour", [2] = "miximax", [3] = "soul", [4] = "kizuna_trans",
+  [5] = "awakening_power", [6] = "mode_change" }
+-- kinds whose free start holds only while nothing pays with the hyper gauge (c.unused, set by the script)
+local NEEDS_UNUSED = { [4] = true, [5] = true, [6] = true }
 
 local function listed(l, ty)
   local k = AURA_WORD[ty]
@@ -51,7 +54,6 @@ function M.pe(t)
     armour_pe_mult = num(t.armour_pe_mult, 1.05),
     miximax_armour_pe_mult = num(t.miximax_armour_pe_mult, 1.30),
     miximax_end_pe = num(t.miximax_end_pe, 0.0),
-    cpu = bool(t.cpu, true),
     cost_model = string.lower(tostring(t.cost_model or "cs")),
     miximax_carriers = list(t.miximax_carriers, {}),
     cs_pe_free_while_out = bool(t.cs_pe_free_while_out, true),
@@ -70,12 +72,21 @@ function M.pe(t)
   function c.cs_scale() return scale end
   -- the engine's start pay is skipped for the listed kinds (a keshin / armour / totem on its pool: Aura Points' own
   -- free start, its ProcessPending provider)
+  -- c.unused(): nothing pays with the hyper gauge (the script's AuraPoints.HyperUnused); the kinds of NEEDS_UNUSED
+  -- start free only then
+  function c.gated(ty)
+    return NEEDS_UNUSED[ty] == true and not (type(c.unused) == "function" and c.unused())
+  end
   function c.free_activation(ty)
-    if not c.enabled or AURA_WORD[ty] == nil then return false end
+    if not c.enabled or AURA_WORD[ty] == nil or c.gated(ty) then return false end
     return listed(c.free_activation_list, ty)
   end
   function c.start_check_waived(ty)
-    return c.enabled and AURA_WORD[ty] ~= nil and listed(c.no_start_check, ty)
+    return c.enabled and AURA_WORD[ty] ~= nil and not c.gated(ty) and listed(c.no_start_check, ty)
+  end
+  -- the listed kind of an auraType (config only, no gate): what the shared rule checks
+  function c.listed_free(ty)
+    return AURA_WORD[ty] ~= nil and listed(c.free_activation_list, ty) and listed(c.no_start_check, ty)
   end
   -- the three PE multipliers (miximax, armour, both); CS: the miximax's cs_miximax_pe_mult × cs_scale, the armour 1
   function c.pe_mults()

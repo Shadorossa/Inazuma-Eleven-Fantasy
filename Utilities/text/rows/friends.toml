@@ -18,44 +18,8 @@ zh_hans = "好友列表"
 zh_hant = "好友列表"
 
 # this player's friend code
-[[row]]
-id = "Utilities.Friends.MyCode"
-es = "Tu código de amigo: %s"
-en = "Your friend code: %s"
-fr = "Ton code ami : %s"
-de = "Dein Freundescode: %s"
-it = "Il tuo codice amico: %s"
-pt = "O teu código de amigo: %s"
-ja = "あなたのフレンドコード：%s"
-zh_hans = "你的好友代码：%s"
-zh_hant = "你的好友代碼：%s"
-
 # no code (Steam not ready)
-[[row]]
-id = "Utilities.Friends.NoCode"
-es = "Steam no está listo"
-en = "Steam is not ready"
-fr = "Steam n'est pas prêt"
-de = "Steam ist nicht bereit"
-it = "Steam non è pronto"
-pt = "O Steam não está pronto"
-ja = "Steamの準備ができていません"
-zh_hans = "Steam尚未就绪"
-zh_hant = "Steam尚未就緒"
-
 # the keys under the code
-[[row]]
-id = "Utilities.Friends.HeadKeys"
-es = "<CMD_FUNC3> Copiar   <CMD_FUNC4> Añadir amigo por código"
-en = "<CMD_FUNC3> Copy   <CMD_FUNC4> Add friend by code"
-fr = "<CMD_FUNC3> Copier   <CMD_FUNC4> Ajouter un ami par code"
-de = "<CMD_FUNC3> Kopieren   <CMD_FUNC4> Freund per Code hinzufügen"
-it = "<CMD_FUNC3> Copia   <CMD_FUNC4> Aggiungi amico con codice"
-pt = "<CMD_FUNC3> Copiar   <CMD_FUNC4> Adicionar amigo por código"
-ja = "<CMD_FUNC3> コピー   <CMD_FUNC4> コードでフレンド追加"
-zh_hans = "<CMD_FUNC3> 复制   <CMD_FUNC4> 通过代码添加好友"
-zh_hant = "<CMD_FUNC3> 複製   <CMD_FUNC4> 透過代碼新增好友"
-
 # the list's keys (bottom)
 [[row]]
 id = "Utilities.Friends.ListKeys"
@@ -83,57 +47,9 @@ zh_hans = "<CMD_ENTER> 选择   <CMD_BACK> 返回"
 zh_hant = "<CMD_ENTER> 選擇   <CMD_BACK> 返回"
 
 # section: in the game now
-[[row]]
-id = "Utilities.Friends.SecPlaying"
-es = "En Inazuma Eleven VR"
-en = "In Inazuma Eleven VR"
-fr = "Dans Inazuma Eleven VR"
-de = "In Inazuma Eleven VR"
-it = "In Inazuma Eleven VR"
-pt = "No Inazuma Eleven VR"
-ja = "イナズマイレブンVRをプレイ中"
-zh_hans = "正在玩闪电十一人VR"
-zh_hant = "正在玩閃電十一人VR"
-
 # section: friends added by code
-[[row]]
-id = "Utilities.Friends.SecMod"
-es = "Amigos del mod"
-en = "Mod friends"
-fr = "Amis du mod"
-de = "Mod-Freunde"
-it = "Amici della mod"
-pt = "Amigos do mod"
-ja = "MODフレンド"
-zh_hans = "模组好友"
-zh_hant = "模組好友"
-
 # section: online
-[[row]]
-id = "Utilities.Friends.SecOnline"
-es = "En línea"
-en = "Online"
-fr = "En ligne"
-de = "Online"
-it = "Online"
-pt = "Online"
-ja = "オンライン"
-zh_hans = "在线"
-zh_hant = "線上"
-
 # section: offline
-[[row]]
-id = "Utilities.Friends.SecOffline"
-es = "Desconectados"
-en = "Offline"
-fr = "Hors ligne"
-de = "Offline"
-it = "Offline"
-pt = "Offline"
-ja = "オフライン"
-zh_hans = "离线"
-zh_hant = "離線"
-
 # an empty section
 [[row]]
 id = "Utilities.Friends.Nobody"
@@ -317,18 +233,6 @@ zh_hans = "离线"
 zh_hant = "離線"
 
 # status: a mod friend who has not added this player's code
-[[row]]
-id = "Utilities.Friends.St_pending"
-es = "Esperando a que añada tu código"
-en = "Waiting for them to add your code"
-fr = "En attente qu'il ajoute ton code"
-de = "Wartet, bis er deinen Code hinzufügt"
-it = "In attesa che aggiunga il tuo codice"
-pt = "À espera que adicione o teu código"
-ja = "相手があなたのコードを追加するのを待っています"
-zh_hans = "等待对方添加你的代码"
-zh_hant = "等待對方新增你的代碼"
-
 # the friend hosts an open room
 [[row]]
 id = "Utilities.Friends.HasRoom"
@@ -499,18 +403,6 @@ zh_hans = "Steam个人资料"
 zh_hant = "Steam個人檔案"
 
 # action (mod friends)
-[[row]]
-id = "Utilities.Friends.Act_remove"
-es = "Quitar de amigos del mod"
-en = "Remove from mod friends"
-fr = "Retirer des amis du mod"
-de = "Aus den Mod-Freunden entfernen"
-it = "Rimuovi dagli amici della mod"
-pt = "Remover dos amigos do mod"
-ja = "MODフレンドから削除"
-zh_hans = "从模组好友中移除"
-zh_hant = "從模組好友中移除"
-
 # result
 [[row]]
 id = "Utilities.Friends.Invited"
@@ -629,324 +521,24 @@ zh_hans = "无法完成。"
 zh_hant = "無法完成。"
 
 # add by code: done
-[[row]]
-id = "Utilities.Friends.Added"
-es = "Solicitud de amistad enviada a %s. Le llegará en cuanto se conecte; al aceptarla seréis amigos del mod."
-en = "Friend request sent to %s. It reaches them as soon as they are online; once they accept, you are mod friends."
-fr = "Demande d'ami envoyée à %s. Elle lui parviendra dès qu'il sera en ligne ; s'il accepte, vous serez amis du mod."
-de = "Freundschaftsanfrage an %s gesendet. Sie kommt an, sobald er online ist; nimmt er an, seid ihr Mod-Freunde."
-it = "Richiesta di amicizia inviata a %s. Gli arriverà appena sarà online; se accetta, sarete amici della mod."
-pt = "Pedido de amizade enviado a %s. Chega-lhe assim que estiver online; se aceitar, serão amigos do mod."
-ja = "%sにフレンド申請を送りました。相手がオンラインになると届きます。承認されるとMODフレンドになります。"
-zh_hans = "已向%s发送好友申请。对方上线后就会收到；对方接受后你们就是模组好友。"
-zh_hant = "已向%s送出好友申請。對方上線後就會收到；對方接受後你們就是模組好友。"
-
 # add by code: no code on the clipboard
-[[row]]
-id = "Utilities.Friends.AddHint"
-es = "Ese código no es válido. Un código de amigo tiene el formato XXXX-XXXX."
-en = "That code is not valid. A friend code looks like XXXX-XXXX."
-fr = "Ce code n'est pas valide. Un code ami a la forme XXXX-XXXX."
-de = "Dieser Code ist ungültig. Ein Freundescode hat die Form XXXX-XXXX."
-it = "Questo codice non è valido. Un codice amico ha il formato XXXX-XXXX."
-pt = "Esse código não é válido. Um código de amigo tem o formato XXXX-XXXX."
-ja = "無効なコードです。フレンドコードの形式は XXXX-XXXX です。"
-zh_hans = "该代码无效。好友代码的格式为 XXXX-XXXX。"
-zh_hant = "該代碼無效。好友代碼的格式為 XXXX-XXXX。"
-
 # my code copied
-[[row]]
-id = "Utilities.Friends.Copied"
-es = "Tu código de amigo %s está copiado: pégalo a quien quieras añadir."
-en = "Your friend code %s is copied: paste it to whoever you want to add."
-fr = "Ton code ami %s est copié : colle-le à qui tu veux ajouter."
-de = "Dein Freundescode %s ist kopiert: Füge ihn bei der Person ein, die du hinzufügen willst."
-it = "Il tuo codice amico %s è copiato: incollalo a chi vuoi aggiungere."
-pt = "O teu código de amigo %s está copiado: cola-o a quem quiseres adicionar."
-ja = "フレンドコード%sをコピーしました。追加したい相手に貼り付けてください。"
-zh_hans = "你的好友代码%s已复制：粘贴给你想添加的人。"
-zh_hant = "你的好友代碼%s已複製：貼給你想新增的人。"
-
 # the «Solicitudes» section (friend requests this player got; at the top of the list while any wait)
-[[row]]
-id = "Utilities.Friends.SecRequests"
-es = "Solicitudes"
-en = "Requests"
-fr = "Demandes"
-de = "Anfragen"
-it = "Richieste"
-pt = "Pedidos"
-ja = "フレンド申請"
-zh_hans = "好友申请"
-zh_hant = "好友申請"
-
 # status line of a request row / of a mod friend this player sent a request to
-[[row]]
-id = "Utilities.Friends.St_request_got"
-es = "Te ha enviado una solicitud"
-en = "Sent you a friend request"
-fr = "T'a envoyé une demande"
-de = "Hat dir eine Anfrage gesendet"
-it = "Ti ha inviato una richiesta"
-pt = "Enviou-te um pedido"
-ja = "フレンド申請が届いています"
-zh_hans = "向你发送了好友申请"
-zh_hant = "向你送出了好友申請"
-
 # a request this player sent arrived and waits for an answer
-[[row]]
-id = "Utilities.Friends.St_request_sent"
-es = "Solicitud enviada"
-en = "Request sent"
-fr = "Demande envoyée"
-de = "Anfrage gesendet"
-it = "Richiesta inviata"
-pt = "Pedido enviado"
-ja = "申請済み"
-zh_hans = "已发送申请"
-zh_hant = "已送出申請"
-
 # a request this player sent has not arrived yet (the other player is offline): sent again until it does
-[[row]]
-id = "Utilities.Friends.St_request_pending"
-es = "Solicitud pendiente"
-en = "Request pending"
-fr = "Demande en attente"
-de = "Anfrage ausstehend"
-it = "Richiesta in sospeso"
-pt = "Pedido pendente"
-ja = "申請待ち"
-zh_hans = "申请待发送"
-zh_hant = "申請待送出"
-
 # the details of a request row
-[[row]]
-id = "Utilities.Friends.ReqDetail"
-es = "Te ha enviado una solicitud de amistad."
-en = "Sent you a friend request."
-fr = "T'a envoyé une demande d'ami."
-de = "Hat dir eine Freundschaftsanfrage gesendet."
-it = "Ti ha inviato una richiesta di amicizia."
-pt = "Enviou-te um pedido de amizade."
-ja = "フレンド申請が届いています。"
-zh_hans = "向你发送了好友申请。"
-zh_hant = "向你送出了好友申請。"
-
 # the requester's friend code (details of a request row)
-[[row]]
-id = "Utilities.Friends.ReqCode"
-es = "Su código de amigo: %s"
-en = "Their friend code: %s"
-fr = "Son code ami : %s"
-de = "Sein Freundescode: %s"
-it = "Il suo codice amico: %s"
-pt = "O código de amigo dele: %s"
-ja = "相手のフレンドコード：%s"
-zh_hans = "对方的好友代码：%s"
-zh_hant = "對方的好友代碼：%s"
-
 # actions of a request row / of a sent request
-[[row]]
-id = "Utilities.Friends.Act_accept"
-es = "Aceptar"
-en = "Accept"
-fr = "Accepter"
-de = "Annehmen"
-it = "Accetta"
-pt = "Aceitar"
-ja = "承認"
-zh_hans = "接受"
-zh_hant = "接受"
-
-[[row]]
-id = "Utilities.Friends.Act_decline"
-es = "Rechazar"
-en = "Decline"
-fr = "Refuser"
-de = "Ablehnen"
-it = "Rifiuta"
-pt = "Recusar"
-ja = "拒否"
-zh_hans = "拒绝"
-zh_hant = "拒絕"
-
-[[row]]
-id = "Utilities.Friends.Act_block"
-es = "Bloquear"
-en = "Block"
-fr = "Bloquer"
-de = "Blockieren"
-it = "Blocca"
-pt = "Bloquear"
-ja = "ブロック"
-zh_hans = "屏蔽"
-zh_hant = "封鎖"
-
-[[row]]
-id = "Utilities.Friends.Act_cancel"
-es = "Cancelar solicitud"
-en = "Cancel request"
-fr = "Annuler la demande"
-de = "Anfrage zurückziehen"
-it = "Annulla richiesta"
-pt = "Cancelar pedido"
-ja = "申請を取り消す"
-zh_hans = "取消申请"
-zh_hant = "取消申請"
-
 # opens the Steam overlay to add him as a real Steam friend
-[[row]]
-id = "Utilities.Friends.Act_steam_add"
-es = "Añadir en Steam"
-en = "Add on Steam"
-fr = "Ajouter sur Steam"
-de = "Auf Steam hinzufügen"
-it = "Aggiungi su Steam"
-pt = "Adicionar no Steam"
-ja = "Steamで追加"
-zh_hans = "在 Steam 上添加"
-zh_hant = "在 Steam 上新增"
-
 # toast / message: a request arrived (%s = the sender)
-[[row]]
-id = "Utilities.Friends.ReqGot"
-es = "%s te ha enviado una solicitud de amistad"
-en = "%s sent you a friend request"
-fr = "%s t'a envoyé une demande d'ami"
-de = "%s hat dir eine Freundschaftsanfrage gesendet"
-it = "%s ti ha inviato una richiesta di amicizia"
-pt = "%s enviou-te um pedido de amizade"
-ja = "%sからフレンド申請が届きました"
-zh_hans = "%s 向你发送了好友申请"
-zh_hant = "%s 向你送出了好友申請"
-
 # toast: this player's request was accepted
-[[row]]
-id = "Utilities.Friends.ReqAccepted"
-es = "%s ha aceptado tu solicitud: ya sois amigos del mod"
-en = "%s accepted your request: you are mod friends now"
-fr = "%s a accepté ta demande : vous êtes amis du mod"
-de = "%s hat deine Anfrage angenommen: ihr seid jetzt Mod-Freunde"
-it = "%s ha accettato la tua richiesta: ora siete amici della mod"
-pt = "%s aceitou o teu pedido: já são amigos do mod"
-ja = "%sが申請を承認しました。MODフレンドになりました"
-zh_hans = "%s 接受了你的申请：你们现在是模组好友"
-zh_hant = "%s 接受了你的申請：你們現在是模組好友"
-
 # toast: this player's request was declined
-[[row]]
-id = "Utilities.Friends.ReqDeclined"
-es = "%s ha rechazado tu solicitud"
-en = "%s declined your request"
-fr = "%s a refusé ta demande"
-de = "%s hat deine Anfrage abgelehnt"
-it = "%s ha rifiutato la tua richiesta"
-pt = "%s recusou o teu pedido"
-ja = "%sが申請を拒否しました"
-zh_hans = "%s 拒绝了你的申请"
-zh_hant = "%s 拒絕了你的申請"
-
 # messages after a request action
-[[row]]
-id = "Utilities.Friends.DoneAccept"
-es = "%s y tú ya sois amigos del mod."
-en = "You and %s are mod friends now."
-fr = "Toi et %s êtes maintenant amis du mod."
-de = "Du und %s seid jetzt Mod-Freunde."
-it = "Tu e %s ora siete amici della mod."
-pt = "Tu e %s já são amigos do mod."
-ja = "%sとMODフレンドになりました。"
-zh_hans = "你和 %s 现在是模组好友。"
-zh_hant = "你和 %s 現在是模組好友。"
-
-[[row]]
-id = "Utilities.Friends.DoneDecline"
-es = "Solicitud de %s rechazada."
-en = "%s's request declined."
-fr = "Demande de %s refusée."
-de = "Anfrage von %s abgelehnt."
-it = "Richiesta di %s rifiutata."
-pt = "Pedido de %s recusado."
-ja = "%sの申請を拒否しました。"
-zh_hans = "已拒绝 %s 的申请。"
-zh_hant = "已拒絕 %s 的申請。"
-
-[[row]]
-id = "Utilities.Friends.DoneBlock"
-es = "%s bloqueado: no recibirás nada de este jugador."
-en = "%s blocked: you will get nothing from this player."
-fr = "%s bloqué : tu ne recevras plus rien de ce joueur."
-de = "%s blockiert: Du erhältst nichts mehr von diesem Spieler."
-it = "%s bloccato: non riceverai più nulla da questo giocatore."
-pt = "%s bloqueado: não vais receber nada deste jogador."
-ja = "%sをブロックしました。このプレイヤーからは何も届きません。"
-zh_hans = "已屏蔽 %s：你不会再收到该玩家的任何内容。"
-zh_hant = "已封鎖 %s：你不會再收到該玩家的任何內容。"
-
-[[row]]
-id = "Utilities.Friends.DoneCancel"
-es = "Solicitud a %s cancelada."
-en = "Request to %s cancelled."
-fr = "Demande à %s annulée."
-de = "Anfrage an %s zurückgezogen."
-it = "Richiesta a %s annullata."
-pt = "Pedido a %s cancelado."
-ja = "%sへの申請を取り消しました。"
-zh_hans = "已取消对 %s 的申请。"
-zh_hant = "已取消對 %s 的申請。"
-
 # «Añadir amigo por código»: the code read from the clipboard, before anything is sent (Sí / No)
-[[row]]
-id = "Utilities.Friends.AddConfirm"
-es = "Código: %s\\n¿Enviar una solicitud de amistad a este jugador?"
-en = "Code: %s\\nSend a friend request to this player?"
-fr = "Code : %s\\nEnvoyer une demande d'ami à ce joueur ?"
-de = "Code: %s\\nDiesem Spieler eine Freundschaftsanfrage senden?"
-it = "Codice: %s\\nInviare una richiesta di amicizia a questo giocatore?"
-pt = "Código: %s\\nEnviar um pedido de amizade a este jogador?"
-ja = "コード：%s\\nこのプレイヤーにフレンド申請を送りますか？"
-zh_hans = "代码：%s\\n向该玩家发送好友申请？"
-zh_hant = "代碼：%s\\n向該玩家發送好友申請？"
-
 # the same, Steam knows the player's name (code, name)
-[[row]]
-id = "Utilities.Friends.AddConfirmName"
-es = "Código: %s (%s)\\n¿Enviar la solicitud de amistad?"
-en = "Code: %s (%s)\\nSend the friend request?"
-fr = "Code : %s (%s)\\nEnvoyer la demande d'ami ?"
-de = "Code: %s (%s)\\nFreundschaftsanfrage senden?"
-it = "Codice: %s (%s)\\nInviare la richiesta di amicizia?"
-pt = "Código: %s (%s)\\nEnviar o pedido de amizade?"
-ja = "コード：%s（%s）\\nフレンド申請を送りますか？"
-zh_hans = "代码：%s（%s）\\n发送好友申请？"
-zh_hant = "代碼：%s（%s）\\n發送好友申請？"
-
 # the clipboard holds this player's own friend code
-[[row]]
-id = "Utilities.Friends.AddOwn"
-es = "Ese es tu propio código de amigo. Escribe el de tu amigo (formato XXXX-XXXX)."
-en = "That is your own friend code. Type your friend's (format XXXX-XXXX)."
-fr = "C'est ton propre code ami. Saisis celui de ton ami (format XXXX-XXXX)."
-de = "Das ist dein eigener Freundescode. Gib den deines Freundes ein (Form XXXX-XXXX)."
-it = "Questo è il tuo codice amico. Scrivi quello del tuo amico (formato XXXX-XXXX)."
-pt = "Esse é o teu próprio código de amigo. Escreve o do teu amigo (formato XXXX-XXXX)."
-ja = "それはあなた自身のフレンドコードです。相手のコード（XXXX-XXXX）を入力してください。"
-zh_hans = "这是你自己的好友代码。请输入好友的代码（XXXX-XXXX）。"
-zh_hant = "這是你自己的好友代碼。請輸入好友的代碼（XXXX-XXXX）。"
-
 # «Añadir amigo por código» while Steam is not ready: nothing is sent
-[[row]]
-id = "Utilities.Friends.AddNotReady"
-es = "Steam no está listo: ahora no se puede enviar la solicitud. Inténtalo dentro de un momento."
-en = "Steam is not ready: the request cannot be sent now. Try again in a moment."
-fr = "Steam n'est pas prêt : la demande ne peut pas être envoyée maintenant. Réessaie dans un instant."
-de = "Steam ist nicht bereit: Die Anfrage kann jetzt nicht gesendet werden. Versuche es gleich noch einmal."
-it = "Steam non è pronto: ora non è possibile inviare la richiesta. Riprova tra poco."
-pt = "O Steam não está pronto: agora não é possível enviar o pedido. Tenta daqui a pouco."
-ja = "Steamの準備ができていないため、今は申請を送れません。少し待ってからもう一度お試しください。"
-zh_hans = "Steam尚未就绪，现在无法发送申请。请稍后再试。"
-zh_hant = "Steam尚未就緒，現在無法送出申請。請稍後再試。"
-
 # the panel got no answer from the friends script (an error: see the ModLoader log)
 [[row]]
 id = "Utilities.Friends.NoScript"
@@ -961,44 +553,8 @@ zh_hans = "好友列表没有响应（请查看 ModLoader 日志）"
 zh_hant = "好友列表沒有回應（請查看 ModLoader 記錄）"
 
 # the keyboard's title («Añadir amigo por código»)
-[[row]]
-id = "Utilities.Friends.KbTitle"
-es = "Código de amigo"
-en = "Friend code"
-fr = "Code ami"
-de = "Freundescode"
-it = "Codice amico"
-pt = "Código de amigo"
-ja = "フレンドコード"
-zh_hans = "好友代码"
-zh_hant = "好友代碼"
-
 # the keyboard's guide line
-[[row]]
-id = "Utilities.Friends.KbGuide"
-es = "Escribe el código de tu amigo (XXXX-XXXX)"
-en = "Type your friend's code (XXXX-XXXX)"
-fr = "Saisis le code de ton ami (XXXX-XXXX)"
-de = "Gib den Code deines Freundes ein (XXXX-XXXX)"
-it = "Scrivi il codice del tuo amico (XXXX-XXXX)"
-pt = "Escreve o código do teu amigo (XXXX-XXXX)"
-ja = "相手のフレンドコードを入力（XXXX-XXXX）"
-zh_hans = "输入好友的代码（XXXX-XXXX）"
-zh_hant = "輸入好友的代碼（XXXX-XXXX）"
-
 # the game's keyboard did not open
-[[row]]
-id = "Utilities.Friends.KbFail"
-es = "No se pudo abrir el teclado. Inténtalo de nuevo."
-en = "The keyboard could not open. Try again."
-fr = "Le clavier n'a pas pu s'ouvrir. Réessaie."
-de = "Die Tastatur ließ sich nicht öffnen. Versuch es noch einmal."
-it = "Impossibile aprire la tastiera. Riprova."
-pt = "Não foi possível abrir o teclado. Tenta de novo."
-ja = "キーボードを開けませんでした。もう一度お試しください。"
-zh_hans = "无法打开键盘，请重试。"
-zh_hant = "無法開啟鍵盤，請重試。"
-
 # the panel's message box: yes
 [[row]]
 id = "Utilities.Friends.BtnYes"

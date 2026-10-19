@@ -6,10 +6,8 @@
 # c99999901_mx_scene_base_ / c99999902_mx_scene_aura_ and their body rigs over c000101 in the pack paths (keep those
 # placeholders). The packs, cameras and effect objects are this mod's assets (event\ev99, effect\event\ev99); the
 # main event's eff list also plays the retail Mix-Max cut-in effect ev82000100.
-# Inazuma Fantasy declares the same events: this file is left out when it is active (one owner).
 schema = "VRFW.anim/2"
 if_mod = "all_miximaxed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
-if_not_mod = "inazuma_fantasy"
 
 [[script]]
 event = "ev99_97010"

@@ -17,6 +17,11 @@ curve_exponent = 1.0
 # `level_sync_below_percent` % below the rival's: sync = rival × (100 − percent) / 100, rounded DOWN, at least 1.
 level_sync_below_percent = 7
 
+# Gate battles whose first win (the gate battle, difficulty 2) also gives the gate rival's kit (owner 2026-10-19:
+# Plathos). research/scripts/chronicle_deluxe_heroic_build.py writes the table chronicle_deluxe.gate_<game> (the battle's
+# retail first-clear items + the kit) and its [[VRFW.GameDrops]] in content/teams/90_rules/heroic.toml.
+gate_kits = ["fbtl_cro12_030_010"]    # Plathos
+
 # The heroic player rules (owner 2026-10-14, simplified 2026-10-16). The «first game» of a player is his character's
 # source series in the game's data (chara_base series → chara_series_config type: Inazuma Eleven, 2, 3, GO, GO 2, GO
 # Galaxy, Ares, Orion, Victory Road); a Chronicle route's game is the series most of its Crónica rivals' players belong to.

@@ -59,6 +59,8 @@ local function info(...) VRFW.log("create:", ...) end
 
 local MOD = "character_reforged"
 local PLACE_FAILED = -2
+-- the create flow refused the player's avatar (a system whose rules say avatar_may_pair = false; the menus ask the game)
+local AVATAR_DENIED = -4
 
 local function id_of(k)
   if type(k) == "number" then return u32(k) end
@@ -175,10 +177,10 @@ function CharacterReforged.Create.Row(item)
   for i, s in ipairs(load_systems()) do
     if s.item == item then
       info(string.format("row of %s: %d (%s, store %s)", hex(item), i, s.system, s.store_name))
-      return i, s.store, s.scene == true
+      return i, s.store, s.scene == true, A.PairRules(s.pair_system).avatar_may_pair ~= false
     end
   end
-  return 0, 0, false
+  return 0, 0, false, true
 end
 
 -- (charaHdl) -> row (0 = no create item was picked), board slot, store command id
@@ -269,12 +271,12 @@ local MAX_MOVES = 2
 -- its stat preview (crc32 of `preview`, 0 = none)
 function CharacterReforged.Create.Moves(i)
   local s = load_systems()[math.floor(tonumber(i) or 0)]
-  if not s then return 0, 0, "", 0, 0 end
+  if not s then return 0, 0, "", 0, 0, true end
   local n = math.floor(tonumber(A.PairRules(s.pair_system).moves) or 0)
   n = math.max(0, math.min(MAX_MOVES, n))
   local key = s.confirm or (MOD .. ".create_confirm")
   info(string.format("moves of row %s (%s): %d, confirmation %s", tostring(i), s.system, n, key))
-  return n, id_of(key), text_of(key), id_of(s.confirm_icon), id_of(s.preview)
+  return n, id_of(key), text_of(key), id_of(s.confirm_icon), id_of(s.preview), A.PairRules(s.pair_system).avatar_may_pair ~= false
 end
 
 -- (row, code) -> labelId, reasonId, labelText, reasonText: the refusal window's two texts (ids for the game's own text
@@ -286,6 +288,8 @@ function CharacterReforged.Create.Refusal(i, code)
   local reason
   if code == PLACE_FAILED then
     reason = MOD .. ".create_refused_place"
+  elseif code == AVATAR_DENIED then
+    reason = MOD .. ".create_refused_avatar"
   elseif s and s.refusals[tostring(code)] then
     reason = tostring(s.refusals[tostring(code)])
   elseif s and s.pair_codes >= 0 and code > s.pair_codes and code <= s.pair_codes + 9 then

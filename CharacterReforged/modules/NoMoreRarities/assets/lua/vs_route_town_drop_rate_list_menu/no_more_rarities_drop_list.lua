@@ -6,7 +6,7 @@
 --
 -- The retail row (UpdateListItem_DropChara(layer, instance, dirty, focused, chara, ..., rarity)) paints its band with
 -- the rarity's sprite of win05_38 (list_drop_chr_rarity01..08) on the texture slot list_drop_chr_rarity01. After it, a
--- row of a NORMAL card (spirit drop rarity 0-4; the Ídolo variants 5-7 keep their rarity band) gets the band of his
+-- row of a removed rarity (NoMoreRarities.RarityRemoved: 0-4 always, the Ídolo variants 5-7 by the option) gets the band of his
 -- position look, from the mod's one shared helper NoMoreRarities.PositionColour (no_more_rarities_card_look.lua: the
 -- card's own position, the VR-Framework's rule; nil = the retail look: a reserved slot such as INAROGUE's, a special
 -- card, staff, an unknown position), the card being the spirit's (CMND_GET_SPIRIT_CHARA_PARAM_ID(chara, rarity), what
@@ -28,7 +28,6 @@ if type(rawget(_ENV, "UpdateListItem_DropChara")) == "function" and NoMoreRariti
   local BAND_SLOT = 94010567             -- list_drop_chr_rarity01: the band mesh's texture slot
   local SWAP_SPRITE = 558735651          -- (layer, texture, sprite, slot, 0, instance)
   local SPIRIT_CARD = 1545473289         -- CMND_GET_SPIRIT_CHARA_PARAM_ID (chara, rarity) -> the spirit's card
-  local LAST_NORMAL_RARITY = 4           -- spirit drop rarities 0-4: the normal cards; 5-7 the Ídolo variants
   -- the row band of each position look (NoMoreRarities.POSITION_LOOKS key); the forward's crc made on first use
   local DROP_BAND_OF_LOOK = {
     goalkeeper = 1978697800,             -- list_drop_chr_rarity04 (gold)
@@ -63,7 +62,8 @@ if type(rawget(_ENV, "UpdateListItem_DropChara")) == "function" and NoMoreRariti
 
   -- the band of one drawn row: true when it was swapped
   function D.Paint(layer, instance, chara, rarity)
-    if type(chara) ~= "number" or chara == 0 or type(rarity) ~= "number" or rarity < 0 or rarity > LAST_NORMAL_RARITY then
+    if type(chara) ~= "number" or chara == 0 or type(NoMoreRarities.RarityRemoved) ~= "function"
+        or not NoMoreRarities.RarityRemoved(rarity) then
       return false
     end
     if type(NoMoreRarities.PositionColour) ~= "function" then

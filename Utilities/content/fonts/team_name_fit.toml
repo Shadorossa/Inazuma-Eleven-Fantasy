@@ -1,0 +1,20 @@
+schema = "VRFW.font/1"
+# Utilities › team name length (docs/game/ui/team-name-length.md §3): the Team Dock's name takes up to 24 characters
+# (config.toml [team_name]); the save holds 128 bytes of UTF-8 per name, so it is stored and shown by the game itself.
+# The screens whose name style does not squeeze a long text into its box (the match scoreboard and the team info
+# headers already do: their styles are «_sclw») get the game's squeeze mode on their styles here, so a 24-character
+# name stays inside its box everywhere. A text that fits is drawn as before; only a text wider than its box is
+# narrowed. The styles below are used by the team name nodes and by few other texts (v7.1.2 menu objects):
+#   fs_50_w_cc_2d2_001 / _002   VS team info (soccer20_04 / soccer20_05)
+#   fs_48_w_cc_2d0_001_at2      half-time screen (soccer21_01)
+#   fs_32_b_lc_2d0_001          the top bar's team panel (mainmenu90_31), the avatar list, BB member frame
+#   fs_30_b_lc_2d0_001          formation frame (team14_03)
+#   fs_list_title02             formation frames team14_03b / c, two item lists
+#   fs2_36_w_cc_2d0_001         CPU / practice match formation (mainmenu90_34_*)
+#   fs_enjoy_team_name01 / 02 / 11 / 12   Battle Bay / VS route team names (vs01_40 / 44 / 45, vsroute02_04, win04_15)
+
+[[font_style]]
+styles = ["fs_50_w_cc_2d2_001", "fs_50_w_cc_2d2_002", "fs_48_w_cc_2d0_001_at2", "fs_32_b_lc_2d0_001",
+          "fs_30_b_lc_2d0_001", "fs_list_title02", "fs2_36_w_cc_2d0_001", "fs_enjoy_team_name01",
+          "fs_enjoy_team_name02", "fs_enjoy_team_name11", "fs_enjoy_team_name12"]
+squeeze = true

@@ -1,0 +1,25 @@
+schema = "VRFW.option/2"
+# No More Rarities › which rarities lose their rarity (owner request 2026-10-19), on the Mods screen's «Ajustes» of the
+# mod and in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3). Value file:
+# <data dir>\mod_options\no_more_rarities.json. restart = true: every reader gets the value the game started with.
+# The game's tiers (docs/game/characters/rarity-removal.md §0): basic = the normal cards 1★-5★ (rarity 0-4), Ídolo =
+# the Héroe variants (5-7), Diamante (8). The basic rarities are always removed (the saved 1★-4★ -> 5★, the stat bonus,
+# the spirit sources). The choice decides which special cards also lose their rarity LOOK: their card, plates, rarity
+# title, header band and drop-list band show the player's position as the normal cards do, and a filter rarity set
+# always lets them through. Their saved rarity, their own card (chara_param row) and stats are kept.
+# One reader: NoMoreRarities.RarityRemoved(rarity) (assets\lua\_all\no_more_rarities_card_look.lua).
+
+[[option]]
+id = "removed_rarities"                        # row key no_more_rarities.removed_rarities
+type = "list"
+label = "option_removed_rarities"              # text\keys.toml, 9 languages
+help = "option_removed_rarities_help"
+values = [
+    { value = 0, name = "removed_basic", text = "Basic only" },
+    { value = 1, name = "removed_basic_idol", text = "Basic + Idols" },
+    { value = 2, name = "removed_basic_diamond", text = "Basic + Diamonds" },
+    { value = 3, name = "removed_all", text = "All" },
+]
+default = 0                                    # owner 2026-10-19: basic only (the earlier behaviour)
+order = 100
+restart = true

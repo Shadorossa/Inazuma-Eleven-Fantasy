@@ -49,6 +49,7 @@ function M.load()
       local row = { key = tostring(r[2] or ""), type = tonumber(r[11]) or 255, move = u32(r[7]), chara = u32(r[8]), cost = tonumber(r[5]) or 0 }
       rows[id] = row
       order[#order + 1] = id
+      ids[#ids + 1] = id
       if row.type == 0 and row.chara ~= 0 and not first_keshin[row.chara] then first_keshin[row.chara] = id end
     end
   end
@@ -72,6 +73,10 @@ function M.load()
 end
 
 function M.row(id) return rows[id] end
+
+-- every aura id of the table, in table order
+local ids = {}
+function M.ids() return ids end
 
 -- auraType (nil = not an aura command)
 function M.type(id)

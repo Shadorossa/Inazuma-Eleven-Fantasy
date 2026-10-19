@@ -1,16 +1,20 @@
--- Character Reforged › its actions of the VR-Framework's save adjust (Options › «Ajustar save»,
--- docs/framework/save-adjust.md). Declared in content\save_adjust\character_reforged.toml; the framework calls the
--- functions below by name.
+-- Character Reforged › the functions of the VR-Framework's save adjust (Options › «Ajustar save»,
+-- docs/framework/save-adjust.md). remove_unobtainable_moves / remove_hidden_kits are declared in
+-- content\save_adjust\character_reforged.toml; remove_duplicates by New Recruitment and normal_rarity by No More
+-- Rarities (their content\save_adjust\, script = "character_reforged:save_tools.lua": the actions exist only while
+-- those modules are on). The framework calls the functions below by name.
 --
--- Both actions run the SAME pass as the duplicate-players hook (scripts\duplicate_players.lua: a duplicated save, and
+-- Both duplicate actions run the SAME pass as the duplicate-players hook (scripts\duplicate_players.lua: a duplicated save, and
 -- every load of a player slot when a rule asks for it) with the POLICY the mods declare in content\duplicate_rules\
 -- (New Recruitment: one card per character; No More Rarities: every normal card -> rarity 4), split in two:
 --
 --   remove_duplicates   one card per character / card (keep_first decides which copy stays; the others are merged
---                       into it and leave the club and every team), the policy's rarity left out. Offered while a
---                       rule declares `one_card_per`.
+--                       into it and leave the club and every team), the policy's rarity left out. Never released: a
+--                       card the bank cannot retire or that did not join by signing (merge_pass.lua: always the one
+--                       kept). Offered while a rule declares `one_card_per`.
 --   normal_rarity       every normal card to the rarity the rules declare (`normal_card_rarity`; No More Rarities: 4 =
---                       5★ Leyenda), no copy leaves. Offered while a rule declares `normal_card_rarity`.
+--                       5★ Leyenda), and the special tiers a rule's option removes (`normalize_special_rarities`), no
+--                       copy leaves. Offered while a rule declares `normal_card_rarity`.
 --
 -- Two more actions take out of the save what the active mods' rules make unobtainable:
 --
@@ -69,10 +73,11 @@ function SaveAdjust.can_remove_duplicates()
 end
 
 function SaveAdjust.remove_duplicates(tree, event)
-  local policy = policy_with({ normal_card_rarity = false })
+  local policy = policy_with({ normal_card_rarity = false, normal_special_rarities = false })
   if policy.one_card_per == nil then return { error = "no duplicate rule declares one_card_per" } end
   local report = run_pass(tree, policy, "remove_duplicates (slot " .. event.slot .. ")")
-  return { count = report.duplicates_merged, log = report.duplicates_merged .. " duplicates merged, " .. report.hidden_released .. " hidden cards released" }
+  return { count = report.duplicates_merged, log = report.duplicates_merged .. " duplicates merged, " .. report.hidden_released
+    .. " hidden cards released, " .. (report.protected or 0) .. " kept (not retirable / not signed)" }
 end
 
 function SaveAdjust.can_set_normal_rarity()

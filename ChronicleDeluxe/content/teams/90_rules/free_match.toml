@@ -53,6 +53,12 @@ Tab = 1
 Unlock = "fbtl_cro02_200_010"
 After = "fbtl_cro02_200_010"
 
+# IE2 (1.11.10, owner 2026-10-19): Mar de Árboles (the side node after Emperadores Oscuros) right after Jóvenes
+# Inazuma; listed once its Chronicle battle is won (its node's piece), with the three classes of its node game
+[[VRFW.FreeMatchPlace]]
+Game = "evt_rn_ie2_forest"
+After = "fbtl_free_001"                # Jóvenes Inazuma
+
 # IE2: Épsilon's BATALLA LEGENDARIA plays Épsilon Plus (whose own game left the list); INAZUMA / ZONA LETAL stay Épsilon
 [[VRFW.FreeMatchRival]]
 Game = "fbtl_cro02_100_010"            # Épsilon

@@ -12,8 +12,10 @@
 --                                            Chronicle completion not asked: a notice «you got the key item»)
 --   VRFW_Copies.SlotOk()                  -> true in a normal save slot
 --   VRFW_Copies.Reset()                   -- forget the cached answers (a screen asks again at its OnInit)
---   VRFW_Copies.HideCounters(layer, inst) -- a move list row's two copy counters (equipped / owned) hidden
---   VRFW_Copies.ListRow(layer, inst, item)-> true (counters hidden) when the item is unlimited
+--   VRFW_Copies.HideCounters(layer, inst) -- a move list row's two copy counters (equipped / owned) hidden, with
+--                                            their stock boxes (the frames and icons a focused row shows)
+--   VRFW_Copies.ListRow(layer, inst, item)-> true (counters hidden) when the item is unlimited; otherwise the row's
+--                                            counters are shown (list instances are reused)
 --   VRFW_Copies.Snapshot(items)           -> {item = owned count} of the unlimited items owned at least once
 --   VRFW_Copies.Restore(before, handleOf) -- after an equip: every item whose owned count grew is brought back
 --                                            (handleOf(item) = its handle on the player's board, or nil)
@@ -123,7 +125,7 @@ if VRFW_Copies == nil then
   end
 
   function M.Reset()
-    M.state, M.slot = {}, nil
+    M.state, M.slot, M.hidden = {}, nil, nil
     if VRFW_Chronicle ~= nil then
       pcall(VRFW_Chronicle.Reset)
     end
@@ -190,17 +192,38 @@ if VRFW_Copies == nil then
     return false
   end
 
+  -- the stock box meshes of a list row (equipped: frame, label, icon; owned: frame, icon, label), as the retail
+  -- SetVisibleEquipmentNum / SetVisibleStockNum of equip_menu_inc toggle them
+  M.STOCK_MESHES = {1202991162 --[[_base_equip01]], 1139638886 --[[_gtxt_equip01]], 1087832946,
+    1228576956 --[[_base_have01]], 2037408502 --[[_icon_have01]], 132349475}
+
   function M.HideCounters(layer, inst)
     funcLuaMenuCommand(2158717427, layer, 442049775 --[[_pos_equip01]], false, inst)
     funcLuaMenuCommand(2158717427, layer, 3426045766 --[[_pos_have01]], false, inst)
+    for _, m in ipairs(M.STOCK_MESHES) do
+      pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, inst)
+    end
     funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3974820126 --[[num_equip01]], false)
     funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3334923667 --[[num_have01]], false)
   end
 
+  function M.ShowCounters(layer, inst)
+    funcLuaMenuCommand(2158717427, layer, 442049775 --[[_pos_equip01]], true, inst)
+    funcLuaMenuCommand(2158717427, layer, 3426045766 --[[_pos_have01]], true, inst)
+    funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3974820126 --[[num_equip01]], true)
+    funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3334923667 --[[num_have01]], true)
+  end
+
   function M.ListRow(layer, inst, item)
     if not M.Unlimited(item) then
+      if M.hidden ~= nil and M.hidden[layer .. ":" .. inst] then
+        M.hidden[layer .. ":" .. inst] = nil
+        M.ShowCounters(layer, inst)               -- a reused instance that held an unlimited row
+      end
       return false
     end
+    M.hidden = M.hidden or {}
+    M.hidden[layer .. ":" .. inst] = true
     M.HideCounters(layer, inst)
     return true
   end

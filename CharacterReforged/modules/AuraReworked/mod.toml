@@ -2,7 +2,7 @@ id = "aura_reworked"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Aura Reworked"
-version = "1.0.5"
+version = "1.0.9"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The aura reworks in one mod, each part switched on or off in its settings: Souls Rework (totems gain levels during the match like the souls of Inazuma Eleven GO Galaxy and spin a skill reel), All Changed (any player gets his own «Modo cambio» into any of your characters and swaps with RB+B, 60 seconds between two swaps), All Miximaxed (a miximax between any two of your players, as in Chrono Stone) and All Keshin Armed (every keshin with its armour, for every player). The game's own mode changes are sold in the Spirit Market, or in Inazuma Fantasy's Training Shop when that mod is on. Works with the VR-Framework and Character Reforged; Aura Points is optional."
@@ -43,7 +43,7 @@ folder = "AuraReworked"
 # copied once from slot<N>\all_changed\ and slot<N>\all_miximaxed\ ([[VRFW.SaveImport]] of content\game).
 # vr_framework 2.4.172: [[merged]] (the four old ids keep working), the gates of VRFW.files.declarations;
 # character_reforged: the family (the [module] below), its create entry, pairing rules and player page.
-requires = ["vr_framework>=2.4.172", "character_reforged>=1.8.24"]
+requires = ["vr_framework>=2.4.172", "character_reforged>=1.9.15"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -66,7 +66,7 @@ option = "all_changed"
 
 [[merged]]
 id = "all_miximaxed"
-version = "1.1.3"
+version = "1.1.4"
 option = "all_miximaxed"
 
 [[merged]]

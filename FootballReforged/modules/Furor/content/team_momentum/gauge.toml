@@ -15,6 +15,7 @@ levels = 2                                # flags .level1 at 50 %, .level2 at 10
 start_at = 1.0                            # the phase can start when the gauge is full
 phase_seconds = 24                        # the phase lasts 24 live seconds (the gauge drains to 0); the tunable
 gains_in_phase = false
+drain_only_in_play = true                 # the phase stands still outside open play (half time, goals, duels, restarts)
 
 # small gains from actions (to = actor: the actor's team; goal: the team that scored)
 [[VRFW.MomentumGain]]

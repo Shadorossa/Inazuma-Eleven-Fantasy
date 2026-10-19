@@ -426,6 +426,10 @@ end
 --     plates (goals beside them), the group tables in their own menu (1.5.60, BBT_GroupsShow); the page title in the menu's header. L1 / R1 (and left / right) turn pages, Enter = next match (the retail campaign «continue»
 --     request, after selecting the round's rulebook); eliminated: Enter simulates the next remaining round and shows
 --     it (round by round to the final), then closes and clears the run; Back = close.
+--   * 2026-10-19 (owner): a knockout of exactly 16 teams on the Victory Road «決勝トーナメント» art (the retail vroad04_*
+--     objects as this menu's layers: the tree base, the 16 gold path strips lit by their «move» rate, the stars, the
+--     trophy, the per-round scores, the schedule panel with the round and the player's next match): BBT_DrawRetail;
+--     the stadium of the final in a box at the bottom of every tree page (BBT_DrawStadium).
 -- Globals only (BBT_*); nothing runs at chunk load.
 BBT.ARM = 45534381
 BBT.DISARM = 1831824216
@@ -732,8 +736,9 @@ function BBT_End()
 end
 
 -- a tinted quad of the mod's drawings: centre (x, y), w x h px; prio = the draw priority of a connector-pool
--- instance (1.5.58: a score box on a host without a box pool, BBT.SHARE; nil = the connectors' own)
-function BBT_Quad(layer, spr, x, y, w, h, col, prio)
+-- instance (1.5.58: a score box on a host without a box pool, BBT.SHARE; nil = the connectors' own); atlas = another
+-- loaded atlas than the mod's drawings (crc32 of its path; the final stadium's thumbnail)
+function BBT_Quad(layer, spr, x, y, w, h, col, prio, atlas)
   local C, G = BBT.C, BBT.G
   local nk = "icon"
   for k, l in pairs(BBT.L) do
@@ -760,7 +765,7 @@ function BBT_Quad(layer, spr, x, y, w, h, col, prio)
   end
   funcLuaMenuCommand(C.VISIBLE, layer, i, true)
   funcLuaMenuCommand(C.SCALE, layer, w / G.Q, h / G.Q, 1, i)
-  funcLuaMenuCommand(C.SPRITE, layer, BBT.ART, spr, BBT.NODE_QUAD, 0, i)
+  funcLuaMenuCommand(C.SPRITE, layer, atlas or BBT.ART, spr, BBT.NODE_QUAD, 0, i)
   funcLuaMenuCommand(C.POS, layer, x, -y, 0, i)
   funcLuaMenuCommand(C.PRIM_COLOR, layer, i, BBT.MESH_QUAD, col[1], col[2], col[3])
 end
@@ -1034,6 +1039,366 @@ function BBT_DrawTree(v)
   end
 end
 
+-- ------------------------------------------------------------------------------------------------ the retail bracket
+-- 2026-10-19 (owner): a knockout of exactly 16 teams is drawn in the style of Victory Road's «決勝トーナメント» with
+-- the retail objects as layers of this menu (content\menus\bb_tournament.toml, retail layer names): the tree base
+-- (the unlit bracket mesh) attaches the 16 gold path strips, the trophy, the per-round scores and the schedule panel
+-- to its nodes; each strip attaches the star of its slot to the head of its lit part. A strip's lit length is its
+-- MenuRateSetting «move» (the retail native code: 0.25 a round won, bound to the animation group «line»), set with
+-- the rate commands the retail gauges use (541357333 bind, 1595998683 set). BBD's own plates stand at the base's
+-- name nodes. Every other bracket (8, 32, 64 teams) keeps the generic lines (BBT_DrawTree).
+BBT.RL = {
+  base = 3588811684,
+  trophy = 3283010508,
+  star = 3849475336,   -- 16 instances: strip k attaches instance k - 1
+  sched = 3240712402,
+  -- slots in the view's leaf order: the left side top to bottom (l01 .. l08), then the right side (r01 .. r08)
+  lines = {
+    3486647085, 2621986985, 468620266,
+    998043553, 3168412898, 4013981542,
+    1759949861, 2925823984, 1223503537,
+    460813621, 2630991478, 3158557245,
+    1004865918, 1753174778, 4024015289,
+    693873260,
+  },
+  -- per round: round 1 (8: matches 1-4 left, 5-8 right), 2 (4), 3 (2), the final (1); instance = match - 1
+  score = { 3241977043, 1479931241,
+    791856639, 3405702754 },
+}
+BBT.RETAIL = {
+  ROUNDS = 4,                          -- the retail tree: 16 entrants
+  STARS = 16,
+  SCORES = { 8, 4, 2, 1 },
+  RATE_MOVE = 4013832056 --[[move]],   -- the strips' MenuRateSetting
+  ANIM_LINE = 3507795190,              -- its animation group (the retail native code binds «move» to «line»)
+  NUM_A = 2710162575,                  -- the score objects' two number settings: the upper (left) entrant's goals
+  NUM_B = 947952949,                   -- and the lower (right) entrant's
+  -- the score objects' flag meshes (hidden by the object), shown beside the winner of a shoot-out: [side][entrant]
+  FLAG = { left = { 963924750, 2692547252 }, right = { 801955188, 3066399950 } },
+  FLAG_FINAL = { 963924750, 801955188 },
+  FLAG_ALL = { 963924750, 2692547252, 801955188, 3066399950 },
+  -- the panel's texts (vroad04_09: _text_time01_01 top, _text_time01_02, _text_now01; _text_time02 shares the top
+  -- line's place and stays empty)
+  TXT_ROUND = 419600486, TXT_PLAYED = 2148256220, TXT_NEXT = 1773984605,
+  TXT_SPARE = 1856213283,
+  -- the base's layout is in screen px (as vroad04_01_p1_bg's): placed at the origin. Its name nodes
+  -- (_atc_name_l01 .. r08): x 363 / 1557, y 288 + 72 a slot; a strip starts 137 px inside its node
+  NAME_X_L = 363, NAME_X_R = 1557, NAME_Y0 = 288, NAME_STEP = 72, STRIP_IN = 137,
+  PLATE_S = 0.6,                       -- BBD's plate (520 x 72) at the name nodes: 312 x 43
+  PLATE_GAP = 6,                       -- between a plate's inner end and its strip
+  CHAMP_Y = 206,                       -- the champion's plate, above the trophy (_atc_trophy01 at y 381)
+}
+
+-- whether this menu has the retail layers (another host, or a menu file without them: the generic lines)
+function BBT_RetailReady()
+  if BBT_S.retail_ok ~= nil then
+    return BBT_S.retail_ok
+  end
+  local L = BBT.RL
+  local need = { L.base, L.trophy, L.sched, L.star, L.lines[1], L.lines[16], L.score[1], L.score[4] }
+  local ok = true
+  for _, l in ipairs(need) do
+    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], l)
+    if type(n) ~= "number" or n < 1 then
+      ok = false
+    end
+  end
+  if ok then
+    BBT_S.retail_ok = true
+  end
+  if ok or not BBT_S.retail_missing_logged then
+    BBT_S.retail_missing_logged = not ok
+    BBT_Log("retail bracket layers: " .. (ok and "present (16-team knockouts in the Victory Road style)" or
+      "missing on " .. tostring(BBT_HOST.name) .. " (every bracket on the generic lines)"))
+  end
+  return ok
+end
+
+-- every instance of the retail layers: f(layer, instance)
+function BBT_RetailEach(f)
+  local L, R = BBT.RL, BBT.RETAIL
+  f(L.base, 0)
+  f(L.trophy, 0)
+  f(L.sched, 0)
+  for k = 1, #L.lines do
+    f(L.lines[k], 0)
+  end
+  for i = 0, R.STARS - 1 do
+    f(L.star, i)
+  end
+  for r = 1, #L.score do
+    for i = 0, R.SCORES[r] - 1 do
+      f(L.score[r], i)
+    end
+  end
+end
+
+-- the retail layers shown (a 16-team tree page) or hidden (every other page); the stars and scores are shown by
+-- BBT_DrawRetail one by one
+function BBT_RetailShow(on)
+  if not BBT_S.retail_open then
+    return
+  end
+  local C, L = BBT.C, BBT.RL
+  BBT_RetailEach(function(l, i)
+    funcLuaMenuCommand(C.VISIBLE, l, i, on and l ~= L.star and l ~= L.score[1] and l ~= L.score[2]
+      and l ~= L.score[3] and l ~= L.score[4])
+  end)
+  BBT_S.retail_shown = on
+end
+
+-- a strip's lit length: rate 0 (unlit) .. 1 (to the centre); the star at its head shown while the rate is above 0
+function BBT_RetailRate(k, rate)
+  local L, R, C = BBT.RL, BBT.RETAIL, BBT.C
+  local l = L.lines[k]
+  local g = funcLuaMenuCommand(112302847 --[[CMND_GET_GROUP_INDEX?]], l, 0, R.ANIM_LINE)
+  funcLuaMenuCommand(541357333, l, R.RATE_MOVE, g or 0, 0)
+  funcLuaMenuCommand(1595998683, l, R.RATE_MOVE, 0, rate, 0, true, R.ANIM_LINE)
+  funcLuaMenuCommand(C.VISIBLE, L.star, k - 1, rate > 0)
+end
+
+-- one score object: the two entrants' goals, the shoot-out's winner flagged; nil = hidden (not played)
+function BBT_RetailScore(r, t, m)
+  local L, R, C = BBT.RL, BBT.RETAIL, BBT.C
+  local l, i = L.score[r], t - 1
+  local sc = m and (m.w or 0) ~= 0 and m.score or nil
+  funcLuaMenuCommand(C.VISIBLE, l, i, sc ~= nil)
+  if not sc then
+    return
+  end
+  for _, prim in ipairs({ R.NUM_A, R.NUM_B }) do
+    funcLuaMenuCommand(1233047821, l, i, prim, true)
+    local pi = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], l, i, prim)
+    funcLuaMenuCommand(3609943765, l, i, pi, prim == R.NUM_A and (sc.ga or 0) or (sc.gb or 0))
+  end
+  for _, f in ipairs(R.FLAG_ALL) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, l, f, false, i)
+  end
+  if (sc.pa or 0) + (sc.pb or 0) > 0 then
+    local flags = r == #L.score and R.FLAG_FINAL or (t > R.SCORES[r] / 2 and R.FLAG.right or R.FLAG.left)
+    funcLuaMenuCommand(C.MESH_VISIBLE, l, flags[m.w] or flags[1], true, i)
+  end
+end
+
+-- a text with <VALUE> and <VALUE2> filled (the retail text value command, once per tag)
+function BBT_TextValue2(key, a, b)
+  local t = BBT_Text(key)
+  local ok, r = pcall(funcLuaCommand, 910683996, t, "VALUE", a or 0, 0, 0, true)
+  t = ok and r or t
+  local ok2, r2 = pcall(funcLuaCommand, 910683996, t, "VALUE2", b or 0, 0, 0, true)
+  return ok2 and r2 or t
+end
+
+-- the schedule panel: the round being played, its matches played, the player's next match (or the run's end)
+function BBT_RetailPanel(v)
+  local L, R, C = BBT.RL, BBT.RETAIL, BBT.C
+  local cur, played, total = nil, 0, 0
+  for r = 1, R.ROUNDS do
+    local row = v.matches[r] or {}
+    local n, done = 0, 0
+    for _, m in pairs(row) do
+      n = n + 1
+      if (m.w or 0) ~= 0 then
+        done = done + 1
+      end
+    end
+    if cur == nil and done < n then
+      cur, played, total = r, done, n
+    end
+  end
+  local round_txt, played_txt, next_txt
+  if cur == nil then
+    round_txt = BBT_Text("sched_over")
+    played_txt = ""
+  else
+    round_txt = BBT_Text("round_" .. tostring(R.ROUNDS - cur + 1))
+    played_txt = BBT_TextValue2("sched_played", played, total)
+  end
+  local tail = BBT_Outcome(v)
+  if tail ~= "" then
+    next_txt = tail
+  elseif cur ~= nil then
+    local rival = (v.next or 0) ~= 0 and BBT_TeamName(v.next) or BBT_Text("sched_rival_tbd")
+    next_txt = BBT_Text("sched_next") .. "  ·  " .. rival
+  else
+    next_txt = ""
+  end
+  local l = L.sched
+  for node, s in pairs({ [R.TXT_ROUND] = round_txt, [R.TXT_PLAYED] = played_txt, [R.TXT_NEXT] = next_txt,
+    [R.TXT_SPARE] = "" }) do
+    funcLuaMenuCommand(C.TEXT, l, node, s, 0)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, l, node, s ~= "", 0)
+  end
+  pcall(funcLuaMenuCommand, 1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], l, 0, R.TXT_ROUND)
+  pcall(funcLuaMenuCommand, 1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], l, 0, R.TXT_PLAYED)
+  return cur
+end
+
+-- the 16-team tree on the retail art: BBD's plates at the name nodes, each slot's strip lit by the rounds its team
+-- won while it is still in (a team that is out: unlit, its plate faded, as BBT_DrawTree's dark paths), the scores
+-- of the played matches, the trophy, the panel; the champion's plate above the trophy. BBT_S.retail keeps each
+-- slot's rate and its rate before the last round played (the advance animates from one to the other).
+function BBT_DrawRetail(v)
+  local G, R, L, C = BBT.G, BBT.RETAIL, BBT.RL, BBT.C
+  local leaves = v.leaves
+  local s = R.PLATE_S
+  local pw = G.PLATE_W * s
+  -- the last round with a result (the one the advance animates)
+  local last = 0
+  for r = 1, R.ROUNDS do
+    for _, m in pairs(v.matches[r] or {}) do
+      if (m.w or 0) ~= 0 then
+        last = r
+      end
+    end
+  end
+  local rates, prev = {}, {}
+  for k = 1, #L.lines do
+    local p = leaves[k] or {}
+    local right = k > 8
+    local y = R.NAME_Y0 + R.NAME_STEP * ((k - 1) % 8)
+    local x = right and (R.NAME_X_R - R.STRIP_IN + R.PLATE_GAP) or (R.NAME_X_L + R.STRIP_IN - R.PLATE_GAP - pw)
+    if (p.team or 0) ~= 0 then
+      BBT_Plate(p, x, y, s, right, false)
+    end
+    -- the rounds this slot's team won: its leaf's own count (tourney_view) or walked up the tree
+    local won = tonumber(p.won) or 0
+    local rate = (not p.out and (p.team or 0) ~= 0) and math.min(1, won / R.ROUNDS) or 0
+    rates[k] = rate
+    -- before the last round: one round less for its winner; its loser was lit by the rounds it had won
+    local before = rate
+    local t = math.floor((k - 1) / 2 ^ last) + 1
+    local m = (v.matches[last] or {})[t]
+    if last > 0 and m and (m.w or 0) ~= 0 then
+      local upper = ((k - 1) % 2 ^ last) < 2 ^ (last - 1)
+      local winner = (m.w == 1) == upper
+      if winner then
+        before = math.max(0, rate - 1 / R.ROUNDS)
+      elseif (p.team or 0) ~= 0 then
+        before = math.min(1, (last - 1) / R.ROUNDS)
+      end
+    end
+    prev[k] = before
+    BBT_RetailRate(k, rate)
+  end
+  for r = 1, R.ROUNDS do
+    local row = v.matches[r] or {}
+    for t = 1, R.SCORES[r] do
+      BBT_RetailScore(r, t, row[t])
+    end
+  end
+  local cur = BBT_RetailPanel(v)
+  if (v.champion or 0) ~= 0 then
+    BBT_Plate({ team = v.champion }, G.CX - G.PLATE_W * G.CHAMP_S / 2, R.CHAMP_Y, G.CHAMP_S, false, true,
+      BBT.ROW_CHAMP)
+  end
+  BBT_S.crests = {}
+  BBT_S.retail = { rates = rates, prev = prev, last = last }
+  local lit = 0
+  for k = 1, #rates do
+    if rates[k] > 0 then
+      lit = lit + 1
+    end
+  end
+  -- where the engine put the base and the l01 strip (attached to the name node _atc_name_l01: x 363, y 288 expected
+  -- in the base's layout px; BBD's plates are placed on those numbers)
+  local okb, bx, by = pcall(funcLuaMenuCommand, 4002164178 --[[global pos]], L.base, 0)
+  local okl, lx, ly = pcall(funcLuaMenuCommand, 4002164178 --[[global pos]], L.lines[1], 0)
+  BBT_Log(string.format("retail bracket: %d path(s) lit, last round played %d, panel round %s; base at %s,%s, l01 strip at %s,%s",
+    lit, last, tostring(cur), tostring(okb and bx), tostring(okb and by), tostring(okl and lx), tostring(okl and ly)))
+end
+
+-- 2026-10-19: the stadium of the FINAL in a box at the bottom of every bracket page (a tree), from
+-- CMND_BBD_TOURN_INFO .final_stadium = { map = "s01g001", id = crc32(map) } (scripts	ournament.lua: drawn once per
+-- tournament from config.toml [tournament] final_stadiums); nothing when the field is missing. Its name: the game's
+-- map name (CMND_GET_MAP_NAME, as the retail room setting); its picture: the game's room picture of that map
+-- (#/menu/220_img/stadium/img_room_<map>.g4tx, sprite img_room_<map>_01: the retail Campaña's stadium picture),
+-- loaded on demand (CMND_LOAD_MENU_RES_TEXTURE, asynchronous: the page is drawn again once it is in; a map without
+-- a picture: the name only).
+BBT.STADIUM = { Y = 958, W = 560, H = 84, THUMB_W = 128, THUMB_H = 72, PAD = 8, LABEL_S = 0.62, NAME_S = 0.86,
+  LOAD_MIN = 10, LOAD_MAX = 600, PICTURE_DIR = "#/menu/220_img/stadium/img_room_" }
+
+-- the picture of a map: { path, tex, sprite, st = 0 not asked / 1 loading / 2 in / -1 none }, one per map a session
+BBT_S.stadium_pics = BBT_S.stadium_pics or {}
+function BBT_StadiumPicture(map)
+  local pics = BBT_S.stadium_pics
+  local pic = pics[map]
+  if pic == nil then
+    local path = BBT.STADIUM.PICTURE_DIR .. map .. ".g4tx"
+    pic = { path = path, tex = BBT_Crc(path), sprite = BBT_Crc("img_room_" .. map .. "_01"), st = 0, t = 0 }
+    pics[map] = pic
+  end
+  if pic.st == 0 then
+    local ok = pcall(funcLuaMenuCommand, 839427544 --[[CMND_LOAD_MENU_RES_TEXTURE]], pic.path)
+    pic.st, pic.t = ok and 1 or -1, 0
+    BBT_S.stadium_load = ok and map or nil
+    BBT_Log("final stadium picture: " .. pic.path .. (ok and " asked" or " not loadable (name only)"))
+  end
+  return pic
+end
+
+-- from Step while a picture loads: once it is in, the page again (the box gets its picture)
+function BBT_StadiumLoadStep()
+  local map = BBT_S.stadium_load
+  local pic = map and BBT_S.stadium_pics[map]
+  if not pic or pic.st ~= 1 then
+    BBT_S.stadium_load = nil
+    return
+  end
+  pic.t = pic.t + 1
+  local ok, busy = pcall(funcLuaCommand, 1506186496 --[[texture still loading?]], pic.tex)
+  if not ok or pic.t > BBT.STADIUM.LOAD_MAX then
+    pic.st = -1
+    BBT_S.stadium_load = nil
+    BBT_Log("final stadium picture: never loaded (name only)", pic.path)
+    return
+  end
+  if busy ~= true and pic.t >= BBT.STADIUM.LOAD_MIN then
+    pic.st = 2
+    BBT_S.stadium_load = nil
+    BBT_Log("final stadium picture: in after " .. pic.t .. " frames")
+    if BBT_S.open and BBT_S.view and BBT_S.view.kind == "tree" then
+      BBT_S.redraw = true
+    end
+  end
+end
+
+function BBT_DrawStadium()
+  local info = BBT_INFO or {}
+  local okc, fresh = pcall(BBT_Info)
+  if okc and type(fresh) == "table" then
+    info = fresh
+  end
+  local fs = info.final_stadium
+  if type(fs) ~= "table" or type(fs.map) ~= "string" or fs.map == "" then
+    return
+  end
+  local G, P = BBT.G, BBT.STADIUM
+  local id = type(fs.id) == "number" and fs.id or BBT_Crc(fs.map)
+  local okn, name = pcall(funcLuaCommand, 3763041341 --[[CMND_GET_MAP_NAME]], id)
+  if not okn or type(name) ~= "string" then
+    name = ""
+  end
+  local x0 = G.CX - P.W / 2
+  BBT_Quad(BBT.L.box, BBT.SPR_STATE.even, G.CX, P.Y, P.W, P.H, BBT.WHITE)
+  local pic = BBT_StadiumPicture(fs.map)
+  local tx = x0 + P.PAD
+  if pic.st == 2 then
+    BBT_Quad(BBT.L.box, pic.sprite, x0 + P.PAD + P.THUMB_W / 2, P.Y, P.THUMB_W, P.THUMB_H, BBT.WHITE, nil, pic.tex)
+  end
+  if pic.st ~= -1 then
+    tx = x0 + P.PAD * 2 + P.THUMB_W   -- the picture's place kept while it loads
+  end
+  local cx = (tx + x0 + P.W - P.PAD) / 2
+  BBT_Txt(BBT_Text("final_stadium"), cx, P.Y - P.H * 0.22, P.LABEL_S)
+  BBT_Txt(name, cx, P.Y + P.H * 0.18, P.NAME_S)
+  if BBT_S.stadium_logged ~= fs.map .. ":" .. pic.st then
+    BBT_S.stadium_logged = fs.map .. ":" .. pic.st
+    BBT_Log(string.format("final stadium panel: %s «%s» (picture %s)", fs.map, name,
+      pic.st == 2 and "shown" or (pic.st == 1 and "loading" or "none")))
+  end
+end
+
 -- a crest alone (an evt_bbd_tn_crest instance: the left plate with its plate and name hidden) centred on (x, y) at
 -- scale sc; returns the instance (nil: none left)
 function BBT_Crest(c, x, y, sc)
@@ -1097,6 +1462,10 @@ end
 -- the round just played (the last one with a result) walks; nothing when the tree has no result yet
 function BBT_AnimStart(v)
   BBT_S.anim = nil
+  -- 2026-10-19: on the retail art the paths of the round just played light up (or go out) along their strips
+  if BBT_S.retail then
+    return BBT_RetailAnimStart(v)
+  end
   local crests = BBT_S.crests or {}
   local last = 0
   for _, c in ipairs(crests) do
@@ -1135,6 +1504,9 @@ function BBT_AnimApply()
   local an = BBT_S.anim
   if not an then
     return
+  end
+  if an.retail then
+    return BBT_RetailAnimApply(an)
   end
   local C, L, A = BBT.C, BBT.L, BBT.ADV
   local champ_wait = false
@@ -1184,6 +1556,49 @@ function BBT_AnimFinish(why)
   BBT_AnimApply()
   BBT_S.anim = nil
   BBT_Log("bracket advance:", why)
+end
+
+-- 2026-10-19: the retail art's advance: every strip whose rate the last round changed goes from its rate before
+-- that round to its rate now (the winners' paths grow to the next node, the losers' go out), eased and staggered
+-- as the crests' walk; the champion's plate shows when the final's path reaches the centre
+function BBT_RetailAnimStart(v)
+  local rt = BBT_S.retail
+  if not rt or rt.last == 0 then
+    return
+  end
+  local A = BBT.ADV
+  local items = {}
+  for k = 1, #rt.rates do
+    if rt.prev[k] ~= rt.rates[k] then
+      items[#items + 1] = { slot = k, from = rt.prev[k], to = rt.rates[k] }
+    end
+  end
+  if #items == 0 then
+    return
+  end
+  local gap = math.min(A.STAGGER, A.STAGGER_ALL / #items)
+  for n, it in ipairs(items) do
+    it.delay = (n - 1) * gap
+  end
+  BBT_S.anim = { t = 0, page = v.page, retail = true, items = items, round = rt.last,
+    final = rt.last == BBT.RETAIL.ROUNDS, done_at = (#items - 1) * gap + A.DUR }
+  BBT_RetailAnimApply(BBT_S.anim)
+  BBT_Log(string.format("bracket advance: round %d, %d path(s) change on the retail art", rt.last, #items))
+end
+
+function BBT_RetailAnimApply(an)
+  local A = BBT.ADV
+  local busy = false
+  for _, it in ipairs(an.items) do
+    local p = math.max(0, math.min(1, (an.t - it.delay) / A.DUR))
+    if p < 1 then
+      busy = true
+    end
+    BBT_RetailRate(it.slot, it.from + (it.to - it.from) * bbt_ease(p))
+  end
+  if an.final and BBT_S.view and (BBT_S.view.champion or 0) ~= 0 then
+    funcLuaMenuCommand(BBT.C.VISIBLE, BBT.L.row_l, BBT.ROW_CHAMP, not busy)
+  end
 end
 
 -- the results of a round: matches 1-4 on the left (plates as the left side), 5-8 on the right (mirrored), the two
@@ -1439,6 +1854,8 @@ function BBT_ChampOpen(v)
   BBT_S.view, BBT_S.page = v, v.page
   BBT_S.champ = { t = 0, team = v.champion }
   BBT_S.champ_done = true
+  BBT_S.retail = nil
+  pcall(BBT_RetailShow, false)
   BBT_Begin()
   -- the crest: the champion's plate instance, plate and name hidden
   local i = BBT_Take(L.row_l, BBT.ROW_CHAMP)
@@ -1493,11 +1910,21 @@ function BBT_Draw(page, animate)
   end
   BBT_S.view, BBT_S.page = v, v.page
   BBT_Begin()
+  -- 2026-10-19: a 16-team knockout on the retail bracket art (BBT_DrawRetail), every other tree on the generic lines
+  local retail = v.kind == "tree" and BBT_S.retail_open == true and tonumber(v.rounds) == BBT.RETAIL.ROUNDS
+    and type(v.leaves) == "table" and type(v.matches) == "table"
+  BBT_S.retail = nil
+  pcall(BBT_RetailShow, retail)
   local ok, err = pcall(function()
-    if v.kind == "tree" then
+    if retail then
+      BBT_DrawRetail(v)
+    elseif v.kind == "tree" then
       BBT_DrawTree(v)
     elseif v.kind == "results" then
       BBT_DrawResults(v)
+    end
+    if v.kind == "tree" then
+      BBT_DrawStadium()
     end
   end)
   if not ok then
@@ -1573,6 +2000,17 @@ function BBT_Open(page)
     bbt_open_layer(l, i)
     BBT_Hide(l, i)
   end)
+  -- 2026-10-19: the retail bracket's layers (this menu only), opened once and hidden until a 16-team tree draws them;
+  -- the base's layout is in screen px: at the origin
+  BBT_S.retail_open = false
+  if BBT_RetailReady() then
+    BBT_RetailEach(function(l, i)
+      bbt_open_layer(l, i)
+      funcLuaMenuCommand(BBT.C.VISIBLE, l, i, false)
+    end)
+    funcLuaMenuCommand(BBT.C.POS, BBT.RL.base, 0, 0, 0, 0)
+    BBT_S.retail_open = true
+  end
   bbt_open_layer(BBT.ANCHOR, 0)
   -- 1.5.20: the anchor is a button object; on «Modos de juego» it showed at the top left (a teal box over the
   -- header): placed off screen and invisible, it keeps the keys
@@ -1617,6 +2055,12 @@ function BBT_Close()
     bbt_close_layer(l, i)
   end)
   bbt_close_layer(BBT.L.bg, 0)
+  if BBT_S.retail_open then
+    BBT_RetailEach(function(l, i)
+      bbt_close_layer(l, i)
+    end)
+    BBT_S.retail_open, BBT_S.retail = false, nil
+  end
   bbt_close_layer(BBT.ANCHOR, 0)
   BBT_S.emb = {}
   funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], BBT.ANCHOR, false)
@@ -2028,6 +2472,21 @@ function BBT_SetupCheck()
     end
     parts[#parts + 1] = string.format("%s %d/%d", k, got, n)
   end
+  -- 2026-10-19: the retail bracket's layers (their instances summed: 50 in the menu file)
+  local rgot, rwant = 0, 0
+  local seen = {}
+  BBT_RetailEach(function(l, i)
+    rwant = rwant + 1
+    if not seen[l] then
+      seen[l] = true
+      local got = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], l)
+      rgot = rgot + (type(got) == "number" and got or 0)
+    end
+  end)
+  parts[#parts + 1] = string.format("~retail %d/%d", rgot, rwant)
+  if rgot < rwant then
+    short = short + 1
+  end
   table.sort(parts)
   local bg = funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], 367379312 --[[mainmenu90_00_background]], 0)
   local covered = funcLuaCommand(2259183189) == true
@@ -2144,6 +2603,14 @@ do
       if not okg then
         S.gm_want = nil
         BBT_Log("groups menu error", tostring(errg))
+      end
+    end
+    -- 2026-10-19: the final stadium's picture loading (BBT_DrawStadium asked it)
+    if S.open and S.stadium_load ~= nil then
+      local okp, errp = pcall(BBT_StadiumLoadStep)
+      if not okp then
+        S.stadium_load = nil
+        BBT_Log("final stadium picture error", tostring(errp))
       end
     end
     if S.open and S.anim then

@@ -2,7 +2,8 @@
 -- Declarations: every active mod's content\team_momentum\*.toml (VRFW.team_momentum/1, content\types\team_momentum.toml); docs/framework/team-momentum.md.
 -- Effects are rule responses: rule flags <key>.<side>.full / .phase / .level<N> (side = user / rival) and signals <key>.full / .phase / .phase_end / .level (actor = a player of that team).
 -- A player who comes on by substitution during his team's phase gets the signal <key>.phase_join (actor = him): the phase's effects for him alone.
--- A phase ends when the gauge is empty, at half time and at the match end (signal <key>.phase_end each time).
+-- A phase ends when the gauge is empty and at the match end (signal <key>.phase_end each time); it goes on into the second half.
+-- drain_only_in_play: the phase drains only in play_states (open play), so it stands still in half time, goal scenes and cut-ins.
 -- A phase starts on the signal <key>.start (its actor's team) or CMND_VRFW_TEAM_MOMENTUM_START(key, side); it drains the gauge to 0 over phase_seconds of live play.
 
 TeamMomentum = TeamMomentum or {}
@@ -38,9 +39,11 @@ local function load_declarations()
       else
         local live = {}
         for _, s in ipairs(d.v.live_states or {}) do live[s] = true end
+        local play = {}
+        for _, s in ipairs(d.v.play_states or {}) do play[s] = true end
         local m = {
           key = d.key, resource = d.v.resource, option = d.v.option, fill = d.v.fill_per_s, behind = d.v.behind_per_s,
-          live = live, levels = math.floor(d.v.levels), start_at = d.v.start_at, phase_seconds = d.v.phase_seconds,
+          live = live, play = play, drain_only_in_play = d.v.drain_only_in_play == true, levels = math.floor(d.v.levels), start_at = d.v.start_at, phase_seconds = d.v.phase_seconds,
           gains_in_phase = d.v.gains_in_phase, gain_count = 0, flags = {}, pending = { [0] = 0, [1] = 0 },
           team = { [0] = { cur = 0, max = 0, phase = false, level = 0, full = false }, [1] = { cur = 0, max = 0, phase = false, level = 0, full = false } },
           option_at = -1e18, option_on = true, was_on = nil,
@@ -176,13 +179,16 @@ end
 -- ---------------------------------------------------------------------------------------------- per frame
 
 local function step(m, match, dt)
-  local live = m.live[tonumber(match.soccer_state) or -1] == true and dt > 0 and dt < 1
+  local state = tonumber(match.soccer_state) or -1
+  local live = m.live[state] == true and dt > 0 and dt < 1
+  -- drain_only_in_play: the phase stands still outside open play (its gauge and its effects stay)
+  local drains = live and (not m.drain_only_in_play or m.play[state] == true)
   for team = 0, 1 do
     local t = m.team[team]
     local add = m.pending[team] or 0
     if live then
       if t.phase then
-        add = add - (t.max > 0 and t.max or 0) / m.phase_seconds * dt
+        if drains then add = add - (t.max > 0 and t.max or 0) / m.phase_seconds * dt end
         if m.gains_in_phase then add = add + m.fill * dt end
       else
         add = add + m.fill * dt + (behind(team) and m.behind * dt or 0)
@@ -249,14 +255,6 @@ VRFW.on("match_end", function(ev)
     for team = 0, 1 do end_phase(m, team, "match end") end
   end
   reset_match(nil)
-  return nil
-end)
--- half time (soccer state 11): a running phase ends there
-VRFW.on("state_enter", function(ev)
-  if tostring(ev.arg) ~= "11" then return nil end
-  for _, m in ipairs(LIST) do
-    for team = 0, 1 do end_phase(m, team, "half time") end
-  end
   return nil
 end)
 VRFW.on("possession", function(ev) remember(ev) return nil end)

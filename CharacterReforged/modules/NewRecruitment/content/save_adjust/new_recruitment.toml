@@ -1,12 +1,19 @@
 # New Recruitment › its action of the VR-Framework's save adjust (Options › «Ajustar save»,
-# docs/framework/save-adjust.md). The function lives in scripts\save_tools.lua; the texts in text\rows\save_tools.toml.
+# docs/framework/save-adjust.md): it exists only while this module is on. The pass is Character Reforged's
+# duplicate-players mechanism (scripts\save_tools.lua of Character Reforged, lib/duplicate_players/merge_pass.lua) with
+# this module's policy (content\duplicate_rules\new_recruitment.toml); the texts are text\rows\save_tools.toml.
+# Safety: a card the club's bank cannot retire (attribute bits 0x80 / 0x1000 / 0x2000 / 0x10000: original players,
+# avatars) and a card that did not join by signing (addPartySource other than 4) are never released; in a duplicate
+# group such a card is always the one kept. Every card it releases, and every one it may not, is logged
+# («save adjust: remove_duplicates …»).
 schema = "VRFW.save_adjust/1"
 
 [[VRFW.SaveAdjust]]
-id = "remove_spirits"
-label = "new_recruitment_save_tools_remove_spirits"
-description = "new_recruitment_save_tools_remove_spirits_desc"
-result = "new_recruitment_save_tools_remove_spirits_done"
-order = 200
-script = "save_tools.lua"
-run = "NewRecruitment.SaveAdjust.remove_spirits"
+id = "remove_duplicates"
+label = "new_recruitment_save_tools_remove_duplicates"
+description = "new_recruitment_save_tools_remove_duplicates_desc"
+result = "new_recruitment_save_tools_remove_duplicates_done"
+order = 100
+script = "character_reforged:save_tools.lua"
+run = "CharacterReforged.SaveAdjust.remove_duplicates"
+available = "CharacterReforged.SaveAdjust.can_remove_duplicates"

@@ -19,7 +19,7 @@
 --
 -- | Command | Args -> answers |
 -- |---|---|
--- | CMND_BBD_TOURN_INFO | -> table { active, armed, fmt, size, k, matches, stage, outcome, rules, campaign, defaults } |
+-- | CMND_BBD_TOURN_INFO | -> table { active, armed, fmt, size, k, matches, stage, outcome, rules, final (the next match is the final), final_stadium { map, id }, campaign, defaults } |
 -- | CMND_BBD_TOURN_ARM | fmt (0 knockout, 1 groups, -1 default), size (0 default), configured (1 = options confirmed) -> ok, why |
 -- | CMND_BBD_TOURN_DISARM | -> true |
 -- | CMND_BBD_TOURN_SYNC | phase, rules, gf, ga, pf, pa, winner, et (CMND_VRFW_RULE_ENGINE_STATE) -> table { event, show } |
@@ -74,6 +74,10 @@ local CFG = {
   pen_kicks = cfg_num("penalty_kicks", T.DEFAULTS.pen_kicks, 1, 11),
   seed = tonumber(U.config("tournament.seed", 0)) or 0,
   rules = tostring(U.config("tournament.knockout_rules", "bbd_knockout")),
+  -- the final's rulebook (the knockout's plus the tournament-final end: the champions' celebration) and the
+  -- stadiums one of which is drawn for the final (config.toml [tournament] final_rules / final_stadiums)
+  final_rules = tostring(U.config("tournament.final_rules", "bbd_final")),
+  final_stadiums = {},
   -- 1.5.16: «Filtrar equipos poco importantes» (the options' cursor start) and the story matches' game key patterns
   filter = U.config("tournament.filter_minor", false) == true,
   story_games = {},
@@ -86,6 +90,19 @@ do
   if type(g) == "table" then
     for _, x in ipairs(g) do
       CFG.story_games[#CFG.story_games + 1] = tostring(x)
+    end
+  end
+end
+do
+  local list = U.config("tournament.final_stadiums", {})
+  if type(list) == "string" then
+    list = { list }
+  end
+  if type(list) == "table" then
+    for _, x in ipairs(list) do
+      if type(x) == "string" and x ~= "" then
+        CFG.final_stadiums[#CFG.final_stadiums + 1] = x
+      end
     end
   end
 end
@@ -783,6 +800,7 @@ VRFW.on("match_end", function(ev)
     gf, ga = f, a
   end
   PLAYED = { index = LIVE.index, rival = LIVE.rival, gf = gf, ga = ga }
+  final_request(nil)
   info(string.format("match over: %d-%d (match end %s-%s, goals seen %d-%d)", gf, ga, tostring(f), tostring(a),
     LIVE.gf, LIVE.ga))
   LIVE = nil
@@ -791,12 +809,55 @@ end)
 
 -- ------------------------------------------------------------------------------------------------ the commands
 
+-- the player's next match is the tournament's final
+local function final_next(run)
+  local m, stage, round = T.pending(run)
+  return m ~= nil and stage == "ko" and T.round_from_end(run, round) == 1
+end
+
 local function rules_of(run)
   local m, stage = T.pending(run)
   if m and stage == "ko" then
+    if final_next(run) and CFG.final_rules ~= "" then
+      return CFG.final_rules
+    end
     return CFG.rules
   end
   return ""
+end
+
+-- the final's stadium: drawn once from the run's seed among config [tournament] final_stadiums and kept in the run
+-- (a reload never changes it); "" = no list (the final keeps the Battle Bay's stadium)
+local FINAL_STADIUM_TAG = 0x46494E41
+local function final_stadium(run)
+  if type(run.final_stadium) == "string" then
+    return run.final_stadium
+  end
+  local n = #CFG.final_stadiums
+  local pick = ""
+  if n > 0 then
+    local r = U.rng((run.seed[1] + FINAL_STADIUM_TAG) % 4294967296, run.seed[2])
+    r:next()
+    pick = CFG.final_stadiums[r:below(n) + 1]
+  end
+  run.final_stadium = pick
+  save()
+  info(string.format("final stadium: %s (drawn among %d)", pick ~= "" and pick or "none", n))
+  return pick
+end
+
+-- the StartMatchRequest answer (content\game\active_team.toml) writes this table's stadium into a Battle Bay
+-- request: set only while the player's next match is the final, removed otherwise
+local FINAL_TABLE = "BattleBayDeluxe.FinalStadium"
+local function final_request(run)
+  local map = run and not run.outcome and final_next(run) and final_stadium(run) or ""
+  local id = map ~= "" and U.crc32(map) or nil
+  local ok, e = pcall(VRFW.native.table_set, FINAL_TABLE, 0, id)
+  if not ok then
+    warn("final stadium request not set: " .. tostring(e))
+  elseif id then
+    info(string.format("final stadium request: %s (0x%08X) for the next Battle Bay match", map, id))
+  end
 end
 
 function BattleBayDeluxe.TournInfo()
@@ -815,6 +876,11 @@ function BattleBayDeluxe.TournInfo()
     t.matches = T.player_matches(run.fmt, run.size)
     t.outcome = run.outcome or ""
     t.rules = rules_of(run)
+    t.final = final_next(run)
+    local map = final_stadium(run)
+    if map ~= "" then
+      t.final_stadium = { map = map, id = U.crc32(map) }
+    end
     local opp = T.opponent(run)
     t.rival = opp ~= 0 and run.teams[opp] or 0
   end
@@ -1037,12 +1103,14 @@ function BattleBayDeluxe.TournPrepare()
   end
   run.loaded = true
   save()
+  final_request(run)
   return { ok = true, rules = rules_of(run) }
 end
 
 -- the request did not start the match: the Campaña's fields back at once
 function BattleBayDeluxe.TournUnload()
   local run = load()
+  final_request(nil)
   if run then
     run.loaded = false
     save()

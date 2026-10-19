@@ -13,7 +13,8 @@
 --   when the dock opens, places one with the game's own placement and reports it (CMND_UTIL_TP_ASSIGNED).
 --
 -- Commands (content\game\team_planner.toml): CMND_UTIL_TP_INFO / _LIST / _SET / _CANDIDATES / _ASSIGNED / _PENDING /
--- _PICK_OPEN / _PICK_GRID / _PICK_TAB / _PICK_ITEM / _PICK_TEAM / _PICK_PLAYER.
+-- _PICK_OPEN / _PICK_GRID / _PICK_TAB / _PICK_ITEM / _PICK_TEAM / _PICK_PLAYER, and the season list (the bank-style
+-- list «Planificar equipo» opens): _PICK_LIST / _PICK_TABS / _PICK_SEASON / _PICK_ROSTER.
 
 local C = require "lib/tp_core"
 local Cat = require "lib/original_names_catalogue"
@@ -44,6 +45,13 @@ local cfg = {
   -- the picker's team grid (the framework's emblem grid, layers util_tp_emblem / util_tp_label): tiles a row, rows a
   -- page, pitch (px), the grid's centre (screen px, y down)
   team_grid = { cols = 8, rows = 3, pitch_x = 210, pitch_y = 236, cx = 960, cy = 520 },
+  -- the season list «Planificar equipo» opens (the bank's look: series tabs over a card list on the left, the pitch
+  -- on the right): cards a row, rows a page, pitch, card scale, the list's centre, the card's centre offset; the tab
+  -- bar (first tab's centre, pitch, scale); the dark panel behind it (the formation's cmn02_01_blackbg: position and
+  -- scale of its layer). Screen px, 1920 x 1080, y down.
+  list = { cols = 5, rows = 3, pitch_x = 180, pitch_y = 215, scale = 1.0, cx = 500, cy = 610, ox = 0, oy = 0,
+           tab_x = 110, tab_y = 230, tab_pitch = 78, tab_scale = 1.0,
+           back_x = 0, back_y = 0, back_sx = 0.54, back_sy = 1.0 },
 }
 local rule = nil
 local catalogue = nil     -- { cat = original-names catalogue, card = { [chara_base] = param }, rows = { [series] = … } }
@@ -64,6 +72,13 @@ local function load_cfg()
       for k, v in pairs(c.team_grid) do
         if cfg.team_grid[k] ~= nil and type(v) == "number" then
           cfg.team_grid[k] = v
+        end
+      end
+    end
+    if type(c.list) == "table" then
+      for k, v in pairs(c.list) do
+        if cfg.list[k] ~= nil and type(v) == "number" then
+          cfg.list[k] = v
         end
       end
     end
@@ -526,13 +541,104 @@ function Utilities.TeamPlanner.PickTeam(i)
   return #r.players, count_owned(r.players), team_name(r.team)
 end
 
+-- CMND_UTIL_TP_PICK_LIST() -> the season list's layout ([team_planner.list]): cols, rows, pitch x, pitch y, card
+-- scale, centre x, centre y, card offset x, y, ghost alpha, tab x, tab y, tab pitch, tab scale, panel x, y, scale x, y
+function Utilities.TeamPlanner.PickList()
+  local g = cfg.list
+  return g.cols, g.rows, g.pitch_x, g.pitch_y, g.scale, g.cx, g.cy, g.ox, g.oy, cfg.ghost_alpha,
+    g.tab_x, g.tab_y, g.tab_pitch, g.tab_scale, g.back_x, g.back_y, g.back_sx, g.back_sy
+end
+
+-- the tab icon sprites of series type `ty` (the game's naming of its series tab icons, icon_list_tab_seriesNN):
+-- on, off (0, 0 = the game has no such tab: the menu side asks the framework's mod tabs)
+local TAB_ATLAS = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+local function tab_sprites(ty)
+  if type(ty) ~= "number" or ty < 1 or ty > 99 then
+    return 0, 0
+  end
+  local name = string.format("icon_list_tab_series%02d", ty)
+  return u32(VRFW.ui.crc32(name)), u32(VRFW.ui.crc32(name .. "_off"))
+end
+
+-- CMND_UTIL_TP_PICK_TABS() -> { { series id, series type, atlas, on sprite, off sprite, name }, … } one per season
+-- tab (the series with characters; no «all» tab), in the catalogue's order
+function Utilities.TeamPlanner.PickTabs()
+  if not pick then
+    return false
+  end
+  local out = {}
+  local atlas = u32(VRFW.ui.crc32(TAB_ATLAS))
+  for i, si in ipairs(page_list()) do
+    local s = catalogue.cat.series[si]
+    local on, off = tab_sprites(s.ty)
+    local name = text_of(pick.series_rows, s.name_text) or text_of(pick.team_rows, s.name_text) or ""
+    out[i] = { s.id, s.ty or 0, on ~= 0 and atlas or 0, on, off, name }
+  end
+  return out
+end
+
+-- CMND_UTIL_TP_PICK_SEASON(dir, page) -> the season tab `dir` away (or `page`, 1-based, when > 0) as the list: page,
+-- the series' name, characters owned, characters, pages. Its roster = every character of the series' teams with a
+-- card, once each, in team order.
+function Utilities.TeamPlanner.PickSeason(dir, at)
+  if not pick then
+    return false
+  end
+  local pl = page_list()
+  local want = int(at) or 0
+  if want >= 1 and want <= #pl then
+    pick.page = want
+  else
+    local d = int(dir) or 0
+    if d ~= 0 then
+      pick.page = ((pick.page - 1 + (d < 0 and -1 or 1)) % #pl) + 1
+    end
+  end
+  local si = pl[pick.page]
+  local s = catalogue.cat.series[si]
+  local roster, seen, on = {}, {}, 0
+  for _, r in ipairs(series_rows(si)) do
+    for _, ci in ipairs(r.players) do
+      if not seen[ci] then
+        seen[ci] = true
+        roster[#roster + 1] = ci
+        if owns(catalogue.card[catalogue.cat.charas[ci][8]]) then
+          on = on + 1
+        end
+      end
+    end
+  end
+  pick.row, pick.roster = "season", roster
+  local name = text_of(pick.series_rows, s.name_text) or text_of(pick.team_rows, s.name_text) or string.format("0x%08X", s.id)
+  return pick.page, name, on, #roster, #pl
+end
+
+-- CMND_UTIL_TP_PICK_ROSTER() -> the open season's characters: { { card param, owned, display rarity, name }, … }
+function Utilities.TeamPlanner.PickRoster()
+  if not pick or pick.row ~= "season" then
+    return false
+  end
+  local out = {}
+  for i, ci in ipairs(pick.roster or {}) do
+    local c = catalogue.cat.charas[ci]
+    local p = catalogue.card[c[8]] or 0
+    out[i] = { p, owns(p) == true, rule.display_rarity, text_of(pick.names, c[1]) or "" }
+  end
+  return out
+end
+
 -- CMND_UTIL_TP_PICK_PLAYER(j) -> character j (1-based) of the open team: card param, owned, display rarity, name
 function Utilities.TeamPlanner.PickPlayer(j)
   if not pick or not pick.row then
     return false
   end
-  local r = series_rows(page_list()[pick.page])[pick.row]
-  local ci = r and r.players[int(j) or 0]
+  local ci
+  if pick.row == "season" then
+    ci = (pick.roster or {})[int(j) or 0]
+  else
+    local r = series_rows(page_list()[pick.page])[pick.row]
+    ci = r and r.players[int(j) or 0]
+  end
   if not ci then
     return false
   end

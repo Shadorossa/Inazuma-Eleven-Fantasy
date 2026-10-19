@@ -23,6 +23,10 @@ res = [
     # 1.5.15: the bracket's own drawings (connector line, crown): content\images\menu\220_img\bbd_tn.toml
     # (1.5.57: the mode selector's atlas bbd_md only on the grid: the selector's layers left this menu)
     "#/menu/220_img/bbd_tn/bbd_tn.g4tx",
+    # 2026-10-19: the digit atlases of the retail bracket's score objects (vroad04_07 / 07b), as the retail setting
+    "#/menu/200_icon/100_num/num_half_time.g4tx",
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/200_icon/100_num/<LG>/num_menu01.g4tx",
 ]
 
 # ---- objects (1.5.15) --------------------------------------------------------------------------------------------
@@ -265,16 +269,127 @@ scale = [0.0, 0.0, 1.0]
 # 1.5.60 (owner 2026-10-14: the group stage always on ONE page): the group tables are drawn in a menu of their own
 # (evt_bbd_tn_groups_menu, the [[screen]] at the end of this file), so this menu keeps only the bracket's pools: txt 64
 # (the 63 scores of a 64-team bracket, the 64 goals of a 32-match results page, the champion screen's 2). Budget of
-# bb_stadium_top_menu: retail 26 + Utilities (top bar 36, friends panel 233) + these 484 = 779. Every pool costs its
+# bb_stadium_top_menu: retail 26 + Utilities (top bar 36, friends panel 233) + these 484 = 779.
+# 2026-10-19: + the 16-team retail bracket's 50, box 64 -> 36 (a results page draws at most 32 boxes, the tree page
+# the final stadium's panel: 2), txt 64 -> 66 (the final stadium's name and label beside a 64-team tree's 63 scores):
+# these 508 = 803. Every pool costs its
 # instances at every opening: add none without taking as many away.
 
 [[patch]]
 menu = "bb_stadium_top_menu"
 add_layer = { name = "vroad04_01_p1_bg", object = "vroad04_01_p1_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }] }
 
+# ---- the Victory Road bracket art for a 16-team knockout (2026-10-19) ---------------------------------------------
+# The retail objects of victory_road_final_tournament_menu, with their RETAIL layer names: the tree base
+# (vroad04_01_tournament_base: the unlit bracket mesh _tournament01) attaches the 16 gold path strips, the trophy, the
+# per-round scores and the schedule panel to its own nodes by layer name, and each strip attaches the star instance of
+# its slot (vroad04_04_light_on_line, instance 0-15) to the head of its lit part. The graft (bbt_top.lua
+# BBT_DrawRetail) places the base at the screen origin (its layout is in screen px), sets each strip's «move» rate
+# (0.25 a round won), the score digits and the panel's texts, and draws BBD's own plates at the base's name nodes.
+# Only a knockout of exactly 16 teams uses them; every other bracket keeps the generic lines (BBT_DrawTree).
+# Not added: the plates of the online tournament (vroad04_05 / soccer00_40 / cmn01_54), the player focus, the
+# champion ribbon (BBD's own plates and champion plate are drawn instead).
+# Budget of bb_stadium_top_menu: 779 before + these 50 - 28 (evt_bbd_tn_box 64 -> 36) + 2 (evt_bbd_tn_txt 64 -> 66)
+# = 803 of the engine's ~844 (docs/game/ui/menu-layer-limits.md §2.1).
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_01_p1_bg", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_01_p1_bg" }] }
+add_layer = { name = "vroad04_01_tournament_base", object = "vroad04_01_tournament_base", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_01_p1_bg", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_01_p1_bg" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l01_tournament_line", object = "vroad04_03_l01_tournament_line", count = 1, after = "vroad04_01_tournament_base", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_01_tournament_base" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l02_tournament_line", object = "vroad04_03_l02_tournament_line", count = 1, after = "vroad04_03_l01_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l01_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l03_tournament_line", object = "vroad04_03_l03_tournament_line", count = 1, after = "vroad04_03_l02_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l02_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l04_tournament_line", object = "vroad04_03_l04_tournament_line", count = 1, after = "vroad04_03_l03_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l03_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l05_tournament_line", object = "vroad04_03_l05_tournament_line", count = 1, after = "vroad04_03_l04_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l04_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l06_tournament_line", object = "vroad04_03_l06_tournament_line", count = 1, after = "vroad04_03_l05_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l05_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l07_tournament_line", object = "vroad04_03_l07_tournament_line", count = 1, after = "vroad04_03_l06_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l06_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_l08_tournament_line", object = "vroad04_03_l08_tournament_line", count = 1, after = "vroad04_03_l07_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l07_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r01_tournament_line", object = "vroad04_03_r01_tournament_line", count = 1, after = "vroad04_03_l08_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_l08_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r02_tournament_line", object = "vroad04_03_r02_tournament_line", count = 1, after = "vroad04_03_r01_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r01_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r03_tournament_line", object = "vroad04_03_r03_tournament_line", count = 1, after = "vroad04_03_r02_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r02_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r04_tournament_line", object = "vroad04_03_r04_tournament_line", count = 1, after = "vroad04_03_r03_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r03_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r05_tournament_line", object = "vroad04_03_r05_tournament_line", count = 1, after = "vroad04_03_r04_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r04_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r06_tournament_line", object = "vroad04_03_r06_tournament_line", count = 1, after = "vroad04_03_r05_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r05_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r07_tournament_line", object = "vroad04_03_r07_tournament_line", count = 1, after = "vroad04_03_r06_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r06_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_03_r08_tournament_line", object = "vroad04_03_r08_tournament_line", count = 1, after = "vroad04_03_r07_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r07_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_04_light_on_line", object = "vroad04_04_light_on_line", count = 16, after = "vroad04_03_r08_tournament_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_03_r08_tournament_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_02_trophy", object = "vroad04_02_trophy", count = 1, after = "vroad04_04_light_on_line", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_04_light_on_line" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_07_tounament_score_round01", object = "vroad04_07_tounament_score", count = 8, after = "vroad04_02_trophy", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_02_trophy" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_07_tounament_score_round02", object = "vroad04_07_tounament_score", count = 4, after = "vroad04_07_tounament_score_round01", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07_tounament_score_round01" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_07_tounament_score_round03", object = "vroad04_07_tounament_score", count = 2, after = "vroad04_07_tounament_score_round02", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07_tounament_score_round02" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_07b_tounament_score_final", object = "vroad04_07b_tounament_score_final", count = 1, after = "vroad04_07_tounament_score_round03", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07_tounament_score_round03" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad04_09_schedule_for_spectator", object = "vroad04_09_schedule_for_spectator", count = 1, after = "vroad04_07b_tounament_score_final", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07b_tounament_score_final" }] }
+
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_09_schedule_for_spectator", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_09_schedule_for_spectator" }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -286,7 +401,7 @@ add_layer = { name = "evt_bbd_tn_row_r", object = "evt_bbd_tn_row_r", count = 32
 
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 64, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 66, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -294,7 +409,7 @@ add_layer = { name = "evt_bbd_tn_icon", object = "evt_bbd_tn_icon", count = 1, a
 
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "evt_bbd_tn_box", object = "evt_bbd_tn_box", count = 64, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+add_layer = { name = "evt_bbd_tn_box", object = "evt_bbd_tn_box", count = 36, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
 
 # 1.5.35: the winners' crests standing at the bracket's joints and walking to them (the left plate's object, its plate
 # and name hidden by the graft: only the crest); 16 = one per match of a 32-team first round
@@ -319,82 +434,9 @@ add_cmd = [
     { layer = "evt_bbd_tn_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x65B7144D },
 ]
 
-# ---- «Modos de juego» (1.5.18) -------------------------------------------------------------------------------------
-# Inazuma Fantasy's hub (soccer_top_menu) hosts the Torneo too (graft bbt_hub.lua): the same bracket layers, anchor
-# and keys in that menu's layer group (the «not opened with the group» flags: the graft opens them), and the
-# bracket's drawings as a resource. 1.5.22 (owner log 18:32: CMND_OPEN_LAYER left them closed in this menu): opened
-# WITH the group (flags [0, 1, …]) and hidden at setup by the graft (bbt_hub.lua), shown by visibility.
-# 1.5.58 (layer budget, docs/game/ui/menu-layer-limits.md §2.3: soccer_top_menu was at 822 without Inazuma Fantasy,
-# ~840 with it, against the engine's ~844): only the hub draws here (bbt_hub.lua: without Inazuma Fantasy's hub there
-# is no Torneo tile, nothing opens the bracket on this menu), so every patch below is `if_mod = "inazuma_fantasy"`
-# (docs/framework/if-mod.md): without it the menu keeps its retail + Utilities 302. With it the pools are the
-# bracket's minus what the hub can share: no score-box pool (the boxes are drawn on the connector pool at the box's
-# draw priority 552, BBT_HOST.share in bbt_hub.lua; the results page draws no connector) and 64 texts (the 63 scores
-# of a 64-team bracket, the 64 goals of a 32-match results page; 1.5.60: the group tables are drawn in their own menu
-# evt_bbd_tn_groups_menu, opened over this one too). 420 here (bb_stadium_top_menu 484). The counts are mirrored in
-# bbt_hub.lua BBT_HOST.pools: change both together.
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-res = ["#/menu/220_img/bbd_tn/bbd_tn.g4tx"]
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "vroad04_01_p1_bg", object = "vroad04_01_p1_bg", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0] }] }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_01_p1_bg", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "vroad04_01_p1_bg" }] }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_row_l", object = "evt_bbd_tn_row_l", count = 33, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_line", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_line" }] }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_row_r", object = "evt_bbd_tn_row_r", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_l", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_l" }] }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 64, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_icon", object = "evt_bbd_tn_icon", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_txt", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_txt" }] }
-
-# 1.5.35: the winners' crests standing at the bracket's joints and walking to them (the left plate's object, its plate
-# and name hidden by the graft: only the crest); 32 = one per match of a 64-team first round (1.5.58: after row_r, where
-# the box pool was)
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_crest", object = "evt_bbd_tn_row_l", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
-
-# the input anchor (off screen): its own focus group, keys -> the graft
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_layer = { name = "evt_bbd_tn_anchor", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "soccer_top_menu", flags = [0, 1, 0, 0, 1, 0] }], focus = {} }
-
-[[patch]]
-menu = "soccer_top_menu"
-if_mod = "inazuma_fantasy"
-add_cmd = [
-    { layer = "evt_bbd_tn_anchor", input = "CMD_ENTER", command = "CMD_ENTER" },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_BACK", command = "CMD_BACK" },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x65B7144D },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0xDD7A8C24 },
-    { layer = "evt_bbd_tn_anchor", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x65B7144D },
-]
+# ---- «Modos de juego» (1.5.18-1.5.85): the bracket layers in soccer_top_menu were for the hub of the retired
+# Inazuma Fantasy (id inazuma_fantasy, gated `if_mod`); no current mod has that hub, so they were removed
+# (2026-10-19; git history of this file has them).
 
 # ---- the Torneo's options window: a third L / R row (1.5.16) -------------------------------------------------------
 # «Filtrar equipos poco importantes» (Sí / No) under «Con fase de grupos» and «Número de equipos». The retail L / R

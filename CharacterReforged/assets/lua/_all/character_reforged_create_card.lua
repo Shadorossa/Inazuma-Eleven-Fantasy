@@ -24,6 +24,8 @@ if CharacterReforged.CreateCard == nil then
   Card.ICON_BY_TYPE = {[2] = 2185069032 --[[icon_sp_area07]], [6] = 1917130140 --[[icon_sp_area11]]}
   Card.ICON_ATLAS = 2320109963             -- icon_common
   Card.MIXIMAX_WINDOW = 3679282495         -- team00_30_aura_mixi_max_detail_info
+  Card.IS_AVATAR = 2461887648              -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
+  Card.ROW_OF = 2827747337                 -- CMND_CHARACTERREFORGED_CREATE_ROW (item) -> row, store, scene, avatarMayPair
   Card.items = nil
 
   function Card.U32(v)
@@ -55,6 +57,25 @@ if CharacterReforged.CreateCard == nil then
       end
     end
     return Card.items[Card.U32(skill)] == true
+  end
+
+  -- is `hdl` the player's avatar? the game's own answer (CMND_GET_IS_AVATAR_CHARA)
+  function Card.IsAvatar(hdl)
+    if type(hdl) ~= "number" or hdl == 0 then
+      return false
+    end
+    local ok, avatar = pcall(funcLuaCommand, Card.IS_AVATAR, hdl)
+    return ok and avatar == true
+  end
+
+  -- may player `hdl` be the base of create item `skill`? false only for the avatar when the item's system says
+  -- avatar_may_pair = false (All Miximaxed); anything that is not a create item: true
+  function Card.CreateAllowed(skill, hdl)
+    if not Card.IsCreate(skill) or not Card.IsAvatar(hdl) then
+      return true
+    end
+    local ok, row, _, _, avatar_may_pair = pcall(funcLuaCommand, Card.ROW_OF, skill)
+    return not (ok and type(row) == "number" and row > 0 and avatar_may_pair == false)
   end
 
   function Card.AuraType(skill)
@@ -193,7 +214,7 @@ if CharacterReforged.CreateCard == nil then
   -- base = the player, item = the picked «create» item, hide = a menu to hide under the bank (nil = none);
   -- true = the bank is opening
   function Card.OpenBankEarly(base, item, hide)
-    if type(base) ~= "number" or base == 0 or not Card.IsCreate(item) then
+    if type(base) ~= "number" or base == 0 or not Card.IsCreate(item) or not Card.CreateAllowed(item, base) then
       return false
     end
     local row = funcLuaCommand(Card.ROW, item)

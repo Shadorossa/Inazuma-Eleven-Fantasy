@@ -15,8 +15,8 @@
 # SP bar per player and totem for the whole match, its Galaxy SP at max level; at 0 SP the totem leaves for that match).
 # Off = retail (time, hyper gauge).
 [points]
-# the rival (CPU) team plays by the same rules (false: only the user's team)
-cpu = true
+# The rival (CPU) team always plays by the same point systems as the player (owner 2026-10-19: the rival adapts to the
+# active mods; the old key `cpu` is no longer read).
 # the pool's own move pays its PEG / SP instead of tension (false: PEG / SP and its tension)
 move_tension_free = true
 # Armour cost model: "cs" = Chrono Stone's (docs/game/miximax/chrono-stone-drain.md) with every cost × cs_scale; "if" =
@@ -72,10 +72,12 @@ kp_default = 200
 # with the «miximax PE drain» log lines (every drain_log_s seconds of a running miximax; 0 = off)
 cs_miximax_pe_mult = 5.0
 drain_log_s = 5.0
-# the start does not spend the hyper gauge (the engine's pay is skipped)
-free_activation = ["miximax"]
-# the start does not need the hyper gauge at all
-no_start_check = ["miximax"]
+# the start does not spend the hyper gauge (the engine's pay is skipped). Kinds: miximax, mode_change (auraType 6),
+# kizuna_trans (4), awakening_power (5). The last three only while nothing pays with the hyper gauge (PE, PEG and SP
+# on, every aura covered: AuraPoints.HyperUnused, scripts of features\pe\); otherwise they pay it as in the game
+free_activation = ["miximax", "mode_change", "kizuna_trans", "awakening_power"]
+# the start does not need the hyper gauge at all (same kinds, same rule)
+no_start_check = ["miximax", "mode_change", "kizuna_trans", "awakening_power"]
 # the miximax has no time limit and ends at 0 PE (the miximax of a mod's extra slot worn under an armour: that miximax
 # ends, the armour stays); false = the miximax keeps the game's timer
 miximax_untimed = true
@@ -85,8 +87,6 @@ miximax_end_pe = 0.0
 miximax_pe_mult = 1.25
 miximax_armour_pe_mult = 1.30
 armour_pe_mult = 1.05
-# the rival (CPU) team plays by the same rules (false: only the user's team)
-cpu = true
 # the battery out's clip when a trait rule names none ("" = none)
 clip_gauge_end = ""
 # aura rows other mods ship whose start is a miximax whatever their row's auraType says (aura keys or ids): All
@@ -144,7 +144,9 @@ idle_states = [9]
 keepers = false
 cpu = true
 
-# Match HUD layers hidden while PE and the PEG or SP points are both on (owner 2026-10-16: the PEG / SP bar under the PE
+# Match HUD layers hidden while nothing pays with the hyper gauge (AuraPoints.HyperUnused: PE, PEG and SP on and every
+# aura of the game's table on a pool or a free start; the same rule turns the gauge's gains off). Before 1.1.5: while
+# PE and the PEG or SP points are both on (owner 2026-10-16: the PEG / SP bar under the PE
 # bar takes the role of the retail hyper gauge under the tension bar). Layers of the match HUD menu (soccer_menu; 5 v 5:
 # soccer_battle_menu), every instance, both teams; drawing only (the gauge still fills, pays and gates as retail).
 # Graft research/grafts/aura_points_hyper_gauge; [] = nothing hidden.

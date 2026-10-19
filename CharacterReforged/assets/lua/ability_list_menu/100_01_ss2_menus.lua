@@ -45,6 +45,7 @@ local evt_pick = false
 local evt_used = {}                 -- skill id -> row number it occupies on the slot screen
 local evt_mode = "N"
 local evt_rows = {}                 -- list item instance -> skill id (from UpdateListItem)
+local evt_unlimited_rows = {}       -- list item instance -> item id of a row with unlimited copies (any list mode)
 local evt_inv = {}                  -- skill id -> 3rd UpdateListItem arg (try 8: this is the ITEM ID, not a handle)
 local evt_free = {}                 -- skill id -> the list shows a free copy (have > equipped), board rule
 local evt_sent = 0                  -- last id from SendSkillIdToLua (if the engine calls it for this group)
@@ -278,6 +279,7 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
   if a1 == EVT_ITEM and type(VRFW_Copies) == "table" then
     local okU, u = pcall(VRFW_Copies.ListRow, a1, a2, EVT_U32(funcLuaCommand(901208644, a3)))
     unlimited = okU and u == true
+    evt_unlimited_rows[a2] = unlimited and EVT_U32(funcLuaCommand(901208644, a3)) or nil
   end
   if evt_pick and a1 == EVT_ITEM then
     local skill = EVT_U32(funcLuaCommand(901208644, a3))
@@ -606,6 +608,13 @@ function OnChangeFocus(a1, a2)
   end
   EVT_Mark(EVT_BIT.FOCUS)
   EVT_RetailOnChangeFocus(a1, a2)
+  -- the focused row of an unlimited item: the focus shows the row's stock boxes again, so they are hidden again
+  if a1 == EVT_ITEM and type(VRFW_Copies) == "table" then
+    local inst = funcLuaMenuCommand(2603265800 --[[focused index]], EVT_ITEM)
+    if type(inst) == "number" and evt_unlimited_rows[inst] ~= nil then
+      pcall(VRFW_Copies.HideCounters, EVT_ITEM, inst)
+    end
+  end
   if a1 == 4044286600 --[[cmn06_20_list_tab_item]] then
     local count = funcLuaMenuCommand(2389020234 --[[list item count]], EVT_LIST)
     if type(count) ~= "number" or count <= 0 then

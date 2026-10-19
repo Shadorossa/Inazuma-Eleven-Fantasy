@@ -15,3 +15,7 @@ normal_card_rarity = 4
 # kept (Character Reforged's scripts\duplicate_players.lua «slot_load», blob
 # save-backup-slot<N>-<stamp>-before-duplicate-rules.bin); the locked retail slot and reserved slots are never touched
 apply_on_load = true
+# the special cards (chara_param col 41) that get normal_card_rarity too: the tiers the option «Rarezas eliminadas»
+# removes (options.toml no_more_rarities.removed_rarities: 0 basic only, 1 + Ídolo 5-7, 2 + Diamante 8, 3 all; the
+# same tiers as NoMoreRarities.RarityRemoved of assets\lua\_all\no_more_rarities_card_look.lua)
+normalize_special_rarities = { option = "no_more_rarities.removed_rarities", values = { "1" = [5, 6, 7], "2" = [8], "3" = [5, 6, 7, 8] } }

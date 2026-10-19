@@ -21,8 +21,10 @@
 --   PE of the plate's card (content\match_resources\pe_max.toml at his level; Físico is passed as the plate radar
 --   reads it, stat 4: funcLuaCommand(1131797651, hdl, 18, true, false)). Nothing is drawn without the command, in mode "log", or
 --   on a screen without the layers; then the piece takes no width.
--- * Fill: CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max (features\pe\scripts\stamina.lua) while a match runs and knows
---   the handle; otherwise (outside a match) the bar is full. Read when the header shows a player (its fill callback).
+-- * Current PE: CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max (features\pe\scripts\stamina.lua) while a match runs: the
+--   plate's character status handle is mapped there to his match player, so in the pause menu the number is his
+--   current PE and the bar current / max, the values of the match HUD. Outside a match: the max PE and a full bar.
+--   Read when the header shows a player (its fill callback).
 -- * Miximax (Chrono Stone: the miximax also gives the base PE): while Inazuma Fantasy's player page shows the
 --   player's miximax (its globals EVT_R9.mx on ATRIBUTOS, or EVT_PPG.MxForm / CurForm on PERFIL; absent = never), the
 --   number is his max PE + the miximax's PE gain (Inazuma Fantasy's CMND_EVT_MX_GAINS, 13th value; absent = 0).
@@ -131,13 +133,13 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       return math.floor(max + 0.5)
     end
 
-    -- the share of his PE chara status handle hdl has left (0..1): the match's current / max PE, 1 outside a match
+    -- his match PE (chara status handle hdl): the share left (0..1) and the current PE; 1, nil outside a match
     function P.RateOf(hdl)
       local ok, has, cur, max = pcall(funcLuaCommand, P.CMD_CURRENT, hdl)
       if not ok or has ~= true or type(cur) ~= "number" or type(max) ~= "number" or max <= 0 then
-        return 1
+        return 1, nil
       end
-      return math.max(0, math.min(1, cur / max))
+      return math.max(0, math.min(1, cur / max)), math.max(0, math.floor(cur + 0.5))
     end
 
     -- Inazuma Fantasy's player page shows the miximax now (Miximax view on ATRIBUTOS, the Miximax form on PERFIL)
@@ -331,8 +333,9 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       P.TAG_X, P.BAR_X = ctx.x, ctx.x
       P.TAG_Y = ctx.top - P.TAG_DY
       local mx = P.MxShown()
-      P.want = {plate = ctx.layer, inst = ctx.inst or 0, base = max, hdl = ctx.hdl, mx = mx,
-                max = max + (mx and P.MxGain(ctx.hdl) or 0), rate = P.RateOf(ctx.hdl)}
+      local rate, current = P.RateOf(ctx.hdl)
+      P.want = {plate = ctx.layer, inst = ctx.inst or 0, base = max, hdl = ctx.hdl, mx = mx, rate = rate,
+                live = current ~= nil, max = current or (max + (mx and P.MxGain(ctx.hdl) or 0))}
       P.Draw()
       return P.BAR_W
     end
@@ -350,7 +353,9 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       local mx = P.MxShown()
       if mx ~= w.mx then
         w.mx = mx
-        w.max = w.base + (mx and P.MxGain(w.hdl) or 0)
+        if not w.live then                 -- in a match the number is his current PE (the miximax is in it)
+          w.max = w.base + (mx and P.MxGain(w.hdl) or 0)
+        end
         if P.shown then
           P.Draw()
           return

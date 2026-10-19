@@ -119,3 +119,8 @@ file = "view_forms.lua"
 budget = 200000
 memory_kb = 4096
 allow = []
+
+# Match clock: «Segundos por minuto de partido» (the match info's clock rate at match start / kick-off)
+[[script]]
+file = "match_clock.lua"
+allow = []

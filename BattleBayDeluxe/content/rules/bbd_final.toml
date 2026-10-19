@@ -1,0 +1,29 @@
+schema = "VRFW.rule/1"
+# Battle Bay Deluxe «Torneo»: the tournament's FINAL (owner 2026-10-19). The knockout rules of bbd_knockout.toml (extra
+# time + penalties: a final must have a winner) and the tournament-final end of the game's own Victory Road final:
+# rule word bit 24, so after the whistle the game plays the champions' celebration ev72_00050 (the trophy lift, in the
+# final's stadium), then its photo scene, then the normal result screen
+# (docs/game/mods/bbd-tournament-celebration.md). scripts\tournament.lua selects this rulebook for the final only
+# (config.toml [tournament] final_rules; "" = the knockout rulebook, no celebration).
+id = "bbd_final"
+name = "Battle Bay tournament: final (extra time + penalties, champions' celebration)"   # fallback; text key ruleset_bbd_final
+version = 1
+
+[play]
+# the tournament-final end (ResultEventState -> TournamentFinalGameEnd, soccer state 0x1C)
+rule_bits = [24]
+
+[end]
+extra_time = true
+extra_time_halves = 2
+# a third of the row's half length (30 in a full 11v11 row), as a real extra time is to a half
+extra_time_minutes = 10
+golden_goal = false
+penalties = true
+penalties_kicks = 5
+penalties_sudden_death = true
+penalties_order = "forwards_first"
+penalties_first = "user"
+# the result screen shows the score before the shoot-out with one goal more for its winner (2-2, pen. 4-3 -> 3-2);
+# scripts\tournament.lua takes that goal back and records 2-2 (pen. 4-3)
+penalties_final_score = "winner_plus_one"

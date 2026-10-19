@@ -36,6 +36,10 @@ exclude = []
 # "free_match" (the 1 vs 1 grid: draft the 16, then the Draft team is your 1P / CPU team for that match; the online
 # Battle Bay never). Leave "free_match" out and the 1 vs 1 refuses the tile again.
 modes = ["campaign", "free_match"]
+# Mouse on the Draft screen (graft research/grafts/bb_draft): hovering a slot of the pitch / bench or a candidate card on
+# the pack's band selects it as the arrows do, a left click on it confirms as Enter does (a click during the pack's
+# animation shows all 5 at once). false = keys / pad only. Read when the Draft screen opens.
+mouse = true
 
 [draft.pack]
 # The «pack opening» of a slot's 5 candidates (1.5.26, graft research/grafts/bb_draft): the screen darkens, a band
@@ -86,6 +90,28 @@ penalty_kicks = 5
 # The rulebook of the player's knockout matches (extra time + penalties; content\rules\bbd_knockout.toml). Another
 # mod's rulebook id may go here.
 knockout_rules = "bbd_knockout"
+# The rulebook of the tournament's FINAL (content\rules\bbd_final.toml: the knockout's rules plus the game's own
+# tournament-final end, the champions' celebration with the trophy lift, then its photo scene). "" = the knockout
+# rulebook above, no celebration.
+final_rules = "bbd_final"
+# The final is played in one of these stadiums, drawn once per tournament (kept in the save: a reload never changes
+# it) and shown on the tournament screen. Maps of the game's stadium list (soccer_game_option); [] = the Battle Bay's
+# own stadium. Default: the venues of the game's finals and big matches.
+final_stadiums = [
+  "s01g001",  # Football Frontier Stadium
+  "s14g001",  # Legendary Football Frontier Stadium
+  "s24g001",  # Fierce Football Frontier Stadium
+  "s15g001",  # Titanic Stadium
+  "s17g001",  # Saints' Way Stadium
+  "s18g001",  # Zenith Stadium
+  "s19g001",  # Ragnarok Stadium
+  "s32g001",  # Lost Galaxy Stadium
+  "s06g001",  # Astro Ray Stadium
+  "s11g001",  # Zeus Stadium
+  "s78g001",  # Odaiba Football Stadium
+  "s84g001",  # Moscow Route Bay Main Stadium
+  "s88g001",  # Victory Road Stadium
+]
 # 0 = a new draw every tournament. Any other number = the same bracket and simulated results for the same team (testing).
 seed = 0
 # Teams never drawn (owner, 2026-10-12), by team key (team_config); read from the game's team table, mods included:

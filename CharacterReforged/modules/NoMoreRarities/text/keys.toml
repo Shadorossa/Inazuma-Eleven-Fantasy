@@ -1,41 +1,103 @@
 schema = "VRFW.text_key/1"
 # Texts of «No More Rarities» (mod no_more_rarities, 2026-10-14) (format: docs/framework/types/text.md): the «Mods»
-# screen's name and description. A language missing here falls back to English. The one-card-per-character limit is the
+# screen's name and description, and the option row of options.toml. A language missing here falls back to English. The one-card-per-character limit is the
 # module New Recruitment's since 2026-10-15 (its text\keys.toml).
 default_lang = "en"
 
 [en.new]
 mod_name = "No More Rarities"
-mod_description = "Every normal player is a 5★ Legend, as in the classic Inazuma Eleven games: no 1★-4★ rarities, no rarity stat bonus, no rarity-up or fusion. Every spirit source gives the 5★ card and the «Rarity» filter lists only the special cards. The normal cards are coloured by the player's position. Héroe and Diamante cards stay as they are."
+mod_description = "Every normal player is a 5★ Legend, as in the classic Inazuma Eleven games: no 1★-4★ rarities, no rarity stat bonus, no rarity-up or fusion. Every spirit source gives the 5★ card and the «Rarity» filter lists only the special cards. The normal cards are coloured by the player's position. Héroe and Diamante cards keep their look unless the mod's setting removes their rarity too."
+option_removed_rarities = "Rarities removed"
+option_removed_rarities_help = "Which rarities lose their rarity look: the basic 1★-5★ always; Idols (Héroe) and Diamonds also show the player's position. Applies after restarting the game."
+removed_basic = "Basic only"
+removed_basic_idol = "Basic + Idols"
+removed_basic_diamond = "Basic + Diamonds"
+removed_all = "All"
+
 
 [es.new]
 mod_name = "No More Rarities"
-mod_description = "Todo jugador normal es Leyenda 5★, como en los Inazuma Eleven clásicos: sin rarezas 1★-4★, sin bonus de rareza, sin subir rareza ni fusionar. Todas las fuentes de espíritus dan la carta 5★ y el filtro «Rareza» solo lista las cartas especiales. Las cartas normales llevan el color de la posición del jugador. Las cartas Héroe y Diamante siguen igual."
+mod_description = "Todo jugador normal es Leyenda 5★, como en los Inazuma Eleven clásicos: sin rarezas 1★-4★, sin bonus de rareza, sin subir rareza ni fusionar. Todas las fuentes de espíritus dan la carta 5★ y el filtro «Rareza» solo lista las cartas especiales. Las cartas normales llevan el color de la posición del jugador. Las cartas Héroe y Diamante mantienen su aspecto salvo que el ajuste del mod también elimine su rareza."
+option_removed_rarities = "Rarezas eliminadas"
+option_removed_rarities_help = "Qué rarezas pierden su aspecto de rareza: las básicas 1★-5★ siempre; Ídolos (Héroe) y Diamantes también muestran la posición del jugador. Se aplica al reiniciar el juego."
+removed_basic = "Solo las básicas"
+removed_basic_idol = "Básicas + Ídolos"
+removed_basic_diamond = "Básicas + Diamantes"
+removed_all = "Todas"
+
 
 [fr.new]
 mod_name = "No More Rarities"
-mod_description = "Chaque joueur normal est une Légende 5★, comme dans les Inazuma Eleven classiques : plus de raretés 1★-4★, plus de bonus de rareté, ni montée de rareté ni fusion. Toutes les sources d'esprits donnent la carte 5★ et le filtre « Rareté » ne liste que les cartes spéciales. Les cartes normales prennent la couleur du poste du joueur. Les cartes Héros et Diamant restent telles quelles."
+mod_description = "Chaque joueur normal est une Légende 5★, comme dans les Inazuma Eleven classiques : plus de raretés 1★-4★, plus de bonus de rareté, ni montée de rareté ni fusion. Toutes les sources d'esprits donnent la carte 5★ et le filtre « Rareté » ne liste que les cartes spéciales. Les cartes normales prennent la couleur du poste du joueur. Les cartes Héros et Diamant gardent leur aspect, sauf si le réglage du mod supprime aussi leur rareté."
+option_removed_rarities = "Raretés supprimées"
+option_removed_rarities_help = "Quelles raretés perdent leur aspect : les basiques 1★-5★ toujours ; les Idoles (Héros) et les Diamants montrent aussi le poste du joueur. Appliqué au redémarrage du jeu."
+removed_basic = "Basiques seulement"
+removed_basic_idol = "Basiques + Idoles"
+removed_basic_diamond = "Basiques + Diamants"
+removed_all = "Toutes"
+
 
 [de.new]
 mod_name = "No More Rarities"
-mod_description = "Jeder normale Spieler ist eine 5★-Legende, wie in den klassischen Inazuma-Eleven-Spielen: keine Seltenheiten 1★-4★, kein Seltenheitsbonus, kein Aufstufen und keine Fusion. Jede Geisterquelle gibt die 5★-Karte und der Filter „Seltenheit“ zeigt nur die Spezialkarten. Die normalen Karten tragen die Farbe der Position des Spielers. Helden- und Diamantkarten bleiben, wie sie sind."
+mod_description = "Jeder normale Spieler ist eine 5★-Legende, wie in den klassischen Inazuma-Eleven-Spielen: keine Seltenheiten 1★-4★, kein Seltenheitsbonus, kein Aufstufen und keine Fusion. Jede Geisterquelle gibt die 5★-Karte und der Filter „Seltenheit“ zeigt nur die Spezialkarten. Die normalen Karten tragen die Farbe der Position des Spielers. Helden- und Diamantkarten behalten ihr Aussehen, außer die Einstellung des Mods entfernt auch ihre Seltenheit."
+option_removed_rarities = "Entfernte Seltenheiten"
+option_removed_rarities_help = "Welche Seltenheiten ihr Aussehen verlieren: die einfachen 1★-5★ immer; Idole (Helden) und Diamanten zeigen auch die Position des Spielers. Gilt nach einem Neustart des Spiels."
+removed_basic = "Nur einfache"
+removed_basic_idol = "Einfache + Idole"
+removed_basic_diamond = "Einfache + Diamanten"
+removed_all = "Alle"
+
 
 [it.new]
 mod_name = "No More Rarities"
-mod_description = "Ogni giocatore normale è una Leggenda 5★, come negli Inazuma Eleven classici: niente rarità 1★-4★, niente bonus di rarità, niente aumento di rarità né fusione. Ogni fonte di spiriti dà la carta 5★ e il filtro «Rarità» elenca solo le carte speciali. Le carte normali hanno il colore del ruolo del giocatore. Le carte Eroe e Diamante restano come sono."
+mod_description = "Ogni giocatore normale è una Leggenda 5★, come negli Inazuma Eleven classici: niente rarità 1★-4★, niente bonus di rarità, niente aumento di rarità né fusione. Ogni fonte di spiriti dà la carta 5★ e il filtro «Rarità» elenca solo le carte speciali. Le carte normali hanno il colore del ruolo del giocatore. Le carte Eroe e Diamante mantengono il loro aspetto, a meno che l'impostazione del mod non rimuova anche la loro rarità."
+option_removed_rarities = "Rarità rimosse"
+option_removed_rarities_help = "Quali rarità perdono il loro aspetto: le base 1★-5★ sempre; gli Idoli (Eroe) e i Diamanti mostrano anche il ruolo del giocatore. Si applica al riavvio del gioco."
+removed_basic = "Solo base"
+removed_basic_idol = "Base + Idoli"
+removed_basic_diamond = "Base + Diamanti"
+removed_all = "Tutte"
+
 
 [pt.new]
 mod_name = "No More Rarities"
-mod_description = "Todo jogador normal é uma Lenda 5★, como nos Inazuma Eleven clássicos: sem raridades 1★-4★, sem bónus de raridade, sem subir raridade nem fundir. Todas as fontes de espíritos dão a carta 5★ e o filtro «Raridade» só lista as cartas especiais. As cartas normais levam a cor da posição do jogador. As cartas Herói e Diamante ficam como estão."
+mod_description = "Todo jogador normal é uma Lenda 5★, como nos Inazuma Eleven clássicos: sem raridades 1★-4★, sem bónus de raridade, sem subir raridade nem fundir. Todas as fontes de espíritos dão a carta 5★ e o filtro «Raridade» só lista as cartas especiais. As cartas normais levam a cor da posição do jogador. As cartas Herói e Diamante mantêm o seu aspeto, a não ser que a definição do mod também remova a sua raridade."
+option_removed_rarities = "Raridades removidas"
+option_removed_rarities_help = "Que raridades perdem o seu aspeto: as básicas 1★-5★ sempre; os Ídolos (Herói) e os Diamantes também mostram a posição do jogador. Aplica-se ao reiniciar o jogo."
+removed_basic = "Só as básicas"
+removed_basic_idol = "Básicas + Ídolos"
+removed_basic_diamond = "Básicas + Diamantes"
+removed_all = "Todas"
+
 
 [ja.new]
 mod_name = "No More Rarities"
-mod_description = "昔のイナズマイレブンのように、通常の選手はすべて★5レジェンド（★1～★4のレアリティ、レアリティによる能力ボーナス、レアリティアップ・合成はなし）。スピリットの入手先はすべて★5のカードになり、「レアリティ」フィルターには特別なカードだけが並ぶ。通常のカードは選手のポジションの色になる。ヒーローとダイヤモンドのカードはそのまま。"
+mod_description = "昔のイナズマイレブンのように、通常の選手はすべて★5レジェンド（★1～★4のレアリティ、レアリティによる能力ボーナス、レアリティアップ・合成はなし）。スピリットの入手先はすべて★5のカードになり、「レアリティ」フィルターには特別なカードだけが並ぶ。通常のカードは選手のポジションの色になる。ヒーローとダイヤモンドのカードは、MODの設定でレアリティを外さない限りそのまま。"
+option_removed_rarities = "削除するレアリティ"
+option_removed_rarities_help = "見た目のレアリティを外す範囲：基本の★1～★5は常に、アイドル（ヒーロー）とダイヤモンドも選手のポジションの色になる。ゲームの再起動後に反映。"
+removed_basic = "基本のみ"
+removed_basic_idol = "基本＋アイドル"
+removed_basic_diamond = "基本＋ダイヤモンド"
+removed_all = "すべて"
+
 
 [zh_hans.new]
 mod_name = "No More Rarities"
-mod_description = "像经典的闪电十一人一样，所有普通球员都是★5传奇（没有★1～★4稀有度、没有稀有度能力加成、不能升级稀有度或合成）。所有灵魂来源都给★5卡，「稀有度」筛选只列出特殊卡。普通卡显示球员位置的颜色。英雄卡和钻石卡保持不变。"
+mod_description = "像经典的闪电十一人一样，所有普通球员都是★5传奇（没有★1～★4稀有度、没有稀有度能力加成、不能升级稀有度或合成）。所有灵魂来源都给★5卡，「稀有度」筛选只列出特殊卡。普通卡显示球员位置的颜色。英雄卡和钻石卡保持原样，除非模组的设置也移除它们的稀有度。"
+option_removed_rarities = "移除的稀有度"
+option_removed_rarities_help = "哪些稀有度失去稀有度外观：基本的★1～★5始终如此；偶像（英雄）和钻石也显示球员位置的颜色。重启游戏后生效。"
+removed_basic = "仅基本"
+removed_basic_idol = "基本＋偶像"
+removed_basic_diamond = "基本＋钻石"
+removed_all = "全部"
+
 
 [zh_hant.new]
 mod_name = "No More Rarities"
-mod_description = "像經典的閃電十一人一樣，所有普通球員都是★5傳奇（沒有★1～★4稀有度、沒有稀有度能力加成、不能升級稀有度或合成）。所有靈魂來源都給★5卡，「稀有度」篩選只列出特殊卡。普通卡顯示球員位置的顏色。英雄卡和鑽石卡保持不變。"
+mod_description = "像經典的閃電十一人一樣，所有普通球員都是★5傳奇（沒有★1～★4稀有度、沒有稀有度能力加成、不能升級稀有度或合成）。所有靈魂來源都給★5卡，「稀有度」篩選只列出特殊卡。普通卡顯示球員位置的顏色。英雄卡和鑽石卡保持原樣，除非模組的設定也移除它們的稀有度。"
+option_removed_rarities = "移除的稀有度"
+option_removed_rarities_help = "哪些稀有度失去稀有度外觀：基本的★1～★5始終如此；偶像（英雄）和鑽石也顯示球員位置的顏色。重啟遊戲後生效。"
+removed_basic = "僅基本"
+removed_basic_idol = "基本＋偶像"
+removed_basic_diamond = "基本＋鑽石"
+removed_all = "全部"

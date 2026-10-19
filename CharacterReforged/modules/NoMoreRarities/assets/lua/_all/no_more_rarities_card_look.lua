@@ -1,10 +1,15 @@
 -- No More Rarities: the normal cards coloured by the player's POSITION, chosen at run time (docs/refactor/aura-mods-split.md
 -- «Save pass on load and card look», docs/game/characters/rarity-removal.md §4.6, docs/game/characters/position-cards.md).
 -- Owner rule 2026-10-14: the position colours belong to No More Rarities (taken out of Inazuma Fantasy's position_cards):
--- with this mod on, every normal card (rarity 0-4) shows its player's position, the same scheme as the player header
+-- with this mod on, every card of a removed rarity shows its player's position, the same scheme as the player header
 -- (no_more_rarities_header.lua): POR gold, DF blue, MC green, DL red. Without this mod: the retail look. A mode's own
--- save (a reserved slot: INAROGUE) keeps its players' rarities and their look exactly as in the game. Héroe / Ídolo /
--- Diamante / season cards (rarity 5+) keep theirs. The game's own rarity sprites are never repainted.
+-- save (a reserved slot: INAROGUE) keeps its players' rarities and their look exactly as in the game. Which rarities
+-- are removed is the option no_more_rarities.removed_rarities (options.toml): the normal cards 0-4 always, the Ídolo
+-- cards 5-7 and the Diamante cards 8 by the choice; a kept rarity and the season cards (9+) keep their look exactly as
+-- in the game. The game's own rarity sprites are never repainted.
+--
+--   NoMoreRarities.RarityRemoved(rarity)    THE rule of the option (every reader goes through it): this rarity loses
+--     its rarity look. NoMoreRarities.FrameOfRarity(rarity): the card / plate / title frame number of a rarity.
 --
 --   NoMoreRarities.POSITION_LOOKS[type]     the position look by position icon type (0 GK, 1 DF, 2 MF, 3 FW; the
 --     VR-Framework's one rule VRFW_UI.HeaderRow.NaturalType / ParamType): key, card_frame (the card frame the engine
@@ -16,7 +21,7 @@
 --     and overwritePosType (scPosType bits of a formation slot: the slot's colour instead of the player's own).
 --   NoMoreRarities.PositionLookOfType(type) the look of a position icon type, nil when unknown.
 --   NoMoreRarities.CardPositionType(card)   the card's position icon type (the slot's, else the player's own), nil for
---     staff / unknown. NoMoreRarities.IsNormalCard(card): its rarity is 0-4.
+--     staff / unknown. NoMoreRarities.IsNormalCard(card): its rarity is a removed one (RarityRemoved).
 --   NoMoreRarities.RarityRemovalApplies()   true unless the loaded save is a RESERVED slot (a mode's own save: INAROGUE's,
 --     or any mode that reserves one through the VR-Framework's slot service: CMND_VRFW_SLOT_ACTIVE ->
 --     CMND_VRFW_SLOT_RESERVED(n) -> reserved). The same rule as the save pass on load. No framework answer = it applies.
@@ -182,6 +187,53 @@ if NoMoreRarities.RarityRemovalApplies == nil then
   end
 end
 
+if NoMoreRarities.RarityRemoved == nil then
+  local OPTION_GET = 4082322029        -- CMND_VRFW_OPTION_GET (row key) -> the value the game started with (restart row)
+  local OPTION_KEY = "no_more_rarities.removed_rarities"
+  local OPTION_DEFAULT = 0             -- options.toml default: basic only
+  -- the game's rarity tiers (docs/game/characters/rarity-removal.md §0): the normal cards 0-4, Ídolo 5-7, Diamante 8
+  local LAST_BASIC_RARITY, LAST_IDOL_RARITY, DIAMOND_RARITY = 4, 7, 8
+  local DIAMOND_FRAME = 10             -- the card / plate / title frame is rarity + 1, Diamante's is 10
+  -- options.toml values: 0 basic only, 1 basic + Ídolo, 2 basic + Diamante, 3 all
+  local TIERS_OF_CHOICE = {[0] = {}, {idol = true}, {diamond = true}, {idol = true, diamond = true}}
+  local tiers = nil
+
+  -- the removed special tiers of the option, read once per script (the row applies after a restart)
+  local function RemovedTiers()
+    if tiers == nil then
+      local ok, value = false, nil
+      if type(funcLuaCommand) == "function" then
+        ok, value = pcall(funcLuaCommand, OPTION_GET, OPTION_KEY)
+      end
+      tiers = TIERS_OF_CHOICE[ok and type(value) == "number" and value or OPTION_DEFAULT] or TIERS_OF_CHOICE[OPTION_DEFAULT]
+    end
+    return tiers
+  end
+
+  function NoMoreRarities.RarityRemoved(rarity)
+    if type(rarity) ~= "number" or rarity < 0 then
+      return false
+    end
+    if rarity <= LAST_BASIC_RARITY then
+      return true
+    end
+    if rarity <= LAST_IDOL_RARITY then
+      return RemovedTiers().idol == true
+    end
+    if rarity == DIAMOND_RARITY then
+      return RemovedTiers().diamond == true
+    end
+    return false
+  end
+
+  function NoMoreRarities.FrameOfRarity(rarity)
+    return rarity == DIAMOND_RARITY and DIAMOND_FRAME or rarity + 1
+  end
+
+  -- the rarities the rule can remove (the plate and title sprites of the removed ones are swapped)
+  NoMoreRarities.LAST_REMOVABLE_RARITY = DIAMOND_RARITY
+end
+
 if NoMoreRarities.NormalCardRarity == nil then
   local NORMAL_CARD_RARITY = 4         -- the 5★ «Leyenda» card (content\duplicate_rules\no_more_rarities.toml)
 
@@ -196,7 +248,6 @@ end
 if NoMoreRarities.PositionColour == nil then
   local CHARA = 1131797651             -- CMND_GET_CHARA (hdl, 12) = the status' rarity
   local CHARA_INFO = 4060384944        -- CMND_GET_CHARA_INFO (param, 8) = the card's rarity (chara_param col 41)
-  local LAST_NORMAL_RARITY = 4         -- 5-7 Héroe / Ídolo, 8 Diamante, 9+ season and mods' cards keep their look
   -- scPosType bits (retail ConvertPosTypeToScPosType) -> position icon type; the game VM has no bit32: tested with %
   local SLOT_POSITION_BITS = {{16, 0}, {32, 1}, {64, 2}, {128, 3}}
 
@@ -270,7 +321,7 @@ if NoMoreRarities.PositionColour == nil then
     return NoMoreRarities.POSITION_LOOKS[positionType or -1]
   end
 
-  -- the card's rarity (the given one, else the status' saved one, else the card's) is a normal one (0-4)
+  -- the card's rarity (the given one, else the status' saved one, else the card's) is a removed one
   function NoMoreRarities.IsNormalCard(card)
     local hdl, param, rarity = CardFields(card)
     if hdl == nil and param == nil then
@@ -283,7 +334,7 @@ if NoMoreRarities.PositionColour == nil then
         rarity = ParamRarity(param)
       end
     end
-    return type(rarity) == "number" and rarity >= 0 and rarity <= LAST_NORMAL_RARITY
+    return NoMoreRarities.RarityRemoved(rarity)
   end
 
   function NoMoreRarities.CardPositionType(card)
@@ -335,8 +386,6 @@ if draws_cards and NoMoreRarities.CardLook == nil then
   local CARD_SLOT_ARGUMENT = 6
   local CARD_RARITY_ARGUMENT = 11
   local CARD_MANAGER_ARGUMENT = 18
-  local LAST_NORMAL_FRAME = 5          -- the plate sprites *_01..*_05 of the rarities 0-4
-  local DIAMOND_RARITY, DIAMOND_FRAME = 8, 10   -- the native card frame is rarity + 1, Diamante's is 10
   -- the formation card layers (a card shows the position badge of its slot there; position-cards.md §4c)
   local FORMATION_LAYER_NAMES = {"team00_01_chara_card_for_soccer", "team00_01_chara_card_for_leader",
     "team00_01_chara_card_for_move"}
@@ -374,10 +423,15 @@ if draws_cards and NoMoreRarities.CardLook == nil then
       look.personal_plate_id = crc(look.personal_plate)
     end
     L.STATUS_RARITY_PLATES, L.PERSONAL_RARITY_PLATES, L.NORMAL_TITLES = {}, {}, {}
-    for frame = 1, LAST_NORMAL_FRAME do
-      L.STATUS_RARITY_PLATES[crc(string.format("status_chr_base01_s%02d", frame))] = true
-      L.PERSONAL_RARITY_PLATES[crc(string.format("status_chr_plate01_%02d", frame))] = true
-      L.NORMAL_TITLES[crc(string.format("gtxt_rarity01_%02d", frame))] = true
+    -- the plate and title sprites of the removed rarities (*_01..*_05 the normal cards; *_06..*_08 Ídolo and *_10
+    -- Diamante when the option removes them)
+    for rarity = 0, NoMoreRarities.LAST_REMOVABLE_RARITY do
+      if NoMoreRarities.RarityRemoved(rarity) then
+        local frame = NoMoreRarities.FrameOfRarity(rarity)
+        L.STATUS_RARITY_PLATES[crc(string.format("status_chr_base01_s%02d", frame))] = true
+        L.PERSONAL_RARITY_PLATES[crc(string.format("status_chr_plate01_%02d", frame))] = true
+        L.NORMAL_TITLES[crc(string.format("gtxt_rarity01_%02d", frame))] = true
+      end
     end
     for element = 1, 5 do
       L.NORMAL_TITLES[crc(string.format("gtxt_rarity01_01_type%02d", element))] = true
@@ -485,7 +539,7 @@ if draws_cards and NoMoreRarities.CardLook == nil then
     if type(rarity) ~= "number" or rarity < 0 then
       return nil
     end
-    return rarity == DIAMOND_RARITY and DIAMOND_FRAME or rarity + 1
+    return NoMoreRarities.FrameOfRarity(rarity)
   end
 
   -- a card the coach frame was swapped onto (a leader command) and now drawn as another card: its frame's sprites back

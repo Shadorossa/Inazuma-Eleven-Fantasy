@@ -1,35 +1,24 @@
--- Utilities › friends panel («Lista de amigos», docs/game/ui/friends.md): a side panel on the right of the menus
--- (slides in over the current hub, like a launcher's friends list) with ALL the Steam friends, grouped: «En Inazuma
--- Eleven VR» (same mods ✓ / other mods ⚠ / without the mod), «Amigos del mod» (players added by friend code, no Steam
--- friendship needed), «En línea» (what Steam says they do), «Desconectados». This player's friend code at the top
--- («Copiar»), «Añadir amigo por código» (the clipboard's code). A friend with the mod opens his details next to the
--- list: active team (formation + faces), the career summary, the lines other mods add; actions: invite to my Battle
--- Bay private room, join his, send my team code, the mods we differ in, Steam profile, remove a mod friend.
--- Mechanism = the VR-Framework's friends API (VRFW.net.*; Steam through the game's own steam_api64.dll and the
--- framework's own transport, never EOS / EAC). The panel itself is assets\lua\_all\utilities_friends.lua (every hub of
--- the top bar; layers of content\menus\friends_panel.toml).
+-- Utilities › friends panel («Lista de amigos», docs/game/ui/friends.md): a narrow side panel on the right of the menus
+-- with the player's Steam friends in one list, sorted by status (in Inazuma Eleven VR, online, away, offline) then by
+-- name. A friend with the mod opens his details next to the list: active team (formation + faces), the career summary,
+-- the lines other mods add; actions: invite to my Battle Bay private room, join his, send my team code, the mods we
+-- differ in, Steam profile. Mechanism = the VR-Framework's friends API (VRFW.net.*; Steam through the game's own
+-- steam_api64.dll and the framework's own transport, never EOS / EAC). The panel itself is
+-- assets\lua\_all\utilities_friends.lua (every hub of the top bar; layers of content\menus\friends_panel.toml).
 --
 -- Commands (crc32 of the name; the panel uses the numbers):
---   CMND_UTIL_FRIENDS_OPEN(refresh, lang code) -> ready, rows, inbox count, error, my friend code, panel art texture
+--   CMND_UTIL_FRIENDS_OPEN(refresh, lang code) -> ready, rows, inbox count, error, panel art texture
 --   CMND_UTIL_FRIENDS_LAYOUT() -> panel x, width, top, row height, header height, details width, slide frames
---   CMND_UTIL_FRIENDS_ROW(i) -> kind ("head" / "friend" / "none"), group, name, status key, dot, badge, room (bool),
---                               avatar texture, avatar sprite, count (heads) / friend code (friends)
---   CMND_UTIL_FRIENDS_ACTIONS(i) -> action keys, comma-separated (invite, join, code, mods, profile, remove)
+--   CMND_UTIL_FRIENDS_ROW(i) -> kind ("friend" / "none"), group, name, status key, dot, badge, room (bool),
+--                               avatar texture, avatar sprite, friend id
+--   CMND_UTIL_FRIENDS_ACTIONS(i) -> action keys, comma-separated (invite, join, code, mods, profile)
 --   CMND_UTIL_FRIENDS_DO(i, action) -> state ("ok" / "wait" / "error"), text
 --   CMND_UTIL_FRIENDS_POLL(i, action) -> state ("wait" / "ok" / "error"), text (the mod difference lines)
 --   CMND_UTIL_FRIENDS_DETAILS(i) -> asked (bool: the profile is being asked for)
 --   CMND_UTIL_FRIENDS_DETAILS_POLL(i) -> state ("wait" / "ok" / "error"), team name, formation name,
 --                                       faces ("chara_base:level:name|…"), stats ("key\tname\tvalue" lines)
---   CMND_UTIL_FRIENDS_ADD("peek") -> "ok" / "error", the clipboard's friend code / error key, the player's name / detail
---   CMND_UTIL_FRIENDS_ADD("send", code) -> "ok" / "error", code / error key, name / detail (the request is sent)
---   CMND_UTIL_FRIENDS_COPY() -> this player's friend code (copied to the clipboard)
 --   CMND_UTIL_FRIENDS_INBOX() -> the next received item: kind ("code" / "invite" / ""), sender's name, team lines, data
 --   CMND_UTIL_FRIENDS_STATUS(menu stem) -> status published ("" = this menu sets none)
---   CMND_UTIL_FRIENDS_BADGE() -> requests waiting (count), the next notice (kind "request" / "accepted" / "declined" /
---                               "", the other player's name), the panel art texture, the top bar entry to mark
--- Friend requests (VRFW 2.1.0): «Añadir amigo por código» sends one (VRFW.net.mod_friend_add); the requests this player
--- got are the «Solicitudes» rows at the top (kind "request": Aceptar / Rechazar / Bloquear / Añadir en Steam); a sent
--- one shows on the friend's row («Solicitud enviada» / «pendiente»: Cancelar / Añadir en Steam).
 -- Export (mod.toml [exports]): Utilities.FriendsProfileLine(label, value) — a line another mod adds to the profile
 -- friends see (e.g. Chronicle progress, Battle Bay record), in the sender's language; value "" removes it.
 
@@ -336,9 +325,9 @@ local view = { rows = {}, lang = "en" }
 local avatars = {}
 local AVATAR_TTL_MS = 60000
 
--- the flat list the panel scrolls: a header per section (always; an empty one shows «nadie» under it), then its
--- friends in the framework's order (group, then name)
-local SECTIONS = { "playing", "mod", "online", "offline" }
+-- the list the panel scrolls: the Steam friends only, by status (in the game, online, away, offline) then by name; an
+-- empty list is one «nadie» row
+local DOT_ORDER = { game = 1, on = 2, away = 3, off = 4 }
 
 local function dot_of(f)
   if f.in_game then return "game" end
@@ -350,41 +339,29 @@ end
 local function badge_of(f)
   if f.group == "same" then return "ok" end
   if f.group == "different" then return "warn" end
-  if f.group == "mod" and f.in_game and f.vrfw ~= "" then
-    return f.modset ~= "" and f.modset == view.my_modset and "ok" or "warn"
-  end
   return ""
 end
 
-local function build_rows(list, requests)
-  local by = {}
-  for _, s in ipairs(SECTIONS) do by[s] = {} end
+local function build_rows(list)
+  local friends = {}
   for _, f in ipairs(list) do
-    local sec = by[f.section] and f.section or "offline"
-    by[sec][#by[sec] + 1] = f
+    if f.steam_friend == true then friends[#friends + 1] = f end
   end
+  table.sort(friends, function(a, b)
+    local da, db = DOT_ORDER[dot_of(a)] or 4, DOT_ORDER[dot_of(b)] or 4
+    if da ~= db then return da < db end
+    return tostring(a.name):lower() < tostring(b.name):lower()
+  end)
   local rows = {}
-  -- «Solicitudes» on top, only while some wait
-  if type(requests) == "table" and #requests > 0 then
-    rows[#rows + 1] = { kind = "head", group = "requests", count = #requests }
-    for _, r in ipairs(requests) do
-      rows[#rows + 1] = { kind = "request", group = "requests", f = r }
-    end
+  for _, f in ipairs(friends) do
+    rows[#rows + 1] = { kind = "friend", group = f.group, f = f }
   end
-  for _, sec in ipairs(SECTIONS) do
-    rows[#rows + 1] = { kind = "head", group = sec, count = #by[sec] }
-    if #by[sec] == 0 then
-      rows[#rows + 1] = { kind = "none", group = sec }
-    end
-    for _, f in ipairs(by[sec]) do
-      rows[#rows + 1] = { kind = "friend", group = f.group, f = f }
-    end
-  end
+  if #rows == 0 then rows[1] = { kind = "none", group = "" } end
   return rows
 end
 
 function Utilities.Friends.Open(refresh, code)
-  if not cfg.enabled then return false, 0, 0, "disabled", "", "" end
+  if not cfg.enabled then return false, 0, 0, "disabled", "" end
   view.lang = lang_of(code)
   -- the profile is not the panel: a failure there never costs the list
   local recent = profile_at ~= nil and VRFW.now() - profile_at < OPEN_FORCE_MS
@@ -395,15 +372,12 @@ function Utilities.Friends.Open(refresh, code)
   if type(r) ~= "table" or r.ready ~= true then
     local e = type(r) == "table" and tostring(r.error) or tostring(err)
     warn("no friend list: " .. e)
-    view.rows = build_rows({}, {})
-    return false, #view.rows, 0, e, "", okA and tostring(art) or ""
+    view.rows = build_rows({})
+    return false, #view.rows, 0, e, okA and tostring(art) or ""
   end
-  local me = type(r.me) == "table" and r.me or {}
-  view.my_modset = tostring(me.modset or "")
-  view.rows = build_rows(type(r.list) == "table" and r.list or {}, type(r.requests) == "table" and r.requests or {})
-  info(string.format("panel: %d friend(s), %d row(s), inbox %s", type(r.list) == "table" and #r.list or 0, #view.rows,
-    tostring(r.inbox)))
-  return true, #view.rows, tonumber(r.inbox) or 0, "", tostring(me.code or ""), okA and tostring(art) or ""
+  view.rows = build_rows(type(r.list) == "table" and r.list or {})
+  info(string.format("panel: %d Steam friend row(s), inbox %s", #view.rows, tostring(r.inbox)))
+  return true, #view.rows, tonumber(r.inbox) or 0, "", okA and tostring(art) or ""
 end
 
 -- the panel's layout (config.toml [friends.panel])
@@ -415,8 +389,8 @@ end
 function Utilities.Friends.Row(i)
   local row = view.rows[math.floor(tonumber(i) or 0)]
   if row == nil then return "" end
-  if row.kind ~= "friend" and row.kind ~= "request" then
-    return row.kind, row.group, "", "", "", "", false, "", "", row.count or 0
+  if row.kind ~= "friend" then
+    return row.kind, row.group, "", "", "", "", false, "", "", ""
   end
   local f = row.f
   local tex, sprite = "", ""
@@ -431,11 +405,8 @@ function Utilities.Friends.Row(i)
       avatars[f.id] = { tex, sprite, now }
     end
   end
-  if row.kind == "request" then
-    return "request", "requests", tostring(f.name), "request_got", "", "", false, tex, sprite, tostring(f.code or "")
-  end
   return "friend", tostring(f.group), tostring(f.name), tostring(f.status_key), dot_of(f), badge_of(f), f.room == true,
-    tex, sprite, tostring(f.code or "")
+    tex, sprite, tostring(f.id)
 end
 
 local function friend(i)
@@ -443,33 +414,17 @@ local function friend(i)
   return row and row.kind == "friend" and row.f or nil
 end
 
--- a «Solicitudes» row: { id, name, code, at }
-local function request_of(i)
-  local row = view.rows[math.floor(tonumber(i) or 0)]
-  return row and row.kind == "request" and row.f or nil
-end
-
 function Utilities.Friends.Actions(i)
-  if request_of(i) ~= nil then return table.concat(F.request_actions(), ",") end
   local f = friend(i)
   if f == nil then return "" end
   return table.concat(F.actions(f, net("status")), ",")
 end
 
--- the request actions (a «Solicitudes» row, or a friend this player sent one to)
-local REQUEST_OPS = { accept = "friend_request_accept", decline = "friend_request_decline", block = "friend_block",
-                      cancel = "friend_request_cancel", steam_add = "friend_steam_add" }
-
 -- ---------------------------------------------------------------------------------------- actions
 
 function Utilities.Friends.Do(i, action)
-  local f = friend(i) or request_of(i)
+  local f = friend(i)
   if f == nil then return "error", "no such row" end
-  if REQUEST_OPS[action] ~= nil then
-    local ok, err = result(net(REQUEST_OPS[action], f.id))
-    return ok and "ok" or "error", ok and "" or tostring(err)
-  end
-  if request_of(i) ~= nil then return "error", "not an action of a request" end
   if action == "invite" then
     local ok, err = result(net("friend_invite", f.id))
     return ok and "ok" or "error", ok and "" or tostring(err)
@@ -489,9 +444,6 @@ function Utilities.Friends.Do(i, action)
   elseif action == "profile" then
     local ok, err = result(net("friend_profile", f.id))
     return ok and "ok" or "error", ok and "" or tostring(err)
-  elseif action == "remove" then
-    local ok, err = result(net("mod_friend_remove", f.id))
-    return ok and "ok" or "error", ok and "" or tostring(err)
   end
   return "error", "unknown action " .. tostring(action)
 end
@@ -510,8 +462,7 @@ end
 
 function Utilities.Friends.Details(i)
   local f = friend(i)
-  -- (a player who has not answered this player's request gives no profile)
-  if f == nil or (f.request or "") ~= "" or not (f.vrfw ~= "" or f.mod_friend) then return false end
+  if f == nil or (f.vrfw or "") == "" then return false end
   load_names(view.lang)
   return (result(net("friend_ask", f.id, KIND_PROFILE)))
 end
@@ -550,55 +501,7 @@ function Utilities.Friends.DetailsPoll(i)
   return "ok", parse_profile(a.data)
 end
 
--- ---------------------------------------------------------------------------------------- codes
-
--- a friend code check (VRFW.net.friend_code_peek): `text` ("" = the clipboard's) -> ok, code, name or false, error key
--- (the text of the failure: "not_ready" / "no_code" / "own_code" / "failed")
-local function peek(text)
-  local ok, v = result(net("friend_code_peek", text or ""))
-  if not ok then
-    local key = tostring(v):match("^([%w_]+):") or "failed"
-    return false, key, tostring(v)
-  end
-  local code, _id, name = tostring(v):match("^([^\t]*)\t([^\t]*)\t(.*)$")
-  if code == nil or code == "" then return false, "failed", tostring(v) end
-  return true, code, name or ""
-end
-
--- «Añadir amigo por código» in two steps, so nothing is sent without the player seeing the code:
---   Add("peek")        -> "ok", code, the player's Steam name ("" = not known yet) / "error", error key, detail
---   Add("send", code)  -> "ok", code, name / "error", error key, detail
--- op "peek" (code typed in the game's keyboard): checks it, sends nothing; op "send": the request. An empty code is
--- refused (the framework would read the clipboard: not used since Utilities 1.14.9, owner 2026-10-12)
-function Utilities.Friends.Add(op, code)
-  if not cfg.enabled then return "error", "failed", "disabled" end
-  code = tostring(code or ""):gsub("^%s+", ""):gsub("%s+$", "")
-  if code == "" then return "error", "no_code", "" end
-  if op == "send" then
-    local okP, c, name = peek(tostring(code or ""))
-    if not okP then return "error", c, name end
-    local ok, v = result(net("mod_friend_add", c))
-    if not ok then
-      warn("add " .. c .. ": " .. tostring(v))
-      return "error", tostring(v):match("^([%w_]+):") or "failed", tostring(v)
-    end
-    -- the name again: Steam may know it now (request_user_info of the add)
-    local okN, _, name2 = peek(c)
-    if okN and name2 ~= "" then name = name2 end
-    info("friend request / mod friend " .. c .. " (" .. tostring(v) .. ")")
-    return "ok", c, name or ""
-  end
-  local okP, c, name = peek(code)
-  if not okP then return "error", c, name end
-  return "ok", c, name
-end
-
-function Utilities.Friends.Copy()
-  local ok, code = result(net("my_code"))
-  if not ok then return "" end
-  pcall(VRFW.net.clipboard, code)
-  return tostring(code)
-end
+-- ---------------------------------------------------------------------------------------- received items
 
 local inbox = {}
 
@@ -623,27 +526,6 @@ function Utilities.Friends.Inbox()
     warn("received " .. tostring(it.kind) .. " from " .. tostring(it.from) .. " ignored")
   end
   return ""
-end
-
--- ---------------------------------------------------------------------------------------- requests: badge, notices
-
-local notices = {}
-
-function Utilities.Friends.Badge()
-  if not cfg.enabled then return 0, "", "", "", "" end
-  local r = net("friend_requests")
-  local n = (type(r) == "table" and type(r.incoming) == "table") and #r.incoming or 0
-  if #notices == 0 then
-    local q = net("friend_notices")
-    if type(q) == "table" then
-      for _, it in ipairs(q) do notices[#notices + 1] = it end
-    end
-  end
-  local kind, name = "", ""
-  local it = table.remove(notices, 1)
-  if type(it) == "table" then kind, name = tostring(it.kind or ""), tostring(it.name or "") end
-  local okA, art = true, PANEL_ART
-  return n, kind, name, okA and tostring(art) or "", F.BADGE_ENTRY
 end
 
 -- ---------------------------------------------------------------------------------------- status
@@ -690,12 +572,12 @@ VRFW.on("slot_load", function() return refresh_profile("slot_load") end)
 
 -- every command answers, whatever happens: an error inside one is logged and answered with its «failed» values instead of
 -- reaching the framework (an uncaught error switches the whole script off until a restart, and the panel then gets no
--- answer at all: no art, no list, no friend code; Utilities 1.14.4)
+-- answer at all: no art, no list; Utilities 1.14.4)
 do
   local failed = {
     Open = function(e)
       local okA, art = true, PANEL_ART
-      return false, 0, 0, "script: " .. e, "", okA and tostring(art) or ""
+      return false, 0, 0, "script: " .. e, okA and tostring(art) or ""
     end,
     Layout = function()
       local p = cfg.panel
@@ -704,11 +586,8 @@ do
     Row = function() return "" end,
     Actions = function() return "" end,
     Details = function() return false end,
-    Add = function(e) return "error", "failed", e end,
-    Copy = function() return "" end,
     Inbox = function() return "" end,
     Status = function() return "" end,
-    Badge = function() return 0, "", "", "", F.BADGE_ENTRY end,
   }
   for name, fn in pairs(Utilities.Friends) do
     if type(fn) == "function" then

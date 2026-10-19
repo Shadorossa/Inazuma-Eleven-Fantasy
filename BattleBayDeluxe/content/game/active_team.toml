@@ -137,6 +137,20 @@ when = [
 value = "0"
 write = "[args[2] + 0xA4]:u32"
 
+# 2026-10-19 (owner): the Torneo's final is played in its drawn stadium. A Battle Bay request (+0xA0 = 1) carries its
+# match info at +0x68 (filled by 0xEBA4B0 from the reservation's parameters; 0xCB4C90 passes the rival's stadium, its
+# enjoy row +0xC); the match info's +0x20 is the stadium map. scripts\tournament.lua sets the table
+# BattleBayDeluxe.FinalStadium (key 0 = the map crc) only while the player's next match is the final; no entry = the
+# request's own stadium.
+[[VRFW.Hook.answer]]
+phase = "pre"
+when = [
+  { value = "[args[2] + 0xA0]:u8", equals = 1 },
+  { value = "0", in_table = "BattleBayDeluxe.FinalStadium" },
+]
+value = "lookup(BattleBayDeluxe.FinalStadium, 0)"
+write = "[args[2] + 0x88]:u32"
+
 # 1.5.64 (owner 2026-10-14: the tile previewed Raimon / Mark Evans): the active team set mirrored onto the tile. The
 # graft research/grafts/bb_active_team reads the active team set (CMND_GET_VS_USE_TEAM_SET and its members) and sends
 # (captain chara_param, "position:chara_param,…"); scripts\active_team.lua writes them over the tile's member rows

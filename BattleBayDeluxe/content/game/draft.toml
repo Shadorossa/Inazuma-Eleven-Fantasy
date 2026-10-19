@@ -135,6 +135,12 @@ name = "CMND_BBD_DRAFT_PACK"
 handler = "BattleBayDeluxe.DraftPack"
 
 [[VRFW.Command]]
+# 1.5.89: the Draft screen's mouse switch (config.toml [draft] mouse), asked by the graft when the screen opens; no game
+# access, so no declaration needed (without it the graft keeps the mouse on)
+name = "CMND_BBD_DRAFT_MOUSE"
+handler = "BattleBayDeluxe.DraftMouse"
+
+[[VRFW.Command]]
 # 1.5.69: a starter slot's placement in a formation (formation_config, read by the script), for the «Plantilla» viewer
 # of the Campaña grid (Y on a tile, graft bb_draft bbd_roster.lua); no game memory, so no declaration needed
 name = "CMND_BBD_FORMATION_PLACE"

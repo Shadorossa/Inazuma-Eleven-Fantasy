@@ -181,7 +181,8 @@ local function clear_match_tables()
   flush_records()
 end
 
-local function applies(team) return P.cpu or team == frame.user end
+-- both teams: the rival plays by the same point systems as the player (owner 2026-10-19)
+local function applies(team) return team == 0 or team == 1 end
 
 local function cost_teams()
   local u = frame.user
@@ -864,10 +865,10 @@ local function start()
   A.load()
   local n_pool, n_moves = A.publish(function(id) return pool_aura_of(id) ~= nil end)
   clear_match_tables()
-  info(string.format("active: PEG %s, SP %s; %d auras run on a pool, %d spirit moves; cost model %s (scale %s); pool moves %s; CPU %s; hooks: cost check %s, pending pay %s, tension pay %s",
+  info(string.format("active: PEG %s, SP %s; %d auras run on a pool, %d spirit moves; cost model %s (scale %s); pool moves %s; both teams; hooks: cost check %s, pending pay %s, tension pay %s",
     P.peg() and "on" or "off", P.sp() and "on" or "off", n_pool, n_moves, P.cs() and "CS" or "IF", P.cs_scale(),
     P.keshin_moves_all_peg() and "the spirit's own moves + (keshin out) every move's tension" or "only the running spirit's own moves",
-    tostring(P.cpu), tostring(VRFW.is_on("Ap_AuraCostCheck")), tostring(VRFW.is_on("Ap_PendingPay")), tostring(VRFW.is_on("Ap_TensionPay"))))
+    tostring(VRFW.is_on("Ap_AuraCostCheck")), tostring(VRFW.is_on("Ap_PendingPay")), tostring(VRFW.is_on("Ap_TensionPay"))))
 end
 
 start()

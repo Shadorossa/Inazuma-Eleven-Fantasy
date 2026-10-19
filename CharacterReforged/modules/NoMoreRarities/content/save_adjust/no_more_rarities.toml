@@ -1,0 +1,16 @@
+# No More Rarities › its action of the VR-Framework's save adjust (Options › «Ajustar save»,
+# docs/framework/save-adjust.md): it exists only while this module is on. The pass is Character Reforged's
+# duplicate-players mechanism (scripts\save_tools.lua of Character Reforged) with this module's policy
+# (content\duplicate_rules\no_more_rarities.toml): every normal card -> rarity 4, and the special tiers the option
+# «Rarezas eliminadas» removes (normalize_special_rarities). The texts are text\rows\save_tools.toml.
+schema = "VRFW.save_adjust/1"
+
+[[VRFW.SaveAdjust]]
+id = "normal_rarity"
+label = "no_more_rarities_save_tools_normal_rarity"
+description = "no_more_rarities_save_tools_normal_rarity_desc"
+result = "no_more_rarities_save_tools_normal_rarity_done"
+order = 110
+script = "character_reforged:save_tools.lua"
+run = "CharacterReforged.SaveAdjust.normal_rarity"
+available = "CharacterReforged.SaveAdjust.can_set_normal_rarity"

@@ -415,7 +415,7 @@ local function roll(p, aura, T)
   p.rolls = p.rolls + 1
   local slot = 1
   local ok, rng = pcall(VRFW.rng, "aura_reworked.souls_reel", { match.seed, p.hdl, aura, p.rolls })
-  if ok and rng then slot = rng.below(#T.slots) + 1 end
+  if ok and rng then slot = rng:below(#T.slots) + 1 end
   local s = T.slots[slot]
   local shown = REEL.show and p.team == match.user
   local item = { hdl = p.hdl, aura = aura, slot = slot, at = now() + REEL.land_ms, shown = shown }
@@ -614,8 +614,10 @@ local function publish_start_max()
   return n
 end
 
--- CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> true, level, «Lv.3» (text key aura_reworked.reel_level) of the totem the match player
--- has out now; nothing when he has none. The handle may come signed or unsigned: both forms are tried.
+-- CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> true, level, «Lv.3» (text key aura_reworked.reel_level), progress, top of the
+-- totem the match player has out now; nothing when he has none. progress = his level points toward the next level
+-- (0..1: from this level's threshold to the next one, config.toml [souls.levels] thresholds); top = 1 at the totem's
+-- last level (progress 1). The handle may come signed or unsigned: both forms are tried.
 function AuraReworked.Souls.TotemLevel(hdl)
   local h = tonumber(hdl)
   if not h then return nil end
@@ -623,7 +625,15 @@ function AuraReworked.Souls.TotemLevel(hdl)
   if not p or not p.active then return nil end
   local st = p.pairs[p.active.aura]
   if not st then return nil end
-  return true, st.level, text("aura_reworked.reel_level", st.level)
+  local T = totem_of(p.active.aura)
+  local th = RULE.thresholds or {}
+  local to = th[st.level]
+  if not T or st.level >= #T.sp or not to then
+    return true, st.level, text("aura_reworked.reel_level", st.level), 1, 1
+  end
+  local from = th[st.level - 1] or 0
+  local progress = to > from and math.max(0, math.min(1, (st.lp - from) / (to - from))) or 1
+  return true, st.level, text("aura_reworked.reel_level", st.level), progress, 0
 end
 
 -- again after a return to the title (a load-time flag write may be refused: then the first one is here)

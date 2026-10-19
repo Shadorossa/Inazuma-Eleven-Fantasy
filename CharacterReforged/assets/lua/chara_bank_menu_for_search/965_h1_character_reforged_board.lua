@@ -30,7 +30,8 @@ do
   B.KEY_ROW = 416963278                              -- character_reforged_create_row
   B.KEY_MOVES = {892911027, 2888952841}              -- character_reforged_create_move1 / _move2
   B.MOVES = 201707600                                -- CMND_CHARACTERREFORGED_CREATE_MOVES (row) -> n, confirmId, confirmText,
-                                                     -- confirmIcon, previewCommand
+                                                     -- confirmIcon, previewCommand, avatarMayPair
+  B.IS_AVATAR = 2461887648                           -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
   -- the confirmation panel (pair_confirm_window_hooks.lua in general_window reads and clears these): the two cards,
   -- the move, the base's stats and what the pair adds (the system's preview command), the glyph
   B.PAIR = {N = 3845463003, BASE = 3138498002, PARTNER = 3239651284, MOVE = 2493211851,   -- character_reforged_pair_n / base / partner / move
@@ -90,10 +91,26 @@ do
   function B.Reset()
     B.on, B.base, B.row, B.moves, B.confirm_id, B.confirm_text, B.confirm_icon = false, 0, 0, 0, 0, "", 0
     B.preview = 0
+    B.avatar_may_pair = true
+    B.avatar_of = {}                                 -- card -> the player's avatar (B.IsAvatar)
     B.keep_plate, B.plate_done, B.co, B.pick, B.quiet, B.busy = false, false, nil, 0, 0, false
     B.created = false                                -- opened by a «Crear …» flow (any row, with or without moves)
   end
   B.Reset()
+
+  -- is card `hdl` the player's avatar (the game's answer, asked once per card while this bank is open)
+  function B.IsAvatar(hdl)
+    if type(hdl) ~= "number" or hdl == 0 then
+      return false
+    end
+    local known = B.avatar_of[hdl]
+    if known == nil then
+      local ok, avatar = pcall(funcLuaCommand, B.IS_AVATAR, hdl)
+      known = ok and avatar == true
+      B.avatar_of[hdl] = known
+    end
+    return known
+  end
 
   function B.Log(step, ...)
     pcall(funcLuaCommand, B.LOG, "bank " .. tostring(step), ...)
@@ -487,7 +504,8 @@ do
       if type(base) ~= "number" or base == 0 or type(row) ~= "number" or row <= 0 then
         return
       end
-      local n, confirm_id, confirm_text, confirm_icon, preview = funcLuaCommand(B.MOVES, row)
+      local n, confirm_id, confirm_text, confirm_icon, preview, avatar_may_pair = funcLuaCommand(B.MOVES, row)
+      B.avatar_may_pair = avatar_may_pair ~= false
       B.base, B.row = base, row
       B.moves = type(n) == "number" and n or 0
       B.confirm_id = type(confirm_id) == "number" and confirm_id or 0
@@ -502,6 +520,11 @@ do
 
     VRFW_Host.on(B.STEM, "IsBankCharaEnabled", {id = B.ID .. ".base_greyed", phase = "around", fn = function(nxt, card, ...)
       if B.on and card == B.base then
+        return false
+      end
+      -- the player's avatar, for a system whose rule says avatar_may_pair = false (All Miximaxed): greyed, never the
+      -- partner (the game's own answer, CMND_GET_IS_AVATAR_CHARA)
+      if B.created and not B.avatar_may_pair and B.IsAvatar(card) then
         return false
       end
       return nxt(card, ...)

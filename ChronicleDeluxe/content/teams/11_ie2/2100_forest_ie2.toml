@@ -1,0 +1,29 @@
+schema = "VRFW.team/2"
+# Mar de Árboles for the Chronicle side node «ie2_forest» (content/teams/70_route_nodes/side_nodes.toml): the retail
+# legend team tm_cro_legend_IE2_09 (roster, loadouts, formation, kit, crest through based_on) with an ordinary team's
+# stats. The legend team has the Batalla legendaria profile (stat rates x9 on every stat, cols 14-19 set); the node's
+# Crónica, Heroica and free-match classes play this copy, with the ordinary profile (cols 14-19 = -1, rates 1: the
+# empty lists are the defaults). Chronicle Deluxe 1.11.13, owner 2026-10-19. Its level comes from its game.
+default_lang = "en"
+
+[[team]]
+name = "cro_ie2_forest"
+key = "evt_cro_ie2_forest"
+based_on = "tm_cro_legend_IE2_09"      # Mar de Árboles (legend team)
+series = "IE2"
+
+[[edit]]
+target = "cro_ie2_forest"
+member = [
+  { slot = 0, patch = true, c14_19 = [], rates = [] },
+  { slot = 1, patch = true, c14_19 = [], rates = [] },
+  { slot = 2, patch = true, c14_19 = [], rates = [] },
+  { slot = 3, patch = true, c14_19 = [], rates = [] },
+  { slot = 4, patch = true, c14_19 = [], rates = [] },
+  { slot = 5, patch = true, c14_19 = [], rates = [] },
+  { slot = 6, patch = true, c14_19 = [], rates = [] },
+  { slot = 7, patch = true, c14_19 = [], rates = [] },
+  { slot = 8, patch = true, c14_19 = [], rates = [] },
+  { slot = 9, patch = true, c14_19 = [], rates = [] },
+  { slot = 10, patch = true, c14_19 = [], rates = [] },
+]

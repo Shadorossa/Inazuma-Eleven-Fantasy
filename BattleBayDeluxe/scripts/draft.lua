@@ -30,6 +30,7 @@
 -- | CMND_BBCR_DRAFT_PICK | k, i -> ok, done, slot, param, filled: candidate i of place k taken, the rows written |
 -- | CMND_BBCR_DRAFT_ABANDON | -> true: placeholders back, no draft (a running draft campaign is kept) |
 -- | CMND_BBD_DRAFT_PACK | -> ok, 12 numbers, 4 sound hashes: the candidates' «pack opening» look ([draft.pack]) |
+-- | CMND_BBD_DRAFT_MOUSE | -> ok, on: the Draft screen's mouse switch ([draft] mouse, default true) |
 -- | CMND_BBD_FORMATION_PLACE | formation, slot -> ok, pos, x, y: a starter slot's placement (the «Plantilla» viewer) |
 -- | CMND_BBCR_DRAFT_SYNC | active (1/0), playerTeam (the BB top menu's campaign info) -> phase |
 
@@ -1668,6 +1669,12 @@ function BattleBayDeluxe.DraftPack()
     return false
   end
   return true, table.unpack(p)
+end
+
+-- the Draft screen's mouse (config.toml [draft] mouse): hover selects, a click confirms; asked at every opening
+function BattleBayDeluxe.DraftMouse()
+  local v = U.config("draft.mouse", true)
+  return true, v ~= false
 end
 
 function BattleBayDeluxe.DraftSync(active, player)

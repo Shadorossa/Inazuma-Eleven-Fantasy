@@ -14,6 +14,9 @@ partner_rarities_denied = []
 # Inazuma Fantasy's «Crear miximax»): shown on the player page's mix card, given in a match while the miximax runs
 # (1.0.6, owner 2026-10-14; was 0: no partner move)
 moves = 1
+# the player's avatar is never the base nor the partner of a new miximax (owner 2026-10-19): greyed and refused in the
+# create flows; a miximax stored before stays
+avatar_may_pair = false
 
 # The base game's «Crear miximax» row: Character Reforged's create entry on the retail skill board (an aura piece's list
 # shows the item, the partner and his move come from the retail bank picker; scripts\lib\create.lua of that mod). The

@@ -5,7 +5,13 @@
 -- * OnEnter (around): A on an EMPTY slot (the game plays the error sound there) opens a one-column sub window:
 --   «Añadir del banco» (the formation closes and the dock runs the game's own «Banco», util_tp_dock.lua),
 --   «Planificar equipo» (the picker below) and, on a ghost, «Quitar planificación».
--- * The picker: the teams of a series page as emblem tiles (the VR-Framework's VRFW_EmblemGrid on Utilities' layers
+-- * «Planificar equipo» opens the SEASON LIST (2026-10-19, owner: like the Banco screen): the bank's own series tabs
+--   (Utilities' layer util_tp_tab, the game's cmn06_20_list_tab_item and its icon_list_tab icons; one tab a season,
+--   no «all» tab) over a card list on the left (layer util_tp_card) holding every character of that season (all the
+--   series' teams, owned or not, from the game's and the mods' data), a dark panel behind it, the pitch on the right.
+--   L2 / R2 or a click on a tab change the season, arrows / mouse move, L1 / R1 (wheel) page, A plans the card in the
+--   slot (the planner's own plan), B closes. Layout: config.toml [team_planner.list].
+-- * The older two-level picker (below, emblem tiles then a team's cards) stays for other callers: the teams of a series page as emblem tiles (the VR-Framework's VRFW_EmblemGrid on Utilities' layers
 --   util_tp_emblem / util_tp_label; Q / E change the series; «owned/characters» under each), then the team's characters as cards on Utilities' layer util_tp_card (menus\102_team\
 --   team_planner.toml): drawn from the card param at the display rarity, semi-transparent when the save does not own
 --   them; arrows / mouse move, L1 / R1 (wheel) page, A plans the card in the slot, B back to the teams. The keys are
@@ -49,6 +55,9 @@ do
   F.PLATE_MENU = 1427722143      -- personal_plate_menu
   F.DOCK_MENU = 937147172        -- soccer_team_dock_menu
   F.CARD_LAYER = @crc:util_tp_card@
+  F.TAB_LAYER = @crc:util_tp_tab@         -- the bank's series tab (season list)
+  F.SET_SPRITE, F.MESH_VISIBLE = 558735651, 3405944500
+  F.TAB_DMY_ON, F.TAB_DMY_OFF, F.TAB_ICON_BASE = 3229351341, 380437824, 4013273506   -- icon_list_tab_dmy01_on / _off, _icon_base01
   F.EMBLEM_LAYER = @crc:util_tp_emblem@   -- the framework's emblem grid (vrfw_emblem_tile / vrfw_tile_label)
   F.LABEL_LAYER = @crc:util_tp_label@
   F.BACKDROP = @crc:cmn02_01_blackbg@
@@ -70,6 +79,7 @@ do
   F.CTRLS = {1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]}
   F.KEYS = {up = 1197218715, down = 3259546669, left = 2765147006, right = 2075023265, enter = 1981080283,
             back = 3011112225 --[[CMD_BACK]], l1 = 3966226594 --[[CMD_FUNCL1]], r1 = 942075773 --[[CMD_FUNCR1]],
+            l2 = 1970176280 --[[CMD_FUNCL2]], r2 = 2704260807 --[[CMD_FUNCR2]],
             rclick = 3473063670 --[[CMD_MOUSE_RIGHT_CLICK]], click = 218912913 --[[CMD_EVT_MOUSE_LEFT]],
             wup = 1942756954 --[[CMD_EVT_WHEEL_UP]], wdown = 1623431741 --[[CMD_EVT_WHEEL_DOWN]]}
   F.REPEAT_FIRST, F.REPEAT_EVERY = 18, 5
@@ -238,8 +248,152 @@ do
     F.Backdrop(true)
     F.focus = 1
     F.built, F.opened = F.built or {}, F.opened or {}
-    TP.Log("picker opened:", pages, "series page(s)")
-    return F.ShowTab(0)
+    TP.Log("picker opened:", pages, "season(s)")
+    return F.ListOpen()
+  end
+
+  -- ---- the season list ---------------------------------------------------------------------------------------------
+
+  -- the list's layout (CMND_UTIL_TP_PICK_LIST, [team_planner.list])
+  function F.ListLayout()
+    local r = table.pack(TP.Cmd(TP.C.PICK_LIST))
+    if type(r[1]) ~= "number" then
+      r = {5, 3, 180, 215, 1.0, 500, 610, 0, 0, 0.45, 110, 230, 78, 1.0, 0, 0, 0.54, 1.0}
+    end
+    return {cols = r[1], rows = r[2], px = r[3], py = r[4], scale = r[5], cx = r[6], cy = r[7], ox = r[8], oy = r[9],
+            alpha = r[10], tab_x = r[11], tab_y = r[12], tab_pitch = r[13], tab_scale = r[14], back_x = r[15],
+            back_y = r[16], back_sx = r[17], back_sy = r[18]}
+  end
+
+  -- the dark panel behind the list: the backdrop layer moved / scaled over the list's side (nil = back to whole)
+  function F.Panel(Lo)
+    if Lo == nil then
+      TP.M(F.C.LOCAL_POS, F.BACKDROP, 0, 0, 0, 0)
+      TP.M(F.C.LOCAL_SCALE, F.BACKDROP, 1, 1, 1, 0)
+      return
+    end
+    TP.M(F.C.LOCAL_POS, F.BACKDROP, Lo.back_x, -Lo.back_y, 0, 0)
+    TP.M(F.C.LOCAL_SCALE, F.BACKDROP, Lo.back_sx, Lo.back_sy, 1, 0)
+  end
+
+  function F.ListOpen()
+    local L = F.CARD_LAYER
+    local have = TP.M(F.C.LAYER_NUM, L)
+    if type(have) ~= "number" or have < 1 then
+      TP.Log("list: layer util_tp_card not in soccer_formation_menu (" .. tostring(have) .. "): install the mod")
+      F.Finish()
+      return false
+    end
+    F.list = F.ListLayout()
+    F.Panel(F.list)
+    local tabs = TP.Cmd(TP.C.PICK_TABS)
+    F.tabs = type(tabs) == "table" and tabs or {}
+    F.tab_open = F.tab_open or {}
+    return F.SeasonShow(0, 0)
+  end
+
+  -- the season tab `dir` away (or tab `at`, 1-based) as the list
+  function F.SeasonShow(dir, at)
+    local page, name, on, n, pages = TP.Cmd(TP.C.PICK_SEASON, dir or 0, at or 0)
+    if type(page) ~= "number" or type(n) ~= "number" then
+      TP.Snd(TP.SY_ERROR)
+      F.Finish()
+      return false
+    end
+    local roster = TP.Cmd(TP.C.PICK_ROSTER)
+    if F.grid ~= nil then
+      F.GridClose(false)
+    end
+    local Lo, have = F.list, TP.M(F.C.LAYER_NUM, F.CARD_LAYER)
+    local per = math.max(1, math.min(Lo.cols * Lo.rows, type(have) == "number" and have or 1))
+    local G = {n = n, owned = on or 0, team = tostring(name), cols = Lo.cols, rows = math.ceil(per / Lo.cols), per = per,
+               px = Lo.px, py = Lo.py, scale = Lo.scale, cx = Lo.cx, cy = Lo.cy, ox = Lo.ox, oy = Lo.oy, alpha = Lo.alpha,
+               players = {}, sel = 0, held = {}, drawn = {}, shown = {}, wait = {},
+               season = {page = page, pages = pages or 1}}
+    for j = 1, n do
+      local e = type(roster) == "table" and roster[j] or nil
+      if type(e) == "table" then
+        G.players[j] = {param = type(e[1]) == "number" and e[1] or 0, owned = e[2] == true,
+                        rarity = type(e[3]) == "number" and e[3] or 4, name = tostring(e[4] or "")}
+      else
+        G.players[j] = {param = 0, owned = false, rarity = 4, name = ""}
+      end
+    end
+    G.prio = F.prio or 440
+    F.grid = G
+    F.state = "grid"
+    F.KeysReset()
+    F.Tabs(page)
+    F.GridDraw()
+    TP.Log(string.format("season list: tab %d/%d %s, %d character(s), %d owned, %d a page", page, pages or 0, G.team, n,
+      G.owned, per))
+    return true
+  end
+
+  -- the centre of season tab i (1-based) in screen px (y down)
+  function F.TabCentre(i)
+    local Lo = F.list
+    return Lo.tab_x + (i - 1) * Lo.tab_pitch, Lo.tab_y
+  end
+
+  -- the tab bar: one bank tab a season, the current one in its focused look (cur = nil hides the bar)
+  function F.Tabs(cur)
+    local L = F.TAB_LAYER
+    local have = TP.M(F.C.LAYER_NUM, L)
+    have = type(have) == "number" and have or 0
+    local mods = {}
+    if cur ~= nil and type(VRFW_BankTabs) == "table" and type(VRFW_BankTabs.List) == "function" then
+      local ok, l = pcall(VRFW_BankTabs.List)
+      mods = (ok and type(l) == "table") and l or {}
+    end
+    for k = 0, have - 1 do
+      local t = cur ~= nil and F.tabs[k + 1] or nil
+      if t == nil then
+        if F.tab_open[k] then
+          TP.M(TP.C.LAYER_VISIBLE, L, k, false)
+        end
+      else
+        if not F.tab_open[k] then
+          TP.M(F.C.OPEN_LAYER, L, k)
+          F.tab_open[k] = true
+        end
+        local atlas, on, off = t[3] or 0, t[4] or 0, t[5] or 0
+        if atlas == 0 then            -- a mod's series: the framework's bank tab of that series
+          for _, m in ipairs(mods) do
+            if m.series == t[1] then
+              atlas, on, off = m.atlas or 0, m.icon or 0, m.off or 0
+              break
+            end
+          end
+        end
+        if atlas ~= 0 then
+          TP.M(F.SET_SPRITE, L, atlas, on, F.TAB_DMY_ON, 0, k)
+          TP.M(F.SET_SPRITE, L, atlas, off, F.TAB_DMY_OFF, 0, k)
+        end
+        TP.M(F.MESH_VISIBLE, L, F.TAB_ICON_BASE, true, k)
+        local x, y = F.TabCentre(k + 1)
+        local sc = F.list.tab_scale
+        TP.M(F.C.LOCAL_SCALE, L, sc, sc, 1, k)
+        TP.M(F.C.LOCAL_POS, L, x, -y, 0, k)
+        TP.M(F.C.SET_PRIO, L, k, (F.prio or 440) + 2)
+        TP.M(F.C.ANIME, L, k, F.FOCUS, (k + 1) == cur and 0 or 2, F.BUTTON)
+        TP.M(TP.C.LAYER_VISIBLE, L, k, true)
+      end
+    end
+  end
+
+  -- the season tab under the pointer (1-based; nil = none)
+  function F.TabHit(x, y)
+    if type(x) ~= "number" or type(y) ~= "number" or F.list == nil then
+      return nil
+    end
+    for i = 1, #F.tabs do
+      local cx, cy = F.TabCentre(i)
+      if math.abs(x - cx) <= F.list.tab_pitch / 2 and math.abs(y - cy) <= 40 then
+        return i
+      end
+    end
+    return nil
   end
 
   function F.TeamItem(i)
@@ -317,7 +471,15 @@ do
     if F.eg ~= nil then
       F.eg:Close()
     end
+    if F.grid ~= nil then
+      F.GridClose(false)
+    end
     F.grid = nil
+    if F.list ~= nil then
+      F.Tabs(nil)
+      F.Panel(nil)
+      F.list = nil
+    end
     F.Backdrop(false)
     F.HeaderBack()
     F.state = nil
@@ -467,7 +629,7 @@ do
       who = p.name .. "  " .. (p.owned and TP.Text(F.T_OWNED, "(owned)") or TP.Text(F.T_MISSING, "(not owned)"))
     end
     local pages = math.ceil(G.n / G.per)
-    local head = F.Fmt(F.T_INFO, "%s  %d/%d  ·  %s", G.team, G.owned, G.n, who)
+    local head = F.Fmt(F.T_INFO, "%s  %d/%d  -  %s", G.team, G.owned, G.n, who)
     if pages > 1 then
       head = head .. string.format("  (%d/%d)", page + 1, pages)
     end
@@ -556,15 +718,24 @@ do
     local G = F.grid
     F.CardStep()
     local P = {}
-    for _, k in ipairs({"back", "rclick", "click", "enter", "l1", "r1", "wup", "wdown"}) do
+    for _, k in ipairs({"back", "rclick", "click", "enter", "l1", "r1", "l2", "r2", "wup", "wdown"}) do
       P[k] = F.Pressed(k)
     end
     for _, k in ipairs({"left", "right", "up", "down"}) do
       P[k] = F.Pressed(k, true)
     end
     if P.back or P.rclick then
+      if G.season ~= nil then
+        F.Finish()
+        return
+      end
       TP.Snd(TP.SY_BACK)
       F.GridClose(true)
+      return
+    end
+    if G.season ~= nil and (P.l2 or P.r2) and G.season.pages > 1 then
+      TP.Snd(TP.SY_MOVE)
+      F.SeasonShow(P.l2 and -1 or 1, 0)
       return
     end
     local x, y = TP.M(F.C.POINTER)
@@ -574,6 +745,16 @@ do
       local d = F.GridHit(x, y)
       if d ~= nil then
         F.GridMove(d)
+      end
+    end
+    if P.click and G.season ~= nil then
+      local t = F.TabHit(x, y)
+      if t ~= nil then
+        if t ~= G.season.page then
+          TP.Snd(TP.SY_MOVE)
+          F.SeasonShow(0, t)
+        end
+        return
       end
     end
     if P.click then
@@ -632,6 +813,7 @@ do
     return function(...)
       TP.ghost, F.state, F.grid, F.built, F.opened = {}, nil, nil, {}, {}
       F.eg = nil                        -- a new menu: new layer instances
+      F.tab_open, F.list, F.tabs = {}, nil, {}
       F.set, F.type = nil, 0
       local okA, hasA = pcall(funcLuaCommand, TP.C.PARAM_HAS, F.PARAM_DOCK)
       if okA and hasA then

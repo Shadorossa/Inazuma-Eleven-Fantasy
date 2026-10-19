@@ -10,6 +10,9 @@
 --   keep_first = [...]                      which copy stays: the first key that tells two copies apart decides, in
 --                                           order; KEEP_ORDER_KEYS below (default: the list KEEP_ORDER_DEFAULT)
 --   normal_card_rarity = 0..15              the saved rarity every normal card gets (absent = rarities unchanged)
+--   normalize_special_rarities = { option = "<mod>.<row>", values = { "<option value>" = [col 41 values] } }
+--                                           the special cards (chara_param col 41) that get normal_card_rarity too, by
+--                                           the current value of a settings row (none listed for that value = none)
 --   element_spirits_per_released_card = n   element spirits (the story's «fichas» of his element) per copy that leaves
 --   release_cards_hidden_in = "<file>"      a file of the declaring mod whose [[hide]] rows / [[remove]] rows with
 --                                           mode = "hide" name cards that leave the club (each declaring mod its own)
@@ -60,6 +63,22 @@ local function merge_rule(policy, mod_id, rule_name, rule)
         policy.normal_card_rarity = value
       else
         warn(label .. ": normal_card_rarity must be a whole number 0.." .. HIGHEST_RARITY)
+      end
+    elseif key == "normalize_special_rarities" then
+      local option = type(value) == "table" and value.option or nil
+      local values = type(value) == "table" and value.values or nil
+      if type(option) == "string" and option:find(".", 1, true) and type(values) == "table" then
+        local ok, current = pcall(VRFW.option, option)
+        local key = (ok and type(current) == "number") and string.format("%d", math.floor(current)) or tostring(ok and current or "")
+        local list = values[key]
+        local set = {}
+        for _, rarity in ipairs(type(list) == "table" and list or {}) do
+          if type(rarity) == "number" and rarity > 0 and rarity <= HIGHEST_RARITY and rarity % 1 == 0 then set[rarity] = true end
+        end
+        policy.normal_special_rarities = set
+        policy.normal_special_option = option .. " = " .. tostring(ok and current or "?")
+      else
+        warn(label .. ": normalize_special_rarities must be { option = \"<mod>.<row>\", values = { \"<value>\" = [...] } }")
       end
     elseif key == "element_spirits_per_released_card" then
       if type(value) == "number" and value >= 0 and value % 1 == 0 then
@@ -116,9 +135,14 @@ function DuplicateRules.describe(policy)
   if #policy.names == 0 then return "no duplicate rule declared" end
   local hidden = {}
   for _, source in ipairs(policy.hidden_card_sources) do hidden[#hidden + 1] = source.mod .. ":" .. source.file end
-  return string.format("rules %s; one card per %s; keep first %s; normal cards -> rarity %s; %d element spirits per released copy; hidden cards released: %s; on load: %s",
+  local special = {}
+  for rarity in pairs(policy.normal_special_rarities or {}) do special[#special + 1] = rarity end
+  table.sort(special)
+  return string.format("rules %s; one card per %s; keep first %s; normal cards -> rarity %s (special tiers too: %s%s); %d element spirits per released copy; hidden cards released: %s; on load: %s",
     table.concat(policy.names, ", "), policy.one_card_per or "(none: duplicates stay)", table.concat(policy.keep_first, " > "),
     policy.normal_card_rarity ~= nil and tostring(policy.normal_card_rarity) or "(unchanged)",
+    #special > 0 and table.concat(special, ", ") or "none",
+    policy.normal_special_option and (", " .. policy.normal_special_option) or "",
     policy.element_spirits_per_released_card, #hidden > 0 and table.concat(hidden, ", ") or "none",
     policy.apply_on_load and "yes" or "no")
 end

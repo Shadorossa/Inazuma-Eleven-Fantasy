@@ -6,8 +6,9 @@
 -- character_reforged_list_base, written by board_create_entry_hooks.lua before the list opens, removed after it):
 --   * a «create» row: the item's own name, no counts, its aura type's icon (CharacterReforged.CreateCard.Row);
 --   * its detail card: the item's own name and description, no template portrait / move (CreateCard.Detail);
---   * a retail Mix-Max row this player can not take (CreateCard.Allowed: the VR-Framework's owners / whitelist rule):
---     greyed, and Aceptar on it plays the retail error sound and keeps the list open.
+--   * a retail Mix-Max row this player can not take (CreateCard.Allowed: the VR-Framework's owners / whitelist rule) and
+--     a «create» row he may not be the base of (CreateCard.CreateAllowed: the avatar when the system's rule says
+--     avatar_may_pair = false): greyed, and Aceptar on it plays the retail error sound and keeps the list open.
 -- The shared rules are Character Reforged's lua\_all\character_reforged_create_card.lua (also the «Fantasy» skill
 -- table's picker, graft ss2_menus). Definitions and wraps only at chunk load (no engine call).
 do
@@ -71,6 +72,12 @@ do
           end
           if card.IsCreate(skill) then
             card.Row(a1, a2, skill)
+            if not card.CreateAllowed(skill, List.base) then
+              List.refused[skill] = true
+              if type(SetupGrayout) == "function" then
+                SetupGrayout(a1, a2, 0.5)
+              end
+            end
           elseif not card.Allowed(skill, List.base) then
             List.refused[skill] = true
             if type(SetupGrayout) == "function" then

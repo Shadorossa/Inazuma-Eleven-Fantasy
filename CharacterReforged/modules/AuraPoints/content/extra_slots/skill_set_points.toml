@@ -7,7 +7,7 @@
 # on their pool. Same rules Inazuma Fantasy declared on its Hiper slot (read from this mod's tables since 2026-10-14).
 #
 #   start_gate_applies   a keshin / armour / totem that runs on a pool (table AuraPoints.Aura, field pool) of a team
-#                        the pools apply to (AuraPoints.Team, field cost: the user's team, the rival's with [points] cpu)
+#                        the pools apply to (AuraPoints.Team, field cost: both teams)
 #                        starts by its pool, never by the gauge ...
 #   start_refused        ... and is refused only when that pool is empty this match (AuraPoints.Pair, field empty)
 #   move_cost_short      the running spirit's own move (or a fusion keshin partner's) whose pool does not cover its PEG /

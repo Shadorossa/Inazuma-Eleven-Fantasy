@@ -205,7 +205,7 @@ local function apply_grade_animations()
   for _, e in ipairs(list) do
     parts[#parts + 1] = string.format("%s from grade %d plays %s's cut-in", tostring(e.technique), e.grade, tostring(e.cutin_of))
   end
-  info(string.format("grade animations on (%d): %s", #list, table.concat(parts, "; ")))
+  info(string.format("grade animations on (%d): %s; titles: %s", #list, table.concat(parts, "; "), tostring(why or "-")))
 end
 
 -- is one of the state keys of rule `name` set (= 1) now? the key's name when so

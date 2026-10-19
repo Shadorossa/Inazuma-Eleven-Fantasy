@@ -2,7 +2,8 @@
 -- duplicate rules, lib/duplicate_players/rules.lua). Ported from Inazuma Fantasy's «Ajustar save al mod»
 -- (scripts/lib/save_slots/adjust.lua, docs/game/engine/savefix.md) on 2026-10-14, without its own rules.
 --
---   * rarity (policy normal_card_rarity): every normal card (chara_param col 41 = 0) whose saved rarity differs -> it
+--   * rarity (policy normal_card_rarity): every normal card (chara_param col 41 = 0), and every special card whose col 41
+--     the policy lists (normal_special_rarities: the tiers a rule's option removes), whose saved rarity differs -> it
 --   * hidden cards (policy release_cards_hidden_in): every copy is released, a copy in a team too (team slot,
 --     memberNum, captain, team aura entry); their spirit cards (spirit lists) are emptied
 --   * duplicates (policy one_card_per): ONE card per character (a normal card by its chara_base, a special card by its
@@ -13,7 +14,11 @@
 --     equipment and board items go back to their stacks (equipment_num), his handle leaves charaBank / rpgCharaBank /
 --     m_Collection, the Kizuna boards (item + its lines) and the Kizuna Town residents; he gives
 --     element_spirits_per_released_card element spirits of his element (story spirits, rarity 4 then 3..0, capped)
--- Never touched: story-only, season and released-scout records (attribute bits). Idempotent.
+-- Never touched: story-only, season and released-scout records (attribute bits). Never released: a card the game's
+-- bank cannot retire (CanCharaBankRemove of chara_bank_menu: attribute bits 0x80 / 0x1000 / 0x2000 / 0x10000, e.g. the
+-- avatars and the original players) and any card that did not join by signing (addPartySource other than 4): in a
+-- duplicate group such a card is always the one kept, and a second one of them stays too (logged «not released»).
+-- Idempotent.
 
 local T = require "lib/duplicate_players/save_tree"
 
@@ -24,6 +29,10 @@ local floor, concat, sub, byte, char = math.floor, table.concat, string.sub, str
 
 -- attribute bits of the records the pass never touches (story-only, season, released scouts)
 MergePass.ATTRIBUTES_NEVER_TOUCHED = 0x10000000 + 0x00100000 + 0x80 + 0x40
+-- the attribute bits of a card the bank cannot retire (chara_bank_menu CanCharaBankRemove: CMND 29506568(hdl, bit))
+MergePass.ATTRIBUTES_NOT_RETIRABLE = 0x80 + 0x1000 + 0x2000 + 0x10000
+-- addPartySource of a player who joined by signing (a spirit summon / fichaje); docs/formats/save.md
+MergePass.SIGNED_SOURCE = 4
 -- an element spirit stock word holds at most this many
 MergePass.ELEMENT_SPIRIT_CAP = 999
 local ELEMENT_NAMES = { "wind", "forest", "fire", "mountain" }
@@ -55,6 +64,12 @@ local function eligible(record)
   return record.handle ~= 0 and record.card ~= 0 and band(record.attributes, MergePass.ATTRIBUTES_NEVER_TOUCHED) == 0
 end
 
+-- the pass may release this card: the bank could retire it and he joined by signing
+local function retirable(record)
+  return band(record.attributes, MergePass.ATTRIBUTES_NOT_RETIRABLE) == 0 and record.source == MergePass.SIGNED_SOURCE
+end
+MergePass.retirable = retirable
+
 -- what "the same card" is: per character, a normal card is its character and a special card (or an unknown row) its
 -- card; per card, always the card. Ordered keys: every character key sorts before every card key, then by number.
 local function same_card_key(record, one_card_per)
@@ -75,6 +90,9 @@ local KEEP_TESTS = {
 
 local function keeps_before(keep_first)
   return function(a, b)
+    -- a card that cannot be released is always kept first
+    local ra, rb = retirable(a), retirable(b)
+    if ra ~= rb then return rb end
     for _, key in ipairs(keep_first) do
       local decided = KEEP_TESTS[key](a, b)
       if decided ~= nil then return decided end
@@ -83,16 +101,23 @@ local function keeps_before(keep_first)
   end
 end
 
--- plan.rarity = { {handle, card, rarity, character} }, plan.release = { {handle, card, kept} } (kept 0 = a hidden card)
+-- plan.rarity = { {handle, card, rarity, character} }, plan.release = { {handle, card, kept} } (kept 0 = a hidden card),
+-- plan.protected = { {handle, card, why, kept} } (cards the pass would release but may not)
 function MergePass.plan(records, policy, is_hidden)
-  local plan = { rarity = {}, release = {} }
+  local plan = { rarity = {}, release = {}, protected = {} }
+  local special = policy.normal_special_rarities or {}
   local groups, keys = {}, {}
   for _, record in ipairs(records) do
     if eligible(record) then
       if is_hidden(record.card) then
-        plan.release[#plan.release + 1] = { record.handle, record.card, 0 }
+        if retirable(record) then
+          plan.release[#plan.release + 1] = { record.handle, record.card, 0 }
+        else
+          plan.protected[#plan.protected + 1] = { record.handle, record.card, "hidden card", 0, record }
+        end
       else
-        if policy.normal_card_rarity ~= nil and record.special_rarity == 0 and record.rarity ~= policy.normal_card_rarity then
+        if policy.normal_card_rarity ~= nil and (record.special_rarity == 0 or special[record.special_rarity])
+            and record.rarity ~= policy.normal_card_rarity then
           plan.rarity[#plan.rarity + 1] = { record.handle, record.card, record.rarity, record.character }
         end
         if policy.one_card_per ~= nil then
@@ -119,7 +144,13 @@ function MergePass.plan(records, policy, is_hidden)
     if #group >= 2 then
       table.sort(group, before)
       local kept = group[1].handle
-      for i = 2, #group do plan.release[#plan.release + 1] = { group[i].handle, group[i].card, kept } end
+      for i = 2, #group do
+        if retirable(group[i]) then
+          plan.release[#plan.release + 1] = { group[i].handle, group[i].card, kept }
+        else
+          plan.protected[#plan.protected + 1] = { group[i].handle, group[i].card, "duplicate", kept, group[i] }
+        end
+      end
     end
   end
   -- a released copy needs no rarity change
@@ -150,7 +181,7 @@ end
 
 local function new_report()
   return {
-    players = 0, hidden_released = 0, duplicates_merged = 0, to_normal_rarity = 0, to_normal_rarity_from = {},
+    players = 0, hidden_released = 0, duplicates_merged = 0, protected = 0, to_normal_rarity = 0, to_normal_rarity_from = {},
     element_spirits = { 0, 0, 0, 0 }, element_spirits_lost = 0, without_element = 0, spirit_entries_cleared = 0,
     spirit_cards_removed = 0, team_slots_cleared = 0, captains_cleared = 0, team_auras_cleared = 0,
     bank_words_cleared = 0, kizuna_items_cleared = 0, kizuna_lines_cleared = 0, residents_unlinked = 0,
@@ -190,6 +221,10 @@ function MergePass.run(tree, facts, policy)
   local levels = column("nowLv")
   local count = #handles
   local function level_of(i) return T.rd(levels, i * 2, 2) end
+  -- how each player joined (u8 per record); a save without the column: unknown (0), so nobody is released
+  local sources = T.leaf(tree, humans, "addPartySource")
+  if sources and #sources ~= count then sources = nil end
+  local function source_of(i) return sources and byte(sources, i + 1) or 0 end
   -- team sets (block 7): the handles in a team
   local team_permanent = T.unwrap(tree, "block7", "m_InfoPermanent")
   local teams = teams_of(tree, team_permanent)
@@ -211,11 +246,18 @@ function MergePass.run(tree, facts, policy)
         handle = handle, card = card, rarity = rarities[i + 1], attributes = attributes[i + 1], level = level_of(i),
         experience = experiences[i + 1], get_order = get_orders[i + 1], in_a_team = in_a_team[handle] == true,
         in_a_fusion = false, move_uses = 0, special_rarity = facts:special_rarity_of(card), character = facts:character_of(card),
+        source = source_of(i),
       }
     end
   end
   report.players = #records
   local plan = MergePass.plan(records, policy, is_hidden)
+  report.protected = #plan.protected
+  for _, entry in ipairs(plan.protected) do
+    local record = entry[5]
+    report.lines[#report.lines + 1] = string.format("not released 0x%08X card 0x%08X (%s%s): the bank cannot retire it (attribute 0x%X) or it did not join by signing (source %d)",
+      entry[1], entry[2], entry[3], entry[4] ~= 0 and string.format(" of 0x%08X", entry[4]) or "", record.attributes, record.source)
+  end
 
   -- ---- rarity of the normal cards
   local rarity_from = {}
@@ -618,12 +660,12 @@ function MergePass.summary(report)
   local from = {}
   for i, entry in ipairs(report.to_normal_rarity_from) do from[i] = "(" .. entry[1] .. ", " .. entry[2] .. ")" end
   return string.format(
-    "Duplicate players: %d players; %d hidden cards released, %d duplicates merged into the kept card, %d normal cards "
+    "Duplicate players: %d players; %d hidden cards released, %d duplicates merged into the kept card, %d kept (not retirable), %d normal cards "
       .. "-> the normal rarity [%s]; element spirits +%d wind +%d forest +%d fire +%d mountain (%d lost to the cap, %d "
       .. "players without element); %d spirit entries (%d cards) of hidden cards emptied; moved to the kept card: %d "
       .. "team slots, %d captains, %d team auras, %d bank words, %d dock-bit records; cleared: %d team slots, %d "
       .. "captains, %d team auras, %d bank words, %d Kizuna items + %d lines, %d residents, %d item references; %d bytes patched",
-    report.players, report.hidden_released, report.duplicates_merged, report.to_normal_rarity, concat(from, ", "),
+    report.players, report.hidden_released, report.duplicates_merged, report.protected or 0, report.to_normal_rarity, concat(from, ", "),
     report.element_spirits[1], report.element_spirits[2], report.element_spirits[3], report.element_spirits[4],
     report.element_spirits_lost, report.without_element, report.spirit_entries_cleared, report.spirit_cards_removed,
     report.team_slots_repointed, report.captains_repointed, report.team_auras_repointed, report.bank_words_repointed,

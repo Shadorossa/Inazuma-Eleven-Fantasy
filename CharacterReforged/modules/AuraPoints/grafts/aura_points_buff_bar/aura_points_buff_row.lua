@@ -10,6 +10,10 @@
 -- * AuraPoints_BuffRow.drawn: the row's drawn state, the player on each portrait instance (retail or widened).
 -- * AuraPoints_BuffRow.PoolsOn(): the mod's PEG or SP part is on (CMND_AURAPOINTS_ACTIVE_PARTS): while not, or not
 --   known yet, the row keeps the retail count and aura_points_buff_bar.lua draws nothing.
+-- * Face swaps in quick succession: a portrait instance whose face is swapped again while its previous face load may
+--   still run (two row redraws a few frames apart, e.g. a player entering and leaving the row) could keep the blank
+--   placeholder. Such an instance gets its last face swapped once more RESWAP_FRAMES later (R.Step, from the bar
+--   block's Step wrapper); loader.log «aura_points buff row face swapped again».
 -- Nothing at chunk load but the debug library's upvalue search; engine calls only inside the wrapper, through pcall.
 @UPV@
 AuraPoints_BuffRow = AuraPoints_BuffRow or {}
@@ -20,6 +24,32 @@ local CMD_PARTS = @crc:CMND_AURAPOINTS_ACTIVE_PARTS@ --[[the mod's parts this st
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
+R.RESWAP_FRAMES = 30 --[[a second face swap of one instance within this many frames is redone this many frames later]]
+R.frame = R.frame or 0
+R.faces = R.faces or {} --[[portrait instance -> {hdl, metamorphosed, frame, redo}: its last face swap]]
+
+-- the face swap of portrait instance i (the retail call), remembered for a later redo
+function R.SwapFace(hdl, layer, i, metamorphosed)
+  local last = R.faces[i]
+  local redo = last ~= nil and R.frame - last.frame < R.RESWAP_FRAMES and R.frame + R.RESWAP_FRAMES or nil
+  R.faces[i] = {hdl = hdl, layer = layer, metamorphosed = metamorphosed, frame = R.frame, redo = redo}
+  SwapLayerFaceIconTexBySoccerCharaHdl(hdl, layer, i, 620971603, 1501523875, faceType, 1, true, true, true, false, metamorphosed)
+end
+
+-- every frame (the bar block's Step wrapper): the frame count and the face swaps due again
+function R.Step()
+  R.frame = R.frame + 1
+  for i, f in pairs(R.faces) do
+    if f.redo ~= nil and R.frame >= f.redo then
+      f.redo = nil
+      if IsInvalidSoccerCharaHdl(f.hdl) == false then
+        SwapLayerFaceIconTexBySoccerCharaHdl(f.hdl, f.layer, i, 620971603, 1501523875, faceType, 1, true, true, true, false,
+          f.metamorphosed)
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "aura_points buff row face swapped again", i, string.format("0x%X", f.hdl))
+      end
+    end
+  end
+end
 
 -- the portrait layer's open instances (the menu's layer count); 0 = unknown
 function R.Instances()
@@ -134,7 +164,7 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
         local n10 = 3669916425
         funcLuaMenuCommand(558735651, n8, 502529699 --[[#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx]], n9, n10, 0, i2)
         local is_aura_skill_metamorphosed = IsAuraSkillMetamorphosed(convert_aura_attr_to_aura_ty)
-        SwapLayerFaceIconTexBySoccerCharaHdl(aura_chara_hdl, n7, i2, 620971603, 1501523875, faceType, 1, true, true, true, false, is_aura_skill_metamorphosed)
+        R.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
       end
       local l3 = 68 * n6
       funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], n7, l3, 0, 0, i2)

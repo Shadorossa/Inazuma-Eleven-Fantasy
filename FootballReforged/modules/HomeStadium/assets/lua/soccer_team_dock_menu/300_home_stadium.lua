@@ -41,6 +41,8 @@ if type(HomeStadium) == "table" and type(HomeStadium.owned) == "function" then
     TITLE_SLOT = 3259336903,    -- gtxt_formation01
     NAME_NODE = 1509045176,     -- _text_formation01
     BOX = 1083262227,           -- _base_formation01 (layout (-403, -24), 410 x 76: BetterUI's scale reference)
+    BOX_BLANK = 579557469,      -- _base_formation_blank_stop01 (the flat grey plate the retail hides)
+    FORM_BOX = 3286546665,      -- team00_12_formation_style (FORMACIÓN, the box the button copies)
     MAP_NAME = 3763041341,      -- CMND_GET_MAP_NAME (map)
     TEXT_GET = 4074371074,      -- CMND_TEXT_GET (id)
     POS_X = 534, POS_Y = -206,  -- the window's place: the retail stadium picker's (soccer_vs_mydock_option_menu)
@@ -157,6 +159,16 @@ if type(HomeStadium) == "table" and type(HomeStadium.owned) == "function" then
   -- save loaded), the dock's team switch (UpdateTeamDockNo), a pick; skipped when nothing changed (team, stadium).
   local function dress(why)
     if not is_open(K.BUTTON) then return end
+    -- the box itself as the retail SetupFormationStyle shows FORMACIÓN's: its translucent plate on, the flat grey
+    -- «blank / stop» plate off (the copied object shows both until the retail code picks one: the grey box of 1.2.2),
+    -- drawn at FORMACIÓN's own priority (its text one above, as the retail OnSetupLayer sets them)
+    pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], K.BUTTON, K.BOX, true, 0)
+    pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], K.BUTTON, K.BOX_BLANK, false, 0)
+    local okp, prio = pcall(funcLuaMenuCommand, 1018283794 --[[CMND_GET_DRAW_PRIORITY]], K.FORM_BOX, 0)
+    if okp and type(prio) == "number" then
+      pcall(funcLuaMenuCommand, 1491630496 --[[CMND_SET_DRAW_PRIORITY]], K.BUTTON, 0, prio)
+      pcall(funcLuaMenuCommand, 1848885328 --[[CMND_SET_MENU_TEXT_PRIORITY]], K.BUTTON, 0, K.NAME_NODE, prio + 1)
+    end
     if not S.titled then
       S.titled = true
       local ok = pcall(funcLuaMenuCommand, 558735651 --[[sprite of a material slot]], K.BUTTON, K.TITLE_ATLAS, K.TITLE,

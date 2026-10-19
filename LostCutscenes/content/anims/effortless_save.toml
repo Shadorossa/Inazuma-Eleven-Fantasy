@@ -14,6 +14,7 @@
 # 1.1.0-1.3.3 built a cut-in of our own here (ev71_80010: «Recepción negativa» mirrored and slowed, joined to ev71_31090);
 # replaced by the retail one in 1.4.0 (Nacho, 2026-10-07).
 schema = "VRFW.anim/2"
+owner = "match"   # the keeper scene rule plays it (content\techniques\effortless_save.toml [[keeper_scene]])
 
 [[event]]
 name = "effortless_save"

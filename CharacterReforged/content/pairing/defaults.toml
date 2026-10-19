@@ -17,3 +17,6 @@ base_rarities_denied = []
 partner_rarities_denied = []
 # partner moves the player picks with a new pair (0 = none: the pair works as the retail aura does)
 moves = 0
+# the player's avatar (the game's own answer, CMND_GET_IS_AVATAR_CHARA) may be the base or the partner of a new pair;
+# false: greyed and refused in the create flows (pairs stored before stay as they are)
+avatar_may_pair = true

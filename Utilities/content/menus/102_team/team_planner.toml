@@ -26,3 +26,17 @@ add_layer = { name = "util_tp_emblem", object = "vrfw_emblem_tile", count = 24, 
 [[patch]]
 menu = "soccer_formation_menu"
 add_layer = { name = "util_tp_label", object = "vrfw_tile_label", count = 48, groups = [{ group = "soccer_formation_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The season list «Planificar equipo» opens (2026-10-19, owner: «like the Banco screen»): the bank's own series tab
+# (cmn06_20_list_tab_item of chara_bank_menu, its icons from the game's icon_list_tab atlas) as a free object the Lua
+# places in a row over the card list (the formation screen has no tab bar to attach it to), x16 (one a season).
+[[object]]
+name = "util_tp_tab"
+from = "cmn06_20_list_tab_item"
+free = true
+drop_index_attach = true
+
+[[patch]]
+menu = "soccer_formation_menu"
+add_layer = { name = "util_tp_tab", object = "util_tp_tab", count = 16, groups = [{ group = "soccer_formation_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+res = ["#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"]

@@ -3,7 +3,10 @@ do
 local EVT_Child = function()
 -- No More Rarities › the «Rareza» tab (graft no_more_rarities_filter). Every normal card is rarity 4 and the tab has
 -- no box for it (it lists from rarity 5 on), so a specific rarity set always lets rarity 4 through; the removed
--- rarities 0-3 that older saved sets still hold are dropped. «Todos» passes everything as in the game.
+-- rarities 0-3 that older saved sets still hold are dropped. The special cards the option removes
+-- (NoMoreRarities.RarityRemoved: Ídolo 5-7 / Diamante 8) look like normal cards, so a specific set lets them through
+-- too (their boxes stay listed: the tab's list start is the config's first_listed_rarity). «Todos» passes everything
+-- as in the game.
 local NORMAL_CARD_RARITY = 4
 local FILTER_KIND_RARITY = 5          -- listItemType of a rarity box
 local FILTER_KIND_ALL = 9             -- listItemType of a «Todos» box (its value = the tab's kind)
@@ -24,6 +27,19 @@ local function holds_rarity(params, rarity)
     end
   end
   return false
+end
+-- the rarities a specific set always lets through: the normal card's and every special one the option removes
+local function always_passing()
+  local out = {NORMAL_CARD_RARITY}
+  local rules = rawget(_ENV, "NoMoreRarities")
+  if type(rules) == "table" and type(rules.RarityRemoved) == "function" and type(rules.LAST_REMOVABLE_RARITY) == "number" then
+    for rarity = NORMAL_CARD_RARITY + 1, rules.LAST_REMOVABLE_RARITY do
+      if rules.RarityRemoved(rarity) then
+        out[#out + 1] = rarity
+      end
+    end
+  end
+  return out
 end
 local function is_specific_rarity_set(params)
   local specific, everything = false, false
@@ -50,10 +66,14 @@ end
 local previous_create_send_filter_param_array = SPIRIT_FILTER_MENU.CreateSendFilterParamArray
 function SPIRIT_FILTER_MENU.CreateSendFilterParamArray(params)
   local result = previous_create_send_filter_param_array(params)
-  if is_specific_rarity_set(params) and not holds_rarity(params, NORMAL_CARD_RARITY) and rarity_removal_applies() then
-    table.insert(result, FILTER_KIND_RARITY)
-    table.insert(result, NORMAL_CARD_RARITY)
-    table.insert(result, RARITY_OPTION)
+  if is_specific_rarity_set(params) and rarity_removal_applies() then
+    for _, rarity in ipairs(always_passing()) do
+      if not holds_rarity(params, rarity) then
+        table.insert(result, FILTER_KIND_RARITY)
+        table.insert(result, rarity)
+        table.insert(result, RARITY_OPTION)
+      end
+    end
   end
   return result
 end

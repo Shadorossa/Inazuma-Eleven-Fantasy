@@ -276,11 +276,11 @@ local function cost_teams()
   if cost_teams_user == u then return end
   cost_teams_user = u
   for team = 0, 1 do
-    teamset(team, "cost", (AC.enabled and (AC.cpu or team == u)) and 1 or nil)
+    teamset(team, "cost", AC.enabled and 1 or nil)
   end
 end
 
-local function applies(team) return AC.enabled and (AC.cpu or team == frame.user) end
+local function applies(team) return AC.enabled and (team == 0 or team == 1) end   -- both teams (owner 2026-10-19)
 
 local function start_match()
   match_no = match_no + 1
@@ -986,11 +986,27 @@ end)
 
 -- ---------------------------------------------------------------------------------------------- commands
 
--- CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max, exhausted (0/1), modeOn (1), user (0/1), hdl, mult. hdl 0 = the
--- user's controlled player; false outside a match / after the final whistle / for a player without PE.
+-- the match player (soccer handle) whose character status handle is `chara` (a menu's player: the pause menu's
+-- formation, the player header), nil when none of this match's players is that character
+local function player_of_chara(chara)
+  for h, p in pairs(players) do
+    if p.chara == chara then return h end
+  end
+  return nil
+end
+
+-- CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max, exhausted (0/1), modeOn (1), user (0/1), hdl, mult. hdl = a match
+-- player's soccer handle, or a character status handle (a menu's player: mapped to the match player of that character),
+-- 0 = the user's controlled player; false outside a match / after the final whistle / for a player without PE.
 function AuraPoints.Stamina(hdl)
   hdl = tonumber(hdl) or 0
   if not seen.in_match or seen.ended then return false end
+  local u = hdl % 4294967296
+  if hdl ~= 0 and not players[u] then
+    local h = player_of_chara(u)
+    if not h then return false end
+    hdl = h
+  end
   local ok, v = pcall(VRFW.resource.get, PE, hdl)
   if not ok or not v then return false end
   local p = players[v.hdl]
@@ -1033,16 +1049,83 @@ function AuraPoints.StaminaMax(fisico, hdl)
   return true, (ok and m) or DECL.max, 1
 end
 
--- CMND_AURAPOINTS_HUD_HIDDEN_LAYERS() -> ok, layer hash...: the match HUD layers hidden while the PEG or SP points are
--- on too (config.toml [hud_hidden_layers] hidden_layers: the retail hyper gauge; with PEG and SP off: false, retail)
+-- ---------------------------------------------------------------------------------------------- the hyper gauge
+
+-- THE rule «nothing pays with the hyper gauge» (owner 2026-10-19), read once (the option rows restart the game): PE (this
+-- feature) with its rules on, PEG and SP on, and every aura of the game's table (the served aura_skill_config, every
+-- mod's rows) covered: a keshin on its PEG pool, an armour on its keshin's pool, a totem on its SP bar, any other kind
+-- with a free start without the gauge check ([pe] free_activation and no_start_check), a row that costs nothing. Both
+-- teams play by these rules. It drives the HUD layers hidden (CMND_AURAPOINTS_HUD_HIDDEN_LAYERS), the free start of
+-- mode change / kizuna trans / awakening power (lib/stamina/cfg.lua) and the gauge's gains turned off
+-- (CMND_AURAPOINTS_HYPER_GAIN_OFF, the patches of stamina.toml). The 20 % start fill of the gauge is the game's.
+local hyper_unused, hyper_why = nil, nil
+function AuraPoints.HyperUnused()
+  if hyper_unused ~= nil then return hyper_unused end
+  local why = nil
+  if not AC.enabled then
+    why = "[pe] enabled = false"
+  elseif not PEG_ON then
+    why = "option peg off"
+  elseif not SP_ON then
+    why = "option sp off"
+  elseif not A.load() then
+    why = "no aura table"
+  else
+    for _, id in ipairs(A.ids()) do
+      local r = A.row(id)
+      local ty = r and r.type
+      local covered
+      if r == nil or (r.cost or 0) <= 0 then
+        covered = true
+      elseif ty == 0 or ty == 3 then
+        covered = true                       -- a keshin's PEG pool, a totem's SP bar
+      elseif ty == 1 then
+        covered = A.spirit(id) ~= nil        -- an armour runs on its keshin's pool
+      else
+        covered = AC.listed_free(ty)         -- miximax, mode change, kizuna trans, awakening power
+      end
+      if not covered then
+        why = string.format("%s (auraType %s) still pays with the hyper gauge", A.key(id), tostring(ty))
+        break
+      end
+    end
+  end
+  hyper_unused, hyper_why = why == nil, why
+  info(hyper_unused and "nothing pays with the hyper gauge: its HUD hidden, its gains off, both teams"
+    or ("the hyper gauge stays as in the game: " .. why))
+  return hyper_unused
+end
+AC.unused = AuraPoints.HyperUnused
+
+-- CMND_AURAPOINTS_HUD_HIDDEN_LAYERS() -> ok, layer hash...: the match HUD layers hidden while nothing pays with the hyper
+-- gauge (config.toml [hud_hidden_layers] hidden_layers: the retail hyper gauge); false otherwise (the HUD stays retail)
 local HUD_HIDDEN_LAYERS = {}
 for _, name in ipairs((VRFW.files.config("hud_hidden_layers") or {}).hidden_layers or {}) do
   if type(name) == "string" and name ~= "" then HUD_HIDDEN_LAYERS[#HUD_HIDDEN_LAYERS + 1] = VRFW.crc32(name) end
 end
 
 function AuraPoints.HudHiddenLayers()
-  if not (PEG_ON or SP_ON) then return false end
+  if not AuraPoints.HyperUnused() then return false end
   return true, table.unpack(HUD_HIDDEN_LAYERS)
+end
+
+-- CMND_AURAPOINTS_HYPER_GAIN_OFF() -> true while the hyper gauge's gains are off (the same rule)
+function AuraPoints.HyperGainOff()
+  return AuraPoints.HyperUnused() == true
+end
+
+-- the gains off at their source, written once at the start when the rule holds (stamina.toml: the skill-use gain and
+-- its «+N» number skipped as for a rate of 0, the two scripted gain handlers return at once)
+local HYPER_GAIN_PATCHES = { "Ap_HyperGainSkill", "Ap_HyperGainScriptA", "Ap_HyperGainScriptB" }
+local function hyper_gain_off()
+  if not AuraPoints.HyperUnused() then return end
+  for _, name in ipairs(HYPER_GAIN_PATCHES) do
+    local ok, done, e = pcall(VRFW.patch.apply, name)
+    if not ok or not done then
+      warn(string.format("hyper gauge gain patch %s not written: %s", name, tostring(ok and e or done)))
+    end
+  end
+  info("hyper gauge gains off (" .. #HYPER_GAIN_PATCHES .. " sites)")
 end
 
 -- ---------------------------------------------------------------------------------------------- start
@@ -1050,12 +1133,14 @@ end
 local function start()
   math.randomseed(now_ms() % 2147483647)
   A.load()
+  AuraPoints.HyperUnused()
   local n = A.publish(AC)
+  hyper_gain_off()
   clear_match_tables()
   info(string.format("active over the VR-Framework's %s (max %s; exhausted bit %s, speed x%s / duel x%s); %d auras; " ..
     "rules %s, cost model %s (scale %s), miximax PE x%s, untimed %s; CPU %s; %d trait rule(s); tired locomotion %s; hooks: cost check %s, pending pay %s",
     PE, DECL.max, tostring(DECL.exhausted_bit), DECL.speed, DECL.speed_duel, n, AC.enabled and "on" or "OFF", AC.cs() and "CS" or "IF",
-    AC.cs_scale(), select(1, AC.pe_mults()), tostring(AC.miximax_untimed), tostring(AC.cpu),
+    AC.cs_scale(), select(1, AC.pe_mults()), tostring(AC.miximax_untimed), "both teams",
     (function() local k = 0 for _ in pairs(AC.traits) do k = k + 1 end return k end)(), TM.enabled and "on" or "off",
     tostring(VRFW.is_on("Ap_StaminaCostCheck")), tostring(VRFW.is_on("Ap_StaminaPendingPay"))))
 end

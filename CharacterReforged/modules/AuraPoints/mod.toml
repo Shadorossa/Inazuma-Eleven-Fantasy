@@ -2,13 +2,18 @@ id = "aura_points"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Aura Points"
-version = "1.1.3"
+version = "1.1.6"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Keshin, keshin armours and totems run on points instead of time, as in Chrono Stone and Galaxy, and every player gets a stamina bar (GP) for the whole match. Each player has a fighting-spirit pool (PEG) for each keshin and an SP bar for each totem: summoning is free and has no time limit, the keshin's or totem's own special move costs its points instead of tension, an armour drains its keshin's PEG while it is worn, and an empty pool sends the spirit away for the rest of the match. Running and above all dashing spend GP, Físico makes it last longer, half-time gives some back, and an exhausted player slows down, cannot dash and staggers; each character's GP is his Inazuma Eleven GO Galaxy value, growing with his level. A miximax has no time limit and does not spend the hyper gauge: it burns GP faster and ends at 0; a keshin or an armour stops the drain while it is out and costs GP when it ends. A purple PEG bar (blue for SP) and a yellow GP bar show under the controlled player's face, and every player's max GP in the player header. In the mod's settings PEG, SP and GP can each be switched off (that part keeps the game's own rules). Works with the VR-Framework and Character Reforged; Inazuma Fantasy adds its own rules on top."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-19"
+# 1.1.5 (owner 2026-10-19): one rule «nothing pays with the hyper gauge» (AuraPoints.HyperUnused in
+# features\pe\scripts\stamina.lua: PE, PEG and SP on, every aura covered) hides the gauge and turns its gains off at the
+# source (three script patches: no gain, no «+N»; CMND_AURAPOINTS_HYPER_GAIN_OFF); mode change, kizuna trans and
+# awakening power start free and without the gauge check while it holds; the rival always plays by the same point
+# systems ([points] cpu and [pe] cpu removed)
 # This mod's own names (TOML keys [AuraPoints.X], Lua AuraPoints.X, commands CMND_AURAPOINTS_*, tables AuraPoints.*;
 # game Lua AuraPoints_Hud / AuraPoints_Stamina); never VRFW.
 prefix = "AuraPoints"
@@ -61,7 +66,7 @@ requires = ["vr_framework>=2.4.174", "character_reforged>=1.5.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
-permissions = ["memory", "call", "command", "hook"]
+permissions = ["memory", "call", "command", "hook", "patch"]
 
 # The mod Stamina Points (stamina_points 1.2.3) is this mod's part «pe» since 2026-10-16 (docs/framework/merged-mods.md):
 # `requires` / `if_mod` on stamina_points follow the part, an old installed stamina_points folder is replaced, the

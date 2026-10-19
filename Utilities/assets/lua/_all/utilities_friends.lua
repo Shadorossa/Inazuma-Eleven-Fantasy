@@ -1,28 +1,21 @@
 -- Utilities › friends panel («Lista de amigos», docs/game/ui/friends.md §4). Runs in every menu VM (lua\_all):
 --  * every VM reports its menu when it opens (CMND_UTIL_FRIENDS_STATUS(<script stem>): the status friends see);
 --  * in the hubs of the top bar (the ones with the layers util_fr_* of content\menus\friends_panel.toml) the top bar
---    entry «Lista de amigos» (action lua Utilities.FriendsPanel) slides a panel in on the right, over the menu: this
---    player's friend code (Y copies it), «Añadir amigo por código» (X: the clipboard's code, shown for a Sí / No
---    before anything is sent), then every friend in
---    sections «En Inazuma Eleven VR» / «Amigos del mod» / «En línea» / «Desconectados» (an empty one says «nadie»):
---    avatar, name, status line, a dot (in the game / online / away / offline) and ✓ / ⚠ (same / other mods). A on a
---    friend opens his details on the panel's left: his active team (faces, formation), the career summary and the
---    lines other mods add, then his actions (A runs one). B goes back / closes; the arrows, L1 / R1, the wheel and the
---    mouse move. The data and the actions are Utilities' script (scripts\friends.lua, CMND_UTIL_FRIENDS_*) over the
---    VR-Framework's friends API (Steam through the game's own steam_api64.dll and our own transport, never EOS).
---  * friend requests (VRFW 2.1.0): «Solicitudes» on top of the list while some wait (A: Aceptar / Rechazar / Bloquear /
---    Añadir en Steam); every ~1 s (CMND_UTIL_FRIENDS_BADGE) the top bar's «Lista de amigos» icon gets a red dot while
---    requests wait (VRFW_TopBarBadges) and, with the panel closed, a short toast says a request arrived / was accepted /
---    declined (on the panel's own layers, ~4 s).
--- Engine calls only from OnInit / Step / layer callbacks (nothing at chunk load but table definitions). UNTESTED in game.
+--    entry «Lista de amigos» (action lua Utilities.FriendsPanel) slides a narrow panel in on the right, over the menu:
+--    the player's Steam friends in one list (in the game, online, away, offline; then by name), one compact row each
+--    (a status dot, the name, the status). A on a friend opens his details on the panel's left: his active team
+--    (faces, formation), the career summary and the lines other mods add, then his actions (A runs one). B goes back /
+--    closes; the arrows, L1 / R1, the wheel and the mouse move. The data and the actions are Utilities' script
+--    (scripts\friends.lua, CMND_UTIL_FRIENDS_*) over the VR-Framework's friends API (Steam through the game's own
+--    steam_api64.dll, never EOS).
+-- Engine calls only from OnInit / Step / layer callbacks (nothing at chunk load but table definitions).
 Utilities = type(Utilities) == "table" and Utilities or {}
 
 if UTIL_FP == nil then
   UTIL_FP = {
     CMD = {
       OPEN = 2960985135, LAYOUT = 832611508, ROW = 2296591079, ACTIONS = 3156590377, DO = 4170892414, POLL = 2427549134,
-      DETAILS = 3410707788, DETAILS_POLL = 2315523593, ADD = 4056528859, COPY = 1505178633, INBOX = 1057064150,
-      STATUS = 1889184330, BADGE = 3219144690,
+      DETAILS = 3410707788, DETAILS_POLL = 2315523593, INBOX = 1057064150, STATUS = 1889184330,
     },
     C = {
       LOG = 3661580131, TEXT_GET = 4074371074, LANG = 477234096, SND = 3073642526,
@@ -31,11 +24,6 @@ if UTIL_FP == nil then
       TEXT_VISIBLE = 2735666188, SET_TEXT = 1083631230, LOAD_TEX = 839427544, TEX_LOADING = 1506186496,
       FACE = 552280324, RESET_FACE = 4176779611, LOADING = 1277042906, CHECK_INPUT = 4265778440,
       POINTER = 558229292, MOVED = 3272825600,
-      -- the game's own text entry (GENERAL_WINDOW.WaitAndSwkbWindowCoroutine: keyboard_input_menu, or Steam's
-      -- gamepad text input when the game runs in Big Picture / on a Deck; docs/game/engine/save-slots.md «Game
-      -- keyboard»): open, active, the text (live buffer too), cancelled, force end
-      KB_OPEN = 962493425, KB_ACTIVE = 422535539, KB_TEXT = 1487869455, KB_CANCELLED = 1447363287,
-      KB_END = 3351189333, KB_TITLE = 2568160623 --[[retail menu_text «Nombre»: the title when ours does not resolve]],
     },
     L = { BACK = 3391176382, PLATE = 3848078112, ICON = 3262895698, FACE = 2734392558, TEXT = 2623821902 },
     QUAD = 1909474081,            -- icon_new01: the cmn01_10 quad's sprite slot
@@ -52,23 +40,19 @@ if UTIL_FP == nil then
       HIDE_NODES = {"_pos_base02", "_pos_leader01", "_pos_ai_role01", "_num_chr_l01", "_num_chr_l02", "_pos_gauge_exp_l01"},
     },
     CTRLS = {1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]},
-    KEYS = {up = 1197218715, down = 3259546669, enter = 1981080283, back = 3011112225, y = 3421673595 --[[CMD_FUNC3]],
-            x = 1435897304 --[[CMD_FUNC4]], l1 = 3966226594, r1 = 942075773, rclick = 3473063670,
+    KEYS = {up = 1197218715, down = 3259546669, enter = 1981080283, back = 3011112225,
+            l1 = 3966226594, r1 = 942075773, rclick = 3473063670,
             click = 218912913 --[[CMD_EVT_MOUSE_LEFT]], wup = 1942756954, wdown = 1623431741,
             left = 2765147006, right = 2075023265},
-    -- the game pad / keyboard straight from the devices (CMND_VRFW_INPUT_PAD / _KEY): read while the game's keyboard
-    -- is up, to tell its Esc / B (cancel) from Enter / A (confirm); pad masks of vr_sigs::input, Windows virtual keys
-    DEV = {PAD = 2864033604, KEY = 3182184968, A = 0x4000, B = 0x2000, VK_ENTER = 0x0D, VK_ESC = 0x1B},
     SY_OK = 3848881948, SY_MOVE = 2500047763, SY_ERROR = 2086672038,
     REPEAT_FIRST = 18, REPEAT_EVERY = 5, REFRESH = 300, ASK_FRAMES = 600,
     MSG_MAX = 108000,                       -- a message box nobody answers (frames)
     MSG_UNITS = 34,                         -- the message box's line length (Latin characters; a CJK one counts 2)
     msg = nil,                              -- the open message box {lines, buttons, sel}
-    CODE_MAX = 9,                           -- XXXX-XXXX
     here = false,      -- this VM has the panel's layers
     open = false, closing = false, anim = 0, frame = 0, dx = 0,
     mode = "list",     -- "list" | "details"
-    rows = {}, sel = nil, scroll = 0, code = "", ready = false, err = "",
+    rows = {}, sel = nil, scroll = 0, ready = false, err = "",
     -- the panel's art: Utilities' own atlas (research/scripts/friends_art.py), a `res` of the panel's layers in every
     -- hub (content\menus\friends_panel.toml), so it is loaded with the menu; sprites util_friends_<name>
     art = "#/menu/220_img/util_friends/util_friends.g4tx", SPRITE = "util_friends_",
@@ -76,11 +60,10 @@ if UTIL_FP == nil then
                        -- there yet keeps the quad's base sprite, the red «new» badge of cmn01_10, and was never retried)
     AVATAR_WAIT = 10,  -- frames a served Steam avatar must answer «loaded» before it replaces the placeholder
     det = nil,         -- the open details: { i, state, team, form, faces, stats, acts, asel, asked_at }
-    P = { x = 1380, width = 540, top = 72, row_h = 72, head_h = 44, details_w = 560, slide = 10 },
+    P = { x = 1500, width = 420, top = 72, row_h = 40, head_h = 56, details_w = 560, slide = 10 },
     co = nil, held = {}, sent = {}, used = {}, shown = {}, crcs = {}, texts = {}, loaded = {}, faces = {},
     cap = {}, opened = {},
-    idle = 0, toast = nil, POLL = 60, TOAST = 240,   -- request badge poll (frames), toast time (frames)
-    TOAST_W = 780,                                   -- toast width (screen px)
+    idle = 0, HIDE_EVERY = 60,                       -- frames between two checks that the closed panel is hidden
   }
 end
 
@@ -184,7 +167,7 @@ local function TexReady(tex, wait)
   return st.ok >= (wait or 1)
 end
 
-local ArtReady   -- below, with the badge poll
+local ArtReady   -- below, with the hiding of the closed panel
 
 -- a text: left edge x, vertical middle y (screen px), scale
 local function Text(s, x, y, sc)
@@ -402,10 +385,6 @@ local function Msg(text, kind)
   return n
 end
 
-local function Ask(text)
-  return Msg(text, 2) == 0
-end
-
 local function Run(fn)
   FP.co = coroutine.create(fn)
 end
@@ -414,7 +393,7 @@ end
 
 local function Load(refresh)
   local okL, lang = pcall(funcLuaCommand, FP.C.LANG)
-  local ok, ready, n, inbox, err, code = pcall(funcLuaCommand, FP.CMD.OPEN, refresh == true, okL and lang or -1)
+  local ok, ready, n, inbox, err = pcall(funcLuaCommand, FP.CMD.OPEN, refresh == true, okL and lang or -1)
   if not ok then
     Log("open error", tostring(ready))
     FP.ready, FP.err = false, "noscript"
@@ -427,23 +406,21 @@ local function Load(refresh)
     return 0
   end
   FP.ready, FP.err = ready == true, tostring(err or "")
-  if type(code) == "string" and code ~= "" then FP.code = code end
-  local keep = FP.sel and FP.rows[FP.sel] and FP.rows[FP.sel].code or nil
-  local function pick(r) return r.kind == "friend" or r.kind == "request" end
+  local keep = FP.sel and FP.rows[FP.sel] and FP.rows[FP.sel].id or nil
+  local function pick(r) return r.kind == "friend" end
   FP.rows = {}
   for i = 1, tonumber(n) or 0 do
-    local okR, kind, group, name, st, dot, badge, room, tex, sprite, extra = pcall(funcLuaCommand, FP.CMD.ROW, i)
+    local okR, kind, group, name, st, dot, badge, room, tex, sprite, id = pcall(funcLuaCommand, FP.CMD.ROW, i)
     if okR and type(kind) == "string" and kind ~= "" then
       FP.rows[#FP.rows + 1] = {kind = kind, group = group, name = name, status = st, dot = dot, badge = badge,
                                room = room == true, tex = tex, sprite = sprite, idx = i,
-                               count = kind == "head" and extra or nil,
-                               code = (kind == "friend" or kind == "request") and extra or nil}
+                               id = kind == "friend" and id or nil}
     end
   end
   -- the selection: the same friend after a refresh, else the first friend
   FP.sel = nil
   for i, r in ipairs(FP.rows) do
-    if pick(r) and (keep == nil or r.code == keep) then FP.sel = i break end
+    if pick(r) and (keep == nil or r.id == keep) then FP.sel = i break end
   end
   if FP.sel == nil then
     for i, r in ipairs(FP.rows) do
@@ -467,11 +444,8 @@ end
 
 -- ------------------------------------------------------------------------------------------------ layout
 
-local SECTION_TEXT = {requests = "SecRequests", playing = "SecPlaying", mod = "SecMod", online = "SecOnline",
-                      offline = "SecOffline"}
-
-local function RowH(r)
-  return r.kind == "head" and FP.P.head_h or FP.P.row_h
+local function RowH(_r)
+  return FP.P.row_h
 end
 
 -- top of row i in list space (0 = the list's first pixel)
@@ -482,7 +456,7 @@ local function RowTop(i)
 end
 
 local function ListBox()
-  return FP.P.top + 150, 1080 - 56
+  return FP.P.top + FP.P.head_h + 8, 1080 - 56
 end
 
 local function KeepVisible()
@@ -490,10 +464,7 @@ local function KeepVisible()
   local y0, y1 = ListBox()
   local t = RowTop(FP.sel)
   local h = RowH(FP.rows[FP.sel])
-  local tt = t
-  -- the section header right above a section's first friend shows with it
-  if FP.sel > 1 and FP.rows[FP.sel - 1].kind == "head" then tt = t - FP.P.head_h end
-  if tt < FP.scroll then FP.scroll = math.max(0, tt) end
+  if t < FP.scroll then FP.scroll = math.max(0, t) end
   if t + h > FP.scroll + (y1 - y0) then FP.scroll = t + h - (y1 - y0) end
 end
 
@@ -518,51 +489,37 @@ local function DrawList()
   Art(FP.L.BACK, "shadow", x - 28, P.top, 28, h, 1)
   Art(FP.L.BACK, "panel", x, P.top, w, h, 1)
   Art(FP.L.PLATE, "edge", x, P.top, 3, h, 1)
-  -- header: title, my code, its keys
-  Art(FP.L.PLATE, "head", x, P.top, w, 56, 1)
-  Text(Tx("Title"), x + 24, P.top + 28, 1.05)
-  local status
-  if FP.err == "noscript" then
-    status = Tx("NoScript")
-  elseif FP.code ~= "" then
-    status = string.format(Tx("MyCode"), FP.code)
-  else
-    status = Tx("NoCode")
+  -- header: the title and how many friends
+  Art(FP.L.PLATE, "head", x, P.top, w, P.head_h, 1)
+  local count = 0
+  for _, r in ipairs(FP.rows) do
+    if r.kind == "friend" then count = count + 1 end
   end
-  Text(status, x + 24, P.top + 80, 0.85)
-  Text(Tx("HeadKeys"), x + 24, P.top + 114, 0.7)
-  Art(FP.L.PLATE, "line", x + 16, P.top + 138, w - 32, 2, 1)
+  Text(Tx("Title") .. string.format("  (%d)", count), x + 20, P.top + P.head_h / 2, 0.95)
   local y0, y1 = ListBox()
   local y = y0 - FP.scroll
+  if FP.err == "noscript" then
+    Text(Tx("NoScript"), x + 20, y0 + P.row_h / 2, 0.7)
+  end
   -- an open message box covers the list: no row under it (the texts' layer draws above the box's layer)
   for i, r in ipairs(FP.msg == nil and FP.rows or {}) do
     local rh = RowH(r)
     if y >= y0 - 2 and y + rh <= y1 + 2 then
-      if r.kind == "head" then
-        Art(FP.L.PLATE, "section", x + 12, y + 6, w - 24, rh - 10, 1)
-        Text(Tx(SECTION_TEXT[r.group] or "SecOffline") .. string.format("  (%d)", tonumber(r.count) or 0), x + 32, y + rh / 2 + 1, 0.8)
-      elseif r.kind == "none" then
-        Text(Tx("Nobody"), x + 40, y + rh / 2, 0.75)
+      if r.kind == "none" then
+        Text(Tx("Nobody"), x + 20, y + rh / 2, 0.7)
       else
-        local sel = i == FP.sel
-        Art(FP.L.PLATE, sel and "sel" or "row", x + 12, y + 4, w - 24, rh - 8, 1)
-        Avatar(r.tex, r.sprite, x + 24, y + 8, rh - 16)
-        if r.kind == "request" then
-          Art(FP.L.ICON, "badge", x + w - 60, y + rh / 2 - 14, 28, 28, 1)
-        else
-          Art(FP.L.ICON, "dot_" .. ((r.dot ~= nil and r.dot ~= "") and r.dot or "off"), x + rh - 14, y + rh - 30, 18, 18, 1)
+        if i == FP.sel then
+          Art(FP.L.PLATE, "sel", x + 8, y + 2, w - 16, rh - 4, 1)
         end
-        if r.badge == "ok" or r.badge == "warn" then
-          Art(FP.L.ICON, r.badge, x + w - 64, y + rh / 2 - 18, 36, 36, 1)
-        end
-        Text(r.name, x + rh + 20, y + rh / 2 - 13, 0.9)
-        Text(StatusText(r), x + rh + 20, y + rh / 2 + 15, 0.68)
+        Art(FP.L.ICON, "dot_" .. ((r.dot ~= nil and r.dot ~= "") and r.dot or "off"), x + 18, y + rh / 2 - 6, 12, 12, 1)
+        Text(r.name, x + 40, y + rh / 2, 0.78)
+        Text(StatusText(r), x + w - 170, y + rh / 2, 0.6)
       end
     end
     y = y + rh
   end
   Art(FP.L.PLATE, "line", x + 16, 1080 - 50, w - 32, 2, 1)
-  Text(FP.mode == "details" and Tx("DetailKeys") or Tx("ListKeys"), x + 24, 1080 - 26, 0.7)
+  Text(FP.mode == "details" and Tx("DetailKeys") or Tx("ListKeys"), x + 20, 1080 - 26, 0.7)
 end
 
 local function DrawDetails()
@@ -581,10 +538,7 @@ local function DrawDetails()
     Art(FP.L.ICON, r.badge, x + dw - 70, P.top + 30, 40, 40, 1)
   end
   local y = P.top + 140
-  if r.kind == "request" then
-    Text(Tx("ReqDetail"), x + 24, y + 20, 0.8)
-    Text(string.format(Tx("ReqCode"), tostring(r.code or "")), x + 24, y + 54, 0.75)
-  elseif D.state == "wait" then
+  if D.state == "wait" then
     Text(Tx("Loading"), x + 24, y + 20, 0.8)
   elseif D.state == "error" then
     Text(Tx("NoAnswer"), x + 24, y + 20, 0.75)
@@ -625,7 +579,7 @@ end
 local function Draw()
   BeginFrame()
   -- hidden while the game's keyboard is up (the panel draws at 1001-1005, over the keyboard menu)
-  if FP.open and FP.art_ok and not FP.kb then
+  if FP.open and FP.art_ok then
     DrawList()
     if FP.mode == "details" then DrawDetails() end
     DrawModal()
@@ -700,139 +654,6 @@ local function Act(idx, a, name)
     Msg(string.format(Tx("CodeSent"), tostring(name)) .. "\n" .. tostring(text))
   elseif a == "mods" then
     Msg((text == nil or text == "") and Tx("ModsSame") or (Tx("ModsDiff") .. "\n" .. tostring(text)))
-  elseif a == "remove" then
-    FP.mode, FP.det = "list", nil
-    Load(true)
-  elseif a == "accept" or a == "decline" or a == "block" or a == "cancel" then
-    FP.mode, FP.det = "list", nil
-    Load(true)
-    Msg(string.format(Tx("Done" .. a:sub(1, 1):upper() .. a:sub(2)), tostring(name)))
-  end
-end
-
--- the game's keyboard (in the panel's coroutine): the typed text, nil = cancelled / nothing typed, false = it did not
--- open. Only a confirm submits (owner 2026-10-12: Esc showed «código no válido»): the keyboard's result flag has come
--- back «cancelled» with an empty text after a confirm (save slots' rename), so the last of Esc / B (cancel) and Enter
--- / A (confirm) pressed while it was up decides, read from the devices; the live buffer only stands in for an empty
--- result after a confirm.
-local function Keyboard(initial)
-  local C = FP.C
-  if funcLuaCommand(C.KB_ACTIVE) == true then
-    funcLuaCommand(C.KB_END, "")
-    coroutine.yield()
-  end
-  local title = Crc("Utilities.Friends.KbTitle")
-  local okT, t = pcall(funcLuaCommand, FP.C.TEXT_GET, title)
-  if not (okT and type(t) == "string" and t ~= "") then title = C.KB_TITLE end
-  -- the hub's own input stays off (the panel's): the keyboard is a menu of its own with its own input
-  FP.kb = true
-  Guard(false)   -- the keyboard menu must get its input (the guard suspends every menu VM)
-  local opened = false
-  for attempt = 1, 2 do
-    funcLuaCommand(C.KB_OPEN, 0, initial or "", title, 0, FP.CODE_MAX, 0, 0, 0, 0, 0, 0, true, true, 2, Tx("KbGuide"), 0,
-      false, false)
-    for _ = 1, 15 do
-      if funcLuaCommand(C.KB_ACTIVE) == true then opened = true break end
-      coroutine.yield()
-    end
-    Log("keyboard open attempt", attempt, opened and "up" or "not up")
-    if opened then break end
-  end
-  if not opened then
-    FP.kb = false
-    KeysReset()
-    return false
-  end
-  local live, last, was = "", nil, {}
-  local D = FP.DEV
-  local function dev()
-    local okp, pad = pcall(funcLuaCommand, D.PAD)
-    pad = (okp and type(pad) == "number" and pad > 0) and pad or 0
-    local function key(vk)
-      local okk, v = pcall(funcLuaCommand, D.KEY, vk)
-      return okk and v == true
-    end
-    return math.floor(pad / D.B) % 2 == 1 or key(D.VK_ESC), math.floor(pad / D.A) % 2 == 1 or key(D.VK_ENTER)
-  end
-  while funcLuaCommand(C.KB_ACTIVE) == true do
-    local t2 = funcLuaCommand(C.KB_TEXT)
-    if type(t2) == "string" and t2 ~= "" then live = t2 end
-    local esc, ent = dev()
-    if esc and not was.esc then last = "cancel" end
-    if ent and not was.ent then last = "ok" end
-    was.esc, was.ent = esc, ent
-    coroutine.yield()
-  end
-  local text = funcLuaCommand(C.KB_TEXT)
-  local cancelled = funcLuaCommand(C.KB_CANCELLED) == true
-  FP.kb = false
-  KeysReset()
-  Log("keyboard closed; cancelled", tostring(cancelled), "last key", tostring(last), "text [" .. tostring(text) ..
-    "] live [" .. live .. "]")
-  if last == "cancel" then return nil end
-  if type(text) ~= "string" then text = "" end
-  if text == "" and last == "ok" then text = live end
-  if cancelled and last ~= "ok" and text == "" then return nil end
-  text = (text:gsub("^%s+", ""):gsub("%s+$", ""))
-  if text == "" then return nil end
-  return text
-end
-
--- «Añadir amigo por código» (X, owner 2026-10-12): the game's keyboard asks for the code (XXXX-XXXX), the code is
--- checked (friend_code_peek: valid, not this player's own) and shown with the player's Steam name when Steam knows
--- it for a Sí / No; only «Sí» sends the request. Nothing is sent while Steam is not ready. No clipboard step.
-local function AddByCode()
-  if not FP.ready then
-    Snd(FP.SY_ERROR)
-    Msg(FP.err == "noscript" and Tx("NoScript") or Tx("AddNotReady"))
-    return
-  end
-  local typed = Keyboard("")
-  if typed == false then
-    Snd(FP.SY_ERROR)
-    Msg(Tx("KbFail"))
-    return
-  end
-  if typed == nil then
-    Log("add: nothing typed")
-    return
-  end
-  local ok, st, code, name = pcall(funcLuaCommand, FP.CMD.ADD, "peek", typed)
-  if not ok or st ~= "ok" or type(code) ~= "string" or code == "" then
-    Log("add: no code", tostring(st), tostring(code), tostring(name))
-    Snd(FP.SY_ERROR)
-    local key = (ok and st == "error") and code or "failed"
-    Msg(key == "not_ready" and Tx("AddNotReady") or key == "own_code" and Tx("AddOwn") or
-        (ok and st == "error") and Tx("AddHint") or Tx("NoScript"))
-    return
-  end
-  local who = type(name) == "string" and name or ""
-  local q = who ~= "" and string.format(Tx("AddConfirmName"), code, who) or string.format(Tx("AddConfirm"), code)
-  if not Ask(q) then
-    Log("add: cancelled", code)
-    return
-  end
-  local okS, st2, code2, name2 = pcall(funcLuaCommand, FP.CMD.ADD, "send", code)
-  if okS and st2 == "ok" then
-    Snd(FP.SY_OK)
-    Load(true)
-    local to = (type(name2) == "string" and name2 ~= "") and name2 or who ~= "" and who or code
-    Msg(string.format(Tx("Added"), to))
-  else
-    Log("add refused", tostring(st2), tostring(code2), tostring(name2))
-    Snd(FP.SY_ERROR)
-    Msg((okS and code2 == "not_ready") and Tx("AddNotReady") or Tx("Failed"))
-  end
-end
-
-local function CopyCode()
-  local ok, code = pcall(funcLuaCommand, FP.CMD.COPY)
-  if ok and type(code) == "string" and code ~= "" then
-    FP.code = code
-    Snd(FP.SY_OK)
-    Msg(string.format(Tx("Copied"), code))
-  else
-    Snd(FP.SY_ERROR)
   end
 end
 
@@ -840,7 +661,7 @@ end
 
 local function Layout()
   local ok, x, w, top, rh, hh, dw, sl = pcall(funcLuaCommand, FP.CMD.LAYOUT)
-  if not ok or type(x) ~= "number" then x, w, top, rh, hh, dw, sl = 1380, 540, 72, 72, 44, 560, 10 end
+  if not ok or type(x) ~= "number" then x, w, top, rh, hh, dw, sl = 1500, 420, 72, 40, 56, 560, 10 end
   FP.P = {x = x, width = w, top = top, row_h = rh, head_h = hh, details_w = dw, slide = math.max(1, sl)}
 end
 
@@ -854,9 +675,8 @@ end
 local function Open()
   Layout()
   Caps()
-  FP.sent, FP.faces, FP.kb = {}, {}, false   -- a hub that rebuilt its instances (child menu, group reopened) gets every property again
+  FP.sent, FP.faces = {}, {}   -- a hub that rebuilt its instances (child menu, group reopened) gets every property again
   ArtReady()
-  FP.toast = nil
   local inbox = Load(false)
   FP.open, FP.closing, FP.anim, FP.mode, FP.det, FP.scroll = true, false, 0, "list", nil, 0
   KeepVisible()
@@ -891,50 +711,15 @@ function Utilities.FriendsPanel(_e)
   if FP.open and not FP.closing then Close() else Open() end
 end
 
--- ------------------------------------------------------------------------------------------------ requests: badge, toast
+-- ------------------------------------------------------------------------------------------------ art, hiding
 
-local NOTICE_TEXT = {request = "ReqGot", accepted = "ReqAccepted", declined = "ReqDeclined"}
-
--- the art is in this VM's texture cache (the panel, badge and toast sprites can be drawn); once true it stays true
+-- the art is in this VM's texture cache (the panel's sprites can be drawn); once true it stays true
 ArtReady = function()
   if not FP.art_ok and TexReady(FP.art, 1) then
     FP.art_ok = true
     FP.sent = {}   -- every property sent again (nothing was drawn before, but no stale swap may stay cached)
   end
   return FP.art_ok
-end
-
--- requests waiting -> the top bar badge; the next notice -> a toast (panel closed) or a list refresh (open)
-local function Poll()
-  local ok, n, kind, name, _, entry = pcall(funcLuaCommand, FP.CMD.BADGE)
-  if not ok then return end
-  local ready = ArtReady()
-  if type(entry) == "string" and entry ~= "" then
-    if type(VRFW_TopBarBadges) ~= "table" then VRFW_TopBarBadges = {} end
-    VRFW_TopBarBadges[entry] = ((tonumber(n) or 0) > 0 and ready) and {tex = FP.art, sprite = FP.SPRITE .. "badge"} or nil
-  end
-  local key = NOTICE_TEXT[kind or ""]
-  if key == nil then return end
-  Log("notice", kind, tostring(name))
-  if FP.open then
-    if FP.mode == "list" and FP.co == nil then Load(true) end
-  else
-    FP.toast = {text = string.format(Tx(key), tostring(name)), till = FP.frame + FP.TOAST}
-  end
-end
-
-local function DrawToast()
-  local T = FP.toast
-  if T == nil or not FP.art_ok then return end
-  -- right-aligned under the bar, wider than the panel (a name + the sentence)
-  local P = FP.P
-  local w, h = FP.TOAST_W, 64
-  local x, y = 1920 - 16 - w, P.top + 8
-  FP.dx = 0
-  Art(FP.L.BACK, "panel", x, y, w, h, 1)
-  Art(FP.L.PLATE, "edge", x, y, 4, h, 1)
-  Art(FP.L.ICON, "badge", x + 20, y + h / 2 - 12, 24, 24, 1)
-  Text(T.text, x + 56, y + h / 2, 0.72)
 end
 
 -- every instance of the panel's layers hidden (2026-10-12, Utilities 1.14.2): the layers sit at draw priority
@@ -956,14 +741,9 @@ end
 local function StepIdle()
   FP.frame = FP.frame + 1
   FP.idle = FP.idle + 1
-  if FP.idle % FP.POLL == 1 then
-    Poll()
-    if FP.toast == nil then HideAll() end
-  end
-  if FP.toast ~= nil then
-    BeginFrame()
-    if FP.frame <= FP.toast.till then DrawToast() else FP.toast = nil end
-    EndFrame()
+  if FP.idle % FP.HIDE_EVERY == 1 then
+    ArtReady()
+    HideAll()
   end
 end
 
@@ -977,7 +757,7 @@ local function Hit(px, py)
   local y = y0 - FP.scroll
   for i, r in ipairs(FP.rows) do
     local rh = RowH(r)
-    if py >= y and py < y + rh then return (r.kind == "friend" or r.kind == "request") and i or nil end
+    if py >= y and py < y + rh then return r.kind == "friend" and i or nil end
     y = y + rh
   end
   return nil
@@ -989,7 +769,7 @@ local function MoveSel(dir, steps)
   for _ = 1, #FP.rows do
     if moved >= (steps or 1) then break end
     local j = i + dir
-    while FP.rows[j] ~= nil and FP.rows[j].kind ~= "friend" and FP.rows[j].kind ~= "request" do j = j + dir end
+    while FP.rows[j] ~= nil and FP.rows[j].kind ~= "friend" do j = j + dir end
     if FP.rows[j] == nil then break end
     i, moved = j, moved + 1
   end
@@ -1002,7 +782,7 @@ end
 
 local function StepOpen()
   FP.frame = FP.frame + 1
-  if not FP.kb then Guard(true) end
+  Guard(true)
   local P = FP.P
   if FP.closing then
     FP.anim = FP.anim - 1
@@ -1017,18 +797,17 @@ local function StepOpen()
     local ok, err = coroutine.resume(FP.co)
     if not ok then Log("error", tostring(err)) end
     if not ok or coroutine.status(FP.co) == "dead" then
-      FP.co, FP.kb = nil, false
+      FP.co = nil
       KeysReset()
     end
     Draw()
     return
   end
   if FP.frame % FP.REFRESH == 0 and FP.mode == "list" then Load(false) end
-  if FP.frame % FP.POLL == 0 then Poll() end
   DetailsPoll()
   if FP.closing then Draw() return end
   local K = {}
-  for _, k in ipairs({"enter", "back", "y", "x", "l1", "r1", "rclick", "click", "wup", "wdown"}) do K[k] = Pressed(k) end
+  for _, k in ipairs({"enter", "back", "l1", "r1", "rclick", "click", "wup", "wdown"}) do K[k] = Pressed(k) end
   K.up, K.down = Pressed("up", true), Pressed("down", true)
   local px, py = M(FP.C.POINTER)
   if FP.mode == "details" then
@@ -1054,10 +833,6 @@ local function StepOpen()
       MoveSel(-1, K.l1 and 8 or 3)
     elseif K.r1 or K.wdown then
       MoveSel(1, K.r1 and 8 or 3)
-    elseif K.y then
-      Run(CopyCode)
-    elseif K.x then
-      Run(AddByCode)
     elseif K.click and type(px) == "number" then
       local i = Hit(px, py)
       if i ~= nil then

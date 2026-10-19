@@ -20,7 +20,10 @@ do
   local Create = CharacterReforged_TableCreate
   Create.INAZUMA_FANTASY_ITEMS = 464382964           -- CMND_EVT_MX_ITEMS: answered only by Inazuma Fantasy (its own flow)
   Create.ITEMS = 2820944175                          -- CMND_CHARACTERREFORGED_CREATE_ITEMS () -> n, create item 1 .. n
-  Create.ROW = 2827747337                            -- CMND_CHARACTERREFORGED_CREATE_ROW (item) -> row (0 none), store command id, scene
+  Create.ROW = 2827747337                            -- CMND_CHARACTERREFORGED_CREATE_ROW (item) -> row (0 none), store command id, scene,
+                                                     -- the avatar may take part
+  Create.IS_AVATAR = 2461887648                      -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
+  Create.AVATAR_DENIED = -4                          -- the refusal code of the avatar (CMND_CHARACTERREFORGED_CREATE_REFUSAL)
   Create.FADE = 609722083                            -- screen fade (1 out / 0 in, seconds)
   Create.MENU_HIDE = 1670867360                      -- (1, menu) the whole menu hidden (the retail full-screen movie hide)
   Create.MENU_SHOW = 3257327861                      -- (menu) shown again
@@ -243,7 +246,7 @@ do
     if row ~= 0 or type(skill) ~= "number" or skill == 0 or Create.InazumaFantasyFlow() then
       return false
     end
-    local system, store, scene = funcLuaCommand(Create.ROW, skill)
+    local system, store, scene, avatar_may_pair = funcLuaCommand(Create.ROW, skill)
     Create.scene_row = scene == true
     if type(system) ~= "number" or system <= 0 or type(store) ~= "number" or store == 0 then
       return false                                   -- not a create item: the screen's normal equip
@@ -252,6 +255,12 @@ do
     if hdl == nil then
       Create.Log("2 picked", "row", system, "no shown player: not created")
       funcLuaCommand(Create.SOUND, Create.SOUND_REFUSED)
+      return true
+    end
+    if avatar_may_pair == false and funcLuaCommand(Create.IS_AVATAR, hdl) == true then
+      Create.Log("2 picked", "row", system, "player", hdl, "the avatar: refused")
+      funcLuaCommand(Create.SOUND, Create.SOUND_REFUSED)
+      Create.Refusal(system, Create.AVATAR_DENIED)
       return true
     end
     Create.Log("2 picked", "row", system, "player", hdl, "store", store)

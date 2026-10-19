@@ -13,6 +13,10 @@ local EVT_Child = function()
 -- * AuraPoints_BuffRow.drawn: the row's drawn state, the player on each portrait instance (retail or widened).
 -- * AuraPoints_BuffRow.PoolsOn(): the mod's PEG or SP part is on (CMND_AURAPOINTS_ACTIVE_PARTS): while not, or not
 --   known yet, the row keeps the retail count and aura_points_buff_bar.lua draws nothing.
+-- * Face swaps in quick succession: a portrait instance whose face is swapped again while its previous face load may
+--   still run (two row redraws a few frames apart, e.g. a player entering and leaving the row) could keep the blank
+--   placeholder. Such an instance gets its last face swapped once more RESWAP_FRAMES later (R.Step, from the bar
+--   block's Step wrapper); loader.log «aura_points buff row face swapped again».
 -- Nothing at chunk load but the debug library's upvalue search; engine calls only inside the wrapper, through pcall.
 -- EVT upvalue helpers for lua_patch files (docs/game/engine/lua-patches.md "Locales del chunk retail"). A retail
 -- chunk is stripped bytecode: its main-chunk locals are reachable only as upvalues of its global functions. The
@@ -91,6 +95,32 @@ local CMD_PARTS = 1040362010 --[[the mod's parts this start: ok, peg, sp, pe]]
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
+R.RESWAP_FRAMES = 30 --[[a second face swap of one instance within this many frames is redone this many frames later]]
+R.frame = R.frame or 0
+R.faces = R.faces or {} --[[portrait instance -> {hdl, metamorphosed, frame, redo}: its last face swap]]
+
+-- the face swap of portrait instance i (the retail call), remembered for a later redo
+function R.SwapFace(hdl, layer, i, metamorphosed)
+  local last = R.faces[i]
+  local redo = last ~= nil and R.frame - last.frame < R.RESWAP_FRAMES and R.frame + R.RESWAP_FRAMES or nil
+  R.faces[i] = {hdl = hdl, layer = layer, metamorphosed = metamorphosed, frame = R.frame, redo = redo}
+  SwapLayerFaceIconTexBySoccerCharaHdl(hdl, layer, i, 620971603, 1501523875, faceType, 1, true, true, true, false, metamorphosed)
+end
+
+-- every frame (the bar block's Step wrapper): the frame count and the face swaps due again
+function R.Step()
+  R.frame = R.frame + 1
+  for i, f in pairs(R.faces) do
+    if f.redo ~= nil and R.frame >= f.redo then
+      f.redo = nil
+      if IsInvalidSoccerCharaHdl(f.hdl) == false then
+        SwapLayerFaceIconTexBySoccerCharaHdl(f.hdl, f.layer, i, 620971603, 1501523875, faceType, 1, true, true, true, false,
+          f.metamorphosed)
+        pcall(funcLuaCommand, 3661580131, "aura_points buff row face swapped again", i, string.format("0x%X", f.hdl))
+      end
+    end
+  end
+end
 
 -- the portrait layer's open instances (the menu's layer count); 0 = unknown
 function R.Instances()
@@ -205,7 +235,7 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
         local n10 = 3669916425
         funcLuaMenuCommand(558735651, n8, 502529699 --[[#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx]], n9, n10, 0, i2)
         local is_aura_skill_metamorphosed = IsAuraSkillMetamorphosed(convert_aura_attr_to_aura_ty)
-        SwapLayerFaceIconTexBySoccerCharaHdl(aura_chara_hdl, n7, i2, 620971603, 1501523875, faceType, 1, true, true, true, false, is_aura_skill_metamorphosed)
+        R.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
       end
       local l3 = 68 * n6
       funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], n7, l3, 0, 0, i2)
@@ -278,6 +308,8 @@ B.NUM_ADV, B.SLASH_ADV, B.ONE_ADV = 7.8, 4.5, 4.8     -- advance of a digit / of
 B.NUM_GAP = 0.5                        -- gap between the bar and its number
 B.LEVEL_SCALE = 0.28                   -- the level label's text scale (the telop's text box is 334 x 70)
 B.LEVEL_DY = 1                         -- the level label's middle this far below the tile's top edge (layout units)
+B.PROGRESS_H = 4                       -- the totem's next-level bar: its height (the SP bar's width, layout units)
+B.PROGRESS_GAP = 1                     -- its gap under the SP number
 B.LOGS = B.LOGS or 0                   -- first placements logged (loader.log «aura_points buff bar»)
 
 local CMD_PEG = 2798170173
@@ -438,7 +470,9 @@ function B.Collect()
     end
     local spirit = bit32.band(u.attr, ATTR_KESHIN + ATTR_ARMOUR + ATTR_TOTEM)
     if spirit ~= 0 then
-      out[#out + 1] = {k = k + track * rows, face = k, track = track, hdl = u.hdl, attr = spirit}
+      -- a totem shown as the entry's first bar: its next-level bar takes the entry's free second-bar instance
+      local progress = (spirit == ATTR_TOTEM and track == 0) and (k + rows) or nil
+      out[#out + 1] = {k = k + track * rows, face = k, track = track, hdl = u.hdl, attr = spirit, progress = progress}
     end
   end
   return out
@@ -649,8 +683,10 @@ function B.Draw(e)
   if cur ~= nil and max ~= nil then
     local ny = bar_y - (bar_half + B.NUM_GAP + B.NUM_H / 2) * scale
     B.DrawNumber(e.k, cur, max, gx + B.DX, ny, scale)
+    e.under = {x = gx + B.DX, y = ny - (B.NUM_H / 2 + B.PROGRESS_GAP) * scale, scale = scale}
   else
     B.HideNumber(e.k)
+    e.under = nil
   end
   if B.LOGS < 6 then
     B.LOGS = B.LOGS + 1
@@ -753,6 +789,63 @@ function B.HideLevel(k)
   end
 end
 
+-- the totem's next-level bar of entry e: hidden (its instance keeps no rate; Frame hides it when the entry is gone)
+function B.HideProgress(e)
+  if e.progress ~= nil and B.shown[e.progress] then
+    B.Hide(e.progress)
+  end
+end
+
+-- the totem's next-level bar of entry e: a thin copy of the entry's bar (the retail fill hp_bar02) under its SP number,
+-- filled to `rate` (his level points toward the next level); only where the entry has a free instance and a number
+function B.DrawProgress(e, rate)
+  local k, u = e.progress, e.under
+  if k == nil or u == nil then
+    B.HideProgress(e)
+    return
+  end
+  if Menu(CMND_IS_OPEN, LAYER, k) ~= true then
+    Menu(CMND_OPEN, LAYER, k)
+    B.opened[k] = true
+    B.ready[k], B.shown[k], B.rates[k] = nil, false, nil
+    return
+  end
+  if Menu(CMND_IS_LOADING, LAYER, k) == true then
+    return
+  end
+  if B.owners[k] ~= e.hdl then
+    B.owners[k] = e.hdl
+    B.ready[k] = nil
+  end
+  if not B.ready[k] then
+    B.ready[k] = true
+    B.rates[k] = nil
+    Menu(CMND_RATE_INIT, LAYER, RATE_BAR, 0, k)
+    Menu(CMND_RATE_INIT, LAYER, RATE_RED, 0, k)
+    Menu(CMND_MESH_VISIBLE, LAYER, MESH_LABEL, false, k)
+    Menu(CMND_MESH_VISIBLE, LAYER, MESH_EMPTY, false, k)
+  end
+  if B.fill[k] ~= "progress" then
+    B.fill[k] = "progress"
+    Menu(CMND_SWAP_TEX, LAYER, ATLAS, FILL_SLOT, FILL_SLOT, 0, k)
+  end
+  B.HideNumber(k)
+  local sx, sy = B.BAR_W * u.scale / FRAME_W, B.PROGRESS_H * u.scale / FRAME_H
+  local half = 28 * B.PROGRESS_H / FRAME_H / 2 * u.scale
+  Menu(CMND_SET_SCALE, LAYER, sx, sy, 1, k)
+  Menu(CMND_SET_POS, LAYER, u.x - FRAME_CX * sx, u.y - half - FRAME_CY * sy, 0, k)
+  if not B.shown[k] then
+    Menu(CMND_VISIBLE, LAYER, k, true)
+    B.shown[k] = true
+    B.rates[k] = nil
+  end
+  if B.rates[k] == nil or math.abs(B.rates[k] - rate) > 0.0005 then
+    B.rates[k] = rate
+    Menu(CMND_RATE, LAYER, RATE_BAR, 0, rate, k, true)
+    Menu(CMND_RATE, LAYER, RATE_RED, 0, rate, k, true)
+  end
+end
+
 -- the label «Lv.3» on the top edge of the totem tile of entry e; false = nothing to show (or still loading)
 function B.DrawLevel(e)
   local L = B.lvl
@@ -760,10 +853,16 @@ function B.DrawLevel(e)
     B.HideLevel(e.face)
     return false
   end
-  local has, level, text = Command(K.CMD_LEVEL, e.hdl or 0)
+  local has, level, text, progress, top = Command(K.CMD_LEVEL, e.hdl or 0)
   if has ~= true or type(level) ~= "number" or type(text) ~= "string" or text == "" then
     B.HideLevel(e.face)
+    B.HideProgress(e)
     return false
+  end
+  if top == 1 or type(progress) ~= "number" then
+    B.HideProgress(e)
+  else
+    B.DrawProgress(e, progress)
   end
   local node = B.LevelNode()
   if node == nil then
@@ -866,6 +965,9 @@ function B.Frame()
   for _, e in ipairs(B.entries) do
     if B.Draw(e) then
       used[e.k] = true
+      if e.progress ~= nil then
+        used[e.progress] = true
+      end
     end
   end
   for k, on in pairs(B.shown) do
@@ -906,6 +1008,10 @@ if B.origStep == nil and type(Step) == "function" then
   B.origStep = Step
   function Step(...)
     local r = table.pack(B.origStep(...))
+    local row = rawget(_ENV, "AuraPoints_BuffRow")
+    if type(row) == "table" and type(row.Step) == "function" then
+      pcall(row.Step)
+    end
     pcall(B.Frame)
     return table.unpack(r, 1, r.n)
   end

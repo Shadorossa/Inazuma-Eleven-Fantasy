@@ -18,23 +18,26 @@ name_text = 0xEFE452DE                 # Umbrella (the game's name text)
 series = "IE1"
 
 # Moves: every player plays his card's own moveset (loadout 0: the characters' TOML), no aura / Hiper (Nacho 2026-10-06).
+# Stats: an ordinary team's profile (cols 14-19 = -1, stat rates 1: the empty lists are the defaults). The retail legend
+# team has the Batalla legendaria rates (x9 on every stat), which based_on would carry into the Crónica, the Heroica and
+# the free-match classes (1.11.12, owner 2026-10-19; Street Sally's is an exact roster, so it already has them).
 [[edit]]
 target = "cro_ie1_umbrella"
 member = [
-  { slot = 0, patch = true, loadout = 0 },
-  { slot = 1, patch = true, loadout = 0 },
-  { slot = 2, patch = true, loadout = 0 },
-  { slot = 3, patch = true, loadout = 0 },
-  { slot = 4, patch = true, loadout = 0 },
-  { slot = 5, patch = true, loadout = 0 },
-  { slot = 6, patch = true, loadout = 0 },
-  { slot = 7, patch = true, loadout = 0 },
-  { slot = 8, patch = true, loadout = 0 },
-  { slot = 9, patch = true, loadout = 0 },
-  { slot = 10, patch = true, loadout = 0 },
-  { slot = 11, patch = true, loadout = 0 },
-  { slot = 12, patch = true, loadout = 0 },
-  { slot = 13, patch = true, loadout = 0 },
-  { slot = 14, patch = true, loadout = 0 },
-  { slot = 15, patch = true, loadout = 0 },
+  { slot = 0, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 1, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 2, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 3, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 4, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 5, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 6, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 7, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 8, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 9, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 10, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 11, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 12, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 13, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 14, patch = true, loadout = 0, c14_19 = [], rates = [] },
+  { slot = 15, patch = true, loadout = 0, c14_19 = [], rates = [] },
 ]

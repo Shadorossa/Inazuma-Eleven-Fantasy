@@ -30,7 +30,7 @@ local function info(...) VRFW.log("pairing:", ...) end
 -- ---------------------------------------------------------------------------------------- the rules (data)
 
 -- what a system gets when no mod declares a key (the same values as content\pairing\defaults.toml)
-local BUILTIN = { same_character = false, one_partner_per_base = true, base_may_be_partner = false, base_rarities_denied = {}, partner_rarities_denied = {}, moves = 0 }
+local BUILTIN = { same_character = false, one_partner_per_base = true, base_may_be_partner = false, base_rarities_denied = {}, partner_rarities_denied = {}, moves = 0, avatar_may_pair = true }
 local RULES = nil
 local DECLARATIONS = nil
 

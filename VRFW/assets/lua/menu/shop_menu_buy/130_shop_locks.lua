@@ -2,8 +2,9 @@
 --
 -- A shop row whose progress condition fails is listed when a mod declares its shop ([[VRFW.ShopLock]], scripts\shop_rows.lua).
 -- This file draws such a row: greyed card (material preset list_base of shop01_02_list_item at 0.5, as retail greys a locked
--- special move), a padlock instead of every icon of the row, what unlocks it as the row's name, no detail card, no model
--- preview, a button guide with Accept only, and Accept refused with the retail «cannot» sound and a notice.
+-- special move), the row's own icons as the game draws them, what unlocks it as the row's name, the price as retail shows
+-- it, no detail card, no model preview, a button guide with Accept only, and Accept refused with the retail «cannot»
+-- sound and a notice.
 -- The sentence: CMND_VRFW_SHOP_LOCK_SOURCE names the chapter, match, opponent or flag text; the framework's text rows
 -- vrfw_shop_lock_* (text\rows\shop_locks.toml) give it in the game's language.
 -- shop01_02_list_item has 8 recycled instances: CMND_VRFW_SHOP_LOCKED(instance) tells which one shows a locked row.
@@ -23,19 +24,9 @@ if VRFW_Host ~= nil then
     FOCUS_INSTANCE = 2603265800,
     MATERIAL_COLOR = 801406373,
     SET_TEXT = 1083631230,
-    SET_SPRITE = 558735651,
-    LOAD_TEXTURE = 839427544,   -- CMND_LOAD_MENU_RES_TEXTURE
-    TEXTURE_LOADING = 1506186496,
-    MESH_VISIBLE = 2277921386,  -- CMND_IS_MESH_VISIBLE
-    SET_MESH_VISIBLE = 3405944500,
-    LAYER_OPEN = 2640875187,    -- CMND_IS_OPEN_LAYER
     LAYER_VISIBLE = 1262717583, -- CMND_IS_LAYER_VISIBLE
     SET_LAYER_VISIBLE = 711242136,
     SET_OBJECT_VISIBLE = 2171393651,
-    NODE_VISIBLE = 2158717427,  -- (layer, node, visible, instance): a joint, whatever the engine does to its mesh
-    GET_TRANS = 2491463760,     -- (layer, instance, node) -> x, y, z
-    SET_TRANS = 1856671416,     -- (layer, instance, node, x, y, z)
-    NODE_SIZE = 2885415772,     -- (layer, instance, node, width, height)
     GUIDE_SET = 2209673388,
     GUIDE_KEYS = 452337289,
     MESSAGE = 2289627655,
@@ -47,30 +38,6 @@ if VRFW_Host ~= nil then
   local BG = 717014739          -- shop01_00_background: its close = the shop is going
   local GREY = 0.5              -- retail grey of a locked special move
   local MATERIAL = 2239373704   -- list_base: CMenuChangeMaterialColor preset of shop01_02_list_item
-  local TEX_PATH = "#/menu/150_shop/vrfw_shop_lock/vrfw_shop_lock.g4tx"
-  local TEX = 976744312         -- crc32(TEX_PATH)
-  local LOCK = 443981853        -- vrfw_shop_lock_dark
-  local LOCK_ALT = 577900967    -- vrfw_shop_lock_light (set first so the sprite always changes)
-  local ICON_NODE = 2176982228  -- icon_item_dmy03: the row icon's node
-  local ICON_MESH = 303536660   -- _icon_item_dmy01
-  local CHARA_MESH = 3879052096 -- _list_chr_dmy01: character / aura icon
-  local CHARA_NODE = 994901711  -- list_chr_dmy01
-  -- the two icon boxes of shop01_02 (layout units): the item icon 80 x 80 inside the card, the character icon 128 x 128
-  -- (it rises over the card's edges by design). A padlock on the character mesh is drawn in the item icon's box.
-  local ICON_SIZE = 80
-  local CHARA_SIZE = 128
-  local SPIRIT_LAYER = 1048618417 -- cmn01_07_sprit_icon
-  -- meshes of a row that tell what it sells: hidden on locked rows
-  local HIDE_MESHES = {
-    530479263,   -- _list_type_dmy01: element
-    2496182457,  -- _type_base01
-    3044722974,  -- _icon_area_dmy01
-    1896097465,  -- _icon_buff_dmy01
-    3937907647,  -- _icon_synergy_dmy01
-    3541433305,  -- _synergy_icon_base01
-    2203859798,  -- _icon_position_dmy01
-    441805548,   -- _icon_position_dmy02
-  }
   -- the row's name nodes: item rows use _text_list01, character / aura rows _text_coach01
   local NAME_NODES = { 931545948, 3705682548, 1059092884, 1230493388 }
   -- detail card layers (retail UpdateSelectItemInfo / ClearNotUseUpdateSelectInfoLayer)
@@ -116,11 +83,8 @@ if VRFW_Host ~= nil then
     SL.phrases = {}         -- "kind:a:b" -> sentence
     SL.focus = -1
     SL.tint = {}            -- instance -> greyed
-    SL.rows = {}            -- locked instance -> frames since its fill
-    SL.saved = {}           -- instance -> mesh state before it was locked { slot, mesh, icon, chr, spirit }
     SL.detail_hidden = false
     SL.card_visible = {}
-    SL.texture = 0          -- 0 not asked, 1 loading, 2 ready
     SL.closing = false
   end
   reset()
@@ -237,123 +201,11 @@ if VRFW_Host ~= nil then
     return (SL.FocusInfo(item)) == true
   end
 
-  local function texture_ready()
-    if SL.texture == 0 then
-      menu(CMD.LOAD_TEXTURE, TEX_PATH)
-      SL.texture = 1
-    end
-    if SL.texture == 1 then
-      local ok, loading = pcall(funcLuaCommand, CMD.TEXTURE_LOADING, TEX)
-      if ok and not loading then SL.texture = 2 end
-    end
-    return SL.texture == 2
-  end
-
   -- the card colour of a row (material preset list_base): grey or back to normal
   function SL.GreyRow(layer, inst, on)
     local f = on and GREY or 1
     menu(CMD.MATERIAL_COLOR, layer, inst, MATERIAL, f, f, f)
     SL.tint[inst] = on or nil
-  end
-
-  local function slot_type()
-    local ok, s = pcall(GetCurrentSlotType)
-    if ok then return s end
-    return -1
-  end
-
-  local function mesh_visible(layer, mesh, inst)
-    local ok, v = menu(CMD.MESH_VISIBLE, layer, mesh, inst)
-    return ok and v == true
-  end
-
-  local function spirit_open(inst)
-    local ok, open = menu(CMD.LAYER_OPEN, SPIRIT_LAYER, inst)
-    return ok and open == true
-  end
-
-  -- the mesh state the engine gave this instance (once per instance and tab)
-  local function save(layer, inst)
-    local slot = slot_type()
-    local rec = SL.saved[inst]
-    if rec ~= nil and rec.slot == slot then return end
-    rec = { slot = slot, mesh = {} }
-    for _, m in ipairs(HIDE_MESHES) do rec.mesh[m] = mesh_visible(layer, m, inst) end
-    rec.icon = mesh_visible(layer, ICON_MESH, inst)
-    rec.chr = mesh_visible(layer, CHARA_MESH, inst)
-    local old = SL.saved[inst]
-    if old ~= nil and old.boxed then
-      rec.chara_at, rec.boxed = old.chara_at, true   -- the joint is still in the padlock's box: its own place is the old one
-    else
-      local okc, cx, cy, cz = menu(CMD.GET_TRANS, layer, inst, CHARA_MESH)
-      if okc and type(cx) == "number" and type(cy) == "number" then rec.chara_at = { cx, cy, cz or 0 } end
-    end
-    if spirit_open(inst) then
-      local ok, vis = menu(CMD.LAYER_VISIBLE, SPIRIT_LAYER, inst)
-      rec.spirit = ok and vis == true
-    end
-    SL.saved[inst] = rec
-  end
-
-  -- a locked row: only the padlock. The engine redraws the row icon's sprite on its own, so the padlock goes on the mesh the
-  -- engine does not use for this row (item rows: the character mesh; character / aura rows: the item icon mesh). The
-  -- engine's mesh is hidden at its JOINT (the engine shows the mesh again when its icon texture arrives, a frame after
-  -- the fill: the real icon flashed under the padlock); a padlock on the character mesh is moved and sized into the item
-  -- icon's box (the character box overflows the card).
-  local function apply_row(layer, inst)
-    for _, m in ipairs(HIDE_MESHES) do menu(CMD.SET_MESH_VISIBLE, layer, m, false, inst) end
-    if spirit_open(inst) then menu(CMD.SET_LAYER_VISIBLE, SPIRIT_LAYER, inst, false) end
-    local rec = SL.saved[inst]
-    local lock_mesh, lock_node, engine_mesh = CHARA_MESH, CHARA_NODE, ICON_MESH
-    if rec ~= nil and rec.chr == true then
-      lock_mesh, lock_node, engine_mesh = ICON_MESH, ICON_NODE, CHARA_MESH
-    end
-    menu(CMD.SET_MESH_VISIBLE, layer, engine_mesh, false, inst)
-    menu(CMD.NODE_VISIBLE, layer, engine_mesh, false, inst)
-    menu(CMD.NODE_VISIBLE, layer, lock_mesh, true, inst)
-    if lock_mesh == CHARA_MESH and (rec == nil or not rec.boxed) then
-      local ok, x, y, z = menu(CMD.GET_TRANS, layer, inst, ICON_MESH)
-      if ok and type(x) == "number" and type(y) == "number" then
-        menu(CMD.SET_TRANS, layer, inst, CHARA_MESH, x, y, z or 0)
-        menu(CMD.NODE_SIZE, layer, inst, CHARA_MESH, ICON_SIZE, ICON_SIZE)
-        if rec ~= nil then rec.boxed = true end
-      end
-    end
-    if texture_ready() then
-      menu(CMD.SET_SPRITE, layer, TEX, LOCK_ALT, lock_node, 0, inst)
-      menu(CMD.SET_SPRITE, layer, TEX, LOCK, lock_node, 0, inst)
-      menu(CMD.SET_MESH_VISIBLE, layer, lock_mesh, true, inst)
-    else
-      menu(CMD.SET_MESH_VISIBLE, layer, lock_mesh, false, inst)
-    end
-  end
-
-  -- a recycled instance that shows a normal row again: its meshes as the engine left them
-  local function restore(layer, inst)
-    SL.rows[inst] = nil
-    local rec = SL.saved[inst]
-    SL.saved[inst] = nil
-    menu(CMD.NODE_VISIBLE, layer, ICON_MESH, true, inst)
-    menu(CMD.NODE_VISIBLE, layer, CHARA_MESH, true, inst)
-    if rec ~= nil and rec.boxed and rec.chara_at ~= nil then
-      menu(CMD.SET_TRANS, layer, inst, CHARA_MESH, rec.chara_at[1], rec.chara_at[2], rec.chara_at[3])
-      menu(CMD.NODE_SIZE, layer, inst, CHARA_MESH, CHARA_SIZE, CHARA_SIZE)
-    end
-    if rec == nil then
-      menu(CMD.SET_MESH_VISIBLE, layer, ICON_MESH, true, inst)
-      menu(CMD.SET_MESH_VISIBLE, layer, CHARA_MESH, false, inst)
-      return
-    end
-    local engine_mesh = rec.chr and CHARA_MESH or ICON_MESH
-    if not mesh_visible(layer, engine_mesh, inst) then
-      menu(CMD.SET_MESH_VISIBLE, layer, ICON_MESH, rec.icon ~= false, inst)
-      menu(CMD.SET_MESH_VISIBLE, layer, CHARA_MESH, rec.chr == true, inst)
-    end
-    if rec.slot ~= slot_type() then return end
-    for m, vis in pairs(rec.mesh) do
-      if vis and not mesh_visible(layer, m, inst) then menu(CMD.SET_MESH_VISIBLE, layer, m, true, inst) end
-    end
-    if rec.spirit and spirit_open(inst) then menu(CMD.SET_LAYER_VISIBLE, SPIRIT_LAYER, inst, true) end
   end
 
   -- the detail card on the right goes while a locked row has the focus
@@ -403,7 +255,6 @@ if VRFW_Host ~= nil then
 
   on("OnShopInit", "before", function(...)
     reset()
-    if SL.On() then texture_ready() end
   end)
 
   on("OnCloseLayer", "before", function(a1, ...)
@@ -414,7 +265,8 @@ if VRFW_Host ~= nil then
     SL.closing = true
   end, true)
 
-  -- engine fill of each row (end of the list item fill): a locked row is drawn here, a recycled one restored
+  -- engine fill of each row (end of the list item fill): a locked row greyed with what unlocks it as its name (its icons
+  -- stay the game's), a recycled one back to normal colour
   on("SetupGrayout", "around", function(nxt, a1, a2, a3)
     if a1 ~= LIST then return nxt(a1, a2, a3) end
     local locked, kind, pa, pb = SL.InstanceInfo(a2)
@@ -423,23 +275,10 @@ if VRFW_Host ~= nil then
       SL.GreyRow(a1, a2, true)
       local s = SL.Phrase(kind, pa, pb)
       for _, node in ipairs(NAME_NODES) do menu(CMD.SET_TEXT, a1, node, s, a2) end
-      save(a1, a2)
-      SL.rows[a2] = 0
-      apply_row(a1, a2)
       return
     end
-    if SL.rows[a2] ~= nil or SL.saved[a2] ~= nil then restore(a1, a2) end
     if SL.tint[a2] then SL.GreyRow(a1, a2, false) end
     return nxt(a1, a2, a3)
-  end)
-
-  -- every frame: the engine repaints icons when it recycles rows
-  on("Step", "after", function(r, ...)
-    if next(SL.rows) == nil or closing() then return end
-    for inst, k in pairs(SL.rows) do
-      SL.rows[inst] = k + 1
-      apply_row(LIST, inst)
-    end
   end)
 
   on("OnChangeFocus", "before", function(a1, a2)

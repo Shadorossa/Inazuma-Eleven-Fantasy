@@ -133,13 +133,55 @@ aliases = ["CMND_STAMINAPOINTS_PE_MAX", "CMND_EVT_PE_MAX"]
 handler = "AuraPoints.StaminaMax"
 
 # CMND_AURAPOINTS_HUD_HIDDEN_LAYERS() -> ok, layer hash... (graft aura_points_hyper_gauge; alias
-# CMND_STAMINAPOINTS_HUD_HIDDEN_LAYERS): the match HUD layers hidden while PE and the PEG or SP points are both on
-# (config.toml [hud_hidden_layers]: the retail hyper gauge, the PEG / SP bar under the PE bar taking that role). With PE
-# off this feature is not read and nothing answers; with PEG and SP off the answer is false: the HUD stays retail.
+# CMND_STAMINAPOINTS_HUD_HIDDEN_LAYERS): the match HUD layers hidden while nothing pays with the hyper gauge
+# (AuraPoints.HyperUnused; config.toml [hud_hidden_layers]: the retail hyper gauge, the PEG / SP bar under the PE bar
+# taking that role). With PE off this feature is not read and nothing answers; otherwise false: the HUD stays retail.
 [[VRFW.Command]]
 name = "CMND_AURAPOINTS_HUD_HIDDEN_LAYERS"
 aliases = ["CMND_STAMINAPOINTS_HUD_HIDDEN_LAYERS"]
 handler = "AuraPoints.HudHiddenLayers"
+
+# CMND_AURAPOINTS_HYPER_GAIN_OFF() -> true while the hyper gauge's gains are off (AuraPoints.HyperUnused, the rule of
+# the layers above: nothing pays with the gauge)
+[[VRFW.Command]]
+name = "CMND_AURAPOINTS_HYPER_GAIN_OFF"
+handler = "AuraPoints.HyperGainOff"
+
+# ------------------------------------------------------------------------------------------------ hyper gauge gains
+# Written by scripts\stamina.lua at the start only while nothing pays with the hyper gauge (AuraPoints.HyperUnused):
+# no gain, no «+N» number. The gauge's match value: [[g_gameRoot 0x21F62A0]+0x6A58] + 0x60 + team * 0x1130, cur f32
+# +0x1064; every gain goes through AddHyper 0xEB55D0 (team, amount), called by the three sites below. The pays (aura
+# starts, ProcessPending) and the 20 % start fill are other code: untouched.
+
+# The skill-use gain 0x16BAF90: amount = the skill's value x AddHyperdimensionalPowerRate_<kind> (game_param, the six
+# rates at 0x22AEE84); `comiss rate, 0; jbe end` skips the add AND its flying number when the rate is 0. The jbe
+# becomes a jmp to the same end: every rate reads as 0.
+[[VRFW.Patch]]
+name = "Ap_HyperGainSkill"
+pattern = "0F B6 41 01 3C 06 0F 83 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 0F 57 C9 F3 0F 10 04 81 0F 2F C1 ?? ?? ?? ?? ?? ?? 0F B6 47 18"
+rva = 0x16BB00A
+offset = 0x1E
+expect = "0F 86 81 03 00 00"
+bytes = "E9 82 03 00 00 90"
+apply = "script"
+
+# The two scripted gain handlers 0x16A1FE0 / 0x16A2090 (a value from a script argument: the «+N» number, then AddHyper;
+# void): they return at once (push rbx -> ret).
+[[VRFW.Patch]]
+name = "Ap_HyperGainScriptA"
+pattern = "?? 53 48 83 EC 30 83 7A 08 01 48 8B D9 0F B7 42"
+rva = 0x16A1FE0
+expect = "40"
+bytes = "C3"
+apply = "script"
+
+[[VRFW.Patch]]
+name = "Ap_HyperGainScriptB"
+pattern = "?? 53 48 83 EC 30 41 83 78 08 01 48 8B DA 41 0F"
+rva = 0x16A2090
+expect = "40"
+bytes = "C3"
+apply = "script"
 
 # the module bit the mods' Lua reads (CMND_EVT_LOADER_VERSION): 8 = «stamina» while the PE commands are on (was
 # Inazuma Fantasy's)

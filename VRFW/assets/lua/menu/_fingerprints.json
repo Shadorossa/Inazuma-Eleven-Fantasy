@@ -145,6 +145,21 @@
   "forbid": [],
   "ambiguous": []
  },
+ "soccer_battle_constant_menu": {
+  "script": "soccer_battle_constant_menu_0.00.00",
+  "require": [
+   "InitializeGlobalValues",
+   "CREATE_SOCCER_TRAINING_PERFORMANCE_TEXT"
+  ],
+  "forbid": [
+   "PlayStampPopupCoroutine"
+  ],
+  "ambiguous": [
+   "soccer_training_constant_menu"
+  ],
+  "chunk_crc": 1522934058,
+  "chunk_size": 1308
+ },
  "soccer_battle_vs_menu": {
   "script": "soccer_battle_vs_menu_1.04.02.00",
   "require": [
@@ -221,6 +236,14 @@
   "script": "team_dock_menu_rpg_battle_1.04.19.01",
   "require": [
    "UpdateAttachedControlCharaBadge"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "timetelop_menu": {
+  "script": "timetelop_menu_0.05.85",
+  "require": [
+   "SetupTimeTelopInfo"
   ],
   "forbid": [],
   "ambiguous": []

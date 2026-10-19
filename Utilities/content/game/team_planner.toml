@@ -73,3 +73,24 @@ handler = "Utilities.TeamPlanner.PickTeam"
 [[VRFW.Command]]
 name = "CMND_UTIL_TP_PICK_PLAYER"
 handler = "Utilities.TeamPlanner.PickPlayer"
+
+# () -> the season list's layout ([team_planner.list]): cols, rows, pitch x, pitch y, card scale, centre x, centre y,
+# card offset x, y, ghost alpha, tab x, tab y, tab pitch, tab scale, panel x, y, scale x, y
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_LIST"
+handler = "Utilities.TeamPlanner.PickList"
+
+# () -> { { series id, series type, atlas, on sprite, off sprite, name }, … }: the season tabs (no «all» tab)
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_TABS"
+handler = "Utilities.TeamPlanner.PickTabs"
+
+# (dir, page) -> the season tab as the list: page, name, characters owned, characters, pages
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_SEASON"
+handler = "Utilities.TeamPlanner.PickSeason"
+
+# () -> the open season's characters: { { card param, owned, display rarity, name }, … }
+[[VRFW.Command]]
+name = "CMND_UTIL_TP_PICK_ROSTER"
+handler = "Utilities.TeamPlanner.PickRoster"

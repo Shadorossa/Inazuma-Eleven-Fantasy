@@ -295,6 +295,14 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x0995AEC9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNAmVrskoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120016
   ] } }
 
+  [[keyed.add]]                         # evt_rn_ie2_forest (rival chronicle_deluxe.cro_ie2_forest)
+  key = 0xC2E561D1                       # crc32(chronicle_deluxe.heroic_evt_rn_ie2_forest)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x860DAAAB, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em020044
+    { item = 0xDAA6A3E9, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u021801
+    { item = 0x0995AEC9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNAmVrskoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120016
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro03_010_010 (rival tm_cro_ie3_0100)
   key = 0x79E17FA2                       # crc32(chronicle_deluxe.heroic_fbtl_cro03_010_010)
   cells = { REF_ITEMS = { set = [
@@ -1250,4 +1258,12 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x87FE63EF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em110002
     { item = 0xE371E82F, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u110201
     { item = 0x31D30898, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDHTCJgoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120067
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro12_030_010 gate battle (rival tm_cro_original_0300)
+  key = 0xA20B285D                       # crc32(chronicle_deluxe.gate_fbtl_cro12_030_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x26EA0F62, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000001
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x4B3E9EFD, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u112101
   ] } }

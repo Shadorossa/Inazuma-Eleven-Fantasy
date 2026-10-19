@@ -280,6 +280,19 @@ function S.build(X, sfiles)
     return #hits
   end
 
+  -- rows of shop `sid` that `test(t, i)` accepts, hidden or not
+  local function count_rows(sid, test)
+    local t = shop_table()
+    if not t then return 0 end
+    local _, b, e = shop_span(t, sid)
+    if not b then return 0 end
+    local n = 0
+    for _, r in ipairs(shop_rows(t, b, e)) do
+      if test(t, r[1]) then n = n + 1 end
+    end
+    return n
+  end
+
   -- hide every row of shop `sid` of one kind ("spirit": player spirit rows, "unknown": rows of an item not in item_config); how many
   local function hide_rows_where(sid, m, what, kind)
     local never = C.never()
@@ -404,7 +417,12 @@ function S.build(X, sfiles)
       return "write either `item = …` or `technique = …`"
     end
     if X.hidden[item] then
-      X.warn(m, what .. ": `" .. ikey .. "` is removed by a [[remove]]: not sold")
+      -- another mod's [[remove]] (or its [[VRFW.Unobtainable]]) wins over this mod's sale: expected, not a fault
+      if X.hidden[item] == m then
+        X.warn(m, what .. ": `" .. ikey .. "` is removed by a [[remove]]: not sold")
+      else
+        VRFW.log.info(what .. ": `" .. ikey .. "` is removed by mod " .. tostring(X.hidden[item]) .. ": not sold")
+      end
       return nil
     end
     -- costs: the entry's, else the item's default (an item's default price is written by the item's mod)
@@ -579,13 +597,23 @@ function S.build(X, sfiles)
     for _, h in ipairs(d.hide or {}) do
       local it, he = X.item_ref(h, m)
       if it then
-        if hide_rows(id, it, m, what) == 0 then X.warn(m, what .. ": hide " .. h .. ": the shop does not sell it") end
+        if hide_rows(id, it, m, what) == 0 then
+          if count_rows(id, function(t, i) return t:uint(i, "item") == it and (t:uint(i, "spirit_param") or 0) == 0 end) > 0 then
+            VRFW.log.info(what .. ": hide " .. h .. ": already hidden by an earlier mod")
+          else
+            X.warn(m, what .. ": hide " .. h .. ": the shop does not sell it")
+          end
+        end
       else
         X.err(m, what .. ": hide: " .. he)
       end
     end
     if d.hide_spirits and hide_rows_where(id, m, what, "spirit") == 0 then
-      X.warn(m, what .. ": hide_spirits: the shop sells no player spirit")
+      if count_rows(id, function(t, i) return (t:uint(i, "spirit_param") or 0) ~= 0 end) > 0 then
+        VRFW.log.info(what .. ": hide_spirits: its player spirit rows are already hidden by an earlier mod")
+      else
+        X.warn(m, what .. ": hide_spirits: the shop sells no player spirit")
+      end
     end
     if d.hide_unknown_items and hide_rows_where(id, m, what, "unknown") == 0 then
       X.warn(m, what .. ": hide_unknown_items: every row of the shop sells a known item")

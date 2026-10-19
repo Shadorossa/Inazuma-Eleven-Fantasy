@@ -2,13 +2,13 @@ id = "no_more_rarities"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "No More Rarities"
-version = "1.0.14"
+version = "1.0.17"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Every normal player is a 5★ Legend, as in the classic Inazuma Eleven games: the 1★-4★ rarities are gone (no rarity stat bonus, no rarity-up or fusion), every spirit source gives the 5★ card, the «Rarity» filter lists only the special cards (normal players always pass), and a save duplicated into another slot, or a save when it is loaded, has every normal card at 5★ (a backup of the save is kept before its first change); the normal cards show no rarity art nor rarity title: every normal card and plate is coloured by the player's position (goalkeeper gold, defender blue, midfielder green, forward red, the same as the player header), and so are the spirit rows of the drop lists; the coach card is white and the managers' cards pink. Héroe and Diamante cards stay as they are, and a mode's own save (INAROGUE) keeps its players' rarities and their look. One card per character (no duplicates, a spirit drop recruited as the player) is the module New Recruitment. Works with the VR-Framework and Character Reforged."
+description = "Every normal player is a 5★ Legend, as in the classic Inazuma Eleven games: the 1★-4★ rarities are gone (no rarity stat bonus, no rarity-up or fusion), every spirit source gives the 5★ card, the «Rarity» filter lists only the special cards (normal players always pass), and a save duplicated into another slot, or a save when it is loaded, has every normal card at 5★ (a backup of the save is kept before its first change); the normal cards show no rarity art nor rarity title: every normal card and plate is coloured by the player's position (goalkeeper gold, defender blue, midfielder green, forward red, the same as the player header), and so are the spirit rows of the drop lists; the coach card is white and the managers' cards pink. An option in the mod's settings chooses which rarities lose their look: the basic ones only (the default: Héroe and Diamante cards keep their look), basic + Idols (Héroe), basic + Diamonds, or all; a removed special card keeps its own card and stats and shows its player's position. A mode's own save (INAROGUE) keeps its players' rarities and their look. One card per character (no duplicates, a spirit drop recruited as the player) is the module New Recruitment. Works with the VR-Framework and Character Reforged."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-15"
+updated = "2026-10-19"
 # This mod's own names (TOML keys [NoMoreRarities.X], Lua NoMoreRarities.X, commands CMND_NOMORERARITIES_*); never VRFW.
 prefix = "NoMoreRarities"
 folder = "NoMoreRarities"
@@ -24,6 +24,10 @@ folder = "NoMoreRarities"
 #   content\duplicate_rules\no_more_rarities.toml   [CharacterReforged.DuplicateRules.no_more_rarities]: every normal
 #                                     card -> rarity 4 on a duplicated save; apply_on_load: the same on every load of a
 #                                     player slot (a backup of the save first, once per save; Character Reforged >= 1.7.8)
+#   content\save_adjust\no_more_rarities.toml + text\rows\save_tools.toml   Options › «Ajustar save» › «Igualar la
+#                                     rareza de los jugadores», run by Character Reforged's scripts\save_tools.lua: the
+#                                     normal cards and the special tiers the option removes -> rarity 4
+#                                     (duplicate rule key normalize_special_rarities)
 #   content\rarities\rarity.toml      the rarity set without the 1★-4★ rarities (normal, growing, advanced, top)
 #   content\params\rarity_removal.toml  no rarity stat bonus, the spirit weights on the 5★ card (GENERATED)
 #   content\base_tables\**            every spirit source gives the 5★ card: drops, fixed rewards, gifts, Players
@@ -33,6 +37,10 @@ folder = "NoMoreRarities"
 #                                     first_listed_rarity on (default 5: the normal cards always pass, graft
 #                                     no_more_rarities_filter)
 #   content\team_planner\rule.toml    Utilities' team planner: the cards drawn as the 5★ card
+#   options.toml                      the row removed_rarities (restart): which tiers lose their rarity look (basic
+#                                     always; Ídolo 5-7 and Diamante 8 by the choice), read only through the one
+#                                     function NoMoreRarities.RarityRemoved(rarity) (card look, plates, titles,
+#                                     header band and title, drop-list bands, the filter graft)
 #   content\images\** + assets\lua\_all\no_more_rarities_card_look.lua   the normal cards coloured by POSITION
 #                                     (1.0.7; taken out of Inazuma Fantasy's position_cards, owner rule 2026-10-14: the
 #                                     position colours are this mod's), chosen at run time outside a reserved slot (a
@@ -88,8 +96,11 @@ order = 70
 # NoMoreRarities.RarityRemovalApplies = whether the removal applies to the loaded save (never a reserved slot);
 # NoMoreRarities.PositionColour(card) / PositionLookOfType(type) = the one position look (card frame, plates, rgb) of a
 # normal card, nil = the retail look (assets\lua\_all\no_more_rarities_card_look.lua; card look, header band, drop lists);
+# NoMoreRarities.RarityRemoved(rarity) = the option's rule: this rarity loses its rarity look (assets\lua\_all\
+# no_more_rarities_card_look.lua);
 # NoMoreRarities.NormalCardRarity() = the rarity every normal card has (4) while the removal applies, else nil (read by
 # New Recruitment's spirit recruit)
 [exports]
 game_lua = ["NoMoreRarities.HeaderBandColour", "NoMoreRarities.HeaderShowsRarity", "NoMoreRarities.RarityRemovalApplies",
-  "NoMoreRarities.PositionColour", "NoMoreRarities.PositionLookOfType", "NoMoreRarities.NormalCardRarity"]
+  "NoMoreRarities.PositionColour", "NoMoreRarities.PositionLookOfType", "NoMoreRarities.NormalCardRarity",
+  "NoMoreRarities.RarityRemoved"]

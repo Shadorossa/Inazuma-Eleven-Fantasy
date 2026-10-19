@@ -2,7 +2,7 @@
 -- band colour of Character Reforged's host character_reforged.header_band; CharacterReforged.Header.BandColour calls
 -- NoMoreRarities.HeaderBandColour(layer, inst, hdl) on every fill of the band). Without this mod the band keeps the
 -- retail rarity look (Character Reforged).
--- * A normal card (rarity 0-4: the cards that lose their rarity here) gets the plate of his OWN position through the
+-- * A card of a removed rarity (NoMoreRarities.RarityRemoved: 0-4 always, Ídolo / Diamante by the option) gets the plate of his OWN position through the
 --   mod's one position helper NoMoreRarities.PositionColour (no_more_rarities_card_look.lua, POSITION_LOOKS: GK the
 --   gold plate status_chr_base01_s04, DF the blue s02, MF the green s01, FW the red element-fire plate s01_type03;
 --   docs/game/characters/position-cards.md §1), swapped on the band's texture slot status_chr_base01_s01 -> true.
@@ -60,7 +60,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       if type(NoMoreRarities.IsNormalCard) == "function" then
         local okNormal, normal = pcall(NoMoreRarities.IsNormalCard, hdl)
         if okNormal and normal == true then
-          return false                   -- rarity 0-4: never a title
+          return false                   -- a removed rarity: never a title
         end
       end
       local cardType = CardType(hdl)

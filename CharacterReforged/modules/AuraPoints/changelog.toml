@@ -4,7 +4,8 @@ schema = "VRFW.changelog/1"
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
 # 1.0.0 (2026-10-14): split out of Inazuma Fantasy. 1.1.0 (2026-10-16): the mod Stamina Points (the match PE) merged
-# in, the option rows peg / sp / pe.
+# in, the option rows peg / sp / pe. 1.1.5 (2026-10-19): rewritten for the hyper gauge rule (no gauge, no
+# gains, free mode change / awakening / bond transformation, the rival on the same points).
 lang = "es"
 name = "Aura Points"
 
@@ -37,10 +38,10 @@ icon = "general"
 notes = [
     "Keshin, armaduras y tótems usan PEG o SP, no tiempo.",
     "Invocar es gratis; su supertécnica gasta PEG o SP.",
-    "Cada jugador tiene PE; agotado, va lento y se tambalea.",
-    "PE de cada personaje: su valor de GO Galaxy.",
+    "PE por jugador (el de GO Galaxy); agotado, va lento.",
     "Miximax sin tiempo: gasta PE y termina a 0 PE.",
-    "Barras bajo la cara del jugador; PE máximo en su ficha.",
+    "Sin hipertensión: cambio, despertar y vínculo gratis.",
+    "El rival usa los mismos puntos; barras bajo la cara.",
     "Ajustes: activa o desactiva PEG, SP y PE por separado.",
 ]
 
@@ -48,10 +49,10 @@ notes = [
 notes = [
     "Keshin, armours and totems run on PEG / SP, not time.",
     "Summoning is free; its special move costs PEG or SP.",
-    "Every player has GP; exhausted, he slows and staggers.",
-    "Each character's GP: his GO Galaxy value.",
+    "GP per player (his GO Galaxy value); exhausted: slow.",
     "Untimed miximax: it burns GP and ends at 0 GP.",
-    "Bars under the player's face; max GP on his page.",
+    "No hyper gauge: mode change, awakening, bond trans free.",
+    "The rival uses the same points; bars under the face.",
     "Settings: switch PEG, SP and GP on or off one by one.",
 ]
 
@@ -59,10 +60,10 @@ notes = [
 notes = [
     "Keshin, armures et totems : des PG / SP, plus de temps.",
     "Invoquer est gratuit ; sa technique coûte PG ou SP.",
-    "Chaque joueur a des PE ; épuisé, il ralentit.",
-    "PE de chaque personnage : sa valeur de GO Galaxy.",
+    "PE par joueur (valeur GO Galaxy) ; épuisé, il ralentit.",
     "Miximax sans limite : il brûle les PE, fin à 0.",
-    "Barres sous le visage ; PE max sur la fiche du joueur.",
+    "Sans jauge hyper : mode, éveil et lien gratuits.",
+    "Le rival suit les mêmes points ; barres sous le visage.",
     "Réglages : activez PG, SP et PE séparément.",
 ]
 
@@ -70,10 +71,10 @@ notes = [
 notes = [
     "Keshin, Rüstungen und Totems nutzen KGP / SP statt Zeit.",
     "Beschwören ist gratis; seine Technik kostet KGP o. SP.",
-    "Jeder Spieler hat GP; erschöpft wird er langsam.",
-    "GP jeder Figur: ihr Wert aus GO Galaxy.",
+    "GP je Spieler (sein GO-Galaxy-Wert); erschöpft: langsam.",
     "Miximax ohne Zeitlimit: verbraucht GP, endet bei 0.",
-    "Balken unter dem Gesicht; max. GP auf der Spielerseite.",
+    "Keine Hyperleiste: Modus, Erwachen, Band-Trans. gratis.",
+    "Gegner nutzt dieselben Punkte; Balken unterm Gesicht.",
     "Einstellungen: KGP, SP und GP einzeln abschaltbar.",
 ]
 
@@ -81,10 +82,10 @@ notes = [
 notes = [
     "Keshin, armature e totem usano PSG / SP, non tempo.",
     "Evocare è gratis; la sua tecnica costa PSG o SP.",
-    "Ogni giocatore ha PE; esausto, rallenta e barcolla.",
-    "PE di ogni personaggio: il suo valore di GO Galaxy.",
+    "PE per giocatore (da GO Galaxy); esausto, rallenta.",
     "Miximax senza tempo: consuma PE e finisce a 0.",
-    "Barre sotto il volto; PE massimi nella scheda.",
+    "Niente barra iper: modalità, risveglio e legame gratis.",
+    "Il rivale usa gli stessi punti; barre sotto il volto.",
     "Impostazioni: PSG, SP e PE si disattivano a parte.",
 ]
 
@@ -92,10 +93,10 @@ notes = [
 notes = [
     "Keshin, armaduras e totens usam PEG / SP, não tempo.",
     "Invocar é grátis; a sua técnica custa PEG ou SP.",
-    "Cada jogador tem PE; esgotado, fica lento.",
-    "PE de cada personagem: o seu valor de GO Galaxy.",
+    "PE por jogador (de GO Galaxy); esgotado, fica lento.",
     "Miximax sem tempo: gasta PE e termina a 0.",
-    "Barras sob o rosto; PE máximo na ficha do jogador.",
+    "Sem barra hiper: modo, despertar e vínculo grátis.",
+    "O rival usa os mesmos pontos; barras sob o rosto.",
     "Definições: liga ou desliga PEG, SP e PE à parte.",
 ]
 
@@ -103,10 +104,10 @@ notes = [
 notes = [
     "化身・アームド・ソウルが時間でなくFSP/SP制に。",
     "召喚は無料、その必殺技はFSPかSPを消費。",
-    "全選手がGPを持つ。ダッシュで消費、ばてると遅い。",
-    "各キャラのGPはGOギャラクシーの値。",
+    "全選手にGP（GOギャラクシーの値）。ばてると遅い。",
     "ミキシマックスは時間無制限、GP0で終了。",
-    "顔の下にゲージ、選手ページに最大GP。",
+    "超次元ゲージ廃止：モードチェンジ・覚醒・絆は無料。",
+    "相手も同じポイント制。顔の下にゲージ。",
     "設定でFSP・SP・GPを個別にオン／オフ。",
 ]
 
@@ -114,10 +115,10 @@ notes = [
 notes = [
     "化身、铠甲与灵魂改用FSP/SP，不再计时。",
     "召唤免费；其必杀技消耗FSP或SP。",
-    "每名球员拥有GP：冲刺消耗，耗尽变慢。",
-    "每个角色的GP取自GO银河的数值。",
+    "每名球员有GP（GO银河数值），耗尽变慢。",
     "混合最大化不限时：消耗GP，归零结束。",
-    "头像下方显示条；资料页显示最大GP。",
+    "取消超次元槽：模式切换、觉醒与羁绊免费。",
+    "对手采用相同点数规则；头像下方显示条。",
     "设置中可分别开关FSP、SP与GP。",
 ]
 
@@ -125,9 +126,9 @@ notes = [
 notes = [
     "化身、鎧甲與靈魂改用FSP/SP，不再計時。",
     "召喚免費；其必殺技消耗FSP或SP。",
-    "每名球員擁有GP：衝刺消耗，耗盡變慢。",
-    "每個角色的GP取自GO銀河的數值。",
+    "每名球員有GP（GO銀河數值），耗盡變慢。",
     "混合最大化不限時：消耗GP，歸零結束。",
-    "頭像下方顯示條；資料頁顯示最大GP。",
+    "取消超次元槽：模式切換、覺醒與羈絆免費。",
+    "對手採用相同點數規則；頭像下方顯示條。",
     "設定中可分別開關FSP、SP與GP。",
 ]
