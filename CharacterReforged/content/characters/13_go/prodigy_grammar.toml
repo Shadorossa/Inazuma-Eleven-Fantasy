@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04000610"                                   # Par Scal
+moves = [
+  { move = 0x822B79EA, level = 1 },                         # Somersault Stamp
+  { move = 0x06B22DB5, level = 20 },                        # Gyro-Blocker
+  { move = 0xB8C5883B, level = 25 },                        # God Hand X
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0x66E09C37                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c04000610"                                   # Par Scal
 
 [[edit]]
 target = "c04000620"                                   # Tez La
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0xED7B7A4F, level = 20 },                        # Defence Equation
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x0F4DC9B3, level = 40 },                        # Logicstical Sync
+]
 
   [[edit.cards]]
   id = 0x4DCDCFF4                                         # DF/MF · forest
@@ -24,6 +36,12 @@ target = "c04000620"                                   # Tez La
 
 [[edit]]
 target = "c04000630"                                   # Aris Tottle
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0xD8794890, level = 15 },                        # Kangaroo Kick
+  { move = 0x585098FC, level = 25 },                        # Slice and Dice
+  { move = 0x5DA7EA06, level = 32 },                        # Boomerang Bluff
+]
 
   [[edit.cards]]
   id = 0x54D6FEB5                                         # DF/MF · mountain
@@ -34,6 +52,12 @@ target = "c04000630"                                   # Aris Tottle
 
 [[edit]]
 target = "c04000640"                                   # Archie Medes
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x12E67CC1, level = 13 },                        # Future Eye
+  { move = 0x6B1CF436, level = 20 },                        # Bewildered
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0x1B976872                                         # DF/MF · forest
@@ -44,6 +68,12 @@ target = "c04000640"                                   # Archie Medes
 
 [[edit]]
 target = "c04000650"                                   # Socrat Eiss
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0x4E9A9232, level = 25 },                        # Spinning Cut
+  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x028C5933                                         # DF/FW · wind
@@ -53,6 +83,12 @@ target = "c04000650"                                   # Socrat Eiss
 
 [[edit]]
 target = "c04000660"                                   # Ian Stein
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0x2E7B2B84, level = 13 },                        # Thief's Eye
+  { move = 0x19025F83, level = 25 },                        # Quick Draw
+  { move = 0x4E9A9232, level = 30 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x29A10AF0                                         # MF/DF · forest
@@ -62,6 +98,12 @@ target = "c04000660"                                   # Ian Stein
 
 [[edit]]
 target = "c04000670"                                   # Ed Ison
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0xACAC21CE, level = 20 },                        # Fake Ball
+  { move = 0x73C5AF40, level = 40 },                        # Dash Accelerator
+]
 
   [[edit.cards]]
   id = 0x30BA3BB1                                         # MF/FW · forest
@@ -71,6 +113,12 @@ target = "c04000670"                                   # Ed Ison
 
 [[edit]]
 target = "c04000680"                                   # Mitchell Angelio
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0x3C843987, level = 25 },                        # Flurry Dash
+  { move = 0xDA3FF6C9, level = 36 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0xB722277E                                         # MF/FW · wind
@@ -81,6 +129,12 @@ target = "c04000680"                                   # Mitchell Angelio
 
 [[edit]]
 target = "c04000690"                                   # Moe Sart
+moves = [
+  { move = 0x928B9BED, level = 1 },                         # Optimal Trajectory
+  { move = 0x2E7B2B84, level = 13 },                        # Thief's Eye
+  { move = 0x29B328E6, level = 25 },                        # Spectacle Crash
+  { move = 0x61FB16FD, level = 45 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0xAE39163F                                         # FW/DF · forest
@@ -90,6 +144,12 @@ target = "c04000690"                                   # Moe Sart
 
 [[edit]]
 target = "c04000700"                                   # Dave Inchy
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0xF7E49F60, level = 30 },                        # Magnetism
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x7E39C741                                         # MF/DF · forest
@@ -99,6 +159,12 @@ target = "c04000700"                                   # Dave Inchy
 
 [[edit]]
 target = "c04000710"                                   # Frank Lyn
+moves = [
+  { move = 0x928B9BED, level = 6 },                         # Optimal Trajectory
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x17A96A44, level = 25 },                        # Clone Faker
+  { move = 0xA0BDF96F, level = 60 },                        # Ballista Barrage
+]
 
   [[edit.cards]]
   id = 0x6722F600                                         # FW/MF · forest
@@ -108,6 +174,12 @@ target = "c04000710"                                   # Frank Lyn
 
 [[edit]]
 target = "c04000720"                                   # Cooper Nikos
+moves = [
+  { move = 0x822B79EA, level = 6 },                         # Somersault Stamp
+  { move = 0xF2CB0879, level = 15 },                        # Mugen the Hand
+  { move = 0x8B31808E, level = 25 },                        # Wormhole
+  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+]
 
   [[edit.cards]]
   id = 0x4C0FA5C3                                         # GK/MF · forest
@@ -118,6 +190,12 @@ target = "c04000720"                                   # Cooper Nikos
 
 [[edit]]
 target = "c04000730"                                   # Leo Gally
+moves = [
+  { move = 0x2E7B2B84, level = 6 },                         # Thief's Eye
+  { move = 0xEF3DC416, level = 20 },                        # Skytree Hop
+  { move = 0x4A17EE80, level = 39 },                        # Hunter's Net
+  { move = 0x5643C944, level = 45 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x55149482                                         # DF/MF · forest
@@ -128,6 +206,12 @@ target = "c04000730"                                   # Leo Gally
 
 [[edit]]
 target = "c04000740"                                   # Desmond Cartes
+moves = [
+  { move = 0x12E67CC1, level = 6 },                         # Future Eye
+  { move = 0x2E7B2B84, level = 13 },                        # Thief's Eye
+  { move = 0xAD6E4BF9, level = 25 },                        # Harvest
+  { move = 0xDBFD9CFE, level = 56 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0x1A550245                                         # MF/DF · mountain
@@ -137,6 +221,12 @@ target = "c04000740"                                   # Desmond Cartes
 
 [[edit]]
 target = "c04000750"                                   # Connor Fuschius
+moves = [
+  { move = 0x12E67CC1, level = 6 },                         # Future Eye
+  { move = 0xCF7FA2C4, level = 15 },                        # Gold Rush
+  { move = 0x73C5AF40, level = 30 },                        # Dash Accelerator
+  { move = 0x14D1ED15, level = 36 },                        # Jumping Jack
+]
 
   [[edit.cards]]
   id = 0x034E3304                                         # MF/FW · wind
@@ -146,6 +236,12 @@ target = "c04000750"                                   # Connor Fuschius
 
 [[edit]]
 target = "c04000760"                                   # Dar Wynne
+moves = [
+  { move = 0x928B9BED, level = 6 },                         # Optimal Trajectory
+  { move = 0x332CCDC9, level = 15 },                        # Heel Kick
+  { move = 0xF6E75EE9, level = 24 },                        # Headbanger
+  { move = 0x1C4D4906, level = 36 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0x286360C7                                         # FW/MF · mountain
@@ -156,6 +252,12 @@ target = "c04000760"                                   # Dar Wynne
 
 [[edit]]
 target = "c11804010"                                   # Tom Jefferson
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0xDF8CB373, level = 20 },                        # Sonic Shot
+  { move = 0x9349F1DA, level = 30 },                        # Zephyr Shot
+]
 
   [[edit.cards]]
   id = 0x9FCEDA86                                         # FW/MF · wind

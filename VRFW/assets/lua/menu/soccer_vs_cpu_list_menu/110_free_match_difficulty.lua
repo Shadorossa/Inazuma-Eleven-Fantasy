@@ -317,6 +317,26 @@ local function RePreview()
   end
 end
 
+-- «Shown team changed»: the list shows the team of its game's row of the shown class (the focused opponent, then the
+-- class the class window focuses: retail UpdateDifficult). A game whose classes have different rivals (a mod's
+-- per-class rival) changes team with the class. Listeners: VRFW_FM.shown_team_listeners[id] = function(game, class,
+-- team), called once per change of (game, class, team), after the list redrew its formation for it.
+FM.shown_team_listeners = FM.shown_team_listeners or {}
+FM.shown = nil
+function FM.ShownTeamChanged(game, d, team)
+  local key = tostring(game) .. ":" .. tostring(d) .. ":" .. tostring(team)
+  if FM.shown == key then
+    return
+  end
+  FM.shown = key
+  for id, fn in pairs(FM.shown_team_listeners) do
+    local ok, why = pcall(fn, game, d, team)
+    if not ok then
+      Log("shown team listener", id, tostring(why))
+    end
+  end
+end
+
 -- PreviewClass = false: the preview's «Nv.» label, level number and class badge hidden
 local function HideClass()
   local R = FM.Rules()
@@ -334,6 +354,39 @@ if VRFW_Host ~= nil then
     id = "menu_engine.free_match_difficulty", phase = "before",
     fn = function()
       FM.cache = nil                 -- the table may change between opens (a reload)
+      FM.shown = nil
+    end,
+  })
+
+  -- the shown class changes (the class window's focus, the preview): the list's team becomes that class's row's
+  -- team before the retail redraw (its UpdateFormation draws the local team n2), then the listeners hear it. The game
+  -- is the chunk's local n5 (no menu-object command: this may run while the list sets up).
+  VRFW_Host.on("soccer_vs_cpu_list_menu", "UpdateDifficult", {
+    id = "menu_engine.free_match_difficulty.shown_team", phase = "around",
+    fn = function(nxt, d, ...)
+      local L = HostL()
+      local game, team = nil, nil
+      if L ~= nil and type(d) == "number" and not FM.Off() then
+        local ok, g = pcall(function() return L.n5 end)
+        if ok and type(g) == "number" and g ~= 0 then
+          game = g
+          team = FM.Team(g, d)
+        end
+      end
+      if team ~= nil then
+        local ok, cur = pcall(function() return L.n2 end)
+        if ok and cur ~= team and pcall(function() L.n2 = team end) then
+          local okn, n = pcall(funcLuaMenuCommand, 1175615627 --[[created instances]], 1835074715 --[[mainmenu90_34_cpu_team_formation]])
+          if okn and type(n) == "number" and n >= 1 then
+            TeamHeader(team)
+          end
+        end
+      end
+      local r = table.pack(nxt(d, ...))
+      if team ~= nil then
+        FM.ShownTeamChanged(game, d, team)
+      end
+      return table.unpack(r, 1, r.n)
     end,
   })
 
@@ -383,6 +436,42 @@ if VRFW_Host ~= nil then
       for d = 6, 9 do
         funcLuaMenuCommand(2158717427, K.ORB_LAYER, K.POS[d], d == best, a2)
       end
+    end,
+  })
+
+  -- the retail focus change draws the formation of the game's FIRST row's team (0x836C9C28(game), no class: a
+  -- Chronicle row) before the preview class's team is set: two draws per move, and a coach that differs between the
+  -- two teams (a mod's staff on the free-match team) blinks while its portrait loads. Around the retail handler, that
+  -- one-argument team query answers the previewed class's team and the preview class is the chunk's class (n8), so
+  -- the retail draw itself is the final one.
+  VRFW_Host.on("soccer_vs_cpu_list_menu", "OnChangeFocus", {
+    id = "menu_engine.free_match_difficulty.first_draw", phase = "around",
+    fn = function(nxt, a1, ...)
+      if a1 ~= K.ITEM or FM.Rules() == nil or FM.Off() then
+        return nxt(a1, ...)
+      end
+      local raw = funcLuaCommand
+      funcLuaCommand = function(id, ...)
+        if id == 2204933160 and select("#", ...) == 1 then
+          local game = ...
+          local d = type(game) == "number" and game ~= 0 and FM.Preview(game) or nil
+          local team = d ~= nil and FM.Team(game, d) or nil
+          if team ~= nil then
+            local L = HostL()
+            if L ~= nil then
+              pcall(function() L.n8 = d end)
+            end
+            return true, team
+          end
+        end
+        return raw(id, ...)
+      end
+      local r = table.pack(pcall(nxt, a1, ...))
+      funcLuaCommand = raw
+      if not r[1] then
+        error(r[2], 0)
+      end
+      return table.unpack(r, 2, r.n)
     end,
   })
 

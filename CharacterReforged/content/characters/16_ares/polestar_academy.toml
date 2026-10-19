@@ -10,8 +10,23 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 311, control = 265, technique = 258, pressure = 194, physical = 182, intelligence = 234, agility = 177, freedom = 271 }
 
+  [[edit.cards]]
+  id = 0x2945A978    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x16658ADE, level = 1 },                       # Perfect Penguin
+    { move = 0x91FD9611, level = 13 },                      # Penguin Volley
+    { move = 0xB27F13ED, level = 20 },                      # Death Zone
+    { move = 0x0A02DF36, level = 30 },                      # Containment Field
+  ]
+
 [[edit]]
 target = "c07020020"                                   # Eddy O'Ryan
+moves = [
+  { move = 0xB27F13ED, level = 1 },                         # Death Zone
+  { move = 0x142DBE2A, level = 13 },                        # Foul Offence
+  { move = 0x88E6A750, level = 20 },                        # Centrifugal Blast
+  { move = 0xA17F9358, level = 30 },                        # Clone Death Zone
+]
 
   [[edit.cards]]
   id = 0x0268FABB                                         # MF/FW · fire
@@ -21,6 +36,12 @@ target = "c07020020"                                   # Eddy O'Ryan
 
 [[edit]]
 target = "c07020030"                                   # Oscar Pio
+moves = [
+  { move = 0xB27F13ED, level = 1 },                         # Death Zone
+  { move = 0x6ADE9E01, level = 13 },                        # Illusory Ball
+  { move = 0x88E6A750, level = 20 },                        # Centrifugal Blast
+  { move = 0x245D62F1, level = 30 },                        # Attack Scan
+]
 
   [[edit.cards]]
   id = 0x1B73CBFA                                         # MF/FW · fire
@@ -31,6 +52,12 @@ target = "c07020030"                                   # Oscar Pio
 
 [[edit]]
 target = "c07020040"                                   # Oliver Golightly
+moves = [
+  { move = 0x7DD6FEF8, level = 1 },                         # Athena's Anthem
+  { move = 0x8331F63E, level = 13 },                        # Divine Dummy
+  { move = 0x88E6A750, level = 20 },                        # Centrifugal Blast
+  { move = 0xDF8CB373, level = 30 },                        # Sonic Shot
+]
 
   [[edit.cards]]
   id = 0x54325D3D                                         # MF/FW · wind
@@ -41,6 +68,12 @@ target = "c07020040"                                   # Oliver Golightly
 
 [[edit]]
 target = "c07020050"                                   # Caesar Pike
+moves = [
+  { move = 0x0A02DF36, level = 1 },                         # Containment Field
+  { move = 0x737DCB3F, level = 13 },                        # Pancake Defence
+  { move = 0xE8F5C774, level = 20 },                        # Megalodon
+  { move = 0x06D2AC29, level = 30 },                        # Diabolical Cut
+]
 
   [[edit.cards]]
   id = 0x4D296C7C                                         # MF/DF · mountain
@@ -50,6 +83,12 @@ target = "c07020050"                                   # Caesar Pike
 
 [[edit]]
 target = "c07020060"                                   # Jimmy Nigh
+moves = [
+  { move = 0x0A02DF36, level = 1 },                         # Containment Field
+  { move = 0x142DBE2A, level = 13 },                        # Foul Offence
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x66043FBF                                         # MF/DF · wind
@@ -59,6 +98,12 @@ target = "c07020060"                                   # Jimmy Nigh
 
 [[edit]]
 target = "c07020070"                                   # Acker Reese
+moves = [
+  { move = 0x0A02DF36, level = 1 },                         # Containment Field
+  { move = 0x7DAF3139, level = 13 },                        # Emperor Penguin No. 2
+  { move = 0x2B343D01, level = 20 },                        # Cyclone
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0x7F1F0EFE                                         # DF/MF · wind
@@ -69,6 +114,12 @@ target = "c07020070"                                   # Acker Reese
 
 [[edit]]
 target = "c07020080"                                   # Ari Zimmerman
+moves = [
+  { move = 0x0A02DF36, level = 1 },                         # Containment Field
+  { move = 0xA81CA5FD, level = 13 },                        # Sparky Spin
+  { move = 0x5643C944, level = 20 },                        # Killer Slide
+  { move = 0xC7A9BB3A, level = 30 },                        # Whirlwind Cut
+]
 
   [[edit.cards]]
   id = 0xF8871231                                         # DF/MF · mountain
@@ -79,6 +130,12 @@ target = "c07020080"                                   # Ari Zimmerman
 
 [[edit]]
 target = "c07020090"                                   # Cygnus Starkey
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x8331F63E, level = 13 },                        # Divine Dummy
+  { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
+  { move = 0x21127474, level = 30 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0xE19C2370                                         # DF/MF · forest
@@ -89,6 +146,12 @@ target = "c07020090"                                   # Cygnus Starkey
 
 [[edit]]
 target = "c07020100"                                   # Larry Lyre
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x7A67325B, level = 13 },                        # Flame Dance
+  { move = 0x427719AC, level = 20 },                        # Gale Dash
+  { move = 0xABA58912, level = 30 },                        # Ignited Steal
+]
 
   [[edit.cards]]
   id = 0x319CF20E                                         # DF/FW · fire
@@ -99,6 +162,12 @@ target = "c07020100"                                   # Larry Lyre
 
 [[edit]]
 target = "c07020110"                                   # Mickey Way
+moves = [
+  { move = 0x57E122EF, level = 1 },                         # Desecrater
+  { move = 0x4EFA13AE, level = 13 },                        # Fur Trapper
+  { move = 0x8DFA4265, level = 20 },                        # Toughness Block
+  { move = 0xB27F13ED, level = 30 },                        # Death Zone
+]
 
   [[edit.cards]]
   id = 0x2887C34F                                         # GK/FW · forest
@@ -109,6 +178,12 @@ target = "c07020110"                                   # Mickey Way
 
 [[edit]]
 target = "c07020130"                                   # Holt Northam
+moves = [
+  { move = 0x0A02DF36, level = 1 },                         # Containment Field
+  { move = 0x5643C944, level = 13 },                        # Killer Slide
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0x01DB04F5, level = 30 },                        # Defence Scan
+]
 
   [[edit.cards]]
   id = 0x1AB1A1CD                                         # DF/MF · forest
@@ -119,6 +194,12 @@ target = "c07020130"                                   # Holt Northam
 
 [[edit]]
 target = "c07020140"                                   # Braveon Halvors
+moves = [
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0x4DDFEDE2, level = 13 },                        # Eagle Buster
+  { move = 0x485150D9, level = 20 },                        # Body Shield
+  { move = 0xC5EF0563, level = 30 },                        # Three-Legged Rush
+]
 
   [[edit.cards]]
   id = 0x55F0370A                                         # FW/DF · mountain
@@ -128,6 +209,12 @@ target = "c07020140"                                   # Braveon Halvors
 
 [[edit]]
 target = "c07020150"                                   # Konrad Hardin
+moves = [
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0x414BA9BD, level = 20 },                        # Pincer Pinch
+  { move = 0xA2BF7076, level = 30 },                        # Side Swipe
+]
 
   [[edit.cards]]
   id = 0x4CEB064B                                         # GK/DF · fire
@@ -137,6 +224,12 @@ target = "c07020150"                                   # Konrad Hardin
 
 [[edit]]
 target = "c07020160"                                   # Aren Yarrow
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x73C5AF40, level = 13 },                        # Dash Accelerator
+  { move = 0x88B554E0, level = 20 },                        # Galatyn
+  { move = 0x55C71D2A, level = 30 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0x67C65588                                         # MF/GK · wind
@@ -146,6 +239,12 @@ target = "c07020160"                                   # Aren Yarrow
 
 [[edit]]
 target = "c07020120"                                   # Jude Sharp
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0x03AA908C                                         # MF/FW · wind
@@ -155,6 +254,12 @@ target = "c07020120"                                   # Jude Sharp
 
 [[edit]]
 target = "c11807140"                                   # Percival Travis
+moves = [
+  { move = 0x4E22F64D, level = 8 },                         # Transporter Device
+  { move = 0x6BA49049, level = 19 },                        # Mystic Mist
+  { move = 0x2296A01A, level = 33 },                        # Southern Cross
+  { move = 0x6ADE9E01, level = 52 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0xF1CEEB1A                                         # MF/DF · forest
@@ -164,6 +269,12 @@ target = "c11807140"                                   # Percival Travis
 
 [[edit]]
 target = "c11807150"                                   # Dominic Hewitt
+moves = [
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x1876DB66, level = 13 },                        # Disaster Strike
+  { move = 0xDCA94D3F, level = 20 },                        # Flash Upper
+  { move = 0xD471DE6C, level = 30 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0xE8D5DA5B                                         # FW/GK · mountain
@@ -173,6 +284,12 @@ target = "c11807150"                                   # Dominic Hewitt
 
 [[edit]]
 target = "c11807250"                                   # Celia Hills
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x4E9A9232, level = 27 },                        # Spinning Cut
+  { move = 0x32EEA7FE, level = 70 },                        # Death Zone 2
+]
 
   [[edit.cards]]
   id = 0xEA936402                                         # MF/DF · wind

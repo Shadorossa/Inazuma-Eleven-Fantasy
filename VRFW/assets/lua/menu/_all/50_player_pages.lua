@@ -8,6 +8,8 @@
 --   VRFW_PlayerPages.Add({Name = "<mod>.<Page>", Index = <n>, Type = <t>,
 --                         First = true | Last = true | After = "<name>" | Before = "<name>",
 --                         Enabled = function() return <bool> end})        -- optional, asked at run time
+--   VRFW_PlayerPages.ShowWhen("<page name>", function() return <bool> end) -- an extra condition on any page, retail
+--                                                                           -- pages included, asked at run time
 -- Names of the retail pages: vrfw.Moves (0), vrfw.Equipment (1), vrfw.TeamPassives (2), vrfw.SixthSense (3).
 -- Declarations happen while the mods' chunks load (pure Lua, any order); the order is resolved LAZILY at the first
 -- use (a page step, a dot), when every mod of the VM has declared, so nothing depends on the load order. Placement:
@@ -34,7 +36,8 @@ if VRFW_PlayerPages == nil then
       {Name = "vrfw.SixthSense", Index = 3, Type = 3},
     },
     decls = {},                  -- name -> declaration
-    list = nil,                  -- resolved order (declarations), nil = resolve at the next use
+    conditions = {},             -- page name -> {function, ...}: the ShowWhen conditions of that page
+    list = nil,                 -- resolved order (declarations), nil = resolve at the next use
     byIndex = nil,
     wrapped = {},
   }
@@ -51,6 +54,19 @@ if VRFW_PlayerPages == nil then
     end
     P.decls[d.Name] = d
     P.list = nil
+    return true
+  end
+
+  -- an extra condition on a page of any mod or a retail page: the page is shown only while every condition of it
+  -- (and its own Enabled) answers true; while one says no the page also loses its dot slot (no gap); a condition
+  -- that errors counts as true
+  function P.ShowWhen(name, fn)
+    if type(name) ~= "string" or type(fn) ~= "function" then
+      return false
+    end
+    local list = P.conditions[name] or {}
+    list[#list + 1] = fn
+    P.conditions[name] = list
     return true
   end
 
@@ -124,12 +140,25 @@ if VRFW_PlayerPages == nil then
     return out
   end
 
-  function P.On(d)
-    if type(d.Enabled) ~= "function" then
-      return true
+  -- a ShowWhen condition of the page says no: the page is left out of the order (no step, no dot slot)
+  function P.Removed(d)
+    for _, fn in ipairs(P.conditions[d.Name] or {}) do
+      local ok, v = pcall(fn)
+      if ok and v == false then
+        return true
+      end
     end
-    local ok, v = pcall(d.Enabled)
-    return not ok or v ~= false
+    return false
+  end
+
+  function P.On(d)
+    if type(d.Enabled) == "function" then
+      local ok, v = pcall(d.Enabled)
+      if ok and v == false then
+        return false
+      end
+    end
+    return not P.Removed(d)
   end
 
   -- the shown pages' indices in order; `count` = only indices below it (a screen whose page table has `count` rows)
@@ -150,21 +179,29 @@ if VRFW_PlayerPages == nil then
     return d ~= nil and d.Type or nil
   end
 
-  -- dots: {[slot] = index} of the shown pages, slot = the page's place in the whole order (a page whose Enabled says
-  -- no keeps its slot empty); SlotOfType(type) = the slot of the page of that type
+  -- dots: {[slot] = index} of the shown pages, slot = the page's place in the order (a page whose Enabled says no
+  -- keeps its slot empty; a page a ShowWhen condition removes has no slot); SlotOfType(type) = the slot of the page
+  -- of that type
   function P.Slots()
-    local m = {}
-    for i, d in ipairs(P.Resolve()) do
-      if P.On(d) then
-        m[i] = d.Index
+    local m, slot = {}, 0
+    for _, d in ipairs(P.Resolve()) do
+      if not P.Removed(d) then
+        slot = slot + 1
+        if P.On(d) then
+          m[slot] = d.Index
+        end
       end
     end
     return m
   end
   function P.SlotOfType(t)
-    for i, d in ipairs(P.Resolve()) do
-      if d.Type == t then
-        return i
+    local slot = 0
+    for _, d in ipairs(P.Resolve()) do
+      if not P.Removed(d) then
+        slot = slot + 1
+        if d.Type == t then
+          return slot
+        end
       end
     end
     return nil

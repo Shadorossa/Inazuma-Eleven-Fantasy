@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05024650"                                   # Nathan Swift
+moves = [
+  { move = 0x3C843987, level = 7 },                         # Flurry Dash
+  { move = 0x19025F83, level = 18 },                        # Quick Draw
+  { move = 0x17A96A44, level = 36 },                        # Clone Faker
+  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
+]
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x515996B0                                         # DF/MF · wind
@@ -15,6 +24,15 @@ target = "c05024650"                                   # Nathan Swift
 
 [[edit]]
 target = "c05024630"                                   # Jack Wallside
+moves = [
+  { move = 0x7D6E9A87, level = 11 },                        # The Wall
+  { move = 0x166B0073, level = 16 },                        # Super Armadillo
+  { move = 0x4031A7F5, level = 32 },                        # Mole Fake
+  { move = 0x67F17FA8, level = 55 },                        # Mega Quake
+]
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
 
   [[edit.cards]]
   id = 0x07033136                                         # DF/MF · mountain
@@ -24,6 +42,20 @@ target = "c05024630"                                   # Jack Wallside
 
 [[edit]]
 target = "c05024710"                                   # Axel Blaze
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
+  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
+  { move = 0x19025F83, level = 26 },                        # Quick Draw
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7978E1FA, level = 1 },                         # Lancelot [aura]
+]
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0x34F73983                                         # FW/MF · fire
@@ -32,6 +64,15 @@ target = "c05024710"                                   # Axel Blaze
 
 [[edit]]
 target = "c05024680"                                   # Kevin Dragonfly
+moves = [
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
+  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
+  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+]
+VRFW.MoveGrades = [
+  { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+]
 
   [[edit.cards]]
   id = 0xE4F7E8FD                                         # FW/MF · forest
@@ -41,6 +82,12 @@ target = "c05024680"                                   # Kevin Dragonfly
 
 [[edit]]
 target = "c05024690"                                   # Xavier Schiller
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0x1755397B, level = 16 },                        # Dark Energy Star
+  { move = 0xC3D894B7, level = 37 },                        # The Dawn
+  { move = 0x00A10ABD, level = 50 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0xFDECD9BC                                         # FW/MF · fire
@@ -49,6 +96,12 @@ target = "c05024690"                                   # Xavier Schiller
 
 [[edit]]
 target = "c05024700"                                   # Shawn Froste
+moves = [
+  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
+  { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+]
 
   [[edit.cards]]
   id = 0x2DEC08C2                                         # FW/MF · wind
@@ -57,6 +110,15 @@ target = "c05024700"                                   # Shawn Froste
 
 [[edit]]
 target = "c05024660"                                   # Caleb Stonewall
+moves = [
+  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
+  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+]
+VRFW.MoveGrades = [
+  { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x7A74C573                                         # MF/FW · fire
@@ -66,6 +128,15 @@ target = "c05024660"                                   # Caleb Stonewall
 
 [[edit]]
 target = "c05024640"                                   # Hurley Kane
+moves = [
+  { move = 0xA4B51923, level = 1 },                         # The Typhoon
+  { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
+  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
+  { move = 0xB2BEB853, level = 50 },                        # Whale Guard
+]
+VRFW.MoveGrades = [
+  { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost
+]
 
   [[edit.cards]]
   id = 0x4842A7F1                                         # DF/FW · wind

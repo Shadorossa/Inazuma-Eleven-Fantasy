@@ -1,0 +1,68 @@
+id = "better_menu"
+# name / description: the English fallback (no text keys yet: a test mod)
+name = "BetterMenu"
+version = "0.7.32"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "The main menu over a 3D scene, as the club house of Inazuma Eleven Strikers. Version 0.1 is a test: with [experiment] map_under_menu = true (config.toml) the Odaiba clubhouse map (w50i001) is loaded under the main menu, its background hidden, with the active team sitting and standing in it and the save's avatar in a side wing; the camera shots of the lodge are the mode selection (the menu opens on the living room with no mode, where A does nothing; L2 / R2 go from it to the first / last mode; no mode row, no «Mi equipo» / «VICTORIAS» banners: L2 / R2 or left / right change the mode, its name at the top left on the game's area-name banner of the Chronicle map (a blue band with a hexagon pattern, «CASETA DEL CLUB» in yellow above the name, the L2 / R2 glyphs beside it); Story: the left wing's door, Competition: a cut out of the lodge to the island's football pitch looking out to the sea, where A opens the game's opponent list with the focused team's three players standing on the pitch as menu 3D models (a team change swaps them in place: no reload, no black), Chronicle: the paintings under the staircase, the big one showing the Chronicle top menu in motion while the shot is on (the caravan hovering over its speed lines and hexagons; its button «Cadena de Crónica»; A goes straight to the Chronicle map, no Chronicle top menu), Battle Bay: the unrolled projection screen, Market: the kitchen, Kizuna: the gallery; in the Story shot three buttons on the objects: the umbrella stand «Historia+», the door «Continuar» / «Partida nueva» (a slow dolly to the door, the door swinging open, the camera on through it into the white outside, then the story from that white; no exterior backdrop: the windows read white), the doormat «Historia extendida»; left / right between them, the selected one outlined in white along its shape, A); Y opens the game's own team roster («Plantilla de equipo»: team sets with L1 / R1, tactics, formation, kit, coach, bench, swaps, player pages) over the room on the roster's own blue background cut to a band with slanted edges that slides in from the right (no black fade, no shortcut bar at the top), the camera on a wide shot of the hall; the Y button sits at the right edge, mid height; its B closes it and the main menu comes back without reloading the room; leaving the menu for a mode unloads the map. Off = the game's main menu. The bottom of the main menu is compact: smaller tiles at the bottom edge, no «Deluxe Edition» logo or «V» / «?» prompt, the copyright at the bottom left and the version at the top right, the tiles on a slanted plate with the player plate's hexagon pattern, and the DLC block as one tight row of small icons (the two big DLC banners too; hovering an icon shows its banner). The top is cleaner: no «Información» plate (X does nothing), no title logo, no «Inazuma Post» plate or window (its key does nothing), no AVATAR banner: X on «Modo Historia» opens the Avatar menu."
+priority = 0
+tags = ["Interface"]
+updated = "2026-10-19"
+# This mod's own names (TOML keys, Lua tables, commands, keys): BetterMenu.X; never VRFW.
+prefix = "BetterMenu"
+permissions = ["command"]
+folder = "BetterMenu"
+# Content only, on the VR-Framework's menu scene service (docs/framework/menu-scene.md, docs/game/mods/better-menu.md):
+#   content\menu_scenes\clubhouse.toml   the scene: BetterMenu's own map w50i901 under title_menu_2, the walker's entry point, the
+#                                        hidden background layer; gated on [experiment] map_under_menu
+#   content\field_modes\clubhouse.toml   the field mode entered while the map is loaded (walker, no autosaves, no field menus)
+#   (the camera: the scene's own shots in clubhouse.toml, one per mode tile; the camera drive of 0.1-0.3 is gone)
+#   content\menus\title_avatar.toml    no AVATAR banner; X on the mode row (assets\lua\title_menu_2\210_avatar.lua: the
+#                                        Avatar menu while «Modo Historia» is focused; text\keys.toml its balloon line)
+#   content\menu_scenes\clubhouse_people.toml  GENERATED people templates (research/scripts/menu_scene_people_build.py)
+#   content\menus\title_bottom_row.toml  the main menu's bottom: tile row, copyright, DLC icons (menu type; config.toml
+#                                        [main_menu] compact_bottom_row), with assets\lua\title_menu_2\200_bottom_row.lua and
+#                                        the icons assets\images\menu\title02_23\*.png (research/scripts/better_menu_dlc_icons_build.py); the plate atlas content\images\menu\20_cmn\better_menu_tile_plate.toml
+#   content\menus\title_top_cleanup.toml  the main menu's top: «Información», logo and «Inazuma Post» off ([main_menu] clean_top)
+#   content\menus\title_mode_header.toml  the mode header top left: the Chronicle map's area-name banner (assets\lua\title_menu_2\220_mode_header.lua)
+#   content\menus\title_live_painting.toml  the live painting of the Crónica shot: a quad fitted to the big painting by
+#                                        the scene's [[VRFW.MenuSceneScreen]] (assets\lua\title_menu_2\240_live_painting.lua plays
+#                                        its flipbook; the atlas content\images\menu\20_cmn\better_menu_live_painting.toml, GENERATED
+#                                        by research/scripts/better_menu_live_painting_build.py)
+#   (the Battle Bay projection layer and its atlas are removed in 0.6.20: the 1098-sprite atlas crashed the main menu;
+#    the flipbook png and research/scripts/better_menu_bb_opening_build.py stay for a rework, docs §46)
+#   content\menus\title_team_drawer.toml  Y: the game's team roster over the room (assets\lua\title_menu_2\230_team_drawer.lua,
+#                                        assets\lua\soccer_team_dock_menu\230_team_drawer_no_fade.lua,
+#                                        assets\lua\menu_chara_model_comp\230_team_drawer_camera.lua; the band picture
+#                                        content\images\menu\20_cmn\better_menu_team_band.toml, GENERATED by
+#                                        research/scripts/better_menu_team_band_build.py)
+#   content\menus\competition.toml    the Competition list over the pitch; the white line behind its crest strip
+#                                        (content\images\menu\20_cmn\better_menu_crest_line.toml, GENERATED by
+#                                        research/scripts/better_menu_crest_line_build.py)
+#   content\menus\competition_mouse.toml  the Competition list's mouse zone (step 1: the centre crest; config [competition] mouse)
+#   content\menus\competition_tabs.toml  GENERATED: the list's series tab bar with narrow grey ends and the icons
+#                                        spread (research/scripts/better_menu_competition_tabs_build.py; its atlas
+#                                        content\images\menu\20_cmn\better_menu_competition_tabs.toml)
+#   assets\map\w\w50i901\, assets\gamedata\map\w50i901\  GENERATED BetterMenu's own clubhouse map: a copy of the
+#                                        retail w50i001 with only what the shots see, white panes, the exit door that
+#                                        opens, its own map names (root, blocks, area), no NPC of its own
+#                                        (research/scripts/better_menu_club_map_build.py; docs §47, §60);
+#                                        content\tables\common\map\map_data.toml its row
+# Competition strip API (assets/lua/_all/260_competition_api.lua): BetterMenu.Competition.ReserveUnderCrest(id, px)
+# reserves a band between the selected crest and the team name (the name moves down by it) and returns its top y and
+# the crest x; BetterMenu.Competition.strip_listeners[id] = function is called once per list open, when the strip
+# and the list's focus are ready (0.7.2; 0.7.0 called it before the list menu existed).
+# 0.7.5: the free-match class window over the Competition list at the bottom, centred on the three players (session
+# op «players_x»); CREST_BOTTOM for the bands under the crest. 0.7.28: no class header and no level left of the tab
+# band (the class window keeps the class choice).
+# No changelog.toml yet: the «Novedades de mods» sheet would open over the main menu the first time.
+requires = ["vr_framework>=2.7.15"]
+conflicts = []
+
+# content folders read by the framework's scripts, not by a framework type (layout lint)
+[layout]
+script_folders = ["menu_scenes", "competition_court"]
+
+# UI only: left out of the mod set two players must share in a private online room
+[VRFW.Mod]
+AffectsMatch = false

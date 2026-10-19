@@ -123,21 +123,31 @@ function M.rule_sig(r)
 end
 
 -- the rule: config, then every mod's declaration in load order (`decls` = VRFW.files.declarations entries
--- { mod, data }); the last declaring mod wins, a second one with other values is a note
+-- { mod, data }), key by key: a later mod wins a key; a note only when two mods set the SAME key to other values
+local KEY_SIG = {
+  display_rarity = function(r) return tostring(r.display_rarity) end,
+  owned_rarities = function(r) return M.rule_sig(r):match("owned ([^,]*)") end,
+  card_values = function(r) return M.rule_sig(r):match("cards (.*)$") end,
+}
 function M.rule(cfg, decls, notes)
   notes = notes or {}
   local r = M.rule_from_config(cfg, notes)
-  local first_sig, first_mod = nil, nil
+  local set_by = {}                        -- key -> { mod, value }
   for _, e in ipairs(decls or {}) do
     local d = type(e.data) == "table" and e.data or {}
     local probe = { display_rarity = r.display_rarity, owned_any = r.owned_any, owned = r.owned, card_values = r.card_values }
     if M.apply(probe, d, "content/team_planner of mod " .. tostring(e.mod), notes) then
-      local sig = M.rule_sig(probe)
-      if first_sig ~= nil and sig ~= first_sig then
-        notes[#notes + 1] = "content/team_planner: mod " .. tostring(e.mod) .. " (" .. sig .. ") replaces mod "
-          .. tostring(first_mod) .. " (" .. first_sig .. ")"
+      for key, sig_of in pairs(KEY_SIG) do
+        if d[key] ~= nil then
+          local value = sig_of(probe)
+          local prev = set_by[key]
+          if prev ~= nil and prev.value ~= value then
+            notes[#notes + 1] = "content/team_planner: mod " .. tostring(e.mod) .. " sets " .. key .. " = " .. value
+              .. ", replacing mod " .. tostring(prev.mod) .. "'s " .. prev.value
+          end
+          set_by[key] = { mod = e.mod, value = value }
+        end
       end
-      first_sig, first_mod = sig, e.mod
       r.display_rarity, r.owned_any, r.owned, r.card_values = probe.display_rarity, probe.owned_any, probe.owned, probe.card_values
       r.source = "mod " .. tostring(e.mod)
     end

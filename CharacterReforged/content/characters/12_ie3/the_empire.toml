@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03031210"                                   # Jorge Ortega
+moves = [
+  { move = 0xBA833662, level = 1 },                         # Million Hands
+  { move = 0x132416F6, level = 40 },                        # Dog Run
+  { move = 0xC5B27C7E, level = 58 },                        # Storm Rider
+  { move = 0xBD8A9EBE, level = 65 },                        # Infinite Wall
+]
+VRFW.MoveGrades = [
+  { Move = 0xBA833662, Grade = 1 },                         # Million Hands
+]
 
   [[edit.cards]]
   id = 0x5B5217D0                                         # GK/MF · fire
@@ -15,6 +24,12 @@ target = "c03031210"                                   # Jorge Ortega
 
 [[edit]]
 target = "c03031220"                                   # Thiago Torres
+moves = [
+  { move = 0xB13A6C3D, level = 1 },                         # Zigzag Flame
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x52CEB5F6, level = 20 },                        # Iron Wall
+  { move = 0xABA58912, level = 60 },                        # Ignited Steal
+]
 
   [[edit.cards]]
   id = 0x707F4413                                         # DF/MF · fire
@@ -24,6 +39,12 @@ target = "c03031220"                                   # Thiago Torres
 
 [[edit]]
 target = "c03031230"                                   # Julio Acosta
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0xB13A6C3D, level = 15 },                        # Zigzag Flame
+  { move = 0x41F3CDC2, level = 37 },                        # Scorching Tackle
+  { move = 0xAD6E4BF9, level = 55 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0x69647552                                         # DF/MF · forest
@@ -34,6 +55,12 @@ target = "c03031230"                                   # Julio Acosta
 
 [[edit]]
 target = "c03031240"                                   # Grande Díaz
+moves = [
+  { move = 0x166B0073, level = 1 },                         # Super Armadillo
+  { move = 0xB13A6C3D, level = 15 },                        # Zigzag Flame
+  { move = 0x58E8FC83, level = 33 },                        # Rolling Hell
+  { move = 0xBA833662, level = 52 },                        # Million Hands
+]
 
   [[edit.cards]]
   id = 0x2625E395                                         # DF/MF · forest
@@ -43,6 +70,12 @@ target = "c03031240"                                   # Grande Díaz
 
 [[edit]]
 target = "c03031250"                                   # Ramón Martínez
+moves = [
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x66F2BE21, level = 15 },                        # Leaping Thunder
+  { move = 0x4CDC2C6B, level = 38 },                        # Shooting Star
+  { move = 0x4E5B398C, level = 55 },                        # Acrobat Bomber
+]
 
   [[edit.cards]]
   id = 0x3F3ED2D4                                         # DF/FW · mountain
@@ -52,6 +85,12 @@ target = "c03031250"                                   # Ramón Martínez
 
 [[edit]]
 target = "c03031260"                                   # Esteban Carlos
+moves = [
+  { move = 0x132416F6, level = 1 },                         # Dog Run
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+  { move = 0x68982058, level = 35 },                        # Armadillo Circus
+  { move = 0x4E9A9232, level = 40 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x14138117                                         # MF/DF · wind
@@ -61,6 +100,12 @@ target = "c03031260"                                   # Esteban Carlos
 
 [[edit]]
 target = "c03031270"                                   # Sergio Pérez
+moves = [
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x592A96B4, level = 28 },                        # Afterimage
+  { move = 0xC66BD10D, level = 30 },                        # Zigzag Spark
+  { move = 0x5AAE42DA, level = 65 },                        # Triple Dash
+]
 
   [[edit.cards]]
   id = 0x0D08B056                                         # MF/DF · forest
@@ -70,6 +115,12 @@ target = "c03031270"                                   # Sergio Pérez
 
 [[edit]]
 target = "c03031280"                                   # Roberto Torres
+moves = [
+  { move = 0x132416F6, level = 1 },                         # Dog Run
+  { move = 0x2B343D01, level = 31 },                        # Cyclone
+  { move = 0xEA12530F, level = 36 },                        # Double Rocket
+  { move = 0x52CEB5F6, level = 52 },                        # Iron Wall
+]
 
   [[edit.cards]]
   id = 0x8A90AC99                                         # MF/DF · wind
@@ -79,6 +130,12 @@ target = "c03031280"                                   # Roberto Torres
 
 [[edit]]
 target = "c03031290"                                   # Pablo Castillo
+moves = [
+  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0xC0FD6AFB, level = 1 },                         # Fireball Head
+  { move = 0xB13A6C3D, level = 15 },                        # Zigzag Flame
+  { move = 0x2F78EA0D, level = 58 },                        # Triangle Z
+]
 
   [[edit.cards]]
   id = 0x938B9DD8                                         # MF/FW · wind
@@ -88,6 +145,15 @@ target = "c03031290"                                   # Pablo Castillo
 
 [[edit]]
 target = "c03031300"                                   # Leone Badigo
+moves = [
+  { move = 0xBDAE2862, level = 1 },                         # Hellfire
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x1D4E888F, level = 33 },                        # Condor Dive
+  { move = 0x4DDFEDE2, level = 36 },                        # Eagle Buster
+]
+VRFW.MoveGrades = [
+  { Move = 0xBDAE2862, Grade = 1 },                         # Hellfire
+]
 
   [[edit.cards]]
   id = 0x438B4CA6                                         # FW/MF · fire
@@ -97,6 +163,12 @@ target = "c03031300"                                   # Leone Badigo
 
 [[edit]]
 target = "c03031310"                                   # Diego Oro
+moves = [
+  { move = 0xBDAE2862, level = 1 },                         # Hellfire
+  { move = 0x74CC079C, level = 29 },                        # Big Fan
+  { move = 0x4DDFEDE2, level = 36 },                        # Eagle Buster
+  { move = 0xA5777314, level = 46 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0x5A907DE7                                         # FW/MF · mountain
@@ -107,6 +179,12 @@ target = "c03031310"                                   # Diego Oro
 
 [[edit]]
 target = "c03031320"                                   # Lionel Cruz
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0xA6D711A6, level = 15 },                        # Full Power Shield
+  { move = 0xB13A6C3D, level = 34 },                        # Zigzag Flame
+  { move = 0x4BD584B7, level = 55 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0x71BD2E24                                         # GK/DF · wind
@@ -116,6 +194,12 @@ target = "c03031320"                                   # Lionel Cruz
 
 [[edit]]
 target = "c03031330"                                   # Mario Saviola
+moves = [
+  { move = 0x695A4A6F, level = 1 },                         # Magic
+  { move = 0x4890FB67, level = 12 },                        # Twin Boost
+  { move = 0x5405771D, level = 34 },                        # Supreme Spin
+  { move = 0x316A7390, level = 62 },                        # Land Dragon
+]
 
   [[edit.cards]]
   id = 0x68A61F65                                         # FW/MF · fire
@@ -125,6 +209,12 @@ target = "c03031330"                                   # Mario Saviola
 
 [[edit]]
 target = "c03031340"                                   # Hernán Tévez
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0xE9968761, level = 36 },                        # Rocket Kobushi
+  { move = 0x21127474, level = 57 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x27E789A2                                         # DF/MF · wind
@@ -135,6 +225,12 @@ target = "c03031340"                                   # Hernán Tévez
 
 [[edit]]
 target = "c03031350"                                   # Herman Samuel
+moves = [
+  { move = 0x68982058, level = 1 },                         # Armadillo Circus
+  { move = 0x2EBA803A, level = 32 },                        # Dirt Ball
+  { move = 0xB1FBC783, level = 58 },                        # Reflect Buster
+  { move = 0x132416F6, level = 66 },                        # Dog Run
+]
 
   [[edit.cards]]
   id = 0x3EFCB8E3                                         # MF/FW · forest
@@ -144,6 +240,12 @@ target = "c03031350"                                   # Herman Samuel
 
 [[edit]]
 target = "c03031360"                                   # Ricardo Agüero
+moves = [
+  { move = 0x011AAF4B, level = 1 },                         # Gyro Head
+  { move = 0xB13A6C3D, level = 1 },                         # Zigzag Flame
+  { move = 0x4DDFEDE2, level = 20 },                        # Eagle Buster
+  { move = 0xADAFE047, level = 59 },                        # Dual Strike
+]
 
   [[edit.cards]]
   id = 0x15D1EB20                                         # FW/MF · mountain
@@ -153,6 +255,12 @@ target = "c03031360"                                   # Ricardo Agüero
 
 [[edit]]
 target = "c11803060"                                   # Daniel Sturbin
+moves = [
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0xEE3E059F, level = 13 },                        # Celestial Smash
+  { move = 0x518BCA26, level = 20 },                        # Fire Tornado
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x4D5874F8                                         # FW/MF · fire

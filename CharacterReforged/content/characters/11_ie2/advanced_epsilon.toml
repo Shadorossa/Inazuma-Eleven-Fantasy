@@ -6,6 +6,16 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11902210"                                   # Dvalin
+moves = [
+  { move = 0x8B31808E, level = 1 },                         # Wormhole
+  { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
+  { move = 0x19025F83, level = 42 },                        # Quick Draw
+  { move = 0x6633159F, level = 78 },                        # Gravitation
+]
+VRFW.MoveGrades = [
+  { Move = 0x8B31808E, Grade = 1 },                         # Wormhole
+  { Move = 0x8E7E960B, Grade = 1 },                         # Drill Smasher
+]
 
   [[edit.cards]]
   id = 0x727D8291                                         # GK/FW · fire
@@ -15,6 +25,12 @@ target = "c11902210"                                   # Dvalin
 
 [[edit]]
 target = "c11902220"                                   # Kenville
+moves = [
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
+  { move = 0xC7A9BB3A, level = 38 },                        # Whirlwind Cut
+  { move = 0x514A6198, level = 70 },                        # Asteroid Belt
+]
 
   [[edit.cards]]
   id = 0x5950D152                                         # DF/MF · fire
@@ -24,6 +40,12 @@ target = "c11902220"                                   # Kenville
 
 [[edit]]
 target = "c11902230"                                   # Mole
+moves = [
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x46A71C03, level = 44 },                        # Black Hole
+  { move = 0x8E7E960B, level = 60 },                        # Drill Smasher
+]
 
   [[edit.cards]]
   id = 0x404BE013                                         # DF/GK · forest
@@ -33,6 +55,12 @@ target = "c11902230"                                   # Mole
 
 [[edit]]
 target = "c11902240"                                   # Kayson
+moves = [
+  { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
+  { move = 0x514A6198, level = 1 },                         # Asteroid Belt
+  { move = 0x3D4653B0, level = 41 },                        # Poison Fog
+  { move = 0x142DBE2A, level = 55 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0x0F0A76D4                                         # DF/MF · wind
@@ -42,6 +70,12 @@ target = "c11902240"                                   # Kayson
 
 [[edit]]
 target = "c11902250"                                   # Tytan
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x00196EC2, level = 40 },                        # Earthquake
+  { move = 0x28B0E96F, level = 46 },                        # Heavy Mettle
+  { move = 0x29728358, level = 65 },                        # Planet Shield
+]
 
   [[edit.cards]]
   id = 0x16114795                                         # DF/MF · mountain
@@ -52,6 +86,12 @@ target = "c11902250"                                   # Tytan
 
 [[edit]]
 target = "c11902260"                                   # Fedora
+moves = [
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0xB633C4E1, level = 31 },                        # Photon Crash
+  { move = 0x7EEA4EE9, level = 39 },                        # Blade Attack
+  { move = 0xA5777314, level = 65 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0x3D3C1456                                         # MF/DF · fire
@@ -61,6 +101,12 @@ target = "c11902260"                                   # Fedora
 
 [[edit]]
 target = "c11902270"                                   # Krypto
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x2C3D95DD, level = 42 },                        # Sleeping Dust
+  { move = 0x2296A01A, level = 53 },                        # Southern Cross
+]
 
   [[edit.cards]]
   id = 0x24272517                                         # MF/DF · wind
@@ -70,6 +116,12 @@ target = "c11902270"                                   # Krypto
 
 [[edit]]
 target = "c11902280"                                   # Sworm
+moves = [
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0xB633C4E1, level = 39 },                        # Photon Crash
+  { move = 0x011AAF4B, level = 51 },                        # Gyro Head
+  { move = 0x7FE98F60, level = 63 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0xA3BF39D8                                         # MF/FW · forest
@@ -79,6 +131,12 @@ target = "c11902280"                                   # Sworm
 
 [[edit]]
 target = "c11902290"                                   # Mercury
+moves = [
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x4C1D87D5, level = 36 },                        # Bed of Roses
+  { move = 0x035C1112, level = 70 },                        # Gungnir
+]
 
   [[edit.cards]]
   id = 0xBAA40899                                         # FW/MF · wind
@@ -88,6 +146,12 @@ target = "c11902290"                                   # Mercury
 
 [[edit]]
 target = "c11902300"                                   # Metron
+moves = [
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x60397CCA, level = 37 },                        # Cross Drive
+  { move = 0x7C6D5B0E, level = 55 },                        # Astro Break
+]
 
   [[edit.cards]]
   id = 0x6AA4D9E7                                         # FW/MF · wind
@@ -98,6 +162,12 @@ target = "c11902300"                                   # Metron
 
 [[edit]]
 target = "c11902310"                                   # Zell
+moves = [
+  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x8B31808E, level = 60 },                        # Wormhole
+  { move = 0xA01CD34D, level = 88 },                        # Temporal Wall
+]
 
   [[edit.cards]]
   id = 0x73BFE8A6                                         # FW/GK · wind

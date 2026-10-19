@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04000350"                                   # Spotter
+moves = [
+  { move = 0xAE5C7145, level = 13 },                        # Fangtasmagoria
+  { move = 0xAA67E325, level = 25 },                        # Desert Blast
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+]
 
   [[edit.cards]]
   id = 0x04479BD8                                         # MF/DF · mountain
@@ -15,6 +21,15 @@ target = "c04000350"                                   # Spotter
 
 [[edit]]
 target = "c05026610"                                   # Jordan Greenway
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
+  { move = 0x029E7B25, level = 53 },                        # Gaia Break
+]
+VRFW.MoveGrades = [
+  { Move = 0x7C6D5B0E, Grade = 1 },                         # Astro Break
+]
 
   [[edit.cards]]
   id = 0x9F3C9B3F                                         # MF/FW · forest
@@ -25,6 +40,12 @@ target = "c05026610"                                   # Jordan Greenway
 
 [[edit]]
 target = "c05026510"                                   # Nelly Evans
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x900C8E0A, level = 1 },                         # Maestro's Call
+  { move = 0x2A4E3349, level = 39 },                        # Heart Beat
+  { move = 0x87379CDF, level = 65 },                        # Fire Tornado TC
+]
 
   [[edit.cards]]
   id = 0x9D7A2566                                         # FW/MF · fire
@@ -34,6 +55,12 @@ target = "c05026510"                                   # Nelly Evans
 
 [[edit]]
 target = "c05026520"                                   # Celia Hills
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x4E9A9232, level = 27 },                        # Spinning Cut
+  { move = 0x32EEA7FE, level = 70 },                        # Death Zone 2
+]
 
   [[edit.cards]]
   id = 0xB65776A5                                         # MF/DF · wind
@@ -44,6 +71,12 @@ target = "c05026520"                                   # Celia Hills
 
 [[edit]]
 target = "c05026600"                                   # Austin Hobbes
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x232D05EC, level = 3 },                         # Tiger Drive
+  { move = 0xA6763B84, level = 11 },                        # Gladius Arch
+  { move = 0xF02C9C02, level = 21 },                        # Tiger Storm
+]
 
   [[edit.cards]]
   id = 0x8627AA7E                                         # FW/MF · forest
@@ -53,6 +86,12 @@ target = "c05026600"                                   # Austin Hobbes
 
 [[edit]]
 target = "c05026540"                                   # Camellia Travis
+moves = [
+  { move = 0x4E9A9232, level = 16 },                        # Spinning Cut
+  { move = 0xB5B7108F, level = 29 },                        # Shadow Stitch
+  { move = 0xC7A9BB3A, level = 36 },                        # Whirlwind Cut
+  { move = 0x3F00EDE9, level = 50 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0xE00DD123                                         # DF/MF · forest
@@ -62,6 +101,12 @@ target = "c05026540"                                   # Camellia Travis
 
 [[edit]]
 target = "c05026560"                                   # Charley Horse
+moves = [
+  { move = 0x2E7B2B84, level = 12 },                        # Thief's Eye
+  { move = 0x6B1CF436, level = 17 },                        # Bewildered
+  { move = 0x3663DB4C, level = 24 },                        # Utter Gutsiness Bat
+  { move = 0x737DCB3F, level = 43 },                        # Pancake Defence
+]
 
   [[edit.cards]]
   id = 0xD23BB3A1                                         # DF/MF · mountain
@@ -72,6 +117,12 @@ target = "c05026560"                                   # Charley Horse
 
 [[edit]]
 target = "c05026570"                                   # Chester Horse Sr
+moves = [
+  { move = 0x2D9F7E76, level = 1 },                         # Breath Taker
+  { move = 0xE546F47E, level = 14 },                        # Dust Devil
+  { move = 0x7D6E9A87, level = 29 },                        # The Wall
+  { move = 0xD471DE6C, level = 45 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0xCB2082E0                                         # GK/MF · mountain
@@ -81,6 +132,12 @@ target = "c05026570"                                   # Chester Horse Sr
 
 [[edit]]
 target = "c05026630"                                   # Faythe Heeler
+moves = [
+  { move = 0xA37D1A41, level = 1 },                         # Hyper-Swiper
+  { move = 0x6DD736DD, level = 17 },                        # Ribbon Shower
+  { move = 0xBBA44137, level = 37 },                        # Great Wall
+  { move = 0xB0F8060A, level = 51 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0xAD0AF9BD                                         # DF/MF · wind
@@ -90,6 +147,12 @@ target = "c05026630"                                   # Faythe Heeler
 
 [[edit]]
 target = "c05026640"                                   # Maia
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x20D01E43, level = 15 },                        # Hey Presto
+  { move = 0xDCC9CCA3, level = 36 },                        # Tesla Coil
+  { move = 0xEC78BBC6, level = 58 },                        # Black Ash
+]
 
   [[edit.cards]]
   id = 0xE24B6F7A                                         # DF/MF · forest
@@ -100,6 +163,12 @@ target = "c05026640"                                   # Maia
 
 [[edit]]
 target = "c05026650"                                   # Julia Blaze
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0x0B011EBF, level = 16 },                        # Fireball Screw
+  { move = 0xB7474004, level = 29 },                        # Dough Ray Me
+  { move = 0xDA3FF6C9, level = 50 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0xFB505E3B                                         # MF/FW · fire
@@ -109,6 +178,12 @@ target = "c05026650"                                   # Julia Blaze
 
 [[edit]]
 target = "c06037450"                                   # William Glass
+moves = [
+  { move = 0x01DB04F5, level = 28 },                        # Defence Scan
+  { move = 0x0F703132, level = 40 },                        # Black Magic
+  { move = 0x61FB16FD, level = 75 },                        # Divine Arrows
+  { move = 0xDF70E04C, level = 99 },                        # Rodeo Clown
+]
 
   [[edit.cards]]
   id = 0x4CE0DE1D                                         # FW/MF · forest
@@ -119,6 +194,12 @@ target = "c06037450"                                   # William Glass
 
 [[edit]]
 target = "c06039020"                                   # Seymour Hillman
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xA491AFFF, level = 88 },                        # Majin the Hand
+  { move = 0xB039ADB4, level = 99 },                        # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0xE4779735                                         # GK/FW · mountain
@@ -128,6 +209,15 @@ target = "c06039020"                                   # Seymour Hillman
 
 [[edit]]
 target = "c06037400"                                   # Victoria Vanguard
+moves = [
+  { move = 0xAF28F5A0, level = 1 },                         # The Tower
+  { move = 0xAC6D8A70, level = 21 },                        # Rainbow Arc
+  { move = 0x4E5B398C, level = 34 },                        # Acrobat Bomber
+  { move = 0x49933AEE, level = 69 },                        # Perfect Tower
+]
+VRFW.MoveGrades = [
+  { Move = 0xAF28F5A0, Grade = 1 },                         # The Tower
+]
 
   [[edit.cards]]
   id = 0x31972A58                                         # MF/DF · wind
@@ -138,6 +228,15 @@ target = "c06037400"                                   # Victoria Vanguard
 
 [[edit]]
 target = "c06037430"                                   # Darren LaChance
+moves = [
+  { move = 0x5AF33BC7, level = 1 },                         # God Hand
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0xF2CB0879, level = 1 },                         # Mugen the Hand
+  { move = 0x74CC079C, level = 35 },                        # Big Fan
+]
+VRFW.MoveGrades = [
+  { Move = 0xF2CB0879, Grade = 1 },                         # Mugen the Hand
+]
 
   [[edit.cards]]
   id = 0x1ABA799B                                         # GK/MF · forest
@@ -147,6 +246,12 @@ target = "c06037430"                                   # Darren LaChance
 
 [[edit]]
 target = "c06037440"                                   # Archer Hawkins
+moves = [
+  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
+  { move = 0x04941270, level = 4 },                         # Vac Attack
+  { move = 0x142DBE2A, level = 30 },                        # Foul Offence
+  { move = 0x7B64F3D2, level = 40 },                        # Hawk Shot
+]
 
   [[edit.cards]]
   id = 0x55FBEF5C                                         # DF/MF · wind
@@ -157,6 +262,12 @@ target = "c06037440"                                   # Archer Hawkins
 
 [[edit]]
 target = "c06037460"                                   # Arion Sherwind
+moves = [
+  { move = 0x6F918884, level = 1 },                         # Easy Breezy
+  { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
+  { move = 0xC755E805, level = 62 },                        # Triple Threat
+  { move = 0xA9E3374B, level = 72 },                        # Cyclone Sprint
+]
 
   [[edit.cards]]
   id = 0x67CD8DDE                                         # MF/FW · wind
@@ -165,6 +276,17 @@ target = "c06037460"                                   # Arion Sherwind
 
 [[edit]]
 target = "c06037380"                                   # Janison Veteran
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0xDF2D9951, level = 15 },                        # Close Counter
+  { move = 0x50E88A33, level = 34 },                        # Fist Beam
+  { move = 0xB8C5883B, level = 64 },                        # God Hand X
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x9036A3E7, level = 1 },                         # Serendipity [aura]
+]
 
   [[edit.cards]]
   id = 0xFC01B6D5                                         # GK/MF · fire
@@ -175,6 +297,12 @@ target = "c06037380"                                   # Janison Veteran
 
 [[edit]]
 target = "c06037390"                                   # Aquilina Schiller
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0xAF28F5A0, level = 21 },                        # The Tower
+  { move = 0x2296A01A, level = 32 },                        # Southern Cross
+  { move = 0xA955D999, level = 59 },                        # The Earth: Infinity
+]
 
   [[edit.cards]]
   id = 0xE51A8794                                         # FW/MF · forest
@@ -184,6 +312,12 @@ target = "c06037390"                                   # Aquilina Schiller
 
 [[edit]]
 target = "c06039030"                                   # Frank Wintersea
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x650FA58E, level = 14 },                        # Spin Out
+  { move = 0xE196F1D1, level = 24 },                        # Burning Bomb
+  { move = 0x1C4D4906, level = 44 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xFD6CA674                                         # DF/MF · wind
@@ -194,6 +328,12 @@ target = "c06039030"                                   # Frank Wintersea
 
 [[edit]]
 target = "c06039040"                                   # Sonny Raimon
+moves = [
+  { move = 0xC4D13C6B, level = 1 },                         # Katana Kick
+  { move = 0x568262FA, level = 14 },                        # Dark Tornado
+  { move = 0xA0BDF96F, level = 32 },                        # Ballista Barrage
+  { move = 0xF5638A87, level = 53 },                        # Elemental Destroyer
+]
 
   [[edit.cards]]
   id = 0xB22D30B3                                         # FW/MF · mountain
@@ -203,6 +343,12 @@ target = "c06039040"                                   # Sonny Raimon
 
 [[edit]]
 target = "c11904030"                                   # Othello Go
+moves = [
+  { move = 0xF5638A87, level = 1 },                         # Elemental Destroyer
+  { move = 0x3297683F, level = 13 },                        # Warp Step
+  { move = 0x0E4E083A, level = 20 },                        # Zero Magnum
+  { move = 0x568262FA, level = 30 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0x66A46BA1                                         # FW/DF · wind
@@ -213,6 +359,12 @@ target = "c11904030"                                   # Othello Go
 
 [[edit]]
 target = "c04017260"                                   # Ton Nino
+moves = [
+  { move = 0x3C843987, level = 8 },                         # Flurry Dash
+  { move = 0xC66BD10D, level = 19 },                        # Zigzag Spark
+  { move = 0x7EEA4EE9, level = 30 },                        # Blade Attack
+  { move = 0x2D3E5454, level = 56 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0x8E1FB325                                         # MF/DF · wind

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11140010"                                   # Asuna Sugami
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x1C8CE2B8, level = 13 },                        # God Knows
+  { move = 0xC2E6ADBF, level = 20 },                        # Log Roll
+  { move = 0xE0549BE6, level = 30 },                        # Easy Breezy Kid
+]
 
   [[edit.cards]]
   id = 0xC223BAD9                                         # FW/MF · wind
@@ -16,6 +22,12 @@ target = "c11140010"                                   # Asuna Sugami
 
 [[edit]]
 target = "c11140020"                                   # Carlton Lawstrom
+moves = [
+  { move = 0xDF8CB373, level = 1 },                         # Sonic Shot
+  { move = 0x46FA651E, level = 13 },                        # Water Veil
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x5049A011, level = 30 },                        # Spinning Shot
+]
 
   [[edit.cards]]
   id = 0xE90EE91A                                         # MF/DF · wind
@@ -25,6 +37,12 @@ target = "c11140020"                                   # Carlton Lawstrom
 
 [[edit]]
 target = "c11140030"                                   # Kean Aimes
+moves = [
+  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0x72BFA108, level = 20 },                        # Wall of Atlantis
+  { move = 0x35E70F22, level = 30 },                        # Grenade Shot
+]
 
   [[edit.cards]]
   id = 0xF015D85B                                         # FW/DF · fire
@@ -34,6 +52,12 @@ target = "c11140030"                                   # Kean Aimes
 
 [[edit]]
 target = "c11140040"                                   # Reamond Lockhard
+moves = [
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0xC2E6ADBF, level = 20 },                        # Log Roll
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0xBF544E9C                                         # FW/MF · wind
@@ -43,6 +67,12 @@ target = "c11140040"                                   # Reamond Lockhard
 
 [[edit]]
 target = "c11140050"                                   # Plume Hathaway
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x2354CA2D, level = 13 },                        # Wind God's Dance
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x1C4D4906, level = 30 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xA64F7FDD                                         # MF/DF · wind
@@ -53,6 +83,12 @@ target = "c11140050"                                   # Plume Hathaway
 
 [[edit]]
 target = "c11140060"                                   # Beryl Granger
+moves = [
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0x9AF2229C, level = 20 },                        # Gravity Point
+  { move = 0x61FB16FD, level = 30 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x8D622C1E                                         # FW/GK · forest
@@ -63,6 +99,12 @@ target = "c11140060"                                   # Beryl Granger
 
 [[edit]]
 target = "c11140070"                                   # Swae Talltree
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x1C4D4906, level = 13 },                        # Whirlpool
+  { move = 0xC42D6F54, level = 20 },                        # Aikido
+  { move = 0x4F58F805, level = 30 },                        # Coil Turn
+]
 
   [[edit.cards]]
   id = 0x94791D5F                                         # DF/MF · wind
@@ -72,6 +114,12 @@ target = "c11140070"                                   # Swae Talltree
 
 [[edit]]
 target = "c11140080"                                   # Summers Laughlin
+moves = [
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x25276CB9, level = 13 },                        # Solar Surprise
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x025FD09B, level = 30 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0x13E10190                                         # MF/DF · fire
@@ -81,6 +129,12 @@ target = "c11140080"                                   # Summers Laughlin
 
 [[edit]]
 target = "c11140090"                                   # Peridot Runehart
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x2AF65736, level = 13 },                        # Bamboo Pattern
+  { move = 0x20D01E43, level = 20 },                        # Hey Presto
+  { move = 0x1755397B, level = 30 },                        # Dark Energy Star
+]
 
   [[edit.cards]]
   id = 0x0AFA30D1                                         # MF/FW · forest
@@ -90,6 +144,12 @@ target = "c11140090"                                   # Peridot Runehart
 
 [[edit]]
 target = "c11140100"                                   # Garrison Hayfield
+moves = [
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0xBFCC20E7, level = 13 },                        # Wood Chopper
+  { move = 0xC636A810, level = 20 },                        # Combustion Catch
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0xDAFAE1AF                                         # GK/DF · mountain
@@ -99,6 +159,12 @@ target = "c11140100"                                   # Garrison Hayfield
 
 [[edit]]
 target = "c11140110"                                   # Seon Gulliver
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x530CDFC1, level = 13 },                        # Mystifying Mist
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0xC3E1D0EE                                         # DF/MF · wind
@@ -109,6 +175,12 @@ target = "c11140110"                                   # Seon Gulliver
 
 [[edit]]
 target = "c11140120"                                   # Imogen Greenbourne
+moves = [
+  { move = 0x530CDFC1, level = 1 },                         # Mystifying Mist
+  { move = 0xAEEA9F97, level = 13 },                        # Sigma Zone
+  { move = 0x70417B2E, level = 20 },                        # Deceptor Dribble
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0xE8CC832D                                         # MF/DF · forest
@@ -118,6 +190,12 @@ target = "c11140120"                                   # Imogen Greenbourne
 
 [[edit]]
 target = "c11140130"                                   # Chilton Churner
+moves = [
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0x50880BAF, level = 20 },                        # Frozen Steal
+  { move = 0x65B7C1F1, level = 30 },                        # Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0xF1D7B26C                                         # DF/MF · wind
@@ -127,6 +205,12 @@ target = "c11140130"                                   # Chilton Churner
 
 [[edit]]
 target = "c11140140"                                   # Kata Caballo
+moves = [
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xC42D6F54, level = 13 },                        # Aikido
+  { move = 0xDCA94D3F, level = 20 },                        # Flash Upper
+  { move = 0x6E53E2B3, level = 30 },                        # Angel Ball
+]
 
   [[edit.cards]]
   id = 0xBE9624AB                                         # GK/MF · wind
@@ -136,6 +220,12 @@ target = "c11140140"                                   # Kata Caballo
 
 [[edit]]
 target = "c11140150"                                   # Jewel Tremaine
+moves = [
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x54C4DCA3, level = 13 },                        # Butterfly Trance
+  { move = 0xF2CB0879, level = 20 },                        # Mugen the Hand
+  { move = 0x70417B2E, level = 30 },                        # Deceptor Dribble
+]
 
   [[edit.cards]]
   id = 0xA78D15EA                                         # MF/GK · forest
@@ -145,6 +235,12 @@ target = "c11140150"                                   # Jewel Tremaine
 
 [[edit]]
 target = "c11140160"                                   # Quip Netley
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x73C5AF40, level = 13 },                        # Dash Accelerator
+  { move = 0x5E233E68, level = 20 },                        # Super Elastico
+  { move = 0x5DA7EA06, level = 30 },                        # Boomerang Bluff
+]
 
   [[edit.cards]]
   id = 0x8CA04629                                         # MF/FW · mountain
@@ -154,6 +250,12 @@ target = "c11140160"                                   # Quip Netley
 
 [[edit]]
 target = "c11140500"                                   # Julie Page
+moves = [
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0xD9BB22A7, level = 13 },                        # Air Ride
+  { move = 0xA9E3374B, level = 20 },                        # Cyclone Sprint
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xDDF34973                                         # FW/MF · wind
@@ -163,6 +265,12 @@ target = "c11140500"                                   # Julie Page
 
 [[edit]]
 target = "c11140510"                                   # Hopkins Foamcrest
+moves = [
+  { move = 0x96A7CD7D, level = 1 },                         # Tsunami Wall
+  { move = 0xBA662B00, level = 13 },                        # Pterrordactyl Swoop
+  { move = 0x422A60B1, level = 20 },                        # Barrier Reef
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0xC4E87832                                         # GK/DF · wind
@@ -173,6 +281,12 @@ target = "c11140510"                                   # Hopkins Foamcrest
 
 [[edit]]
 target = "c11140520"                                   # Hawke Ambrose
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x2BF596BF, level = 20 },                        # Tsunami Boost
+  { move = 0xF64674CB, level = 30 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0xEFC52BF1                                         # MF/GK · wind
@@ -183,6 +297,12 @@ target = "c11140520"                                   # Hawke Ambrose
 
 [[edit]]
 target = "c11140530"                                   # Melvin Moodry
+moves = [
+  { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
+  { move = 0x1A868BED, level = 13 },                        # Clone Defence
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x5781A373, level = 30 },                        # Hurricane Arrows
+]
 
   [[edit.cards]]
   id = 0xF6DE1AB0                                         # DF/FW · wind

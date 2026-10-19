@@ -8,6 +8,8 @@ doc = "a 3D field map kept loaded under a game menu: the map, where its walker s
 # Read by scripts\menu_scene.lua (docs/framework/menu-scene.md). One scene per menu: with several, the later mod in load order wins.
 name = { type = "name", required = true, doc = "the scene (key <mod>.<name>)" }
 menu = { type = "string", required = true, doc = "the menu drawn over the map: title_menu_2 (the main menu, the only one supported)" }
+selectable = { type = "bool", default = false, doc = "an alternate scene selected explicitly with CMND_VRFW_MENU_SCENE_TRAVEL; does not replace the menu's default scene" }
+travel_maps = { type = "strings", doc = "map names this alternate scene may load; stadiums registered by active mods are also accepted" }
 map = { type = "string", required = true, doc = "the field map: its folder name (w50i001)" }
 field_mode = { type = "name", required = true, doc = "a [[VRFW.FieldMode]] of the same mod, entered while the map is loaded (walker, autosaves, its mode context for a camera drive)" }
 entry_point = { type = "string", default = "", doc = "a layout point of the map (its name or 0x… id, the map's config\\<map>_layout: the arrivals of its doors): the walker arrives there as through a door. Empty = entry_x / y / z / rot" }
@@ -26,14 +28,26 @@ people = { type = "string", default = "none", doc = "who stands in the map: acti
 people_seconds = { type = "number", min = 0, max = 30, default = 8, doc = "with people: at most these seconds of field after the map is up before the hand-over (the NPCs are made by the field state, not by the title; their models load first), the screen held black meanwhile" }
 people_min_seconds = { type = "number", min = 0, max = 30, default = 1.5, doc = "with people: at least these seconds of field after the map is up" }
 people_quiet_seconds = { type = "number", min = 0, max = 10, default = 0.5, doc = "with people: seconds after the field's NPC update is done (the retail NPCUpdate: NPCs made, their models loaded) before the hand-over" }
+guests = { type = "string", default = "npc", doc = "how the scene shows its guests (CMND_VRFW_MENU_SCENE_GUESTS, e.g. the Competition players): npc = with its people in the map's npc_setting (served again, the NPCs reloaded); actors = as scene characters the title creates on the guest spots (CMND_CREATE_SCN_CHARA: no npc_setting, the map's light; lua/menu/title_menu_2/152_menu_scene_actors.lua; VRFW 2.4.231: an experiment, every step logged)" }
+people_as = { type = "string", default = "npc", doc = "how the scene shows its people (and its guests): npc = in the map's npc_setting (the map's NPC system); actors = as scene characters the title creates on the spots (the engine's own scene character create with the person's kit, the chara's NPC pack for its clips; lua/menu/title_menu_2/152_menu_scene_actors.lua): all of them shown together once each is built and posed, the scene's reveal held until then; a team change re-creates only the people that changed" }
+actor_type = { type = "int", min = 1, max = 2, default = 1, doc = "the type a scene actor is created as (argument 2 of CMND_CREATE_SCN_CHARA and of the kit create): 1 = a scene character (the party event's value), 2 = an NPC (create flags 4, as the map's NPCs; docs/game/engine/scene-chara-faces.md)" }
+people_reread = { type = "bool", default = false, doc = "people served while the map is up (a team change, guests) are read into the map's NPC set at once (VRFW.map_npcs.reload: the NPC entries deleted, the config parsed again, the table rebuilt); false = they change at the next map load (VRFW 2.4.229: off by default, under test)" }
+npc_spawn_radius = { type = "number", min = 0, max = 100000, default = 0, doc = "with people: the game makes a map NPC only within 65 m (50 m of height) of the player's position and removes it past 80 m; a menu scene has no walker, so that position is whatever the last player left (another map's place) and the people showed only sometimes. While the scene is up the radii and heights grow to at least these metres (more than the map's size: every person shows); 0 = the game's" }
 people_kit = { type = "string", default = "team", doc = "team = the active team's kit on the people, default = each character's default look" }
+actor_face = { type = "string", default = "clip", doc = "with actors: clip = the face the actor's clips give (nothing is set), default = the character's default face set again when its pose plays and when it is shown" }
+actor_hold_face = { type = "bool", default = false, doc = "with actors: true = once the pose plays, the clip's face channel is switched off (CMND_VRFW_SCN_CHARA_FACE_HOLD), so the face no longer changes with the clip" }
 camera = { type = "string", default = "", doc = "the engine camera the scene's shots drive (its name: RpgCamera, the field camera); empty = no shots (a camera drive or the game's camera)" }
 default_shot = { type = "name", default = "default", doc = "the [[VRFW.MenuSceneShot]] while no tile with a shot of its own is focused" }
 home_shot = { type = "string", default = "", doc = "with shots_select_modes: a home entry without a tile, on this [[VRFW.MenuSceneShot]]: the menu always opens on it, it is the first place of the previous / next mode cycle, A does nothing there and the game param vrfw_menu_scene_home is set while it is shown (a mode header hides its name); empty = no home entry" }
 shot_seconds = { type = "number", min = 0, max = 5, default = 0.5, doc = "time of the move from one shot to the next" }
 shot_ease = { type = "string", default = "smooth", doc = "smooth (ease in and out), smoother (softer start and stop) or linear" }
+shot_turn = { type = "string", default = "slerp", doc = "how a move turns the camera: slerp (the view direction turns along the shortest arc at an even pace, the eye and the look distance mix) or lerp (eye and target slide in straight lines, as before 2.4.206)" }
+shot_seconds_min = { type = "number", min = 0, max = 5, default = 0.0, doc = "with shot_seconds_max: the time of a move grows with the turn and the eye's travel from this (a small change) ..." }
+shot_seconds_max = { type = "number", min = 0, max = 5, default = 0.0, doc = "... to this (a quarter turn or more, or shot_seconds_metres of travel or more); 0 = every move takes shot_seconds; a shot's own move_seconds always wins" }
+shot_seconds_metres = { type = "number", min = 0.1, max = 100, default = 8.0, doc = "eye travel (metres) that takes shot_seconds_max" }
 drift_metres = { type = "number", min = 0, max = 2, default = 0.0, doc = "idle drift of the eye around the shot (metres, 0 = still)" }
 drift_seconds = { type = "number", min = 1, max = 120, default = 20, doc = "one drift cycle" }
+cut_metres = { type = "number", min = 0, max = 10000, default = 0.0, doc = "a move between two shots whose eyes are farther apart than this is a cut (no move through what lies between); 0 = every move is a move" }
 shots_select_modes = { type = "bool", default = false, doc = "the shots are the mode selection: the menu's mode row is not drawn (list its layers in hide_layers), the previous / next shot keys move its focus, up / down go between the scene and the lower row, a focus move to a hidden layer is refused, and the focused mode's name is drawn at mode_label_x / y (title_menu_2: the menu needs the layer vrfw_ms_label, docs/framework/menu-scene.md)" }
 mode_label = { type = "bool", default = true, doc = "with shots_select_modes: draw the focused mode's name on vrfw_ms_label 0 (false: the mod draws its own mode header)" }
 mode_label_x = { type = "number", min = 0, max = 1920, default = 64, doc = "with shots_select_modes: the left edge of the mode's name (menu px, 1920 x 1080)" }
@@ -44,6 +58,7 @@ when = { type = "when", doc = "conditions on the declaring mod's config: all mus
 [entry.MenuSceneShot]
 doc = "a camera shot of a menu scene: the eye, the point looked at, the field of view, and the menu tiles that call it"
 scene = { type = "name", required = true, doc = "the scene" }
+of_mod = { type = "string", default = "", doc = "the mod whose scene this shot joins (its mod id, e.g. better_menu): a mod adds a shot to another mod's scene, e.g. for its own title tile (`tiles`); empty = a scene of this mod" }
 name = { type = "name", required = true, doc = "the shot (the scene's default_shot is the shot without a focused tile of its own)" }
 eye_x = { type = "number", required = true, doc = "metres" }
 eye_y = { type = "number", required = true, doc = "metres" }
@@ -58,6 +73,9 @@ move_seconds = { type = "number", min = -1, max = 10, default = -1, doc = "time 
 ease = { type = "string", default = "", doc = "the move into this shot: smooth, smoother or linear; empty = the scene's shot_ease" }
 then_shot = { type = "string", default = "", doc = "a shot the camera moves on to by itself once this shot's move is done and then_after_seconds have passed (a move in two steps); empty = none" }
 then_after_seconds = { type = "number", min = 0, max = 10, default = 0.0, doc = "seconds the camera holds this shot before it moves on to then_shot" }
+map_tags_on = { type = "strings", doc = "map tags switched on while this shot is on (the camera on it or moving into it); the scene's own map_tags_on / map_tags_off come back when another shot comes" }
+map_tags_off = { type = "strings", doc = "map tags switched off while this shot is on (e.g. a post in front of a wide shot: its meshes carry a tag of their own)" }
+hotspot_keys = { type = "string", default = "left_right", doc = "the keys that move the selection between this shot's hotspots: left_right (the mode row's left / right), or up_down (up / down too, for hotspots one above the other: down past the last one and up past the first one go on as the title's own up / down)" }
 
 [entry.MenuSceneAction]
 doc = "what a tile of the menu does over the scene instead of the game's own: continue_story = straight into the story as «Continuar» (no story submenu), chronicle_map = straight to the Chronicle map (no Chronicle top menu), after a move to a shot"
@@ -67,18 +85,27 @@ action = { type = "string", required = true, doc = "continue_story: when a story
 shot = { type = "string", default = "", doc = "a [[VRFW.MenuSceneShot]] the camera moves to first (a push-in), empty = none" }
 seconds = { type = "number", min = 0, max = 5, default = 0.8, doc = "time given to that move before the screen fades out" }
 leave_fade = { type = "string", default = "black", doc = "the screen's fade when the title leaves for the action: black (the default) or white (the title's own white fade, e.g. after a shot that ends in a white space); a value other than white is black" }
+return = { type = "string", default = "", doc = "where Back goes from the menu the action ends in when that menu opens again: title = straight back to the main menu (chronicle_map: Back from the Chronicle map skips the Chronicle top menu); empty = the game's own" }
 
 [entry.MenuSceneSpot]
 doc = "a place for one person of a menu scene: slot 1 = the captain, then the team's starters in position order"
 scene = { type = "name", required = true, doc = "the scene (a [[VRFW.MenuScene]] name of the same mod)" }
 slot = { type = "int", required = true, min = 1, max = 32, doc = "the order the spots are filled in (1..N, no gaps)" }
 pose = { type = "string", default = "stand", doc = "a label for the log: stand, sit…" }
-who = { type = "string", default = "team", doc = "team = the next starter of the active team; avatar = the save's avatar (its character on the NPC system: the character's default look)" }
+who = { type = "string", default = "team", doc = "team = the next starter of the active team; avatar = the save's avatar (its character on the NPC system: the character's default look); manager / coach = the team's staff; guest = the next guest a menu gives the scene (CMND_VRFW_MENU_SCENE_GUESTS: another team's player in its own kit)" }
 x = { type = "number", required = true, doc = "metres" }
 y = { type = "number", default = 0.0, doc = "metres (the floor the spot stands on)" }
 z = { type = "number", required = true, doc = "metres" }
-rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "facing, degrees (0 = +z, 90 = +x)" }
+rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "facing, degrees (0 = +z, 90 = +x); ignored with a group" }
+group = { type = "string", default = "", doc = "a [[VRFW.MenuSceneGroup]] of the same scene: the person faces the group's centre (people talking in a loose circle)" }
 clips = { type = "strings", required = true, doc = "idle clips of the skeleton's NPC motion pack (common/chr/<set>/<set>_p060.g4pk), the first one the member's set holds" }
+
+[entry.MenuSceneGroup]
+doc = "people standing together: the spots that name it face its centre"
+scene = { type = "name", required = true, doc = "the scene" }
+name = { type = "name", required = true, doc = "the group, named by its spots' group key" }
+x = { type = "number", required = true, doc = "the centre, metres" }
+z = { type = "number", required = true, doc = "metres" }
 
 [entry.MenuScenePeople]
 doc = "GENERATED (research/scripts/menu_scene_people_build.py): the scene's npc_setting template for `count` people, hex, with the sentinels the run time patches"
@@ -101,7 +128,7 @@ width = { type = "number", min = 0.01, max = 50, required = true, doc = "metres,
 height = { type = "number", min = 0.01, max = 50, required = true, doc = "metres: up on a wall, along `rot` on the floor" }
 surface = { type = "string", default = "wall", doc = "wall (standing, facing `rot`) or floor (lying flat)" }
 rot = { type = "number", min = -360, max = 360, default = 0.0, doc = "degrees: the way a wall rectangle faces (0 = +z, 180 = -z), the turn of a floor one" }
-actions = { type = "strings", required = true, doc = "what A does, the first available one: story_continue (a story save: «Continuar»), story_new_game (no story save: «Partida nueva»), story_plus («Historia+»), story_extended («Historia extendida»), chronicle_map (on the «Modo Crónica» tile's shot: «Cadena de Crónica», straight to the Chronicle map); none available = greyed, A refused" }
+actions = { type = "strings", required = true, doc = "what A does, the first available one: story_continue (a story save: «Continuar»), story_new_game (no story save: «Partida nueva»), story_plus («Historia+»), story_extended («Historia extendida»), chronicle_map (on the «Modo Crónica» tile's shot: «Cadena de Crónica», straight to the Chronicle map), menu_pick (the tile's own press, then the next menu that holds pick_layer runs its entry pick_index as a press of A: e.g. one of the Battle Bay top menu's modes; give it a text), open_group (the shot shows the hotspots of open_group instead, when open_group_if holds); none available = greyed, A refused" }
 text = { type = "string", default = "", doc = "the text (a text id, 0x… or decimal, or a text key); empty = the game's own text of the action that runs" }
 push_shot = { type = "string", default = "", doc = "a shot the camera moves to on A before the action (empty = none)" }
 seconds = { type = "number", min = 0, max = 5, default = 0.8, doc = "time given to that move before the screen fades out" }
@@ -110,12 +137,25 @@ open_door = { type = "string", default = "", doc = "on A: a door of the map open
 open_door_after_seconds = { type = "number", min = 0, max = 5, default = 0.0, doc = "seconds after A before the door opens (during the push-in)" }
 open_door_reverse = { type = "bool", default = false, doc = "open with the door's reverse clips (start2 / loop2: it swings the other way)" }
 leave_fade = { type = "string", default = "black", doc = "the screen's fade when the title leaves for the action: black (the default) or white (the title's own white fade, e.g. after a shot that ends in a white space); a value other than white is black" }
+pick_layer = { type = "string", default = "", doc = "menu_pick: the list layer of the next menu whose entry is pressed (a layer name or id, 0x… or decimal)" }
+pick_index = { type = "int", min = 0, max = 255, default = 0, doc = "menu_pick: the entry (instance) of pick_layer, from 0" }
+pick_option = { type = "int", min = -1, max = 15, default = -1, doc = "menu_pick: the entry opens a choice of the menu's own (its sub-window, then its yes / no confirmation): this option (from 0) is chosen and the confirmation answered yes, behind the white (e.g. the Battle Bay campaign's continue / new); -1 = the player chooses" }
+group = { type = "string", default = "", doc = "the shot's hotspots show by group: \"\" (the default) when the shot comes; a hotspot with the action open_group shows its group instead (Back returns to \"\")" }
+open_group = { type = "string", default = "", doc = "the action open_group: the group A shows (e.g. a choice of two hotspots on the same screen)" }
+open_group_if = { type = "string", default = "", doc = "the action open_group is available only when this holds (else the hotspot's next action runs): bb_campaign_save (a Battle Bay campaign save exists); empty = always" }
+return = { type = "string", default = "", doc = "where Back goes from the menu the action ends in when that menu opens again: title = straight back to the main menu (chronicle_map: Back from the Chronicle map skips the Chronicle top menu); empty = the game's own" }
+edge_actor = { type = "int", min = 0, max = 32, default = 0, doc = "a [[VRFW.MenuSceneSpot]] slot whose scene actor (people_as = \"actors\") is the hotspot's object: while the hotspot is selected that character gets a white edge (its own CCharaEdgeProperty, the game's character outline), instead of the rectangle. 0 = none" }
+call = { type = "string", default = "", doc = "with the action call: a function of the title's Lua (a global, dotted path, e.g. MyMod.Avatar.Open) the press runs with the hotspot's name; it does the rest (the title is not left)" }
+outline_tag = { type = "string", default = "", doc = "a map tag (the token of the map's mesh names, e.g. HSDOOR: meshes named …_HSDOOR_; its row in the map's tag_management_config) switched on while this hotspot is selected and off otherwise: a mod's own outline of the object (e.g. a white inverted hull model); the rectangle outline is then not drawn. Empty = the rectangle" }
+draw = { type = "bool", default = true, doc = "false: the framework draws neither the text nor the outline (the selection and A still work): the mod draws the hotspot itself and reads the selection (VRFW_MenuSceneHotspot() in the menu's Lua)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
 
 [entry.MenuSceneFile]
 doc = "a map file served in place of the game's while the scene runs (from the request to the reset that leaves it): e.g. the map's node tree without its exterior backdrop"
 scene = { type = "name", required = true, doc = "the scene" }
 filter = { type = "string", required = true, doc = "a part of the engine's path of the game file (w50i001/w50i001.g4pk): every open whose path contains it gets `key`" }
-key = { type = "string", required = true, doc = "the file served instead: its game path in the mod's assets (data/common/map/w/w50i001/<own folder>/<file>), never the game file's own path" }
+key = { type = "string", required = true, doc = "the file served instead: its game path in the mod's assets (data/common/map/w/w50i001/<own folder>/<file>), never the game file's own path; with `hex`, the path the bytes are served under" }
+hex = { type = "string", default = "", doc = "the file's bytes (hex), served at run time under `key` (VRFW.files.serve, as the people's npc_setting): a small file, no asset in the mod (e.g. the map's objbin with a larger build radius); empty = the mod's asset at `key`" }
 
 [entry.MenuSceneScreen]
 doc = "a screen in the scene: a rectangle of the map (a painting, a monitor) that shows layers of the scene's menu while a shot is on: the layers are placed and scaled so that their design area covers the rectangle where the camera sees it, fade in once the camera has arrived and out when it moves to another shot (title_menu_2; the layers are the mod's, added to the menu by its menus TOML and opened here)"
@@ -135,3 +175,4 @@ design_y = { type = "number", default = 0.0, doc = "its top edge (menu px, y dow
 design_width = { type = "number", min = 1, max = 20000, default = 1920.0, doc = "its width (menu px); the layers are stretched to the rectangle's width" }
 design_height = { type = "number", min = 1, max = 20000, default = 1080.0, doc = "its height (menu px); the layers are stretched to the rectangle's height" }
 fade_seconds = { type = "number", min = 0, max = 5, default = 0.3, doc = "the fade in once the camera has arrived on the shot, and out when it leaves" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

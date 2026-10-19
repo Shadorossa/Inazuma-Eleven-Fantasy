@@ -144,6 +144,7 @@ zh_hant = "特殊效果"
 
 # Shot / keeper mini-effects (docs/framework/technique.md §4e, CMND_VRFW_TECHNIQUE_MINI_FX): one sentence per effect,
 # joined with a space when a move has several (shown after the ball sentence when a move has both).
+# Gameplay rules only: a flight's shape (trajectory), trails, auras and other visuals (Living Shots) have no sentence.
 [[row]]
 id = "evt_skc_fx_distance"  # distance_falloff = "inverted" (Excálibur)
 es = "Cuanto más lejos, más potente."
@@ -217,28 +218,16 @@ zh_hans = "若挡下射门，获得对手所耗气势的{pct}%。"
 zh_hant = "若擋下射門，獲得對手所耗氣勢的{pct}%。"
 
 [[row]]
-id = "evt_skc_fx_dive"  # trajectory = "dive" (Lanza letal): Bezier arc; unblockable on a long shot
-es = "El balón sube y cae en picado sobre la portería; en un tiro lejano, los bloqueos no pueden pararlo."
-en = "The ball rises and dives into the goal; on a long shot, blocks cannot stop it."
-fr = "Le ballon monte puis plonge sur le but ; sur un tir de loin, les contres ne peuvent pas l'arrêter."
-de = "Der Ball steigt und stürzt ins Tor; bei einem Fernschuss können Blocks ihn nicht aufhalten."
-it = "Il pallone sale e piomba in porta; su un tiro da lontano, i blocchi non possono fermarlo."
-pt = "A bola sobe e cai a pique sobre a baliza; num remate de longe, os bloqueios não a param."
-ja = "ボールが上昇し、ゴールへ急降下する。ロングシュートではブロックで止められない。"
-zh_hans = "球升起后俯冲入门；远射时封堵无法拦下。"
-zh_hant = "球升起後俯衝入門；遠射時封堵無法攔下。"
-
-[[row]]
-id = "evt_skc_fx_dive_plain"  # trajectory = { mode = "dive", unblockable = false }
-es = "El balón sube y cae en picado sobre la portería."
-en = "The ball rises and dives into the goal."
-fr = "Le ballon monte puis plonge sur le but."
-de = "Der Ball steigt und stürzt ins Tor."
-it = "Il pallone sale e piomba in porta."
-pt = "A bola sobe e cai a pique sobre a baliza."
-ja = "ボールが上昇し、ゴールへ急降下する。"
-zh_hans = "球升起后俯冲入门。"
-zh_hant = "球升起後俯衝入門。"
+id = "evt_skc_fx_unblockable"  # trajectory with unblockable = true: no field block starts against it on a long shot
+es = "En un tiro lejano, los bloqueos no pueden pararlo."
+en = "On a long shot, blocks cannot stop it."
+fr = "Sur un tir de loin, les contres ne peuvent pas l'arrêter."
+de = "Bei einem Fernschuss können Blocks ihn nicht aufhalten."
+it = "Su un tiro da lontano, i blocchi non possono fermarlo."
+pt = "Num remate de longe, os bloqueios não o param."
+ja = "ロングシュートではブロックで止められない。"
+zh_hans = "远射时封堵无法拦下。"
+zh_hant = "遠射時封堵無法攔下。"
 
 # the element words of evt_skc_fx_participants (1 wind, 2 forest, 3 fire, 4 mountain; until 2026-10-14 IF's album rows
 # evt_album_elem_N)

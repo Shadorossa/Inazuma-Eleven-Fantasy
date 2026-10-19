@@ -60,8 +60,8 @@ end
 local POP = {
   show = CFG_POP.show ~= false, cpu = CFG_POP.cpu ~= false,
   appear = num(CFG_POP.appear_s, 0.15), hold = num(CFG_POP.hold_s, 1.0), out = num(CFG_POP.out_s, 0.4),
-  width = num(CFG_POP.width, 92), height = num(CFG_POP.height, 36), text_scale = num(CFG_POP.text_scale, 0.55),
-  lift = num(CFG_POP.lift, 24), rise = num(CFG_POP.rise, 40),
+  height = num(CFG_POP.height, 36), lift = num(CFG_POP.lift, 24), rise = num(CFG_POP.rise, 40),
+  markup = type(CFG_POP.text_markup) == "string" and CFG_POP.text_markup:find("{text}", 1, true) and CFG_POP.text_markup or "{text}",
   colors = {}, neutral = rgb(CFG_POP.neutral_color) or { 0.55, 0.55, 0.55 }, queue = 8,
 }
 for i, v in ipairs(type(CFG_POP.element_colors) == "table" and CFG_POP.element_colors or {}) do POP.colors[i] = rgb(v) end
@@ -254,12 +254,15 @@ local function lp_mult(p)
   return m
 end
 
--- the pop over the player: the totem's element colour, the text «+Nv.» (its {level} = the new level)
+-- the pop over the player: the totem's element colour, the text «+Nv.2» (its {level} = the new level) in the
+-- configured colour markup
 local function queue_pop(p, aura, level)
   if not POP.show or (not POP.cpu and p.team ~= match.user) then return end
   while #pop_queue >= POP.queue do table.remove(pop_queue, 1) end
   pop_seq = pop_seq + 1
-  pop_queue[#pop_queue + 1] = { seq = pop_seq, at = now(), hdl = p.hdl, text = text("aura_reworked.level_pop", level),
+  local label = text("aura_reworked.level_pop", level)
+  pop_queue[#pop_queue + 1] = { seq = pop_seq, at = now(), hdl = p.hdl,
+    text = (POP.markup:gsub("{text}", (label:gsub("%%", "%%%%")))),
     color = POP.colors[A.element(aura)] or POP.neutral }
 end
 
@@ -487,19 +490,31 @@ function AuraReworked.Souls.Reel(seen)
   return 0
 end
 
--- CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, hdl, text, r, g, b, appear, hold, out, width, height, textScale, lift, rise:
--- the oldest level-up pop newer than `seen` and at most 1 s old (nothing when none). The graft keeps the last seq it took.
+-- a cut-in or a match scene is playing (the framework's match events cutin_start / cutin_end): the pops hide meanwhile
+local scene_playing = false
+VRFW.on("cutin_start", function(ev)
+  scene_playing = true
+  return nil
+end)
+VRFW.on("cutin_end", function(ev)
+  scene_playing = false
+  return nil
+end)
+
+-- CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, hdl, text, r, g, b, appear, hold, out, height, lift, rise: the
+-- oldest level-up pop newer than `seen` and at most 1 s old (seq 0 and the scene flag alone when none); scene = 1 while a
+-- cut-in or a match scene plays. The graft keeps the last seq it took.
 function AuraReworked.Souls.LevelPop(seen)
   seen = tonumber(seen) or 0
   if seen > pop_seq then seen = 0 end
+  local in_scene = scene_playing and 1 or 0
   for _, q in ipairs(pop_queue) do
     if q.seq > seen and now() - q.at <= 1000 then
       local c = q.color
-      return q.seq, q.hdl, q.text, c[1], c[2], c[3], POP.appear, POP.hold, POP.out, POP.width, POP.height,
-        POP.text_scale, POP.lift, POP.rise
+      return q.seq, in_scene, q.hdl, q.text, c[1], c[2], c[3], POP.appear, POP.hold, POP.out, POP.height, POP.lift, POP.rise
     end
   end
-  return 0
+  return 0, in_scene
 end
 
 -- ---------------------------------------------------------------------------------------------- the tick
@@ -599,18 +614,6 @@ local function publish_start_max()
   return n
 end
 
--- CMND_AURAREWORKED_SOULS_SP_LEVELS(aura) (alias CMND_EVT_PEG_LEVELS) -> text «Lv1 80 · Lv2 100 · … SP» of a totem's SP per
--- level in the game's language (nil for an aura without a totem record)
-function AuraReworked.Souls.SpLevels(aura)
-  local T = totem_of(tonumber(aura) or 0)
-  if not T then return nil end
-  local parts = {}
-  for i, v in ipairs(T.sp) do
-    parts[#parts + 1] = (text("aura_reworked.sp_level_entry", i):gsub("{sp}", tostring(math.floor(v + 0.5))))
-  end
-  return (text("aura_reworked.sp_levels", nil):gsub("{levels}", (table.concat(parts, " · "):gsub("%%", "%%%%"))))
-end
-
 -- CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> true, level, «Lv.3» (text key aura_reworked.reel_level) of the totem the match player
 -- has out now; nothing when he has none. The handle may come signed or unsigned: both forms are tried.
 function AuraReworked.Souls.TotemLevel(hdl)
@@ -630,6 +633,7 @@ VRFW.on("game_reset", function(ev)
 end)
 
 VRFW.on("match_start", function(ev)
+  scene_playing = false
   read_options()
   publish_start_max()
   clear_match()

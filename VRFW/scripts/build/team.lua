@@ -57,7 +57,8 @@ local function vrfw_empty(v)
   v = v or {}
   return not has_levels(v.FreeMatch) and #(v.RouteNode or {}) == 0 and #(v.Talk or {}) == 0 and #(v.LevelMap or {}) == 0
     and #(v.Chain or {}) == 0 and #(v.Category or {}) == 0 and #(v.Season or {}) == 0 and #(v.FreeMatchTab or {}) == 0
-    and #(v.FreeMatchTabBar or {}) == 0 and #(v.GameTab or {}) == 0 and #(v.MatchChallenge or {}) == 0 and v.BbUnlock == nil
+    and #(v.FreeMatchTabBar or {}) == 0 and #(v.GameTab or {}) == 0 and #(v.FreeMatchGame or {}) == 0
+    and #(v.FreeMatchPlace or {}) == 0 and #(v.FreeMatchRival or {}) == 0 and #(v.MatchChallenge or {}) == 0 and v.BbUnlock == nil
     and #(v.GameDrops or {}) == 0 and #(v.SpiritDrops or {}) == 0
 end
 
@@ -400,6 +401,9 @@ local function build_teams(input, X, out, fm)
   local fm_tabs, fm_bars = X.free_match_tabs(files)
   -- (3b'') [[VRFW.GameTab]]: retail games filed under another retail tab (after the tabs and their difficulty rows)
   local game_tabs = X.game_tabs(files)
+  -- (3b''') [[VRFW.FreeMatchGame]] (games listed in a retail tab), then [[VRFW.FreeMatchPlace]] (rows moved)
+  X.free_match_games(files, game_tabs)
+  X.free_match_places(files, game_tabs)
   -- (3c) Chronicle board side nodes (before removals: a hidden team keeps its node)
   local route_nodes, route_roads = X.route_nodes(files)
   -- (3d) talk scenes ([[VRFW.Talk]]) and node talks
@@ -413,7 +417,11 @@ local function build_teams(input, X, out, fm)
   X.level_maps(files)
   -- (3e') [VRFW.FreeMatch] class levels on every free-match game's rows
   X.free_match_copy(fm)
+  -- [[VRFW.FreeMatchRival]] first: the class levels then give the declared team its flat copy
+  X.free_match_rivals(files, game_tabs)
   X.free_match_levels(fm)
+  -- every offered class row of a listed game has a clear bit (a node's game, a list clone: none of their own)
+  X.free_match_clear_bits(fm)
   -- (3e'') [[VRFW.GameDrops]]: the drop tables of the games' rows (every game exists now: nodes, chains)
   X.game_drops(files, chains)
   -- (3f) the Estadio BB rows' stadium = their team's home stadium (after every edit and appearance)

@@ -34,6 +34,17 @@ target = "c04002300_5100"                              # Langford Ash
 
 [[edit]]
 target = "c04002210"                                   # Strom Boojum
+moves = [
+  { move = 0xDF2D9951, level = 1 },                         # Close Counter
+  { move = 0xDBA0E5E3, level = 30 },                        # Gigant Wall
+  { move = 0xA7157B91, level = 40 },                        # Power Shield
+  { move = 0xED1BFBD3, level = 56 },                        # Fingers of Gaia
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x88EFF891, level = 1 },                         # Barron [aura]
+]
 
   [[edit.cards]]
   id = 0xCBE0FC60                                         # GK/MF · mountain
@@ -44,6 +55,12 @@ target = "c04002210"                                   # Strom Boojum
 
 [[edit]]
 target = "c04002220"                                   # Dock Hickory
+moves = [
+  { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
+  { move = 0x141046AB, level = 20 },                        # Overnight Fortress
+  { move = 0xC2E6ADBF, level = 27 },                        # Log Roll
+  { move = 0x530CDFC1, level = 36 },                        # Mystifying Mist
+]
 
   [[edit.cards]]
   id = 0xE0CDAFA3                                         # DF/MF · forest
@@ -54,6 +71,12 @@ target = "c04002220"                                   # Dock Hickory
 
 [[edit]]
 target = "c04002230"                                   # Bourne Birch
+moves = [
+  { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
+  { move = 0x6ADE9E01, level = 32 },                        # Illusory Ball
+  { move = 0xDF2D9951, level = 47 },                        # Close Counter
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0xF9D69EE2                                         # DF/MF · forest
@@ -64,6 +87,12 @@ target = "c04002230"                                   # Bourne Birch
 
 [[edit]]
 target = "c04002240"                                   # Flynt Pine
+moves = [
+  { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
+  { move = 0xB60E3C60, level = 15 },                        # Plasma Cut
+  { move = 0x0C08B663, level = 31 },                        # Doom Dive Drive
+  { move = 0x3297683F, level = 60 },                        # Warp Step
+]
 
   [[edit.cards]]
   id = 0xB6970825                                         # DF/MF · fire
@@ -73,6 +102,12 @@ target = "c04002240"                                   # Flynt Pine
 
 [[edit]]
 target = "c04002250"                                   # Trent Poplar
+moves = [
+  { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
+  { move = 0xD1E62D0A, level = 20 },                        # Mushroom Hop
+  { move = 0xC2E6ADBF, level = 27 },                        # Log Roll
+  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+]
 
   [[edit.cards]]
   id = 0xAF8C3964                                         # DF/MF · forest
@@ -83,6 +118,12 @@ target = "c04002250"                                   # Trent Poplar
 
 [[edit]]
 target = "c04002260"                                   # River Willows
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x8B90AAAC, level = 19 },                        # Fortissimo
+  { move = 0x650FA58E, level = 35 },                        # Spin Out
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x84A16AA7                                         # MF/FW · wind
@@ -93,6 +134,12 @@ target = "c04002260"                                   # River Willows
 
 [[edit]]
 target = "c04002270"                                   # Beck Heath
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x6F918884, level = 19 },                        # Easy Breezy
+  { move = 0xC66BD10D, level = 25 },                        # Zigzag Spark
+  { move = 0x530CDFC1, level = 36 },                        # Mystifying Mist
+]
 
   [[edit.cards]]
   id = 0x9DBA5BE6                                         # MF/DF · wind
@@ -102,6 +149,12 @@ target = "c04002270"                                   # Beck Heath
 
 [[edit]]
 target = "c04002280"                                   # Brook Linden
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xDDCA0D2A, level = 22 },                        # Bouncing Bomb
+  { move = 0x05567847, level = 27 },                        # Runaway Train
+  { move = 0x4E22F64D, level = 40 },                        # Transporter Device
+]
 
   [[edit.cards]]
   id = 0x1A224729                                         # MF/DF · fire
@@ -111,6 +164,17 @@ target = "c04002280"                                   # Brook Linden
 
 [[edit]]
 target = "c04002290"                                   # Bay Laurel
+moves = [
+  { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
+  { move = 0xDA3FF6C9, level = 26 },                        # Criss-Cross
+  { move = 0x4FE09C7A, level = 43 },                        # Acrobatic Keep
+  { move = 0xA0BDF96F, level = 60 },                        # Ballista Barrage
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x701BD75F, level = 1 },                         # León [aura]
+]
 
   [[edit.cards]]
   id = 0x03397668                                         # MF/DF · mountain
@@ -121,6 +185,17 @@ target = "c04002290"                                   # Bay Laurel
 
 [[edit]]
 target = "c04002300"                                   # Langford Ash
+moves = [
+  { move = 0xBBE07677, level = 1 },                         # Sidewinder
+  { move = 0xC324C788, level = 34 },                        # Blast Mine
+  { move = 0xADD8A52B, level = 40 },                        # Matchlock Bullet
+  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x9B4E5206, level = 1 },                         # Caballo blanco [aura]
+]
 
   [[edit.cards]]
   id = 0xD339A716                                         # FW/MF · mountain
@@ -130,6 +205,12 @@ target = "c04002300"                                   # Langford Ash
 
 [[edit]]
 target = "c04002310"                                   # Escott Aspen
+moves = [
+  { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
+  { move = 0xEFFC6FA8, level = 34 },                        # Warhead
+  { move = 0xB60E3C60, level = 40 },                        # Plasma Cut
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0xCA229657                                         # FW/MF · fire
@@ -140,6 +221,12 @@ target = "c04002310"                                   # Escott Aspen
 
 [[edit]]
 target = "c04002320"                                   # Maxwell Mahogany
+moves = [
+  { move = 0xC636A810, level = 4 },                         # Combustion Catch
+  { move = 0x37009B59, level = 30 },                        # Burnout Burst
+  { move = 0x585098FC, level = 39 },                        # Slice and Dice
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0xE10FC594                                         # GK/MF · fire
@@ -149,6 +236,12 @@ target = "c04002320"                                   # Maxwell Mahogany
 
 [[edit]]
 target = "c04002330"                                   # Bradford Ash
+moves = [
+  { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
+  { move = 0x14D1ED15, level = 26 },                        # Jumping Jack
+  { move = 0xE35B59DB, level = 35 },                        # Twin Sun Smash
+  { move = 0x64CDCFB9, level = 48 },                        # Rising Dragon
+]
 
   [[edit.cards]]
   id = 0xF814F4D5                                         # FW/MF · mountain
@@ -159,6 +252,12 @@ target = "c04002330"                                   # Bradford Ash
 
 [[edit]]
 target = "c04002340"                                   # Calder Elm
+moves = [
+  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
+  { move = 0x39CB2F02, level = 30 },                        # Dragster
+  { move = 0xA2FB4736, level = 35 },                        # Flying Fish
+  { move = 0x6F918884, level = 45 },                        # Easy Breezy
+]
 
   [[edit.cards]]
   id = 0xB7556212                                         # FW/MF · wind
@@ -169,6 +268,12 @@ target = "c04002340"                                   # Calder Elm
 
 [[edit]]
 target = "c04002350"                                   # Laike Alder
+moves = [
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
+  { move = 0x1C4D4906, level = 31 },                        # Whirlpool
+  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0xAE4E5353                                         # DF/MF · mountain
@@ -179,6 +284,12 @@ target = "c04002350"                                   # Laike Alder
 
 [[edit]]
 target = "c04002360"                                   # Tahoma Sequoia
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xA2FB4736, level = 30 },                        # Flying Fish
+  { move = 0xF400CA92, level = 40 },                        # Anchors Aweigh
+  { move = 0x5739C70C, level = 45 },                        # Guided Collide
+]
 
   [[edit.cards]]
   id = 0x85630090                                         # MF/FW · forest
@@ -189,6 +300,12 @@ target = "c04002360"                                   # Tahoma Sequoia
 
 [[edit]]
 target = "c05026590"                                   # Byron Love
+moves = [
+  { move = 0x1C8CE2B8, level = 1 },                         # God Knows
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xB4757AB8, level = 50 },                        # Divine Stamp
+  { move = 0x61FB16FD, level = 80 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x55A3AF6E                                         # MF/FW · forest

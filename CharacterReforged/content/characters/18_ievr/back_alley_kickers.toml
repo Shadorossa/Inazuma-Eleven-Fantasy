@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11130010"                                   # June Davidson
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x7EEA4EE9, level = 13 },                        # Blade Attack
+  { move = 0xC324C788, level = 20 },                        # Blast Mine
+  { move = 0x93E8DBF8, level = 30 },                        # Dimensional Hand
+]
 
   [[edit.cards]]
   id = 0x700366C9                                         # DF/GK · forest
@@ -15,6 +21,12 @@ target = "c11130010"                                   # June Davidson
 
 [[edit]]
 target = "c11130020"                                   # Moray Delmar
+moves = [
+  { move = 0x1C4D4906, level = 1 },                         # Whirlpool
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0x46FA651E, level = 30 },                        # Water Veil
+]
 
   [[edit.cards]]
   id = 0x5B2E350A                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c11130020"                                   # Moray Delmar
 
 [[edit]]
 target = "c11130030"                                   # Holden Monday
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0xC324C788, level = 13 },                        # Blast Mine
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x4235044B                                         # MF/DF · mountain
@@ -33,6 +51,12 @@ target = "c11130030"                                   # Holden Monday
 
 [[edit]]
 target = "c11130040"                                   # Cobb Hightail
+moves = [
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xE9968761, level = 13 },                        # Rocket Kobushi
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x5B3151F0, level = 30 },                        # Nitro Slap
+]
 
   [[edit.cards]]
   id = 0x0D74928C                                         # GK/DF · mountain
@@ -42,6 +66,12 @@ target = "c11130040"                                   # Cobb Hightail
 
 [[edit]]
 target = "c11130050"                                   # Jaxon Taggart
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0xE9968761, level = 20 },                        # Rocket Kobushi
+  { move = 0x6E53E2B3, level = 30 },                        # Angel Ball
+]
 
   [[edit.cards]]
   id = 0x146FA3CD                                         # GK/MF · wind
@@ -51,6 +81,12 @@ target = "c11130050"                                   # Jaxon Taggart
 
 [[edit]]
 target = "c11130060"                                   # Deor Rummond
+moves = [
+  { move = 0xBDAE2862, level = 1 },                         # Hellfire
+  { move = 0xBA833662, level = 13 },                        # Million Hands
+  { move = 0x41F3CDC2, level = 20 },                        # Scorching Tackle
+  { move = 0x65B7C1F1, level = 30 },                        # Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0x3F42F00E                                         # FW/GK · fire
@@ -60,6 +96,12 @@ target = "c11130060"                                   # Deor Rummond
 
 [[edit]]
 target = "c11130070"                                   # Jazzmine Skylark
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x2B343D01, level = 13 },                        # Cyclone
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xC2E6ADBF, level = 30 },                        # Log Roll
+]
 
   [[edit.cards]]
   id = 0x2659C14F                                         # DF/MF · wind
@@ -69,6 +111,12 @@ target = "c11130070"                                   # Jazzmine Skylark
 
 [[edit]]
 target = "c11130080"                                   # Anson Barker
+moves = [
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0x087999EE, level = 13 },                        # Heel Drop
+  { move = 0x5643C944, level = 20 },                        # Killer Slide
+  { move = 0x72BFA108, level = 30 },                        # Wall of Atlantis
+]
 
   [[edit.cards]]
   id = 0xA1C1DD80                                         # MF/DF · mountain
@@ -78,6 +126,12 @@ target = "c11130080"                                   # Anson Barker
 
 [[edit]]
 target = "c11130090"                                   # Caius Rushford
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x67F17FA8, level = 13 },                        # Mega Quake
+  { move = 0x05567847, level = 20 },                        # Runaway Train
+  { move = 0x0597D3F9, level = 30 },                        # Dragon Tornado
+]
 
   [[edit.cards]]
   id = 0xB8DAECC1                                         # MF/FW · fire
@@ -87,6 +141,12 @@ target = "c11130090"                                   # Caius Rushford
 
 [[edit]]
 target = "c11130100"                                   # Drako Bonner
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x79E3E635, level = 13 },                        # Racing Flame
+  { move = 0x93885A64, level = 20 },                        # Fire Drill
+  { move = 0x67F17FA8, level = 30 },                        # Mega Quake
+]
 
   [[edit.cards]]
   id = 0x68DA3DBF                                         # MF/DF · fire
@@ -96,6 +156,12 @@ target = "c11130100"                                   # Drako Bonner
 
 [[edit]]
 target = "c11130110"                                   # Noctis Dunn
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x7C6D5B0E, level = 13 },                        # Astro Break
+  { move = 0x6633159F, level = 20 },                        # Gravitation
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x71C10CFE                                         # MF/FW · forest
@@ -105,6 +171,12 @@ target = "c11130110"                                   # Noctis Dunn
 
 [[edit]]
 target = "c11130120"                                   # Chancer Cosgrave
+moves = [
+  { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
+  { move = 0x17110E3B, level = 13 },                        # Jumbo Sandwich
+  { move = 0x585098FC, level = 20 },                        # Slice and Dice
+  { move = 0x05567847, level = 30 },                        # Runaway Train
+]
 
   [[edit.cards]]
   id = 0x5AEC5F3D                                         # DF/FW · fire
@@ -114,6 +186,12 @@ target = "c11130120"                                   # Chancer Cosgrave
 
 [[edit]]
 target = "c11130500"                                   # The Second
+moves = [
+  { move = 0xC41097D5, level = 1 },                         # Acrobotics
+  { move = 0xE35B59DB, level = 13 },                        # Twin Sun Smash
+  { move = 0x0CF4E55C, level = 20 },                        # Double Touch
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x6FD39563                                         # MF/DF · forest
@@ -123,6 +201,12 @@ target = "c11130500"                                   # The Second
 
 [[edit]]
 target = "c11130510"                                   # Reuben Sidegate
+moves = [
+  { move = 0x88B554E0, level = 1 },                         # Galatyn
+  { move = 0x922AB1CF, level = 13 },                        # Safety First
+  { move = 0x04941270, level = 20 },                        # Vac Attack
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0x76C8A422                                         # GK/DF · wind
@@ -132,6 +216,12 @@ target = "c11130510"                                   # Reuben Sidegate
 
 [[edit]]
 target = "c11500060"                                   # Aniki
+moves = [
+  { move = 0x2D9F7E76, level = 6 },                         # Breath Taker
+  { move = 0x822B79EA, level = 22 },                        # Somersault Stamp
+  { move = 0x7BC5D9F0, level = 42 },                        # Rotary Sander
+  { move = 0x9B3048AB, level = 51 },                        # Shadow Catch
+]
 
   [[edit.cards]]
   id = 0xE373C8C8                                         # FW/GK · mountain
@@ -142,6 +232,12 @@ target = "c11500060"                                   # Aniki
 
 [[edit]]
 target = "c11500070"                                   # Berg
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x087999EE, level = 20 },                        # Heel Drop
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0xFA68F989                                         # FW/MF · fire
@@ -151,6 +247,12 @@ target = "c11500070"                                   # Berg
 
 [[edit]]
 target = "c11500080"                                   # Brandt
+moves = [
+  { move = 0x4B142F09, level = 16 },                        # Teleport Shot
+  { move = 0x0F703132, level = 24 },                        # Black Magic
+  { move = 0x520F1E48, level = 30 },                        # Psycho Shot
+  { move = 0x17A96A44, level = 37 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0x7DF0E546                                         # FW/DF · wind
@@ -160,6 +262,12 @@ target = "c11500080"                                   # Brandt
 
 [[edit]]
 target = "c11500090"                                   # Goldy
+moves = [
+  { move = 0x087999EE, level = 1 },                         # Heel Drop
+  { move = 0x5781A373, level = 13 },                        # Hurricane Arrows
+  { move = 0x5643C944, level = 20 },                        # Killer Slide
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x64EBD407                                         # MF/FW · forest

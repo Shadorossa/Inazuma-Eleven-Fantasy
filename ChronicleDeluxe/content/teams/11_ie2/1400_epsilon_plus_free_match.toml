@@ -1,0 +1,38 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe 1.11.9 (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §14): the Épsilon Plus of
+# Épsilon's BATALLA LEGENDARIA in «Competir contra bots» (content/teams/90_rules/free_match.toml [[VRFW.FreeMatchRival]])
+# with Zell in goal and Dvalin up front: the two swap their places (slot 0 = the goalkeeper's place, slot 9 a forward's),
+# each with his own card, moves, number and captaincy. Only there: INAZUMA / ZONA LETAL play Épsilon, and the Chronicle
+# keeps Épsilon Plus as it is.
+#
+# How (as content/teams/10_ie1/0302_royal_academy_free_match.toml): this mod's free-match classes are FlatRivalLevel
+# classes, so the class row plays the copy of its rival team keyed `<team key>_flat` (docs/framework/free-match-tabs.md
+# §8), and a team a mod declares under that key IS that copy: here Épsilon Plus's copy with the swap and every member at
+# level offset 0. Zell keeps his own set, which holds the keeper technique Agujero de gusano (a whk keeper move, Dvalin's
+# first move too); the goalkeeper's kit goes with the goalkeeper's place.
+default_lang = "en"
+
+[[team]]
+name = "fm_epsilon_plus"
+key = "tm_cro_ie2_1400_flat"            # the free-match copy of tm_cro_ie2_1400 (framework naming)
+based_on = "tm_cro_ie2_1400"            # Épsilon Plus
+name_text = 0xB53BEC4F                  # Épsilon Plus (the game team's own name text)
+series = "IE2"
+
+# Zell (his row's card / uid / loadout / number 11) in goal; Dvalin (card / uid / loadout / number 1, the captain) at
+# Zell's forward place; every player of the line-up at level offset 0.
+[[edit]]
+target = "chronicle_deluxe.fm_epsilon_plus"
+member = [
+  { slot = 0, patch = true, card = 0x73BFE8A6, uid = 0x499F6C9C, loadout = 0x94EADC5E, number = 11, captain = false, level_offset = 0 },
+  { slot = 1, patch = true, level_offset = 0 },
+  { slot = 2, patch = true, level_offset = 0 },
+  { slot = 3, patch = true, level_offset = 0 },
+  { slot = 4, patch = true, level_offset = 0 },
+  { slot = 5, patch = true, level_offset = 0 },
+  { slot = 6, patch = true, level_offset = 0 },
+  { slot = 7, patch = true, level_offset = 0 },
+  { slot = 8, patch = true, level_offset = 0 },
+  { slot = 9, patch = true, card = 0x727D8291, uid = 0x485D06AB, loadout = 0x9528B669, number = 1, captain = true, level_offset = 0 },
+  { slot = 10, patch = true, level_offset = 0 },
+]

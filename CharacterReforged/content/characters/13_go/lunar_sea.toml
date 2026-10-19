@@ -15,6 +15,17 @@ target = "c04001610_5000"                              # Alessandro il Grande
 
 [[edit]]
 target = "c04001610"                                   # Alessandro il Grande
+moves = [
+  { move = 0xED1BFBD3, level = 1 },                         # Fingers of Gaia
+  { move = 0xB01D1B68, level = 26 },                        # Power Spike
+  { move = 0xE546F47E, level = 35 },                        # Dust Devil
+  { move = 0x53E9C2A3, level = 62 },                        # Capable Hands
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xBC1258F8, level = 1 },                         # Gigante [aura]
+]
 
   [[edit.cards]]
   id = 0xDE5CFB52                                         # GK/MF · mountain
@@ -24,6 +35,12 @@ target = "c04001610"                                   # Alessandro il Grande
 
 [[edit]]
 target = "c04001620"                                   # Gene Ghiskhan
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0xEFFC6FA8, level = 35 },                        # Warhead
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0xF571A891                                         # DF/MF · mountain
@@ -33,6 +50,12 @@ target = "c04001620"                                   # Gene Ghiskhan
 
 [[edit]]
 target = "c04001630"                                   # Attila Hun
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0xF6E75EE9, level = 19 },                        # Headbanger
+  { move = 0xDA3FF6C9, level = 31 },                        # Criss-Cross
+  { move = 0x414BA9BD, level = 52 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0xEC6A99D0                                         # DF/MF · fire
@@ -43,6 +66,12 @@ target = "c04001630"                                   # Attila Hun
 
 [[edit]]
 target = "c04001640"                                   # Sun Tzu
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x4E9A9232, level = 30 },                        # Spinning Cut
+  { move = 0x62BE692D, level = 39 },                        # Whirlwind Force
+  { move = 0xC324C788, level = 40 },                        # Blast Mine
+]
 
   [[edit.cards]]
   id = 0xA32B0F17                                         # DF/MF · wind
@@ -53,6 +82,12 @@ target = "c04001640"                                   # Sun Tzu
 
 [[edit]]
 target = "c04001650"                                   # Arty Xerxes
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x5739C70C, level = 20 },                        # Guided Collide
+  { move = 0x6ADE9E01, level = 47 },                        # Illusory Ball
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0xBA303E56                                         # DF/MF · forest
@@ -63,6 +98,12 @@ target = "c04001650"                                   # Arty Xerxes
 
 [[edit]]
 target = "c04001660"                                   # Darius Cyrus
+moves = [
+  { move = 0xC324C788, level = 1 },                         # Blast Mine
+  { move = 0xA37D1A41, level = 25 },                        # Hyper-Swiper
+  { move = 0x1C4D4906, level = 31 },                        # Whirlpool
+  { move = 0x2354CA2D, level = 40 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x911D6D95                                         # MF/DF · wind
@@ -72,6 +113,12 @@ target = "c04001660"                                   # Darius Cyrus
 
 [[edit]]
 target = "c04001670"                                   # Jerry Onimo
+moves = [
+  { move = 0xC324C788, level = 1 },                         # Blast Mine
+  { move = 0xEFFC6FA8, level = 24 },                        # Warhead
+  { move = 0x141046AB, level = 30 },                        # Overnight Fortress
+  { move = 0x4A17EE80, level = 44 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x88065CD4                                         # MF/DF · fire
@@ -81,6 +128,12 @@ target = "c04001670"                                   # Jerry Onimo
 
 [[edit]]
 target = "c04001680"                                   # Leon Ohnepart
+moves = [
+  { move = 0xC324C788, level = 1 },                         # Blast Mine
+  { move = 0x3663DB4C, level = 15 },                        # Utter Gutsiness Bat
+  { move = 0xEFFC6FA8, level = 39 },                        # Warhead
+  { move = 0x3297683F, level = 60 },                        # Warp Step
+]
 
   [[edit.cards]]
   id = 0x0F9E401B                                         # MF/FW · mountain
@@ -90,6 +143,17 @@ target = "c04001680"                                   # Leon Ohnepart
 
 [[edit]]
 target = "c04001700"                                   # Robert Lee
+moves = [
+  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0xBBE07677, level = 20 },                        # Sidewinder
+  { move = 0xC324C788, level = 39 },                        # Blast Mine
+  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x555C1AE5, level = 1 },                         # Roc [aura]
+]
 
   [[edit.cards]]
   id = 0xC685A024                                         # FW/MF · mountain
@@ -100,6 +164,17 @@ target = "c04001700"                                   # Robert Lee
 
 [[edit]]
 target = "c04001710"                                   # Nobby Naga
+moves = [
+  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0x9349F1DA, level = 26 },                        # Zephyr Shot
+  { move = 0xC324C788, level = 39 },                        # Blast Mine
+  { move = 0xF4A1E0B0, level = 60 },                        # Entropic Arrows
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x4C472BA4, level = 1 },                         # Ave de fuego [aura]
+]
 
   [[edit.cards]]
   id = 0xDF9E9165                                         # FW/MF · wind
@@ -110,6 +185,12 @@ target = "c04001710"                                   # Nobby Naga
 
 [[edit]]
 target = "c04001720"                                   # Salvador Addin
+moves = [
+  { move = 0xB01D1B68, level = 1 },                         # Power Spike
+  { move = 0x6A66FA7E, level = 30 },                        # Killer Whale
+  { move = 0xF14FDC17, level = 35 },                        # Shot Pocket
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0xF4B3C2A6                                         # GK/DF · wind
@@ -120,6 +201,12 @@ target = "c04001720"                                   # Salvador Addin
 
 [[edit]]
 target = "c04001730"                                   # Otto Bismark
+moves = [
+  { move = 0x15138722, level = 8 },                         # Will-o'-the-Wisp Shot
+  { move = 0x8B90AAAC, level = 19 },                        # Fortissimo
+  { move = 0x4E22F64D, level = 25 },                        # Transporter Device
+  { move = 0x20D01E43, level = 36 },                        # Hey Presto
+]
 
   [[edit.cards]]
   id = 0xEDA8F3E7                                         # DF/MF · forest
@@ -130,6 +217,12 @@ target = "c04001730"                                   # Otto Bismark
 
 [[edit]]
 target = "c04001740"                                   # Jean Darc
+moves = [
+  { move = 0x141046AB, level = 13 },                        # Overnight Fortress
+  { move = 0x0E8FA384, level = 25 },                        # Warsaw
+  { move = 0x737DCB3F, level = 35 },                        # Pancake Defence
+  { move = 0x414BA9BD, level = 52 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0xA2E96520                                         # DF/MF · forest
@@ -139,6 +232,12 @@ target = "c04001740"                                   # Jean Darc
 
 [[edit]]
 target = "c04001750"                                   # Bobby Bruce
+moves = [
+  { move = 0xF6E75EE9, level = 12 },                        # Headbanger
+  { move = 0x05567847, level = 22 },                        # Runaway Train
+  { move = 0xADD8A52B, level = 35 },                        # Matchlock Bullet
+  { move = 0x518BCA26, level = 60 },                        # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0xBBF25461                                         # FW/DF · fire
@@ -149,6 +248,12 @@ target = "c04001750"                                   # Bobby Bruce
 
 [[edit]]
 target = "c04001760"                                   # Hanny Bawl
+moves = [
+  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
+  { move = 0x2E7B2B84, level = 13 },                        # Thief's Eye
+  { move = 0xC4D13C6B, level = 25 },                        # Katana Kick
+  { move = 0x2354CA2D, level = 40 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x90DF07A2                                         # FW/MF · wind
@@ -159,6 +264,12 @@ target = "c04001760"                                   # Hanny Bawl
 
 [[edit]]
 target = "c11804050"                                   # Sturm Schwartzkopf
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0xF9C4BCF4, level = 13 },                        # Double Helix
+  { move = 0x8B90AAAC, level = 20 },                        # Fortissimo
+  { move = 0x7DD6FEF8, level = 30 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0xFBA21F82                                         # FW/MF · forest

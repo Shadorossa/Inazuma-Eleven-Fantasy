@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03032810"                                   # Thorsten Welger
+moves = [
+  { move = 0xC7F4C227, level = 7 },                         # Shot Trap
+  { move = 0xB37CD264, level = 20 },                        # Am-Bush
+  { move = 0xECD991E4, level = 50 },                        # The Stinger
+  { move = 0x46A71C03, level = 53 },                        # Black Hole
+]
 
   [[edit.cards]]
   id = 0x44703DE8                                         # GK/DF · forest
@@ -15,6 +21,12 @@ target = "c03032810"                                   # Thorsten Welger
 
 [[edit]]
 target = "c03032820"                                   # Alexander Hausen
+moves = [
+  { move = 0xB37CD264, level = 1 },                         # Am-Bush
+  { move = 0x2FB941B3, level = 23 },                        # Stone Prison
+  { move = 0x3069B219, level = 42 },                        # Super Sumo Stomp
+  { move = 0xD9477198, level = 51 },                        # Emperor Penguin X
+]
 
   [[edit.cards]]
   id = 0x6F5D6E2B                                         # DF/FW · fire
@@ -24,6 +36,12 @@ target = "c03032820"                                   # Alexander Hausen
 
 [[edit]]
 target = "c03032830"                                   # Heinrich Farber
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0xB37CD264, level = 30 },                        # Am-Bush
+  { move = 0x7DAF3139, level = 54 },                        # Emperor Penguin No. 2
+  { move = 0x88B554E0, level = 60 },                        # Galatyn
+]
 
   [[edit.cards]]
   id = 0x76465F6A                                         # DF/FW · wind
@@ -33,6 +51,12 @@ target = "c03032830"                                   # Heinrich Farber
 
 [[edit]]
 target = "c03032840"                                   # Kurt Zawel
+moves = [
+  { move = 0x38094535, level = 1 },                         # Sub-Terfuge
+  { move = 0x4031A7F5, level = 12 },                        # Mole Fake
+  { move = 0x7D6E9A87, level = 27 },                        # The Wall
+  { move = 0xA8215D7C, level = 48 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x3907C9AD                                         # DF/MF · forest
@@ -42,6 +66,12 @@ target = "c03032840"                                   # Kurt Zawel
 
 [[edit]]
 target = "c03032850"                                   # Lukas Schmidt
+moves = [
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0x4BD584B7, level = 1 },                         # Power Charge
+  { move = 0x7CACF0B0, level = 26 },                        # Horn Train
+  { move = 0x1C8CE2B8, level = 62 },                        # God Knows
+]
 
   [[edit.cards]]
   id = 0x201CF8EC                                         # DF/MF · mountain
@@ -51,6 +81,12 @@ target = "c03032850"                                   # Lukas Schmidt
 
 [[edit]]
 target = "c03032860"                                   # Theodor Ulrich
+moves = [
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x8C990270, level = 1 },                         # Gunshot
+  { move = 0xECD991E4, level = 31 },                        # The Stinger
+  { move = 0x52CEB5F6, level = 52 },                        # Iron Wall
+]
 
   [[edit.cards]]
   id = 0x0B31AB2F                                         # MF/DF · mountain
@@ -60,6 +96,12 @@ target = "c03032860"                                   # Theodor Ulrich
 
 [[edit]]
 target = "c03032870"                                   # Jan Oster
+moves = [
+  { move = 0xB37CD264, level = 1 },                         # Am-Bush
+  { move = 0x38094535, level = 31 },                        # Sub-Terfuge
+  { move = 0x01DB04F5, level = 40 },                        # Defence Scan
+  { move = 0x8C990270, level = 66 },                        # Gunshot
+]
 
   [[edit.cards]]
   id = 0x122A9A6E                                         # MF/DF · forest
@@ -69,6 +111,12 @@ target = "c03032870"                                   # Jan Oster
 
 [[edit]]
 target = "c03032880"                                   # Niklas Kuster
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x43B5739B, level = 24 },                        # Lightning Bolt
+  { move = 0x7DAF3139, level = 47 },                        # Emperor Penguin No. 2
+  { move = 0x4890FB67, level = 53 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0x95B286A1                                         # MF/FW · fire
@@ -78,6 +126,12 @@ target = "c03032880"                                   # Niklas Kuster
 
 [[edit]]
 target = "c03032890"                                   # Jonas Polk
+moves = [
+  { move = 0x8C990270, level = 4 },                         # Gunshot
+  { move = 0x6633159F, level = 16 },                        # Gravitation
+  { move = 0xE9968761, level = 22 },                        # Rocket Kobushi
+  { move = 0xA9229CF5, level = 47 },                        # The Galaxy
+]
 
   [[edit.cards]]
   id = 0x8CA9B7E0                                         # MF/FW · wind
@@ -87,6 +141,12 @@ target = "c03032890"                                   # Jonas Polk
 
 [[edit]]
 target = "c03032900"                                   # Maximilian Müller
+moves = [
+  { move = 0x38094535, level = 1 },                         # Sub-Terfuge
+  { move = 0x568262FA, level = 1 },                         # Dark Tornado
+  { move = 0xA6763B84, level = 34 },                        # Gladius Arch
+  { move = 0x259F08C6, level = 41 },                        # Whirlwind Twister
+]
 
   [[edit.cards]]
   id = 0x5CA9669E                                         # FW/MF · wind
@@ -97,6 +157,12 @@ target = "c03032900"                                   # Maximilian Müller
 
 [[edit]]
 target = "c03032910"                                   # Peter Naumann
+moves = [
+  { move = 0x38094535, level = 4 },                         # Sub-Terfuge
+  { move = 0x61FB16FD, level = 28 },                        # Divine Arrows
+  { move = 0x60397CCA, level = 34 },                        # Cross Drive
+  { move = 0xA5777314, level = 49 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0x45B257DF                                         # FW/MF · fire
@@ -107,6 +173,12 @@ target = "c03032910"                                   # Peter Naumann
 
 [[edit]]
 target = "c03032920"                                   # Gerhard Enders
+moves = [
+  { move = 0xC7F4C227, level = 1 },                         # Shot Trap
+  { move = 0x4BD584B7, level = 45 },                        # Power Charge
+  { move = 0x5E7E4775, level = 50 },                        # Table-Turner
+  { move = 0x88B554E0, level = 60 },                        # Galatyn
+]
 
   [[edit.cards]]
   id = 0x6E9F041C                                         # GK/DF · wind
@@ -116,6 +188,12 @@ target = "c03032920"                                   # Gerhard Enders
 
 [[edit]]
 target = "c03032930"                                   # Erwin Völz
+moves = [
+  { move = 0x8C990270, level = 1 },                         # Gunshot
+  { move = 0xDCF43422, level = 23 },                        # Aurora Dribble
+  { move = 0x66F2BE21, level = 50 },                        # Leaping Thunder
+  { move = 0xBF6D0AC5, level = 61 },                        # Emperor Penguin No. 3
+]
 
   [[edit.cards]]
   id = 0x7784355D                                         # FW/MF · mountain
@@ -126,6 +204,12 @@ target = "c03032930"                                   # Erwin Völz
 
 [[edit]]
 target = "c03032940"                                   # Jens Hoffman
+moves = [
+  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0xB37CD264, level = 30 },                        # Am-Bush
+  { move = 0x6730D416, level = 46 },                        # Emperor Penguin No. 1
+  { move = 0x18C035B4, level = 54 },                        # Ghost Pull
+]
 
   [[edit.cards]]
   id = 0x38C5A39A                                         # FW/DF · forest
@@ -136,6 +220,12 @@ target = "c03032940"                                   # Jens Hoffman
 
 [[edit]]
 target = "c03032950"                                   # Ernst Fliedner
+moves = [
+  { move = 0xB37CD264, level = 1 },                         # Am-Bush
+  { move = 0x79E3E635, level = 23 },                        # Racing Flame
+  { move = 0x47380F29, level = 39 },                        # Echo Ball
+  { move = 0x7DAF3139, level = 63 },                        # Emperor Penguin No. 2
+]
 
   [[edit.cards]]
   id = 0x21DE92DB                                         # MF/DF · fire
@@ -145,6 +235,12 @@ target = "c03032950"                                   # Ernst Fliedner
 
 [[edit]]
 target = "c03032960"                                   # Emmanuel Ewerz
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0xB37CD264, level = 3 },                         # Am-Bush
+  { move = 0x4BD584B7, level = 16 },                        # Power Charge
+  { move = 0xB13A6C3D, level = 50 },                        # Zigzag Flame
+]
 
   [[edit.cards]]
   id = 0x0AF3C118                                         # DF/MF · wind

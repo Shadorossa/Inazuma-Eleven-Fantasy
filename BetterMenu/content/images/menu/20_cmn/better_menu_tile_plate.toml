@@ -1,0 +1,18 @@
+# BetterMenu: the patterned plate behind the main menu's lower tile row (a NEW atlas, the one the copied badge layout
+# better_menu_tile_plate.g4pkm reads; content\menus\title_bottom_row.toml). GENERATED picture:
+# research/scripts/better_menu_dlc_icons_build.py (rerun it after changing the plate's box in title_bottom_row.toml).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_tile_plate/better_menu_tile_plate.g4tx"
+name = "cmn01_10"
+png = "better_menu_tile_plate/better_menu_tile_plate.png"
+
+# the sprite name the copied quad's material reads (the retail badge «icon_new01»)
+[[sprite]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_tile_plate/better_menu_tile_plate.g4tx"
+name = "icon_new01"
+texture = "cmn01_10"
+x = 0
+y = 0
+size = [1632, 200]

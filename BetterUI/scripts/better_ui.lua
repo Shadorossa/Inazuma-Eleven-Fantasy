@@ -27,6 +27,25 @@ function BetterUI.TacticSlices()
   return true
 end
 
+-- The position types of the game's cards (No More Rarities' POSITION_LOOKS keys) by config.toml name.
+local POSITION_NAMES = {[0] = "goalkeeper", "defender", "midfielder", "forward"}
+
+-- CMND_BETTERUI_POSITION_LOOK(positionType) -> the position type whose card look `positionType` takes: the one
+-- config.toml [position_card_looks] names for it; the same type when the name is missing or unknown.
+function BetterUI.PositionLook(positionType)
+  local name = POSITION_NAMES[positionType]
+  if name == nil then
+    return positionType
+  end
+  local want = VRFW.files.config("position_card_looks." .. name)
+  for t, n in pairs(POSITION_NAMES) do
+    if n == want then
+      return t
+    end
+  end
+  return positionType
+end
+
 -- CMND_BETTERUI_XSKIP_COVER(on) -> 1 when done, 0 when the native hold is not available (content\game\prematch_skip.toml).
 -- on = 1: the pre-match X skip's black cover (bright-fade layer 1) is held by the hook BrightFadeLayer until the kick-off
 -- is ready (the table BetterUI.XSkipCover gets the bright-fade object); any other value: released (the table cleared).

@@ -1,0 +1,72 @@
+schema = "VRFW.menu/2"
+
+# The team drawer of the main menu over the clubhouse (docs/game/mods/better-menu.md §28, §32; Lua
+# assets\lua\title_menu_2\230_team_drawer.lua): Y opens the game's own team roster («Plantilla de equipo»:
+# soccer_team_dock_menu under team_dock_common_top_menu) over the 3D room, on a blue band with slanted top and bottom
+# edges (the roster's own background), with no black fade; the camera on the hall's wide shot; the roster's B closes
+# it. A small button at the right edge, mid height, shows the game's team dock icon and the Y glyph. Layers (not opened
+# with the group: the Lua opens, fills and places them):
+#   better_menu_team_band    1 x a copy of the 36 px quad cmn01_10 (layout better_menu_team_band.g4pkm, reading the atlas of
+#                            its own folder: content\images\menu\20_cmn\better_menu_team_band.toml) showing the band's
+#                            picture (the roster's own blue background cut to the band's shape, research/scripts/
+#                            better_menu_team_band_build.py); draw priority 150, under the roster's lowest layers (its
+#                            formation pitch 199) and over the 3D room
+#   better_menu_team_text    1 x the framework's text object (vrfw_mp_label): the button's Y glyph
+#   better_menu_team_icon    1 x the 36 px quad cmn01_10 on its own atlas: the hub header's team dock icon with its cut
+#                            corners restored (content\images\menu\20_cmn\better_menu_team_icon.toml)
+#   better_menu_team_anchor  the input anchor off screen while the roster is open: B / Y -> CMD_FUNCTION
+#                            better_menu_team_drawer (crc32 0x1839610E), swallowed by the title's Lua
+when = { config = "experiment.map_under_menu", default = true }
+
+[[layout]]
+file = "common/menu/20_cmn/cmn01/better_menu_team_band/better_menu_team_band.g4pkm"
+from = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm"
+
+[[object]]
+name = "better_menu_team_band"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 150 } },
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn01/better_menu_team_band/better_menu_team_band.g4pkm" } },
+]
+
+[[layout]]
+file = "common/menu/20_cmn/cmn01/better_menu_team_icon/better_menu_team_icon.g4pkm"
+from = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm"
+
+[[object]]
+name = "better_menu_team_icon"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 530 } },
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn01/better_menu_team_icon/better_menu_team_icon.g4pkm" } },
+]
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_team_band", object = "better_menu_team_band", count = 1, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_team_text", object = "vrfw_mp_label", count = 1, after = "better_menu_team_band", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "better_menu_team_band" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_team_icon", object = "better_menu_team_icon", count = 1, after = "better_menu_team_text", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "better_menu_team_text" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_team_anchor", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "title_menu_2"
+add_cmd = [
+    { layer = "better_menu_team_anchor", input = "CMD_BACK", command = "CMD_FUNCTION", arg = 0x1839610E },
+    { layer = "better_menu_team_anchor", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_FUNCTION", arg = 0x1839610E },
+    { layer = "better_menu_team_anchor", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x1839610E },
+]
+
+# the hub header's atlas (the team dock icon of the button)
+[[patch]]
+menu = "title_menu_2"
+res = ["#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx"]

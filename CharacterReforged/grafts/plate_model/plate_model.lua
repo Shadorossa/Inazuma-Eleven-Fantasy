@@ -150,6 +150,7 @@ EVT_PPM = EVT_PPM or {}
   M.CAP_MESH = @crc:_chr_3d01_01@        -- the quad the render texture is drawn on
   M.CAP_HIDE = {@crc:_chr_telop01_01@, @crc:_chr_telop01_02@}   -- the VS telop art of the same layout
   M.CAP_BOX = EVT_PPM_CAP_BOX or {1203, 270, 515}   -- quad top-left (screen px) and side: 245 px / m, feet y ~773
+  M.TEAM_BOX = EVT_PPM_TEAM_BOX or {1400, 270, 515} -- isolated preview area on the player page over BetterMenu's room
   M.CAP_REGIST = EVT_PPM_CAP_REGIST or 3 -- CMND_SET_SCN_CHARA_REGIST_TYPE of the retail capture talk window (4 here
   -- for the menu-camera model)
   M.CAP_CAM = EVT_PPM_CAP_CAM or 3085867494   -- capture camera of the model: the VS camera 0xB7EE99E6 (512 x 512, FOV 20)
@@ -171,12 +172,22 @@ EVT_PPM = EVT_PPM or {}
   -- loader.log «EVT_PPM capture quad hidden until drawn», «EVT_PPM capture quad shown | hidden <answer>».
   M.DRAWN_CMD = @crc:CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN@
   M.DRAWN_EVERY = 10
+  -- Character Reforged 1.9.0 (VRFW 2.5.0): the framework binds the quad to the model's capture cell
+  -- (VRFW.render.capture_bind through CMND_CHARACTERREFORGED_PAGE_CAPTURE_BIND: the render-texture entry of the model
+  -- kept on its live cell and the quad mesh, the values the game's build and swap write) and answers when the quad's
+  -- active list holds it (CMND_CHARACTERREFORGED_PAGE_CAPTURE_BOUND). The quad stays hidden until then: never the
+  -- white placeholder. loader.log «EVT_PPM capture quad hidden until bound», «EVT_PPM capture quad shown: bound»,
+  -- VRFW «capture bind: …» lines.
+  M.BIND_CMD = @crc:CMND_CHARACTERREFORGED_PAGE_CAPTURE_BIND@
+  M.BOUND_CMD = @crc:CMND_CHARACTERREFORGED_PAGE_CAPTURE_BOUND@
   M.capReady = false
   M.PLATE = 1844915256                   -- soccer11_04_formation_chara_status (the plate of this screen)
   M.PAGE = 878737202                     -- team11_01_personal_plate
   M.MENU = 1427722143                    -- personal_plate_menu
   M.WAIT_MAX = 120                       -- Steps a phase may wait before it goes on anyway
   local CMD_EXIST = 262659071            -- CMND_IS_EXIST_LAYER (layer)
+  local PARAM_HAS = 2947612279           -- CMND_IS_PARAM_EXIST
+  local TEAM_DRAWER = 3752859857         -- crc32("better_menu_team_over_scene")
   local CMD_OPEN = 629267548             -- CMND_OPEN_LAYER (layer)
   local CMD_IS_OPEN = 2640875187         -- CMND_IS_OPEN_LAYER (layer[, inst])
   local CMD_LOADING = 3057768039         -- CMND_IS_LOADING_LAYER (layer)
@@ -261,6 +272,15 @@ EVT_PPM = EVT_PPM or {}
     return false
   end
 
+  -- BetterMenu's roster over the clubhouse (param better_menu_team_over_scene). The page uses its capture layer there
+  -- (a quad above BetterMenu's band). Character Reforged 1.8.66 had turned it off: the quad showed white although the
+  -- model was drawn into its render texture every frame. 1.9.0: the framework's quad binding (M.BIND_CMD) keeps the
+  -- quad's render-texture entry on the model's cell and the quad stays hidden until the binding is in place.
+  function M.InTeamDrawer()
+    local ok, on = pcall(funcLuaCommand, PARAM_HAS, TEAM_DRAWER)
+    return ok and on == true
+  end
+
   function M.InMatch()
     return type(EVT_PPG) == "table" and EVT_PPG.plateType == 1
   end
@@ -319,7 +339,8 @@ EVT_PPM = EVT_PPM or {}
   -- which model layer this page uses (only while none is open)
   function M.ChooseLayer()
     local mode = M.Settings().mode
-    local cap = mode == 2 or (mode == 1 and M.InMatch()) or (EVT_PPM_CAPTURE ~= false and M.InCaptureMenu())
+    local cap = mode == 2 or (mode == 1 and M.InMatch()) or
+      (EVT_PPM_CAPTURE ~= false and (M.InCaptureMenu() or M.InTeamDrawer()))
     if cap and Cmd(CMD_EXIST, M.CAP) ~= true then
       if not M.capMissLogged then
         M.capMissLogged = true
@@ -346,14 +367,19 @@ EVT_PPM = EVT_PPM or {}
     for _, m in ipairs(M.CAP_HIDE) do
       Cmd(3405944500, M.LAYER, m, false, 0)                -- CMND_SET_MESH_VISIBLE
     end
-    local b = M.CAP_BOX
+    local b = M.InTeamDrawer() and M.TEAM_BOX or M.CAP_BOX
     Cmd(2575768773, M.LAYER, 0, M.CAP_MESH, 0, b[1])       -- node position x (parent _pos_chr01 sits at 0, 0)
     Cmd(2575768773, M.LAYER, 0, M.CAP_MESH, 1, -b[2])      -- y (up)
     Cmd(2885415772, M.LAYER, 0, M.CAP_MESH, b[3], b[3])    -- node scale = the quad's size
-    M.gated = M.InMatch() and M.Settings().gate
-    M.quadOn, M.drawnIn = not M.gated, M.DRAWN_EVERY
+    local okb, bind = pcall(funcLuaCommand, M.BIND_CMD, M.CAP_KEY, M.CAP_MESH)
+    M.bindGate = okb and bind == 1
+    M.bindOn = M.bindGate or nil
+    M.gated = not M.bindGate and M.InMatch() and M.Settings().gate
+    M.quadOn, M.drawnIn = not (M.gated or M.bindGate), M.DRAWN_EVERY
     Cmd(3405944500, M.LAYER, M.CAP_MESH, M.quadOn, 0)
-    if M.gated then
+    if M.bindGate then
+      pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden until bound")
+    elseif M.gated then
       pcall(funcLuaCommand, M.DRAWN_CMD, 1)                -- a new wait for the probe's first draw
       pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden until drawn")
     end
@@ -376,6 +402,18 @@ EVT_PPM = EVT_PPM or {}
   -- the gated quad (M.gated): shown once the probe reports the model drawn into its render texture, hidden again when
   -- it reports no draw
   function M.QuadGate()
+    if M.bindGate and M.Capture() then      -- waits for the framework's binding, as the build waits for COMPLETE
+      local ok, r = pcall(funcLuaCommand, M.BOUND_CMD)
+      if ok and r == 1 then
+        M.bindGate, M.quadOn = false, true
+        Cmd(3405944500, M.LAYER, M.CAP_MESH, true, 0)       -- CMND_SET_MESH_VISIBLE
+        pcall(funcLuaCommand, LOG, "EVT_PPM capture quad shown: bound")
+      elseif not ok or r ~= 0 then
+        M.bindGate = false                                 -- no binding service: the quad stays hidden
+        pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden: no binding", tostring(r))
+      end
+      return
+    end
     if not M.gated or not M.Capture() then
       return
     end
@@ -998,6 +1036,11 @@ EVT_PPM = EVT_PPM or {}
       pcall(funcLuaCommand, M.LIVE_CMD, 0)
       did = true
     end
+    if M.bindOn then
+      M.bindOn, M.bindGate = nil, false
+      pcall(funcLuaCommand, M.BIND_CMD, 0, 0)
+      did = true
+    end
     if did then
       pcall(funcLuaCommand, LOG, "EVT_PPM release", tostring(why))
     end
@@ -1032,7 +1075,7 @@ EVT_PPM = EVT_PPM or {}
     end
     pcall(M.CapSetup)
     local up = shownNow
-    if up and M.Capture() and M.Settings().live then   -- the pause freeze off while the capture page shows
+    if up and M.Capture() and (M.Settings().live or M.InTeamDrawer()) and not M.liveOn then   -- live while the capture page shows
       M.liveOn = true
       pcall(funcLuaCommand, M.LIVE_CMD, 1)
     end

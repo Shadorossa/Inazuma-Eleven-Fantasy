@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07060040"                                   # Philip Marvel
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x34256515, level = 20 },                        # Dynamite Shot
+  { move = 0x7BA5586C, level = 85 },                        # Mad Express
+  { move = 0x58E8FC83, level = 92 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0xA1B2FBFD                                         # DF/MF · mountain
@@ -16,6 +22,12 @@ target = "c07060040"                                   # Philip Marvel
 
 [[edit]]
 target = "c07060050"                                   # Noel Good
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x0710C61E, level = 30 },                        # Perimeter Zone
+  { move = 0x520F1E48, level = 76 },                        # Psycho Shot
+  { move = 0x00196EC2, level = 90 },                        # Earthquake
+]
 
   [[edit.cards]]
   id = 0xB8A9CABC                                         # DF/MF · mountain
@@ -26,6 +38,12 @@ target = "c07060050"                                   # Noel Good
 
 [[edit]]
 target = "c07060070"                                   # Francis Tell
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x8C990270, level = 75 },                        # Gunshot
+  { move = 0xB5B7108F, level = 89 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x8A9FA83E                                         # MF/FW · forest
@@ -36,6 +54,12 @@ target = "c07060070"                                   # Francis Tell
 
 [[edit]]
 target = "c07060090"                                   # Jonathan Seller
+moves = [
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x8EDFBC29, level = 27 },                        # Double Jaw
+  { move = 0x518BCA26, level = 85 },                        # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0x141C85B0                                         # FW/MF · wind
@@ -45,6 +69,12 @@ target = "c07060090"                                   # Jonathan Seller
 
 [[edit]]
 target = "c07060100"                                   # Victor Kind
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x30A819A7, level = 26 },                        # Twin Boost F
+  { move = 0x4890FB67, level = 78 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0xC41C54CE                                         # MF/FW · forest
@@ -55,6 +85,12 @@ target = "c07060100"                                   # Victor Kind
 
 [[edit]]
 target = "c07060110"                                   # Neil Turner
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0xA5777314, level = 38 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0xDD07658F                                         # FW/MF · fire
@@ -65,6 +101,12 @@ target = "c07060110"                                   # Neil Turner
 
 [[edit]]
 target = "c07060010"                                   # Gideon Poe
+moves = [
+  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
+  { move = 0xF14FDC17, level = 13 },                        # Shot Pocket
+  { move = 0xEA12530F, level = 20 },                        # Double Rocket
+  { move = 0xC7F4C227, level = 30 },                        # Shot Trap
+]
 
   [[edit.cards]]
   id = 0xDCC50FB8                                         # GK/FW · fire
@@ -74,6 +116,12 @@ target = "c07060010"                                   # Gideon Poe
 
 [[edit]]
 target = "c07060060"                                   # Electra Faraday
+moves = [
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0x520F1E48, level = 13 },                        # Psycho Shot
+  { move = 0x245D62F1, level = 20 },                        # Attack Scan
+  { move = 0xDCC9CCA3, level = 30 },                        # Tesla Coil
+]
 
   [[edit.cards]]
   id = 0x9384997F                                         # MF/DF · wind
@@ -83,6 +131,12 @@ target = "c07060060"                                   # Electra Faraday
 
 [[edit]]
 target = "c07060080"                                   # Darren Gouger
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x38094535, level = 13 },                        # Sub-Terfuge
+  { move = 0xC0A013E6, level = 20 },                        # Liar Shot
+  { move = 0x74B5C85D, level = 30 },                        # Security Shot
+]
 
   [[edit.cards]]
   id = 0x0D07B4F1                                         # MF/DF · mountain
@@ -92,6 +146,12 @@ target = "c07060080"                                   # Darren Gouger
 
 [[edit]]
 target = "c07060020"                                   # Harry Leading
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x55C71D2A, level = 29 },                        # About Face
+  { move = 0x5B6C28ED, level = 80 },                        # Invisible Fake
+  { move = 0xB3BD79DA, level = 90 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0xF7E85C7B                                         # DF/MF · wind
@@ -101,6 +161,12 @@ target = "c07060020"                                   # Harry Leading
 
 [[edit]]
 target = "c07060030"                                   # Terry Stronger
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0xA5777314, level = 24 },                        # Assault Shot
+  { move = 0x520F1E48, level = 29 },                        # Psycho Shot
+  { move = 0xA8E0F6C2, level = 65 },                        # Kung Fu Header
+]
 
   [[edit.cards]]
   id = 0xEEF36D3A                                         # DF/FW · fire
@@ -110,6 +176,12 @@ target = "c07060030"                                   # Terry Stronger
 
 [[edit]]
 target = "c11807070"                                   # Jethro Mackin
+moves = [
+  { move = 0x245D62F1, level = 1 },                         # Attack Scan
+  { move = 0xB3BD79DA, level = 13 },                        # Patriot Shot
+  { move = 0x01DB04F5, level = 20 },                        # Defence Scan
+  { move = 0x928B9BED, level = 30 },                        # Optimal Trajectory
+]
 
   [[edit.cards]]
   id = 0xDB21D2EE                                         # MF/FW · wind
@@ -120,6 +192,12 @@ target = "c11807070"                                   # Jethro Mackin
 
 [[edit]]
 target = "c11807080"                                   # Des Pott
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0xA1BE38E6, level = 13 },                        # La Flamme
+  { move = 0x245D62F1, level = 20 },                        # Attack Scan
+  { move = 0x67F17FA8, level = 30 },                        # Mega Quake
+]
 
   [[edit.cards]]
   id = 0x5CB9CE21                                         # MF/DF · fire

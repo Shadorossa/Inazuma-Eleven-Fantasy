@@ -1,0 +1,21 @@
+schema = "VRFW.technique/3"
+# The five moves of «New Techniques» (docs/release/new_techniques.md). Each one is a retail move cloned (`base`: its
+# skill_config row, voice, banner margins, manual, event env row) with the numbers of the download it comes from; its
+# event is the base's event renamed with a recoloured effect object (assets\data\common\event\ + content\base_tables\
+# common\event\, event_cfg\ + content\models\effects\, research/scripts/new_techniques_build.py), its banner a telop of
+# the base's layout (content\telops\any\). Fixed keys (skill id = crc32(key), the download's ids: a save that learned
+# a move from the download keeps it). Names and descriptions: text\rows\skill_text.toml (the download's text ids,
+# pinned below). Manuals: the base's manual cloned, catalog number from the id registry (the download gave all five
+# the catalog 13002, IECross's Pingüino Infernal).
+
+[[technique]]
+name = "dispersion"              # Dispersión
+key = "whk93113"
+base = "whk01130"                # Repulsión (void catch, 70-440, 70 TP; fail event ev63_01130_2 kept)
+order = 5
+name_text = 0x10ECA03B
+desc_text = 0x457A7269
+event = "ev63_93113_1"           # ev63_01130_1 renamed, effect object ev63931130
+power_min = 100
+power_max = 640
+tp = 100

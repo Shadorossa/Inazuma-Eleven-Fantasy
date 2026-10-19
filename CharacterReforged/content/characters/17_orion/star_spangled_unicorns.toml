@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08130010"                                   # Gabriel Jax
+moves = [
+  { move = 0xB6F26F5F, level = 1 },                         # Tri-Pegasus
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x2A37FC88, level = 40 },                        # Revolution V
+  { move = 0x21127474, level = 65 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x29312384                                         # FW/MF · mountain
@@ -15,6 +21,12 @@ target = "c08130010"                                   # Gabriel Jax
 
 [[edit]]
 target = "c08130020"                                   # Dylan Keats
+moves = [
+  { move = 0xD8851BAF, level = 1 },                         # Unicorn Boost
+  { move = 0x3EC287DE, level = 15 },                        # Bubble Gum
+  { move = 0x2A37FC88, level = 42 },                        # Revolution V
+  { move = 0x0BFD4D80, level = 50 },                        # Grand Slam
+]
 
   [[edit.cards]]
   id = 0x021C7047                                         # FW/MF · fire
@@ -24,6 +36,15 @@ target = "c08130020"                                   # Dylan Keats
 
 [[edit]]
 target = "c08130030"                                   # Mark Krueger
+moves = [
+  { move = 0x94405906, level = 1 },                         # Grand Fenrir
+  { move = 0x3A4FFB6C, level = 1 },                         # The Ikaros
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0xB6F26F5F, level = 45 },                        # Tri-Pegasus
+]
+VRFW.MoveGrades = [
+  { Move = 0x94405906, Grade = 1 },                         # Grand Fenrir
+]
 
   [[edit.cards]]
   id = 0x1B074106                                         # MF/FW · forest
@@ -34,6 +55,12 @@ target = "c08130030"                                   # Mark Krueger
 
 [[edit]]
 target = "c08130050"                                   # Shane Pierce
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x79224D8B, level = 10 },                        # Freeze Shot
+  { move = 0xC19E2AEE, level = 65 },                        # Pegasus Shot
+]
 
   [[edit.cards]]
   id = 0x4D5DE680                                         # MF/FW · mountain
@@ -43,6 +70,12 @@ target = "c08130050"                                   # Shane Pierce
 
 [[edit]]
 target = "c08130060"                                   # Steve Woodmark
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x6ADE9E01, level = 10 },                        # Illusory Ball
+  { move = 0x4890FB67, level = 35 },                        # Twin Boost
+  { move = 0x3A4FFB6C, level = 55 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x6670B543                                         # MF/DF · fire
@@ -52,6 +85,12 @@ target = "c08130060"                                   # Steve Woodmark
 
 [[edit]]
 target = "c08130080"                                   # Drake Dynamo
+moves = [
+  { move = 0x4BD584B7, level = 1 },                         # Power Charge
+  { move = 0xDCA94D3F, level = 10 },                        # Flash Upper
+  { move = 0x67F17FA8, level = 36 },                        # Mega Quake
+  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0xF8F398CD                                         # DF/GK · wind
@@ -62,6 +101,12 @@ target = "c08130080"                                   # Drake Dynamo
 
 [[edit]]
 target = "c08130090"                                   # Tony Strider
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x4BD584B7, level = 15 },                        # Power Charge
+  { move = 0xB3BD79DA, level = 30 },                        # Patriot Shot
+  { move = 0x7CACF0B0, level = 50 },                        # Horn Train
+]
 
   [[edit.cards]]
   id = 0xE1E8A98C                                         # DF/FW · fire
@@ -72,6 +117,12 @@ target = "c08130090"                                   # Tony Strider
 
 [[edit]]
 target = "c08130100"                                   # Ted Bryant
+moves = [
+  { move = 0x4BD584B7, level = 1 },                         # Power Charge
+  { move = 0x19025F83, level = 15 },                        # Quick Draw
+  { move = 0x261BDCA8, level = 36 },                        # Moonsault
+  { move = 0x7A67325B, level = 55 },                        # Flame Dance
+]
 
   [[edit.cards]]
   id = 0x31E878F2                                         # DF/MF · mountain
@@ -81,6 +132,12 @@ target = "c08130100"                                   # Ted Bryant
 
 [[edit]]
 target = "c08130110"                                   # Billy Dash
+moves = [
+  { move = 0xDCA94D3F, level = 1 },                         # Flash Upper
+  { move = 0xF08DB620, level = 1 },                         # Whirlwind
+  { move = 0xE9968761, level = 32 },                        # Rocket Kobushi
+  { move = 0x8C990270, level = 75 },                        # Gunshot
+]
 
   [[edit.cards]]
   id = 0x28F349B3                                         # GK/FW · forest
@@ -90,6 +147,12 @@ target = "c08130110"                                   # Billy Dash
 
 [[edit]]
 target = "c08130120"                                   # Norbert Poindexter
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x5049A011, level = 18 },                        # Spinning Shot
+  { move = 0x58E8FC83, level = 29 },                        # Rolling Hell
+  { move = 0x4CDC2C6B, level = 38 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x03DE1A70                                         # FW/DF · fire
@@ -99,6 +162,12 @@ target = "c08130120"                                   # Norbert Poindexter
 
 [[edit]]
 target = "c08130130"                                   # Petie Pooma
+moves = [
+  { move = 0x011AAF4B, level = 1 },                         # Gyro Head
+  { move = 0xC66BD10D, level = 18 },                        # Zigzag Spark
+  { move = 0xB7F1AED6, level = 35 },                        # Double Cyclone
+  { move = 0xDF70E04C, level = 40 },                        # Rodeo Clown
+]
 
   [[edit.cards]]
   id = 0x1AC52B31                                         # MF/DF · forest
@@ -108,6 +177,12 @@ target = "c08130130"                                   # Petie Pooma
 
 [[edit]]
 target = "c08130140"                                   # Alex Hawke
+moves = [
+  { move = 0xC379BE95, level = 1 },                         # Counter Strike
+  { move = 0x7B64F3D2, level = 12 },                        # Hawk Shot
+  { move = 0x592A96B4, level = 40 },                        # Afterimage
+  { move = 0x4DDFEDE2, level = 58 },                        # Eagle Buster
+]
 
   [[edit.cards]]
   id = 0x5584BDF6                                         # GK/FW · mountain

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08090010"                                   # Alexander Allegrov
+moves = [
+  { move = 0x0C7FF30F, level = 1 },                         # Divine Drive
+  { move = 0x14A6A879, level = 13 },                        # Regal Eagle
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x261BDCA8, level = 30 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0xA8DDE880                                         # MF/FW · wind
@@ -14,6 +20,12 @@ target = "c08090010"                                   # Alexander Allegrov
 
 [[edit]]
 target = "c08090020"                                   # Yuri Dolchin
+moves = [
+  { move = 0xDE4ED944, level = 1 },                         # Snowstorm Leopard
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x64152A5A, level = 20 },                        # Pinch and Save
+  { move = 0x89773ED7, level = 30 },                        # Celestial Zone
+]
 
   [[edit.cards]]
   id = 0x83F0BB43                                         # FW/GK · wind
@@ -23,6 +35,12 @@ target = "c08090020"                                   # Yuri Dolchin
 
 [[edit]]
 target = "c08090030"                                   # Anton Kolosalyov
+moves = [
+  { move = 0xA5F2EFEA, level = 1 },                         # Brave Shot
+  { move = 0x316A7390, level = 13 },                        # Land Dragon
+  { move = 0xDEB28A7B, level = 20 },                        # Monkey Turn
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0x9AEB8A02                                         # FW/MF · mountain
@@ -32,6 +50,12 @@ target = "c08090030"                                   # Anton Kolosalyov
 
 [[edit]]
 target = "c08090040"                                   # Dmitri Pianov
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0xC7A9BB3A, level = 13 },                        # Whirlwind Cut
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0xD5AA1CC5                                         # MF/FW · wind
@@ -41,6 +65,12 @@ target = "c08090040"                                   # Dmitri Pianov
 
 [[edit]]
 target = "c08090050"                                   # Konstantin Furyozov
+moves = [
+  { move = 0x67F17FA8, level = 1 },                         # Mega Quake
+  { move = 0x637C031A, level = 13 },                        # No Escape
+  { move = 0x38094535, level = 20 },                        # Sub-Terfuge
+  { move = 0x21127474, level = 30 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0xCCB12D84                                         # MF/FW · mountain
@@ -50,6 +80,12 @@ target = "c08090050"                                   # Konstantin Furyozov
 
 [[edit]]
 target = "c08090060"                                   # Mikhail Vivachev
+moves = [
+  { move = 0x7207C577, level = 1 },                         # Boost Glider
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x38094535, level = 20 },                        # Sub-Terfuge
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0xE79C7E47                                         # MF/DF · fire
@@ -60,6 +96,12 @@ target = "c08090060"                                   # Mikhail Vivachev
 
 [[edit]]
 target = "c08090070"                                   # Igor Pitsikatov
+moves = [
+  { move = 0x7207C577, level = 1 },                         # Boost Glider
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x38094535, level = 20 },                        # Sub-Terfuge
+  { move = 0xAEEA9F97, level = 30 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0xFE874F06                                         # MF/DF · forest
@@ -70,6 +112,12 @@ target = "c08090070"                                   # Igor Pitsikatov
 
 [[edit]]
 target = "c08090080"                                   # Nikolai Glisanderov
+moves = [
+  { move = 0x5AAE42DA, level = 1 },                         # Triple Dash
+  { move = 0x637C031A, level = 13 },                        # No Escape
+  { move = 0xDCF43422, level = 20 },                        # Aurora Dribble
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0x791F53C9                                         # DF/FW · mountain
@@ -80,6 +128,12 @@ target = "c08090080"                                   # Nikolai Glisanderov
 
 [[edit]]
 target = "c08090090"                                   # Boris Kaprichyov
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x72BFA108, level = 13 },                        # Wall of Atlantis
+  { move = 0x166B0073, level = 20 },                        # Super Armadillo
+  { move = 0x67F17FA8, level = 30 },                        # Mega Quake
+]
 
   [[edit.cards]]
   id = 0x60046288                                         # DF/MF · forest
@@ -90,6 +144,12 @@ target = "c08090090"                                   # Boris Kaprichyov
 
 [[edit]]
 target = "c08090100"                                   # Leonid Largov
+moves = [
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x1A868BED, level = 20 },                        # Clone Defence
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0xB004B3F6                                         # DF/FW · wind
@@ -100,6 +160,12 @@ target = "c08090100"                                   # Leonid Largov
 
 [[edit]]
 target = "c08090110"                                   # Gregory Fortin
+moves = [
+  { move = 0x64152A5A, level = 1 },                         # Pinch and Save
+  { move = 0xF309624E, level = 13 },                        # Dual Smash
+  { move = 0xC4701649, level = 20 },                        # Ice Block
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0xA91F82B7                                         # GK/FW · fire
@@ -110,6 +176,12 @@ target = "c08090110"                                   # Gregory Fortin
 
 [[edit]]
 target = "c08090120"                                   # Molev Misterioski
+moves = [
+  { move = 0xB2085681, level = 1 },                         # Volcanic Rock
+  { move = 0xD0AF516E, level = 13 },                        # Asteride
+  { move = 0xDCF43422, level = 20 },                        # Aurora Dribble
+  { move = 0xBDAE2862, level = 30 },                        # Hellfire
+]
 
   [[edit.cards]]
   id = 0x8232D174                                         # FW/DF · fire
@@ -120,6 +192,12 @@ target = "c08090120"                                   # Molev Misterioski
 
 [[edit]]
 target = "c08090130"                                   # Marat Stakatov
+moves = [
+  { move = 0xD0AF516E, level = 1 },                         # Asteride
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0x928B9BED, level = 30 },                        # Optimal Trajectory
+]
 
   [[edit.cards]]
   id = 0x9B29E035                                         # MF/DF · forest
@@ -129,6 +207,12 @@ target = "c08090130"                                   # Marat Stakatov
 
 [[edit]]
 target = "c08090140"                                   # Martemeli Prestov
+moves = [
+  { move = 0x0C7FF30F, level = 1 },                         # Divine Drive
+  { move = 0x5BE73EBE, level = 13 },                        # One for All
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xD46876F2                                         # MF/DF · fire
@@ -138,6 +222,12 @@ target = "c08090140"                                   # Martemeli Prestov
 
 [[edit]]
 target = "c08090150"                                   # Oleg Animatov
+moves = [
+  { move = 0x14A6A879, level = 1 },                         # Regal Eagle
+  { move = 0x5BE73EBE, level = 13 },                        # One for All
+  { move = 0x768AB9C5, level = 20 },                        # Frosticle
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0xCD7347B3                                         # MF/FW · wind
@@ -147,6 +237,12 @@ target = "c08090150"                                   # Oleg Animatov
 
 [[edit]]
 target = "c08090210"                                   # Serge Riktov
+moves = [
+  { move = 0xB10794BC, level = 1 },                         # Flash Dash
+  { move = 0x43B5739B, level = 13 },                        # Lightning Bolt
+  { move = 0x83BAE06D, level = 20 },                        # Golden Gull
+  { move = 0xDCF43422, level = 30 },                        # Aurora Dribble
+]
 
   [[edit.cards]]
   id = 0xAB593CEE                                         # MF/DF · fire
@@ -155,6 +251,12 @@ target = "c08090210"                                   # Serge Riktov
 
 [[edit]]
 target = "c11808110"                                   # Baton Maystrov
+moves = [
+  { move = 0x14A6A879, level = 1 },                         # Regal Eagle
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x5BE73EBE, level = 20 },                        # One for All
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0xD4DA0F09                                         # MF/DF · mountain

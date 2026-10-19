@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02022210"                                   # Seymour Hillman
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xA491AFFF, level = 88 },                        # Majin the Hand
+  { move = 0xB039ADB4, level = 99 },                        # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0xD2F09A3A                                         # GK/FW · mountain
@@ -15,6 +21,12 @@ target = "c02022210"                                   # Seymour Hillman
 
 [[edit]]
 target = "c02022220"                                   # Charles Island
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x520F1E48, level = 45 },                        # Psycho Shot
+  { move = 0x63BDA8A4, level = 60 },                        # Inazuma Drop
+]
 
   [[edit.cards]]
   id = 0xF9DDC9F9                                         # DF/MF · forest
@@ -24,6 +36,12 @@ target = "c02022220"                                   # Charles Island
 
 [[edit]]
 target = "c02022230"                                   # Garret Hairtown
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
+  { move = 0xA8E0F6C2, level = 39 },                        # Kung Fu Header
+  { move = 0x49529150, level = 72 },                        # Snake Shot
+]
 
   [[edit.cards]]
   id = 0xE0C6F8B8                                         # DF/FW · wind
@@ -33,6 +51,12 @@ target = "c02022230"                                   # Garret Hairtown
 
 [[edit]]
 target = "c02022240"                                   # Arthur Sweet
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x3663DB4C, level = 42 },                        # Utter Gutsiness Bat
+  { move = 0x0597D3F9, level = 65 },                        # Dragon Tornado
+]
 
   [[edit.cards]]
   id = 0xAF876E7F                                         # DF/FW · mountain
@@ -42,6 +66,12 @@ target = "c02022240"                                   # Arthur Sweet
 
 [[edit]]
 target = "c02022250"                                   # Peter Mildred
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x35E70F22, level = 37 },                        # Grenade Shot
+  { move = 0x17A96A44, level = 68 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0xB69C5F3E                                         # MF/DF · forest
@@ -52,6 +82,12 @@ target = "c02022250"                                   # Peter Mildred
 
 [[edit]]
 target = "c02022260"                                   # Josh Nathaniel
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x7EEA4EE9, level = 34 },                        # Blade Attack
+  { move = 0xE9968761, level = 49 },                        # Rocket Kobushi
+]
 
   [[edit.cards]]
   id = 0x9DB10CFD                                         # MF/DF · forest
@@ -62,6 +98,12 @@ target = "c02022260"                                   # Josh Nathaniel
 
 [[edit]]
 target = "c02022270"                                   # Edward Gladstone
+moves = [
+  { move = 0x60397CCA, level = 1 },                         # Cross Drive
+  { move = 0x4E9A9232, level = 34 },                        # Spinning Cut
+  { move = 0x4890FB67, level = 38 },                        # Twin Boost
+  { move = 0xB4757AB8, level = 88 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0x84AA3DBC                                         # MF/FW · fire
@@ -71,6 +113,12 @@ target = "c02022270"                                   # Edward Gladstone
 
 [[edit]]
 target = "c02022280"                                   # Tyler Thomas
+moves = [
+  { move = 0x695A4A6F, level = 1 },                         # Magic
+  { move = 0x60397CCA, level = 1 },                         # Cross Drive
+  { move = 0xF14FDC17, level = 40 },                        # Shot Pocket
+  { move = 0x6ADE9E01, level = 61 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x03322173                                         # MF/FW · mountain
@@ -80,6 +128,12 @@ target = "c02022280"                                   # Tyler Thomas
 
 [[edit]]
 target = "c02022290"                                   # Joseph Yosemite
+moves = [
+  { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
+  { move = 0x63BDA8A4, level = 1 },                         # Inazuma Drop
+  { move = 0x19025F83, level = 45 },                        # Quick Draw
+  { move = 0x61FB16FD, level = 79 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x1A291032                                         # FW/DF · wind
@@ -89,6 +143,12 @@ target = "c02022290"                                   # Joseph Yosemite
 
 [[edit]]
 target = "c02022300"                                   # Ian Suffolk
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x34256515, level = 1 },                         # Dynamite Shot
+  { move = 0x142DBE2A, level = 44 },                        # Foul Offence
+  { move = 0x55C71D2A, level = 72 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0xCA29C14C                                         # MF/FW · fire
@@ -98,6 +158,12 @@ target = "c02022300"                                   # Ian Suffolk
 
 [[edit]]
 target = "c02022310"                                   # Constant Builder
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 38 },                        # Scorching Tackle
+  { move = 0x37A1B17B, level = 64 },                        # Fire Rooster
+]
 
   [[edit.cards]]
   id = 0xD332F00D                                         # FW/MF · fire
@@ -108,6 +174,12 @@ target = "c02022310"                                   # Constant Builder
 
 [[edit]]
 target = "c11801010"                                   # David Evans
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xC4701649, level = 15 },                        # Ice Block
+  { move = 0xF2CB0879, level = 36 },                        # Mugen the Hand
+  { move = 0xB8C5883B, level = 62 },                        # God Hand X
+]
 
   [[edit.cards]]
   id = 0xA8102AB4                                         # GK/DF · mountain

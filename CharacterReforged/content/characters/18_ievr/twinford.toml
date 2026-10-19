@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11090010"                                   # Orin Wildwood
+moves = [
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0x737DCB3F, level = 13 },                        # Pancake Defence
+  { move = 0x17A96A44, level = 20 },                        # Clone Faker
+  { move = 0xB1FBC783, level = 30 },                        # Reflect Buster
+]
 
   [[edit.cards]]
   id = 0xF1EFADCD                                         # MF/DF · mountain
@@ -16,6 +22,12 @@ target = "c11090010"                                   # Orin Wildwood
 
 [[edit]]
 target = "c11090020"                                   # Iris Nightwood
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0xDAC2FE0E                                         # MF/DF · fire
@@ -26,6 +38,12 @@ target = "c11090020"                                   # Iris Nightwood
 
 [[edit]]
 target = "c11090030"                                   # Lachlan Hartwood
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x3069B219, level = 13 },                        # Super Sumo Stomp
+  { move = 0xE937AD43, level = 20 },                        # Dragon Slayer
+  { move = 0x4E5B398C, level = 30 },                        # Acrobat Bomber
+]
 
   [[edit.cards]]
   id = 0xC3D9CF4F                                         # MF/FW · forest
@@ -36,6 +54,12 @@ target = "c11090030"                                   # Lachlan Hartwood
 
 [[edit]]
 target = "c11090050"                                   # Hobie Chartwood
+moves = [
+  { move = 0xBFCC20E7, level = 1 },                         # Wood Chopper
+  { move = 0x485150D9, level = 13 },                        # Body Shield
+  { move = 0xDBA0E5E3, level = 20 },                        # Gigant Wall
+  { move = 0x5E7E4775, level = 30 },                        # Table-Turner
+]
 
   [[edit.cards]]
   id = 0x958368C9                                         # GK/DF · mountain
@@ -46,6 +70,12 @@ target = "c11090050"                                   # Hobie Chartwood
 
 [[edit]]
 target = "c11090040"                                   # Lila Glosswood
+moves = [
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0x79E3E635, level = 13 },                        # Racing Flame
+  { move = 0x9765A74A, level = 20 },                        # Beast Fang
+  { move = 0xEA12530F, level = 30 },                        # Double Rocket
+]
 
   [[edit.cards]]
   id = 0x8C985988                                         # DF/GK · fire
@@ -56,6 +86,12 @@ target = "c11090040"                                   # Lila Glosswood
 
 [[edit]]
 target = "c11090060"                                   # Ronan Strongwood
+moves = [
+  { move = 0x05567847, level = 1 },                         # Runaway Train
+  { move = 0x64CDCFB9, level = 13 },                        # Rising Dragon
+  { move = 0xB1FBC783, level = 20 },                        # Reflect Buster
+  { move = 0x9D236FA3, level = 30 },                        # Sword of the King
+]
 
   [[edit.cards]]
   id = 0xBEAE3B0A                                         # FW/MF · mountain
@@ -66,6 +102,12 @@ target = "c11090060"                                   # Ronan Strongwood
 
 [[edit]]
 target = "c11090070"                                   # Alden Songwood
+moves = [
+  { move = 0xBFCC20E7, level = 1 },                         # Wood Chopper
+  { move = 0x8FBCFC3C, level = 13 },                        # Blazing Knuckle
+  { move = 0xEE3E059F, level = 20 },                        # Celestial Smash
+  { move = 0xF08DB620, level = 30 },                        # Whirlwind
+]
 
   [[edit.cards]]
   id = 0xA7B50A4B                                         # GK/FW · fire
@@ -76,6 +118,12 @@ target = "c11090070"                                   # Alden Songwood
 
 [[edit]]
 target = "c11090080"                                   # Tristan Brookwood
+moves = [
+  { move = 0xC2E6ADBF, level = 1 },                         # Log Roll
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0x202D1684                                         # DF/MF · wind
@@ -86,6 +134,12 @@ target = "c11090080"                                   # Tristan Brookwood
 
 [[edit]]
 target = "c11090090"                                   # Asher Norwood
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0x4AD6453E, level = 13 },                        # Back Tornado
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x5049A011, level = 30 },                        # Spinning Shot
+]
 
   [[edit.cards]]
   id = 0x393627C5                                         # FW/MF · wind
@@ -96,6 +150,12 @@ target = "c11090090"                                   # Asher Norwood
 
 [[edit]]
 target = "c11090100"                                   # Lydia Trailwood
+moves = [
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0x4FE09C7A, level = 13 },                        # Acrobatic Keep
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0xD471DE6C, level = 30 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0xE936F6BB                                         # MF/GK · mountain
@@ -106,6 +166,12 @@ target = "c11090100"                                   # Lydia Trailwood
 
 [[edit]]
 target = "c11090110"                                   # Emory Plainwood
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x2E7B2B84, level = 13 },                        # Thief's Eye
+  { move = 0xC16279D1, level = 20 },                        # Field of Force
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0xF02DC7FA                                         # DF/MF · forest
@@ -116,6 +182,12 @@ target = "c11090110"                                   # Emory Plainwood
 
 [[edit]]
 target = "c11090120"                                   # Rowland Brightwood
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x1A868BED, level = 13 },                        # Clone Defence
+  { move = 0x19025F83, level = 20 },                        # Quick Draw
+  { move = 0x7FE98F60, level = 30 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0xDB009439                                         # DF/FW · forest
@@ -126,6 +198,12 @@ target = "c11090120"                                   # Rowland Brightwood
 
 [[edit]]
 target = "c11090130"                                   # Vearn Dashwood
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x78E027BC, level = 13 },                        # Shine Drive
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0x232D05EC, level = 30 },                        # Tiger Drive
+]
 
   [[edit.cards]]
   id = 0xC21BA578                                         # FW/MF · mountain
@@ -136,6 +214,12 @@ target = "c11090130"                                   # Vearn Dashwood
 
 [[edit]]
 target = "c11090140"                                   # Maris Hollowwood
+moves = [
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0xB7474004, level = 13 },                        # Dough Ray Me
+  { move = 0xACAC21CE, level = 20 },                        # Fake Ball
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x8D5A33BF                                         # MF/FW · fire
@@ -146,6 +230,12 @@ target = "c11090140"                                   # Maris Hollowwood
 
 [[edit]]
 target = "c11090150"                                   # Nathaniel Whitewood
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0xC5D2FDE2, level = 13 },                        # Oglitteration
+  { move = 0x4F58F805, level = 20 },                        # Coil Turn
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0x944102FE                                         # MF/DF · forest
@@ -156,6 +246,12 @@ target = "c11090150"                                   # Nathaniel Whitewood
 
 [[edit]]
 target = "c11090160"                                   # Calvin Sixwood
+moves = [
+  { move = 0x4FE09C7A, level = 1 },                         # Acrobatic Keep
+  { move = 0x6B1CF436, level = 13 },                        # Bewildered
+  { move = 0xBD8A9EBE, level = 20 },                        # Infinite Wall
+  { move = 0xA0BDF96F, level = 30 },                        # Ballista Barrage
+]
 
   [[edit.cards]]
   id = 0xBF6C513D                                         # MF/GK · mountain
@@ -166,6 +262,12 @@ target = "c11090160"                                   # Calvin Sixwood
 
 [[edit]]
 target = "c11090500"                                   # Theobald Longwood
+moves = [
+  { move = 0x07D16DA0, level = 1 },                         # Inazuma-1
+  { move = 0x78E027BC, level = 13 },                        # Shine Drive
+  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0xEE3F5E67                                         # FW/DF · wind
@@ -176,6 +278,12 @@ target = "c11090500"                                   # Theobald Longwood
 
 [[edit]]
 target = "c11090510"                                   # Mabel Greenwood
+moves = [
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0x7D6E9A87, level = 13 },                        # The Wall
+  { move = 0x84385EE2, level = 20 },                        # Black Tide Ride
+  { move = 0xACAC21CE, level = 30 },                        # Fake Ball
+]
 
   [[edit.cards]]
   id = 0xF7246F26                                         # DF/MF · mountain

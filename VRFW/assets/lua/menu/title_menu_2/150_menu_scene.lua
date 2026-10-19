@@ -25,6 +25,9 @@
 --     light grow from the rectangle over the screen before the fade (also when the door cannot open). leave_fade =
 --     "white" (a hotspot or a tile action) sets param vrfw_menu_scene_leave_white: title_main's fade when it leaves is
 --     the white one (a shot that ends in a white space hands over in white, no black frame).
+--   * A hotspot with outline_tag: instead of the rectangle outline, that map tag is on while the hotspot is selected
+--     (the mode row has the focus, the camera has arrived, it is seen) and off otherwise (a mod's own outline model
+--     of the object); the tag switch rides on the map tags below, sent when its state changes.
 --   * A home entry (scene key home_shot, with shots_select_modes): a place of the mode cycle without a tile, on its own
 --     shot. The menu always opens on it; the previous / next mode keys and left / right on the hidden row go from it to
 --     the first / last mode and from the first / last mode back to it. While it is shown the row keeps its hidden
@@ -57,7 +60,6 @@ local MS = {
   MSG_BUSY = 898725220,      -- a message window is open
   SHEET = 3492314538,        -- title_tutorial_menu (the welcome / «Novedades de mods» sheets)
   GO = 2860602156,           -- param vrfw_menu_scene_go: title_main presses Options
-  UP = 1602039306,           -- param vrfw_menu_scene_up: this title runs over the scene's map
   OPTIONS = 1432246941,      -- param vrfw_menu_scene_options: an opening of setting_top_menu for the scene
   HUD_OFF = 3499142076,      -- param vrfw_menu_scene_hud_off: the field HUD hidden (kept while the scene is up)
   TITLE_READY = 358816896,   -- param vrfw_menu_scene_title_ready: title_main reads requests (the menu fully open)
@@ -99,6 +101,7 @@ local MS = {
   MESH_VISIBLE = 3405944500, -- (layer, mesh, on, instance)
   HOTSPOTS = 2234870553,     -- CMND_VRFW_MENU_SCENE_HOTSPOTS (key) -> "" | { shot, settled, n, [i] = { … } }
   SCREENS = 713720306,       -- CMND_VRFW_MENU_SCENE_SCREENS (key) -> "" | { n, [i] = { name, on, fade_ms, seen, x0, y0, x1, y1, layers, design } }
+  SHOT_TAGS = 688500432,     -- CMND_VRFW_MENU_SCENE_SHOT_TAGS (key) -> "" | { shot, on = { tag ids }, off = { tag ids } }
   LAYER_ALPHA = 4231609516,  -- CMND_SET_LAYER_MODEL_ALPHA (layer, instance, 0, alpha)
   STORY_KIND = 3368022765,   -- param vrfw_menu_scene_story_kind: 1 continue, 2 new game (with STORY_GO)
   STORY_PICK = 1790329263,   -- param vrfw_menu_scene_story_pick: the story submenu's entry + 1 it picks itself
@@ -134,8 +137,14 @@ local MS = {
                              -- after it and the Chronicle top menu goes straight to the map (action chronicle_map)
   PENDING = 3277277325,      -- CMND_VRFW_MENU_SCENE_PENDING (action | "")
   LEAVE_WHITE = 2048703318,  -- param vrfw_menu_scene_leave_white: title_main leaves with the white fade (leave_fade)
+  PICK_LAYER = 2283875177, -- param vrfw_menu_scene_pick_layer: the next menu holding this layer presses an entry of it
+  PICK_INDEX = 3968429426, -- param vrfw_menu_scene_pick_index: that entry + 1
+  PICK_OPTION = 2481379900, -- param vrfw_menu_scene_pick_option: the option of the entry's own choice + 1 (pick_option)
+  BB_CAMPAIGN_SAVE = 1267047957, -- (0) -> a Battle Bay campaign save exists (the BB top menu's own check)
+  PICK_WAIT = 2171674033,  -- param vrfw_menu_scene_pick_wait: ms title_main waits (the push-in) before it ends
   HOME = 2904671763,         -- CMND_VRFW_MENU_SCENE_HOME (key[, on]) -> 1 on the home entry
-  HOME_PARAM = 1063404533,   -- param vrfw_menu_scene_home: set while the home entry is shown
+  COME_BACK = 3530256574,    -- CMND_VRFW_MENU_SCENE_COME_BACK (key[, mode]) -> mode: the mode a return to the title opens on
+  PICK_RETURN = 1862198659,  -- param vrfw_menu_scene_pick_return: the picked entry's menu goes back to the title (return)
   FOCUS_WAIT_FRAMES = 10,    -- after a move out of the home entry: frames the old tile's focus is not reported
   MENU = "title_menu_2",
   ID = "vr_framework.menu_scene",
@@ -150,6 +159,36 @@ local ms = { phase = "off", frames = 0, asks = 0, key = nil, timeout = 600, hide
 
 local function MS_Log(...)
   pcall(funcLuaCommand, MS.LOG, "menu_scene", "title_menu_2", ...)
+end
+
+-- the title's scene state for its mods (this VM is the one owner; no game param): up over the scene's map, and on its
+-- home entry
+function VRFW_MenuSceneIsUp() return ms.phase == "up" end
+function VRFW_MenuSceneIsHome() return ms.phase == "up" and ms.home == true end
+
+-- the title's scene events for mods: VRFW_MenuScene.On(event, id, fn) registers fn (one per id: registering an id again
+-- replaces it). Events: "mode_focused" (index; -1 = the home entry) after the framework moved the mode row's focus
+-- (mode keys, a restore, the scene's up; the pad's own moves reach the title's OnChangeFocus), "home_changed" (on, why)
+-- when the home entry comes or goes. Registering runs no engine call (allowed at load time).
+VRFW_MenuScene = VRFW_MenuScene or {}
+local ms_listeners = { mode_focused = {}, home_changed = {} }
+function VRFW_MenuScene.On(event, id, fn)
+  local list = ms_listeners[event]
+  if list == nil or type(id) ~= "string" or type(fn) ~= "function" then return false end
+  for i, l in ipairs(list) do
+    if l.id == id then
+      list[i].fn = fn
+      return true
+    end
+  end
+  list[#list + 1] = { id = id, fn = fn }
+  return true
+end
+local function MS_Emit(event, ...)
+  for _, l in ipairs(ms_listeners[event]) do
+    local ok, why = pcall(l.fn, ...)
+    if not ok then pcall(funcLuaCommand, MS.LOG, "menu_scene", "title_menu_2", "listener", l.id, event, "error:", tostring(why)) end
+  end
 end
 
 local function MS_Call(cmd, ...)
@@ -168,7 +207,6 @@ end
 local function MS_Fail(why)
   MS_Log("FAILED:", why, "-> the retail main menu")
   MS_Clear(MS.HUD_OFF)
-  MS_Clear(MS.HOME_PARAM)
   ms.home = false
   MS_Call(MS.SET, "failed", "title_menu_2: " .. tostring(why))
   MS_Clear(MS.GO)
@@ -273,16 +311,17 @@ local function MS_ReportFocus()
 end
 
 -- the home entry on / off: the framework's camera (the home shot, kept for tile reports), the game param for mods
+-- the "mode_focused" event (VRFW_MenuScene.On): the framework moved the mode row's focus; index -1 = the home entry
+local function MS_ModeFocused(index)
+  MS_Emit("mode_focused", index)
+end
+
 local function MS_SetHome(on, why)
   if not ms.home_shot then return end
   ms.home, ms.focus, ms.label = on, nil, nil
-  if on then
-    MS_Call(MS.PARAM_SET, MS.HOME_PARAM, 0, 1, 1)
-  else
-    MS_Clear(MS.HOME_PARAM)
-  end
   local r = MS_Call(MS.HOME, ms.key, on and 1 or 0)
   MS_Log("home entry", on and "on" or "off", "(", tostring(why), "): framework", tostring(r))
+  MS_Emit("home_changed", on, why)            -- the "home_changed" event (VRFW_MenuScene.On)
 end
 
 -- ---- the shots as the mode selection (scene key shots_select_modes)
@@ -402,6 +441,31 @@ local function MS_ModeStep(dir)
   end
   pcall(funcLuaCommand, MS.SOUND, MS.SOUND_MOVE)
   MS_Log("mode key", dir < 0 and "previous" or "next", ":", was_home and "home" or from, "->", home == true and "home" or to)
+  MS_ModeFocused(home == true and -1 or to)
+end
+
+-- A scene-reload host restores the mode through the same home/focus state used by
+-- navigation. Changing only the camera's Home command leaves this VM on home.
+function VRFW_MenuSceneFocusMode(index)
+  if ms.phase ~= "up" then return false end
+  index = tonumber(index)
+  local n = type(GetItemButtonNum) == "function" and GetItemButtonNum(true) or 0
+  if not index or index ~= math.floor(index) or index < -1 or index >= n then return false end
+  if index < 0 then
+    if not ms.home_shot then return false end
+    MS_SetHome(true, "restored after a scene reload")
+    MS_ModeFocused(-1)
+    return true
+  end
+  MS_SetHome(false, "restored after a scene reload")
+  ms.home_restore, ms.home_leave, ms.focus = nil, false, nil
+  ms.mode_idx = index
+  ms.focus_wait = { idx = index, last = ms.up_frames + MS.FOCUS_WAIT_FRAMES }
+  ms.own_move = ms.up_frames
+  MS_M(MS.CTRL_FOCUS, MS.UPPER, true)
+  MS_M(MS.FOCUS_MARK, MS.UPPER, index, true)
+  MS_ModeFocused(index)
+  return true
 end
 
 -- left / right on the hidden row with a home entry: from it into the first / last mode, from the first / last mode's
@@ -432,6 +496,18 @@ end
 -- up / down with the mode row hidden: true = handled here (the title's own move does not run)
 local function MS_ModeUpDown(dir)
   local layer, idx = MS_Selected()
+  -- a shot whose hotspots stand one above the other (hotspot_keys = "up_down"): up / down move the selection; past the
+  -- first / last one the title's own up / down
+  local h = ms.hot
+  if h and h.active and h.keys == "up_down" and layer == MS.UPPER and h.n > 1 then
+    local to = h.sel + ((dir == MS.DIR_UP) and -1 or 1)
+    if to >= 1 and to <= h.n then
+      h.sel = to
+      pcall(funcLuaCommand, MS.SOUND, MS.SOUND_MOVE)
+      MS_Log("hotspot", h.sel, h.list[h.sel] and h.list[h.sel].name, "(up / down)")
+      return true
+    end
+  end
   if dir == MS.DIR_UP and layer == MS.LOWER and ms.mode_idx ~= nil then
     if MS_M(MS.KEY_HELD, MS.KEY_UP) then return true end
     -- back to the mode on screen, not to the tile above
@@ -468,11 +544,26 @@ local function MS_StorySaves()
   return ok and tonumber(saves) or 0
 end
 
-local function MS_ActionAvailable(a, saves)
+-- the conditions a hotspot's open_group_if may name
+local GROUP_CONDITIONS = {
+  bb_campaign_save = function() return MS_M(MS.BB_CAMPAIGN_SAVE, 0) == true end,
+}
+
+local function MS_ActionAvailable(a, saves, e)
+  if a == "open_group" then
+    if not e or (e.open_group or "") == "" then return false end
+    local cond = e.open_group_if or ""
+    if cond == "" then return true end
+    local f = GROUP_CONDITIONS[cond]
+    local ok, yes = pcall(f or function() return false end)
+    return ok and yes == true
+  end
   if a == "story_continue" then return saves > 0 end
   if a == "story_new_game" then return saves <= 0 end
   if a == "story_plus" or a == "story_extended" then return MS_Call(MS.BIT, MS.STORY_MODES_BIT) == true end
   if a == "chronicle_map" then return true end   -- the title's own press decides (a locked mode is refused there)
+  if a == "menu_pick" then return true end       -- the tile's own press decides; the next menu presses the entry
+  if a == "call" then return e ~= nil and (e.call or "") ~= "" end
   return false
 end
 
@@ -596,8 +687,21 @@ local function MS_FrameDraw(outline, hidden)
   ms.frame_shown = drawn
 end
 
+-- the selected hotspot's actor edge (edge_actor): set on the actor that is selected now, its own on the one before
+local function MS_EdgeTo(slot)
+  local h = ms.hot
+  if (h.edge_shown or 0) == (slot or 0) then return end
+  if VRFW_MenuScene and VRFW_MenuScene.ActorEdge then
+    if (h.edge_shown or 0) ~= 0 then VRFW_MenuScene.ActorEdge(h.edge_shown, false) end
+    if (slot or 0) ~= 0 then VRFW_MenuScene.ActorEdge(slot, true) end
+  end
+  h.edge_shown = slot or 0
+end
+
 local function MS_HotHide()
   local h = ms.hot
+  h.outline_on = nil
+  MS_EdgeTo(0)
   MS_FrameHide()
   if not h.drawn then return end
   h.drawn = false
@@ -609,19 +713,31 @@ end
 -- the hotspots of a shot that just came: each one's action (the first available), its text, the one selected
 local function MS_HotLoad(r)
   local h = ms.hot
-  h.shot, h.n, h.list, h.sel = r.shot, math.min(tonumber(r.n) or 0, MS_LabelCount() - 1), {}, 1
+  if r.shot ~= h.group_shot then h.group, h.group_shot = "", r.shot end   -- a new shot opens on its first group
+  h.group = h.group or ""
+  h.shot, h.list, h.sel = r.shot, {}, 1
+  h.keys = r.keys or "left_right"
   local saves = MS_StorySaves()
-  for i = 1, h.n do
-    local e = r[i]
+  local max = MS_LabelCount() - 1
+  local src = {}
+  for i = 1, tonumber(r.n) or 0 do
+    if type(r[i]) == "table" and (r[i].group or "") == h.group and #src < max then src[#src + 1] = i end
+  end
+  h.n = #src
+  for j, si in ipairs(src) do
+    local i, e = j, r[si]
     local pick, ok = nil, false
     for _, a in ipairs(type(e.actions) == "table" and e.actions or {}) do
-      if MS_ActionAvailable(a, saves) then pick, ok = a, true break end
+      if MS_ActionAvailable(a, saves, e) then pick, ok = a, true break end
     end
     pick = pick or (type(e.actions) == "table" and e.actions[1]) or ""
     h.list[i] = { name = e.name, action = pick, available = ok, text = MS_TextOf(e.text, pick), push_shot = e.push_shot,
       ms = tonumber(e.ms) or 800, flood_ms = tonumber(e.flood_ms) or 0, width = nil,
       door = type(e.door) == "string" and e.door or "", door_id = tonumber(e.door_id) or 0,
-      door_ms = tonumber(e.door_ms) or 0, door_reverse = e.door_reverse == 1, leave_white = e.leave_white == 1 }
+      door_ms = tonumber(e.door_ms) or 0, door_reverse = e.door_reverse == 1, leave_white = e.leave_white == 1,
+      pick_layer = tonumber(e.pick_layer) or 0, pick_index = tonumber(e.pick_index) or 0, draw = e.draw ~= 0,
+      pick_option = tonumber(e.pick_option) or -1, open_group = e.open_group or "", back_to = e.back_to or "", src = si,
+      outline_tag = tonumber(e.outline_tag) or 0, edge_actor = tonumber(e.edge_actor) or 0, call = e.call or "" }
     if e.start == 1 then h.sel = i end
     MS_Log("hotspot", i, e.name, "->", pick, ok and "available" or "not available", h.list[i].text)
     if h.list[i].door_id ~= 0 then
@@ -630,7 +746,7 @@ local function MS_HotLoad(r)
         okc and tostring(registered) or "call failed", okc and kind and string.format("type 0x%08X", kind % 4294967296) or "")
     end
   end
-  if h.n < (tonumber(r.n) or 0) then MS_Log("vrfw_ms_label has", MS_LabelCount(), "instance(s): only", h.n, "hotspot(s) drawn") end
+  if #src >= max and h.n < (tonumber(r.n) or 0) then MS_Log("vrfw_ms_label has", MS_LabelCount(), "instance(s): only", h.n, "hotspot(s) drawn") end
 end
 
 -- the text's width at scale 1 (the game's measure, else 13 px per character)
@@ -662,10 +778,13 @@ local function MS_HotFrame()
   if r.shot ~= h.shot then MS_HotLoad(r) end
   h.active = h.n > 0 and layer == MS.UPPER
   local outline, hidden = nil, nil
+  h.outline_on = nil
+  local edge = 0
   for i = 1, h.n do
-    local e, d = r[i], h.list[i]
-    if e.seen ~= 1 then
-      MS_Text(i, "")
+    local d = h.list[i]
+    local e = r[d.src or i]
+    if e.seen ~= 1 or not d.draw then
+      MS_Text(i, "")                 -- not seen, or drawn by the mod (draw = false)
     else
       d.width = d.width or MS_TextWidth(i, d.text)
       -- the text's size from the rectangle's size on screen; a floor rectangle flattens it (no skew command exists:
@@ -679,11 +798,29 @@ local function MS_HotFrame()
       local alpha = not d.available and 0.4 or (selected and 1 or MS.UNSELECTED_ALPHA)
       local grow = selected and MS.SELECTED_GROW or 1
       MS_Text(i, d.text, e.x - d.width * sc * grow / 2, e.y, sc * grow, sy * grow, alpha)
-      if selected then outline, hidden = e.outline, e.hidden end
+      if selected then
+        if d.edge_actor ~= 0 then
+          edge = d.edge_actor            -- the actor's own edge, no rectangle
+        elseif d.outline_tag ~= 0 then
+          h.outline_on = d.outline_tag   -- the mod's outline of the object (map tag), no rectangle
+        else
+          outline, hidden = e.outline, e.hidden
+        end
+      end
     end
   end
   if outline then MS_FrameDraw(outline, hidden) else MS_FrameHide() end
+  MS_EdgeTo(edge)
   h.drawn = true
+end
+
+-- the running shot's hotspots for a mod's own drawing (draw = false): shot name, the selected one (1-based; 0 while the
+-- mode row does not have the focus or no hotspot shows), its name, the count
+function VRFW_MenuSceneHotspot()
+  local h = ms.hot
+  if not h or not h.shot or (h.n or 0) == 0 then return "", 0, "", 0 end
+  local d = h.list[h.sel]
+  return h.shot, h.active and h.sel or 0, d and d.name or "", h.n
 end
 
 -- the scene's screens ([[VRFW.MenuSceneScreen]]): every frame while up, the layers of each screen placed and scaled so
@@ -695,6 +832,43 @@ local function MS_ScreenHide()
       for _, layer in ipairs(st.layers or {}) do MS_M(MS.VISIBLE, layer, 0, false) end
       st.shown, st.alpha = false, 0
       MS_Log("screen", name, "hidden")
+    end
+  end
+end
+
+-- the map tags: the scene's own (map_tags_on / map_tags_off) with the running shot's over them (a shot's own
+-- map_tags_on / map_tags_off, CMND_VRFW_MENU_SCENE_SHOT_TAGS); a tag is sent when its state changes, and every tag again
+-- with `all` (every 30 frames, in case the map's own requests set one back)
+local function MS_TagFrame(all)
+  local want, order = {}, {}
+  for _, t in ipairs(ms.tags or {}) do
+    if want[t[1]] == nil then order[#order + 1] = t[1] end
+    want[t[1]] = t[2]
+  end
+  local r = MS_Call(MS.SHOT_TAGS, ms.key)
+  local shot = type(r) == "table" and r.shot or ""
+  if type(r) == "table" then
+    for _, pair in ipairs({ { r.on, true }, { r.off, false } }) do
+      for _, id in ipairs(type(pair[1]) == "table" and pair[1] or {}) do
+        if want[id] == nil then order[#order + 1] = id end
+        want[id] = pair[2]
+      end
+    end
+  end
+  -- the hotspots' outline tags: only the selected hotspot's is on
+  local selected = ms.hot and ms.hot.outline_on
+  for _, id in ipairs(ms.outline_tags or {}) do
+    if want[id] == nil then order[#order + 1] = id end
+    want[id] = id == selected
+  end
+  ms.tag_state = ms.tag_state or {}
+  for _, id in ipairs(order) do
+    if all or ms.tag_state[id] ~= want[id] then
+      local ok = pcall(funcLuaCommand, MS.MAP_TAG, id, want[id])
+      if ms.tag_state[id] ~= want[id] then
+        MS_Log(string.format("map tag 0x%08X %s for shot %s (%s)", id % 4294967296, want[id] and "on" or "off", shot, tostring(ok)))
+      end
+      ms.tag_state[id] = want[id]
     end
   end
 end
@@ -814,16 +988,45 @@ local function MS_HotEnter()
     MS_Log("hotspot", e.name, ":", e.action, "not available")
     return true, false
   end
-  for _, k in ipairs({ MS.STORY_GO, MS.STORY_KIND, MS.STORY_PICK, MS.STORY_WAIT, MS.CHRONICLE_WAIT, MS.LEAVE_WHITE }) do
+  if e.action == "call" then
+    -- a function of the title's Lua (a mod's: it does the rest; the title is not left)
+    local fn = _G
+    for part in tostring(e.call):gmatch("[^%.]+") do fn = type(fn) == "table" and fn[part] or nil end
+    if type(fn) ~= "function" then
+      MS_Log("hotspot", e.name, ": call", e.call, "is not a function of the title")
+      return true, false
+    end
+    local ok, why = pcall(fn, e.name)
+    MS_Log("hotspot", e.name, ": call", e.call, ok and "" or ("error " .. tostring(why)))
+    return true, false
+  end
+  if e.action == "open_group" then
+    -- the shot shows the hotspots of the group (Back: its first group again)
+    h.group, h.shot = e.open_group, nil
+    pcall(funcLuaCommand, MS.SOUND, MS.SOUND_MOVE)
+    MS_Log("hotspot", e.name, ": group", e.open_group)
+    return true, false
+  end
+  for _, k in ipairs({ MS.STORY_GO, MS.STORY_KIND, MS.STORY_PICK, MS.STORY_WAIT, MS.CHRONICLE_WAIT, MS.LEAVE_WHITE,
+      MS.PICK_LAYER, MS.PICK_INDEX, MS.PICK_WAIT, MS.PICK_OPTION, MS.PICK_RETURN }) do
     MS_Clear(k)
   end
   if e.leave_white then
     MS_Call(MS.PARAM_SET, MS.LEAVE_WHITE, 0, 1, 1)
   end
+  -- Back from what the action opens comes to the title: it opens again on this mode
+  if e.back_to == "title" and ms.mode_idx ~= nil then MS_Call(MS.COME_BACK, ms.key, ms.mode_idx) end
   if e.action == "chronicle_map" then
     -- the press is the title's «Modo Crónica» (the shot's tile): title_main ends after the push-in, the Chronicle top
     -- menu then goes straight to the map
     MS_Call(MS.PARAM_SET, MS.CHRONICLE_WAIT, 0, e.ms, 1)
+  elseif e.action == "menu_pick" then
+    -- the press is the tile's own; title_main ends after the push-in, the next menu holding pick_layer presses the entry
+    MS_Call(MS.PARAM_SET, MS.PICK_LAYER, 0, e.pick_layer, 1)
+    MS_Call(MS.PARAM_SET, MS.PICK_INDEX, 0, e.pick_index + 1, 1)
+    if (e.pick_option or -1) >= 0 then MS_Call(MS.PARAM_SET, MS.PICK_OPTION, 0, e.pick_option + 1, 1) end
+    if e.back_to == "title" then MS_Call(MS.PARAM_SET, MS.PICK_RETURN, 0, 1, 1) end
+    MS_Call(MS.PARAM_SET, MS.PICK_WAIT, 0, e.ms, 1)
   elseif e.action == "story_continue" or e.action == "story_new_game" then
     MS_Call(MS.PARAM_SET, MS.STORY_GO, 0, e.ms, 1)
     MS_Call(MS.PARAM_SET, MS.STORY_KIND, 0, e.action == "story_new_game" and 2 or 1, 1)
@@ -835,7 +1038,7 @@ local function MS_HotEnter()
     MS_Call(MS.SHOT, ms.key, e.push_shot)
   end
   if e.flood_ms > 0 then
-    ms.flood = { shot = h.shot, index = h.sel, start = ms.up_frames, total = e.ms * 60 / 1000,
+    ms.flood = { shot = h.shot, index = e.src or h.sel, start = ms.up_frames, total = e.ms * 60 / 1000,
       length = math.min(e.flood_ms, e.ms) * 60 / 1000, logged = false }
   end
   if e.door_id ~= 0 then
@@ -847,13 +1050,22 @@ local function MS_HotEnter()
   return true, true
 end
 
+-- Optional host hook: a mod can finish its child interface under the same black
+-- cover before the scene and that interface are revealed together.
+function VRFW_MenuSceneCanReveal(key) return true end
+
 local function MS_GoUp(key)
+  if VRFW_MenuSceneCanReveal(key) ~= true then return false end
   local ok = MS_Call(MS.SET, "up")
   if ok ~= 1 then
     return false
   end
   ms.key, ms.phase, ms.up_frames = key, "up", 0
   MS_Call(MS.FADE, 0, 0.3)      -- the framework released its black cover at «up»: the room and the menu fade in together
+  -- the bright-fade layer 1 too: a match left by its prompts fades it to black (the match_exit cover,
+  -- lua/menu/_all/14_match_exit.lua) and the title return only ends the hold; the title's own fade-in that would show
+  -- it is made instant over a scene, so the room stayed black behind the menu after a match
+  MS_Call(MS.FADE, 0, 0.3, 1)
   local sc = MS_Call(MS.SCENE, key)
   ms.hide = type(sc) == "table" and type(sc.hide_layers) == "table" and sc.hide_layers or {}
   ms.close = type(sc) == "table" and type(sc.close_menus) == "table" and sc.close_menus or {}
@@ -869,11 +1081,11 @@ local function MS_GoUp(key)
   ms.hot = { n = 0, list = {}, sel = 1 }
   ms.screens = {}
   MS_Clear(MS.LEAVE_WHITE)
+  for _, k in ipairs({ MS.PICK_LAYER, MS.PICK_INDEX, MS.PICK_WAIT }) do MS_Clear(k) end
   ms.actions = {}
   for _, a in ipairs(type(sc) == "table" and type(sc.actions) == "table" and sc.actions or {}) do
     if type(a) == "table" and type(a.tile) == "number" then ms.actions[a.tile % 4294967296] = a end
   end
-  MS_Call(MS.PARAM_SET, MS.UP, 0, 1, 1)
   MS_Log("opened over the map of", key, "(scene up):", #ms.hide, "layer(s) to hide,", #ms.close, "field menu(s) to close,",
     ms.modes and "the shots select the modes" or "the mode row as the game's")
   local okp, x, y, z = MS_Call(MS.CAMERA_POS)
@@ -882,22 +1094,33 @@ local function MS_GoUp(key)
   MS_Hide()
   -- the scene's map tags (e.g. a screen unrolled): the map's tag manager exists once the map is up; set again every
   -- 30 frames (as the minimap), in case the map's own requests set one back
-  ms.tags = {}
+  ms.tags, ms.tag_state = {}, {}
+  ms.outline_tags = type(sc) == "table" and type(sc.outline_tags) == "table" and sc.outline_tags or {}
   for _, pair in ipairs({ { type(sc) == "table" and sc.map_tags_on, true }, { type(sc) == "table" and sc.map_tags_off, false } }) do
     for _, tag in ipairs(type(pair[1]) == "table" and pair[1] or {}) do
       ms.tags[#ms.tags + 1] = { tag, pair[2] }
+      ms.tag_state = ms.tag_state or {}
+      ms.tag_state[tag] = pair[2]
       local okt = pcall(funcLuaCommand, MS.MAP_TAG, tag, pair[2])
       MS_Log(string.format("map tag 0x%08X %s (%s)", tag % 4294967296, pair[2] and "on" or "off", tostring(okt)))
     end
   end
   ms.focus, ms.home, ms.home_restore, ms.home_leave, ms.focus_wait = nil, false, nil, false, nil
   ms.home_shot = ms.modes and type(sc) == "table" and type(sc.home_shot) == "string" and sc.home_shot ~= "" and sc.home_shot or nil
-  if ms.home_shot then
+  -- a return to the title after an action that declared it (return = "title") opens on the mode it left from
+  local back = tonumber(MS_Call(MS.COME_BACK, key)) or -1
+  if back >= 0 and VRFW_MenuSceneFocusMode(back) then
+    MS_Log("opened on mode", back, "(the return of the action it left by)")
+  elseif ms.home_shot then
     MS_SetHome(true, "the menu opens on it")
-  else
-    MS_Clear(MS.HOME_PARAM)
   end
   MS_ReportFocus()               -- the tile focused at the open
+  local open_layer, open_idx = MS_Selected()
+  if ms.home then
+    MS_ModeFocused(-1)
+  elseif open_layer == MS.UPPER and type(open_idx) == "number" then
+    MS_ModeFocused(open_idx)
+  end
   return true
 end
 
@@ -981,6 +1204,9 @@ local function MS_Step()
     end
   elseif ms.phase == "going_up" then
     MS_Hide()
+    -- Native title/menu opening animations may request their own fade-in.
+    -- Keep the same cover until the child UI's reveal gate has completed.
+    MS_Call(MS.FADE, 1, 0)
     -- the room shows with the menu: «up» once the menu's opening is done (its opening coroutine past its first
     -- activation), at most 5 s
     ms.wait_up = (ms.wait_up or 0) + 1
@@ -1023,11 +1249,11 @@ local function MS_Step()
     elseif ms.up_frames % 30 == 0 then
       MS_Hide(true)
     end
+    MS_TagFrame(ms.up_frames % 30 == 0)
     if ms.up_frames % 30 == 0 then
       MS_CloseField()
-      for _, t in ipairs(ms.tags or {}) do pcall(funcLuaCommand, MS.MAP_TAG, t[1], t[2]) end
     end
-    if ms.up_frames == 60 or ms.up_frames == 300 or ms.up_frames % 1800 == 0 then
+    if ms.up_frames == 60 then
       MS_Log("scene up for", ms.up_frames, "frames (", math.floor(ms.up_frames / 60), "s )")
     end
   end
@@ -1047,10 +1273,8 @@ if VRFW_Host ~= nil then
       MS_Call(MS.PENDING, "")           -- a title opened: no menu after a leave is waiting
       ms.close, ms.closed, ms.seen, ms.wait_up = {}, 0, {}, 0
       MS_Clear(MS.GO)    -- a request never outlives the title it came from
-      MS_Clear(MS.UP)    -- set again below only when this title runs over the map
       MS_Clear(MS.OPTIONS)
       MS_Clear(MS.TITLE_READY)          -- set again by this title's title_main once it reads requests
-      MS_Clear(MS.HOME_PARAM)           -- set again at «up» when the scene has a home entry
       ms.home_shot, ms.home, ms.home_restore, ms.home_leave, ms.focus_wait = nil, false, nil, false, nil
     end,
   })
@@ -1079,6 +1303,21 @@ if VRFW_Host ~= nil then
   -- a tile action of the scene (A on a mode-row tile): continue_story = straight into the story as «Continuar», after
   -- the action's push-in shot; the game's own press runs too (its sound, its request): title_main's 150_menu_scene.lua
   -- then skips the story submenu (param vrfw_menu_scene_story_continue). No story save: the game's submenu.
+  -- Back while a shot shows another group of its hotspots (open_group): its first group again
+  VRFW_Host.on("title_menu_2", "OnBack", {
+    id = MS.ID .. ".hotspot_group_back",
+    phase = "around",
+    fn = function(nxt, ...)
+      local h = ms.hot
+      if ms.phase == "up" and h and (h.group or "") ~= "" then
+        MS_Log("hotspot group", h.group, "left (Back)")
+        h.group, h.shot = "", nil
+        pcall(funcLuaCommand, MS.SOUND, MS.SOUND_MOVE)
+        return 1
+      end
+      return nxt(...)
+    end,
+  })
   VRFW_Host.on("title_menu_2", "OnEnter", {
     id = MS.ID .. ".tile_action",
     phase = "around",

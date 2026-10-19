@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05029840"                                   # Venom Braggard
+moves = [
+  { move = 0xB8A509A7, level = 1 },                         # Asterocks
+  { move = 0x2296A01A, level = 20 },                        # Southern Cross
+  { move = 0x4A17EE80, level = 40 },                        # Hunter's Net
+  { move = 0xEEFFAE21, level = 58 },                        # Jungle Jam
+]
 
   [[edit.cards]]
   id = 0xB0B65226                                         # DF/MF · forest

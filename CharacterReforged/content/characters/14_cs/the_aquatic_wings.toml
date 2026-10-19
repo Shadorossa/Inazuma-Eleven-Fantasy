@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05029830"                                   # Sting Xiang
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x0DCADC54, level = 17 },                        # Emperor Penguin 7
+  { move = 0x89D614F5, level = 37 },                        # White Hurricane
+  { move = 0xD262F964, level = 53 },                        # Format Disk
+]
 
   [[edit.cards]]
   id = 0xFFF7C4E1                                         # MF/FW · wind

@@ -79,3 +79,11 @@ go3 = "Galaxy"
 ares = "Ares"
 orion = "Orion"
 victory_road = "VR"
+
+# Free-match teams whose players play their base form (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md
+# §14): research/scripts/chronicle_deluxe_base_form_build.py writes content/teams/90_rules/free_match_base_forms.toml,
+# a team `chronicle_deluxe.<name>` based on `team` with each player's base-form card (the same-named character's other
+# card in the game's teams), used per class by [[VRFW.FreeMatchRival]] (content/teams/90_rules/free_match.toml).
+[[free_match_base_form]]
+team = "tm_cro_go2_0800"     # Protocolo Omega 3.0 (its players miximaxed with Zanark)
+name = "fm_protocol_omega_3_base"

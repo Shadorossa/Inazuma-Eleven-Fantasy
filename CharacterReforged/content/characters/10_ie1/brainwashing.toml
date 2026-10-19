@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01000810"                                   # Thomas Feldt
+moves = [
+  { move = 0xF14FDC17, level = 1 },                         # Shot Pocket
+  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
+  { move = 0x8FBCFC3C, level = 34 },                        # Blazing Knuckle
+  { move = 0x01DB04F5, level = 45 },                        # Defence Scan
+]
 
   [[edit.cards]]
   id = 0x3E469E9A                                         # GK/MF · forest
@@ -15,6 +21,12 @@ target = "c01000810"                                   # Thomas Feldt
 
 [[edit]]
 target = "c01000820"                                   # Harry Leading
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x55C71D2A, level = 29 },                        # About Face
+  { move = 0x5B6C28ED, level = 80 },                        # Invisible Fake
+  { move = 0xB3BD79DA, level = 90 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0x156BCD59                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c01000820"                                   # Harry Leading
 
 [[edit]]
 target = "c01000830"                                   # Terry Stronger
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0xA5777314, level = 24 },                        # Assault Shot
+  { move = 0x520F1E48, level = 29 },                        # Psycho Shot
+  { move = 0xA8E0F6C2, level = 65 },                        # Kung Fu Header
+]
 
   [[edit.cards]]
   id = 0x0C70FC18                                         # DF/FW · fire
@@ -33,6 +51,12 @@ target = "c01000830"                                   # Terry Stronger
 
 [[edit]]
 target = "c01000840"                                   # Philip Marvel
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x34256515, level = 20 },                        # Dynamite Shot
+  { move = 0x7BA5586C, level = 85 },                        # Mad Express
+  { move = 0x58E8FC83, level = 92 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0x43316ADF                                         # DF/MF · mountain
@@ -43,6 +67,12 @@ target = "c01000840"                                   # Philip Marvel
 
 [[edit]]
 target = "c01000850"                                   # Noel Good
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x0710C61E, level = 30 },                        # Perimeter Zone
+  { move = 0x520F1E48, level = 76 },                        # Psycho Shot
+  { move = 0x00196EC2, level = 90 },                        # Earthquake
+]
 
   [[edit.cards]]
   id = 0x5A2A5B9E                                         # DF/MF · forest
@@ -53,6 +83,12 @@ target = "c01000850"                                   # Noel Good
 
 [[edit]]
 target = "c01000860"                                   # Tyron Rock
+moves = [
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0x01DB04F5, level = 25 },                        # Defence Scan
+  { move = 0xB1FBC783, level = 88 },                        # Reflect Buster
+]
 
   [[edit.cards]]
   id = 0x7107085D                                         # MF/FW · fire
@@ -62,6 +98,12 @@ target = "c01000860"                                   # Tyron Rock
 
 [[edit]]
 target = "c01000870"                                   # Francis Tell
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x8C990270, level = 75 },                        # Gunshot
+  { move = 0xB5B7108F, level = 89 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x681C391C                                         # MF/FW · forest
@@ -72,6 +114,12 @@ target = "c01000870"                                   # Francis Tell
 
 [[edit]]
 target = "c01000880"                                   # Samuel Buster
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x34256515, level = 1 },                         # Dynamite Shot
+  { move = 0x71831119, level = 25 },                        # Foul Offence 2
+  { move = 0xB1FBC783, level = 92 },                        # Reflect Buster
+]
 
   [[edit.cards]]
   id = 0xEF8425D3                                         # MF/FW · fire
@@ -81,6 +129,12 @@ target = "c01000880"                                   # Samuel Buster
 
 [[edit]]
 target = "c01000890"                                   # Jonathan Seller
+moves = [
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x8EDFBC29, level = 27 },                        # Double Jaw
+  { move = 0x518BCA26, level = 85 },                        # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0xF69F1492                                         # FW/MF · wind
@@ -90,6 +144,12 @@ target = "c01000890"                                   # Jonathan Seller
 
 [[edit]]
 target = "c01000900"                                   # Victor Kind
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x30A819A7, level = 26 },                        # Twin Boost F
+  { move = 0x4890FB67, level = 78 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0x269FC5EC                                         # MF/FW · forest
@@ -100,6 +160,12 @@ target = "c01000900"                                   # Victor Kind
 
 [[edit]]
 target = "c01000910"                                   # Neil Turner
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0xA5777314, level = 38 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0x3F84F4AD                                         # FW/MF · fire
@@ -109,6 +175,12 @@ target = "c01000910"                                   # Neil Turner
 
 [[edit]]
 target = "c01000920"                                   # Reg Underwood
+moves = [
+  { move = 0x01DB04F5, level = 26 },                        # Defence Scan
+  { move = 0x520F1E48, level = 38 },                        # Psycho Shot
+  { move = 0xF14FDC17, level = 50 },                        # Shot Pocket
+  { move = 0x4AD6453E, level = 79 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0x14A9A76E                                         # GK/MF · forest
@@ -118,6 +190,12 @@ target = "c01000920"                                   # Reg Underwood
 
 [[edit]]
 target = "c01000930"                                   # Patrick Stiller
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x627FC293, level = 27 },                        # Meteor Attack
+  { move = 0x19025F83, level = 35 },                        # Quick Draw
+  { move = 0x79224D8B, level = 47 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x0DB2962F                                         # MF/FW · wind
@@ -128,6 +206,12 @@ target = "c01000930"                                   # Patrick Stiller
 
 [[edit]]
 target = "c01000940"                                   # Charles Oughtry
+moves = [
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x3C843987, level = 20 },                        # Flurry Dash
+  { move = 0x01DB04F5, level = 30 },                        # Defence Scan
+  { move = 0xB3BD79DA, level = 65 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0x42F300E8                                         # MF/FW · mountain
@@ -137,6 +221,12 @@ target = "c01000940"                                   # Charles Oughtry
 
 [[edit]]
 target = "c01000950"                                   # Clive Mooney
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0x5643C944, level = 24 },                        # Killer Slide
+  { move = 0x142DBE2A, level = 36 },                        # Foul Offence
+  { move = 0x3663DB4C, level = 78 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0x5BE831A9                                         # FW/MF · fire
@@ -147,6 +237,12 @@ target = "c01000950"                                   # Clive Mooney
 
 [[edit]]
 target = "c01000960"                                   # Neil Waters
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x01DB04F5, level = 24 },                        # Defence Scan
+  { move = 0xB3BD79DA, level = 33 },                        # Patriot Shot
+  { move = 0x7D6E9A87, level = 47 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0x70C5626A                                         # DF/FW · forest
@@ -157,6 +253,12 @@ target = "c01000960"                                   # Neil Waters
 
 [[edit]]
 target = "c11801070"                                   # Newton Thomas
+moves = [
+  { move = 0x514A6198, level = 1 },                         # Asteroid Belt
+  { move = 0x7748D3F2, level = 13 },                        # Devil Ball
+  { move = 0x750E6DAB, level = 20 },                        # Matador Feint
+  { move = 0x06D2AC29, level = 30 },                        # Diabolical Cut
+]
 
   [[edit.cards]]
   id = 0xFE4A8D32                                         # MF/DF · forest

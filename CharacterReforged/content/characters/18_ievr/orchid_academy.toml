@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11110010"                                   # Celina Lavelle
+moves = [
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x54C4DCA3, level = 13 },                        # Butterfly Trance
+  { move = 0xAC6D8A70, level = 20 },                        # Rainbow Arc
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x0AC335A9                                         # FW/DF · mountain
@@ -15,6 +21,12 @@ target = "c11110010"                                   # Celina Lavelle
 
 [[edit]]
 target = "c11110020"                                   # Clarisse Luxe
+moves = [
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x27D9B69F, level = 20 },                        # Prima Donna
+  { move = 0x4C1D87D5, level = 30 },                        # Bed of Roses
+]
 
   [[edit.cards]]
   id = 0x21EE666A                                         # FW/MF · fire
@@ -24,6 +36,12 @@ target = "c11110020"                                   # Clarisse Luxe
 
 [[edit]]
 target = "c11110030"                                   # Adelina Gearhart
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x12E67CC1, level = 13 },                        # Future Eye
+  { move = 0x70417B2E, level = 20 },                        # Deceptor Dribble
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0x38F5572B                                         # FW/MF · forest
@@ -33,6 +51,12 @@ target = "c11110030"                                   # Adelina Gearhart
 
 [[edit]]
 target = "c11110040"                                   # Eliza Florence
+moves = [
+  { move = 0x20D01E43, level = 1 },                         # Hey Presto
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x36A270F2, level = 20 },                        # Rolling Slide
+  { move = 0x4FE09C7A, level = 30 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x77B4C1EC                                         # MF/FW · mountain
@@ -42,6 +66,12 @@ target = "c11110040"                                   # Eliza Florence
 
 [[edit]]
 target = "c11110050"                                   # Elyse Reign
+moves = [
+  { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x750E6DAB, level = 20 },                        # Matador Feint
+  { move = 0xB7474004, level = 30 },                        # Dough Ray Me
+]
 
   [[edit.cards]]
   id = 0x6EAFF0AD                                         # MF/FW · fire
@@ -51,6 +81,12 @@ target = "c11110050"                                   # Elyse Reign
 
 [[edit]]
 target = "c11110060"                                   # Galia Flair
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0xAF150D21, level = 13 },                        # Swallow Counter
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x585098FC, level = 30 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0x4582A36E                                         # MF/DF · fire
@@ -60,6 +96,12 @@ target = "c11110060"                                   # Galia Flair
 
 [[edit]]
 target = "c11110070"                                   # Selene Trance
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0x27D9B69F, level = 13 },                        # Prima Donna
+  { move = 0x1C4D4906, level = 20 },                        # Whirlpool
+  { move = 0xF64674CB, level = 30 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0x5C99922F                                         # MF/GK · wind
@@ -69,6 +111,12 @@ target = "c11110070"                                   # Selene Trance
 
 [[edit]]
 target = "c11110080"                                   # Margie Frostveil
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0xB633C4E1, level = 13 },                        # Photon Crash
+  { move = 0xC19E2AEE, level = 20 },                        # Pegasus Shot
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0xDB018EE0                                         # DF/FW · forest
@@ -78,6 +126,12 @@ target = "c11110080"                                   # Margie Frostveil
 
 [[edit]]
 target = "c11110090"                                   # Evelyn Hale
+moves = [
+  { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
+  { move = 0x1C4D4906, level = 13 },                        # Whirlpool
+  { move = 0xC42D6F54, level = 20 },                        # Aikido
+  { move = 0x4E9A9232, level = 30 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0xC21ABFA1                                         # DF/MF · wind
@@ -87,6 +141,12 @@ target = "c11110090"                                   # Evelyn Hale
 
 [[edit]]
 target = "c11110100"                                   # Elara Silvane
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0xEA12530F, level = 13 },                        # Double Rocket
+  { move = 0x530CDFC1, level = 20 },                        # Mystifying Mist
+  { move = 0xBA833662, level = 30 },                        # Million Hands
+]
 
   [[edit.cards]]
   id = 0x121A6EDF                                         # DF/GK · fire
@@ -96,6 +156,12 @@ target = "c11110100"                                   # Elara Silvane
 
 [[edit]]
 target = "c11110110"                                   # Lilia Charmont
+moves = [
+  { move = 0xD471DE6C, level = 1 },                         # Snakebite
+  { move = 0xC13F00CC, level = 13 },                        # Flower Power
+  { move = 0x4FE09C7A, level = 20 },                        # Acrobatic Keep
+  { move = 0xF14FDC17, level = 30 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0x0B015F9E                                         # GK/MF · mountain
@@ -105,6 +171,12 @@ target = "c11110110"                                   # Lilia Charmont
 
 [[edit]]
 target = "c11110120"                                   # Talia Jester
+moves = [
+  { move = 0xEA12530F, level = 1 },                         # Double Rocket
+  { move = 0x5B3151F0, level = 13 },                        # Nitro Slap
+  { move = 0x4890FB67, level = 20 },                        # Twin Boost
+  { move = 0x47657634, level = 30 },                        # Flame Breath
+]
 
   [[edit.cards]]
   id = 0x202C0C5D                                         # GK/FW · fire
@@ -114,6 +186,12 @@ target = "c11110120"                                   # Talia Jester
 
 [[edit]]
 target = "c11110130"                                   # Kiyora Asakiri
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x592A96B4, level = 13 },                        # Afterimage
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x1A868BED, level = 30 },                        # Clone Defence
+]
 
   [[edit.cards]]
   id = 0x39373D1C                                         # MF/DF · wind
@@ -123,6 +201,12 @@ target = "c11110130"                                   # Kiyora Asakiri
 
 [[edit]]
 target = "c11110140"                                   # Lenora Graves
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0x53E9C2A3, level = 20 },                        # Capable Hands
+  { move = 0xAB6422AC, level = 30 },                        # Phantom Shot
+]
 
   [[edit.cards]]
   id = 0x7676ABDB                                         # FW/GK · fire
@@ -132,6 +216,12 @@ target = "c11110140"                                   # Lenora Graves
 
 [[edit]]
 target = "c11110150"                                   # Liliane Alban
+moves = [
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0xC5D2FDE2, level = 13 },                        # Oglitteration
+  { move = 0x4C1D87D5, level = 20 },                        # Bed of Roses
+  { move = 0x54C4DCA3, level = 30 },                        # Butterfly Trance
+]
 
   [[edit.cards]]
   id = 0x6F6D9A9A                                         # FW/DF · forest
@@ -141,6 +231,12 @@ target = "c11110150"                                   # Liliane Alban
 
 [[edit]]
 target = "c11110160"                                   # Amara Winslow
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x4F58F805, level = 13 },                        # Coil Turn
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x4440C959                                         # DF/MF · mountain
@@ -150,6 +246,12 @@ target = "c11110160"                                   # Amara Winslow
 
 [[edit]]
 target = "c11110500"                                   # Apia Crownwell
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x79E3E635, level = 13 },                        # Racing Flame
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0x1513C603                                         # FW/MF · fire
@@ -159,6 +261,12 @@ target = "c11110500"                                   # Apia Crownwell
 
 [[edit]]
 target = "c11110510"                                   # Melissa Hivewood
+moves = [
+  { move = 0x5049A011, level = 1 },                         # Spinning Shot
+  { move = 0x18019E0A, level = 13 },                        # Double Grenade
+  { move = 0x19025F83, level = 20 },                        # Quick Draw
+  { move = 0x37A1B17B, level = 30 },                        # Fire Rooster
+]
 
   [[edit.cards]]
   id = 0x0C08F742                                         # DF/FW · fire

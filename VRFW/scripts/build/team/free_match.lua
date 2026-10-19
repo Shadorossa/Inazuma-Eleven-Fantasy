@@ -21,7 +21,7 @@ local function same_classes(a, b)
   if #a ~= #b then return false end
   for k = 1, #a do
     local x, y = a[k], b[k]
-    if x.class ~= y.class or x.level ~= y.level then return false end
+    if x.class ~= y.class or x.level ~= y.level or (x.flat_rival_level == true) ~= (y.flat_rival_level == true) then return false end
     if (x.banner == nil) ~= (y.banner == nil) then return false end
     if x.banner and (x.banner[1] ~= y.banner[1] or x.banner[2] ~= y.banner[2]) then return false end
   end
@@ -34,6 +34,7 @@ local function describe(classes)
   for _, c in ipairs(classes) do
     local x = {}
     if c.level ~= nil then x[#x + 1] = "Nv. " .. c.level end
+    if c.flat_rival_level == true then x[#x + 1] = "every rival at that level" end
     if c.banner ~= nil then x[#x + 1] = "banner " .. c.banner[1] .. ":" .. c.banner[2] end
     if #x == 0 then parts[#parts + 1] = T.d(c.class) else parts[#parts + 1] = T.d(c.class) .. " (" .. table.concat(x, ", ") .. ")" end
   end
@@ -86,7 +87,9 @@ function FM.install_rules(X)
             VRFW.log.error(string.format("%s: [vrfw.FreeMatch] Difficulties: class %d: Banner `%s` must be `#/<atlas path>:<sprite>` (the retail title is shown)", file, d, b))
           end
         end
-        out[#out + 1] = { class = d, level = level, banner = bn }
+        local flat = type(c) == "table" and c.flat_rival_level == true or nil
+        local own_bit = type(c) == "table" and c.own_clear_bit == true or nil
+        out[#out + 1] = { class = d, level = level, banner = bn, flat_rival_level = flat, own_clear_bit = own_bit }
       end
     end
     T.sort(out, function(a, b) return a.class < b.class end)
@@ -671,16 +674,279 @@ function FM.install(X)
   function X.free_match_levels(rules)
     local levels = {}
     for _, c in ipairs(rules.classes) do
-      if c.level ~= nil then levels[#levels + 1] = { c.class, c.level } end
+      if c.level ~= nil then levels[#levels + 1] = { c.class, c.level, c.flat_rival_level == true } end
     end
     if #levels == 0 then return end
-    local g, n, rows = X.fm_level_rows(levels)
+    local g, n, rows, flat = X.fm_level_rows(levels)
     if g then
       local p = {}
-      for k, x in ipairs(levels) do p[k] = x[1] .. " = Nv. " .. x[2] end
-      VRFW.log.info(string.format("[vrfw.FreeMatch] class levels %s: %d row(s) of %d free-match game(s) re-levelled (%d game(s) on the list)", table.concat(p, ", "), rows, g, n))
+      for k, x in ipairs(levels) do p[k] = x[1] .. " = Nv. " .. x[2] .. (x[3] and " (every rival at that level)" or "") end
+      VRFW.log.info(string.format("[vrfw.FreeMatch] class levels %s: %d row(s) of %d free-match game(s) re-levelled (%d game(s) on the list); %d row(s) play their team without member level offsets", table.concat(p, ", "), rows, g, n, flat))
     else
       VRFW.log.error("[vrfw.FreeMatch] class levels: " .. n .. " (no row changed)")
+    end
+  end
+
+  -- clear bits of the free-match classes: every row of an offered class of a game on the free-match list that has no
+  -- clear bit (a route node's game, a list's clone) gets one from the shared space, keyed `free_match.<game>.<class>`,
+  -- so a win at that class is recorded and the row's orb lights
+  function X.free_match_clear_bits(rules)
+    local classes, own = {}, {}
+    for _, c in ipairs(rules.difficulties or {}) do classes[c] = true end
+    if T.is_empty(classes) then return end
+    -- OwnClearBit: every row of the class gets a bit of its own, whatever bit it had (old wins do not count)
+    for _, c in ipairs(rules.classes or {}) do if c.own_clear_bit == true then own[c.class] = true end end
+    local o, oe = X.opp()
+    local t, te = X.games()
+    local fb = o and o:field(0, "battleId")
+    if not (o and t and fb) then
+      VRFW.log.error("[vrfw.FreeMatch] clear bits: " .. tostring(oe or te or "no battleId column") .. " (no row changed)")
+      return
+    end
+    local SG = X.SG
+    local listed = {}
+    for _, x in ipairs(o:col_u32(0, fb)) do if x and x ~= 0 then listed[x] = true end end
+    local used = {}
+    for _, i in ipairs(t:rows("SOCCER_GAME_DIFFICULTY")) do
+      local b = t:uint(i, SG.D_CLEAR_BIT)
+      if b and b ~= 0 then used[b] = true end
+    end
+    local n, seen = 0, {}
+    for _, g in ipairs(X.games_list()) do
+      if listed[g.id] then
+        for _, i in ipairs(X.grows(g)) do
+          if not seen[i] then
+            seen[i] = true
+            local d = t:int(i, SG.D_DIFF)
+            if d and classes[d] and (own[d] or (t:uint(i, SG.D_CLEAR_BIT) or 0) == 0) then
+              local b, w = clear_bit("free_match." .. g.name .. "." .. d, used)
+              if w then VRFW.log.warn(w) end
+              if b then
+                used[b] = true
+                t:set(i, SG.D_CLEAR_BIT, b)
+                n = n + 1
+              else
+                VRFW.log.warn(string.format("[vrfw.FreeMatch] clear bits: no free clear bit below %d for %s class %d (a win there is never recorded)", CLEAR_BITS, g.name, d))
+              end
+            end
+          end
+        end
+      end
+    end
+    if n > 0 then
+      t:touch()
+      X.touched.games = true
+      VRFW.log.info(string.format("[vrfw.FreeMatch] clear bits: %d class row(s) of free-match games got one of their own", n))
+    end
+  end
+
+  -- ---- [[VRFW.FreeMatchGame]] / [[VRFW.FreeMatchPlace]] / [[VRFW.FreeMatchRival]] (free-match-tabs.md §12; native: fm_games.rs)
+
+  -- the id the list rows of game `name` carry: the game's, or its [[VRFW.GameTab]] copy's
+  local function listed_id(name, game_tabs)
+    local g = X.gcache().by_name[name]
+    if not g then return nil, "`" .. name .. "` is not a game of soccer_game_config" end
+    for _, x in ipairs(game_tabs or {}) do
+      if x[2] == g.id then return x[1] end
+    end
+    return g.id
+  end
+
+  -- move the list rows of `gid` right before the first row of `before`, else right after the last row of `after`
+  local function place_rows(gid, before, after)
+    local o, oe = X.opp()
+    if not o then return nil, oe end
+    local fb = o:field(0, "battleId")
+    local bat = o:col_u32(0, fb)
+    local mine, order = {}, {}
+    for i = 0, #bat - 1 do
+      if bat[i + 1] == gid then mine[#mine + 1] = i else order[#order + 1] = i end
+    end
+    if #mine == 0 then return nil, "the game has no list row" end
+    local at
+    if before ~= nil then
+      for k, j in ipairs(order) do if bat[j + 1] == before then at = k break end end
+      if at == nil then return nil, "the `Before` game has no list row" end
+    elseif after ~= nil then
+      for k, j in ipairs(order) do if bat[j + 1] == after then at = k + 1 end end
+      if at == nil then return nil, "the `After` game has no list row" end
+    else
+      return 0
+    end
+    for k, i in ipairs(mine) do table.insert(order, at + k - 1, i) end
+    o:keep(0, order)
+    o:touch()
+    X.touched.opp = true
+    return #mine
+  end
+
+  local function targets(d, game_tabs)
+    local b, a
+    if d.before ~= nil then
+      local e
+      b, e = listed_id(d.before, game_tabs)
+      if not b then return nil, nil, "Before: " .. e end
+    end
+    if d.after ~= nil then
+      local e
+      a, e = listed_id(d.after, game_tabs)
+      if not a then return nil, nil, "After: " .. e end
+    end
+    return b, a
+  end
+
+  -- the first piece holding game `g` and its event row (0-based), or nil
+  local function holder(r, pl, el, fref, fg, g)
+    for p = 0, r:len(pl) - 1 do
+      local a, n = r:tuple(pl, p, fref)
+      for j = a or 0, (a or 0) + (n or 0) - 1 do
+        if r:u32(el, j, fg) == g then return p, j end
+      end
+    end
+    return nil
+  end
+
+  local function free_match_game(m, what, d, game_tabs)
+    if d.tab > FIRST_TAB - 1 then return nil, string.format("tab %d: only the retail tabs 0..%d (IE1 … Victory Road)", d.tab, FIRST_TAB - 1) end
+    local G = X.gcache()
+    local unlock = G.by_name[d.unlock]
+    if not unlock then return nil, "Unlock `" .. d.unlock .. "` is not a game of soccer_game_config" end
+    local r, pl, el = X.route_lists()
+    if not r then return nil, pl end
+    local fid, fref, frt, fg = r:field(pl, "pieceId"), r:field(pl, "eventInfoRef"), r:field(pl, "routeType"), r:field(el, "paramCrc1")
+    local src, ev = holder(r, pl, el, fref, fg, unlock.id)
+    if src == nil then return nil, "Unlock `" .. d.unlock .. "`: no piece of chronicle_vs_route_config holds it" end
+    local gid, made
+    if d.template ~= nil and d.team ~= nil then
+      local t, te = X.team_ref(d.team, m)
+      if t == nil then return nil, "Team: " .. te end
+      local e
+      gid, e = X.clone_game(m, what, t, d.template, d.game, nil, false, true)
+      if not gid then return nil, e end
+      made = true
+    elseif d.template == nil and d.team == nil then
+      local g = X.gcache().by_name[d.game]
+      if not g then return nil, "not a game of soccer_game_config (a new game needs `Template` and `Team`)" end
+      if holder(r, pl, el, fref, fg, g.id) ~= nil then return nil, "a piece of chronicle_vs_route_config already holds it (use [[VRFW.GameTab]])" end
+      gid, made = g.id, false
+    else
+      return nil, "`Template` and `Team` go together (a new game) or are both left out (an existing game)"
+    end
+    -- the hidden piece: the unlock game's board piece, one event (the game), the tab as routeType
+    r, pl, el = X.route_lists()
+    local s = r:copy(el, ev)
+    r:set_u32(-1, s, fg, gid)
+    for _, f in ipairs { "paramCrc2", "paramNum1", "paramNum2" } do
+      local x = r:field(el, f)
+      if x then r:set_u32(-1, s, x, 0) end
+    end
+    for _, f in ipairs { "bustupEventPreSoccer", "bustupEventPostWinSoccer" } do
+      local x = r:field(el, f)
+      if x then r:set_str(-1, s, x, nil) end
+    end
+    local start = r:len(el)
+    r:push(el, s)
+    local piece = VRFW.crc32("vrfw_fm_game_" .. d.game)
+    local prow = r:copy(pl, src)
+    r:set_u32(-1, prow, fid, piece)
+    r:set_u32(-1, prow, frt, d.tab)
+    local fe = r:field(pl, "eventType")
+    if fe then r:set_u32(-1, prow, fe, 0) end
+    r:set_tuple(-1, prow, fref, start, 1)
+    for _, n in ipairs { "moveRouteInfo", "unlockPieceInfo" } do
+      local fx = r:field(pl, n)
+      if fx then r:set_tuple(-1, prow, fx, 0, 0) end
+    end
+    local ft = r:field(pl, "opponentListTab")
+    if ft then r:set_u32(-1, prow, ft, 255) end
+    r:push(pl, prow)
+    r:touch()
+    X.touched.route = true
+    -- the list row: an existing game's rows become category 1; a new game gets a copy of the unlock game's row
+    local o, oe = X.opp()
+    if not o then return nil, oe end
+    local fb, fc = o:field(0, "battleId"), o:field(0, "category")
+    local n = 0
+    if not made then
+      local bat = o:col_u32(0, fb)
+      for i = 0, #bat - 1 do
+        if bat[i + 1] == gid then o:set_u32(0, i, fc, 1) n = n + 1 end
+      end
+      if n > 0 then o:touch() X.touched.opp = true end
+    end
+    if n == 0 then
+      local ok, e = X.opp_row(gid, { unlock.id }, 1, nil)
+      if not ok then return nil, e end
+    end
+    local b, a, te = targets(d, game_tabs)
+    if te then return nil, te end
+    local placed, pe = place_rows(gid, b, a)
+    if not placed then return nil, pe end
+    return string.format("%s game, tab %d, opens with %s (hidden piece %s)%s", made and "new" or "existing", d.tab, d.unlock,
+      T.hex(piece), placed > 0 and (", " .. placed .. " list row(s) placed") or "")
+  end
+
+  function X.free_match_games(files, game_tabs)
+    for _, f in ipairs(files) do
+      for _, d in ipairs(f.value.vrfw.FreeMatchGame or {}) do
+        local what = f.file .. ": FreeMatchGame `" .. d.game .. "`"
+        local msg, e = free_match_game(f.mod, what, d, game_tabs)
+        if msg then VRFW.log.info(what .. ": " .. msg) else VRFW.log.error(what .. ": " .. e .. " (skipped)") end
+      end
+    end
+  end
+
+  function X.free_match_places(files, game_tabs)
+    for _, f in ipairs(files) do
+      for _, d in ipairs(f.value.vrfw.FreeMatchPlace or {}) do
+        local what = f.file .. ": FreeMatchPlace `" .. d.game .. "`"
+        local n, e
+        if d.before == nil and d.after == nil then
+          e = "give `Before` or `After`"
+        else
+          local gid
+          gid, e = listed_id(d.game, game_tabs)
+          if gid then
+            local b, a, te = targets(d, game_tabs)
+            if te then e = te else n, e = place_rows(gid, b, a) end
+          end
+        end
+        if n then VRFW.log.info(what .. ": " .. n .. " list row(s) moved") else VRFW.log.error(what .. ": " .. e .. " (skipped)") end
+      end
+    end
+  end
+
+  function X.free_match_rivals(files, game_tabs)
+    for _, f in ipairs(files) do
+      for _, d in ipairs(f.value.vrfw.FreeMatchRival or {}) do
+        local what = f.file .. ": FreeMatchRival `" .. d.game .. "`"
+        local t, te = X.team_ref(d.team, f.mod)
+        local gid, ge = listed_id(d.game, game_tabs)
+        local g = gid and X.gcache().by_id[gid]
+        local gt = X.games()
+        if t == nil then
+          VRFW.log.error(what .. ": Team: " .. te .. " (skipped)")
+        elseif not g then
+          VRFW.log.error(what .. ": " .. (ge or "game gone") .. " (skipped)")
+        else
+          local tid = X.tc:id_of(t)
+          local n = 0
+          for _, i in ipairs(X.grows(g)) do
+            local c = gt:int(i, X.SG.D_DIFF)
+            local want = false
+            if #(d.classes or {}) == 0 then want = c ~= nil and c >= CLASS_LO and c <= CLASS_HI
+            else for _, x in ipairs(d.classes) do if x == c then want = true end end end
+            if want then gt:set(i, X.SG.D_TEAM, T.i32(tid)) n = n + 1 end
+          end
+          if n > 0 then
+            gt:touch()
+            X.touched.games = true
+            VRFW.log.info(what .. ": " .. n .. " class row(s) play " .. d.team)
+          else
+            VRFW.log.warn(what .. ": the game has no row of the classes given")
+          end
+        end
+      end
     end
   end
 
@@ -745,7 +1011,7 @@ function FM.install(X)
     local t, te = X.games()
     if not t then return nil, te end
     local SG = X.SG
-    local n_games, n_rows = 0, 0
+    local n_games, n_rows, n_flat = 0, 0, 0
     local seen = {}
     for _, g in ipairs(X.games_list()) do
       if listed[g.id] then
@@ -755,12 +1021,23 @@ function FM.install(X)
             seen[i] = true
             local d = t:int(i, SG.D_DIFF)
             if d then
-              local l
-              for _, x in ipairs(levels) do if x[1] == d then l = x[2] break end end
+              local l, flat
+              for _, x in ipairs(levels) do if x[1] == d then l, flat = x[2], x[3] break end end
               if l ~= nil and t:int(i, SG.D_LEVEL) ~= l then
                 t:set(i, SG.D_LEVEL, l)
                 n_rows = n_rows + 1
                 hit = true
+              end
+              if l ~= nil and flat then
+                local tid = t:uint(i, SG.D_TEAM) or 0
+                local nid, err = X.fm_flat_team(tid)
+                if nid == nil then
+                  VRFW.log.warn(string.format("[vrfw.FreeMatch] class %d of game %s: %s (the rival keeps its level offsets)", d, T.hex(g.id), err))
+                elseif nid ~= tid then
+                  t:set(i, SG.D_TEAM, T.i32(nid))
+                  n_flat = n_flat + 1
+                  hit = true
+                end
               end
             end
           end
@@ -768,11 +1045,52 @@ function FM.install(X)
         if hit then n_games = n_games + 1 end
       end
     end
-    if n_rows > 0 then
+    if n_rows > 0 or n_flat > 0 then
       t:touch()
       X.touched.games = true
     end
-    return n_games, nlisted, n_rows
+    return n_games, nlisted, n_rows, n_flat
+  end
+
+  -- the copy of team `tid` whose members have no level offset (SOCCER_TEAM_MEMBER level_offset = 0), made once per
+  -- team: every player of the line-up plays at the row's rival level. A team a mod declares under the copy's key
+  -- (`<team key>_flat`) is that copy (e.g. other staff in the free match only). A team without offsets is its own answer.
+  function X.fm_flat_team(tid)
+    if tid == 0 then return nil, "no rival team" end
+    local tc = X.tc
+    local t = tc:find(tid)
+    if t == nil then return nil, "team " .. T.hex(tid) .. " is not in team_config" end
+    local key = tc:key_of(t) .. "_flat"
+    local id = VRFW.crc32(key)
+    if tc:find(id) ~= nil then return id end
+    local TM = X.TM
+    local s, e = tc:member_range(t)
+    local offsets = false
+    for i = s, e - 1 do
+      if (TC.int(tc:member(i).m, TM.LV_OFS) or 0) ~= 0 then offsets = true break end
+    end
+    if not offsets then return tid end
+    local rows = {}
+    for i = s, e - 1 do
+      local x = tc:member(i)
+      local row = TC.copy_row(x.m)
+      TC.set_int(row, TM.LV_OFS, 0)
+      rows[#rows + 1] = { m = row, r = TC.copy_row(x.r) }
+    end
+    local info, refs = tc:team_copy(t)
+    TC.set_int(info, X.TI.ID, id)
+    info[X.TI.KEY + 1] = key
+    tc:push_team(info, refs)
+    local nt = #tc.teams - 1
+    local start = #tc.members
+    for _, r in ipairs(rows) do tc.members[#tc.members + 1] = r end
+    tc:set_slice(nt, 0, start, #rows)
+    local m = X.meta[tid]
+    if m then
+      X.meta[id] = { stadium = m.stadium, stadium_fallback = m.stadium_fallback, stadium_image = m.stadium_image, music = m.music, ai = m.ai, rules = m.rules, series = m.series, names = T.copy(m.names),
+        short = T.copy(m.short), default_lang = m.default_lang }
+    end
+    return id
   end
 end
 

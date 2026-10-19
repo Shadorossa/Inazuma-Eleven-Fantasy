@@ -1,0 +1,30 @@
+schema = "VRFW.changelog/1"
+# Home Stadium: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-19): created (a module of Football Reforged).
+lang = "es"
+name = "Estadio local"
+
+[en]
+name = "Home Stadium"
+
+[[release]]
+icon = "stadium"
+notes = [
+    "Plantilla › botón «Estadio local» (fila sin BetterUI).",
+    "Solo los estadios que tienes (comprados o desbloqueados).",
+    "Sus partidos en casa se juegan en ese estadio.",
+    "Competición, Crónica y Bahía Batalla no cambian.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "Team Dock › «Home stadium» button (a row without BetterUI).",
+    "Only the stadiums you own (bought or unlocked).",
+    "Its home matches are played at that stadium.",
+    "Competition, Chronicle and Battle Bay keep theirs.",
+    "A module of Football Reforged.",
+]

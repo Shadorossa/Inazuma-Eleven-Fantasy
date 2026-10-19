@@ -1,0 +1,38 @@
+# Chronicle Deluxe: the free-match class window sized for its 3 classes (owner 2026-10-19; docs/game/mods/
+# chronicle-deluxe-free-match.md §8). The window picture list_base03 (560 x 404, made for 4 rows every 70 px) is
+# remade at boot from the PLAYER'S own sprite, 70 px shorter: its top 40 px and bottom 64 px (the rounded edges and
+# the retail padding) kept as they are, the plain middle (a vertical gradient) resized from 300 to 230 px. Repainted
+# in place (same texture and place); content/menus/free_match_class_window.toml gives the layout's quad that height.
+schema = "VRFW.image/1"
+
+[[recipe]]
+name = "chronicle_deluxe_class_window_top"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_20/vsroute01_20.g4tx"
+sprite = "list_base03"
+ops = [{ op = "crop", box = [0, 0, 560, 40] }]
+
+[[recipe]]
+name = "chronicle_deluxe_class_window_middle"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_20/vsroute01_20.g4tx"
+sprite = "list_base03"
+ops = [{ op = "crop", box = [0, 40, 560, 340] }, { op = "resize", size = [560, 230] }]
+
+[[recipe]]
+name = "chronicle_deluxe_class_window_bottom"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_20/vsroute01_20.g4tx"
+sprite = "list_base03"
+ops = [{ op = "crop", box = [0, 340, 560, 404] }]
+
+[[recipe]]
+name = "chronicle_deluxe_class_window"
+canvas = [560, 334]
+ops = [{ op = "paste", image = "chronicle_deluxe_class_window_top", at = [0, 0] }, { op = "paste", image = "chronicle_deluxe_class_window_middle", at = [0, 40] }, { op = "paste", image = "chronicle_deluxe_class_window_bottom", at = [0, 270] }]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_20/vsroute01_20.g4tx"
+name = "list_base03"
+texture = "vsroute01_20"
+x = 0
+y = 0
+size = [560, 334]
+recipe = "chronicle_deluxe_class_window"

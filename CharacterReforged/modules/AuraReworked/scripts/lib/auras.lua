@@ -31,7 +31,8 @@ function M.load()
     if type(r[1]) == "number" then
       local id = u32(r[1])
       local key = tostring(r[2] or "")
-      rows[id] = { key = key, type = tonumber(r[5]) or 255, move = u32(r[3]), element = tonumber(r[4]) or 0 }
+      -- VRFW.table.raw keys each row by the asked column positions (r[7], not r[3])
+      rows[id] = { key = key, type = tonumber(r[11]) or 255, move = u32(r[7]), element = tonumber(r[9]) or 0 }
       if key ~= "" then by_key[key] = id end
     end
   end

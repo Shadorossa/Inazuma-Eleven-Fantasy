@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05029810"                                   # Silvain Hache
+moves = [
+  { move = 0x1C097E46, level = 1 },                         # Dragon Drive
+  { move = 0x768AB9C5, level = 19 },                        # Frosticle
+  { move = 0x5E5AF1A9, level = 43 },                        # Northern Impact
+  { move = 0x0E4E083A, level = 57 },                        # Zero Magnum
+]
 
   [[edit.cards]]
   id = 0xCDC1A663                                         # FW/MF · wind

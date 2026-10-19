@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02024700"                                   # Canon Evans
+moves = [
+  { move = 0x332CCDC9, level = 1 },                         # Heel Kick
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x31ABD82E, level = 30 },                        # Circus Block
+  { move = 0x7E2BE557, level = 45 },                        # Legendary Wolf
+]
 
   [[edit.cards]]
   id = 0xE84B364C                                         # FW/MF · wind
@@ -14,6 +20,12 @@ target = "c02024700"                                   # Canon Evans
 
 [[edit]]
 target = "c02024710"                                   # Syon Blaze
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x63BDA8A4, level = 1 },                         # Inazuma Drop
+  { move = 0x427719AC, level = 30 },                        # Gale Dash
+  { move = 0x00D8C57C, level = 45 },                        # Fireball Storm
+]
 
   [[edit.cards]]
   id = 0xF150070D                                         # FW/MF · fire
@@ -22,6 +34,12 @@ target = "c02024710"                                   # Syon Blaze
 
 [[edit]]
 target = "c02029240"                                   # In Chikita
+moves = [
+  { move = 0x6C6C932B, level = 1 },                         # Megaton Head
+  { move = 0xACAC21CE, level = 15 },                        # Fake Ball
+  { move = 0x7A67325B, level = 27 },                        # Flame Dance
+  { move = 0xDD365E15, level = 48 },                        # Mole Shuffle
+]
 
   [[edit.cards]]
   id = 0x7886E97E                                         # FW/MF · fire
@@ -32,6 +50,12 @@ target = "c02029240"                                   # In Chikita
 
 [[edit]]
 target = "c11902070"                                   # Stewart Vanguard
+moves = [
+  { move = 0x49933AEE, level = 1 },                         # Perfect Tower
+  { move = 0xAF28F5A0, level = 13 },                        # The Tower
+  { move = 0xC42D6F54, level = 20 },                        # Aikido
+  { move = 0x0F4DC9B3, level = 30 },                        # Logicstical Sync
+]
 
   [[edit.cards]]
   id = 0x27A3F179                                         # MF/DF · wind

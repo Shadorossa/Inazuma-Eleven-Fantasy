@@ -22,3 +22,11 @@ handler = "CharacterReforged.PageCapture.Live"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN"    # (reset 1 / 0) -> 1 drawn, 0 no draw (hide the quad), 2 waiting, -1 no probe: VRFW.render.capture_pause()
 handler = "CharacterReforged.PageCapture.Drawn"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_BIND"     # (model key, quad mesh crc; key 0 = release) -> 1 bound by the framework, -1 not available: VRFW.render.capture_bind
+handler = "CharacterReforged.PageCapture.Bind"
+
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_PAGE_CAPTURE_BOUND"    # () -> 1 the quad shows the capture cell, 0 not yet, -1 not available: VRFW.render.capture_bound
+handler = "CharacterReforged.PageCapture.Bound"

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07160010"                                   # Griffit Valiance
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x19C3F43D, level = 20 },                        # Eternal Blizzard
+  { move = 0x1D4E888F, level = 30 },                        # Condor Dive
+]
 
   [[edit.cards]]
   id = 0x1799DC1D                                         # FW/MF · wind
@@ -15,6 +21,12 @@ target = "c07160010"                                   # Griffit Valiance
 
 [[edit]]
 target = "c07160020"                                   # Wryn Twincrest
+moves = [
+  { move = 0x2C5D1441, level = 1 },                         # Song of the Three Kingdoms
+  { move = 0x8AF3EAB9, level = 13 },                        # Hammer of Fury
+  { move = 0x9B916289, level = 20 },                        # Jurassic Jaws
+  { move = 0x53CD747F, level = 30 },                        # Tarzan Kick
+]
 
   [[edit.cards]]
   id = 0x3CB48FDE                                         # GK/FW · mountain
@@ -25,6 +37,12 @@ target = "c07160020"                                   # Wryn Twincrest
 
 [[edit]]
 target = "c07160030"                                   # Aurel Ashdown
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x18019E0A, level = 13 },                        # Double Grenade
+  { move = 0xEE3E059F, level = 20 },                        # Celestial Smash
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x25AFBE9F                                         # MF/FW · fire
@@ -34,6 +52,12 @@ target = "c07160030"                                   # Aurel Ashdown
 
 [[edit]]
 target = "c07160040"                                   # Corwin Lumen
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0xC5D2FDE2, level = 13 },                        # Oglitteration
+  { move = 0x7DD6FEF8, level = 20 },                        # Athena's Anthem
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0x6AEE2858                                         # MF/DF · forest
@@ -44,6 +68,12 @@ target = "c07160040"                                   # Corwin Lumen
 
 [[edit]]
 target = "c07160050"                                   # Garvin Cliffmarch
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0xB5B7108F, level = 13 },                        # Shadow Stitch
+  { move = 0x4A17EE80, level = 20 },                        # Hunter's Net
+  { move = 0xB27F13ED, level = 30 },                        # Death Zone
+]
 
   [[edit.cards]]
   id = 0x73F51919                                         # DF/FW · forest
@@ -54,6 +84,12 @@ target = "c07160050"                                   # Garvin Cliffmarch
 
 [[edit]]
 target = "c07160060"                                   # Corin Cainver
+moves = [
+  { move = 0xA1BE38E6, level = 1 },                         # La Flamme
+  { move = 0x3663DB4C, level = 13 },                        # Utter Gutsiness Bat
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x35E70F22, level = 30 },                        # Grenade Shot
+]
 
   [[edit.cards]]
   id = 0x58D84ADA                                         # FW/DF · fire
@@ -63,6 +99,12 @@ target = "c07160060"                                   # Corin Cainver
 
 [[edit]]
 target = "c07160070"                                   # Orphion Ordain
+moves = [
+  { move = 0xAEEA9F97, level = 1 },                         # Sigma Zone
+  { move = 0xF309624E, level = 13 },                        # Dual Smash
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x93E8DBF8, level = 30 },                        # Dimensional Hand
+]
 
   [[edit.cards]]
   id = 0x41C37B9B                                         # DF/GK · forest
@@ -72,6 +114,12 @@ target = "c07160070"                                   # Orphion Ordain
 
 [[edit]]
 target = "c07160080"                                   # Aveline Morrin
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0xC4701649, level = 20 },                        # Ice Block
+  { move = 0x6E53E2B3, level = 30 },                        # Angel Ball
+]
 
   [[edit.cards]]
   id = 0xC65B6754                                         # MF/GK · wind
@@ -82,6 +130,12 @@ target = "c07160080"                                   # Aveline Morrin
 
 [[edit]]
 target = "c07160090"                                   # Therion Daywick
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0xC41097D5, level = 13 },                        # Acrobotics
+  { move = 0xC5EF0563, level = 20 },                        # Three-Legged Rush
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0xDF405615                                         # DF/MF · mountain
@@ -91,6 +145,12 @@ target = "c07160090"                                   # Therion Daywick
 
 [[edit]]
 target = "c07160100"                                   # Alaric Durnham
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0xF26A225B, level = 13 },                        # RC Shot
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x41F3CDC2, level = 30 },                        # Scorching Tackle
+]
 
   [[edit.cards]]
   id = 0x0F40876B                                         # MF/FW · fire
@@ -100,6 +160,12 @@ target = "c07160100"                                   # Alaric Durnham
 
 [[edit]]
 target = "c07160110"                                   # Galad Worden
+moves = [
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0xAD6E4BF9, level = 20 },                        # Harvest
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x165BB62A                                         # MF/DF · forest
@@ -109,6 +175,12 @@ target = "c07160110"                                   # Galad Worden
 
 [[edit]]
 target = "c07160120"                                   # Sylvar Verdis
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x3D76E5E9                                         # DF/MF · forest
@@ -118,6 +190,12 @@ target = "c07160120"                                   # Sylvar Verdis
 
 [[edit]]
 target = "c07160130"                                   # Plumian Whitlock
+moves = [
+  { move = 0xC21AFE80, level = 1 },                         # Whirlwind Drop
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xC2E6ADBF, level = 30 },                        # Log Roll
+]
 
   [[edit.cards]]
   id = 0x246DD4A8                                         # MF/FW · wind
@@ -127,6 +205,12 @@ target = "c07160130"                                   # Plumian Whitlock
 
 [[edit]]
 target = "c07160140"                                   # Tarvon Runnel
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x4F58F805, level = 20 },                        # Coil Turn
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0x6B2C426F                                         # MF/DF · wind
@@ -137,6 +221,12 @@ target = "c07160140"                                   # Tarvon Runnel
 
 [[edit]]
 target = "c07160150"                                   # Queintas Quillmere
+moves = [
+  { move = 0x8B31808E, level = 1 },                         # Wormhole
+  { move = 0xDD6B2708, level = 13 },                        # Majin the Hand
+  { move = 0x6BA49049, level = 20 },                        # Mystic Mist
+  { move = 0x06D2AC29, level = 30 },                        # Diabolical Cut
+]
 
   [[edit.cards]]
   id = 0x7237732E                                         # DF/GK · forest
@@ -147,6 +237,12 @@ target = "c07160150"                                   # Queintas Quillmere
 
 [[edit]]
 target = "c07160160"                                   # Merrick Seawell
+moves = [
+  { move = 0x141046AB, level = 1 },                         # Overnight Fortress
+  { move = 0x18019E0A, level = 13 },                        # Double Grenade
+  { move = 0x518BCA26, level = 20 },                        # Fire Tornado
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x591A20ED                                         # FW/DF · fire
@@ -157,6 +253,12 @@ target = "c07160160"                                   # Merrick Seawell
 
 [[edit]]
 target = "c07160500"                                   # Silasar Noirmont
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x6C6C932B, level = 13 },                        # Megaton Head
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x08492FB7                                         # FW/DF · mountain

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700480"                                   # Alara Belmont
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0xDF8CB373, level = 20 },                        # Sonic Shot
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0x3731EC91                                         # FW/MF · wind
@@ -16,6 +22,12 @@ target = "c11700480"                                   # Alara Belmont
 
 [[edit]]
 target = "c11700680"                                   # Lyla Loveland
+moves = [
+  { move = 0xC16279D1, level = 1 },                         # Field of Force
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x5AF33BC7, level = 20 },                        # God Hand
+  { move = 0x17A96A44, level = 30 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0x34B538FF                                         # MF/GK · forest
@@ -26,6 +38,12 @@ target = "c11700680"                                   # Lyla Loveland
 
 [[edit]]
 target = "c11724010"                                   # Ana Santini
+moves = [
+  { move = 0xC41097D5, level = 1 },                         # Acrobotics
+  { move = 0x52CEB5F6, level = 13 },                        # Iron Wall
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0x5DA7EA06, level = 30 },                        # Boomerang Bluff
+]
 
   [[edit.cards]]
   id = 0x14583B33                                         # DF/MF · mountain
@@ -36,6 +54,12 @@ target = "c11724010"                                   # Ana Santini
 
 [[edit]]
 target = "c11724020"                                   # Dasher Ballard
+moves = [
+  { move = 0x20D01E43, level = 1 },                         # Hey Presto
+  { move = 0x4E5B398C, level = 13 },                        # Acrobat Bomber
+  { move = 0x7DD6FEF8, level = 20 },                        # Athena's Anthem
+  { move = 0xC513565C, level = 30 },                        # Doom Spear
+]
 
   [[edit.cards]]
   id = 0x3F7568F0                                         # FW/MF · forest
@@ -46,6 +70,12 @@ target = "c11724020"                                   # Dasher Ballard
 
 [[edit]]
 target = "c11724030"                                   # Javor Bonnaire
+moves = [
+  { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
+  { move = 0x613ABD43, level = 13 },                        # Dawnrise
+  { move = 0x259F08C6, level = 20 },                        # Whirlwind Twister
+  { move = 0x2B343D01, level = 30 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0x266E59B1                                         # DF/MF · wind
@@ -56,6 +86,12 @@ target = "c11724030"                                   # Javor Bonnaire
 
 [[edit]]
 target = "c11724040"                                   # Tobin Tempelhof
+moves = [
+  { move = 0x5AF33BC7, level = 1 },                         # God Hand
+  { move = 0xDD6B2708, level = 13 },                        # Majin the Hand
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x692FCF76                                         # DF/GK · forest
@@ -66,6 +102,12 @@ target = "c11724040"                                   # Tobin Tempelhof
 
 [[edit]]
 target = "c11724050"                                   # Shiryu Hanabusa
+moves = [
+  { move = 0xB8C5883B, level = 1 },                         # God Hand X
+  { move = 0x585098FC, level = 13 },                        # Slice and Dice
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x53E9C2A3, level = 30 },                        # Capable Hands
+]
 
   [[edit.cards]]
   id = 0x7034FE37                                         # GK/DF · fire
@@ -76,6 +118,12 @@ target = "c11724050"                                   # Shiryu Hanabusa
 
 [[edit]]
 target = "c11724060"                                   # Dyne Amic
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xC42D6F54, level = 13 },                        # Aikido
+  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0x5B19ADF4                                         # MF/FW · wind
@@ -86,6 +134,12 @@ target = "c11724060"                                   # Dyne Amic
 
 [[edit]]
 target = "c11724070"                                   # Callista Norton
+moves = [
+  { move = 0x5DA7EA06, level = 1 },                         # Boomerang Bluff
+  { move = 0x232D05EC, level = 13 },                        # Tiger Drive
+  { move = 0x1876DB66, level = 20 },                        # Disaster Strike
+  { move = 0x9D236FA3, level = 30 },                        # Sword of the King
+]
 
   [[edit.cards]]
   id = 0x42029CB5                                         # FW/MF · mountain
@@ -96,6 +150,12 @@ target = "c11724070"                                   # Callista Norton
 
 [[edit]]
 target = "c11724080"                                   # Neve Paisley
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x05567847, level = 30 },                        # Runaway Train
+]
 
   [[edit.cards]]
   id = 0xC59A807A                                         # MF/DF · fire
@@ -106,6 +166,12 @@ target = "c11724080"                                   # Neve Paisley
 
 [[edit]]
 target = "c11724090"                                   # Serene Goldwell
+moves = [
+  { move = 0x46A71C03, level = 1 },                         # Black Hole
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0x4A17EE80, level = 20 },                        # Hunter's Net
+  { move = 0x9AF2229C, level = 30 },                        # Gravity Point
+]
 
   [[edit.cards]]
   id = 0xDC81B13B                                         # DF/GK · forest
@@ -116,6 +182,12 @@ target = "c11724090"                                   # Serene Goldwell
 
 [[edit]]
 target = "c11724100"                                   # Mirko Harding
+moves = [
+  { move = 0x05567847, level = 1 },                         # Runaway Train
+  { move = 0x9765A74A, level = 13 },                        # Beast Fang
+  { move = 0xA1BE38E6, level = 20 },                        # La Flamme
+  { move = 0xB01D1B68, level = 30 },                        # Power Spike
+]
 
   [[edit.cards]]
   id = 0x0C816045                                         # GK/DF · fire
@@ -126,6 +198,12 @@ target = "c11724100"                                   # Mirko Harding
 
 [[edit]]
 target = "c11724110"                                   # Clyde Dalen
+moves = [
+  { move = 0xABA58912, level = 1 },                         # Ignited Steal
+  { move = 0xAF150D21, level = 13 },                        # Swallow Counter
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0x159A5104                                         # MF/DF · fire
@@ -136,6 +214,12 @@ target = "c11724110"                                   # Clyde Dalen
 
 [[edit]]
 target = "c11724120"                                   # Curia Caldwell
+moves = [
+  { move = 0xC41097D5, level = 1 },                         # Acrobotics
+  { move = 0x2AF65736, level = 13 },                        # Bamboo Pattern
+  { move = 0x72BFA108, level = 20 },                        # Wall of Atlantis
+  { move = 0x53CD747F, level = 30 },                        # Tarzan Kick
+]
 
   [[edit.cards]]
   id = 0x3EB702C7                                         # DF/FW · mountain
@@ -146,6 +230,12 @@ target = "c11724120"                                   # Curia Caldwell
 
 [[edit]]
 target = "c11724130"                                   # Ava Ehrenreich
+moves = [
+  { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
+  { move = 0x18019E0A, level = 13 },                        # Double Grenade
+  { move = 0x4741C0E8, level = 20 },                        # Steeple Shot
+  { move = 0xBA833662, level = 30 },                        # Million Hands
+]
 
   [[edit.cards]]
   id = 0x27AC3386                                         # FW/GK · fire

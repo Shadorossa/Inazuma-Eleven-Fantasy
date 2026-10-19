@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06032810"                                   # Phobos Quasar
+moves = [
+  { move = 0xFFD91151, level = 8 },                         # Goal Gobbler
+  { move = 0xF5C2A0A5, level = 27 },                        # Capoeira Grab
+  { move = 0x88D5D57C, level = 42 },                        # Judgment Ray
+  { move = 0x9AF2229C, level = 56 },                        # Gravity Point
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x53672EC2, level = 1 },                         # Tótem Gigiras [aura]
+]
 
   [[edit.cards]]
   id = 0x1648124F                                         # GK/DF · mountain
@@ -15,6 +26,17 @@ target = "c06032810"                                   # Phobos Quasar
 
 [[edit]]
 target = "c06032820"                                   # Aegir Cepheid
+moves = [
+  { move = 0x88D5D57C, level = 2 },                         # Judgment Ray
+  { move = 0x900C8E0A, level = 23 },                        # Maestro's Call
+  { move = 0x0F4DC9B3, level = 39 },                        # Logicstical Sync
+  { move = 0x0E0A3F7A, level = 50 },                        # Spatial Portal
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x752F8F55, level = 1 },                         # Tótem salamandra oscura [aura]
+]
 
   [[edit.cards]]
   id = 0x3D65418C                                         # DF/MF · wind
@@ -24,6 +46,12 @@ target = "c06032820"                                   # Aegir Cepheid
 
 [[edit]]
 target = "c06032830"                                   # Meteo Garnet
+moves = [
+  { move = 0x88D5D57C, level = 1 },                         # Judgment Ray
+  { move = 0xAF150D21, level = 27 },                        # Swallow Counter
+  { move = 0x2B8C597E, level = 39 },                        # Fugue Wave
+  { move = 0xB9676390, level = 53 },                        # Particle Accelerator
+]
 
   [[edit.cards]]
   id = 0x247E70CD                                         # DF/MF · fire
@@ -34,6 +62,17 @@ target = "c06032830"                                   # Meteo Garnet
 
 [[edit]]
 target = "c06032840"                                   # Deimos Lepton
+moves = [
+  { move = 0x88D5D57C, level = 3 },                         # Judgment Ray
+  { move = 0xC5EF0563, level = 28 },                        # Three-Legged Rush
+  { move = 0xF4604B0E, level = 40 },                        # Fancy-Footwork
+  { move = 0x25276CB9, level = 50 },                        # Solar Surprise
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x752F8F55, level = 1 },                         # Tótem salamandra oscura [aura]
+]
 
   [[edit.cards]]
   id = 0x6B3FE60A                                         # DF/MF · mountain
@@ -43,6 +82,17 @@ target = "c06032840"                                   # Deimos Lepton
 
 [[edit]]
 target = "c06032850"                                   # Ymir Catena
+moves = [
+  { move = 0x88D5D57C, level = 1 },                         # Judgment Ray
+  { move = 0x768AB9C5, level = 24 },                        # Frosticle
+  { move = 0x650FA58E, level = 37 },                        # Spin Out
+  { move = 0xBA662B00, level = 54 },                        # Pterrordactyl Swoop
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x752F8F55, level = 1 },                         # Tótem salamandra oscura [aura]
+]
 
   [[edit.cards]]
   id = 0x7224D74B                                         # DF/MF · wind
@@ -53,6 +103,12 @@ target = "c06032850"                                   # Ymir Catena
 
 [[edit]]
 target = "c06032860"                                   # Sinope Linea
+moves = [
+  { move = 0x88D5D57C, level = 8 },                         # Judgment Ray
+  { move = 0x039DBAAC, level = 25 },                        # Land of Ice
+  { move = 0x750E6DAB, level = 36 },                        # Matador Feint
+  { move = 0xC41097D5, level = 48 },                        # Acrobotics
+]
 
   [[edit.cards]]
   id = 0x59098488                                         # DF/MF · forest
@@ -63,6 +119,12 @@ target = "c06032860"                                   # Sinope Linea
 
 [[edit]]
 target = "c06032870"                                   # Tarvos Boson
+moves = [
+  { move = 0xFACB7EC9, level = 12 },                        # Shiny Feathers
+  { move = 0xD9BB22A7, level = 24 },                        # Air Ride
+  { move = 0xF4604B0E, level = 36 },                        # Fancy-Footwork
+  { move = 0xDA3FF6C9, level = 52 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0x4012B5C9                                         # MF/DF · fire
@@ -73,6 +135,17 @@ target = "c06032870"                                   # Tarvos Boson
 
 [[edit]]
 target = "c06032880"                                   # Dione Bolide
+moves = [
+  { move = 0xFACB7EC9, level = 13 },                        # Shiny Feathers
+  { move = 0x39CB2F02, level = 26 },                        # Dragster
+  { move = 0xCB79C825, level = 41 },                        # In-Line Stampede
+  { move = 0xC9BAEA82, level = 53 },                        # Eye of the Storm
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x6E33EAEE, level = 1 },                         # Tótem antílope oscuro [aura]
+]
 
   [[edit.cards]]
   id = 0xC78AA906                                         # MF/DF · mountain
@@ -83,6 +156,12 @@ target = "c06032880"                                   # Dione Bolide
 
 [[edit]]
 target = "c06032890"                                   # Despina Lux
+moves = [
+  { move = 0x1EBD198D, level = 13 },                        # Magic Amp
+  { move = 0xC5EF0563, level = 27 },                        # Three-Legged Rush
+  { move = 0x2354CA2D, level = 43 },                        # Wind God's Dance
+  { move = 0x0AC37488, level = 52 },                        # Heavenly Drive
+]
 
   [[edit.cards]]
   id = 0xDE919847                                         # FW/MF · mountain
@@ -92,6 +171,17 @@ target = "c06032890"                                   # Despina Lux
 
 [[edit]]
 target = "c06032900"                                   # Ozrock Boldar
+moves = [
+  { move = 0x07A628CC, level = 11 },                        # Stargazer
+  { move = 0x2A37FC88, level = 29 },                        # Revolution V
+  { move = 0xFACB7EC9, level = 44 },                        # Shiny Feathers
+  { move = 0x88D5D57C, level = 59 },                        # Judgment Ray
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x50CE31DA, level = 1 },                         # Tótem Ixaal [aura]
+]
 
   [[edit.cards]]
   id = 0x0E914939                                         # FW/MF · wind
@@ -101,6 +191,12 @@ target = "c06032900"                                   # Ozrock Boldar
 
 [[edit]]
 target = "c06032910"                                   # Loge Colles
+moves = [
+  { move = 0x1EBD198D, level = 13 },                        # Magic Amp
+  { move = 0x21127474, level = 21 },                        # Ultra Moon
+  { move = 0xD0A1DBC3, level = 37 },                        # Bungee Ball Burst
+  { move = 0xBD2BB49C, level = 53 },                        # Dark Matter
+]
 
   [[edit.cards]]
   id = 0x178A7878                                         # FW/MF · forest

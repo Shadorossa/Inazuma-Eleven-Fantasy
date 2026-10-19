@@ -2,13 +2,13 @@ id = "football_reforged"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Football Reforged"
-version = "1.2.16"
+version = "1.2.17"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "A base of match mechanics in modules: each module is a card on this mod's page in Mods (on / off, applies after a restart). Goalkeeper barrier: keepers resist shots while an orange part of their fatigue bar lasts. Furor: the GO Strikers tension gauge, a fire bar by each crest; full, L3 / R starts the furor phase. Both on by default."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-19"
 # This mod's own names (TOML keys [FootballReforged.X], Lua FootballReforged.X, commands CMND_FOOTBALLREFORGED_*, tables
 # FootballReforged.*); never VRFW.
 prefix = "FootballReforged"
@@ -29,6 +29,8 @@ folder = "FootballReforged"
 #                                team, the active pachanga team (was Inazuma Fantasy's)
 #   modules\Challenges\          challenges (Challenges.X): the match challenge rulesets, their defaults and formation,
 #                                the office trial friendlies, triggers and rivals (were Inazuma Fantasy's)
+#   modules\HomeStadium\         home_stadium (HomeStadium.X): each player team's home stadium, picked in «Plantilla de
+#                                equipo» among the owned stadiums, for its home matches (docs/game/mods/home-stadium.md)
 # Until 1.1.0 they were internal modules (option rows of «Opciones de mods»); those rows are gone.
 requires = ["vr_framework>=2.4.75"]
 conflicts = []

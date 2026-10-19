@@ -142,29 +142,3 @@ menu = "personal_plate_menu_for_datafile"
 res = [
     { path = "#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx", after = "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx" },
 ]
-
-# ---- a totem's SP per level under the Hiper page's SP gauges (2026-10-15; graft plate_hiper_plate EVT_PHI.PoolLevels):
-# the corner button's text node (plates hidden by the graft), drawn over the card; hung at the joint of evt_ph_tension
-# instance 0 like evt_ph_peg_pool. Shown only while a mod answers CMND_EVT_PEG_LEVELS (Souls Rework).
-[[object]]
-name = "evt_ph_pool_levels"
-from = "cmn03_01_cmd_back"
-remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
-set = [
-    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 576 } },
-]
-
-[[patch]]
-menu = "personal_plate_menu"
-add_layer = { name = "evt_ph_pool_levels", object = "evt_ph_pool_levels", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_peg_pool", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_peg_pool" }] }
-
-[[patch]]
-menu = "personal_plate_menu_for_datafile"
-add_layer = { name = "evt_ph_pool_levels", object = "evt_ph_pool_levels", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_ph_peg_pool", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_ph_peg_pool" }] }
-
-# the attach row of evt_ph_tension instance 0 (0x82D588EA) repeated for evt_ph_pool_levels (0xA7B912D0)
-[[object_set]]
-object = "evt_ph_skill_detail_info"
-copy = [
-  { param = "NullLayerName", match = { 3 = 0x82D588EA, 4 = 0 }, values = { 3 = 0xA7B912D0, 4 = 0 }, optional = true },
-]

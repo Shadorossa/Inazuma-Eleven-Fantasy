@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07110010"                                   # Billy Miller
+moves = [
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0xA6763B84, level = 13 },                        # Gladius Arch
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0x5AF33BC7, level = 30 },                        # God Hand
+]
 
   [[edit.cards]]
   id = 0xA5B9000D                                         # DF/FW · fire
@@ -16,6 +22,12 @@ target = "c07110010"                                   # Billy Miller
 
 [[edit]]
 target = "c07110030"                                   # Luke Blank
+moves = [
+  { move = 0xC7A9BB3A, level = 1 },                         # Whirlwind Cut
+  { move = 0x518BCA26, level = 13 },                        # Fire Tornado
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0x2A37FC88, level = 30 },                        # Revolution V
+]
 
   [[edit.cards]]
   id = 0x978F628F                                         # MF/FW · wind
@@ -25,6 +37,12 @@ target = "c07110030"                                   # Luke Blank
 
 [[edit]]
 target = "c07110040"                                   # Neville Merchant
+moves = [
+  { move = 0x0EBCD1A8, level = 1 },                         # Heavenly Tianlong
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0xD8CEF448                                         # FW/MF · wind
@@ -34,6 +52,12 @@ target = "c07110040"                                   # Neville Merchant
 
 [[edit]]
 target = "c07110050"                                   # Pacey Hawker
+moves = [
+  { move = 0x0EBCD1A8, level = 1 },                         # Heavenly Tianlong
+  { move = 0x427719AC, level = 13 },                        # Gale Dash
+  { move = 0x17A96A44, level = 20 },                        # Clone Faker
+  { move = 0x316A7390, level = 30 },                        # Land Dragon
+]
 
   [[edit.cards]]
   id = 0xC1D5C509                                         # FW/GK · forest
@@ -44,6 +68,12 @@ target = "c07110050"                                   # Pacey Hawker
 
 [[edit]]
 target = "c07110060"                                   # Giles Farmer
+moves = [
+  { move = 0x0EBCD1A8, level = 1 },                         # Heavenly Tianlong
+  { move = 0xDEB28A7B, level = 13 },                        # Monkey Turn
+  { move = 0x4031A7F5, level = 20 },                        # Mole Fake
+  { move = 0x105C91A7, level = 30 },                        # Slingshot
+]
 
   [[edit.cards]]
   id = 0xEAF896CA                                         # MF/FW · mountain
@@ -54,6 +84,12 @@ target = "c07110060"                                   # Giles Farmer
 
 [[edit]]
 target = "c07110070"                                   # Jack Sawyer
+moves = [
+  { move = 0x0EBCD1A8, level = 1 },                         # Heavenly Tianlong
+  { move = 0x3C843987, level = 13 },                        # Flurry Dash
+  { move = 0x73C5AF40, level = 20 },                        # Dash Accelerator
+  { move = 0xDB01CFC1, level = 30 },                        # Thunder Beast
+]
 
   [[edit.cards]]
   id = 0xF3E3A78B                                         # MF/FW · wind
@@ -64,6 +100,12 @@ target = "c07110070"                                   # Jack Sawyer
 
 [[edit]]
 target = "c07110080"                                   # Gaffer Mason
+moves = [
+  { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
+  { move = 0x74CC079C, level = 13 },                        # Big Fan
+  { move = 0x2FB941B3, level = 20 },                        # Stone Prison
+  { move = 0x316A7390, level = 30 },                        # Land Dragon
+]
 
   [[edit.cards]]
   id = 0x747BBB44                                         # MF/DF · fire
@@ -74,6 +116,12 @@ target = "c07110080"                                   # Gaffer Mason
 
 [[edit]]
 target = "c07110090"                                   # Dan Bowsun
+moves = [
+  { move = 0x60F8D774, level = 1 },                         # Gravestone
+  { move = 0x1A868BED, level = 13 },                        # Clone Defence
+  { move = 0xDD365E15, level = 20 },                        # Mole Shuffle
+  { move = 0x2AF65736, level = 30 },                        # Bamboo Pattern
+]
 
   [[edit.cards]]
   id = 0x6D608A05                                         # DF/MF · mountain
@@ -83,6 +131,12 @@ target = "c07110090"                                   # Dan Bowsun
 
 [[edit]]
 target = "c07110100"                                   # Meriwether Beaumont
+moves = [
+  { move = 0xC5EF0563, level = 1 },                         # Three-Legged Rush
+  { move = 0x19025F83, level = 13 },                        # Quick Draw
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0x2AF65736, level = 30 },                        # Bamboo Pattern
+]
 
   [[edit.cards]]
   id = 0xBD605B7B                                         # DF/GK · forest
@@ -92,6 +146,12 @@ target = "c07110100"                                   # Meriwether Beaumont
 
 [[edit]]
 target = "c07110110"                                   # Burleigh Carpenter
+moves = [
+  { move = 0x68982058, level = 1 },                         # Armadillo Circus
+  { move = 0x166B0073, level = 13 },                        # Super Armadillo
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x1B44E1DA, level = 30 },                        # Stone Wall
+]
 
   [[edit.cards]]
   id = 0xA47B6A3A                                         # DF/MF · mountain
@@ -101,6 +161,12 @@ target = "c07110110"                                   # Burleigh Carpenter
 
 [[edit]]
 target = "c07110120"                                   # Kia Tanner
+moves = [
+  { move = 0x0422FCA2, level = 1 },                         # Ninja Toad
+  { move = 0x259F08C6, level = 13 },                        # Whirlwind Twister
+  { move = 0xD8794890, level = 20 },                        # Kangaroo Kick
+  { move = 0xADAFE047, level = 30 },                        # Dual Strike
+]
 
   [[edit.cards]]
   id = 0x8F5639F9                                         # MF/GK · forest
@@ -111,6 +177,12 @@ target = "c07110120"                                   # Kia Tanner
 
 [[edit]]
 target = "c07110130"                                   # Eamond Everwing
+moves = [
+  { move = 0xBB21DDC9, level = 1 },                         # Trina Tumble
+  { move = 0x2D3E5454, level = 13 },                        # Clone Shot
+  { move = 0x737DCB3F, level = 20 },                        # Pancake Defence
+  { move = 0xB37CD264, level = 30 },                        # Am-Bush
+]
 
   [[edit.cards]]
   id = 0x964D08B8                                         # FW/DF · mountain
@@ -121,6 +193,12 @@ target = "c07110130"                                   # Eamond Everwing
 
 [[edit]]
 target = "c07110140"                                   # Frey Fielding
+moves = [
+  { move = 0xC5EF0563, level = 1 },                         # Three-Legged Rush
+  { move = 0x737DCB3F, level = 13 },                        # Pancake Defence
+  { move = 0xAD6E4BF9, level = 20 },                        # Harvest
+  { move = 0xBB21DDC9, level = 30 },                        # Trina Tumble
+]
 
   [[edit.cards]]
   id = 0xD90C9E7F                                         # MF/DF · mountain
@@ -131,6 +209,12 @@ target = "c07110140"                                   # Frey Fielding
 
 [[edit]]
 target = "c07110150"                                   # Tobin Harveston
+moves = [
+  { move = 0x74CC079C, level = 1 },                         # Big Fan
+  { move = 0xB7474004, level = 13 },                        # Dough Ray Me
+  { move = 0x485150D9, level = 20 },                        # Body Shield
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xC017AF3E                                         # MF/DF · fire
@@ -140,6 +224,12 @@ target = "c07110150"                                   # Tobin Harveston
 
 [[edit]]
 target = "c07110160"                                   # Everest Brightwell
+moves = [
+  { move = 0xBB21DDC9, level = 1 },                         # Trina Tumble
+  { move = 0xD8794890, level = 13 },                        # Kangaroo Kick
+  { move = 0x316A7390, level = 20 },                        # Land Dragon
+  { move = 0x530CDFC1, level = 30 },                        # Mystifying Mist
+]
 
   [[edit.cards]]
   id = 0xEB3AFCFD                                         # DF/MF · forest
@@ -149,6 +239,12 @@ target = "c07110160"                                   # Everest Brightwell
 
 [[edit]]
 target = "c07110020"                                   # Mark Evans
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
+  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
+  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+]
 
   [[edit.cards]]
   id = 0x8E9453CE                                         # GK/FW · mountain
@@ -157,6 +253,12 @@ target = "c07110020"                                   # Mark Evans
 
 [[edit]]
 target = "c11807270"                                   # Seymour Hillman
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xA491AFFF, level = 88 },                        # Majin the Hand
+  { move = 0xB039ADB4, level = 99 },                        # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0xD8A50680                                         # GK/FW · mountain
@@ -167,6 +269,12 @@ target = "c11807270"                                   # Seymour Hillman
 
 [[edit]]
 target = "c11807260"                                   # Silvia Woods
+moves = [
+  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
+  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
+  { move = 0x8C382852, level = 23 },                        # God Hand
+  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0xC1BE37C1                                         # GK/DF · mountain

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07030010"                                   # Heath Moore
+moves = [
+  { move = 0x0F7EBB9F, level = 1 },                         # Royal Lancer
+  { move = 0x19BA3BFC, level = 13 },                        # Dance on Air
+  { move = 0x65766A4F, level = 20 },                        # Meteor Blade
+  { move = 0x20D01E43, level = 30 },                        # Hey Presto
+]
 
   [[edit.cards]]
   id = 0x142580C8                                         # FW/DF · fire
@@ -15,6 +21,12 @@ target = "c07030010"                                   # Heath Moore
 
 [[edit]]
 target = "c07030020"                                   # Duske Grayling
+moves = [
+  { move = 0x7CCC712C, level = 1 },                         # Lunar Eclipse
+  { move = 0x65D7406D, level = 13 },                        # Grabber Arm
+  { move = 0x768AB9C5, level = 20 },                        # Frosticle
+  { move = 0xF14FDC17, level = 30 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0x3F08D30B                                         # GK/MF · forest
@@ -23,6 +35,12 @@ target = "c07030020"                                   # Duske Grayling
 
 [[edit]]
 target = "c07030030"                                   # Solomon Owle
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x261BDCA8, level = 13 },                        # Moonsault
+  { move = 0x245D62F1, level = 20 },                        # Attack Scan
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0x2613E24A                                         # DF/MF · wind
@@ -32,6 +50,12 @@ target = "c07030030"                                   # Solomon Owle
 
 [[edit]]
 target = "c07030040"                                   # Leif Bolt
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 13 },                        # Scorching Tackle
+  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0x427719AC, level = 30 },                        # Gale Dash
+]
 
   [[edit.cards]]
   id = 0x6952748D                                         # FW/MF · fire
@@ -42,6 +66,12 @@ target = "c07030040"                                   # Leif Bolt
 
 [[edit]]
 target = "c07030050"                                   # Oleander Meadows
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x8D9AC3F9, level = 13 },                        # Twister Trap
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x7CCC712C, level = 30 },                        # Lunar Eclipse
+]
 
   [[edit.cards]]
   id = 0x704945CC                                         # DF/GK · mountain
@@ -52,6 +82,12 @@ target = "c07030050"                                   # Oleander Meadows
 
 [[edit]]
 target = "c07030060"                                   # Raven Vale
+moves = [
+  { move = 0xC6655BA0, level = 1 },                         # Celestial Saw
+  { move = 0x8331F63E, level = 13 },                        # Divine Dummy
+  { move = 0x73C5AF40, level = 20 },                        # Dash Accelerator
+  { move = 0x20D01E43, level = 30 },                        # Hey Presto
+]
 
   [[edit.cards]]
   id = 0x5B64160F                                         # MF/FW · forest
@@ -62,6 +98,12 @@ target = "c07030060"                                   # Raven Vale
 
 [[edit]]
 target = "c07030070"                                   # Wolfe Redwood
+moves = [
+  { move = 0x19BA3BFC, level = 1 },                         # Dance on Air
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x73C5AF40, level = 20 },                        # Dash Accelerator
+  { move = 0x31ABD82E, level = 30 },                        # Circus Block
+]
 
   [[edit.cards]]
   id = 0x427F274E                                         # MF/FW · mountain
@@ -71,6 +113,12 @@ target = "c07030070"                                   # Wolfe Redwood
 
 [[edit]]
 target = "c07030080"                                   # Willow Proude
+moves = [
+  { move = 0xC6655BA0, level = 1 },                         # Celestial Saw
+  { move = 0x6ADE9E01, level = 13 },                        # Illusory Ball
+  { move = 0x8331F63E, level = 20 },                        # Divine Dummy
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xC5E73B81                                         # MF/FW · mountain
@@ -81,6 +129,12 @@ target = "c07030080"                                   # Willow Proude
 
 [[edit]]
 target = "c07030090"                                   # Reid Rivers
+moves = [
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x8D9AC3F9, level = 13 },                        # Twister Trap
+  { move = 0x73C5AF40, level = 20 },                        # Dash Accelerator
+  { move = 0xAF150D21, level = 30 },                        # Swallow Counter
+]
 
   [[edit.cards]]
   id = 0xDCFC0AC0                                         # DF/FW · wind
@@ -91,6 +145,12 @@ target = "c07030090"                                   # Reid Rivers
 
 [[edit]]
 target = "c07030100"                                   # Piers Thornton
+moves = [
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x4E9A9232, level = 13 },                        # Spinning Cut
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x0CFCDBBE                                         # DF/MF · fire
@@ -100,6 +160,12 @@ target = "c07030100"                                   # Piers Thornton
 
 [[edit]]
 target = "c07030110"                                   # Bud Bloome
+moves = [
+  { move = 0x19BA3BFC, level = 1 },                         # Dance on Air
+  { move = 0x4E9A9232, level = 13 },                        # Spinning Cut
+  { move = 0x7DD6FEF8, level = 20 },                        # Athena's Anthem
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0x15E7EAFF                                         # DF/MF · forest
@@ -109,6 +175,12 @@ target = "c07030110"                                   # Bud Bloome
 
 [[edit]]
 target = "c07030120"                                   # Lucian Skye
+moves = [
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
+  { move = 0x8D9AC3F9, level = 13 },                        # Twister Trap
+  { move = 0xDD6B2708, level = 20 },                        # Majin the Hand
+  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x3ECAB93C                                         # MF/GK · forest
@@ -119,6 +191,12 @@ target = "c07030120"                                   # Lucian Skye
 
 [[edit]]
 target = "c07030130"                                   # Solren Dawnwright
+moves = [
+  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
+  { move = 0xF14FDC17, level = 20 },                        # Shot Pocket
+  { move = 0x9B3048AB, level = 30 },                        # Shadow Catch
+  { move = 0xDF8CB373, level = 30 },                        # Sonic Shot
+]
 
   [[edit.cards]]
   id = 0x27D1887D                                         # GK/FW · mountain
@@ -128,6 +206,12 @@ target = "c07030130"                                   # Solren Dawnwright
 
 [[edit]]
 target = "c07030140"                                   # Elior March
+moves = [
+  { move = 0x8331F63E, level = 1 },                         # Divine Dummy
+  { move = 0x530CDFC1, level = 13 },                        # Mystifying Mist
+  { move = 0x4683AADF, level = 20 },                        # Space Penguin
+  { move = 0x4F58F805, level = 30 },                        # Coil Turn
+]
 
   [[edit.cards]]
   id = 0x68901EBA                                         # DF/FW · wind
@@ -138,6 +222,12 @@ target = "c07030140"                                   # Elior March
 
 [[edit]]
 target = "c07030150"                                   # Raylon Highmoor
+moves = [
+  { move = 0x19BA3BFC, level = 1 },                         # Dance on Air
+  { move = 0x04941270, level = 13 },                        # Vac Attack
+  { move = 0x592A96B4, level = 20 },                        # Afterimage
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0x718B2FFB                                         # MF/DF · wind
@@ -148,6 +238,12 @@ target = "c07030150"                                   # Raylon Highmoor
 
 [[edit]]
 target = "c07030160"                                   # Fedrin Fennley
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0xAEEA9F97, level = 13 },                        # Sigma Zone
+  { move = 0x18C035B4, level = 20 },                        # Ghost Pull
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x5AA67C38                                         # DF/MF · forest
@@ -158,6 +254,12 @@ target = "c07030160"                                   # Fedrin Fennley
 
 [[edit]]
 target = "c11807160"                                   # Curt Gale
+moves = [
+  { move = 0x3A4FFB6C, level = 1 },                         # The Ikaros
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0x50E88A33, level = 20 },                        # Fist Beam
+  { move = 0xFF5C8DAF, level = 30 },                        # Shot Stopper
+]
 
   [[edit.cards]]
   id = 0xC3F88998                                         # MF/GK · fire

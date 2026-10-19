@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01010980"                                   # Shadow Cimmerian
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x568262FA, level = 18 },                        # Dark Tornado
+  { move = 0x33ED6677, level = 24 },                        # Doppelganger
+  { move = 0xB27F13ED, level = 44 },                        # Death Zone
+]
 
   [[edit.cards]]
   id = 0xD3266654                                         # FW/MF · forest
@@ -15,6 +21,12 @@ target = "c01010980"                                   # Shadow Cimmerian
 
 [[edit]]
 target = "c03030030"                                   # Isaac Glass
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x29B328E6, level = 30 },                        # Spectacle Crash
+  { move = 0xAEEA9F97, level = 75 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0xD25CC659                                         # FW/MF · forest

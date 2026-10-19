@@ -7,9 +7,10 @@ local M = {}
 local INFO = "EFFECT_CHR_TRIGGER_DEFINE_DEF_INFO"
 local INFO_BEG = INFO .. "_LIST_BEG"
 local INFO_END = INFO .. "_LIST_END"
--- INFO row columns: effect (crc32 of its effect_define name), trigger (crc32 of its name)
+-- INFO row columns: effect (crc32 of its effect_define name), trigger (crc32 of its name), body aura (effect_aura_config auraDefCrc)
 local COL_EFFECT = 0
 local COL_TRIGGER = 8
+local COL_BODY_AURA = 29
 local TWO32 = 4294967296
 
 -- Hex digits (optional '+'), at most 32 bits; nil otherwise.
@@ -537,6 +538,15 @@ local function add_trigger(t, d, effect_name)
     if not g then return nil, e2 end
     repl[#repl + 1] = { VRFW.crc32(U.trim(from)), VRFW.crc32(g), from, g }
   end
+  -- replacement body auras: template aura def crc -> (new aura def id, names)
+  local body = {}
+  for _, from in ipairs(U.keys(d.body_auras or {})) do
+    local old, e3 = trigger_id(from)
+    if not old then return nil, "body_auras: " .. e3 end
+    local new, e4 = trigger_id(d.body_auras[from])
+    if not new then return nil, "body_auras." .. from .. ": " .. e4 end
+    body[#body + 1] = { old, new, from, text_of(d.body_auras[from]) }
+  end
   local rows = {}
   for _, i in ipairs(info) do
     if t:uint(i, COL_TRIGGER) == like and t:width(i) > COL_TRIGGER then rows[#rows + 1] = i end
@@ -550,6 +560,13 @@ local function add_trigger(t, d, effect_name)
     end
     if not hit then return nil, "effects: `" .. r[3] .. "` is not an effect of the rows of " .. VRFW.hex(like) end
   end
+  for _, b in ipairs(body) do
+    local hit = false
+    for _, i in ipairs(rows) do
+      if t:width(i) > COL_BODY_AURA and t:uint(i, COL_BODY_AURA) == b[1] then hit = true end
+    end
+    if not hit then return nil, "body_auras: `" .. b[3] .. "` is not a body aura of the rows of " .. VRFW.hex(like) end
+  end
   local detail = { "trigger `" .. name .. "` = " .. VRFW.hex(id) .. ", " .. #rows .. " row(s) of " .. VRFW.hex(like) }
   -- from the last row backwards, so an insert never moves a row still to be copied
   for k = #rows, 1, -1 do
@@ -562,6 +579,16 @@ local function add_trigger(t, d, effect_name)
         row.values[COL_EFFECT + 1] = r[2]
         what = r[3] .. " -> " .. r[4]
         break
+      end
+    end
+    if t:width(i) > COL_BODY_AURA then
+      local aura = t:uint(i, COL_BODY_AURA) or 0
+      for _, b in ipairs(body) do
+        if aura ~= 0 and b[1] == aura then
+          row.values[COL_BODY_AURA + 1] = b[2]
+          what = what .. ", body aura " .. b[3] .. " -> " .. b[4]
+          break
+        end
       end
     end
     row.values[COL_TRIGGER + 1] = id

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08040010"                                   # Bolero Salimov
+moves = [
+  { move = 0x66539403, level = 1 },                         # Behind Bars
+  { move = 0x2B8C597E, level = 13 },                        # Fugue Wave
+  { move = 0x47380F29, level = 20 },                        # Echo Ball
+  { move = 0xD9E65BBA, level = 30 },                        # Aurora Curtain
+]
 
   [[edit.cards]]
   id = 0x504D2C31                                         # GK/MF · forest
@@ -16,6 +22,12 @@ target = "c08040010"                                   # Bolero Salimov
 
 [[edit]]
 target = "c08040020"                                   # Kizomba Zakharov
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x7CACF0B0, level = 13 },                        # Horn Train
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0x61FB16FD, level = 30 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x7B607FF2                                         # DF/MF · wind
@@ -25,6 +37,12 @@ target = "c08040020"                                   # Kizomba Zakharov
 
 [[edit]]
 target = "c08040030"                                   # Rumba Mansurov
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x7CACF0B0, level = 13 },                        # Horn Train
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0x41F3CDC2, level = 30 },                        # Scorching Tackle
+]
 
   [[edit.cards]]
   id = 0x627B4EB3                                         # DF/FW · fire
@@ -35,6 +53,12 @@ target = "c08040030"                                   # Rumba Mansurov
 
 [[edit]]
 target = "c08040040"                                   # Merengue Muratov
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0xA2BF7076, level = 13 },                        # Side Swipe
+  { move = 0x1162A8AF, level = 20 },                        # Bewilder Blast
+  { move = 0x61FB16FD, level = 30 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x2D3AD874                                         # DF/MF · wind
@@ -45,6 +69,12 @@ target = "c08040040"                                   # Merengue Muratov
 
 [[edit]]
 target = "c08040050"                                   # Chacha Goncharov
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x1162A8AF, level = 13 },                        # Bewilder Blast
+  { move = 0xC0A013E6, level = 20 },                        # Liar Shot
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x3421E935                                         # DF/MF · wind
@@ -54,6 +84,12 @@ target = "c08040050"                                   # Chacha Goncharov
 
 [[edit]]
 target = "c08040060"                                   # Hulan Nazarova
+moves = [
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0xA2BF7076, level = 13 },                        # Side Swipe
+  { move = 0xC0A013E6, level = 20 },                        # Liar Shot
+  { move = 0xC2E6ADBF, level = 30 },                        # Log Roll
+]
 
   [[edit.cards]]
   id = 0x1F0CBAF6                                         # MF/DF · mountain
@@ -64,6 +100,12 @@ target = "c08040060"                                   # Hulan Nazarova
 
 [[edit]]
 target = "c08040070"                                   # Polkan Ismailov
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x56FBAD3B, level = 13 },                        # Seal Matrix
+  { move = 0x7CACF0B0, level = 20 },                        # Horn Train
+  { move = 0x427719AC, level = 30 },                        # Gale Dash
+]
 
   [[edit.cards]]
   id = 0x06178BB7                                         # MF/DF · fire
@@ -74,6 +116,12 @@ target = "c08040070"                                   # Polkan Ismailov
 
 [[edit]]
 target = "c08040080"                                   # Jazzar Belikov
+moves = [
+  { move = 0x56FBAD3B, level = 1 },                         # Seal Matrix
+  { move = 0x17110E3B, level = 13 },                        # Jumbo Sandwich
+  { move = 0x7CACF0B0, level = 20 },                        # Horn Train
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0x818F9778                                         # MF/DF · mountain
@@ -84,6 +132,12 @@ target = "c08040080"                                   # Jazzar Belikov
 
 [[edit]]
 target = "c08040090"                                   # Limbo Zakharov
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x56FBAD3B, level = 13 },                        # Seal Matrix
+  { move = 0x7CACF0B0, level = 20 },                        # Horn Train
+  { move = 0xAEEA9F97, level = 30 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0x9894A639                                         # MF/FW · forest
@@ -93,6 +147,12 @@ target = "c08040090"                                   # Limbo Zakharov
 
 [[edit]]
 target = "c08040100"                                   # Samba Sokolov
+moves = [
+  { move = 0xAD53B378, level = 1 },                         # Diffusal Chord
+  { move = 0x3297683F, level = 13 },                        # Warp Step
+  { move = 0x6A558852, level = 20 },                        # Hollow Blare
+  { move = 0xDA3FF6C9, level = 30 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0x48947747                                         # MF/FW · fire
@@ -102,6 +162,12 @@ target = "c08040100"                                   # Samba Sokolov
 
 [[edit]]
 target = "c08040110"                                   # Tango Ahmedov
+moves = [
+  { move = 0x3297683F, level = 1 },                         # Warp Step
+  { move = 0x6A558852, level = 13 },                        # Hollow Blare
+  { move = 0xAD53B378, level = 20 },                        # Diffusal Chord
+  { move = 0x035C1112, level = 30 },                        # Gungnir
+]
 
   [[edit.cards]]
   id = 0x518F4606                                         # FW/DF · wind
@@ -112,6 +178,12 @@ target = "c08040110"                                   # Tango Ahmedov
 
 [[edit]]
 target = "c08040120"                                   # Cancan Popov
+moves = [
+  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
+  { move = 0x6A558852, level = 13 },                        # Hollow Blare
+  { move = 0x3EC287DE, level = 20 },                        # Bubble Gum
+  { move = 0xB3CA3CB6, level = 30 },                        # Parkour Power
+]
 
   [[edit.cards]]
   id = 0x7AA215C5                                         # FW/MF · forest
@@ -121,6 +193,12 @@ target = "c08040120"                                   # Cancan Popov
 
 [[edit]]
 target = "c08040130"                                   # Bhangra Makarov
+moves = [
+  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
+  { move = 0x7CACF0B0, level = 13 },                        # Horn Train
+  { move = 0x3EC287DE, level = 20 },                        # Bubble Gum
+  { move = 0x5E7E4775, level = 30 },                        # Table-Turner
+]
 
   [[edit.cards]]
   id = 0x63B92484                                         # MF/GK · forest
@@ -131,6 +209,12 @@ target = "c08040130"                                   # Bhangra Makarov
 
 [[edit]]
 target = "c11808040"                                   # Ballet Burkhanov
+moves = [
+  { move = 0x3297683F, level = 1 },                         # Warp Step
+  { move = 0xAD53B378, level = 13 },                        # Diffusal Chord
+  { move = 0x6A558852, level = 20 },                        # Hollow Blare
+  { move = 0x2B8C597E, level = 30 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0xA86F917B                                         # FW/MF · fire
@@ -141,6 +225,12 @@ target = "c11808040"                                   # Ballet Burkhanov
 
 [[edit]]
 target = "c11808050"                                   # Carrie Ogrova
+moves = [
+  { move = 0x13D845C9, level = 1 },                         # Samba Strike
+  { move = 0xA5F2EFEA, level = 13 },                        # Brave Shot
+  { move = 0x5E233E68, level = 20 },                        # Super Elastico
+  { move = 0x66539403, level = 30 },                        # Behind Bars
+]
 
   [[edit.cards]]
   id = 0xB174A03A                                         # GK/FW · mountain

@@ -1,0 +1,20 @@
+schema = "VRFW.game/2"
+
+# Home Stadium (docs/game/mods/home-stadium.md): the commands the game Lua asks (assets\lua). The logic is
+# scripts\home_stadium.lua (HomeStadium.*).
+
+# () -> { { map, item }, … }: the game's stadium list in list order; item = its ticket (0 = always listed, -1 = another
+# unlock condition: not offered)
+[[VRFW.Command]]
+name = "CMND_HOMESTADIUM_LIST"
+handler = "HomeStadium.List"
+
+# (team set) -> the map crc of that team dock's home stadium, 0 = none
+[[VRFW.Command]]
+name = "CMND_HOMESTADIUM_GET"
+handler = "HomeStadium.Get"
+
+# (team set, map crc) -> ok: the team dock's home stadium (0 clears it), saved in the slot's mod data
+[[VRFW.Command]]
+name = "CMND_HOMESTADIUM_SET"
+handler = "HomeStadium.Set"

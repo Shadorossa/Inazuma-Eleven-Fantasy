@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08090160"                                   # Rion
+moves = [
+  { move = 0x14A6A879, level = 1 },                         # Regal Eagle
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x768AB9C5, level = 20 },                        # Frosticle
+  { move = 0xDE4ED944, level = 30 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0xE65E1470                                         # FW/MF · wind
@@ -15,6 +21,12 @@ target = "c08090160"                                   # Rion
 
 [[edit]]
 target = "c08090170"                                   # Van Maanen
+moves = [
+  { move = 0x316A7390, level = 1 },                         # Land Dragon
+  { move = 0x768AB9C5, level = 13 },                        # Frosticle
+  { move = 0xC6978232, level = 20 },                        # Dinosaur Roar
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0xFF452531                                         # FW/DF · mountain
@@ -25,6 +37,12 @@ target = "c08090170"                                   # Van Maanen
 
 [[edit]]
 target = "c08090180"                                   # Veles
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0x43B5739B, level = 13 },                        # Lightning Bolt
+  { move = 0xDEB28A7B, level = 20 },                        # Monkey Turn
+  { move = 0xEFFC6FA8, level = 30 },                        # Warhead
+]
 
   [[edit.cards]]
   id = 0x78DD39FE                                         # MF/FW · forest
@@ -34,6 +52,12 @@ target = "c08090180"                                   # Veles
 
 [[edit]]
 target = "c08090190"                                   # Brock
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x768AB9C5, level = 13 },                        # Frosticle
+  { move = 0x2E7B2B84, level = 20 },                        # Thief's Eye
+  { move = 0x64152A5A, level = 30 },                        # Pinch and Save
+]
 
   [[edit.cards]]
   id = 0x61C608BF                                         # DF/GK · forest
@@ -44,6 +68,12 @@ target = "c08090190"                                   # Brock
 
 [[edit]]
 target = "c08090200"                                   # Wolfe
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x768AB9C5, level = 13 },                        # Frosticle
+  { move = 0x78E027BC, level = 20 },                        # Shine Drive
+  { move = 0x087999EE, level = 30 },                        # Heel Drop
+]
 
   [[edit.cards]]
   id = 0xB2420DAF                                         # MF/DF · fire
@@ -53,6 +83,12 @@ target = "c08090200"                                   # Wolfe
 
 [[edit]]
 target = "c11908310"                                   # Alexander Allegrov
+moves = [
+  { move = 0x0C7FF30F, level = 1 },                         # Divine Drive
+  { move = 0x14A6A879, level = 13 },                        # Regal Eagle
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x261BDCA8, level = 30 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0x1C0208C2                                         # MF/FW · wind

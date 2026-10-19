@@ -4,6 +4,7 @@ schema = "VRFW.changelog/1"
 # (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
 # 1.2.0 (2026-10-15): the modules are module mods in modules\<Module>\ (Character Reforged's layout).
+# 1.2.17 (2026-10-19): the module Home Stadium (modules\HomeStadium\).
 lang = "es"
 name = "Football Reforged"
 
@@ -36,52 +37,61 @@ icon = "general"
 notes = [
     "Mecánicas de partido en módulos, cada uno una tarjeta.",
     "Barrera del portero y Furor, activados por defecto.",
+    "Estadio local por equipo para sus partidos en casa.",
 ]
 
 [release.en]
 notes = [
     "Match mechanics in modules, each one a card.",
     "Goalkeeper barrier and Furor, on by default.",
+    "A home stadium per team for its home matches.",
 ]
 
 [release.fr]
 notes = [
     "Mécaniques de match en modules, chacun une carte.",
     "Barrière du gardien et Furie, actifs par défaut.",
+    "Un stade à domicile par équipe pour ses matchs.",
 ]
 
 [release.de]
 notes = [
     "Spielmechaniken in Modulen, jedes eine Karte.",
     "Torwart-Barriere und Furor, standardmäßig an.",
+    "Ein Heimstadion pro Team für seine Heimspiele.",
 ]
 
 [release.it]
 notes = [
     "Meccaniche di partita in moduli, ognuno una carta.",
     "Barriera del portiere e Furore, attivi di base.",
+    "Uno stadio di casa per squadra per le gare in casa.",
 ]
 
 [release.pt]
 notes = [
     "Mecânicas de partida em módulos, cada um um cartão.",
     "Barreira do guarda-redes e Furor, ativos por defeito.",
+    "Um estádio da casa por equipa para os jogos em casa.",
 ]
 
 [release.ja]
 notes = [
     "試合メカニクスをモジュールで追加、各モジュールはカード。",
     "キーパーバリアとフューラー、初期状態でオン。",
+    "チームごとのホームスタジアムでホーム戦。",
 ]
 
 [release.zh_hans]
 notes = [
     "以模块加入比赛机制，每个模块是一张卡片。",
     "门将屏障与怒火，默认开启。",
+    "每支队伍的主场球场，用于主场比赛。",
 ]
 
 [release.zh_hant]
 notes = [
     "以模組加入比賽機制，每個模組是一張卡片。",
     "門將屏障與怒火，預設開啟。",
+    "每支隊伍的主場球場，用於主場比賽。",
 ]

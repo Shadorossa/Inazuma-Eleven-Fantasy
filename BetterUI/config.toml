@@ -15,3 +15,15 @@ prematch_skip_hold = 1.0
 # soccer08\soccer08_04.toml + the mesh move content\menus\kizuna_plate.toml, both `when = { config = "slanted_kizuna" }`).
 # false = the retail rounded capsule (read at the next game start).
 slanted_kizuna = true
+
+# The card colour of each player position, wherever cards are coloured by position (team screen, formation, bench,
+# Competition lists, the player page header, drop lists: No More Rarities' position looks). Each position takes the
+# look (card frame, plates, row colour) of the position named here: goalkeeper (gold), defender (blue), midfielder
+# (green), forward (red). Owner 2026-10-19: midfielders blue, defenders green. Read at the first card of each screen
+# (scripts\better_ui.lua BetterUI.PositionLook, CMND_BETTERUI_POSITION_LOOK); a missing or unknown name = the
+# position's own look. Without No More Rarities nothing changes.
+[position_card_looks]
+goalkeeper = "goalkeeper"
+defender = "midfielder"
+midfielder = "defender"
+forward = "forward"

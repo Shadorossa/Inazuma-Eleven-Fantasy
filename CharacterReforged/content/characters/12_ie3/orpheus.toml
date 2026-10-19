@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03031610"                                   # Gigi Blasi
+moves = [
+  { move = 0xA3980723, level = 1 },                         # Colosseum Guard
+  { move = 0x41AEB4DF, level = 1 },                         # Crystal Barrier
+  { move = 0x00196EC2, level = 33 },                        # Earthquake
+  { move = 0xDBA0E5E3, level = 42 },                        # Gigant Wall
+]
+VRFW.MoveGrades = [
+  { Move = 0xA3980723, Grade = 1 },                         # Colosseum Guard
+]
 
   [[edit.cards]]
   id = 0x5C5BBF0C                                         # GK/MF · wind
@@ -16,6 +25,12 @@ target = "c03031610"                                   # Gigi Blasi
 
 [[edit]]
 target = "c03031620"                                   # Vento Galliano
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x34E4CEAB, level = 20 },                        # Barbarian Shield
+  { move = 0x3F00EDE9, level = 53 },                        # Dash Storm
+  { move = 0xB7F1AED6, level = 62 },                        # Double Cyclone
+]
 
   [[edit.cards]]
   id = 0x7776ECCF                                         # DF/MF · wind
@@ -25,6 +40,12 @@ target = "c03031620"                                   # Vento Galliano
 
 [[edit]]
 target = "c03031630"                                   # Ottorino Nobili
+moves = [
+  { move = 0xA6D711A6, level = 1 },                         # Full Power Shield
+  { move = 0x34E4CEAB, level = 20 },                        # Barbarian Shield
+  { move = 0x4BD584B7, level = 38 },                        # Power Charge
+  { move = 0x7FE98F60, level = 56 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0x6E6DDD8E                                         # DF/FW · forest
@@ -34,6 +55,12 @@ target = "c03031630"                                   # Ottorino Nobili
 
 [[edit]]
 target = "c03031640"                                   # Anton Graziuso
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x34E4CEAB, level = 20 },                        # Barbarian Shield
+  { move = 0x1A868BED, level = 40 },                        # Clone Defence
+  { move = 0x0710C61E, level = 57 },                        # Perimeter Zone
+]
 
   [[edit.cards]]
   id = 0x212C4B49                                         # DF/MF · fire
@@ -44,6 +71,12 @@ target = "c03031640"                                   # Anton Graziuso
 
 [[edit]]
 target = "c03031650"                                   # Marco Maserati
+moves = [
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x21127474, level = 35 },                        # Ultra Moon
+  { move = 0x47380F29, level = 57 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0x38377A08                                         # DF/MF · mountain
@@ -53,6 +86,12 @@ target = "c03031650"                                   # Marco Maserati
 
 [[edit]]
 target = "c03031660"                                   # Angelo Gabrini
+moves = [
+  { move = 0x61FB16FD, level = 1 },                         # Divine Arrows
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x78E027BC, level = 37 },                        # Shine Drive
+  { move = 0x0D368F6B, level = 60 },                        # Heaven's Time
+]
 
   [[edit.cards]]
   id = 0x131A29CB                                         # MF/DF · wind
@@ -63,6 +102,12 @@ target = "c03031660"                                   # Angelo Gabrini
 
 [[edit]]
 target = "c03031670"                                   # Gianluca Zanardi
+moves = [
+  { move = 0x332CCDC9, level = 1 },                         # Heel Kick
+  { move = 0x47380F29, level = 15 },                        # Echo Ball
+  { move = 0x3BF45E9A, level = 40 },                        # Triple Boost
+  { move = 0x46FA651E, level = 65 },                        # Water Veil
+]
 
   [[edit.cards]]
   id = 0x0A01188A                                         # MF/FW · forest
@@ -73,6 +118,12 @@ target = "c03031670"                                   # Gianluca Zanardi
 
 [[edit]]
 target = "c03031680"                                   # Giorgio Giannini
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x47380F29, level = 15 },                        # Echo Ball
+  { move = 0x8FBCFC3C, level = 32 },                        # Blazing Knuckle
+  { move = 0x0D368F6B, level = 57 },                        # Heaven's Time
+]
 
   [[edit.cards]]
   id = 0x8D990445                                         # MF/DF · mountain
@@ -82,6 +133,12 @@ target = "c03031680"                                   # Giorgio Giannini
 
 [[edit]]
 target = "c03031690"                                   # Dante Diavolo
+moves = [
+  { move = 0x47380F29, level = 1 },                         # Echo Ball
+  { move = 0x34E4CEAB, level = 20 },                        # Barbarian Shield
+  { move = 0x28B0E96F, level = 35 },                        # Heavy Mettle
+  { move = 0xB4757AB8, level = 55 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0x94823504                                         # MF/DF · fire
@@ -91,6 +148,15 @@ target = "c03031690"                                   # Dante Diavolo
 
 [[edit]]
 target = "c03031700"                                   # Paolo Bianchi
+moves = [
+  { move = 0x8D5B6847, level = 1 },                         # Odin Sword
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x61FB16FD, level = 42 },                        # Divine Arrows
+  { move = 0x6F918884, level = 58 },                        # Easy Breezy
+]
+VRFW.MoveGrades = [
+  { Move = 0x8D5B6847, Grade = 1 },                         # Odin Sword
+]
 
   [[edit.cards]]
   id = 0x4482E47A                                         # FW/MF · forest
@@ -100,6 +166,12 @@ target = "c03031700"                                   # Paolo Bianchi
 
 [[edit]]
 target = "c03031710"                                   # Raffaele Generani
+moves = [
+  { move = 0x79224D8B, level = 1 },                         # Freeze Shot
+  { move = 0x19025F83, level = 28 },                        # Quick Draw
+  { move = 0xB1FBC783, level = 40 },                        # Reflect Buster
+  { move = 0x3BF45E9A, level = 65 },                        # Triple Boost
+]
 
   [[edit.cards]]
   id = 0x5D99D53B                                         # FW/DF · mountain
@@ -110,6 +182,12 @@ target = "c03031710"                                   # Raffaele Generani
 
 [[edit]]
 target = "c03031720"                                   # Daniele Sanctis
+moves = [
+  { move = 0xDBA0E5E3, level = 1 },                         # Gigant Wall
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xBFCC20E7, level = 33 },                        # Wood Chopper
+  { move = 0xA3980723, level = 63 },                        # Colosseum Guard
+]
 
   [[edit.cards]]
   id = 0x76B486F8                                         # GK/MF · fire
@@ -119,6 +197,12 @@ target = "c03031720"                                   # Daniele Sanctis
 
 [[edit]]
 target = "c03031730"                                   # Enrico Oliviero
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x60397CCA, level = 1 },                         # Cross Drive
+  { move = 0x47380F29, level = 59 },                        # Echo Ball
+  { move = 0x3BF45E9A, level = 68 },                        # Triple Boost
+]
 
   [[edit.cards]]
   id = 0x6FAFB7B9                                         # MF/FW · mountain
@@ -128,6 +212,12 @@ target = "c03031730"                                   # Enrico Oliviero
 
 [[edit]]
 target = "c03031740"                                   # Alessandro Rossa
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0xAC6D8A70, level = 1 },                         # Rainbow Arc
+  { move = 0x31ABD82E, level = 45 },                        # Circus Block
+  { move = 0x4E9A9232, level = 65 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x20EE217E                                         # MF/DF · forest
@@ -138,6 +228,12 @@ target = "c03031740"                                   # Alessandro Rossa
 
 [[edit]]
 target = "c03031750"                                   # Giuseppe Cannavaro
+moves = [
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0xDD365E15, level = 48 },                        # Mole Shuffle
+  { move = 0x47380F29, level = 62 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0x39F5103F                                         # DF/MF · wind

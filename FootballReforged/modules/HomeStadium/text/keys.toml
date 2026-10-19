@@ -1,0 +1,20 @@
+schema = "VRFW.text_key/1"
+# Texts of «Home Stadium» (mod home_stadium, a module of Football Reforged) (format: docs/framework/types/text.md): the
+# «Mods» screen's name and description and the team dock row (menu_text, id crc32("home_stadium.<name>"): row,
+# row_help, none are read by assets\lua\soccer_team_dock_menu\300_home_stadium.lua). A language missing here falls back
+# to English. The help line fits the help bar on one line (about 75 characters).
+default_lang = "en"
+
+[en.new]
+mod_name = "Home Stadium"
+mod_description = "Each of your teams gets a home stadium: Team Dock › «Home stadium» (a picture button under Tactics with BetterUI, a list row without it) lists the stadiums you own (bought or unlocked) and saves the pick for the team on screen. The team plays its home matches there: the friendlies that leave the stadium open (no stadium of their own and no rival's home). Competition, Chronicle and Battle Bay keep their stadiums. A module of Football Reforged."
+row = "Home stadium"
+row_help = "Pick this team's home stadium among the stadiums you own."
+none = "No home stadium"
+
+[es.new]
+mod_name = "Estadio local"
+mod_description = "Cada uno de tus equipos tiene un estadio local: Plantilla de equipo › «Estadio local» (un botón con imagen bajo Tácticas con BetterUI, una fila de la lista sin él) muestra los estadios que tienes (comprados o desbloqueados) y guarda el elegido para el equipo en pantalla. El equipo juega allí sus partidos en casa: los amistosos que dejan el estadio libre (sin estadio propio ni el del rival). Competición, Crónica y Bahía Batalla mantienen sus estadios. Un módulo de Football Reforged."
+row = "Estadio local"
+row_help = "Elige el estadio local de este equipo entre los estadios que tienes."
+none = "Sin estadio local"

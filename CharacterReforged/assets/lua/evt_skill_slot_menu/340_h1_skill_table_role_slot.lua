@@ -11,6 +11,10 @@
 --     by the mouse pointer (object evt_role_medal_slot: the retail object + a click zone on _touch_sp01), Aceptar or a
 --     click opens the role picker of the screen (PL.RoleCoroutine: «Sin rol» / Entrenador / Gerente), which sets it with
 --     CMND_CHARACTERREFORGED_SET_ROLE.
+-- 2026-10-19: the slot is placed only once the player card is laid out (its position answered (0, 0) while the card was
+-- still opening, which put the medal at the screen's top-left corner first) and stays hidden until then. The first
+-- placement of a visit logs every visible layer of the screen with its position (Slot.Probe): the layers the screen
+-- opened, the top-left quarter marked, for the owner's stray top-left box.
 -- The shown player = the chunk's local `n`, read through the skill table's extension point
 -- (CharacterReforged.SkillTable.L, graft skill_table_host). Definitions and wraps only at chunk load (no engine call);
 -- the screen's active / input state is never touched here (the role picker keeps its own).
@@ -52,6 +56,16 @@ do
   Slot.FALLBACK_X, Slot.FALLBACK_Y = 326, -96
   Slot.shown_chara = nil
   Slot.placed_at = nil
+  Slot.covered = false
+  -- the screen's opened layers (layer crc -> highest instance seen), for the one-time probe of a visit
+  Slot.opened = {}
+  Slot.probed = false
+  -- the probe's «top-left» region: left of this x, above this y (the menu's layout units, origin top-left, y down < 0)
+  Slot.PROBE_LEFT_OF, Slot.PROBE_ABOVE = 480, -270
+  Slot.IS_EXIST_LAYER = 262659071                   -- CMND_IS_EXIST_LAYER (layer)
+  Slot.IS_LAYER_VISIBLE = 1262717583                -- CMND_IS_LAYER_VISIBLE (layer, idx)
+  Slot.CURSOR = 2296367164                          -- cmn05_01_cursor (the screen's focus frame)
+  Slot.PLATE_MESH = 2392129151                      -- _set_icon_badge01 (the medal's plate)
 
   function Slot.Table()
     local api = type(CharacterReforged) == "table" and CharacterReforged.SkillTable or nil
@@ -69,10 +83,11 @@ do
     return 0
   end
 
-  -- the player card's position and the top of its frame: x, y, top (nil = unknown); (0, 0) = a missing node
+  -- the player card's position and the top of its frame: x, y, top (nil = unknown: the card not laid out yet answers
+  -- (0, 0)); (0, 0) = a missing node
   function Slot.CardFrame()
     local ok, x, y = pcall(funcLuaMenuCommand, Slot.LAYER_POS, Slot.CARD, 0)
-    if not ok or type(x) ~= "number" or type(y) ~= "number" then
+    if not ok or type(x) ~= "number" or type(y) ~= "number" or (x == 0 and y == 0) then
       return nil
     end
     local top = nil
@@ -85,12 +100,13 @@ do
     return x, y, top
   end
 
-  -- smaller and above the card, never over it; placed again only when the card moved
+  -- smaller and above the card, never over it; placed again only when the card moved; nothing while the card is not
+  -- laid out (the slot stays hidden until its first placement)
   function Slot.Place()
     local x, y, top = Slot.CardFrame()
     local px, py
     if x == nil then
-      px, py = Slot.FALLBACK_X, Slot.FALLBACK_Y
+      return
     elseif top ~= nil then
       px, py = x, top + Slot.GAP + Slot.PLATE_HALF * Slot.SCALE
     else
@@ -98,13 +114,94 @@ do
     end
     local key = string.format("%.1f,%.1f", px, py)
     if Slot.placed_at == key then
+      pcall(Slot.Anchor, px, py)
       return
     end
     funcLuaMenuCommand(Slot.LOCAL_SCALE, Slot.LAYER, Slot.SCALE, Slot.SCALE, 1, 0)
-    funcLuaMenuCommand(Slot.LOCAL_POS, Slot.LAYER, px, py, 0, 0)
+    funcLuaMenuCommand(Slot.LOCAL_POS, Slot.LAYER, px + (Slot.offset_x or 0), py + (Slot.offset_y or 0), 0, 0)
+    Slot.anchored = nil
+    local first = Slot.placed_at == nil
     Slot.placed_at = key
+    if first then
+      Slot.Show(true)
+    end
     pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "medal placed", tostring(x),
       tostring(y), "frame top", tostring(top), "at", px, py, "scale", Slot.SCALE)
+    if not Slot.probed then
+      Slot.probed = true
+      pcall(Slot.Probe)
+    end
+  end
+
+  -- a layer instance the screen set up or opened (the probe's list)
+  function Slot.Record(layer, idx)
+    if type(layer) == "number" then
+      idx = type(idx) == "number" and idx or 0
+      Slot.opened[layer] = math.max(Slot.opened[layer] or 0, idx)
+    end
+  end
+
+  -- a mesh's drawn (global) position, «-» when unknown
+  function Slot.MeshAt(layer, node)
+    local ok, x, y = pcall(funcLuaMenuCommand, Slot.MESH_POS, layer, 0, node)
+    if ok and type(x) == "number" and type(y) == "number" then
+      return string.format("(%.0f, %.0f)", x, y)
+    end
+    return "-"
+  end
+
+  -- one line per visit: every layer instance the screen set up or opened that is visible, its root position, the
+  -- top-left ones marked «*» (crc of the layer name: research\grafts\_names.json names them); then where the medal
+  -- and the card's frame are DRAWN (mesh global positions) and the focus cursor's root
+  function Slot.Probe()
+    local parts = {}
+    Slot.Record(Slot.LAYER, 0)
+    Slot.Record(Slot.CURSOR, 0)
+    for layer, top_idx in pairs(Slot.opened) do
+      if funcLuaMenuCommand(Slot.IS_EXIST_LAYER, layer) == true then
+        for idx = 0, top_idx do
+          if funcLuaMenuCommand(Slot.IS_LAYER_VISIBLE, layer, idx) == true then
+            local ok, x, y = pcall(funcLuaMenuCommand, Slot.LAYER_POS, layer, idx)
+            if ok and type(x) == "number" and type(y) == "number" then
+              local mark = (x < Slot.PROBE_LEFT_OF and y > Slot.PROBE_ABOVE) and "*" or ""
+              parts[#parts + 1] = string.format("%s0x%08X/%d (%.0f, %.0f)", mark, layer % 4294967296, idx, x, y)
+            end
+          end
+        end
+      end
+    end
+    table.sort(parts)
+    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "probe: visible layers (* = top-left)",
+      table.concat(parts, ", "))
+    local card = {}
+    for _, node in ipairs(Slot.CARD_FRAME_NODES) do
+      card[#card + 1] = Slot.MeshAt(Slot.CARD, node)
+    end
+    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "probe: drawn at",
+      "medal plate", Slot.MeshAt(Slot.LAYER, Slot.PLATE_MESH), "medal icon", Slot.MeshAt(Slot.LAYER, Slot.MEDAL_MESH),
+      "card frame", table.concat(card, " / "), "medal placed", tostring(Slot.placed_at))
+  end
+
+  -- the placement is in the slot layer's own local frame (its anchor comes from ability_learning_board_menu, not the
+  -- card's): once per placement, after the layout applied it, the plate's DRAWN centre is compared with the target
+  -- (the card frame's drawn space) and the layer is moved by the difference. Logged when it moves.
+  function Slot.Anchor(px, py)
+    if Slot.anchored == Slot.placed_at then
+      return
+    end
+    local ok, dx, dy = pcall(funcLuaMenuCommand, Slot.MESH_POS, Slot.LAYER, 0, Slot.PLATE_MESH)
+    if not ok or type(dx) ~= "number" or type(dy) ~= "number" or (dx == 0 and dy == 0) then
+      return
+    end
+    Slot.anchored = Slot.placed_at
+    local ox, oy = px - dx, py - dy
+    if math.abs(ox) <= 2 and math.abs(oy) <= 2 then
+      return
+    end
+    Slot.offset_x, Slot.offset_y = (Slot.offset_x or 0) + ox, (Slot.offset_y or 0) + oy
+    funcLuaMenuCommand(Slot.LOCAL_POS, Slot.LAYER, px + Slot.offset_x, py + Slot.offset_y, 0, 0)
+    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "medal anchored to the card: drawn",
+      dx, dy, "target", px, py, "layer offset", Slot.offset_x, Slot.offset_y)
   end
 
   -- the slot as the board draws its coach / manager piece (UpdateEffectPieceIcon, director slot branch)
@@ -141,8 +238,9 @@ do
     end
   end
 
+  -- the slot shows only once placed at the card and while no list covers the card
   function Slot.Show(visible)
-    funcLuaMenuCommand(Slot.LAYER_VISIBLE, Slot.LAYER, 0, visible)
+    funcLuaMenuCommand(Slot.LAYER_VISIBLE, Slot.LAYER, 0, visible and Slot.placed_at ~= nil and not Slot.covered)
   end
 
   -- ---- the wraps (once per VM; each calls what it wrapped) -----------------------------------------------------
@@ -160,9 +258,14 @@ do
   Slot.WrapGlobal("OnSetupLayer", function(previous)
     return function(a1, a2, ...)
       local result = table.pack(previous(a1, a2, ...))
+      Slot.Record(a1, a2)
       if a1 == Slot.LAYER then
         funcLuaMenuCommand(Slot.PRIORITY, a1, a2, Slot.DRAW_PRIORITY, true)
         Slot.placed_at = nil
+        Slot.covered = false
+        Slot.probed = false
+        Slot.probed_focus = false
+        Slot.Show(false)
         pcall(Slot.Place)
         pcall(Slot.Draw)
       elseif a1 == Slot.BUTTON_SS or a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
@@ -175,8 +278,10 @@ do
   Slot.WrapGlobal("OnOpenLayer", function(previous)
     return function(a1, a2, ...)
       local result = table.pack(previous(a1, a2, ...))
+      Slot.Record(a1, a2)
       if a1 == Slot.LAYER then
         Slot.placed_at = nil
+        Slot.Show(false)
         pcall(Slot.Place)
         pcall(Slot.Draw)
       elseif a1 == Slot.BUTTON_SS or a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
@@ -189,6 +294,10 @@ do
   -- the slot has the focus: the screen treats it like a bottom button (no row info), the guide line names the role
   Slot.WrapGlobal("OnChangeFocus", function(previous)
     return function(a1, a2, ...)
+      if Slot.probed and not Slot.probed_focus then
+        Slot.probed_focus = true
+        pcall(Slot.Probe)
+      end
       local L = Slot.Table()
       if a1 == Slot.LAYER and L ~= nil then
         L.evt_focus_layer = a1
@@ -252,7 +361,8 @@ do
       local previous = PL.ListCover
       PL.ListCover = function(show, ...)
         local result = table.pack(previous(show, ...))
-        pcall(Slot.Show, not show)
+        Slot.covered = show == true
+        pcall(Slot.Show, true)
         return table.unpack(result, 1, result.n)
       end
       Slot.wrapped_list_cover = PL.ListCover

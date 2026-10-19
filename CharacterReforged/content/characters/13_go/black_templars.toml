@@ -15,6 +15,12 @@ target = "c04000490_5000"                              # Howie Itzer
 
 [[edit]]
 target = "c04000410"                                   # Lance Speares
+moves = [
+  { move = 0x58B5859E, level = 12 },                        # Whip Crack
+  { move = 0xA7157B91, level = 15 },                        # Power Shield
+  { move = 0xB01D1B68, level = 31 },                        # Power Spike
+  { move = 0x5B3151F0, level = 40 },                        # Nitro Slap
+]
 
   [[edit.cards]]
   id = 0x65644859                                         # GK/MF · fire
@@ -24,6 +30,12 @@ target = "c04000410"                                   # Lance Speares
 
 [[edit]]
 target = "c04000420"                                   # Dirk Anlace
+moves = [
+  { move = 0x2E7B2B84, level = 6 },                         # Thief's Eye
+  { move = 0x6A66FA7E, level = 25 },                        # Killer Whale
+  { move = 0x5739C70C, level = 35 },                        # Guided Collide
+  { move = 0x6ADE9E01, level = 52 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x4E491B9A                                         # DF/MF · forest
@@ -34,6 +46,12 @@ target = "c04000420"                                   # Dirk Anlace
 
 [[edit]]
 target = "c04000430"                                   # Clay Moor
+moves = [
+  { move = 0xF6E75EE9, level = 12 },                        # Headbanger
+  { move = 0x05567847, level = 22 },                        # Runaway Train
+  { move = 0x737DCB3F, level = 35 },                        # Pancake Defence
+  { move = 0x24E5068E, level = 40 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0x57522ADB                                         # DF/FW · forest
@@ -44,6 +62,12 @@ target = "c04000430"                                   # Clay Moor
 
 [[edit]]
 target = "c04000440"                                   # Nun Chuck
+moves = [
+  { move = 0x179492C5, level = 13 },                        # Center Scythe Slice
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x17110E3B, level = 27 },                        # Jumbo Sandwich
+  { move = 0x585098FC, level = 44 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0x1813BC1C                                         # DF/MF · mountain
@@ -54,6 +78,12 @@ target = "c04000440"                                   # Nun Chuck
 
 [[edit]]
 target = "c04000450"                                   # Spike Stiletto
+moves = [
+  { move = 0xF626F557, level = 13 },                        # Electric Impedance
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x4A17EE80, level = 39 },                        # Hunter's Net
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0x01088D5D                                         # DF/MF · wind
@@ -63,6 +93,12 @@ target = "c04000450"                                   # Spike Stiletto
 
 [[edit]]
 target = "c04000460"                                   # Bilbo Baton
+moves = [
+  { move = 0x928B9BED, level = 6 },                         # Optimal Trajectory
+  { move = 0x12E67CC1, level = 13 },                        # Future Eye
+  { move = 0x650FA58E, level = 40 },                        # Spin Out
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x2A25DE9E                                         # MF/FW · forest
@@ -73,6 +109,12 @@ target = "c04000460"                                   # Bilbo Baton
 
 [[edit]]
 target = "c04000470"                                   # Jack Knife
+moves = [
+  { move = 0x457EB170, level = 15 },                        # Pyrokinetic
+  { move = 0x20D01E43, level = 26 },                        # Hey Presto
+  { move = 0xBBE07677, level = 35 },                        # Sidewinder
+  { move = 0x4031A7F5, level = 45 },                        # Mole Fake
+]
 
   [[edit.cards]]
   id = 0x333EEFDF                                         # MF/FW · mountain
@@ -82,6 +124,12 @@ target = "c04000470"                                   # Jack Knife
 
 [[edit]]
 target = "c04000480"                                   # Bayonet Gunne
+moves = [
+  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x530CDFC1, level = 31 },                        # Mystifying Mist
+  { move = 0xB0BC314A, level = 40 },                        # Spin Meister
+]
 
   [[edit.cards]]
   id = 0xB4A6F310                                         # MF/DF · wind
@@ -92,6 +140,17 @@ target = "c04000480"                                   # Bayonet Gunne
 
 [[edit]]
 target = "c04000490"                                   # Howie Itzer
+moves = [
+  { move = 0x20D01E43, level = 19 },                        # Hey Presto
+  { move = 0xC324C788, level = 34 },                        # Blast Mine
+  { move = 0x56FBAD3B, level = 40 },                        # Seal Matrix
+  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x5FBBF82E, level = 1 },                         # Comadreja [aura]
+]
 
   [[edit.cards]]
   id = 0xADBDC251                                         # FW/MF · forest
@@ -101,6 +160,12 @@ target = "c04000490"                                   # Howie Itzer
 
 [[edit]]
 target = "c04000510"                                   # Flam Berger
+moves = [
+  { move = 0x8A52C09B, level = 11 },                        # Doomsword Slash
+  { move = 0x9B916289, level = 30 },                        # Jurassic Jaws
+  { move = 0xABA58912, level = 40 },                        # Ignited Steal
+  { move = 0x1755397B, level = 82 },                        # Dark Energy Star
+]
 
   [[edit.cards]]
   id = 0x64A6226E                                         # FW/MF · fire
@@ -110,6 +175,12 @@ target = "c04000510"                                   # Flam Berger
 
 [[edit]]
 target = "c04000520"                                   # Matt Chetty
+moves = [
+  { move = 0xC636A810, level = 11 },                        # Combustion Catch
+  { move = 0x58B5859E, level = 19 },                        # Whip Crack
+  { move = 0x62DEE8B1, level = 35 },                        # Jumping Whack
+  { move = 0x039DBAAC, level = 48 },                        # Land of Ice
+]
 
   [[edit.cards]]
   id = 0x4F8B71AD                                         # GK/MF · wind
@@ -120,6 +191,12 @@ target = "c04000520"                                   # Matt Chetty
 
 [[edit]]
 target = "c04000530"                                   # Harold Shields
+moves = [
+  { move = 0xDDCA0D2A, level = 15 },                        # Bouncing Bomb
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x14D1ED15, level = 31 },                        # Jumping Jack
+  { move = 0x44BCDB47, level = 56 },                        # Pyroclastic
+]
 
   [[edit.cards]]
   id = 0x569040EC                                         # FW/MF · mountain
@@ -129,6 +206,12 @@ target = "c04000530"                                   # Harold Shields
 
 [[edit]]
 target = "c04000540"                                   # Hal Byrd
+moves = [
+  { move = 0xE11DE782, level = 13 },                        # Chrysanthemum Katana
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0xEFFC6FA8, level = 39 },                        # Warhead
+  { move = 0x5643C944, level = 45 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x19D1D62B                                         # MF/FW · forest
@@ -139,6 +222,12 @@ target = "c04000540"                                   # Hal Byrd
 
 [[edit]]
 target = "c04000550"                                   # Morgan Stern
+moves = [
+  { move = 0x0BFD4D80, level = 12 },                        # Grand Slam
+  { move = 0xBBA44137, level = 22 },                        # Great Wall
+  { move = 0x62BE692D, level = 39 },                        # Whirlwind Force
+  { move = 0x4E9A9232, level = 45 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x00CAE76A                                         # DF/MF · mountain
@@ -149,6 +238,12 @@ target = "c04000550"                                   # Morgan Stern
 
 [[edit]]
 target = "c04000560"                                   # Roman Ballista
+moves = [
+  { move = 0x650FA58E, level = 8 },                         # Spin Out
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x39CB2F02, level = 35 },                        # Dragster
+  { move = 0x518BCA26, level = 60 },                        # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0x2BE7B4A9                                         # MF/FW · fire
@@ -158,6 +253,12 @@ target = "c04000560"                                   # Roman Ballista
 
 [[edit]]
 target = "c06039050"                                   # Saber Sabel
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x8A52C09B, level = 10 },                        # Doomsword Slash
+  { move = 0x44BCDB47, level = 26 },                        # Pyroclastic
+  { move = 0x90CD25B4, level = 38 },                        # Supernatural Strike
+]
 
   [[edit.cards]]
   id = 0xAB3601F2                                         # DF/FW · fire

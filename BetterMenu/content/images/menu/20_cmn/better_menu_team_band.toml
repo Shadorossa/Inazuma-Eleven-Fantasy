@@ -1,0 +1,19 @@
+# BetterMenu: the team drawer's band behind the game's team roster over the clubhouse (a NEW atlas, the one the copied
+# quad layout better_menu_team_band.g4pkm reads; content\menus\title_team_drawer.toml). GENERATED picture:
+# research/scripts/better_menu_team_band_build.py (the roster's own background bg01 of mainmenu90_00, graded, cut to
+# the band's shape; the box y 78 .. 1046 is also in assets\lua\title_menu_2\230_team_drawer.lua BAND_TOP / BAND_BOTTOM).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_team_band/better_menu_team_band.g4tx"
+name = "cmn01_10"
+png = "better_menu_team_band/better_menu_team_band.png"
+
+# the sprite name the copied quad's material reads (the retail badge «icon_new01»)
+[[sprite]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_team_band/better_menu_team_band.g4tx"
+name = "icon_new01"
+texture = "cmn01_10"
+x = 0
+y = 0
+size = [1920, 968]

@@ -1,0 +1,11 @@
+schema = "VRFW.base_table/1"
+# Chronicle Deluxe: the free-match class card's level number 0xAA5F9EE0 ("num_menu01b_02_", vsroute01_21_sub_list) gets
+# 3 digit slots like its retail twin 0x32C4EC17 (row 354: the same digits, centred, spacing 1, in the same ball of the
+# Chronicle difficulty list), so the card's ball shows 200 (content/menus/free_match_class_level.toml;
+# docs/game/mods/chronicle-deluxe-free-match.md). Row 353 is its position in the v7.1.2 file.
+
+[[list]]
+name = "MENU_GRAPHIC_NUMBER"
+set = [
+  { row = 353, cells = { "#5" = 3 } },   # 0xAA5F9EE0 "num_menu01b_02_": max digits 2 -> 3
+]

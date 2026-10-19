@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06031010"                                   # Udom Kaochuea
+moves = [
+  { move = 0x1C2DC89A, level = 1 },                         # Menace Elbow
+  { move = 0x58B5859E, level = 18 },                        # Whip Crack
+  { move = 0xC42D6F54, level = 30 },                        # Aikido
+  { move = 0xDBA0E5E3, level = 44 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0x0AEEEC19                                         # GK/MF · wind
@@ -15,6 +21,12 @@ target = "c06031010"                                   # Udom Kaochuea
 
 [[edit]]
 target = "c06031020"                                   # Yuth Poonlarp
+moves = [
+  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
+  { move = 0x1C2DC89A, level = 19 },                        # Menace Elbow
+  { move = 0x457EB170, level = 29 },                        # Pyrokinetic
+  { move = 0x3663DB4C, level = 39 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0x21C3BFDA                                         # DF/MF · fire
@@ -25,6 +37,12 @@ target = "c06031020"                                   # Yuth Poonlarp
 
 [[edit]]
 target = "c06031030"                                   # Napa Rattana
+moves = [
+  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
+  { move = 0x78218C02, level = 14 },                        # Duskfall
+  { move = 0xDBFD9CFE, level = 31 },                        # Big Ball Trick
+  { move = 0x25276CB9, level = 53 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0x38D88E9B                                         # DF/MF · forest
@@ -35,6 +53,12 @@ target = "c06031030"                                   # Napa Rattana
 
 [[edit]]
 target = "c06031040"                                   # Naid Sirisukha
+moves = [
+  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
+  { move = 0x660EED1E, level = 18 },                        # Low Scythe Slice
+  { move = 0x17110E3B, level = 28 },                        # Jumbo Sandwich
+  { move = 0xC324C788, level = 41 },                        # Blast Mine
+]
 
   [[edit.cards]]
   id = 0x7799185C                                         # DF/MF · mountain
@@ -45,6 +69,12 @@ target = "c06031040"                                   # Naid Sirisukha
 
 [[edit]]
 target = "c06031050"                                   # Solada Kulkit
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0x3EC287DE, level = 17 },                        # Bubble Gum
+  { move = 0x4FE09C7A, level = 33 },                        # Acrobatic Keep
+  { move = 0x14D1ED15, level = 42 },                        # Jumping Jack
+]
 
   [[edit.cards]]
   id = 0x6E82291D                                         # MF/FW · mountain
@@ -55,6 +85,12 @@ target = "c06031050"                                   # Solada Kulkit
 
 [[edit]]
 target = "c06031060"                                   # Suchart Chaowarat
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0x179492C5, level = 8 },                         # Center Scythe Slice
+  { move = 0xB60E3C60, level = 24 },                        # Plasma Cut
+  { move = 0xDDCA0D2A, level = 35 },                        # Bouncing Bomb
+]
 
   [[edit.cards]]
   id = 0x45AF7ADE                                         # MF/DF · fire
@@ -65,6 +101,12 @@ target = "c06031060"                                   # Suchart Chaowarat
 
 [[edit]]
 target = "c06031070"                                   # Naowarat Rahman
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0x179492C5, level = 7 },                         # Center Scythe Slice
+  { move = 0xD6649385, level = 23 },                        # Tusk Force
+  { move = 0xC5EF0563, level = 33 },                        # Three-Legged Rush
+]
 
   [[edit.cards]]
   id = 0x5CB44B9F                                         # MF/DF · mountain
@@ -74,6 +116,12 @@ target = "c06031070"                                   # Naowarat Rahman
 
 [[edit]]
 target = "c06031080"                                   # Mei Chaptri
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0x20D01E43, level = 16 },                        # Hey Presto
+  { move = 0x2C3D95DD, level = 27 },                        # Sleeping Dust
+  { move = 0x568262FA, level = 40 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0xDB2C5750                                         # MF/DF · fire
@@ -84,6 +132,12 @@ target = "c06031080"                                   # Mei Chaptri
 
 [[edit]]
 target = "c06031090"                                   # Bhak Sepakroh
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0xD6649385, level = 9 },                         # Tusk Force
+  { move = 0x332CCDC9, level = 16 },                        # Heel Kick
+  { move = 0xDDCA0D2A, level = 34 },                        # Bouncing Bomb
+]
 
   [[edit.cards]]
   id = 0xC2376611                                         # MF/FW · fire
@@ -94,6 +148,12 @@ target = "c06031090"                                   # Bhak Sepakroh
 
 [[edit]]
 target = "c06031100"                                   # Klaharn Sangsorn
+moves = [
+  { move = 0x660EED1E, level = 1 },                         # Low Scythe Slice
+  { move = 0xD6649385, level = 10 },                        # Tusk Force
+  { move = 0xCABBA212, level = 30 },                        # Menacing Glare
+  { move = 0x9FEEC7A9, level = 40 },                        # Gigaton Head
+]
 
   [[edit.cards]]
   id = 0x1237B76F                                         # MF/FW · mountain
@@ -104,6 +164,12 @@ target = "c06031100"                                   # Klaharn Sangsorn
 
 [[edit]]
 target = "c06031110"                                   # Tamgan Jaa
+moves = [
+  { move = 0xD6649385, level = 1 },                         # Tusk Force
+  { move = 0x660EED1E, level = 5 },                         # Low Scythe Slice
+  { move = 0x15138722, level = 26 },                        # Will-o'-the-Wisp Shot
+  { move = 0x232D05EC, level = 44 },                        # Tiger Drive
+]
 
   [[edit.cards]]
   id = 0x0B2C862E                                         # FW/MF · forest
@@ -113,6 +179,12 @@ target = "c06031110"                                   # Tamgan Jaa
 
 [[edit]]
 target = "c11806030"                                   # Rashiri Saran
+moves = [
+  { move = 0x47657634, level = 1 },                         # Flame Breath
+  { move = 0xA1BE38E6, level = 13 },                        # La Flamme
+  { move = 0x58B5859E, level = 20 },                        # Whip Crack
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x07F1708F                                         # GK/DF · fire

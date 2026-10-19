@@ -15,7 +15,8 @@ mod = "clean_hud"
 requires = []
 conflicts = []
 wraps = ["OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "MoveFocusInc", "MoveFocusDec", "MoveFocusMtx", "Step",
-         "SetupTacticsLayer", "UpdateTeamBuildTypeInfo"]
+         "SetupTacticsLayer", "UpdateTeamBuildTypeInfo", "OnFunction", "OnEnter", "OnFocusLayerShift",
+         "UpdateTeamDockNo", "ResumeTeamDock"]
 description = "clean_hud: Plantilla panel (tactics row, Conf. beside Formación) smaller dock arrows, AT / DF under the goalkeeper"
 
 [[files]]

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01001210"                                   # Morgan Sanders
+moves = [
+  { move = 0xF08DB620, level = 1 },                         # Whirlwind
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x2D3E5454, level = 38 },                        # Clone Shot
+  { move = 0xE854ED56, level = 92 },                        # Warp Space
+]
 
   [[edit.cards]]
   id = 0x8B6D7C29                                         # GK/MF · forest
@@ -15,6 +21,12 @@ target = "c01001210"                                   # Morgan Sanders
 
 [[edit]]
 target = "c01001220"                                   # Newton Flust
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x6B1CF436, level = 52 },                        # Bewildered
+  { move = 0x2EBA803A, level = 93 },                        # Dirt Ball
+]
 
   [[edit.cards]]
   id = 0xA0402FEA                                         # DF/MF · mountain
@@ -24,6 +36,12 @@ target = "c01001220"                                   # Newton Flust
 
 [[edit]]
 target = "c01001230"                                   # Jim Hillfort
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0xB5B7108F, level = 85 },                        # Shadow Stitch
+  { move = 0x2D3E5454, level = 94 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0xB95B1EAB                                         # DF/MF · wind
@@ -33,6 +51,12 @@ target = "c01001230"                                   # Jim Hillfort
 
 [[edit]]
 target = "c01001240"                                   # Galen Thunderbird
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x3D4653B0, level = 1 },                         # Poison Fog
+  { move = 0xB5B7108F, level = 40 },                        # Shadow Stitch
+  { move = 0x322F0C40, level = 92 },                        # Spider Web
+]
 
   [[edit.cards]]
   id = 0xF61A886C                                         # DF/MF · mountain
@@ -42,6 +66,12 @@ target = "c01001240"                                   # Galen Thunderbird
 
 [[edit]]
 target = "c01001250"                                   # Finn Stoned
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0xACAC21CE, level = 44 },                        # Fake Ball
+  { move = 0x4031A7F5, level = 79 },                        # Mole Fake
+]
 
   [[edit.cards]]
   id = 0xEF01B92D                                         # DF/MF · fire
@@ -51,6 +81,12 @@ target = "c01001250"                                   # Finn Stoned
 
 [[edit]]
 target = "c01001260"                                   # Phil Wingate
+moves = [
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0xC7A9BB3A, level = 37 },                        # Whirlwind Cut
+  { move = 0x5781A373, level = 95 },                        # Hurricane Arrows
+]
 
   [[edit.cards]]
   id = 0xC42CEAEE                                         # MF/DF · mountain
@@ -61,6 +97,12 @@ target = "c01001260"                                   # Phil Wingate
 
 [[edit]]
 target = "c01001270"                                   # Jez Shell
+moves = [
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0xAB6422AC, level = 38 },                        # Phantom Shot
+  { move = 0x33ED6677, level = 64 },                        # Doppelganger
+  { move = 0x2D3E5454, level = 90 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0xDD37DBAF                                         # MF/DF · wind
@@ -70,6 +112,12 @@ target = "c01001270"                                   # Jez Shell
 
 [[edit]]
 target = "c01001280"                                   # Jupiter Jumper
+moves = [
+  { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
+  { move = 0x2EBA803A, level = 1 },                         # Dirt Ball
+  { move = 0x592A96B4, level = 37 },                        # Afterimage
+  { move = 0x261BDCA8, level = 56 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0x5AAFC760                                         # MF/DF · wind
@@ -80,6 +128,12 @@ target = "c01001280"                                   # Jupiter Jumper
 
 [[edit]]
 target = "c01001290"                                   # Sam Samurai
+moves = [
+  { move = 0x2D3E5454, level = 1 },                         # Clone Shot
+  { move = 0x19025F83, level = 35 },                        # Quick Draw
+  { move = 0xB5B7108F, level = 46 },                        # Shadow Stitch
+  { move = 0x37A1B17B, level = 88 },                        # Fire Rooster
+]
 
   [[edit.cards]]
   id = 0x43B4F621                                         # FW/DF · forest
@@ -89,6 +143,12 @@ target = "c01001290"                                   # Sam Samurai
 
 [[edit]]
 target = "c01001300"                                   # Hank Sullivan
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x2D3E5454, level = 1 },                         # Clone Shot
+  { move = 0x3C843987, level = 39 },                        # Flurry Dash
+  { move = 0xB5B7108F, level = 90 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x93B4275F                                         # MF/DF · forest
@@ -99,6 +159,12 @@ target = "c01001300"                                   # Hank Sullivan
 
 [[edit]]
 target = "c01001310"                                   # Sail Bluesea
+moves = [
+  { move = 0x2EBA803A, level = 1 },                         # Dirt Ball
+  { move = 0x3D4653B0, level = 1 },                         # Poison Fog
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x37A1B17B, level = 38 },                        # Fire Rooster
+]
 
   [[edit.cards]]
   id = 0x8AAF161E                                         # FW/DF · fire
@@ -108,6 +174,12 @@ target = "c01001310"                                   # Sail Bluesea
 
 [[edit]]
 target = "c01001320"                                   # John Reynolds
+moves = [
+  { move = 0x34256515, level = 1 },                         # Dynamite Shot
+  { move = 0x3C843987, level = 33 },                        # Flurry Dash
+  { move = 0x2D3E5454, level = 42 },                        # Clone Shot
+  { move = 0x592A96B4, level = 58 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0xA18245DD                                         # FW/MF · wind
@@ -117,6 +189,12 @@ target = "c01001320"                                   # John Reynolds
 
 [[edit]]
 target = "c01001330"                                   # Dan Hopper
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x1D4E888F, level = 36 },                        # Condor Dive
+  { move = 0x627FC293, level = 44 },                        # Meteor Attack
+  { move = 0x261BDCA8, level = 69 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0xB899749C                                         # DF/FW · mountain
@@ -127,6 +205,12 @@ target = "c01001330"                                   # Dan Hopper
 
 [[edit]]
 target = "c01001340"                                   # Cal Trops
+moves = [
+  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x4890FB67, level = 42 },                        # Twin Boost
+  { move = 0xAD6E4BF9, level = 75 },                        # Harvest
+  { move = 0x58E8FC83, level = 94 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0xF7D8E25B                                         # MF/FW · forest
@@ -137,6 +221,12 @@ target = "c01001340"                                   # Cal Trops
 
 [[edit]]
 target = "c01001350"                                   # Winston Falls
+moves = [
+  { move = 0x33ED6677, level = 1 },                         # Doppelganger
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x322F0C40, level = 48 },                        # Spider Web
+  { move = 0xB5B7108F, level = 67 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0xEEC3D31A                                         # MF/DF · wind
@@ -147,6 +237,12 @@ target = "c01001350"                                   # Winston Falls
 
 [[edit]]
 target = "c01001360"                                   # Kevin Castle
+moves = [
+  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x18C035B4, level = 38 },                        # Ghost Pull
+  { move = 0xA7157B91, level = 48 },                        # Power Shield
+  { move = 0xF08DB620, level = 80 },                        # Whirlwind
+]
 
   [[edit.cards]]
   id = 0xC5EE80D9                                         # GK/MF · wind
@@ -156,6 +252,12 @@ target = "c01001360"                                   # Kevin Castle
 
 [[edit]]
 target = "c11801100"                                   # Sammy Igajima
+moves = [
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0x3069B219, level = 13 },                        # Super Sumo Stomp
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x087999EE, level = 30 },                        # Heel Drop
+]
 
   [[edit.cards]]
   id = 0xB0C971C2                                         # MF/DF · fire

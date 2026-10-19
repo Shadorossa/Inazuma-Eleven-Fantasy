@@ -1,0 +1,24 @@
+schema = "VRFW.menu/2"
+
+# The mode header of the main menu over the clubhouse (docs/game/mods/better-menu.md §29; Lua
+# assets\lua\title_menu_2\220_mode_header.lua): the game's area-name banner of the Chronicle map
+# (vsroute00_03_area_name_plate: a translucent blue band with the hexagon pattern, its white name line, the band
+# stretching with the name, the slide-in Open animation) at the top left, carrying the focused mode's name; over it the
+# scene's name in yellow and the L2 / R2 glyphs beside the name, as texts of the framework's text object vrfw_mp_label.
+# The banner's baked area title (a per-language picture of the map's place name) is hidden by the Lua. Neither layer
+# is opened with the group: the Lua opens, fills and places them while the scene is up.
+when = { config = "experiment.map_under_menu", default = true }
+
+[[object]]
+name = "better_menu_mode_header"
+from = "vsroute00_03_area_name_plate"
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_mode_header", object = "better_menu_mode_header", count = 1, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+res = ["#/menu/30_vsroute/vsroute00/vsroute00_03/<LG>/vsroute00_03.g4tx"]
+
+# 0 = the scene's caption (yellow), 1 = the L2 glyph, 2 = the R2 glyph
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_mode_texts", object = "vrfw_mp_label", count = 3, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }

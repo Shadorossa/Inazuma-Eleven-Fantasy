@@ -1,0 +1,52 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §9): in «Competir contra bots» the
+# second Royal Academy game of the IE1 tab (fbtl_cro01_070_010, Football Frontier) plays with Ray Dark as its coach,
+# and the team's own coach (Stephen Black) moves to the manager's place. Only there: the Chronicle (Crónica, Heroica)
+# keeps the game's team as it is.
+#
+# How: the free-match classes of this mod are FlatRivalLevel classes (content/defaults/match_difficulty.toml), so the
+# framework gives every free-match row of a class the copy of its rival team without member level offsets, keyed
+# `<team key>_flat` (docs/framework/free-match-tabs.md §8 «FlatRivalLevel»), and a team a mod declares under that key
+# IS that copy. This file declares Royal Academy's copy with the two staff changes and every member at level offset
+# 0 (the whole line-up at the class level, as the framework's own copies). The game's team (tm_cro_ie1_0700) plays
+# only on this game, so no other opponent changes.
+default_lang = "en"
+
+[[team]]
+name = "fm_royal_academy"
+key = "tm_cro_ie1_0700_flat"            # the free-match copy of tm_cro_ie1_0700 (framework naming)
+based_on = "tm_cro_ie1_0700"            # Royal Academy, Football Frontier (fbtl_cro01_070_010)
+name_text = 0x82C9C16B                  # Royal Academy (the game team's own name text)
+series = "IE1"
+  [[team.member]]                       # coach: Ray Dark
+  player = "c11801020"
+  slot = 19
+  number = 0
+  level_offset = 0
+  [[team.member]]                       # manager: Stephen Black, the game's coach of this team
+  player = "c11801030"
+  slot = 20
+  number = 0
+  level_offset = 0
+
+# Every player of the line-up at level offset 0 (the rows keep their cards, moves and equipment).
+[[edit]]
+target = "chronicle_deluxe.fm_royal_academy"
+member = [
+  { slot = 0, patch = true, level_offset = 0 },
+  { slot = 1, patch = true, level_offset = 0 },
+  { slot = 2, patch = true, level_offset = 0 },
+  { slot = 3, patch = true, level_offset = 0 },
+  { slot = 4, patch = true, level_offset = 0 },
+  { slot = 5, patch = true, level_offset = 0 },
+  { slot = 6, patch = true, level_offset = 0 },
+  { slot = 7, patch = true, level_offset = 0 },
+  { slot = 8, patch = true, level_offset = 0 },
+  { slot = 9, patch = true, level_offset = 0 },
+  { slot = 10, patch = true, level_offset = 0 },
+  { slot = 11, patch = true, level_offset = 0 },
+  { slot = 12, patch = true, level_offset = 0 },
+  { slot = 13, patch = true, level_offset = 0 },
+  { slot = 14, patch = true, level_offset = 0 },
+  { slot = 15, patch = true, level_offset = 0 },
+]

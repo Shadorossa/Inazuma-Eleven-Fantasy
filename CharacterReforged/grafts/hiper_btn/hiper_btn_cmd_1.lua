@@ -162,23 +162,81 @@ EVT_HIPER_FACE_H = 52                -- plate band height (plate layer units, be
 EVT_HIPER_FACE_DX, EVT_HIPER_FACE_DY = 0, 0   -- extra shift of the card's band corner (plate layer units)
 local EVT_CHR_BAND_R, EVT_CHR_BAND_TOP, EVT_CHR_BAND_H = 457, 160, 88.15
 local evt_chr_logs = 0
+-- 2026-10-19 (owner: the portrait a few px short of the plate's height; it blinked): the fit is MEASURED after each
+-- draw (EVT_FaceFit, on the draw's retry frames only): the card's band (_fs_base01, layout top 160, 88.15 high) is
+-- scaled to the plate's painted band (_cmd_base_sp01: its sprite's opaque rows 2..53 = layout y +26..-26, measured
+-- against the plate's own scale) and its top-right corner put on the band's top-right corner. evt_face[inst + 1] =
+-- {fix = scale factor, dy = vertical shift (card layer units), key = what is drawn, ok = drawn}
+local EVT_PLATE_BASE, EVT_PLATE_BASE_Y, EVT_PLATE_BAND = 4282364172 --[[_cmd_base_sp01]], 28, 26
+local EVT_CHR_BASE = 734954092 --[[_fs_base01]]
+local EVT_POS_BASE = 1517329426 --[[_pos_base01]]
+local evt_face = {{fix = 1, dy = 0}, {fix = 1, dy = 0}}
 
 function EVT_PlateFaceHide(inst)
   pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CHR, inst, false)
+  if evt_face ~= nil and evt_face[inst + 1] ~= nil then
+    evt_face[inst + 1].key, evt_face[inst + 1].ok = nil, false
+  end
 end
 
 -- place / clean instance `inst` of the card layer (engine calls: from EVT_HiperStep only)
 local function EVT_PlateFacePlace(inst)
   pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_CHR_ATC, true)
-  local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H * (EVT_HIPER_PLATE_SCALE or 1)
+  local fc = evt_face[inst + 1]
+  local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H * (EVT_HIPER_PLATE_SCALE or 1) * fc.fix
   funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_CHR, k, k, 1, inst)
   funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_CHR, EVT_HIPER_FACE_DX - EVT_CHR_BAND_R * k,
-    EVT_HIPER_FACE_DY - EVT_CHR_BAND_TOP * k, 0, inst)
+    EVT_HIPER_FACE_DY - EVT_CHR_BAND_TOP * k + fc.dy, 0, inst)
   for i = 1, #EVT_CHR_HIDE do
     funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_CHR, EVT_CHR_HIDE[i], false, inst)
   end
   funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_CHR, EVT_CHR_TEXT, "", inst)
   funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_CHR, EVT_CHR_TEXT, false, inst)
+end
+
+-- the card's band onto the plate's painted band (global units, both layers measured): its height by the scale factor,
+-- its top by the shift; applied when off by more than half a pixel, measured again on the next retry frame
+function EVT_FaceFit(inst)
+  local fc = evt_face[inst + 1]
+  local function g(L, node)
+    local ok, x, y = pcall(funcLuaMenuCommand, 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]], L, inst, node)
+    if ok and type(x) == "number" and type(y) == "number" then
+      return x, y
+    end
+    return nil
+  end
+  local _, pby = g(EVT_HL, EVT_POS_BASE)
+  local _, pty = g(EVT_HL, EVT_PLATE_BASE)
+  local _, fby = g(EVT_CHR, EVT_POS_BASE)
+  local _, fty = g(EVT_CHR, EVT_CHR_BASE)
+  if pby == nil or pty == nil or fby == nil or fty == nil then
+    return
+  end
+  local kp = (pty - pby) / EVT_PLATE_BASE_Y          -- global per plate layer unit (y)
+  local kf = (fty - fby) / EVT_CHR_BAND_TOP          -- global per card layer unit (y)
+  if math.abs(kp) < 0.001 or math.abs(kf) < 0.001 then
+    return
+  end
+  local want_h = 2 * EVT_PLATE_BAND * math.abs(kp)   -- the painted band's height
+  local have_h = EVT_CHR_BAND_H * math.abs(kf)       -- the card band's height
+  local want_top = pby + EVT_PLATE_BAND * kp         -- the painted band's top
+  local ratio = want_h / have_h
+  local dtop = (want_top - fty) / kf                 -- card layer units
+  if math.abs(ratio - 1) < 0.005 and math.abs(dtop * math.abs(kf)) < 0.5 then
+    return
+  end
+  if math.abs(ratio - 1) >= 0.005 then
+    fc.fix = fc.fix * ratio
+  else
+    local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H * (EVT_HIPER_PLATE_SCALE or 1) * fc.fix
+    fc.dy = fc.dy + dtop * k                          -- in the card's parent units (its local position)
+  end
+  EVT_PlateFacePlace(inst)
+  if evt_chr_logs < 24 then
+    evt_chr_logs = evt_chr_logs + 1
+    pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "face fit", tostring(inst),
+      string.format("band %.1f / card %.1f, fix %.3f, dy %.1f", want_h, have_h, fc.fix, fc.dy))
+  end
 end
 
 -- true when it drew a portrait. retry = a re-issue a few frames after the draw (the texture may still be loading)
@@ -191,7 +249,7 @@ function EVT_PlateFace(L, inst, hdl, retry, pover, skill)
   if skill ~= nil and skill ~= 0 then
     t = EVT_HC.AuraType(skill)
   end
-  local fusion, mc = nil, nil
+  local fusion, mc, own = nil, nil, skill
   local function key(param)
     local okk, k = pcall(funcLuaCommand, 347353059, param)
     if okk and type(k) == "number" and k ~= 0 then
@@ -202,18 +260,33 @@ function EVT_PlateFace(L, inst, hdl, retry, pover, skill)
   if pover ~= nil and pover ~= 0 then
     mc = {face = key(pover)}             -- «modo cambio» plate: the face of the other form (loader value 16)
   elseif t == 2 or t == nil or t == 255 then
-    local okf, partner = pcall(funcLuaCommand, EVT_CMD_MXP, hdl)
+    -- whose move it is (the plate's move given): a miximax aura or a partner move = the fusion partner; the running
+    -- spirit's own move = that spirit (its aura's own character, as the aura plates draw it); else no portrait
+    local okf, partner, spirit = pcall(funcLuaCommand, EVT_CMD_MXP, hdl, skill or 0)
     if okf and type(partner) == "number" and partner ~= 0 then
       fusion = {face = key(partner)}
+    elseif okf and t == nil and type(spirit) == "number" and spirit ~= 0 then
+      own = spirit
+      t = EVT_HC.AuraType(spirit)
     end
   end
   if fusion == nil and mc == nil and (t == nil or EVT_HC.FACE_BY_TYPE[t] == nil) then
     EVT_PlateFaceHide(inst)
     return false
   end
+  local fc = evt_face[inst + 1]
+  local key = tostring(own or 0) .. ":" .. tostring(fusion and fusion.face or 0) .. ":" .. tostring(mc and mc.face or 0)
+  if fc.key == key and fc.ok then
+    -- the same face is on screen: no clear / re-issue (each one blanked it for a frame: the blinking), only the fit
+    if retry then
+      pcall(EVT_FaceFit, inst)
+    end
+    return true
+  end
   EVT_PlateFacePlace(inst)
-  local okp, shown = pcall(EVT_HC.Portrait, EVT_CHR, skill or 0, fusion, mc, "hiper_plates", inst)
+  local okp, shown = pcall(EVT_HC.Portrait, EVT_CHR, own or 0, fusion, mc, "hiper_plates", inst)
   local ok = okp and shown ~= nil and shown ~= 0
+  fc.key, fc.ok = key, ok
   funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CHR, inst, ok)
   if not retry or evt_chr_logs < 12 then
     evt_chr_logs = evt_chr_logs + 1
@@ -222,6 +295,8 @@ function EVT_PlateFace(L, inst, hdl, retry, pover, skill)
       what = "partner"
     elseif mc ~= nil then
       what = "mode change"
+    elseif own ~= skill then
+      what = string.format("spirit %08X", own or 0)
     end
     pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "plate portrait", tostring(inst), tostring(hdl),
       string.format("%08X", skill or 0), "type " .. tostring(t), what,
@@ -542,6 +617,11 @@ local function EVT_Update(inst, st, hdl, skill, ring, glyph, armour, suffix, pov
   local last = EVT_last[inst + 1]
   suffix = suffix or ""
   pover = pover or 0
+  -- the «modo cambio» values (loader 11-17) can be missing for a frame: the plate kept toggling between the other form's
+  -- face and none (a redraw each time: the blinking). The face stays while the plate's skill and player are the same.
+  if pover == 0 and (last.pover or 0) ~= 0 and skill == last.skill and hdl == last.hdl and st == last.st then
+    pover = last.pover
+  end
   if st == last.st and skill == last.skill and ring == last.ring and glyph == last.glyph and hdl == last.hdl and armour == last.armour
     and suffix == (last.suffix or "") and pover == (last.pover or 0) then
     return
@@ -564,8 +644,9 @@ local function EVT_Update(inst, st, hdl, skill, ring, glyph, armour, suffix, pov
   last.drawTick = EVT_tick
   last.hasFace = false
   if ok and st ~= 0 and skill ~= 0 then
-    local okp, partner = pcall(funcLuaCommand, EVT_CMD_MXP, hdl)
-    last.hasFace = (okp and type(partner) == "number" and partner ~= 0) or pover ~= 0
+    local okp, partner, spirit = pcall(funcLuaCommand, EVT_CMD_MXP, hdl, skill)
+    last.hasFace = (okp and ((type(partner) == "number" and partner ~= 0) or (type(spirit) == "number" and spirit ~= 0)))
+      or pover ~= 0
   end
   last.shown = ok and st ~= 0 and skill ~= 0
   if appear and last.shown then
@@ -657,8 +738,10 @@ end
 -- plate) is centred under the «¡Subid!» guide (soccer08_17_go_ahead_guide, centred on its root soccer08_17_output),
 -- measured against the cross like EVT_HO_CrossX; the right plate's right end stays there while the plates stretch left.
 -- No measure: the global EVT_HL_GOAHEAD_X of the HUD layout, else the plates stay flush with the screen edge.
-EVT_HIPER_CENTER_UNDER_GO_AHEAD = true
-EVT_HIPER_PAIR_GAP = 10             -- gap between the two plates' visible bands (layout units)
+-- 2026-10-19 (owner): off. One layout in every selector (shot, dribble, defence, keeper): both plates flush with the
+-- right screen edge, RB+A rightmost, RB+B on its left with a visible gap (centred, they sat on the bottom stat bar).
+EVT_HIPER_CENTER_UNDER_GO_AHEAD = false
+EVT_HIPER_PAIR_GAP = 24             -- gap between the two plates' visible bands (layout units)
 local EVT_GO_AHEAD = 4104611069 --[[soccer08_17_go_ahead_guide]]
 local EVT_GO_AHEAD_ROOT = 2966568918 --[[soccer08_17_output]]
 

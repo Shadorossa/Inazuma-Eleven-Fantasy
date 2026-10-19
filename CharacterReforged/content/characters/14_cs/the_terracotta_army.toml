@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05024010"                                   # Terracotta Warrior 1
+moves = [
+  { move = 0x50E88A33, level = 1 },                         # Fist Beam
+  { move = 0xF626F557, level = 10 },                        # Electric Impedance
+  { move = 0xDBA0E5E3, level = 26 },                        # Gigant Wall
+  { move = 0xDF2D9951, level = 46 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0x31B82F06                                         # GK/DF · wind
@@ -15,6 +21,12 @@ target = "c05024010"                                   # Terracotta Warrior 1
 
 [[edit]]
 target = "c05024020"                                   # Terracotta Warrior 2
+moves = [
+  { move = 0xF626F557, level = 1 },                         # Electric Impedance
+  { move = 0x50E88A33, level = 13 },                        # Fist Beam
+  { move = 0xA9E3374B, level = 29 },                        # Cyclone Sprint
+  { move = 0x4E22F64D, level = 49 },                        # Transporter Device
+]
 
   [[edit.cards]]
   id = 0x1A957CC5                                         # DF/GK · wind
@@ -24,6 +36,12 @@ target = "c05024020"                                   # Terracotta Warrior 2
 
 [[edit]]
 target = "c05024030"                                   # Terracotta Warrior 3
+moves = [
+  { move = 0xF626F557, level = 1 },                         # Electric Impedance
+  { move = 0x4E22F64D, level = 14 },                        # Transporter Device
+  { move = 0x50E88A33, level = 27 },                        # Fist Beam
+  { move = 0x016DEA27, level = 46 },                        # Accelerator Gears
+]
 
   [[edit.cards]]
   id = 0x038E4D84                                         # DF/GK · forest
@@ -33,6 +51,12 @@ target = "c05024030"                                   # Terracotta Warrior 3
 
 [[edit]]
 target = "c05024040"                                   # Terracotta Warrior 4
+moves = [
+  { move = 0xF626F557, level = 1 },                         # Electric Impedance
+  { move = 0xE196F1D1, level = 10 },                        # Burning Bomb
+  { move = 0x457EB170, level = 23 },                        # Pyrokinetic
+  { move = 0x6BA49049, level = 45 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x4CCFDB43                                         # DF/MF · fire
@@ -42,6 +66,12 @@ target = "c05024040"                                   # Terracotta Warrior 4
 
 [[edit]]
 target = "c05024050"                                   # Terracotta Warrior 5
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0x17110E3B, level = 17 },                        # Jumbo Sandwich
+  { move = 0x2FB941B3, level = 24 },                        # Stone Prison
+  { move = 0x737DCB3F, level = 47 },                        # Pancake Defence
+]
 
   [[edit.cards]]
   id = 0x55D4EA02                                         # MF/GK · mountain
@@ -51,6 +81,12 @@ target = "c05024050"                                   # Terracotta Warrior 5
 
 [[edit]]
 target = "c05024060"                                   # Terracotta Warrior 6
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0xF626F557, level = 16 },                        # Electric Impedance
+  { move = 0x41F3CDC2, level = 31 },                        # Scorching Tackle
+  { move = 0x737DCB3F, level = 43 },                        # Pancake Defence
+]
 
   [[edit.cards]]
   id = 0x7EF9B9C1                                         # MF/DF · mountain
@@ -60,6 +96,12 @@ target = "c05024060"                                   # Terracotta Warrior 6
 
 [[edit]]
 target = "c05024070"                                   # Terracotta Warrior 7
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0xA9E3374B, level = 19 },                        # Cyclone Sprint
+  { move = 0x00196EC2, level = 34 },                        # Earthquake
+  { move = 0x2354CA2D, level = 46 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x67E28880                                         # MF/DF · wind
@@ -69,6 +111,12 @@ target = "c05024070"                                   # Terracotta Warrior 7
 
 [[edit]]
 target = "c05024080"                                   # Terracotta Warrior 8
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0x12E67CC1, level = 18 },                        # Future Eye
+  { move = 0xC66BD10D, level = 35 },                        # Zigzag Spark
+  { move = 0xF626F557, level = 51 },                        # Electric Impedance
+]
 
   [[edit.cards]]
   id = 0xE07A944F                                         # MF/FW · forest
@@ -78,6 +126,12 @@ target = "c05024080"                                   # Terracotta Warrior 8
 
 [[edit]]
 target = "c05024090"                                   # Terracotta Warrior 9
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0xF626F557, level = 17 },                        # Electric Impedance
+  { move = 0x016DEA27, level = 33 },                        # Accelerator Gears
+  { move = 0xDA3FF6C9, level = 47 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0xF961A50E                                         # MF/FW · fire
@@ -87,6 +141,12 @@ target = "c05024090"                                   # Terracotta Warrior 9
 
 [[edit]]
 target = "c05024100"                                   # Terracotta Warrior 10
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0x585098FC, level = 15 },                        # Slice and Dice
+  { move = 0x016DEA27, level = 28 },                        # Accelerator Gears
+  { move = 0xB60E3C60, level = 51 },                        # Plasma Cut
+]
 
   [[edit.cards]]
   id = 0x29617470                                         # MF/DF · fire
@@ -96,6 +156,12 @@ target = "c05024100"                                   # Terracotta Warrior 10
 
 [[edit]]
 target = "c05024110"                                   # Terracotta Warrior 11
+moves = [
+  { move = 0x016DEA27, level = 1 },                         # Accelerator Gears
+  { move = 0x4E22F64D, level = 9 },                         # Transporter Device
+  { move = 0xC324C788, level = 32 },                        # Blast Mine
+  { move = 0xE11DE782, level = 54 },                        # Chrysanthemum Katana
+]
 
   [[edit.cards]]
   id = 0x307A4531                                         # FW/MF · mountain

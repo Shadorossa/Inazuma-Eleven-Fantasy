@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03032210"                                   # Hector Helio
+moves = [
+  { move = 0xA1DEB97A, level = 10 },                        # Soul Hand
+  { move = 0xB8C5883B, level = 15 },                        # God Hand X
+  { move = 0xEB71131A, level = 20 },                        # X Blast
+  { move = 0x7EEA4EE9, level = 50 },                        # Blade Attack
+]
+VRFW.MoveGrades = [
+  { Move = 0xA1DEB97A, Grade = 1 },                         # Soul Hand
+]
 
   [[edit.cards]]
   id = 0x49E7B83E                                         # GK/MF · mountain
@@ -15,6 +24,12 @@ target = "c03032210"                                   # Hector Helio
 
 [[edit]]
 target = "c03032220"                                   # Zephyr Vitesse
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x17A96A44, level = 10 },                        # Clone Faker
+  { move = 0xD9BB22A7, level = 25 },                        # Air Ride
+  { move = 0xF1EEF635, level = 55 },                        # The Hurricane
+]
 
   [[edit.cards]]
   id = 0x62CAEBFD                                         # DF/MF · wind
@@ -24,6 +39,12 @@ target = "c03032220"                                   # Zephyr Vitesse
 
 [[edit]]
 target = "c03032230"                                   # Walter Mountain
+moves = [
+  { move = 0xDD365E15, level = 1 },                         # Mole Shuffle
+  { move = 0x166B0073, level = 10 },                        # Super Armadillo
+  { move = 0x2DFFFFEA, level = 25 },                        # Ground Quake
+  { move = 0xA8215D7C, level = 59 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x7BD1DABC                                         # DF/MF · mountain
@@ -34,6 +55,12 @@ target = "c03032230"                                   # Walter Mountain
 
 [[edit]]
 target = "c03032240"                                   # Jimi Gaines
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x5B6C28ED, level = 1 },                         # Invisible Fake
+  { move = 0xB7F1AED6, level = 10 },                        # Double Cyclone
+  { move = 0x592A96B4, level = 65 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0x34904C7B                                         # DF/MF · forest
@@ -43,6 +70,12 @@ target = "c03032240"                                   # Jimi Gaines
 
 [[edit]]
 target = "c03032250"                                   # Ian Ferrum
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
+  { move = 0xAC6D8A70, level = 10 },                        # Rainbow Arc
+  { move = 0x7A67325B, level = 52 },                        # Flame Dance
+]
 
   [[edit.cards]]
   id = 0x2D8B7D3A                                         # DF/MF · fire
@@ -52,6 +85,12 @@ target = "c03032250"                                   # Ian Ferrum
 
 [[edit]]
 target = "c03032260"                                   # Quint Hampton
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x4CDC2C6B, level = 10 },                        # Shooting Star
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x5DFA931B, level = 50 },                        # Triple Defence
+]
 
   [[edit.cards]]
   id = 0x06A62EF9                                         # MF/DF · wind
@@ -61,6 +100,12 @@ target = "c03032260"                                   # Quint Hampton
 
 [[edit]]
 target = "c03032270"                                   # Yasir Haddad
+moves = [
+  { move = 0x68982058, level = 1 },                         # Armadillo Circus
+  { move = 0x011AAF4B, level = 10 },                        # Gyro Head
+  { move = 0x574008CD, level = 25 },                        # Kung Fu Fighting
+  { move = 0xADAFE047, level = 52 },                        # Dual Strike
+]
 
   [[edit.cards]]
   id = 0x1FBD1FB8                                         # MF/FW · forest
@@ -70,6 +115,12 @@ target = "c03032270"                                   # Yasir Haddad
 
 [[edit]]
 target = "c03032280"                                   # Keith Ryan
+moves = [
+  { move = 0x18019E0A, level = 1 },                         # Double Grenade
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x4D1E465C, level = 15 },                        # Fake Bomber
+  { move = 0x66F2BE21, level = 52 },                        # Leaping Thunder
+]
 
   [[edit.cards]]
   id = 0x98250377                                         # MF/FW · fire
@@ -79,6 +130,12 @@ target = "c03032280"                                   # Keith Ryan
 
 [[edit]]
 target = "c03032290"                                   # Maximino Cruz
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0xD9BB22A7, level = 25 },                        # Air Ride
+  { move = 0x2A37FC88, level = 65 },                        # Revolution V
+]
 
   [[edit.cards]]
   id = 0x813E3236                                         # MF/FW · wind
@@ -88,6 +145,15 @@ target = "c03032290"                                   # Maximino Cruz
 
 [[edit]]
 target = "c03032300"                                   # Gareth Flare
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x7A67325B, level = 20 },                        # Flame Dance
+  { move = 0x41F3CDC2, level = 28 },                        # Scorching Tackle
+  { move = 0x0B011EBF, level = 65 },                        # Fireball Screw
+]
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0x513EE348                                         # FW/MF · fire
@@ -98,6 +164,12 @@ target = "c03032300"                                   # Gareth Flare
 
 [[edit]]
 target = "c03032310"                                   # Drago Hill
+moves = [
+  { move = 0x8EDFBC29, level = 10 },                        # Double Jaw
+  { move = 0xD9BB22A7, level = 25 },                        # Air Ride
+  { move = 0x2CFC3E63, level = 50 },                        # Dragon Crash
+  { move = 0x5F989B9E, level = 65 },                        # Wyvern Crash
+]
 
   [[edit.cards]]
   id = 0x4825D209                                         # FW/MF · forest
@@ -108,6 +180,12 @@ target = "c03032310"                                   # Drago Hill
 
 [[edit]]
 target = "c03032320"                                   # Keenan DiFortune
+moves = [
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0xA1DEB97A, level = 1 },                         # Soul Hand
+  { move = 0xB8C5883B, level = 25 },                        # God Hand X
+  { move = 0xF2CB0879, level = 65 },                        # Mugen the Hand
+]
 
   [[edit.cards]]
   id = 0x630881CA                                         # GK/MF · forest
@@ -117,6 +195,12 @@ target = "c03032320"                                   # Keenan DiFortune
 
 [[edit]]
 target = "c03032330"                                   # Jarell Mangrove
+moves = [
+  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0x5049A011, level = 20 },                        # Spinning Shot
+  { move = 0xF5C2A0A5, level = 58 },                        # Capoeira Grab
+  { move = 0x73C5AF40, level = 58 },                        # Dash Accelerator
+]
 
   [[edit.cards]]
   id = 0x7A13B08B                                         # DF/FW · fire
@@ -126,6 +210,12 @@ target = "c03032330"                                   # Jarell Mangrove
 
 [[edit]]
 target = "c03032340"                                   # Vic Vitrum
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x3B8D915B, level = 18 },                        # Meteor Shower
+  { move = 0x1C8CE2B8, level = 55 },                        # God Knows
+  { move = 0x29B328E6, level = 65 },                        # Spectacle Crash
+]
 
   [[edit.cards]]
   id = 0x3552264C                                         # MF/FW · mountain
@@ -135,6 +225,12 @@ target = "c03032340"                                   # Vic Vitrum
 
 [[edit]]
 target = "c03032350"                                   # Li Leung
+moves = [
+  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
+  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
+  { move = 0x2354CA2D, level = 58 },                        # Wind God's Dance
+  { move = 0xB2BEB853, level = 62 },                        # Whale Guard
+]
 
   [[edit.cards]]
   id = 0x2C49170D                                         # MF/DF · wind
@@ -144,6 +240,12 @@ target = "c03032350"                                   # Li Leung
 
 [[edit]]
 target = "c03032360"                                   # Jazzy Hedgeer
+moves = [
+  { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
+  { move = 0xA4B51923, level = 1 },                         # The Typhoon
+  { move = 0x025FD09B, level = 20 },                        # Volcano Cut
+  { move = 0x46FA651E, level = 60 },                        # Water Veil
+]
 
   [[edit.cards]]
   id = 0x076444CE                                         # FW/MF · fire
@@ -153,6 +255,12 @@ target = "c03032360"                                   # Jazzy Hedgeer
 
 [[edit]]
 target = "c11803100"                                   # David Arrows
+moves = [
+  { move = 0xBD8A9EBE, level = 1 },                         # Infinite Wall
+  { move = 0xC4701649, level = 13 },                        # Ice Block
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x2FB941B3, level = 30 },                        # Stone Prison
+]
 
   [[edit.cards]]
   id = 0x1AC0B949                                         # GK/DF · mountain

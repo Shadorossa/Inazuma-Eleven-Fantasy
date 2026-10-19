@@ -9,10 +9,11 @@
 --   (CMND_EVT_PACHANGA_*, evt_loader\pachanga_slot<N>.json, one per bank). «Establecer como equipo activo» sets the one of
 --   the type on screen; the dock number check mark, the header mark and the selector's help line show them.
 -- * Only in the standalone dock (opened from the title) outside INAROGUE / story / Crónica; elsewhere the row is grey.
--- * The first row is the format row «< 11 v 11 >» (EVT_PT_KINDS, the one declaration of the formats; only the enabled
---   ones are offered). Left / right (and a click on its arrows) cycle the value without leaving the list; Accept on the
---   row switches the dock to the format shown. Every refusal goes through PT.gate (one guard: OnEnter refuses at once,
---   PT.switch checks again).
+-- * The first rows are the format rows, one per enabled format of EVT_PT_KINDS (the one declaration of the formats):
+--   «11v11», «5v5». Up / down move between them as in any list, right leaves the list as the retail list does, Accept
+--   on a row switches the dock to that format (since 2026-10-19; before, one row «< 11 v 11 >» cycled with left / right
+--   and trapped the focus when it was the list's only row). Every refusal goes through PT.gate (one guard: OnEnter
+--   refuses at once, PT.switch checks again).
 -- * 2026-09-30 (doc §9): the two templates of a dock share name, emblem, kit, supertácticas, coach and managers
 --   (PT.link); leaving the dock puts the Partido team of the visit back in vsUseTeamSet (PT.leave).
 -- Uses the file locals t, t2, n, n4, n5, n10, n11, flag3, flag4 (graft.toml expect). Wraps once per definition (EVT_PT_WRAPPED).
@@ -60,7 +61,7 @@ do
     FORM5_DEFAULT = 712431653,
     VALID = 1538643580,              -- (set, team, false) -> 0 = the team can play (retail member check)
     GET_VS = 3713813716, SET_VS = 662075964,
-    ROW = 13, EQUIP_ALL = 10,        -- list item kinds (t): ours, retail «Equipar todo»
+    ROW = 13, EQUIP_ALL = 10,        -- list item kinds (t): the first format row (format col c = ROW + c - 1), retail «Equipar todo»
     LIST = 3367997069,               -- team01_02_list_item
     GUIDE_LINE = 3078308064, GUIDE_NODE = 378156699, SET_TEXT = 1083631230,
     MENU_ID = 937147172,             -- soccer_team_dock_menu
@@ -260,22 +261,9 @@ do
   -- The team name's length is Utilities' (graft util_team_name, docs/game/ui/team-name-length.md): this block only keeps
   -- the other template in step after the retail name edit.
 
-  -- The format row (docs/game/ui/pachanga-templates.md §11): a normal list row whose text is «< 11 v 11 >». Left / right
-  -- (and a click on its arrows) cycle the enabled formats, wrapping; the value is only a preview until Accept on the
-  -- row, which switches the dock to that format (PT.switch). Leaving the row puts the value back on the format on screen.
-  PT.ARG_RIGHT = 2682339866          -- OnChangeFocus arg of CMD_RIGHT on the list (retail: move to the pitch)
-  PT.CTRL, PT.CMD_LEFT = 1332654303, 2765147006   -- CMND_CHECK_INPUT_CMD(MENU_CTRL, crc32("CMD_LEFT")): not in the setting
-  PT.MOUSE_LEFT = 218912913          -- CMD_EVT_MOUSE_LEFT: the mouse's left button is down
-  PT.CHECK_INPUT = 4265778440        -- CMND_CHECK_INPUT_CMD (ctrl, cmd) -> bool
+  -- The format rows (docs/game/ui/pachanga-templates.md §11): one normal list row per enabled format, its text the
+  -- format's name; Accept on a row switches the dock to that format (PT.switch).
   PT.SE_MOVE = 2500047763            -- sy0005
-  PT.POINTER = 558229292             -- the pointer's screen px (y down; compared as x, -y with global positions)
-  PT.GPOS = 4002164178               -- global position of a layer instance (layer, idx)
-  PT.MESH_GPOS = 499270986           -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, mesh)
-  PT.TEXT_SIZE = 3549540977          -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node, string) -> w, h
-  PT.TXT_ON = 931545948              -- _text_list01_on
-  PT.TEXT_X = 47                     -- x of the row's text node from the row origin (item units)
-  PT.ARROW_PART = 0.25               -- share of the text width, at each end, that counts as its arrow for a click
-  PT.cur = nil                       -- the previewed format (index in PT.kinds(); nil = the format on screen)
   PT.pick = nil                      -- the format OnEnter accepted, for the OnDecideFocus of the same press
 
   function PT.kinds()
@@ -337,22 +325,24 @@ do
     return 1
   end
 
-  function PT.curCol()
-    local c = PT.cur
-    if type(c) ~= "number" or not PT.kindOn(PT.kinds()[c]) then
-      c = PT.activeCol()
+  -- the format col of list kind `kind` (nil = not a format row)
+  function PT.colOfKind(kind)
+    if type(kind) ~= "number" then
+      return nil
     end
-    return c
+    local col = kind - PT.ROW + 1
+    if col >= 1 and col <= #PT.kinds() then
+      return col
+    end
+    return nil
   end
 
-  -- the list index of the row (-1 = not in the list)
-  function PT.rowIndex()
-    for i = 0, (n or 0) - 1 do
-      if t[i + 1] == PT.ROW then
-        return i
-      end
+  -- the format col of list row i (0-based; nil = not a format row)
+  function PT.colAt(i)
+    if type(i) ~= "number" or i < 0 or i >= (n or 0) then
+      return nil
     end
-    return -1
+    return PT.colOfKind(t[i + 1])
   end
 
   function PT.listIndex()
@@ -360,91 +350,45 @@ do
     return ok and idx or nil
   end
 
-  -- the dock's focus is on the row. n6 = the retail «layer with the focus» (OnChangeFocus / MoveToOtherLayer keep it;
-  -- 0 before the first focus change, when the list has it). Not CMND_IS_CTRL_FOCUS_ACTIVE: the retail OnEnter turns
-  -- the list's control focus off for the decide, and a reset on that loss would send every decide to the format on
-  -- screen.
-  function PT.rowFocused()
-    local i = PT.rowIndex()
-    if i < 0 or (n6 ~= nil and n6 ~= 0 and n6 ~= PT.LIST) then
-      return false
+  -- the format col of the focused list row (nil = the focus is not on a format row). n6 = the retail «layer with the
+  -- focus» (OnChangeFocus / MoveToOtherLayer keep it; 0 before the first focus change, when the list has it). Not
+  -- CMND_IS_CTRL_FOCUS_ACTIVE: the retail OnEnter turns the list's control focus off for the decide.
+  function PT.focusedCol()
+    if n6 ~= nil and n6 ~= 0 and n6 ~= PT.LIST then
+      return nil
     end
-    return PT.listIndex() == i
+    return PT.colAt(PT.listIndex())
   end
 
-  -- the row's text: the previewed format while the row can switch, else the format on screen
-  function PT.rowText()
-    local col = PT.canSwitch() and PT.curCol() or PT.activeCol()
-    return PT.formatText(PT.kinds()[col])
+  function PT.rowFocused()
+    return PT.focusedCol() ~= nil
   end
 
+  -- the format the line and the guard talk about: the focused format row's, else the format on screen
+  function PT.curCol()
+    return PT.focusedCol() or PT.activeCol()
+  end
+
+  -- a format row's text: the format's name («11v11», text keys evt_pt_kind_*)
+  function PT.rowText(col)
+    local k = PT.kinds()[col or PT.activeCol()]
+    if type(k) ~= "table" then
+      return ""
+    end
+    return PT.kindLabel(k)
+  end
+
+  -- every format row's text (a refresh of the list may have rewritten them)
   function PT.drawRow()
-    local i = PT.rowIndex()
-    if not EVT_PACHANGA or i < 0 or type(SetTeamDockListItemText) ~= "function" then
+    if not EVT_PACHANGA or type(SetTeamDockListItemText) ~= "function" then
       return
     end
-    local s = PT.rowText()
-    if s ~= PT.drawn then
-      PT.drawn = s
-      pcall(SetTeamDockListItemText, i, s)
-    end
-  end
-
-  -- left / right on the row: the next enabled format, wrapping. false = not moved (fewer than two formats, or the row
-  -- cannot switch)
-  function PT.moveCur(d)
-    if PT.busy or PT.co ~= nil or not PT.canSwitch() then
-      return false
-    end
-    local opts = PT.options()
-    if #opts < 2 then
-      return false
-    end
-    local cur, at = PT.curCol(), 1
-    for p, i in ipairs(opts) do
-      if i == cur then
-        at = p
+    for i = 0, (n or 0) - 1 do
+      local col = PT.colAt(i)
+      if col ~= nil then
+        pcall(SetTeamDockListItemText, i, PT.rowText(col))
       end
     end
-    PT.cur = opts[(at - 1 + d) % #opts + 1]
-    funcLuaCommand(PT.SOUND, PT.SE_MOVE)
-    PT.drawRow()
-    PT.activeLine()
-    return true
-  end
-
-  -- a mouse click on the row: -1 / 1 = on its left / right arrow, nil = elsewhere (or not a mouse click). The text node
-  -- is left-aligned at PT.TEXT_X of the row; the scale from item units to global units is measured from it.
-  function PT.clickArrow()
-    local okL, down = pcall(funcLuaCommand, PT.CHECK_INPUT, PT.CTRL, PT.MOUSE_LEFT)
-    if not okL or down ~= true then
-      return nil
-    end
-    local i = PT.rowIndex()
-    local okP, px, py = pcall(funcLuaMenuCommand, PT.POINTER)
-    local okR, rx = pcall(funcLuaMenuCommand, PT.GPOS, PT.LIST, i)
-    local okT, tx = pcall(funcLuaMenuCommand, PT.MESH_GPOS, PT.LIST, i, PT.TXT_ON)
-    if i < 0 or not okP or not okR or not okT or type(px) ~= "number" or type(rx) ~= "number"
-        or type(tx) ~= "number" then
-      return nil
-    end
-    local k = (tx - rx) / PT.TEXT_X
-    if k < 0.3 or k > 3 then
-      k = 1
-    end
-    local s = PT.rowText()
-    local okW, w = pcall(funcLuaMenuCommand, PT.TEXT_SIZE, PT.LIST, i, PT.TXT_ON, s)
-    if not okW or type(w) ~= "number" or w <= 0 then
-      w = 20 * #s
-    end
-    w = w * k
-    local pad = 24 * k
-    if px >= tx - pad and px <= tx + w * PT.ARROW_PART then
-      return -1
-    elseif px >= tx + w * (1 - PT.ARROW_PART) and px <= tx + w + pad then
-      return 1
-    end
-    return nil
   end
 
   -- THE guard of the type switch (every path: OnEnter on the row, PT.switch from OnDecideFocus or a wrapper).
@@ -484,7 +428,7 @@ do
       return
     end
     for i = 0, (n or 0) - 1 do
-      if t[i + 1] == PT.ROW then
+      if PT.colAt(i) ~= nil then
         pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], PT.LIST, i, 0, 0.5)
         pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], PT.LIST, i, 931545948 --[[_text_list01_on]], 0.5)
         pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], PT.LIST, i, 3705682548 --[[_text_list01_off]], 0.5)
@@ -564,23 +508,19 @@ do
     end)
   end
 
-  -- the list: «Equipar todo» out, the selector first (8 rows as before: the layer has 8 instances)
+  -- the list: «Equipar todo» out, the format rows first (one per enabled format, in EVT_PT_KINDS order)
   if EVT_PACHANGA and type(t) == "table" and type(t2) == "table" then
     for i = #t, 1, -1 do
-      if t[i] == PT.EQUIP_ALL then
+      if t[i] == PT.EQUIP_ALL or PT.colOfKind(t[i]) ~= nil then
         table.remove(t, i)
       end
     end
-    local has = false
-    for _, v in ipairs(t) do
-      if v == PT.ROW then
-        has = true
-      end
+    local opts = PT.options()
+    for p = #opts, 1, -1 do
+      local kind = PT.ROW + opts[p] - 1
+      table.insert(t, 1, kind)
+      t2[kind + 1] = {itemName = PT.T.MATCH, itemExplation = PT.T.HELP}
     end
-    if not has then
-      table.insert(t, 1, PT.ROW)
-    end
-    t2[PT.ROW + 1] = {itemName = PT.T.MATCH, itemExplation = PT.T.HELP}
   end
 
   -- starters of the 5v5 team of `set` (the 5 pitch positions; bench and support do not count). Retail mapping of the
@@ -915,8 +855,6 @@ do
     end
     PT.log("switched", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4)
     back()
-    PT.cur = nil                     -- the row shows the format now on screen
-    PT.drawn = nil
     PT.drawRow()
   end
 
@@ -1348,7 +1286,7 @@ do
         pcall(SetActiveDockBackground, n4 == n5)
       end
       PT.flags()
-      PT.cur, PT.pick, PT.child, PT.drawn = nil, nil, false, nil
+      PT.pick, PT.child = nil, false
       PT.log("open", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4, "pachanga", PT.active,
         "loader", tostring(PT.loader))
       return table.unpack(r, 1, r.n)
@@ -1372,10 +1310,9 @@ do
 
   PT.wrap("SetupTeamDockListItemText", function(orig)
     return function(a1, a2, ...)
-      if EVT_PACHANGA and a2 == PT.ROW then
-        local s = PT.rowText()
-        SetTeamDockListItemText(a1, s)
-        PT.drawn = s
+      local col = EVT_PACHANGA and PT.colOfKind(a2) or nil
+      if col ~= nil then
+        SetTeamDockListItemText(a1, PT.rowText(col))
         return
       end
       return orig(a1, a2, ...)
@@ -1400,64 +1337,24 @@ do
 
   PT.wrap("OnChangeFocus", function(orig)
     return function(a1, a2, ...)
-      -- right on the row: the next format (wrapping); a row that cannot switch keeps the retail move to the pitch.
-      -- OnChangeFocus is where the retail list moves the focus for CMD_RIGHT (MoveToOtherLayer), so the focus stays
-      -- when the original is not called. a1 = the list: the input came from it.
-      if EVT_PACHANGA and a1 == PT.LIST and a2 == PT.ARG_RIGHT and PT.listIndex() == PT.rowIndex()
-          and PT.moveCur(1) then
-        return
-      end
+      -- right on a format row is the retail move out of the list (no format cycling since 2026-10-19)
       local r = PT.pack(orig(a1, a2, ...))
       if PT.pachanga() and PT.NO5[a1] and type(OnChangeFocusCommon) == "function" then
         PT.log("focus moved off a hidden tactics / synergy layer", a1)
         pcall(OnChangeFocusCommon, PT.FORM_BOX, 0, true)
       end
-      if EVT_PACHANGA then
-        -- the focus left the row (list up / down, to the pitch): the value goes back to the format on screen. Only a
-        -- real focus move resets it (never a control focus switched off for a decide, see PT.rowFocused)
-        local on = PT.rowFocused()
-        if not on then
-          PT.cur = nil
-        end
-        if on ~= (PT.onRow == true) then
-          PT.onRow = on
-          PT.drawRow()
-        end
-        if on then
-          PT.activeLine()
-        end
+      if EVT_PACHANGA and PT.rowFocused() then
+        PT.activeLine()              -- on a format row: the active teams line (or why it cannot switch)
       end
       return table.unpack(r, 1, r.n)
     end
   end)
 
-  -- left on the row: not in the list's input rows (retail: nothing), read from the pad (CMND_CHECK_INPUT_CMD, as the
-  -- skill-slot picker); the queued messages of OnEnter (PT.say) run here. The value is not reset here (the decide of
-  -- a press switches the list's control focus off until OnDecideFocus).
+  -- the queued messages of OnEnter (PT.say) run here
   PT.wrap("Step", function(orig)
     return function(...)
       local r = PT.pack(orig(...))
       if EVT_PACHANGA then
-        local okL, left = pcall(funcLuaCommand, PT.CHECK_INPUT, PT.CTRL, PT.CMD_LEFT)
-        left = okL and left == true
-        if left and not PT.left and PT.co == nil and not PT.busy and not PT.child and PT.pick == nil
-            and PT.rowFocused() then
-          PT.moveCur(-1)
-        end
-        PT.left = left
-        -- focus in / out of the row by any path: the value shown follows; the text is put back now and then (a
-        -- refresh of the list may have rewritten it)
-        local on = PT.rowFocused()
-        if not on and PT.cur ~= nil and not PT.busy and PT.pick == nil then
-          PT.cur = nil
-        end
-        PT.frames = (PT.frames or 0) + 1
-        if on ~= (PT.onRow == true) or PT.frames >= 30 then
-          PT.onRow = on
-          PT.frames = 0
-          PT.drawn = nil
-          PT.drawRow()
-        end
         PT.stepSay()
       end
       return table.unpack(r, 1, r.n)
@@ -1470,15 +1367,10 @@ do
         funcLuaCommand(PT.SOUND, PT.SE_NG)
         return 1
       end
-      -- the row: a click on one of its arrows cycles the value (no decide); otherwise refused here, at once (no
-      -- yield: an OnEnter that yields is taken as accepted), sound and message by PT.gate; the message opens from Step
-      if EVT_PACHANGA and a1 == PT.LIST and type(a2) == "number" and t[a2 + 1] == PT.ROW then
-        local arrow = PT.clickArrow()
-        if arrow ~= nil then
-          PT.moveCur(arrow)
-          return 1
-        end
-        local col = PT.curCol()
+      -- a format row: refused here, at once (no yield: an OnEnter that yields is taken as accepted), sound and
+      -- message by PT.gate; the message opens from Step
+      local col = EVT_PACHANGA and a1 == PT.LIST and PT.colAt(a2) or nil
+      if col ~= nil then
         if PT.busy or PT.co ~= nil or not PT.gate(col) then
           return 1
         end
@@ -1501,20 +1393,10 @@ do
       if EVT_PACHANGA and a1 == PT.LIST and type(a2) == "number" then
         kind = t[a2 + 1]
       end
-      if kind == PT.ROW then
-        local col = PT.pick
+      local rowCol = PT.colOfKind(kind)
+      if rowCol ~= nil then
+        local col = PT.pick or rowCol  -- a decide without our OnEnter (a mouse click): the clicked row's format
         PT.pick = nil
-        if col == nil then
-          -- a decide without our OnEnter (a mouse click): its arrows cycle the value, the dock gets its input back
-          local arrow = PT.clickArrow()
-          if arrow ~= nil then
-            PT.moveCur(arrow)
-            funcLuaMenuCommand(1558704558, PT.MENU_ID, true)
-            funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, true)
-            return
-          end
-          col = PT.curCol()
-        end
         PT.switch(a1, col)           -- PT.gate again inside: a press OnEnter refused never switches
         return
       end

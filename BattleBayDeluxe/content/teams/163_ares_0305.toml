@@ -1,0 +1,352 @@
+# Independent Battle Bay Deluxe data; edit this team's own declaration.
+schema = "VRFW.team/2"
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_0_moves"
+moves = [0x8DFA4265, 0xE9968761, 0xDBA0E5E3, 0xC636A810, 0x3F18A8D1, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_11_moves"
+moves = [0x5781A373, 0x4AD6453E, 0x5049A011, 0x481F9847, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_12_moves"
+moves = [0x5781A373, 0x4CDC2C6B, 0xD1E62D0A, 0x481F9847, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_5_moves"
+moves = [0x2F78EA0D, 0x4AD6453E, 0x7207C577, 0x5049A011, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_8_moves"
+moves = [0x2F78EA0D, 0x4AD6453E, 0x261BDCA8, 0x2B343D01, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_9_moves"
+moves = [0x2F78EA0D, 0x4AD6453E, 0x142DBE2A, 0x4E9A9232, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_10_moves"
+moves = [0x518BCA26, 0x63BDA8A4, 0x07D16DA0, 0x41F3CDC2, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_3_moves"
+moves = [0x4E9A9232, 0x73C5AF40, 0x1ECA5CE1, 0x2B343D01, 0xD67B0DE4, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_4_moves"
+moves = [0x19025F83, 0x5781A373, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [40, 40, 0, 0, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_1_moves"
+moves = [0x4E9A9232, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [40, 0, 0, 0, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_2_moves"
+moves = [0x4F58F805, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [40, 0, 0, 0, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_6_moves"
+moves = [0x261BDCA8, 0x4AD6453E, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [40, 40, 0, 0, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_13_moves"
+moves = [0xDEB28A7B, 0x4AD6453E, 0x3C843987, 0x2A37FC88, 0xD67B0DE4, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_7_moves"
+moves = [0x7B64F3D2, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [40, 0, 0, 0, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.ares_0305.slot_16_moves"
+moves = [0x4E9A9232, 0x5781A373, 0x7207C577, 0xACAC21CE, 0xD67B0DE4, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[team]]
+name = "ares_0305"
+key = "bbcr_ares_0305_bb"
+name_text = 0x8CEDF2CB
+level = 40
+series = "ARES"
+stadium_fallback = "s23g001"
+stadium_image = "ev_chronicle_img/ev_ch_s23g001_0116.g4tx"
+tactics = [0x446F1689, 0x4629A8D0, 0x238707E3]
+appears = [{ list = "bb_stadium", category = "main", season = "series_07", row = { copy = false, stadium = 0xE3DD6DDB, image = "ev_chronicle_img/ev_ch_s23g001_0116.g4tx", image_name = "ev_ch_s23g001_0116", bgm = 0x6C1E6CDD } }]
+same_as = ["tm_cro_ares_0305"]
+roster = "exact"
+description = 0x00000000
+formation = 0x0A75FAB9
+kit = 0x03A9BB9F
+emblem = 0x5D86D049
+skills = []
+stadium = 0xE3DD6DDB
+
+[[team.member]]
+slot = 0
+card = 0xFF09B06C
+uid = 0xEEA3E449
+number = 1
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_0_moves"
+
+[[team.member]]
+slot = 11
+card = 0xA8917DDD
+uid = 0xB93B29F8
+number = 23
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_11_moves"
+
+[[team.member]]
+slot = 12
+card = 0xE7D0EB1A
+uid = 0xF67ABF3F
+number = 24
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_12_moves"
+
+[[team.member]]
+slot = 5
+card = 0xB04826AB
+uid = 0xA1E2728E
+number = 9
+captain = true
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_5_moves"
+
+[[team.member]]
+slot = 8
+card = 0xA95317EA
+uid = 0xB8F943CF
+number = 10
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_8_moves"
+
+[[team.member]]
+slot = 9
+card = 0xE612812D
+uid = 0xF7B8D508
+number = 11
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_9_moves"
+
+[[team.member]]
+slot = 10
+card = 0x9B657568
+uid = 0x8ACF214D
+number = 17
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_10_moves"
+
+[[team.member]]
+slot = 3
+card = 0xD424E3AF
+uid = 0xC58EB78A
+number = 2
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_3_moves"
+
+[[team.member]]
+slot = 4
+card = 0xCD3FD2EE
+uid = 0xDC9586CB
+number = 3
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_4_moves"
+
+[[team.member]]
+slot = 1
+card = 0x4AA7CE21
+uid = 0x5B0D9A04
+number = 4
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_1_moves"
+
+[[team.member]]
+slot = 2
+card = 0x53BCFF60
+uid = 0x4216AB45
+number = 5
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_2_moves"
+
+[[team.member]]
+slot = 6
+card = 0x83BC2E1E
+uid = 0x92167A3B
+number = 6
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_6_moves"
+
+[[team.member]]
+slot = 13
+card = 0x9AA71F5F
+uid = 0x8B0D4B7A
+number = 7
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_13_moves"
+
+[[team.member]]
+slot = 7
+card = 0xB18A4C9C
+uid = 0xA02018B9
+number = 8
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_7_moves"
+
+[[team.member]]
+slot = 19
+card = 0x5F3D1A4F
+uid = 0x4E974E6A
+number = 0
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = 0
+
+[[team.member]]
+slot = 16
+card = 0x45A2FF60
+uid = 0x5408AB45
+number = 0
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.ares_0305.slot_16_moves"

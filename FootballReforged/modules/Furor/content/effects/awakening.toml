@@ -1,4 +1,131 @@
-# Furor › the phase's awakening look (docs/game/mechanics/furor.md §3.3). Since Furor 1.1.9 the phase uses the retail
-# awakening trigger 0x9627F4F7 in its own colour (content\rules\gauge.toml, owner 2026-10-16): no recoloured copies,
-# nothing declared here.
+# Furor › the furor phase's fire look (docs/game/mechanics/furor.md §3.3). The retail awakening («Despertar») draws its
+# look through ONE character-effect trigger (0x9627F4F7): the effects ega0550a-ega0553a at two body attach points and
+# the body aura (effect_aura_config) ega0550a. The trigger furor_phase_fire copies those rows with recoloured COPIES of
+# the four effects and another body aura: orange, yellow and red like flames. The retail ones stay untouched, so the
+# game's own awakening keeps its pink-red. The rules of content\rules\gauge.toml hold it on the team's players during
+# the phase with the framework's char_effect (no aura bit, no aura slot; it fades out at the phase's end).
+# The colours are the tunables here: `hue` in degrees (0 red, 15-30 orange, 45-55 yellow), `saturation` multiplier.
+# The noise textures _04 / _05 (distortion) and the grey masks keep theirs.
 schema = "VRFW.effect/1"
+
+# ---------------------------------------------------------------- ega0550a (the body flames, first attach point)
+
+# the flame tongues and the materials' colour: red-orange
+[[recolor]]
+effect = "ega0550a"
+copy = "egr0550a"
+textures = ["01"]
+materials = "all"
+hue = 18
+mode = "set"
+saturation = 1.1
+
+# the colour ramps: yellow, orange, red
+[[recolor]]
+object = "egr0550a"
+textures = ["02"]
+materials = "none"
+hue = 48
+mode = "set"
+
+[[recolor]]
+object = "egr0550a"
+textures = ["07"]
+materials = "none"
+hue = 28
+mode = "set"
+
+[[recolor]]
+object = "egr0550a"
+textures = ["12"]
+materials = "none"
+hue = 6
+mode = "set"
+saturation = 1.1
+
+# ---------------------------------------------------------------- ega0551a / ega0553a (the flames of the other points)
+
+[[recolor]]
+effect = "ega0551a"
+copy = "egr0551a"
+textures = ["01"]
+materials = "all"
+hue = 22
+mode = "set"
+saturation = 1.1
+
+[[recolor]]
+object = "egr0551a"
+textures = ["02"]
+materials = "none"
+hue = 50
+mode = "set"
+
+[[recolor]]
+object = "egr0551a"
+textures = ["07"]
+materials = "none"
+hue = 10
+mode = "set"
+
+[[recolor]]
+effect = "ega0553a"
+copy = "egr0553a"
+textures = ["01"]
+materials = "all"
+hue = 14
+mode = "set"
+saturation = 1.1
+
+[[recolor]]
+object = "egr0553a"
+textures = ["02"]
+materials = "none"
+hue = 45
+mode = "set"
+
+[[recolor]]
+object = "egr0553a"
+textures = ["07"]
+materials = "none"
+hue = 30
+mode = "set"
+
+# ---------------------------------------------------------------- ega0552a (the sparks): golden yellow
+
+[[recolor]]
+effect = "ega0552a"
+copy = "egr0552a"
+hue = 42
+mode = "set"
+saturation = 1.1
+
+# ---------------------------------------------------------------- the new pooled effects and the trigger
+
+[[effect]]
+name = "furor_fire_0"
+from = "ega0550a"
+object = "egr0550a"
+
+[[effect]]
+name = "furor_fire_1"
+from = "ega0551a"
+object = "egr0551a"
+
+[[effect]]
+name = "furor_fire_2"
+from = "ega0552a"
+object = "egr0552a"
+
+[[effect]]
+name = "furor_fire_3"
+from = "ega0553a"
+object = "egr0553a"
+
+# body_auras: the body aura shell ega0550a (pink colour plate effAuraTex_05) -> the retail body aura 0x293ACB8C, the
+# same shell with the orange colour plate effAuraTex_08 (luminance 4 instead of 2)
+[[chr_trigger]]
+name = "furor_phase_fire"
+like = "0x9627F4F7"
+effects = { ega0550a = "furor_fire_0", ega0551a = "furor_fire_1", ega0552a = "furor_fire_2", ega0553a = "furor_fire_3" }
+body_auras = { ega0550a = "0x293ACB8C" }

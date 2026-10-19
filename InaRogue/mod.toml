@@ -1,6 +1,6 @@
 id = "inarogue"
 name = "InaRogue"
-version = "1.0.5"
+version = "1.0.6"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "INAROGUE: el modo roguelite de Inazuma Eleven. Forma un equipo desde cero, recorre el mapa fase tras fase y colecciona cartas, avatares y formaciones en tu propia partida (ranura 4)."
@@ -13,7 +13,7 @@ updated = "2026-10-15"
 # companions (if_mod gates, soft commands). Inazuma Fantasy requires InaRogue, never the other way round.
 # vr_framework 2.2.205: the save import service ([[VRFW.SaveImport]]: INAROGUE's saved files of mod inazuma_fantasy) and the
 # reserved-slot hand-over (`takes_over`); 2.2.159: if_mod gates; 2.2.x: the title row host, the random team service.
-requires = ["vr_framework>=2.4.0"]
+requires = ["vr_framework>=2.4.207"]
 # its title press / menus run before the other mods' patches, as INAROGUE did inside Inazuma Fantasy
 lua_early = true
 loader_modules = ["lua_bridge"]

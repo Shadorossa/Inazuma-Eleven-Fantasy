@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03034010"                                   # Anorel
+moves = [
+  { move = 0x89773ED7, level = 1 },                         # Celestial Zone
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x039DBAAC, level = 48 },                        # Land of Ice
+  { move = 0xEE9F2FBD, level = 72 },                        # God Catch
+]
 
   [[edit.cards]]
   id = 0x6F08338C                                         # GK/MF · forest
@@ -15,6 +21,12 @@ target = "c03034010"                                   # Anorel
 
 [[edit]]
 target = "c03034020"                                   # Nenel
+moves = [
+  { move = 0x613ABD43, level = 1 },                         # Dawnrise
+  { move = 0x6E53E2B3, level = 43 },                        # Angel Ball
+  { move = 0x6ADE9E01, level = 51 },                        # Illusory Ball
+  { move = 0x4A17EE80, level = 66 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x4425604F                                         # DF/MF · fire
@@ -25,6 +37,12 @@ target = "c03034020"                                   # Nenel
 
 [[edit]]
 target = "c03034030"                                   # Genel
+moves = [
+  { move = 0x613ABD43, level = 1 },                         # Dawnrise
+  { move = 0x5B6C28ED, level = 38 },                        # Invisible Fake
+  { move = 0x0D368F6B, level = 49 },                        # Heaven's Time
+  { move = 0x79E3E635, level = 75 },                        # Racing Flame
+]
 
   [[edit.cards]]
   id = 0x5D3E510E                                         # DF/MF · mountain
@@ -34,6 +52,12 @@ target = "c03034030"                                   # Genel
 
 [[edit]]
 target = "c03034040"                                   # Ekadel
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x1FC99D68, level = 52 },                        # Snow Angel
+  { move = 0x0AC37488, level = 58 },                        # Heavenly Drive
+  { move = 0x039DBAAC, level = 67 },                        # Land of Ice
+]
 
   [[edit.cards]]
   id = 0x127FC7C9                                         # DF/MF · wind
@@ -44,6 +68,12 @@ target = "c03034040"                                   # Ekadel
 
 [[edit]]
 target = "c03034050"                                   # Lephiel
+moves = [
+  { move = 0x613ABD43, level = 1 },                         # Dawnrise
+  { move = 0xA6763B84, level = 58 },                        # Gladius Arch
+  { move = 0x47380F29, level = 62 },                        # Echo Ball
+  { move = 0x89773ED7, level = 70 },                        # Celestial Zone
+]
 
   [[edit.cards]]
   id = 0x0B64F688                                         # DF/MF · mountain
@@ -54,6 +84,12 @@ target = "c03034050"                                   # Lephiel
 
 [[edit]]
 target = "c03034060"                                   # Sachinel
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x3A3634AD, level = 57 },                        # Excalibur
+  { move = 0x6633159F, level = 64 },                        # Gravitation
+  { move = 0x21127474, level = 75 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x2049A54B                                         # MF/FW · mountain
@@ -63,6 +99,12 @@ target = "c03034060"                                   # Sachinel
 
 [[edit]]
 target = "c03034070"                                   # Wenel
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x1FC99D68, level = 50 },                        # Snow Angel
+  { move = 0x3A4FFB6C, level = 61 },                        # The Ikaros
+  { move = 0x0D368F6B, level = 75 },                        # Heaven's Time
+]
 
   [[edit.cards]]
   id = 0x3952940A                                         # MF/DF · fire
@@ -73,6 +115,12 @@ target = "c03034070"                                   # Wenel
 
 [[edit]]
 target = "c03034080"                                   # Ientel
+moves = [
+  { move = 0x613ABD43, level = 1 },                         # Dawnrise
+  { move = 0x6E53E2B3, level = 51 },                        # Angel Ball
+  { move = 0x8D5B6847, level = 68 },                        # Odin Sword
+  { move = 0x2C3D95DD, level = 75 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0xBECA88C5                                         # MF/DF · forest
@@ -83,6 +131,12 @@ target = "c03034080"                                   # Ientel
 
 [[edit]]
 target = "c03034090"                                   # Nuel
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x8EDFBC29, level = 61 },                        # Double Jaw
+  { move = 0x47380F29, level = 69 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0xA7D1B984                                         # MF/DF · forest
@@ -92,6 +146,12 @@ target = "c03034090"                                   # Nuel
 
 [[edit]]
 target = "c03034100"                                   # Gaiel
+moves = [
+  { move = 0x0AC37488, level = 1 },                         # Heavenly Drive
+  { move = 0x3A4FFB6C, level = 1 },                         # The Ikaros
+  { move = 0x27D9B69F, level = 43 },                        # Prima Donna
+  { move = 0x035C1112, level = 60 },                        # Gungnir
+]
 
   [[edit.cards]]
   id = 0x77D168FA                                         # FW/MF · wind
@@ -101,6 +161,12 @@ target = "c03034100"                                   # Gaiel
 
 [[edit]]
 target = "c03034110"                                   # Sanctus
+moves = [
+  { move = 0x0AC37488, level = 1 },                         # Heavenly Drive
+  { move = 0x21127474, level = 60 },                        # Ultra Moon
+  { move = 0xF72534DE, level = 60 },                        # Shadow Ray
+  { move = 0x3A3634AD, level = 75 },                        # Excalibur
+]
 
   [[edit.cards]]
   id = 0x6ECA59BB                                         # FW/MF · forest

@@ -35,7 +35,8 @@ AuraPoints_BuffBar = AuraPoints_BuffBar or {entries = {}, ready = {}, fill = {},
 local B = AuraPoints_BuffBar
 B.opened = B.opened or {}              -- bar instances opened in this menu (k -> true)
 B.digits = B.digits or {opened = {}, ready = {}, glyph = {}, pos = {}, shown = {}, text = {}}
-B.lvl = B.lvl or {opened = {}, ready = {}, shown = {}, text = {}, pos = {}}
+B.lvl = B.lvl or {opened = {}, ready = {}, shown = {}, text = {}, pos = {}, logged = {}}
+B.lvl.logged = B.lvl.logged or {}
 B.ON = true                            -- false: no bar (the retail stopwatch everywhere)
 B.BAR_W, B.BAR_H = 60, 12              -- bar frame size (layout units; retail frame 476 x 44)
 B.DX, B.DY = 0, 0                      -- extra offset from the portrait's position (layout units)
@@ -82,6 +83,8 @@ K.LEVEL_TEXT = @crc:_text_telop01@
 K.LEVEL_TEXT_W = 334 --[[the text node's box at scale 1]]
 K.LEVEL_TEXT_H = 70
 K.CMND_GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+K.CMND_LAYER_GLOBAL_POS = 4002164178 --[[a layer instance's global position (layer, instance)]]
+K.PROBE_TRIES = 6 --[[level label probe: measurements before it gives up on steady units]]
 K.CMND_SET_TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING]]
 local CMND_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
 local CMND_IS_VISIBLE = 1262717583 --[[CMND_IS_LAYER_VISIBLE]]
@@ -147,17 +150,28 @@ local function IfDraws()
   return type(rawget(_ENV, "EVT_AP")) == "table" and rawget(_ENV, "EVT_AURA_PEG") == true
 end
 
--- the aura entries the retail row just built: k = 0.. in member order, one per aura user of the team
+-- the aura entries the row just built: k = the portrait instance of the player, one per aura user of the team
 function B.Collect()
   local out = {}
   local ok0, okt, team = pcall(GetSoccerTeamInfo, 0)
   if not ok0 or not okt or team == nil then
     return out
   end
-  -- the team's aura users in member order (entry k = his place among them, as the row builds it)
+  -- the players as the row drew them: portrait instance i shows the player of its drawn state (matched by player
+  -- handle, so a bar or label never lands on another player's portrait); without that state, the team's aura users
+  -- in member order (the row's own order)
   local cap = Rows()
   local users = {}
-  for i = 0, 28 do
+  local row = rawget(_ENV, "AuraPoints_BuffRow")
+  local drawn = type(row) == "table" and type(row.drawn) == "table" and row.drawn or nil
+  for i = 1, drawn ~= nil and #drawn or 0 do
+    local d = drawn[i]
+    if type(d) == "table" and type(d.auraCharaHdl) == "number" and d.auraCharaHdl ~= 0 and d.auraAttr ~= 0
+      and (cap == nil or i <= cap) then
+      users[#users + 1] = {hdl = d.auraCharaHdl, attr = d.auraAttr, face = i - 1}
+    end
+  end
+  for i = 0, drawn ~= nil and -1 or 28 do
     local ok, ok2, hdl = pcall(funcLuaCommand, CMND_MEMBER, team, i, true)
     if ok and ok2 and hdl ~= nil and hdl ~= 0 then
       local oka, has, attr = pcall(GetSoccerCharaInfo, hdl, 26)
@@ -170,9 +184,19 @@ function B.Collect()
     end
   end
   -- second bars from instance `rows` on
-  local rows = cap or #users
+  local rows = cap or (drawn ~= nil and #drawn) or #users
+  -- the portrait of each player, logged when it changes
+  local map = {}
+  for _, u in ipairs(users) do
+    map[#map + 1] = string.format("%s:0x%X", tostring(u.face), u.hdl)
+  end
+  map = table.concat(map, " ")
+  if map ~= B.map then
+    B.map = map
+    Log("portraits", drawn ~= nil and "drawn state" or "member order", map)
+  end
   for k0, u in ipairs(users) do
-    local k = k0 - 1
+    local k = u.face or (k0 - 1)
     -- the miximax's PE or the mode change's recharge first, then the keshin / armour / totem pool
     local track = 0
     if ChangeRate(u.hdl) ~= nil then
@@ -433,7 +457,8 @@ function B.LevelNode()
   end
   local p = L.probe
   if p == nil then
-    L.probe = {stage = 1, wait = 2}
+    L.probe = {stage = 0, wait = 2, tries = (L.tries or 0) + 1}
+    L.tries = L.probe.tries
     Menu(CMND_VISIBLE, K.LEVEL_LAYER, 0, false)
     Menu(CMND_SET_SCALE, K.LEVEL_LAYER, 1, 1, 1, 0)
     Menu(CMND_SET_POS, K.LEVEL_LAYER, 0, 0, 0, 0)
@@ -450,6 +475,15 @@ function B.LevelNode()
     return nil
   end
   local step = 100
+  -- stage 0: the node at rest (two readings a few frames apart agree), so its open animation is over
+  if p.stage == 0 then
+    if p.rx ~= nil and math.abs(p.rx - x) < 0.5 and math.abs(p.ry - y) < 0.5 then
+      p.stage = 1
+    else
+      p.rx, p.ry, p.wait = x, y, 2
+      return nil
+    end
+  end
   if p.stage == 1 then
     p.x1, p.y1, p.stage, p.wait = x, y, 2, 2
     Menu(CMND_SET_POS, K.LEVEL_LAYER, step, step, 0, 0)
@@ -463,13 +497,20 @@ function B.LevelNode()
   end
   local ux, uy = (p.x2 - p.x1) / step, (p.y2 - p.y1) / step
   Menu(CMND_SET_SCALE, K.LEVEL_LAYER, 1, 1, 1, 0)
+  local skew = math.abs(math.abs(ux) - math.abs(uy)) / math.max(math.abs(ux), math.abs(uy), 0.01)
+  if skew > 0.02 and L.tries < K.PROBE_TRIES then
+    Log("level label: probe", L.tries, string.format("units differ (%.3f %.3f): measuring again", ux, uy))
+    L.probe = nil
+    return nil
+  end
   if math.abs(ux) < 0.01 or math.abs(uy) < 0.01 then
     L.node = false
     Log("level label: its position does not move its text node: off")
     return nil
   end
   L.node = {x = (x - p.x1) / ux, y = (y - p.y1) / uy}
-  Log("level label: text node offset", string.format("%.1f %.1f", L.node.x, L.node.y))
+  Log("level label: text node offset", string.format("%.1f %.1f", L.node.x, L.node.y), "units",
+    string.format("%.3f %.3f", ux, uy), "probe", L.tries)
   return L.node
 end
 
@@ -531,12 +572,21 @@ function B.DrawLevel(e)
   local old = L.pos[k]
   if old == nil or math.abs(old[1] - px) > 0.01 or math.abs(old[2] - py) > 0.01 or math.abs(old[3] - ts) > 1e-6 then
     L.pos[k] = {px, py, ts}
+    L.logged[k] = nil
     Menu(CMND_SET_SCALE, K.LEVEL_LAYER, ts, ts, 1, k)
     Menu(CMND_SET_POS, K.LEVEL_LAYER, px, py, 0, k)
   end
   if not L.shown[k] then
     L.shown[k] = true
     Menu(CMND_VISIBLE, K.LEVEL_LAYER, k, true)
+  elseif not L.logged[k] then
+    -- the frame after a placement: the owner, the instance and the real global x of his portrait and of the label
+    L.logged[k] = true
+    local portrait_x = Menu(K.CMND_LAYER_GLOBAL_POS, PORTRAIT, k)
+    local text_x = Menu(K.CMND_GLOBAL_POS, K.LEVEL_LAYER, k, K.LEVEL_TEXT)
+    Log("level label", text, "hdl", string.format("0x%X", e.hdl or 0), "instance", k, "portrait local x", tostring(gx),
+      "portrait global x", tostring(portrait_x), "label local x", string.format("%.1f", px), "text node global x",
+      tostring(text_x))
   end
   return true
 end

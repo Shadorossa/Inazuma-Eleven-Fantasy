@@ -37,6 +37,7 @@ EVT_UI_FLAGS.compact_cards = true
 --   CLEAN_HUD_PC_IsCompact(call, layer, idx)   the card uses the formation layout (call = a funcLuaMenuCommand)
 --   CLEAN_HUD_PC_HideName(call, layer, idx)    hide the name line (and block its re-show)
 --   CLEAN_HUD_PC_KeepName(layer, idx)          stop blocking the name line of that card (a menu's own label there)
+--   CLEAN_HUD_PC_HideLevel(layer, idx)         hide the level of a card another mod draws (and block its re-show)
 --   CLEAN_HUD_PC_WrapFormation()               called by the soccer_formation_menu_inc part of the graft
 -- No engine call at load: funcLuaMenuCommand / funcLuaCommand do not exist while INCLUDEs run.
 local PC_CMD_CARD_HDL = 3837561292      -- chara card by chara status handle (native 0xCC2590)
@@ -170,6 +171,11 @@ local function HideParts(call, layer, idx)
   for _, pr in ipairs(PC_LV_PRIMS) do
     call(PC_CMD_PRIM_VISIBLE, layer, idx or 0, pr, false)
   end
+end
+
+-- level off on one card of any layer (another mod's own card, drawn by it): kept off until a card is drawn there again
+function CLEAN_HUD_PC_HideLevel(layer, idx)
+  HideParts(funcLuaMenuCommand, layer, idx)
 end
 
 -- after a card command: the formation layout loses name and level; a retail-layout card keeps them

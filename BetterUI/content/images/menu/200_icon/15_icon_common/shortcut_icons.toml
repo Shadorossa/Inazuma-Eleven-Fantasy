@@ -1,0 +1,29 @@
+# BetterUI › the Team Dock shortcut tiles' glyphs (graft ui_clean_dock_panel, CHD.ROW.ICONS; content/menus/
+# dock_shortcuts.toml): flat white 120 x 120 like the game's team build icons, own art drawn by
+# _tools/shortcut_icons.py. Added to icon_common.g4tx, the atlas the tiles' icon slot (icon_build_dmy01) takes its
+# sprites from in the retail CONF. DE EQUIPO box.
+schema = "VRFW.image/1"
+
+# Vínculo de Afinidad: two linked chain links
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "betterui_shortcut_affinity"
+png = "betterui_shortcut_affinity.png"
+
+# Comandos de hipertécnicas: a lightning bolt
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "betterui_shortcut_hyper_commands"
+png = "betterui_shortcut_hyper_commands.png"
+
+# Habilidades: a star
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "betterui_shortcut_abilities"
+png = "betterui_shortcut_abilities.png"
+
+# Banco: a group of three people
+[[sprite]]
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+name = "betterui_shortcut_bank"
+png = "betterui_shortcut_bank.png"

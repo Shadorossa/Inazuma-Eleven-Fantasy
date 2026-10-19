@@ -2,13 +2,13 @@ id = "chronicle_deluxe"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Chronicle Deluxe"
-version = "1.8.10"
+version = "1.11.9"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner; the Crónica battle drops the rival's player spirits too (at the rates of the old route-unlock battle, below the Heroica's); and the match ranks S / A / B of a won board or chain match, with their badges on the board pieces, the chain tiles and the chain board's help; and the chain board's IE3 look (its background, plates, chests and icons). Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 (Royal Academy) to Lv 200 (Victory Road's last match), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), only the auras of that game for both teams (none in IE1-IE3, Ares and Orion but a card's own mode change, fighting spirits in GO, plus armours and Mix-Max in Chrono Stone, plus totems in Galaxy, everything in Victory Road), and its first win gives the rival's crest, its kit and the stadium of the match. Winning the Destructores gate battle gives the key item «Master's Seal»: one copy of a special move serves all your players (with every Chronicle completed, auras too; in Character Reforged's skill table). Works on the base game with the VRFW. Always on: the mod has no options."
+description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner; the Crónica battle drops the rival's player spirits too (at the rates of the old route-unlock battle, below the Heroica's); and the match ranks S / A / B of a won board or chain match, with their badges on the board pieces, the chain tiles and the chain board's help; and the chain board's IE3 look (its background, plates, chests and icons). Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 (Royal Academy) to Lv 200 (Victory Road's last match), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), only the auras of that game for both teams (none in IE1-IE3, Ares and Orion but a card's own mode change, fighting spirits in GO, plus armours and Mix-Max in Chrono Stone, plus totems in Galaxy, everything in Victory Road), and its first win gives the rival's crest, its kit and the stadium of the match. Winning the Destructores gate battle gives the key item «Master's Seal»: one copy of a special move serves all your players (with every Chronicle completed, auras too; in Character Reforged's skill table). Works on the base game with the VRFW. Always on: the mod has no options. In the free match every opponent offers three difficulties, the whole rival team at that level: Lv 50, Lv 99 and Lv 200 (legendary battle)."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-16"
+updated = "2026-10-19"
 # NOT the older mod «Chronicles Deluxe» (id chronicles_deluxe, folder ChroniclesDeluxe, with an «s»): that mod is set aside
 # (owner 2026-10-14) and is neither edited nor needed by this one. Where both declare the same thing (the Umbrella /
 # Sally's nodes and teams), this mod's files carry `if_not_mod = "chronicles_deluxe"`: with the old mod active, its
@@ -124,5 +124,63 @@ folder = "ChronicleDeluxe"
 # "normal": the legend teams' 9.3-10 stat rates out).
 # 1.8.8 (owner 2026-10-16): rank S of the chain gives no kit any more (Fallen Zeus's was an away version) but one
 # True Hissatsu «Libro de mejora de supertécnica» (only with True Hissatsu active; VRFW 2.4.157 IfMod / Text).
-requires = ["vr_framework>=2.4.157"]
+# 1.9.0 (owner 2026-10-19): the free match («Competir contra bots») offers three classes per opponent, the whole rival
+# line-up at the class level (VRFW 2.4.245 MatchDifficulty FlatRivalLevel; docs/game/mods/chronicle-deluxe-free-match.md):
+#   content\defaults\match_difficulty.toml          Class1 INAZUMA Lv 50, Class2 ZONA LETAL Lv 99, Class4 BATALLA
+#                                                  LEGENDARIA Lv 200; Class3 (RANGO DIVINO) only on chains
+#   content\images\menu\200_icon\06_icon_class\icon_class.toml   the BATALLA LEGENDARIA title (the old Inazuma
+#                                                  Fantasy's, made at boot from the player's gtxt_class28)
+#   content\images\menu\30_vsroute\vsroute01\vsroute01_21.toml   its cyan-lime level ball
+#   content\menus\free_match_class_level.toml       + content\base_tables\menu\config\menu_graphic_number_config.toml:
+#                                                  the class card's ball shows 3 digits (200)
+# 1.10.0 (owner 2026-10-19): the «team cleared» gauge: one pill with the orb of the highest class won against each
+# opponent ([VRFW.FreeMatch] Orb = "best"), also under the selected crest of BetterMenu's Competition strip, above the
+# team name (BetterMenu 0.7.0 ReserveUnderCrest; docs/game/mods/chronicle-deluxe-free-match.md §7):
+#   assets/lua/soccer_vs_cpu_list_menu/280_free_match_cleared_gauge.lua   the gauge, drawn on list open / focus change
+#   content/menus/free_match_cleared_gauge.toml     its layer (the list's own clear-icon object)
+# 1.10.1: no crash on entering Competition: the gauge never asks the focused game during the list's OnInit (the list
+# menu does not exist yet: null read in nie.exe+0xCB6910); drawn from BetterMenu 0.7.2's strip-ready call and focus changes.
+# 1.10.2 (owner test): the gauge's orb in the class colours (INAZUMA blue, ZONA LETAL purple, BATALLA LEGENDARIA the
+# new green-cyan chronicle_deluxe_legendary_orb in content/images/menu/30_vsroute/vsroute01/vsroute01_06b.toml), the
+# gauge with equal gaps between the crest and the name; the class window for 3 rows (content/menus/
+# free_match_class_window.toml + content/images/menu/30_vsroute/vsroute01/vsroute01_20.toml); the flat rivals in the
+# native team build too (VRFW), so the balls read 50 / 99 / 200.
+# 1.11.0 (owner 2026-10-19): the free match's IE1 / IE3 tabs (docs/game/mods/chronicle-deluxe-free-match.md §9):
+#   content/base_tables/gamedata/soccer/soccer_opponent_info.toml   the first Royal Academy game out of the list;
+#                                                  the Umbrella and Street Sally's nodes' games listed after Inazuma
+#                                                  Kids FC and Brain (three classes, the node's Crónica opens them)
+#   content/teams/10_ie1/0302_royal_academy_free_match.toml   the second Royal Academy's free-match copy
+#                                                  (tm_cro_ie1_0700_flat): Ray Dark coach, Stephen Black manager
+#   content/teams/90_rules/free_match.toml          [[VRFW.GameTab]]: Equipo Ogro under IE3, after Pequeños Gigantes
+#   VRFW 2.7.0: the class rows of the nodes' games get clear bits (orbs, gauge); a declared `_flat` team is the copy;
+#   [[VRFW.GameTab]] in the native team build (before, only the Lua build moved a game).
+# 1.11.1 (owner 2026-10-19): more free-match tab changes (docs/game/mods/chronicle-deluxe-free-match.md §10; VRFW 2.7.2
+# [[VRFW.FreeMatchGame]] / [[VRFW.FreeMatchPlace]] / [[VRFW.FreeMatchRival]]):
+#   content/teams/90_rules/free_match.toml          Raimon first in IE1 (opens with Zeus) and in IE2 (with Emperadores
+#                                                  Oscuros), Inazuma Japón first in IE3 (with Pequeños Gigantes), Chrono
+#                                                  Storm before Ragnah; Jóvenes Inazuma after Emperadores Oscuros;
+#                                                  Épsilon's BATALLA LEGENDARIA plays Épsilon Plus; Sky Team / Dark Team /
+#                                                  Ángel Oscuro before Equipo Ogro; Zanark Outsiders / Guardianas /
+#                                                  Plathos in Victory Road before Destructores
+#   content/teams/11_ie2/0001_raimon_free_match.toml   the IE2 Raimon with Byron Love on the bench
+#   content/base_tables/gamedata/soccer/soccer_opponent_info.toml   out: Épsilon Plus, Equipo B, Raimon equipo B,
+#                                                  Tormenta cortante, Hojas espinosas, Llamarada volcánica, Aplastarocas
+# 1.11.2 (owner test): the cleared gauge and the team name closer to the crest (gaps of a quarter of the crest -> name
+# gap, from BetterMenu 0.7.7's measured crest bottom); the class-9 orb swap applied on every draw, to its glow copies
+# too, and one log line per focused team (best class, clear bits, swap answers).
+# 1.11.3 (owner 2026-10-19): the retail IE2 Raimon game (fbtl_cro02_170_010) leaves the free-match list: the IE2 tab
+# has only the new Raimon (with Byron Love) at its top.
+# 1.11.4 (owner test): the cleared gauge centred between the crest's visible bottom and the name's glyphs (BetterMenu
+# 0.7.15 on-screen geometry); the class-9 orb's orange glow copies hidden (they have no sprite slot to swap).
+# 1.11.5 (owner): a team with no class won shows the gauge empty (the pill, no orb), at the same place.
+# 1.11.6 (owner test): the three classes get clear bits of their own (OwnClearBit, VRFW 2.7.10): an old
+# HÉROE LEGENDARIO / ZONA LETAL / INAZUMA win no longer lights the gauge, the row orbs or the class menu's ticks;
+# the gauge shows ONE orb (the pill's own) with the class's sprite: blue / purple / green-cyan.
+# 1.11.8 (owner 2026-10-19): free-match list - Chrono Stone without Selección de Japón, Ira de Imagawa, the Zanark
+# Domain with Okita, Caballeros de la Mesa Redonda and the second Cascada Perfecta; GO Galaxy: Earth Eleven (Battle Bay's
+# bb_13_team_newjapan) in place of Royal Academy; Ares without the first Academia Polaris.
+# 1.11.9 (owner 2026-10-19): per-class free-match rivals - Protocolo Omega 3.0 in base form at INAZUMA / ZONA LETAL
+# (generated content/teams/90_rules/free_match_base_forms.toml), Cascada Perfecta's masked line-up at BATALLA LEGENDARIA,
+# Épsilon Plus at BATALLA LEGENDARIA with Zell in goal and Dvalin forward (content/teams/11_ie2/1400_epsilon_plus_free_match.toml).
+requires = ["vr_framework>=2.7.20"]
 conflicts = []

@@ -7,12 +7,19 @@
 -- global byte 3152001072 = 2, does).
 -- The retail menu instead: the tutorial question not answered yet (global bit 1169930310), a Players Universe event
 -- reserved, the retail skip mode, no ChangeVsRouteTownScene; or the menu still open FALLBACK_FRAMES after the skip
--- began (its layers shown again and its own opening run). Wraps OnInit, OnSetupLayer, OnOpenLayer and Step (no host for
--- this script). No engine call at load time.
+-- began (its layers shown again and its own opening run).
+-- Back from the map: when the action's declaration says `return = "title"`, the framework answers this menu's next
+-- opening with "title" (CMND_VRFW_MENU_SCENE_RETURN): its layers stay hidden, the screen black, and instead of its
+-- opening the retail Back runs (its OnFunction of the back key: BackToTitle) in a coroutine resumed every Step; the
+-- retail menu when that Back is not there or the menu is still open FALLBACK_FRAMES later.
+-- Wraps OnInit, OnSetupLayer, OnOpenLayer and Step (no host for this script). No engine call at load time.
 
 local CHRONICLE_SKIP = {
   LOG = 3661580131,                    -- CMND_EVT_LOG
   TAKE = 3945440440,                   -- CMND_VRFW_MENU_SCENE_TAKE (action) -> 1 | 0
+  RETURN = 2450671793,                 -- CMND_VRFW_MENU_SCENE_RETURN (menu) -> "title" | ""
+  MENU = "chronicle_mode_top_menu",
+  BACK_FUNCTION = 1842266423,          -- the retail OnFunction id of the back key (BackToTitle)
   GLOBAL_BIT = 941426960,              -- CMND_GET_GLOBAL_BIT_FLAG (bit) -> set
   GLOBAL_BYTE = 2769028935,            -- CMND_GET_GLOBAL_BYTE_FLAG (byte) -> value
   TEMP_BIT = 2283097588,               -- CMND_GET_TEMP_BIT_FLAG (bit) -> set
@@ -33,7 +40,7 @@ local CHRONICLE_SKIP = {
   FALLBACK_FRAMES = 600,               -- the menu still open this long after the skip began: the retail menu
 }
 
-local chronicle_skip = { on = false, started = false, frames = 0, hidden = {} }
+local chronicle_skip = { on = false, started = false, frames = 0, hidden = {}, back = false, co = nil }
 
 local function ChronicleSkipLog(...)
   pcall(funcLuaCommand, CHRONICLE_SKIP.LOG, "menu_scene", "chronicle_mode_top_menu", ...)
@@ -48,7 +55,19 @@ end
 -- at OnInit: the pending action taken, and whether the skip may run
 local function ChronicleSkipDecide()
   chronicle_skip.on, chronicle_skip.started, chronicle_skip.frames, chronicle_skip.hidden = false, false, 0, {}
-  if ChronicleSkipCall(CHRONICLE_SKIP.TAKE, "chronicle_map") ~= 1 then return end
+  chronicle_skip.back, chronicle_skip.co = false, nil
+  if ChronicleSkipCall(CHRONICLE_SKIP.TAKE, "chronicle_map") ~= 1 then
+    -- opening again after the map: Back straight to the title when the action asked for it
+    if ChronicleSkipCall(CHRONICLE_SKIP.RETURN, CHRONICLE_SKIP.MENU) == "title" then
+      if type(OnFunction) ~= "function" then
+        ChronicleSkipLog("chronicle map: back to the title asked, no OnFunction: the top menu is shown")
+        return
+      end
+      chronicle_skip.on, chronicle_skip.back = true, true
+      ChronicleSkipLog("chronicle map: back from the map, straight to the title")
+    end
+    return
+  end
   local why = nil
   if type(ChangeVsRouteTownScene) ~= "function" then
     why = "no ChangeVsRouteTownScene"
@@ -68,8 +87,28 @@ local function ChronicleSkipDecide()
   ChronicleSkipLog("chronicle map: the top menu is skipped")
 end
 
+-- the background's open, back from the map: the retail Back (BackToTitle yields: a coroutine resumed every Step)
+local function ChronicleBackStart()
+  chronicle_skip.started = true
+  ChronicleSkipCall(CHRONICLE_SKIP.FADE, 1, 0)
+  chronicle_skip.co = coroutine.create(function() OnFunction(CHRONICLE_SKIP.BACK_FUNCTION, 0) end)
+  ChronicleSkipLog("chronicle map: the retail Back to the title started")
+  return true
+end
+
+local function ChronicleBackStep()
+  local co = chronicle_skip.co
+  if not co or coroutine.status(co) == "dead" then return end
+  local ok, err = coroutine.resume(co)
+  if not ok then
+    chronicle_skip.co = nil
+    ChronicleSkipLog("chronicle map: Back to the title error:", tostring(err))
+  end
+end
+
 -- the background's open: instead of the retail opening (caravan, fade-in, input), the «Cadena de Crónica» path
 local function ChronicleSkipStart()
+  if chronicle_skip.back then return ChronicleBackStart() end
   chronicle_skip.started = true
   ChronicleSkipCall(CHRONICLE_SKIP.FADE, 1, 0)
   ChronicleSkipCall(CHRONICLE_SKIP.TUTORIAL_FOCUS_PARAM, CHRONICLE_SKIP.TUTORIAL_FOCUS_KEY, 0)
@@ -105,7 +144,7 @@ if type(OnInit) == "function" and type(OnOpenLayer) == "function" then
 
   -- the retail menu after all: its layers shown again, its own opening (caravan, fade-in, input)
   fallback = function(why)
-    chronicle_skip.on = false
+    chronicle_skip.on, chronicle_skip.back, chronicle_skip.co = false, false, nil
     ChronicleSkipLog("chronicle map:", why, ": the top menu is shown")
     for _, layer in ipairs(chronicle_skip.hidden) do
       pcall(funcLuaMenuCommand, CHRONICLE_SKIP.VISIBLE, layer[1], layer[2], true)
@@ -132,6 +171,10 @@ if type(OnInit) == "function" and type(OnOpenLayer) == "function" then
     Step = function(...)
       local r = table.pack(step_before(...))
       if chronicle_skip.on and chronicle_skip.started then
+        if chronicle_skip.back then
+          local ok, err = pcall(ChronicleBackStep)
+          if not ok then ChronicleSkipLog("chronicle map: Back step error:", tostring(err)) end
+        end
         chronicle_skip.frames = chronicle_skip.frames + 1
         if chronicle_skip.frames > CHRONICLE_SKIP.FALLBACK_FRAMES then
           local ok, err = pcall(fallback, "still open " .. CHRONICLE_SKIP.FALLBACK_FRAMES .. " frames after the skip began")

@@ -5,13 +5,13 @@ name = "Living Shots"
 # LivingShots.X; the mod id stays shot_fx (saved option values, `requires`, Inazuma Fantasy's dependency)
 prefix = "LivingShots"
 folder = "LivingShots"
-version = "1.4.74"
+version = "1.4.75"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Special shots keep their cut-in look while the ball flies: Doom Spear travels inside its red lattice spear, Excalibur rides its slash wave and leaves a burnt gash on the pitch, Doom Rain flies among its rain of dark balls, Emperor Penguin No. 1 / 2 / 3 carry their penguins, Katana Kick its wave and maple leaves, Doom Break skims the pitch inside its spiked ball, God Knows flies inside its lightning orb and Ultimate Eleven Assault inside its golden sphere with rainbow streaks. Visual only: no power, cost, path or block change. Camera on shots: while a shot at goal flies, the camera shows it from the touchline, then your camera comes back (always on, no setting). Special goals: scoring with Meteoric Fire Tornado, Inazuma Break, Shadow Empress or Ultimate Eleven Assault smashes the goal (each with its own scene; Ultimate Eleven Assault's is golden), whoever uses it; option «Skip special goal scene» in Mod options."
 priority = 0
 tags = ["Visual"]
-updated = "2026-10-14"
+updated = "2026-10-16"
 # Data only, no DLL, no Lua (1.4.0): content\effects\ ([[effect]] + [[shot_aura]] of the effect type, docs/framework/effect.md
 # §6), visual keys of the technique type (techniques\: ground_trail, trajectories, goal_event), the match camera
 # presets cameras\ and the shot camera content\camera_drives\shot_view.toml ([[VRFW.CameraDrive]], run every frame by
@@ -25,6 +25,6 @@ updated = "2026-10-14"
 # §3.1): its pose is the preset cameras\shot.toml (shot_fx.shot), requested at priority 10 (above Utilities'
 # «Lateral») for the shot window only.
 # 1.4.0 (2026-10-10): renamed «Living Shots»; the shot camera is data (the framework's camera drive), shot_fx.dll gone.
-requires = ["vr_framework>=2.4.7"]
+requires = ["vr_framework>=2.4.150"]
 provides = ["goal_smash=1.0.0"]
 conflicts = []

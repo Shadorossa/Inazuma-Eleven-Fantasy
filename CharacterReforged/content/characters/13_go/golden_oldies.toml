@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04003820"                                   # Scott Banyan
+moves = [
+  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0x259F08C6, level = 18 },                        # Whirlwind Twister
+  { move = 0x55C71D2A, level = 24 },                        # About Face
+  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+]
+VRFW.MoveGrades = [
+  { Move = 0x62BE692D, Grade = 1 },                         # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x55E64D10                                         # DF/MF · forest
@@ -16,6 +25,12 @@ target = "c04003820"                                   # Scott Banyan
 
 [[edit]]
 target = "c04003810"                                   # Chuck Pumpkins
+moves = [
+  { move = 0x58B5859E, level = 4 },                         # Whip Crack
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0x4B3099D5, level = 30 },                        # Stomper Stopper
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0x7ECB1ED3                                         # GK/DF · mountain
@@ -25,6 +40,12 @@ target = "c04003810"                                   # Chuck Pumpkins
 
 [[edit]]
 target = "c04003830"                                   # Filbert Chestnut
+moves = [
+  { move = 0xED7B7A4F, level = 13 },                        # Defence Equation
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+  { move = 0x585098FC, level = 39 },                        # Slice and Dice
+  { move = 0xDBFD9CFE, level = 56 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0x4CFD7C51                                         # DF/MF · fire
@@ -34,6 +55,12 @@ target = "c04003830"                                   # Filbert Chestnut
 
 [[edit]]
 target = "c04003840"                                   # Gadish Oldman
+moves = [
+  { move = 0x928B9BED, level = 8 },                         # Optimal Trajectory
+  { move = 0xBA662B00, level = 30 },                        # Pterrordactyl Swoop
+  { move = 0xC4D13C6B, level = 43 },                        # Katana Kick
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x03BCEA96                                         # DF/MF · mountain
@@ -43,6 +70,12 @@ target = "c04003840"                                   # Gadish Oldman
 
 [[edit]]
 target = "c04003850"                                   # Autumn Leaf
+moves = [
+  { move = 0xF7E49F60, level = 13 },                        # Magnetism
+  { move = 0x530CDFC1, level = 26 },                        # Mystifying Mist
+  { move = 0x4A17EE80, level = 39 },                        # Hunter's Net
+  { move = 0x19BA3BFC, level = 62 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x1AA7DBD7                                         # DF/MF · forest
@@ -53,6 +86,12 @@ target = "c04003850"                                   # Autumn Leaf
 
 [[edit]]
 target = "c04003860"                                   # Skeeter Hawk
+moves = [
+  { move = 0x6A66FA7E, level = 8 },                         # Killer Whale
+  { move = 0xEF3DC416, level = 15 },                        # Skytree Hop
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x6ADE9E01, level = 52 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x318A8814                                         # MF/DF · wind
@@ -63,6 +102,12 @@ target = "c04003860"                                   # Skeeter Hawk
 
 [[edit]]
 target = "c04003870"                                   # Hal Löwén
+moves = [
+  { move = 0x6F918884, level = 12 },                        # Easy Breezy
+  { move = 0x14D1ED15, level = 26 },                        # Jumping Jack
+  { move = 0x4FE09C7A, level = 43 },                        # Acrobatic Keep
+  { move = 0x6BA49049, level = 48 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x2891B955                                         # MF/FW · mountain
@@ -73,6 +118,12 @@ target = "c04003870"                                   # Hal Löwén
 
 [[edit]]
 target = "c04003880"                                   # Jacko Lantern
+moves = [
+  { move = 0x3EC287DE, level = 8 },                         # Bubble Gum
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x05567847, level = 27 },                        # Runaway Train
+  { move = 0x585098FC, level = 44 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0xAF09A59A                                         # MF/DF · fire
@@ -82,6 +133,12 @@ target = "c04003880"                                   # Jacko Lantern
 
 [[edit]]
 target = "c04003890"                                   # Guy-Jean Harvestman
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0xDF8CB373, level = 11 },                        # Sonic Shot
+  { move = 0x5739C70C, level = 25 },                        # Guided Collide
+  { move = 0x62BE692D, level = 44 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0xB61294DB                                         # MF/DF · wind
@@ -91,6 +148,12 @@ target = "c04003890"                                   # Guy-Jean Harvestman
 
 [[edit]]
 target = "c04003900"                                   # Bobine Apples
+moves = [
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0xBF6D0AC5, level = 35 },                        # Emperor Penguin No. 3
+  { move = 0x2B8C597E, level = 58 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0x661245A5                                         # FW/MF · wind
@@ -100,6 +163,12 @@ target = "c04003900"                                   # Bobine Apples
 
 [[edit]]
 target = "c04003910"                                   # Sibylle Equinox
+moves = [
+  { move = 0x7C6D5B0E, level = 18 },                        # Astro Break
+  { move = 0x6ADE9E01, level = 42 },                        # Illusory Ball
+  { move = 0x15138722, level = 51 },                        # Will-o'-the-Wisp Shot
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x7F0974E4                                         # FW/MF · forest
@@ -110,6 +179,12 @@ target = "c04003910"                                   # Sibylle Equinox
 
 [[edit]]
 target = "c05026530"                                   # Silvia Woods
+moves = [
+  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
+  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
+  { move = 0x8C382852, level = 23 },                        # God Hand
+  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0xAF4C47E4                                         # GK/DF · mountain

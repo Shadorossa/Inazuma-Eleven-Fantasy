@@ -1,0 +1,59 @@
+schema = "VRFW.text_key/1"
+# BetterMenu's texts (key better_menu.<name>): the line the «Modo Historia» balloon adds on the main menu (X = the Avatar
+# menu, docs/game/mods/better-menu.md §14); the mode header's caption over the banner (§29: the scene's name); the
+# team drawer's close hint (§24).
+default_lang = "es"
+
+[es.new]
+team_close = "<CMD_BACK> Cerrar"
+scene_caption = "CASETA DEL CLUB"
+avatar_prompt = "X: Avatar"
+avatar_hotspot = "Avatar"
+
+[en.new]
+team_close = "<CMD_BACK> Close"
+scene_caption = "CLUBHOUSE"
+avatar_prompt = "X: Avatar"
+avatar_hotspot = "Avatar"
+
+[fr.new]
+team_close = "<CMD_BACK> Fermer"
+scene_caption = "CLUB-HOUSE"
+avatar_prompt = "X : Avatar"
+avatar_hotspot = "Avatar"
+
+[de.new]
+team_close = "<CMD_BACK> Schließen"
+scene_caption = "KLUBHAUS"
+avatar_prompt = "X: Avatar"
+avatar_hotspot = "Avatar"
+
+[it.new]
+team_close = "<CMD_BACK> Chiudi"
+scene_caption = "CLUB HOUSE"
+avatar_prompt = "X: Avatar"
+avatar_hotspot = "Avatar"
+
+[pt.new]
+team_close = "<CMD_BACK> Fechar"
+scene_caption = "SEDE DO CLUBE"
+avatar_prompt = "X: Avatar"
+avatar_hotspot = "Avatar"
+
+[ja.new]
+team_close = "<CMD_BACK> 閉じる"
+scene_caption = "部室"
+avatar_prompt = "X：アバター"
+avatar_hotspot = "アバター"
+
+[zh_hans.new]
+team_close = "<CMD_BACK> 关闭"
+scene_caption = "部室"
+avatar_prompt = "X：头像"
+avatar_hotspot = "头像"
+
+[zh_hant.new]
+team_close = "<CMD_BACK> 關閉"
+scene_caption = "部室"
+avatar_prompt = "X：頭像"
+avatar_hotspot = "頭像"

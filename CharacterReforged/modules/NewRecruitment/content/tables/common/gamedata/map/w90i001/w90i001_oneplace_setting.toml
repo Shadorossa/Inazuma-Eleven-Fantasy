@@ -3,6 +3,7 @@ schema = "VRFW.table/1"
 # «run_players_universe_menu» is removed, so the map spawns neither its interaction zone nor its marker.
 # The other three points stay as retail. The hub's trigger script (content/triggers/w90i001.toml) keeps its row.
 table = "map/function_point"
+key_columns = ["id"]                 # the function point id (crc32 of its name)
 
 [[delete]]
 key = 0xFD055ABA                     # crc32("run_players_universe_menu")

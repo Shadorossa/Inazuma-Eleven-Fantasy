@@ -42,6 +42,17 @@ target = "c05023510_5000"                              # Luke Kayon
 
 [[edit]]
 target = "c05023410"                                   # Lee Canthrup
+moves = [
+  { move = 0x53E9C2A3, level = 1 },                         # Capable Hands
+  { move = 0x9765A74A, level = 1 },                         # Beast Fang
+  { move = 0x585098FC, level = 48 },                        # Slice and Dice
+  { move = 0x4AF2F3E2, level = 61 },                        # Bridge to Nowhere
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xA200C165, level = 1 },                         # Kraon [aura]
+]
 
   [[edit.cards]]
   id = 0xAB66BF63                                         # GK/DF · fire
@@ -51,6 +62,17 @@ target = "c05023410"                                   # Lee Canthrup
 
 [[edit]]
 target = "c05023420"                                   # Gerald Fuss
+moves = [
+  { move = 0xB0F8060A, level = 1 },                         # Ozone Flayer
+  { move = 0xB60E3C60, level = 19 },                        # Plasma Cut
+  { move = 0x49933AEE, level = 38 },                        # Perfect Tower
+  { move = 0x25276CB9, level = 56 },                        # Solar Surprise
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x70A3B320, level = 1 },                         # Kukulkán [aura]
+]
 
   [[edit.cards]]
   id = 0x804BECA0                                         # DF/MF · wind
@@ -61,6 +83,12 @@ target = "c05023420"                                   # Gerald Fuss
 
 [[edit]]
 target = "c05023430"                                   # Kym Errer
+moves = [
+  { move = 0xB0F8060A, level = 1 },                         # Ozone Flayer
+  { move = 0x2354CA2D, level = 19 },                        # Wind God's Dance
+  { move = 0x93885A64, level = 38 },                        # Fire Drill
+  { move = 0xB8A509A7, level = 56 },                        # Asterocks
+]
 
   [[edit.cards]]
   id = 0x9950DDE1                                         # DF/MF · wind
@@ -71,6 +99,12 @@ target = "c05023430"                                   # Kym Errer
 
 [[edit]]
 target = "c05023440"                                   # Hunter O'Mann
+moves = [
+  { move = 0xB60E3C60, level = 1 },                         # Plasma Cut
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0xAF28F5A0, level = 44 },                        # The Tower
+  { move = 0x2296A01A, level = 56 },                        # Southern Cross
+]
 
   [[edit.cards]]
   id = 0xD6114B26                                         # MF/DF · forest
@@ -80,6 +114,12 @@ target = "c05023440"                                   # Hunter O'Mann
 
 [[edit]]
 target = "c05023450"                                   # Mona Selene
+moves = [
+  { move = 0xB60E3C60, level = 1 },                         # Plasma Cut
+  { move = 0x0D0B77EA, level = 14 },                        # Floral Fiesta
+  { move = 0x457EB170, level = 35 },                        # Pyrokinetic
+  { move = 0x25276CB9, level = 62 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0xCF0A7A67                                         # MF/DF · fire
@@ -89,6 +129,12 @@ target = "c05023450"                                   # Mona Selene
 
 [[edit]]
 target = "c05023460"                                   # Lou Garrou
+moves = [
+  { move = 0x44BCDB47, level = 1 },                         # Pyroclastic
+  { move = 0x414BA9BD, level = 15 },                        # Pincer Pinch
+  { move = 0xC324C788, level = 45 },                        # Blast Mine
+  { move = 0x7DD6FEF8, level = 58 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0xE42729A4                                         # MF/DF · mountain
@@ -98,6 +144,12 @@ target = "c05023460"                                   # Lou Garrou
 
 [[edit]]
 target = "c05023470"                                   # Al Woo
+moves = [
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
+  { move = 0xA37D1A41, level = 12 },                        # Hyper-Swiper
+  { move = 0xC16279D1, level = 41 },                        # Field of Force
+  { move = 0x7DD6FEF8, level = 57 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0xFD3C18E5                                         # MF/DF · forest
@@ -108,6 +160,12 @@ target = "c05023470"                                   # Al Woo
 
 [[edit]]
 target = "c05023480"                                   # Sylvester Bullet
+moves = [
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
+  { move = 0xA37D1A41, level = 19 },                        # Hyper-Swiper
+  { move = 0xB0F8060A, level = 37 },                        # Ozone Flayer
+  { move = 0xDE4ED944, level = 59 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0x7AA4042A                                         # MF/DF · wind
@@ -118,6 +176,12 @@ target = "c05023480"                                   # Sylvester Bullet
 
 [[edit]]
 target = "c05023490"                                   # Terri Ann Thrope
+moves = [
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+  { move = 0xB60E3C60, level = 11 },                        # Plasma Cut
+  { move = 0xC513565C, level = 47 },                        # Doom Spear
+  { move = 0xE29933EC, level = 63 },                        # Dimensional Deluge
+]
 
   [[edit.cards]]
   id = 0x63BF356B                                         # FW/MF · forest
@@ -127,6 +191,17 @@ target = "c05023490"                                   # Terri Ann Thrope
 
 [[edit]]
 target = "c05023500"                                   # Wolfram Vulpeen
+moves = [
+  { move = 0x02E93E49, level = 1 },                         # Werewolf Howl
+  { move = 0xD262F964, level = 25 },                        # Format Disk
+  { move = 0xAE5C7145, level = 53 },                        # Fangtasmagoria
+  { move = 0xCBF2DE76, level = 75 },                        # Nocturne
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xC304BA8E, level = 1 },                         # Miximax Trans: <FUL:G GENE> [aura]
+]
 
   [[edit.cards]]
   id = 0xB3BFE415                                         # FW/MF · fire
@@ -135,6 +210,17 @@ target = "c05023500"                                   # Wolfram Vulpeen
 
 [[edit]]
 target = "c05023510"                                   # Luke Kayon
+moves = [
+  { move = 0x0C08B663, level = 1 },                         # Doom Dive Drive
+  { move = 0x64CDCFB9, level = 22 },                        # Rising Dragon
+  { move = 0xE35B59DB, level = 48 },                        # Twin Sun Smash
+  { move = 0x02E93E49, level = 72 },                        # Werewolf Howl
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x13077546, level = 1 },                         # Asura [aura]
+]
 
   [[edit.cards]]
   id = 0xAAA4D554                                         # FW/MF · mountain
@@ -144,6 +230,17 @@ target = "c05023510"                                   # Luke Kayon
 
 [[edit]]
 target = "c05028630"                                   # Wolfram Vulpeen
+moves = [
+  { move = 0x02E93E49, level = 1 },                         # Werewolf Howl
+  { move = 0xD262F964, level = 25 },                        # Format Disk
+  { move = 0xAE5C7145, level = 53 },                        # Fangtasmagoria
+  { move = 0xCBF2DE76, level = 75 },                        # Nocturne
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x28522161, level = 1 },                         # Huargo [aura]
+]
 
   [[edit.cards]]
   id = 0x4DD58E8E                                         # FW/MF · fire

@@ -5,6 +5,14 @@
 # positionNo, the kick-off (b_kickoff), who receives it (b_follow) and pass_no are chosen.
 schema = "VRFW.formation/1"
 
+[[alias]]
+old = "inazuma_fantasy.if_form_street_3"
+new = "match_formats.if_form_street_3"
+
+[[alias]]
+old = "inazuma_fantasy.if_form_7_1231"
+new = "match_formats.if_form_7_1231"
+
 # 0x3285EB55 = crc32("if_form_street_3"): Inazuma Street 3v3: 1 defender + 2 forwards, no keeper (places 1-3)
 [[formation]]
 name = "if_form_street_3"

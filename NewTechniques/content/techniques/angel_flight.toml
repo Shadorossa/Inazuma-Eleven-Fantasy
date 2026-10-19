@@ -1,0 +1,21 @@
+schema = "VRFW.technique/3"
+# The five moves of «New Techniques» (docs/release/new_techniques.md). Each one is a retail move cloned (`base`: its
+# skill_config row, voice, banner margins, manual, event env row) with the numbers of the download it comes from; its
+# event is the base's event renamed with a recoloured effect object (assets\data\common\event\ + content\base_tables\
+# common\event\, event_cfg\ + content\models\effects\, research/scripts/new_techniques_build.py), its banner a telop of
+# the base's layout (content\telops\any\). Fixed keys (skill id = crc32(key), the download's ids: a save that learned
+# a move from the download keeps it). Names and descriptions: text\rows\skill_text.toml (the download's text ids,
+# pinned below). Manuals: the base's manual cloned, catalog number from the id registry (the download gave all five
+# the catalog 13002, IECross's Pingüino Infernal).
+
+[[technique]]
+name = "angel_flight"            # Vuelo angelical
+key = "whs90236"
+base = "whs02360"                # Vuelo de fénix (fire shot, 140-800, 100 TP, «El Dorado»)
+order = 2
+name_text = 0x60BC1B87
+desc_text = 0x352AC9D5
+event = "ev60_90236"             # ev60_02360 renamed, effect object ev60902360
+element = "wind"                 # colour 1 (wind) with it
+tp = 50                          # as the download: 50 TP for a 140-800 shot (Vuelo de fénix costs 100)
+effect_flags = 4                 # skillEffectBitFlag 4, as the download (the base has 0)

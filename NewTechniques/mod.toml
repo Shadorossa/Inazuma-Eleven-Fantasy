@@ -15,8 +15,8 @@ folder = "NewTechniques"
 # PERSONAL until the owner confirms where the downloaded files come from (docs/release/new_techniques.md §1): the
 # whole mod stays out of every release pack (research/scripts/release_exclude.py PERSONAL_MODS).
 # Data only, standard mod layout (docs/framework/mod-layout.md):
-#   content\techniques\new_techniques.toml      the five moves (fixed keys whs90208, whs90236, whd92114, whd92149,
-#                                               whk93113), each a clone of a retail move
+#   content\techniques\<name>.toml              one file for each move (fixed keys whs90208, whs90236, whd92114,
+#                                               whd92149, whk93113), each a clone of a retail move
 #   text\rows\skill_text.toml                   their names / descriptions (Spanish; other languages TODO)
 #   content\telops\any\                         their name banners (PNG + list, cloned from the base's banner)
 #   content\base_tables\event\…, event_cfg\…

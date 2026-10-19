@@ -46,13 +46,6 @@ key = ["[[args[2] + 0x78] + 0x94]:u32"]
 # CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> ok, level, text («Lv.3» / «Nv.3»: the text key reel_level in the game's language) of
 # the totem the player has out now, nothing when he has none (Aura Points' graft aura_points_buff_bar: the label on the
 # totem tile's top edge in the match buff row).
-# CMND_AURAREWORKED_SOULS_SP_LEVELS(aura) -> text of a totem's SP per level («Lv1 80 · Lv2 100 · … SP»), nil = no record.
-# Alias CMND_EVT_PEG_LEVELS: the generic name Character Reforged's player page asks under its SP gauges.
-[[VRFW.Command]]
-name = "CMND_AURAREWORKED_SOULS_SP_LEVELS"
-aliases = ["CMND_SOULSREWORK_SP_LEVELS", "CMND_EVT_PEG_LEVELS"]
-handler = "AuraReworked.Souls.SpLevels"
-
 [[VRFW.Command]]
 name = "CMND_AURAREWORKED_SOULS_TOTEM_LEVEL"
 aliases = ["CMND_SOULSREWORK_TOTEM_LEVEL"]
@@ -65,8 +58,9 @@ handler = "AuraReworked.Souls.Reel"
 
 # ------------------------------------------------------------------------------------------------ level-up pop command
 
-# CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, hdl, text, r, g, b, appear, hold, out, width, height, textScale, lift, rise
-# (graft souls_rework_level_pop: the next level-up pop after `seen`; 0 = none)
+# CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, hdl, text, r, g, b, appear, hold, out, height, lift, rise
+# (graft souls_rework_level_pop: the next level-up pop after `seen`; seq 0 = none; scene 1 while a cut-in or a match
+# scene plays)
 [[VRFW.Command]]
 name = "CMND_AURAREWORKED_SOULS_LEVEL_POP"
 aliases = ["CMND_SOULSREWORK_LEVEL_POP"]

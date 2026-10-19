@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06031810"                                   # Aoba Gyr
+moves = [
+  { move = 0x536C5E5D, level = 1 },                         # Volcano Head
+  { move = 0xECB91078, level = 25 },                        # Volcanic Flight
+  { move = 0xE9968761, level = 37 },                        # Rocket Kobushi
+  { move = 0x50E88A33, level = 51 },                        # Fist Beam
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x52A544F5, level = 1 },                         # Tótem Gorius [aura]
+]
 
   [[edit.cards]]
   id = 0x04FDBDA1                                         # GK/DF · fire
@@ -15,6 +26,17 @@ target = "c06031810"                                   # Aoba Gyr
 
 [[edit]]
 target = "c06031820"                                   # Mayon Langcrest
+moves = [
+  { move = 0xECB91078, level = 3 },                         # Volcanic Flight
+  { move = 0x79E3E635, level = 21 },                        # Racing Flame
+  { move = 0x9EA7BBCD, level = 34 },                        # Magmire
+  { move = 0x0E8FA384, level = 46 },                        # Warsaw
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7769310C, level = 1 },                         # Tótem Garius [aura]
+]
 
   [[edit.cards]]
   id = 0x2FD0EE62                                         # DF/MF · mountain
@@ -25,6 +47,17 @@ target = "c06031820"                                   # Mayon Langcrest
 
 [[edit]]
 target = "c06031830"                                   # Merapil Sekretair
+moves = [
+  { move = 0xECB91078, level = 5 },                         # Volcanic Flight
+  { move = 0x9EA7BBCD, level = 23 },                        # Magmire
+  { move = 0xF4604B0E, level = 35 },                        # Fancy-Footwork
+  { move = 0x536C5E5D, level = 49 },                        # Volcano Head
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7769310C, level = 1 },                         # Tótem Garius [aura]
+]
 
   [[edit.cards]]
   id = 0x36CBDF23                                         # DF/MF · fire
@@ -34,6 +67,12 @@ target = "c06031830"                                   # Merapil Sekretair
 
 [[edit]]
 target = "c06031840"                                   # Misty Aul
+moves = [
+  { move = 0x9EA7BBCD, level = 4 },                         # Magmire
+  { move = 0xECB91078, level = 10 },                        # Volcanic Flight
+  { move = 0x64CDCFB9, level = 34 },                        # Rising Dragon
+  { move = 0xAF150D21, level = 48 },                        # Swallow Counter
+]
 
   [[edit.cards]]
   id = 0x798A49E4                                         # MF/DF · mountain
@@ -44,6 +83,12 @@ target = "c06031840"                                   # Misty Aul
 
 [[edit]]
 target = "c06031850"                                   # Nevado Condorum
+moves = [
+  { move = 0x9EA7BBCD, level = 6 },                         # Magmire
+  { move = 0xECB91078, level = 12 },                        # Volcanic Flight
+  { move = 0xAF150D21, level = 37 },                        # Swallow Counter
+  { move = 0x0E8FA384, level = 52 },                        # Warsaw
+]
 
   [[edit.cards]]
   id = 0x609178A5                                         # MF/DF · fire
@@ -54,6 +99,12 @@ target = "c06031850"                                   # Nevado Condorum
 
 [[edit]]
 target = "c06031860"                                   # Etna Horx
+moves = [
+  { move = 0x9EA7BBCD, level = 8 },                         # Magmire
+  { move = 0xB2085681, level = 24 },                        # Volcanic Rock
+  { move = 0xECB91078, level = 40 },                        # Volcanic Flight
+  { move = 0xB58AE80E, level = 49 },                        # Silk Road
+]
 
   [[edit.cards]]
   id = 0x4BBC2B66                                         # MF/DF · fire
@@ -64,6 +115,12 @@ target = "c06031860"                                   # Etna Horx
 
 [[edit]]
 target = "c06031870"                                   # Promon Shubill
+moves = [
+  { move = 0x9EA7BBCD, level = 6 },                         # Magmire
+  { move = 0xE196F1D1, level = 22 },                        # Burning Bomb
+  { move = 0x457EB170, level = 33 },                        # Pyrokinetic
+  { move = 0xD0A1DBC3, level = 44 },                        # Bungee Ball Burst
+]
 
   [[edit.cards]]
   id = 0x52A71A27                                         # MF/DF · mountain
@@ -74,6 +131,12 @@ target = "c06031870"                                   # Promon Shubill
 
 [[edit]]
 target = "c06031880"                                   # Cotopax Gerigar
+moves = [
+  { move = 0xB2085681, level = 5 },                         # Volcanic Rock
+  { move = 0x9EA7BBCD, level = 20 },                        # Magmire
+  { move = 0xDDCA0D2A, level = 29 },                        # Bouncing Bomb
+  { move = 0xB9A6C82E, level = 46 },                        # Triangle ZZ
+]
 
   [[edit.cards]]
   id = 0xD53F06E8                                         # FW/MF · mountain
@@ -83,6 +146,12 @@ target = "c06031880"                                   # Cotopax Gerigar
 
 [[edit]]
 target = "c06031890"                                   # Vesuvion Bubo
+moves = [
+  { move = 0xB2085681, level = 7 },                         # Volcanic Rock
+  { move = 0xEFFC6FA8, level = 22 },                        # Warhead
+  { move = 0xBDAE2862, level = 34 },                        # Hellfire
+  { move = 0x0C08B663, level = 43 },                        # Doom Dive Drive
+]
 
   [[edit.cards]]
   id = 0xCC2437A9                                         # FW/MF · fire
@@ -92,6 +161,12 @@ target = "c06031890"                                   # Vesuvion Bubo
 
 [[edit]]
 target = "c06031900"                                   # Tar Parky
+moves = [
+  { move = 0xB2085681, level = 3 },                         # Volcanic Rock
+  { move = 0xECB91078, level = 24 },                        # Volcanic Flight
+  { move = 0xAF150D21, level = 36 },                        # Swallow Counter
+  { move = 0x066442FB, level = 48 },                        # Gusher Crusher
+]
 
   [[edit.cards]]
   id = 0x1C24E6D7                                         # FW/MF · mountain
@@ -101,6 +176,12 @@ target = "c06031900"                                   # Tar Parky
 
 [[edit]]
 target = "c06031910"                                   # Nyira Fezun
+moves = [
+  { move = 0xB2085681, level = 2 },                         # Volcanic Rock
+  { move = 0x9EA7BBCD, level = 13 },                        # Magmire
+  { move = 0x518BCA26, level = 32 },                        # Fire Tornado
+  { move = 0xFA40689A, level = 51 },                        # Solar Nexus
+]
 
   [[edit.cards]]
   id = 0x053FD796                                         # FW/MF · mountain
@@ -110,6 +191,17 @@ target = "c06031910"                                   # Nyira Fezun
 
 [[edit]]
 target = "c06031920"                                   # Bala Gasgula
+moves = [
+  { move = 0x99250542, level = 13 },                        # Volcanic Lightning
+  { move = 0xBDAE2862, level = 26 },                        # Hellfire
+  { move = 0x79E3E635, level = 41 },                        # Racing Flame
+  { move = 0xDDCA0D2A, level = 58 },                        # Bouncing Bomb
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x1F8FA71D, level = 1 },                         # Tótem Doruga [aura]
+]
 
   [[edit.cards]]
   id = 0x2E128455                                         # FW/DF · fire
@@ -119,6 +211,12 @@ target = "c06031920"                                   # Bala Gasgula
 
 [[edit]]
 target = "c11806090"                                   # Caldera Dorne
+moves = [
+  { move = 0xC16279D1, level = 1 },                         # Field of Force
+  { move = 0x06130797, level = 13 },                        # Rolling Kick
+  { move = 0xE937AD43, level = 20 },                        # Dragon Slayer
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0xFD1E9805                                         # MF/FW · forest

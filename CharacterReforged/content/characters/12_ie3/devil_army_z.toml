@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03034210"                                   # Astaroth
+moves = [
+  { move = 0xA25A6D14, level = 1 },                         # The End
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0xA9062A29, level = 63 },                        # Ultrasonic
+  { move = 0x91AE65A1, level = 75 },                        # Giant Spider
+]
 
   [[edit.cards]]
   id = 0x6C8CE7E2                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c03034210"                                   # Astaroth
 
 [[edit]]
 target = "c03034220"                                   # Bael
+moves = [
+  { move = 0x78218C02, level = 1 },                         # Duskfall
+  { move = 0x09BBF3D9, level = 1 },                         # Dark Whirlwind
+  { move = 0xC324C788, level = 54 },                        # Blast Mine
+  { move = 0x6633159F, level = 72 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0x47A1B421                                         # DF/MF · mountain
@@ -25,6 +37,12 @@ target = "c03034220"                                   # Bael
 
 [[edit]]
 target = "c03034230"                                   # Abigor
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0x28B0E96F, level = 36 },                        # Heavy Mettle
+  { move = 0xA25A6D14, level = 58 },                        # The End
+  { move = 0xC16279D1, level = 72 },                        # Field of Force
+]
 
   [[edit.cards]]
   id = 0x5EBA8560                                         # DF/MF · wind
@@ -34,6 +52,12 @@ target = "c03034230"                                   # Abigor
 
 [[edit]]
 target = "c03034240"                                   # Behemoth
+moves = [
+  { move = 0x78218C02, level = 1 },                         # Duskfall
+  { move = 0x6633159F, level = 37 },                        # Gravitation
+  { move = 0x1162A8AF, level = 47 },                        # Bewilder Blast
+  { move = 0x34E4CEAB, level = 56 },                        # Barbarian Shield
+]
 
   [[edit.cards]]
   id = 0x11FB13A7                                         # DF/MF · forest
@@ -43,6 +67,12 @@ target = "c03034240"                                   # Behemoth
 
 [[edit]]
 target = "c03034250"                                   # Belial
+moves = [
+  { move = 0x78218C02, level = 1 },                         # Duskfall
+  { move = 0xBD2BB49C, level = 42 },                        # Dark Matter
+  { move = 0x8A52C09B, level = 71 },                        # Doomsword Slash
+  { move = 0x28B0E96F, level = 72 },                        # Heavy Mettle
+]
 
   [[edit.cards]]
   id = 0x08E022E6                                         # DF/MF · wind
@@ -52,6 +82,12 @@ target = "c03034250"                                   # Belial
 
 [[edit]]
 target = "c03034260"                                   # Malphas
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0x06D2AC29, level = 48 },                        # Diabolical Cut
+  { move = 0x71831119, level = 72 },                        # Foul Offence 2
+  { move = 0x0BFD4D80, level = 73 },                        # Grand Slam
+]
 
   [[edit.cards]]
   id = 0x23CD7125                                         # MF/DF · wind
@@ -62,6 +98,12 @@ target = "c03034260"                                   # Malphas
 
 [[edit]]
 target = "c03034270"                                   # Glasya
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0x34E4CEAB, level = 41 },                        # Barbarian Shield
+  { move = 0xBDAE2862, level = 51 },                        # Hellfire
+  { move = 0x1162A8AF, level = 72 },                        # Bewilder Blast
+]
 
   [[edit.cards]]
   id = 0x3AD64064                                         # MF/DF · mountain
@@ -71,6 +113,12 @@ target = "c03034270"                                   # Glasya
 
 [[edit]]
 target = "c03034280"                                   # Jezebeth
+moves = [
+  { move = 0x78218C02, level = 1 },                         # Duskfall
+  { move = 0x71831119, level = 26 },                        # Foul Offence 2
+  { move = 0x3B8D915B, level = 57 },                        # Meteor Shower
+  { move = 0x2C3D95DD, level = 72 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0xBD4E5CAB                                         # MF/DF · fire
@@ -80,6 +128,12 @@ target = "c03034280"                                   # Jezebeth
 
 [[edit]]
 target = "c03034290"                                   # Arachne
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0x2C3D95DD, level = 1 },                         # Sleeping Dust
+  { move = 0x06D2AC29, level = 59 },                        # Diabolical Cut
+  { move = 0xEAB3792D, level = 72 },                        # Grand Fire
+]
 
   [[edit.cards]]
   id = 0xA4556DEA                                         # MF/DF · fire
@@ -89,6 +143,12 @@ target = "c03034290"                                   # Arachne
 
 [[edit]]
 target = "c03034300"                                   # Thanatos
+moves = [
+  { move = 0xBD2BB49C, level = 1 },                         # Dark Matter
+  { move = 0x34E4CEAB, level = 37 },                        # Barbarian Shield
+  { move = 0x09BBF3D9, level = 43 },                        # Dark Whirlwind
+  { move = 0x22EF6FDB, level = 60 },                        # Dark Phoenix
+]
 
   [[edit.cards]]
   id = 0x7455BC94                                         # FW/MF · forest
@@ -98,6 +158,12 @@ target = "c03034300"                                   # Thanatos
 
 [[edit]]
 target = "c03034310"                                   # Destra
+moves = [
+  { move = 0xBD2BB49C, level = 1 },                         # Dark Matter
+  { move = 0x6633159F, level = 32 },                        # Gravitation
+  { move = 0x9606E75F, level = 60 },                        # Shadow Ray
+  { move = 0xBDAE2862, level = 75 },                        # Hellfire
+]
 
   [[edit.cards]]
   id = 0x6D4E8DD5                                         # FW/MF · mountain

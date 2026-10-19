@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06033010"                                   # Strem Goozer
+moves = [
+  { move = 0x2FD9C02F, level = 8 },                         # Bastion Block
+  { move = 0x41F3CDC2, level = 30 },                        # Scorching Tackle
+  { move = 0xDBA0E5E3, level = 43 },                        # Gigant Wall
+  { move = 0x53E9C2A3, level = 56 },                        # Capable Hands
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x370BEBC6, level = 1 },                         # Tótem Magnatas [aura]
+]
 
   [[edit.cards]]
   id = 0xA0E72492                                         # GK/MF · fire
@@ -15,6 +26,17 @@ target = "c06033010"                                   # Strem Goozer
 
 [[edit]]
 target = "c06033020"                                   # Fow Tudas
+moves = [
+  { move = 0x91CEE43D, level = 10 },                        # Phalanx
+  { move = 0x650FA58E, level = 29 },                        # Spin Out
+  { move = 0x93885A64, level = 41 },                        # Fire Drill
+  { move = 0xB37CD264, level = 52 },                        # Am-Bush
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x951E6853, level = 1 },                         # Tótem Univolt [aura]
+]
 
   [[edit.cards]]
   id = 0x8BCA7751                                         # DF/MF · wind
@@ -24,6 +46,17 @@ target = "c06033020"                                   # Fow Tudas
 
 [[edit]]
 target = "c06033030"                                   # Cherio Pardon
+moves = [
+  { move = 0x91CEE43D, level = 13 },                        # Phalanx
+  { move = 0xCABBA212, level = 27 },                        # Menacing Glare
+  { move = 0xB37CD264, level = 40 },                        # Am-Bush
+  { move = 0x06D2AC29, level = 55 },                        # Diabolical Cut
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x8E020DE8, level = 1 },                         # Tótem Flami [aura]
+]
 
   [[edit.cards]]
   id = 0x92D14610                                         # DF/MF · forest
@@ -33,6 +66,17 @@ target = "c06033030"                                   # Cherio Pardon
 
 [[edit]]
 target = "c06033040"                                   # Bambaros Tower
+moves = [
+  { move = 0x91CEE43D, level = 12 },                        # Phalanx
+  { move = 0x414BA9BD, level = 30 },                        # Pincer Pinch
+  { move = 0x72BFA108, level = 45 },                        # Wall of Atlantis
+  { move = 0x52CEB5F6, level = 54 },                        # Iron Wall
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x8E020DE8, level = 1 },                         # Tótem Flami [aura]
+]
 
   [[edit.cards]]
   id = 0xDD90D0D7                                         # DF/MF · mountain
@@ -43,6 +87,17 @@ target = "c06033040"                                   # Bambaros Tower
 
 [[edit]]
 target = "c06033050"                                   # Zartan Walder
+moves = [
+  { move = 0x91CEE43D, level = 11 },                        # Phalanx
+  { move = 0x457EB170, level = 26 },                        # Pyrokinetic
+  { move = 0xD0A1DBC3, level = 44 },                        # Bungee Ball Burst
+  { move = 0xA3F886BF, level = 56 },                        # Rock Hammer
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x8E020DE8, level = 1 },                         # Tótem Flami [aura]
+]
 
   [[edit.cards]]
   id = 0xC48BE196                                         # DF/MF · fire
@@ -53,6 +108,17 @@ target = "c06033050"                                   # Zartan Walder
 
 [[edit]]
 target = "c06033060"                                   # Zyne Hanging
+moves = [
+  { move = 0x91CEE43D, level = 13 },                        # Phalanx
+  { move = 0xB7F1AED6, level = 30 },                        # Double Cyclone
+  { move = 0xD9BB22A7, level = 40 },                        # Air Ride
+  { move = 0xC79443BB, level = 51 },                        # Waterfall
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x951E6853, level = 1 },                         # Tótem Univolt [aura]
+]
 
   [[edit.cards]]
   id = 0xEFA6B255                                         # DF/MF · wind
@@ -63,6 +129,17 @@ target = "c06033060"                                   # Zyne Hanging
 
 [[edit]]
 target = "c06033070"                                   # Madison Barada
+moves = [
+  { move = 0x91CEE43D, level = 14 },                        # Phalanx
+  { move = 0x17110E3B, level = 29 },                        # Jumbo Sandwich
+  { move = 0xAC91D94F, level = 43 },                        # Major Miner
+  { move = 0xBA662B00, level = 53 },                        # Pterrordactyl Swoop
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x951E6853, level = 1 },                         # Tótem Univolt [aura]
+]
 
   [[edit.cards]]
   id = 0xF6BD8314                                         # DF/MF · mountain
@@ -73,6 +150,17 @@ target = "c06033070"                                   # Madison Barada
 
 [[edit]]
 target = "c06033080"                                   # Bindal Hermit
+moves = [
+  { move = 0x7D536206, level = 14 },                        # Atlas Sword
+  { move = 0x2354CA2D, level = 27 },                        # Wind God's Dance
+  { move = 0xF7E49F60, level = 38 },                        # Magnetism
+  { move = 0xC9BAEA82, level = 54 },                        # Eye of the Storm
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x510C5BED, level = 1 },                         # Tótem Goliger [aura]
+]
 
   [[edit.cards]]
   id = 0x71259FDB                                         # MF/DF · fire
@@ -83,6 +171,17 @@ target = "c06033080"                                   # Bindal Hermit
 
 [[edit]]
 target = "c06033090"                                   # Astro Justin
+moves = [
+  { move = 0x7D536206, level = 15 },                        # Atlas Sword
+  { move = 0xF88DC090, level = 30 },                        # Z Slash
+  { move = 0xCB79C825, level = 45 },                        # In-Line Stampede
+  { move = 0x0D368F6B, level = 55 },                        # Heaven's Time
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x510C5BED, level = 1 },                         # Tótem Goliger [aura]
+]
 
   [[edit.cards]]
   id = 0x683EAE9A                                         # MF/DF · mountain
@@ -93,6 +192,17 @@ target = "c06033090"                                   # Astro Justin
 
 [[edit]]
 target = "c06033100"                                   # Circulus Corona
+moves = [
+  { move = 0xCD391C9D, level = 12 },                        # Loyal Heart Shot
+  { move = 0x7D536206, level = 25 },                        # Atlas Sword
+  { move = 0xDAC3A5F6, level = 47 },                        # Big Bang
+  { move = 0xFF0F7E1F, level = 75 },                        # Galactic GigaFall
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xBE333B90, level = 1 },                         # Tótem grifo [aura]
+]
 
   [[edit.cards]]
   id = 0xB83E7FE4                                         # FW/MF · fire
@@ -102,6 +212,17 @@ target = "c06033100"                                   # Circulus Corona
 
 [[edit]]
 target = "c06033110"                                   # Joss Fool
+moves = [
+  { move = 0x7D536206, level = 13 },                        # Atlas Sword
+  { move = 0xC16279D1, level = 26 },                        # Field of Force
+  { move = 0x90CD25B4, level = 42 },                        # Supernatural Strike
+  { move = 0xEC78BBC6, level = 56 },                        # Black Ash
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x510C5BED, level = 1 },                         # Tótem Goliger [aura]
+]
 
   [[edit.cards]]
   id = 0xA1254EA5                                         # MF/FW · forest

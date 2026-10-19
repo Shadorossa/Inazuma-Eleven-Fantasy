@@ -1,0 +1,10 @@
+# Home Stadium: the team dock list («Plantilla de equipo», soccer_team_dock_menu) has 8 row instances
+# (team01_02_list_item) and the retail list fills them. Without BetterUI (which takes two rows out of the list) the row
+# «Estadio local» is a 9th row: one more instance. With BetterUI the 8 instances are enough and nothing changes.
+schema = "VRFW.menu/2"
+if_not_mod = "clean_hud"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+layer = "team01_02_list_item"
+count = 9

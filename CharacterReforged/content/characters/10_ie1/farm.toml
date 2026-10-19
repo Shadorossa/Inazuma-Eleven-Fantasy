@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01001410"                                   # Albert Green
+moves = [
+  { move = 0xBFCC20E7, level = 1 },                         # Wood Chopper
+  { move = 0x5C38F92C, level = 1 },                         # Mistral
+  { move = 0xBD8A9EBE, level = 1 },                         # Infinite Wall
+  { move = 0x55C71D2A, level = 68 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0x8FE0009B                                         # GK/MF · fire
@@ -16,6 +22,12 @@ target = "c01001410"                                   # Albert Green
 
 [[edit]]
 target = "c01001420"                                   # Seward Hayseed
+moves = [
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0xA8E0F6C2, level = 37 },                        # Kung Fu Header
+  { move = 0x259F08C6, level = 44 },                        # Whirlwind Twister
+  { move = 0x0455B9CE, level = 73 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0xA4CD5358                                         # DF/FW · mountain
@@ -25,6 +37,12 @@ target = "c01001420"                                   # Seward Hayseed
 
 [[edit]]
 target = "c01001430"                                   # Kent Work
+moves = [
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x2AF65736, level = 1 },                         # Bamboo Pattern
+  { move = 0x3C843987, level = 40 },                        # Flurry Dash
+  { move = 0xA8E0F6C2, level = 80 },                        # Kung Fu Header
+]
 
   [[edit.cards]]
   id = 0xBDD66219                                         # DF/MF · forest
@@ -34,6 +52,12 @@ target = "c01001430"                                   # Kent Work
 
 [[edit]]
 target = "c01001440"                                   # Mark Hillvalley
+moves = [
+  { move = 0xAD6E4BF9, level = 1 },                         # Harvest
+  { move = 0x58E8FC83, level = 39 },                        # Rolling Hell
+  { move = 0x65B7C1F1, level = 58 },                        # Sumo Stomp
+  { move = 0xBD8A9EBE, level = 99 },                        # Infinite Wall
+]
 
   [[edit.cards]]
   id = 0xF297F4DE                                         # DF/GK · mountain
@@ -44,6 +68,12 @@ target = "c01001440"                                   # Mark Hillvalley
 
 [[edit]]
 target = "c01001450"                                   # Herb Sherman
+moves = [
+  { move = 0xAD6E4BF9, level = 1 },                         # Harvest
+  { move = 0x35E70F22, level = 37 },                        # Grenade Shot
+  { move = 0x55C71D2A, level = 49 },                        # About Face
+  { move = 0xBD8A9EBE, level = 99 },                        # Infinite Wall
+]
 
   [[edit.cards]]
   id = 0xEB8CC59F                                         # DF/FW · fire
@@ -53,6 +83,12 @@ target = "c01001450"                                   # Herb Sherman
 
 [[edit]]
 target = "c01001460"                                   # Joe Small
+moves = [
+  { move = 0xC7A9BB3A, level = 1 },                         # Whirlwind Cut
+  { move = 0xAD6E4BF9, level = 1 },                         # Harvest
+  { move = 0x4E9A9232, level = 39 },                        # Spinning Cut
+  { move = 0x4523C86D, level = 78 },                        # Killer Blade
+]
 
   [[edit.cards]]
   id = 0xC0A1965C                                         # MF/DF · mountain
@@ -62,6 +98,12 @@ target = "c01001460"                                   # Joe Small
 
 [[edit]]
 target = "c01001470"                                   # Ike Steiner
+moves = [
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x4E9A9232, level = 48 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0xD9BAA71D                                         # MF/DF · forest
@@ -71,6 +113,12 @@ target = "c01001470"                                   # Ike Steiner
 
 [[edit]]
 target = "c01001480"                                   # Orville Newman
+moves = [
+  { move = 0xA8E0F6C2, level = 1 },                         # Kung Fu Header
+  { move = 0xC7A9BB3A, level = 1 },                         # Whirlwind Cut
+  { move = 0xC2BBD4A2, level = 48 },                        # Wild Claw
+  { move = 0xA6D711A6, level = 89 },                        # Full Power Shield
+]
 
   [[edit.cards]]
   id = 0x5E22BBD2                                         # MF/FW · fire
@@ -80,6 +128,12 @@ target = "c01001480"                                   # Orville Newman
 
 [[edit]]
 target = "c01001490"                                   # Tom Walters
+moves = [
+  { move = 0x0455B9CE, level = 1 },                         # Run Ball Run
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0x4031A7F5, level = 50 },                        # Mole Fake
+  { move = 0x78E027BC, level = 75 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x47398A93                                         # MF/FW · mountain
@@ -89,6 +143,12 @@ target = "c01001490"                                   # Tom Walters
 
 [[edit]]
 target = "c01001500"                                   # Daniel Dawson
+moves = [
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0x0455B9CE, level = 1 },                         # Run Ball Run
+  { move = 0x4F58F805, level = 42 },                        # Coil Turn
+  { move = 0x7EEA4EE9, level = 71 },                        # Blade Attack
+]
 
   [[edit.cards]]
   id = 0x97395BED                                         # MF/FW · wind
@@ -98,6 +158,12 @@ target = "c01001500"                                   # Daniel Dawson
 
 [[edit]]
 target = "c01001510"                                   # Stuart Racoonfur
+moves = [
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0xC7A9BB3A, level = 1 },                         # Whirlwind Cut
+  { move = 0x3C843987, level = 42 },                        # Flurry Dash
+  { move = 0x55C71D2A, level = 53 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0x8E226AAC                                         # FW/MF · forest
@@ -107,6 +173,12 @@ target = "c01001510"                                   # Stuart Racoonfur
 
 [[edit]]
 target = "c01001520"                                   # Lorne Mower
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x166B0073, level = 40 },                        # Super Armadillo
+  { move = 0xA8E0F6C2, level = 78 },                        # Kung Fu Header
+]
 
   [[edit.cards]]
   id = 0xA50F396F                                         # GK/FW · mountain
@@ -116,6 +188,12 @@ target = "c01001520"                                   # Lorne Mower
 
 [[edit]]
 target = "c01001530"                                   # Homer Grower
+moves = [
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0x4E9A9232, level = 40 },                        # Spinning Cut
+  { move = 0x55C71D2A, level = 62 },                        # About Face
+  { move = 0xC7A9BB3A, level = 90 },                        # Whirlwind Cut
+]
 
   [[edit.cards]]
   id = 0xBC14082E                                         # DF/MF · mountain
@@ -125,6 +203,12 @@ target = "c01001530"                                   # Homer Grower
 
 [[edit]]
 target = "c01001540"                                   # Rolf Howells
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x55C71D2A, level = 42 },                        # About Face
+  { move = 0xDEB28A7B, level = 67 },                        # Monkey Turn
+  { move = 0x2B343D01, level = 85 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0xF3559EE9                                         # DF/MF · wind
@@ -134,6 +218,12 @@ target = "c01001540"                                   # Rolf Howells
 
 [[edit]]
 target = "c01001550"                                   # Luke Lively
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x7CACF0B0, level = 33 },                        # Horn Train
+  { move = 0x3D4653B0, level = 48 },                        # Poison Fog
+  { move = 0xAD6E4BF9, level = 76 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xEA4EAFA8                                         # DF/FW · forest
@@ -144,6 +234,12 @@ target = "c01001550"                                   # Luke Lively
 
 [[edit]]
 target = "c01001560"                                   # Ben Nevis
+moves = [
+  { move = 0x4B142F09, level = 1 },                         # Teleport Shot
+  { move = 0x01DB04F5, level = 39 },                        # Defence Scan
+  { move = 0x53CD747F, level = 48 },                        # Tarzan Kick
+  { move = 0xC7A9BB3A, level = 56 },                        # Whirlwind Cut
+]
 
   [[edit.cards]]
   id = 0xC163FC6B                                         # DF/FW · wind
@@ -153,6 +249,12 @@ target = "c01001560"                                   # Ben Nevis
 
 [[edit]]
 target = "c11801110"                                   # Turtle Newfield
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x46FA651E, level = 13 },                        # Water Veil
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xB7F1AED6, level = 30 },                        # Double Cyclone
+]
 
   [[edit.cards]]
   id = 0xA9D24083                                         # MF/DF · wind

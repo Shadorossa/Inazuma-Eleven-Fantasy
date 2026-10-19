@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04015200"                                   # Damien Blackloch
+moves = [
+  { move = 0xAF28F5A0, level = 28 },                        # The Tower
+  { move = 0x19C3F43D, level = 38 },                        # Eternal Blizzard
+  { move = 0x0E0A3F7A, level = 51 },                        # Spatial Portal
+  { move = 0x1755397B, level = 82 },                        # Dark Energy Star
+]
 
   [[edit.cards]]
   id = 0x724CDC28                                         # FW/DF · wind

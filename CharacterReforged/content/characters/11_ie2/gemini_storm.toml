@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02021010"                                   # Galileo
+moves = [
+  { move = 0x8B31808E, level = 1 },                         # Wormhole
+  { move = 0x46A71C03, level = 1 },                         # Black Hole
+  { move = 0x00196EC2, level = 34 },                        # Earthquake
+  { move = 0x8E7E960B, level = 62 },                        # Drill Smasher
+]
 
   [[edit.cards]]
   id = 0xC3C1E1BA                                         # GK/DF · forest
@@ -15,6 +21,12 @@ target = "c02021010"                                   # Galileo
 
 [[edit]]
 target = "c02021020"                                   # Coral
+moves = [
+  { move = 0x514A6198, level = 1 },                         # Asteroid Belt
+  { move = 0x261BDCA8, level = 23 },                        # Moonsault
+  { move = 0xB633C4E1, level = 34 },                        # Photon Crash
+  { move = 0xB907E20C, level = 69 },                        # Procyon Net
+]
 
   [[edit.cards]]
   id = 0xE8ECB279                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c02021020"                                   # Coral
 
 [[edit]]
 target = "c02021030"                                   # Gigs
+moves = [
+  { move = 0x8AF3EAB9, level = 1 },                         # Hammer of Fury
+  { move = 0x6633159F, level = 20 },                        # Gravitation
+  { move = 0x3069B219, level = 38 },                        # Super Sumo Stomp
+  { move = 0x10A0C298, level = 46 },                        # Warp Drive
+]
 
   [[edit.cards]]
   id = 0xF1F78338                                         # DF/MF · fire
@@ -33,6 +51,12 @@ target = "c02021030"                                   # Gigs
 
 [[edit]]
 target = "c02021040"                                   # Ganymede
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x520F1E48, level = 22 },                        # Psycho Shot
+  { move = 0x28B0E96F, level = 38 },                        # Heavy Mettle
+  { move = 0x7FE98F60, level = 44 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0xBEB615FF                                         # DF/FW · mountain
@@ -42,6 +66,12 @@ target = "c02021040"                                   # Ganymede
 
 [[edit]]
 target = "c02021050"                                   # Charon
+moves = [
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x2B343D01, level = 26 },                        # Cyclone
+  { move = 0x7C6D5B0E, level = 32 },                        # Astro Break
+  { move = 0x514A6198, level = 49 },                        # Asteroid Belt
+]
 
   [[edit.cards]]
   id = 0xA7AD24BE                                         # DF/FW · fire
@@ -51,6 +81,12 @@ target = "c02021050"                                   # Charon
 
 [[edit]]
 target = "c02021060"                                   # Pandora
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x8B31808E, level = 38 },                        # Wormhole
+  { move = 0xA01CD34D, level = 72 },                        # Temporal Wall
+]
 
   [[edit.cards]]
   id = 0x8C80777D                                         # MF/GK · wind
@@ -60,6 +96,12 @@ target = "c02021060"                                   # Pandora
 
 [[edit]]
 target = "c02021070"                                   # Grengo
+moves = [
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x695A4A6F, level = 19 },                        # Magic
+  { move = 0x33ED6677, level = 28 },                        # Doppelganger
+  { move = 0x035C1112, level = 60 },                        # Gungnir
+]
 
   [[edit.cards]]
   id = 0x959B463C                                         # MF/DF · mountain
@@ -69,6 +111,12 @@ target = "c02021070"                                   # Grengo
 
 [[edit]]
 target = "c02021080"                                   # Io
+moves = [
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x6633159F, level = 10 },                        # Gravitation
+  { move = 0x34256515, level = 19 },                        # Dynamite Shot
+  { move = 0x65766A4F, level = 56 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x12035AF3                                         # MF/FW · fire
@@ -78,6 +126,12 @@ target = "c02021080"                                   # Io
 
 [[edit]]
 target = "c02021090"                                   # Rihm
+moves = [
+  { move = 0x1B854A64, level = 1 },                         # Cosmic Blast
+  { move = 0xAB6422AC, level = 19 },                        # Phantom Shot
+  { move = 0x10A0C298, level = 37 },                        # Warp Drive
+  { move = 0x4683AADF, level = 75 },                        # Space Penguin
+]
 
   [[edit.cards]]
   id = 0x0B186BB2                                         # FW/MF · forest
@@ -92,14 +146,20 @@ rank = 3
 growth = "normal"
 stats = { kick = 277, control = 254, technique = 289, pressure = 198, physical = 185, intelligence = 262, agility = 169, freedom = 279 }
 moves = [
-  { move = 0x7C6D5B0E, level = 1 },                       # Astro Break
-  { move = 0x10A0C298, level = 1 },                       # Warp Drive
-  { move = 0x7FE98F60, level = 32 },                      # Ganymede Ray
-  { move = 0x1B854A64, level = 70 },                      # Cosmic Blast
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
+  { move = 0x029E7B25, level = 53 },                        # Gaia Break
 ]
 
 [[edit]]
 target = "c02021110"                                   # Diam
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x10A0C298, level = 15 },                        # Warp Drive
+  { move = 0x514A6198, level = 27 },                        # Asteroid Belt
+  { move = 0x1B854A64, level = 39 },                        # Cosmic Blast
+]
 
   [[edit.cards]]
   id = 0xC2038B8D                                         # FW/MF · forest

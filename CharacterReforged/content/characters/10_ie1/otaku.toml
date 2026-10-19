@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01001010"                                   # Sam Idol
+moves = [
+  { move = 0xDA628FD4, level = 1 },                         # Sliding Goal
+  { move = 0x44E1A25A, level = 29 },                        # Pressure Punch
+  { move = 0x8DFA4265, level = 46 },                        # Toughness Block
+  { move = 0xBE0E4AD0, level = 99 },                        # Fireball Knuckle
+]
 
   [[edit.cards]]
   id = 0x88E9A847                                         # GK/MF · mountain
@@ -15,6 +21,12 @@ target = "c01001010"                                   # Sam Idol
 
 [[edit]]
 target = "c01001020"                                   # Marcus Train
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x520F1E48, level = 26 },                        # Psycho Shot
+  { move = 0xC66BD10D, level = 52 },                        # Zigzag Spark
+  { move = 0x3663DB4C, level = 78 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0xA3C4FB84                                         # DF/MF · fire
@@ -24,6 +36,12 @@ target = "c01001020"                                   # Marcus Train
 
 [[edit]]
 target = "c01001030"                                   # Light Nobel
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x3663DB4C, level = 25 },                        # Utter Gutsiness Bat
+  { move = 0x73C5AF40, level = 46 },                        # Dash Accelerator
+  { move = 0x6B1CF436, level = 72 },                        # Bewildered
+]
 
   [[edit.cards]]
   id = 0xBADFCAC5                                         # MF/DF · forest
@@ -34,6 +52,12 @@ target = "c01001030"                                   # Light Nobel
 
 [[edit]]
 target = "c01001040"                                   # Walter Valiant
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x1F0836D6, level = 21 },                        # Comet Shot
+  { move = 0x34256515, level = 28 },                        # Dynamite Shot
+]
 
   [[edit.cards]]
   id = 0xF59E5C02                                         # MF/FW · fire
@@ -43,6 +67,12 @@ target = "c01001040"                                   # Walter Valiant
 
 [[edit]]
 target = "c01001050"                                   # Spencer Gates
+moves = [
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x00196EC2, level = 30 },                        # Earthquake
+  { move = 0xDA628FD4, level = 80 },                        # Sliding Goal
+]
 
   [[edit.cards]]
   id = 0xEC856D43                                         # DF/MF · mountain
@@ -52,6 +82,12 @@ target = "c01001050"                                   # Spencer Gates
 
 [[edit]]
 target = "c01001060"                                   # Josh Spear
+moves = [
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x18C035B4, level = 27 },                        # Ghost Pull
+  { move = 0x01DB04F5, level = 90 },                        # Defence Scan
+  { move = 0xAA67E325, level = 95 },                        # Desert Blast
+]
 
   [[edit.cards]]
   id = 0xC7A83E80                                         # FW/MF · forest
@@ -62,6 +98,12 @@ target = "c01001060"                                   # Josh Spear
 
 [[edit]]
 target = "c01001070"                                   # Gaby Farmer
+moves = [
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x2B343D01, level = 30 },                        # Cyclone
+  { move = 0x79224D8B, level = 58 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0xDEB30FC1                                         # FW/MF · wind
@@ -72,6 +114,12 @@ target = "c01001070"                                   # Gaby Farmer
 
 [[edit]]
 target = "c01001080"                                   # A. Woodbridge
+moves = [
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x3663DB4C, level = 26 },                        # Utter Gutsiness Bat
+  { move = 0x4F58F805, level = 38 },                        # Coil Turn
+  { move = 0x1ECA5CE1, level = 73 },                        # Wrath Shot
+]
 
   [[edit.cards]]
   id = 0x592B130E                                         # MF/FW · wind
@@ -81,6 +129,12 @@ target = "c01001080"                                   # A. Woodbridge
 
 [[edit]]
 target = "c01001090"                                   # Gus Gamer
+moves = [
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+  { move = 0xACAC21CE, level = 39 },                        # Fake Ball
+  { move = 0x78E027BC, level = 85 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x4030224F                                         # FW/MF · fire
@@ -91,6 +145,12 @@ target = "c01001090"                                   # Gus Gamer
 
 [[edit]]
 target = "c01001100"                                   # Mark Gambling
+moves = [
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x33ED6677, level = 41 },                        # Doppelganger
+  { move = 0x7EEA4EE9, level = 68 },                        # Blade Attack
+]
 
   [[edit.cards]]
   id = 0x9030F331                                         # FW/MF · wind
@@ -100,6 +160,12 @@ target = "c01001100"                                   # Mark Gambling
 
 [[edit]]
 target = "c01001110"                                   # Theodore Master
+moves = [
+  { move = 0x1F0836D6, level = 1 },                         # Comet Shot
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x60397CCA, level = 26 },                        # Cross Drive
+  { move = 0x3663DB4C, level = 79 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0x892BC270                                         # FW/MF · forest
@@ -109,6 +175,12 @@ target = "c01001110"                                   # Theodore Master
 
 [[edit]]
 target = "c01001120"                                   # Ham Signalman
+moves = [
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0x4F58F805, level = 22 },                        # Coil Turn
+  { move = 0x4E9A9232, level = 34 },                        # Spinning Cut
+  { move = 0xB3BD79DA, level = 48 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0xA20691B3                                         # MF/DF · wind
@@ -118,6 +190,12 @@ target = "c01001120"                                   # Ham Signalman
 
 [[edit]]
 target = "c01001130"                                   # Bill Formby
+moves = [
+  { move = 0x33ED6677, level = 1 },                         # Doppelganger
+  { move = 0x8DFA4265, level = 26 },                        # Toughness Block
+  { move = 0x322F0C40, level = 55 },                        # Spider Web
+  { move = 0xE9968761, level = 76 },                        # Rocket Kobushi
+]
 
   [[edit.cards]]
   id = 0xBB1DA0F2                                         # DF/FW · mountain
@@ -127,6 +205,12 @@ target = "c01001130"                                   # Bill Formby
 
 [[edit]]
 target = "c01001140"                                   # Grant Eldorado
+moves = [
+  { move = 0x5049A011, level = 1 },                         # Spinning Shot
+  { move = 0x2CFC3E63, level = 28 },                        # Dragon Crash
+  { move = 0x7CACF0B0, level = 37 },                        # Horn Train
+  { move = 0x142DBE2A, level = 52 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0xF45C3635                                         # GK/FW · fire
@@ -137,6 +221,12 @@ target = "c01001140"                                   # Grant Eldorado
 
 [[edit]]
 target = "c01001150"                                   # Mike Vox
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x3C843987, level = 26 },                        # Flurry Dash
+  { move = 0x01DB04F5, level = 47 },                        # Defence Scan
+  { move = 0x2B343D01, level = 79 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0xED470774                                         # DF/MF · wind
@@ -146,6 +236,12 @@ target = "c01001150"                                   # Mike Vox
 
 [[edit]]
 target = "c01001160"                                   # Ollie Webb
+moves = [
+  { move = 0x01DB04F5, level = 25 },                        # Defence Scan
+  { move = 0x0F703132, level = 35 },                        # Black Magic
+  { move = 0x41F3CDC2, level = 42 },                        # Scorching Tackle
+  { move = 0x60397CCA, level = 71 },                        # Cross Drive
+]
 
   [[edit.cards]]
   id = 0xC66A54B7                                         # DF/MF · forest
@@ -155,6 +251,12 @@ target = "c01001160"                                   # Ollie Webb
 
 [[edit]]
 target = "c11801080"                                   # Manny Artic
+moves = [
+  { move = 0x60F8D774, level = 1 },                         # Gravestone
+  { move = 0x73C5AF40, level = 13 },                        # Dash Accelerator
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x485150D9, level = 30 },                        # Body Shield
+]
 
   [[edit.cards]]
   id = 0x79D291FD                                         # MF/DF · mountain
@@ -164,6 +266,12 @@ target = "c11801080"                                   # Manny Artic
 
 [[edit]]
 target = "c11801090"                                   # Meina Maiden
+moves = [
+  { move = 0x72BFA108, level = 1 },                         # Wall of Atlantis
+  { move = 0xAEEA9F97, level = 13 },                        # Sigma Zone
+  { move = 0xADAFE047, level = 20 },                        # Dual Strike
+  { move = 0x2C3D95DD, level = 30 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0x60C9A0BC                                         # DF/FW · forest

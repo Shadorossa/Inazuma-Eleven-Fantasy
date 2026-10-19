@@ -1,0 +1,19 @@
+schema = "VRFW.menu_scene/1"
+
+# INAROGUE's shot in BetterMenu's clubhouse (the 3D main menu): while INAROGUE's title button is focused, the camera
+# looks at the ground floor's door right of the staircase's foot (the right wing's door, about (5.6, 1.2, -6.9)), the
+# stairs at the left, the post at the right third. The shot joins BetterMenu's scene (of_mod); without BetterMenu it
+# is left out and nothing changes. VR-Framework docs/framework/menu-scene.md §2.2 (of_mod).
+[[VRFW.MenuSceneShot]]
+scene = "clubhouse"
+of_mod = "better_menu"
+name = "inarogue_door"
+order = 8
+eye_x = 1.4
+eye_y = 1.6
+eye_z = -5.2
+target_x = 6.4
+target_y = 1.2
+target_z = -6.6
+fov = 40
+tiles = ["evt_title_menu_custom_item"]    # INAROGUE's title item (content\menus\title_row.toml)

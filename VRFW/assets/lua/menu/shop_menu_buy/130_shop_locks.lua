@@ -32,6 +32,10 @@ if VRFW_Host ~= nil then
     LAYER_VISIBLE = 1262717583, -- CMND_IS_LAYER_VISIBLE
     SET_LAYER_VISIBLE = 711242136,
     SET_OBJECT_VISIBLE = 2171393651,
+    NODE_VISIBLE = 2158717427,  -- (layer, node, visible, instance): a joint, whatever the engine does to its mesh
+    GET_TRANS = 2491463760,     -- (layer, instance, node) -> x, y, z
+    SET_TRANS = 1856671416,     -- (layer, instance, node, x, y, z)
+    NODE_SIZE = 2885415772,     -- (layer, instance, node, width, height)
     GUIDE_SET = 2209673388,
     GUIDE_KEYS = 452337289,
     MESSAGE = 2289627655,
@@ -51,6 +55,10 @@ if VRFW_Host ~= nil then
   local ICON_MESH = 303536660   -- _icon_item_dmy01
   local CHARA_MESH = 3879052096 -- _list_chr_dmy01: character / aura icon
   local CHARA_NODE = 994901711  -- list_chr_dmy01
+  -- the two icon boxes of shop01_02 (layout units): the item icon 80 x 80 inside the card, the character icon 128 x 128
+  -- (it rises over the card's edges by design). A padlock on the character mesh is drawn in the item icon's box.
+  local ICON_SIZE = 80
+  local CHARA_SIZE = 128
   local SPIRIT_LAYER = 1048618417 -- cmn01_07_sprit_icon
   -- meshes of a row that tell what it sells: hidden on locked rows
   local HIDE_MESHES = {
@@ -273,6 +281,13 @@ if VRFW_Host ~= nil then
     for _, m in ipairs(HIDE_MESHES) do rec.mesh[m] = mesh_visible(layer, m, inst) end
     rec.icon = mesh_visible(layer, ICON_MESH, inst)
     rec.chr = mesh_visible(layer, CHARA_MESH, inst)
+    local old = SL.saved[inst]
+    if old ~= nil and old.boxed then
+      rec.chara_at, rec.boxed = old.chara_at, true   -- the joint is still in the padlock's box: its own place is the old one
+    else
+      local okc, cx, cy, cz = menu(CMD.GET_TRANS, layer, inst, CHARA_MESH)
+      if okc and type(cx) == "number" and type(cy) == "number" then rec.chara_at = { cx, cy, cz or 0 } end
+    end
     if spirit_open(inst) then
       local ok, vis = menu(CMD.LAYER_VISIBLE, SPIRIT_LAYER, inst)
       rec.spirit = ok and vis == true
@@ -281,7 +296,10 @@ if VRFW_Host ~= nil then
   end
 
   -- a locked row: only the padlock. The engine redraws the row icon's sprite on its own, so the padlock goes on the mesh the
-  -- engine does not use for this row (item rows: the character mesh; character / aura rows: the item icon mesh).
+  -- engine does not use for this row (item rows: the character mesh; character / aura rows: the item icon mesh). The
+  -- engine's mesh is hidden at its JOINT (the engine shows the mesh again when its icon texture arrives, a frame after
+  -- the fill: the real icon flashed under the padlock); a padlock on the character mesh is moved and sized into the item
+  -- icon's box (the character box overflows the card).
   local function apply_row(layer, inst)
     for _, m in ipairs(HIDE_MESHES) do menu(CMD.SET_MESH_VISIBLE, layer, m, false, inst) end
     if spirit_open(inst) then menu(CMD.SET_LAYER_VISIBLE, SPIRIT_LAYER, inst, false) end
@@ -291,6 +309,16 @@ if VRFW_Host ~= nil then
       lock_mesh, lock_node, engine_mesh = ICON_MESH, ICON_NODE, CHARA_MESH
     end
     menu(CMD.SET_MESH_VISIBLE, layer, engine_mesh, false, inst)
+    menu(CMD.NODE_VISIBLE, layer, engine_mesh, false, inst)
+    menu(CMD.NODE_VISIBLE, layer, lock_mesh, true, inst)
+    if lock_mesh == CHARA_MESH and (rec == nil or not rec.boxed) then
+      local ok, x, y, z = menu(CMD.GET_TRANS, layer, inst, ICON_MESH)
+      if ok and type(x) == "number" and type(y) == "number" then
+        menu(CMD.SET_TRANS, layer, inst, CHARA_MESH, x, y, z or 0)
+        menu(CMD.NODE_SIZE, layer, inst, CHARA_MESH, ICON_SIZE, ICON_SIZE)
+        if rec ~= nil then rec.boxed = true end
+      end
+    end
     if texture_ready() then
       menu(CMD.SET_SPRITE, layer, TEX, LOCK_ALT, lock_node, 0, inst)
       menu(CMD.SET_SPRITE, layer, TEX, LOCK, lock_node, 0, inst)
@@ -305,6 +333,12 @@ if VRFW_Host ~= nil then
     SL.rows[inst] = nil
     local rec = SL.saved[inst]
     SL.saved[inst] = nil
+    menu(CMD.NODE_VISIBLE, layer, ICON_MESH, true, inst)
+    menu(CMD.NODE_VISIBLE, layer, CHARA_MESH, true, inst)
+    if rec ~= nil and rec.boxed and rec.chara_at ~= nil then
+      menu(CMD.SET_TRANS, layer, inst, CHARA_MESH, rec.chara_at[1], rec.chara_at[2], rec.chara_at[3])
+      menu(CMD.NODE_SIZE, layer, inst, CHARA_MESH, CHARA_SIZE, CHARA_SIZE)
+    end
     if rec == nil then
       menu(CMD.SET_MESH_VISIBLE, layer, ICON_MESH, true, inst)
       menu(CMD.SET_MESH_VISIBLE, layer, CHARA_MESH, false, inst)

@@ -2,13 +2,13 @@ id = "true_hissatsu"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "True Hissatsu"
-version = "1.0.10"
+version = "1.1.1"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); the Special Move Upgrade Book (+1 level, also in the general shop) is an item of its own. A player can no longer carry the same special move twice, whatever board you use. Works with the VR-Framework alone."
+description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); the Special Move Upgrade Book (+1 level, also in the general shop) is an item of its own. A player can no longer carry the same special move twice, whatever board you use. From G5 on, some moves play the cut-in of their evolution. Works with the VR-Framework alone."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-15"
+updated = "2026-10-19"
 # This mod's own names (TOML keys [TrueHissatsu.X], Lua TrueHissatsu.X, commands CMND_TRUEHISSATSU_*, text ids
 # TrueHissatsu.*); never VRFW.
 prefix = "TrueHissatsu"
@@ -17,6 +17,9 @@ folder = "TrueHissatsu"
 # technique ranks by use (module skill_rank), the grade-up banner (graft sr_popup), the move-rank items and the
 # one-copy-per-set rule. Standard mod layout (docs/framework/mod-layout.md):
 #   config.toml                       [ranks] the use curve and the rules, [duplicates] the one-copy rule
+#   content\true_hissatsu\grade_animations.toml  [[TrueHissatsu.GradeAnimation]]: from G5 a move plays its
+#                                     evolution's cut-in (VRFW.cutin.by_grade; Mano celestial -> EV, Parada celestial
+#                                     -> TURBO; docs/game/mechanics/skill-rank-usage.md §7.16)
 #   content\game\true_hissatsu.toml   the engine entries (hooks, functions, globals), the commands, the save import
 #   content\items\rank_items.toml     the Libro de mejora de supertécnica (own item since 1.0.4; the retail
 #                                     abl_000001 «Nueva posibilidad» is retail again) + the Cuaderno de evolución
@@ -37,7 +40,7 @@ folder = "TrueHissatsu"
 # Hissatsu owns its rules in both views (the retail board: Board.CanEquip hook; Character Reforged's «Fantasy» skill
 # table, when that mod is on: the data it reads, content/skill_set/true_hissatsu.toml, and the row action its
 # host calls; the [[host]] is declared here too so the entry stays valid while Character Reforged is off).
-requires = ["vr_framework>=2.4.52", "hissatsu_reforged>=1.0.0"]
+requires = ["vr_framework>=2.7.18", "hissatsu_reforged>=1.0.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -59,7 +62,7 @@ game_lua = ["TrueHissatsu.SkillTableRankItem"]
 
 # content\skill_set\ is read by Character Reforged (its place rules as data): the layout lint accepts it
 [layout]
-script_folders = ["skill_set"]
+script_folders = ["skill_set", "true_hissatsu"]
 
 # A MODULE of Hissatsu Reforged (owner request 2026-10-14, docs/framework/mod-families.md; until then of Character
 # Reforged): the Mods screen, the ModManager and `vrfw list` show it inside Hissatsu Reforged's entry («Módulos y

@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03030070"                                   # Dave Quagmire
+moves = [
+  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0x035C1112, level = 1 },                         # Gungnir
+  { move = 0x6ADE9E01, level = 41 },                        # Illusory Ball
+  { move = 0x142DBE2A, level = 54 },                        # Foul Offence
+]
+VRFW.MoveGrades = [
+  { Move = 0x6ADE9E01, Grade = 1 },                         # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0xB630035D                                         # MF/FW · fire
@@ -16,6 +25,12 @@ target = "c03030070"                                   # Dave Quagmire
 
 [[edit]]
 target = "c04017360"                                   # Zack Cummings
+moves = [
+  { move = 0x00196EC2, level = 1 },                         # Earthquake
+  { move = 0x29728358, level = 1 },                         # Planet Shield
+  { move = 0x166B0073, level = 55 },                        # Super Armadillo
+  { move = 0x6633159F, level = 67 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0x8FDDD912                                         # DF/MF · mountain
@@ -25,6 +40,12 @@ target = "c04017360"                                   # Zack Cummings
 
 [[edit]]
 target = "c04017410"                                   # Wilbur Watkins
+moves = [
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0x6DAEF91C, level = 75 },                        # Supernova
+]
 
   [[edit.cards]]
   id = 0xC5D35950                                         # FW/MF · forest
@@ -35,6 +56,12 @@ target = "c04017410"                                   # Wilbur Watkins
 
 [[edit]]
 target = "c04017470"                                   # Ethan Whitering
+moves = [
+  { move = 0x9765A74A, level = 1 },                         # Beast Fang
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x30A819A7, level = 63 },                        # Twin Boost F
+]
 
   [[edit.cards]]
   id = 0x9389FED6                                         # MF/FW · forest
@@ -44,6 +71,15 @@ target = "c04017470"                                   # Ethan Whitering
 
 [[edit]]
 target = "c06037140"                                   # Zeke Valanche
+moves = [
+  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x8B31808E, level = 1 },                         # Wormhole
+  { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
+]
+VRFW.MoveGrades = [
+  { Move = 0x8E7E960B, Grade = 1 },                         # Drill Smasher
+]
 
   [[edit.cards]]
   id = 0x53302DB7                                         # FW/GK · wind

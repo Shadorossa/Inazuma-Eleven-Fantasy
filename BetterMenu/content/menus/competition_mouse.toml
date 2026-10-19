@@ -1,0 +1,25 @@
+schema = "VRFW.menu/2"
+when = { config = "competition.mouse", default = true }
+
+# Mouse on the Competition list, step 1: one click zone over the centred crest. The zone is the retail team-dock item
+# mainmenu90_31_doc_item as it is (its MenuCollisionSetting names _touch_list01, a 636 x 86 locator at (12, -13) of
+# its layout mainmenu90_31.g4pkm, both checked offline), drawn at alpha 0 and scaled over the crest by
+# assets\lua\soccer_vs_cpu_list_menu¸_competition.lua. Its own focus group with the input layer's rows, so the keys
+# keep working while the mouse holds the focus. config.toml [competition] mouse = false removes it.
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_hit", object = "mainmenu90_31_doc_item", count = 1, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_cmd = [
+  { layer = "better_menu_competition_hit", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x666E6071 },
+  { layer = "better_menu_competition_hit", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xDEA3F818 },
+  { layer = "better_menu_competition_hit", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x13890272 },
+  { layer = "better_menu_competition_hit", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0xAB449A1B },
+  { layer = "better_menu_competition_hit", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x807AF060 },
+  { layer = "better_menu_competition_hit", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x38B76809 },
+  { layer = "better_menu_competition_hit", input = "CMD_ENTER", command = "CMD_FUNCTION", arg = 0x2A80517B },
+  { layer = "better_menu_competition_hit", input = "CMD_BACK", command = "CMD_BACK" },
+  { layer = "better_menu_competition_hit", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+]

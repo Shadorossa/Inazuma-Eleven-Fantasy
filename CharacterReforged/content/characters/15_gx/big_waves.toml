@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06030610"                                   # Jude Gordon
+moves = [
+  { move = 0x2E1BAA18, level = 1 },                         # Crocodile Crush
+  { move = 0xF14FDC17, level = 16 },                        # Shot Pocket
+  { move = 0x422A60B1, level = 26 },                        # Barrier Reef
+  { move = 0xF400CA92, level = 41 },                        # Anchors Aweigh
+]
 
   [[edit.cards]]
   id = 0xB6DFF7CE                                         # GK/MF · wind
@@ -15,6 +21,12 @@ target = "c06030610"                                   # Jude Gordon
 
 [[edit]]
 target = "c06030620"                                   # Owe Noyster
+moves = [
+  { move = 0x8917BF4B, level = 1 },                         # Willy-Willy
+  { move = 0x530CDFC1, level = 15 },                        # Mystifying Mist
+  { move = 0x025FD09B, level = 28 },                        # Volcano Cut
+  { move = 0x9B3048AB, level = 36 },                        # Shadow Catch
+]
 
   [[edit.cards]]
   id = 0x9DF2A40D                                         # DF/GK · fire
@@ -25,6 +37,12 @@ target = "c06030620"                                   # Owe Noyster
 
 [[edit]]
 target = "c06030630"                                   # Whaly Walker
+moves = [
+  { move = 0x8917BF4B, level = 1 },                         # Willy-Willy
+  { move = 0x06D2AC29, level = 17 },                        # Diabolical Cut
+  { move = 0x58B5859E, level = 25 },                        # Whip Crack
+  { move = 0xC324C788, level = 38 },                        # Blast Mine
+]
 
   [[edit.cards]]
   id = 0x84E9954C                                         # DF/MF · forest
@@ -35,6 +53,12 @@ target = "c06030630"                                   # Whaly Walker
 
 [[edit]]
 target = "c06030640"                                   # Sunny Fishton
+moves = [
+  { move = 0x8917BF4B, level = 1 },                         # Willy-Willy
+  { move = 0x3C843987, level = 18 },                        # Flurry Dash
+  { move = 0x49933AEE, level = 25 },                        # Perfect Tower
+  { move = 0xD9BB22A7, level = 40 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0xCBA8038B                                         # DF/MF · wind
@@ -44,6 +68,12 @@ target = "c06030640"                                   # Sunny Fishton
 
 [[edit]]
 target = "c06030650"                                   # Clem Chowdry
+moves = [
+  { move = 0x8917BF4B, level = 1 },                         # Willy-Willy
+  { move = 0x20D01E43, level = 14 },                        # Hey Presto
+  { move = 0x78218C02, level = 24 },                        # Duskfall
+  { move = 0x13D845C9, level = 42 },                        # Samba Strike
+]
 
   [[edit.cards]]
   id = 0xD2B332CA                                         # DF/MF · fire
@@ -54,6 +84,12 @@ target = "c06030650"                                   # Clem Chowdry
 
 [[edit]]
 target = "c06030660"                                   # Oscar Squidows
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0xE8F5C774, level = 16 },                        # Megalodon
+  { move = 0x8917BF4B, level = 33 },                        # Willy-Willy
+  { move = 0x7DD6FEF8, level = 46 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0xF99E6109                                         # MF/DF · forest
@@ -64,6 +100,12 @@ target = "c06030660"                                   # Oscar Squidows
 
 [[edit]]
 target = "c06030670"                                   # Marsha Ark
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x322F0C40, level = 17 },                        # Spider Web
+  { move = 0x5E233E68, level = 32 },                        # Super Elastico
+  { move = 0x2B8C597E, level = 43 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0xE0855048                                         # MF/DF · mountain
@@ -74,6 +116,12 @@ target = "c06030670"                                   # Marsha Ark
 
 [[edit]]
 target = "c06030680"                                   # Cole Reef
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x3A4FFB6C, level = 34 },                        # The Ikaros
+  { move = 0xC66BD10D, level = 49 },                        # Zigzag Spark
+]
 
   [[edit.cards]]
   id = 0x671D4C87                                         # MF/FW · fire
@@ -84,6 +132,12 @@ target = "c06030680"                                   # Cole Reef
 
 [[edit]]
 target = "c06030690"                                   # Amanda Ray
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x7DD6FEF8, level = 18 },                        # Athena's Anthem
+  { move = 0x2C3D95DD, level = 34 },                        # Sleeping Dust
+  { move = 0x19BA3BFC, level = 51 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x7E067DC6                                         # MF/DF · forest
@@ -94,6 +148,12 @@ target = "c06030690"                                   # Amanda Ray
 
 [[edit]]
 target = "c06030700"                                   # Lob Stark
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x332CCDC9, level = 16 },                        # Heel Kick
+  { move = 0x016DEA27, level = 25 },                        # Accelerator Gears
+  { move = 0x0C08B663, level = 42 },                        # Doom Dive Drive
+]
 
   [[edit.cards]]
   id = 0xAE06ACB8                                         # FW/MF · mountain
@@ -103,6 +163,12 @@ target = "c06030700"                                   # Lob Stark
 
 [[edit]]
 target = "c06030710"                                   # Octavius Parson
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0xA2FB4736, level = 15 },                        # Flying Fish
+  { move = 0x61FB16FD, level = 27 },                        # Divine Arrows
+  { move = 0xA4B51923, level = 41 },                        # The Typhoon
+]
 
   [[edit.cards]]
   id = 0xB71D9DF9                                         # FW/MF · wind
@@ -112,6 +178,12 @@ target = "c06030710"                                   # Octavius Parson
 
 [[edit]]
 target = "c11806010"                                   # Orlando Sherman
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x414BA9BD, level = 13 },                        # Pincer Pinch
+  { move = 0x46FA651E, level = 20 },                        # Water Veil
+  { move = 0x53E9C2A3, level = 30 },                        # Capable Hands
+]
 
   [[edit.cards]]
   id = 0x35C7120D                                         # MF/GK · fire

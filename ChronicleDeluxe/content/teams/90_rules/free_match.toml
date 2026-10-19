@@ -6,3 +6,139 @@ schema = "VRFW.team/2"
 # the Crónica win (the framework's rule, docs/framework/free-match-tabs.md §8; per key: another mod's other keys stay).
 [VRFW.FreeMatch]
 Unlock = "together"
+# The single «best» orb (docs/game/mods/chronicle-deluxe-free-match.md §7): each opponent row shows one pill with the
+# orb of the highest class won (INAZUMA / ZONA LETAL / BATALLA LEGENDARIA), nothing lit when none is won; the same
+# gauge goes under the selected crest of BetterMenu's Competition strip.
+Orb = "best"
+
+# Equipo Ogro in the IE3 tab (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §9): its game (the last
+# IE1 board battle) is listed under the IE3 tab, right after Pequeños Gigantes (IE3's final rivals, the place InaRogue's
+# team order gives Ogre too) and before Raimon equipo B; the board keeps its piece. The framework lists a copy of the game
+# in a hidden piece of that tab with the same unlock (the Ogre Crónica win) and the same clear bits (an old save keeps
+# its won classes) (docs/framework/free-match-tabs.md §9).
+[[VRFW.GameTab]]
+Game = "fbtl_cro01_130_010"        # Equipo Ogro
+Tab = 2                            # IE3
+After = "fbtl_cro03_180_010"       # Pequeños Gigantes
+
+# ---- 1.11.1 (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §10). VRFW 2.7.2 keys
+# (docs/framework/free-match-tabs.md §12). New games copy the rows of the Chronicle battle they come from (the three
+# classes, AI, rules, stadium); their rival is the player's own line-up of that battle. Each opens with the Chronicle
+# battle named in `Unlock`.
+
+# IE1: Raimon (the line-up of the IE1 final against Zeus), first in the tab, opens when Zeus is beaten
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_ie1"
+Team = "pltm_cro_ie1_12"
+Template = "fbtl_cro01_120_010"        # Zeus
+Tab = 0
+Unlock = "fbtl_cro01_120_010"
+Before = "fbtl_cro01_020_010"          # Inazuma Kids FC (the first IE1 game)
+
+# IE2: Raimon (the line-up against Génesis) with Byron Love on the bench, first in the tab, opens when Emperadores
+# Oscuros is beaten
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_ie2"
+Team = "chronicle_deluxe.fm_raimon_ie2" # content/teams/11_ie2/0001_raimon_free_match.toml
+Template = "fbtl_cro02_190_010"        # Génesis
+Tab = 1
+Unlock = "fbtl_cro02_200_010"          # Emperadores Oscuros
+Before = "fbtl_cro02_020_010"          # Servicio Secreto (the first IE2 game)
+
+# IE2: Jóvenes Inazuma (the game's own free-match game; the list puts it in the IE2 tab) right after Emperadores
+# Oscuros, opening with it
+[[VRFW.FreeMatchGame]]
+Game = "fbtl_free_001"
+Tab = 1
+Unlock = "fbtl_cro02_200_010"
+After = "fbtl_cro02_200_010"
+
+# IE2: Épsilon's BATALLA LEGENDARIA plays Épsilon Plus (whose own game left the list); INAZUMA / ZONA LETAL stay Épsilon
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro02_100_010"            # Épsilon
+Classes = [9]
+Team = "tm_cro_ie2_1400"               # Épsilon Plus (its free-match line-up: content/teams/11_ie2/1400_epsilon_plus_free_match.toml)
+
+# Chrono Stone (1.11.9, owner 2026-10-19): Protocolo Omega 3.0 plays its players' base form at INAZUMA / ZONA LETAL
+# (chronicle_deluxe.fm_protocol_omega_3_base, generated: content/teams/90_rules/free_match_base_forms.toml); BATALLA
+# LEGENDARIA keeps the game's team, the players miximaxed with Zanark
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro05_080_010"            # Protocolo Omega 3.0
+Classes = [6, 7]
+Team = "chronicle_deluxe.fm_protocol_omega_3_base"
+
+# Chrono Stone (1.11.9, owner 2026-10-19): Cascada Perfecta's BATALLA LEGENDARIA plays the masked line-up of the second
+# Cascada Perfecta game (fbtl_cro05_150_010, out of the list since 1.11.8); INAZUMA / ZONA LETAL keep its own team
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro05_130_010"            # Cascada Perfecta
+Classes = [9]
+Team = "tm_cro_go2_1300"               # Cascada Perfecta, masked line-up
+
+# IE3: Inazuma Japón (the line-up against Pequeños Gigantes), first in the tab, opens when Pequeños Gigantes is beaten
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_inazuma_japan_ie3"
+Team = "pltm_cro_ie3_18"
+Template = "fbtl_cro03_180_010"        # Pequeños Gigantes
+Tab = 2
+Unlock = "fbtl_cro03_180_010"
+Before = "fbtl_cro03_020_010"          # Big Waves (the first IE3 game once Equipo B left)
+
+# IE3: Sky Team, Dark Team and Ángel Oscuro right before Equipo Ogro
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro03_120_010"            # Sky Team
+Before = "fbtl_cro01_130_010"          # Equipo Ogro (its IE3 copy)
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro03_130_010"            # Dark Team
+Before = "fbtl_cro01_130_010"
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro03_140_010"            # Ángel Oscuro
+Before = "fbtl_cro01_130_010"
+
+# Chrono Stone: Chrono Storm (the line-up against Ragnarok), right before Ragnah, opens when Ragnarok is beaten
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_chrono_storm"
+Team = "pltm_cro_ie5_19"
+Template = "fbtl_cro05_190_010"        # Ragnah (Ragnarok)
+Tab = 4
+Unlock = "fbtl_cro05_190_010"
+Before = "fbtl_cro05_190_010"
+
+# GO Galaxy: Earth Eleven (1.11.8, owner 2026-10-19), first in the tab where the Galaxy Royal Academy was (that game left
+# the list: base_tables soccer_opponent_info). The rival is the game's own Earth Eleven team of Battle Bay
+# (bb_13_team_newjapan: Galaxy line-up, coach Astero Black); the rows (three classes, AI, stadium) are those of the
+# Galaxy Royal Academy battle, and it opens with that battle's win, as Royal Academy did.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_earth_eleven"
+Team = "bb_13_team_newjapan"
+Template = "fbtl_cro06_010_010"        # Royal Academy (GO Galaxy)
+Tab = 5
+Unlock = "fbtl_cro06_010_010"
+Before = "fbtl_cro06_020_010"          # Dragones de Fuego (the first Galaxy game once Royal Academy left)
+
+# Victory Road: Zanark Outsiders, Guardianas and Plathos (the Chrono Stone / Galaxy / Ares extra battles) in the Victory
+# Road tab, right before Destructores
+[[VRFW.GameTab]]
+Game = "fbtl_cro12_020_010"            # Zanark Outsiders
+Tab = 8
+
+[[VRFW.GameTab]]
+Game = "fbtl_cro12_010_010"            # Guardianas
+Tab = 8
+
+[[VRFW.GameTab]]
+Game = "fbtl_cro12_030_010"            # Plathos
+Tab = 8
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro12_020_010"
+Before = "fbtl_cro12_080_020"          # Destructores
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro12_010_010"
+Before = "fbtl_cro12_080_020"
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro12_030_010"
+Before = "fbtl_cro12_080_020"

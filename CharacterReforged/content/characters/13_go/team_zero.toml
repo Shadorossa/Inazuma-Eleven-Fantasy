@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04004450"                                   # Gus Martin
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x01DB04F5, level = 31 },                        # Defence Scan
+  { move = 0xAEEA9F97, level = 85 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0x8E6A1A0A                                         # DF/MF · forest
@@ -16,6 +22,12 @@ target = "c04004450"                                   # Gus Martin
 
 [[edit]]
 target = "c04004410"                                   # Pinkus Mountbatten
+moves = [
+  { move = 0xF5638A87, level = 1 },                         # Elemental Destroyer
+  { move = 0xC324C788, level = 35 },                        # Blast Mine
+  { move = 0x64CDCFB9, level = 43 },                        # Rising Dragon
+  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0xEA06DF0E                                         # MF/DF · mountain
@@ -25,6 +37,12 @@ target = "c04004410"                                   # Pinkus Mountbatten
 
 [[edit]]
 target = "c04004420"                                   # Flint Charcoal
+moves = [
+  { move = 0x0C08B663, level = 19 },                        # Doom Dive Drive
+  { move = 0xB60E3C60, level = 30 },                        # Plasma Cut
+  { move = 0x4FE09C7A, level = 43 },                        # Acrobatic Keep
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0xC12B8CCD                                         # MF/FW · fire
@@ -34,6 +52,12 @@ target = "c04004420"                                   # Flint Charcoal
 
 [[edit]]
 target = "c04004430"                                   # Glaucous Gull
+moves = [
+  { move = 0xF5638A87, level = 1 },                         # Elemental Destroyer
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+  { move = 0xB0BC314A, level = 40 },                        # Spin Meister
+  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0xD830BD8C                                         # FW/MF · wind
@@ -43,6 +67,12 @@ target = "c04004430"                                   # Glaucous Gull
 
 [[edit]]
 target = "c04004440"                                   # Ashley Silverwood
+moves = [
+  { move = 0xAF28F5A0, level = 13 },                        # The Tower
+  { move = 0x4A17EE80, level = 34 },                        # Hunter's Net
+  { move = 0x6BA49049, level = 43 },                        # Mystic Mist
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x97712B4B                                         # DF/MF · forest
@@ -53,6 +83,12 @@ target = "c04004440"                                   # Ashley Silverwood
 
 [[edit]]
 target = "c04004460"                                   # Cinereous Slate
+moves = [
+  { move = 0x9AF2229C, level = 1 },                         # Gravity Point
+  { move = 0x2D9F7E76, level = 30 },                        # Breath Taker
+  { move = 0x4FE09C7A, level = 40 },                        # Acrobatic Keep
+  { move = 0xFF5C8DAF, level = 60 },                        # Shot Stopper
+]
 
   [[edit.cards]]
   id = 0xA54749C9                                         # GK/MF · mountain

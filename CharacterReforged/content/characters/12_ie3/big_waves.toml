@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03030210"                                   # Gene Whalon
+moves = [
+  { move = 0x422A60B1, level = 1 },                         # Barrier Reef
+  { move = 0x96A7CD7D, level = 40 },                        # Tsunami Wall
+  { move = 0xD8794890, level = 51 },                        # Kangaroo Kick
+  { move = 0xF400CA92, level = 64 },                        # Anchors Aweigh
+]
+VRFW.MoveGrades = [
+  { Move = 0x422A60B1, Grade = 1 },                         # Barrier Reef
+]
 
   [[edit.cards]]
   id = 0xE3EE70B5                                         # GK/MF · wind
@@ -15,6 +24,12 @@ target = "c03030210"                                   # Gene Whalon
 
 [[edit]]
 target = "c03030220"                                   # David Waterman
+moves = [
+  { move = 0x60F8D774, level = 5 },                         # Gravestone
+  { move = 0x039DBAAC, level = 20 },                        # Land of Ice
+  { move = 0x259F08C6, level = 36 },                        # Whirlwind Twister
+  { move = 0x2296A01A, level = 53 },                        # Southern Cross
+]
 
   [[edit.cards]]
   id = 0xC8C32376                                         # DF/MF · wind
@@ -24,6 +39,12 @@ target = "c03030220"                                   # David Waterman
 
 [[edit]]
 target = "c03030230"                                   # Sonny Shore
+moves = [
+  { move = 0xD8794890, level = 5 },                         # Kangaroo Kick
+  { move = 0x78E027BC, level = 37 },                        # Shine Drive
+  { move = 0x4E9A9232, level = 40 },                        # Spinning Cut
+  { move = 0x025FD09B, level = 53 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0xD1D81237                                         # DF/MF · fire
@@ -33,6 +54,12 @@ target = "c03030230"                                   # Sonny Shore
 
 [[edit]]
 target = "c03030240"                                   # Kjell Snapper
+moves = [
+  { move = 0x60F8D774, level = 1 },                         # Gravestone
+  { move = 0xB2BEB853, level = 5 },                         # Whale Guard
+  { move = 0x422A60B1, level = 39 },                        # Barrier Reef
+  { move = 0x4BD584B7, level = 69 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0x9E9984F0                                         # DF/GK · forest
@@ -42,6 +69,12 @@ target = "c03030240"                                   # Kjell Snapper
 
 [[edit]]
 target = "c03030250"                                   # Ken Crackham
+moves = [
+  { move = 0xB2BEB853, level = 1 },                         # Whale Guard
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x4E9A9232, level = 34 },                        # Spinning Cut
+  { move = 0x34E4CEAB, level = 73 },                        # Barbarian Shield
+]
 
   [[edit.cards]]
   id = 0x8782B5B1                                         # DF/MF · forest
@@ -51,6 +84,12 @@ target = "c03030250"                                   # Ken Crackham
 
 [[edit]]
 target = "c03030260"                                   # Shawn Princeton
+moves = [
+  { move = 0x46FA651E, level = 5 },                         # Water Veil
+  { move = 0x261BDCA8, level = 20 },                        # Moonsault
+  { move = 0x60F8D774, level = 36 },                        # Gravestone
+  { move = 0x2FB941B3, level = 61 },                        # Stone Prison
+]
 
   [[edit.cards]]
   id = 0xACAFE672                                         # MF/DF · fire
@@ -60,6 +99,12 @@ target = "c03030260"                                   # Shawn Princeton
 
 [[edit]]
 target = "c03030270"                                   # Matt Fischer
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x637C031A, level = 22 },                        # No Escape
+  { move = 0x322F0C40, level = 36 },                        # Spider Web
+  { move = 0x2BF596BF, level = 42 },                        # Tsunami Boost
+]
 
   [[edit.cards]]
   id = 0xB5B4D733                                         # MF/DF · fire
@@ -69,6 +114,12 @@ target = "c03030270"                                   # Matt Fischer
 
 [[edit]]
 target = "c03030280"                                   # Hank Tennyson
+moves = [
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x2BF596BF, level = 21 },                        # Tsunami Boost
+  { move = 0x261BDCA8, level = 33 },                        # Moonsault
+  { move = 0x70417B2E, level = 46 },                        # Deceptor Dribble
+]
 
   [[edit.cards]]
   id = 0x322CCBFC                                         # MF/FW · wind
@@ -78,6 +129,12 @@ target = "c03030280"                                   # Hank Tennyson
 
 [[edit]]
 target = "c03030290"                                   # Dolph Hensen
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x2BF596BF, level = 5 },                         # Tsunami Boost
+  { move = 0x0DCADC54, level = 45 },                        # Emperor Penguin 7
+  { move = 0x121A2FFE, level = 63 },                        # Mirage Shot
+]
 
   [[edit.cards]]
   id = 0x2B37FABD                                         # MF/DF · wind
@@ -88,6 +145,12 @@ target = "c03030290"                                   # Dolph Hensen
 
 [[edit]]
 target = "c03030300"                                   # Hamilton Reith
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x1F0836D6, level = 30 },                        # Comet Shot
+  { move = 0x17A96A44, level = 56 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0xFB372BC3                                         # FW/MF · forest
@@ -98,6 +161,15 @@ target = "c03030300"                                   # Hamilton Reith
 
 [[edit]]
 target = "c03030310"                                   # Joe Dawes
+moves = [
+  { move = 0xE8F5C774, level = 1 },                         # Megalodon
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x18C035B4, level = 12 },                        # Ghost Pull
+  { move = 0x67F17FA8, level = 48 },                        # Mega Quake
+]
+VRFW.MoveGrades = [
+  { Move = 0xE8F5C774, Grade = 1 },                         # Megalodon
+]
 
   [[edit.cards]]
   id = 0xE22C1A82                                         # FW/DF · fire
@@ -108,6 +180,12 @@ target = "c03030310"                                   # Joe Dawes
 
 [[edit]]
 target = "c03030320"                                   # Quincy Horace
+moves = [
+  { move = 0x422A60B1, level = 1 },                         # Barrier Reef
+  { move = 0xC4701649, level = 5 },                         # Ice Block
+  { move = 0x79224D8B, level = 26 },                        # Freeze Shot
+  { move = 0xF14FDC17, level = 39 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0xC9014941                                         # GK/FW · forest
@@ -117,6 +195,15 @@ target = "c03030320"                                   # Quincy Horace
 
 [[edit]]
 target = "c03030330"                                   # Holly Summers
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x427719AC, level = 37 },                        # Gale Dash
+  { move = 0x1F0836D6, level = 45 },                        # Comet Shot
+  { move = 0x7A67325B, level = 57 },                        # Flame Dance
+]
+VRFW.MoveGrades = [
+  { Move = 0xD8794890, Grade = 1 },                         # Kangaroo Kick
+]
 
   [[edit.cards]]
   id = 0xD01A7800                                         # MF/DF · fire
@@ -126,6 +213,12 @@ target = "c03030330"                                   # Holly Summers
 
 [[edit]]
 target = "c03030340"                                   # Derek Rabson
+moves = [
+  { move = 0x4031A7F5, level = 1 },                         # Mole Fake
+  { move = 0x60F8D774, level = 5 },                         # Gravestone
+  { move = 0x574008CD, level = 38 },                        # Kung Fu Fighting
+  { move = 0x4BD584B7, level = 70 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0x9F5BEEC7                                         # MF/DF · mountain
@@ -135,6 +228,15 @@ target = "c03030340"                                   # Derek Rabson
 
 [[edit]]
 target = "c03030350"                                   # Barack Daniels
+moves = [
+  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
+  { move = 0x60F8D774, level = 5 },                         # Gravestone
+  { move = 0xC2BBD4A2, level = 37 },                        # Wild Claw
+  { move = 0x7BA5586C, level = 63 },                        # Mad Express
+]
+VRFW.MoveGrades = [
+  { Move = 0x60F8D774, Grade = 1 },                         # Gravestone
+]
 
   [[edit.cards]]
   id = 0x8640DF86                                         # DF/GK · wind
@@ -144,6 +246,12 @@ target = "c03030350"                                   # Barack Daniels
 
 [[edit]]
 target = "c03030360"                                   # Bruce Marlin
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x1F0836D6, level = 5 },                         # Comet Shot
+  { move = 0xD8794890, level = 22 },                        # Kangaroo Kick
+  { move = 0x121A2FFE, level = 59 },                        # Mirage Shot
+]
 
   [[edit.cards]]
   id = 0xAD6D8C45                                         # FW/MF · mountain
@@ -154,6 +262,12 @@ target = "c03030360"                                   # Bruce Marlin
 
 [[edit]]
 target = "c11803010"                                   # Robert Kleiser
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0xB3BD79DA, level = 13 },                        # Patriot Shot
+  { move = 0x35E70F22, level = 20 },                        # Grenade Shot
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x0219E23F                                         # FW/MF · fire

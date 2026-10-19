@@ -28,6 +28,15 @@ game = "Shop.TabOf"
 kind = "call"
 needs = ["ItemTestSeriesStat", "ItemTestSkill"]
 
+# The game's tab of a row (0x118BCA0: category, sub-kind -> shop slot type) has no entry for the mode change items
+# (special-skill category 160, sub-kind 178: the game never sold them) and files them under slot type 1, the «Tiques»
+# tab, whose row and detail panel find no ticket data (no price, stock 0, blank image, no name). They are listed in the
+# aura tab (slot type 17) with the other aura items (keshin, armour, miximax, totem: sub-kinds 125, 171-176).
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [{ value = "args[2]", equals = 160 }, { value = "args[3]", equals = 178 }]
+value = "17"
+
 # slot, inv, t1, v1, o1, … -> ok (no triples = that slot's filter removed)
 [[VRFW.Command]]
 name = "CMND_UTIL_SHOP_FILTER_SET"

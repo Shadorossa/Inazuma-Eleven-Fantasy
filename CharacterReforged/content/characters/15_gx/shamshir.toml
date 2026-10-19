@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06030810"                                   # Salman Karim
+moves = [
+  { move = 0x37009B59, level = 1 },                         # Burnout Burst
+  { move = 0x4B3099D5, level = 16 },                        # Stomper Stopper
+  { move = 0x53E9C2A3, level = 32 },                        # Capable Hands
+  { move = 0xDBA0E5E3, level = 42 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0xBC41DAC4                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c06030810"                                   # Salman Karim
 
 [[edit]]
 target = "c06030820"                                   # Shakir Zahir
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x5643C944, level = 14 },                        # Killer Slide
+  { move = 0x530CDFC1, level = 29 },                        # Mystifying Mist
+  { move = 0x6BA49049, level = 46 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x976C8907                                         # DF/MF · forest
@@ -25,6 +37,12 @@ target = "c06030820"                                   # Shakir Zahir
 
 [[edit]]
 target = "c06030830"                                   # Asad Gheisari
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x37009B59, level = 17 },                        # Burnout Burst
+  { move = 0xA2BF7076, level = 27 },                        # Side Swipe
+  { move = 0xF4604B0E, level = 50 },                        # Fancy-Footwork
+]
 
   [[edit.cards]]
   id = 0x8E77B846                                         # DF/GK · fire
@@ -34,6 +52,12 @@ target = "c06030830"                                   # Asad Gheisari
 
 [[edit]]
 target = "c06030840"                                   # Batal Majid
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x7F15DC5F, level = 19 },                        # Desert Drift
+  { move = 0x585098FC, level = 29 },                        # Slice and Dice
+  { move = 0x485150D9, level = 45 },                        # Body Shield
+]
 
   [[edit.cards]]
   id = 0xC1362E81                                         # DF/MF · mountain
@@ -44,6 +68,12 @@ target = "c06030840"                                   # Batal Majid
 
 [[edit]]
 target = "c06030850"                                   # Qamar Sadir
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x78218C02, level = 16 },                        # Duskfall
+  { move = 0x62BE692D, level = 25 },                        # Whirlwind Force
+  { move = 0x20D01E43, level = 38 },                        # Hey Presto
+]
 
   [[edit.cards]]
   id = 0xD82D1FC0                                         # DF/MF · forest
@@ -54,6 +84,12 @@ target = "c06030850"                                   # Qamar Sadir
 
 [[edit]]
 target = "c06030860"                                   # Khalil Haddaoui
+moves = [
+  { move = 0x7F15DC5F, level = 1 },                         # Desert Drift
+  { move = 0x066442FB, level = 6 },                         # Gusher Crusher
+  { move = 0x414BA9BD, level = 27 },                        # Pincer Pinch
+  { move = 0x3A4FFB6C, level = 40 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0xF3004C03                                         # MF/DF · fire
@@ -64,6 +100,12 @@ target = "c06030860"                                   # Khalil Haddaoui
 
 [[edit]]
 target = "c06030870"                                   # Nazim Nizar
+moves = [
+  { move = 0x7F15DC5F, level = 1 },                         # Desert Drift
+  { move = 0xAA67E325, level = 14 },                        # Desert Blast
+  { move = 0x066442FB, level = 28 },                        # Gusher Crusher
+  { move = 0x5E233E68, level = 43 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0xEA1B7D42                                         # MF/DF · mountain
@@ -73,6 +115,12 @@ target = "c06030870"                                   # Nazim Nizar
 
 [[edit]]
 target = "c06030880"                                   # Tamir Nasr
+moves = [
+  { move = 0x7F15DC5F, level = 1 },                         # Desert Drift
+  { move = 0xBA221C40, level = 19 },                        # Dragon's Tail
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+  { move = 0x4A17EE80, level = 45 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x6D83618D                                         # MF/DF · mountain
@@ -83,6 +131,12 @@ target = "c06030880"                                   # Tamir Nasr
 
 [[edit]]
 target = "c06030890"                                   # Rashid Hakim
+moves = [
+  { move = 0x7F15DC5F, level = 1 },                         # Desert Drift
+  { move = 0x066442FB, level = 5 },                         # Gusher Crusher
+  { move = 0x17110E3B, level = 27 },                        # Jumbo Sandwich
+  { move = 0xA0BDF96F, level = 46 },                        # Ballista Barrage
+]
 
   [[edit.cards]]
   id = 0x749850CC                                         # MF/FW · fire
@@ -93,6 +147,12 @@ target = "c06030890"                                   # Rashid Hakim
 
 [[edit]]
 target = "c06030900"                                   # Said Ashraf
+moves = [
+  { move = 0x066442FB, level = 1 },                         # Gusher Crusher
+  { move = 0xD0A1DBC3, level = 19 },                        # Bungee Ball Burst
+  { move = 0x13D845C9, level = 31 },                        # Samba Strike
+  { move = 0xF4A1E0B0, level = 50 },                        # Entropic Arrows
+]
 
   [[edit.cards]]
   id = 0xA49881B2                                         # FW/MF · mountain
@@ -102,6 +162,12 @@ target = "c06030900"                                   # Said Ashraf
 
 [[edit]]
 target = "c06030910"                                   # Qasim Batal
+moves = [
+  { move = 0x066442FB, level = 1 },                         # Gusher Crusher
+  { move = 0x39CB2F02, level = 18 },                        # Dragster
+  { move = 0xDE4ED944, level = 28 },                        # Snowstorm Leopard
+  { move = 0xB3CA3CB6, level = 47 },                        # Parkour Power
+]
 
   [[edit.cards]]
   id = 0xBD83B0F3                                         # FW/MF · wind
@@ -111,6 +177,12 @@ target = "c06030910"                                   # Qasim Batal
 
 [[edit]]
 target = "c11806020"                                   # Murshid Amir
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0xAA67E325, level = 13 },                        # Desert Blast
+  { move = 0x025FD09B, level = 20 },                        # Volcano Cut
+  { move = 0x414BA9BD, level = 30 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0x1EEA41CE                                         # DF/MF · fire

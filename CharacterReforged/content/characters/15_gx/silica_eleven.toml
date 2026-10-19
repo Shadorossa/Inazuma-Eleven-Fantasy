@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06031410"                                   # B'adaen
+moves = [
+  { move = 0x0536F9DB, level = 1 },                         # Sand Blaster
+  { move = 0xDE8F72FA, level = 29 },                        # Under Miner
+  { move = 0x2D9F7E76, level = 40 },                        # Breath Taker
+  { move = 0xED1BFBD3, level = 52 },                        # Fingers of Gaia
+]
 
   [[edit.cards]]
   id = 0x0DE744C5                                         # GK/DF · mountain
@@ -15,6 +21,12 @@ target = "c06031410"                                   # B'adaen
 
 [[edit]]
 target = "c06031420"                                   # G'ob
+moves = [
+  { move = 0xDE8F72FA, level = 7 },                         # Under Miner
+  { move = 0xAC91D94F, level = 28 },                        # Major Miner
+  { move = 0xD0A1DBC3, level = 39 },                        # Bungee Ball Burst
+  { move = 0x0E8FA384, level = 51 },                        # Warsaw
+]
 
   [[edit.cards]]
   id = 0x26CA1706                                         # DF/MF · fire
@@ -25,6 +37,12 @@ target = "c06031420"                                   # G'ob
 
 [[edit]]
 target = "c06031430"                                   # A'ddah
+moves = [
+  { move = 0xDE8F72FA, level = 8 },                         # Under Miner
+  { move = 0x0536F9DB, level = 26 },                        # Sand Blaster
+  { move = 0x7D6E9A87, level = 36 },                        # The Wall
+  { move = 0x72BFA108, level = 45 },                        # Wall of Atlantis
+]
 
   [[edit.cards]]
   id = 0x3FD12647                                         # DF/GK · mountain
@@ -35,6 +53,12 @@ target = "c06031430"                                   # A'ddah
 
 [[edit]]
 target = "c06031440"                                   # R'adji
+moves = [
+  { move = 0xDE8F72FA, level = 6 },                         # Under Miner
+  { move = 0xE452F107, level = 27 },                        # Dust Javelin
+  { move = 0xAC91D94F, level = 41 },                        # Major Miner
+  { move = 0xC324C788, level = 50 },                        # Blast Mine
+]
 
   [[edit.cards]]
   id = 0x7090B080                                         # DF/MF · mountain
@@ -45,6 +69,12 @@ target = "c06031440"                                   # R'adji
 
 [[edit]]
 target = "c06031450"                                   # A'kra
+moves = [
+  { move = 0xDE8F72FA, level = 8 },                         # Under Miner
+  { move = 0xCABBA212, level = 30 },                        # Menacing Glare
+  { move = 0x36A270F2, level = 38 },                        # Rolling Slide
+  { move = 0x0E8FA384, level = 51 },                        # Warsaw
+]
 
   [[edit.cards]]
   id = 0x698B81C1                                         # DF/MF · fire
@@ -55,6 +85,12 @@ target = "c06031450"                                   # A'kra
 
 [[edit]]
 target = "c06031460"                                   # N'ameeb
+moves = [
+  { move = 0xDE8F72FA, level = 3 },                         # Under Miner
+  { move = 0xAC91D94F, level = 16 },                        # Major Miner
+  { move = 0x4A17EE80, level = 30 },                        # Hunter's Net
+  { move = 0xBB21DDC9, level = 48 },                        # Trina Tumble
+]
 
   [[edit.cards]]
   id = 0x42A6D202                                         # DF/MF · forest
@@ -65,6 +101,17 @@ target = "c06031460"                                   # N'ameeb
 
 [[edit]]
 target = "c06031470"                                   # K'aran
+moves = [
+  { move = 0xAC91D94F, level = 6 },                         # Major Miner
+  { move = 0xE452F107, level = 18 },                        # Dust Javelin
+  { move = 0xDE8F72FA, level = 41 },                        # Under Miner
+  { move = 0xC8760A18, level = 54 },                        # Falling Planet
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x49D5009B, level = 1 },                         # Tótem Begiran [aura]
+]
 
   [[edit.cards]]
   id = 0x5BBDE343                                         # MF/FW · mountain
@@ -75,6 +122,12 @@ target = "c06031470"                                   # K'aran
 
 [[edit]]
 target = "c06031480"                                   # K'al
+moves = [
+  { move = 0xE452F107, level = 6 },                         # Dust Javelin
+  { move = 0xAC91D94F, level = 10 },                        # Major Miner
+  { move = 0xBA221C40, level = 27 },                        # Dragon's Tail
+  { move = 0x232D05EC, level = 46 },                        # Tiger Drive
+]
 
   [[edit.cards]]
   id = 0xDC25FF8C                                         # FW/MF · mountain
@@ -84,6 +137,17 @@ target = "c06031480"                                   # K'al
 
 [[edit]]
 target = "c06031490"                                   # S'haha
+moves = [
+  { move = 0xE452F107, level = 8 },                         # Dust Javelin
+  { move = 0xAC91D94F, level = 18 },                        # Major Miner
+  { move = 0xEFFC6FA8, level = 26 },                        # Warhead
+  { move = 0x9FEEC7A9, level = 42 },                        # Gigaton Head
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x4A51D4F5, level = 1 },                         # Tótem Guma [aura]
+]
 
   [[edit.cards]]
   id = 0xC53ECECD                                         # FW/MF · fire
@@ -93,6 +157,12 @@ target = "c06031490"                                   # S'haha
 
 [[edit]]
 target = "c06031500"                                   # S'harqiyah
+moves = [
+  { move = 0xE452F107, level = 3 },                         # Dust Javelin
+  { move = 0xAC91D94F, level = 11 },                        # Major Miner
+  { move = 0x035C1112, level = 27 },                        # Gungnir
+  { move = 0x568262FA, level = 43 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0x153E1FB3                                         # FW/MF · forest
@@ -102,6 +172,12 @@ target = "c06031500"                                   # S'harqiyah
 
 [[edit]]
 target = "c06031510"                                   # A'tac
+moves = [
+  { move = 0xE452F107, level = 5 },                         # Dust Javelin
+  { move = 0xAC91D94F, level = 15 },                        # Major Miner
+  { move = 0xC6978232, level = 28 },                        # Dinosaur Roar
+  { move = 0xE35B59DB, level = 50 },                        # Twin Sun Smash
+]
 
   [[edit.cards]]
   id = 0x0C252EF2                                         # FW/MF · mountain
@@ -111,6 +187,17 @@ target = "c06031510"                                   # A'tac
 
 [[edit]]
 target = "c06031520"                                   # Ogar Circes
+moves = [
+  { move = 0xA3F886BF, level = 3 },                         # Rock Hammer
+  { move = 0x2FB941B3, level = 31 },                        # Stone Prison
+  { move = 0x7F15DC5F, level = 43 },                        # Desert Drift
+  { move = 0x72BFA108, level = 55 },                        # Wall of Atlantis
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xE9EA1C82, level = 1 },                         # Tótem Gandran [aura]
+]
 
   [[edit.cards]]
   id = 0x27087D31                                         # DF/MF · mountain
@@ -121,6 +208,12 @@ target = "c06031520"                                   # Ogar Circes
 
 [[edit]]
 target = "c11806040"                                   # Zundar Zand
+moves = [
+  { move = 0x422A60B1, level = 1 },                         # Barrier Reef
+  { move = 0x5049A011, level = 13 },                        # Spinning Shot
+  { move = 0xDF8CB373, level = 20 },                        # Sonic Shot
+  { move = 0x4AF2F3E2, level = 30 },                        # Bridge to Nowhere
+]
 
   [[edit.cards]]
   id = 0x48B0E648                                         # FW/GK · wind

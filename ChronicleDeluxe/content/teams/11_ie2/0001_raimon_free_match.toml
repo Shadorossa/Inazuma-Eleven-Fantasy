@@ -1,0 +1,15 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe 1.11.1 (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §10): the IE2 Raimon of the
+# free match (first in the IE2 tab): the Raimon line-up the player fields against Génesis in the Chronicle
+# (pltm_cro_ie2_19, the own team of fbtl_cro02_190_010's Crónica row) with Byron Love on the bench. Only the free
+# match plays it (content/teams/90_rules/free_match.toml [[VRFW.FreeMatchGame]]).
+default_lang = "en"
+
+[[team]]
+name = "fm_raimon_ie2"
+based_on = "pltm_cro_ie2_19"            # Raimon, IE2 final (against Génesis)
+name_text = 0x621DA590                  # Raimon (the line-up's own name text)
+series = "IE2"
+  [[team.member]]                       # Byron Love, substitute (his IE1 / IE2 character)
+  player = "c01001900"
+  slot = 13

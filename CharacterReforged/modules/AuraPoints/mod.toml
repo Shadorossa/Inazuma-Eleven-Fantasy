@@ -2,13 +2,13 @@ id = "aura_points"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Aura Points"
-version = "1.1.0"
+version = "1.1.3"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Keshin, keshin armours and totems run on points instead of time, as in Chrono Stone and Galaxy, and every player gets a stamina bar (GP) for the whole match. Each player has a fighting-spirit pool (PEG) for each keshin and an SP bar for each totem: summoning is free and has no time limit, the keshin's or totem's own special move costs its points instead of tension, an armour drains its keshin's PEG while it is worn, and an empty pool sends the spirit away for the rest of the match. Running and above all dashing spend GP, Físico makes it last longer, half-time gives some back, and an exhausted player slows down, cannot dash and staggers; each character's GP is his Inazuma Eleven GO Galaxy value, growing with his level. A miximax has no time limit and does not spend the hyper gauge: it burns GP faster and ends at 0; a keshin or an armour stops the drain while it is out and costs GP when it ends. A purple PEG bar (blue for SP) and a yellow GP bar show under the controlled player's face, and every player's max GP in the player header. In the mod's settings PEG, SP and GP can each be switched off (that part keeps the game's own rules). Works with the VR-Framework and Character Reforged; Inazuma Fantasy adds its own rules on top."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-16"
+updated = "2026-10-19"
 # This mod's own names (TOML keys [AuraPoints.X], Lua AuraPoints.X, commands CMND_AURAPOINTS_*, tables AuraPoints.*;
 # game Lua AuraPoints_Hud / AuraPoints_Stamina); never VRFW.
 prefix = "AuraPoints"
@@ -87,8 +87,9 @@ functions = []
 keys = []
 tables = ["AuraPoints.Aura", "AuraPoints.Player", "AuraPoints.Pair", "AuraPoints.Team", "AuraPoints.StaminaAura", "AuraPoints.StaminaPlayer", "AuraPoints.StaminaTeam", "Resource.OffPitch"]
 # the PE HUD graft keeps the EVT_PE_* globals of Inazuma Fantasy's stamina_hud (the PEG / SP bar sits under it by them)
-# game_lua: AuraPoints_Stamina.Plate / .PlatePe = the player header's PE piece (assets\lua\_all\aura_points_stamina_plate.lua)
-game_lua = ["AuraPoints_Hud", "AuraPoints_Stamina.Plate", "AuraPoints_Stamina.PlatePe"]
+# game_lua: AuraPoints_Stamina = the player header's PE piece, its table Plate and function PlatePe
+# (assets\lua\_all\aura_points_stamina_plate.lua)
+game_lua = ["AuraPoints_Hud", "AuraPoints_Stamina"]
 
 # A MODULE of Character Reforged (owner request 2026-10-14, docs/framework/mod-families.md): the Mods screen, the
 # ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod

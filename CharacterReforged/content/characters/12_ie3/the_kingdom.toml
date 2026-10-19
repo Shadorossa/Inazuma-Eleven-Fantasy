@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03031810"                                   # Falcão Da Silva
+moves = [
+  { move = 0xF5C2A0A5, level = 1 },                         # Capoeira Grab
+  { move = 0xC2BBD4A2, level = 1 },                         # Wild Claw
+  { move = 0x53CD747F, level = 33 },                        # Tarzan Kick
+  { move = 0xDD365E15, level = 55 },                        # Mole Shuffle
+]
+VRFW.MoveGrades = [
+  { Move = 0xF5C2A0A5, Grade = 1 },                         # Capoeira Grab
+]
 
   [[edit.cards]]
   id = 0x56C59206                                         # GK/MF · mountain
@@ -15,6 +24,12 @@ target = "c03031810"                                   # Falcão Da Silva
 
 [[edit]]
 target = "c03031820"                                   # Carlos Lagarto
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x7A67325B, level = 35 },                        # Flame Dance
+  { move = 0x21127474, level = 50 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x7DE8C1C5                                         # DF/MF · forest
@@ -24,6 +39,12 @@ target = "c03031820"                                   # Carlos Lagarto
 
 [[edit]]
 target = "c03031830"                                   # Antonio Bagre
+moves = [
+  { move = 0x7F2824DE, level = 1 },                         # Dual Storm
+  { move = 0x4E5B398C, level = 1 },                         # Acrobat Bomber
+  { move = 0xAD6E4BF9, level = 44 },                        # Harvest
+  { move = 0xB7F1AED6, level = 60 },                        # Double Cyclone
+]
 
   [[edit.cards]]
   id = 0x64F3F084                                         # DF/FW · wind
@@ -33,6 +54,12 @@ target = "c03031830"                                   # Antonio Bagre
 
 [[edit]]
 target = "c03031840"                                   # Monstro Ximenes
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x7D6E9A87, level = 38 },                        # The Wall
+  { move = 0x5E7E4775, level = 48 },                        # Table-Turner
+]
 
   [[edit.cards]]
   id = 0x2BB26643                                         # DF/GK · fire
@@ -42,6 +69,12 @@ target = "c03031840"                                   # Monstro Ximenes
 
 [[edit]]
 target = "c03031850"                                   # Formiga Clemens
+moves = [
+  { move = 0xC5EF0563, level = 1 },                         # Three-Legged Rush
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x47657634, level = 55 },                        # Flame Breath
+]
 
   [[edit.cards]]
   id = 0x32A95702                                         # DF/MF · mountain
@@ -51,6 +84,12 @@ target = "c03031850"                                   # Formiga Clemens
 
 [[edit]]
 target = "c03031860"                                   # Presa Passos
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x2354CA2D, level = 57 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x198404C1                                         # MF/DF · wind
@@ -60,6 +99,12 @@ target = "c03031860"                                   # Presa Passos
 
 [[edit]]
 target = "c03031870"                                   # Borboleta Barboza
+moves = [
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0x5B6C28ED, level = 1 },                         # Invisible Fake
+  { move = 0x74CC079C, level = 38 },                        # Big Fan
+  { move = 0x4741C0E8, level = 53 },                        # Steeple Shot
+]
 
   [[edit.cards]]
   id = 0x009F3580                                         # MF/FW · wind
@@ -69,6 +114,12 @@ target = "c03031870"                                   # Borboleta Barboza
 
 [[edit]]
 target = "c03031880"                                   # Coruja Cerezo
+moves = [
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0x5E233E68, level = 1 },                         # Super Elastico
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x0455B9CE, level = 50 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0x8707294F                                         # MF/FW · mountain
@@ -78,6 +129,12 @@ target = "c03031880"                                   # Coruja Cerezo
 
 [[edit]]
 target = "c03031890"                                   # Leonardo Almeida
+moves = [
+  { move = 0xB7300568, level = 1 },                         # Double Tornado
+  { move = 0x5E233E68, level = 1 },                         # Super Elastico
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x2296A01A, level = 53 },                        # Southern Cross
+]
 
   [[edit.cards]]
   id = 0x9E1C180E                                         # MF/FW · forest
@@ -87,6 +144,15 @@ target = "c03031890"                                   # Leonardo Almeida
 
 [[edit]]
 target = "c03031900"                                   # Mac Robingo
+moves = [
+  { move = 0x13D845C9, level = 1 },                         # Samba Strike
+  { move = 0x5E233E68, level = 1 },                         # Super Elastico
+  { move = 0x5049A011, level = 40 },                        # Spinning Shot
+  { move = 0x9349F1DA, level = 55 },                        # Zephyr Shot
+]
+VRFW.MoveGrades = [
+  { Move = 0x13D845C9, Grade = 1 },                         # Samba Strike
+]
 
   [[edit.cards]]
   id = 0x4E1CC970                                         # FW/MF · fire
@@ -96,6 +162,12 @@ target = "c03031900"                                   # Mac Robingo
 
 [[edit]]
 target = "c03031910"                                   # Gato Carvalho
+moves = [
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0xC0FD6AFB, level = 1 },                         # Fireball Head
+  { move = 0xC7A9BB3A, level = 38 },                        # Whirlwind Cut
+  { move = 0x13D845C9, level = 65 },                        # Samba Strike
+]
 
   [[edit.cards]]
   id = 0x5707F831                                         # FW/MF · fire
@@ -106,6 +178,12 @@ target = "c03031910"                                   # Gato Carvalho
 
 [[edit]]
 target = "c03031920"                                   # Xavier Ribeiro
+moves = [
+  { move = 0xA553C5C8, level = 1 },                         # Clone Block
+  { move = 0xC0FD6AFB, level = 1 },                         # Fireball Head
+  { move = 0xF5C2A0A5, level = 50 },                        # Capoeira Grab
+  { move = 0xEBD03938, level = 65 },                        # Utter Gutsiness Catch
+]
 
   [[edit.cards]]
   id = 0x7C2AABF2                                         # GK/MF · mountain
@@ -115,6 +193,12 @@ target = "c03031920"                                   # Xavier Ribeiro
 
 [[edit]]
 target = "c03031930"                                   # Ulisses Nogueira
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x5DFA931B, level = 50 },                        # Triple Defence
+  { move = 0x74B5C85D, level = 52 },                        # Security Shot
+]
 
   [[edit.cards]]
   id = 0x65319AB3                                         # DF/FW · fire
@@ -124,6 +208,12 @@ target = "c03031930"                                   # Ulisses Nogueira
 
 [[edit]]
 target = "c03031940"                                   # Gervasio Oliveira
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x36A270F2, level = 38 },                        # Rolling Slide
+  { move = 0xB4757AB8, level = 53 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0x2A700C74                                         # DF/MF · fire
@@ -133,6 +223,12 @@ target = "c03031940"                                   # Gervasio Oliveira
 
 [[edit]]
 target = "c03031950"                                   # Tigre Mendes
+moves = [
+  { move = 0xB7300568, level = 1 },                         # Double Tornado
+  { move = 0xC5EF0563, level = 1 },                         # Three-Legged Rush
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x41F3CDC2, level = 44 },                        # Scorching Tackle
+]
 
   [[edit.cards]]
   id = 0x336B3D35                                         # MF/FW · wind
@@ -142,6 +238,12 @@ target = "c03031950"                                   # Tigre Mendes
 
 [[edit]]
 target = "c03031960"                                   # Grillo Santos
+moves = [
+  { move = 0x78E027BC, level = 1 },                         # Shine Drive
+  { move = 0x011AAF4B, level = 1 },                         # Gyro Head
+  { move = 0x3EC287DE, level = 39 },                        # Bubble Gum
+  { move = 0x5E233E68, level = 60 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0x18466EF6                                         # FW/MF · forest
@@ -151,6 +253,12 @@ target = "c03031960"                                   # Grillo Santos
 
 [[edit]]
 target = "c11803080"                                   # Leão Samus
+moves = [
+  { move = 0x88B554E0, level = 1 },                         # Galatyn
+  { move = 0x49933AEE, level = 13 },                        # Perfect Tower
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0x96A7CD7D, level = 30 },                        # Tsunami Wall
+]
 
   [[edit.cards]]
   id = 0xD3DB5976                                         # DF/GK · wind
@@ -160,6 +268,12 @@ target = "c11803080"                                   # Leão Samus
 
 [[edit]]
 target = "c11803090"                                   # Zoolan Rice
+moves = [
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0x7C6D5B0E, level = 13 },                        # Astro Break
+  { move = 0xF2CB0879, level = 20 },                        # Mugen the Hand
+  { move = 0x91AE65A1, level = 30 },                        # Giant Spider
+]
 
   [[edit.cards]]
   id = 0xCAC06837                                         # GK/FW · forest

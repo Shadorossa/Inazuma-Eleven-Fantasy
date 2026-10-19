@@ -1,0 +1,210 @@
+# Chronicle Deluxe: the free-match class title «BATALLA LEGENDARIA» of the Lv 200 class (class 9,
+# content\defaults\match_difficulty.toml [MatchDifficulty.Class4] Badge) in the class title format of
+# #/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx (512 x 160; 1024 x 320 in the default = Japanese file). The same title
+# the old Inazuma Fantasy used for its Lv 200 class: made at boot from the PLAYER'S own retail Chronicle title
+# gtxt_class28 (680 x 152 / 1360 x 304, wider than the class card), resized so its plate box lands on the plate box of
+# the class title gtxt_class01 of the same file, on a class-title-sized canvas. The numbers are the measures of
+# research/scripts/fm_class_banners.py on the v7.1.2 dump (re-run it after a game update that changes these sprites).
+# docs/game/mods/chronicle-deluxe-free-match.md.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+size = [1024, 320]
+lang = ""
+
+[[texture]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+size = [512, 160]
+lang = ["en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
+
+# gtxt_class28 of the default (Japanese) file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_default_src"
+game = "#/menu/200_icon/06_icon_class/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [809, 234] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_default"
+canvas = [1024, 320]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_default_src", at = [107, 27] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_default"
+lang = ""
+
+# gtxt_class28 of the en file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_en_src"
+game = "#/menu/200_icon/06_icon_class/en/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [417, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_en"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_en_src", at = [53, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_en"
+lang = "en"
+
+# gtxt_class28 of the es file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_es_src"
+game = "#/menu/200_icon/06_icon_class/es/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [416, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_es"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_es_src", at = [55, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_es"
+lang = "es"
+
+# gtxt_class28 of the fr file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_fr_src"
+game = "#/menu/200_icon/06_icon_class/fr/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [417, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_fr"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_fr_src", at = [53, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_fr"
+lang = "fr"
+
+# gtxt_class28 of the de file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_de_src"
+game = "#/menu/200_icon/06_icon_class/de/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [417, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_de"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_de_src", at = [53, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_de"
+lang = "de"
+
+# gtxt_class28 of the it file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_it_src"
+game = "#/menu/200_icon/06_icon_class/it/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [405, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_it"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_it_src", at = [60, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_it"
+lang = "it"
+
+# gtxt_class28 of the pt file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_pt_src"
+game = "#/menu/200_icon/06_icon_class/pt/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [417, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_pt"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_pt_src", at = [53, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_pt"
+lang = "pt"
+
+# gtxt_class28 of the zh_hans file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_zh_hans_src"
+game = "#/menu/200_icon/06_icon_class/zh_hans/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [405, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_zh_hans"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_zh_hans_src", at = [54, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_zh_hans"
+lang = "zh_hans"
+
+# gtxt_class28 of the zh_hant file, its plate on gtxt_class01's
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_zh_hant_src"
+game = "#/menu/200_icon/06_icon_class/zh_hant/icon_class.g4tx"
+sprite = "gtxt_class28"
+ops = [{ op = "resize", size = [405, 119] }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_battle_zh_hant"
+canvas = [512, 160]
+ops = [{ op = "paste", image = "chronicle_deluxe_legendary_battle_zh_hant_src", at = [54, 10] }]
+
+[[sprite]]
+atlas = "#/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx"
+name = "chronicle_deluxe_legendary_battle"
+texture = "chronicle_deluxe_legendary_battle"
+x = 0
+y = 0
+recipe = "chronicle_deluxe_legendary_battle_zh_hant"
+lang = "zh_hant"

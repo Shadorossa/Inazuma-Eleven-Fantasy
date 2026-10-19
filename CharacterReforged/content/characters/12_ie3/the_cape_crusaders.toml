@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03033010"                                   # Zolani Baloi
+moves = [
+  { move = 0xF5C2A0A5, level = 1 },                         # Capoeira Grab
+  { move = 0x8FBCFC3C, level = 8 },                         # Blazing Knuckle
+  { move = 0x4BD584B7, level = 37 },                        # Power Charge
+  { move = 0x6633159F, level = 53 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0xF2DF0B35                                         # GK/DF · mountain
@@ -16,6 +22,12 @@ target = "c03033010"                                   # Zolani Baloi
 
 [[edit]]
 target = "c03033020"                                   # Dakarai Furman
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0x7A67325B, level = 12 },                        # Flame Dance
+  { move = 0xC0A013E6, level = 42 },                        # Liar Shot
+  { move = 0x13D845C9, level = 58 },                        # Samba Strike
+]
 
   [[edit.cards]]
   id = 0xD9F258F6                                         # DF/MF · fire
@@ -26,6 +38,12 @@ target = "c03033020"                                   # Dakarai Furman
 
 [[edit]]
 target = "c03033030"                                   # Jake Fana
+moves = [
+  { move = 0x36A270F2, level = 4 },                         # Rolling Slide
+  { move = 0x41F3CDC2, level = 16 },                        # Scorching Tackle
+  { move = 0xA6D711A6, level = 31 },                        # Full Power Shield
+  { move = 0xABA58912, level = 59 },                        # Ignited Steal
+]
 
   [[edit.cards]]
   id = 0xC0E969B7                                         # DF/MF · fire
@@ -35,6 +53,12 @@ target = "c03033030"                                   # Jake Fana
 
 [[edit]]
 target = "c03033040"                                   # Masego Molelo
+moves = [
+  { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
+  { move = 0x427719AC, level = 21 },                        # Gale Dash
+  { move = 0xC0A013E6, level = 46 },                        # Liar Shot
+  { move = 0x70417B2E, level = 57 },                        # Deceptor Dribble
+]
 
   [[edit.cards]]
   id = 0x8FA8FF70                                         # DF/MF · forest
@@ -45,6 +69,12 @@ target = "c03033040"                                   # Masego Molelo
 
 [[edit]]
 target = "c03033050"                                   # Cassius Tobler
+moves = [
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
+  { move = 0x0B011EBF, level = 48 },                        # Fireball Screw
+  { move = 0x9765A74A, level = 55 },                        # Beast Fang
+]
 
   [[edit.cards]]
   id = 0x96B3CE31                                         # DF/FW · forest
@@ -55,6 +85,12 @@ target = "c03033050"                                   # Cassius Tobler
 
 [[edit]]
 target = "c03033060"                                   # Anton Nortje
+moves = [
+  { move = 0x166B0073, level = 1 },                         # Super Armadillo
+  { move = 0x4BD584B7, level = 17 },                        # Power Charge
+  { move = 0x41F3CDC2, level = 25 },                        # Scorching Tackle
+  { move = 0x7BA5586C, level = 48 },                        # Mad Express
+]
 
   [[edit.cards]]
   id = 0xBD9E9DF2                                         # MF/DF · mountain
@@ -64,6 +100,12 @@ target = "c03033060"                                   # Anton Nortje
 
 [[edit]]
 target = "c03033070"                                   # Adam Marunga
+moves = [
+  { move = 0xC0A013E6, level = 6 },                         # Liar Shot
+  { move = 0x087999EE, level = 26 },                        # Heel Drop
+  { move = 0x21127474, level = 37 },                        # Ultra Moon
+  { move = 0x2354CA2D, level = 52 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0xA485ACB3                                         # MF/DF · wind
@@ -73,6 +115,12 @@ target = "c03033070"                                   # Adam Marunga
 
 [[edit]]
 target = "c03033080"                                   # Reggie Ines
+moves = [
+  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x70417B2E, level = 18 },                        # Deceptor Dribble
+  { move = 0x2FB941B3, level = 32 },                        # Stone Prison
+  { move = 0x62BE692D, level = 46 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x231DB07C                                         # MF/DF · wind
@@ -82,6 +130,12 @@ target = "c03033080"                                   # Reggie Ines
 
 [[edit]]
 target = "c03033090"                                   # Siyabonga Mahlangu
+moves = [
+  { move = 0x41F3CDC2, level = 2 },                         # Scorching Tackle
+  { move = 0x2BF596BF, level = 27 },                        # Tsunami Boost
+  { move = 0x36A270F2, level = 39 },                        # Rolling Slide
+  { move = 0x38094535, level = 60 },                        # Sub-Terfuge
+]
 
   [[edit.cards]]
   id = 0x3A06813D                                         # MF/DF · fire
@@ -91,6 +145,12 @@ target = "c03033090"                                   # Siyabonga Mahlangu
 
 [[edit]]
 target = "c03033100"                                   # Nathan Tswane
+moves = [
+  { move = 0xC0A013E6, level = 1 },                         # Liar Shot
+  { move = 0x43B5739B, level = 28 },                        # Lightning Bolt
+  { move = 0x62BE692D, level = 40 },                        # Whirlwind Force
+  { move = 0xAAA6489B, level = 54 },                        # Spiral Shot
+]
 
   [[edit.cards]]
   id = 0xEA065043                                         # FW/MF · wind
@@ -100,6 +160,12 @@ target = "c03033100"                                   # Nathan Tswane
 
 [[edit]]
 target = "c03033110"                                   # Melisizwe Zamani
+moves = [
+  { move = 0xC0A013E6, level = 1 },                         # Liar Shot
+  { move = 0x41F3CDC2, level = 16 },                        # Scorching Tackle
+  { move = 0x0B011EBF, level = 45 },                        # Fireball Screw
+  { move = 0x142DBE2A, level = 53 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0xF31D6102                                         # FW/MF · fire
@@ -109,6 +175,12 @@ target = "c03033110"                                   # Melisizwe Zamani
 
 [[edit]]
 target = "c03033120"                                   # Herschel De Villiers
+moves = [
+  { move = 0xC0A013E6, level = 7 },                         # Liar Shot
+  { move = 0xBDAE2862, level = 38 },                        # Hellfire
+  { move = 0x427719AC, level = 47 },                        # Gale Dash
+  { move = 0x0CF4E55C, level = 61 },                        # Double Touch
+]
 
   [[edit.cards]]
   id = 0xD83032C1                                         # FW/MF · fire
@@ -119,6 +191,12 @@ target = "c03033120"                                   # Herschel De Villiers
 
 [[edit]]
 target = "c03033130"                                   # Moeneeb Booysen
+moves = [
+  { move = 0xB37CD264, level = 10 },                        # Am-Bush
+  { move = 0x36A270F2, level = 16 },                        # Rolling Slide
+  { move = 0x087999EE, level = 34 },                        # Heel Drop
+  { move = 0xDCF43422, level = 52 },                        # Aurora Dribble
+]
 
   [[edit.cards]]
   id = 0xC12B0380                                         # DF/MF · wind
@@ -129,6 +207,12 @@ target = "c03033130"                                   # Moeneeb Booysen
 
 [[edit]]
 target = "c03033140"                                   # Kennedy McCarthy
+moves = [
+  { move = 0xC0A013E6, level = 8 },                         # Liar Shot
+  { move = 0x166B0073, level = 9 },                         # Super Armadillo
+  { move = 0xB13A6C3D, level = 30 },                        # Zigzag Flame
+  { move = 0xB37CD264, level = 60 },                        # Am-Bush
+]
 
   [[edit.cards]]
   id = 0x8E6A9547                                         # DF/MF · forest
@@ -139,6 +223,12 @@ target = "c03033140"                                   # Kennedy McCarthy
 
 [[edit]]
 target = "c03033150"                                   # Hugh Makebe
+moves = [
+  { move = 0xC2BBD4A2, level = 1 },                         # Wild Claw
+  { move = 0xF5C2A0A5, level = 10 },                        # Capoeira Grab
+  { move = 0x91AE65A1, level = 39 },                        # Giant Spider
+  { move = 0x4BD584B7, level = 47 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0x9771A406                                         # GK/DF · mountain
@@ -148,6 +238,12 @@ target = "c03033150"                                   # Hugh Makebe
 
 [[edit]]
 target = "c03033160"                                   # Themba Sepeng
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0xC0A013E6, level = 17 },                        # Liar Shot
+  { move = 0xD8794890, level = 26 },                        # Kangaroo Kick
+  { move = 0xB4757AB8, level = 42 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0xBC5CF7C5                                         # MF/DF · fire

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11908080"                                   # Chesney Horse
+moves = [
+  { move = 0x5506B694, level = 1 },                         # Utter Gutsiness Club
+  { move = 0x6B1CF436, level = 13 },                        # Bewildered
+  { move = 0xCF7FA2C4, level = 20 },                        # Gold Rush
+  { move = 0x29B328E6, level = 30 },                        # Spectacle Crash
+]
 
   [[edit.cards]]
   id = 0xCF860DD2                                         # FW/MF · forest
@@ -16,6 +22,15 @@ target = "c11908080"                                   # Chesney Horse
 
 [[edit]]
 target = "c11907050"                                   # Hunter Foster
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0x6DAEF91C, level = 35 },                        # Supernova
+  { move = 0xB633C4E1, level = 41 },                        # Photon Crash
+  { move = 0x2296A01A, level = 62 },                        # Southern Cross
+]
+VRFW.MoveGrades = [
+  { Move = 0x65766A4F, Grade = 1 },                         # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x224B63C9                                         # FW/DF · fire
@@ -24,6 +39,12 @@ target = "c11907050"                                   # Hunter Foster
 
 [[edit]]
 target = "c11907060"                                   # Xavier Schiller
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0x1755397B, level = 16 },                        # Dark Energy Star
+  { move = 0xC3D894B7, level = 37 },                        # The Dawn
+  { move = 0x00A10ABD, level = 50 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x0966300A                                         # FW/DF · forest
@@ -32,6 +53,12 @@ target = "c11907060"                                   # Xavier Schiller
 
 [[edit]]
 target = "c11907080"                                   # Massimo Donati
+moves = [
+  { move = 0xA3CBF493, level = 1 },                         # Fire Lemonade
+  { move = 0x728CD324, level = 13 },                        # Fizzy Fire Lemonade
+  { move = 0x3663DB4C, level = 20 },                        # Utter Gutsiness Bat
+  { move = 0x4D1E465C, level = 30 },                        # Fake Bomber
+]
 
   [[edit.cards]]
   id = 0x97E51D84                                         # FW/DF · fire
@@ -52,6 +79,12 @@ target = "c11907090_notplayer"                         # Kia Tanner
 
 [[edit]]
 target = "c11907070"                                   # Faith Winter
+moves = [
+  { move = 0x867EE0BB, level = 1 },                         # Verdure Vortex
+  { move = 0x0A02DF36, level = 13 },                        # Containment Field
+  { move = 0x9543988F, level = 20 },                        # Tornado Barrier
+  { move = 0x8D9AC3F9, level = 30 },                        # Twister Trap
+]
 
   [[edit.cards]]
   id = 0x107D014B                                         # DF/FW · wind

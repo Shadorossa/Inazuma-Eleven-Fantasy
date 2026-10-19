@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11500280"                                   # Blue Cleverley
+moves = [
+  { move = 0x9AF2229C, level = 1 },                         # Gravity Point
+  { move = 0xACAC21CE, level = 13 },                        # Fake Ball
+  { move = 0x6BA49049, level = 20 },                        # Mystic Mist
+  { move = 0x06B22DB5, level = 30 },                        # Gyro-Blocker
+]
 
   [[edit.cards]]
   id = 0x7E743128                                         # GK/DF · forest
@@ -16,6 +22,12 @@ target = "c11500280"                                   # Blue Cleverley
 
 [[edit]]
 target = "c11700350"                                   # Faris Creed
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x64CDCFB9, level = 13 },                        # Rising Dragon
+  { move = 0x4FE09C7A, level = 20 },                        # Acrobatic Keep
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x87D08459                                         # MF/DF · mountain
@@ -26,6 +38,12 @@ target = "c11700350"                                   # Faris Creed
 
 [[edit]]
 target = "c11708010"                                   # Sophia Goston
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0xAB6422AC, level = 13 },                        # Phantom Shot
+  { move = 0xC19E2AEE, level = 20 },                        # Pegasus Shot
+  { move = 0xDBFD9CFE, level = 30 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0x244ED7EB                                         # MF/FW · forest
@@ -36,6 +54,12 @@ target = "c11708010"                                   # Sophia Goston
 
 [[edit]]
 target = "c11708020"                                   # Stellan Checkman
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0x4F58F805, level = 20 },                        # Coil Turn
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x0F638428                                         # MF/DF · wind
@@ -46,6 +70,12 @@ target = "c11708020"                                   # Stellan Checkman
 
 [[edit]]
 target = "c11708030"                                   # Ayla Bordaire
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x4E5B398C, level = 20 },                        # Acrobat Bomber
+  { move = 0x7DD6FEF8, level = 30 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0x1678B569                                         # FW/MF · forest
@@ -56,6 +86,12 @@ target = "c11708030"                                   # Ayla Bordaire
 
 [[edit]]
 target = "c11708040"                                   # Jerome Knight
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0x3A4FFB6C, level = 13 },                        # The Ikaros
+  { move = 0xDDCA0D2A, level = 20 },                        # Bouncing Bomb
+  { move = 0xEFFC6FA8, level = 30 },                        # Warhead
+]
 
   [[edit.cards]]
   id = 0x593923AE                                         # MF/FW · fire
@@ -66,6 +102,12 @@ target = "c11708040"                                   # Jerome Knight
 
 [[edit]]
 target = "c11708050"                                   # Harris Gridley
+moves = [
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x3A4FFB6C, level = 13 },                        # The Ikaros
+  { move = 0x41F3CDC2, level = 20 },                        # Scorching Tackle
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0x402212EF                                         # MF/DF · fire
@@ -76,6 +118,12 @@ target = "c11708050"                                   # Harris Gridley
 
 [[edit]]
 target = "c11708060"                                   # Pierce Castleton
+moves = [
+  { move = 0x105C91A7, level = 1 },                         # Slingshot
+  { move = 0x1876DB66, level = 13 },                        # Disaster Strike
+  { move = 0x2D9F7E76, level = 20 },                        # Breath Taker
+  { move = 0xDBA0E5E3, level = 30 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0x6B0F412C                                         # FW/GK · mountain
@@ -86,6 +134,12 @@ target = "c11708060"                                   # Pierce Castleton
 
 [[edit]]
 target = "c11708070"                                   # Link Whitstone
+moves = [
+  { move = 0x49933AEE, level = 1 },                         # Perfect Tower
+  { move = 0x6F918884, level = 13 },                        # Easy Breezy
+  { move = 0xE0549BE6, level = 20 },                        # Easy Breezy Kid
+  { move = 0x62BE692D, level = 30 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x7214706D                                         # DF/MF · wind
@@ -96,6 +150,12 @@ target = "c11708070"                                   # Link Whitstone
 
 [[edit]]
 target = "c11708080"                                   # Whitney Blackrock
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0x8A936B25, level = 20 },                        # Goopy Gloopy Goo
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0xF58C6CA2                                         # DF/MF · fire
@@ -106,6 +166,12 @@ target = "c11708080"                                   # Whitney Blackrock
 
 [[edit]]
 target = "c11708090"                                   # Vivienne Starling
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x592A96B4, level = 13 },                        # Afterimage
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0x4A17EE80, level = 30 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0xEC975DE3                                         # DF/MF · forest

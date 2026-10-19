@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02023410"                                   # Crane Kik
+moves = [
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0x47657634, level = 1 },                         # Flame Breath
+  { move = 0xBFCC20E7, level = 20 },                        # Wood Chopper
+  { move = 0xA553C5C8, level = 45 },                        # Clone Block
+]
 
   [[edit.cards]]
   id = 0x6EC181ED                                         # GK/MF · forest
@@ -15,6 +21,12 @@ target = "c02023410"                                   # Crane Kik
 
 [[edit]]
 target = "c02023420"                                   # Parry Waxon
+moves = [
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x0F703132, level = 21 },                        # Black Magic
+  { move = 0xB4757AB8, level = 46 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0x45ECD22E                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c02023420"                                   # Parry Waxon
 
 [[edit]]
 target = "c02023430"                                   # Bri Spark
+moves = [
+  { move = 0x3D4653B0, level = 13 },                        # Poison Fog
+  { move = 0xB5B7108F, level = 20 },                        # Shadow Stitch
+  { move = 0x09BBF3D9, level = 29 },                        # Dark Whirlwind
+  { move = 0x17A96A44, level = 50 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0x5CF7E36F                                         # DF/MF · mountain
@@ -33,6 +51,12 @@ target = "c02023430"                                   # Bri Spark
 
 [[edit]]
 target = "c02023440"                                   # Max Fortune
+moves = [
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0x19025F83, level = 14 },                        # Quick Draw
+  { move = 0x574008CD, level = 27 },                        # Kung Fu Fighting
+  { move = 0xB4757AB8, level = 42 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0x13B675A8                                         # DF/MF · forest
@@ -42,6 +66,12 @@ target = "c02023440"                                   # Max Fortune
 
 [[edit]]
 target = "c02023450"                                   # Brendan Water
+moves = [
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
+  { move = 0x41F3CDC2, level = 26 },                        # Scorching Tackle
+  { move = 0x4031A7F5, level = 37 },                        # Mole Fake
+]
 
   [[edit.cards]]
   id = 0x0AAD44E9                                         # DF/MF · fire
@@ -51,6 +81,12 @@ target = "c02023450"                                   # Brendan Water
 
 [[edit]]
 target = "c02023460"                                   # Junior Fardream
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x09BBF3D9, level = 23 },                        # Dark Whirlwind
+  { move = 0xB5B7108F, level = 34 },                        # Shadow Stitch
+  { move = 0x2D3E5454, level = 42 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0x2180172A                                         # MF/DF · forest
@@ -60,6 +96,12 @@ target = "c02023460"                                   # Junior Fardream
 
 [[edit]]
 target = "c02023470"                                   # Ian Telektual
+moves = [
+  { move = 0x17A96A44, level = 17 },                        # Clone Faker
+  { move = 0x6B1CF436, level = 21 },                        # Bewildered
+  { move = 0x3663DB4C, level = 30 },                        # Utter Gutsiness Bat
+  { move = 0xC7A9BB3A, level = 45 },                        # Whirlwind Cut
+]
 
   [[edit.cards]]
   id = 0x389B266B                                         # MF/DF · wind
@@ -70,6 +112,12 @@ target = "c02023470"                                   # Ian Telektual
 
 [[edit]]
 target = "c02023480"                                   # Lee Dinglite
+moves = [
+  { move = 0xA8E0F6C2, level = 1 },                         # Kung Fu Header
+  { move = 0x2D3E5454, level = 1 },                         # Clone Shot
+  { move = 0x33ED6677, level = 18 },                        # Doppelganger
+  { move = 0x261BDCA8, level = 39 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0xBF033AA4                                         # MF/FW · forest
@@ -79,6 +127,12 @@ target = "c02023480"                                   # Lee Dinglite
 
 [[edit]]
 target = "c02023490"                                   # Marshall Artz
+moves = [
+  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x574008CD, level = 1 },                         # Kung Fu Fighting
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0xADAFE047, level = 53 },                        # Dual Strike
+]
 
   [[edit.cards]]
   id = 0xA6180BE5                                         # FW/MF · fire
@@ -89,6 +143,12 @@ target = "c02023490"                                   # Marshall Artz
 
 [[edit]]
 target = "c02023500"                                   # Tyke Wando
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0xB5B7108F, level = 33 },                        # Shadow Stitch
+  { move = 0xB4B4D106, level = 42 },                        # Dragon Cannon
+]
 
   [[edit.cards]]
   id = 0x7618DA9B                                         # FW/MF · forest
@@ -98,6 +158,12 @@ target = "c02023500"                                   # Tyke Wando
 
 [[edit]]
 target = "c02023510"                                   # Dirk Artz
+moves = [
+  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0xB4B4D106, level = 1 },                         # Dragon Cannon
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x4DDFEDE2, level = 57 },                        # Eagle Buster
+]
 
   [[edit.cards]]
   id = 0x6F03EBDA                                         # FW/MF · wind
@@ -112,9 +178,38 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 151, control = 209, technique = 215, pressure = 236, physical = 216, intelligence = 297, agility = 174, freedom = 351 }
+moves = [
+  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0x259F08C6, level = 18 },                        # Whirlwind Twister
+  { move = 0x55C71D2A, level = 24 },                        # About Face
+  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+]
+VRFW.MoveGrades = [
+  { Move = 0x62BE692D, Grade = 1 },                         # Whirlwind Force
+]
+
+  [[edit.cards]]
+  id = 0x442EB819    # this card's moveset differs from the list above
+  moves = [
+    { move = 0x62BE692D, level = 1 },                       # Whirlwind Force
+    { move = 0x259F08C6, level = 18 },                      # Whirlwind Twister
+    { move = 0x55C71D2A, level = 24 },                      # About Face
+    { move = 0x6B1CF436, level = 28 },                      # Bewildered
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x925B9AA5, level = 1 },                       # Modo Serio [aura]
+  ]
 
 [[edit]]
 target = "c02023530"                                   # Earnest Bookworm
+moves = [
+  { move = 0x94E17324, level = 1 },                         # Tornado Catch
+  { move = 0xC0FD6AFB, level = 22 },                        # Fireball Head
+  { move = 0xA8E0F6C2, level = 33 },                        # Kung Fu Header
+  { move = 0x47657634, level = 49 },                        # Flame Breath
+]
 
   [[edit.cards]]
   id = 0x5D358958                                         # GK/MF · wind
@@ -125,6 +220,12 @@ target = "c02023530"                                   # Earnest Bookworm
 
 [[edit]]
 target = "c02023540"                                   # Ollie Gami
+moves = [
+  { move = 0x18C035B4, level = 1 },                         # Ghost Pull
+  { move = 0x0F703132, level = 1 },                         # Black Magic
+  { move = 0x4B142F09, level = 28 },                        # Teleport Shot
+  { move = 0x322F0C40, level = 43 },                        # Spider Web
+]
 
   [[edit.cards]]
   id = 0x12741F9F                                         # DF/MF · forest
@@ -134,6 +235,12 @@ target = "c02023540"                                   # Ollie Gami
 
 [[edit]]
 target = "c02023550"                                   # Roman Kandel
+moves = [
+  { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
+  { move = 0x41F3CDC2, level = 29 },                        # Scorching Tackle
+  { move = 0x518BCA26, level = 35 },                        # Fire Tornado
+  { move = 0x025FD09B, level = 50 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0x0B6F2EDE                                         # MF/DF · fire
@@ -143,6 +250,12 @@ target = "c02023550"                                   # Roman Kandel
 
 [[edit]]
 target = "c02023560"                                   # Don Ation
+moves = [
+  { move = 0x4B142F09, level = 1 },                         # Teleport Shot
+  { move = 0xA8E0F6C2, level = 30 },                        # Kung Fu Header
+  { move = 0x259F08C6, level = 34 },                        # Whirlwind Twister
+  { move = 0xB4B4D106, level = 55 },                        # Dragon Cannon
+]
 
   [[edit.cards]]
   id = 0x20427D1D                                         # FW/DF · wind
@@ -153,6 +266,12 @@ target = "c02023560"                                   # Don Ation
 
 [[edit]]
 target = "c11802020"                                   # Isaias Setik
+moves = [
+  { move = 0x46A71C03, level = 1 },                         # Black Hole
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0xB5B7108F, level = 20 },                        # Shadow Stitch
+  { move = 0x93E8DBF8, level = 30 },                        # Dimensional Hand
+]
 
   [[edit.cards]]
   id = 0x9188D699                                         # DF/GK · forest
@@ -163,6 +282,15 @@ target = "c11802020"                                   # Isaias Setik
 
 [[edit]]
 target = "c11902330"                                   # Scott Banyan
+moves = [
+  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0x259F08C6, level = 18 },                        # Whirlwind Twister
+  { move = 0x55C71D2A, level = 24 },                        # About Face
+  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+]
+VRFW.MoveGrades = [
+  { Move = 0x62BE692D, Grade = 1 },                         # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x41898A24                                         # DF/MF · forest

@@ -1,0 +1,45 @@
+# The Competition picker's three players on the island's football pitch of the clubhouse map (model w50i001h03, floor
+# y -8.1), drawn as menu 3D models (assets\lua\soccer_vs_cpu_list_menu\275_competition_players.lua). Read by
+# scripts\competition.lua. Order: the captain, the goalkeeper, the third player (the picker's own choice).
+# Each player faces the eye of the scene shot named here unless `turn` (degrees about the up axis, 0 = +z) is given.
+# Places: shot AB5 «V abierta heroica» (owner 2026-10-19, research/build/previews/rival_shots_ab/shots.txt): the
+# captain 0.25 m ahead, the goalkeeper behind his right shoulder and the third behind his left in a wide V with no
+# shoulder overlap, each turned toward the low camera.
+
+[court]
+scene = "clubhouse"
+shot = "competition"
+# the shot (scripts/competition.lua «frame»): AB5 «V abierta heroica» (eye 0.65 m over the grass, heading 88, owner
+# 2026-10-19), always as declared; the players' places follow their sizes instead (spacing)
+camera_eye = [-105.482, -7.45, 96.199]
+camera_target = [-109.282, -6.653, 95.239]
+camera_fov = 30.0
+base_height = 1.89
+# the players' places follow their bodies (scripts/competition.lua «places»): a player taller than the captain stands
+# back_per_metre further from the camera per metre of difference, and out to the side until his shoulders clear the
+# captain's by `gap` metres (a body's width = its height x width_ratio); then, while his head, feet or shoulders are
+# outside the fixed frame (`margin` of the half frame kept free; the legs may leave its bottom), he steps back by `step` metres along his line from the
+# camera, at most max_back
+spacing = { width_ratio = 0.3, gap = 0.3, back_per_metre = 2.5, margin = 0.06, step = 0.15, max_back = 12.0 }
+# the older model (no camera_eye): heading / margin / captain_left
+camera_heading = 88.0
+height_margin = 1.15
+captain_left = 0.5
+
+[[court.spot]]
+x = -108.25
+y = -8.1
+z = 96.11
+turn = 88.1
+
+[[court.spot]]
+x = -109.12
+y = -8.1
+z = 96.53
+turn = 95.2
+
+[[court.spot]]
+x = -109.06
+y = -8.1
+z = 95.61
+turn = 80.7

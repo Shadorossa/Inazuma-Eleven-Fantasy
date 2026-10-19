@@ -10,8 +10,23 @@ rank = 3
 growth = "normal"
 stats = { kick = 155, control = 215, technique = 225, pressure = 238, physical = 240, intelligence = 248, agility = 269, freedom = 209 }
 
+  [[edit.cards]]
+  id = 0x9ED17B1B    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x8C382852, level = 1 },                       # God Hand
+    { move = 0x8FBCFC3C, level = 1 },                       # Blazing Knuckle
+    { move = 0xA491AFFF, level = 88 },                      # Majin the Hand
+    { move = 0xB039ADB4, level = 99 },                      # Inazuma Break
+  ]
+
 [[edit]]
 target = "c01002620"                                   # Charles Island
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x520F1E48, level = 45 },                        # Psycho Shot
+  { move = 0x63BDA8A4, level = 60 },                        # Inazuma Drop
+]
 
   [[edit.cards]]
   id = 0xB5FC28D8                                         # DF/MF · forest
@@ -21,6 +36,12 @@ target = "c01002620"                                   # Charles Island
 
 [[edit]]
 target = "c01002630"                                   # Garret Hairtown
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
+  { move = 0xA8E0F6C2, level = 39 },                        # Kung Fu Header
+  { move = 0x49529150, level = 72 },                        # Snake Shot
+]
 
   [[edit.cards]]
   id = 0xACE71999                                         # DF/FW · wind
@@ -30,6 +51,12 @@ target = "c01002630"                                   # Garret Hairtown
 
 [[edit]]
 target = "c01002640"                                   # Arthur Sweet
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x3663DB4C, level = 42 },                        # Utter Gutsiness Bat
+  { move = 0x0597D3F9, level = 65 },                        # Dragon Tornado
+]
 
   [[edit.cards]]
   id = 0xE3A68F5E                                         # DF/FW · mountain
@@ -39,6 +66,12 @@ target = "c01002640"                                   # Arthur Sweet
 
 [[edit]]
 target = "c01002650"                                   # Peter Mildred
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x35E70F22, level = 37 },                        # Grenade Shot
+  { move = 0x17A96A44, level = 68 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0xFABDBE1F                                         # MF/DF · forest
@@ -49,6 +82,12 @@ target = "c01002650"                                   # Peter Mildred
 
 [[edit]]
 target = "c01002660"                                   # Josh Nathaniel
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x7EEA4EE9, level = 34 },                        # Blade Attack
+  { move = 0xE9968761, level = 49 },                        # Rocket Kobushi
+]
 
   [[edit.cards]]
   id = 0xD190EDDC                                         # MF/DF · forest
@@ -59,6 +98,12 @@ target = "c01002660"                                   # Josh Nathaniel
 
 [[edit]]
 target = "c01002670"                                   # Edward Gladstone
+moves = [
+  { move = 0x60397CCA, level = 1 },                         # Cross Drive
+  { move = 0x4E9A9232, level = 34 },                        # Spinning Cut
+  { move = 0x4890FB67, level = 38 },                        # Twin Boost
+  { move = 0xB4757AB8, level = 88 },                        # Divine Stamp
+]
 
   [[edit.cards]]
   id = 0xC88BDC9D                                         # MF/FW · fire
@@ -68,6 +113,12 @@ target = "c01002670"                                   # Edward Gladstone
 
 [[edit]]
 target = "c01002680"                                   # Tyler Thomas
+moves = [
+  { move = 0x695A4A6F, level = 1 },                         # Magic
+  { move = 0x60397CCA, level = 1 },                         # Cross Drive
+  { move = 0xF14FDC17, level = 40 },                        # Shot Pocket
+  { move = 0x6ADE9E01, level = 61 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x4F13C052                                         # MF/FW · mountain
@@ -77,6 +128,12 @@ target = "c01002680"                                   # Tyler Thomas
 
 [[edit]]
 target = "c01002690"                                   # Joseph Yosemite
+moves = [
+  { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
+  { move = 0x63BDA8A4, level = 1 },                         # Inazuma Drop
+  { move = 0x19025F83, level = 45 },                        # Quick Draw
+  { move = 0x61FB16FD, level = 79 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x5608F113                                         # FW/DF · wind
@@ -86,6 +143,12 @@ target = "c01002690"                                   # Joseph Yosemite
 
 [[edit]]
 target = "c01002700"                                   # Ian Suffolk
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x34256515, level = 1 },                         # Dynamite Shot
+  { move = 0x142DBE2A, level = 44 },                        # Foul Offence
+  { move = 0x55C71D2A, level = 72 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0x8608206D                                         # MF/FW · fire
@@ -95,6 +158,12 @@ target = "c01002700"                                   # Ian Suffolk
 
 [[edit]]
 target = "c01002710"                                   # Constant Builder
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 38 },                        # Scorching Tackle
+  { move = 0x37A1B17B, level = 64 },                        # Fire Rooster
+]
 
   [[edit.cards]]
   id = 0x9F13112C                                         # FW/MF · fire
@@ -105,6 +174,12 @@ target = "c01002710"                                   # Constant Builder
 
 [[edit]]
 target = "c01002720"                                   # Ted Poe
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x0F703132, level = 34 },                        # Black Magic
+  { move = 0x01DB04F5, level = 51 },                        # Defence Scan
+  { move = 0xB5B7108F, level = 80 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0xB43E42EF                                         # FW/MF · forest
@@ -114,6 +189,12 @@ target = "c01002720"                                   # Ted Poe
 
 [[edit]]
 target = "c01002730"                                   # Marshall Heart
+moves = [
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0xA8E0F6C2, level = 34 },                        # Kung Fu Header
+  { move = 0x2D3E5454, level = 46 },                        # Clone Shot
+  { move = 0xBFCC20E7, level = 72 },                        # Wood Chopper
+]
 
   [[edit.cards]]
   id = 0xAD2573AE                                         # FW/MF · wind
@@ -124,6 +205,12 @@ target = "c01002730"                                   # Marshall Heart
 
 [[edit]]
 target = "c01002740"                                   # Dom Foreman
+moves = [
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0x2EBA803A, level = 38 },                        # Dirt Ball
+  { move = 0x4031A7F5, level = 49 },                        # Mole Fake
+  { move = 0x7207C577, level = 75 },                        # Boost Glider
+]
 
   [[edit.cards]]
   id = 0xE264E569                                         # MF/FW · mountain
@@ -134,6 +221,12 @@ target = "c01002740"                                   # Dom Foreman
 
 [[edit]]
 target = "c01002750"                                   # Slot MacHines
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x142DBE2A, level = 34 },                        # Foul Offence
+  { move = 0x55C71D2A, level = 54 },                        # About Face
+  { move = 0x3D4653B0, level = 70 },                        # Poison Fog
+]
 
   [[edit.cards]]
   id = 0xFB7FD428                                         # DF/MF · fire
@@ -143,6 +236,12 @@ target = "c01002750"                                   # Slot MacHines
 
 [[edit]]
 target = "c01002760"                                   # Bill Steakspear
+moves = [
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x7CACF0B0, level = 42 },                        # Horn Train
+  { move = 0x4523C86D, level = 69 },                        # Killer Blade
+]
 
   [[edit.cards]]
   id = 0xD05287EB                                         # DF/MF · mountain

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06030210"                                   # Skie Blue
+moves = [
+  { move = 0xC636A810, level = 4 },                         # Combustion Catch
+  { move = 0xC13F00CC, level = 25 },                        # Flower Power
+  { move = 0x06B22DB5, level = 35 },                        # Gyro-Blocker
+  { move = 0x53E9C2A3, level = 99 },                        # Capable Hands
+]
 
   [[edit.cards]]
   id = 0xB1D65F12                                         # MF/GK · forest
@@ -15,6 +21,17 @@ target = "c06030210"                                   # Skie Blue
 
 [[edit]]
 target = "c06030010"                                   # Terry Archibald
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x04F493EC, level = 48 },                        # Dragon Rage Dunk
+  { move = 0xE4849E49, level = 58 },                        # Wild Dunk
+  { move = 0xE6C22010, level = 68 },                        # Claw de Force
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7BCEA96F, level = 1 },                         # Tótem mamut [aura]
+]
 
   [[edit.cards]]
   id = 0xB2528B7C                                         # GK/MF · wind
@@ -23,6 +40,17 @@ target = "c06030010"                                   # Terry Archibald
 
 [[edit]]
 target = "c06030020"                                   # Trina Verdure
+moves = [
+  { move = 0x0CF4E55C, level = 12 },                        # Double Touch
+  { move = 0x322F0C40, level = 20 },                        # Spider Web
+  { move = 0x867EE0BB, level = 42 },                        # Verdure Vortex
+  { move = 0xBB21DDC9, level = 52 },                        # Trina Tumble
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xC3052576, level = 1 },                         # Tótem zorro [aura]
+]
 
   [[edit.cards]]
   id = 0x997FD8BF                                         # DF/MF · forest
@@ -33,6 +61,17 @@ target = "c06030020"                                   # Trina Verdure
 
 [[edit]]
 target = "c06030030"                                   # Keenan Sharpe
+moves = [
+  { move = 0xB4488239, level = 5 },                         # Look! UFO
+  { move = 0x5DA7EA06, level = 13 },                        # Boomerang Bluff
+  { move = 0x0F4DC9B3, level = 30 },                        # Logicstical Sync
+  { move = 0xA23AEC88, level = 40 },                        # Copy Cut
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xEF21DE69, level = 1 },                         # Tótem búho [aura]
+]
 
   [[edit.cards]]
   id = 0x8064E9FE                                         # DF/MF · mountain
@@ -42,6 +81,17 @@ target = "c06030030"                                   # Keenan Sharpe
 
 [[edit]]
 target = "c06030040"                                   # Zippy Lerner
+moves = [
+  { move = 0x2E7B2B84, level = 5 },                         # Thief's Eye
+  { move = 0x12E67CC1, level = 8 },                         # Future Eye
+  { move = 0x0F4DC9B3, level = 30 },                        # Logicstical Sync
+  { move = 0xED7B7A4F, level = 40 },                        # Defence Equation
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xF0F12DC3, level = 1 },                         # Tótem tejón [aura]
+]
 
   [[edit.cards]]
   id = 0xCF257F39                                         # DF/MF · wind
@@ -52,6 +102,17 @@ target = "c06030040"                                   # Zippy Lerner
 
 [[edit]]
 target = "c06030050"                                   # Frank Foreman
+moves = [
+  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0xF4604B0E, level = 12 },                        # Fancy-Footwork
+  { move = 0x82788A5A, level = 25 },                        # Straight Counter
+  { move = 0xBDAE2862, level = 43 },                        # Hellfire
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xBFB0BB04, level = 1 },                         # Tótem búfalo [aura]
+]
 
   [[edit.cards]]
   id = 0xD63E4E78                                         # DF/FW · fire
@@ -62,6 +123,17 @@ target = "c06030050"                                   # Frank Foreman
 
 [[edit]]
 target = "c06030060"                                   # Buddy Fury
+moves = [
+  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
+  { move = 0xCABBA212, level = 2 },                         # Menacing Glare
+  { move = 0x52CEB5F6, level = 51 },                        # Iron Wall
+  { move = 0x81FC5E34, level = 61 },                        # Driving Header
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xD9DB2AFA, level = 1 },                         # Tótem oso pardo [aura]
+]
 
   [[edit.cards]]
   id = 0xFD131DBB                                         # MF/DF · mountain
@@ -71,6 +143,12 @@ target = "c06030060"                                   # Buddy Fury
 
 [[edit]]
 target = "c06038010"                                   # Buddy Fury
+moves = [
+  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
+  { move = 0xCABBA212, level = 2 },                         # Menacing Glare
+  { move = 0x52CEB5F6, level = 51 },                        # Iron Wall
+  { move = 0x81FC5E34, level = 61 },                        # Driving Header
+]
 
   [[edit.cards]]
   id = 0x77E6A393                                         # MF/DF · mountain
@@ -80,6 +158,17 @@ target = "c06038010"                                   # Buddy Fury
 
 [[edit]]
 target = "c06030070"                                   # Cerise Blossom
+moves = [
+  { move = 0xD3A09353, level = 8 },                         # Hoopsie-Daisy
+  { move = 0xAAD10DF7, level = 15 },                        # Mermaid Smash
+  { move = 0x6DD736DD, level = 28 },                        # Ribbon Shower
+  { move = 0x54C4DCA3, level = 35 },                        # Butterfly Trance
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xC0C01BBB, level = 1 },                         # Tótem antílope [aura]
+]
 
   [[edit.cards]]
   id = 0xE4082CFA                                         # MF/FW · wind
@@ -89,6 +178,17 @@ target = "c06030070"                                   # Cerise Blossom
 
 [[edit]]
 target = "c06030110"                                   # Falco Flashman
+moves = [
+  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
+  { move = 0x568262FA, level = 30 },                        # Dark Tornado
+  { move = 0xB3CA3CB6, level = 40 },                        # Parkour Power
+  { move = 0x9B63BB1B, level = 50 },                        # Black Dawn
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x2E3D11F1, level = 1 },                         # Tótem halcón [aura]
+]
 
   [[edit.cards]]
   id = 0xB390E14B                                         # FW/MF · wind
@@ -97,6 +197,17 @@ target = "c06030110"                                   # Falco Flashman
 
 [[edit]]
 target = "c06038020"                                   # Falco Flashman
+moves = [
+  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
+  { move = 0x568262FA, level = 30 },                        # Dark Tornado
+  { move = 0xB3CA3CB6, level = 40 },                        # Parkour Power
+  { move = 0x9B63BB1B, level = 50 },                        # Black Dawn
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x2E3D11F1, level = 1 },                         # Tótem halcón [aura]
+]
 
   [[edit.cards]]
   id = 0x5CCBF050                                         # FW/MF · wind
@@ -105,6 +216,17 @@ target = "c06038020"                                   # Falco Flashman
 
 [[edit]]
 target = "c06030120"                                   # Zack Avalon
+moves = [
+  { move = 0x64CDCFB9, level = 1 },                         # Rising Dragon
+  { move = 0xD4222DDC, level = 1 },                         # Kabuki Break
+  { move = 0xC9BAEA82, level = 40 },                        # Eye of the Storm
+  { move = 0xB6852A33, level = 50 },                        # I Am the Almighty
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7867B677, level = 1 },                         # Tótem león [aura]
+]
 
   [[edit.cards]]
   id = 0x98BDB288                                         # FW/MF · forest
@@ -114,6 +236,12 @@ target = "c06030120"                                   # Zack Avalon
 
 [[edit]]
 target = "c06030220"                                   # Glacia Vessal
+moves = [
+  { move = 0x86F5F6E8, level = 1 },                         # Cupid's Arrow
+  { move = 0xAF28F5A0, level = 19 },                        # The Tower
+  { move = 0x54C4DCA3, level = 38 },                        # Butterfly Trance
+  { move = 0xCABBA212, level = 52 },                        # Menacing Glare
+]
 
   [[edit.cards]]
   id = 0x9AFB0CD1                                         # FW/MF · mountain
@@ -123,6 +251,12 @@ target = "c06030220"                                   # Glacia Vessal
 
 [[edit]]
 target = "c06039290"                                   # Astero Black
+moves = [
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0xBF6D0AC5, level = 26 },                        # Emperor Penguin No. 3
+  { move = 0x0DCADC54, level = 34 },                        # Emperor Penguin 7
+  { move = 0xC9B4602F, level = 60 },                        # Final Death Zone
+]
 
   [[edit.cards]]
   id = 0x04079A90                                         # FW/MF · mountain

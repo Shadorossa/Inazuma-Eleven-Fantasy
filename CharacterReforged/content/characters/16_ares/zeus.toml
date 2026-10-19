@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07080020"                                   # Ross Siddon
+moves = [
+  { move = 0x96A7CD7D, level = 1 },                         # Tsunami Wall
+  { move = 0xDBA0E5E3, level = 13 },                        # Gigant Wall
+  { move = 0x89773ED7, level = 20 },                        # Celestial Zone
+  { move = 0x34844F37, level = 30 },                        # White Hole
+]
 
   [[edit.cards]]
   id = 0x48D8E21A                                         # GK/FW · mountain
@@ -15,6 +21,12 @@ target = "c07080020"                                   # Ross Siddon
 
 [[edit]]
 target = "c07080040"                                   # Hadrian Diesel
+moves = [
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x61FB16FD, level = 20 },                        # Divine Arrows
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0x1E82459C                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c07080040"                                   # Hadrian Diesel
 
 [[edit]]
 target = "c07080110"                                   # Percy Hurst
+moves = [
+  { move = 0xC6655BA0, level = 1 },                         # Celestial Saw
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x1C8CE2B8, level = 20 },                        # God Knows
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0x6237DBEE                                         # FW/MF · fire
@@ -33,6 +51,12 @@ target = "c07080110"                                   # Percy Hurst
 
 [[edit]]
 target = "c07080030"                                   # Apollo Light
+moves = [
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x78E027BC, level = 56 },                        # Shine Drive
+  { move = 0x695A4A6F, level = 60 },                        # Magic
+  { move = 0x3F00EDE9, level = 80 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0x51C3D35B                                         # DF/MF · forest
@@ -43,6 +67,12 @@ target = "c07080030"                                   # Apollo Light
 
 [[edit]]
 target = "c07080050"                                   # Lane War
+moves = [
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x18C035B4, level = 45 },                        # Ghost Pull
+  { move = 0x142DBE2A, level = 55 },                        # Foul Offence
+  { move = 0x58E8FC83, level = 79 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0x079974DD                                         # DF/MF · mountain
@@ -53,6 +83,12 @@ target = "c07080050"                                   # Lane War
 
 [[edit]]
 target = "c07080060"                                   # Danny Wood
+moves = [
+  { move = 0x67F17FA8, level = 1 },                         # Mega Quake
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x00196EC2, level = 60 },                        # Earthquake
+  { move = 0xB1FBC783, level = 80 },                        # Reflect Buster
+]
 
   [[edit.cards]]
   id = 0x2CB4271E                                         # DF/MF · wind
@@ -63,6 +99,12 @@ target = "c07080060"                                   # Danny Wood
 
 [[edit]]
 target = "c07080070"                                   # Artie Mishman
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x61FB16FD, level = 45 },                        # Divine Arrows
+  { move = 0x6ADE9E01, level = 56 },                        # Illusory Ball
+  { move = 0x33ED6677, level = 79 },                        # Doppelganger
+]
 
   [[edit.cards]]
   id = 0x35AF165F                                         # MF/DF · wind
@@ -73,6 +115,12 @@ target = "c07080070"                                   # Artie Mishman
 
 [[edit]]
 target = "c07080080"                                   # Arion Matlock
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
+  { move = 0x2B343D01, level = 53 },                        # Cyclone
+  { move = 0xF08DB620, level = 80 },                        # Whirlwind
+]
 
   [[edit.cards]]
   id = 0xB2370A90                                         # MF/DF · forest
@@ -83,6 +131,12 @@ target = "c07080080"                                   # Arion Matlock
 
 [[edit]]
 target = "c07080090"                                   # Wesley Knox
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0x01DB04F5, level = 45 },                        # Defence Scan
+  { move = 0x4E9A9232, level = 65 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0xAB2C3BD1                                         # MF/DF · forest
@@ -93,6 +147,12 @@ target = "c07080090"                                   # Wesley Knox
 
 [[edit]]
 target = "c07080100"                                   # Jonas Demetrius
+moves = [
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x61FB16FD, level = 58 },                        # Divine Arrows
+  { move = 0x7CACF0B0, level = 79 },                        # Horn Train
+]
 
   [[edit.cards]]
   id = 0x7B2CEAAF                                         # FW/MF · fire
@@ -102,6 +162,12 @@ target = "c07080100"                                   # Jonas Demetrius
 
 [[edit]]
 target = "c07080010"                                   # Byron Love
+moves = [
+  { move = 0x1C8CE2B8, level = 1 },                         # God Knows
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xB4757AB8, level = 50 },                        # Divine Stamp
+  { move = 0x61FB16FD, level = 80 },                        # Divine Arrows
+]
 
   [[edit.cards]]
   id = 0x63F5B1D9                                         # MF/FW · forest
@@ -111,6 +177,12 @@ target = "c07080010"                                   # Byron Love
 
 [[edit]]
 target = "c11807100"                                   # Alexander Scrivener
+moves = [
+  { move = 0x62DEE8B1, level = 1 },                         # Jumping Whack
+  { move = 0xDBA0E5E3, level = 13 },                        # Gigant Wall
+  { move = 0xBFCC20E7, level = 20 },                        # Wood Chopper
+  { move = 0x73C5AF40, level = 30 },                        # Dash Accelerator
+]
 
   [[edit.cards]]
   id = 0x95A22E1E                                         # GK/MF · mountain
@@ -121,6 +193,12 @@ target = "c11807100"                                   # Alexander Scrivener
 
 [[edit]]
 target = "c11807110"                                   # Deirdre Staples
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0x568262FA, level = 13 },                        # Dark Tornado
+  { move = 0x67F17FA8, level = 20 },                        # Mega Quake
+  { move = 0x79224D8B, level = 30 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x8CB91F5F                                         # FW/MF · forest

@@ -6,6 +6,20 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02024410"                                   # Daisy Fields
+moves = [
+  { move = 0xC13F00CC, level = 1 },                         # Flower Power
+  { move = 0xBC48F489, level = 1 },                         # Claw Slash
+  { move = 0x5405771D, level = 25 },                        # Supreme Spin
+  { move = 0x5E7E4775, level = 37 },                        # Table-Turner
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xD66DCC44, level = 1 },                         # Daji [aura]
+]
+VRFW.MoveGrades = [
+  { Move = 0xC13F00CC, Grade = 1 },                         # Flower Power
+]
 
   [[edit.cards]]
   id = 0xF316B954                                         # GK/MF · fire
@@ -15,6 +29,12 @@ target = "c02024410"                                   # Daisy Fields
 
 [[edit]]
 target = "c02024420"                                   # Alexia Sand
+moves = [
+  { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
+  { move = 0x4D1E465C, level = 1 },                         # Fake Bomber
+  { move = 0x6B1CF436, level = 32 },                        # Bewildered
+  { move = 0x31ABD82E, level = 42 },                        # Circus Block
+]
 
   [[edit.cards]]
   id = 0xD83BEA97                                         # DF/MF · forest
@@ -24,6 +44,12 @@ target = "c02024420"                                   # Alexia Sand
 
 [[edit]]
 target = "c02024430"                                   # Hellen Hearth
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x2C3D95DD, level = 1 },                         # Sleeping Dust
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x4C1D87D5, level = 47 },                        # Bed of Roses
+]
 
   [[edit.cards]]
   id = 0xC120DBD6                                         # DF/MF · forest
@@ -33,6 +59,12 @@ target = "c02024430"                                   # Hellen Hearth
 
 [[edit]]
 target = "c02024440"                                   # Rose Pinkpetal
+moves = [
+  { move = 0x4D1E465C, level = 1 },                         # Fake Bomber
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x261BDCA8, level = 30 },                        # Moonsault
+  { move = 0x6DD736DD, level = 38 },                        # Ribbon Shower
+]
 
   [[edit.cards]]
   id = 0x8E614D11                                         # DF/MF · forest
@@ -42,6 +74,12 @@ target = "c02024440"                                   # Rose Pinkpetal
 
 [[edit]]
 target = "c02024450"                                   # Esther Greenland
+moves = [
+  { move = 0x2C3D95DD, level = 1 },                         # Sleeping Dust
+  { move = 0x7EEA4EE9, level = 26 },                        # Blade Attack
+  { move = 0x1F0836D6, level = 33 },                        # Comet Shot
+  { move = 0x78E027BC, level = 39 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x977A7C50                                         # DF/FW · fire
@@ -51,6 +89,12 @@ target = "c02024450"                                   # Esther Greenland
 
 [[edit]]
 target = "c02024460"                                   # Bela Bluebells
+moves = [
+  { move = 0x5049A011, level = 1 },                         # Spinning Shot
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0xDEB28A7B, level = 26 },                        # Monkey Turn
+  { move = 0x6DD736DD, level = 40 },                        # Ribbon Shower
+]
 
   [[edit.cards]]
   id = 0xBC572F93                                         # MF/FW · wind
@@ -61,6 +105,12 @@ target = "c02024460"                                   # Bela Bluebells
 
 [[edit]]
 target = "c02024470"                                   # Natalie Sunrise
+moves = [
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x4D1E465C, level = 29 },                        # Fake Bomber
+  { move = 0x142DBE2A, level = 37 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0xA54C1ED2                                         # MF/DF · forest
@@ -70,6 +120,12 @@ target = "c02024470"                                   # Natalie Sunrise
 
 [[edit]]
 target = "c02024480"                                   # Hillary Bush
+moves = [
+  { move = 0x6DD736DD, level = 1 },                         # Ribbon Shower
+  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+  { move = 0x4F58F805, level = 25 },                        # Coil Turn
+  { move = 0xAC6D8A70, level = 35 },                        # Rainbow Arc
+]
 
   [[edit.cards]]
   id = 0x22D4021D                                         # MF/DF · wind
@@ -79,6 +135,12 @@ target = "c02024480"                                   # Hillary Bush
 
 [[edit]]
 target = "c02024490"                                   # Mary Moor
+moves = [
+  { move = 0x06130797, level = 1 },                         # Rolling Kick
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x6DD736DD, level = 32 },                        # Ribbon Shower
+  { move = 0x3663DB4C, level = 43 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0x3BCF335C                                         # MF/FW · mountain
@@ -92,14 +154,20 @@ rank = 3
 growth = "normal"
 stats = { kick = 273, control = 250, technique = 220, pressure = 185, physical = 169, intelligence = 205, agility = 178, freedom = 301 }
 moves = [
-  { move = 0x4C1D87D5, level = 1 },                       # Bed of Roses
-  { move = 0x54C4DCA3, level = 1 },                       # Butterfly Trance
-  { move = 0xC5EF0563, level = 45 },                      # Three-Legged Rush
-  { move = 0x27D9B69F, level = 60 },                      # Prima Donna
+  { move = 0x4C1D87D5, level = 1 },                         # Bed of Roses
+  { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
+  { move = 0x27D9B69F, level = 31 },                        # Prima Donna
+  { move = 0x4741C0E8, level = 45 },                        # Steeple Shot
 ]
 
 [[edit]]
 target = "c02024510"                                   # Lily Willow
+moves = [
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
+  { move = 0x6DD736DD, level = 1 },                         # Ribbon Shower
+  { move = 0x2C3D95DD, level = 40 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0xF2D4D363                                         # FW/MF · forest
@@ -109,6 +177,12 @@ target = "c02024510"                                   # Lily Willow
 
 [[edit]]
 target = "c02024520"                                   # Dell Closeout
+moves = [
+  { move = 0x4523C86D, level = 1 },                         # Killer Blade
+  { move = 0xC13F00CC, level = 28 },                        # Flower Power
+  { move = 0x55C71D2A, level = 30 },                        # About Face
+  { move = 0xBC48F489, level = 46 },                        # Claw Slash
+]
 
   [[edit.cards]]
   id = 0xD9F980A0                                         # GK/DF · mountain
@@ -118,6 +192,12 @@ target = "c02024520"                                   # Dell Closeout
 
 [[edit]]
 target = "c02024530"                                   # Amy Spires
+moves = [
+  { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
+  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
+  { move = 0x322F0C40, level = 36 },                        # Spider Web
+  { move = 0x4741C0E8, level = 54 },                        # Steeple Shot
+]
 
   [[edit.cards]]
   id = 0xC0E2B1E1                                         # DF/MF · forest
@@ -128,6 +208,12 @@ target = "c02024530"                                   # Amy Spires
 
 [[edit]]
 target = "c02024540"                                   # Peony Cash
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x3EC287DE, level = 32 },                        # Bubble Gum
+  { move = 0x6DD736DD, level = 40 },                        # Ribbon Shower
+  { move = 0x27D9B69F, level = 56 },                        # Prima Donna
+]
 
   [[edit.cards]]
   id = 0x8FA32726                                         # MF/FW · fire
@@ -137,6 +223,12 @@ target = "c02024540"                                   # Peony Cash
 
 [[edit]]
 target = "c02024550"                                   # Gayle Revel
+moves = [
+  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+  { move = 0x261BDCA8, level = 29 },                        # Moonsault
+  { move = 0x34256515, level = 37 },                        # Dynamite Shot
+  { move = 0x74CC079C, level = 49 },                        # Big Fan
+]
 
   [[edit.cards]]
   id = 0x96B81667                                         # MF/DF · forest
@@ -146,6 +238,12 @@ target = "c02024550"                                   # Gayle Revel
 
 [[edit]]
 target = "c02024560"                                   # Janine Brook
+moves = [
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0x5405771D, level = 30 },                        # Supreme Spin
+  { move = 0x3663DB4C, level = 38 },                        # Utter Gutsiness Bat
+  { move = 0xDA628FD4, level = 53 },                        # Sliding Goal
+]
 
   [[edit.cards]]
   id = 0xBD9545A4                                         # GK/DF · fire
@@ -155,6 +253,12 @@ target = "c02024560"                                   # Janine Brook
 
 [[edit]]
 target = "c11802060"                                   # Nerina Hartland
+moves = [
+  { move = 0x8AF3EAB9, level = 1 },                         # Hammer of Fury
+  { move = 0xBD8A9EBE, level = 13 },                        # Infinite Wall
+  { move = 0x8DFA4265, level = 20 },                        # Toughness Block
+  { move = 0x6B1CF436, level = 30 },                        # Bewildered
+]
 
   [[edit.cards]]
   id = 0xF5E4139D                                         # GK/MF · mountain

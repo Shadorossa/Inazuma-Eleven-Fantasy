@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07050050"                                   # Trice Topper
+moves = [
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xDBA0E5E3, level = 13 },                        # Gigant Wall
+  { move = 0xE9968761, level = 20 },                        # Rocket Kobushi
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0xFF09B06C                                         # GK/FW · fire
@@ -16,6 +22,12 @@ target = "c07050050"                                   # Trice Topper
 
 [[edit]]
 target = "c07050130"                                   # Hilary Prentice
+moves = [
+  { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
+  { move = 0x7207C577, level = 13 },                        # Boost Glider
+  { move = 0x4AD6453E, level = 20 },                        # Back Tornado
+  { move = 0x1C4D4906, level = 30 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xA8917DDD                                         # MF/DF · wind
@@ -25,6 +37,12 @@ target = "c07050130"                                   # Hilary Prentice
 
 [[edit]]
 target = "c07050140"                                   # Jodi Green
+moves = [
+  { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
+  { move = 0x7207C577, level = 13 },                        # Boost Glider
+  { move = 0x4CDC2C6B, level = 20 },                        # Shooting Star
+  { move = 0xD1E62D0A, level = 30 },                        # Mushroom Hop
+]
 
   [[edit.cards]]
   id = 0xE7D0EB1A                                         # DF/FW · fire
@@ -35,6 +53,15 @@ target = "c07050140"                                   # Jodi Green
 
 [[edit]]
 target = "c07050010"                                   # Axel Blaze
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
+  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
+  { move = 0x19025F83, level = 26 },                        # Quick Draw
+]
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0x9B657568                                         # FW/MF · fire
@@ -43,6 +70,12 @@ target = "c07050010"                                   # Axel Blaze
 
 [[edit]]
 target = "c07050060"                                   # Malcolm Night
+moves = [
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x1ECA5CE1, level = 39 },                        # Wrath Shot
+  { move = 0x2B343D01, level = 79 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0xD424E3AF                                         # DF/MF · fire
@@ -52,6 +85,12 @@ target = "c07050060"                                   # Malcolm Night
 
 [[edit]]
 target = "c07050070"                                   # Alfred Meenan
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
+  { move = 0x261BDCA8, level = 50 },                        # Moonsault
+  { move = 0x6ADE9E01, level = 74 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0xCD3FD2EE                                         # DF/MF · forest
@@ -61,6 +100,12 @@ target = "c07050070"                                   # Alfred Meenan
 
 [[edit]]
 target = "c07050080"                                   # Dan Mirthful
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x00196EC2, level = 42 },                        # Earthquake
+  { move = 0xA8E0F6C2, level = 49 },                        # Kung Fu Header
+  { move = 0x78E027BC, level = 72 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x4AA7CE21                                         # DF/FW · forest
@@ -70,6 +115,12 @@ target = "c07050080"                                   # Dan Mirthful
 
 [[edit]]
 target = "c07050090"                                   # Ricky Clover
+moves = [
+  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
+  { move = 0x627FC293, level = 44 },                        # Meteor Attack
+  { move = 0x4AD6453E, level = 64 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0x53BCFF60                                         # DF/FW · mountain
@@ -79,6 +130,12 @@ target = "c07050090"                                   # Ricky Clover
 
 [[edit]]
 target = "c07050100"                                   # Toby Damian
+moves = [
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x19025F83, level = 48 },                        # Quick Draw
+  { move = 0x5049A011, level = 56 },                        # Spinning Shot
+]
 
   [[edit.cards]]
   id = 0x83BC2E1E                                         # MF/FW · wind
@@ -88,6 +145,12 @@ target = "c07050100"                                   # Toby Damian
 
 [[edit]]
 target = "c07050110"                                   # York Nashmith
+moves = [
+  { move = 0x7207C577, level = 1 },                         # Boost Glider
+  { move = 0x7B64F3D2, level = 42 },                        # Hawk Shot
+  { move = 0xDEB28A7B, level = 54 },                        # Monkey Turn
+  { move = 0x4AD6453E, level = 76 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0x9AA71F5F                                         # MF/FW · forest
@@ -97,6 +160,12 @@ target = "c07050110"                                   # York Nashmith
 
 [[edit]]
 target = "c07050120"                                   # Zachary Moore
+moves = [
+  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x6ADE9E01, level = 42 },                        # Illusory Ball
+  { move = 0x4890FB67, level = 53 },                        # Twin Boost
+  { move = 0x7207C577, level = 84 },                        # Boost Glider
+]
 
   [[edit.cards]]
   id = 0xB18A4C9C                                         # MF/FW · forest
@@ -106,6 +175,12 @@ target = "c07050120"                                   # Zachary Moore
 
 [[edit]]
 target = "c07050020"                                   # Marvin Murdock
+moves = [
+  { move = 0x2F78EA0D, level = 1 },                         # Triangle Z
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x35E70F22, level = 45 },                        # Grenade Shot
+  { move = 0x7207C577, level = 70 },                        # Boost Glider
+]
 
   [[edit.cards]]
   id = 0xB04826AB                                         # FW/MF · fire
@@ -115,6 +190,12 @@ target = "c07050020"                                   # Marvin Murdock
 
 [[edit]]
 target = "c07050030"                                   # Thomas Murdock
+moves = [
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x5643C944, level = 45 },                        # Killer Slide
+  { move = 0x2F78EA0D, level = 70 },                        # Triangle Z
+]
 
   [[edit.cards]]
   id = 0xA95317EA                                         # FW/MF · wind
@@ -124,6 +205,12 @@ target = "c07050030"                                   # Thomas Murdock
 
 [[edit]]
 target = "c07050040"                                   # Tyler Murdock
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0x142DBE2A, level = 45 },                        # Foul Offence
+  { move = 0x2F78EA0D, level = 70 },                        # Triangle Z
+]
 
   [[edit.cards]]
   id = 0xE612812D                                         # FW/MF · mountain
@@ -133,6 +220,12 @@ target = "c07050040"                                   # Tyler Murdock
 
 [[edit]]
 target = "c11807090"                                   # Lynn Tambelle
+moves = [
+  { move = 0x7207C577, level = 1 },                         # Boost Glider
+  { move = 0x5781A373, level = 13 },                        # Hurricane Arrows
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0x93E8DBF8, level = 30 },                        # Dimensional Hand
+]
 
   [[edit.cards]]
   id = 0x45A2FF60                                         # DF/GK · forest
@@ -142,6 +235,12 @@ target = "c11807090"                                   # Lynn Tambelle
 
 [[edit]]
 target = "c11807280"                                   # Seth Nichols
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x49933AEE, level = 13 },                        # Perfect Tower
+  { move = 0xAF28F5A0, level = 20 },                        # The Tower
+  { move = 0x5781A373, level = 30 },                        # Hurricane Arrows
+]
 
   [[edit.cards]]
   id = 0x5F3D1A4F                                         # DF/FW · wind

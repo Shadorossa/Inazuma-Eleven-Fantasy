@@ -20,3 +20,35 @@ png = "vsroute01_06b/chronicle_deluxe_rank_a.png"
 atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
 name = "chronicle_deluxe_rank_b"
 png = "vsroute01_06b/chronicle_deluxe_rank_b.png"
+
+# The «team cleared» gauge's orb of BATALLA LEGENDARIA (owner 2026-10-19: INAZUMA blue, ZONA LETAL purple, BATALLA
+# LEGENDARIA green-cyan like its level ball; docs/game/mods/chronicle-deluxe-free-match.md §7): a new sprite made at boot
+# from the PLAYER'S own orbs, the legendary ball's recipe (vsroute01_21.toml): the purple orb clear_icon02 blended
+# diagonally into the blue one turned cyan (clear_icon01) and the gold one turned lime (clear_icon03). The gauge's own
+# instance shows it in place of the orange clear_icon04 (the board's dots keep the retail sprite).
+[[recipe]]
+name = "chronicle_deluxe_legendary_orb_base"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon02"
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_orb_cyan"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon01"
+ops = [{ op = "hue", turns = -0.1 }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_orb_lime"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon03"
+ops = [{ op = "hue", turns = 0.1 }]
+
+[[recipe]]
+name = "chronicle_deluxe_legendary_orb"
+from = "chronicle_deluxe_legendary_orb_base"
+ops = [{ op = "mix_gradient", image = "chronicle_deluxe_legendary_orb_cyan", weight = [-0.2, 1.4, 1.4], clamp = [0.0, 1.0] }, { op = "mix_gradient", image = "chronicle_deluxe_legendary_orb_lime", weight = [-1.2, 1.6, 1.6], clamp = [0.0, 1.0] }]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+name = "chronicle_deluxe_legendary_orb"
+recipe = "chronicle_deluxe_legendary_orb"

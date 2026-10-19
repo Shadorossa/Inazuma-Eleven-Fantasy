@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03030810"                                   # Freddy McQueen
+moves = [
+  { move = 0x88B554E0, level = 1 },                         # Galatyn
+  { move = 0x922AB1CF, level = 14 },                        # Safety First
+  { move = 0x5B6C28ED, level = 32 },                        # Invisible Fake
+  { move = 0x46A71C03, level = 47 },                        # Black Hole
+]
+VRFW.MoveGrades = [
+  { Move = 0x88B554E0, Grade = 1 },                         # Galatyn
+]
 
   [[edit.cards]]
   id = 0xEE79F563                                         # GK/MF · fire
@@ -15,6 +24,12 @@ target = "c03030810"                                   # Freddy McQueen
 
 [[edit]]
 target = "c03030820"                                   # Jonny Gascoigne
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0x41F3CDC2, level = 29 },                        # Scorching Tackle
+  { move = 0xACAC21CE, level = 63 },                        # Fake Ball
+]
 
   [[edit.cards]]
   id = 0xC554A6A0                                         # DF/MF · forest
@@ -24,6 +39,12 @@ target = "c03030820"                                   # Jonny Gascoigne
 
 [[edit]]
 target = "c03030830"                                   # David Buckingham
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x6ADE9E01, level = 16 },                        # Illusory Ball
+  { move = 0x142DBE2A, level = 34 },                        # Foul Offence
+  { move = 0x7DAF3139, level = 57 },                        # Emperor Penguin No. 2
+]
 
   [[edit.cards]]
   id = 0xDC4F97E1                                         # DF/MF · mountain
@@ -33,6 +54,12 @@ target = "c03030830"                                   # David Buckingham
 
 [[edit]]
 target = "c03030840"                                   # Lance Rawton
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x60397CCA, level = 21 },                        # Cross Drive
+  { move = 0x88B554E0, level = 32 },                        # Galatyn
+  { move = 0x3A3634AD, level = 60 },                        # Excalibur
+]
 
   [[edit.cards]]
   id = 0x930E0126                                         # DF/FW · wind
@@ -42,6 +69,15 @@ target = "c03030840"                                   # Lance Rawton
 
 [[edit]]
 target = "c03030850"                                   # Edge Ripper
+moves = [
+  { move = 0x4523C86D, level = 1 },                         # Killer Blade
+  { move = 0x2FB941B3, level = 10 },                        # Stone Prison
+  { move = 0x4E9A9232, level = 30 },                        # Spinning Cut
+  { move = 0x04941270, level = 49 },                        # Vac Attack
+]
+VRFW.MoveGrades = [
+  { Move = 0x4523C86D, Grade = 2 },                         # Killer Blade
+]
 
   [[edit.cards]]
   id = 0x8A153067                                         # DF/GK · forest
@@ -51,6 +87,12 @@ target = "c03030850"                                   # Edge Ripper
 
 [[edit]]
 target = "c03030860"                                   # Peter Cole
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x01DB04F5, level = 17 },                        # Defence Scan
+  { move = 0x34256515, level = 37 },                        # Dynamite Shot
+  { move = 0x47380F29, level = 62 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0xA13863A4                                         # MF/FW · fire
@@ -60,6 +102,12 @@ target = "c03030860"                                   # Peter Cole
 
 [[edit]]
 target = "c03030870"                                   # Gary Mane
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x4F58F805, level = 5 },                         # Coil Turn
+  { move = 0x70417B2E, level = 26 },                        # Deceptor Dribble
+  { move = 0x2FB941B3, level = 41 },                        # Stone Prison
+]
 
   [[edit.cards]]
   id = 0xB82352E5                                         # MF/DF · mountain
@@ -69,6 +117,12 @@ target = "c03030870"                                   # Gary Mane
 
 [[edit]]
 target = "c03030880"                                   # Paul Appleton
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0xC66BD10D, level = 11 },                        # Zigzag Spark
+  { move = 0x2B343D01, level = 33 },                        # Cyclone
+  { move = 0x47380F29, level = 59 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0x3FBB4E2A                                         # MF/DF · forest
@@ -78,6 +132,12 @@ target = "c03030880"                                   # Paul Appleton
 
 [[edit]]
 target = "c03030890"                                   # Eric Purpleton
+moves = [
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x49529150, level = 8 },                         # Snake Shot
+  { move = 0xB1FBC783, level = 28 },                        # Reflect Buster
+  { move = 0x43B5739B, level = 49 },                        # Lightning Bolt
+]
 
   [[edit.cards]]
   id = 0x26A07F6B                                         # MF/FW · fire
@@ -87,6 +147,16 @@ target = "c03030890"                                   # Eric Purpleton
 
 [[edit]]
 target = "c03030900"                                   # Edgar Partinus
+moves = [
+  { move = 0x3A3634AD, level = 1 },                         # Excalibur
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x8B90AAAC, level = 58 },                        # Fortissimo
+]
+VRFW.MoveGrades = [
+  { Move = 0x3A3634AD, Grade = 1 },                         # Excalibur
+  { Move = 0xA7B451B3, Grade = 1 },                         # Paladin Strike
+]
 
   [[edit.cards]]
   id = 0xF6A0AE15                                         # FW/MF · forest
@@ -96,6 +166,15 @@ target = "c03030900"                                   # Edgar Partinus
 
 [[edit]]
 target = "c03030910"                                   # Phillip Owen
+moves = [
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x6ADE9E01, level = 25 },                        # Illusory Ball
+  { move = 0x43B5739B, level = 30 },                        # Lightning Bolt
+  { move = 0x427719AC, level = 62 },                        # Gale Dash
+]
+VRFW.MoveGrades = [
+  { Move = 0xA7B451B3, Grade = 1 },                         # Paladin Strike
+]
 
   [[edit.cards]]
   id = 0xEFBB9F54                                         # FW/MF · mountain
@@ -106,6 +185,12 @@ target = "c03030910"                                   # Phillip Owen
 
 [[edit]]
 target = "c03030920"                                   # Servilius Jeeves
+moves = [
+  { move = 0x88B554E0, level = 15 },                        # Galatyn
+  { move = 0x4523C86D, level = 30 },                        # Killer Blade
+  { move = 0x8E7E960B, level = 43 },                        # Drill Smasher
+  { move = 0x3A3634AD, level = 73 },                        # Excalibur
+]
 
   [[edit.cards]]
   id = 0xC496CC97                                         # GK/FW · mountain
@@ -115,6 +200,12 @@ target = "c03030920"                                   # Servilius Jeeves
 
 [[edit]]
 target = "c03030930"                                   # Martin Squall
+moves = [
+  { move = 0x73C5AF40, level = 6 },                         # Dash Accelerator
+  { move = 0x21127474, level = 15 },                        # Ultra Moon
+  { move = 0x4D1E465C, level = 27 },                        # Fake Bomber
+  { move = 0xD8851BAF, level = 68 },                        # Unicorn Boost
+]
 
   [[edit.cards]]
   id = 0xDD8DFDD6                                         # DF/MF · fire
@@ -124,6 +215,12 @@ target = "c03030930"                                   # Martin Squall
 
 [[edit]]
 target = "c03030940"                                   # Nick Woodgate
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0xA7B451B3, level = 20 },                        # Paladin Strike
+  { move = 0x695A4A6F, level = 28 },                        # Magic
+  { move = 0x7FE98F60, level = 41 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0x92CC6B11                                         # FW/MF · wind
@@ -134,6 +231,12 @@ target = "c03030940"                                   # Nick Woodgate
 
 [[edit]]
 target = "c03030950"                                   # Mikey Richards
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x2FB941B3, level = 18 },                        # Stone Prison
+  { move = 0xB5B7108F, level = 45 },                        # Shadow Stitch
+  { move = 0x4BD584B7, level = 74 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0x8BD75A50                                         # MF/DF · forest
@@ -144,6 +247,12 @@ target = "c03030950"                                   # Mikey Richards
 
 [[edit]]
 target = "c03030960"                                   # Sirius Pounding
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x5B6C28ED, level = 28 },                        # Invisible Fake
+  { move = 0x8C382852, level = 37 },                        # God Hand
+  { move = 0xDCA94D3F, level = 71 },                        # Flash Upper
+]
 
   [[edit.cards]]
   id = 0xA0FA0993                                         # MF/GK · mountain
@@ -153,6 +262,12 @@ target = "c03030960"                                   # Sirius Pounding
 
 [[edit]]
 target = "c11803040"                                   # Aaron Adams
+moves = [
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x750E6DAB, level = 13 },                        # Matador Feint
+  { move = 0x7748D3F2, level = 20 },                        # Devil Ball
+  { move = 0xC513565C, level = 30 },                        # Doom Spear
+]
 
   [[edit.cards]]
   id = 0x7F6E167A                                         # FW/MF · forest

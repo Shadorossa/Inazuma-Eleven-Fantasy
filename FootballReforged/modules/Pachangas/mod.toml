@@ -2,10 +2,10 @@ id = "pachangas"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Pachangas"
-version = "1.0.2"
+version = "1.0.4"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Team Dock gets a format row «< 11 v 11 >» (left / right pick the format, confirm switches): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
+description = "Team Dock's list starts with one row per match format («11v11», «5v5»; confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
 priority = 0
 tags = ["Gameplay"]
 updated = "2026-10-16"
@@ -14,6 +14,9 @@ updated = "2026-10-16"
 # 1.0.2 (2026-10-16): the four type boxes became one normal list row «< 11 v 11 >»: left / right (or a click on its
 # arrows) cycle the enabled formats, confirm switches (docs/game/ui/pachanga-templates.md §16);
 # content\menus\pachanga_dock.toml and its sprite evt_pt_box_white removed
+# 1.0.4 (owner 2026-10-19): the format row became one list row per enabled format («11v11», «5v5», texts
+# evt_pt_kind_*): up / down between them, confirm switches, right leaves the list as the retail list does (the single
+# row cycled with left / right and trapped the focus once BetterUI's shortcut tiles left it alone in the list)
 # This mod's own names (Lua Pachangas.X, commands CMND_PACHANGAS_*); never VRFW. The grafts keep their EVT_PT_* game Lua
 # globals.
 prefix = "Pachangas"

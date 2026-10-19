@@ -1,0 +1,10 @@
+schema = "VRFW.menu/2"
+# Chronicle Deluxe: one instance of the free-match list's own clear-icon object (vsroute01_06b, the row's «cleared»
+# pill and class orbs) as the «team cleared» gauge under the selected crest of BetterMenu's Competition strip, drawn by
+# assets/lua/soccer_vs_cpu_list_menu/280_free_match_cleared_gauge.lua (docs/game/mods/chronicle-deluxe-free-match.md §7).
+# [VRFW.FreeMatch] Orb = "best" (content/teams/90_rules/free_match.toml) makes the framework put the class orbs on the
+# pill's single slot in that object's layout.
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "chronicle_deluxe_cleared_gauge", object = "vsroute01_06b_town_map_piece_clear_icon", count = 1, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }] }

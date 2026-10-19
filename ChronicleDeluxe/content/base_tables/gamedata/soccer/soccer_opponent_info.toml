@@ -1,0 +1,77 @@
+schema = "VRFW.base_table/1"
+# Chronicle Deluxe: the IE1 tab of «Competir contra bots» (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md
+# §8). The list shows the rows of this table in table order, each under the tab of the first board piece that holds its
+# game (docs/framework/free-match-tabs.md §1); a row is listed once that piece's Chronicle battle is won.
+#   * the first Royal Academy game (the opening match, before Inazuma Kids FC) leaves the list;
+#   * the board side nodes Umbrella and Street Sally's (content/teams/70_route_nodes/side_nodes.toml) are listed in the
+#     IE1 tab, right after Inazuma Kids FC and Brain, the games they follow on the board. Their node games already have
+#     the free-match class rows (their template's, rival = the node's team), so they offer the same three classes; they
+#     open with the node's Crónica win (the node's piece); the clear bits of their class rows are the framework's
+#     (free-match-tabs.md §8). Each new row is a copy of the row it follows (category 1, no condition: as every IE1 row).
+# Keyed by game name (battleId): no row position, no number.
+
+[[keyed]]
+table = "soccer/soccer_opponent_info"
+key_columns = ["battleId"]
+
+  [[keyed.add]]                         # Umbrella, after Inazuma Kids FC
+  key = "evt_rn_ie1_umbrella"
+  from = "fbtl_cro01_020_010"
+  after = "fbtl_cro01_020_010"
+
+  [[keyed.add]]                         # Street Sally's, after Brain
+  key = "evt_rn_ie1_sallys"
+  from = "fbtl_cro01_050_010"
+  after = "fbtl_cro01_050_010"
+
+  [[keyed.delete]]                      # Royal Academy, the first match
+  key = "fbtl_cro01_010_010"
+
+  # 1.11.1 (owner 2026-10-19): more games out of the free-match list (their Chronicle battles untouched)
+  [[keyed.delete]]                      # Épsilon Plus: its team plays Épsilon's BATALLA LEGENDARIA instead
+  key = "fbtl_cro02_140_010"            # (teams/90_rules/free_match.toml [[VRFW.FreeMatchRival]])
+
+  [[keyed.delete]]                      # IE3: Pruebas de selección - Equipo B
+  key = "fbtl_cro03_010_010"
+
+  [[keyed.delete]]                      # IE3: Raimon equipo B
+  key = "fbtl_cro03_190_010"
+
+  [[keyed.delete]]                      # Victory Road: Tormenta cortante
+  key = "fbtl_cro12_040_020"
+
+  [[keyed.delete]]                      # Victory Road: Hojas espinosas
+  key = "fbtl_cro12_050_020"
+
+  [[keyed.delete]]                      # Victory Road: Llamarada volcánica
+  key = "fbtl_cro12_060_020"
+
+  [[keyed.delete]]                      # Victory Road: Aplastarocas
+  key = "fbtl_cro12_070_020"
+
+  # 1.11.2 (owner 2026-10-19): the IE2 tab keeps only the new Raimon at its top
+  [[keyed.delete]]                      # IE2: Raimon (the retail game in the middle of the tab)
+  key = "fbtl_cro02_170_010"
+
+  # 1.11.8 (owner 2026-10-19): Chrono Stone, GO Galaxy and Ares tabs, games out of the list (their Chronicle battles
+  # untouched). Each checked by its rival team and line-up in the served team data.
+  [[keyed.delete]]                      # Chrono Stone: Selección de Japón (tm_cro_go2_0400: Protocolo Omega's players)
+  key = "fbtl_cro05_040_010"
+
+  [[keyed.delete]]                      # Chrono Stone: Ira de Imagawa (tm_cro_go2_0700: Protocolo Omega's players)
+  key = "fbtl_cro05_070_010"
+
+  [[keyed.delete]]                      # Chrono Stone: Zanark Domain with Okita (tm_cro_go2_1000: Soji Okita, no coach)
+  key = "fbtl_cro05_110_010"
+
+  [[keyed.delete]]                      # Chrono Stone: Caballeros de la Mesa Redonda (tm_cro_go2_2400)
+  key = "fbtl_cro05_140_010"
+
+  [[keyed.delete]]                      # Chrono Stone: the second Cascada Perfecta (tm_cro_go2_1300, after the Caballeros)
+  key = "fbtl_cro05_150_010"
+
+  [[keyed.delete]]                      # GO Galaxy: Royal Academy (tm_cro_go3_0100); Earth Eleven takes its place
+  key = "fbtl_cro06_010_010"
+
+  [[keyed.delete]]                      # Ares: the first Academia Polaris (tm_cro_ares_0100, right after Barcelona Orb)
+  key = "fbtl_cro07_020_010"

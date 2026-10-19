@@ -11,14 +11,20 @@ rank = 3
 growth = "normal"
 stats = { kick = 208, control = 197, technique = 211, pressure = 247, physical = 231, intelligence = 301, agility = 196, freedom = 225 }
 moves = [
-  { move = 0x50880BAF, level = 1 },                       # Frozen Steal
-  { move = 0xB633C4E1, level = 17 },                      # Photon Crash
-  { move = 0x46FA651E, level = 30 },                      # Water Veil
-  { move = 0x8B31808E, level = 44 },                      # Wormhole
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x8B31808E, level = 60 },                        # Wormhole
+  { move = 0xC4701649, level = 75 },                        # Ice Block
 ]
 
 [[edit]]
 target = "c02020840"                                   # Gocker
+moves = [
+  { move = 0x29728358, level = 1 },                         # Planet Shield
+  { move = 0x3526A49C, level = 59 },                        # Road Roller
+  { move = 0x65B7C1F1, level = 64 },                        # Sumo Stomp
+  { move = 0x50880BAF, level = 72 },                        # Frozen Steal
+]
 
   [[edit.cards]]
   id = 0x08192322                                         # DF/MF · mountain
@@ -28,6 +34,12 @@ target = "c02020840"                                   # Gocker
 
 [[edit]]
 target = "c02020870"                                   # Droll
+moves = [
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x19025F83, level = 60 },                        # Quick Draw
+  { move = 0x3C843987, level = 65 },                        # Flurry Dash
+  { move = 0x1B854A64, level = 70 },                        # Cosmic Blast
+]
 
   [[edit.cards]]
   id = 0x233470E1                                         # MF/DF · wind
@@ -37,6 +49,12 @@ target = "c02020870"                                   # Droll
 
 [[edit]]
 target = "c02020880"                                   # Rhine
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+]
 
   [[edit.cards]]
   id = 0xA4AC6C2E                                         # MF/FW · wind
@@ -49,14 +67,20 @@ target = "c02020890"                                   # Gazelle
 growth = "normal"
 stats = { kick = 339, control = 257, technique = 263, pressure = 193, physical = 188, intelligence = 234, agility = 165, freedom = 213 }
 moves = [
-  { move = 0x46FA651E, level = 1 },                       # Water Veil
-  { move = 0x5E5AF1A9, level = 1 },                       # Northern Impact
-  { move = 0x0D368F6B, level = 1 },                       # Heaven's Time
-  { move = 0x09C23C18, level = 60 },                      # Fire Blizzard
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x09C23C18, level = 77 },                        # Fire Blizzard
 ]
 
 [[edit]]
 target = "c02022610"                                   # Beluga
+moves = [
+  { move = 0xC4701649, level = 1 },                         # Ice Block
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x94E17324, level = 60 },                        # Tornado Catch
+  { move = 0x50880BAF, level = 70 },                        # Frozen Steal
+]
 
   [[edit.cards]]
   id = 0xD5F932E6                                         # GK/DF · mountain
@@ -66,6 +90,12 @@ target = "c02022610"                                   # Beluga
 
 [[edit]]
 target = "c02022620"                                   # Arkew
+moves = [
+  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x50880BAF, level = 1 },                         # Frozen Steal
+  { move = 0x01DB04F5, level = 62 },                        # Defence Scan
+  { move = 0xC4701649, level = 75 },                        # Ice Block
+]
 
   [[edit.cards]]
   id = 0xFED46125                                         # DF/GK · wind
@@ -75,6 +105,12 @@ target = "c02022620"                                   # Arkew
 
 [[edit]]
 target = "c02022650"                                   # Icer
+moves = [
+  { move = 0x514A6198, level = 1 },                         # Asteroid Belt
+  { move = 0x50880BAF, level = 1 },                         # Frozen Steal
+  { move = 0xDCF43422, level = 59 },                        # Aurora Dribble
+  { move = 0x5E5AF1A9, level = 75 },                        # Northern Impact
+]
 
   [[edit.cards]]
   id = 0xB195F7E2                                         # MF/DF · wind
@@ -85,6 +121,12 @@ target = "c02022650"                                   # Icer
 
 [[edit]]
 target = "c02022660"                                   # Balen
+moves = [
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x4E9A9232, level = 59 },                        # Spinning Cut
+  { move = 0xB633C4E1, level = 62 },                        # Photon Crash
+  { move = 0x574008CD, level = 68 },                        # Kung Fu Fighting
+]
 
   [[edit.cards]]
   id = 0x9AB8A421                                         # MF/DF · mountain
@@ -94,6 +136,12 @@ target = "c02022660"                                   # Balen
 
 [[edit]]
 target = "c02022690"                                   # Blown
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
+  { move = 0x4F58F805, level = 59 },                        # Coil Turn
+  { move = 0x5E5AF1A9, level = 70 },                        # Northern Impact
+]
 
   [[edit.cards]]
   id = 0x1D20B8EE                                         # FW/MF · wind
@@ -104,6 +152,12 @@ target = "c02022690"                                   # Blown
 
 [[edit]]
 target = "c02022710"                                   # Frost
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x61FB16FD, level = 59 },                        # Divine Arrows
+  { move = 0x46FA651E, level = 68 },                        # Water Veil
+  { move = 0x6DAEF91C, level = 80 },                        # Supernova
+]
 
   [[edit.cards]]
   id = 0xD43B58D1                                         # FW/MF · mountain

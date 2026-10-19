@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08100010"                                   # Rio
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x78E027BC, level = 13 },                        # Shine Drive
+  { move = 0x768AB9C5, level = 20 },                        # Frosticle
+  { move = 0x2690CAFB, level = 30 },                        # Beyond the Sambadrome
+]
 
   [[edit.cards]]
   id = 0x6E915954                                         # FW/GK · fire
@@ -16,6 +22,12 @@ target = "c08100010"                                   # Rio
 
 [[edit]]
 target = "c08100020"                                   # Alegre
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0x2752A0CC, level = 13 },                        # Capoeira Kick
+  { move = 0x13D845C9, level = 20 },                        # Samba Strike
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x45BC0A97                                         # FW/DF · forest
@@ -26,6 +38,12 @@ target = "c08100020"                                   # Alegre
 
 [[edit]]
 target = "c08100030"                                   # André
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0xD9BB22A7, level = 13 },                        # Air Ride
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0x5CA73BD6                                         # MF/FW · wind
@@ -36,6 +54,12 @@ target = "c08100030"                                   # André
 
 [[edit]]
 target = "c08100040"                                   # Manaus
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0xD9BB22A7, level = 13 },                        # Air Ride
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0x13E6AD11                                         # MF/DF · wind
@@ -45,6 +69,12 @@ target = "c08100040"                                   # Manaus
 
 [[edit]]
 target = "c08100050"                                   # Iguaçu
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0x427719AC, level = 13 },                        # Gale Dash
+  { move = 0x68982058, level = 20 },                        # Armadillo Circus
+  { move = 0x21127474, level = 30 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x0AFD9C50                                         # MF/FW · fire
@@ -55,6 +85,12 @@ target = "c08100050"                                   # Iguaçu
 
 [[edit]]
 target = "c08100060"                                   # Belo
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x5E233E68, level = 13 },                        # Super Elastico
+  { move = 0x25276CB9, level = 20 },                        # Solar Surprise
+  { move = 0x2752A0CC, level = 30 },                        # Capoeira Kick
+]
 
   [[edit.cards]]
   id = 0x21D0CF93                                         # MF/FW · mountain
@@ -65,6 +101,12 @@ target = "c08100060"                                   # Belo
 
 [[edit]]
 target = "c08100070"                                   # Luís
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0x2296A01A, level = 13 },                        # Southern Cross
+  { move = 0x70417B2E, level = 20 },                        # Deceptor Dribble
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0x38CBFED2                                         # MF/DF · forest
@@ -75,6 +117,12 @@ target = "c08100070"                                   # Luís
 
 [[edit]]
 target = "c08100080"                                   # João
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x5E233E68, level = 13 },                        # Super Elastico
+  { move = 0x6A66FA7E, level = 20 },                        # Killer Whale
+  { move = 0x2690CAFB, level = 30 },                        # Beyond the Sambadrome
+]
 
   [[edit.cards]]
   id = 0xBF53E21D                                         # DF/FW · wind
@@ -85,6 +133,12 @@ target = "c08100080"                                   # João
 
 [[edit]]
 target = "c08100090"                                   # Maceió
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x2296A01A, level = 13 },                        # Southern Cross
+  { move = 0xB633C4E1, level = 20 },                        # Photon Crash
+  { move = 0x21127474, level = 30 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0xA648D35C                                         # DF/FW · fire
@@ -94,6 +148,12 @@ target = "c08100090"                                   # Maceió
 
 [[edit]]
 target = "c08100100"                                   # Bernardo
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x2296A01A, level = 13 },                        # Southern Cross
+  { move = 0xB633C4E1, level = 20 },                        # Photon Crash
+  { move = 0x34844F37, level = 30 },                        # White Hole
+]
 
   [[edit.cards]]
   id = 0x76480222                                         # DF/GK · forest
@@ -104,6 +164,12 @@ target = "c08100100"                                   # Bernardo
 
 [[edit]]
 target = "c08100110"                                   # Gonçalo
+moves = [
+  { move = 0x4063C70A, level = 1 },                         # Sauced-up Marinara Barrier
+  { move = 0x30093385, level = 13 },                        # Marinara Barrier
+  { move = 0x44E1A25A, level = 20 },                        # Pressure Punch
+  { move = 0xF309624E, level = 30 },                        # Dual Smash
+]
 
   [[edit.cards]]
   id = 0x6F533363                                         # GK/MF · fire
@@ -113,6 +179,12 @@ target = "c08100110"                                   # Gonçalo
 
 [[edit]]
 target = "c08100120"                                   # Belém
+moves = [
+  { move = 0x2690CAFB, level = 1 },                         # Beyond the Sambadrome
+  { move = 0x2DFFFFEA, level = 13 },                        # Ground Quake
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0x07704782, level = 30 },                        # Rejection
+]
 
   [[edit.cards]]
   id = 0x447E60A0                                         # DF/GK · mountain
@@ -122,6 +194,12 @@ target = "c08100120"                                   # Belém
 
 [[edit]]
 target = "c08100130"                                   # Paulo
+moves = [
+  { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
+  { move = 0xB633C4E1, level = 13 },                        # Photon Crash
+  { move = 0x00196EC2, level = 20 },                        # Earthquake
+  { move = 0x2690CAFB, level = 30 },                        # Beyond the Sambadrome
+]
 
   [[edit.cards]]
   id = 0x5D6551E1                                         # MF/DF · mountain
@@ -131,6 +209,12 @@ target = "c08100130"                                   # Paulo
 
 [[edit]]
 target = "c11808120"                                   # Cristiano Dabola
+moves = [
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0xB633C4E1, level = 13 },                        # Photon Crash
+  { move = 0x2690CAFB, level = 20 },                        # Beyond the Sambadrome
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0xFFF75CCA                                         # DF/MF · fire

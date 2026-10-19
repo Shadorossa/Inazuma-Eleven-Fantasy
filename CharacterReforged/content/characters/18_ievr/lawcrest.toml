@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11170010"                                   # Rufery Faire
+moves = [
+  { move = 0x53E9C2A3, level = 1 },                         # Capable Hands
+  { move = 0xC636A810, level = 13 },                        # Combustion Catch
+  { move = 0x485150D9, level = 20 },                        # Body Shield
+  { move = 0xF64674CB, level = 30 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0x8583C009                                         # GK/DF · fire
@@ -15,6 +21,12 @@ target = "c11170010"                                   # Rufery Faire
 
 [[edit]]
 target = "c11170030"                                   # Prudence Witt
+moves = [
+  { move = 0xC41097D5, level = 1 },                         # Acrobotics
+  { move = 0x750E6DAB, level = 13 },                        # Matador Feint
+  { move = 0x27D9B69F, level = 20 },                        # Prima Donna
+  { move = 0xE0DF8DB5, level = 30 },                        # No Future
+]
 
   [[edit.cards]]
   id = 0xB7B5A28B                                         # MF/FW · fire
@@ -24,6 +36,12 @@ target = "c11170030"                                   # Prudence Witt
 
 [[edit]]
 target = "c11170040"                                   # Willard Headdon
+moves = [
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0x414BA9BD, level = 13 },                        # Pincer Pinch
+  { move = 0xC5EF0563, level = 20 },                        # Three-Legged Rush
+  { move = 0x65766A4F, level = 30 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0xF8F4344C                                         # DF/FW · fire
@@ -34,6 +52,12 @@ target = "c11170040"                                   # Willard Headdon
 
 [[edit]]
 target = "c11170050"                                   # Norwin Naeve
+moves = [
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0x3BF45E9A, level = 13 },                        # Triple Boost
+  { move = 0xE35B59DB, level = 20 },                        # Twin Sun Smash
+  { move = 0x12E67CC1, level = 30 },                        # Future Eye
+]
 
   [[edit.cards]]
   id = 0xE1EF050D                                         # FW/MF · fire
@@ -43,6 +67,12 @@ target = "c11170050"                                   # Norwin Naeve
 
 [[edit]]
 target = "c11170060"                                   # Eames Rapport
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x9AF2229C, level = 13 },                        # Gravity Point
+  { move = 0x2E7B2B84, level = 20 },                        # Thief's Eye
+  { move = 0x91AE65A1, level = 30 },                        # Giant Spider
+]
 
   [[edit.cards]]
   id = 0xCAC256CE                                         # DF/GK · forest
@@ -53,6 +83,12 @@ target = "c11170060"                                   # Eames Rapport
 
 [[edit]]
 target = "c11170020"                                   # Brie Brillante
+moves = [
+  { move = 0xC4701649, level = 1 },                         # Ice Block
+  { move = 0xC13F00CC, level = 13 },                        # Flower Power
+  { move = 0x7748D3F2, level = 20 },                        # Devil Ball
+  { move = 0xF14FDC17, level = 30 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0xAEAE93CA                                         # GK/MF · forest
@@ -63,6 +99,12 @@ target = "c11170020"                                   # Brie Brillante
 
 [[edit]]
 target = "c11170070"                                   # Dion Arbiter
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x3C843987, level = 13 },                        # Flurry Dash
+  { move = 0xB0F8060A, level = 20 },                        # Ozone Flayer
+  { move = 0x06D2AC29, level = 30 },                        # Diabolical Cut
+]
 
   [[edit.cards]]
   id = 0xD3D9678F                                         # MF/DF · forest
@@ -72,6 +114,12 @@ target = "c11170070"                                   # Dion Arbiter
 
 [[edit]]
 target = "c11170080"                                   # Gusto Reitonly
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x025FD09B, level = 13 },                        # Volcano Cut
+  { move = 0x57BEB7B1, level = 20 },                        # Endeavor Rush
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x54417B40                                         # DF/MF · fire
@@ -82,6 +130,12 @@ target = "c11170080"                                   # Gusto Reitonly
 
 [[edit]]
 target = "c11170090"                                   # Adamas Quarell
+moves = [
+  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0xC41097D5, level = 13 },                        # Acrobotics
+  { move = 0x3663DB4C, level = 20 },                        # Utter Gutsiness Bat
+  { move = 0x72BFA108, level = 30 },                        # Wall of Atlantis
+]
 
   [[edit.cards]]
   id = 0x4D5A4A01                                         # FW/DF · mountain
@@ -91,6 +145,12 @@ target = "c11170090"                                   # Adamas Quarell
 
 [[edit]]
 target = "c11170100"                                   # Faust Fennrick
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xAB6422AC, level = 13 },                        # Phantom Shot
+  { move = 0xC5EF0563, level = 20 },                        # Three-Legged Rush
+  { move = 0xBBE07677, level = 30 },                        # Sidewinder
+]
 
   [[edit.cards]]
   id = 0x9D5A9B7F                                         # FW/MF · mountain
@@ -100,6 +160,12 @@ target = "c11170100"                                   # Faust Fennrick
 
 [[edit]]
 target = "c11170120"                                   # Cordelia Collison
+moves = [
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x67F17FA8, level = 20 },                        # Mega Quake
+  { move = 0x2FB941B3, level = 30 },                        # Stone Prison
+]
 
   [[edit.cards]]
   id = 0xAF6CF9FD                                         # MF/DF · mountain
@@ -110,6 +176,12 @@ target = "c11170120"                                   # Cordelia Collison
 
 [[edit]]
 target = "c11170510"                                   # Willoughby Lexford
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x0A3F27B7, level = 13 },                        # Foul Offence 3
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x834802E2                                         # DF/MF · fire
@@ -120,6 +192,12 @@ target = "c11170510"                                   # Willoughby Lexford
 
 [[edit]]
 target = "c11170110"                                   # Normon Peeveton
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x105C91A7, level = 13 },                        # Slingshot
+  { move = 0x585098FC, level = 20 },                        # Slice and Dice
+  { move = 0xC324C788, level = 30 },                        # Blast Mine
+]
 
   [[edit.cards]]
   id = 0x8441AA3E                                         # DF/GK · mountain
@@ -130,6 +208,12 @@ target = "c11170110"                                   # Normon Peeveton
 
 [[edit]]
 target = "c11170130"                                   # Fabricius Cator
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x04941270, level = 13 },                        # Vac Attack
+  { move = 0x4A17EE80, level = 20 },                        # Hunter's Net
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0xB677C8BC                                         # MF/DF · wind
@@ -140,6 +224,12 @@ target = "c11170130"                                   # Fabricius Cator
 
 [[edit]]
 target = "c11170140"                                   # Recco Rectenwald
+moves = [
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0x78E027BC, level = 13 },                        # Shine Drive
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x57BEB7B1, level = 30 },                        # Endeavor Rush
+]
 
   [[edit.cards]]
   id = 0xF9365E7B                                         # FW/MF · fire
@@ -150,6 +240,12 @@ target = "c11170140"                                   # Recco Rectenwald
 
 [[edit]]
 target = "c11170160"                                   # Alzen Wasruff
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x19025F83, level = 13 },                        # Quick Draw
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0xCB003CF9                                         # DF/MF · mountain
@@ -160,6 +256,12 @@ target = "c11170160"                                   # Alzen Wasruff
 
 [[edit]]
 target = "c11170150"                                   # Kieran Knavenly
+moves = [
+  { move = 0x530CDFC1, level = 1 },                         # Mystifying Mist
+  { move = 0x84385EE2, level = 13 },                        # Black Tide Ride
+  { move = 0xAF150D21, level = 20 },                        # Swallow Counter
+  { move = 0x9D236FA3, level = 30 },                        # Sword of the King
+]
 
   [[edit.cards]]
   id = 0xE02D6F3A                                         # DF/GK · forest
@@ -170,6 +272,12 @@ target = "c11170150"                                   # Kieran Knavenly
 
 [[edit]]
 target = "c11170500"                                   # Helene Justitia
+moves = [
+  { move = 0x72BFA108, level = 1 },                         # Wall of Atlantis
+  { move = 0x422A60B1, level = 13 },                        # Barrier Reef
+  { move = 0x025FD09B, level = 20 },                        # Volcano Cut
+  { move = 0x585098FC, level = 30 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0x9A5333A3                                         # DF/GK · fire

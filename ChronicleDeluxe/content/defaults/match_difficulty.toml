@@ -6,7 +6,12 @@
 # Normal board pieces: Crónica (1) and Batalla heroica (4). Gate pieces: their gate battle (2) only. The route-unlock
 # battle of a normal piece is not offered: a Crónica win counts as its clear (graft chronicle_deluxe_board). Nothing is
 # removed from the game data or from a save: the hidden rows keep their clear / lock bits.
-# The «Competir contra bots» classes (6-9) are not touched.
+# «Competir contra bots» (free match): three classes per opponent, every rival player synced to the class level
+# (docs/game/mods/chronicle-deluxe-free-match.md): INAZUMA (6) Lv 50, ZONA LETAL (7) Lv 99 and BATALLA LEGENDARIA
+# (9) Lv 200; RANGO DIVINO (8) is not offered there. `Level` re-levels the class row of every game of the free-match
+# list (the framework's class levels); `FlatRivalLevel` makes the row play a copy of its team without member level
+# offsets, so the whole line-up and the card's level ball show exactly that level; `OwnClearBit` gives the rows
+# clear bits of their own (owner 2026-10-19: an old HÉROE LEGENDARIO / ZONA LETAL / INAZUMA win does not count).
 
 [MatchDifficulty.RouteOpen]
 Contexts = ["gate"]          # hidden on normal pieces (a Crónica win counts as its clear); still the gate battle
@@ -19,3 +24,26 @@ Enabled = false              # Batalla heroica+
 
 [MatchDifficulty.Legendaria]
 Enabled = false              # Batalla legendaria
+
+[MatchDifficulty.Class1]
+Level = 50                   # INAZUMA (retail title and blue ball)
+FlatRivalLevel = true
+OwnClearBit = true           # new clear bits: wins of the retail class this row was do not count
+
+[MatchDifficulty.Class2]
+Level = 99                   # ZONA LETAL (retail title and purple ball)
+FlatRivalLevel = true
+OwnClearBit = true           # new clear bits: wins of the retail class this row was do not count
+
+[MatchDifficulty.Class3]
+Contexts = ["chain"]         # RANGO DIVINO: not a free-match class here (its row stays for the chains that play it)
+
+# BATALLA LEGENDARIA: the legendary title the old Inazuma Fantasy used for its Lv 200 class (the retail Chronicle title
+# gtxt_class28 fitted to the class title format) and its cyan-lime ball, both made at boot from the player's files
+# (content\images\menu\200_icon\06_icon_class\icon_class.toml, content\images\menu\30_vsroute\vsroute01\vsroute01_21.toml).
+[MatchDifficulty.Class4]
+Level = 200
+FlatRivalLevel = true
+OwnClearBit = true           # new clear bits: wins of the retail class this row was do not count
+Badge = "chronicle_deluxe_legendary_battle"
+Ball = "chronicle_deluxe_legendary_ball"

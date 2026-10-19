@@ -1,7 +1,8 @@
 schema = "VRFW.base_table/1"
 # The free-match rows of the Cross games (category 1, under the Cross tab; their conditions: listed while the office
-# is off; three rows also listed again after a previous game is won). Key = [battleId, sortOrder] (two rows share a
-# game). The team type orders them and writes the unlock chain (content/teams/cross_tab.toml: order, unlock = "chain").
+# is off), one row per game: the team type orders them and writes the unlock chain (content/teams/cross_tab.toml:
+# order, unlock = "chain"). Key = [battleId, sortOrder]. 1.3.21: the second rows of Piratas Inazuma Japón, Shin Zeus
+# and Circo Caos (the old chain's «listed again after the previous win» copies) are gone: each game is listed once.
 # Moved from Inazuma Fantasy's whole soccer_opponent_info on 2026-10-08 (docs/release/iecross.md §6).
 
 [[keyed]]
@@ -50,15 +51,3 @@ key_columns = ["battleId", "sortOrder"]
   [[keyed.add]]                         # evt_cm_cx_japan_2026
   key = [0xDD7171CC, 741]
   cells = { category = 1, cond1 = "AAAAABgFNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAHg=", cond2 = "AAAAABgFNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAHg=", cond3 = "AAAAABgFNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAHg=", cond4 = "AAAAABgFNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAHg=" }
-
-  [[keyed.add]]                         # evt_cm_cx_kaizoku_ij
-  key = [0xD5B940FC, 744]
-  cells = { category = 1, cond1 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI01blA/CgABgIyAAAACTIAAAABeI8=", cond2 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI01blA/CgABgIyAAAACTIAAAABeI8=", cond3 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI01blA/CgABgIyAAAACTIAAAABeI8=", cond4 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI01blA/CgABgIyAAAACTIAAAABeI8=" }
-
-  [[keyed.add]]                         # evt_cm_cx_shin_zeus
-  key = [0x81D0CDFF, 742]
-  cells = { category = 1, cond1 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0gdDN/ygABgIyAAAACTIAAAABeI8=", cond2 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0gdDN/ygABgIyAAAACTIAAAABeI8=", cond3 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0gdDN/ygABgIyAAAACTIAAAABeI8=", cond4 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0gdDN/ygABgIyAAAACTIAAAABeI8=" }
-
-  [[keyed.add]]                         # evt_cm_cx_pierrot_chaos
-  key = [0xB0232C51, 743]
-  cells = { category = 1, cond1 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0sCMsUSgABgIyAAAACTIAAAABeI8=", cond2 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0sCMsUSgABgIyAAAACTIAAAABeI8=", cond3 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0sCMsUSgABgIyAAAACTIAAAABeI8=", cond4 = "AAAAADkLNZ6ZhIwACgEoAAYCNJtjX8IyAAAAAXg1uBfJxQATAigABgI0sCMsUSgABgIyAAAACTIAAAABeI8=" }

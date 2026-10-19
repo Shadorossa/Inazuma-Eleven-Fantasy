@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700640"                                   # Romica Glimmerly
+moves = [
+  { move = 0x6B1CF436, level = 1 },                         # Bewildered
+  { move = 0xC8760A18, level = 13 },                        # Falling Planet
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0x574008CD, level = 30 },                        # Kung Fu Fighting
+]
 
   [[edit.cards]]
   id = 0x980077F3                                         # FW/MF · mountain

@@ -45,6 +45,17 @@ target = "c05022710_5000"                              # Garreau
 
 [[edit]]
 target = "c05022610"                                   # Feduhm
+moves = [
+  { move = 0x07704782, level = 1 },                         # Rejection
+  { move = 0xB01D1B68, level = 23 },                        # Power Spike
+  { move = 0xA7157B91, level = 45 },                        # Power Shield
+  { move = 0x4AF2F3E2, level = 67 },                        # Bridge to Nowhere
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xEEC583CC, level = 1 },                         # Atlanticus [aura]
+]
 
   [[edit.cards]]
   id = 0x105E0C68                                         # GK/MF · wind
@@ -54,6 +65,17 @@ target = "c05022610"                                   # Feduhm
 
 [[edit]]
 target = "c05022620"                                   # Tsync
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x457EB170, level = 21 },                        # Pyrokinetic
+  { move = 0xE196F1D1, level = 41 },                        # Burning Bomb
+  { move = 0x25276CB9, level = 61 },                        # Solar Surprise
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x8A4C5BAA, level = 1 },                         # Zhuque [aura]
+]
 
   [[edit.cards]]
   id = 0x3B735FAB                                         # DF/MF · fire
@@ -64,6 +86,12 @@ target = "c05022620"                                   # Tsync
 
 [[edit]]
 target = "c05022630"                                   # Driss
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x0BFD4D80, level = 18 },                        # Grand Slam
+  { move = 0xAD6E4BF9, level = 39 },                        # Harvest
+  { move = 0x4A17EE80, level = 57 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x22686EEA                                         # DF/MF · forest
@@ -74,6 +102,12 @@ target = "c05022630"                                   # Driss
 
 [[edit]]
 target = "c05022640"                                   # Ludeau
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0xAD6E4BF9, level = 20 },                        # Harvest
+  { move = 0x414BA9BD, level = 38 },                        # Pincer Pinch
+  { move = 0x04941270, level = 55 },                        # Vac Attack
+]
 
   [[edit.cards]]
   id = 0x6D29F82D                                         # DF/MF · mountain
@@ -84,6 +118,12 @@ target = "c05022640"                                   # Ludeau
 
 [[edit]]
 target = "c05022650"                                   # Dios
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0xC324C788, level = 14 },                        # Blast Mine
+  { move = 0x4FE09C7A, level = 30 },                        # Acrobatic Keep
+  { move = 0x64CDCFB9, level = 52 },                        # Rising Dragon
+]
 
   [[edit.cards]]
   id = 0x7432C96C                                         # MF/DF · mountain
@@ -94,6 +134,12 @@ target = "c05022650"                                   # Dios
 
 [[edit]]
 target = "c05022660"                                   # Grigham
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x3C843987, level = 16 },                        # Flurry Dash
+  { move = 0x39CB2F02, level = 32 },                        # Dragster
+  { move = 0x2354CA2D, level = 49 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x5F1F9AAF                                         # MF/DF · wind
@@ -104,6 +150,12 @@ target = "c05022660"                                   # Grigham
 
 [[edit]]
 target = "c05022670"                                   # Zatang
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x0BFD4D80, level = 12 },                        # Grand Slam
+  { move = 0x457EB170, level = 43 },                        # Pyrokinetic
+  { move = 0xB60E3C60, level = 55 },                        # Plasma Cut
+]
 
   [[edit.cards]]
   id = 0x4604ABEE                                         # MF/DF · fire
@@ -114,6 +166,17 @@ target = "c05022670"                                   # Zatang
 
 [[edit]]
 target = "c05022680"                                   # Rodh
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0xF9C4BCF4, level = 1 },                         # Double Helix
+  { move = 0xC66BD10D, level = 46 },                        # Zigzag Spark
+  { move = 0x768AB9C5, level = 55 },                        # Frosticle
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x61A1BA8C, level = 1 },                         # Poseidón [aura]
+]
 
   [[edit.cards]]
   id = 0xC19CB721                                         # MF/FW · wind
@@ -124,6 +187,12 @@ target = "c05022680"                                   # Rodh
 
 [[edit]]
 target = "c05022690"                                   # Djibz
+moves = [
+  { move = 0xF9C4BCF4, level = 1 },                         # Double Helix
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x457EB170, level = 43 },                        # Pyrokinetic
+  { move = 0x0B011EBF, level = 56 },                        # Fireball Screw
+]
 
   [[edit.cards]]
   id = 0xD8878660                                         # MF/FW · fire
@@ -134,6 +203,17 @@ target = "c05022690"                                   # Djibz
 
 [[edit]]
 target = "c05022710"                                   # Garreau
+moves = [
+  { move = 0x035C1112, level = 1 },                         # Gungnir
+  { move = 0x585098FC, level = 24 },                        # Slice and Dice
+  { move = 0xC324C788, level = 49 },                        # Blast Mine
+  { move = 0xA0BDF96F, level = 61 },                        # Ballista Barrage
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x50130C60, level = 1 },                         # Cuervo [aura]
+]
 
   [[edit.cards]]
   id = 0x119C665F                                         # MF/FW · mountain
@@ -144,6 +224,12 @@ target = "c05022710"                                   # Garreau
 
 [[edit]]
 target = "c05022720"                                   # Steiyah
+moves = [
+  { move = 0x07704782, level = 1 },                         # Rejection
+  { move = 0x8C382852, level = 12 },                        # God Hand
+  { move = 0xED1BFBD3, level = 34 },                        # Fingers of Gaia
+  { move = 0xD471DE6C, level = 49 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0x3AB1359C                                         # GK/MF · mountain
@@ -153,6 +239,12 @@ target = "c05022720"                                   # Steiyah
 
 [[edit]]
 target = "c05022730"                                   # Mhadoor
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x5643C944, level = 13 },                        # Killer Slide
+  { move = 0x585098FC, level = 36 },                        # Slice and Dice
+  { move = 0xB01D1B68, level = 51 },                        # Power Spike
+]
 
   [[edit.cards]]
   id = 0x23AA04DD                                         # DF/GK · mountain
@@ -162,6 +254,12 @@ target = "c05022730"                                   # Mhadoor
 
 [[edit]]
 target = "c05022740"                                   # Heyze
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0xF94FAAA7, level = 14 },                        # Decoy Deploy
+  { move = 0x1C4D4906, level = 29 },                        # Whirlpool
+  { move = 0x2354CA2D, level = 47 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x6CEB921A                                         # MF/DF · wind
@@ -172,6 +270,12 @@ target = "c05022740"                                   # Heyze
 
 [[edit]]
 target = "c05022750"                                   # Kuhrach
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x0B011EBF, level = 12 },                        # Fireball Screw
+  { move = 0xDDCA0D2A, level = 25 },                        # Bouncing Bomb
+  { move = 0x910F4F83, level = 49 },                        # Fire Tornado DD
+]
 
   [[edit.cards]]
   id = 0x75F0A35B                                         # MF/FW · fire
@@ -182,6 +286,12 @@ target = "c05022750"                                   # Kuhrach
 
 [[edit]]
 target = "c05022760"                                   # Torhm
+moves = [
+  { move = 0xF9C4BCF4, level = 1 },                         # Double Helix
+  { move = 0x035C1112, level = 11 },                        # Gungnir
+  { move = 0x457EB170, level = 24 },                        # Pyrokinetic
+  { move = 0x65766A4F, level = 39 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x5EDDF098                                         # FW/MF · forest

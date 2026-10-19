@@ -1,0 +1,47 @@
+id = "home_stadium"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Home Stadium"
+version = "1.2.2"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Each of your teams gets a home stadium: Team Dock › «Home stadium» (a picture button under Tactics with BetterUI, a list row without it) lists the stadiums you own (bought or unlocked) and saves the pick for the team on screen. The team plays its home matches there: the friendlies that leave the stadium open (no stadium of their own and no rival's home). Competition, Chronicle and Battle Bay keep their stadiums."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-19"
+# This mod's own names (Lua HomeStadium.X, commands CMND_HOMESTADIUM_*, save keys dock.<set>); never VRFW.
+prefix = "HomeStadium"
+folder = "HomeStadium"
+# Created on 2026-10-19 (owner request: Football Reforged option «Estadio local»; decision (c): the home stadium is for
+# the matches the player plays at home only, BetterMenu's Competition court stays). docs/game/mods/home-stadium.md.
+# Standard mod layout (docs/framework/mod-layout.md):
+#   scripts\home_stadium.lua                         the stadium list (the game's SOCCER_OPTION_FIELD_INFO rows and
+#                                                    their tickets), the choice per team dock (save data of the slot)
+#   content\game\home_stadium.toml                   the commands CMND_HOMESTADIUM_*
+#   content\menus\home_stadium_dock.toml             the team dock list's 9th row instance (without BetterUI)
+#   content\menus\home_stadium_button.toml           with BetterUI: the picture button (a focusable layer + the stadium picture layer)
+#   content\menus\home_stadium_picker.toml           the selector's stadium picture frame (win05_40_sub_image_frame)
+#   assets\lua\_all\home_stadium.lua                 the provider of the framework's home matches (VRFW_HomeStadium)
+#                                                    and the owned stadiums, in every menu VM
+#   assets\lua\soccer_team_dock_menu\300_home_stadium.lua  the team dock entry «Estadio local» and its selector: with
+#                                                    BetterUI a picture button between TÁCTICAS and FORMACIÓN (placed,
+#                                                    reached and decided by BetterUI >= 1.22.10, BetterUI.AddDockButton), else a
+#                                                    row of the dock's list
+#   text\keys.toml                                   the row's texts, the mod's name / description
+requires = ["vr_framework>=2.4.223", "football_reforged>=1.2.17"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+# command: its commands (the game Lua asks them)
+permissions = ["command"]
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "football_reforged"
+order = 90

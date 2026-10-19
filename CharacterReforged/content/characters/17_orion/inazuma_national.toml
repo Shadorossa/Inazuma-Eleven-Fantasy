@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08010030"                                   # Basile Hardy
+moves = [
+  { move = 0xBAD0C5D2, level = 1 },                         # Daruma Boomer
+  { move = 0xF5915315, level = 13 },                        # Flying Colours
+  { move = 0xA897B3AE, level = 20 },                        # Fire Tornado A
+  { move = 0x427719AC, level = 30 },                        # Gale Dash
+]
 
   [[edit.cards]]
   id = 0xAA9BC1C3                                         # FW/MF · fire
@@ -14,6 +20,12 @@ target = "c08010030"                                   # Basile Hardy
 
 [[edit]]
 target = "c08010240"                                   # Sandra Fischer
+moves = [
+  { move = 0x338DE7EB, level = 1 },                         # Mermaid's Veil
+  { move = 0x2A96D6AA, level = 13 },                        # Maelstrom the Hand
+  { move = 0xC79443BB, level = 20 },                        # Waterfall
+  { move = 0x422A60B1, level = 30 },                        # Barrier Reef
+]
 
   [[edit.cards]]
   id = 0xE65E836A                                         # GK/DF · wind
@@ -24,6 +36,12 @@ target = "c08010240"                                   # Sandra Fischer
 
 [[edit]]
 target = "c08010010"                                   # Philip Star
+moves = [
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
+  { move = 0x07A628CC, level = 13 },                        # Stargazer
+  { move = 0xB0F8060A, level = 20 },                        # Ozone Flayer
+  { move = 0xA9E3374B, level = 30 },                        # Cyclone Sprint
+]
 
   [[edit.cards]]
   id = 0x98ADA341                                         # MF/FW · wind
@@ -33,6 +51,12 @@ target = "c08010010"                                   # Philip Star
 
 [[edit]]
 target = "c08010020"                                   # Lucas Star
+moves = [
+  { move = 0xCC7060F9, level = 1 },                         # Starstruck
+  { move = 0x40BAB1A6, level = 13 },                        # Starstriker
+  { move = 0xA34E686D, level = 20 },                        # Last Resort Σ
+  { move = 0xB0F8060A, level = 30 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0xB380F082                                         # MF/FW · wind
@@ -41,6 +65,12 @@ target = "c08010020"                                   # Lucas Star
 
 [[edit]]
 target = "c11808160"                                   # Jim Trainer
+moves = [
+  { move = 0x65D7406D, level = 1 },                         # Grabber Arm
+  { move = 0x8C382852, level = 13 },                        # God Hand
+  { move = 0x7F48A542, level = 20 },                        # Mega Majin Trio
+  { move = 0x922AB1CF, level = 30 },                        # Safety First
+]
 
   [[edit.cards]]
   id = 0x9B9B99CE                                         # GK/DF · mountain

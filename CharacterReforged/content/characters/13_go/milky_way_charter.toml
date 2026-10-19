@@ -16,6 +16,12 @@ target = "c04000860_5000"                              # Zaphod Riker
 
 [[edit]]
 target = "c04000810"                                   # Starbuck Rogers
+moves = [
+  { move = 0x58B5859E, level = 1 },                         # Whip Crack
+  { move = 0x2D9F7E76, level = 15 },                        # Breath Taker
+  { move = 0xDF2D9951, level = 47 },                        # Close Counter
+  { move = 0xFF5C8DAF, level = 60 },                        # Shot Stopper
+]
 
   [[edit.cards]]
   id = 0x6C7EB13D                                         # GK/MF · mountain
@@ -25,6 +31,12 @@ target = "c04000810"                                   # Starbuck Rogers
 
 [[edit]]
 target = "c04000820"                                   # Worff Chewback
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0x05567847, level = 30 },                        # Runaway Train
+  { move = 0xBBA44137, level = 42 },                        # Great Wall
+]
 
   [[edit.cards]]
   id = 0x4753E2FE                                         # DF/MF · mountain
@@ -35,6 +47,12 @@ target = "c04000820"                                   # Worff Chewback
 
 [[edit]]
 target = "c04000830"                                   # Dart H. Cylon
+moves = [
+  { move = 0xF626F557, level = 1 },                         # Electric Impedance
+  { move = 0x1C4D4906, level = 26 },                        # Whirlpool
+  { move = 0x20D01E43, level = 31 },                        # Hey Presto
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x5E48D3BF                                         # DF/MF · forest
@@ -45,6 +63,12 @@ target = "c04000830"                                   # Dart H. Cylon
 
 [[edit]]
 target = "c04000840"                                   # Scotty O'Brien
+moves = [
+  { move = 0x0BFD4D80, level = 1 },                         # Grand Slam
+  { move = 0x4FE09C7A, level = 20 },                        # Acrobatic Keep
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x11094578                                         # DF/MF · mountain
@@ -55,6 +79,12 @@ target = "c04000840"                                   # Scotty O'Brien
 
 [[edit]]
 target = "c04000850"                                   # Billy-Lee Adarma
+moves = [
+  { move = 0x0BFD4D80, level = 1 },                         # Grand Slam
+  { move = 0x73C5AF40, level = 15 },                        # Dash Accelerator
+  { move = 0x17110E3B, level = 35 },                        # Jumbo Sandwich
+  { move = 0x44BCDB47, level = 56 },                        # Pyroclastic
+]
 
   [[edit.cards]]
   id = 0x08127439                                         # MF/DF · fire
@@ -65,6 +95,17 @@ target = "c04000850"                                   # Billy-Lee Adarma
 
 [[edit]]
 target = "c04000860"                                   # Zaphod Riker
+moves = [
+  { move = 0x0BFD4D80, level = 1 },                         # Grand Slam
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x768AB9C5, level = 43 },                        # Frosticle
+  { move = 0xB0F8060A, level = 60 },                        # Ozone Flayer
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x78BA8BCD, level = 1 },                         # Halcón de trueno [aura]
+]
 
   [[edit.cards]]
   id = 0x233F27FA                                         # MF/DF · wind
@@ -75,6 +116,12 @@ target = "c04000860"                                   # Zaphod Riker
 
 [[edit]]
 target = "c04000870"                                   # Cyber Dalekman
+moves = [
+  { move = 0x0BFD4D80, level = 1 },                         # Grand Slam
+  { move = 0xDCC9CCA3, level = 15 },                        # Tesla Coil
+  { move = 0x737DCB3F, level = 35 },                        # Pancake Defence
+  { move = 0x19BA3BFC, level = 62 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x3A2416BB                                         # MF/DF · mountain
@@ -84,6 +131,12 @@ target = "c04000870"                                   # Cyber Dalekman
 
 [[edit]]
 target = "c04000880"                                   # Lucas Skywalk
+moves = [
+  { move = 0xF6E75EE9, level = 1 },                         # Headbanger
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x457EB170, level = 27 },                        # Pyrokinetic
+  { move = 0x0CF4E55C, level = 35 },                        # Double Touch
+]
 
   [[edit.cards]]
   id = 0xBDBC0A74                                         # MF/FW · wind
@@ -93,6 +146,12 @@ target = "c04000880"                                   # Lucas Skywalk
 
 [[edit]]
 target = "c04000890"                                   # Jimmy Kyrk
+moves = [
+  { move = 0xF6E75EE9, level = 1 },                         # Headbanger
+  { move = 0x0BFD4D80, level = 5 },                         # Grand Slam
+  { move = 0x2A4E3349, level = 40 },                        # Heart Beat
+  { move = 0xB9A6C82E, level = 52 },                        # Triangle ZZ
+]
 
   [[edit.cards]]
   id = 0xA4A73B35                                         # FW/MF · forest
@@ -102,6 +161,12 @@ target = "c04000890"                                   # Jimmy Kyrk
 
 [[edit]]
 target = "c04000900"                                   # Harkness Torchwood
+moves = [
+  { move = 0xF6E75EE9, level = 1 },                         # Headbanger
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x56FBAD3B, level = 25 },                        # Seal Matrix
+  { move = 0xDBFD9CFE, level = 56 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0x74A7EA4B                                         # FW/MF · mountain
@@ -111,6 +176,12 @@ target = "c04000900"                                   # Harkness Torchwood
 
 [[edit]]
 target = "c04000910"                                   # Jean-Luc Janeway
+moves = [
+  { move = 0xF6E75EE9, level = 1 },                         # Headbanger
+  { move = 0x0CF4E55C, level = 20 },                        # Double Touch
+  { move = 0x457EB170, level = 27 },                        # Pyrokinetic
+  { move = 0x65766A4F, level = 58 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x6DBCDB0A                                         # FW/MF · fire
@@ -121,6 +192,12 @@ target = "c04000910"                                   # Jean-Luc Janeway
 
 [[edit]]
 target = "c04000920"                                   # Wesley Sheridan
+moves = [
+  { move = 0x58B5859E, level = 1 },                         # Whip Crack
+  { move = 0xC636A810, level = 11 },                        # Combustion Catch
+  { move = 0xF14FDC17, level = 20 },                        # Shot Pocket
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0x469188C9                                         # GK/MF · wind
@@ -131,6 +208,12 @@ target = "c04000920"                                   # Wesley Sheridan
 
 [[edit]]
 target = "c04000930"                                   # Sithri Peon
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0xF4604B0E, level = 15 },                        # Fancy-Footwork
+  { move = 0xDE8F72FA, level = 25 },                        # Under Miner
+  { move = 0x17110E3B, level = 32 },                        # Jumbo Sandwich
+]
 
   [[edit.cards]]
   id = 0x5F8AB988                                         # DF/MF · mountain
@@ -141,6 +224,12 @@ target = "c04000930"                                   # Sithri Peon
 
 [[edit]]
 target = "c04000940"                                   # Isaac Binks
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0xF4A1E0B0, level = 60 },                        # Entropic Arrows
+]
 
   [[edit.cards]]
   id = 0x10CB2F4F                                         # DF/MF · forest
@@ -150,6 +239,12 @@ target = "c04000940"                                   # Isaac Binks
 
 [[edit]]
 target = "c04000950"                                   # Carl Rissian
+moves = [
+  { move = 0x24E5068E, level = 1 },                         # Fractal Repeller
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0xBBA44137, level = 27 },                        # Great Wall
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x09D01E0E                                         # MF/DF · mountain
@@ -160,6 +255,12 @@ target = "c04000950"                                   # Carl Rissian
 
 [[edit]]
 target = "c04000960"                                   # Robert Affett
+moves = [
+  { move = 0xF6E75EE9, level = 1 },                         # Headbanger
+  { move = 0xE196F1D1, level = 15 },                        # Burning Bomb
+  { move = 0x0BFD4D80, level = 24 },                        # Grand Slam
+  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0x22FD4DCD                                         # FW/MF · fire
@@ -170,6 +271,12 @@ target = "c04000960"                                   # Robert Affett
 
 [[edit]]
 target = "c11804020"                                   # Deanna Tam
+moves = [
+  { move = 0xE0549BE6, level = 1 },                         # Easy Breezy Kid
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xB4E38945                                         # MF/DF · wind

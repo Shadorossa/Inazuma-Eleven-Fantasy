@@ -6,6 +6,16 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02024720"                                   # Thor Stoutberg
+moves = [
+  { move = 0xDB01CFC1, level = 1 },                         # Thunder Beast
+  { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
+  { move = 0x3069B219, level = 30 },                        # Super Sumo Stomp
+  { move = 0x1B44E1DA, level = 56 },                        # Stone Wall
+]
+VRFW.MoveGrades = [
+  { Move = 0xDB01CFC1, Grade = 2 },                         # Thunder Beast
+  { Move = 0x3069B219, Grade = 2 },                         # Super Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0xDA7D54CE                                         # MF/DF · wind
@@ -15,6 +25,15 @@ target = "c02024720"                                   # Thor Stoutberg
 
 [[edit]]
 target = "c03030060"                                   # Jordan Greenway
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
+  { move = 0x029E7B25, level = 53 },                        # Gaia Break
+]
+VRFW.MoveGrades = [
+  { Move = 0x7C6D5B0E, Grade = 1 },                         # Astro Break
+]
 
   [[edit.cards]]
   id = 0xAF2B321C                                         # MF/FW · forest
@@ -25,6 +44,15 @@ target = "c03030060"                                   # Jordan Greenway
 
 [[edit]]
 target = "c03030040"                                   # Xavier Foster
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0x6DAEF91C, level = 35 },                        # Supernova
+  { move = 0xB633C4E1, level = 41 },                        # Photon Crash
+  { move = 0x2296A01A, level = 62 },                        # Southern Cross
+]
+VRFW.MoveGrades = [
+  { Move = 0x65766A4F, Grade = 1 },                         # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x9D1D509E                                         # FW/MF · fire
@@ -33,6 +61,15 @@ target = "c03030040"                                   # Xavier Foster
 
 [[edit]]
 target = "c03030050"                                   # Caleb Stonewall
+moves = [
+  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
+  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+]
+VRFW.MoveGrades = [
+  { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x840661DF                                         # MF/FW · fire
@@ -42,6 +79,12 @@ target = "c03030050"                                   # Caleb Stonewall
 
 [[edit]]
 target = "c03030010"                                   # Austin Hobbes
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x232D05EC, level = 3 },                         # Tiger Drive
+  { move = 0xA6763B84, level = 11 },                        # Gladius Arch
+  { move = 0xF02C9C02, level = 21 },                        # Tiger Storm
+]
 
   [[edit.cards]]
   id = 0xE06AA4DB                                         # FW/MF · forest
@@ -51,6 +94,12 @@ target = "c03030010"                                   # Austin Hobbes
 
 [[edit]]
 target = "c03030020"                                   # Archer Hawkins
+moves = [
+  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
+  { move = 0x04941270, level = 4 },                         # Vac Attack
+  { move = 0x142DBE2A, level = 30 },                        # Foul Offence
+  { move = 0x7B64F3D2, level = 40 },                        # Hawk Shot
+]
 
   [[edit.cards]]
   id = 0xCB47F718                                         # DF/MF · wind
@@ -61,6 +110,12 @@ target = "c03030020"                                   # Archer Hawkins
 
 [[edit]]
 target = "c03030080"                                   # Camellia Travis
+moves = [
+  { move = 0x4E9A9232, level = 16 },                        # Spinning Cut
+  { move = 0xB5B7108F, level = 29 },                        # Shadow Stitch
+  { move = 0xC7A9BB3A, level = 36 },                        # Whirlwind Cut
+  { move = 0x3F00EDE9, level = 50 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0x31A81F92                                         # DF/MF · forest
@@ -70,6 +125,12 @@ target = "c03030080"                                   # Camellia Travis
 
 [[edit]]
 target = "c03039500"                                   # Percival Travis
+moves = [
+  { move = 0x4E22F64D, level = 8 },                         # Transporter Device
+  { move = 0x6BA49049, level = 19 },                        # Mystic Mist
+  { move = 0x2296A01A, level = 33 },                        # Southern Cross
+  { move = 0x6ADE9E01, level = 52 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x82B218FB                                         # MF/DF · forest
@@ -79,6 +140,12 @@ target = "c03039500"                                   # Percival Travis
 
 [[edit]]
 target = "c11901160"                                   # Jude Sharp
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0x2DCF05E1                                         # MF/FW · wind

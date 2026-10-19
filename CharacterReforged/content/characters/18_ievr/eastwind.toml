@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11060010"                                   # Jenny Okutba
+moves = [
+  { move = 0x3D794772, level = 1 },                         # Deep Diver
+  { move = 0xDCF43422, level = 13 },                        # Aurora Dribble
+  { move = 0x1C4D4906, level = 20 },                        # Whirlpool
+  { move = 0x5E5AF1A9, level = 30 },                        # Northern Impact
+]
 
   [[edit.cards]]
   id = 0x73BF3A1C                                         # DF/MF · wind
@@ -16,6 +22,12 @@ target = "c11060010"                                   # Jenny Okutba
 
 [[edit]]
 target = "c11060020"                                   # Sikuvot Shivan
+moves = [
+  { move = 0x6588D533, level = 1 },                         # Niagara Falls
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x3D794772, level = 20 },                        # Deep Diver
+  { move = 0x1C4D4906, level = 30 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0x589269DF                                         # FW/DF · wind
@@ -26,6 +38,12 @@ target = "c11060020"                                   # Sikuvot Shivan
 
 [[edit]]
 target = "c11060030"                                   # Martino Leone
+moves = [
+  { move = 0x9A755221, level = 1 },                         # Cyber Realm
+  { move = 0x88B554E0, level = 13 },                        # Galatyn
+  { move = 0x8B31808E, level = 20 },                        # Wormhole
+  { move = 0x1FA91CF4, level = 30 },                        # Negative Feedback
+]
 
   [[edit.cards]]
   id = 0x4189589E                                         # GK/DF · forest
@@ -36,6 +54,12 @@ target = "c11060030"                                   # Martino Leone
 
 [[edit]]
 target = "c11060040"                                   # Joey Beat
+moves = [
+  { move = 0x119C17D3, level = 1 },                         # Cheat Blaster
+  { move = 0x7A67325B, level = 13 },                        # Flame Dance
+  { move = 0x087999EE, level = 20 },                        # Heel Drop
+  { move = 0xDDCA0D2A, level = 30 },                        # Bouncing Bomb
+]
 
   [[edit.cards]]
   id = 0x0EC8CE59                                         # FW/MF · fire
@@ -46,6 +70,12 @@ target = "c11060040"                                   # Joey Beat
 
 [[edit]]
 target = "c11060050"                                   # Robart Anderson
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x6588D533, level = 13 },                        # Niagara Falls
+  { move = 0x36A270F2, level = 20 },                        # Rolling Slide
+  { move = 0x7A67325B, level = 30 },                        # Flame Dance
+]
 
   [[edit.cards]]
   id = 0x17D3FF18                                         # MF/DF · mountain
@@ -56,6 +86,12 @@ target = "c11060050"                                   # Robart Anderson
 
 [[edit]]
 target = "c11060060"                                   # Maribelle Flanmir
+moves = [
+  { move = 0x613ABD43, level = 1 },                         # Dawnrise
+  { move = 0x3A4FFB6C, level = 13 },                        # The Ikaros
+  { move = 0x6E53E2B3, level = 20 },                        # Angel Ball
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x3CFEACDB                                         # MF/FW · wind
@@ -66,6 +102,12 @@ target = "c11060060"                                   # Maribelle Flanmir
 
 [[edit]]
 target = "c11060070"                                   # Toyo Yamanouchi
+moves = [
+  { move = 0x6588D533, level = 1 },                         # Niagara Falls
+  { move = 0x3D794772, level = 13 },                        # Deep Diver
+  { move = 0xBD8A9EBE, level = 20 },                        # Infinite Wall
+  { move = 0xA0BDF96F, level = 30 },                        # Ballista Barrage
+]
 
   [[edit.cards]]
   id = 0x25E59D9A                                         # MF/GK · mountain
@@ -75,6 +117,12 @@ target = "c11060070"                                   # Toyo Yamanouchi
 
 [[edit]]
 target = "c11060080"                                   # Judie Cassios
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x19BA3BFC, level = 13 },                        # Dance on Air
+  { move = 0xD9BB22A7, level = 20 },                        # Air Ride
+  { move = 0x6B1CF436, level = 30 },                        # Bewildered
+]
 
   [[edit.cards]]
   id = 0xA27D8155                                         # DF/MF · fire
@@ -85,6 +133,12 @@ target = "c11060080"                                   # Judie Cassios
 
 [[edit]]
 target = "c11060090"                                   # Ming Chow
+moves = [
+  { move = 0x087999EE, level = 1 },                         # Heel Drop
+  { move = 0x3BF45E9A, level = 13 },                        # Triple Boost
+  { move = 0x35E70F22, level = 20 },                        # Grenade Shot
+  { move = 0x79E3E635, level = 30 },                        # Racing Flame
+]
 
   [[edit.cards]]
   id = 0xBB66B014                                         # MF/FW · fire
@@ -95,6 +149,12 @@ target = "c11060090"                                   # Ming Chow
 
 [[edit]]
 target = "c11060100"                                   # Kai Yoshizaki
+moves = [
+  { move = 0x119C17D3, level = 1 },                         # Cheat Blaster
+  { move = 0xB13A6C3D, level = 13 },                        # Zigzag Flame
+  { move = 0x637C031A, level = 20 },                        # No Escape
+  { move = 0x17110E3B, level = 30 },                        # Jumbo Sandwich
+]
 
   [[edit.cards]]
   id = 0x6B66616A                                         # FW/MF · fire
@@ -104,6 +164,12 @@ target = "c11060100"                                   # Kai Yoshizaki
 
 [[edit]]
 target = "c11060110"                                   # Gigy Maharaja
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x6588D533, level = 13 },                        # Niagara Falls
+  { move = 0x6633159F, level = 20 },                        # Gravitation
+  { move = 0x119C17D3, level = 30 },                        # Cheat Blaster
+]
 
   [[edit.cards]]
   id = 0x727D502B                                         # DF/FW · fire
@@ -113,6 +179,12 @@ target = "c11060110"                                   # Gigy Maharaja
 
 [[edit]]
 target = "c11060120"                                   # Olson Carchis
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x00A10ABD, level = 20 },                        # Ball Lightning
+  { move = 0xA7B451B3, level = 30 },                        # Paladin Strike
+]
 
   [[edit.cards]]
   id = 0x595003E8                                         # FW/MF · forest
@@ -123,6 +195,12 @@ target = "c11060120"                                   # Olson Carchis
 
 [[edit]]
 target = "c11060130"                                   # Mengmeng Wang
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0xB13A6C3D, level = 13 },                        # Zigzag Flame
+  { move = 0x7A67325B, level = 20 },                        # Flame Dance
+  { move = 0x132416F6, level = 30 },                        # Dog Run
+]
 
   [[edit.cards]]
   id = 0x404B32A9                                         # MF/DF · fire
@@ -133,6 +211,12 @@ target = "c11060130"                                   # Mengmeng Wang
 
 [[edit]]
 target = "c11060140"                                   # Kaos Dao
+moves = [
+  { move = 0x7BC5D9F0, level = 1 },                         # Rotary Sander
+  { move = 0xE9968761, level = 13 },                        # Rocket Kobushi
+  { move = 0xDBA0E5E3, level = 20 },                        # Gigant Wall
+  { move = 0x65B7C1F1, level = 30 },                        # Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0x0F0AA46E                                         # GK/MF · mountain
@@ -143,6 +227,12 @@ target = "c11060140"                                   # Kaos Dao
 
 [[edit]]
 target = "c11060150"                                   # Edmond Pias
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0x141046AB, level = 13 },                        # Overnight Fortress
+  { move = 0xDD0BA694, level = 20 },                        # Okehazama Ravine
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0x1611952F                                         # DF/GK · wind
@@ -153,6 +243,12 @@ target = "c11060150"                                   # Edmond Pias
 
 [[edit]]
 target = "c11060160"                                   # Kain Vijet
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x21127474, level = 13 },                        # Ultra Moon
+  { move = 0x19025F83, level = 20 },                        # Quick Draw
+  { move = 0xACAC21CE, level = 30 },                        # Fake Ball
+]
 
   [[edit.cards]]
   id = 0x3D3CC6EC                                         # DF/MF · mountain
@@ -163,6 +259,12 @@ target = "c11060160"                                   # Kain Vijet
 
 [[edit]]
 target = "c11060500"                                   # Derrin Wilson
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x087999EE, level = 13 },                        # Heel Drop
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x132416F6, level = 30 },                        # Dog Run
+]
 
   [[edit.cards]]
   id = 0x6C6FC9B6                                         # MF/DF · fire
@@ -173,6 +275,12 @@ target = "c11060500"                                   # Derrin Wilson
 
 [[edit]]
 target = "c11060510"                                   # Anita Navarro
+moves = [
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x50E88A33, level = 13 },                        # Fist Beam
+  { move = 0xA6D711A6, level = 20 },                        # Full Power Shield
+  { move = 0xDA3FF6C9, level = 30 },                        # Criss-Cross
+]
 
   [[edit.cards]]
   id = 0x7574F8F7                                         # GK/MF · fire

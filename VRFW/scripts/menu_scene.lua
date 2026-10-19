@@ -38,9 +38,12 @@ local PREVIOUS = { requested = "idle", options = "requested", entering = "option
 -- People (scene key `people`): the map's npc_setting served from the scene's generated templates
 -- (content\menu_scenes\<scene>_people.toml, research/scripts/menu_scene_people_build.py): fixed-size sentinels per spot.
 local CHARA_SENTINEL, UNIFORM_SENTINEL, CLIP_SENTINEL = 0xB3E1A000, 0xB3E1B000, 0xB3E1C000
+local PLACE_SENTINEL = 0xB3E1E000   -- the place markers of serve_people (never in a template)
+local KEEPER_SENTINEL = 0xB3E1D000
 local SKELETON_PLACEHOLDER = "z0000%02d"   -- 7 characters, as a motion set name (c000101)
 
 local scenes, by_key, by_menu = {}, {}, {}
+local selected, travel_target = {}, nil -- applied only after the previous RPG scene has ended
 local people_served = 0                    -- serves this session (a fresh key each time)
 local redirected = {}                      -- filter -> true while the map's npc_setting is redirected
 local live = false                  -- the detour is installed
@@ -69,6 +72,7 @@ local function set_state(s, why)
 end
 
 local cover_release_early      -- (defined with the cover)
+local spawn_radius_early       -- (defined with the people)
 
 local function fail(why)
   arm(false)
@@ -93,7 +97,7 @@ end
 -- the actions a hotspot may run (title_menu_2: the story submenu's entries; chronicle_map: Modo Crónica straight into the
 -- Chronicle map)
 local HOTSPOT_ACTIONS = { story_continue = true, story_new_game = true, story_plus = true, story_extended = true,
-  chronicle_map = true }
+  chronicle_map = true, menu_pick = true, open_group = true, call = true }
 -- the actions a tile may run ([[VRFW.MenuSceneAction]])
 local TILE_ACTIONS = { continue_story = true, chronicle_map = true }
 
@@ -129,15 +133,24 @@ local function start()
         if id then close[#close + 1] = id else warn(string.format("%s: close_menus item %d: not a name or an id", d.where, i)) end
       end
       local s = {
-        key = d.key, mod = d.mod, menu = v.menu, map = v.map, map_id = D.id_of(v.map),
+        key = d.key, mod = d.mod, menu = v.menu, map = v.map, map_id = D.id_of(v.map), selectable = v.selectable,
+        travel_maps = v.travel_maps or {},
         field_mode = d.mod .. "." .. v.field_mode,
         x = v.entry_x, y = v.entry_y, z = v.entry_z, rot = v.entry_rot,
         entry_point = (v.entry_point ~= "" and D.id_of(v.entry_point)) or 0,
         hide_layers = hide, close_menus = close, map_tags_on = tags_on, map_tags_off = tags_off, title_play_mode = v.title_play_mode,
         settle_frames = v.settle_frames, timeout_ms = math.floor(v.timeout_seconds * 1000),
+        npc_spawn_radius = v.npc_spawn_radius or 0, people_reread = v.people_reread == true,
+        guests_as = (v.guests == "actors" or v.people_as == "actors") and "actors" or "npc",
+        people_as = (v.people_as == "actors") and "actors" or "npc",
+        actor_type = (v.actor_type == 2) and 2 or 1,
+        actor_face = v.actor_face == "default" and "default" or "clip", actor_hold_face = v.actor_hold_face == true,
         people = v.people, people_kit = v.people_kit, people_seconds = v.people_seconds, people_min_seconds = v.people_min_seconds, people_quiet_seconds = v.people_quiet_seconds, spots = {}, templates = {}, clip_sets = {}, files = {},
         camera = v.camera, camera_crc = v.camera ~= "" and D.id_of(v.camera) or 0, default_shot = v.default_shot,
         shot_seconds = v.shot_seconds, shot_ease = v.shot_ease, drift_metres = v.drift_metres, drift_seconds = v.drift_seconds,
+        cut_metres = v.cut_metres or 0, shot_turn = v.shot_turn or "slerp",
+        shot_seconds_min = v.shot_seconds_min or 0, shot_seconds_max = v.shot_seconds_max or 0,
+        shot_seconds_metres = v.shot_seconds_metres or 8,
         shots = {}, tile_shot = {}, shot_list = {}, actions = {},
         shots_select_modes = v.shots_select_modes, mode_label = v.mode_label ~= false, mode_label_x = v.mode_label_x, mode_label_y = v.mode_label_y,
         mode_label_scale = v.mode_label_scale,
@@ -145,35 +158,47 @@ local function start()
         hotspots = {},                  -- shot name -> its hotspots, by order
         screens = {},                   -- [[VRFW.MenuSceneScreen]], in declaration order
       }
-      if by_menu[v.menu] then
+      if not s.selectable and by_menu[v.menu] then
         info(string.format("%s replaces %s on %s (later mod wins)", s.key, by_menu[v.menu], v.menu))
       end
       scenes[#scenes + 1] = s
-      by_key[s.key], by_menu[v.menu] = s, s.key
+      by_key[s.key] = s
+      if not s.selectable then by_menu[v.menu] = s.key end
       info(string.format("scene %s (%s): menu %s, map %s (0x%08X), field mode %s, entry (%.2f, %.2f, %.2f) rot %.1f, %d layer(s) hidden, %d menu(s) closed, title play mode %d, settle %d frames, timeout %d ms",
         s.key, d.file, s.menu, s.map, s.map_id, s.field_mode, s.x, s.y, s.z, s.rot, #hide, #close, s.title_play_mode, s.settle_frames, s.timeout_ms))
     end
   end
   -- spots and people templates of the declared scenes
   for _, d in ipairs(decls) do
-    local s = by_key[d.mod .. "." .. tostring(d.v.scene)]
+    local owner = (d.v.of_mod or "") ~= "" and d.v.of_mod or d.mod   -- a shot may join another mod's scene
+    local s = by_key[owner .. "." .. tostring(d.v.scene)]
     if d.entry == "MenuSceneSpot" and s then
       local hashes = {}
       for _, c in ipairs(d.v.clips) do hashes[#hashes + 1] = D.id_of(c) end
       s.spots[d.v.slot] = { slot = d.v.slot, pose = d.v.pose, who = d.v.who, clips = hashes, names = d.v.clips,
-        position = { d.v.x, d.v.y or 0, d.v.z } }
+        position = { d.v.x, d.v.y or 0, d.v.z }, rot = d.v.rot or 0, group = d.v.group or "" }
+    elseif d.entry == "MenuSceneGroup" and s then
+      s.groups = s.groups or {}
+      s.groups[d.v.name] = { x = d.v.x, z = d.v.z }
     elseif d.entry == "MenuSceneAction" and s then
       local id = D.id_of(d.v.tile)
       if not TILE_ACTIONS[d.v.action] then
         warn(string.format("%s: action %q is not known (continue_story, chronicle_map): left out", d.where, d.v.action))
       elseif id then
         s.actions[#s.actions + 1] = { tile = id, action = d.v.action, shot = d.v.shot, seconds = d.v.seconds,
-          leave_white = d.v.leave_fade == "white" }
+          leave_white = d.v.leave_fade == "white", back_to = d.v["return"] or "" }
       end
     elseif d.entry == "MenuSceneShot" and s then
       local sh = { name = d.v.name, eye = { d.v.eye_x, d.v.eye_y, d.v.eye_z }, target = { d.v.target_x, d.v.target_y, d.v.target_z }, fov = d.v.fov,
         move_seconds = d.v.move_seconds, ease = d.v.ease, then_shot = d.v.then_shot or "",
-        then_after_seconds = d.v.then_after_seconds or 0 }
+        hotspot_keys = d.v.hotspot_keys or "left_right",
+        then_after_seconds = d.v.then_after_seconds or 0, tags_on = {}, tags_off = {} }
+      for _, pair in ipairs({ { d.v.map_tags_on, sh.tags_on, "map_tags_on" }, { d.v.map_tags_off, sh.tags_off, "map_tags_off" } }) do
+        for i, t in ipairs(pair[1] or {}) do
+          local id = D.id_of(t)
+          if id then pair[2][#pair[2] + 1] = id else warn(string.format("%s: shot %s: %s item %d: not a tag or an id", d.where, d.v.name, pair[3], i)) end
+        end
+      end
       sh.order, sh.decl = d.v.order, #s.shot_list + 1
       s.shots[d.v.name] = sh
       s.shot_list[#s.shot_list + 1] = sh
@@ -185,7 +210,7 @@ local function start()
         if not HOTSPOT_ACTIONS[a] then known = false end
       end
       if not known or #v.actions == 0 then
-        warn(string.format("%s: hotspot %s: actions must be some of story_continue, story_new_game, story_plus, story_extended, chronicle_map: left out", d.where, v.name))
+        warn(string.format("%s: hotspot %s: actions must be some of story_continue, story_new_game, story_plus, story_extended, chronicle_map, menu_pick, open_group, call: left out", d.where, v.name))
       elseif v.surface ~= "wall" and v.surface ~= "floor" then
         warn(string.format("%s: hotspot %s: surface %q is not wall or floor: left out", d.where, v.name, v.surface))
       else
@@ -196,7 +221,16 @@ local function start()
           push_shot = v.push_shot, seconds = v.seconds, start = v.start, light_flood_seconds = v.light_flood_seconds,
           open_door = v.open_door, open_door_id = v.open_door ~= "" and D.id_of(v.open_door) or 0,
           open_door_after_seconds = v.open_door_after_seconds, open_door_reverse = v.open_door_reverse,
-          leave_white = v.leave_fade == "white" }
+          leave_white = v.leave_fade == "white",
+          pick_layer = (v.pick_layer or "") ~= "" and D.id_of(v.pick_layer) or 0, pick_index = v.pick_index or 0,
+          pick_option = v.pick_option or -1, group = v.group or "", open_group = v.open_group or "",
+          open_group_if = v.open_group_if or "",
+          back_to = v["return"] or "", draw = v.draw ~= false,
+          outline_tag = (v.outline_tag or "") ~= "" and (D.id_of(v.outline_tag) or 0) or 0,
+          edge_actor = v.edge_actor or 0, call = v.call or "" }
+        if (v.outline_tag or "") ~= "" and list[#list].outline_tag == 0 then
+          warn(string.format("%s: hotspot %s: outline_tag %q is not a tag or an id: the rectangle is drawn", d.where, v.name, v.outline_tag))
+        end
       end
     elseif d.entry == "MenuSceneScreen" and s then
       local v = d.v
@@ -217,7 +251,7 @@ local function start()
       if d.v.filter == "" or d.v.key == "" or string.find(string.lower(d.v.key), string.lower(d.v.filter), 1, true) then
         warn(string.format("%s: file %q -> %q: empty, or the key contains the filter (it would redirect itself): left out", d.where, d.v.filter, d.v.key))
       else
-        s.files[#s.files + 1] = { filter = d.v.filter, key = d.v.key }
+        s.files[#s.files + 1] = { filter = d.v.filter, key = d.v.key, hex = d.v.hex or "" }
       end
     elseif d.entry == "MenuScenePeople" and s then
       s.templates[d.v.count] = d.v.template
@@ -266,6 +300,17 @@ local function start()
     info(string.format("scene %s: camera %s, %d shot(s) for %d tile(s), default %s, %.2f s %s, drift %.2f m / %.0f s", s.key,
       s.camera_crc ~= 0 and s.camera or "none (no shots)", nshots, ntiles, s.default_shot, s.shot_seconds, s.shot_ease,
       s.drift_metres, s.drift_seconds))
+    -- a spot of a group faces the group's centre (0 = +z, 90 = +x)
+    for _, sp in pairs(s.spots) do
+      if sp.group ~= "" then
+        local g = (s.groups or {})[sp.group]
+        if g then
+          sp.rot = math.deg((math.atan2 or math.atan)(g.x - sp.position[1], g.z - sp.position[3]))
+        else
+          warn(string.format("scene %s: spot %d: group %q is not declared (its rot is kept)", s.key, sp.slot, sp.group))
+        end
+      end
+    end
     info(string.format("scene %s: people %s (kit %s), %d spot(s), %d template(s), %d motion set(s)", s.key, s.people,
       s.people_kit, #s.spots, n, (function() local k = 0 for _ in pairs(s.clip_sets) do k = k + 1 end return k end)()))
   end
@@ -434,6 +479,8 @@ local function on_field_frame(ev)
   local people = run.placed > 0 or s.people == "map"
   if run.settle == 1 then
     run.up_at = t
+    -- the NPC spawn radius before the field's NPC update makes the people (it was set at the title's up, after it)
+    if spawn_radius_early then spawn_radius_early(s) end
     -- the scene's camera from now on: what the settling field may show is the room, never the walker
     MenuScene.CameraStart(s)
     info(string.format("map %s up (frame %d, %d ms after loading): %s (%d people); npc_setting read: %s",
@@ -476,6 +523,19 @@ local function u32le(v)
   return string.char(v % 256, math.floor(v / 256) % 256, math.floor(v / 65536) % 256, math.floor(v / 16777216) % 256)
 end
 
+-- a number as a little-endian IEEE float32 (Lua 5.2: no string.pack); normal numbers and 0
+local function f32le(x)
+  x = tonumber(x) or 0
+  if x == 0 then return "\0\0\0\0" end
+  local sign = x < 0 and 1 or 0
+  local m, e = math.frexp(math.abs(x))          -- |x| = m * 2^e, 0.5 <= m < 1
+  local mant = math.floor((m * 2 - 1) * 8388608 + 0.5)
+  local exp = e - 1 + 127
+  if mant >= 8388608 then mant, exp = 0, exp + 1 end
+  local v = sign * 2147483648 + exp * 8388608 + mant
+  return u32le(v)
+end
+
 -- every plain occurrence of `from` replaced by `to` (same length): text, count
 local function replace_all(s, from, to)
   local parts, i, n = {}, 1, 0
@@ -508,6 +568,11 @@ end
 function MenuScene.FilesOn(s)
   if not s then return end
   for _, f in ipairs(s.files) do
+    if f.hex ~= "" and not f.served then
+      local oks, done_s, why_s = pcall(VRFW.files.serve, f.key, unhex(f.hex))
+      f.served = oks and done_s ~= false
+      info(string.format("file %s served from its declaration, %d bytes (%s)", f.key, math.floor(#f.hex / 2), tostring(oks and (done_s ~= false or why_s) or done_s)))
+    end
     local ok, done, why = pcall(VRFW.files.redirect, f.filter, f.key)
     f.on = ok and done ~= false
     info(string.format("file %s -> %s (%s)", f.filter, f.key, tostring(ok and (done ~= false or why) or done)))
@@ -525,56 +590,132 @@ function MenuScene.FilesOff(s, why)
   end
 end
 
--- members = "chara_base:motion set,…" in spot order, uniform = the team's kit (0 = none) -> placed, text
-local function serve_people(s, members, uniform, avatar)
+-- a spot's place in a people template: x, y, z, facing as little-endian float32
+local function spot_point(sp)
+  return f32le(sp.position[1]) .. f32le(sp.position[2]) .. f32le(sp.position[3]) .. f32le(sp.rot)
+end
+
+-- members = "role:chara_base:motion set,…" (player, manager or coach), uniform = the team's kit -> placed, text
+-- members = "role:chara_base:motion set,…" (player, keeper, manager, coach or guest:…), avatar = "chara_base:motion set"
+-- -> placed { base, set, clip, spot, role, kit, keeper, own_kit }, notes: each person on the next spot of its role
+local function assign_people(s, members, avatar)
   local placed, notes = {}, {}
   local team = {}
   for item in tostring(members or ""):gmatch("[^,]+") do team[#team + 1] = item end
   local avatar_item = tostring(avatar or "")
-  local nextTeam = 1
-  while true do
-    local spot = s.spots[#placed + 1]
-    if not spot then break end
-    -- an avatar spot takes the avatar; without one, or a team spot, the next starter
-    local item
-    if spot.who == "avatar" and avatar_item ~= "" then
-      item, avatar_item = avatar_item, ""
+  local role_spots = { player = {}, manager = {}, coach = {}, guest = {} }
+  local avatar_spot
+  for _, spot in ipairs(s.spots) do
+    if spot.who == "avatar" then
+      avatar_spot = spot
     else
-      item = team[nextTeam]
-      nextTeam = nextTeam + 1
-      if spot.who == "avatar" and item then notes[#notes + 1] = string.format("slot %d: no avatar, a starter instead", spot.slot) end
+      local role = (spot.who == "manager" or spot.who == "coach" or spot.who == "guest") and spot.who or "player"
+      role_spots[role][#role_spots[role] + 1] = spot
     end
-    if not item then break end
+  end
+  local role_cursors, legacy_slot = { player = 0, manager = 0, coach = 0, guest = 0 }, avatar_item ~= "" and 1 or 0
+  -- own_kit: a guest's uniform (nil = the chara's own look); own_keeper: a guest's uniform kind is the keeper's
+  local function add_person(item, role, spot, own_kit, own_keeper)
+    if not item then return end
     local base, set = item:match("^(%d+):(%w+)$")
     base = tonumber(base)
     local have = set and s.clip_sets[set]
     local clip
-    for _, c in ipairs(spot.clips) do
+    for _, c in ipairs(spot and spot.clips or {}) do
       if have and have[c] then clip = c break end
     end
-    if not base or base == 0 or not have or not clip then
+    if not spot then
+      notes[#notes + 1] = string.format("%s skipped (no %s spot)", item, tostring(role))
+    elseif not base or base == 0 or not have or not clip then
       notes[#notes + 1] = string.format("%s skipped (%s)", item, not have and ("motion set " .. tostring(set) .. " has no NPC pack") or "no clip of the spot")
     else
-      placed[#placed + 1] = { base = base, set = set, clip = clip, spot = spot, kit = spot.who ~= "avatar" }
+      placed[#placed + 1] = { base = base, set = set, clip = clip, spot = spot, role = role,
+        kit = role == "player" or role == "keeper" or own_kit ~= nil, keeper = role == "keeper" or own_keeper == true,
+        own_kit = own_kit }
     end
   end
+  if avatar_item ~= "" then
+    add_person(avatar_item, "avatar", avatar_spot)
+    avatar_item = ""
+  end
+  for _, item in ipairs(team) do
+    -- a guest (another team's player, e.g. the Competition list's): "guest:chara_base:motion set:uniform:kind", the
+    -- uniform a number (the kit the caller wants it in) or "own" (the chara's own look), the kind "field" or "keeper"
+    -- (also 0 / 1); optionally "@x,z,turn": its own place on the floor of its spot (the mod fits the places to the bodies)
+    local gbase, gset, gkit, gkeeper, gplace = item:match("^guest:(%d+):(%w+):(%w+):(%w+)(.*)$")
+    if gbase then
+      role_cursors.guest = role_cursors.guest + 1
+      local spot = role_spots.guest[role_cursors.guest]
+      local px, pz, pturn = tostring(gplace or ""):match("^@(%-?[%d%.]+),(%-?[%d%.]+),(%-?[%d%.]+)$")
+      if spot and px then
+        local moved = {}
+        for k, v in pairs(spot) do moved[k] = v end
+        moved.position = { tonumber(px), spot.position[2], tonumber(pz) }
+        moved.rot = tonumber(pturn)
+        spot = moved
+      end
+      add_person(gbase .. ":" .. gset, "guest", spot, tonumber(gkit), gkeeper == "1" or gkeeper == "keeper")
+    else
+      local role, base, set = item:match("^(%a+):(%d+):(%w+)$")
+      if role == "player" or role == "keeper" or role == "manager" or role == "coach" then
+        local group = role == "keeper" and "player" or role
+        role_cursors[group] = role_cursors[group] + 1
+        add_person(base and (base .. ":" .. set) or item, role, role_spots[group][role_cursors[group]])
+      else
+        -- Older callers pass untagged members; keep their original slot order.
+        legacy_slot = legacy_slot + 1
+        local spot = s.spots[legacy_slot]
+        add_person(item, spot and ((spot.who == "manager" or spot.who == "coach") and spot.who or "player") or "player", spot)
+      end
+    end
+  end
+  return placed, notes
+end
+
+local function serve_people(s, members, uniform, avatar)
+  local placed, notes = assign_people(s, members, avatar)
   local tpl = s.templates[#placed]
   if not tpl then
     return 0, string.format("no template for %d people (rebuild %s_people.toml)", #placed, s.key)
   end
   local bytes = unhex(tpl)
   local kit = s.people_kit == "team" and (tonumber(uniform) or 0) or 0
+  -- a person whose spot is not the template's place k is moved in two steps: every such place is first marked
+  -- (a unique 16-byte marker per index), then each marker gets its spot's place, so a place a person was moved to is
+  -- never taken for another index's place (one replace pass moved two people onto the same spot)
+  local moves = {}
+  local function place_marker(k) return string.rep("\255\255\255\127" .. u32le(PLACE_SENTINEL + k), 2) end
   for i, p in ipairs(placed) do
     local k = i - 1
     local n1, n2, n3, n4
     bytes, n1 = replace_all(bytes, u32le(CHARA_SENTINEL + k), u32le(p.base))
-    bytes, n2 = replace_all(bytes, u32le(UNIFORM_SENTINEL + k), u32le(p.kit and kit or 0))
+    bytes, n2 = replace_all(bytes, u32le(UNIFORM_SENTINEL + k), u32le(p.own_kit or (p.kit and kit) or 0))
     bytes, n3 = replace_all(bytes, u32le(CLIP_SENTINEL + k), u32le(p.clip))
     bytes, n4 = replace_all(bytes, string.format(SKELETON_PLACEHOLDER, k), p.set)
+    -- NPC_BASE column 9 selects the keeper version of the same team uniform.
+    -- Older templates have no marker and retain their existing outfield flags.
+    local keeper_count
+    bytes, keeper_count = replace_all(bytes, u32le(KEEPER_SENTINEL + k), u32le(p.keeper and 1 or 0))
+    if p.keeper and keeper_count ~= 1 then return 0, "keeper preview requires rebuilt people templates" end
+    -- the template's place k is its k-th spot (slot order); a person whose spot is another one (a guest after a team
+    -- with fewer members than spots) gets its own spot's place and facing
+    local baked = s.spots[i]
+    if baked and baked ~= p.spot then
+      local moved
+      bytes, moved = replace_all(bytes, spot_point(baked), place_marker(k))
+      if moved == 1 then
+        moves[#moves + 1] = { k = k, spot = p.spot }
+      else
+        notes[#notes + 1] = string.format("slot %d: the template place of index %d not found (%d)", p.spot.slot, k, moved)
+      end
+    end
     if n1 ~= 1 or n2 ~= 1 or n3 < 1 or n4 ~= 2 then
       return 0, string.format("template of %d people: spot %d sentinels %d/%d/%d/%d (rebuild it)", #placed, i, n1, n2, n3, n4)
     end
-    notes[#notes + 1] = string.format("slot %d %s %s: 0x%08X set %s clip 0x%08X", p.spot.slot, p.spot.who, p.spot.pose, p.base, p.set, p.clip)
+    notes[#notes + 1] = string.format("slot %d %s %s: 0x%08X set %s clip 0x%08X", p.spot.slot, p.role, p.spot.pose, p.base, p.set, p.clip)
+  end
+  for _, m in ipairs(moves) do
+    bytes = replace_all(bytes, place_marker(m.k), spot_point(m.spot))
   end
   people_served = people_served + 1
   local key = string.format("data/common/gamedata/map/%s/vrfw_menu_scene_people_%d.cfg.bin", s.map, people_served)
@@ -584,14 +725,63 @@ local function serve_people(s, members, uniform, avatar)
   local okr, whyr = VRFW.files.redirect(f, key)
   if not okr then return 0, "redirect refused: " .. tostring(whyr) end
   redirected[f] = true
+  -- the map is up: the game reads its npc_setting only when the map loads, so the served bytes are read again now
+  -- (CMND_VRFW_MENU_SCENE_NPC_READ from the title's Step, VRFW.map_npcs.reload)
+  s.people_bytes = bytes                 -- the last people served (read again once if the map load parsed none)
+  s.unparsed_checked = false
+  if s.people_reread and run.state == "up" and run.key == s.key then s.npc_reread = bytes end
   info(string.format("people: %s: %d placed (kit 0x%08X), %d bytes served as %s; %s", s.key, #placed, kit, #bytes, key,
     table.concat(notes, "; ")))
   run.placed = #placed
   return #placed, string.format("%d placed", #placed)
 end
 
--- CMND_VRFW_MENU_SCENE_PEOPLE(key, members, uniform) -> placed, text. members = "chara_base:motion set,…" (team order);
+-- CMND_VRFW_MENU_SCENE_PEOPLE(key, members, uniform, avatar) -> placed, text. Members carry their role and are assigned
+-- to matching spots; untagged entries keep their old positional behavior.
 -- "" = nobody (the map's own NPCs are removed either way).
+local people_args = {}   -- scene key -> { members, uniform, avatar } of its last People call
+local guests = {}        -- scene key -> the guests' member text ("" = none)
+
+-- CMND_VRFW_MENU_SCENE_GUESTS(key, guests) -> placed, text: the scene's people served again with these guests
+-- ("guest:chara_base:motion set:kit:keeper 0|1,…" on the scene's who = "guest" spots, each in its own kit; "" = none)
+-- after its last People call's members; the caller then asks the field to reload its NPCs (CMND_RELOAD_NPC)
+function MenuScene.Guests(key, list)
+  key = tostring(key or "")
+  local s = by_key[key]
+  if not s then return 0, "unknown scene" end
+  guests[key] = tostring(list or "")
+  -- people_as = "actors": the guests join the scene's actor list with the team
+  if s.people_as == "actors" then
+    local a = people_args[key] or {}
+    return MenuScene.People(key, a.members or "", a.uniform or 0, a.avatar or "")
+  end
+  -- guests = "actors": the title's actor service makes them (CMND_VRFW_MENU_SCENE_ACTORS); the people stay as served
+  if s.guests_as == "actors" then
+    local n = 0
+    for _ in guests[key]:gmatch("[^,]+") do n = n + 1 end
+    info(string.format("guests: %s: %d guest(s) as scene actors: %s", key, n, guests[key]))
+    return n, string.format("%d actor(s)", n)
+  end
+  local a = people_args[key]
+  if not a then return 0, "no people served yet" end
+  return MenuScene.People(key, a.members, a.uniform, a.avatar)
+end
+
+-- people_as = "actors": the people are kept as the scene's actor list (CMND_VRFW_MENU_SCENE_ACTORS); the map's
+-- npc_setting is served with nobody, so the map makes no NPC of its own
+local actor_lists = {}   -- scene key -> { [i] = person } of its last People call
+local function actor_people(s, all, uniform, avatar)
+  local placed, notes = assign_people(s, all, avatar)
+  local kit = s.people_kit == "team" and (tonumber(uniform) or 0) or 0
+  for _, p in ipairs(placed) do p.kit_id = p.own_kit or (p.kit and kit) or 0 end
+  actor_lists[s.key] = placed
+  local ok, n, why = pcall(serve_people, s, "", uniform, "")
+  if not ok or n ~= 0 then warn(string.format("people: %s: the empty npc_setting not served (%s)", s.key, tostring(ok and why or n))) end
+  run.placed = 0
+  info(string.format("people: %s: %d as scene actors (kit 0x%08X); %s", s.key, #placed, kit, table.concat(notes, "; ")))
+  return #placed, string.format("%d actor(s)", #placed)
+end
+
 function MenuScene.People(key, members, uniform, avatar)
   local s = by_key[tostring(key or "")]
   if not s then return 0, "unknown scene" end
@@ -600,9 +790,15 @@ function MenuScene.People(key, members, uniform, avatar)
     info(string.format("people: %s: the map's own npc_setting (people = \"map\", a control test): nothing served", s.key))
     return 0, "the map's own NPCs"
   end
-  if s.people ~= "active_team" then members = "" end
+  if s.people ~= "active_team" and s.people ~= "provided" then members = "" end
   if s.people ~= "active_team" then avatar = "" end
-  local ok, n, why = pcall(serve_people, s, members, uniform, avatar)
+  people_args[s.key] = { members = members, uniform = uniform, avatar = avatar }
+  local all = members
+  if (guests[s.key] or "") ~= "" then
+    all = (tostring(members or "") ~= "" and (tostring(members) .. ",") or "") .. guests[s.key]
+  end
+  if s.people_as == "actors" then return actor_people(s, all, uniform, avatar) end
+  local ok, n, why = pcall(serve_people, s, all, uniform, avatar)
   if not ok then
     warn("people: " .. tostring(n))
     return 0, tostring(n)
@@ -611,8 +807,209 @@ function MenuScene.People(key, members, uniform, avatar)
   return n, why
 end
 
+-- CMND_VRFW_MENU_SCENE_ACTORS(key) -> "" | { sig, n, [i] = { base, set, kit, keeper, x, y, z, rot, clip, clips } }: the
+-- guests of a scene with guests = "actors" on its who = "guest" spots, in order (the title's actor service creates them
+-- as scene characters); sig changes whenever the list does
+function MenuScene.Actors(key)
+  local s = by_key[tostring(key or "")]
+  if not s or s.guests_as ~= "actors" then return "" end
+  if s.people_as == "actors" then
+    local out, ids = { n = 0 }, {}
+    for _, p in ipairs(actor_lists[s.key] or {}) do
+      local have, list = s.clip_sets[p.set] or {}, {}
+      for _, c in ipairs(p.spot.clips) do
+        if have[c] then list[#list + 1] = c end
+      end
+      if #list == 0 then list[1] = p.clip end
+      out.n = out.n + 1
+      -- id: what makes this actor; an actor whose id stays is kept as it is when the list changes
+      local id = string.format("%d:%.0f:%s:%.0f:%d:%.0f@%.2f,%.2f", p.spot.slot, p.base, p.set, p.kit_id, p.keeper and 1 or 0,
+        p.clip, p.spot.position[1], p.spot.position[3])
+      ids[#ids + 1] = id
+      -- uniform: the kit the actor is created in (the scene's people_kit for the active team's people, uniform 0 =
+      -- their own outfit; what the caller gave a guest); nil = made from its own chara (the avatar, a guest given «own»)
+      local uniform = (p.role ~= "avatar" and (p.role ~= "guest" or p.own_kit ~= nil)) and p.kit_id or nil
+      out[out.n] = { id = id, base = p.base, set = p.set, kit = p.kit_id, keeper = p.keeper, role = p.role,
+        uniform = uniform, uniform_kind = p.keeper and "keeper" or "field", face = s.actor_face, hold_face = s.actor_hold_face,
+        slot = p.spot.slot, x = p.spot.position[1], y = p.spot.position[2], z = p.spot.position[3], rot = p.spot.rot,
+        clip = p.clip, clip_list = list, clips = table.concat(p.spot.names or {}, "|") }
+    end
+    out.sig = table.concat(ids, ",")
+    out.people = 1
+    out.actor_type = s.actor_type
+    return out
+  end
+  local list = guests[s.key] or ""
+  local spots = {}
+  for _, spot in ipairs(s.spots) do
+    if spot.who == "guest" then spots[#spots + 1] = spot end
+  end
+  local out = { sig = list, n = 0, actor_type = s.actor_type }
+  for item in list:gmatch("[^,]+") do
+    local base, set, kit, keeper = item:match("^guest:(%d+):(%w+):(%w+):(%w+)")
+    local spot = spots[out.n + 1]
+    if base and spot then
+      local have = s.clip_sets[set] or {}
+      local clip = 0
+      for _, c in ipairs(spot.clips) do
+        if have[c] then clip = c break end
+      end
+      if clip == 0 then clip = spot.clips[1] or 0 end
+      out.n = out.n + 1
+      out[out.n] = { base = tonumber(base), set = set, kit = tonumber(kit) or 0, keeper = keeper == "1" or keeper == "keeper",
+        face = s.actor_face, hold_face = s.actor_hold_face,
+        x = spot.position[1], y = spot.position[2], z = spot.position[3], rot = spot.rot, clip = clip,
+        clip_list = spot.clips, clips = table.concat(spot.names or {}, "|") }
+    end
+  end
+  return out
+end
+
+-- CMND_VRFW_MENU_SCENE_ACTOR_HANDLES(key, text | nil) -> text: the scene's live actors («handle=id|…»), set by the
+-- title's actor service at each change and read by a title that opens again over the same run
+local actor_handles = {}
+function MenuScene.ActorHandles(key, text)
+  key = tostring(key or "")
+  if text ~= nil then actor_handles[key] = tostring(text) end
+  return actor_handles[key] or ""
+end
+
+-- CMND_VRFW_SCN_CHARA_EDGE(handle, on, r, g, b, a, pixel) -> text | nil, why: a scene character's own edge (outline)
+-- in that colour and width (on), or back to its own (off) (VRFW.map_npcs.edge: its CCharaEdgeProperty)
+function MenuScene.CharaEdge(handle, on, r, g, b, a, pixel)
+  local api = VRFW.map_npcs
+  if not api or not api.edge then return nil, "no VRFW.map_npcs.edge (an older framework DLL)" end
+  local ok, text, why = pcall(api.edge, tonumber(handle) or 0, on == true or on == 1, r, g, b, a, pixel)
+  if not ok or text == nil then
+    warn(string.format("scene character 0x%08X: edge not set (%s)", (tonumber(handle) or 0) % 4294967296, tostring(ok and why or text)))
+    return nil, tostring(ok and why or text)
+  end
+  return text
+end
+
+-- CMND_VRFW_SCN_CHARA_FACE_HOLD(handle, on) -> text | nil, why: a scene character's face held (the body clip's face
+-- channel off) or from its clips again (VRFW.map_npcs.face_hold)
+function MenuScene.CharaFaceHold(handle, on)
+  local api = VRFW.map_npcs
+  if not api or not api.face_hold then return nil, "no VRFW.map_npcs.face_hold (an older framework DLL)" end
+  local ok, text, why = pcall(api.face_hold, tonumber(handle) or 0, on == true or on == 1)
+  if not ok or text == nil then return nil, tostring(ok and why or text) end
+  return text
+end
+
+-- CMND_VRFW_SCN_CHARA_MOTION_PACK(handle, motion set) -> true | false, why: the motion set's NPC pack
+-- (common/chr/<set>/<set>_p060.g4pk: the NPC clips and their faces) loaded onto a scene character, as the NPC
+-- manager loads an NPC's (VRFW.map_npcs.attach_motion_pack)
+function MenuScene.CharaMotionPack(handle, set)
+  set = tostring(set or "")
+  if not set:match("^%w+$") then return false, "no motion set" end
+  local api = VRFW.map_npcs
+  if not api or not api.attach_motion_pack then return false, "no VRFW.map_npcs.attach_motion_pack (an older framework DLL)" end
+  local path = string.format("common/chr/%s/%s_p060.g4pk", set, set)
+  local ok, done, why = pcall(api.attach_motion_pack, tonumber(handle) or 0, path)
+  if not ok or done == nil then
+    warn(string.format("scene character 0x%08X: %s not attached (%s)", (tonumber(handle) or 0) % 4294967296, path, tostring(ok and why or done)))
+    return false, tostring(ok and why or done)
+  end
+  return done == true, path
+end
+
+-- CMND_VRFW_SCN_CHARA_FACE_PROBE(handle, why) -> text | false, why: a read-only probe of a scene character's face
+-- (VRFW.map_npcs.face_probe, docs/game/engine/scene-chara-faces.md), logged by the framework DLL
+function MenuScene.CharaFaceProbe(handle, why)
+  local api = VRFW.map_npcs
+  if not api or not api.face_probe then return false, "no VRFW.map_npcs.face_probe (an older framework DLL)" end
+  local ok, text, err = pcall(api.face_probe, tonumber(handle) or 0)
+  if not ok or text == nil then
+    warn(string.format("face probe 0x%08X (%s): %s", (tonumber(handle) or 0) % 4294967296, tostring(why), tostring(ok and err or text)))
+    return false, tostring(ok and err or text)
+  end
+  return text
+end
+
+-- CMND_VRFW_SCN_CHARA_FACIAL_DEFAULT(handle) -> lip motion | false, why: the facial component's default face again,
+-- as CMND_SET_MOTION_FACIAL(chara, 0) by the scene character's handle (VRFW.map_npcs.facial_default)
+function MenuScene.CharaFacialDefault(handle)
+  local api = VRFW.map_npcs
+  if not api or not api.facial_default then return false, "no VRFW.map_npcs.facial_default (an older framework DLL)" end
+  local ok, lip, err = pcall(api.facial_default, tonumber(handle) or 0)
+  if not ok or lip == nil then return false, tostring(ok and err or lip) end
+  return lip
+end
+
+-- CMND_VRFW_MENU_SCENE_NPC_ENTRIES(why) -> text: a probe of the NPC manager's live entries (VRFW.map_npcs.entries),
+-- logged: how many, with a character, active, with a model, and each one's slot and position
+function MenuScene.NpcEntries(why)
+  local api = VRFW.map_npcs
+  if not api or not api.entries then return "no VRFW.map_npcs.entries (an older framework DLL)" end
+  local r, err = api.entries()
+  local text = type(r) == "table" and string.format("config rows %s / %s, table %s, entry bound %s | %d entries, %d with a character, %d active, %d with a model: %s",
+    tostring(r.config_rows), tostring(r.config_groups), tostring(r.table), tostring(r.entry_bound),
+    r.n, r.with_chara, r.active, r.with_model, r.list) or ("not readable: " .. tostring(err))
+  info(string.format("NPC entries %s: %s", tostring(why or ""), text))
+  return text
+end
+
+-- CMND_VRFW_MENU_SCENE_NPC_READ() -> "read" | "busy" | "none" | "failed": the people served while the map is up read
+-- into the map's NPC set (VRFW.map_npcs.reload: the NPC entries deleted, the config parsed again, the table rebuilt);
+-- after "read" the caller asks CMND_RELOAD_NPC, which makes the new entries. "busy": the NPC manager is updating (ask
+-- again on the next frame); "failed": logged, the people change at the next map load.
+function MenuScene.NpcRead()
+  local s = scene()
+  if not s or run.state ~= "up" then return "none" end
+  -- the map load parsed no people (owner boot 2026-10-19 10:41: «config rows 0 / 0, table 0» on the first load after
+  -- the game starts, rows 18 on every later load): the served people are read once more now
+  if not s.npc_reread and not s.unparsed_checked and s.people_bytes and run.placed > 0 and VRFW.map_npcs
+      and VRFW.map_npcs.entries and now() - run.since > 500 then
+    s.unparsed_checked = true
+    local r = VRFW.map_npcs.entries()
+    if type(r) == "table" and tonumber(r.config_rows) == 0 then
+      info(string.format("people: %s: the map load parsed no people (config rows 0): the served people are read again", s.key))
+      s.npc_reread = s.people_bytes
+    end
+  end
+  if not s.npc_reread then return "none" end
+  local api = VRFW.map_npcs
+  if not api then
+    s.npc_reread = nil
+    warn("people: VRFW.map_npcs is missing (an older framework DLL): the people change at the next map load")
+    return "failed"
+  end
+  local ok, done, why = pcall(api.reload, s.npc_reread)
+  if ok and done == false then return "busy" end
+  local bytes = #s.npc_reread
+  s.npc_reread = nil
+  if not ok or not done then
+    warn(string.format("people: %s: the served npc_setting was not read again (%s): the people change at the next map load",
+      s.key, tostring(ok and why or done)))
+    return "failed"
+  end
+  info(string.format("people: %s: the served npc_setting read again while the map is up (%d bytes)", s.key, bytes))
+  return "read"
+end
+
+-- the NPC manager's spawn radius around the walker while a scene with npc_spawn_radius is up (its people stand
+-- farther than the game's 65 m from the walker); the game's radius back when the scene ends
+local radius_set = false
+local function spawn_radius(s)
+  local api = VRFW.map_npcs
+  if not api then return end
+  if s and (s.npc_spawn_radius or 0) > 0 then
+    local spawn, despawn, why = api.spawn_radius(s.npc_spawn_radius)
+    radius_set = spawn ~= nil
+    info(string.format("NPC spawn radius around the walker: %s", spawn and string.format("%.0f m, despawn %.0f m", spawn, despawn)
+      or ("not set (" .. tostring(why) .. ")")))
+  elseif radius_set then
+    radius_set = false
+    pcall(api.spawn_radius, nil)
+  end
+end
+
+spawn_radius_early = spawn_radius
+
 -- a title return: the old rpg scene (and any map under the menu) has ended
 VRFW.on("game_reset", function(ev)
+  spawn_radius(nil)
   MenuScene.CameraStop("game reset")
   for _, s in ipairs(scenes) do clear_redirect(s) MenuScene.FilesOff(s, "game reset") end
   cover_release("game reset")
@@ -622,6 +1019,23 @@ VRFW.on("game_reset", function(ev)
     set_state("idle", "game reset")
   end
   run.key, run.settle, run.last, run.calls = nil, 0, nil, 0
+  if travel_target then
+    local target = travel_target
+    travel_target = nil
+    local s = by_key[target.key]
+    if s then
+      if target.map then s.map, s.map_id = target.map, target.map_id end
+      s.provided_members, s.provided_uniform = target.members, target.uniform
+      selected[s.menu] = s.key
+      -- The caller resets directly into Options with SlotCarry. That state is
+      -- already initialised, so a second title/save-loading pass is unnecessary.
+      run.key, run.requested = s.key, now()
+      run.npcs_asked_at, run.npcs_ready_at, run.npcs_info = nil, nil, nil
+      MenuScene.FilesOn(s)
+      set_state("options", "scene travel: the carried RPG opens Options directly")
+      info(string.format("travel: next %s uses %s, map %s", s.menu, s.key, s.map))
+    end
+  end
 end)
 
 -- ---- shots: the scene's camera, moved by the menu's focus
@@ -629,6 +1043,9 @@ end)
 local CAMERA_KEY, CAMERA_TABLE = "vr_framework.menu_scene.camera", "VRFW.MenuScene.Cameras"
 local CAMERA_NAME_AT = 0x70         -- a camera object's name crc
 local following = {}                -- name crc -> name: other cameras that take the shots' pose (FollowCamera)
+local clip_logged = {}              -- name crc -> true: the clip planes copy logged
+local own_pose = {}                 -- name crc -> { eye, target, fov }: a following camera's pose from its own menu
+local written_pose = {}             -- name crc -> the pose the shots wrote into it last
 local CAM_HOOK = "MenuScene.CameraView"
 local cam = { on = false, scene = nil, from = nil, to = nil, at = 0, name = nil, writes = 0, hook = false, seconds = 0, ease = "smooth",
   home = false }                    -- on the scene's home entry (home_shot): a tile's focus report keeps the home shot
@@ -648,6 +1065,61 @@ local function eased(k, ease)
   return k * k * (3 - 2 * k)
 end
 
+-- a pose between two poses at k (0..1, eased by the caller). turn = "slerp": the view direction turns along the shortest
+-- arc between the two (constant angular speed) and the look distance and the eye mix linearly, so a large change of
+-- direction is a smooth turn, not a target that slides across the room; "lerp": eye and target mix linearly
+local function blend_pose(a, b, k, turn)
+  local eye = { mix(a.eye[1], b.eye[1], k), mix(a.eye[2], b.eye[2], k), mix(a.eye[3], b.eye[3], k) }
+  local fov = mix(a.fov, b.fov, k)
+  if turn ~= "slerp" then
+    return { eye = eye, fov = fov,
+      target = { mix(a.target[1], b.target[1], k), mix(a.target[2], b.target[2], k), mix(a.target[3], b.target[3], k) } }
+  end
+  local fa = { a.target[1] - a.eye[1], a.target[2] - a.eye[2], a.target[3] - a.eye[3] }
+  local fb = { b.target[1] - b.eye[1], b.target[2] - b.eye[2], b.target[3] - b.eye[3] }
+  local la = math.sqrt(fa[1] ^ 2 + fa[2] ^ 2 + fa[3] ^ 2)
+  local lb = math.sqrt(fb[1] ^ 2 + fb[2] ^ 2 + fb[3] ^ 2)
+  if la < 1e-6 or lb < 1e-6 then return { eye = eye, fov = fov, target = b.target } end
+  local ua = { fa[1] / la, fa[2] / la, fa[3] / la }
+  local ub = { fb[1] / lb, fb[2] / lb, fb[3] / lb }
+  local c = math.max(-1, math.min(1, ua[1] * ub[1] + ua[2] * ub[2] + ua[3] * ub[3]))
+  local w = math.acos(c)
+  local dir
+  if w < 1e-4 then
+    dir = ub
+  else
+    local sa, sb = math.sin((1 - k) * w) / math.sin(w), math.sin(k * w) / math.sin(w)
+    dir = { ua[1] * sa + ub[1] * sb, ua[2] * sa + ub[2] * sb, ua[3] * sa + ub[3] * sb }
+  end
+  local len = mix(la, lb, k)
+  return { eye = eye, fov = fov, target = { eye[1] + dir[1] * len, eye[2] + dir[2] * len, eye[3] + dir[3] * len } }
+end
+
+-- the time of a move from pose a to pose b: the scene's shot_seconds_min .. _max by the larger of the turn (a quarter
+-- turn or more = the max) and the eye's travel (shot_seconds_metres or more = the max); nil when the scene sets no range
+local function auto_seconds(s, a, b)
+  local lo, hi = s.shot_seconds_min or 0, s.shot_seconds_max or 0
+  if hi <= 0 or hi < lo then return nil end
+  local fa = { a.target[1] - a.eye[1], a.target[2] - a.eye[2], a.target[3] - a.eye[3] }
+  local fb = { b.target[1] - b.eye[1], b.target[2] - b.eye[2], b.target[3] - b.eye[3] }
+  local la = math.sqrt(fa[1] ^ 2 + fa[2] ^ 2 + fa[3] ^ 2)
+  local lb = math.sqrt(fb[1] ^ 2 + fb[2] ^ 2 + fb[3] ^ 2)
+  local turn = 0
+  if la > 1e-6 and lb > 1e-6 then
+    turn = math.acos(math.max(-1, math.min(1, (fa[1] * fb[1] + fa[2] * fb[2] + fa[3] * fb[3]) / (la * lb))))
+  end
+  local travel = math.sqrt((b.eye[1] - a.eye[1]) ^ 2 + (b.eye[2] - a.eye[2]) ^ 2 + (b.eye[3] - a.eye[3]) ^ 2)
+  local x = math.max(math.min(turn / (math.pi / 2), 1), math.min(travel / math.max(s.shot_seconds_metres or 8, 0.1), 1))
+  return lo + (hi - lo) * x
+end
+
+-- a move whose eye travels farther than the scene's cut_metres (> 0) is a cut: no flight through what lies between
+local function is_cut(s, from, to)
+  if not from or not to or (s.cut_metres or 0) <= 0 then return false end
+  local dx, dy, dz = to.eye[1] - from.eye[1], to.eye[2] - from.eye[2], to.eye[3] - from.eye[3]
+  return math.sqrt(dx * dx + dy * dy + dz * dz) > s.cut_metres
+end
+
 -- a shot with then_shot: once its move is done and its hold (then_after_seconds) is over, the camera moves on to that
 -- shot by itself (one step per call; the drift goes on over it)
 local function follow_on(s, t)
@@ -658,6 +1130,7 @@ local function follow_on(s, t)
   if t - cam.at < (cam.seconds + (sh.then_after_seconds or 0)) * 1000 then return end
   cam.from, cam.to, cam.at, cam.name = cam.to, pose_of(nxt), t, nxt.name
   cam.seconds = (nxt.move_seconds and nxt.move_seconds >= 0) and nxt.move_seconds or s.shot_seconds
+  if is_cut(s, cam.from, cam.to) then cam.from = nil end
   cam.ease = (nxt.ease and nxt.ease ~= "") and nxt.ease or s.shot_ease
   info(string.format("shot %s (then_shot of %s): eye (%.2f, %.2f, %.2f) -> target (%.2f, %.2f, %.2f), fov %.0f, move %.2f s %s",
     nxt.name, sh.name, nxt.eye[1], nxt.eye[2], nxt.eye[3], nxt.target[1], nxt.target[2], nxt.target[3], nxt.fov,
@@ -671,11 +1144,7 @@ local function pose_now(s, t)
   local d = cam.seconds * 1000
   if cam.from and d > 0 and t - cam.at < d then
     local k = eased((t - cam.at) / d, cam.ease)
-    p = {
-      eye = { mix(cam.from.eye[1], cam.to.eye[1], k), mix(cam.from.eye[2], cam.to.eye[2], k), mix(cam.from.eye[3], cam.to.eye[3], k) },
-      target = { mix(cam.from.target[1], cam.to.target[1], k), mix(cam.from.target[2], cam.to.target[2], k), mix(cam.from.target[3], cam.to.target[3], k) },
-      fov = mix(cam.from.fov, cam.to.fov, k),
-    }
+    p = blend_pose(cam.from, cam.to, k, s.shot_turn)
   end
   if s.drift_metres > 0 then
     local w = 2 * math.pi * t / (s.drift_seconds * 1000)
@@ -692,10 +1161,16 @@ local function set_shot(s, name, why)
   if cam.name == sh.name then return sh.name end
   local t = now()
   cam.from = cam.to and pose_now(s, t) or nil
+  cam.left = cam.name                  -- the shot the move leaves (its map_tags_off hold until the move ends)
   cam.to, cam.at, cam.name = pose_of(sh), t, sh.name
   -- the move into a shot: its own time and ease, else the scene's
-  cam.seconds = (sh.move_seconds and sh.move_seconds >= 0) and sh.move_seconds or s.shot_seconds
+  cam.seconds = (sh.move_seconds and sh.move_seconds >= 0) and sh.move_seconds
+    or (cam.from and auto_seconds(s, cam.from, cam.to)) or s.shot_seconds
   cam.ease = (sh.ease and sh.ease ~= "") and sh.ease or s.shot_ease
+  if is_cut(s, cam.from, cam.to) then
+    cam.from = nil
+    why = why .. ", a cut"
+  end
   info(string.format("shot %s (%s): eye (%.2f, %.2f, %.2f) -> target (%.2f, %.2f, %.2f), fov %.0f, move %.2f s %s", sh.name, why,
     sh.eye[1], sh.eye[2], sh.eye[3], sh.target[1], sh.target[2], sh.target[3], sh.fov, cam.seconds, cam.ease))
   return sh.name
@@ -716,8 +1191,38 @@ function MenuScene.CameraStop(why)
   cam.on, cam.object, cam.home = false, nil, false
   pcall(VRFW.state.set, CAMERA_KEY, 0)
   pcall(VRFW.native.table_clear, CAMERA_TABLE)
-  following = {}
+  following, own_pose, written_pose = {}, {}, {}
   info(string.format("shots off (%s) after %d camera write(s)", tostring(why), cam.writes))
+end
+
+-- a following camera's own pose (the one its menu gave it, e.g. a 3D model screen's framing): read before the shot's
+-- write; a value that differs from the last write means the engine set the camera again (a new screen)
+local POSE_CHANGED_METRES = 0.001
+local function remember_own_pose(name, c)
+  local v = {}
+  for _, f in ipairs({ "pos_x", "pos_y", "pos_z", "target_x", "target_y", "target_z", "fov" }) do
+    v[f] = field(c, f)
+    if type(v[f]) ~= "number" or v[f] ~= v[f] then return end
+  end
+  local read = { eye = { v.pos_x, v.pos_y, v.pos_z }, target = { v.target_x, v.target_y, v.target_z }, fov = v.fov * 180 / math.pi }
+  local last = written_pose[name]
+  if last then
+    local moved = 0
+    for k = 1, 3 do
+      moved = math.max(moved, math.abs(read.eye[k] - last.eye[k]), math.abs(read.target[k] - last.target[k]))
+    end
+    if moved < POSE_CHANGED_METRES and math.abs(read.fov - last.fov) < 0.01 then return end
+  end
+  if read.fov <= 0.5 or read.fov >= 170 then return end
+  local before = own_pose[name]
+  own_pose[name] = read
+  if before and math.abs(before.eye[1] - read.eye[1]) + math.abs(before.eye[2] - read.eye[2]) + math.abs(before.eye[3] - read.eye[3])
+    + math.abs(before.target[1] - read.target[1]) + math.abs(before.target[2] - read.target[2])
+    + math.abs(before.target[3] - read.target[3]) < POSE_CHANGED_METRES and math.abs(before.fov - read.fov) < 0.01 then
+    return
+  end
+  info(string.format("camera 0x%08X: its own pose eye (%.2f, %.2f, %.2f) -> target (%.2f, %.2f, %.2f), fov %.1f (kept for REFRAME)",
+    name, read.eye[1], read.eye[2], read.eye[3], read.target[1], read.target[2], read.target[3], read.fov))
 end
 
 -- the camera's view, before the engine takes it: this frame's pose
@@ -730,6 +1235,7 @@ local function on_camera_view(ev)
   local okn, name = pcall(VRFW.mem.read, "u32", ev.args[1] + CAMERA_NAME_AT)
   if not okn or name == s.camera_crc then cam.object = c end
   local p = pose_now(s, now())
+  if okn and name ~= s.camera_crc then remember_own_pose(name, c) end
   local ok = write(c, "pos_x", p.eye[1]) and write(c, "pos_y", p.eye[2]) and write(c, "pos_z", p.eye[3])
     and write(c, "target_x", p.target[1]) and write(c, "target_y", p.target[2]) and write(c, "target_z", p.target[3])
   local fov = p.fov * math.pi / 180
@@ -749,8 +1255,29 @@ local function on_camera_view(ev)
       ok = write(c, f, mine + bit32.band(bit32.bnot(parent), 0x10000)) and ok
     end
   end
+  if okn and name ~= s.camera_crc then
+    written_pose[name] = { eye = { p.eye[1], p.eye[2], p.eye[3] }, target = { p.target[1], p.target[2], p.target[3] }, fov = p.fov }
+    -- the scene camera's clip planes too: a menu camera's own far plane cut the map's sky and its distant fog (owner
+    -- 2026-10-19: the clubhouse sunset turned to a flat grey sky as the Competition list's camera took the view)
+    local src = cam.object
+    local near, far = src and field(src, "clip_near"), src and field(src, "clip_far")
+    if type(near) == "number" and type(far) == "number" and near > 0 and far > near then
+      local mine_near, mine_far = field(c, "clip_near"), field(c, "clip_far")
+      if mine_near ~= near or mine_far ~= far then
+        ok = write(c, "clip_near", near) and write(c, "clip_far", far) and write(c, "proj_dirty", 1) and ok
+        if not clip_logged[name] then
+          clip_logged[name] = true
+          info(string.format("camera 0x%08X: clip planes %s .. %s -> the scene camera's %.3f .. %.1f", name,
+            tostring(mine_near), tostring(mine_far), near, far))
+        end
+      end
+    end
+  end
   cam.writes = cam.writes + 1
-  if cam.writes == 1 then info(string.format("first camera write (%s)", tostring(ok))) end
+  if cam.writes == 1 then
+    info(string.format("first camera write (%s); its clip planes %s .. %s", tostring(ok), tostring(field(c, "clip_near")),
+      tostring(field(c, "clip_far"))))
+  end
   return nil
 end
 
@@ -874,7 +1401,8 @@ function MenuScene.Hotspots(key, of_shot)
   if not list or #list == 0 then return "" end
   local t = now()
   local v, p = view_now(s, t)
-  local out = { shot = shot, settled = (t - cam.at >= cam.seconds * 1000) and 1 or 0, n = #list }
+  local out = { shot = shot, settled = (t - cam.at >= cam.seconds * 1000) and 1 or 0, n = #list,
+    keys = s.shots[shot] and s.shots[shot].hotspot_keys or "left_right" }
   local people = people_boxes(s, v)
   for i, h in ipairs(list) do
     local hidden = {}
@@ -902,6 +1430,10 @@ function MenuScene.Hotspots(key, of_shot)
       flood_ms = math.floor((h.light_flood_seconds or 0) * 1000),
       door = h.open_door or "", door_id = h.open_door_id or 0, door_ms = math.floor((h.open_door_after_seconds or 0) * 1000),
       door_reverse = h.open_door_reverse and 1 or 0, leave_white = h.leave_white and 1 or 0,
+      pick_layer = h.pick_layer or 0, pick_index = h.pick_index or 0, draw = h.draw == false and 0 or 1,
+      pick_option = h.pick_option or -1, group = h.group or "", open_group = h.open_group or "",
+      open_group_if = h.open_group_if or "", back_to = h.back_to or "", outline_tag = h.outline_tag or 0,
+      edge_actor = h.edge_actor or 0, call = h.call or "",
       start = h.start and 1 or 0, seen = seen,
       x = seen == 1 and (x0 + x1) / 2 or 0, y = seen == 1 and (y0 + y1) / 2 or 0,
       w = seen == 1 and x1 - x0 or 0, h = seen == 1 and y1 - y0 or 0,
@@ -1045,7 +1577,69 @@ function MenuScene.FollowCamera(name, on)
   local ok = pcall(VRFW.native.table_set, CAMERA_TABLE, crc, follow and 1 or nil)
   following[crc] = follow and tostring(name) or nil
   info(string.format("camera %s %s the shots (%s)", tostring(name), follow and "follows" or "no longer follows", tostring(ok)))
+  if not follow then own_pose[crc], written_pose[crc] = nil, nil end
   return ok and 1 or 0
+end
+
+-- CMND_VRFW_MENU_SCENE_REFRAME(camera name, x, y, z[, near]) -> x, y, z, turn (degrees about the world's up), screen x,
+-- screen y (px of the 1920 x 1080 menu screen, y down), metres per screen height at the point, distance from the
+-- shot's eye (metres) | "": a world point framed by a following camera's own pose (a menu's 3D model on its stage),
+-- moved to where the running shot shows it at the same screen place and size (its depth scaled by the two FOVs);
+-- turning the model by `turn` keeps the side of it the camera sees. "" while that camera has no own pose yet or the
+-- point is behind it.
+local atan2 = math.atan2 or math.atan   -- Lua 5.2 has math.atan2
+local function heading(f) return math.deg(atan2(f[1], f[3])) end
+-- CMND_VRFW_MENU_SCENE_SHOT_POSE(key, shot, eye x, y, z, target x, y, z[, fov]) -> 1 | 0: a shot's pose set at run time
+-- (e.g. framed to what stands in it); the camera moves there (SHOT_POSE_SECONDS, eased) when that shot is on
+local SHOT_POSE_SECONDS = 0.35
+function MenuScene.ShotPose(key, name, ex, ey, ez, tx, ty, tz, fov)
+  local s = by_key[tostring(key or "")]
+  local sh = s and s.shots[tostring(name or "")]
+  local v = { tonumber(ex), tonumber(ey), tonumber(ez), tonumber(tx), tonumber(ty), tonumber(tz) }
+  if not sh or #v < 6 then return 0 end
+  for i = 1, 6 do if not v[i] then return 0 end end
+  sh.eye, sh.target = { v[1], v[2], v[3] }, { v[4], v[5], v[6] }
+  if tonumber(fov) and tonumber(fov) > 1 then sh.fov = tonumber(fov) end
+  if cam.on and cam.name == sh.name and cam.to then
+    local t = now()
+    cam.from, cam.to, cam.at, cam.seconds = pose_now(s, t), pose_of(sh), t, SHOT_POSE_SECONDS
+  end
+  info(string.format("shot %s posed at run time: eye (%.2f, %.2f, %.2f) -> target (%.2f, %.2f, %.2f), fov %.0f", sh.name,
+    v[1], v[2], v[3], v[4], v[5], v[6], sh.fov))
+  return 1
+end
+
+function MenuScene.Reframe(name, x, y, z, near)
+  if not cam.on or not cam.to then return "" end
+  local crc = D.id_of(name)
+  local own = crc and own_pose[crc]
+  x, y, z = tonumber(x), tonumber(y), tonumber(z)
+  if not own or not x or not y or not z then return "" end
+  local from = pose_view(own)
+  local to = view_now(cam.scene, now())
+  local d = sub({ x, y, z }, from.eye)
+  local depth = dot(d, from.f)
+  if depth < 0.05 then return "" end
+  local across, up = dot(d, from.r), dot(d, from.u)
+  local scaled = depth * math.tan(math.rad(from.fov) / 2) / math.tan(math.rad(to.fov) / 2)
+  local px = to.eye[1] + to.f[1] * scaled + to.r[1] * across + to.u[1] * up
+  local py = to.eye[2] + to.f[2] * scaled + to.r[2] * across + to.u[2] * up
+  local pz = to.eye[3] + to.f[3] * scaled + to.r[3] * across + to.u[3] * up
+  -- near (0 < near < 1): the point pulled toward the eye by that factor (the same screen place; the caller scales the
+  -- model by it): in front of whatever of the map stands between the eye and the full depth
+  local k = tonumber(near)
+  if k and k > 0 and k < 1 then
+    px, py, pz = to.eye[1] + (px - to.eye[1]) * k, to.eye[2] + (py - to.eye[2]) * k, to.eye[3] + (pz - to.eye[3]) * k
+  end
+  local turn = heading(to.f) - heading(from.f)
+  if turn > 180 then turn = turn - 360 elseif turn < -180 then turn = turn + 360 end
+  -- where the point shows (the stage's view: the same place in the shot) and how many metres the screen's height
+  -- spans there, for a caller that sizes or boxes the model
+  local half = depth * math.tan(math.rad(from.fov) / 2)
+  local sx = MENU_W / 2 + across / (half * MENU_W / MENU_H) * (MENU_W / 2)
+  local sy = MENU_H / 2 - up / half * (MENU_H / 2)
+  local dx, dy, dz = px - to.eye[1], py - to.eye[2], pz - to.eye[3]
+  return px, py, pz, turn, sx, sy, 2 * half, math.sqrt(dx * dx + dy * dy + dz * dz)
 end
 
 -- CMND_VRFW_MENU_SCENE_AVATAR() -> chara_base, card, handle of the save's avatar (0 = unknown)
@@ -1065,7 +1659,27 @@ end
 -- map). The script outlives the game reset; the game's params are not relied on across it.
 
 local PENDING_MS = 30000            -- a pending action older than this is dropped
-local pending = nil                 -- { action, at }
+local pending = nil                 -- { action, at, back_to }
+-- the menu an action ends in, whose Back may be sent elsewhere (the declaration's `return`)
+local ACTION_MENU = { chronicle_map = "chronicle_mode_top_menu" }
+local back_to = {}                  -- menu name -> "title": its next opening goes back there (CMND_VRFW_MENU_SCENE_RETURN)
+
+-- the `return` of the running scene's declarations of an action (a tile action or a hotspot), "" = none
+local function declared_return(action)
+  local s = by_key[run.key or ""]
+  if not s then return "" end
+  for _, a in ipairs(s.actions or {}) do
+    if a.action == action and (a.back_to or "") ~= "" then return a.back_to end
+  end
+  for _, list in pairs(s.hotspots or {}) do
+    for _, h in ipairs(list) do
+      for _, a in ipairs(h.actions or {}) do
+        if a == action and (h.back_to or "") ~= "" then return h.back_to end
+      end
+    end
+  end
+  return ""
+end
 
 -- CMND_VRFW_MENU_SCENE_PENDING(action) -> 1: the action waits for the menu it ends in ("" = none)
 function MenuScene.Pending(action)
@@ -1075,8 +1689,9 @@ function MenuScene.Pending(action)
     pending = nil
     return 1
   end
-  pending = { action = action, at = now() }
-  info(string.format("pending action %s: for the menu after the leave", action))
+  pending = { action = action, at = now(), back_to = declared_return(action) }
+  info(string.format("pending action %s: for the menu after the leave%s", action,
+    pending.back_to ~= "" and (", its Back to the " .. pending.back_to) or ""))
   return 1
 end
 
@@ -1085,19 +1700,111 @@ function MenuScene.Take(action)
   action = tostring(action or "")
   if not pending or pending.action ~= action then return 0 end
   local age = now() - pending.at
+  local to = pending.back_to or ""
   pending = nil
   if age > PENDING_MS then
     info(string.format("pending action %s too old (%d ms): dropped", action, math.floor(age)))
     return 0
   end
-  info(string.format("pending action %s taken after %d ms", action, math.floor(age)))
+  local menu = ACTION_MENU[action]
+  if to ~= "" and menu then
+    back_to[menu] = to
+    info(string.format("pending action %s taken after %d ms; the next %s goes back to the %s", action, math.floor(age), menu, to))
+  else
+    info(string.format("pending action %s taken after %d ms", action, math.floor(age)))
+  end
   return 1
+end
+
+-- CMND_VRFW_MENU_SCENE_RETURN(menu) -> "title" | "": where the menu, opening again after an action that ended in it
+-- (a declaration's `return`), sends its Back at once; answered once. Cleared when a scene comes up.
+function MenuScene.Return(menu)
+  menu = tostring(menu or "")
+  local to = back_to[menu]
+  if not to then return "" end
+  back_to[menu] = nil
+  info(string.format("%s: back to the %s (the action's return)", menu, to))
+  return to
+end
+
+-- CMND_VRFW_MENU_SCENE_COME_BACK(key, mode) records the mode a title left from by an action that returns to the title;
+-- CMND_VRFW_MENU_SCENE_COME_BACK(key) -> that mode once (-1 = none): the title opens on it at its next up
+local come_back = nil
+function MenuScene.ComeBack(key, mode)
+  key = tostring(key or "")
+  if mode ~= nil then
+    come_back = { key = key, mode = tonumber(mode) or -1 }
+    info(string.format("%s: a return to the title opens on mode %s", key, tostring(mode)))
+    return come_back.mode
+  end
+  if not come_back or come_back.key ~= key then return -1 end
+  local m = come_back.mode
+  come_back = nil
+  return m
 end
 
 -- CMND_VRFW_MENU_SCENE_FOR(menu) -> key | ""
 function MenuScene.For(menu)
   if run.failed then return "" end
-  return by_menu[tostring(menu or "")] or ""
+  menu = tostring(menu or "")
+  return selected[menu] or by_menu[menu] or ""
+end
+
+-- Queue a scene for the next normal title reset. Never mutate the scene still being rendered.
+-- The caller carries the in-memory save and resets only after this command has accepted the destination.
+-- Numeric maps are resolved from the scene's map names and active mods' stadium declarations.
+function MenuScene.Travel(key, map_id, members, uniform)
+  if key == nil or key == "" then
+    local s = scene()
+    return { key = s and s.key or "", map_id = s and s.map_id or 0, pending = travel_target ~= nil }
+  end
+  if key == "cancel" then
+    travel_target = nil
+    if run.state == "options" then run.key = nil set_state("idle", "direct scene reset cancelled") end
+    return true
+  end
+  local s = by_key[tostring(key)]
+  if not s or run.failed or (run.state ~= "up" and run.state ~= "idle") then return false, "scene unavailable" end
+  local map
+  map_id = tonumber(map_id) or 0
+  if map_id ~= 0 then
+    if not s.selectable then return false, "only alternate scenes accept a map override" end
+    local names = { s.map }
+    for _, name in ipairs(s.travel_maps) do names[#names + 1] = name end
+    for _, file in ipairs(VRFW.files.declarations("content/stadiums")) do
+      for _, row in ipairs(type(file.data) == "table" and file.data.stadium or {}) do
+        if type(row.map) == "string" then names[#names + 1] = row.map end
+      end
+    end
+    for _, name in ipairs(names) do
+      if D.id_of(name) == map_id % 4294967296 then map = name break end
+    end
+    if not map or map == "" then return false, "unknown map" end
+  end
+  if s.people == "provided" and (type(members) ~= "string" or members == "") then
+    return false, "no people supplied"
+  end
+  travel_target = { key = s.key, map = map, map_id = map_id, members = members or "", uniform = tonumber(uniform) or 0 }
+  return true
+end
+
+-- CMND_VRFW_MENU_SCENE_SHOT_TAGS(key) -> "" | { shot = name, on = { tag ids }, off = { tag ids } }: the map tags of the
+-- shot the camera is on (or moving into); the menu applies them over the scene's own tags while that shot is on
+function MenuScene.ShotTags(key)
+  local s = by_key[tostring(key or "")]
+  if not s or not cam.on or cam.scene ~= s or not cam.name then return "" end
+  local sh = s.shots[cam.name]
+  if not sh then return "" end
+  local on, off = {}, {}
+  for i, id in ipairs(sh.tags_on or {}) do on[i] = id end
+  for i, id in ipairs(sh.tags_off or {}) do off[i] = id end
+  -- while the camera still moves out of a shot, that shot's map_tags_off hold too (owner 2026-10-19: the post the home
+  -- shot hides stood in the middle of the frame during the move to the next shot); a cut has no move
+  local left = cam.left and s.shots[cam.left]
+  if left and cam.from and now() - cam.at < cam.seconds * 1000 then
+    for _, id in ipairs(left.tags_off or {}) do off[#off + 1] = id end
+  end
+  return { shot = sh.name, on = on, off = off }
 end
 
 -- CMND_VRFW_MENU_SCENE(key) -> table | ""
@@ -1110,11 +1817,21 @@ function MenuScene.Get(key)
   local tags_on, tags_off = {}, {}
   for i, id in ipairs(s.map_tags_on) do tags_on[i] = id end
   for i, id in ipairs(s.map_tags_off) do tags_off[i] = id end
-  return { key = s.key, map = s.map, map_id = s.map_id, field_mode = s.field_mode, x = s.x, y = s.y, z = s.z, rot = s.rot,
-    entry_point = s.entry_point,
+  -- every hotspot's outline tag: off unless its hotspot is selected (the menu switches it)
+  local outline_tags, seen_tag = {}, {}
+  for _, list in pairs(s.hotspots) do
+    for _, h in ipairs(list) do
+      if (h.outline_tag or 0) ~= 0 and not seen_tag[h.outline_tag] then
+        seen_tag[h.outline_tag] = true
+        outline_tags[#outline_tags + 1] = h.outline_tag
+      end
+    end
+  end
+  return { outline_tags = outline_tags, key = s.key, map = s.map, map_id = s.map_id, field_mode = s.field_mode, x = s.x, y = s.y, z = s.z, rot = s.rot,
+    entry_point = s.entry_point, provided_members = s.provided_members or "", provided_uniform = s.provided_uniform or 0,
     shots_select_modes = s.shots_select_modes and 1 or 0, mode_label = s.mode_label and 1 or 0, mode_label_x = s.mode_label_x, mode_label_y = s.mode_label_y,
     mode_label_scale = s.mode_label_scale, home_shot = s.home_shot,
-    hide_layers = hide, close_menus = close, map_tags_on = tags_on, map_tags_off = tags_off, timeout_ms = s.timeout_ms, people = s.people, spots = #s.spots,
+    hide_layers = hide, close_menus = close, map_tags_on = tags_on, map_tags_off = tags_off, timeout_ms = s.timeout_ms, people = s.people, people_as = s.people_as, guests_as = s.guests_as, spots = #s.spots,
     actions = (function()
       local a = {}
       for i, x in ipairs(s.actions) do
@@ -1160,14 +1877,21 @@ function MenuScene.Set(s, arg)
       return 0, run.state
     end
     run.key, run.requested, run.settle, run.last, run.calls = key, now(), 0, nil, 0
+    guests[key] = nil                    -- a new run starts without the last run's guests
+    actor_handles[key] = nil             -- and without its actors (the map is loaded again)
     MenuScene.FilesOn(by_key[key])
     run.npcs_asked_at, run.npcs_ready_at, run.npcs_info = nil, nil, nil
   end
   set_state(s, arg ~= nil and tostring(arg) or nil)
   if s == "up" then
+    if next(back_to) then
+      info("returns dropped: a scene is up")
+      back_to = {}
+    end
     -- the room appears with the menu: the cover held through the title's start, released when title_menu_2 is open
     -- (its handler fades the screen in right after)
     cover_release("the main menu is up")
+    spawn_radius(scene())
   end
   if s == "loading" then
     arm(true)

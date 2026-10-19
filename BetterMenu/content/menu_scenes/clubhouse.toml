@@ -1,0 +1,949 @@
+schema = "VRFW.menu_scene/1"
+
+# The Odaiba clubhouse of South Cirrus (both floors) under the main menu (docs/game/mods/better-menu.md §7-§14), on
+# BetterMenu's own map w50i901: a copy of the retail w50i001 with only what the shots see, the window panes white, the
+# exit door that opens, block ranges and build radius that cover the pitch and no NPC of its own (§47, §60). After
+# changing a shot: python research/scripts/better_menu_club_visibility.py, then better_menu_club_map_build.py.
+# The walker arrives at the map's right door (the right side wing, never in a shot); the camera moves between the shots
+# below as the mode row's focus moves (Sparking Zero / Persona 5 style). The save's avatar sits on the right-side sofa;
+# 16 players, 3 managers and the coach stand or sit in the living room and on the gallery. After changing a
+# spot: python
+# research/scripts/menu_scene_people_build.py --mod research/mods/BetterMenu --scene clubhouse --npc-base-map w50i001
+# (writes clubhouse_people.toml; the own map has no NPC file of its own in the game data).
+[[VRFW.MenuScene]]
+name = "clubhouse"
+menu = "title_menu_2"
+map = "w50i901"
+field_mode = "clubhouse"
+entry_point = "0x683C6995"               # the map's right door arrival (layout point at (9.05, 0, -3.25), facing 180): the
+                                          # right-side sofa is the avatar's spot
+entry_x = 9.05
+entry_y = 0.0
+entry_z = -3.25
+entry_rot = 180.0
+# the main menu's full-screen background and the notice list over «Información» (white plates on the map); the mode
+# row with its name label and balloon, and the banners over it (Mi equipo, AVATAR, VICTORIAS): the shots are the mode
+# selection (shots_select_modes below)
+hide_layers = ["title02_00_title_bg_2", "info01_03_banner_list_item", "title00_07_item_button_upper",
+    "title02_03_item_name_2", "title02_09_flavor_balloon_upper", "title02_10_my_team_banner", "title02_11_avatar_banner",
+    "title02_07_victory_counter", "title02_12_victory_counter_detail"]
+# the field HUD and its pop-ups: gauges, button guide, minimap, the day / time telop («MIÉ»)
+close_menus = ["rpg_info_window", "talk_icon", "notification_log", "activity_telop_menu"]
+map_tags_on = ["SC", "BMHOME"]            # the projection screen w50ai025 unrolled (its fabric model_w50ai025_ar01_SC_; §25)
+                                          # and the post the home shot hides (BMHOME, §48)
+title_play_mode = 6                       # what the game's own title start writes
+settle_frames = 1                         # hand over after the real NPC load completes
+timeout_seconds = 10
+npc_spawn_radius = 10000.0                # the game makes NPCs only within 65 m of the player's position, and a menu
+                                          # scene has no walker (the position is the last player's, another map's):
+                                          # wider than the map, so every person shows (the pitch is ~155 m away)
+guests = "actors"                         # the Competition players as scene characters, not NPCs
+people_as = "actors"                      # the team as scene characters too (all shown together, a team edit swaps only who changed)
+actor_type = 2                            # the actors created as NPCs (create type 2); 1 = scene characters (face test, VRFW 2.5.2)
+people = "active_team"                    # 16 players, 3 managers and 1 coach; none = no NPCs; map = the map's own NPC file
+people_kit = "team"                       # team = the active team's kit, default = each character's default look
+actor_face = "default"                    # each actor's default face set again when its pose plays and when it is shown
+actor_hold_face = true                    # and kept: the idle clips' face channel off (no open mouths while they loop)
+people_seconds = 8                        # keep the cover until the full lineup's NPCs finish loading
+people_min_seconds = 0.0                  # no fixed presentation delay after map arrival
+people_quiet_seconds = 0.0                # NPCUpdate's load completion gates the hand-over
+camera = "RpgCamera"                      # the field camera: the shots below drive it
+default_shot = "team_overview"
+home_shot = "team_overview"                # start wide enough to keep the gallery pair in view too
+shot_seconds = 0.5                        # the move from shot to shot when no range applies
+shot_ease = "smoother"                    # ease in and out, softer start and stop
+shot_turn = "slerp"                       # the view turns along the shortest arc; the eye moves in a straight line
+shot_seconds_min = 0.6                    # a small change of view ...
+shot_seconds_max = 1.1                    # ... to a quarter turn or 8 m of travel or more (shot_seconds_metres): slower,
+                                          # softer moves between the modes (owner 2026-10-19)
+drift_metres = 0.04                       # a slow idle sway of the eye (0 = still)
+drift_seconds = 18
+cut_metres = 40                           # a move to or from the pitch (about 150 m out of the lodge) is a cut, never a flight through the walls
+# The shots are the mode selection: the mode row is not drawn; L2 / R2 (and left / right on the scene) go to the
+# previous / next mode and its shot, down / up go between the scene and the lower row, A / X act on the mode on screen.
+# The cycle starts on the home entry (home_shot): the full clubhouse with no mode, where A and X do nothing and Y opens
+# the team drawer; next from it = the first mode, previous = the last one.
+# The mode's name (the game's own tile text) at the bottom left, over the lower row (content\menus\title_scene.toml adds
+# its layer).
+shots_select_modes = true
+mode_label = false                        # BetterMenu draws its own mode header (assets\lua\title_menu_2\220_mode_header.lua)
+mode_label_x = 250                        # inside the screen also on a 4:3 window (the label has no screen anchor)
+mode_label_y = 846                        # over the lower row's own labels (centre y 914)
+mode_label_scale = 0.8
+when = { config = "experiment.map_under_menu", default = true }
+
+# Shots (L2 / R2 on the main menu cycle them by `order`): the mode row's tiles (the title's item ids) that call them. A tile without a shot of its own gets the default;
+# the lower row (Guía, Opciones, Información, Guardar, Mods) and the banners keep the shot on screen. Inside the lodge
+# only: living room x -7..7, z -7..5 (glass front at z 5, fireplace right, cabinet left), left wing x -11.7..-7, kitchen /
+# dining room z -22..-14, gallery y 4 (back walkway z -14.5..-10).
+[[VRFW.MenuSceneShot]]                    # from the glass front over the living room, the team on the sofa
+scene = "clubhouse"
+name = "living_room"
+order = 1                                 # L2 / R2 cycle the shots in this order
+eye_x = 0.0
+eye_y = 1.6
+eye_z = 4.4
+target_x = 0.0
+target_y = 1.8
+target_z = -7.0
+fov = 50
+
+[[VRFW.MenuSceneShot]]                    # Modo Historia: the door to Odaiba and the avatar on the bench
+scene = "clubhouse"
+name = "story"
+order = 2
+eye_x = -8.2                              # from the wing's room side: the seated avatar in three-quarter front view
+eye_y = 1.5
+eye_z = -7.2
+target_x = -10.3
+target_y = 1.15                           # beside the door leaf's centre (1.2 x 2.5 m, face at z -0.7; the push-in keeps it)
+target_z = -1.2
+fov = 48
+tiles = ["296576821"]                     # Modo Historia
+
+[[VRFW.MenuSceneShot]]                    # in front of the avatar once it stands up from the bench (the hotspot «avatar»):
+scene = "clubhouse"                       # asked by name (no tile); the avatar at (-10.55, -3.79) faces +x
+name = "avatar_front"
+order = 90
+eye_x = -8.75
+eye_y = 1.45
+eye_z = -3.55
+target_x = -10.55
+target_y = 1.1
+target_z = -3.79
+fov = 38
+
+[[VRFW.MenuSceneShot]]                    # Modo Competición: the picker's three players on the island's pitch (model w50i001h03,
+scene = "clubhouse"                       # floor y -8.1, centre (-117.4, 90.6)), seen from in front of them at three-quarters
+name = "competition"                      # shot AB5 «V abierta heroica» (owner 2026-10-19, research/build/previews/rival_shots_ab):
+order = 3                                 # the eye 0.65 m over the grass, 3.33 m from the group, heading 88, looking up at
+eye_x = -105.482                          # the three in a wide V with the sky behind; the players' places follow their
+eye_y = -7.45                             # bodies (content\competition_court\court.toml)
+eye_z = 96.199
+target_x = -109.282
+target_y = -6.653
+target_z = 95.239
+fov = 30
+tiles = ["2477753773"]                    # Modo Competición
+
+[[VRFW.MenuSceneShot]]                    # Modo Crónica: the wood-panelled wall under the staircase (wall face z -9.9) with the
+scene = "clubhouse"                       # big cliff / sea painting (0.2, 1.52) 1.6 x 0.84 m and the small flower painting
+name = "cronica"                          # (1.75, 1.52) 0.5 x 0.64 m (model w50ai007b); the eye at 2 m keeps the seated heads out
+order = 4
+eye_x = 1.0
+eye_y = 2.0
+eye_z = -1.0
+target_x = 1.0
+target_y = 1.65
+target_z = -9.85
+fov = 22
+tiles = ["130186018"]                     # Modo Crónica
+
+[[VRFW.MenuSceneShot]]                    # Battle Bay: square on to the pull-down screen (w50ai025, image rectangle
+scene = "clubhouse"                       # __ev09_01300__screen01_01: x -1.18 .. 1.18, y 1.325 .. 2.525 at z 4.817), its
+name = "table"                            # centre in the middle of the frame (owner 2026-10-19), the screen about half the
+order = 5                                 # frame's width: it shows the Battle Bay top menu (the hotspots below)
+eye_x = 0.0
+eye_y = 1.925
+eye_z = 1.0
+target_x = 0.0
+target_y = 1.925
+target_z = 4.817
+fov = 40
+tiles = ["3009621826"]                    # Estadio BB
+hotspot_keys = "up_down"                  # the Battle Bay menu's buttons stand one above the other
+
+[[VRFW.MenuSceneShot]]                    # Battle Bay, on A over a mode: the camera squares the screen's image rectangle, as if
+scene = "clubhouse"                       # the screen became the display (2.36 m wide at 1.82 m with FOV 40 at 16:9)
+name = "table_screen"
+order = 95
+eye_x = 0.0
+eye_y = 1.93
+eye_z = 3.0
+target_x = 0.0
+target_y = 1.93
+target_z = 4.82
+fov = 40
+move_seconds = 0.7
+ease = "smoother"
+
+# The Battle Bay top menu on the pull-down screen (docs/game/mods/better-menu.md §57, [experiment] bb_live_menu): a copy
+# of the game's bb_stadium_top_menu pieces (content\menus\title_bb_live.toml: its button locator, stadium art, logo,
+# next-match badge and cross-play note; the buttons themselves follow the locator), fitted so the menu's 1920 x 1080
+# design covers the screen's whole image rectangle (2.36 x 1.2 m, a little wider than 16:9; owner 2026-10-19).
+[[VRFW.MenuSceneScreen]]
+scene = "clubhouse"
+shot = "table"
+keep_shots = ["table_screen"]
+name = "battle_bay_menu"
+x = 0.0
+y = 1.925
+z = 4.81
+width = 2.36
+height = 1.2
+rot = 180.0
+layers = ["vs01_00_p2_background_bb_stadium", "mainmenu90_25_list_item_locator", "vs01_47_bb_stadium_header_logo"]
+# (the next-match badge vs11_01_next_stage_guide and the cross-play note mainmenu90_35_cross_play_guide are not shown:
+# owner 2026-10-19, the small bar over the stadium art)
+fade_seconds = 0.3
+# (no `when`: [[VRFW.MenuSceneScreen]] has no such key and the whole screen was left out; the layers are gated by
+# experiment.bb_live_menu in content\menus\title_bb_live.toml)
+
+# the copy's blue background (content\menus\title_bb_live.toml) on the same rectangle: its layout is 2640 px wide
+# (x -360 .. 2280), so a screen of its own fits that width to the rectangle
+[[VRFW.MenuSceneScreen]]
+scene = "clubhouse"
+shot = "table"
+keep_shots = ["table_screen"]
+name = "battle_bay_background"
+x = 0.0
+y = 1.925
+z = 4.81
+width = 2.36
+height = 1.2
+rot = 180.0
+layers = ["better_menu_bb_live_background"]
+# the area the layer really draws (measured on the owner's screenshot of 0.6.80, design -360, 0, 2640, 1080: the blue
+# covered x 162 .. 2474 and y 113 .. 964 of that design), so it now covers the whole image rectangle
+design_x = -198.0
+design_y = 113.0
+design_width = 2312.0
+design_height = 851.0
+fade_seconds = 0.3
+
+[[VRFW.MenuSceneShot]]                    # Mercado: the kitchen, the fridge and its shelves
+scene = "clubhouse"
+name = "kitchen"
+order = 6
+eye_x = -2.5
+eye_y = 1.7
+eye_z = -14.5
+target_x = 4.5
+target_y = 1.1
+target_z = -20.5
+fov = 50
+tiles = ["1806468555"]                    # Mercado
+
+[[VRFW.MenuSceneShot]]                    # Kizuna: the deer head on the gallery
+scene = "clubhouse"
+name = "gallery"                          # the mounted deer head (model w50ai009, (0, 5.84 .. 7.1, -14.4)) on the upper gallery's
+order = 7                                 # back wall between its two plaques, from above the top of the stairs
+eye_x = 1.2
+eye_y = 5.3
+eye_z = -7.5
+target_x = 0.0
+target_y = 6.25
+target_z = -14.4
+fov = 30
+tiles = ["2071851632"]                    # Kizuna
+
+[[VRFW.MenuSceneShot]]                    # the team drawer (Y): keep the wide hall view and gallery team clear of the foreground post
+scene = "clubhouse"
+name = "team_overview"
+order = 97
+eye_x = 6.6
+eye_y = 3.2
+eye_z = 3.5
+target_x = 0.85
+target_y = -0.06
+target_z = -4.28
+fov = 60
+# no move_seconds: the move home takes the scene's shot_seconds_min .. _max by turn and travel; from the pitch a cut
+ease = "smoother"
+map_tags_off = ["BMHOME"]                 # the home shot without the post in front of it (§48)
+
+[[VRFW.MenuSceneShot]]                    # A on Modo Historia: one move from the Story shot straight through the opening door
+scene = "clubhouse"                       # (owner 2026-10-19: no stop in front of it): the eye's straight line from the Story
+name = "story_door"                       # eye crosses the door's plane (z -0.65) at x -9.16, inside the doorway (x -9.9 .. -8.7;
+order = 99                                # the open leaf stays left of x -9.9), and ends 0.95 m past the wall in the door
+eye_x = -9.3                              # model's white box outside (z -0.38 .. 2.45), the view turning on the way to
+eye_y = 1.45                              # straight out; eased in and out, white from about 1.4 s on
+eye_z = 0.3
+target_x = -9.3
+target_y = 1.45
+target_z = 2.45
+fov = 40
+move_seconds = 1.8
+ease = "smooth"
+
+[[VRFW.MenuSceneShot]]                    # a hotspot other than the door: a short push toward the wing, then the story submenu
+scene = "clubhouse"
+name = "story_near"
+order = 98
+eye_x = -9.3
+eye_y = 1.5
+eye_z = -5.6
+target_x = -9.3
+target_y = 1.25
+target_z = -0.65
+fov = 46
+move_seconds = 0.6
+ease = "smoother"
+
+[[VRFW.MenuSceneShot]]                    # A on Modo Crónica: the push-in to the big painting before the Chronicle map
+scene = "clubhouse"
+name = "cronica_painting"
+order = 96
+eye_x = 0.5                               # in front of the painting's centre (0.2, 1.52, -9.87), 4.4 m from the wall
+eye_y = 1.7
+eye_z = -5.5
+target_x = 0.2
+target_y = 1.52
+target_z = -9.87
+fov = 24                                  # the painting fills about half the frame's height
+move_seconds = 1.0
+ease = "smoother"
+
+# The story shot's buttons in the wing (left / right between them, A): the umbrella stand «Historia+», the door
+# «Continuar» (or «Partida nueva» without a story save), the doormat «Historia extendida». Each text is the game's own
+# entry of the story submenu, drawn where the camera sees the object (position and size follow the shot); the
+# selected one shows its white silhouette (outline_tag: the own map's outline models, docs/game/mods/better-menu.md §101). Rectangles
+# from the map's own models (w50i001.g4sk placements, model bounding boxes; docs/game/mods/better-menu.md §19-§20).
+# With [experiment] bb_live_menu: the same choice over the projected copy of the menu, plus its Opciones and Guardar
+# (Ayuda is hidden): hotspots that the framework does not draw (draw = false); assets\lua\title_menu_2\250_bb_live_menu.lua
+# shows the selected one on the projected button. Order = the menu's own list order.
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_campaign"
+order = 1
+start = true
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["open_group", "menu_pick"]   # a campaign save: the continue / new choice on the screen first;
+open_group = "bb_campaign"                # none: straight into a new campaign (the game's own press)
+open_group_if = "bb_campaign_save"
+text = "943773677"                       # «Campaña»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1                             # the push-in (0.7 s), then the projected menu fades to the screen's white
+leave_fade = "white"
+pick_layer = "716364754"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 0
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]                 # the campaign's continue / new choice on the projected menu (group bb_campaign):
+scene = "clubhouse"                       # the Battle Bay top menu presses Campaña with that option answered behind the
+shot = "table"                            # white (pick_option), so its own menu never shows (owner 2026-10-19)
+name = "bb_live_campaign_continue"
+group = "bb_campaign"
+order = 1
+start = true
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "2856747853"                      # the campaign choice's «continue»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1
+leave_fade = "white"
+pick_layer = "716364754"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 0
+pick_option = 0
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_campaign_new"
+group = "bb_campaign"
+order = 2
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "1851993283"                      # the campaign choice's «new»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1
+leave_fade = "white"
+pick_layer = "716364754"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 0
+pick_option = 1
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_single_player"
+order = 2
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "909487812"                       # «Modo para un jugador»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1                             # the push-in (0.7 s), then the projected menu fades to the screen's white
+leave_fade = "white"
+pick_layer = "716364754"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 1
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_multiplayer"
+order = 3
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "3808874428"                       # «Multijugador»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1                             # the push-in (0.7 s), then the projected menu fades to the screen's white
+leave_fade = "white"
+pick_layer = "716364754"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 2
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_options"
+order = 4
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "355747446"                       # «Opciones»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1                             # the push-in (0.7 s), then the projected menu fades to the screen's white
+leave_fade = "white"
+pick_layer = "530619243"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 1
+when = { config = "experiment.bb_live_menu", default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_live_save"
+order = 5
+x = 0.0
+y = 1.93
+z = 4.8
+width = 2.0
+height = 1.0
+surface = "wall"
+rot = 180.0
+actions = ["menu_pick"]
+text = "1008104139"                       # «Guardar»
+draw = false
+push_shot = "table_screen"
+seconds = 1.1                             # the push-in (0.7 s), then the projected menu fades to the screen's white
+leave_fade = "white"
+pick_layer = "530619243"
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 2
+when = { config = "experiment.bb_live_menu", default = true }
+
+# The Battle Bay top menu (bb_stadium_top_menu) drawn on the screen: its three modes as hotspots stacked in the image
+# rectangle (2.0 x 0.36 m each, top to bottom; left / right move between them), with the menu's own texts. A: the BB tile's own
+# press, the push-in that squares the screen (table_screen), the title leaves in white, and the top menu presses that
+# mode itself (menu_pick: its list layer 716364754 holds Campaña, Modo para un jugador, Multijugador as 0, 1, 2), so the
+# mode's menu opens with the top menu never shown (docs/game/mods/better-menu.md §50).
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_campaign"
+order = 1
+start = true
+x = 0.0
+y = 2.31
+z = 4.8                                   # just in front of the screen (face at z 4.817)
+width = 2.0
+height = 0.36
+surface = "wall"
+rot = 180.0                               # faces the camera (-z), as the screen
+actions = ["menu_pick"]
+text = "943773677"                       # «Campaña» (the top menu's own text)
+push_shot = "table_screen"
+seconds = 0.8
+leave_fade = "white"
+pick_layer = "716364754"                  # bb_stadium_top_menu's mode list
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 0
+when = { config = "experiment.bb_live_menu", equals = false, default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_single_player"
+order = 2
+x = 0.0
+y = 1.93
+z = 4.8                                   # just in front of the screen (face at z 4.817)
+width = 2.0
+height = 0.36
+surface = "wall"
+rot = 180.0                               # faces the camera (-z), as the screen
+actions = ["menu_pick"]
+text = "909487812"                       # «Modo para un jugador» (the top menu's own text)
+push_shot = "table_screen"
+seconds = 0.8
+leave_fade = "white"
+pick_layer = "716364754"                  # bb_stadium_top_menu's mode list
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 1
+when = { config = "experiment.bb_live_menu", equals = false, default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "table"
+name = "bb_multiplayer"
+order = 3
+x = 0.0
+y = 1.55
+z = 4.8                                   # just in front of the screen (face at z 4.817)
+width = 2.0
+height = 0.36
+surface = "wall"
+rot = 180.0                               # faces the camera (-z), as the screen
+actions = ["menu_pick"]
+text = "3808874428"                       # «Multijugador» (the top menu's own text)
+push_shot = "table_screen"
+seconds = 0.8
+leave_fade = "white"
+pick_layer = "716364754"                  # bb_stadium_top_menu's mode list
+return = "title"                          # Back from the menu it opens comes to this shot of the title
+pick_index = 2
+when = { config = "experiment.bb_live_menu", equals = false, default = true }
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "story"
+name = "umbrella_stand"
+order = 1
+x = -7.97                                 # the stand (0.24 m across, 0.55 m) with its umbrellas up to 0.99 m
+y = 0.5
+z = -1.0
+width = 0.3
+height = 1.0
+surface = "wall"
+rot = 180.0                               # faces the camera (-z)
+actions = ["story_plus"]
+push_shot = "story_near"
+seconds = 0.6
+outline_tag = "HSUMB"                     # its white silhouette (better_menu_outline_build.py) instead of the rectangle
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "story"
+name = "door"
+order = 2
+start = true
+x = -9.3                                  # the glass-panelled leaf (x -9.9 .. -8.7, y 0 .. 2.5), its face at z -0.7
+y = 1.25
+z = -0.7
+width = 1.2
+height = 2.5
+surface = "wall"
+rot = 180.0
+actions = ["story_continue", "story_new_game"]
+push_shot = "story_door"
+seconds = 2.0                             # one move from the Story shot through the doorway (1.8 s), then the fade
+open_door = "w50aidoor02_02_01"           # the door model cut out of the structure (better_menu_door_build.py, §26)
+open_door_after_seconds = 0.3             # it swings open (0.5 s clip) while the camera comes: open well before the
+                                          # camera reaches the doorway (at about 1.3 s)
+open_door_reverse = true                  # the reverse clips: into the wing, toward the camera (the hinge on the left edge)
+outline_tag = "HSDOOR"                    # the leaf's white outline (off once A pushes in, before the door opens)
+leave_fade = "white"                      # the camera ends in the white outside: the hand-over to the story is white too
+
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "story"
+name = "doormat"
+order = 3
+x = -9.29                                 # the mat x -10.44 .. -8.14, z -2.44 .. -0.92
+y = 0.01
+z = -1.68
+width = 2.3                               # across x
+height = 1.5                              # along z
+surface = "floor"
+rot = 0.0
+actions = ["story_extended"]
+push_shot = "story_near"
+seconds = 0.6
+outline_tag = "HSMAT"                     # a white border around the mat
+
+# The avatar on the left wing's bench (spot 1, a scene actor): selected, it gets the game's white character edge (its
+# own CCharaEdgeProperty, edge_actor); A stands it up and moves the camera in front of it (BetterMenu.Avatar.Open,
+# lua title_menu_2¥_avatar_stage.lua; §104). The rectangle covers the seated avatar (seat x -11.46 .. -10.74).
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "story"
+name = "avatar"
+order = 4
+x = -10.75
+y = 0.75
+z = -3.79
+width = 0.8
+height = 1.4
+surface = "wall"
+rot = 180.0                               # faces the story camera (-z)
+actions = ["call"]
+call = "BetterMenu.Avatar.Open"
+text = "better_menu.avatar_hotspot"
+edge_actor = 1
+
+# The Crónica shot's button: the big painting «Cadena de Crónica» (the Chronicle top menu's own text): A pushes in to
+# the painting, then the Chronicle map. The rectangle is the painting's outer frame (model w50ai007b placed at (0.70,
+# 1.52, -9.90): frame x -0.60 .. 1.00, y 1.095 .. 1.945, front face z -9.85; the picture inside it x -0.52 .. 0.92,
+# y 1.175 .. 1.865). While the shot is on, the picture shows the Chronicle top menu live (§37).
+[[VRFW.MenuSceneHotspot]]
+scene = "clubhouse"
+shot = "cronica"
+name = "caravan_painting"
+order = 1
+start = true
+x = 0.0                                   # image fit: screenshot shows the frame 0.2 m left of the previous estimate
+y = 1.52
+z = -9.85
+width = 1.6
+height = 0.85
+surface = "wall"
+rot = 0.0                                 # faces the room (+z)
+actions = ["chronicle_map"]
+return = "title"                          # Back from the Chronicle map: straight to the main menu (no Chronicle top menu)
+push_shot = "cronica_painting"
+seconds = 1.2
+outline_tag = "HSPAINT"                   # the painting's white outline
+
+# The live painting (§37): while the Crónica shot is on (and during its push-in), the big painting's picture shows the
+# Chronicle top menu in motion: the quad layer better_menu_live_painting (content\menus\title_live_painting.toml, the
+# 36 px quad cmn01_10 centred on its origin: design area -18, -18, 36 x 36) fitted to the picture x -0.52 .. 0.92,
+# y 1.175 .. 1.865 (centre (0.20, 1.52), 1.44 x 0.69 m, the face at z -9.85), its flipbook played by
+# assets\lua\title_menu_2\240_live_painting.lua. Outside the shot the painting is the retail landscape.
+[[VRFW.MenuSceneScreen]]
+scene = "clubhouse"
+shot = "cronica"
+keep_shots = ["cronica_painting"]
+name = "chronicle_painting"
+x = 0.0
+y = 1.52
+z = -9.85
+width = 1.44
+height = 0.69
+rot = 0.0
+layers = ["better_menu_live_painting"]
+design_x = -18.0
+design_y = -18.0
+design_width = 36.0
+design_height = 36.0
+fade_seconds = 0.4
+
+# A on «Modo Historia» without the hotspots drawn (no label layer): the camera pushes in to the door (story_door),
+# then the story continues as its «Continuar»
+# does, without the story submenu. No story save yet: the game's submenu.
+[[VRFW.MenuSceneAction]]
+scene = "clubhouse"
+tile = "296576821"                        # Modo Historia
+action = "continue_story"
+shot = "story_door"
+seconds = 2.0                             # the one move through the door (story_door, 1.8 s), then the fade
+leave_fade = "white"                      # white, as the space the camera ends in
+
+[[VRFW.MenuSceneAction]]                  # docs/game/mods/better-menu.md §27
+scene = "clubhouse"
+tile = "130186018"                        # Modo Crónica: straight to the Chronicle map, as its «Cadena de Crónica» (no top menu)
+action = "chronicle_map"
+shot = "cronica_painting"
+seconds = 1.2                             # the push-in (1.0 s) and a moment on the painting, then the fade
+return = "title"                          # Back from the Chronicle map: straight to the main menu
+
+# Spots: slot 1 = the save's avatar (who = "avatar"), then the players by team position, 3 managers and the coach.
+# x / z metres on the ground floor (y 0), rot degrees (0 = facing +z, toward the glass front); a spot with a group faces
+# the group's centre instead. clips: NPC clips of the skeleton's NPC pack (common/chr/<set>/<set>_p060.g4pk), the first one
+# the member's set holds. Seated members stand their point at the seat's front edge.
+
+[[VRFW.MenuSceneGroup]]                   # the living room's left side, by the fireplace wall
+scene = "clubhouse"
+name = "living_left"
+x = -4.3
+z = -0.6
+
+[[VRFW.MenuSceneGroup]]                   # the living room's right side
+scene = "clubhouse"
+name = "living_right"
+x = 4.1
+z = -0.6
+
+[[VRFW.MenuSceneGroup]]                   # toward the glass front, left
+scene = "clubhouse"
+name = "front_left"
+x = -2.8
+z = 2.4
+
+[[VRFW.MenuSceneGroup]]                   # toward the glass front, right
+scene = "clubhouse"
+name = "front_right"
+x = 2.9
+z = 2.4
+
+[[VRFW.MenuSceneGroup]]                   # the managers, at the back of the living room
+scene = "clubhouse"
+name = "staff"
+x = -4.0
+z = -6.0
+
+[[VRFW.MenuSceneSpot]]                    # the avatar on the left wing's bench (model w50ai014, x -11.46..-10.74, z -4.25..-3.33, seat 0.45 m), facing the room
+scene = "clubhouse"
+slot = 1
+who = "avatar"
+pose = "sit"
+x = -10.55
+z = -3.79
+rot = 90.0
+clips = ["NPC座り1L"]
+
+[[VRFW.MenuSceneSpot]]                    # the sofa behind the table (x -2..2, z -4.7..-3.8): talking to the coach at its middle
+scene = "clubhouse"
+slot = 2
+pose = "sit"
+x = -1.35
+z = -3.6
+rot = 0.0
+clips = ["NPCおしゃべり座り右1L", "NPC座り1会話1L", "NPC座り1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 3
+pose = "sit"
+x = 1.35
+z = -3.6
+rot = 0.0
+clips = ["NPCおしゃべり座り左1L", "NPC足組み座り会話1L", "NPC座り1L"]
+
+[[VRFW.MenuSceneSpot]]                    # players in talking groups, all on the ground floor
+scene = "clubhouse"
+slot = 4
+pose = "stand"
+x = -5.0
+z = -0.9
+group = "living_left"
+clips = ["NPC談笑動き控えめ1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 5
+pose = "stand"
+x = -3.6
+z = -1.0
+group = "living_left"
+clips = ["NPC談笑相槌1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 6
+pose = "stand"
+x = -4.7
+z = 0.1
+group = "living_left"
+clips = ["NPC大笑い立ち1L", "NPC談笑動き控えめ1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 7
+pose = "stand"
+x = -3.8
+z = 0.2
+group = "living_left"
+clips = ["NPC腕組み立ち会話1L", "NPC腕組み立ち1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 8
+pose = "stand"
+x = 4.8
+z = -0.9
+group = "living_right"
+clips = ["NPC談笑動き大きめ1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 9
+pose = "stand"
+x = 3.4
+z = -1.0
+group = "living_right"
+clips = ["NPC後ろ手組立ち会話1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 10
+pose = "stand"
+x = 4.6
+z = 0.1
+group = "living_right"
+clips = ["NPC談笑相槌1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 11
+pose = "stand"
+x = 3.6
+z = 0.2
+group = "living_right"
+clips = ["NPC考え立ち会話1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 12
+pose = "stand"
+x = -3.5
+z = 2.1
+group = "front_left"
+clips = ["NPCやる気立ち会話1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 13
+pose = "stand"
+x = -2.1
+z = 2.0
+group = "front_left"
+clips = ["NPC談笑動き控えめ1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 14
+pose = "stand"
+x = -2.8
+z = 3.1
+group = "front_left"
+clips = ["NPC談笑相槌1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 15
+pose = "stand"
+x = 3.6
+z = 2.1
+group = "front_right"
+clips = ["NPC腕組み立ち会話1L", "NPC腕組み立ち1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 16
+pose = "stand"
+x = 2.2
+z = 2.0
+group = "front_right"
+clips = ["NPC大笑い立ち1L", "NPC談笑動き控えめ1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 17
+pose = "stand"
+x = 2.9
+z = 3.1
+group = "front_right"
+clips = ["NPC談笑動き控えめ1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]                    # the managers
+scene = "clubhouse"
+slot = 18
+who = "manager"
+pose = "stand"
+x = -4.8
+z = -5.6
+group = "staff"
+clips = ["NPC談笑動き控えめ1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 19
+who = "manager"
+pose = "stand"
+x = -3.3
+z = -5.5
+group = "staff"
+clips = ["NPC談笑相槌1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 20
+who = "manager"
+pose = "stand"
+x = -4.0
+z = -6.8
+group = "staff"
+clips = ["NPC後ろ手組立ち会話1L", "NPC立ち会話1L", "NPC立ち1L"]
+
+[[VRFW.MenuSceneSpot]]                    # the coach on the front sofa (placement row bk02|w50ai013_02_02 at (2.49, 0, -0.60),
+scene = "clubhouse"                       # turned -90: the seat's front edge at x 2.01), facing the laptop's screen across
+slot = 21                                 # the table (part of w50ai012: lid x 0.10, keyboard x 0.24..0.36, z -0.99..-0.87,
+who = "coach"                             # display toward +x)
+pose = "sit"
+x = 1.79
+z = -0.93
+rot = -90.0
+clips = ["NPCスマホいじり座り1L", "NPC座り1L"]
+
+[[VRFW.MenuSceneSpot]]                    # the Competition list's three players on the pitch (guests: the focused team, own kit; §84)
+scene = "clubhouse"
+slot = 22
+who = "guest"
+pose = "stand"
+x = -108.5
+y = -8.1
+z = 96.1
+rot = 86.2                                # shot B: the captain
+clips = ["NPC腕組み立ち1L", "NPC仁王立ち1L", "NPC立ち1L", "立ち1L"]   # arms crossed, else hands on hips (the female sets)
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 23
+who = "guest"
+pose = "stand"
+x = -109.02
+y = -8.1
+z = 96.42
+rot = 93.3                                # shot B: the goalkeeper
+clips = ["NPC腕組み立ち1L", "NPC仁王立ち1L", "NPC立ち1L", "立ち1L"]   # arms crossed, else hands on hips (the female sets)
+
+[[VRFW.MenuSceneSpot]]
+scene = "clubhouse"
+slot = 24
+who = "guest"
+pose = "stand"
+x = -108.95
+y = -8.1
+z = 95.69
+rot = 78.5                                # shot B: the third player
+clips = ["NPC腕組み立ち1L", "NPC仁王立ち1L", "NPC立ち1L", "立ち1L"]   # arms crossed, else hands on hips (the female sets)
+

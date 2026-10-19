@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03032410"                                   # Roger Pialat
+moves = [
+  { move = 0xECD991E4, level = 1 },                         # The Stinger
+  { move = 0x88B554E0, level = 55 },                        # Galatyn
+  { move = 0xEE9F2FBD, level = 60 },                        # God Catch
+  { move = 0x5AF33BC7, level = 61 },                        # God Hand
+]
 
   [[edit.cards]]
   id = 0x4D6AC48C                                         # GK/MF · forest
@@ -15,6 +21,12 @@ target = "c03032410"                                   # Roger Pialat
 
 [[edit]]
 target = "c03032420"                                   # Kevin Pinot
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x232D05EC, level = 18 },                        # Tiger Drive
+  { move = 0xB13A6C3D, level = 33 },                        # Zigzag Flame
+  { move = 0xB633C4E1, level = 54 },                        # Photon Crash
+]
 
   [[edit.cards]]
   id = 0x6647974F                                         # DF/MF · fire
@@ -24,6 +36,12 @@ target = "c03032420"                                   # Kevin Pinot
 
 [[edit]]
 target = "c03032430"                                   # Michaël Aron
+moves = [
+  { move = 0x695A4A6F, level = 1 },                         # Magic
+  { move = 0x1FC99D68, level = 9 },                         # Snow Angel
+  { move = 0x79E3E635, level = 23 },                        # Racing Flame
+  { move = 0x68982058, level = 57 },                        # Armadillo Circus
+]
 
   [[edit.cards]]
   id = 0x7F5CA60E                                         # DF/MF · forest
@@ -33,6 +51,12 @@ target = "c03032430"                                   # Michaël Aron
 
 [[edit]]
 target = "c03032440"                                   # Francis Poujol
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x67F17FA8, level = 12 },                        # Mega Quake
+  { move = 0xA6D711A6, level = 26 },                        # Full Power Shield
+  { move = 0x52CEB5F6, level = 53 },                        # Iron Wall
+]
 
   [[edit.cards]]
   id = 0x301D30C9                                         # DF/GK · wind
@@ -42,6 +66,12 @@ target = "c03032440"                                   # Francis Poujol
 
 [[edit]]
 target = "c03032450"                                   # Pierre Godin
+moves = [
+  { move = 0x4C1D87D5, level = 1 },                         # Bed of Roses
+  { move = 0x7A67325B, level = 16 },                        # Flame Dance
+  { move = 0xB633C4E1, level = 24 },                        # Photon Crash
+  { move = 0x2F78EA0D, level = 62 },                        # Triangle Z
+]
 
   [[edit.cards]]
   id = 0x29060188                                         # DF/FW · wind
@@ -51,6 +81,12 @@ target = "c03032450"                                   # Pierre Godin
 
 [[edit]]
 target = "c03032460"                                   # Roland Pérec
+moves = [
+  { move = 0x5B6C28ED, level = 7 },                         # Invisible Fake
+  { move = 0x132416F6, level = 20 },                        # Dog Run
+  { move = 0x6633159F, level = 28 },                        # Gravitation
+  { move = 0x3BF45E9A, level = 68 },                        # Triple Boost
+]
 
   [[edit.cards]]
   id = 0x022B524B                                         # MF/DF · forest
@@ -60,6 +96,12 @@ target = "c03032460"                                   # Roland Pérec
 
 [[edit]]
 target = "c03032470"                                   # Julien Rousseau
+moves = [
+  { move = 0x4C1D87D5, level = 1 },                         # Bed of Roses
+  { move = 0xB633C4E1, level = 8 },                         # Photon Crash
+  { move = 0xB6F26F5F, level = 53 },                        # Tri-Pegasus
+  { move = 0x8B90AAAC, level = 65 },                        # Fortissimo
+]
 
   [[edit.cards]]
   id = 0x1B30630A                                         # MF/FW · mountain
@@ -70,6 +112,12 @@ target = "c03032470"                                   # Julien Rousseau
 
 [[edit]]
 target = "c03032480"                                   # Stéphane Hinault
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x4C1D87D5, level = 10 },                        # Bed of Roses
+  { move = 0x121A2FFE, level = 22 },                        # Mirage Shot
+  { move = 0x47380F29, level = 58 },                        # Echo Ball
+]
 
   [[edit.cards]]
   id = 0x9CA87FC5                                         # MF/FW · fire
@@ -79,6 +127,12 @@ target = "c03032480"                                   # Stéphane Hinault
 
 [[edit]]
 target = "c03032490"                                   # Romuald Huysmans
+moves = [
+  { move = 0xA7B451B3, level = 20 },                        # Paladin Strike
+  { move = 0xB633C4E1, level = 29 },                        # Photon Crash
+  { move = 0x3C843987, level = 53 },                        # Flurry Dash
+  { move = 0xB6F26F5F, level = 55 },                        # Tri-Pegasus
+]
 
   [[edit.cards]]
   id = 0x85B34E84                                         # MF/FW · wind
@@ -88,6 +142,12 @@ target = "c03032490"                                   # Romuald Huysmans
 
 [[edit]]
 target = "c03032500"                                   # Jérôme Hervaud
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x105C91A7, level = 20 },                        # Slingshot
+  { move = 0x8EDFBC29, level = 61 },                        # Double Jaw
+  { move = 0x35E70F22, level = 67 },                        # Grenade Shot
+]
 
   [[edit.cards]]
   id = 0x55B39FFA                                         # FW/MF · fire
@@ -97,6 +157,12 @@ target = "c03032500"                                   # Jérôme Hervaud
 
 [[edit]]
 target = "c03032510"                                   # Alain Favreau
+moves = [
+  { move = 0x316A7390, level = 1 },                         # Land Dragon
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x132416F6, level = 33 },                        # Dog Run
+  { move = 0xB6F26F5F, level = 59 },                        # Tri-Pegasus
+]
 
   [[edit.cards]]
   id = 0x4CA8AEBB                                         # FW/MF · fire
@@ -106,6 +172,12 @@ target = "c03032510"                                   # Alain Favreau
 
 [[edit]]
 target = "c03032520"                                   # Émile Lazare
+moves = [
+  { move = 0xECD991E4, level = 20 },                        # The Stinger
+  { move = 0x8AF3EAB9, level = 42 },                        # Hammer of Fury
+  { move = 0x4C1D87D5, level = 52 },                        # Bed of Roses
+  { move = 0xF14FDC17, level = 55 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0x6785FD78                                         # GK/FW · mountain
@@ -115,6 +187,12 @@ target = "c03032520"                                   # Émile Lazare
 
 [[edit]]
 target = "c03032530"                                   # André Pinson
+moves = [
+  { move = 0xB4757AB8, level = 6 },                         # Divine Stamp
+  { move = 0x7A67325B, level = 17 },                        # Flame Dance
+  { move = 0x592A96B4, level = 28 },                        # Afterimage
+  { move = 0x46A71C03, level = 47 },                        # Black Hole
+]
 
   [[edit.cards]]
   id = 0x7E9ECC39                                         # DF/MF · fire
@@ -124,6 +202,12 @@ target = "c03032530"                                   # André Pinson
 
 [[edit]]
 target = "c03032540"                                   # Jean Gutain
+moves = [
+  { move = 0x4D1E465C, level = 1 },                         # Fake Bomber
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x06D2AC29, level = 48 },                        # Diabolical Cut
+  { move = 0xACAC21CE, level = 65 },                        # Fake Ball
+]
 
   [[edit.cards]]
   id = 0x31DF5AFE                                         # DF/MF · forest
@@ -133,6 +217,12 @@ target = "c03032540"                                   # Jean Gutain
 
 [[edit]]
 target = "c03032550"                                   # Claude Moreau
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x261BDCA8, level = 12 },                        # Moonsault
+  { move = 0x0D368F6B, level = 34 },                        # Heaven's Time
+  { move = 0xDCF43422, level = 53 },                        # Aurora Dribble
+]
 
   [[edit.cards]]
   id = 0x28C46BBF                                         # MF/DF · wind
@@ -142,6 +232,12 @@ target = "c03032550"                                   # Claude Moreau
 
 [[edit]]
 target = "c03032560"                                   # Michel Morland
+moves = [
+  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
+  { move = 0xB1FBC783, level = 21 },                        # Reflect Buster
+  { move = 0x97C48D68, level = 35 },                        # Astro Gate
+  { move = 0x88B554E0, level = 46 },                        # Galatyn
+]
 
   [[edit.cards]]
   id = 0x03E9387C                                         # FW/DF · wind

@@ -13,6 +13,12 @@ growth = "normal"
   [[edit.cards]]
   id = 0xDF79536D                                         # MF/FW · mountain
   stats = { kick = 284, control = 259, technique = 289, pressure = 190, physical = 193, intelligence = 259, agility = 166, freedom = 225 }
+  moves = [
+    { move = 0x0DBD9938, level = 1 },                       # Diamond Cutter
+    { move = 0x6813360B, level = 13 },                      # Diamond Ray
+    { move = 0x0FFB2761, level = 20 },                      # Perseus Strike
+    { move = 0x8C58A9CE, level = 30 },                      # Formidable Fortress
+  ]
 
   [[edit.cards]]
   id = 0xC09FD427                                         # DF/FW · forest
@@ -20,6 +26,12 @@ growth = "normal"
 
 [[edit]]
 target = "c07130020"                                   # Joan Asensi
+moves = [
+  { move = 0xEE3E059F, level = 1 },                         # Celestial Smash
+  { move = 0x3F8BFBBA, level = 13 },                        # Double-Trouble
+  { move = 0x41F3CDC2, level = 20 },                        # Scorching Tackle
+  { move = 0xBDAE2862, level = 30 },                        # Hellfire
+]
 
   [[edit.cards]]
   id = 0xF45400AE                                         # FW/MF · fire
@@ -30,6 +42,12 @@ target = "c07130020"                                   # Joan Asensi
 
 [[edit]]
 target = "c07130030"                                   # Leo Segarra
+moves = [
+  { move = 0x3F8BFBBA, level = 1 },                         # Double-Trouble
+  { move = 0x65766A4F, level = 13 },                        # Meteor Blade
+  { move = 0x245D62F1, level = 20 },                        # Attack Scan
+  { move = 0xB7300568, level = 30 },                        # Double Tornado
+]
 
   [[edit.cards]]
   id = 0xED4F31EF                                         # FW/GK · fire
@@ -39,6 +57,12 @@ target = "c07130030"                                   # Leo Segarra
 
 [[edit]]
 target = "c07130110"                                   # Salvador Castell
+moves = [
+  { move = 0x0079EF5E, level = 1 },                         # Wetsuit
+  { move = 0x406CDEE8, level = 13 },                        # Omega Hand
+  { move = 0xDBA0E5E3, level = 20 },                        # Gigant Wall
+  { move = 0xCD6AEF2D, level = 30 },                        # All-Star
+]
 
   [[edit.cards]]
   id = 0xDEBB395A                                         # GK/MF · mountain

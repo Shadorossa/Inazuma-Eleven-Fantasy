@@ -1,0 +1,37 @@
+# Home Stadium with BetterUI: the button «Estadio local» of «Plantilla de equipo» (soccer_team_dock_menu), between
+# TÁCTICAS and FORMACIÓN on the panel's centre (BetterUI's dock panel places it and moves the cursor to and from it:
+# BetterUI.AddDockButton, graft ui_clean_dock_panel). Owner 2026-10-19: a box like FORMACIÓN with the chosen stadium's
+# name. The layer home_stadium_dock_button is a copy of the FORMACIÓN box's object (team00_12_formation_style: its
+# title, dark box, yellow name text, focus frame, pointer zone, cursor locator); assets\lua\soccer_team_dock_menu\
+# 300_home_stadium.lua puts the retail «ESTADIO» title (gtxt_stadium01 of the match settings' atlas vs01_21, a menu
+# resource below) in the title's slot and the stadium's name (or «Sin estadio local») in the text. Its input rows:
+# ENTER (the selector), UP / DOWN / RIGHT as CMD_FUNCTION betterui_dock_button_* (BetterUI's cursor moves), the dock's
+# function keys (team switch, …) and back, as the synergy buttons have them.
+schema = "VRFW.menu/2"
+if_mod = "clean_hud"
+
+[[object]]
+name = "home_stadium_dock_button"
+from = "team00_12_formation_style"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "home_stadium_dock_button", object = "home_stadium_dock_button", count = 1, after = "team00_17_synergy_attachment_button_flag", groups = [{ group = "soccer_team_dock_menu", flags = [0, 1, 0, 0, 1, 0], after = "team00_17_synergy_attachment_button_flag" }], focus = { info = [973515837, 0, 0] } }
+res = ["#/menu/107_vs/vs01/vs01_21/<LG>/vs01_21.g4tx"]
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_cmd = [
+    { layer = "home_stadium_dock_button", input = 1981080283, command = "CMD_ENTER", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+    # UP / DOWN / RIGHT: BetterUI's dock panel moves the cursor (OnFunction betterui_dock_button_up / _down / _right)
+    { layer = "home_stadium_dock_button", input = 1197218715, command = "CMD_FUNCTION", arg = 2122449173, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 3259546669, command = "CMD_FUNCTION", arg = 885050662, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 2075023265, command = "CMD_FUNCTION", arg = 3622053520, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 3966226594, command = "CMD_FUNCTION", arg = 2294853123, arg2 = 2053629800, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 942075773, command = "CMD_FUNCTION", arg = 2294853123, arg2 = 3033167124, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 637335895, command = "CMD_FUNCTION", arg = 3620553157, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 3421673595, command = "CMD_FUNCTION", arg = 4219711668, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 1435897304, command = "CMD_FUNCTION", arg = 3702644710, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 3473063670, command = "CMD_BACK", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+    { layer = "home_stadium_dock_button", input = 3011112225, command = "CMD_BACK", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+]

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01002210"                                   # Joe Ingram
+moves = [
+  { move = 0x94E17324, level = 1 },                         # Tornado Catch
+  { move = 0x5049A011, level = 21 },                        # Spinning Shot
+  { move = 0xF08DB620, level = 48 },                        # Whirlwind
+  { move = 0x4AD6453E, level = 78 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0x99D8D3C7                                         # GK/FW · fire
@@ -15,6 +21,12 @@ target = "c01002210"                                   # Joe Ingram
 
 [[edit]]
 target = "c01002220"                                   # Kendall Sefton
+moves = [
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x259F08C6, level = 16 },                        # Whirlwind Twister
+  { move = 0xA8E0F6C2, level = 43 },                        # Kung Fu Header
+  { move = 0x322F0C40, level = 85 },                        # Spider Web
+]
 
   [[edit.cards]]
   id = 0xB2F58004                                         # DF/FW · wind
@@ -24,6 +36,12 @@ target = "c01002220"                                   # Kendall Sefton
 
 [[edit]]
 target = "c01002230"                                   # Jason Strike
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x06130797, level = 14 },                        # Rolling Kick
+  { move = 0x7EEA4EE9, level = 37 },                        # Blade Attack
+  { move = 0x60397CCA, level = 68 },                        # Cross Drive
+]
 
   [[edit.cards]]
   id = 0xABEEB145                                         # DF/FW · fire
@@ -33,6 +51,12 @@ target = "c01002230"                                   # Jason Strike
 
 [[edit]]
 target = "c01002240"                                   # Norman Porter
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x7CACF0B0, level = 23 },                        # Horn Train
+  { move = 0x7D6E9A87, level = 75 },                        # The Wall
+  { move = 0x58E8FC83, level = 92 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0xE4AF2782                                         # DF/MF · mountain
@@ -42,6 +66,12 @@ target = "c01002240"                                   # Norman Porter
 
 [[edit]]
 target = "c01002250"                                   # Maxwell Claus
+moves = [
+  { move = 0x4F58F805, level = 9 },                         # Coil Turn
+  { move = 0x7EEA4EE9, level = 22 },                        # Blade Attack
+  { move = 0xDEB28A7B, level = 45 },                        # Monkey Turn
+  { move = 0x2B343D01, level = 94 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0xFDB416C3                                         # DF/MF · forest
@@ -51,6 +81,12 @@ target = "c01002250"                                   # Maxwell Claus
 
 [[edit]]
 target = "c01002260"                                   # Bruce Chaney
+moves = [
+  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
+  { move = 0x34256515, level = 24 },                        # Dynamite Shot
+  { move = 0x3663DB4C, level = 41 },                        # Utter Gutsiness Bat
+  { move = 0x4AD6453E, level = 83 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0xD6994500                                         # MF/FW · forest
@@ -60,6 +96,12 @@ target = "c01002260"                                   # Bruce Chaney
 
 [[edit]]
 target = "c01002270"                                   # Leroy Rhymes
+moves = [
+  { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0x0455B9CE, level = 57 },                        # Run Ball Run
+  { move = 0x58E8FC83, level = 87 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0xCF827441                                         # MF/FW · wind
@@ -69,6 +111,12 @@ target = "c01002270"                                   # Leroy Rhymes
 
 [[edit]]
 target = "c01002280"                                   # Mildford Scott
+moves = [
+  { move = 0x01DB04F5, level = 19 },                        # Defence Scan
+  { move = 0x695A4A6F, level = 28 },                        # Magic
+  { move = 0xACAC21CE, level = 39 },                        # Fake Ball
+  { move = 0xC19E2AEE, level = 75 },                        # Pegasus Shot
+]
 
   [[edit.cards]]
   id = 0x481A688E                                         # MF/DF · forest
@@ -78,6 +126,12 @@ target = "c01002280"                                   # Mildford Scott
 
 [[edit]]
 target = "c01002290"                                   # Lou Edmonds
+moves = [
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x5049A011, level = 1 },                         # Spinning Shot
+  { move = 0x41F3CDC2, level = 30 },                        # Scorching Tackle
+  { move = 0x6B1CF436, level = 68 },                        # Bewildered
+]
 
   [[edit.cards]]
   id = 0x510159CF                                         # FW/MF · fire
@@ -88,6 +142,12 @@ target = "c01002290"                                   # Lou Edmonds
 
 [[edit]]
 target = "c01002300"                                   # Cameron Morefield
+moves = [
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x5049A011, level = 10 },                        # Spinning Shot
+  { move = 0x34256515, level = 28 },                        # Dynamite Shot
+  { move = 0x79224D8B, level = 49 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x810188B1                                         # MF/FW · wind
@@ -97,6 +157,12 @@ target = "c01002300"                                   # Cameron Morefield
 
 [[edit]]
 target = "c01002310"                                   # Greg Bernard
+moves = [
+  { move = 0x49529150, level = 1 },                         # Snake Shot
+  { move = 0x01DB04F5, level = 19 },                        # Defence Scan
+  { move = 0xC66BD10D, level = 38 },                        # Zigzag Spark
+  { move = 0xB3BD79DA, level = 64 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0x981AB9F0                                         # FW/MF · forest
@@ -106,6 +172,12 @@ target = "c01002310"                                   # Greg Bernard
 
 [[edit]]
 target = "c01002320"                                   # Peter Banker
+moves = [
+  { move = 0x5049A011, level = 7 },                         # Spinning Shot
+  { move = 0x1F0836D6, level = 21 },                        # Comet Shot
+  { move = 0xAB6422AC, level = 40 },                        # Phantom Shot
+  { move = 0x1ECA5CE1, level = 64 },                        # Wrath Shot
+]
 
   [[edit.cards]]
   id = 0xB337EA33                                         # GK/FW · wind
@@ -115,6 +187,12 @@ target = "c01002320"                                   # Peter Banker
 
 [[edit]]
 target = "c01002330"                                   # Saul Tunk
+moves = [
+  { move = 0xAAA6489B, level = 9 },                         # Spiral Shot
+  { move = 0x0F703132, level = 24 },                        # Black Magic
+  { move = 0x142DBE2A, level = 43 },                        # Foul Offence
+  { move = 0x53CD747F, level = 58 },                        # Tarzan Kick
+]
 
   [[edit.cards]]
   id = 0xAA2CDB72                                         # MF/FW · fire
@@ -124,6 +202,12 @@ target = "c01002330"                                   # Saul Tunk
 
 [[edit]]
 target = "c01002340"                                   # Alan Most
+moves = [
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x166B0073, level = 20 },                        # Super Armadillo
+  { move = 0x65B7C1F1, level = 32 },                        # Sumo Stomp
+  { move = 0x44E1A25A, level = 54 },                        # Pressure Punch
+]
 
   [[edit.cards]]
   id = 0xE56D4DB5                                         # DF/MF · mountain
@@ -133,6 +217,12 @@ target = "c01002340"                                   # Alan Most
 
 [[edit]]
 target = "c01002350"                                   # Paul Caperock
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x8DFA4265, level = 13 },                        # Toughness Block
+  { move = 0x7EEA4EE9, level = 42 },                        # Blade Attack
+  { move = 0x3663DB4C, level = 70 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0xFC767CF4                                         # DF/FW · wind
@@ -142,6 +232,12 @@ target = "c01002350"                                   # Paul Caperock
 
 [[edit]]
 target = "c01002360"                                   # Julius Molehill
+moves = [
+  { move = 0x06130797, level = 1 },                         # Rolling Kick
+  { move = 0x3C843987, level = 17 },                        # Flurry Dash
+  { move = 0x592A96B4, level = 41 },                        # Afterimage
+  { move = 0x4890FB67, level = 73 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0xD75B2F37                                         # DF/MF · wind
@@ -151,6 +247,12 @@ target = "c01002360"                                   # Julius Molehill
 
 [[edit]]
 target = "c11801130"                                   # Clint Loggan
+moves = [
+  { move = 0xB27F13ED, level = 1 },                         # Death Zone
+  { move = 0x1ECA5CE1, level = 13 },                        # Wrath Shot
+  { move = 0xF2CB0879, level = 20 },                        # Mugen the Hand
+  { move = 0xF14FDC17, level = 30 },                        # Shot Pocket
+]
 
   [[edit.cards]]
   id = 0x9BE42201                                         # FW/GK · forest

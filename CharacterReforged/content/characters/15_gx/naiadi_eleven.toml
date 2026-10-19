@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06031610"                                   # Van Tarel
+moves = [
+  { move = 0x4A776F1C, level = 1 },                         # Hydro Breath
+  { move = 0xC79443BB, level = 23 },                        # Waterfall
+  { move = 0x8B31808E, level = 35 },                        # Wormhole
+  { move = 0xE6C22010, level = 51 },                        # Claw de Force
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x50E3FAAC, level = 1 },                         # Tótem Delfinus [aura]
+]
 
   [[edit.cards]]
   id = 0x0E6390AB                                         # GK/DF · forest
@@ -15,6 +26,12 @@ target = "c06031610"                                   # Van Tarel
 
 [[edit]]
 target = "c06031620"                                   # Squalcha Nhess
+moves = [
+  { move = 0xC79443BB, level = 5 },                         # Waterfall
+  { move = 0x039DBAAC, level = 18 },                        # Land of Ice
+  { move = 0x78218C02, level = 36 },                        # Duskfall
+  { move = 0x0F4DC9B3, level = 50 },                        # Logicstical Sync
+]
 
   [[edit.cards]]
   id = 0x254EC368                                         # DF/MF · forest
@@ -25,6 +42,12 @@ target = "c06031620"                                   # Squalcha Nhess
 
 [[edit]]
 target = "c06031630"                                   # Sog Galily
+moves = [
+  { move = 0xC79443BB, level = 8 },                         # Waterfall
+  { move = 0x4A776F1C, level = 24 },                        # Hydro Breath
+  { move = 0x650FA58E, level = 34 },                        # Spin Out
+  { move = 0x4E9A9232, level = 47 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x3C55F229                                         # DF/MF · mountain
@@ -35,6 +58,12 @@ target = "c06031630"                                   # Sog Galily
 
 [[edit]]
 target = "c06031640"                                   # Tinkel Urmia
+moves = [
+  { move = 0x87BC8A8C, level = 1 },                         # Hydro Flow
+  { move = 0xC79443BB, level = 10 },                        # Waterfall
+  { move = 0xFD49C046, level = 32 },                        # Bubble Trouble
+  { move = 0x2354CA2D, level = 43 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x731464EE                                         # MF/DF · wind
@@ -45,6 +74,12 @@ target = "c06031640"                                   # Tinkel Urmia
 
 [[edit]]
 target = "c06031650"                                   # Plink Powai
+moves = [
+  { move = 0x87BC8A8C, level = 1 },                         # Hydro Flow
+  { move = 0xC79443BB, level = 11 },                        # Waterfall
+  { move = 0x7C1494CF, level = 36 },                        # Tornado Tunnel
+  { move = 0xE3D04F88, level = 55 },                        # Jackknife
+]
 
   [[edit.cards]]
   id = 0x6A0F55AF                                         # MF/DF · wind
@@ -54,6 +89,12 @@ target = "c06031650"                                   # Plink Powai
 
 [[edit]]
 target = "c06031660"                                   # Puddel Khaspian
+moves = [
+  { move = 0x87BC8A8C, level = 4 },                         # Hydro Flow
+  { move = 0xFD49C046, level = 17 },                        # Bubble Trouble
+  { move = 0x6DD736DD, level = 31 },                        # Ribbon Shower
+  { move = 0x7DD6FEF8, level = 48 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0x4122066C                                         # MF/FW · forest
@@ -64,6 +105,12 @@ target = "c06031660"                                   # Puddel Khaspian
 
 [[edit]]
 target = "c06031670"                                   # Sploosh Saroma
+moves = [
+  { move = 0x87BC8A8C, level = 5 },                         # Hydro Flow
+  { move = 0xFD49C046, level = 18 },                        # Bubble Trouble
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+  { move = 0x04941270, level = 45 },                        # Vac Attack
+]
 
   [[edit.cards]]
   id = 0x5839372D                                         # MF/DF · wind
@@ -74,6 +121,12 @@ target = "c06031670"                                   # Sploosh Saroma
 
 [[edit]]
 target = "c06031680"                                   # Droplit Turkana
+moves = [
+  { move = 0x87BC8A8C, level = 2 },                         # Hydro Flow
+  { move = 0xFD49C046, level = 8 },                         # Bubble Trouble
+  { move = 0x039DBAAC, level = 33 },                        # Land of Ice
+  { move = 0x6DD736DD, level = 45 },                        # Ribbon Shower
+]
 
   [[edit.cards]]
   id = 0xDFA12BE2                                         # MF/DF · mountain
@@ -84,6 +137,12 @@ target = "c06031680"                                   # Droplit Turkana
 
 [[edit]]
 target = "c06031690"                                   # Plip Batur
+moves = [
+  { move = 0xFD49C046, level = 7 },                         # Bubble Trouble
+  { move = 0xC79443BB, level = 23 },                        # Waterfall
+  { move = 0x7E2BE557, level = 36 },                        # Legendary Wolf
+  { move = 0xCB79C825, level = 47 },                        # In-Line Stampede
+]
 
   [[edit.cards]]
   id = 0xC6BA1AA3                                         # FW/MF · mountain
@@ -93,6 +152,12 @@ target = "c06031690"                                   # Plip Batur
 
 [[edit]]
 target = "c06031700"                                   # Serban Bacha
+moves = [
+  { move = 0xFD49C046, level = 6 },                         # Bubble Trouble
+  { move = 0x87BC8A8C, level = 12 },                        # Hydro Flow
+  { move = 0x828A53C8, level = 32 },                        # Plasma Ball
+  { move = 0xDE4ED944, level = 46 },                        # Snowstorm Leopard
+]
 
   [[edit.cards]]
   id = 0x16BACBDD                                         # FW/MF · wind
@@ -102,6 +167,12 @@ target = "c06031700"                                   # Serban Bacha
 
 [[edit]]
 target = "c06031710"                                   # Plunk Balkhash
+moves = [
+  { move = 0xFD49C046, level = 10 },                        # Bubble Trouble
+  { move = 0xE8F5C774, level = 20 },                        # Megalodon
+  { move = 0xD9BB22A7, level = 35 },                        # Air Ride
+  { move = 0x82788A5A, level = 48 },                        # Straight Counter
+]
 
   [[edit.cards]]
   id = 0x0FA1FA9C                                         # FW/MF · forest
@@ -111,6 +182,17 @@ target = "c06031710"                                   # Plunk Balkhash
 
 [[edit]]
 target = "c06031720"                                   # Rondula Flehl
+moves = [
+  { move = 0xE3D04F88, level = 5 },                         # Jackknife
+  { move = 0x0D368F6B, level = 26 },                        # Heaven's Time
+  { move = 0xB501FE5D, level = 39 },                        # Holy Roller
+  { move = 0xC42D6F54, level = 54 },                        # Aikido
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x6C7554B7, level = 1 },                         # Tótem Fenikias [aura]
+]
 
   [[edit.cards]]
   id = 0x248CA95F                                         # MF/FW · wind
@@ -121,6 +203,12 @@ target = "c06031720"                                   # Rondula Flehl
 
 [[edit]]
 target = "c11806050"                                   # Porco Umir
+moves = [
+  { move = 0xC16279D1, level = 1 },                         # Field of Force
+  { move = 0x70417B2E, level = 13 },                        # Deceptor Dribble
+  { move = 0xDD6B2708, level = 20 },                        # Majin the Hand
+  { move = 0x91AE65A1, level = 30 },                        # Giant Spider
+]
 
   [[edit.cards]]
   id = 0x51ABD709                                         # MF/GK · forest

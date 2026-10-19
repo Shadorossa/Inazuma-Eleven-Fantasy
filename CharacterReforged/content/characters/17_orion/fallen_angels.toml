@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08030010"                                   # Serge Atanas
+moves = [
+  { move = 0xC6978232, level = 1 },                         # Dinosaur Roar
+  { move = 0x7748D3F2, level = 13 },                        # Devil Ball
+  { move = 0x087999EE, level = 20 },                        # Heel Drop
+  { move = 0x6B97E265, level = 30 },                        # Bull Rush
+]
 
   [[edit.cards]]
   id = 0xE26DF021                                         # FW/MF · wind
@@ -16,6 +22,12 @@ target = "c08030010"                                   # Serge Atanas
 
 [[edit]]
 target = "c08030020"                                   # Aster Roth
+moves = [
+  { move = 0xC6978232, level = 1 },                         # Dinosaur Roar
+  { move = 0xE29933EC, level = 13 },                        # Dimensional Deluge
+  { move = 0x132416F6, level = 20 },                        # Dog Run
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0xC940A3E2                                         # FW/DF · mountain
@@ -25,6 +37,12 @@ target = "c08030020"                                   # Aster Roth
 
 [[edit]]
 target = "c08030030"                                   # Seth Bael
+moves = [
+  { move = 0x42FC0FFF, level = 1 },                         # Time Trance
+  { move = 0xE29933EC, level = 1 },                         # Dimensional Deluge
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0xD05B92A3                                         # MF/FW · mountain
@@ -34,6 +52,12 @@ target = "c08030030"                                   # Seth Bael
 
 [[edit]]
 target = "c08030031"                                   # Seth Bael
+moves = [
+  { move = 0x42FC0FFF, level = 1 },                         # Time Trance
+  { move = 0xE29933EC, level = 1 },                         # Dimensional Deluge
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0xA75CA235                                         # MF/FW · mountain
@@ -43,6 +67,17 @@ target = "c08030031"                                   # Seth Bael
 
 [[edit]]
 target = "c08030032"                                   # Seth Bael
+moves = [
+  { move = 0x42FC0FFF, level = 1 },                         # Time Trance
+  { move = 0xE29933EC, level = 1 },                         # Dimensional Deluge
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xE820D133, level = 1 },                         # Modo Santurrón [aura]
+]
 
   [[edit.cards]]
   id = 0x3E55F38F                                         # MF/FW · mountain
@@ -53,6 +88,12 @@ target = "c08030032"                                   # Seth Bael
 
 [[edit]]
 target = "c08030040"                                   # Ian Qubus
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x7748D3F2, level = 13 },                        # Devil Ball
+  { move = 0x132416F6, level = 20 },                        # Dog Run
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x9F1A0464                                         # MF/FW · forest
@@ -62,6 +103,12 @@ target = "c08030040"                                   # Ian Qubus
 
 [[edit]]
 target = "c08030050"                                   # Malik Sinn
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0xC324C788, level = 13 },                        # Blast Mine
+  { move = 0x457EB170, level = 20 },                        # Pyrokinetic
+  { move = 0x06D2AC29, level = 30 },                        # Diabolical Cut
+]
 
   [[edit.cards]]
   id = 0x86013525                                         # MF/DF · mountain
@@ -72,6 +119,12 @@ target = "c08030050"                                   # Malik Sinn
 
 [[edit]]
 target = "c08030060"                                   # Beel Zebub
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x457EB170, level = 13 },                        # Pyrokinetic
+  { move = 0x585098FC, level = 20 },                        # Slice and Dice
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0xAD2C66E6                                         # MF/DF · wind
@@ -82,6 +135,12 @@ target = "c08030060"                                   # Beel Zebub
 
 [[edit]]
 target = "c08030070"                                   # Dante Dusias
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0xCF7FA2C4, level = 13 },                        # Gold Rush
+  { move = 0x1D8F2331, level = 20 },                        # Yo-Yo Ball
+  { move = 0x6BA49049, level = 30 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0xB43757A7                                         # DF/MF · mountain
@@ -91,6 +150,12 @@ target = "c08030070"                                   # Dante Dusias
 
 [[edit]]
 target = "c08030080"                                   # Mortam Malius
+moves = [
+  { move = 0x93885A64, level = 1 },                         # Fire Drill
+  { move = 0x457EB170, level = 13 },                        # Pyrokinetic
+  { move = 0x10A0C298, level = 20 },                        # Warp Drive
+  { move = 0x025FD09B, level = 30 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0x33AF4B68                                         # DF/MF · fire
@@ -101,6 +166,12 @@ target = "c08030080"                                   # Mortam Malius
 
 [[edit]]
 target = "c08030090"                                   # Damon Gorgon
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x5781A373, level = 13 },                        # Hurricane Arrows
+  { move = 0x1D8F2331, level = 20 },                        # Yo-Yo Ball
+  { move = 0x67F17FA8, level = 30 },                        # Mega Quake
+]
 
   [[edit.cards]]
   id = 0x2AB47A29                                         # DF/FW · wind
@@ -110,6 +181,12 @@ target = "c08030090"                                   # Damon Gorgon
 
 [[edit]]
 target = "c08030100"                                   # Carlam Buer
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0x029E7B25, level = 30 },                        # Gaia Break
+]
 
   [[edit.cards]]
   id = 0xFAB4AB57                                         # DF/FW · mountain
@@ -119,6 +196,12 @@ target = "c08030100"                                   # Carlam Buer
 
 [[edit]]
 target = "c08030110"                                   # Pazuza Ross
+moves = [
+  { move = 0x2FD9C02F, level = 1 },                         # Bastion Block
+  { move = 0x5465F681, level = 13 },                        # Raiser Blade
+  { move = 0x34844F37, level = 20 },                        # White Hole
+  { move = 0xC5B27C7E, level = 30 },                        # Storm Rider
+]
 
   [[edit.cards]]
   id = 0xE3AF9A16                                         # GK/FW · fire
@@ -129,6 +212,12 @@ target = "c08030110"                                   # Pazuza Ross
 
 [[edit]]
 target = "c08030120"                                   # Lu Jiver
+moves = [
+  { move = 0x44BCDB47, level = 1 },                         # Pyroclastic
+  { move = 0xA2BF7076, level = 13 },                        # Side Swipe
+  { move = 0xC0A013E6, level = 20 },                        # Liar Shot
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0xC882C9D5                                         # MF/DF · forest
@@ -138,6 +227,12 @@ target = "c08030120"                                   # Lu Jiver
 
 [[edit]]
 target = "c08030130"                                   # Zagan Barbatos
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x5781A373, level = 20 },                        # Hurricane Arrows
+  { move = 0x15138722, level = 30 },                        # Will-o'-the-Wisp Shot
+]
 
   [[edit.cards]]
   id = 0xD199F894                                         # MF/FW · mountain
@@ -147,6 +242,12 @@ target = "c08030130"                                   # Zagan Barbatos
 
 [[edit]]
 target = "c11808020"                                   # Grant Grimoire
+moves = [
+  { move = 0x1D8F2331, level = 1 },                         # Yo-Yo Ball
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0xE29933EC, level = 20 },                        # Dimensional Deluge
+  { move = 0x585098FC, level = 30 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0xFE3536FD                                         # DF/FW · wind
@@ -156,6 +257,12 @@ target = "c11808020"                                   # Grant Grimoire
 
 [[edit]]
 target = "c11808030"                                   # Baz Azel
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0x2FD9C02F, level = 20 },                        # Bastion Block
+  { move = 0x34844F37, level = 30 },                        # White Hole
+]
 
   [[edit.cards]]
   id = 0xE72E07BC                                         # GK/DF · mountain

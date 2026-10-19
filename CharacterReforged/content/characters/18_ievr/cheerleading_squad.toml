@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700610"                                   # Montgomery Marchand
+moves = [
+  { move = 0x53E9C2A3, level = 1 },                         # Capable Hands
+  { move = 0xFF5C8DAF, level = 13 },                        # Shot Stopper
+  { move = 0x05567847, level = 20 },                        # Runaway Train
+  { move = 0xA2BF7076, level = 30 },                        # Side Swipe
+]
 
   [[edit.cards]]
   id = 0xE57783B6                                         # GK/DF · fire
@@ -16,6 +22,12 @@ target = "c11700610"                                   # Montgomery Marchand
 
 [[edit]]
 target = "c11700720"                                   # Elmer Trommel
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0xF26A225B, level = 13 },                        # RC Shot
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0xB3BD79DA, level = 30 },                        # Patriot Shot
+]
 
   [[edit.cards]]
   id = 0xCF98BA42                                         # MF/FW · fire

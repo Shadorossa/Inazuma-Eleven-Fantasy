@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08080010"                                   # Hellion
+moves = [
+  { move = 0x4DDFEDE2, level = 1 },                         # Eagle Buster
+  { move = 0x53CD747F, level = 13 },                        # Tarzan Kick
+  { move = 0xEEFFAE21, level = 20 },                        # Jungle Jam
+  { move = 0xA0CABC03, level = 30 },                        # Cannonball
+]
 
   [[edit.cards]]
   id = 0x95BDC130                                         # FW/DF · mountain
@@ -16,6 +22,12 @@ target = "c08080010"                                   # Hellion
 
 [[edit]]
 target = "c08080020"                                   # Moai
+moves = [
+  { move = 0x4DDFEDE2, level = 1 },                         # Eagle Buster
+  { move = 0xA0CABC03, level = 13 },                        # Cannonball
+  { move = 0xEEFFAE21, level = 20 },                        # Jungle Jam
+  { move = 0xB37CD264, level = 30 },                        # Am-Bush
+]
 
   [[edit.cards]]
   id = 0xBE9092F3                                         # FW/DF · forest
@@ -26,6 +38,12 @@ target = "c08080020"                                   # Moai
 
 [[edit]]
 target = "c08080030"                                   # Mop
+moves = [
+  { move = 0xA0CABC03, level = 1 },                         # Cannonball
+  { move = 0xEEFFAE21, level = 13 },                        # Jungle Jam
+  { move = 0x695A4A6F, level = 20 },                        # Magic
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+]
 
   [[edit.cards]]
   id = 0xA78BA3B2                                         # MF/DF · forest
@@ -36,6 +54,12 @@ target = "c08080030"                                   # Mop
 
 [[edit]]
 target = "c08080040"                                   # Yoga
+moves = [
+  { move = 0xC7A9BB3A, level = 1 },                         # Whirlwind Cut
+  { move = 0xA0CABC03, level = 13 },                        # Cannonball
+  { move = 0x695A4A6F, level = 20 },                        # Magic
+  { move = 0x8C990270, level = 30 },                        # Gunshot
+]
 
   [[edit.cards]]
   id = 0xE8CA3575                                         # MF/FW · wind
@@ -45,6 +69,12 @@ target = "c08080040"                                   # Yoga
 
 [[edit]]
 target = "c08080050"                                   # Cobra
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0xA0CABC03, level = 13 },                        # Cannonball
+  { move = 0xDD365E15, level = 20 },                        # Mole Shuffle
+  { move = 0x322F0C40, level = 30 },                        # Spider Web
+]
 
   [[edit.cards]]
   id = 0xF1D10434                                         # DF/FW · mountain
@@ -54,6 +84,12 @@ target = "c08080050"                                   # Cobra
 
 [[edit]]
 target = "c08080060"                                   # Hunter
+moves = [
+  { move = 0x4A17EE80, level = 1 },                         # Hunter's Net
+  { move = 0xDD365E15, level = 13 },                        # Mole Shuffle
+  { move = 0xA0CABC03, level = 20 },                        # Cannonball
+  { move = 0xE937AD43, level = 30 },                        # Dragon Slayer
+]
 
   [[edit.cards]]
   id = 0xDAFC57F7                                         # DF/FW · forest
@@ -63,6 +99,12 @@ target = "c08080060"                                   # Hunter
 
 [[edit]]
 target = "c08080070"                                   # Judge
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0xAD6E4BF9, level = 13 },                        # Harvest
+  { move = 0x0A3F27B7, level = 20 },                        # Foul Offence 3
+  { move = 0x142DBE2A, level = 30 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0xC3E766B6                                         # DF/MF · fire
@@ -72,6 +114,12 @@ target = "c08080070"                                   # Judge
 
 [[edit]]
 target = "c08080080"                                   # Smokestack
+moves = [
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0x7EEA4EE9, level = 13 },                        # Blade Attack
+  { move = 0xA0CABC03, level = 20 },                        # Cannonball
+  { move = 0x4D1E465C, level = 30 },                        # Fake Bomber
+]
 
   [[edit.cards]]
   id = 0x447F7A79                                         # DF/FW · wind
@@ -82,6 +130,12 @@ target = "c08080080"                                   # Smokestack
 
 [[edit]]
 target = "c08080090"                                   # Scuba
+moves = [
+  { move = 0x1C4D4906, level = 1 },                         # Whirlpool
+  { move = 0x46FA651E, level = 13 },                        # Water Veil
+  { move = 0xB2BEB853, level = 20 },                        # Whale Guard
+  { move = 0xA0CABC03, level = 30 },                        # Cannonball
+]
 
   [[edit.cards]]
   id = 0x5D644B38                                         # DF/FW · wind
@@ -92,6 +146,12 @@ target = "c08080090"                                   # Scuba
 
 [[edit]]
 target = "c08080100"                                   # Charmer
+moves = [
+  { move = 0x52CEB5F6, level = 1 },                         # Iron Wall
+  { move = 0x7EEA4EE9, level = 13 },                        # Blade Attack
+  { move = 0xA0CABC03, level = 20 },                        # Cannonball
+  { move = 0x0D368F6B, level = 30 },                        # Heaven's Time
+]
 
   [[edit.cards]]
   id = 0x8D649A46                                         # DF/FW · mountain
@@ -101,6 +161,12 @@ target = "c08080100"                                   # Charmer
 
 [[edit]]
 target = "c08080110"                                   # Bigman
+moves = [
+  { move = 0x023F5107, level = 1 },                         # Aegis Protocol
+  { move = 0xECD991E4, level = 13 },                        # The Stinger
+  { move = 0xB907E20C, level = 20 },                        # Procyon Net
+  { move = 0x4523C86D, level = 30 },                        # Killer Blade
+]
 
   [[edit.cards]]
   id = 0x947FAB07                                         # GK/MF · forest
@@ -110,6 +176,12 @@ target = "c08080110"                                   # Bigman
 
 [[edit]]
 target = "c08080120"                                   # Switch
+moves = [
+  { move = 0xA0CABC03, level = 1 },                         # Cannonball
+  { move = 0xC6978232, level = 13 },                        # Dinosaur Roar
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0xACAC21CE, level = 30 },                        # Fake Ball
+]
 
   [[edit.cards]]
   id = 0xBF52F8C4                                         # FW/MF · mountain
@@ -119,6 +191,12 @@ target = "c08080120"                                   # Switch
 
 [[edit]]
 target = "c08080130"                                   # Wizard
+moves = [
+  { move = 0xA0CABC03, level = 1 },                         # Cannonball
+  { move = 0x695A4A6F, level = 13 },                        # Magic
+  { move = 0xDDCA0D2A, level = 20 },                        # Bouncing Bomb
+  { move = 0x36C2F16E, level = 30 },                        # Dark Reversal
+]
 
   [[edit.cards]]
   id = 0xA649C985                                         # MF/GK · fire
@@ -129,6 +207,12 @@ target = "c08080130"                                   # Wizard
 
 [[edit]]
 target = "c08080140"                                   # Howler
+moves = [
+  { move = 0x91AE65A1, level = 1 },                         # Giant Spider
+  { move = 0xBC48F489, level = 13 },                        # Claw Slash
+  { move = 0xA0CABC03, level = 20 },                        # Cannonball
+  { move = 0xDBA0E5E3, level = 30 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0xE9085F42                                         # GK/FW · forest
@@ -138,6 +222,12 @@ target = "c08080140"                                   # Howler
 
 [[edit]]
 target = "c11808100"                                   # René Gadé
+moves = [
+  { move = 0xA0CABC03, level = 1 },                         # Cannonball
+  { move = 0x38094535, level = 13 },                        # Sub-Terfuge
+  { move = 0x119EFB90, level = 20 },                        # Doom Rain
+  { move = 0x332CCDC9, level = 30 },                        # Heel Kick
+]
 
   [[edit.cards]]
   id = 0xCDC13E48                                         # FW/GK · wind

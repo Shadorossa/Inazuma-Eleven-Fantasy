@@ -15,6 +15,12 @@ target = "c05020700_5000"                              # Beta
 
 [[edit]]
 target = "c05020630"                                   # Kilo
+moves = [
+  { move = 0xDCC9CCA3, level = 1 },                         # Tesla Coil
+  { move = 0x457EB170, level = 21 },                        # Pyrokinetic
+  { move = 0x650FA58E, level = 32 },                        # Spin Out
+  { move = 0xF7E49F60, level = 49 },                        # Magnetism
+]
 
   [[edit.cards]]
   id = 0x8861A661                                         # DF/MF · forest
@@ -25,6 +31,12 @@ target = "c05020630"                                   # Kilo
 
 [[edit]]
 target = "c05020650"                                   # Foxtrot
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0x457EB170, level = 21 },                        # Pyrokinetic
+  { move = 0xA4B51923, level = 37 },                        # The Typhoon
+  { move = 0x1C4D4906, level = 52 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xDE3B01E7                                         # MF/DF · wind
@@ -35,6 +47,12 @@ target = "c05020650"                                   # Foxtrot
 
 [[edit]]
 target = "c05020680"                                   # November
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0x585098FC, level = 21 },                        # Slice and Dice
+  { move = 0x43B5739B, level = 38 },                        # Lightning Bolt
+  { move = 0x86F5F6E8, level = 53 },                        # Cupid's Arrow
+]
 
   [[edit.cards]]
   id = 0x6B957FAA                                         # MF/DF · fire
@@ -49,15 +67,15 @@ rank = 3
 growth = "normal"
 stats = { kick = 333, control = 265, technique = 252, pressure = 186, physical = 184, intelligence = 232, agility = 182, freedom = 335 }
 moves = [
-  { move = 0x05124F07, level = 6 },                       # Fission and Fusion
-  { move = 0x650FA58E, level = 22 },                      # Spin Out
-  { move = 0xB0BC314A, level = 46 },                      # Spin Meister
-  { move = 0x1BF20F08, level = 71 },                      # Omega Assault
-  { move = 0, level = 0 },                                # (empty)
-  { move = 0, level = 0 },                                # (empty)
-  { move = 0, level = 0 },                                # (empty)
-  { move = 0, level = 0 },                                # (empty)
-  { move = 0x64EEAC09, level = 1 },                       # Athene [aura]
+  { move = 0x05124F07, level = 1 },                         # Fission and Fusion
+  { move = 0x650FA58E, level = 19 },                        # Spin Out
+  { move = 0x518BCA26, level = 46 },                        # Fire Tornado
+  { move = 0x1BF20F08, level = 68 },                        # Omega Assault
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x64EEAC09, level = 1 },                         # Atenea [aura]
 ]
 
 [[edit]]
@@ -65,3 +83,23 @@ target = "c11905050"                                   # Beta
 rank = 3
 growth = "normal"
 stats = { kick = 290, control = 259, technique = 250, pressure = 209, physical = 170, intelligence = 236, agility = 188, freedom = 255 }
+moves = [
+  { move = 0x05124F07, level = 1 },                         # Fission and Fusion
+  { move = 0x650FA58E, level = 19 },                        # Spin Out
+  { move = 0x518BCA26, level = 46 },                        # Fire Tornado
+  { move = 0x1BF20F08, level = 68 },                        # Omega Assault
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x64EEAC09, level = 1 },                         # Atenea [aura]
+]
+
+  [[edit.cards]]
+  id = 0xB0069AEE    # this card's moveset differs from the list above
+  moves = [
+    { move = 0x05124F07, level = 1 },                       # Fission and Fusion
+    { move = 0x650FA58E, level = 19 },                      # Spin Out
+    { move = 0x518BCA26, level = 46 },                      # Fire Tornado
+    { move = 0x1BF20F08, level = 68 },                      # Omega Assault
+  ]

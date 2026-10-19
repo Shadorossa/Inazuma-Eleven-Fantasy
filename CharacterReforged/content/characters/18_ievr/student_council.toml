@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11740010"                                   # Puffet Vearn
+moves = [
+  { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0x36A270F2, level = 20 },                        # Rolling Slide
+  { move = 0xB7474004, level = 30 },                        # Dough Ray Me
+]
 
   [[edit.cards]]
   id = 0x147A59C4                                         # DF/FW · fire
@@ -15,6 +21,12 @@ target = "c11740010"                                   # Puffet Vearn
 
 [[edit]]
 target = "c11740020"                                   # Glorian Flaunt
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x5E5AF1A9, level = 13 },                        # Northern Impact
+  { move = 0x4AD6453E, level = 20 },                        # Back Tornado
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x3F570A07                                         # FW/MF · wind

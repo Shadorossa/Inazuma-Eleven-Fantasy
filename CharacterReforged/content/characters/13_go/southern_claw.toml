@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04015210"                                   # Xavier Shotwell
+moves = [
+  { move = 0xF2CB0879, level = 28 },                        # Mugen the Hand
+  { move = 0xED1BFBD3, level = 46 },                        # Fingers of Gaia
+  { move = 0xA0BDF96F, level = 55 },                        # Ballista Barrage
+  { move = 0xD471DE6C, level = 62 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0x6B57ED69                                         # GK/FW · forest
@@ -15,6 +21,12 @@ target = "c04015210"                                   # Xavier Shotwell
 
 [[edit]]
 target = "c04015220"                                   # Crimson Wiseman
+moves = [
+  { move = 0x39CB2F02, level = 23 },                        # Dragster
+  { move = 0xF4604B0E, level = 30 },                        # Fancy-Footwork
+  { move = 0x1C4D4906, level = 35 },                        # Whirlpool
+  { move = 0x6BA49049, level = 48 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x407ABEAA                                         # DF/MF · wind
@@ -24,6 +36,12 @@ target = "c04015220"                                   # Crimson Wiseman
 
 [[edit]]
 target = "c04015230"                                   # Linden Haregrove
+moves = [
+  { move = 0x4E22F64D, level = 18 },                        # Transporter Device
+  { move = 0x20D01E43, level = 26 },                        # Hey Presto
+  { move = 0x530CDFC1, level = 31 },                        # Mystifying Mist
+  { move = 0x039DBAAC, level = 48 },                        # Land of Ice
+]
 
   [[edit.cards]]
   id = 0x59618FEB                                         # DF/MF · forest
@@ -33,6 +51,12 @@ target = "c04015230"                                   # Linden Haregrove
 
 [[edit]]
 target = "c04015240"                                   # Jared Dapplegrey
+moves = [
+  { move = 0xB01D1B68, level = 19 },                        # Power Spike
+  { move = 0x737DCB3F, level = 30 },                        # Pancake Defence
+  { move = 0x585098FC, level = 39 },                        # Slice and Dice
+  { move = 0x62BE692D, level = 44 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x1620192C                                         # DF/GK · fire
@@ -42,6 +66,12 @@ target = "c04015240"                                   # Jared Dapplegrey
 
 [[edit]]
 target = "c04015250"                                   # Keith Wellington
+moves = [
+  { move = 0x05567847, level = 15 },                        # Runaway Train
+  { move = 0xEFFC6FA8, level = 34 },                        # Warhead
+  { move = 0x585098FC, level = 39 },                        # Slice and Dice
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x0F3B286D                                         # DF/MF · wind
@@ -52,6 +82,12 @@ target = "c04015250"                                   # Keith Wellington
 
 [[edit]]
 target = "c04015260"                                   # Cirrus Whisp
+moves = [
+  { move = 0xC324C788, level = 27 },                        # Blast Mine
+  { move = 0x56FBAD3B, level = 35 },                        # Seal Matrix
+  { move = 0x2B8C597E, level = 53 },                        # Fugue Wave
+  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0x24167BAE                                         # MF/DF · forest
@@ -62,6 +98,12 @@ target = "c04015260"                                   # Cirrus Whisp
 
 [[edit]]
 target = "c04015270"                                   # Gamal Everlast
+moves = [
+  { move = 0x2A4E3349, level = 13 },                        # Heart Beat
+  { move = 0xAF150D21, level = 30 },                        # Swallow Counter
+  { move = 0xC324C788, level = 39 },                        # Blast Mine
+  { move = 0x65766A4F, level = 58 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x3D0D4AEF                                         # MF/FW · fire
@@ -72,6 +114,12 @@ target = "c04015270"                                   # Gamal Everlast
 
 [[edit]]
 target = "c04015280"                                   # Sandy Dryhill
+moves = [
+  { move = 0x585098FC, level = 27 },                        # Slice and Dice
+  { move = 0xDBFD9CFE, level = 46 },                        # Big Ball Trick
+  { move = 0x2B8C597E, level = 53 },                        # Fugue Wave
+  { move = 0x1755397B, level = 82 },                        # Dark Energy Star
+]
 
   [[edit.cards]]
   id = 0xBA955620                                         # MF/DF · mountain
@@ -82,6 +130,12 @@ target = "c04015280"                                   # Sandy Dryhill
 
 [[edit]]
 target = "c04015290"                                   # Dryden Zephyr
+moves = [
+  { move = 0x141046AB, level = 13 },                        # Overnight Fortress
+  { move = 0xDA3FF6C9, level = 26 },                        # Criss-Cross
+  { move = 0x15138722, level = 51 },                        # Will-o'-the-Wisp Shot
+  { move = 0x2B8C597E, level = 58 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0xA38E6761                                         # MF/DF · mountain
@@ -92,6 +146,12 @@ target = "c04015290"                                   # Dryden Zephyr
 
 [[edit]]
 target = "c04015300"                                   # Solomon Roundhay
+moves = [
+  { move = 0x20D01E43, level = 19 },                        # Hey Presto
+  { move = 0x4FE09C7A, level = 38 },                        # Acrobatic Keep
+  { move = 0x6ADE9E01, level = 47 },                        # Illusory Ball
+  { move = 0x15138722, level = 56 },                        # Will-o'-the-Wisp Shot
+]
 
   [[edit.cards]]
   id = 0x738EB61F                                         # FW/MF · wind
@@ -101,6 +161,12 @@ target = "c04015300"                                   # Solomon Roundhay
 
 [[edit]]
 target = "c04015310"                                   # Harry Dwind
+moves = [
+  { move = 0xDA3FF6C9, level = 19 },                        # Criss-Cross
+  { move = 0xBBE07677, level = 30 },                        # Sidewinder
+  { move = 0xC324C788, level = 39 },                        # Blast Mine
+  { move = 0x15138722, level = 56 },                        # Will-o'-the-Wisp Shot
+]
 
   [[edit.cards]]
   id = 0x6A95875E                                         # FW/MF · forest

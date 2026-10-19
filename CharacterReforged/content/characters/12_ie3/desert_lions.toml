@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03030410"                                   # Nasir Mustafa
+moves = [
+  { move = 0xC5B27C7E, level = 1 },                         # Storm Rider
+  { move = 0x7CACF0B0, level = 13 },                        # Horn Train
+  { move = 0x7BC5D9F0, level = 35 },                        # Rotary Sander
+  { move = 0xC379BE95, level = 49 },                        # Counter Strike
+]
+VRFW.MoveGrades = [
+  { Move = 0xC5B27C7E, Grade = 1 },                         # Storm Rider
+]
 
   [[edit.cards]]
   id = 0xE7630C07                                         # GK/DF · fire
@@ -15,6 +24,12 @@ target = "c03030410"                                   # Nasir Mustafa
 
 [[edit]]
 target = "c03030420"                                   # Faraz Farooq
+moves = [
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0x6B1CF436, level = 8 },                         # Bewildered
+  { move = 0x70417B2E, level = 28 },                        # Deceptor Dribble
+  { move = 0x4BD584B7, level = 63 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0xCC4E5FC4                                         # DF/MF · forest
@@ -25,6 +40,20 @@ target = "c03030420"                                   # Faraz Farooq
 
 [[edit]]
 target = "c03030430"                                   # Bilal Kalil
+moves = [
+  { move = 0x121A2FFE, level = 1 },                         # Mirage Shot
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0xBBE07677, level = 1 },                         # Sidewinder
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x03204C39, level = 1 },                         # Modo León Salvaje [aura]
+]
+VRFW.MoveGrades = [
+  { Move = 0xAA67E325, Grade = 1 },                         # Desert Blast
+]
 
   [[edit.cards]]
   id = 0xD5556E85                                         # DF/FW · forest
@@ -35,6 +64,12 @@ target = "c03030430"                                   # Bilal Kalil
 
 [[edit]]
 target = "c03030440"                                   # Jamila Wali
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
+  { move = 0x142DBE2A, level = 22 },                        # Foul Offence
+  { move = 0x60397CCA, level = 34 },                        # Cross Drive
+]
 
   [[edit.cards]]
   id = 0x9A14F842                                         # DF/MF · mountain
@@ -45,6 +80,12 @@ target = "c03030440"                                   # Jamila Wali
 
 [[edit]]
 target = "c03030450"                                   # Musa Sylla
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x7D6E9A87, level = 16 },                        # The Wall
+  { move = 0x6B1CF436, level = 31 },                        # Bewildered
+  { move = 0xDBA0E5E3, level = 55 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0x830FC903                                         # DF/MF · forest
@@ -55,6 +96,12 @@ target = "c03030450"                                   # Musa Sylla
 
 [[edit]]
 target = "c03030460"                                   # Yusuf Massoud
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x695A4A6F, level = 7 },                         # Magic
+  { move = 0x7B64F3D2, level = 28 },                        # Hawk Shot
+  { move = 0x43B5739B, level = 48 },                        # Lightning Bolt
+]
 
   [[edit.cards]]
   id = 0xA8229AC0                                         # MF/FW · wind
@@ -64,6 +111,12 @@ target = "c03030460"                                   # Yusuf Massoud
 
 [[edit]]
 target = "c03030470"                                   # Sulayk Sulaiman
+moves = [
+  { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
+  { move = 0xACAC21CE, level = 13 },                        # Fake Ball
+  { move = 0x17A96A44, level = 50 },                        # Clone Faker
+  { move = 0x1A868BED, level = 67 },                        # Clone Defence
+]
 
   [[edit.cards]]
   id = 0xB139AB81                                         # MF/DF · wind
@@ -73,6 +126,12 @@ target = "c03030470"                                   # Sulayk Sulaiman
 
 [[edit]]
 target = "c03030480"                                   # Sayid Armand
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0x4BD584B7, level = 52 },                        # Power Charge
+  { move = 0x71831119, level = 65 },                        # Foul Offence 2
+]
 
   [[edit.cards]]
   id = 0x36A1B74E                                         # MF/DF · wind
@@ -82,6 +141,12 @@ target = "c03030480"                                   # Sayid Armand
 
 [[edit]]
 target = "c03030490"                                   # Mansur Jasim
+moves = [
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0x2EBA803A, level = 20 },                        # Dirt Ball
+  { move = 0x71831119, level = 42 },                        # Foul Offence 2
+  { move = 0x485150D9, level = 57 },                        # Body Shield
+]
 
   [[edit.cards]]
   id = 0x2FBA860F                                         # MF/DF · mountain
@@ -91,6 +156,15 @@ target = "c03030490"                                   # Mansur Jasim
 
 [[edit]]
 target = "c03030500"                                   # Zack Abdulla
+moves = [
+  { move = 0x121A2FFE, level = 1 },                         # Mirage Shot
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x34256515, level = 20 },                        # Dynamite Shot
+  { move = 0x9765A74A, level = 53 },                        # Beast Fang
+]
+VRFW.MoveGrades = [
+  { Move = 0x121A2FFE, Grade = 1 },                         # Mirage Shot
+]
 
   [[edit.cards]]
   id = 0xFFBA5771                                         # FW/DF · fire
@@ -100,6 +174,12 @@ target = "c03030500"                                   # Zack Abdulla
 
 [[edit]]
 target = "c03030510"                                   # Majdi Ismail
+moves = [
+  { move = 0x0455B9CE, level = 6 },                         # Run Ball Run
+  { move = 0x121A2FFE, level = 8 },                         # Mirage Shot
+  { move = 0xC2BBD4A2, level = 24 },                        # Wild Claw
+  { move = 0x7C6D5B0E, level = 43 },                        # Astro Break
+]
 
   [[edit.cards]]
   id = 0xE6A16630                                         # FW/GK · forest
@@ -109,6 +189,12 @@ target = "c03030510"                                   # Majdi Ismail
 
 [[edit]]
 target = "c03030520"                                   # Talal Hamad
+moves = [
+  { move = 0xC5B27C7E, level = 1 },                         # Storm Rider
+  { move = 0x94E17324, level = 15 },                        # Tornado Catch
+  { move = 0xF08DB620, level = 20 },                        # Whirlwind
+  { move = 0x4BD584B7, level = 58 },                        # Power Charge
+]
 
   [[edit.cards]]
   id = 0xCD8C35F3                                         # GK/DF · mountain
@@ -118,6 +204,12 @@ target = "c03030520"                                   # Talal Hamad
 
 [[edit]]
 target = "c03030530"                                   # Hasan Ahmed
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x33ED6677, level = 20 },                        # Doppelganger
+  { move = 0x132416F6, level = 32 },                        # Dog Run
+  { move = 0x00D8C57C, level = 62 },                        # Fireball Storm
+]
 
   [[edit.cards]]
   id = 0xD49704B2                                         # DF/MF · fire
@@ -128,6 +220,12 @@ target = "c03030530"                                   # Hasan Ahmed
 
 [[edit]]
 target = "c03030540"                                   # Khalfan Jibril
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0xB7F1AED6, level = 20 },                        # Double Cyclone
+  { move = 0x142DBE2A, level = 30 },                        # Foul Offence
+  { move = 0x637C031A, level = 60 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0x9BD69275                                         # DF/MF · forest
@@ -137,6 +235,12 @@ target = "c03030540"                                   # Khalfan Jibril
 
 [[edit]]
 target = "c03030550"                                   # Rajab Ismail
+moves = [
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0x627FC293, level = 18 },                        # Meteor Attack
+  { move = 0xB3BD79DA, level = 27 },                        # Patriot Shot
+  { move = 0xADAFE047, level = 62 },                        # Dual Strike
+]
 
   [[edit.cards]]
   id = 0x82CDA334                                         # MF/FW · fire
@@ -146,6 +250,12 @@ target = "c03030550"                                   # Rajab Ismail
 
 [[edit]]
 target = "c03030560"                                   # Adel Siddique
+moves = [
+  { move = 0x121A2FFE, level = 1 },                         # Mirage Shot
+  { move = 0x34256515, level = 8 },                         # Dynamite Shot
+  { move = 0x6B1CF436, level = 33 },                        # Bewildered
+  { move = 0x28B0E96F, level = 57 },                        # Heavy Mettle
+]
 
   [[edit.cards]]
   id = 0xA9E0F0F7                                         # FW/DF · mountain
@@ -155,6 +265,12 @@ target = "c03030560"                                   # Adel Siddique
 
 [[edit]]
 target = "c11803020"                                   # Eliza Mannan
+moves = [
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x6C6C932B, level = 13 },                        # Megaton Head
+  { move = 0x166B0073, level = 20 },                        # Super Armadillo
+  { move = 0x5E233E68, level = 30 },                        # Super Elastico
+]
 
   [[edit.cards]]
   id = 0x2934B1FC                                         # MF/FW · mountain
@@ -164,6 +280,15 @@ target = "c11803020"                                   # Eliza Mannan
 
 [[edit]]
 target = "c11903050"                                   # Bilal Kalil
+moves = [
+  { move = 0x121A2FFE, level = 1 },                         # Mirage Shot
+  { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0xBBE07677, level = 1 },                         # Sidewinder
+]
+VRFW.MoveGrades = [
+  { Move = 0xAA67E325, Grade = 1 },                         # Desert Blast
+]
 
   [[edit.cards]]
   id = 0xAD29F49E                                         # DF/MF · forest

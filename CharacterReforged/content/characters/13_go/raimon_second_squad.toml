@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04000210"                                   # Montaña Tábano
+moves = [
+  { move = 0x58B5859E, level = 12 },                        # Whip Crack
+  { move = 0xE4849E49, level = 15 },                        # Wild Dunk
+  { move = 0xF400CA92, level = 25 },                        # Anchors Aweigh
+  { move = 0xED1BFBD3, level = 56 },                        # Fingers of Gaia
+]
 
   [[edit.cards]]
   id = 0x61E934EB                                         # GK/MF · wind
@@ -15,6 +21,12 @@ target = "c04000210"                                   # Montaña Tábano
 
 [[edit]]
 target = "c04000220"                                   # Tom Gato
+moves = [
+  { move = 0x5739C70C, level = 8 },                         # Guided Collide
+  { move = 0x20D01E43, level = 26 },                        # Hey Presto
+  { move = 0x4A17EE80, level = 39 },                        # Hunter's Net
+  { move = 0x62BE692D, level = 44 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x4AC46728                                         # DF/MF · forest
@@ -25,6 +37,12 @@ target = "c04000220"                                   # Tom Gato
 
 [[edit]]
 target = "c04000230"                                   # Joaquín Coronado
+moves = [
+  { move = 0xB60E3C60, level = 8 },                         # Plasma Cut
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0x05567847, level = 27 },                        # Runaway Train
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x53DF5669                                         # DF/MF · fire
@@ -34,6 +52,12 @@ target = "c04000230"                                   # Joaquín Coronado
 
 [[edit]]
 target = "c04000240"                                   # Conant Ó Briain
+moves = [
+  { move = 0xA23AEC88, level = 8 },                         # Copy Cut
+  { move = 0x530CDFC1, level = 26 },                        # Mystifying Mist
+  { move = 0x20D01E43, level = 35 },                        # Hey Presto
+  { move = 0x19BA3BFC, level = 62 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x1C9EC0AE                                         # DF/MF · forest
@@ -44,6 +68,12 @@ target = "c04000240"                                   # Conant Ó Briain
 
 [[edit]]
 target = "c04000250"                                   # Sirius Starsky
+moves = [
+  { move = 0xA9E3374B, level = 23 },                        # Cyclone Sprint
+  { move = 0x9349F1DA, level = 30 },                        # Zephyr Shot
+  { move = 0x65766A4F, level = 53 },                        # Meteor Blade
+  { move = 0xCD6AEF2D, level = 58 },                        # All-Star
+]
 
   [[edit.cards]]
   id = 0x0585F1EF                                         # DF/FW · wind
@@ -53,6 +83,12 @@ target = "c04000250"                                   # Sirius Starsky
 
 [[edit]]
 target = "c04000260"                                   # Shunsuke Aoyama
+moves = [
+  { move = 0x2E7B2B84, level = 6 },                         # Thief's Eye
+  { move = 0xDA3FF6C9, level = 20 },                        # Criss-Cross
+  { move = 0x20D01E43, level = 31 },                        # Hey Presto
+  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+]
 
   [[edit.cards]]
   id = 0x2EA8A22C                                         # MF/FW · forest
@@ -63,6 +99,12 @@ target = "c04000260"                                   # Shunsuke Aoyama
 
 [[edit]]
 target = "c04000270"                                   # Bucky Woodchuck
+moves = [
+  { move = 0xAC91D94F, level = 8 },                         # Major Miner
+  { move = 0x6F918884, level = 19 },                        # Easy Breezy
+  { move = 0x24E5068E, level = 25 },                        # Fractal Repeller
+  { move = 0x4FE09C7A, level = 48 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x37B3936D                                         # MF/DF · mountain
@@ -73,6 +115,12 @@ target = "c04000270"                                   # Bucky Woodchuck
 
 [[edit]]
 target = "c04000280"                                   # Punkie Mahican
+moves = [
+  { move = 0x5DA7EA06, level = 15 },                        # Boomerang Bluff
+  { move = 0x14D1ED15, level = 26 },                        # Jumping Jack
+  { move = 0x4031A7F5, level = 30 },                        # Mole Fake
+  { move = 0x19BA3BFC, level = 62 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0xB02B8FA2                                         # MF/FW · mountain
@@ -83,6 +131,12 @@ target = "c04000280"                                   # Punkie Mahican
 
 [[edit]]
 target = "c04000290"                                   # Hugues Baudet
+moves = [
+  { move = 0x04941270, level = 18 },                        # Vac Attack
+  { move = 0x2354CA2D, level = 26 },                        # Wind God's Dance
+  { move = 0x768AB9C5, level = 43 },                        # Frosticle
+  { move = 0xB0F8060A, level = 60 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0xA930BEE3                                         # MF/DF · wind
@@ -93,6 +147,12 @@ target = "c04000290"                                   # Hugues Baudet
 
 [[edit]]
 target = "c04000300"                                   # Jagur Meister
+moves = [
+  { move = 0x1876DB66, level = 8 },                         # Disaster Strike
+  { move = 0xF6E75EE9, level = 19 },                        # Headbanger
+  { move = 0x05567847, level = 27 },                        # Runaway Train
+  { move = 0xB9A6C82E, level = 52 },                        # Triangle ZZ
+]
 
   [[edit.cards]]
   id = 0x79306F9D                                         # FW/MF · fire
@@ -103,6 +163,12 @@ target = "c04000300"                                   # Jagur Meister
 
 [[edit]]
 target = "c04000310"                                   # Friedrich Schiller
+moves = [
+  { move = 0xDDCA0D2A, level = 15 },                        # Bouncing Bomb
+  { move = 0xDA3FF6C9, level = 26 },                        # Criss-Cross
+  { move = 0xF6E75EE9, level = 40 },                        # Headbanger
+  { move = 0x65766A4F, level = 58 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x602B5EDC                                         # FW/MF · fire

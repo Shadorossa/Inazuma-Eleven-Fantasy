@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01000210"                                   # Joseph King
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0xA6D711A6, level = 26 },                        # Full Power Shield
+  { move = 0x7B64F3D2, level = 31 },                        # Hawk Shot
+  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x33D11B4C                                         # GK/MF · fire
@@ -14,6 +20,12 @@ target = "c01000210"                                   # Joseph King
 
 [[edit]]
 target = "c01000220"                                   # Peter Drent
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x00196EC2, level = 1 },                         # Earthquake
+  { move = 0xB1FBC783, level = 42 },                        # Reflect Buster
+  { move = 0x67F17FA8, level = 80 },                        # Mega Quake
+]
 
   [[edit.cards]]
   id = 0x18FC488F                                         # DF/FW · mountain
@@ -24,6 +36,12 @@ target = "c01000220"                                   # Peter Drent
 
 [[edit]]
 target = "c01000230"                                   # Ben Simmons
+moves = [
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x6ADE9E01, level = 40 },                        # Illusory Ball
+  { move = 0x60397CCA, level = 85 },                        # Cross Drive
+]
 
   [[edit.cards]]
   id = 0x01E779CE                                         # DF/MF · forest
@@ -33,6 +51,12 @@ target = "c01000230"                                   # Ben Simmons
 
 [[edit]]
 target = "c01000240"                                   # Alan Master
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x34256515, level = 23 },                        # Dynamite Shot
+  { move = 0x4E9A9232, level = 74 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x4EA6EF09                                         # MF/DF · wind
@@ -42,6 +66,12 @@ target = "c01000240"                                   # Alan Master
 
 [[edit]]
 target = "c01000250"                                   # Gus Martin
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x01DB04F5, level = 31 },                        # Defence Scan
+  { move = 0xAEEA9F97, level = 85 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0x57BDDE48                                         # DF/MF · forest
@@ -52,6 +82,12 @@ target = "c01000250"                                   # Gus Martin
 
 [[edit]]
 target = "c01000260"                                   # Herman Waldon
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0xB27F13ED, level = 25 },                        # Death Zone
+  { move = 0x2B343D01, level = 76 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0x7C908D8B                                         # MF/FW · wind
@@ -61,6 +97,12 @@ target = "c01000260"                                   # Herman Waldon
 
 [[edit]]
 target = "c01000270"                                   # John Bloom
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
+  { move = 0x79224D8B, level = 65 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x658BBCCA                                         # MF/FW · fire
@@ -70,6 +112,12 @@ target = "c01000270"                                   # John Bloom
 
 [[edit]]
 target = "c01000280"                                   # Derek Swing
+moves = [
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x79224D8B, level = 25 },                        # Freeze Shot
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+  { move = 0xB27F13ED, level = 90 },                        # Death Zone
+]
 
   [[edit.cards]]
   id = 0xE213A005                                         # MF/FW · wind
@@ -79,6 +127,12 @@ target = "c01000280"                                   # Derek Swing
 
 [[edit]]
 target = "c01000290"                                   # Daniel Hatch
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
+  { move = 0xB27F13ED, level = 25 },                        # Death Zone
+  { move = 0xC7A9BB3A, level = 39 },                        # Whirlwind Cut
+]
 
   [[edit.cards]]
   id = 0xFB089144                                         # FW/DF · forest
@@ -93,10 +147,10 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 281, control = 258, technique = 282, pressure = 200, physical = 181, intelligence = 259, agility = 157, freedom = 271 }
 moves = [
-  { move = 0xC42D6F54, level = 1 },                       # Aikido
-  { move = 0x4E9A9232, level = 1 },                       # Spinning Cut
-  { move = 0xB039ADB4, level = 1 },                       # Inazuma Break
-  { move = 0x32EEA7FE, level = 55 },                      # Death Zone 2
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
 ]
 
 [[edit]]
@@ -104,14 +158,20 @@ target = "c01000310"                                   # David Samford
 growth = "normal"
 stats = { kick = 292, control = 251, technique = 248, pressure = 211, physical = 130, intelligence = 219, agility = 169, freedom = 284 }
 moves = [
-  { move = 0x142DBE2A, level = 1 },                       # Foul Offence
-  { move = 0x427719AC, level = 1 },                       # Gale Dash
-  { move = 0x7DAF3139, level = 1 },                       # Emperor Penguin No. 2
-  { move = 0x4683AADF, level = 70 },                      # Space Penguin
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x17A96A44, level = 1 },                         # Clone Faker
+  { move = 0x7DAF3139, level = 25 },                        # Emperor Penguin No. 2
+  { move = 0x61FB16FD, level = 47 },                        # Divine Arrows
 ]
 
 [[edit]]
 target = "c01000320"                                   # Bob Carlton
+moves = [
+  { move = 0x00196EC2, level = 1 },                         # Earthquake
+  { move = 0x73C5AF40, level = 24 },                        # Dash Accelerator
+  { move = 0xB3BD79DA, level = 34 },                        # Patriot Shot
+  { move = 0x0455B9CE, level = 63 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0x193E22B8                                         # GK/DF · forest
@@ -121,6 +181,12 @@ target = "c01000320"                                   # Bob Carlton
 
 [[edit]]
 target = "c01000330"                                   # Cliff Tomlinson
+moves = [
+  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
+  { move = 0x5643C944, level = 28 },                        # Killer Slide
+  { move = 0x142DBE2A, level = 41 },                        # Foul Offence
+  { move = 0x4890FB67, level = 67 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0x002513F9                                         # FW/MF · wind
@@ -131,6 +197,12 @@ target = "c01000330"                                   # Cliff Tomlinson
 
 [[edit]]
 target = "c01000340"                                   # Jim Lawrenson
+moves = [
+  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0xAAA6489B, level = 29 },                        # Spiral Shot
+  { move = 0x1ECA5CE1, level = 46 },                        # Wrath Shot
+  { move = 0x7B64F3D2, level = 75 },                        # Hawk Shot
+]
 
   [[edit.cards]]
   id = 0x4F64853E                                         # FW/MF · wind
@@ -140,6 +212,12 @@ target = "c01000340"                                   # Jim Lawrenson
 
 [[edit]]
 target = "c01000350"                                   # Barry Potts
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x259F08C6, level = 29 },                        # Whirlwind Twister
+  { move = 0x166B0073, level = 40 },                        # Super Armadillo
+  { move = 0xA8E0F6C2, level = 55 },                        # Kung Fu Header
+]
 
   [[edit.cards]]
   id = 0x567FB47F                                         # MF/FW · wind
@@ -149,6 +227,12 @@ target = "c01000350"                                   # Barry Potts
 
 [[edit]]
 target = "c01000360"                                   # Steve Ingham
+moves = [
+  { move = 0x4B142F09, level = 1 },                         # Teleport Shot
+  { move = 0x18C035B4, level = 28 },                        # Ghost Pull
+  { move = 0x7B64F3D2, level = 35 },                        # Hawk Shot
+  { move = 0x1F0836D6, level = 97 },                        # Comet Shot
+]
 
   [[edit.cards]]
   id = 0x7D52E7BC                                         # FW/MF · mountain
@@ -159,6 +243,12 @@ target = "c01000360"                                   # Steve Ingham
 
 [[edit]]
 target = "c01010970"                                   # Jude Sharp
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+]
 
   [[edit.cards]]
   id = 0x260C33A3                                         # MF/FW · wind
@@ -167,6 +257,12 @@ target = "c01010970"                                   # Jude Sharp
 
 [[edit]]
 target = "c11801020"                                   # Ray Dark
+moves = [
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0xBF6D0AC5, level = 26 },                        # Emperor Penguin No. 3
+  { move = 0x0DCADC54, level = 34 },                        # Emperor Penguin 7
+  { move = 0xC9B4602F, level = 60 },                        # Final Death Zone
+]
 
   [[edit.cards]]
   id = 0x833D7977                                         # MF/FW · wind
@@ -176,6 +272,12 @@ target = "c11801020"                                   # Ray Dark
 
 [[edit]]
 target = "c11801030"                                   # Stephen Black
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0xAD6E4BF9, level = 20 },                        # Harvest
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0x9A264836                                         # DF/MF · forest

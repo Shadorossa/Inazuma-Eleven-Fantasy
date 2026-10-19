@@ -1,0 +1,18 @@
+# BetterMenu: the white line behind the Competition list's crest strip (a NEW atlas, the one the copied quad layout
+# better_menu_crest_line.g4pkm reads; content\menus\competition.toml). GENERATED picture:
+# research/scripts/better_menu_crest_line_build.py (white, fading to transparent toward both ends).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_crest_line/better_menu_crest_line.g4tx"
+name = "cmn01_10"
+png = "better_menu_crest_line/better_menu_crest_line.png"
+
+# the sprite name the copied quad's material reads (the retail badge «icon_new01»)
+[[sprite]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_crest_line/better_menu_crest_line.g4tx"
+name = "icon_new01"
+texture = "cmn01_10"
+x = 0
+y = 0
+size = [960, 24]

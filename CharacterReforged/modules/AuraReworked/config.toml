@@ -38,22 +38,25 @@ spin_rows_per_s = 12
 # a second reel waits at most this many (a rival's rolls are never shown)
 queue = 2
 
-# The level-up pop (graft souls_rework_level_pop): a small plate of the totem's colour with «+Nv.» (text key
-# aura_reworked.level_pop) over the player's head, following him: it pops in, stays, then rises and fades out. Seconds;
-# sizes in layout units of a 1920 x 1080 screen.
+# The level-up pop (graft souls_rework_level_pop): a small plate of the totem's colour with «+Nv.2» (text key
+# aura_reworked.level_pop, {level} = the new level) on it, over the player's head, following him: it pops in, stays,
+# then rises and fades out. Hidden while a cut-in or a match scene plays (the framework's cutin_start / cutin_end); it
+# shows again after the scene only while its time is not over. Seconds; sizes in layout units of a 1920 x 1080 screen.
 [souls.level_pop]
 # false: no pop
 show = true
 # the rival (CPU) team's level-ups pop too (their levels count only with [levels] cpu = true)
 cpu = true
 appear_s = 0.15
-hold_s = 1.0
+# how long it stays over the player at full size (owner 2026-10-19: 3 s longer than the first 1.0)
+hold_s = 4.0
 out_s = 0.4
-# the plate's size, the text's scale (1 = the retail telop text) and the gap between the head and the plate's bottom
-width = 92
+# the plate's height (its width and its text follow at the same scale: the retail telop plate with its own text) and
+# the gap between the head and the plate's bottom
 height = 36
-text_scale = 0.55
 lift = 24
+# the text's colour markup around it ({text}; font_color tags: [CW] white ... [C] reset)
+text_markup = "[CW]{text}[C]"
 # how far it rises while it fades out
 rise = 40
 # the plate's colour = the colour of the totem's element (aura_skill_config column 8: 1 wind, 2 forest, 3 fire,

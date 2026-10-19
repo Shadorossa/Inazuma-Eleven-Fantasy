@@ -7,6 +7,7 @@ do
   local KEY = 3499142076 --[[crc32 vrfw_menu_scene_hud_off]]
   local VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
   local MINIMAP = 1868910795 --[[0x6F6550CB: the field minimap shown / hidden]]
+  local STATE, FADE = 2588710643, 609722083
   local seen, logged = {}, false
   local function off()
     local ok, on = pcall(funcLuaCommand, 2947612279, KEY)
@@ -39,6 +40,14 @@ do
     if type(f) == "function" then
       _G[name] = function(...)
         local r = table.pack(f(...))
+        if off() then
+          local ok, state = pcall(funcLuaCommand, STATE)
+          if ok and (state == "loading" or state == "switching") then
+            -- The retail field start fades in independently of the menu. Hold
+            -- it black through the hand-over; title_menu_2 releases once ready.
+            pcall(funcLuaCommand, FADE, 1, 0)
+          end
+        end
         if next(seen) ~= nil and off() then
           for _, l in pairs(seen) do
             pcall(funcLuaMenuCommand, VISIBLE, l[1], l[2], false)

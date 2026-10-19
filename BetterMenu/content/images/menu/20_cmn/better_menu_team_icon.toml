@@ -1,0 +1,18 @@
+# BetterMenu: the team drawer button's icon (the game's team dock icon icon_header_teamdock01 with its two cut corners
+# restored; a NEW atlas that the copied quad layout better_menu_team_icon.g4pkm reads, content\menus\title_team_drawer.toml).
+# GENERATED picture: research/scripts/better_menu_team_icon_build.py.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_team_icon/better_menu_team_icon.g4tx"
+name = "cmn01_10"
+png = "better_menu_team_icon/better_menu_team_icon.png"
+
+# the sprite name the copied quad's material reads (the retail badge «icon_new01»)
+[[sprite]]
+atlas = "#/menu/20_cmn/cmn01/better_menu_team_icon/better_menu_team_icon.g4tx"
+name = "icon_new01"
+texture = "cmn01_10"
+x = 0
+y = 0
+size = [360, 328]

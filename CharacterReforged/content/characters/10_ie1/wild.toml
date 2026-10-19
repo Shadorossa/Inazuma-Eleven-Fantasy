@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01000610"                                   # Charlie Boardfield
+moves = [
+  { move = 0xC2BBD4A2, level = 1 },                         # Wild Claw
+  { move = 0x00196EC2, level = 24 },                        # Earthquake
+  { move = 0x8FBCFC3C, level = 50 },                        # Blazing Knuckle
+  { move = 0x166B0073, level = 86 },                        # Super Armadillo
+]
 
   [[edit.cards]]
   id = 0x34D8B390                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c01000610"                                   # Charlie Boardfield
 
 [[edit]]
 target = "c01000620"                                   # Hugo Tallgeese
+moves = [
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0xC7A9BB3A, level = 34 },                        # Whirlwind Cut
+  { move = 0x7207C577, level = 91 },                        # Boost Glider
+]
 
   [[edit.cards]]
   id = 0x1FF5E053                                         # MF/FW · fire
@@ -25,6 +37,12 @@ target = "c01000620"                                   # Hugo Tallgeese
 
 [[edit]]
 target = "c01000630"                                   # Wilson Fishman
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x4E9A9232, level = 25 },                        # Spinning Cut
+  { move = 0xDF70E04C, level = 44 },                        # Rodeo Clown
+  { move = 0x0455B9CE, level = 88 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0x06EED112                                         # DF/MF · forest
@@ -34,6 +52,12 @@ target = "c01000630"                                   # Wilson Fishman
 
 [[edit]]
 target = "c01000640"                                   # Peter Johnson
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x73C5AF40, level = 18 },                        # Dash Accelerator
+  { move = 0xACAC21CE, level = 38 },                        # Fake Ball
+  { move = 0x06130797, level = 59 },                        # Rolling Kick
+]
 
   [[edit.cards]]
   id = 0x49AF47D5                                         # DF/MF · forest
@@ -43,6 +67,12 @@ target = "c01000640"                                   # Peter Johnson
 
 [[edit]]
 target = "c01000650"                                   # Leonard O'Shea
+moves = [
+  { move = 0x166B0073, level = 1 },                         # Super Armadillo
+  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
+  { move = 0xC379BE95, level = 40 },                        # Counter Strike
+  { move = 0x0455B9CE, level = 66 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0x50B47694                                         # DF/MF · mountain
@@ -53,6 +83,12 @@ target = "c01000650"                                   # Leonard O'Shea
 
 [[edit]]
 target = "c01000660"                                   # Cham Lion
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x592A96B4, level = 18 },                        # Afterimage
+  { move = 0x55C71D2A, level = 48 },                        # About Face
+  { move = 0x4B142F09, level = 83 },                        # Teleport Shot
+]
 
   [[edit.cards]]
   id = 0x7B992557                                         # MF/DF · wind
@@ -63,6 +99,12 @@ target = "c01000660"                                   # Cham Lion
 
 [[edit]]
 target = "c01000670"                                   # Steve Eagle
+moves = [
+  { move = 0x1D4E888F, level = 1 },                         # Condor Dive
+  { move = 0x7B64F3D2, level = 20 },                        # Hawk Shot
+  { move = 0x6ADE9E01, level = 28 },                        # Illusory Ball
+  { move = 0x7207C577, level = 90 },                        # Boost Glider
+]
 
   [[edit.cards]]
   id = 0x62821416                                         # MF/FW · wind
@@ -72,6 +114,12 @@ target = "c01000670"                                   # Steve Eagle
 
 [[edit]]
 target = "c01000680"                                   # Bruce Monkey
+moves = [
+  { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
+  { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
+  { move = 0x4F58F805, level = 35 },                        # Coil Turn
+  { move = 0x261BDCA8, level = 95 },                        # Moonsault
+]
 
   [[edit.cards]]
   id = 0xE51A08D9                                         # MF/FW · wind
@@ -81,6 +129,12 @@ target = "c01000680"                                   # Bruce Monkey
 
 [[edit]]
 target = "c01000690"                                   # Gary Lancaster
+moves = [
+  { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
+  { move = 0x166B0073, level = 1 },                         # Super Armadillo
+  { move = 0x6B1CF436, level = 16 },                        # Bewildered
+  { move = 0x3663DB4C, level = 59 },                        # Utter Gutsiness Bat
+]
 
   [[edit.cards]]
   id = 0xFC013998                                         # FW/MF · mountain
@@ -91,6 +145,12 @@ target = "c01000690"                                   # Gary Lancaster
 
 [[edit]]
 target = "c01000700"                                   # Harry Snake
+moves = [
+  { move = 0x49529150, level = 1 },                         # Snake Shot
+  { move = 0xC66BD10D, level = 21 },                        # Zigzag Spark
+  { move = 0x60397CCA, level = 35 },                        # Cross Drive
+  { move = 0x322F0C40, level = 80 },                        # Spider Web
+]
 
   [[edit.cards]]
   id = 0x2C01E8E6                                         # FW/MF · forest
@@ -101,6 +161,12 @@ target = "c01000700"                                   # Harry Snake
 
 [[edit]]
 target = "c01000710"                                   # Adrian Speed
+moves = [
+  { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x34256515, level = 24 },                        # Dynamite Shot
+  { move = 0x2D3E5454, level = 72 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0x351AD9A7                                         # FW/MF · wind
@@ -110,6 +176,12 @@ target = "c01000710"                                   # Adrian Speed
 
 [[edit]]
 target = "c01000720"                                   # Alan Coe
+moves = [
+  { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
+  { move = 0xDEB28A7B, level = 30 },                        # Monkey Turn
+  { move = 0x0455B9CE, level = 48 },                        # Run Ball Run
+  { move = 0x6ADE9E01, level = 71 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x1E378A64                                         # MF/FW · forest
@@ -119,6 +191,12 @@ target = "c01000720"                                   # Alan Coe
 
 [[edit]]
 target = "c01000730"                                   # Philip Anders
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0xDF70E04C, level = 24 },                        # Rodeo Clown
+  { move = 0xA8E0F6C2, level = 35 },                        # Kung Fu Header
+  { move = 0x142DBE2A, level = 66 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0x072CBB25                                         # FW/MF · fire
@@ -128,6 +206,12 @@ target = "c01000730"                                   # Philip Anders
 
 [[edit]]
 target = "c01000740"                                   # Rocky Rackham
+moves = [
+  { move = 0x166B0073, level = 1 },                         # Super Armadillo
+  { move = 0x35E70F22, level = 18 },                        # Grenade Shot
+  { move = 0x7CACF0B0, level = 37 },                        # Horn Train
+  { move = 0x55C71D2A, level = 82 },                        # About Face
+]
 
   [[edit.cards]]
   id = 0x486D2DE2                                         # DF/MF · forest
@@ -138,6 +222,12 @@ target = "c01000740"                                   # Rocky Rackham
 
 [[edit]]
 target = "c01000750"                                   # Matt Mouseman
+moves = [
+  { move = 0xACAC21CE, level = 15 },                        # Fake Ball
+  { move = 0x6B1CF436, level = 25 },                        # Bewildered
+  { move = 0x4B142F09, level = 42 },                        # Teleport Shot
+  { move = 0x592A96B4, level = 75 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0x51761CA3                                         # MF/DF · mountain
@@ -148,6 +238,12 @@ target = "c01000750"                                   # Matt Mouseman
 
 [[edit]]
 target = "c01000760"                                   # Chad Bullford
+moves = [
+  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
+  { move = 0x8DFA4265, level = 27 },                        # Toughness Block
+  { move = 0xC2BBD4A2, level = 46 },                        # Wild Claw
+  { move = 0x65B7C1F1, level = 80 },                        # Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0x7A5B4F60                                         # GK/MF · fire
@@ -157,6 +253,12 @@ target = "c01000760"                                   # Chad Bullford
 
 [[edit]]
 target = "c11801060"                                   # Harry Savage
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xC42D6F54, level = 13 },                        # Aikido
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0xE751BC73                                         # MF/DF · wind
@@ -167,6 +269,12 @@ target = "c11801060"                                   # Harry Savage
 
 [[edit]]
 target = "c11807060"                                   # Flammie Gonzalez
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0xB7474004, level = 13 },                        # Dough Ray Me
+  { move = 0x427719AC, level = 20 },                        # Gale Dash
+  { move = 0x35E70F22, level = 30 },                        # Grenade Shot
+]
 
   [[edit.cards]]
   id = 0xC23AE3AF                                         # FW/MF · fire

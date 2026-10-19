@@ -13,11 +13,18 @@
 --      VRFW.MoveGrades of any mod) are seeded into the store first, and a sweep seeds the saved characters' lists once
 --      a minute.
 --   H3 TrueHissatsu.MatchSkillInstall (post): recast = max(0, floor(info.recast × (1 + recast_per_grade × rank))).
+--   Grade sync (1.1.1): after CMND_SET_SKILL (the skill tables write rank 0 with it), after every list rebuild
+--      (chara:moves) and at each match install, the saved / live ranks of the user's players follow the stored
+--      grades, so menus, match power and the grade cut-ins read the same grade.
 --   H4 TrueHissatsu.CanEquip (post): a board placement of a move already on another slot of the player's active set is
 --      refused ([duplicates] block).
 --   Rules of other mods ([TrueHissatsu.Rules]): `no_rank_up_states` (state keys: while one is 1 no use is counted, e.g.
 --      Inazuma Fantasy's INAROGUE), `boost_states` (CMND_TRUEHISSATSU_RANK_BOOST only while one is 1). An overlay
 --      session (VRFW.session.sink = the slot left): the left slot's store is parked in memory and comes back unchanged.
+--   Grade animations ([[TrueHissatsu.GradeAnimation]] of every active mod's content\true_hissatsu\*.toml): from
+--      `grade` on (1..6, 5 = G5) a move plays the cut-in of `animation_of`, its evolution; only the cut-in changes. Handed
+--      once at start to the framework's grade cut-ins (VRFW.cutin.by_grade), which read the executor's live grade when
+--      the cut-in starts (both teams, every match mode).
 --
 --   CMND_TRUEHISSATSU_USES(charaStHdl, skillId) -> uses, grade, next threshold (0 at the maximum); errors -1, -1, 0 (bad
 --        args) / -2, -2, 0 (not active)
@@ -144,6 +151,61 @@ local function rules()
     end
   end
   return RULES
+end
+
+-- ------------------------------------------------------------------------------------------------ grade animations
+-- [[TrueHissatsu.GradeAnimation]] of every active mod's content\true_hissatsu\*.toml, in load order: `technique`,
+-- `grade` (1..6: 1 = the first grade, 5 = G5, 6 = the last) and `animation_of` (the move whose cut-in plays). A later
+-- entry for the same move and grade replaces an earlier one; `enabled = false` takes it off.
+local function grade_animations()
+  local by_key, order = {}, {}
+  local ok, decl = pcall(VRFW.files.declarations, "content/true_hissatsu")
+  for _, f in ipairs(ok and type(decl) == "table" and decl or {}) do
+    local d = type(f) == "table" and f.data or nil
+    local list = type(d) == "table" and type(d.TrueHissatsu) == "table" and d.TrueHissatsu.GradeAnimation or nil
+    for i, e in ipairs(type(list) == "table" and list or {}) do
+      local where = string.format("%s %s entry %d", tostring(f.mod), tostring(f.file), i)
+      local t, g, a = type(e) == "table" and e.technique, type(e) == "table" and tonumber(e.grade), type(e) == "table" and e.animation_of
+      local ref_ok = function(v) return (type(v) == "string" and v ~= "") or type(v) == "number" end
+      if not ref_ok(t) or not g or g ~= math.floor(g) or g < 1 or g > MAX_GRADE + 1 then
+        warn(string.format("[[TrueHissatsu.GradeAnimation]] %s: needs `technique` and `grade` 1..%d: left out", where, MAX_GRADE + 1))
+      else
+        local key = tostring(t) .. "#" .. g
+        if by_key[key] == nil then order[#order + 1] = key end
+        if e.enabled == false then
+          by_key[key] = false
+        elseif not ref_ok(a) then
+          warn(string.format("[[TrueHissatsu.GradeAnimation]] %s: needs `animation_of` (the move whose cut-in plays): left out", where))
+        else
+          by_key[key] = { technique = t, grade = g, cutin_of = a }
+        end
+      end
+    end
+  end
+  local out = {}
+  for _, k in ipairs(order) do
+    if by_key[k] then out[#out + 1] = by_key[k] end
+  end
+  return out
+end
+
+-- the declared grade animations handed to the framework (once, at start: no game call)
+local function apply_grade_animations()
+  local list = grade_animations()
+  if #list == 0 then
+    info("grade animations: none declared")
+    return
+  end
+  local ok, n, why = pcall(VRFW.cutin.by_grade, list)
+  if not ok or not n then
+    err("grade animations off: " .. tostring(ok and why or n))
+    return
+  end
+  local parts = {}
+  for _, e in ipairs(list) do
+    parts[#parts + 1] = string.format("%s from grade %d plays %s's cut-in", tostring(e.technique), e.grade, tostring(e.cutin_of))
+  end
+  info(string.format("grade animations on (%d): %s", #list, table.concat(parts, "; ")))
 end
 
 -- is one of the state keys of rule `name` set (= 1) now? the key's name when so
@@ -779,10 +841,84 @@ local function on_build(ev)
 end
 
 -- ------------------------------------------------------------------------------------------------ H3
+-- ------------------------------------------------------------------------------------------------ grade sync
+-- The stored grade is the move's grade everywhere: menus (their evolution glyph, plate base and graded power read the
+-- saved skill_list rank through GetSkillEvoLevelByCharaStHdl), the match (the unit rank copied at kick-off) and the
+-- framework's grade cut-ins (the live unit rank). Every writer of a player's list is followed by a sync: the board's
+-- rebuild (H2), CMND_SET_SKILL (the skill tables place moves with it: it writes rank 0) and the match install (H3).
+
+-- the saved skill_list ranks of character `hdl` set to the stored grades ([ranks] mode): changes as "(skill, old, new)"
+local function sync_saved_ranks(hdl)
+  if not ON or not hdl or hdl == 0 or not is_chara_handle(hdl) then return {} end
+  local r = record(hdl)
+  if not r or not r.addr then return {} end
+  local own = owner(hdl, false) or hdl
+  local st = cur()
+  local declared = grades_of(u32(r.param))
+  local changes, seeded = {}, false
+  for i = 0, SKILL_SLOTS - 1 do
+    local e = r.addr + REC_SKILL_LIST + i * SKILL_ENTRY
+    local id, cur_r = rd("u32", e), rd("u8", e + 4)
+    if id and id ~= 0 and cur_r and A.type(id) == nil and not A.is_spirit_move(id) then
+      if declared[id] and seed(st, own, id, declared[id]) then seeded = true end
+      local _, g = get(st, own, id)
+      local want = mode_rank(cur_r, g)
+      if want ~= cur_r and wr("u8", e + 4, want) then
+        changes[#changes + 1] = string.format("(%s, %d, %d)", hex(id), cur_r, want)
+      end
+    end
+  end
+  if seeded then commit(st, "recruit grade") end
+  return changes
+end
+
+-- after CMND_SET_SKILL(charaStHdl, skill, slot): the list's ranks follow the store again (VRFW.CommandFilter, after)
+function TrueHissatsu.AfterSetSkill(args)
+  local hdl = u32(type(args) == "table" and tonumber(args[1]) or 0)
+  local changes = sync_saved_ranks(hdl)
+  if #changes > 0 then
+    info(string.format("CMND_SET_SKILL on chara %s: saved ranks follow the stored grades [%s]", hex(hdl), table.concat(changes, ", ")))
+  end
+  return nil
+end
+
+-- after RebuildSkillList (event chara:moves; the board hook H2 may have been skipped while the scripts were busy)
+local function on_moves(ev)
+  local obj = ev.args and ev.args[1] or 0
+  if obj < 0x10000 then return end
+  local rec = rd("ptr", obj + 8)
+  local hdl = rec and rd("u32", rec)
+  local changes = sync_saved_ranks(hdl)
+  if #changes > 0 then
+    info(string.format("list rebuilt for chara %s: saved ranks follow the stored grades [%s]", hex(hdl), table.concat(changes, ", ")))
+  end
+end
+
+-- the live rank of an installed move of the user's player = the stored grade ([ranks] mode), before its recast
+local install_synced = 0
+local function sync_install_rank(unit, slot)
+  if slot >= SKILL_SLOTS then return end
+  local entry = unit + UNIT_SKILLS + slot * UNIT_SKILL_STRIDE
+  local id, cur_r = rd("u32", entry), rd("u8", entry + UNIT_SKILL_RANK)
+  if not id or id == 0 or not cur_r or A.type(id) ~= nil or A.is_spirit_move(id) then return end
+  local chara = rd("u32", unit + UNIT_CHARA) or 0
+  local own = chara ~= 0 and owner(chara, false) or nil
+  if not own then return end -- an opponent keeps his team's grade
+  local _, g = get(cur(), own, id)
+  local want = mode_rank(cur_r, g)
+  if want ~= cur_r and wr("u8", entry + UNIT_SKILL_RANK, want) then
+    install_synced = install_synced + 1
+    if install_synced <= 24 then
+      info(string.format("match install: chara %s (owner %s) skill %s live rank %d -> %d (stored grade)", hex(chara), hex(own), hex(id), cur_r, want))
+    end
+  end
+end
+
 local function on_install(ev)
   note_install()
   local unit = ev.args[1] or 0
   if unit < 0x10000 then return end
+  sync_install_rank(unit, band(ev.args[2] or 0, 0xFF))
   local id, rank, old, new = apply_recast(unit, band(ev.args[2] or 0, 0xFF))
   if id then
     install_hits = install_hits + 1
@@ -1116,7 +1252,9 @@ local function start()
 end
 
 start()
+apply_grade_animations()
 VRFW.on("hook:TrueHissatsu.SkillUsed:post", on_used)
 VRFW.on("hook:TrueHissatsu.BuildSkillList:post", on_build)
 VRFW.on("hook:TrueHissatsu.MatchSkillInstall:post", on_install)
+VRFW.on("chara:moves:post", on_moves)
 VRFW.on("hook:TrueHissatsu.CanEquip:post", on_can_equip)

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11070010"                                   # Floramira Pagotta
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0x0E0A3F7A, level = 20 },                        # Spatial Portal
+  { move = 0x7C6D5B0E, level = 30 },                        # Astro Break
+]
 
   [[edit.cards]]
   id = 0x4EDF13AC                                         # MF/FW · wind
@@ -15,6 +21,12 @@ target = "c11070010"                                   # Floramira Pagotta
 
 [[edit]]
 target = "c11070020"                                   # Kaz Bloomfield
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0x1A868BED, level = 13 },                        # Clone Defence
+  { move = 0x18C035B4, level = 20 },                        # Ghost Pull
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0x65F2406F                                         # DF/MF · forest
@@ -24,6 +36,17 @@ target = "c11070020"                                   # Kaz Bloomfield
 
 [[edit]]
 target = "c11070030"                                   # Govin Castlehoven
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x22EF6FDB, level = 20 },                        # Dark Phoenix
+  { move = 0xA2BF7076, level = 30 },                        # Side Swipe
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x9BF8BCD4, level = 1 },                         # Warborg [aura]
+]
 
   [[edit.cards]]
   id = 0x7CE9712E                                         # DF/MF · wind
@@ -33,6 +56,17 @@ target = "c11070030"                                   # Govin Castlehoven
 
 [[edit]]
 target = "c11070040"                                   # Blaine Westbrook
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x15138722, level = 20 },                        # Will-o'-the-Wisp Shot
+  { move = 0xA2BF7076, level = 30 },                        # Side Swipe
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xD3712971, level = 1 },                         # Conejo de cristal [aura]
+]
 
   [[edit.cards]]
   id = 0x33A8E7E9                                         # FW/DF · wind
@@ -42,6 +76,12 @@ target = "c11070040"                                   # Blaine Westbrook
 
 [[edit]]
 target = "c11070050"                                   # Alistar Montero
+moves = [
+  { move = 0x20D01E43, level = 1 },                         # Hey Presto
+  { move = 0x4FE09C7A, level = 13 },                        # Acrobatic Keep
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0xF7E49F60, level = 30 },                        # Magnetism
+]
 
   [[edit.cards]]
   id = 0x2AB3D6A8                                         # MF/FW · mountain
@@ -51,6 +91,12 @@ target = "c11070050"                                   # Alistar Montero
 
 [[edit]]
 target = "c11070060"                                   # Elijah Singleton
+moves = [
+  { move = 0x2AF65736, level = 1 },                         # Bamboo Pattern
+  { move = 0x19025F83, level = 13 },                        # Quick Draw
+  { move = 0x0455B9CE, level = 20 },                        # Run Ball Run
+  { move = 0x24E5068E, level = 30 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0x019E856B                                         # MF/DF · fire
@@ -60,6 +106,12 @@ target = "c11070060"                                   # Elijah Singleton
 
 [[edit]]
 target = "c11070070"                                   # Kiona Blackwell
+moves = [
+  { move = 0xD534C4E6, level = 1 },                         # Silent Inkstroke
+  { move = 0x91AE65A1, level = 13 },                        # Giant Spider
+  { move = 0x9B3048AB, level = 20 },                        # Shadow Catch
+  { move = 0x592A96B4, level = 30 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0x1885B42A                                         # GK/MF · wind
@@ -69,6 +121,12 @@ target = "c11070070"                                   # Kiona Blackwell
 
 [[edit]]
 target = "c11070080"                                   # Lennox Portsman
+moves = [
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0x17110E3B, level = 13 },                        # Jumbo Sandwich
+  { move = 0x05567847, level = 20 },                        # Runaway Train
+  { move = 0xA3980723, level = 30 },                        # Colosseum Guard
+]
 
   [[edit.cards]]
   id = 0x9F1DA8E5                                         # DF/GK · mountain
@@ -78,6 +136,12 @@ target = "c11070080"                                   # Lennox Portsman
 
 [[edit]]
 target = "c11070090"                                   # Rohan Snatchett
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0x3B8D915B, level = 13 },                        # Meteor Shower
+  { move = 0xD0A1DBC3, level = 20 },                        # Bungee Ball Burst
+  { move = 0x25276CB9, level = 30 },                        # Solar Surprise
+]
 
   [[edit.cards]]
   id = 0x860699A4                                         # MF/GK · fire
@@ -87,6 +151,12 @@ target = "c11070090"                                   # Rohan Snatchett
 
 [[edit]]
 target = "c11070100"                                   # Marinus Courier
+moves = [
+  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x43B5739B, level = 13 },                        # Lightning Bolt
+  { move = 0xEFFC6FA8, level = 20 },                        # Warhead
+  { move = 0x18019E0A, level = 30 },                        # Double Grenade
+]
 
   [[edit.cards]]
   id = 0x560648DA                                         # FW/MF · fire
@@ -96,6 +166,12 @@ target = "c11070100"                                   # Marinus Courier
 
 [[edit]]
 target = "c11070110"                                   # Umbren Lightwood
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x00A10ABD, level = 20 },                        # Ball Lightning
+  { move = 0xB0BC314A, level = 30 },                        # Spin Meister
+]
 
   [[edit.cards]]
   id = 0x4F1D799B                                         # FW/MF · wind
@@ -105,6 +181,12 @@ target = "c11070110"                                   # Umbren Lightwood
 
 [[edit]]
 target = "c11070120"                                   # Zelane Whitlow
+moves = [
+  { move = 0xD471DE6C, level = 1 },                         # Snakebite
+  { move = 0xE9968761, level = 13 },                        # Rocket Kobushi
+  { move = 0xB633C4E1, level = 20 },                        # Photon Crash
+  { move = 0x41AEB4DF, level = 30 },                        # Crystal Barrier
+]
 
   [[edit.cards]]
   id = 0x64302A58                                         # GK/MF · fire
@@ -114,6 +196,12 @@ target = "c11070120"                                   # Zelane Whitlow
 
 [[edit]]
 target = "c11070130"                                   # Rael Abbeybogy
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0x166B0073, level = 30 },                        # Super Armadillo
+]
 
   [[edit.cards]]
   id = 0x7D2B1B19                                         # MF/FW · forest
@@ -123,6 +211,12 @@ target = "c11070130"                                   # Rael Abbeybogy
 
 [[edit]]
 target = "c11070140"                                   # Dawsey Geistfeld
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0x0E0A3F7A, level = 13 },                        # Spatial Portal
+  { move = 0x568262FA, level = 20 },                        # Dark Tornado
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x326A8DDE                                         # FW/DF · wind
@@ -132,6 +226,12 @@ target = "c11070140"                                   # Dawsey Geistfeld
 
 [[edit]]
 target = "c11070150"                                   # Volk Lorius
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0x6ADE9E01, level = 13 },                        # Illusory Ball
+  { move = 0x94405906, level = 20 },                        # Grand Fenrir
+  { move = 0x1A868BED, level = 30 },                        # Clone Defence
+]
 
   [[edit.cards]]
   id = 0x2B71BC9F                                         # MF/FW · wind
@@ -141,6 +241,12 @@ target = "c11070150"                                   # Volk Lorius
 
 [[edit]]
 target = "c11070160"                                   # Drexel Kixley
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0x2FB941B3, level = 20 },                        # Stone Prison
+  { move = 0x3F00EDE9, level = 30 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0x005CEF5C                                         # DF/MF · mountain
@@ -150,6 +256,12 @@ target = "c11070160"                                   # Drexel Kixley
 
 [[edit]]
 target = "c11070500"                                   # Wythers Moonridge
+moves = [
+  { move = 0x7C93E472, level = 1 },                         # Ghoulish Glare
+  { move = 0x78218C02, level = 13 },                        # Duskfall
+  { move = 0x1A868BED, level = 20 },                        # Clone Defence
+  { move = 0x21127474, level = 30 },                        # Ultra Moon
+]
 
   [[edit.cards]]
   id = 0x510FE006                                         # MF/DF · forest
@@ -159,6 +271,12 @@ target = "c11070500"                                   # Wythers Moonridge
 
 [[edit]]
 target = "c11070510"                                   # Mirela Delisle
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0xB5B7108F, level = 13 },                        # Shadow Stitch
+  { move = 0x592A96B4, level = 20 },                        # Afterimage
+  { move = 0x4AF2F3E2, level = 30 },                        # Bridge to Nowhere
+]
 
   [[edit.cards]]
   id = 0x4814D147                                         # DF/GK · fire

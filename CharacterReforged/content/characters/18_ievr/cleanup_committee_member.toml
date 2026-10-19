@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700250"                                   # Rudgar Dennings
+moves = [
+  { move = 0x52CEB5F6, level = 1 },                         # Iron Wall
+  { move = 0xDD0BA694, level = 13 },                        # Okehazama Ravine
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x53CD747F, level = 30 },                        # Tarzan Kick
+]
 
   [[edit.cards]]
   id = 0x8612EE6E                                         # DF/FW · mountain
@@ -16,6 +22,12 @@ target = "c11700250"                                   # Rudgar Dennings
 
 [[edit]]
 target = "c11700260"                                   # Hardan Kempton
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0xACAC21CE, level = 13 },                        # Fake Ball
+  { move = 0xDBFD9CFE, level = 20 },                        # Big Ball Trick
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xAD3FBDAD                                         # MF/DF · forest

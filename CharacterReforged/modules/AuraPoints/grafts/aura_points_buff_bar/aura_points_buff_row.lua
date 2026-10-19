@@ -7,6 +7,7 @@
 -- * rows = min(team limit, the portrait layer's open instances: content\menus\buff_row.toml), never below the retail
 --   count; t5 grows inside the wrapper (match time), never at chunk load. No limit (-1): every open instance.
 -- * AuraPoints_BuffRow.Rows(): the entries of the row now (read by aura_points_buff_bar.lua for its bars).
+-- * AuraPoints_BuffRow.drawn: the row's drawn state, the player on each portrait instance (retail or widened).
 -- * AuraPoints_BuffRow.PoolsOn(): the mod's PEG or SP part is on (CMND_AURAPOINTS_ACTIVE_PARTS): while not, or not
 --   known yet, the row keeps the retail count and aura_points_buff_bar.lua draws nothing.
 -- Nothing at chunk load but the debug library's upvalue search; engine calls only inside the wrapper, through pcall.
@@ -81,6 +82,9 @@ end
 local t5 = EVT_UpvalueFind({"UpdateAuraBuffCharaIcon", "OnSetupLayer", "UpdateAuraActiveTimeGauge"}, function(t)
   return #t > 0 and type(t[1]) == "table" and t[1].auraCharaHdl ~= nil and t[1].auraAttr ~= nil
 end)
+-- the row's drawn state (t5[i + 1] = the player on portrait instance i): read by aura_points_buff_bar.lua to put each
+-- bar / label on its player's portrait
+R.drawn = t5
 local retail_update = UpdateAuraBuffCharaIcon
 if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrapper then
   local n, n4

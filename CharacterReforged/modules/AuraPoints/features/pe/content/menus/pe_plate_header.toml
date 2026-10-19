@@ -3,7 +3,7 @@
 # pe_plate.toml so that file builds on the retail data alone (crates/plugins/menu_engine tests).
 schema = "VRFW.menu/2"
 
-# the five attach rows on Character Reforged's one-row header object (an [[object_set]] on the retail object does not
+# the six attach rows on Character Reforged's one-row header object (an [[object_set]] on the retail object does not
 # reach that derived copy): trace, locator _pos_base01 0x5A709C12, layer, instance 0
 [[object_set]]
 object = "evt_soccer11_04pp_pp"
@@ -13,6 +13,7 @@ add = [
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x540D16D3, 0x5A709C12, 0x540D16D3, 0] },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x055B3075, 0x5A709C12, 0x055B3075, 0] },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x725C00E3, 0x5A709C12, 0x725C00E3, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x401B0F3C, 0x5A709C12, 0x401B0F3C, 0] },
 ]
 
 # the piece: AuraPoints_Stamina.PlatePe (assets\lua\_all\aura_points_stamina_plate.lua) draws the max PE at the slot's x

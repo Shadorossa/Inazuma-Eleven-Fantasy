@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700130"                                   # Ordin Scriben
+moves = [
+  { move = 0x5AF33BC7, level = 1 },                         # God Hand
+  { move = 0xDD6B2708, level = 13 },                        # Majin the Hand
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0xD20EF7B1                                         # DF/GK · forest
@@ -16,6 +22,12 @@ target = "c11700130"                                   # Ordin Scriben
 
 [[edit]]
 target = "c11700140"                                   # Rhianna Wardholdt
+moves = [
+  { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0xD0A1DBC3, level = 20 },                        # Bungee Ball Burst
+  { move = 0x9765A74A, level = 30 },                        # Beast Fang
+]
 
   [[edit.cards]]
   id = 0x9D4F6176                                         # MF/GK · fire
@@ -26,6 +38,12 @@ target = "c11700140"                                   # Rhianna Wardholdt
 
 [[edit]]
 target = "c11700150"                                   # Coraline Quisittor
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0x7748D3F2, level = 13 },                        # Devil Ball
+  { move = 0x4E5B398C, level = 20 },                        # Acrobat Bomber
+  { move = 0x4C1D87D5, level = 30 },                        # Bed of Roses
+]
 
   [[edit.cards]]
   id = 0x84545037                                         # FW/MF · forest
@@ -36,6 +54,12 @@ target = "c11700150"                                   # Coraline Quisittor
 
 [[edit]]
 target = "c11700160"                                   # Judis Nitcher
+moves = [
+  { move = 0xC16279D1, level = 1 },                         # Field of Force
+  { move = 0x06130797, level = 13 },                        # Rolling Kick
+  { move = 0xC19E2AEE, level = 20 },                        # Pegasus Shot
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0xAF7903F4                                         # MF/FW · forest
@@ -46,6 +70,12 @@ target = "c11700160"                                   # Judis Nitcher
 
 [[edit]]
 target = "c11700170"                                   # Lawton Dappermann
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x39CB2F02, level = 13 },                        # Dragster
+  { move = 0xD9BB22A7, level = 20 },                        # Air Ride
+  { move = 0x9349F1DA, level = 30 },                        # Zephyr Shot
+]
 
   [[edit.cards]]
   id = 0xB66232B5                                         # MF/FW · wind

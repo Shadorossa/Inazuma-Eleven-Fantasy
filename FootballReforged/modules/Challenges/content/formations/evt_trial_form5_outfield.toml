@@ -5,6 +5,10 @@
 # 2026-10-15; the id has not changed.
 schema = "VRFW.formation/1"
 
+[[alias]]                                      # Inazuma Fantasy's formation until 2026-10-15: it keeps that number
+old = "inazuma_fantasy.evt_trial_form5_outfield"
+new = "challenges.evt_trial_form5_outfield"
+
 # 0x892736BB = crc32("evt_trial_form5_outfield")
 [[formation]]
 name = "evt_trial_form5_outfield"

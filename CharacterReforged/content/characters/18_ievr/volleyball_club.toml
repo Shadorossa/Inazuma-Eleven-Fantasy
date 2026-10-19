@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11500340"                                   # Capricia Saiz
+moves = [
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0x72BFA108, level = 13 },                        # Wall of Atlantis
+  { move = 0x60F8D774, level = 20 },                        # Gravestone
+  { move = 0x9D236FA3, level = 30 },                        # Sword of the King
+]
 
   [[edit.cards]]
   id = 0xD3031413                                         # DF/MF · mountain
@@ -16,6 +22,12 @@ target = "c11500340"                                   # Capricia Saiz
 
 [[edit]]
 target = "c11700440"                                   # Mina Veyance
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0xEFFC6FA8, level = 13 },                        # Warhead
+  { move = 0xBDAE2862, level = 20 },                        # Hellfire
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x9B84A39D                                         # FW/MF · fire
@@ -26,6 +38,12 @@ target = "c11700440"                                   # Mina Veyance
 
 [[edit]]
 target = "c11721010"                                   # Bunette Volane
+moves = [
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0x41AEB4DF, level = 13 },                        # Crystal Barrier
+  { move = 0xC5B27C7E, level = 20 },                        # Storm Rider
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0x2386CB01                                         # GK/DF · wind
@@ -36,6 +54,12 @@ target = "c11721010"                                   # Bunette Volane
 
 [[edit]]
 target = "c11721020"                                   # Cocoa Bounce
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x0A3F27B7, level = 13 },                        # Foul Offence 3
+  { move = 0xA2BF7076, level = 20 },                        # Side Swipe
+  { move = 0x025FD09B, level = 30 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0x08AB98C2                                         # DF/MF · fire
@@ -46,6 +70,12 @@ target = "c11721020"                                   # Cocoa Bounce
 
 [[edit]]
 target = "c11721030"                                   # Naya Prism
+moves = [
+  { move = 0x1755397B, level = 1 },                         # Dark Energy Star
+  { move = 0x4E5B398C, level = 13 },                        # Acrobat Bomber
+  { move = 0x5643C944, level = 20 },                        # Killer Slide
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x11B0A983                                         # FW/DF · forest
@@ -56,6 +86,12 @@ target = "c11721030"                                   # Naya Prism
 
 [[edit]]
 target = "c11721040"                                   # Corwin Lockhart
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x613ABD43, level = 20 },                        # Dawnrise
+  { move = 0x2B343D01, level = 30 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0x5EF13F44                                         # DF/MF · wind
@@ -66,6 +102,12 @@ target = "c11721040"                                   # Corwin Lockhart
 
 [[edit]]
 target = "c11721050"                                   # Damian Stonewell
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0x7748D3F2, level = 20 },                        # Devil Ball
+  { move = 0x17A96A44, level = 30 },                        # Clone Faker
+]
 
   [[edit.cards]]
   id = 0x47EA0E05                                         # MF/FW · forest
@@ -76,6 +118,12 @@ target = "c11721050"                                   # Damian Stonewell
 
 [[edit]]
 target = "c11721060"                                   # Rylan Spiker
+moves = [
+  { move = 0x232D05EC, level = 1 },                         # Tiger Drive
+  { move = 0x8D5B6847, level = 13 },                        # Odin Sword
+  { move = 0x6B1CF436, level = 20 },                        # Bewildered
+  { move = 0x4FE09C7A, level = 30 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x6CC75DC6                                         # FW/MF · mountain
@@ -86,6 +134,12 @@ target = "c11721060"                                   # Rylan Spiker
 
 [[edit]]
 target = "c11721070"                                   # Ecole Linwood
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x928B9BED, level = 20 },                        # Optimal Trajectory
+  { move = 0x568262FA, level = 30 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0x75DC6C87                                         # MF/FW · forest
@@ -96,6 +150,12 @@ target = "c11721070"                                   # Ecole Linwood
 
 [[edit]]
 target = "c11721080"                                   # Landon Crosser
+moves = [
+  { move = 0xB8C5883B, level = 1 },                         # God Hand X
+  { move = 0xEF5D458A, level = 13 },                        # Burnout
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0xB13A6C3D, level = 30 },                        # Zigzag Flame
+]
 
   [[edit.cards]]
   id = 0xF2447048                                         # DF/GK · fire
@@ -106,6 +166,12 @@ target = "c11721080"                                   # Landon Crosser
 
 [[edit]]
 target = "c11721090"                                   # Duarte Wilde
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x6E53E2B3, level = 30 },                        # Angel Ball
+]
 
   [[edit.cards]]
   id = 0xEB5F4109                                         # MF/DF · wind
@@ -116,6 +182,12 @@ target = "c11721090"                                   # Duarte Wilde
 
 [[edit]]
 target = "c11721100"                                   # Finnard Grit
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0x67F17FA8, level = 13 },                        # Mega Quake
+  { move = 0x9765A74A, level = 20 },                        # Beast Fang
+  { move = 0x50E88A33, level = 30 },                        # Fist Beam
+]
 
   [[edit.cards]]
   id = 0x3B5F9077                                         # DF/GK · fire

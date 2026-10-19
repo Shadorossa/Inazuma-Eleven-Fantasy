@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08050010"                                   # Falcon Al-Saqir
+moves = [
+  { move = 0xEA12530F, level = 1 },                         # Double Rocket
+  { move = 0x4F387999, level = 13 },                        # Sun Block
+  { move = 0x00267A00, level = 20 },                        # Falcon Counter
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x6D2D0581                                         # GK/MF · wind
@@ -15,6 +21,12 @@ target = "c08050010"                                   # Falcon Al-Saqir
 
 [[edit]]
 target = "c08050020"                                   # Osprey Al-Bahar
+moves = [
+  { move = 0x72BFA108, level = 1 },                         # Wall of Atlantis
+  { move = 0x12DB8440, level = 13 },                        # Red Hot Shower
+  { move = 0x7CACF0B0, level = 20 },                        # Horn Train
+  { move = 0x029E7B25, level = 30 },                        # Gaia Break
+]
 
   [[edit.cards]]
   id = 0x46005642                                         # DF/FW · mountain
@@ -24,6 +36,12 @@ target = "c08050020"                                   # Osprey Al-Bahar
 
 [[edit]]
 target = "c08050030"                                   # Merlin Al-Yaman
+moves = [
+  { move = 0x72BFA108, level = 1 },                         # Wall of Atlantis
+  { move = 0x12DB8440, level = 13 },                        # Red Hot Shower
+  { move = 0xB13A6C3D, level = 20 },                        # Zigzag Flame
+  { move = 0xAE2B3429, level = 30 },                        # Atomic Flare
+]
 
   [[edit.cards]]
   id = 0x5F1B6703                                         # DF/FW · fire
@@ -34,6 +52,12 @@ target = "c08050030"                                   # Merlin Al-Yaman
 
 [[edit]]
 target = "c08050040"                                   # Kestrel Al-Sahir
+moves = [
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0xB8C5883B, level = 20 },                        # God Hand X
+  { move = 0xD8794890, level = 30 },                        # Kangaroo Kick
+]
 
   [[edit.cards]]
   id = 0x105AF1C4                                         # DF/GK · wind
@@ -43,6 +67,12 @@ target = "c08050040"                                   # Kestrel Al-Sahir
 
 [[edit]]
 target = "c08050050"                                   # Buzzard Al-Sahma
+moves = [
+  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x12DB8440, level = 13 },                        # Red Hot Shower
+  { move = 0x10A0C298, level = 20 },                        # Warp Drive
+  { move = 0xABA58912, level = 30 },                        # Ignited Steal
+]
 
   [[edit.cards]]
   id = 0x0941C085                                         # MF/DF · fire
@@ -52,6 +82,12 @@ target = "c08050050"                                   # Buzzard Al-Sahma
 
 [[edit]]
 target = "c08050060"                                   # Griffon Al-Qahir
+moves = [
+  { move = 0xC0A013E6, level = 1 },                         # Liar Shot
+  { move = 0x25276CB9, level = 13 },                        # Solar Surprise
+  { move = 0x5DA7EA06, level = 20 },                        # Boomerang Bluff
+  { move = 0x7A67325B, level = 30 },                        # Flame Dance
+]
 
   [[edit.cards]]
   id = 0x226C9346                                         # MF/FW · mountain
@@ -62,6 +98,12 @@ target = "c08050060"                                   # Griffon Al-Qahir
 
 [[edit]]
 target = "c08050070"                                   # Shrike Al-Jazzar
+moves = [
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x5FE1545F, level = 13 },                        # Flame Veil
+  { move = 0x28B0E96F, level = 20 },                        # Heavy Mettle
+  { move = 0xAE2B3429, level = 30 },                        # Atomic Flare
+]
 
   [[edit.cards]]
   id = 0x3B77A207                                         # MF/FW · mountain
@@ -71,6 +113,12 @@ target = "c08050070"                                   # Shrike Al-Jazzar
 
 [[edit]]
 target = "c08050080"                                   # Hawke Al-Bazzar
+moves = [
+  { move = 0x12DB8440, level = 1 },                         # Red Hot Shower
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x10A0C298, level = 20 },                        # Warp Drive
+  { move = 0xEA12530F, level = 30 },                        # Double Rocket
+]
 
   [[edit.cards]]
   id = 0xBCEFBEC8                                         # MF/GK · forest
@@ -81,6 +129,12 @@ target = "c08050080"                                   # Hawke Al-Bazzar
 
 [[edit]]
 target = "c08050090"                                   # Robin Al-Ahmar
+moves = [
+  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x12DB8440, level = 13 },                        # Red Hot Shower
+  { move = 0x5DA7EA06, level = 20 },                        # Boomerang Bluff
+  { move = 0x18019E0A, level = 30 },                        # Double Grenade
+]
 
   [[edit.cards]]
   id = 0xA5F48F89                                         # MF/FW · mountain
@@ -90,6 +144,12 @@ target = "c08050090"                                   # Robin Al-Ahmar
 
 [[edit]]
 target = "c08050100"                                   # Condor Al-Kundur
+moves = [
+  { move = 0x12DB8440, level = 1 },                         # Red Hot Shower
+  { move = 0xB813E775, level = 13 },                        # Flaming Firebird
+  { move = 0x1D4E888F, level = 20 },                        # Condor Dive
+  { move = 0x4DDFEDE2, level = 30 },                        # Eagle Buster
+]
 
   [[edit.cards]]
   id = 0x75F45EF7                                         # FW/DF · wind
@@ -100,6 +160,12 @@ target = "c08050100"                                   # Condor Al-Kundur
 
 [[edit]]
 target = "c08050110"                                   # Perry Al-Surah
+moves = [
+  { move = 0xB813E775, level = 1 },                         # Flaming Firebird
+  { move = 0x457EB170, level = 13 },                        # Pyrokinetic
+  { move = 0x12DB8440, level = 20 },                        # Red Hot Shower
+  { move = 0x9EA7BBCD, level = 30 },                        # Magmire
+]
 
   [[edit.cards]]
   id = 0x6CEF6FB6                                         # FW/DF · fire
@@ -109,6 +175,12 @@ target = "c08050110"                                   # Perry Al-Surah
 
 [[edit]]
 target = "c08050120"                                   # Harris Al-Suhra
+moves = [
+  { move = 0x12DB8440, level = 1 },                         # Red Hot Shower
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0xB813E775, level = 20 },                        # Flaming Firebird
+  { move = 0x592A96B4, level = 30 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0x47C23C75                                         # MF/DF · forest
@@ -119,6 +191,12 @@ target = "c08050120"                                   # Harris Al-Suhra
 
 [[edit]]
 target = "c08050130"                                   # Eagle Al-Suhra
+moves = [
+  { move = 0x12DB8440, level = 1 },                         # Red Hot Shower
+  { move = 0x10A0C298, level = 13 },                        # Warp Drive
+  { move = 0xB813E775, level = 20 },                        # Flaming Firebird
+  { move = 0x592A96B4, level = 30 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0x5ED90D34                                         # MF/DF · fire
@@ -128,6 +206,12 @@ target = "c08050130"                                   # Eagle Al-Suhra
 
 [[edit]]
 target = "c11808060"                                   # Anqa Qushchi
+moves = [
+  { move = 0xEA12530F, level = 1 },                         # Double Rocket
+  { move = 0x4F387999, level = 13 },                        # Sun Block
+  { move = 0xDF2D9951, level = 20 },                        # Close Counter
+  { move = 0x12DB8440, level = 30 },                        # Red Hot Shower
+]
 
   [[edit.cards]]
   id = 0x9A59F3F9                                         # GK/DF · mountain
@@ -138,6 +222,12 @@ target = "c11808060"                                   # Anqa Qushchi
 
 [[edit]]
 target = "c11808070"                                   # Roc Nasr
+moves = [
+  { move = 0x0536F9DB, level = 1 },                         # Sand Blaster
+  { move = 0x12DB8440, level = 13 },                        # Red Hot Shower
+  { move = 0xB813E775, level = 20 },                        # Flaming Firebird
+  { move = 0xEA12530F, level = 30 },                        # Double Rocket
+]
 
   [[edit.cards]]
   id = 0x8342C2B8                                         # GK/MF · mountain

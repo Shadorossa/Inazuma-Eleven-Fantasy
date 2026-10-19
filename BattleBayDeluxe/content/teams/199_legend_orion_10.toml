@@ -1,0 +1,252 @@
+# Independent Battle Bay Deluxe data; edit this team's own declaration.
+schema = "VRFW.team/2"
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_0_moves"
+moves = [0x291202C4, 0x49F3BB72, 0x06B22DB5, 0x1FA91CF4, 0x3F18A8D1, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_2_moves"
+moves = [0xC79443BB, 0x20D01E43, 0x24E5068E, 0x1F0836D6, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_3_moves"
+moves = [0x322F0C40, 0xDA3FF6C9, 0x24E5068E, 0x8C990270, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_1_moves"
+moves = [0xC79443BB, 0xC41097D5, 0x79224D8B, 0x2296A01A, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_4_moves"
+moves = [0x04941270, 0xC41097D5, 0xDE4ED944, 0x3B8D915B, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_6_moves"
+moves = [0x0E0A3F7A, 0x0F703132, 0x1F0836D6, 0x3B8D915B, 0xD67B0DE4, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_7_moves"
+moves = [0x0C7FF30F, 0x5BE73EBE, 0x768AB9C5, 0xA17C3D72, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_5_moves"
+moves = [0xB10794BC, 0x83BAE06D, 0x25276CB9, 0xF5915315, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_10_moves"
+moves = [0x14A6A879, 0x5BE73EBE, 0x768AB9C5, 0xD67B0DE4, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_9_moves"
+moves = [0x3E49918D, 0x59A180E7, 0xBC6C4255, 0xA5777314, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
+
+[[loadout]]
+id = "bb_chronicle_teams.legend_orion_10.slot_8_moves"
+moves = [0x0C7FF30F, 0x14A6A879, 0x7C1494CF, 0xA611F96B, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[team]]
+name = "legend_orion_10"
+key = "bbcr_legend_orion_10_bb"
+name_text = 0xA1F2B944
+level = 40
+series = "ORION"
+stadium_fallback = "s85g001"
+stadium_image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx"
+appears = [{ list = "bb_stadium", category = "secondary", season = "series_08", row = { copy = false, stadium = 0xCD06BB1D, image = "ev_chronicle_img/ev_ch_s85g001_0416.g4tx", image_name = "ev_ch_s85g001_0416", bgm = 0x6C1E6CDD } }]
+same_as = ["tm_cro_legend_ORION_10"]
+roster = "exact"
+description = 0x00000000
+formation = 0x937CAB03
+kit = 0x377E856E
+emblem = 0x07D324E6
+tactics = [0x3B5E5C95, 0x921A0AE5, 0x741FCA52]
+skills = []
+stadium = 0xCD06BB1D
+
+[[team.member]]
+slot = 0
+card = 0x15936003
+uid = 0x112DBD4D
+number = 1
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_0_moves"
+
+[[team.member]]
+slot = 2
+card = 0x0C885142
+uid = 0x08368C0C
+number = 2
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_2_moves"
+
+[[team.member]]
+slot = 3
+card = 0xDC88803C
+uid = 0xD8365D72
+number = 3
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_3_moves"
+
+[[team.member]]
+slot = 1
+card = 0x420BADB2
+uid = 0x46B570FC
+number = 4
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_1_moves"
+
+[[team.member]]
+slot = 4
+card = 0x5B109CF3
+uid = 0x5FAE41BD
+number = 5
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_4_moves"
+
+[[team.member]]
+slot = 6
+card = 0x703DCF30
+uid = 0x7483127E
+number = 6
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_6_moves"
+
+[[team.member]]
+slot = 7
+card = 0xD46876F2
+uid = 0xD0D6ABBC
+number = 7
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_7_moves"
+
+[[team.member]]
+slot = 5
+card = 0x6EE5D3A8
+uid = 0x6A5B0EE6
+number = 8
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_5_moves"
+
+[[team.member]]
+slot = 10
+card = 0xCD7347B3
+uid = 0xC9CD9AFD
+number = 9
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_10_moves"
+
+[[team.member]]
+slot = 9
+card = 0x3F7C59F7
+uid = 0x3BC284B9
+number = 10
+captain = true
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_9_moves"
+
+[[team.member]]
+slot = 8
+card = 0xA8DDE880
+uid = 0xAC6335CE
+number = 11
+captain = false
+equipment = [0x00000000, 0x00000000, 0x00000000, 0x00000000]
+title = 0x00000000
+flag = 0
+level_offset = 0
+rarity_step = 4
+c14_19 = [-1, -1, -1, -1, -1, -1]
+rates = [1, 1, 1, 1, 1, 1, 1, 1]
+role = [0, 0]
+loadout = "bb_chronicle_teams.legend_orion_10.slot_8_moves"

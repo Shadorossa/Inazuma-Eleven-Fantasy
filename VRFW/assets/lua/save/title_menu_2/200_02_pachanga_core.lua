@@ -133,6 +133,16 @@ do
     elseif op == O.DIFFICULTY then
       call(1104380539 --[[difficulty helper]], a)
     elseif op == O.RESERVE then
+      -- stadium 0 = nobody chose one (no rival's home, no stadium of the rules): with the caller's stadium left open
+      -- the friendly is a home match, played at the player team's home stadium when a mod provides one
+      if b == 0 and P.home_open then
+        local home, team = P.home_stadium()
+        if home ~= 0 then
+          P.log("home match: team", team, "home stadium", home)
+          b = home
+        end
+      end
+      P.home_open = false
       local ok, r = pcall(funcLuaCommand, 1620561217 --[[CMND_RESERVE_SOCCER]], a, b, c)
       P.log("reserve", a, b, c, tostring(ok), tostring(r))
       return ok and r ~= false and r ~= nil
@@ -169,6 +179,25 @@ do
   end
   P.exec = exec
 
+  -- The player team's home stadium (map crc, 0 = none) and the team set asked: the providers mods register with
+  -- VRFW_HomeStadium (framework menu _all 73_home_stadium.lua). set = nil -> the team the match is played with (the VS
+  -- team set; an active friendly team was swapped in before the reservation).
+  function P.home_stadium(set)
+    local M = VRFW_HomeStadium
+    if type(M) ~= "table" or type(M.Of) ~= "function" then
+      return 0, set
+    end
+    if type(set) ~= "number" then
+      local ok, vs = pcall(funcLuaCommand, 3713813716 --[[CMND_GET_VS_USE_TEAM_SET]])
+      set = (ok and type(vs) == "number") and vs or -1
+    end
+    local ok, map = pcall(M.Of, set)
+    if ok and type(map) == "number" then
+      return map, set
+    end
+    return 0, set
+  end
+
   function P.rollback(n)
     for i = 1, (n or 0) do
       local op, a, b, c = call(P.CMD.STEP, -i)
@@ -180,7 +209,7 @@ do
 
   -- THE function. Runs inside the caller's coroutine (it yields). ctx = {tag, sub, game, difficulty, objective, set,
   -- stadium, rival, map = {map, x, y, z, rot}, on_reserved = function, on_failed = function(why)}; set = nil -> the
-  -- active pachanga dock; rival = nil -> the row's rival team (asked at the call). Returns true, or false + why (the launch was rolled back; the caller shows its message).
+  -- active pachanga dock; stadium = nil -> a home match when nothing else picks one (P.home_stadium), 0 = the row's own; rival = nil -> the row's rival team (asked at the call). Returns true, or false + why (the launch was rolled back; the caller shows its message).
   function P.start(id, ctx)
     ctx = ctx or {}
     local set = ctx.set
@@ -204,6 +233,7 @@ do
       return false, code
     end
     local skip = false
+    P.home_open = ctx.stadium == nil   -- the caller left the stadium open (0 = the row's own stadium, on purpose)
     for i = 1, (n or 0) do
       local op, a, b, c = call(P.CMD.STEP, i)
       if type(op) ~= "number" or op == 0 then
@@ -228,6 +258,7 @@ do
         end
       end
     end
+    P.home_open = false
     return true
   end
 

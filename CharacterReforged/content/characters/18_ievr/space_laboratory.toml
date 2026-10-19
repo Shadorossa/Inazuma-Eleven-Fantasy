@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700040"                                   # Raymond Galak
+moves = [
+  { move = 0x52CEB5F6, level = 1 },                         # Iron Wall
+  { move = 0x60F8D774, level = 13 },                        # Gravestone
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0xA8215D7C, level = 30 },                        # The Mountain
+]
 
   [[edit.cards]]
   id = 0x9C8D0B41                                         # DF/MF · mountain
@@ -16,6 +22,12 @@ target = "c11700040"                                   # Raymond Galak
 
 [[edit]]
 target = "c11700050"                                   # Luceus Cloudstrider
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0xA9E3374B, level = 20 },                        # Cyclone Sprint
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0x85963A00                                         # MF/DF · wind
@@ -26,6 +38,12 @@ target = "c11700050"                                   # Luceus Cloudstrider
 
 [[edit]]
 target = "c11700060"                                   # Cosmo Starward
+moves = [
+  { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x0A3F27B7, level = 13 },                        # Foul Offence 3
+  { move = 0x18019E0A, level = 20 },                        # Double Grenade
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0xAEBB69C3                                         # FW/MF · fire
@@ -36,6 +54,12 @@ target = "c11700060"                                   # Cosmo Starward
 
 [[edit]]
 target = "c11700430"                                   # Starry Durant
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x70417B2E, level = 13 },                        # Deceptor Dribble
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0xDCC9CCA3, level = 30 },                        # Tesla Coil
+]
 
   [[edit.cards]]
   id = 0xD4C5355A                                         # DF/MF · forest
@@ -46,6 +70,12 @@ target = "c11700430"                                   # Starry Durant
 
 [[edit]]
 target = "c11720010"                                   # Santi Lite
+moves = [
+  { move = 0xA01CD34D, level = 1 },                         # Temporal Wall
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0x9B3AAC64                                         # MF/GK · wind
@@ -56,6 +86,12 @@ target = "c11720010"                                   # Santi Lite
 
 [[edit]]
 target = "c11720020"                                   # Jackson Bover
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0x1A868BED, level = 13 },                        # Clone Defence
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0xB017FFA7                                         # DF/MF · forest
@@ -66,6 +102,12 @@ target = "c11720020"                                   # Jackson Bover
 
 [[edit]]
 target = "c11720040"                                   # Eilidh Innes
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x3A4FFB6C, level = 13 },                        # The Ikaros
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0xAF150D21, level = 30 },                        # Swallow Counter
+]
 
   [[edit.cards]]
   id = 0xE64D5821                                         # MF/DF · fire
@@ -76,6 +118,12 @@ target = "c11720040"                                   # Eilidh Innes
 
 [[edit]]
 target = "c11720050"                                   # Ashe Connelly
+moves = [
+  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0xC42D6F54, level = 13 },                        # Aikido
+  { move = 0x1D4E888F, level = 20 },                        # Condor Dive
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0xFF566960                                         # MF/FW · wind
@@ -86,6 +134,12 @@ target = "c11720050"                                   # Ashe Connelly
 
 [[edit]]
 target = "c11720060"                                   # Nova Holloway
+moves = [
+  { move = 0x2C5D1441, level = 1 },                         # Song of the Three Kingdoms
+  { move = 0x8AF3EAB9, level = 13 },                        # Hammer of Fury
+  { move = 0x485150D9, level = 20 },                        # Body Shield
+  { move = 0x00196EC2, level = 30 },                        # Earthquake
+]
 
   [[edit.cards]]
   id = 0xD47B3AA3                                         # GK/DF · mountain
@@ -96,6 +150,12 @@ target = "c11720060"                                   # Nova Holloway
 
 [[edit]]
 target = "c11720070"                                   # Lyra Nazar
+moves = [
+  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
+  { move = 0xB27F13ED, level = 13 },                        # Death Zone
+  { move = 0x530CDFC1, level = 20 },                        # Mystifying Mist
+  { move = 0x4E5B398C, level = 30 },                        # Acrobat Bomber
+]
 
   [[edit.cards]]
   id = 0xCD600BE2                                         # FW/DF · forest
@@ -106,6 +166,12 @@ target = "c11720070"                                   # Lyra Nazar
 
 [[edit]]
 target = "c11749010"                                   # Altair Aldrin
+moves = [
+  { move = 0x07D16DA0, level = 1 },                         # Inazuma-1
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0xA4B51923, level = 20 },                        # The Typhoon
+  { move = 0xC2E6ADBF, level = 30 },                        # Log Roll
+]
 
   [[edit.cards]]
   id = 0x6972164E                                         # FW/MF · wind

@@ -1,0 +1,9 @@
+# Home Stadium: the stadium picture of the selector (the retail stadium pickers' frame win05_40_sub_image_frame, as in
+# soccer_vs_mydock_option_menu / enjoy_team_select_menu): a layer of «Plantilla de equipo» (soccer_team_dock_menu),
+# not opened with the screen; assets\lua\soccer_team_dock_menu\300_home_stadium.lua opens it with the window and shows
+# the focused stadium's picture in it (GetStadiumTextureInfo, the retail calls of enjoy_team_select_menu_offline).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "win05_40_sub_image_frame", object = "win05_40_sub_image_frame", count = 1, groups = [{ group = "soccer_team_dock_menu", flags = [0, 0, 0, 0, 1, 0] }] }

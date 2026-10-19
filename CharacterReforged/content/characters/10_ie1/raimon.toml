@@ -9,10 +9,10 @@ target = "c01000010"                                   # Mark Evans
 growth = "normal"
 stats = { kick = 247, control = 216, technique = 163, pressure = 201, physical = 258, intelligence = 228, agility = 269, freedom = 209 }
 moves = [
-  { move = 0xF64674CB, level = 1 },                       # Fist of Justice
-  { move = 0x8AF3EAB9, level = 1 },                       # Hammer of Fury
-  { move = 0x93E8DBF8, level = 1 },                       # Dimensional Hand
-  { move = 0xEE9F2FBD, level = 1 },                       # God Catch
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
+  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
+  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
 ]
 
   [[edit.cards]]
@@ -26,10 +26,13 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 247, control = 220, technique = 239, pressure = 215, physical = 240, intelligence = 301, agility = 193, freedom = 389 }
 moves = [
-  { move = 0x3C843987, level = 1 },                       # Flurry Dash
-  { move = 0xC21AFE80, level = 1 },                       # Whirlwind Drop
-  { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
-  { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+  { move = 0x3C843987, level = 7 },                         # Flurry Dash
+  { move = 0x19025F83, level = 18 },                        # Quick Draw
+  { move = 0x17A96A44, level = 36 },                        # Clone Faker
+  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
+]
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
 ]
 
 [[edit]]
@@ -38,14 +41,23 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 78, control = 211, technique = 221, pressure = 265, physical = 248, intelligence = 320, agility = 201, freedom = 297 }
 moves = [
-  { move = 0x7D6E9A87, level = 1 },                       # The Wall
-  { move = 0x4031A7F5, level = 12 },                      # Mole Fake
-  { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
-  { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  { move = 0x7D6E9A87, level = 11 },                        # The Wall
+  { move = 0x166B0073, level = 16 },                        # Super Armadillo
+  { move = 0x4031A7F5, level = 32 },                        # Mole Fake
+  { move = 0x67F17FA8, level = 55 },                        # Mega Quake
+]
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
 ]
 
 [[edit]]
 target = "c01000040"                                   # Jim Wraith
+moves = [
+  { move = 0x4F58F805, level = 8 },                         # Coil Turn
+  { move = 0x55C71D2A, level = 22 },                        # About Face
+  { move = 0x592A96B4, level = 32 },                        # Afterimage
+  { move = 0xB5B7108F, level = 44 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x4D223B67                                         # DF/GK · forest
@@ -56,6 +68,15 @@ target = "c01000040"                                   # Jim Wraith
 
 [[edit]]
 target = "c01000050"                                   # Tod Ironside
+moves = [
+  { move = 0xDF70E04C, level = 7 },                         # Rodeo Clown
+  { move = 0x1F0836D6, level = 10 },                        # Comet Shot
+  { move = 0xDEB28A7B, level = 25 },                        # Monkey Turn
+  { move = 0x0455B9CE, level = 35 },                        # Run Ball Run
+]
+VRFW.MoveGrades = [
+  { Move = 0x1F0836D6, Grade = 1 },                         # Comet Shot
+]
 
   [[edit.cards]]
   id = 0x54390A26                                         # DF/MF · fire
@@ -66,6 +87,12 @@ target = "c01000050"                                   # Tod Ironside
 
 [[edit]]
 target = "c01000060"                                   # Steve Grim
+moves = [
+  { move = 0x06130797, level = 10 },                        # Rolling Kick
+  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
+  { move = 0x2B343D01, level = 39 },                        # Cyclone
+  { move = 0x79224D8B, level = 50 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x7F1459E5                                         # MF/DF · wind
@@ -76,6 +103,12 @@ target = "c01000060"                                   # Steve Grim
 
 [[edit]]
 target = "c01000070"                                   # Tim Saunders
+moves = [
+  { move = 0x259F08C6, level = 6 },                         # Whirlwind Twister
+  { move = 0xA8E0F6C2, level = 18 },                        # Kung Fu Header
+  { move = 0x17A96A44, level = 32 },                        # Clone Faker
+  { move = 0x2D3E5454, level = 46 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0x660F68A4                                         # MF/DF · forest
@@ -86,6 +119,12 @@ target = "c01000070"                                   # Tim Saunders
 
 [[edit]]
 target = "c01000080"                                   # Sam Kincaid
+moves = [
+  { move = 0x35E70F22, level = 12 },                        # Grenade Shot
+  { move = 0x6B1CF436, level = 14 },                        # Bewildered
+  { move = 0xACAC21CE, level = 23 },                        # Fake Ball
+  { move = 0x4890FB67, level = 34 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0xE197746B                                         # MF/DF · fire
@@ -96,6 +135,12 @@ target = "c01000080"                                   # Sam Kincaid
 
 [[edit]]
 target = "c01000090"                                   # Maxwell Carson
+moves = [
+  { move = 0x19025F83, level = 7 },                         # Quick Draw
+  { move = 0xAAA6489B, level = 10 },                        # Spiral Shot
+  { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
+  { move = 0x4AD6453E, level = 36 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0xF88C452A                                         # FW/MF · wind
@@ -108,10 +153,13 @@ target = "c01000100"                                   # Axel Blaze
 growth = "normal"
 stats = { kick = 328, control = 244, technique = 258, pressure = 184, physical = 208, intelligence = 205, agility = 185, freedom = 247 }
 moves = [
-  { move = 0x518BCA26, level = 1 },                       # Fire Tornado
-  { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
-  { move = 0x0B011EBF, level = 1 },                       # Fireball Screw
-  { move = 0xEAB3792D, level = 1 },                       # Grand Fire
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
+  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
+  { move = 0x19025F83, level = 26 },                        # Quick Draw
+]
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
 ]
 
 [[edit]]
@@ -119,10 +167,13 @@ target = "c01000110"                                   # Kevin Dragonfly
 rank = 3
 growth = "normal"
 moves = [
-  { move = 0x2CFC3E63, level = 1 },                       # Dragon Crash
-  { move = 0xE937AD43, level = 1 },                       # Dragon Slayer
-  { move = 0x5F989B9E, level = 18 },                      # Wyvern Crash
-  { move = 0x10D90D59, level = 32 },                      # Wyvern Blizzard
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
+  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
+  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+]
+VRFW.MoveGrades = [
+  { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
 ]
 
   [[edit.cards]]
@@ -139,6 +190,26 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 238, control = 279, technique = 282, pressure = 197, physical = 146, intelligence = 240, agility = 165, freedom = 417 }
+moves = [
+  { move = 0x01DB04F5, level = 28 },                        # Defence Scan
+  { move = 0x0F703132, level = 40 },                        # Black Magic
+  { move = 0x61FB16FD, level = 75 },                        # Divine Arrows
+  { move = 0xDF70E04C, level = 99 },                        # Rodeo Clown
+]
+
+  [[edit.cards]]
+  id = 0x1ABAF6D6    # this card's moveset differs from the list above
+  moves = [
+    { move = 0x01DB04F5, level = 28 },                      # Defence Scan
+    { move = 0x0F703132, level = 40 },                      # Black Magic
+    { move = 0x61FB16FD, level = 75 },                      # Divine Arrows
+    { move = 0xDF70E04C, level = 99 },                      # Rodeo Clown
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x7200101B, level = 1 },                       # Vega [aura]
+  ]
 
 [[edit]]
 target = "c01000010_5000"                              # Mark Evans
@@ -165,10 +236,10 @@ rank = 3
 growth = "normal"
 stats = { kick = 293, control = 257, technique = 250, pressure = 207, physical = 153, intelligence = 254, agility = 171, freedom = 393 }
 moves = [
-  { move = 0x5049A011, level = 1 },                       # Spinning Shot
-  { move = 0x261BDCA8, level = 18 },                      # Moonsault
-  { move = 0x7A67325B, level = 30 },                      # Flame Dance
-  { move = 0xAE2B3429, level = 53 },                      # Atomic Flare
+  { move = 0x5049A011, level = 1 },                         # Spinning Shot
+  { move = 0x4E9A9232, level = 18 },                        # Spinning Cut
+  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
+  { move = 0x64B40078, level = 47 },                        # The Phoenix
 ]
 
 [[edit]]
@@ -178,14 +249,20 @@ rank = 3
 growth = "normal"
 stats = { kick = 165, control = 216, technique = 186, pressure = 247, physical = 242, intelligence = 319, agility = 208, freedom = 375 }
 moves = [
-  { move = 0x5643C944, level = 1 },                       # Killer Slide
-  { move = 0x025FD09B, level = 21 },                      # Volcano Cut
-  { move = 0x4AD6453E, level = 32 },                      # Back Tornado
-  { move = 0xA9229CF5, level = 55 },                      # The Galaxy
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x7EEA4EE9, level = 19 },                        # Blade Attack
+  { move = 0x4AD6453E, level = 32 },                        # Back Tornado
+  { move = 0x5781A373, level = 45 },                        # Hurricane Arrows
 ]
 
 [[edit]]
 target = "c01010930"                                   # Paul Peabody
+moves = [
+  { move = 0xDF70E04C, level = 5 },                         # Rodeo Clown
+  { move = 0x55C71D2A, level = 22 },                        # About Face
+  { move = 0x8C382852, level = 35 },                        # God Hand
+  { move = 0xA491AFFF, level = 68 },                        # Majin the Hand
+]
 
   [[edit.cards]]
   id = 0x30D2BF9F                                         # DF/GK · wind
@@ -195,6 +272,12 @@ target = "c01010930"                                   # Paul Peabody
 
 [[edit]]
 target = "c02024730"                                   # Nelly Raimon
+moves = [
+  { move = 0x8B90AAAC, level = 12 },                        # Fortissimo
+  { move = 0x86F5F6E8, level = 20 },                        # Cupid's Arrow
+  { move = 0xDA3FF6C9, level = 31 },                        # Criss-Cross
+  { move = 0x1755397B, level = 82 },                        # Dark Energy Star
+]
 
   [[edit.cards]]
   id = 0xC366658F                                         # FW/MF · fire
@@ -209,9 +292,21 @@ target = "c02024740"                                   # Celia Hills
   growth_pattern = 1
   growth = "normal"
   stats = { kick = 257, control = 227, technique = 251, pressure = 223, physical = 165, intelligence = 231, agility = 186, freedom = 375 }
+  moves = [
+    { move = 0x6ADE9E01, level = 1 },                       # Illusory Ball
+    { move = 0x01DB04F5, level = 1 },                       # Defence Scan
+    { move = 0x4E9A9232, level = 27 },                      # Spinning Cut
+    { move = 0x32EEA7FE, level = 70 },                      # Death Zone 2
+  ]
 
 [[edit]]
 target = "c02024750"                                   # Silvia Woods
+moves = [
+  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
+  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
+  { move = 0x8C382852, level = 23 },                        # God Hand
+  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+]
 
   [[edit.cards]]
   id = 0x953CC209                                         # GK/DF · mountain
@@ -237,6 +332,12 @@ target = "c01000100_5000"                              # Axel Blaze
 
 [[edit]]
 target = "c11901150"                                   # Mark Evans
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
+  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
+  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+]
 
   [[edit.cards]]
   id = 0x06E25622                                         # GK/FW · mountain

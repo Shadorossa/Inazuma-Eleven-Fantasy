@@ -1,0 +1,207 @@
+schema = "VRFW.menu/2"
+
+# The bottom of the main menu (title_menu_2) under BetterMenu (docs/game/mods/better-menu.md §10): the lower tile row
+# (Guía, Opciones, Información, Guardar, Mods) smaller and near the bottom edge, no «Deluxe Edition» logo, no «V» / «?»
+# help prompt, the copyright at the bottom left, and the DLC block lower down as one row of small icons: the game's
+# four plus the two big banners as icons (hovering one shows its banner in the game's DLC balloon; Lua:
+# assets\lua\title_menu_2\200_bottom_row.lua). Positions are menu layout px (1920 x 1080, y up, the screen's top left
+# = (0, 0)). Off: config.toml [main_menu] compact_bottom_row = false (restart).
+when = { config = "main_menu.compact_bottom_row", default = true }
+
+# ---- the lower tile row (title02_02 locator sheet) -------------------------------------------------------------------
+# Tiles at 0.6 instead of 0.8 (3/4 of their size, icons and frames), centred where they were and lowered so they end
+# 20 px above the bottom edge (tile centre y 1012, 96 px tall). The framework's «Guardar» / «Mods» buttons are added
+# after this and keep the row centred. Each row origin is scaled about the row's centre (960, 863) -> (960, 1012):
+# origin' = (960, -1012) + 0.75 * (origin - (960, -863)).
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_pos_atc_btn02"
+translate = [667.5, -1012.0]
+scale = [0.6, 0.6]
+
+# The lower tiles' name labels (shown under the focused tile in the game) at 3/4 size, ABOVE the tiles and above the
+# white plate behind them (plate top y 952): label centre y 914 = origin y 745 + 0.75 * 225.
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_pos_atc_telop02"
+translate = [666.0, -745.0]
+scale = [0.75, 0.75]
+
+# ---- «V» / «?» help prompt (title02_08_explanation_button_guide) out of the screen ---------------------------------
+[[layout]]
+file = "common/menu/50_title/title02/title02_08/title02_08.g4pkm"
+joint = "_pos_base01"
+translate = [5000.0, -1080.0]
+
+# ---- the DLC block (title02_20 locator sheet) ------------------------------------------------------------------------
+# «Deluxe Edition» (title02_21_dlc_buy_btn, on _atc_btn02_l) out of the screen; the focus shifts below skip it.
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_pos_atc01_l"
+translate = [-2000.0, -848.0]
+
+# The small icons: one tight row of six, 66 px apart (the game: 80; each icon is 94 px wide, so they overlap a little),
+# the last one where the game's last icon is (x 1829), 59 px lower (centre y 1040); icons 5 and 6 are the two banners
+# (locators _atc_logo_icon05 / 06, attach rows below).
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_pos_logo_icon_atc01"
+translate = [1499.0, -1040.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_atc_logo_icon02"
+translate = [66.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_atc_logo_icon03"
+translate = [132.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_atc_logo_icon04"
+translate = [198.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_atc_logo_icon05"
+parent = "_pos_logo_icon_atc01"
+translate = [264.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_atc_logo_icon06"
+parent = "_pos_logo_icon_atc01"
+translate = [330.0, 0.0]
+
+# The balloon slot of the hovered icon's banner (and the hidden banners' slots), 59 px lower, centred so its first
+# tail (x -121 of the balloon) is over the first icon: 1499 + 121 = 1620 (balloon x 1430 ... 1810, right of the tiles).
+[[layout]]
+file = "common/menu/50_title/title02/title02_20/title02_20.g4pkm"
+joint = "_pos_logo_atc01"
+translate = [1620.0, -1034.0]
+
+# The balloon's four tails (68 px quads, left edges) at the icons' new 66 px step (the game: -155, -75, 5, 85).
+[[layout]]
+file = "common/menu/50_title/title02/title02_24/title02_24.g4pkm"
+joint = "_logo_balloon_tail02"
+translate = [-89.0, -32.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_24/title02_24.g4pkm"
+joint = "_logo_balloon_tail03"
+translate = [-23.0, -32.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_24/title02_24.g4pkm"
+joint = "_logo_balloon_tail04"
+translate = [43.0, -32.0]
+
+# Attach rows of the two new icons (instances 4 and 5 of title02_23_dlc_logo_simple = -255377268), copies of the row of
+# instance 3: label = locator row name better_menu_dlc_icon_1 / _2 (crc32 -1880144210 / 384177940, the names the Lua
+# enables), locator _atc_logo_icon05 / 06 (crc32 -1740764875 / 20404367).
+[[object_set]]
+object = "title02_20_dlc_buy_btn_atc_locator"
+copy = [
+    { param = "NullLayerName", match = { 3 = -255377268, 4 = 3 }, values = { 1 = -1880144210, 2 = -1740764875, 4 = 4 } },
+    { param = "NullLayerName", match = { 3 = -255377268, 4 = 3 }, values = { 1 = 384177940, 2 = 20404367, 4 = 5 } },
+]
+
+# Two more small icons (the game's 4 + the 2 banners) and the focus ring without «Deluxe Edition»: left of the first
+# lower tile = the last DLC icon, right of the last DLC icon = the first lower tile (the game: both «Deluxe Edition»).
+# Layers: lower row -421094784, DLC icons -255377268.
+[[patch]]
+menu = "title_menu_2"
+layer = "title02_23_dlc_logo_simple"
+count = 6
+set_row = [
+    { list = "MENU_FOCUS_SHIFT_BASE_INFO", index = 0, values = ["CMD_FCS_BACK", 0, -255377268, -1] },
+    { list = "MENU_FOCUS_SHIFT_BASE_INFO", index = 13, values = ["CMD_FCS_NEXT", -1, -421094784, 0] },
+]
+
+# The two icons' art (research/scripts/better_menu_dlc_icons_build.py, cut from the game's banners).
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_23/<LG>/title02_23.g4tx"
+name = "better_menu_dlc_icon_1"
+png = "assets/images/menu/title02_23/better_menu_dlc_icon_1.png"
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_23/<LG>/title02_23.g4tx"
+name = "better_menu_dlc_icon_2"
+png = "assets/images/menu/title02_23/better_menu_dlc_icon_2.png"
+
+# ---- the copyright at the bottom left -------------------------------------------------------------------------------
+# Its layout is shared with the press-start title screens: this menu gets its own copy (the text quad 32 px from the
+# left edge instead of 32 px from the right) and the layer is anchored to the left.
+[[layout]]
+file = "common/menu/50_title/title00/better_menu_copyright/better_menu_copyright.g4pkm"
+from = "common/menu/50_title/title00/title00_08/title00_08.g4pkm"
+joint = "_inc01"
+translate = [32.0, -1005.0]
+
+[[object]]
+name = "better_menu_copyright"
+from = "title00_08_copyright"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/50_title/title00/title00_08/title00_08.g4pkm" }, values = { 1 = "common/menu/50_title/title00/better_menu_copyright/better_menu_copyright.g4pkm" } }]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/50_title/title00/title00_08/title00_08.g4tx"] }]
+
+[[patch]]
+menu = "title_menu_2"
+layer = "title00_08_copyright"
+object = "better_menu_copyright"
+align = ["left", "bottom"]
+
+# ---- the plate behind the five lower tiles ---------------------------------------------------------------------------
+# One parallelogram (slanted as the tiles: 0.4 px left per px down) with the player plate's hexagon pattern, behind the
+# lower row. It hangs on the row's origin locator _pos_atc_btn02 (an attach row of title02_02_item_atc_locator_2), so it
+# takes the row's scale (0.6), its centring by the framework's «Guardar» / «Mods» build and its slide when the row gets
+# the focus (-50 px). Its box is in the row's own units (y up): the tiles' locators sit at x 244 … 1420, each tile
+# 158 units either side (its _btn_shadow01 quad), the focused tile 100 units wider (the tiles right of it slide by
+# that): the widest row spans x 86 … 1678. The plate: x 66 … 1698 (20 units = 12 px either side in that state), y
+# +100 … -100 (tiles ±80). Drawn under the tiles (draw priority 200; tiles 201) and over the 3D scene. The copied badge
+# layout reads the atlas of its own folder: content\images\menu\20_cmn\better_menu_tile_plate.toml (the quad's sprite
+# icon_new01 = the plate, drawn at this box by research/scripts/better_menu_dlc_icons_build.py from the retail player
+# plate's pattern; tile, scale, opacity, slant in research/scripts/data/better_menu_dlc_icons.toml [plate]).
+# The tiles' own white halo (sprite btn_shadow01 of each tile) is hidden by the Lua on the lower row only.
+[[layout]]
+file = "common/menu/20_cmn/cmn01/better_menu_tile_plate/better_menu_tile_plate.g4pkm"
+from = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm"
+joint = "_icon_new01"
+translate = [66.0, 100.0]
+scale = [1632.0, 200.0]
+
+[[object]]
+name = "better_menu_tile_plate"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 200 } },
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn01/better_menu_tile_plate/better_menu_tile_plate.g4pkm" } },
+]
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_tile_plate", object = "better_menu_tile_plate", count = 1, align = ["none", "none"], after = "title02_02_item_atc_locator_2", groups = [{ group = "title_menu_2", flags = [0, 1, 0, 0, 1, 0], after = "title02_02_item_atc_locator_2" }] }
+
+# its attach row: label / layer better_menu_tile_plate (crc32 -1055268084), locator _pos_atc_btn02 (crc32 423236622)
+[[object_set]]
+object = "title02_02_item_atc_locator_2"
+add = [{ block = "CMenuAttachLocator", param = "NullLayerName", values = [-1055268084, 423236622, -1055268084, 0] }]
+
+# ---- the version label («ver.7.1.2 VRFW 2.xx») at the top right corner -------------------------------------------------
+# Both layers keep their anchoring (right / top): the retail label (title02_04, its pieces placed by the framework's
+# content\menus\title_version.toml) and the framework's «VRFW» word (its copy evt_vrfw_title_word). Their common origin
+# _pos_scl_base01 (the game: (1873, -39), scale 0.65 x 0.9, the label's right end) gets scale x 0.72 (0.468 x 0.648)
+# and sits 24 px from the screen's right edge, its top ~24 px from the top: the top left holds the mode header
+# (title_mode_header.toml) since BetterMenu 0.4.12.
+[[layout]]
+file = "common/menu/50_title/title02/title02_04/title02_04.g4pkm"
+joint = "_pos_scl_base01"
+translate = [1896.0, -38.0]
+scale = [0.468, 0.648]
+
+[[layout]]
+file = "common/menu/50_title/title02/evt_vrfw_title_word/evt_vrfw_title_word.g4pkm"
+joint = "_pos_scl_base01"
+translate = [1896.0, -38.0]
+scale = [0.468, 0.648]

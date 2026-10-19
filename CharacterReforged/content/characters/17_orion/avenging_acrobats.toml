@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08060010"                                   # Bruce Lau
+moves = [
+  { move = 0xF8D0B98D, level = 1 },                         # Fantastic Save
+  { move = 0x47657634, level = 13 },                        # Flame Breath
+  { move = 0x574008CD, level = 20 },                        # Kung Fu Fighting
+  { move = 0x53E9C2A3, level = 30 },                        # Capable Hands
+]
 
   [[edit.cards]]
   id = 0x2A8D7F51                                         # GK/MF · fire
@@ -16,6 +22,12 @@ target = "c08060010"                                   # Bruce Lau
 
 [[edit]]
 target = "c08060020"                                   # Coryn Fong
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x7A67325B, level = 13 },                        # Flame Dance
+  { move = 0x17227C17, level = 20 },                        # Crack Shot
+  { move = 0x36A270F2, level = 30 },                        # Rolling Slide
+]
 
   [[edit.cards]]
   id = 0x01A02C92                                         # DF/FW · fire
@@ -25,6 +37,12 @@ target = "c08060020"                                   # Coryn Fong
 
 [[edit]]
 target = "c08060030"                                   # Michelle Luo
+moves = [
+  { move = 0x7A67325B, level = 1 },                         # Flame Dance
+  { move = 0x17227C17, level = 13 },                        # Crack Shot
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0x2C3D95DD, level = 30 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0x18BB1DD3                                         # DF/FW · mountain
@@ -35,6 +53,12 @@ target = "c08060030"                                   # Michelle Luo
 
 [[edit]]
 target = "c08060040"                                   # Sammo Tong
+moves = [
+  { move = 0x0BC0B501, level = 1 },                         # Last Lion of Defence
+  { move = 0x72BFA108, level = 13 },                        # Wall of Atlantis
+  { move = 0x67F17FA8, level = 20 },                        # Mega Quake
+  { move = 0x05567847, level = 30 },                        # Runaway Train
+]
 
   [[edit.cards]]
   id = 0x57FA8B14                                         # DF/MF · fire
@@ -45,6 +69,12 @@ target = "c08060040"                                   # Sammo Tong
 
 [[edit]]
 target = "c08060050"                                   # David Liang
+moves = [
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x592A96B4, level = 13 },                        # Afterimage
+  { move = 0x17227C17, level = 20 },                        # Crack Shot
+  { move = 0xDF70E04C, level = 30 },                        # Rodeo Clown
+]
 
   [[edit.cards]]
   id = 0x4EE1BA55                                         # MF/FW · forest
@@ -54,6 +84,12 @@ target = "c08060050"                                   # David Liang
 
 [[edit]]
 target = "c08060060"                                   # Donnie Yang
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0x17227C17, level = 13 },                        # Crack Shot
+  { move = 0x592A96B4, level = 20 },                        # Afterimage
+  { move = 0x79E3E635, level = 30 },                        # Racing Flame
+]
 
   [[edit.cards]]
   id = 0x65CCE996                                         # MF/FW · fire
@@ -64,6 +100,12 @@ target = "c08060060"                                   # Donnie Yang
 
 [[edit]]
 target = "c08060070"                                   # Bolo Cheung
+moves = [
+  { move = 0x58E8FC83, level = 1 },                         # Rolling Hell
+  { move = 0x485150D9, level = 13 },                        # Body Shield
+  { move = 0x8917BF4B, level = 20 },                        # Willy-Willy
+  { move = 0x7EEA4EE9, level = 30 },                        # Blade Attack
+]
 
   [[edit.cards]]
   id = 0x7CD7D8D7                                         # MF/GK · mountain
@@ -73,6 +115,12 @@ target = "c08060070"                                   # Bolo Cheung
 
 [[edit]]
 target = "c08060080"                                   # Jackie Tan
+moves = [
+  { move = 0x17227C17, level = 1 },                         # Crack Shot
+  { move = 0x4FE09C7A, level = 13 },                        # Acrobatic Keep
+  { move = 0x58E8FC83, level = 20 },                        # Rolling Hell
+  { move = 0xA5F2EFEA, level = 30 },                        # Brave Shot
+]
 
   [[edit.cards]]
   id = 0xFB4FC418                                         # MF/FW · mountain
@@ -83,6 +131,12 @@ target = "c08060080"                                   # Jackie Tan
 
 [[edit]]
 target = "c08060090"                                   # Jimmy Wongfu
+moves = [
+  { move = 0x17227C17, level = 1 },                         # Crack Shot
+  { move = 0x0E394D56, level = 13 },                        # Avenging Eagle
+  { move = 0xAEEA9F97, level = 20 },                        # Sigma Zone
+  { move = 0x259F08C6, level = 30 },                        # Whirlwind Twister
+]
 
   [[edit.cards]]
   id = 0xE254F559                                         # MF/DF · wind
@@ -91,6 +145,12 @@ target = "c08060090"                                   # Jimmy Wongfu
 
 [[edit]]
 target = "c08060100"                                   # Jet Long
+moves = [
+  { move = 0x58E8FC83, level = 1 },                         # Rolling Hell
+  { move = 0x427719AC, level = 13 },                        # Gale Dash
+  { move = 0x332CCDC9, level = 20 },                        # Heel Kick
+  { move = 0x025FD09B, level = 30 },                        # Volcano Cut
+]
 
   [[edit.cards]]
   id = 0x32542427                                         # FW/DF · fire
@@ -100,6 +160,12 @@ target = "c08060100"                                   # Jet Long
 
 [[edit]]
 target = "c08060110"                                   # Stephen Chang
+moves = [
+  { move = 0xA8E0F6C2, level = 1 },                         # Kung Fu Header
+  { move = 0x2354CA2D, level = 13 },                        # Wind God's Dance
+  { move = 0x574008CD, level = 20 },                        # Kung Fu Fighting
+  { move = 0x3C843987, level = 30 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x2B4F1566                                         # FW/DF · forest
@@ -110,6 +176,12 @@ target = "c08060110"                                   # Stephen Chang
 
 [[edit]]
 target = "c08060120"                                   # Mars Hung
+moves = [
+  { move = 0x64CDCFB9, level = 1 },                         # Rising Dragon
+  { move = 0x2FB941B3, level = 13 },                        # Stone Prison
+  { move = 0xD8794890, level = 20 },                        # Kangaroo Kick
+  { move = 0xA3F886BF, level = 30 },                        # Rock Hammer
+]
 
   [[edit.cards]]
   id = 0x006246A5                                         # MF/FW · mountain
@@ -120,6 +192,12 @@ target = "c08060120"                                   # Mars Hung
 
 [[edit]]
 target = "c08060130"                                   # Gordon Siu
+moves = [
+  { move = 0x2B343D01, level = 1 },                         # Cyclone
+  { move = 0x64CDCFB9, level = 13 },                        # Rising Dragon
+  { move = 0xD8794890, level = 20 },                        # Kangaroo Kick
+  { move = 0x316A7390, level = 30 },                        # Land Dragon
+]
 
   [[edit.cards]]
   id = 0x197977E4                                         # DF/FW · wind
@@ -130,6 +208,12 @@ target = "c08060130"                                   # Gordon Siu
 
 [[edit]]
 target = "c11808080"                                   # Lucy Wongfu
+moves = [
+  { move = 0x0E394D56, level = 1 },                         # Avenging Eagle
+  { move = 0x2296A01A, level = 13 },                        # Southern Cross
+  { move = 0x1F0836D6, level = 20 },                        # Comet Shot
+  { move = 0xAEEA9F97, level = 30 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0x04DADE77                                         # MF/DF · forest
@@ -139,6 +223,12 @@ target = "c11808080"                                   # Lucy Wongfu
 
 [[edit]]
 target = "c11808090"                                   # Wilson Ip
+moves = [
+  { move = 0xA553C5C8, level = 1 },                         # Clone Block
+  { move = 0xECD991E4, level = 13 },                        # The Stinger
+  { move = 0x9B3048AB, level = 20 },                        # Shadow Catch
+  { move = 0x4AF2F3E2, level = 30 },                        # Bridge to Nowhere
+]
 
   [[edit.cards]]
   id = 0x1DC1EF36                                         # GK/DF · forest

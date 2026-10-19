@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c03032010"                                   # Cyril Fox
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0x91AE65A1, level = 2 },                         # Giant Spider
+  { move = 0x4523C86D, level = 45 },                        # Killer Blade
+  { move = 0x3B8D915B, level = 45 },                        # Meteor Shower
+]
+VRFW.MoveGrades = [
+  { Move = 0x91AE65A1, Grade = 1 },                         # Giant Spider
+]
 
   [[edit.cards]]
   id = 0x4A636C50                                         # GK/MF · mountain
@@ -15,6 +24,12 @@ target = "c03032010"                                   # Cyril Fox
 
 [[edit]]
 target = "c03032020"                                   # Jacques Allemand
+moves = [
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x06D2AC29, level = 10 },                        # Diabolical Cut
+  { move = 0x087999EE, level = 30 },                        # Heel Drop
+  { move = 0xB5B7108F, level = 45 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x614E3F93                                         # DF/MF · forest
@@ -24,6 +39,12 @@ target = "c03032020"                                   # Jacques Allemand
 
 [[edit]]
 target = "c03032030"                                   # Phil A. Minion
+moves = [
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0x457EB170, level = 1 },                         # Pyrokinetic
+  { move = 0x06D2AC29, level = 10 },                        # Diabolical Cut
+  { move = 0x0D368F6B, level = 50 },                        # Heaven's Time
+]
 
   [[edit.cards]]
   id = 0x78550ED2                                         # DF/MF · fire
@@ -34,6 +55,12 @@ target = "c03032030"                                   # Phil A. Minion
 
 [[edit]]
 target = "c03032040"                                   # Buddy Plains
+moves = [
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0x3526A49C, level = 20 },                        # Road Roller
+  { move = 0x91AE65A1, level = 58 },                        # Giant Spider
+]
 
   [[edit.cards]]
   id = 0x37149815                                         # DF/MF · forest
@@ -43,6 +70,12 @@ target = "c03032040"                                   # Buddy Plains
 
 [[edit]]
 target = "c03032050"                                   # Dean Goddard
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x514A6198, level = 30 },                        # Asteroid Belt
+  { move = 0xC42D6F54, level = 45 },                        # Aikido
+  { move = 0xC5EF0563, level = 65 },                        # Three-Legged Rush
+]
 
   [[edit.cards]]
   id = 0x2E0FA954                                         # DF/MF · mountain
@@ -52,6 +85,12 @@ target = "c03032050"                                   # Dean Goddard
 
 [[edit]]
 target = "c03032060"                                   # Cecil Crowley
+moves = [
+  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x0A3F27B7, level = 20 },                        # Foul Offence 3
+  { move = 0x3B8D915B, level = 45 },                        # Meteor Shower
+  { move = 0x4CDC2C6B, level = 55 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x0522FA97                                         # MF/DF · wind
@@ -61,6 +100,12 @@ target = "c03032060"                                   # Cecil Crowley
 
 [[edit]]
 target = "c03032070"                                   # Seth Hedges
+moves = [
+  { move = 0x09BBF3D9, level = 1 },                         # Dark Whirlwind
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0x28B0E96F, level = 20 },                        # Heavy Mettle
+]
 
   [[edit.cards]]
   id = 0x1C39CBD6                                         # MF/DF · mountain
@@ -70,6 +115,12 @@ target = "c03032070"                                   # Seth Hedges
 
 [[edit]]
 target = "c03032080"                                   # Niccolo Mantegna
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x71831119, level = 20 },                        # Foul Offence 2
+  { move = 0x0A3F27B7, level = 58 },                        # Foul Offence 3
+  { move = 0xA01CD34D, level = 69 },                        # Temporal Wall
+]
 
   [[edit.cards]]
   id = 0x9BA1D719                                         # MF/DF · forest
@@ -79,6 +130,12 @@ target = "c03032080"                                   # Niccolo Mantegna
 
 [[edit]]
 target = "c03032090"                                   # Damien Crawford
+moves = [
+  { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
+  { move = 0xB27F13ED, level = 20 },                        # Death Zone
+  { move = 0x58E8FC83, level = 45 },                        # Rolling Hell
+  { move = 0xD9477198, level = 65 },                        # Emperor Penguin X
+]
 
   [[edit.cards]]
   id = 0x82BAE658                                         # MF/FW · wind
@@ -88,6 +145,12 @@ target = "c03032090"                                   # Damien Crawford
 
 [[edit]]
 target = "c03032100"                                   # Avinash Chowdhury
+moves = [
+  { move = 0x3D4653B0, level = 1 },                         # Poison Fog
+  { move = 0x8C990270, level = 1 },                         # Gunshot
+  { move = 0x568262FA, level = 25 },                        # Dark Tornado
+  { move = 0x28B0E96F, level = 50 },                        # Heavy Mettle
+]
 
   [[edit.cards]]
   id = 0x52BA3726                                         # FW/MF · wind
@@ -98,6 +161,12 @@ target = "c03032100"                                   # Avinash Chowdhury
 
 [[edit]]
 target = "c03032110"                                   # Sedgley Scofield
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x22EF6FDB, level = 35 },                        # Dark Phoenix
+  { move = 0x17A96A44, level = 44 },                        # Clone Faker
+  { move = 0x7FE98F60, level = 58 },                        # Ganymede Ray
+]
 
   [[edit.cards]]
   id = 0x4BA10667                                         # FW/MF · forest
@@ -107,6 +176,12 @@ target = "c03032110"                                   # Sedgley Scofield
 
 [[edit]]
 target = "c03032120"                                   # Grizzler Bruin
+moves = [
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x91AE65A1, level = 30 },                        # Giant Spider
+  { move = 0xD824318D, level = 30 },                        # Swan Dive
+  { move = 0x29728358, level = 60 },                        # Planet Shield
+]
 
   [[edit.cards]]
   id = 0x608C55A4                                         # GK/DF · fire
@@ -116,6 +191,12 @@ target = "c03032120"                                   # Grizzler Bruin
 
 [[edit]]
 target = "c03032130"                                   # Ian C. Wincy
+moves = [
+  { move = 0x18C035B4, level = 1 },                         # Ghost Pull
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0x91AE65A1, level = 30 },                        # Giant Spider
+  { move = 0x6633159F, level = 40 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0x799764E5                                         # DF/GK · forest
@@ -125,6 +206,12 @@ target = "c03032130"                                   # Ian C. Wincy
 
 [[edit]]
 target = "c03032140"                                   # Bandy Horsman
+moves = [
+  { move = 0x33ED6677, level = 1 },                         # Doppelganger
+  { move = 0x0A3F27B7, level = 25 },                        # Foul Offence 3
+  { move = 0x4B142F09, level = 35 },                        # Teleport Shot
+  { move = 0x58E8FC83, level = 50 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0x36D6F222                                         # MF/DF · mountain
@@ -134,6 +221,12 @@ target = "c03032140"                                   # Bandy Horsman
 
 [[edit]]
 target = "c03032150"                                   # Ali Caiman
+moves = [
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
+  { move = 0x568262FA, level = 25 },                        # Dark Tornado
+  { move = 0xAA67E325, level = 38 },                        # Desert Blast
+  { move = 0x71831119, level = 42 },                        # Foul Offence 2
+]
 
   [[edit.cards]]
   id = 0x2FCDC363                                         # FW/MF · wind
@@ -143,6 +236,12 @@ target = "c03032150"                                   # Ali Caiman
 
 [[edit]]
 target = "c03032160"                                   # Chris Ellis
+moves = [
+  { move = 0x520F1E48, level = 1 },                         # Psycho Shot
+  { move = 0x06D2AC29, level = 10 },                        # Diabolical Cut
+  { move = 0x514A6198, level = 45 },                        # Asteroid Belt
+  { move = 0xC4701649, level = 62 },                        # Ice Block
+]
 
   [[edit.cards]]
   id = 0x04E090A0                                         # DF/FW · wind

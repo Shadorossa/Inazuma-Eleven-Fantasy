@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04004210"                                   # Vivian Doosley
+moves = [
+  { move = 0xC636A810, level = 3 },                         # Combustion Catch
+  { move = 0xA7157B91, level = 10 },                        # Power Shield
+  { move = 0x31CB59B2, level = 16 },                        # God Hand
+  { move = 0xAF150D21, level = 45 },                        # Swallow Counter
+]
 
   [[edit.cards]]
   id = 0xEE8BA3BC                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c04004210"                                   # Vivian Doosley
 
 [[edit]]
 target = "c04004220"                                   # Sean Muller
+moves = [
+  { move = 0xC41097D5, level = 8 },                         # Acrobotics
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0x3EC287DE, level = 30 },                        # Bubble Gum
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0xC5A6F07F                                         # DF/MF · mountain
@@ -25,6 +37,12 @@ target = "c04004220"                                   # Sean Muller
 
 [[edit]]
 target = "c04004230"                                   # Abe Roof
+moves = [
+  { move = 0x737DCB3F, level = 13 },                        # Pancake Defence
+  { move = 0x4A17EE80, level = 24 },                        # Hunter's Net
+  { move = 0xD9BB22A7, level = 30 },                        # Air Ride
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0xDCBDC13E                                         # DF/MF · forest
@@ -35,6 +53,12 @@ target = "c04004230"                                   # Abe Roof
 
 [[edit]]
 target = "c04004240"                                   # Buck Tucker
+moves = [
+  { move = 0x05567847, level = 15 },                        # Runaway Train
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0xA9E3374B, level = 30 },                        # Cyclone Sprint
+  { move = 0xE0549BE6, level = 40 },                        # Easy Breezy Kid
+]
 
   [[edit.cards]]
   id = 0x93FC57F9                                         # DF/MF · wind
@@ -44,6 +68,12 @@ target = "c04004240"                                   # Buck Tucker
 
 [[edit]]
 target = "c04004250"                                   # Edward Headwood
+moves = [
+  { move = 0xC9BAEA82, level = 8 },                         # Eye of the Storm
+  { move = 0x6B1CF436, level = 25 },                        # Bewildered
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x6ADE9E01, level = 52 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x8AE766B8                                         # DF/MF · forest
@@ -53,6 +83,12 @@ target = "c04004250"                                   # Edward Headwood
 
 [[edit]]
 target = "c04004260"                                   # Ricky Shea
+moves = [
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0x457EB170, level = 22 },                        # Pyrokinetic
+  { move = 0xEF3DC416, level = 30 },                        # Skytree Hop
+  { move = 0x64CDCFB9, level = 48 },                        # Rising Dragon
+]
 
   [[edit.cards]]
   id = 0xA1CA357B                                         # MF/DF · fire
@@ -63,6 +99,12 @@ target = "c04004260"                                   # Ricky Shea
 
 [[edit]]
 target = "c04004270"                                   # Felix Higgins
+moves = [
+  { move = 0x19BA3BFC, level = 8 },                         # Dance on Air
+  { move = 0xC2E6ADBF, level = 22 },                        # Log Roll
+  { move = 0x3EC287DE, level = 30 },                        # Bubble Gum
+  { move = 0x3297683F, level = 60 },                        # Warp Step
+]
 
   [[edit.cards]]
   id = 0xB8D1043A                                         # MF/DF · forest
@@ -72,6 +114,12 @@ target = "c04004270"                                   # Felix Higgins
 
 [[edit]]
 target = "c04004280"                                   # Warren Cool
+moves = [
+  { move = 0xF6E75EE9, level = 12 },                        # Headbanger
+  { move = 0x8A52C09B, level = 20 },                        # Doomsword Slash
+  { move = 0x90CD25B4, level = 30 },                        # Supernatural Strike
+  { move = 0x65766A4F, level = 58 },                        # Meteor Blade
+]
 
   [[edit.cards]]
   id = 0x3F4918F5                                         # FW/MF · fire
@@ -82,6 +130,12 @@ target = "c04004280"                                   # Warren Cool
 
 [[edit]]
 target = "c04004290"                                   # Keeley Hall
+moves = [
+  { move = 0x6F918884, level = 12 },                        # Easy Breezy
+  { move = 0x3EC287DE, level = 25 },                        # Bubble Gum
+  { move = 0x5DA7EA06, level = 27 },                        # Boomerang Bluff
+  { move = 0x4FE09C7A, level = 48 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x265229B4                                         # MF/DF · mountain
@@ -91,6 +145,12 @@ target = "c04004290"                                   # Keeley Hall
 
 [[edit]]
 target = "c04004300"                                   # Walt Riverside
+moves = [
+  { move = 0xD0A1DBC3, level = 13 },                        # Bungee Ball Burst
+  { move = 0xC2E6ADBF, level = 22 },                        # Log Roll
+  { move = 0x900C8E0A, level = 30 },                        # Maestro's Call
+  { move = 0x768AB9C5, level = 48 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xF652F8CA                                         # MF/DF · wind
@@ -100,6 +160,12 @@ target = "c04004300"                                   # Walt Riverside
 
 [[edit]]
 target = "c04004310"                                   # Elizabeth Buble
+moves = [
+  { move = 0x928B9BED, level = 6 },                         # Optimal Trajectory
+  { move = 0xDDCA0D2A, level = 22 },                        # Bouncing Bomb
+  { move = 0xA9A7000B, level = 30 },                        # Bouncing Bunny
+  { move = 0x0C08B663, level = 36 },                        # Doom Dive Drive
+]
 
   [[edit.cards]]
   id = 0xEF49C98B                                         # FW/DF · fire
@@ -109,6 +175,12 @@ target = "c04004310"                                   # Elizabeth Buble
 
 [[edit]]
 target = "c04004320"                                   # Titch Allhare
+moves = [
+  { move = 0x58B5859E, level = 3 },                         # Whip Crack
+  { move = 0xA9062A29, level = 22 },                        # Ultrasonic
+  { move = 0x2D9F7E76, level = 30 },                        # Breath Taker
+  { move = 0xCD6AEF2D, level = 58 },                        # All-Star
+]
 
   [[edit.cards]]
   id = 0xC4649A48                                         # GK/MF · forest
@@ -119,6 +191,12 @@ target = "c04004320"                                   # Titch Allhare
 
 [[edit]]
 target = "c04004330"                                   # Puck Fishley
+moves = [
+  { move = 0x5DA7EA06, level = 13 },                        # Boomerang Bluff
+  { move = 0x737DCB3F, level = 25 },                        # Pancake Defence
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0xDD7FAB09                                         # DF/MF · mountain
@@ -129,6 +207,12 @@ target = "c04004330"                                   # Puck Fishley
 
 [[edit]]
 target = "c04004340"                                   # Reed Maind
+moves = [
+  { move = 0x24E5068E, level = 8 },                         # Fractal Repeller
+  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
+  { move = 0x737DCB3F, level = 30 },                        # Pancake Defence
+  { move = 0x530CDFC1, level = 36 },                        # Mystifying Mist
+]
 
   [[edit.cards]]
   id = 0x923E3DCE                                         # MF/DF · mountain
@@ -138,6 +222,12 @@ target = "c04004340"                                   # Reed Maind
 
 [[edit]]
 target = "c04004350"                                   # Jacqueline Rabbit
+moves = [
+  { move = 0x928B9BED, level = 6 },                         # Optimal Trajectory
+  { move = 0x6B1CF436, level = 15 },                        # Bewildered
+  { move = 0xA9A7000B, level = 30 },                        # Bouncing Bunny
+  { move = 0x14D1ED15, level = 36 },                        # Jumping Jack
+]
 
   [[edit.cards]]
   id = 0x8B250C8F                                         # FW/MF · forest
@@ -147,6 +237,12 @@ target = "c04004350"                                   # Jacqueline Rabbit
 
 [[edit]]
 target = "c04004360"                                   # Bert Trapper
+moves = [
+  { move = 0x2E7B2B84, level = 6 },                         # Thief's Eye
+  { move = 0xA23AEC88, level = 20 },                        # Copy Cut
+  { move = 0x650FA58E, level = 30 },                        # Spin Out
+  { move = 0x7DD6FEF8, level = 62 },                        # Athena's Anthem
+]
 
   [[edit.cards]]
   id = 0xA0085F4C                                         # DF/MF · wind
@@ -157,6 +253,12 @@ target = "c04004360"                                   # Bert Trapper
 
 [[edit]]
 target = "c06037420"                                   # Steve Grim
+moves = [
+  { move = 0x06130797, level = 10 },                        # Rolling Kick
+  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
+  { move = 0x2B343D01, level = 39 },                        # Cyclone
+  { move = 0x79224D8B, level = 50 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0x03A148DA                                         # MF/DF · wind
@@ -167,6 +269,17 @@ target = "c06037420"                                   # Steve Grim
 
 [[edit]]
 target = "c06037410"                                   # Millie Moonlight
+moves = [
+  { move = 0x1F0836D6, level = 1 },                         # Comet Shot
+  { move = 0xDF70E04C, level = 7 },                         # Rodeo Clown
+  { move = 0x7B64F3D2, level = 18 },                        # Hawk Shot
+  { move = 0x7DAF3139, level = 99 },                        # Emperor Penguin No. 2
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x0A1C4407, level = 1 },                         # Metis [aura]
+]
 
   [[edit.cards]]
   id = 0x288C1B19                                         # FW/MF · forest

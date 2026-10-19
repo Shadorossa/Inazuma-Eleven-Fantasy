@@ -157,9 +157,9 @@ KeeperBarSource = "keeper_hp"
 PassLaneCut = { receivers = 2, at = 0.5, seconds = 0.8, range_m = 25 }
 # its forwards hunt your ball carrier: the 3 nearest to him (35 m) run at him, 25 % faster while they chase
 PressCarrier = { forwards = 1, midfielders = 0, defenders = 0, range_m = 35, max = 3, speed_mult = 1.25 }
-# its passes reach the receiver 25 % sooner than the game's (the arrival time x 1/1.25; your passes keep the game's):
+# its passes reach the receiver 5 % sooner than the game's (the arrival time x 1/1.05; your passes keep the game's):
 # ground passes roll faster, lobs fly flatter, and the ball meets the receiver on his run
-PassSpeed = 1.25
+PassSpeed = 1.05
 
 # A player of yours just received a pass from a teammate: more rivals press him (2 s).
 [[VRFW.MatchAI.If]]

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c08120010"                                   # Betelgeuse
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x4CDC2C6B, level = 13 },                        # Shooting Star
+  { move = 0x627FC293, level = 20 },                        # Meteor Attack
+  { move = 0xA25A6D14, level = 30 },                        # The End
+]
 
   [[edit.cards]]
   id = 0x14510A34                                         # FW/GK · fire
@@ -15,6 +21,12 @@ target = "c08120010"                                   # Betelgeuse
 
 [[edit]]
 target = "c08120020"                                   # Jade Beor
+moves = [
+  { move = 0x3E49918D, level = 1 },                         # Orion's Shade
+  { move = 0xBC6C4255, level = 13 },                        # Neo Galaxy
+  { move = 0x59A180E7, level = 20 },                        # Shadow Swarm
+  { move = 0xA5777314, level = 30 },                        # Assault Shot
+]
 
   [[edit.cards]]
   id = 0x3F7C59F7                                         # FW/MF · forest
@@ -23,6 +35,12 @@ target = "c08120020"                                   # Jade Beor
 
 [[edit]]
 target = "c08120030"                                   # Rigel
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x0885CAD1, level = 13 },                        # Prime Legend
+  { move = 0x627FC293, level = 20 },                        # Meteor Attack
+  { move = 0x3B8D915B, level = 30 },                        # Meteor Shower
+]
 
   [[edit.cards]]
   id = 0x266768B6                                         # MF/FW · wind
@@ -33,6 +51,12 @@ target = "c08120030"                                   # Rigel
 
 [[edit]]
 target = "c08120040"                                   # Bellatrix
+moves = [
+  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
+  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x4683AADF, level = 35 },                        # Space Penguin
+  { move = 0xC66BD10D, level = 55 },                        # Zigzag Spark
+]
 
   [[edit.cards]]
   id = 0x6926FE71                                         # MF/DF · mountain
@@ -42,6 +66,12 @@ target = "c08120040"                                   # Bellatrix
 
 [[edit]]
 target = "c08120050"                                   # Mintaka
+moves = [
+  { move = 0x2FB941B3, level = 1 },                         # Stone Prison
+  { move = 0x4CDC2C6B, level = 13 },                        # Shooting Star
+  { move = 0x1F0836D6, level = 20 },                        # Comet Shot
+  { move = 0x3B8D915B, level = 30 },                        # Meteor Shower
+]
 
   [[edit.cards]]
   id = 0x703DCF30                                         # MF/DF · fire
@@ -51,6 +81,12 @@ target = "c08120050"                                   # Mintaka
 
 [[edit]]
 target = "c08120060"                                   # Alnilam
+moves = [
+  { move = 0xC79443BB, level = 1 },                         # Waterfall
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0xDE4ED944, level = 20 },                        # Snowstorm Leopard
+  { move = 0x3B8D915B, level = 30 },                        # Meteor Shower
+]
 
   [[edit.cards]]
   id = 0x5B109CF3                                         # MF/FW · wind
@@ -61,6 +97,12 @@ target = "c08120060"                                   # Alnilam
 
 [[edit]]
 target = "c08120070"                                   # Alnitak
+moves = [
+  { move = 0xC79443BB, level = 1 },                         # Waterfall
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0xDE4ED944, level = 20 },                        # Snowstorm Leopard
+  { move = 0x2296A01A, level = 30 },                        # Southern Cross
+]
 
   [[edit.cards]]
   id = 0x420BADB2                                         # MF/DF · wind
@@ -71,6 +113,12 @@ target = "c08120070"                                   # Alnitak
 
 [[edit]]
 target = "c08120080"                                   # Saiph
+moves = [
+  { move = 0xC79443BB, level = 1 },                         # Waterfall
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0x6633159F, level = 30 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0xC593B17D                                         # DF/GK · mountain
@@ -80,6 +128,12 @@ target = "c08120080"                                   # Saiph
 
 [[edit]]
 target = "c08120090"                                   # Meissa
+moves = [
+  { move = 0xC79443BB, level = 1 },                         # Waterfall
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0xFACB7EC9, level = 30 },                        # Shiny Feathers
+]
 
   [[edit.cards]]
   id = 0xDC88803C                                         # DF/MF · wind
@@ -89,6 +143,12 @@ target = "c08120090"                                   # Meissa
 
 [[edit]]
 target = "c08120100"                                   # Tabit
+moves = [
+  { move = 0xC79443BB, level = 1 },                         # Waterfall
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0xFACB7EC9, level = 30 },                        # Shiny Feathers
+]
 
   [[edit.cards]]
   id = 0x0C885142                                         # DF/MF · mountain
@@ -98,6 +158,12 @@ target = "c08120100"                                   # Tabit
 
 [[edit]]
 target = "c08120110"                                   # Procyon
+moves = [
+  { move = 0x291202C4, level = 1 },                         # Shadow Shield
+  { move = 0x49F3BB72, level = 13 },                        # Psychlone
+  { move = 0x06B22DB5, level = 20 },                        # Gyro-Blocker
+  { move = 0x1FA91CF4, level = 30 },                        # Negative Feedback
+]
 
   [[edit.cards]]
   id = 0x15936003                                         # GK/FW · forest
@@ -107,6 +173,12 @@ target = "c08120110"                                   # Procyon
 
 [[edit]]
 target = "c08120120"                                   # Sirius
+moves = [
+  { move = 0x29728358, level = 1 },                         # Planet Shield
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0x6633159F, level = 30 },                        # Gravitation
+]
 
   [[edit.cards]]
   id = 0x3EBE33C0                                         # DF/FW · fire
@@ -117,6 +189,12 @@ target = "c08120120"                                   # Sirius
 
 [[edit]]
 target = "c08120130"                                   # Hatysa
+moves = [
+  { move = 0x29728358, level = 1 },                         # Planet Shield
+  { move = 0xDA3FF6C9, level = 13 },                        # Criss-Cross
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0xA25A6D14, level = 30 },                        # The End
+]
 
   [[edit.cards]]
   id = 0x27A50281                                         # MF/GK · fire
@@ -127,6 +205,12 @@ target = "c08120130"                                   # Hatysa
 
 [[edit]]
 target = "c08120140"                                   # Kappa
+moves = [
+  { move = 0x29728358, level = 1 },                         # Planet Shield
+  { move = 0x514A6198, level = 13 },                        # Asteroid Belt
+  { move = 0x24E5068E, level = 20 },                        # Fractal Repeller
+  { move = 0x3B8D915B, level = 30 },                        # Meteor Shower
+]
 
   [[edit.cards]]
   id = 0x68E49446                                         # MF/GK · forest

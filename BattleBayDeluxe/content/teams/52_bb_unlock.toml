@@ -1,12 +1,3 @@
+# Independent Battle Bay Deluxe data; edit this team's own declaration.
 schema = "vr_framework.team/2"
-# The Battle Bay unlock rule's declared equivalents of this mod's grid (docs/framework/bb-pages.md §8.1, [VRFW.BbUnlock]
-# Same): rows the rule would otherwise match to a Chronicle rival by name only.
-# * the game's own first row, Raimon (bb_01_team_raimon, season series_01): its name matched five Chronicle Raimons
-#   (IE2 tm_cro_ie2_1700 / _1720 and Victory Road tm_cro_victory_0600 / _0605 / _0620). Its era's Raimon among the
-#   Chronicle rivals is the IE2 one; Victory Road's Raimon is another club.
-
-[VRFW.BbUnlock]
-Same = { bb_01_team_raimon = ["tm_cro_ie2_1700", "tm_cro_ie2_1720"] }
-# 2026-10-15 (owner): Umbrella and Sally's (Chronicle Deluxe adds them as side nodes, so the name rule matched their legend
-# rows to nodes and showed them locked) are always available in the Battle Bay.
-Open = ["legend_ie2_01", "legend_ie1_06"]
+VRFW = { BbUnlock = { Same = { bb_01_team_raimon = ["tm_cro_ie2_1700", "tm_cro_ie2_1720"] }, Open = ["legend_ie2_01", "legend_ie1_06"] } }

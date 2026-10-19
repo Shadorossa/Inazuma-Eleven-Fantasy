@@ -1,0 +1,101 @@
+schema = "VRFW.team/2"
+# IECross in Bahía Batalla (owner 2026-10-19): each Cross club has ONE Battle Bay team, declared here in the Battle Bay
+# format the way Battle Bay Deluxe declares its own (one team per club with a fixed `<key>_bb` key, its grid row playing
+# that team itself: `row = { copy = false }`), so no framework copy is made and no club is on the grid twice. The free
+# match keeps its own Cross teams (content/teams/0001..0012_*.toml); each Battle Bay team is based on its club's team
+# with the Battle Bay cells (level 40, every member rarity step 4, level offset 0, no move grades, rates 1).
+# Keys = the ones the framework's automatic copies had (`evt_ct_cx_<club>_bb`): same team ids, saves keep their rows.
+# Only with Battle Bay Deluxe active (the file gate below): without it IECross puts no team in Bahía Batalla.
+# Clubs on the grid (owner choices kept: 2026-10-07 / 10-13 removals): Piratas Inazuma Japón, Shin Zeus, Circo Caos.
+if_mod = "bb_chronicle_teams"
+default_lang = "en"
+
+# The Inazuma National Pirates are never locked on the grid (no chain requirement; bb-pages.md §8.1).
+[VRFW.BbUnlock]
+Open = ["ct_cx_kaizoku_ij_bb"]
+
+# ---- Inazuma National Pirates / Piratas Inazuma Japón
+[[team]]
+name = "ct_cx_kaizoku_ij_bb"
+key = "evt_ct_cx_kaizoku_ij_bb"
+based_on = "iecross.ct_cx_kaizoku_ij"
+name_text = 0x3B6C5968                  # the club's name (text/rows/team_text.toml)
+level = 40
+same_as = ["iecross.ct_cx_kaizoku_ij"]
+appears = [{ list = "bb_stadium", season = "series_10", row = { copy = false } }]   # the Cross season of the grid
+
+[[edit]]
+target = "iecross.ct_cx_kaizoku_ij_bb"
+member = [
+  { slot = 0, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 1, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 2, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 3, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 4, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 5, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 6, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 7, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 8, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 9, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 10, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 11, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 12, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 13, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+]
+
+# ---- Shin Zeus
+[[team]]
+name = "ct_cx_shin_zeus_bb"
+key = "evt_ct_cx_shin_zeus_bb"
+based_on = "iecross.ct_cx_shin_zeus"
+name_text = 0x2F55C5A7                  # the club's name (text/rows/team_text.toml)
+level = 40
+same_as = ["iecross.ct_cx_shin_zeus"]
+appears = [{ list = "bb_stadium", season = "series_10", row = { copy = false } }]   # the Cross season of the grid
+
+[[edit]]
+target = "iecross.ct_cx_shin_zeus_bb"
+member = [
+  { slot = 0, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 1, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 2, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 3, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 4, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 5, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 6, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 7, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 8, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 9, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 10, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 11, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 12, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 13, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 14, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 15, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+]
+
+# ---- Chaos Circus / Circo Caos
+[[team]]
+name = "ct_cx_pierrot_chaos_bb"
+key = "evt_ct_cx_pierrot_chaos_bb"
+based_on = "iecross.ct_cx_pierrot_chaos"
+name_text = 0xA8E7815F                  # the club's name (text/rows/team_text.toml)
+level = 40
+same_as = ["iecross.ct_cx_pierrot_chaos"]
+appears = [{ list = "bb_stadium", season = "series_10", row = { copy = false } }]   # the Cross season of the grid
+
+[[edit]]
+target = "iecross.ct_cx_pierrot_chaos_bb"
+member = [
+  { slot = 0, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 1, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 2, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 3, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 4, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 5, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 6, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 7, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 8, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 9, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+  { slot = 10, patch = true, rarity_step = 4, level_offset = 0, c14_19 = [-1, -1, -1, -1, -1, -1], rates = [1, 1, 1, 1, 1, 1, 1, 1] },
+]

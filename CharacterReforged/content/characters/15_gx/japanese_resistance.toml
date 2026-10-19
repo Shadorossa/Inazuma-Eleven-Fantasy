@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06039230"                                   # Caleb Stonewall
+moves = [
+  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
+  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
+]
+VRFW.MoveGrades = [
+  { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
+]
 
   [[edit.cards]]
   id = 0xFEE8721A                                         # MF/FW · fire

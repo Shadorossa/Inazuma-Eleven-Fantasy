@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05028060"                                   # Sol Daystar
+moves = [
+  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
+  { move = 0x20D01E43, level = 16 },                        # Hey Presto
+  { move = 0x25276CB9, level = 38 },                        # Solar Surprise
+  { move = 0xAE2B3429, level = 50 },                        # Atomic Flare
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x2F22467C, level = 1 },                         # Apolo [aura]
+]
 
   [[edit.cards]]
   id = 0x342F0679                                         # FW/MF · fire

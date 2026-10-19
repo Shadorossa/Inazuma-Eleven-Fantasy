@@ -1,0 +1,24 @@
+schema = "VRFW.technique/3"
+# The five moves of «New Techniques» (docs/release/new_techniques.md). Each one is a retail move cloned (`base`: its
+# skill_config row, voice, banner margins, manual, event env row) with the numbers of the download it comes from; its
+# event is the base's event renamed with a recoloured effect object (assets\data\common\event\ + content\base_tables\
+# common\event\, event_cfg\ + content\models\effects\, research/scripts/new_techniques_build.py), its banner a telop of
+# the base's layout (content\telops\any\). Fixed keys (skill id = crc32(key), the download's ids: a save that learned
+# a move from the download keeps it). Names and descriptions: text\rows\skill_text.toml (the download's text ids,
+# pinned below). Manuals: the base's manual cloned, catalog number from the id registry (the download gave all five
+# the catalog 13002, IECross's Pingüino Infernal).
+
+[[technique]]
+name = "abyss_strike"            # Golpe del abismo
+key = "whs90208"
+base = "whs02080"                # Golpe cataclismo (mountain shot, 70-440, 70 TP)
+order = 1
+name_text = 0x6B5E606A
+desc_text = 0x3EC8B238
+event = "ev60_90208"             # ev60_02080 renamed, effect object ev60902080
+power_min = 100
+power_max = 640
+tp = 100
+element = "void"
+# colour row 10 (content\base_tables\gamedata\skill\skill_config.toml): the ball auras rw90208a / b / c
+cells = { colorIdx = 10 }

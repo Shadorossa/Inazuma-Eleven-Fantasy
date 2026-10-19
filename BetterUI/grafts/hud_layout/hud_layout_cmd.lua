@@ -507,6 +507,19 @@ if type(hl_prevOffset) == "function" then
   end)
 end
 
+-- the answering side's move choice (the keeper's save choice after a shot): the engine calls
+-- OnStartOpponentSkillSelect by name and retail slides the whole command group (type «offset02» of set «vs»,
+-- _pos_base01 0 -> -288) to the left. Held at its rest pose like the move list slide: the selector stays where the
+-- other choices have it.
+local HL_TYPE_VS_OFFSET = 2898379319 --[[offset02: type of set vs, _pos_base01 0 -> -288 in the answering choice]]
+HL_Wrap("OnStartOpponentSkillSelect", function()
+  local play = rawget(_ENV, "PlayAnimeMoveOffsetCmdBase")
+  if EVT_HL_LIST_ANCHOR and type(play) == "function" then
+    play(HL_TYPE_VS_OFFSET, 2, true)      -- end of «out» = rest pose (no slide)
+    HL_Log("answering choice held at the closed anchor")
+  end
+end)
+
 -- the engine calls these by name when it gives a plate of the cross its action (SetupBaseCmdInfo(index, action, ...))
 HL_Wrap("SetupBaseCmdInfo", function(index, action)
   if type(index) == "number" and index >= 0 and index < HL_BASE_CMD_COUNT then

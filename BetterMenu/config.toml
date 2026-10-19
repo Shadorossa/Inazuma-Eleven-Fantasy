@@ -1,0 +1,25 @@
+# Settings of BetterMenu (read at the game's start: edit this file in <game>\mods\BetterMenu\ and restart the game).
+
+[experiment]
+# The first test of the 3D main menu (docs/game/mods/better-menu.md §7): true = the Odaiba clubhouse map (w50i001) is
+# loaded under the main menu (title_menu_2) with its background hidden and a fixed camera; false = the game's main menu.
+map_under_menu = true
+# The Battle Bay shot (docs/game/mods/better-menu.md §57): true = the projector screen shows a copy of the game's Battle
+# Bay top menu (its own buttons, logo and stadium art, fitted into the screen); false = the three mode names as plain
+# labels on the screen.
+bb_live_menu = true
+
+[main_menu]
+# The bottom of the main menu (docs/game/mods/better-menu.md §10, §12, §13): true = smaller tile row at the bottom edge
+# on a slanted hexagon-pattern plate (no white halo per tile), no «Deluxe Edition» logo and no «V» / «?» help prompt,
+# the copyright at the bottom left, the version label at the top left, the DLC block lower as one tight row of small icons with the two big DLC
+# banners among them (hover = the banner); false = the game's layout. Positions: content\menus\title_bottom_row.toml.
+compact_bottom_row = true
+# The top of the main menu (§12): true = no «X Información» plate (X does nothing; the «Información» tile stays), no
+# title logo, no «Inazuma Post» plate (its key still opens the mail box); false = as the game. content\menus\title_top_cleanup.toml.
+clean_top = true
+
+[competition]
+# Mouse on the Competition list (step 1: the centre crest only): true = a click zone over the centred crest (hover
+# focuses it, a click decides as Enter does); false = no zone (keys and pad only). content\menus\competition_mouse.toml.
+mouse = true

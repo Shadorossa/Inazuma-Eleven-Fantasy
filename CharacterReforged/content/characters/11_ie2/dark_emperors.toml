@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02024300"                                   # Nathan Swift
+moves = [
+  { move = 0x3C843987, level = 7 },                         # Flurry Dash
+  { move = 0x19025F83, level = 18 },                        # Quick Draw
+  { move = 0x17A96A44, level = 36 },                        # Clone Faker
+  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
+]
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0xEF429E90                                         # FW/MF · wind
@@ -15,6 +24,12 @@ target = "c02024300"                                   # Nathan Swift
 
 [[edit]]
 target = "c02024240"                                   # Jim Wraith
+moves = [
+  { move = 0x4F58F805, level = 8 },                         # Coil Turn
+  { move = 0x55C71D2A, level = 22 },                        # About Face
+  { move = 0x592A96B4, level = 32 },                        # Afterimage
+  { move = 0xB5B7108F, level = 44 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0x8AEC31A3                                         # DF/GK · forest
@@ -24,6 +39,15 @@ target = "c02024240"                                   # Jim Wraith
 
 [[edit]]
 target = "c02024250"                                   # Tod Ironside
+moves = [
+  { move = 0xDF70E04C, level = 7 },                         # Rodeo Clown
+  { move = 0x1F0836D6, level = 10 },                        # Comet Shot
+  { move = 0xDEB28A7B, level = 25 },                        # Monkey Turn
+  { move = 0x0455B9CE, level = 35 },                        # Run Ball Run
+]
+VRFW.MoveGrades = [
+  { Move = 0x1F0836D6, Grade = 1 },                         # Comet Shot
+]
 
   [[edit.cards]]
   id = 0x93F700E2                                         # MF/DF · fire
@@ -33,6 +57,12 @@ target = "c02024250"                                   # Tod Ironside
 
 [[edit]]
 target = "c02024260"                                   # Steve Grim
+moves = [
+  { move = 0x06130797, level = 10 },                        # Rolling Kick
+  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
+  { move = 0x2B343D01, level = 39 },                        # Cyclone
+  { move = 0x79224D8B, level = 50 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0xB8DA5321                                         # MF/DF · wind
@@ -42,6 +72,12 @@ target = "c02024260"                                   # Steve Grim
 
 [[edit]]
 target = "c02024270"                                   # Tim Saunders
+moves = [
+  { move = 0x259F08C6, level = 6 },                         # Whirlwind Twister
+  { move = 0xA8E0F6C2, level = 18 },                        # Kung Fu Header
+  { move = 0x17A96A44, level = 32 },                        # Clone Faker
+  { move = 0x2D3E5454, level = 46 },                        # Clone Shot
+]
 
   [[edit.cards]]
   id = 0xA1C16260                                         # MF/DF · forest
@@ -51,6 +87,12 @@ target = "c02024270"                                   # Tim Saunders
 
 [[edit]]
 target = "c02024280"                                   # Sam Kincaid
+moves = [
+  { move = 0x35E70F22, level = 12 },                        # Grenade Shot
+  { move = 0x6B1CF436, level = 14 },                        # Bewildered
+  { move = 0xACAC21CE, level = 23 },                        # Fake Ball
+  { move = 0x4890FB67, level = 34 },                        # Twin Boost
+]
 
   [[edit.cards]]
   id = 0x26597EAF                                         # MF/FW · fire
@@ -60,6 +102,12 @@ target = "c02024280"                                   # Sam Kincaid
 
 [[edit]]
 target = "c02024290"                                   # Maxwell Carson
+moves = [
+  { move = 0x19025F83, level = 7 },                         # Quick Draw
+  { move = 0xAAA6489B, level = 10 },                        # Spiral Shot
+  { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
+  { move = 0x4AD6453E, level = 36 },                        # Back Tornado
+]
 
   [[edit.cards]]
   id = 0x3F424FEE                                         # MF/FW · wind
@@ -69,6 +117,15 @@ target = "c02024290"                                   # Maxwell Carson
 
 [[edit]]
 target = "c02024310"                                   # Kevin Dragonfly
+moves = [
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
+  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
+  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+]
+VRFW.MoveGrades = [
+  { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+]
 
   [[edit.cards]]
   id = 0xF659AFD1                                         # FW/MF · forest
@@ -78,6 +135,12 @@ target = "c02024310"                                   # Kevin Dragonfly
 
 [[edit]]
 target = "c02024210"                                   # Thomas Feldt
+moves = [
+  { move = 0xF14FDC17, level = 1 },                         # Shot Pocket
+  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
+  { move = 0x8FBCFC3C, level = 34 },                        # Blazing Knuckle
+  { move = 0x01DB04F5, level = 45 },                        # Defence Scan
+]
 
   [[edit.cards]]
   id = 0xF79BC5E6                                         # GK/MF · forest
@@ -87,6 +150,12 @@ target = "c02024210"                                   # Thomas Feldt
 
 [[edit]]
 target = "c02024220"                                   # Malcolm Night
+moves = [
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x1ECA5CE1, level = 39 },                        # Wrath Shot
+  { move = 0x2B343D01, level = 79 },                        # Cyclone
+]
 
   [[edit.cards]]
   id = 0xDCB69625                                         # DF/MF · fire
@@ -96,6 +165,12 @@ target = "c02024220"                                   # Malcolm Night
 
 [[edit]]
 target = "c02024230"                                   # Shadow Cimmerian
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x568262FA, level = 18 },                        # Dark Tornado
+  { move = 0x33ED6677, level = 24 },                        # Doppelganger
+  { move = 0xB27F13ED, level = 44 },                        # Death Zone
+]
 
   [[edit.cards]]
   id = 0xC5ADA764                                         # FW/MF · forest
@@ -105,6 +180,12 @@ target = "c02024230"                                   # Shadow Cimmerian
 
 [[edit]]
 target = "c11802070"                                   # Godric Wyles
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x74B5C85D, level = 13 },                        # Security Shot
+  { move = 0xC16279D1, level = 20 },                        # Field of Force
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0xECFF22DC                                         # MF/FW · forest

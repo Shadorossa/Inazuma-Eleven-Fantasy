@@ -137,3 +137,14 @@ handler = "TrueHissatsu.Cmd.CanPlace"
 [[VRFW.Command]]
 name = "CMND_TRUEHISSATSU_RETAIL_STOCK"   # (count) -> count -1: the save slot still needs its line; count >= 0 (abl_000001 stock) logs the retail «Nueva posibilidad» stock once per slot (graft sr_popup; 1.0.4)
 handler = "TrueHissatsu.Cmd.RetailStock"
+
+# ------------------------------------------------------------------------------------------------ grade sync
+# CMND_SET_SKILL(charaStHdl, skill, slot) 0x8EB59E18: the skill tables (Character Reforged's included) put a move in a
+# player's list with it, and it writes rank 0. After it, the list's ranks follow the stored grades again, so the
+# menus' grade glyph, plate base and graded power show the move's grade (docs/game/mechanics/skill-rank-usage.md
+# §7.17).
+[[VRFW.CommandFilter]]
+name = "TrueHissatsu.SetSkillGrade"
+command = "CMND_SET_SKILL"
+handler = "TrueHissatsu.AfterSetSkill"
+phase = "after"

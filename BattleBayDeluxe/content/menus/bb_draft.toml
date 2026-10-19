@@ -82,18 +82,36 @@ add_layer = { name = "evt_bbd_pk_quad", object = "evt_bbd_pk_quad", count = 16, 
 menu = "enjoy_team_select_menu"
 add_layer = { name = "evt_bbd_pk_txt", object = "evt_bbd_pk_txt", count = 7, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_pk_quad", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_quad" }] }
 
-# 1.5.71: the «Plantilla» viewer's look (graft bbd_roster.lua), the in-match «Formación» screen's own objects
-# (soccer_formation_menu): its background, its pitch frame with the bench and coach places, its formation bar. Campaña
-# grid only, opened by the Lua (not with the group); priorities and places set by the Lua (just above the picker's
-# background).
-[[patch]]
-menu = "enjoy_team_select_menu"
-add_layer = { name = "evt_bbd_roster_bg", object = "soccer11_01_formation_bg", count = 1, after = "vrfw_bb_page_guide", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "vrfw_bb_page_guide" }] }
+# 1.5.71: the «Plantilla» viewer's look (graft bbd_roster.lua), the formation screen's objects: its background, the
+# dock's pitch frame with the bench, manager and coach places, its formation bar. Campaña grid only, opened by the Lua
+# (not with the group); priorities and places set by the Lua (just above the picker's background).
+# 1.5.83: the background is drawn in the background pass (m_drawType 1, as the picker's own vs01_41 background), so the
+# player page's 3D model shows over it; the frame is BetterUI's dock frame (soccer11_02_formation_frame_evt_fc: its bench
+# and manager places spaced for the formation cards).
+[[object]]
+name = "evt_bbd_roster_background"
+from = "soccer11_01_formation_bg"
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
 
 [[patch]]
 menu = "enjoy_team_select_menu"
-add_layer = { name = "evt_bbd_roster_frame", object = "soccer11_02_formation_frame", count = 1, after = "evt_bbd_roster_bg", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_bg" }] }
+add_layer = { name = "evt_bbd_roster_bg", object = "evt_bbd_roster_background", count = 1, after = "vrfw_bb_page_guide", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "vrfw_bb_page_guide" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_frame", object = "soccer11_02_formation_frame_evt_fc", count = 1, after = "evt_bbd_roster_bg", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_bg" }] }
 
 [[patch]]
 menu = "enjoy_team_select_menu"
 add_layer = { name = "evt_bbd_roster_title", object = "soccer11_12_formation_button", count = 1, after = "evt_bbd_roster_frame", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_frame" }] }
+
+# 1.5.83: the viewer's squad as the team dock draws it: one formation card per member slot (0-10 the pitch, 11-15 the
+# bench, 16-18 the managers, 19 the coach) and the retail empty slot (BetterUI's blank card) on a free bench, manager or
+# coach place. Opened and placed by the Lua.
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_blank", object = "team00_01_p1_chara_card_blank_for_formation_evt", count = 20, after = "evt_bbd_roster_title", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_title" }] }
+
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bbd_roster_card", object = "team00_01_chara_card_for_formation_evt", count = 20, after = "evt_bbd_roster_blank", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_blank" }] }

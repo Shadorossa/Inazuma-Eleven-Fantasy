@@ -307,6 +307,54 @@ do
   F.AI_TOGGLE_FUNCTION = 2941571381     -- OnFunctionCommon id of the AI-use toggle
   F.PLAY_SOUND = 1917805374
   F.CANNOT_SOUND = 3791946501           -- sy0004
+  F.BOARD_PLACE = 3270716539            -- CMND_CHARACTERREFORGED_BOARD_PLACE (charaStHdl, inventory handle, board slot)
+  F.BOARD_CLEAR = 1398771376            -- CMND_CHARACTERREFORGED_BOARD_CLEAR (charaStHdl, board slot, keepOpen)
+  F.LOG = 3661580131                    -- CMND_EVT_LOG
+  F.BOARD_SLOTS = 9                     -- board slots 0-8 (0-5 = list positions, 8 = the aura slot)
+
+  -- the move on board slot `slot` of card `hdl` and its inventory handle (placed item, else the native one)
+  local function BoardAt(call, hdl, slot)
+    for _, kind in ipairs({1, 0}) do
+      local okh, h = pcall(call, F.BOARD_INV, hdl, slot, kind)
+      if okh and type(h) == "number" and h ~= 0 then
+        local okm, m = pcall(call, F.INV_ITEM, h, 0)
+        return (okm and U32(m or 0)) or 0, h
+      end
+    end
+    return 0, 0
+  end
+
+  -- the game rebuilds a player's technique list from his board when a match loads: after a swap of list positions the
+  -- board slots of those positions take the list's moves (Character Reforged's board commands), with the handles the
+  -- board already holds. One log line per swap.
+  function F.MirrorPositions(call, hdl, positions)
+    local handle_of = {}
+    for slot = 0, F.BOARD_SLOTS - 1 do
+      local m, h = BoardAt(call, hdl, slot)
+      if m ~= 0 and handle_of[m] == nil then
+        handle_of[m] = h
+      end
+    end
+    local todo, done = {}, {}
+    for _, p in ipairs(positions) do
+      local okw, want = pcall(call, F.GET_SKILL, hdl, p)
+      want = okw and U32(want or 0) or 0
+      local cur = BoardAt(call, hdl, p)
+      if want ~= 0 and want ~= cur and handle_of[want] ~= nil then
+        todo[#todo + 1] = {p = p, want = want}
+      end
+    end
+    for _, t in ipairs(todo) do
+      pcall(call, F.BOARD_CLEAR, hdl, t.p, 1)
+    end
+    for _, t in ipairs(todo) do
+      local okp, st = pcall(call, F.BOARD_PLACE, hdl, handle_of[t.want], t.p)
+      done[#done + 1] = string.format("slot %d %08X %s", t.p, t.want, (okp and st == 1) and "OK" or ("NO " .. tostring(st)))
+    end
+    if #done > 0 then
+      pcall(call, F.LOG, "EVT_PPG fantasy moves: swap mirrored on the board", table.concat(done, ", "))
+    end
+  end
 
   local function SkillLayer()
     local layer = g_useFormationCharaSkillLayer
@@ -436,7 +484,9 @@ do
           pcall(call, F.PLAY_SOUND, F.CANNOT_SOUND)
           return false
         end
-        return call(cmd, card, move, target.position, ...)
+        local results = table.pack(call(cmd, card, move, target.position, ...))
+        pcall(F.MirrorPositions, call, card, {from, target.position})
+        return table.unpack(results, 1, results.n)
       end
       funcLuaCommand = swap
       local results = table.pack(pcall(orig, a1, a2, ...))

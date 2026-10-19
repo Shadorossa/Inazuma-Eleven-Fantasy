@@ -15,6 +15,17 @@ target = "c05029620_5000"                              # Mecha-Mark
 
 [[edit]]
 target = "c05029620"                                   # Mecha-Mark
+moves = [
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0x1E6B76C3, level = 10 },                        # Penguin the Hand
+  { move = 0xA491AFFF, level = 32 },                        # Majin the Hand
+  { move = 0xE647BCEE, level = 57 },                        # God Hand V
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xD7AFA673, level = 1 },                         # Papelín [aura]
+]
 
   [[edit.cards]]
   id = 0xEC72D8AA                                         # GK/MF · mountain

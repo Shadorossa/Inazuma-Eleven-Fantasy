@@ -1,6 +1,8 @@
 -- Team momentum: a team gauge (a per = "team" match resource) filled by time and by match events, with levels and a phase started at full.
 -- Declarations: every active mod's content\team_momentum\*.toml (VRFW.team_momentum/1, content\types\team_momentum.toml); docs/framework/team-momentum.md.
 -- Effects are rule responses: rule flags <key>.<side>.full / .phase / .level<N> (side = user / rival) and signals <key>.full / .phase / .phase_end / .level (actor = a player of that team).
+-- A player who comes on by substitution during his team's phase gets the signal <key>.phase_join (actor = him): the phase's effects for him alone.
+-- A phase ends when the gauge is empty, at half time and at the match end (signal <key>.phase_end each time).
 -- A phase starts on the signal <key>.start (its actor's team) or CMND_VRFW_TEAM_MOMENTUM_START(key, side); it drains the gauge to 0 over phase_seconds of live play.
 
 TeamMomentum = TeamMomentum or {}
@@ -241,7 +243,22 @@ VRFW.on("tick", function(ev)
 end)
 
 VRFW.on("match_start", function(ev) reset_match("match start: gauges, flags and phases reset") return nil end)
-VRFW.on("match_end", function(ev) reset_match(nil) return nil end)
+-- every running phase ends with its <key>.phase_end signal (its rules take the effects off), then the match resets
+VRFW.on("match_end", function(ev)
+  for _, m in ipairs(LIST) do
+    for team = 0, 1 do end_phase(m, team, "match end") end
+  end
+  reset_match(nil)
+  return nil
+end)
+-- half time (soccer state 11): a running phase ends there
+VRFW.on("state_enter", function(ev)
+  if tostring(ev.arg) ~= "11" then return nil end
+  for _, m in ipairs(LIST) do
+    for team = 0, 1 do end_phase(m, team, "half time") end
+  end
+  return nil
+end)
 VRFW.on("possession", function(ev) remember(ev) return nil end)
 VRFW.on("select", function(ev) remember(ev) return nil end)
 
@@ -285,6 +302,33 @@ local function on_gain(on)
     end
     return nil
   end
+end
+
+-- ---------------------------------------------------------------------------------------------- substitutions
+
+local SUBSTITUTION_EVENT = 318   -- the effect event of a player coming on (Match.SubstitutionEvent's NotifyEffectEvent)
+
+-- match:substitution post, once per player who comes on: args[1] = the effect event, args[2] = u32* his handle.
+-- During his team's phase he joins it: the signal <key>.phase_join with him as the actor.
+local function on_substitution(ev)
+  local args = ev.args or {}
+  if (tonumber(args[1]) or 0) % 4294967296 ~= SUBSTITUTION_EVENT then return nil end
+  local ptr = (tonumber(args[2]) or 0) % 18446744073709551616
+  if ptr < 0x10000 then return nil end
+  local ok, hdl = pcall(VRFW.mem.read, "u32", ptr)
+  hdl = ok and (tonumber(hdl) or 0) % 4294967296 or 0
+  if hdl == 0 then return nil end
+  local found, actor = pcall(VRFW.actor, hdl)
+  local team = found and type(actor) == "table" and actor.team or nil
+  if team == nil or team > 1 then return nil end
+  HANDLES[team] = hdl
+  for _, m in ipairs(LIST) do
+    if m.team[team].phase and enabled(m) then
+      pcall(VRFW.signal, m.key .. ".phase_join", hdl)
+      info(string.format("%s: T%d player 0x%08X came on during the phase: joins it", m.key, team, hdl))
+    end
+  end
+  return nil
 end
 
 -- ---------------------------------------------------------------------------------------------- commands
@@ -334,4 +378,12 @@ for _, m in ipairs(LIST) do
   if not ok then warn(m.key, "start signal:", tostring(e)) end
   info(string.format("%s: gauge %s, %d gains, %d levels, %s", m.key, m.resource, m.gain_count, m.levels,
     m.phase_seconds > 0 and string.format("phase from %.0f %% for %.0f s", m.start_at * 100, m.phase_seconds) or "no phase"))
+end
+local has_phase = false
+for _, m in ipairs(LIST) do
+  if m.phase_seconds > 0 then has_phase = true end
+end
+if has_phase then
+  local ok, e = pcall(VRFW.on, "match:substitution:post", on_substitution)
+  if not ok then warn("substitution event:", tostring(e)) end
 end

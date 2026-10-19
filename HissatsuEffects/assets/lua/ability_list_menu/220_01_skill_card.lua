@@ -11,10 +11,12 @@
 -- the numbers (no metres, degrees or symbols). The move's shot / keeper mini-effects (distance_falloff,
 -- on_win_lock_opponent_move, pe_sacrifice, power_per_participant, on_win_steal_tension, trajectory:
 -- docs/framework/technique.md §4e) come from CMND_VRFW_TECHNIQUE_MINI_FX(move) -> present, mask (1 distance, 2 lock,
--- 4 PE, 8 power per performer, 16 tension steal, 32 dive), slope, cap, fraction, power_mult, key, element, pct,
+-- 4 PE, 8 power per performer, 16 tension steal, 32 flight), slope, cap, fraction, power_mult, key, element, pct,
 -- steal_pct, dive_height, dive_unblockable: one sentence each (evt_skc_fx_*; the element word of «power per performer» is the row
 -- evt_skc_elem_1..4, void / any use the sentence without an element), after the ball sentence when a move has
--- both.
+-- both. The card describes gameplay only: a flight gets a sentence only when it is unblockable on a long shot (its
+-- shape, like trails and auras, is a visual of the mod that declares it), and a move whose mini-effects are all
+-- visual has no effect page.
 -- A move with a mini-effect shows the player page's «Q • • E» row at the bottom of the card (layer evt_skc_dots: four
 -- copies of the retail status base, Hissatsu Effects content/menus/skill_card_dots.toml; Q glyph, dot 1, dot 2, E glyph, the
 -- current page's dot lit) and the bottom guide gets «Q E Efecto» (on the effect page «Q E Descripción»; the game
@@ -70,8 +72,7 @@ do
       fx_participants = 3726543276,
       fx_participants_any = 1978378480,
       fx_steal = 4180469492,
-      fx_dive = 635515224,
-      fx_dive_plain = 3217110953,
+      fx_unblockable = 2194287633,
       el_wind = 1671343377,
       el_forest = 4204264619,
       el_fire = 2375076925,
@@ -95,8 +96,7 @@ do
       fx_participants = "+{pct} % de potencia por cada compañero de elemento {element} que la realiza.",
       fx_participants_any = "+{pct} % de potencia por cada compañero que la realiza.",
       fx_steal = "Si para el tiro, gana un {pct} % de la tensión que gastó el rival.",
-      fx_dive = "El balón sube y cae en picado sobre la portería; en un tiro lejano, los bloqueos no pueden pararlo.",
-      fx_dive_plain = "El balón sube y cae en picado sobre la portería.",
+      fx_unblockable = "En un tiro lejano, los bloqueos no pueden pararlo.",
       el_wind = "Viento",
       el_forest = "Bosque",
       el_fire = "Fuego",
@@ -175,7 +175,10 @@ do
     return s
   end
 
-  -- the move's mini-effect, or false
+  -- the card's text for a move (defined below)
+  local EffectText
+
+  -- the move's mini-effect, or false (also false when none of its mini-effects has a gameplay sentence)
   local function Effect(skill)
     if type(skill) ~= "number" or skill == 0 then
       return false
@@ -200,6 +203,9 @@ do
       e.ppct = tonumber(ppct) or 0
       e.spct = tonumber(spct) or 0
       e.dunb = tonumber(dunb) or 0
+    end
+    if e and EffectText(e) == "" then
+      e = false
     end
     SKC.cache[skill] = e
     return e
@@ -229,8 +235,8 @@ do
   end
 
   -- the ball sentence, then one sentence per mini-effect (mask bits 1 distance, 2 lock, 4 PE, 8 per performer,
-  -- 16 tension steal, 32 dive)
-  local function EffectText(e)
+  -- 16 tension steal, 32 flight: only its unblockable rule); "" when the move has no gameplay sentence
+  EffectText = function(e)
     local parts = {}
     if e.ball then
       parts[#parts + 1] = BallText(e)
@@ -259,8 +265,8 @@ do
     if Bit(16) then
       parts[#parts + 1] = Text("fx_steal", {pct = math.floor((e.spct or 0) + 0.5)})
     end
-    if Bit(32) then
-      parts[#parts + 1] = Text(e.dunb == 1 and "fx_dive" or "fx_dive_plain")
+    if Bit(32) and e.dunb == 1 then
+      parts[#parts + 1] = Text("fx_unblockable")
     end
     return table.concat(parts, " ")
   end
@@ -507,7 +513,14 @@ do
       return
     end
     if not want and next(SKC.opened) == nil then
-      return                                      -- never opened: nothing to hide
+      -- the row's instances open once as soon as the card is up, even when the first move has no effect page (they
+      -- stay hidden until wanted): left unopened, the move list never showed (Hissatsu Effects 1.1.0)
+      if Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false then
+        for k = 0, 3 do
+          Ready(k, true)
+        end
+      end
+      return
     end
     if not want and SKC.shown == "" then
       -- hidden already: keep it so every frame (a row the engine lit again is hidden again)

@@ -15,6 +15,12 @@ target = "c05020500_5000"                              # Alpha
 
 [[edit]]
 target = "c05020410"                                   # Hotel
+moves = [
+  { move = 0x4B3099D5, level = 1 },                         # Stomper Stopper
+  { move = 0x06B22DB5, level = 21 },                        # Gyro-Blocker
+  { move = 0xA6D711A6, level = 37 },                        # Full Power Shield
+  { move = 0xA7157B91, level = 54 },                        # Power Shield
+]
 
   [[edit.cards]]
   id = 0xB9D3108D                                         # GK/FW · mountain
@@ -24,6 +30,12 @@ target = "c05020410"                                   # Hotel
 
 [[edit]]
 target = "c05020420"                                   # Oscar
+moves = [
+  { move = 0xDCC9CCA3, level = 1 },                         # Tesla Coil
+  { move = 0x2D9F7E76, level = 25 },                        # Breath Taker
+  { move = 0xBBE07677, level = 44 },                        # Sidewinder
+  { move = 0xF7E49F60, level = 61 },                        # Magnetism
+]
 
   [[edit.cards]]
   id = 0x92FE434E                                         # DF/MF · mountain
@@ -34,6 +46,12 @@ target = "c05020420"                                   # Oscar
 
 [[edit]]
 target = "c05020430"                                   # Echo
+moves = [
+  { move = 0xDCC9CCA3, level = 1 },                         # Tesla Coil
+  { move = 0xF14FDC17, level = 12 },                        # Shot Pocket
+  { move = 0xC41097D5, level = 33 },                        # Acrobotics
+  { move = 0xF626F557, level = 51 },                        # Electric Impedance
+]
 
   [[edit.cards]]
   id = 0x8BE5720F                                         # DF/GK · forest
@@ -44,6 +62,12 @@ target = "c05020430"                                   # Echo
 
 [[edit]]
 target = "c05020440"                                   # Golf
+moves = [
+  { move = 0xDCC9CCA3, level = 1 },                         # Tesla Coil
+  { move = 0x650FA58E, level = 8 },                         # Spin Out
+  { move = 0x4B3099D5, level = 26 },                        # Stomper Stopper
+  { move = 0x457EB170, level = 43 },                        # Pyrokinetic
+]
 
   [[edit.cards]]
   id = 0xC4A4E4C8                                         # DF/MF · wind
@@ -54,6 +78,12 @@ target = "c05020440"                                   # Golf
 
 [[edit]]
 target = "c05020450"                                   # Charlie
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0xF6E75EE9, level = 14 },                        # Headbanger
+  { move = 0x0BFD4D80, level = 38 },                        # Grand Slam
+  { move = 0xEFFC6FA8, level = 49 },                        # Warhead
+]
 
   [[edit.cards]]
   id = 0xDDBFD589                                         # MF/FW · fire
@@ -64,6 +94,12 @@ target = "c05020450"                                   # Charlie
 
 [[edit]]
 target = "c05020460"                                   # Lima
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0x5739C70C, level = 17 },                        # Guided Collide
+  { move = 0x1C4D4906, level = 41 },                        # Whirlpool
+  { move = 0xBBE07677, level = 52 },                        # Sidewinder
+]
 
   [[edit.cards]]
   id = 0xF692864A                                         # MF/FW · wind
@@ -74,6 +110,12 @@ target = "c05020460"                                   # Lima
 
 [[edit]]
 target = "c05020470"                                   # Bravo
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0x17110E3B, level = 14 },                        # Jumbo Sandwich
+  { move = 0xF7E49F60, level = 28 },                        # Magnetism
+  { move = 0x457EB170, level = 51 },                        # Pyrokinetic
+]
 
   [[edit.cards]]
   id = 0xEF89B70B                                         # MF/DF · mountain
@@ -84,6 +126,12 @@ target = "c05020470"                                   # Bravo
 
 [[edit]]
 target = "c05020480"                                   # India
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0xDCC9CCA3, level = 7 },                         # Tesla Coil
+  { move = 0x86F5F6E8, level = 36 },                        # Cupid's Arrow
+  { move = 0x19BA3BFC, level = 44 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x6811ABC4                                         # MF/DF · fire
@@ -94,6 +142,12 @@ target = "c05020480"                                   # India
 
 [[edit]]
 target = "c05020490"                                   # Juliet
+moves = [
+  { move = 0xFB8202AD, level = 1 },                         # Gaussian Goal
+  { move = 0x650FA58E, level = 12 },                        # Spin Out
+  { move = 0x828A53C8, level = 27 },                        # Plasma Ball
+  { move = 0x768AB9C5, level = 59 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0x710A9A85                                         # FW/MF · wind
@@ -103,6 +157,17 @@ target = "c05020490"                                   # Juliet
 
 [[edit]]
 target = "c05020500"                                   # Alpha
+moves = [
+  { move = 0xB0BC314A, level = 1 },                         # Spin Meister
+  { move = 0xC324C788, level = 16 },                        # Blast Mine
+  { move = 0xFB8202AD, level = 38 },                        # Gaussian Goal
+  { move = 0x1BF20F08, level = 64 },                        # Omega Assault
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x56D8CE8B, level = 1 },                         # Fénix [aura]
+]
 
   [[edit.cards]]
   id = 0xA10A4BFB                                         # FW/MF · fire
@@ -112,6 +177,12 @@ target = "c05020500"                                   # Alpha
 
 [[edit]]
 target = "c05020510"                                   # Mike
+moves = [
+  { move = 0xFB8202AD, level = 1 },                         # Gaussian Goal
+  { move = 0x828A53C8, level = 10 },                        # Plasma Ball
+  { move = 0x1F7F73BA, level = 23 },                        # Bicycle Slash
+  { move = 0xF9C4BCF4, level = 59 },                        # Double Helix
+]
 
   [[edit.cards]]
   id = 0xB8117ABA                                         # FW/MF · forest
@@ -121,6 +192,12 @@ target = "c05020510"                                   # Mike
 
 [[edit]]
 target = "c05020520"                                   # Uniform
+moves = [
+  { move = 0x4B3099D5, level = 1 },                         # Stomper Stopper
+  { move = 0xF14FDC17, level = 19 },                        # Shot Pocket
+  { move = 0x8B31808E, level = 23 },                        # Wormhole
+  { move = 0x7BC5D9F0, level = 44 },                        # Rotary Sander
+]
 
   [[edit.cards]]
   id = 0x933C2979                                         # GK/MF · forest
@@ -130,6 +207,12 @@ target = "c05020520"                                   # Uniform
 
 [[edit]]
 target = "c05020530"                                   # Tango
+moves = [
+  { move = 0xDCC9CCA3, level = 1 },                         # Tesla Coil
+  { move = 0x19BA3BFC, level = 9 },                         # Dance on Air
+  { move = 0x650FA58E, level = 31 },                        # Spin Out
+  { move = 0xC41097D5, level = 37 },                        # Acrobotics
+]
 
   [[edit.cards]]
   id = 0x8A271838                                         # DF/MF · fire
@@ -140,6 +223,12 @@ target = "c05020530"                                   # Tango
 
 [[edit]]
 target = "c05020540"                                   # Zulu
+moves = [
+  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0xDCC9CCA3, level = 11 },                        # Tesla Coil
+  { move = 0x64CDCFB9, level = 27 },                        # Rising Dragon
+  { move = 0x05124F07, level = 49 },                        # Fission and Fusion
+]
 
   [[edit.cards]]
   id = 0xC5668EFF                                         # MF/DF · mountain
@@ -150,6 +239,12 @@ target = "c05020540"                                   # Zulu
 
 [[edit]]
 target = "c05020550"                                   # X-Ray
+moves = [
+  { move = 0xB0BC314A, level = 1 },                         # Spin Meister
+  { move = 0xDCC9CCA3, level = 14 },                        # Tesla Coil
+  { move = 0x650FA58E, level = 32 },                        # Spin Out
+  { move = 0x7C6D5B0E, level = 52 },                        # Astro Break
+]
 
   [[edit.cards]]
   id = 0xDC7DBFBE                                         # FW/MF · forest
@@ -159,6 +254,12 @@ target = "c05020550"                                   # X-Ray
 
 [[edit]]
 target = "c05020560"                                   # Delta
+moves = [
+  { move = 0xB0BC314A, level = 1 },                         # Spin Meister
+  { move = 0xE35B59DB, level = 13 },                        # Twin Sun Smash
+  { move = 0x414BA9BD, level = 26 },                        # Pincer Pinch
+  { move = 0x650FA58E, level = 44 },                        # Spin Out
+]
 
   [[edit.cards]]
   id = 0xF750EC7D                                         # FW/DF · wind

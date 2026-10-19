@@ -1,0 +1,53 @@
+schema = "VRFW.menu/2"
+
+# BetterMenu: a copy of the game's Battle Bay top menu (bb_stadium_top_menu, its menu setting
+# gamedata/menu/cfg/bb_stadium_top_menu_setting.cfg.bin) on the clubhouse's projector screen (docs/game/mods/better-menu.md
+# §57). The retail objects under their own layer names (the buttons attach to the locator by its name), in
+# title_menu_2: the button locator, the three mode buttons (list_item_middle x 3), the small buttons (list_item_small x 3:
+# Ayuda hidden, Opciones, Guardar), the stadium art, the logo, the next-match badge and the cross-play note. Not the
+# full-screen blue background (drawn before the 3D pass: it would sit behind the room) nor the header and guides.
+# The scene's [[VRFW.MenuSceneScreen]] battle_bay_menu fits them into the screen; assets\lua\title_menu_2\
+# 250_bb_live_menu.lua sets the buttons' texts, textures and selection. Only the retail atlases these objects read.
+when = { config = "experiment.bb_live_menu", default = true }
+
+# The menu's blue background behind the copy (owner 2026-10-19: the projected menu read as a few parts on an empty
+# screen): the retail mainmenu90_00_background as a normal 2D layer (not the «draw type before» copy the Battle Bay
+# menu uses, which draws before the 3D pass), without its screen stretch and its attach to a list base this menu has
+# not; the scene's screen battle_bay_background fits its 2640 px width to the projector screen.
+[[object]]
+name = "better_menu_bb_live_background"
+from = "mainmenu90_00_background"
+remove = [{ param = "m_screenStretch" }]
+remove_block = ["CMenuAttachLocator"]
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "better_menu_bb_live_background", object = "better_menu_bb_live_background", count = 1, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "vs01_00_p2_background_bb_stadium", object = "vs01_00_p2_background_bb_stadium", count = 1, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "mainmenu90_25_list_item_locator", object = "mainmenu90_25_list_item_locator", count = 1, after = "vs01_00_p2_background_bb_stadium", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "vs01_00_p2_background_bb_stadium" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "mainmenu90_11_list_item_middle", object = "mainmenu90_11_list_item_middle", count = 3, after = "mainmenu90_25_list_item_locator", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "mainmenu90_25_list_item_locator" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "mainmenu90_12_list_item_small", object = "mainmenu90_12_list_item_small", count = 3, after = "mainmenu90_11_list_item_middle", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "mainmenu90_11_list_item_middle" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "vs01_47_bb_stadium_header_logo", object = "vs01_47_bb_stadium_header_logo", count = 1, after = "mainmenu90_12_list_item_small", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "mainmenu90_12_list_item_small" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "vs11_01_next_stage_guide", object = "vs11_01_next_stage_guide", count = 1, after = "vs01_47_bb_stadium_header_logo", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "vs01_47_bb_stadium_header_logo" }] }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "mainmenu90_35_cross_play_guide", object = "mainmenu90_35_cross_play_guide", count = 1, after = "vs11_01_next_stage_guide", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "vs11_01_next_stage_guide" }] }

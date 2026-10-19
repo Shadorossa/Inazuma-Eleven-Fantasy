@@ -24,7 +24,6 @@ local MT = {
   PARAM_SET = 3860611758, PARAM_HAS = 2947612279, PARAM_CLEAR = 3363400568,
   GO = 2860602156,           -- param vrfw_menu_scene_go
   OPTIONS = 1432246941,      -- param vrfw_menu_scene_options
-  UP = 1602039306,           -- param vrfw_menu_scene_up
   HUD_OFF = 3499142076,      -- param vrfw_menu_scene_hud_off
   TITLE_READY = 358816896,   -- param vrfw_menu_scene_title_ready: the title reads requests (its menu fully open)
   STORY_GO = 4275168888,     -- param vrfw_menu_scene_story_continue (value = ms to wait): skip the story submenu
@@ -47,6 +46,7 @@ local MT = {
   NO_PRESS_START = 937976662, -- (true) the next title opens the main menu at once
   CHRONICLE_WAIT = 53570903, -- param vrfw_menu_scene_chronicle_wait (value = ms of the push-in): Modo Crónica straight to the map
   CHRONICLE_ITEM = 130186018, -- the title's «Modo Crónica» item
+  PICK_WAIT = 2171674033,    -- param vrfw_menu_scene_pick_wait (ms of the push-in): a menu_pick hotspot pressed its tile
   PENDING = 3277277325,      -- CMND_VRFW_MENU_SCENE_PENDING (action): waits for the menu after the leave's reset
   LEAVE_WHITE = 2048703318,  -- param vrfw_menu_scene_leave_white: the leave's fade is the white one
   ID = "vr_framework.menu_scene",
@@ -78,10 +78,14 @@ local function MT_Has(k)
   return MT_Call(MT.PARAM_HAS, k) == true
 end
 
+-- a menu scene is up under the title (the framework's run state: its one owner)
+local function MT_SceneUp()
+  return MT_Call(MT.STATE) == "up"
+end
+
 -- the scene is up: the game kept in memory, reset, straight into the state the title wrote; true = left (never returns
 -- in that case before the reset ends this script), false = the retail hand-over must run
 local function MT_Leave()
-  MT_Clear(MT.UP)
   MT_Clear(MT.LEAVE_WHITE)
   MT_Clear(MT.HUD_OFF)          -- the picked mode's field HUD is the game's
   MT_Call(MT.SET, "leaving", "a mode was picked: reset straight into it, the map goes with the old rpg scene")
@@ -141,13 +145,23 @@ if VRFW_Host ~= nil then
           if r[1] == true and r[2] == MT.CHRONICLE_ITEM then
             mt_chronicle_ms = tonumber(MT_Call(MT.PARAM_GET, MT.CHRONICLE_WAIT)) or 0
             MT_Clear(MT.CHRONICLE_WAIT)
-            if MT_Has(MT.UP) then
+            if MT_SceneUp() then
               MT_Call(MT.PENDING, "chronicle_map")
               MT_Log("chronicle map: Modo Crónica pressed, the title ends after", math.floor(mt_chronicle_ms),
                 "ms; the Chronicle top menu goes straight to the map")
             else
               mt_chronicle_ms = nil
             end
+          end
+          return table.unpack(r, 1, r.n)
+        end
+        if id == MT.READ_REQUEST and not MT_Has(MT.GO) and MT_Has(MT.PICK_WAIT) then
+          local r = table.pack(menu(id, ...))
+          if r[1] == true then
+            -- a menu_pick hotspot: the tile's own request, the title ends after the push-in (the next menu picks)
+            mt_chronicle_ms = MT_SceneUp() and (tonumber(MT_Call(MT.PARAM_GET, MT.PICK_WAIT)) or 0) or nil
+            MT_Clear(MT.PICK_WAIT)
+            MT_Log("menu pick: tile", tostring(r[2]), "pressed, the title ends after", tostring(mt_chronicle_ms), "ms")
           end
           return table.unpack(r, 1, r.n)
         end
@@ -206,7 +220,7 @@ if VRFW_Host ~= nil then
     id = MT.ID .. ".fade",
     phase = "around",
     fn = function(nxt, ...)
-      if not MT_Has(MT.OPTIONS) and not MT_Has(MT.UP) then
+      if not MT_Has(MT.OPTIONS) and not MT_SceneUp() then
         return nxt(...)
       end
       local opening = MT_Has(MT.OPTIONS)
@@ -345,7 +359,7 @@ if VRFW_Host ~= nil then
     id = MT.ID .. ".leave",
     phase = "around",
     fn = function(nxt, ...)
-      if mt_leaving or not MT_Has(MT.UP) then
+      if mt_leaving or not MT_SceneUp() then
         return nxt(...)
       end
       if MT_Call(MT.FADE_DONE) ~= true then

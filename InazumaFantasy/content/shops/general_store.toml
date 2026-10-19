@@ -9,7 +9,7 @@ schema = "VRFW.shop/2"
 [[shop]]
 name = "general_store"
 based_on = "0xB13B2BD5"
-currencies = ["tk_bb000001", "tk_hr000001", "tk_hr000002", "tk_hr000003", "tk_hr000004", "tk_hr000005", "tk_hr000006", "tk_hr000007"]
+currencies = ["tk_bb000001"]
 default_lang = "en"
   [shop.text.es]
   name = "Tienda general"
@@ -2662,216 +2662,189 @@ default_lang = "en"
 
   [[shop.entry]]
   item = "ti04000050"
-  price = 15
-  currency = "tk_hr000005"
-  costs = [{ currency = "tk_hr000007", count = 11 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNHCPKfgoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti05020140"
-  price = 5
-  currency = "tk_hr000004"
-  costs = [{ currency = "tk_hr000006", count = 12 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNIkqEUooAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti05020110"
-  price = 10
-  currency = "tk_hr000002"
-  costs = [{ currency = "tk_hr000005", count = 14 }]
+  price = 5
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNIjoe30oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti03030060"
-  price = 10
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000004", count = 9 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNFRMU04oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti03030040"
-  price = 6
-  currency = "tk_hr000002"
-  costs = [{ currency = "tk_hr000007", count = 12 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNFRMU04oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti03030050"
-  price = 5
-  currency = "tk_hr000006"
-  costs = [{ currency = "tk_hr000007", count = 8 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNMiITVooAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti04000150"
-  price = 15
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000007", count = 10 }]
+  price = 5
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOxKui8oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti04003500"
-  price = 14
-  currency = "tk_hr000006"
-  costs = [{ currency = "tk_hr000007", count = 15 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNFuiejsoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti04003700"
-  price = 15
-  currency = "tk_hr000005"
-  costs = [{ currency = "tk_hr000007", count = 10 }]
+  price = 5
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNFuiejsoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti05021500"
-  price = 12
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000006", count = 14 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNGiYdtgoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02020890"
-  price = 14
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000007", count = 14 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNPj4kYEoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02020900"
-  price = 8
-  currency = "tk_hr000002"
-  costs = [{ currency = "tk_hr000007", count = 15 }]
+  price = 5
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNPj4kYEoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021510"
-  price = 9
-  currency = "tk_hr000004"
-  costs = [{ currency = "tk_hr000005", count = 11 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021100"
-  price = 7
-  currency = "tk_hr000004"
-  costs = [{ currency = "tk_hr000006", count = 10 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNKzkiF4oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021210"
-  price = 5
-  currency = "tk_hr000001"
-  costs = [{ currency = "tk_hr000002", count = 6 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOOlHpkoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02020850"
-  price = 14
-  currency = "tk_hr000006"
-  costs = [{ currency = "tk_hr000007", count = 15 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNIWPZcQoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021440"
-  price = 12
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000006", count = 14 }]
+  price = 6
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02020910"
-  price = 9
-  currency = "tk_hr000004"
-  costs = [{ currency = "tk_hr000005", count = 11 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNIWPZcQoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02029500"
-  price = 10
-  currency = "tk_hr000002"
-  costs = [{ currency = "tk_hr000005", count = 12 }]
+  price = 5
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNGZ7vA8oAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti05020700"
-  price = 5
-  currency = "tk_hr000001"
-  costs = [{ currency = "tk_hr000002", count = 6 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNLscc8goAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021420"
-  price = 5
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000007", count = 7 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021430"
-  price = 5
-  currency = "tk_hr000005"
-  costs = [{ currency = "tk_hr000007", count = 6 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021480"
-  price = 6
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000007", count = 8 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti02021450"
-  price = 8
-  currency = "tk_hr000005"
-  costs = [{ currency = "tk_hr000007", count = 8 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOHjoMAoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti07010010"
-  price = 6
-  currency = "tk_hr000003"
-  costs = [{ currency = "tk_hr000006", count = 8 }]
+  price = 3
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNOpWeNkoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti07020010"
-  price = 7
-  currency = "tk_hr000002"
-  costs = [{ currency = "tk_hr000004", count = 10 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNNmicGwoAAYCMgAAAAEyAAAAAXg="
 
   [[shop.entry]]
   item = "ti07030010"
-  price = 8
-  currency = "tk_hr000001"
-  costs = [{ currency = "tk_hr000007", count = 12 }]
+  price = 4
+  currency = "tk_bb000001"
   stock = 1
   condition = "AAAAACEFNcl4Pb8AEwIoAAYCNKaTOnAoAAYCMgAAAAEyAAAAAXg="

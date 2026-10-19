@@ -9,8 +9,12 @@
 --        render targets of slots 2 / 3, whether the camera is in the external camera config, the pause freeze state
 --        and the model's CharaRenderProperty (model = its scene chara handle)
 --   CMND_CHARACTERREFORGED_PAGE_CAPTURE_LIVE(on)  -> status
---        on 1: the render settings' pause freeze flag (+0xD8) saved and cleared; 0: put back (1 done, 0 nothing to do,
---        -1 not reachable)
+--        on 1: the capture models kept live in a pause (VRFW.render.capture_live); 0: left to the game (1 done, -1 not
+--        available)
+--   CMND_CHARACTERREFORGED_PAGE_CAPTURE_BIND(key, mesh)  -> 1 / -1
+--        the framework keeps the quad mesh's render-texture entry on the capture model's live cell
+--        (VRFW.render.capture_bind; key 0 = release); -1 = not available (loader.log says why)
+--   CMND_CHARACTERREFORGED_PAGE_CAPTURE_BOUND()  -> 1 the quad shows the capture cell, 0 not yet, -1 not available
 --   CMND_CHARACTERREFORGED_PAGE_CAPTURE_DRAWN(reset)  -> state
 --        reset 1: a new wait starts (the capture quad was just set up), answers 2; reset 0: 1 = the framework's capture
 --        probe saw a mesh of a capture model drawn into its render texture since then, 0 = none in
@@ -29,7 +33,6 @@ local MAX_ENTRIES, MAX_CAMERAS = 64, 4096
 local function log(...) VRFW.log("player_page_capture:", ...) end
 local RECORD_SIZE, RECORD_HANDLE, RECORD_FLAGS, RECORD_RENDER = 0x1460, 0x80, 0x70, 0x7D0   -- scene chara records
 local FREEZE_FLAG = 0xD8                                                                     -- render settings
-local saved_freeze = nil
 
 local function setting(path, default)
   local ok, value = pcall(VRFW.files.config, path)
@@ -242,24 +245,37 @@ local function report_model(model)
   end
 end
 
+-- on 1: the capture models kept live in a pause (VRFW.render.capture_live: the frozen texture of a pause is not shown,
+-- the render texture the model is drawn into each frame is); 0: left to the game again
 function P.Live(on)
-  local settings = render_settings()
-  if not settings or not read("u8", settings + FREEZE_FLAG) then return -1 end
-  if on == 1 then
-    if saved_freeze == nil then
-      saved_freeze = read("u8", settings + FREEZE_FLAG)
-      log("pause freeze flag " .. tostring(saved_freeze) .. " -> 0 while the capture page shows")
-    end
-    if read("u8", settings + FREEZE_FLAG) ~= 0 then
-      pcall(VRFW.mem.write, "u8", settings + FREEZE_FLAG, 0)
-    end
-    return 1
+  local live = VRFW.render and VRFW.render.capture_live
+  if type(live) ~= "function" then return -1 end
+  local was, why = live(on == 1)
+  if was == nil then
+    log("live capture not available: " .. tostring(why))
+    return -1
   end
-  if saved_freeze == nil then return 0 end
-  pcall(VRFW.mem.write, "u8", settings + FREEZE_FLAG, saved_freeze)
-  log("pause freeze flag back to " .. tostring(saved_freeze))
-  saved_freeze = nil
   return 1
+end
+
+-- the framework's quad binding (VRFW.render.capture_bind / capture_bound)
+function P.Bind(key, mesh)
+  local bind = VRFW.render and VRFW.render.capture_bind
+  if type(bind) ~= "function" then return -1 end
+  local ok, why = bind(type(key) == "number" and key % 4294967296 or 0, type(mesh) == "number" and mesh % 4294967296 or 0)
+  if not ok then
+    log("quad binding not available: " .. tostring(why))
+    return -1
+  end
+  return 1
+end
+
+function P.Bound()
+  local bound = VRFW.render and VRFW.render.capture_bound
+  if type(bound) ~= "function" then return -1 end
+  local ok, s = pcall(bound)
+  if not ok or type(s) ~= "table" then return -1 end
+  return s.bound and 1 or 0
 end
 
 function P.Report(when, key, camera, model)
@@ -277,4 +293,4 @@ function P.Report(when, key, camera, model)
   return 1
 end
 
-log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT / _LIVE / _DRAWN)")
+log("player page capture commands ready (CMND_CHARACTERREFORGED_PAGE_CAPTURE_CONFIG / _REPORT / _LIVE / _DRAWN / _BIND / _BOUND)")

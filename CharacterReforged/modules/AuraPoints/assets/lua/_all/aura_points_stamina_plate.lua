@@ -2,23 +2,27 @@
 -- docs/refactor/aura-mods-split.md «Player header»). A piece of Character Reforged's header slot: the entry «pe» of the
 -- host character_reforged.header (features\pe\content\menus\pe_plate_header.toml, read while the option «pe» is on)
 -- names AuraPoints_Stamina.PlatePe, which Character Reforged's header (assets\lua\_all\character_reforged_header.lua)
--- calls on every refresh of a header plate with the slot's x. Outside a match PE is always full, so the bar is full
--- and the number is the player's max PE:
+-- calls on every refresh of a header plate with the slot's x. The number is the player's max PE; the bar is filled to
+-- his current PE / max PE (outside a match PE is always full, so the bar is full):
 --   «PE»                            108   (the tag stamina_points_pe_tag01 of the match HUD, the number in Chrono
 --   [====== full yellow bar ======]         Stone's digits stamina_points_pe_num0..9, both standing on the bar: tag
 --                                           at its left end, number at its right end)
 -- * Layers (content\menus\pe_plate.toml, added to every screen with the header): stamina_points_plate_bar (the retail
---   stairs-race gauge btl06_13, like the HUD bar: its frame, and the full fill drawn by its plain quad _hp_empty01
---   with the fill's sprite hp_bar02 at the fill's rect; the masked fill _hp_bar02 is hidden, its rate does not advance
---   while a match is paused), stamina_points_plate_tag (the same gauge, only its frame shown, the
+--   stairs-race gauge btl06_13, like the HUD bar: only its frame, the bar's outline and track), stamina_points_plate_fill
+--   (the same gauge, only its frame shown, the frame's sprite swapped for the fill's sprite hp_bar02 and the quad
+--   sized to the filled part of the bar's fill rect; the gauge's fill _hp_bar02 and red trail _hp_empty01 are masked
+--   by the rates hp_bar / hp_bar_red, which do not take on these script-opened layers, so they never draw here),
+--   stamina_points_plate_tag (the same gauge, only its frame shown, the
 --   frame's sprite swapped for the tag) and the digit layers stamina_points_plate_num (units), _num2 (tens), _num3
 --   (hundreds): the same gauge again, frame only, its sprite swapped for the digit (a leading zero's layer hidden).
 --   The header objects carry one attach row per layer (trace = the layer's name) at their root locator _pos_base01,
---   so the five follow the plate.
+--   so the six follow the plate.
 -- * Max PE: CMND_AURAPOINTS_STAMINA_MAX(Físico, hdl) -> ok, max, modeOn (features\pe\scripts\stamina.lua): the max
 --   PE of the plate's card (content\match_resources\pe_max.toml at his level; Físico is passed as the plate radar
 --   reads it, stat 4: funcLuaCommand(1131797651, hdl, 18, true, false)). Nothing is drawn without the command, in mode "log", or
 --   on a screen without the layers; then the piece takes no width.
+-- * Fill: CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max (features\pe\scripts\stamina.lua) while a match runs and knows
+--   the handle; otherwise (outside a match) the bar is full. Read when the header shows a player (its fill callback).
 -- * Miximax (Chrono Stone: the miximax also gives the base PE): while Inazuma Fantasy's player page shows the
 --   player's miximax (its globals EVT_R9.mx on ATRIBUTOS, or EVT_PPG.MxForm / CurForm on PERFIL; absent = never), the
 --   number is his max PE + the miximax's PE gain (Inazuma Fantasy's CMND_EVT_MX_GAINS, 13th value; absent = 0).
@@ -38,6 +42,8 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
     P.NUM = 1410143955                     -- stamina_points_plate_num
     P.NUM2 = 89862261                      -- stamina_points_plate_num2
     P.NUM3 = 1918632163                    -- stamina_points_plate_num3
+    P.FILL = 1075515196                    -- stamina_points_plate_fill
+    P.CMD_CURRENT = 3590013386             -- CMND_AURAPOINTS_STAMINA
     -- placement in the header layout units (y up, origin = the plate's _pos_base01 = the screen's top-left): the block
     -- starts at the slot's x (ctx.x); the tag 32 x 16 (TAG_DY below the band's top) on the bar's left end, the bar
     -- under it (visible ~198..206 on the band y 163..227), the number (3 digits 11 x 16) on the tag's row at the bar's
@@ -62,18 +68,16 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
     local CMD_MESH = 3405944500            -- CMND_SET_MESH_VISIBLE (layer, mesh, on, inst)
     local CMD_TRACE = 1774843228           -- attach trace on / off (owner layer, inst, trace, on)
     local CMD_SWAP_TEX = 558735651         -- (layer, atlas, new sprite, old sprite, 0, inst)
-    local CMD_NODE_POS = 2575768773        -- (layer, inst, node, axis 0 / 1, value)
-    local CMD_NODE_SCALE = 2885415772      -- (layer, inst, node, x, y): a mesh node's scale = its size
     local CMD_CHARA = 1131797651           -- chara status value (hdl, index, ...)
     -- the gauge (btl06_13_stamina_gauge): frame _hp_base01 top-left (94, -816), 476 x 44
     local G_X, G_Y, G_W, G_H = 94, -816, 476, 44
-    local MESH_FRAME, MESH_LABEL = 1837325853, 1257514352      -- _hp_base01, _gtxt_stamina01
+    local MESH_LABEL = 1257514352          -- _gtxt_stamina01
     local MESH_EMPTY, MESH_FILL = 2609329121, 2043683848       -- _hp_empty01, _hp_bar02
     local ATLAS = 1191797350               -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
     local TEX_TAG, TEX_FRAME = 2270199711, 538967808           -- stamina_points_pe_tag01, hp_base01
-    -- the full fill: the plain quad _hp_empty01 (drawn over the frame; its sprite slot hp_bar_red02) with the fill's
-    -- sprite hp_bar02 at the fill's rect, top-left (100, -820), 448 x 24 (gauge units, y up)
-    local TEX_FILL, TEX_EMPTY_SLOT = 1460691304, 3706229145    -- hp_bar02, hp_bar_red02
+    -- the fill: the fill layer's frame quad with the fill's sprite hp_bar02, over the bar's fill rect, top-left
+    -- (100, -820), 448 x 24 (gauge units, y up), cut to the current PE's share of its width
+    local TEX_FILL = 1460691304            -- hp_bar02
     local FILL_X, FILL_Y, FILL_W, FILL_H = 100, -820, 448, 24
     local G_VIS_TOP = 2                    -- the frame's visible rows are 2..29 of the 44-row mesh
     -- Chrono Stone's digits stamina_points_pe_num0..9 (btl06_13 atlas, content\images\...\stamina_points_pe_num.toml)
@@ -127,6 +131,15 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       return math.floor(max + 0.5)
     end
 
+    -- the share of his PE chara status handle hdl has left (0..1): the match's current / max PE, 1 outside a match
+    function P.RateOf(hdl)
+      local ok, has, cur, max = pcall(funcLuaCommand, P.CMD_CURRENT, hdl)
+      if not ok or has ~= true or type(cur) ~= "number" or type(max) ~= "number" or max <= 0 then
+        return 1
+      end
+      return math.max(0, math.min(1, cur / max))
+    end
+
     -- Inazuma Fantasy's player page shows the miximax now (Miximax view on ATRIBUTOS, the Miximax form on PERFIL)
     function P.MxShown()
       local R = rawget(_ENV, "EVT_R9")
@@ -167,6 +180,13 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       return P.TAG_X - G_X * sx, P.TAG_Y - G_Y * sy, sx, sy
     end
 
+    -- the fill layer: its frame quad over the left `rate` of the bar's fill rect
+    function P.FillPos(rate)
+      local bx, by, bsx, bsy = P.BarPos()
+      local sx, sy = FILL_W * rate * bsx / G_W, FILL_H * bsy / G_H
+      return bx + FILL_X * bsx - G_X * sx, by + FILL_Y * bsy - G_Y * sy, sx, sy
+    end
+
     -- digit layer k (1 = units, 2 = tens, 3 = hundreds): cells right-aligned at the bar's right end, standing on the
     -- bar's visible frame like the tag (their bottom = the tag's bottom)
     function P.NumPos(k)
@@ -181,7 +201,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
     end
 
     local function Layers()
-      return {P.BAR, P.TAG, P.NUM, P.NUM2, P.NUM3}
+      return {P.BAR, P.FILL, P.TAG, P.NUM, P.NUM2, P.NUM3}
     end
 
     local function HideAll()
@@ -210,18 +230,16 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
     end
 
     local function Setup(l)
-      if l == P.BAR then
-        Cmd(CMD_MESH, l, MESH_LABEL, false, 0)
-        Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_FILL, TEX_EMPTY_SLOT, 0, 0)
-      else                                 -- the tag and the digits: the gauge's frame only
-        Cmd(CMD_MESH, l, MESH_LABEL, false, 0)
-        Cmd(CMD_MESH, l, MESH_EMPTY, false, 0)
-        Cmd(CMD_MESH, l, MESH_FILL, false, 0)
-        if l == P.TAG then
-          Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_TAG, TEX_FRAME, 0, 0)
-        else
-          P.digit[l] = nil
-        end
+      -- every layer: the gauge's frame only
+      Cmd(CMD_MESH, l, MESH_LABEL, false, 0)
+      Cmd(CMD_MESH, l, MESH_EMPTY, false, 0)
+      Cmd(CMD_MESH, l, MESH_FILL, false, 0)
+      if l == P.TAG then
+        Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_TAG, TEX_FRAME, 0, 0)
+      elseif l == P.FILL then
+        Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_FILL, TEX_FRAME, 0, 0)
+      elseif l ~= P.BAR then
+        P.digit[l] = nil
       end
     end
 
@@ -238,7 +256,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       return d
     end
 
-    -- the five layers on the plate of P.want; false = still loading (the step tries again)
+    -- the six layers on the plate of P.want; false = still loading (the step tries again)
     function P.Draw()
       local w = P.want
       if w == nil then
@@ -265,12 +283,12 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       local x, y, sx, sy = P.BarPos()
       Cmd(CMD_SCALE, P.BAR, sx, sy, 1, 0)
       Cmd(CMD_POS, P.BAR, x, y, 0, 0)
-      -- outside a match PE is always full: the fill quad over the whole fill rect
-      Cmd(CMD_MESH, P.BAR, MESH_FILL, false, 0)
-      Cmd(CMD_NODE_POS, P.BAR, 0, MESH_EMPTY, 0, FILL_X)
-      Cmd(CMD_NODE_POS, P.BAR, 0, MESH_EMPTY, 1, FILL_Y)
-      Cmd(CMD_NODE_SCALE, P.BAR, 0, MESH_EMPTY, FILL_W, FILL_H)
-      Cmd(CMD_MESH, P.BAR, MESH_EMPTY, true, 0)
+      local filled = w.rate > 0.001
+      if filled then
+        x, y, sx, sy = P.FillPos(w.rate)
+        Cmd(CMD_SCALE, P.FILL, sx, sy, 1, 0)
+        Cmd(CMD_POS, P.FILL, x, y, 0, 0)
+      end
       x, y, sx, sy = P.TagPos()
       Cmd(CMD_SCALE, P.TAG, sx, sy, 1, 0)
       Cmd(CMD_POS, P.TAG, x, y, 0, 0)
@@ -288,6 +306,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
         end
       end
       Cmd(CMD_VISIBLE, P.BAR, 0, true)
+      Cmd(CMD_VISIBLE, P.FILL, 0, filled)
       Cmd(CMD_VISIBLE, P.TAG, 0, true)
       for k, l in ipairs(Digits()) do
         Cmd(CMD_VISIBLE, l, 0, dig[k] ~= nil)
@@ -313,7 +332,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       P.TAG_Y = ctx.top - P.TAG_DY
       local mx = P.MxShown()
       P.want = {plate = ctx.layer, inst = ctx.inst or 0, base = max, hdl = ctx.hdl, mx = mx,
-                max = max + (mx and P.MxGain(ctx.hdl) or 0)}
+                max = max + (mx and P.MxGain(ctx.hdl) or 0), rate = P.RateOf(ctx.hdl)}
       P.Draw()
       return P.BAR_W
     end

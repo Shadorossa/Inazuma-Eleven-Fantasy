@@ -1,0 +1,44 @@
+schema = "VRFW.menu/2"
+
+# The menu scene's own drawings on the main menu (title_menu_2; docs/game/mods/better-menu.md §18-§21): the layer the
+# framework's menu scene draws on (docs/framework/menu-scene.md §2.2.1 and §2.2.3): vrfw_ms_label, the match panel's
+# text (vrfw_mp_label): 0 = the name of the mode on screen, 1.. = the hotspots. Not opened with the group: the
+# framework's Lua opens each instance on its first draw.
+when = { config = "experiment.map_under_menu", default = true }
+
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "vrfw_ms_label", object = "vrfw_mp_label", count = 7, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+
+# the selected hotspot's outline (docs/framework/menu-scene.md §2.2.3): edge quads of the framework's object, its
+# white square of vrfw_plain tinted light blue; instance 4: the door's light flood; the others: the outline's parts
+# (4 edges, more where a person in front cuts an edge)
+[[patch]]
+menu = "title_menu_2"
+add_layer = { name = "vrfw_ms_frame", object = "vrfw_ms_frame", count = 13, after = "title02_04_version", groups = [{ group = "title_menu_2", flags = [0, 0, 0, 0, 1, 0], after = "title02_04_version" }] }
+res = ["#/menu/220_img/vrfw_plain/vrfw_plain.g4tx"]
+
+# The parts of the mode row the game shows again on every focus change for one frame before the framework hides them
+# (the mode name label over the tiles, «VICTORIAS» and its detail, «Mi equipo»): their layouts off screen at the root
+# joint (no animation moves it), so they are never drawn. The framework still hides them every frame (the scene's
+# hide_layers). With the scene off this session (a failure) the main menu has no mode names over the tiles, no
+# victory counter and no «Mi equipo» banner.
+[[layout]]
+file = "common/menu/50_title/title02/title02_03/title02_03.g4pkm"
+joint = "title02_03_output"
+translate = [0.0, 5000.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_07/title02_07.g4pkm"
+joint = "title02_07_output"
+translate = [0.0, 5000.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_12/title02_12.g4pkm"
+joint = "title02_12_output"
+translate = [0.0, 5000.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_10/title02_10.g4pkm"
+joint = "title02_10_output"
+translate = [5000.0, 0.0]

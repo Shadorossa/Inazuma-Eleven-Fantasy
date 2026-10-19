@@ -2,7 +2,7 @@ id = "legendary_match"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Legendary Match"
-version = "1.0.19"
+version = "1.0.20"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Every offline match is played against a «Legendary» CPU (the game's «Batalla legendaria» AI as the base). The rival team only (never your AI teammates): dodges every sliding tackle, plays every strategy of the game's top AI level, reacts at once in duels, computes the power of every move of both players and plays the cheapest one that wins (no move against a shot it cannot stop or that a «parada» will save, a counter shot when it returns yours), always picks the move whose element beats yours, remembers the moves you use and counters them, keeps tension for its keeper and gains 0.5 tension per second, passes and decides without waits, shoots or chains as soon as it starts a shoot zone, presses the player who just received a pass and your tired players, tries long shots when your keeper's bar is above half, sprints while it has stamina and substitutes players at 15 % (with Aura Points) and for elemental advantage, never the captain, and its power charges / power blocks are a foul 5 % of the time (the game: 15 %). Both teams: the defensive action range is halved. Every value is data (content\\rules\\ai\\legendary.toml)."

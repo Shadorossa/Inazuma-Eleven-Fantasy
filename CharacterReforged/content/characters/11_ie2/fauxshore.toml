@@ -10,14 +10,23 @@ rank = 3
 growth = "normal"
 stats = { kick = 204, control = 209, technique = 216, pressure = 242, physical = 220, intelligence = 244, agility = 246, freedom = 355 }
 moves = [
-  { move = 0x8C382852, level = 1 },                       # God Hand
-  { move = 0xA491AFFF, level = 1 },                       # Majin the Hand
-  { move = 0xF2CB0879, level = 1 },                       # Mugen the Hand
-  { move = 0xF7841EFC, level = 1 },                       # Fiend Hand
+  { move = 0x5AF33BC7, level = 1 },                         # God Hand
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0xF2CB0879, level = 1 },                         # Mugen the Hand
+  { move = 0x74CC079C, level = 35 },                        # Big Fan
+]
+VRFW.MoveGrades = [
+  { Move = 0xF2CB0879, Grade = 1 },                         # Mugen the Hand
 ]
 
 [[edit]]
 target = "c02023820"                                   # Drancis Fake
+moves = [
+  { move = 0xA7B451B3, level = 1 },                         # Paladin Strike
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x4F58F805, level = 28 },                        # Coil Turn
+  { move = 0x74CC079C, level = 46 },                        # Big Fan
+]
 
   [[edit.cards]]
   id = 0x4CF62B4A                                         # DF/MF · wind
@@ -27,6 +36,12 @@ target = "c02023820"                                   # Drancis Fake
 
 [[edit]]
 target = "c02023830"                                   # Mick Mishap
+moves = [
+  { move = 0x4CDC2C6B, level = 1 },                         # Shooting Star
+  { move = 0x7CACF0B0, level = 29 },                        # Horn Train
+  { move = 0x3C843987, level = 33 },                        # Flurry Dash
+  { move = 0x58E8FC83, level = 55 },                        # Rolling Hell
+]
 
   [[edit.cards]]
   id = 0x55ED1A0B                                         # DF/MF · forest
@@ -36,6 +51,12 @@ target = "c02023830"                                   # Mick Mishap
 
 [[edit]]
 target = "c02023840"                                   # Louis Leave
+moves = [
+  { move = 0x5506B694, level = 1 },                         # Utter Gutsiness Club
+  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
+  { move = 0x41F3CDC2, level = 35 },                        # Scorching Tackle
+  { move = 0x4D1E465C, level = 47 },                        # Fake Bomber
+]
 
   [[edit.cards]]
   id = 0x1AAC8CCC                                         # DF/MF · fire
@@ -45,6 +66,12 @@ target = "c02023840"                                   # Louis Leave
 
 [[edit]]
 target = "c02023850"                                   # Maurice Badgame
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x74CC079C, level = 1 },                         # Big Fan
+  { move = 0xBFCC20E7, level = 33 },                        # Wood Chopper
+  { move = 0x5E7E4775, level = 51 },                        # Table-Turner
+]
 
   [[edit.cards]]
   id = 0x03B7BD8D                                         # DF/MF · mountain
@@ -55,6 +82,12 @@ target = "c02023850"                                   # Maurice Badgame
 
 [[edit]]
 target = "c02023860"                                   # Cannon Random
+moves = [
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
+  { move = 0x68982058, level = 1 },                         # Armadillo Circus
+  { move = 0xC0FD6AFB, level = 32 },                        # Fireball Head
+  { move = 0x47657634, level = 48 },                        # Flame Breath
+]
 
   [[edit.cards]]
   id = 0x289AEE4E                                         # MF/DF · fire
@@ -65,6 +98,12 @@ target = "c02023860"                                   # Cannon Random
 
 [[edit]]
 target = "c02023870"                                   # Ulric Richmen
+moves = [
+  { move = 0x49529150, level = 1 },                         # Snake Shot
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x2EBA803A, level = 29 },                        # Dirt Ball
+  { move = 0x4E5B398C, level = 43 },                        # Acrobat Bomber
+]
 
   [[edit.cards]]
   id = 0x3181DF0F                                         # MF/FW · forest
@@ -74,6 +113,12 @@ target = "c02023870"                                   # Ulric Richmen
 
 [[edit]]
 target = "c02023880"                                   # Dave Fate
+moves = [
+  { move = 0x2A37FC88, level = 1 },                         # Revolution V
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x74CC079C, level = 1 },                         # Big Fan
+  { move = 0x3069B219, level = 39 },                        # Super Sumo Stomp
+]
 
   [[edit.cards]]
   id = 0xB619C3C0                                         # FW/MF · mountain
@@ -83,6 +128,12 @@ target = "c02023880"                                   # Dave Fate
 
 [[edit]]
 target = "c02023890"                                   # Spencer Duskplay
+moves = [
+  { move = 0x18019E0A, level = 1 },                         # Double Grenade
+  { move = 0x695A4A6F, level = 29 },                        # Magic
+  { move = 0x74CC079C, level = 39 },                        # Big Fan
+  { move = 0x5506B694, level = 47 },                        # Utter Gutsiness Club
+]
 
   [[edit.cards]]
   id = 0xAF02F281                                         # MF/FW · wind
@@ -93,6 +144,12 @@ target = "c02023890"                                   # Spencer Duskplay
 
 [[edit]]
 target = "c02023900"                                   # Jonathan Luckyman
+moves = [
+  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+  { move = 0xAC6D8A70, level = 1 },                         # Rainbow Arc
+  { move = 0xC5EF0563, level = 1 },                         # Three-Legged Rush
+  { move = 0x34256515, level = 41 },                        # Dynamite Shot
+]
 
   [[edit.cards]]
   id = 0x7F0223FF                                         # FW/MF · forest
@@ -102,6 +159,12 @@ target = "c02023900"                                   # Jonathan Luckyman
 
 [[edit]]
 target = "c02023910"                                   # Joe Poker
+moves = [
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x74CC079C, level = 1 },                         # Big Fan
+  { move = 0x627FC293, level = 33 },                        # Meteor Attack
+  { move = 0xC5EF0563, level = 53 },                        # Three-Legged Rush
+]
 
   [[edit.cards]]
   id = 0x661912BE                                         # FW/DF · fire
@@ -111,6 +174,12 @@ target = "c02023910"                                   # Joe Poker
 
 [[edit]]
 target = "c02023920"                                   # Wiley Cracker
+moves = [
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
+  { move = 0xEBD03938, level = 36 },                        # Utter Gutsiness Catch
+  { move = 0xC379BE95, level = 52 },                        # Counter Strike
+]
 
   [[edit.cards]]
   id = 0x4D34417D                                         # GK/MF · fire
@@ -120,6 +189,12 @@ target = "c02023920"                                   # Wiley Cracker
 
 [[edit]]
 target = "c02023930"                                   # Mark Failing
+moves = [
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x35E70F22, level = 28 },                        # Grenade Shot
+  { move = 0x34256515, level = 34 },                        # Dynamite Shot
+  { move = 0x142DBE2A, level = 42 },                        # Foul Offence
+]
 
   [[edit.cards]]
   id = 0x542F703C                                         # FW/MF · forest
@@ -130,6 +205,12 @@ target = "c02023930"                                   # Mark Failing
 
 [[edit]]
 target = "c02023940"                                   # Alton Cotts
+moves = [
+  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
+  { move = 0x7CACF0B0, level = 30 },                        # Horn Train
+  { move = 0xAC6D8A70, level = 36 },                        # Rainbow Arc
+  { move = 0x4D1E465C, level = 45 },                        # Fake Bomber
+]
 
   [[edit.cards]]
   id = 0x1B6EE6FB                                         # MF/DF · mountain
@@ -139,6 +220,12 @@ target = "c02023940"                                   # Alton Cotts
 
 [[edit]]
 target = "c02023950"                                   # Mike Passing
+moves = [
+  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+  { move = 0x011AAF4B, level = 29 },                        # Gyro Head
+  { move = 0x4890FB67, level = 40 },                        # Twin Boost
+  { move = 0xC5EF0563, level = 54 },                        # Three-Legged Rush
+]
 
   [[edit.cards]]
   id = 0x0275D7BA                                         # FW/MF · wind
@@ -149,6 +236,12 @@ target = "c02023950"                                   # Mike Passing
 
 [[edit]]
 target = "c02023960"                                   # Knowle Bathers
+moves = [
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0xC0FD6AFB, level = 1 },                         # Fireball Head
+  { move = 0x4E9A9232, level = 33 },                        # Spinning Cut
+  { move = 0x4CDC2C6B, level = 49 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x29588479                                         # GK/DF · wind
@@ -158,6 +251,12 @@ target = "c02023960"                                   # Knowle Bathers
 
 [[edit]]
 target = "c02029020"                                   # Dany Destiny
+moves = [
+  { move = 0x259F08C6, level = 8 },                         # Whirlwind Twister
+  { move = 0x55C71D2A, level = 24 },                        # About Face
+  { move = 0x025FD09B, level = 38 },                        # Volcano Cut
+  { move = 0x74CC079C, level = 50 },                        # Big Fan
+]
 
   [[edit.cards]]
   id = 0x2D589A96                                         # DF/MF · fire
@@ -168,6 +267,12 @@ target = "c02029020"                                   # Dany Destiny
 
 [[edit]]
 target = "c11802030"                                   # Augustus Hargrave
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x322F0C40, level = 20 },                        # Spider Web
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x8893E7D8                                         # MF/DF · forest
@@ -177,6 +282,12 @@ target = "c11802030"                                   # Augustus Hargrave
 
 [[edit]]
 target = "c11802040"                                   # Windell Balding
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x768AB9C5, level = 13 },                        # Frosticle
+  { move = 0xD9BB22A7, level = 20 },                        # Air Ride
+  { move = 0x49933AEE, level = 30 },                        # Perfect Tower
+]
 
   [[edit.cards]]
   id = 0xC7D2711F                                         # MF/DF · wind

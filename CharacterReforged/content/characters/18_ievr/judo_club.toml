@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11500040"                                   # Linton Judson
+moves = [
+  { move = 0x232D05EC, level = 1 },                         # Tiger Drive
+  { move = 0x84385EE2, level = 13 },                        # Black Tide Ride
+  { move = 0x5DA7EA06, level = 20 },                        # Boomerang Bluff
+  { move = 0x9D236FA3, level = 30 },                        # Sword of the King
+]
 
   [[edit.cards]]
   id = 0xD145AA4A                                         # FW/MF · mountain
@@ -16,6 +22,12 @@ target = "c11500040"                                   # Linton Judson
 
 [[edit]]
 target = "c11700010"                                   # Domino Guerrera
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xE1FAFF04                                         # DF/MF · forest
@@ -26,6 +38,12 @@ target = "c11700010"                                   # Domino Guerrera
 
 [[edit]]
 target = "c11700020"                                   # Leston Thoreau
+moves = [
+  { move = 0x2C5D1441, level = 1 },                         # Song of the Three Kingdoms
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0xE647BCEE, level = 20 },                        # God Hand V
+  { move = 0x8DFA4265, level = 30 },                        # Toughness Block
+]
 
   [[edit.cards]]
   id = 0xCAD7ACC7                                         # GK/DF · mountain
@@ -36,6 +54,12 @@ target = "c11700020"                                   # Leston Thoreau
 
 [[edit]]
 target = "c11700030"                                   # Trane Levitt
+moves = [
+  { move = 0xC21AFE80, level = 1 },                         # Whirlwind Drop
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x259F08C6, level = 20 },                        # Whirlwind Twister
+  { move = 0xDF8CB373, level = 30 },                        # Sonic Shot
+]
 
   [[edit.cards]]
   id = 0xD3CC9D86                                         # FW/MF · wind
@@ -46,6 +70,12 @@ target = "c11700030"                                   # Trane Levitt
 
 [[edit]]
 target = "c11717010"                                   # Judeau Garb
+moves = [
+  { move = 0x24E5068E, level = 1 },                         # Fractal Repeller
+  { move = 0x9D236FA3, level = 13 },                        # Sword of the King
+  { move = 0x64CDCFB9, level = 20 },                        # Rising Dragon
+  { move = 0x485150D9, level = 30 },                        # Body Shield
+]
 
   [[edit.cards]]
   id = 0x414DEE0D                                         # MF/DF · mountain
@@ -56,6 +86,12 @@ target = "c11717010"                                   # Judeau Garb
 
 [[edit]]
 target = "c11717020"                                   # Belton McGirdle
+moves = [
+  { move = 0xB8C5883B, level = 1 },                         # God Hand X
+  { move = 0x4CDC2C6B, level = 13 },                        # Shooting Star
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0xC636A810, level = 30 },                        # Combustion Catch
+]
 
   [[edit.cards]]
   id = 0x6A60BDCE                                         # DF/GK · fire
@@ -66,6 +102,12 @@ target = "c11717020"                                   # Belton McGirdle
 
 [[edit]]
 target = "c11717030"                                   # Agil Surefall
+moves = [
+  { move = 0x78218C02, level = 1 },                         # Duskfall
+  { move = 0x6ADE9E01, level = 13 },                        # Illusory Ball
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0x737B8C8F                                         # DF/MF · forest
@@ -76,6 +118,12 @@ target = "c11717030"                                   # Agil Surefall
 
 [[edit]]
 target = "c11717040"                                   # Bowen Fleurmett
+moves = [
+  { move = 0x7DD6FEF8, level = 1 },                         # Athena's Anthem
+  { move = 0x5643C944, level = 13 },                        # Killer Slide
+  { move = 0x0E0A3F7A, level = 20 },                        # Spatial Portal
+  { move = 0x750E6DAB, level = 30 },                        # Matador Feint
+]
 
   [[edit.cards]]
   id = 0x3C3A1A48                                         # MF/DF · forest
@@ -86,6 +134,12 @@ target = "c11717040"                                   # Bowen Fleurmett
 
 [[edit]]
 target = "c11717050"                                   # Healan Masson
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x768AB9C5, level = 13 },                        # Frosticle
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0xAAA6489B, level = 30 },                        # Spiral Shot
+]
 
   [[edit.cards]]
   id = 0x25212B09                                         # MF/FW · wind
@@ -96,6 +150,12 @@ target = "c11717050"                                   # Healan Masson
 
 [[edit]]
 target = "c11717060"                                   # Damion Duform
+moves = [
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x585098FC, level = 20 },                        # Slice and Dice
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x0E0C78CA                                         # MF/DF · fire
@@ -106,6 +166,12 @@ target = "c11717060"                                   # Damion Duform
 
 [[edit]]
 target = "c11717070"                                   # Hovard Schulder
+moves = [
+  { move = 0x19BA3BFC, level = 1 },                         # Dance on Air
+  { move = 0x9D236FA3, level = 13 },                        # Sword of the King
+  { move = 0x53CD747F, level = 20 },                        # Tarzan Kick
+  { move = 0x232D05EC, level = 30 },                        # Tiger Drive
+]
 
   [[edit.cards]]
   id = 0x1717498B                                         # MF/FW · mountain

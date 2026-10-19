@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11010080"                                   # Tai Richter
+moves = [
+  { move = 0x2B0B29C3, level = 1 },                         # Matrix Eye
+  { move = 0x928B9BED, level = 13 },                        # Optimal Trajectory
+  { move = 0x6633159F, level = 20 },                        # Gravitation
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0x105D5D45                                         # MF/DF · wind
@@ -21,14 +27,20 @@ rank = 3
 growth = "normal"
 stats = { kick = 269, control = 248, technique = 254, pressure = 188, physical = 207, intelligence = 232, agility = 180, freedom = 217 }
 moves = [
-  { move = 0x05567847, level = 4 },                       # Runaway Train
-  { move = 0x58D7E841, level = 19 },                      # Runaway Bull
-  { move = 0x166B0073, level = 36 },                      # Super Armadillo
-  { move = 0xB13A6C3D, level = 52 },                      # Zigzag Flame
+  { move = 0x58D7E841, level = 1 },                         # Runaway Bull
+  { move = 0xB13A6C3D, level = 13 },                        # Zigzag Flame
+  { move = 0x166B0073, level = 20 },                        # Super Armadillo
+  { move = 0x6C6C932B, level = 30 },                        # Megaton Head
 ]
 
 [[edit]]
 target = "c11010100"                                   # Charis Benzaie
+moves = [
+  { move = 0x73FABB82, level = 1 },                         # Dramatic Swipe
+  { move = 0x530CDFC1, level = 13 },                        # Mystifying Mist
+  { move = 0xF94FAAA7, level = 20 },                        # Decoy Deploy
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0xD946BD7A                                         # DF/MF · mountain
@@ -39,6 +51,12 @@ target = "c11010100"                                   # Charis Benzaie
 
 [[edit]]
 target = "c11010110"                                   # Lycus Foxworth
+moves = [
+  { move = 0x4F67ECC7, level = 1 },                         # Phantasm Dribble
+  { move = 0xA2BF7076, level = 13 },                        # Side Swipe
+  { move = 0x09454CA5, level = 20 },                        # Legendary Silver Wolf
+  { move = 0xAB6422AC, level = 30 },                        # Phantom Shot
+]
 
   [[edit.cards]]
   id = 0xC05D8C3B                                         # DF/FW · forest
@@ -49,6 +67,12 @@ target = "c11010110"                                   # Lycus Foxworth
 
 [[edit]]
 target = "c11010120"                                   # Maine Alsop
+moves = [
+  { move = 0x22681F66, level = 1 },                         # Solution Boost
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x2E7B2B84, level = 20 },                        # Thief's Eye
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0xEB70DFF8                                         # MF/DF · mountain
@@ -59,6 +83,12 @@ target = "c11010120"                                   # Maine Alsop
 
 [[edit]]
 target = "c11010130"                                   # Dario Highton
+moves = [
+  { move = 0x32101882, level = 1 },                         # Peaky Breezy
+  { move = 0xA8215D7C, level = 13 },                        # The Mountain
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0xAEEA9F97, level = 30 },                        # Sigma Zone
+]
 
   [[edit.cards]]
   id = 0xF26BEEB9                                         # MF/GK · forest
@@ -69,6 +99,12 @@ target = "c11010130"                                   # Dario Highton
 
 [[edit]]
 target = "c11010140"                                   # Amelia Rainwalker
+moves = [
+  { move = 0x6633159F, level = 1 },                         # Gravitation
+  { move = 0x567CDD86, level = 13 },                        # Hoopsie-Loop
+  { move = 0xAF28F5A0, level = 20 },                        # The Tower
+  { move = 0xDCF43422, level = 30 },                        # Aurora Dribble
+]
 
   [[edit.cards]]
   id = 0xBD2A787E                                         # DF/FW · wind
@@ -79,6 +115,12 @@ target = "c11010140"                                   # Amelia Rainwalker
 
 [[edit]]
 target = "c11010150"                                   # Marisol Cavallo
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x193D4B41, level = 13 },                        # Frost Finesse
+  { move = 0x039DBAAC, level = 20 },                        # Land of Ice
+  { move = 0xD471DE6C, level = 30 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0xA431493F                                         # DF/GK · fire
@@ -89,6 +131,12 @@ target = "c11010150"                                   # Marisol Cavallo
 
 [[edit]]
 target = "c11010160"                                   # Winsor Compete
+moves = [
+  { move = 0x88D7393F, level = 1 },                         # Vigorous Stomp
+  { move = 0x7D6E9A87, level = 13 },                        # The Wall
+  { move = 0x5B3151F0, level = 20 },                        # Nitro Slap
+  { move = 0xDBA0E5E3, level = 30 },                        # Gigant Wall
+]
 
   [[edit.cards]]
   id = 0x8F1C1AFC                                         # DF/GK · mountain
@@ -104,10 +152,10 @@ rank = 3
 growth = "normal"
 stats = { kick = 340, control = 239, technique = 194, pressure = 201, physical = 212, intelligence = 208, agility = 182, freedom = 230 }
 moves = [
-  { move = 0x06130797, level = 5 },                       # Rolling Kick
-  { move = 0x3AB14410, level = 10 },                      # Swirly Shot
-  { move = 0x36A270F2, level = 32 },                      # Rolling Slide
-  { move = 0x592A96B4, level = 49 },                      # Afterimage
+  { move = 0x36A270F2, level = 1 },                         # Rolling Slide
+  { move = 0x592A96B4, level = 13 },                        # Afterimage
+  { move = 0x3AB14410, level = 20 },                        # Swirly Shot
+  { move = 0xF5C2A0A5, level = 30 },                        # Capoeira Grab
 ]
 
 [[edit]]
@@ -116,9 +164,35 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 235, control = 198, technique = 212, pressure = 235, physical = 262, intelligence = 293, agility = 190, freedom = 275 }
+moves = [
+  { move = 0x91CC087E, level = 1 },                         # Kraken Seaquake
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x400EB337, level = 20 },                        # Twirling Turtle
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
+
+  [[edit.cards]]
+  id = 0x97C5418A    # this card's moveset differs from the list above
+  moves = [
+    { move = 0x91CC087E, level = 1 },                       # Kraken Seaquake
+    { move = 0x3F00EDE9, level = 13 },                      # Dash Storm
+    { move = 0x400EB337, level = 20 },                      # Twirling Turtle
+    { move = 0x7C1494CF, level = 30 },                      # Tornado Tunnel
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0xEF95E8F2, level = 1 },                       # Miximax Trans: Raika [aura]
+  ]
 
 [[edit]]
 target = "c11010170"                                   # Meridia Althoff
+moves = [
+  { move = 0xE11DE782, level = 1 },                         # Chrysanthemum Katana
+  { move = 0x00267A00, level = 13 },                        # Falcon Counter
+  { move = 0x259F08C6, level = 20 },                        # Whirlwind Twister
+  { move = 0xC42D6F54, level = 30 },                        # Aikido
+]
 
   [[edit.cards]]
   id = 0x96072BBD                                         # DF/MF · wind
@@ -129,6 +203,12 @@ target = "c11010170"                                   # Meridia Althoff
 
 [[edit]]
 target = "c11010180"                                   # Lemmy Stretchen
+moves = [
+  { move = 0x6AE18AC3, level = 1 },                         # Dark Mist
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0x0E0A3F7A, level = 20 },                        # Spatial Portal
+  { move = 0xF94FAAA7, level = 30 },                        # Decoy Deploy
+]
 
   [[edit.cards]]
   id = 0x119F3772                                         # DF/MF · fire
@@ -139,6 +219,12 @@ target = "c11010180"                                   # Lemmy Stretchen
 
 [[edit]]
 target = "c11010190"                                   # Starla Thorn
+moves = [
+  { move = 0x7D518E45, level = 1 },                         # Amp Beat
+  { move = 0x5643C944, level = 13 },                        # Killer Slide
+  { move = 0x4B3099D5, level = 20 },                        # Stomper Stopper
+  { move = 0xB60E3C60, level = 30 },                        # Plasma Cut
+]
 
   [[edit.cards]]
   id = 0x08840633                                         # MF/FW · fire
@@ -148,6 +234,12 @@ target = "c11010190"                                   # Starla Thorn
 
 [[edit]]
 target = "c11010200"                                   # Kelvin Steelborne
+moves = [
+  { move = 0x41CCD900, level = 1 },                         # Metal Hammer
+  { move = 0x52CEB5F6, level = 13 },                        # Iron Wall
+  { move = 0xC324C788, level = 20 },                        # Blast Mine
+  { move = 0x132416F6, level = 30 },                        # Dog Run
+]
 
   [[edit.cards]]
   id = 0xDB000323                                         # DF/GK · mountain
@@ -158,6 +250,12 @@ target = "c11010200"                                   # Kelvin Steelborne
 
 [[edit]]
 target = "c11010210"                                   # Antonia Felicier
+moves = [
+  { move = 0x6E53E2B3, level = 1 },                         # Angel Ball
+  { move = 0x644ABF04, level = 13 },                        # Look! A Rice Ball
+  { move = 0x8A936B25, level = 20 },                        # Goopy Gloopy Goo
+  { move = 0x2AF65736, level = 30 },                        # Bamboo Pattern
+]
 
   [[edit.cards]]
   id = 0xC21B3262                                         # DF/MF · forest
@@ -167,6 +265,12 @@ target = "c11010210"                                   # Antonia Felicier
 
 [[edit]]
 target = "c11010220"                                   # Florent Shorleigh
+moves = [
+  { move = 0x3B732E27, level = 1 },                         # Flying Marlin
+  { move = 0xC2E6ADBF, level = 13 },                        # Log Roll
+  { move = 0xD9BB22A7, level = 20 },                        # Air Ride
+  { move = 0x637C031A, level = 30 },                        # No Escape
+]
 
   [[edit.cards]]
   id = 0xE93661A1                                         # MF/DF · wind
@@ -177,6 +281,14 @@ target = "c11010220"                                   # Florent Shorleigh
 
 [[edit]]
 target = "c11010230"                                   # Cade Shelby
+moves = [
+  { move = 0x91CC087E, level = 1 },                         # Kraken Seaquake
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x400EB337, level = 20 },                        # Twirling Turtle
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+  { move = 0x3F00EDE9, level = 38 },                        # Dash Storm
+  { move = 0x7C1494CF, level = 43 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0xF02D50E0                                         # DF/MF · wind
@@ -185,6 +297,12 @@ target = "c11010230"                                   # Cade Shelby
 
 [[edit]]
 target = "c11010500"                                   # Edwin Grove
+moves = [
+  { move = 0x7BC5D9F0, level = 1 },                         # Rotary Sander
+  { move = 0xABA58912, level = 13 },                        # Ignited Steal
+  { move = 0xBA833662, level = 20 },                        # Million Hands
+  { move = 0x47657634, level = 30 },                        # Flame Breath
+]
 
   [[edit.cards]]
   id = 0xDE4F15A6                                         # GK/DF · fire
@@ -195,6 +313,12 @@ target = "c11010500"                                   # Edwin Grove
 
 [[edit]]
 target = "c11500020"                                   # Lilac Tausend
+moves = [
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x568262FA, level = 20 },                        # Dark Tornado
+  { move = 0xE937AD43, level = 30 },                        # Dragon Slayer
+]
 
   [[edit.cards]]
   id = 0x871F0DCC                                         # MF/FW · forest
@@ -204,6 +328,12 @@ target = "c11500020"                                   # Lilac Tausend
 
 [[edit]]
 target = "c11500250"                                   # Juno Hundertmark
+moves = [
+  { move = 0xC4701649, level = 1 },                         # Ice Block
+  { move = 0x613ABD43, level = 13 },                        # Dawnrise
+  { move = 0xAF28F5A0, level = 20 },                        # The Tower
+  { move = 0x4AF2F3E2, level = 30 },                        # Bridge to Nowhere
+]
 
   [[edit.cards]]
   id = 0xCBDA4F65                                         # DF/GK · wind
@@ -245,10 +375,10 @@ target = "c11010020"                                   # Briar Bloomhurst
 growth = "normal"
 stats = { kick = 333, control = 243, technique = 251, pressure = 205, physical = 215, intelligence = 227, agility = 180, freedom = 242 }
 moves = [
-  { move = 0x768AB9C5, level = 5 },                       # Frosticle
-  { move = 0x23AA7551, level = 13 },                      # Force Flash
-  { move = 0x5EDD8114, level = 32 },                      # Spring Thunderclap
-  { move = 0x2B343D01, level = 56 },                      # Cyclone
+  { move = 0x5EDD8114, level = 1 },                         # Spring Thunderclap
+  { move = 0x23AA7551, level = 13 },                        # Force Flash
+  { move = 0x2B343D01, level = 20 },                        # Cyclone
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
 ]
 
 [[edit]]
@@ -258,6 +388,15 @@ rank = 3
 growth = "normal"
 stats = { kick = 248, control = 209, technique = 224, pressure = 234, physical = 252, intelligence = 244, agility = 236, freedom = 234 }
 
+  [[edit.cards]]
+  id = 0xF3A9848E    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x79818BEA, level = 1 },                       # Divine Deflectors
+    { move = 0xB15801E2, level = 13 },                      # Icy Grace
+    { move = 0x5E5AF1A9, level = 20 },                      # Northern Impact
+    { move = 0x41AEB4DF, level = 30 },                      # Crystal Barrier
+  ]
+
 [[edit]]
 target = "c11010040"                                   # Thierry Reyes
 growth_pattern = 1
@@ -265,10 +404,10 @@ rank = 3
 growth = "normal"
 stats = { kick = 267, control = 257, technique = 258, pressure = 180, physical = 230, intelligence = 238, agility = 184, freedom = 355 }
 moves = [
-  { move = 0xC324C788, level = 3 },                       # Blast Mine
-  { move = 0x6D2989A1, level = 16 },                      # Heavenly Thunder
-  { move = 0x5E233E68, level = 21 },                      # Super Elastico
-  { move = 0x00A10ABD, level = 28 },                      # Ball Lightning
+  { move = 0x6D2989A1, level = 1 },                         # Heavenly Thunder
+  { move = 0x00A10ABD, level = 13 },                        # Ball Lightning
+  { move = 0x5E233E68, level = 20 },                        # Super Elastico
+  { move = 0x637C031A, level = 30 },                        # No Escape
 ]
 
 [[edit]]
@@ -276,10 +415,27 @@ target = "c11010050"                                   # Cedric Freud
 growth_pattern = 1
 rank = 3
 growth = "normal"
+moves = [
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
+  { move = 0x17A96A44, level = 13 },                        # Clone Faker
+  { move = 0x13D845C9, level = 20 },                        # Samba Strike
+  { move = 0x4031A7F5, level = 30 },                        # Mole Fake
+]
 
   [[edit.cards]]
   id = 0xA5F32308                                         # MF/FW · forest
   stats = { kick = 278, control = 251, technique = 282, pressure = 196, physical = 208, intelligence = 254, agility = 177, freedom = 313 }
+  moves = [
+    { move = 0x31ABD82E, level = 1 },                       # Circus Block
+    { move = 0x17A96A44, level = 13 },                      # Clone Faker
+    { move = 0x13D845C9, level = 20 },                      # Samba Strike
+    { move = 0x4031A7F5, level = 30 },                      # Mole Fake
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0xBE7EDAD0, level = 1 },                       # Animador [aura]
+  ]
 
   [[edit.cards]]
   id = 0x8D582F5E                                         # DF/FW · forest

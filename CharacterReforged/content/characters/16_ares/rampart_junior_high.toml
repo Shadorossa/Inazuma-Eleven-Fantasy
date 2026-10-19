@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c07040010"                                   # Rocky Hardcastle
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x2354CA2D, level = 13 },                        # Wind God's Dance
+  { move = 0x01DB04F5, level = 20 },                        # Defence Scan
+  { move = 0x1E0BF75F, level = 30 },                        # Mega Wall
+]
 
   [[edit.cards]]
   id = 0xA6055CD8                                         # MF/DF · wind
@@ -16,6 +22,12 @@ target = "c07040010"                                   # Rocky Hardcastle
 
 [[edit]]
 target = "c07040020"                                   # Rick Wall
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0xAA67E325, level = 13 },                        # Desert Blast
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0x568262FA, level = 30 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0x8D280F1B                                         # MF/FW · forest
@@ -26,6 +38,12 @@ target = "c07040020"                                   # Rick Wall
 
 [[edit]]
 target = "c07040030"                                   # Hefton Bulk
+moves = [
+  { move = 0xE8346CCA, level = 1 },                         # Easter Island Header
+  { move = 0x7D6E9A87, level = 13 },                        # The Wall
+  { move = 0x232D05EC, level = 20 },                        # Tiger Drive
+  { move = 0x4031A7F5, level = 30 },                        # Mole Fake
+]
 
   [[edit.cards]]
   id = 0x94333E5A                                         # DF/FW · mountain
@@ -35,6 +53,12 @@ target = "c07040030"                                   # Hefton Bulk
 
 [[edit]]
 target = "c07040040"                                   # Lunk Ironbrow
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0xC3193F09, level = 13 },                        # Frankenstun
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0x8D5B6847, level = 30 },                        # Odin Sword
+]
 
   [[edit.cards]]
   id = 0xDB72A89D                                         # DF/FW · mountain
@@ -44,6 +68,12 @@ target = "c07040040"                                   # Lunk Ironbrow
 
 [[edit]]
 target = "c07040050"                                   # Iggy Motte
+moves = [
+  { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
+  { move = 0x1D4E888F, level = 13 },                        # Condor Dive
+  { move = 0x4031A7F5, level = 20 },                        # Mole Fake
+  { move = 0x3F00EDE9, level = 30 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0xC26999DC                                         # FW/MF · wind
@@ -54,6 +84,12 @@ target = "c07040050"                                   # Iggy Motte
 
 [[edit]]
 target = "c07040060"                                   # Sebastian Fortwright
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x166B0073, level = 13 },                        # Super Armadillo
+  { move = 0x4031A7F5, level = 20 },                        # Mole Fake
+  { move = 0xBBE07677, level = 30 },                        # Sidewinder
+]
 
   [[edit.cards]]
   id = 0xE944CA1F                                         # MF/GK · forest
@@ -63,6 +99,12 @@ target = "c07040060"                                   # Sebastian Fortwright
 
 [[edit]]
 target = "c07040070"                                   # Ivor Shield
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x7D6E9A87, level = 13 },                        # The Wall
+  { move = 0x31ABD82E, level = 20 },                        # Circus Block
+  { move = 0xA7B451B3, level = 30 },                        # Paladin Strike
+]
 
   [[edit.cards]]
   id = 0xF05FFB5E                                         # MF/FW · mountain
@@ -72,6 +114,12 @@ target = "c07040070"                                   # Ivor Shield
 
 [[edit]]
 target = "c07040080"                                   # Knox Loxley
+moves = [
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xEF5D458A, level = 13 },                        # Burnout
+  { move = 0x1A472053, level = 20 },                        # Double Wrath Shot
+  { move = 0xA7157B91, level = 30 },                        # Power Shield
+]
 
   [[edit.cards]]
   id = 0x77C7E791                                         # GK/FW · fire
@@ -82,6 +130,12 @@ target = "c07040080"                                   # Knox Loxley
 
 [[edit]]
 target = "c07040090"                                   # Barry Cade
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x1B44E1DA, level = 13 },                        # Stone Wall
+  { move = 0x67F17FA8, level = 20 },                        # Mega Quake
+  { move = 0x166B0073, level = 30 },                        # Super Armadillo
+]
 
   [[edit.cards]]
   id = 0x6EDCD6D0                                         # DF/MF · mountain
@@ -92,6 +146,12 @@ target = "c07040090"                                   # Barry Cade
 
 [[edit]]
 target = "c07040100"                                   # Waldo Gibbons
+moves = [
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0xBDAE2862, level = 13 },                        # Hellfire
+  { move = 0x7D6E9A87, level = 20 },                        # The Wall
+  { move = 0x5506B694, level = 30 },                        # Utter Gutsiness Club
+]
 
   [[edit.cards]]
   id = 0xBEDC07AE                                         # FW/MF · fire
@@ -102,6 +162,12 @@ target = "c07040100"                                   # Waldo Gibbons
 
 [[edit]]
 target = "c07040110"                                   # Björn Brocken
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x1B44E1DA, level = 13 },                        # Stone Wall
+  { move = 0x17110E3B, level = 20 },                        # Jumbo Sandwich
+  { move = 0xDD365E15, level = 30 },                        # Mole Shuffle
+]
 
   [[edit.cards]]
   id = 0xA7C736EF                                         # DF/MF · mountain
@@ -111,6 +177,12 @@ target = "c07040110"                                   # Björn Brocken
 
 [[edit]]
 target = "c07040130"                                   # Corbin Brickham
+moves = [
+  { move = 0xAA67E325, level = 1 },                         # Desert Blast
+  { move = 0x17110E3B, level = 13 },                        # Jumbo Sandwich
+  { move = 0x7D6E9A87, level = 20 },                        # The Wall
+  { move = 0x7A67325B, level = 30 },                        # Flame Dance
+]
 
   [[edit.cards]]
   id = 0x95F1546D                                         # DF/MF · fire
@@ -120,6 +192,12 @@ target = "c07040130"                                   # Corbin Brickham
 
 [[edit]]
 target = "c07040140"                                   # Helena Harwood
+moves = [
+  { move = 0xBD8A9EBE, level = 1 },                         # Infinite Wall
+  { move = 0xED1BFBD3, level = 13 },                        # Fingers of Gaia
+  { move = 0x89773ED7, level = 20 },                        # Celestial Zone
+  { move = 0xC13F00CC, level = 30 },                        # Flower Power
+]
 
   [[edit.cards]]
   id = 0xDAB0C2AA                                         # GK/DF · wind
@@ -129,6 +207,12 @@ target = "c07040140"                                   # Helena Harwood
 
 [[edit]]
 target = "c07040150"                                   # Dane Upchurch
+moves = [
+  { move = 0x5506B694, level = 1 },                         # Utter Gutsiness Club
+  { move = 0x31ABD82E, level = 13 },                        # Circus Block
+  { move = 0x52CEB5F6, level = 20 },                        # Iron Wall
+  { move = 0xC6978232, level = 30 },                        # Dinosaur Roar
+]
 
   [[edit.cards]]
   id = 0xC3ABF3EB                                         # FW/DF · mountain
@@ -138,6 +222,12 @@ target = "c07040150"                                   # Dane Upchurch
 
 [[edit]]
 target = "c07040160"                                   # Warden Watchford
+moves = [
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x1A472053, level = 13 },                        # Double Wrath Shot
+  { move = 0xAD6E4BF9, level = 20 },                        # Harvest
+  { move = 0x4D1E465C, level = 30 },                        # Fake Bomber
+]
 
   [[edit.cards]]
   id = 0xE886A028                                         # MF/FW · forest
@@ -147,6 +237,15 @@ target = "c07040160"                                   # Warden Watchford
 
 [[edit]]
 target = "c07040120"                                   # Jack Wallside
+moves = [
+  { move = 0x7D6E9A87, level = 11 },                        # The Wall
+  { move = 0x166B0073, level = 16 },                        # Super Armadillo
+  { move = 0x4031A7F5, level = 32 },                        # Mole Fake
+  { move = 0x67F17FA8, level = 55 },                        # Mega Quake
+]
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
 
   [[edit.cards]]
   id = 0x8CEA652C                                         # DF/MF · mountain
@@ -156,6 +255,12 @@ target = "c07040120"                                   # Jack Wallside
 
 [[edit]]
 target = "c11807170"                                   # Bastiana Chateau
+moves = [
+  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0x0E0A3F7A, level = 20 },                        # Spatial Portal
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+]
 
   [[edit.cards]]
   id = 0xDAE3B8D9                                         # DF/MF · forest
@@ -166,6 +271,12 @@ target = "c11807170"                                   # Bastiana Chateau
 
 [[edit]]
 target = "c11807180"                                   # Fortnum Pile
+moves = [
+  { move = 0xBD8A9EBE, level = 1 },                         # Infinite Wall
+  { move = 0xDBA0E5E3, level = 13 },                        # Gigant Wall
+  { move = 0xEA12530F, level = 20 },                        # Double Rocket
+  { move = 0xA6D711A6, level = 30 },                        # Full Power Shield
+]
 
   [[edit.cards]]
   id = 0x5D7BA416                                         # GK/FW · fire
@@ -175,6 +286,12 @@ target = "c11807180"                                   # Fortnum Pile
 
 [[edit]]
 target = "c11807190"                                   # Skinner Lankley
+moves = [
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0xC5EF0563, level = 13 },                        # Three-Legged Rush
+  { move = 0xA7B451B3, level = 20 },                        # Paladin Strike
+  { move = 0xB1FBC783, level = 30 },                        # Reflect Buster
+]
 
   [[edit.cards]]
   id = 0x44609557                                         # FW/MF · mountain

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11100010"                                   # Vashan Morell
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0xA1BE38E6, level = 13 },                        # La Flamme
+  { move = 0xADD8A52B, level = 20 },                        # Matchlock Bullet
+  { move = 0x78218C02, level = 30 },                        # Duskfall
+]
 
   [[edit.cards]]
   id = 0x37A31C19                                         # FW/DF · fire
@@ -15,6 +21,12 @@ target = "c11100010"                                   # Vashan Morell
 
 [[edit]]
 target = "c11100020"                                   # Ebiss Marlowe
+moves = [
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
+  { move = 0x0CF4E55C, level = 13 },                        # Double Touch
+  { move = 0x72BFA108, level = 20 },                        # Wall of Atlantis
+  { move = 0x05567847, level = 30 },                        # Runaway Train
+]
 
   [[edit.cards]]
   id = 0x1C8E4FDA                                         # MF/DF · mountain
@@ -24,6 +36,12 @@ target = "c11100020"                                   # Ebiss Marlowe
 
 [[edit]]
 target = "c11100030"                                   # Vinda Koral
+moves = [
+  { move = 0xAF150D21, level = 1 },                         # Swallow Counter
+  { move = 0xADD8A52B, level = 13 },                        # Matchlock Bullet
+  { move = 0x4FE09C7A, level = 20 },                        # Acrobatic Keep
+  { move = 0xD471DE6C, level = 30 },                        # Snakebite
+]
 
   [[edit.cards]]
   id = 0x05957E9B                                         # DF/GK · mountain
@@ -33,6 +51,12 @@ target = "c11100030"                                   # Vinda Koral
 
 [[edit]]
 target = "c11100040"                                   # Froclan Junn
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0xC324C788, level = 13 },                        # Blast Mine
+  { move = 0xB27F13ED, level = 20 },                        # Death Zone
+  { move = 0x4A17EE80, level = 30 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x4AD4E85C                                         # MF/FW · forest
@@ -42,6 +66,12 @@ target = "c11100040"                                   # Froclan Junn
 
 [[edit]]
 target = "c11100050"                                   # Benton Zellner
+moves = [
+  { move = 0xDF8CB373, level = 1 },                         # Sonic Shot
+  { move = 0x2354CA2D, level = 13 },                        # Wind God's Dance
+  { move = 0xC324C788, level = 20 },                        # Blast Mine
+  { move = 0x4AF2F3E2, level = 30 },                        # Bridge to Nowhere
+]
 
   [[edit.cards]]
   id = 0x53CFD91D                                         # MF/GK · wind
@@ -51,6 +81,12 @@ target = "c11100050"                                   # Benton Zellner
 
 [[edit]]
 target = "c11100060"                                   # Budan Ashwell
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x05567847, level = 13 },                        # Runaway Train
+  { move = 0x65766A4F, level = 20 },                        # Meteor Blade
+  { move = 0x5781A373, level = 30 },                        # Hurricane Arrows
+]
 
   [[edit.cards]]
   id = 0x78E28ADE                                         # MF/FW · fire
@@ -60,6 +96,12 @@ target = "c11100060"                                   # Budan Ashwell
 
 [[edit]]
 target = "c11100070"                                   # Itor Sheerman
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x3C843987, level = 13 },                        # Flurry Dash
+  { move = 0xC42D6F54, level = 20 },                        # Aikido
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0x61F9BB9F                                         # FW/MF · wind
@@ -69,6 +111,12 @@ target = "c11100070"                                   # Itor Sheerman
 
 [[edit]]
 target = "c11100080"                                   # Yarkin Cittey
+moves = [
+  { move = 0x4CDC2C6B, level = 1 },                         # Shooting Star
+  { move = 0xBD8A9EBE, level = 13 },                        # Infinite Wall
+  { move = 0xACAC21CE, level = 20 },                        # Fake Ball
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0xE661A750                                         # DF/GK · mountain
@@ -78,6 +126,12 @@ target = "c11100080"                                   # Yarkin Cittey
 
 [[edit]]
 target = "c11100090"                                   # Susen Faircourt
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0x2B343D01, level = 13 },                        # Cyclone
+  { move = 0x3F00EDE9, level = 20 },                        # Dash Storm
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0xFF7A9611                                         # DF/MF · wind
@@ -87,6 +141,12 @@ target = "c11100090"                                   # Susen Faircourt
 
 [[edit]]
 target = "c11100100"                                   # Hathea Calmell
+moves = [
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x46FA651E, level = 13 },                        # Water Veil
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0x93E8DBF8, level = 30 },                        # Dimensional Hand
+]
 
   [[edit.cards]]
   id = 0x2F7A476F                                         # MF/GK · forest
@@ -96,6 +156,12 @@ target = "c11100100"                                   # Hathea Calmell
 
 [[edit]]
 target = "c11100110"                                   # Mayen Harmet
+moves = [
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0x5AF33BC7, level = 13 },                        # God Hand
+  { move = 0x07D16DA0, level = 20 },                        # Inazuma-1
+  { move = 0xE9968761, level = 30 },                        # Rocket Kobushi
+]
 
   [[edit.cards]]
   id = 0x3661762E                                         # GK/FW · forest
@@ -105,6 +171,12 @@ target = "c11100110"                                   # Mayen Harmet
 
 [[edit]]
 target = "c11100120"                                   # Trevin Seabourne
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0x0D368F6B, level = 13 },                        # Heaven's Time
+  { move = 0x1C4D4906, level = 20 },                        # Whirlpool
+  { move = 0x4E9A9232, level = 30 },                        # Spinning Cut
+]
 
   [[edit.cards]]
   id = 0x1D4C25ED                                         # DF/MF · wind
@@ -114,6 +186,12 @@ target = "c11100120"                                   # Trevin Seabourne
 
 [[edit]]
 target = "c11100130"                                   # Jory Jinx
+moves = [
+  { move = 0xB3BD79DA, level = 1 },                         # Patriot Shot
+  { move = 0xBDAE2862, level = 13 },                        # Hellfire
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x41F3CDC2, level = 30 },                        # Scorching Tackle
+]
 
   [[edit.cards]]
   id = 0x045714AC                                         # FW/DF · fire
@@ -123,6 +201,12 @@ target = "c11100130"                                   # Jory Jinx
 
 [[edit]]
 target = "c11100150"                                   # Clementine Weston
+moves = [
+  { move = 0x20D01E43, level = 1 },                         # Hey Presto
+  { move = 0x4AD6453E, level = 13 },                        # Back Tornado
+  { move = 0xA8215D7C, level = 20 },                        # The Mountain
+  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0x520DB32A                                         # MF/DF · mountain
@@ -132,6 +216,12 @@ target = "c11100150"                                   # Clementine Weston
 
 [[edit]]
 target = "c11100160"                                   # Orfreya Newcomb
+moves = [
+  { move = 0xAF28F5A0, level = 1 },                         # The Tower
+  { move = 0x79E3E635, level = 13 },                        # Racing Flame
+  { move = 0x9D236FA3, level = 20 },                        # Sword of the King
+  { move = 0x27D9B69F, level = 30 },                        # Prima Donna
+]
 
   [[edit.cards]]
   id = 0x7920E0E9                                         # DF/MF · mountain
@@ -141,6 +231,12 @@ target = "c11100160"                                   # Orfreya Newcomb
 
 [[edit]]
 target = "c11100500"                                   # Conrado Pottinger
+moves = [
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0xB3BD79DA, level = 13 },                        # Patriot Shot
+  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0x4FE09C7A, level = 30 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x2873EFB3                                         # FW/MF · mountain
@@ -150,6 +246,12 @@ target = "c11100500"                                   # Conrado Pottinger
 
 [[edit]]
 target = "c11100510"                                   # Celeste Fairbourne
+moves = [
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x61FB16FD, level = 13 },                        # Divine Arrows
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x6E53E2B3, level = 30 },                        # Angel Ball
+]
 
   [[edit.cards]]
   id = 0x3168DEF2                                         # FW/MF · wind
@@ -159,6 +261,12 @@ target = "c11100510"                                   # Celeste Fairbourne
 
 [[edit]]
 target = "c11100140"                                   # Jakob Serveraw
+moves = [
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xA7157B91, level = 13 },                        # Power Shield
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0xED1BFBD3, level = 30 },                        # Fingers of Gaia
+]
 
   [[edit.cards]]
   id = 0x4B16826B                                         # GK/DF · mountain

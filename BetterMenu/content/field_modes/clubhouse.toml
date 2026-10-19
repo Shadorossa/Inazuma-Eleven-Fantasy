@@ -1,0 +1,13 @@
+schema = "VRFW.field_mode/1"
+
+# Entered by the menu scene (content\menu_scenes\clubhouse.toml) while the clubhouse map is loaded under the main menu;
+# left at the game reset that ends the scene. The play mode of Options (1) is kept: the Kizuna walker setup (play mode 3)
+# brings the Kizuna day / activity telop (activity_telop_menu: the white panel top left and «MIÉ» bottom right). No
+# autosave (the clubhouse is never saved as the current place), no field menu opens.
+[[VRFW.FieldMode]]
+name = "clubhouse"
+play_mode = 3                    # use the Kizuna field setup so the save avatar is present as the walker
+walker = "avatar"                # create a valid field actor near the scene before the NPC update
+block_autosave = true
+[VRFW.FieldMode.menus]
+default = "none"

@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06032010"                                   # Ceram Longicorn
+moves = [
+  { move = 0x78410D9E, level = 1 },                         # Venus Balltrap
+  { move = 0xF5A22139, level = 25 },                        # Bindweed
+  { move = 0xF309624E, level = 36 },                        # Dual Smash
+  { move = 0x9AF2229C, level = 53 },                        # Gravity Point
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x79881736, level = 1 },                         # Tótem Mosfi [aura]
+]
 
   [[edit.cards]]
   id = 0x185B43F7                                         # GK/DF · forest
@@ -15,6 +26,12 @@ target = "c06032010"                                   # Ceram Longicorn
 
 [[edit]]
 target = "c06032020"                                   # Romborina Drohn
+moves = [
+  { move = 0xF5A22139, level = 8 },                         # Bindweed
+  { move = 0x78410D9E, level = 22 },                        # Venus Balltrap
+  { move = 0x5739C70C, level = 31 },                        # Guided Collide
+  { move = 0xB37CD264, level = 50 },                        # Am-Bush
+]
 
   [[edit.cards]]
   id = 0x33761034                                         # DF/MF · forest
@@ -25,6 +42,12 @@ target = "c06032020"                                   # Romborina Drohn
 
 [[edit]]
 target = "c06032030"                                   # Heterocera Mothlin
+moves = [
+  { move = 0xF5A22139, level = 4 },                         # Bindweed
+  { move = 0xD1E62D0A, level = 10 },                        # Mushroom Hop
+  { move = 0xDCC9CCA3, level = 30 },                        # Tesla Coil
+  { move = 0x4A17EE80, level = 44 },                        # Hunter's Net
+]
 
   [[edit.cards]]
   id = 0x2A6D2175                                         # DF/MF · wind
@@ -35,6 +58,12 @@ target = "c06032030"                                   # Heterocera Mothlin
 
 [[edit]]
 target = "c06032040"                                   # Formica Anz
+moves = [
+  { move = 0xD1E62D0A, level = 1 },                         # Mushroom Hop
+  { move = 0x5739C70C, level = 17 },                        # Guided Collide
+  { move = 0x21127474, level = 32 },                        # Ultra Moon
+  { move = 0xB37CD264, level = 48 },                        # Am-Bush
+]
 
   [[edit.cards]]
   id = 0x652CB7B2                                         # MF/DF · forest
@@ -45,6 +74,12 @@ target = "c06032040"                                   # Formica Anz
 
 [[edit]]
 target = "c06032050"                                   # Mantodea Mantus
+moves = [
+  { move = 0xD1E62D0A, level = 7 },                         # Mushroom Hop
+  { move = 0xF5A22139, level = 19 },                        # Bindweed
+  { move = 0x900C8E0A, level = 30 },                        # Maestro's Call
+  { move = 0xDBFD9CFE, level = 49 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0x7C3786F3                                         # MF/DF · mountain
@@ -55,6 +90,12 @@ target = "c06032050"                                   # Mantodea Mantus
 
 [[edit]]
 target = "c06032060"                                   # Lepidoptera Flutterby
+moves = [
+  { move = 0xD1E62D0A, level = 2 },                         # Mushroom Hop
+  { move = 0xF5A22139, level = 7 },                         # Bindweed
+  { move = 0x6E53E2B3, level = 33 },                        # Angel Ball
+  { move = 0x2C3D95DD, level = 46 },                        # Sleeping Dust
+]
 
   [[edit.cards]]
   id = 0x571AD530                                         # MF/DF · wind
@@ -65,6 +106,12 @@ target = "c06032060"                                   # Lepidoptera Flutterby
 
 [[edit]]
 target = "c06032070"                                   # Vespa Hornest
+moves = [
+  { move = 0xAB1367C0, level = 5 },                         # Giant Beanstalk
+  { move = 0xF88DC090, level = 20 },                        # Z Slash
+  { move = 0x2B8C597E, level = 35 },                        # Fugue Wave
+  { move = 0xB3CA3CB6, level = 45 },                        # Parkour Power
+]
 
   [[edit.cards]]
   id = 0x4E01E471                                         # FW/MF · wind
@@ -74,6 +121,12 @@ target = "c06032070"                                   # Vespa Hornest
 
 [[edit]]
 target = "c06032080"                                   # Caelif Hopper
+moves = [
+  { move = 0xAB1367C0, level = 10 },                        # Giant Beanstalk
+  { move = 0xD1E62D0A, level = 22 },                        # Mushroom Hop
+  { move = 0xF5A22139, level = 37 },                        # Bindweed
+  { move = 0x3F00EDE9, level = 46 },                        # Dash Storm
+]
 
   [[edit.cards]]
   id = 0xC999F8BE                                         # MF/DF · wind
@@ -84,6 +137,17 @@ target = "c06032080"                                   # Caelif Hopper
 
 [[edit]]
 target = "c06032090"                                   # Lucan Stag
+moves = [
+  { move = 0xAB1367C0, level = 4 },                         # Giant Beanstalk
+  { move = 0xD1E62D0A, level = 11 },                        # Mushroom Hop
+  { move = 0xF5A22139, level = 34 },                        # Bindweed
+  { move = 0xC9BAEA82, level = 53 },                        # Eye of the Storm
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x94DC0264, level = 1 },                         # Tótem Gusfi [aura]
+]
 
   [[edit.cards]]
   id = 0xD082C9FF                                         # MF/DF · mountain
@@ -94,6 +158,12 @@ target = "c06032090"                                   # Lucan Stag
 
 [[edit]]
 target = "c06032100"                                   # Banda Crix
+moves = [
+  { move = 0xD1E62D0A, level = 5 },                         # Mushroom Hop
+  { move = 0xAB1367C0, level = 16 },                        # Giant Beanstalk
+  { move = 0x2CFC3E63, level = 36 },                        # Dragon Crash
+  { move = 0xFB8202AD, level = 49 },                        # Gaussian Goal
+]
 
   [[edit.cards]]
   id = 0x00821881                                         # MF/FW · wind
@@ -104,6 +174,12 @@ target = "c06032100"                                   # Banda Crix
 
 [[edit]]
 target = "c06032110"                                   # Schisto Locus
+moves = [
+  { move = 0xAB1367C0, level = 6 },                         # Giant Beanstalk
+  { move = 0xD1E62D0A, level = 19 },                        # Mushroom Hop
+  { move = 0xF88DC090, level = 33 },                        # Z Slash
+  { move = 0xC513565C, level = 47 },                        # Doom Spear
+]
 
   [[edit.cards]]
   id = 0x199929C0                                         # FW/MF · forest
@@ -113,6 +189,17 @@ target = "c06032110"                                   # Schisto Locus
 
 [[edit]]
 target = "c06032120"                                   # Ruger Baran
+moves = [
+  { move = 0xB04EE8D8, level = 12 },                        # Scream of Eden
+  { move = 0x79224D8B, level = 26 },                        # Freeze Shot
+  { move = 0x6ADE9E01, level = 40 },                        # Illusory Ball
+  { move = 0xC513565C, level = 54 },                        # Doom Spear
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x1B02DBAF, level = 1 },                         # Tótem Pelion [aura]
+]
 
   [[edit.cards]]
   id = 0x32B47A03                                         # FW/MF · forest
@@ -121,6 +208,17 @@ target = "c06032120"                                   # Ruger Baran
 
 [[edit]]
 target = "c06032130"                                   # Gandares Baran
+moves = [
+  { move = 0xB04EE8D8, level = 13 },                        # Scream of Eden
+  { move = 0x8B90AAAC, level = 28 },                        # Fortissimo
+  { move = 0x660EED1E, level = 43 },                        # Low Scythe Slice
+  { move = 0xF9C4BCF4, level = 56 },                        # Double Helix
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x62F85358, level = 1 },                         # Tótem Belion [aura]
+]
 
   [[edit.cards]]
   id = 0x2BAF4B42                                         # FW/MF · forest
@@ -129,6 +227,12 @@ target = "c06032130"                                   # Gandares Baran
 
 [[edit]]
 target = "c06032140"                                   # Banda Crix Junior
+moves = [
+  { move = 0x530CDFC1, level = 1 },                         # Mystifying Mist
+  { move = 0x2B8C597E, level = 21 },                        # Fugue Wave
+  { move = 0xD1E62D0A, level = 38 },                        # Mushroom Hop
+  { move = 0xAB1367C0, level = 45 },                        # Giant Beanstalk
+]
 
   [[edit.cards]]
   id = 0x64EEDD85                                         # MF/DF · wind
@@ -139,6 +243,12 @@ target = "c06032140"                                   # Banda Crix Junior
 
 [[edit]]
 target = "c06035790"                                   # Elater Clicka
+moves = [
+  { move = 0x4E22F64D, level = 1 },                         # Transporter Device
+  { move = 0x2CFC3E63, level = 18 },                        # Dragon Crash
+  { move = 0x21127474, level = 28 },                        # Ultra Moon
+  { move = 0x4E5B398C, level = 38 },                        # Acrobat Bomber
+]
 
   [[edit.cards]]
   id = 0x481AE7C3                                         # FW/MF · forest
@@ -148,6 +258,12 @@ target = "c06035790"                                   # Elater Clicka
 
 [[edit]]
 target = "c06035800"                                   # Theraphos Tranchla
+moves = [
+  { move = 0xA23AEC88, level = 1 },                         # Copy Cut
+  { move = 0x2CFC3E63, level = 22 },                        # Dragon Crash
+  { move = 0x0C08B663, level = 37 },                        # Doom Dive Drive
+  { move = 0xF4A1E0B0, level = 50 },                        # Entropic Arrows
+]
 
   [[edit.cards]]
   id = 0x92841BB7                                         # FW/DF · mountain
@@ -157,6 +273,12 @@ target = "c06035800"                                   # Theraphos Tranchla
 
 [[edit]]
 target = "c11806060"                                   # Simeur Feromont
+moves = [
+  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
+  { move = 0x613ABD43, level = 13 },                        # Dawnrise
+  { move = 0x4E9A9232, level = 20 },                        # Spinning Cut
+  { move = 0xB0F8060A, level = 30 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0x7A8684CA                                         # DF/FW · wind

@@ -502,8 +502,8 @@ set = [
     { param = "m_drawPriority", values = { 1 = 299 } },
     { param = "m_useObjectNum", values = { 1 = 1 } },
 ]
+# m_drawType 1 kept (as the retail VS capture): drawn in the «before» pass, which writes the capture cell's alpha
 remove = [
-    { param = "m_drawType" },
     { param = "m_screenStretch" },
     { param = "m_isShareRenderTexture" },
 ]

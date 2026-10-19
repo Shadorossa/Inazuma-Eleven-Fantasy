@@ -1567,44 +1567,6 @@ EVT_PHI.TENS_NODE = 923022909            -- _pos_tension01
 EVT_PHI.TENS_LABEL = CALC_CRC("_gtxt_tension01")
 EVT_PHI.TENS_X0 = 225                    -- plate_hiper_build.py PH_TENS_X: the retail place of the move gauge
 EVT_PHI.PoolGaugeOn = false
--- 2026-10-15 (owner: a totem's SP per level under its SP gauges): one text line «Lv1 80 · Lv2 100 · … SP» from whichever
--- mod answers CMND_EVT_PEG_LEVELS(aura) (Souls Rework); layer evt_ph_pool_levels (content\menus\player_page_layers.toml:
--- the corner button's text node, plates hidden; hung at the same joint as evt_ph_peg_pool), centred under the two
--- gauges, LEVELS_DY under their line, scaled LEVELS_K. No answer = no line.
-EVT_PHI.LEVELS = 2813924048              -- crc32("evt_ph_pool_levels")
-EVT_PHI.LEVELS_TEXT = 378327766          -- _text_cmd_back01
-EVT_PHI.LEVELS_PLATES = {298211823 --[[_cmd_back_base01]], 2853207670 --[[_cmd_back_base01_add]]}
-EVT_PHI.LEVELS_K, EVT_PHI.LEVELS_DY = 0.55, 30
-function EVT_PHI.PoolLevels(skill, x0, x1, y)
-  local T = EVT_PHI.LEVELS
-  if not EVT_PH_Exists(T) then
-    return false
-  end
-  local text = nil
-  if skill ~= nil and x0 ~= nil then
-    local ok, s = pcall(funcLuaCommand, CALC_CRC("CMND_EVT_PEG_LEVELS"), skill)
-    if ok and type(s) == "string" and s ~= "" then
-      text = s
-    end
-  end
-  if text == nil then
-    if funcLuaMenuCommand(C.IS_OPEN_LAYER, T, 0) then
-      funcLuaMenuCommand(C.LAYER_VISIBLE, T, 0, false)
-    end
-    return false
-  end
-  EVT_PH_Open(T, 0)
-  local tj = EVT_PHI.GEO.TENS_J[1]
-  for _, m in ipairs(EVT_PHI.LEVELS_PLATES) do
-    funcLuaMenuCommand(C.MESH_VISIBLE, T, m, false, 0)
-  end
-  funcLuaMenuCommand(C.TEXT, T, EVT_PHI.LEVELS_TEXT, text, 0)
-  funcLuaMenuCommand(C.LOCAL_SCALE, T, EVT_PHI.LEVELS_K, EVT_PHI.LEVELS_K, 1, 0)
-  funcLuaMenuCommand(C.LOCAL_POS, T, (x0 + x1) / 2 - tj[1], y - EVT_PHI.LEVELS_DY - tj[2], 0, 0)
-  funcLuaMenuCommand(C.LAYER_VISIBLE, T, 0, true)
-  EVT_PH_Log("hiper pool levels", text)
-  return true
-end
 
 function EVT_PHI.PoolGauge(L, peg, skill)
   local P, G = EVT_PHI.POOL, EVT_PHI.GEO
@@ -1619,7 +1581,6 @@ function EVT_PHI.PoolGauge(L, peg, skill)
       funcLuaMenuCommand(2885415772 --[[NODE_SCALE]], L, 0, EVT_PHI.TENS_NODE, 1, 1)
       funcLuaMenuCommand(C.MESH_VISIBLE, L, EVT_PHI.TENS_LABEL, true, 0)
     end
-    pcall(EVT_PHI.PoolLevels, nil)
     return false
   end
   local k, w = EVT_PHI.POOL_ROW_K, EVT_PHI.POOL_ROW_W * EVT_PHI.POOL_ROW_K
@@ -1643,7 +1604,6 @@ function EVT_PHI.PoolGauge(L, peg, skill)
     funcLuaMenuCommand(C.MESH_VISIBLE, l, EVT_PHI.TENS_LABEL, false, i)
   end})
   funcLuaMenuCommand(C.LAYER_VISIBLE, P, 0, true)
-  pcall(EVT_PHI.PoolLevels, skill, xm, right, mainY)
   local okp, px, py = pcall(funcLuaMenuCommand, C.MESH_POSE, P, 0, EVT_PHI.TENS_NODE)
   local okm, mx, my = pcall(funcLuaMenuCommand, C.MESH_POSE, L, 0, EVT_PHI.TENS_NODE)
   EVT_PH_Log("hiper pool gauge", math.floor(peg.pool + 0.5), tostring(peg.kind), "main", string.format("%.0f", xm),

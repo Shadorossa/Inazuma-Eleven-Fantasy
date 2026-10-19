@@ -24,6 +24,17 @@ target = "c04001100_5000"                              # Maxim Millennium
 
 [[edit]]
 target = "c04001010"                                   # Aum Nirvana
+moves = [
+  { move = 0xA9062A29, level = 1 },                         # Ultrasonic
+  { move = 0x7BC5D9F0, level = 10 },                        # Rotary Sander
+  { move = 0x41AEB4DF, level = 43 },                        # Crystal Barrier
+  { move = 0x4AF2F3E2, level = 62 },                        # Bridge to Nowhere
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xF353CE3F, level = 1 },                         # Goliat [aura]
+]
 
   [[edit.cards]]
   id = 0xDAD187E0                                         # GK/MF · wind
@@ -33,6 +44,12 @@ target = "c04001010"                                   # Aum Nirvana
 
 [[edit]]
 target = "c04001020"                                   # Adamant Walhalla
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0xAA67E325, level = 10 },                        # Desert Blast
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0x1C4D4906, level = 40 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xF1FCD423                                         # DF/MF · wind
@@ -43,6 +60,12 @@ target = "c04001020"                                   # Adamant Walhalla
 
 [[edit]]
 target = "c04001030"                                   # Omega Elysium
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x05567847, level = 17 },                        # Runaway Train
+  { move = 0x79E3E635, level = 35 },                        # Racing Flame
+  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+]
 
   [[edit.cards]]
   id = 0xE8E7E562                                         # DF/MF · mountain
@@ -53,6 +76,12 @@ target = "c04001030"                                   # Omega Elysium
 
 [[edit]]
 target = "c04001040"                                   # Fürimmer Jung
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x737DCB3F, level = 13 },                        # Pancake Defence
+  { move = 0x4A17EE80, level = 39 },                        # Hunter's Net
+  { move = 0xDBFD9CFE, level = 56 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0xA7A673A5                                         # DF/MF · forest
@@ -62,6 +91,12 @@ target = "c04001040"                                   # Fürimmer Jung
 
 [[edit]]
 target = "c04001050"                                   # Zenith Shangrila
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x5DA7EA06, level = 17 },                        # Boomerang Bluff
+  { move = 0x8917BF4B, level = 30 },                        # Willy-Willy
+  { move = 0x6BA49049, level = 48 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0xBEBD42E4                                         # DF/MF · fire
@@ -71,6 +106,12 @@ target = "c04001050"                                   # Zenith Shangrila
 
 [[edit]]
 target = "c04001060"                                   # Optimum Limbo
+moves = [
+  { move = 0x5DA7EA06, level = 1 },                         # Boomerang Bluff
+  { move = 0xF6E75EE9, level = 14 },                        # Headbanger
+  { move = 0x332CCDC9, level = 40 },                        # Heel Kick
+  { move = 0x4FE09C7A, level = 48 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0x95901127                                         # MF/FW · fire
@@ -80,6 +121,12 @@ target = "c04001060"                                   # Optimum Limbo
 
 [[edit]]
 target = "c04001070"                                   # Panacea Utopia
+moves = [
+  { move = 0x5DA7EA06, level = 1 },                         # Boomerang Bluff
+  { move = 0x5643C944, level = 15 },                        # Killer Slide
+  { move = 0x530CDFC1, level = 31 },                        # Mystifying Mist
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x8C8B2066                                         # MF/DF · wind
@@ -90,6 +137,12 @@ target = "c04001070"                                   # Panacea Utopia
 
 [[edit]]
 target = "c04001080"                                   # Acme Rapture
+moves = [
+  { move = 0x5DA7EA06, level = 1 },                         # Boomerang Bluff
+  { move = 0xDDCA0D2A, level = 12 },                        # Bouncing Bomb
+  { move = 0x141046AB, level = 40 },                        # Overnight Fortress
+  { move = 0xB0F8060A, level = 60 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0x0B133CA9                                         # MF/DF · forest
@@ -100,6 +153,12 @@ target = "c04001080"                                   # Acme Rapture
 
 [[edit]]
 target = "c04001090"                                   # Ultima Nextworld
+moves = [
+  { move = 0xDDCA0D2A, level = 1 },                         # Bouncing Bomb
+  { move = 0x5DA7EA06, level = 12 },                        # Boomerang Bluff
+  { move = 0x9349F1DA, level = 31 },                        # Zephyr Shot
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x12080DE8                                         # FW/MF · wind
@@ -110,6 +169,17 @@ target = "c04001090"                                   # Ultima Nextworld
 
 [[edit]]
 target = "c04001100"                                   # Maxim Millennium
+moves = [
+  { move = 0xDDCA0D2A, level = 1 },                         # Bouncing Bomb
+  { move = 0x035C1112, level = 10 },                        # Gungnir
+  { move = 0x5DA7EA06, level = 27 },                        # Boomerang Bluff
+  { move = 0x15138722, level = 56 },                        # Will-o'-the-Wisp Shot
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x2EE02C4B, level = 1 },                         # Trickster [aura]
+]
 
   [[edit.cards]]
   id = 0xC208DC96                                         # FW/MF · forest
@@ -119,6 +189,12 @@ target = "c04001100"                                   # Maxim Millennium
 
 [[edit]]
 target = "c04001110"                                   # Infinity Beyond
+moves = [
+  { move = 0xDDCA0D2A, level = 1 },                         # Bouncing Bomb
+  { move = 0x5DA7EA06, level = 12 },                        # Boomerang Bluff
+  { move = 0xFB8202AD, level = 20 },                        # Gaussian Goal
+  { move = 0xF4A1E0B0, level = 60 },                        # Entropic Arrows
+]
 
   [[edit.cards]]
   id = 0xDB13EDD7                                         # FW/MF · fire
@@ -128,6 +204,12 @@ target = "c04001110"                                   # Infinity Beyond
 
 [[edit]]
 target = "c04001120"                                   # Apex Paradiso
+moves = [
+  { move = 0xC636A810, level = 4 },                         # Combustion Catch
+  { move = 0xA7157B91, level = 20 },                        # Power Shield
+  { move = 0x457EB170, level = 27 },                        # Pyrokinetic
+  { move = 0xED1BFBD3, level = 56 },                        # Fingers of Gaia
+]
 
   [[edit.cards]]
   id = 0xF03EBE14                                         # GK/MF · fire
@@ -138,6 +220,12 @@ target = "c04001120"                                   # Apex Paradiso
 
 [[edit]]
 target = "c04001130"                                   # Pearl Gates
+moves = [
+  { move = 0x332CCDC9, level = 8 },                         # Heel Kick
+  { move = 0xDDCA0D2A, level = 22 },                        # Bouncing Bomb
+  { move = 0x457EB170, level = 27 },                        # Pyrokinetic
+  { move = 0x592A96B4, level = 35 },                        # Afterimage
+]
 
   [[edit.cards]]
   id = 0xE9258F55                                         # FW/MF · wind
@@ -147,6 +235,12 @@ target = "c04001130"                                   # Pearl Gates
 
 [[edit]]
 target = "c04001140"                                   # Perpetuo Xanadu
+moves = [
+  { move = 0x5DA7EA06, level = 15 },                        # Boomerang Bluff
+  { move = 0x660EED1E, level = 30 },                        # Low Scythe Slice
+  { move = 0xA8E0F6C2, level = 40 },                        # Kung Fu Header
+  { move = 0x4FE09C7A, level = 48 },                        # Acrobatic Keep
+]
 
   [[edit.cards]]
   id = 0xA6641992                                         # MF/DF · forest
@@ -157,6 +251,12 @@ target = "c04001140"                                   # Perpetuo Xanadu
 
 [[edit]]
 target = "c04001150"                                   # Sempiterno Bliss
+moves = [
+  { move = 0xB60E3C60, level = 8 },                         # Plasma Cut
+  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x3297683F, level = 60 },                        # Warp Step
+]
 
   [[edit.cards]]
   id = 0xBF7F28D3                                         # MF/DF · fire
@@ -167,6 +267,12 @@ target = "c04001150"                                   # Sempiterno Bliss
 
 [[edit]]
 target = "c04001160"                                   # Myriad Arcadia
+moves = [
+  { move = 0x2E7B2B84, level = 6 },                         # Thief's Eye
+  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
+  { move = 0xED7B7A4F, level = 25 },                        # Defence Equation
+  { move = 0x414BA9BD, level = 52 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0x94527B10                                         # DF/MF · forest
@@ -176,6 +282,12 @@ target = "c04001160"                                   # Myriad Arcadia
 
 [[edit]]
 target = "c11804030"                                   # Primo Eden
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x4E22F64D, level = 13 },                        # Transporter Device
+  { move = 0x72BFA108, level = 20 },                        # Wall of Atlantis
+  { move = 0xDCC9CCA3, level = 30 },                        # Tesla Coil
+]
 
   [[edit.cards]]
   id = 0xADF8B804                                         # DF/MF · forest

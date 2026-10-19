@@ -6,6 +6,17 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c05029820"                                   # Goldus Janque
+moves = [
+  { move = 0xE647BCEE, level = 1 },                         # God Hand V
+  { move = 0xDD0BA694, level = 22 },                        # Okehazama Ravine
+  { move = 0xD471DE6C, level = 38 },                        # Snakebite
+  { move = 0x07704782, level = 55 },                        # Rejection
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xBB1BF024, level = 1 },                         # Grandius [aura]
+]
 
   [[edit.cards]]
   id = 0xE6ECF5A0                                         # GK/DF · mountain

@@ -34,6 +34,12 @@ target = "c04001500_5000"                              # Davy Jones
 
 [[edit]]
 target = "c04001410"                                   # Ishmael Ahab
+moves = [
+  { move = 0xF400CA92, level = 1 },                         # Anchors Aweigh
+  { move = 0x58B5859E, level = 19 },                        # Whip Crack
+  { move = 0x2D9F7E76, level = 35 },                        # Breath Taker
+  { move = 0x41AEB4DF, level = 48 },                        # Crystal Barrier
+]
 
   [[edit.cards]]
   id = 0xDDD82F3C                                         # GK/MF · wind
@@ -43,6 +49,17 @@ target = "c04001410"                                   # Ishmael Ahab
 
 [[edit]]
 target = "c04001420"                                   # Octavus Kraken
+moves = [
+  { move = 0x6A66FA7E, level = 1 },                         # Killer Whale
+  { move = 0x1C4D4906, level = 16 },                        # Whirlpool
+  { move = 0x5643C944, level = 35 },                        # Killer Slide
+  { move = 0x414BA9BD, level = 52 },                        # Pincer Pinch
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xF641A1A7, level = 1 },                         # Peón blanco [aura]
+]
 
   [[edit.cards]]
   id = 0xF6F57CFF                                         # DF/MF · fire
@@ -53,6 +70,12 @@ target = "c04001420"                                   # Octavus Kraken
 
 [[edit]]
 target = "c04001430"                                   # Roger Jolly
+moves = [
+  { move = 0x6A66FA7E, level = 1 },                         # Killer Whale
+  { move = 0xC2E6ADBF, level = 12 },                        # Log Roll
+  { move = 0x24E5068E, level = 35 },                        # Fractal Repeller
+  { move = 0x0E0A3F7A, level = 56 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0xEFEE4DBE                                         # DF/MF · mountain
@@ -62,6 +85,12 @@ target = "c04001430"                                   # Roger Jolly
 
 [[edit]]
 target = "c04001440"                                   # Sinbad Saylor
+moves = [
+  { move = 0x6A66FA7E, level = 1 },                         # Killer Whale
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xF6E75EE9, level = 29 },                        # Headbanger
+  { move = 0x332CCDC9, level = 45 },                        # Heel Kick
+]
 
   [[edit.cards]]
   id = 0xA0AFDB79                                         # DF/MF · fire
@@ -72,6 +101,12 @@ target = "c04001440"                                   # Sinbad Saylor
 
 [[edit]]
 target = "c04001450"                                   # Rob Crusoe
+moves = [
+  { move = 0x6A66FA7E, level = 1 },                         # Killer Whale
+  { move = 0x1C4D4906, level = 20 },                        # Whirlpool
+  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
+  { move = 0x44BCDB47, level = 56 },                        # Pyroclastic
+]
 
   [[edit.cards]]
   id = 0xB9B4EA38                                         # DF/MF · wind
@@ -81,6 +116,12 @@ target = "c04001450"                                   # Rob Crusoe
 
 [[edit]]
 target = "c04001460"                                   # Cheung Po
+moves = [
+  { move = 0xC2E6ADBF, level = 1 },                         # Log Roll
+  { move = 0x1C4D4906, level = 16 },                        # Whirlpool
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+  { move = 0x585098FC, level = 44 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0x9299B9FB                                         # MF/DF · forest
@@ -90,6 +131,12 @@ target = "c04001460"                                   # Cheung Po
 
 [[edit]]
 target = "c04001470"                                   # William Kidd
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0xA2FB4736, level = 20 },                        # Flying Fish
+  { move = 0xC2E6ADBF, level = 27 },                        # Log Roll
+  { move = 0x2BF596BF, level = 45 },                        # Tsunami Boost
+]
 
   [[edit.cards]]
   id = 0x8B8288BA                                         # MF/FW · forest
@@ -99,6 +146,12 @@ target = "c04001470"                                   # William Kidd
 
 [[edit]]
 target = "c04001480"                                   # Santelmo Phyre
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0x6A66FA7E, level = 20 },                        # Killer Whale
+  { move = 0xDDCA0D2A, level = 27 },                        # Bouncing Bomb
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x0C1A9475                                         # MF/DF · fire
@@ -108,6 +161,17 @@ target = "c04001480"                                   # Santelmo Phyre
 
 [[edit]]
 target = "c04001490"                                   # Dakkar Nemo
+moves = [
+  { move = 0xDF8CB373, level = 1 },                         # Sonic Shot
+  { move = 0x6A66FA7E, level = 20 },                        # Killer Whale
+  { move = 0xDA3FF6C9, level = 31 },                        # Criss-Cross
+  { move = 0x19C3F43D, level = 48 },                        # Eternal Blizzard
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0xEE98FAD1, level = 1 },                         # Barius [aura]
+]
 
   [[edit.cards]]
   id = 0x1501A534                                         # MF/FW · wind
@@ -118,6 +182,17 @@ target = "c04001490"                                   # Dakkar Nemo
 
 [[edit]]
 target = "c04001500"                                   # Davy Jones
+moves = [
+  { move = 0xA2FB4736, level = 1 },                         # Flying Fish
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xB0F8060A, level = 55 },                        # Ozone Flayer
+  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x61A1BA8C, level = 1 },                         # Poseidón [aura]
+]
 
   [[edit.cards]]
   id = 0xC501744A                                         # FW/MF · wind
@@ -127,6 +202,12 @@ target = "c04001500"                                   # Davy Jones
 
 [[edit]]
 target = "c04001510"                                   # Calico Corsair
+moves = [
+  { move = 0xA2FB4736, level = 1 },                         # Flying Fish
+  { move = 0x2354CA2D, level = 20 },                        # Wind God's Dance
+  { move = 0xBBE07677, level = 35 },                        # Sidewinder
+  { move = 0x2B8C597E, level = 58 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0xDC1A450B                                         # FW/MF · forest
@@ -137,6 +218,12 @@ target = "c04001510"                                   # Calico Corsair
 
 [[edit]]
 target = "c04001520"                                   # Nick Tofobia
+moves = [
+  { move = 0xA9062A29, level = 1 },                         # Ultrasonic
+  { move = 0xF400CA92, level = 20 },                        # Anchors Aweigh
+  { move = 0x1FA91CF4, level = 30 },                        # Negative Feedback
+  { move = 0x41AEB4DF, level = 48 },                        # Crystal Barrier
+]
 
   [[edit.cards]]
   id = 0xF73716C8                                         # GK/MF · fire
@@ -146,6 +233,12 @@ target = "c04001520"                                   # Nick Tofobia
 
 [[edit]]
 target = "c04001530"                                   # Marley Hookson
+moves = [
+  { move = 0xA2FB4736, level = 5 },                         # Flying Fish
+  { move = 0xF6E75EE9, level = 19 },                        # Headbanger
+  { move = 0x2354CA2D, level = 35 },                        # Wind God's Dance
+  { move = 0x332CCDC9, level = 40 },                        # Heel Kick
+]
 
   [[edit.cards]]
   id = 0xEE2C2789                                         # MF/FW · fire
@@ -155,6 +248,12 @@ target = "c04001530"                                   # Marley Hookson
 
 [[edit]]
 target = "c04001540"                                   # Bart Black
+moves = [
+  { move = 0x1C4D4906, level = 5 },                         # Whirlpool
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0xE196F1D1, level = 40 },                        # Burning Bomb
+]
 
   [[edit.cards]]
   id = 0xA16DB14E                                         # DF/MF · wind
@@ -165,6 +264,12 @@ target = "c04001540"                                   # Bart Black
 
 [[edit]]
 target = "c04001550"                                   # Frank Drake
+moves = [
+  { move = 0x1C4D4906, level = 19 },                        # Whirlpool
+  { move = 0xBBA44137, level = 22 },                        # Great Wall
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0x64CDCFB9, level = 48 },                        # Rising Dragon
+]
 
   [[edit.cards]]
   id = 0xB876800F                                         # DF/MF · mountain
@@ -174,6 +279,12 @@ target = "c04001550"                                   # Frank Drake
 
 [[edit]]
 target = "c04001560"                                   # Barnabas Rossa
+moves = [
+  { move = 0xA2FB4736, level = 10 },                        # Flying Fish
+  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
+  { move = 0x7DAF3139, level = 57 },                        # Emperor Penguin No. 2
+  { move = 0x19BA3BFC, level = 62 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0x935BD3CC                                         # FW/MF · forest
@@ -184,6 +295,12 @@ target = "c04001560"                                   # Barnabas Rossa
 
 [[edit]]
 target = "c11804040"                                   # Longjohn Silver
+moves = [
+  { move = 0x4B3099D5, level = 1 },                         # Stomper Stopper
+  { move = 0x9AF2229C, level = 13 },                        # Gravity Point
+  { move = 0xDCC9CCA3, level = 20 },                        # Tesla Coil
+  { move = 0xA2BF7076, level = 30 },                        # Side Swipe
+]
 
   [[edit.cards]]
   id = 0xE2B92EC3                                         # GK/DF · forest

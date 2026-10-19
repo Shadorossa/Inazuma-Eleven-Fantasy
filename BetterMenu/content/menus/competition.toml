@@ -1,0 +1,112 @@
+schema = "VRFW.menu/2"
+when = { config = "experiment.map_under_menu", default = true }
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_selector", object = "vrfw_mp_label", count = 6, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[object]]
+name = "better_menu_competition_crest"
+from = "mainmenu90_34_cpu_team_formation"
+remove_block = ["CMenuAttachLocator"]
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_crest", object = "better_menu_competition_crest", count = 8, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The white line behind the crest strip, fading out toward both ends: 1 x a copy of the 36 px quad cmn01_10 (layout
+# better_menu_crest_line.g4pkm, reading the atlas of its own folder: content\images\menu\20_cmn\better_menu_crest_line.toml);
+# draw priority 560, under the crests (570); placed by assets\lua\soccer_vs_cpu_list_menu\270_competition.lua.
+[[layout]]
+file = "common/menu/20_cmn/cmn01/better_menu_crest_line/better_menu_crest_line.g4pkm"
+from = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm"
+
+[[object]]
+name = "better_menu_competition_crest_line"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 560 } },
+    { param = "SkeletonAnime", match = { 1 = "common/menu/20_cmn/cmn01/cmn01_10/cmn01_10.g4pkm" }, values = { 1 = "common/menu/20_cmn/cmn01/better_menu_crest_line/better_menu_crest_line.g4pkm" } },
+]
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_crest_line", object = "better_menu_competition_crest_line", count = 1, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# Input belongs to the carousel. The retail list remains only as a data source.
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_input", object = "cmn03_05_cmn_button_b_graphic_text", count = 1, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }], focus = {} }
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_cmd = [
+  { layer = "better_menu_competition_input", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x666E6071 },
+  { layer = "better_menu_competition_input", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xDEA3F818 },
+  { layer = "better_menu_competition_input", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x13890272 },
+  { layer = "better_menu_competition_input", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0xAB449A1B },
+  { layer = "better_menu_competition_input", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x807AF060 },
+  { layer = "better_menu_competition_input", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x38B76809 },
+  { layer = "better_menu_competition_input", input = "CMD_ENTER", command = "CMD_FUNCTION", arg = 0x2A80517B },
+  { layer = "better_menu_competition_input", input = "CMD_BACK", command = "CMD_BACK" },
+  { layer = "better_menu_competition_input", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK" },
+]
+
+# Shift the actual list geometry and its hit regions outside the screen.
+# Layer visibility alone is overwritten by the retail list animation.
+[[layout]]
+file = "common/menu/102_team/team05/team05_03/team05_03.g4pkm"
+joint = "team05_03_output"
+translate = [-6000.0, 0.0]
+
+[[layout]]
+file = "common/menu/100_mainmenu/mainmenu90/mainmenu90_19/mainmenu90_19.g4pkm"
+joint = "mainmenu90_19_output"
+translate = [-6000.0, 0.0]
+
+[[object]]
+name = "better_menu_competition_data_row"
+from = "mainmenu90_19_vs_cpu_list_item"
+remove_block = ["MenuCollisionSetting"]
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+layer = "mainmenu90_19_vs_cpu_list_item"
+object = "better_menu_competition_data_row"
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+remove_cmd = [
+  { layer = "team05_03_soccer_cpu_opponent_list", input = 0x475C1B9B },
+  { layer = "team05_03_soccer_cpu_opponent_list", input = 0xC248BC2D },
+  { layer = "team05_03_soccer_cpu_opponent_list", input = 0xA4D0CB7E },
+  { layer = "team05_03_soccer_cpu_opponent_list", input = 0x7BAE57A1 },
+  { layer = "mainmenu90_19_vs_cpu_list_item", input = 0x475C1B9B },
+  { layer = "mainmenu90_19_vs_cpu_list_item", input = 0xC248BC2D },
+]
+
+# The three players on the pitch while the list is open (9 instances: three groups of three, the one on screen, the next
+# team building hidden, one kept for going back): menu 3D models drawn with the menu camera, which takes the
+# clubhouse scene's shot (CMND_VRFW_MENU_SCENE_FOLLOW_CAMERA), each placed on its spot of content\competition_court\
+# (assets\lua\soccer_vs_cpu_list_menu\275_competition_players.lua). The object: the minimal retail model layer
+# (rpg99_99_chara_model_only_view: render + CMenuCharaModelComponent) without its render-texture capture rows, on a
+# layout with locators only, the retail «Ver apariencia» camera row and light.
+[[object]]
+name = "better_menu_competition_player"
+from = "rpg99_99_chara_model_only_view"
+set = [
+    { param = "SkeletonAnime", values = { 1 = "common/menu/102_team/team01/team01_01/team01_01.g4pkm" } },
+    { param = "m_menuCameraNameCrc", values = { 1 = 935586083 } },
+    { param = "m_isRotateSelf", values = { 1 = 0 } },
+]
+remove = [
+    { param = "m_isShareRenderTexture" },
+    { param = "m_isEnablePreBuildResource" },
+    # no menu light of their own: a menu light object takes over the scene's light and sky while it lives (owner
+    # 2026-10-18: the sunset of the clubhouse turned grey as the list opened); the players take the map's light
+    { param = "m_lightObjDataPathName" },
+]
+
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "better_menu_competition_player", object = "better_menu_competition_player", count = 9, groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0] }] }

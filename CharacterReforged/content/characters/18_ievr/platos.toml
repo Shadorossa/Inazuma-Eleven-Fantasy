@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11210010"                                   # Torin Sandels
+moves = [
+  { move = 0xC6978232, level = 1 },                         # Dinosaur Roar
+  { move = 0xB9676390, level = 13 },                        # Particle Accelerator
+  { move = 0x1162A8AF, level = 20 },                        # Bewilder Blast
+  { move = 0x24E5068E, level = 30 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0x8C574707                                         # MF/DF · mountain
@@ -15,6 +21,12 @@ target = "c11210010"                                   # Torin Sandels
 
 [[edit]]
 target = "c11210030"                                   # Orpheus Clayridge
+moves = [
+  { move = 0x19B4B151, level = 1 },                         # Great Blaster
+  { move = 0xDE4ED944, level = 13 },                        # Snowstorm Leopard
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xBE612585                                         # FW/MF · wind
@@ -24,6 +36,12 @@ target = "c11210030"                                   # Orpheus Clayridge
 
 [[edit]]
 target = "c11210040"                                   # Rhea Loriandrin
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x7F2824DE, level = 13 },                        # Dual Storm
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x00AF8010, level = 30 },                        # Splitting Hares
+]
 
   [[edit.cards]]
   id = 0xF120B342                                         # DF/FW · mountain
@@ -33,6 +51,12 @@ target = "c11210040"                                   # Rhea Loriandrin
 
 [[edit]]
 target = "c11210050"                                   # Miles Euclid
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0xA3392D01, level = 30 },                        # Rainbow Bubble Burst
+]
 
   [[edit.cards]]
   id = 0xE83B8203                                         # DF/FW · forest
@@ -42,6 +66,12 @@ target = "c11210050"                                   # Miles Euclid
 
 [[edit]]
 target = "c11210060"                                   # Saros Algebra
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0xB9676390, level = 20 },                        # Particle Accelerator
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0xC316D1C0                                         # DF/FW · forest
@@ -51,6 +81,12 @@ target = "c11210060"                                   # Saros Algebra
 
 [[edit]]
 target = "c11210070"                                   # Ash Barnes
+moves = [
+  { move = 0x615A3CDF, level = 1 },                         # Bounce Handler
+  { move = 0x1FA91CF4, level = 13 },                        # Negative Feedback
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x2D9F7E76, level = 30 },                        # Breath Taker
+]
 
   [[edit.cards]]
   id = 0xDA0DE081                                         # GK/MF · wind
@@ -60,6 +96,12 @@ target = "c11210070"                                   # Ash Barnes
 
 [[edit]]
 target = "c11210080"                                   # Hector Thareos
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x7F2824DE, level = 20 },                        # Dual Storm
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x5D95FC4E                                         # DF/FW · fire
@@ -69,6 +111,12 @@ target = "c11210080"                                   # Hector Thareos
 
 [[edit]]
 target = "c11210090"                                   # Niana Cooke
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x448ECD0F                                         # DF/FW · mountain
@@ -78,6 +126,12 @@ target = "c11210090"                                   # Niana Cooke
 
 [[edit]]
 target = "c11210100"                                   # Dariusius Henletos
+moves = [
+  { move = 0x24E5068E, level = 1 },                         # Fractal Repeller
+  { move = 0x19BA3BFC, level = 13 },                        # Dance on Air
+  { move = 0xF626F557, level = 20 },                        # Electric Impedance
+  { move = 0xF806D6C3, level = 30 },                        # Shell Burst
+]
 
   [[edit.cards]]
   id = 0x948E1C71                                         # MF/DF · mountain
@@ -87,6 +141,12 @@ target = "c11210100"                                   # Dariusius Henletos
 
 [[edit]]
 target = "c11210110"                                   # Eon McKeane
+moves = [
+  { move = 0xC9BAEA82, level = 1 },                         # Eye of the Storm
+  { move = 0xF806D6C3, level = 13 },                        # Shell Burst
+  { move = 0x828A53C8, level = 20 },                        # Plasma Ball
+  { move = 0x6BA49049, level = 30 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x8D952D30                                         # MF/DF · forest
@@ -96,6 +156,12 @@ target = "c11210110"                                   # Eon McKeane
 
 [[edit]]
 target = "c11210120"                                   # Eosram Reeves
+moves = [
+  { move = 0xC9BAEA82, level = 1 },                         # Eye of the Storm
+  { move = 0xF806D6C3, level = 13 },                        # Shell Burst
+  { move = 0x00AF8010, level = 20 },                        # Splitting Hares
+  { move = 0x6BA49049, level = 30 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0xA6B87EF3                                         # MF/DF · forest
@@ -105,6 +171,12 @@ target = "c11210120"                                   # Eosram Reeves
 
 [[edit]]
 target = "c11210130"                                   # Nikolaos Menandros
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x00AF8010, level = 13 },                        # Splitting Hares
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x24E5068E, level = 30 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0xBFA34FB2                                         # MF/DF · mountain
@@ -114,6 +186,12 @@ target = "c11210130"                                   # Nikolaos Menandros
 
 [[edit]]
 target = "c11210140"                                   # Pharos Radris
+moves = [
+  { move = 0x7BC5D9F0, level = 1 },                         # Rotary Sander
+  { move = 0x1FA91CF4, level = 13 },                        # Negative Feedback
+  { move = 0x2D9F7E76, level = 20 },                        # Breath Taker
+  { move = 0xB8A509A7, level = 30 },                        # Asterocks
+]
 
   [[edit.cards]]
   id = 0xF0E2D975                                         # GK/MF · fire
@@ -123,6 +201,12 @@ target = "c11210140"                                   # Pharos Radris
 
 [[edit]]
 target = "c11210150"                                   # Gilia Dandrel
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0xB8A509A7, level = 13 },                        # Asterocks
+  { move = 0xB0F8060A, level = 20 },                        # Ozone Flayer
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0xE9F9E834                                         # MF/DF · fire
@@ -132,6 +216,12 @@ target = "c11210150"                                   # Gilia Dandrel
 
 [[edit]]
 target = "c11210160"                                   # Hugo Severian
+moves = [
+  { move = 0x19B4B151, level = 1 },                         # Great Blaster
+  { move = 0xB0F8060A, level = 13 },                        # Ozone Flayer
+  { move = 0x828A53C8, level = 20 },                        # Plasma Ball
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0xC2D4BBF7                                         # FW/MF · wind
@@ -141,6 +231,12 @@ target = "c11210160"                                   # Hugo Severian
 
 [[edit]]
 target = "c11210510"                                   # Muriela Stone
+moves = [
+  { move = 0xB0F8060A, level = 1 },                         # Ozone Flayer
+  { move = 0xC9BAEA82, level = 13 },                        # Eye of the Storm
+  { move = 0x86F5F6E8, level = 20 },                        # Cupid's Arrow
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x8A9C85EC                                         # MF/FW · mountain
@@ -154,8 +250,33 @@ rank = 3
 growth = "normal"
 stats = { kick = 344, control = 255, technique = 261, pressure = 185, physical = 205, intelligence = 223, agility = 170, freedom = 209 }
 
+  [[edit.cards]]
+  id = 0x2AA62CA1    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF806D6C3, level = 1 },                       # Shell Burst
+    { move = 0x00AF8010, level = 13 },                      # Splitting Hares
+    { move = 0x7C1494CF, level = 20 },                      # Tornado Tunnel
+    { move = 0x19BA3BFC, level = 30 },                      # Dance on Air
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0xF85C7AB2, level = 1 },                       # Victoria [aura]
+  ]
+
 [[edit]]
 target = "c11600020"                                   # Fei Rune
+moves = [
+  { move = 0xA9A7000B, level = 1 },                         # Bouncing Bunny
+  { move = 0x19BA3BFC, level = 8 },                         # Dance on Air
+  { move = 0xB0F8060A, level = 39 },                        # Ozone Flayer
+  { move = 0x00AF8010, level = 47 },                        # Splitting Hares
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x9C30BFB6, level = 1 },                         # Robin [aura]
+]
 
   [[edit.cards]]
   id = 0x018B7F62                                         # FW/MF · forest
@@ -164,6 +285,12 @@ target = "c11600020"                                   # Fei Rune
 
 [[edit]]
 target = "c11210210"                                   # Torin Sandels
+moves = [
+  { move = 0xC6978232, level = 1 },                         # Dinosaur Roar
+  { move = 0xB9676390, level = 13 },                        # Particle Accelerator
+  { move = 0x1162A8AF, level = 20 },                        # Bewilder Blast
+  { move = 0x24E5068E, level = 30 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0x8FD39369                                         # MF/DF · mountain
@@ -173,6 +300,12 @@ target = "c11210210"                                   # Torin Sandels
 
 [[edit]]
 target = "c11210230"                                   # Orpheus Clayridge
+moves = [
+  { move = 0x19B4B151, level = 1 },                         # Great Blaster
+  { move = 0xDE4ED944, level = 13 },                        # Snowstorm Leopard
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xBDE5F1EB                                         # FW/MF · wind
@@ -182,6 +315,12 @@ target = "c11210230"                                   # Orpheus Clayridge
 
 [[edit]]
 target = "c11210240"                                   # Rhea Loriandrin
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x7F2824DE, level = 13 },                        # Dual Storm
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x00AF8010, level = 30 },                        # Splitting Hares
+]
 
   [[edit.cards]]
   id = 0xF2A4672C                                         # DF/FW · mountain
@@ -191,6 +330,12 @@ target = "c11210240"                                   # Rhea Loriandrin
 
 [[edit]]
 target = "c11210250"                                   # Miles Euclid
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0xA3392D01, level = 30 },                        # Rainbow Bubble Burst
+]
 
   [[edit.cards]]
   id = 0xEBBF566D                                         # DF/FW · forest
@@ -200,6 +345,12 @@ target = "c11210250"                                   # Miles Euclid
 
 [[edit]]
 target = "c11210260"                                   # Saros Algebra
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0xB9676390, level = 20 },                        # Particle Accelerator
+  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+]
 
   [[edit.cards]]
   id = 0xC09205AE                                         # DF/FW · forest
@@ -209,6 +360,12 @@ target = "c11210260"                                   # Saros Algebra
 
 [[edit]]
 target = "c11210270"                                   # Ash Barnes
+moves = [
+  { move = 0x615A3CDF, level = 1 },                         # Bounce Handler
+  { move = 0x1FA91CF4, level = 13 },                        # Negative Feedback
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x2D9F7E76, level = 30 },                        # Breath Taker
+]
 
   [[edit.cards]]
   id = 0xD98934EF                                         # GK/MF · wind
@@ -218,6 +375,12 @@ target = "c11210270"                                   # Ash Barnes
 
 [[edit]]
 target = "c11210280"                                   # Hector Thareos
+moves = [
+  { move = 0xEEFFAE21, level = 1 },                         # Jungle Jam
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x7F2824DE, level = 20 },                        # Dual Storm
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x5E112820                                         # DF/FW · fire
@@ -227,6 +390,12 @@ target = "c11210280"                                   # Hector Thareos
 
 [[edit]]
 target = "c11210290"                                   # Niana Cooke
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x470A1961                                         # DF/FW · mountain
@@ -236,6 +405,12 @@ target = "c11210290"                                   # Niana Cooke
 
 [[edit]]
 target = "c11210300"                                   # Dariusius Henletos
+moves = [
+  { move = 0x24E5068E, level = 1 },                         # Fractal Repeller
+  { move = 0x19BA3BFC, level = 13 },                        # Dance on Air
+  { move = 0xF626F557, level = 20 },                        # Electric Impedance
+  { move = 0xF806D6C3, level = 30 },                        # Shell Burst
+]
 
   [[edit.cards]]
   id = 0x970AC81F                                         # MF/DF · mountain
@@ -245,6 +420,12 @@ target = "c11210300"                                   # Dariusius Henletos
 
 [[edit]]
 target = "c11210310"                                   # Eon McKeane
+moves = [
+  { move = 0xC9BAEA82, level = 1 },                         # Eye of the Storm
+  { move = 0xF806D6C3, level = 13 },                        # Shell Burst
+  { move = 0x828A53C8, level = 20 },                        # Plasma Ball
+  { move = 0x6BA49049, level = 30 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0x8E11F95E                                         # MF/DF · forest
@@ -254,6 +435,12 @@ target = "c11210310"                                   # Eon McKeane
 
 [[edit]]
 target = "c11210320"                                   # Eosram Reeves
+moves = [
+  { move = 0xC9BAEA82, level = 1 },                         # Eye of the Storm
+  { move = 0xF806D6C3, level = 13 },                        # Shell Burst
+  { move = 0x00AF8010, level = 20 },                        # Splitting Hares
+  { move = 0x6BA49049, level = 30 },                        # Mystic Mist
+]
 
   [[edit.cards]]
   id = 0xA53CAA9D                                         # MF/DF · forest
@@ -263,6 +450,12 @@ target = "c11210320"                                   # Eosram Reeves
 
 [[edit]]
 target = "c11210330"                                   # Nikolaos Menandros
+moves = [
+  { move = 0x6BA49049, level = 1 },                         # Mystic Mist
+  { move = 0x00AF8010, level = 13 },                        # Splitting Hares
+  { move = 0x19BA3BFC, level = 20 },                        # Dance on Air
+  { move = 0x24E5068E, level = 30 },                        # Fractal Repeller
+]
 
   [[edit.cards]]
   id = 0xBC279BDC                                         # MF/DF · mountain
@@ -272,6 +465,12 @@ target = "c11210330"                                   # Nikolaos Menandros
 
 [[edit]]
 target = "c11210340"                                   # Pharos Radris
+moves = [
+  { move = 0x7BC5D9F0, level = 1 },                         # Rotary Sander
+  { move = 0x1FA91CF4, level = 13 },                        # Negative Feedback
+  { move = 0x2D9F7E76, level = 20 },                        # Breath Taker
+  { move = 0xB8A509A7, level = 30 },                        # Asterocks
+]
 
   [[edit.cards]]
   id = 0xF3660D1B                                         # GK/MF · fire
@@ -281,6 +480,12 @@ target = "c11210340"                                   # Pharos Radris
 
 [[edit]]
 target = "c11210350"                                   # Gilia Dandrel
+moves = [
+  { move = 0x2354CA2D, level = 1 },                         # Wind God's Dance
+  { move = 0xB8A509A7, level = 13 },                        # Asterocks
+  { move = 0xB0F8060A, level = 20 },                        # Ozone Flayer
+  { move = 0x0E0A3F7A, level = 30 },                        # Spatial Portal
+]
 
   [[edit.cards]]
   id = 0xEA7D3C5A                                         # MF/DF · fire
@@ -290,6 +495,12 @@ target = "c11210350"                                   # Gilia Dandrel
 
 [[edit]]
 target = "c11210360"                                   # Hugo Severian
+moves = [
+  { move = 0x19B4B151, level = 1 },                         # Great Blaster
+  { move = 0xB0F8060A, level = 13 },                        # Ozone Flayer
+  { move = 0x828A53C8, level = 20 },                        # Plasma Ball
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0xC1506F99                                         # FW/MF · wind
@@ -299,6 +510,12 @@ target = "c11210360"                                   # Hugo Severian
 
 [[edit]]
 target = "c11210710"                                   # Muriela Stone
+moves = [
+  { move = 0xB0F8060A, level = 1 },                         # Ozone Flayer
+  { move = 0xC9BAEA82, level = 13 },                        # Eye of the Storm
+  { move = 0x86F5F6E8, level = 20 },                        # Cupid's Arrow
+  { move = 0x19B4B151, level = 30 },                        # Great Blaster
+]
 
   [[edit.cards]]
   id = 0x89185182                                         # MF/FW · mountain
@@ -308,6 +525,12 @@ target = "c11210710"                                   # Muriela Stone
 
 [[edit]]
 target = "c11600090"                                   # Victorio Cryptix
+moves = [
+  { move = 0xF806D6C3, level = 1 },                         # Shell Burst
+  { move = 0x00AF8010, level = 13 },                        # Splitting Hares
+  { move = 0x7C1494CF, level = 20 },                        # Tornado Tunnel
+  { move = 0x19BA3BFC, level = 30 },                        # Dance on Air
+]
 
   [[edit.cards]]
   id = 0xE27FA6A9                                         # FW/DF · wind

@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06030410"                                   # Do-Hyeon Nam
+moves = [
+  { move = 0x5B3151F0, level = 1 },                         # Nitro Slap
+  { move = 0xB01D1B68, level = 19 },                        # Power Spike
+  { move = 0x47657634, level = 27 },                        # Flame Breath
+  { move = 0x7BC5D9F0, level = 48 },                        # Rotary Sander
+]
 
   [[edit.cards]]
   id = 0xB55B23A0                                         # GK/MF · fire
@@ -15,6 +21,12 @@ target = "c06030410"                                   # Do-Hyeon Nam
 
 [[edit]]
 target = "c06030420"                                   # Shinjae Choi
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x05567847, level = 13 },                        # Runaway Train
+  { move = 0xE196F1D1, level = 28 },                        # Burning Bomb
+  { move = 0xF4604B0E, level = 49 },                        # Fancy-Footwork
+]
 
   [[edit.cards]]
   id = 0x9E767063                                         # DF/MF · fire
@@ -25,6 +37,12 @@ target = "c06030420"                                   # Shinjae Choi
 
 [[edit]]
 target = "c06030430"                                   # Jun-Ho Bae
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x5643C944, level = 15 },                        # Killer Slide
+  { move = 0x530CDFC1, level = 31 },                        # Mystifying Mist
+  { move = 0x457EB170, level = 41 },                        # Pyrokinetic
+]
 
   [[edit.cards]]
   id = 0x876D4122                                         # DF/MF · mountain
@@ -35,6 +53,12 @@ target = "c06030430"                                   # Jun-Ho Bae
 
 [[edit]]
 target = "c06030440"                                   # Yongjin Seo
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x025FD09B, level = 13 },                        # Volcano Cut
+  { move = 0x05567847, level = 31 },                        # Runaway Train
+  { move = 0x414BA9BD, level = 42 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0xC82CD7E5                                         # DF/MF · fire
@@ -45,6 +69,12 @@ target = "c06030440"                                   # Yongjin Seo
 
 [[edit]]
 target = "c06030450"                                   # Ujin Shin
+moves = [
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x025FD09B, level = 14 },                        # Volcano Cut
+  { move = 0xE196F1D1, level = 28 },                        # Burning Bomb
+  { move = 0x457EB170, level = 37 },                        # Pyrokinetic
+]
 
   [[edit.cards]]
   id = 0xD137E6A4                                         # DF/MF · fire
@@ -55,6 +85,12 @@ target = "c06030450"                                   # Ujin Shin
 
 [[edit]]
 target = "c06030460"                                   # Gunwoo Yang
+moves = [
+  { move = 0xE196F1D1, level = 1 },                         # Burning Bomb
+  { move = 0x0BFD4D80, level = 17 },                        # Grand Slam
+  { move = 0x17110E3B, level = 30 },                        # Jumbo Sandwich
+  { move = 0xD0A1DBC3, level = 44 },                        # Bungee Ball Burst
+]
 
   [[edit.cards]]
   id = 0xFA1AB567                                         # MF/DF · fire
@@ -64,6 +100,12 @@ target = "c06030460"                                   # Gunwoo Yang
 
 [[edit]]
 target = "c06030470"                                   # Jihun Song
+moves = [
+  { move = 0xE196F1D1, level = 1 },                         # Burning Bomb
+  { move = 0xABA58912, level = 13 },                        # Ignited Steal
+  { move = 0x79E3E635, level = 25 },                        # Racing Flame
+  { move = 0x98E76F75, level = 34 },                        # Rapid Fire
+]
 
   [[edit.cards]]
   id = 0xE3018426                                         # MF/DF · fire
@@ -74,6 +116,12 @@ target = "c06030470"                                   # Jihun Song
 
 [[edit]]
 target = "c06030480"                                   # Minseo Byun
+moves = [
+  { move = 0xE196F1D1, level = 1 },                         # Burning Bomb
+  { move = 0xDBFD9CFE, level = 14 },                        # Big Ball Trick
+  { move = 0x3EC287DE, level = 26 },                        # Bubble Gum
+  { move = 0x56FBAD3B, level = 35 },                        # Seal Matrix
+]
 
   [[edit.cards]]
   id = 0x649998E9                                         # MF/DF · mountain
@@ -84,6 +132,12 @@ target = "c06030480"                                   # Minseo Byun
 
 [[edit]]
 target = "c06030490"                                   # Soyeon Sim
+moves = [
+  { move = 0x98E76F75, level = 1 },                         # Rapid Fire
+  { move = 0x4C1D87D5, level = 18 },                        # Bed of Roses
+  { move = 0xDDCA0D2A, level = 31 },                        # Bouncing Bomb
+  { move = 0xAC1ACF1C, level = 47 },                        # Flower Plower
+]
 
   [[edit.cards]]
   id = 0x7D82A9A8                                         # FW/MF · mountain
@@ -93,6 +147,12 @@ target = "c06030490"                                   # Soyeon Sim
 
 [[edit]]
 target = "c06030500"                                   # Jun-Yeong Lee
+moves = [
+  { move = 0x98E76F75, level = 1 },                         # Rapid Fire
+  { move = 0x0BFD4D80, level = 20 },                        # Grand Slam
+  { move = 0x39CB2F02, level = 33 },                        # Dragster
+  { move = 0x568262FA, level = 49 },                        # Dark Tornado
+]
 
   [[edit.cards]]
   id = 0xAD8278D6                                         # FW/MF · forest
@@ -102,6 +162,12 @@ target = "c06030500"                                   # Jun-Yeong Lee
 
 [[edit]]
 target = "c06030510"                                   # Joon-Ho Hwang
+moves = [
+  { move = 0x98E76F75, level = 1 },                         # Rapid Fire
+  { move = 0xDF8CB373, level = 13 },                        # Sonic Shot
+  { move = 0xBDAE2862, level = 27 },                        # Hellfire
+  { move = 0xDDCA0D2A, level = 38 },                        # Bouncing Bomb
+]
 
   [[edit.cards]]
   id = 0xB4994997                                         # FW/MF · wind
@@ -111,6 +177,12 @@ target = "c06030510"                                   # Joon-Ho Hwang
 
 [[edit]]
 target = "c11806070"                                   # Changsu Choi
+moves = [
+  { move = 0x087999EE, level = 1 },                         # Heel Drop
+  { move = 0x457EB170, level = 1 },                         # Pyrokinetic
+  { move = 0xB4B4D106, level = 20 },                        # Dragon Cannon
+  { move = 0x316A7390, level = 63 },                        # Land Dragon
+]
 
   [[edit.cards]]
   id = 0x639DB58B                                         # MF/DF · fire

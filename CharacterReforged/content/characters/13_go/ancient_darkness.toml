@@ -50,6 +50,12 @@ target = "c04003710_5000"                              # Yang
 
 [[edit]]
 target = "c04003610"                                   # Nero Night
+moves = [
+  { move = 0x4AF2F3E2, level = 1 },                         # Bridge to Nowhere
+  { move = 0x06B22DB5, level = 25 },                        # Gyro-Blocker
+  { move = 0x536C5E5D, level = 35 },                        # Volcano Head
+  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+]
 
   [[edit.cards]]
   id = 0x745533D9                                         # GK/MF · fire
@@ -59,6 +65,12 @@ target = "c04003610"                                   # Nero Night
 
 [[edit]]
 target = "c04003620"                                   # Morris Moore
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x17110E3B, level = 22 },                        # Jumbo Sandwich
+  { move = 0x78218C02, level = 35 },                        # Duskfall
+  { move = 0x414BA9BD, level = 52 },                        # Pincer Pinch
+]
 
   [[edit.cards]]
   id = 0x5F78601A                                         # DF/MF · forest
@@ -69,6 +81,12 @@ target = "c04003620"                                   # Morris Moore
 
 [[edit]]
 target = "c04003630"                                   # Jet Onyx
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x0BFD4D80, level = 19 },                        # Grand Slam
+  { move = 0x585098FC, level = 39 },                        # Slice and Dice
+  { move = 0xE196F1D1, level = 45 },                        # Burning Bomb
+]
 
   [[edit.cards]]
   id = 0x4663515B                                         # DF/MF · wind
@@ -79,6 +97,12 @@ target = "c04003630"                                   # Jet Onyx
 
 [[edit]]
 target = "c04003640"                                   # Cole Ebony
+moves = [
+  { move = 0xA2BF7076, level = 1 },                         # Side Swipe
+  { move = 0x0C08B663, level = 26 },                        # Doom Dive Drive
+  { move = 0x0E0A3F7A, level = 51 },                        # Spatial Portal
+  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x0922C79C                                         # DF/MF · fire
@@ -88,6 +112,12 @@ target = "c04003640"                                   # Cole Ebony
 
 [[edit]]
 target = "c04003650"                                   # Blake Obscura
+moves = [
+  { move = 0x0E0A3F7A, level = 1 },                         # Spatial Portal
+  { move = 0xC324C788, level = 26 },                        # Blast Mine
+  { move = 0x04941270, level = 40 },                        # Vac Attack
+  { move = 0xA2BF7076, level = 56 },                        # Side Swipe
+]
 
   [[edit.cards]]
   id = 0x1039F6DD                                         # DF/MF · forest
@@ -97,6 +127,17 @@ target = "c04003650"                                   # Blake Obscura
 
 [[edit]]
 target = "c04003660"                                   # Shady Shwartz
+moves = [
+  { move = 0x15138722, level = 1 },                         # Will-o'-the-Wisp Shot
+  { move = 0xC6978232, level = 25 },                        # Dinosaur Roar
+  { move = 0x2B8C597E, level = 53 },                        # Fugue Wave
+  { move = 0xA0BDF96F, level = 60 },                        # Ballista Barrage
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x9B4E5206, level = 1 },                         # Caballo blanco [aura]
+]
 
   [[edit.cards]]
   id = 0x3B14A51E                                         # MF/FW · mountain
@@ -106,6 +147,12 @@ target = "c04003660"                                   # Shady Shwartz
 
 [[edit]]
 target = "c04003670"                                   # Goth Grimshaw
+moves = [
+  { move = 0x3297683F, level = 1 },                         # Warp Step
+  { move = 0xBBA44137, level = 22 },                        # Great Wall
+  { move = 0xB0F8060A, level = 55 },                        # Ozone Flayer
+  { move = 0x141046AB, level = 60 },                        # Overnight Fortress
+]
 
   [[edit.cards]]
   id = 0x220F945F                                         # MF/DF · wind
@@ -115,6 +162,12 @@ target = "c04003670"                                   # Goth Grimshaw
 
 [[edit]]
 target = "c04003680"                                   # Duff Dooley
+moves = [
+  { move = 0xF4A1E0B0, level = 1 },                         # Entropic Arrows
+  { move = 0x00A10ABD, level = 45 },                        # Ball Lightning
+  { move = 0x0E0A3F7A, level = 51 },                        # Spatial Portal
+  { move = 0xA2BF7076, level = 60 },                        # Side Swipe
+]
 
   [[edit.cards]]
   id = 0xA5978890                                         # MF/DF · mountain
@@ -124,6 +177,17 @@ target = "c04003680"                                   # Duff Dooley
 
 [[edit]]
 target = "c04003690"                                   # Tynan Crowe
+moves = [
+  { move = 0x15138722, level = 1 },                         # Will-o'-the-Wisp Shot
+  { move = 0xC324C788, level = 34 },                        # Blast Mine
+  { move = 0x9FEEC7A9, level = 40 },                        # Gigaton Head
+  { move = 0xF4A1E0B0, level = 60 },                        # Entropic Arrows
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x56196535, level = 1 },                         # Alfil blanco [aura]
+]
 
   [[edit.cards]]
   id = 0xBC8CB9D1                                         # MF/FW · forest
@@ -134,6 +198,17 @@ target = "c04003690"                                   # Tynan Crowe
 
 [[edit]]
 target = "c04003700"                                   # Tezcat
+moves = [
+  { move = 0xEC78BBC6, level = 1 },                         # Black Ash
+  { move = 0x3297683F, level = 40 },                        # Warp Step
+  { move = 0xA2BF7076, level = 45 },                        # Side Swipe
+  { move = 0x0E4E083A, level = 70 },                        # Zero Magnum
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x8013DD1E, level = 1 },                         # Azote negro [aura]
+]
 
   [[edit.cards]]
   id = 0x6C8C68AF                                         # FW/MF · forest
@@ -142,6 +217,17 @@ target = "c04003700"                                   # Tezcat
 
 [[edit]]
 target = "c04003710"                                   # Yang
+moves = [
+  { move = 0x0C08B663, level = 1 },                         # Doom Dive Drive
+  { move = 0xDA3FF6C9, level = 38 },                        # Criss-Cross
+  { move = 0x19C3F43D, level = 55 },                        # Eternal Blizzard
+  { move = 0x3297683F, level = 60 },                        # Warp Step
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x4F025474, level = 1 },                         # Torre blanca [aura]
+]
 
   [[edit.cards]]
   id = 0x759759EE                                         # FW/MF · mountain

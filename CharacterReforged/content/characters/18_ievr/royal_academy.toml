@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11080010"                                   # Ruelle Neurivieu
+moves = [
+  { move = 0x1C4D4906, level = 1 },                         # Whirlpool
+  { move = 0x6ADE9E01, level = 13 },                        # Illusory Ball
+  { move = 0xFB0BF8BD, level = 20 },                        # Marshal's Light
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0xCC8F847D                                         # DF/MF · forest
@@ -15,6 +21,12 @@ target = "c11080010"                                   # Ruelle Neurivieu
 
 [[edit]]
 target = "c11080020"                                   # Solan Brightmoor
+moves = [
+  { move = 0x0F4F25F0, level = 1 },                         # The Stronghold
+  { move = 0xFB0BF8BD, level = 13 },                        # Marshal's Light
+  { move = 0x32EEA7FE, level = 20 },                        # Death Zone 2
+  { move = 0x585098FC, level = 30 },                        # Slice and Dice
+]
 
   [[edit.cards]]
   id = 0xE7A2D7BE                                         # FW/GK · forest
@@ -24,6 +36,12 @@ target = "c11080020"                                   # Solan Brightmoor
 
 [[edit]]
 target = "c11080030"                                   # Syd Faircrest
+moves = [
+  { move = 0xFB0BF8BD, level = 1 },                         # Marshal's Light
+  { move = 0x30A819A7, level = 13 },                        # Twin Boost F
+  { move = 0xDA3FF6C9, level = 20 },                        # Criss-Cross
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0xFEB9E6FF                                         # MF/FW · fire
@@ -33,6 +51,12 @@ target = "c11080030"                                   # Syd Faircrest
 
 [[edit]]
 target = "c11080040"                                   # Hudson Headland
+moves = [
+  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x7DAF3139, level = 13 },                        # Emperor Penguin No. 2
+  { move = 0x2B343D01, level = 20 },                        # Cyclone
+  { move = 0x1C4D4906, level = 30 },                        # Whirlpool
+]
 
   [[edit.cards]]
   id = 0xB1F87038                                         # DF/MF · wind
@@ -42,6 +66,12 @@ target = "c11080040"                                   # Hudson Headland
 
 [[edit]]
 target = "c11080050"                                   # Kaien Spiradawn
+moves = [
+  { move = 0xFB0BF8BD, level = 1 },                         # Marshal's Light
+  { move = 0x0DCADC54, level = 13 },                        # Emperor Penguin 7
+  { move = 0x5643C944, level = 20 },                        # Killer Slide
+  { move = 0x0F4F25F0, level = 30 },                        # The Stronghold
+]
 
   [[edit.cards]]
   id = 0xA8E34179                                         # FW/MF · wind
@@ -51,6 +81,12 @@ target = "c11080050"                                   # Kaien Spiradawn
 
 [[edit]]
 target = "c11080060"                                   # Asten Royds
+moves = [
+  { move = 0x637C031A, level = 1 },                         # No Escape
+  { move = 0x0F4F25F0, level = 13 },                        # The Stronghold
+  { move = 0x00196EC2, level = 20 },                        # Earthquake
+  { move = 0x3B8D915B, level = 30 },                        # Meteor Shower
+]
 
   [[edit.cards]]
   id = 0x83CE12BA                                         # DF/GK · mountain
@@ -60,6 +96,12 @@ target = "c11080060"                                   # Asten Royds
 
 [[edit]]
 target = "c11080070"                                   # Ciel Natcherall
+moves = [
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xB27F13ED, level = 13 },                        # Death Zone
+  { move = 0x0F4F25F0, level = 20 },                        # The Stronghold
+  { move = 0x2E7B2B84, level = 30 },                        # Thief's Eye
+]
 
   [[edit.cards]]
   id = 0x9AD523FB                                         # MF/DF · fire
@@ -69,6 +111,12 @@ target = "c11080070"                                   # Ciel Natcherall
 
 [[edit]]
 target = "c11080080"                                   # Kyo Seestar
+moves = [
+  { move = 0x4604DA62, level = 1 },                         # Royal Penguin Parade
+  { move = 0x3B8D915B, level = 13 },                        # Meteor Shower
+  { move = 0x0DCADC54, level = 20 },                        # Emperor Penguin 7
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+]
 
   [[edit.cards]]
   id = 0x1D4D3F34                                         # FW/DF · wind
@@ -78,6 +126,12 @@ target = "c11080080"                                   # Kyo Seestar
 
 [[edit]]
 target = "c11080090"                                   # Vex Frieden
+moves = [
+  { move = 0x0A3F27B7, level = 1 },                         # Foul Offence 3
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x3BF45E9A, level = 20 },                        # Triple Boost
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0x04560E75                                         # DF/FW · fire
@@ -87,6 +141,12 @@ target = "c11080090"                                   # Vex Frieden
 
 [[edit]]
 target = "c11080100"                                   # Theon Stillcliffe
+moves = [
+  { move = 0xFB0BF8BD, level = 1 },                         # Marshal's Light
+  { move = 0x41F3CDC2, level = 13 },                        # Scorching Tackle
+  { move = 0x025FD09B, level = 20 },                        # Volcano Cut
+  { move = 0xDDCA0D2A, level = 30 },                        # Bouncing Bomb
+]
 
   [[edit.cards]]
   id = 0xD456DF0B                                         # MF/DF · mountain
@@ -96,6 +156,12 @@ target = "c11080100"                                   # Theon Stillcliffe
 
 [[edit]]
 target = "c11080110"                                   # Ashlan Panoptos
+moves = [
+  { move = 0xFE199725, level = 1 },                         # Royal Shield
+  { move = 0xA7157B91, level = 13 },                        # Power Shield
+  { move = 0xA6D711A6, level = 20 },                        # Full Power Shield
+  { move = 0x0F4F25F0, level = 30 },                        # The Stronghold
+]
 
   [[edit.cards]]
   id = 0xCD4DEE4A                                         # GK/DF · mountain
@@ -105,6 +171,12 @@ target = "c11080110"                                   # Ashlan Panoptos
 
 [[edit]]
 target = "c11080120"                                   # Lenox Grinder
+moves = [
+  { move = 0x4890FB67, level = 1 },                         # Twin Boost
+  { move = 0xFB0BF8BD, level = 13 },                        # Marshal's Light
+  { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
+  { move = 0x1ECA5CE1, level = 30 },                        # Wrath Shot
+]
 
   [[edit.cards]]
   id = 0xE660BD89                                         # FW/MF · fire
@@ -114,6 +186,12 @@ target = "c11080120"                                   # Lenox Grinder
 
 [[edit]]
 target = "c11080130"                                   # Ophelia Ennercourt
+moves = [
+  { move = 0x7748D3F2, level = 1 },                         # Devil Ball
+  { move = 0xBF6D0AC5, level = 13 },                        # Emperor Penguin No. 3
+  { move = 0xC16279D1, level = 20 },                        # Field of Force
+  { move = 0x5643C944, level = 30 },                        # Killer Slide
+]
 
   [[edit.cards]]
   id = 0xFF7B8CC8                                         # FW/DF · forest
@@ -123,6 +201,12 @@ target = "c11080130"                                   # Ophelia Ennercourt
 
 [[edit]]
 target = "c11080140"                                   # Riggs Fornstrut
+moves = [
+  { move = 0x0F4F25F0, level = 1 },                         # The Stronghold
+  { move = 0xFB0BF8BD, level = 13 },                        # Marshal's Light
+  { move = 0x05567847, level = 20 },                        # Runaway Train
+  { move = 0xBA833662, level = 30 },                        # Million Hands
+]
 
   [[edit.cards]]
   id = 0xB03A1A0F                                         # MF/GK · mountain
@@ -132,6 +216,12 @@ target = "c11080140"                                   # Riggs Fornstrut
 
 [[edit]]
 target = "c11080150"                                   # Leticia Legatus
+moves = [
+  { move = 0xFE199725, level = 1 },                         # Royal Shield
+  { move = 0xA6D711A6, level = 13 },                        # Full Power Shield
+  { move = 0xDA3FF6C9, level = 20 },                        # Criss-Cross
+  { move = 0xA7157B91, level = 30 },                        # Power Shield
+]
 
   [[edit.cards]]
   id = 0xA9212B4E                                         # GK/MF · fire
@@ -141,6 +231,12 @@ target = "c11080150"                                   # Leticia Legatus
 
 [[edit]]
 target = "c11080160"                                   # Arran Realis
+moves = [
+  { move = 0x93885A64, level = 1 },                         # Fire Drill
+  { move = 0xF9C4BCF4, level = 13 },                        # Double Helix
+  { move = 0x30A819A7, level = 20 },                        # Twin Boost F
+  { move = 0x86F5F6E8, level = 30 },                        # Cupid's Arrow
+]
 
   [[edit.cards]]
   id = 0x820C788D                                         # DF/FW · fire
@@ -150,6 +246,12 @@ target = "c11080160"                                   # Arran Realis
 
 [[edit]]
 target = "c11080500"                                   # Alice Rendell
+moves = [
+  { move = 0x0F4F25F0, level = 1 },                         # The Stronghold
+  { move = 0xFB0BF8BD, level = 13 },                        # Marshal's Light
+  { move = 0xBF6D0AC5, level = 20 },                        # Emperor Penguin No. 3
+  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
+]
 
   [[edit.cards]]
   id = 0xD35F77D7                                         # MF/FW · forest
@@ -159,6 +261,12 @@ target = "c11080500"                                   # Alice Rendell
 
 [[edit]]
 target = "c11080510"                                   # Partis Payton
+moves = [
+  { move = 0xFE199725, level = 1 },                         # Royal Shield
+  { move = 0xA7157B91, level = 13 },                        # Power Shield
+  { move = 0xA6D711A6, level = 20 },                        # Full Power Shield
+  { move = 0x3C843987, level = 30 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0xCA444696                                         # GK/MF · mountain

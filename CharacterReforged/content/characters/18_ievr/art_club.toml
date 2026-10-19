@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11500270"                                   # Colette Brushmont
+moves = [
+  { move = 0x93885A64, level = 1 },                         # Fire Drill
+  { move = 0xA8215D7C, level = 13 },                        # The Mountain
+  { move = 0x025FD09B, level = 20 },                        # Volcano Cut
+  { move = 0xBA833662, level = 30 },                        # Million Hands
+]
 
   [[edit.cards]]
   id = 0xF9EC2DE7                                         # DF/GK · fire
@@ -15,6 +21,12 @@ target = "c11500270"                                   # Colette Brushmont
 
 [[edit]]
 target = "c11700210"                                   # Aimee Porteret
+moves = [
+  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x41F3CDC2, level = 13 },                        # Scorching Tackle
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x35E70F22, level = 30 },                        # Grenade Shot
+]
 
   [[edit.cards]]
   id = 0xE27E2B6A                                         # MF/FW · fire
@@ -25,6 +37,12 @@ target = "c11700210"                                   # Aimee Porteret
 
 [[edit]]
 target = "c11700390"                                   # Lorenzo Dellart
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0x0C08B663, level = 13 },                        # Doom Dive Drive
+  { move = 0x8A52C09B, level = 20 },                        # Doomsword Slash
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0x2B65CB55                                         # FW/MF · fire
@@ -35,6 +53,12 @@ target = "c11700390"                                   # Lorenzo Dellart
 
 [[edit]]
 target = "c11723010"                                   # Mireille Modelle
+moves = [
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0x422A60B1, level = 13 },                        # Barrier Reef
+  { move = 0x7EEA4EE9, level = 20 },                        # Blade Attack
+  { move = 0x613ABD43, level = 30 },                        # Dawnrise
+]
 
   [[edit.cards]]
   id = 0x898F038A                                         # GK/DF · wind
@@ -45,6 +69,12 @@ target = "c11723010"                                   # Mireille Modelle
 
 [[edit]]
 target = "c11723020"                                   # Greef Lonbrusch
+moves = [
+  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0x025FD09B, level = 13 },                        # Volcano Cut
+  { move = 0x613ABD43, level = 20 },                        # Dawnrise
+  { move = 0x3A4FFB6C, level = 30 },                        # The Ikaros
+]
 
   [[edit.cards]]
   id = 0xA2A25049                                         # DF/MF · fire
@@ -55,6 +85,12 @@ target = "c11723020"                                   # Greef Lonbrusch
 
 [[edit]]
 target = "c11723030"                                   # Bracker Grippe
+moves = [
+  { move = 0x1B854A64, level = 1 },                         # Cosmic Blast
+  { move = 0x4E22F64D, level = 13 },                        # Transporter Device
+  { move = 0x21127474, level = 20 },                        # Ultra Moon
+  { move = 0x79224D8B, level = 30 },                        # Freeze Shot
+]
 
   [[edit.cards]]
   id = 0xBBB96108                                         # FW/MF · forest
@@ -65,6 +101,12 @@ target = "c11723030"                                   # Bracker Grippe
 
 [[edit]]
 target = "c11723040"                                   # Trew Talif
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x49933AEE, level = 13 },                        # Perfect Tower
+  { move = 0x4F58F805, level = 20 },                        # Coil Turn
+  { move = 0x768AB9C5, level = 30 },                        # Frosticle
+]
 
   [[edit.cards]]
   id = 0xF4F8F7CF                                         # MF/DF · wind
@@ -75,6 +117,12 @@ target = "c11723040"                                   # Trew Talif
 
 [[edit]]
 target = "c11723050"                                   # Madeline Milke
+moves = [
+  { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
+  { move = 0x5AF33BC7, level = 13 },                        # God Hand
+  { move = 0x06D2AC29, level = 20 },                        # Diabolical Cut
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xEDE3C68E                                         # DF/GK · forest
@@ -85,6 +133,12 @@ target = "c11723050"                                   # Madeline Milke
 
 [[edit]]
 target = "c11723060"                                   # Giovanni Buston
+moves = [
+  { move = 0x64CDCFB9, level = 1 },                         # Rising Dragon
+  { move = 0x9D236FA3, level = 13 },                        # Sword of the King
+  { move = 0xC5EF0563, level = 20 },                        # Three-Legged Rush
+  { move = 0x53CD747F, level = 30 },                        # Tarzan Kick
+]
 
   [[edit.cards]]
   id = 0xC6CE954D                                         # MF/FW · mountain
@@ -95,6 +149,12 @@ target = "c11723060"                                   # Giovanni Buston
 
 [[edit]]
 target = "c11723070"                                   # Audreen Slumberey
+moves = [
+  { move = 0xE0549BE6, level = 1 },                         # Easy Breezy Kid
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x6E53E2B3, level = 20 },                        # Angel Ball
+  { move = 0x1D4E888F, level = 30 },                        # Condor Dive
+]
 
   [[edit.cards]]
   id = 0xDFD5A40C                                         # MF/FW · wind
@@ -105,6 +165,12 @@ target = "c11723070"                                   # Audreen Slumberey
 
 [[edit]]
 target = "c11723080"                                   # Zinnia Crylic
+moves = [
+  { move = 0x1B854A64, level = 1 },                         # Cosmic Blast
+  { move = 0x12E67CC1, level = 13 },                        # Future Eye
+  { move = 0xB27F13ED, level = 20 },                        # Death Zone
+  { move = 0x4C1D87D5, level = 30 },                        # Bed of Roses
+]
 
   [[edit.cards]]
   id = 0x584DB8C3                                         # FW/MF · forest

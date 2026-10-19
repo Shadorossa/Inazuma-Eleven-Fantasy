@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11700070"                                   # Hercule Gaillard
+moves = [
+  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x3A4FFB6C, level = 13 },                        # The Ikaros
+  { move = 0x585098FC, level = 20 },                        # Slice and Dice
+  { move = 0xB60E3C60, level = 30 },                        # Plasma Cut
+]
 
   [[edit.cards]]
   id = 0xB7A05882                                         # MF/DF · fire
@@ -16,6 +22,12 @@ target = "c11700070"                                   # Hercule Gaillard
 
 [[edit]]
 target = "c11700080"                                   # Didar Valmont
+moves = [
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
+  { move = 0x06D2AC29, level = 13 },                        # Diabolical Cut
+  { move = 0xC16279D1, level = 20 },                        # Field of Force
+  { move = 0x12E67CC1, level = 30 },                        # Future Eye
+]
 
   [[edit.cards]]
   id = 0x3038444D                                         # DF/MF · forest
@@ -26,6 +38,12 @@ target = "c11700080"                                   # Didar Valmont
 
 [[edit]]
 target = "c11700090"                                   # Iro Armussel
+moves = [
+  { move = 0x07D16DA0, level = 1 },                         # Inazuma-1
+  { move = 0x19C3F43D, level = 13 },                        # Eternal Blizzard
+  { move = 0x259F08C6, level = 20 },                        # Whirlwind Twister
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x2923750C                                         # FW/MF · wind
@@ -36,6 +54,12 @@ target = "c11700090"                                   # Iro Armussel
 
 [[edit]]
 target = "c11719010"                                   # Stratos Merrill
+moves = [
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0x52CEB5F6, level = 13 },                        # Iron Wall
+  { move = 0x2FB941B3, level = 20 },                        # Stone Prison
+  { move = 0x73C5AF40, level = 30 },                        # Dash Accelerator
+]
 
   [[edit.cards]]
   id = 0xA192993E                                         # DF/MF · mountain
@@ -46,6 +70,12 @@ target = "c11719010"                                   # Stratos Merrill
 
 [[edit]]
 target = "c11719020"                                   # Kairo Reaser
+moves = [
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
+  { move = 0x3F00EDE9, level = 13 },                        # Dash Storm
+  { move = 0x49933AEE, level = 20 },                        # Perfect Tower
+  { move = 0x4F58F805, level = 30 },                        # Coil Turn
+]
 
   [[edit.cards]]
   id = 0x8ABFCAFD                                         # MF/DF · wind
@@ -56,6 +86,12 @@ target = "c11719020"                                   # Kairo Reaser
 
 [[edit]]
 target = "c11719030"                                   # Watt Ownes
+moves = [
+  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x585098FC, level = 13 },                        # Slice and Dice
+  { move = 0x3A4FFB6C, level = 20 },                        # The Ikaros
+  { move = 0x087999EE, level = 30 },                        # Heel Drop
+]
 
   [[edit.cards]]
   id = 0x93A4FBBC                                         # MF/DF · fire
@@ -66,6 +102,12 @@ target = "c11719030"                                   # Watt Ownes
 
 [[edit]]
 target = "c11719040"                                   # Proteus Flavout
+moves = [
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0x41AEB4DF, level = 13 },                        # Crystal Barrier
+  { move = 0xC2E6ADBF, level = 20 },                        # Log Roll
+  { move = 0xBB415C55, level = 30 },                        # Needle Hammer
+]
 
   [[edit.cards]]
   id = 0xDCE56D7B                                         # GK/MF · wind
@@ -76,6 +118,12 @@ target = "c11719040"                                   # Proteus Flavout
 
 [[edit]]
 target = "c11719050"                                   # Olan Ackroyd
+moves = [
+  { move = 0x585098FC, level = 1 },                         # Slice and Dice
+  { move = 0x78E027BC, level = 13 },                        # Shine Drive
+  { move = 0x78218C02, level = 20 },                        # Duskfall
+  { move = 0xEFFC6FA8, level = 30 },                        # Warhead
+]
 
   [[edit.cards]]
   id = 0xC5FE5C3A                                         # FW/DF · fire
@@ -86,6 +134,12 @@ target = "c11719050"                                   # Olan Ackroyd
 
 [[edit]]
 target = "c11719060"                                   # Evander Greenvale
+moves = [
+  { move = 0x1B854A64, level = 1 },                         # Cosmic Blast
+  { move = 0x121A2FFE, level = 13 },                        # Mirage Shot
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x7748D3F2, level = 30 },                        # Devil Ball
+]
 
   [[edit.cards]]
   id = 0xEED30FF9                                         # FW/MF · forest
@@ -96,6 +150,12 @@ target = "c11719060"                                   # Evander Greenvale
 
 [[edit]]
 target = "c11719070"                                   # Floyn Circuits
+moves = [
+  { move = 0xA01CD34D, level = 1 },                         # Temporal Wall
+  { move = 0x49933AEE, level = 13 },                        # Perfect Tower
+  { move = 0xAF28F5A0, level = 20 },                        # The Tower
+  { move = 0x0710C61E, level = 30 },                        # Perimeter Zone
+]
 
   [[edit.cards]]
   id = 0xF7C83EB8                                         # DF/GK · wind
@@ -106,6 +166,12 @@ target = "c11719070"                                   # Floyn Circuits
 
 [[edit]]
 target = "c11719080"                                   # Zaydan Smythe
+moves = [
+  { move = 0x485150D9, level = 1 },                         # Body Shield
+  { move = 0x52CEB5F6, level = 13 },                        # Iron Wall
+  { move = 0x2AF65736, level = 20 },                        # Bamboo Pattern
+  { move = 0x84385EE2, level = 30 },                        # Black Tide Ride
+]
 
   [[edit.cards]]
   id = 0x70502277                                         # DF/MF · mountain
@@ -116,6 +182,12 @@ target = "c11719080"                                   # Zaydan Smythe
 
 [[edit]]
 target = "c11719090"                                   # Praiseton Strongshout
+moves = [
+  { move = 0xC5D2FDE2, level = 1 },                         # Oglitteration
+  { move = 0x93E8DBF8, level = 13 },                        # Dimensional Hand
+  { move = 0x91AE65A1, level = 20 },                        # Giant Spider
+  { move = 0x19025F83, level = 30 },                        # Quick Draw
+]
 
   [[edit.cards]]
   id = 0x694B1336                                         # GK/DF · forest
@@ -126,6 +198,12 @@ target = "c11719090"                                   # Praiseton Strongshout
 
 [[edit]]
 target = "c11719100"                                   # Wheyland Schultz
+moves = [
+  { move = 0x4B3099D5, level = 1 },                         # Stomper Stopper
+  { move = 0x7748D3F2, level = 13 },                        # Devil Ball
+  { move = 0xF2CB0879, level = 20 },                        # Mugen the Hand
+  { move = 0xDBFD9CFE, level = 30 },                        # Big Ball Trick
+]
 
   [[edit.cards]]
   id = 0xB94BC248                                         # MF/GK · forest
@@ -136,6 +214,12 @@ target = "c11719100"                                   # Wheyland Schultz
 
 [[edit]]
 target = "c11719110"                                   # Heron Champs
+moves = [
+  { move = 0xDE4ED944, level = 1 },                         # Snowstorm Leopard
+  { move = 0xC42D6F54, level = 13 },                        # Aikido
+  { move = 0x95823331, level = 20 },                        # The Tube
+  { move = 0xC66BD10D, level = 30 },                        # Zigzag Spark
+]
 
   [[edit.cards]]
   id = 0xA050F309                                         # FW/MF · wind

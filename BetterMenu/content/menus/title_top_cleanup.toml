@@ -1,0 +1,41 @@
+schema = "VRFW.menu/2"
+
+# The top of the main menu (title_menu_2) under BetterMenu (docs/game/mods/better-menu.md §12): no «X Información»
+# plate (and X no longer opens the notices: the lower row's «Información» tile does), no title logo, no «Inazuma Post»
+# plate (its key still opens the mail box). The plates' layouts move off screen at their root joint (no animation
+# moves it), so they can neither be seen nor clicked; the title logo's art is untouched. «Victorias» and the Avatar /
+# Mi equipo banners stay. Off: config.toml [main_menu] clean_top = false (restart).
+when = { config = "main_menu.clean_top", default = true }
+
+# «X Información» (title02_06_information_banner, top left)
+[[layout]]
+file = "common/menu/50_title/title02/title02_06/title02_06.g4pkm"
+joint = "title02_06_output"
+translate = [-5000.0, 0.0]
+
+# the title logo (title02_01_title_logo_2, top centre)
+[[layout]]
+file = "common/menu/50_title/title02/title02_01/title02_01.g4pkm"
+joint = "title02_01_output"
+translate = [0.0, 5000.0]
+
+# «Inazuma Post» (title00_10_inazuma_post, top right; its key row CMD_FUNCTION 0x5A8A6C8D «post» stays)
+[[layout]]
+file = "common/menu/50_title/title00/title00_10/title00_10.g4pkm"
+joint = "title00_10_output"
+translate = [5000.0, 0.0]
+
+# X (input 0x55960DD8 -> CMD_FUNCTION 0x29791883, the notices window) taken out of every focusable layer of the title:
+# upper / lower row, the DLC buy buttons, the team / avatar banners, the victory counter, the DLC icons.
+[[patch]]
+menu = "title_menu_2"
+remove_cmd = [
+    { layer = "title00_07_item_button_upper", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title00_07_item_button_lower", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_21_dlc_buy_btn", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_21_sw2_upgrade_pass_btn", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_10_my_team_banner", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_11_avatar_banner", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_07_victory_counter", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+    { layer = "title02_23_dlc_logo_simple", input = 0x55960DD8, command = "CMD_FUNCTION", arg = 0x29791883 },
+]

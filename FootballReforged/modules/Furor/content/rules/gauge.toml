@@ -1,7 +1,8 @@
 # Furor › what the furor does, as behaviour rules (docs/framework/rules.md) on the flags and
 # signals of the team momentum furor.gauge (content\team_momentum\gauge.toml; docs/game/mechanics/furor.md
 # §3). Flags: furor.gauge.<side>.level1 (50 %), .full, .phase (side = user / rival, the actor's side in
-# `when.team`). Signals (actor = a player of that team): furor.gauge.phase / .phase_end / .start.
+# `when.team`). Signals (actor = a player of that team): furor.gauge.phase / .phase_end / .start;
+# .phase_join (actor = a player who came on by substitution during his team's phase).
 schema = "VRFW.behaviour/1"
 
 # ---------------------------------------------------------------- level 1 (half gauge): special moves a little stronger
@@ -87,8 +88,8 @@ power_mult = 0.9
 
 # ---------------------------------------------------------------- the phase's awakening
 # The furor phase is the only awakening (content\techniques\no_awakenings.toml): every player of the team that starts
-# it (the user's or the CPU's) wears the retail awakening look, its own colour (the awakening's character-effect
-# trigger 0x9627F4F7: rows ega0550a-ega0553a, the body aura ega0550a; owner 2026-10-16), and gets his position's
+# it (the user's or the CPU's) wears the furor fire look (the trigger furor_phase_fire of content\effects\awakening.toml:
+# the retail awakening's rows in orange, yellow and red; the retail awakening keeps its pink-red), and gets his position's
 # awakening stats, until the phase ends. It is no aura: no aura bit, no aura slot, no aura limit, a keshin / totem /
 # armour / Mix-Max keeps running with it; at the end the look fades out (no withdraw animation, no aura-end signal).
 # Position (stats only): gk = the team's keeper, the others by their card's main position (docs/framework/rules.md,
@@ -99,7 +100,7 @@ power_mult = 0.9
 id = "furor_awakening_look"
 on = "signal:furor.gauge.phase"
 [rule.do]
-char_effect = { trigger = "0x9627F4F7", who = "team" }
+char_effect = { trigger = "furor_phase_fire", who = "team" }
 
 [[rule]]
 id = "furor_awakening_gk"
@@ -125,12 +126,44 @@ on = "signal:furor.gauge.phase"
 [rule.do]
 set_stat = { stat = ["kick", "agility"], mult = 1.15, who = "team", position = "fw" }
 
+# a player who comes on by substitution during his team's phase joins it (signal furor.gauge.phase_join, actor = him):
+# the same look and his position's stats as above, for him alone; the phase's end below takes them off with the team's
+[[rule]]
+id = "furor_awakening_look_join"
+on = "signal:furor.gauge.phase_join"
+[rule.do]
+char_effect = { trigger = "furor_phase_fire", who = "actor" }
+
+[[rule]]
+id = "furor_awakening_gk_join"
+on = "signal:furor.gauge.phase_join"
+[rule.do]
+set_stat = { stat = ["agility", "physical"], mult = 1.12, who = "actor", position = "gk" }
+
+[[rule]]
+id = "furor_awakening_df_join"
+on = "signal:furor.gauge.phase_join"
+[rule.do]
+set_stat = { stat = ["pressure", "physical"], mult = 1.15, who = "actor", position = "df" }
+
+[[rule]]
+id = "furor_awakening_mf_join"
+on = "signal:furor.gauge.phase_join"
+[rule.do]
+set_stat = { stat = ["control", "technique", "agility"], mult = 1.1, who = "actor", position = "mf" }
+
+[[rule]]
+id = "furor_awakening_fw_join"
+on = "signal:furor.gauge.phase_join"
+[rule.do]
+set_stat = { stat = ["kick", "agility"], mult = 1.15, who = "actor", position = "fw" }
+
 # the end: the look off on the whole team (a player who changed place keeps none), the stats back
 [[rule]]
 id = "furor_awakening_end"
 on = "signal:furor.gauge.phase_end"
 [rule.do]
-char_effect = { clear = true, trigger = "0x9627F4F7", who = "team" }
+char_effect = { clear = true, trigger = "furor_phase_fire", who = "team" }
 set_stat = { stat = ["kick", "control", "technique", "pressure", "physical", "agility"], restore = true, who = "team" }
 
 # ---------------------------------------------------------------- the CPU starts its phase (Strikers' AI: by chance,

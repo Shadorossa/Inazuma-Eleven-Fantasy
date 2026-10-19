@@ -34,6 +34,17 @@ target = "c05023100_5000"                              # Dekih
 
 [[edit]]
 target = "c05023010"                                   # Chitoh
+moves = [
+  { move = 0x07704782, level = 1 },                         # Rejection
+  { move = 0x62DEE8B1, level = 14 },                        # Jumping Whack
+  { move = 0x9B3048AB, level = 38 },                        # Shadow Catch
+  { move = 0x9AF2229C, level = 62 },                        # Gravity Point
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x7046AE42, level = 1 },                         # Amorosa [aura]
+]
 
   [[edit.cards]]
   id = 0xAC6F17BF                                         # GK/MF · forest
@@ -43,6 +54,12 @@ target = "c05023010"                                   # Chitoh
 
 [[edit]]
 target = "c05023020"                                   # Kazach
+moves = [
+  { move = 0x04941270, level = 1 },                         # Vac Attack
+  { move = 0x5DA7EA06, level = 15 },                        # Boomerang Bluff
+  { move = 0x17110E3B, level = 37 },                        # Jumbo Sandwich
+  { move = 0xDD0BA694, level = 52 },                        # Okehazama Ravine
+]
 
   [[edit.cards]]
   id = 0x8742447C                                         # DF/MF · mountain
@@ -53,6 +70,12 @@ target = "c05023020"                                   # Kazach
 
 [[edit]]
 target = "c05023030"                                   # Fumh
+moves = [
+  { move = 0x1C4D4906, level = 1 },                         # Whirlpool
+  { move = 0x62BE692D, level = 19 },                        # Whirlwind Force
+  { move = 0x2354CA2D, level = 31 },                        # Wind God's Dance
+  { move = 0xB0F8060A, level = 51 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0x9E59753D                                         # DF/MF · wind
@@ -62,6 +85,12 @@ target = "c05023030"                                   # Fumh
 
 [[edit]]
 target = "c05023040"                                   # Gumille
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0x56FBAD3B, level = 8 },                         # Seal Matrix
+  { move = 0x86F5F6E8, level = 28 },                        # Cupid's Arrow
+  { move = 0x8A936B25, level = 52 },                        # Goopy Gloopy Goo
+]
 
   [[edit.cards]]
   id = 0xD118E3FA                                         # DF/MF · fire
@@ -72,6 +101,17 @@ target = "c05023040"                                   # Gumille
 
 [[edit]]
 target = "c05023050"                                   # Yurkeh
+moves = [
+  { move = 0x6F918884, level = 1 },                         # Easy Breezy
+  { move = 0x8D5B6847, level = 21 },                        # Odin Sword
+  { move = 0x0CF4E55C, level = 37 },                        # Double Touch
+  { move = 0x7DD6FEF8, level = 59 },                        # Athena's Anthem
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x60A27B05, level = 1 },                         # Berserker [aura]
+]
 
   [[edit.cards]]
   id = 0xC803D2BB                                         # MF/FW · forest
@@ -82,6 +122,12 @@ target = "c05023050"                                   # Yurkeh
 
 [[edit]]
 target = "c05023060"                                   # Rokah
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x530CDFC1, level = 7 },                         # Mystifying Mist
+  { move = 0x5739C70C, level = 19 },                        # Guided Collide
+  { move = 0x2B8C597E, level = 48 },                        # Fugue Wave
+]
 
   [[edit.cards]]
   id = 0xE32E8178                                         # MF/DF · forest
@@ -92,6 +138,12 @@ target = "c05023060"                                   # Rokah
 
 [[edit]]
 target = "c05023070"                                   # Pinoh
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0xEFFC6FA8, level = 10 },                        # Warhead
+  { move = 0x19BA3BFC, level = 24 },                        # Dance on Air
+  { move = 0x44BCDB47, level = 55 },                        # Pyroclastic
+]
 
   [[edit.cards]]
   id = 0xFA35B039                                         # MF/FW · fire
@@ -102,6 +154,12 @@ target = "c05023070"                                   # Pinoh
 
 [[edit]]
 target = "c05023080"                                   # Tahk
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x24E5068E, level = 13 },                        # Fractal Repeller
+  { move = 0xC324C788, level = 31 },                        # Blast Mine
+  { move = 0xA0BDF96F, level = 51 },                        # Ballista Barrage
+]
 
   [[edit.cards]]
   id = 0x7DADACF6                                         # MF/DF · mountain
@@ -112,6 +170,17 @@ target = "c05023080"                                   # Tahk
 
 [[edit]]
 target = "c05023100"                                   # Dekih
+moves = [
+  { move = 0xF9C4BCF4, level = 1 },                         # Double Helix
+  { move = 0x5739C70C, level = 16 },                        # Guided Collide
+  { move = 0xA37D1A41, level = 36 },                        # Hyper-Swiper
+  { move = 0xEDBAD1F1, level = 61 },                        # Brimstone Rain
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0, level = 0 },                                  # (empty)
+  { move = 0x308B7A17, level = 1 },                         # Qinglong [aura]
+]
 
   [[edit.cards]]
   id = 0xB4B64CC9                                         # FW/MF · forest
@@ -121,6 +190,12 @@ target = "c05023100"                                   # Dekih
 
 [[edit]]
 target = "c05023110"                                   # Yuh
+moves = [
+  { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+  { move = 0xF94FAAA7, level = 23 },                        # Decoy Deploy
+  { move = 0x039DBAAC, level = 45 },                        # Land of Ice
+  { move = 0x89D614F5, level = 67 },                        # White Hurricane
+]
 
   [[edit.cards]]
   id = 0xADAD7D88                                         # FW/MF · wind
@@ -130,6 +205,12 @@ target = "c05023110"                                   # Yuh
 
 [[edit]]
 target = "c05023120"                                   # Bhabass
+moves = [
+  { move = 0x07704782, level = 1 },                         # Rejection
+  { move = 0x50E88A33, level = 13 },                        # Fist Beam
+  { move = 0xE4849E49, level = 29 },                        # Wild Dunk
+  { move = 0xED1BFBD3, level = 47 },                        # Fingers of Gaia
+]
 
   [[edit.cards]]
   id = 0x86802E4B                                         # GK/MF · mountain
@@ -139,6 +220,12 @@ target = "c05023120"                                   # Bhabass
 
 [[edit]]
 target = "c05023130"                                   # Sheenai
+moves = [
+  { move = 0x0D0B77EA, level = 1 },                         # Floral Fiesta
+  { move = 0xC13F00CC, level = 4 },                         # Flower Power
+  { move = 0x56FBAD3B, level = 29 },                        # Seal Matrix
+  { move = 0xB8A509A7, level = 56 },                        # Asterocks
+]
 
   [[edit.cards]]
   id = 0x9F9B1F0A                                         # DF/MF · fire
@@ -149,6 +236,12 @@ target = "c05023130"                                   # Sheenai
 
 [[edit]]
 target = "c05023140"                                   # Tessell
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x5DA7EA06, level = 14 },                        # Boomerang Bluff
+  { move = 0x17110E3B, level = 39 },                        # Jumbo Sandwich
+  { move = 0x9B916289, level = 47 },                        # Jurassic Jaws
+]
 
   [[edit.cards]]
   id = 0xD0DA89CD                                         # MF/DF · mountain
@@ -159,6 +252,12 @@ target = "c05023140"                                   # Tessell
 
 [[edit]]
 target = "c05023150"                                   # Chikka
+moves = [
+  { move = 0xF94FAAA7, level = 1 },                         # Decoy Deploy
+  { move = 0x4031A7F5, level = 11 },                        # Mole Fake
+  { move = 0x5739C70C, level = 22 },                        # Guided Collide
+  { move = 0x20D01E43, level = 44 },                        # Hey Presto
+]
 
   [[edit.cards]]
   id = 0xC9C1B88C                                         # MF/DF · forest
@@ -169,6 +268,12 @@ target = "c05023150"                                   # Chikka
 
 [[edit]]
 target = "c05023160"                                   # Mahrsa
+moves = [
+  { move = 0xF9C4BCF4, level = 1 },                         # Double Helix
+  { move = 0xC2E6ADBF, level = 18 },                        # Log Roll
+  { move = 0xA9E3374B, level = 43 },                        # Cyclone Sprint
+  { move = 0x7E2BE557, level = 48 },                        # Legendary Wolf
+]
 
   [[edit.cards]]
   id = 0xE2ECEB4F                                         # FW/MF · wind

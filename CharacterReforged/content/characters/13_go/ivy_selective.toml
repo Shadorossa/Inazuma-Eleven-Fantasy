@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c04004010"                                   # Clem Attish
+moves = [
+  { move = 0x58B5859E, level = 12 },                        # Whip Crack
+  { move = 0xF400CA92, level = 20 },                        # Anchors Aweigh
+  { move = 0x41AEB4DF, level = 43 },                        # Crystal Barrier
+  { move = 0xCD6AEF2D, level = 58 },                        # All-Star
+]
 
   [[edit.cards]]
   id = 0xED0F77D2                                         # GK/MF · wind
@@ -15,6 +21,12 @@ target = "c04004010"                                   # Clem Attish
 
 [[edit]]
 target = "c04004020"                                   # Tyrian Purpel
+moves = [
+  { move = 0xA9E3374B, level = 8 },                         # Cyclone Sprint
+  { move = 0x1C4D4906, level = 26 },                        # Whirlpool
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0xE0549BE6, level = 40 },                        # Easy Breezy Kid
+]
 
   [[edit.cards]]
   id = 0xC6222411                                         # MF/DF · wind
@@ -25,6 +37,12 @@ target = "c04004020"                                   # Tyrian Purpel
 
 [[edit]]
 target = "c04004030"                                   # Pike Pollack
+moves = [
+  { move = 0xE0549BE6, level = 13 },                        # Easy Breezy Kid
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x6A66FA7E, level = 40 },                        # Killer Whale
+]
 
   [[edit.cards]]
   id = 0xDF391550                                         # DF/MF · wind
@@ -34,6 +52,12 @@ target = "c04004030"                                   # Pike Pollack
 
 [[edit]]
 target = "c04004040"                                   # Martin Blando
+moves = [
+  { move = 0xA37D1A41, level = 8 },                         # Hyper-Swiper
+  { move = 0x39CB2F02, level = 30 },                        # Dragster
+  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
+  { move = 0x62BE692D, level = 44 },                        # Whirlwind Force
+]
 
   [[edit.cards]]
   id = 0x90788397                                         # DF/MF · wind
@@ -43,6 +67,12 @@ target = "c04004040"                                   # Martin Blando
 
 [[edit]]
 target = "c04004050"                                   # Keane Gardner
+moves = [
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0x768AB9C5, level = 38 },                        # Frosticle
+  { move = 0x039DBAAC, level = 43 },                        # Land of Ice
+  { move = 0xB0F8060A, level = 60 },                        # Ozone Flayer
+]
 
   [[edit.cards]]
   id = 0x8963B2D6                                         # DF/MF · wind
@@ -53,6 +83,12 @@ target = "c04004050"                                   # Keane Gardner
 
 [[edit]]
 target = "c04004060"                                   # Shaun Bonce
+moves = [
+  { move = 0xA37D1A41, level = 13 },                        # Hyper-Swiper
+  { move = 0xC2E6ADBF, level = 22 },                        # Log Roll
+  { move = 0x39CB2F02, level = 35 },                        # Dragster
+  { move = 0xA9E3374B, level = 40 },                        # Cyclone Sprint
+]
 
   [[edit.cards]]
   id = 0xA24EE115                                         # MF/DF · wind
@@ -63,6 +99,12 @@ target = "c04004060"                                   # Shaun Bonce
 
 [[edit]]
 target = "c04004070"                                   # Penn Minim
+moves = [
+  { move = 0x650FA58E, level = 13 },                        # Spin Out
+  { move = 0xC2E6ADBF, level = 22 },                        # Log Roll
+  { move = 0x0DCADC54, level = 31 },                        # Emperor Penguin 7
+  { move = 0x2354CA2D, level = 40 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0xBB55D054                                         # MF/FW · wind
@@ -72,6 +114,12 @@ target = "c04004070"                                   # Penn Minim
 
 [[edit]]
 target = "c04004080"                                   # Brook Bold
+moves = [
+  { move = 0xB0BC314A, level = 8 },                         # Spin Meister
+  { move = 0xA2FB4736, level = 30 },                        # Flying Fish
+  { move = 0x768AB9C5, level = 43 },                        # Frosticle
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0x3CCDCC9B                                         # MF/FW · wind
@@ -81,6 +129,12 @@ target = "c04004080"                                   # Brook Bold
 
 [[edit]]
 target = "c04004090"                                   # Francis Tuffnot
+moves = [
+  { move = 0x6F918884, level = 12 },                        # Easy Breezy
+  { move = 0x9349F1DA, level = 26 },                        # Zephyr Shot
+  { move = 0x62BE692D, level = 39 },                        # Whirlwind Force
+  { move = 0x039DBAAC, level = 48 },                        # Land of Ice
+]
 
   [[edit.cards]]
   id = 0x25D6FDDA                                         # DF/MF · wind
@@ -91,6 +145,12 @@ target = "c04004090"                                   # Francis Tuffnot
 
 [[edit]]
 target = "c04004100"                                   # Joshua Bleak
+moves = [
+  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
+  { move = 0xE8F5C774, level = 15 },                        # Megalodon
+  { move = 0xA4B51923, level = 30 },                        # The Typhoon
+  { move = 0x19C3F43D, level = 48 },                        # Eternal Blizzard
+]
 
   [[edit.cards]]
   id = 0xF5D62CA4                                         # FW/MF · wind
@@ -101,6 +161,12 @@ target = "c04004100"                                   # Joshua Bleak
 
 [[edit]]
 target = "c04004110"                                   # Hayden Whyrl
+moves = [
+  { move = 0xA2FB4736, level = 23 },                        # Flying Fish
+  { move = 0x7E2BE557, level = 30 },                        # Legendary Wolf
+  { move = 0x19C3F43D, level = 43 },                        # Eternal Blizzard
+  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+]
 
   [[edit.cards]]
   id = 0xECCD1DE5                                         # FW/MF · wind
@@ -111,6 +177,12 @@ target = "c04004110"                                   # Hayden Whyrl
 
 [[edit]]
 target = "c04004120"                                   # Matt Durer
+moves = [
+  { move = 0x822B79EA, level = 6 },                         # Somersault Stamp
+  { move = 0x1C4D4906, level = 26 },                        # Whirlpool
+  { move = 0xF400CA92, level = 35 },                        # Anchors Aweigh
+  { move = 0x41AEB4DF, level = 40 },                        # Crystal Barrier
+]
 
   [[edit.cards]]
   id = 0xC7E04E26                                         # GK/DF · wind
@@ -120,6 +192,12 @@ target = "c04004120"                                   # Matt Durer
 
 [[edit]]
 target = "c04004130"                                   # Nixon Earlnight
+moves = [
+  { move = 0xC2E6ADBF, level = 13 },                        # Log Roll
+  { move = 0xA9E3374B, level = 30 },                        # Cyclone Sprint
+  { move = 0xB0F8060A, level = 35 },                        # Ozone Flayer
+  { move = 0x039DBAAC, level = 48 },                        # Land of Ice
+]
 
   [[edit.cards]]
   id = 0xDEFB7F67                                         # DF/MF · wind
@@ -130,6 +208,12 @@ target = "c04004130"                                   # Nixon Earlnight
 
 [[edit]]
 target = "c04004140"                                   # Jack Balance
+moves = [
+  { move = 0xE8F5C774, level = 8 },                         # Megalodon
+  { move = 0xC2E6ADBF, level = 22 },                        # Log Roll
+  { move = 0x0DCADC54, level = 31 },                        # Emperor Penguin 7
+  { move = 0x39CB2F02, level = 40 },                        # Dragster
+]
 
   [[edit.cards]]
   id = 0x91BAE9A0                                         # MF/FW · wind
@@ -139,6 +223,12 @@ target = "c04004140"                                   # Jack Balance
 
 [[edit]]
 target = "c04004150"                                   # Skylar Lepton
+moves = [
+  { move = 0x14D1ED15, level = 19 },                        # Jumping Jack
+  { move = 0x1C4D4906, level = 26 },                        # Whirlpool
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0xDF8CB373, level = 40 },                        # Sonic Shot
+]
 
   [[edit.cards]]
   id = 0x88A1D8E1                                         # DF/FW · wind
@@ -149,6 +239,12 @@ target = "c04004150"                                   # Skylar Lepton
 
 [[edit]]
 target = "c04004160"                                   # Tarquin Orchards
+moves = [
+  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
+  { move = 0xA2FB4736, level = 30 },                        # Flying Fish
+  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0xE8F5C774, level = 45 },                        # Megalodon
+]
 
   [[edit.cards]]
   id = 0xA38C8B22                                         # FW/DF · wind

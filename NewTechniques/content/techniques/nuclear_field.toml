@@ -1,0 +1,21 @@
+schema = "VRFW.technique/3"
+# The five moves of «New Techniques» (docs/release/new_techniques.md). Each one is a retail move cloned (`base`: its
+# skill_config row, voice, banner margins, manual, event env row) with the numbers of the download it comes from; its
+# event is the base's event renamed with a recoloured effect object (assets\data\common\event\ + content\base_tables\
+# common\event\, event_cfg\ + content\models\effects\, research/scripts/new_techniques_build.py), its banner a telop of
+# the base's layout (content\telops\any\). Fixed keys (skill id = crc32(key), the download's ids: a save that learned
+# a move from the download keeps it). Names and descriptions: text\rows\skill_text.toml (the download's text ids,
+# pinned below). Manuals: the base's manual cloned, catalog number from the id registry (the download gave all five
+# the catalog 13002, IECross's Pingüino Infernal).
+
+[[technique]]
+name = "nuclear_field"           # Campo nuclear
+key = "whd92114"
+base = "whd01140"                # Campo minado (void block, 60-360, 60 TP; fail event ev62_01140_2 kept)
+order = 3
+name_text = 0x1A9284C0
+desc_text = 0x4F045692
+event = "ev62_92114_1"           # ev62_01140_1 renamed, effect object ev62921140
+power_min = 85
+power_max = 540
+tp = 80

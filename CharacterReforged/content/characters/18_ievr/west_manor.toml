@@ -6,6 +6,12 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c11050010"                                   # Edvan Trodden
+moves = [
+  { move = 0x1A868BED, level = 1 },                         # Clone Defence
+  { move = 0x514A6198, level = 13 },                        # Asteroid Belt
+  { move = 0x2B343D01, level = 20 },                        # Cyclone
+  { move = 0xC66BD10D, level = 30 },                        # Zigzag Spark
+]
 
   [[edit.cards]]
   id = 0x341F40CC                                         # DF/MF · wind
@@ -16,6 +22,12 @@ target = "c11050010"                                   # Edvan Trodden
 
 [[edit]]
 target = "c11050020"                                   # Looke Raundoff
+moves = [
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x8B31808E, level = 20 },                        # Wormhole
+  { move = 0x57BEB7B1, level = 30 },                        # Endeavor Rush
+]
 
   [[edit.cards]]
   id = 0x1F32130F                                         # DF/GK · forest
@@ -25,6 +37,12 @@ target = "c11050020"                                   # Looke Raundoff
 
 [[edit]]
 target = "c11050030"                                   # Berdy Caster
+moves = [
+  { move = 0x12E67CC1, level = 1 },                         # Future Eye
+  { move = 0x8F1F3A5D, level = 13 },                        # Sniper Shot
+  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
+  { move = 0x00A10ABD, level = 30 },                        # Ball Lightning
+]
 
   [[edit.cards]]
   id = 0x0629224E                                         # FW/MF · forest
@@ -35,6 +53,12 @@ target = "c11050030"                                   # Berdy Caster
 
 [[edit]]
 target = "c11050040"                                   # Dax Prescott
+moves = [
+  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
+  { move = 0xC636A810, level = 13 },                        # Combustion Catch
+  { move = 0x53E9C2A3, level = 20 },                        # Capable Hands
+  { move = 0x57BEB7B1, level = 30 },                        # Endeavor Rush
+]
 
   [[edit.cards]]
   id = 0x4968B489                                         # GK/FW · wind
@@ -44,6 +68,12 @@ target = "c11050040"                                   # Dax Prescott
 
 [[edit]]
 target = "c11050050"                                   # Laymark Starwyn
+moves = [
+  { move = 0x8F1F3A5D, level = 1 },                         # Sniper Shot
+  { move = 0x57BEB7B1, level = 13 },                        # Endeavor Rush
+  { move = 0xA0BDF96F, level = 20 },                        # Ballista Barrage
+  { move = 0x2E7B2B84, level = 30 },                        # Thief's Eye
+]
 
   [[edit.cards]]
   id = 0x507385C8                                         # MF/FW · mountain
@@ -53,6 +83,12 @@ target = "c11050050"                                   # Laymark Starwyn
 
 [[edit]]
 target = "c11050060"                                   # Moby Tidbitt
+moves = [
+  { move = 0x57BEB7B1, level = 1 },                         # Endeavor Rush
+  { move = 0x8DFA4265, level = 13 },                        # Toughness Block
+  { move = 0x166B0073, level = 20 },                        # Super Armadillo
+  { move = 0x2E7B2B84, level = 30 },                        # Thief's Eye
+]
 
   [[edit.cards]]
   id = 0x7B5ED60B                                         # MF/GK · mountain
@@ -63,6 +99,12 @@ target = "c11050060"                                   # Moby Tidbitt
 
 [[edit]]
 target = "c11050070"                                   # Edgard Loathe
+moves = [
+  { move = 0x8F1F3A5D, level = 1 },                         # Sniper Shot
+  { move = 0x20D01E43, level = 13 },                        # Hey Presto
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x2354CA2D, level = 30 },                        # Wind God's Dance
+]
 
   [[edit.cards]]
   id = 0x6245E74A                                         # MF/FW · wind
@@ -73,6 +115,12 @@ target = "c11050070"                                   # Edgard Loathe
 
 [[edit]]
 target = "c11050080"                                   # Flanko Midspringle
+moves = [
+  { move = 0x06130797, level = 1 },                         # Rolling Kick
+  { move = 0x57BEB7B1, level = 13 },                        # Endeavor Rush
+  { move = 0x73C5AF40, level = 20 },                        # Dash Accelerator
+  { move = 0x0455B9CE, level = 30 },                        # Run Ball Run
+]
 
   [[edit.cards]]
   id = 0xE5DDFB85                                         # FW/DF · forest
@@ -83,6 +131,12 @@ target = "c11050080"                                   # Flanko Midspringle
 
 [[edit]]
 target = "c11050090"                                   # Rutheo Wheyston
+moves = [
+  { move = 0x17110E3B, level = 1 },                         # Jumbo Sandwich
+  { move = 0x592A96B4, level = 13 },                        # Afterimage
+  { move = 0x19025F83, level = 20 },                        # Quick Draw
+  { move = 0xAD6E4BF9, level = 30 },                        # Harvest
+]
 
   [[edit.cards]]
   id = 0xFCC6CAC4                                         # DF/FW · forest
@@ -92,6 +146,12 @@ target = "c11050090"                                   # Rutheo Wheyston
 
 [[edit]]
 target = "c11050100"                                   # Ernesta Beauregard
+moves = [
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x06130797, level = 13 },                        # Rolling Kick
+  { move = 0x7A67325B, level = 20 },                        # Flame Dance
+  { move = 0x36A270F2, level = 30 },                        # Rolling Slide
+]
 
   [[edit.cards]]
   id = 0x2CC61BBA                                         # MF/DF · fire
@@ -102,6 +162,12 @@ target = "c11050100"                                   # Ernesta Beauregard
 
 [[edit]]
 target = "c11050110"                                   # Drever Olflaire
+moves = [
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x36A270F2, level = 13 },                        # Rolling Slide
+  { move = 0x57BEB7B1, level = 20 },                        # Endeavor Rush
+  { move = 0x78E027BC, level = 30 },                        # Shine Drive
+]
 
   [[edit.cards]]
   id = 0x35DD2AFB                                         # DF/FW · forest
@@ -111,6 +177,12 @@ target = "c11050110"                                   # Drever Olflaire
 
 [[edit]]
 target = "c11050120"                                   # Chicory Bellflower
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x4F58F805, level = 13 },                        # Coil Turn
+  { move = 0x259F08C6, level = 20 },                        # Whirlwind Twister
+  { move = 0xAAA6489B, level = 30 },                        # Spiral Shot
+]
 
   [[edit.cards]]
   id = 0x1EF07938                                         # MF/DF · forest
@@ -120,6 +192,12 @@ target = "c11050120"                                   # Chicory Bellflower
 
 [[edit]]
 target = "c11050130"                                   # Aysen DeMacon
+moves = [
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x57BEB7B1, level = 13 },                        # Endeavor Rush
+  { move = 0x8F1F3A5D, level = 20 },                        # Sniper Shot
+  { move = 0x8FBCFC3C, level = 30 },                        # Blazing Knuckle
+]
 
   [[edit.cards]]
   id = 0x07EB4879                                         # FW/GK · mountain
@@ -129,6 +207,12 @@ target = "c11050130"                                   # Aysen DeMacon
 
 [[edit]]
 target = "c11050140"                                   # Breppo Terrey
+moves = [
+  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0xB3BD79DA, level = 13 },                        # Patriot Shot
+  { move = 0x57BEB7B1, level = 20 },                        # Endeavor Rush
+  { move = 0xABA58912, level = 30 },                        # Ignited Steal
+]
 
   [[edit.cards]]
   id = 0x48AADEBE                                         # MF/DF · fire
@@ -138,6 +222,12 @@ target = "c11050140"                                   # Breppo Terrey
 
 [[edit]]
 target = "c11050150"                                   # Frie Sorbet
+moves = [
+  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
+  { move = 0x27D9B69F, level = 13 },                        # Prima Donna
+  { move = 0x2E7B2B84, level = 20 },                        # Thief's Eye
+  { move = 0x50880BAF, level = 30 },                        # Frozen Steal
+]
 
   [[edit.cards]]
   id = 0x51B1EFFF                                         # DF/MF · wind
@@ -147,6 +237,12 @@ target = "c11050150"                                   # Frie Sorbet
 
 [[edit]]
 target = "c11050160"                                   # Eddi Losse
+moves = [
+  { move = 0xBFCC20E7, level = 1 },                         # Wood Chopper
+  { move = 0xC5B27C7E, level = 13 },                        # Storm Rider
+  { move = 0x0455B9CE, level = 20 },                        # Run Ball Run
+  { move = 0x822B79EA, level = 30 },                        # Somersault Stamp
+]
 
   [[edit.cards]]
   id = 0x7A9CBC3C                                         # GK/DF · wind
@@ -156,6 +252,12 @@ target = "c11050160"                                   # Eddi Losse
 
 [[edit]]
 target = "c11050500"                                   # Waddell Homely
+moves = [
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0xBD8A9EBE, level = 13 },                        # Infinite Wall
+  { move = 0xBFCC20E7, level = 20 },                        # Wood Chopper
+  { move = 0x2AF65736, level = 30 },                        # Bamboo Pattern
+]
 
   [[edit.cards]]
   id = 0x2BCFB366                                         # GK/DF · forest
@@ -166,6 +268,12 @@ target = "c11050500"                                   # Waddell Homely
 
 [[edit]]
 target = "c11050510"                                   # Yasmin Tausend
+moves = [
+  { move = 0x21127474, level = 1 },                         # Ultra Moon
+  { move = 0xC16279D1, level = 13 },                        # Field of Force
+  { move = 0x12E67CC1, level = 20 },                        # Future Eye
+  { move = 0x1C8CE2B8, level = 30 },                        # God Knows
+]
 
   [[edit.cards]]
   id = 0x32D48227                                         # MF/FW · forest

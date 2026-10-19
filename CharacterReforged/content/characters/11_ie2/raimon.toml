@@ -13,6 +13,12 @@ growth = "normal"
   [[edit.cards]]
   id = 0x19A53AFF                                         # FW/MF · forest
   stats = { kick = 265, control = 250, technique = 250, pressure = 243, physical = 126, intelligence = 247, agility = 230, freedom = 231 }
+  moves = [
+    { move = 0x7C6D5B0E, level = 1 },                       # Astro Break
+    { move = 0xAF28F5A0, level = 21 },                      # The Tower
+    { move = 0x2296A01A, level = 32 },                      # Southern Cross
+    { move = 0xA955D999, level = 59 },                      # The Earth: Infinity
+  ]
 
   [[edit.cards]]
   id = 0xA8635544                                         # FW/DF · forest
@@ -32,6 +38,12 @@ growth = "normal"
 
 [[edit]]
 target = "c11902360"                                   # Shawn Froste
+moves = [
+  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
+  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
+  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
+  { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+]
 
   [[edit.cards]]
   id = 0x3CFE7E61                                         # FW/MF · wind

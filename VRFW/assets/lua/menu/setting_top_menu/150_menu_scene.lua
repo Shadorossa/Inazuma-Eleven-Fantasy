@@ -19,11 +19,6 @@ local MO = {
   SET = 3352504786,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
   PEOPLE = 496639384,        -- CMND_VRFW_MENU_SCENE_PEOPLE (key, members, uniform, avatar) -> placed, text
   AVATAR = 603653521,        -- CMND_VRFW_MENU_SCENE_AVATAR () -> chara_base, card, handle of the save's avatar
-  VS_SET = 3713813716,       -- CMND_GET_VS_USE_TEAM_SET () -> the active team set
-  MEMBER = 1720957768,       -- team set member (set, team type, i, 0 handle | 1 position) -> has, value
-  STATUS = 1131797651,       -- character status (handle, 4) -> chara_param card
-  SET_INFO = 1033065575,     -- CMND_GET_TEAM_SET_INFO (set, team type, field, …) -> has, value
-  CHARA_BASE = 413729894,    -- CMND_VRFW_CHARA_BASE (card) -> chara_base
   MOTION_SET = 1229214512,   -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set (c000101 …)
   FIELD_ENTER = 3839029809,  -- CMND_VRFW_FIELD_ENTER (key, walker, map) -> ok, code
   FIELD_LEAVE = 3323114127,  -- CMND_VRFW_FIELD_LEAVE ()
@@ -90,46 +85,11 @@ local function MO_Fail(why)
   end
 end
 
--- the active team's starters, captain first then by position: "chara_base:motion set,…", the team's kit, a log text
+-- the active team's players and staff, captain first then by position: "role:chara_base:motion set,…", kit, log text
+-- (lua/menu/_all/72_menu_scene_team.lua, shared with the title's people refresh)
 local function MO_Team()
-  local ok, set = pcall(funcLuaCommand, MO.VS_SET)
-  if not ok or type(set) ~= "number" or set < 0 then
-    return "", 0, "no active team set"
-  end
-  local byPos, captain = {}, nil
-  for k = 0, 28 do
-    local okh, has, hdl = pcall(funcLuaCommand, MO.MEMBER, set, 0, k, 0)
-    if okh and has and type(hdl) == "number" and hdl ~= 0 then
-      local okp, hasp, pos = pcall(funcLuaCommand, MO.MEMBER, set, 0, k, 1)
-      if okp and hasp and type(pos) == "number" and pos >= 0 and pos <= 10 and byPos[pos] == nil then
-        local okc, card = pcall(funcLuaCommand, MO.STATUS, hdl, 4)
-        if okc and type(card) == "number" and card ~= 0 then
-          byPos[pos] = card
-          local okk, hask, cap = pcall(funcLuaCommand, MO.SET_INFO, set, 0, 8, hdl)
-          if okk and hask and cap == true then captain = pos end
-        end
-      end
-    end
-  end
-  local order = {}
-  if captain ~= nil then order[1] = captain end
-  for pos = 0, 10 do
-    if byPos[pos] ~= nil and pos ~= captain then order[#order + 1] = pos end
-  end
-  local parts, skipped = {}, 0
-  for _, pos in ipairs(order) do
-    local base = MO_Call(MO.CHARA_BASE, byPos[pos])
-    local mset = type(base) == "number" and MO_Call(MO.MOTION_SET, base) or nil
-    if type(base) == "number" and base ~= 0 and type(mset) == "string" then
-      parts[#parts + 1] = string.format("%.0f:%s", base % 4294967296, mset)
-    else
-      skipped = skipped + 1
-    end
-  end
-  local oku, hasu, uniform = pcall(funcLuaCommand, MO.SET_INFO, set, 0, 7)
-  uniform = (oku and hasu and type(uniform) == "number") and uniform % 4294967296 or 0
-  return table.concat(parts, ","), uniform, string.format("team set %d: %d starter(s), captain at %s, %d unreadable",
-    set, #order, tostring(captain), skipped)
+  if type(VRFW_MenuSceneTeam) ~= "function" then return "", 0, "no team reader" end
+  return VRFW_MenuSceneTeam()
 end
 
 -- the map jump: to a layout point of the map (the short form: map, point, event, overwrite: the walker arrives as through
@@ -168,6 +128,8 @@ local function MO_Enter()
   local members, uniform, why = "", 0, "people none"
   if sc.people == "active_team" then
     members, uniform, why = MO_Team()
+  elseif sc.people == "provided" then
+    members, uniform, why = sc.provided_members or "", sc.provided_uniform or 0, "scene-provided people"
   end
   local avatar = ""
   if sc.people == "active_team" then
@@ -206,7 +168,7 @@ local function MO_Enter()
   end
   mo.ours = false
   MO_Call(MO.CLOSE, MO.MENU, true)
-  MO_Call(MO.FIELD_START, 1.5)
+  MO_Call(MO.FIELD_START, 0) -- the scene's load/readiness gates replace the retail field entrance transition
   MO_Call(MO.CURSOR_RPG, true)
   local r2 = MO_Jump(sc)
   MO_Log("map jump reserved (", tostring(r1), tostring(r2), "), Options closed, field started: the map", sc.map, "loads")
@@ -218,10 +180,22 @@ if VRFW_Host ~= nil then
     phase = "after",
     fn = function()
       mo.ours, mo.co, mo.bg_ready, mo.bg_idx, mo.open_end, mo.entered = false, nil, false, 0, nil, false
-      if MO_Call(MO.PARAM_HAS, MO.OPTIONS) == true then
+      local marked = MO_Call(MO.PARAM_HAS, MO.OPTIONS) == true
+      local status = MO_Call(MO.STATE)
+      if marked or status == "options" or status == nil then
         MO_Clear(MO.OPTIONS)
         mo.ours = true
-        mo.co = coroutine.create(MO_Enter)
+        mo.co = coroutine.create(function()
+          if not marked and status == nil then
+            status = MO_Ask(MO.STATE)
+            if status ~= "options" then
+              mo.ours = false
+              if mo.open_end ~= nil then pcall(mo.open_end, MO.BG, mo.bg_idx) end
+              return
+            end
+          end
+          MO_Enter()
+        end)
         MO_Log("opened for a menu scene: kept black, the field mode and the map follow")
       end
     end,

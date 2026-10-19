@@ -6,6 +6,15 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c06039320"                                   # Axel Blaze
+moves = [
+  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
+  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
+  { move = 0x19025F83, level = 26 },                        # Quick Draw
+]
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
 
   [[edit.cards]]
   id = 0xE631296C                                         # FW/MF · fire
