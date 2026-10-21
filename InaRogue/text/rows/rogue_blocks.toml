@@ -1,0 +1,526 @@
+schema = "VRFW.text/2"
+table = "menu_text"
+# InaRogue › the label and one-line explanation of each piece and block of the rogue items
+# (scripts/lib/rogue/pieces.lua, scripts/lib/rogue/blocks.lua; ids InaRogue.rogue_block_<name>_label / _desc,
+# blocks.lua B.text_keys). Catalogue: docs/game/modes/inarogue-archetypes.md «Bloques».
+
+[[row]]
+id = "InaRogue.rogue_block_stat_multiplier_label"
+es = "Multiplicador de estadística"
+en = "Stat multiplier"
+
+[[row]]
+id = "InaRogue.rogue_block_stat_multiplier_desc"
+es = "Multiplica una estadística de los jugadores alcanzados."
+en = "Multiplies one stat of the reached players."
+
+[[row]]
+id = "InaRogue.rogue_block_stat_bonus_label"
+es = "Bonus de estadística"
+en = "Stat bonus"
+
+[[row]]
+id = "InaRogue.rogue_block_stat_bonus_desc"
+es = "Suma puntos fijos a una estadística de los jugadores alcanzados."
+en = "Adds flat points to one stat of the reached players."
+
+[[row]]
+id = "InaRogue.rogue_block_tension_cost_multiplier_label"
+es = "Coste de tensión"
+en = "Tension cost"
+
+[[row]]
+id = "InaRogue.rogue_block_tension_cost_multiplier_desc"
+es = "Multiplica la tensión que cuestan las supertécnicas."
+en = "Multiplies the tension the special moves cost."
+
+[[row]]
+id = "InaRogue.rogue_block_technique_cooldown_multiplier_label"
+es = "Enfriamiento de supertécnicas"
+en = "Move cooldown"
+
+[[row]]
+id = "InaRogue.rogue_block_technique_cooldown_multiplier_desc"
+es = "Multiplica el tiempo de recarga de las supertécnicas."
+en = "Multiplies the recharge time of the special moves."
+
+[[row]]
+id = "InaRogue.rogue_block_wall_reduction_multiplier_label"
+es = "Fuerza de los muros"
+en = "Wall strength"
+
+[[row]]
+id = "InaRogue.rogue_block_wall_reduction_multiplier_desc"
+es = "Multiplica la AT que quitan los bloqueos de tiro de un bando."
+en = "Multiplies the AT a side's shot blocks take away."
+
+[[row]]
+id = "InaRogue.rogue_block_pass_speed_multiplier_label"
+es = "Velocidad de pase"
+en = "Pass speed"
+
+[[row]]
+id = "InaRogue.rogue_block_pass_speed_multiplier_desc"
+es = "Multiplica la velocidad del balón en los pases."
+en = "Multiplies the ball speed of passes."
+
+[[row]]
+id = "InaRogue.rogue_block_technique_grade_override_label"
+es = "Grado máximo"
+en = "Top grade"
+
+[[row]]
+id = "InaRogue.rogue_block_technique_grade_override_desc"
+es = "Todas las supertécnicas juegan a su grado máximo durante N partidos."
+en = "Every special move plays at its top grade for N matches."
+
+[[row]]
+id = "InaRogue.rogue_block_technique_power_multiplier_label"
+es = "Poder de supertécnicas"
+en = "Move power"
+
+[[row]]
+id = "InaRogue.rogue_block_technique_power_multiplier_desc"
+es = "Multiplica el poder de las supertécnicas que pasan el filtro."
+en = "Multiplies the power of the special moves that pass the filter."
+
+[[row]]
+id = "InaRogue.rogue_block_technique_free_until_broken_label"
+es = "Gratis hasta romperse"
+en = "Free until broken"
+
+[[row]]
+id = "InaRogue.rogue_block_technique_free_until_broken_desc"
+es = "Las supertécnicas del filtro no gastan tensión hasta que pierden un duelo."
+en = "The filtered moves cost no tension until one loses a duel."
+
+[[row]]
+id = "InaRogue.rogue_block_shop_cost_multiplier_label"
+es = "Precios de la Tienda"
+en = "Shop prices"
+
+[[row]]
+id = "InaRogue.rogue_block_shop_cost_multiplier_desc"
+es = "Multiplica lo que cuestan los objetos y sus mejoras en la Tienda."
+en = "Multiplies what items and their upgrades cost in the Shop."
+
+[[row]]
+id = "InaRogue.rogue_block_when_in_team_label"
+es = "Si es de un equipo"
+en = "If in a team"
+
+[[row]]
+id = "InaRogue.rogue_block_when_in_team_desc"
+es = "Solo para jugadores de ese equipo o grupo de cartas."
+en = "Only for players of that team or card set."
+
+[[row]]
+id = "InaRogue.rogue_block_when_element_label"
+es = "Si es de un elemento"
+en = "If of an element"
+
+[[row]]
+id = "InaRogue.rogue_block_when_element_desc"
+es = "Solo para jugadores de ese elemento."
+en = "Only for players of that element."
+
+[[row]]
+id = "InaRogue.rogue_block_when_position_label"
+es = "Si juega en una posición"
+en = "If in a position"
+
+[[row]]
+id = "InaRogue.rogue_block_when_position_desc"
+es = "Solo para jugadores de esa posición."
+en = "Only for players of that position."
+
+[[row]]
+id = "InaRogue.rogue_block_when_rarity_label"
+es = "Si tiene esa rareza"
+en = "If of a rarity"
+
+[[row]]
+id = "InaRogue.rogue_block_when_rarity_desc"
+es = "Solo para jugadores con ese número de estrellas."
+en = "Only for players with that number of stars."
+
+[[row]]
+id = "InaRogue.rogue_block_when_on_field_label"
+es = "Si es titular"
+en = "If on the field"
+
+[[row]]
+id = "InaRogue.rogue_block_when_on_field_desc"
+es = "Solo para los once titulares."
+en = "Only for the eleven starters."
+
+[[row]]
+id = "InaRogue.rogue_block_when_on_bench_label"
+es = "Si está en el banquillo"
+en = "If on the bench"
+
+[[row]]
+id = "InaRogue.rogue_block_when_on_bench_desc"
+es = "Solo para los suplentes del banquillo."
+en = "Only for the players on the bench."
+
+[[row]]
+id = "InaRogue.rogue_block_when_captain_label"
+es = "Si es el capitán"
+en = "If captain"
+
+[[row]]
+id = "InaRogue.rogue_block_when_captain_desc"
+es = "Solo para el capitán del equipo."
+en = "Only for the team's captain."
+
+[[row]]
+id = "InaRogue.rogue_block_when_facing_boss_label"
+es = "Contra un jefe"
+en = "Facing a boss"
+
+[[row]]
+id = "InaRogue.rogue_block_when_facing_boss_desc"
+es = "Solo en partidos contra un jefe."
+en = "Only in matches against a boss."
+
+[[row]]
+id = "InaRogue.rogue_block_when_node_kind_label"
+es = "En un tipo de casilla"
+en = "On a node kind"
+
+[[row]]
+id = "InaRogue.rogue_block_when_node_kind_desc"
+es = "Solo en ese tipo de casilla del mapa."
+en = "Only on that kind of map node."
+
+[[row]]
+id = "InaRogue.rogue_block_when_score_label"
+es = "Según el marcador"
+en = "By the score"
+
+[[row]]
+id = "InaRogue.rogue_block_when_score_desc"
+es = "Solo si el equipo gana, pierde o empata."
+en = "Only while the team wins, loses or draws."
+
+[[row]]
+id = "InaRogue.rogue_block_when_half_label"
+es = "En una parte"
+en = "In a half"
+
+[[row]]
+id = "InaRogue.rogue_block_when_half_desc"
+es = "Solo durante esa parte del partido."
+en = "Only during that half of the match."
+
+[[row]]
+id = "InaRogue.rogue_block_when_minute_label"
+es = "Entre minutos"
+en = "Between minutes"
+
+[[row]]
+id = "InaRogue.rogue_block_when_minute_desc"
+es = "Solo entre esos minutos de la parte."
+en = "Only between those minutes of the half."
+
+[[row]]
+id = "InaRogue.rogue_block_when_phase_label"
+es = "En unas fases"
+en = "In some phases"
+
+[[row]]
+id = "InaRogue.rogue_block_when_phase_desc"
+es = "Solo en esas fases de la partida."
+en = "Only in those phases of the run."
+
+[[row]]
+id = "InaRogue.rogue_block_when_has_item_label"
+es = "Con un objeto"
+en = "With an item"
+
+[[row]]
+id = "InaRogue.rogue_block_when_has_item_desc"
+es = "Solo si el equipo lleva ese objeto."
+en = "Only if the team holds that item."
+
+[[row]]
+id = "InaRogue.rogue_block_when_archetype_rank_label"
+es = "Con rango de arquetipo"
+en = "With an archetype rank"
+
+[[row]]
+id = "InaRogue.rogue_block_when_archetype_rank_desc"
+es = "Solo si el equipo tiene al menos ese rango del arquetipo."
+en = "Only if the team has at least that archetype rank."
+
+[[row]]
+id = "InaRogue.rogue_block_when_roster_count_label"
+es = "Con N jugadores así"
+en = "With N such players"
+
+[[row]]
+id = "InaRogue.rogue_block_when_roster_count_desc"
+es = "Solo si el equipo tiene al menos N jugadores que cumplen el filtro."
+en = "Only if the team has at least N players that pass the filter."
+
+[[row]]
+id = "InaRogue.rogue_block_on_goal_scored_label"
+es = "Al marcar"
+en = "On a goal"
+
+[[row]]
+id = "InaRogue.rogue_block_on_goal_scored_desc"
+es = "Cuando el equipo marca un gol."
+en = "When the team scores a goal."
+
+[[row]]
+id = "InaRogue.rogue_block_on_goal_conceded_label"
+es = "Al encajar"
+en = "On conceding"
+
+[[row]]
+id = "InaRogue.rogue_block_on_goal_conceded_desc"
+es = "Cuando el equipo encaja un gol."
+en = "When the team concedes a goal."
+
+[[row]]
+id = "InaRogue.rogue_block_on_technique_used_label"
+es = "Al usar una supertécnica"
+en = "On a move"
+
+[[row]]
+id = "InaRogue.rogue_block_on_technique_used_desc"
+es = "Cuando un jugador usa una supertécnica que pasa el filtro."
+en = "When a player uses a special move that passes the filter."
+
+[[row]]
+id = "InaRogue.rogue_block_on_block_won_label"
+es = "Al ganar un bloqueo"
+en = "On a block won"
+
+[[row]]
+id = "InaRogue.rogue_block_on_block_won_desc"
+es = "Cuando un defensor gana un duelo de bloqueo."
+en = "When a defender wins a block duel."
+
+[[row]]
+id = "InaRogue.rogue_block_on_duel_won_label"
+es = "Al ganar un duelo"
+en = "On a duel won"
+
+[[row]]
+id = "InaRogue.rogue_block_on_duel_won_desc"
+es = "Cuando un jugador gana un duelo."
+en = "When a player wins a duel."
+
+[[row]]
+id = "InaRogue.rogue_block_on_dribble_won_label"
+es = "Al ganar un regate"
+en = "On a dribble won"
+
+[[row]]
+id = "InaRogue.rogue_block_on_dribble_won_desc"
+es = "Cuando el jugador con el balón gana un duelo."
+en = "When the ball holder wins a duel."
+
+[[row]]
+id = "InaRogue.rogue_block_on_pass_completed_label"
+es = "Al completar un pase"
+en = "On a pass"
+
+[[row]]
+id = "InaRogue.rogue_block_on_pass_completed_desc"
+es = "Cuando un compañero recibe el balón."
+en = "When a teammate receives the ball."
+
+[[row]]
+id = "InaRogue.rogue_block_on_substitution_label"
+es = "Al hacer un cambio"
+en = "On a substitution"
+
+[[row]]
+id = "InaRogue.rogue_block_on_substitution_desc"
+es = "Cuando un jugador entra al campo."
+en = "When a player comes on."
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_won_label"
+es = "Al ganar un partido"
+en = "On a match won"
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_won_desc"
+es = "Cuando el equipo gana un partido."
+en = "When the team wins a match."
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_lost_label"
+es = "Al perder un partido"
+en = "On a match lost"
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_lost_desc"
+es = "Cuando el equipo pierde un partido."
+en = "When the team loses a match."
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_end_label"
+es = "Al acabar una ronda"
+en = "On a round end"
+
+[[row]]
+id = "InaRogue.rogue_block_on_match_end_desc"
+es = "Al terminar cada partido (una ronda) que sigue en la partida."
+en = "After each match (one round) the run keeps."
+
+[[row]]
+id = "InaRogue.rogue_block_on_phase_end_label"
+es = "Al acabar la fase"
+en = "On a phase end"
+
+[[row]]
+id = "InaRogue.rogue_block_on_phase_end_desc"
+es = "Cuando termina una fase del mapa."
+en = "When a map phase ends."
+
+
+[[row]]
+id = "InaRogue.rogue_block_on_boss_defeated_label"
+es = "Al vencer a un jefe"
+en = "On a boss defeated"
+
+[[row]]
+id = "InaRogue.rogue_block_on_boss_defeated_desc"
+es = "Cuando el equipo vence a un jefe."
+en = "When the team beats a boss."
+
+[[row]]
+id = "InaRogue.rogue_block_on_shop_visit_label"
+es = "Al pasar por la Tienda"
+en = "On a Shop visit"
+
+[[row]]
+id = "InaRogue.rogue_block_on_shop_visit_desc"
+es = "Cuando el equipo recorre una línea de Tienda."
+en = "When the team walks a Shop line."
+
+[[row]]
+id = "InaRogue.rogue_block_on_effect_activated_label"
+es = "Al activarse otro efecto"
+en = "On another effect"
+
+[[row]]
+id = "InaRogue.rogue_block_on_effect_activated_desc"
+es = "Cuando se activa el efecto de otro objeto."
+en = "When another item's effect activates."
+
+[[row]]
+id = "InaRogue.rogue_block_count_trigger_label"
+es = "Cuenta de sucesos"
+en = "Event count"
+
+[[row]]
+id = "InaRogue.rogue_block_count_trigger_desc"
+es = "Suma uno cada vez que pasa el suceso."
+en = "Adds one each time the event happens."
+
+[[row]]
+id = "InaRogue.rogue_block_count_timer_label"
+es = "Cuenta de tiempo"
+en = "Time count"
+
+[[row]]
+id = "InaRogue.rogue_block_count_timer_desc"
+es = "Suma uno cada cierto tiempo de juego."
+en = "Adds one every so much play time."
+
+[[row]]
+id = "InaRogue.rogue_block_count_roster_label"
+es = "Cuenta de jugadores"
+en = "Player count"
+
+[[row]]
+id = "InaRogue.rogue_block_count_roster_desc"
+es = "Cuenta los jugadores del equipo que cumplen el filtro."
+en = "Counts the team's players that pass the filter."
+
+[[row]]
+id = "InaRogue.rogue_block_chance_one_in_label"
+es = "Probabilidad 1 entre N"
+en = "1 in N chance"
+
+[[row]]
+id = "InaRogue.rogue_block_chance_one_in_desc"
+es = "Solo ocurre una vez de cada N."
+en = "Happens only once in N."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_points_label"
+es = "Da puntos"
+en = "Gives points"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_points_desc"
+es = "Da puntos Rogue."
+en = "Gives Rogue points."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_xp_multiplier_label"
+es = "Multiplica la experiencia"
+en = "Experience multiplier"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_xp_multiplier_desc"
+es = "Multiplica la experiencia de los próximos partidos."
+en = "Multiplies the experience of the next matches."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_resource_label"
+es = "Da recurso"
+en = "Gives a resource"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_resource_desc"
+es = "Devuelve tensión o PE al jugador o al equipo."
+en = "Gives tension or PE back to the player or the team."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_item_label"
+es = "Da un objeto"
+en = "Gives an item"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_item_desc"
+es = "Da un objeto al inventario."
+en = "Puts an item in the inventory."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_player_label"
+es = "Da un jugador"
+en = "Gives a player"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_player_desc"
+es = "Da un jugador que cumple el filtro."
+en = "Gives a player that passes the filter."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_clone_label"
+es = "Clona a un jugador"
+en = "Clones a player"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_clone_desc"
+es = "Clona a un jugador durante N partidos."
+en = "Clones a player for N matches."
+
+[[row]]
+id = "InaRogue.rogue_block_grant_stat_buff_label"
+es = "Mejora temporal"
+en = "Temporary boost"
+
+[[row]]
+id = "InaRogue.rogue_block_grant_stat_buff_desc"
+es = "Multiplica una estadística durante N partidos."
+en = "Multiplies a stat for N matches."

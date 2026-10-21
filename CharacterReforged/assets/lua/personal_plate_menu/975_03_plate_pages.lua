@@ -53,6 +53,10 @@ if EVT_PPG_WRAPPED == nil then
 end
 
 function EVT_PPG_Wrap(name, make)
+  if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+    local ok = VRFW_Host.wrap(name, make, {level = 2})   -- survives a later patch that redefines the function
+    return ok
+  end
   local cur = _ENV[name]
   if type(cur) ~= "function" or EVT_PPG_WRAPPED[cur] then
     return false
@@ -128,13 +132,17 @@ end
 -- holding an aura; a row shows its position's move, nothing when that is an aura (the aura / mix halves own it: the
 -- Hiper page), the board slot of the same position when the position is empty (ss2_menus EVT_Skill / PL.ProjPos,
 -- the same rule). The retail fill runs with the move lookup answered for this card only (CMND 0x35D3E3B8, the
--- learnable list off, the evolution grade read at the move's own list position) and restored right after. Victory
--- Road: the retail rows untouched. No engine call while the chunk loads.
+-- evolution grade read at the move's own list position) and restored right after. A row whose move needs a level above
+-- the player's (CMND_VRFW_CHARACTER_LEARN_LEVEL, the framework's learn levels) is drawn as the retail plate draws a move
+-- not learned yet: no move at that position and the learn table (0xCF25A8AF) answering that move and its level there,
+-- so the retail fill shows its padlock and «Nv. N». Victory Road: the retail rows untouched. No engine call while the
+-- chunk loads.
 EVT_PPG_FANTASY_MOVES = EVT_PPG_FANTASY_MOVES or {}
 do
   local F = EVT_PPG_FANTASY_MOVES
   F.GET_SKILL = 903078840               -- (charaStHdl, list position 0..5) -> move (save skill_list)
   F.LEARNABLE = 3475351727              -- (charaStHdl) -> ok, {move per slot}, {unlock level per slot}
+  F.LEARN_LEVEL = 8867751               -- CMND_VRFW_CHARACTER_LEARN_LEVEL (charaStHdl, move) -> level needed, player's level
   F.SKILL_INFO = 2580586398             -- (move, 9) -> ok, category (8 = an aura)
   F.BOARD_INV = 632801955               -- (charaStHdl, board slot, kind 1 placed / 0 native) -> inventory handle
   F.INV_ITEM = 2662166687               -- (inventory handle, 0) -> move
@@ -247,13 +255,35 @@ do
       end
       local row = rows[slot + 1] or {move = 0}
       F.shown[slot] = {hdl = hdl, move = row.move, slot = row.slot or slot}
+      -- a move above the player's level: the retail «not learned yet» row (padlock + its level)
+      local need = 0
+      if row.move ~= 0 then
+        local okL, n, lv = pcall(call, F.LEARN_LEVEL, hdl, row.move)
+        if okL and type(n) == "number" and type(lv) == "number" and n > lv then
+          need = n
+        end
+      end
+      local learnable = nil
+      if need > 0 then
+        local moves, levels = {}, {}
+        for i = 1, F.ROW_COUNT do
+          moves[i] = 0
+          levels[i] = 0
+        end
+        moves[slot + 1] = row.move
+        levels[slot + 1] = need
+        learnable = {moves, levels}
+      end
       local grade = GetSkillEvoLevelByCharaStHdl
       funcLuaCommand = function(cmd, a, b, ...)
         if a == hdl then
           if cmd == F.GET_SKILL and b == slot then
-            return row.move
+            return need > 0 and 0 or row.move
           end
           if cmd == F.LEARNABLE then
+            if learnable ~= nil then
+              return true, learnable[1], learnable[2]
+            end
             return false
           end
         end
@@ -662,6 +692,10 @@ EVT_PPG = EVT_PPG or {}
   G.DOT_ON = {2540064569, 2996782795, 2245255383, 1030719410, 2696462091, 4121092084}
   G.DOTS_MAX = 8                         -- dot slots of the layout (6 status-base meshes + 2 evt_pp_dots copies)
   G.DOT_X = {1489, 1517}                 -- slots 7 / 8 (layout: x0 1321, pitch 28)
+  G.DOT_PITCH = G.DOT_X[2] - G.DOT_X[1]
+  -- the Q / E glyphs' joints (_text_btn_l01 / _text_btn_r01) and their layout x (player_page_layout.toml), status base
+  G.KEY_NODES = {355816102, 59628764}
+  G.KEY_X = {-77, 195}
   G.DOTS_LOCS = {3407216458, 1377611504, 622567014, 3145665477, 1753514051, 790952595, 442049775, 1056264686,
     2946906320, 1437140403}              -- every _pos_page* / _pos_equip* / arrow locator of the copies
   G.M_DOT_OFF1, G.M_DOT_ON1 = 3784855471, 2540064569           -- _page01_off / _page01_on
@@ -954,10 +988,36 @@ EVT_PPG = EVT_PPG or {}
       Cmd(C.MESH, G.STATUS, G.DOT_OFF[i], on, 0)
       Cmd(C.MESH, G.STATUS, G.DOT_ON[i], on and lit == i, 0)
     end
+    -- the row centred on the slots this page has: the layout spaces G.DOTS_MAX slots between the Q / E glyphs; with
+    -- fewer (a screen that leaves pages out) the dots move right and both glyphs close in by half the unused width
+    local used = 1
+    for s in pairs(pages) do
+      if type(s) == "number" and s > used then
+        used = s
+      end
+    end
+    local shift = (G.DOTS_MAX - math.min(used, G.DOTS_MAX)) * G.DOT_PITCH / 2
+    local up = Cmd(C.IS_VIS, G.STATUS, 0) == true
+    if not up then
+      G.dotShift = nil                     -- a status base shown again starts from its layout
+    elseif G.dotShift ~= shift then
+      G.dotShift = shift
+      for i = 1, 6 do
+        local x = G.DOT_X[1] - (7 - i) * G.DOT_PITCH - 1358 + shift
+        Cmd(C.NODE_POS, G.STATUS, 0, G.DOT_OFF[i], 0, x)
+        Cmd(C.NODE_POS, G.STATUS, 0, G.DOT_ON[i], 0, x)
+      end
+      Cmd(C.NODE_POS, G.STATUS, 0, G.KEY_NODES[1], 0, G.KEY_X[1] + shift)
+      Cmd(C.NODE_POS, G.STATUS, 0, G.KEY_NODES[2], 0, G.KEY_X[2] - shift)
+      for k = 0, 1 do
+        if Exists(G.DOTS) and G.ready[G.DOTS * 16 + k] and Cmd(C.IS_OPEN, G.DOTS, k) == true then
+          Cmd(C.POS, G.DOTS, G.DOT_X[k + 1] + shift - 1362 - 1358, 540 + 34, 0, k)
+        end
+      end
+    end
     if not Exists(G.DOTS) then
       return
     end
-    local up = Cmd(C.IS_VIS, G.STATUS, 0) == true
     local psub = up and G.ptype == 2 and not G.InOffice()
     for k = 2, 5 do
       if not psub then
@@ -1003,7 +1063,7 @@ EVT_PPG = EVT_PPG or {}
           Cmd(C.TEXT_VIS, G.DOTS, 355816102, false, k)   -- _text_btn_l01
           Cmd(C.TEXT_VIS, G.DOTS, 59628764, false, k)    -- _text_btn_r01
           -- copy's _page01_off at copy-local (1362, -949) from the status base root: onto slot 7 / 8 (y -949)
-          Cmd(C.POS, G.DOTS, G.DOT_X[k + 1] - 1362 - 1358, 540 + 34, 0, k)   -- round 12: y 915 (10 px up)
+          Cmd(C.POS, G.DOTS, G.DOT_X[k + 1] + shift - 1362 - 1358, 540 + 34, 0, k)   -- round 12: y 915 (10 px up)
         end
         Cmd(C.MESH, G.DOTS, G.M_DOT_OFF1, true, k)
         Cmd(C.MESH, G.DOTS, G.M_DOT_ON1, lit == k + 7, k)
@@ -1167,12 +1227,20 @@ EVT_PPG = EVT_PPG or {}
   -- step is redirected inside OnChangeFocus (before that frame is drawn); a step the engine does not make (an edge of
   -- the old links) is made from the frame hook on the next frame. The pointer is the engine's: its zones follow the
   -- moved plates (instance transform); with the Fantasy rows a zone is on only where the row shows a move.
+  -- The engine calls OnChangeFocus(layer, direction token) after a key step (retail soccer_formation_menu_inc
+  -- GetFocusDirType: the token is the direction, the new instance is the layer's focused index), so the step's
+  -- direction is read from that token; the input state is only a fallback for a call without a known token.
   G.NAV = {CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303, MENU_CTRL_ANALOG = 2748927068,
     UP = 1197218715, DOWN = 3259546669, LEFT = 2765147006, RIGHT = 2075023265,
     FOCUS_MARK = 1778826357, FOCUS_SET = 3466097042, PLAY_ANIME = 3781155141, FOCUS_ANIME = 2734777837,
     ANIME_KIND = 973515837, ZONE = 855005857, GET_SKILL = 903078840, SOUND = 1917805374, CURSOR_SOUND = 2500047763,
-    GHOST_FRAMES = 3}
-  G.nav = {index = nil, pending = nil, handled = false, busy = false, echo = false, lastDir = nil, ghost = nil}
+    GHOST_FRAMES = 3, COLUMNS = 2, ROWS = 3,
+    -- OnChangeFocus direction tokens (retail GetFocusDirType / rpg_team_dock_menu_inc GetForcusDir: 1 up, 2 down,
+    -- 3 left, 4 right; the second token of each pair is the analog stick's)
+    DIRECTION_TOKENS = {[3483715641] = "up", [906909014] = "up", [49409691] = "down", [2207386753] = "down",
+      [1684642248] = "left", [3842669522] = "left", [1644353666] = "right", [2682339866] = "right"}}
+  G.nav = {index = nil, pending = nil, handled = false, busy = false, echo = false, lastDir = nil, ghost = nil,
+    expect = nil}
 
   -- the move layer holds the control focus on SUPERTÉCNICAS of the player page (the confirmation mode)
   function G.NavActive()
@@ -1195,7 +1263,7 @@ EVT_PPG = EVT_PPG or {}
 
   -- instance i shows a move (the Fantasy row's own move when the rows were filled from the skill table)
   function G.NavFilled(i)
-    if i < 0 or i > 5 or Cmd(C.IS_OPEN, G.SKILL, i) ~= true then
+    if i < 0 or i >= G.NAV.COLUMNS * G.NAV.ROWS or Cmd(C.IS_OPEN, G.SKILL, i) ~= true then
       return false
     end
     local F = EVT_PPG_FANTASY_MOVES
@@ -1214,22 +1282,32 @@ EVT_PPG = EVT_PPG or {}
   end
 
   -- the instance a step `dir` from instance `from` lands on (from itself at an edge)
+  -- (grid of NAV.ROWS x NAV.COLUMNS, instance = row * COLUMNS + column: G.Moves' placement). LEFT / RIGHT: the
+  -- nearest filled plate of the same row in that direction; UP / DOWN: the nearest row in that direction with a filled
+  -- plate, the same column first, else the filled plate of that row closest to the column (the left one on a tie)
   function G.NavTarget(from, dir)
-    local row, column = math.floor(from / 2), from % 2
+    local columns, rows = G.NAV.COLUMNS, G.NAV.ROWS
+    local row, column = math.floor(from / columns), from % columns
     if dir == "left" or dir == "right" then
-      local toColumn = dir == "left" and 0 or 1
-      if toColumn ~= column and G.NavFilled(row * 2 + toColumn) then
-        return row * 2 + toColumn
+      local step = dir == "left" and -1 or 1
+      local c = column + step
+      while c >= 0 and c < columns do
+        if G.NavFilled(row * columns + c) then
+          return row * columns + c
+        end
+        c = c + step
       end
       return from
     end
     local step = dir == "up" and -1 or 1
     local r = row + step
-    while r >= 0 and r <= 2 do
-      if G.NavFilled(r * 2 + column) then
-        return r * 2 + column
-      elseif G.NavFilled(r * 2 + 1 - column) then
-        return r * 2 + 1 - column
+    while r >= 0 and r < rows do
+      for distance = 0, columns - 1 do
+        for _, c in ipairs({column - distance, column + distance}) do
+          if c >= 0 and c < columns and G.NavFilled(r * columns + c) then
+            return r * columns + c
+          end
+        end
       end
       r = r + step
     end
@@ -1263,7 +1341,7 @@ EVT_PPG = EVT_PPG or {}
   end
 
   -- OnChangeFocus of the move layer: a key step of the engine is redirected to this page's target; true = handled
-  function G.NavOnChange(layer, index)
+  function G.NavOnChange(layer, token)
     local S = G.nav
     if S.busy then
       S.echo = true
@@ -1272,19 +1350,24 @@ EVT_PPG = EVT_PPG or {}
     if layer ~= G.SKILL or not G.NavActive() then
       return false
     end
-    local dir = G.NavDirection()
-    if dir == nil or S.index == nil then
-      S.index = index                             -- the pointer or the screen moved it
-      S.pending = nil
+    local index = Cmd(G.FOCUS_IDX, G.SKILL)       -- the instance the engine moved the focus to
+    local dir = G.NAV.DIRECTION_TOKENS[token]
+    if dir == nil then
+      dir = G.NavDirection()
+    end
+    if dir == nil or S.index == nil or type(index) ~= "number" then
+      S.index = type(index) == "number" and index or nil   -- the pointer or the screen moved it
+      S.pending, S.expect = nil, nil
       return false
     end
     local target = G.NavTarget(S.index, dir)
     S.pending, S.handled = nil, true
     if target == index then
-      S.index = index
+      S.index, S.expect = index, nil
       return false
     end
     G.NavSetFocus(target, index)
+    S.expect = target
     return true
   end
 
@@ -1304,7 +1387,7 @@ EVT_PPG = EVT_PPG or {}
       end
     end
     if not G.NavActive() then
-      S.index, S.pending, S.handled, S.lastDir = nil, nil, false, nil
+      S.index, S.pending, S.handled, S.lastDir, S.expect = nil, nil, false, nil, nil
       return
     end
     local current = Cmd(G.FOCUS_IDX, G.SKILL)
@@ -1315,7 +1398,14 @@ EVT_PPG = EVT_PPG or {}
     local lastDir = S.lastDir
     S.lastDir = dir
     if S.handled then
-      S.handled, S.pending, S.index = false, nil, current
+      -- a redirected step the engine put back on its own target after OnChangeFocus: set once more
+      local expect = S.expect
+      S.handled, S.pending, S.expect = false, nil, nil
+      if expect ~= nil and current ~= expect then
+        G.NavSetFocus(expect, current)
+        current = expect
+      end
+      S.index = current
       return
     end
     local p = S.pending

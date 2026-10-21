@@ -5,11 +5,6 @@
 # opens (read at every match by scripts\prematch_editor.lua, the handler of the mid hook content\game\prematch_editor.toml).
 skip_prematch_editor = true
 
-# Pre-match events (walk-in, entrance scenes): the prompt «(X) <kick-off>» left of the retail «(Y) Saltar»; holding X
-# for this many seconds skips every remaining pre-match event and the two lineup screens, straight to the kick-off
-# (graft clean_hud_prematch_skip, through CMND_EVT_CHD_XSKIP_HOLD = scripts\better_ui.lua). 1.0 = the retail Y hold,
-# at most 10. 0 = developer kill switch (no X prompt).
-prematch_skip_hold = 1.0
 
 # The match HUD's kizuna plate («MÁX. n %») slanted like the gauge bars (image recipe content\images\menu\00_soccer\
 # soccer08\soccer08_04.toml + the mesh move content\menus\kizuna_plate.toml, both `when = { config = "slanted_kizuna" }`).

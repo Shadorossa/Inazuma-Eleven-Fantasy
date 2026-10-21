@@ -15,14 +15,17 @@ schema = "VRFW.technique/3"
 # Coletazo de Belion (whs02720).
 [[edit]]
 target = "whs02720"
-trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+trajectory = { points = [[0.0, 3.49], [1.44, 2.6], [5.11, 1.2], [10.61, 0.66]], unblockable = false }
 
 # Coletazo de Begiran (whs02721).
 [[edit]]
 target = "whs02721"
-trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+trajectory = { points = [[0.0, 3.49], [1.44, 2.6], [5.11, 1.2], [10.61, 0.66]], unblockable = false }
 
 # Coletazo de Pelion (whs02722).
 [[edit]]
 target = "whs02722"
-trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.59], [1.44, 2.67], [5.11, 1.22], [10.61, 0.66]], unblockable = false }
+trajectory = { points = [[0.0, 3.49], [1.44, 2.6], [5.11, 1.2], [10.61, 0.66]], unblockable = false }

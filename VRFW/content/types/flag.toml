@@ -5,7 +5,7 @@ schema = "VRFW.table_map/1"
 #   name   flag name; its id is crc32(name)
 #   id     id when the name is unknown (0x…, number); with `name` too, both must agree
 #   bank   FLAG_INFO bank (0 = story / global bank)
-#   bit    bit in the bank (fixed: where saves keep it)
+#   bit    bit in the bank (fixed: where saves keep it); bank 0 without `bit`: the framework gives one (types/flag.md)
 # A flag already in the bank at the same bit is kept once; a bit used by another flag, or the same flag at another bit, is left out with a warning.
 [[map]]
 entry = "flag"
@@ -21,4 +21,4 @@ count = "flags"
 name = { type = "string" }
 id = { type = "id" }
 bank = { type = "int", required = true }
-bit = { column = "index", type = "int", required = true }
+bit = { column = "index", type = "int" }        # bank 0: optional (the flag type gives a bit before the map runs)

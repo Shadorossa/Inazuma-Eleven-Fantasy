@@ -1,0 +1,40 @@
+# New Recruitment: the look of the framework's contact map screen for the recruitment office (vrfw_contact_map_menu;
+# docs/framework/contact-map.md §19, docs/framework/screen-art.md): every role as a sprite of the mod's own atlases
+# (content/images/menu/220_img/new_recruitment_office*.toml): card plates, the cost card's panel, the panel ground, the
+# requirement icons and badges. No background: the screen keeps the hub's own.
+schema = "VRFW.screen_art/1"
+
+[[VRFW.ScreenArt]]
+Screen = "contact_map"
+Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+
+[VRFW.ScreenArt.Sprites]
+# the chain board look (IF's copy): list rows, plates, cursor, links, page arrows, tile icons
+list_row = "new_recruitment_office_list_row"
+cursor = "new_recruitment_office_cursor"
+link = "new_recruitment_office_link"
+arrow_left = "new_recruitment_office_arrow_left"
+arrow_right = "new_recruitment_office_arrow_right"
+tile_hidden = "new_recruitment_office_tile_hidden"
+tile_done = "new_recruitment_office_tile_done"
+tile_start = "new_recruitment_office_tile_start"
+icon_unknown = "new_recruitment_office_icon_unknown"
+icon_lock = "new_recruitment_office_icon_lock"
+icon_check = "new_recruitment_office_icon_check"
+icon_start = "new_recruitment_office_icon_start"
+# the requirement icons, their met / unmet badges, the cost card's panel and a player's plate
+requirement_level = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_level" }
+requirement_wins = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_wins" }
+requirement_goals = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_goals" }
+requirement_item = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_item" }
+requirement_player = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_player" }
+requirement_position_1 = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_position_1" }
+requirement_position_2 = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_position_2" }
+requirement_position_3 = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_position_3" }
+requirement_position_4 = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_requirement_position_4" }
+badge_met = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_badge_met" }
+badge_unmet = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_badge_unmet" }
+card_panel = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_card_panel" }
+player_plate = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_player_plate" }
+# the player panel's ground (the right part of the game's menu background)
+panel_ground = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_ground.g4tx", Sprite = "new_recruitment_office_panel_ground" }

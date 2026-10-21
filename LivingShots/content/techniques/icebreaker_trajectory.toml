@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Lanza gélida (whs03360).
 [[edit]]
 target = "whs03360"
-trajectory = { goal_points = [[18.78, 5.48, 999, 9.39], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[18.78, 5.48, 999, 9.39], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[18.78, 4.21, 999.0, 9.39], [0.0, 2.0]], unblockable = false }

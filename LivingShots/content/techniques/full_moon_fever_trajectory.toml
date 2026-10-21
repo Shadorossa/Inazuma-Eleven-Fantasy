@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Fiebre de luna llena (whs02400).
 [[edit]]
 target = "whs02400"
-trajectory = { goal_points = [[57.57, 35.24], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[57.57, 35.24], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[57.57, 4.5], [0.0, 2.0]], unblockable = false }

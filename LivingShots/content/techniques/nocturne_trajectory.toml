@@ -1,10 +1,10 @@
 schema = "VRFW.technique/3"
 # «Living Shots» (shot_fx): the flight of «Nocturne» («Escena nocturna», whs02310). In the cut-in's last cut (c0300)
-# the wolf carries the ball level 12.9 m up across the sky and then dives with it onto the goal; in the match
-# (coordinator 2026-10-08, for Nacho) it flies the technique type's **level flight at mid height** instead of that
+# the wolf carries the ball level 12.9 m up across the sky and then dives with it onto the goal; from 2026-10-08
+# to 2026-10-21 the match flew the technique type's **level flight at mid height** instead of that
 # dive: `trajectory = { mode = "level" }` (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md
 # §7.7): the ball rises from the kick to the framework's default `level_height` (3.0 m, ball centre, a little over the
-# game's own flight), runs level and eases into the goal at `level_end_height` (2.0 m, the keeper's reach). Its aura
+# game's own flight), ran level and eased into the goal at `level_end_height` (2.0 m); now a straight line (below). Its aura
 # (content\effects\nocturne_ball.toml, the wolf and its red-black funnel) is turned along the flight.
 #
 # The cut-in's own dive, kept for reference (research/scripts/shot_trajectory_from_cutin.py --move nocturne;
@@ -19,7 +19,8 @@ schema = "VRFW.technique/3"
 # Escena nocturna (Nocturne, whs02310).
 [[edit]]
 target = "whs02310"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner: «no parabola», and it must not start higher than before): the level flight rose from
+# the kick to 3.0 m and came down again into the goal, an arc the cut-in does not have. Now one straight line from where
+# the cut-in leaves the ball (start.height = "kick", as before) into the goal at 2.0 m: no rise-and-fall, no higher
+# start. The cut-in's own dive (12.94 m, 23.6 deg, above) would start the ball high in the air, which the owner refused.
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }

@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Ruptura relámpago (whs00380).
 [[edit]]
 target = "whs00380"
-trajectory = { points = [[0.0, 4.28]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 4.28]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 3.86]], goal_points = [[0.0, 2.0]], unblockable = false }

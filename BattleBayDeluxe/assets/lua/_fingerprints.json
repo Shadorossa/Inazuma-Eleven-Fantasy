@@ -51,6 +51,18 @@
   "forbid": [],
   "ambiguous": []
  },
+ "game_over_menu": {
+  "script": "game_over_menu",
+  "require": [
+   "OpenTelop_Coroutine",
+   "CloseMenu_Coroutine"
+  ],
+  "forbid": [
+   "PreStep",
+   "FinalizeMenu"
+  ],
+  "ambiguous": []
+ },
  "network_room_match_top": {
   "script": "network_room_match_top_5.01.14.00",
   "require": [

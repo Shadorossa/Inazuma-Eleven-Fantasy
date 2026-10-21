@@ -150,8 +150,8 @@ game = "Board.FindCharaRecord"
 name = "PlayerTraining.HumanGetLevel"
 game = "Chara.HumanGetLevel"
 
-# [[g_gameRoot]+0x69D8]: the character containers (container of kind k = [this + 8 + k * 8])
+# [[g_gameRoot]+ Game.RootCharaContainers]: the character containers (container of kind k = [this + 8 + k * 8])
 [[VRFW.Global]]
 name = "player_training_chara_containers"
 base = "game_root"
-chain = [0x69D8]
+chain = ["Game.RootCharaContainers"]

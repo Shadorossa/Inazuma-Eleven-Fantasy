@@ -541,12 +541,14 @@ function Utilities.TeamPlanner.PickTeam(i)
   return #r.players, count_owned(r.players), team_name(r.team)
 end
 
--- CMND_UTIL_TP_PICK_LIST() -> the season list's layout ([team_planner.list]): cols, rows, pitch x, pitch y, card
--- scale, centre x, centre y, card offset x, y, ghost alpha, tab x, tab y, tab pitch, tab scale, panel x, y, scale x, y
+-- CMND_UTIL_TP_PICK_LIST() -> the season list's layout ([team_planner.list]) as ONE table { key = number } (the keys of
+-- cfg.list + ghost_alpha): a command's answer keeps only its first values, so 18 separate numbers lost the last ones
 function Utilities.TeamPlanner.PickList()
-  local g = cfg.list
-  return g.cols, g.rows, g.pitch_x, g.pitch_y, g.scale, g.cx, g.cy, g.ox, g.oy, cfg.ghost_alpha,
-    g.tab_x, g.tab_y, g.tab_pitch, g.tab_scale, g.back_x, g.back_y, g.back_sx, g.back_sy
+  local out = { ghost_alpha = cfg.ghost_alpha }
+  for k, v in pairs(cfg.list) do
+    out[k] = v
+  end
+  return out
 end
 
 -- the tab icon sprites of series type `ty` (the game's naming of its series tab icons, icon_list_tab_seriesNN):

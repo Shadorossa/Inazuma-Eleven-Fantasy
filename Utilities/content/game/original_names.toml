@@ -12,11 +12,11 @@ schema = "VRFW.game/2"
 #
 # The row itself (three values, «Por equipos» stored as names.custom) is the two hooks below.
 
-# [[g_gameRoot] + 0x6A50] = the game settings; +0x7D = «Nombres de los personajes» (1 = Originales)
+# [[g_gameRoot] + Game.RootSettings] = the game settings; +0x7D = «Nombres de los personajes» (1 = Originales)
 [[VRFW.Global]]
 name = "game_settings"
 base = "game_root"
-chain = [0x6A50]
+chain = ["Game.RootSettings"]
 
 # ([lang code]) -> bool: the loaded names tables no longer match the saved choices (the settings script takes the retail
 # «Originales» path: back to the title, texts reloaded). Asked before CloseMenuSetting.

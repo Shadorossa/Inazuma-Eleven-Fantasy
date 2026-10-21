@@ -1,0 +1,12 @@
+schema = "VRFW.shop_redirect/1"
+# New Recruitment › the Mercado bar of the recruitment office. With this mod «El atrio de los indomables» sells no
+# player (content\shops\no_player_spirits.toml), so its bar opens the office instead (the VR-Framework's contact map
+# screen on the set new_recruitment.office, content\contact_maps\office.toml); its name is text\rows\shop_text.toml.
+# Every other menu entry of that shop opens the office too. Priority 10: a mod that redirects its emptied retail shops
+# to a shop of its own (Inazuma Fantasy's general store) leaves this one to the office.
+
+[[VRFW.ShopRedirect]]
+name = "office"
+from = ["0x66B2F9E6"]           # El atrio de los indomables (the Diamante shop)
+contact_set = "office"
+priority = 10

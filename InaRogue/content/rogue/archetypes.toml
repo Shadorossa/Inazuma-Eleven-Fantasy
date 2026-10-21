@@ -1,0 +1,17 @@
+schema = "InaRogue.rogue_archetypes/1"
+# InaRogue › the INAROGUE archetypes and what each one does at each rank (docs/game/modes/inarogue-archetypes.md,
+# designed one by one with the owner; inarogue-passive-system.md §2.5). The team's archetype is the one with most items
+# in the inventory; its rank is that item count (1-5). Read by scripts/lib/rogue/items.lua.
+#
+# [[archetype]]  key (a-z 0-9 _; the items' `archetypes` name it), scope = outside | match | both,
+#                [[archetype.effect]] pieces as an item's (scripts/lib/rogue/pieces.lua); a value may be a list (one per
+#                rank 1-5) or { base, max } (rank 1 → rank 5)
+#
+# The list order is the archetype's number: content/archetypes/inarogue.toml declares number n with pick_value = n (the
+# VRFW archetype shown in the dock, «Bonificaciones de equipo» and the match HUD). A new archetype goes at the end of
+# both files.
+
+# 1. Asedio: lock the rival in his half and load him with shots. Effects per rank: to be decided with the owner.
+[[archetype]]
+key = "siege"
+scope = "match"

@@ -653,4 +653,99 @@ function Utilities.Career.Params(slot)
   return table.concat(out, ",")
 end
 
+-- ---------------------------------------------------------------------------------------- club statistics screen
+
+-- «Estadísticas del club» (row of «Caseta del club», graft util_club_stats_row + the panel
+-- assets/lua/play_guide_top_menu/150_club_stats.lua): the club totals of the store and one row per player of the
+-- user's club who has a career record (played a counted match or was signed since the store started).
+local T = require "lib/original_names_tables"
+
+local club_rows = {}
+local club_names = { lang = nil, rows = {}, base = {}, text = {} }
+
+local function club_lang(code)
+  local c = type(code) == "number" and math.floor(code) or nil
+  if c and c >= 0 and type(VRFW.files.game_languages) == "function" then
+    local ok, t = pcall(VRFW.files.game_languages)
+    local l = ok and type(t) == "table" and t[c + 1] or nil
+    if type(l) == "string" then return l end
+  end
+  return "en"
+end
+
+local function club_load_names(lang)
+  if club_names.lang == lang then return end
+  local ok, rows = pcall(VRFW.files.text_rows, T.text_key(lang, T.CHARA))
+  if (not ok or type(rows) ~= "table") and lang ~= "en" then
+    ok, rows = pcall(VRFW.files.text_rows, T.text_key("en", T.CHARA))
+  end
+  club_names = { lang = lang, rows = (ok and type(rows) == "table") and rows or {}, base = {}, text = {} }
+end
+
+-- the character (chara_base) of a card, cached; nil = unknown
+local function club_base_of(param)
+  local b = club_names.base[param]
+  if b == nil then
+    local ok, c = pcall(VRFW.chara.base_of, param)
+    b = (ok and type(c) == "number") and c or false
+    club_names.base[param] = b
+  end
+  return b or nil
+end
+
+local function club_name_of(base)
+  if not base then return "" end
+  local id = club_names.text[base]
+  if id == nil then
+    local ok, c = pcall(VRFW.chara.character, base)
+    id = (ok and type(c) == "table" and type(c.name_text) == "number") and c.name_text or false
+    club_names.text[base] = id
+  end
+  local r = id and club_names.rows[id]
+  local s = r and r[0]
+  if type(s) == "string" and s ~= "" then return T.strip_furigana(s) end
+  return ""
+end
+
+-- CMND_UTIL_CLUB_STATS(langCode) -> ok, players, since, matches, wins, draws, losses, goalsFor, goalsAgainst,
+-- cleanSheets, bestWinFor, bestWinAgainst, bestWinDay, bestWinRun, bestUnbeatenRun, storeSince, today. Days as
+-- yyyymmdd (0 = none yet); storeSince = the day the career store started (players signed before it have no date).
+-- Builds the player list CMND_UTIL_CLUB_STATS_ROW reads. ok = false in a mod's reserved slot or without a save.
+function Utilities.Career.Club(code)
+  club_rows = {}
+  local today = VRFW.ui.today()
+  scan_and_date(false)
+  local st = ensure_store()
+  if not st then return false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, today end
+  club_load_names(club_lang(tonumber(code)))
+  for k, s in pairs(st.players) do
+    local hdl = tonumber(k, 16)
+    if hdl and (s.matches > 0 or s.signed > 0) then
+      local param, order = ident(hdl)
+      if param and param == s.param and order == s.order then
+        local base = club_base_of(param)
+        club_rows[#club_rows + 1] = { base = base or 0, name = club_name_of(base), s = s }
+      end
+    end
+  end
+  table.sort(club_rows, function(a, b)
+    if a.s.goals ~= b.s.goals then return a.s.goals > b.s.goals end
+    if a.s.matches ~= b.s.matches then return a.s.matches > b.s.matches end
+    return a.name < b.name
+  end)
+  local c = st.club or S.club_new()
+  info("club stats: " .. #club_rows .. " player(s), club totals since " .. c.since .. " (" .. c.matches .. " match(es))")
+  return true, #club_rows, c.since, c.matches, c.wins, c.draws, c.losses, c.goals_for, c.goals_against, c.clean_sheets,
+    c.best_win_for, c.best_win_against, c.best_win_day, c.best_win_run, c.best_unbeaten_run, st.since, today
+end
+
+-- CMND_UTIL_CLUB_STATS_ROW(i) (1-based) -> chara_base (portrait key, 0 = none), name, matches, wins, draws, losses,
+-- goals, assists, mvp, signed (yyyymmdd; 0 = signed before the career store started). "" past the end.
+function Utilities.Career.ClubRow(i)
+  local r = club_rows[math.floor(tonumber(i) or 0)]
+  if not r then return "" end
+  local s = r.s
+  return r.base, r.name, s.matches, s.wins, s.draws, s.losses, s.goals, s.assists, s.mvp, s.signed
+end
+
 info("active; store blob " .. S.BLOB .. " per slot (staged with the game's save); fed by the match HUD (CMND_UTIL_CAREER_MATCH, graft util_career_match); plate page CMND_UTIL_CAREER_EX (graft util_career_page)")

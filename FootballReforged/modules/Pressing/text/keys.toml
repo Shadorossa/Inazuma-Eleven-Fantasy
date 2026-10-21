@@ -1,0 +1,50 @@
+# Texts of Pressing, a module of Football Reforged (docs/framework/types/text.md): the name and description of its
+# card on Football Reforged's page in Mods, and the word of the press button guide (press_hud_label: drawn into the
+# sprite pressing_gtxt_action_press01 by research/scripts/vrfw_action_label_build.py, content\images\hud).
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Pressing"
+mod_description = "Without the ball, L2 is a press button instead of the focus field: hold it and 2 to 4 of your teammates nearest to the ball carrier sprint at him (never the keeper); release it or win the ball back and they play as before. The CPU presses with the same rules instead of opening its focus field. With Aura Points, a winded player does not press and pressing drains the sprint bar. Without the ball the L2 guide reads «Press!» and your pressers show the game's arrows towards the carrier. With the ball, L2 is the game's."
+press_hud_label = "Press!"
+
+[es.new]
+mod_name = "Presión"
+mod_description = "Sin balón, L2 es un botón de presión en lugar del campo de foco: mantenlo y de 2 a 4 compañeros, los más cercanos al rival con el balón, esprintan hacia él (nunca el portero); suéltalo o recupera el balón y vuelven a jugar como antes. La CPU presiona con las mismas reglas en lugar de abrir su campo de foco. Con Aura Points, un jugador sin aliento no presiona y presionar gasta su barra de esprint. Sin balón, la guía de L2 dice «¡Presión!» y tus jugadores que presionan muestran las flechas del juego hacia el rival con el balón. Con balón, L2 es el del juego."
+press_hud_label = "¡Presión!"
+
+[fr.new]
+mod_name = "Pressing"
+mod_description = "Sans le ballon, L2 devient un bouton de pressing à la place du champ de concentration : maintiens-le et 2 à 4 coéquipiers, les plus proches du porteur, sprintent vers lui (jamais le gardien) ; relâche-le ou récupère le ballon et ils jouent comme avant. Le CPU presse avec les mêmes règles au lieu d'ouvrir son champ. Avec Aura Points, un joueur essoufflé ne presse pas et le pressing vide sa barre de sprint. Sans ballon, le guide de L2 affiche «Pressing !» et tes joueurs qui pressent montrent les flèches du jeu vers le porteur. Avec le ballon, L2 reste celui du jeu."
+press_hud_label = "Pressing !"
+
+[de.new]
+mod_name = "Pressing"
+mod_description = "Ohne Ball ist L2 eine Pressing-Taste statt des Fokusfelds: Halte sie und 2 bis 4 Mitspieler, die dem Ballführer am nächsten sind, sprinten auf ihn zu (nie der Torwart); lass sie los oder erobere den Ball und sie spielen wie vorher. Die CPU presst mit denselben Regeln, statt ihr Fokusfeld zu öffnen. Mit Aura Points presst ein erschöpfter Spieler nicht, und Pressing leert seinen Sprintbalken. Ohne Ball zeigt die L2-Anzeige «Pressing!» und deine pressenden Spieler zeigen die Pfeile des Spiels zum Ballführer. Mit Ball ist L2 die Taste des Spiels."
+press_hud_label = "Pressing!"
+
+[it.new]
+mod_name = "Pressing"
+mod_description = "Senza palla, L2 è un tasto di pressing al posto del campo di concentrazione: tienilo premuto e da 2 a 4 compagni, i più vicini al portatore, scattano verso di lui (mai il portiere); rilascialo o recupera la palla e tornano a giocare come prima. La CPU pressa con le stesse regole invece di aprire il suo campo. Con Aura Points, un giocatore senza fiato non pressa e il pressing consuma la sua barra dello scatto. Senza palla, la guida di L2 mostra «Pressing!» e i tuoi giocatori che pressano mostrano le frecce del gioco verso il portatore. Con la palla, L2 è quello del gioco."
+press_hud_label = "Pressing!"
+
+[pt.new]
+mod_name = "Pressão"
+mod_description = "Sem bola, L2 é um botão de pressão em vez do campo de foco: mantém-no premido e 2 a 4 colegas, os mais próximos do portador, correm a sprint para ele (nunca o guarda-redes); larga-o ou recupera a bola e voltam a jogar como antes. O CPU pressiona com as mesmas regras em vez de abrir o seu campo de foco. Com Aura Points, um jogador sem fôlego não pressiona e pressionar gasta a sua barra de sprint. Sem bola, o guia de L2 mostra «Pressão!» e os teus jogadores que pressionam mostram as setas do jogo para o portador. Com bola, L2 é o do jogo."
+press_hud_label = "Pressão!"
+
+[ja.new]
+mod_name = "プレス"
+mod_description = "ボールを持っていない時、L2はフォーカスフィールドの代わりにプレスボタンになる。押している間、ボール保持者に近い味方2〜4人が彼に向かってダッシュする（キーパーは除く）。離すかボールを奪い返すと元の動きに戻る。CPUもフォーカスフィールドの代わりに同じルールでプレスする。Aura Pointsがある時、息切れした選手はプレスせず、プレスはダッシュゲージを消費する。ボールがない時、L2のガイドは「プレス！」になり、プレスする選手にはボール保持者へ向かうゲームの矢印が出る。ボールを持っている時のL2はゲーム通り。"
+press_hud_label = "プレス！"
+
+[zh_hans.new]
+mod_name = "逼抢"
+mod_description = "无球时，L2不再是专注领域，而是逼抢键：按住时，离持球者最近的2到4名队友向他冲刺（门将除外）；松开或夺回球后，他们恢复原来的行动。电脑也会用同样的规则逼抢，而不是展开专注领域。装有Aura Points时，喘不过气的球员不逼抢，逼抢会消耗冲刺条。无球时，L2提示显示「全体逼抢！」，逼抢的队员会显示指向持球者的游戏箭头。有球时，L2保持游戏原样。"
+press_hud_label = "全体逼抢！"
+
+[zh_hant.new]
+mod_name = "逼搶"
+mod_description = "無球時，L2不再是專注領域，而是逼搶鍵：按住時，離持球者最近的2到4名隊友向他衝刺（門將除外）；放開或奪回球後，他們恢復原來的行動。電腦也會用同樣的規則逼搶，而不是展開專注領域。裝有Aura Points時，喘不過氣的球員不逼搶，逼搶會消耗衝刺條。無球時，L2提示顯示「全體逼搶！」，逼搶的隊員會顯示指向持球者的遊戲箭頭。有球時，L2保持遊戲原樣。"
+press_hud_label = "全體逼搶！"

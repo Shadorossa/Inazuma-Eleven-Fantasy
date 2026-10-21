@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Golpe justiciero (whs01820).
 [[edit]]
 target = "whs01820"
-trajectory = { goal_points = [[38.45, 20.17], [0.0, 1.13]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[38.45, 20.17], [0.0, 1.13]], unblockable = false }
+trajectory = { goal_points = [[38.45, 4.5], [0.0, 1.13]], unblockable = false }

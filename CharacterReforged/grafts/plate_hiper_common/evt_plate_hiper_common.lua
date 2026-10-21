@@ -43,6 +43,10 @@ function EVT_PlateHiperStep(cur, dir, count)
 end
 
 function EVT_PH_Wrap(name, make)
+  if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+    local ok = VRFW_Host.wrap(name, make, {level = 2})   -- survives a later patch that redefines the function
+    return ok
+  end
   local cur = _ENV[name]
   if type(cur) ~= "function" or EVT_PH_WRAPPED[cur] then
     return false

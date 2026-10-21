@@ -1,0 +1,103 @@
+schema = "VRFW.changelog/1"
+# Transforming Items: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language.
+# Do not touch it on a version bump; rewrite it only when what the mod offers changes.
+lang = "es"
+name = "Transforming Items"
+
+[en]
+name = "Transforming Items"
+
+[fr]
+name = "Transforming Items"
+
+[de]
+name = "Transforming Items"
+
+[it]
+name = "Transforming Items"
+
+[pt]
+name = "Transforming Items"
+
+[ja]
+name = "Transforming Items"
+
+[zh_hans]
+name = "Transforming Items"
+
+[zh_hant]
+name = "Transforming Items"
+
+[[release]]
+icon = "general"
+notes = [
+    "Objetos que cambian la apariencia de un jugador.",
+    "Piedra Alius: 24 jugadores toman su forma Alius.",
+    "Con sus estadísticas y técnicas; al quitarla, vuelve.",
+    "Se equipa tras ganar a los Emperadores Oscuros.",
+]
+
+[release.en]
+notes = [
+    "Items that change a player's look while worn.",
+    "Alius Crystal: 24 players take their Alius look.",
+    "With that version's stats and moves; remove it to undo.",
+    "Equip it once the Dark Emperors are beaten.",
+]
+
+[release.fr]
+notes = [
+    "Des objets qui changent l'apparence d'un joueur.",
+    "Cristal Alius : 24 joueurs prennent leur forme Alius.",
+    "Avec ses stats et techniques ; retire-le pour revenir.",
+    "S'équipe après avoir battu les Empereurs noirs.",
+]
+
+[release.de]
+notes = [
+    "Gegenstände, die das Aussehen eines Spielers ändern.",
+    "Alius-Stein: 24 Spieler nehmen ihre Alius-Gestalt an.",
+    "Mit deren Werten und Techniken; ablegen = zurück.",
+    "Ausrüstbar nach dem Sieg über die Dark Emperors.",
+]
+
+[release.it]
+notes = [
+    "Oggetti che cambiano l'aspetto di un giocatore.",
+    "Pietra di Alius: 24 giocatori in forma Alius.",
+    "Con statistiche e tecniche; toglila per tornare.",
+    "Si equipaggia dopo aver battuto i Dark Emperors.",
+]
+
+[release.pt]
+notes = [
+    "Objetos que mudam a aparência de um jogador.",
+    "Meteorito Alien: 24 jogadores ganham a forma Alius.",
+    "Com os seus atributos e técnicas; tira-o para voltar.",
+    "Equipa-se depois de vencer os Imperadores.",
+]
+
+[release.ja]
+notes = [
+    "装備中、選手の見た目を変えるアイテム。",
+    "エイリアストーン：24人がエイリアの姿に。",
+    "能力値と技も変わる。外せば元に戻る。",
+    "ダークエンペラーズに勝つと装備可能。",
+]
+
+[release.zh_hans]
+notes = [
+    "装备期间改变球员外观的道具。",
+    "宇宙晶石：24名球员变为外星形态。",
+    "能力值与技能随之改变，卸下即恢复。",
+    "战胜暗黑帝王后即可装备。",
+]
+
+[release.zh_hant]
+notes = [
+    "裝備期間改變球員外觀的道具。",
+    "宇宙晶石：24名球員變為外星形態。",
+    "能力值與技能隨之改變，卸下即恢復。",
+    "戰勝暗黑帝王後即可裝備。",
+]

@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Asalto aéreo (whs01840).
 [[edit]]
 target = "whs01840"
-trajectory = { goal_points = [[31.75, 9.56], [26.84, 4.62], [16.6, 1.53], [0.0, 0.34]], curve = "smooth", unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[31.75, 9.56], [26.84, 4.62], [16.6, 1.53], [0.0, 0.34]], curve = "smooth", unblockable = false }
+trajectory = { goal_points = [[31.75, 4.48], [26.84, 2.26], [16.6, 0.87], [0.0, 0.34]], curve = "smooth", unblockable = false }

@@ -5,7 +5,7 @@
 -- settings gauge_self / gauge_enemy, own bar at locator _pos_hp01, rival's at _pos_hp02) as a PART of the bar's own
 -- fill: the barrier is the TOP 25 % of the keeper bar, the fill between the barrier line (75 %) and the fill's edge,
 -- drawn bronze. Its outer end is the fill's edge, so it drains with the fill (same edge, same direction: config.toml
--- hud_fill_from, retail both bars from the left) and is gone at 75 % or below.
+-- hud_fill_from: own bar anchored right (flipped by Football Reforged), rival left) and is gone at 75 % or below.
 -- Layer football_reforged_barrier (the mod's content\menus\goalkeeper_barrier_hud.toml: the retail btl06_13 gauge, 2
 -- instances hung on _pos_hp01 / _pos_hp02): only its FRAME quad _hp_base01 is shown (fill, red trail and label
 -- hidden), the frame's sprite hp_base01 swapped for a bronze segment sprite: the outer part of the retail keeper bar
@@ -53,7 +53,7 @@ FOOTBALL_BARRIER_SPRITE = {nil, nil}          -- per instance: the segment sprit
 -- step k = bronze from the barrier line to k / steps of the share (the fill's edge); every sprite covers the same
 -- quad of the keeper bar (bar columns / rows from its top-left): x QUAD_X[i + 1], row QUAD_ROW, QUAD_W x QUAD_H
 FOOTBALL_BARRIER_STEPS = 29
-FOOTBALL_BARRIER_QUAD_X = {264, 263}
+FOOTBALL_BARRIER_QUAD_X = {11, 263}
 FOOTBALL_BARRIER_QUAD_ROW = 8
 FOOTBALL_BARRIER_QUAD_W = 89
 FOOTBALL_BARRIER_QUAD_H = 7

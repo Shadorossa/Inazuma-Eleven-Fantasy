@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Cañón de meteoritos A (Meteor Blade A, whs03410), cut-in ev60_03410.
+#
+# In the cut-in (c0400) the ball dives from 4.35 m to 1.91 m. Flight (owner rules 2026-10-21: never curved; a high
+# shot starts at most 4.5 m up and ends at about 2.0 m; a still origin at the kick point needs a fixed speed): one
+# straight line from 4.5 m at the kick into 2.0 m at the goal at 20 m/s (doom_spear_ball_fx.KICK_GROW: the fan's
+# sheets stretch at that speed).
+# unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick.
+
+# Cañón de meteoritos A (whs03410).
+[[edit]]
+target = "whs03410"
+trajectory = { points = [[0.0, 4.5]], goal_points = [[0.0, 2.0]], speed = 20.0, unblockable = false }

@@ -1,18 +1,18 @@
 # «Combo cósmico» (Cosmic Blaster, whs02980, whs02980_or and whs02980_or_02, same cut-in; forest shot of two players,
-# cut-in ev60_02980): while the ball flies to the goal after the cut-in it keeps BOTH looks of the cut-in (owner
-# 2026-10-12): the ball's own pink light and the blue / pink light streaks it draws (c0400, the ball passed through
-# space), and the end of the cut-in (c0600): the black hole behind the ball along its path firing its black beam, the
-# beam's head at the ball and the yellow / blue rings along it, instead of the plain forest special-shot aura (ega0075d).
-# The object is ev6298cb00 (effect/event/ev60/ev6298cb00/), built by research/scripts/cosmic_blaster_ball_fx.py from the
-# cut-in's effect object ev60029800 (two cuts in one aura, waza_replay_aura.py Group): c0400's motion over 272-284
-# replayed then held (x1, the ball cards turned to face the touchline), c0600's over 580-630 replayed then held (the
-# black hole's swirl turning on), placed with the beam's head at the ball and scaled to the pitch x0.06 (beam 11.4 m,
-# black hole 11.4 m behind the ball). Left out: the space backdrop, the camera-attached cards, the giant sun and
-# backdrops of c0500. docs/game/media/cosmic-blaster-ball-fx.md.
-# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
-# ball's velocity every frame (aura-balon-tiro.md §2b). No trajectory file: the cut-in has no ball flight to measure.
-# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's
-# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+# cut-in ev60_02980): while the ball flies to the goal after the cut-in, both looks of the cut-in (owner 2026-10-12)
+# in their finished state (owner 2026-10-21): the ball's own pink light and ripples (c0400) inside the head of the
+# black hole's fire stream (c0600), which runs from the black hole, standing at the kick point with its swirl, to the
+# ball every frame, the yellow / blue rings on it, its head tapering and fading round the ball; instead of the plain
+# forest special-shot aura (ega0075d).
+# The object ev6298cb00 (assets\data\{common,dx11}\effect\event\ev60\ev6298cb00\) is built by
+# research/scripts/cosmic_blaster_ball_fx.py from the cut-in's effect object ev60029800 (two cuts in one aura,
+# waza_replay_aura.py Group): c0400 280-284 and c0600 650-656 replayed then held (texture scrolls and the swirl running
+# on), every part in the cut-in's orientation, the black hole / stream x0.06, priorities <= 30; the black hole slides
+# back from the ball at the shot's 25 m/s (content\techniques\cosmic_blaster_trajectory.toml). The trigger copies the
+# forest special-shot aura's row (like = "ega0075d"): its callback turns +Z along the ball's velocity.
+# docs/game/media/cosmic-blaster-ball-fx.md.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
 schema = "VRFW.effect/1"
 
 [[effect]]
@@ -25,5 +25,3 @@ name = "cosmic_blaster"
 when = { techniques = ["whs02980", "whs02980_or", "whs02980_or_02"] }
 aura = "cosmic_blaster"
 like = "ega0075d"
-# the aura's replay (50 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
-fit = { replay = 50 }

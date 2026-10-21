@@ -1,0 +1,80 @@
+schema = "VRFW.contact_map/1"
+# New Recruitment › the recruitment office («Oficina de fichajes»), Inazuma Fantasy's old office rebuilt on the
+# VR-Framework's contact map screen (docs/framework/contact-map.md §20-21, docs/game/mods/new-recruitment-office.md):
+# beat a team, then sign its players. The pages are built from the game's own teams and matches; each card's level,
+# price in «fichas», page and requirements are the old office's (content\contact_maps\office_terms.toml, generated).
+# The Mercado bar that opens it: content\shop_redirects\office.toml.
+
+[[VRFW.ContactSet]]
+Name = "office"
+Title = "new_recruitment_office_title"
+# the office's hub: the free-match list («Competir contra bots») with its series tabs, the beaten teams' crests and the
+# selected team's lineup, as the old office; choosing a team opens its page
+Hub = "free_match"
+# the «fichas»: the story element spirits, a player costs fichas of his own element (the old office's currencies)
+ElementCurrency = { wind = "0xC35FFA3C", forest = "0x90B639BB", fire = "0x86503F3A", mountain = "0x81274E23" }
+# their names on the cost line and in the messages (text\rows\menu_text.toml)
+ElementCurrencyTitle = { wind = "new_recruitment_office_fichas_wind", forest = "new_recruitment_office_fichas_forest", fire = "new_recruitment_office_fichas_fire", mountain = "new_recruitment_office_fichas_mountain" }
+# «Dimitir»: the fichas of his element a released player gives back (the old office's 3)
+ReleaseRefund = 3
+# the friendly a card's trial is played as (content\friendlies\office_trial.toml)
+TrialFriendly = "new_recruitment_office_trial"
+# the old office's requirements (office_terms.toml): asked only while config.toml [office] requirements is true
+# (default false: price only, trials optional)
+Requirements = { config = "office.requirements", default = false }
+
+  # rules of every team page of the set
+  [VRFW.ContactSet.Teams]
+  Staff = false                    # managers and coaches (team slots 19-20) are not sold
+  OnePagePerCharacter = true       # a character is sold on one page only (his old office page, else his own team's)
+  MergeSameName = true             # teams with the same name are one page
+
+  # the price of a card without old terms (a mod's new player, a game update's): the old office's tiers, in fichas of
+  # his element; the first tier whose conditions hold; price = Base + PerLevel x the level he joins at
+  [[VRFW.ContactSet.Teams.Price]]
+  Tier = "superstar"               # «Súper estrella»: the character has an Ídolo / Diamante card
+  Special = true
+  Base = 15
+  PerLevel = 0.2
+
+  [[VRFW.ContactSet.Teams.Price]]
+  Tier = "star_captain"            # «Estrella»: captain of his page's team
+  Captain = true
+  Base = 8
+  PerLevel = 0.125
+
+  [[VRFW.ContactSet.Teams.Price]]
+  Tier = "star"                    # «Estrella»: plays for 4 teams of the office or more
+  MinTeams = 4
+  Base = 8
+  PerLevel = 0.125
+
+  [[VRFW.ContactSet.Teams.Price]]
+  Tier = "featured"                # «Destacado»: plays for 2-3 teams
+  MinTeams = 2
+  Base = 4
+  PerLevel = 0.0833
+
+  [[VRFW.ContactSet.Teams.Price]]
+  Tier = "normal"
+  Base = 2
+  PerLevel = 0.05
+
+# one list per route of the Chronicle board (in the board's order), named after the series of its players
+[[VRFW.ContactMap]]
+Set = "office"
+Name = "routes"
+Order = 10
+Title = "new_recruitment_office_route"   # shown when a route's series cannot be named
+  [VRFW.ContactMap.Teams]
+  Source = "chronicle_routes"
+
+# the other teams of «Competir contra bots» (story, clubs, street teams) and the old office's pages on no route (the
+# Chronicle legend matches): one list after the routes
+[[VRFW.ContactMap]]
+Set = "office"
+Name = "story"
+Order = 90
+Title = "new_recruitment_office_story"
+  [VRFW.ContactMap.Teams]
+  Source = "free_match"

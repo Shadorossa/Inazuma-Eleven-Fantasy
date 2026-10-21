@@ -210,8 +210,13 @@ end
 -- copy's wrapper, and that wrapper then called itself by tail call forever (a hang without any error) as soon as the
 -- plate listed a move. The retail function is now captured in the wrapper's own closure (EVT_PH_Wrap: never wrapped
 -- twice) and kept in EVT_PH_SKL_RETAIL for the direct calls below.
+-- The retail function is taken at load: before the script's host runs, VRFW_Host.wrap builds the wrapper only at the
+-- function's first call, so the direct calls cannot wait for make(orig). The first copy in this VM keeps it.
+if EVT_PH_SKL_RETAIL == nil and type(SetSkillItemLayerName) == "function" then
+  EVT_PH_SKL_RETAIL = SetSkillItemLayerName
+end
 EVT_PH_Wrap("SetSkillItemLayerName", function(orig)
-  EVT_PH_SKL_RETAIL = orig
+  EVT_PH_SKL_RETAIL = EVT_PH_SKL_RETAIL or orig
   return function(...)
     EVT_PHI.skl = {...}
     return orig(...)

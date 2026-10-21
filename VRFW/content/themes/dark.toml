@@ -107,3 +107,7 @@ enabled = true
 # Colour token of the style name -> palette key (k = grey ink, b = blue ink; w white stays).
 map = { k = "text", b = "accent_hi" }
 keep_styles = []
+
+[fade]
+# Colour of the game's white full-screen fades while the theme is served (palette / accent key).
+white = "bg"

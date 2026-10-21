@@ -20,14 +20,17 @@ schema = "VRFW.technique/3"
 # Pingüino emperador nº1.
 [[edit]]
 target = "whs00610"
-trajectory = { goal_points = [[18.01, 11.59, 4.5], [8.71, 6.17], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[18.01, 11.59, 4.5], [8.71, 6.17], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[18.01, 4.5, 4.5], [8.71, 3.08], [0.0, 2.0]], unblockable = false }
 
 # Pingüino emperador nº2 (covers whs00400_or).
 [[edit]]
 target = "whs00400"
-trajectory = { goal_points = [[19.78, 5.84, 999, 9.89], [0.0, 0.18]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[19.78, 5.84, 999, 9.89], [0.0, 0.18]], unblockable = false }
+trajectory = { goal_points = [[19.78, 4.27, 999.0, 9.89], [0.0, 0.18]], unblockable = false }
 
 # Pingüino emperador nº3 (covers whs01050_or / _mm).
 [[edit]]
 target = "whs01050"
-trajectory = { goal_points = [[30.0, 25.21], [20.58, 10.9], [17.13, 1.9], [5.87, 0.6]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[30.0, 25.21], [20.58, 10.9], [17.13, 1.9], [5.87, 0.6]], unblockable = false }
+trajectory = { goal_points = [[30.0, 4.5], [20.58, 2.23], [17.13, 0.81], [5.87, 0.6]], unblockable = false }

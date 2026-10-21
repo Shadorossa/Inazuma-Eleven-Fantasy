@@ -7,7 +7,7 @@
 VRFW_DropList = VRFW_DropList or {}
 do
   local D = VRFW_DropList
-  D.ROW = 1472534724                  -- () -> section (1 header, 2 aura item, 0 other, -1 none), kind, id
+  D.ROW = 1472534724                  -- () -> section (1 AURAS header, 2 aura item, 3 a declared section's header, 0 other, -1 none), kind, id[, picture]
   D.TEXT_AURAS = 1622646884          -- menu_text "AURAS"
   D.TEXT_GET = 4074371074                            -- CMND_TEXT_GET (textId) -> text
   D.SET_TEXT = 1083631230                            -- (layer, text node, string, instance)
@@ -52,6 +52,8 @@ do
   -- list_drop_chr_msk01: a slanted 91 x 54 strip, x 19-110 / y 37-91 of the 128 px quad, fading to the right; the quad
   -- moved so the strip ends at the band's right end and sits on its middle), the rate moved left of the art
   D.AURA = {band = {23, 35, 724, 69}, art = {629, 64, 128, 128}, percent = {469, 0}, icon = {57, 0}}
+  -- the name's room on an aura row: from the name (x 131) to the rate's dots (x 469 + their offset), less a margin
+  D.NAME_ROOM = 320
   -- the team00_30 band of each aura type (CMND_GET_SOCCER_SKILL_INFO 13: 0 keshin, 1 armed keshin, 2 Mix-Max, 3 totem,
   -- 4 bond transformation, 5 awakening, 6 mode change), one per element 1-5 (fire / wind / wood / earth / none)
   D.BANDS = {
@@ -75,11 +77,11 @@ do
   end
 
   function D.Section()
-    local ok, s, kind, id = pcall(funcLuaCommand, D.ROW)
+    local ok, s, kind, id, pic = pcall(funcLuaCommand, D.ROW)
     if not ok or s == nil then
       return -1
     end
-    return s, kind, id
+    return s, kind, id, pic
   end
 
   local function pos(L, i, n, x, y)
@@ -115,8 +117,8 @@ do
   -- the "AURAS" header = the game's own header row (the "Items" pill, its size and place, the partition line) with
   -- only its label picture changed: vrfw_gtxt_auras01 of win05_38, one per language (VRFW image win05_38_auras.toml,
   -- research/scripts/vrfw_drop_list_header_build.py from menu_text vrfw_drop_list_auras)
-  function D.Header(L, i)
-    cmd(D.SET_TEX, L, D.W38, D.HEADER, 4088285385 --[[gtxt_spirits01]], 0, i)
+  function D.Header(L, i, pic)
+    cmd(D.SET_TEX, L, D.W38, pic or D.HEADER, 4088285385 --[[gtxt_spirits01]], 0, i)
   end
 
   -- the aura's character for its art: the aura chara (CMND_GET_SOCCER_SKILL_INFO 17), else (Mix-Max, mode change) the
@@ -134,6 +136,55 @@ do
       end
     end
     return 0
+  end
+
+  -- the aura's portrait on (mesh, slot) as the game's aura windows draw it: the aura character as aura art of its type
+  -- (SwapLayerFaceIconTex, D.ART_SIZE: keshin / armour / bond / awakening 8 = aura_fs, totem 14 = aura_soul, Mix-Max /
+  -- mode change 12 = aura_mixi, the last only when 2208175668 says that art exists); without that art the character's
+  -- list face icon (552280324). True = drawn.
+  function D.Portrait(L, i, mesh, slot, chara, kind)
+    local art = D.ART_SIZE[kind] or 8
+    if art == 12 then
+      local okf, has = pcall(funcLuaMenuCommand, 2208175668 --[[has Mix-Max face art]], chara)
+      if not (okf and has == true) then
+        art = nil
+      end
+    end
+    if art ~= nil then
+      local ok, r = pcall(funcLuaMenuCommand, D.FACE, L, i, mesh, slot, chara, 0, art, true, true, true, 5)
+      if ok and r ~= false then
+        return true
+      end
+      cmd(D.RESET_FACE, L, i, slot)
+    end
+    pcall(SetDisableForceCharaInvalidUseTarget)
+    local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, i, false, mesh, slot, 0, 0, chara)
+    pcall(SetEnableForceCharaInvalidUseTarget)
+    return ok and r ~= false
+  end
+
+  -- a Mix-Max / mode change named by its own part: the game's item name («Miximax Trans: Liu Bei») when it fits before
+  -- the rate, else only the part after the colon («Liu Bei»; a text tag there: the character's name)
+  function D.SpecificName(L, i, item, chara)
+    local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
+    if not okn or type(name) ~= "string" then
+      return
+    end
+    local tail = string.match(name, "[:：]%s*(.-)%s*$")
+    if tail == nil or tail == "" then
+      return
+    end
+    local okw, w = pcall(funcLuaMenuCommand, D.TEXT_RECT, L, i, D.N.name[1], name)
+    if okw and type(w) == "number" and w <= D.NAME_ROOM then
+      return
+    end
+    if string.find(tail, "<", 1, true) ~= nil and chara ~= 0 then
+      local okc, a, b = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], chara, 10)
+      tail = (okc and type(b) == "string" and b) or (okc and type(a) == "string" and a) or nil
+    end
+    if tail ~= nil and tail ~= "" then
+      cmd(D.SET_TEXT, L, D.N.name[1], tail, i)
+    end
   end
 
   -- an item of the section: its aura's banner (the aura card's band and art)
@@ -163,28 +214,16 @@ do
     size(L, i, N.band, A.band[3], A.band[4])
     pos(L, i, N.percent, A.percent[1], A.percent[2])
     pos(L, i, N.icon, A.icon[1], A.icon[2])
-    -- Mix-Max / mode change: the label without the player ("Miximax Trans: X" -> "Miximax Trans"), the art shows who
-    if kind == 2 or kind == 6 then
-      local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
-      if okn and type(name) == "string" then
-        local head = string.match(name, "^(.-)%s*[:：]")
-        if head ~= nil and head ~= "" then
-          cmd(D.SET_TEXT, L, N.name[1], head, i)
-        end
-      end
-    end
     local chara = aura_chara(item)
+    if kind == 2 or kind == 6 then
+      D.SpecificName(L, i, item, chara)
+    end
+    -- every aura kind: its portrait at the band's right end (no character = no art, the row keeps its item icon)
     local shown = false
-    -- the portrait only when the aura's character has a face icon (else a white square, e.g. an imported aura
-    -- character without VR art): no art then, the row keeps its item icon
     if chara ~= 0 then
-      local okf, has = pcall(funcLuaMenuCommand, 2208175668 --[[has a face icon]], chara)
-      if okf and has then
-        if kind == 2 or kind == 6 then
-          cmd(D.RESET_FACE, L, i, D.SLOT_ART)
-        end
-        shown = cmd(D.FACE, L, i, N.art[1], D.SLOT_ART, chara, 0, D.ART_SIZE[kind] or 8, true, true, true, 5)
-      end
+      cmd(D.RESET_FACE, L, i, D.SLOT_ART)
+      local okp, drawn = pcall(D.Portrait, L, i, N.art[1], D.SLOT_ART, chara, kind)
+      shown = okp and drawn == true
     end
     if shown then
       D.art_t[i] = D.ART_DELAY
@@ -258,8 +297,12 @@ function UpdateListItem_ItemLine(a1, a2, a3, ...)
   local r = {vrfw_dl_iline(a1, a2, a3, ...)}
   if a3 then
     local D = VRFW_DropList
-    if D.Section() == 1 then
+    local s, _, _, pic = D.Section()
+    if s == 1 then
       pcall(D.Header, a1, a2)
+    elseif s == 3 and type(pic) == "number" then
+      -- a declared section ([[VRFW.DropList.Sections]]): the same header with its own label picture
+      pcall(D.Header, a1, a2, pic)
     else
       pcall(D.Plain, a1, a2)
     end

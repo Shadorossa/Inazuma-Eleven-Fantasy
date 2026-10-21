@@ -68,7 +68,7 @@ fields = { pos_x = { at = 0x30, type = "f32" }, pos_y = { at = 0x34, type = "f32
 [[VRFW.Global]]
 name = "menu_scene_kizuna"
 base = "game_root"
-chain = [0x6AD8]
+chain = ["Game.RootKizunaTown"]
 
 [[VRFW.Struct]]
 name = "MenuScene.Kizuna"

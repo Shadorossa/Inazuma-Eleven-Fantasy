@@ -28,6 +28,16 @@ file = "common/menu/100_mainmenu/mainmenu90/util_tb_doc_item/util_tb_doc_item.g4
 joint = "mainmenu90_31_output"
 scale = [0.8, 0.8, 1.0]
 
+# the category label «PLANTILLA DE EQUIPO» (_sdock_gtxt_teamdock01, a per-language texture, 728 px wide, its text spans
+# 23 % (pt) .. 59 % (fr) of it) ran into «Nv. EQUIPO» in the longest languages (Italian / French: the label ended 4-7 px from
+# the level label). Uniform 0.88 about its top-left corner (retail 364 x 40 at 258, -13), moved down 2.4 to stay centred:
+# the text now ends >= 24 px before the level text in all 9 languages (v7.1.2 and v7.2.1 layouts are identical).
+[[layout]]
+file = "common/menu/100_mainmenu/mainmenu90/util_tb_doc_item/util_tb_doc_item.g4pkm"
+joint = "_sdock_gtxt_teamdock01"
+translate = [258.0, -15.4, 0.0]
+scale = [320.32, 35.2, 1.0]
+
 [[object]]
 name = "util_tb_doc_item"
 from = "mainmenu90_31_doc_item"

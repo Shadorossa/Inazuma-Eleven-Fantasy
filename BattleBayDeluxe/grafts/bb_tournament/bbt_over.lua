@@ -1,0 +1,22 @@
+-- bb_chronicle_teams bb_tournament, the game-over telop (game_over_menu). A lost or drawn Battle Bay campaign match ends
+-- in the game's GameOver telop; a tournament match borrows the campaign's block, so the telop came after every group
+-- defeat. When its telop layer opens, the tournament is asked once (CMND_BBD_TOURN_STILL_IN): a group-stage defeat that
+-- leaves the player in the run closes the menu at once (the retail close: fade, menu object closed) and the top menu's
+-- sync records the result; a defeat that ends the run (or any other game over) keeps the retail telop.
+-- Globals only; nothing runs at chunk load.
+do
+  local open_layer = OnOpenLayer
+  function OnOpenLayer(a1, a2, ...)
+    if a1 == 3428917655 --[[game over telop]] then
+      local ok, still_in = pcall(funcLuaCommand, @crc:CMND_BBD_TOURN_STILL_IN@)
+      if ok and still_in == true then
+        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams tournament",
+          "game over skipped: the group-stage defeat keeps the player in the run")
+        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false)
+        RunManageCoroutine(2)
+        return
+      end
+    end
+    return open_layer(a1, a2, ...)
+  end
+end

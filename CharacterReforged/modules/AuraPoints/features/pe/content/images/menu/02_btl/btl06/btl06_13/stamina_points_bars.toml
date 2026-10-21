@@ -7,6 +7,9 @@
 #   stamina_points_gloss_00 .. _47   the glass gloss band at position NN of 48 across the gauge fill (centre -0.10 ..
 #                                    1.10 of its width; research/scripts/hud_gloss_build.py), swept over the bar while
 #                                    the player's PE drains faster (docs/game/mechanics/aura-costs.md §6)
+#   stamina_points_sprint_fill01     the sprint bar in front of the PE fill (translucent white) and, during the
+#   stamina_points_sprint_winded01   «winded» cooldown, a dimmed grey twin: the gauge fill's shape, on the frame's quad
+#                                    (research/scripts/hud_sprint_build.py, docs/game/mechanics/match-stamina.md §18)
 schema = "VRFW.image/1"
 
 # ---- the «PE» tag
@@ -443,3 +446,33 @@ texture = "stamina_points_gloss"
 x = 128
 y = 370
 size = [128, 12]
+
+# ---- sprint segment
+
+[[texture]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "stamina_points_sprint_fill"
+size = [512, 32]
+png = "sprint/stamina_points_sprint_fill.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "stamina_points_sprint_fill01"
+texture = "stamina_points_sprint_fill"
+x = 0
+y = 4
+size = [448, 24]
+
+[[texture]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "stamina_points_sprint_winded"
+size = [512, 32]
+png = "sprint/stamina_points_sprint_winded.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+name = "stamina_points_sprint_winded01"
+texture = "stamina_points_sprint_winded"
+x = 0
+y = 4
+size = [448, 24]

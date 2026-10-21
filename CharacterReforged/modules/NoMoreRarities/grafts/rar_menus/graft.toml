@@ -64,8 +64,9 @@ stem = "soccer_summon_menu"
 '''
   crc = "none"
 
+  # after the retail «both options off» check, right before the sub-window's option list is built
   [[files.ops]]
-  type = "insert_before"
+  type = "insert_after"
   point = "soccer_summon_menu.OpenSpiritSubWindow.RarMenus"
   text = '''
   if EVT_RARITY_UP_DISABLED then -- EVT rarity

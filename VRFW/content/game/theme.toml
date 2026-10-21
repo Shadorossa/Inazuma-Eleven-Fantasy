@@ -1,0 +1,26 @@
+schema = "VRFW.game/2"
+
+# UI theme: the colour of the game's full-screen fades (schema VRFW.game/2). The `theme` type fills the table
+# Theme.FadeWhite (key = channel 0..2, value 0..1) from `[fade] white` of the served theme; while it is empty (no theme
+# served, or a theme without `[fade]`) the answers find no value and the game's white stays.
+
+# FadeLayerTo(obj, layer, start RGBA*, target RGBA*, seconds, from_start): every fade of one layer of the bright-fade
+# object. Each layer's record is 0x3C bytes at obj + layer * 0x3C: start RGBA at +0x00, target RGBA at +0x10 (f32).
+[[VRFW.Hook]]
+name = "Theme.FadeColor"
+game = "Render.BrightFadeLayer"
+kind = "function"
+
+# Start colour: a white start the caller asked for (args[3] = 1, 1, 1) takes the theme's colour, channel by channel.
+[[VRFW.Hook.answer]]
+phase = "post"
+each = { count = "3", max = 3 }
+value = "if(([args[3]]:f32 == 1) * ([args[3] + 4]:f32 == 1) * ([args[3] + 8]:f32 == 1) * ([args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + i * 4]:f32 == 1), lookup(Theme.FadeWhite, i), [args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + i * 4]:f32)"
+write = "[args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + i * 4]:f32"
+
+# Target colour: a white target (args[4] = 1, 1, 1) takes the theme's colour; alpha stays the game's.
+[[VRFW.Hook.answer]]
+phase = "post"
+each = { count = "3", max = 3 }
+value = "if(([args[4]]:f32 == 1) * ([args[4] + 4]:f32 == 1) * ([args[4] + 8]:f32 == 1) * ([args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + 0x10 + i * 4]:f32 == 1), lookup(Theme.FadeWhite, i), [args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + 0x10 + i * 4]:f32)"
+write = "[args[1] + mask(args[2], 0xFFFFFFFF) * 0x3C + 0x10 + i * 4]:f32"

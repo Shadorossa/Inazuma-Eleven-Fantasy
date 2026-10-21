@@ -1,0 +1,116 @@
+# New Recruitment: the recruitment office's look on the VR-Framework's contact map screen (content\screen_art\n# contact_map.toml): Inazuma Fantasy's former contact map art (research/scripts/contact_map_req_art.py drew it;
+# the ground is the right part of the game's menu background), copied with the office. Atlas: see the paths below.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_board"
+size = [1024, 416]
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_list_row"
+texture = "new_recruitment_office_board"
+x = 0
+y = 0
+size = [860, 176]
+png = "new_recruitment_office/new_recruitment_office_list_row.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_cursor"
+texture = "new_recruitment_office_board"
+x = 0
+y = 180
+size = [168, 168]
+png = "new_recruitment_office/new_recruitment_office_cursor.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_tile_hidden"
+texture = "new_recruitment_office_board"
+x = 172
+y = 180
+size = [128, 128]
+png = "new_recruitment_office/new_recruitment_office_tile_hidden.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_tile_done"
+texture = "new_recruitment_office_board"
+x = 304
+y = 180
+size = [128, 128]
+png = "new_recruitment_office/new_recruitment_office_tile_done.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_tile_start"
+texture = "new_recruitment_office_board"
+x = 436
+y = 180
+size = [128, 128]
+png = "new_recruitment_office/new_recruitment_office_tile_start.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_icon_unknown"
+texture = "new_recruitment_office_board"
+x = 568
+y = 180
+size = [96, 96]
+png = "new_recruitment_office/new_recruitment_office_icon_unknown.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_icon_lock"
+texture = "new_recruitment_office_board"
+x = 668
+y = 180
+size = [96, 96]
+png = "new_recruitment_office/new_recruitment_office_icon_lock.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_icon_check"
+texture = "new_recruitment_office_board"
+x = 768
+y = 180
+size = [96, 96]
+png = "new_recruitment_office/new_recruitment_office_icon_check.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_icon_start"
+texture = "new_recruitment_office_board"
+x = 868
+y = 180
+size = [96, 96]
+png = "new_recruitment_office/new_recruitment_office_icon_start.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_arrow_left"
+texture = "new_recruitment_office_board"
+x = 0
+y = 352
+size = [64, 64]
+png = "new_recruitment_office/new_recruitment_office_arrow_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_arrow_right"
+texture = "new_recruitment_office_board"
+x = 68
+y = 352
+size = [64, 64]
+png = "new_recruitment_office/new_recruitment_office_arrow_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_board.g4tx"
+name = "new_recruitment_office_link"
+texture = "new_recruitment_office_board"
+x = 136
+y = 352
+size = [16, 16]
+png = "new_recruitment_office/new_recruitment_office_link.png"

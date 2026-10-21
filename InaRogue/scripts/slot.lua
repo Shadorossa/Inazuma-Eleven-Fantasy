@@ -51,7 +51,20 @@ local function ready()
   return ok and r == true
 end
 
+-- the storage slot of an open overlay session (the INAROGUE save loaded over the player's slot), nil = none
+local function overlay_slot()
+  local ok, s = pcall(VRFW.session.state)
+  if ok and type(s) == "table" and s.open == true and type(s.storage) == "number" and s.storage > 0 then
+    return math.floor(s.storage)
+  end
+  return nil
+end
+
+-- the loaded game's slot: the overlay session's storage slot first (the slot service is not ready while a menu scene
+-- changes), else the slot service's active slot
 local function active()
+  local o = overlay_slot()
+  if o then return o end
   if not ready() then return 1 end
   local ok, s = pcall(VRFW.slots.active)
   return ok and tonumber(s) or 1

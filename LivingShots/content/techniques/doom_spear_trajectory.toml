@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Lanza letal (whs01400).
 [[edit]]
 target = "whs01400"
-trajectory = { goal_points = [[29.58, 18.79, 999, 14.79], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[29.58, 18.79, 999, 14.79], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[29.58, 4.5, 999.0, 14.79], [0.0, 2.0]], unblockable = false }

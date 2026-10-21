@@ -1,0 +1,13 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe: the rival of the Chronicle side node `go_royal_practice` (content/teams/70_route_nodes/side_nodes.toml):
+# GO 3DS chapter 7, the practice match against Royal Academy (btl0032, 3DS Lv 24), which has no VR Chronicle game of its
+# own. A copy of VR's Royal Academy Chronicle team (the rival of fbtl_cro04_060_010, 100 % of the 3DS roster), so that
+# game keeps its own team; its levels and moves come from research/scripts/chronicle_deluxe_story_teams_build.py
+# (13_go/0310_go_story_teams.toml, the node's `Story`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+
+[[team]]
+name = "cro_go_royal_practice"
+key = "evt_cro_go_royal_practice"
+based_on = "tm_cro_go1_0600"           # Royal Academy (GO Chronicle)

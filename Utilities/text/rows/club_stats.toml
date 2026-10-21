@@ -1,0 +1,434 @@
+# Texts of Utilities' «Estadísticas del club» (the row of «Caseta del club», graft util_club_stats_row, and its panel
+# assets/lua/play_guide_top_menu/150_club_stats.lua, which reads them with CMND_TEXT_GET(crc32(id))). Format:
+# docs/game/engine/text-engine.md §2. «{1}» = a value the panel fills in. Dates use utilities.cs_date (career.toml).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the «Caseta del club» row and the screen's header
+[[row]]
+id = "Utilities.ClubStats.Row"
+es = "Estadísticas del club"
+en = "Club stats"
+fr = "Statistiques du club"
+de = "Vereinsstatistik"
+it = "Statistiche del club"
+pt = "Estatísticas do clube"
+ja = "クラブの記録"
+zh_hans = "俱乐部统计"
+zh_hant = "俱樂部統計"
+
+# the row's help line
+[[row]]
+id = "Utilities.ClubStats.RowHelp"
+es = "Goles, partidos, victorias y fichajes de tu club y sus jugadores."
+en = "Goals, matches, wins and signings of your club and its players."
+fr = "Buts, matchs, victoires et recrues de ton club et de ses joueurs."
+de = "Tore, Spiele, Siege und Neuzugänge deines Vereins und seiner Spieler."
+it = "Gol, partite, vittorie e acquisti del tuo club e dei suoi giocatori."
+pt = "Gols, partidas, vitórias e contratações do teu clube e dos jogadores."
+ja = "クラブと選手のゴール・試合・勝利・加入日。"
+zh_hans = "俱乐部及球员的进球、比赛、胜场与加入日期。"
+zh_hant = "俱樂部及球員的進球、比賽、勝場與加入日期。"
+
+# the totals band: «{1}» = the day the club totals started
+[[row]]
+id = "Utilities.ClubStats.ClubSince"
+es = "Totales del club desde el {1}"
+en = "Club totals since {1}"
+fr = "Totaux du club depuis le {1}"
+de = "Vereinsbilanz seit {1}"
+it = "Totali del club dal {1}"
+pt = "Totais do clube desde {1}"
+ja = "{1}からのクラブ通算"
+zh_hans = "自{1}起的俱乐部总计"
+zh_hant = "自{1}起的俱樂部總計"
+
+# the totals band before the first counted match
+[[row]]
+id = "Utilities.ClubStats.ClubNone"
+es = "Los totales del club se cuentan desde tu próximo partido"
+en = "Club totals count from your next match"
+fr = "Les totaux du club comptent dès ton prochain match"
+de = "Die Vereinsbilanz zählt ab deinem nächsten Spiel"
+it = "I totali del club contano dalla prossima partita"
+pt = "Os totais do clube contam a partir da próxima partida"
+ja = "クラブ通算は次の試合から記録されます"
+zh_hans = "俱乐部总计将从下一场比赛开始记录"
+zh_hant = "俱樂部總計將從下一場比賽開始記錄"
+
+# totals: matches
+[[row]]
+id = "Utilities.ClubStats.Matches"
+es = "PARTIDOS"
+en = "MATCHES"
+fr = "MATCHS"
+de = "SPIELE"
+it = "PARTITE"
+pt = "PARTIDAS"
+ja = "試合"
+zh_hans = "比赛"
+zh_hant = "比賽"
+
+# totals: wins-draws-losses
+[[row]]
+id = "Utilities.ClubStats.Record"
+es = "V-E-D"
+en = "W-D-L"
+fr = "V-N-D"
+de = "S-U-N"
+it = "V-P-S"
+pt = "V-E-D"
+ja = "勝-分-敗"
+zh_hans = "胜-平-负"
+zh_hant = "勝-平-負"
+
+# totals: win percentage
+[[row]]
+id = "Utilities.ClubStats.WinPct"
+es = "% VICTORIAS"
+en = "WIN %"
+fr = "% VICTOIRES"
+de = "SIEG-%"
+it = "% VITTORIE"
+pt = "% VITÓRIAS"
+ja = "勝率"
+zh_hans = "胜率"
+zh_hant = "勝率"
+
+# totals: goals scored
+[[row]]
+id = "Utilities.ClubStats.GoalsFor"
+es = "GOLES A FAVOR"
+en = "GOALS FOR"
+fr = "BUTS POUR"
+de = "TORE"
+it = "GOL FATTI"
+pt = "GOLS PRÓ"
+ja = "得点"
+zh_hans = "进球"
+zh_hant = "進球"
+
+# totals: goals conceded
+[[row]]
+id = "Utilities.ClubStats.GoalsAgainst"
+es = "GOLES EN CONTRA"
+en = "GOALS AGAINST"
+fr = "BUTS CONTRE"
+de = "GEGENTORE"
+it = "GOL SUBITI"
+pt = "GOLS CONTRA"
+ja = "失点"
+zh_hans = "失球"
+zh_hant = "失球"
+
+# totals: goal difference
+[[row]]
+id = "Utilities.ClubStats.GoalDiff"
+es = "DIFERENCIA"
+en = "GOAL DIFF."
+fr = "DIFFÉRENCE"
+de = "TORDIFFERENZ"
+it = "DIFFERENZA"
+pt = "SALDO"
+ja = "得失点差"
+zh_hans = "净胜球"
+zh_hant = "淨勝球"
+
+# totals: matches without conceding
+[[row]]
+id = "Utilities.ClubStats.CleanSheets"
+es = "SIN ENCAJAR"
+en = "CLEAN SHEETS"
+fr = "CAGE INVIOLÉE"
+de = "ZU NULL"
+it = "PORTA INVIOLATA"
+pt = "SEM SOFRER"
+ja = "無失点"
+zh_hans = "零封"
+zh_hant = "零封"
+
+# totals: the biggest win
+[[row]]
+id = "Utilities.ClubStats.BestWin"
+es = "MAYOR VICTORIA"
+en = "BIGGEST WIN"
+fr = "PLUS LARGE VICTOIRE"
+de = "HÖCHSTER SIEG"
+it = "VITTORIA PIÙ LARGA"
+pt = "MAIOR VITÓRIA"
+ja = "最大勝利"
+zh_hans = "最大胜利"
+zh_hant = "最大勝利"
+
+# totals: the longest run of wins
+[[row]]
+id = "Utilities.ClubStats.WinRun"
+es = "RACHA DE VICTORIAS"
+en = "WINNING RUN"
+fr = "VICTOIRES D'AFFILÉE"
+de = "SIEGSERIE"
+it = "VITTORIE DI FILA"
+pt = "VITÓRIAS SEGUIDAS"
+ja = "最多連勝"
+zh_hans = "最长连胜"
+zh_hant = "最長連勝"
+
+# totals: the longest run without a loss
+[[row]]
+id = "Utilities.ClubStats.UnbeatenRun"
+es = "RACHA SIN PERDER"
+en = "UNBEATEN RUN"
+fr = "SANS DÉFAITE"
+de = "UNGESCHLAGEN"
+it = "IMBATTIBILITÀ"
+pt = "INVENCIBILIDADE"
+ja = "最多無敗"
+zh_hans = "最长不败"
+zh_hant = "最長不敗"
+
+# the player list band: «{1}» = how many players
+[[row]]
+id = "Utilities.ClubStats.Players"
+es = "JUGADORES ({1})"
+en = "PLAYERS ({1})"
+fr = "JOUEURS ({1})"
+de = "SPIELER ({1})"
+it = "GIOCATORI ({1})"
+pt = "JOGADORES ({1})"
+ja = "選手（{1}）"
+zh_hans = "球员（{1}）"
+zh_hant = "球員（{1}）"
+
+# the player list band: «{1}» = the sort column
+[[row]]
+id = "Utilities.ClubStats.SortBy"
+es = "Orden: {1}"
+en = "Sorted by: {1}"
+fr = "Tri : {1}"
+de = "Sortiert nach: {1}"
+it = "Ordine: {1}"
+pt = "Ordem: {1}"
+ja = "並び順：{1}"
+zh_hans = "排序：{1}"
+zh_hant = "排序：{1}"
+
+# column: the player
+[[row]]
+id = "Utilities.ClubStats.ColName"
+es = "JUGADOR"
+en = "PLAYER"
+fr = "JOUEUR"
+de = "SPIELER"
+it = "GIOCATORE"
+pt = "JOGADOR"
+ja = "選手"
+zh_hans = "球员"
+zh_hant = "球員"
+
+# column: matches played
+[[row]]
+id = "Utilities.ClubStats.ColMatches"
+es = "PJ"
+en = "MP"
+fr = "MJ"
+de = "SP"
+it = "PG"
+pt = "PJ"
+ja = "試合"
+zh_hans = "场"
+zh_hant = "場"
+
+# column: goals
+[[row]]
+id = "Utilities.ClubStats.ColGoals"
+es = "G"
+en = "G"
+fr = "B"
+de = "T"
+it = "G"
+pt = "G"
+ja = "得点"
+zh_hans = "进球"
+zh_hant = "進球"
+
+# column: assists
+[[row]]
+id = "Utilities.ClubStats.ColAssists"
+es = "A"
+en = "A"
+fr = "PD"
+de = "V"
+it = "A"
+pt = "A"
+ja = "アシスト"
+zh_hans = "助攻"
+zh_hant = "助攻"
+
+# column: man of the match awards
+[[row]]
+id = "Utilities.ClubStats.ColMvp"
+es = "MVP"
+en = "MVP"
+fr = "MVP"
+de = "MVP"
+it = "MVP"
+pt = "MVP"
+ja = "MVP"
+zh_hans = "MVP"
+zh_hant = "MVP"
+
+# column: win percentage in his matches
+[[row]]
+id = "Utilities.ClubStats.ColWinPct"
+es = "% V"
+en = "WIN %"
+fr = "% V"
+de = "SIEG-%"
+it = "% V"
+pt = "% V"
+ja = "勝率"
+zh_hans = "胜率"
+zh_hant = "勝率"
+
+# column: the day he was signed
+[[row]]
+id = "Utilities.ClubStats.ColSigned"
+es = "FICHADO"
+en = "SIGNED"
+fr = "RECRUTÉ"
+de = "BEITRITT"
+it = "ACQUISTATO"
+pt = "CONTRATADO"
+ja = "加入日"
+zh_hans = "加入日期"
+zh_hant = "加入日期"
+
+# sort: goals
+[[row]]
+id = "Utilities.ClubStats.SortGoals"
+es = "Goles"
+en = "Goals"
+fr = "Buts"
+de = "Tore"
+it = "Gol"
+pt = "Gols"
+ja = "得点"
+zh_hans = "进球"
+zh_hant = "進球"
+
+# sort: matches
+[[row]]
+id = "Utilities.ClubStats.SortMatches"
+es = "Partidos"
+en = "Matches"
+fr = "Matchs"
+de = "Spiele"
+it = "Partite"
+pt = "Partidas"
+ja = "試合数"
+zh_hans = "比赛场数"
+zh_hant = "比賽場數"
+
+# sort: assists
+[[row]]
+id = "Utilities.ClubStats.SortAssists"
+es = "Asistencias"
+en = "Assists"
+fr = "Passes décisives"
+de = "Vorlagen"
+it = "Assist"
+pt = "Assistências"
+ja = "アシスト"
+zh_hans = "助攻"
+zh_hant = "助攻"
+
+# sort: man of the match awards
+[[row]]
+id = "Utilities.ClubStats.SortMvp"
+es = "MVP"
+en = "MVP"
+fr = "MVP"
+de = "MVP"
+it = "MVP"
+pt = "MVP"
+ja = "MVP"
+zh_hans = "MVP"
+zh_hant = "MVP"
+
+# sort: win percentage
+[[row]]
+id = "Utilities.ClubStats.SortWinPct"
+es = "% de victorias"
+en = "Win %"
+fr = "% de victoires"
+de = "Siegquote"
+it = "% di vittorie"
+pt = "% de vitórias"
+ja = "勝率"
+zh_hans = "胜率"
+zh_hant = "勝率"
+
+# sort: newest signing first
+[[row]]
+id = "Utilities.ClubStats.SortSigned"
+es = "Fichaje más reciente"
+en = "Newest signing"
+fr = "Recrue la plus récente"
+de = "Neuester Zugang"
+it = "Acquisto più recente"
+pt = "Contratação mais recente"
+ja = "加入日が新しい順"
+zh_hans = "最新加入"
+zh_hant = "最新加入"
+
+# the keys line
+[[row]]
+id = "Utilities.ClubStats.Keys"
+es = "<CMD_LEFT><CMD_RIGHT> Ordenar   <CMD_BACK> Volver"
+en = "<CMD_LEFT><CMD_RIGHT> Sort   <CMD_BACK> Back"
+fr = "<CMD_LEFT><CMD_RIGHT> Trier   <CMD_BACK> Retour"
+de = "<CMD_LEFT><CMD_RIGHT> Sortieren   <CMD_BACK> Zurück"
+it = "<CMD_LEFT><CMD_RIGHT> Ordina   <CMD_BACK> Indietro"
+pt = "<CMD_LEFT><CMD_RIGHT> Ordenar   <CMD_BACK> Voltar"
+ja = "<CMD_LEFT><CMD_RIGHT> 並び替え   <CMD_BACK> 戻る"
+zh_hans = "<CMD_LEFT><CMD_RIGHT> 排序   <CMD_BACK> 返回"
+zh_hant = "<CMD_LEFT><CMD_RIGHT> 排序   <CMD_BACK> 返回"
+
+# the player list while no player has numbers
+[[row]]
+id = "Utilities.ClubStats.NoPlayers"
+es = "Aún no hay datos de jugadores: se cuentan desde el próximo partido."
+en = "No player numbers yet: they count from your next match."
+fr = "Pas encore de données : elles comptent dès ton prochain match."
+de = "Noch keine Spielerdaten: sie zählen ab deinem nächsten Spiel."
+it = "Ancora nessun dato: si contano dalla prossima partita."
+pt = "Ainda sem dados: contam a partir da próxima partida."
+ja = "選手の記録はまだありません。次の試合から記録されます。"
+zh_hans = "暂无球员数据，将从下一场比赛开始记录。"
+zh_hant = "暫無球員資料，將從下一場比賽開始記錄。"
+
+# the screen without a save's numbers (a mod's own save slot)
+[[row]]
+id = "Utilities.ClubStats.NoSave"
+es = "Esta partida no guarda estadísticas del club."
+en = "This save keeps no club stats."
+fr = "Cette partie n'enregistre pas de statistiques."
+de = "Dieser Spielstand speichert keine Statistik."
+it = "Questo salvataggio non registra statistiche."
+pt = "Este jogo salvo não guarda estatísticas."
+ja = "このセーブではクラブの記録は残りません。"
+zh_hans = "此存档不记录俱乐部统计。"
+zh_hant = "此存檔不記錄俱樂部統計。"
+
+# a signing day before the numbers started
+[[row]]
+id = "Utilities.ClubStats.Unknown"
+es = "-"
+en = "-"
+fr = "-"
+de = "-"
+it = "-"
+pt = "-"
+ja = "-"
+zh_hans = "-"
+zh_hant = "-"

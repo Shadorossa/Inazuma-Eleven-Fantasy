@@ -178,8 +178,13 @@ if BBT_WRAPPED_SW == nil and SetupWindowParams ~= nil then
   end
   function BBT_SW_ThirdRow(rows)
     local ROW, LOC = 2914934797 --[[win05_08_sub_list_item_lr]], 379318822 --[[win05_17_sub_list_locator_lr]]
+    -- the copy stands where the retail locator stands (builds that place it in SetupWindowParams: v7.2.1)
+    local okp, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], LOC, 0)
     funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], LOC, 0)
     funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], BBT_SW_LOC3, 0)
+    if okp and type(x) == "number" and type(y) == "number" then
+      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], BBT_SW_LOC3, x, y, 0)
+    end
     for i = 2, rows - 1 do
       funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], ROW, i)
     end
@@ -486,6 +491,7 @@ BBT.FN_NEXT = 1706497101
 -- the bracket layers (content\menus\bb_tournament.toml; 1.5.15: the whole bracket in one view, built from its size)
 BBT.L = {
   bg = 751755006,
+  stadium = 3903912928,   -- 1.8.0: the Victory Road stadium (opaque) behind the band
   line = 2962010247,    -- connector pieces (a tinted white quad)
   row_l = 697264244,  -- a team plate, crest left of the name (left side; results / groups; champion)
   row_r = 3548402967,  -- the mirrored plate (right side)
@@ -504,7 +510,12 @@ BBT.L.crest = 3817070050
 -- to the bracket's own pools. 1.5.60: the group tables are drawn in their own menu (BBT_GroupsShow), so the texts are
 -- the bracket's only (txt 64: 63 scores of a 64-team bracket, 64 goals of a 32-match results page). Budget: retail 26
 -- + Utilities 269 + this file 484 = 779 in bb_stadium_top_menu (every pool costs its instances at every opening).
-BBT.N = { line = 256, row_l = 33, row_r = 32, txt = 64, icon = 1, box = 64, crest = 32 }
+-- 1.8.0: box 36 (the stadium's dim + a results page's 32 score boxes, or on a tree the dim, the player's focus
+-- band, the stars at the joints (at most 32), the final stadium's panel and picture: at most 36). 1.9.0: the scores
+-- are digit sprites on the connector pool (BBT.NUM): line 256 -> 330 (1.12.0; a 64-team tree: 251 pieces + 62 pairs + the
+-- final's 2 digits + shoot-outs; a results page: its digits only), txt 66 -> 4 (the final stadium's two lines, the
+-- champion screen's two)
+BBT.N = { line = 330, row_l = 33, row_r = 32, txt = 4, icon = 1, box = 36, crest = 32 }
 -- draw priority of a connector-pool quad by what it draws (the layer's own is the connectors' 549; a score box drawn
 -- on it where the menu has no box pool: 552, BBT.SHARE)
 BBT.PRIO = { line = 549, box = 552 }
@@ -514,6 +525,9 @@ BBT.PRIO = { line = 549, box = 552 }
 BBT.SHARE = {}
 BBT.ROW_CHAMP = 32                 -- row_l instance of the champion's plate
 BBT.ART = 2658588602               -- crc32("#/menu/220_img/bbd_tn/bbd_tn.g4tx"): the mod's drawings
+-- 1.12.0: the score digits' own atlas (a g4tx holds at most 255 sprites; 1.9.0 had them all in bbd_tn: 275, and the
+-- game crashed loading it): crc32("#/menu/220_img/bbd_tn_num/bbd_tn_num.g4tx")
+BBT.ART_NUM = 1494349866
 BBT.SPR_LINE = 1533989496
 BBT.SPR_CROWN = 1525901733
 -- 1.5.37 (owner in game, 2026-10-13: every connector white, the lost branches too): CMND_SET_PRIM_COLOR never tinted
@@ -524,9 +538,39 @@ BBT.SPR_STATE = {
   out = 3552629531, out_me = 1411917964,
   win = 938553375, lose = 1173382537, even = 2688933539,
 }
+-- 1.8.0 (owner 2026-10-21: the bracket in the Victory Road look; research/scripts/bbd_bracket_art.py): a lit piece is
+-- a white core with a halo across its thickness, one sprite per direction (gold; the player's own path cyan); the
+-- unlit pieces navy (bbd_tn_line_plain), a lost way dark (out / out_me)
+BBT.SPR_HALO = {
+  lit = { h = 4227230180, v = 33117319 },
+  me = { h = 1378105206, v = 2821392917 },
+}
+BBT.SPR_STAR = 1134640282      -- the glow at the joint a team waits at (the Victory Road star)
+BBT.SPR_FOCUS = 1749720744    -- the player's focus band behind his plate
+BBT.SPR_PANEL = 2821130062    -- the final stadium's translucent panel
+BBT.SPR_DIM = 671880702        -- the Victory Road stadium dimmed under a page (one box-pool quad)
+-- the team strips in the order of scripts/lib/plate_colors.lua M.names (a plate's .strip = its 1-based index): the
+-- list plate's own sprite (list_base_xs01_off of team06_02.g4tx) swapped for the team's strip (CMND 558735651)
+BBT.SPR_STRIP = {
+  3023874441, 1316267766, 2209741585, 3525202131,
+  1815493204, 1998271095, 3107218792, 3310258453,
+  2332099802, 2095714261,
+}
+BBT.PLATE_SPRITE = 3628801333
+BBT.PLATE_ATLAS = 143680280            -- crc32("#/menu/102_team/team06/team06_02/team06_02.g4tx")
 BBT.WHITE = { 1, 1, 1 }
 BBT.MESH_QUAD = 312193881 --[[_icon_new01]]
 BBT.NODE_QUAD = 1909474081 --[[icon_new01]]
+-- 1.9.0 (owner 2026-10-21, on a crop of the Victory Road bracket: «Deberían verse así los resultados»): a played
+-- match's result is the two entrants' goals STACKED just past its joint, the upper entrant's over the lower's with the
+-- joint's outgoing line between them, the winner's gold and the loser's dark: one connector-pool quad showing a pair
+-- sprite bbd_tn_pr_<upper>_<lower>_<winner 1 / 2> (a number of two digits: single digits above / below); a
+-- shoot-out: the kicks as smaller digits beside each; the final: the two goals left / right below the centre; the
+-- results page: single digits in its boxes (research/scripts/bbd_bracket_art.py draws them; W / H / GAP / PAIR_H =
+-- its DIGIT_W / DIGIT_H / PAIR_GAP / PAIR_H). HEIGHT = a digit's height of the plates' pitch (H_MIN .. H_MAX px),
+-- SPACE = the gap from the joint (digit units), ADV = a digit's advance in a row, PRIO = in front of the connectors
+BBT.NUM = { W = 22, H = 29, GAP = 20, PAIR_H = 78, HEIGHT = 0.55, H_MIN = 13, H_MAX = 26, SPACE = 4, ADV = 0.78,
+  PEN_S = 0.75, FINAL_S = 1.3, BOX_FILL = 0.72, PRIO = 548 }
 -- the plate's four looks (team06_02): off = light (a team), on = blue (the player), ok = cyan (the champion), ol =
 -- the focus outline (never shown here)
 BBT.PLATE = { off = 2022529787, on = 2334302522, ok = 4215821749,
@@ -547,12 +591,16 @@ BBT.C = {
 -- plates' edge (+ GAP), so the final meets in the middle (CX) and its stem goes up to the champion's plate.
 BBT.G = {
   W = 1920, TOP = 136, BOTTOM = 1004, MARGIN = 34, CX = 960, PLATE_W = 520, PLATE_H = 72, FILL = 0.84,
-  SCALE_MAX = 1.0, GAP = 16, Q = 36, LINE = 4, LINE_LIT = 6, CHAMP_Y = 176, CHAMP_S = 0.85, CROWN_W = 72,
+  SCALE_MAX = 1.0, GAP = 16, Q = 36, LINE = 4, LINE_LIT = 10, CHAMP_Y = 176, CHAMP_S = 0.85, CROWN_W = 72,
   CROWN_H = 54, SCORE_DY = 18, TXT_MIN = 0.62, TXT_MAX = 0.9,
+  -- 1.8.0: the trophy's centre on the generic tree (the retail trophy in place of the crown, BBT_TrophyPlace); a
+  -- star's size = STAR of the plates' pitch (STAR_MIN .. STAR_MAX px); the focus band = FOCUS_W x FOCUS_H of the plate
+  TROPHY_Y = 300, STAR = 1.8, STAR_MIN = 32, STAR_MAX = 64, FOCUS_W = 1.2, FOCUS_H = 1.7,
   COL = { 0.66, 0.78, 0.95 }, COL_LIT = { 1.0, 0.80, 0.24 }, DIM = 0.5,
   -- the Victory Road background (vroad04_01_p1: one translucent navy panel, 2004 x 724 at y 178 below its origin)
   -- stretched to hold the whole bracket: BG_TOP .. BG_BOTTOM
   BG_Y = 178, BG_H = 724, BG_TOP = 100, BG_BOTTOM = 1036,
+  PRIO_STADIUM = 560,                    -- 1.8.0: the Victory Road stadium behind the bracket (BBT_Open)
   -- results (8 matches: two columns of 4, the two plates of a match one above the other); the group tables: their own
   -- menu (BBT_GroupsShow)
   RES_X = 190, RES_TOP = 196, RES_MATCH = 196, RES_ROW = 80, RES_VAL = 56,
@@ -768,10 +816,12 @@ function BBT_Quad(layer, spr, x, y, w, h, col, prio, atlas)
   funcLuaMenuCommand(C.SPRITE, layer, atlas or BBT.ART, spr, BBT.NODE_QUAD, 0, i)
   funcLuaMenuCommand(C.POS, layer, x, -y, 0, i)
   funcLuaMenuCommand(C.PRIM_COLOR, layer, i, BBT.MESH_QUAD, col[1], col[2], col[3])
+  return i
 end
 
 -- an axis-aligned connector piece from (x0, y0) to (x1, y1); lit = on the winners' path (thicker); st = its state
--- (BBT.SPR_STATE: plain / lit / me / out / out_me; default lit or plain), drawn as that state's coloured quad
+-- (BBT.SPR_STATE: plain / lit / me / out / out_me; default lit or plain), drawn as that state's coloured quad; 1.8.0:
+-- a lit / me piece is its direction's halo sprite (BBT.SPR_HALO)
 function BBT_Seg(x0, y0, x1, y1, lit, st)
   local G = BBT.G
   local t = lit and G.LINE_LIT or G.LINE
@@ -781,7 +831,9 @@ function BBT_Seg(x0, y0, x1, y1, lit, st)
   else
     w, h = t, math.abs(y1 - y0) + t
   end
-  local spr = BBT.SPR_STATE[st or (lit and "lit" or "plain")] or BBT.SPR_LINE
+  local look = st or (lit and "lit" or "plain")
+  local halo = BBT.SPR_HALO[look]
+  local spr = halo and halo[y0 == y1 and "h" or "v"] or BBT.SPR_STATE[look] or BBT.SPR_LINE
   BBT_Quad(BBT.L.line, spr, (x0 + x1) / 2, (y0 + y1) / 2, w, h, BBT.WHITE)
 end
 
@@ -803,6 +855,7 @@ function BBT_Txt(s, x, y, scale, style)
   funcLuaMenuCommand(C.TEXT, L.txt, BBT.TXT_OFF, "", i)
   funcLuaMenuCommand(C.TEXT_VISIBLE, L.txt, BBT.TXT_ON, true, i)
   funcLuaMenuCommand(C.TEXT_VISIBLE, L.txt, BBT.TXT_OFF, false, i)
+  return i
 end
 
 -- the team's crest on a plate (the retail emblem request of the office lists); asked again only when the instance
@@ -833,7 +886,13 @@ function BBT_Plate(p, x, y, s, right, champ, fixed)
     return
   end
   local look = champ and "ok" or (p.me and "on" or "off")
-  local white = look ~= "off"
+  -- 1.8.0: a team plate (and the player's: his focus band marks him) is the team's strip with the name in white
+  local strip = not champ and BBT.SPR_STRIP[tonumber(p.strip) or 0] or nil
+  if strip then
+    look = "off"
+  end
+  BBT_PlateStrip(l, i, look == "off" and strip or nil)
+  local white = look ~= "off" or strip ~= nil
   funcLuaMenuCommand(C.VISIBLE, l, i, true)
   funcLuaMenuCommand(C.SCALE, l, s, s, 1, i)
   funcLuaMenuCommand(C.POS, l, x, -y, 0, i)
@@ -853,12 +912,148 @@ function BBT_Plate(p, x, y, s, right, champ, fixed)
   BBT_Emblem(l, i, p.team)
 end
 
+-- 1.8.0: the plate's own sprite (list_base_xs01_off) swapped for a team strip of the mod's atlas, or back to the
+-- list plate (spr nil); once per instance and sprite while the overlay is open (BBT_S.strip, reset at every opening)
+function BBT_PlateStrip(l, i, spr)
+  BBT_S.strip = BBT_S.strip or {}
+  local k = tostring(l) .. ":" .. i
+  local want = spr or false
+  if BBT_S.strip[k] == want then
+    return
+  end
+  BBT_S.strip[k] = want
+  if spr then
+    pcall(funcLuaMenuCommand, BBT.C.SPRITE, l, BBT.ART, spr, BBT.PLATE_SPRITE, 0, i)
+  else
+    pcall(funcLuaMenuCommand, BBT.C.SPRITE, l, BBT.PLATE_ATLAS, BBT.PLATE_SPRITE, BBT.PLATE_SPRITE, 0, i)
+  end
+end
+
+-- 1.8.0: the player's focus band behind his plate (left edge x, centre y, scale s), on the box pool
+function BBT_Focus(x, y, s)
+  local G = BBT.G
+  BBT_Quad(BBT.L.box, BBT.SPR_FOCUS, x + G.PLATE_W * s / 2, y, G.PLATE_W * s * G.FOCUS_W, G.PLATE_H * s * G.FOCUS_H,
+    BBT.WHITE)
+end
+
 -- an instance's model + name alpha (CMND_SET_LAYER_MODEL_ALPHA / CMND_SET_MENU_TEXT_ALPHA, as the retail
 -- soccer_team_dock_menu UpdateViewMenuByLock); reset to 1 on every plate / crest drawn (instances are reused)
 function BBT_Alpha(l, i, a)
   pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], l, i, 0, a)
   pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], l, i, BBT.TXT_ON, a)
   pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], l, i, BBT.TXT_OFF, a)
+end
+
+-- 1.9.0: crc32 of a digit sprite's name, kept (the same few names every draw)
+function BBT_SprCrc(name)
+  BBT_S.spr_crc = BBT_S.spr_crc or {}
+  local c = BBT_S.spr_crc[name]
+  if c == nil then
+    c = BBT_Crc(name)
+    BBT_S.spr_crc[name] = c
+  end
+  return c
+end
+
+-- a row of digit sprites centred on (x, y): parts = { { sprite name, height }, ... }; returns its width
+function BBT_Glyphs(parts, x, y)
+  local N = BBT.NUM
+  local total, ws = 0, {}
+  for k, p in ipairs(parts) do
+    ws[k] = N.W * p[2] / N.H
+    total = total + ws[k] * (k < #parts and N.ADV or 1)
+  end
+  local cx = x - total / 2
+  for k, p in ipairs(parts) do
+    BBT_Quad(BBT.L.line, BBT_SprCrc(p[1]), cx + ws[k] / 2, y, ws[k], p[2], BBT.WHITE, N.PRIO, BBT.ART_NUM)
+    cx = cx + ws[k] * N.ADV
+  end
+  return total
+end
+
+-- the parts of number n (style gold / dark / white) at height h appended to parts; wrap = in brackets
+function BBT_NumParts(parts, n, style, h, wrap)
+  if wrap then
+    parts[#parts + 1] = { "bbd_tn_d_lp", h }
+  end
+  for c in tostring(math.max(0, math.floor(tonumber(n) or 0))):gmatch("%d") do
+    parts[#parts + 1] = { "bbd_tn_d_" .. style .. "_" .. c, h }
+  end
+  if wrap then
+    parts[#parts + 1] = { "bbd_tn_d_rp", h }
+  end
+  return parts
+end
+
+-- the width of a row of k digits at height h
+local function bbt_row_w(k, h)
+  local N = BBT.NUM
+  return N.W * h / N.H * (1 + N.ADV * (k - 1))
+end
+
+-- a played match's result at its joint (xj, ym) of the left side (right = mirrored): the pair just past the joint
+-- (lead px further: the big crest standing on the joint), a shoot-out's kicks after it; returns the room it took past
+-- the joint (0: not played)
+function BBT_TreeScore(m, xj, ym, right, pitch, lead)
+  local sc = m and (m.w or 0) ~= 0 and m.score or nil
+  if not sc then
+    return 0
+  end
+  local N, G = BBT.NUM, BBT.G
+  local h = math.max(N.H_MIN, math.min(N.H_MAX, pitch * N.HEIGHT))
+  local dy = (h + h * N.GAP / N.H) / 2
+  local function x_of(off, w)
+    local c = xj + off + w / 2
+    return right and (2 * G.CX - c) or c
+  end
+  local space = N.SPACE * h / N.H
+  local used = (lead or 0) + space
+  local ga, gb = sc.ga or 0, sc.gb or 0
+  local sa, sb = m.w == 1 and "gold" or "dark", m.w == 2 and "gold" or "dark"
+  local w
+  if ga <= 9 and gb <= 9 then
+    w = N.W * h / N.H
+    BBT_Quad(BBT.L.line, BBT_SprCrc(string.format("bbd_tn_pr_%d_%d_%d", ga, gb, m.w)), x_of(used, w), ym, w,
+      h * N.PAIR_H / N.H, BBT.WHITE, N.PRIO, BBT.ART_NUM)
+  else
+    local pa, pb = BBT_NumParts({}, ga, sa, h), BBT_NumParts({}, gb, sb, h)
+    w = bbt_row_w(math.max(#pa, #pb), h)
+    BBT_Glyphs(pa, x_of(used, w), ym - dy)
+    BBT_Glyphs(pb, x_of(used, w), ym + dy)
+  end
+  used = used + w
+  if (sc.pa or 0) + (sc.pb or 0) > 0 then
+    local hp = h * N.PEN_S
+    local pa, pb = BBT_NumParts({}, sc.pa or 0, sa, hp), BBT_NumParts({}, sc.pb or 0, sb, hp)
+    local wp = bbt_row_w(math.max(#pa, #pb), hp)
+    used = used + space / 2
+    BBT_Glyphs(pa, x_of(used, wp), ym - dy)
+    BBT_Glyphs(pb, x_of(used, wp), ym + dy)
+    used = used + wp
+  end
+  return used + space
+end
+
+-- the final's result below the centre: the left finalist's goals left of it, the right one's right of it (a
+-- shoot-out: the kicks in brackets below each)
+function BBT_FinalScore(m, ymid, pitch)
+  local sc = m and (m.w or 0) ~= 0 and m.score or nil
+  if not sc then
+    return
+  end
+  local N, G = BBT.NUM, BBT.G
+  local h = math.max(N.H_MIN, math.min(N.H_MAX, pitch * N.HEIGHT)) * N.FINAL_S
+  local y = ymid + G.LINE_LIT + h / 2
+  local off = N.W * h / N.H
+  local sa, sb = m.w == 1 and "gold" or "dark", m.w == 2 and "gold" or "dark"
+  BBT_Glyphs(BBT_NumParts({}, sc.ga or 0, sa, h), G.CX - off, y)
+  BBT_Glyphs(BBT_NumParts({}, sc.gb or 0, sb, h), G.CX + off, y)
+  if (sc.pa or 0) + (sc.pb or 0) > 0 then
+    local hp = h * N.PEN_S
+    local yp = y + h / 2 + hp * 0.7
+    BBT_Glyphs(BBT_NumParts({}, sc.pa or 0, sa, hp, true), G.CX - off, yp)
+    BBT_Glyphs(BBT_NumParts({}, sc.pb or 0, sb, hp, true), G.CX + off, yp)
+  end
 end
 
 -- a match's score, the upper entrant's goals first: «2-1», «1-1 (4-3)» (the shoot-out in brackets; the results page
@@ -894,6 +1089,9 @@ BBT.ADV = {
   CREST_X_R = 464,        -- and from the mirrored plate's left edge (430 + 34)
   -- the line colours: BBT.SPR_STATE (1.5.37: coloured quads; plain, lit gold, me light blue, out dark, out_me)
   OUT_ALPHA = 0.45,       -- 1.5.37: the plate of a team that is out (model + text alpha, the retail locked-dock way)
+  -- 1.9.0: the crest standing on a joint (BBT_BigCrest): BIG_OF of the stub, the round's joint spacing less BIG_GAP,
+  -- BIG_MIN .. BIG_MAX px, its bottom BIG_LIFT px above the line; drawn in front of the connectors and the digits
+  BIG_OF = 0.5, BIG_GAP = 8, BIG_MIN = 24, BIG_MAX = 72, BIG_LIFT = 1, CREST_PRIO = 547,
 }
 
 function BBT_DrawTree(v)
@@ -920,8 +1118,6 @@ function BBT_DrawTree(v)
   local ts = math.max(G.TXT_MIN, math.min(G.TXT_MAX, s))
   local edge = G.MARGIN + G.PLATE_W * s
   local xe = edge + G.GAP
-  local cs = s * A.CREST_S
-  local cw = A.CREST_W * cs
   local function jx(r)
     return xe + (G.CX - xe) * r / R
   end
@@ -941,6 +1137,9 @@ function BBT_DrawTree(v)
     local x = right and (G.W - G.MARGIN - G.PLATE_W * s) or G.MARGIN
     at[t] = { x + (right and A.CREST_X_R or A.CREST_X) * s, y }
     if p and (p.team or 0) ~= 0 then
+      if p.me then
+        BBT_Focus(x, y, s)
+      end
       BBT_Plate(p, x, y, s, right, false)
     end
   end
@@ -982,25 +1181,31 @@ function BBT_DrawTree(v)
         seg(mx(xj, right), ya, mx(xj, right), ym, la, played, w == 1)
         seg(mx(xj, right), ym, mx(xj, right), yb, lb, played, w == 2)
         -- the score in the pocket between the match's two stubs (left of its joint; mirrored on the right)
-        BBT_Txt(BBT_Score(m.score), mx((xc + xj) / 2, right), ym, ts)
+        -- 1.9.0: the result stacked just past the joint (BBT_TreeScore)
+        -- 1.9.0 (owner 2026-10-21: «El logo del equipo debe ser grande y estar arriba de la intersección»): the
+        -- winner waiting at this joint stands BIG on top of it (BBT_BigCrest), the result stacked right of it
+        local nxt = (v.matches[r + 1] or {})[math.floor((t + 1) / 2)] or {}
+        local stays = win ~= 0 and (nxt.w or 0) == 0
+        local big = BBT_BigCrest(r, pitch, (G.CX - xe) / R)
+        -- (the digits always clear the crest's column, so a neighbour's crest never covers them)
+        BBT_TreeScore(m, xj, ym, right, pitch, big / 2)
         if win ~= 0 and from then
-          -- the winner's crest: just past the joint, on the next round's stub
-          local rest = { mx(xj + cw / 2, right), ym }
+          local rest = { mx(xj, right), ym - G.LINE_LIT / 2 - A.BIG_LIFT - big / 2 }
           nat[t] = rest
-          local nxt = (v.matches[r + 1] or {})[math.floor((t + 1) / 2)] or {}
-          crests[#crests + 1] = { leaf = win, round = r, rest = rest, s = cs, stays = (nxt.w or 0) == 0,
-            path = { from, { mx(xj, right), yw }, { mx(xj, right), ym }, rest } }
+          crests[#crests + 1] = { leaf = win, round = r, rest = rest, s = big / A.CREST_W, stays = stays,
+            joint = { mx(xj, right), ym }, path = { from, { mx(xj, right), yw }, { mx(xj, right), ym }, rest } }
         end
       else
         -- the final: the left finalist's line and the right one's meet at CX; the stem up to the champion
         seg(xc, ya, G.CX, ya, la, played, w == 1)
         seg(mx(xc, true), yb, G.CX, yb, lb, played, w == 2)
         seg(G.CX, G.CHAMP_Y + G.PLATE_H * G.CHAMP_S / 2, G.CX, ymid, win, played, true)
-        BBT_Txt(BBT_Score(m.score), G.CX, ymid + G.SCORE_DY * 1.6, math.max(ts, 0.8))
+        BBT_FinalScore(m, ymid, pitch)
         if win ~= 0 and from then
           -- the champion's crest walks to the champion plate's crest slot (the plate shows once it is there)
           local rest = { G.CX - cpw / 2 + A.CREST_X * G.CHAMP_S, G.CHAMP_Y }
-          crests[#crests + 1] = { leaf = win, round = r, rest = rest, s = cs, s1 = G.CHAMP_S, final = true,
+          local fs = BBT_BigCrest(R, pitch, (G.CX - xe) / R) / A.CREST_W
+          crests[#crests + 1] = { leaf = win, round = r, rest = rest, s = fs, s1 = G.CHAMP_S, final = true,
             stays = false, path = { from, { G.CX, yw }, { G.CX, G.CHAMP_Y }, rest } }
         end
       end
@@ -1023,8 +1228,11 @@ function BBT_DrawTree(v)
   end
   -- the crests standing at a joint (the round's winners not yet past their next match)
   BBT_S.crests = crests
+  -- 1.8.0: the star glow at the joint each of them waits at (behind the lines; shown when its crest gets there)
+  local star = math.max(G.STAR_MIN, math.min(G.STAR_MAX, pitch * G.STAR))
   for _, c in ipairs(crests) do
     if c.stays then
+      c.star = BBT_Quad(BBT.L.box, BBT.SPR_STAR, c.joint[1], c.joint[2], star, star, BBT.WHITE)
       c.i = BBT_Crest(c, c.rest[1], c.rest[2], c.s)
     end
   end
@@ -1033,7 +1241,9 @@ function BBT_DrawTree(v)
   local cs2 = G.CHAMP_S
   local cy = G.CHAMP_Y - G.PLATE_H * cs2 / 2 - G.CROWN_H / 2 + 6
   local cc = champ and 1 or G.DIM
-  BBT_Quad(BBT.L.icon, BBT.SPR_CROWN, G.CX, cy, G.CROWN_W, G.CROWN_H, { cc, cc, cc })
+  if not BBT_S.trophy then
+    BBT_Quad(BBT.L.icon, BBT.SPR_CROWN, G.CX, cy, G.CROWN_W, G.CROWN_H, { cc, cc, cc })
+  end
   if champ then
     BBT_Plate({ team = v.champion }, G.CX - G.PLATE_W * cs2 / 2, G.CHAMP_Y, cs2, false, true, BBT.ROW_CHAMP)
   end
@@ -1086,6 +1296,8 @@ BBT.RETAIL = {
   NAME_X_L = 363, NAME_X_R = 1557, NAME_Y0 = 288, NAME_STEP = 72, STRIP_IN = 137,
   PLATE_S = 0.6,                       -- BBD's plate (520 x 72) at the name nodes: 312 x 43
   PLATE_GAP = 6,                       -- between a plate's inner end and its strip
+  MESH_TREE = 5946920,     -- the base's unlit 16-team bracket mesh
+  TROPHY_NODE_Y = 381,                 -- the base's _atc_trophy01 (the trophy's place), screen px
   CHAMP_Y = 206,                       -- the champion's plate, above the trophy (_atc_trophy01 at y 381)
 }
 
@@ -1145,6 +1357,19 @@ function BBT_RetailShow(on)
       and l ~= L.score[3] and l ~= L.score[4])
   end)
   BBT_S.retail_shown = on
+end
+
+-- 1.8.0: every other tree (8, 32, 64 teams) shows the retail trophy in place of the crown: the base without its
+-- 16-team mesh, moved so its trophy node stands at BBT.G.TROPHY_Y (its strips, stars, scores and panel hidden by
+-- BBT_RetailShow); alone = false puts the base back for the 16-team art (mesh shown, at the origin)
+function BBT_TrophyPlace(alone)
+  local C, L, R = BBT.C, BBT.RL, BBT.RETAIL
+  funcLuaMenuCommand(C.MESH_VISIBLE, L.base, R.MESH_TREE, not alone, 0)
+  funcLuaMenuCommand(C.POS, L.base, 0, alone and (R.TROPHY_NODE_Y - BBT.G.TROPHY_Y) or 0, 0, 0)
+  if alone then
+    funcLuaMenuCommand(C.VISIBLE, L.base, 0, true)
+    funcLuaMenuCommand(C.VISIBLE, L.trophy, 0, true)
+  end
 end
 
 -- a strip's lit length: rate 0 (unlit) .. 1 (to the centre); the star at its head shown while the rate is above 0
@@ -1259,6 +1484,9 @@ function BBT_DrawRetail(v)
     local y = R.NAME_Y0 + R.NAME_STEP * ((k - 1) % 8)
     local x = right and (R.NAME_X_R - R.STRIP_IN + R.PLATE_GAP) or (R.NAME_X_L + R.STRIP_IN - R.PLATE_GAP - pw)
     if (p.team or 0) ~= 0 then
+      if p.me then
+        BBT_Focus(x, y, s)
+      end
       BBT_Plate(p, x, y, s, right, false)
     end
     -- the rounds this slot's team won: its leaf's own count (tourney_view) or walked up the tree
@@ -1315,8 +1543,28 @@ end
 -- (#/menu/220_img/stadium/img_room_<map>.g4tx, sprite img_room_<map>_01: the retail Campaña's stadium picture),
 -- loaded on demand (CMND_LOAD_MENU_RES_TEXTURE, asynchronous: the page is drawn again once it is in; a map without
 -- a picture: the name only).
-BBT.STADIUM = { Y = 958, W = 560, H = 84, THUMB_W = 128, THUMB_H = 72, PAD = 8, LABEL_S = 0.62, NAME_S = 0.86,
+-- 1.7.0 (owner 2026-10-21): both lines centred on the box, the box as wide as its longest line + SIDE on each side
+-- (MIN_W..MAX_W: MAX_W stays inside the 64-team tree's inner lines); a line wider than the room is scaled down; the
+-- picture only once it is in and only when it fits beside the texts (the texts stay centred: the box grows by the
+-- picture on both sides).
+BBT.STADIUM = { Y = 958, H = 84, MIN_W = 300, MAX_W = 480, SIDE = 28, THUMB_W = 128, THUMB_H = 72, PAD = 8,
+  LABEL_S = 0.62, NAME_S = 0.86, CHAR_W = 14.5, TEXT_SIZE = 3549540977 --[[CMND_GET_MENU_TEXT_RECT_SIZE]],
   LOAD_MIN = 10, LOAD_MAX = 600, PICTURE_DIR = "#/menu/220_img/stadium/img_room_" }
+
+-- the width in px of s drawn by BBT_Txt on txt instance i at scale sc (the engine's text width; a per-character
+-- estimate if it answers nothing)
+function BBT_TextWidth(i, s, sc)
+  local P = BBT.STADIUM
+  local ok, w = pcall(funcLuaMenuCommand, P.TEXT_SIZE, BBT.L.txt, i, BBT.TXT_ON, s)
+  if not ok or type(w) ~= "number" or w <= 0 then
+    local n = 0
+    for _ in string.gmatch(s, "[^\128-\191]") do
+      n = n + 1
+    end
+    w = n * P.CHAR_W
+  end
+  return w * sc
+end
 
 -- the picture of a map: { path, tex, sprite, st = 0 not asked / 1 loading / 2 in / -1 none }, one per map a session
 BBT_S.stadium_pics = BBT_S.stadium_pics or {}
@@ -1379,24 +1627,47 @@ function BBT_DrawStadium()
   if not okn or type(name) ~= "string" then
     name = ""
   end
-  local x0 = G.CX - P.W / 2
-  BBT_Quad(BBT.L.box, BBT.SPR_STATE.even, G.CX, P.Y, P.W, P.H, BBT.WHITE)
+  -- the two lines centred on the screen's centre, each scaled down to the room it has
+  local room = P.MAX_W - P.SIDE * 2
+  local widest = 0
+  for _, ln in ipairs({ { BBT_Text("final_stadium"), P.Y - P.H * 0.22, P.LABEL_S },
+    { name, P.Y + P.H * 0.18, P.NAME_S } }) do
+    local i = BBT_Txt(ln[1], G.CX, ln[2], ln[3])
+    if i ~= nil then
+      local w = BBT_TextWidth(i, ln[1], ln[3])
+      if w > room then
+        local sc = ln[3] * room / w
+        funcLuaMenuCommand(BBT.C.SCALE, BBT.L.txt, sc, sc, 1, i)
+        w = room
+      end
+      widest = math.max(widest, w)
+    end
+  end
+  local w = math.max(P.MIN_W, widest + P.SIDE * 2)
   local pic = BBT_StadiumPicture(fs.map)
-  local tx = x0 + P.PAD
-  if pic.st == 2 then
-    BBT_Quad(BBT.L.box, pic.sprite, x0 + P.PAD + P.THUMB_W / 2, P.Y, P.THUMB_W, P.THUMB_H, BBT.WHITE, nil, pic.tex)
+  local with_pic = w + (P.THUMB_W + P.PAD) * 2
+  local show_pic = pic.st == 2 and with_pic <= P.MAX_W
+  if show_pic then
+    w = with_pic
   end
-  if pic.st ~= -1 then
-    tx = x0 + P.PAD * 2 + P.THUMB_W   -- the picture's place kept while it loads
+  BBT_Quad(BBT.L.box, BBT.SPR_PANEL, G.CX, P.Y, w, P.H, BBT.WHITE)
+  if show_pic then
+    BBT_Quad(BBT.L.box, pic.sprite, G.CX - w / 2 + P.PAD + P.THUMB_W / 2, P.Y, P.THUMB_W, P.THUMB_H, BBT.WHITE, nil,
+      pic.tex)
   end
-  local cx = (tx + x0 + P.W - P.PAD) / 2
-  BBT_Txt(BBT_Text("final_stadium"), cx, P.Y - P.H * 0.22, P.LABEL_S)
-  BBT_Txt(name, cx, P.Y + P.H * 0.18, P.NAME_S)
   if BBT_S.stadium_logged ~= fs.map .. ":" .. pic.st then
     BBT_S.stadium_logged = fs.map .. ":" .. pic.st
     BBT_Log(string.format("final stadium panel: %s «%s» (picture %s)", fs.map, name,
       pic.st == 2 and "shown" or (pic.st == 1 and "loading" or "none")))
   end
+end
+
+-- 1.9.0: the size (px) of the crest standing on a joint of round r: as big as the room allows, BIG_OF of the stub
+-- to the next joint (stub px) and the joints' spacing of that round (2^r plate pitches) less BIG_GAP, at most
+-- BIG_MAX (64 teams: 46 px on round 1, 62 later; 32: 58; 8: 65)
+function BBT_BigCrest(r, pitch, stub)
+  local A = BBT.ADV
+  return math.max(A.BIG_MIN, math.min(A.BIG_MAX, stub * A.BIG_OF, 2 ^ r * pitch - A.BIG_GAP))
 end
 
 -- a crest alone (an evt_bbd_tn_crest instance: the left plate with its plate and name hidden) centred on (x, y) at
@@ -1408,6 +1679,12 @@ function BBT_Crest(c, x, y, sc)
     return nil
   end
   local p = BBT.ADV
+  -- 1.9.0: in front of the connectors (549) and the score digits (548), once per instance and opening
+  BBT_S.crest_prio = BBT_S.crest_prio or {}
+  if not BBT_S.crest_prio[i] then
+    BBT_S.crest_prio[i] = true
+    pcall(funcLuaMenuCommand, 1491630496 --[[CMND_SET_DRAW_PRIORITY]], L.crest, i, p.CREST_PRIO, true)
+  end
   funcLuaMenuCommand(C.VISIBLE, L.crest, i, true)
   for _, m in pairs(BBT.PLATE) do
     funcLuaMenuCommand(C.MESH_VISIBLE, L.crest, m, false, i)
@@ -1519,6 +1796,9 @@ function BBT_AnimApply()
     funcLuaMenuCommand(C.VISIBLE, L.crest, c.i, show)
     funcLuaMenuCommand(C.SCALE, L.crest, sc, sc, 1, c.i)
     funcLuaMenuCommand(C.POS, L.crest, x - A.CREST_X * sc, -y, 0, c.i)
+    if c.star then
+      funcLuaMenuCommand(C.VISIBLE, BBT.L.box, c.star, p >= 1)
+    end
     if c.final and p < 1 then
       champ_wait = true
     end
@@ -1650,8 +1930,19 @@ function BBT_DrawResults(v)
           look = r.w == side and "win" or "lose"
         end
         local bx = side == 1 and (G.CX - Rr.GAP / 2 - bw / 2 - 4) or (G.CX + Rr.GAP / 2 + bw / 2 + 4)
-        BBT_Quad(BBT.L.box, BBT.SPR_STATE[look], bx, y, bw, bh, BBT.WHITE)
-        BBT_Txt(txt, bx, y, ts)
+        -- 1.9.0: the Victory Road digits on the stadium panel's navy (winner gold, loser dark, a draw white), the
+        -- shoot-out's kicks smaller in brackets, extra time marked
+        BBT_Quad(BBT.L.box, BBT.SPR_PANEL, bx, y, bw, bh, BBT.WHITE)
+        local N = BBT.NUM
+        local style = look == "win" and "gold" or (look == "lose" and "dark" or "white")
+        local h = bh * N.BOX_FILL
+        local parts = BBT_NumParts({}, g or 0, style, h)
+        if (r.pa or 0) + (r.pb or 0) > 0 then
+          BBT_NumParts(parts, pk or 0, style, h * N.PEN_S, true)
+        elseif r.et then
+          parts[#parts + 1] = { "bbd_tn_d_et", h * N.PEN_S }
+        end
+        BBT_Glyphs(parts, bx, y)
       end
     end
   end
@@ -1910,11 +2201,22 @@ function BBT_Draw(page, animate)
   end
   BBT_S.view, BBT_S.page = v, v.page
   BBT_Begin()
+  -- 1.8.0: the Victory Road stadium dimmed under the page (the box pool's first quad, behind everything it draws)
+  if BBT_S.stadium_bg and v.kind ~= "groups" then
+    BBT_Quad(BBT.L.box, BBT.SPR_DIM, BBT.G.CX, 540, BBT.G.W, 1080, BBT.WHITE)
+  end
   -- 2026-10-19: a 16-team knockout on the retail bracket art (BBT_DrawRetail), every other tree on the generic lines
   local retail = v.kind == "tree" and BBT_S.retail_open == true and tonumber(v.rounds) == BBT.RETAIL.ROUNDS
     and type(v.leaves) == "table" and type(v.matches) == "table"
   BBT_S.retail = nil
   pcall(BBT_RetailShow, retail)
+  -- 1.8.0: the trophy alone on every other tree (BBT_TrophyPlace)
+  BBT_S.trophy = false
+  if BBT_S.retail_open then
+    BBT_S.trophy = not retail and v.kind == "tree"
+    local okt = pcall(BBT_TrophyPlace, BBT_S.trophy)
+    BBT_S.trophy = okt and BBT_S.trophy
+  end
   local ok, err = pcall(function()
     if retail then
       BBT_DrawRetail(v)
@@ -1995,6 +2297,19 @@ function BBT_Open(page)
   local sy = (G.BG_BOTTOM - G.BG_TOP) / G.BG_H
   funcLuaMenuCommand(BBT.C.SCALE, BBT.L.bg, 1, sy, 1, 0)
   funcLuaMenuCommand(BBT.C.POS, BBT.L.bg, 0, -(G.BG_TOP - G.BG_Y * sy), 0, 0)
+  -- 1.8.0: the Victory Road stadium (its layout in screen px: at the origin) behind the bracket's pools (549-552; a
+  -- lower draw priority draws in front; its own 200 would cover them): 560; the band (195) stays in front, as in retail
+  BBT_S.strip = {}
+  BBT_S.crest_prio = {}
+  BBT_S.stadium_bg = false
+  local nst = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], BBT.L.stadium)
+  if type(nst) == "number" and nst >= 1 then
+    bbt_open_layer(BBT.L.stadium, 0)
+    funcLuaMenuCommand(BBT.C.SCALE, BBT.L.stadium, 1, 1, 1, 0)
+    funcLuaMenuCommand(BBT.C.POS, BBT.L.stadium, 0, 0, 0, 0)
+    pcall(funcLuaMenuCommand, 1491630496 --[[CMND_SET_DRAW_PRIORITY]], BBT.L.stadium, 0, G.PRIO_STADIUM, true)
+    BBT_S.stadium_bg = true
+  end
   -- every instance opened once, hidden until a page draws it (each draw shows what it uses, hides the rest)
   BBT_EachInstance(function(l, i)
     bbt_open_layer(l, i)
@@ -2055,6 +2370,10 @@ function BBT_Close()
     bbt_close_layer(l, i)
   end)
   bbt_close_layer(BBT.L.bg, 0)
+  if BBT_S.stadium_bg then
+    bbt_close_layer(BBT.L.stadium, 0)
+    BBT_S.stadium_bg = false
+  end
   if BBT_S.retail_open then
     BBT_RetailEach(function(l, i)
       bbt_close_layer(l, i)

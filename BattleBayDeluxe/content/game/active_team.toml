@@ -37,7 +37,7 @@ schema = "VRFW.game/1"
 # the party block (CGDDPartyStatus): +0x9F10 the VS team set in use, +0x9F13 the same in play mode 2
 name = "active_team_party"
 base = "game_root"
-chain = [0x69A8]
+chain = ["Game.RootParty"]
 
 [[VRFW.State]]
 # the address of the native block the StartMatchRequest answers mark a tile request in (set by scripts\active_team.lua)
@@ -160,15 +160,12 @@ name = "CMND_BBD_ACTIVE_TEAM_MIRROR"
 handler = "BattleBayDeluxe.ActiveTeamMirror"
 needs = ["FindTeamConfig", "TeamRecord", "TeamConfig", "MemberRow", "enjoy", "EnjoyTable", "EnjoyRow", "ActiveTeamRecord"]
 
-# 1.5.66: the level sync of the active team's match stats. MatchCharaBuild's GetLevel call (0x1606121) before
-# 0x16053F0(stats, level); unique pattern in the v7.1.2 dump.
+# 1.5.66: the level sync of the active team's match stats. MatchCharaBuild's GetLevel call before the stats are built
+# from the level; the game profile's site Match.BuildCharaLevelCall gives the call and its callee per build.
 [[VRFW.Hook]]
 name = "MatchStatLevel"
+game = "Match.BuildCharaLevelCall"
 kind = "call"
-pattern = "4C 8B 65 6F 48 8D 55 6F 41 89 B7 74 03 00 00 48 8B CB C6 45 6F 00 E8 ?? ?? ?? ?? 45 8B 45 00 44 0F B7 C8 49 8B D7 E8"
-offset = 0x16
-rva = 0x160610B
-target_rva = 0xD85710
 args = ["ptr", "ptr"]
 ret = "u16"
 

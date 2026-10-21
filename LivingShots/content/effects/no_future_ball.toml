@@ -1,0 +1,24 @@
+# «Futuro negativo» (No Future, whs02320; fire; a two-player combo shot; cut-in ev60_02320): while the ball flies to
+# the goal after the cut-in it keeps the look of the cut-in's last cut (c0400, the charged ball shot across the sky as a
+# white / cyan comet): the star core round the ball, the star head, the tail sheets, lines and glow behind it (grown
+# from the kick point with the ball, their far end faded out), x0.25, instead of the plain fire special-shot aura
+# (ega0075c).
+# The object is ev6232nf00 (effect/event/ev60/ev6232nf00/), built by research/scripts/no_future_ball_fx.py from the
+# cut-in's effect object ev60023200: c0400 replayed over 470-478, then held at frame 478, the pulsing widths running on,
+# ball at the origin flying +Z. docs/game/media/no-future-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\no_future_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "no_future"
+from = "ega0075c"
+object = "effect/event/ev60/ev6232nf00/ev6232nf00.objbin"
+
+[[shot_aura]]
+name = "no_future"
+when = { techniques = "whs02320" }
+aura = "no_future"
+like = "ega0075c"

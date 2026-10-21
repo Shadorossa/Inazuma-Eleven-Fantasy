@@ -2248,7 +2248,9 @@ end
 --     (evt_bb_draft_anchor): arrows / a click move the cursor, L2 / R2 turn the page's pages (567813453 / 2019940505 +
 --     3297841487), Back / Y close. Read-only. While the page is up the game's parameter store holds
 --     BattleBayDeluxe.lineup (LINEUP_FLAG): other mods' plate code reads it to change that page on this screen only
---     (Utilities: no team passives / TRAYECTORIA pages; BetterUI: no level in the header).
+--     (Utilities: no team passives / TRAYECTORIA pages; BetterUI: no level in the header). It also holds the shown
+--     player's team and member slot (VRFW.plate_team / VRFW.plate_slot, the VR-Framework's VRFW_PlateMember): the page
+--     shows the items of his row of the team (boots, ...) and its 3D model wears his team's kit.
 --   * The page's 3D model (Character Reforged's evt_pp_model) is drawn in the 3D pass: only background-pass layers
 --     (m_drawType 1) are under it, so the background is a background-pass copy. The model and the picker's own
 --     character (the team panel vs01_44_p1's model component) share the menu camera: the team panel is closed while
@@ -2301,6 +2303,9 @@ BBD_ROSTER = {
   P_PARAM = 3928123478, P_LEVEL = 3894267099, P_RARITY = 571278276,
   PLATE_SET = 1101551215 --[[(param, level, rarity, false): the page's player]],
   LINEUP_FLAG = 2100506454 --[[parameter set while this screen shows the page]],
+  -- the VR-Framework's plate member (VRFW_PlateMember): the shown player's team and member slot, so the page shows his
+  -- row's equipment and his team's kit
+  MEMBER_TEAM = 1930590710, MEMBER_SLOT = 469565326,
   PLATE_PAGE_PREV = 567813453, PLATE_PAGE_NEXT = 2019940505, PLATE_PAGE_UPDATE = 3297841487,
   CHARA_INFO = 4060384944 --[[CMND_GET_CHARA_INFO (param, 8) = chara_param rarity]],
   RARITY_DEFAULT = 4, RARITY_MAX = 7,
@@ -2644,6 +2649,10 @@ local function member_card(layer, i, m)
   if type(BetterUI) == "table" and type(BetterUI.CardHideLevel) == "function" then
     pcall(BetterUI.CardHideLevel, layer, i)
   end
+  -- BetterUI's compact cards carry no name (the coach's large card showed it)
+  if type(BetterUI) == "table" and type(BetterUI.CardHideName) == "function" then
+    pcall(BetterUI.CardHideName, funcLuaMenuCommand, layer, i)
+  end
   for _, mesh in ipairs(B.M_TAG) do
     funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
   end
@@ -2652,6 +2661,12 @@ local function member_card(layer, i, m)
   end
   local other = 3 - sz
   funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[other], false, i)
+  -- a card draw may hook the cursor labels again: only the focused card keeps the cursor
+  local shown = R.shown
+  if shown == nil or shown[1] ~= layer or shown[2] ~= i then
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR2, false)
+  end
 end
 
 -- a free bench, manager or coach place as the retail empty slot (SetBlankMeshByCardType): the blank card, with the
@@ -2739,7 +2754,9 @@ function BBD_ROSTER_Cursor(show)
   local B, R = BBCR_DRAFT, BBD_ROSTER
   if R.shown ~= nil then
     local l, i = R.shown[1], R.shown[2]
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, cursor_label(R.shown[3]), false)
+    -- both labels off (the cursor stayed on a card whose other label was hooked)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR2, false)
     for _, m in ipairs(B.M_FOCUS) do
       funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], l, m, false, i)
     end
@@ -2923,6 +2940,7 @@ function BBD_ROSTER_Show()
   if R.plate ~= nil and R.plate.param == m.param then
     return
   end
+  param_set(R.MEMBER_SLOT, m.slot)
   funcLuaMenuCommand(R.PLATE_SET, m.param, m.level, m.rar, false)
   if R.plate ~= nil then
     R.plate.param = m.param
@@ -2997,6 +3015,8 @@ function BBD_ROSTER_Open()
   param_set(R.P_LEVEL, m.level)
   param_set(R.P_RARITY, m.rar)
   param_set(R.LINEUP_FLAG, 1)
+  param_set(R.MEMBER_TEAM, team >= 2147483648 and team - 4294967296 or team) -- the store keeps signed 32-bit numbers
+  param_set(R.MEMBER_SLOT, m.slot)
   funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], R.PLATE)
   BBD_ROSTER_Log("open: tile", tile, "team", team, "members", #R.members, "free places", #R.empties)
 end
@@ -3017,6 +3037,8 @@ function BBD_ROSTER_Finish(why)
   local B, R = BBCR_DRAFT, BBD_ROSTER
   params_clear()
   param_clear(R.LINEUP_FLAG)
+  param_clear(R.MEMBER_TEAM)
+  param_clear(R.MEMBER_SLOT)
   R.state, R.plate, R.pending, R.probe = nil, nil, nil, nil
   BBD_ROSTER_Cursor(false)
   cards_open(false)
@@ -3446,3 +3468,118 @@ do
   end
 end
 -- ===== EVT bb_draft roster END =====
+
+-- ===== EVT bb_draft difficulty cursor BEGIN =====
+-- bb_chronicle_teams bb_draft, the cursor on the Campaña's difficulty window (enjoy_team_select_menu_campaign).
+-- Deciding a team hides the grid and opens the difficulty window (list win05_02_general_sub_list_item + the start
+-- button cmn03_05_cmn_button_b_graphic_text «Empezar partido»). The grid's tiles keep their «cursor» attach to
+-- cmn05_01_cursor traced while they are hidden, so the arrow stayed on the decided tile (left of the window) when the
+-- focus reached the button. When the focus enters the window (OnChangeFocus on the list or the button) the tiles'
+-- attach is released and the focused element's own cursor attach is traced and set as the cursor locator (the retail
+-- recipe: attach trace + CMND_SET_CURSOR_LOCATOR); when the window closes (OnCloseEndLayer) the tiles' attach is
+-- traced again and the cursor locator goes back to the focused tile. Globals only; nothing runs at chunk load.
+BBD_DIFF_CURSOR = {
+  GRID = 106197494 --[[vs01_43_enjoy_team_select_emblem_icon]],
+  WINDOW = 2996147312 --[[win05_11_select_difficulty_win_base]],
+  LIST = 1027507646 --[[win05_02_general_sub_list_item]],
+  START = 336167129 --[[cmn03_05_cmn_button_b_graphic_text]],
+  CURSOR = 3313461902 --[[cursor: the attach of the grid tiles and of the start button]],
+  LIST_CURSOR = 21268581 --[[select_cur: the attach of the list rows]],
+  ATTACH_TRACE = 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, attach, on)]],
+  CURSOR_LOCATOR = 381797568 --[[CMND_SET_CURSOR_LOCATOR (layer, attach, idx, count)]],
+  LAYER_COUNT = 1175615627 --[[CMND_GET_CREATE_LAYER_NUM]],
+  IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
+  FOCUS_INDEX = 2603265800,
+  released = false,
+  last = nil,
+}
+
+function BBD_DiffCursorLog(...)
+  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams difficulty cursor", ...)
+end
+
+-- the instance count of a layer (0 when unknown)
+function BBD_DiffCursorCount(layer)
+  local n = funcLuaMenuCommand(BBD_DIFF_CURSOR.LAYER_COUNT, layer)
+  return type(n) == "number" and n or 0
+end
+
+-- every grid tile's cursor attach traced or not
+function BBD_DiffCursorGrid(on)
+  local C = BBD_DIFF_CURSOR
+  for i = 0, BBD_DiffCursorCount(C.GRID) - 1 do
+    funcLuaMenuCommand(C.ATTACH_TRACE, C.GRID, i, C.CURSOR, on)
+  end
+end
+
+-- the focus entered the window's list (row idx) or its start button: the cursor on that element only
+function BBD_DiffCursorOn(layer, idx)
+  local C = BBD_DIFF_CURSOR
+  if not C.released then
+    BBD_DiffCursorGrid(false)
+    C.released = true
+  end
+  local rows = BBD_DiffCursorCount(C.LIST)
+  for i = 0, rows - 1 do
+    funcLuaMenuCommand(C.ATTACH_TRACE, C.LIST, i, C.LIST_CURSOR, layer == C.LIST and i == idx)
+  end
+  funcLuaMenuCommand(C.ATTACH_TRACE, C.START, 0, C.CURSOR, layer == C.START)
+  if layer == C.START then
+    funcLuaMenuCommand(C.CURSOR_LOCATOR, C.START, C.CURSOR, 0, 1)
+  else
+    funcLuaMenuCommand(C.CURSOR_LOCATOR, C.LIST, C.LIST_CURSOR, idx, rows)
+  end
+  local where = layer == C.START and "start button" or ("list row " .. tostring(idx))
+  if where ~= C.last then
+    C.last = where
+    BBD_DiffCursorLog("cursor on the " .. where)
+  end
+end
+
+-- the window closed: the grid tiles' attach traced again, the cursor locator on the focused tile
+function BBD_DiffCursorBack()
+  local C = BBD_DIFF_CURSOR
+  if not C.released then
+    return
+  end
+  C.released, C.last = false, nil
+  funcLuaMenuCommand(C.ATTACH_TRACE, C.START, 0, C.CURSOR, false)
+  BBD_DiffCursorGrid(true)
+  local cur = funcLuaMenuCommand(C.FOCUS_INDEX, C.GRID)
+  if type(cur) == "number" and cur >= 0 then
+    funcLuaMenuCommand(C.CURSOR_LOCATOR, C.GRID, C.CURSOR, cur, BBD_DiffCursorCount(C.GRID))
+  end
+  BBD_DiffCursorLog("cursor back on the grid, tile " .. tostring(cur))
+end
+
+do
+  local change = OnChangeFocus
+  if change ~= nil then
+    function OnChangeFocus(a1, a2, ...)
+      local r = table.pack(change(a1, a2, ...))
+      local C = BBD_DIFF_CURSOR
+      if (a1 == C.START or a1 == C.LIST) and funcLuaMenuCommand(C.IS_OPEN, C.WINDOW) == true then
+        local ok, err = pcall(BBD_DiffCursorOn, a1, type(a2) == "number" and a2 or 0)
+        if not ok then
+          BBD_DiffCursorLog("error", tostring(err))
+        end
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end
+
+  local closeEnd = OnCloseEndLayer
+  if closeEnd ~= nil then
+    function OnCloseEndLayer(a1, a2, ...)
+      local r = table.pack(closeEnd(a1, a2, ...))
+      if a1 == BBD_DIFF_CURSOR.WINDOW then
+        local ok, err = pcall(BBD_DiffCursorBack)
+        if not ok then
+          BBD_DiffCursorLog("error", tostring(err))
+        end
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end
+end
+-- ===== EVT bb_draft difficulty cursor END =====

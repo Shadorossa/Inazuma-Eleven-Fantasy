@@ -2,7 +2,7 @@ id = "pachangas"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Pachangas"
-version = "1.0.4"
+version = "1.0.5"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Team Dock's list starts with one row per match format («11v11», «5v5»; confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
@@ -35,7 +35,7 @@ folder = "Pachangas"
 #   text\keys.toml                         the mod's name / description
 # Grafts (research/grafts, mod = "pachangas"): pachanga_dock (the format row and the 5v5 dock), pachanga_bank (the bank's
 # 5v5 view), pachanga_equip (kit / emblem of the 5v5 team), pachanga_formation (the 5v5 formations), pachanga_plate (the
-# player plate in the 5v5 dock). The 7v7 and 3v3 formats are not offered yet (enabled = false; the rulesets are the module MatchFormats').
+# player plate in the 5v5 dock). The 7v7 and 3v3 formats are not offered yet (enabled = false; the rulesets are in Football Reforged's base).
 # Utilities: its team bank pages (UTIL_TB, mounted page) and the team kit command. InaRogue is optional: while its save is
 # loaded (its export InaRogue.SaveSlot) the docks keep the retail 11v11 / 5v5 link.
 requires = ["vr_framework>=2.4.87", "football_reforged>=1.2.0", "utilities>=1.15.1"]

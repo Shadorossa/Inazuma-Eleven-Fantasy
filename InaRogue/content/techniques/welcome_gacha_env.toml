@@ -1,0 +1,7 @@
+schema = "VRFW.technique/3"
+# InaRogue › the welcome gacha (docs/game/modes/inarogue-welcome-gacha.md): InaRogue's scene ev74_10091, a menu-launched
+# event like the retail ev74_10010 (its soccer_demo row cloned, no map jump). Its lists are
+# content/base_tables/common/event_cfg/*/ev74_10091*.toml, its look content/effects/welcome_gacha.toml.
+[[event_env]]
+event = "ev74_10091"
+from = "ev74_10010"

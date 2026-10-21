@@ -1,0 +1,13 @@
+# Schema of the shop aura cards: the item sub-kinds a shop draws with an aura card on the right, beyond the game's own.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.shop_aura_card/1"
+folder = "content/shop_aura_cards"
+
+[entry.ShopAuraCard]
+doc = "the special-move items (item category 160) of one item sub-kind are drawn in a shop with the aura card of their aura type"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+item_sub = { type = "int", min = 0, max = 65535, required = true, doc = "the item sub-kind (item_config column 6) of the items, e.g. 178 the mode changes; the game already draws 125 and 171-176" }
+aura_type = { type = "int", min = 0, max = 255, required = true, doc = "the aura type of those items (CMND_GET_SOCCER_SKILL_INFO 13: 0 keshin, 1 armour, 2 miximax, 3 totem, 4 bond, 5 awakening, 6 mode change)" }
+layer = { type = "string", required = true, doc = "the card layer of that aura type in the shop menu (a layer name, e.g. team00_30_aura_mode_change_detail_info); a layer the game does not list in the shop_menu_buy group is added by the declaring mod's content\\menus" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -1159,7 +1159,13 @@ function C.install(X)
       internal = "evt_te_" .. T.pad(n % 1000000, 6)
     end
     local tid = VRFW.crc32(internal)
-    local name_id = d.name_text ~= nil and T.id(d.name_text) or VRFW.crc32(internal .. "_name")
+    -- a copy (`based_on`) that declares no name of its own keeps its base's name text: it shows the base's name
+    local inherited
+    if d.name_text == nil and base ~= nil and T.is_empty(d.text or {}) then
+      local n = TC.uint(tc:info(base), TI.NAME) or 0
+      if n ~= 0 then inherited = n end
+    end
+    local name_id = d.name_text ~= nil and T.id(d.name_text) or inherited or VRFW.crc32(internal .. "_name")
     local info, refs = tc:team_copy(tpl)
     TC.set_int(info, TI.ID, tid)
     info[TI.KEY + 1] = internal
@@ -1244,7 +1250,7 @@ function C.install(X)
     if t == nil then return "row gone" end
     local meta = X.meta[tid] or X.new_meta()
     -- a `name_text` (or, with a fixed `key`, its default `<key>_name` row) names the team through an existing text row
-    if T.is_empty(meta.names) and d.name_text == nil and d.key == nil then
+    if T.is_empty(meta.names) and d.name_text == nil and d.key == nil and inherited == nil then
       VRFW.log.warn(what .. ": no [team.text.<lang>] name nor name_text: the new team shows no name")
     end
     local emb, kit = TC.uint(tc:info(t), TI.EMBLEM) or 0, TC.uint(tc:info(t), TI.KIT) or 0

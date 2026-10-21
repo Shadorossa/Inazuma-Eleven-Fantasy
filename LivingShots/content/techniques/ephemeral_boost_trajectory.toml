@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Impulso efímero (Ephemeral Boost, whs02040; whs02040_mm covered by the base
+# move's rule), cut-in ev60_02040.
+#
+# In the cut-in (c0500) the ball (event ball s01) runs dead level 0.62 m up along +Z. Flight (owner rules 2026-10-21:
+# never curved; a low shot leaves at the kick height and ends at about 2.0 m): one straight line from 0.62 m at the
+# kick into 2.0 m at the goal. unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are
+# the ball centre over the pitch (m); goal_points count back from the goal point, points from the kick.
+
+# Impulso efímero (whs02040).
+[[edit]]
+target = "whs02040"
+trajectory = { points = [[0.0, 0.62]], goal_points = [[0.0, 2.0]], unblockable = false }

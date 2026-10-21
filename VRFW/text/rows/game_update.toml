@@ -1,16 +1,18 @@
-# Title-corner notice shown on an unknown nie.exe build; {n} = features + mod declarations switched off.
+# Title-corner notice shown on an unknown nie.exe build; {n} = features + mod declarations switched off. Kept about
+# as short as the retail «Inazuma Post» label it replaces, so it stays in the title's corner (the full detail is in
+# the game-update report).
 
 schema = "VRFW.text/2"
 table = "menu_text"
 
 [[row]]
 id = "vrfw_game_update_notice"
-en = "Unknown game version: {n} functions off - see the report"
-es = "Versión del juego desconocida: {n} funciones desactivadas - ver informe"
-fr = "Version du jeu inconnue : {n} fonctions désactivées - voir le rapport"
-de = "Unbekannte Spielversion: {n} Funktionen aus - siehe Bericht"
-it = "Versione del gioco sconosciuta: {n} funzioni disattivate - vedi rapporto"
-pt = "Versão do jogo desconhecida: {n} funções desativadas - ver relatório"
-ja = "不明なゲームバージョン：{n}個の機能を無効化 - レポート参照"
-zh_hans = "未知的游戏版本：已停用 {n} 项功能 - 请查看报告"
-zh_hant = "未知的遊戲版本：已停用 {n} 項功能 - 請查看報告"
+en = "Unknown game version ({n} off)"
+es = "Versión desconocida ({n} desact.)"
+fr = "Version inconnue ({n} désact.)"
+de = "Unbekannte Version ({n} aus)"
+it = "Versione sconosciuta ({n} disatt.)"
+pt = "Versão desconhecida ({n} desat.)"
+ja = "不明なバージョン（{n}件無効）"
+zh_hans = "未知版本（停用 {n} 项）"
+zh_hant = "未知版本（停用 {n} 項）"

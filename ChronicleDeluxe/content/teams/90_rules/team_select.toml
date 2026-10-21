@@ -1,0 +1,26 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe: the retail team picker «Elige tu equipo» (Equipo Llamarada / Equipo Trueno) on more Chronicle
+# battles (owner 2026-10-19; docs/game/mods/chronicle-deluxe.md §14). Retail offers it on the Chrono Stone pieces whose
+# game has a twin (e.g. «¡El equipo definitivo al completo!»: fbtl_cro05_190_010 with pltm_cro_ie5_19, Sol Daystar in
+# slot 6 = Equipo Llamarada; fbtl_cro05_190_110 with pltm_cro_ie5_19_1, Bai Long in slot 6 = Equipo Trueno). The
+# VR-Framework's [[VRFW.TeamSelect]] makes the twin game and turns the picker on (docs/framework/route-board.md §7).
+default_lang = "en"
+
+# «¡El equipo definitivo!» against Criaturas de la Noche (fbtl_cro05_220_010): the Crónica's fixed line-up
+# pltm_cro_ie5_20 (Sol in slot 6) is Equipo Llamarada; this copy with Bai Long in slot 6 is Equipo Trueno. Bai Long's
+# card, row id, move loadout and number are the ones retail gives him in pltm_cro_ie5_19_1 (slot 6).
+[[team]]
+name = "chrono_storm_night_creatures_bai_long"
+key = "chronicle_deluxe_pltm_cro_ie5_20_bai_long"
+based_on = "pltm_cro_ie5_20"
+
+[[edit]]
+target = "chrono_storm_night_creatures_bai_long"
+member = [
+  { slot = 6, patch = true, card = "0x07DB0ECC", uid = "0xA68C190B", loadout = "0xA703B189", number = 19 },   # Bai Long (c05028140)
+]
+
+[[VRFW.TeamSelect]]
+Game = "fbtl_cro05_220_010"
+Twin = "fbtl_cro05_220_110"
+OwnTeam = "chrono_storm_night_creatures_bai_long"

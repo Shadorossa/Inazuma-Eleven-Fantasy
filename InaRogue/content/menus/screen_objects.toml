@@ -1,6 +1,21 @@
 schema = "VRFW.menu/2"
 # The menu objects of INAROGUE's screens (moved from Inazuma Fantasy's menus\screen_objects.toml 2026-10-14).
 
+# the Objetos / Equipos stickers (2026-10-20): the rarity card base over the slot, the item icon / crest over it
+[[object]]
+name = "evt_album_back"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 458 } },
+]
+
+[[object]]
+name = "evt_album_icon"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } },
+]
+
 [[object]]
 name = "evt_album_book"
 from = "cmn01_10_new_icon"

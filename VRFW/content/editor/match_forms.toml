@@ -1,0 +1,410 @@
+# The forms of the framework's match declarations: [[VRFW.RouteNode]], [[VRFW.MatchChallenge]], [[VRFW.GameDrops]] and
+# [[VRFW.LevelMap]] (docs/framework/modmanager-editor-schemas.md). ModManager's match page («Eventos» > a match) edits
+# every mod's records of these tables with them, in place. `For` names the table a root shape is the form of.
+# The keys are the team type's (team_engine: decl.rs, challenge.rs); a save is read back by its strict parser first.
+# Read only by ModManager: the game does not read content\editor\.
+schema = "VRFW.editor/1"
+
+# ---------------------------------------------------------------------------------------------- [[VRFW.RouteNode]]
+[[Shape]]
+Id = "route_node"
+For = "VRFW.RouteNode"
+  [[Shape.Field]]
+  Key = "Team"
+  Type = "ref"
+  Ref = "team"
+  Required = true
+  Label = { es = "Rival", en = "Rival" }
+  Help = { es = "El equipo rival (clave, id o <mod>.<nombre>).", en = "The rival team (key, id or <mod>.<name>)." }
+  [[Shape.Field]]
+  Key = "Difficulties"
+  Type = "list"
+  Of = "int"
+  Label = { es = "Dificultades", en = "Difficulties" }
+  Help = { es = "Las filas del menú del nodo (1 Crónica, 4 Heroica…). Vacío = [1, 4].", en = "The node's command rows (1 Crónica, 4 Heroica…). Empty = [1, 4]." }
+  [[Shape.Field]]
+  Key = "Title"
+  Type = "text"
+  Label = { es = "Título del partido", en = "Match title" }
+  [[Shape.Field]]
+  Key = "TemplateGame"
+  Type = "ref"
+  Ref = "match"
+  Label = { es = "Partido plantilla", en = "Template match" }
+  Help = { es = "El partido que se clona (filas, premios, IA, estadio). Por defecto: el de la pieza de al lado.", en = "The match cloned (rows, prizes, AI, stadium). Default: the piece beside it." }
+  [[Shape.Field]]
+  Key = "MatchFrom"
+  Type = "ref"
+  Ref = "match"
+  Label = { es = "Reglas del partido de", en = "Match setup from" }
+  Help = { es = "Comentarista, reglas especiales, objetivos y guiones de este partido.", en = "Caster, special rules, objectives and scripts of this match." }
+  [[Shape.Field]]
+  Key = "DropsFrom"
+  Type = "ref"
+  Ref = "match"
+  Label = { es = "Botín de", en = "Drops from" }
+  [[Shape.Field]]
+  Key = "Map"
+  Type = "ref"
+  Ref = "stadium"
+  Label = { es = "Estadio", en = "Stadium" }
+  [[Shape.Field]]
+  Key = "GameType"
+  Type = "int"
+  Min = 1
+  Max = 4
+  Label = { es = "Tipo de partido", en = "Match type" }
+  Help = { es = "1 = 11 contra 11, 2 = 5 contra 5, 3 / 4 = otros formatos pequeños.", en = "1 = 11-a-side, 2 = 5-a-side, 3 / 4 = other small formats." }
+  [[Shape.Field]]
+  Key = "Challenge"
+  Type = "string"
+  Label = { es = "Desafío", en = "Challenge" }
+  Help = { es = "El [[VRFW.MatchChallenge]] que debe cumplir tu equipo (su Name).", en = "The [[VRFW.MatchChallenge]] your team must meet (its Name)." }
+  [[Shape.Field]]
+  Key = "Mandatory"
+  Type = "bool"
+  Default = true
+  Label = { es = "Obligatorio (aplica Gates)", en = "Mandatory (applies Gates)" }
+  [[Shape.Field]]
+  Key = "Cronica"
+  Type = "table"
+  Of = "node_cronica"
+  Label = { es = "Crónica (dificultad 1)", en = "Crónica (difficulty 1)" }
+  [[Shape.Field]]
+  Key = "Heroica"
+  Type = "table"
+  Of = "node_heroica"
+  Label = { es = "Heroica (dificultad 4)", en = "Heroica (difficulty 4)" }
+  [[Shape.Field]]
+  Key = "FirstClear"
+  Type = "table"
+  Of = "first_clear"
+  Label = { es = "Premio de primera victoria", en = "First-clear prize" }
+  [[Shape.Field]]
+  Key = "LockedTitle"
+  Type = "text"
+  Label = { es = "Texto mientras está cerrado", en = "Text while locked" }
+
+[[Shape]]
+Id = "node_cronica"
+  [[Shape.Field]]
+  Key = "Level"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nivel del rival", en = "Rival level" }
+  [[Shape.Field]]
+  Key = "OwnTeam"
+  Type = "ref"
+  Ref = "team"
+  Label = { es = "Tu alineación fija", en = "Your fixed line-up" }
+  [[Shape.Field]]
+  Key = "OwnLevel"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Su nivel", en = "Its level" }
+  [[Shape.Field]]
+  Key = "Talk"
+  Type = "string"
+  Label = { es = "Diálogo antes", en = "Talk before" }
+  [[Shape.Field]]
+  Key = "TalkAfter"
+  Type = "string"
+  Label = { es = "Diálogo tras ganar", en = "Talk after a win" }
+  [[Shape.Field]]
+  Key = "Quest"
+  Type = "string"
+  Label = { es = "Objetivos (lista game_quest)", en = "Objectives (game_quest list)" }
+
+[[Shape]]
+Id = "node_heroica"
+  [[Shape.Field]]
+  Key = "Level"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nivel del rival", en = "Rival level" }
+  [[Shape.Field]]
+  Key = "Quest"
+  Type = "string"
+  Label = { es = "Objetivos (lista game_quest)", en = "Objectives (game_quest list)" }
+
+[[Shape]]
+Id = "first_clear"
+  [[Shape.Field]]
+  Key = "1"
+  Type = "string"
+  Label = { es = "Crónica", en = "Crónica" }
+  [[Shape.Field]]
+  Key = "4"
+  Type = "string"
+  Label = { es = "Heroica", en = "Heroica" }
+
+# ---------------------------------------------------------------------------------------------- [[VRFW.MatchChallenge]]
+[[Shape]]
+Id = "challenge"
+For = "VRFW.MatchChallenge"
+  [[Shape.Field]]
+  Key = "Name"
+  Type = "string"
+  Required = true
+  Label = { es = "Nombre", en = "Name" }
+  Help = { es = "<Prefijo del mod>.<Nombre>: lo que nombran los partidos.", en = "<ModPrefix>.<Name>: what matches name." }
+  [[Shape.Field]]
+  Key = "Title"
+  Type = "string"
+  Required = true
+  Label = { es = "Título (fila de texto)", en = "Title (text row)" }
+  [[Shape.Field]]
+  Key = "Description"
+  Type = "string"
+  Label = { es = "Descripción (fila de texto)", en = "Description (text row)" }
+  [[Shape.Field]]
+  Key = "Short"
+  Type = "string"
+  Label = { es = "Condición corta (fila de texto)", en = "Short condition (text row)" }
+  Help = { es = "Una línea bajo la fila del tablero de Crónica: azul si tu equipo la cumple, roja si no. Vacío = el título.", en = "One line under the Chronicle board row: blue when your team meets it, red when not. Empty = the title." }
+  [[Shape.Field]]
+  Key = "Scope"
+  Type = "enum"
+  Values = ["squad", "starters"]
+  ValueLabels = { squad = { es = "Titulares y banquillo", en = "Starters and bench" }, starters = { es = "Solo titulares", en = "Starters only" } }
+  Label = { es = "A quién mira", en = "Who it checks" }
+  [[Shape.Field]]
+  Key = "Games"
+  Type = "list"
+  Of = "string"
+  Ref = "match"
+  Label = { es = "Partidos", en = "Matches" }
+  [[Shape.Field]]
+  Key = "Difficulties"
+  Type = "list"
+  Of = "int"
+  Label = { es = "Dificultades (vacío = todas)", en = "Difficulties (empty = all)" }
+  [[Shape.Field]]
+  Key = "Require"
+  Type = "list"
+  Of = "require"
+  Label = { es = "Condiciones (todas)", en = "Conditions (all)" }
+  [[Shape.Field]]
+  Key = "Required"
+  Type = "list"
+  Of = "required"
+  Label = { es = "Titulares obligatorios", en = "Required starters" }
+
+[[Shape]]
+Id = "required"
+  [[Shape.Field]]
+  Key = "Characters"
+  Type = "list"
+  Of = "string"
+  Ref = "character"
+  Required = true
+  Label = { es = "Uno de estos personajes", en = "One of these characters" }
+  [[Shape.Field]]
+  Key = "Positions"
+  Type = "list"
+  Of = "string"
+  Values = ["gk", "df", "mf", "fw"]
+  ValueLabels = { gk = { es = "Portero", en = "Goalkeeper" }, df = { es = "Defensa", en = "Defender" }, mf = { es = "Centrocampista", en = "Midfielder" }, fw = { es = "Delantero", en = "Forward" } }
+  Label = { es = "En un puesto de", en = "In a place of" }
+  [[Shape.Field]]
+  Key = "UntilFirstClear"
+  Type = "bool"
+  Label = { es = "Solo hasta la primera victoria", en = "Only until the first win" }
+  [[Shape.Field]]
+  Key = "Text"
+  Type = "string"
+  Label = { es = "Línea propia (fila de texto)", en = "Own line (text row)" }
+  [[Shape.Field]]
+  Key = "Label"
+  Type = "string"
+  Label = { es = "Añadido a la línea del desafío (fila de texto)", en = "Added to the challenge line (text row)" }
+
+[[Shape]]
+Id = "require"
+  [[Shape.Field]]
+  Key = "Every"
+  Type = "table"
+  Of = "filter"
+  Inline = true
+  Label = { es = "Todos los jugadores", en = "Every player" }
+  [[Shape.Field]]
+  Key = "None"
+  Type = "table"
+  Of = "filter"
+  Inline = true
+  Label = { es = "Ningún jugador", en = "No player" }
+  [[Shape.Field]]
+  Key = "Count"
+  Type = "table"
+  Of = "filter"
+  Inline = true
+  Label = { es = "Cuenta los jugadores", en = "Count the players" }
+  [[Shape.Field]]
+  Key = "AtLeast"
+  Type = "int"
+  Min = 0
+  Max = 16
+  Label = { es = "Al menos", en = "At least" }
+  [[Shape.Field]]
+  Key = "AtMost"
+  Type = "int"
+  Min = 0
+  Max = 16
+  Label = { es = "Como mucho", en = "At most" }
+  [[Shape.Field]]
+  Key = "Text"
+  Type = "string"
+  Label = { es = "Línea propia (fila de texto)", en = "Own line (text row)" }
+
+[[Shape]]
+Id = "filter"
+  [[Shape.Field]]
+  Key = "Gender"
+  Type = "enum"
+  Values = ["female", "male"]
+  ValueLabels = { female = { es = "Chicas", en = "Girls" }, male = { es = "Chicos", en = "Boys" } }
+  Label = { es = "Género", en = "Gender" }
+  [[Shape.Field]]
+  Key = "Element"
+  Type = "list"
+  Of = "string"
+  Values = ["fire", "wind", "wood", "earth", "neutral"]
+  ValueLabels = { fire = { es = "Fuego", en = "Fire" }, wind = { es = "Aire", en = "Wind" }, wood = { es = "Bosque", en = "Wood" }, earth = { es = "Montaña", en = "Earth" }, neutral = { es = "Neutro", en = "Neutral" } }
+  Label = { es = "Elemento", en = "Element" }
+  [[Shape.Field]]
+  Key = "Position"
+  Type = "list"
+  Of = "string"
+  Values = ["gk", "df", "mf", "fw"]
+  ValueLabels = { gk = { es = "Portero", en = "Goalkeeper" }, df = { es = "Defensa", en = "Defender" }, mf = { es = "Centrocampista", en = "Midfielder" }, fw = { es = "Delantero", en = "Forward" } }
+  Label = { es = "Posición", en = "Position" }
+  [[Shape.Field]]
+  Key = "Series"
+  Type = "list"
+  Of = "string"
+  Ref = "series"
+  Label = { es = "Juego de origen", en = "Game of origin" }
+  [[Shape.Field]]
+  Key = "Characters"
+  Type = "list"
+  Of = "string"
+  Ref = "character"
+  Label = { es = "Personajes", en = "Characters" }
+  [[Shape.Field]]
+  Key = "MinLevel"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nivel mínimo", en = "Minimum level" }
+  [[Shape.Field]]
+  Key = "MaxLevel"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nivel máximo", en = "Maximum level" }
+
+# ---------------------------------------------------------------------------------------------- [[VRFW.GameDrops]]
+[[Shape]]
+Id = "game_drops"
+For = "VRFW.GameDrops"
+  [[Shape.Field]]
+  Key = "Game"
+  Type = "ref"
+  Ref = "match"
+  Required = true
+  Label = { es = "Partido", en = "Match" }
+  [[Shape.Field]]
+  Key = "Difficulties"
+  Type = "list"
+  Of = "int"
+  Label = { es = "Dificultades (vacío = todas)", en = "Difficulties (empty = all)" }
+  [[Shape.Field]]
+  Key = "FirstClear"
+  Type = "string"
+  Label = { es = "Premio de primera victoria (tabla)", en = "First-clear prize (table)" }
+  [[Shape.Field]]
+  Key = "ItemDrop"
+  Type = "string"
+  Label = { es = "Tabla de botín", en = "Drop table" }
+  [[Shape.Field]]
+  Key = "Decide"
+  Type = "string"
+  Label = { es = "Tabla de reparto", en = "Decide table" }
+  [[Shape.Field]]
+  Key = "SpiritChara"
+  Type = "string"
+  Label = { es = "Espíritus extra", en = "Extra spirits" }
+  [[Shape.Field]]
+  Key = "SpiritDrop"
+  Type = "string"
+  Label = { es = "Probabilidad de espíritus", en = "Spirit odds" }
+  [[Shape.Field]]
+  Key = "SpiritDrop2"
+  Type = "string"
+  Label = { es = "Probabilidad de espíritus 2", en = "Spirit odds 2" }
+  [[Shape.Field]]
+  Key = "IfMod"
+  Type = "string"
+  Label = { es = "Solo con el mod", en = "Only with mod" }
+
+# ---------------------------------------------------------------------------------------------- [[VRFW.LevelMap]]
+[[Shape]]
+Id = "level_map"
+For = "VRFW.LevelMap"
+  [[Shape.Field]]
+  Key = "Name"
+  Type = "string"
+  Required = true
+  Label = { es = "Nombre", en = "Name" }
+  [[Shape.Field]]
+  Key = "Games"
+  Type = "list"
+  Of = "string"
+  Ref = "match"
+  Label = { es = "Partidos", en = "Matches" }
+  [[Shape.Field]]
+  Key = "Difficulties"
+  Type = "list"
+  Of = "int"
+  Label = { es = "Dificultades", en = "Difficulties" }
+  [[Shape.Field]]
+  Key = "By"
+  Type = "string"
+  Label = { es = "Según", en = "By" }
+  [[Shape.Field]]
+  Key = "Sync"
+  Type = "int"
+  Min = -999
+  Max = 999
+  Label = { es = "Sincronía de nivel (respecto al rival)", en = "Level sync (from the rival)" }
+  [[Shape.Field]]
+  Key = "Max"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nivel máximo", en = "Maximum level" }
+  [[Shape.Field]]
+  Key = "NotAbove"
+  Type = "int"
+  Min = 1
+  Max = 999
+  Label = { es = "Nunca por encima de", en = "Never above" }
+  [[Shape.Field]]
+  Key = "Moves"
+  Type = "bool"
+  Label = { es = "Sube las técnicas", en = "Levels the moves" }
+  [[Shape.Field]]
+  Key = "Clones"
+  Type = "bool"
+  Label = { es = "También sus clones", en = "Also its clones" }
+  [[Shape.Field]]
+  Key = "RivalRates"
+  Type = "float"
+  Label = { es = "Escala de stats del rival", en = "Rival stat rates" }
+  [[Shape.Field]]
+  Key = "Exp"
+  Type = "float"
+  Label = { es = "Experiencia", en = "Experience" }

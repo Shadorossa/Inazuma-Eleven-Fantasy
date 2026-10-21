@@ -1,0 +1,14 @@
+schema = "VRFW.item/2"
+# The Revolutionaries' Chronicle prizes in the team's own kit (content\teams\13_go\1700_revolutionaries_kit.toml): the
+# kit «Equipación Revolucionarios» and its boots keep their keys and names, and take uniform 33ECC86B (models u041601)
+# with the game's own icons of that kit, instead of Kirkwood GO's swapped kit (711553F6). Owner 2026-10-20.
+
+[[edit]]
+target = "uni_u041401_20"
+model = { uniform = 0x33ECC86B }
+icon_key = "uni_u041601"
+
+[[edit]]
+target = "eq_sh041401_20"
+model = { uniform = 0x33ECC86B }
+icon_key = "eq_sh041601"

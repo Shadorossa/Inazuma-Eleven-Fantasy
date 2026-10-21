@@ -42,6 +42,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "chronicle_mode_soccer_vs_menu": {
+  "script": "chronicle_mode_soccer_vs_menu_1.01.79.00",
+  "require": [
+   "OnOpenChronicleModeVsLocator"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "chronicle_mode_top_menu": {
   "script": "chronicle_mode_top_menu_6.00.06.00",
   "require": [
@@ -54,6 +62,14 @@
   "script": "equip_uniform_menu_list_5.01.07.00",
   "require": [
    "CheckTeamDockUniformEquip"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "event_menu": {
+  "script": "event_menu_6.00.28.00",
+  "require": [
+   "ResetSkippedState"
   ],
   "forbid": [],
   "ambiguous": []
@@ -78,6 +94,14 @@
   "script": "join_club_menu_0.00.00.00",
   "require": [
    "ExecTimerEvent"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "play_guide_top_menu": {
+  "script": "play_guide_top_menu_1.04.09.00",
+  "require": [
+   "GetListButtonLayerIndex"
   ],
   "forbid": [],
   "ambiguous": []
@@ -112,6 +136,22 @@
   "forbid": [],
   "ambiguous": []
  },
+ "soccer_battle_setting_flow_vs_menu": {
+  "script": "soccer_battle_setting_flow_vs_menu_7.00.14.00",
+  "require": [
+   "CheckStoryChapter8Character"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_battle_vs_menu": {
+  "script": "soccer_battle_vs_menu_1.04.02.00",
+  "require": [
+   "OnOpenVsBackgroundLayer"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "soccer_constant_menu": {
   "script": "soccer_constant_menu_1.03.19.00",
   "require": [
@@ -137,6 +177,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "soccer_half_time_menu": {
+  "script": "soccer_half_time_menu_7.01.08.00",
+  "require": [
+   "EndHalfTime"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "soccer_inplay_menu": {
   "script": "soccer_inplay_menu_1.00.48",
   "require": [
@@ -150,6 +198,14 @@
   ],
   "chunk_crc": 108364872,
   "chunk_size": 793
+ },
+ "soccer_restart_guide_menu": {
+  "script": "soccer_restart_guide_menu_1.04.16.00",
+  "require": [
+   "InitializeKickoffButton_Callback"
+  ],
+  "forbid": [],
+  "ambiguous": []
  },
  "soccer_training_inplay_menu": {
   "script": "soccer_training_inplay_menu_0.00.00",
@@ -255,14 +311,6 @@
   "script": "shop_menu_buy_7.00.05.00",
   "require": [
    "ResetFreeCursor"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
- "soccer_half_time_menu": {
-  "script": "soccer_half_time_menu_7.01.08.00",
-  "require": [
-   "EndHalfTime"
   ],
   "forbid": [],
   "ambiguous": []

@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Diluvio letal (whs01390).
 [[edit]]
 target = "whs01390"
-trajectory = { goal_points = [[72.46, 19.89, 999, 36.23], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[72.46, 19.89, 999, 36.23], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[72.46, 4.5, 999.0, 36.23], [0.0, 2.0]], unblockable = false }

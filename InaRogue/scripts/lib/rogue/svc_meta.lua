@@ -13,7 +13,7 @@
 -- | CMND_EVT_RL_COACH_ITEMS | – | n, key, id, count x n |
 -- | CMND_EVT_RL_AVATAR_GET | – | texture, prefix, index, unit, name, id |
 -- | CMND_EVT_RL_AVATAR_LIST | -1 / i | count, ownedCount, currentIndex, defaultIndex, enabled / ok, id, name, team, texture, prefix, tier, price, owned, current, available, needPhase, unit |
--- | CMND_EVT_RL_AVATAR_TEAM | -1 / t, -1 / t, j | teamCount / ok, teamId, name, tier, captainIndex, memberCount, ownedCount / ok, avatarIndex |
+-- | CMND_EVT_RL_AVATAR_TEAM | -1 / t, -1 / t, j | teamCount / ok, teamId, name, tier, captainIndex, memberCount, ownedCount, hasCrest / ok, avatarIndex |
 -- | CMND_EVT_RL_AVATAR_UNLOCK / _SELECT | i, paid / i | code |
 -- | CMND_EVT_RL_POINTS / _GIVEN | – / n | pending, earned, given, spent, itemKey, itemIdGuess, enabled, rogueActive / code, pendingLeft |
 -- | CMND_EVT_RL_FORM_OWNED | formId | locked, owned, rarity, ownedCount, total |
@@ -26,10 +26,13 @@ local U = require "lib/rogue/util"
 local Core = require "lib/rogue/core"
 local X = require "lib/rogue/unlocks"
 local Co = require "lib/rogue/coaches"
+local E = require "lib/rogue/effects"
+local Items = require "lib/rogue/items"
 local Av = require "lib/rogue/avatars"
 local F = require "lib/rogue/formations"
 local album = require "lib/rogue/album"
 local chara = require "lib/rogue/chara"
+local Blocks = require "lib/rogue/svc_blocks"
 local info, warn = U.logger("rogue")
 
 local S = {}
@@ -60,6 +63,7 @@ end
 
 local function apply(ev, why)
   if not cfg().unlocks.enabled or not U.rogue_active() then return end
+  if cfg().debug_all_players then return end -- a run with every player unlocked never counts for the unlocks
   local s = X.store()
   -- seed the lifetime counters from the bank once (a run end already in the bank's counters is not counted twice)
   if not s.seeded then
@@ -184,9 +188,15 @@ end
 
 -- the run coach's multiplier of a reward ("frags" / "points"); 1.0 = none
 local function reward_mult(r)
-  if not cfg().coaches.enabled then return 1.0 end
-  local c = Co.by_id(ccat(), Core.run.run_coach())
-  return c and Co.reward_mult(c, r) or 1.0
+  local m = 1.0
+  if cfg().coaches.enabled then
+    local c = Co.by_id(ccat(), Core.run.run_coach())
+    if c then m = Co.reward_mult(c, r) end
+  end
+  -- the rogue items of the run in progress (scope outside / both)
+  local run = Core.run.run_hdls()
+  if run then m = m * E.reward_mult(E.concat(Items.effects(run.items, "outside"), Items.archetype_effects(run.items, "outside")), r) end
+  return m
 end
 
 function S.coach_scaled(n, r)
@@ -208,32 +218,48 @@ end
 -- key (0, stat) = a player when the run lists no handle (the team-wide effects only). Empty = nothing applies.
 local T_COACH = "InaRogue.CoachMult"
 
+-- InaRogue.CoachAdd: the flat additions (stat_bonus) with the same keys, read by the same declaration
+local T_COACH_ADD = "InaRogue.CoachAdd"
+
 function S.coach_sync(r)
   local c = r and Co.by_id(ccat(), r.coach) or nil
-  local entries = {}
-  if c and Co.has_stat_mults(c) then
+  -- the coach's effects, the match effects of the run's rogue items and their stat buffs, through one aggregator
+  local effects = E.concat(c and c.effects or {}, r and Items.effects(r.items, "match") or {},
+    r and Items.archetype_effects(r.items, "match") or {}, r and Blocks.buff_effects(r) or {})
+  local entries, adds = {}, {}
+  if E.has_stat_mults(effects) then
     local n = 0
+    local rc = Blocks.run_ctx(r)
     for k = 0, 19 do
       local h = r.hdls[k + 1] or 0
       if h ~= 0 then
         local uid
         if #r.slots == 0 then uid = r.squad[k + 1] else uid = r.slots[k + 1] end
-        local pos, el = 0, 0
-        local param = uid and uid ~= 0 and Core.bank.bank_entry(uid) or nil
-        local ci = param and chara.get(param)
-        if ci then pos, el = ci.position, ci.element end
-        local m = Co.stat_mults(c, pos, el)
-        for s = 1, 8 do entries[#entries + 1] = { { h, s - 1 }, m[s] } end
+        local p = Blocks.player_of(k, uid)
+        local ctx = Blocks.ctx(rc, p, nil)
+        local m = E.stat_mults(effects, p.position, p.element, ctx)
+        local a = E.stat_adds(effects, p.position, p.element, ctx)
+        for s = 1, 8 do
+          entries[#entries + 1] = { { h, s - 1 }, m[s] }
+          if a[s] ~= 0 then adds[#adds + 1] = { { h, s - 1 }, a[s] } end
+        end
         n = n + 1
       end
     end
     if n == 0 then
-      local any = Co.stat_mults(c, 0, 0)
-      for s = 1, 8 do entries[#entries + 1] = { { 0, s - 1 }, any[s] } end
+      local ctx = Blocks.ctx(rc, nil, nil)
+      local any = E.stat_mults(effects, 0, 0, ctx)
+      local a = E.stat_adds(effects, 0, 0, ctx)
+      for s = 1, 8 do
+        entries[#entries + 1] = { { 0, s - 1 }, any[s] }
+        if a[s] ~= 0 then adds[#adds + 1] = { { 0, s - 1 }, a[s] } end
+      end
     end
   end
   local ok, e = pcall(VRFW.native.table_replace, T_COACH, nil, entries)
   if not ok then VRFW.warn("rogue coaches: " .. tostring(e)) end
+  local ok2, e2 = pcall(VRFW.native.table_replace, T_COACH_ADD, nil, adds)
+  if not ok2 then VRFW.warn("rogue coaches: " .. tostring(e2)) end
 end
 
 function S.CoachList(i_arg)
@@ -349,7 +375,7 @@ function S.AvatarTeam(t_arg, j_arg)
   local j = U.int(j_arg, -1)
   if j < 0 then
     local owned = cfg().avatars.unlock_all and #team.members or Av.team_owned(k, prof(), team)
-    return true, team.id, team.name, team.tier, team.captain, #team.members, owned
+    return true, team.id, team.name, team.tier, team.captain, #team.members, owned, team.crest
   end
   local m = team.members[j + 1]
   if m == nil then return false end

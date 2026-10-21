@@ -1,0 +1,21 @@
+# The pointer commands polled by the framework's menus and the shared pointer helper (evt_menu_kit.lua#Pointer).
+# Copies of retail MENU_CTRL mouse rows: the left button alone and the wheel split by direction.
+schema = "VRFW.input/1"
+
+# Left mouse button alone (CMD_ENTER_CLICK also fires on Enter / A).
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_EVT_MOUSE_LEFT"
+mouse = [0, 0]
+
+# Wheel forward (the CMD_MOUSE_WHEEL row with direction 1).
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_EVT_WHEEL_UP"
+mouse = [4, 5, 1, 0.1, 1.0]
+
+# Wheel backward (the CMD_MOUSE_WHEEL row with direction 2).
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_EVT_WHEEL_DOWN"
+mouse = [4, 5, 2, -1.0, -0.1]

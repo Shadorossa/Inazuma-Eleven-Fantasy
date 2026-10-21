@@ -1,0 +1,7 @@
+schema = "VRFW.game/1"
+
+# The framework's debug switches (config.toml [debug]) for game Lua (docs/framework/debug-flags.md).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_DEBUG_SWITCH"     # (name) -> true while config.toml [debug] <name> is true (set there or forced by a debug flag)
+handler = "DebugSwitch.Get"

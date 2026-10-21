@@ -13,6 +13,11 @@
 # * stamina_points_pe_label: the same gauge again, only its frame shown, the frame's sprite swapped for the Chrono Stone
 #   «PE» / «GP» tag stamina_points_pe_tag01 (content\images\menu\02_btl\btl06\btl06_13\stamina_points_bars.toml, per
 #   language) and scaled to the bar's height, left of the bar.
+# * stamina_points_pe_sprint (2026-10-20): the same gauge again, only its frame quad shown, its sprite swapped for
+#   stamina_points_sprint_fill01 (translucent white) or stamina_points_sprint_winded01 (dimmed grey, the «winded»
+#   cooldown) and the quad sized from the bar's left end to the sprint share of the whole bar: the sprint bar (match
+#   resource aura_points.sprint, match_resources\sprint.toml) in front of the PE fill; draw priority 202 (over the
+#   bar and the gloss).
 # Was Inazuma Fantasy's menus\00_soccer\pe_hud.toml (layers evt_pe_bar / evt_pe_shine / evt_pe_label) until 2026-10-14.
 schema = "VRFW.menu/2"
 
@@ -71,6 +76,26 @@ add_layer = { name = "stamina_points_pe_shine", object = "stamina_points_pe_shin
 [[patch]]
 menu = "soccer_inplay_menu"
 add_layer = { name = "stamina_points_pe_label", object = "stamina_points_pe_label", count = 1, after = "stamina_points_pe_shine", groups = [
+    { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[object]]
+name = "stamina_points_pe_sprint"
+from = "btl06_13_stamina_gauge"
+priority = 202
+add_block = [{ block = "MenuAnchorComponent", values = [], after = "CMenuAnimation" }]
+add = [
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalV", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointHorizontalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_anchorPointVerticalH", values = [17] },
+    { block = "MenuAnchorComponent", param = "m_autoCalcPos", values = [0] },
+]
+
+[[patch]]
+menu = "soccer_inplay_menu"
+add_layer = { name = "stamina_points_pe_sprint", object = "stamina_points_pe_sprint", count = 1, after = "stamina_points_pe_label", groups = [
     { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
     { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
 ] }

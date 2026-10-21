@@ -1,0 +1,29 @@
+# Character Reforged: the team aura command screen «Comandos de hipertécnicas» (retail equip_aura_skill_menu,
+# docs/game/hiper/hyper-commands.md §4). Two fixes on the retail screen, data-driven, wrappers only:
+#   * the four command slot rows (soccer11_09 move plates): a row filled before its layer instance was ready kept the
+#     layout's defaults (white category-icon placeholder, the «Armadura» logo on every aura, the AT number's white
+#     placeholder). Each row is filled again once its instance is ready and its state is held by the framework's move
+#     plate service (VRFW_UI.MovePlate: «Armadura» only on an armed aura, no AT placeholder, no empty badge slot).
+#   * the detail card of a Mix-Max carrier (an aura of type 2 that is not a retail pair row:
+#     CMND_VRFW_MIXIMAX_ITEM_ALLOWED says «not restricted») for a player with a stored miximax: the partner's portrait
+#     and the pair's technique, read from the miximax store (Inazuma Fantasy's CMND_EVT_MX_GET, else Character
+#     Reforged's page slot CMND_CHARACTERREFORGED_PAGE_FUSION, answered by Aura Reworked's All Miximaxed). Retail draws
+#     the card itself; only its answers for the carrier's partner (column 19 / 17) and change skill (column 16) change.
+# No engine call at load.
+name = "aura_command_cards"
+mod = "character_reforged"
+order = 960
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "Step", "UpdateSkillSlot", "UpdateMixiMaxDetailInfo"]
+description = "Comandos de hipertécnicas: command slot rows held in their real state, a Mix-Max carrier's card shows the player's pair"
+
+[[files]]
+stem = "equip_aura_skill_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "aura_command_cards.lua"
+  marker = "aura_command_cards"
+  crc = "none"

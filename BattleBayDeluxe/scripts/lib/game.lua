@@ -9,14 +9,31 @@ local G = {}
 -- the grid menu (EnjoySelectTeamMenu)
 G.GRID_LAYER = 0x065471F6          -- the grid layer's hash (FindChildByHash; a decide's button on the grid)
 G.BTN_CAMPAIGN_START = 0x140980D9  -- the button that starts the Campaña
-G.SLOTS = 28                       -- grid slot records: this + 0x258 + i * 0x38 (GridSlot)
-G.SLOT_BASE = 0x258
+G.SLOTS = 28                       -- grid slot records: this + GridMenu.Slots + i * 0x38 (GridSlot)
 G.SLOT_STRIDE = 0x38
 G.RIVALS = 7                       -- Session +0x2CA6F0: the Campaña's 7 rivals (u32)
 G.S_RIVALS = 0x2CA6F0
 
+-- where the grid's slot records start in the menu on the running build (game profile field GridMenu.Slots); nil
+-- when the profile does not name it
+local slot_base
+function G.slot_base()
+  if not slot_base then
+    local ok, v = pcall(VRFW.game.field, "GridMenu.Slots")
+    if ok and type(v) == "number" and v > 0 then
+      slot_base = v
+    end
+  end
+  return slot_base
+end
+
+-- the address of grid slot record `i` of `menu`; nil when the slot base is unknown on this build
 function G.slot_addr(menu, i)
-  return menu + G.SLOT_BASE + i * G.SLOT_STRIDE
+  local base = G.slot_base()
+  if not base then
+    return nil
+  end
+  return menu + base + i * G.SLOT_STRIDE
 end
 
 -- the enjoy_mode_team_config rows in memory, table order: { { team, cond, addr } … } (cond 0 = no unlock

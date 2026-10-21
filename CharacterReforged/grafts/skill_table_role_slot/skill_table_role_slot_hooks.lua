@@ -45,12 +45,15 @@ do
   Slot.LOCAL_SCALE = 3778714801                     -- CMND_SET_LAYER_LOCAL_SCALE (layer, x, y, z, idx)
   Slot.MESH_POS = 499270986                         -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y, z
   -- the medal at 62 % of the board's size (plate 136 layout units -> 84), fully above the player card with a gap: its
-  -- centre = the card's x, the card frame's top + GAP + half the scaled plate (top-left nodes _icon_chr_focus_l01 /
-  -- _s01 of the card; the higher one counts). The fixed offsets are used when the card's frame is unknown.
+  -- centre = the card's x (its root: the frame is centred on it, team00_01 _icon_chr_focus_l01 = -108 .. 108), the
+  -- card's drawn top + GAP + half the scaled plate. The drawn top is the highest top-left node of the card's frame and
+  -- of its portrait (_icon_chr_dmy_l01 / _s01: the portrait rises 23 units above the frame and sits right of centre:
+  -- below it the medal covered the hair). The fixed offsets are used when the card's frame is unknown.
   Slot.SCALE = 0.62
   Slot.PLATE_HALF = 68                              -- _set_icon_badge01: 136 x 136 centred on the layer root
-  Slot.GAP = 12
-  Slot.CARD_FRAME_NODES = {3345942320 --[[_icon_chr_focus_l01]], 3491095421 --[[_icon_chr_focus_s01]]}
+  Slot.GAP = 12                                     -- layout units between the card's top and the medal
+  Slot.CARD_TOP_NODES = {3345942320 --[[_icon_chr_focus_l01]], 3491095421 --[[_icon_chr_focus_s01]],
+    2828003679 --[[_icon_chr_dmy_l01]], 3220507922 --[[_icon_chr_dmy_s01]]}
   Slot.ABOVE_CARD_DX, Slot.ABOVE_CARD_DY = 0, 66 + 12 + 42
   Slot.FALLBACK_X, Slot.FALLBACK_Y = 326, -96
   Slot.shown_chara = nil
@@ -90,7 +93,7 @@ do
       return nil
     end
     local top = nil
-    for _, node in ipairs(Slot.CARD_FRAME_NODES) do
+    for _, node in ipairs(Slot.CARD_TOP_NODES) do
       local okn, nx, ny = pcall(funcLuaMenuCommand, Slot.MESH_POS, Slot.CARD, 0, node)
       if okn and type(nx) == "number" and type(ny) == "number" and (nx ~= 0 or ny ~= 0) and ny > y then
         top = (top == nil or ny > top) and ny or top
@@ -173,7 +176,7 @@ do
     pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "probe: visible layers (* = top-left)",
       table.concat(parts, ", "))
     local card = {}
-    for _, node in ipairs(Slot.CARD_FRAME_NODES) do
+    for _, node in ipairs(Slot.CARD_TOP_NODES) do
       card[#card + 1] = Slot.MeshAt(Slot.CARD, node)
     end
     pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_table_role_slot", "probe: drawn at",

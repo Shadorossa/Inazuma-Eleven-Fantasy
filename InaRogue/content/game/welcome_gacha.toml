@@ -1,0 +1,87 @@
+schema = "VRFW.game/2"
+# InaRogue › the welcome gacha of the first INAROGUE entry (docs/game/modes/inarogue-welcome-gacha.md). Logic:
+# scripts\lib\rogue\welcome_gacha.lua (commands below), data content\rogue\welcome_gacha.toml, the scene's look
+# content\effects\welcome_gacha.toml, the game Lua research/grafts/inarogue (evt_inarogue_menu) and
+# research/grafts/inarogue_welcome (the scene overlay and the retail summon performance).
+
+# ------------------------------------------------------------------------------------------------ the scene player
+# The INAROGUE menu lives in the menu scene (CSceneMenu), which never starts a reserved event: the scene is played over
+# the menus the way menuvsroute::EventState does it (Enter 0x1445DF0, Update 0x1445B20).
+
+# CreateScene(out {hash u32, slot u8, ...}, name, 1, NULL): pushes a scene on the scene stack
+[[VRFW.Function]]
+name = "InaRogue.SceneCreate"
+game = "Scene.Create"
+
+# EventDispatch(GameState*): the current reservation of CMND_RESERVE_EVENT becomes the pending event
+[[VRFW.Function]]
+name = "InaRogue.EventDispatch"
+game = "Event.Dispatch"
+
+# EventRelease(table = GameState+0x2138, const u32* id): frees a reservation record
+[[VRFW.Function]]
+name = "InaRogue.EventRelease"
+game = "Event.Release"
+
+# EventQueuePick(table = GameState+0x2138): makes the highest-priority record current (+0xF4)
+[[VRFW.Function]]
+name = "InaRogue.EventQueuePick"
+game = "Event.QueuePick"
+
+# the event system (+0x130 state: 0 idle, 1 pending, 2 playing, 3 ended; +0x134 current event)
+[[VRFW.Global]]
+name = "inarogue_event_system"
+game = "Event.System"
+
+# the game state (+0x2138 the event reservation table, 20 x 12 bytes)
+[[VRFW.Global]]
+name = "inarogue_game_state"
+game = "Scene.GameState"
+
+# the event view (word 0x0101 at +0xFF before every SceneEvent)
+[[VRFW.Global]]
+name = "inarogue_event_view"
+game = "Event.View"
+
+# the scene stack (8 scene slots at +0x10, a scene's name hash +0xC)
+[[VRFW.Global]]
+name = "inarogue_scene_stack"
+game = "Scene.Manager"
+
+# ------------------------------------------------------------------------------------------------ commands
+
+# () -> n: grants the first-run gift and keeps it for the gacha (0 = nothing granted: not pending, off or not written)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_WELCOME_DRAW"
+handler = "InaRogue.Mode.WelcomeDraw"
+
+# (i 0-based) -> ok, param, stars, rarity: player i of the kept gift (rarity = the card type, for a temporary chara)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_WELCOME_INFO"
+handler = "InaRogue.Mode.WelcomeInfo"
+
+# () -> { orbs N, orb digit 1..N, bust-up param 1..M }: the scene overlay's answers (a table: more than 15 values)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_WELCOME_BALLS"
+handler = "InaRogue.Mode.WelcomeBalls"
+
+# ([state]) -> state: 0 off, 1 the scene, 2 the reveal (set with an argument, read without)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_WELCOME_STATE"
+handler = "InaRogue.Mode.WelcomeState"
+
+# () -> eventHash, count, the summary's geometry, the meshes and texts a tile hides (tables), the scene's longest play
+# in seconds: the data of content\rogue\welcome_gacha.toml
+[[VRFW.Command]]
+name = "CMND_INAROGUE_WELCOME_LAYOUT"
+handler = "InaRogue.Mode.WelcomeLayout"
+
+# (reserved) -> true, slot | false, why: the reserved event played over the menus (a failure frees the reservation)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_SCENE_RUN"
+handler = "InaRogue.Mode.SceneRun"
+
+# () -> "starting" | "running" | "done" | "idle", seconds since running began
+[[VRFW.Command]]
+name = "CMND_INAROGUE_SCENE_TICK"
+handler = "InaRogue.Mode.SceneTick"

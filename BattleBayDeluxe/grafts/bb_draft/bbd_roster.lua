@@ -23,7 +23,9 @@
 --     (evt_bb_draft_anchor): arrows / a click move the cursor, L2 / R2 turn the page's pages (567813453 / 2019940505 +
 --     3297841487), Back / Y close. Read-only. While the page is up the game's parameter store holds
 --     BattleBayDeluxe.lineup (LINEUP_FLAG): other mods' plate code reads it to change that page on this screen only
---     (Utilities: no team passives / TRAYECTORIA pages; BetterUI: no level in the header).
+--     (Utilities: no team passives / TRAYECTORIA pages; BetterUI: no level in the header). It also holds the shown
+--     player's team and member slot (VRFW.plate_team / VRFW.plate_slot, the VR-Framework's VRFW_PlateMember): the page
+--     shows the items of his row of the team (boots, ...) and its 3D model wears his team's kit.
 --   * The page's 3D model (Character Reforged's evt_pp_model) is drawn in the 3D pass: only background-pass layers
 --     (m_drawType 1) are under it, so the background is a background-pass copy. The model and the picker's own
 --     character (the team panel vs01_44_p1's model component) share the menu camera: the team panel is closed while
@@ -76,6 +78,9 @@ BBD_ROSTER = {
   P_PARAM = 3928123478, P_LEVEL = 3894267099, P_RARITY = 571278276,
   PLATE_SET = 1101551215 --[[(param, level, rarity, false): the page's player]],
   LINEUP_FLAG = @crc:BattleBayDeluxe.lineup@ --[[parameter set while this screen shows the page]],
+  -- the VR-Framework's plate member (VRFW_PlateMember): the shown player's team and member slot, so the page shows his
+  -- row's equipment and his team's kit
+  MEMBER_TEAM = @crc:VRFW.plate_team@, MEMBER_SLOT = @crc:VRFW.plate_slot@,
   PLATE_PAGE_PREV = 567813453, PLATE_PAGE_NEXT = 2019940505, PLATE_PAGE_UPDATE = 3297841487,
   CHARA_INFO = 4060384944 --[[CMND_GET_CHARA_INFO (param, 8) = chara_param rarity]],
   RARITY_DEFAULT = 4, RARITY_MAX = 7,
@@ -419,6 +424,10 @@ local function member_card(layer, i, m)
   if type(BetterUI) == "table" and type(BetterUI.CardHideLevel) == "function" then
     pcall(BetterUI.CardHideLevel, layer, i)
   end
+  -- BetterUI's compact cards carry no name (the coach's large card showed it)
+  if type(BetterUI) == "table" and type(BetterUI.CardHideName) == "function" then
+    pcall(BetterUI.CardHideName, funcLuaMenuCommand, layer, i)
+  end
   for _, mesh in ipairs(B.M_TAG) do
     funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
   end
@@ -427,6 +436,12 @@ local function member_card(layer, i, m)
   end
   local other = 3 - sz
   funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[other], false, i)
+  -- a card draw may hook the cursor labels again: only the focused card keeps the cursor
+  local shown = R.shown
+  if shown == nil or shown[1] ~= layer or shown[2] ~= i then
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR2, false)
+  end
 end
 
 -- a free bench, manager or coach place as the retail empty slot (SetBlankMeshByCardType): the blank card, with the
@@ -514,7 +529,9 @@ function BBD_ROSTER_Cursor(show)
   local B, R = BBCR_DRAFT, BBD_ROSTER
   if R.shown ~= nil then
     local l, i = R.shown[1], R.shown[2]
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, cursor_label(R.shown[3]), false)
+    -- both labels off (the cursor stayed on a card whose other label was hooked)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR2, false)
     for _, m in ipairs(B.M_FOCUS) do
       funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], l, m, false, i)
     end
@@ -698,6 +715,7 @@ function BBD_ROSTER_Show()
   if R.plate ~= nil and R.plate.param == m.param then
     return
   end
+  param_set(R.MEMBER_SLOT, m.slot)
   funcLuaMenuCommand(R.PLATE_SET, m.param, m.level, m.rar, false)
   if R.plate ~= nil then
     R.plate.param = m.param
@@ -772,6 +790,8 @@ function BBD_ROSTER_Open()
   param_set(R.P_LEVEL, m.level)
   param_set(R.P_RARITY, m.rar)
   param_set(R.LINEUP_FLAG, 1)
+  param_set(R.MEMBER_TEAM, team >= 2147483648 and team - 4294967296 or team) -- the store keeps signed 32-bit numbers
+  param_set(R.MEMBER_SLOT, m.slot)
   funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], R.PLATE)
   BBD_ROSTER_Log("open: tile", tile, "team", team, "members", #R.members, "free places", #R.empties)
 end
@@ -792,6 +812,8 @@ function BBD_ROSTER_Finish(why)
   local B, R = BBCR_DRAFT, BBD_ROSTER
   params_clear()
   param_clear(R.LINEUP_FLAG)
+  param_clear(R.MEMBER_TEAM)
+  param_clear(R.MEMBER_SLOT)
   R.state, R.plate, R.pending, R.probe = nil, nil, nil, nil
   BBD_ROSTER_Cursor(false)
   cards_open(false)

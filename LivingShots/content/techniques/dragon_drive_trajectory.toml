@@ -3,9 +3,9 @@ schema = "VRFW.technique/3"
 # own dive, matching its cut-in). In the cut-in's shot cut (c0030) the ball is kicked from the air, about 4 m up, and
 # flies down into the goal at a gentle angle; in the match the ball starts that high over the kick point and comes
 # into the goal at the cut-in's angle and height: the angled dive (docs/framework/technique.md §4e,
-# docs/game/mechanics/move-mini-effects.md §7.6). Close in the start comes down onto the 20° line; farther the ball
-# leaves level at 4 m (a downward volley) and bends into the 20° line half way down it. Its aura
-# (content\effects\dragon_drive_ball.toml, the yellow fan) is turned along the flight.
+# docs/game/mechanics/move-mini-effects.md §7.6). Since 2026-10-21 the flight is one straight line from that start
+# height into the goal (owner: shot flights and auras are never curved). Its aura (content\effects\dragon_drive_ball.toml,
+# the dragon) is turned along the flight.
 #
 # Measured (research/scripts/shot_trajectory_from_cutin.py --move dragon_drive): the event ball (b000001 bone
 # c_add_1_0) of ev60_01990 c0030, the kick frames 290-292: (0.06, 4.07, 3.34) -> (0.06, 1.80, 9.47), 4.07 m -> 1.80 m
@@ -19,8 +19,9 @@ schema = "VRFW.technique/3"
 # Rizo de dragón (whs01990).
 [[edit]]
 target = "whs01990"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the angled dive above as points, the same
-# flight: 4.11 m (4.0 over a kick on the pitch) held until 6.35 m before the goal point, then the 20.0
-# deg line down into 1.8 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 3.17 m down (bend 0.5). A shot shorter
-# than 6.35 m starts lower, on the line.
-trajectory = { goal_points = [[6.35, 4.11, 999, 3.17], [0.0, 1.8]], unblockable = false }
+# Flight (2026-10-21, owner: «debe salir desde una altura determinada (un poco más alto que un tiro normal) e ir
+# recto»; shot auras are never curved): one straight line from the start height down into 2.0 m at the goal, no level
+# piece and no bend. Measured start 4.11 m (4.0 over a kick on the pitch), lowered by _flight_height.toml to 3.78 m.
+# (until 1.6.x: 4.11 m held level, then the 20 deg line down into 1.8 m, the bend 3.17 m down it.)
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 4.11]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 3.78]], goal_points = [[0.0, 2.0]], unblockable = false }

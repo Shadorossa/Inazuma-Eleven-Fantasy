@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Katana crisantemo (Chrysanthemum Katana, whs02220; the edit also covers
+# whs02220_mm).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_02220 c0400 is shot at effect frames 340-360 from 1.57 m to
+# 0.50 m over 11.3 m along +Z (a low shot), then stands at the beam's tip to the cut's end.
+# Flight (owner rules 2026-10-21: never curved; a low shot starts at kick height): one straight line from 0.5 m at
+# the kick into 2.0 m at the goal. speed = 20 (m/s): the aura's burst stays at the kick point by sliding back from the
+# ball at 20 m/s (doom_spear_ball_fx.KICK_GROW), so the shot flies at that speed. hide_ball: the real match ball is
+# not drawn while the shot flies (the beam's tip is its place); drawn again when the shot is over.
+# unblockable = false: the game's block rules (shot_fx changes no block rule).
+
+# Katana crisantemo (whs02220).
+[[edit]]
+target = "whs02220"
+trajectory = { points = [[0.0, 0.5]], goal_points = [[0.0, 2.0]], speed = 20.0, unblockable = false }
+hide_ball = true

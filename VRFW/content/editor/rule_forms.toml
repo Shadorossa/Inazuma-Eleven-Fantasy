@@ -1,0 +1,410 @@
+# The forms of the rule type's files (docs/framework/types/rule.md): rulebooks (`VRFW.rule/1`, one per file) and their
+# bindings (`VRFW.rule_binding/1`), in the editor schema format (docs/framework/modmanager-editor-schemas.md).
+# ModManager's «Reglas» page edits every mod's rule files with them, in place. `For` names the file kind a root shape
+# is the form of. The keys are the match engine's (ruleset.rs, assign.rs, challenge/rules.rs, pitch.rs): every save is
+# read back by its strict parser first. A field without a value keeps the match row's rule (the game's), so «—» is a
+# value of its own. Read only by ModManager: the game does not read content\editor\.
+schema = "VRFW.editor/1"
+
+# ---------------------------------------------------------------------------------------------- rulebook (rule/1)
+[[Shape]]
+Id = "rulebook"
+For = "VRFW.rule/1"
+  [[Shape.Field]]
+  Key = "id"
+  Type = "id"
+  Required = true
+  Label = { es = "Id", en = "Id" }
+  Help = { es = "Único; lo usan los enlaces, los modos y los partidos amistosos.", en = "Unique; bindings, modes and friendlies name it." }
+  [[Shape.Field]]
+  Key = "name"
+  Type = "string"
+  Label = { es = "Nombre", en = "Name" }
+  Help = { es = "Nombre de reserva; en el juego se usa el texto <mod>.ruleset_<id>.", en = "Fallback name; the game shows the text <mod>.ruleset_<id>." }
+  [[Shape.Field]]
+  Key = "aliases"
+  Type = "list"
+  Of = "string"
+  Label = { es = "Ids anteriores", en = "Former ids" }
+  Help = { es = "Quien nombre uno de estos ids sigue encontrando este reglamento.", en = "Whatever names one of these ids still finds this rulebook." }
+  [[Shape.Field]]
+  Key = "training"
+  Type = "bool"
+  Default = false
+  Label = { es = "Partido de entrenamiento", en = "Training match" }
+  Help = { es = "Sin resultado ni premios: los demás mods saltan sus registros.", en = "No result or rewards: other mods skip their records." }
+  [[Shape.Field]]
+  Key = "time"
+  Type = "table"
+  Of = "rule_time"
+  Label = { es = "Tiempo", en = "Time" }
+  [[Shape.Field]]
+  Key = "teams"
+  Type = "table"
+  Of = "rule_teams"
+  Label = { es = "Equipos", en = "Teams" }
+  [[Shape.Field]]
+  Key = "kickoff"
+  Type = "table"
+  Of = "rule_kickoff"
+  Label = { es = "Saque inicial", en = "Kick-off" }
+  [[Shape.Field]]
+  Key = "play"
+  Type = "table"
+  Of = "rule_play"
+  Label = { es = "Juego", en = "Play" }
+  [[Shape.Field]]
+  Key = "end"
+  Type = "table"
+  Of = "rule_end"
+  Label = { es = "Final del partido", en = "End of the match" }
+  [[Shape.Field]]
+  Key = "pitch"
+  Type = "table"
+  Of = "rule_pitch"
+  Label = { es = "Campo", en = "Pitch" }
+  [[Shape.Field]]
+  Key = "challenge"
+  Type = "table"
+  Of = "rule_challenge"
+  Label = { es = "Desafío", en = "Challenge" }
+  Help = { es = "Opcional: el partido se juega como un desafío.", en = "Optional: the match is played as a challenge." }
+
+[[Shape]]
+Id = "rule_time"
+  [[Shape.Field]]
+  Key = "half_minutes"
+  Type = "int"
+  Min = 0
+  Max = 90
+  Label = { es = "Minutos por parte", en = "Minutes per half" }
+  Help = { es = "También la prórroga y el gol de oro. 0 = sin límite (solo con 0 partes o sin fin). Vacío = los del partido.", en = "Also extra time and golden goal. 0 = no limit (only with 0 halves or endless). Empty = the match's." }
+  [[Shape.Field]]
+  Key = "halves"
+  Type = "int"
+  Min = 0
+  Max = 10
+  Label = { es = "Partes", en = "Halves" }
+  Help = { es = "0 = sin tiempo reglamentario. Vacío = las del partido.", en = "0 = no regular time. Empty = the match's." }
+  [[Shape.Field]]
+  Key = "endless"
+  Type = "bool"
+  Default = false
+  Label = { es = "Sin fin", en = "Endless" }
+  Help = { es = "Una parte con el reloj parado: el partido no acaba solo.", en = "One period with the clock stopped: the match never ends by itself." }
+
+[[Shape]]
+Id = "rule_teams"
+  [[Shape.Field]]
+  Key = "players"
+  Type = "int"
+  Min = 1
+  Max = 11
+  Label = { es = "Jugadores por equipo", en = "Players per side" }
+  [[Shape.Field]]
+  Key = "goalkeeper"
+  Type = "bool"
+  Label = { es = "Porteros", en = "Goalkeepers" }
+  Help = { es = "No = todos de campo (necesita una formación sin portero).", en = "No = all outfield (needs an all-outfield formation)." }
+  [[Shape.Field]]
+  Key = "fill"
+  Type = "bool"
+  Label = { es = "Rellenar huecos", en = "Fill holes" }
+  Help = { es = "Un puesto vacío de la alineación lo ocupa un suplente (el portero primero).", en = "An empty line-up spot gets a bench player (the keeper's first)." }
+  [[Shape.Field]]
+  Key = "user"
+  Type = "table"
+  Of = "rule_side"
+  Label = { es = "Equipo del jugador", en = "Player's side" }
+  [[Shape.Field]]
+  Key = "rival"
+  Type = "table"
+  Of = "rule_side"
+  Label = { es = "Equipo rival", en = "Rival side" }
+
+[[Shape]]
+Id = "rule_side"
+  [[Shape.Field]]
+  Key = "players"
+  Type = "int"
+  Min = 0
+  Max = 11
+  Label = { es = "Jugadores", en = "Players" }
+  [[Shape.Field]]
+  Key = "formation"
+  Type = "ref"
+  Ref = "formation"
+  Label = { es = "Formación", en = "Formation" }
+  [[Shape.Field]]
+  Key = "goalkeeper"
+  Type = "bool"
+  Label = { es = "Portero", en = "Goalkeeper" }
+  [[Shape.Field]]
+  Key = "fill"
+  Type = "bool"
+  Label = { es = "Rellenar huecos", en = "Fill holes" }
+  [[Shape.Field]]
+  Key = "team"
+  Type = "ref"
+  Ref = "team"
+  Label = { es = "Equipo", en = "Team" }
+  Help = { es = "Solo el rival, y solo con un reglamento elegido por un modo (SELECT / OVERRIDE).", en = "Rival side only, and only for a rulebook a mode chooses (SELECT / OVERRIDE)." }
+
+[[Shape]]
+Id = "rule_kickoff"
+  [[Shape.Field]]
+  Key = "always"
+  Type = "enum"
+  Values = ["user", "rival", "row"]
+  ValueLabels = { user = { es = "Siempre el jugador", en = "Always the player" }, rival = { es = "Siempre el rival", en = "Always the rival" }, row = { es = "Como el partido", en = "As the match" } }
+  Label = { es = "Quién saca", en = "Who kicks off" }
+
+[[Shape]]
+Id = "rule_play"
+  [[Shape.Field]]
+  Key = "fouls"
+  Type = "bool"
+  Label = { es = "Faltas", en = "Fouls" }
+  Help = { es = "No = sin faltas, tarjetas ni penaltis por falta.", en = "No = no fouls, cards or foul penalties." }
+  [[Shape.Field]]
+  Key = "referee"
+  Type = "bool"
+  Label = { es = "Árbitro", en = "Referee" }
+  Help = { es = "No = ni faltas ni fueras de juego.", en = "No = no fouls and no offside." }
+  [[Shape.Field]]
+  Key = "offside"
+  Type = "bool"
+  Label = { es = "Fuera de juego", en = "Offside" }
+  [[Shape.Field]]
+  Key = "tactics"
+  Type = "bool"
+  Label = { es = "Supertácticas", en = "Special tactics" }
+  [[Shape.Field]]
+  Key = "coach_mode"
+  Type = "bool"
+  Label = { es = "Modo comandante", en = "Coach mode" }
+  [[Shape.Field]]
+  Key = "goal_scenes"
+  Type = "bool"
+  Label = { es = "Escenas de gol", en = "Goal scenes" }
+  Help = { es = "No = tras un gol la escena y la celebración terminan al momento.", en = "No = after a goal the scene and celebration end at once." }
+  [[Shape.Field]]
+  Key = "exrule"
+  Type = "list"
+  Of = "int"
+  Min = 1
+  Max = 31
+  Label = { es = "Reglas especiales activadas", en = "Special rules on" }
+  Help = { es = "Bits ExRule del partido que se encienden.", en = "The match's ExRule bits switched on." }
+  [[Shape.Field]]
+  Key = "exrule_off"
+  Type = "list"
+  Of = "int"
+  Min = 1
+  Max = 31
+  Label = { es = "Reglas especiales desactivadas", en = "Special rules off" }
+  [[Shape.Field]]
+  Key = "rule_bits"
+  Type = "list"
+  Of = "int"
+  Min = 0
+  Max = 31
+  Label = { es = "Bits de regla del partido activados", en = "Match rule bits on" }
+  Help = { es = "Bits de la palabra de reglas del partido, solo en este partido. 24 = final de torneo (celebración de campeones).", en = "Bits of the match's rule word, this match only. 24 = tournament final (champions' celebration)." }
+  [[Shape.Field]]
+  Key = "rule_bits_off"
+  Type = "list"
+  Of = "int"
+  Min = 0
+  Max = 31
+  Label = { es = "Bits de regla del partido desactivados", en = "Match rule bits off" }
+
+[[Shape]]
+Id = "rule_end"
+  [[Shape.Field]]
+  Key = "first_goal_ends"
+  Type = "bool"
+  Default = false
+  Label = { es = "El primer gol acaba el partido", en = "First goal ends the match" }
+  [[Shape.Field]]
+  Key = "extra_time"
+  Type = "bool"
+  Default = false
+  Label = { es = "Prórroga", en = "Extra time" }
+  [[Shape.Field]]
+  Key = "extra_time_halves"
+  Type = "int"
+  Min = 1
+  Max = 2
+  Default = 2
+  Label = { es = "Partes de la prórroga", en = "Extra-time halves" }
+  [[Shape.Field]]
+  Key = "extra_time_minutes"
+  Type = "int"
+  Min = 1
+  Max = 60
+  Label = { es = "Minutos por parte de prórroga", en = "Minutes per extra half" }
+  Help = { es = "Vacío = los minutos por parte del partido.", en = "Empty = the match's minutes per half." }
+  [[Shape.Field]]
+  Key = "golden_goal"
+  Type = "bool"
+  Default = false
+  Label = { es = "Gol de oro", en = "Golden goal" }
+  [[Shape.Field]]
+  Key = "penalties"
+  Type = "bool"
+  Default = false
+  Label = { es = "Penaltis", en = "Penalties" }
+  [[Shape.Field]]
+  Key = "penalties_kicks"
+  Type = "int"
+  Min = 1
+  Max = 11
+  Default = 5
+  Label = { es = "Tiros por equipo", en = "Kicks per side" }
+  [[Shape.Field]]
+  Key = "penalties_sudden_death"
+  Type = "bool"
+  Default = true
+  Label = { es = "Muerte súbita", en = "Sudden death" }
+  [[Shape.Field]]
+  Key = "penalties_order"
+  Type = "enum"
+  Values = ["forwards_first", "lineup"]
+  ValueLabels = { forwards_first = { es = "Delanteros primero", en = "Forwards first" }, lineup = { es = "Orden de la alineación", en = "Line-up order" } }
+  Label = { es = "Orden de tiradores", en = "Kick order" }
+  [[Shape.Field]]
+  Key = "penalties_first"
+  Type = "enum"
+  Values = ["user", "rival"]
+  ValueLabels = { user = { es = "El jugador", en = "The player" }, rival = { es = "El rival", en = "The rival" } }
+  Label = { es = "Tira primero", en = "Kicks first" }
+  [[Shape.Field]]
+  Key = "penalties_final_score"
+  Type = "enum"
+  Values = ["winner_plus_one", "sum"]
+  ValueLabels = { winner_plus_one = { es = "Ganador +1", en = "Winner +1" }, sum = { es = "Sumar los goles", en = "Add the goals" } }
+  Label = { es = "Marcador final", en = "Final score" }
+  [[Shape.Field]]
+  Key = "extended_vgoal"
+  Type = "bool"
+  Label = { es = "Gol V tras empate (historia)", en = "V-goal after a draw (story)" }
+
+[[Shape]]
+Id = "rule_pitch"
+  [[Shape.Field]]
+  Key = "scale"
+  Type = "float"
+  Min = 0.3
+  Max = 1.0
+  Label = { es = "Escala del campo", en = "Pitch scale" }
+  [[Shape.Field]]
+  Key = "goal"
+  Type = "point"
+  Label = { es = "Portería (ancho, alto en m)", en = "Goal (width, height in m)" }
+
+[[Shape]]
+Id = "rule_challenge"
+  [[Shape.Field]]
+  Key = "kind"
+  Type = "enum"
+  Required = true
+  Values = ["hold", "goals", "steals"]
+  ValueLabels = { hold = { es = "Mantener el balón", en = "Keep the ball" }, goals = { es = "Marcar goles", en = "Score goals" }, steals = { es = "Robar balones", en = "Steal the ball" } }
+  Label = { es = "Tipo", en = "Kind" }
+  [[Shape.Field]]
+  Key = "seconds"
+  Type = "int"
+  Min = 0
+  Max = 3600
+  Label = { es = "Segundos", en = "Seconds" }
+  [[Shape.Field]]
+  Key = "count"
+  Type = "int"
+  Min = 0
+  Max = 999
+  Label = { es = "Cantidad", en = "Count" }
+  [[Shape.Field]]
+  Key = "zone_block"
+  Type = "bool"
+  Label = { es = "Bloquear la zona", en = "Block the zone" }
+  [[Shape.Field]]
+  Key = "outfield"
+  Type = "bool"
+  Label = { es = "Todos de campo", en = "All outfield" }
+  [[Shape.Field]]
+  Key = "keepaway"
+  Type = "bool"
+  Label = { es = "IA de rondo", en = "Keep-away AI" }
+  [[Shape.Field]]
+  Key = "keepers_out"
+  Type = "bool"
+  Label = { es = "Sin porteros", en = "Keepers out" }
+  [[Shape.Field]]
+  Key = "end_match"
+  Type = "bool"
+  Label = { es = "Acaba el partido", en = "Ends the match" }
+  [[Shape.Field]]
+  Key = "tag"
+  Type = "int"
+  Min = 0
+  Label = { es = "Etiqueta", en = "Tag" }
+  [[Shape.Field]]
+  Key = "outfield_formation"
+  Type = "ref"
+  Ref = "formation"
+  Label = { es = "Formación sin portero", en = "All-outfield formation" }
+  [[Shape.Field]]
+  Key = "keepaway_ai"
+  Type = "toml"
+  Label = { es = "Ajustes de la IA de rondo", en = "Keep-away AI knobs" }
+
+# ---------------------------------------------------------------------------------------------- binding (rule_binding/1)
+[[Shape]]
+Id = "binding"
+For = "VRFW.rule_binding/1"
+  [[Shape.Field]]
+  Key = "modes"
+  Type = "map"
+  KeyRef = "mode"
+  Ref = "record:rulebook"
+  Label = { es = "Por modo de juego", en = "By game mode" }
+  [[Shape.Field]]
+  Key = "games"
+  Type = "map"
+  KeyRef = "match"
+  Ref = "record:rulebook"
+  Label = { es = "Por partido", en = "By match" }
+  Help = { es = "El nivel más alto: gana a equipos, modos y valores por defecto.", en = "The highest level: wins over teams, modes and defaults." }
+  [[Shape.Field]]
+  Key = "teams"
+  Type = "map"
+  KeyRef = "team"
+  Ref = "record:rulebook"
+  Label = { es = "Por equipo rival", en = "By rival team" }
+  [[Shape.Field]]
+  Key = "default"
+  Type = "table"
+  Of = "binding_default"
+  Label = { es = "Por defecto en los partidos del mod", en = "Default for the mod's matches" }
+  [[Shape.Field]]
+  Key = "home_stadiums"
+  Type = "map"
+  KeyRef = "team"
+  Ref = "map"
+  Label = { es = "Estadio local del rival", en = "Rival's home stadium" }
+  Help = { es = "No elige reglamento: dónde se juega una pachanga con rival_home.", en = "Picks no rulebook: where a pachanga with rival_home is played." }
+
+[[Shape]]
+Id = "binding_default"
+  [[Shape.Field]]
+  Key = "ruleset"
+  Type = "ref"
+  Ref = "record:rulebook"
+  Label = { es = "Reglamento", en = "Rulebook" }
+  [[Shape.Field]]
+  Key = "games"
+  Type = "list"
+  Of = "string"
+  Ref = "match"
+  Label = { es = "Partidos", en = "Matches" }

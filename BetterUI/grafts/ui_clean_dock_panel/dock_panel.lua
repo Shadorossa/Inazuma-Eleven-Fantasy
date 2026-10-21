@@ -1302,16 +1302,10 @@ local function CHD_RowCount()
     return
   end
   CHD_Cmd(R.COUNT_SET, R.COUNT_LAYER, 0, prim, count)
-  -- the number has its own draw order: the pill went above the tile (layer priority = the tile's + 1) but the number
-  -- kept the list's, under the tile (1.23.6: «3656» logged, an empty pill). It goes above the pill, as the retail puts
-  -- a box's texts one above its layer (CMND_SET_MENU_TEXT_PRIORITY)
-  local prio = CHD_Get(1018283794 --[[CMND_GET_DRAW_PRIORITY]], R.COUNT_LAYER, 0)
-  if type(prio) == "number" then
-    CHD_Cmd(1848885328 --[[CMND_SET_MENU_TEXT_PRIORITY]], R.COUNT_LAYER, 0, R.COUNT_NUM, prio + 1)
-  end
   if not CHD.row.countLog then
     CHD.row.countLog = true
-    CHD_Log("shortcut bank count " .. tostring(count) .. " (priority " .. tostring(prio) .. ")")
+    CHD_Log("shortcut bank count " .. tostring(count) .. " (count layer priority " .. tostring(CHD.row.countPrio)
+      .. ", tiles " .. tostring(CHD_Get(1018283794 --[[CMND_GET_DRAW_PRIORITY]], R.LAYER, 0)) .. ")")
   end
 end
 
@@ -1320,7 +1314,24 @@ end
 -- open yet (1.23.2 dressed nothing: white icon slots, the «CONF. DE EQUIPO» titles)
 local function CHD_RowDress()
   local R = CHD.ROW
-  local prio = CHD_Get(1018283794 --[[CMND_GET_DRAW_PRIORITY]], R.LAYER, 0)
+  -- the draw order: the bank count's digits keep the priority their layer had when the dock built it (raising the
+  -- pill's layer above the tile raised the pill only: 1.23.6-1.23.9 drew an empty pill, the «3656» written under the
+  -- tile). So nothing of the count layer is changed: the tiles go one under it instead (never under FORMACIÓN's
+  -- order, the retail boxes'), and the «!» goes one above the tiles (the retail list puts it one above its rows)
+  local GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]]
+  if CHD.row.countPrio == nil then
+    CHD.row.countPrio = CHD_Get(GET_PRIO, R.COUNT_LAYER, 0) or false
+  end
+  local prio = CHD_Get(GET_PRIO, R.LAYER, 0)
+  local cp = CHD.row.countPrio
+  local floor = CHD_Get(GET_PRIO, CHD.FORM, 0)
+  if type(prio) == "number" and type(cp) == "number" and prio >= cp
+      and (type(floor) ~= "number" or cp - 1 >= floor) then
+    prio = cp - 1
+    for i = 0, #R.KINDS - 1 do
+      CHD_Cmd(CHD.SET_PRIO, R.LAYER, i, prio)
+    end
+  end
   for i = 0, #R.KINDS - 1 do
     CHD_Cmd(CHD.LAYER_SCALE, R.LAYER, CHD.row.scale or CHD_ROW.scale, CHD.row.scale or CHD_ROW.scale, 1, i)
     -- the «CONF. DE EQUIPO» title: mesh off, node off and at size 0 (it kept showing with the mesh off alone)
@@ -1350,8 +1361,12 @@ local function CHD_RowDress()
         CHD_Cmd(CHD.NODE_POS, R.LAYER, i, R.COUNT_NODE, 0, R.COUNT_AT[1])
         CHD_Cmd(CHD.NODE_POS, R.LAYER, i, R.COUNT_NODE, 1, R.COUNT_AT[2])
       end
-      if type(prio) == "number" then
+      if type(prio) == "number" and nt.layer ~= R.COUNT_LAYER then
         CHD_Cmd(CHD.SET_PRIO, nt.layer, 0, prio + 1)
+      elseif type(prio) == "number" then
+        -- the bank count's pill and number above the tile and its focus frame: the retail icon layers set their
+        -- priority with the trailing «true» (the layer's texts / numbers follow it), a plain set moved only the pill
+        CHD_Cmd(CHD.SET_PRIO, nt.layer, 0, prio + 1, true)
       end
     end
     CHD_RowSetup(i)
@@ -1502,6 +1517,14 @@ local function CHD_RowDecide(i)
   end
   if not ok then
     CHD_Log("shortcut " .. tostring(i) .. " error " .. tostring(err))
+  end
+  -- back from the row's menu: the squad on the pitch drawn again from the team set. The retail list gets this from its
+  -- own return (ResumeTeamDock reopens the list; its OnOpenLayer sets the dock's «redraw the squad» flag only while the
+  -- list holds the focus), never true for a tile: a player put on the bench in the bank stayed off the pitch and the
+  -- dock kept its old member list (owner 2026-10-19). UpdateFormationInfo = the retail redraw (member list, cards).
+  if type(UpdateFormationInfo) == "function" then
+    local okr, er = pcall(UpdateFormationInfo)
+    CHD_Log("shortcut " .. tostring(i) .. ": squad redrawn" .. (okr and "" or (" (error " .. tostring(er) .. ")")))
   end
   -- the list row's branch gave the list the control focus (and some its marker): the tile takes both back. The
   -- cursor has one owner: the tile that holds the focus

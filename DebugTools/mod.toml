@@ -1,0 +1,27 @@
+id = "debug_tools"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
+name = "Debug Tools"
+version = "1.0.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "For testing only: while this mod is enabled, every debug and «unlock everything» setting of the other mods is on (every chain open and playable, every INAROGUE player, avatar, coach and album entry, the contact maps drawn open...). Disable it and everything is back to normal: nothing is written to your save by it."
+priority = 0
+tags = ["Debug"]
+updated = "2026-10-20"
+# This mod's own names (TOML keys [[DebugTools.X]], Lua DebugTools.X); never VRFW.
+prefix = "DebugTools"
+folder = "DebugTools"
+# Data only: no plugin, no Lua, no options rows. It turns on the VR-Framework's debug flags (docs/framework/debug-flags.md):
+# each mod names its own debug settings in its mod.toml ([[VRFW.DebugSwitch]]), and the flags listed in this mod's
+# config.toml [flags] force them on for as long as this mod is enabled. The other mods' files are never changed.
+# README.md is a developer file, never installed.
+requires = ["vr_framework>=2.8.41"]
+conflicts = []
+
+# the debug flags this mod turns on: the [flags] table of its config.toml
+[VRFW.DebugFlags]
+Config = "flags"
+
+# UI / test switches only: left out of the mod set two players must share in a private online room
+[VRFW.Mod]
+AffectsMatch = false

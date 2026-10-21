@@ -4,9 +4,11 @@
 --
 -- * Gear (equipment) and moves (solo hissatsu) are real game items the Lua gives with CMND_ADD_ITEM_ONLY; formations
 --   are the third kind (formations.lua). A roll is a pure function of (run seed, phase, node, salt).
--- * A gacha coin draws a character of a Players Universe star sign from the game's own rates (no retail lottery call).
+-- * A gacha coin draws a character of a Players Universe star sign from the game's own rates (no retail lottery call);
+--   a coach / manager card is never drawn.
 
 local U = require "lib/rogue/util"
+local chara = require "lib/rogue/chara"
 local warn = select(2, U.logger("rogue"))
 
 local L = {}
@@ -128,7 +130,7 @@ function L.gacha_draw(sign, rnd)
   local rtype, first, count = s.buckets[b][1], s.buckets[b][3], s.buckets[b][4]
   if first + count > #g.charas then return nil end
   local cw = {}
-  for k = 1, count do cw[k] = g.charas[first + k][3] end
+  for k = 1, count do cw[k] = chara.is_staff(g.charas[first + k][1]) and 0 or g.charas[first + k][3] end
   local i = pick(cw, rnd())
   if not i then return nil end
   local row = g.charas[first + i]

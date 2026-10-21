@@ -16,5 +16,6 @@ schema = "VRFW.technique/3"
 # Tornado dragón (whs00350).
 [[edit]]
 target = "whs00350"
-trajectory = { goal_points = [[18.72, 11.39], [17.56, 10.47], [14.75, 10.16], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[18.72, 11.39], [17.56, 10.47], [14.75, 10.16], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[18.72, 4.49], [17.56, 4.25], [14.75, 4.17], [0.0, 2.0]], unblockable = false }
 

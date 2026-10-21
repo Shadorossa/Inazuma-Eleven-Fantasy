@@ -196,6 +196,12 @@ end
 function FM.install(X)
   local D = X.D.free_match_tabs
   local FIRST_TAB, RETAIL_EXTRA, MAX_TABS = D.first_tab, D.retail_extra, D.max_tabs
+
+  -- opponentListTab of a free-match-only hidden piece ([[VRFW.GameTab]], [[VRFW.FreeMatchGame]]): a tab the Chronicle
+  -- team list has not, so only the free-match list shows its game (missing: 255, that list files it under its routeType)
+  local function hidden_piece_list_tab()
+    return D.hidden_piece_list_tab or 255
+  end
   local LIM = (X.input.limits or {})
   local NATIVE_CLEAR_BITS, CLEAR_BITS = LIM.native_clear_bits or 2560, LIM.clear_bits or 32768
 
@@ -453,7 +459,7 @@ function FM.install(X)
             if fx then r:set_tuple(-1, prow, fx, 0, 0) end
           end
           local ft = r:field(pl, "opponentListTab")
-          if ft then r:set_u32(-1, prow, ft, 255) end
+          if ft then r:set_u32(-1, prow, ft, hidden_piece_list_tab()) end
           r:push(pl, prow)
           r:touch()
           X.touched.route = true
@@ -858,7 +864,7 @@ function FM.install(X)
       if fx then r:set_tuple(-1, prow, fx, 0, 0) end
     end
     local ft = r:field(pl, "opponentListTab")
-    if ft then r:set_u32(-1, prow, ft, 255) end
+    if ft then r:set_u32(-1, prow, ft, hidden_piece_list_tab()) end
     r:push(pl, prow)
     r:touch()
     X.touched.route = true

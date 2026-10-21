@@ -6,11 +6,14 @@
 # graft training_ground (training_ground_panel.lua) opens it. Over it, the layers of the rival team picker (the
 # framework's VRFW_EmblemGrid, docs/framework/emblem-grid.md: emblem tiles vrfw_emblem_tile, names vrfw_tile_label;
 # cols x rows of config.toml [training_ground.picker] = 6 x 3).
+# The four layers go after every retail layer of soccer_menu (no `after` on the first one): a layer inserted among the
+# retail rows moves the ones behind it (the command select stopwatch, the catch ring timer); inserted there, the cut-in
+# effects of every match froze and the stopwatch lost its sector.
 schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_menu"
-add_layer = { name = "vrfw_mp_plate", object = "vrfw_mp_plate", count = 28, align = [1, 8], scale = 0.2, after = "soccer08_26_p1_hyperdimensional_power_one_gauge_enemy", groups = [
+add_layer = { name = "vrfw_mp_plate", object = "vrfw_mp_plate", count = 28, align = [1, 8], scale = 0.2, groups = [
     { group = "soccer_menu", flags = [0, 1, 0, 0, 1, 0] },
     { group = "soccer_battle_menu", flags = [0, 1, 0, 0, 1, 0] },
 ] }

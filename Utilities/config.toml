@@ -190,11 +190,11 @@ profile_refresh_s = 30
 [friends.panel]
 # the panel (screen px, 1920 x 1080, y down): left edge and width, top (under the top bar), the row height, the
 # title bar's height, the details pane's width (left of the panel), frames of the slide-in
-x = 1500
-width = 420
+x = 1440
+width = 480
 top = 72
-row_h = 40
-head_h = 56
+row_h = 64
+head_h = 72
 details_w = 560
 slide_frames = 10
 
@@ -281,3 +281,9 @@ key_dy = 0
 # 14.1 on v7.1.2). The chosen seconds per minute give rate = current × (60 / seconds) / game_rate, so the normal
 # speed gets exactly 60 / seconds and the slow speed (12) or a mode's own clock keep their proportion.
 game_rate = 14.1
+
+[prematch_skip]
+# Pre-match «(X) Ir al saque» (graft util_prematch_skip, docs/game/ui/prematch-skip.md): seconds X must be held in a
+# pre-match event to go straight to the kick-off, 0..10 (default 1.0 = the retail Y hold; 0 = no X prompt). It was
+# BetterUI's config.toml prematch_skip_hold until Utilities 1.17.0.
+hold = 1.0

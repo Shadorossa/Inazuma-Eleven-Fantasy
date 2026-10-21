@@ -31,26 +31,10 @@
   "forbid": [],
   "ambiguous": []
  },
- "chronicle_mode_soccer_vs_menu": {
-  "script": "chronicle_mode_soccer_vs_menu_1.01.79.00",
-  "require": [
-   "OnOpenChronicleModeVsLocator"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
  "chronicle_mode_top_menu": {
   "script": "chronicle_mode_top_menu_6.00.06.00",
   "require": [
    "WaitCaravanModelLoad"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
- "event_menu": {
-  "script": "event_menu_6.00.28.00",
-  "require": [
-   "ResetSkippedState"
   ],
   "forbid": [],
   "ambiguous": []
@@ -144,22 +128,6 @@
   "forbid": [],
   "ambiguous": []
  },
- "soccer_battle_setting_flow_vs_menu": {
-  "script": "soccer_battle_setting_flow_vs_menu_7.00.14.00",
-  "require": [
-   "CheckStoryChapter8Character"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
- "soccer_battle_vs_menu": {
-  "script": "soccer_battle_vs_menu_1.04.02.00",
-  "require": [
-   "OnOpenVsBackgroundLayer"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
  "soccer_command_action_menu": {
   "script": "soccer_command_action_menu_1.00.51",
   "require": [
@@ -193,14 +161,6 @@
   "script": "soccer_formation_menu_0.06.94",
   "require": [
    "UpdateSkillCollision"
-  ],
-  "forbid": [],
-  "ambiguous": []
- },
- "soccer_half_time_menu": {
-  "script": "soccer_half_time_menu_7.01.08.00",
-  "require": [
-   "EndHalfTime"
   ],
   "forbid": [],
   "ambiguous": []

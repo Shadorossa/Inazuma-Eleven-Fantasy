@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Pingüino emperador n.º 2 + Tiburón (whs03330).
 [[edit]]
 target = "whs03330"
-trajectory = { goal_points = [[26.31, 6.42, 999, 13.16], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[26.31, 6.42, 999, 13.16], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[26.31, 4.35, 999.0, 13.16], [0.0, 2.0]], unblockable = false }

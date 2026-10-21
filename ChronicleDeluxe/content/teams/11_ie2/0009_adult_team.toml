@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Adult Team (IE2, «Hakuren's Coach's route» #7; report status: partial, closest existing: album: Servicio Secreto 6/11).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Adult_Team
+[[team]]
+name = "ct_wk_adult_team"
+key = "evt_ct_wk_adult_team"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = { home = 0x368C7CA2, flip = true }  # wiki «SP Wear away» = VR kit of tm_cro_ie2_0200, tm_cro_ie2_0220 (Servicio Secreto's kit, flipped)
+level = 65
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x9D55AF75, slot = 0, number = 1, rarity_step = 1 }, # Yaono Sumiko = Suzanne Yuma (GK)
+  { card = 0x0DA4EC35, slot = 1, number = 2, rarity_step = 1, captain = true }, # Sumisu Eiji = Ian Smith (DF)
+  { card = 0xB678FCB6, slot = 2, number = 3, rarity_step = 1 }, # Fudeyama Tome = Tammy Fielding (DF)
+  { card = 0xE0225B30, slot = 3, number = 4, rarity_step = 1 }, # Honemaru Hitoshi = Louis Hillside (DF)
+  { card = 0xF9396A71, slot = 4, number = 5, rarity_step = 1 }, # Shittou Nao = Ness Sheldon (DF)
+  { card = 0xB80A9278, slot = 5, number = 6, rarity_step = 1 }, # Sakite Masaru = Marshall Firsthand (MF)
+  { card = 0xAF63CDF7, slot = 6, number = 7, rarity_step = 1 }, # Ootama Konomi = Alex Lovely (DF)
+  { card = 0x2689BFF6, slot = 7, number = 8, rarity_step = 1 }, # Gokuhi Tsutomu = Taylor Firepool (MF)
+  { card = 0x680A4306, slot = 8, number = 9, rarity_step = 1 }, # Kisoku Jun = Joe Kenneddy (FW)
+  { card = 0x3F928EB7, slot = 9, number = 10, rarity_step = 1 }, # Tateno Mai = Marge Fielding (MF)
+  { card = 0xA111A339, slot = 10, number = 11, rarity_step = 1 }, # Kagami Houko = Holly Mirror (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_adult_team.png" # remastered crest of the wiki's Adult Team emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Equipo de Adultos"
+short = "Equipo de Adultos"
+[team.text.en]
+name = "Grown-Ups"
+short = "Grown-Ups"
+[team.text.ja]
+name = "アダルトチーム"
+short = "アダルトチーム"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_adult_team"
+card_moves = 4

@@ -608,6 +608,12 @@ local function passives_off()
   return ok and tonumber(v) == 1
 end
 
+-- a framework signature-only mode runs (vrfw.passive.slots_off): the 5 slots are empty, the custom passive slot stays
+local function slots_off()
+  local ok, v = pcall(VRFW.state.get, "vrfw.passive.slots_off")
+  return ok and tonumber(v) == 1
+end
+
 -- the slot rules need every saved player's slots in the tables (a special slot holds his own special, the archetype
 -- mode derives defaults), not only the configured ones
 local function rules_touch_everyone()
@@ -1051,7 +1057,7 @@ function PC.PlateInfo(h, slot, field, _copy, preview)
   h, slot, field = arg_u32(h), arg_u32(slot), arg_u32(field)
   if not (h and slot and field) or field > 2 then return false end
   local li = C.list_index(h)
-  if not li and slot < N and passives_off() then
+  if not li and slot < N and (passives_off() or slots_off()) then
     if field == 2 then return true, true, false end
     return true, true, 0
   end
@@ -1100,9 +1106,9 @@ end
 
 -- ---------------------------------------------------------------------------------------------- commands
 
--- CMND_UTIL_PC_OFF() → true while a declared off mode runs (the plate hides its passive rows)
+-- CMND_UTIL_PC_OFF() → true while a declared off mode or a framework signature-only mode runs (the plate hides its passive rows)
 function PC.Off()
-  return passives_off()
+  return passives_off() or slots_off()
 end
 
 -- CMND_UTIL_PC_INFO(hdl) → ok, mode, archetype 1, archetype 2, max slots, inactive count

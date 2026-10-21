@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Astrorremate (Astro Break, whs00500, cut-in ev60_00500).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_00500 c0030 is kicked at effect frame 262 and skims the pitch
+# 40 m along +Z at 0.27 m -> 0.09 m (a ground shot, its furrow ploughed under it).
+# Flight (owner rules 2026-10-21: never curved; a low shot keeps its kick height): along the ground the whole way, the
+# ball centre at 0.11 m (on the grass), as Grand Fire's ground shot, so the aura's dust wings and furrow lie on the
+# pitch. unblockable = false: the game's block rules (shot_fx changes no block rule). Heights are the ball centre over
+# the pitch (m); points count from the kick; the height is held.
+
+# Astrorremate (whs00500).
+[[edit]]
+target = "whs00500"
+trajectory = { points = [[0.0, 0.11]], unblockable = false }

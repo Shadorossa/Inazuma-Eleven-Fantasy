@@ -1,0 +1,21 @@
+# Debug Tools: the debug flags this mod turns on while it is enabled (docs/framework/debug-flags.md).
+#
+# all = true turns on every debug flag that any active mod declares ([[VRFW.DebugSwitch]] in its mod.toml), also the
+# flags of mods added later. A flag set to false below stays off even with all = true.
+# To change one for a single install without touching the mod, write it in evt_loader\config.toml, e.g.
+#   [mods.debug_tools.flags]
+#   all_players = false
+# The log says once at start which flags are on and which setting of which mod each one forced («[debug]» lines).
+[flags]
+all = true
+# VR-Framework: every chain board shows every match tile open and playable, and every Chronicle board node that opens a
+# chain is drawn and can be entered, whatever the progress (the save's progress is only read)
+all_chains = true
+# VR-Framework: contact maps drawn open, every office team page listed, with a «MODO VISTA» (view mode) mark
+reveal_all = true
+# InaRogue: every avatar, office unlock, coach, album entry and formation owned / shown
+unlock_all = true
+# InaRogue: every draw-pool card in the INAROGUE bank (in memory only, never written to the bank file)
+all_players = true
+# InaRogue: the INAROGUE debug commands (bank fill, fragments, probe info)
+tools = true

@@ -1,0 +1,197 @@
+# The forms of the framework's tables inside a move entry (docs/framework/technique.md §4g): [VRFW.MoveEffect] and
+# [VRFW.DualElement] of a [[technique]] / [[edit]] entry, in the editor schema format
+# (docs/framework/modmanager-editor-schemas.md). `Within = "technique"`: ModManager's move editor lists each one as a
+# rule of the move (turned on, off, and each key set). The ranges are the editor's, the keys the technique engine's
+# (technique_engine::move_effect, ::dual_element): every save is read back by its strict parser first.
+# Read only by ModManager: the game does not read content\editor\.
+schema = "VRFW.editor/1"
+
+# ---------------------------------------------------------------------------------------------- [VRFW.MoveEffect]
+[[Shape]]
+Id = "move_effect"
+For = "VRFW.MoveEffect"
+Within = "technique"
+Label = { en = "Duel effects (framework)", es = "Efectos de duelo (framework)" }
+Help = { en = "The framework's generic rules: ball speed, first use, stat power, tension on block, cooldown refund and push.", es = "Reglas genéricas del framework: velocidad del balón, primer uso, poder por estadísticas, tensión al bloquear, recarga y empuje." }
+  [[Shape.Field]]
+  Key = "BallSpeedMult"
+  Type = "float"
+  Label = { en = "Ball speed", es = "Velocidad del balón" }
+  Min = 0.5
+  Max = 3.0
+  Step = 0.01
+  Unit = "×"
+  [[Shape.Field]]
+  Key = "LongShotFalloffMult"
+  Type = "float"
+  Label = { en = "Long-shot falloff", es = "Pérdida de tiro largo" }
+  Min = 0.0
+  Max = 1.0
+  Step = 0.01
+  Unit = "×"
+  [[Shape.Field]]
+  Key = "FirstUse"
+  Type = "table"
+  Of = "move_effect_first_use"
+  [[Shape.Field]]
+  Key = "StatPower"
+  Type = "table"
+  Of = "move_effect_stat_power"
+  [[Shape.Field]]
+  Key = "OnBlock"
+  Type = "table"
+  Of = "move_effect_on_block"
+  [[Shape.Field]]
+  Key = "OnUse"
+  Type = "table"
+  Of = "move_effect_on_use"
+  [[Shape.Field]]
+  Key = "OnSuccess"
+  Type = "table"
+  Of = "move_effect_on_success"
+
+[[Shape]]
+Id = "move_effect_first_use"
+  [[Shape.Field]]
+  Key = "PowerMult"
+  Type = "float"
+  Label = { en = "First use: power ×", es = "Primer uso: poder ×" }
+  Min = 1.0
+  Max = 100.0
+  Step = 0.1
+  Unit = "×"
+  [[Shape.Field]]
+  Key = "Uses"
+  Type = "int"
+  Label = { en = "First use: uses", es = "Primer uso: usos" }
+  Min = 1
+  Max = 99
+  [[Shape.Field]]
+  Key = "Scope"
+  Type = "enum"
+  Label = { en = "First use: scope", es = "Primer uso: ámbito" }
+  Values = ["team_match", "player_match"]
+  ValueLabels = { team_match = { en = "team, match", es = "equipo, partido" }, player_match = { en = "player, match", es = "jugador, partido" } }
+
+[[Shape]]
+Id = "move_effect_stat_power"
+  # Of = "stat": the game's stat words (kick, control, ...), as the technique engine names them
+  [[Shape.Field]]
+  Key = "Stats"
+  Type = "list"
+  Of = "stat"
+  Label = { en = "Stat power: stats", es = "Poder por estadísticas" }
+  [[Shape.Field]]
+  Key = "Weight"
+  Type = "float"
+  Label = { en = "Weight", es = "Peso" }
+  Min = 0.0
+  Max = 10.0
+  Step = 0.05
+  Unit = "×"
+  [[Shape.Field]]
+  Key = "DecayPerUse"
+  Type = "float"
+  Label = { en = "Decay per use", es = "Pérdida por uso" }
+  Min = 0.0
+  Max = 10.0
+  Step = 0.05
+  [[Shape.Field]]
+  Key = "Scope"
+  Type = "enum"
+  Label = { en = "Scope", es = "Ámbito" }
+  Values = ["team_match", "player_match"]
+  ValueLabels = { team_match = { en = "team, match", es = "equipo, partido" }, player_match = { en = "player, match", es = "jugador, partido" } }
+  [[Shape.Field]]
+  Key = "Combine"
+  Type = "enum"
+  Label = { en = "Combine", es = "Combinar" }
+  Values = ["mean", "sum"]
+  ValueLabels = { mean = { en = "mean", es = "media" }, sum = { en = "sum", es = "suma" } }
+
+[[Shape]]
+Id = "move_effect_on_block"
+  [[Shape.Field]]
+  Key = "Tension"
+  Type = "float"
+  Label = { en = "Tension when blocked", es = "Tensión al bloquearlo" }
+  Min = -1.0
+  Max = 1.0
+  Step = 0.005
+  [[Shape.Field]]
+  Key = "Team"
+  Type = "enum"
+  Label = { en = "Team that changes", es = "Equipo que cambia" }
+  Values = ["rival", "own"]
+  ValueLabels = { rival = { en = "rival", es = "rival" }, own = { en = "own", es = "propio" } }
+
+[[Shape]]
+Id = "move_effect_on_use"
+  [[Shape.Field]]
+  Key = "CooldownRefund"
+  Type = "float"
+  Label = { en = "Cooldown refunded", es = "Recarga devuelta" }
+  Min = 0.0
+  Max = 1.0
+  Step = 0.01
+  [[Shape.Field]]
+  Key = "Filter"
+  Type = "table"
+  Of = "move_effect_on_use_filter"
+
+[[Shape]]
+Id = "move_effect_on_use_filter"
+  [[Shape.Field]]
+  Key = "Team"
+  Type = "enum"
+  Label = { en = "Refunded team", es = "Equipo de la recarga" }
+  Values = ["own", "rival"]
+  ValueLabels = { own = { en = "own", es = "propio" }, rival = { en = "rival", es = "rival" } }
+
+[[Shape]]
+Id = "move_effect_on_success"
+  [[Shape.Field]]
+  Key = "PushAffected"
+  Type = "table"
+  Of = "move_effect_push_affected"
+
+[[Shape]]
+Id = "move_effect_push_affected"
+  [[Shape.Field]]
+  Key = "RadiusM"
+  Type = "float"
+  Label = { en = "Push rivals to", es = "Empujar rivales a" }
+  Min = 3.0
+  Max = 60.0
+  Step = 0.5
+  Unit = " m"
+  [[Shape.Field]]
+  Key = "MarginM"
+  Type = "float"
+  Label = { en = "Line margin", es = "Margen de la banda" }
+  Min = 0.0
+  Max = 10.0
+  Step = 0.1
+  Unit = " m"
+
+# -------------------------------------------------------------------------------------------- [VRFW.DualElement]
+[[Shape]]
+Id = "dual_element"
+For = "VRFW.DualElement"
+Within = "technique"
+Label = { en = "Dual element", es = "Doble elemento" }
+Help = { en = "The move counts as the elements of its performers.", es = "La técnica cuenta como los elementos de quienes la ejecutan." }
+  [[Shape.Field]]
+  Key = "From"
+  Type = "enum"
+  Label = { en = "Elements from", es = "Elementos de" }
+  Values = ["performers"]
+  ValueLabels = { performers = { en = "the performers", es = "los participantes" } }
+  Default = "performers"
+  [[Shape.Field]]
+  Key = "MultiStabBonus"
+  Type = "float"
+  Label = { en = "Bonus per extra element", es = "Bonus por elemento extra" }
+  Min = 0.0
+  Max = 1.0
+  Step = 0.01

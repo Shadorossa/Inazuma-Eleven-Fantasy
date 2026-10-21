@@ -1,0 +1,22 @@
+# «Puerta astral» (Astro Gate, whs01260; forest; cut-in ev60_01260): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0300, the ball skimming the ground out of the star gate): its
+# purple orb round it and the dust wake it drags, grown from the kick point with the ball, its back end faded, x1,
+# instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6126ag00 (effect/event/ev60/ev6126ag00/), built by research/scripts/astro_gate_ball_fx.py from the
+# cut-in's effect object ev60012600. docs/game/media/astro-gate-ball-fx.md.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\astro_gate_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "astro_gate"
+from = "ega0075d"
+object = "effect/event/ev60/ev6126ag00/ev6126ag00.objbin"
+
+[[shot_aura]]
+name = "astro_gate"
+when = { techniques = "whs01260" }
+aura = "astro_gate"
+like = "ega0075d"

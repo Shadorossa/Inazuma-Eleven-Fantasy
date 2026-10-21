@@ -1,0 +1,104 @@
+schema = "VRFW.changelog/1"
+# Debug Tools: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+lang = "es"
+name = "Herramientas de depuración"
+
+[en]
+name = "Debug Tools"
+
+[fr]
+name = "Outils de débogage"
+
+[de]
+name = "Debug-Werkzeuge"
+
+[it]
+name = "Strumenti di debug"
+
+[pt]
+name = "Ferramentas de depuração"
+
+[ja]
+name = "デバッグツール"
+
+[zh_hans]
+name = "调试工具"
+
+[zh_hant]
+name = "除錯工具"
+
+[[release]]
+icon = "general"
+notes = [
+    "Solo para pruebas: activa todo el modo depuración.",
+    "Todas las cadenas abiertas, con todos sus equipos.",
+    "INAROGUE: jugadores, avatares y álbum desbloqueados.",
+    "Desactívalo y todo vuelve a la normalidad.",
+]
+
+[release.en]
+notes = [
+    "Testing only: turns on every debug setting.",
+    "Every chain open, with all of its teams.",
+    "INAROGUE: players, avatars and album unlocked.",
+    "Disable it and everything is back to normal.",
+]
+
+[release.fr]
+notes = [
+    "Pour les tests : active tous les réglages de débogage.",
+    "Toutes les chaînes ouvertes, avec toutes leurs équipes.",
+    "INAROGUE : joueurs, avatars et album débloqués.",
+    "Désactive-le et tout redevient normal.",
+]
+
+[release.de]
+notes = [
+    "Nur für Tests: schaltet alle Debug-Optionen ein.",
+    "Alle Ketten offen, mit allen ihren Teams.",
+    "INAROGUE: Spieler, Avatare und Album freigeschaltet.",
+    "Deaktivieren, und alles ist wieder normal.",
+]
+
+[release.it]
+notes = [
+    "Solo per i test: attiva tutte le opzioni di debug.",
+    "Tutte le catene aperte, con tutte le loro squadre.",
+    "INAROGUE: giocatori, avatar e album sbloccati.",
+    "Disattivalo e tutto torna normale.",
+]
+
+[release.pt]
+notes = [
+    "Só para testes: ativa todas as opções de depuração.",
+    "Todas as cadeias abertas, com todas as suas equipes.",
+    "INAROGUE: jogadores, avatares e álbum desbloqueados.",
+    "Desative-o e tudo volta ao normal.",
+]
+
+[release.ja]
+notes = [
+    "テスト専用：デバッグ設定をすべてオンにします。",
+    "すべてのチェーンが全チームと共に解放。",
+    "INAROGUE：選手・アバター・図鑑を解放。",
+    "無効にすれば元どおりに戻ります。",
+]
+
+[release.zh_hans]
+notes = [
+    "仅供测试：开启所有调试设置。",
+    "所有连战全部开放，所有队伍均可挑战。",
+    "INAROGUE：球员、头像与图鉴全部解锁。",
+    "停用后一切恢复原状。",
+]
+
+[release.zh_hant]
+notes = [
+    "僅供測試：開啟所有除錯設定。",
+    "所有連戰全部開放，所有隊伍皆可挑戰。",
+    "INAROGUE：球員、頭像與圖鑑全部解鎖。",
+    "停用後一切恢復原狀。",
+]

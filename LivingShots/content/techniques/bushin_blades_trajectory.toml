@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Estocada samurái (whs01865).
 [[edit]]
 target = "whs01865"
-trajectory = { goal_points = [[20.19, 16.48], [14.84, 11.92], [9.6, 8.15], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[20.19, 16.48], [14.84, 11.92], [9.6, 8.15], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[20.19, 4.5], [14.84, 3.71], [9.6, 3.06], [0.0, 2.0]], unblockable = false }

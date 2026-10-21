@@ -9,3 +9,12 @@ schema = "VRFW.menu/2"
 menu = "market_menu"
 layer = "shop01_21_market_list_item"
 count = 3
+if_not_mod = "new_recruitment"
+
+# With New Recruitment the Atrio de los indomables stays in the Mercado as its recruitment office (a retail shop whose
+# menu entries open a contact set, CMND_VRFW_SHOP_SCREENS, never leaves it: graft inazuma_fantasy_general_store): 4 bars.
+[[patch]]
+menu = "market_menu"
+layer = "shop01_21_market_list_item"
+count = 4
+if_mod = "new_recruitment"

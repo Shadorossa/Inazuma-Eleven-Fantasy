@@ -24,6 +24,14 @@
   "forbid": [],
   "ambiguous": []
  },
+ "chara_pack_open_event_menu": {
+  "script": "chara_pack_open_event_menu",
+  "require": [
+   "SetBustupIconCharaId"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "main_menu": {
   "script": "main_menu_1.02.92.00",
   "require": [
@@ -55,6 +63,14 @@
   "script": "soccer_formation_menu_0.06.94",
   "require": [
    "UpdateSkillCollision"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "soccer_summon_menu": {
+  "script": "soccer_summon_menu_6.00.34.00",
+  "require": [
+   "SelectSpiritItem"
   ],
   "forbid": [],
   "ambiguous": []

@@ -810,7 +810,7 @@ local DK = {
   IDX_HDL = 1720957768,        -- (set, team, index, 0) -> ok, handle (index 19 = coach)
   CHARA = 1131797651,          -- (hdl, 4) -> chara_param id
   RL_CHARA = 1144149794,             -- (param) -> tier, cost, inPool, stat, card, element, position (1 GK)
-  BANK_COUNT = 2104951661,      -- () -> count, ...
+  BANK_COUNT = 2104951661,      -- () -> count, capacity, slot, budget, rosterLimit (nil = DK.MAX)
   BANK_GET = 405423844,          -- (i, sort) -> ok, uid, param, ...
   PICK_STATE = 1488679912,      -- (uid) -> picked, starter cost (fragments applied)
   TEAM_RESET = 1704951671,      -- () -> budget
@@ -1051,6 +1051,15 @@ local function DK_Link5(set)
   return n
 end
 
+-- most bank players created in the INAROGUE save: the bank's own limit ([rogue] debug_all_players), else DK.MAX
+local function DK_RosterLimit()
+  local limit = select(5, Call(DK.BANK_COUNT))
+  if type(limit) == "number" and limit > 0 then
+    return limit
+  end
+  return DK.MAX
+end
+
 -- chara_param id -> {uid, cost} of the INAROGUE bank
 local function DK_BankMap()
   local m, list = {}, {}
@@ -1179,10 +1188,11 @@ function DK.Roster()
   end
   local deleted = DK_Purge()
   local _, list = DK_BankMap()
+  local limit = DK_RosterLimit()
   local made = {}
   for i, e in ipairs(list) do
-    if i > DK.MAX then
-      Log("roster: bank has", #list, "players, only the first", DK.MAX, "are created")
+    if i > limit then
+      Log("roster: bank has", #list, "players, only the first", limit, "are created")
       break
     end
     e.hdl = DK_Create(e.param)
@@ -1291,9 +1301,10 @@ function DK.Prepare()
       deleted = deleted + 1
     end
   end
+  local limit = DK_RosterLimit()
   local made = {}
   for i, e in ipairs(list) do
-    if i > DK.MAX then
+    if i > limit then
       break
     end
     e.hdl = have[e.param]
@@ -2170,6 +2181,262 @@ function IRM_ReadSlots()
   Log("slots", "rogue slot", SL.slot, "active", SL.active, "return", SL.ret, "rogue has game", SL.has)
 end
 
+-- ---- the welcome gacha of the first entry (docs/game/modes/inarogue-welcome-gacha.md; owner 2026-10-20) ------------
+-- The first-run gift drawn (CMND_INAROGUE_WELCOME_DRAW), a welcome message, InaRogue's gold copy of the retail Players
+-- Universe scene (ev74_10091) played over the menus, every player revealed one by one by the retail summon performance
+-- (soccer_summon_menu, graft inarogue_welcome), then a summary of the players on this screen (tiles = the retail status
+-- plate soccer11_04_formation_chara_status: its backing, the kit-dressed miniface, the name and the stars). Data:
+-- content\rogue\welcome_gacha.toml. A global table: no new chunk locals (the 200-local limit).
+--@lib evt_menu_kit.lua#Pointer
+IRW = {
+  DRAW = 45978392,            -- CMND_INAROGUE_WELCOME_DRAW () -> n
+  INFO = 3116769088,          -- CMND_INAROGUE_WELCOME_INFO (i) -> ok, param, stars, rarity
+  STATE = 459028698,          -- CMND_INAROGUE_WELCOME_STATE (state)
+  LAYOUT = 1300599966,        -- CMND_INAROGUE_WELCOME_LAYOUT () -> event, n, geometry, meshes, texts, seconds
+  RUN = 3913979361,           -- CMND_INAROGUE_SCENE_RUN (reserved) -> ok, slot / why
+  TICK = 1628542059,          -- CMND_INAROGUE_SCENE_TICK () -> phase, seconds
+  RESERVE = 822852817,        -- CMND_RESERVE_EVENT (event) -> id, refused
+  HIDE_MENU = 1670867360,     -- (1, menu): a menu not drawn (retail full-screen video over menus)
+  SHOW_MENU = 3257327861,     -- (menu): drawn again
+  FADE_BUSY = 1215256347,     -- CMND_BRIGHT_IS_FADE
+  SUMMON_MENU = 369188769,    -- soccer_summon_menu
+  CHARA_ID = 347353059,       -- (param) -> chara id
+  CHARA_NAME = 523676951,     -- (chara id) -> name
+  FACE = 552280324,           -- the face icon (layer, idx, faceOnly, mesh, slot, 0, 0, chara id)
+  TEXT_VISIBLE = 1505208242,  -- CMND_SET_MENU_TEXT_VISIBLE (layer, text, visible, idx)
+  TILE = 1844915256,          -- soccer11_04_formation_chara_status (11 instances on this screen)
+  TILE_FACE = 2531809341,     -- _icon_chr_status_dmy01
+  TILE_FACE_SLOT = 3236322704,   -- icon_chr_status_dmy01
+  TILE_NAME = 1704438437,     -- _text_name01
+  TILE_STARS = 4238277407,    -- _text_name02
+  HEADER_TEXT = 1220590795,   -- _text_sub_title02 of the header
+  GUIDE_TEXT = 378156699,     -- _text_guide01 of the guide line
+  TXT = {
+    MSG = {1478993723 --[[evt_ir_welcome_msg]], "¡Bienvenido a INAROGUE!"},
+    TITLE = {2373811702 --[[evt_ir_welcome_title]], "¡BIENVENIDO A INAROGUE!"},
+    SUB = {1756330568 --[[evt_ir_welcome_sub]], "Tus {1} primeros jugadores ya están en el banco"},
+    STAR_ON = {2007460865 --[[evt_ir_star_on]], "★"},
+    STAR_OFF = {3380229650 --[[evt_ir_star_off]], "☆"},
+  },
+  open = false,               -- the summary is on screen (Accept / Back / a click anywhere close it)
+  pointer = nil,              -- the summary's pointer (evt_menu_kit.lua#Pointer): a mouse click anywhere closes it
+  accepted = false,
+  shown = 0,                  -- tiles in use
+}
+
+function IRW.WaitFade()
+  local k = 0
+  while funcLuaCommand(IRW.FADE_BUSY) and k < 120 do
+    k = k + 1
+    coroutine.yield()
+  end
+end
+
+-- the gold scene over the menus; the screen stays black after it (the reveal opens under black)
+function IRW.Scene(event, max_s)
+  if type(event) ~= "number" or event == 0 then
+    return
+  end
+  Call(IRW.STATE, 1)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
+  funcLuaCommand(C.FADE, 1, 0.3)
+  IRW.WaitFade()
+  local id, refused = Call(IRW.RESERVE, event)
+  Log("welcome gacha: scene reserved", tostring(id), tostring(refused))
+  if type(id) == "number" and id ~= 0 then
+    ShowOwnLayers(false)
+    funcLuaMenuCommand(IRW.HIDE_MENU, 1, MENU)
+    local ok, why = Call(IRW.RUN, id)
+    Log("welcome gacha: scene run", tostring(ok), tostring(why))
+    if ok == true then
+      funcLuaCommand(C.FADE, 0, 0.3)
+      local frames, limit = 0, Int(max_s) * 60
+      local phase = "starting"
+      while frames < limit do
+        phase = Call(IRW.TICK)
+        if phase ~= "starting" and phase ~= "running" then
+          break
+        end
+        frames = frames + 1
+        coroutine.yield()
+      end
+      Log("welcome gacha: scene", tostring(phase), "after", frames, "frame(s)")
+      funcLuaCommand(C.FADE, 1, 0)
+    end
+    funcLuaMenuCommand(IRW.SHOW_MENU, MENU)
+  end
+  Call(IRW.STATE, 0)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+end
+
+-- the retail summon performance, one player at a time (graft inarogue_welcome runs it in soccer_summon_menu and
+-- closes that menu at the end)
+function IRW.Reveal(n)
+  Call(IRW.STATE, 2)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
+  funcLuaCommand(C.OPEN_MENU, IRW.SUMMON_MENU)
+  coroutine.yield()
+  coroutine.yield()
+  local opened = funcLuaMenuCommand(C.EXIST_MENU, IRW.SUMMON_MENU) == true
+  Log("welcome gacha: reveal of", n, "player(s), summon menu open", tostring(opened))
+  local frames = 0
+  while funcLuaMenuCommand(C.EXIST_MENU, IRW.SUMMON_MENU) == true and frames < 36000 do
+    frames = frames + 1
+    coroutine.yield()
+  end
+  if frames >= 36000 then
+    Log("welcome gacha: the summon screen was still open after 36000 steps: closed")
+    funcLuaCommand(C.CLOSE_MENU, IRW.SUMMON_MENU)
+  end
+  Call(IRW.STATE, 0)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+end
+
+-- n stars as text (the glyphs are menu_text rows)
+function IRW.Stars(n)
+  local on, off = T(IRW.TXT.STAR_ON), T(IRW.TXT.STAR_OFF)
+  return string.rep(on, n) .. string.rep(off, 5 - n)
+end
+
+-- tile k (0-based) of the summary: player k at its place of the rows (g = the layout's geometry: tile, gap, scale,
+-- offset x, offset y, rows n, count per row..., centre y per row...)
+function IRW.Tile(k, g, meshes, texts)
+  local ok, param, stars = Call(IRW.INFO, k)
+  if ok ~= true then
+    return false
+  end
+  local tile, gap, scale, dx, dy, nrows = g[1], g[2], g[3], g[4], g[5], Int(g[6])
+  local row, col = 1, k
+  while row <= nrows and col >= Int(g[6 + row]) do
+    col = col - Int(g[6 + row])
+    row = row + 1
+  end
+  if row > nrows then
+    return false
+  end
+  local count = Int(g[6 + row])
+  local x = 960 + (col - (count - 1) / 2) * (tile + gap) + dx
+  local y = -Int(g[6 + nrows + row]) + dy
+  funcLuaMenuCommand(C.OPEN_LAYER, IRW.TILE, k)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, IRW.TILE, k, true)
+  funcLuaMenuCommand(LAYOUT.POS, IRW.TILE, x, y, 0, k)
+  funcLuaMenuCommand(ARC.SCALE, IRW.TILE, scale, scale, 1, k)
+  for _, m in ipairs(meshes) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, IRW.TILE, m, false, k)
+  end
+  for _, t in ipairs(texts) do
+    funcLuaMenuCommand(IRW.TEXT_VISIBLE, IRW.TILE, t, false, k)
+  end
+  local id = Call(IRW.CHARA_ID, param)
+  if type(id) == "number" and id ~= 0 then
+    funcLuaMenuCommand(IRW.FACE, IRW.TILE, k, false, IRW.TILE_FACE, IRW.TILE_FACE_SLOT, 0, 0, id)
+    local name = Call(IRW.CHARA_NAME, id)
+    funcLuaMenuCommand(C.TEXT, IRW.TILE, IRW.TILE_NAME, type(name) == "string" and name or "", k)
+  end
+  funcLuaMenuCommand(C.TEXT, IRW.TILE, IRW.TILE_STARS, IRW.Stars(Int(stars)), k)
+  return true
+end
+
+-- the summary: the players on this screen until Accept / Back
+function IRW.Summary(n, g, meshes, texts)
+  if type(g) ~= "table" then
+    return
+  end
+  ShowOwnLayers(false)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_BG, 0, true)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_HEADER, 0, true)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_GUIDE_LINE, 0, true)
+  funcLuaMenuCommand(C.LAYER_VISIBLE, L_BTN_GUIDE, 0, true)
+  funcLuaMenuCommand(C.TEXT, L_HEADER, IRW.HEADER_TEXT, T(IRW.TXT.TITLE))
+  funcLuaMenuCommand(C.TEXT, L_GUIDE_LINE, IRW.GUIDE_TEXT, T(IRW.TXT.SUB, n), 0)
+  IRW.shown = 0
+  IRW.accepted = false
+  IRW.open = true                 -- before the tiles open: their OnOpenLayer shows them
+  for k = 0, n - 1 do
+    if IRW.Tile(k, g, type(meshes) == "table" and meshes or {}, type(texts) == "table" and texts or {}) then
+      IRW.shown = k + 1
+    end
+  end
+  Log("welcome gacha: summary of", IRW.shown, "player(s)")
+  funcLuaCommand(C.FADE, 0, 0.3)
+  IRW.pointer = IRW.pointer or EVT_PointerNew()
+  IRW.pointer.Reset()             -- the press that ended the reveal is no click here
+  while not IRW.accepted do
+    local ev = IRW.pointer.Poll()
+    if ev.click ~= nil or ev.miss then
+      IRW.accepted = true
+    end
+    coroutine.yield()
+  end
+  IRW.open = false
+  funcLuaCommand(C.SE, SE_DECIDE)
+  for k = 0, IRW.shown - 1 do
+    funcLuaMenuCommand(C.LAYER_VISIBLE, IRW.TILE, k, false)
+  end
+  funcLuaMenuCommand(C.TEXT, L_HEADER, IRW.HEADER_TEXT, TXT.HEADER)
+  RestoreOwnLayers()
+  UpdateGuideLine()
+  SyncNativeFocus()               -- the pointer may have moved the engine focus over the hidden rows meanwhile
+end
+
+-- Accept / Back while the summary is open: it closes (true = the input is taken)
+function IRW.Input()
+  if IRW.open then
+    IRW.accepted = true
+    return true
+  end
+  return false
+end
+
+-- the whole welcome: draw, message, scene, reveal, summary
+-- one log line per step of the welcome (on change only)
+function IRW.Step(name)
+  if IRW.step ~= name then
+    IRW.step = name
+    Log("welcome gacha step:", name)
+  end
+end
+
+function IRW.Steps()
+  IRW.Step("draw")
+  local n = Int(Call(IRW.DRAW))
+  Log("welcome gacha: players drawn", n)
+  if n <= 0 then
+    return
+  end
+  IRW.Step("message")
+  Message(T(IRW.TXT.MSG, n))
+  local event, _, g, meshes, texts, max_s = Call(IRW.LAYOUT)
+  IRW.Step("scene")
+  IRW.Scene(event, max_s)
+  IRW.Step("reveal")
+  IRW.Reveal(n)
+  IRW.Step("summary")
+  IRW.Summary(n, g, meshes, texts)
+end
+
+-- the whole welcome: draw, message, scene, reveal, summary. Any error gives the plain menu back (the players are in the
+-- bank already: the welcome only shows them).
+function IRW.Run()
+  local ok, err = pcall(IRW.Steps)
+  if not ok then
+    Log("welcome gacha: error at step", tostring(IRW.step), "- the plain menu comes back:", tostring(err))
+    IRW.open = false
+    for k = 0, 10 do
+      funcLuaMenuCommand(C.LAYER_VISIBLE, IRW.TILE, k, false)
+    end
+    Call(IRW.STATE, 0)
+    funcLuaMenuCommand(IRW.SHOW_MENU, MENU)
+    funcLuaMenuCommand(C.TEXT, L_HEADER, IRW.HEADER_TEXT, TXT.HEADER)
+    RestoreOwnLayers()
+    UpdateGuideLine()
+    funcLuaCommand(C.FADE, 0, 0.3)
+    funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+  end
+  IRW.Step("done")
+  IRW.step = nil
+end
+
 function IRM_FirstEntry()
   local changed = IRM_UnlockProgress()   -- §25: story completed + Chronicle unlocked in slot 4 (only what is not set yet)
   changed = changed + IRM_MarkHelpsSeen()   -- §24: no retail tutorial pages in the INAROGUE save
@@ -2183,11 +2450,7 @@ function IRM_FirstEntry()
   end
   local _, _, gift = Call(RL_STARTER)
   if gift == true then
-    local n = Int(Call(RL_GIFT))
-    Log("first-run starters", n)
-    if n > 0 then
-      Message(string.format(TXT.GIFT, n))
-    end
+    IRW.Run()                   -- the welcome gacha: the first-run starters drawn, revealed and summed up
   end
 end
 
@@ -2354,6 +2617,8 @@ end
 local match_after = false   -- the run file says a match is reserved (stage 3): the title reopened us after it
 
 function OnInit()
+  -- the title's press waits for this sign that the screen really runs (crc32("evt_inarogue_alive"))
+  funcLuaCommand(C.P_SET, 3151688232, 0, 1, 1)
   LAYOUT.frames = 0
   LAYOUT.closed = false
   LAYOUT.mouse = false
@@ -2380,6 +2645,10 @@ function OnInit()
 end
 
 function OnSetupLayer(a1, a2)
+  if a1 == IRW.TILE then          -- the welcome gacha's tiles: shown only by its summary
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, IRW.open == true)
+    return
+  end
   if a1 == L_HEADER then
     SetupSoccerTopCommonHeaderLayerInfo(a1, 4153539961, 253801632, 3969848060, 1144161661, 3293713115, 253801632, 1152304044, 305955024, 3007971317)
     SwapSoccerTopCommonHeaderMenuModeIconTexture(1566262113 --[[mode_base02, the Chronicle top's plate]])
@@ -2421,6 +2690,10 @@ function OnSetupLayer(a1, a2)
 end
 
 function OnOpenLayer(a1, a2)
+  if a1 == IRW.TILE then
+    funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, IRW.open == true)
+    return
+  end
   if a1 == L_MID and a2 == 0 then
     funcLuaMenuCommand(C.OPEN_LAYER, L_CURSOR, 0)
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, 0, false)     -- §30.5: the main button's anchor (the quad is the button)
@@ -2568,8 +2841,8 @@ end
 -- the engine moved its focus by itself: the mouse hovering a row (the cursor follows), or anything else while no key
 -- moved it (a window closing, MENU_ACTIVE): then the native focus goes back to the lit row
 function OnChangeFocus(a1, a2)
-  if a1 ~= L_MID and a1 ~= L_SMALL then
-    return
+  if (a1 ~= L_MID and a1 ~= L_SMALL) or IRW.open then
+    return                        -- the welcome summary covers the rows: hovering their hidden anchors redraws nothing
   end
   if LAYOUT.busy or not funcLuaMenuCommand(C.FOCUS_ACTIVE, a1) then
     return
@@ -2601,6 +2874,9 @@ function OnChangeFocus(a1, a2)
 end
 
 function OnDecideFocus(a1, a2)
+  if IRW.Input() then           -- the welcome gacha's summary closes
+    return
+  end
   if evt_co ~= nil or LAYOUT.guard > 0 or (a1 ~= L_MID and a1 ~= L_SMALL) then
     return
   end
@@ -2627,6 +2903,9 @@ function OnDecideFocus(a1, a2)
 end
 
 function OnEnter(a1, a2)
+  if IRW.Input() then           -- the welcome gacha's summary closes
+    return 1
+  end
   if a1 == L_BTN or a1 == L_RET then
     return 1
   end
@@ -2636,6 +2915,9 @@ function OnEnter(a1, a2)
 end
 
 function OnBack(a1)
+  if IRW.Input() then           -- the welcome gacha's summary closes
+    return 1
+  end
   if evt_co ~= nil or LAYOUT.guard > 0 then
     return 1
   end

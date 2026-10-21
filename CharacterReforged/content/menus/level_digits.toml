@@ -122,3 +122,74 @@ set = [
     { param = "DispMaxValue", match = { 1 = 0xB49DEFB2 }, values = { 2 = 999 } },
     { param = "DispMaxValue", match = { 1 = 0x2D94BE08 }, values = { 2 = 999 } },
 ]
+
+# The Chronicle screens (levels above 99 since Chronicle Deluxe's Heroica / story levels): every DispMaxValue row of
+# these objects is a team level, so no `match` (v7.2.1 added rows: 0xBD48558E in _ui, 0x83777AFE in vsroute02_04_vs).
+# Their digit slots (menu_graphic_number_config) are already 3 in retail, except the own-team level of the difficulty
+# list (0x3356CF5A / 0x4451FFCC): 3 slots in content/base_tables/menu/config/menu_graphic_number_config.toml, and
+# their digit dummies below.
+#   soccer25_01_chronicle_mode_vs_locator*  the match intro VS («NIVEL DEL EQUIPO» under each crest)
+#   vsroute02_04_vs                         the Chronicle piece VS panel (both team bars «Nv.»)
+#   vsroute01_16_sub_list                   the Chronicle difficulty list (rival level ball of each row)
+#   vsroute01_17_myteam_banner              the Chronicle «MI EQUIPO» banner
+
+[[object_set]]
+object = "soccer25_01_chronicle_mode_vs_locator"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer25_01_chronicle_mode_vs_locator_model"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "soccer25_01_chronicle_mode_vs_locator_ui"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "vsroute02_04_vs"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "vsroute01_16_sub_list"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+[[object_set]]
+object = "vsroute01_17_myteam_banner"
+set = [
+    { param = "DispMaxValue", values = { 2 = 999 } },
+]
+
+# The field talk icon's level (0xA68F3B61, «Lv» beside an NPC's talk / battle icon, dummy _num_lv_dmy02 28 x 36,
+# left-aligned, spacing -3): 3 slots in menu_graphic_number_config.toml; the third digit goes on the right, as the
+# number is left-aligned (no plate behind it).
+[[object_set]]
+object = "rpg10_01_talkicon_atc"
+set = [
+    { param = "DispMaxValue", match = { 1 = 0xA68F3B61 }, values = { 2 = 999 } },
+]
+
+# The Chronicle difficulty list's own-team level (0x3356CF5A on _num_team_lv_dmy01, 0x4451FFCC on
+# _num_team_lv_dmy02, centred): the digit dummies take the size of the same layout's retail 3-digit slot
+# _num_enemy_lv_dmy02 (the rival level: 13 x 23 at -6.5), so 3 digits are 41 px wide, 2 digits 27 px, centred at
+# the same point. Values from the v7.1.2 layout (identical on v7.2.1).
+[[layout]]
+file = "common/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4pkm"
+joint = "_num_team_lv_dmy01"
+translate = [-6.5, 0.0, 0.0]
+scale = [13.0, 23.0, 1.0]
+
+[[layout]]
+file = "common/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4pkm"
+joint = "_num_team_lv_dmy02"
+translate = [-6.5, 0.0, 0.0]
+scale = [13.0, 23.0, 1.0]

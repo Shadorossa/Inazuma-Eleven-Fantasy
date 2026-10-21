@@ -21,6 +21,10 @@ local run = require "lib/rogue/svc_run"
 local meta = require "lib/rogue/svc_meta"
 local misc = require "lib/rogue/svc_misc"
 local session = require "lib/rogue/svc_session"
+local welcome = require "lib/rogue/welcome_gacha"
+local items = require "lib/rogue/svc_items"
+local pieces = require "lib/rogue/svc_pieces"
+local collections = require "lib/rogue/collections"
 
 Core.bank, Core.run, Core.meta = bank, run, meta
 
@@ -33,6 +37,15 @@ do
   local ok, e = pcall(VRFW.native.table_replace, "InaRogue.Slot", nil, { { U.ROGUE_SLOT, 1 } })
   if not ok then VRFW.warn("rogue: InaRogue.Slot: " .. tostring(e)) end
 end
+-- The talent slot (Talento propio, content/rogue/talents.toml): in the INAROGUE save each player keeps only his talent
+local talents = require "lib/rogue/talents"
+if ENABLED then
+  talents.fill()
+  -- the character index may come up after the scripts: filled again once a slot is loaded
+  VRFW.on("slot_load", function() talents.fill() end)
+end
+function InaRogue.TalentOfCard(card) return talents.of_card(card) end
+
 if not ENABLED then VRFW.log("rogue: module rogue off ([modules] rogue / [modes] inarogue / [phase]): INAROGUE commands answer nothing") end
 
 -- every command handler: the slot caches follow the slot events first; nothing while the module is off
@@ -51,6 +64,14 @@ function InaRogue.Mode.Budget(...) return call(bank.Budget, ...) end
 function InaRogue.Mode.BankDebugFill(...) return call(bank.DebugFill, ...) end
 function InaRogue.Mode.StarterInfo(...) return call(bank.StarterInfo, ...) end
 function InaRogue.Mode.StarterGift(...) return call(bank.StarterGift, ...) end
+-- the welcome gacha of the first entry (content\game\welcome_gacha.toml)
+function InaRogue.Mode.WelcomeDraw(...) return call(welcome.Draw, ...) end
+function InaRogue.Mode.WelcomeInfo(...) return call(welcome.Info, ...) end
+function InaRogue.Mode.WelcomeBalls(...) return call(welcome.Balls, ...) end
+function InaRogue.Mode.WelcomeState(...) return call(welcome.State, ...) end
+function InaRogue.Mode.WelcomeLayout(...) return call(welcome.Layout, ...) end
+function InaRogue.Mode.SceneRun(...) return call(welcome.SceneRun, ...) end
+function InaRogue.Mode.SceneTick(...) return call(welcome.SceneTick, ...) end
 function InaRogue.Mode.PickReset(...) return call(bank.PickReset, ...) end
 function InaRogue.Mode.PickToggle(...) return call(bank.PickToggle, ...) end
 function InaRogue.Mode.PickState(...) return call(bank.PickState, ...) end
@@ -69,6 +90,8 @@ function InaRogue.Mode.GachaDraw(...) return call(bank.GachaDraw, ...) end
 function InaRogue.Mode.Card(...) return call(bank.Card, ...) end
 function InaRogue.Mode.RunEnd(...) return call(bank.RunEnd, ...) end
 function InaRogue.Mode.AlbumInfo(...) return call(bank.AlbumInfo, ...) end
+-- the album's «Objetos» / «Equipos» sections (scripts/lib/rogue/collections.lua)
+function InaRogue.Mode.Collection(...) return call(collections.Collection, ...) end
 
 -- the run
 function InaRogue.Mode.RunInfo(...) return call(run.Info, ...) end
@@ -118,6 +141,15 @@ function InaRogue.Mode.NoRole(...) return call(misc.NoRole, ...) end
 function InaRogue.Mode.NoRoleAll(...) return call(misc.NoRoleAll, ...) end
 function InaRogue.Mode.RoleCarry(...) return call(misc.RoleCarry, ...) end
 
+-- the rogue items and the talent levels (content/rogue/items.toml, content/game/items.toml)
+function InaRogue.Mode.ItemInfo(...) return call(items.Info, ...) end
+function InaRogue.Mode.ItemGet(...) return call(items.Get, ...) end
+function InaRogue.Mode.ItemCatalogue(...) return call(items.Catalogue, ...) end
+function InaRogue.Mode.ItemAdd(...) return call(items.Add, ...) end
+function InaRogue.Mode.ItemSell(...) return call(items.Sell, ...) end
+function InaRogue.Mode.ItemUpgrade(...) return call(items.Upgrade, ...) end
+function InaRogue.Mode.TalentUp(...) return call(items.TalentUp, ...) end
+
 -- the overlay session (registered at start: the framework recovers its journal then)
 if ENABLED then session.start() end
 function InaRogue.Mode.SessionBegin(...) return call(session.Begin, ...) end
@@ -131,6 +163,11 @@ function InaRogue.Mode.ProbeCount(...) return call(misc.ProbeCount, ...) end
 function InaRogue.Mode.ProbeSet13(...) return call(misc.ProbeSet13, ...) end
 function InaRogue.Mode.ProbeRestore13(...) return call(misc.ProbeRestore13, ...) end
 function InaRogue.Mode.ProbeKv(...) return call(misc.ProbeKv, ...) end
+
+-- the match pieces of the rogue items (tension, cooldown, walls: rule triggers answered by lib/rogue/svc_pieces.lua)
+if ENABLED then pieces.register() end
+-- the item blocks' match triggers, counters and live stats (lib/rogue/svc_blocks.lua)
+if ENABLED then require("lib/rogue/svc_blocks").register() end
 
 -- the INAROGUE save shows / sets no retail achievements («logros», inarogue.md §21)
 if ENABLED then

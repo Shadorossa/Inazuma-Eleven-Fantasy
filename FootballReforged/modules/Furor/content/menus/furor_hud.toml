@@ -1,13 +1,17 @@
-# Furor › the furor gauges on the match HUD (docs/game/mechanics/furor.md §3.2): GO Strikers 2013's fire gauge, one per
-# team, level with the score, growing OUTWARD from its team's crest. Two layers of 2 instances (0 = own team, left;
-# 1 = rival, right), not opened by the screen: the graft research/grafts/furor_hud opens them, measures each instance's
-# local -> screen mapping and places it every frame from the scoreboard's keeper bar locators (as Goalkeeper Barrier):
-#   furor_trough   the dark navy outline of the empty gauge (priority 302)
-#   furor_gauge    the bar: the rising / falling flame frames clipped from the crest side, the glowing Max bar when full
-#                  (priority 303, over the trough)
-# Their object is the retail stamina gauge of the stairs race (btl06_13_stamina_gauge): only its fill shown (frame, red
-# trail, label hidden by the graft), the fill's sprite swapped for the gauge sprites of
-# content\images\menu\02_btl\furor_gauge.toml (its own atlas). In both groups that show the scoreboard. No retail byte.
+# Furor › the furor gauges on the match HUD (docs/game/mechanics/furor.md §2.4.1, §3.2): GO Strikers 2013's fire gauge,
+# one per team, level with the score, growing OUTWARD from its team's crest, drawn in Strikers' layers. Not opened by
+# the screen: the graft research/grafts/furor_hud opens them, measures each instance's local -> screen mapping and
+# places it from the scoreboard's keeper bar locators (as Goalkeeper Barrier). Instances 0 = own team (left),
+# 1 = rival (right); furor_spark: 0 .. FUROR_HUD_SPARK_SLOTS - 1 own, then the rival's.
+#   furor_trough   the empty blue gauge, always drawn (priority 302)
+#   furor_gauge    the flames (Base_tex), cut from the crest side (303)
+#   furor_glow     the flames' 1 s brightness pulse (Base_eff) (304)
+#   furor_stripes  the rising / falling stripe frames at 50 % (Up_tex / Down_tex) (305)
+#   furor_max      the full gauge's 1 s pulse (Max_Tex) (306)
+#   furor_spark    the Max animation's sparkles (kira): FUROR_HUD_SPARK_SLOTS per team (generated, 13) (307)
+# Their object is the retail stamina gauge of the stairs race (btl06_13_stamina_gauge): only its frame quad shown (fill,
+# red trail, label hidden by the graft), the frame's sprite swapped for the sprites of
+# content\images\menu\02_btl\furor_gauge.toml (own atlases). In both groups that show the scoreboard. No retail byte.
 schema = "VRFW.menu/2"
 
 [[object]]
@@ -20,6 +24,26 @@ name = "furor_gauge"
 from = "btl06_13_stamina_gauge"
 priority = 303
 
+[[object]]
+name = "furor_glow"
+from = "btl06_13_stamina_gauge"
+priority = 304
+
+[[object]]
+name = "furor_stripes"
+from = "btl06_13_stamina_gauge"
+priority = 305
+
+[[object]]
+name = "furor_max"
+from = "btl06_13_stamina_gauge"
+priority = 306
+
+[[object]]
+name = "furor_spark"
+from = "btl06_13_stamina_gauge"
+priority = 307
+
 [[patch]]
 menu = "soccer_constant_menu"
 add_layer = { name = "furor_trough", object = "furor_trough", count = 2, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
@@ -30,6 +54,35 @@ add_layer = { name = "furor_trough", object = "furor_trough", count = 2, after =
 [[patch]]
 menu = "soccer_constant_menu"
 add_layer = { name = "furor_gauge", object = "furor_gauge", count = 2, after = "furor_trough", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_glow", object = "furor_glow", count = 2, after = "furor_gauge", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_stripes", object = "furor_stripes", count = 2, after = "furor_glow", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_max", object = "furor_max", count = 2, after = "furor_stripes", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }
+
+# count = 2 x FUROR_HUD_SPARK_SLOTS of the graft's generated block
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "furor_spark", object = "furor_spark", count = 26, after = "furor_max", groups = [
     { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
     { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
 ] }

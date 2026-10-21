@@ -59,7 +59,8 @@ local PASS_ARCH = {}     -- passive id -> archetype number
 
 local CHARGE_KEYS = { on = true, add = true, every_s = true }
 local ARCH_KEYS = { name = true, number = true, label = true, description = true, icon = true, icon_large = true,
-  gauge_icon = true, passives = true, rank_charges = true, start_charge = true, charge = true }
+  gauge_icon = true, passives = true, rank_charges = true, start_charge = true, charge = true, pick_state = true,
+  pick_value = true, rank_state = true }
 
 local function read_decl(mod, file, a, i)
   local where = string.format("mods/%s/%s: [[VRFW.Archetype]] #%d", tostring(mod), tostring(file), i)
@@ -71,9 +72,26 @@ local function read_decl(mod, file, a, i)
   if not n or n ~= math.floor(n) or n <= FREEDOM or n > MAX_NUMBER then
     return nil, string.format("%s %s: number = %s: 7..%d (0-5 are the game's builds, 6 «Libertad»)", where, a.name, tostring(a.number), MAX_NUMBER)
   end
+  -- picked by a game_state key: the user's team takes this archetype while `pick_state` equals `pick_value`; its rank
+  -- is then the key `rank_state` (no charge rules), so rank_charges may be left out (ranks 1-5)
+  local pick = nil
+  if a.pick_state ~= nil then
+    local v = tonumber(a.pick_value)
+    if type(a.pick_state) ~= "string" or a.pick_state == "" or not v then
+      return nil, where .. " " .. a.name .. ": pick_state = \"<game_state key>\" needs pick_value = <number>"
+    end
+    pick = { state = a.pick_state, value = v }
+  elseif a.pick_value ~= nil then
+    return nil, where .. " " .. a.name .. ": pick_value without pick_state"
+  end
+  if a.rank_state ~= nil and (type(a.rank_state) ~= "string" or a.rank_state == "") then
+    return nil, where .. " " .. a.name .. ": rank_state = \"<game_state key>\""
+  end
   local ranks = {}
-  if type(a.rank_charges) ~= "table" or #a.rank_charges == 0 then return nil, where .. " " .. a.name .. ": rank_charges = [ … ] (ascending charges of ranks 1, 2, …) is required" end
-  for j, c in ipairs(a.rank_charges) do
+  local charges = a.rank_charges
+  if charges == nil and a.rank_state ~= nil then charges = { 1, 2, 3, 4, 5 } end
+  if type(charges) ~= "table" or #charges == 0 then return nil, where .. " " .. a.name .. ": rank_charges = [ … ] (ascending charges of ranks 1, 2, …) is required" end
+  for j, c in ipairs(charges) do
     c = tonumber(c)
     if not c or c <= 0 or (j > 1 and c <= ranks[j - 1]) then return nil, where .. " " .. a.name .. ": rank_charges must be positive and ascending" end
     ranks[j] = c
@@ -84,6 +102,7 @@ local function read_decl(mod, file, a, i)
     icon = a.icon and id_of(a.icon) or 0, icon_large = a.icon_large and id_of(a.icon_large) or 0,
     gauge_icon = a.gauge_icon and id_of(a.gauge_icon) or 0,
     passives = {}, ranks = ranks, max_charge = ranks[#ranks], start = math.max(0, tonumber(a.start_charge) or 0), rules = {},
+    pick = pick, rank_state = a.rank_state,
   }
   x.start = math.min(x.start, x.max_charge)
   for _, p in ipairs(type(a.passives) == "table" and a.passives or {}) do
@@ -248,6 +267,24 @@ local function sel_key(addr)
 end
 
 -- the engine's winner rule over counts c[0..n]: strictly most points, at least 1; else FREEDOM
+-- a declared archetype picked by a game_state key (pick_state = pick_value) for the user's team: its number, else nil.
+-- A menu pick is the user's team; a match side only when it is the user's side.
+local function forced_pick(sel)
+  if not sel then return nil end
+  if sel.side ~= nil then
+    local okm, m = pcall(VRFW.match)
+    local u = okm and type(m) == "table" and m.user_team or nil
+    if u ~= sel.side then return nil end
+  end
+  for _, x in ipairs(LIST) do
+    if x.pick then
+      local ok, v = pcall(VRFW.state.get, x.pick.state)
+      if ok and tonumber(v) == x.pick.value then return x.number end
+    end
+  end
+  return nil
+end
+
 local function winner(counts)
   local best, who, tie = 0, FREEDOM, false
   for b, c in pairs(counts) do
@@ -288,6 +325,8 @@ if #LIST > 0 then
     for b = 0, N_GAME - 1 do all[b] = counts[b] end
     for a, c in pairs(custom) do all[a] = c end
     local build = winner(all)
+    local forced = forced_pick(sel)
+    if forced then build = forced end
     if build > FREEDOM then
       for b = 0, N_GAME - 1 do pcall(VRFW.mem.write, "u32", rbp + 7 + 4 * b, 0) end
     end
@@ -323,6 +362,12 @@ local function new_side(build)
 end
 
 local function rank_of(x, charge)
+  -- a rank given by a game_state key: that value (0..the declared ranks), whatever the charge
+  if x.rank_state then
+    local ok, v = pcall(VRFW.state.get, x.rank_state)
+    v = ok and tonumber(v) or 0
+    return math.max(0, math.min(#x.ranks, math.floor(v)))
+  end
   local r = 0
   for _, c in ipairs(x.ranks) do
     if charge >= c then r = r + 1 end
@@ -395,7 +440,7 @@ local function fire(side, name)
   if name == "shot" or name == "shot_on_target" then s.idle = 0 end
   dirty = true
   local x = DECL[s.build]
-  if not x then return end
+  if not x or x.rank_state then return end
   for _, r in ipairs(x.rules) do
     if r.on == name then add_charge(side, r.add, name) end
   end
@@ -662,8 +707,10 @@ local E = require "lib/game_entries"
 local EXEC_ENTRY = "Passive.ResolveExecCondition"
 local EXEC_TABLE = "Passive.ExecCondition"
 local PASSIVE_ENTRIES = {
-  { "Passive.TeamPassiveId", { "Passive.SlotChoice", "Passive.OwnSlot", "Passive.OwnKept" } },
-  { "Passive.TeamPassiveUnlocked", { "Passive.SlotUnlock", "Passive.AllOpen", "Passive.OwnOpen", "Passive.OwnKept" } },
+  { "Passive.TeamPassiveId", { "Passive.SlotsOff", "Passive.SlotChoice", "Passive.OwnSlot", "Passive.OwnKept" } },
+  { "Passive.TeamPassiveUnlocked", { "Passive.SlotsOff", "Passive.SlotUnlock", "Passive.AllOpen", "Passive.OwnOpen", "Passive.OwnKept" } },
+  { "Passive.SignatureSlotId", { "Passive.SignatureSlot", "Passive.SignatureOnly" } },
+  { "Passive.SignaturePieceOpen", { "Passive.SignatureOpen", "Passive.SignatureOnly" } },
   { "Passive.RarityVersion", { "Passive.RarityTwin", "Passive.RarityTier" } },
 }
 

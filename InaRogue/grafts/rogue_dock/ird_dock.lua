@@ -84,9 +84,12 @@ do
     pcall(funcLuaMenuCommand, SET_HEADER, 5, base .. " · " .. IRD.points_text())
   end
 
-  -- the «Tipo» row (pachanga_dock, order 315, wrapped before this block) in slot 4: allowed; the run's team is the VS
-  -- dock, which is also «the active pachanga team» (no other dock to move to, no pointer to set)
-  if type(EVT_PT) == "table" and not EVT_PT.ird_patched then
+  -- the «Tipo» row (pachanga_dock) in slot 4: allowed; the run's team is the VS dock, which is also «the active
+  -- pachanga team» (no other dock to move to, no pointer to set)
+  local function patch_pachanga()
+    if type(EVT_PT) ~= "table" or EVT_PT.ird_patched then
+      return
+    end
     EVT_PT.ird_patched = true
     local can, move, refresh, switch = EVT_PT.canSwitch, EVT_PT.moveTo, EVT_PT.refresh, EVT_PT.switch
     if type(can) == "function" then
@@ -150,6 +153,7 @@ do
       end
     end
   end
+  patch_pachanga()   -- Pachangas loaded first; else at OnInit (its patches may run after this one)
 
   -- ---- M3: the match from the pre-match dock ---------------------------------------------------------------------
   local function ask(text, yesno)
@@ -288,8 +292,13 @@ do
     FuncOnBack()
   end
 
+  -- Pachangas asks the dock's owner each time (its OnInit may wrap this one): INAROGUE owns the dock in its save
+  EVT_DOCK_OWNERS = type(EVT_DOCK_OWNERS) == "table" and EVT_DOCK_OWNERS or {}
+  EVT_DOCK_OWNERS.inarogue = function() return IRD.check() end
+
   IRD.wrap("OnInit", function(orig)
     return function(...)
+      patch_pachanga()
       if IRD.check() then
         IRD.saved_tb = UTIL_TEAM_BANKS
         UTIL_TEAM_BANKS = false

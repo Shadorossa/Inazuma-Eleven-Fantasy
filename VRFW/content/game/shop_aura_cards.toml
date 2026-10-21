@@ -1,0 +1,10 @@
+schema = "VRFW.game/2"
+
+# Shop aura cards. Runtime: scripts/shop_aura_cards.lua reads each mod's content/shop_aura_cards/*.toml (item sub-kind ->
+# aura type -> card layer) and config.toml [shop] aura_cards. Menu side: assets/lua/menu/shop_menu_buy/150_shop_aura_cards.lua.
+
+# () -> on, n, item sub-kind 1, aura type 1, layer id 1, … (on = false: the rows keep the game's look; the layers are
+# still listed so the menu keeps them hidden).
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_AURA_CARDS"
+handler = "ShopAuraCards.List"

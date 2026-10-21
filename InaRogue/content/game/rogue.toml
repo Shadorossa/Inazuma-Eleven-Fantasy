@@ -49,11 +49,12 @@ formula = "if(lookup_or(InaRogue.Slot, 0, slot) == 1, 0x9EDB7BFC, 0)"
 # «Entrenadores»): the multipliers are the native table InaRogue.CoachMult (scripts\lib\rogue\svc_meta.lua coach_sync:
 # key (handle, stat) of a listed run handle, (0, stat) when the run lists none); d = round(f32(stat × f32(k − 1))),
 # clamped to 1..9999 with the stat. After the trained points (10), before the run speed (100).
+# Plus the flat points of InaRogue.CoachAdd (the items' stat_bonus, same keys; absent = 0).
 [[VRFW.MatchStat]]
 name = "InaRogue.Coach"
 order = 20
 when = { value = ["slot"], in_table = "InaRogue.Slot" }
-stat = "let(k, f32(lookup_or(InaRogue.CoachMult, lookup(InaRogue.CoachMult, 0, i), args[2], i)), clamp(args[4] + round(f32(args[4] * f32(k - 1))), 1, 9999))"
+stat = "let(k, f32(lookup_or(InaRogue.CoachMult, lookup(InaRogue.CoachMult, 0, i), args[2], i)), clamp(args[4] + round(f32(args[4] * f32(k - 1))) + round(f32(lookup_or(InaRogue.CoachAdd, lookup_or(InaRogue.CoachAdd, 0, 0, i), args[2], i))), 1, 9999))"
 
 # void SetTrophyTier(const u32* trophyId, u32 tier, bool notify) 0xE89BE0: the retail «logros» setter (the banner, the
 # trophy count, the Steam achievement). A pre handler skips it while the INAROGUE save is the loaded game
@@ -220,6 +221,12 @@ handler = "InaRogue.Mode.RunEnd"
 name = "CMND_INAROGUE_RL_ALBUM_INFO"
 aliases = ["CMND_EVT_RL_ALBUM_INFO"]
 handler = "InaRogue.Mode.AlbumInfo"
+
+# CMND_INAROGUE_RL_COLLECTION (op, kind, ...) -> the album's «Objetos» (kind 1) / «Equipos» (kind 2) pages (ops 0-5,
+# scripts/lib/rogue/collections.lua)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_COLLECTION"
+handler = "InaRogue.Mode.Collection"
 
 # CMND_EVT_RL_RUN_INFO -> exists, phase, cols, nodes, edges, cur, curCol, seed, phasesDone, budget, slot, stage, pendingNode, won, lost, fog, revealBoss
 [[VRFW.Command]]

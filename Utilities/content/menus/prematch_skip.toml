@@ -1,0 +1,34 @@
+# Utilities' pre-match «hold X = straight to the kick-off» prompt (graft research/grafts/util_prematch_skip,
+# docs/game/ui/prematch-skip.md). In event_menu (the walk-in / entrance events of a match) the retail «(Y) Saltar»
+# guide (layer soccer01_32_replay_button_guide) hangs on the node _replay_guide01 of its locator
+# soccer01_31_replay_button_guide_locator (top right; centred at the bottom in bust-up talks). A second copy of the same
+# retail guide object (layer util_xskip_guide: same plate, glyph, hold ring) hangs on a new node of that locator
+# layout, one plate (204 px) + 12 px to the left, so it moves with the retail one wherever the locator goes. Its texts
+# («<CMD_FUNC4>» + utilities.prematch_skip) and its ring are set by the graft. Only event_menu gets the extra attach row
+# (the locator object is redirected there, not changed in place: replay_menu keeps the retail one).
+schema = "VRFW.menu/2"
+
+# the node the X guide hangs on: _replay_guide01 (-248, -44) moved left by the plate width 204 + a 12 px gap
+[[layout]]
+file = "common/menu/00_soccer/soccer01/soccer01_31/soccer01_31.g4pkm"
+joint = "_util_xskip01"
+parent = "_pos_base01"
+translate = [-464.0, -44.0, 0.0]
+
+# the retail locator + one attach row: [label, node, child layer, index] (label = crc32("util_xskip_atc"))
+[[object]]
+name = "util_xskip_locator"
+from = "soccer01_31_replay_button_guide_locator"
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x11BF5E51, 0xE8AB8E5C, 0x68883FC1, 0] },
+]
+
+[[redirect]]
+object = "soccer01_31_replay_button_guide_locator"
+to = "util_xskip_locator"
+menus = ["event_menu"]
+
+# the X guide: the retail «Saltar» guide object again, after the retail one, in the same group with the same flags
+[[patch]]
+menu = "event_menu"
+add_layer = { name = "util_xskip_guide", object = "soccer01_32_replay_button_guide", count = 1, after = "soccer01_32_replay_button_guide", groups = [{ group = "event_menu", flags = [0, 0, 0, 0, 1, 0], after = "soccer01_32_replay_button_guide" }] }

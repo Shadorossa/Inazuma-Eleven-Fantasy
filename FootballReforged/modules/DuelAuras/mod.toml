@@ -1,0 +1,42 @@
+id = "duel_auras"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Duel Auras"
+version = "1.2.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "In a duel an aura (keshin, totem, armour, Mix-Max, mode change) is never the answer to the rival's special move: it activates with its effects and the duel choice stays open, so a real special move or a normal action answers. The same for the CPU."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-21"
+# This mod's own names (TOML keys [DuelAuras.X], Lua DuelAuras.X, commands CMND_DUELAURAS_*); never VRFW.
+prefix = "DuelAuras"
+folder = "DuelAuras"
+# A module mod of Football Reforged (modules\DuelAuras\, docs/framework/mod-families.md §1.3; docs/game/mods/football-reforged.md).
+# Retail: every move of the duel list, aura moves included, is the duel's command choice (docs/game/hiper/hiper-match-slot.md
+# §1.3), so an aura answered the rival's special move. Only a declaration: the VR-Framework's duel aura rule
+# ([VRFW.DuelAura], docs/framework/extra-slot.md §7.7) takes an aura out of the duel's choice on every choice path (the
+# duel list, the extra slot plates, the duel AI).
+#   content\extra_slots\duel_auras.toml   the rule, always on (no option)
+#   text\keys.toml                        the module's name / description, 9 languages
+# Moved here from Character Reforged (content\extra_slots\skill_set.toml, where it was gated by its option
+# skill_set_view) in its 1.10.0. One rule in all mods: a later mod's [VRFW.DuelAura] replaces this one.
+# 1.1.0 (owner 2026-10-21): needs VRFW 2.13.0, where the rule runs on the game's v7.2.1 (before, it refused there: the
+# aura stayed the duel's answer); no skill table view or option is read: enabling the module is the only switch.
+# 1.2.0 (owner 2026-10-21): needs VRFW 2.19.0: the duel's clock is frozen during the aura's cut-in on v7.2.1 (the focus
+# hold now installs there), and an aura is refused once its side committed its duel choice (no aura behind a clash).
+requires = ["vr_framework>=2.19.0", "football_reforged>=1.2.0"]
+conflicts = []
+loader_modules = []
+permissions = []
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "football_reforged"
+order = 110

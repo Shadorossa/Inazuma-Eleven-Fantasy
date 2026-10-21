@@ -4,7 +4,8 @@
 --       - table ShotZone.Box: team 0 / 1 = the area that team attacks, 10 / 11 = the field's halves 0 / 1 ({ x0, x1, z0, z1 } with margin; team records add { cz, sg, hz });
 --         a side on "retail" gets the game's full-width band past the zone line (zoneLineFieldRateZ) as its rectangle;
 --       - scale: the box's width (about its centre) and depth (from the goal line toward the centre) x this, before the margin;
---       - state keys vrfw.shot_zone.ball / .setpiece / .play_ctrl / .line / .chain_retail feed the retail chain answers.
+--       - state keys vrfw.shot_zone.ball / .setpiece / .play_flags / .line / .chain_retail feed the retail answers
+--         (while a zone runs or a shot chain window is open / taken, chain_area = "retail": every position gets the game's own band).
 --     No valid field data (no match, loading pitch) = empty table: every query answers false.
 --     Margin: margin_m, or the mod's config value at margin_config (0..20 m); extra_state = state key prefix, <prefix>.0 / .1 = extra metres around the box team 0 / 1 attacks (total within 0..20 m).
 --     With several mods, each key the later mod (load order) gives wins.
@@ -17,7 +18,9 @@ local function warn(...) VRFW.warn("shot_rules:", ...) end
 
 local BOX = "ShotZone.Box"
 local KEY_BALL, KEY_SETPIECE = "vrfw.shot_zone.ball", "vrfw.shot_zone.setpiece"
-local KEY_PLAY_CTRL, KEY_LINE, KEY_CHAIN = "vrfw.shot_zone.play_ctrl", "vrfw.shot_zone.line", "vrfw.shot_zone.chain_retail"
+local KEY_PLAY_FLAGS, KEY_LINE, KEY_CHAIN = "vrfw.shot_zone.play_flags", "vrfw.shot_zone.line", "vrfw.shot_zone.chain_retail"
+-- the play controller's flags offset (game profile; it moves between builds)
+local PLAY_FLAGS_FIELD = "Match.PlayControlFlags"
 local ZONE_HOOKS = { "ShotZone.Area", "ShotZone.AreaAny" }
 local ANY_FIRST = 10
 
@@ -143,7 +146,7 @@ start()
 
 -- ---- zone area
 
-local chain_published = false
+local chain_published, play_flags_off = false, nil
 
 local function extras()
   local out = { [0] = 0, [1] = 0 }
@@ -235,19 +238,32 @@ local function kind_of(team, user)
   return ZONE.area
 end
 
--- keys read by the chain answers: play controller (every frame), line address and switch (once)
+-- keys read by the retail answers: the play controller flags address (every frame), line address and switch (once)
 local function publish_chain()
-  pcall(VRFW.state.set, KEY_PLAY_CTRL, global("shot_zone_play_ctrl"))
-  if chain_published then return end
-  chain_published = true
-  local ok, line = pcall(VRFW.mem.global_addr, "shot_zone_line")
-  if ok and type(line) == "number" and line >= 0x10000 then
-    pcall(VRFW.state.set, KEY_LINE, line)
-  else
-    warn("zone area: no zone line address: shot chains use the box")
+  if not chain_published then
+    chain_published = true
+    local retail = ZONE.chain_retail
+    local ok, line = pcall(VRFW.mem.global_addr, "shot_zone_line")
+    if ok and type(line) == "number" and line >= 0x10000 then
+      pcall(VRFW.state.set, KEY_LINE, line)
+    else
+      warn("zone area: no zone line address: a running zone and shot chains use the box")
+      retail = false
+    end
+    local okf, off = pcall(VRFW.game.field, PLAY_FLAGS_FIELD)
+    if okf and type(off) == "number" and off > 0 then
+      play_flags_off = off
+    else
+      warn(string.format("zone area: game profile field %s does not resolve (%s): a running zone and shot chains use the box",
+        PLAY_FLAGS_FIELD, tostring(okf and VRFW.game.status(PLAY_FLAGS_FIELD) or off)))
+      retail = false
+    end
+    pcall(VRFW.state.set, KEY_CHAIN, retail and 1 or 0)
+    info(string.format("zone area: a running zone and shot chains: %s; play control flags at +0x%X",
+      retail and "the game's own area (chain_area = \"retail\")" or "the box", play_flags_off or 0))
   end
-  pcall(VRFW.state.set, KEY_CHAIN, ZONE.chain_retail and 1 or 0)
-  info("zone area: shot chains: " .. (ZONE.chain_retail and "the game's own area (chain_area = \"retail\")" or "the box (chain_area = \"box\")"))
+  local ctrl = global("shot_zone_play_ctrl")
+  pcall(VRFW.state.set, KEY_PLAY_FLAGS, (ctrl and play_flags_off) and (ctrl + play_flags_off) or 0)
 end
 
 local last_sig, field_logs, filled = nil, 0, false

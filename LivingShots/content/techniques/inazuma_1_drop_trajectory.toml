@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Supertrampolín relámpago (whs00690).
 [[edit]]
 target = "whs00690"
-trajectory = { points = [[0.0, 4.9], [2.47, 4.98], [5.9, 4.72]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 4.9], [2.47, 4.98], [5.9, 4.72]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.04], [2.47, 4.1], [5.9, 3.92]], goal_points = [[0.0, 2.0]], unblockable = false }

@@ -1,0 +1,12 @@
+schema = "VRFW.image/1"
+# IECross › the pre-match VS screen's picture of s98g001 (the diagonal band of soccer20_01_vs_background: the game loads
+# dx11/menu/220_img/stadium/img_vs_bg_<map>.g4tx by the map's name; without it the band is white). Laid out like retail
+# img_vs_bg_s11g001: one 1920 x 1080 BC7 texture named as the file, no mips, no sub-textures. The picture is the
+# converted stadium's own view drawn by research/scripts/cross_stadium_build.py (vs_background) when the port was built.
+
+[[texture]]
+atlas = "#/menu/220_img/stadium/img_vs_bg_s98g001.g4tx"
+name = "img_vs_bg_s98g001"
+png = "img_vs_bg_s98g001/img_vs_bg_s98g001.png"
+format = "bc7"
+mips = 1

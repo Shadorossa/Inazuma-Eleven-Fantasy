@@ -1,0 +1,40 @@
+schema = "VRFW.game/2"
+
+# Match EXP: the EXP of each player of the user's team after a match, as mods declare it (content\match_exp\*.toml,
+# docs/framework/match-exp.md). Runtime: scripts\match_exp.lua.
+
+# void Match.EndPrizes(u8) 0x16A7A90: the end-of-match result builder. It writes each player's EXP in the result entries
+# ([[g_gameRoot] + Game.RootMatchResult] + 0xAFC, 30 × 20 B: +0 the match handle, +0xC the EXP) and the total (+0xDC8);
+# the result screen shows them and the apply step (0x16A6D40) adds each entry's EXP to the player (AddExp 0xD7BD40).
+# Post: a declared rule rewrites the entries before anything reads them. Once per match: the call waits for the scripts.
+[[VRFW.Hook]]
+name = "MatchExp.Result"
+game = "Match.EndPrizes"
+kind = "function"
+args = ["u8"]
+wait_ms = 1000
+apply = "script"
+
+# The match's result block (Match.EndPrizes's entries and total).
+[[VRFW.Global]]
+name = "MatchExpResultBlock"
+base = "game_root"
+chain = ["Game.RootMatchResult"]
+
+# The match info: +4 the game id, +0x15 the difficulty row, +0x2C26 / +0x2C27 the scores, +0x2C29 the user's side.
+[[VRFW.Global]]
+name = "MatchExpInfo"
+base = "game_root"
+chain = ["Game.RootMatch"]
+
+# The two match teams: +0x1E0 = team 0 (team 1 at +0x4A8), members at +0x80 .. +0x250 (16 B: match handle, saved handle).
+[[VRFW.Global]]
+name = "MatchExpParty"
+base = "game_root"
+chain = ["Game.RootParty"]
+
+# The save's flag block: the Chronicle clear status bytes at +0x15948 (one per statusFlagIndex).
+[[VRFW.Global]]
+name = "MatchExpFlags"
+base = "game_root"
+chain = ["Game.RootFlags"]

@@ -1,0 +1,30 @@
+schema = "VRFW.game/2"
+
+# Chronicle Deluxe: free-match teams that play with their line-up swapped (run time scripts\free_match_shuffle.lua;
+# docs/game/mods/chronicle-deluxe-free-match.md §16). Deals the starters of a class team (game key chronicle_deluxe_fms_*)
+# to new places in game memory from its source teams <key>_as_gk|fw|mf|df.
+
+# FindTeamConfig(&record, &container, teamHash): team_config record of a team (no side effect)
+[[VRFW.Function]]
+name = "ChronicleDeluxeFmShuffleFind"
+game = "Team.FindConfig"
+
+# team_config record: +0x28 / +0x2C member slice
+[[VRFW.Struct]]
+name = "ChronicleDeluxeFmShuffleRecord"
+game = "TeamRecord"
+
+# team_config container: member rows +0x68 (stride 0x54), count +0x70
+[[VRFW.Struct]]
+name = "ChronicleDeluxeFmShuffleConfig"
+game = "TeamConfig"
+
+# member row (stride 0x54): +0x00 8 stat rates, +0x20 card, +0x47 roster slot; the whole row is copied
+[[VRFW.Struct]]
+name = "ChronicleDeluxeFmShuffleMember"
+game = "MemberRow"
+
+[[VRFW.Command]]
+name = "CMND_ChronicleDeluxe_FreeMatchShuffle"   # () -> teams dealt (0 when every shuffled team still holds its deal)
+handler = "ChronicleDeluxe.FreeMatchShuffle.Deal"
+needs = ["ChronicleDeluxeFmShuffleFind", "ChronicleDeluxeFmShuffleRecord", "ChronicleDeluxeFmShuffleConfig", "ChronicleDeluxeFmShuffleMember"]

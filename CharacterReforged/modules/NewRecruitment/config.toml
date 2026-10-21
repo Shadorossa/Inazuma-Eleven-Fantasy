@@ -1,0 +1,9 @@
+# New Recruitment: default configuration (docs/framework/native.md §2.3). The loader's config.toml
+# [mods.new_recruitment] overrides it key by key (survives mod updates). Read at start.
+
+[office]
+# the recruitment office (content\contact_maps\office.toml): false = every player is signed for his price in fichas
+# only; the old office's requirements (players at a level, items, trials, harder wins) are kept in
+# content\contact_maps\office_terms.toml but not asked, and a trial («Prueba») stays playable without gating anything.
+# true = the old office's requirements are asked again. Owner 2026-10-20: «Quita los requisitos por ahora».
+requirements = false

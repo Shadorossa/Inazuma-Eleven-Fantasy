@@ -1,0 +1,23 @@
+# Declaration schema for [[VRFW.MatchExp]] (content\match_exp\*.toml); an unknown key, wrong type or out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.match_exp/1"
+folder = "content/match_exp"
+
+[entry.MatchExp]
+doc = "the EXP of each player of the user's team after a match of the given games: the EXP to rise a number of levels set by the level gap to the rival team and the match rank, written over the game's own EXP before the result screen shows it; the first declaration whose games, difficulties and conditions hold is used"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+games = { type = "strings", required = true, doc = "game names (SOCCER_GAME_INFO col 1); `*` = any run, `?` = one character (`fbtl_cro*`, `evt_ch_ie1_sonny_*`)" }
+difficulties = { type = "ints", min = 0, max = 255, doc = "difficulty rows (SOCCER_GAME_DIFFICULTY col 0, e.g. 4 = Batalla heroica); empty = any row" }
+until_cleared_pieces = { type = "ids", doc = "the rule holds only while none of these Chronicle board pieces (pieceId, 0x…) is cleared at until_cleared_difficulty" }
+until_cleared_difficulty = { type = "int", min = 1, max = 20, default = 2, doc = "the difficulty of until_cleared_pieces (2 = the route-open battle / the gate battle)" }
+levels = { type = "number", min = 0, max = 50, default = 1.0, doc = "levels a player rises at gap rate 1 and rank rate 1 (the EXP of the levels he passes, at his own rarity rate)" }
+gap = { type = "ints", min = -999, max = 999, doc = "level gaps (player level - rival team level), increasing; with gap_rates: the rate at each gap, straight lines between them, the end rates beyond the ends; empty = rate 1 at every gap" }
+gap_rates = { type = "numbers", min = 0, max = 100, doc = "the rate of each gap (as many as gap)" }
+rank_ids = { type = "strings", doc = "match rank Ids (defaults\\match_rank.toml [MatchRank.<Id>]) with a rate in rank_rates" }
+rank_rates = { type = "numbers", min = 0, max = 100, doc = "the rate of each rank of rank_ids (as many as rank_ids)" }
+no_rank_rate = { type = "number", min = 0, max = 100, default = 1.0, doc = "the rate of a match with no listed rank (a loss, a draw, a win of an unlisted rank)" }
+min_levels = { type = "number", min = 0, max = 50, default = 0.0, doc = "the levels after the rates, at least" }
+max_levels = { type = "number", min = 0, max = 50, default = 50.0, doc = "the levels after the rates, at most" }
+cap_at_rival = { type = "bool", default = true, doc = "a player below the rival team's level never goes above it from this match (a player at or above it gets the gap rate alone)" }
+retail_share = { type = "bool", default = true, doc = "each player keeps his share of the game's own EXP (his EXP / the highest of the team: the bench's lower share stays); a player the game gave no EXP gets none" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -11,109 +11,9 @@ schema = "VRFW.team/2"
 # the cap of the player's own team) as an offset from the new level. Clones: other mods' route nodes cloned
 # from the game follow it; this mod's own side nodes have their own maps, at the end (after their template's).
 
-[[VRFW.LevelMap]]                # heroic battle 1 / 148
+[[VRFW.LevelMap]]                # heroic battle 1 / 152
 Name = "heroic_fbtl_cro01_010_010"
 Games = ["fbtl_cro01_010_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 4], [999, 4]]
-Moves = false
-Sync = -1                        # level sync 3
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 2 / 148
-Name = "heroic_fbtl_cro01_020_010"
-Games = ["fbtl_cro01_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 5], [999, 5]]
-Moves = false
-Sync = -1                        # level sync 4
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 4 / 148
-Name = "heroic_fbtl_cro01_030_010"
-Games = ["fbtl_cro01_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 8], [999, 8]]
-Moves = false
-Sync = -1                        # level sync 7
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 5 / 148
-Name = "heroic_fbtl_cro01_040_010"
-Games = ["fbtl_cro01_040_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 9], [999, 9]]
-Moves = false
-Sync = -1                        # level sync 8
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 6 / 148
-Name = "heroic_fbtl_cro01_050_010"
-Games = ["fbtl_cro01_050_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 11], [999, 11]]
-Moves = false
-Sync = -1                        # level sync 10
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 8 / 148
-Name = "heroic_fbtl_cro01_060_010"
-Games = ["fbtl_cro01_060_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 13], [999, 13]]
-Moves = false
-Sync = -1                        # level sync 12
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 9 / 148
-Name = "heroic_fbtl_cro01_070_010"
-Games = ["fbtl_cro01_070_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 15], [999, 15]]
-Moves = false
-Sync = -2                        # level sync 13
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 10 / 148
-Name = "heroic_fbtl_cro01_080_010"
-Games = ["fbtl_cro01_080_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 16], [999, 16]]
-Moves = false
-Sync = -2                        # level sync 14
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 11 / 148
-Name = "heroic_fbtl_cro01_090_010"
-Games = ["fbtl_cro01_090_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 17], [999, 17]]
-Moves = false
-Sync = -2                        # level sync 15
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 12 / 148
-Name = "heroic_fbtl_cro01_100_010"
-Games = ["fbtl_cro01_100_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 19], [999, 19]]
-Moves = false
-Sync = -2                        # level sync 17
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 13 / 148
-Name = "heroic_fbtl_cro01_110_010"
-Games = ["fbtl_cro01_110_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 20], [999, 20]]
@@ -121,19 +21,59 @@ Moves = false
 Sync = -2                        # level sync 18
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 14 / 148
-Name = "heroic_fbtl_cro01_120_010"
-Games = ["fbtl_cro01_120_010"]
+[[VRFW.LevelMap]]                # heroic battle 2 / 152
+Name = "heroic_fbtl_cro01_020_010"
+Games = ["fbtl_cro01_020_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 21], [999, 21]]
+Points = [[1, 2], [999, 2]]
 Moves = false
-Sync = -2                        # level sync 19
+Sync = -1                        # level sync 1
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 15 / 148
-Name = "heroic_fbtl_cro01_130_010"
-Games = ["fbtl_cro01_130_010"]
+[[VRFW.LevelMap]]                # heroic battle 4 / 152
+Name = "heroic_fbtl_cro01_030_010"
+Games = ["fbtl_cro01_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 3], [999, 3]]
+Moves = false
+Sync = -1                        # level sync 2
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 5 / 152
+Name = "heroic_fbtl_cro01_040_010"
+Games = ["fbtl_cro01_040_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 14], [999, 14]]
+Moves = false
+Sync = -1                        # level sync 13
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 6 / 152
+Name = "heroic_fbtl_cro01_050_010"
+Games = ["fbtl_cro01_050_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 18], [999, 18]]
+Moves = false
+Sync = -2                        # level sync 16
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 8 / 152
+Name = "heroic_fbtl_cro01_060_010"
+Games = ["fbtl_cro01_060_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 20], [999, 20]]
+Moves = false
+Sync = -2                        # level sync 18
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 9 / 152
+Name = "heroic_fbtl_cro01_070_010"
+Games = ["fbtl_cro01_070_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 23], [999, 23]]
@@ -141,19 +81,19 @@ Moves = false
 Sync = -2                        # level sync 21
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 16 / 148
-Name = "heroic_fbtl_cro02_010_010"
-Games = ["fbtl_cro02_010_010"]
+[[VRFW.LevelMap]]                # heroic battle 10 / 152
+Name = "heroic_fbtl_cro01_080_010"
+Games = ["fbtl_cro01_080_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 24], [999, 24]]
+Points = [[1, 30], [999, 30]]
 Moves = false
-Sync = -2                        # level sync 22
+Sync = -3                        # level sync 27
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 17 / 148
-Name = "heroic_fbtl_cro02_020_010"
-Games = ["fbtl_cro02_020_010"]
+[[VRFW.LevelMap]]                # heroic battle 11 / 152
+Name = "heroic_fbtl_cro01_090_010"
+Games = ["fbtl_cro01_090_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 25], [999, 25]]
@@ -161,19 +101,9 @@ Moves = false
 Sync = -2                        # level sync 23
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 18 / 148
-Name = "heroic_fbtl_cro02_030_010"
-Games = ["fbtl_cro02_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 27], [999, 27]]
-Moves = false
-Sync = -2                        # level sync 25
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 19 / 148
-Name = "heroic_fbtl_cro02_040_010"
-Games = ["fbtl_cro02_040_010"]
+[[VRFW.LevelMap]]                # heroic battle 12 / 152
+Name = "heroic_fbtl_cro01_100_010"
+Games = ["fbtl_cro01_100_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 28], [999, 28]]
@@ -181,19 +111,19 @@ Moves = false
 Sync = -2                        # level sync 26
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 20 / 148
-Name = "heroic_fbtl_cro02_050_010"
-Games = ["fbtl_cro02_050_010"]
+[[VRFW.LevelMap]]                # heroic battle 13 / 152
+Name = "heroic_fbtl_cro01_110_010"
+Games = ["fbtl_cro01_110_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 29], [999, 29]]
+Points = [[1, 30], [999, 30]]
 Moves = false
-Sync = -3                        # level sync 26
+Sync = -3                        # level sync 27
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 21 / 148
-Name = "heroic_fbtl_cro02_060_010"
-Games = ["fbtl_cro02_060_010"]
+[[VRFW.LevelMap]]                # heroic battle 14 / 152
+Name = "heroic_fbtl_cro01_120_010"
+Games = ["fbtl_cro01_120_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 31], [999, 31]]
@@ -201,9 +131,9 @@ Moves = false
 Sync = -3                        # level sync 28
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 22 / 148
-Name = "heroic_fbtl_cro02_070_010"
-Games = ["fbtl_cro02_070_010"]
+[[VRFW.LevelMap]]                # heroic battle 15 / 152
+Name = "heroic_fbtl_cro01_130_010"
+Games = ["fbtl_cro01_130_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 32], [999, 32]]
@@ -211,99 +141,9 @@ Moves = false
 Sync = -3                        # level sync 29
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 23 / 148
-Name = "heroic_fbtl_cro02_080_010"
-Games = ["fbtl_cro02_080_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 33], [999, 33]]
-Moves = false
-Sync = -3                        # level sync 30
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 24 / 148
-Name = "heroic_fbtl_cro02_090_010"
-Games = ["fbtl_cro02_090_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 35], [999, 35]]
-Moves = false
-Sync = -3                        # level sync 32
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 25 / 148
-Name = "heroic_fbtl_cro02_100_010"
-Games = ["fbtl_cro02_100_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 36], [999, 36]]
-Moves = false
-Sync = -3                        # level sync 33
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 26 / 148
-Name = "heroic_fbtl_cro02_110_010"
-Games = ["fbtl_cro02_110_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 37], [999, 37]]
-Moves = false
-Sync = -3                        # level sync 34
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 27 / 148
-Name = "heroic_fbtl_cro02_120_010"
-Games = ["fbtl_cro02_120_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 39], [999, 39]]
-Moves = false
-Sync = -3                        # level sync 36
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 28 / 148
-Name = "heroic_fbtl_cro02_130_010"
-Games = ["fbtl_cro02_130_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 40], [999, 40]]
-Moves = false
-Sync = -3                        # level sync 37
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 29 / 148
-Name = "heroic_fbtl_cro02_140_010"
-Games = ["fbtl_cro02_140_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 41], [999, 41]]
-Moves = false
-Sync = -3                        # level sync 38
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 30 / 148
-Name = "heroic_fbtl_cro02_150_010"
-Games = ["fbtl_cro02_150_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 43], [999, 43]]
-Moves = false
-Sync = -4                        # level sync 39
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 31 / 148
-Name = "heroic_fbtl_cro02_160_010"
-Games = ["fbtl_cro02_160_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 44], [999, 44]]
-Moves = false
-Sync = -4                        # level sync 40
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 32 / 148
-Name = "heroic_fbtl_cro02_170_010"
-Games = ["fbtl_cro02_170_010"]
+[[VRFW.LevelMap]]                # heroic battle 16 / 152
+Name = "heroic_fbtl_cro02_010_010"
+Games = ["fbtl_cro02_010_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 45], [999, 45]]
@@ -311,9 +151,19 @@ Moves = false
 Sync = -4                        # level sync 41
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 33 / 148
-Name = "heroic_fbtl_cro02_180_010"
-Games = ["fbtl_cro02_180_010"]
+[[VRFW.LevelMap]]                # heroic battle 17 / 152
+Name = "heroic_fbtl_cro02_020_010"
+Games = ["fbtl_cro02_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 42], [999, 42]]
+Moves = false
+Sync = -3                        # level sync 39
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 18 / 152
+Name = "heroic_fbtl_cro02_030_010"
+Games = ["fbtl_cro02_030_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 47], [999, 47]]
@@ -321,19 +171,19 @@ Moves = false
 Sync = -4                        # level sync 43
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 34 / 148
-Name = "heroic_fbtl_cro02_190_010"
-Games = ["fbtl_cro02_190_010"]
+[[VRFW.LevelMap]]                # heroic battle 19 / 152
+Name = "heroic_fbtl_cro02_040_010"
+Games = ["fbtl_cro02_040_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 48], [999, 48]]
+Points = [[1, 46], [999, 46]]
 Moves = false
-Sync = -4                        # level sync 44
+Sync = -4                        # level sync 42
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 35 / 148
-Name = "heroic_fbtl_cro02_200_010"
-Games = ["fbtl_cro02_200_010"]
+[[VRFW.LevelMap]]                # heroic battle 20 / 152
+Name = "heroic_fbtl_cro02_050_010"
+Games = ["fbtl_cro02_050_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 49], [999, 49]]
@@ -341,9 +191,9 @@ Moves = false
 Sync = -4                        # level sync 45
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 37 / 148
-Name = "heroic_fbtl_cro03_010_010"
-Games = ["fbtl_cro03_010_010"]
+[[VRFW.LevelMap]]                # heroic battle 21 / 152
+Name = "heroic_fbtl_cro02_060_010"
+Games = ["fbtl_cro02_060_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 52], [999, 52]]
@@ -351,99 +201,9 @@ Moves = false
 Sync = -4                        # level sync 48
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 38 / 148
-Name = "heroic_fbtl_cro03_020_010"
-Games = ["fbtl_cro03_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 53], [999, 53]]
-Moves = false
-Sync = -4                        # level sync 49
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 39 / 148
-Name = "heroic_fbtl_cro03_030_010"
-Games = ["fbtl_cro03_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 55], [999, 55]]
-Moves = false
-Sync = -4                        # level sync 51
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 40 / 148
-Name = "heroic_fbtl_cro03_040_010"
-Games = ["fbtl_cro03_040_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 56], [999, 56]]
-Moves = false
-Sync = -4                        # level sync 52
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 41 / 148
-Name = "heroic_fbtl_cro03_050_010"
-Games = ["fbtl_cro03_050_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 57], [999, 57]]
-Moves = false
-Sync = -4                        # level sync 53
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 42 / 148
-Name = "heroic_fbtl_cro03_060_010"
-Games = ["fbtl_cro03_060_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 59], [999, 59]]
-Moves = false
-Sync = -5                        # level sync 54
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 43 / 148
-Name = "heroic_fbtl_cro03_070_010"
-Games = ["fbtl_cro03_070_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 60], [999, 60]]
-Moves = false
-Sync = -5                        # level sync 55
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 44 / 148
-Name = "heroic_fbtl_cro03_080_010"
-Games = ["fbtl_cro03_080_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 61], [999, 61]]
-Moves = false
-Sync = -5                        # level sync 56
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 45 / 148
-Name = "heroic_fbtl_cro03_090_010"
-Games = ["fbtl_cro03_090_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 63], [999, 63]]
-Moves = false
-Sync = -5                        # level sync 58
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 46 / 148
-Name = "heroic_fbtl_cro03_100_010"
-Games = ["fbtl_cro03_100_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 64], [999, 64]]
-Moves = false
-Sync = -5                        # level sync 59
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 47 / 148
-Name = "heroic_fbtl_cro03_110_010"
-Games = ["fbtl_cro03_110_010"]
+[[VRFW.LevelMap]]                # heroic battle 22 / 152
+Name = "heroic_fbtl_cro02_070_010"
+Games = ["fbtl_cro02_070_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 65], [999, 65]]
@@ -451,9 +211,39 @@ Moves = false
 Sync = -5                        # level sync 60
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 48 / 148
-Name = "heroic_fbtl_cro03_120_010"
-Games = ["fbtl_cro03_120_010"]
+[[VRFW.LevelMap]]                # heroic battle 23 / 152
+Name = "heroic_fbtl_cro02_080_010"
+Games = ["fbtl_cro02_080_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 59], [999, 59]]
+Moves = false
+Sync = -5                        # level sync 54
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 24 / 152
+Name = "heroic_fbtl_cro02_090_010"
+Games = ["fbtl_cro02_090_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 62], [999, 62]]
+Moves = false
+Sync = -5                        # level sync 57
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 25 / 152
+Name = "heroic_fbtl_cro02_100_010"
+Games = ["fbtl_cro02_100_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 65], [999, 65]]
+Moves = false
+Sync = -5                        # level sync 60
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 26 / 152
+Name = "heroic_fbtl_cro02_110_010"
+Games = ["fbtl_cro02_110_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 67], [999, 67]]
@@ -461,29 +251,9 @@ Moves = false
 Sync = -5                        # level sync 62
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 49 / 148
-Name = "heroic_fbtl_cro03_130_010"
-Games = ["fbtl_cro03_130_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 68], [999, 68]]
-Moves = false
-Sync = -5                        # level sync 63
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 50 / 148
-Name = "heroic_fbtl_cro03_140_010"
-Games = ["fbtl_cro03_140_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 69], [999, 69]]
-Moves = false
-Sync = -5                        # level sync 64
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 51 / 148
-Name = "heroic_fbtl_cro03_150_010"
-Games = ["fbtl_cro03_150_010"]
+[[VRFW.LevelMap]]                # heroic battle 27 / 152
+Name = "heroic_fbtl_cro02_120_010"
+Games = ["fbtl_cro02_120_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 71], [999, 71]]
@@ -491,9 +261,9 @@ Moves = false
 Sync = -5                        # level sync 66
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 52 / 148
-Name = "heroic_fbtl_cro03_160_010"
-Games = ["fbtl_cro03_160_010"]
+[[VRFW.LevelMap]]                # heroic battle 28 / 152
+Name = "heroic_fbtl_cro02_130_010"
+Games = ["fbtl_cro02_130_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 72], [999, 72]]
@@ -501,19 +271,9 @@ Moves = false
 Sync = -6                        # level sync 66
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 53 / 148
-Name = "heroic_fbtl_cro03_170_010"
-Games = ["fbtl_cro03_170_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 73], [999, 73]]
-Moves = false
-Sync = -6                        # level sync 67
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 54 / 148
-Name = "heroic_fbtl_cro03_180_010"
-Games = ["fbtl_cro03_180_010"]
+[[VRFW.LevelMap]]                # heroic battle 29 / 152
+Name = "heroic_fbtl_cro02_140_010"
+Games = ["fbtl_cro02_140_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 75], [999, 75]]
@@ -521,49 +281,9 @@ Moves = false
 Sync = -6                        # level sync 69
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 55 / 148
-Name = "heroic_fbtl_cro03_190_010"
-Games = ["fbtl_cro03_190_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 76], [999, 76]]
-Moves = false
-Sync = -6                        # level sync 70
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 56 / 148
-Name = "heroic_fbtl_cro04_010_010"
-Games = ["fbtl_cro04_010_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 77], [999, 77]]
-Moves = false
-Sync = -6                        # level sync 71
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 57 / 148
-Name = "heroic_fbtl_cro04_020_010"
-Games = ["fbtl_cro04_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 79], [999, 79]]
-Moves = false
-Sync = -6                        # level sync 73
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 58 / 148
-Name = "heroic_fbtl_cro04_030_010"
-Games = ["fbtl_cro04_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 80], [999, 80]]
-Moves = false
-Sync = -6                        # level sync 74
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 59 / 148
-Name = "heroic_fbtl_cro04_040_010"
-Games = ["fbtl_cro04_040_010"]
+[[VRFW.LevelMap]]                # heroic battle 30 / 152
+Name = "heroic_fbtl_cro02_150_010"
+Games = ["fbtl_cro02_150_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 81], [999, 81]]
@@ -571,39 +291,9 @@ Moves = false
 Sync = -6                        # level sync 75
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 60 / 148
-Name = "heroic_fbtl_cro04_050_010"
-Games = ["fbtl_cro04_050_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 83], [999, 83]]
-Moves = false
-Sync = -6                        # level sync 77
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 61 / 148
-Name = "heroic_fbtl_cro04_060_010"
-Games = ["fbtl_cro04_060_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 84], [999, 84]]
-Moves = false
-Sync = -6                        # level sync 78
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 62 / 148
-Name = "heroic_fbtl_cro04_070_010"
-Games = ["fbtl_cro04_070_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 85], [999, 85]]
-Moves = false
-Sync = -6                        # level sync 79
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 63 / 148
-Name = "heroic_fbtl_cro04_080_010"
-Games = ["fbtl_cro04_080_010"]
+[[VRFW.LevelMap]]                # heroic battle 31 / 152
+Name = "heroic_fbtl_cro02_160_010"
+Games = ["fbtl_cro02_160_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 87], [999, 87]]
@@ -611,99 +301,19 @@ Moves = false
 Sync = -7                        # level sync 80
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 64 / 148
-Name = "heroic_fbtl_cro04_090_010"
-Games = ["fbtl_cro04_090_010"]
+[[VRFW.LevelMap]]                # heroic battle 32 / 152
+Name = "heroic_fbtl_cro02_170_010"
+Games = ["fbtl_cro02_170_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 88], [999, 88]]
+Points = [[1, 94], [999, 94]]
 Moves = false
-Sync = -7                        # level sync 81
+Sync = -7                        # level sync 87
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 65 / 148
-Name = "heroic_fbtl_cro04_100_010"
-Games = ["fbtl_cro04_100_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 89], [999, 89]]
-Moves = false
-Sync = -7                        # level sync 82
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 66 / 148
-Name = "heroic_fbtl_cro04_110_010"
-Games = ["fbtl_cro04_110_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 91], [999, 91]]
-Moves = false
-Sync = -7                        # level sync 84
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 67 / 148
-Name = "heroic_fbtl_cro04_120_010"
-Games = ["fbtl_cro04_120_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 92], [999, 92]]
-Moves = false
-Sync = -7                        # level sync 85
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 68 / 148
-Name = "heroic_fbtl_cro04_130_010"
-Games = ["fbtl_cro04_130_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 93], [999, 93]]
-Moves = false
-Sync = -7                        # level sync 86
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 69 / 148
-Name = "heroic_fbtl_cro04_140_010"
-Games = ["fbtl_cro04_140_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 95], [999, 95]]
-Moves = false
-Sync = -7                        # level sync 88
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 70 / 148
-Name = "heroic_fbtl_cro04_150_010"
-Games = ["fbtl_cro04_150_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 96], [999, 96]]
-Moves = false
-Sync = -7                        # level sync 89
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 71 / 148
-Name = "heroic_fbtl_cro04_160_010"
-Games = ["fbtl_cro04_160_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 97], [999, 97]]
-Moves = false
-Sync = -7                        # level sync 90
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 72 / 148
-Name = "heroic_fbtl_cro04_170_010"
-Games = ["fbtl_cro04_170_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 99], [999, 99]]
-Moves = false
-Sync = -7                        # level sync 92
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 73 / 148
-Name = "heroic_fbtl_cro04_180_010"
-Games = ["fbtl_cro04_180_010"]
+[[VRFW.LevelMap]]                # heroic battle 33 / 152
+Name = "heroic_fbtl_cro02_180_010"
+Games = ["fbtl_cro02_180_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 100], [999, 100]]
@@ -711,9 +321,79 @@ Moves = false
 Sync = -7                        # level sync 93
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 74 / 148
-Name = "heroic_fbtl_cro04_190_010"
-Games = ["fbtl_cro04_190_010"]
+[[VRFW.LevelMap]]                # heroic battle 34 / 152
+Name = "heroic_fbtl_cro02_190_010"
+Games = ["fbtl_cro02_190_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 79], [999, 79]]
+Moves = false
+Sync = -6                        # level sync 73
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 35 / 152
+Name = "heroic_fbtl_cro02_200_010"
+Games = ["fbtl_cro02_200_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 82], [999, 82]]
+Moves = false
+Sync = -6                        # level sync 76
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 37 / 152
+Name = "heroic_fbtl_cro03_010_010"
+Games = ["fbtl_cro03_010_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 86], [999, 86]]
+Moves = false
+Sync = -7                        # level sync 79
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 38 / 152
+Name = "heroic_fbtl_cro03_020_010"
+Games = ["fbtl_cro03_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 89], [999, 89]]
+Moves = false
+Sync = -7                        # level sync 82
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 39 / 152
+Name = "heroic_fbtl_cro03_030_010"
+Games = ["fbtl_cro03_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 91], [999, 91]]
+Moves = false
+Sync = -7                        # level sync 84
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 40 / 152
+Name = "heroic_fbtl_cro03_040_010"
+Games = ["fbtl_cro03_040_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 92], [999, 92]]
+Moves = false
+Sync = -7                        # level sync 85
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 41 / 152
+Name = "heroic_fbtl_cro03_050_010"
+Games = ["fbtl_cro03_050_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 95], [999, 95]]
+Moves = false
+Sync = -7                        # level sync 88
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 42 / 152
+Name = "heroic_fbtl_cro03_060_010"
+Games = ["fbtl_cro03_060_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 101], [999, 101]]
@@ -721,9 +401,9 @@ Moves = false
 Sync = -8                        # level sync 93
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 75 / 148
-Name = "heroic_fbtl_cro04_200_010"
-Games = ["fbtl_cro04_200_010"]
+[[VRFW.LevelMap]]                # heroic battle 43 / 152
+Name = "heroic_fbtl_cro03_070_010"
+Games = ["fbtl_cro03_070_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 103], [999, 103]]
@@ -731,29 +411,9 @@ Moves = false
 Sync = -8                        # level sync 95
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 76 / 148
-Name = "heroic_fbtl_cro04_210_010"
-Games = ["fbtl_cro04_210_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 104], [999, 104]]
-Moves = false
-Sync = -8                        # level sync 96
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 77 / 148
-Name = "heroic_fbtl_cro04_220_010"
-Games = ["fbtl_cro04_220_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 105], [999, 105]]
-Moves = false
-Sync = -8                        # level sync 97
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 78 / 148
-Name = "heroic_fbtl_cro05_010_010"
-Games = ["fbtl_cro05_010_010"]
+[[VRFW.LevelMap]]                # heroic battle 44 / 152
+Name = "heroic_fbtl_cro03_080_010"
+Games = ["fbtl_cro03_080_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 107], [999, 107]]
@@ -761,29 +421,9 @@ Moves = false
 Sync = -8                        # level sync 99
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 79 / 148
-Name = "heroic_fbtl_cro05_020_010"
-Games = ["fbtl_cro05_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 108], [999, 108]]
-Moves = false
-Sync = -8                        # level sync 100
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 80 / 148
-Name = "heroic_fbtl_cro05_030_010"
-Games = ["fbtl_cro05_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 109], [999, 109]]
-Moves = false
-Sync = -8                        # level sync 101
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 81 / 148
-Name = "heroic_fbtl_cro05_040_010"
-Games = ["fbtl_cro05_040_010"]
+[[VRFW.LevelMap]]                # heroic battle 45 / 152
+Name = "heroic_fbtl_cro03_090_010"
+Games = ["fbtl_cro03_090_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 111], [999, 111]]
@@ -791,19 +431,9 @@ Moves = false
 Sync = -8                        # level sync 103
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 82 / 148
-Name = "heroic_fbtl_cro05_050_010"
-Games = ["fbtl_cro05_050_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 112], [999, 112]]
-Moves = false
-Sync = -8                        # level sync 104
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 83 / 148
-Name = "heroic_fbtl_cro05_060_010"
-Games = ["fbtl_cro05_060_010"]
+[[VRFW.LevelMap]]                # heroic battle 46 / 152
+Name = "heroic_fbtl_cro03_100_010"
+Games = ["fbtl_cro03_100_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 113], [999, 113]]
@@ -811,9 +441,9 @@ Moves = false
 Sync = -8                        # level sync 105
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 84 / 148
-Name = "heroic_fbtl_cro05_070_010"
-Games = ["fbtl_cro05_070_010"]
+[[VRFW.LevelMap]]                # heroic battle 47 / 152
+Name = "heroic_fbtl_cro03_110_010"
+Games = ["fbtl_cro03_110_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 115], [999, 115]]
@@ -821,99 +451,9 @@ Moves = false
 Sync = -9                        # level sync 106
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 85 / 148
-Name = "heroic_fbtl_cro05_080_010"
-Games = ["fbtl_cro05_080_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 116], [999, 116]]
-Moves = false
-Sync = -9                        # level sync 107
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 86 / 148
-Name = "heroic_fbtl_cro05_090_010"
-Games = ["fbtl_cro05_090_010", "fbtl_cro05_090_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 117], [999, 117]]
-Moves = false
-Sync = -9                        # level sync 108
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 87 / 148
-Name = "heroic_fbtl_cro05_100_010"
-Games = ["fbtl_cro05_100_010", "fbtl_cro05_100_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 119], [999, 119]]
-Moves = false
-Sync = -9                        # level sync 110
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 88 / 148
-Name = "heroic_fbtl_cro05_110_010"
-Games = ["fbtl_cro05_110_010", "fbtl_cro05_110_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 120], [999, 120]]
-Moves = false
-Sync = -9                        # level sync 111
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 89 / 148
-Name = "heroic_fbtl_cro05_120_010"
-Games = ["fbtl_cro05_120_010", "fbtl_cro05_120_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 121], [999, 121]]
-Moves = false
-Sync = -9                        # level sync 112
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 90 / 148
-Name = "heroic_fbtl_cro05_130_010"
-Games = ["fbtl_cro05_130_010", "fbtl_cro05_130_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 123], [999, 123]]
-Moves = false
-Sync = -9                        # level sync 114
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 91 / 148
-Name = "heroic_fbtl_cro05_140_010"
-Games = ["fbtl_cro05_140_010", "fbtl_cro05_140_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 124], [999, 124]]
-Moves = false
-Sync = -9                        # level sync 115
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 92 / 148
-Name = "heroic_fbtl_cro05_150_010"
-Games = ["fbtl_cro05_150_010", "fbtl_cro05_150_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 125], [999, 125]]
-Moves = false
-Sync = -9                        # level sync 116
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 93 / 148
-Name = "heroic_fbtl_cro05_160_010"
-Games = ["fbtl_cro05_160_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 127], [999, 127]]
-Moves = false
-Sync = -9                        # level sync 118
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 94 / 148
-Name = "heroic_fbtl_cro05_170_010"
-Games = ["fbtl_cro05_170_010"]
+[[VRFW.LevelMap]]                # heroic battle 48 / 152
+Name = "heroic_fbtl_cro03_120_010"
+Games = ["fbtl_cro03_120_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 128], [999, 128]]
@@ -921,99 +461,19 @@ Moves = false
 Sync = -9                        # level sync 119
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 95 / 148
-Name = "heroic_fbtl_cro05_180_010"
-Games = ["fbtl_cro05_180_010", "fbtl_cro05_180_110"]
+[[VRFW.LevelMap]]                # heroic battle 49 / 152
+Name = "heroic_fbtl_cro03_130_010"
+Games = ["fbtl_cro03_130_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 129], [999, 129]]
+Points = [[1, 128], [999, 128]]
 Moves = false
-Sync = -10                        # level sync 119
+Sync = -9                        # level sync 119
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 96 / 148
-Name = "heroic_fbtl_cro05_190_010"
-Games = ["fbtl_cro05_190_010", "fbtl_cro05_190_110"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 131], [999, 131]]
-Moves = false
-Sync = -10                        # level sync 121
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 97 / 148
-Name = "heroic_fbtl_cro05_200_010"
-Games = ["fbtl_cro05_200_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 132], [999, 132]]
-Moves = false
-Sync = -10                        # level sync 122
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 98 / 148
-Name = "heroic_fbtl_cro05_210_010"
-Games = ["fbtl_cro05_210_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 133], [999, 133]]
-Moves = false
-Sync = -10                        # level sync 123
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 99 / 148
-Name = "heroic_fbtl_cro05_220_010"
-Games = ["fbtl_cro05_220_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 135], [999, 135]]
-Moves = false
-Sync = -10                        # level sync 125
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 100 / 148
-Name = "heroic_fbtl_cro05_230_010"
-Games = ["fbtl_cro05_230_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 136], [999, 136]]
-Moves = false
-Sync = -10                        # level sync 126
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 101 / 148
-Name = "heroic_fbtl_cro05_240_010"
-Games = ["fbtl_cro05_240_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 137], [999, 137]]
-Moves = false
-Sync = -10                        # level sync 127
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 102 / 148
-Name = "heroic_fbtl_cro06_010_010"
-Games = ["fbtl_cro06_010_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 139], [999, 139]]
-Moves = false
-Sync = -10                        # level sync 129
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 103 / 148
-Name = "heroic_fbtl_cro06_020_010"
-Games = ["fbtl_cro06_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 140], [999, 140]]
-Moves = false
-Sync = -10                        # level sync 130
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 104 / 148
-Name = "heroic_fbtl_cro06_030_010"
-Games = ["fbtl_cro06_030_010"]
+[[VRFW.LevelMap]]                # heroic battle 50 / 152
+Name = "heroic_fbtl_cro03_140_010"
+Games = ["fbtl_cro03_140_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 141], [999, 141]]
@@ -1021,129 +481,649 @@ Moves = false
 Sync = -10                        # level sync 131
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 105 / 148
+[[VRFW.LevelMap]]                # heroic battle 51 / 152
+Name = "heroic_fbtl_cro03_150_010"
+Games = ["fbtl_cro03_150_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 119], [999, 119]]
+Moves = false
+Sync = -9                        # level sync 110
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 52 / 152
+Name = "heroic_fbtl_cro03_160_010"
+Games = ["fbtl_cro03_160_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 120], [999, 120]]
+Moves = false
+Sync = -9                        # level sync 111
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 53 / 152
+Name = "heroic_fbtl_cro03_170_010"
+Games = ["fbtl_cro03_170_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 122], [999, 122]]
+Moves = false
+Sync = -9                        # level sync 113
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 54 / 152
+Name = "heroic_fbtl_cro03_180_010"
+Games = ["fbtl_cro03_180_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 123], [999, 123]]
+Moves = false
+Sync = -9                        # level sync 114
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 55 / 152
+Name = "heroic_fbtl_cro03_190_010"
+Games = ["fbtl_cro03_190_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 124], [999, 124]]
+Moves = false
+Sync = -9                        # level sync 115
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 56 / 152
+Name = "heroic_fbtl_cro04_010_010"
+Games = ["fbtl_cro04_010_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 1], [999, 1]]
+Moves = false
+Sync = 0                        # level sync 1
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 57 / 152
+Name = "heroic_fbtl_cro04_020_010"
+Games = ["fbtl_cro04_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 3], [999, 3]]
+Moves = false
+Sync = -1                        # level sync 2
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 58 / 152
+Name = "heroic_fbtl_cro04_030_010"
+Games = ["fbtl_cro04_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 6], [999, 6]]
+Moves = false
+Sync = -1                        # level sync 5
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 59 / 152
+Name = "heroic_fbtl_cro04_040_010"
+Games = ["fbtl_cro04_040_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 9], [999, 9]]
+Moves = false
+Sync = -1                        # level sync 8
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 60 / 152
+Name = "heroic_fbtl_cro04_050_010"
+Games = ["fbtl_cro04_050_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 12], [999, 12]]
+Moves = false
+Sync = -1                        # level sync 11
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 61 / 152
+Name = "heroic_fbtl_cro04_060_010"
+Games = ["fbtl_cro04_060_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 16], [999, 16]]
+Moves = false
+Sync = -2                        # level sync 14
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 62 / 152
+Name = "heroic_fbtl_cro04_070_010"
+Games = ["fbtl_cro04_070_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 20], [999, 20]]
+Moves = false
+Sync = -2                        # level sync 18
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 63 / 152
+Name = "heroic_fbtl_cro04_080_010"
+Games = ["fbtl_cro04_080_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 22], [999, 22]]
+Moves = false
+Sync = -2                        # level sync 20
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 65 / 152
+Name = "heroic_fbtl_cro04_090_010"
+Games = ["fbtl_cro04_090_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 24], [999, 24]]
+Moves = false
+Sync = -2                        # level sync 22
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 66 / 152
+Name = "heroic_fbtl_cro04_100_010"
+Games = ["fbtl_cro04_100_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 28], [999, 28]]
+Moves = false
+Sync = -2                        # level sync 26
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 67 / 152
+Name = "heroic_fbtl_cro04_110_010"
+Games = ["fbtl_cro04_110_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 32], [999, 32]]
+Moves = false
+Sync = -3                        # level sync 29
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 68 / 152
+Name = "heroic_fbtl_cro04_120_010"
+Games = ["fbtl_cro04_120_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 60], [999, 60]]
+Moves = false
+Sync = -5                        # level sync 55
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 69 / 152
+Name = "heroic_fbtl_cro04_130_010"
+Games = ["fbtl_cro04_130_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 60], [999, 60]]
+Moves = false
+Sync = -5                        # level sync 55
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 70 / 152
+Name = "heroic_fbtl_cro04_140_010"
+Games = ["fbtl_cro04_140_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 65], [999, 65]]
+Moves = false
+Sync = -5                        # level sync 60
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 71 / 152
+Name = "heroic_fbtl_cro04_150_010"
+Games = ["fbtl_cro04_150_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 36], [999, 36]]
+Moves = false
+Sync = -3                        # level sync 33
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 72 / 152
+Name = "heroic_fbtl_cro04_160_010"
+Games = ["fbtl_cro04_160_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 36], [999, 36]]
+Moves = false
+Sync = -3                        # level sync 33
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 73 / 152
+Name = "heroic_fbtl_cro04_170_010"
+Games = ["fbtl_cro04_170_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 38], [999, 38]]
+Moves = false
+Sync = -3                        # level sync 35
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 74 / 152
+Name = "heroic_fbtl_cro04_180_010"
+Games = ["fbtl_cro04_180_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 40], [999, 40]]
+Moves = false
+Sync = -3                        # level sync 37
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 75 / 152
+Name = "heroic_fbtl_cro04_190_010"
+Games = ["fbtl_cro04_190_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 42], [999, 42]]
+Moves = false
+Sync = -3                        # level sync 39
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 76 / 152
+Name = "heroic_fbtl_cro04_200_010"
+Games = ["fbtl_cro04_200_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 60], [999, 60]]
+Moves = false
+Sync = -5                        # level sync 55
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 77 / 152
+Name = "heroic_fbtl_cro04_210_010"
+Games = ["fbtl_cro04_210_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 60], [999, 60]]
+Moves = false
+Sync = -5                        # level sync 55
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 78 / 152
+Name = "heroic_fbtl_cro04_220_010"
+Games = ["fbtl_cro04_220_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 61], [999, 61]]
+Moves = false
+Sync = -5                        # level sync 56
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 79 / 152
+Name = "heroic_fbtl_cro05_010_010"
+Games = ["fbtl_cro05_010_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 48], [999, 48]]
+Moves = false
+Sync = -4                        # level sync 44
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 80 / 152
+Name = "heroic_fbtl_cro05_020_010"
+Games = ["fbtl_cro05_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 49], [999, 49]]
+Moves = false
+Sync = -4                        # level sync 45
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 81 / 152
+Name = "heroic_fbtl_cro05_030_010"
+Games = ["fbtl_cro05_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 55], [999, 55]]
+Moves = false
+Sync = -4                        # level sync 51
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 82 / 152
+Name = "heroic_fbtl_cro05_040_010"
+Games = ["fbtl_cro05_040_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 56], [999, 56]]
+Moves = false
+Sync = -4                        # level sync 52
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 83 / 152
+Name = "heroic_fbtl_cro05_050_010"
+Games = ["fbtl_cro05_050_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 63], [999, 63]]
+Moves = false
+Sync = -5                        # level sync 58
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 84 / 152
+Name = "heroic_fbtl_cro05_060_010"
+Games = ["fbtl_cro05_060_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 66], [999, 66]]
+Moves = false
+Sync = -5                        # level sync 61
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 85 / 152
+Name = "heroic_fbtl_cro05_070_010"
+Games = ["fbtl_cro05_070_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 67], [999, 67]]
+Moves = false
+Sync = -5                        # level sync 62
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 86 / 152
+Name = "heroic_fbtl_cro05_080_010"
+Games = ["fbtl_cro05_080_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 71], [999, 71]]
+Moves = false
+Sync = -5                        # level sync 66
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 88 / 152
+Name = "heroic_fbtl_cro05_090_010"
+Games = ["fbtl_cro05_090_010", "fbtl_cro05_090_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 74], [999, 74]]
+Moves = false
+Sync = -6                        # level sync 68
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 89 / 152
+Name = "heroic_fbtl_cro05_100_010"
+Games = ["fbtl_cro05_100_010", "fbtl_cro05_100_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 75], [999, 75]]
+Moves = false
+Sync = -6                        # level sync 69
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 90 / 152
+Name = "heroic_fbtl_cro05_110_010"
+Games = ["fbtl_cro05_110_010", "fbtl_cro05_110_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 80], [999, 80]]
+Moves = false
+Sync = -6                        # level sync 74
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 91 / 152
+Name = "heroic_fbtl_cro05_120_010"
+Games = ["fbtl_cro05_120_010", "fbtl_cro05_120_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 83], [999, 83]]
+Moves = false
+Sync = -6                        # level sync 77
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 92 / 152
+Name = "heroic_fbtl_cro05_130_010"
+Games = ["fbtl_cro05_130_010", "fbtl_cro05_130_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 84], [999, 84]]
+Moves = false
+Sync = -6                        # level sync 78
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 93 / 152
+Name = "heroic_fbtl_cro05_140_010"
+Games = ["fbtl_cro05_140_010", "fbtl_cro05_140_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 84], [999, 84]]
+Moves = false
+Sync = -6                        # level sync 78
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 94 / 152
+Name = "heroic_fbtl_cro05_150_010"
+Games = ["fbtl_cro05_150_010", "fbtl_cro05_150_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 85], [999, 85]]
+Moves = false
+Sync = -6                        # level sync 79
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 95 / 152
+Name = "heroic_fbtl_cro05_160_010"
+Games = ["fbtl_cro05_160_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 87], [999, 87]]
+Moves = false
+Sync = -7                        # level sync 80
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 96 / 152
+Name = "heroic_fbtl_cro05_170_010"
+Games = ["fbtl_cro05_170_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 88], [999, 88]]
+Moves = false
+Sync = -7                        # level sync 81
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 97 / 152
+Name = "heroic_fbtl_cro05_180_010"
+Games = ["fbtl_cro05_180_010", "fbtl_cro05_180_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 89], [999, 89]]
+Moves = false
+Sync = -7                        # level sync 82
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 98 / 152
+Name = "heroic_fbtl_cro05_190_010"
+Games = ["fbtl_cro05_190_010", "fbtl_cro05_190_110"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 92], [999, 92]]
+Moves = false
+Sync = -7                        # level sync 85
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 99 / 152
+Name = "heroic_fbtl_cro05_200_010"
+Games = ["fbtl_cro05_200_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 117], [999, 117]]
+Moves = false
+Sync = -9                        # level sync 108
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 100 / 152
+Name = "heroic_fbtl_cro05_210_010"
+Games = ["fbtl_cro05_210_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 117], [999, 117]]
+Moves = false
+Sync = -9                        # level sync 108
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 101 / 152
+Name = "heroic_fbtl_cro05_220_010"
+Games = ["fbtl_cro05_220_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 127], [999, 127]]
+Moves = false
+Sync = -9                        # level sync 118
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 102 / 152
+Name = "heroic_fbtl_cro05_230_010"
+Games = ["fbtl_cro05_230_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 102], [999, 102]]
+Moves = false
+Sync = -8                        # level sync 94
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 103 / 152
+Name = "heroic_fbtl_cro05_240_010"
+Games = ["fbtl_cro05_240_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 112], [999, 112]]
+Moves = false
+Sync = -8                        # level sync 104
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 104 / 152
+Name = "heroic_fbtl_cro06_010_010"
+Games = ["fbtl_cro06_010_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 94], [999, 94]]
+Moves = false
+Sync = -7                        # level sync 87
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 105 / 152
+Name = "heroic_fbtl_cro06_020_010"
+Games = ["fbtl_cro06_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 93], [999, 93]]
+Moves = false
+Sync = -7                        # level sync 86
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 106 / 152
+Name = "heroic_fbtl_cro06_030_010"
+Games = ["fbtl_cro06_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 96], [999, 96]]
+Moves = false
+Sync = -7                        # level sync 89
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 108 / 152
 Name = "heroic_fbtl_cro06_040_010"
 Games = ["fbtl_cro06_040_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 143], [999, 143]]
+Points = [[1, 100], [999, 100]]
 Moves = false
-Sync = -11                        # level sync 132
+Sync = -7                        # level sync 93
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 106 / 148
+[[VRFW.LevelMap]]                # heroic battle 109 / 152
 Name = "heroic_fbtl_cro06_050_010"
 Games = ["fbtl_cro06_050_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 144], [999, 144]]
+Points = [[1, 103], [999, 103]]
 Moves = false
-Sync = -11                        # level sync 133
+Sync = -8                        # level sync 95
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 107 / 148
+[[VRFW.LevelMap]]                # heroic battle 110 / 152
 Name = "heroic_fbtl_cro06_060_010"
 Games = ["fbtl_cro06_060_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 145], [999, 145]]
+Points = [[1, 113], [999, 113]]
 Moves = false
-Sync = -11                        # level sync 134
+Sync = -8                        # level sync 105
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 108 / 148
+[[VRFW.LevelMap]]                # heroic battle 111 / 152
 Name = "heroic_fbtl_cro06_070_010"
 Games = ["fbtl_cro06_070_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 147], [999, 147]]
+Points = [[1, 108], [999, 108]]
 Moves = false
-Sync = -11                        # level sync 136
+Sync = -8                        # level sync 100
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 109 / 148
+[[VRFW.LevelMap]]                # heroic battle 112 / 152
 Name = "heroic_fbtl_cro06_080_010"
 Games = ["fbtl_cro06_080_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 148], [999, 148]]
+Points = [[1, 114], [999, 114]]
 Moves = false
-Sync = -11                        # level sync 137
+Sync = -8                        # level sync 106
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 110 / 148
+[[VRFW.LevelMap]]                # heroic battle 113 / 152
 Name = "heroic_fbtl_cro06_090_010"
 Games = ["fbtl_cro06_090_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 149], [999, 149]]
+Points = [[1, 119], [999, 119]]
 Moves = false
-Sync = -11                        # level sync 138
+Sync = -9                        # level sync 110
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 111 / 148
+[[VRFW.LevelMap]]                # heroic battle 115 / 152
 Name = "heroic_fbtl_cro06_100_010"
 Games = ["fbtl_cro06_100_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 151], [999, 151]]
+Points = [[1, 122], [999, 122]]
 Moves = false
-Sync = -11                        # level sync 140
+Sync = -9                        # level sync 113
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 112 / 148
+[[VRFW.LevelMap]]                # heroic battle 116 / 152
 Name = "heroic_fbtl_cro06_110_010"
 Games = ["fbtl_cro06_110_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 152], [999, 152]]
+Points = [[1, 127], [999, 127]]
 Moves = false
-Sync = -11                        # level sync 141
+Sync = -9                        # level sync 118
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 113 / 148
+[[VRFW.LevelMap]]                # heroic battle 117 / 152
 Name = "heroic_fbtl_cro06_120_010"
 Games = ["fbtl_cro06_120_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 153], [999, 153]]
+Points = [[1, 130], [999, 130]]
 Moves = false
-Sync = -11                        # level sync 142
+Sync = -10                        # level sync 120
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 114 / 148
+[[VRFW.LevelMap]]                # heroic battle 118 / 152
 Name = "heroic_fbtl_cro06_130_010"
 Games = ["fbtl_cro06_130_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 155], [999, 155]]
+Points = [[1, 134], [999, 134]]
 Moves = false
-Sync = -11                        # level sync 144
+Sync = -10                        # level sync 124
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 115 / 148
+[[VRFW.LevelMap]]                # heroic battle 119 / 152
 Name = "heroic_fbtl_cro06_140_010"
 Games = ["fbtl_cro06_140_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 156], [999, 156]]
-Moves = false
-Sync = -11                        # level sync 145
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 116 / 148
-Name = "heroic_fbtl_cro06_150_010"
-Games = ["fbtl_cro06_150_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 157], [999, 157]]
-Moves = false
-Sync = -11                        # level sync 146
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 117 / 148
-Name = "heroic_fbtl_cro06_160_010"
-Games = ["fbtl_cro06_160_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 159], [999, 159]]
@@ -1151,79 +1131,19 @@ Moves = false
 Sync = -12                        # level sync 147
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 118 / 148
-Name = "heroic_fbtl_cro07_010_010"
-Games = ["fbtl_cro07_010_010"]
+[[VRFW.LevelMap]]                # heroic battle 120 / 152
+Name = "heroic_fbtl_cro06_150_010"
+Games = ["fbtl_cro06_150_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 160], [999, 160]]
+Points = [[1, 159], [999, 159]]
 Moves = false
-Sync = -12                        # level sync 148
+Sync = -12                        # level sync 147
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 119 / 148
-Name = "heroic_fbtl_cro07_020_010"
-Games = ["fbtl_cro07_020_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 161], [999, 161]]
-Moves = false
-Sync = -12                        # level sync 149
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 120 / 148
-Name = "heroic_fbtl_cro07_030_010"
-Games = ["fbtl_cro07_030_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 163], [999, 163]]
-Moves = false
-Sync = -12                        # level sync 151
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 121 / 148
-Name = "heroic_fbtl_cro07_040_010"
-Games = ["fbtl_cro07_040_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 164], [999, 164]]
-Moves = false
-Sync = -12                        # level sync 152
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 122 / 148
-Name = "heroic_fbtl_cro07_050_010"
-Games = ["fbtl_cro07_050_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 165], [999, 165]]
-Moves = false
-Sync = -12                        # level sync 153
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 123 / 148
-Name = "heroic_fbtl_cro07_060_010"
-Games = ["fbtl_cro07_060_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 167], [999, 167]]
-Moves = false
-Sync = -12                        # level sync 155
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 124 / 148
-Name = "heroic_fbtl_cro07_070_010"
-Games = ["fbtl_cro07_070_010"]
-Difficulties = [4]
-By = "rival"
-Points = [[1, 168], [999, 168]]
-Moves = false
-Sync = -12                        # level sync 156
-Clones = true
-
-[[VRFW.LevelMap]]                # heroic battle 125 / 148
-Name = "heroic_fbtl_cro07_080_010"
-Games = ["fbtl_cro07_080_010"]
+[[VRFW.LevelMap]]                # heroic battle 121 / 152
+Name = "heroic_fbtl_cro06_160_010"
+Games = ["fbtl_cro06_160_010"]
 Difficulties = [4]
 By = "rival"
 Points = [[1, 169], [999, 169]]
@@ -1231,187 +1151,267 @@ Moves = false
 Sync = -12                        # level sync 157
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 126 / 148
+[[VRFW.LevelMap]]                # heroic battle 122 / 152
+Name = "heroic_fbtl_cro07_010_010"
+Games = ["fbtl_cro07_010_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 24], [999, 24]]
+Moves = false
+Sync = -2                        # level sync 22
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 123 / 152
+Name = "heroic_fbtl_cro07_020_010"
+Games = ["fbtl_cro07_020_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 12], [999, 12]]
+Moves = false
+Sync = -1                        # level sync 11
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 124 / 152
+Name = "heroic_fbtl_cro07_030_010"
+Games = ["fbtl_cro07_030_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 5], [999, 5]]
+Moves = false
+Sync = -1                        # level sync 4
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 125 / 152
+Name = "heroic_fbtl_cro07_040_010"
+Games = ["fbtl_cro07_040_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 12], [999, 12]]
+Moves = false
+Sync = -1                        # level sync 11
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 126 / 152
+Name = "heroic_fbtl_cro07_050_010"
+Games = ["fbtl_cro07_050_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 11], [999, 11]]
+Moves = false
+Sync = -1                        # level sync 10
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 127 / 152
+Name = "heroic_fbtl_cro07_060_010"
+Games = ["fbtl_cro07_060_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 15], [999, 15]]
+Moves = false
+Sync = -2                        # level sync 13
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 128 / 152
+Name = "heroic_fbtl_cro07_070_010"
+Games = ["fbtl_cro07_070_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 19], [999, 19]]
+Moves = false
+Sync = -2                        # level sync 17
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 129 / 152
+Name = "heroic_fbtl_cro07_080_010"
+Games = ["fbtl_cro07_080_010"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 23], [999, 23]]
+Moves = false
+Sync = -2                        # level sync 21
+Clones = true
+
+[[VRFW.LevelMap]]                # heroic battle 130 / 152
 Name = "heroic_fbtl_cro07_090_010"
 Games = ["fbtl_cro07_090_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 171], [999, 171]]
+Points = [[1, 26], [999, 26]]
 Moves = false
-Sync = -12                        # level sync 159
+Sync = -2                        # level sync 24
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 127 / 148
+[[VRFW.LevelMap]]                # heroic battle 131 / 152
 Name = "heroic_fbtl_cro07_100_010"
 Games = ["fbtl_cro07_100_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 172], [999, 172]]
+Points = [[1, 29], [999, 29]]
 Moves = false
-Sync = -13                        # level sync 159
+Sync = -3                        # level sync 26
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 128 / 148
+[[VRFW.LevelMap]]                # heroic battle 132 / 152
 Name = "heroic_fbtl_cro07_110_010"
 Games = ["fbtl_cro07_110_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 173], [999, 173]]
+Points = [[1, 32], [999, 32]]
 Moves = false
-Sync = -13                        # level sync 160
+Sync = -3                        # level sync 29
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 129 / 148
+[[VRFW.LevelMap]]                # heroic battle 133 / 152
 Name = "heroic_fbtl_cro07_120_010"
 Games = ["fbtl_cro07_120_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 175], [999, 175]]
+Points = [[1, 36], [999, 36]]
 Moves = false
-Sync = -13                        # level sync 162
+Sync = -3                        # level sync 33
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 130 / 148
+[[VRFW.LevelMap]]                # heroic battle 134 / 152
 Name = "heroic_fbtl_cro07_130_010"
 Games = ["fbtl_cro07_130_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 176], [999, 176]]
+Points = [[1, 40], [999, 40]]
 Moves = false
-Sync = -13                        # level sync 163
+Sync = -3                        # level sync 37
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 131 / 148
+[[VRFW.LevelMap]]                # heroic battle 135 / 152
 Name = "heroic_fbtl_cro08_010_010"
 Games = ["fbtl_cro08_010_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 177], [999, 177]]
+Points = [[1, 44], [999, 44]]
 Moves = false
-Sync = -13                        # level sync 164
+Sync = -4                        # level sync 40
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 132 / 148
+[[VRFW.LevelMap]]                # heroic battle 136 / 152
 Name = "heroic_fbtl_cro08_020_010"
 Games = ["fbtl_cro08_020_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 179], [999, 179]]
+Points = [[1, 47], [999, 47]]
 Moves = false
-Sync = -13                        # level sync 166
+Sync = -4                        # level sync 43
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 133 / 148
+[[VRFW.LevelMap]]                # heroic battle 137 / 152
 Name = "heroic_fbtl_cro08_030_010"
 Games = ["fbtl_cro08_030_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 180], [999, 180]]
+Points = [[1, 50], [999, 50]]
 Moves = false
-Sync = -13                        # level sync 167
+Sync = -4                        # level sync 46
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 134 / 148
+[[VRFW.LevelMap]]                # heroic battle 138 / 152
 Name = "heroic_fbtl_cro08_040_010"
 Games = ["fbtl_cro08_040_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 181], [999, 181]]
+Points = [[1, 53], [999, 53]]
 Moves = false
-Sync = -13                        # level sync 168
+Sync = -4                        # level sync 49
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 135 / 148
+[[VRFW.LevelMap]]                # heroic battle 139 / 152
 Name = "heroic_fbtl_cro08_050_010"
 Games = ["fbtl_cro08_050_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 183], [999, 183]]
+Points = [[1, 57], [999, 57]]
 Moves = false
-Sync = -13                        # level sync 170
+Sync = -4                        # level sync 53
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 136 / 148
+[[VRFW.LevelMap]]                # heroic battle 140 / 152
 Name = "heroic_fbtl_cro08_060_010"
 Games = ["fbtl_cro08_060_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 184], [999, 184]]
+Points = [[1, 61], [999, 61]]
 Moves = false
-Sync = -13                        # level sync 171
+Sync = -5                        # level sync 56
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 137 / 148
+[[VRFW.LevelMap]]                # heroic battle 141 / 152
 Name = "heroic_fbtl_cro08_070_010"
 Games = ["fbtl_cro08_070_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 185], [999, 185]]
+Points = [[1, 65], [999, 65]]
 Moves = false
-Sync = -13                        # level sync 172
+Sync = -5                        # level sync 60
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 138 / 148
+[[VRFW.LevelMap]]                # heroic battle 142 / 152
 Name = "heroic_fbtl_cro08_080_010"
 Games = ["fbtl_cro08_080_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 187], [999, 187]]
+Points = [[1, 68], [999, 68]]
 Moves = false
-Sync = -14                        # level sync 173
+Sync = -5                        # level sync 63
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 139 / 148
+[[VRFW.LevelMap]]                # heroic battle 143 / 152
 Name = "heroic_fbtl_cro08_090_010"
 Games = ["fbtl_cro08_090_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 188], [999, 188]]
+Points = [[1, 71], [999, 71]]
 Moves = false
-Sync = -14                        # level sync 174
+Sync = -5                        # level sync 66
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 140 / 148
+[[VRFW.LevelMap]]                # heroic battle 144 / 152
 Name = "heroic_fbtl_cro08_100_010"
 Games = ["fbtl_cro08_100_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 189], [999, 189]]
+Points = [[1, 74], [999, 74]]
 Moves = false
-Sync = -14                        # level sync 175
+Sync = -6                        # level sync 68
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 141 / 148
+[[VRFW.LevelMap]]                # heroic battle 145 / 152
 Name = "heroic_fbtl_cro08_110_010"
 Games = ["fbtl_cro08_110_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 191], [999, 191]]
+Points = [[1, 78], [999, 78]]
 Moves = false
-Sync = -14                        # level sync 177
+Sync = -6                        # level sync 72
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 142 / 148
+[[VRFW.LevelMap]]                # heroic battle 146 / 152
 Name = "heroic_fbtl_cro08_120_010"
 Games = ["fbtl_cro08_120_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 192], [999, 192]]
+Points = [[1, 82], [999, 82]]
 Moves = false
-Sync = -14                        # level sync 178
+Sync = -6                        # level sync 76
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 143 / 148
+[[VRFW.LevelMap]]                # heroic battle 147 / 152
 Name = "heroic_fbtl_cro09_010_010"
 Games = ["fbtl_cro09_010_010"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 193], [999, 193]]
+Points = [[1, 194], [999, 194]]
 Moves = false
-Sync = -14                        # level sync 179
+Sync = -14                        # level sync 180
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 144 / 148
+[[VRFW.LevelMap]]                # heroic battle 148 / 152
 Name = "heroic_fbtl_cro09_020_010"
 Games = ["fbtl_cro09_020_010"]
 Difficulties = [4]
@@ -1421,7 +1421,7 @@ Moves = false
 Sync = -14                        # level sync 181
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 145 / 148
+[[VRFW.LevelMap]]                # heroic battle 149 / 152
 Name = "heroic_fbtl_cro09_030_010"
 Games = ["fbtl_cro09_030_010"]
 Difficulties = [4]
@@ -1431,7 +1431,7 @@ Moves = false
 Sync = -14                        # level sync 182
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 146 / 148
+[[VRFW.LevelMap]]                # heroic battle 150 / 152
 Name = "heroic_fbtl_cro09_040_010"
 Games = ["fbtl_cro09_040_010"]
 Difficulties = [4]
@@ -1441,7 +1441,7 @@ Moves = false
 Sync = -14                        # level sync 183
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 147 / 148
+[[VRFW.LevelMap]]                # heroic battle 151 / 152
 Name = "heroic_fbtl_cro09_050_010"
 Games = ["fbtl_cro09_050_010"]
 Difficulties = [4]
@@ -1451,7 +1451,7 @@ Moves = false
 Sync = -14                        # level sync 185
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 148 / 148
+[[VRFW.LevelMap]]                # heroic battle 152 / 152
 Name = "heroic_fbtl_cro09_060_010"
 Games = ["fbtl_cro09_060_010"]
 Difficulties = [4]
@@ -1461,34 +1461,74 @@ Moves = false
 Sync = -14                        # level sync 186
 Clones = true
 
-[[VRFW.LevelMap]]                # heroic battle 3 / 148
+[[VRFW.LevelMap]]                # heroic battle 3 / 152
 Name = "heroic_evt_rn_ie1_umbrella"
 Games = ["evt_rn_ie1_umbrella"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 7], [999, 7]]
+Points = [[1, 5], [999, 5]]
 Moves = false
-Sync = -1                        # level sync 6
+Sync = -1                        # level sync 4
 Clones = false
 
-[[VRFW.LevelMap]]                # heroic battle 7 / 148
+[[VRFW.LevelMap]]                # heroic battle 7 / 152
 Name = "heroic_evt_rn_ie1_sallys"
 Games = ["evt_rn_ie1_sallys"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 12], [999, 12]]
+Points = [[1, 20], [999, 20]]
 Moves = false
-Sync = -1                        # level sync 11
+Sync = -2                        # level sync 18
 Clones = false
 
-[[VRFW.LevelMap]]                # heroic battle 36 / 148
+[[VRFW.LevelMap]]                # heroic battle 36 / 152
 Name = "heroic_evt_rn_ie2_forest"
 Games = ["evt_rn_ie2_forest"]
 Difficulties = [4]
 By = "rival"
-Points = [[1, 51], [999, 51]]
+Points = [[1, 92], [999, 92]]
 Moves = false
-Sync = -4                        # level sync 47
+Sync = -7                        # level sync 85
+Clones = false
+
+[[VRFW.LevelMap]]                # heroic battle 64 / 152
+Name = "heroic_evt_rn_go_royal_practice"
+Games = ["evt_rn_go_royal_practice"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 24], [999, 24]]
+Moves = false
+Sync = -2                        # level sync 22
+Clones = false
+
+[[VRFW.LevelMap]]                # heroic battle 87 / 152
+Name = "heroic_evt_rn_cs_omega3_side"
+Games = ["evt_rn_cs_omega3_side"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 72], [999, 72]]
+Moves = false
+Sync = -6                        # level sync 66
+Clones = false
+
+[[VRFW.LevelMap]]                # heroic battle 107 / 152
+Name = "heroic_evt_rn_galaxy_raimon"
+Games = ["evt_rn_galaxy_raimon"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 98], [999, 98]]
+Moves = false
+Sync = -7                        # level sync 91
+Clones = false
+
+[[VRFW.LevelMap]]                # heroic battle 114 / 152
+Name = "heroic_evt_rn_galaxy_naiadi_side"
+Games = ["evt_rn_galaxy_naiadi_side"]
+Difficulties = [4]
+By = "rival"
+Points = [[1, 121], [999, 121]]
+Moves = false
+Sync = -9                        # level sync 112
 Clones = false
 
 # ---------------------------------------------------------------------------------------------- players
@@ -1519,7 +1559,6 @@ Games = ["fbtl_cro01_010_010", "fbtl_cro01_020_010", "evt_rn_ie1_umbrella", "fbt
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_1"
@@ -1540,7 +1579,6 @@ Games = ["fbtl_cro02_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_2"
@@ -1561,7 +1599,6 @@ Games = ["fbtl_cro02_020_010", "fbtl_cro02_030_010", "fbtl_cro02_040_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_3"
@@ -1582,7 +1619,6 @@ Games = ["fbtl_cro02_050_010", "fbtl_cro02_060_010", "fbtl_cro02_070_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_4"
@@ -1603,7 +1639,6 @@ Games = ["fbtl_cro02_080_010", "fbtl_cro02_090_010", "fbtl_cro02_100_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_5"
@@ -1624,7 +1659,6 @@ Games = ["fbtl_cro02_120_010", "fbtl_cro02_130_010", "fbtl_cro02_140_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_6"
@@ -1645,7 +1679,6 @@ Games = ["fbtl_cro02_150_010", "fbtl_cro02_160_010", "fbtl_cro02_170_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie2_min_7"
@@ -1666,7 +1699,6 @@ Games = ["fbtl_cro02_180_010", "fbtl_cro02_190_010", "fbtl_cro02_200_010", "evt_
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_1"
@@ -1687,7 +1719,6 @@ Games = ["fbtl_cro03_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_2"
@@ -1708,7 +1739,6 @@ Games = ["fbtl_cro03_020_010", "fbtl_cro03_030_010", "fbtl_cro03_040_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_3"
@@ -1729,7 +1759,6 @@ Games = ["fbtl_cro03_050_010", "fbtl_cro03_060_010", "fbtl_cro03_070_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_4"
@@ -1750,7 +1779,6 @@ Games = ["fbtl_cro03_080_010", "fbtl_cro03_090_010", "fbtl_cro03_100_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_5"
@@ -1771,7 +1799,6 @@ Games = ["fbtl_cro03_110_010", "fbtl_cro03_120_010", "fbtl_cro03_130_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_6"
@@ -1792,7 +1819,6 @@ Games = ["fbtl_cro03_140_010", "fbtl_cro03_150_010", "fbtl_cro03_160_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ie3_min_7"
@@ -1813,7 +1839,6 @@ Games = ["fbtl_cro03_170_010", "fbtl_cro03_180_010", "fbtl_cro03_190_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_1"
@@ -1834,7 +1859,6 @@ Games = ["fbtl_cro04_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_2"
@@ -1855,7 +1879,6 @@ Games = ["fbtl_cro04_020_010", "fbtl_cro04_030_010", "fbtl_cro04_040_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_3"
@@ -1876,7 +1899,6 @@ Games = ["fbtl_cro04_050_010", "fbtl_cro04_060_010", "fbtl_cro04_070_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_4"
@@ -1884,7 +1906,7 @@ Title = "chronicle_deluxe_heroic_go1_min_4"
 Short = "chronicle_deluxe_heroic_short_go1_min_4"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro04_090_010", "fbtl_cro04_100_010", "fbtl_cro04_110_010"]
+Games = ["evt_rn_go_royal_practice", "fbtl_cro04_090_010", "fbtl_cro04_100_010", "fbtl_cro04_110_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 4
@@ -1897,7 +1919,6 @@ Games = ["fbtl_cro04_090_010", "fbtl_cro04_100_010", "fbtl_cro04_110_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_5"
@@ -1905,7 +1926,7 @@ Title = "chronicle_deluxe_heroic_go1_min_5"
 Short = "chronicle_deluxe_heroic_short_go1_min_5"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro04_120_010", "fbtl_cro04_130_010", "fbtl_cro04_140_010", "fbtl_cro04_150_010"]
+Games = ["fbtl_cro04_120_010", "fbtl_cro04_130_010", "fbtl_cro04_140_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 5
@@ -1918,7 +1939,6 @@ Games = ["fbtl_cro04_120_010", "fbtl_cro04_130_010", "fbtl_cro04_140_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_6"
@@ -1926,7 +1946,7 @@ Title = "chronicle_deluxe_heroic_go1_min_6"
 Short = "chronicle_deluxe_heroic_short_go1_min_6"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro04_160_010", "fbtl_cro04_170_010", "fbtl_cro04_180_010"]
+Games = ["fbtl_cro04_150_010", "fbtl_cro04_160_010", "fbtl_cro04_170_010", "fbtl_cro04_180_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from go1
   Count = { Series = "0x9299810F" }
   AtLeast = 6
@@ -1939,7 +1959,6 @@ Games = ["fbtl_cro04_160_010", "fbtl_cro04_170_010", "fbtl_cro04_180_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go1_min_7"
@@ -1960,7 +1979,6 @@ Games = ["fbtl_cro04_190_010", "fbtl_cro04_200_010", "fbtl_cro04_210_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, own_mode_change
   Allowed = ["keshin", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_keshin"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_1"
@@ -1981,7 +1999,6 @@ Games = ["fbtl_cro05_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_2"
@@ -1989,7 +2006,7 @@ Title = "chronicle_deluxe_heroic_go2_min_2"
 Short = "chronicle_deluxe_heroic_short_go2_min_2"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro05_020_010", "fbtl_cro05_030_010", "fbtl_cro05_040_010"]
+Games = ["fbtl_cro05_020_010", "fbtl_cro05_030_010", "fbtl_cro05_040_010", "fbtl_cro05_050_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 2 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 2
@@ -2002,7 +2019,6 @@ Games = ["fbtl_cro05_020_010", "fbtl_cro05_030_010", "fbtl_cro05_040_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_3"
@@ -2010,7 +2026,7 @@ Title = "chronicle_deluxe_heroic_go2_min_3"
 Short = "chronicle_deluxe_heroic_short_go2_min_3"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro05_050_010", "fbtl_cro05_060_010", "fbtl_cro05_070_010", "fbtl_cro05_080_010"]
+Games = ["fbtl_cro05_060_010", "fbtl_cro05_070_010", "fbtl_cro05_080_010", "evt_rn_cs_omega3_side"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 3
@@ -2023,7 +2039,6 @@ Games = ["fbtl_cro05_050_010", "fbtl_cro05_060_010", "fbtl_cro05_070_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_4"
@@ -2044,7 +2059,6 @@ Games = ["fbtl_cro05_090_010", "fbtl_cro05_090_110", "fbtl_cro05_100_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_5"
@@ -2065,7 +2079,6 @@ Games = ["fbtl_cro05_130_010", "fbtl_cro05_130_110", "fbtl_cro05_140_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_6"
@@ -2086,7 +2099,6 @@ Games = ["fbtl_cro05_170_010", "fbtl_cro05_180_010", "fbtl_cro05_180_110", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go2_min_7"
@@ -2094,7 +2106,7 @@ Title = "chronicle_deluxe_heroic_go2_min_7"
 Short = "chronicle_deluxe_heroic_short_go2_min_7"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro05_210_010", "fbtl_cro05_220_010", "fbtl_cro05_230_010", "fbtl_cro05_240_010"]
+Games = ["fbtl_cro05_210_010", "fbtl_cro05_220_010", "fbtl_cro05_220_110", "fbtl_cro05_230_010", "fbtl_cro05_240_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 7 from go2
   Count = { Series = "0x0B90D0B5" }
   AtLeast = 7
@@ -2107,7 +2119,6 @@ Games = ["fbtl_cro05_210_010", "fbtl_cro05_220_010", "fbtl_cro05_230_010", "fbtl
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go2"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_1"
@@ -2128,7 +2139,6 @@ Games = ["fbtl_cro06_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_2"
@@ -2149,7 +2159,6 @@ Games = ["fbtl_cro06_020_010", "fbtl_cro06_030_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_3"
@@ -2157,7 +2166,7 @@ Title = "chronicle_deluxe_heroic_go3_min_3"
 Short = "chronicle_deluxe_heroic_short_go3_min_3"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro06_040_010", "fbtl_cro06_050_010", "fbtl_cro06_060_010"]
+Games = ["evt_rn_galaxy_raimon", "fbtl_cro06_040_010", "fbtl_cro06_050_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 3 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 3
@@ -2170,7 +2179,6 @@ Games = ["fbtl_cro06_040_010", "fbtl_cro06_050_010", "fbtl_cro06_060_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_4"
@@ -2178,7 +2186,7 @@ Title = "chronicle_deluxe_heroic_go3_min_4"
 Short = "chronicle_deluxe_heroic_short_go3_min_4"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro06_070_010", "fbtl_cro06_080_010"]
+Games = ["fbtl_cro06_060_010", "fbtl_cro06_070_010", "fbtl_cro06_080_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 4 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 4
@@ -2191,7 +2199,6 @@ Games = ["fbtl_cro06_070_010", "fbtl_cro06_080_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_5"
@@ -2199,7 +2206,7 @@ Title = "chronicle_deluxe_heroic_go3_min_5"
 Short = "chronicle_deluxe_heroic_short_go3_min_5"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro06_090_010", "fbtl_cro06_100_010", "fbtl_cro06_110_010"]
+Games = ["fbtl_cro06_090_010", "evt_rn_galaxy_naiadi_side", "fbtl_cro06_100_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 5 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 5
@@ -2212,7 +2219,6 @@ Games = ["fbtl_cro06_090_010", "fbtl_cro06_100_010", "fbtl_cro06_110_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_6"
@@ -2220,7 +2226,7 @@ Title = "chronicle_deluxe_heroic_go3_min_6"
 Short = "chronicle_deluxe_heroic_short_go3_min_6"
 Scope = "squad"
 Difficulties = [4]
-Games = ["fbtl_cro06_120_010", "fbtl_cro06_130_010"]
+Games = ["fbtl_cro06_110_010", "fbtl_cro06_120_010", "fbtl_cro06_130_010"]
   [[VRFW.MatchChallenge.Require]]     # ramp: at least 6 from go3
   Count = { Series = "0x7C97E023" }
   AtLeast = 6
@@ -2233,7 +2239,6 @@ Games = ["fbtl_cro06_120_010", "fbtl_cro06_130_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_go3_min_7"
@@ -2254,7 +2259,6 @@ Games = ["fbtl_cro06_140_010", "fbtl_cro06_150_010", "fbtl_cro06_160_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only keshin, armour, miximax, totem, own_mode_change
   Allowed = ["keshin", "armour", "miximax", "totem", "own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_up_to_go3"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_1"
@@ -2275,7 +2279,6 @@ Games = ["fbtl_cro07_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_2"
@@ -2296,7 +2299,6 @@ Games = ["fbtl_cro07_020_010", "fbtl_cro07_030_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_3"
@@ -2317,7 +2319,6 @@ Games = ["fbtl_cro07_040_010", "fbtl_cro07_050_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_4"
@@ -2338,7 +2339,6 @@ Games = ["fbtl_cro07_060_010", "fbtl_cro07_070_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_5"
@@ -2359,7 +2359,6 @@ Games = ["fbtl_cro07_080_010", "fbtl_cro07_090_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_6"
@@ -2380,7 +2379,6 @@ Games = ["fbtl_cro07_100_010", "fbtl_cro07_110_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_ares_min_7"
@@ -2401,7 +2399,6 @@ Games = ["fbtl_cro07_120_010", "fbtl_cro07_130_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_1"
@@ -2422,7 +2419,6 @@ Games = ["fbtl_cro08_010_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_2"
@@ -2443,7 +2439,6 @@ Games = ["fbtl_cro08_020_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_3"
@@ -2464,7 +2459,6 @@ Games = ["fbtl_cro08_030_010", "fbtl_cro08_040_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_4"
@@ -2485,7 +2479,6 @@ Games = ["fbtl_cro08_050_010", "fbtl_cro08_060_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_5"
@@ -2506,7 +2499,6 @@ Games = ["fbtl_cro08_070_010", "fbtl_cro08_080_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_6"
@@ -2527,7 +2519,6 @@ Games = ["fbtl_cro08_090_010", "fbtl_cro08_100_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_orion_min_7"
@@ -2548,7 +2539,6 @@ Games = ["fbtl_cro08_110_010", "fbtl_cro08_120_010"]
   Label = "chronicle_deluxe_heroic_required_label"
   [VRFW.MatchChallenge.Auras]         # both teams: only own_mode_change
   Allowed = ["own_mode_change"]
-  Label = "chronicle_deluxe_heroic_auras_none"
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.Heroic_victory_road_min_1"
@@ -3279,6 +3269,11 @@ Difficulties = [1]
 FirstClear = "0x257932D5"                # the route-unlock battle's first clear
 
 [[VRFW.GameDrops]]
+Game = "evt_rn_go_royal_practice"
+Difficulties = [4]
+FirstClear = "chronicle_deluxe.heroic_evt_rn_go_royal_practice"        # 0xE799D68A
+
+[[VRFW.GameDrops]]
 Game = "fbtl_cro04_090_010"
 Difficulties = [4]
 FirstClear = "chronicle_deluxe.heroic_fbtl_cro04_090_010"        # 0xF1D39006
@@ -3497,6 +3492,11 @@ FirstClear = "chronicle_deluxe.heroic_fbtl_cro05_080_010"        # 0x2DF457E0
 Game = "fbtl_cro05_080_010"
 Difficulties = [1]
 FirstClear = "0x257932D5"                # the route-unlock battle's first clear
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_cs_omega3_side"
+Difficulties = [4]
+FirstClear = "chronicle_deluxe.heroic_evt_rn_cs_omega3_side"        # 0xEECE3B41
 
 [[VRFW.GameDrops]]
 Game = "fbtl_cro05_090_010"
@@ -3779,6 +3779,11 @@ Difficulties = [1]
 FirstClear = "0x257932D5"                # the route-unlock battle's first clear
 
 [[VRFW.GameDrops]]
+Game = "evt_rn_galaxy_raimon"
+Difficulties = [4]
+FirstClear = "chronicle_deluxe.heroic_evt_rn_galaxy_raimon"        # 0xA4C25A74
+
+[[VRFW.GameDrops]]
 Game = "fbtl_cro06_040_010"
 Difficulties = [4]
 FirstClear = "chronicle_deluxe.heroic_fbtl_cro06_040_010"        # 0x63BBAB5E
@@ -3837,6 +3842,11 @@ FirstClear = "chronicle_deluxe.heroic_fbtl_cro06_090_010"        # 0xDF25B880
 Game = "fbtl_cro06_090_010"
 Difficulties = [1]
 FirstClear = "0x257932D5"                # the route-unlock battle's first clear
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_galaxy_naiadi_side"
+Difficulties = [4]
+FirstClear = "chronicle_deluxe.heroic_evt_rn_galaxy_naiadi_side"        # 0x6247DEA5
 
 [[VRFW.GameDrops]]
 Game = "fbtl_cro06_100_010"
@@ -4218,6 +4228,145 @@ Game = "fbtl_cro09_060_010"
 Difficulties = [1]
 FirstClear = "0x6AA8F0A8"                # the route-unlock battle's first clear
 
+# Story auras (chronicle_deluxe_story_auras_build.py): FirstClear (col 34) of the Crónica that unlocks an own
+# team's story aura = the table chronicle_deluxe.story_auras_<game> (its first-clear items + the aura items,
+# each only while the player has none).
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro04_040_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro04_040_010"        # 0x654C86A9
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro04_070_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro04_070_010"        # 0xE3D8F407
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro04_110_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro04_110_010"        # 0x93F61CAE
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro04_160_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro04_160_010"        # 0x8EF32C16
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro04_170_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro04_170_010"        # 0x45AFFFB3
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_010_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_010_010"        # 0x22FA0359
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_020_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_020_010"        # 0xA46E71F7
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_070_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_070_010"        # 0xF4A3E044
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_080_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_080_010"        # 0x05F55291
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_100_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_100_010"        # 0x4FD1DB48
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_100_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_100_110"        # 0x4E13B17F
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_110_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_110_010"        # 0x848D08ED
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_110_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_110_110"        # 0x854F62DA
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_120_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_120_010"        # 0x02197A43
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_120_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_120_110"        # 0x03DB1074
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_150_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_150_010"        # 0x1F1C4AFB
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_150_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_150_110"        # 0x1EDE20CC
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_160_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_160_010"        # 0x99883855
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_160_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_160_110"        # 0x984A5262
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_180_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_180_010"        # 0xA3825925
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro05_180_110"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro05_180_110"        # 0xA2403312
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_080_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_080_010"        # 0x3C786E54
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_090_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_090_010"        # 0xF724BDF1
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_100_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_100_010"        # 0x765CE78D
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_110_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_110_010"        # 0xBD003428
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_120_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_120_010"        # 0x3B944686
+
+[[VRFW.GameDrops]]
+Game = "fbtl_cro06_130_010"
+Difficulties = [1]
+FirstClear = "chronicle_deluxe.story_auras_fbtl_cro06_130_010"        # 0xF0C89523
+
 # Gate battles of config.toml [heroic] gate_kits: FirstClear (col 34) of the gate battle (difficulty 2) =
 # the table chronicle_deluxe.gate_<game> (the battle's retail first-clear items and the gate rival's kit).
 
@@ -4225,3 +4374,12 @@ FirstClear = "0x6AA8F0A8"                # the route-unlock battle's first clear
 Game = "fbtl_cro12_030_010"
 Difficulties = [2]
 FirstClear = "chronicle_deluxe.gate_fbtl_cro12_030_010"        # 0xA20B285D
+
+# Free-match rows of config.toml [heroic] rival_rewards: FirstClear (col 34) = the table
+# chronicle_deluxe.rival_<game>_<difficulty> (the row's retail first-clear items, then the rival's crest and kit,
+# each only while the player has none).
+
+[[VRFW.GameDrops]]
+Game = "fbtl_free_001"
+Difficulties = [9]
+FirstClear = "chronicle_deluxe.rival_fbtl_free_001_9"        # 0xCDE23C55

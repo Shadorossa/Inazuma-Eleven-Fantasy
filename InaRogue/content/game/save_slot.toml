@@ -27,12 +27,13 @@ global = ["rogue_unlocks.json", "rogue_rivals_seen.json", "rogue_session.json"]
 
 # ------------------------------------------------------------------------------------------------ globals
 
-# [[g_gameRoot]+0x69C0]: the story phase status (+0x08 the saved record m_Parmanent, +0x14058 the live one: u16 chapter,
-# u16 sub-phase; +4 / +8 of each = m_nextPhase / m_CheckedFreePhase; GetPhase 0xDCC270)
+# [[g_gameRoot] + Game.RootPhaseStatus] (the game profile gives each build's offset: 0x69C0 on v7.1.2, 0x69C8 on
+# v7.2.1): the story phase status (+0x08 the saved record m_Parmanent, +0x14058 the live one: u16 chapter, u16
+# sub-phase; +4 / +8 of each = m_nextPhase / m_CheckedFreePhase; GetPhase 0xDCC270 on v7.1.2)
 [[VRFW.Global]]
 name = "inarogue_phase_status"
 base = "game_root"
-chain = [0x69C0]
+chain = ["Game.RootPhaseStatus"]
 
 # ------------------------------------------------------------------------------------------------ commands
 

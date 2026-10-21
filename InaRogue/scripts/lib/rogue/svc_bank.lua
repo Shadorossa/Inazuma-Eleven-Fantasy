@@ -2,7 +2,7 @@
 --
 -- | Command | Args | Returns |
 -- |---|---|---|
--- | CMND_EVT_RL_BANK_COUNT | – | count, capacity, slot, budget (the slot's starter budget) |
+-- | CMND_EVT_RL_BANK_COUNT | – | count, capacity, slot, budget (the slot's starter budget), rosterLimit (nil = the menu's own) |
 -- | CMND_EVT_RL_BANK_GET | i (0-based), sort (0 added, 1 tier, 2 cost, 3 level) | ok, uid, param, level, tier, cost, runs, added, card, starterCost, frags, whatif |
 -- | CMND_EVT_RL_BANK_ADD | param[, level] (always 5) | code (0 ok, 1 bad args, 2 not a roguelite player, 3 owned, 4 full, 5 write failed), uid |
 -- | CMND_EVT_RL_CHARA | param | tier, cost, inPool, statTotal99, card, element, position, whatif |
@@ -18,6 +18,10 @@
 -- | CMND_EVT_RL_CARD | – | the INAROGUE save's own data (slot 4) for the slot screen card |
 -- | CMND_EVT_RL_RUN_END | result, phase | played |
 -- | CMND_EVT_RL_ALBUM_INFO | op, … | (ops 0-10, docs/game/modes/inarogue.md §14) |
+--
+-- [rogue] debug_all_players: every card of the draw pool not owned joins the loaded bank as an in-memory debug entry
+-- (bank.lua): never written to the blob, left out of the album and the first-run gift, still offered by the Fichaje;
+-- no unlock counts while it is on (svc_meta.lua).
 --
 -- A corrupt bank blob is set aside (its .archive\ copy) and the call that found it answers nothing; the next call starts
 -- an empty bank (the DLL first tried the previous version of the backup ring: scripts cannot read it yet).
@@ -46,10 +50,19 @@ end
 
 local function cfg() return Core.cfg() end
 
+-- [rogue] debug_all_players: every draw-pool card the bank does not hold becomes a debug entry of the loaded bank
+local function add_debug_players(b)
+  if not cfg().debug_all_players then return end
+  local added = B.add_debug(b, chara.table().pool)
+  info(string.format("debug_all_players on: slot %d bank shows %d owned + %d debug players (nothing saved)", b.slot,
+    B.real_len(b), added))
+end
+
 local function load_bank(slot)
   local b, why = B.load(slot)
   if b then
     info(string.format("slot %d: bank with %d players", slot, B.len(b)))
+    add_debug_players(b)
     return b
   end
   local kept = U.blob_aside(B.BLOB, slot)
@@ -105,8 +118,9 @@ local function starter_budget(i)
   return St.budget(cfg(), i.bank.best_phase)
 end
 
+-- never while debug_all_players is on (the gift would find every player owned and be spent for nothing)
 local function gift_pending(i, c)
-  return c.starter_gift and not i.bank.granted and B.len(i.bank) < c.squad_size
+  return c.starter_gift and not c.debug_all_players and not i.bank.granted and B.real_len(i.bank) < c.squad_size
 end
 
 local function entry_cost(i, uid)
@@ -125,7 +139,9 @@ end
 function S.bank_params()
   return with_bank(function(i)
     local o = {}
-    for k, e in ipairs(i.bank.entries) do o[k] = e.param end
+    for _, e in ipairs(i.bank.entries) do
+      if not e.debug then o[#o + 1] = e.param end
+    end
     return o
   end) or {}
 end
@@ -179,14 +195,15 @@ function S.bank_frags_to(uids, n, why)
   end) or 0
 end
 
--- the Fichaje draw pool: { param, tier } of tier 1..max_tier not in the bank (normal cards only)
+-- the Fichaje draw pool: { param, tier } of tier 1..max_tier not in the bank (normal player cards only, no staff)
 function S.recruit_pool(max_tier)
   local t = chara.table()
   return with_bank(function(i)
     local o = {}
     for _, p in ipairs(t.pool) do
       local x = t.map[p]
-      if x.tier >= 1 and x.tier <= max_tier and not i.bank.by_param[p] then o[#o + 1] = { p, x.tier } end
+      local e = i.bank.by_param[p]
+      if x.tier >= 1 and x.tier <= max_tier and (not e or e.debug) then o[#o + 1] = { p, x.tier } end
     end
     return o
   end) or {}
@@ -199,7 +216,8 @@ function S.whatif_pool()
     local o = {}
     for _, p in ipairs(t.whatif) do
       local x = t.map[p]
-      if x.tier >= 1 and not i.bank.by_param[p] then o[#o + 1] = { p, x.tier } end
+      local e = i.bank.by_param[p]
+      if x.tier >= 1 and (not e or e.debug) then o[#o + 1] = { p, x.tier } end
     end
     return o
   end) or {}
@@ -234,7 +252,7 @@ function S.Count()
   local c = cfg()
   local r = with_bank(function(i) return { B.len(i.bank), i.bank.slot, starter_budget(i) } end)
   r = r or { 0, U.slot(), c.starter_budget }
-  return r[1], c.bank_capacity, r[2], r[3]
+  return r[1], c.bank_capacity, r[2], r[3], c.debug_all_players and U.clamp(c.debug_all_players_limit, 1, 5000) or nil
 end
 
 function S.Get(i_arg, sort_arg)
@@ -301,7 +319,7 @@ function S.DebugFill(n_arg)
       local p = t.pool[next_rng() % #t.pool + 1]
       if B.add_from(i.bank, p, U.today(), true, c.bank_capacity, B.SOURCE.DEBUG) == B.CODE.OK then
         added = added + 1
-      elseif B.len(i.bank) >= c.bank_capacity then
+      elseif B.real_len(i.bank) >= c.bank_capacity then
         break
       end
     end
@@ -329,11 +347,13 @@ function S.StarterInfo()
   return r[1], r[2], r[3], r[4], c.squad_size, c.starter_pick
 end
 
-function S.StarterGift()
+-- the first-run gift (11 random 1-3 star players, never a coach / manager card; [rogue] gift_* settings): the params
+-- granted, in draw order, or nil when it is not pending / off / not written
+local function grant_gift()
   local c = cfg()
   local t = chara.table()
-  local added = with_bank(function(i)
-    if not gift_pending(i, c) then return -1 end
+  return with_bank(function(i)
+    if not gift_pending(i, c) then return nil end
     local pool = {}
     for _, p in ipairs(t.pool) do
       local x = t.map[p]
@@ -345,19 +365,31 @@ function S.StarterGift()
     local gift = St.draw_gift(pool, owned, { c.gift_weights[1] or 0, c.gift_weights[2] or 0, c.gift_weights[3] or 0 },
       c.gift_cost_cap, holder)
     rng = holder.s
-    local n = 0
+    local added = {}
     for _, p in ipairs(gift) do
-      if B.add_from(i.bank, p, U.today(), true, c.bank_capacity, B.SOURCE.STARTER) == B.CODE.OK then n = n + 1 end
+      if B.add_from(i.bank, p, U.today(), true, c.bank_capacity, B.SOURCE.STARTER) == B.CODE.OK then added[#added + 1] = p end
     end
     i.bank.granted = true
     if not commit(i, "first-run gift") then
       local slot = i.bank.slot
       i.bank = load_bank(slot) or B.new(slot)
-      return -1
+      return nil
     end
-    return n
-  end) or -1
-  info(string.format("first-run gift -> %d players", added))
+    return added
+  end)
+end
+
+function S.StarterGift()
+  local added = grant_gift()
+  local n = added and #added or -1
+  info(string.format("first-run gift -> %d players", n))
+  return n
+end
+
+-- the first-run gift for the welcome gacha (lib\rogue\welcome_gacha.lua): the params granted, or nil
+function S.starter_gift_list()
+  local added = grant_gift()
+  info(string.format("first-run gift (welcome gacha) -> %d players", added and #added or -1))
   return added
 end
 
@@ -634,20 +666,48 @@ local function cost_of(param)
   return math.max(c, 0)
 end
 
-local function album_view(order)
-  order = U.clamp(order, 0, album.ORDER_LAST)
-  local rows = with_bank(function(i) return i.bank.entries end) or {}
-  local stamp = #rows
-  for _, e in ipairs(rows) do stamp = (stamp * 31 + e.goals + e.runs) % 1000000007 end
-  if view and view.order == order and view.len == #rows and view.stamp == stamp then return view end
+-- the album's owned cards: key -> { uid, runs, added } and key -> { goals, source, real }. Real bank rows first; the
+-- debug bank players ([rogue] debug_all_players) and, with [rogue.album] unlock_all, every card count as owned too
+-- (real = false: no stats of their own). Display only: the save and the progress counters keep the real rows.
+local function album_rows()
+  return with_bank(function(i)
+    local list = {}
+    for _, e in ipairs(i.bank.entries) do
+      if not e.debug or cfg().debug_all_players then list[#list + 1] = e end
+    end
+    return list
+  end) or {}
+end
+
+local function album_owned_maps(rows)
+  rows = rows or album_rows()
   local owned, extra = {}, {}
   for _, e in ipairs(rows) do
     local k = album.char_key(e.param)
-    if k and not owned[k] then
-      owned[k] = { e.uid, e.runs, e.added }
-      extra[k] = { e.goals, e.source }
+    if k and (not owned[k] or (not e.debug and not extra[k][3])) then
+      owned[k] = { e.debug and 0 or e.uid, e.runs, e.added }
+      extra[k] = { e.goals, e.source, not e.debug }
     end
   end
+  if cfg().album.unlock_all then
+    for c = 0, album.total_cards() - 1 do
+      local _, k = album.card(c)
+      if k and not owned[k] then
+        owned[k] = { 0, 0, 0 }
+        extra[k] = { 0, 0, false }
+      end
+    end
+  end
+  return rows, owned, extra
+end
+
+local function album_view(order)
+  order = U.clamp(order, 0, album.ORDER_LAST)
+  local rows = album_rows()
+  local stamp = #rows
+  for _, e in ipairs(rows) do stamp = (stamp * 31 + e.goals + e.runs) % 1000000007 end
+  if view and view.order == order and view.len == #rows and view.stamp == stamp then return view end
+  local _, owned, extra = album_owned_maps(rows)
   local list = album.book_order(order, owned, chara.tier_of, cost_of)
   local book = album.book(list, function(c) return album.section_key(order, c, owned, chara.tier_of, cost_of) end)
   local n = 0
@@ -686,10 +746,10 @@ function S.AlbumInfo(op_arg, a1, a2, a3)
     local tier, cost = tier_cost(param)
     local uid, runs, added = 0, 0, 0
     if own then uid, runs, added = own[1], own[2], own[3] end
-    local goals, src = 0, 0
-    if ex then goals, src = ex[1], ex[2] end
+    local goals, src, real = 0, 0, false
+    if ex then goals, src, real = ex[1], ex[2], ex[3] end
     return true, param, own ~= nil, tier, uid, t, t_owned, n, cost, runs, added, name, chara.is_whatif(param), card + 1,
-      album.club_emblem(card), goals, src
+      album.club_emblem(card), goals, src, real
   elseif op == 5 then
     local i, ord, dir = math.max(U.int(a1, 0), 0), order(a2), U.int(a3, 1)
     local v = album_view(ord)
@@ -750,7 +810,7 @@ function S.AlbumInfo(op_arg, a1, a2, a3)
     return p, r, c
   end
   if op == 0 then view = nil end -- the screen (re)opens: fresh ownership
-  local owned = album.owned_keys(S.bank_params())
+  local _, owned = album_owned_maps()
   if op == 1 then
     local t = U.int(a1, -1)
     local id, name, emblem, n = album.team(t)
@@ -762,11 +822,11 @@ function S.AlbumInfo(op_arg, a1, a2, a3)
     if not param then return false end
     local uid = with_bank(function(i)
       for _, e in ipairs(i.bank.entries) do
-        if album.char_key(e.param) == key then return e.uid end
+        if not e.debug and album.char_key(e.param) == key then return e.uid end
       end
       return 0
     end) or 0
-    return true, param, owned[key] == true, chara.tier_of(param), uid
+    return true, param, owned[key] ~= nil, chara.tier_of(param), uid
   end
   return album.teams(), album.total_cards(), album.total_owned(owned)
 end

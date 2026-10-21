@@ -118,6 +118,29 @@ do
     return 0
   end
 
+  -- the aura's portrait as the game's aura windows draw it: aura art of its type (D.ART_SIZE: 8 aura_fs, 14 aura_soul,
+  -- 12 aura_mixi only when 2208175668 says that art exists), else the character's list face icon. True = drawn.
+  local function portrait(L, k, mesh, slot, chara, kind)
+    local art = D.ART_SIZE[kind] or 8
+    if art == 12 then
+      local okf, has = pcall(funcLuaMenuCommand, 2208175668 --[[has Mix-Max face art]], chara)
+      if not (okf and has == true) then
+        art = nil
+      end
+    end
+    if art ~= nil then
+      local ok, r = pcall(funcLuaMenuCommand, D.FACE, L, k, mesh, slot, chara, 0, art, true, true, true, 5)
+      if ok and r ~= false then
+        return true
+      end
+      cmd(4176779611 --[[ResetFaceIcon]], L, k, slot)
+    end
+    pcall(SetDisableForceCharaInvalidUseTarget)
+    local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, k, false, mesh, slot, 0, 0, chara)
+    pcall(SetEnableForceCharaInvalidUseTarget)
+    return ok and r ~= false
+  end
+
   local function draw_row(k, item, pct)
     local L, N, A = D.LAYER, D.N, D.AURA
     cmd(711242136, L, k, true)
@@ -160,22 +183,19 @@ do
       pos(L, k, N.percent, A.percent[1], A.percent[2])
       pos(L, k, N.pos_icon, A.icon[1], A.icon[2])
       local chara = aura_chara(item)
-      -- the portrait only when the aura's character has a face icon (else a white square, e.g. an imported aura
-      -- character without VR art): no art then, the row keeps its item icon
-      if chara ~= 0 then
-        local okf, has = pcall(funcLuaMenuCommand, 2208175668 --[[has a face icon]], chara)
-        if not (okf and has) then
+      -- every aura kind: its portrait (no character or nothing drawn = no art, the row keeps its item icon); the same
+      -- portrait as before on this row is kept (no reload, no white frame), another is hidden until loaded
+      if chara ~= 0 and D.art_of[k] ~= chara then
+        cmd(D.ALPHA, L, k, 1, 0, N.art[1])
+        cmd(4176779611 --[[ResetFaceIcon]], L, k, 2605092343 --[[list_drop_chr_dmy01]])
+        local okp, drawn = pcall(portrait, L, k, N.art[1], 2605092343 --[[list_drop_chr_dmy01]], chara, kind)
+        if okp and drawn == true then
+          D.art_of[k], D.art_t[k] = chara, D.ART_DELAY
+        else
           chara = 0
         end
       end
       if chara ~= 0 then
-        -- the same portrait as before on this row: kept (no reload, no white frame); another: hidden until loaded
-        if D.art_of[k] ~= chara then
-          cmd(D.ALPHA, L, k, 1, 0, N.art[1])
-          cmd(4176779611 --[[ResetFaceIcon]], L, k, 2605092343 --[[list_drop_chr_dmy01]])
-          cmd(D.FACE, L, k, N.art[1], 2605092343, chara, 0, D.ART_SIZE[kind] or 8, true, true, true, 5)
-          D.art_of[k], D.art_t[k] = chara, D.ART_DELAY
-        end
         cmd(3405944500, L, N.art[1], true, k)
         pos(L, k, N.art, A.art[1], A.art[2])
         size(L, k, N.art, A.art[3], A.art[4])

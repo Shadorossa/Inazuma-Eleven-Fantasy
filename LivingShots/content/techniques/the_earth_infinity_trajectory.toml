@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # La Tierra: Infinito (whs02650).
 [[edit]]
 target = "whs02650"
-trajectory = { points = [[0.0, 14.82]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 14.82]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.5]], goal_points = [[0.0, 2.0]], unblockable = false }

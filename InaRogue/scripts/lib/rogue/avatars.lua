@@ -53,7 +53,7 @@ local AVATAR_FIELDS = { { "id", "string", true }, { "name", "string", true }, { 
   { "kit_palette", "number" }, { "body", "number" }, { "tier", "number" }, { "price", "number" }, { "best_phase", "number" },
   { "captain", "boolean" } }
 local TEAM_FIELDS = { { "id", "number", true }, { "name", "string", true }, { "tier", "number" }, { "captain", "string", true },
-  { "captain_rule", "string" } }
+  { "captain_rule", "string" }, { "crest", "boolean" } }
 local function known(fields)
   local o = {}
   for _, f in ipairs(fields) do o[f[1]] = true end
@@ -101,7 +101,8 @@ local function assemble(list, default, rows, warns)
           break
         end
       end
-      teams[#teams + 1] = { id = id, name = list[cap + 1].team, tier = list[cap + 1].tier, captain = cap, members = m }
+      teams[#teams + 1] = { id = id, name = list[cap + 1].team, tier = list[cap + 1].tier, captain = cap, members = m,
+        crest = true }
     end
   else
     for _, r in ipairs(rows) do
@@ -119,7 +120,8 @@ local function assemble(list, default, rows, warns)
         for _, i in ipairs(m) do
           if i ~= cap then ord[#ord + 1] = i end
         end
-        teams[#teams + 1] = { id = r.id, name = r.name, tier = r.tier or 0, captain = cap, members = ord }
+        teams[#teams + 1] = { id = r.id, name = r.name, tier = r.tier or 0, captain = cap, members = ord,
+          crest = r.crest ~= false }
       end
     end
   end

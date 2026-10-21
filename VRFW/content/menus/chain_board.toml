@@ -5,8 +5,8 @@
 # (453: the links), vrfw_chain_tile (455: tile plates, the mouse's hit areas), vrfw_chain_emb (457: crest / icon on the
 # tile), vrfw_chain_tag (458: rank badge / check), vrfw_chain_ui (459: cursor ring, page title plates, page arrows), and
 # vrfw_chain_title (the retail list item, 551: the help window's lines and a chain hub's list rows, its plate meshes hidden), vrfw_chain_card (459)
-# + vrfw_chain_cardtxt (551): the team card above the board, vrfw_chain_icon (461): the card's crest
-# and the help window's badges / separators above their panels. Board pool counts = two pages
+# + vrfw_chain_cardtxt (551): the team card above the board and a match tile's rewards box, vrfw_chain_icon (461): the
+# card's crest, the help window's badges / separators and the rewards box's badges / icons / line above their panels. Board pool counts = two pages
 # of at most 6 x 5 tiles (team type MAX_BOARD_COLS / ROWS). Art: ROLES a mod declares for the screen
 # "chain_board" (content\screen_art\, docs/framework/screen-art.md), loaded on demand: a
 # mod's atlas is never in `res` (it may not exist); a role nobody declares is a plain tinted shape of the framework's
@@ -55,7 +55,8 @@ name = "vrfw_chain_helpwin"
 from = "cmn01_10_new_icon"
 set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 460 } }]
 
-# the team card above the board (2.0.49): its panel and the crest / icon (459); its lines in vrfw_chain_cardtxt
+# the team card above the board (2.0.49) and the rewards box at its right: their panels (459); their lines in
+# vrfw_chain_cardtxt
 [[object]]
 name = "vrfw_chain_card"
 from = "cmn01_10_new_icon"
@@ -122,10 +123,10 @@ layer = [
     { layer = "vrfw_chain_tag", object = "vrfw_chain_tag", count = 60, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_chain_ui", object = "vrfw_chain_ui", count = 12, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_chain_helpwin", object = "vrfw_chain_helpwin", count = 1, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "vrfw_chain_card", object = "vrfw_chain_card", count = 1, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "vrfw_chain_icon", object = "vrfw_chain_icon", count = 12, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_chain_card", object = "vrfw_chain_card", count = 2, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_chain_icon", object = "vrfw_chain_icon", count = 21, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_chain_title", object = "save01_02_list_item", count = 8, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "vrfw_chain_cardtxt", object = "save01_02_list_item", count = 3, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_chain_cardtxt", object = "save01_02_list_item", count = 9, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "mainmenu90_01_header" },
     { layer = "mainmenu90_05_content_guide_line01" },
     { layer = "cmn05_01_cursor" },

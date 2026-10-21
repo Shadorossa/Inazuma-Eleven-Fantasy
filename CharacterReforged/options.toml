@@ -20,3 +20,17 @@ default = 1
 parent = "mod_options.game_settings"
 order = 140
 restart = true                                # the value applies after a game restart
+
+# «Máx. auras por equipo» (owner request 2026-10-20: «un límite máximo de auras en partido por cada equipo, por default
+# 3»): how many players of each team may run an aura at once in a match (keshin, totem, armour, miximax, mode change:
+# every form of the framework's transform run time). Both teams; a start over the limit is refused like the game's own
+# limit (the aura command answers «not available»). 0 = no limit. Read at every match start (no restart):
+# content\transforms\team_limit.toml [rules] team_aura_max_option.
+[[option]]
+id = "team_aura_max"                          # row key character_reforged.team_aura_max
+type = "list"
+label = "team_aura_max"                       # text\keys.toml, 9 languages
+help = "team_aura_max_help"
+values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, { value = 0, name = "team_aura_max_none", text = "No limit" }]
+default = 3
+order = 141

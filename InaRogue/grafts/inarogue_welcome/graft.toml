@@ -1,0 +1,31 @@
+# InaRogue › the welcome gacha of the first INAROGUE entry (docs/game/modes/inarogue-welcome-gacha.md): the two retail
+# screens it borrows. Both are inert unless InaRogue's welcome state (CMND_INAROGUE_WELCOME_STATE, the NUMBER 1 / 2)
+# says so: the retail Players Universe scene and the retail summon screen keep their own behaviour.
+#   chara_pack_open_event_menu (the scene overlay): while InaRogue's gold scene ev74_10091 plays (state 1) the orbs are
+#       the drawn players' (GetBustupIconRarityType = the digit of their stars) and the bust-ups the best of them
+#   soccer_summon_menu (state 2): opened by evt_inarogue_menu, it plays the retail summon performance
+#       (ExecSummonPerformance) for the drawn players one by one, with temporary characters of their cards, then closes
+name = "inarogue_welcome"
+mod = "inarogue"
+order = 345
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "GetBustupIconRarityType", "SetBustupIconCharaId", "CreateTempSummonCharaHdl", "Step", "FinalizeMenu"]
+description = "INAROGUE: the welcome gacha's orbs, bust-ups and one-by-one reveal on the retail scene overlay and summon screen"
+
+[[files]]
+stem = "chara_pack_open_event_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "irw_scene.lua"
+  marker = "inarogue welcome scene"
+
+[[files]]
+stem = "soccer_summon_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "irw_reveal.lua"
+  marker = "inarogue welcome reveal"

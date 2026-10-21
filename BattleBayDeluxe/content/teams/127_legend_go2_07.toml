@@ -3,8 +3,8 @@ schema = "VRFW.team/2"
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_0_moves"
-moves = [0xE647BCEE, 0xFF5C8DAF, 0xDD0BA694, 0xD471DE6C, 0x1F6BAF6A, 0xFB997A80]
-levels = [1, 1, 1, 1, 1, 0]
+moves = [0xE647BCEE, 0xDD0BA694, 0xD471DE6C, 0x07704782, 0xBB1BF024, 0x1F6BAF6A]
+levels = [1, 1, 1, 1, 1, 1]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_5_moves"
@@ -18,8 +18,8 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_1_moves"
-moves = [0x0D0B77EA, 0xC324C788, 0x19C3F43D, 0xA7B74993, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x0D0B77EA, 0xC324C788, 0x19C3F43D, 0x03C716DD, 0xA7B74993, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_2_moves"
@@ -33,8 +33,8 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_4_moves"
-moves = [0x457EB170, 0x05567847, 0x585098FC, 0x414BA9BD, 0x7E2BE557, 0x1958F3F2]
-levels = [1, 1, 1, 1, 1, 1]
+moves = [0x457EB170, 0x05567847, 0x585098FC, 0x414BA9BD, 0x1958F3F2, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_7_moves"
@@ -53,8 +53,8 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_10_moves"
-moves = [0x5E5AF1A9, 0x768AB9C5, 0x89D614F5, 0x83970970, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x5E5AF1A9, 0x768AB9C5, 0x89D614F5, 0x09C23C18, 0x83970970, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_11_moves"
@@ -68,18 +68,18 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_13_moves"
-moves = [0xD262F964, 0xB01D1B68, 0xA7157B91, 0x4FE09C7A, 0xB9A6C82E, 0x43EFDFEA]
-levels = [1, 1, 1, 1, 1, 1]
-
-[[loadout]]
-id = "bb_chronicle_teams.legend_go2_07.slot_14_moves"
-moves = [0x39CB2F02, 0x6A66FA7E, 0x2D9F7E76, 0x9349F1DA, 0x59703AC5, 0xFB997A80]
+moves = [0xD262F964, 0x52CEB5F6, 0x4FE09C7A, 0xB9A6C82E, 0x43EFDFEA, 0xFB997A80]
 levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
+id = "bb_chronicle_teams.legend_go2_07.slot_14_moves"
+moves = [0x39CB2F02, 0x6A66FA7E, 0x9349F1DA, 0x59703AC5, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 1, 0, 0]
+
+[[loadout]]
 id = "bb_chronicle_teams.legend_go2_07.slot_15_moves"
-moves = [0x0BFD4D80, 0x0C08B663, 0x72BFA108, 0x9FEEC7A9, 0xF806D6C3, 0x282BEEA0]
-levels = [1, 1, 1, 1, 1, 1]
+moves = [0x0BFD4D80, 0x0C08B663, 0x72BFA108, 0x9FEEC7A9, 0x282BEEA0, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[team]]
 name = "legend_go2_07"
@@ -127,7 +127,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, 3, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_5_moves"
@@ -143,7 +143,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, 3, 3, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_6_moves"
@@ -159,7 +159,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [3, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_1_moves"
@@ -175,7 +175,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, 3, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_2_moves"
@@ -191,7 +191,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, -1, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_3_moves"
@@ -223,7 +223,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, -1, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_7_moves"
@@ -239,7 +239,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_8_moves"
@@ -255,7 +255,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, -1, 4, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_9_moves"
@@ -271,7 +271,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 3, 4, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_10_moves"
@@ -287,7 +287,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, -1, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_11_moves"
@@ -303,7 +303,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, 4, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_12_moves"
@@ -319,7 +319,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, 3, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_13_moves"
@@ -335,7 +335,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, 3, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_14_moves"
@@ -351,7 +351,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, 4, -1, 4, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_go2_07.slot_15_moves"

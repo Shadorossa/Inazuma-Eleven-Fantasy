@@ -1,0 +1,27 @@
+# Utilities' pre-match X skip (graft research/grafts/util_prematch_skip, polled by its event_menu Step):
+#   CMD_UTIL_XSKIP_HOLD  X held (pad 15, the button of MENU_CTRL CMD_FUNC4 «<CMD_FUNC4>», the glyph the guide
+#                             shows) / its keyboard key (23, CMD_FUNC4's), in both event controllers, the way the retail
+#                             CMD_EVENT_SKIP_HOLD is Y held (pad [2, 12] / keyboard [2, 21]) there. State 2 = held.
+# The event controllers have no key_assign profiles: these input_ctrl rows are the ones in force. In talk events X is
+# also the retail auto-forward toggle (CMD_EVENT_AUTO_FORWARD_ON, a press): holding it there toggles that once too.
+schema = "VRFW.input/1"
+
+[[command]]
+ctrl = "EVENT_CTRL_VISUAL"
+name = "CMD_UTIL_XSKIP_HOLD"
+pad = [2, 15]
+
+[[command]]
+ctrl = "EVENT_CTRL_VISUAL"
+name = "CMD_UTIL_XSKIP_HOLD"
+keyboard = [2, 23]
+
+[[command]]
+ctrl = "EVENT_CTRL_TALK"
+name = "CMD_UTIL_XSKIP_HOLD"
+pad = [2, 15]
+
+[[command]]
+ctrl = "EVENT_CTRL_TALK"
+name = "CMD_UTIL_XSKIP_HOLD"
+keyboard = [2, 23]

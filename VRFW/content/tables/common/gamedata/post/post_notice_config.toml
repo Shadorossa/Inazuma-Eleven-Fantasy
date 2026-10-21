@@ -1,0 +1,7 @@
+schema = "VRFW.table/1"
+# The «Información» notice of the online Victory Road mode (v7.1.2: its beta, v7.2.1: Season 1) is removed: the mode is
+# blocked by the online guard (defaults\online_guard.toml), so its notice has nothing to point at.
+list = "m_PostNoticeInfoList"
+
+[[delete]]
+key = 0x6C0E386A                     # the Victory Road notice (banner banner_img_victoryroad01)

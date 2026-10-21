@@ -14,3 +14,15 @@ label = "skip_goal_scene"                     # «Saltar la cinemática de gol e
 help = "skip_goal_scene_help"
 default = false
 order = 300
+
+# «Todos los tiros son lejanos» (owner 2026-10-21): on = content\techniques\all_long_shots.toml applies (its `option`
+# key): every shot technique gets the long-shot flag. Read when the technique data builds: a change applies at the
+# next start of the game.
+[[option]]
+id = "all_long_shots"                         # row key shot_fx.all_long_shots
+type = "toggle"                               # 0 = Desactivado (the game's own flags), 1 = Activado (every shot a long shot)
+label = "all_long_shots"                      # «Todos los tiros son lejanos» (text\keys.toml, 9 languages)
+help = "all_long_shots_help"
+default = false
+order = 310
+restart = true                                 # read when the technique data builds: readers get the value the game started with

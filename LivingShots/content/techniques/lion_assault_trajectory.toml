@@ -15,14 +15,17 @@ schema = "VRFW.technique/3"
 # Rugido de león (whs02710).
 [[edit]]
 target = "whs02710"
-trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+trajectory = { points = [[0.0, 3.61], [3.96, 2.74]], unblockable = false }
 
 # Rugido de Doruga (whs02711).
 [[edit]]
 target = "whs02711"
-trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+trajectory = { points = [[0.0, 3.61], [3.96, 2.74]], unblockable = false }
 
 # Rugido de Goliger (whs02712).
 [[edit]]
 target = "whs02712"
-trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.79], [3.96, 2.74]], unblockable = false }
+trajectory = { points = [[0.0, 3.61], [3.96, 2.74]], unblockable = false }

@@ -7,3 +7,9 @@ schema = "VRFW.game/2"
 [[VRFW.Command]]
 name = "CMND_VRFW_SHOP_REDIRECTS"
 handler = "ShopRedirects.List"
+
+# () -> n, from 1, set 1, … from n, set n: a shop id (number) or a mod's shop key (text), and the crc32 of a contact
+# set key (<mod>.<name>) whose screen (vrfw_contact_map_menu) opens instead of that shop.
+[[VRFW.Command]]
+name = "CMND_VRFW_SHOP_SCREENS"
+handler = "ShopRedirects.Screens"

@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Impulso del equipo definitivo (whs02350).
 [[edit]]
 target = "whs02350"
-trajectory = { goal_points = [[22.78, 12.93, 999, 11.39], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[22.78, 12.93, 999, 11.39], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[22.78, 4.5, 999.0, 11.39], [0.0, 2.0]], unblockable = false }

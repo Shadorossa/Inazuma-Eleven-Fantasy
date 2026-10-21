@@ -175,10 +175,20 @@ function VRFW_RN_IsOpen(node)
   return false
 end
 
+-- Debug (the framework's config [debug] all_chains, docs/framework/debug-flags.md): a chain node (its piece opens a
+-- chain board) is shown and enterable whatever its prerequisites; the save's lock flags are only read, never written.
+function VRFW_RN_DebugChain(node)
+  if node.debugChain == nil then
+    node.debugChain = VRFW_Chain ~= nil and VRFW_Chain.DebugAll ~= nil and VRFW_Chain.DebugAll() == true
+      and VRFW_Chain.OfPiece(node.piece) ~= nil
+  end
+  return node.debugChain
+end
+
 -- Drawn (piece and road): its prerequisites are won and a difficulty is open (also right on a first board visit,
--- before VRFW_RN_Sync has initialised a never-used slot).
+-- before VRFW_RN_Sync has initialised a never-used slot), or a chain node in the debug mode above.
 function VRFW_RN_Shown(node)
-  return VRFW_RN_IsOpen(node) and VRFW_RN_Ready(node)
+  return VRFW_RN_DebugChain(node) or (VRFW_RN_IsOpen(node) and VRFW_RN_Ready(node))
 end
 
 -- A node piece that must not be drawn yet (closed; a node with a `LockedTitle` is drawn locked). Unknown pieces: false.

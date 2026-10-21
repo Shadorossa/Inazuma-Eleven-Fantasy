@@ -1,0 +1,96 @@
+schema = "VRFW.changelog/1"
+# Duel Auras: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-21): Character Reforged's duel aura rule as a Football Reforged module, always on.
+lang = "es"
+name = "Duel Auras"
+
+[en]
+name = "Duel Auras"
+
+[fr]
+name = "Duel Auras"
+
+[de]
+name = "Duel Auras"
+
+[it]
+name = "Duel Auras"
+
+[pt]
+name = "Duel Auras"
+
+[ja]
+name = "Duel Auras"
+
+[zh_hans]
+name = "Duel Auras"
+
+[zh_hant]
+name = "Duel Auras"
+
+[[release]]
+icon = "general"
+notes = [
+    "En un duelo, un aura nunca responde a una supertécnica.",
+    "El aura se activa y luego eliges tu respuesta real.",
+    "La CPU hace lo mismo con sus auras.",
+]
+
+[release.en]
+notes = [
+    "In a duel an aura never answers a special move.",
+    "The aura activates, then you pick your real answer.",
+    "The CPU does the same with its auras.",
+]
+
+[release.fr]
+notes = [
+    "En duel, une aura ne répond jamais à une supertechnique.",
+    "L'aura s'active, puis tu choisis ta vraie réponse.",
+    "Le CPU fait de même avec ses auras.",
+]
+
+[release.de]
+notes = [
+    "Im Duell antwortet nie eine Aura auf Spezialtechniken.",
+    "Die Aura wird aktiviert, dann wählst du die Antwort.",
+    "Die CPU macht es mit ihren Auren genauso.",
+]
+
+[release.it]
+notes = [
+    "In duello un'aura non risponde mai a una supertecnica.",
+    "L'aura si attiva, poi scegli la tua vera risposta.",
+    "La CPU fa lo stesso con le sue aure.",
+]
+
+[release.pt]
+notes = [
+    "Num duelo, uma aura nunca responde a uma supertécnica.",
+    "A aura ativa-se e depois escolhes a resposta real.",
+    "O CPU faz o mesmo com as suas auras.",
+]
+
+[release.ja]
+notes = [
+    "デュエルでオーラは必殺技への応戦にならない。",
+    "オーラ発動後、本当の応戦を選ぶ。",
+    "CPUのオーラも同じ。",
+]
+
+[release.zh_hans]
+notes = [
+    "对决中灵气绝不会应对必杀技。",
+    "灵气发动后，再选择真正的应对。",
+    "电脑的灵气也一样。",
+]
+
+[release.zh_hant]
+notes = [
+    "對決中靈氣絕不會應對必殺技。",
+    "靈氣發動後，再選擇真正的應對。",
+    "電腦的靈氣也一樣。",
+]

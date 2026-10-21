@@ -1,0 +1,54 @@
+# Aura Points › PE: the sprint bar (key aura_points.sprint), a short-term stamina for dashing on top of the match PE
+# (pe.toml; owner request 2026-10-20). Every player has it, both teams and the keepers. A dash (a manual dash, or the
+# engine's DP consume state of a CPU / AI dash) spends it much faster than the PE; it fills again whenever he does not
+# dash. Empty = «winded»: no manual dash (a running one is ended) and a CPU dash moves at jogging speed for a cooldown of
+# min_seconds (5 s) while the bar refills. It is its own bar, apart from the PE: a dash ends only when it reaches 0. It
+# never goes above the player's PE share (cap_by): it refills only up to the PE fill, and drops with the PE. The HUD
+# draws it in front of the controlled player's PE bar on the bar's scale (full = the whole bar), dimmed
+# during the cooldown (graft aura_points_stamina_hud, layer stamina_points_pe_sprint of content\menus\pe_bar.toml;
+# CMND_AURAPOINTS_STAMINA's 9th and 10th values).
+# Part of the option feature features\pe\ (option row «pe»): off = no sprint bar either.
+# Read once at the framework's init: restart the game after a change. docs/game/mechanics/match-stamina.md §18.
+schema = "VRFW.match_resource/1"
+
+[[VRFW.MatchResource]]
+name = "sprint"
+max = 100
+live_states = [9, 14, 15, 16]     # in play, focus battle, scramble, zone (as the PE)
+duel_states = [14, 15]
+# + per live second, always (also while dashing: a dash costs drain.dash - regen_per_s net). From empty: 60 % at the
+# end of the 5 s «winded» cooldown, full after 8.3 s.
+regen_per_s = 12.0
+# never above the player's PE share (owner 2026-10-21: «se tiene que recargar solo hasta el tope de la barra normal»)
+cap_by = "aura_points.pe"
+
+# Absolute points per live second (no per_match: the sprint bar does not follow the match length).
+# Físico 100: a full bar lasts 100 / (30 - 12) = 5.6 s of dashing, 100 / (48 - 12) = 2.8 s of dash attack (the retail
+# team dash fuel was 4 s); a player can dash about 40 % of his live time without ever emptying it.
+[VRFW.MatchResource.drain]
+base = 0.0
+dash = 30.0
+dash_attack = 48.0
+consume_is_dash = true            # the DP consume state is the engine's dash (manual or AI)
+
+# Físico lengthens the sprint like the PE: drain x (1 - 0.0028) ^ (Físico - 100) (Físico 150: x0.87, 50: x1.15)
+[VRFW.MatchResource.stat_scale]
+stat = "physical"
+ref = 100
+step = 0.0028
+floor = 0.01
+
+# full again before every half (the break between the halves and both halves of extra time)
+[VRFW.MatchResource.half_time]
+share = 1.0
+
+# empty: a cooldown of min_seconds live seconds without dash while the bar refills, then the dash is allowed again
+[[VRFW.MatchResource.state]]
+name = "winded"
+below = 0.0                       # entered at 0
+above = 0.0                       # left as soon as the cooldown is over (refilled 5 x 12 = 60 by then, at most the PE)
+min_seconds = 5.0                 # the cooldown: seconds of live play without dash after the bar ran empty
+block_dash = true                 # a manual dash is refused
+end_dash = true                   # a running manual dash is ended
+stop_drain = true                 # no drain while winded (a CPU still in its dash motion refills too)
+speed_mult_dashing = 0.72         # a CPU dash at jogging speed (the AI dash rate 1.4 x 0.72 = 1.0)

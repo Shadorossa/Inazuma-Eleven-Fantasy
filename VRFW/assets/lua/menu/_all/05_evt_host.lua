@@ -662,6 +662,124 @@ hook_point = function(h, name, create)
   install(h, p)
 end
 
+-- After the last patch file of the script (the loader calls it): every hook point of an active host whose global a
+-- later root replaced (a merge-path patch that redefines the retail functions) is hooked again over the new function,
+-- so the handlers of the mods that ran before that root still run. A point the script defined only later is hooked now.
+function H.settle()
+  H.settled = true
+  for _, h in pairs(H.hosts) do
+    if h.active then
+      for _, p in pairs(h.points) do
+        install(h, p)
+      end
+    end
+  end
+  -- H.wrap of a script without a host: the wrappers go on the globals now, in registration order
+  local waiting = H.unhosted
+  H.unhosted = {}
+  table.sort(waiting, function(a, b) return a.seq < b.seq end)
+  for _, w in ipairs(waiting) do
+    local hs = H.hosts[w.stem]
+    if not (hs ~= nil and hs.active) then
+      H.wrap_global(w)
+    end
+  end
+end
+
+-- ---- classic wrappers -----------------------------------------------------------------------------------------------
+-- VRFW_Host.wrap(name, make [, spec]) -> true when `name` is a global function of this script. `make(orig)` returns
+-- the wrapper of `orig`, as with `_ENV[name] = make(_ENV[name])`; the rules decide where it goes:
+--   * the script's host has not run yet (a lua_early root): an around handler, inner to every other handler (the
+--     wrapper of a patch that ran before the host is part of the original), so a later patch that redefines the
+--     function does not drop it (H.settle hooks the point again);
+--   * the host already ran (a later root, or a call from a callback): a wrapper of the global, over the dispatcher;
+--   * a script without a host: a wrapper of the global after the last patch file (H.settle).
+-- One wrapper per call site: the same call running again (the script loaded twice, a second install pass) replaces
+-- its handler, or wraps the global again only when that was redefined since. spec = { level = stack level of the call
+-- site above the caller (default 1: the caller; 2 for a mod's own wrap helper), stem = script stem (default: the
+-- patch file's folder), id = handler id (default: derived from the call site) }.
+H.unhosted = H.unhosted or {}
+H.wrapped = H.wrapped or {}     -- handler id -> the global wrapper it made (wrapper of the global only)
+local wrap_seq = 0
+
+local function wrap_site(level)
+  local dbg = D or EVT_DEBUG
+  local info = dbg ~= nil and type(dbg.getinfo) == "function" and dbg.getinfo(level + 1, "Sl") or nil
+  if info == nil or type(info.source) ~= "string" then
+    return nil, nil
+  end
+  local src = info.source:gsub("^[=@]", ""):gsub("^patch:", "")
+  return src, src .. ":" .. tostring(info.currentline)
+end
+
+function H.wrap_global(w)
+  local cur = _ENV[w.name]
+  if type(cur) ~= "function" then
+    H.note(w.stem, w.name .. " is not defined in this script: " .. w.id .. " never runs")
+    return false
+  end
+  if H.wrapped[w.id] == cur then
+    return true
+  end
+  local f = w.make(cur)
+  H.wrapped[w.id] = f
+  _ENV[w.name] = f
+  return true
+end
+
+function H.wrap(name, make, spec)
+  if type(name) ~= "string" or type(make) ~= "function" then
+    error("VRFW_Host.wrap(name, make [, spec]): a string and a function expected", 2)
+  end
+  spec = spec or {}
+  if type(_ENV[name]) ~= "function" then
+    return false
+  end
+  local src, site = wrap_site((tonumber(spec.level) or 1) + 1)
+  local stem = spec.stem
+  if stem == nil then
+    local dir = type(src) == "string" and src:match("([^/]+)/[^/]+$") or nil
+    stem = dir ~= nil and (dir:gsub("_%d+%.%d+[%.%d]*$", "")) or stem_here()
+  end
+  local mod = type(src) == "string" and src:match("^mods/([^/]+)/") or caller_mod() or "patch"
+  local id = spec.id
+  if id == nil then
+    if site == nil then
+      wrap_seq = wrap_seq + 1
+      site = "call" .. wrap_seq
+    end
+    id = mod .. ".wrap_" .. site:gsub("[^%w]", "_") .. "_" .. name
+  end
+  local w = { name = name, make = make, stem = stem, id = id }
+  local list = stem ~= nil and H.reg[stem] and H.reg[stem][name] or nil
+  local seq = nil
+  for _, e in ipairs(list or {}) do
+    if e.id == id and e.phase == "around" then
+      seq = e.seq
+    end
+  end
+  local h = stem ~= nil and H.hosts[stem] or nil
+  if seq ~= nil and h ~= nil and h.active then
+    return true                 -- this call site's handler is in place: the dispatcher runs it over any redefinition
+  end
+  if stem == nil or (D or EVT_DEBUG) == nil or (h ~= nil and h.active) or (H.settled and h == nil) then
+    return H.wrap_global(w)
+  end
+  seq = seq or (H.seq + 1)
+  local under, f = nil, nil
+  H.on(stem, name, { id = id, phase = "around", priority = 1000000 - seq, fn = function(nxt, ...)
+    if nxt ~= under then
+      under, f = nxt, make(nxt)
+    end
+    return f(...)
+  end })
+  if h == nil then
+    w.seq = seq
+    H.unhosted[#H.unhosted + 1] = w
+  end
+  return true
+end
+
 -- A named list of a host (H.add items), declared by the mod that consumes it:
 -- def = { apply = function(items, L, host) end }, items = { {id, mod, value}, ... } in order; apply runs once per VM
 -- at the host's first callback.

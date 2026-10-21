@@ -1,0 +1,171 @@
+schema = "VRFW.effect/1"
+# InaRogue › the welcome gacha's scene (docs/game/modes/inarogue-welcome-gacha.md; owner 2026-10-20): the retail Players
+# Universe scene in GOLD and its orbs coloured by the drawn player's INAROGUE stars. Everything is derived at build time
+# from the game's own files (recoloured copies). The retail scene ev74_10010 and its objects are not touched: InaRogue
+# plays its own event ev74_10091 (content\base_tables\common\event_cfg\*\ev74_10091*.toml = copies of ev74_10010's
+# lists, content\techniques\welcome_gacha_env.toml = its event_env row), whose eff list is edited at the end of this file.
+#
+# How the game picks the orbs: the eff list loads `ega13<RARITY>0a` for spirit 0..11; the engine fills <RARITY>
+# (nie.exe 0xF4FB30, tag crc32("RARITY")) with GetBustupIconRarityType(i) of the open menu chara_pack_open_event_menu.
+# While InaRogue's welcome scene plays (CMND_INAROGUE_WELCOME_STATE 1), graft inarogue_welcome makes it answer the digit
+# of player i's stars (content\rogue\welcome_gacha.toml orb_by_stars), 0 = no player (an invisible orb).
+
+# ---------------------------------------------------------------- the scene object: ev74100100 -> ev74100191 (gold)
+[[recolor]]
+object = "ev74100100"
+copy = "ev74100191"
+hue = 45
+mode = "set"
+textures = "all"
+materials = "all"
+vertex_colors = ["_190_BeamEdge3", "_500_Beam7", "_700_Beam6", "_800_Beam5"]
+
+# ---------------------------------------------------------------- the orbs: copies of ega1300a (the retail cyan orb)
+# 2 stars: green
+[[recolor]]
+effect = "ega1300a"
+copy = "egr1302a"
+hue = 130
+mode = "set"
+textures = "all"
+materials = "all"
+
+# 3 stars: purple
+[[recolor]]
+effect = "ega1300a"
+copy = "egr1303a"
+hue = 275
+mode = "set"
+textures = "all"
+materials = "all"
+
+# no player behind this orb (the gift has fewer players than the scene has orbs): meshes not drawn
+[[recolor]]
+effect = "ega1300a"
+copy = "egr1300h"
+value = 0.0
+textures = "all"
+materials = "none"
+
+[[recolor.tint]]
+mesh = "_"
+alpha = 0.0
+op = "set"
+
+# ---------------------------------------------------------------- the pooled orbs inarogue.welcome_ball0..5
+# (the digit = what graft inarogue_welcome answers for <RARITY>; each the clips / group of its template)
+[[effect]]
+name = "welcome_ball0"
+from = "ega1300a"
+object = "egr1300h"
+
+[[effect]]
+name = "welcome_ball1"                   # 1 star: the retail cyan orb
+from = "ega1300a"
+
+[[effect]]
+name = "welcome_ball2"                   # 2 stars: green
+from = "ega1300a"
+object = "egr1302a"
+
+[[effect]]
+name = "welcome_ball3"                   # 3 stars: purple
+from = "ega1300a"
+object = "egr1303a"
+
+[[effect]]
+name = "welcome_ball4"                   # 4 stars: the retail gold orb
+from = "ega1310a"
+
+[[effect]]
+name = "welcome_ball5"                   # 5 stars: the retail gold orb with its green halo
+from = "ega1320a"
+
+# ---------------------------------------------------------------- InaRogue's welcome event ev74_10091 (eff list = ev74_10010's)
+# the scene object: the gold copy
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_799A1EBA"                 # LOAD_ACTOR_RESOURCE
+args = ["ev74100100"]
+set = ["ev74100100", "common/effect/event/ev74/ev74100191/ev74100191.objbin"]
+
+# the orbs: LOAD_EFFECT ega13<RARITY>0a -> the pooled orbs (the engine still fills <RARITY>)
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_96CCCA47"                 # LOAD_EFFECT
+args = ["ega13<RARITY>0a"]
+set = ["inarogue.welcome_ball<RARITY>"]
+
+# REGISTER_EFFECT spiritNN (its 2nd argument is the effect)
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit01"]
+set = ["spirit01", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit02"]
+set = ["spirit02", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit03"]
+set = ["spirit03", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit04"]
+set = ["spirit04", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit05"]
+set = ["spirit05", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit06"]
+set = ["spirit06", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit07"]
+set = ["spirit07", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit08"]
+set = ["spirit08", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit09"]
+set = ["spirit09", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit10"]
+set = ["spirit10", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit11"]
+set = ["spirit11", "inarogue.welcome_ball<RARITY>"]
+
+[[event_command]]
+event = "ev74_10091"
+command = "CMD_27B4468E"                 # REGISTER_EFFECT
+args = ["spirit12"]
+set = ["spirit12", "inarogue.welcome_ball<RARITY>"]

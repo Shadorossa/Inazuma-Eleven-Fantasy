@@ -961,6 +961,12 @@ if #LIST > 0 then
     (VRFW.is_on("SynergyDetail") and VRFW.is_on("SynergyDetailRows")) and "on" or "OFF (not installed)"))
 end
 
+-- CMND_VRFW_SYNERGY_SHOP_CONDITIONS() -> the shop's synergy panel shows the condition card (config.toml [synergy]
+-- shop_conditions, default true)
+function Synergy.ShopConditions()
+  return VRFW.files.config("synergy.shop_conditions") ~= false
+end
+
 -- No mod declares a synergy: the command is still a global and answers nil, so the menu patch leaves every panel as the game draws it.
 if #LIST == 0 then
   function Synergy.CmdPanel() return nil end

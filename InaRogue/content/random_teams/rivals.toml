@@ -7,10 +7,11 @@ schema = "VRFW.random_team/1"
 
 # every card with an INAROGUE tier 1-5 (chara_param col 57 rogue_rarity, content\characters\rogue_tiers*.toml): the
 # cards of an absent mod are not served, so they never join (the «¿Y si…?» cards, 13-15, stay out)
+# (written col_57 below: the run-time character index knows the schema names only, not [[param_column]] names)
 [[VRFW.RandomTeamPool]]
 Name = "rivals"
 [[VRFW.RandomTeamPool.Include]]
-Columns = { rogue_rarity = [1, 5] }
+Columns = { col_57 = [1, 5] }
 
 [[VRFW.RandomTeam]]
 Name = "minor_5v5"
@@ -19,7 +20,7 @@ Look = "rival_looks"
 Slots = ["inarogue.rt_slot_5v5_t1", "inarogue.rt_slot_5v5_t2", "inarogue.rt_slot_5v5_t3", "inarogue.rt_slot_5v5_t4"]
 Unique = "character"
 Version = 1
-TierColumn = "rogue_rarity"
+TierColumn = "col_57"
 MaxSame = 3
 Theme = { Chance = 0.2, Weight = 5 }
 [[VRFW.RandomTeam.Stage]]
@@ -45,7 +46,7 @@ Look = "rival_looks"
 Slots = ["inarogue.rt_slot_11v11_t1", "inarogue.rt_slot_11v11_t2", "inarogue.rt_slot_11v11_t3", "inarogue.rt_slot_11v11_t4"]
 Unique = "character"
 Version = 1
-TierColumn = "rogue_rarity"
+TierColumn = "col_57"
 MaxSame = 5
 Theme = { Chance = 0.2, Weight = 4 }
 [[VRFW.RandomTeam.Stage]]

@@ -31,6 +31,8 @@ local St = require "lib/rogue/starter"
 local chara = require "lib/rogue/chara"
 local loot = require "lib/rogue/loot"
 local Bk = require "lib/rogue/bank"
+local Items = require "lib/rogue/items"
+local Blocks = require "lib/rogue/svc_blocks"
 local info, warn, err = U.logger("rogue run")
 
 local S = {}
@@ -59,6 +61,7 @@ end
 local function note_coach(r)
   if r then last_coach = r.coach end
   Core.meta.coach_sync(r)
+  Core.run_changed(r)
 end
 
 local function load(slot)
@@ -288,7 +291,21 @@ function S.Move(to_arg)
   else
     code = edit("move", function(r, i) return R.move_to(r, i.map, to) end)
   end
-  if code ~= C.OK then warn(string.format("move to %d refused (code %d)", to, code)) end
+  if code ~= C.OK then
+    warn(string.format("move to %d refused (code %d)", to, code))
+    return code
+  end
+  -- a Tienda line walked to reach the node: a shop visit for the blocks
+  local shop = with(function(i)
+    local r, m = i.run, i.map
+    local from = r and r.path[#r.path - 1]
+    if not m or from == nil then return false end
+    for e, x in ipairs(m.edges) do
+      if x[1] == from and x[2] == to then return (m.edge_ev[e] or 0) == map.EV.TIENDA end
+    end
+    return false
+  end)
+  if shop then Blocks.fire_run({ "on_shop_visit" }, {}, "Tienda line") end
   return code
 end
 
@@ -388,7 +405,7 @@ end
 
 function S.Reserve()
   sync_lifetime(false)
-  local out = nil
+  local out, met_row = nil, nil
   local code = with(function(i)
     local r, m = i.run, i.map
     if not r or not m then return C.NO_RUN end
@@ -399,6 +416,7 @@ function S.Reserve()
     local e = R.set_stage(r, ST.MATCH)
     if e ~= C.OK then return e end
     pool.variety_record(r.seed, p.row.id) -- squads met: the next runs prefer others
+    met_row = p.row
     local pend = r.pending
     pend.game, pend.diff, pend.stadium, pend.level = p.game, p.diff, p.row.stadium, p.level
     out = U.copy(pend)
@@ -410,6 +428,7 @@ function S.Reserve()
     end
     return c
   end)
+  if out and met_row then require("lib/rogue/collections").team_met(met_row) end -- the album's «Equipos»
   if out then
     info(string.format("reserve node %d -> game %s diff %d level %d", out.node, U.hex(out.game), out.diff, out.level))
     local g, d, sd, lv, rv = match_values(out)
@@ -443,6 +462,10 @@ function S.Result(result_arg, gf_arg, ga_arg)
     phase = r.phase
     uids = R.player_uids(r)
     local before = R.copy(r)
+    -- the items whose pieces last N matches count this match (rogue_run.json matches_left); the blocks' counts of
+    -- the match, their stat buffs' matches and queued grants (lib/rogue/svc_blocks.lua)
+    Items.match_played(r.items)
+    Blocks.merge_match(r)
     if won then
       r.won = r.won + 1
       R.note_beaten(r, rival, row) -- §33 fusion bosses
@@ -492,8 +515,10 @@ function S.Result(result_arg, gf_arg, ga_arg)
       local a, b2, c3, d4, e5 = Core.meta.formation_grant(seed, phase, node, kind)
       if a then fid, fname, frar, fown, ftot = a, b2, c3, d4, e5 end
       Core.meta.unlocks_on_win(kind, phase, rival, row, uids, guest ~= 0 and { guest } or {}, era)
+      require("lib/rogue/collections").team_beaten(rival, phase)
       points = Core.meta.earn_win(kind, phase)
     end
+    Blocks.after_result(outcome == OUT.CLEARED, outcome == OUT.RUN_OVER, boss or kind == K.GATE)
   end
   info(string.format("result %d (%d-%d) -> code %d outcome %d boss %s frags %d x %d", result, gf, ga, code, outcome,
     tostring(boss), each, players))
@@ -522,6 +547,7 @@ function S.NextPhase()
   end)
   if code == C.OK then
     Core.bank.record_phase(phase)
+    Blocks.fire_run({ "on_phase_end" }, {}, "phase end")
   else
     phase = with(function(i) return i.run and i.run.phase or 0 end)
   end
@@ -672,6 +698,16 @@ function S.Loot(node_arg, salt_arg)
   info(string.format("loot node %d phase %d salt %d -> %s %s tier %d %s", k, phase, salt,
     it.kind == loot.KIND.GEAR and "gear" or "move", U.hex(it.id), it.tier, it.name))
   return it.kind, it.id, it.tier, it.name, 0, 0
+end
+
+-- change the run (the rogue items, lib/rogue/svc_items.lua): f(run) -> code; saved, rolled back when not OK
+function S.edit_run(why, f) return edit(why, f) end
+
+-- the route map kind of run `r`'s node in progress, from the map already built (nil while the run is being read)
+function S.node_kind(r)
+  if not inner or inner.run ~= r or not inner.map then return nil end
+  local n = map.node(inner.map, r.cur)
+  return n and n.kind or nil
 end
 
 -- (map.lua needs nothing else; the coach publish reads the run's handles through this)

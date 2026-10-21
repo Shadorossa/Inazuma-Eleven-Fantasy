@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-20): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Little Team (IE2, «Oumihara's Coach's route» #3; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Little_Team
+[[team]]
+name = "ct_wk_little_team"
+key = "evt_ct_wk_little_team"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Sailor Wear, not a VR kit (only the unported 3DS GO model 0114))
+level = 50
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x30D2BF9F, slot = 0, number = 1, rarity_step = 1 }, # Tamano Gorou = Paul Peabody ({'IE': 'DF', 'CS': 'GK', 'VR': 'DF'})
+  { card = 0xA1C16260, slot = 1, number = 2, rarity_step = 1, captain = true }, # Shourinji Ayumu = Tim Saunders (MF)
+  { card = 0xA86A652B, slot = 2, number = 3, rarity_step = 1 }, # Kitagaki Ryouta = Robert Silver (DF)
+  { card = 0xEEB49676, slot = 3, number = 4, rarity_step = 1 }, # Konpeito = Balt Decker (DF)
+  { card = 0x15DA3376, slot = 4, number = 5, rarity_step = 1 }, # Cocona = Adelpha Lovelace (DF)
+  { card = 0x959B463C, slot = 5, number = 6, rarity_step = 1 }, # Omotsuki Sora = Grengo (MF)
+  { card = 0xE213A005, slot = 6, number = 7, rarity_step = 1 }, # Doumen Shuuichirou = Derek Swing (MF)
+  { card = 0x25DDAAC1, slot = 7, number = 8, rarity_step = 1 }, # Kyan Rinka = Dora Delight (MF)
+  { card = 0x5C50675A, slot = 8, number = 9, rarity_step = 1 }, # Sae = Sandra Mudd (FW)
+  { card = 0x863C42BC, slot = 9, number = 10, rarity_step = 1 }, # Yokomichi = George Barros (FW)
+  { card = 0xC73326C7, slot = 10, number = 11, rarity_step = 1 }, # Hiramoto = Andrew Hooper (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_little_team.png" # remastered crest of the wiki's Little Team emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Chiquis"
+short = "Chiquis"
+[team.text.en]
+name = "Little Team"
+short = "Little Team"
+[team.text.ja]
+name = "リトルチーム"
+short = "リトルチーム"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_little_team"
+card_moves = 4

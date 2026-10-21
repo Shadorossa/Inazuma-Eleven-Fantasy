@@ -187,6 +187,14 @@ layer = [
     { layer = "soccer11_04_chara_stasus", from = "shop_menu" },
     { layer = "vrfw_cm_slant", object = "vrfw_cm_slant", count = 1 },
     { layer = "soccer11_04_formation_chara_status", from = "team_dock_menu" },
+    # a team page's lineup as the team dock draws it (the pitch lines, the formation frame and the game's player cards;
+    # BetterUI's cards when it is on: its soccer_common / soccer_formation_menu_inc patches restyle them)
+    { layer = "mainmenu04_10_formation_base", from = "team_dock_menu" },
+    { layer = "soccer11_02_formation_frame", from = "team_dock_menu" },
+    { layer = "team00_01_p1_chara_card_blank", from = "team_dock_menu" },
+    { layer = "team00_01_p1_chara_card_blank_for_leader", from = "team_dock_menu" },
+    { layer = "team00_01_chara_card_for_soccer", from = "team_dock_menu" },
+    { layer = "team00_01_chara_card_for_leader", from = "team_dock_menu" },
     { layer = "mainmenu90_01_header" },
     { layer = "mainmenu90_05_content_guide_line01" },
     { layer = "cmn05_01_cursor" },
@@ -194,7 +202,8 @@ layer = [
     { layer = "mainmenu01_06_base_button_guide" },
     { layer = "mainmenu01_07_button_guide" },
 ]
-# arrows move (CMD_FUNCTION vrfw_cm_up / _down / _left / _right); no FUNC2 / «Objetos» (Items)
+# arrows move (CMD_FUNCTION vrfw_cm_up / _down / _left / _right); no FUNC2 / «Objetos» (Items); FUNC3 «Prueba»
+# (vrfw_cm_trial) and FUNC4 «Dimitir» (vrfw_cm_release) on a team page's player
 cmd = [
     { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
@@ -203,6 +212,8 @@ cmd = [
     { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x3D85189A, flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xE73E04DB, flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x27562FF0, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0xF527DAC2, flag = 1 },
     { layer = "vrfw_cm_tile", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
     { layer = "vrfw_cm_tile", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
     { layer = "vrfw_cm_tile", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x76683C00, flag = 1 },
@@ -210,6 +221,8 @@ cmd = [
     { layer = "vrfw_cm_tile", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x3D85189A, flag = 1 },
     { layer = "vrfw_cm_tile", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0xE73E04DB, flag = 1 },
     { layer = "vrfw_cm_tile", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x27562FF0, flag = 1 },
+    { layer = "vrfw_cm_tile", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0xF527DAC2, flag = 1 },
 ]
 res = [
     "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
@@ -227,6 +240,10 @@ res = [
     "#/menu/200_icon/100_num/num_at.g4tx",
     "#/menu/200_icon/10_icon_chr/spirit_type/spirit_blank10.g4tx",
     "#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx",
+    # the lineup's player cards (the team dock's numbers and level)
+    "#/menu/200_icon/100_num/<LG>/num_menu01.g4tx",
+    "#/menu/200_icon/100_num/num_lv.g4tx",
+    "#/menu/200_icon/100_num/num_menu02.g4tx",
 ]
 group_base = [
     { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
@@ -259,10 +276,16 @@ group_base = [
     { layer = "soccer11_04_chara_stasus", flags = [0, 1, 1, 0, 1, 0] },
     { layer = "vrfw_cm_slant", flags = [0, 1, 1, 0, 1, 0] },
     { layer = "soccer11_04_formation_chara_status", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu04_10_formation_base", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "soccer11_02_formation_frame", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "team00_01_p1_chara_card_blank", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "team00_01_p1_chara_card_blank_for_leader", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "team00_01_chara_card_for_soccer", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "team00_01_chara_card_for_leader", flags = [0, 0, 0, 0, 1, 0] },
 ]
 group = [
     { group = "common", slice = [0, 3] },
-    { group = "vrfw_contact_map_menu", flags = [1], slice = [3, 27] },
+    { group = "vrfw_contact_map_menu", flags = [1], slice = [3, 33] },
 ]
 focus_group = [
     { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },

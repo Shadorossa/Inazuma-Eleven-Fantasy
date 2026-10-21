@@ -1,0 +1,17 @@
+# New Recruitment: the recruitment office's look on the VR-Framework's contact map screen (content\screen_art\n# contact_map.toml): Inazuma Fantasy's former contact map art (research/scripts/contact_map_req_art.py drew it;
+# the ground is the right part of the game's menu background), copied with the office. Atlas: see the paths below.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_ground.g4tx"
+name = "new_recruitment_office_ground"
+size = [720, 1080]
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_ground.g4tx"
+name = "new_recruitment_office_panel_ground"
+texture = "new_recruitment_office_ground"
+x = 0
+y = 0
+size = [720, 1080]
+png = "new_recruitment_office/new_recruitment_office_panel_ground.png"

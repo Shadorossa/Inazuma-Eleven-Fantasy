@@ -21,4 +21,5 @@ schema = "VRFW.technique/3"
 # Triángulo letal final (whs02010; covers whs02010_or).
 [[edit]]
 target = "whs02010"
-trajectory = { goal_points = [[72.8, 18.49, 999, 36.4], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[72.8, 18.49, 999, 36.4], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[72.8, 4.5, 999.0, 36.4], [0.0, 2.0]], unblockable = false }

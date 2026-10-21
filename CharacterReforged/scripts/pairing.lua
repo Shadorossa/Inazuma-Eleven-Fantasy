@@ -225,7 +225,7 @@ function A.BoardPlace(hdl, slot, inv)
   HBUF = HBUF or VRFW.mem.buffer("character_reforged_board_hdl", 8)
   local okw = pcall(VRFW.mem.write, "u32", HBUF, hdl)
   if not okw then return false, "buffer" end
-  local ok, e = pcall(VRFW.call, "CharacterReforged.BoardPlaceByHandle", HBUF, piece, inv, 0, 1)
+  local ok, e = pcall(VRFW.call, "CharacterReforged.BoardPlaceByHandle", HBUF, piece, inv, 0, 1, 1)
   if not ok then return false, "place: " .. tostring(e) end
   local after = A.BoardItems(hdl)
   local got = after and after[slot].inv or 0

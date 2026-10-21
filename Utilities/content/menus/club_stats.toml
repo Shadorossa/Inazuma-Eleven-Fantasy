@@ -1,0 +1,61 @@
+# Utilities' «Estadísticas del club» (docs/game/ui/club-stats.md): the layers the panel
+# (assets/lua/play_guide_top_menu/150_club_stats.lua) draws with in «Caseta del club» (play_guide_top_menu), the same
+# recipe as the friends panel (content/menus/friends_panel.toml): quads of cmn01_10_new_icon for the friends atlas and the
+# game's list plates, the retail list character card for the portraits, the retail back-button text for the texts.
+# Added after the header in the group «common»; hidden until the panel opens.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "util_cst_back"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1001 } },
+]
+
+[[object]]
+name = "util_cst_plate"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1002 } },
+]
+
+[[object]]
+name = "util_cst_icon"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1003 } },
+]
+
+[[object]]
+name = "util_cst_face"
+from = "team00_01_chara_card_for_list"
+priority = 1004
+
+[[object]]
+name = "util_cst_text"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 1005 } },
+]
+
+[[patch]]
+menu = "play_guide_top_menu"
+add_layer = { name = "util_cst_back", object = "util_cst_back", count = 6, scale = 0.01, after = "mainmenu90_01_header", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_01_header" }] }
+res = ["#/menu/220_img/util_friends/util_friends.g4tx", "#/menu/51_save/save01/save01_02/save01_02.g4tx", "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx"]
+
+[[patch]]
+menu = "play_guide_top_menu"
+add_layer = { name = "util_cst_plate", object = "util_cst_plate", count = 40, scale = 0.01, after = "util_cst_back", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_back" }] }
+
+[[patch]]
+menu = "play_guide_top_menu"
+add_layer = { name = "util_cst_icon", object = "util_cst_icon", count = 12, scale = 0.01, after = "util_cst_plate", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_plate" }] }
+
+[[patch]]
+menu = "play_guide_top_menu"
+add_layer = { name = "util_cst_face", object = "util_cst_face", count = 9, scale = 0.01, after = "util_cst_icon", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_icon" }] }
+
+[[patch]]
+menu = "play_guide_top_menu"
+add_layer = { name = "util_cst_text", object = "util_cst_text", count = 120, scale = 0.01, after = "util_cst_face", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_face" }] }

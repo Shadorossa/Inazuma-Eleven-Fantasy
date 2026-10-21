@@ -45,7 +45,7 @@ local function warn(...) VRFW.warn("friends:", ...) end
 local cfg = {
   enabled = true,
   profile_refresh_s = 30,
-  panel = { x = 1380, width = 540, top = 72, row_h = 72, head_h = 44, details_w = 560, slide_frames = 10 },
+  panel = { x = 1440, width = 480, top = 72, row_h = 64, head_h = 72, details_w = 560, slide_frames = 10 },
   status_menus = {
     bb = { "bb_stadium_top_menu", "enjoy_team_select_menu" },
     menu = { "soccer_top_menu", "market_menu", "item_menu", "play_guide_top_menu", "chronicle_mode_top_menu",

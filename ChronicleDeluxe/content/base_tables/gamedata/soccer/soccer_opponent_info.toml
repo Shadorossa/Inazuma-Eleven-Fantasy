@@ -24,8 +24,9 @@ key_columns = ["battleId"]
   from = "fbtl_cro01_050_010"
   after = "fbtl_cro01_050_010"
 
-  # 1.11.10 (owner 2026-10-19): Mar de Árboles (the IE2 side node), in the IE2 tab after Emperadores Oscuros (moved
-  # right after Jóvenes Inazuma by teams/90_rules/free_match.toml [[VRFW.FreeMatchPlace]])
+  # 1.11.10 (owner 2026-10-19): Mar de Árboles (the IE2 side node), in the IE2 tab after Emperadores Oscuros; Jóvenes
+  # Inazuma's row is then placed right after Emperadores Oscuros (teams/90_rules/free_match.toml), so Mar de Árboles
+  # follows it
   [[keyed.add]]                         # Mar de Árboles, a copy of Emperadores Oscuros's row
   key = "evt_rn_ie2_forest"
   from = "fbtl_cro02_200_010"

@@ -5,6 +5,9 @@ schema = "VRFW.changelog/1"
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
 # 1.2.0 (2026-10-15): the modules are module mods in modules\<Module>\ (Character Reforged's layout).
 # 1.2.17 (2026-10-19): the module Home Stadium (modules\HomeStadium\).
+# 1.2.18 (2026-10-21): the module Pressing (modules\Pressing\).
+# 1.3.0 (2026-10-21): the module Duel Auras (modules\DuelAuras\).
+# 1.5.0 (2026-10-21): the match formats are part of the base (no longer a module).
 lang = "es"
 name = "Football Reforged"
 
@@ -38,6 +41,8 @@ notes = [
     "Mecánicas de partido en módulos, cada uno una tarjeta.",
     "Barrera del portero y Furor, activados por defecto.",
     "Estadio local por equipo para sus partidos en casa.",
+    "Presión: L2 sin balón manda a 2-4 compañeros al rival.",
+    "Formatos en la base: Fútbol 7, Inazuma Street y 5v5.",
 ]
 
 [release.en]
@@ -45,6 +50,8 @@ notes = [
     "Match mechanics in modules, each one a card.",
     "Goalkeeper barrier and Furor, on by default.",
     "A home stadium per team for its home matches.",
+    "Pressing: L2 without the ball sends 2-4 mates at him.",
+    "Match formats in the base: Football 7, Street, 5v5.",
 ]
 
 [release.fr]
@@ -52,6 +59,8 @@ notes = [
     "Mécaniques de match en modules, chacun une carte.",
     "Barrière du gardien et Furie, actifs par défaut.",
     "Un stade à domicile par équipe pour ses matchs.",
+    "Pressing : L2 sans ballon envoie 2-4 joueurs au porteur.",
+    "Formats dans la base : Football à 7, Street, 5v5.",
 ]
 
 [release.de]
@@ -59,6 +68,8 @@ notes = [
     "Spielmechaniken in Modulen, jedes eine Karte.",
     "Torwart-Barriere und Furor, standardmäßig an.",
     "Ein Heimstadion pro Team für seine Heimspiele.",
+    "Pressing: L2 ohne Ball schickt 2-4 Mitspieler los.",
+    "Spielformate in der Basis: 7er, Street, 5 gegen 5.",
 ]
 
 [release.it]
@@ -66,6 +77,8 @@ notes = [
     "Meccaniche di partita in moduli, ognuno una carta.",
     "Barriera del portiere e Furore, attivi di base.",
     "Uno stadio di casa per squadra per le gare in casa.",
+    "Pressing: L2 senza palla manda 2-4 compagni sul rivale.",
+    "Formati nella base: Calcio a 7, Street, 5 contro 5.",
 ]
 
 [release.pt]
@@ -73,6 +86,8 @@ notes = [
     "Mecânicas de partida em módulos, cada um um cartão.",
     "Barreira do guarda-redes e Furor, ativos por defeito.",
     "Um estádio da casa por equipa para os jogos em casa.",
+    "Pressão: L2 sem bola manda 2-4 colegas ao portador.",
+    "Formatos na base: Futebol de 7, Street, 5 contra 5.",
 ]
 
 [release.ja]
@@ -80,6 +95,8 @@ notes = [
     "試合メカニクスをモジュールで追加、各モジュールはカード。",
     "キーパーバリアとフューラー、初期状態でオン。",
     "チームごとのホームスタジアムでホーム戦。",
+    "プレス：ボールなしのL2で味方2〜4人が保持者へ。",
+    "試合形式をベースに収録：7人制、ストリート、5人制。",
 ]
 
 [release.zh_hans]
@@ -87,6 +104,8 @@ notes = [
     "以模块加入比赛机制，每个模块是一张卡片。",
     "门将屏障与怒火，默认开启。",
     "每支队伍的主场球场，用于主场比赛。",
+    "逼抢：无球时按L2，2到4名队友冲向持球者。",
+    "基础含比赛形式：7人制、闪电街头、5人制。",
 ]
 
 [release.zh_hant]
@@ -94,4 +113,6 @@ notes = [
     "以模組加入比賽機制，每個模組是一張卡片。",
     "門將屏障與怒火，預設開啟。",
     "每支隊伍的主場球場，用於主場比賽。",
+    "逼搶：無球時按L2，2到4名隊友衝向持球者。",
+    "基礎含比賽形式：7人制、閃電街頭、5人制。",
 ]

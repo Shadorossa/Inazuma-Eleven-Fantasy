@@ -1,9 +1,10 @@
 -- Contact maps (schema VRFW.contact_map/1): serves every active mod's content\contact_maps\*.toml to the screen vrfw_contact_map_menu.
 -- Declarations: [[VRFW.ContactSet]], [[VRFW.ContactMap]] with its Zone / Node / Item entries. Recruiting, prices and the per-save record are the screen's.
+-- A [[VRFW.ContactMap]] with a [VRFW.ContactMap.Teams] table is built from the game's teams and matches (lib/contact_teams.lua).
 --   CMND_VRFW_CONTACT_SETS()          -> { {key, crc, title, maps}, ... }  every declared set
---   CMND_VRFW_CONTACT_MAPS(set, lang) -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex, sprite, players, excl}, ... }, reveal }  (set = crc32 of "<mod>.<name>" or the text)
---   CMND_VRFW_CONTACT_MAP(map, lang)  -> { key, kind, title, tex, sprite, strict, zones = {...}, items = {...}, nodes = { {kind, zone, card, face, level, price, name, x, y, links, reqs, story, notes} } }  (map = key text or crc32)
--- Titles are sent as crc32 of their menu_text row id; character names are read from the game's chara_text in the asked language.
+--   CMND_VRFW_CONTACT_MAPS(set, lang) -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex, sprite, players, excl, series}, ... }, reveal }  (set = crc32 of "<mod>.<name>" or the text)
+--   CMND_VRFW_CONTACT_MAP(map, lang)  -> { key, kind, title, tex, sprite, strict, series, zones = {... label, reqs}, items = {...}, nodes = { {kind, zone, card, face, level, price, name, x, y, links, reqs, story, notes, cards} } }  (map = key text or crc32)
+-- Titles are sent as crc32 of their menu_text row id; character and team names are read from the game's chara_text / team_text in the asked language.
 
 ContactMap = ContactMap or {}
 
@@ -34,6 +35,17 @@ local function id_of(v)
   if v:match("^%s*%d+%s*$") then return tonumber(v) % 4294967296 end
   return nil
 end
+
+-- An item reference: a number / "0x..." as id_of, any other name = its crc32 (a game internal name such as "tk_hr000008",
+-- or a mod's item "<mod>.<name>": both are the item's id)
+local function item_id(v)
+  local n = id_of(v)
+  if n then return n end
+  if type(v) == "string" and v:match("^%s*[%w_%.]+%s*$") then return crc((v:gsub("^%s+", ""):gsub("%s+$", ""))) end
+  return nil
+end
+
+local Teams = require "lib/contact_teams"   -- team pages derived from the game's data ([VRFW.ContactMap.Teams])
 
 -- ---------------------------------------------------------------------------------------------- declarations
 
@@ -393,6 +405,7 @@ local function need_texts()
   for _, M in ipairs(MAPS) do
     for _, n in ipairs(M.nodes) do
       if n.base ~= 0 then need_id(CHARA.text_of[n.base]) else need_card(n.card) end
+      if (n.spirit or 0) ~= 0 then need_card(n.spirit) end
       for _, r in ipairs(n.reqs) do
         if r.kind == "player" and r.ids[1] ~= nil then need_card(r.ids[1]) end
       end
@@ -464,6 +477,53 @@ local function name_of_card(c)
   return b and name_of_base(b) or ""
 end
 
+-- A team's name (team_text, furigana reduced) in a language; "" when unknown
+local function team_name(id, lang)
+  if id == nil or id == 0 then return "" end
+  local s = game_text("team_text", lang, id)
+  return type(s) == "string" and strip(s) or ""
+end
+
+-- [VRFW.ContactSet] ElementCurrency = { wind = card, forest = …, fire = …, mountain = …, void = … }: the spirit card a
+-- team page's player of that element costs (the classic «fichas»); element number -> card
+local function element_currency(t)
+  if type(t) ~= "table" then return nil end
+  local out = {}
+  for name, e in pairs(ELEMENTS) do
+    local id = id_of(t[name])
+    if id then out[e] = id end
+  end
+  return next(out) and out or nil
+end
+
+-- [VRFW.ContactSet] Requirements = { config = "<dotted path of the declaring mod's config>", default = … } or a
+-- bool: false = the team pages' card terms ask no requirement (price only; trials stay playable); absent = asked
+local function requirements_on(v, mod)
+  if type(v) == "boolean" then return v end
+  if type(v) ~= "table" or type(v.config) ~= "string" then return nil end
+  local ok, x = pcall(VRFW.files.config, v.config, mod)
+  if not ok or x == nil then x = v.default end
+  return x == true
+end
+
+-- [VRFW.ContactSet] ElementCurrencyTitle = { wind = "<menu_text row>", … }: the name of each element's price spirit
+-- (e.g. «Fichas de Viento»); element number -> crc32 of the row
+local function element_titles(t)
+  if type(t) ~= "table" then return nil end
+  local out = {}
+  for name, e in pairs(ELEMENTS) do
+    if type(t[name]) == "string" and t[name] ~= "" then out[e] = crc(t[name]) end
+  end
+  return out
+end
+
+-- the build's context for the derived team pages
+local TEAMS_CTX = {
+  warn = warn, info = info, crc = crc,
+  own_face = function(card, base) return own_face("", base, card) end,
+  team_name = function(id) return team_name(id, "en") end,
+}
+
 local function load()
   if SETS ~= nil then return end
   local t0 = VRFW.now()
@@ -476,23 +536,42 @@ local function load()
   local t_files = VRFW.now()
   chara_index()
   local t_index = VRFW.now()
+  local DERIVED, TERMS, TRIALS = {}, {}, {}
   for _, f in ipairs(files) do
     local v = type(f.data) == "table" and type(f.data.VRFW) == "table" and f.data.VRFW or {}
     for _, s in ipairs(type(v.ContactSet) == "table" and v.ContactSet or {}) do
       if type(s.Name) == "string" then
         local key = f.mod .. "." .. s.Name
-        local set = { key = key, crc = crc(key), title = crc(s.Title or key), rc = id_of(s.RecruitCurrency) or 0,
-          ic = id_of(s.ItemCurrency) or 0, rct = crc(s.RecruitCurrencyTitle or ""), ict = crc(s.ItemCurrencyTitle or ""), maps = {},
-          exclude = type(s.Exclude) == "table" and s.Exclude or nil, where = string.format("mods/%s/%s", f.mod, f.file) }
+        local set = { key = key, crc = crc(key), title = crc(s.Title or key), rc = item_id(s.RecruitCurrency) or 0,
+          ic = item_id(s.ItemCurrency) or 0, rct = crc(s.RecruitCurrencyTitle or ""), ict = crc(s.ItemCurrencyTitle or ""), maps = {},
+          exclude = type(s.Exclude) == "table" and s.Exclude or nil, where = string.format("mods/%s/%s", f.mod, f.file),
+          teams = type(s.Teams) == "table" and s.Teams or nil, derived = {},
+          element_currency = element_currency(s.ElementCurrency),
+          trial_friendly = type(s.TrialFriendly) == "string" and s.TrialFriendly or nil, terms = {}, trials = {},
+          refund = math.max(0, math.floor(tonumber(s.ReleaseRefund) or 0)),
+          requirements = requirements_on(s.Requirements, f.mod),
+          hub = type(s.Hub) == "string" and s.Hub or nil,
+          element_title = element_titles(s.ElementCurrencyTitle) }
         if SET_BY[key] == nil then
           SETS[#SETS + 1] = set
           SET_BY[key], SET_BY[set.crc] = set, set
         end
       end
     end
+    -- per-card terms and trials of a set (team pages): read after every set is known
+    for _, t in ipairs(type(v.ContactTerms) == "table" and v.ContactTerms or {}) do
+      TERMS[#TERMS + 1] = { mod = f.mod, set = t.Set, list = t.Terms, where = string.format("mods/%s/%s", f.mod, f.file) }
+    end
+    for _, t in ipairs(type(v.ContactTrials) == "table" and v.ContactTrials or {}) do
+      TRIALS[#TRIALS + 1] = { mod = f.mod, set = t.Set, list = t.Trials }
+    end
     for mi, m in ipairs(type(v.ContactMap) == "table" and v.ContactMap or {}) do
       local where = string.format("mods/%s/%s: [[VRFW.ContactMap]] #%d", f.mod, f.file, mi)
-      if type(m.Name) ~= "string" or not KINDS[m.Kind or ""] then
+      if type(m.Name) == "string" and type(m.Teams) == "table" then
+        -- team pages derived from the game's data: built once every set is known (below)
+        local set = (m.Set or ""):find(".", 1, true) and m.Set or (f.mod .. "." .. tostring(m.Set))
+        DERIVED[#DERIVED + 1] = { m = m, mod = f.mod, where = where, key = f.mod .. "." .. m.Name, set = set }
+      elseif type(m.Name) ~= "string" or not KINDS[m.Kind or ""] then
         warn(where .. ": Name / Kind (zones, network, list) missing (left out)")
       else
         local set = (m.Set or ""):find(".", 1, true) and m.Set or (f.mod .. "." .. tostring(m.Set))
@@ -575,6 +654,61 @@ local function load()
       end
     end
   end
+  -- terms and trials by set: card -> term (the later declaration of a card wins), id -> trial
+  local function set_of(mod, name)
+    name = tostring(name or "")
+    return SET_BY[name:find(".", 1, true) and name or (mod .. "." .. name)]
+  end
+  for _, t in ipairs(TERMS) do
+    local st = set_of(t.mod, t.set)
+    if st == nil then
+      warn(t.where .. ": [[VRFW.ContactTerms]] of an undeclared set " .. tostring(t.set) .. " (left out)")
+    else
+      local n = 0
+      for _, term in ipairs(type(t.list) == "table" and t.list or {}) do
+        local card = id_of(term.Card)
+        if card then
+          st.terms[card] = term
+          n = n + 1
+        end
+      end
+      info(string.format("set %s: %d card terms (%s)", st.key, n, t.where))
+    end
+  end
+  for _, t in ipairs(TRIALS) do
+    local st = set_of(t.mod, t.set)
+    for _, tr in ipairs(st and type(t.list) == "table" and t.list or {}) do
+      local id = tonumber(tr.Id)
+      if id then
+        st.trials[math.floor(id)] = { id = math.floor(id), game = id_of(tr.Game) or 0, objective = tonumber(tr.Objective) or 0,
+          part = tonumber(tr.Part) or 1, of = tonumber(tr.Of) or 1 }
+      end
+    end
+  end
+  -- the derived team pages, per set (one character on one page across the whole set)
+  for _, d in ipairs(DERIVED) do
+    local s = SET_BY[d.set]
+    if s then
+      s.derived[#s.derived + 1] = d
+    else
+      warn(d.key .. ": set " .. d.set .. " is not declared (team pages not built)")
+    end
+  end
+  for _, s in ipairs(SETS) do
+    if #s.derived > 0 then
+      local okb, built = pcall(Teams.build, s, s.derived, TEAMS_CTX)
+      if not okb then
+        warn(string.format("set %s: team pages not built (%s)", s.key, tostring(built)))
+      else
+        for _, M in ipairs(built) do
+          if MAP_BY[M.key] == nil then
+            MAPS[#MAPS + 1] = M
+            MAP_BY[M.key], MAP_BY[M.crc] = M, M
+          end
+        end
+      end
+    end
+  end
   for _, M in ipairs(MAPS) do
     local s = SET_BY[M.set]
     if s then
@@ -610,6 +744,99 @@ local function find_map(v)
   return MAP_BY[u32(v)]
 end
 
+-- CMND_VRFW_CONTACT_HUB(set) -> { menu, title }: the menu a set opens on (Hub = "free_match": the free-match list
+-- soccer_vs_cpu_list_menu as the set's team hub; 0 = the contact map screen itself) and the set's title row
+local HUBS = { free_match = 1970579282 }   -- crc32("soccer_vs_cpu_list_menu")
+function ContactMap.Hub(set)
+  local s = find_set(set)
+  if s == nil then return nil end
+  return { menu = HUBS[s.hub or ""] or 0, title = s.title }
+end
+
+-- CMND_VRFW_CONTACT_FIND(set, game) -> { map = key, zone = n }: the team page of a match (derived maps); nil = none
+function ContactMap.Find(set, game)
+  local s = find_set(set)
+  game = u32(game)
+  if s == nil or game == 0 then return nil end
+  for _, M in ipairs(s.maps) do
+    for z, zone in ipairs(M.zones) do
+      if type(zone.games) == "table" and zone.games[game] then
+        return { map = M.key, zone = z }
+      end
+    end
+  end
+  return nil
+end
+
+-- ---------------------------------------------------------------------------------------------- hub list filter
+-- While a set's hub is open (CMND_VRFW_CONTACT_HUB_FILTER(set) from the list's OnInit; 0 from any other open and when
+-- the hub closes), the free-match list's builder (hook ContactHub.ListBuild, content/game/contact_hub.toml) keeps only
+-- the rows whose match has a team page: its row pointers (aggregate + 0x10) compacted, its count (+ 0x08) lowered.
+local HUBF = { games = nil, applied = false, logs = 0 }
+
+function ContactMap.HubFilter(set)
+  local s = (set ~= nil and set ~= 0) and find_set(set) or nil
+  if s == nil then
+    HUBF.games = nil
+    return false
+  end
+  local games = {}
+  for _, M in ipairs(s.maps) do
+    for _, zone in ipairs(M.zones) do
+      for g in pairs(type(zone.games) == "table" and zone.games or {}) do games[g] = true end
+    end
+  end
+  HUBF.games = games
+  if not HUBF.applied then
+    local ok, done, e = pcall(VRFW.hook.apply, "ContactHub.ListBuild")
+    HUBF.applied = ok and done == true
+    if not HUBF.applied then
+      warn("hook ContactHub.ListBuild not installed (" .. tostring(ok and e or done) .. "): the hub lists every team")
+    end
+  end
+  return HUBF.applied
+end
+
+local function rd(ty, at)
+  local ok, v = pcall(VRFW.mem.read, ty, at)
+  if ok then return v end
+  return nil
+end
+
+VRFW.on("hook:ContactHub.ListBuild:post", function(ev)
+  local games = HUBF.games
+  if games == nil then return end
+  local agg, entries = tonumber(ev.args and ev.args[1]) or 0, tonumber(ev.args and ev.args[2]) or 0
+  if agg < 0x10000 or entries < 0x10000 then return end
+  local n = rd("u32", agg + 8)
+  if type(n) ~= "number" or n == 0 or n > 4096 then return end
+  -- the retail layout only (pointers into the entries the builder was handed): a raised list keeps its rows
+  local first = rd("ptr", agg + 0x10)
+  if type(first) ~= "number" or first < entries or first >= entries + n * 12 then
+    if HUBF.logs < 3 then
+      HUBF.logs = HUBF.logs + 1
+      warn("hub list: row pointers not in the retail layout: every team listed")
+    end
+    return
+  end
+  local kept = 0
+  for i = 0, n - 1 do
+    local p = rd("ptr", agg + 0x10 + i * 8)
+    local g = p and rd("u32", p)
+    if g and games[u32(g)] then
+      if kept ~= i then pcall(VRFW.mem.write, "ptr", agg + 0x10 + kept * 8, p) end
+      kept = kept + 1
+    end
+  end
+  if kept ~= n then
+    pcall(VRFW.mem.write, "u32", agg + 8, kept)
+    if HUBF.logs < 20 then
+      HUBF.logs = HUBF.logs + 1
+      info(string.format("hub list: %d of %d teams have a page", kept, n))
+    end
+  end
+end)
+
 function ContactMap.Sets()
   load()
   local out = {}
@@ -623,12 +850,27 @@ function ContactMap.Maps(set, code)
   local s = find_set(set)
   if s == nil then return nil end
   names_for(lang_of(code))           -- the screen opens: its maps' names, once per language (ContactMap.Map serves them)
-  local out = { key = s.key, title = s.title, rc = s.rc, ic = s.ic, rct = s.rct, ict = s.ict, maps = {}, reveal = REVEAL_ALL }
+  -- refund: the spirits a released player gives back on a team page (ReleaseRefund, the price's spirit)
+  local out = { key = s.key, title = s.title, rc = s.rc, ic = s.ic, rct = s.rct, ict = s.ict, maps = {}, reveal = REVEAL_ALL,
+    refund = s.refund or 0 }
   for _, M in ipairs(s.maps) do
+    -- series: a chara_series_id whose name (CMND_GET_CHARA_SERIES_INFO) the screen shows instead of the title
     out.maps[#out.maps + 1] = { key = M.key, title = M.title, kind = M.kind, tex = M.tex, sprite = M.sprite, players = M.players,
-      excl = M.excl or {} }
+      excl = M.excl or {}, series = M.series or 0 }
   end
   return out
+end
+
+-- the element whose price spirit is `spirit`, and the name row of that spirit (0 = none declared)
+local function pay_element(s, spirit)
+  for e, c in pairs(s.element_currency or {}) do
+    if c == spirit then return e end
+  end
+  return 0
+end
+local function pay_title(s, spirit)
+  local e = pay_element(s, spirit)
+  return e ~= 0 and s.element_title and s.element_title[e] or 0
 end
 
 function ContactMap.Map(map, code)
@@ -636,15 +878,24 @@ function ContactMap.Map(map, code)
   if M == nil then return nil end
   names_for(lang_of(code))
   local out = { key = M.key, kind = M.kind, title = M.title, tex = M.tex, sprite = M.sprite, strict = M.strict, zones = {},
-    items = {}, nodes = {} }
+    items = {}, nodes = {}, series = M.series or 0, pitch = M.pitch == true }
   local s = SET_BY[M.set] or {}
+  local lang = NAMES.lang or "en"
   local item_title = {}
   for _, it in ipairs(M.items) do item_title[it.item] = it.title end
   if s.ic then item_title[s.ic] = item_title[s.ic] or s.ict end
   if s.rc then item_title[s.rc] = item_title[s.rc] or s.rct end
+  -- a «cleared» requirement (team pages): any (game, difficulty) of `games` won; `name` = the team to beat
+  local function cleared(r)
+    return { kind = "cleared", games = r.games, count = 1, name = team_name(r.name_text, lang) }
+  end
   for i, z in ipairs(M.zones) do
+    -- label: the zone's name as text (a team page: the team's name), shown instead of its title
     out.zones[i] = { name = z.name, title = z.title, x = z.x, y = z.y, count = z.count, tex = z.tex, sprite = z.sprite,
-      aw = z.aw, ah = z.ah }
+      aw = z.aw, ah = z.ah, label = team_name(z.name_text, lang), team = z.team }
+    if type(z.reqs) == "table" and z.reqs[1] ~= nil and z.reqs[1].kind == "cleared" then
+      out.zones[i].reqs = { cleared(z.reqs[1]) }
+    end
   end
   for i, it in ipairs(M.items) do
     out.items[i] = { item = it.item, price = it.price, title = it.title }
@@ -653,15 +904,27 @@ function ContactMap.Map(map, code)
     local reqs = {}
     for k, r in ipairs(n.reqs) do
       if r.kind == "player" then
-        reqs[k] = { kind = "player", ids = r.ids, count = r.count, name = name_of_card(r.ids[1]) }
+        reqs[k] = { kind = "player", ids = r.ids, count = r.count, name = name_of_card(r.ids[1]), level = r.level }
       elseif r.kind == "item" then
         reqs[k] = { kind = "item", id = r.id, count = r.count, title = item_title[r.id] or 0 }
+      elseif r.kind == "cleared" then
+        reqs[k] = cleared(r)
+      elseif r.kind == "unlock" then
+        reqs[k] = { kind = "unlock", groups = r.groups, count = 1, name = team_name(r.name_text, lang) }
+      elseif r.kind == "trial" then
+        reqs[k] = { kind = "trial", friendly = r.friendly, tag = r.tag, sub = r.sub, game = r.game, difficulty = r.difficulty,
+          objective = r.objective, part = r.part, of = r.of, count = 1 }
       else
         reqs[k] = { kind = r.kind, count = r.count, element = r.element, position = r.position }
       end
     end
+    -- cards: every card of the character (a team page: one card per character, any of them owned = signed)
     out.nodes[i] = { kind = n.kind, zone = n.zone, card = n.card, face = n.face, level = n.level, price = n.price,
-      name = n.base ~= 0 and name_of_base(n.base) or name_of_card(n.card), x = n.x, y = n.y, links = n.links, reqs = reqs }
+      name = n.base ~= 0 and name_of_base(n.base) or name_of_card(n.card), x = n.x, y = n.y, links = n.links, reqs = reqs,
+      cards = n.cards, spirit = n.spirit, item = n.item, slot = n.slot, px = n.px, py = n.py, trials = n.trials,
+      element = n.element, position = n.position, main = n.main,
+      pay_element = pay_element(s, n.spirit), pay_title = pay_title(s, n.spirit),
+      pay_name = (n.spirit or 0) ~= 0 and name_of_card(n.spirit) or nil }
     if n.story then
       local notes = {}
       for _, nt in ipairs(n.notes) do

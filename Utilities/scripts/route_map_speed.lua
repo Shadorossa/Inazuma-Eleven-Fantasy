@@ -52,21 +52,51 @@ local log = cfg.log ~= false
 
 -- the hook runs every frame of the route map: its handler stays a pad read (+ one key query when keys are set),
 -- with the API functions held as upvalues
-local input_pad, input_key, band = VRFW.input.pad, VRFW.input.key, bit32.band
+local band = bit32.band
+local input_pad, input_key -- VRFW.input.pad / VRFW.input.key, nil while the framework does not offer them
+local input_missing_logged = false
+
+-- true when the framework's input reads are there; without them the map keeps the game's speed (logged once)
+local function input_ready()
+  if input_pad then
+    return true
+  end
+  local api = type(VRFW.input) == "table" and VRFW.input or nil
+  local pad, key = api and api.pad, api and api.key
+  if type(pad) == "function" and type(key) == "function" then
+    input_pad, input_key = pad, key
+    return true
+  end
+  if not input_missing_logged then
+    input_missing_logged = true
+    VRFW.warn("route map speed: VRFW.input.pad / VRFW.input.key not available: the map cursor keeps the game's speed")
+  end
+  return false
+end
+
 local n_keys = #keys
 local key_args = n_keys > 0 and keys or nil
 
 local function r2_held()
-  local pad = input_pad()
-  if pad and band(pad, PAD_RT) ~= 0 then
+  if not input_pad and not input_ready() then
+    return false
+  end
+  local ok, pad = pcall(input_pad)
+  if ok and pad and band(pad, PAD_RT) ~= 0 then
     return true
   end
-  return key_args ~= nil and input_key(table.unpack(key_args, 1, n_keys))
+  if key_args == nil then
+    return false
+  end
+  local okk, down = pcall(input_key, table.unpack(key_args, 1, n_keys))
+  return okk and down == true
 end
 
 -- the framework resolves its game globals (the pad's too) at the first read: read the pad once now (script load, not
 -- the game thread) so the route map's first frame cannot pay for it (a one-off 196 ms call, log 2026-10-13 20:09)
-pcall(input_pad)
+if input_ready() then
+  pcall(input_pad)
+end
 
 local held = false
 local saved -- { address, the game's speed } between the pre and post handlers
@@ -106,5 +136,5 @@ VRFW.on("hook:RouteMapUpdate:post", function()
 end)
 
 function Utilities.RouteMapSpeedOn()
-  return VRFW.is_on("RouteMapUpdate")
+  return VRFW.is_on("RouteMapUpdate") and input_ready()
 end

@@ -36,6 +36,7 @@ local U = require "lib/util"
 local T = require "lib/tourney"
 local V = require "lib/tourney_view"
 local G = require "lib/game"
+local PC = require "lib/plate_colors"
 
 local Tn = {}
 
@@ -926,6 +927,12 @@ function BattleBayDeluxe.TournArm(fmt, size, configured, filter)
   if load() and not RUN.outcome then
     return false, "a tournament is running"
   end
+  -- the start is taken by scripts\campaign.lua's Decide hook; without it the grid's start would run the game's own
+  -- campaign start under the tournament's grid (a late second decide while the match loads)
+  if not VRFW.is_on("Decide") then
+    warn("not armed: the Decide hook is off on this build (content/game/campaign.toml)")
+    return false, "the Decide hook is off"
+  end
   local fl = U.int(filter, -1)
   ARMED = { fmt = fmt, size = size, configured = U.int(configured, 0) == 1, filter = fl == 1 or (fl == -1 and CFG.filter) }
   PENDING, PENDING_DIFF = nil, nil
@@ -1138,6 +1145,43 @@ function BattleBayDeluxe.TournClose()
   return true
 end
 
+local function copy_table(t)
+  if type(t) ~= "table" then
+    return t
+  end
+  local out = {}
+  for k, v in pairs(t) do
+    out[k] = copy_table(v)
+  end
+  return out
+end
+
+-- the game-over telop after a lost / drawn tournament match (graft bbt_over.lua): true = the player is still in the run
+-- (a group-stage match that does not knock him out), so the telop is skipped; false = the defeat ends the run or the
+-- match is not a tournament match. The result is recorded on a copy of the run (the real record stays the top
+-- menu's sync); the score is this session's match_end one (none seen: 0-1, as the sync records it).
+function BattleBayDeluxe.TournStillIn()
+  local run = load()
+  if not run or not run.loaded or run.outcome then
+    return false
+  end
+  local _, stage = T.pending(run)
+  if stage ~= "groups" then
+    return false
+  end
+  local gf, ga = 0, 1
+  if PLAYED then
+    gf, ga = PLAYED.gf, PLAYED.ga
+  end
+  local trial = copy_table(run)
+  local cfg = { goals = CFG.goals, weight = CFG.weight, pen_kick = CFG.pen_kick, pen_kicks = CFG.pen_kicks }
+  local done = T.record(trial, cfg, mk, gf, ga, 0, 0, false)
+  local still_in = done ~= nil and trial.outcome ~= "out"
+  info(string.format("game over after a group match %d-%d: %s", gf, ga,
+    still_in and "still in the run, the telop is skipped" or "eliminated, the telop stays"))
+  return still_in
+end
+
 -- CMND_GET_BB_STADIUM_CAMPAIGN_INFO as a tournament shows it (the graft asks first): sub 1 = the matches played
 -- (+1 between the end of a match and the sync, as the game answers on the result screens), sub 3, i = the rival of
 -- the player's match i + 1 (0 = not known yet: the loading telop hides that emblem)
@@ -1214,6 +1258,63 @@ end
 
 -- ------------------------------------------------------------------------------------------------ the bracket view
 
+-- 1.8.0 (owner 2026-10-21: the bracket in the Victory Road look): each plate's team strip = the strip of its team's
+-- emblem (team_config «emblem», the mods' teams included; lib/plate_colors.lua: generated from the game's emblem
+-- pictures by research/scripts/bbd_bracket_art.py --plates); an emblem missing there (a newer game, another mod's):
+-- a strip from its id
+local EMBLEMS = nil
+local function emblems()
+  if EMBLEMS then
+    return EMBLEMS
+  end
+  EMBLEMS = {}
+  local ok, rows = team_rows()
+  if ok and type(rows) == "table" then
+    for _, r in ipairs(rows) do
+      local id, em = r.id or r[1], r.emblem or r[7]
+      if type(id) == "number" and type(em) == "number" then
+        EMBLEMS[U.u32(id)] = U.u32(em)
+      end
+    end
+  else
+    warn("team table not readable: the bracket's plates keep the list plate")
+  end
+  return EMBLEMS
+end
+
+local function strip_of(team)
+  local em = emblems()[U.u32(team or 0)]
+  if not em or em == 0 then
+    return nil
+  end
+  return PC.by_emblem[em] or (em % #PC.names) + 1
+end
+
+-- every team plate of a view (tree leaves, results rows, the old plates list) gets .strip
+local function add_strips(v)
+  local function one(p)
+    if type(p) == "table" and (p.team or 0) ~= 0 then
+      p.strip = strip_of(p.team)
+    end
+  end
+  for _, list in ipairs({ v.leaves, v.plates }) do
+    if type(list) == "table" then
+      for _, p in pairs(list) do
+        one(p)
+      end
+    end
+  end
+  if type(v.rows) == "table" then
+    for _, r in pairs(v.rows) do
+      if type(r) == "table" then
+        one(r.a)
+        one(r.b)
+      end
+    end
+  end
+  return v
+end
+
 -- What the overlay draws (the graft resolves names / emblems from the team hashes and texts from text keys).
 --   page 0 = the knockout tree, every round in one view (1.5.15; lib/tourney_view.lua), page 10 = the group tables
 --   (1.5.54: every group on one page), page 20 + p = the results of the round just played (8 matches per page).
@@ -1222,7 +1323,11 @@ function BattleBayDeluxe.TournView(page)
   if not run then
     return { kind = "none" }
   end
-  return V.build(run, U.int(page, -1))
+  local v = V.build(run, U.int(page, -1))
+  if type(v) == "table" then
+    pcall(add_strips, v)
+  end
+  return v
 end
 
 -- The team table's derived sets at script load (the boot thread), not in the first draw's frame (2026-10-13
@@ -1237,8 +1342,9 @@ do
     pcall(name_text, 0)
     pcall(exclusion_set)
     pcall(story_set)
+    pcall(emblems)
     TEAM_ROWS = nil
-    info(string.format("team sets (levels, names, exclusions, story teams) read at load in %d ms", VRFW.now() - t0))
+    info(string.format("team sets (levels, names, exclusions, story teams, emblems) read at load in %d ms", VRFW.now() - t0))
   end
 end
 

@@ -1,0 +1,52 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): «Ases del Inazuma 2» (Inazuma '09, イナズマ'09) of IE2, a rival of the chain «Ruta del
+# entrenador del Mary Times» (content/teams/70_route_nodes/chain_ie2_marytimes.toml). The same team key as the set-aside
+# Chronicles Deluxe's «Inazuma '09» (ct_iy_09, the same team id and the same 11 players): while chronicles_deluxe is
+# active this file is left out and that mod's team is used. Here: its 11 players (the wiki lineup) with each card's own
+# moves, the formation / tactics of the retail «Ice Queens» legend team (as there; that mod's CPU loadouts and legend
+# stat rates are not here), the wiki crest (WebP -> PNG, no resize), as ct_iy_08 (content/teams/10_ie1/0012).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+
+[[team]]
+name = "ct_iy_09"
+key = "evt_ct_iy_09"
+based_on = "tm_cro_legend_IE2_03"         # The Ice Queens (its tactics / team skills)
+formation = 0xC2D71727
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Shinkai no Wear away, not a VR kit)
+level = 75
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0xF41F1188, slot = 0, number = 1, rarity_step = 1 },   # Rocky Black (GK)
+  { card = 0x0DA4EC35, slot = 1, number = 2, rarity_step = 1 },   # Ian Smith (DF)
+  { card = 0x45ECD22E, slot = 2, number = 3, rarity_step = 1 },   # Parry Waxon (DF)
+  { card = 0x5F733701, slot = 3, number = 4, rarity_step = 1 },   # Blade Healen (DF)
+  { card = 0xC120DBD6, slot = 4, number = 5, rarity_step = 1 },   # Hellen Hearth (DF)
+  { card = 0x250D6B98, slot = 5, number = 6, rarity_step = 1 },   # Kerry Bootgaiter (MF)
+  { card = 0x289AEE4E, slot = 6, number = 7, rarity_step = 1 },   # Cannon Random (MF)
+  { card = 0xA245B60E, slot = 7, number = 8, rarity_step = 1 },   # Cadence Soundtown (MF)
+  { card = 0xBAA40899, slot = 8, number = 9, rarity_step = 1 },   # Mercury (FW)
+  { card = 0x0B186BB2, slot = 9, number = 10, rarity_step = 1 },   # Rihm (FW)
+  { card = 0xC5D35950, slot = 10, number = 11, rarity_step = 1, captain = true },   # Wilbur Watkins (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/wiki/inazuma_09.png"   # the wiki's Inazuma '09 emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Ases del Inazuma 2"
+short = "Ases del Inazuma 2"
+[team.text.en]
+name = "Inazuma '09"
+short = "Inazuma '09"
+[team.text.ja]
+name = "イナズマ'09"
+short = "イナズマ'09"
+
+# each player plays its card's first 4 moves (the engine reads them from the card)
+[[edit]]
+target = "ct_iy_09"
+card_moves = 4

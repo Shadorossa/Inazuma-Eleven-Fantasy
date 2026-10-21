@@ -93,6 +93,16 @@ local function check_value(spec, v)
       out[#out + 1] = x
     end
     return out
+  elseif t == "numbers" then
+    if type(v) ~= "table" then return nil, "a list of numbers" end
+    local out = {}
+    for i, x in ipairs(v) do
+      if type(x) ~= "number" or x ~= x or (spec.min and x < spec.min) or (spec.max and x > spec.max) then
+        return nil, string.format("item %d: a number %s..%s", i, tostring(spec.min or "-"), tostring(spec.max or "-"))
+      end
+      out[#out + 1] = x
+    end
+    return out
   elseif t == "strings" then
     if type(v) ~= "table" then return nil, "a list of texts" end
     local out = {}

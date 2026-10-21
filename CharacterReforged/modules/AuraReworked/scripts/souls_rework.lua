@@ -11,7 +11,7 @@
 -- The totem's own move rolls the reel: a uniformly random slot of the totem's 6 (seeded per match); the user's rolls are
 -- shown by the graft souls_rework_reel (command CMND_AURAREWORKED_SOULS_REEL), the rival's are applied without a reel. The
 -- result lands when the reel stops and lasts while the totem is out (timed skills: their seconds; recoveries: at once).
--- Every level-up queues a pop (a plate of the totem's element colour with «+Nv.» over the player's head) for the graft
+-- Every level-up queues a pop (a speech bubble in the aura type's colours with «+Nv.» over the player's head) for the graft
 -- souls_rework_level_pop (command CMND_AURAREWORKED_SOULS_LEVEL_POP; config.toml [souls.level_pop]).
 
 AuraReworked = AuraReworked or {}
@@ -51,20 +51,37 @@ local REEL = {
   queue = math.max(1, math.floor(num(CFG_REEL.queue, 2))),
 }
 REEL.land_ms = (REEL.open + REEL.spin + REEL.stop) * 1000
--- "#RRGGBB" -> r, g, b (0..1); nil when it is not one
-local function rgb(v)
-  local h = type(v) == "string" and v:match("^#?(%x%x%x%x%x%x)$")
-  if not h then return nil end
-  return { tonumber(h:sub(1, 2), 16) / 255, tonumber(h:sub(3, 4), 16) / 255, tonumber(h:sub(5, 6), 16) / 255 }
-end
 local POP = {
   show = CFG_POP.show ~= false, cpu = CFG_POP.cpu ~= false,
   appear = num(CFG_POP.appear_s, 0.15), hold = num(CFG_POP.hold_s, 1.0), out = num(CFG_POP.out_s, 0.4),
-  height = num(CFG_POP.height, 36), lift = num(CFG_POP.lift, 24), rise = num(CFG_POP.rise, 40),
+  body = num(CFG_POP.body_height, 28), tail = num(CFG_POP.tail_height, 8), lift = num(CFG_POP.lift, 10),
+  rise = num(CFG_POP.rise, 24), text_scale = num(CFG_POP.text_scale, 0.45), pad = num(CFG_POP.pad_x, 8),
+  char_width = num(CFG_POP.char_width, 24), text_y = num(CFG_POP.text_offset_y, 0),
   markup = type(CFG_POP.text_markup) == "string" and CFG_POP.text_markup:find("{text}", 1, true) and CFG_POP.text_markup or "{text}",
-  colors = {}, neutral = rgb(CFG_POP.neutral_color) or { 0.55, 0.55, 0.55 }, queue = 8,
+  widths = {}, bubbles = {}, queue = 8,
 }
-for i, v in ipairs(type(CFG_POP.element_colors) == "table" and CFG_POP.element_colors or {}) do POP.colors[i] = rgb(v) end
+for _, v in ipairs(type(CFG_POP.bubble_widths) == "table" and CFG_POP.bubble_widths or {}) do
+  v = math.floor(num(v, 0))
+  if v > 0 then POP.widths[#POP.widths + 1] = v end
+end
+table.sort(POP.widths)
+-- the bubble sprites of an aura type (content/images/menu/02_btl/souls_rework_pop.toml, made by
+-- research/scripts/souls_rework_bubble_build.py: souls_rework_bubble_<type>_<width>) as "crc:width;crc:width;…",
+-- narrowest first; built once per type
+local function bubbles(aura_type)
+  -- the retail aura types 0..6 have their bubbles; any other value shows the totem's (3)
+  local key = tonumber(aura_type)
+  if key == nil or key < 0 or key > 6 then key = 3 end
+  if POP.bubbles[key] == nil then
+    local list = {}
+    for _, w in ipairs(POP.widths) do
+      local crc = VRFW.ui.crc32(string.format("souls_rework_bubble_%d_%d", key, w)) % 4294967296
+      list[#list + 1] = string.format("%d:%d", crc, w)
+    end
+    POP.bubbles[key] = table.concat(list, ";")
+  end
+  return POP.bubbles[key]
+end
 local SHOT_WINDOW_MS = num(CFG_FX.shot_window_s, 8) * 1000
 local KNOCKDOWN_CLIP = tostring(CFG_FX.knockdown_clip or "")
 local LIVE = {}
@@ -114,7 +131,7 @@ local players = {}       -- hdl -> { hdl, team, actor, active, pairs = { [aura] 
 local pending = {}       -- rolls waiting for the reel to stop: { hdl, aura, slot, at, seq }
 local reel_queue = {}    -- shown rolls for the graft: { seq, ... }
 local reel_seq = 0
-local pop_queue = {}     -- level-up pops for the graft: { seq, hdl, text, color }
+local pop_queue = {}     -- level-up pops for the graft: { seq, hdl, text, bubbles }
 local pop_seq = 0
 local last_shot = nil    -- { hdl, team, at }: the last shot's player (Numbness +)
 local knocked = {}       -- hdl -> { mult, until }: players slowed by a knock-down
@@ -254,8 +271,8 @@ local function lp_mult(p)
   return m
 end
 
--- the pop over the player: the totem's element colour, the text «+Nv.2» (its {level} = the new level) in the
--- configured colour markup
+-- the pop over the player: a speech bubble in the colours of the aura's type, the text «+Nv.2» (its {level} = the new
+-- level) in the configured colour markup
 local function queue_pop(p, aura, level)
   if not POP.show or (not POP.cpu and p.team ~= match.user) then return end
   while #pop_queue >= POP.queue do table.remove(pop_queue, 1) end
@@ -263,7 +280,7 @@ local function queue_pop(p, aura, level)
   local label = text("aura_reworked.level_pop", level)
   pop_queue[#pop_queue + 1] = { seq = pop_seq, at = now(), hdl = p.hdl,
     text = (POP.markup:gsub("{text}", (label:gsub("%%", "%%%%")))),
-    color = POP.colors[A.element(aura)] or POP.neutral }
+    bubbles = bubbles(A.type(aura)) }
 end
 
 local function level_up(p, aura, st, T)
@@ -501,7 +518,8 @@ VRFW.on("cutin_end", function(ev)
   return nil
 end)
 
--- CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, hdl, text, r, g, b, appear, hold, out, height, lift, rise: the
+-- CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, hdl, text, bubbles, appear, hold, out, body, tail, lift, rise,
+-- text_scale, pad, char_width, text_y (bubbles = the aura type's sprites "crc:width;...", narrowest first): the
 -- oldest level-up pop newer than `seen` and at most 1 s old (seq 0 and the scene flag alone when none); scene = 1 while a
 -- cut-in or a match scene plays. The graft keeps the last seq it took.
 function AuraReworked.Souls.LevelPop(seen)
@@ -510,8 +528,8 @@ function AuraReworked.Souls.LevelPop(seen)
   local in_scene = scene_playing and 1 or 0
   for _, q in ipairs(pop_queue) do
     if q.seq > seen and now() - q.at <= 1000 then
-      local c = q.color
-      return q.seq, in_scene, q.hdl, q.text, c[1], c[2], c[3], POP.appear, POP.hold, POP.out, POP.height, POP.lift, POP.rise
+      return q.seq, in_scene, q.hdl, q.text, q.bubbles, POP.appear, POP.hold, POP.out, POP.body, POP.tail, POP.lift,
+        POP.rise, POP.text_scale, POP.pad, POP.char_width, POP.text_y
     end
   end
   return 0, in_scene

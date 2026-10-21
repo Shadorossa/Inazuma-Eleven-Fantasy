@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Triángulo letal triturador (whs03180).
 [[edit]]
 target = "whs03180"
-trajectory = { goal_points = [[16.2, 19.87, 999, 8.1], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[16.2, 19.87, 999, 8.1], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[16.2, 4.5, 999.0, 8.1], [0.0, 2.0]], unblockable = false }

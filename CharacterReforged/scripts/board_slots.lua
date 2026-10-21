@@ -155,10 +155,12 @@ local function equip_slot(hdl, inv, slot, native)
   return nil
 end
 
+-- Board.PlaceByHandle(&hdl, piece, inv, native, 1, 1): the last 1 = clearing a native slot takes its item off
+-- (always so on v7.1.2, an argument since v7.2.1)
 local function place_by_handle(hdl, piece, inv, native)
   buffers()
   pcall(VRFW.mem.write, "u32", handle_buffer, hdl)
-  local ok, e = pcall(VRFW.call, "CharacterReforged.BoardPlaceByHandle", handle_buffer, piece, inv, native and 1 or 0, 1)
+  local ok, e = pcall(VRFW.call, "CharacterReforged.BoardPlaceByHandle", handle_buffer, piece, inv, native and 1 or 0, 1, 1)
   if not ok then
     warn(string.format("PlaceByHandle(%s, piece %d, %s, native %s) raised: %s", hex(hdl), piece, hex(inv), tostring(native), tostring(e)))
     return STATUS_EXCEPTION

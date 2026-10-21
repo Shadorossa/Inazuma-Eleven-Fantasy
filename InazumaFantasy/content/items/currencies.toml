@@ -65,6 +65,15 @@ Keep = [
 ]
 ReplaceWith = "tk_hr000008"
 
+# The Piedra de la victoria (tk_hr000009, retail Market currency, unused here) is never given by a match of any mode:
+# the game's prize rows of it (soccer_prize_config: win and first-clear prizes, which the filter above does not edit)
+# are left out of the result and an in-match drop of it gives nothing; every other grant of it (boxes, quests,
+# trophies, gifts, a repeated item's compensation) gives nothing either (owner request 2026-10-21).
+# VR-Framework [[VRFW.MatchDropRemove]] (docs/framework/drops.md §6).
+[[VRFW.MatchDropRemove]]
+Items = ["tk_hr000009"]                     # Piedra de la victoria
+AllSources = true
+
 # Every match of every mode also pays both currencies at its end, as rows of the result list (owner request 2026-10-15),
 # on top of what its goal rolls give. The amounts are the player's: config.toml [match_drops.friendship] /
 # [match_drops.passion] (win, draw, loss, per_goal = for each goal of the user's team, any result); the values below are

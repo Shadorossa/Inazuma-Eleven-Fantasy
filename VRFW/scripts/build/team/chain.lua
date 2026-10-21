@@ -92,6 +92,14 @@ function CH.install(X)
     local name_id = TC.uint(X.tc:info(t), X.TI.NAME) or 0
     local out = {}
     if name_id == 0 then return out end
+    -- a copy (`based_on`) of a mod team shares its base's name text, which only the mod's text rows have: the
+    -- declared names of the team that owns that text id
+    for u = 0, #X.tc.teams - 1 do
+      if u ~= t and (TC.uint(X.tc:info(u), X.TI.NAME) or 0) == name_id then
+        local mu = X.meta[X.tc:id_of(u)]
+        if mu and not T.is_empty(mu.names) then return T.copy(mu.names) end
+      end
+    end
     for _, lang in ipairs(VRFW.lang.list()) do
       local names = X.nouns(lang, "team_text")
       if names and names[name_id] then out[lang] = names[name_id] end
@@ -516,6 +524,8 @@ function CH.install(X)
       elseif t.kind == "dchest" then
         local ok, re = check_rewards(t.reward, true)
         if not ok then return nil, tw .. ": " .. re end
+        ok, re = check_rewards(t.a_reward, true)
+        if not ok then return nil, tw .. ": AReward: " .. re end
         ok, re = check_rewards(t.s_reward, true)
         if not ok then return nil, tw .. ": SReward: " .. re end
       elseif t.kind == "blocked" then
@@ -535,6 +545,9 @@ function CH.install(X)
       end
       if t.kind ~= "dchest" and #(t.s_reward or {}) > 0 then
         VRFW.log.warn(what .. ": " .. tw .. ": `SReward` only applies to double chests (Kind = \"dchest\") (ignored)")
+      end
+      if t.kind ~= "dchest" and #(t.a_reward or {}) > 0 then
+        VRFW.log.warn(what .. ": " .. tw .. ": `AReward` only applies to double chests (Kind = \"dchest\") (ignored)")
       end
     end
     if start == nil then return nil, "no `start` tile" end
@@ -595,7 +608,7 @@ function CH.install(X)
     for i, t in ipairs(tiles) do
       local tb = { id = t.id, kind = t.kind, page = (t.page or 1) - 1, col = t.pos[1] - 1, row = t.pos[2] - 1, links = T.keys(links[i]),
         game = 0, game_key = "", team = 0, level = 0, difficulty = 0, title = {}, rival = {}, emblem = "", reward = "",
-        s_reward = "", requires = "", requires_names = {}, rank_reward = "", rank_reward_names = {} }
+        s_reward = "", a_reward = "", requires = "", requires_names = {}, rank_reward = "", rank_reward_names = {} }
       if t.kind == "match" then
         nmatch = nmatch + 1
         if nmatch > MAX_NODES then return nil, string.format("more than %d match tiles", MAX_NODES) end
@@ -649,16 +662,18 @@ function CH.install(X)
           VRFW.log.info(what .. ": chest `" .. t.id .. "`: gives " .. enc .. " once opened")
         end
       elseif t.kind == "dchest" then
-        -- double chest: base reward, then the special one with rank S on its branch
+        -- double chest: base reward, the A one (its branch all at rank A or better), the S one (all at rank S)
         local enc, re = X.chest_rewards(m, t.reward)
         if not enc then return nil, "tile `" .. t.id .. "`: " .. re end
+        local aenc, ae = X.chest_rewards(m, t.a_reward)
+        if not aenc then return nil, "tile `" .. t.id .. "`: AReward: " .. ae end
         local senc, se = X.chest_rewards(m, t.s_reward)
         if not senc then return nil, "tile `" .. t.id .. "`: SReward: " .. se end
-        tb.reward, tb.s_reward = enc, senc
-        if enc == "" and senc == "" then
+        tb.reward, tb.a_reward, tb.s_reward = enc, aenc, senc
+        if enc == "" and aenc == "" and senc == "" then
           VRFW.log.info(what .. ": double chest `" .. t.id .. "`: no reward declared: disabled (never opens)")
         else
-          VRFW.log.info(what .. ": double chest `" .. t.id .. "`: base [" .. enc .. "], rank S [" .. senc .. "]")
+          VRFW.log.info(what .. ": double chest `" .. t.id .. "`: base [" .. enc .. "], rank A [" .. aenc .. "], rank S [" .. senc .. "]")
         end
       end
       out.tiles[#out.tiles + 1] = tb

@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Sabiduría divina (whs00340).
 [[edit]]
 target = "whs00340"
-trajectory = { goal_points = [[12.68, 12.9, 3.0], [11.81, 9.63], [8.27, 5.34], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[12.68, 12.9, 3.0], [11.81, 9.63], [8.27, 5.34], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[12.68, 4.5, 3.0], [11.81, 3.75], [8.27, 2.77], [0.0, 2.0]], unblockable = false }

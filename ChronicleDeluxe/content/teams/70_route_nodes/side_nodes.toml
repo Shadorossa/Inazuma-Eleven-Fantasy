@@ -6,6 +6,7 @@ schema = "VRFW.team/2"
 # SLOT MANIFEST: `Slot` is the node's byte in the save's Chronicle arrays (271-299). Never change or reuse a released
 # slot: it IS that node's clear / lock state in every save.
 #   271  ie1_umbrella        274  ie1_sallys          275  ie2_forest
+#   300  go_royal_practice   301  cs_omega3_side      302  galaxy_raimon       303  galaxy_naiadi_side   (extended slots)
 # Same names and slots as the older mod Chronicles Deluxe (chronicles_deluxe, set aside 2026-10-14) and Inazuma Fantasy
 # before it: the piece (evt_rn_piece_<name>), the game (evt_rn_<name>) and the slot are derived from the node's name,
 # not from the mod, so every save's progress of these nodes is kept as it is.
@@ -111,6 +112,132 @@ Scripts = false                        # no per-game match scripts
   zh_hans = "树海对决！"
   zh_hant = "樹海對決！"
 
+# GO saga story matches with no VR Chronicle game (owner 2026-10-21: «escálalos entre medias del resto»;
+# docs/game/mods/chronicle-deluxe.md §16.3). Each node's 3DS story match (the btl of the game of its board series) is
+# in the mod root's _story_nodes.toml (never a key here: the framework drops every node of a file with an unknown key);
+# research/data/go3ds | cs3ds | galaxy3ds/story_matches.json; chronicle_deluxe_story_teams_build.py gives
+# its rival the 3DS levels and moves of that match at the Crónica `Level` (its 3DS level + the game's shift, or between
+# its board neighbours when that would break their order) and its own line-up `OwnTeam` (the line-up of the `After`
+# game) moved like that game's. Plain Crónica battles (no talks, no in-match events: Scripts = false); the win opens
+# the Heroica. Spirits / match setup from the rival's own game where VR has one.
+
+# GO chapter 7: the practice match against Royal Academy (btl0032, Lv 24), between Edad Dorada (Lv 22) and Mar de Luna
+# (Lv 24). A dead end down-left (LD, Edad Dorada's free direction) of Edad Dorada.
+[[VRFW.RouteNode]]
+Name = "go_royal_practice"
+Slot = 300
+After = "fbtl_cro04_080_010"           # Edad Dorada
+Dir = "LD"
+Pos = [17.0, 15.0]
+Team = "chronicle_deluxe.cro_go_royal_practice"   # content/teams/13_go/0500_story_node_royal_practice.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+TemplateGame = "fbtl_cro04_080_010"    # Edad Dorada
+DropsFrom = "fbtl_cro04_060_010"       # Royal Academy's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 24                           # 3DS Lv 24 + 0 (GO shift); Edad Dorada 22, Mar de Luna 24
+  OwnTeam = "pltm_cro_ie4_08"          # the Raimon line-up of the Edad Dorada match
+  OwnLevel = 17                        # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Partido de práctica contra la Royal Academy!"
+  en = "Practice Match with Royal Academy!"
+  fr = "Match d'entraînement contre la Royal Academy !"
+  de = "Trainingsspiel gegen die Royal Academy!"
+  it = "Amichevole contro la Royal Academy!"
+  pt = "Jogo-treino contra o Instituto Imperial!"
+  ja = "帝国学園と練習試合！"
+  zh_hans = "与帝国学园的练习赛！"
+  zh_hant = "與帝國學園的練習賽！"
+
+# Chrono Stone optional chapter 30 (a side script, an 11-a-side match): Protocolo Omega 3.0 again (btl5001, Lv 25),
+# right after the main Protocolo Omega 3.0 match (Lv 24) and before Ejército de Terracota (Lv 27). A dead end up-right
+# (RU, a free direction) of Protocolo Omega 3.0.
+[[VRFW.RouteNode]]
+Name = "cs_omega3_side"
+Slot = 301
+After = "fbtl_cro05_080_010"           # Protocolo Omega 3.0
+Dir = "RU"
+Pos = [-9.0, 23.0]
+Team = "chronicle_deluxe.cro_cs_omega3_side"      # content/teams/14_cs/0500_story_node_omega3_side.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+TemplateGame = "fbtl_cro05_080_010"    # Protocolo Omega 3.0
+DropsFrom = "fbtl_cro05_080_010"       # Protocolo Omega 3.0's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 72                           # 3DS Lv 25 + 47 (Chrono Stone shift); Protocolo Omega 3.0 71, Terracota 74
+  OwnTeam = "pltm_cro_ie5_08"          # the line-up of the Protocolo Omega 3.0 match
+  OwnLevel = 17                        # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Revancha contra Protocolo Omega 3.0!"
+  en = "Rematch with Protocol Omega 3.0!"
+  fr = "Revanche contre le Protocole Omega 3.0 !"
+  de = "Revanche gegen Protokoll Omega 3.0!"
+  it = "Rivincita contro il Protocollo Omega 3.0!"
+  pt = "Revanche contra o Protocolo Ômega 3.0!"
+  ja = "プロトコル・オメガ3.0と再戦！"
+  zh_hans = "再战欧米伽协议3.0！"
+  zh_hant = "再戰歐米伽協議3.0！"
+
+# Galaxy chapter 3: Raimon (btl0004, Lv 9), between Big Waves (Lv 7) and Los Cimitarras (Lv 11). Opens with Big Waves'
+# win (with Los Cimitarras); on the board it hangs off Los Cimitarras (LD, its free direction): Big Waves' free
+# directions lead onto the IE1 start and Los Cimitarras.
+[[VRFW.RouteNode]]
+Name = "galaxy_raimon"
+Slot = 302
+After = "fbtl_cro06_030_010"           # Big Waves
+Beside = "fbtl_cro06_040_010"          # Los Cimitarras
+Dir = "LD"
+Pos = [-4.0, -16.0]
+Team = "chronicle_deluxe.cro_galaxy_raimon"       # content/teams/15_galaxy/0500_story_node_raimon.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+TemplateGame = "fbtl_cro06_030_010"    # Big Waves
+DropsFrom = "fbtl_cro06_030_010"       # Big Waves (Raimon has no Chronicle game)
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 98                           # 3DS Lv 9 + 89 (Galaxy shift); Big Waves 96, Los Cimitarras 100
+  OwnTeam = "pltm_cro_ie6_03"          # the Earth Eleven line-up of the Big Waves match
+  OwnLevel = 7                         # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Duelo! ¡Earth Eleven contra Raimon!"
+  en = "Earth Eleven VS Raimon!"
+  fr = "Le duel : le onze terrestre contre Raimon"
+  de = "Earth Eleven gegen Raimon!"
+  it = "Earth Eleven contro Raimon!"
+  pt = "Onze da Terra Contra Raimon!"
+  ja = "アースイレブンVS雷門！"
+  zh_hans = "地球十一人VS雷门！"
+  zh_hant = "地球十一人VS雷門！"
+
+# Galaxy optional chapter 52 (a side story, an 11-a-side match): Los Naiadi again (btl5002, 3DS Lv 23). A rematch of a
+# team first met in chapter 7, so after the main Los Naiadi match (Lv 30 + 89 = 119); its 3DS level (+ 89 = 112) is
+# below it, so it plays between Los Naiadi (119) and Los Magmavís (122). A dead end down-left (LD, a free direction)
+# of Los Naiadi.
+[[VRFW.RouteNode]]
+Name = "galaxy_naiadi_side"
+Slot = 303
+After = "fbtl_cro06_090_010"           # Los Naiadi
+Dir = "LD"
+Pos = [-2.0, -26.0]
+Team = "chronicle_deluxe.cro_galaxy_naiadi_side"  # content/teams/15_galaxy/0501_story_node_naiadi_side.toml
+Difficulties = [1, 4]                  # Crónica, then Heroica (opened by the Crónica win)
+TemplateGame = "fbtl_cro06_090_010"    # Los Naiadi
+DropsFrom = "fbtl_cro06_090_010"       # Los Naiadi's own game: its players' spirits, its match setup
+Scripts = false                        # no per-game match scripts
+  [VRFW.RouteNode.Cronica]
+  Level = 121                          # between Los Naiadi (119) and Los Magmavís (122); 3DS Lv 23 + 89 = 112
+  OwnTeam = "pltm_cro_ie6_09"          # the Earth Eleven line-up of the Los Naiadi match
+  OwnLevel = 19                        # its retail level in that match
+  [VRFW.RouteNode.Title]
+  es = "¡Revancha contra los Naiadi!"
+  en = "Rematch with Naiadi Eleven!"
+  fr = "Revanche contre l'Onze de Naiadi !"
+  de = "Revanche gegen Naiadi Eleven!"
+  it = "Rivincita contro i Naiadi!"
+  pt = "Revanche contra o Onze de Naiadi!"
+  ja = "サザナーライレブンと再戦！"
+  zh_hans = "再战萨扎纳拉十一人！"
+  zh_hant = "再戰薩扎納拉十一人！"
+
 # Player spirits (owner 2026-10-14: «Umbrella y Sally's deben poder dropear espíritus como el resto de partidos de
 # Crónica»). The rule of every retail Chronicle board row (v7.1.2 soccer_game_config, all IE1 pieces): col 29
 # spirit_chara_table = 0 and cols 31 / 33 spirit_drop_table(_2) = 0. With 0 the engine (nie.exe 0x15C7850 /
@@ -130,4 +257,20 @@ SpiritChara = "0"
 
 [[VRFW.GameDrops]]
 Game = "evt_rn_ie2_forest"
+SpiritChara = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_go_royal_practice"
+SpiritChara = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_cs_omega3_side"
+SpiritChara = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_galaxy_raimon"
+SpiritChara = "0"
+
+[[VRFW.GameDrops]]
+Game = "evt_rn_galaxy_naiadi_side"
 SpiritChara = "0"

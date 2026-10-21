@@ -176,12 +176,17 @@ function EVT_IR_Message(text) -- EVT INAROGUE
   end
 end
 
+-- a save / load job of the game: wait for it (one log line when it has to wait, one when it gives up after 600 steps)
 function EVT_IR_WaitJob() -- EVT INAROGUE
   local k = 0
   coroutine.yield()
   while funcLuaCommand(EVT_IR.IS_SAVE_WORKING) do
     k = k + 1
-    if k > 3600 then
+    if k == 1 then
+      EVT_IR_Log("waiting for a save / load job of the game")
+    end
+    if k > 600 then
+      EVT_IR_Log("a save / load job is still running after 600 steps: not waited for")
       return false
     end
     coroutine.yield()
@@ -410,6 +415,17 @@ function EVT_IR_AutoOpen() -- EVT INAROGUE
   if evt_ir_busy or not EVT_IR_InRogueSlot() then
     return
   end
+  -- the press could not open INAROGUE (its screen did not open or never ran, or an error): no retry every frame; the
+  -- title is given back once (faded in, active) and the press stays available on its button
+  if evt_ir_open_failed then
+    if not evt_ir_open_failed_logged then
+      evt_ir_open_failed_logged = true
+      EVT_IR_Log("slot 4: INAROGUE could not be opened: the title stays (no automatic retry)")
+      funcLuaCommand(EVT_IR.FADE, 0, 0.3)
+      funcLuaMenuCommand(EVT_IR.MENU_ACTIVE, EVT_IR.MENU, true)
+    end
+    return
+  end
   funcLuaMenuCommand(EVT_IR.MENU_ACTIVE, EVT_IR.MENU, false)
   -- one continuous black from the switch until INAROGUE is on screen (it fades itself in once): no title frame, no
   -- second fade. Not in a seamless session this title instance opened / showed (§10): there the title is the backdrop.
@@ -429,7 +445,7 @@ function EVT_IR_AutoOpen() -- EVT INAROGUE
     return
   end
   EVT_IR_Log("slot 4: opening INAROGUE")
-  EVT_OnEnterCustomItem()
+  EVT_IR_TitlePress()   -- InaRogue's own entry (the title button's press): one coroutine l1, so this runs once per open
 end
 
 -- Base-game popups the title opens by itself (notices, tutorial pages, network invites) never run in slot 4.
@@ -694,6 +710,7 @@ function EVT_IR_BlockInRogueSlot(name) -- EVT INAROGUE
 end
 function OnInit()
   evt_ir_frames = 0 -- EVT INAROGUE
+  evt_ir_open_failed, evt_ir_open_failed_logged = false, false -- EVT INAROGUE: slot 4 auto-open retried only by a new title
   evt_ir_live = false
   EVT_IR_MarkTitle() -- EVT INAROGUE: built over INAROGUE's game = rebuilt when the overlay closes
   if EVT_IR_InRogueSlot() then -- EVT INAROGUE: slot 4 stays black until INAROGUE opens over it
@@ -2218,31 +2235,92 @@ end
 
 -- ===== EVT inarogue title press BEGIN =====
 -- EVT INAROGUE: the title button's press (VRFW title row, lua action); the menu opens as a child of the title
+-- The press runs as the title's coroutine l1, which the retail Step resumes WITHOUT looking at the result: an error
+-- inside it would be silent and leave the title inactive. So the body runs under pcall (Lua 5.2: it may yield), every
+-- step logs once, and any failure gives the title back. A dead coroutine left in l1 never blocks a later press.
 function EVT_IR_TitlePress()
   if l1 ~= nil then
-    return 1
+    if coroutine.status(l1) ~= "dead" then
+      EVT_IR_Log("title press: the title's coroutine is busy: press ignored")
+      return 1
+    end
+    EVT_IR_Log("title press: a finished coroutine was still in l1: cleared")
+    l1 = nil
   end
   funcLuaCommand(1917805374, 766561556 --[[sy0080]])
-  l1 = coroutine.create(EVT_IR_TitleCoroutine)
+  EVT_IR_Step("pressed")
+  l1 = coroutine.create(EVT_IR_TitleGuarded)
+end
+-- one log line per step of the press (on change only)
+function EVT_IR_Step(name)
+  if evt_ir_step ~= name then
+    evt_ir_step = name
+    EVT_IR_Log("title press step:", name)
+  end
+end
+function EVT_IR_TitleGuarded()
+  local ok, err = pcall(EVT_IR_TitleCoroutine)
+  if not ok then
+    EVT_IR_Log("title press: error, the title comes back: " .. tostring(err))
+    evt_ir_open_failed = true
+    pcall(funcLuaCommand, 2039986631, true)
+    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, true)
+    funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], true)
+  end
+  EVT_IR_Step("done")
+  evt_ir_step = nil
+  l1 = nil
 end
 function EVT_IR_TitleCoroutine()
   funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], false)
   funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, false)
   coroutine.yield()
+  EVT_IR_Step("session checklist")
   if EVT_IR_SessionDebug() then -- EVT INAROGUE: session checklist (debug)
     funcLuaMenuCommand(711242136, 24113234, 0, true)
     funcLuaMenuCommand(1558704558, 3874253475, true)
     l1 = nil
     return
   end
+  EVT_IR_Step("seamless entry")
   EVT_IR_SeamlessEnter() -- EVT INAROGUE: [rogue] session_entry: INAROGUE's save swapped in here, no fade / reload (§10)
+  EVT_IR_Step("open the INAROGUE menu")
   local menu = 1301289148 --[[evt_inarogue_menu]]
+  -- the screen's OnInit sets the parameter crc32("evt_inarogue_alive"): a menu object whose screen never loaded (a
+  -- refused screen declaration, a script that does not run) exists without it and is closed after 300 steps
+  local alive = 3151688232
+  funcLuaCommand(3363400568 --[[parameter clear]], alive)
   funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], menu)
   funcLuaCommand(2039986631, false)
   coroutine.yield()
+  if not funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], menu) then
+    EVT_IR_Log("title press: the INAROGUE menu did not open: the title comes back")
+    evt_ir_open_failed = true
+  else
+    local k = 0
+    while funcLuaCommand(2947612279 --[[parameter exists]], alive) ~= true and k < 300 do
+      k = k + 1
+      coroutine.yield()
+    end
+    if funcLuaCommand(2947612279, alive) == true then
+      EVT_IR_Step("INAROGUE menu open")
+      evt_ir_open_failed, evt_ir_open_failed_logged = false, false
+    else
+      EVT_IR_Log("title press: the INAROGUE menu object exists but its screen never ran (300 steps): closed, the title comes back")
+      evt_ir_open_failed = true
+      funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], menu)
+      local c = 0
+      while funcLuaMenuCommand(2231168902, menu) and c < 120 do
+        c = c + 1
+        coroutine.yield()
+      end
+    end
+  end
+  funcLuaCommand(3363400568, alive)
   while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], menu) do
     coroutine.yield()
   end
+  EVT_IR_Step("INAROGUE menu closed")
   funcLuaCommand(2039986631, true)
   if EVT_IR_AfterMenu() then -- EVT INAROGUE: 4 enter slot 4 / 5 back to the normal slot / 6 options
     l1 = nil

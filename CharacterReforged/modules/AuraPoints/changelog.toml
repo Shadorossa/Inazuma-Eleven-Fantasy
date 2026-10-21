@@ -5,7 +5,8 @@ schema = "VRFW.changelog/1"
 # Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
 # 1.0.0 (2026-10-14): split out of Inazuma Fantasy. 1.1.0 (2026-10-16): the mod Stamina Points (the match PE) merged
 # in, the option rows peg / sp / pe. 1.1.5 (2026-10-19): rewritten for the hyper gauge rule (no gauge, no
-# gains, free mode change / awakening / bond transformation, the rival on the same points).
+# gains, free mode change / awakening / bond transformation, the rival on the same points). 1.2.0 (2026-10-20):
+# row 3 names the sprint strip.
 lang = "es"
 name = "Aura Points"
 
@@ -38,7 +39,7 @@ icon = "general"
 notes = [
     "Keshin, armaduras y tótems usan PEG o SP, no tiempo.",
     "Invocar es gratis; su supertécnica gasta PEG o SP.",
-    "PE por jugador (el de GO Galaxy); agotado, va lento.",
+    "PE por jugador con barra de sprint; agotado, va lento.",
     "Miximax sin tiempo: gasta PE y termina a 0 PE.",
     "Sin hipertensión: cambio, despertar y vínculo gratis.",
     "El rival usa los mismos puntos; barras bajo la cara.",
@@ -49,7 +50,7 @@ notes = [
 notes = [
     "Keshin, armours and totems run on PEG / SP, not time.",
     "Summoning is free; its special move costs PEG or SP.",
-    "GP per player (his GO Galaxy value); exhausted: slow.",
+    "GP per player with a sprint strip; exhausted: slow.",
     "Untimed miximax: it burns GP and ends at 0 GP.",
     "No hyper gauge: mode change, awakening, bond trans free.",
     "The rival uses the same points; bars under the face.",
@@ -60,7 +61,7 @@ notes = [
 notes = [
     "Keshin, armures et totems : des PG / SP, plus de temps.",
     "Invoquer est gratuit ; sa technique coûte PG ou SP.",
-    "PE par joueur (valeur GO Galaxy) ; épuisé, il ralentit.",
+    "PE par joueur, bande de sprint ; épuisé, il ralentit.",
     "Miximax sans limite : il brûle les PE, fin à 0.",
     "Sans jauge hyper : mode, éveil et lien gratuits.",
     "Le rival suit les mêmes points ; barres sous le visage.",
@@ -71,7 +72,7 @@ notes = [
 notes = [
     "Keshin, Rüstungen und Totems nutzen KGP / SP statt Zeit.",
     "Beschwören ist gratis; seine Technik kostet KGP o. SP.",
-    "GP je Spieler (sein GO-Galaxy-Wert); erschöpft: langsam.",
+    "GP je Spieler mit Sprintstreifen; erschöpft: langsam.",
     "Miximax ohne Zeitlimit: verbraucht GP, endet bei 0.",
     "Keine Hyperleiste: Modus, Erwachen, Band-Trans. gratis.",
     "Gegner nutzt dieselben Punkte; Balken unterm Gesicht.",
@@ -82,7 +83,7 @@ notes = [
 notes = [
     "Keshin, armature e totem usano PSG / SP, non tempo.",
     "Evocare è gratis; la sua tecnica costa PSG o SP.",
-    "PE per giocatore (da GO Galaxy); esausto, rallenta.",
+    "PE per giocatore con barra di scatto; esausto, rallenta.",
     "Miximax senza tempo: consuma PE e finisce a 0.",
     "Niente barra iper: modalità, risveglio e legame gratis.",
     "Il rivale usa gli stessi punti; barre sotto il volto.",
@@ -93,7 +94,7 @@ notes = [
 notes = [
     "Keshin, armaduras e totens usam PEG / SP, não tempo.",
     "Invocar é grátis; a sua técnica custa PEG ou SP.",
-    "PE por jogador (de GO Galaxy); esgotado, fica lento.",
+    "PE por jogador com barra de arranque; esgotado, lento.",
     "Miximax sem tempo: gasta PE e termina a 0.",
     "Sem barra hiper: modo, despertar e vínculo grátis.",
     "O rival usa os mesmos pontos; barras sob o rosto.",
@@ -104,7 +105,7 @@ notes = [
 notes = [
     "化身・アームド・ソウルが時間でなくFSP/SP制に。",
     "召喚は無料、その必殺技はFSPかSPを消費。",
-    "全選手にGP（GOギャラクシーの値）。ばてると遅い。",
+    "全選手にGPとダッシュゲージ。ばてると遅い。",
     "ミキシマックスは時間無制限、GP0で終了。",
     "超次元ゲージ廃止：モードチェンジ・覚醒・絆は無料。",
     "相手も同じポイント制。顔の下にゲージ。",
@@ -115,7 +116,7 @@ notes = [
 notes = [
     "化身、铠甲与灵魂改用FSP/SP，不再计时。",
     "召唤免费；其必杀技消耗FSP或SP。",
-    "每名球员有GP（GO银河数值），耗尽变慢。",
+    "每名球员有GP与冲刺条，耗尽变慢。",
     "混合最大化不限时：消耗GP，归零结束。",
     "取消超次元槽：模式切换、觉醒与羁绊免费。",
     "对手采用相同点数规则；头像下方显示条。",
@@ -126,7 +127,7 @@ notes = [
 notes = [
     "化身、鎧甲與靈魂改用FSP/SP，不再計時。",
     "召喚免費；其必殺技消耗FSP或SP。",
-    "每名球員有GP（GO銀河數值），耗盡變慢。",
+    "每名球員有GP與衝刺條，耗盡變慢。",
     "混合最大化不限時：消耗GP，歸零結束。",
     "取消超次元槽：模式切換、覺醒與羈絆免費。",
     "對手採用相同點數規則；頭像下方顯示條。",

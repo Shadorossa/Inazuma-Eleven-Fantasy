@@ -23,6 +23,8 @@ res = [
     # 1.5.15: the bracket's own drawings (connector line, crown): content\images\menu\220_img\bbd_tn.toml
     # (1.5.57: the mode selector's atlas bbd_md only on the grid: the selector's layers left this menu)
     "#/menu/220_img/bbd_tn/bbd_tn.g4tx",
+    # 1.12.0: the score digits (1.9.0) in an atlas of their own: a g4tx holds at most 255 sprites
+    "#/menu/220_img/bbd_tn_num/bbd_tn_num.g4tx",
     # 2026-10-19: the digit atlases of the retail bracket's score objects (vroad04_07 / 07b), as the retail setting
     "#/menu/200_icon/100_num/num_half_time.g4tx",
     "#/menu/200_icon/100_num/num_menu01.g4tx",
@@ -274,6 +276,22 @@ scale = [0.0, 0.0, 1.0]
 # the final stadium's panel: 2), txt 64 -> 66 (the final stadium's name and label beside a 64-team tree's 63 scores):
 # these 508 = 803. Every pool costs its
 # instances at every opening: add none without taking as many away.
+# 1.8.0 (owner 2026-10-21: the bracket in the Victory Road look): + the Victory Road stadium background (1, below):
+# 804. The look's other pieces cost no instance: the team strips are the plates' own sprite swapped, the stars, the
+# focus band and the stadium panel are box-pool quads (a tree page: at most 32 + 1 + 1 of 36), the trophy is the
+# retail one already in this menu.
+# 1.9.0 (owner 2026-10-21: the results as in the Victory Road bracket, two digits stacked at each joint): the scores
+# are digit sprites of the mod's atlas on the connector pool, no texts: evt_bbd_tn_line 256 -> 348 (a 64-team tree:
+# 251 pieces + 62 pairs + the final's 2 digits + up to 33 shoot-out digits), evt_bbd_tn_txt 66 -> 4 (the final
+# stadium's two lines, the champion screen's two): 804 + 92 - 62 = 834.
+# 1.12.0: evt_bbd_tn_line 348 -> 330 (up to 15 shoot-out digits on a 64-team tree): 816, a margin under the cap.
+
+# 1.8.0: the Victory Road mode's stadium background (victory_road_top_menu's vroad01_00_background: _bg_v01, 2640 x
+# 1080 from x -360, layout in screen px), opened under the bracket by the graft (BBT_Open) behind its pools
+# (draw priority 560; its own 200 would draw over them); the band (vroad04_01_p1_bg, 195) stays in front of it
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "vroad01_00_background", object = "vroad01_00_background", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -389,7 +407,7 @@ add_layer = { name = "vroad04_09_schedule_for_spectator", object = "vroad04_09_s
 
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 256, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_09_schedule_for_spectator", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_09_schedule_for_spectator" }] }
+add_layer = { name = "evt_bbd_tn_line", object = "evt_bbd_tn_line", count = 330, align = [1, 8], scale = 0.20000000298023224, after = "vroad04_09_schedule_for_spectator", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_09_schedule_for_spectator" }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -401,7 +419,7 @@ add_layer = { name = "evt_bbd_tn_row_r", object = "evt_bbd_tn_row_r", count = 32
 
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 66, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
+add_layer = { name = "evt_bbd_tn_txt", object = "evt_bbd_tn_txt", count = 4, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_row_r", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_row_r" }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"

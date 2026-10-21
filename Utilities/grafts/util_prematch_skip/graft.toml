@@ -1,0 +1,89 @@
+# Utilities pre-match X skip (docs/game/ui/prematch-skip.md; Nacho 2026-10-09; BetterUI's until Utilities 1.17.0): in the walk-in / entrance events of a
+# match (event_menu, after the VS screen) a second guide «(X) Ir al saque» sits left of the retail «(Y) Saltar»; holding
+# X (hold time: config.toml prematch_skip_hold through Utilities' scripts\prematch_skip.lua's CMND_UTIL_XSKIP_HOLD, else 1 s) skips this
+# event and every remaining pre-match event, and the lineup screens close unopened, so the match goes straight to the
+# kick-off. State in the parameter store (research/grafts/_lib/util_xskip.lua): ARMED when a VS screen closes
+# offline (flow VS, Chronicle VS, small-match VS), disarmed by the lineup screens, the kick-off / restart button and
+# half time; GO once X was held. Layer / locator / layout: Utilities' menus\prematch_skip.toml; the input: its
+# inputs\prematch_skip.toml; the label: its text.toml (utilities.prematch_skip). Always on (no options row).
+# 1.21.1: one fade to black, held by Utilities' hook BrightFadeLayer (content\game\prematch_skip.toml,
+# CMND_UTIL_XSKIP_COVER) until the kick-off; the skipped lineup screens start the match BGM as the retail ones do.
+# 1.21.7: a direct jump instead (CMND_UTIL_XSKIP_JUMP: the event ended in that frame, no fade; hook
+# PrematchSecondEntrance: no second entrance event; the lineup group closed unopened without a fade); the cover is the
+# fallback when the jump is not available.
+# 1.22.3: the jump runs under one fade to black (layer 1 cover, held natively); the lineups hand it to the retail
+# kick-off fade in of layer 0, so the lineup / kick-off cameras of the flow are not seen.
+# Wrappers only; nothing runs at chunk load.
+name = "util_prematch_skip"
+mod = "utilities"
+order = 300
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OpenButtonGuideUI", "ResetSkippedState", "Step", "GoToFormationScreen",
+         "CloseChronicleModeSoccerVsMenu", "CloseSoccerBattleVsMenu", "OnLayerLoadCompleted",
+         "InitializeKickoffButton_Callback", "InitializeRestartButton_Callback", "DecideRestartButton", "OnInit"]
+description = "Utilities: hold X in a pre-match event = straight to the kick-off (guide left of «Saltar»)"
+
+[[files]]
+stem = "event_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_event.lua"
+  marker = "utilities prematch skip event"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_setting_flow_vs_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_vs.lua"
+  marker = "utilities prematch skip vs"
+  crc = "none"
+
+[[files]]
+stem = "chronicle_mode_soccer_vs_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_chronicle.lua"
+  marker = "utilities prematch skip chronicle vs"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_vs_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_vs_small.lua"
+  marker = "utilities prematch skip small vs"
+  crc = "none"
+
+[[files]]
+stem = "soccer_battle_setting_flow_formation_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_lineup.lua"
+  marker = "utilities prematch skip lineups"
+  crc = "none"
+
+[[files]]
+stem = "soccer_restart_guide_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_restart.lua"
+  marker = "utilities prematch skip kick-off"
+  crc = "none"
+
+[[files]]
+stem = "soccer_half_time_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "xs_half_time.lua"
+  marker = "utilities prematch skip half time"
+  crc = "none"

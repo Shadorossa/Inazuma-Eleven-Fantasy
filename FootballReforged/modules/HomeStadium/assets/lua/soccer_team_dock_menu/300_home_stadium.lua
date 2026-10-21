@@ -81,6 +81,10 @@ if type(HomeStadium) == "table" and type(HomeStadium.owned) == "function" then
     return ok and yes == true
   end
 
+  -- BetterUI shows the stadium as its panel button (set where the button is registered, below): the list row is then
+  -- never added, whether or not the button's layer exists yet when the list is set up
+  local button = false
+
   local function has_button()
     local ok, yes = pcall(funcLuaMenuCommand, K.EXIST_LAYER, K.BUTTON)
     return ok and yes == true
@@ -195,7 +199,7 @@ if type(HomeStadium) == "table" and type(HomeStadium.owned) == "function" then
 
   -- the row (no BetterUI button): one more kind at the end of the live list, with its name and help line
   local function add_row()
-    if has_button() then return end
+    if button or has_button() then return end
     local kinds = upvalue("SetupTeamDockListItem", is_kinds) or upvalue("UpdateViewTeamDockListItem", is_kinds)
     local texts = upvalue("SetupTeamDockListItemText", is_texts) or upvalue("OnChangeFocus", is_texts)
     if kinds == nil or texts == nil then
@@ -319,7 +323,6 @@ if type(HomeStadium) == "table" and type(HomeStadium.owned) == "function" then
 
   -- the button (BetterUI): its step drives the picture and the selector; its decide starts the selector
   local install                     -- defined below (the button's step() may call it first)
-  local button = false
   if type(BetterUI) == "table" and type(BetterUI.AddDockButton) == "function" then
     button = BetterUI.AddDockButton({
       id = "home_stadium.dock", layer = K.BUTTON, help = K.TEXT_HELP, column = "panel",

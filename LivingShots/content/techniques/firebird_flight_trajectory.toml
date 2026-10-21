@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Vuelo de fénix (whs02360).
 [[edit]]
 target = "whs02360"
-trajectory = { points = [[0.0, 15.76]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 15.76]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.5]], goal_points = [[0.0, 2.0]], unblockable = false }

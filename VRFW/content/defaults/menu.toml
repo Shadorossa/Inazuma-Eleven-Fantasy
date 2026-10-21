@@ -4,9 +4,15 @@
 [scene_archive]
 max_rows = 512
 
-# Layer instances per open menu: the engine supports about 844, past it the menu never opens.
-# The build logs a WARN past `warn` and an ERROR past `hard`; it never refuses the build.
+# Layer instances per open menu: the engine's menu control event list holds 840 events (MENU_CTRL_EVENT_NUM); a menu
+# whose instances post more at once never finishes opening. The build logs a WARN past `warn` and an ERROR past `hard`;
+# it never refuses the build. `warn` / `hard` = the game's own capacity; when the ModLoader raised it
+# (`[limits] menu_ctrl_events`, published as game_state `capacity_state`), the budget follows it:
+# hard = capacity - hard_margin, warn = capacity - warn_margin (only when that is above `hard`).
 [layer_instances]
 warn = 800
 hard = 844
+capacity_state = "loader.menu_ctrl_events"
+hard_margin = 40
+warn_margin = 400
 doc = "docs/game/ui/menu-layer-limits.md §2.3"

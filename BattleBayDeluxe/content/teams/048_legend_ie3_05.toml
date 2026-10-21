@@ -18,8 +18,8 @@ levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_2_moves"
-moves = [0x7D6E9A87, 0x67F17FA8, 0xA6D711A6, 0x52CEB5F6, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x7D6E9A87, 0x67F17FA8, 0x52CEB5F6, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_4_moves"
@@ -38,8 +38,8 @@ levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_8_moves"
-moves = [0x0947A0E6, 0xB6F26F5F, 0xB633C4E1, 0xD67B0DE4, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0xA7B451B3, 0xB633C4E1, 0xB6F26F5F, 0x0947A0E6, 0xD67B0DE4, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_6_moves"
@@ -48,13 +48,13 @@ levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_10_moves"
-moves = [0x0947A0E6, 0x2B343D01, 0x132416F6, 0xB6F26F5F, 0xFB997A80, 0xFB997A80]
+moves = [0x316A7390, 0x2B343D01, 0x132416F6, 0xB6F26F5F, 0xFB997A80, 0xFB997A80]
 levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_9_moves"
-moves = [0x0947A0E6, 0x6ADE9E01, 0x8EDFBC29, 0xA611F96B, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x6ADE9E01, 0x105C91A7, 0x8EDFBC29, 0x0947A0E6, 0xA611F96B, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_11_moves"
@@ -63,8 +63,8 @@ levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_12_moves"
-moves = [0xB4757AB8, 0x7A67325B, 0x592A96B4, 0x46A71C03, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0xB4757AB8, 0x7A67325B, 0x592A96B4, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_13_moves"
@@ -78,8 +78,8 @@ levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ie3_05.slot_15_moves"
-moves = [0x039DBAAC, 0xB1FBC783, 0x97C48D68, 0x88B554E0, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x039DBAAC, 0xB1FBC783, 0x97C48D68, 0xFB997A80, 0xFB997A80, 0xFB997A80]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[team]]
 name = "legend_ie3_05"
@@ -111,7 +111,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [1, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ie3_05.slot_0_moves"
@@ -255,7 +255,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [1, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ie3_05.slot_10_moves"
@@ -271,7 +271,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [-1, -1, -1, 1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ie3_05.slot_9_moves"

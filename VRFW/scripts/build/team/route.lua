@@ -487,7 +487,8 @@ function R.install(X)
             if n then
               slots[d.slot] = key
               local after = type(d.after) == "table" and d.after or { d.after }
-              VRFW.log.info(string.format("%s: piece %s slot %d, game %s (%s), after %s", what, T.hex(n.piece), n.slot, n.game_key, T.hex(n.game), dbg_strs(after)))
+              VRFW.log.info(string.format("%s: piece %s slot %d, game %s (%s), after %s%s", what, T.hex(n.piece), n.slot, n.game_key, T.hex(n.game), dbg_strs(after),
+                d.after_won and (" won at difficulty " .. table.concat(d.after_won, ",")) or ""))
               made[#made + 1] = n
             else
               VRFW.log.error(what .. ": " .. err .. " (skipped)")
@@ -550,6 +551,16 @@ function R.install(X)
     -- prerequisites
     local after = type(d.after) == "table" and d.after or { d.after }
     if #after == 0 then return nil, "`after` names no piece" end
+    -- `after_won`: the difficulties whose clear counts as won for each board piece of `after` (default { 2 }, the
+    -- route-open clear); a route node of `after` keeps its own (its route-open clear and its shown difficulties)
+    local after_won = d.after_won
+    if after_won ~= nil then
+      if type(after_won) ~= "table" or #after_won == 0 then return nil, "`after_won` must list at least one difficulty" end
+      for _, x in ipairs(after_won) do
+        if type(x) ~= "number" or x < 1 or x % 1 ~= 0 then return nil, "`after_won`: " .. tostring(x) .. " is not a difficulty" end
+      end
+    end
+    local native_won = true   -- every board-piece prerequisite counts its route-open clear (the native unlock link's)
     local parents, parent_pieces = {}, {}
     for _, a in ipairs(after) do
       local p, e = X.node_piece_ref(a, m, made)
@@ -560,11 +571,22 @@ function R.install(X)
       local r, F = rf()
       local sfi = X.slot_of_piece(p, r:u32(F.pl, i, F.p_sfi) or 0, made)
       local won = { 2 }
+      local is_node = false
       for _, n in ipairs(made) do
         if n.piece == p then
+          is_node = true
           for _, x in ipairs(n.difficulties) do if x ~= 2 then won[#won + 1] = x end end
           break
         end
+      end
+      if after_won ~= nil and not is_node then
+        won = {}
+        local has_open = false
+        for _, x in ipairs(after_won) do
+          won[#won + 1] = x
+          if x == 2 then has_open = true end
+        end
+        if not has_open then native_won = false end
       end
       parents[#parents + 1] = { sfi, won }
       parent_pieces[#parent_pieces + 1] = p
@@ -967,7 +989,9 @@ function R.install(X)
       X.push_text(m, nil, { table = "menu_text", id = locked_guide, variant = 0, texts = texts, add = true, origin = what .. ": locked board label" })
       VRFW.log.info(what .. ": drawn while closed (its balloon: the locked title)")
     end
-    local linked = #parent_pieces == 1
+    -- the native unlock link opens the node on the parent's route-open clear: only when that clear counts as won (else
+    -- the graft opens it, with the open effect, after the clear of a difficulty of `after_won`: VRFW_RN_Sync)
+    local linked = #parent_pieces == 1 and native_won
     r, F = rf()
     if not r then return nil, F end
     -- icon row

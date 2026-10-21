@@ -25,13 +25,14 @@ game = "Duel.Manager"
 # f32 GetFoulRate(const FoulRequest* req) 0x1665B90: the chance that a contact is a foul. req +0 the kind (1 = a duel),
 # +4 the offender's handle, +8 the victim's. In a duel the game reads the duel's result kind: 6 (a power charge /
 # power block) = focusFoulBaseRatePowerAction (0.15) x the offender's foul-rate passives; 0 when he is immune.
-# Prologue: mov rax,rsp; sub rsp,0F8h; mov rdx,[rip+x] = 17 bytes (the RIP operand relocated).
+# Prologue: mov rax,rsp; sub rsp,0F8h; mov rdx,[rip+x] = 17 bytes (the RIP operand relocated). The saved XMM
+# registers after it are wildcards: the same function on v7.1.2 and v7.2.1 (0x169A310).
 # Post: scripts\legendary_match.lua answers config [legendary_match] rival_power_action_foul_rate for the rival's
 # power actions (the scripts run only for a duel foul with a non-zero chance).
 [[VRFW.Hook]]
 name = "LegendaryMatch.FoulRate"
 kind = "function"
-pattern = "48 8B C4 48 81 EC F8 00 00 00 48 8B 15 ?? ?? ?? ?? 44 0F 29 5C 24 70 44 0F 29 64 24 60 45 0F 57 E4 48 89 58 10 8B 59 04"
+pattern = "48 8B C4 48 81 EC F8 00 00 00 48 8B 15 ?? ?? ?? ?? 44 0F 29 5C 24 70 44 0F 29 ?? 24 ?? 45 0F 57 ?? 48 89 58 10 8B 59 04"
 rva = 0x1665B90
 steal = 17
 relocs = [{ at = 13, next = 17 }]

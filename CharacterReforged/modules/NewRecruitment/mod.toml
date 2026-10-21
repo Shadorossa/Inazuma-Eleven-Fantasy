@@ -2,13 +2,13 @@ id = "new_recruitment"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "New Recruitment"
-version = "1.0.11"
+version = "1.1.7"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove the duplicate players of the current save (never a card the club cannot release, which is always the copy kept). The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) the Tab shortcut of the Chronicle board and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
+description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove the duplicate players of the current save (never a card the club cannot release, which is always the copy kept). The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) the Tab shortcut of the Chronicle board and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The recruitment office («Oficina de fichajes», the Mercado bar of «El atrio de los indomables»): every team you have beaten has a page in it, and its players are signed for «fichas» (the element spirits of their element) at the old office's prices and levels (its requirements, players at a level, items, trial matches, are kept but off: config.toml [office] requirements; the trials stay playable), shown as the team's lineup on a pitch; a signed player can be released («Dimitir», fichas back), one page per character, built from the game's own teams and matches. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-19"
+updated = "2026-10-21"
 # This mod's own names (TOML keys [NewRecruitment.X], Lua NewRecruitment.X); never VRFW.
 prefix = "NewRecruitment"
 folder = "NewRecruitment"
@@ -50,18 +50,40 @@ folder = "NewRecruitment"
 #                                     Reforged's scripts\save_tools.lua (script = "character_reforged:save_tools.lua") with
 #                                     this module's duplicate rule; a card the bank cannot retire or that did not join
 #                                     by signing is never released
+#   content\contact_maps\office.toml   [[VRFW.ContactSet]] office: the recruitment office (VR-Framework contact map
+#                                     screen; [VRFW.ContactMap.Teams] team pages built from the game's Chronicle routes and
+#                                     «Competir contra bots» matches; fichas, refund, trial friendly, fallback price tiers;
+#                                     docs/game/mods/new-recruitment-office.md)
+#   content\contact_maps\office_terms.toml   GENERATED (research/scripts/new_recruitment_office_terms.py): every
+#                                     card's level, price in fichas, page, requirements and trials as the old office had them
+#   config.toml                        [office] requirements (default false: the office asks only the price)
+#   content\friendlies\office_trial.toml   the trial friendly («Prueba»), passed per card (office.{tag}.{sub})
+#   content\shop_redirects\office.toml + text\rows\shop_text.toml   the Mercado bar of «El atrio de los indomables»
+#                                     (0x66B2F9E6, no player sold any more) opens the office and reads «Oficina de fichajes»
+#   text\rows\menu_text.toml   the office's titles
 # Saved state: none under this mod's id. The pending spirit recruits are loader UI flags whose key names were kept from
 # No More Rarities (no_more_rarities_spirit_pending*), so recruits noted before the split still happen; the on-load
 # backup blobs are Character Reforged's. No save import is needed.
 # vr_framework 2.4.32: [VRFW.DropList.Spirits]; 2.4.36: the slot_duplicate event; 2.4.40: the save tools.
 # character_reforged 1.7.8: the duplicate rules' apply_on_load.
+# 1.1.4 (owner test 2026-10-20): the «Espíritu» dock row is found again when BetterUI's shortcut tiles took rows 7, 8, 9 out of the list (the list was never found: the row stayed); a not-found list is logged
+# 1.1.3 (owner 2026-10-20): the «Espíritu» row of «Plantilla de equipo» is hidden in every save (it was kept in a mode's reserved save); only the row, the spirit screen and its data stay
 # 1.0.1 (vr_framework 2.4.133: [VRFW.DropList.Spirits] ExcludeAll): no player drops in matches, no player groups in the
 # drop-rate list (owner request 2026-10-15).
 # 1.0.7: no shop sells a player spirit or a Victory crate (content\shops\no_player_spirits.toml, hide_spirits), so
 # nothing is paid for a card the stock refuses.
 # 1.0.6 (vr_framework 2.4.142: [VRFW.DropList.Spirits] AllSources): no player spirit from any source in any mode
 # (rewards, gifts, boxes, events, packs, retire); a reserved slot keeps the game's rules.
-requires = ["vr_framework>=2.4.142", "character_reforged>=1.7.8"]
+# 1.1.0 (vr_framework 2.8.42: contact map team pages, shop redirect contact_set): the recruitment office.
+# 1.1.5 (vr_framework 2.8.68: Hub = "free_match"): the office opens on the free-match team list (crests, lineup),
+# as Inazuma Fantasy's old office.
+# 1.1.2 (vr_framework 2.8.50: [VRFW.ContactSet] Requirements, staff home-page fix): config.toml [office]
+# requirements = false (owner 2026-10-20 «Quita los requisitos por ahora»): price only.
+# 1.1.1 (vr_framework 2.8.46: card terms, fichas, pitch, trials, «Dimitir», shop redirect priority): the old office's
+# terms and extras.
+# 1.1.6 (vr_framework 2.8.72): the office team page's look (content\screen_art\contact_map.toml + the atlases
+# content\images\menu\220_img\new_recruitment_office*: card plates, cost card, panel ground); the hub lists only teams with a page.
+requires = ["vr_framework>=2.8.74", "character_reforged>=1.7.8"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 

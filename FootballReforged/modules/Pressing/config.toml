@@ -1,0 +1,69 @@
+# Pressing: its settings (read by scripts\pressing.lua at the start; restart the game after a change).
+# docs/game/mods/pressing.md
+
+[pressing]
+# WHO PRESSES. Of the pressing team's outfield players (never the keeper, never the player you control, never one who
+# is winded), sorted by distance to the ball carrier: the ones within band_m of him press, at least min_players and at
+# most max_players; when fewer than min_players are within band_m, the nearest ones within range_m fill up. Nobody
+# farther than range_m presses.
+min_players = 2
+max_players = 4
+band_m = 14.0
+range_m = 32.0
+# true: the pressers run with their sprint (the game's dash: its animation and speed); false: they run at their
+# normal pace.
+sprint = true
+# how long one press order lasts without a refresh (ms); the script refreshes it every frame while the press holds.
+order_ms = 300
+# true: the pressers chase the carrier (his position at every AI decision); false: they run to where he is now.
+chase = true
+
+# THE SPRINT BAR (Aura Points 1.2.0+, resource aura_points.sprint): a player whose bar is in its «winded» state
+# (it emptied: a 5 s cooldown, Aura Points 1.3.0+) does not press, nor one below min_sprint (0..1). Without Aura Points
+# every outfield player may press.
+sprint_resource = "aura_points.sprint"
+winded_state = "winded"
+min_sprint = 0.0
+
+# THE FOCUS FIELD. "off_ball": without the ball neither team can open its focus field (your L2 presses instead; the
+# CPU presses instead); with the ball it is the game's. "off": the focus field is always the game's.
+focus_field_gate = "off_ball"
+
+# YOUR PRESS: while one of these input commands is on (their names in the game's input_ctrl). L2 on the pad (the
+# focus field's button; CMD_GO_AHEAD_HOLD = L2 held, CMD_GO_AHEAD = its first frame), Z on the keyboard (C is a press,
+# not a hold). They follow the game's «Configuración de controles».
+hold_commands = ["CMD_GO_AHEAD_HOLD", "CMD_GO_AHEAD", "CMD_CATCH_BOMB"]
+
+# THE CPU'S PRESS (the rival team, and your team when it plays on auto). The CPU decides every decide_ms; it starts a
+# press when one of the [[pressing.cpu_rule]] holds (every key given in a rule must hold) and its roll of the rule's
+# chance (0..1) wins; a press lasts press_ms, then it waits rest_ms before the next one.
+cpu = true
+decide_ms = 500
+press_ms = 2500
+rest_ms = 1500
+
+# THE HUD (docs/framework/ai-move.md §5, §6).
+# While the rival has the ball in open play, the L2 «¡Subid!» guide shows this sprite (the word «¡Presión!», 9
+# languages: content\images\hud\go_ahead_guide.toml, made from the text key press_hud_label); "" = the game's
+# guide.
+hud_sprite = "pressing_gtxt_action_press01"
+# The game's «¡Subid!» arrows on the pressers, pointing at the carrier, for the game's «¡Subid!» time (4 s) or until
+# their press ends: "user" (your team's pressers), "both" (the CPU's too) or "off".
+arrows = "user"
+
+# The carrier is near the CPU's goal.
+[[pressing.cpu_rule]]
+carrier_to_own_goal_max_m = 30.0
+chance = 0.8
+
+# The carrier is in the CPU's half and a CPU player is close to him.
+[[pressing.cpu_rule]]
+carrier_in_own_half = true
+nearest_within_m = 8.0
+chance = 0.6
+
+# Anywhere: three CPU players are close to the carrier.
+[[pressing.cpu_rule]]
+ready_within_m = 12.0
+ready_count = 3
+chance = 0.35

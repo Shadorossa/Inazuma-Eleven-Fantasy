@@ -81,3 +81,10 @@ needs = ["session"]
 name = "CMND_BBD_TOURN_UNLOAD"
 handler = "BattleBayDeluxe.TournUnload"
 needs = ["session"]
+
+[[VRFW.Command]]
+# -> true: the tournament match just lost / drawn is a group-stage match that leaves the player in the run (the
+# game-over telop is skipped: graft bb_tournament bbt_over.lua); false: the defeat ends the run, or no tournament match
+name = "CMND_BBD_TOURN_STILL_IN"
+handler = "BattleBayDeluxe.TournStillIn"
+needs = ["session"]

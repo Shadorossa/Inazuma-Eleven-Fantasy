@@ -6,3 +6,22 @@
 # assets/sound/<ja|en>/<cue>.p3lip), one per length; `{tenths}` = the length in tenths of a second. A line takes the
 # shortest length that covers it (about 13 characters a second).
 lip = { cue = "ev40_bbd_lip_{tenths}", seconds = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0] }
+
+# Retail lines (docs/framework/bb-prematch.md «Retail lines»; the mechanism is the VR-Framework's): a team of this mod
+# has no BB talk of its own, so its captain speaks a line the game already has for him, with its voice and his pose,
+# instead of the default line. Sources, in this order: the captain also leads a retail Battle Bay team (that team's
+# own line, voice and pose); a line he speaks in the Chronicle pre-match talk of a match against his own team; in any
+# Chronicle pre-match talk; in any other Chronicle talk he is cast in. A side with none keeps the default line.
+[bb_talk.retail]
+sources = ["bb_captain", "pre_match_own", "pre_match", "chronicle"]
+# The voiced lines of these sources get their voice (copied at start into the talks' voice bank, about 70 KB each);
+# a `chronicle` line keeps the silent lip cue (its voice is not copied: too many characters).
+voice_sources = ["pre_match_own", "pre_match"]
+# The filters read the English text: no tag (a `<...>` names another character), no question, at most 2 rows and
+# 90 characters, at least 10; a voiced line and a line ending in «!» (a greeting or a challenge) come first.
+reject = ["<", "?"]
+prefer_end = ["!"]
+prefer_voiced = true
+max_rows = 2
+max_chars = 90
+min_chars = 10

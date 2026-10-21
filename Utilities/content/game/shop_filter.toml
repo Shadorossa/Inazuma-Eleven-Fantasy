@@ -37,6 +37,29 @@ phase = "post"
 when = [{ value = "args[2]", equals = 160 }, { value = "args[3]", equals = 178 }]
 value = "17"
 
+# The same answer where the shop list view asks the tab of a row elsewhere: its tab list (0x118BEF0; without it the
+# mode change rows also put a «Tiques» tab in the list, empty when the shop sells no ticket) and its «new» marks
+# (0x118A330: the mark goes on the aura tab's plate).
+[[VRFW.Hook]]
+name = "ShopTabListOf"
+game = "Shop.TabListOf"
+kind = "call"
+
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [{ value = "args[2]", equals = 160 }, { value = "args[3]", equals = 178 }]
+value = "17"
+
+[[VRFW.Hook]]
+name = "ShopNewMarkTabOf"
+game = "Shop.NewMarkTabOf"
+kind = "call"
+
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [{ value = "args[2]", equals = 160 }, { value = "args[3]", equals = 178 }]
+value = "17"
+
 # slot, inv, t1, v1, o1, … -> ok (no triples = that slot's filter removed)
 [[VRFW.Command]]
 name = "CMND_UTIL_SHOP_FILTER_SET"

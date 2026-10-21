@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Zennihon Youth A (IE2, «Hakuren's Coach's route» #8; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Zennihon_Youth_A
+[[team]]
+name = "ct_wk_zennihon_youth_a"
+key = "evt_ct_wk_zennihon_youth_a"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Doryoku no Wear, not a VR kit)
+level = 70
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x6EC181ED, slot = 0, number = 1, rarity_step = 1 }, # Kakita Taishou = Crane Kik (GK)
+  { card = 0xF297F4DE, slot = 1, number = 2, rarity_step = 1 }, # Makiya Hiroshi = Mark Hillvalley (DF)
+  { card = 0xB95B1EAB, slot = 2, number = 3, rarity_step = 1 }, # Kousaka Jin = Jim Hillfort (DF)
+  { card = 0x50B47694, slot = 3, number = 4, rarity_step = 1 }, # Shishiou Kou = Leonard O'Shea (DF)
+  { card = 0xA245B60E, slot = 4, number = 5, rarity_step = 1 }, # Otomura Gakuya = Cadence Soundtown (MF)
+  { card = 0xF59E5C02, slot = 5, number = 6, rarity_step = 1 }, # Muteki Hideo = Walter Valiant (MF)
+  { card = 0x4E2373F7, slot = 6, number = 7, rarity_step = 1 }, # Demete Yutaka = Jonas Demetrius (FW)
+  { card = 0x055C719C, slot = 7, number = 8, rarity_step = 1 }, # Megane Kakeru = William Glass (FW)
+  { card = 0x759C0EF5, slot = 8, number = 9, rarity_step = 1 }, # Fudou Akio = Caleb Stonewall (MF)
+  { card = 0x02E4DD1D, slot = 9, number = 10, rarity_step = 1, captain = true }, # Ichinose Kazuya = Erik Eagle (MF)
+  { card = 0x430EC21A, slot = 10, number = 11, rarity_step = 1 }, # Kiyama Hiroto = Xene (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_zennihon_youth.png" # remastered crest of the wiki's Zennihon Youth emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Selección Juvenil A"
+short = "Selección Juvenil A"
+[team.text.en]
+name = "National Youth A"
+short = "National Youth A"
+[team.text.ja]
+name = "全日本ユースＡ"
+short = "全日本ユースＡ"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_zennihon_youth_a"
+card_moves = 4

@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Living Shots» (shot_fx): the flight of Desfile de pingüinos (Royal Penguin Parade, whs10100).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_10100 c0400 runs 73 m along +Z at 0.5-2.1 m (1.2 m at the cut's
+# end), level on the whole.
+# Flight (owner rules 2026-10-21: never curved; a low shot keeps its own start): one straight line from 1.2 m at the
+# kick into 2.0 m at the goal. unblockable = false: the game's block rules (shot_fx changes no block rule).
+
+# Desfile de pingüinos (whs10100).
+[[edit]]
+target = "whs10100"
+trajectory = { points = [[0.0, 1.2]], goal_points = [[0.0, 2.0]], unblockable = false }

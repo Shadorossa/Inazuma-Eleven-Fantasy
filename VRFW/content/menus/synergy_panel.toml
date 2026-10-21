@@ -26,3 +26,17 @@ add_layer = { name = "vrfw_syn_face", object = "team16_03_synergy_chara_conditio
 [[patch]]
 menu = "equip_synergy_menu"
 add_layer = { name = "vrfw_syn_icon", object = "team16_03_synergy_chara_condition_list", count = 24, groups = [{ group = "equip_synergy_menu_list", flags = [0, 0, 0, 0, 1, 0] }] }
+
+# The same three layers in the Mercado (menu shop_menu, group shop_menu_buy): its synergy panel uses the same rows
+# (lua\synergy\shop_menu_buy\310_synergy_shop.lua).
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "vrfw_syn_crest", object = "vrfw_emblem_tile", count = 18, groups = [{ group = "shop_menu_buy", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "vrfw_syn_face", object = "team16_03_synergy_chara_condition_list", count = 30, groups = [{ group = "shop_menu_buy", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "vrfw_syn_icon", object = "team16_03_synergy_chara_condition_list", count = 24, groups = [{ group = "shop_menu_buy", flags = [0, 0, 0, 0, 1, 0] }] }

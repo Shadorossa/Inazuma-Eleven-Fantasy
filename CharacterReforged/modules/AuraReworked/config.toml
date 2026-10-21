@@ -38,10 +38,12 @@ spin_rows_per_s = 12
 # a second reel waits at most this many (a rival's rolls are never shown)
 queue = 2
 
-# The level-up pop (graft souls_rework_level_pop): a small plate of the totem's colour with «+Nv.2» (text key
-# aura_reworked.level_pop, {level} = the new level) on it, over the player's head, following him: it pops in, stays,
-# then rises and fades out. Hidden while a cut-in or a match scene plays (the framework's cutin_start / cutin_end); it
-# shows again after the scene only while its time is not over. Seconds; sizes in layout units of a 1920 x 1080 screen.
+# The level-up pop (graft souls_rework_level_pop): a small speech bubble over the player's head with «+Nv.2» (text key
+# aura_reworked.level_pop, {level} = the new level), its tail pointing down to the head, following him: it pops in,
+# stays, then rises and fades out. Its colours are those of the aura type (totem, keshin, armed, miximax, …: the type's
+# own icon of the game, research/scripts/souls_rework_bubble_build.py). Hidden while a cut-in or a match scene plays
+# (the framework's cutin_start / cutin_end); it shows again after the scene only while its time is not over. Seconds;
+# sizes in layout units of a 1920 x 1080 screen.
 [souls.level_pop]
 # false: no pop
 show = true
@@ -51,19 +53,25 @@ appear_s = 0.15
 # how long it stays over the player at full size (owner 2026-10-19: 3 s longer than the first 1.0)
 hold_s = 4.0
 out_s = 0.4
-# the plate's height (its width and its text follow at the same scale: the retail telop plate with its own text) and
-# the gap between the head and the plate's bottom
-height = 36
-lift = 24
+# the bubble: body height, tail height (the tail tip is `lift` above the head) and the text's scale (1 = the retail
+# telop's text size)
+body_height = 28
+tail_height = 8
+lift = 10
+text_scale = 0.45
+# room left and right of the text inside the body
+pad_x = 8
+# the body widths drawn for each aura type (the narrowest that holds the text is used); the sprites are made from this
+# list by research/scripts/souls_rework_bubble_build.py: run it again after a change
+bubble_widths = [36, 40, 44, 49, 54, 60, 66, 73, 80, 88, 97, 107, 118]
+# a character's width at text scale 1, used only when the game does not measure the text
+char_width = 24
+# moves the text up (+) or down (-) inside the body
+text_offset_y = 0
 # the text's colour markup around it ({text}; font_color tags: [CW] white ... [C] reset)
 text_markup = "[CW]{text}[C]"
 # how far it rises while it fades out
-rise = 40
-# the plate's colour = the colour of the totem's element (aura_skill_config column 8: 1 wind, 2 forest, 3 fire,
-# 4 mountain, 5 void), measured as the mean colour of the game's element move plates cmd_base_sp01..05 (soccer11_09);
-# neutral = cmd_base_sp06, for an element outside the list
-element_colors = ["#0080BD", "#38A530", "#C03622", "#B07222", "#7520AD"]
-neutral_color = "#8B8B8B"
+rise = 24
 
 # How a totem gains level points (LP) and levels while it is out (Galaxy's real amounts are unknown). About 4 minutes of
 # live play reach level 5 without duels; each duel won is 15 s of play, a goal 30 s.

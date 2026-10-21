@@ -1,0 +1,302 @@
+schema = "VRFW.editor/1"
+# Aura Reworked (All Miximaxed): the ModManager editors of the miximax look (docs/framework/modmanager-editor-schemas.md).
+# ModManager reads this file and builds its «Miximax palettes» page from it (Section = "miximax_look": the framework's
+# miximax look view, with the 3D simulation of base, partner and result):
+#   miximax_palettes  the per-character colours of the generated look ([[VRFW.MiximaxPalette]], every mod's files:
+#                     Merge = "by_key" merges them by character in load order; an edit goes back into the last mod
+#                     that declares that character, else into New of the ACTIVE MOD)
+#   ideal_miximax     custom fusions: a base, a partner and, optionally, a fixed look or the pieces changed over the
+#                     generated look ([[transform]] kind = "miximax" in this mod's content\transforms\ideal_miximax.toml)
+# Read only by ModManager: the game does not read content\editor\.
+
+[[Editor]]
+Id = "miximax_palettes"
+Title = { en = "Miximax palettes", es = "Paletas de miximax" }
+Help = { en = "Each character's colours in the generated miximax look: as a partner he gives them to the base, as a base his own are replaced.", es = "Los colores de cada personaje en el aspecto generado del miximax: como compañero se los da a la base, como base se cambian los suyos." }
+Section = "miximax_look"
+Files = ["content/miximax_palettes/**/*.toml"]
+Table = "VRFW.MiximaxPalette"
+Key = "character"
+Shape = "miximax_palette"
+New = "content/miximax_palettes/edits.toml"
+Merge = "by_key"
+  # the page's own words (the miximax look view), by text key
+  [Editor.Texts]
+  "mxp.search" = { en = "Search a player…", es = "Buscar un jugador…" }
+  "mxp.view.all" = { en = "All", es = "Todos" }
+  "mxp.view.with" = { en = "With palette", es = "Con paleta" }
+  "mxp.view.without" = { en = "Without palette", es = "Sin paleta" }
+  "mxp.view.edited" = { en = "Edited", es = "Editados" }
+  "mxp.count" = { en = "{0} players", es = "{0} jugadores" }
+  "mxp.kicker" = { en = "Miximax palette · {0}", es = "Paleta de miximax · {0}" }
+  "mxp.no_palette" = { en = "This player has no palette: as a partner he gives no colours and as a base he does not change.", es = "Este jugador no tiene paleta: como compañero no da colores y como base no cambia." }
+  "mxp.new" = { en = "＋ New", es = "＋ Nuevo" }
+  "mxp.new_help" = { en = "A palette for this player in the ACTIVE MOD (the game's face and skin; the rest blank or copied from another player)", es = "Una paleta para este jugador en MOD ACTIVO (cara y piel del juego; el resto, en blanco o copiado de otro jugador)" }
+  "mxp.pick_active_mod" = { en = "Pick an ACTIVE MOD to edit: palettes are saved into it.", es = "Elige un MOD ACTIVO para editar: las paletas se guardan en él." }
+  "mxp.from" = { en = "From {0} ({1})", es = "De {0} ({1})" }
+  "mxp.loads_before" = { en = "{0} loads before {1}: {1}'s palette wins in the game", es = "{0} carga antes que {1}: la paleta de {1} gana en el juego" }
+  "mxp.none" = { en = "No colour", es = "Sin color" }
+  "mxp.inherited" = { en = "(from an earlier mod)", es = "(de un mod anterior)" }
+  "mxp.original" = { en = "Original: {0}", es = "Original: {0}" }
+  "mxp.head" = { en = "Face texture", es = "Textura de la cara" }
+  "mxp.head_help" = { en = "The face texture recoloured (_face/<series>/<id>/<id>.g4tx)", es = "La textura de la cara que se recolorea (_face/<serie>/<id>/<id>.g4tx)" }
+  "mxp.id" = { en = "Id", es = "Id" }
+  "mxp.id_help" = { en = "The character's id (0x…) when it is not the crc32 of its name (mod characters); empty = the name's", es = "El id del personaje (0x…) cuando no es el crc32 de su nombre (personajes de mods); vacío = el del nombre" }
+  "mxp.preview" = { en = "Preview", es = "Vista previa" }
+  "mxp.preview_help" = { en = "Each colour in shadow, base tone and light, as the recolour uses it", es = "Cada color en la sombra, el tono base y la luz, como lo usa el recoloreado" }
+  "mxp.copy_from" = { en = "Copy palette from…", es = "Copiar paleta de…" }
+  "mxp.copy_search" = { en = "Search the player to copy from", es = "Buscar el jugador del que copiar" }
+  "mxp.copy_done" = { en = "Colours copied from {0}", es = "Colores copiados de {0}" }
+  "mxp.reset" = { en = "Reset to original", es = "Restablecer original" }
+  "mxp.reset_help" = { en = "Back to the saved palette (drops this player's unsaved changes)", es = "Vuelve a la paleta guardada (descarta los cambios sin guardar de este jugador)" }
+  "mxp.use_lower" = { en = "Use {0}'s", es = "Usar la de {0}" }
+  "mxp.use_lower_help" = { en = "The palette {0} gives without the ACTIVE MOD's change", es = "La paleta que da {0} sin el ajuste de MOD ACTIVO" }
+  "mxp.nothing_changed" = { en = "Nothing changed.", es = "No hay cambios." }
+  "mxp.bad_save" = { en = "The saved file would not read back: {0}", es = "El archivo guardado no se leería bien: {0}" }
+  "mxp.problems_n" = { en = "{0} WARNINGS", es = "{0} AVISOS" }
+  "mxp.entries_n" = { en = "{0} palettes", es = "{0} paletas" }
+  "mxp.no_head" = { en = "The face texture is missing: without it the game does not apply the palette", es = "Falta la textura de la cara: sin ella el juego no aplica la paleta" }
+  "mxp.tab.simulation" = { en = "Simulation", es = "Simulación" }
+  "mxp.tab.parts" = { en = "Parts", es = "Partes" }
+  "mxp.frame.body" = { en = "Body", es = "Cuerpo" }
+  "mxp.frame.head" = { en = "Head", es = "Cabeza" }
+  "mxp.eye" = { en = "Eyedropper", es = "Cuentagotas" }
+  "mxp.eye_help" = { en = "Pick a palette colour and click the model, a mini face or a texture: that pixel goes into this player's chosen colour", es = "Elige un color de la paleta y pulsa en el modelo, una minicara o una textura: ese píxel pasa al color elegido de este jugador" }
+  "mxp.eye.off" = { en = "Off", es = "Apagado" }
+  "mxp.eye.done" = { en = "{0} copied into {1}", es = "{0} copiado a {1}" }
+  "mxp.sim.base" = { en = "Base", es = "Base" }
+  "mxp.sim.partner" = { en = "Partner", es = "Pareja" }
+  "mxp.sim.result" = { en = "Miximax", es = "Miximax" }
+  "mxp.sim.swap" = { en = "Swap base and partner", es = "Intercambiar base y pareja" }
+  "mxp.sim.no_partner" = { en = "pick a partner", es = "elige una pareja" }
+  "mxp.sim.this_base" = { en = "This player as the base", es = "Este jugador como base" }
+  "mxp.sim.search" = { en = "Search the base or the partner…", es = "Buscar la base o la pareja…" }
+  "mxp.sim.as_base" = { en = "Base", es = "Base" }
+  "mxp.sim.as_partner" = { en = "Partner", es = "Pareja" }
+  "mxp.sim.carried" = { en = "The partner's accessories in the miximax: {0}", es = "Accesorios de la pareja en el miximax: {0}" }
+  "mxp.sim.skipped" = { en = "Accessories left out: {0} (empty, already worn or no free slot)", es = "Accesorios que no entran: {0} (vacío, ya lo lleva o sin hueco libre)" }
+  "mxp.sim.help" = { en = "As in the game: the base's model with his face texture recoloured with the partner, the partner's body skin and his marked accessories. Drag to turn, wheel to zoom, double-click to centre.", es = "Como en el juego: el modelo de la base con su textura de cara recoloreada con la pareja, la piel del cuerpo de la pareja y sus accesorios marcados. Arrastra para girar, rueda para acercar, doble clic para centrar." }
+  "mxp.sim.no_palettes" = { en = "The base and the partner need a palette", es = "La base y la pareja necesitan paleta" }
+  "mxp.sim.no_head" = { en = "The base's palette has no face texture", es = "La base no tiene textura de cara en su paleta" }
+  "mxp.section.hair" = { en = "Hair", es = "Pelo" }
+  "mxp.section.face" = { en = "Face", es = "Cara" }
+  "mxp.section.iris" = { en = "Eyes", es = "Ojos" }
+  "mxp.section.skin" = { en = "Body skin", es = "Piel del cuerpo" }
+  "mxp.section.accessory" = { en = "Accessory", es = "Accesorio" }
+  "mxp.parts.texels" = { en = "{0}: {1} texels", es = "{0}: {1} píxeles de textura" }
+  "mxp.parts.none_found" = { en = "none: check that colour", es = "ninguno: revisa ese color" }
+  "mxp.parts.textures" = { en = "Face textures", es = "Texturas de la cara" }
+  "mxp.parts.textures_help" = { en = "Left, the game's texture (the eyedropper copies the exact texel); right, what each palette part recolours", es = "Izquierda, la textura del juego (el cuentagotas copia el píxel exacto); derecha, lo que recolorea cada parte de la paleta" }
+  "mxp.parts.meshes" = { en = "Model meshes", es = "Mallas del modelo" }
+  "mxp.parts.meshes_help" = { en = "Hover a mesh to see it alone on the model", es = "Pasa el ratón por una malla para verla sola en el modelo" }
+  "mxp.parts.mesh" = { en = "Mesh", es = "Malla" }
+  "mxp.parts.texture" = { en = "Texture", es = "Textura" }
+  "mxp.parts.section" = { en = "Part", es = "Parte" }
+  "mxp.parts.accessory" = { en = "Accessories", es = "Accesorios" }
+  "mxp.parts.kind.head" = { en = "head", es = "cabeza" }
+  "mxp.parts.kind.extra" = { en = "extra piece", es = "pieza extra" }
+  "mxp.parts.kind.skin" = { en = "skin", es = "piel" }
+  "mxp.parts.not_tinted" = { en = "not recoloured", es = "no se recolorea" }
+  "mxp.parts.mark" = { en = "To the miximax", es = "Al miximax" }
+  "mxp.parts.carried_help" = { en = "An extra piece of the model: as a partner, the miximax puts it on the base (in a free extra-piece slot)", es = "Pieza extra del modelo: como pareja, el miximax se la pone a la base (en un hueco de pieza extra libre)" }
+  "mxp.parts.head_mesh_help" = { en = "A head mesh: marked and shown here, but the game cannot carry it into the miximax yet (the head is the base's)", es = "Malla de la cabeza: se marca y se ve aquí, pero el juego aún no puede llevarla al miximax (la cabeza es la de la base)" }
+  "mxp.parts.tint" = { en = "Colour", es = "Color" }
+  "mxp.parts.tint_help" = { en = "A colour for the accessory: saved, not applied by the game yet", es = "Un color para el accesorio: se guarda, pero el juego aún no lo aplica" }
+  "mxp.parts.runtime_note" = { en = "In the game: the marked extra pieces go into the miximax; head meshes and the accessory colour are saved, pending.", es = "En el juego: las piezas extra marcadas pasan al miximax; las mallas de la cabeza y el color del accesorio quedan guardados, pendientes." }
+  "mxp.parts.head_differs" = { en = "The palette recolours {0}, but the model uses {1}: the miximax draws the model's head with the palette's texture", es = "La paleta recolorea {0}, pero el modelo usa {1}: el miximax dibuja la cabeza del modelo con la textura de la paleta" }
+
+[[Editor]]
+Id = "ideal_miximax"
+Title = { en = "Ideal miximax", es = "Miximax ideales" }
+Help = { en = "Your own fusions of this player as the base: pick the partner and, if you want, a fixed look (another character's whole model). Without a fixed look the fusion uses the generated look (the base in the partner's palette colours), and each colour and outfit piece can be changed.", es = "Tus propias fusiones con este jugador como base: elige el compañero y, si quieres, un aspecto fijo (el modelo entero de otro personaje). Sin aspecto fijo la fusión usa el aspecto generado (la base con los colores de la paleta del compañero), y cada color y pieza de ropa se puede cambiar." }
+Section = "miximax_look"
+Files = ["content/transforms/ideal_miximax.toml"]
+Table = "transform"
+Key = "name"
+Shape = "ideal_miximax"
+New = "content/transforms/ideal_miximax.toml"
+  # a new fusion: fired by this mod's miximax carrier (the «Create miximax» row), like the generated ones
+  [Editor.Template]
+  kind = "miximax"
+  command = "wmm_evt"
+  [Editor.Texts]
+  "mxp.ideal.none" = { en = "No ideal miximax of this player yet.", es = "Este jugador aún no tiene miximax ideales." }
+  "mxp.ideal.new" = { en = "+ New ideal miximax", es = "+ Nuevo miximax ideal" }
+  "mxp.ideal.new_help" = { en = "A new fusion with this player as the base, in this mod's file", es = "Una fusión nueva con este jugador como base, en el archivo de este mod" }
+  "mxp.ideal.preview" = { en = "See in 3D", es = "Ver en 3D" }
+  "mxp.ideal.preview_help" = { en = "Shows this fusion in the Simulation tab", es = "Muestra esta fusión en la pestaña Simulación" }
+  "mxp.ideal.fixed" = { en = "Fixed look: {0}", es = "Aspecto fijo: {0}" }
+  "mxp.ideal.pending" = { en = "A fixed look is one whole model. Without it, the hair, skin and eye colours and the clothes, shoes and gloves chosen here change the generated look (in a match the team kit is still drawn over the clothes).", es = "Un aspecto fijo es un modelo entero. Sin él, los colores de pelo, piel y ojos y la ropa, las botas y los guantes elegidos aquí cambian el aspecto generado (en un partido la equipación del equipo se sigue viendo encima de la ropa)." }
+  "mxp.ideal.shown" = { en = "Fusion {0}", es = "Fusión {0}" }
+
+# ---------------------------------------------------------------------------------------------------- shapes
+
+[[Shape]]
+Id = "miximax_palette"
+  [[Shape.Field]]
+  Key = "character"
+  Type = "ref"
+  Ref = "character"
+  Required = true
+  Label = { en = "Character", es = "Personaje" }
+  [[Shape.Field]]
+  Key = "id"
+  Type = "string"
+  Label = { en = "Id", es = "Id" }
+  Help = { en = "The character's id (0x…) when it is not the crc32 of its name (mod characters); empty = the name's", es = "El id del personaje (0x…) cuando no es el crc32 de su nombre (personajes de mods); vacío = el del nombre" }
+  More = true
+  [[Shape.Field]]
+  Key = "head"
+  Type = "string"
+  Label = { en = "Face texture", es = "Textura de la cara" }
+  Help = { en = "The face texture recoloured (_face/<series>/<id>/<id>.g4tx)", es = "La textura de la cara que se recolorea (_face/<serie>/<id>/<id>.g4tx)" }
+  [[Shape.Field]]
+  Key = "hair"
+  Type = "colour"
+  Label = { en = "Hair", es = "Pelo" }
+  Help = { en = "The hair colour. No colour: bald, cap or hood (not recoloured).", es = "El color del pelo. Sin color: calvo, gorra o capucha (no se recolorea)." }
+  [[Shape.Field]]
+  Key = "face"
+  Type = "colour"
+  Label = { en = "Face", es = "Cara" }
+  Help = { en = "The face skin colour (the expression atlas).", es = "El color de piel de la cara (el atlas de expresiones)." }
+  [[Shape.Field]]
+  Key = "iris"
+  Type = "colour"
+  Label = { en = "Eyes", es = "Ojos" }
+  Help = { en = "The eye colour. No colour: the eyes keep theirs.", es = "El color de los ojos. Sin color: los ojos no cambian." }
+  [[Shape.Field]]
+  Key = "skin"
+  Type = "colour"
+  Label = { en = "Body skin", es = "Piel del cuerpo" }
+  Help = { en = "The body skin colour (multiplied into the model's skin).", es = "El color de piel del cuerpo (se multiplica sobre la piel del modelo)." }
+  [[Shape.Field]]
+  Key = "accessories"
+  Type = "list"
+  Of = "accessory"
+  Label = { en = "Accessories", es = "Accesorios" }
+
+[[Shape]]
+Id = "accessory"
+  [[Shape.Field]]
+  Key = "piece"
+  Type = "string"
+  Required = true
+  Label = { en = "Piece", es = "Pieza" }
+  [[Shape.Field]]
+  Key = "color"
+  Type = "colour"
+  Label = { en = "Colour", es = "Color" }
+  Help = { en = "A colour for the accessory: saved, not applied by the game yet", es = "Un color para el accesorio: se guarda, pero el juego aún no lo aplica" }
+
+[[Shape]]
+Id = "ideal_miximax"
+# the 3D preview: the base, the partner and the fixed look of a record (field paths)
+Preview = { Kind = "miximax_look", Base = "users.characters", Partner = "source.partner", Look = "look.character", Pieces = "look" }
+  [[Shape.Field]]
+  Key = "name"
+  Type = "id"
+  Required = true
+  Label = { en = "Key", es = "Clave" }
+  Help = { en = "The fusion's key in this mod (aura_reworked.<key>).", es = "La clave de la fusión en este mod (aura_reworked.<clave>)." }
+  [[Shape.Field]]
+  Key = "users"
+  Type = "table"
+  Of = "ideal_miximax_base"
+  Inline = true
+  [[Shape.Field]]
+  Key = "source"
+  Type = "table"
+  Of = "ideal_miximax_partner"
+  Inline = true
+  [[Shape.Field]]
+  Key = "look"
+  Type = "table"
+  Of = "ideal_miximax_look"
+  Inline = true
+  [[Shape.Field]]
+  Key = "command"
+  Type = "string"
+  Label = { en = "Carrier", es = "Portador" }
+  Help = { en = "The aura command that fires the fusion (wmm_evt: this mod's «Create miximax» carrier).", es = "El comando de aura que activa la fusión (wmm_evt: el portador «Crear miximax» de este mod)." }
+  More = true
+
+[[Shape]]
+Id = "ideal_miximax_base"
+  [[Shape.Field]]
+  Key = "characters"
+  Type = "list"
+  Of = "ref"
+  Ref = "character"
+  Required = true
+  Label = { en = "Base", es = "Base" }
+  Help = { en = "The player (or players) who get this fusion.", es = "El jugador (o jugadores) que reciben esta fusión." }
+
+[[Shape]]
+Id = "ideal_miximax_partner"
+  [[Shape.Field]]
+  Key = "partner"
+  Type = "ref"
+  Ref = "character"
+  Required = true
+  Label = { en = "Partner", es = "Compañero" }
+
+[[Shape]]
+Id = "ideal_miximax_look"
+  [[Shape.Field]]
+  Key = "character"
+  Type = "ref"
+  Ref = "character"
+  Label = { en = "Fixed look", es = "Aspecto fijo" }
+  Help = { en = "This character's whole model as the fusion's look. Empty: the generated look (the base in the partner's palette colours).", es = "El modelo entero de este personaje como aspecto de la fusión. Vacío: el aspecto generado (la base con los colores de la paleta del compañero)." }
+  [[Shape.Field]]
+  Key = "hair"
+  Type = "ref"
+  Ref = "character"
+  Colour = true
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Hair colour", es = "Color del pelo" }
+  Help = { en = "Empty or Partner's: the partner's hair colour (the generated look). Base's own: not recoloured. A colour, or a character: his hair colour (from his miximax palette).", es = "Vacío o Del compañero: el color de pelo del compañero (el aspecto generado). Propio de la base: no se recolorea. Un color, o un personaje: su color de pelo (de su paleta de miximax)." }
+  [[Shape.Field]]
+  Key = "skin"
+  Type = "ref"
+  Ref = "character"
+  Colour = true
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Skin colour", es = "Color de piel" }
+  Help = { en = "The body and face skin. Empty or Partner's: the partner's skin. Base's own: unchanged. A colour, or a character: his skin.", es = "La piel del cuerpo y de la cara. Vacío o Del compañero: la piel del compañero. Propio de la base: sin cambios. Un color, o un personaje: su piel." }
+  [[Shape.Field]]
+  Key = "iris"
+  Type = "ref"
+  Ref = "character"
+  Colour = true
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Eye colour", es = "Color de ojos" }
+  Help = { en = "Empty or Partner's: the partner's eye colour. Base's own: unchanged. A colour, or a character: his eye colour.", es = "Vacío o Del compañero: el color de ojos del compañero. Propio de la base: sin cambios. Un color, o un personaje: su color de ojos." }
+  [[Shape.Field]]
+  Key = "clothes"
+  Type = "ref"
+  Ref = "character"
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Clothes", es = "Ropa" }
+  Help = { en = "Empty or Base's own: the base's clothes. Partner's, or a character: his clothes. In a match the team kit is drawn over them.", es = "Vacío o Propio de la base: la ropa de la base. Del compañero, o un personaje: su ropa. En un partido la equipación del equipo se ve encima." }
+  [[Shape.Field]]
+  Key = "shoes"
+  Type = "ref"
+  Ref = "character"
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Shoes", es = "Botas" }
+  Help = { en = "Empty or Base's own: the base's shoes. Partner's, or a character: his shoes.", es = "Vacío o Propio de la base: las botas de la base. Del compañero, o un personaje: sus botas." }
+  [[Shape.Field]]
+  Key = "gloves"
+  Type = "ref"
+  Ref = "character"
+  Values = ["partner", "base"]
+  ValueLabels = { partner = { en = "Partner's", es = "Del compañero" }, base = { en = "Base's own", es = "Propio de la base" } }
+  Label = { en = "Gloves", es = "Guantes" }
+  Help = { en = "Empty or Base's own: the base's gloves. Partner's, or a character: his gloves.", es = "Vacío o Propio de la base: los guantes de la base. Del compañero, o un personaje: sus guantes." }

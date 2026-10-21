@@ -35,7 +35,42 @@ function R.new(slot, seed)
     version = R.VERSION, slot = slot, seed = math.max(seed, 1), phase = 1, cur = 0, cleared = { 0 }, path = { 0 },
     phases_done = 0, squad = {}, slots = {}, formation = 0, pending = nil, hdls = {}, won = 0, lost = 0,
     rivals_rule = R.RIVALS_RULE, coach = "", coach_since = 0, coach_items_given = true, beaten = {}, beaten_phase = {},
+    items = {}, talents = {},
   }
+end
+
+-- the blocks' saved counts of an item: { [name] = number } (lib/rogue/svc_blocks.lua)
+local function counters_of(v)
+  local o = {}
+  if type(v) ~= "table" then return o end
+  for k, x in pairs(v) do
+    if type(k) == "string" and type(x) == "number" then o[k] = x end
+  end
+  return o
+end
+
+-- the run's rogue items: { { key, level, counter, matches_left, counters } } (lib/rogue/items.lua)
+local function items_of(v)
+  local o = {}
+  if type(v) ~= "table" then return o end
+  for _, x in ipairs(v) do
+    if type(x) == "table" and type(x.key) == "string" and x.key ~= "" then
+      o[#o + 1] = { key = x.key, level = math.max(U.int(x.level, 1), 1), counter = U.int(x.counter, 0),
+        matches_left = math.max(U.int(x.matches_left, 0), 0), counters = counters_of(U.val(x.counters)) }
+    end
+  end
+  return o
+end
+
+-- the talent levels of the run's players: { [bank uid] = level }
+local function talents_of(v)
+  local o = {}
+  if type(v) ~= "table" then return o end
+  for k, x in pairs(v) do
+    local uid = tonumber(k)
+    if uid and type(x) == "number" then o[uid] = math.max(U.int(x, 1), 1) end
+  end
+  return o
 end
 
 -- a parsed file -> run | nil, why (the DLL's serde rules: the first seven fields are required)
@@ -59,11 +94,24 @@ function R.from_json(j, slot)
     formation = U.int(j.formation, 0), pending = pending, hdls = list(j.hdls), won = U.int(j.won, 0),
     lost = U.int(j.lost, 0), rivals_rule = U.int(j.rivals_rule, 0), coach = type(j.coach) == "string" and j.coach or "",
     coach_since = U.int(j.coach_since, 0), coach_items_given = (items == nil) and true or (items == true),
-    beaten = strs(j.beaten), beaten_phase = strs(j.beaten_phase),
+    beaten = strs(j.beaten), beaten_phase = strs(j.beaten_phase), items = items_of(j.items), talents = talents_of(j.talents),
   }
 end
 
 function R.to_json(r)
+  local items, talents = {}, {}
+  for _, o in ipairs(r.items or {}) do
+    local names, counters = {}, {}
+    for k in pairs(o.counters or {}) do names[#names + 1] = k end
+    table.sort(names)
+    for _, k in ipairs(names) do counters[#counters + 1] = { k, o.counters[k] } end
+    items[#items + 1] = J.obj({ { "key", o.key }, { "level", o.level }, { "counter", o.counter or 0 },
+      { "matches_left", o.matches_left or 0 }, { "counters", J.obj(counters) } })
+  end
+  local uids = {}
+  for uid in pairs(r.talents or {}) do uids[#uids + 1] = uid end
+  table.sort(uids)
+  for _, uid in ipairs(uids) do talents[#talents + 1] = { string.format("%.0f", uid), r.talents[uid] } end
   local pend = nil
   if r.pending then
     local p = r.pending
@@ -77,6 +125,7 @@ function R.to_json(r)
     { "hdls", J.arr(r.hdls) }, { "won", r.won }, { "lost", r.lost }, { "rivals_rule", r.rivals_rule },
     { "coach", r.coach }, { "coach_since", r.coach_since }, { "coach_items_given", r.coach_items_given },
     { "beaten", J.arr(r.beaten) }, { "beaten_phase", J.arr(r.beaten_phase) },
+    { "items", J.arr(items) }, { "talents", J.obj(talents) },
   }))
 end
 

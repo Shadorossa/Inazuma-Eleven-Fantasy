@@ -20,6 +20,8 @@
 #   soccer_top_menu                  bbt_common.lua + bbt_top.lua + bbt_hub.lua (1.5.18): Inazuma Fantasy's «Modos de
 #                                    juego» hosts the Torneo (its tile: the panel over the bracket, the grid, the
 #                                    matches, the sync after them); the Battle Bay top menu never opens for it
+#   game_over_menu                   bbt_over.lua: the game-over telop after a group-stage defeat that keeps the player
+#                                    in the run is skipped (CMND_BBD_TOURN_STILL_IN); an eliminating defeat keeps it
 #   sub_window_group                 bbt_common.lua: Accept on a row of the Torneo's options panel (L / R window)
 #                                    changes the value in place (OnEnter; 1.5.10); 1.5.16: the panel's third L / R row (OpenWindow
 #                                    wrapped: the mod's 3-row locator evt_bbd_tn_opts_locator, row instance 3)
@@ -31,7 +33,7 @@ order = 346
 module = "lua_bridge"
 requires = ["bb_draft"]
 conflicts = []
-wraps = ["OnInit", "OnDecideFocus", "OnBack", "OnFunction", "Step", "OnEnter", "OnSetupLayer", "SetupParam", "funcLuaMenuCommand", "funcLuaCommand", "SetupListItemTexture", "OpenWindow", "SetupWindowParams"]
+wraps = ["OnInit", "OnDecideFocus", "OnBack", "OnFunction", "Step", "OnEnter", "OnSetupLayer", "SetupParam", "funcLuaMenuCommand", "funcLuaCommand", "SetupListItemTexture", "OpenWindow", "SetupWindowParams", "OnOpenLayer"]
 description = "Battle Bay: the Torneo (knockout or group stage + knockout) on the Campaña's matches, with the Victory Road bracket art"
 
 [[files]]
@@ -121,3 +123,11 @@ stem = "soccer_top_menu"
   type = "append_block"
   src = "bbt_hub.lua"
   marker = "bb_tournament hub"
+
+[[files]]
+stem = "game_over_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_over.lua"
+  marker = "bb_tournament over"

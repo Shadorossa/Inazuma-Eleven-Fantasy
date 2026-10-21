@@ -147,9 +147,7 @@ local C = {
 }
 -- the mouse (the route map's way, evt_rogue_map_menu.lua MS): hit areas from the same layout (GPOS of the instances)
 local MS = {
-  CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303, CLICK = 1651523701,
-  WHEEL_UP = 1942756954, WHEEL_DOWN = 1623431741,
-  MOVED = 3272825600, POINTER = 558229292, GPOS = 4002164178,
+  GPOS = 4002164178,          -- an instance's global position (the pointer zones: EVT_PointerNew below)
   HIT_ARROW = 50, HIT_DOT = 16,
 }
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
@@ -203,10 +201,15 @@ local list = {}        -- the grid's items: avatar records {i, id, name, team, t
 local level = "teams"
 local cur_team = nil   -- 0-based team index of the open sub-shop
 local cur_tid = 0      -- its IE3 team id
+local cur_crest = true -- its team has its own crest (CMND_EVT_RL_AVATAR_TEAM 8th value)
 local back = nil       -- {focus, cam} of the team grid
 local cache = {}       -- avatar index -> record (CMND_EVT_RL_AVATAR_LIST), cleared after a purchase
 local tex_asked = {}   -- avatar atlases already requested (CMND_LOAD_MENU_RES_TEXTURE, on demand)
 local pos = {}         -- [1..n] = {x, y}: global centres (page p is p * PAGE_W to the right)
+local grid_cell = {}   -- [1..n] = {page, row, column}: the item's place in the grid (Layout)
+local row_items = {}   -- [page][row] = {item indices left to right}
+local crest_left = {}  -- [slot] = crest redraws left (the crest atlas may still be loading when the hex is drawn)
+local CREST_RETRIES = 24
 local per, pages = 1, 1
 local tabs = {}        -- the shown tabs (TABS with ready)
 local tab = 1
@@ -232,7 +235,6 @@ local click_guard = 0
 local anim = {}        -- [item] = {fi, ft, drawn}
 local save_req = nil   -- {frames, sent}
 local evt_co = nil
-local last_ptr = nil   -- the pointer's last position (hover only when it moves)
 
 local function Log(...)
   pcall(funcLuaCommand, RL.LOG, "rogue_shop", ...)
@@ -299,7 +301,7 @@ local function Layout()
   local used_h = (rows - 1) * G.DY + G.HEX_H
   local y0 = G.AREA_Y + (G.AREA_H - used_h) / 2 + G.HEX_H / 2
   local cx = G.AREA_X + G.AREA_W / 2
-  pos = {}
+  pos, grid_cell, row_items = {}, {}, {}
   for i = 1, #list do
     local p, k = math.floor((i - 1) / per), (i - 1) % per
     local r = 0
@@ -308,6 +310,10 @@ local function Layout()
       r = r + 1
     end
     pos[i] = {p * G.PAGE_W + cx + (k - (RowLen(r) - 1) / 2) * G.DX, y0 + r * G.DY}
+    grid_cell[i] = {p, r, k}
+    row_items[p] = row_items[p] or {}
+    row_items[p][r] = row_items[p][r] or {}
+    table.insert(row_items[p][r], i)
   end
   Log("layout", cols, "cols", rows, "rows", per, "per page", pages, "pages")
 end
@@ -321,26 +327,45 @@ local function SlotOf(i)
   return (i - 1) % per
 end
 
--- keys: left / right = the nearest hex of the same row that way (across pages: the next page's edge); up / down =
--- the nearest hex of the row above / below
+-- keys: left / right = the next hex of the same row; past the row's end the same row of the next / previous page
+-- (its first / last hex; that page without the row: its last hex); up / down = the nearest hex of the row above /
+-- below on the same page (a tie: the left one); nothing past the page's top / bottom row
 local function Neighbour(i, dx, dy)
-  local x, y = pos[i][1], pos[i][2]
-  local best, bd = nil, nil
-  for j = 1, #pos do
-    if j ~= i then
-      local jx, jy = pos[j][1], pos[j][2]
-      local ok = false
-      if dx ~= 0 then
-        ok = math.abs(jy - y) < 1 and (jx - x) * dx > 0
-      else
-        ok = (jy - y) * dy > 1 and math.abs(jy - y) < G.DY * 1.5
-      end
-      if ok then
-        local d = math.abs(jx - x)
-        if bd == nil or d < bd then
-          best, bd = j, d
+  local c = grid_cell[i]
+  if c == nil then
+    return nil
+  end
+  local p, r, k = c[1], c[2], c[3]
+  if dx ~= 0 then
+    local row = row_items[p][r]
+    if row[k + 1 + dx] ~= nil then
+      return row[k + 1 + dx]
+    end
+    local q = row_items[p + dx]
+    if q == nil then
+      return nil
+    end
+    local other = q[r]
+    if other == nil then
+      local last = nil
+      for _, items in pairs(q) do
+        for _, j in ipairs(items) do
+          if last == nil or j > last then last = j end
         end
       end
+      return last
+    end
+    return dx > 0 and other[1] or other[#other]
+  end
+  local row = row_items[p][r + dy]
+  if row == nil then
+    return nil
+  end
+  local best, bd = nil, nil
+  for _, j in ipairs(row) do
+    local d = math.abs(pos[j][1] - pos[i][1])
+    if bd == nil or d < bd - 0.5 then
+      best, bd = j, d
     end
   end
   return best
@@ -364,7 +389,7 @@ local function ReadList()
   list = {}
   if level == "teams" then
     for t = 0, Int(Call(RL.TEAM, -1)) - 1 do
-      local ok, tid, tname, _, cap, n, owned = Call(RL.TEAM, t, -1)
+      local ok, tid, tname, _, cap, n, owned, crest = Call(RL.TEAM, t, -1)
       local a = ok == true and Avatar(Int(cap)) or nil
       if a ~= nil then
         local it = {}
@@ -373,13 +398,24 @@ local function ReadList()
         end
         it.kind, it.t, it.tname, it.nTotal, it.nOwned = "team", t, tname, Int(n), Int(owned)
         it.tid = Int(tid)
+        it.crest = crest ~= false            -- a catalogue without the field: every team shows its crest sprite
         it.free = it.tid == 0              -- «Jugadores libres» (no IE3 team; rogue_avatars_build.py FREE_TID)
         list[#list + 1] = it
       end
     end
+    for _, it in ipairs(list) do         -- every crest atlas of the grid requested at once, before any hex is drawn
+      if it.crest and it.tid > 0 then
+        local tex = string.format(CREST_TEX, math.floor(it.tid / G.CREST_PER))
+        if not tex_asked[tex] then
+          tex_asked[tex] = true
+          funcLuaMenuCommand(C.LOAD_TEX, tex)
+        end
+      end
+    end
   else
-    local _, tid, _, _, _, n = Call(RL.TEAM, cur_team, -1)
+    local _, tid, _, _, _, n, _, crest = Call(RL.TEAM, cur_team, -1)
     cur_tid = Int(tid)
+    cur_crest = crest ~= false
     for j = 0, Int(n) - 1 do
       local ok, i = Call(RL.TEAM, cur_team, j)
       local a = ok == true and Avatar(Int(i)) or nil
@@ -497,8 +533,10 @@ local CREST_LIT, CREST_DARK = {1, 1, 1}, {0.45, 0.45, 0.52}
 local function DrawCrest(s, a, x, y, lit)
   local k = s * N_PER_HEX + CREST_K
   local tid = a.kind == "team" and a.tid or cur_tid
-  if tid == nil or tid <= 0 then
+  local own = a.kind == "team" and a.crest or (a.kind ~= "team" and cur_crest)
+  if tid == nil or tid <= 0 or not own then        -- no crest of its own: none (no neutral shield)
     Hide(L_PRICE, k)
+    crest_left[s] = 0
     return
   end
   local tex = string.format(CREST_TEX, math.floor(tid / G.CREST_PER))
@@ -522,6 +560,14 @@ local function DrawSprite(i, force)
     return
   end
   st.drawn = cell
+  if not force and (crest_left[s] or 0) > 0 then   -- the crest again: its atlas may have loaded since
+    crest_left[s] = crest_left[s] - 1
+    local lit = a.owned
+    if a.kind == "team" then
+      lit = a.free or a.nOwned > 0 or a.avail
+    end
+    DrawCrest(s, a, pos[i][1] - cam, pos[i][2], lit)
+  end
   local box = G.BOX * G.SPR_SCALE
   local x, y = pos[i][1] - cam, pos[i][2]
   QuadTex(L_AV, s, CRC32(ShopTex(a.tex)), CRC32(string.format("%s_c%02d", a.prefix, cell)), x,
@@ -547,6 +593,7 @@ local function DrawItem(i)
     tex_asked[stex] = true
     funcLuaMenuCommand(C.LOAD_TEX, stex)
   end
+  crest_left[s] = CREST_RETRIES
   DrawCrest(s, a, x, y, lit)
   DrawPrice(s, a, x, y)
   DrawSprite(i, true)
@@ -891,84 +938,65 @@ local function SwitchTab(d)
   DrawAll()
 end
 
--- ---- the mouse (hit areas = the instances' global positions, so the same layout) ---------------------------------
-local function Pointer()
-  local mx, my = funcLuaMenuCommand(MS.POINTER)
-  if type(mx) ~= "number" or type(my) ~= "number" then
-    return nil
-  end
-  return mx, -my
-end
+-- ---- the mouse / free cursor: the shared pointer helper (docs/game/ui/mouse-support.md §5) ----------------------------
+-- zones = the drawn hexes (a DX x DY box around each instance: the staggered rows tile the grid without overlap), the
+-- page arrows, the page dots and the L2 / R2 glyphs beside them; hover by movement focuses, click decides, wheel =
+-- page. The pad / keys own the cursor until the pointer really moves (Ptr.KeyStep in the key moves): pad Aceptar never
+-- decides the hex under a resting pointer.
+--@lib evt_menu_kit.lua#Pointer
+local Ptr = EVT_PointerNew()
+local ZONE_PREV, ZONE_NEXT, ZONE_DOT = "page_prev", "page_next", "dot"
 
-local function Over(layer, idx, mx, py, w, h)
-  local gx, gy = funcLuaMenuCommand(MS.GPOS, layer, idx)
-  return type(gx) == "number" and math.abs(mx - gx) <= w and math.abs(py - gy) <= h
-end
-
--- the item under the pointer (inside the hexagon: |dx| <= w/2 and the slanted edges), or nil
-local function PointedItem()
-  local mx, py = Pointer()
-  if mx == nil then
-    return nil
-  end
+local function DeclareZones()
+  Ptr.Begin()
   for s, i in pairs(shown) do
-    local gx, gy = funcLuaMenuCommand(MS.GPOS, L_HEX, s)
-    if type(gx) == "number" then
-      local dx, dy = math.abs(mx - gx), math.abs(py - gy)
-      if dx <= G.HEX_W / 2 and dy <= G.HEX_H / 2 - dx * (G.HEX_H / 4) / (G.HEX_W / 2) then
-        return i
-      end
-    end
+    Ptr.Inst(L_HEX, s, G.DX / 2, G.DY / 2, i)
   end
-  return nil
+  if pages <= 1 then
+    return
+  end
+  local page, n = PageOf(focus), math.min(pages, G.MAX_DOTS)
+  local x0 = 960 - (n - 1) * G.DOT_DX / 2
+  for d = 0, n - 1 do
+    Ptr.Inst(L_UI, UI_DOT0 + d, MS.HIT_DOT, MS.HIT_DOT, ZONE_DOT .. d)
+  end
+  Ptr.Box(x0 - G.GLYPH_GAP, G.DOT_Y, MS.HIT_DOT, MS.HIT_DOT, ZONE_PREV)
+  Ptr.Box(x0 + (n - 1) * G.DOT_DX + G.GLYPH_GAP, G.DOT_Y, MS.HIT_DOT, MS.HIT_DOT, ZONE_NEXT)
+  if page > 0 then
+    Ptr.Inst(L_UI, UI_ARROW_L, MS.HIT_ARROW, MS.HIT_ARROW, ZONE_PREV)
+  end
+  if page < pages - 1 then
+    Ptr.Inst(L_UI, UI_ARROW_R, MS.HIT_ARROW, MS.HIT_ARROW, ZONE_NEXT)
+  end
 end
 
 --@lib evt_menu_kit.lua#StartCo
 
 local function PollMouse()
+  DeclareZones()
+  local ev = Ptr.Poll()                -- every frame, so a press during a guard is not seen later as a new one
   if evt_co ~= nil or not ready or open_guard > 0 then
     return
   end
-  if Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_DOWN) == true then
-    GoPage(PageOf(focus) + 1)
-  elseif Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_UP) == true then
+  if ev.wheel ~= nil then
+    GoPage(PageOf(focus) + ev.wheel)
+    return
+  end
+  if type(ev.hover) == "number" and cam == cam_to then
+    SetFocus(ev.hover, true)
+  end
+  local z = ev.click
+  if z == nil then
+    return
+  end
+  if z == ZONE_PREV then
     GoPage(PageOf(focus) - 1)
-  end
-  -- hover follows the pointer only when it really moved (Nacho 07/10 round 2: a pointer resting on a hex kept
-  -- pulling the focus back to it, so Aceptar after the arrow keys opened the team under the mouse, «Wild»)
-  local px, py = Pointer()
-  local moved = px ~= nil and last_ptr ~= nil and (math.abs(px - last_ptr[1]) > 2 or math.abs(py - last_ptr[2]) > 2)
-  if px ~= nil then
-    last_ptr = {px, py}
-  end
-  if moved and funcLuaMenuCommand(MS.MOVED) == true and cam == cam_to then
-    SetFocus(PointedItem(), true)
-  end
-  if Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.CLICK) ~= true then
-    return
-  end
-  local mx, py = Pointer()
-  if mx == nil then
-    return
-  end
-  if pages > 1 then
-    if PageOf(focus) > 0 and Over(L_UI, UI_ARROW_L, mx, py, MS.HIT_ARROW, MS.HIT_ARROW) then
-      GoPage(PageOf(focus) - 1)
-      return
-    elseif PageOf(focus) < pages - 1 and Over(L_UI, UI_ARROW_R, mx, py, MS.HIT_ARROW, MS.HIT_ARROW) then
-      GoPage(PageOf(focus) + 1)
-      return
-    end
-    for d = 0, math.min(pages, G.MAX_DOTS) - 1 do
-      if Over(L_UI, UI_DOT0 + d, mx, py, MS.HIT_DOT, MS.HIT_DOT) then
-        GoPage(DotStart() + d)
-        return
-      end
-    end
-  end
-  local i = PointedItem()
-  if i ~= nil then
-    SetFocus(i, false)
+  elseif z == ZONE_NEXT then
+    GoPage(PageOf(focus) + 1)
+  elseif type(z) == "string" and z:sub(1, #ZONE_DOT) == ZONE_DOT then
+    GoPage(DotStart() + tonumber(z:sub(#ZONE_DOT + 1)))
+  elseif type(z) == "number" then
+    SetFocus(z, false)
     click_guard = CLICK_GUARD
     StartCo(Decide, "click")
   end
@@ -1077,6 +1105,7 @@ function OnOpenLayer(a1, a2)
     DrawAll()
     UpdateButtonGuide()
     ready = true
+    Ptr.Reset()                    -- a press / wheel held from the screen before is no click
     if funcLuaCommand(C.FADE_DONE) then
       funcLuaCommand(C.FADE, 0, 0.3)
     end
@@ -1093,7 +1122,7 @@ function OnDecideFocus(a1, a2)
   -- the engine's decide (pad A / Enter, and the CMD_ENTER of a clicked hex) always decides OUR cursor (focus): its
   -- a2 is the hex layer's native focus, which stays 0 (round 4: pad A on slot 2 opened Raimon, slot 0). A click is
   -- decided by the mouse poll; its CMD_ENTER arrives after it and is swallowed (click_guard).
-  if click_guard > 0 then
+  if click_guard > 0 or Ptr.Owns() then     -- a pointer click is decided by PollMouse, on the hex under it
     Log("decide ignored (click)", a1, a2)
     return
   end
@@ -1128,6 +1157,7 @@ function OnFunction(a1, a2)
   else
     return
   end
+  Ptr.KeyStep()                        -- the pad / keys own the cursor until the pointer really moves again
   return 1
 end
 

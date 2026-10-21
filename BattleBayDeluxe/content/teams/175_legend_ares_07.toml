@@ -8,18 +8,18 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_1_moves"
-moves = [0x5781A373, 0x4CDC2C6B, 0xD1E62D0A, 0x481F9847, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x5781A373, 0x4CDC2C6B, 0xD1E62D0A, 0x7207C577, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_2_moves"
-moves = [0x5781A373, 0x4AD6453E, 0x5049A011, 0x481F9847, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x5781A373, 0x4AD6453E, 0x5049A011, 0x7207C577, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_4_moves"
-moves = [0xB27F13ED, 0x88E6A750, 0x6ADE9E01, 0xA17C3D72, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0xB27F13ED, 0x88E6A750, 0x6ADE9E01, 0x245D62F1, 0xA17C3D72, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_3_moves"
@@ -33,8 +33,8 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_6_moves"
-moves = [0xB4757AB8, 0x3F00EDE9, 0x613ABD43, 0x481F9847, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0xB4757AB8, 0x3F00EDE9, 0x613ABD43, 0x61FB16FD, 0x481F9847, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_7_moves"
@@ -58,8 +58,8 @@ levels = [1, 1, 1, 1, 1, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.legend_ares_07.slot_11_moves"
-moves = [0x5C38F92C, 0xEBD03938, 0x8DFA4265, 0x3F18A8D1, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 1, 1, 0, 0]
+moves = [0x5C38F92C, 0xEBD03938, 0x8DFA4265, 0xA7157B91, 0x3F18A8D1, 0xFB997A80]
+levels = [1, 1, 1, 1, 1, 0]
 
 [[team]]
 name = "legend_ares_07"
@@ -91,7 +91,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 4, 3, 3, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_0_moves"
@@ -107,7 +107,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_1_moves"
@@ -123,7 +123,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_2_moves"
@@ -139,7 +139,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [3, 4, 2, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_4_moves"
@@ -155,7 +155,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_3_moves"
@@ -171,7 +171,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 2, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_5_moves"
@@ -187,7 +187,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 2, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_6_moves"
@@ -203,7 +203,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 4, 2, 2, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_7_moves"
@@ -219,7 +219,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 4, 2, 2, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_8_moves"
@@ -235,7 +235,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 3, 4, 2, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_9_moves"
@@ -251,7 +251,7 @@ title = 0x00000000
 flag = 0
 level_offset = 0
 rarity_step = 4
-c14_19 = [-1, -1, -1, -1, -1, -1]
+c14_19 = [4, 3, 4, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
 loadout = "bb_chronicle_teams.legend_ares_07.slot_10_moves"

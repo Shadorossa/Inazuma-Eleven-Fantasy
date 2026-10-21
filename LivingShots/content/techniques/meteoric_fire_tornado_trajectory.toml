@@ -24,7 +24,8 @@ target = "whs10110"
 # flight: 23.41 m (23.3 over a kick on the pitch) held until 16.13 m before the goal point, then the 53.0
 # deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 8.07 m down (bend 0.5). A shot shorter
 # than 16.13 m starts lower, on the line.
-trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[16.13, 4.5, 999.0, 8.07], [0.0, 2.0]], unblockable = false }
 # Tornado de fuego meteoro V (whs10160): the same cut-in animation.
 [[edit]]
 target = "whs10160"
@@ -32,4 +33,5 @@ target = "whs10160"
 # flight: 23.41 m (23.3 over a kick on the pitch) held until 16.13 m before the goal point, then the 53.0
 # deg line down into 2.0 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 8.07 m down (bend 0.5). A shot shorter
 # than 16.13 m starts lower, on the line.
-trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[16.13, 23.41, 999, 8.07], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[16.13, 4.5, 999.0, 8.07], [0.0, 2.0]], unblockable = false }

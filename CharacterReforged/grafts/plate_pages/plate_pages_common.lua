@@ -36,6 +36,10 @@ if EVT_PPG_WRAPPED == nil then
 end
 
 function EVT_PPG_Wrap(name, make)
+  if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+    local ok = VRFW_Host.wrap(name, make, {level = 2})   -- survives a later patch that redefines the function
+    return ok
+  end
   local cur = _ENV[name]
   if type(cur) ~= "function" or EVT_PPG_WRAPPED[cur] then
     return false
@@ -111,13 +115,17 @@ end
 -- holding an aura; a row shows its position's move, nothing when that is an aura (the aura / mix halves own it: the
 -- Hiper page), the board slot of the same position when the position is empty (ss2_menus EVT_Skill / PL.ProjPos,
 -- the same rule). The retail fill runs with the move lookup answered for this card only (CMND 0x35D3E3B8, the
--- learnable list off, the evolution grade read at the move's own list position) and restored right after. Victory
--- Road: the retail rows untouched. No engine call while the chunk loads.
+-- evolution grade read at the move's own list position) and restored right after. A row whose move needs a level above
+-- the player's (CMND_VRFW_CHARACTER_LEARN_LEVEL, the framework's learn levels) is drawn as the retail plate draws a move
+-- not learned yet: no move at that position and the learn table (0xCF25A8AF) answering that move and its level there,
+-- so the retail fill shows its padlock and «Nv. N». Victory Road: the retail rows untouched. No engine call while the
+-- chunk loads.
 EVT_PPG_FANTASY_MOVES = EVT_PPG_FANTASY_MOVES or {}
 do
   local F = EVT_PPG_FANTASY_MOVES
   F.GET_SKILL = 903078840               -- (charaStHdl, list position 0..5) -> move (save skill_list)
   F.LEARNABLE = 3475351727              -- (charaStHdl) -> ok, {move per slot}, {unlock level per slot}
+  F.LEARN_LEVEL = 8867751               -- CMND_VRFW_CHARACTER_LEARN_LEVEL (charaStHdl, move) -> level needed, player's level
   F.SKILL_INFO = 2580586398             -- (move, 9) -> ok, category (8 = an aura)
   F.BOARD_INV = 632801955               -- (charaStHdl, board slot, kind 1 placed / 0 native) -> inventory handle
   F.INV_ITEM = 2662166687               -- (inventory handle, 0) -> move
@@ -230,13 +238,35 @@ do
       end
       local row = rows[slot + 1] or {move = 0}
       F.shown[slot] = {hdl = hdl, move = row.move, slot = row.slot or slot}
+      -- a move above the player's level: the retail «not learned yet» row (padlock + its level)
+      local need = 0
+      if row.move ~= 0 then
+        local okL, n, lv = pcall(call, F.LEARN_LEVEL, hdl, row.move)
+        if okL and type(n) == "number" and type(lv) == "number" and n > lv then
+          need = n
+        end
+      end
+      local learnable = nil
+      if need > 0 then
+        local moves, levels = {}, {}
+        for i = 1, F.ROW_COUNT do
+          moves[i] = 0
+          levels[i] = 0
+        end
+        moves[slot + 1] = row.move
+        levels[slot + 1] = need
+        learnable = {moves, levels}
+      end
       local grade = GetSkillEvoLevelByCharaStHdl
       funcLuaCommand = function(cmd, a, b, ...)
         if a == hdl then
           if cmd == F.GET_SKILL and b == slot then
-            return row.move
+            return need > 0 and 0 or row.move
           end
           if cmd == F.LEARNABLE then
+            if learnable ~= nil then
+              return true, learnable[1], learnable[2]
+            end
             return false
           end
         end

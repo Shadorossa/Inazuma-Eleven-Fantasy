@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Golpe de Atenea (whs02370).
 [[edit]]
 target = "whs02370"
-trajectory = { goal_points = [[9.88, 6.09], [9.02, 5.46], [3.39, 3.43], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[9.88, 6.09], [9.02, 5.46], [3.39, 3.43], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[9.88, 4.31], [9.02, 3.95], [3.39, 2.81], [0.0, 2.0]], unblockable = false }

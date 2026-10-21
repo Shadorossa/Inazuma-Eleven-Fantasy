@@ -15,15 +15,27 @@
 --   VRFW_Recruit.CanSign(param)               -> true, or false + why ("owned" / "bank_full")
 --   VRFW_Recruit.Sign(param, level, rarity, source) -> handle or nil + why: the game's own add-character path
 --   VRFW_Recruit.Recruit(opt)                 -> true or false + why: requirements, price, sign, autosave in one call
+--   VRFW_Recruit.Spirits(card)                -> how many spirits of that card the stock holds (every rarity 0-4)
+--   VRFW_Recruit.ChargeSpirits(card, n) / GiveSpirits(card, n) -> true when done (a price paid in spirits, e.g. the
+--                                               element spirits as the classic «fichas»)
+--   VRFW_Recruit.Holders(cards)               -> { {handle, param, level, busy}, ... } the club players of those cards
+--   VRFW_Recruit.Release(cards, refund)       -> true or false + why: the bank's own retire of the first club player of
+--                                               those cards (refund = {spirit = card, count = n} or {item, count} given)
 --
 -- A requirement (kept, never taken): {kind = "player", ids = {card, ...}, count = n} (n copies among those cards in the
 -- club), {kind = "item", id = item, count = n} (have at least n), {kind = "team_level", count = n} (the active team's
 -- level >= n: the team dock in use, CMND_GET_TEAM_SET_INFO(dock, 0, 1)), {kind = "element", element = e, count = n}
 -- (n players of element e in the club: 1 wind, 2 forest, 3 fire, 4 mountain, 5 void), {kind = "position", position = p,
 -- count = n} (n players of main position p in the club: 1 GK, 2 FW, 3 MF, 4 DF), {kind = "wins", count = n} (matches won
--- in this save slot), {kind = "goals", count = n} (goals scored). The club counts come from the framework's script
--- (CMND_VRFW_RECRUIT_CLUB, scripts\recruit.lua), cached until VRFW_Recruit.Refresh(); the career counters are the
--- save service's keys stats.matches_won / stats.goals (owner vr_framework, the same script counts them).
+-- in this save slot), {kind = "goals", count = n} (goals scored), {kind = "cleared", games = {game, difficulty, ...}}
+-- (1 when any of those matches was won at that difficulty: CMND_GET_SOCCER_GAME_CLEAR_FLAG), {kind = "unlock", groups =
+-- {{check, ...}, ...}} (1 when every group has a check that holds; check = {t = "game", a = game, b = difficulty} /
+-- {t = "chronicle", a = status flag index, b = difficulty} / {t = "flag", a = global bit flag}), {kind = "trial",
+-- friendly, tag, sub} (1 once that friendly was passed for tag / sub: CMND_VRFW_FRIENDLY_PASSED); a "player"
+-- requirement with `level` counts only the club players at that level or more. The club counts come from
+-- the framework's script (CMND_VRFW_RECRUIT_CLUB, scripts\recruit.lua) and the cleared answers are cached until
+-- VRFW_Recruit.Refresh(); the career counters are the save service's keys stats.matches_won / stats.goals (owner
+-- vr_framework, the same script counts them).
 --
 -- The add-character path (CMND_ADD_PARTY): the
 -- retail summon screen's AddSummonChara call (20 arguments: card, level, ..., team set 16 = the normal bank, rarity,
@@ -48,7 +60,19 @@ if VRFW_Recruit == nil then
       STORY_DOCK = 2787124386,       -- the story's team dock in use
       VS_DOCK = 3713813716,          -- CMND_GET_VS_USE_TEAM_SET: the team dock in use outside the story
       TEAM_SET_INFO = 1033065575,    -- CMND_GET_TEAM_SET_INFO (dock, 0, 1) -> ok, team level
+      GAME_CLEAR = 989257499,        -- CMND_GET_SOCCER_GAME_CLEAR_FLAG (game, difficulty) -> won
+      CHRONICLE_CLEAR = 4034518619,  -- CMND_GET_CHRONICLE_CLEAR_STATUS (status flag index, difficulty) -> cleared
+      GLOBAL_BIT = 941426960,        -- CMND_GET_GLOBAL_BIT_FLAG (flag) -> on
+      PASSED = 3228376551,           -- CMND_VRFW_FRIENDLY_PASSED (friendly id, tag, sub) -> passed
+      HOLDERS = 3795984993,          -- CMND_VRFW_RECRUIT_HOLDERS (card, ...) -> { {handle, param, level, busy}, ... }
+      SPIRIT_NUM = 1883729669,       -- CMND_GET_SPIRIT_NUM (card, rarity) -> ok, n
+      ADD_SPIRIT = 2757645277,       -- CMND_ADD_ITEM_SPIRIT (card, n, rarity, used): n < 0 takes
+      RETIRE = 3955826921,           -- the bank's retire (funcLuaMenuCommand, handle) -> ok
+      STATUS = 1131797651,           -- (handle, field) -> a value of the player's status (12 = rarity)
     },
+    SPIRIT_RARITIES = {0, 1, 2, 3, 4},   -- a spirit price is paid with any rarity, lowest first
+    holders = {},                    -- card list -> club players, until Refresh()
+    cleared = {},                    -- "game:difficulty" -> won, until Refresh()
     OWNER = "vr_framework",
     club = nil,                      -- the club counts (CMND_VRFW_RECRUIT_CLUB), until Refresh()
     TEAM_SET_BANK = 16,              -- CMND_ADD_PARTY arg 10: 16 = no logical team set (the normal bank)
@@ -99,6 +123,148 @@ if VRFW_Recruit == nil then
   -- forget the club counts (after a signing, or when a screen opens)
   function R.Refresh()
     R.club = nil
+    R.cleared = {}
+    R.holders = {}
+  end
+
+  -- the club players of some cards (cached per list until Refresh)
+  function R.Holders(ids)
+    local key = table.concat(ids or {}, ",")
+    if R.holders[key] == nil then
+      local list = call(R.C.HOLDERS, table.unpack(ids or {}))
+      R.holders[key] = type(list) == "table" and list or {}
+    end
+    return R.holders[key]
+  end
+
+  local function check(c)
+    local key = tostring(c.t) .. ":" .. tostring(c.a) .. ":" .. tostring(c.b)
+    local v = R.cleared[key]
+    if v == nil then
+      if c.t == "game" then
+        v = call(R.C.GAME_CLEAR, c.a, c.b) == true
+      elseif c.t == "chronicle" then
+        v = (c.a or 0) > 0 and call(R.C.CHRONICLE_CLEAR, c.a, c.b) == true
+      elseif c.t == "flag" then
+        v = call(R.C.GLOBAL_BIT, c.a) == true
+      else
+        v = false
+      end
+      R.cleared[key] = v
+    end
+    return v
+  end
+
+  -- 1 when every group has a check that holds
+  function R.Unlocked(groups)
+    for _, g in ipairs(groups or {}) do
+      local any = false
+      for _, c in ipairs(g) do
+        if check(c) then
+          any = true
+          break
+        end
+      end
+      if not any then
+        return 0
+      end
+    end
+    return 1
+  end
+
+  local function spirit_num(card, r)
+    local a, b = call(R.C.SPIRIT_NUM, card, r)
+    local v = type(b) == "number" and b or (type(a) == "number" and a or 0)
+    return math.max(0, num(v))
+  end
+
+  function R.Spirits(card)
+    local n = 0
+    for _, r in ipairs(R.SPIRIT_RARITIES) do
+      n = n + spirit_num(card, r)
+    end
+    return n
+  end
+
+  -- takes n spirits of the card, the lowest rarity first; a rarity is only asked for what it holds (a negative add
+  -- past the stock would wrap)
+  function R.ChargeSpirits(card, n)
+    n = num(n)
+    if n <= 0 then
+      return true
+    end
+    if R.Spirits(card) < n then
+      return false
+    end
+    local left = n
+    for _, r in ipairs(R.SPIRIT_RARITIES) do
+      if left <= 0 then
+        break
+      end
+      local take = math.min(spirit_num(card, r), left)
+      if take > 0 then
+        call(R.C.ADD_SPIRIT, card, -take, r, false)
+        left = left - take
+      end
+    end
+    return left <= 0
+  end
+
+  function R.GiveSpirits(card, n)
+    n = num(n)
+    if n > 0 then
+      call(R.C.ADD_SPIRIT, card, n, 4, false)
+    end
+    return true
+  end
+
+  -- a price: {item = id, count = n} or {spirit = card, count = n}
+  function R.Pay(price)
+    if price == nil or (price.count or 0) <= 0 then
+      return true
+    end
+    if price.spirit ~= nil and price.spirit ~= 0 then
+      return R.ChargeSpirits(price.spirit, price.count)
+    end
+    return R.Charge(price.item, price.count)
+  end
+
+  function R.Refund(price)
+    if price == nil or (price.count or 0) <= 0 then
+      return
+    end
+    if price.spirit ~= nil and price.spirit ~= 0 then
+      R.GiveSpirits(price.spirit, price.count)
+    else
+      R.Give(price.item, price.count)
+    end
+  end
+
+  -- what the player has to pay with: the spirits of `spirit`, else the item
+  function R.Wallet(price)
+    if price ~= nil and price.spirit ~= nil and price.spirit ~= 0 then
+      return R.Spirits(price.spirit)
+    end
+    return R.Items(price and price.item or 0)
+  end
+
+  -- 1 when any (game, difficulty) pair of the flat list was won, else 0
+  function R.Cleared(games)
+    if type(games) ~= "table" then
+      return 0
+    end
+    for i = 1, #games - 1, 2 do
+      local key = tostring(games[i]) .. ":" .. tostring(games[i + 1])
+      local won = R.cleared[key]
+      if won == nil then
+        won = call(R.C.GAME_CLEAR, games[i], games[i + 1]) == true
+        R.cleared[key] = won
+      end
+      if won then
+        return 1
+      end
+    end
+    return 0
   end
 
   function R.Club()
@@ -131,6 +297,15 @@ if VRFW_Recruit == nil then
   function R.Have(req)
     local k = req.kind
     if k == "player" then
+      if (req.level or 0) > 1 then
+        local n = 0
+        for _, h in ipairs(R.Holders(req.ids)) do
+          if (h.level or 0) >= req.level then
+            n = n + 1
+          end
+        end
+        return n
+      end
       return R.OwnedAny(req.ids)
     elseif k == "item" then
       return R.Items(req.id)
@@ -144,6 +319,16 @@ if VRFW_Recruit == nil then
       return R.Career("stats.matches_won")
     elseif k == "goals" then
       return R.Career("stats.goals")
+    elseif k == "cleared" then
+      return R.Cleared(req.games)
+    elseif k == "unlock" then
+      return R.Unlocked(req.groups)
+    elseif k == "trial" then
+      local key = "trial:" .. tostring(req.friendly) .. ":" .. tostring(req.tag) .. ":" .. tostring(req.sub)
+      if R.cleared[key] == nil then
+        R.cleared[key] = call(R.C.PASSED, req.friendly, req.tag or 0, req.sub or 0) == true
+      end
+      return R.cleared[key] and 1 or 0
     end
     return 0                         -- a kind this build does not know is never met (never sold by mistake)
   end
@@ -223,17 +408,69 @@ if VRFW_Recruit == nil then
       return false, "requirements"
     end
     local price = opt.price
-    if price ~= nil and (price.count or 0) > 0 and not R.Charge(price.item, price.count) then
+    if not R.Pay(price) then
       return false, "price"
     end
     local hdl, err = R.Sign(opt.param, opt.level, opt.rarity, opt.source)
     if hdl == nil then
-      if price ~= nil and (price.count or 0) > 0 then
-        R.Give(price.item, price.count)
-      end
+      R.Refund(price)
       return false, err
     end
     call(R.C.AUTO_SAVE)
     return true
+  end
+
+  -- the bank's own retire of the first club player of `cards` that no miximax fusion holds (the retail «Despedir»:
+  -- the player leaves the club and every team); the card the retire may hand out is taken back and `refund` (a price
+  -- table) given. Returns true, or false + why ("none", "busy", "refused").
+  function R.Release(cards, refund_price)
+    R.holders = {}
+    local h = nil
+    local busy = false
+    for _, x in ipairs(R.Holders(cards)) do
+      if x.busy then
+        busy = true
+      elseif h == nil then
+        h = x
+      end
+    end
+    if h == nil then
+      return false, busy and "busy" or "none"
+    end
+    local rarity = num(call(R.C.STATUS, h.handle, 12))
+    local before = spirit_num(h.param, rarity)
+    local owned = R.Owned(h.param)
+    local ok, done = pcall(funcLuaMenuCommand, R.C.RETIRE, h.handle)
+    R.Log("release", h.param, h.handle, tostring(ok), tostring(done))
+    R.Refresh()
+    if R.Owned(h.param) >= owned then
+      return false, "refused"                              -- the bank refused (e.g. he is in a team dock)
+    end
+    local now = spirit_num(h.param, rarity)
+    if now == before + 1 then
+      call(R.C.ADD_SPIRIT, h.param, -1, rarity, true)     -- the retire's card back: one card per character
+    end
+    R.Refund(refund_price)
+    call(R.C.AUTO_SAVE)
+    return true
+  end
+end
+
+-- A recruit trial (a contact map's team page, «Prueba»): the friendly `friendly` against `game` at `difficulty`, with
+-- the challenge objective and the per-card «passed» key tag / sub, started from THIS menu through the match start
+-- service (VRFW_MATCH, _all\12_match_start.lua). The contact map screen calls it in its hub's VM (CMND MENU_CALL) and
+-- closes itself. Returns true when the launch runs.
+if VRFW_RecruitTrial == nil then
+  function VRFW_RecruitTrial(friendly, game, difficulty, tag, sub, objective)
+    if type(VRFW_MATCH) ~= "table" or type(VRFW_MATCH.start) ~= "function" or type(friendly) ~= "string" then
+      return false
+    end
+    local ok, started, why = pcall(VRFW_MATCH.start, {friendly = friendly, game = game, difficulty = difficulty or 1,
+      tag = tag, sub = sub, objective = objective, settle = 20, black = false})
+    if VRFW_Recruit ~= nil then
+      VRFW_Recruit.Log("trial start", friendly, game, difficulty, tag, sub, objective, tostring(ok), tostring(started),
+        tostring(why))
+    end
+    return ok and started == true
   end
 end

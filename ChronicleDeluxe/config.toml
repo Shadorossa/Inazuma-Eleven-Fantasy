@@ -22,6 +22,34 @@ level_sync_below_percent = 7
 # retail first-clear items + the kit) and its [[VRFW.GameDrops]] in content/teams/90_rules/heroic.toml.
 gate_kits = ["fbtl_cro12_030_010"]    # Plathos
 
+# Free-match rows whose first win also gives the rival's crest and kit, each only while the player has none (owner
+# 2026-10-20: Jóvenes Inazuma at Lv 200, difficulty 9 = [MatchDifficulty.Class4], which has its own clear bit). The
+# builder writes the table chronicle_deluxe.rival_<game>_<difficulty> (the row's retail first-clear items + the two)
+# and its [[VRFW.GameDrops]] FirstClear; a rival uniform without a kit item gets one (content/items/rival_kits.toml).
+rival_rewards = [{ game = "fbtl_free_001", difficulty = 9 }]    # Jóvenes Inazuma
+
+# Heroic battles whose rival wears a uniform with no kit item in the game (owner 2026-10-20, docs/game/kits-unused.md
+# group B): the builder creates the kit item (content/items/rival_kits.toml) and the battle's first heroic win gives it,
+# only while the player has none. A uniform with no model texture and no icon on disk whose derived name is a kit the
+# game already has gives that kit (Emperadores Oscuros: u021901 is not on disk; the game's «Equipación Emperadores
+# Oscuros» is uni_u021301).
+heroic_kits = [
+    "fbtl_cro02_140_010",    # Épsilon Plus
+    "fbtl_cro02_200_010",    # Emperadores Oscuros
+    "fbtl_cro05_090_010",    # Ejército de Terracota (and its twin game)
+]
+
+# Kits of teams sold in a store instead (owner 2026-10-20: Raimon of the Ares era «en tienda por ahora»): the kit item
+# is created when the team's uniform has none, and sold in `store` while `store_mod` is active, at the price of the
+# store's other Raimon kit of that game (Equipación Raimon Isla Remota: 14 Puntos de pasión). A kit no single team owns
+# (owner 2026-10-20: the school clubs' neutral kit, worn by 74 club teams, and the training teams' kit) gives its
+# `names` and `icon_from`: a kit of the same mesh that the new item clones and whose icon is recoloured with the
+# colours of the uniform's own texture (the uniform has no icon in the game). `team` = one team wearing it.
+store_kits = [
+    { team = "pltm_cro_ie7_02", store = "inazuma_fantasy_2.general_store", store_mod = "inazuma_fantasy_2", price = 14, currency = "tk_bb000001" },
+    { team = "tm_prc_050200", store = "inazuma_fantasy_2.general_store", store_mod = "inazuma_fantasy_2", price = 14, currency = "tk_bb000001", icon_from = "uni_u031401", names = { es = "Equipación de club", en = "Club Kit", fr = "Maillot de club", de = "Vereinstrikot", it = "Divisa del club", pt = "Uniforme de clube", ja = "部活ウェア", zh_hans = "社团球衣", zh_hant = "社團服裝" } },
+]
+
 # The heroic player rules (owner 2026-10-14, simplified 2026-10-16). The «first game» of a player is his character's
 # source series in the game's data (chara_base series → chara_series_config type: Inazuma Eleven, 2, 3, GO, GO 2, GO
 # Galaxy, Ares, Orion, Victory Road); a Chronicle route's game is the series most of its Crónica rivals' players belong to.
@@ -92,3 +120,43 @@ victory_road = "VR"
 [[free_match_base_form]]
 team = "tm_cro_go2_0800"     # Protocolo Omega 3.0 (its players miximaxed with Zanark)
 name = "fm_protocol_omega_3_base"
+
+# Free-match teams that play with their line-up swapped (owner 2026-10-20; docs/game/mods/chronicle-deluxe-free-match.md
+# §16): research/scripts/chronicle_deluxe_shuffle_build.py writes content/teams/90_rules/free_match_shuffles.toml, the
+# class team `chronicle_deluxe.<name>` (game key `key`, which starts with chronicle_deluxe_fms_) and its four position
+# source teams; scripts/free_match_shuffle.lua deals the starters to new places before every match.
+[[free_match_shuffle]]
+team = "tm_cro_orion_1200"   # Chispas Perfectas (La marca llama de nuevo)
+name = "fm_perfect_spark_shuffle"
+key = "chronicle_deluxe_fms_perfect_spark"
+# The rival's drops of every Chronicle board battle (owner 2026-10-21; docs/game/mods/chronicle-deluxe.md §17). Read
+# by research/scripts/chronicle_deluxe_drops_build.py, which writes content\teams\90_rules\rival_drops.toml and the
+# drop / loot base tables from them: change a value here, re-run it (`--check` = exit 1 when the data is stale).
+# Rates are percent per drop roll (one roll per goal of the player's team, kept on a win); each rate is lowered when a
+# row's drops would pass 100 %. An item a row already gives (its first-clear prize, its own drops) is not added again.
+[drops]
+max_manuals = 32          # manuals per row at most, the moves most players use first (the drop-rate list shows 64 rows)
+weight = 10               # loot weight of one manual / the boots (the books: by their rates)
+max_auras = 20            # aura items per row at most: keshin / totems first, then Mix-Max / mode changes
+books_mod = "true_hissatsu"   # the level-up books are this mod's items: they drop only while it is active
+
+# Batalla de crónica (1) and the gate battle that stands in for it on the gate pieces (2)
+[[drops.battle]]
+difficulties = [1, 2]
+manuals = 4.0             # the rival's unlocked manuals, shared by all of them
+boots = 1.0               # the rival team's own boots
+auras = 0.5               # its players' aura items (keshin, totems, Mix-Max, mode changes; never armours), shared
+books = [
+  { item = "abl_ub000001", rate = 1.0 },   # Libro de mejora de supertécnica (+1 grade, up to grade 4)
+]
+
+# Batalla heroica (4): the higher tier also gives the last grade's book
+[[drops.battle]]
+difficulties = [4]
+manuals = 10.0
+boots = 2.5
+auras = 1.5
+books = [
+  { item = "abl_ub000001", rate = 2.0 },   # Libro de mejora de supertécnica
+  { item = "abl_ue000001", rate = 0.5 },   # Cuaderno de evolución definitiva (grade 4 -> 5)
+]

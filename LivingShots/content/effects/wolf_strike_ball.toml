@@ -1,11 +1,12 @@
 # «Embate de lobo» (Wolf Strike, whs02700, fire; with the same cut-in «Embate de lobo plateado» / Silver Wolf Strike
 # whs02701, forest, and «Embate de Dragnova» / Dragnova Strike whs02702, void; cut-in ev60_02700): while the ball flies
-# to the goal after the cut-in it keeps the look of the cut-in's last cut (c0300, the ball lobbed in its blue / purple
-# wolf vortex): the vortex rings turning round it, its lights and winds, instead of the plain special-shot aura of its
-# element (ega0075c / ega0075d / ega0075e). The object is ev6270ws00 (effect/event/ev60/ev6270ws00/), built by
-# research/scripts/wolf_strike_ball_fx.py from the cut-in's effect object ev60027000: c0300 replayed from the kick
-# (348), then held at frame 444, ball at the origin flying +Z, x1. Left out: the crater and smoke at the kick point,
-# the earlier cuts' parts, the wolf (not in c0300). docs/game/media/wolf-strike-ball-fx.md. One aura, one trigger per
+# low along the pitch to the goal after the cut-in it keeps the look of the cut-in's ground run and last cut (c0300):
+# the blue / purple wolf vortex turning round it, its lights and winds, and behind it the groove it ploughs, grown from
+# the kick point with the ball, instead of the plain special-shot aura of its element (ega0075c / ega0075d / ega0075e).
+# The object is ev6270ws00 (effect/event/ev60/ev6270ws00/), built by research/scripts/wolf_strike_ball_fx.py from the
+# cut-in's effect object ev60027000: c0300 replayed from 348, then held at frame 444, ball at the origin flying +Z
+# (level), x1; no `fit`: the vortex is whole over the replay and the groove grows at its own rate. Left out: the
+# crater and smoke at the kick point, the earlier cuts' parts, the wolf (not in c0300). docs/game/media/wolf-strike-ball-fx.md. One aura, one trigger per
 # element: each copies its element's special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's
 # velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\wolf_strike_trajectory.toml.
 # Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
@@ -22,21 +23,15 @@ name = "wolf_strike"
 when = { techniques = ["whs02700"] }
 aura = "wolf_strike"
 like = "ega0075c"
-# the aura's replay (96 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
-fit = { replay = 96 }
 
 [[shot_aura]]
 name = "wolf_strike_forest"
 when = { techniques = ["whs02701"] }
 aura = "wolf_strike"
 like = "ega0075d"
-# the aura's replay (96 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
-fit = { replay = 96 }
 
 [[shot_aura]]
 name = "wolf_strike_void"
 when = { techniques = ["whs02702"] }
 aura = "wolf_strike"
 like = "ega0075e"
-# the aura's replay (96 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
-fit = { replay = 96 }

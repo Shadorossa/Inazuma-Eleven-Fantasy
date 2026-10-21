@@ -1,0 +1,15 @@
+schema = "VRFW.team/2"
+# Free match, Protocolo Omega 3.0 (owner 2026-10-21: «haz que use la ropa de Protocolo Omega y no tengan a Zanark de
+# entrenador; solo usen la ropa del 3.0 y Zanark de entrenador en la dificultad del Nv200»). Classes 6 / 7 (INAZUMA,
+# ZONA LETAL) play chronicle_deluxe.fm_protocol_omega_3_base (free_match.toml [[VRFW.FreeMatchRival]]), which inherits
+# tm_cro_go2_0800's kit and coach: it wears the plain Protocolo Omega's kit (tm_cro_go2_0100, uniform 0x450DA068,
+# item uni_u050101) and has no coach, as tm_cro_go2_0100 (no slot 19 / 20). Class 9 (BATALLA LEGENDARIA, Lv 200)
+# keeps tm_cro_go2_0800: the 3.0 kit (0x320A90FE) and coach Zanark Avalonic (slot 19).
+default_lang = "en"
+
+[[edit]]
+target = "chronicle_deluxe.fm_protocol_omega_3_base"
+kit = 0x450DA068                 # tm_cro_go2_0100's uniform «Equipación Protocolo Omega»
+member = [
+  { slot = 19, remove = true },  # no coach (was Zanark Avalonic, card 0x19B62C9E)
+]

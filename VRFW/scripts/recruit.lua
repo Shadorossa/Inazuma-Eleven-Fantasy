@@ -1,6 +1,7 @@
 -- Recruit service, script side (game Lua side: assets/lua/menu/_all/62_recruit.lua).
 --   CMND_VRFW_RECRUIT_CLUB() -> { total, element = { [1..5] = n }, position = { [1..4] = n } }: saved club characters counted by card element
 --     (chara_param col 2: 1 wind, 2 forest, 3 fire, 4 mountain, 5 void) and main position (col 3: 1 GK, 2 FW, 3 MF, 4 DF)
+--   CMND_VRFW_RECRUIT_HOLDERS(card, ...) -> { {handle, param, level, busy}, ... }: the saved club players of those cards
 --   career counters (per save slot, read with CMND_VRFW_SAVE_GET), counted from first run:
 --     "stats.matches_won"  matches the user's side ends ahead
 --     "stats.goals"        goals of the user's side
@@ -42,6 +43,34 @@ function Recruit.Club()
     if p then
       if p[1] >= 1 and p[1] <= 5 then out.element[p[1]] = out.element[p[1]] + 1 end
       if p[2] >= 1 and p[2] <= 4 then out.position[p[2]] = out.position[p[2]] + 1 end
+    end
+  end
+  return out
+end
+
+-- ---- holders: the club players of some cards (a level requirement, a release)
+
+-- a miximax fusion holds the player (as its base or its partner): such a player is never released
+local function in_fusion(handle)
+  if not (VRFW.miximax and VRFW.miximax.call) then return false end
+  for _, op in ipairs({ "fusion_of", "partner_fusion" }) do
+    local ok, f = pcall(VRFW.miximax.call, { op = op, hdl = handle })
+    if ok and type(f) == "table" and type(f.f) == "table" then return true end
+  end
+  return false
+end
+
+-- CMND_VRFW_RECRUIT_HOLDERS(card, ...) -> { {handle, param, level, busy}, ... }: the saved club players (container 0)
+-- of those cards; busy = true while a miximax fusion holds him
+function Recruit.Holders(...)
+  local want = {}
+  for _, c in ipairs({ ... }) do want[u32(c)] = true end
+  local out = {}
+  local ok, saved = pcall(VRFW.chara.saved)
+  for _, k in ipairs(ok and type(saved) == "table" and saved or {}) do
+    local h = u32(k.handle)
+    if math.floor(h / 4096) % 16 == 0 and want[u32(k.param)] then
+      out[#out + 1] = { handle = h, param = u32(k.param), level = tonumber(k.level) or 1, busy = in_fusion(h) }
     end
   end
   return out

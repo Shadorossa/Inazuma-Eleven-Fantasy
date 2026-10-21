@@ -1,0 +1,29 @@
+schema = "VRFW.text/2"
+# Transforming Items › the refusal texts of the «Piedra Alius» (content/items/alius_stone.toml, [[VRFW.ItemTransform]]
+# text = { incompatible, locked }): the VR-Framework's equipment-list graft vrfw_item_xform shows them when the item is
+# refused; {item} = the item's name. Format: docs/framework/types/text.md.
+table = "menu_text"
+
+[[row]]
+id = "TransformingItems.AliusStoneIncompatible"  # the player cannot wear it; {item} = the item name
+es = "{item} no puede transformar a este jugador. Solo la pueden llevar los Emperadores Oscuros, Samford, King y Stonewall (Royal Academy Redux) y los jugadores de Tormenta de Géminis, Épsilon, Génesis, Prominence y Polvo de Diamantes, en su versión clásica."
+en = "{item} cannot transform this player. Only the Dark Emperors, Samford, King and Stonewall (Royal Academy Redux) and the players of Gemini Storm, Epsilon, Genesis, Prominence and Diamond Dust can wear it, in their classic version."
+fr = "{item} ne peut pas transformer ce joueur. Seuls les Empereurs noirs, Samford, King et Stonewall (Nouvelle Royal Ac.) et les joueurs de Tempête des Gémeaux, Epsilon, Genesis, Prominence et Diamond Dust peuvent le porter, dans leur version classique."
+de = "{item} kann diesen Spieler nicht verwandeln. Nur die Dark Emperors, Samford, King und Stonewall (Royal Academy Redux) und die Spieler von Gemini Storm, Epsilon, Genesis, Prominence und Diamond Dust können ihn tragen, in ihrer klassischen Version."
+it = "{item} non può trasformare questo giocatore. Possono indossarla solo i Dark Emperors, Samford, King e Stonewall (Absolute Royal) e i giocatori di Gemini Storm, Epsilon, Genesis, Prominence e Diamond Dust, nella loro versione classica."
+pt = "{item} não pode transformar este jogador. Só podem usá-la os Imperadores da Escuridão, Samford, King e Stonewall (Instituto Imperial Verdadeiro) e os jogadores de Tormenta Geminis, Épsilon, Gênesis, Proeminência e Pó de Diamante, na sua versão clássica."
+ja = "{item}ではこの選手は変身できません。装備できるのはダークエンペラーズ、[真/しん]・[帝国学園/ていこくがくえん]の佐久間・源田・不動、そしてジェミニストーム・イプシロン・ザ・ジェネシス・プロミネンス・ダイヤモンドダストの選手（クラシック版）だけです。"
+zh_hans = "{item}无法让这名球员变身。只有暗黑帝王、真·帝国的佐久间、源田、不动，以及双子星风暴、极限零度、创世纪、太阳火焰、钻石冰晶的球员（经典版）才能装备。"
+zh_hant = "{item}無法讓這名球員變身。只有暗黑帝王、真·帝國的佐久間、源田、不動，以及雙子星風暴、極限零度、創世紀、太陽火焰、鑽石冰晶的球員（經典版）才能裝備。"
+
+[[row]]
+id = "TransformingItems.AliusStoneLocked"  # the Dark Emperors are not beaten in the Crónica yet; {item} = the item name
+es = "{item} todavía no despierta su poder. Gana a los Emperadores Oscuros en la Crónica para poder equiparla."
+en = "{item} has not awakened its power yet. Beat the Dark Emperors in Chronicle Mode to be able to equip it."
+fr = "{item} n'a pas encore éveillé son pouvoir. Bats les Empereurs noirs dans le mode Chroniques pour pouvoir l'équiper."
+de = "{item} hat seine Kraft noch nicht erweckt. Besiege die Dark Emperors im Chronik-Modus, um ihn ausrüsten zu können."
+it = "{item} non ha ancora risvegliato il suo potere. Batti i Dark Emperors nella modalità Cronache per poterla equipaggiare."
+pt = "{item} ainda não despertou o seu poder. Vence os Imperadores da Escuridão no modo Crónica para o poderes equipar."
+ja = "{item}はまだ力を目覚めさせていない。クロニクルモードでダークエンペラーズに勝つと装備できるようになる。"
+zh_hans = "{item}尚未觉醒力量。在编年史模式中战胜暗黑帝王后即可装备。"
+zh_hant = "{item}尚未覺醒力量。在編年史模式中戰勝暗黑帝王後即可裝備。"

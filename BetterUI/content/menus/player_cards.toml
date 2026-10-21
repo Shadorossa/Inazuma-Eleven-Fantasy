@@ -27,6 +27,7 @@ set = [
 # Chronicle board VS preview, rival half (vs_route_town_vs_enemy_formation_menu, a child menu of
 # vs_route_town_vs_team_menu, which draws your half): team00_01_chara_card_for_vsroute = the retail pitch card with a
 # longer level-prim list; the same layout swap and Hero / Diamond effect locator as the formation object.
+# 1.24.0: plus the index attach rows of the «Basic data» name (menus\vs_basic_data.toml: name instance k on card k).
 [[object]]
 name = "team00_01_chara_card_for_vsroute_evt"
 from = "team00_01_chara_card_for_vsroute"
@@ -36,6 +37,10 @@ set = [
     { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
     { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
     { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1346942742, 0x5A709C12, 98463589] },
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [2087089339, -1015427672, 98463589] },
 ]
 
 # The rival team screen (opponent_team_menu: rival info of the opponent lists, also story / Kizuna Town rematches):
@@ -48,25 +53,26 @@ set = [
 ]
 
 # The formation screens: pitch, bench, coach / manager slots and the drag card (layers _for_soccer, _for_leader,
-# _for_move) and their empty slots. Only screens whose every team00_01 card is a formation card (a screen that loads
-# both layouts lost the level on its retail cards: position-cards.md §8.1). enjoy_team_select_menu = the Estadio BB /
-# Bahía Batalla team select (your squad left, the rival right: layers _left / _right, both from this object).
+# _for_move; the Chronicle VS screen's own half, vs_route_town_vs_team_menu, since 1.24.0 by its own card objects in
+# menus\vs_basic_data.toml) and their empty slots. Only screens whose every team00_01 card is a formation card (a
+# screen that loads both layouts lost the level on its retail cards: position-cards.md §8.1).
+# enjoy_team_select_menu = the Estadio BB / Bahía Batalla team select (your squad left, the rival right: layers _left / _right, both from this object).
 [[redirect]]
 object = "team00_01_chara_card_for_soccer"
 to = "team00_01_chara_card_for_formation_evt"
-menus = ["enjoy_team_select_menu", "kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu", "vs_route_town_vs_team_menu"]
+menus = ["enjoy_team_select_menu", "kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vrfw_contact_map_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu"]
 
 [[redirect]]
 object = "team00_01_p1_chara_card_blank"
 to = "team00_01_p1_chara_card_blank_for_formation_evt"
-menus = ["kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu", "vs_route_town_vs_team_menu", "vs_route_town_vs_enemy_formation_menu"]
+menus = ["kizuna_town_avatar_menu", "players_universe_search_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_formation_menu_for_search", "team_dock_menu", "vrfw_contact_map_menu", "vs_route_town_class_select_menu", "vs_route_town_list_menu", "vs_route_town_vs_team_menu", "vs_route_town_vs_enemy_formation_menu"]
 
 # the bench column and manager block closed up for the narrower cards (retail 122 px cards would overlap at this spacing);
 # opponent_team_menu: the rival's bench and staff the same way as your own squad's
 [[redirect]]
 object = "soccer11_02_formation_frame"
 to = "soccer11_02_formation_frame_evt_fc"
-menus = ["opponent_team_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_menu"]
+menus = ["opponent_team_menu", "select_first_team_menu", "select_myteam_formation_menu", "soccer_battle_setting_flow_vs_menu", "soccer_formation_menu", "soccer_team_dock_menu", "soccer_vs_cpu_list_menu", "soccer_vs_mydock_menu", "team_dock_menu", "vrfw_contact_map_menu"]
 
 # the rival squad screens (all their team00_01 cards: pitch, bench, coach / managers, 5 v 5 row)
 [[redirect]]

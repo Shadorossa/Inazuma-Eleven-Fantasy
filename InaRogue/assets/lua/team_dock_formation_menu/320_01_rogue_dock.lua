@@ -58,6 +58,7 @@ do
   end
 
   function IRD.log(...)
+    IRD.flush_unwrapped()
     if IRD.logs < 80 then
       IRD.logs = IRD.logs + 1
       pcall(funcLuaCommand, IRD.LOG, "inarogue dock", ...)
@@ -74,6 +75,7 @@ do
 
   -- INAROGUE mode = the INAROGUE save (slot 4) is the loaded game; the budget only counts before a run starts
   function IRD.check()
+    IRD.flush_unwrapped()
     local rs, act = call(IRD.SLOT)
     IRD.on = type(rs) == "number" and rs == act
     if IRD.on then
@@ -95,9 +97,35 @@ do
     IRD.log("seen, request", p, "run", IRD.run, "vs set", IRD.set)
   end
 
+  -- the script stem of this patch file: its folder without the version suffix
+  IRD.STEM = (function()
+    local f = type(EVT_PATCH) == "table" and EVT_PATCH.file or nil
+    local dir = type(f) == "string" and f:match("([^/]+)/[^/]+$") or nil
+    return dir ~= nil and (dir:gsub("_%d+%.%d+[%.%d]*$", "")) or nil
+  end)()
+  IRD.unwrapped = {}   -- names IRD.wrap could not wrap, logged once by IRD.flush_unwrapped
+
+  function IRD.flush_unwrapped()
+    if IRD.unwrapped[1] ~= nil and type(funcLuaCommand) == "function" then
+      local names = table.concat(IRD.unwrapped, ", ")
+      IRD.unwrapped = {}
+      pcall(funcLuaCommand, IRD.LOG, "inarogue dock", tostring(IRD.STEM), "not wrapped (not a function here):", names)
+    end
+  end
+
+  -- VRFW_Host.wrap (the framework's one rule for wrappers of a hosted script: a later patch that redefines the
+  -- function does not drop it); without it, a wrapper of the global
   function IRD.wrap(name, make)
+    if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+      local ok = VRFW_Host.wrap(name, make, {level = 2})   -- not a tail call: level 2 = the IRD.wrap call site
+      if not ok then
+        IRD.unwrapped[#IRD.unwrapped + 1] = name
+      end
+      return ok
+    end
     local cur = _ENV[name]
     if type(cur) ~= "function" then
+      IRD.unwrapped[#IRD.unwrapped + 1] = name
       return false
     end
     _ENV[name] = make(cur)

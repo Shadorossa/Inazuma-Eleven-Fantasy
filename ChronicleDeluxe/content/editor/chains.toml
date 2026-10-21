@@ -238,6 +238,13 @@ Id = "tile"
   Label = { es = "Premios por rango (solo esta casilla)", en = "Rank rewards (this tile only)" }
   Help = { es = "Vacío: los de la cadena. Con alguno, solo estos.", en = "Empty: the chain's. With any, only these." }
   [[Shape.Field]]
+  Key = "AReward"
+  Type = "list"
+  Of = "reward"
+  When = { Kind = ["dchest"] }
+  Label = { es = "Premio de rango A (rama con A o más)", en = "Rank A reward (branch at A or better)" }
+  Help = { es = "Se suma al premio base; con S también se da.", en = "Given on top of the base reward; S gives it too." }
+  [[Shape.Field]]
   Key = "SReward"
   Type = "list"
   Of = "reward"

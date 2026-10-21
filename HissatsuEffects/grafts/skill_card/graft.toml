@@ -5,14 +5,17 @@
 # content/menus/skill_card_dots.toml). Texts: research/mods/HissatsuEffects/text/rows/skill_card.toml. The card's
 # shadow: images .../team02_02/card_flat.toml (Inazuma Fantasy).
 # 2026-10-14 (owner): moved from Inazuma Fantasy to the mod Hissatsu Effects (hissatsu_effects) with the move effects
-# it shows; the aura windows' page guide reset it also did stays in Inazuma Fantasy (graft aura_guide_reset).
+# it shows. 2026-10-21 (owner: «se queda el R2 · · L2 en todas aunque no tengan»): the «Q • • E» row follows the
+# card's events (fill, page turn, sort / filter windows (CallBackSort), back), no per-frame re-hiding; every fill first
+# hides the retail aura windows' page guide team00_40 and the stale aura windows (Inazuma Fantasy's archived graft
+# aura_guide_reset did it until IF was switched off); the retail shows it again for a paged aura only.
 name = "skill_card"
 mod = "hissatsu_effects"
 order = 220
 module = ""
 requires = []
 conflicts = []
-wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction", "OnChangeFocus", "OnAfterReceiveFilterParam"]
+wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction", "OnChangeFocus", "OnAfterReceiveFilterParam", "CallBackSort"]
 description = "Move card: Q / E (LT / RT) show the move's ball / shot / keeper mini-effects, with page dots"
 
 [[files]]

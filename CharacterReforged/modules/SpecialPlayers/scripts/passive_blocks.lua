@@ -53,6 +53,21 @@ end
 
 -- the game passives character `chara` (a character handle) carries: the 5 team slots, read as the match builder
 -- 0x1604E90 reads them (unlocked slot, slot reader, rarity version), and his own passive slot; a set of ids
+-- a framework signature-only mode runs (vrfw.passive.slots_off): only the custom passive slot's answer counts
+local function slots_off()
+  local ok, v = pcall(VRFW.state.get, "vrfw.passive.slots_off")
+  return ok and tonumber(v) == 1
+end
+
+-- the custom passive slot as its readers answer it (every subscriber's answer); 0 = none
+local BUF_SIGNATURE = nil
+local function live_signature(chara)
+  if not BUF_SIGNATURE then BUF_SIGNATURE = VRFW.mem.buffer("special_players_signature_id", 8) end
+  VRFW.mem.write("u32", BUF_SIGNATURE, 0)
+  if not pcall(VRFW.call, "SpecialPlayers.SignatureSlotIdLive", BUF_SIGNATURE, chara) then return 0 end
+  return read("u32", BUF_SIGNATURE) or 0
+end
+
 local function carried_of_chara(chara)
   if not chara or chara == 0 then return {} end
   local ok_rec, rec = pcall(VRFW.chara.record, chara)
@@ -86,7 +101,10 @@ local function carried_of_chara(chara)
       end
     end
   end
-  if type(rec.param) == "number" then
+  if slots_off() then
+    local own = live_signature(chara)
+    if own ~= 0 then out[own] = true end
+  elseif type(rec.param) == "number" then
     local own = own_slot_of(rec.param)
     if own ~= 0 then out[own] = true end
   end
@@ -145,6 +163,7 @@ local function players()
     return PLAYERS
   end
   if BY_CHARACTER == nil then index_characters() end
+  local off_mode = slots_off()
   local out = {}
   local actors = VRFW.game.special_players_actors()
   if actors and actors ~= 0 then
@@ -156,7 +175,10 @@ local function players()
         local card = a.card and u32(a.card) or 0
         local ci = card ~= 0 and VRFW.chara.card(card) or nil
         local list = {}
-        for _, p in ipairs(BY_CARD[card] or BY_CHARACTER[u32(a.chara or 0)] or {}) do list[#list + 1] = p end
+        -- in a signature-only mode the per-character passives are off: only what his slots carry counts
+        if not off_mode then
+          for _, p in ipairs(BY_CARD[card] or BY_CHARACTER[u32(a.chara or 0)] or {}) do list[#list + 1] = p end
+        end
         if ANY_CARRIED then
           local c = CARRIED[hdl]
           if not c or now - c.at >= CARRIED_TTL_MS then

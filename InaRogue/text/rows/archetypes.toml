@@ -1,0 +1,14 @@
+schema = "VRFW.text/2"
+table = "menu_text"
+# InaRogue › the names and explanations of the INAROGUE archetypes (content/archetypes/inarogue.toml); the explanation
+# says they come from the rogue items.
+
+[[row]]
+id = "InaRogue.Archetype_siege"
+es = "Asedio"
+en = "Siege"
+
+[[row]]
+id = "InaRogue.ArchetypeDesc_siege"
+es = "Asedio: encierra al rival en su campo y cárgalo a tiros.\nSu rango es el número de objetos de Asedio (hasta 5)."
+en = "Siege: lock the rival in his half and load him with shots.\nIts rank is the number of Siege items (up to 5)."

@@ -137,3 +137,13 @@ edit = "Squad.MemberRow.MatchUnitsLookupFirstUnsigned"
 [[VRFW.Patch]]
 name = "MemberRows.MemberRow15CB8F0.B"
 edit = "Squad.MemberRow.MatchUnitsLookupSecondUnsigned"
+
+# The chara's team slice search of the match chara build (v7.2.1 only).
+[[VRFW.Patch]]
+name = "MemberRows.MatchCharaMemberSearch"
+edit = "Squad.MemberRow.MatchCharaMemberSearchUnsigned"
+
+# A team slice's member row by chara (v7.2.1 only).
+[[VRFW.Patch]]
+name = "MemberRows.SliceFindByChara"
+edit = "Squad.MemberRow.SliceFindByCharaUnsigned"

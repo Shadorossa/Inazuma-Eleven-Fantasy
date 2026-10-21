@@ -2,10 +2,22 @@
 # Lua assets\lua\menu\vs_route_town_command_select_menu\110_match_challenge.lua). While a row with a match challenge
 # is focused, one line under the battle-kind list says the challenge's condition, blue when the active dock meets it
 # and red when not.
-#   vrfw_mc_text  1 x the match panel's text (vrfw_mp_label, match_panel.toml): the condition line
+#   vrfw_mc_text  1 x vrfw_mc_label: a copy of the board's own row (vsroute01_16_sub_list), so the line has the rows'
+#                 text style and size; without its pointer zone and its attach rows (cursor, lock): only its text shows
+#                 (the Lua hides the rest).
 # Not opened with the group: the Lua opens it on the first draw.
 schema = "VRFW.menu/2"
 
+[[object]]
+name = "vrfw_mc_label"
+from = "vsroute01_16_sub_list"
+remove_block = ["MenuCollisionSetting"]
+remove = [
+    { param = "NullLayerName", match = { 1 = 0xC57F6A8E } },
+    { param = "NullLayerName", match = { 1 = 0x42790313 } },
+    { param = "NullLayerIndexName", match = { 1 = 0x878F9B0E } },
+]
+
 [[patch]]
 menu = "vs_route_town_command_select_menu"
-add_layer = { name = "vrfw_mc_text", object = "vrfw_mp_label", count = 1, after = "vsroute01_18_legend_telop", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "vsroute01_18_legend_telop" }] }
+add_layer = { name = "vrfw_mc_text", object = "vrfw_mc_label", count = 1, after = "vsroute01_18_legend_telop", groups = [{ group = "vs_route_town_command_select_menu", flags = [0, 0, 0, 0, 1, 0], after = "vsroute01_18_legend_telop" }] }

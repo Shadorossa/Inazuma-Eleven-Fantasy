@@ -1,0 +1,30 @@
+# BetterUI: «Caseta del club» (play_guide_top_menu; retail «Guía del Juego») with «Ayuda» always LAST in its list.
+# The retail list is `t` = {0, 1, 2, 3}, one KIND per row (0 Ayuda, 1 Galería de la victoria, 2 Archivo de escenas,
+# 3 Logros); every list function reads the kind at the row (`t[i + 1]`), the row count is `#t`, and the labels, help lines,
+# icons and the press are looked up by KIND (`t3[kind + 1]` ...), so moving a kind in `t` moves the whole row, the cursor
+# visits the rows in the new order and the first row (focus at open) is the first one of the list. The rule is «kind 0
+# last», not a fixed index: a mod that adds a row appends its kind to `t` (at load, in OnInit or in a wrapper of
+# OnSetupLayer that runs before this one) and it lands above Ayuda. Order 50 = the innermost wrapper, so every other graft of
+# this script runs before it. The list is reached as an upvalue (EVT_UpvalueFind): the block names no retail local, so
+# nothing is promoted / redefined (as clean_hud_dock_rows). Details: docs/game/mods/better-ui-guide-rows.md.
+name = "clean_hud_guide_rows"
+order = 50
+module = "lua_bridge"
+mod = "clean_hud"
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnSetupLayer"]
+description = "BetterUI: «Ayuda» always the last row of the «Caseta del club» list"
+
+[[files]]
+stem = "play_guide_top_menu"
+expect = [
+  '^local t = \{0, 1, 2, 3\}$',
+]
+
+  [[files.ops]]
+  type = "append_block"
+  src = "guide_rows.lua"
+  marker = "clean_hud_guide_rows"
+  crc = "none"
+  include = { "@UPV@" = "../_lib/evt_upvalues.lua" }

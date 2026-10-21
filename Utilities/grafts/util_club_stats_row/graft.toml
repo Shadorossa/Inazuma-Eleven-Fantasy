@@ -1,0 +1,30 @@
+# Utilities: the row «Estadísticas del club» in «Caseta del club» (play_guide_top_menu; retail «Guía del Juego»),
+# docs/game/ui/club-stats.md. The retail list is `t` = one KIND per row (0 Ayuda, 1 Galería de la victoria, 2 Archivo de
+# escenas, 3 Logros), and the labels, help lines and icons are looked up by kind (`t3` / `t4` / `t5` at kind + 1). This
+# block adds kind 4: appended to `t` when the list's first row is set up (each open), its label / help line / icon at
+# index 5, its press in OnDecideFocus (Utilities.ClubStats.Open, the panel assets/lua/play_guide_top_menu/
+# 150_club_stats.lua). Order 60 > BetterUI's clean_hud_guide_rows (50): this wrapper of OnSetupLayer runs first, so with
+# BetterUI the new row lands above «Ayuda» (its rule moves kind 0 to the end); without BetterUI it follows the retail
+# order (after «Logros»). If «Ayuda» is already last when the row is added, it goes in front of it. The tables are
+# reached as upvalues (EVT_UpvalueFind): no retail local is named, nothing promoted. No engine call at load.
+name = "util_club_stats_row"
+order = 60
+module = "lua_bridge"
+mod = "utilities"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OnDecideFocus"]
+description = "Utilities: «Estadísticas del club» row in «Caseta del club»"
+
+[[files]]
+stem = "play_guide_top_menu"
+expect = [
+  '^local t = \{0, 1, 2, 3\}$',
+]
+
+  [[files.ops]]
+  type = "append_block"
+  src = "club_stats_row.lua"
+  marker = "util_club_stats_row"
+  crc = "none"
+  include = { "@UPV@" = "../_lib/evt_upvalues.lua" }

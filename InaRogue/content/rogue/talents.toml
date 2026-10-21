@@ -1,0 +1,29 @@
+schema = "InaRogue.talents/1"
+# InaRogue › «Talento propio» (docs/game/modes/inarogue-passive-system.md): in INAROGUE's save slot every player keeps
+# one passive only, his talent, in the custom passive slot (board equip slot 9). The 5 retail passive slots read empty
+# there, and a player with no talent here has an empty slot 9. Read by scripts\lib\rogue\talents.lua, which fills the
+# framework's signature slot tables (Passive.SignatureSlot / SignatureOpen / SignatureOnly / SlotsOff, keyed by the
+# INAROGUE save slot). Outside that save slot nothing changes.
+#
+# [[talent]]
+#   name       a-z 0-9 _, unique in this file (the log names it)
+#   character  a character key (every card of that character), or
+#   card       one card (chara_param id or key): a card entry wins over a character entry
+#   passive    the game passive in the slot: a passive key (ps10039, a mod passive's key) or an id ("0x…")
+#              or a list, one per talent level 1-6 (a «Talento +1» raises it; the last one past the end)
+#   unlock     "always" (default: the slot works from level 1) or "board" (once his custom passive piece is open)
+#
+# The entries below are provisional stand-ins (owner 2026-10-20: wire 2-3 talents to test the slot): a retail passive
+# close to the idea of docs/game/modes/inarogue-passives/ie1-part1.md until the talent's own effect is built.
+
+# Axel Blaze (Raimon): idea «+2% de tiro por cada gol [run]»; stand-in ps10039 = own shot AT +% in the rival half
+[[talent]]
+name = "axel_blaze_goal_shot"
+character = "c01000100"
+passive = "ps10039"
+
+# Steve Grim (Raimon): idea «+5% de AT y DF en foco»; stand-in ps10034 = own focus +% in his own half
+[[talent]]
+name = "steve_grim_focus"
+character = "c01000060"
+passive = "ps10034"

@@ -216,6 +216,75 @@ when = [
   { value = ["[record(args[1]) + 0x10]:u32", "args[2]"], not_in_table = "*/Passive.OwnKept" },
 ]
 
+# Slots off and the signature slot: a save slot where a mode keeps only each player's signature passive (its tables
+# keyed by the active save slot). These detours run before the other subscribers of the entry (order 100), so their
+# post answers are written last and win; a save slot no mod lists keeps every other answer.
+#   Passive.SlotsOff       (save slot) -> 0: the 5 passive slots of every player read empty and locked there
+#   Passive.SignatureSlot  (save slot, chara_param id) -> passive id: the player's signature passive (board slot 9)
+#   Passive.SignatureOpen  (save slot, chara_param id) -> 1: his custom passive piece counts as open
+#   Passive.SignatureOnly  (save slot) -> 0: a player with no signature passive there has an empty, closed slot 9
+[[VRFW.Hook]]
+name = "VRFW.PassiveSlotsOffId"
+game = "Passive.TeamPassiveId"
+kind = "function"
+order = 100
+args = ["ptr", "u32", "u8", "u8"]
+ret = "ptr"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SlotsOff"
+key = ["slot"]
+write = "[args[1]]:u32"
+
+[[VRFW.Hook]]
+name = "VRFW.PassiveSlotsOffUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+kind = "function"
+order = 100
+args = ["u32", "u8", "u8"]
+ret = "bool"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SlotsOff"
+key = ["slot"]
+
+# The custom passive slot reader (board equip slot 9).
+[[VRFW.Hook]]
+name = "VRFW.SignatureSlotId"
+game = "Passive.SignatureSlotId"
+kind = "function"
+order = 100
+args = ["ptr", "u32"]
+ret = "ptr"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SignatureSlot"
+key = ["slot", "[record(args[2]) + 4]:u32"]
+write = "[args[1]]:u32"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SignatureOnly"
+key = ["slot"]
+when = { value = "args[2]", not = 0 }
+write = "[args[1]]:u32"
+
+# The custom passive piece's open state.
+[[VRFW.Hook]]
+name = "VRFW.SignaturePieceOpen"
+game = "Passive.SignaturePieceOpen"
+kind = "function"
+order = 100
+args = ["ptr"]
+ret = "u8"
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SignatureOpen"
+key = ["slot", "[record([args[1]]:u32) + 4]:u32"]
+
+[[VRFW.Hook.answer]]
+table = "*/Passive.SignatureOnly"
+key = ["slot"]
+
 # ResolvePassiveRarity: rarity version of a passive; the twin answer runs first (it tests the asked rarity), then the tier.
 [[VRFW.Hook]]
 name = "VRFW.PassiveRarity"

@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Ryuugaku Team (IE2, «Hakuren's Coach's route» #4; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Ryuugaku_Team
+[[team]]
+name = "ct_wk_ryuugaku_team"
+key = "evt_ct_wk_ryuugaku_team"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Yuuyake no Wear, not a VR kit)
+level = 50
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x953CC209, slot = 0, number = 1, rarity_step = 1 }, # Kino Aki = Silvia Woods (GK)
+  { card = 0x7E51436F, slot = 1, number = 2, rarity_step = 1 }, # Cool = Guile Crocket (DF)
+  { card = 0xDCB69625, slot = 2, number = 3, rarity_step = 1 }, # Nishigaki Mamoru = Malcolm Night (DF)
+  { card = 0xFCF3E00A, slot = 3, number = 4, rarity_step = 1 }, # Yokohama = Francis Paine (MF)
+  { card = 0x1668698A, slot = 4, number = 5, rarity_step = 1 }, # Suehisa = Benedict Eggers (DF)
+  { card = 0x81C733F2, slot = 5, number = 6, rarity_step = 1 }, # Yasumori (scout character) = Lehman Rind (MF)
+  { card = 0x078B3F10, slot = 6, number = 7, rarity_step = 1 }, # Suzumushi = Holly Cricket (MF)
+  { card = 0x29C98EDE, slot = 7, number = 8, rarity_step = 1 }, # Domon Asuka = Bobby Shearer (DF)
+  { card = 0x753B8AC0, slot = 8, number = 9, rarity_step = 1 }, # Princess = Ann Taisie (FW)
+  { card = 0x02E4DD1D, slot = 9, number = 10, rarity_step = 1, captain = true }, # Ichinose Kazuya = Erik Eagle (MF)
+  { card = 0x491EB9FA, slot = 10, number = 11, rarity_step = 1 }, # Noto = Beata Pummel (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_ryuugaku_team.png" # remastered crest of the wiki's Ryuugaku Team emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Alumnos de Intercambio"
+short = "Alumnos de Intercambio"
+[team.text.en]
+name = "Foreign Students"
+short = "Foreign Students"
+[team.text.ja]
+name = "留学チーム"
+short = "留学チーム"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_ryuugaku_team"
+card_moves = 4

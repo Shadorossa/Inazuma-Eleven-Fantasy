@@ -1,0 +1,13 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe: the rival of the Chronicle side node `cs_omega3_side` (content/teams/70_route_nodes/side_nodes.toml):
+# Chrono Stone 3DS optional chapter 30, Protocolo Omega 3.0 (btl5001, 3DS Lv 25, an 11-a-side match), which has no VR
+# Chronicle game of its own. A copy of VR's Protocolo Omega 3.0 Chronicle team (the rival of fbtl_cro05_080_010, 100 %
+# of the 3DS roster), so that game keeps its own team; its levels and moves come from
+# research/scripts/chronicle_deluxe_story_teams_build.py (14_cs/0310_cs_story_teams.toml, the node's `Story`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+
+[[team]]
+name = "cro_cs_omega3_side"
+key = "evt_cro_cs_omega3_side"
+based_on = "tm_cro_go2_0800"           # Protocolo Omega 3.0 (Chrono Stone Chronicle)

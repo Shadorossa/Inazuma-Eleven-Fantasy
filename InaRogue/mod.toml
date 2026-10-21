@@ -1,12 +1,15 @@
 id = "inarogue"
 name = "InaRogue"
-version = "1.0.7"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "INAROGUE: el modo roguelite de Inazuma Eleven. Forma un equipo desde cero, recorre el mapa fase tras fase y colecciona cartas, avatares y formaciones en tu propia partida (ranura 4)."
 priority = 0
 tags = ["Mode"]
-updated = "2026-10-19"
+updated = "2026-10-21"
+# 1.1.0 (owner 2026-10-20): the welcome gacha of the first entry (docs/game/modes/inarogue-welcome-gacha.md): the
+# first-run gift drawn in a gold copy of the Players Universe scene, each player revealed by the retail summon
+# performance, then a summary of the players.
 # INAROGUE (docs/game/modes/inarogue.md) out of Inazuma Fantasy as a mod of its own (owner 2026-10-13/14,
 # docs/refactor/roguelite-split-map.md). It runs on the VR-Framework alone: Chronicles Deluxe (remastered crests),
 # Inazuma Fantasy (office unlocks, IF's cards in the tiers / rival pool), Utilities and BetterUI are optional
@@ -24,12 +27,46 @@ folder = "InaRogue"
 permissions = ["memory", "call", "patch", "command", "state", "hook"]
 
 [exports]
-# called by Inazuma Fantasy's scripts (it requires InaRogue): INAROGUE's save slot and the Rogue points item id. Phase 2 of the split adds the collectibles' read API here.
-functions = ["SaveSlot", "PointsItem"]
+# called by Inazuma Fantasy's scripts (it requires InaRogue): INAROGUE's save slot, the Rogue points item id and TalentOfCard(card) -> passive id, always open, talent name. Phase 2 of the split adds the collectibles' read API here.
+functions = ["SaveSlot", "PointsItem", "TalentOfCard"]
 keys = []
-tables = []
+# the talent slot (content\rogue\talents.toml, scripts\lib\rogue\talents.lua): VRFW's passive slot detours
+# (service S6, vr_framework 2.8.25) read these, keyed by INAROGUE's save slot
+tables = ["Passive.SlotsOff", "Passive.SignatureSlot", "Passive.SignatureOpen", "Passive.SignatureOnly"]
 
 # its own content\ folders read only by its scripts (no framework type): the catalogues (content\rogue\) and its growth
 # (content\growth\), its rule for the mod True Hissatsu (content\true_hissatsu\: no move rank-up by use in INAROGUE)
 [layout]
 script_folders = ["rogue", "growth", "true_hissatsu"]
+
+# Debug switches (docs/framework/debug-flags.md): the config.toml settings a debug flag forces on (e.g. while the mod
+# Debug Tools is enabled); config.toml keeps them off. Flag `unlock_all`: every avatar, office unlock, coach, album entry and
+# formation owned / shown; `all_players`: every draw-pool card in the INAROGUE bank (in memory only); `tools`: the
+# INAROGUE debug commands (CMND_EVT_RL_BANK_DEBUG_FILL, CMND_EVT_RL_FRAGS_ADD, CMND_EVT_RL_PROBE_INFO).
+[[VRFW.DebugSwitch]]
+Flag = "unlock_all"
+Config = "rogue.avatars.unlock_all"
+
+[[VRFW.DebugSwitch]]
+Flag = "unlock_all"
+Config = "rogue.unlocks.unlock_all"
+
+[[VRFW.DebugSwitch]]
+Flag = "unlock_all"
+Config = "rogue.coaches.unlock_all"
+
+[[VRFW.DebugSwitch]]
+Flag = "unlock_all"
+Config = "rogue.album.unlock_all"
+
+[[VRFW.DebugSwitch]]
+Flag = "unlock_all"
+Config = "rogue.formations.unlock_all"
+
+[[VRFW.DebugSwitch]]
+Flag = "all_players"
+Config = "rogue.debug_all_players"
+
+[[VRFW.DebugSwitch]]
+Flag = "tools"
+Config = "rogue.debug_tools"

@@ -294,28 +294,31 @@ if NewRecruitment.Spirits == nil then
       end
       seen[kind] = true
     end
-    return seen[7] == true and seen[8] == true and seen[9] == true
+    -- the retail kinds 7, 8, 9, or (BetterUI's shortcut tiles take those rows out of the list) the «Espíritu» and
+    -- next rows 1, 2
+    return (seen[7] == true and seen[8] == true and seen[9] == true) or (seen[1] == true and seen[2] == true)
   end
 
   local dock = {list = nil, removed_at = nil, logged = false}
   local function FilterDockRows()
     if dock.list == nil then
-      dock.list = FindUpvalue({"SetupTeamDockListItemText", "OnSetupLayer", "OnDecideFocus"}, IsDockRowList)
+      dock.list = FindUpvalue({"SetupTeamDockListItem", "UpdateViewTeamDockListItem", "SetupTeamDockListItemText",
+        "OnSetupLayer", "OnEnter", "OnDecideFocus"}, IsDockRowList)
     end
     local list = dock.list
     if list == nil then
+      if not dock.logged then
+        dock.logged = true
+        Log("team dock: «Espíritu» row list not found (no EVT_DEBUG?): the row stays")
+      end
       return
     end
-    if RemovalApplies() then
-      for row = #list, 1, -1 do
-        if list[row] == SPIRIT_DOCK_ROW then
-          table.remove(list, row)
-          dock.removed_at = row
-        end
+    -- the row is only hidden (the spirit screen and its data stay), in every save
+    for row = #list, 1, -1 do
+      if list[row] == SPIRIT_DOCK_ROW then
+        table.remove(list, row)
+        dock.removed_at = row
       end
-    elseif dock.removed_at ~= nil then
-      table.insert(list, math.min(dock.removed_at, #list + 1), SPIRIT_DOCK_ROW)
-      dock.removed_at = nil
     end
     if not dock.logged then
       dock.logged = true

@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Desolación eterna (whs01930).
 [[edit]]
 target = "whs01930"
-trajectory = { goal_points = [[39.59, 12.82], [20.2, 7.07], [6.85, 3.72], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[39.59, 12.82], [20.2, 7.07], [6.85, 3.72], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[39.59, 4.5], [20.2, 3.17], [6.85, 2.4], [0.0, 2.0]], unblockable = false }

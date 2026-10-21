@@ -73,6 +73,7 @@ do
   end
 
   function IRD.log(...)
+    IRD.flush_unwrapped()
     if IRD.logs < 80 then
       IRD.logs = IRD.logs + 1
       pcall(funcLuaCommand, IRD.LOG, "inarogue dock", ...)
@@ -89,6 +90,7 @@ do
 
   -- INAROGUE mode = the INAROGUE save (slot 4) is the loaded game; the budget only counts before a run starts
   function IRD.check()
+    IRD.flush_unwrapped()
     local rs, act = call(IRD.SLOT)
     IRD.on = type(rs) == "number" and rs == act
     if IRD.on then
@@ -110,9 +112,35 @@ do
     IRD.log("seen, request", p, "run", IRD.run, "vs set", IRD.set)
   end
 
+  -- the script stem of this patch file: its folder without the version suffix
+  IRD.STEM = (function()
+    local f = type(EVT_PATCH) == "table" and EVT_PATCH.file or nil
+    local dir = type(f) == "string" and f:match("([^/]+)/[^/]+$") or nil
+    return dir ~= nil and (dir:gsub("_%d+%.%d+[%.%d]*$", "")) or nil
+  end)()
+  IRD.unwrapped = {}   -- names IRD.wrap could not wrap, logged once by IRD.flush_unwrapped
+
+  function IRD.flush_unwrapped()
+    if IRD.unwrapped[1] ~= nil and type(funcLuaCommand) == "function" then
+      local names = table.concat(IRD.unwrapped, ", ")
+      IRD.unwrapped = {}
+      pcall(funcLuaCommand, IRD.LOG, "inarogue dock", tostring(IRD.STEM), "not wrapped (not a function here):", names)
+    end
+  end
+
+  -- VRFW_Host.wrap (the framework's one rule for wrappers of a hosted script: a later patch that redefines the
+  -- function does not drop it); without it, a wrapper of the global
   function IRD.wrap(name, make)
+    if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+      local ok = VRFW_Host.wrap(name, make, {level = 2})   -- not a tail call: level 2 = the IRD.wrap call site
+      if not ok then
+        IRD.unwrapped[#IRD.unwrapped + 1] = name
+      end
+      return ok
+    end
     local cur = _ENV[name]
     if type(cur) ~= "function" then
+      IRD.unwrapped[#IRD.unwrapped + 1] = name
       return false
     end
     _ENV[name] = make(cur)
@@ -444,9 +472,12 @@ do
     pcall(funcLuaMenuCommand, SET_HEADER, 5, base .. " · " .. IRD.points_text())
   end
 
-  -- the «Tipo» row (pachanga_dock, order 315, wrapped before this block) in slot 4: allowed; the run's team is the VS
-  -- dock, which is also «the active pachanga team» (no other dock to move to, no pointer to set)
-  if type(EVT_PT) == "table" and not EVT_PT.ird_patched then
+  -- the «Tipo» row (pachanga_dock) in slot 4: allowed; the run's team is the VS dock, which is also «the active
+  -- pachanga team» (no other dock to move to, no pointer to set)
+  local function patch_pachanga()
+    if type(EVT_PT) ~= "table" or EVT_PT.ird_patched then
+      return
+    end
     EVT_PT.ird_patched = true
     local can, move, refresh, switch = EVT_PT.canSwitch, EVT_PT.moveTo, EVT_PT.refresh, EVT_PT.switch
     if type(can) == "function" then
@@ -510,6 +541,7 @@ do
       end
     end
   end
+  patch_pachanga()   -- Pachangas loaded first; else at OnInit (its patches may run after this one)
 
   -- ---- M3: the match from the pre-match dock ---------------------------------------------------------------------
   local function ask(text, yesno)
@@ -648,8 +680,13 @@ do
     FuncOnBack()
   end
 
+  -- Pachangas asks the dock's owner each time (its OnInit may wrap this one): INAROGUE owns the dock in its save
+  EVT_DOCK_OWNERS = type(EVT_DOCK_OWNERS) == "table" and EVT_DOCK_OWNERS or {}
+  EVT_DOCK_OWNERS.inarogue = function() return IRD.check() end
+
   IRD.wrap("OnInit", function(orig)
     return function(...)
+      patch_pachanga()
       if IRD.check() then
         IRD.saved_tb = UTIL_TEAM_BANKS
         UTIL_TEAM_BANKS = false

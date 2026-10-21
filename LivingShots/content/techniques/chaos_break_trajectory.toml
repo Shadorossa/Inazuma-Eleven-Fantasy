@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Remate caótico (whs01250).
 [[edit]]
 target = "whs01250"
-trajectory = { goal_points = [[29.24, 6.23, 999, 14.62], [0.0, 1.83]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[29.24, 6.23, 999, 14.62], [0.0, 1.83]], unblockable = false }
+trajectory = { goal_points = [[29.24, 4.33, 999.0, 14.62], [0.0, 1.83]], unblockable = false }

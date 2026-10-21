@@ -3,8 +3,9 @@ schema = "VRFW.technique/3"
 # ev60_02100; whs02100_mm covered by the base move's rule). Nacho 2026-10-10: every aura move its own flight, heights
 # over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
 # In the cut-in (c0400) the ball (the effect's ball group: no event ball in c0200-c0400) ploughs dead level along the
-# pitch, its centre 2.50 m up (the ~9 m sphere touching the ground); in the match it leaves at 2.50 m and comes in one
-# straight line into the goal at 2.0 m (a level 2.5 m run would clear the bar), as Inazuma Break.
+# pitch, its centre 2.50 m up (the ~9 m sphere touching the ground); in the match it flies level at 2.0 m into the
+# goal (a level 2.5 m run would clear the bar); the aura's ground parts are raised by the 0.5 m difference so they lie
+# on the grass the whole flight (research/scripts/supermassive_shot_ball_fx.py FLIGHT_HEIGHT, owner 2026-10-21).
 #
 # Measured (research/scripts/shot_trajectory_from_cutin.py --points --move supermassive_shot):
 # main_ball_pos of ev60021000 c0400, effect frames 440-518 (point_eff adds nothing): [[0.00, 2.50], [12.31, 2.50]]:
@@ -15,4 +16,4 @@ schema = "VRFW.technique/3"
 # Tiro supermasivo (whs02100).
 [[edit]]
 target = "whs02100"
-trajectory = { points = [[0.0, 2.5]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 2.0]], goal_points = [[0.0, 2.0]], unblockable = false }

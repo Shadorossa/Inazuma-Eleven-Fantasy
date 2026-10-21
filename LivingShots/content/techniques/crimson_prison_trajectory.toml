@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Prisión escarlata (whs02380).
 [[edit]]
 target = "whs02380"
-trajectory = { goal_points = [[21.46, 11.71], [3.7, 3.41], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[21.46, 11.71], [3.7, 3.41], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[21.46, 4.5], [3.7, 2.36], [0.0, 2.0]], unblockable = false }

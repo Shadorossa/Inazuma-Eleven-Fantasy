@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Llamarada solar (whs01860).
 [[edit]]
 target = "whs01860"
-trajectory = { goal_points = [[15.6, 10.76], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[15.6, 10.76], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[15.6, 4.49], [0.0, 2.0]], unblockable = false }

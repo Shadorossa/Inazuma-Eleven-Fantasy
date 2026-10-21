@@ -1,0 +1,167 @@
+schema = "VRFW.text/2"
+table = "menu_text"
+# InaRogue › the names of the item rarities and the names and explanations of the rogue items (content/rogue/items.toml; ids
+# InaRogue.rogue_item_<key>_name / _desc, scripts/lib/rogue/items.lua I.text_keys). The Asedio names are placeholders
+# until the owner names them.
+
+[[row]]
+id = "InaRogue.rogue_item_siege_long_shot_tension_name"
+es = "Objeto de Asedio 1"
+en = "Siege item 1"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_long_shot_tension_desc"
+es = "Los disparos lejanos gastan un 15 % menos de tensión (40 % al nivel máximo)."
+en = "Long shots cost 15 % less tension (40 % at the top level)."
+
+[[row]]
+id = "InaRogue.rogue_item_siege_technique_cooldown_name"
+es = "Objeto de Asedio 2"
+en = "Siege item 2"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_technique_cooldown_desc"
+es = "El enfriamiento de las supertécnicas se reduce un 40 % (75 % al nivel máximo)."
+en = "Special moves recharge 40 % faster (75 % at the top level)."
+
+[[row]]
+id = "InaRogue.rogue_item_siege_wall_breaker_name"
+es = "Objeto de Asedio 3"
+en = "Siege item 3"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_wall_breaker_desc"
+es = "Los muros rivales reducen un 10 % menos la AT del tiro."
+en = "Rival walls take 10 % less of the shot's AT."
+
+[[row]]
+id = "InaRogue.rogue_item_siege_pass_speed_name"
+es = "Objeto de Asedio 4"
+en = "Siege item 4"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_pass_speed_desc"
+es = "Los pases van un 2,5 % más rápido (5 % al nivel máximo)."
+en = "Passes travel 2.5 % faster (5 % at the top level)."
+
+[[row]]
+id = "InaRogue.rogue_item_siege_max_grade_name"
+es = "Objeto de Asedio 5"
+en = "Siege item 5"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_max_grade_desc"
+es = "Todas las supertécnicas pasan a grado máximo durante 3 partidos."
+en = "Every special move plays at its top grade for 3 matches."
+
+[[row]]
+id = "InaRogue.rogue_item_siege_focus_at_name"
+es = "Objeto de Asedio 6"
+en = "Siege item 6"
+
+[[row]]
+id = "InaRogue.rogue_item_siege_focus_at_desc"
+es = "AT de foco +5 % (+30 % al nivel máximo)."
+en = "Focus AT +5 % (+30 % at the top level)."
+
+[[row]]
+id = "InaRogue.rogue_rarity_common"
+es = "Común"
+en = "Common"
+
+[[row]]
+id = "InaRogue.rogue_rarity_rare"
+es = "Raro"
+en = "Rare"
+
+[[row]]
+id = "InaRogue.rogue_rarity_epic"
+es = "Épico"
+en = "Epic"
+
+[[row]]
+id = "InaRogue.rogue_rarity_legendary"
+es = "Legendario"
+en = "Legendary"
+
+# The block examples (content/rogue/items.toml «block examples»): placeholder names.
+
+[[row]]
+id = "InaRogue.rogue_item_example_goal_kick_run_name"
+es = "Ejemplo de bloques 1"
+en = "Block example 1"
+
+[[row]]
+id = "InaRogue.rogue_item_example_goal_kick_run_desc"
+es = "Tiro +2 % por cada gol del equipo en la partida."
+en = "Kick +2 % for each goal the team scores in the run."
+
+[[row]]
+id = "InaRogue.rogue_item_example_element_power_name"
+es = "Ejemplo de bloques 2"
+en = "Block example 2"
+
+[[row]]
+id = "InaRogue.rogue_item_example_element_power_desc"
+es = "Supertécnicas de montaña y fuego +5 % (15 % al nivel máximo); Mano celestial +10 %."
+en = "Mountain and fire moves +5 % (15 % at the top level); God Hand +10 %."
+
+[[row]]
+id = "InaRogue.rogue_item_example_wind_intelligence_name"
+es = "Ejemplo de bloques 3"
+en = "Block example 3"
+
+[[row]]
+id = "InaRogue.rogue_item_example_wind_intelligence_desc"
+es = "Cada jugador de viento +30 de inteligencia."
+en = "Every wind player +30 intelligence."
+
+[[row]]
+id = "InaRogue.rogue_item_example_raimon_discount_name"
+es = "Ejemplo de bloques 4"
+en = "Block example 4"
+
+[[row]]
+id = "InaRogue.rogue_item_example_raimon_discount_desc"
+es = "Precios de la Tienda −2 % por cada jugador del Raimon (hasta −20 %)."
+en = "Shop prices −2 % per Raimon player (down to −20 %)."
+
+[[row]]
+id = "InaRogue.rogue_item_example_pass_charge_name"
+es = "Ejemplo de bloques 5"
+en = "Block example 5"
+
+[[row]]
+id = "InaRogue.rogue_item_example_pass_charge_desc"
+es = "Cada 100 pases del partido, el siguiente tiro con supertécnica ×3."
+en = "Every 100 passes in a match, the next shot move ×3."
+
+[[row]]
+id = "InaRogue.rogue_item_example_pe_per_technique_name"
+es = "Ejemplo de bloques 6"
+en = "Block example 6"
+
+[[row]]
+id = "InaRogue.rogue_item_example_pe_per_technique_desc"
+es = "Recupera un 3 % de PE por cada supertécnica."
+en = "Recovers 3 % PE per special move."
+
+[[row]]
+id = "InaRogue.rogue_item_example_zeus_rising_name"
+es = "Ejemplo de bloques 7"
+en = "Block example 7"
+
+[[row]]
+id = "InaRogue.rogue_item_example_zeus_rising_desc"
+es = "Jugadores del Zeus +1 % cada 2 minutos; vuelve a 0 con cada gol."
+en = "Zeus players +1 % every 2 minutes; back to 0 on each goal."
+
+[[row]]
+id = "InaRogue.rogue_item_example_phase_end_recruit_name"
+es = "Ejemplo de bloques 8"
+en = "Block example 8"
+
+[[row]]
+id = "InaRogue.rogue_item_example_phase_end_recruit_desc"
+es = "Al acabar la fase, 1 entre 3 de conseguir un jugador del Raimon, del Inazuma Kids FC o de los Veteranos Inazuma de hasta 3 estrellas."
+en = "At each phase end, 1 in 3 to get a Raimon, Inazuma Kids FC or Raimon Veterans player of up to 3 stars."

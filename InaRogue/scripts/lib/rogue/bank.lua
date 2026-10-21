@@ -4,6 +4,7 @@
 -- * One entry per owned roguelite player (`param`), a stable `uid` (never reused in a slot). Players never leave the
 --   bank; `undo_add` only rolls back the entry just added when its write failed.
 -- * Every bank player is level 5 (design rule 2026-09-24): loading resets older levels.
+-- * Debug entries ([rogue] debug_all_players): extra in-memory entries flagged `debug`, never written to the blob.
 
 local U = require "lib/rogue/util"
 local J = require "lib/rogue/json"
@@ -36,6 +37,31 @@ function B.new(slot)
 end
 
 function B.len(b) return #b.entries end
+
+-- the entries the blob holds (debug entries left out)
+function B.real_len(b) return #b.entries - (b.debug_count or 0) end
+
+-- the uid of a debug entry: derived from the card id, so a run saved with it finds the same player after a restart
+local DEBUG_UID_BASE, DEBUG_UID_SPAN = 0x40000000, 0x3FFFFFFF
+local function debug_uid(param) return DEBUG_UID_BASE + param % DEBUG_UID_SPAN end
+
+-- add an in-memory debug entry for every param not owned yet (a uid already taken skips its card): the number added
+function B.add_debug(b, params)
+  local added = 0
+  for _, param in ipairs(params) do
+    local uid = debug_uid(param)
+    if param ~= 0 and not b.by_param[param] and not b.by_uid[uid] then
+      local e = { uid = uid, param = param, level = start_level(), runs = 0, added = 0, flags = 0, frags = 0, goals = 0,
+        source = B.SOURCE.DEBUG, debug = true }
+      b.entries[#b.entries + 1] = e
+      b.by_uid[uid] = e
+      b.by_param[param] = e
+      added = added + 1
+    end
+  end
+  b.debug_count = (b.debug_count or 0) + added
+  return added
+end
 
 -- parse a decoded file: rows with uid 0 / param 0 / a duplicate uid or param are dropped, next_uid raised
 function B.from_json(j, slot)
@@ -70,9 +96,11 @@ end
 
 function B.to_json(b)
   local players = {}
-  for i, e in ipairs(b.entries) do
-    players[i] = J.obj({ { "uid", e.uid }, { "param", e.param }, { "level", e.level }, { "runs", e.runs },
-      { "added", e.added }, { "flags", e.flags }, { "frags", e.frags }, { "goals", e.goals }, { "source", e.source } })
+  for _, e in ipairs(b.entries) do
+    if not e.debug then
+      players[#players + 1] = J.obj({ { "uid", e.uid }, { "param", e.param }, { "level", e.level }, { "runs", e.runs },
+        { "added", e.added }, { "flags", e.flags }, { "frags", e.frags }, { "goals", e.goals }, { "source", e.source } })
+    end
   end
   return J.pretty(J.obj({
     { "version", B.VERSION }, { "slot", b.slot }, { "next_uid", b.next_uid }, { "best_phase", b.best_phase },
@@ -104,7 +132,7 @@ function B.add_from(b, param, added, valid, capacity, src)
   if param == 0 then return C.BAD_ARGS end
   if not valid then return C.NOT_ROGUELITE end
   if b.by_param[param] then return C.DUPLICATE end
-  if #b.entries >= capacity then return C.FULL end
+  if B.real_len(b) >= capacity then return C.FULL end
   local uid = math.max(b.next_uid, 1)
   b.next_uid = math.max((uid + 1) % U.TWO32, 1)
   local e = { uid = uid, param = param, level = start_level(), runs = 0, added = added, flags = 0, frags = 0, goals = 0,

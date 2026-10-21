@@ -1,0 +1,132 @@
+schema = "VRFW.changelog/1"
+# Pressing: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-21): created (a module of Football Reforged). 1.1.0: the L2 press guide and the arrows.
+lang = "es"
+name = "Presión"
+
+[en]
+name = "Pressing"
+
+[fr]
+name = "Pressing"
+
+[de]
+name = "Pressing"
+
+[it]
+name = "Pressing"
+
+[pt]
+name = "Pressão"
+
+[ja]
+name = "プレス"
+
+[zh_hans]
+name = "逼抢"
+
+[zh_hant]
+name = "逼搶"
+
+[[release]]
+icon = "general"
+notes = [
+    "Sin balón, L2 presiona en lugar del campo de foco.",
+    "Mantenlo: 2-4 compañeros esprintan hacia el rival.",
+    "Nunca el portero; suelta L2 y vuelven a su sitio.",
+    "La CPU también presiona en vez de usar su campo.",
+    "Con Aura Points, quien está sin aliento no presiona.",
+    "Sin balón, L2 dice «¡Presión!» y salen flechas azules.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "Without the ball, L2 presses instead of the focus field.",
+    "Hold it: 2-4 teammates sprint at the ball carrier.",
+    "Never the keeper; release L2 and they go back.",
+    "The CPU presses too instead of using its field.",
+    "With Aura Points, a winded player does not press.",
+    "Without the ball L2 reads «Press!», with blue arrows.",
+    "A module of Football Reforged.",
+]
+
+[release.fr]
+notes = [
+    "Sans ballon, L2 presse au lieu d'ouvrir le champ.",
+    "Maintiens-le : 2 à 4 coéquipiers sprintent au porteur.",
+    "Jamais le gardien ; relâche L2 et ils reviennent.",
+    "Le CPU presse aussi au lieu d'ouvrir son champ.",
+    "Avec Aura Points, un joueur essoufflé ne presse pas.",
+    "Sans ballon, L2 affiche «Pressing !» et des flèches.",
+    "Un module de Football Reforged.",
+]
+
+[release.de]
+notes = [
+    "Ohne Ball presst L2 statt das Fokusfeld zu öffnen.",
+    "Halte L2: 2-4 Mitspieler sprinten zum Ballführer.",
+    "Nie der Torwart; lass L2 los und sie kehren zurück.",
+    "Auch die CPU presst, statt ihr Feld zu nutzen.",
+    "Mit Aura Points presst ein Erschöpfter nicht.",
+    "Ohne Ball zeigt L2 «Pressing!» und blaue Pfeile.",
+    "Ein Modul von Football Reforged.",
+]
+
+[release.it]
+notes = [
+    "Senza palla, L2 pressa invece di aprire il campo.",
+    "Tienilo: 2-4 compagni scattano verso il portatore.",
+    "Mai il portiere; rilascia L2 e tornano al loro posto.",
+    "Anche la CPU pressa invece di usare il suo campo.",
+    "Con Aura Points, chi è senza fiato non pressa.",
+    "Senza palla, L2 mostra «Pressing!» e frecce blu.",
+    "Un modulo di Football Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Sem bola, L2 pressiona em vez do campo de foco.",
+    "Mantém-no: 2-4 colegas correm ao portador da bola.",
+    "Nunca o guarda-redes; larga L2 e voltam ao lugar.",
+    "O CPU também pressiona em vez de usar o seu campo.",
+    "Com Aura Points, quem está sem fôlego não pressiona.",
+    "Sem bola, L2 mostra «Pressão!» e setas azuis.",
+    "Um módulo de Football Reforged.",
+]
+
+[release.ja]
+notes = [
+    "ボールなしのL2はフォーカスフィールドでなくプレス。",
+    "押し続けると味方2〜4人が保持者へダッシュ。",
+    "キーパーは除く。離すと元の位置に戻る。",
+    "CPUもフィールドの代わりにプレスする。",
+    "Aura Pointsで息切れした選手はプレスしない。",
+    "ボールなしでL2に「プレス！」と青い矢印。",
+    "Football Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "无球时，L2不是专注领域，而是逼抢。",
+    "按住：2到4名队友冲向持球者。",
+    "门将除外；松开L2他们回到原位。",
+    "电脑也会逼抢，而不是用专注领域。",
+    "装有Aura Points时，喘不过气的人不逼抢。",
+    "无球时L2显示「全体逼抢！」和蓝色箭头。",
+    "Football Reforged的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "無球時，L2不是專注領域，而是逼搶。",
+    "按住：2到4名隊友衝向持球者。",
+    "門將除外；放開L2他們回到原位。",
+    "電腦也會逼搶，而不是用專注領域。",
+    "裝有Aura Points時，喘不過氣的人不逼搶。",
+    "無球時L2顯示「全體逼搶！」和藍色箭頭。",
+    "Football Reforged的模組。",
+]

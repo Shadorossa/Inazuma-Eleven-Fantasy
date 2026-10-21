@@ -26,7 +26,8 @@ target = "whs00950"
 # flight: 5.61 m (5.5 over a kick on the pitch) held until 48.12 m before the goal point, then the 5.0
 # deg line down into 1.4 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 24.06 m down (bend 0.5). A shot shorter
 # than 48.12 m starts lower, on the line.
-trajectory = { goal_points = [[48.12, 5.61, 999, 24.06], [0.0, 1.4]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[48.12, 5.61, 999, 24.06], [0.0, 1.4]], unblockable = false }
+trajectory = { goal_points = [[48.12, 4.24, 999.0, 24.06], [0.0, 1.4]], unblockable = false }
 # Fuego cruzado (whs03400, wind).
 [[edit]]
 target = "whs03400"
@@ -34,4 +35,5 @@ target = "whs03400"
 # flight: 5.61 m (5.5 over a kick on the pitch) held until 48.12 m before the goal point, then the 5.0
 # deg line down into 1.4 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 24.06 m down (bend 0.5). A shot shorter
 # than 48.12 m starts lower, on the line.
-trajectory = { goal_points = [[48.12, 5.61, 999, 24.06], [0.0, 1.4]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[48.12, 5.61, 999, 24.06], [0.0, 1.4]], unblockable = false }
+trajectory = { goal_points = [[48.12, 4.24, 999.0, 24.06], [0.0, 1.4]], unblockable = false }

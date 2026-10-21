@@ -1,0 +1,54 @@
+schema = "VRFW.game/2"
+
+# InaRogue › the rogue items of the run and the talent levels (scripts\lib\rogue\svc_items.lua; catalogue
+# content\rogue\items.toml; docs/game/modes/inarogue-passive-system.md §2.3-2.7).
+
+# the team's archetype from the inventory: its number (position in content/rogue/archetypes.toml: 1 siege), 0 = none;
+# set on every run load / save while the INAROGUE save is loaded
+[[VRFW.State]]
+key = "InaRogue.archetype"
+
+# its rank: the number of items of that archetype (1-5), 0 = none
+[[VRFW.State]]
+key = "InaRogue.archetype_rank"
+
+# 1 while an item's technique_grade_override piece has matches left (scripts/lib/rogue/svc_pieces.lua): the mod True
+# Hissatsu installs every move of the user's players at the last grade (content/true_hissatsu/inarogue.toml)
+[[VRFW.State]]
+key = "InaRogue.max_grade"
+
+# () -> count, max slots, archetype (0 none, 1..n), rank, catalogue size
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_INFO"
+handler = "InaRogue.Mode.ItemInfo"
+
+# (i) -> ok, key, level, max level, rarity (1 common, 2 rare, 3 epic, 4 legendary), upgrade cost (-1 at the maximum), sell value, first
+# archetype, scope, matches left
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_GET"
+handler = "InaRogue.Mode.ItemGet"
+
+# (i) -> ok, key, kind, rarity (1-4), price, max level, first archetype: the catalogue for the Shop
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_CATALOGUE"
+handler = "InaRogue.Mode.ItemCatalogue"
+
+# (key) -> code (0 ok, 1 no run, 8 full, 9 owned: turned into Rogue points, 10 unknown), index / points given
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_ADD"
+handler = "InaRogue.Mode.ItemAdd"
+
+# (i) -> code, Rogue points given (half of what the item cost)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_SELL"
+handler = "InaRogue.Mode.ItemSell"
+
+# (i, paid) -> code (11 at the maximum, 12 paid less than the cost), level: the Shop's «Mejorar»
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_ITEM_UPGRADE"
+handler = "InaRogue.Mode.ItemUpgrade"
+
+# (bank uid) -> code (13 no talent, 14 not a run player, 11 at level 6), level: a «Talento +1»
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_TALENT_UP"
+handler = "InaRogue.Mode.TalentUp"

@@ -25,21 +25,25 @@ ret = "ptr"
 [[VRFW.Function]]
 # Layout guard, never called: BuildRoster 0xE9AC40 at 0xE9AC9B (`movzx r13d,word [r8+28h]` the first member row of the
 # team record … `cmp eax,[r10+70h]` the member row count … `imul r15,rax,54h; add r15,[r10+68h]` member rows of 0x54
-# bytes) = the TeamRecord / TeamConfig / MemberRow layout below. Another build of that code = no Draft.
+# bytes) = the TeamRecord / TeamConfig / MemberRow layout below. Another build of that code = no Draft. `alt`: the
+# same reads in v7.2.1's BuildRoster 0xEA44A0 (0xEA44FD: +0x28, +0x70, 0x54, +0x68; other registers).
 name = "RosterRowsCode"
 pattern = "45 0F B7 68 28 4D 89 73 D0 45 33 F6 66 44 89 6C 24 30 45 85 C9 0F 84 ?? ?? ?? ?? 41 0F 29 73 B8 66 0F 6F 35 ?? ?? ?? ?? 41 8B C1 4D 89 63 E0 48 89 44 24 50 4D 89 7B C8 49 0F BF C5 85 C0 0F 88 ?? ?? ?? ?? 41 3B 42 70 0F 8D ?? ?? ?? ?? 4C 6B F8 54 48 8B D0 4D 03 7A 68"
+alt = ["41 0F B7 58 28 49 89 73 E0 33 F6 4D 89 73 D0 45 33 F6 66 89 5C 24 ?? 89 44 24 ?? 39 44 24 ?? 0F 86 ?? ?? ?? ?? 8B 54 24 ?? 41 0F 29 73 B8 66 0F 6F 35 ?? ?? ?? ?? 4D 89 6B D8 4D 89 7B C8 0F 1F 44 00 00 48 0F BF DB 85 DB 0F 88 ?? ?? ?? ?? 41 3B 59 70 0F 8D ?? ?? ?? ?? 4C 6B FB 54 48 8B C3 4D 03 79 68"]
 rva = 0xE9AC9B
 
 [[VRFW.Function]]
 # Layout guard, never called: 0xE9AEB8 `mov r8d,[r15+20h]` = the member's chara_param id (MemberRow.param).
 name = "RosterParamCode"
 pattern = "45 8B 47 20 0F 1F 40 00 44 3B 40 04 74 0B 48 83 C0 0C"
+alt = ["45 8B 47 20 66 0F 1F 44 00 00 44 3B 40 04 74 0B 48 83 C0 0C"]   # v7.2.1 0xEA47A6 (a longer nop)
 rva = 0xE9AEB8
 
 [[VRFW.Function]]
 # Layout guard, never called: 0xE9AF13 `movzx eax,byte [r15+47h]` = the member's roster slot (MemberRow.slot).
 name = "RosterSlotCode"
 pattern = "41 0F B6 47 47 88 44 24 74 41 0F B6 47 49 66 89 44 24 76 41 8B 47 40 83 C8 40 4C 89 65 70"
+alt = ["41 0F B6 47 47 88 45 DC 41 0F B6 47 49 66 89 45 DE 41 8B 47 40 83 C8 40 4C 89 AD 80 00 00 00"]   # v7.2.1 0xEA4803 (locals on rbp)
 rva = 0xE9AF13
 
 # ---------------------------------------------------------------- globals ([[g_gameRoot]+…])
@@ -47,7 +51,7 @@ rva = 0xE9AF13
 # the Kizuna town object: +0x15610 the avatar's chara handle, +0x15614 its index (0 = the avatar)
 name = "kizuna"
 base = "game_root"
-chain = [0x6AD8]
+chain = ["Game.RootKizunaTown"]
 
 [[VRFW.Global]]
 name = "chara_containers"

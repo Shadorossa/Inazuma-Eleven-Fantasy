@@ -14,4 +14,5 @@ schema = "VRFW.technique/3"
 # Tornado de fuego DD (whs01760).
 [[edit]]
 target = "whs01760"
-trajectory = { goal_points = [[13.67, 9.86, 999, 6.84], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[13.67, 9.86, 999, 6.84], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[13.67, 4.48, 999.0, 6.84], [0.0, 2.0]], unblockable = false }

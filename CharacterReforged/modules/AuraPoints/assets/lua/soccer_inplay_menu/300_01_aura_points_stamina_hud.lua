@@ -24,6 +24,15 @@
 --   outside the bar); its red trail is at 0; its fill sprite is swapped frame after frame for stamina_points_gloss_NN (the mod's
 --   images\menu\02_btl\btl06\btl06_13\hud_gloss.toml: one soft white diagonal band at position NN of 48). The bar keeps its colour.
 --   docs/game/mechanics/aura-costs.md §6.
+-- * stamina_points_pe_sprint (a fourth copy of the gauge, only its frame quad shown): the sprint bar (the match
+--   resource aura_points.sprint, 9th / 10th values of CMND_AURAPOINTS_STAMINA), its own bar apart from the PE, drawn in
+--   front of the PE fill (draw priority 202) from the bar's left end: EVT_PE_SPRINT_SPAN of the fill's width when it is
+--   full, the PE fill showing through it; the resource is capped at the PE share (cap_by), so it ends within the fill. It shrinks towards the left end while he dashes; at 0 he is «winded» (a
+--   cooldown without dash, the state's min_seconds) and it refills dimmed until the cooldown is over. The frame's sprite
+--   is swapped for stamina_points_sprint_fill01 / stamina_points_sprint_winded01 (features\pe\content\images\...\
+--   btl06_13\stamina_points_bars.toml) and the quad is sized to the segment: the gauge's masked fill material does not
+--   draw on script-opened copies, a plain quad does. Commands only when the segment, the sprite or the bar moved.
+--   docs/game/mechanics/match-stamina.md §18.
 -- * the keshin PEG / totem SP bar under it is the graft aura_points_hud since 2026-10-14 (it reads
 --   EVT_PE_FRAME / EVT_PE_BarPos / EVT_PE_BAR_SHOWN / EVT_PE_FACE_SCALE of this block to sit under the PE bar).
 -- Engine calls only inside the callbacks the exe calls by name (UpdateScreenOutCtrlCharaIcon, UpdateDashRecastMeter,
@@ -47,7 +56,7 @@ EVT_PE_ON = nil                        -- the mod's PE part this start (4th valu
 EVT_PE_ASKS = 0                        -- unanswered asks of the parts command (600: taken as on)
 EVT_PE_BAR_SHOWN = false               -- the bar layer is visible
 EVT_PE_BAR_RATE = nil                  -- last PE / max sent to the bar
-EVT_PE_FRAME = {x = nil, y = nil, rate = nil, shown = false, mult = 1}
+EVT_PE_FRAME = {x = nil, y = nil, rate = nil, shown = false, mult = 1, sprint = nil, winded = false}
 EVT_PE_SHINE = true                    -- glass shine over the bar while the PE drains faster (multiplier > 1)
 EVT_PE_SHINE_FRAMES = 40               -- frames of one sweep, left to right
 EVT_PE_SHINE_PAUSE = 25                -- frames between two sweeps
@@ -63,6 +72,12 @@ EVT_PE_LABEL_GAP = 2                   -- between the tag and the bar's frame
 EVT_PE_LABEL_DX = 0                    -- extra offset of the tag (layout units, y up)
 EVT_PE_LABEL_DY = 0
 EVT_PE_LABEL_SHOWN = false
+EVT_PE_SPRINT = true                   -- the sprint bar in front of the PE fill
+EVT_PE_SPRINT_SPAN = 1.0               -- its length with a full sprint bar, share of the fill's width from its left end
+EVT_PE_SPRINT_MIN = 0.004              -- no segment shorter than this share of the fill
+EVT_PE_SPRINT_SHOWN = false
+EVT_PE_SPRINT_SPRITE = nil             -- sprite on the segment's quad now
+EVT_PE_SPRINT_LAST = nil               -- {x, y, sx, sy} last sent to the segment layer
 
 local PE_BALLOON = 3573161010 --[[soccer02_22_chara_face_balloon]]
 local PE_RING = 2308648479 --[[soccer00_13_dash_recast_meter]]
@@ -91,6 +106,8 @@ local PE_FRAME_CX, PE_FRAME_CY, PE_FRAME_W, PE_FRAME_H = 332, -838, 476, 44
 -- the frame's visible (opaque) rows in its 476 x 44 sprite hp_base01: 2..29 (28 px, a soft drop shadow 30..41 below);
 -- the centre of those rows in layout units (y up)
 local PE_FRAME_VIS_H, PE_FRAME_VIS_CY = 28, -832
+-- the gauge fill _hp_bar02's rect (top-left, size; layout units, y up); it fills from the left
+local PE_FILL_X, PE_FILL_Y, PE_FILL_W, PE_FILL_H = 100, -820, 448, 24
 local pe_ready = false                 -- the bar layer was set up since it was opened
 local PE_SHINE = 181937208
 local PE_LABEL = 52290927
@@ -118,6 +135,10 @@ EVT_GLOSS = {
   377668468, 1636168674, 4169966168, 2408288974}
 EVT_GLOSS_C0, EVT_GLOSS_C1 = -0.10, 1.10
 local pe_shine_ready, pe_label_ready = false, false
+local PE_SPRINT = 2622617985
+local PE_TEX_SPRINT = 1660964304
+local PE_TEX_WINDED = 488208304
+local pe_sprint_ready = false
 local pe_shine_t = 0                   -- frames since the shine started (sweep + pause cycle)
 
 local function PE_Pack(...)
@@ -154,12 +175,13 @@ function EVT_PE_PartOn()
   return EVT_PE_ON == true
 end
 
--- PE ratio (0..1), exhausted; nil when there is nothing to show (no loader command, mode "log", no data)
+-- PE ratio (0..1), exhausted, multiplier, sprint ratio (0..1, nil = no sprint bar), winded; nil when there is nothing
+-- to show (no loader command, mode "log", no data)
 function EVT_PE_Query(hdl)
   if EVT_PE_ABSENT or type(funcLuaCommand) ~= "function" then
     return nil
   end
-  local ok, has, cur, max, ex, on, _, _, mult = pcall(funcLuaCommand, EVT_PE_CMD, hdl or 0)
+  local ok, has, cur, max, ex, on, _, _, mult, sprint, winded = pcall(funcLuaCommand, EVT_PE_CMD, hdl or 0)
   if not ok or has == nil then
     return nil                           -- no answer this frame (the mod scripts were busy on another thread): nothing shown, asked again next frame
   end
@@ -169,7 +191,12 @@ function EVT_PE_Query(hdl)
   if type(mult) ~= "number" or mult ~= mult then
     mult = 1                             -- older loader: no multiplier
   end
-  return EVT_PE_Rate(cur, max), ex == 1, mult
+  if type(sprint) ~= "number" or sprint ~= sprint or sprint < 0 then
+    sprint = nil                         -- no sprint bar (older mod, resource missing)
+  else
+    sprint = math.min(sprint, 1)
+  end
+  return EVT_PE_Rate(cur, max), ex == 1, mult, sprint, winded == 1
 end
 
 -- the gloss sprite (1-based index of EVT_GLOSS) at frame t of the cycle on a fill of rate (0..1), nil = in the pause
@@ -258,9 +285,17 @@ local function PE_HideLabel()
   end
 end
 
+local function PE_HideSprint()
+  if EVT_PE_SPRINT_SHOWN then
+    EVT_PE_SPRINT_SHOWN = false
+    PE_HideLayer(PE_SPRINT)
+  end
+end
+
 local function PE_HideBar()
   PE_HideShine()
   PE_HideLabel()
+  PE_HideSprint()
   if EVT_PE_BAR_SHOWN then
     EVT_PE_BAR_SHOWN = false
     PE_HideLayer(PE_LAYER)
@@ -367,6 +402,71 @@ local function PE_DrawShine(px, py, sx, sy, rate, mult)
   end
 end
 
+-- the sprint bar along the fill (shares of the fill's width, 0..1): start a0 and length; nil = nothing to show.
+-- It starts at the bar's left end and is span x sprint long, whatever the PE fill is.
+function EVT_PE_SprintSeg(sprint)
+  if type(sprint) ~= "number" then
+    return nil
+  end
+  local len = math.max(0, math.min(1, EVT_PE_SPRINT_SPAN or 0)) * math.max(0, math.min(1, sprint))
+  if len < (EVT_PE_SPRINT_MIN or 0) then
+    return nil
+  end
+  return 0, len
+end
+
+-- the segment layer's position / scale for the bar layer at (px, py) scaled (sx, sy): its frame quad (top-left (94,
+-- -816), 476 x 44) over the fill rect's columns a0 .. a0 + len, the fill rect's full height
+function EVT_PE_SprintPos(px, py, sx, sy, a0, len)
+  local tsx = PE_FILL_W * len * sx / PE_FRAME_W
+  local tsy = PE_FILL_H * sy / PE_FRAME_H
+  local tx, ty = (PE_FILL_X + PE_FILL_W * a0) * sx, PE_FILL_Y * sy
+  local ox, oy = EVT_PE_ToPos(tx - 94 * tsx, ty + 816 * tsy)
+  return px + ox, py + oy, tsx, tsy
+end
+
+-- the sprint bar on the bar (px, py, sx, sy), in front of the PE fill; dimmed sprite while winded (the cooldown)
+local function PE_DrawSprint(px, py, sx, sy, sprint, winded)
+  local a0, len = nil, nil
+  if EVT_PE_SPRINT then
+    a0, len = EVT_PE_SprintSeg(sprint)
+  end
+  if a0 == nil then
+    PE_HideSprint()
+    return
+  end
+  local ready, opened = PE_Ready(PE_SPRINT)
+  if opened then
+    pe_sprint_ready = false
+  end
+  if not ready then
+    return
+  end
+  if not pe_sprint_ready then
+    pe_sprint_ready = true
+    EVT_PE_SPRINT_SPRITE, EVT_PE_SPRINT_LAST = nil, nil
+    PE_Cmd(PE_CMND_MESH_VISIBLE, PE_SPRINT, PE_MESH_LABEL, false, 0)
+    PE_Cmd(PE_CMND_MESH_VISIBLE, PE_SPRINT, PE_MESH_EMPTY, false, 0)
+    PE_Cmd(PE_CMND_MESH_VISIBLE, PE_SPRINT, PE_MESH_BAR, false, 0)
+  end
+  local sprite = winded and PE_TEX_WINDED or PE_TEX_SPRINT
+  if EVT_PE_SPRINT_SPRITE ~= sprite then
+    PE_Cmd(PE_CMND_SWAP_TEX, PE_SPRINT, PE_ATLAS, sprite, PE_TEX_FRAME, 0, 0)
+    EVT_PE_SPRINT_SPRITE = sprite
+  end
+  local qx, qy, qsx, qsy = EVT_PE_SprintPos(px, py, sx, sy, a0, len)
+  local last = EVT_PE_SPRINT_LAST
+  if last == nil or last[1] ~= qx or last[2] ~= qy or last[3] ~= qsx or last[4] ~= qsy then
+    EVT_PE_SPRINT_LAST = {qx, qy, qsx, qsy}
+    PE_Cmd(PE_CMND_SCALE, PE_SPRINT, qsx, qsy, 1, 0)
+    PE_Cmd(PE_CMND_POS, PE_SPRINT, qx, qy, 0, 0)
+  end
+  if not EVT_PE_SPRINT_SHOWN then
+    EVT_PE_SPRINT_SHOWN = true
+    PE_ShowLayer(PE_SPRINT)
+  end
+end
+
 -- open the bar layer once; set it up (rates, label and red trail hidden) when it has loaded. true = ready
 local function PE_OpenBar()
   if PE_Cmd(PE_CMND_IS_OPEN, PE_LAYER) ~= true then
@@ -415,6 +515,7 @@ function EVT_PE_DrawBar()
   end
   PE_DrawLabel(px, py, sx, sy)
   PE_DrawShine(px, py, sx, sy, fr.rate, fr.mult)
+  PE_DrawSprint(px, py, sx, sy, fr.sprint, fr.winded)
 end
 
 -- the controlled player's bubble (exe, every frame: handle, on screen, x, y). The retail function runs with a proxy of
@@ -459,12 +560,12 @@ function UpdateScreenOutCtrlCharaIcon(a1, a2, a3, a4)
   if fr.shown then
     PE_Cmd(PE_CMND_SCALE, PE_BALLOON, s, s, 1, 0)
   end
-  local r, m = nil, 1
+  local r, m, sp, wd = nil, 1, nil, false
   if EVT_PE_BAR and fr.shown and type(a1) == "number" and a1 ~= 0 then
     local ex
-    r, ex, m = EVT_PE_Query(a1)
+    r, ex, m, sp, wd = EVT_PE_Query(a1)
   end
-  fr.rate, fr.mult = r, m or 1
+  fr.rate, fr.mult, fr.sprint, fr.winded = r, m or 1, sp, wd == true
   EVT_PE_DrawBar()
 end
 

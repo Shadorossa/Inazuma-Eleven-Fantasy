@@ -90,6 +90,8 @@ kept_slots = [18, 20]
 first_tab = 9
 retail_extra = 1
 max_tabs = 12
+# opponentListTab of the hidden piece of a [[VRFW.GameTab]] / [[VRFW.FreeMatchGame]] game: a tab the Chronicle team list does not have (it has 0-8), so the game is listed in the free match only.
+hidden_piece_list_tab = 9
 
 [bb_unlock]
 # Battle Bay unlock: Chronicle difficulty ids, starters two teams must share to be the same team / squad, and maximum comparisons per unlock condition.

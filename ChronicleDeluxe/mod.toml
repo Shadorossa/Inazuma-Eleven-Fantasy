@@ -2,13 +2,13 @@ id = "chronicle_deluxe"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Chronicle Deluxe"
-version = "1.11.14"
+version = "1.16.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner; the Crónica battle drops the rival's player spirits too (at the rates of the old route-unlock battle, below the Heroica's); and the match ranks S / A / B of a won board or chain match, with their badges on the board pieces, the chain tiles and the chain board's help; and the chain board's IE3 look (its background, plates, chests and icons). Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 (Royal Academy) to Lv 200 (Victory Road's last match), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), only the auras of that game for both teams (none in IE1-IE3, Ares and Orion but a card's own mode change, fighting spirits in GO, plus armours and Mix-Max in Chrono Stone, plus totems in Galaxy, everything in Victory Road), and its first win gives the rival's crest, its kit and the stadium of the match. Winning the Destructores gate battle gives the key item «Master's Seal»: one copy of a special move serves all your players (auras too; in Character Reforged's skill table). Works on the base game with the VRFW. Always on: the mod has no options. In the free match every opponent offers three difficulties, the whole rival team at that level: Lv 50, Lv 99 and Lv 200 (legendary battle)."
+description = "More Chronicle mode: two extra matches on the Chronicle board in IE1 (Umbrella, across the bridge after Inazuma Kids FC, and Street Sally's, between Brain and Otaku), each a Crónica battle that opens its Heroica; the chain «Sonny's Premium Route» of the original IE1 (18 matches in two branches, on the pitch in front of Raimon after Zeus: the four elemental teams only accept a squad of the element weak against theirs, each win gives the rival's special moves at the end of the match, a double chest ends each branch); the chain «Mary Times Coach's Route» of the original IE2 (11 matches in two branches: the Mary Times and Alpino coaches' chains merged, without any team of Sonny's chain or of Chronicle mode; on the Mary Times sea pitch, after the IE2 board's last match); and the aura items a match drops (keshin, totems, Mix-Max, mode changes) in their own «AURAS» section of the drop lists, each drawn as its aura's banner, and the other items in three sections «OBJETOS», «SUPERTÉCNICAS» (shots, dribbles, blocks, saves) and «EQUIPACIÓN» (boots, gear, kits, crests); the Crónica battle drops the rival's player spirits too (at the rates of the old route-unlock battle, below the Heroica's); every Chronicle board match also drops the manuals of the special moves its rival's players have learned at that match's level, the rival team's own boots, its players' auras of the battle's era and, with True Hissatsu, a book to raise a special move's grade (Crónica: manuals 4 %, boots 1 %, book 1 % per roll; Heroica: 10 %, 2.5 %, 2 % + the last grade's book 0.5 %); and the match ranks S / A / B of a won board or chain match, with their badges on the board pieces, the chain tiles and the chain board's help; and the chain board's IE3 look (its background, plates, chests and icons). Every Chronicle team keeps only two battles: the Crónica, whose win opens the route as the route-unlock battle did, and the Batalla heroica, from Lv 4 to Lv 200 (Victory Road's last match; the IE1, IE2 and IE3 teams play both battles as the rival of their DS story match, every player at his DS level (IE2 and IE3 shifted to follow the game before) with his DS moves; Orion's battles continue Ares' levels, every move as in VR, the ones not yet learned locked; in the Crónica the fixed Raimon / Inazuma Japan keeps the retail Crónica's level gap to the rival, with its DS moves of that point of the story), your team synced 7 % below the rival, only players of that game or earlier ones (from IE2 on, a growing number of that game's own players), only the auras of that game for both teams (none in IE1-IE3, Ares and Orion but a card's own mode change, fighting spirits in GO, plus armours and Mix-Max in Chrono Stone, plus totems in Galaxy, everything in Victory Road), and its first win gives the rival's crest, its kit and the stadium of the match. Winning the Destructores gate battle gives the key item «Master's Seal»: one copy of a special move serves all your players (auras too; in Character Reforged's skill table). Works on the base game with the VRFW. Always on: the mod has no options. In the free match every opponent offers three difficulties, the whole rival team at that level: Lv 50, Lv 99 and Lv 200 (legendary battle)."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-19"
+updated = "2026-10-21"
 # NOT the older mod «Chronicles Deluxe» (id chronicles_deluxe, folder ChroniclesDeluxe, with an «s»): that mod is set aside
 # (owner 2026-10-14) and is neither edited nor needed by this one. Where both declare the same thing (the Umbrella /
 # Sally's nodes and teams), this mod's files carry `if_not_mod = "chronicles_deluxe"`: with the old mod active, its
@@ -75,6 +75,26 @@ folder = "ChronicleDeluxe"
 # 1.2.5 (2026-10-14, owner: «Idols must not be able to drop in ANY chronicle match»): no Ídolo spirit (rarities 5-7)
 # from any Chronicle match, its rates shown truthfully (the Ídolo chance is dropped, not moved; §9):
 #   content\teams\90_rules\no_idol_spirits.toml   [[VRFW.SpiritDrops]] Rows = "chronicle", ExcludeRarities (VRFW 2.4.43)
+# 1.14.0 (2026-10-21, owner): the 5 Galaxy techniques matched by key number use the verified VR ids (§16.3,
+#   research/data/go3ds_technique_overrides.toml); Galaxy story teams, story auras, heroic and drops regenerated
+# 1.13.0 (2026-10-21, owner): VR games with no story match scaled between their neighbours (§16.4); GO-saga story
+#   matches with no VR game as board nodes (side_nodes.toml `Story`, content\teams\13_go|14_cs|15_galaxy\05xx_story_node_*,
+#   §16.5); the own team's story auras (research/scripts/chronicle_deluxe_story_auras_build.py ->
+#   content\teams\90_rules\story_auras.toml + first-clear tables, §16.6); IE2 chains of Rika's mother and the secret
+#   warehouse, Mary Times chain completed and unlocked by the Dark Emperors' Crónica (§15); free match Protocolo Omega
+#   3.0's plain Omega kit and no coach below Nv200 (content\teams\90_rules\free_match_omega3_staff.toml)
+# 1.12.0 (2026-10-21, owner: the GO saga at its 3DS story levels and movesets; chronicle-deluxe.md §16.3):
+#   content\teams\13_go\0310_go_story_teams.toml, 14_cs\0310_cs_story_teams.toml, 15_galaxy\0310_galaxy_story_teams.toml
+#   (research/scripts/chronicle_deluxe_story_teams_build.py from research/data/go3ds, cs3ds, galaxy3ds); heroic.toml and
+#   the rival drops regenerated
+# 1.11.47 (2026-10-21, owner: the drop list's items in OBJETOS / SUPERTÉCNICAS / EQUIPACIÓN; chronicle-deluxe.md §18):
+#   content\items\drop_list.toml [[VRFW.DropList.Sections]] (VRFW 2.8.89), text\rows\drop_list_sections.toml,
+#   content\images\menu\10_win\win05\win05_38_sections.toml (the header pictures)
+# 1.11.44 (2026-10-21, owner: the rival's unlocked hissatsu manuals, its team's boots and the level-up books as drops,
+# a feature of this mod, not the framework's; docs/game/mods/chronicle-deluxe.md §17):
+#   research/scripts/chronicle_deluxe_drops_build.py from config.toml [drops] writes content\teams\90_rules\rival_drops.toml
+#   ([[VRFW.GameDrops]]), content\base_tables\gamedata\soccer\soccer_drop_config.toml (after its marker) and
+#   content\base_tables\gamedata\item\win_treasure_lot_table_config.toml
 # 1.3.0 (2026-10-14, owner: «the chain ranks belong to Chronicle Deluxe»): the match ranks S / A / B and their art,
 # moved from the VR-Framework (which now declares no rank):
 #   content\defaults\match_rank.toml               [MatchRank.S / A / B]: thresholds, badges, help lines (VRFW 2.4.48
@@ -184,5 +204,31 @@ folder = "ChronicleDeluxe"
 # Épsilon Plus at BATALLA LEGENDARIA with Zell in goal and Dvalin forward (content/teams/11_ie2/1400_epsilon_plus_free_match.toml).
 # 1.11.10 (owner 2026-10-19): the IE2 side node Mar de Árboles (slot 275, after Emperadores Oscuros; rival the game's
 # legend team tm_cro_legend_IE2_09) with its Crónica and Heroica, and its game in the free-match IE2 tab after Jóvenes Inazuma.
-requires = ["vr_framework>=2.7.20"]
+# 1.11.18 (owner 2026-10-20): the EXP of the Batalla heroica and, until the Destructores gate battle is won, of the chain
+# matches, as [[VRFW.MatchExp]] rules (content/match_exp/heroic.toml, VRFW 2.7.42): each player rises a number of levels set
+# by the level gap to the rival (Trails-like rates) and the match rank (S ×1.25, A ×1.0, B ×0.75, loss ×0.5), never above
+# the rival's level from below it.
+# 1.11.27 (owner 2026-10-20): the IE2 chain «Ruta del entrenador del Mary Times» (slot 287, on the Mary Times sea pitch;
+# the Mary Times and Alpino coaches' chains merged without repeated teams; docs/game/mods/chronicle-deluxe.md §15).
+# 1.11.28 (owner 2026-10-20): the Mary Times coach chain's Upper double chest gives Syon Blaze (branch cleared) and
+# Canon Evans (branch all at rank S), the IE2 coach's own player rewards.
+# 1.11.31-1.11.32 (owner 2026-10-20): the second Chispas Perfectas of the Orion tab plays its line-up swapped at BATALLA
+# LEGENDARIA, each player with his new position's stats and moves and the place's stat bonus (the keeper's ×1.6 goes to
+# whoever plays in goal); this mod's own feature since 1.11.32: config.toml [[free_match_shuffle]], generated
+# content/teams/90_rules/free_match_shuffles.toml (research/scripts/chronicle_deluxe_shuffle_build.py),
+# scripts/free_match_shuffle.lua, assets/lua/soccer_vs_cpu_list_menu/290_free_match_shuffle.lua (docs/game/mods/
+# chronicle-deluxe-free-match.md §16).
+# 1.11.33 (2026-10-20): the Mary Times coach chain's key shortened to ie2_marytimes (node ie2_chain_marytimes, games
+# evt_ch_ie2_marytimes_NN): «ie2_mary_times_coach» was over the 16-character chain name limit, so the chain and its
+# games were not built.
+# 1.11.36 (owner 2026-10-21): the Mary Times coach chain without any team of Sonny's chain or of Chronicle mode (same
+# players or the same team under a letter / number): the 5 Mary Times + 5 Alpino teams left and Jóvenes Inazuma, rows of
+# 5 and 6; new rivals Equipo Blaze, Chavalillas A, Equipo de Adultos, Selección Juvenil A, Alumnos de Intercambio, Ases
+# del Inazuma 2; Occult Plus (the Occult's players) out. docs/game/mods/chronicle-deluxe.md §15.
+# 1.11.37 (2026-10-21): Ases del Inazuma 2 (ct_iy_09) is built again: its players named Chronicles Deluxe's CPU
+# loadouts, which this mod does not have (the team was refused, so the Mary Times chain lost its last two matches); now each
+# card's own moves. chronicle_deluxe_chains_build.py checks every chain team (declared, cards, loadouts).
+requires = ["vr_framework>=2.8.89"]
+# Native declarations of the free-match shuffle (content/game/free_match_shuffle.toml) need these.
+permissions = ["call", "memory", "command"]
 conflicts = []

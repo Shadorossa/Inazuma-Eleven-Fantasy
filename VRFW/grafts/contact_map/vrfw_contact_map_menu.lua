@@ -26,11 +26,14 @@
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
 INCLUDE("LUA_SOCCER_COMMON")                  -- the panel's status plate (UpdateCharaStatusPlateInfoByCharaParamId)
+INCLUDE("LUA_SOCCER_FORMATION_MENU_INC")      -- a team page's lineup: the team dock's cards (UpdateMemberCharaIconInfoByChrParamId)
 
 local MENU = 1355292071           -- crc32("vrfw_contact_map_menu")
 local KEY_SET = 1128821923        -- crc32("vrfw_contact_set"): parameter in, the set
 local KEY_RESULT = 1506951015     -- crc32("vrfw_contact_pick"): parameter out (0: nothing to report)
 local KEY_PARENT = 2740862541     -- crc32("vrfw_contact_parent"): optional parameter in, the menu under the screen
+-- crc32("vrfw_contact_game") (3811836272): optional parameter in, a match: the screen opens straight on its team page
+-- (a hub's choice, e.g. the free-match list as the office) and Back on it closes the screen
 local OWNER = "vr_framework"
 
 -- texts: menu_text rows crc32("vrfw_cm_<name>") of the framework (text\rows\contact_map.toml)
@@ -44,6 +47,15 @@ local T = {
   SHOP_EMPTY = 877398782, BAG_FULL = 2728655910, ZONE_HINT = 1603344950, UNKNOWN = 3326508568,
   -- the special requirements: vrfw_cm_req_team_level / _elem / _wins / _goals, the element / position labels
   REQ_TEAM_LEVEL = 1040602938, REQ_ELEM = 1482667094, REQ_WINS = 3179220225, REQ_GOALS = 4013490541,
+  REQ_BEAT = 3395213988,                           -- vrfw_cm_req_beat "Beat %s" (a team page: a match against that team won)
+  TEAMS_NONE = 239112625,                          -- vrfw_cm_teams_none (a map of team pages with none open yet)
+  REQ_PAY = 2211476719,                            -- vrfw_cm_req_pay "Coste: %d %s (tienes %d)"
+  -- team pages: a player at a level, the harder clears, the trials, «Dimitir» (vrfw_cm_* rows)
+  REQ_PLAYER_LEVEL = 4185569193, REQ_BEAT_MORE = 1292820146,
+  TRIAL = {1082028622, 3363525476, 2492399005},   -- vrfw_cm_trial_hold / _goals / _steals (by the objective's kind)
+  TRIAL_BTN = 3837556680, TRIAL_ASK = 3654396889, TRIAL_FAIL = 3650311168, TRIAL_PASSED = 2195445266,
+  RELEASE_BTN = 1399328150, RELEASE_Q = 3291638255, RELEASE_DONE = 3288151915, RELEASE_FAIL = 1442315401,
+  RELEASE_BUSY = 474644034,
   ELEM = {2663092405, 129155343, 1890972057, 4006700090, 2580960428}, POS = {889919200, 2885830490, 3674568652, 1164042863},
   VIEW_MARK = 2320547439,                          -- vrfw_reveal_all_mark "VIEW MODE" (config [debug] reveal_all)
   STORY_ONLY = 3991482902,                         -- vrfw_cm_story_only "Signed in story mode" (a StoryOnly node)                               -- vrfw_cm_page "Page %d / %d" (a network's pages)
@@ -155,7 +167,8 @@ local C = {
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
 local CUR = 3313461902          -- crc32("cursor")
-local FN = {UP = 1986542592, DOWN = 1528655817, LEFT = 1032132762, RIGHT = 3879601371, SHOP = 3951604560}
+local FN = {UP = 1986542592, DOWN = 1528655817, LEFT = 1032132762, RIGHT = 3879601371, SHOP = 3951604560,
+            TRIAL = 659959792, RELEASE = 4113029826}   -- vrfw_cm_trial (CMD_FUNC3), vrfw_cm_release (CMD_FUNC4)
 local G_ACCEPT = 1847312674 --[[Accept]]
 local I_ENTER, I_FUNC2 = 2750714971 --[[<CMD_ENTER>]], 2387151820 --[[<CMD_FUNC2>]]
 local K_ENTER, K_FUNC2 = 1981080283, 3170216173
@@ -197,6 +210,7 @@ local FALLBACK = {
   requirement_position_4 = {"circle", {0.24, 0.43, 0.82}},
   badge_met = {"circle", {0.35, 0.85, 0.45}},           -- a requirement met / not met
   badge_unmet = {"circle", {0.92, 0.28, 0.28}},
+  badge_new = {"circle", {1, 0.84, 0.20}},             -- a player who can be signed and was not looked at yet («!»)
   card_panel = {"square", {0.13, 0.29, 0.64}},          -- the cost / requirements card (tinted darker on screen)
   panel_ground = {"square", {0.10, 0.16, 0.30}},        -- the player panel's ground (right side)
 }
@@ -336,6 +350,44 @@ local function Fmt(id, ...)
     return s
   end
   return Text(id)
+end
+
+-- a map's name: its series' name when the map has one (team pages of a Chronicle route), else its title row
+-- team pages: series names, «owns any card of the character» answers (a global: the main chunk is at its 200 locals)
+CmPages = {series = {}, own = {}}
+function CmPages.MapTitle(m)
+  local sid = m and Int(m.series) or 0
+  if sid ~= 0 then
+    if CmPages.series[sid] == nil then
+      local ok, okc, s = pcall(funcLuaMenuCommand, 964991930 --[[CMND_GET_CHARA_SERIES_INFO]], 1, sid)
+      CmPages.series[sid] = (ok and okc and type(s) == "string" and s ~= "") and s or false
+    end
+    if CmPages.series[sid] then
+      return CmPages.series[sid]
+    end
+  end
+  return Text(m and m.title or 0)
+end
+
+-- the recruit currency's name: the set's RecruitCurrencyTitle row, else the item's own name (as the game shows it,
+-- renamed by any mod)
+function CmPages.CurrencyName()
+  local s = SET ~= nil and Text(SET.rct) or ""
+  if s == "" and SET ~= nil and Int(SET.rc) ~= 0 then
+    local ok, name = pcall(funcLuaCommand, 1883585771 --[[item name (item, 0)]], SET.rc, 0)
+    if ok and type(name) == "string" then
+      s = name
+    end
+  end
+  return s
+end
+
+-- a zone's name: its label (a team page: the team's name) when served, else its title row
+function CmPages.ZoneTitle(z)
+  if z ~= nil and type(z.label) == "string" and z.label ~= "" then
+    return z.label
+  end
+  return Text(z and z.title or 0)
 end
 
 local function Place(layer, idx, x, y)
@@ -580,9 +632,23 @@ local function ReqsMet(node)
   return #VRFW_Recruit.Missing(node.reqs) == 0
 end
 
+-- a node with `cards` (team pages: every card of the character) counts as signed when any of them is in the club;
+-- the answer is kept until the map opens again (CmPages.own)
 local function IsSigned(i)
   local n = MAP.nodes[i]
-  return signed[i] == true or (n.kind == "player" and VRFW_Recruit.Owned(n.card) > 0)
+  if signed[i] == true and not (type(n.cards) == "table" and #n.cards > 0) then
+    return true
+  end
+  if n.kind ~= "player" then
+    return false
+  end
+  if type(n.cards) == "table" and #n.cards > 0 then
+    if CmPages.own[i] == nil then
+      CmPages.own[i] = VRFW_Recruit.OwnedAny(n.cards) > 0
+    end
+    return CmPages.own[i]
+  end
+  return VRFW_Recruit.Owned(n.card) > 0
 end
 
 -- the strict order (IE's Connection Map): acquired / open per tile, to a fixed point
@@ -636,7 +702,7 @@ local function Price(node)
 end
 
 local function CanAfford(node)
-  return VRFW_Recruit.Items(SET.rc) >= Price(node)
+  return VRFW_Recruit.Wallet(CmPages.PriceOf(node)) >= Price(node)
 end
 
 -- a player's state: "done", "ready", "missing", "locked"
@@ -687,7 +753,7 @@ local function ItemTitle(id)
     return Text(SET.ict)
   end
   if SET ~= nil and id == SET.rc then
-    return Text(SET.rct)
+    return CmPages.CurrencyName()
   end
   return "#" .. tostring(id)
 end
@@ -698,7 +764,10 @@ local function ReqLines(node)
     local have = VRFW_Recruit.Have(r)
     local mark = have >= (r.count or 1) and MARK_ON or MARK_OFF
     local count = "  " .. tostring(math.min(have, r.count or 1)) .. "/" .. tostring(r.count or 1)
-    if r.kind == "player" then
+    if r.kind == "player" and (r.level or 0) > 1 then
+      out[#out + 1] = mark .. Fmt(T.REQ_PLAYER_LEVEL, CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 14),
+        r.level)
+    elseif r.kind == "player" then
       -- the name, cut so the count stays visible
       out[#out + 1] = mark .. CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 8) .. count
     elseif r.kind == "item" then
@@ -714,6 +783,12 @@ local function ReqLines(node)
       out[#out + 1] = mark .. Fmt(T.REQ_WINS, r.count or 1, have)
     elseif r.kind == "goals" then
       out[#out + 1] = mark .. Fmt(T.REQ_GOALS, r.count or 1, have)
+    elseif r.kind == "cleared" then
+      out[#out + 1] = mark .. Fmt(T.REQ_BEAT, CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 8))
+    elseif r.kind == "unlock" then
+      out[#out + 1] = mark .. Fmt(T.REQ_BEAT_MORE, CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 14))
+    elseif r.kind == "trial" then
+      out[#out + 1] = mark .. CmPages.TrialText(r)
     end
   end
   return out
@@ -741,6 +816,9 @@ local function HideAll()
   end
   for i = 0, N.TITLE - 1 do
     Hide(L_TITLE, i)
+  end
+  if mode ~= "grid" and CmPages.HideLineup ~= nil then
+    CmPages.HideLineup()
   end
 end
 
@@ -813,7 +891,8 @@ end
 
 -- one icon per requirement (kind -> its art role, or the game's element icon), met / unmet badge
 local REQ_ROLE = {team_level = "requirement_level", wins = "requirement_wins", goals = "requirement_goals",
-                  item = "requirement_item", player = "requirement_player"}
+                  item = "requirement_item", player = "requirement_player", cleared = "requirement_wins",
+                  unlock = "requirement_wins", trial = "requirement_goals"}
 
 local function DrawReqs(reqs)
   for k = 0, N.REQ - 1 do
@@ -974,6 +1053,9 @@ function ReqRow(r)
   local count = need > 1 and ("  " .. tostring(math.min(have, need)) .. "/" .. tostring(need)) or ""
   if r.kind == "player" then
     local name = (r.name or "") ~= "" and r.name or Text(T.UNKNOWN)
+    if (r.level or 0) > 1 then
+      return Fmt(T.REQ_PLAYER_LEVEL, CmClip(name, INFO.CLIP - 16), r.level), {bust = r.ids and r.ids[1], ok = ok}
+    end
     return Fmt(T.REQ_SIGN, CmClip(name, INFO.CLIP - 10)), {bust = r.ids and r.ids[1], ok = ok}
   elseif r.kind == "item" then
     local title = (r.title ~= nil and r.title ~= 0) and Text(r.title) or ItemTitle(r.id)
@@ -995,6 +1077,12 @@ function ReqRow(r)
     text = Fmt(T.REQ_WINS, need, have)
   elseif r.kind == "goals" then
     text = Fmt(T.REQ_GOALS, need, have)
+  elseif r.kind == "cleared" then
+    text = Fmt(T.REQ_BEAT, CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 10))
+  elseif r.kind == "unlock" then
+    text = Fmt(T.REQ_BEAT_MORE, CmClip((r.name or "") ~= "" and r.name or Text(T.UNKNOWN), INFO.CLIP - 16))
+  elseif r.kind == "trial" then
+    text = CmPages.TrialText(r)
   end
   return text .. count, {role = role, ok = ok}
 end
@@ -1018,7 +1106,12 @@ local function RowIcon(k, ic, y)
     if k < N.CARD_BUSTS then
       HideBust(L_BUST, N.BUST - N.CARD_BUSTS + k)
     end
-    Quad(L_REQ, k, ic.role or "requirement_item", x, y, sz, sz)
+    local tc = ic.elem ~= nil and ELEM_ICON[ic.elem] ~= nil and Tex(COMMON_TEX) or nil
+    if tc then                      -- the game's element icon (a price in element spirits)
+      QuadTex(L_REQ, k, tc, CRC32(ELEM_ICON[ic.elem]), x, y, sz, sz)
+    else
+      Quad(L_REQ, k, ic.role or "requirement_item", x, y, sz, sz)
+    end
     if ic.item ~= nil then          -- the item's own icon (the game's item icon composite on the quad)
       local ok, r = pcall(funcLuaMenuCommand, 3508889864 --[[item icon]], L_REQ, k, MESH_QUAD, NODE_QUAD, ic.item)
       if not INFO.logged then
@@ -1103,14 +1196,38 @@ local function PlayerCard(i)
     Card(lines, n, nil, icons)
     return
   end
+  if MAP.pitch then
+    -- a team page: 4 requirement lines (a blank line when there is none; an optional trial in the first free one),
+    -- the price with its spirit's element icon and what the player has, the state
+    local rows = {}
+    for _, r in ipairs(n.reqs or {}) do
+      rows[#rows + 1] = r
+    end
+    local tr = #rows < 4 and CmPages.OpenTrial(n) or nil
+    if tr ~= nil and tr ~= rows[1] then
+      rows[#rows + 1] = tr
+    end
+    for k = 1, 4 do
+      lines[k], icons[k] = ReqRow(rows[k])
+    end
+    lines[5] = Fmt(T.REQ_PAY, Price(n), CmPages.PayName(n), VRFW_Recruit.Wallet(CmPages.PriceOf(n)))
+    icons[5] = (n.pay_element or 0) ~= 0 and {elem = n.pay_element} or {role = "requirement_item"}
+    lines[6] = state
+    Card(lines, n, nil, icons)
+    return
+  end
   for k = 1, 4 do
     lines[k], icons[k] = ReqRow(n.reqs and n.reqs[k])
   end
   if n.reqs ~= nil and #n.reqs > 4 then
     lines[4] = lines[4] .. " +" .. tostring(#n.reqs - 4)
   end
-  lines[5] = tostring(Price(n)) .. " " .. Text(SET.rct)
-  icons[5] = (SET.rc or 0) ~= 0 and {item = SET.rc, role = "requirement_item"} or nil
+  lines[5] = tostring(Price(n)) .. " " .. CmPages.PayName(n)
+  if (n.spirit or 0) ~= 0 then
+    icons[5] = {role = "requirement_item"}
+  else
+    icons[5] = (SET.rc or 0) ~= 0 and {item = SET.rc, role = "requirement_item"} or nil
+  end
   lines[6] = state
   Card(lines, n, nil, icons)
 end
@@ -1178,7 +1295,7 @@ local function DrawList()
       local on = i == focus.list
       -- the map's name on the left; "n / m" right-aligned at the row's right end on its own list item (no plate):
       -- "Signed" stays in the panel on the right
-      local s = Text(m.title)
+      local s = CmPages.MapTitle(m)
       local c = tostring(m.signed or 0) .. " / " .. tostring(m.players)
       Line(L_TITLE, k, s, left + 40, y, 1)
       local kc = k + LIST.ROWS
@@ -1200,7 +1317,7 @@ local function DrawList()
     end
   end
   local m = SET.maps[focus.list]
-  Card({Text(SET.title), Text(m.title), Fmt(T.COUNT, m.signed or 0, m.players)}, nil, nil)
+  Card({Text(SET.title), CmPages.MapTitle(m), Fmt(T.COUNT, m.signed or 0, m.players)}, nil, nil)
   Hide(L_UI, 0)
 end
 
@@ -1257,15 +1374,476 @@ local function DrawZones()
       Quad(L_TILE, k, "list_row", LIST.CX, y, LIST.W, LIST.H)
       Tint(L_TILE, k, z == focus.zones and COLOUR.ROW_FOCUS or COLOUR.ROW)
       DrawFace(L_FACE, k, ZoneFace(z), left + 44, y, LIST.H - 6)
-      Line(L_TITLE, k, Text(zz.title) .. "   " .. Fmt(T.COUNT, done, zz.count), left + 90, y, 1)
+      Line(L_TITLE, k, CmPages.ZoneTitle(zz) .. "   " .. Fmt(T.COUNT, done, zz.count), left + 90, y, 1)
       pos[z] = {x = LIST.CX, y = y, hw = LIST.W / 2, hh = LIST.H / 2}
     end
   end
   local zz = MAP.zones[focus.zones]
   if zz ~= nil then
-    Card({Text(zz.title), Fmt(T.COUNT, ZoneSigned(focus.zones), zz.count), Text(T.ZONE_HINT)}, ZoneFace(focus.zones))
+    Card({CmPages.ZoneTitle(zz), Fmt(T.COUNT, ZoneSigned(focus.zones), zz.count), Text(T.ZONE_HINT)}, ZoneFace(focus.zones))
   end
   Hide(L_UI, 0)
+end
+
+-- ---- team pages ([VRFW.ContactMap.Teams]): the pitch, the price per player, «signed once», «!», trials, «Dimitir»
+-- (functions of the global CmPages: the main chunk is at its 200 locals)
+CmPages.PITCH = {X0 = 120, X1 = 960, Y0 = 190, Y1 = 960, BENCH_X = 1110, BENCH_Y0 = 200, BENCH_DY = 84, PLATE = 96,
+                 MAX = 30, GHOST = {0.55, 0.57, 0.62}, GHOST_ALPHA = 0.45}
+-- the team dock's lineup layers (content/menus/contact_map.toml): the pitch lines, the formation frame, the cards
+CmPages.FORM = {BASE = 3518110933 --[[mainmenu04_10_formation_base]], FRAME = 3321884270 --[[soccer11_02_formation_frame]],
+                CARD = 1973487846 --[[team00_01_chara_card_for_soccer]], LEADER = 1658289671 --[[..._for_leader]],
+                BLANK = 3571911991 --[[team00_01_p1_chara_card_blank]], BLANK_L = 2290394976 --[[..._blank_for_leader]],
+                filled = nil, shown = false}
+CmPages.FORM_LAYER = {[3518110933] = true, [3321884270] = true, [1973487846] = true, [1658289671] = true,
+                      [3571911991] = true, [2290394976] = true}
+CmPages.CARD = {HW = 104, HH = 80}       -- half the size of a lineup card on the screen (the cursor and the hit box)
+
+-- a lineup layer's setup, as the free-match list does it for the same layers (soccer_formation_menu_inc)
+function CmPages.SetupFormLayer(a1, a2)
+  local F = CmPages.FORM
+  if a1 == F.FRAME and type(SetFormationLayer) == "function" then
+    pcall(SetFormationLayer, a1)
+  elseif a1 == F.CARD or a1 == F.LEADER then
+    pcall(funcLuaMenuCommand, 4233535095, a1, a2, false)
+    pcall(funcLuaMenuCommand, 2628464193, a1, a2, 550)
+  end
+  if type(OnSetupLayerFormationCommon) == "function" then
+    pcall(OnSetupLayerFormationCommon, a1, a2)
+  end
+end
+
+function CmPages.FormCount(layer)
+  local ok, n = pcall(funcLuaMenuCommand, C.LAYER_NUM or 1175615627, layer)
+  return (ok and type(n) == "number") and n or 0
+end
+
+-- the lineup layers are opened with the screen's own (a layer is drawn only once opened), hidden until a team page
+function CmPages.OpenFormLayers()
+  local F = CmPages.FORM
+  local n = 0
+  for _, l in ipairs({F.BASE, F.FRAME, F.BLANK, F.BLANK_L, F.CARD, F.LEADER}) do
+    for i = 0, CmPages.FormCount(l) - 1 do
+      pcall(funcLuaMenuCommand, C.OPEN_LAYER, l, i)
+      pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, l, i, false)
+      n = n + 1
+    end
+  end
+  F.shown, F.filled, F.opened = false, nil, n > 0
+  Log("lineup layers opened", n)
+end
+
+function CmPages.HideLineup()
+  local F = CmPages.FORM
+  if not F.shown then
+    return
+  end
+  F.shown = false
+  for _, l in ipairs({F.BASE, F.FRAME, F.CARD, F.LEADER, F.BLANK, F.BLANK_L}) do
+    for i = 0, CmPages.FormCount(l) - 1 do
+      pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, l, i, false)
+    end
+  end
+end
+
+-- the page's team on the game's lineup: the cards filled as the free-match list fills its preview (the team's
+-- formation, kit, members by slot; each card by its chara_param, the level he joins at here); false = no lineup layers
+function CmPages.Lineup(z)
+  local F = CmPages.FORM
+  if type(UpdateMemberCharaIconInfoByChrParamId) ~= "function" or type(UpdateMainMemberIcomFormationPos) ~= "function" then
+    return false
+  end
+  local ncard = CmPages.FormCount(F.CARD)
+  local zz = MAP and MAP.zones[z]
+  local team = zz and Int(zz.team) or 0
+  if ncard == 0 or team == 0 then
+    return false
+  end
+  if not F.opened then
+    CmPages.OpenFormLayers()           -- not opened with the screen (set up after its first layers): now
+  end
+  if F.filled ~= team then
+    F.filled = team
+    local lv, sold = {}, {}
+    for _, n in ipairs(MAP.nodes) do
+      if n.zone == z and Int(n.level or 0) > 0 then
+        lv[Int(n.card)] = Int(n.level)
+      end
+      if n.zone == z and n.kind == "player" then
+        sold[Int(n.card)] = true
+      end
+    end
+    for i = 0, ncard - 1 do
+      pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.BLANK, i, true)
+      pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.CARD, i, false)
+    end
+    local _, form = funcLuaCommand(2151743654, team, 3)
+    pcall(UpdateMainMemberIcomFormationPos, form or 0, true)
+    local _, uni = funcLuaCommand(2151743654, team, 4)
+    local kit = funcLuaMenuCommand(1187793486, uni or 0)
+    local okc, cnt = funcLuaCommand(2151743654, team, 8)
+    if type(SetDisableForceCharaInvalidUseTarget) == "function" then
+      pcall(SetDisableForceCharaInvalidUseTarget)
+    end
+    for m = 0, ((okc and type(cnt) == "number") and cnt or 0) - 1 do
+      local okp, param = funcLuaCommand(34355761, team, m, 0)
+      local oks, slot = funcLuaCommand(34355761, team, m, 7)
+      if okp and oks and type(slot) == "number" and slot < 19 and slot < ncard then
+        local _, num = funcLuaCommand(34355761, team, m, 9)
+        pcall(UpdateMemberCharaIconInfoByChrParamId, param, slot, form, kit, lv[Int(param)] or 1, num, uni, 4)
+        pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.CARD, slot, true)
+        -- a member sold on another page (or not at all) stays on the lineup, translucent
+        pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], F.CARD, slot, 0,
+          sold[Int(param)] and 1 or CmPages.PITCH.GHOST_ALPHA)
+      end
+    end
+    if type(SetEnableForceCharaInvalidUseTarget) == "function" then
+      pcall(SetEnableForceCharaInvalidUseTarget)
+    end
+    local x0, y0 = CmPages.CardAt(0)
+    Log("lineup", team, "formation", tostring(form), "members", tostring(cnt), "cards", ncard,
+      "card 0 at", tostring(x0), tostring(y0))
+  end
+  if not F.shown then
+    F.shown = true
+    pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.BASE, 0, true)
+    pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.FRAME, 0, true)
+    for _, l in ipairs({F.LEADER, F.BLANK_L}) do
+      for i = 0, CmPages.FormCount(l) - 1 do
+        pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, l, i, false)
+      end
+    end
+  end
+  return true
+end
+
+-- the screen place of the lineup card of slot (the layer instance's position, y down); nil when it cannot be read
+function CmPages.CardAt(slot)
+  local ok, gx, gy = pcall(funcLuaMenuCommand, 4002164178 --[[the instance's position]], CmPages.FORM.CARD, slot)
+  -- a card that is not placed (no position yet: 0, 0) is not used: the framework's plate stands there instead
+  if ok and type(gx) == "number" and type(gy) == "number" and (math.abs(gx) > 1 or math.abs(gy) > 1) then
+    return gx, -gy
+  end
+  return nil
+end
+CmPages.seen = {}
+CmPages.seen_key = nil
+
+-- the price of a node: its spirit (the classic «fichas») or the set's item
+function CmPages.PriceOf(n)
+  if n ~= nil and (n.spirit or 0) ~= 0 then
+    return {spirit = n.spirit, count = n.price or 0}
+  end
+  return {item = SET and SET.rc or 0, count = n and n.price or 0}
+end
+
+function CmPages.PayName(n)
+  if n ~= nil and (n.pay_title or 0) ~= 0 then
+    local t = Text(n.pay_title)       -- the set's name of that element's spirit (ElementCurrencyTitle)
+    if t ~= "" then
+      return t
+    end
+  end
+  if n ~= nil and (n.spirit or 0) ~= 0 and (n.pay_name or "") ~= "" then
+    return n.pay_name
+  end
+  return CmPages.CurrencyName()
+end
+
+-- a trial's line: «Prueba k/n: …» by the objective (kind * 100000 + seconds * 100 + count)
+function CmPages.TrialText(r)
+  local obj = r.objective or 0
+  local kind = math.floor(obj / 100000)
+  local secs = math.floor((obj % 100000) / 100)
+  local count = obj % 100
+  local id = T.TRIAL[kind] or T.TRIAL[1]
+  if kind == 1 then
+    return Fmt(id, r.part or 1, r.of or 1, secs)
+  elseif kind == 2 then
+    return Fmt(id, r.part or 1, r.of or 1, count, secs)
+  end
+  return Fmt(id, r.part or 1, r.of or 1, count)
+end
+
+-- «signed once»: a card recorded on this map keeps only the page's own unlock (a match against his team won); his
+-- players / items / levels / trials are never asked again
+function CmPages.WaiveSigned()
+  if MAP == nil or not MAP.pitch then
+    return
+  end
+  for i, n in ipairs(MAP.nodes) do
+    if signed[i] == true and n.all_reqs == nil then
+      n.all_reqs = n.reqs
+      local keep = {}
+      for _, r in ipairs(n.reqs or {}) do
+        if r.kind == "cleared" or r.kind == "unlock" then
+          keep[#keep + 1] = r
+        end
+      end
+      n.reqs = keep
+    end
+  end
+end
+
+-- «!»: the players who can be signed and were not looked at yet (per save and map: key contact.seen.<map>)
+function CmPages.LoadSeen()
+  CmPages.seen = {}
+  CmPages.seen_key = nil
+  if MAP == nil or not MAP.pitch then
+    return
+  end
+  CmPages.seen_key = "contact.seen." .. MAP.key
+  local v = Call(C.SAVE_GET, OWNER, CmPages.seen_key, "")
+  for x in string.gmatch(type(v) == "string" and v or "", "%d+") do
+    CmPages.seen[tonumber(x)] = true
+  end
+end
+
+function CmPages.MarkSeen(n)
+  if CmPages.seen_key == nil or n == nil or CmPages.seen[Int(n.card)] then
+    return
+  end
+  CmPages.seen[Int(n.card)] = true
+  local t = {}
+  for c in pairs(CmPages.seen) do
+    t[#t + 1] = c
+  end
+  table.sort(t)
+  Call(C.SAVE_SET, OWNER, CmPages.seen_key, table.concat(t, ","), 1)
+end
+
+-- a team page's members: its players, then its ghosts (the starters sold on another page)
+function CmPages.Members(z)
+  local out = {}
+  for _, kind in ipairs({"player", "ghost"}) do
+    for i, n in ipairs(MAP.nodes) do
+      if n.kind == kind and n.zone == z then
+        out[#out + 1] = i
+      end
+    end
+  end
+  return out
+end
+
+-- where member g stands: a starter at his place on the pitch, the others down the bench column
+function CmPages.Spot(g)
+  local P = CmPages.PITCH
+  local n = MAP.nodes[members[g]]
+  if (n.px or -1) >= 0 and (n.py or -1) >= 0 then
+    return P.X0 + n.px * (P.X1 - P.X0), P.Y0 + n.py * (P.Y1 - P.Y0)
+  end
+  local k = 0
+  for h = 1, g - 1 do
+    local m = MAP.nodes[members[h]]
+    if not ((m.px or -1) >= 0 and (m.py or -1) >= 0) then
+      k = k + 1
+    end
+  end
+  return P.BENCH_X, P.BENCH_Y0 + k * P.BENCH_DY
+end
+
+function CmPages.DrawPitch()
+  local P = CmPages.PITCH
+  local cards = CmPages.Lineup(zone)
+  CmPages.at = {}
+  for g, i in ipairs(members) do
+    local k = g - 1
+    if k >= P.MAX then
+      break
+    end
+    local n = MAP.nodes[i]
+    local x, y = CmPages.Spot(g)
+    local size = (n.px or -1) >= 0 and P.PLATE or P.PLATE * 0.8
+    local cx, cy = nil, nil
+    if cards and n.main and Int(n.slot or 99) <= 18 then
+      cx, cy = CmPages.CardAt(Int(n.slot))
+    end
+    if cx ~= nil then
+      -- the game's card at its lineup place: only the marks, the cursor and the hit box are the screen's
+      CmPages.at[g] = {cx, cy}
+      local hw, hh = CmPages.CARD.HW, CmPages.CARD.HH
+      pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], CmPages.FORM.CARD, Int(n.slot), 0,
+        n.kind == "ghost" and P.GHOST_ALPHA or 1)
+      Hide(L_TILE, k)
+      Hide(L_FACE, k)
+      Hide(L_TILE, 100 + k)
+      if n.kind == "ghost" then
+        Hide(L_TAG, k)
+      else
+        local st = State(i)
+        local bs = 44
+        if st == "done" then
+          Quad(L_TAG, k, "icon_check", cx + hw - bs * 0.6, cy + hh - bs * 0.6, bs, bs)
+        elseif st == "ready" and not CmPages.seen[Int(n.card)] then
+          Quad(L_TAG, k, "badge_new", cx - hw + bs * 0.6, cy - hh + bs * 0.6, bs, bs)
+        elseif ReqsUnmet(n) then
+          Quad(L_TAG, k, "badge_unmet", cx + hw - bs * 0.6, cy + hh - bs * 0.6, bs * 0.7, bs * 0.7)
+        else
+          Hide(L_TAG, k)
+        end
+        pcall(funcLuaMenuCommand, 1491630496 --[[draw priority]], L_TAG, k, 800, true)
+        pos[g] = {x = cx, y = cy, hw = hw, hh = hh}
+        if g == focus.grid and st == "ready" then
+          CmPages.MarkSeen(n)
+        end
+      end
+    elseif n.kind == "ghost" then
+      Plate(k, "locked", x, y, size)
+      DrawFace(L_FACE, k, n, x, y, size * NET.FACE_IN)
+      pcall(Tint, L_FACE, k, P.GHOST)
+      Hide(L_TAG, k)
+    else
+      local st = State(i)
+      local bs = size * GRID.CHECK
+      local bx, by = x + size / 2 - bs * 0.45, y + size / 2 - bs * 0.45
+      Plate(k, st, x, y, size)
+      DrawFace(L_FACE, k, n, x, y, size * NET.FACE_IN)
+      -- (no lineup cards: the framework's plate) the game's element icon on its top-right corner
+      local e = Int(n.element or 0)
+      local tc = ELEM_ICON[e] ~= nil and Tex(COMMON_TEX) or nil
+      if tc then
+        local es = size * 0.34
+        QuadTex(L_TILE, 100 + k, tc, CRC32(ELEM_ICON[e]), x + size / 2 - es * 0.45, y - size / 2 + es * 0.45, es, es)
+      else
+        Hide(L_TILE, 100 + k)
+      end
+      if st == "done" then
+        Quad(L_TAG, k, "icon_check", bx, by, bs, bs)
+      elseif st == "ready" and not CmPages.seen[Int(n.card)] then
+        Quad(L_TAG, k, "badge_new", x - size / 2 + bs * 0.45, y - size / 2 + bs * 0.45, bs, bs)
+      elseif ReqsUnmet(n) then
+        Quad(L_TAG, k, "badge_unmet", bx, by, size * GRID.REQNG, size * GRID.REQNG)
+      else
+        Hide(L_TAG, k)
+      end
+      pos[g] = {x = x, y = y, hw = size / 2, hh = size / 2}
+      if g == focus.grid and st == "ready" then
+        CmPages.MarkSeen(n)
+      end
+    end
+  end
+  if CmPages.Guide ~= nil then
+    CmPages.Guide()
+  end
+end
+
+-- the D-pad on the pitch: the nearest player (never a ghost) in that direction
+-- where member g stands now: his card's place (the lineup), else the framework's spot
+function CmPages.Where(g)
+  local a = CmPages.at and CmPages.at[g]
+  if a ~= nil then
+    return a[1], a[2]
+  end
+  return CmPages.Spot(g)
+end
+
+function CmPages.PitchMove(dx, dy)
+  local cx, cy = CmPages.Where(focus.grid)
+  local best, bd = nil, nil
+  for g, i in ipairs(members) do
+    if g ~= focus.grid and MAP.nodes[i].kind == "player" and g <= CmPages.PITCH.MAX then
+      local x, y = CmPages.Where(g)
+      local ax, ay = x - cx, y - cy
+      local along = ax * dx + ay * dy
+      if along > 4 then
+        local side = math.abs(ax * dy) + math.abs(ay * dx)
+        local d = along + side * 2.5
+        if bd == nil or d < bd then
+          best, bd = g, d
+        end
+      end
+    end
+  end
+  return best
+end
+
+function CmPages.Focused()
+  if MAP == nil or not MAP.pitch or mode ~= "grid" then
+    return nil
+  end
+  local i = members[focus.grid]
+  local n = i and MAP.nodes[i] or nil
+  if n == nil or n.kind ~= "player" then
+    return nil
+  end
+  return n, i
+end
+
+-- the focused player's first trial not passed yet (a requirement, or an optional trial when the set asks none)
+function CmPages.OpenTrial(n)
+  for _, list in ipairs({n and n.reqs or {}, n and n.trials or {}}) do
+    for _, r in ipairs(list) do
+      if r.kind == "trial" and VRFW_Recruit.Have(r) < 1 then
+        return r
+      end
+    end
+  end
+  return nil
+end
+
+-- the button guide's extra entries: {text, icon, key}
+function CmPages.GuideExtra()
+  local out = {}
+  local n, i = CmPages.Focused()
+  if n == nil then
+    return out
+  end
+  if CmPages.OpenTrial(n) ~= nil then
+    out[#out + 1] = {T.TRIAL_BTN, 2735202045 --[[<CMD_FUNC3>]], 3421673595 --[[CMD_FUNC3]]}
+  end
+  if IsSigned(i) then
+    out[#out + 1] = {T.RELEASE_BTN, 950905002 --[[<CMD_FUNC4>]], 1435897304 --[[CMD_FUNC4]]}
+  end
+  return out
+end
+
+-- Y: the focused player's trial: a friendly against his rival page's team, started from the hub under this screen
+-- (VRFW_RecruitTrial in the hub's VM: the match start service), then this screen closes
+function CmPages.Trial()
+  local n = CmPages.Focused()
+  local r = CmPages.OpenTrial(n)
+  if r == nil then
+    return
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  if not Ask(Fmt(T.TRIAL_ASK, CmPages.TrialText(r))) then
+    return
+  end
+  local ok, started = pcall(funcLuaCommand, C.MENU_CALL, HUB.menu or 0, "VRFW_RecruitTrial", r.friendly, r.game,
+    r.difficulty or 1, r.tag or 0, r.sub or 0, r.objective or 0)
+  Log("trial", tostring(r.friendly), r.game, r.tag, r.sub, tostring(ok), tostring(started))
+  if not ok or started == false then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(T.TRIAL_FAIL))
+    return
+  end
+  CmPages.Leave(0)
+end
+
+-- X: «Dimitir» the focused player (the bank's own retire); the set's refund of his price's spirit given back
+function CmPages.Release()
+  local n, i = CmPages.Focused()
+  if n == nil or not IsSigned(i) then
+    return
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  if not Ask(Fmt(T.RELEASE_Q, n.name)) then
+    return
+  end
+  local refund = nil
+  if (n.spirit or 0) ~= 0 and (SET.refund or 0) > 0 then
+    refund = {spirit = n.spirit, count = SET.refund}
+  end
+  local ok, why = VRFW_Recruit.Release(n.cards or {n.card}, refund)
+  Log("release", MAP.key, i, n.card, tostring(ok), tostring(why))
+  CmPages.own = {}
+  if not ok then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(why == "busy" and T.RELEASE_BUSY or T.RELEASE_FAIL))
+    return
+  end
+  funcLuaCommand(C.SE, SE_OK)
+  CmPages.Recruited()
+  Message(Fmt(T.RELEASE_DONE, n.name))
 end
 
 local function GridPage()
@@ -1273,6 +1851,13 @@ local function GridPage()
 end
 
 local function DrawGrid()
+  if MAP.pitch then
+    CmPages.DrawPitch()
+    if members[focus.grid] ~= nil then
+      PlayerCard(members[focus.grid])
+    end
+    return
+  end
   local per = GRID.COLS * GRID.ROWS
   local page = GridPage()
   local left = AREA.CX - (GRID.COLS - 1) * GRID.CELL / 2
@@ -1585,14 +2170,14 @@ end
 local function UpdateTitle()
   local title = Text(SET and SET.title or 0)
   if mode ~= "list" and MAP ~= nil then
-    title = Text(MAP.title)
+    title = CmPages.MapTitle(MAP)
     if mode == "grid" and MAP.zones[zone] ~= nil then
-      title = title .. " · " .. Text(MAP.zones[zone].title)
+      title = title .. " · " .. CmPages.ZoneTitle(MAP.zones[zone])
     elseif mode == "shop" then
       title = title .. " · " .. Text(T.SHOP_BTN)
     end
   end
-  if VIEW_ALL.on then
+  if VIEW_ALL.on and not CmPages.direct then
     title = title .. "  [" .. Text(T.VIEW_MARK) .. "]"
   end
   funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], title, 0)
@@ -1603,11 +2188,17 @@ local function UpdateButtonGuide()
     funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, {T.SHOP_BTN, G_ACCEPT}, {I_FUNC2, I_ENTER}, {0, 18}, {}, {})
     funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, {K_FUNC2, K_ENTER})
   else
-    funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, {G_ACCEPT}, {I_ENTER}, {18}, {}, {})
-    funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, {K_ENTER})
+    local texts, icons, sizes, keys = {G_ACCEPT}, {I_ENTER}, {18}, {K_ENTER}
+    for _, g in ipairs(CmPages.GuideExtra()) do
+      texts[#texts + 1], icons[#icons + 1], sizes[#sizes + 1], keys[#keys + 1] = g[1], g[2], 18, g[3]
+    end
+    funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, texts, icons, sizes, {}, {})
+    funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, keys)
   end
   funcLuaMenuCommand(C.GUIDE_OPT, MENU, L_BTN_GUIDE, false)
 end
+
+CmPages.Guide = UpdateButtonGuide
 
 local function DrawAll()
   if SET == nil then
@@ -1679,6 +2270,36 @@ local function NetOpen()
   N.full = false
 end
 
+-- zones with requirements (team pages: a match against the team won) that are not met yet leave the map: their players
+-- become "hidden" (node numbers kept), the other zones are numbered again. View-everything mode keeps them all.
+-- Returns the number of zones left.
+function CmPages.HideLockedZones()
+  if VIEW_ALL.on then
+    return #MAP.zones
+  end
+  local keep, new = {}, {}
+  for z, zz in ipairs(MAP.zones) do
+    if type(zz.reqs) ~= "table" or #VRFW_Recruit.Missing(zz.reqs) == 0 then
+      keep[#keep + 1] = zz
+      new[z] = #keep
+    end
+  end
+  if #keep == #MAP.zones then
+    return #keep
+  end
+  for _, n in ipairs(MAP.nodes) do
+    local z = new[n.zone]
+    if n.zone > 0 and z == nil then
+      n.kind, n.zone = "hidden", 0
+    elseif z ~= nil then
+      n.zone = z
+    end
+  end
+  Log("zones open", MAP.key, #keep, "of", #MAP.zones)
+  MAP.zones = keep
+  return #keep
+end
+
 local function OpenMap(i)
   local m = SET.maps[i]
   local data = Call(C.CM_MAP, m.key, lang)
@@ -1697,13 +2318,22 @@ local function OpenMap(i)
     n.name = n.name or ""
     n.face = n.face or ""
   end
+  CmPages.own = {}
+  CmPages.LoadSeen()
+  if #MAP.zones > 0 and not CmPages.direct and CmPages.HideLockedZones() == 0 then
+    MAP = nil
+    funcLuaCommand(C.SE, SE_NG)
+    Message(Text(T.TEAMS_NONE))
+    return
+  end
   LoadRecord()
+  CmPages.WaiveSigned()
   if MAP.kind == "network" then
     NetOpen()
     SetMode("network")
   elseif MAP.kind == "list" and #MAP.zones == 1 then
     zone = 1
-    members = ZoneMembers(1)
+    members = MAP.pitch and CmPages.Members(1) or ZoneMembers(1)
     focus.grid = 1
     SetMode("grid")
   else
@@ -1715,15 +2345,43 @@ end
 
 local function OpenZone(z)
   zone = z
-  members = ZoneMembers(z)
+  members = MAP.pitch and CmPages.Members(z) or ZoneMembers(z)
   focus.grid = 1
   for g, i in ipairs(members) do
-    if not IsSigned(i) then
+    if MAP.nodes[i].kind == "player" and not IsSigned(i) then
       focus.grid = g
       break
     end
   end
+  if MAP.pitch and MAP.nodes[members[focus.grid] or 0] ~= nil and MAP.nodes[members[focus.grid]].kind ~= "player" then
+    for g, i in ipairs(members) do
+      if MAP.nodes[i].kind == "player" then
+        focus.grid = g
+        break
+      end
+    end
+  end
   SetMode("grid")
+end
+
+-- opened on one team page: the page of the match the hub chose (CMND_VRFW_CONTACT_FIND)
+function CmPages.OpenDirect()
+  local f = Call(93238014 --[[CMND_VRFW_CONTACT_FIND]], SET.key, CmPages.direct)
+  if type(f) ~= "table" or f.map == nil then
+    Log("direct", "no team page for game", CmPages.direct)
+    return false
+  end
+  for i, m in ipairs(SET.maps) do
+    if m.key == f.map then
+      OpenMap(i)
+      if MAP ~= nil and mode ~= "grid" and MAP.zones[f.zone] ~= nil then
+        OpenZone(f.zone)
+      end
+      Log("direct", "game", CmPages.direct, "map", f.map, "zone", f.zone)
+      return MAP ~= nil
+    end
+  end
+  return false
 end
 
 local function OpenShop()
@@ -1752,7 +2410,7 @@ end
 local KEYS = {L1 = 3966226594, R1 = 942075773, BACK = 3011112225,
               held = {}, frame = 0, back_cb = -100, back_poll = nil, logs = 0,
               NAV = {UP = 1197218715, DOWN = 3259546669, LEFT = 2765147006, RIGHT = 2075023265,
-                     ENTER = 1981080283},
+                     ENTER = 1981080283, FUNC3 = 3421673595, FUNC4 = 1435897304},
               DIR = {UP = {0, -1}, DOWN = {0, 1}, LEFT = {-1, 0}, RIGHT = {1, 0}},
               ANALOG = 1440697067,    -- CMND_GET_ANALOG_VALUE (index: 0 / 1 = left stick x / y)
               FREE_CURSOR = 879521569, free_off = false,
@@ -1796,7 +2454,18 @@ local function Leave(result)
   Close(result)
 end
 
+CmPages.Leave = Leave
+CmPages.Recruited = function()
+  if MAP ~= nil and mode == "grid" then
+    DrawAll()
+  end
+end
+
 local function Back()
+  if CmPages.direct and mode ~= "shop" then
+    Leave(0)                          -- opened on one team page by its hub: back to the hub
+    return
+  end
   if mode == "shop" then
     SetMode(prev_mode or "zones")
   elseif mode == "grid" and not (MAP.kind == "list" and #MAP.zones == 1) then
@@ -1857,6 +2526,15 @@ local function MoveGrid(dx, dy)
   if n == 0 then
     return
   end
+  if MAP.pitch then
+    local g = CmPages.PitchMove(dx, dy)
+    if g ~= nil then
+      focus.grid = g
+      funcLuaCommand(C.SE, SE_OK)
+      DrawAll()
+    end
+    return
+  end
   local g = focus.grid
   if dx ~= 0 then
     g = g + dx
@@ -1884,7 +2562,9 @@ end
 -- LB / RB: a page of the grid (24 players), or of the list of maps / the shelf
 local function PageTurn(d)
   local per, count, key
-  if mode == "grid" then
+  if mode == "grid" and MAP.pitch then
+    return false
+  elseif mode == "grid" then
     per, count, key = GRID.COLS * GRID.ROWS, #members, "grid"
   elseif mode == "list" then
     per, count, key = LIST.ROWS, #SET.maps, "list"
@@ -2025,18 +2705,18 @@ local function Recruit(i)
     Message(Fmt(T.NEED_REQS, table.concat(lines, "\n")))
     return
   end
-  local have = VRFW_Recruit.Items(SET.rc)
+  local have = VRFW_Recruit.Wallet(CmPages.PriceOf(n))
   if have < Price(n) then
     funcLuaCommand(C.SE, SE_NG)
-    Message(Fmt(T.NEED_PRICE, Price(n), Text(SET.rct), have))
+    Message(Fmt(T.NEED_PRICE, Price(n), CmPages.PayName(n), have))
     return
   end
   funcLuaCommand(C.SE, SE_DECIDE)
-  if not Ask(Fmt(T.ASK, n.name, n.level, Price(n), Text(SET.rct))) then
+  if not Ask(Fmt(T.ASK, n.name, n.level, Price(n), CmPages.PayName(n))) then
     return
   end
   local ok, why = VRFW_Recruit.Recruit({param = n.card, level = n.level, reqs = n.reqs,
-                                       price = {item = SET.rc, count = Price(n)}})
+                                       price = CmPages.PriceOf(n)})
   if not ok then
     Log("recruit refused", MAP.key, i, n.card, why)
     funcLuaCommand(C.SE, SE_NG)
@@ -2045,6 +2725,8 @@ local function Recruit(i)
   end
   signed[i] = true
   SaveRecord()
+  CmPages.own = {}
+  CmPages.WaiveSigned()
   if MAP.kind == "network" then
     NetState()
   end
@@ -2351,6 +3033,14 @@ function OnInit()
     return
   end
   VRFW_Recruit.Refresh()                        -- the club counts of the element / position requirements, fresh
+  CmPages.direct = nil
+  if funcLuaCommand(C.P_EXISTS, 3811836272 --[[vrfw_contact_game]]) then
+    CmPages.direct = Int(funcLuaCommand(C.P_GET, 3811836272))
+    funcLuaCommand(C.P_CLEAR, 3811836272)
+    if CmPages.direct == 0 then
+      CmPages.direct = nil
+    end
+  end
   SET = LoadSet(set)
   if SET == nil then
     Log("open", "set", set, "not declared: closing")
@@ -2370,6 +3060,9 @@ local function DropEngineZone(layer, idx)
 end
 
 local function OpenOwnLayers()
+  if CmPages.OpenFormLayers ~= nil then
+    CmPages.OpenFormLayers()           -- the team dock's lineup layers (a team page)
+  end
   for i = 0, N.LINE - 1 do
     funcLuaMenuCommand(C.OPEN_LAYER, L_LINE, i)
   end
@@ -2416,6 +3109,10 @@ end
 function OnSetupLayer(a1, a2)
   if OT.f <= OT.FRAMES then
     OT.setup[a1] = (OT.setup[a1] or 0) + 1
+  end
+  if CmPages.FORM_LAYER[a1] then
+    CmPages.SetupFormLayer(a1, a2)
+    return
   end
   if a1 == L_HEADER then
     SetupSoccerTopCommonHeaderLayerInfo(a1, 4153539961, 253801632, 3969848060, 1144161661, 3293713115, 253801632, 1152304044, 305955024, 3007971317)
@@ -2470,6 +3167,10 @@ function OnOpenLayer(a1, a2)
       return
     end
     OtNote("anchor open")
+    if CmPages.direct ~= nil and not CmPages.OpenDirect() then
+      Close(0)
+      return
+    end
     UpdateTitle()
     DrawAll()
     UpdateButtonGuide()
@@ -2548,6 +3249,11 @@ function KEYS.Poll(free)
       elseif name == "FUNC2" then
         KEYS.press[name] = nil
         KEYS.Shop()
+      elseif name == "FUNC3" or name == "FUNC4" then
+        KEYS.press[name] = nil
+        if evt_co == nil and ready then
+          StartCo(name == "FUNC3" and CmPages.Trial or CmPages.Release)
+        end
       end
     end
   end
@@ -2555,8 +3261,16 @@ end
 
 function OnFunction(a1, a2)
   local id = a1
-  if a1 ~= FN.UP and a1 ~= FN.DOWN and a1 ~= FN.LEFT and a1 ~= FN.RIGHT and a1 ~= FN.SHOP then
+  if a1 ~= FN.UP and a1 ~= FN.DOWN and a1 ~= FN.LEFT and a1 ~= FN.RIGHT and a1 ~= FN.SHOP and a1 ~= FN.TRIAL
+    and a1 ~= FN.RELEASE then
     id = a2
+  end
+  if id == FN.TRIAL or id == FN.RELEASE then
+    KEYS.cb[id == FN.TRIAL and "FUNC3" or "FUNC4"] = KEYS.frame
+    if evt_co == nil and ready then
+      StartCo(id == FN.TRIAL and CmPages.Trial or CmPages.Release)
+    end
+    return 1
   end
   local name = (id == FN.UP and "UP") or (id == FN.DOWN and "DOWN") or (id == FN.LEFT and "LEFT")
     or (id == FN.RIGHT and "RIGHT") or (id == FN.SHOP and "FUNC2") or nil

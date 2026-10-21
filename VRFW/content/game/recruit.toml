@@ -5,3 +5,7 @@ schema = "VRFW.game/1"
 [[VRFW.Command]]
 name = "CMND_VRFW_RECRUIT_CLUB"     # () -> { total, element = {n x 5}, position = {n x 4} }
 handler = "Recruit.Club"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_RECRUIT_HOLDERS"  # (card, ...) -> { {handle, param, level, busy}, ... }: the club players of those cards
+handler = "Recruit.Holders"

@@ -30,4 +30,5 @@ target = "whs03060"
 # flight: 12.51 m (12.4 over a kick on the pitch) held until 22.2 m before the goal point, then the 27.0
 # deg line down into 1.2 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 11.1 m down (bend 0.5). A shot shorter
 # than 22.2 m starts lower, on the line.
-trajectory = { goal_points = [[22.2, 12.51, 999, 11.1], [0.0, 1.2]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[22.2, 12.51, 999, 11.1], [0.0, 1.2]], unblockable = false }
+trajectory = { goal_points = [[22.2, 4.5, 999.0, 11.1], [0.0, 1.2]], unblockable = false }

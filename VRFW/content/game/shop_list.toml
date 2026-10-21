@@ -1,0 +1,34 @@
+schema = "VRFW.game/2"
+
+# Shop list refresh. Runtime: scripts/shop_list.lua (installs both hooks with `apply = "script"`).
+# The shop's list view (game::CMenuListViewShop) updates every frame (base Update, vtable slot 9). When it scrolls, its
+# layout moves, its row count changes or it is marked dirty, Update calls Refresh(force = 1), which refills every visible
+# row through the class's UpdateItem (slot 65) even when the row instance still shows the same shop row; each refill
+# draws the row's icons again and they blink. The hooks below keep a forced refill only for a row instance whose row
+# changed, unless the row content changed (dirty flag or a new row count).
+# The vtable is named by the class constructor (0x118CC20 on v7.1.2, 0x119A0B0 on v7.2.1):
+#   lea rax, [rip + vftable]; mov [rdi], rax; xor edx, edx; mov r8d, 0x1E00; lea rcx, [rdi + 1E8h]; call
+# v7.1.2: vtable 0x1A14220 (slot 9 = 0x5410D0, slot 65 = 0x118C5D0). v7.2.1: vtable 0x1A280D0 (slot 9 = 0x542DE0,
+# slot 65 = 0x1199A60). The same fields on both builds: +0x1B0 dirty, +0x140 last row count, +0x1E0 row count,
+# +0x1E8 + 0x18 * index the row pointer, +0xDC / +0x130 the scroll position Update compares.
+
+# void Update(this): per frame, pre (the dirty flag and row count before Update clears them) and post.
+[[VRFW.Hook]]
+name = "ShopList.Update"
+kind = "vtable"
+pattern = "48 8D 05 ?? ?? ?? ?? 48 89 07 33 D2 41 B8 00 1E 00 00 48 8D 8F E8 01 00 00 E8"
+rip = { disp_off = 3, next_ip_off = 7 }
+slot = 9
+args = ["ptr"]
+apply = "script"
+
+# u64 UpdateItem(this, item layer, index, force): pre; force is cleared for an instance that still shows its row.
+[[VRFW.Hook]]
+name = "ShopList.UpdateItem"
+kind = "vtable"
+pattern = "48 8D 05 ?? ?? ?? ?? 48 89 07 33 D2 41 B8 00 1E 00 00 48 8D 8F E8 01 00 00 E8"
+rip = { disp_off = 3, next_ip_off = 7 }
+slot = 65
+args = ["ptr", "ptr", "u32", "u8"]
+ret = "u64"
+apply = "script"

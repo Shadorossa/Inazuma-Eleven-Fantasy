@@ -1,0 +1,24 @@
+# «Katana crisantemo» (Chrysanthemum Katana, whs02220 and whs02220_mm, same cut-in; fire, cut-in ev60_02220): while
+# the ball flies to the goal after the cut-in, the cut-in's finished look of its last cut (c0400 frame 394) goes with
+# it instead of the plain fire special-move aura (ega0075c): the golden burst, its guard ring and glows and the outer
+# petals stay at the kick point (the petals tumbling and sinking slowly), the white-gold beam runs from the burst to
+# the ball at every frame (the ball at its tip). The real match ball is not drawn meanwhile and the shot flies at
+# 20 m/s, the burst's own rate (techniques\katana_chrysanthemum_trajectory.toml).
+# The object ev6222kc00 (assets\data\{common,dx11}\effect\event\ev60\ev6222kc00\) is built by
+# research/scripts/katana_chrysanthemum_ball_fx.py from the cut-in's effect object ev60022200 (cutin_replay_aura.py;
+# every part in the cut-in's orientation, priorities <= 30). The trigger row copies the fire special-move aura's
+# (like = "ega0075c": its callback turns +Z along the ball's velocity). docs/game/media/katana-chrysanthemum-ball-fx.md.
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "katana_chrysanthemum"
+from = "ega0075c"
+object = "effect/event/ev60/ev6222kc00/ev6222kc00.objbin"
+
+[[shot_aura]]
+name = "katana_chrysanthemum"
+when = { techniques = ["whs02220", "whs02220_mm"] }
+aura = "katana_chrysanthemum"
+like = "ega0075c"

@@ -37,7 +37,7 @@ order = 345
 module = "lua_bridge"
 requires = []
 conflicts = []
-wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide"]
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide", "OnChangeFocus"]
 description = "Battle Bay: the Draft tile of the Campaña (pitch + bench, 1 of 5 per slot in any order, then the campaign)"
 
 [[files]]
@@ -52,6 +52,11 @@ stem = "enjoy_team_select_menu_campaign"
   type = "append_block"
   src = "bbd_roster.lua"
   marker = "bb_draft roster"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_diff_cursor.lua"
+  marker = "bb_draft difficulty cursor"
 
 [[files]]
 stem = "enjoy_team_select_menu_offline"

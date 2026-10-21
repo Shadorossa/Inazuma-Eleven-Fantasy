@@ -47,6 +47,10 @@ function EVT_PlateHiperStep(cur, dir, count)
 end
 
 function EVT_PH_Wrap(name, make)
+  if type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" then
+    local ok = VRFW_Host.wrap(name, make, {level = 2})   -- survives a later patch that redefines the function
+    return ok
+  end
   local cur = _ENV[name]
   if type(cur) ~= "function" or EVT_PH_WRAPPED[cur] then
     return false
@@ -689,8 +693,13 @@ end
 -- copy's wrapper, and that wrapper then called itself by tail call forever (a hang without any error) as soon as the
 -- plate listed a move. The retail function is now captured in the wrapper's own closure (EVT_PH_Wrap: never wrapped
 -- twice) and kept in EVT_PH_SKL_RETAIL for the direct calls below.
+-- The retail function is taken at load: before the script's host runs, VRFW_Host.wrap builds the wrapper only at the
+-- function's first call, so the direct calls cannot wait for make(orig). The first copy in this VM keeps it.
+if EVT_PH_SKL_RETAIL == nil and type(SetSkillItemLayerName) == "function" then
+  EVT_PH_SKL_RETAIL = SetSkillItemLayerName
+end
 EVT_PH_Wrap("SetSkillItemLayerName", function(orig)
-  EVT_PH_SKL_RETAIL = orig
+  EVT_PH_SKL_RETAIL = EVT_PH_SKL_RETAIL or orig
   return function(...)
     EVT_PHI.skl = {...}
     return orig(...)

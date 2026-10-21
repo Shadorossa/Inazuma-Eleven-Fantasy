@@ -1,6 +1,7 @@
 # Furor (a module mod of Football Reforged) on the match HUD (docs/game/mechanics/furor.md §3.2): each team's furor
 # gauge as GO Strikers 2013's fire gauge level with the score, growing outward from its crest, clipped from the crest
-# side; layers furor_trough / furor_gauge (the mod's content\menus\furor_hud.toml), placed by measurement from the
+# side, in Strikers' layers furor_trough / furor_gauge / furor_glow / furor_stripes / furor_max / furor_spark (the mod's
+# content\menus\furor_hud.toml, docs/game/mechanics/furor.md §2.4.1), placed by measurement from the
 # scoreboard's keeper bar locators. Also polls the furor button (the mod's action CMD_FUROR_PHASE) and asks the own
 # phase. Value: CMND_VRFW_TEAM_MOMENTUM of the VR-Framework's team momentum
 # service; no answer (no match) = hidden. Wrapper only (UpdateScoreboardKeeperHp, every frame from

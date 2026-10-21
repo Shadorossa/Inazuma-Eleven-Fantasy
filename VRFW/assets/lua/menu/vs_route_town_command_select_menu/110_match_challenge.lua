@@ -5,9 +5,8 @@
 -- under its last row (band "match_challenge" of VRFW_RBC_PanelBand, the first one: the mod that sizes the panel
 -- re-sizes it; the band's place is reserved on every row of such a piece, VRFW_RBC_PanelBandReserve, so the panel
 -- keeps one height) and the band shows the
--- challenge's condition centred in the panel (its `Short` text, else its title: VRFW_MC.Status label) and sized to the
--- panel's inner width (the game's measured text width: a short line grows up to the normal size, a long one shrinks
--- only as much as it needs),
+-- challenge's condition centred in the panel (its `Short` text, else its title: VRFW_MC.Status label) in the board
+-- rows' own text style at their size, in a box of the panel's inner width (a longer line shrinks to the box),
 -- light blue when the active dock meets it and light red when not (the same check the VS screen gates the kick-off
 -- with). On any other row the band is gone. The line follows the panel's layer when it moves (Step).
 -- Accept opens the VS screen as retail; the kick-off is refused there while the dock does not meet the challenge
@@ -25,31 +24,36 @@ if VRFW_Host ~= nil then
   local FOCUS_GET = 2603265800   -- (layer) -> the focused row index (0-based)
 
   local LABEL = {
-    LAYER = 375144984,           -- vrfw_mc_text
+    LAYER = 375144984,           -- vrfw_mc_text (object vrfw_mc_label: a copy of the board's row vsroute01_16_sub_list)
     INSTANCE = 0,
-    TEXT_NODE = 378327766,       -- _text_cmd_back01
-    TEXT_MESHES = {298211823 --[[_cmd_back_base01]], 2853207670 --[[_cmd_back_base01_add]]},
-    TEXT_LEFT = -384, TEXT_MID_Y = 144,   -- the corner button's text node in its object (px)
+    -- the row's centred text (the retail rows' style and size), its box (layout x -240..240, y 27..-27: centred on the
+    -- layer's origin), the row's other text, plates and groups hidden
+    TEXT_NODE = 3180095505,      -- _text_list_base01_off
+    HIDE_TEXTS = {808187266 --[[_text_list_base01_on]]},
+    HIDE_MESHES = {688754292 --[[_touch_list01]], 1525181930 --[[_list_base01_on]], 4270801635 --[[_list_base01_off]],
+      3034975430 --[[_list_base01_ol]], 713202021 --[[_list_base01_ok]], 1409068817 --[[_list_base01_gray]],
+      1928480906 --[[_icon_list01_on]], 3004512670 --[[_icon_list01_off]]},
+    HIDE_NODES = {1849899120 --[[_pos_class01]], 44923504 --[[_pos_lv01]], 3597743423 --[[_pos_team_lv01]],
+      2442161064 --[[_pos_list_left01]]},
     C = {
       OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, GET_POS = 2834507455,
       MESH_VISIBLE = 3405944500, TEXT = 1083631230, LAYER_NUM = 1175615627,
       DRAW_PRIORITY = 1491630496,   -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
       NODE_SCALE = 2885415772,      -- (layer, instance, node, width, height): the text node's box
-      TEXT_SIZE = 3549540977,       -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
+      NODE_POS = 2575768773,        -- (layer, instance, node, axis 0 x / 1 y, value)
+      NODE_VISIBLE = 2158717427,    -- (layer, node, bool, instance)
+      TEXT_VISIBLE = 1505208242,    -- (layer, text node, bool, instance)
     },
     -- screen px (1920 x 1080, y down) of the battle-kind list of a normal piece as placed: the first row's centre
     -- line, the rows' spacing (vsroute01_15c `_atc_listNN`, 70 px apart), half a row's height, the gap between two
     -- rows, the panel's centre line (x)
     FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30, ROW_GAP = 11, PANEL_MID_X = 436,
-    -- the band under the last row: its height (the panel grows by ROW_GAP + BAND_HEIGHT); the text's width = the
-    -- panel's inner width (700 px panel, 40 px margin each side)
-    BAND_HEIGHT = 44, TEXT_MAX_WIDTH = 620,
-    -- the text node's box while measuring and drawing (wide enough that the game never squeezes the line; retail
-    -- 368 x 76), its height
-    TEXT_BOX_WIDTH = 1600, TEXT_BOX_HEIGHT = 76,
-    -- text scale: the normal (largest) size, the smallest; the width of one Latin character at scale 1 (a CJK one
-    -- counts twice) when the game cannot measure the line
-    MAX_SCALE = 0.8, MIN_SCALE = 0.3, CHAR_WIDTH = 12.5,
+    -- the band under the last row: its height (the panel grows by ROW_GAP + BAND_HEIGHT); the text's box = the
+    -- panel's inner width (700 px panel, 40 px margin each side), the row's text height. The rows' size (layer scale
+    -- 1) when the line fits the box; a longer line shrinks the layer to the box (the game does not squeeze it, and its
+    -- text measure answers the box): its width is estimated at GLYPH_WIDTH px a Latin character at scale 1 (a CJK
+    -- character or a button tag counts as two), never below MIN_SCALE
+    BAND_HEIGHT = 44, TEXT_BOX_WIDTH = 620, TEXT_BOX_HEIGHT = 54, GLYPH_WIDTH = 18, MIN_SCALE = 0.3,
     -- font_color markup (common/font/font_color.cfg.bin): AIMARK01 light blue, R light red, then the reset
     COLOUR_MET = "[CAIMARK01]", COLOUR_UNMET = "[CR]", COLOUR_RESET = "[C]",
     opened = false, shown = false, x = 0, y = 0,
@@ -63,21 +67,37 @@ if VRFW_Host ~= nil then
     return table.unpack(r, 2, r.n)
   end
 
-  local function instance_count()
-    local n = M(LABEL.C.LAYER_NUM, LABEL.LAYER)
-    return type(n) == "number" and n or 0
-  end
-
-  -- width units of a text (a byte sequence of 3+ bytes = a CJK glyph, 2 units)
-  local function text_units(s)
+  -- the line's width at scale 1, estimated (colour markup [C…] left out, furigana as its base; a CJK character or a
+  -- button tag <…> = 2)
+  local function line_width(s)
+    s = string.gsub(s, "%[C[^%]]*%]", "")
+    s = string.gsub(s, "%[([^%]/]*)/[^%]]*%]", "%1")   -- furigana [base/reading]: the base only
     local units, i, n = 0, 1, string.len(s)
     while i <= n do
       local b = string.byte(s, i)
-      local len = b >= 0xF0 and 4 or (b >= 0xE0 and 3 or (b >= 0xC0 and 2 or 1))
-      units = units + (len >= 3 and 2 or 1)
-      i = i + len
+      local close = b == 60 and string.find(s, ">", i, true) or nil
+      if close ~= nil then
+        units, i = units + 2, close + 1
+      else
+        local len = b >= 0xF0 and 4 or (b >= 0xE0 and 3 or (b >= 0xC0 and 2 or 1))
+        units, i = units + (len >= 3 and 2 or 1), i + len
+      end
     end
-    return units
+    return units * LABEL.GLYPH_WIDTH
+  end
+
+  -- the layer scale that fits the line into the box (1 = it fits at the rows' size)
+  local function fit_scale(s)
+    local w = line_width(s)
+    if w <= LABEL.TEXT_BOX_WIDTH then
+      return 1
+    end
+    return math.max(LABEL.MIN_SCALE, LABEL.TEXT_BOX_WIDTH / w)
+  end
+
+  local function instance_count()
+    local n = M(LABEL.C.LAYER_NUM, LABEL.LAYER)
+    return type(n) == "number" and n or 0
   end
 
   -- was this difficulty row of the open piece won before (false when unknown)
@@ -159,19 +179,26 @@ if VRFW_Host ~= nil then
     panel_band(LABEL.ROW_GAP + LABEL.BAND_HEIGHT)
     LABEL.shown = true
     local colour = status.ok and LABEL.COLOUR_MET or LABEL.COLOUR_UNMET
-    for _, mesh in ipairs(LABEL.TEXT_MESHES) do
+    -- only the row's centred text: its plates, icon, level and class groups and its other text hidden
+    for _, mesh in ipairs(LABEL.HIDE_MESHES) do
       M(LABEL.C.MESH_VISIBLE, LABEL.LAYER, mesh, false, k)
     end
-    -- the line in a box wider than any line, measured at scale 1 by the game
-    M(LABEL.C.NODE_SCALE, LABEL.LAYER, k, LABEL.TEXT_NODE, LABEL.TEXT_BOX_WIDTH, LABEL.TEXT_BOX_HEIGHT)
-    M(LABEL.C.SCALE, LABEL.LAYER, 1, 1, 1, k)
-    M(LABEL.C.TEXT, LABEL.LAYER, LABEL.TEXT_NODE, colour .. status.label .. LABEL.COLOUR_RESET, k)
-    local width_at_one = M(LABEL.C.TEXT_SIZE, LABEL.LAYER, k, LABEL.TEXT_NODE)
-    if type(width_at_one) ~= "number" or width_at_one <= 0 then
-      width_at_one = math.max(text_units(status.label), 1) * LABEL.CHAR_WIDTH
+    for _, node in ipairs(LABEL.HIDE_NODES) do
+      M(LABEL.C.NODE_VISIBLE, LABEL.LAYER, node, false, k)
     end
-    local scale = math.max(LABEL.MIN_SCALE, math.min(LABEL.MAX_SCALE, LABEL.TEXT_MAX_WIDTH / width_at_one))
-    local left = LABEL.PANEL_MID_X - width_at_one * scale / 2
+    for _, node in ipairs(LABEL.HIDE_TEXTS) do
+      M(LABEL.C.TEXT_VISIBLE, LABEL.LAYER, node, false, k)
+    end
+    -- the box at the panel's inner width, centred on the layer's origin; a line longer than the box shrinks the layer
+    -- around that origin (centre kept) so the line spans at most the box
+    local scale = fit_scale(status.label)
+    local box_width = LABEL.TEXT_BOX_WIDTH / scale
+    M(LABEL.C.NODE_SCALE, LABEL.LAYER, k, LABEL.TEXT_NODE, box_width, LABEL.TEXT_BOX_HEIGHT)
+    M(LABEL.C.NODE_POS, LABEL.LAYER, k, LABEL.TEXT_NODE, 0, -box_width / 2)
+    M(LABEL.C.NODE_POS, LABEL.LAYER, k, LABEL.TEXT_NODE, 1, LABEL.TEXT_BOX_HEIGHT / 2)
+    M(LABEL.C.SCALE, LABEL.LAYER, scale, scale, 1, k)
+    M(LABEL.C.TEXT_VISIBLE, LABEL.LAYER, LABEL.TEXT_NODE, true, k)
+    M(LABEL.C.TEXT, LABEL.LAYER, LABEL.TEXT_NODE, colour .. status.label .. LABEL.COLOUR_RESET, k)
     local last_row_mid = LABEL.FIRST_ROW_MID_Y + LABEL.ROW_STEP * (math.max(row_count, 1) - 1)
     local y = last_row_mid + LABEL.ROW_HALF_HEIGHT + LABEL.ROW_GAP + LABEL.BAND_HEIGHT / 2
     if VRFW_RBC_PanelBandTop ~= nil then
@@ -180,8 +207,7 @@ if VRFW_Host ~= nil then
         y = top + LABEL.ROW_GAP + LABEL.BAND_HEIGHT / 2
       end
     end
-    M(LABEL.C.SCALE, LABEL.LAYER, scale, scale, 1, k)
-    LABEL.x, LABEL.y = left - LABEL.TEXT_LEFT * scale, -y - LABEL.TEXT_MID_Y * scale
+    LABEL.x, LABEL.y = LABEL.PANEL_MID_X, -y
     place()
     M(LABEL.C.DRAW_PRIORITY, LABEL.LAYER, k, LABEL_PRIORITY, true)
     M(LABEL.C.VISIBLE, LABEL.LAYER, k, true)

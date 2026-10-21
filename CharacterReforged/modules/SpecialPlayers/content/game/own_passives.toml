@@ -9,14 +9,17 @@ schema = "VRFW.game/2"
 
 # u32* SixSensePassiveId(u32* out, u32 charaHdl) 0xE7B390: the passive of a player's custom passive slot (match passive
 # builder 0x1604E90 group 5, the formation passive totals 0xD67A80 / 0xD776D0, the parameter screen 0xFE1770 /
-# 0xFE2BA0). Post: out = the own passive of the player's card, else 0. Stolen bytes: mov [rsp+10h],rbx; push rdi;
-# sub rsp,20h; mov ebx,edx; mov rdi,rcx (15).
+# 0xFE2BA0). Post: out = the own passive of the player's card, else 0. Stolen bytes (17, an inline hook takes at least
+# 14): mov [rsp+10h],rbx; push rdi; sub rsp,20h; mov ebx,edx; mov rdi,rcx; test edx,edx. `alt`: v7.2.1 0xE836C0 (the
+# record found through FindCharaRecord; same arguments and answer), whose first 17 bytes are whole instructions too:
+# mov [rsp+10h],edx; push rbx; sub rsp,20h; mov rbx,rcx; lea rdx,[rsp+38h].
 [[VRFW.Hook]]
 name = "SpecialPlayers.SixSensePassiveId"
 kind = "function"
 pattern = "48 89 5C 24 10 57 48 83 EC 20 8B DA 48 8B F9 85 D2 74 71 8B C2 C1 E8 0C 83 E0 0F 83 F8 0D 73 64 8B D0 48 8B 05 ?? ?? ?? ?? 48 8B 88 D8 69 00 00 48 8B 4C D1 08 48 85 C9 74 4A"
+alt = ["89 54 24 10 53 48 83 EC 20 48 8B D9 48 8D 54 24 38 48 8B 0D ?? ?? ?? ?? 48 8B 89 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 ?? 48 8B 48 08 8B 01 25 00 F0 00 00 3D 00 60 00 00"]
 rva = 0xE7B390
-steal = 15
+steal = 17
 args = ["ptr", "u32"]
 ret = "ptr"
 
@@ -42,11 +45,11 @@ write = "[args[1]]:u32"
 # bool SixSensePieceOpen(const u32* charaHdl) 0x165EBF0: whether the custom passive piece of the player's board is open
 # (the match counts group 5 only then). Post: 1 for a card whose own passive is declared with unlock = "always".
 # Stolen bytes: mov [rsp+8],rbx; mov [rsp+10h],dx; push rbp; push rsi; push rdi; push r12; push r13; push r14;
-# push r15 (21).
+# push r15 (21). The registers after the prologue are wildcards: the same function on v7.1.2 and v7.2.1 (0x16936E0).
 [[VRFW.Hook]]
 name = "SpecialPlayers.SixSensePieceOpen"
 kind = "function"
-pattern = "48 89 5C 24 08 66 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 48 8B 05 ?? ?? ?? ?? 4C 8D 44 24 68 48 8B D9 C7 44 24 68 D7 9B 55 0D"
+pattern = "48 89 5C 24 08 66 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 20 48 8B ?? ?? ?? ?? ?? 4C 8D 44 24 68 48 8B ?? C7 44 24 68 D7 9B 55 0D"
 rva = 0x165EBF0
 steal = 21
 args = ["ptr"]

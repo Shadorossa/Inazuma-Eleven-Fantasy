@@ -54,10 +54,9 @@ Unlock = "fbtl_cro02_200_010"
 After = "fbtl_cro02_200_010"
 
 # IE2 (1.11.10, owner 2026-10-19): Mar de Árboles (the side node after Emperadores Oscuros) right after Jóvenes
-# Inazuma; listed once its Chronicle battle is won (its node's piece), with the three classes of its node game
-[[VRFW.FreeMatchPlace]]
-Game = "evt_rn_ie2_forest"
-After = "fbtl_free_001"                # Jóvenes Inazuma
+# Inazuma: its list row is added after Emperadores Oscuros (base_tables soccer_opponent_info), and Jóvenes Inazuma's row
+# above is placed right after Emperadores Oscuros, so it lands between them. Not a [[VRFW.FreeMatchPlace]]: the node
+# game is built after the free-match places (team build step 3c), so a place cannot name it.
 
 # IE2: Épsilon's BATALLA LEGENDARIA plays Épsilon Plus (whose own game left the list); INAZUMA / ZONA LETAL stay Épsilon
 [[VRFW.FreeMatchRival]]
@@ -79,6 +78,16 @@ Team = "chronicle_deluxe.fm_protocol_omega_3_base"
 Game = "fbtl_cro05_130_010"            # Cascada Perfecta
 Classes = [9]
 Team = "tm_cro_go2_1300"               # Cascada Perfecta, masked line-up
+
+# Orion (owner 2026-10-20): the second Chispas Perfectas (La marca llama de nuevo) at BATALLA LEGENDARIA plays with its
+# line-up swapped, as in the anime: before every match each starter gets another place, as many as possible another
+# position, and plays it with that position's stat profile and special moves (the class team and its position source
+# teams: generated content/teams/90_rules/free_match_shuffles.toml; the deal: scripts/free_match_shuffle.lua;
+# docs/game/mods/chronicle-deluxe-free-match.md §16); INAZUMA / ZONA LETAL and the Chronicle keep the team as it is
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro08_110_010"            # La marca llama de nuevo (Chispas Perfectas)
+Classes = [9]
+Team = "chronicle_deluxe.fm_perfect_spark_shuffle"
 
 # IE3: Inazuma Japón (the line-up against Pequeños Gigantes), first in the tab, opens when Pequeños Gigantes is beaten
 [[VRFW.FreeMatchGame]]
@@ -102,6 +111,17 @@ Before = "fbtl_cro01_130_010"
 Game = "fbtl_cro03_140_010"            # Ángel Oscuro
 Before = "fbtl_cro01_130_010"
 
+# Chrono Stone: Los Arions (1.11.17, owner 2026-10-20; the line-up of the first Chrono Stone Chronicle battle, «¿Ha
+# desaparecido el fútbol?»), first in the tab before Protocolo Omega; the rows (three classes, AI, stadium) are that
+# battle's, and it opens with its win
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_arions"
+Team = "pltm_cro_ie5_01"
+Template = "fbtl_cro05_010_010"        # Protocolo Omega
+Tab = 4
+Unlock = "fbtl_cro05_010_010"
+Before = "fbtl_cro05_030_010"          # Protocolo Omega's list row (the tab's first; games 010 / 020 have none)
+
 # Chrono Stone: Chrono Storm (the line-up against Ragnarok), right before Ragnah, opens when Ragnarok is beaten
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_chrono_storm"
@@ -122,6 +142,37 @@ Template = "fbtl_cro06_010_010"        # Royal Academy (GO Galaxy)
 Tab = 5
 Unlock = "fbtl_cro06_010_010"
 Before = "fbtl_cro06_020_010"          # Dragones de Fuego (the first Galaxy game once Royal Academy left)
+
+# Ares (1.11.16, owner 2026-10-20): Raimon of the Inakuni island arc (the line-up of the Ares final against Academia
+# Plenilunio, coach Mister), right after Barcelona Orb; the rows (three classes, AI, stadium) are those of that final,
+# and it opens with Barcelona Orb, as its neighbour.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_ares"
+Team = "pltm_cro_ie7_13"
+Template = "fbtl_cro07_130_010"        # ¡Hacia la cima! (Academia Plenilunio)
+Tab = 6
+Unlock = "fbtl_cro07_010_010"          # Barcelona Orb
+After = "fbtl_cro07_010_010"
+
+# Orion (1.11.16, owner 2026-10-20): Inazuma Japón (the line-up of the Orion final against Chispas Perfectas), right
+# before Bisonte Rojo (first in the tab), opening with Bisonte Rojo, as its neighbour; rows of that final.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_inazuma_japan_orion"
+Team = "pltm_cro_ie8_11"
+Template = "fbtl_cro08_110_010"        # La marca llama de nuevo (Chispas Perfectas)
+Tab = 7
+Unlock = "fbtl_cro08_010_010"          # Bisonte Rojo
+Before = "fbtl_cro08_010_010"
+
+# Orion (1.11.16, owner 2026-10-20): Kinuns, Mister Yi's (Zhao Jinyun's) own team (the line-up the player leads against
+# Eclipse de Orión), right before Eclipse de Orión, opening with it, as its neighbour; rows of that match.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_kinuns"
+Team = "pltm_cro_ie8_12"
+Template = "fbtl_cro08_120_010"        # Manos unidas por el mundo (Eclipse de Orión)
+Tab = 7
+Unlock = "fbtl_cro08_120_010"          # Eclipse de Orión
+Before = "fbtl_cro08_120_010"
 
 # Victory Road: Zanark Outsiders, Guardianas and Plathos (the Chrono Stone / Galaxy / Ares extra battles) in the Victory
 # Road tab, right before Destructores

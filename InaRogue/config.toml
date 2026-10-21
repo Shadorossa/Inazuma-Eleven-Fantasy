@@ -19,6 +19,13 @@ grant_without_role = true
 # storage (slot 4's file + modloader_saves\slot4\inarogue) and every INAROGUE save goes there; leaving restores
 # the player's game from memory. false = the old slot-4 switch (black fade + GAME_RESET), same data.
 session_entry = true
+# Debug (docs/game/modes/inarogue.md §8.10): true = every INAROGUE player card (tier 1-5 of the draw pool, no coach /
+# manager cards) is in the INAROGUE bank as if owned, so the «Plantilla de equipo» offers all of them for a run. Kept in
+# memory only (the bank file never stores them; false = the normal bank again); no unlock counts and the first-run gift
+# waits while it is on. debug_all_players_limit = most bank players created in the INAROGUE save for the dock (the game
+# holds 5100 characters; at most 5000).
+debug_all_players = false
+debug_all_players_limit = 5000
 # Special moves do NOT level up by use in INAROGUE: the mod True Hissatsu's rule, InaRogue's data
 # content\true_hissatsu\inarogue.toml (was [rogue] move_rank_by_use of Inazuma Fantasy until 2026-10-14).
 
@@ -58,6 +65,11 @@ unlock_all = false
 [rogue.coaches]
 enabled = true
 file = "content/rogue/coaches.toml"
+unlock_all = false
+
+# INAROGUE album sections «Objetos» and «Equipos» (docs/game/modes/inarogue.md §14.6): an item / rival team shows once
+# obtained / met in any run (global store rogue_collections.json). unlock_all = debug (everything shown as found).
+[rogue.album]
 unlock_all = false
 
 # INAROGUE route map look (docs/game/modes/inarogue.md §27.4): fog of war = only the exits of the current (cleared)

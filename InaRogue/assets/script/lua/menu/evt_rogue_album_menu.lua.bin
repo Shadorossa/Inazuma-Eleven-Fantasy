@@ -19,7 +19,10 @@
 -- Missing cards never get the card command: their face is never loaded (no spoilers).
 -- Data: vr-loader module `rogue`, CMND_EVT_RL_ALBUM_INFO op 4 (card), 5 (section jump), 6 (find), 7-10 (the book).
 -- Keys (setting rows of the input anchor -> OnFunction): arrows move, Tab (CMD_FUNC2) order, L1/R1 page, L2/R2
--- section; Back = close the menu. Enter does nothing (the info card is always there).
+-- section, Y / V (CMD_FUNC3) next collection tab; Back = close the menu. Enter does nothing (the info card is always there).
+-- Collection tabs (2026-10-20, §14.6): Jugadores (the cards above, CMND_EVT_RL_ALBUM_INFO), Objetos and Equipos
+-- (CMND_INAROGUE_RL_COLLECTION, scripts/lib/rogue/collections.lua): the same book; a sticker = the rarity card base
+-- (evt_album_back) + the item icon / team crest (evt_album_icon); the tab buttons sit at the foot of the info page.
 -- Rule (position-cards.md §4b): no engine call at top level; funcLuaCommand only exists inside callbacks.
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc, soccer_common) + general window inc
@@ -59,6 +62,24 @@ local TXT = {
           {1146471252, "Montaña"}},
   empty = {4120712477, "No hay cartas en esta vista. Pulsa <CMD_FUNC2> para cambiar el orden."},
   no_loader = {59215208, "El álbum necesita el vr-loader con el módulo «rogue» activado (app: Proyecto > Loader)."},
+  -- collection tabs (text\rows\menu_text.toml, 9 languages)
+  tab = {617554132, "Colección"},
+  tabs = {{3407070724, "Jugadores"}, {841114752, "Objetos"}, {1174318997, "Equipos"}},
+  section = {1211904281, "Sección"},
+  items_hint = {2005755933, "Todavía no lo tienes: consíguelo en una partida de INAROGUE."},
+  team_hint = {1187990596, "Todavía no te has enfrentado a este equipo en INAROGUE."},
+  teams_guide = {2874921695, "Equipos: {1} / {2} ({3} %)"},
+  price = {1469188608, "Precio"},
+  max_level = {2317055604, "Nivel máx."},
+  times = {2156774997, "Veces"},
+  first_time = {3703694009, "Primera vez"},
+  rarity_label = {2261309733, "Rareza"},
+  wins = {713533372, "Victorias"},
+  matches = {1667849804, "Partidos"},
+  best_phase = {3564389543, "Mejor fase"},
+  first_met = {3282860382, "Primer partido"},
+  team_type = {75571628, "Tipo"},
+  team_kinds = {{1558791157, "Pachanga"}, {3319796303, "Partido"}, {3001492185, "Jefe especial"}},
 }
 local UNKNOWN = "???"
 local DATE_FMT = "%02d/%02d/%04d"
@@ -72,6 +93,7 @@ local RL = {
   LOG = 3661580131,
   CHARA = 1144149794,          -- (param) -> tier, cost, inPool, statTotal, card, element, position
   ALBUM = 2615878751,
+  COLLECTION = 128361226,      -- CMND_INAROGUE_RL_COLLECTION (op, kind, ...): the Objetos / Equipos tabs
 }
 local MOD_ROGUE = 32768
 local CMD_CHARA_INFO = 4060384944   -- CMND_GET_CHARA_INFO (paramId, 0) -> ok, name
@@ -81,6 +103,8 @@ local N_ORDERS = 6
 -- base order. The loader keeps order 2 (op ids unchanged); only this cycle skips it.
 local SORT_CYCLE = {0, 1, 3, 4, 5}
 local TEAM_ORDERS = {[0] = true, [2] = true, [3] = true}
+-- collection tabs: 0 players (CMND_EVT_RL_ALBUM_INFO), 1 items, 2 teams (CMND_INAROGUE_RL_COLLECTION kind = tab)
+local Tabs = {TAB_PLAYERS = 0, TAB_ITEMS = 1, TAB_TEAMS = 2, N_TABS = 3}   -- the tabs' constants and helpers (one main-chunk local)
 
 -- ---- layers -----------------------------------------------------------------------------------------------------
 local L_ROW = 3455690937        -- save01_02_list_item (1 instance: the input anchor, off screen)
@@ -106,8 +130,11 @@ local L_OVER = 1017370076
 local L_LEAF = 1321236066
 local L_INFO_BG = 1111032447
 local L_INFO = 1138116562
-local BOOK_LAYERS = {[L_BOOK] = 1, [L_SLOT] = 42, [L_PLATE] = 10, [L_EMBLEM] = 8,
-                     [L_TEXT] = 73, [L_OVER] = 2, [L_LEAF] = 1, [L_INFO_BG] = 1, [L_INFO] = 5}
+Tabs.L_BACK = 3851532210       -- evt_album_back x42: the rarity card base of an item / team sticker
+Tabs.L_ICON = 3989528414       -- evt_album_icon x42: the item icon / team crest on it
+local BOOK_LAYERS = {[L_BOOK] = 1, [L_SLOT] = 42, [L_PLATE] = 14, [L_EMBLEM] = 8,
+                     [L_TEXT] = 76, [L_OVER] = 2, [L_LEAF] = 1, [L_INFO_BG] = 1, [L_INFO] = 5,
+                     [Tabs.L_BACK] = 42, [Tabs.L_ICON] = 42}
 local WIN_LABEL = 3773505316
 local CARD_LABEL = 2137633855
 local MARK_LABEL = 1312789106
@@ -126,6 +153,14 @@ local I = {TITLE = 0, COST = 1, COST_N = 2, GAMES = 3, GAMES_N = 4, GOALS = 5, G
 local N_INFO_TEXT = 13
 local INFO_BANNER, INFO_MISSING, INFO_POS, INFO_ELEM, INFO_CLUB = 0, 1, 2, 3, 4   -- evt_album_info (0 = name banner)
 local PLATE_OL_ELEM, PLATE_OL_POS = N_HDR, N_HDR + 1   -- evt_album_plate 8 / 9: the icons' black outlines
+Tabs.PLATE_BIG_BACK = PLATE_OL_ELEM   -- Objetos / Equipos: plate 8 = the rarity card base behind the big icon
+Tabs.PLATE_TAB0 = N_HDR + 2           -- evt_album_plate 10-12: the tab buttons, 13: the active tab's frame
+Tabs.PLATE_TAB_ON = Tabs.PLATE_TAB0 + Tabs.N_TABS
+Tabs.T_TAB0 = T_INFO0 + 13            -- evt_album_text 73-75: the tab labels
+-- the tab buttons at the foot of the info page (relative to IX / IY), the big icon / crest of the info card
+Tabs.TAB_Y, Tabs.TAB_W, Tabs.TAB_H, Tabs.TAB_DX, Tabs.TAB_ON_PAD, Tabs.TXT_S_TAB = 726, 184, 56, 196, 10, 0.55
+Tabs.BIG_BACK_W, Tabs.BIG_BACK_H, Tabs.BIG_ICON_S, Tabs.STICKER_BACK_H, Tabs.STICKER_ICON_S = 300, 186, 150, 67, 54
+Tabs.BADGE_S, Tabs.BIG_BADGE_S = 78, 210   -- a team crest alone (badge) in a slot / on the info card
 local OVER_SHADOW, OVER_GLOW = 0, 1
 local CARD_CURSOR = 945715707   -- card objbin cursor labels (retail seasonal turns both off)
 local CARD_CURSOR2 = 1967169874
@@ -164,11 +199,13 @@ local FN = {
   SORT = 3648750759, UP = 121770756, DOWN = 2493572798, LEFT = 4063793645,
   RIGHT = 697327053, PAGE_PREV = 2563649507, PAGE_NEXT = 537114506,
   TEAM_PREV = 3471558466, TEAM_NEXT = 1982226219,
+  TAB_NEXT = 3998623323,       -- crc32("evt_album_tab_next"): CMD_FUNC3, the next collection tab
 }
 -- button guide: retail texts (every language): Ordenar / Cambiar página / Equipo (no Aceptar since 2026-10-06)
 local G_SORT, G_PAGE, G_TEAM = 1844975998, 884337385, 2058233886
 local I_FUNC2, I_R1, I_R2 = 2387151820, 1596629152, 3487556099
 local K_FUNC2, K_R1, K_R2 = 3170216173, 942075773, 2704260807
+Tabs.I_FUNC3, Tabs.K_FUNC3 = 3794706590 --[[<CMD_FUNC3>: Y on a pad, V on the keyboard]], 3421673595 --[[CMD_FUNC3]]
 local SE_OK, SE_BACK = 3848881948, 202039849
 local SE_PAGE = 3848881948      -- the cursor sound for the page turn too (no retail page-flip SE is known)
 
@@ -180,6 +217,11 @@ local TEX_EMBLEM = "#/menu/200_icon/01_icon_emblem/vsroute/icon_vsroute_emblem/v
 -- POR in Spanish) and element icons; enums as RL.CHARA: position 1 GK, 2 FW, 3 MF, 4 DF; element 1 wind .. 4 mountain
 local TEX_POS = "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx"
 local TEX_ICON = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+Tabs.TEX_ITEM = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"   -- the rogue item icons (content\images\menu\200_icon\02_icon_item)
+-- the archetype icon on the info page's paper boxes: the team13_05 style (blue glyph, white rim) of the declaration's
+-- `icon` sprite (content\images\menurchetype_<key>.toml); the white icon_common glyph stays on the navy headers
+Tabs.TEX_ARCH = "#/menu/102_team/team13/team13_05/team13_05.g4tx"
+Tabs.ARCH_S = 84
 local POS_SPRITE = {"icon_param2_position04", "icon_param2_position01", "icon_param2_position02", "icon_param2_position03"}
 local ELEM_SPRITE = {"icon_cmd_type01", "icon_cmd_type02", "icon_cmd_type03", "icon_cmd_type04"}
 -- 2026-09-28 (Nacho: every team with its real emblem): a team whose emblem is not on the Chronicle board atlas shows
@@ -223,6 +265,97 @@ local EMB_S = {
   [3948469306] = "em571021", [3949549226] = "em111023", [3957799995] = "em110019", [3960598272] = "em111009",
   [3987655660] = "em561350", [4052403504] = "em541104",
 }
+-- the rival crests of the Equipos tab: crc32("emNNNNNN") (the match rows' emblem) -> "emNNNNNN" (every emblem of
+-- dx11/menu/200_icon/01_icon_emblem, as evt_rogue_map_menu's EMB_ALL); drawn from <em>_s.g4tx, sprite <em>_s01
+Tabs.EMB_NAME = {
+  [3531712334] = "em0001", [1267267316] = "em0002", [1016055394] = "em0003", [2733331393] = "em0004",
+  [3589038935] = "em0005", [1004667515] = "em0007", [2875006954] = "em0008", [3584811504] = "em010001",
+  [1285730378] = "em010002", [1000702172] = "em010003", [2780894591] = "em010004", [3536201193] = "em010005",
+  [1271886931] = "em010006", [1019757765] = "em010007", [2893502804] = "em010008", [3681577410] = "em010009",
+  [3149389863] = "em010010", [3434139825] = "em010011", [1438220555] = "em010012", [582922653] = "em010013",
+  [3168412734] = "em010014", [184732314] = "em020002", [3106326755] = "em020031", [539990361] = "em020032",
+  [1462282703] = "em020033", [3377216620] = "em020034", [3192589562] = "em020035", [658660672] = "em020036",
+  [1346727382] = "em020037", [3237638215] = "em020038", [3086827729] = "em020039", [2170580658] = "em020040",
+  [4133969444] = "em020041", [1869483934] = "em020042", [409550600] = "em020043", [2249042603] = "em020044",
+  [4044003901] = "em020045", [520420113] = "em020047", [2411456128] = "em020048", [4173125142] = "em020049",
+  [912450346] = "em030002", [2971486152] = "em030015", [672405106] = "em030016", [1595090660] = "em030017",
+  [3484171125] = "em030018", [3098217443] = "em030019", [2640171026] = "em030021", [1950250279] = "em030027",
+  [3833686198] = "em030028", [2475055136] = "em030029", [2770040387] = "em030050", [3525068501] = "em030051",
+  [1259673455] = "em030052", [1007822841] = "em030053", [2725687898] = "em030054", [3580986060] = "em030055",
+  [1282986870] = "em030056", [998237152] = "em030057", [2881551985] = "em030058", [3704082151] = "em030059",
+  [2385913216] = "em030060", [4180743446] = "em030061", [1614300332] = "em030062", [390034490] = "em030063",
+  [2304500121] = "em030064", [4267495695] = "em030065", [491482752] = "em040001", [2218934074] = "em040002",
+  [4081389484] = "em040003", [1830918671] = "em040004", [438741657] = "em040005", [2200959779] = "em040006",
+  [4096314293] = "em040007", [1687672356] = "em040008", [1935109975] = "em040010", [72376257] = "em040011",
+  [2639859323] = "em040012", [1950001998] = "em040014", [54369240] = "em040015", [2587150946] = "em040016",
+  [3979606772] = "em040017", [2106386277] = "em040018", [176936947] = "em040019", [1484405908] = "em040020",
+  [796724226] = "em040021", [3061079480] = "em040022", [3245567278] = "em040023", [1595406477] = "em040024",
+  [672188443] = "em040025", [2971244961] = "em040026", [3323898167] = "em040027", [598709086] = "em050201",
+  [3131491044] = "em050202", [3449942642] = "em050203", [1405446097] = "em050204", [616716103] = "em050205",
+  [3184199421] = "em050206", [3402380907] = "em050207", [1517497338] = "em050208", [1303614089] = "em050210",
+  [984916511] = "em050211", [2747134885] = "em050212", [3569009459] = "em050213", [1256085136] = "em050214",
+  [1037657606] = "em050215", [2765109180] = "em050216", [3554084650] = "em050217", [1130896059] = "em050218",
+  [295301596] = "em050221", [2441842983] = "em050232", [3867976113] = "em050233", [267322500] = "em050235",
+  [2531677502] = "em050236", [3789645224] = "em050237", [1902016569] = "em050238", [106514607] = "em050239",
+  [1203983962] = "em050241", [3737782240] = "em050242", [2848798582] = "em050243", [933864149] = "em050244",
+  [1085182531] = "em050245", [3651650553] = "em050246", [2929783663] = "em050247", [1591240475] = "em050251",
+  [557759386] = "em060220", [1707967417] = "em060301", [4240757251] = "em060302", [2344870549] = "em060303",
+  [363296566] = "em060304", [1654671264] = "em060305", [4222162458] = "em060306", [2360223372] = "em060307",
+  [470891293] = "em060308", [1796606859] = "em060309", [198279790] = "em060310", [2094445304] = "em060311",
+  [3856655170] = "em060312", [2463683540] = "em060313", [213665399] = "em060314", [2075883233] = "em060315",
+  [3803326299] = "em060316", [2511673293] = "em060317", [1525355600] = "em070001", [3286386154] = "em070002",
+  [3034936700] = "em070003", [713154783] = "em070004", [1569116233] = "em070005", [3297739251] = "em070006",
+  [3012079973] = "em070007", [590851316] = "em070008", [1412471906] = "em070009", [888608135] = "em070010",
+  [1139811601] = "em070011", [3673781419] = "em070012", [3717509298] = "em070016", [2861793316] = "em070017",
+  [976002485] = "em070018", [3636167553] = "em080001", [1102238267] = "em080002", [917889709] = "em080003",
+  [2832299790] = "em080004", [3755362200] = "em080005", [1189025314] = "em080006", [836249268] = "em080007",
+  [2707897125] = "em080008", [3596618675] = "em080009", [3064431190] = "em080010", [3248534208] = "em080011",
+  [1487528826] = "em080012", [799986668] = "em080013", [2982823503] = "em080014", [3335354073] = "em080015",
+  [1606690659] = "em080016", [519516757] = "em110001", [2281595887] = "em110002", [4042871673] = "em110003",
+  [1855833818] = "em110004", [429585996] = "em110005", [2157160438] = "em110006", [4153710432] = "em110007",
+  [1730906865] = "em110008", [271366759] = "em110009", [1894462338] = "em110010", [132907796] = "em110011",
+  [2665829038] = "em110012", [3923927608] = "em110013", [2005333915] = "em110014", [8505101] = "em110015",
+  [2575865527] = "em110016", [4002391585] = "em110017", [2117122992] = "em110018", [154635046] = "em110019",
+  [1539727425] = "em110020", [750866647] = "em110021", [3049783661] = "em110022", [3268358651] = "em110023",
+  [1554752600] = "em110024", [732730574] = "em110025", [2997208436] = "em110026", [572184805] = "em110029",
+  [1121800448] = "em110030", [903504278] = "em110031", [2899521580] = "em110032", [2789954864] = "em111001",
+  [1061291146] = "em111002", [1212494876] = "em111003", [3592528319] = "em111004", [2703659305] = "em111005",
+  [942653587] = "em111006", [1328082949] = "em111007", [3751275924] = "em111008", [2828066050] = "em111009",
+  [3361166567] = "em111010", [3209716849] = "em111011", [643380683] = "em111012", [1365116253] = "em111013",
+  [3476721918] = "em111014", [3091046504] = "em111015", [557117906] = "em111016", [1446232388] = "em111017",
+  [3331120341] = "em111018", [2978737219] = "em111019", [3816425252] = "em111020", [2491234226] = "em111021",
+  [225732104] = "em111022", [2054379166] = "em111023", [3826762557] = "em111024", [2467361707] = "em111025",
+  [169452049] = "em111026", [2099155591] = "em111027", [3986788118] = "em111028", [2594619264] = "em111029",
+  [4200674917] = "em111030", [2372273907] = "em111031", [342841161] = "em111032", [1667786719] = "em111033",
+  [4245484156] = "em111034", [2316026602] = "em111035", [318935888] = "em111036", [1678091206] = "em111037",
+  [862644787] = "em510488", [3003840750] = "em520500", [1560582594] = "em520502", [3026664695] = "em520504",
+  [762211661] = "em520507", [2853292463] = "em520510", [3709270329] = "em520511", [1142925443] = "em520512",
+  [857249813] = "em520513", [3665509664] = "em520515", [880106508] = "em520517", [4131105530] = "em520521",
+  [406178774] = "em520523", [2253479541] = "em520524", [525864911] = "em520527", [1408553986] = "em530026",
+  [827577325] = "em530566", [3326509952] = "em530574", [3488665515] = "em530578", [833907648] = "em530581",
+  [2830973562] = "em530582", [1105108815] = "em530584", [682580609] = "em530591", [1366549029] = "em530598",
+  [4126201763] = "em530609", [205393916] = "em530613", [2965472695] = "em530628", [1132435771] = "em530663",
+  [2853977102] = "em530665", [2815128369] = "em541038", [371849648] = "em541056", [1630456102] = "em541057",
+  [3563523910] = "em541060", [3447471623] = "em541070", [3128626833] = "em541071", [3282548277] = "em541078",
+  [859347564] = "em541089", [2224162542] = "em541104", [4086642296] = "em541105", [740561945] = "em551052",
+  [1529029775] = "em551053", [2990571962] = "em551055", [3438411015] = "em551058", [3909560054] = "em551060",
+  [2650805856] = "em551061", [118048730] = "em551062", [4043026330] = "em551097", [3818943672] = "em561310",
+  [229512596] = "em561312", [2057905410] = "em561313", [2479521847] = "em561315", [3984325770] = "em561318",
+  [646137431] = "em561322", [1367635649] = "em561323", [3606827555] = "em561334", [2823466654] = "em561339",
+  [2008294856] = "em561346", [2278339004] = "em561350", [516284422] = "em561353", [1553236906] = "em571003",
+  [3529337699] = "em571018", [2774162421] = "em571019", [2158788612] = "em571021", [430297534] = "em571022",
+  [3923592650] = "em571034", [131278054] = "em571036", [1892947056] = "em571037", [2716931860] = "em571040",
+  [2795295501] = "em571044", [3516654491] = "em571045", [1217573409] = "em571046", [1066762935] = "em571047",
+  [3626872752] = "em571049", [3102352981] = "em571050", [3488421571] = "em571051", [818574679] = "em581001",
+  [2848138477] = "em581002", [3737392251] = "em581003", [1084260824] = "em581004", [229268711] = "em591001",
+  [3485768072] = "em900001", [1456326706] = "em900002", [566950052] = "em900003", [3215879431] = "em900004",
+  [3366542737] = "em900005", [1369443371] = "em900006", [648494269] = "em900007", [3055034668] = "em900008",
+  [3240038842] = "em900009", [2715326559] = "em900010", [3604981961] = "em900011", [1339488627] = "em900012",
+  [953272805] = "em900013", [2796903494] = "em900014", [3518131408] = "em900015", [1220230506] = "em900016",
+  [1069288956] = "em900017", [2936213613] = "em900018", [3624149243] = "em900019", [2331364252] = "em900020",
+  [4070879288] = "em910001", [1806557570] = "em910002", [480956692] = "em910003", [2194556087] = "em910004",
+  [4123620385] = "em910005", [1824531867] = "em910006",
+}
 local TEX_LOADING = 1506186496  -- (textureCrc) -> true while still loading (kizuna_town_menu_inc)
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
 local NODE_GUIDE = 378156699    -- _text_guide01 (the text clone's node)
@@ -250,6 +383,8 @@ local N_ARROW = 3186689458
 
 -- ---- state -------------------------------------------------------------------------------------------------------
 local has_loader = false
+local tab = Tabs.TAB_PLAYERS
+local tab_place = {}      -- tab -> {spread, sel}: where each tab was left
 local order = 0
 local book = {pages = 0, sections = 0, count = 0, total = 0, owned = 0}
 local spread = 0          -- pages 2*spread (left) and 2*spread + 1 (right)
@@ -507,6 +642,11 @@ local function ReadBook()
   if not has_loader then
     return
   end
+  if tab ~= Tabs.TAB_PLAYERS then
+    local pages, secs, n, found = Call(RL.COLLECTION, 0, tab)
+    book = {pages = math.max(1, Int(pages)), sections = Int(secs), count = Int(n), total = Int(n), owned = Int(found)}
+    return
+  end
   local pages, secs, n, total, owned = Call(RL.ALBUM, 7, order)
   book = {pages = math.max(1, Int(pages)), sections = Int(secs), count = Int(n), total = Int(total), owned = Int(owned)}
   local _, total0, owned0 = Call(RL.ALBUM, 0)
@@ -521,7 +661,12 @@ local function PageRows(p)
   if r ~= nil then
     return r
   end
-  local v = table.pack(Call(RL.ALBUM, 8, order, p))
+  local v
+  if tab ~= Tabs.TAB_PLAYERS then
+    v = table.pack(Call(RL.COLLECTION, 1, tab, p))
+  else
+    v = table.pack(Call(RL.ALBUM, 8, order, p))
+  end
   r = {}
   for k = 0, G.ROWS - 1 do
     local b = k * 5
@@ -542,9 +687,35 @@ local function TeamName(tid, es)
   return es
 end
 
+-- a text row by its key string (crc32 of the key), else `fallback`
+function Tabs.TK(key, fallback)
+  if type(key) == "string" and key ~= "" then
+    local s = Call(CMD_TEXT_GET, CRC32(key))
+    if type(s) == "string" and s ~= "" then
+      return s
+    end
+  end
+  return fallback
+end
+
+-- a section of the Objetos / Equipos tab (op 2): its title (archetype / team kind), found / count, header icon
+function Tabs.CollectionSection(s)
+  local ok, n, found, page, key_text, title, icon = Call(RL.COLLECTION, 2, tab, s)
+  if ok ~= true then
+    return nil
+  end
+  return {count = Int(n), page = Int(page), title = Tabs.TK(key_text, type(title) == "string" and title or "?"),
+          a = Int(found), b = Int(n), icon = type(icon) == "string" and icon or ""}
+end
+
 local function Section(s)
   local c = sec_cache[s]
   if c ~= nil then
+    return c
+  end
+  if tab ~= Tabs.TAB_PLAYERS then
+    c = Tabs.CollectionSection(s)
+    sec_cache[s] = c
     return c
   end
   local ok, key, n, sowned, page, towned, tcount, tid, emblem, name = Call(RL.ALBUM, 9, order, s)
@@ -566,6 +737,38 @@ local function Section(s)
   return c
 end
 
+-- entry i of the Objetos / Equipos tab (op 3); `owned` = found (obtained / met once), tier = the sticker's rarity
+function Tabs.CollectionEntry(i)
+  if tab == Tabs.TAB_ITEMS then
+    local ok, found, number, key, tier, max_level, price, arch1, arch2, arch_key, arch_name, icon, count, first,
+      rarity_key, rarity = Call(RL.COLLECTION, 3, tab, i)
+    if ok ~= true then
+      return nil
+    end
+    key = type(key) == "string" and key or ""
+    local e = {pos = i, owned = found == true, number = Int(number), key = key, tier = Int(tier),
+               max_level = Int(max_level), price = Int(price), arch1 = type(arch1) == "string" and arch1 or "",
+               arch2 = type(arch2) == "string" and arch2 or "", icon = type(icon) == "string" and icon or "",
+               count = Int(count), first = Int(first), name = UNKNOWN, desc = ""}
+    if e.owned then
+      e.name = Tabs.TK("InaRogue.rogue_item_" .. key .. "_name", key)
+      e.desc = Tabs.TK("InaRogue.rogue_item_" .. key .. "_desc", "")
+      e.rarity_name = Tabs.TK(rarity_key, type(rarity) == "string" and rarity or "-")
+    end
+    return e
+  end
+  local ok, found, number, name, emblem, kind, tier, met, beaten, best, first = Call(RL.COLLECTION, 3, tab, i)
+  if ok ~= true then
+    return nil
+  end
+  local e = {pos = i, owned = found == true, number = Int(number), emblem = Int(emblem), kind = Int(kind),
+             tier = Int(tier), met = Int(met), beaten = Int(beaten), best = Int(best), first = Int(first), name = UNKNOWN}
+  if e.owned then
+    e.name = type(name) == "string" and name or "?"
+  end
+  return e
+end
+
 -- list position i of the current order (op 4)
 local function Entry(i)
   if i == nil or i < 0 or i >= book.count then
@@ -575,8 +778,13 @@ local function Entry(i)
   if e ~= nil then
     return e
   end
-  local ok, param, owned, tier, uid, team, towned, tcount, cost, runs, added, tname, whatif, number, club, goals, source =
-    Call(RL.ALBUM, 4, i, order)
+  if tab ~= Tabs.TAB_PLAYERS then
+    e = Tabs.CollectionEntry(i)
+    card_cache[i] = e
+    return e
+  end
+  local ok, param, owned, tier, uid, team, towned, tcount, cost, runs, added, tname, whatif, number, club, goals, source,
+    real = Call(RL.ALBUM, 4, i, order)
   if ok ~= true then
     return nil
   end
@@ -584,6 +792,7 @@ local function Entry(i)
        tcount = Int(tcount), cost = Int(cost), runs = Int(runs), added = Int(added),
        tname = type(tname) == "string" and tname or "?", whatif = whatif == true, number = Int(number),
        goals = Int(goals), source = Int(source),   -- INAROGUE goals, how it was obtained (op 4 values 16 / 17)
+       real = real == true,     -- a real bank card (false: shown by the debug switches, no stats of its own)
        club = Int(club),        -- emblem sprite of the card's OWN club (not the album group's team; 0 = generic crest)
        name = UNKNOWN, element = 0, position = 0}
   if e.owned then
@@ -728,8 +937,31 @@ local function SlotXY(k)
   return PageX(side) + G.SX0 + c * G.SDX, G.ROW0 + r * G.ROW_H + G.SDY
 end
 
+local EmblemQuad
+
+-- an item / team sticker: the rarity card base and its icon / crest on the card's footprint (nothing while missing)
+function Tabs.DrawSticker(k, e)
+  emb_pending[Tabs.L_ICON .. ":" .. k] = nil
+  if e == nil or not e.owned or tab == Tabs.TAB_PLAYERS then
+    SetQuad(Tabs.L_BACK, k, nil)
+    SetQuad(Tabs.L_ICON, k, nil)
+    return
+  end
+  local x, y = SlotXY(k)
+  local cx, cy = x + G.SW / 2, y + G.STRIP + (G.SH - G.STRIP) / 2
+  if tab == Tabs.TAB_ITEMS then
+    SetQuad(Tabs.L_BACK, k, TEX_RARITY, string.format("evt_rogue_card_base_%02d", Tier(e)), cx, cy, G.SW, Tabs.STICKER_BACK_H)
+    SetQuad(Tabs.L_ICON, k, Tabs.TEX_ITEM, e.icon, cx, cy, Tabs.STICKER_ICON_S, Tabs.STICKER_ICON_S)
+  else
+    -- a team is a badge: its crest alone, no rarity card (owner 2026-10-20)
+    SetQuad(Tabs.L_BACK, k, nil)
+    Tabs.TeamCrest(Tabs.L_ICON, k, e.emblem, cx, cy, Tabs.BADGE_S, Tabs.BADGE_S)
+  end
+end
+
 local function DrawSlot(k, e)
   local x, y = SlotXY(k)
+  Tabs.DrawSticker(k, e)
   if e == nil then
     SetQuad(L_SLOT, k, nil)
     SetText(T_NUM0 + k, nil)
@@ -738,23 +970,15 @@ local function DrawSlot(k, e)
   end
   SetQuad(L_SLOT, k, TEX, e.owned and "evt_album_slot_owned" or "evt_album_slot_missing", x + G.SW / 2, y + G.SH / 2, G.SW, G.SH)
   SetText(T_NUM0 + k, tostring(e.number), x + 6, y + G.STRIP / 2 + 1, G.TXT_S_NUM)
-  SetCard(k, e)
+  SetCard(k, tab == Tabs.TAB_PLAYERS and e or nil)
 end
 
 -- a team emblem on quad `layer` / `inst`: the board atlas sprite, or the team's own texture (loaded on demand, see
 -- EMB_S); sprite 0 = the generic crest
-local function EmblemQuad(layer, inst, sprite, x, y, w, h)
+-- a quad from the small emblem texture `em` (<em>_s.g4tx, sprite <em>_s01), loaded on demand
+function Tabs.OwnEmblemQuad(layer, inst, em, x, y, w, h)
   local key = layer .. ":" .. inst
-  emb_pending[key] = nil
-  if sprite == 0 then
-    SetQuad(layer, inst, TEX, "evt_album_crest", x, y, w, h)
-    return
-  end
-  local em = EMB_S[sprite]
-  if em == nil then
-    SetQuad(layer, inst, TEX_EMBLEM, sprite, x, y, w, h)
-    return
-  end
+  local sprite = CRC32(em .. "_s01")
   local path = EMB_DIR .. em .. "_s.g4tx"
   if not emb_asked[path] then
     emb_asked[path] = true
@@ -766,6 +990,31 @@ local function EmblemQuad(layer, inst, sprite, x, y, w, h)
     return
   end
   SetQuad(layer, inst, path, sprite, x, y, w, h)
+end
+
+function EmblemQuad(layer, inst, sprite, x, y, w, h)
+  emb_pending[layer .. ":" .. inst] = nil
+  if sprite == 0 then
+    SetQuad(layer, inst, TEX, "evt_album_crest", x, y, w, h)
+    return
+  end
+  local em = EMB_S[sprite]
+  if em == nil then
+    SetQuad(layer, inst, TEX_EMBLEM, sprite, x, y, w, h)
+    return
+  end
+  Tabs.OwnEmblemQuad(layer, inst, em, x, y, w, h)
+end
+
+-- a rival crest of the Equipos tab: emblem = crc32("emNNNNNN"); unknown / 0 = the generic crest
+function Tabs.TeamCrest(layer, inst, emblem, x, y, w, h)
+  emb_pending[layer .. ":" .. inst] = nil
+  local em = Tabs.EMB_NAME[emblem]
+  if em == nil then
+    SetQuad(layer, inst, TEX, "evt_album_crest", x, y, w, h)
+    return
+  end
+  Tabs.OwnEmblemQuad(layer, inst, em, x, y, w, h)
 end
 
 -- Step: put the emblems whose texture came in (a texture that never comes in: the generic crest after 600 frames)
@@ -797,7 +1046,13 @@ local function DrawHeader(side, h, row_top, row)
   end
   SetQuad(L_PLATE, inst, TEX, "evt_album_plate", px + G.PLX + G.PLW / 2, row_top + G.PLY + G.PLH / 2, G.PLW, G.PLH)
   local ex, ey = px + G.EMX, row_top + G.EMY
-  if order == 1 then
+  if tab ~= Tabs.TAB_PLAYERS then
+    if s.icon ~= "" then
+      SetQuad(L_EMBLEM, inst, TEX_ICON, s.icon, ex, ey, 64, 64)       -- the archetype's icon
+    else
+      SetQuad(L_EMBLEM, inst, TEX, "evt_album_crest", ex, ey, G.EMS, G.EMS)
+    end
+  elseif order == 1 then
     SetQuad(L_EMBLEM, inst, TEX_RARITY, string.format("evt_rogue_mark_%02d", math.max(1, math.min(5, s.key))), ex, ey, 76, 48)
   elseif TEAM_ORDERS[order] and s.emblem ~= 0 then
     EmblemQuad(L_EMBLEM, inst, s.emblem, ex, ey, G.EMS, G.EMS)
@@ -879,6 +1134,12 @@ local function UpdateGuideLine()
   local t
   if not has_loader then
     t = T(TXT.no_loader)
+  elseif tab == Tabs.TAB_ITEMS then
+    -- the selected item's effect (Nv. 1 -> Nv. máx.), the hint while it is missing
+    local e = Current()
+    t = e ~= nil and e.owned and e.desc ~= "" and e.desc or T(TXT.items_hint)
+  elseif tab == Tabs.TAB_TEAMS then
+    t = F(T(TXT.teams_guide), book.owned, book.total, Pct(book.owned, book.total))
   else
     -- only «Álbum: N / total (x %)» (Nacho, 30/09): no current team, no order (the headers show both)
     t = F(T(TXT.guide), book.owned, book.total, Pct(book.owned, book.total))
@@ -887,9 +1148,17 @@ local function UpdateGuideLine()
 end
 
 local function UpdateButtonGuide()
-  local texts, icons, offs, cmds = {G_SORT, G_PAGE}, {I_FUNC2, I_R1}, {0, 0}, {K_FUNC2, K_R1}
-  if TEAM_ORDERS[order] then
-    texts[#texts + 1], icons[#icons + 1], offs[#offs + 1], cmds[#cmds + 1] = G_TEAM, I_R2, 0, K_R2
+  local texts, icons, offs, cmds = {TXT.tab[1], G_PAGE}, {Tabs.I_FUNC3, I_R1}, {0, 0}, {Tabs.K_FUNC3, K_R1}
+  if tab == Tabs.TAB_PLAYERS then
+    table.insert(texts, 1, G_SORT)
+    table.insert(icons, 1, I_FUNC2)
+    table.insert(offs, 1, 0)
+    table.insert(cmds, 1, K_FUNC2)
+    if TEAM_ORDERS[order] then
+      texts[#texts + 1], icons[#icons + 1], offs[#offs + 1], cmds[#cmds + 1] = G_TEAM, I_R2, 0, K_R2
+    end
+  else
+    texts[#texts + 1], icons[#icons + 1], offs[#offs + 1], cmds[#cmds + 1] = TXT.section[1], I_R2, 0, K_R2
   end
   funcLuaMenuCommand(C.GUIDE_SET, MENU, L_BTN_GUIDE, texts, icons, offs, {}, {})
   funcLuaMenuCommand(C.GUIDE_CMD, MENU, L_BTN_GUIDE, cmds)
@@ -943,9 +1212,83 @@ local function Box(il, iv, label, value, cx, cy, vscale)
   InfoTextC(iv, value, cx, cy + G.I_NUM_DY, vscale)
 end
 
+-- the tab buttons at the foot of the info page: a plate each, the active one framed
+function Tabs.TabX(t)
+  return G.IX + G.IW / 2 + (t - 1) * Tabs.TAB_DX
+end
+
+function Tabs.DrawTabs()
+  local y = G.IY + Tabs.TAB_Y
+  for t = 0, Tabs.N_TABS - 1 do
+    local x = Tabs.TabX(t)
+    SetQuad(L_PLATE, Tabs.PLATE_TAB0 + t, TEX, "evt_album_plate", x, y, Tabs.TAB_W, Tabs.TAB_H)
+    local label = T(TXT.tabs[t + 1])
+    SetText(Tabs.T_TAB0 + t, label, x - TextW(label, Tabs.TXT_S_TAB) / 2, y, Tabs.TXT_S_TAB)
+  end
+  SetQuad(L_PLATE, Tabs.PLATE_TAB_ON, TEX, "evt_album_glow", Tabs.TabX(tab), y, Tabs.TAB_W + 2 * Tabs.TAB_ON_PAD, Tabs.TAB_H + 2 * Tabs.TAB_ON_PAD)
+end
+
+-- the info card of an item / team (Objetos / Equipos): name banner, the big icon / crest on its rarity card base, the
+-- emblem grid (items: archetype | 2nd archetype, - | Nº; teams: tier mark | -, - | Nº) and the data boxes
+function Tabs.FillCollectionInfo(e, at, Unknown, Missing, Boxes)
+  local function Box3(l1, v1, l2, v2, l3, v3, l4, v4, l5, v5)
+    Box(I.COST, I.COST_N, l1, v1, G.IW / 2 - G.I_R1_DX, G.I_ROW_Y, G.TXT_S_INUM)
+    Box(I.GAMES, I.GAMES_N, l2, v2, G.IW / 2, G.I_ROW_Y, G.TXT_S_INUM)
+    Box(I.GOALS, I.GOALS_N, l3, v3, G.IW / 2 + G.I_R1_DX, G.I_ROW_Y, G.TXT_S_INUM)
+    Box(I.GOT, I.GOT_N, l4, v4, G.IW / 2 - G.I_R2_DX, G.I_ROW2_Y, G.TXT_S_IVAL)
+    Box(I.SRC, I.SRC_N, l5, v5, G.IW / 2 + G.I_R2_DX, G.I_ROW2_Y, G.TXT_S_IVAL)
+  end
+  local items = tab == Tabs.TAB_ITEMS
+  local labels = items and {T(TXT.price), T(TXT.max_level), T(TXT.times), T(TXT.first_time), T(TXT.rarity_label)}
+                       or {T(TXT.wins), T(TXT.matches), T(TXT.best_phase), T(TXT.first_met), T(TXT.team_type)}
+  emb_pending[L_INFO .. ":" .. INFO_MISSING] = nil
+  SetQuad(L_PLATE, Tabs.PLATE_BIG_BACK, nil)
+  if e == nil or not e.owned then
+    InfoTextC(I.TITLE, UNKNOWN, G.IW / 2, G.I_NAME_Y, G.TXT_S_ITITLE)
+    Missing(true)
+    Unknown(INFO_ELEM, 1)
+    Unknown(INFO_POS, 2)
+    Unknown(INFO_CLUB, 3)
+    Box3(labels[1], "?", labels[2], "?", labels[3], "?", labels[4], "?", labels[5], "?")
+    return
+  end
+  InfoTextC(I.TITLE, e.name, G.IW / 2, G.I_NAME_Y, G.TXT_S_ITITLE)
+  local tier = Tier(e)
+  if items then
+    SetQuad(L_PLATE, Tabs.PLATE_BIG_BACK, TEX_RARITY, string.format("evt_rogue_card_base_%02d", tier), G.IX + G.I_CARD_X,
+            G.IY + G.I_CARD_Y, Tabs.BIG_BACK_W, Tabs.BIG_BACK_H)
+  end
+  local mark = string.format("evt_rogue_mark_%02d", tier)
+  if items then
+    InfoQuad(INFO_MISSING, Tabs.TEX_ITEM, e.icon, G.I_CARD_X, G.I_CARD_Y, Tabs.BIG_ICON_S, Tabs.BIG_ICON_S)
+    if e.arch1 ~= "" then
+      InfoQuad(INFO_ELEM, Tabs.TEX_ARCH, e.arch1, at[1][1], at[1][2], Tabs.ARCH_S, Tabs.ARCH_S)
+    else
+      InfoQuad(INFO_ELEM, nil)
+    end
+    if e.arch2 ~= "" then
+      InfoQuad(INFO_POS, Tabs.TEX_ARCH, e.arch2, at[2][1], at[2][2], Tabs.ARCH_S, Tabs.ARCH_S)
+    else
+      InfoQuad(INFO_POS, nil)
+    end
+    InfoQuad(INFO_CLUB, nil)
+    Box3(labels[1], tostring(e.price), labels[2], tostring(e.max_level), labels[3], tostring(e.count), labels[4],
+         DateText(e.first), labels[5], e.rarity_name or "-")
+    return
+  end
+  Tabs.TeamCrest(L_INFO, INFO_MISSING, e.emblem, G.IX + G.I_CARD_X, G.IY + G.I_CARD_Y, Tabs.BIG_BADGE_S, Tabs.BIG_BADGE_S)
+  InfoQuad(INFO_ELEM, TEX_RARITY, mark, at[1][1], at[1][2], 76, 48)
+  InfoQuad(INFO_POS, nil)
+  InfoQuad(INFO_CLUB, nil)
+  local kind = TXT.team_kinds[e.kind]
+  Box3(labels[1], tostring(e.beaten), labels[2], tostring(e.met), labels[3], e.best > 0 and tostring(e.best) or "-",
+       labels[4], DateText(e.first), labels[5], kind ~= nil and T(kind) or "-")
+end
+
 local function FillInfo()
   local e = Current()
   SetQuad(L_INFO_BG, 0, TEX, "evt_album_info", G.IX + G.IW / 2, G.IY + G.IH / 2, G.IW, G.IH)
+  Tabs.DrawTabs()
   for k = 0, N_INFO_TEXT - 1 do
     SetText(T_INFO0 + k, nil)
   end
@@ -977,6 +1320,11 @@ local function FillInfo()
   end
   -- the album number (known for missing cards too: the sticker slot shows it)
   Box(I.NUM, I.NUM_N, Label(TXT.number), e ~= nil and tostring(e.number) or "?", G.I_GX2, G.I_GY2, G.TXT_S_INUM)
+  if tab ~= Tabs.TAB_PLAYERS then
+    SetCard(PANEL, nil)
+    Tabs.FillCollectionInfo(e, at, Unknown, Missing, Boxes)
+    return
+  end
   if e == nil or not e.owned then
     InfoTextC(I.TITLE, UNKNOWN, G.IW / 2, G.I_NAME_Y, G.TXT_S_ITITLE)
     Missing(true)
@@ -1003,7 +1351,11 @@ local function FillInfo()
   end
   EmblemQuad(L_INFO, INFO_CLUB, e.club, G.IX + at[3][1], G.IY + at[3][2], G.I_CLUB_S, G.I_CLUB_S)
   local src = TXT.src[e.source]
-  Boxes(tostring(e.cost), tostring(e.runs), tostring(e.goals), DateText(e.added), src ~= nil and T(src) or "-")
+  if e.real then
+    Boxes(tostring(e.cost), tostring(e.runs), tostring(e.goals), DateText(e.added), src ~= nil and T(src) or "-")
+  else
+    Boxes(tostring(e.cost), "-", "-", "-", "-")
+  end
   Missing(false)
   SetCard(PANEL, e)
 end
@@ -1019,7 +1371,12 @@ end
 
 -- the spread of list position pos
 local function SpreadOf(pos)
-  local p = Int((Call(RL.ALBUM, 10, order, pos)))
+  local p
+  if tab ~= Tabs.TAB_PLAYERS then
+    p = Int((Call(RL.COLLECTION, 5, tab, pos)))
+  else
+    p = Int((Call(RL.ALBUM, 10, order, pos)))
+  end
   return math.max(0, math.floor(p / 2))
 end
 
@@ -1158,7 +1515,12 @@ local function Group(dir)
   if book.count == 0 or sel < 0 then
     return
   end
-  local j = Call(RL.ALBUM, 5, sel, order, dir)
+  local j
+  if tab ~= Tabs.TAB_PLAYERS then
+    j = Call(RL.COLLECTION, 4, tab, sel, dir)
+  else
+    j = Call(RL.ALBUM, 5, sel, order, dir)
+  end
   if type(j) ~= "number" then
     return
   end
@@ -1170,6 +1532,9 @@ local function Group(dir)
 end
 
 local function Sort()
+  if tab ~= Tabs.TAB_PLAYERS then
+    return                        -- Objetos / Equipos have one order
+  end
   local cur = Current()
   local at = 1
   for k, o in ipairs(SORT_CYCLE) do
@@ -1189,6 +1554,28 @@ local function Sort()
     end
   end
   spread = sel >= 0 and SpreadOf(sel) or 0
+  DrawBook()
+  UpdateButtonGuide()
+end
+
+-- the next / chosen collection tab: the book of that tab where it was left
+function Tabs.SwitchTab(to)
+  to = to % Tabs.N_TABS
+  if to == tab then
+    return
+  end
+  tab_place[tab] = {spread = spread, sel = sel}
+  tab = to
+  Log("album tab", tab)
+  funcLuaCommand(C.SE, SE_OK)
+  ReadBook()
+  local at = tab_place[tab]
+  sel = book.count > 0 and 0 or -1
+  if at ~= nil and at.sel >= 0 and at.sel < book.count then
+    sel = at.sel
+  end
+  spread = sel >= 0 and SpreadOf(sel) or 0
+  emb_pending = {}
   DrawBook()
   UpdateButtonGuide()
 end
@@ -1218,7 +1605,10 @@ function OnInit()
   funcLuaMenuCommand(C.LOAD_TEX, TEX_EMBLEM)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_POS)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_ICON)
+  funcLuaMenuCommand(C.LOAD_TEX, Tabs.TEX_ITEM)
+  funcLuaMenuCommand(C.LOAD_TEX, Tabs.TEX_ARCH)
   order, spread, sel, flip = 0, 0, -1, nil
+  tab, tab_place = Tabs.TAB_PLAYERS, {}
   closing, ready = false, false
   open_guard = 20
   ReadBook()
@@ -1351,6 +1741,8 @@ function OnFunction(a1, a2)
     Group(1)
   elseif id == FN.SORT then
     Sort()
+  elseif id == FN.TAB_NEXT then
+    Tabs.SwitchTab(tab + 1)
   end
   return 1
 end
@@ -1382,17 +1774,23 @@ local function PollPointer()
       Ptr.Rect(x, y, G.SW, G.SH, k)
     end
   end
+  for t = 0, Tabs.N_TABS - 1 do
+    Ptr.Rect(Tabs.TabX(t) - Tabs.TAB_W / 2, G.IY + Tabs.TAB_Y - Tabs.TAB_H / 2, Tabs.TAB_W, Tabs.TAB_H, "tab" .. t)
+  end
   local ev = Ptr.Poll()
   if flip ~= nil or closing or not ready or open_guard > 0 then
     return
   end
-  if type(ev.hot) == "number" and ev.changed and slot_pos[ev.hot] ~= nil and slot_pos[ev.hot] ~= sel then
-    Select(slot_pos[ev.hot], true)
+  -- hover by movement only: a page turn under a resting pointer never re-selects (mouse-support.md §5)
+  if type(ev.hover) == "number" and slot_pos[ev.hover] ~= nil and slot_pos[ev.hover] ~= sel then
+    Select(slot_pos[ev.hover], true)
   end
   if ev.click == "prev" or ev.wheel == -1 then
     Page(-1)
   elseif ev.click == "next" or ev.wheel == 1 then
     Page(1)
+  elseif type(ev.click) == "string" and ev.click:sub(1, 3) == "tab" then
+    Tabs.SwitchTab(tonumber(ev.click:sub(4)) or tab)
   end
 end
 

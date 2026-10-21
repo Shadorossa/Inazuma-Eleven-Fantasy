@@ -32,7 +32,10 @@
 -- away the wrappers of the mods patched before this one (Character Reforged's skill table picker, graft ss2_menus: its
 -- pick mode never started, so a chosen move was never equipped). The move the card shows (the retail n2) is followed
 -- here instead (SKC.focus): set by UpdateSkillDetailWindow, cleared by an empty tab and a new filter, as the retail
--- does. Nothing calls the engine at chunk load; the wrappers forward every argument and return every result.
+-- does. The row follows the card's own events (its fill, the page turn, the sort / filter windows, back), shown only
+-- for a move with an effect page; every fill first hides the retail aura windows' page guide (team00_40), which the
+-- retail shows again for a paged aura only (2026-10-21, owner: «se queda el R2 · · L2 en todas aunque no tengan»).
+-- Nothing calls the engine at chunk load; the wrappers forward every argument and return every result.
 do
   local SKC = {
     CMD = 3512960327,
@@ -155,6 +158,15 @@ do
     LIST = 571205469,                 -- team05_03_ability_list
     TAB = 4044286600,                 -- cmn06_20_list_tab_item
     LIST_COUNT = 2389020234,          -- the list layer's item count
+    -- the retail aura windows' own page guide («L2 • • R2» of a paged aura card): the retail fill hides it only inside
+    -- the aura updates, so a move card after a paged aura kept it (Inazuma Fantasy's graft aura_guide_reset did this
+    -- reset until 2026-10-14); hidden before every fill, the retail fill shows it again only for a paged aura
+    PAGE_GUIDE = 1921826160,          -- team00_40_change_page_guide
+    AURA_WIN = {[0] = 2651268807 --[[keshin]], 395833588 --[[keshin armed]], 3679282495 --[[mixi max]],
+      576015315 --[[soul]], 3635526425 --[[kizuna trans]], 1305553269 --[[awakening power]], 3131422953 --[[mode change]]},
+    F_SORT = 1361375778,              -- OnFunction: the sort window
+    F_FILTER = 2143575837,            -- OnFunction: the filter window
+    pending = false,                  -- the row's state waits for its instances / the card to show (one-off, by Step)
   }
 
   -- the card shows a move and it is the one of the last fill
@@ -305,7 +317,11 @@ do
   function OnAfterReceiveFilterParam(...)
     SKC.focus = 0
     SKC.page = 0
-    return SKC_RetailOnAfterReceiveFilterParam(...)
+    local r = table.pack(SKC_RetailOnAfterReceiveFilterParam(...))
+    if SKC.Apply then
+      pcall(SKC.Apply)
+    end
+    return table.unpack(r, 1, r.n)
   end
 
   local SKC_RetailUpdateSkillDetailWindow = UpdateSkillDetailWindow
@@ -318,7 +334,9 @@ do
     -- the move the card shows (the retail's own focus: a move with skill info, else none)
     local okInfo = type(skill) == "number" and funcLuaCommand(SKC.SKILL_INFO, skill, 9)
     SKC.focus = okInfo and skill or 0
-    -- (the aura windows' page guide reset of 2026-10-07 stays in Inazuma Fantasy: graft aura_guide_reset)
+    -- every card starts without the retail aura page guide and without a stale aura window (the fill shows them again
+    -- for the focused aura only)
+    pcall(SKC.ResetAuraGuide, skill)
     local r = table.pack(SKC_RetailUpdateSkillDetailWindow(...))
     if SKC.page ~= 1 then
       pcall(SetStyle, false)
@@ -331,14 +349,32 @@ do
         SKC.page = 0
       end
     end
-    -- a move with one page only (no mini-effect): back to page 1 and the «Q • • E» row hidden at once, not one frame later
+    -- a move with one page only (no mini-effect): back to page 1; the «Q • • E» row follows the card at once
     if not (SKC.focus ~= 0 and Effect(SKC.focus)) then
       SKC.page = 0
-      if SKC.HideRowNow then
-        pcall(SKC.HideRowNow)
-      end
+    end
+    if SKC.Apply then
+      pcall(SKC.Apply)
     end
     return table.unpack(r, 1, r.n)
+  end
+
+  -- the retail aura windows' page guide off and every aura window but the focused aura's type off
+  function SKC.ResetAuraGuide(skill)
+    local keep = nil
+    local ok, cat = funcLuaCommand(SKC.SKILL_INFO, skill, 9)
+    if ok and cat == 8 then
+      local okt, t = funcLuaCommand(SKC.SKILL_INFO, skill, 13)
+      keep = okt and SKC.AURA_WIN[t] or nil
+    end
+    if funcLuaMenuCommand(SKC.EXIST, SKC.PAGE_GUIDE) then
+      funcLuaMenuCommand(SKC.LVIS, SKC.PAGE_GUIDE, 0, false)
+    end
+    for _, L in pairs(SKC.AURA_WIN) do
+      if L ~= keep and funcLuaMenuCommand(SKC.EXIST, L) then
+        funcLuaMenuCommand(SKC.LVIS, L, 0, false)
+      end
+    end
   end
 
   -- the guide: «Q E Efecto / Descripción» (the device's own key glyphs, pad LT / RT) added to whatever the retail (or
@@ -479,104 +515,114 @@ do
   -- the «Q • • E» row: shown for a move with a mini-effect while the card is up, the current page's dot lit
   -- hides every instance of the row that is still open (a move with one page only, the menu leaving)
   -- (the dots' meshes go too, so the row cannot stay lit if the engine re-shows the layer on its own)
+  -- (every part goes: the layer, the dots' meshes and the key glyphs' texts, so nothing of the row stays drawn if the
+  -- card's attachment shows the layer again on its own)
   local function HideRow()
     for k in pairs(SKC.opened) do
       if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true then
         Cmd(SKC.LVIS, SKC.DOTS, k, false)
-        if k == 1 or k == 2 then
-          Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, false, k)
-          Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, false, k)
-        end
+        Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, false, k)
+        Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, false, k)
+        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_L, false, k)
+        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_R, false, k)
       end
     end
     SKC.shown = ""
   end
 
   -- the move on the card has a second page (a mini-effect) and the card is up
-  SKC.HideRowNow = HideRow
 
   local function WantRow()
     return (SKC.Focused() and Effect(SKC.focus)
       and Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false) and true or false
   end
 
-  local function Row()
+  -- the row's state for the card shown, applied on its events (a card fill, a page turn, the sort / filter windows,
+  -- back): shown with the current page's dot lit for a move with an effect page, every part hidden otherwise. The
+  -- instances open once, when the card first shows; until they are loaded (or the card shows) the state waits in
+  -- SKC.pending, which Step finishes once.
+  local function Apply()
+    SKC.pending = false
     local want = WantRow()
     if SKC.gone then
-      -- the engine closed an instance: the row is never shown again, but the instances still open must not stay lit
-      if not want and SKC.shown ~= "" then
-        HideRow()
+      if SKC.shown ~= "" then
+        HideRow()                                 -- the engine closed an instance: the row is never shown again
       end
       return
     end
     if Cmd(SKC.EXIST, SKC.DOTS) ~= true then
       return
     end
-    if not want and next(SKC.opened) == nil then
-      -- the row's instances open once as soon as the card is up, even when the first move has no effect page (they
-      -- stay hidden until wanted): left unopened, the move list never showed (Hissatsu Effects 1.1.0)
-      if Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false then
-        for k = 0, 3 do
-          Ready(k, true)
-        end
-      end
+    local cardUp = Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false
+    if next(SKC.opened) == nil and not cardUp then
+      SKC.pending = true                          -- the instances open with the card (Hissatsu Effects 1.1.1)
       return
     end
-    if not want and SKC.shown == "" then
-      -- hidden already: keep it so every frame (a row the engine lit again is hidden again)
-      for k in pairs(SKC.opened) do
-        if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true and Cmd(SKC.VISIBLE, SKC.DOTS, k) ~= false then
-          HideRow()
-          break
-        end
-      end
-      return
-    end
-    local state = want and tostring(SKC.page) or ""
+    local ready = true
     for k = 0, 3 do
-      if not Ready(k, want) then
-        SKC.shown = nil
+      if not Ready(k, true) then
+        ready = false
       elseif not SKC.dots[k] then
         SKC.dots[k] = true
         SKC.shown = nil
         RowSetup(k)
       end
     end
-    if SKC.gone or state == SKC.shown then
+    if SKC.gone then
       return
     end
-    SKC.shown = state
-    for k = 0, 3 do
-      if SKC.dots[k] then
+    if not ready then
+      SKC.pending = true
+      return
+    end
+    local state = want and tostring(SKC.page) or ""
+    if state == "" then
+      HideRow()
+    else
+      for k = 0, 3 do
         local dot = k == 1 or k == 2
         Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, dot, k)
         Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, dot and SKC.page == k - 1, k)
-        Cmd(SKC.LVIS, SKC.DOTS, k, state ~= "")
+        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_L, k == 0, k)
+        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_R, k == 3, k)
+        Cmd(SKC.LVIS, SKC.DOTS, k, true)
       end
+      SKC.shown = state
     end
-    Log("row", state == "" and "hidden" or ("page " .. state), "visible", Cmd(SKC.VISIBLE, SKC.DOTS, 1))
+    if state ~= SKC.logged then
+      SKC.logged = state
+      Log("row", state == "" and "hidden" or ("page " .. state))
+    end
   end
+  SKC.Apply = Apply
 
   -- leaving / filter / sort: logged (original first, its results returned); the row hidden on back
   local SKC_RetailOnBack = OnBack
   function OnBack(...)
     local r = table.pack(SKC_RetailOnBack(...))
     Log("back")
-    pcall(function()
-      for k in pairs(SKC.opened) do
-        if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true then
-          Cmd(SKC.LVIS, SKC.DOTS, k, false)
-        end
-      end
-      SKC.shown = ""
-    end)
+    SKC.pending = false
+    pcall(HideRow)
     return table.unpack(r, 1, r.n)
   end
 
+  -- the sort / filter windows: the row goes before they open (the retail hides the cursor with them) and follows the
+  -- card again when the retail returns
   local SKC_RetailOnFunction = OnFunction
   function OnFunction(...)
+    local f = ...
+    if f == SKC.F_SORT or f == SKC.F_FILTER then
+      pcall(HideRow)
+    end
     local r = table.pack(SKC_RetailOnFunction(...))
-    Log("function", (...))
+    pcall(Apply)
+    return table.unpack(r, 1, r.n)
+  end
+
+  local SKC_RetailCallBackSort = CallBackSort
+  function CallBackSort(...)
+    local r = table.pack(SKC_RetailCallBackSort(...))
+    pcall(Apply)
     return table.unpack(r, 1, r.n)
   end
 
@@ -599,6 +645,7 @@ do
       SKC.page = 1
       ShowEffect(e)
       UpdateButtonGuide()
+      Apply()
     else
       SKC.page = 0
       local a = SKC.args
@@ -613,7 +660,9 @@ do
       r = table.pack(SKC_RetailStep(...))
     end
     pcall(Poll)
-    pcall(Row)
+    if SKC.pending then
+      pcall(Apply)
+    end
     if r ~= nil then
       return table.unpack(r, 1, r.n)
     end

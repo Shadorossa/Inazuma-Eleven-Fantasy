@@ -63,3 +63,16 @@ handler = "Utilities.Career.Get"
 name = "CMND_UTIL_CAREER_EX"
 aliases = ["CMND_EVT_CAREER_EX"]
 handler = "Utilities.Career.Ex"
+
+# «Estadísticas del club» (the row of «Caseta del club», graft util_club_stats_row; the panel
+# assets/lua/play_guide_top_menu/150_club_stats.lua):
+# CMND_UTIL_CLUB_STATS(langCode) -> ok, players, since, matches, wins, draws, losses, goalsFor, goalsAgainst,
+# cleanSheets, bestWinFor, bestWinAgainst, bestWinDay, bestWinRun, bestUnbeatenRun, storeSince, today
+[[VRFW.Command]]
+name = "CMND_UTIL_CLUB_STATS"
+handler = "Utilities.Career.Club"
+
+# CMND_UTIL_CLUB_STATS_ROW(i) -> chara_base, name, matches, wins, draws, losses, goals, assists, mvp, signed
+[[VRFW.Command]]
+name = "CMND_UTIL_CLUB_STATS_ROW"
+handler = "Utilities.Career.ClubRow"

@@ -23,6 +23,7 @@ local spirit_moves = {}
 local armours = {}     -- keshin id -> { armour ids } (the reverse of spirit_of)
 local carriers = {}
 local loaded = false
+local ids = {}         -- aura ids in table order
 
 local function u32(v)
   v = tonumber(v) or 0
@@ -75,7 +76,6 @@ end
 function M.row(id) return rows[id] end
 
 -- every aura id of the table, in table order
-local ids = {}
 function M.ids() return ids end
 
 -- auraType (nil = not an aura command)

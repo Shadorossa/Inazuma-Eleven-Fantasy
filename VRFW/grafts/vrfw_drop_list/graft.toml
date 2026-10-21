@@ -1,5 +1,6 @@
 # The drop-rate list ("Drop Rate", vs_route_town_drop_rate_list_menu, list view CMenuListViewDropRateList):
-# the look of the "AURAS" section a mod declares ([VRFW.DropList.Auras] of the item type).
+# the look of the "AURAS" section a mod declares ([VRFW.DropList.Auras] of the item type) and the headers of the
+# declared sections ([[VRFW.DropList.Sections]]: the same header row with the section's own label picture).
 # The rows themselves are native: item_engine (drop_list_rt) moves the
 # section's items under an inserted header row at the end of every tab and marks the row being drawn
 # (CMND_VRFW_DROP_ROW). This graft draws them:
@@ -16,7 +17,7 @@ module = ""
 requires = []
 conflicts = []
 wraps = ["OnInit", "OnTabChanged", "UpdateListItem_DropItem", "UpdateListItem_DropChara", "UpdateListItem_ItemLine", "UpdateListItem_CharaLine", "OnUpdateTabData"]
-description = "drop-rate list: the AURAS section's header and aura banners ([VRFW.DropList.Auras])"
+description = "drop-rate list: the AURAS section's header and aura banners ([VRFW.DropList.Auras]), the declared sections' headers ([[VRFW.DropList.Sections]])"
 
 [[files]]
 stem = "vs_route_town_drop_rate_list_menu"

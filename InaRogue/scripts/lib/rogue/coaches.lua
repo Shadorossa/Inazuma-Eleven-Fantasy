@@ -8,89 +8,16 @@
 
 local U = require "lib/rogue/util"
 local unlocks = require "lib/rogue/unlocks"
+local E = require "lib/rogue/effects"
 local info, warn = U.logger("rogue coaches")
 
 local Co = {}
 
 Co.SCHEMA = "inazuma_fantasy.rogue_coaches/1"
-Co.STATS = { "kick", "control", "technique", "pressure", "physical", "intelligence", "agility" }
+Co.STATS = E.STATS
 
-local POSITION = { gk = 1, por = 1, portero = 1, fw = 2, del = 2, delantero = 2, mf = 3, cen = 3, centrocampista = 3,
-  df = 4, def = 4, defensa = 4 }
-local ELEMENT = { viento = 1, wind = 1, bosque = 2, forest = 2, wood = 2, fuego = 3, fire = 3, ["montaña"] = 4,
-  montana = 4, mountain = 4, earth = 4 }
-local CONTENT = { cofre = 1, chest = 1, tienda = 2, shop = 2, evento = 3, event = 3, fichaje = 4, recruit = 4, gacha = 5,
-  elite = 6, ["élite"] = 6, tragaperras = 7, slots = 7 }
-
-local function num(t, k)
-  local v = t[k]
-  if type(v) == "number" then return v end
-  return nil
-end
-
--- one effect table -> its effect, or nil + why
-function Co.parse_effect(t)
-  local kind = t.kind
-  if type(kind) ~= "string" then return nil, "effect without `kind`" end
-  local function value(k)
-    local v = num(t, k)
-    if not v or v ~= v or v < 0 or v == math.huge then return nil, kind .. ": `" .. k .. "` must be a number >= 0" end
-    return v
-  end
-  if kind == "stat_mult" then
-    local target = t.target or "team"
-    local tg = { kind = "team" }
-    if target == "position" then
-      local p = POSITION[string.lower(tostring(t.position or ""))]
-      if not p then return nil, "stat_mult: position = GK / DF / MF / FW" end
-      tg = { kind = "position", v = p }
-    elseif target == "element" then
-      local e = ELEMENT[U.lower(tostring(t.element or ""))]
-      if not e then return nil, "stat_mult: element = viento / bosque / fuego / montaña" end
-      tg = { kind = "element", v = e }
-    elseif target ~= "team" then
-      return nil, "stat_mult: target `" .. tostring(target) .. "` (team / position / element)"
-    end
-    local stat = nil
-    local w = t.stat or "all"
-    if w ~= "all" then
-      stat = U.index_of(Co.STATS, w)
-      if not stat then return nil, "stat_mult: stat `" .. tostring(w) .. "` (all / " .. table.concat(Co.STATS, " / ") .. ")" end
-    end
-    local v, why = value("value")
-    if not v then return nil, why end
-    return { kind = "stat_mult", target = tg, stat = stat, value = v }
-  elseif kind == "node_weight" then
-    local node = tostring(t.node or "")
-    local c = CONTENT[U.lower(node)]
-    if not c then return nil, "node_weight: node `" .. node .. "` (cofre / tienda / evento / fichaje / gacha / elite / tragaperras)" end
-    local v, why = value("mult")
-    if not v then return nil, why end
-    return { kind = "node_weight", content = c, mult = v }
-  elseif kind == "reward_mult" then
-    local r = t.reward or "all"
-    if r ~= "frags" and r ~= "points" and r ~= "all" then return nil, "reward_mult: reward `" .. tostring(r) .. "` (frags / points / all)" end
-    local v, why = value("value")
-    if not v then return nil, why end
-    return { kind = "reward_mult", reward = r, value = v }
-  elseif kind == "start_points" then
-    local v = num(t, "value")
-    if not v or v < 0 then return nil, "start_points: `value` (integer)" end
-    return { kind = "start_points", value = U.int(v, 0) }
-  elseif kind == "start_item" then
-    local item = type(t.item) == "string" and t.item or ""
-    local id = num(t, "id") or 0
-    if item == "" and id == 0 then return nil, "start_item: `item` (registry key) or `id`" end
-    return { kind = "start_item", item = item, id = id, count = math.max(U.int(t.count, 1), 1) }
-  elseif kind == "technique_cost" then
-    local v, why = value("mult")
-    if not v then return nil, why end
-    return { kind = "technique_cost", mult = v, pending = true }
-  elseif kind == "match_rule" then
-    return { kind = "match_rule", rule = tostring(t.rule or ""), pending = true }
-  end
-  return { kind = kind, unknown = true }
-end
+-- one effect table -> its effect, or nil + why (the shared parser, lib/rogue/effects.lua)
+function Co.parse_effect(t) return E.parse_effect(t) end
 
 local cat = nil
 
@@ -203,75 +130,17 @@ function Co.is_unlocked(c, s)
   return true
 end
 
--- multipliers of the 7 engine stats (+ [8] = 1.0) for a player of `position` / `element`
-function Co.stat_mults(c, position, element)
-  local m = { 1, 1, 1, 1, 1, 1, 1, 1 }
-  for _, e in ipairs(c.effects) do
-    if e.kind == "stat_mult" then
-      local hit = e.target.kind == "team" or (e.target.kind == "position" and e.target.v == position)
-        or (e.target.kind == "element" and e.target.v == element)
-      if hit then
-        if e.stat then
-          m[e.stat] = m[e.stat] * e.value
-        else
-          for i = 1, 7 do m[i] = m[i] * e.value end
-        end
-      end
-    end
-  end
-  return m
-end
+-- the coach's effects through the shared aggregators (lib/rogue/effects.lua)
+function Co.stat_mults(c, position, element) return E.stat_mults(c.effects, position, element) end
+function Co.has_stat_mults(c) return E.has_stat_mults(c.effects) end
+function Co.content_mults(c) return E.content_mults(c.effects) end
+function Co.reward_mult(c, r) return E.reward_mult(c.effects, r) end
+function Co.start_points(c) return E.start_points(c.effects) end
 
-function Co.has_stat_mults(c)
-  for _, e in ipairs(c.effects) do
-    if e.kind == "stat_mult" then return true end
-  end
-  return false
-end
-
--- weight multiplier per map content type (1..7); nil = the coach changes no weight
-function Co.content_mults(c)
-  local m, any = {}, false
-  for i = 1, 7 do m[i] = 1.0 end
-  for _, e in ipairs(c.effects) do
-    if e.kind == "node_weight" and m[e.content] then
-      m[e.content] = m[e.content] * e.mult
-      any = true
-    end
-  end
-  if any then return m end
-  return nil
-end
-
-function Co.reward_mult(c, r)
-  local p = 1.0
-  for _, e in ipairs(c.effects) do
-    if e.kind == "reward_mult" and (e.reward == r or e.reward == "all") then p = p * e.value end
-  end
-  return p
-end
-
-function Co.start_points(c)
-  local n = 0
-  for _, e in ipairs(c.effects) do
-    if e.kind == "start_points" then n = n + e.value end
-  end
-  return n
-end
-
-function Co.start_items(c)
-  local o = {}
-  for _, e in ipairs(c.effects) do
-    if e.kind == "start_item" then o[#o + 1] = { e.item, e.id, e.count } end
-  end
-  return o
-end
+function Co.start_items(c) return E.start_items(c.effects) end
 
 -- n x mult, rounded (1.0 = unchanged exactly)
-function Co.scaled(n, mult)
-  if math.abs(mult - 1.0) < 1e-7 then return n end
-  return U.round(n * math.max(mult, 0))
-end
+function Co.scaled(n, mult) return E.scaled(n, mult) end
 
 -- a rule in Spanish with the coaches' names
 function Co.describe(k, cond)

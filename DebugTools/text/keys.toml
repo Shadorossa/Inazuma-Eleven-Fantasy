@@ -1,0 +1,13 @@
+# Texts of Debug Tools (format of the text engine: docs/framework/types/text.md); new texts get the id
+# crc32("debug_tools.<name>"): the mod's name and description on the «Mods» screen. A language missing here falls back
+# to English.
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Debug Tools"
+mod_description = "For testing only: while this mod is enabled, every debug and «unlock everything» setting of the other mods is on (every chain open and playable, every INAROGUE player, avatar, coach and album entry, the contact maps drawn open...). Disable it and everything is back to normal: nothing is written to your save by it."
+
+[es.new]
+mod_name = "Herramientas de depuración"
+mod_description = "Solo para pruebas: mientras este mod está activado, todos los ajustes de depuración y de «desbloquear todo» de los demás mods están encendidos (todas las cadenas abiertas y jugables, todos los jugadores, avatares, entrenadores y entradas del álbum de INAROGUE, los mapas de contactos abiertos...). Desactívalo y todo vuelve a la normalidad: no escribe nada en tu partida."

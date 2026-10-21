@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Alas de halcón (whs01800).
 [[edit]]
 target = "whs01800"
-trajectory = { goal_points = [[44.23, 15.28], [37.3, 13.29], [20.52, 8.21], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[44.23, 15.28], [37.3, 13.29], [20.52, 8.21], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[44.23, 4.5], [37.3, 4.13], [20.52, 3.17], [0.0, 2.0]], unblockable = false }

@@ -26,6 +26,8 @@ layer = [
     { layer = "mainmenu01_10_return_arrow_button_guide" },
     { layer = "mainmenu01_06_base_button_guide" },
     { layer = "mainmenu01_07_button_guide", from = "savedata_management_menu" },
+    # the welcome gacha's summary tiles (docs/game/modes/inarogue-welcome-gacha.md): the retail status plate, 11 players
+    { layer = "soccer11_04_formation_chara_status", object = "soccer11_04_formation_chara_status", count = 11, align = [2, 8] },
 ]
 cmd = [
     { layer = "mainmenu90_11_chronicle_top_list_item_middle", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
@@ -52,6 +54,7 @@ res = [
     "#/menu/200_icon/100_num/num_victory.g4tx",
     "#/menu/220_img/evt_rogue/evt_inarogue_menu_bg.g4tx",
     "#/menu/220_img/evt_rogue/evt_inarogue_menu_ui.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_04/<LG>/soccer11_04.g4tx",
 ]
 group_base = [
     { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
@@ -69,10 +72,11 @@ group_base = [
     { layer = "evt_inarogue_ol", flags = [0, 1, 0, 0, 1, 0] },
     { layer = "evt_inarogue_pic", flags = [0, 1, 0, 0, 1, 0] },
     { layer = "evt_inarogue_text", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "soccer11_04_formation_chara_status", flags = [0, 1, 0, 0, 1, 0] },
 ]
 group = [
     { group = "common", slice = [0, 3] },
-    { group = "evt_inarogue_menu", flags = [1], slice = [3, 12] },
+    { group = "evt_inarogue_menu", flags = [1], slice = [3, 13] },
 ]
 focus_base = [
     [0x3A06AC3D, 0, 0],  # button
@@ -246,7 +250,8 @@ focus_group = [
 shift_base = []
 shift = []
 
-# evt_rogue_album_menu (rogue_album_book_build.py): 22 layers; base evt_rogue_bank_menu
+# evt_rogue_album_menu (rogue_album_book_build.py): 24 layers; base evt_rogue_bank_menu. 2026-10-20: the collection
+# tabs (evt_album_back / evt_album_icon stickers, 4 more plates, 3 more texts, CMD_FUNC3 = next tab, icon_item10)
 [[screen]]
 name = "evt_rogue_album_menu"
 like = "language_option_menu"
@@ -266,11 +271,13 @@ layer = [
     { layer = "evt_album_info_bg", object = "evt_album_info_bg", align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_album_info", object = "evt_album_info", count = 5, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_album_slot", object = "evt_album_slot", count = 42, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "evt_album_plate", object = "evt_album_plate", count = 10, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_album_plate", object = "evt_album_plate", count = 14, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_album_back", object = "evt_album_back", count = 42, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_album_icon", object = "evt_album_icon", count = 42, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_album_emblem", object = "evt_album_emblem", count = 8, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_album_over", object = "evt_album_over", count = 2, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_album_leaf", object = "evt_album_leaf", align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "evt_album_text", object = "evt_album_text", count = 73, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_album_text", object = "evt_album_text", count = 76, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "mainmenu90_01_header" },
     { layer = "mainmenu90_05_content_guide_line01" },
     { layer = "cmn05_01_cursor" },
@@ -282,6 +289,7 @@ cmd = [
     { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_FUNC2", command = "CMD_FUNCTION", arg = 0xD97B84A7, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0xEE56265B, flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x07421304, flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0x94A0E6BE, flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0xF23891ED, flag = 1 },
@@ -305,6 +313,8 @@ res = [
     "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
     "#/menu/220_img/evt_rogue/evt_rogue_album.g4tx",
     "#/menu/200_icon/01_icon_emblem/vsroute/icon_vsroute_emblem/vsroute_emblem.g4tx",
+    "#/menu/200_icon/02_icon_item/icon_item10.g4tx",
+    "#/menu/102_team/team13/team13_05/team13_05.g4tx",
 ]
 group_base = [
     { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
@@ -325,6 +335,8 @@ group_base = [
     { layer = "evt_album_info", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "evt_album_slot", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "evt_album_plate", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_album_back", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "evt_album_icon", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "evt_album_emblem", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "evt_album_over", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "evt_album_leaf", flags = [0, 0, 0, 0, 1, 0] },
@@ -332,7 +344,7 @@ group_base = [
 ]
 group = [
     { group = "common", slice = [0, 3] },
-    { group = "evt_rogue_album_menu", flags = [1], slice = [3, 19] },
+    { group = "evt_rogue_album_menu", flags = [1], slice = [3, 21] },
 ]
 
 # evt_fw_areamap_menu (fw_areamap_build.py): 15 layers; base savedata_management_menu

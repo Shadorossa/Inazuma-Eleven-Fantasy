@@ -1,0 +1,19 @@
+schema = "VRFW.friendly/1"
+# New Recruitment › the recruitment office's trial («Prueba»): a requirement { Trial = N } of a card
+# (content\contact_maps\office_terms.toml) is played as this friendly against its rival page's match, with the trial's
+# challenge (keep the ball / score / win the ball), started from the Mercado under the office (VRFW match start service)
+# and back to it. «Superada» per card and trial: the key office.{tag}.{sub} (tag = the card, sub = the trial), the same
+# key Inazuma Fantasy's old office wrote, so an old pass still counts. The save is never written during the trial.
+
+[[friendly]]
+id = "new_recruitment_office_trial"
+name = "Recruitment office trial"
+team = "current"
+pre_match = true
+rival_home = true           # at the rival team's home stadium when it has one
+challenge = "ctx"
+save = "sink"
+return = "menus"
+pass = "challenge"
+passed_key = "office.{tag}.{sub}"
+before = [{ op = "fade_encounter", frames = 120 }]

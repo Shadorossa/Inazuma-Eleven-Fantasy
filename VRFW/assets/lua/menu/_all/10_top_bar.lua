@@ -142,6 +142,14 @@ if VRFW_TopBar == nil then
     CARRY = 2310157611 --[[CMND_VRFW_SLOT_CARRY]],
   }
   C.NAV = {C.UP, C.DOWN, C.LEFT, C.RIGHT}
+  -- the focus look of a menu element (input guard): control focus queries, the Focus animation, the cursor locator
+  C.CTRL_FOCUS_ACTIVE = 102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE (layer)]]
+  C.FOCUS_INDEX = 2603265800 --[[(layer) -> the focused instance]]
+  C.LAYER_EXISTS = 262659071 --[[CMND_IS_EXIST_LAYER (layer)]]
+  C.PLAY_ANIME = 3781155141 --[[CMND_PLAY_ANIME_TYPE (layer, idx, type, state, set)]]
+  C.ATTACH_TRACE = 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, locator, on)]]
+  C.ANIME_FOCUS, C.ANIME_SET_BUTTON = 2734777837 --[[Focus]], 973515837 --[[button]]
+  C.LOCATOR_CURSOR = 3313461902 --[[cursor]]
   -- The game pad / keyboard read straight from the devices (CMND_VRFW_INPUT_PAD / _KEY) for the bar's own commands, in `standalone` hosts only (the open button did not enter the
   -- bar in the Chronicle board's pause menu). Those menus open over a screen that is no menu hub (the route board, the
   -- free walk): there CMND_CHECK_INPUT_CMD(MENU_CTRL, …) answers false in the menu's own VM (as in the plate during a
@@ -1538,10 +1546,47 @@ if VRFW_TopBar == nil then
     if v ~= GD.last then GD.last, GD.still = v, 0 else GD.still = GD.still + 1 end
     return GD.still < GUARD_TTL
   end
+  -- The screen's focus look while the bar has the focus: the focused element whose menu cursor this VM's Lua attached
+  -- (CMND_SET_LAYER_ATTACH_LOCATOR_TRACE on the «cursor» locator, recorded by Guard in GD.cursor_on) drops its focus
+  -- frame and that cursor, as retail does when a layer gives the focus away (Focus animation set «button» state 2,
+  -- trace off). Screens with their own cursor (other locators, layers without control focus) are left alone. The
+  -- control focus is not moved and no menu callback runs. On leave the screen's own last wish is put back.
+  function GD.FocusHide()
+    GD.hidden = {}
+    for layer, on in pairs(GD.cursor_on or {}) do
+      local okf, act = pcall(GD.raw, C.CTRL_FOCUS_ACTIVE, layer)
+      local oki, idx = pcall(GD.raw, C.FOCUS_INDEX, layer)
+      if okf and act == true and oki and type(idx) == "number" and on[idx] == true then
+        pcall(GD.raw, C.PLAY_ANIME, layer, idx, C.ANIME_FOCUS, 2, C.ANIME_SET_BUTTON)
+        pcall(GD.raw, C.ATTACH_TRACE, layer, idx, C.LOCATOR_CURSOR, false)
+        GD.hidden[#GD.hidden + 1] = {layer = layer, idx = idx}
+        Log("top bar focus: focus look of", TB.name, "hidden", layer, idx)
+      end
+    end
+  end
+  function GD.FocusShow()
+    local hidden = GD.hidden or {}
+    GD.hidden = {}
+    for _, h in ipairs(hidden) do
+      local oke, exists = pcall(GD.raw, C.LAYER_EXISTS, h.layer)
+      local on = GD.cursor_on ~= nil and GD.cursor_on[h.layer] or nil
+      -- the screen turned that cursor off itself meanwhile (focus moved, layer closed): its state stays
+      if oke and exists == true and on ~= nil and on[h.idx] == true then
+        pcall(GD.raw, C.ATTACH_TRACE, h.layer, h.idx, C.LOCATOR_CURSOR, true)
+        local okf, act = pcall(GD.raw, C.CTRL_FOCUS_ACTIVE, h.layer)
+        local oki, idx = pcall(GD.raw, C.FOCUS_INDEX, h.layer)
+        if okf and act == true and oki and idx == h.idx then
+          pcall(GD.raw, C.PLAY_ANIME, h.layer, h.idx, C.ANIME_FOCUS, 0, C.ANIME_SET_BUTTON)
+        end
+        Log("top bar focus: focus look of", TB.name, "restored", h.layer, h.idx)
+      end
+    end
+  end
   local function GuardStep()
     if GD.menu == nil then return end
     local alive = NavAlive()
     if alive and not GD.off then
+      GD.FocusHide()
       GD.off = true
       GD.held = {}
       for _, m in ipairs(Targets()) do
@@ -1562,6 +1607,7 @@ if VRFW_TopBar == nil then
       end
       if n > 0 then Log("top bar focus: input of", TB.name, "restored (" .. n .. " menu(s))") end
       GD.held = {}
+      GD.FocusShow()
     end
   end
   local function Guard()
@@ -1574,6 +1620,20 @@ if VRFW_TopBar == nil then
     local raw = funcLuaMenuCommand
     GD.raw = raw
     funcLuaMenuCommand = function(id, ...)
+      if id == C.ATTACH_TRACE and select("#", ...) >= 4 then
+        local layer, idx, locator, on = ...
+        if locator == C.LOCATOR_CURSOR and type(layer) == "number" and type(idx) == "number" then
+          GD.cursor_on = GD.cursor_on or {}
+          local t = GD.cursor_on[layer]
+          if on == true then
+            if t == nil then t = {} GD.cursor_on[layer] = t end
+            t[idx] = true
+          elseif t ~= nil then
+            t[idx] = nil
+            if next(t) == nil then GD.cursor_on[layer] = nil end
+          end
+        end
+      end
       if id == C.MENU_ACTIVE and select("#", ...) >= 2 then
         local m, b = ...
         if type(m) == "number" then

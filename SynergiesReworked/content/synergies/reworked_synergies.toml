@@ -32,6 +32,32 @@ count = 2
 rule = "min"
 hint = "SynergiesReworked.HintDarkLineage"
 
+# ------------------------------------------------------------------------------------------------ Líderes del Protocolo Omega
+
+# Owner 2026-10-20 (option B): the NEXUS is any one of Alfa (Alpha), Beta or Gamma (the retail synergy's own condition
+# characters); the other 2 are players of the three Protocolo Omega belong teams (Protocolo Omega 1.0, 2.0 and 3.0, both
+# may come from the same team). Belong team keys and names checked in belong_team_config + team_text (v7.1.2).
+[[VRFW.SynergyPool]]
+name = "omega_protocol"
+teams = [
+    "0x45B66234",   # Protocolo Omega (1.0)
+    "0x3B24FCDA",   # Protocolo Omega 2.0
+    "0x4C23CC4C",   # Protocolo Omega 3.0
+]
+
+[[VRFW.Synergy]]
+key = "sf05001"                                  # Líderes del Protocolo Omega (retail: Alfa + Beta + Gamma; Foco AT +10 % en campo propio, afinidad elemental +5 %)
+nexus = [
+    "c05020500", "c05020500_5000",               # Alfa (every card of the character in chara_base, v7.1.2)
+    "c05020700", "c05020700_5000", "c11905050",  # Beta
+    "c05020800", "c05020800_5000", "c05028300",  # Gamma
+]
+pool = "omega_protocol"
+count = 2
+rule = "min"
+distinct = "person"                              # the nexus person never counts again as one of the 2
+hint = "SynergiesReworked.HintOmegaProtocol"
+
 # ------------------------------------------------------------------------------------------------ the managers
 # Every female manager of the game (a manager card: chara_param manager flag; chara_base gender female), split by the
 # series the character comes from: IE1-IE3, Ares and Orión → «Las gerentes más allegadas» (16 characters, 13 persons);

@@ -13,7 +13,7 @@ rival_area = { type = "string", default = "", doc = "the area of the CPU side in
 scale = { type = "number", default = 1, min = 0.5, max = 3, doc = "the box's width (about its centre) and depth (from the goal line toward the centre) x this, before the margin (1.05 = 5 % bigger); the retail band is never scaled" }
 margin_m = { type = "number", default = 0, min = 0, max = 20, doc = "metres added around the box (0 = the white lines)" }
 margin_config = { type = "string", default = "", doc = "a dotted path of the declaring mod's config that gives margin_m (a user setting; missing = margin_m)" }
-chain_area = { type = "string", default = "retail", doc = "shot chains (a chain window open / taken, or the chain partner's position): \"retail\" = the game's own band, \"box\" = the box too" }
+chain_area = { type = "string", default = "retail", doc = "while a zone runs or a shot chain window is open / taken (passes, chain partners, the ball holder, chained shots; the box only decides where a zone starts): \"retail\" = the game's own band, \"box\" = the box too" }
 chain_area_config = { type = "string", default = "", doc = "a dotted path of the declaring mod's config that gives chain_area (missing = chain_area)" }
 extra_state = { type = "string", default = "", doc = "a game_state key prefix of the declaring mod: <prefix>.0 / <prefix>.1 = extra metres around the box team 0 / 1 attacks (its passives), read every match frame; the total stays within 0..20 m" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

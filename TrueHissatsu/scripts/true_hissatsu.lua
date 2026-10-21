@@ -19,7 +19,9 @@
 --   H4 TrueHissatsu.CanEquip (post): a board placement of a move already on another slot of the player's active set is
 --      refused ([duplicates] block).
 --   Rules of other mods ([TrueHissatsu.Rules]): `no_rank_up_states` (state keys: while one is 1 no use is counted, e.g.
---      Inazuma Fantasy's INAROGUE), `boost_states` (CMND_TRUEHISSATSU_RANK_BOOST only while one is 1). An overlay
+--      Inazuma Fantasy's INAROGUE), `boost_states` (CMND_TRUEHISSATSU_RANK_BOOST only while one is 1),
+--      `max_grade_states` (while one is 1 every move of the user's players is installed at the last grade in a match;
+--      the saved grades do not change, e.g. an INAROGUE item for N matches). An overlay
 --      session (VRFW.session.sink = the slot left): the left slot's store is parked in memory and comes back unchanged.
 --   Grade animations ([[TrueHissatsu.GradeAnimation]] of every active mod's content\true_hissatsu\*.toml): from
 --      `grade` on (1..6, 5 = G5) a move plays the cut-in of `animation_of`, its evolution; only the cut-in changes. Handed
@@ -906,6 +908,7 @@ local function sync_install_rank(unit, slot)
   if not own then return end -- an opponent keeps his team's grade
   local _, g = get(cur(), own, id)
   local want = mode_rank(cur_r, g)
+  if state_on("max_grade_states") then want = MAX_GRADE end
   if want ~= cur_r and wr("u8", entry + UNIT_SKILL_RANK, want) then
     install_synced = install_synced + 1
     if install_synced <= 24 then
@@ -1243,9 +1246,10 @@ local function start()
   local r = rules()
   info(string.format("thresholds [%s] (max grade %d), mode %s, log_uses %s, store blob %s per slot",
     table.concat(THR, ", "), max_grade(), MODE, tostring(LOG_USES), BLOB))
-  info(string.format("rules of other mods: no rank-up while [%s]; boosts while [%s]",
+  info(string.format("rules of other mods: no rank-up while [%s]; boosts while [%s]; last grade in a match while [%s]",
     table.concat(type(r.no_rank_up_states) == "table" and r.no_rank_up_states or {}, ", "),
-    table.concat(type(r.boost_states) == "table" and r.boost_states or {}, ", ")))
+    table.concat(type(r.boost_states) == "table" and r.boost_states or {}, ", "),
+    table.concat(type(r.max_grade_states) == "table" and r.max_grade_states or {}, ", ")))
   if POPUP then info("level-up banner on (skill telop + graft sr_popup)") end
   info(string.format("rank-up by use up to grade %d (last grade %d: %s); rank items: raise %s, last grade %s",
     use_cap(), MAX_GRADE, USE_CAP < MAX_GRADE and "rank item only" or "by use too", hex(ITEM_RAISE), hex(ITEM_LAST)))

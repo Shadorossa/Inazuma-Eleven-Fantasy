@@ -1,0 +1,8 @@
+schema = "VRFW.transform/2"
+if_mod = "all_miximaxed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# Ideal miximax: fusions of one base with one partner, made in ModManager's «Miximax palettes» page
+# (content\editor\miximax.toml, editor ideal_miximax). Each [[transform]] kind = "miximax" adds its pair to the pool
+# (types/transform.md §7.6): it wins over the generated look of that base x partner. look.character = a fixed look
+# (that character's whole model); else the generated look, with the pair's own choices on top: look.hair / skin / iris =
+# "partner" (default) / "base" / "#rrggbb" / a character, look.clothes / shoes / gloves = "base" (default) / "partner" /
+# a character.

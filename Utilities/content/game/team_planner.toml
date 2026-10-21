@@ -74,8 +74,7 @@ handler = "Utilities.TeamPlanner.PickTeam"
 name = "CMND_UTIL_TP_PICK_PLAYER"
 handler = "Utilities.TeamPlanner.PickPlayer"
 
-# () -> the season list's layout ([team_planner.list]): cols, rows, pitch x, pitch y, card scale, centre x, centre y,
-# card offset x, y, ghost alpha, tab x, tab y, tab pitch, tab scale, panel x, y, scale x, y
+# () -> the season list's layout ([team_planner.list] + ghost_alpha) as one table { key = number }
 [[VRFW.Command]]
 name = "CMND_UTIL_TP_PICK_LIST"
 handler = "Utilities.TeamPlanner.PickList"

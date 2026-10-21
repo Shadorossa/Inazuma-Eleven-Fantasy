@@ -124,3 +124,8 @@ allow = []
 [[script]]
 file = "match_clock.lua"
 allow = []
+
+# Pre-match X skip (graft util_prematch_skip): its hold time, the native black cover and the direct jump
+[[script]]
+file = "prematch_skip.lua"
+allow = []

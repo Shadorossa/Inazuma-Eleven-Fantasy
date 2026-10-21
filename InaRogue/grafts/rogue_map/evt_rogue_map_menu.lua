@@ -632,8 +632,9 @@ local resume_at_open = false
 -- engine sends hover as OnChangeFocus(L_PLAT, k) and a left click as OnDecideFocus(L_PLAT, k). Only the platforms the
 -- player can walk to have their collision on, so the mouse cannot pick anything else. Right click = Atrás (setting
 -- row CMD_MOUSE_RIGHT_CLICK -> CMD_BACK on the anchor and on the platforms); the button guides are clickable (retail).
--- The wheel pans long maps one column (CMD_EVT_WHEEL_UP / _DOWN: our two MENU_CTRL commands in input_ctrl, built by
--- research/scripts/menu_mouse_build.py; without them the poll is always false).
+-- The wheel pans long maps one column (CMD_EVT_WHEEL_UP / _DOWN: MENU_CTRL commands declared by VRFW's inputs\).
+-- Hover, click and wheel come from the shared pointer helper (evt_menu_kit.lua#Pointer, mouse-support.md §5): mouse and
+-- the free cursor alike; the walkable platforms are its zones, from their global positions every frame.
 local MS = {
   HIT = 855005857,          -- (layer, idx, bool): hit collision of one instance on / off (retail SetupActiveHitCollision)
   HOVER = 2206938151,       -- CMND_SET_ON_CHANGE_FOCUS_MOUSE (layer, idx, bool): hover moves the focus (chara_bank)
@@ -642,16 +643,13 @@ local MS = {
   WHEEL_UP = 1942756954, WHEEL_DOWN = 1623431741,          -- crc32("CMD_EVT_WHEEL_UP" / "CMD_EVT_WHEEL_DOWN")
   -- Lua hit test (the retail players_universe_menu GetCursorPos / GetHitStarLocator way; the engine did not move the
   -- cursor on hover in game, 30/09): the pointer (x, -y) against the layer global position of each walkable platform
-  MOVED = 3272825600,       -- funcLuaMenuCommand () -> the mouse moved this frame
-  POINTER = 558229292,      -- funcLuaMenuCommand () -> x, y (y down; players_universe compares x, -y with layer positions)
   GPOS = 4002164178,        -- funcLuaMenuCommand (layer, idx) -> x, y, z global position of the instance
-  CLICK = 1651523701,   -- MENU_CTRL command: left click (also Enter / A: used only after the mouse moved)
   HIT_W = 84, HIT_UP = 88, HIT_DOWN = 48,               -- hit box around the platform centre (layout units, y up)
 }
 local decided = false  -- one decide per frame (a click / Enter may reach both OnEnter and OnDecideFocus)
 local pan = 0          -- columns the wheel moved the camera away from the cursor's column (0 = follow the cursor)
-local mouse_mode = false   -- the last cursor move came from the mouse (a click / Enter then decides the pointed node)
-local mouse_logs = 0
+--@lib evt_menu_kit.lua#Pointer
+local Ptr = EVT_PointerNew()
 -- the selected node's look (inarogue.md §27): emblem bobbing, platform pulse, walkable / locked tint, blue path
 local FX = {
   PRIM_COLOR = 855211291,   -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b): retail grey-out of the formation cards
@@ -1809,7 +1807,7 @@ end
 local function MoveFocus(delta)
   local old = cam
   pan = 0                     -- keys bring a camera the wheel moved back to the cursor
-  mouse_mode = false          -- Enter now decides the platform the keys chose, wherever the pointer rests
+  Ptr.KeyStep()               -- Enter now decides the platform the keys chose, wherever the pointer rests
   if #reach < 2 then
     UpdateCamera()
     if cam ~= old then
@@ -1834,7 +1832,6 @@ end
 -- mouse: the pointer is over platform instance k (only reachable platforms have their collision on)
 local function HoverFocus(k)
   local j = ReachOf(k)
-  mouse_mode = true
   if j == nil or j == focus then
     return
   end
@@ -1845,33 +1842,22 @@ local function HoverFocus(k)
   DrawPathLines()
 end
 
--- §27 mouse, Lua hit test (retail players_universe_menu GetCursorPos + GetHitStarLocator): the platform instance
--- under the pointer among the WALKABLE ones, or nil. The pointer is (x, -y) in the layers' global space; each
--- platform's global position comes from the engine, so no screen size / scale is assumed here.
-local function PointedPlatform()
+-- §27 pointer zones (retail players_universe_menu GetCursorPos + GetHitStarLocator): one per WALKABLE platform, from
+-- the instance's global position now (layout units, y up) turned into the pointer's screen space (x, -y)
+local function DeclarePlatforms()
+  Ptr.Begin()
   if run == nil then
-    return nil
+    return
   end
-  local mx, my = funcLuaMenuCommand(MS.POINTER)
-  if type(mx) ~= "number" or type(my) ~= "number" then
-    return nil
-  end
-  local py = -my
   for _, i in ipairs(reach) do
     local k = node_inst[i]
     if k ~= nil then
       local gx, gy = funcLuaMenuCommand(MS.GPOS, L_PLAT, k)
-      if type(gx) == "number" and type(gy) == "number" and math.abs(mx - gx) <= MS.HIT_W
-          and py - gy <= MS.HIT_UP and gy - py <= MS.HIT_DOWN then
-        return k
-      end
-      if mouse_logs < 6 then
-        mouse_logs = mouse_logs + 1
-        Log("mouse", string.format("pointer %.0f %.0f  platform %d at %s %s", mx, py, k, tostring(gx), tostring(gy)))
+      if type(gx) == "number" and type(gy) == "number" then
+        Ptr.Rect(gx - MS.HIT_W, -gy - MS.HIT_UP, 2 * MS.HIT_W, MS.HIT_UP + MS.HIT_DOWN, k)
       end
     end
   end
-  return nil
 end
 
 
@@ -1890,17 +1876,7 @@ local function Pan(d)
   funcLuaCommand(C.SE, SE_OK)
   DrawAll()
   SyncFocus()
-end
-
-local function PollWheel()
-  if evt_co ~= nil then
-    return
-  end
-  if Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_DOWN) == true then
-    Pan(1)
-  elseif Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.WHEEL_UP) == true then
-    Pan(-1)
-  end
+  Ptr.KeyStep()               -- other platforms now rest under a still pointer: only a real move or click picks one
 end
 
 --@lib evt_menu_kit.lua#StartCo
@@ -2003,6 +1979,7 @@ function OnOpenLayer(a1, a2)
     funcLuaMenuCommand(C.ATTACH_TRACE, a1, 0, CUR, false)
     funcLuaMenuCommand(C.POS, a1, -4000, 4000, 0, 0)
     DrawAll()
+    Ptr.Reset()                 -- a button held from the screen before is no click here
     rn_ready = true             -- §27.1: the runner starts on the current platform and runs to the cursor
     if funcLuaCommand(C.FADE_DONE) then
       funcLuaCommand(C.FADE, 0, 0.3)
@@ -2050,30 +2027,32 @@ local function DecideAt(k)
   StartCo(Go)
 end
 
--- every frame without a window open: the pointer moved over a walkable platform = the cursor goes there (hover);
--- a left click on it = Aceptar there (the same flow as the keys: partido, fichaje, cofre…)
-local function PollMouse()
+-- every frame: the pointer moved onto a walkable platform = the cursor goes there (hover); a click on it = Aceptar
+-- there (the same flow as the keys: partido, fichaje, cofre…); the wheel pans a long map. Polled behind windows too, so
+-- the click that closes a window is never taken again here.
+local function PollPointer()
+  DeclarePlatforms()
+  local ev = Ptr.Poll()
   if evt_co ~= nil or run == nil then
     return
   end
-  if funcLuaMenuCommand(MS.MOVED) == true then
-    mouse_mode = true
-    local k = PointedPlatform()
-    if k ~= nil then
-      HoverFocus(k)
-    end
+  if ev.hover ~= nil then
+    HoverFocus(ev.hover)
   end
-  if mouse_mode and not decided and Call(MS.CHECK_INPUT, MS.MENU_CTRL, MS.CLICK) == true then
-    local k = PointedPlatform()
-    if k ~= nil then
-      Log("mouse click on platform", k)
-      DecideAt(k)
-    end
+  if ev.click ~= nil and not decided then
+    Log("pointer click on platform", ev.click)
+    DecideAt(ev.click)
+  end
+  if ev.wheel ~= nil then
+    Pan(ev.wheel)
   end
 end
 
 function OnDecideFocus(a1, a2)
   if a1 == L_ROW then
+    if Ptr.Owns() then
+      return                  -- a pointer click is the pointer's (PollPointer): only the platform under it is decided
+    end
     DecideAt(nil)
   elseif a1 == L_PLAT then
     DecideAt(ReachOf(a2) ~= nil and a2 or funcLuaMenuCommand(MS.FOCUS_IDX, L_PLAT))
@@ -2136,9 +2115,8 @@ function Step()
       end
     end
   end
-  PollMouse()                 -- §27: before `decided` is cleared (a click already decided by a callback this frame)
+  PollPointer()               -- §27: before `decided` is cleared (a click already decided by a callback this frame)
   decided = false
-  PollWheel()
   if evt_co == nil then
     Animate()                 -- §27: the platform under the cursor
   end

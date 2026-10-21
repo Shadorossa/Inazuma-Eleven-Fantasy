@@ -22,11 +22,11 @@ game = "Board.BadgeUnequip"
 name = "CharacterReforged.InvRecord"
 game = "Board.InvRecord"
 
-# [g_gameRoot] + 0x69D0 = the inventory InvRecord takes
+# [g_gameRoot] + Game.RootItems = the inventory InvRecord takes
 [[VRFW.Global]]
 name = "character_reforged_items"
 base = "game_root"
-chain = [0x69D0]
+chain = ["Game.RootItems"]
 
 # ------------------------------------------------------------------------------------------------ commands
 # Status codes: 1 ok, 0 refused, -1 bad args, -2 not ready, -4 exception, -5 no record, -10 matches missing.

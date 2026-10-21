@@ -1,0 +1,22 @@
+# «Frente frío» (Cold Front, whs02930 and its override whs02930_or; wind; cut-in ev60_02930): while the ball flies to
+# the goal after the cut-in it keeps the look of the cut-in's last cut (c0500, the ball shot away inside its ice
+# comet): the spiky ice head round it (turning), its ice shards and two ice tails, the ice glows, the wind rings it
+# flies through and the blizzard gust behind it, x1, instead of the plain wind special-shot aura (ega0075b).
+# The object is ev6293cf00 (effect/event/ev60/ev6293cf00/), built by research/scripts/cold_front_ball_fx.py from the
+# cut-in's effect object ev60029300. docs/game/media/cold-front-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\cold_front_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cold_front"
+from = "ega0075b"
+object = "effect/event/ev60/ev6293cf00/ev6293cf00.objbin"
+
+[[shot_aura]]
+name = "cold_front"
+when = { techniques = ["whs02930", "whs02930_or"] }
+aura = "cold_front"
+like = "ega0075b"

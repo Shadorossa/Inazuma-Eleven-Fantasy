@@ -1,0 +1,43 @@
+schema = "VRFW.match_exp/1"
+# Chronicle Deluxe: the EXP of the Batalla heroica and of this mod's chains (owner 2026-10-20: «capped so each player
+# rises at most to the rival team's level, variable for a gradual progression», then «Trails-style level-gap scaling»).
+# The mechanism is the VR-Framework's ([[VRFW.MatchExp]], docs/framework/match-exp.md); the Crónica and every other match
+# keep the game's EXP.
+#
+# Each player of the squad (the manager row too, at his own level) rises
+#   levels × the gap rate (his level − the rival team's level) × the rank rate
+# levels, as the EXP of the levels he passes, and a player below the rival never goes above the rival's level from one
+# match. The gap rates (Trails-like): far below the rival a big bonus, near it the normal rise, above it a steep
+# falloff (×0.5 at +1, ×0.2 at +3, ×0.05 from +5 on). The rank rates: S ×1.25, A ×1.0, B ×0.75; a loss or a draw
+# ×0.5. The bench keeps its share of the game's EXP (retail_share).
+
+# The Batalla heroica (difficulty 4) of every Chronicle board piece: the game's pieces and the route nodes.
+[[VRFW.MatchExp]]
+name = "heroic"
+games = ["fbtl_cro*", "evt_rn_*"]
+difficulties = [4]
+levels = 1.0
+gap       = [-12, -8,  -4,  -2,  0,   1,   2,   3,   4,   5]
+gap_rates = [3.0, 2.0, 1.5, 1.0, 1.0, 0.5, 0.3, 0.2, 0.1, 0.05]
+rank_ids = ["S", "A", "B"]
+rank_rates = [1.25, 1.0, 0.75]
+no_rank_rate = 0.5
+max_levels = 4.0
+cap_at_rival = true
+
+# The matches of this mod's chain boards (Sonny's premium route, the Mary Times coach's route; a new chain adds its
+# games evt_ch_<chain>_*), until the Destructores gate battle is won (piece 0x90185427 at difficulty 2, the win that
+# gives the Master's Seal): after it, the chains give the game's EXP.
+[[VRFW.MatchExp]]
+name = "chains_before_destructores"
+games = ["evt_ch_ie1_sonny_*", "evt_ch_ie2_marytimes_*", "evt_ch_ie2_rika_*", "evt_ch_ie2_warehouse_*"]
+until_cleared_pieces = ["0x90185427"]
+until_cleared_difficulty = 2
+levels = 1.0
+gap       = [-12, -8,  -4,  -2,  0,   1,   2,   3,   4,   5]
+gap_rates = [3.0, 2.0, 1.5, 1.0, 1.0, 0.5, 0.3, 0.2, 0.1, 0.05]
+rank_ids = ["S", "A", "B"]
+rank_rates = [1.25, 1.0, 0.75]
+no_rank_rate = 0.5
+max_levels = 4.0
+cap_at_rival = true

@@ -496,6 +496,8 @@ EVT_PPM = EVT_PPM or {}
   -- the dock passes them. The outfits module still swaps the look natively (moment kit, Team Ogre's off-pitch
   -- uniform when the kit passed is the Ogre kit). A caller-given kit / look (EVT_PPM_KIT / EVT_PPM_LOOK, the office)
   -- wins. loader.log «EVT_PPM kit <chara> <team> <uniform> <number> <flags> <src>» per build.
+  -- 2026-10-21 (Battle Bay Deluxe's line-up viewer: every team's player in the active team's kit): a team member the
+  -- screen names through the VR-Framework's VRFW_PlateMember wears his own team's kit (src «member»).
   function M.Look()
     return type(EVT_PPM_LOOK) == "number" and EVT_PPM_LOOK or 0
   end
@@ -533,7 +535,14 @@ EVT_PPM = EVT_PPM or {}
       return EVT_PPM_KIT, 10, M.Look(), "caller", -1
     end
     local u, team, src = nil, -1, "default"
-    for _, e in ipairs(M.Teams()) do
+    -- a team member shown as a temporary character (a line-up viewer names him: VRFW_PlateMember): his team's kit
+    if type(VRFW_PlateMember) == "table" and type(VRFW_PlateMember.Kit) == "function" then
+      local okm, mk = pcall(VRFW_PlateMember.Kit)
+      if okm and type(mk) == "number" and mk ~= 0 then
+        u, src = mk, "member"
+      end
+    end
+    for _, e in ipairs(u == nil and M.Teams() or {}) do
       u = Num(1033065575, e[1], 0, 7)                   -- CMND_GET_TEAM_SET_INFO(team, 0, 7) = kit
       if u ~= nil and u ~= 0 then
         team, src = e[1], e[2]
@@ -1230,6 +1239,15 @@ EVT_PPM = EVT_PPM or {}
         M.want = a3
         if M.built ~= a3 then
           M.n = 0
+        elseif M.chara ~= 0 then
+          -- the same handle now holds another player (the players-universe page re-creates its temporary member on
+          -- the freed handle: SetPersonalPlateUniverseCharaParamId): rebuilt as a player change, with his own forms
+          local c = CharaOf(a3)
+          if c ~= 0 and c ~= M.chara then
+            M.fhdl = nil
+            M.n = 0
+            M.Fresh()
+          end
         end
       end
       return table.unpack(r, 1, r.n)

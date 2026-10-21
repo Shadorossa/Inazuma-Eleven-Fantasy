@@ -1,0 +1,57 @@
+schema = "VRFW.menu/2"
+
+# The main menu (title_menu_2) without the lower row's «Información» tile (owner 2026-10-21: the X button at the top left
+# opens the same notices screen). The lower row keeps «Guía del Juego» and «Opciones»; the framework adds «Guardar» and
+# «Mods» after them on the locators this file frees (mods_menu::title::build_with: a row of 2 gets the layout's own free
+# locators back), and the row stays centred (below). The pieces:
+#   * the two layer counts below (lower buttons 3 -> 2, their labels 11 -> 10);
+#   * assets\gamedata\menu\obj\title02_02_item_atc_locator_2.objbin = the retail attach-locator object without the rows of
+#     lower button 2 and label 10 (the retail rows point both at _atc_btn13 / _atc_telop13);
+#   * assets\lua\title_menu_2\120_info_tile.lua: the title's lower item list without Información, no «!» on the tile that
+#     now sits on that instance, and the X key (retail OnFunction 695801987) untouched.
+# The retail row of 3 is centred; with 2 + the framework's 2 the row of 4 would sit half a step too far left, so the
+# three button locators move half a step (122 locator units, scale 0.8 = 97.6 px) and the three label locators half a label
+# step (97.6 units, label row scale 1). Only the locators are edited, never the row origins, so a mod that scales or
+# moves the origins (BetterMenu's compact row) keeps its own look and the row stays centred.
+
+[[patch]]
+menu = "title_menu_2"
+layer = "title00_07_item_button_lower"
+count = 2
+
+[[patch]]
+menu = "title_menu_2"
+layer = "title02_03_item_name_2"
+count = 10
+
+# button locators (retail local x 244 / 488 / 732, +122)
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_btn11"
+translate = [366.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_btn12"
+translate = [610.0, 0.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_btn13"
+translate = [854.0, 0.0]
+
+# label locators (retail local x 221 / 392 / 563, y -225, +97.6)
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_telop11"
+translate = [318.6, -225.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_telop12"
+translate = [489.6, -225.0]
+
+[[layout]]
+file = "common/menu/50_title/title02/title02_02/title02_02.g4pkm"
+joint = "_atc_telop13"
+translate = [660.6, -225.0]

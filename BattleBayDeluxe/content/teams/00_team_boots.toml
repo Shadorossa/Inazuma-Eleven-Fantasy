@@ -1,0 +1,6 @@
+# Battle Bay Deluxe: every player of this mod's teams wears his team's own boots: the boots item of the team's kit,
+# else boots with the same boots model (VR-Framework [VRFW.TeamBoots], docs/framework/types/team.md). A team whose kit
+# has no boots in the game data keeps its rows as they are; a member row that already has boots keeps them.
+schema = "VRFW.team/2"
+
+[VRFW.TeamBoots]

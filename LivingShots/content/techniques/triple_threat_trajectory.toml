@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Triple amenaza (whs01700).
 [[edit]]
 target = "whs01700"
-trajectory = { points = [[0.0, 9.25]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 9.25]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.48]], goal_points = [[0.0, 2.0]], unblockable = false }

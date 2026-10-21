@@ -66,11 +66,11 @@ game = "Board.FindCharaRecord"
 name = "SpHumanGetLevel"
 game = "Chara.HumanGetLevel"
 
-# [[g_gameRoot]+0x69D8]: the character containers (container of kind k = [this + 8 + k * 8])
+# [[g_gameRoot] + Game.RootCharaContainers]: the character containers (container of kind k = [this + 8 + k * 8])
 [[VRFW.Global]]
 name = "sp_chara_containers"
 base = "game_root"
-chain = [0x69D8]
+chain = ["Game.RootCharaContainers"]
 
 # ------------------------------------------------------------------------------------------------ the cost check
 
@@ -154,15 +154,19 @@ handler = "AuraPoints.HyperGainOff"
 # starts, ProcessPending) and the 20 % start fill are other code: untouched.
 
 # The skill-use gain 0x16BAF90: amount = the skill's value x AddHyperdimensionalPowerRate_<kind> (game_param, the six
-# rates at 0x22AEE84); `comiss rate, 0; jbe end` skips the add AND its flying number when the rate is 0. The jbe
-# becomes a jmp to the same end: every rate reads as 0.
+# rates at 0x22AEE84; seven on v7.2.1, 0x16FCE90); `comiss rate, 0; jbe end` skips the add AND its flying number when
+# the rate is 0. The jbe becomes a jump to the same end (a stub: its target is the game's own jbe target on each
+# build): every rate reads as 0.
 [[VRFW.Patch]]
 name = "Ap_HyperGainSkill"
-pattern = "0F B6 41 01 3C 06 0F 83 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 0F 57 C9 F3 0F 10 04 81 0F 2F C1 ?? ?? ?? ?? ?? ?? 0F B6 47 18"
+kind = "stub"
+pattern = "0F B6 41 01 3C ?? 0F 83 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 0F 57 ?? F3 0F 10 ?? 81 0F 2F ?? ?? ?? ?? ?? ?? ??"
 rva = 0x16BB00A
 offset = 0x1E
-expect = "0F 86 81 03 00 00"
-bytes = "E9 82 03 00 00 90"
+expect = "0F 86 ?? ?? ?? ??"
+code = "E9 ?? ?? ?? ??"
+refs = [{ at = 1, branch = 0x1E }]
+tail = false
 apply = "script"
 
 # The two scripted gain handlers 0x16A1FE0 / 0x16A2090 (a value from a script argument: the «+N» number, then AddHyper;

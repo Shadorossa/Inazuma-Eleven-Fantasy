@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Ventisca triple (whs02950).
 [[edit]]
 target = "whs02950"
-trajectory = { points = [[0.0, 3.47]], goal_points = [[0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.47]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 3.4]], goal_points = [[0.0, 2.0]], unblockable = false }

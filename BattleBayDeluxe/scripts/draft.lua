@@ -1811,8 +1811,11 @@ VRFW.on("hook:VRFW.BbRecord", function(ev)
   if not avatar then
     return nil
   end
+  if not G.slot_base() then
+    return nil
+  end
   for i = 0, G.SLOTS - 1 do
-    local rec = img + G.SLOT_BASE + i * G.SLOT_STRIDE
+    local rec = G.slot_addr(img, i)
     if U.rd("u32", rec + 0x4) == team and U.rd("u32", rec + 0x8) ~= avatar then
       U.wr("u32", rec + 0x8, avatar)
     end

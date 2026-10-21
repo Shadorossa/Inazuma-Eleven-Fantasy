@@ -1,0 +1,8 @@
+schema = "VRFW.passive_slots/1"
+# InaRogue › while the INAROGUE save is the game in memory (state inarogue.active, content\game\rogue.toml) every player
+# keeps only his talent (custom passive slot): the plates show no passive in the 5 slots (docs/game/modes/
+# inarogue-passive-system.md §2.2). The effect side is scripts\lib\rogue\talents.lua (Passive.SlotsOff / Signature*).
+
+[[VRFW.SignatureOnly]]
+name = "inarogue"
+state = "inarogue.active"

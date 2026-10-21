@@ -242,6 +242,7 @@ table = "soccer/soccer_prize_itbl_base"
   key = 0x9820F1E6                       # crc32(chronicle_deluxe.heroic_fbtl_cro02_140_010)
   cells = { REF_ITEMS = { set = [
     { item = 0xC94C3C6C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em020034
+    { item = 0xD4B5F251, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNS18lEoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion uni_u021001
     { item = 0xD555FA91, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u045101
     { item = 0xCCB69C26, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMy2nCYoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120024
   ] } }
@@ -291,6 +292,7 @@ table = "soccer/soccer_prize_itbl_base"
   key = 0x3259A96D                       # crc32(chronicle_deluxe.heroic_fbtl_cro02_200_010)
   cells = { REF_ITEMS = { set = [
     { item = 0xF6675E24, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em020041
+    { item = 0xD6F34C08, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNbzTAgoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion uni_u021301
     { item = 0xF10A9A3D, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em020045
     { item = 0x0995AEC9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNAmVrskoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120016
   ] } }
@@ -514,6 +516,13 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x5A376DC6, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u041101
   ] } }
 
+  [[keyed.add]]                         # evt_rn_go_royal_practice (rival chronicle_deluxe.cro_go_royal_practice)
+  key = 0xE799D68A                       # crc32(chronicle_deluxe.heroic_evt_rn_go_royal_practice)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x832FFB23, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em040006
+    { item = 0xED5A312C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u040801
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro04_090_010 (rival tm_cro_go1_0900)
   key = 0xF1D39006                       # crc32(chronicle_deluxe.heroic_fbtl_cro04_090_010)
   cells = { REF_ITEMS = { set = [
@@ -685,10 +694,18 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x742081AF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u052001
   ] } }
 
+  [[keyed.add]]                         # evt_rn_cs_omega3_side (rival chronicle_deluxe.cro_cs_omega3_side)
+  key = 0xEECE3B41                       # crc32(chronicle_deluxe.heroic_evt_rn_cs_omega3_side)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x24C25747, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em050205
+    { item = 0x742081AF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u052001
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro05_090_010 (rival tm_cro_go2_2300)
   key = 0xE6A88445                       # crc32(chronicle_deluxe.heroic_fbtl_cro05_090_010)
   cells = { REF_ITEMS = { set = [
     { item = 0xBDCB06FD, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em050206
+    { item = 0xD8E28BCF, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNjii88oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion uni_u050501
     { item = 0xD6D12EFF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u045301
     { item = 0xF4F03A77, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPTwOncoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120055
   ] } }
@@ -697,6 +714,7 @@ table = "soccer/soccer_prize_itbl_base"
   key = 0xE76AEE72                       # crc32(chronicle_deluxe.heroic_fbtl_cro05_090_110)
   cells = { REF_ITEMS = { set = [
     { item = 0xBDCB06FD, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em050206
+    { item = 0xD8E28BCF, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNjii88oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion uni_u050501
     { item = 0xD6D12EFF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u045301
     { item = 0xF4F03A77, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPTwOncoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120055
   ] } }
@@ -922,6 +940,13 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x9A0DE79A, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060201
   ] } }
 
+  [[keyed.add]]                         # evt_rn_galaxy_raimon (rival chronicle_deluxe.cro_galaxy_raimon)
+  key = 0xA4C25A74                       # crc32(chronicle_deluxe.heroic_evt_rn_galaxy_raimon)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x1D4B6E80, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em040001
+    { item = 0xE28B0AA3, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u040101
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro06_040_010 (rival tm_cro_go3_0400)
   key = 0x63BBAB5E                       # crc32(chronicle_deluxe.heroic_fbtl_cro06_040_010)
   cells = { REF_ITEMS = { set = [
@@ -963,6 +988,12 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x6B160B8B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060309
     { item = 0x979A624C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060801
+  ] } }
+
+  [[keyed.add]]                         # evt_rn_galaxy_naiadi_side (rival chronicle_deluxe.cro_galaxy_naiadi_side)
+  key = 0x6247DEA5                       # crc32(chronicle_deluxe.heroic_evt_rn_galaxy_naiadi_side)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x6B160B8B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060309
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_100_010 (rival tm_cro_go3_1000)
@@ -1260,10 +1291,238 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x31D30898, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDHTCJgoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120067
   ] } }
 
+  [[keyed.add]]                         # fbtl_cro04_040_010 Crónica: story auras
+  key = 0x654C86A9                       # crc32(chronicle_deluxe.story_auras_fbtl_cro04_040_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x6063D0BB, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNGBj0LsoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wks00030
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro04_070_010 Crónica: story auras
+  key = 0xE3D8F407                       # crc32(chronicle_deluxe.story_auras_fbtl_cro04_070_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x264170D9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCZBcNkoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wko00010
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro04_110_010 Crónica: story auras
+  key = 0x93F61CAE                       # crc32(chronicle_deluxe.story_auras_fbtl_cro04_110_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3639773D, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDY5dz0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wks00050
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro04_160_010 Crónica: story auras
+  key = 0x8EF32C16                       # crc32(chronicle_deluxe.story_auras_fbtl_cro04_160_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xDA3823A5, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNo4I6UoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkk00250
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro04_170_010 Crónica: story auras
+  key = 0x45AFFFB3                       # crc32(chronicle_deluxe.story_auras_fbtl_cro04_170_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xBFE35ED8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000002
+    { item = 0x5680FBED, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000004
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x49083D21, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNEkIPSEoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wks00300
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_010_010 Crónica: story auras
+  key = 0x22FA0359                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_010_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x0859E4E8, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNAhZ5OgoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00010
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_020_010 Crónica: story auras
+  key = 0xA46E71F7                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_020_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xBB1BF024, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNLsb8CQoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkk00510
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_070_010 Crónica: story auras
+  key = 0xF4A3E044                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_070_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x752E10AD, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNHUuEK0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00040
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_080_010 Crónica: story auras
+  key = 0x05F55291                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_080_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x2C6739AC, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCxnOawoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkd00650
+    { item = 0x099B8EDF, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNAmbjt8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00110
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_100_010 Crónica: story auras
+  key = 0x4FD1DB48                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_100_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x6DF74BDB, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNG33S9soAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00150
+    { item = 0x6C3521EC, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNGw1IewoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00050
+    { item = 0x1C5FD563, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBxf1WMoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00055
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_100_110 Crónica: story auras
+  key = 0x4E13B17F                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_100_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x6DF74BDB, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNG33S9soAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00150
+    { item = 0x6C3521EC, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNGw1IewoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00050
+    { item = 0x1C5FD563, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBxf1WMoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00055
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_110_010 Crónica: story auras
+  key = 0x848D08ED                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_110_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xBFE35ED8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000002
+    { item = 0x5680FBED, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000004
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x4718722F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNEcYci8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00060
+    { item = 0xC0806EE0, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMCAbuAoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00090
+    { item = 0x49C9969F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNEnJlp8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkd00710
+    { item = 0x50D2A7DE, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNFDSp94oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkd00700
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_110_110 Crónica: story auras
+  key = 0x854F62DA                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_110_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xBFE35ED8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000002
+    { item = 0x5680FBED, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000004
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x4718722F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNEcYci8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00060
+    { item = 0xC0806EE0, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMCAbuAoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00090
+    { item = 0x49C9969F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNEnJlp8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkd00710
+    { item = 0x50D2A7DE, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNFDSp94oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wkd00700
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_120_010 Crónica: story auras
+  key = 0x02197A43                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_120_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x185B327B, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBhbMnsoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wks00760
+    { item = 0x5E03436E, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNF4DQ24oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00070
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_120_110 Crónica: story auras
+  key = 0x03DB1074                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_120_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x185B327B, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBhbMnsoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wks00760
+    { item = 0x5E03436E, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNF4DQ24oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00070
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_150_010 Crónica: story auras
+  key = 0x1F1C4AFB                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_150_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x22B6DD1C, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCK23RwoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00120
+    { item = 0x1080BF9E, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBCAv54oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00100
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_150_110 Crónica: story auras
+  key = 0x1EDE20CC                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_150_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x22B6DD1C, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCK23RwoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00120
+    { item = 0x1080BF9E, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNBCAv54oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00100
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_160_010 Crónica: story auras
+  key = 0x99883855                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_160_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3BADEC5D, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDut7F0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00130
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_160_110 Crónica: story auras
+  key = 0x984A5262                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_160_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3BADEC5D, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDut7F0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00130
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_180_010 Crónica: story auras
+  key = 0xA3825925                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_180_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xBFE35ED8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000002
+    { item = 0x5680FBED, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000004
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xD99B5FA1, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNmbX6EoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00080
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro05_180_110 Crónica: story auras
+  key = 0xA2403312                       # crc32(chronicle_deluxe.story_auras_fbtl_cro05_180_110)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xBFE35ED8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000002
+    { item = 0x5680FBED, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000004
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xD99B5FA1, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNmbX6EoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wmm00080
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_080_010 Crónica: story auras
+  key = 0x3C786E54                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_080_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xC3052576, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMMFJXYoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000040
+    { item = 0x7867B677, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNHhntncoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000050
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_090_010 Crónica: story auras
+  key = 0xF724BDF1                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_090_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x2E3D11F1, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNC49EfEoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000030
+    { item = 0xEF21DE69, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNO8h3mkoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000470
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_100_010 Crónica: story auras
+  key = 0x765CE78D                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_100_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xBFB0BB04, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNL+wuwQoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000110
+    { item = 0x969ABC3D, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNJaavD0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000120
+    { item = 0x7BCEA96F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNHvOqW8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsk000130
+    { item = 0xC0C01BBB, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMDAG7soAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000140
+    { item = 0xF0F12DC3, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPDxLcMoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000160
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_110_010 Crónica: story auras
+  key = 0xBD003428                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_110_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xD9DB2AFA, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNnbKvooAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000150
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_120_010 Crónica: story auras
+  key = 0x3B944686                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_120_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xBC7585C9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNLx1hckoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000010
+    { item = 0x372620B0, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDcmILAoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000020
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_130_010 Crónica: story auras
+  key = 0xF0C89523                       # crc32(chronicle_deluxe.story_auras_fbtl_cro06_130_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0xF5FFD1E5, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPX/0eUoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000560
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro12_030_010 gate battle (rival tm_cro_original_0300)
   key = 0xA20B285D                       # crc32(chronicle_deluxe.gate_fbtl_cro12_030_010)
   cells = { REF_ITEMS = { set = [
     { item = 0x26EA0F62, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_hr000001
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0x4B3E9EFD, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u112101
+  ] } }
+
+  [[keyed.add]]                         # fbtl_free_001 difficulty 9 (rival tm_tutorial_002)
+  key = 0xCDE23C55                       # crc32(chronicle_deluxe.rival_fbtl_free_001_9)
+  cells = { REF_ITEMS = { set = [
+    { item = 0xF10A9A3D, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPEKmj0oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # emblem em020045
+    { item = 0xD1FAE4D4, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNH65NQoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion uni_u021701
   ] } }

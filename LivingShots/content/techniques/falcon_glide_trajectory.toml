@@ -14,9 +14,11 @@ schema = "VRFW.technique/3"
 # Vuelo de halcón (whs02690).
 [[edit]]
 target = "whs02690"
-trajectory = { points = [[0.0, 3.23], [0.48, 1.81], [2.79, 1.00], [23.11, 0.28]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.23], [0.48, 1.81], [2.79, 1.00], [23.11, 0.28]], unblockable = false }
+trajectory = { points = [[0.0, 3.21], [0.48, 1.8], [2.79, 1.0], [23.11, 0.28]], unblockable = false }
 
 # Vuelo de águila calva (whs02691).
 [[edit]]
 target = "whs02691"
-trajectory = { points = [[0.0, 3.23], [0.48, 1.81], [2.79, 1.00], [23.11, 0.28]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 3.23], [0.48, 1.81], [2.79, 1.00], [23.11, 0.28]], unblockable = false }
+trajectory = { points = [[0.0, 3.21], [0.48, 1.8], [2.79, 1.0], [23.11, 0.28]], unblockable = false }

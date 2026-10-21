@@ -67,12 +67,30 @@ end
 
 -- ---------------------------------------------------------------------------------------------- commands
 
+-- the custom passive slot as its two readers answer it (every subscriber's answer): passive id, open, ""
+local BUF_ID, BUF_HDL = nil, nil
+local function live_signature(hdl)
+  if not BUF_ID then
+    BUF_ID = VRFW.mem.buffer("special_players_own_live_id", 8)
+    BUF_HDL = VRFW.mem.buffer("special_players_own_live_hdl", 4)
+  end
+  VRFW.mem.write("u32", BUF_ID, 0)
+  if not pcall(VRFW.call, "SpecialPlayers.SignatureSlotIdLive", BUF_ID, hdl) then return 0, false, "" end
+  local id = VRFW.mem.read("u32", BUF_ID) or 0
+  VRFW.mem.write("u32", BUF_HDL, hdl)
+  local ok, open = pcall(VRFW.call, "SpecialPlayers.SignaturePieceOpenLive", BUF_HDL)
+  return id, ok and tonumber(open) ~= nil and tonumber(open) % 256 ~= 0, ""
+end
+
 function SP.Cmd.OwnPassive(hdl)
   hdl = u32(hdl)
   if hdl == 0 then return 0, false, "" end
   -- a mode without player passives (Utilities.passives_off): the boards show the slot empty
   local okoff, off = pcall(VRFW.state.get, "Utilities.passives_off")
   if okoff and tonumber(off) == 1 then return 0, false, "" end
+  -- a framework signature-only mode (vrfw.passive.slots_off): the slot shows what its readers answer
+  local okmode, mode = pcall(VRFW.state.get, "vrfw.passive.slots_off")
+  if okmode and tonumber(mode) == 1 then return live_signature(hdl) end
   local ok, r = pcall(VRFW.chara.record, hdl)
   if not ok or type(r) ~= "table" or type(r.param) ~= "number" then return 0, false, "" end
   local passive, always, mod = SP.OwnPassiveOfCard(r.param)

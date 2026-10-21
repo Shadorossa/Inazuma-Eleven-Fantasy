@@ -189,7 +189,9 @@ R.drawn = t5
 local retail_update = UpdateAuraBuffCharaIcon
 if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrapper then
   local n, n4
-  -- the retail UpdateAuraBuffCharaIcon; only its per-pass table follows #t5 (retail: 3 literal rows)
+  -- the retail UpdateAuraBuffCharaIcon; only its per-pass table follows #t5 (retail: 3 literal rows). Its upvalues must
+  -- be the retail ones in the retail order (t5, _ENV, n, n4): no other local of this file is used inside, the row's
+  -- helpers are reached through the global AuraPoints_BuffRow
   local widened = function()
     local n6 = 0
     local l1 = #t5
@@ -235,7 +237,7 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
         local n10 = 3669916425
         funcLuaMenuCommand(558735651, n8, 502529699 --[[#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx]], n9, n10, 0, i2)
         local is_aura_skill_metamorphosed = IsAuraSkillMetamorphosed(convert_aura_attr_to_aura_ty)
-        R.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
+        AuraPoints_BuffRow.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
       end
       local l3 = 68 * n6
       funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], n7, l3, 0, 0, i2)

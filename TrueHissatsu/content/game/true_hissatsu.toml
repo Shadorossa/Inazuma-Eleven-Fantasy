@@ -32,11 +32,11 @@ game = "Technique.OpenSkillTelop"
 name = "TrueHissatsu.ActorUnit"
 game = "Match.ActorUnit"
 
-# [g_gameRoot] + 0x948 = the skill table SkillInfoFind takes
+# [g_gameRoot] + Game.RootSkillTable = the skill table SkillInfoFind takes
 [[VRFW.Global]]
 name = "true_hissatsu_skill_table"
 base = "game_root"
-chain = [0x948]
+chain = ["Game.RootSkillTable"]
 
 # `[g_soccerActors]` = the soccer actor array (stride 0x570, 0x3A actors; +0x94 its handle, +0xD0 its team; 0 outside
 # matches): the `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60.

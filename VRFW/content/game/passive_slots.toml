@@ -1,0 +1,33 @@
+schema = "VRFW.game/2"
+
+# Passive slot modes (scripts/passive_slots.lua; declarations content/passive_slots/*.toml, VRFW.passive_slots/1). The
+# effect side is the service S6 detours of content/game/archetype.toml (tables Passive.SlotsOff / Signature*); this file
+# is what the menus and other mods' scripts read.
+
+# 1 while a declared signature-only mode runs, else 0: the one test for scripts and native answers
+[[VRFW.State]]
+key = "vrfw.passive.slots_off"
+
+# The two signature slot entries called through their hooked entry points: the answer every subscriber agreed on
+[[VRFW.Function]]
+name = "VRFW.SignatureSlotIdLive"
+game = "Passive.SignatureSlotId"
+
+[[VRFW.Function]]
+name = "VRFW.SignaturePieceOpenLive"
+game = "Passive.SignaturePieceOpen"
+
+# CMND_GET_CHARA_TEAM_PASSIVE_INFO(hdl, slot, field, useCopy, preview): the plate's 5 passive rows read empty
+[[VRFW.CommandFilter]]
+name = "VRFW.PassiveSlotsOffPlate"
+command = 0xF3483CE9
+handler = "PassiveSlots.PlateInfo"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_PASSIVE_SLOTS_OFF"    # () -> true while a declared signature-only mode runs
+handler = "PassiveSlots.CmdOff"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_SIGNATURE_PASSIVE"    # (charaHdl) -> passive id (0 = none), open (bool), signature-only mode (bool)
+handler = "PassiveSlots.CmdSignature"
+needs = ["VRFW.SignatureSlotIdLive", "VRFW.SignaturePieceOpenLive"]

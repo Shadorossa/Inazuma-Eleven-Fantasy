@@ -1,0 +1,31 @@
+# Chronicle Deluxe: the headers of its drop-rate list sections (content\items\drop_list.toml [[VRFW.DropList.Sections]]).
+# The header shows them as pictures: research/scripts/vrfw_drop_list_header_build.py --mod-file … makes one per
+# language from these rows (content\images\menu\10_win\win05\win05_38_sections.toml).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the technique manuals
+[[row]]
+id = "chronicle_deluxe_drop_list_techniques"
+es = "SUPERTÉCNICAS"
+en = "SPECIAL MOVES"
+fr = "TECHNIQUES"
+de = "TECHNIKEN"
+it = "TECNICHE"
+pt = "SUPERTÉCNICAS"
+ja = "必殺技"
+zh_hans = "必杀技"
+zh_hant = "必殺技"
+
+# boots, bracelets, accessories, special gear, kits and crests
+[[row]]
+id = "chronicle_deluxe_drop_list_gear"
+es = "EQUIPACIÓN"
+en = "GEAR"
+fr = "ÉQUIPEMENT"
+de = "AUSRÜSTUNG"
+it = "EQUIPAGGIAMENTO"
+pt = "EQUIPAMENTO"
+ja = "装備"
+zh_hans = "装备"
+zh_hant = "裝備"

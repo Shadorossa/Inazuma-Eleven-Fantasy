@@ -15,11 +15,11 @@ game = "Technique.SkillInfoFind"
 name = "IsActorOnPitch"
 game = "Match.IsActorOnPitch"
 
-# [g_gameRoot] + 0x948 = the skill table SkillInfoFind takes
+# [g_gameRoot] + Game.RootSkillTable = the skill table SkillInfoFind takes
 [[VRFW.Global]]
 name = "skill_table"
 base = "game_root"
-chain = [0x948]
+chain = ["Game.RootSkillTable"]
 
 # SKILL_INFO record (engine copy): skill id, partnerType (2-4 = performers), the three named partners (character ids)
 [[VRFW.Struct]]

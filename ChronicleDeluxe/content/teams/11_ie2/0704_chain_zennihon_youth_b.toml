@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): a rival of the chain «Ruta de la madre de Rika» (content/teams/70_route_nodes/chain_ie2_rika.toml).
+# The same team as the set-aside Chronicles Deluxe's (generated there by research/scripts/wiki_teams_build.py from
+# the wiki lineup; same key, so the same team id): while chronicles_deluxe is active this file is left out and that
+# mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Zennihon Youth B (IE2, «Rika's Mother's route» #8; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Zennihon_Youth_B
+[[team]]
+name = "ct_wk_zennihon_youth_b"
+key = "evt_ct_wk_zennihon_youth_b"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (team_kits_from_wiki.py: no VR kit)
+level = 70
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x6D455583, slot = 0, number = 1, rarity_step = 1 }, # Genda Koujirou = Joseph King (GK)
+  { card = 0x5700BD47, slot = 1, number = 2, rarity_step = 1 }, # Tsunami Jousuke = Hurley Kane (DF)
+  { card = 0x0263ADA0, slot = 2, number = 3, rarity_step = 1 }, # Kabeyama Heigorou = Jack Wallside (DF)
+  { card = 0xBDD66219, slot = 3, number = 4, rarity_step = 1 }, # Serizawa Kazunori = Kent Work (DF)
+  { card = 0x29C98EDE, slot = 4, number = 5, rarity_step = 1 }, # Domon Asuka = Bobby Shearer (DF)
+  { card = 0xB619C3C0, slot = 5, number = 6, rarity_step = 1 }, # Matsurida Wasshoi = Dave Fate (FW)
+  { card = 0x7C908D8B, slot = 6, number = 7, rarity_step = 1 }, # Henmi Wataru = Herman Waldon (MF)
+  { card = 0xDA3E7373, slot = 7, number = 8, rarity_step = 1 }, # Yakata Naoto = York Nashmith (MF)
+  { card = 0x873893C8, slot = 8, number = 9, rarity_step = 1 }, # Hera Tadashi = Henry House (MF)
+  { card = 0x517335ED, slot = 9, number = 10, rarity_step = 1, captain = true }, # Midorikawa Ryuuji = Janus (MF)
+  { card = 0xFC013998, slot = 10, number = 11, rarity_step = 1 }, # Gori Shingo = Gary Lancaster (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_zennihon_youth.png" # remastered crest of the wiki's Zennihon Youth emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Selección Juvenil B"
+short = "Selección Juvenil B"
+[team.text.en]
+name = "National Youth B"
+short = "National Youth B"
+[team.text.ja]
+name = "全日本ユースＢ"
+short = "全日本ユースＢ"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_zennihon_youth_b"
+card_moves = 4

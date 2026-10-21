@@ -27,6 +27,16 @@ game = "Passive.RarityVersion"
 name = "SpecialPlayers.ActorUnit"
 game = "Match.ActorUnit"
 
+# The custom passive slot's two entries called through their hooked entry points (vr_framework 2.8.25 profile names):
+# in a framework signature-only mode (vrfw.passive.slots_off) the slot holds what every subscriber answered there
+[[VRFW.Function]]
+name = "SpecialPlayers.SignatureSlotIdLive"
+game = "Passive.SignatureSlotId"
+
+[[VRFW.Function]]
+name = "SpecialPlayers.SignaturePieceOpenLive"
+game = "Passive.SignaturePieceOpen"
+
 # ------------------------------------------------------------------------------------------------ globals
 
 # `[g_soccerActors]` = the soccer actor array (stride 0x570, 0x3A actors, +0x94 its handle; 0 outside matches)

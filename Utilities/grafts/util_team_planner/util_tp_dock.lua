@@ -476,9 +476,15 @@ do
   end)
 
   -- the formation screen asked for the game's bank («Añadir del banco»): the retail «Banco» once it has closed
-  function TP.BankRequest()
+  function TP.BankRequest(from)
     local ok, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
     if not ok or not has then
+      return
+    end
+    -- OpenCharaBank waits for the bank to close: it needs the dock's coroutine (never the main thread)
+    local co, main = coroutine.running()
+    if co == nil or main then
+      TP.Log("bank request seen at", from, "outside a coroutine: kept for the next one")
       return
     end
     local set = funcLuaCommand(TP.C.PARAM_GET, TP.KEY_BANK)
@@ -488,19 +494,27 @@ do
       TP.Log("bank request of squad", tostring(set), "dropped (dock on", tostring(cur), ")")
       return
     end
-    TP.Log("bank request of squad", tostring(set))
+    TP.Log("bank request of squad", tostring(set), "at", from)
     OpenCharaBank()
+    -- the player chosen in the bank lands in the slot: the squad on the pitch drawn again from the team set (the
+    -- retail list gets this from its own return only while it holds the focus)
+    if type(UpdateFormationInfo) == "function" then
+      local okr, er = pcall(UpdateFormationInfo)
+      if not okr then
+        TP.Log("redraw after the bank failed:", tostring(er))
+      end
+    end
     if type(SetActiveDockBackground) == "function" then
       local n4 = TP.Local(STEM, "n4")
       pcall(SetActiveDockBackground, n4 ~= nil and n4 == cur)
     end
   end
 
-  for _, point in ipairs({"OnEnter", "OnDecideFocus"}) do
+  for _, point in ipairs({"OnEnter", "OnDecideFocus", "ResumeTeamDock"}) do
     TP.Wrap(STEM, point, function(orig)
       return function(...)
         local r = table.pack(orig(...))
-        TP.BankRequest()
+        TP.BankRequest(point)
         return table.unpack(r, 1, r.n)
       end
     end)

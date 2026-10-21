@@ -21,6 +21,17 @@ function Core.forget_all()
   for _, f in ipairs(forgets) do f(nil) end
 end
 
+-- run listeners (fn(run) with the run loaded / saved, fn(nil) when there is none): the parts that follow the run
+local run_listeners = {}
+function Core.on_run(fn) run_listeners[#run_listeners + 1] = fn end
+
+function Core.run_changed(r)
+  for _, f in ipairs(run_listeners) do
+    local ok, e = pcall(f, r)
+    if not ok then VRFW.warn("rogue: run listener: " .. tostring(e)) end
+  end
+end
+
 -- every command calls this first: slot events since the last call drop the caches of the slots they touched
 function Core.sync()
   local hit, all = U.slot_events()

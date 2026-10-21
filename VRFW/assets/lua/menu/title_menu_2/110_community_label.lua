@@ -13,7 +13,7 @@ local CLB = {
   SET_TEXT = 1083631230,    -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
   TEXT_PLATE = 1172899594,  -- refit the text plate (layer, idx, node)
   UPDATE = 1526988990,      -- CMND_VRFW_GAME_UPDATE () -> unknown build, features + mod declarations off
-  TX_UPDATE = 2082649789,   -- crc32("vrfw_game_update_notice") («Unknown game version: {n} functions off - see the report»)
+  TX_UPDATE = 2082649789,   -- crc32("vrfw_game_update_notice") («Unknown game version ({n} off)»)
 }
 
 local function CLB_Call(f, ...)

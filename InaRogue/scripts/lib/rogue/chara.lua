@@ -6,6 +6,8 @@
 -- * cols 2 element, 3 position, 9 rank, 41 card type (0 normal, 5-7 Hero, 8 Diamond, 9/10 Prime);
 -- * the Lv99-equivalent total of the 7 main stats (cols 45..51; layout col 43: 1 = Lv99 values, 2 = Lv200 values
 --   divided by the growth type's (col 44) [stats] lv200_factor_*), 0 = no per-player stats.
+-- * staff: a coach / manager card (chara_param flag_37 / flag_38, VRFW.chara.cards of the framework's character index):
+--   never in the draw pool nor among the What-if cards INAROGUE offers.
 
 local U = require "lib/rogue/util"
 local info, warn = U.logger("rogue")
@@ -23,6 +25,22 @@ local function intv(v)
   return v
 end
 
+-- the set of coach / manager cards; empty when the character index is not readable
+local function staff_cards()
+  local set = {}
+  local ok, cards = pcall(VRFW.chara.cards)
+  if not ok or type(cards) ~= "table" then
+    warn("no character index readable (" .. tostring(cards) .. "): coach / manager cards not marked")
+    return set
+  end
+  for _, c in ipairs(cards) do
+    if type(c) == "table" and type(c.id) == "number" and (c.coach == true or c.manager == true) then
+      set[c.id % U.TWO32] = true
+    end
+  end
+  return set
+end
+
 local function build()
   local t = { map = {}, pool = {}, whatif = {}, rows = 0, with_column = 0, per_tier = { [0] = 0, 0, 0, 0, 0, 0 } }
   local f = {
@@ -35,6 +53,7 @@ local function build()
   cols[#cols + 1] = COL_ROGUE_RARITY
   local pos = {}
   for i, c in ipairs(cols) do pos[i] = c + 1 end
+  local staff = staff_cards()
   local ok, rows = pcall(VRFW.table.raw, "data/common/gamedata/character/chara_param_*.cfg.bin", "CHARA_PARAM_INFO", pos)
   if not ok or type(rows) ~= "table" then
     warn("no chara_param readable (" .. tostring(rows) .. "): every player counts as 1 star")
@@ -77,11 +96,12 @@ local function build()
           rank = b(r[COL_RANK + 1]),
           stat_total99 = total,
           whatif = whatif,
+          staff = staff[id] == true,
         }
         t.map[id] = i
         t.per_tier[tier] = t.per_tier[tier] + 1
-        if tier >= 1 and tier <= M.MAX_TIER and i.card == 0 and not whatif then t.pool[#t.pool + 1] = id end
-        if whatif then t.whatif[#t.whatif + 1] = id end
+        if tier >= 1 and tier <= M.MAX_TIER and i.card == 0 and not whatif and not i.staff then t.pool[#t.pool + 1] = id end
+        if whatif and not i.staff then t.whatif[#t.whatif + 1] = id end
       end
     end
   end
@@ -122,7 +142,13 @@ function M.tier_of(param)
 end
 
 function M.in_pool(i)
-  return i.tier >= 1 and i.tier <= M.MAX_TIER and i.card == 0 and not i.whatif
+  return i.tier >= 1 and i.tier <= M.MAX_TIER and i.card == 0 and not i.whatif and not i.staff
+end
+
+-- a coach / manager card
+function M.is_staff(param)
+  local i = M.get(param)
+  return i ~= nil and i.staff
 end
 
 function M.is_whatif(param)

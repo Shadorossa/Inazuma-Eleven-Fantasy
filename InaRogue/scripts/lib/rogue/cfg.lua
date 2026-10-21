@@ -123,6 +123,8 @@ function C.get()
     budget_per_phase = deflt(r.budget_per_phase, 5),
     bank_capacity = deflt(r.bank_capacity, 6000),
     debug_tools = deflt(r.debug_tools, false),
+    debug_all_players = deflt(r.debug_all_players, false),
+    debug_all_players_limit = deflt(r.debug_all_players_limit, 5000),
     starter_pick = deflt(r.starter_pick, true),
     starter_cost = U.nums(deflt(r.starter_cost, { 1, 2, 4, 6, 9 })),
     frag_steps = U.nums(deflt(r.frag_steps, { 15, 40, 90 })),
@@ -251,6 +253,9 @@ function C.get()
   c.unlocks = sub("unlocks", "content/rogue/unlocks.toml")
   c.coaches = sub("coaches", "content/rogue/coaches.toml")
   c.bosses = sub("bosses", "content/rogue/bosses.toml")
+  -- [rogue.album] unlock_all: debug, every item and team of the album's «Objetos» / «Equipos» shown as found
+  local al = type(r.album) == "table" and r.album or {}
+  c.album = { unlock_all = deflt(al.unlock_all, false) }
   local b = type(r.board) == "table" and r.board or {}
   c.board = { fog = deflt(b.fog, true), reveal_boss = deflt(b.reveal_boss, true) }
   cache = c

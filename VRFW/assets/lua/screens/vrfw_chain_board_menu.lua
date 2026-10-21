@@ -71,12 +71,15 @@ local T = {
   CARD_LEVEL = 2793446092, CARD_REQ = 594567671, CARD_REQ_NONE = 2976084942, CARD_UNKNOWN = 697218748,
   CARD_CHEST = 3849747250, CARD_SCHEST = 390217589, CARD_SCHEST_RULE = 4095379111,
   CARD_WINS = 3412778781,   -- vrfw_chain_card_wins: the wins against the tile's team
-  -- a match tile's rank rewards (vrfw_chain_card_rank_prize / _got, vrfw_chain_prize_emblem / _kit / _item) and the
-  -- bag-full message of a late one (vrfw_chain_rank_full)
-  RANK_PRIZE = 2948352931, RANK_PRIZE_GOT = 1740067847, PRIZE_EMBLEM = 3984245770, PRIZE_KIT = 2896219202,
-  PRIZE_ITEM = 2488379808, RANK_FULL = 1667156185,
-  -- a double chest: vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty
+  -- a match tile's rewards box: a rank reward already received (vrfw_chain_reward_got), the kind of a reward without a
+  -- name of its own (vrfw_chain_prize_emblem / _kit / _item), a match drop not seen yet (vrfw_chain_drop_unknown) and
+  -- the bag-full message of a late rank reward (vrfw_chain_rank_full)
+  REWARD_GOT = 3379297442, PRIZE_EMBLEM = 3984245770, PRIZE_KIT = 2896219202, PRIZE_ITEM = 2488379808,
+  DROP_UNKNOWN = 1233052892, RANK_FULL = 1667156185,
+  -- a double chest: vrfw_chain_card_dchest / vrfw_chain_dchest_rule / _half / _empty; with an A tier:
+  -- vrfw_chain_dchest_rule_a / vrfw_chain_dchest_half_a / vrfw_chain_card_achest_rule
   CARD_DCHEST = 160501078, DCHEST_RULE = 979975818, DCHEST_HALF = 2280379239, DCHEST_EMPTY = 4144261363,
+  DCHEST_RULE_A = 1178752425, DCHEST_HALF_A = 1932131151, CARD_ACHEST_RULE = 42007469,
   -- a blocked tile: vrfw_chain_card_blocked / _blocked_rule / _blocked_open / _blocked_msg and one row per
   -- requirement kind vrfw_chain_req_win / _chain / _team_level / _player
   CARD_BLOCKED = 1593703163, BLOCKED_RULE = 1769468095, BLOCKED_OPEN = 2346704855, BLOCKED_MSG = 2829757331,
@@ -103,14 +106,20 @@ local L_TITLE = 1998461325      -- vrfw_chain_title  x6    (save01_02_list_item,
 local L_BACK = 4140114828       -- vrfw_chain_back   x1    (450) the declared background (role background, full screen)
 local L_RETAIL_BG = 367379312   -- mainmenu90_00_background (450): hidden while a declared background replaces it
 local L_HELP = 938197549       -- vrfw_chain_helpwin x1    (460) the help window's panel
-local L_CARD = 2367650408       -- vrfw_chain_card   x1    (459) the team card's panel
-local L_CARDTXT = 36395481      -- vrfw_chain_cardtxt x3   (save01_02_list_item, 551) the team card's lines
--- vrfw_chain_icon x12 (461): what sits ON a panel, in its own layer above both panels (drawn in the panel's
+local L_CARD = 2367650408       -- vrfw_chain_card   x2    (459) 0 the team card's panel, 1 the rewards box's panel
+-- vrfw_chain_cardtxt x9 (save01_02_list_item, 551): 0-2 the team card's lines, 3-4 the rank rewards' names, 5-8 the
+-- match drops' names
+local L_CARDTXT = 36395481
+local TXT_REWARD0, TXT_DROP0 = 3, 5
+-- vrfw_chain_icon x21 (461): what sits ON a panel, in its own layer above the panels (drawn in the panel's
 -- own layer the crest / the rank badges came out faded): 0 the card's crest / icon, 1-6 the help window's rank badges,
--- 7-11 its row separators
+-- 7-11 its row separators; the rewards box: 12-15 the rank rewards' badge + item icon (two per reward), 16 its line,
+-- 17-20 the match drops' icons
 local L_ICON = 4271885152
-local ICON_CREST, ICON_BADGE0, ICON_SEP0 = 0, 1, 7
-local N = {BG = 2, LINE = 120, TILE = 60, UI = 12, TITLE = 8, HELP = 1, CARD = 1, CARDTXT = 3, ICON = 12, ARROW0 = 3}
+local ICON_CREST, ICON_BADGE0, ICON_SEP0, ICON_HELP_END = 0, 1, 7, 12
+local ICON_REWARD0, ICON_RULE, ICON_DROP0 = 12, 16, 17
+local N = {BG = 2, LINE = 120, TILE = 60, UI = 12, TITLE = 8, HELP = 1, CARD = 2, CARDTXT = 9, ICON = 21, ARROW0 = 3,
+           REWARD = 2, DROP = 4}
 
 local C = {
   TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
@@ -133,6 +142,10 @@ local C = {
   TEXT_GET = 4074371074,
   PRIM_COLOR = 855211291,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
   ROTATE = 3476640154,        -- (layer, x, y, z radians, idx): retail SetLayerLocalRotate (kizuna_menu)
+  ITEM_ICON = 3508889864,     -- (layer, idx, mesh, slot, item): the item's own icon on a quad (as every game list)
+  TEXT_SIZE = 3549540977,     -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node) -> width, height
+  DROP_PREVIEW = 1376251505,  -- CMND_VRFW_DROP_PREVIEW (game, max, difficulty...) -> item ids, the most relevant first
+  DROP_LIST_OF = 1446336384,  -- CMND_VRFW_DROP_LIST_OF (game, difficulty, start, count) -> total, then item, percent
   LOG = 3661580131,
 }
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
@@ -176,8 +189,14 @@ local G = {Q = 36, CX = 960, BOARD_W = 1760, GRID_H = 540, GRID_CY = 680, CELL_M
 -- (square corners, a thinner outline, flat like the cells, the crest opaque, the card tighter, a third
 -- line with the wins against the team: 860 x 176 drawn 1:1, the crest 144 px, 16 px from the right edge; the first line
 -- in the plate's lighter upper band)
-local CARD = {CX = 960, CY = 236, W = 860, H = 176, CREST = 144, CREST_DX = 88, TEXT_X = 562, NAME_Y = 186,
-              NAME_S = 1.35, LINE_S = 0.8, LINE1_Y = 242, LINE2_Y = 284}
+-- On a board the card sits left (BOARD_CX) and a match tile's rewards box at its right; the hub's card stays centred.
+local CARD = {CX = 960, BOARD_CX = 540, CY = 236, W = 860, H = 176, CREST = 144, CREST_DX = 88, TEXT_DX = 32,
+              NAME_Y = 186, NAME_S = 1.35, LINE_S = 0.8, LINE1_Y = 242, LINE2_Y = 284}
+-- the rewards box (same height as the card, 20 px right of it): one row of the rank rewards (badge, item icon, name;
+-- the names shrink to fit), a thin line, then a 2 x 2 grid of the match's drops. Offsets from the box's top edge.
+local BOX = {CX = 1400, W = 820, PAD = 20, ROW_Y = 40, BADGE = 34, ICON = 36, ICON_DX = 42, NAME_DX = 88, GAP = 16,
+             NAME_S = 0.68, RULE_Y = 72, RULE = 2, RULE_COLOUR = {0.59, 0.67, 0.82}, DROP_Y = 104, DROP_PITCH = 42,
+             DROP_ICON = 32, DROP_NAME_DX = 42, GLYPH_W = 17, PAID_TINT = {0.5, 0.5, 0.5}}
 -- the page title's text: the retail list item's text node (save01_02.g4pkm _text_list01_on, left aligned) starts
 -- TEXT_DX px right of the item's origin and is centred on it vertically (the item's plate meshes are hidden)
 local TEXT_DX = 226
@@ -570,15 +589,15 @@ local function RankBadge(layer, idx, rdef, x, y, size)
   end
 end
 
--- a double chest's icon: disabled = the padlocked chest; open = the open chest; base taken ("h")
--- = the S chest (padlocked until its branch is all S); not opened yet = the chest (padlocked until reached)
+-- a double chest's icon: disabled = the padlocked chest; open = the open chest; base / A taken ("h" / "a")
+-- = the S chest (padlocked until its next tier is earned); not opened yet = the chest (padlocked until reached)
 local function DChestIcon(t)
   local st = VRFW_Chain.TileState(B, t)
   if VRFW_Chain.DChestEmpty(B, t) then
     return "icon_chest_locked"
   elseif st == "o" then
     return "icon_chest_open"
-  elseif st == "h" then
+  elseif st == "h" or st == "a" then
     return VRFW_Chain.DChestReady(B, t) and "icon_schest" or "icon_schest_locked"
   end
   return VRFW_Chain.Open(B, t) and "icon_chest" or "icon_chest_locked"
@@ -733,7 +752,7 @@ local HELP = {CX = 960, CY = 600, W = 860, LINE = 88, PAD = 20, BADGE = 64, BADG
 local function DrawHelp()
   if not help_open then
     Hide(L_HELP, 0)
-    for i = ICON_BADGE0, N.ICON - 1 do
+    for i = ICON_BADGE0, ICON_HELP_END - 1 do
       Hide(L_ICON, i)
     end
     for i = 0, N.TITLE - 1 do
@@ -750,7 +769,7 @@ local function DrawHelp()
     local y = HELP.CY + (i - (n + 1) / 2) * HELP.LINE
     RankBadge(L_ICON, ICON_BADGE0 + i - 1, r, left + HELP.BADGE_X, y, HELP.BADGE)
     local si = ICON_SEP0 + i - 2   -- the separator above every row but the first
-    if i > 1 and si < N.ICON then
+    if i > 1 and si < ICON_HELP_END then
       Quad(L_ICON, si, "line", HELP.CX, y - HELP.LINE / 2, HELP.W - 32, HELP.SEP)
       Tint(L_ICON, si, HELP.SEP_COLOUR)
     end
@@ -762,7 +781,7 @@ local function DrawHelp()
   for i = ICON_BADGE0 + n, ICON_SEP0 - 1 do
     Hide(L_ICON, i)
   end
-  for i = ICON_SEP0 + math.max(0, n - 1), N.ICON - 1 do
+  for i = ICON_SEP0 + math.max(0, n - 1), ICON_HELP_END - 1 do
     Hide(L_ICON, i)
   end
   for i = n, N.TITLE - 1 do
@@ -820,25 +839,182 @@ local function ReqText(tile)
   return table.concat(parts, "  ·  ")
 end
 
--- a match tile's rank rewards as one line: "A: Crest  ·  S: <item> (received)" (VRFW_Chain.RankRewards): the entry's
--- `Text` row, else an emblem / kit by its kind, else the item's name; "" = none
-local function RankPrizeText(t)
-  local parts = {}
-  for _, r in ipairs(VRFW_Chain.RankRewards ~= nil and VRFW_Chain.RankRewards(B, t) or {}) do
-    local what = r.name
-    if (r.text or 0) ~= 0 and Text(r.text) ~= "" then
-      what = Text(r.text)                 -- the declared label (`Text`: a menu_text row)
-    elseif r.kind == "emblem" then
-      what = Text(T.PRIZE_EMBLEM)
-    elseif r.kind == "kit" then
-      what = Text(T.PRIZE_KIT)
-    elseif what == nil or what == "" then
-      what = Text(T.PRIZE_ITEM)
-    end
-    local label = VRFW_MatchRank ~= nil and VRFW_MatchRank.Label(r.rank) or r.rank
-    parts[#parts + 1] = Fmt(r.paid and T.RANK_PRIZE_GOT or T.RANK_PRIZE, label, what)
+-- ---- the rewards box of a match tile ---------------------------------------------------------------------------------
+-- a rank reward's shown name: the entry's `Text` row, else an emblem / kit by its kind, else the item's name; a reward
+-- already received in this save says so
+local function RewardName(r)
+  local what = r.name
+  if (r.text or 0) ~= 0 and Text(r.text) ~= "" then
+    what = Text(r.text)                 -- the declared label (`Text`: a menu_text row)
+  elseif r.kind == "emblem" then
+    what = Text(T.PRIZE_EMBLEM)
+  elseif r.kind == "kit" then
+    what = Text(T.PRIZE_KIT)
+  elseif what == nil or what == "" then
+    what = Text(T.PRIZE_ITEM)
   end
-  return table.concat(parts, "  ·  ")
+  if r.paid then
+    what = Fmt(T.REWARD_GOT, what)
+  end
+  return what
+end
+
+-- match tile t's rank rewards in rank order (the lower rank first), at most N.REWARD
+local function SortedRewards(t)
+  local list = {}
+  for k, r in ipairs(VRFW_Chain.RankRewards ~= nil and VRFW_Chain.RankRewards(B, t) or {}) do
+    list[#list + 1] = {r = r, k = k, order = VRFW_MatchRank ~= nil and VRFW_MatchRank.Order(r.rank) or 0}
+  end
+  table.sort(list, function(a, b)
+    if a.order ~= b.order then
+      return a.order < b.order
+    end
+    return a.k < b.k
+  end)
+  local out = {}
+  for i = 1, math.min(#list, N.REWARD) do
+    out[i] = list[i].r
+  end
+  return out
+end
+
+-- the items a match drops (the game's drop tables after the build): the reward preview groups first
+-- (CMND_VRFW_DROP_PREVIEW), then the drop-rate list's order (CMND_VRFW_DROP_LIST_OF), at most N.DROP, kept per game row
+local drops_of = {}
+local function MatchDrops(tile)
+  local game, difficulty = tonumber(tile.game) or 0, tonumber(tile.difficulty) or 0
+  local key = game .. ":" .. difficulty
+  if drops_of[key] ~= nil then
+    return drops_of[key]
+  end
+  local out, seen = {}, {}
+  local function add(id)
+    if type(id) == "number" and id ~= 0 and not seen[id] and #out < N.DROP then
+      seen[id] = true
+      out[#out + 1] = id
+    end
+  end
+  if game ~= 0 then
+    local r = table.pack(pcall(funcLuaCommand, C.DROP_PREVIEW, game, N.DROP, difficulty))
+    if r[1] then
+      for k = 2, r.n do
+        add(r[k])
+      end
+    end
+    if #out < N.DROP then
+      local q = table.pack(pcall(funcLuaCommand, C.DROP_LIST_OF, game, difficulty, 0, 4 * N.DROP))
+      if q[1] then
+        for k = 3, q.n, 2 do      -- total, then item, percent per row
+          add(q[k])
+        end
+      end
+    end
+  end
+  drops_of[key] = out
+  Log("drops of game", game, "difficulty", difficulty, #out)
+  return out
+end
+
+-- a box line's width at text scale 1: measured by the game, else estimated from its characters
+local function LineWidth(i, s)
+  funcLuaMenuCommand(C.SCALE, L_CARDTXT, 1, 1, 1, i)
+  local ok, w = pcall(funcLuaMenuCommand, C.TEXT_SIZE, L_CARDTXT, i, TEXT_ON, s)
+  if ok and type(w) == "number" and w > 0 then
+    return w
+  end
+  local chars = string.gsub(s, "[\128-\191]", "")
+  return #chars * BOX.GLYPH_W
+end
+
+-- an item's own game icon on a transparent quad (the "?" icon when the game has none)
+local function ItemIcon(idx, item, x, y, size, tint)
+  local tc, sc = VRFW_ScreenArt.Plain("blank")
+  QuadTex(L_ICON, idx, tc, sc, x, y, size, size)
+  local ok, r = pcall(funcLuaMenuCommand, C.ITEM_ICON, L_ICON, idx, MESH_QUAD, NODE_QUAD, item)
+  if not ok or r == false then
+    Quad(L_ICON, idx, "icon_unknown", x, y, size, size)
+    return
+  end
+  Tint(L_ICON, idx, tint)
+end
+
+local function HideRewardsBox()
+  Hide(L_CARD, 1)
+  for i = ICON_REWARD0, N.ICON - 1 do
+    Hide(L_ICON, i)
+  end
+  for i = TXT_REWARD0, N.CARDTXT - 1 do
+    Hide(L_CARDTXT, i)
+  end
+end
+
+-- match tile t's rewards box centred on cx: the rank rewards in one row (badge, item icon, name; when the names do
+-- not fit the row they shrink by one factor), a thin line, then the match's drops in a 2 x 2 grid, each «???» with
+-- the "?" icon. Nothing to show: no box.
+local function DrawRewardsBox(t, cx)
+  local tile = B.tiles[t]
+  local rewards, drops = SortedRewards(t), MatchDrops(tile)
+  if #rewards == 0 and #drops == 0 then
+    HideRewardsBox()
+    return
+  end
+  Quad(L_CARD, 1, "card", cx, CARD.CY, BOX.W, CARD.H)
+  local left, top, row_w = cx - BOX.W / 2 + BOX.PAD, CARD.CY - CARD.H / 2, BOX.W - 2 * BOX.PAD
+  -- the rank rewards: each in its share of the row, moved right when the name before it is longer than its share
+  local n = #rewards
+  local names, widths, total = {}, {}, 0
+  for i = 1, n do
+    names[i] = RewardName(rewards[i])
+    widths[i] = LineWidth(TXT_REWARD0 + i - 1, names[i]) * BOX.NAME_S
+    total = total + widths[i]
+  end
+  local room = row_w - n * BOX.NAME_DX - math.max(0, n - 1) * BOX.GAP
+  local k = (total > room and total > 0) and room / total or 1
+  local x, y = left, top + BOX.ROW_Y
+  for i = 1, N.REWARD do
+    local r = rewards[i]
+    local badge, icon = ICON_REWARD0 + 2 * (i - 1), ICON_REWARD0 + 2 * (i - 1) + 1
+    if r == nil then
+      Hide(L_ICON, badge)
+      Hide(L_ICON, icon)
+      CardLine(TXT_REWARD0 + i - 1, nil)
+    else
+      if k == 1 then
+        -- its share's start, unless the rewards from here on would then run past the row's end
+        local rest = (n - i) * BOX.GAP
+        for j = i, n do
+          rest = rest + BOX.NAME_DX + widths[j]
+        end
+        x = math.max(x, math.min(left + (i - 1) * row_w / n, left + row_w - rest))
+      end
+      local tint = r.paid and BOX.PAID_TINT or COLOUR.WHITE
+      local rdef = VRFW_MatchRank ~= nil and VRFW_MatchRank.ById(r.rank) or nil
+      RankBadge(L_ICON, badge, rdef, x + BOX.BADGE / 2, y, BOX.BADGE)
+      Tint(L_ICON, badge, tint)
+      ItemIcon(icon, r.id, x + BOX.ICON_DX + BOX.ICON / 2, y, BOX.ICON, tint)
+      CardLine(TXT_REWARD0 + i - 1, names[i], x + BOX.NAME_DX, y, BOX.NAME_S * k)
+      x = x + BOX.NAME_DX + widths[i] * k + BOX.GAP
+    end
+  end
+  -- the line between the two parts, only when both have something
+  if n > 0 and #drops > 0 then
+    Quad(L_ICON, ICON_RULE, "line", cx, top + BOX.RULE_Y, row_w, BOX.RULE)
+    Tint(L_ICON, ICON_RULE, BOX.RULE_COLOUR)
+  else
+    Hide(L_ICON, ICON_RULE)
+  end
+  -- the drops: two columns, row by row
+  for j = 1, N.DROP do
+    if drops[j] == nil then
+      Hide(L_ICON, ICON_DROP0 + j - 1)
+      CardLine(TXT_DROP0 + j - 1, nil)
+    else
+      local dx = left + ((j - 1) % 2) * row_w / 2
+      local dy = top + BOX.DROP_Y + math.floor((j - 1) / 2) * BOX.DROP_PITCH
+      Quad(L_ICON, ICON_DROP0 + j - 1, "icon_unknown", dx + BOX.DROP_ICON / 2, dy, BOX.DROP_ICON, BOX.DROP_ICON)
+      CardLine(TXT_DROP0 + j - 1, Text(T.DROP_UNKNOWN), dx + BOX.DROP_NAME_DX, dy, BOX.NAME_S)
+    end
+  end
 end
 
 -- the focused tile's card above the board: panel, up to 3 lines (the first one large), the crest / icon on the right
@@ -850,9 +1026,11 @@ local function DrawCard()
     for i = 0, N.CARDTXT - 1 do
       Hide(L_CARDTXT, i)
     end
+    HideRewardsBox()
     return
   end
-  Quad(L_CARD, 0, "card", CARD.CX, CARD.CY, CARD.W, CARD.H)
+  local cx = CARD.BOARD_CX
+  Quad(L_CARD, 0, "card", cx, CARD.CY, CARD.W, CARD.H)
   local open = VRFW_Chain.Open(B, focus)
   local st = VRFW_Chain.TileState(B, focus)
   local lines, icon = {}, "icon_unknown"
@@ -868,11 +1046,6 @@ local function DrawCard()
     lines[2] = lines[2] .. "  |  " .. (mc ~= nil and Fmt(T.CARD_REQ, mc) or Text(T.CARD_REQ_NONE))
     -- the save's wins against this team (VRFW_Stats, at least 1 once the tile is won)
     lines[3] = Fmt(T.CARD_WINS, VRFW_Chain.WinsVs(B, focus))
-    -- the rank rewards of its first win at each rank, after the wins
-    local prizes = RankPrizeText(focus)
-    if prizes ~= "" then
-      lines[3] = lines[3] .. "  ·  " .. prizes
-    end
     icon = nil
   elseif tile.kind == "match" then
     lines = {Text(T.CARD_UNKNOWN), Fmt(T.CARD_LEVEL, tile.level), Text(T.LOCKED)}   -- not open yet: the team stays hidden
@@ -900,16 +1073,17 @@ local function DrawCard()
       status = Text(T.CHEST_OPEN)
     elseif VRFW_Chain.DChestReady(B, focus) then
       status = Text(T.CARD_CHEST)
-    elseif st == "h" then
-      status = Text(T.DCHEST_HALF)
+    elseif st == "h" or st == "a" then
+      status = Text(VRFW_Chain.DChestWaits(B, focus) == "a" and T.DCHEST_HALF_A or T.DCHEST_HALF)
     elseif open then
-      status = Text(T.CARD_SCHEST_RULE)      -- no base reward: it waits for the S
+      -- no base reward: it waits for the A / S
+      status = Text(VRFW_Chain.DChestWaits(B, focus) == "a" and T.CARD_ACHEST_RULE or T.CARD_SCHEST_RULE)
     else
       status = Text(T.LOCKED)
     end
     lines = {Text(T.CARD_DCHEST), status}
     if not VRFW_Chain.DChestEmpty(B, focus) and st ~= "o" then
-      lines[3] = Text(T.DCHEST_RULE)
+      lines[3] = Text((tile.areward or "") ~= "" and T.DCHEST_RULE_A or T.DCHEST_RULE)
     end
     icon = DChestIcon(focus)
   elseif tile.kind == "chest" then
@@ -928,11 +1102,17 @@ local function DrawCard()
   if #lines == 2 then
     ys = {CARD.NAME_Y, (CARD.LINE1_Y + CARD.LINE2_Y) / 2}
   end
-  local x = CARD.TEXT_X
-  for i = 0, N.CARDTXT - 1 do
+  local x = cx - CARD.W / 2 + CARD.TEXT_DX
+  for i = 0, TXT_REWARD0 - 1 do
     CardLine(i, lines[i + 1], x, ys[i + 1] or CARD.CY, i == 0 and CARD.NAME_S or CARD.LINE_S)
   end
-  local ix = CARD.CX + CARD.W / 2 - CARD.CREST_DX
+  -- an open match tile: its rank rewards and drops in the box at the card's right
+  if tile.kind == "match" and open then
+    DrawRewardsBox(focus, BOX.CX)
+  else
+    HideRewardsBox()
+  end
+  local ix = cx + CARD.W / 2 - CARD.CREST_DX
   if icon == nil then
     local tc, sc = Emblem(tile)
     if tc == false then
@@ -1013,9 +1193,10 @@ local function DrawHubCard()
   end
   local lines = {b.title, line2, Text(T.HUB_OPEN)}
   local ys = {CARD.NAME_Y, CARD.LINE1_Y, CARD.LINE2_Y}
-  for i = 0, N.CARDTXT - 1 do
-    CardLine(i, lines[i + 1], CARD.TEXT_X, ys[i + 1], i == 0 and CARD.NAME_S or CARD.LINE_S)
+  for i = 0, TXT_REWARD0 - 1 do
+    CardLine(i, lines[i + 1], CARD.CX - CARD.W / 2 + CARD.TEXT_DX, ys[i + 1], i == 0 and CARD.NAME_S or CARD.LINE_S)
   end
+  HideRewardsBox()
   DrawCrest(L_ICON, ICON_CREST, ChainCrestTile(b), CARD.CX + CARD.W / 2 - CARD.CREST_DX, CARD.CY, CARD.CREST)
 end
 
@@ -1322,8 +1503,13 @@ local function Decide()
     end
     if not VRFW_Chain.DChestReady(B, focus) then
       funcLuaCommand(C.SE, SE_NG)
-      Log("dchest waits for S", tile.id, st)
-      Message(Text(st == "h" and T.DCHEST_HALF or T.SCHEST))
+      local waits = VRFW_Chain.DChestWaits(B, focus)
+      Log("dchest waits for", waits, tile.id, st)
+      if st == "h" or st == "a" then
+        Message(Text(waits == "a" and T.DCHEST_HALF_A or T.DCHEST_HALF))
+      else
+        Message(Text(waits == "a" and T.CARD_ACHEST_RULE or T.SCHEST))
+      end
       return
     end
     funcLuaCommand(C.SE, SE_DECIDE)

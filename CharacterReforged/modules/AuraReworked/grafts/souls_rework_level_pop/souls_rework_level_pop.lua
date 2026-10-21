@@ -1,19 +1,23 @@
 -- ===== SoulsRework level pop BEGIN =====
--- Souls Rework's level-up pop (match play HUD; docs/game/mods/souls-rework-design.md §9.5). Each time a totem gains a
--- level, the module's script queues a pop (CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, handle, text, colour,
--- timing, sizes; config.toml [souls.level_pop]); this block draws it over that player's head and keeps it there while he
--- moves: a small plate of the totem's element colour with «+Nv.2» on it pops in (scale and fade in), stays, then rises
--- and fades out. While a cut-in or a match scene plays (scene = 1, the framework's cutin_start / cutin_end) every pop is
--- hidden; its time runs on, and it shows again after the scene only while that time is not over.
+-- Aura Reworked's level-up pop (match play HUD; docs/game/mods/souls-rework-design.md §9.5). Each time a totem gains a
+-- level, the module's script queues a pop (CMND_AURAREWORKED_SOULS_LEVEL_POP(seen) -> seq, scene, hdl, text, bubbles,
+-- timing, sizes; config.toml [souls.level_pop]); this block draws it over that player's head and keeps it there while
+-- he moves: a small speech bubble in the colours of the aura's type, its tail pointing down to the head, with «+Nv.2»
+-- in it. It pops in (scale and fade in), stays, then rises and fades out. While a cut-in or a match scene plays
+-- (scene = 1, the framework's cutin_start / cutin_end) every pop is hidden; its time runs on, and it shows again after
+-- the scene only while that time is not over.
 -- Layer souls_rework_level_pop (the module's content\menus\level_pop.toml: the retail AI-camera telop with the face
--- bubble's anchoring, 4 instances = 4 pops). Each pop is one instance: its quad shows the module's own white plate
--- (content\images\menu\02_btl\souls_rework_pop.toml) tinted with CMND_SET_PRIM_COLOR, and the telop's own text node on
--- that quad carries the text, so both scale together (one uniform scale from the configured height).
+-- bubble's anchoring, 8 instances = 4 pops). Each pop is two instances: the bubble (instance 2 × slot: its quad shows
+-- the aura type's bubble sprite of the module's atlas, content\images\menu\02_btl\souls_rework_pop.toml, scaled to the
+-- bubble's size; no text) and the text (instance 2 × slot + 1: quad hidden, the telop's text node at the text scale).
+-- The bubble's width is the narrowest of the type's sprites that holds the text (the game's measure of the text,
+-- CMND_GET_MENU_TEXT_RECT_SIZE; a per-character estimate when it answers nothing) plus the side room.
 -- Placement is the retail one of the face bubbles over a player (GetCharaScreenPos of the play HUD's include): the
 -- head position (GetSoccerCharaInfo info 10) through the match camera (0xFC77769A) gives the layer position; layout
 -- offsets go through the retail layout -> position conversion (1192474820). Each instance's node offset is measured
--- once per HUD (as the Furor banner does), so the plate is centred on the head. The plate's colour and the text are set
--- right after the instance is shown (and again on every show).
+-- per HUD (as the Furor banner does) and measured again until two measures agree: the telop's open animation moves
+-- the node at first. The bubble's tail tip sits `lift` above the head and both instances follow the head every frame
+-- while the pop is shown.
 -- Wrapper of PostStep only (every frame of the play HUD); no engine call at chunk load; every engine call in pcall.
 -- loader.log: the first lines «SOULSREWORK_POP ...», then one «SOULSREWORK_POP pop ...» / «... shown ...» per pop.
 
@@ -26,12 +30,13 @@ local souls_pop = {
   TEXTURE_SLOT = @crc:camera_telop01@,        -- the quad's texture slot
   ATLAS_PATH = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx",
   ATLAS = 1266033038 --[[#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx]],
-  SPRITE = @crc:souls_rework_pop_plate@,
-  SLOTS = 4,                                  -- pops at once (one instance each: instance = slot)
+  SLOTS = 4,                                  -- pops at once (two instances each)
   APPEAR_FROM = 0.6,                          -- the pop's scale when it starts to appear
   PROBE_STEP = 100,
   PROBE_WAIT = 2,
-  MAX_LOGS = 30,
+  PROBE_AGREE = 1.5,                          -- two node measures closer than this (position units) are taken
+  PROBE_ROUNDS = 40,                          -- measures at most (then the last one is taken)
+  MAX_LOGS = 40,
   -- engine commands
   CHARA_INFO = 3748253003 --[[GetSoccerCharaInfo's command]],
   WORLD_TO_SCREEN = 4235687578 --[[CalcCharaScreenPos's command (x, y, z, true) -> screen x, y]],
@@ -42,9 +47,9 @@ local souls_pop = {
   SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]],
   SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]],
   SET_TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING]],
+  TEXT_SIZE = 3549540977 --[[CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node, text) -> width, height]],
   MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]],
   LAYER_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]],
-  PRIM_COLOR = 855211291 --[[CMND_SET_PRIM_COLOR (layer, idx, mesh, r, g, b)]],
   MODEL_ALPHA = 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA (layer, idx, 0, a)]],
   TEXT_ALPHA = 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA (layer, idx, node, a)]],
   IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
@@ -57,7 +62,7 @@ local souls_pop = {
   seen = 0,                                   -- the last pop seq taken
   init = false, texture = 0, conv = nil,
   node = {}, probe = {}, ready = {},          -- per instance (0-based): node offset in position units, probe, look set
-  pops = {},                                  -- per slot: { hdl, text, r, g, b, timing, t, shown }
+  pops = {},                                  -- per slot: the pop (see Start)
   scene = false,                              -- a cut-in or a match scene plays (the last answer of the command)
   logs = 0,
 }
@@ -106,15 +111,18 @@ function souls_pop.Global(i, node)
 end
 
 -- an instance's node offset from its layer position, in position units at scale 1:
--- global = origin + unit * position + scale * node (as the Furor banner's probe)
+-- global = origin + unit * position + scale * node (as the Furor banner's probe). Measured again until two measures
+-- agree (the telop's open animation moves the node during the first frames).
 function souls_pop.Probe(i)
   if souls_pop.node[i] ~= nil then
     return souls_pop.node[i] ~= false
   end
   local layer, node = souls_pop.LAYER, souls_pop.QUAD
   local p = souls_pop.probe[i]
-  if p == nil then
-    souls_pop.probe[i] = {stage = 1, wait = souls_pop.PROBE_WAIT}
+  if p == nil or p.stage == 0 then
+    p = p or {rounds = 0}
+    p.stage, p.wait = 1, souls_pop.PROBE_WAIT
+    souls_pop.probe[i] = p
     souls_pop.Menu(souls_pop.SET_SCALE, layer, 1, 1, 1, i)
     souls_pop.Menu(souls_pop.SET_POS, layer, 0, 0, 0, i)
     return false
@@ -147,9 +155,17 @@ function souls_pop.Probe(i)
     souls_pop.Log("instance", i, "its position does not move its node: off")
     return false
   end
-  souls_pop.node[i] = {x = (x - p.x1) / unit_x, y = (y - p.y1) / unit_y}
+  local nx, ny = (x - p.x1) / unit_x, (y - p.y1) / unit_y
+  p.rounds = p.rounds + 1
+  local agree = p.nx ~= nil and math.abs(nx - p.nx) <= souls_pop.PROBE_AGREE and math.abs(ny - p.ny) <= souls_pop.PROBE_AGREE
+  if not agree and p.rounds < souls_pop.PROBE_ROUNDS then
+    p.nx, p.ny, p.stage = nx, ny, 0
+    return false
+  end
+  souls_pop.node[i] = {x = nx, y = ny}
   souls_pop.Menu(souls_pop.SET_SCALE, layer, 1, 1, 1, i)
-  souls_pop.Log("instance", i, "node offset", string.format("%.1f %.1f", souls_pop.node[i].x, souls_pop.node[i].y))
+  souls_pop.Log("instance", i, "node offset", string.format("%.1f %.1f", nx, ny), "after", p.rounds,
+    agree and "measures" or "measures (never agreed)")
   return true
 end
 
@@ -185,15 +201,19 @@ function souls_pop.Hide(slot)
   local pop = souls_pop.pops[slot]
   if pop and pop.shown then
     pop.shown = false
-    souls_pop.Menu(souls_pop.LAYER_VISIBLE, souls_pop.LAYER, slot, false)
+    souls_pop.Menu(souls_pop.LAYER_VISIBLE, souls_pop.LAYER, 2 * slot, false)
+    souls_pop.Menu(souls_pop.LAYER_VISIBLE, souls_pop.LAYER, 2 * slot + 1, false)
   end
 end
 
--- an instance's fixed look: the module's plate sprite on its quad
+-- an instance's fixed look: the bubble instance has no text, the text instance no quad
 function souls_pop.Prepare(i)
   souls_pop.ready[i] = true
-  souls_pop.Menu(souls_pop.SWAP_TEXTURE, souls_pop.LAYER, souls_pop.ATLAS, souls_pop.SPRITE, souls_pop.TEXTURE_SLOT, 0, i)
-  souls_pop.Menu(souls_pop.SET_TEXT, souls_pop.LAYER, souls_pop.TEXT, "", i)
+  if i % 2 == 0 then
+    souls_pop.Menu(souls_pop.SET_TEXT, souls_pop.LAYER, souls_pop.TEXT, "", i)
+  else
+    souls_pop.Menu(souls_pop.MESH_VISIBLE, souls_pop.LAYER, souls_pop.QUAD, false, i)
+  end
 end
 
 function souls_pop.TextureReady()
@@ -210,6 +230,16 @@ function souls_pop.TextureReady()
     end
   end
   return souls_pop.texture == 2
+end
+
+-- "crc:width;crc:width;…" -> { {sprite, width}, … } narrowest first
+function souls_pop.Bubbles(s)
+  local list = {}
+  for crc, w in string.gmatch(tostring(s or ""), "(%d+):(%d+)") do
+    list[#list + 1] = {sprite = tonumber(crc), width = tonumber(w)}
+  end
+  table.sort(list, function(a, b) return a.width < b.width end)
+  return list
 end
 
 -- a new pop takes a free slot (else the oldest one)
@@ -229,21 +259,54 @@ function souls_pop.Start(r)
     slot = oldest
     souls_pop.Hide(slot)
   end
-  local pop = {hdl = r[3], text = tostring(r[4] or ""), r = tonumber(r[5]) or 1, g = tonumber(r[6]) or 1,
-    b = tonumber(r[7]) or 1, appear = math.max(0.01, tonumber(r[8]) or 0.15), hold = math.max(0, tonumber(r[9]) or 1),
-    out = math.max(0.01, tonumber(r[10]) or 0.4), height = tonumber(r[11]) or 36, lift = tonumber(r[12]) or 24,
-    rise = tonumber(r[13]) or 40, t = 0, shown = false}
+  local pop = {hdl = r[3], text = tostring(r[4] or ""), bubbles = souls_pop.Bubbles(r[5]),
+    appear = math.max(0.01, tonumber(r[6]) or 0.15), hold = math.max(0, tonumber(r[7]) or 1),
+    out = math.max(0.01, tonumber(r[8]) or 0.4), body = tonumber(r[9]) or 28, tail = tonumber(r[10]) or 8,
+    lift = tonumber(r[11]) or 10, rise = tonumber(r[12]) or 24, text_scale = tonumber(r[13]) or 0.45,
+    pad = tonumber(r[14]) or 8, char_width = tonumber(r[15]) or 24, text_y = tonumber(r[16]) or 0,
+    t = 0, shown = false, dressed = false}
   souls_pop.pops[slot] = pop
-  souls_pop.Event("pop", r[1], "hdl", pop.hdl, pop.text, string.format("rgb %.2f %.2f %.2f", pop.r, pop.g, pop.b), "slot",
-    slot, string.format("hold %.2f s", pop.hold))
+  souls_pop.Event("pop", r[1], "hdl", pop.hdl, pop.text, "bubbles", #pop.bubbles, "slot", slot,
+    string.format("hold %.2f s", pop.hold))
 end
 
--- the pop's colour and text, on its instance once it is visible
+-- the text's width at scale 1 (layout units): the game's measure, else visible characters × char_width
+function souls_pop.TextWidth(i, pop)
+  local w = souls_pop.Menu(souls_pop.TEXT_SIZE, souls_pop.LAYER, i, souls_pop.TEXT, pop.text)
+  if type(w) == "number" and w > 1 and w < 4000 then
+    return w, "measured"
+  end
+  local plain = string.gsub(pop.text, "%[[^%]]*%]", "")
+  local _, chars = string.gsub(plain, "[^\128-\191]", "")
+  return chars * pop.char_width, "estimated"
+end
+
+-- the pop's text and bubble sprite, on its instances before they are first shown
 function souls_pop.Dress(slot, pop)
-  local layer = souls_pop.LAYER
-  souls_pop.Menu(souls_pop.PRIM_COLOR, layer, slot, souls_pop.QUAD, pop.r, pop.g, pop.b)
-  souls_pop.Menu(souls_pop.SET_TEXT, layer, souls_pop.TEXT, pop.text, slot)
-  souls_pop.Event("shown", "slot", slot, pop.text)
+  local layer, bubble, label = souls_pop.LAYER, 2 * slot, 2 * slot + 1
+  pop.dressed = true
+  souls_pop.Menu(souls_pop.SET_TEXT, layer, souls_pop.TEXT, pop.text, label)
+  local text_w, how = souls_pop.TextWidth(label, pop)
+  local need = text_w * pop.text_scale + 2 * pop.pad
+  local pick = pop.bubbles[#pop.bubbles]
+  for _, b in ipairs(pop.bubbles) do
+    if b.width >= need then
+      pick = b
+      break
+    end
+  end
+  if pick == nil then
+    pop.width = need
+    souls_pop.Event("pop slot", slot, "no bubble sprite: shown without one")
+    souls_pop.Menu(souls_pop.MESH_VISIBLE, layer, souls_pop.QUAD, false, bubble)
+  else
+    -- the widest sprite stretched when even it is too narrow
+    pop.width = math.max(pick.width, need)
+    souls_pop.Menu(souls_pop.MESH_VISIBLE, layer, souls_pop.QUAD, true, bubble)
+    souls_pop.Menu(souls_pop.SWAP_TEXTURE, layer, souls_pop.ATLAS, pick.sprite, souls_pop.TEXTURE_SLOT, 0, bubble)
+  end
+  souls_pop.Event("shown", "slot", slot, pop.text, string.format("text %.1f (%s) bubble %.1f x %.1f", text_w, how,
+    pop.width, pop.body + pop.tail))
 end
 
 function souls_pop.Poll()
@@ -305,8 +368,8 @@ function souls_pop.Draw(slot, pop, dt)
     souls_pop.Hide(slot)
     return
   end
-  local plate = slot
-  if not souls_pop.node[plate] then
+  local bubble, label = 2 * slot, 2 * slot + 1
+  if not souls_pop.node[bubble] or not souls_pop.node[label] then
     return
   end
   local hx, hy = souls_pop.Head(pop.hdl)
@@ -314,20 +377,27 @@ function souls_pop.Draw(slot, pop, dt)
     souls_pop.Hide(slot)
     return
   end
+  if not pop.dressed then
+    souls_pop.Dress(slot, pop)
+  end
   local cv = souls_pop.Conv()
-  -- the plate's centre: above the head by the lift, half the plate, and the rise
-  local cx = hx
-  local cy = hy + (pop.lift + pop.height / 2 + rise) * cv.y
-  -- one uniform scale for the quad and its text: the configured height over the quad's
-  local s = pop.height * k / souls_pop.QUAD_H
-  souls_pop.Place(plate, cx, cy, souls_pop.QUAD_W * s * cv.x, souls_pop.QUAD_H * s * cv.y, s, s)
+  -- the bubble grows from its tail tip, which sits `lift` (+ the rise) above the head
+  local w, body, tail = pop.width * k, pop.body * k, pop.tail * k
+  local tip = hy + (pop.lift + rise) * cv.y
+  local height = body + tail
+  souls_pop.Place(bubble, hx, tip + height / 2 * cv.y, w * cv.x, height * cv.y, w / souls_pop.QUAD_W,
+    height / souls_pop.QUAD_H)
+  -- the text: centred on the body
+  local s = pop.text_scale * k
+  local text_y = tip + (tail + body / 2 + pop.text_y * k) * cv.y
+  souls_pop.Place(label, hx, text_y, souls_pop.QUAD_W * s * cv.x, souls_pop.QUAD_H * s * cv.y, s, s)
   local layer = souls_pop.LAYER
-  souls_pop.Menu(souls_pop.MODEL_ALPHA, layer, plate, 0, alpha)
-  souls_pop.Menu(souls_pop.TEXT_ALPHA, layer, plate, souls_pop.TEXT, alpha)
+  souls_pop.Menu(souls_pop.MODEL_ALPHA, layer, bubble, 0, alpha)
+  souls_pop.Menu(souls_pop.TEXT_ALPHA, layer, label, souls_pop.TEXT, alpha)
   if not pop.shown then
     pop.shown = true
-    souls_pop.Menu(souls_pop.LAYER_VISIBLE, layer, plate, true)
-    souls_pop.Dress(slot, pop)
+    souls_pop.Menu(souls_pop.LAYER_VISIBLE, layer, bubble, true)
+    souls_pop.Menu(souls_pop.LAYER_VISIBLE, layer, label, true)
   end
 end
 
@@ -345,7 +415,7 @@ function SoulsReworkPop_Step()
   -- the layer opens with its instances visible at the retail telop's place: hidden until a pop places them
   if not souls_pop.init then
     souls_pop.init = true
-    for i = 0, souls_pop.SLOTS - 1 do
+    for i = 0, 2 * souls_pop.SLOTS - 1 do
       souls_pop.Menu(souls_pop.LAYER_VISIBLE, layer, i, false)
     end
     souls_pop.Log("layer open: instances hidden")
@@ -354,7 +424,7 @@ function SoulsReworkPop_Step()
     return
   end
   local all = true
-  for i = 0, souls_pop.SLOTS - 1 do
+  for i = 0, 2 * souls_pop.SLOTS - 1 do
     if not souls_pop.ready[i] then
       souls_pop.Prepare(i)
     end

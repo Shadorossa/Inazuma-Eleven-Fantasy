@@ -25,7 +25,8 @@ target = "whs01670"
 # flight: 15.21 m (15.1 over a kick on the pitch) held until 34.93 m before the goal point, then the 21.0
 # deg line down into 1.8 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 17.47 m down (bend 0.5). A shot shorter
 # than 34.93 m starts lower, on the line.
-trajectory = { goal_points = [[34.93, 15.21, 999, 17.47], [0.0, 1.8]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[34.93, 15.21, 999, 17.47], [0.0, 1.8]], unblockable = false }
+trajectory = { goal_points = [[34.93, 4.5, 999.0, 17.47], [0.0, 1.8]], unblockable = false }
 # Ciclón blanco, Chronicle copy (whs01670_cro: not an _or / _mm variant, so not covered by the base's rule).
 [[edit]]
 target = "whs01670_cro"
@@ -33,4 +34,5 @@ target = "whs01670_cro"
 # flight: 15.21 m (15.1 over a kick on the pitch) held until 34.93 m before the goal point, then the 21.0
 # deg line down into 1.8 m at the goal; the bend from the level start into the line (999 before the top: the whole level piece) joins it 17.47 m down (bend 0.5). A shot shorter
 # than 34.93 m starts lower, on the line.
-trajectory = { goal_points = [[34.93, 15.21, 999, 17.47], [0.0, 1.8]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[34.93, 15.21, 999, 17.47], [0.0, 1.8]], unblockable = false }
+trajectory = { goal_points = [[34.93, 4.5, 999.0, 17.47], [0.0, 1.8]], unblockable = false }

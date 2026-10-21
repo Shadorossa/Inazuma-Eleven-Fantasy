@@ -15,4 +15,5 @@ schema = "VRFW.technique/3"
 # Oso polar n.º 2 (whs02770).
 [[edit]]
 target = "whs02770"
-trajectory = { goal_points = [[16.98, 8.3, 999, 8.49], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[16.98, 8.3, 999, 8.49], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[16.98, 4.46, 999.0, 8.49], [0.0, 2.0]], unblockable = false }

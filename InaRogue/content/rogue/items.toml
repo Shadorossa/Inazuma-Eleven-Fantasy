@@ -1,0 +1,301 @@
+schema = "InaRogue.rogue_items/1"
+# InaRogue › the rogue items (docs/game/modes/inarogue-passive-system.md §2.3-2.7; archetypes and their items:
+# docs/game/modes/inarogue-archetypes.md). Read by scripts\lib\rogue\items.lua. The run keeps them in one team
+# inventory. An item is data: rarity, archetypes and effect pieces with values per level; no item has code of its own.
+#
+# [inventory] max_slots   items the team holds at once (owner 2026-10-20: 5)
+# [defaults] icon         the icon of every item without one (a texture of the item icon sheets,
+#                         content\images\menu\200_icon\02_icon_item\)
+# [[rarity]]              key, max_level, price, upgrade_cost: the defaults of the items of that rarity (an item may set
+#                         its own); the list order is the rarity number the commands answer (1 = first); its name is
+#                         the text key InaRogue.rogue_rarity_<key> (text\rows\rogue_items.toml)
+# [[item]]
+#   key            a-z 0-9 _, unique (texts: InaRogue.rogue_item_<key>_name / _desc in text\rows\rogue_items.toml)
+#   kind           "passive" (default: a held item) or "talent_up" (a «Talento +1»: used on a player, not held)
+#   rarity         a [[rarity]] key
+#   scope          outside | match | both (where its effects run)
+#   max_level      1-9 (levels only through the Shop's «Mejorar»; default: the rarity's)
+#   price          Rogue points in the Shop; selling gives half of what it cost (price and every upgrade)
+#   upgrade_cost   Rogue points of each «Mejorar» (level 1->2, 2->3, …); a number = the same each time; none = the
+#                  rarity's, else price × level
+#   archetypes     the archetypes it counts 1 item for (keys of content\rogue\archetypes.toml)
+#   sources        where it drops: chest, elite, boss, shop, event
+#   icon           its icon (default: [defaults] icon)
+#   [[item.effect]] one piece or one grant each (scripts\lib\rogue\pieces.lua, scripts\lib\rogue\blocks.lua): `kind`,
+#                  its parameters, and its value: a number (every level), a list (one value per level) or
+#                  { base = …, max = … } (linear from level 1 to max_level); optional blocks: when (conditions
+#                  when_*), count (counters count_*), on (a trigger on_*), chance (1 in n), per_stack
+#
+# Pieces: stat_multiplier(target, stat, value), stat_bonus(target, stat, value), tension_cost_multiplier(action, mult),
+# technique_cooldown_multiplier(target, mult), wall_reduction_multiplier(side, mult), pass_speed_multiplier(mult),
+# technique_grade_override(grade, duration_matches), technique_power_multiplier(moves filter, value),
+# technique_free_until_broken(moves filter), shop_cost_multiplier(value) (the first names stat_mult, tension_cost_mult,
+# technique_cooldown_mult, wall_reduction_mult, pass_speed_mult are still read); grants grant_points, grant_item,
+# grant_player, grant_resource, grant_stat_buff, grant_xp_multiplier, grant_clone; the economy kinds of the coaches
+# (node_weight, reward_mult, start_points, start_item). The catalogue of pieces and blocks and their engine status:
+# docs/game/modes/inarogue-archetypes.md «Piezas» / «Bloques».
+
+[inventory]
+max_slots = 5
+
+[defaults]
+icon = "tk_rg000002"     # the placeholder item icon (content\images\menu\200_icon\02_icon_item\rogue_item_placeholder.toml)
+
+# Owner 2026-10-20: four rarities, 1 común, 2 raro, 3 épico, 4 legendario. Prices are provisional.
+[[rarity]]
+key = "common"
+max_level = 3
+price = 20
+
+[[rarity]]
+key = "rare"
+max_level = 4
+price = 30
+
+[[rarity]]
+key = "epic"
+max_level = 5
+price = 40
+
+[[rarity]]
+key = "legendary"
+max_level = 5
+price = 60
+
+# ------------------------------------------------------------------------------------------------ 1. Asedio (siege)
+
+# Asedio 1 (epic): long shots cost 15 % less tension → 40 %
+[[item]]
+key = "siege_long_shot_tension"
+rarity = "epic"
+scope = "match"
+archetypes = ["siege"]
+sources = ["chest", "elite", "shop"]
+
+[[item.effect]]
+kind = "tension_cost_multiplier"
+action = "long_shot"
+mult = { base = 0.85, max = 0.60 }
+
+# Asedio 2 (legendary): the techniques' cooldown is 40 % shorter → 75 %
+[[item]]
+key = "siege_technique_cooldown"
+rarity = "legendary"
+scope = "match"
+archetypes = ["siege"]
+sources = ["boss"]
+
+[[item.effect]]
+kind = "technique_cooldown_multiplier"
+target = "team"
+mult = { base = 0.60, max = 0.25 }
+
+# Asedio 3 (common): rival walls take 10 % less of the shot's AT
+[[item]]
+key = "siege_wall_breaker"
+rarity = "common"
+scope = "match"
+archetypes = ["siege"]
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "wall_reduction_multiplier"
+side = "rival"
+mult = 0.90
+
+# Asedio 4 (rare): passes 2.5 % faster → 5 %
+[[item]]
+key = "siege_pass_speed"
+rarity = "rare"
+scope = "match"
+archetypes = ["siege"]
+sources = ["chest", "elite", "shop"]
+
+[[item.effect]]
+kind = "pass_speed_multiplier"
+mult = { base = 1.025, max = 1.05 }
+
+# Asedio 5 (common): every technique at its last grade for 3 matches (temporary)
+[[item]]
+key = "siege_max_grade"
+rarity = "common"
+scope = "match"
+archetypes = ["siege"]
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "technique_grade_override"
+grade = "max"
+duration_matches = 3
+
+# Asedio 6 (common): focus AT +5 % → +30 %
+[[item]]
+key = "siege_focus_at"
+rarity = "common"
+scope = "match"
+archetypes = ["siege"]
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "team"
+stat = "focus_at"
+value = { base = 1.05, max = 1.30 }
+
+# ------------------------------------------------------------------------------------------------ examples / others
+
+# Provisional example (#77 Balón negro de la Academia Alius): team shot AT +25 % → +40 % (Nv5); no archetype yet
+[[item]]
+key = "alius_black_ball"
+rarity = "epic"
+scope = "match"
+price = 40
+upgrade_cost = [8, 16, 24, 32]
+sources = ["elite", "boss", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "team"
+stat = "kick"
+value = [1.25, 1.29, 1.33, 1.36, 1.40]
+
+# Provisional example (#78 Piedra Alius): every stat of the team +20 % → +35 % (Nv5); no archetype yet
+[[item]]
+key = "alius_stone"
+rarity = "legendary"
+scope = "both"
+upgrade_cost = [12, 24, 36, 48]
+sources = ["boss"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "team"
+stat = "all"
+value = [1.20, 1.24, 1.28, 1.31, 1.35]
+
+# ------------------------------------------------------------------------------------------------ block examples
+# Examples of the composable blocks (docs/game/modes/inarogue-archetypes.md «Bloques»), built from the owner's sheet
+# passives as blocks. Placeholder names («Ejemplo de bloques N») and the shared icon; no archetype and no source, so
+# they never drop: CMND_INAROGUE_RL_ITEM_ADD("<key>") gives one for a test. Belong teams (belong_team_config v7.1.2,
+# found by their team_text name): Raimon 0xF01BB293, Zeus 0x9BAD3311, Inazuma Kids FC 0x83D22BED, Veteranos Inazuma
+# 0x7ABBC40C.
+
+# Example 1: +2 % kick for every goal the team scores in the run
+[[item]]
+key = "example_goal_kick_run"
+rarity = "rare"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "stat_multiplier"
+stat = "kick"
+per_stack = 0.02
+count = { kind = "count_trigger", on = "on_goal_scored", scope = "run" }
+
+# Example 2: mountain and fire moves +5 % power → +15 %; «Mano celestial» (whk00010) +10 % more
+[[item]]
+key = "example_element_power"
+rarity = "epic"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "technique_power_multiplier"
+element = ["mountain", "fire"]
+value = { base = 1.05, max = 1.15 }
+
+[[item.effect]]
+kind = "technique_power_multiplier"
+moves = ["whk00010"]
+value = 1.10
+
+# Example 3: every wind player +30 intelligence
+[[item]]
+key = "example_wind_intelligence"
+rarity = "common"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "stat_bonus"
+target = "element"
+element = "wind"
+stat = "intelligence"
+value = 30
+
+# Example 4: the Shop's prices −2 % per Raimon player in the team (at most −20 %)
+[[item]]
+key = "example_raimon_discount"
+rarity = "rare"
+scope = "outside"
+sources = []
+
+[[item.effect]]
+kind = "shop_cost_multiplier"
+per_stack = -0.02
+count = { kind = "count_roster", players = { team = ["0xF01BB293"] }, cap = 10 }
+
+# Example 5: every 100 passes completed in a match, the next shot move ×3 power (one charge)
+[[item]]
+key = "example_pass_charge"
+rarity = "legendary"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "technique_power_multiplier"
+category = "shoot"
+value = 3.0
+count = { kind = "count_trigger", on = "on_pass_completed", scope = "match", every = 100, mode = "charge" }
+
+# Example 6: 3 % of the PE bar back to the player who uses a move (the match resource of Aura Points)
+[[item]]
+key = "example_pe_per_technique"
+rarity = "rare"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "grant_resource"
+resource = "aura_points.pe"
+percent = 3
+who = "actor"
+on = "on_technique_used"
+
+# Example 7: Zeus players +1 % to every stat for each 2 minutes of play, back to 0 on every goal
+[[item]]
+key = "example_zeus_rising"
+rarity = "epic"
+scope = "match"
+sources = []
+
+[[item.effect]]
+kind = "stat_multiplier"
+stat = "all"
+per_stack = 0.01
+when = [{ kind = "when_in_team", team = ["0x9BAD3311"] }]
+count = { kind = "count_timer", seconds = 120, reset_on = ["on_goal_scored", "on_goal_conceded"] }
+
+# Example 8: at each phase end, 1 in 3 to get a Raimon / Inazuma Kids FC / Veteranos Inazuma player of at most 3 stars
+[[item]]
+key = "example_phase_end_recruit"
+rarity = "legendary"
+scope = "outside"
+sources = []
+
+[[item.effect]]
+kind = "grant_player"
+players = { team = ["0xF01BB293", "0x83D22BED", "0x7ABBC40C"], rarity_max = 3 }
+on = "on_phase_end"
+chance = 3
+
+# «Talento +1»: the talent of one run player goes up one level (up to 5 times)
+[[item]]
+key = "talent_plus_one"
+kind = "talent_up"
+rarity = "rare"
+scope = "outside"
+max_level = 1
+price = 30
+sources = ["boss", "shop"]

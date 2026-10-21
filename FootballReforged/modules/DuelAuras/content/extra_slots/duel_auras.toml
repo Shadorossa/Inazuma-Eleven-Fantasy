@@ -1,0 +1,13 @@
+# Duel Auras › an aura is never a duel's answer (docs/framework/extra-slot.md §7.7). In a focus battle (duel) an aura
+# activation (types 0 keshin, 1 armour, 2 Mix-Max, 3 totem, 6 mode change) chosen from the duel list, the extra slot
+# plates or by the duel AI is taken out of the duel's choice: it goes to the in-play performance list and its cut-in
+# plays at once while the duel is frozen (freeze_focus: no steal or line result inside the cut-in); then the duel goes
+# on with that side's choice still open, so a real special move or a normal action answers (the CPU's duel AI picks
+# again). No clash pairs the aura with the rival's move. Both sides alike. Always on (no option).
+schema = "VRFW.extra_slot/1"
+
+[VRFW.DuelAura]
+types = [0, 1, 2, 3, 6]
+mode = "after_duel"
+fast_resume = true
+freeze_focus = true

@@ -1,0 +1,89 @@
+# New Recruitment › the recruitment office's titles (content\contact_maps\office.toml). Rows of menu_text, read by
+# id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "new_recruitment_office_title"
+es = "Oficina de fichajes"
+en = "Recruitment Office"
+fr = "Bureau des recrues"
+de = "Transferbüro"
+it = "Ufficio ingaggi"
+pt = "Gabinete de contratações"
+ja = "スカウトオフィス"
+zh_hans = "球员签约处"
+zh_hant = "球員簽約處"
+
+[[row]]
+id = "new_recruitment_office_route"
+es = "Ruta de la Crónica"
+en = "Chronicle route"
+fr = "Route de la Chronique"
+de = "Chronik-Route"
+it = "Percorso della Cronaca"
+pt = "Rota da Crónica"
+ja = "クロニクルのルート"
+zh_hans = "编年史路线"
+zh_hant = "編年史路線"
+
+[[row]]
+id = "new_recruitment_office_story"
+es = "Historia y otros equipos"
+en = "Story and other teams"
+fr = "Histoire et autres équipes"
+de = "Story und andere Teams"
+it = "Storia e altre squadre"
+pt = "História e outras equipas"
+ja = "ストーリーとその他のチーム"
+zh_hans = "剧情与其他队伍"
+zh_hant = "劇情與其他隊伍"
+
+# the office's prices: the element spirits of the player's element («fichas»), by element
+[[row]]
+id = "new_recruitment_office_fichas_wind"
+es = "Fichas de Viento"
+en = "Wind Tokens"
+fr = "Jetons Vent"
+de = "Wind-Marken"
+it = "Gettoni Vento"
+pt = "Fichas de Vento"
+ja = "風のトークン"
+zh_hans = "风之代币"
+zh_hant = "風之代幣"
+
+[[row]]
+id = "new_recruitment_office_fichas_forest"
+es = "Fichas de Bosque"
+en = "Forest Tokens"
+fr = "Jetons Forêt"
+de = "Wald-Marken"
+it = "Gettoni Foresta"
+pt = "Fichas de Floresta"
+ja = "林のトークン"
+zh_hans = "林之代币"
+zh_hant = "林之代幣"
+
+[[row]]
+id = "new_recruitment_office_fichas_fire"
+es = "Fichas de Fuego"
+en = "Fire Tokens"
+fr = "Jetons Feu"
+de = "Feuer-Marken"
+it = "Gettoni Fuoco"
+pt = "Fichas de Fogo"
+ja = "火のトークン"
+zh_hans = "火之代币"
+zh_hant = "火之代幣"
+
+[[row]]
+id = "new_recruitment_office_fichas_mountain"
+es = "Fichas de Montaña"
+en = "Mountain Tokens"
+fr = "Jetons Montagne"
+de = "Berg-Marken"
+it = "Gettoni Montagna"
+pt = "Fichas de Montanha"
+ja = "山のトークン"
+zh_hans = "山之代币"
+zh_hant = "山之代幣"

@@ -1,0 +1,45 @@
+# InaRogue › the welcome gacha (docs/game/modes/inarogue-welcome-gacha.md; owner 2026-10-20): on the first entry into
+# INAROGUE (the save's first-run gift is pending, [rogue] starter_gift) a welcome message, then the first-run gift's
+# players drawn in the retail Players Universe scene (InaRogue's gold copy, content\effects\welcome_gacha.toml), each
+# player revealed one by one by the retail summon performance, then a summary of the players. Read by
+# scripts\lib\rogue\welcome_gacha.lua; the players themselves are the first-run gift's ([rogue] gift_weights /
+# gift_cost_cap, scripts\lib\rogue\starter.lua).
+
+[welcome_gacha]
+# the scene: InaRogue's copy of the retail ev74_10010 (content\base_tables\common\event_cfg\*\ev74_10091*.toml,
+# content\techniques\welcome_gacha_env.toml)
+event = "ev74_10091"
+# the orbs of the scene (its eff list: spirit01..12) and the <RARITY> digit of an orb without a player (an invisible
+# orb, inarogue.welcome_ball0 of content\effects\welcome_gacha.toml)
+orbs = 12
+empty_orb = 0
+# the orb of a player by his INAROGUE stars (1-5): the digit of inarogue.welcome_ball<digit>
+# (1 cyan, 2 green, 3 purple, 4 gold, 5 gold + green: owner 2026-10-20)
+orb_by_stars = [1, 2, 3, 4, 5]
+# the scene's bust-up icons: the best players of the draw (most stars first, then draw order)
+bustups = 3
+# the longest the scene may play before the menu takes the screen back (seconds)
+scene_max_seconds = 180
+
+# the summary (research/grafts/inarogue: tiles = the retail status plate soccer11_04_formation_chara_status with only
+# its backing icon_chr_status_base01, the kit-dressed miniface and the name shown). Positions in menu pixels, origin
+# at the top-left of the 1920 x 1080 screen, y downwards; tile = the tile's width; centre_y = the centre of each row.
+[welcome_gacha.summary]
+rows = [6, 5]
+tile = 230
+gap = 26
+centre_y = [365, 721]
+# the tile layer's position offset (the plate's own origin is not the tile's centre: tune in game) and scale (the
+# backing sprite is 184 px)
+offset = [0, 0]
+scale = 1.25
+# the parts of the status plate a tile hides (mesh names, or ids 0x…) and its texts hidden; kept: the backing
+# _icon_chr_status_base01, the miniface _icon_chr_status_dmy01, the name _text_name01 and the stars line _text_name02
+hide_meshes = ["_atc_avatar_ring01", "_atc_guide_build01", "_atc_kizuna_icon", "_atc_seasonal01", "_basara_avatar01",
+               "_explain_base01", "_gauge_next01", "_gauge_next_base01", "_gtxt_status_lv01", "_gtxt_status_next01",
+               "_icon_body_dmy01", "_icon_build_dmy01", "_icon_lock_lv01", "_icon_lock_status01", "_icon_mark_dmy01",
+               "_icon_position_status_dmy01", "_icon_type_base01", "_icon_type_status_dmy01", "_icon_uniform01",
+               "_num_back01", "_num_back_dmy01", "_num_status_lv01", "_num_status_lv_dmy01", "_num_status_next01",
+               "_num_status_next_dmy01", "_player_rarity01", "_seasonal_frame01", "_status_chr_base_s01",
+               "_status_chr_base_s02", "_status_name_base01", "_title_name_base01", "0x909F69B0"]   # the alternate base the retail plate shows when no style background is used
+hide_texts = ["_text_explain01", "_text_grade01", "_text_title01"]

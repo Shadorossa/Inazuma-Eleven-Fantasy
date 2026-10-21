@@ -38,6 +38,12 @@ poll_ms = 1000
 #   [mods.vr_framework.debug]
 #   reveal_all = true
 reveal_all = false
+# true = every chain board ([[VRFW.Chain]]) shows every match tile open and playable, and every Chronicle board node
+# that opens a chain is drawn and can be entered, whatever the progress. The save's progress is only read: nothing is
+# unlocked in it (a match won meanwhile is recorded as usual). Game Lua reads it through CMND_VRFW_DEBUG_SWITCH.
+all_chains = false
+# reveal_all and all_chains are also forced on by the debug flags `reveal_all` / `all_chains` ([[VRFW.DebugSwitch]]
+# in mod.toml), e.g. while the mod Debug Tools is enabled (docs/framework/debug-flags.md).
 # the BB P2P phase-1 probes (docs/game/modes/bb-p2p-lockstep.md §8: fixed dt, seeded RNG, input record / replay, state
 # hash lines): "off" for players; "record" | "replay" | "replay_p2" only in a test install's loader config
 p2p_probe = "off"
@@ -296,3 +302,14 @@ enabled = true
 at_title = true             # at the title, once per start: the mods whose summary TEXT is new or changed (never on a version bump)
 first_install = "latest"     # a never-seen mod: latest (its summary shows) | none (marked seen silently)
 max_pages = 1                # hard cap: pages per mod (1..10); each changelog.toml is ONE summary of ONE page
+
+[synergy]
+# The Mercado's synergy panel as the synergy screen's condition card, every box empty (no team evaluated:
+# assets\lua\synergy\shop_menu_buy\310_synergy_shop.lua). false = the game's shop panel (the active squad's members).
+shop_conditions = true
+
+[shop]
+# Shop aura cards (scripts\shop_aura_cards.lua, docs/framework/shop-aura-cards.md): the item sub-kinds mods declare
+# ([[VRFW.ShopAuraCard]], e.g. the game's mode changes) are drawn in a shop with their aura card on the right.
+# false = those rows keep the game's look (no card of their own); the declared card layers stay hidden.
+aura_cards = true

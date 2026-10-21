@@ -11,6 +11,7 @@
 RandomTeam = RandomTeam or {}
 
 local C = require "lib/random_team_core"
+local TeamIds = require "lib/team_ids"
 
 local floor = math.floor
 local u32, hex = C.u32, C.hex
@@ -33,8 +34,8 @@ local function crc(s)
   return u32(VRFW.ui.crc32(s))
 end
 
--- a declared id: a number, "0x…", decimal text, `<mod>.<name>` (the id space of `kind`, else its crc32), any other
--- text = its crc32 (the game's key hash)
+-- a declared id: a number, "0x…", decimal text, `<mod>.<name>` (a mod's team for kind `team`, else the id space of
+-- `kind`, else its crc32), any other text = its crc32 (the game's key hash)
 local function id_of(kind, v)
   if type(v) == "number" then return u32(v) end
   if type(v) ~= "string" then return nil end
@@ -42,6 +43,10 @@ local function id_of(kind, v)
   if h then return tonumber(h, 16) % 4294967296 end
   if v:match("^%s*%d+%s*$") then return tonumber(v) % 4294967296 end
   local s = v:match("^%s*(.-)%s*$")
+  if kind == "team" and s:find(".", 1, true) then
+    local id = TeamIds.of(s)
+    if id then return u32(id) end
+  end
   if kind and s:find(".", 1, true) and VRFW.ids and VRFW.ids.resolve then
     local ok, n = pcall(VRFW.ids.resolve, kind, s)
     if ok and type(n) == "number" then return u32(n) end
@@ -329,7 +334,7 @@ local function load_cards()
     if ok and at ~= nil then
       cols[#cols + 1] = col
     else
-      warn("chara_param has no column " .. tostring(col) .. " (filters on it never match)")
+      warn("chara_param has no column " .. tostring(col) .. " (filters on it never match; at run time a column is a schema name, col_<n> or its 0-based number)")
     end
   end
   local ok, list = pcall(VRFW.chara.cards, { columns = cols })
@@ -668,6 +673,17 @@ local function build(rule_arg, seed, node, stage, slot, write)
   local res, perr2 = C.pick({ pool = pool, places = places, unique = rule.unique, rarity_w = st.rarity_w,
     tier_col = rule.tier_col, tier = st.tier, element_w = st.element_w, max_same = st.max_same, theme = st.theme,
     rng = rng })
+  if not res then
+    -- no card fits the stage: the pool without its rarity / tier / element weights, then every playable card
+    warn(string.format("%s stage %d: %s: drawn without the stage's weights", rule.key, stage, perr2))
+    local relaxed = { pool = pool, places = places, unique = rule.unique, max_same = st.max_same, rng = rng }
+    if #pool > 0 then res, perr2 = C.pick(relaxed) end
+    if not res then
+      warn(string.format("%s stage %d: the pool gives no roster: drawn from every playable card", rule.key, stage))
+      relaxed.pool = load_cards()
+      res, perr2 = C.pick(relaxed)
+    end
+  end
   if not res then
     err(string.format("%s stage %d: %s (nothing written)", rule.key, stage, perr2))
     return 0, team, 0, 0, perr2

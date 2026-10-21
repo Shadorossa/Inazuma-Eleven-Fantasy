@@ -5,7 +5,8 @@ schema = "VRFW.game/2"
 # ---------------------------------------------------------------- [[VRFW.ZoneArea]]
 # area = "penalty_box" replaces IsInZoneArea / IsInAnyZoneArea so a position is in the zone area when inside the attacked penalty box (plus margin).
 # The x coordinate is recovered from the caller's registers / stack / ball / set-piece spot; none = depth test only. No box (no match, team > 1) = false.
-# chain_area = "retail" (default): chaining onto a live shot uses the game's own band; "box": chains use the box too.
+# The box only decides where a zone may start. chain_area = "retail" (default): while a zone runs or a shot chain window is open / taken, every
+# question (passes, chain partners, the ball holder, chained shots) gets the game's own band; "box": they keep the box too.
 
 # Field data of the pitch in play.
 [[VRFW.Global]]
@@ -29,7 +30,7 @@ game = "Ball.Global.ViaGlobalRead"
 name = "shot_zone_setpiece"
 game = "Match.SetPiece"
 
-# Play controller: flags +0x4C44 (0x4 zone on, 0x200 chain taken, 0x800 chain window).
+# Play controller: its flags sit at the game profile offset Match.PlayControlFlags (0x4 zone on, 0x200 chain taken, 0x800 chain window).
 [[VRFW.Global]]
 name = "shot_zone_play_ctrl"
 game = "Match.PlayControl"
@@ -39,7 +40,8 @@ game = "Match.PlayControl"
 name = "shot_zone_line"
 game = "Shot.ZoneLineFieldRate"
 
-# State keys read by the zone and chain answers: ball, set piece and play controller are refreshed every match frame; line and chain_retail are set once.
+# State keys read by the zone and chain answers: ball, set piece and the play controller flags address are refreshed every match frame; line and
+# chain_retail are set once.
 [[VRFW.State]]
 key = "vrfw.shot_zone.ball"
 needs = ["shot_zone_ball"]
@@ -48,15 +50,16 @@ needs = ["shot_zone_ball"]
 key = "vrfw.shot_zone.setpiece"
 needs = ["shot_zone_setpiece"]
 
+# The play controller's flags address (play controller + Match.PlayControlFlags of the running build).
 [[VRFW.State]]
-key = "vrfw.shot_zone.play_ctrl"
+key = "vrfw.shot_zone.play_flags"
 needs = ["shot_zone_play_ctrl"]
 
 [[VRFW.State]]
 key = "vrfw.shot_zone.line"
 needs = ["shot_zone_line"]
 
-# 1 = chains use the game's own area (chain_area = "retail"), 0 = the box.
+# 1 = a running zone and shot chains use the game's own area (chain_area = "retail"), 0 = the box.
 [[VRFW.State]]
 key = "vrfw.shot_zone.chain_retail"
 
@@ -65,12 +68,6 @@ key = "vrfw.shot_zone.chain_retail"
 name = "ShotZone.Retail"
 params = ["Z", "T"]
 value = "(Z - lookup_or(ShotZone.Box:cz, 0, T)) * lookup_or(ShotZone.Box:sg, 0, T) > [state(vrfw.shot_zone.line)]:f32 * lookup_or(ShotZone.Box:hz, 0, T)"
-
-# True when position (X, Z) is more than 2 m from the ball (not the ball holder's).
-[[VRFW.Formula]]
-name = "ShotZone.OffBall"
-params = ["X", "Z"]
-value = "pow(X - [state(vrfw.shot_zone.ball) + 0x15F0]:f32, 2) + pow(Z - [state(vrfw.shot_zone.ball) + 0x15F8]:f32, 2) > 4"
 
 # bool IsInZoneArea(float z, u8 team), replaced whole.
 [[VRFW.Hook]]
@@ -84,15 +81,10 @@ needs = ["shot_zone_field", "shot_zone_match_info"]
 # ShotZone.Box: key team (0 / 1) = the box that team attacks, 10 / 11 = the field's boxes 0 / 1; records { x0, x1, z0, z1 } with margin.
 # Team records also carry { cz, sg, hz } (ShotZone.Retail).
 
-[[VRFW.Hook.answer]]                   # shot chain: window open or taken, use the game's own area
+[[VRFW.Hook.answer]]                   # a zone running or a shot chain window open / taken: the game's own area for every position
 phase = "pre"
 when = { state = "vrfw.shot_zone.chain_retail", equals = 1 }
-value = "if(int(mask([state(vrfw.shot_zone.play_ctrl) + 0x4C44]:u32, 0xA00)) > 0, ShotZone.Retail(args[1], args[2]), 1 / 0)"
-
-[[VRFW.Hook.answer]]                   # in the zone: a chara position that is not the ball holder's
-phase = "pre"
-when = { state = "vrfw.shot_zone.chain_retail", equals = 1 }
-value = "if((int(mask([state(vrfw.shot_zone.play_ctrl) + 0x4C44]:u32, 4)) > 0) * ([regs.rax + 8]:f32 == args[1]) * (abs([regs.rax]:f32) < 1000000000) * ShotZone.OffBall([regs.rax]:f32, args[1]), ShotZone.Retail(args[1], args[2]), 1 / 0)"
+value = "if(int(mask([state(vrfw.shot_zone.play_flags)]:u32, 0xA04)) > 0, ShotZone.Retail(args[1], args[2]), 1 / 0)"
 
 [[VRFW.Hook.answer]]                   # x from the caller's stack
 phase = "pre"
@@ -135,6 +127,11 @@ kind = "replace"
 fallback = 0
 apply = "script"
 needs = ["shot_zone_field", "shot_zone_match_info"]
+
+[[VRFW.Hook.answer]]                   # a zone running or a shot chain window open / taken: the game's own area of either team
+phase = "pre"
+when = { state = "vrfw.shot_zone.chain_retail", equals = 1 }
+value = "if(int(mask([state(vrfw.shot_zone.play_flags)]:u32, 0xA04)) > 0, max(ShotZone.Retail(args[1], 0), ShotZone.Retail(args[1], 1)), 1 / 0)"
 
 [[VRFW.Hook.answer]]                   # x from the caller's stack
 phase = "pre"

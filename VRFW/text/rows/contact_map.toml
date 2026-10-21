@@ -587,3 +587,245 @@ pt = "MODO VISTA"
 ja = "閲覧モード"
 zh_hans = "浏览模式"
 zh_hant = "瀏覽模式"
+
+# a requirement of a team page: a match against that team won (the team's name)
+[[row]]
+id = "vrfw_cm_req_beat"
+es = "Vence a %s"
+en = "Beat %s"
+fr = "Battre %s"
+de = "Besiege %s"
+it = "Batti %s"
+pt = "Vence %s"
+ja = "%sに勝利"
+zh_hans = "击败%s"
+zh_hant = "擊敗%s"
+
+# a map of team pages with no team open yet
+[[row]]
+id = "vrfw_cm_teams_none"
+es = "Aún no hay equipos aquí: gana un partido contra uno de ellos."
+en = "No teams here yet: win a match against one of them."
+fr = "Aucune équipe ici pour l'instant : gagne un match contre l'une d'elles."
+de = "Noch keine Teams hier: Gewinne ein Spiel gegen eines von ihnen."
+it = "Ancora nessuna squadra qui: vinci una partita contro una di esse."
+pt = "Ainda não há equipas aqui: vence um jogo contra uma delas."
+ja = "まだチームがいません。いずれかのチームとの試合に勝利しよう。"
+zh_hans = "这里还没有队伍：赢下与其中一支队伍的比赛。"
+zh_hant = "這裡還沒有隊伍：贏下與其中一支隊伍的比賽。"
+
+# a requirement of a team page: a player of the club at a level (name, level)
+[[row]]
+id = "vrfw_cm_req_player_level"
+es = "%s a Nv. %d"
+en = "%s at Lv. %d"
+fr = "%s au Niv. %d"
+de = "%s auf St. %d"
+it = "%s al Liv. %d"
+pt = "%s no Nv. %d"
+ja = "%s Lv.%d以上"
+zh_hans = "%s 达到 Lv.%d"
+zh_hant = "%s 達到 Lv.%d"
+
+# a requirement of a team page: a harder win against that team (the team's name)
+[[row]]
+id = "vrfw_cm_req_beat_more"
+es = "Vence a %s en difícil"
+en = "Beat %s on a harder level"
+fr = "Battre %s en difficile"
+de = "Besiege %s auf schwerer Stufe"
+it = "Batti %s a difficoltà alta"
+pt = "Vence %s no difícil"
+ja = "%sに高難度で勝利"
+zh_hans = "在高难度下击败%s"
+zh_hant = "在高難度下擊敗%s"
+
+# a trial: keep the ball (part, of, seconds)
+[[row]]
+id = "vrfw_cm_trial_hold"
+es = "Prueba %d/%d: mantén el balón %d s"
+en = "Trial %d/%d: keep the ball for %d s"
+fr = "Essai %d/%d : garde le ballon %d s"
+de = "Probe %d/%d: halte den Ball %d s"
+it = "Prova %d/%d: tieni palla per %d s"
+pt = "Prova %d/%d: mantém a bola %d s"
+ja = "テスト %d/%d：%d秒ボールをキープ"
+zh_hans = "测试 %d/%d：控球%d秒"
+zh_hant = "測試 %d/%d：控球%d秒"
+
+# a trial: score goals in time (part, of, goals, seconds)
+[[row]]
+id = "vrfw_cm_trial_goals"
+es = "Prueba %d/%d: marca %d goles en %d s"
+en = "Trial %d/%d: score %d goals in %d s"
+fr = "Essai %d/%d : marque %d buts en %d s"
+de = "Probe %d/%d: erziele %d Tore in %d s"
+it = "Prova %d/%d: segna %d gol in %d s"
+pt = "Prova %d/%d: marca %d golos em %d s"
+ja = "テスト %d/%d：%d点を%d秒以内に"
+zh_hans = "测试 %d/%d：%d球，限时%d秒"
+zh_hant = "測試 %d/%d：%d球，限時%d秒"
+
+# a trial: win the ball (part, of, times)
+[[row]]
+id = "vrfw_cm_trial_steals"
+es = "Prueba %d/%d: roba el balón %d veces"
+en = "Trial %d/%d: win the ball %d times"
+fr = "Essai %d/%d : récupère le ballon %d fois"
+de = "Probe %d/%d: erobere den Ball %d-mal"
+it = "Prova %d/%d: ruba palla %d volte"
+pt = "Prova %d/%d: rouba a bola %d vezes"
+ja = "テスト %d/%d：ボールを%d回奪う"
+zh_hans = "测试 %d/%d：抢断%d次"
+zh_hant = "測試 %d/%d：搶斷%d次"
+
+# the button guide: play the focused player's trial
+[[row]]
+id = "vrfw_cm_trial_btn"
+es = "Prueba"
+en = "Trial"
+fr = "Essai"
+de = "Probe"
+it = "Prova"
+pt = "Prova"
+ja = "テスト"
+zh_hans = "测试"
+zh_hant = "測試"
+
+# question before a trial (its line)
+[[row]]
+id = "vrfw_cm_trial_ask"
+es = "¿Jugar la prueba?\n%s"
+en = "Play the trial?\n%s"
+fr = "Jouer l'essai ?\n%s"
+de = "Die Probe spielen?\n%s"
+it = "Giocare la prova?\n%s"
+pt = "Jogar a prova?\n%s"
+ja = "テストをプレイしますか？\n%s"
+zh_hans = "进行测试吗？\n%s"
+zh_hant = "進行測試嗎？\n%s"
+
+[[row]]
+id = "vrfw_cm_trial_fail"
+es = "No se ha podido iniciar la prueba."
+en = "The trial could not be started."
+fr = "Impossible de lancer l'essai."
+de = "Die Probe konnte nicht gestartet werden."
+it = "Impossibile avviare la prova."
+pt = "Não foi possível iniciar a prova."
+ja = "テストを開始できませんでした。"
+zh_hans = "无法开始测试。"
+zh_hant = "無法開始測試。"
+
+[[row]]
+id = "vrfw_cm_trial_passed"
+es = "Prueba superada"
+en = "Trial passed"
+fr = "Essai réussi"
+de = "Probe bestanden"
+it = "Prova superata"
+pt = "Prova superada"
+ja = "テスト合格"
+zh_hans = "测试通过"
+zh_hant = "測試通過"
+
+# the button guide: release the focused player from the club
+[[row]]
+id = "vrfw_cm_release_btn"
+es = "Dimitir"
+en = "Release"
+fr = "Libérer"
+de = "Entlassen"
+it = "Svincola"
+pt = "Dispensar"
+ja = "解雇"
+zh_hans = "解约"
+zh_hant = "解約"
+
+# question before a release (the player's name)
+[[row]]
+id = "vrfw_cm_release_q"
+es = "¿Quieres dimitir a %s? Dejará tu club."
+en = "Release %s? He will leave your club."
+fr = "Libérer %s ? Il quittera ton club."
+de = "%s entlassen? Er verlässt deinen Verein."
+it = "Svincolare %s? Lascerà il tuo club."
+pt = "Dispensar %s? Vai sair do teu clube."
+ja = "%sを解雇しますか？クラブから外れます。"
+zh_hans = "要解约%s吗？他将离开你的俱乐部。"
+zh_hant = "要解約%s嗎？他將離開你的俱樂部。"
+
+[[row]]
+id = "vrfw_cm_release_done"
+es = "%s ha dejado tu club."
+en = "%s has left your club."
+fr = "%s a quitté ton club."
+de = "%s hat deinen Verein verlassen."
+it = "%s ha lasciato il tuo club."
+pt = "%s saiu do teu clube."
+ja = "%sがクラブを去りました。"
+zh_hans = "%s离开了你的俱乐部。"
+zh_hant = "%s離開了你的俱樂部。"
+
+[[row]]
+id = "vrfw_cm_release_fail"
+es = "No se ha podido dimitir a este jugador. Si está en una plantilla, quítalo de ella primero."
+en = "This player could not be released. If he is in a squad, take him out of it first."
+fr = "Impossible de libérer ce joueur. S'il est dans un effectif, retire-le d'abord."
+de = "Dieser Spieler konnte nicht entlassen werden. Ist er in einem Kader, nimm ihn zuerst heraus."
+it = "Impossibile svincolare questo giocatore. Se è in una rosa, toglilo prima."
+pt = "Não foi possível dispensar este jogador. Se estiver num plantel, tira-o primeiro."
+ja = "この選手は解雇できません。チームに入っている場合は先に外してください。"
+zh_hans = "无法解约该球员。如果他在阵容中，请先将他移出。"
+zh_hant = "無法解約該球員。如果他在陣容中，請先將他移出。"
+
+[[row]]
+id = "vrfw_cm_release_busy"
+es = "Este jugador forma parte de un Mixi Max: deshazlo primero."
+en = "This player is part of a Mixi Max: undo it first."
+fr = "Ce joueur fait partie d'un Mixi Max : annule-le d'abord."
+de = "Dieser Spieler ist Teil eines Mixi Max: Hebe es zuerst auf."
+it = "Questo giocatore fa parte di un Mixi Max: annullalo prima."
+pt = "Este jogador faz parte de um Mixi Max: desfá-lo primeiro."
+ja = "この選手はミキシマックス中です。先に解除してください。"
+zh_hans = "该球员处于混合最大化中：请先解除。"
+zh_hant = "該球員處於混合最大化中：請先解除。"
+
+# the help line of a contact set's team hub (the free-match list as the office)
+[[row]]
+id = "vrfw_cm_hub_help"
+es = "Elige un equipo para ver los jugadores que puedes fichar."
+en = "Choose a team to see the players you can sign."
+fr = "Choisis une équipe pour voir les joueurs que tu peux recruter."
+de = "Wähle ein Team, um die Spieler zu sehen, die du verpflichten kannst."
+it = "Scegli una squadra per vedere i giocatori che puoi ingaggiare."
+pt = "Escolhe uma equipa para ver os jogadores que podes contratar."
+ja = "チームを選ぶと、スカウトできる選手が表示されます。"
+zh_hans = "选择一支队伍，查看可以招募的球员。"
+zh_hant = "選擇一支隊伍，查看可以招募的球員。"
+
+# a team of the hub with no player to sign
+[[row]]
+id = "vrfw_cm_hub_empty"
+es = "Este equipo no tiene jugadores que fichar."
+en = "This team has no players to sign."
+fr = "Cette équipe n'a aucun joueur à recruter."
+de = "Dieses Team hat keine Spieler zum Verpflichten."
+it = "Questa squadra non ha giocatori da ingaggiare."
+pt = "Esta equipa não tem jogadores para contratar."
+ja = "このチームにはスカウトできる選手がいません。"
+zh_hans = "这支队伍没有可以招募的球员。"
+zh_hant = "這支隊伍沒有可以招募的球員。"
+
+# the cost line of a player's card (price, the currency's name, what the player has)
+[[row]]
+id = "vrfw_cm_req_pay"
+es = "Coste: %d %s (tienes %d)"
+en = "Cost: %d %s (you have %d)"
+fr = "Coût : %d %s (tu en as %d)"
+de = "Kosten: %d %s (du hast %d)"
+it = "Costo: %d %s (ne hai %d)"
+pt = "Custo: %d %s (tens %d)"
+ja = "コスト：%d %s（所持 %d）"
+zh_hans = "费用：%d %s（拥有 %d）"
+zh_hant = "費用：%d %s（擁有 %d）"

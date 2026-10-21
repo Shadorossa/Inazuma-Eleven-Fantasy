@@ -23,42 +23,42 @@ schema = "VRFW.technique/3"
 # Último recurso (whs03270).
 [[edit]]
 target = "whs03270"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 2.8 m and fall again, never
+# higher than before (until 1.6.0: kick -> 2.8 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }
 # Último recurso, second version (whs03275, cut-in ev74_01280).
 [[edit]]
 target = "whs03275"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 3.0 m and fall again, never
+# higher than before (until 1.6.0: kick -> 3.0 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }
 # Último recurso: Sigma (whs03280).
 [[edit]]
 target = "whs03280"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 3.0 m and fall again, never
+# higher than before (until 1.6.0: kick -> 3.0 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }
 # Último recurso: Sigma, Chronicle copy (whs03280_cro).
 [[edit]]
 target = "whs03280_cro"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 3.0 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 3.0, 4.5]], goal_points = [[3.75, 3.0, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 3.0 m and fall again, never
+# higher than before (until 1.6.0: kick -> 3.0 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }
 # Último recurso: Dragón (whs03290).
 [[edit]]
 target = "whs03290"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 2.8 m and fall again, never
+# higher than before (until 1.6.0: kick -> 2.8 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }
 # Último recurso: Dragón, Chronicle copy (whs03290_cro).
 [[edit]]
 target = "whs03290_cro"
-# Flight (2026-10-10, heights over distances: docs/framework/technique.md §4e): the level flight above as points (its 30 m
-# shape): from where the cut-in leaves the ball (start.height = "kick") up to 2.8 m by 9.0 m, level, eased from
-# 7.5 m before the goal point down to 2.0 m (the keeper's reach); corners rounded.
-trajectory = { points = [[4.5, 2.8, 4.5]], goal_points = [[3.75, 2.8, 3.75], [0.0, 2.0]], start = { height = "kick" }, unblockable = false }
+# Flight (2026-10-21, owner approved: a straight flight like Escena nocturna): one straight line from where the cut-in
+# leaves the ball (start.height = "kick") into the goal at 2.0 m: no rise to the measured 2.8 m and fall again, never
+# higher than before (until 1.6.0: kick -> 2.8 m by 9.0 m, level, eased down to 2.0 m).
+trajectory = { goal_points = [[0.0, 2.0]], start = { height = "kick" }, unblockable = false }

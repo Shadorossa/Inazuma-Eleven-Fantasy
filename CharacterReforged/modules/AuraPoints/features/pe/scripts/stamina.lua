@@ -42,6 +42,7 @@ local TM = C.tired(VRFW.files.config("tired_motion"))
 A.set_carriers(AC.miximax_carriers)
 
 local PE = "aura_points.pe"
+local SPRINT = "aura_points.sprint"  -- the sprint bar (features\pe\content\match_resources\sprint.toml)
 local KEY_AURA_MULT = "aura"   -- the drain multiplier's source (aura_points.aura on the resource)
 local AP_PEG = "aura_points.peg"
 
@@ -995,9 +996,10 @@ local function player_of_chara(chara)
   return nil
 end
 
--- CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max, exhausted (0/1), modeOn (1), user (0/1), hdl, mult. hdl = a match
--- player's soccer handle, or a character status handle (a menu's player: mapped to the match player of that character),
--- 0 = the user's controlled player; false outside a match / after the final whistle / for a player without PE.
+-- CMND_AURAPOINTS_STAMINA(hdl) -> ok, cur, max, exhausted (0/1), modeOn (1), user (0/1), hdl, mult, sprint, winded.
+-- hdl = a match player's soccer handle, or a character status handle (a menu's player: mapped to the match player of
+-- that character), 0 = the user's controlled player; false outside a match / after the final whistle / for a player
+-- without PE. sprint = his sprint bar's share (0..1; -1 = no sprint bar), winded = 1 while it is in «winded».
 function AuraPoints.Stamina(hdl)
   hdl = tonumber(hdl) or 0
   if not seen.in_match or seen.ended then return false end
@@ -1011,7 +1013,14 @@ function AuraPoints.Stamina(hdl)
   if not ok or not v then return false end
   local p = players[v.hdl]
   if not p then return false end
-  return true, v.cur, v.max, exhausted_of(v) and 1 or 0, 1, v.user and 1 or 0, v.hdl, p.hud_mult or 1.0
+  local sprint, winded = -1, 0
+  local oks, sv = pcall(VRFW.resource.get, SPRINT, v.hdl)
+  if oks and type(sv) == "table" and type(sv.ratio) == "number" then
+    sprint = sv.ratio
+    local okw, w = pcall(VRFW.resource.state, SPRINT, v.hdl, "winded")
+    winded = (okw and w == true) and 1 or 0
+  end
+  return true, v.cur, v.max, exhausted_of(v) and 1 or 0, 1, v.user and 1 or 0, v.hdl, p.hud_mult or 1.0, sprint, winded
 end
 
 -- CMND_AURAPOINTS_STAMINA_MAX(fisico[, charaStHdl]) -> ok, max, modeOn (1): the plates outside a match. The max of the

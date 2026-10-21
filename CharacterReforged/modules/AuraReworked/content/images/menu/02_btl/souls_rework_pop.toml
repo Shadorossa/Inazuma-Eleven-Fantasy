@@ -1,21 +1,748 @@
-# Souls Rework › the plate of the level-up pop (graft research/grafts/souls_rework_level_pop): one white rounded
-# rectangle of its own atlas, nine-sliced (only its middle columns stretch), tinted at run time with the totem's
-# element colour (CMND_SET_PRIM_COLOR multiplies, so the white body takes the colour and the grey rim a darker shade).
+# Aura Reworked › the speech bubbles of the level-up pop (graft research/grafts/souls_rework_level_pop), made by
+# research/scripts/souls_rework_bubble_build.py (do not edit by hand: run the script). One bubble per aura type and
+# body width (config.toml [souls.level_pop] bubble_widths, layout units; 2 px per unit): a rounded body with a
+# tail at the bottom centre, a fine white frame, filled with the colours of the aura type's own icon of the game
+# (icon_common.g4tx icon_sp_area05..11). Sprite souls_rework_bubble_<aura type>_<body width>.
+# Tones measured (dark / mid / light):
+#   0 keshin           #0F0177 / #222EFF / #869AFE
+#   1 armed            #3800C1 / #4A00D5 / #853DD1
+#   2 miximax          #910000 / #FF3D02 / #E79521
+#   3 soul             #00345A / #026693 / #25C5FC
+#   4 kizuna_trans     #42D808 / #CBFF32 / #EBFB41
+#   5 awakening_power  #5D1714 / #B90000 / #C5695B
+#   6 mode_change      #000CCD / #142CAD / #476CEF
 schema = "VRFW.image/1"
 
 [[texture]]
 atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
 name = "souls_rework_pop"
-size = [96, 48]
+size = [2048, 1024]
 png = "souls_rework_pop/souls_rework_pop.png"
 
 [[sprite]]
 atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
-name = "souls_rework_pop_plate"
+name = "souls_rework_bubble_0_36"
 texture = "souls_rework_pop"
-x = 0
-y = 0
-size = [96, 48]
-nine_slice = [44, 52, 0, 48]
-design_size = [96, 48]
-flags = 1
+x = 4
+y = 4
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_40"
+texture = "souls_rework_pop"
+x = 80
+y = 4
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_44"
+texture = "souls_rework_pop"
+x = 164
+y = 4
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_49"
+texture = "souls_rework_pop"
+x = 256
+y = 4
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_54"
+texture = "souls_rework_pop"
+x = 358
+y = 4
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_60"
+texture = "souls_rework_pop"
+x = 470
+y = 4
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_66"
+texture = "souls_rework_pop"
+x = 594
+y = 4
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_73"
+texture = "souls_rework_pop"
+x = 730
+y = 4
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_80"
+texture = "souls_rework_pop"
+x = 880
+y = 4
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 4
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 4
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 4
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_0_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 4
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_36"
+texture = "souls_rework_pop"
+x = 4
+y = 80
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_40"
+texture = "souls_rework_pop"
+x = 80
+y = 80
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_44"
+texture = "souls_rework_pop"
+x = 164
+y = 80
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_49"
+texture = "souls_rework_pop"
+x = 256
+y = 80
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_54"
+texture = "souls_rework_pop"
+x = 358
+y = 80
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_60"
+texture = "souls_rework_pop"
+x = 470
+y = 80
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_66"
+texture = "souls_rework_pop"
+x = 594
+y = 80
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_73"
+texture = "souls_rework_pop"
+x = 730
+y = 80
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_80"
+texture = "souls_rework_pop"
+x = 880
+y = 80
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 80
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 80
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 80
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_1_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 80
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_36"
+texture = "souls_rework_pop"
+x = 4
+y = 156
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_40"
+texture = "souls_rework_pop"
+x = 80
+y = 156
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_44"
+texture = "souls_rework_pop"
+x = 164
+y = 156
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_49"
+texture = "souls_rework_pop"
+x = 256
+y = 156
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_54"
+texture = "souls_rework_pop"
+x = 358
+y = 156
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_60"
+texture = "souls_rework_pop"
+x = 470
+y = 156
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_66"
+texture = "souls_rework_pop"
+x = 594
+y = 156
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_73"
+texture = "souls_rework_pop"
+x = 730
+y = 156
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_80"
+texture = "souls_rework_pop"
+x = 880
+y = 156
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 156
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 156
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 156
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_2_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 156
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_36"
+texture = "souls_rework_pop"
+x = 4
+y = 232
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_40"
+texture = "souls_rework_pop"
+x = 80
+y = 232
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_44"
+texture = "souls_rework_pop"
+x = 164
+y = 232
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_49"
+texture = "souls_rework_pop"
+x = 256
+y = 232
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_54"
+texture = "souls_rework_pop"
+x = 358
+y = 232
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_60"
+texture = "souls_rework_pop"
+x = 470
+y = 232
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_66"
+texture = "souls_rework_pop"
+x = 594
+y = 232
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_73"
+texture = "souls_rework_pop"
+x = 730
+y = 232
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_80"
+texture = "souls_rework_pop"
+x = 880
+y = 232
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 232
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 232
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 232
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_3_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 232
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_36"
+texture = "souls_rework_pop"
+x = 4
+y = 308
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_40"
+texture = "souls_rework_pop"
+x = 80
+y = 308
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_44"
+texture = "souls_rework_pop"
+x = 164
+y = 308
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_49"
+texture = "souls_rework_pop"
+x = 256
+y = 308
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_54"
+texture = "souls_rework_pop"
+x = 358
+y = 308
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_60"
+texture = "souls_rework_pop"
+x = 470
+y = 308
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_66"
+texture = "souls_rework_pop"
+x = 594
+y = 308
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_73"
+texture = "souls_rework_pop"
+x = 730
+y = 308
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_80"
+texture = "souls_rework_pop"
+x = 880
+y = 308
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 308
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 308
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 308
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_4_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 308
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_36"
+texture = "souls_rework_pop"
+x = 4
+y = 384
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_40"
+texture = "souls_rework_pop"
+x = 80
+y = 384
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_44"
+texture = "souls_rework_pop"
+x = 164
+y = 384
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_49"
+texture = "souls_rework_pop"
+x = 256
+y = 384
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_54"
+texture = "souls_rework_pop"
+x = 358
+y = 384
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_60"
+texture = "souls_rework_pop"
+x = 470
+y = 384
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_66"
+texture = "souls_rework_pop"
+x = 594
+y = 384
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_73"
+texture = "souls_rework_pop"
+x = 730
+y = 384
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_80"
+texture = "souls_rework_pop"
+x = 880
+y = 384
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 384
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 384
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 384
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_5_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 384
+size = [236, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_36"
+texture = "souls_rework_pop"
+x = 4
+y = 460
+size = [72, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_40"
+texture = "souls_rework_pop"
+x = 80
+y = 460
+size = [80, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_44"
+texture = "souls_rework_pop"
+x = 164
+y = 460
+size = [88, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_49"
+texture = "souls_rework_pop"
+x = 256
+y = 460
+size = [98, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_54"
+texture = "souls_rework_pop"
+x = 358
+y = 460
+size = [108, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_60"
+texture = "souls_rework_pop"
+x = 470
+y = 460
+size = [120, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_66"
+texture = "souls_rework_pop"
+x = 594
+y = 460
+size = [132, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_73"
+texture = "souls_rework_pop"
+x = 730
+y = 460
+size = [146, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_80"
+texture = "souls_rework_pop"
+x = 880
+y = 460
+size = [160, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_88"
+texture = "souls_rework_pop"
+x = 1044
+y = 460
+size = [176, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_97"
+texture = "souls_rework_pop"
+x = 1224
+y = 460
+size = [194, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_107"
+texture = "souls_rework_pop"
+x = 1422
+y = 460
+size = [214, 72]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_pop/souls_rework_pop.g4tx"
+name = "souls_rework_bubble_6_118"
+texture = "souls_rework_pop"
+x = 1640
+y = 460
+size = [236, 72]

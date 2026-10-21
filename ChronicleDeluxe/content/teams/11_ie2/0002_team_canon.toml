@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-20): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Team Canon (IE2, «Oumihara's Coach's route» #3; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Team_Canon
+[[team]]
+name = "ct_wk_team_canon"
+key = "evt_ct_wk_team_canon"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Future Wear, not a VR kit)
+level = 55
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x6A4403FC, slot = 0, number = 1, rarity_step = 1 }, # Yellow D = Dom Poppy (GK)
+  { card = 0xDFEA7DB1, slot = 1, number = 2, rarity_step = 1 }, # Green D = Payne Outler (DF)
+  { card = 0x63DB6666, slot = 2, number = 3, rarity_step = 1 }, # Zaihou = Argento Salvage (DF)
+  { card = 0xF4C72E72, slot = 3, number = 4, rarity_step = 1 }, # Blue D = Malcolm Shirker (MF)
+  { card = 0xEDDC1F33, slot = 4, number = 5, rarity_step = 1 }, # Pink D = Hanna Slack (MF)
+  { card = 0x48F635A5, slot = 5, number = 6, rarity_step = 1 }, # Gold = Finn Geld (FW)
+  { card = 0x89B0DA37, slot = 6, number = 7, rarity_step = 1 }, # Yellow = Virgil Amber (GK)
+  { card = 0x90ABEB76, slot = 7, number = 8, rarity_step = 1 }, # Pink = Amy Peach (MF)
+  { card = 0x729D588A, slot = 8, number = 9, rarity_step = 1 }, # Red = Teal Redsky (FW)
+  { card = 0xE84B364C, slot = 9, number = 10, rarity_step = 1, captain = true }, # Endou Canon = Canon Evans (FW)
+  { card = 0xC6F14CF0, slot = 10, number = 11, rarity_step = 1 }, # Red D = Grant Stodgell (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_team_canon.png" # remastered crest of the wiki's Team Canon emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Equipo Canon"
+short = "Equipo Canon"
+[team.text.en]
+name = "Team Canon"
+short = "Team Canon"
+[team.text.ja]
+name = "チームカノン"
+short = "チームカノン"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_team_canon"
+card_moves = 4

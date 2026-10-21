@@ -1,0 +1,39 @@
+schema = "VRFW.item/2"
+# Transforming Items › «Piedra Alius» (retail accessory eq_ac0107101, sold in the Crónica shop): a player who took the
+# Alius stone in the story wears it and takes his Alius look while he wears it (model, face icon and, where the two
+# cards differ, that version's stats and moves). Take it off and he is back. The card itself never changes in the save:
+# the toggle is the accessory slot of «Equipamiento», kept in the save by the game itself.
+# Mechanism: the VR-Framework's [[VRFW.ItemTransform]] (docs/framework/types/item.md §13); this file only declares the
+# content (docs/game/mods/transforming-items.md).
+#
+# Who: the classic version (IE1-IE3) of every player of these teams of origin. The framework finds each one in the
+# game tables (same full name, voice bank or description text); the Ares / GO / Orion / Victory Road / idol versions are
+# left out by base_series. The four players whose Alius form has another name and nothing in the tables links them are
+# listed by hand in `pairs`.
+
+[[VRFW.ItemTransform]]
+name = "TransformingItems.AliusStone"
+item = "eq_ac0107101"                     # Piedra Alius (accessory list: equip slot 2)
+# equipped (and transforming) while the save flag TransformingItems.AliusStoneUnlocked is set (content/flags/
+# alius_stone.toml); the framework sets it when the Dark Emperors are beaten in their Crónica match «¡Duelo! ¡Raimon
+# contra Raimon!» (IE2 board, team tm_cro_ie2_2000), at any difficulty: at the match end, or at the next save load for
+# a save that already beat them
+unlock = { flag = "TransformingItems.AliusStoneUnlocked", cleared = [{ game = "fbtl_cro02_200_010" }] }
+text = { incompatible = "TransformingItems.AliusStoneIncompatible", locked = "TransformingItems.AliusStoneLocked" }   # text/rows/alius_stone.toml
+base_series = ["ie1", "ie2", "ie3"]
+families = [
+    { team = "0x844120FF" },   # Dark Emperors (the Raimon players who took the Alius stone)
+    { team = "0xF1E3E365" },   # Royal Academy Redux
+    { team = "0xC1F58606" },   # Gemini Storm
+    { team = "0xC5629E8C" },   # Epsilon
+    { team = "0x8E1A91A5" },   # Genesis
+    { team = "0xE0D78A15" },   # Prominence
+    { team = "0xA4F89470" },   # Diamond Dust
+]
+pairs = [
+    # human identity -> Alius form, another name and no link in the tables (lore)
+    { base = "c03030060", target = "c02021100" },   # Jordan Greenway -> Janus
+    { base = "c03030070", target = "c02021210" },   # Dave Quagmire -> Dvalin
+    { base = "c03030040", target = "c02021510" },   # Xavier Foster -> Xene
+    { base = "c02029500", target = "c02021500" },   # Aquilina Schiller -> Bellatrix
+]

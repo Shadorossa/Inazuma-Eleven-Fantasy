@@ -3872,8 +3872,23 @@ do
     end
   end
 
+  -- another mode owns this dock (EVT_DOCK_OWNERS: name -> function, true while that mode's dock is open); the
+  -- owners are asked each time, since their graft may wrap OnInit inside this one (mod load order)
   function PT.inRogue()
-    return type(EVT_IRD) == "table" and EVT_IRD.on == true
+    if type(EVT_IRD) == "table" and EVT_IRD.on == true then
+      return true
+    end
+    if type(EVT_DOCK_OWNERS) == "table" then
+      for _, owns in pairs(EVT_DOCK_OWNERS) do
+        if type(owns) == "function" then
+          local ok, yes = pcall(owns)
+          if ok and yes == true then
+            return true
+          end
+        end
+      end
+    end
+    return false
   end
 
   -- the type can be switched here? (true | false, reason)

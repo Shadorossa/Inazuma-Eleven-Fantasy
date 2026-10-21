@@ -1,12 +1,13 @@
-# Player Training › the team dock entry (research/scripts/tr_build.py build_team_dock; docs/game/training-classic.md
-# section 7.1): «Entrenamiento» as a row of the team-command list of soccer_team_dock_menu (Plantilla de equipo ->
-# «Equipar todo» list); it opens the training window evt_training_menu (graft player_training_menu) on the selected
-# dock. The training replaces the beans: the list keeps Autoequipar equipo, Eliminar equipamiento and Ajustes de
-# celebración de gol, then «Entrenamiento» (the bean rows and the auto-beans checkbox are hidden, as in Inazuma
-# Fantasy). Was Inazuma Fantasy's graft training_dock until 2026-10-14 (same block). The row shows only while the
-# mod's module bit 16 is lit (CMND_EVT_LOADER_VERSION). Wraps / replaces OpenSelectTeamMemberControlSubWindowSoccerTeamDock
-# (same body, its own core with the extra row) and wraps CallbackCloseCondTeamCommandSubWinSoccerTeamDock; no engine
-# call at chunk load.
+# Player Training › the team dock entry (docs/game/training-classic.md section 7.1): «Entrenamiento» as a row of the
+# team-command list of soccer_team_dock_menu (Plantilla de equipo -> «Equipar todo» list); it opens the training window
+# evt_training_menu (graft player_training_menu) on the selected dock. The training replaces the beans: the list keeps
+# Autoequipar equipo, Eliminar equipamiento and Ajustes de celebración de gol, then «Entrenamiento» (the bean rows and
+# the auto-beans checkbox are hidden). The row shows only while the mod's module bit 16 is lit (CMND_EVT_LOADER_VERSION).
+# HOOK file (docs/framework/lua-hosts.md §7): around handlers on the VR-Framework's host of soccer_team_dock_menu for
+# OpenSelectTeamMemberControlSubWindowSoccerTeamDock (same body, its own core with the extra row) and
+# CallbackCloseCondTeamCommandSubWinSoccerTeamDock; the chunk's locals through the host's locals map. Was a merge-path
+# append_block until 2026-10-20: another mod's merge-path patch of the dock (Pachangas) redefined the same functions
+# and dropped it. No engine call at chunk load.
 name = "player_training_dock"
 mod = "player_training"
 order = 300
@@ -16,10 +17,6 @@ conflicts = []
 wraps = ["OpenSelectTeamMemberControlSubWindowSoccerTeamDock", "CallbackCloseCondTeamCommandSubWinSoccerTeamDock"]
 description = "Player Training: «Entrenamiento» row in the team dock command list"
 
-[[files]]
+[[hooks]]
 stem = "soccer_team_dock_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "evt_team_dock_training_block.lua"
-  marker = "training team dock"
+src = "training_dock_hooks.lua"

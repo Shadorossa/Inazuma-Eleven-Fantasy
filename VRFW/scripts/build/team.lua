@@ -21,7 +21,9 @@ local Challenge = require "team/challenge"
 local LevelMap = require "team/level_map"
 local FreeMatch = require "team/free_match"
 local Bb = require "team/bb"
+local GameRival = require "team/game_rival"
 local GameDrops = require "team/game_drops"
+local TeamSelect = require "team/team_select"
 
 local LIST_FREE, LIST_BB = Lists.LIST_FREE, Lists.LIST_BB
 
@@ -59,7 +61,7 @@ local function vrfw_empty(v)
     and #(v.Chain or {}) == 0 and #(v.Category or {}) == 0 and #(v.Season or {}) == 0 and #(v.FreeMatchTab or {}) == 0
     and #(v.FreeMatchTabBar or {}) == 0 and #(v.GameTab or {}) == 0 and #(v.FreeMatchGame or {}) == 0
     and #(v.FreeMatchPlace or {}) == 0 and #(v.FreeMatchRival or {}) == 0 and #(v.MatchChallenge or {}) == 0 and v.BbUnlock == nil
-    and #(v.GameDrops or {}) == 0 and #(v.SpiritDrops or {}) == 0
+    and #(v.GameRival or {}) == 0 and #(v.GameDrops or {}) == 0 and #(v.SpiritDrops or {}) == 0 and #(v.TeamSelect or {}) == 0
 end
 
 local function only_lists(f)
@@ -277,7 +279,9 @@ local function build_teams(input, X, out, fm)
   LevelMap.install(X)
   FreeMatch.install(X)
   Bb.install(X)
+  GameRival.install(X)
   GameDrops.install(X)
+  TeamSelect.install(X)
 
   -- a mod team that a [[remove]] mode = "delete" names is never created
   for _, f in ipairs(files) do
@@ -422,8 +426,12 @@ local function build_teams(input, X, out, fm)
   X.free_match_levels(fm)
   -- every offered class row of a listed game has a clear bit (a node's game, a list clone: none of their own)
   X.free_match_clear_bits(fm)
+  -- (3e'0) [[VRFW.GameRival]]: rival team / level of declared rows (after the level maps; the drops and twins see them)
+  X.game_rivals(files)
   -- (3e'') [[VRFW.GameDrops]]: the drop tables of the games' rows (every game exists now: nodes, chains)
   X.game_drops(files, chains)
+  -- (3e''') [[VRFW.TeamSelect]]: twin games with another fixed line-up (after the drops: the twin copies final rows)
+  X.team_selects(files)
   -- (3f) the Estadio BB rows' stadium = their team's home stadium (after every edit and appearance)
   X.bb_home_stadiums()
   -- (4) removals

@@ -4,7 +4,8 @@ schema = "VRFW.game/2"
 # VRFW.chara.record(hdl).addr: +0x94 + 4*slot placed item, +0xC8 + 4*slot native item, +0x165 + slot piece effect index
 # (signed byte; negative = closed). docs/game/ui/skill-board-original.md.
 
-# void PlaceByHandle(const u32* charaHdl, int pieceEffectIdx, u32 invHdl, u8 base, u8) 0xE7D700: record by handle,
+# void PlaceByHandle(const u32* charaHdl, int pieceEffectIdx, u32 invHdl, u8 base, u8, u8 clearNative) 0xE7D700 (the last
+# argument read by v7.2.1 only): record by handle,
 # then 0xD80B40 (puts the inventory item on the slot of that piece)
 [[VRFW.Function]]
 name = "CharacterReforged.BoardPlaceByHandle"

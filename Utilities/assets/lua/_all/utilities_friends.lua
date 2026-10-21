@@ -23,7 +23,7 @@ if UTIL_FP == nil then
       SPRITE = 558735651, ALPHA = 4231609516, MESH_VISIBLE = 3405944500, NODE_VISIBLE = 2158717427,
       TEXT_VISIBLE = 2735666188, SET_TEXT = 1083631230, LOAD_TEX = 839427544, TEX_LOADING = 1506186496,
       FACE = 552280324, RESET_FACE = 4176779611, LOADING = 1277042906, CHECK_INPUT = 4265778440,
-      POINTER = 558229292, MOVED = 3272825600,
+      POINTER = 558229292, MOVED = 3272825600, TEXT_STYLE = 2333948100,
     },
     L = { BACK = 3391176382, PLATE = 3848078112, ICON = 3262895698, FACE = 2734392558, TEXT = 2623821902 },
     QUAD = 1909474081,            -- icon_new01: the cmn01_10 quad's sprite slot
@@ -58,9 +58,31 @@ if UTIL_FP == nil then
     art = "#/menu/220_img/util_friends/util_friends.g4tx", SPRITE = "util_friends_",
     art_ok = false,    -- the atlas answered «loaded» (nothing of the panel is drawn before: a swap to a texture not
                        -- there yet keeps the quad's base sprite, the red «new» badge of cmn01_10, and was never retried)
+    -- the game's own list art, swapped into the same quads (a `res` of the panel's layers too): the save list's
+    -- slanted row plates (off = light, on = blue, ol = the cyan focus frame) and the green triangle cursor of every
+    -- retail list. A texture that does not answer «loaded» falls back to the atlas' look-alike (row / sel / focus /
+    -- cursor), so nothing is ever drawn with a missing sprite.
+    RETAIL = {
+      list = { tex = "#/menu/51_save/save01/save01_02/save01_02.g4tx",
+               off = "list_base_s01_off", on = "list_base_s01_on", focus = "list_base_s01_ol" },
+      cursor = { tex = "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx", sprite = "cur01", w = 128, h = 152 },
+    },
+    -- the game's text styles (font_style.cfg, docs/game/ui/fonts.md §3): every text of the panel names its own
+    STYLE = {
+      title = "fs2_36_w_lc_2d2_001", count = "fs_28_b_lc_2d0_001", section = "fs2_26_w_lc_2d2_001_nr",
+      name = "fs_28_b_lc_2d0_001", name_on = "fs2_28_w_lc_2d0_001",
+      status = "fs_22_k_lc_2d0_001_nr_sclw", status_on = "fs2_22_w_lc_2d1_001",
+      big = "fs_32_b_lc_2d0_001", body = "fs_28_k_lc_2d0_001", small = "fs_26_k_lc_2d0_001",
+      level = "fs_24_b_lc_2d1_001", guide = "fs_guide01",
+    },
+    -- glyph px at 1080p of a style size (the name's size + 2) and the mean Latin glyph width as a share of it: the
+    -- cut of a name / status that does not fit its column (no text-width command)
+    GLYPH = 0.5,
     AVATAR_WAIT = 10,  -- frames a served Steam avatar must answer «loaded» before it replaces the placeholder
     det = nil,         -- the open details: { i, state, team, form, faces, stats, acts, asel, asked_at }
-    P = { x = 1500, width = 420, top = 72, row_h = 40, head_h = 56, details_w = 560, slide = 10 },
+    P = { x = 1440, width = 480, top = 72, row_h = 64, head_h = 72, details_w = 560, slide = 10 },
+    SECTION_H = 40, FOOT_H = 56, AVATAR = 46, BOB = 30,
+    SECTIONS = { "playing", "online", "away", "offline" },
     co = nil, held = {}, sent = {}, used = {}, shown = {}, crcs = {}, texts = {}, loaded = {}, faces = {},
     cap = {}, opened = {},
     idle = 0, HIDE_EVERY = 60,                       -- frames between two checks that the closed panel is hidden
@@ -169,8 +191,26 @@ end
 
 local ArtReady   -- below, with the hiding of the closed panel
 
--- a text: left edge x, vertical middle y (screen px), scale
-local function Text(s, x, y, sc)
+-- a retail list plate (off / on / focus) of the save list; the atlas' look-alike while the game's texture is not there
+local FALLBACK = { off = "row", on = "sel", focus = "focus" }
+local function Plate(layer, look, x, y, w, h)
+  local R = FP.RETAIL.list
+  if TexReady(R.tex, 1) then return Quad(layer, R.tex, R[look], x + FP.dx, y, w, h, 1) end
+  return Art(layer, FALLBACK[look], x, y, w, h, 1)
+end
+
+-- the game's green triangle list cursor, its tip at (x, y middle), `h` px high, bobbing like the retail one
+local function Cursor(x, y, h)
+  local R = FP.RETAIL.cursor
+  local w = h * R.w / R.h
+  local bob = math.floor(3 * math.sin(FP.frame * 2 * math.pi / FP.BOB) + 0.5)
+  if TexReady(R.tex, 1) then return Quad(FP.L.ICON, R.tex, R.sprite, x - w + bob + FP.dx, y - h / 2, w, h, 1) end
+  return Art(FP.L.ICON, "cursor", x - w + bob, y - h / 2, w, h, 1)
+end
+
+-- a text: left edge x, vertical middle y (screen px), a style of FP.STYLE (the game's text styles: size, colour,
+-- outline), scale (1 = the style's own size)
+local function Text(s, x, y, style, sc)
   if s == nil or s == "" then return nil end
   local L, T = FP.L.TEXT, FP.TXT
   local i = Slot(L)
@@ -178,14 +218,41 @@ local function Text(s, x, y, sc)
   sc = sc or 1
   Show(L, i)
   for _, m in ipairs(T.MESHES) do Set(L, i, "m" .. m, FP.C.MESH_VISIBLE, L, m, false, i) end
+  Set(L, i, "st", FP.C.TEXT_STYLE, L, i, T.NODE, Crc(FP.STYLE[style or "body"] or FP.STYLE.body))
   Set(L, i, "txt", FP.C.SET_TEXT, L, T.NODE, s, i)
   Set(L, i, "sc", FP.C.SCALE, L, sc, sc, 1, i)
   Set(L, i, "pos", FP.C.POS, L, x + FP.dx - T.BOX_LEFT * sc, -y - T.BOX_MID_Y * sc, 0, i)
   return i
 end
 
+-- a string's width in glyph units (a CJK glyph counts 2)
+local function Units(s)
+  local u = 0
+  for ch in tostring(s or ""):gmatch("[%z\1-\127\194-\244][\128-\191]*") do u = u + ((ch:byte(1) or 0) >= 0xE3 and 2 or 1) end
+  return u
+end
+
+-- `s` cut to `px` screen px at a style's glyph size `size` (px): whole when it fits, else at the last word boundary
+-- that keeps most of it (else mid-word) with «…»
+local function Fit(s, px, size)
+  s = tostring(s or "")
+  local units = math.floor(px / (size * FP.GLYPH))
+  if units <= 1 or Units(s) <= units then return s end
+  local out, u = {}, 0
+  for ch in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+    local w = (ch:byte(1) or 0) >= 0xE3 and 2 or 1
+    if u + w > units - 1 then break end
+    out[#out + 1] = ch
+    u = u + w
+  end
+  local cut = table.concat(out)
+  local word = cut:match("^(.*%S)%s+%S*$")
+  if word ~= nil and Units(word) >= math.floor(units * 0.6) then cut = word end
+  return (cut:gsub("[%s%p]+$", "")) .. "…"
+end
+
 -- an avatar: the neutral placeholder until the served Steam picture answers «loaded» for AVATAR_WAIT frames (never on
--- a timeout: a swap to a texture that is not there keeps the badge sprite), then the picture; a light frame on top
+-- a timeout: a swap to a texture that is not there keeps the badge sprite), then the picture; the white card frame on top
 local function Avatar(tex, sprite, x, y, s)
   if type(tex) == "string" and tex ~= "" and type(sprite) == "string" and sprite ~= "" and TexReady(tex, FP.AVATAR_WAIT) then
     Quad(FP.L.ICON, tex, sprite, x + FP.dx, y, s, s, 1)
@@ -335,14 +402,16 @@ local function DrawModal()
   local dx = FP.dx
   FP.dx = 0
   Art(FP.L.ICON, "details", x, y, w, h, 1)
-  Art(FP.L.ICON, "edge", x, y, w, 3, 1)
+  Art(FP.L.ICON, "head", x, y, w, 8, 1)
   for k, line in ipairs(B.lines) do
-    Text(line, x + 24, y + 40 + (k - 1) * 34, 0.78)
+    Text(line, x + 24, y + 40 + (k - 1) * 34, "body")
   end
   for k, label in ipairs(B.buttons) do
     local bx = x + 24 + (k - 1) * (bw + 16)
-    Art(FP.L.ICON, k == B.sel and "button_sel" or "button", bx, by, bw, 50, 1)
-    Text(label, bx + 24, by + 25, 0.8)
+    local on = k == B.sel
+    Plate(FP.L.ICON, on and "on" or "off", bx, by, bw, 50)
+    if on then Plate(FP.L.ICON, "focus", bx - 3, by - 3, bw + 6, 56) end
+    Text(Fit(label, bw - 48, 30), bx + 28, by + 25, on and "name_on" or "name")
   end
   FP.dx = dx
 end
@@ -408,15 +477,41 @@ local function Load(refresh)
   FP.ready, FP.err = ready == true, tostring(err or "")
   local keep = FP.sel and FP.rows[FP.sel] and FP.rows[FP.sel].id or nil
   local function pick(r) return r.kind == "friend" end
-  FP.rows = {}
+  -- the script's rows (sorted: this game, online, away, offline; then by name) grouped the way the game groups its
+  -- lists: a section head per status that has someone (playing = this game first, then another game; online; away;
+  -- offline), each friend under it in the script's order. `idx` stays the script's row for every command.
+  local by, other = {}, {}
+  for _, s in ipairs(FP.SECTIONS) do by[s] = {} end
   for i = 1, tonumber(n) or 0 do
     local okR, kind, group, name, st, dot, badge, room, tex, sprite, id = pcall(funcLuaCommand, FP.CMD.ROW, i)
     if okR and type(kind) == "string" and kind ~= "" then
-      FP.rows[#FP.rows + 1] = {kind = kind, group = group, name = name, status = st, dot = dot, badge = badge,
-                               room = room == true, tex = tex, sprite = sprite, idx = i,
-                               id = kind == "friend" and id or nil}
+      local r = {kind = kind, group = group, name = name, status = st, dot = dot, badge = badge,
+                 room = room == true, tex = tex, sprite = sprite, idx = i, id = kind == "friend" and id or nil}
+      if kind ~= "friend" then
+        other[#other + 1] = r
+      elseif dot == "game" or st == "other_game" then
+        table.insert(by.playing, r)
+      elseif dot == "on" then
+        table.insert(by.online, r)
+      elseif dot == "away" then
+        table.insert(by.away, r)
+      else
+        table.insert(by.offline, r)
+      end
     end
   end
+  table.sort(by.playing, function(a, b)
+    if (a.dot == "game") ~= (b.dot == "game") then return a.dot == "game" end
+    return a.idx < b.idx
+  end)
+  FP.rows = {}
+  for _, s in ipairs(FP.SECTIONS) do
+    if #by[s] > 0 then
+      FP.rows[#FP.rows + 1] = {kind = "section", sec = s, count = #by[s]}
+      for _, r in ipairs(by[s]) do FP.rows[#FP.rows + 1] = r end
+    end
+  end
+  for _, r in ipairs(other) do FP.rows[#FP.rows + 1] = r end
   -- the selection: the same friend after a refresh, else the first friend
   FP.sel = nil
   for i, r in ipairs(FP.rows) do
@@ -444,7 +539,8 @@ end
 
 -- ------------------------------------------------------------------------------------------------ layout
 
-local function RowH(_r)
+local function RowH(r)
+  if r ~= nil and r.kind == "section" then return FP.SECTION_H end
   return FP.P.row_h
 end
 
@@ -456,13 +552,22 @@ local function RowTop(i)
 end
 
 local function ListBox()
-  return FP.P.top + FP.P.head_h + 8, 1080 - 56
+  return FP.P.top + FP.P.head_h + 8, 1080 - FP.FOOT_H - 6
+end
+
+local function ContentH()
+  return RowTop(#FP.rows + 1)
 end
 
 local function KeepVisible()
   if FP.sel == nil then return end
   local y0, y1 = ListBox()
-  local t = RowTop(FP.sel)
+  -- the first friend of a section brings its section head into view too
+  local first = FP.sel
+  if FP.rows[first - 1] ~= nil and FP.rows[first - 1].kind == "section" then first = first - 1 end
+  local t = RowTop(first)
+  if t < FP.scroll then FP.scroll = math.max(0, t) end
+  t = RowTop(FP.sel)
   local h = RowH(FP.rows[FP.sel])
   if t < FP.scroll then FP.scroll = math.max(0, t) end
   if t + h > FP.scroll + (y1 - y0) then FP.scroll = t + h - (y1 - y0) end
@@ -479,6 +584,51 @@ end
 
 -- ------------------------------------------------------------------------------------------------ drawing
 
+-- the row plate's quad around a row of height `rh` at y (the retail plate's body is its middle 80 %: the quad overlaps
+-- the row's edges so the visible plate fills the row with a small gap)
+local function RowPlate(look, x, y, w, rh)
+  return Plate(look == "focus" and FP.L.ICON or FP.L.PLATE, look, x, y - 3, w, rh + 6)
+end
+
+local function DrawSection(r, x, y, w)
+  Art(FP.L.PLATE, "section", x + 14, y + 4, w - 40, FP.SECTION_H - 6, 1)
+  local label = Tx("Sec_" .. r.sec)
+  Text(label .. "  " .. tostring(r.count), x + 40, y + FP.SECTION_H / 2 + 1, "section")
+end
+
+local function DrawFriend(r, x, y, w, rh, on, cursor)
+  local px, pw = x + 34, w - 34 - 24
+  RowPlate(on and "on" or "off", px, y, pw, rh)
+  if on then
+    RowPlate("focus", px, y, pw, rh)
+    if cursor then Cursor(px + 6, y + rh / 2, 44) end
+  end
+  local s = FP.AVATAR
+  local ax, ay = px + 24, y + (rh - s) / 2
+  Avatar(r.tex, r.sprite, ax, ay, s)
+  local dot = (r.dot ~= nil and r.dot ~= "") and r.dot or "off"
+  Art(FP.L.ICON, "dot_" .. dot, ax + s - 13, ay + s - 13, 18, 18, 1)
+  local nx = ax + s + 16
+  local right = px + pw - 24
+  if r.badge == "ok" or r.badge == "warn" then
+    Art(FP.L.ICON, r.badge, right - 26, y + rh / 2 - 13, 26, 26, 1)
+    right = right - 34
+  end
+  Text(Fit(r.name, right - nx, 30), nx, y + rh / 2 - 11, on and "name_on" or "name")
+  Text(Fit(StatusText(r), right - nx, 24), nx, y + rh / 2 + 15, on and "status_on" or "status")
+end
+
+local function DrawScrollbar(x, w, y0, y1)
+  local total = ContentH()
+  local view = y1 - y0
+  if total <= view then return end
+  local tx = x + w - 16
+  Art(FP.L.PLATE, "sbar", tx, y0, 8, view, 1)
+  local th = math.max(40, math.floor(view * view / total))
+  local ty = y0 + math.floor((view - th) * FP.scroll / (total - view) + 0.5)
+  Art(FP.L.ICON, "sthumb", tx, ty, 8, th, 1)
+end
+
 local function DrawList()
   local P = FP.P
   local x, w = P.x, P.width
@@ -488,38 +638,40 @@ local function DrawList()
   Art(FP.L.BACK, "veil", 0, P.top, math.max(0, vx + FP.dx), h, 1)
   Art(FP.L.BACK, "shadow", x - 28, P.top, 28, h, 1)
   Art(FP.L.BACK, "panel", x, P.top, w, h, 1)
-  Art(FP.L.PLATE, "edge", x, P.top, 3, h, 1)
-  -- header: the title and how many friends
+  Art(FP.L.PLATE, "edge", x, P.top, 8, h, 1)
+  -- header: the game's blue title band, the title and how many friends on a white tag
   Art(FP.L.PLATE, "head", x, P.top, w, P.head_h, 1)
   local count = 0
   for _, r in ipairs(FP.rows) do
     if r.kind == "friend" then count = count + 1 end
   end
-  Text(Tx("Title") .. string.format("  (%d)", count), x + 20, P.top + P.head_h / 2, 0.95)
+  Art(FP.L.PLATE, "tag", x + w - 108, P.top + 16, 84, 40, 1)
+  Text(tostring(count), x + w - 108 + 26, P.top + 36, "count")
+  Text(Fit(Tx("Title"), w - 160, 38), x + 28, P.top + P.head_h / 2 - 2, "title")
   local y0, y1 = ListBox()
+  FP.scroll = math.max(0, math.min(FP.scroll, ContentH() - (y1 - y0)))
   local y = y0 - FP.scroll
   if FP.err == "noscript" then
-    Text(Tx("NoScript"), x + 20, y0 + P.row_h / 2, 0.7)
+    Text(Fit(Tx("NoScript"), w - 56, 26), x + 28, y0 + P.row_h / 2, "small")
   end
   -- an open message box covers the list: no row under it (the texts' layer draws above the box's layer)
   for i, r in ipairs(FP.msg == nil and FP.rows or {}) do
     local rh = RowH(r)
     if y >= y0 - 2 and y + rh <= y1 + 2 then
       if r.kind == "none" then
-        Text(Tx("Nobody"), x + 20, y + rh / 2, 0.7)
+        Text(Tx("Nobody"), x + 40, y + rh / 2, "small")
+      elseif r.kind == "section" then
+        DrawSection(r, x, y, w)
       else
-        if i == FP.sel then
-          Art(FP.L.PLATE, "sel", x + 8, y + 2, w - 16, rh - 4, 1)
-        end
-        Art(FP.L.ICON, "dot_" .. ((r.dot ~= nil and r.dot ~= "") and r.dot or "off"), x + 18, y + rh / 2 - 6, 12, 12, 1)
-        Text(r.name, x + 40, y + rh / 2, 0.78)
-        Text(StatusText(r), x + w - 170, y + rh / 2, 0.6)
+        DrawFriend(r, x, y, w, rh, i == FP.sel, FP.mode == "list")
       end
     end
     y = y + rh
   end
-  Art(FP.L.PLATE, "line", x + 16, 1080 - 50, w - 32, 2, 1)
-  Text(FP.mode == "details" and Tx("DetailKeys") or Tx("ListKeys"), x + 20, 1080 - 26, 0.7)
+  if FP.msg == nil then DrawScrollbar(x, w, y0, y1) end
+  -- the button guide: the game's bottom band with the key glyphs
+  Art(FP.L.PLATE, "foot", x, 1080 - FP.FOOT_H, w, FP.FOOT_H, 1)
+  Text(FP.mode == "details" and Tx("DetailKeys") or Tx("ListKeys"), x + 28, 1080 - FP.FOOT_H / 2 + 2, "guide")
 end
 
 local function DrawDetails()
@@ -530,29 +682,36 @@ local function DrawDetails()
   local x = P.x - dw
   local r = FP.rows[D.i] or {}
   Art(FP.L.BACK, "details", x, P.top, dw - 6, 1080 - P.top, 1)
-  Art(FP.L.PLATE, "edge", x, P.top, 3, 1080 - P.top, 1)
-  Avatar(r.tex, r.sprite, x + 24, P.top + 20, 96)
-  Text(r.name, x + 140, P.top + 50, 1.0)
-  Text(StatusText(r), x + 140, P.top + 88, 0.75)
+  Art(FP.L.PLATE, "edge", x, P.top, 8, 1080 - P.top, 1)
+  -- the friend: avatar card, name, status, the mod badge
+  Art(FP.L.PLATE, "head", x + 8, P.top, dw - 14, 8, 1)
+  Avatar(r.tex, r.sprite, x + 32, P.top + 28, 96)
+  Art(FP.L.ICON, "dot_" .. ((r.dot ~= nil and r.dot ~= "") and r.dot or "off"), x + 32 + 96 - 24, P.top + 28 + 96 - 24,
+    28, 28, 1)
+  local right = x + dw - 30
   if r.badge == "ok" or r.badge == "warn" then
-    Art(FP.L.ICON, r.badge, x + dw - 70, P.top + 30, 40, 40, 1)
+    Art(FP.L.ICON, r.badge, right - 40, P.top + 38, 40, 40, 1)
+    right = right - 50
   end
-  local y = P.top + 140
+  Text(Fit(r.name, right - (x + 150), 34), x + 150, P.top + 58, "big")
+  Text(Fit(StatusText(r), right - (x + 150), 28), x + 150, P.top + 98, "small")
+  Art(FP.L.PLATE, "line", x + 28, P.top + 140, dw - 62, 2, 1)
+  local y = P.top + 150
   if D.state == "wait" then
-    Text(Tx("Loading"), x + 24, y + 20, 0.8)
+    Text(Tx("Loading"), x + 32, y + 24, "body")
   elseif D.state == "error" then
-    Text(Tx("NoAnswer"), x + 24, y + 20, 0.75)
+    Text(Fit(Tx("NoAnswer"), dw - 70, 28), x + 32, y + 24, "small")
   elseif D.state == "ok" then
-    Text(string.format(Tx("Team"), D.team ~= "" and D.team or "—"), x + 24, y + 18, 0.85)
-    Text(string.format(Tx("Formation"), D.form ~= "" and D.form or "—"), x + 24, y + 50, 0.75)
-    y = y + 76
-    local cols, size, pitch = 4, 104, 130
+    Text(Fit(string.format(Tx("Team"), D.team ~= "" and D.team or "—"), dw - 70, 30), x + 32, y + 20, "name")
+    Text(Fit(string.format(Tx("Formation"), D.form ~= "" and D.form or "—"), dw - 70, 28), x + 32, y + 52, "small")
+    y = y + 78
+    local cols, size, pitch = 4, 104, 128
     for k, f in ipairs(D.faces) do
       if k > 11 then break end
       local c, rr = (k - 1) % cols, math.floor((k - 1) / cols)
-      local cx, cy = x + 24 + size / 2 + c * pitch, y + size / 2 + rr * (pitch + 14)
+      local cx, cy = x + 32 + size / 2 + c * pitch, y + size / 2 + rr * (pitch + 14)
       if f.key ~= nil and f.key ~= 0 then Face(f.key, cx, cy, size) end
-      Text("Lv " .. tostring(f.level), cx - size / 2, cy + size / 2 + 12, 0.6)
+      Text("Lv " .. tostring(f.level), cx - size / 2, cy + size / 2 + 12, "level")
     end
     y = y + math.ceil(math.min(#D.faces, 11) / cols) * (pitch + 14) + 6
     for _, s in ipairs(D.stats) do
@@ -562,17 +721,24 @@ local function DrawDetails()
       else
         line = string.format(Tx("Stat_" .. s.key), s.name, s.value)
       end
-      Text(line, x + 24, y + 14, 0.72)
+      Text(Fit(line, dw - 70, 28), x + 32, y + 14, "small")
       y = y + 32
     end
   end
-  -- the actions, from the bottom up
+  -- the actions, from the bottom up: the game's list plates, the focus frame and the cursor on the chosen one
   local n = #D.acts
-  local ay = 1080 - 64 - n * 54
+  local bh = 50
+  local ay = 1080 - FP.FOOT_H - 16 - n * (bh + 8)
   for k, a in ipairs(D.acts) do
-    local sel = k == D.asel
-    Art(FP.L.PLATE, sel and "button_sel" or "button", x + 24, ay + (k - 1) * 54, dw - 60, 46, 1)
-    Text(Tx("Act_" .. a), x + 44, ay + (k - 1) * 54 + 23, 0.8)
+    local on = k == D.asel
+    local by = ay + (k - 1) * (bh + 8)
+    local bx, bw = x + 44, dw - 90
+    RowPlate(on and "on" or "off", bx, by, bw, bh)
+    if on then
+      RowPlate("focus", bx, by, bw, bh)
+      Cursor(bx + 6, by + bh / 2, 40)
+    end
+    Text(Fit(Tx("Act_" .. a), bw - 60, 30), bx + 30, by + bh / 2, on and "name_on" or "name")
   end
 end
 
@@ -661,7 +827,7 @@ end
 
 local function Layout()
   local ok, x, w, top, rh, hh, dw, sl = pcall(funcLuaCommand, FP.CMD.LAYOUT)
-  if not ok or type(x) ~= "number" then x, w, top, rh, hh, dw, sl = 1500, 420, 72, 40, 56, 560, 10 end
+  if not ok or type(x) ~= "number" then x, w, top, rh, hh, dw, sl = 1440, 480, 72, 64, 72, 560, 10 end
   FP.P = {x = x, width = w, top = top, row_h = rh, head_h = hh, details_w = dw, slide = math.max(1, sl)}
 end
 

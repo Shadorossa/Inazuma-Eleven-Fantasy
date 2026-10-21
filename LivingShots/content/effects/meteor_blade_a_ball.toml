@@ -1,0 +1,22 @@
+# «Cañón de meteoritos A» (Meteor Blade A, whs03410; fire; cut-in ev60_03410): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0400, Ares' version: the
+# ball diving at the tip of a fan of white, blue, yellow and star sheets): the fan's open end left at the kick point
+# for the whole shot and its tip on the ball (the ball inside it), the ball's glow, x0.25, instead of the plain fire
+# special-shot aura (ega0075c).
+# The object is ev6341ma00 (effect/event/ev60/ev6341ma00/), built by research/scripts/meteor_blade_a_ball_fx.py from the cut-in's
+# effect object ev60034100. docs/game/media/meteor-blade-a-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\meteor_blade_a_trajectory.toml.
+# Mod «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteor_blade_a"
+from = "ega0075c"
+object = "effect/event/ev60/ev6341ma00/ev6341ma00.objbin"
+
+[[shot_aura]]
+name = "meteor_blade_a"
+when = { techniques = "whs03410" }
+aura = "meteor_blade_a"
+like = "ega0075c"

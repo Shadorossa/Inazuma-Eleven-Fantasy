@@ -1,0 +1,8 @@
+schema = "VRFW.flag/1"
+# Transforming Items › the save flag of the «Piedra Alius» (content/items/alius_stone.toml, [[VRFW.ItemTransform]]
+# unlock.flag): the VR-Framework sets it when the Dark Emperors' Crónica match is won (unlock.cleared), and the
+# item is equipped / transforms only while it is set. No `bit`: the framework gives the bit and keeps it right in
+# every save (docs/framework/types/flag.md §4).
+[[flag]]
+name = "TransformingItems.AliusStoneUnlocked"
+bank = 0                   # global bit flags

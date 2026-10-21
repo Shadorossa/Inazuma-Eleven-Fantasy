@@ -3,7 +3,8 @@ schema = "VRFW.technique/3"
 # 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
 # docs/game/mechanics/move-mini-effects.md §7).
 # In the cut-in (c0400) the ball is kicked off a 9.9 m perch and comes down a straight ~30 deg line; in the match it
-# comes down that line into the goal. whs02170 has no cut-in of its own in v7.1.2 (no ev60_02170; the aura file
+# comes down one straight diagonal into the goal (since 2026-10-21 from the lowered start height,
+# never level first). whs02170 has no cut-in of its own in v7.1.2 (no ev60_02170; the aura file
 # covers it with whs02160's): it gets the same flight.
 #
 # Measured (research/scripts/shot_trajectory_from_cutin.py --points --move fire_tornado_tc):
@@ -15,9 +16,19 @@ schema = "VRFW.technique/3"
 # Tornado de fuego DT (whs02160).
 [[edit]]
 target = "whs02160"
-trajectory = { goal_points = [[13.85, 9.9, 999, 6.93], [0.0, 2.0]], unblockable = false }
+# Flight (2026-10-21, owner: «tiene que caer lineal inclinado, como una diagonal, no haciendo parábola, pero caer
+# desde no muy alto»): one straight diagonal from the start height down into 2.0 m at the goal. Measured start 9.9 m
+# (the cut-in's perch), lowered by _flight_height.toml to 4.48 m. (until 1.6.x: 4.48 m held level, then the line down
+# the last 13.85 m, the bend 6.93 m down it.)
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 9.9]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.48]], goal_points = [[0.0, 2.0]], unblockable = false }
 
 # Tornado de fuego DT, whs02170 (whs02170).
 [[edit]]
 target = "whs02170"
-trajectory = { goal_points = [[13.85, 9.9, 999, 6.93], [0.0, 2.0]], unblockable = false }
+# Flight (2026-10-21, owner: «tiene que caer lineal inclinado, como una diagonal, no haciendo parábola, pero caer
+# desde no muy alto»): one straight diagonal from the start height down into 2.0 m at the goal. Measured start 9.9 m
+# (the cut-in's perch), lowered by _flight_height.toml to 4.48 m. (until 1.6.x: 4.48 m held level, then the line down
+# the last 13.85 m, the bend 6.93 m down it.)
+# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 9.9]], goal_points = [[0.0, 2.0]], unblockable = false }
+trajectory = { points = [[0.0, 4.48]], goal_points = [[0.0, 2.0]], unblockable = false }

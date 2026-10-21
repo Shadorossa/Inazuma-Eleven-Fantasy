@@ -1,56 +1,123 @@
 schema = "VRFW.base_table/1"
-# The items of Inazuma Eleven Cross's content, appended at the end of their game lists (positions = the retail
-# file's: this mod loads before Inazuma Fantasy, whose edits of the same lists come after these rows). Moved from
-# Inazuma Fantasy's base table on 2026-10-08 (same ids, catalog numbers and texts):
+# The items of Inazuma Eleven Cross's content, added BY KEY at the end of their game lists
+# (docs/framework/types/base_table.md §3), so they stand on any game version and on top of any mod's edition of
+# item_config. Same ids, catalog numbers and texts as since 2026-10-08:
 #   ITEM_SPECIAL_SKILL_INFO  the manuals of the 12 Cross moves (key = the move's key; their catalog 13002-13013 is past the 8192-bit flag array: the technique engine gives each a free number, VRFW 2.2.70)
 #   ITEM_EMBLEM_INFO         the six Cross crests (Shin Zeus, Shin Brain, KFC Pierrot, Chaos Circus, Pirates, Ramen)
-#   ITEM_FASHION_INFO        the six Cross kits (clown, inverted clown, Samurai Blue, Shin Zeus, pirate, Ramen);
-#                            Inazuma Fantasy had them among the retail kits, they are the last rows of the list now
+#   ITEM_FASHION_INFO        the six Cross kits (clown, inverted clown, Samurai Blue, Shin Zeus, pirate, Ramen)
+# Crests and kits clone a retail row of the same series (`from`): the clone brings the row's SERIES flags and the
+# columns a game version adds (v7.2.1 added a trailing -1 to every crest row).
 
-[[list]]
-name = "ITEM_SPECIAL_SKILL_INFO"
-columns = ["id", "reserved_1", "name_text", "desc_text", "catalog_no", "category", "skill_kind", "max_stack", "reserved_8", "reserved_9", "reserved_10", "key", "rarity", "reserved_13", "base_item", "icon_index", "linked", "flag_17"]
-splice = [
-  { at = 1516, remove = 0, rows = [
-    [0x40680BA6, 0, 0, 0, 13002, 160, 161, 999, 1, 0, 0, "whs95000", 1, 0, 0, 246, 0x40680BA6, 0],
-    [0x59733AE7, 0, 0, 0, 13003, 160, 161, 999, 1, 0, 0, "whs95010", 1, 0, 0, 20, 0x59733AE7, 0],
-    [0x725E6924, 0, 0, 0, 13004, 160, 161, 999, 1, 0, 0, "whs95020", 1, 0, 0, 34, 0x725E6924, 0],
-    [0x6B455865, 0, 0, 0, 13005, 160, 161, 999, 1, 0, 0, "whs95030", 1, 0, 0, 20, 0x6B455865, 0],
-    [0x41AA6191, 0, 0, 0, 13006, 160, 161, 999, 1, 0, 0, "whs95100", 1, 0, 0, 21, 0x41AA6191, 0],
-    [0x58B150D0, 0, 0, 0, 13007, 160, 161, 999, 1, 0, 0, "whs95110", 1, 0, 0, 7, 0x58B150D0, 0],
-    [0x739C0313, 0, 0, 0, 13008, 160, 161, 999, 1, 0, 0, "whs95120", 1, 0, 0, 195, 0x739C0313, 0],
-    [0x6A873252, 0, 0, 0, 13009, 160, 161, 999, 1, 0, 0, "whs95130", 1, 0, 0, 197, 0x6A873252, 0],
-    [0x35BEA371, 0, 0, 0, 13010, 160, 162, 999, 1, 0, 0, "who95100", 1, 0, 0, 472, 0x35BEA371, 0],
-    [0x2CA59230, 0, 0, 0, 13011, 160, 162, 999, 1, 0, 0, "who95110", 1, 0, 0, 539, 0x2CA59230, 0],
-    [0x5F7953B2, 0, 0, 0, 13012, 160, 163, 999, 1, 0, 0, "whd95100", 1, 0, 0, 696, 0x5F7953B2, 0],
-    [0x466262F3, 0, 0, 0, 13013, 160, 163, 999, 1, 0, 0, "whd95110", 1, 0, 0, 792, 0x466262F3, 0],
-  ] },
-]
+[[keyed]]
+table = "item/item_special_skill"
+  [[keyed.add]]                         # whs95000
+  key = 0x40680BA6
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13002, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95000", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 246, linked = 0x40680BA6, flag_17 = 0 }
 
-[[list]]
-name = "ITEM_EMBLEM_INFO"
-columns = ["id", "reserved_1", "name_text", "desc_text", "catalog_no", "category", "sub_category", "max_stack", "reserved_8", "reserved_9", "reserved_10", "key", "rarity", "reserved_13", "base_item", "icon_index"]
-splice = [
-  { at = 338, remove = 0, rows = [
-    [0x57F6513A, 0, 0x989D95A7, 0, 8155, 90, 0, 1, 0, 0, 0, "em992074", 1, 0, 0, 12, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x5B94C7AF, 0, 0x0EB38BAC, 0, 8156, 90, 0, 1, 0, 0, 0, "em995973", 1, 0, 0, 6, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x16A53912, 0, 0x13D69CA7, 0, 8157, 90, 0, 1, 0, 0, 0, "em999322", 1, 0, 0, 3, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x249BA533, 0, 0x3549FC29, 0, 8158, 90, 0, 1, 0, 0, 0, "em992692", 1, 0, 0, 22, { SERIES = [0, 1, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x81104386, 0, 0x2D469570, 0, 8159, 90, 0, 1, 0, 0, 0, "em997991", 1, 0, 0, 35, { SERIES = [0, 0, 1, 0, 0, 0, 0, 0, 0] }],
-    [0x79F078B9, 0, 0x51FBE666, 0, 8160, 90, 0, 1, 0, 0, 0, "em992340", 1, 0, 0, 11, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-  ] },
-]
+  [[keyed.add]]                         # whs95010
+  key = 0x59733AE7
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13003, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95010", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 20, linked = 0x59733AE7, flag_17 = 0 }
 
-[[list]]
-name = "ITEM_FASHION_INFO"
-columns = ["id", "reserved_1", "name_text", "desc_text", "catalog_no", "category", "sub_category", "max_stack", "reserved_8", "reserved_9", "reserved_10", "key", "rarity", "reserved_13", "base_item", "icon_index", "reserved_16", "const_17", "uniform"]
-splice = [
-  { at = 181, remove = 0, rows = [
-    [0xA6AF76A7, 0, 0x9D9A4156, 0, 3305, 80, 51, 1, 0, 0, 0, "uni_u912001", 1, 0, 0, 15, 0, 1, 0x8088576A, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x93EE2273, 0, 0xB3D6448C, 0, 3304, 80, 51, 1, 0, 0, 0, "uni_u119801", 1, 0, 0, 15, 0, 1, 0xAD895D0B, { SERIES = [1, 0, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x12FB4BDA, 0, 0xD47FBFBF, 0, 3302, 80, 51, 1, 0, 0, 0, "uni_u120001_20", 1, 0, 0, 29, 0, 1, 0xCF5CE72B, { SERIES = [0, 1, 0, 0, 0, 0, 0, 0, 0] }],
-    [0x3CD6F5ED, 0, 0xCE9FEA2B, 0, 3306, 80, 51, 1, 0, 0, 0, "uni_u990001", 1, 0, 0, 31, 0, 1, 0x5D154E9D, { SERIES = [0, 0, 1, 0, 0, 0, 0, 0, 0] }],
-    [0x98B2654E, 0, 0xC142DBFD, 0, 3303, 80, 51, 1, 0, 0, 0, "uni_u119701", 1, 0, 0, 31, 0, 1, 0x55DD7FAD, { SERIES = [0, 0, 1, 0, 0, 0, 0, 0, 0] }],
-    [0xA7554691, 0, 0x4E2E1D41, 0, 3301, 80, 51, 1, 0, 0, 0, "uni_u120001", 1, 0, 0, 51, 0, 1, 0x0A933B55, { SERIES = [0, 0, 1, 0, 0, 0, 0, 0, 0] }],
-  ] },
-]
+  [[keyed.add]]                         # whs95020
+  key = 0x725E6924
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13004, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95020", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 34, linked = 0x725E6924, flag_17 = 0 }
+
+  [[keyed.add]]                         # whs95030
+  key = 0x6B455865
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13005, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95030", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 20, linked = 0x6B455865, flag_17 = 0 }
+
+  [[keyed.add]]                         # whs95100
+  key = 0x41AA6191
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13006, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95100", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 21, linked = 0x41AA6191, flag_17 = 0 }
+
+  [[keyed.add]]                         # whs95110
+  key = 0x58B150D0
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13007, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95110", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 7, linked = 0x58B150D0, flag_17 = 0 }
+
+  [[keyed.add]]                         # whs95120
+  key = 0x739C0313
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13008, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95120", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 195, linked = 0x739C0313, flag_17 = 0 }
+
+  [[keyed.add]]                         # whs95130
+  key = 0x6A873252
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13009, category = 160, skill_kind = 161, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whs95130", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 197, linked = 0x6A873252, flag_17 = 0 }
+
+  [[keyed.add]]                         # who95100
+  key = 0x35BEA371
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13010, category = 160, skill_kind = 162, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "who95100", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 472, linked = 0x35BEA371, flag_17 = 0 }
+
+  [[keyed.add]]                         # who95110
+  key = 0x2CA59230
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13011, category = 160, skill_kind = 162, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "who95110", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 539, linked = 0x2CA59230, flag_17 = 0 }
+
+  [[keyed.add]]                         # whd95100
+  key = 0x5F7953B2
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13012, category = 160, skill_kind = 163, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whd95100", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 696, linked = 0x5F7953B2, flag_17 = 0 }
+
+  [[keyed.add]]                         # whd95110
+  key = 0x466262F3
+  cells = { reserved_1 = 0, name_text = 0, desc_text = 0, catalog_no = 13013, category = 160, skill_kind = 163, max_stack = 999, reserved_8 = 1, reserved_9 = 0, reserved_10 = 0, key = "whd95110", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 792, linked = 0x466262F3, flag_17 = 0 }
+
+[[keyed]]
+table = "item/item_emblem"
+  [[keyed.add]]                         # em992074
+  key = 0x57F6513A
+  from = "em010001"
+  cells = { reserved_1 = 0, name_text = 0x989D95A7, desc_text = 0, catalog_no = 8155, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em992074", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 12 }
+
+  [[keyed.add]]                         # em995973
+  key = 0x5B94C7AF
+  from = "em010001"
+  cells = { reserved_1 = 0, name_text = 0x0EB38BAC, desc_text = 0, catalog_no = 8156, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em995973", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 6 }
+
+  [[keyed.add]]                         # em999322
+  key = 0x16A53912
+  from = "em010001"
+  cells = { reserved_1 = 0, name_text = 0x13D69CA7, desc_text = 0, catalog_no = 8157, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em999322", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 3 }
+
+  [[keyed.add]]                         # em992692
+  key = 0x249BA533
+  from = "em020031"
+  cells = { reserved_1 = 0, name_text = 0x3549FC29, desc_text = 0, catalog_no = 8158, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em992692", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 22 }
+
+  [[keyed.add]]                         # em997991
+  key = 0x81104386
+  from = "em030015"
+  cells = { reserved_1 = 0, name_text = 0x2D469570, desc_text = 0, catalog_no = 8159, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em997991", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 35 }
+
+  [[keyed.add]]                         # em992340
+  key = 0x79F078B9
+  from = "em010001"
+  cells = { reserved_1 = 0, name_text = 0x51FBE666, desc_text = 0, catalog_no = 8160, category = 90, sub_category = 0, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "em992340", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 11 }
+
+[[keyed]]
+table = "item/item_fashion"
+  [[keyed.add]]                         # uni_u912001
+  key = 0xA6AF76A7
+  from = "uni_u010101"
+  cells = { reserved_1 = 0, name_text = 0x9D9A4156, desc_text = 0, catalog_no = 3305, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u912001", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 15, reserved_16 = 0, const_17 = 1, uniform = 0x8088576A }
+
+  [[keyed.add]]                         # uni_u119801
+  key = 0x93EE2273
+  from = "uni_u010101"
+  cells = { reserved_1 = 0, name_text = 0xB3D6448C, desc_text = 0, catalog_no = 3304, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u119801", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 15, reserved_16 = 0, const_17 = 1, uniform = 0xAD895D0B }
+
+  [[keyed.add]]                         # uni_u120001_20
+  key = 0x12FB4BDA
+  from = "uni_u021201"
+  cells = { reserved_1 = 0, name_text = 0xD47FBFBF, desc_text = 0, catalog_no = 3302, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u120001_20", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 29, reserved_16 = 0, const_17 = 1, uniform = 0xCF5CE72B }
+
+  [[keyed.add]]                         # uni_u990001
+  key = 0x3CD6F5ED
+  from = "uni_u030101"
+  cells = { reserved_1 = 0, name_text = 0xCE9FEA2B, desc_text = 0, catalog_no = 3306, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u990001", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 31, reserved_16 = 0, const_17 = 1, uniform = 0x5D154E9D }
+
+  [[keyed.add]]                         # uni_u119701
+  key = 0x98B2654E
+  from = "uni_u030101"
+  cells = { reserved_1 = 0, name_text = 0xC142DBFD, desc_text = 0, catalog_no = 3303, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u119701", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 31, reserved_16 = 0, const_17 = 1, uniform = 0x55DD7FAD }
+
+  [[keyed.add]]                         # uni_u120001
+  key = 0xA7554691
+  from = "uni_u030101"
+  cells = { reserved_1 = 0, name_text = 0x4E2E1D41, desc_text = 0, catalog_no = 3301, category = 80, sub_category = 51, max_stack = 1, reserved_8 = 0, reserved_9 = 0, reserved_10 = 0, key = "uni_u120001", rarity = 1, reserved_13 = 0, base_item = 0, icon_index = 51, reserved_16 = 0, const_17 = 1, uniform = 0x0A933B55 }

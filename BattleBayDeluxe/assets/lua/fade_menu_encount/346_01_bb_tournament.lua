@@ -178,8 +178,13 @@ if BBT_WRAPPED_SW == nil and SetupWindowParams ~= nil then
   end
   function BBT_SW_ThirdRow(rows)
     local ROW, LOC = 2914934797 --[[win05_08_sub_list_item_lr]], 379318822 --[[win05_17_sub_list_locator_lr]]
+    -- the copy stands where the retail locator stands (builds that place it in SetupWindowParams: v7.2.1)
+    local okp, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], LOC, 0)
     funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], LOC, 0)
     funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], BBT_SW_LOC3, 0)
+    if okp and type(x) == "number" and type(y) == "number" then
+      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], BBT_SW_LOC3, x, y, 0)
+    end
     for i = 2, rows - 1 do
       funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], ROW, i)
     end

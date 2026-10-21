@@ -511,8 +511,8 @@ local function PollPointer()
   if evt_co ~= nil or not ready or open_guard > 0 then
     return
   end
-  if type(ev.hot) == "number" and ev.changed then
-    SetFocus(ev.hot, true)
+  if type(ev.hover) == "number" and ev.hover ~= focus then   -- hover by movement only (mouse-support.md §5)
+    SetFocus(ev.hover, true)
   end
   if type(ev.click) == "number" then
     SetFocus(ev.click, false)

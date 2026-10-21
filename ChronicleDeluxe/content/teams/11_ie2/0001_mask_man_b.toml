@@ -1,0 +1,51 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-20): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/
+# 70_route_nodes/chain_ie2_marytimes.toml). The same team as the set-aside Chronicles Deluxe's (generated there
+# by research/scripts/wiki_teams_build.py from the wiki lineup; same key, so the same team id): while chronicles_deluxe
+# is active this file is left out and that mod's identical team is used. Not in the Battle Bay grid here (no `appears`).
+if_not_mod = "chronicles_deluxe"
+default_lang = "en"
+# Source: research/scripts/wiki_teams_build.py (Chronicles Deluxe), docs/game/data/wiki-missing-teams.csv.
+# Mask Man B (IE2, «Oumihara's Coach's route» #2; report status: missing).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Mask_Man_B
+[[team]]
+name = "ct_wk_mask_man_b"
+key = "evt_ct_wk_mask_man_b"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (wiki: Ouja no Wear away, not a VR kit)
+level = 37
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x6B8669CB, slot = 0, number = 1, rarity_step = 1 }, # Yokochi = Dave Lung (GK)
+  { card = 0x6AEB796A, slot = 1, number = 2, rarity_step = 1 }, # Khohei = Ryan Haywood (DF)
+  { card = 0x28B8F685, slot = 2, number = 3, rarity_step = 1 }, # Hanabuki = Toby Cohill (DF)
+  { card = 0x179C8D2F, slot = 3, number = 4, rarity_step = 1 }, # Waji = Al Stringer (DF)
+  { card = 0x900491E0, slot = 4, number = 5, rarity_step = 1 }, # Ooshika = Chad Jowell (GK)
+  { card = 0x48F635A5, slot = 5, number = 6, rarity_step = 1, captain = true }, # Gold = Finn Geld (FW)
+  { card = 0x4A8C178E, slot = 6, number = 7, rarity_step = 1 }, # Koumoto = Odo Cologne (MF)
+  { card = 0x0E87BC6E, slot = 7, number = 8, rarity_step = 1 }, # Sihero = Bill Fierce (MF)
+  { card = 0x2FB15E59, slot = 8, number = 9, rarity_step = 1 }, # Higasa = Max Motto (MF)
+  { card = 0x14EA80D3, slot = 9, number = 10, rarity_step = 1 }, # Kate = Betty Backer (FW)
+  { card = 0xE768D451, slot = 10, number = 11, rarity_step = 1 }, # Nakashima = Junior Cage (DF)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_mask_man.png" # remastered crest of the wiki's Mask Man emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Enmascarados B"
+short = "Enmascarados B"
+[team.text.en]
+name = "Masked Men B"
+short = "Masked Men B"
+[team.text.ja]
+name = "マスクマンＢ"
+short = "マスクマンＢ"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_mask_man_b"
+card_moves = 4

@@ -1,4 +1,4 @@
-# Schema of the shop redirect: a shop a menu opens is opened as another shop.
+# Schema of the shop redirect: a shop a menu opens is opened as another shop, or as a contact set's screen.
 # Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.shop_redirect/1"
@@ -8,5 +8,7 @@ folder = "content/shop_redirects"
 doc = "every menu that opens one of the `from` shops opens the `to` shop instead (the shop id a menu hands to shop_menu)"
 name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
 from = { type = "strings", required = true, doc = "the shops redirected: SHOP_INFO ids (0x…) or mods' shop keys (<mod>.<name>)" }
-to = { type = "string", required = true, doc = "the shop opened instead: a mod's shop key (<mod>.<name>) or a SHOP_INFO id (0x…)" }
+to = { type = "string", doc = "the shop opened instead: a mod's shop key (<mod>.<name>) or a SHOP_INFO id (0x…); `to` or `contact_set`" }
+contact_set = { type = "string", doc = "instead of a shop, the VR-Framework's contact map screen on this set (<mod>.<name>, a [[VRFW.ContactSet]]); `to` or `contact_set`" }
+priority = { type = "int", doc = "when two declarations redirect the same shop, the higher priority wins (default 0; equal: the later declaration)" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

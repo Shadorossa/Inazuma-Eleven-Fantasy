@@ -16,4 +16,5 @@ schema = "VRFW.technique/3"
 # Tormenta estelar (whs02590).
 [[edit]]
 target = "whs02590"
-trajectory = { goal_points = [[13.47, 10.42, 999, 6.74], [0.0, 2.0]], unblockable = false }
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[13.47, 10.42, 999, 6.74], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[13.47, 4.49, 999.0, 6.74], [0.0, 2.0]], unblockable = false }

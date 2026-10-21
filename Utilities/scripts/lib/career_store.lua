@@ -163,12 +163,63 @@ function S.man_of_the_match(contrib)
   return best
 end
 
+-- ------------------------------------------------------------------------------------------- club totals
+
+-- The user's team over every counted match since the club totals started (`since`, yyyymmdd; 0 = no match yet):
+-- results, goals for / against, clean sheets, the biggest win (largest margin, then most goals; its day) and the
+-- current / best runs of wins and of matches without a loss. The key `club` of the slot file (a file without it
+-- reads as empty: the totals start with the next counted match).
+local CLUB_FIELDS = { "since", "matches", "wins", "draws", "losses", "goals_for", "goals_against", "clean_sheets",
+  "best_win_for", "best_win_against", "best_win_day", "win_run", "best_win_run", "unbeaten_run", "best_unbeaten_run" }
+
+function S.club_new()
+  local c = {}
+  for _, k in ipairs(CLUB_FIELDS) do c[k] = 0 end
+  return c
+end
+
+local function club_read(x)
+  local c = S.club_new()
+  if type(x) == "table" then
+    for _, k in ipairs(CLUB_FIELDS) do c[k] = tonumber(x[k]) or 0 end
+  end
+  return c
+end
+
+-- One counted match of the user's team (outcome "win" / "draw" / "loss", goals for / against, its day).
+function S.club_apply(c, outcome, gf, ga, today)
+  if c.since == 0 then c.since = today end
+  c.matches = c.matches + 1
+  c.goals_for = c.goals_for + gf
+  c.goals_against = c.goals_against + ga
+  if ga == 0 then c.clean_sheets = c.clean_sheets + 1 end
+  if outcome == "win" then
+    c.wins = c.wins + 1
+    c.win_run = c.win_run + 1
+    local margin, best = gf - ga, c.best_win_for - c.best_win_against
+    if c.best_win_day == 0 or margin > best or (margin == best and gf > c.best_win_for) then
+      c.best_win_for, c.best_win_against, c.best_win_day = gf, ga, today
+    end
+  else
+    c.win_run = 0
+  end
+  if outcome == "draw" then c.draws = c.draws + 1 end
+  if outcome == "loss" then
+    c.losses = c.losses + 1
+    c.unbeaten_run = 0
+  else
+    c.unbeaten_run = c.unbeaten_run + 1
+  end
+  if c.win_run > c.best_win_run then c.best_win_run = c.win_run end
+  if c.unbeaten_run > c.best_unbeaten_run then c.best_unbeaten_run = c.unbeaten_run end
+end
+
 -- ------------------------------------------------------------------------------------------- store
 
 function S.key(hdl) return string.format("%08X", hdl) end
 
 function S.new_file(slot)
-  return { version = S.FILE_VERSION, slot = slot, watermark = nil, since = 0, recorded = 0, players = {} }
+  return { version = S.FILE_VERSION, slot = slot, watermark = nil, since = 0, recorded = 0, players = {}, club = S.club_new() }
 end
 
 local function fresh_stats(param, order, signed)
@@ -250,6 +301,7 @@ function S.decode(text, slot)
   f.watermark = tonumber(j.watermark)
   f.since = tonumber(j.since) or 0
   f.recorded = tonumber(j.recorded) or 0
+  f.club = club_read(j.club)
   if type(j.players) == "table" then
     for k, s in pairs(j.players) do
       if type(s) == "table" then f.players[k] = normalize(s, version) end
@@ -264,7 +316,8 @@ end
 function S.encode(f)
   local players = {}
   for k, s in pairs(f.players) do players[k] = s end
-  local t = { version = f.version, slot = f.slot, since = f.since, recorded = f.recorded, players = players }
+  local t = { version = f.version, slot = f.slot, since = f.since, recorded = f.recorded, players = players,
+    club = f.club or S.club_new() }
   if f.watermark then t.watermark = f.watermark end
   -- an empty Lua table is an object for the encoder; `watermark` absent = null for the reader
   return VRFW.json.encode(t, true)
@@ -364,6 +417,8 @@ function S.apply_match(f, m, ident, today)
     end
   end
   f.recorded = f.recorded + 1
+  f.club = f.club or S.club_new()
+  S.club_apply(f.club, m.outcome, m.gf, m.ga, today)
   return n, mvp, contrib
 end
 

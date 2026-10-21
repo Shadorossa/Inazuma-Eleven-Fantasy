@@ -234,13 +234,13 @@ do
 
   -- The bank's engine command entry (funcLuaMenuCommand) is set by the engine after the chunk and every patch ran:
   -- its first call installs the wrappers again over the final definitions. The same entry answers «not moved» to
-  -- the retail «pointer moved» test (3272825600) inside Step while the stats view is shown on the list side and the
+  -- the retail «pointer moved» test (3272825600; 879171363 since v7.2.1) inside Step while the stats view is shown on the list side and the
   -- pointer is on the right half: the retail Step moves the bank to the lineup side whenever the pointer crosses
   -- the middle of the screen, i.e. as soon as it goes over the player page, which suspended the page (B.UiSync).
   -- The lineup side stays reachable with the pad (right off the list), «Añadir al equipo» and with the pointer once
   -- the stats view is hidden (V).
   -- EVT_PPB_POINTER_KEEP = false gives the retail pointer rule back.
-  B.POINTER_MOVED = 3272825600
+  B.POINTER_MOVED = { [3272825600] = true, [879171363] = true }   -- v7.1.2 id, v7.2.1 id
   B.cmdWrapped = B.cmdWrapped or {}
   local function WrapMenuCommand(f)
     if type(f) ~= "function" or B.cmdWrapped[f] then
@@ -252,7 +252,7 @@ do
         local ok, err = pcall(B.Install)
         Log("EVT_PPB install late", tostring(ok), tostring(err))
       end
-      if id == B.POINTER_MOVED and B.inStep and B.ui == 0 and EVT_PPB_POINTER_KEEP ~= false then
+      if B.POINTER_MOVED[id] and B.inStep and B.ui == 0 and EVT_PPB_POINTER_KEEP ~= false then
         local moved = f(id, ...)
         if moved and Want() then
           -- the retail test that follows: pointer x (558229292, flags 2 | 8) against half the screen width

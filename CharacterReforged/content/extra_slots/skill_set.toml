@@ -116,14 +116,6 @@ fusion_stack = "CMND_CHARACTERREFORGED_FUSION_STACK"
 fusion_partner = "CMND_CHARACTERREFORGED_FUSION_PARTNER"
 
 # In a focus battle (duel) the aura command is never the duel's choice (owner 2026-10-14: the keshin summon and the
-# armour usable AT ANY MOMENT, focus battles included): RB+B there is taken at once, held on the in-play list and
-# played as soon as the duel ends (the player still picks his duel action); the duel is frozen while its cut-in plays
-# (nobody steals the ball inside it). Without this rule the press was the duel's command and was refused outside the
-# duel's choice window. Only while the new set is on (option gate, VRFW 2.4.30): the «Victory Road» view keeps the
-# retail duel choice. One rule in all mods: a later mod's (Inazuma Fantasy's) replaces this one.
-[VRFW.DuelAura]
-types = [0, 1, 2, 3, 6]
-mode = "after_duel"
-fast_resume = true
-freeze_focus = true
-option = "skill_set_view"
+# armour usable AT ANY MOMENT, focus battles included): that rule ([VRFW.DuelAura]) is Football Reforged's module
+# Duel Auras (duel_auras, modules\DuelAuras\content\extra_slots\duel_auras.toml) since Character Reforged 1.10.0,
+# always on. Without it RB+B in a duel is the duel's command (refused outside the duel's choice window).

@@ -1,0 +1,176 @@
+# BetterUI 1.24.0: the Chronicle VS screen's «Basic data» view (vs_route_town_vs_team_menu = your half,
+# vs_route_town_vs_enemy_formation_menu = the rival's half; Lua assets\lua\_all\vs_basic_data.lua and the two menus'
+# assets\lua\<menu>\140_vs_basic_data.lua). X switches the player cards between «Preview» (the compact card) and
+# «Basic data»: the card's own level («Nv.» and its number, as the game draws it) and the player's name on the card's
+# bottom row, where the element and position sit in «Preview».
+# The name is a text layer per card, hung on the card's origin (_pos_base01 on a large card, _pos_base02 on a small
+# one) by an index attach row of the card object (card instance k carries name instance k, as the card's own «!»
+# notice), so it follows the card wherever the screen puts it; the Lua only fills, sizes and shows it.
+#   better_ui_card_name         19 x, one per card of team00_01_chara_card_for_soccer (pitch 0-10, bench / managers 11-18)
+#   better_ui_card_name_leader  1 x, the coach card's (team00_01_chara_card_for_leader)
+# Not opened with the group (flags [0, 0, 0, 0, 1, 0]): the Lua opens the instances it uses.
+schema = "VRFW.menu/2"
+
+# ---- the name text --------------------------------------------------------------------------------------------------
+# the save list item's text node (as Battle Bay Deluxe's free text evt_bbd_tn_txt): no open animation, no collision,
+# no attach; drawn over the cards (652); style fs_28_w_cc_2d2_001_nr_sclw (white, outlined, centred, squeezed to its
+# box: the card name's own style, centred)
+[[object]]
+name = "better_ui_card_name"
+from = "save01_02_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_02/save01_02.g4pkm" }, values = { 1 = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm" } },
+    { param = "m_drawPriority", match = { 1 = 551 }, values = { 1 = 653 } },
+    { param = "_text_list01_on", values = { 1 = -455931002 } },
+]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/51_save/save01/save01_02/save01_02.g4tx"] }]
+
+# save01_02 (retail: name box 608 x 68 at x 226): a 146 x 34 box centred on the layer's origin (the large card's name
+# row: card body 154 px wide), the plates and icon slots 0 x 0
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+from = "common/menu/51_save/save01/save01_02/save01_02.g4pkm"
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_text_list01_on"
+translate = [-73.0, 17.0, 0.0]
+scale = [146.0, 34.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_text_list01_off"
+translate = [-73.0, 17.0, 0.0]
+scale = [146.0, 34.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_base_s01_on"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_base_s01_off"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_base_s01_ol"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_base_s01_ok"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_icon_dmy_s01_on"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_icon_dmy_s01_off"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_list_icon_dmy_s01_ok"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/51_save/save01/better_ui_card_name/better_ui_card_name.g4pkm"
+joint = "_touch_list01"
+scale = [0.0, 0.0, 1.0]
+
+# ---- the cards ------------------------------------------------------------------------------------------------------
+# Index attach rows: NullLayerIndexName [row label, card locator, name layer] (labels crc32("better_ui_card_name_large")
+# / "_small" / "better_ui_card_name_leader_large" / "_small"; _pos_base01 = 0x5A709C12, _pos_base02 = -1015427672;
+# better_ui_card_name = 98463589, better_ui_card_name_leader = 770171539). The rival's pitch / bench card
+# (team00_01_chara_card_for_vsroute_evt, menus\player_cards.toml) carries the rows too. The coach card is its own
+# object on both halves, so the coach's name never shares an instance with card 0's.
+
+# your half: the formation card of menus\player_cards.toml (team00_01_chara_card_for_formation_evt's rows) with the rows
+[[object]]
+name = "better_ui_vs_card"
+from = "team00_01_chara_card_for_soccer"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1346942742, 0x5A709C12, 98463589] },
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [2087089339, -1015427672, 98463589] },
+]
+
+[[object]]
+name = "better_ui_vs_leader_card"
+from = "team00_01_chara_card_for_soccer"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1636342082, 0x5A709C12, 770171539] },
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1302747887, -1015427672, 770171539] },
+]
+
+# the rival's coach card: team00_01_chara_card_for_vsroute_evt's rows (menus\player_cards.toml) with the coach's rows
+[[object]]
+name = "better_ui_vs_rival_leader_card"
+from = "team00_01_chara_card_for_vsroute"
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team00/team00_01/team00_01.g4pkm" }, values = { 1 = "common/menu/102_team/team00/team00_01/team00_01_evt_fc.g4pkm" } },
+    { param = "AttachEffect", match = { 1 = 0x151AA0C6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x8C13F17C, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0xDDFA2FB6, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+    { param = "AttachEffect", match = { 1 = 0x33F44E9A, 2 = 0x5A709C12, 3 = 1, 4 = 0.996999979019165 }, values = { 2 = 0x2A0667AE } },
+]
+add = [
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1636342082, 0x5A709C12, 770171539] },
+    { block = "CMenuAttachLocator", param = "NullLayerIndexName", values = [1302747887, -1015427672, 770171539] },
+]
+
+# ---- your half (vs_route_town_vs_team_menu) -------------------------------------------------------------------------
+# both card layers take their own object here (the formation redirect of menus\player_cards.toml no longer lists this
+# screen)
+[[patch]]
+menu = "vs_route_town_vs_team_menu"
+layer = "team00_01_chara_card_for_soccer"
+object = "better_ui_vs_card"
+
+[[patch]]
+menu = "vs_route_town_vs_team_menu"
+layer = "team00_01_chara_card_for_leader"
+object = "better_ui_vs_leader_card"
+
+[[patch]]
+menu = "vs_route_town_vs_team_menu"
+add_layer = { name = "better_ui_card_name", object = "better_ui_card_name", count = 19, align = ["right", "middle"], scale = 0.20000000298023224, after = "vsroute02_05_my_formation_base", groups = [{ group = "vs_route_town_vs_team_menu", flags = [0, 0, 0, 0, 1, 0], after = "vsroute02_05_my_formation_base" }] }
+
+[[patch]]
+menu = "vs_route_town_vs_team_menu"
+add_layer = { name = "better_ui_card_name_leader", object = "better_ui_card_name", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "better_ui_card_name", groups = [{ group = "vs_route_town_vs_team_menu", flags = [0, 0, 0, 0, 1, 0], after = "better_ui_card_name" }] }
+
+# ---- the rival's half (vs_route_town_vs_enemy_formation_menu) -------------------------------------------------------
+# the pitch / bench card stays team00_01_chara_card_for_vsroute_evt (redirect of menus\player_cards.toml, rows added
+# there); the coach card takes its own object
+[[patch]]
+menu = "vs_route_town_vs_enemy_formation_menu"
+layer = "team00_01_chara_card_for_leader"
+object = "better_ui_vs_rival_leader_card"
+
+[[patch]]
+menu = "vs_route_town_vs_enemy_formation_menu"
+add_layer = { name = "better_ui_card_name", object = "better_ui_card_name", count = 19, align = ["right", "middle"], scale = 0.20000000298023224, after = "team00_16_nickname", groups = [{ group = "vs_route_town_vs_enemy_formation_menu", flags = [0, 0, 0, 0, 1, 0], after = "team00_16_nickname" }] }
+
+[[patch]]
+menu = "vs_route_town_vs_enemy_formation_menu"
+add_layer = { name = "better_ui_card_name_leader", object = "better_ui_card_name", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "better_ui_card_name", groups = [{ group = "vs_route_town_vs_enemy_formation_menu", flags = [0, 0, 0, 0, 1, 0], after = "better_ui_card_name" }] }

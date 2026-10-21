@@ -1,0 +1,20 @@
+schema = "VRFW.game/2"
+
+# A contact set's team hub (the free-match list as the office, docs/framework/contact-map.md §22): while the hub is open
+# the list keeps only the teams that have a page (scripts/contact_map.lua). Installed only when a set has a hub
+# (`apply = "script"`).
+
+# void BuildRows(aggregate*, entries*, ?, filter*): the free-match list's row builder (CpuVsOpponentAggregate over
+# soccer_opponent_info, docs/framework/limits.md §1). Post hook: the built rows (pointer array aggregate + 0x10, count
+# + 0x08) are compacted to the teams with a page. The stolen 17 bytes (mov r11, rsp / two home-slot stores / push rbx /
+# push rbp / sub rsp, 58h) have no relative operand; the entry guard's cap is a wildcard (the opponent_rows raise).
+[[VRFW.Hook]]
+name = "ContactHub.ListBuild"
+kind = "function"
+pattern = "4C 8B DC 4D 89 4B 20 45 89 43 18 53 55 48 83 EC 58 8B 41 08 49 8B D9 4C 8B C2 48 8B E9 3D ?? ?? ?? ?? 0F 83"
+rva = 0xD68B20
+steal = 17
+args = ["ptr", "ptr", "ptr", "ptr"]
+ret = "u64"
+apply = "script"
+wait_ms = 200

@@ -514,6 +514,9 @@ do
       SetSubMenuBusy(true)
     end
     TP.Snd(TP.SY_OK)
+    -- one cursor owner: the popup's own row cursor; the formation's cursor (the slot's arrow, behind the popup) is
+    -- hidden until the popup closes
+    TP.M(TP.C.LAYER_VISIBLE, F.CURSOR, 0, false)
     MENU_DEF.OpenSubWindow("UTIL_TP_OnMenu", "", #rows, ids, F.SIZE[#rows] or 0, F.TITLE_SPRITE, en, 0, false, false, 0, 0, new)
     F.state = "menu_opening"
     TP.Log("menu: squad", set, ty, "slot", slot, #rows, "row(s)")
@@ -538,6 +541,10 @@ do
     local c = F.choice
     F.choice = nil
     F.state = nil
+    if c == nil or c.act ~= "plan" then
+      -- the picker hides it itself (and shows it again when it closes)
+      TP.M(TP.C.LAYER_VISIBLE, F.CURSOR, 0, true)
+    end
     if c == nil then
       return
     end
@@ -545,7 +552,8 @@ do
     if c.act == "bank" then
       funcLuaCommand(TP.C.PARAM_DEL, TP.KEY_BANK)
       funcLuaCommand(TP.C.PARAM_SET, TP.KEY_BANK, 0, set, 1)
-      TP.Log("«Añadir del banco»: squad", set)
+      local okh, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
+      TP.Log("«Añadir del banco»: squad", set, "request stored", tostring(okh and has))
       pcall(FuncCloseFormationMenu)
     elseif c.act == "plan" then
       if not F.PickerOpen() then
@@ -619,14 +627,32 @@ do
   -- ---- the season list ---------------------------------------------------------------------------------------------
 
   -- the list's layout (CMND_UTIL_TP_PICK_LIST, [team_planner.list])
+  F.LIST_DEFAULT = {cols = 5, rows = 3, pitch_x = 180, pitch_y = 215, scale = 1.0, cx = 500, cy = 610, ox = 0, oy = 0,
+                    ghost_alpha = 0.45, tab_x = 110, tab_y = 230, tab_pitch = 78, tab_scale = 1.0, back_x = 0,
+                    back_y = 0, back_sx = 0.54, back_sy = 1.0}
   function F.ListLayout()
-    local r = table.pack(TP.Cmd(TP.C.PICK_LIST))
-    if type(r[1]) ~= "number" then
-      r = {5, 3, 180, 215, 1.0, 500, 610, 0, 0, 0.45, 110, 230, 78, 1.0, 0, 0, 0.54, 1.0}
+    local t = TP.Cmd(TP.C.PICK_LIST)
+    if type(t) ~= "table" then
+      t = {}
     end
-    return {cols = r[1], rows = r[2], px = r[3], py = r[4], scale = r[5], cx = r[6], cy = r[7], ox = r[8], oy = r[9],
-            alpha = r[10], tab_x = r[11], tab_y = r[12], tab_pitch = r[13], tab_scale = r[14], back_x = r[15],
-            back_y = r[16], back_sx = r[17], back_sy = r[18]}
+    local v, missing = {}, {}
+    for k, d in pairs(F.LIST_DEFAULT) do
+      local x = t[k]
+      if type(x) == "number" then
+        v[k] = x
+      else
+        v[k] = d
+        missing[#missing + 1] = k
+      end
+    end
+    if #missing > 0 and not F.list_warned then
+      F.list_warned = true
+      table.sort(missing)
+      TP.Log("season list: [team_planner.list] keys not answered, defaults used: " .. table.concat(missing, ", "))
+    end
+    return {cols = v.cols, rows = v.rows, px = v.pitch_x, py = v.pitch_y, scale = v.scale, cx = v.cx, cy = v.cy, ox = v.ox,
+            oy = v.oy, alpha = v.ghost_alpha, tab_x = v.tab_x, tab_y = v.tab_y, tab_pitch = v.tab_pitch,
+            tab_scale = v.tab_scale, back_x = v.back_x, back_y = v.back_y, back_sx = v.back_sx, back_sy = v.back_sy}
   end
 
   -- the dark panel behind the list: the backdrop layer moved / scaled over the list's side (nil = back to whole)

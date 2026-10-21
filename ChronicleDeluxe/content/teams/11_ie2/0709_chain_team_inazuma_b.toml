@@ -1,0 +1,50 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-21): a rival of the chain «Ruta del almacén secreto» (content/teams/70_route_nodes/chain_ie2_warehouse.toml).
+# Built from the wiki lineup (research/build/wiki/lineups_IE2.csv, «Game opponent») with the VR cards of
+# docs/game/data/wiki-missing-teams.csv (every player has one). Not in the Battle Bay grid (no `appears`).
+default_lang = "en"
+# Team Inazuma B (IE2, «Maniya Saito's route #7»).
+# Roster: wiki lineup «IE2 |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Team_Inazuma_B
+[[team]]
+name = "ct_wk_team_inazuma_b"
+key = "evt_ct_wk_team_inazuma_b"
+based_on = "tm_cro_ie2_2020" # Dark Emperors: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xC1F231A9                          # the neutral kit of the wiki route teams (team_kits_from_wiki.py: no VR kit)
+level = 60
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x18FEC374, slot = 0, number = 1, rarity_step = 1, captain = true }, # Endou Mamoru = Mark Evans (GK)
+  { card = 0xEF429E90, slot = 1, number = 2, rarity_step = 1 }, # Kazemaru Ichirouta = Nathan Swift (DF)
+  { card = 0x0263ADA0, slot = 2, number = 3, rarity_step = 1 }, # Kabeyama Heigorou = Jack Wallside (DF)
+  { card = 0x8AEC31A3, slot = 3, number = 4, rarity_step = 1 }, # Kageno Jin = Jim Wraith (DF)
+  { card = 0x93F700E2, slot = 4, number = 5, rarity_step = 1 }, # Kurimatsu Teppei = Tod Ironside (DF)
+  { card = 0xB8DA5321, slot = 5, number = 6, rarity_step = 1 }, # Handa Shinichi = Steve Grim (MF)
+  { card = 0xA1C16260, slot = 6, number = 7, rarity_step = 1 }, # Shourinji Ayumu = Tim Saunders (MF)
+  { card = 0x26597EAF, slot = 7, number = 8, rarity_step = 1 }, # Shishido Sakichi = Sam Kincaid (MF)
+  { card = 0x3F424FEE, slot = 8, number = 9, rarity_step = 1 }, # Matsuno Kuusuke = Maxwell Carson (FW)
+  { card = 0x288C9454, slot = 9, number = 10, rarity_step = 1 }, # Gouenji Shuuya = Axel Blaze (FW)
+  { card = 0xF659AFD1, slot = 10, number = 11, rarity_step = 1 }, # Someoka Ryuugo = Kevin Dragonfly (FW)
+]
+
+[team.emblem]
+png = "assets/images/teams/emblems/512/ie2_team_inazuma.png" # remastered crest of the wiki's Team Inazuma emblem.png
+base = "em020045"
+catalog = "shared"
+
+[team.text.es]
+name = "Inazuma B"
+short = "Inazuma B"
+
+[team.text.en]
+name = "Team Inazuma B"
+short = "Team Inazuma B"
+
+[team.text.ja]
+name = "チーム・イナズマＢ"
+short = "チーム・イナズマＢ"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_team_inazuma_b"
+card_moves = 4

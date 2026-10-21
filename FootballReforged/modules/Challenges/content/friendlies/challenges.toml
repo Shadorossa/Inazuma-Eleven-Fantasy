@@ -7,7 +7,7 @@ schema = "VRFW.friendly/1"
 [[friendly]]
 id = "office_trial"
 name = "Oficina: pachanga de prueba"
-ruleset = "if_pachanga_5v5"  # no special tactics or referee (module MatchFormats); the caller arms the challenge
+ruleset = "if_pachanga_5v5"  # no special tactics or referee (Football Reforged's base); the caller arms the challenge
 team = "active_friendly"
 kit_from_11 = true
 pre_match = true
@@ -38,7 +38,7 @@ after = [
 [[friendly]]
 id = "office_trial_football_7"
 name = "Oficina: prueba de Fútbol 7"
-ruleset = "football_7"  # 7 vs 7, the 1-2-3-1 of module MatchFormats (places 0-6)
+ruleset = "football_7"  # 7 vs 7, the 1-2-3-1 of Football Reforged's base (places 0-6)
 team = "active_friendly"
 kit_from_11 = true
 pre_match = true

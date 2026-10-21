@@ -1,0 +1,24 @@
+schema = "VRFW.archetype/1"
+
+# InaRogue › the team's archetype in INAROGUE comes from its rogue items (docs/game/modes/inarogue-passive-system.md §2.5,
+# docs/game/modes/inarogue-archetypes.md): scripts/lib/rogue/svc_items.lua publishes InaRogue.archetype (the number of
+# the archetype with most items: its position in content/rogue/archetypes.toml) and InaRogue.archetype_rank (that item
+# count, 1-5). Each archetype below is picked for the user's team while the key holds its pick_value, with that rank
+# (VRFW pick_state / rank_state), so the dock, «Bonificaciones de equipo» and the match HUD show it. Numbers 20+ (7-19
+# left to other mods).
+#
+# Icons: sprite names of content/images/menu/archetype_<key>.toml, drawn in the retail build-icon style of every atlas
+# by research/scripts/archetype_icon_build.py (glyph = a data choice of that script: swap the glyph, re-run, the names
+# here stay).
+
+[[VRFW.Archetype]]
+name = "siege"
+number = 20
+label = "InaRogue.Archetype_siege"
+description = "InaRogue.ArchetypeDesc_siege"
+pick_state = "InaRogue.archetype"
+pick_value = 1
+rank_state = "InaRogue.archetype_rank"
+icon = "evt_icon_build_rogue_siege"            # small icon (soccer_common, plate rows, passive rows, header box)
+icon_large = "evt_icon_build_l_rogue_siege"    # large icon (dock plate, team parameter guide)
+gauge_icon = "evt_icon_build_gauge_rogue_siege" # the controlled player's circle in a match

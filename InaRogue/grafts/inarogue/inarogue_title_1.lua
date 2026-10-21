@@ -93,12 +93,17 @@ function EVT_IR_Message(text) -- EVT INAROGUE
   end
 end
 
+-- a save / load job of the game: wait for it (one log line when it has to wait, one when it gives up after 600 steps)
 function EVT_IR_WaitJob() -- EVT INAROGUE
   local k = 0
   coroutine.yield()
   while funcLuaCommand(EVT_IR.IS_SAVE_WORKING) do
     k = k + 1
-    if k > 3600 then
+    if k == 1 then
+      EVT_IR_Log("waiting for a save / load job of the game")
+    end
+    if k > 600 then
+      EVT_IR_Log("a save / load job is still running after 600 steps: not waited for")
       return false
     end
     coroutine.yield()
@@ -327,6 +332,17 @@ function EVT_IR_AutoOpen() -- EVT INAROGUE
   if evt_ir_busy or not EVT_IR_InRogueSlot() then
     return
   end
+  -- the press could not open INAROGUE (its screen did not open or never ran, or an error): no retry every frame; the
+  -- title is given back once (faded in, active) and the press stays available on its button
+  if evt_ir_open_failed then
+    if not evt_ir_open_failed_logged then
+      evt_ir_open_failed_logged = true
+      EVT_IR_Log("slot 4: INAROGUE could not be opened: the title stays (no automatic retry)")
+      funcLuaCommand(EVT_IR.FADE, 0, 0.3)
+      funcLuaMenuCommand(EVT_IR.MENU_ACTIVE, EVT_IR.MENU, true)
+    end
+    return
+  end
   funcLuaMenuCommand(EVT_IR.MENU_ACTIVE, EVT_IR.MENU, false)
   -- one continuous black from the switch until INAROGUE is on screen (it fades itself in once): no title frame, no
   -- second fade. Not in a seamless session this title instance opened / showed (§10): there the title is the backdrop.
@@ -346,7 +362,7 @@ function EVT_IR_AutoOpen() -- EVT INAROGUE
     return
   end
   EVT_IR_Log("slot 4: opening INAROGUE")
-  EVT_OnEnterCustomItem()
+  EVT_IR_TitlePress()   -- InaRogue's own entry (the title button's press): one coroutine l1, so this runs once per open
 end
 
 -- Base-game popups the title opens by itself (notices, tutorial pages, network invites) never run in slot 4.

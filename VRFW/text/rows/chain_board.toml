@@ -482,6 +482,45 @@ ja = "枝の全試合でSを取ると、もう一度開けられる。"
 zh_hans = "在整条分支中取得S即可再次打开。"
 zh_hant = "在整條分支中取得S即可再次打開。"
 
+# ... with an A tier ([[VRFW.Chain.Tile.AReward]]): its rule (third line)
+[[row]]
+id = "vrfw_chain_dchest_rule_a"
+es = "Ábrelo; con A o más en toda la rama, otra vez; con S, una más."
+en = "Open it; with A or better in the whole branch, again; with S, once more."
+fr = "Ouvrez-le ; avec A ou mieux sur toute la branche, encore ; avec S, une fois de plus."
+de = "Öffne sie; mit A oder besser im ganzen Zweig erneut; mit S noch einmal."
+it = "Aprilo; con A o meglio in tutto il ramo, di nuovo; con S, ancora una volta."
+pt = "Abre-o; com A ou melhor em todo o ramo, outra vez; com S, mais uma."
+ja = "開けよう。枝の全試合でA以上ならもう一度、Sならさらにもう一度開けられる。"
+zh_hans = "打开它；整条分支取得A或以上可再次打开；取得S可再开一次。"
+zh_hant = "打開它；整條分支取得A或以上可再次打開；取得S可再開一次。"
+
+# ... opened once, its A reward still to give (card line and Accept message)
+[[row]]
+id = "vrfw_chain_dchest_half_a"
+es = "Consigue A o más en toda la rama para abrirlo otra vez."
+en = "Get A or better in the whole branch to open it again."
+fr = "Obtenez A ou mieux sur toute la branche pour le rouvrir."
+de = "Hol A oder besser im ganzen Zweig, um sie erneut zu öffnen."
+it = "Ottieni A o meglio in tutto il ramo per riaprirlo."
+pt = "Consegue A ou melhor em todo o ramo para o abrir outra vez."
+ja = "枝の全試合でA以上を取ると、もう一度開けられる。"
+zh_hans = "在整条分支中取得A或以上即可再次打开。"
+zh_hant = "在整條分支中取得A或以上即可再次打開。"
+
+# ... no base reward, waiting for its A tier (card line and Accept message)
+[[row]]
+id = "vrfw_chain_card_achest_rule"
+es = "Consigue A o más en toda la rama."
+en = "Get A or better in the whole branch."
+fr = "Obtenez A ou mieux sur toute la branche."
+de = "Hol A oder besser im ganzen Zweig."
+it = "Ottieni A o meglio in tutto il ramo."
+pt = "Consegue A ou melhor em todo o ramo."
+ja = "この枝の全試合でA以上を取ろう。"
+zh_hans = "在整条分支中取得A或以上。"
+zh_hant = "在整條分支中取得A或以上。"
+
 # ... no reward declared: disabled (card line and Accept message)
 [[row]]
 id = "vrfw_chain_dchest_empty"
@@ -495,31 +534,31 @@ ja = "この宝箱は今のところ空っぽだ。"
 zh_hans = "这个宝箱目前是空的。"
 zh_hant = "這個寶箱目前是空的。"
 
-# a match tile's rank reward on the team card: «<rank>: <item>» (the rank's label, the item's name or its kind)
+# a rank reward of the rewards box already received in this save: «<item> (received)»
 [[row]]
-id = "vrfw_chain_card_rank_prize"
-es = "%s: %s"
-en = "%s: %s"
-fr = "%s : %s"
-de = "%s: %s"
-it = "%s: %s"
-pt = "%s: %s"
-ja = "%s：%s"
-zh_hans = "%s：%s"
-zh_hant = "%s：%s"
+id = "vrfw_chain_reward_got"
+es = "%s (obtenido)"
+en = "%s (received)"
+fr = "%s (obtenu)"
+de = "%s (erhalten)"
+it = "%s (ottenuto)"
+pt = "%s (obtido)"
+ja = "%s（入手済み）"
+zh_hans = "%s（已获得）"
+zh_hant = "%s（已獲得）"
 
-# the same, already received in this save
+# a match drop of the rewards box not seen yet
 [[row]]
-id = "vrfw_chain_card_rank_prize_got"
-es = "%s: %s (obtenido)"
-en = "%s: %s (received)"
-fr = "%s : %s (obtenu)"
-de = "%s: %s (erhalten)"
-it = "%s: %s (ottenuto)"
-pt = "%s: %s (obtido)"
-ja = "%s：%s（入手済み）"
-zh_hans = "%s：%s（已获得）"
-zh_hant = "%s：%s（已獲得）"
+id = "vrfw_chain_drop_unknown"
+es = "???"
+en = "???"
+fr = "???"
+de = "???"
+it = "???"
+pt = "???"
+ja = "？？？"
+zh_hans = "？？？"
+zh_hant = "？？？"
 
 # the kind of a rank reward when the item has no name of its own: the rival's crest
 [[row]]

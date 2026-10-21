@@ -4,7 +4,7 @@
 #   key                name for logs (files sharing a key have their lists joined)
 #   label              what the mode is (logs)
 #   title_items        title-row request ids of the mode; its button is removed and the request refused
-#   menus              menu objects (names or crc32) that ARE the mode; open/reserve commands for them are refused. List only the entry screen
+#   menus              menu objects (names or crc32) that ARE the mode; open/reserve commands for them are refused. List the entry screen and the screens that only serve the online mode (screens an offline mod may reuse stay free)
 #   title_silence      title_menu_2 global functions that only serve the mode; they do not run
 #   title_hide_layers  title_menu_2 layers that only serve the mode; kept hidden
 #   title_functions    title_menu_2 OnFunction ids that only serve the mode; swallowed
@@ -12,9 +12,15 @@
 
 [[VRFW.BlockedMode]]
 key = "victory_road"
-label = "Victory Road (online ranked tournaments)"
+label = "Victory Road (online ranked tournaments and their seasons)"
 title_items = [127937052]
-menus = ["victory_road_top_menu"]
+menus = [
+    "victory_road_top_menu",                   # the mode's hub (entry screen)
+    "victory_road_seasonal_menu",              # season player registration (seasonal cards)
+    "victory_road_casual_match_window",        # casual match against players or bots (v7.2.1)
+    "victory_road_select_region_menu",         # tournament server region
+    "victory_road_temp_select_region_menu",    # tournament server region (first entry)
+]
 title_silence = [
     "OpenVroadNoticeWindow",                   # update notice at the title
     "OpenTournamentDeliveryUpdate",            # tournament reward / fix notices

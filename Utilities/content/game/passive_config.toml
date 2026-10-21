@@ -26,11 +26,11 @@ fields = { build = { at = 0x49, type = "u8" }, diamond_build = { at = 0x4B, type
 name = "Utilities.InventoryRecord"
 game = "Board.InvRecord"
 
-# [g_gameRoot] + 0x69D0 = the inventory InventoryRecord takes
+# [g_gameRoot] + Game.RootItems = the inventory InventoryRecord takes
 [[VRFW.Global]]
 name = "utilities_inventory"
 base = "game_root"
-chain = [0x69D0]
+chain = ["Game.RootItems"]
 
 # The two slot readers called through their hooked entry points (the native answers below included): the script's
 # live check compares what they answer with its tables after every mode / match trigger (scripts/passive_config.lua)
@@ -44,17 +44,17 @@ game = "Passive.TeamPassiveId"
 name = "Utilities.TeamPassiveUnlockedLive"
 game = "Passive.TeamPassiveUnlocked"
 
-# [g_gameRoot] + 0x69A8 = the team sets (+0x1E0 + team * 0x4A8, members at +0x80): the match teams the live check reads
+# [g_gameRoot] + Game.RootParty = the team sets (+0x1E0 + team * 0x4A8, members at +0x80): the match teams the live check reads
 [[VRFW.Global]]
 name = "utilities_team_sets"
 base = "game_root"
-chain = [0x69A8]
+chain = ["Game.RootParty"]
 
-# [g_gameRoot] + 0x6A58 = the match info (+0x2C29 the user's match team, 0 / 1)
+# [g_gameRoot] + Game.RootMatch = the match info (+0x2C29 the user's match team, 0 / 1)
 [[VRFW.Global]]
 name = "utilities_match_info"
 base = "game_root"
-chain = [0x6A58]
+chain = ["Game.RootMatch"]
 
 # ------------------------------------------------------------------------------------------------ slot readers
 
