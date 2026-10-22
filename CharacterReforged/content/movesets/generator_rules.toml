@@ -24,9 +24,18 @@ LevelScale = 1.0
 # a move learned through the story (level 100 in the DS files, «E» in the wiki) takes its level in the closest later
 # game where it has one; else the highest level given so far + StoryLevelStep (the first one: level 1)
 StoryLevelStep = 10
-# a talent, a move that Victory Road does not have, or a duplicate is replaced (same slot, same level) by the
-# character's moves of his later games (in order), then by his Victory Road learn list
-ReplaceFrom = ["later", "victory_road"]
+# the moveset comes from ONE game by era: a character whose first game is in SagaGames takes his IE3 moveset, any other
+# original-game character his Galaxy (GX) one; no later-game or Victory Road substitution. A character with no data in
+# that game keeps the moveset the first-game rule gives him.
+SagaGames = ["IE1", "IE2", "IE3"]
+SagaSource = "IE3"
+ModernSource = "GX"
+# a slot of the source moveset that is a talent, a move Victory Road does not have or a duplicate, and every missing slot up
+# to Moves, becomes a grey Victory Road technique (skill_config: GreyMove) of the category list of the character's
+# position (skill category 1 shot, 2 dribble, 3 block, 4 catch), best first, shuffled with the seed; it keeps the source
+# slot's level (a missing slot: the last level + StoryLevelStep)
+GreySeed = "character_reforged.movesets.grey"
+GreyCategoryByPosition = { GK = [4], FW = [1, 2, 3], MF = [2, 1, 3], DF = [3, 2, 1] }
 # a move that Victory Road does not have may take the Victory Road move of its name family (the wiki key without its
 # evolution suffix: God Hand V -> God Hand) before it is replaced
 NameFamily = true

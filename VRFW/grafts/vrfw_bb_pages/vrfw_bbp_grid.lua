@@ -681,6 +681,13 @@ function VRFW_BBP_Pump()
   end
 end
 
+-- A mod's screen that only hid the grid's layers (the crest textures stay loaded) calls VRFW_BBP_KeepCrests(true)
+-- before giving the grid back and VRFW_BBP_KeepCrests(false) after its last redraw: meanwhile a full redraw keeps the
+-- crest of every slot that still shows the same team (no reset: no white dummy texture while it would reload).
+function VRFW_BBP_KeepCrests(on)
+  VRFW_BBP.keep_crests = on == true
+end
+
 function VRFW_BBP_Redraw(turn)
   local B = VRFW_BBP
   turn = turn == true
@@ -701,7 +708,8 @@ function VRFW_BBP_Redraw(turn)
       if show and not same then
         changed[i] = true
         funcLuaMenuCommand(801406373, B.GRID, i, 643056375 --[[gray_out]], 1, 1, 1)
-        if not turn or B.hidden_slots[i] == true then
+        local kept = not turn and B.keep_crests == true and was and B.drawn[i] == team
+        if (not turn or B.hidden_slots[i] == true) and not kept then
           funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, i, B.EMBLEM_TEX)
         end
         SetupEmblemIcon(i, team, unlocked == true, check == true)

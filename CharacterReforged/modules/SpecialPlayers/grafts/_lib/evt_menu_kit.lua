@@ -340,11 +340,14 @@ end
 --   M.Show(pid)   the model of chara_param `pid` (built once; the same player again = just shown)
 --   M.Hide()      hidden (a build under way stays hidden when it completes)
 --   M.Step()      every frame (Step)
+--   M.Release()   the model released (a list that changes its players frees the old ones)
 --   M.Ok()        false when the layer has no model component (nothing was ever built): draw something else
 -- opts: shadow = the 3D shadow layer (retail mainmenu01_08_chara_3d_shadow), pose (retail shop 2328706751), uniform (0 =
 -- his own), look (look flags, 0), settle (2), min (6), max (120), log = function(...) for the first lines,
 -- kit = function(pid) -> uniform, flags: the kit of that player (uniform 0 = `uniform`; flags 2 = the keeper shirt),
 -- asked once per build (the contact map: his own team's kit, CMND_VRFW_CONTACT_KIT),
+-- slot = the component's model slot (0; a component with m_useObjectNum > 1 holds one model per slot, as the retail
+-- shop's 4 and the Victory Road top's 11), key = that slot's model key (the slot number, as retail),
 -- bodies = {[body type] = true} the body types the pose has (menu_chara_model_pose_config; the framework's
 -- CMND_VRFW_MODEL_POSE_BODIES). CRASH GUARD (nie.exe+0x1114F94 reads 0x4C): the pose command
 -- (2450020144) looks the pose up for the chara's body type (CMND_GET_CHARA_INFO(chara, 3)) and dereferences the result
@@ -354,7 +357,8 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
   opts = opts or {}
   local M = {pid = nil, chara = nil, pend = nil, build = nil, hide_build = false, logs = 0, failed = false,
     SHADOW = opts.shadow or 858725131 --[[mainmenu01_08_chara_3d_shadow]], POSE = opts.pose or 2328706751,
-    SETTLE = opts.settle or 2, MIN = opts.min or 6, MAX = opts.max or 120}
+    SETTLE = opts.settle or 2, MIN = opts.min or 6, MAX = opts.max or 120, SLOT = opts.slot or 0}
+  M.KEY = opts.key or M.SLOT
   local function MC(cmd, ...)
     local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
     if ok then return a, b end
@@ -367,13 +371,13 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     end
   end
   local function Visible(on)
-    local h = MC(3895705890, layer, 0, 0)
+    local h = MC(3895705890, layer, 0, M.SLOT)
     if type(h) == "number" and h ~= 0 then
       pcall(funcLuaCommand, 1890282463, h, on)
     end
   end
   local function Ready()
-    return MC(1583438030, layer, 0, 0) == true
+    return MC(1583438030, layer, 0, M.SLOT) == true
   end
   local function Loading(chara)
     local ok, l = pcall(funcLuaCommand, 2475005551, chara)
@@ -392,13 +396,13 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     return 0
   end
   local function Setup(chara, pid, motion, n, uniform, flags)
-    MC(59611540, layer, 0, chara, 0)
-    MC(186863317 --[[CMND_SET_SCN_CHARA_REGIST_TYPE]], layer, 0, 4, 0)
-    MC(3290636356, layer, 0, uniform, motion, flags, 0)
-    MC(4219344099 --[[CMND_SET_CHARA_MODEL_SHADOW?]], layer, 0, M.SHADOW, 0, 0)
-    MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, 0, 0)
+    MC(59611540, layer, 0, chara, M.SLOT)
+    MC(186863317 --[[CMND_SET_SCN_CHARA_REGIST_TYPE]], layer, 0, 4, M.SLOT)
+    MC(3290636356, layer, 0, uniform, motion, flags, M.SLOT)
+    MC(4219344099 --[[CMND_SET_CHARA_MODEL_SHADOW?]], layer, 0, M.SHADOW, M.SLOT, M.SLOT)
+    MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
     if opts.bodies ~= nil and opts.bodies[n] then   -- only a body type the pose lists (see CRASH GUARD above)
-      MC(2450020144, layer, 0, M.POSE, n, 0)
+      MC(2450020144, layer, 0, M.POSE, n, M.SLOT)
     end
   end
   local function BuildStep()
@@ -463,6 +467,16 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
       Visible(false)
     end
   end
+  -- the slot's model released (retail shop ResetCharaModel): nothing shown, its resources freed
+  function M.Release()
+    M.pend, M.hide_build = nil, false
+    if M.pid ~= nil then
+      Visible(false)
+      MC(59611540, layer, 0, 0, M.SLOT)
+      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT)
+    end
+    M.pid, M.chara, M.build = nil, nil, nil
+  end
   function M.Show(pid)
     local P = M.pend
     if P ~= nil and P.pid == pid then
@@ -499,8 +513,14 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
       local okk, u, f = pcall(opts.kit, pid)
       if okk and type(u) == "number" and u ~= 0 then
         uniform = u
-        if f == 2 and flags % 4 < 2 then
-          flags = flags + 2
+      end
+      -- the look bits the caller asks (2 the keeper shirt, 16 a coach's, 32 a manager's own clothes; as the retail
+      -- team dock's model flags) added to the screen's own
+      if okk and type(f) == "number" then
+        for _, bit in ipairs({2, 16, 32}) do
+          if math.floor(f / bit) % 2 == 1 and math.floor(flags / bit) % 2 == 0 then
+            flags = flags + bit
+          end
         end
       end
     end

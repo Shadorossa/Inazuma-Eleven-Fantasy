@@ -1,0 +1,119 @@
+# «Missing Voice»: the Japanese call-out of special moves whose user has no voice line for them in the game, from the
+# player's own take in Inazuma Eleven GO Strikers 2013 (docs/game/mods/missing-voice.md). Each entry adds the cue
+# `<bank>_<key>` (every skill_config key of the technique) to the ja voice bank of the player's cards: the only bank of
+# that character's age group; a cue the bank has is never replaced. The WAVs are made on the owner's PC by
+# research/scripts/missing_voice_build.py (_build.toml) and never committed; the sound type encodes them to the bank's
+# format and sets the cue length from the audio. normalize = "none": the build already matched the bank's loudness.
+schema = "VRFW.sound/1"
+
+[[voice]]
+bank = "c01001440"            # Makiya
+cue = "whd00040"
+lang = "ja"
+file = "assets/sounds/voice/ja/c01001440_whd00040.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c01001860"            # Arute
+cue = "whd00290"
+lang = "ja"
+file = "assets/sounds/voice/ja/c01001860_whd00290.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c01001890"            # Demete
+cue = "who00070"
+lang = "ja"
+file = "assets/sounds/voice/ja/c01001890_who00070.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02021040"            # Ganymede
+cue = "whs00700"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02021040_whs00700.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02021510"            # Gran
+cue = "who00800"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02021510_who00800.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02021510"            # Gran
+cue = "whs01690"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02021510_whs01690.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02024040"            # Tsunami (IE2)
+cue = "whs02000"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02024040_whs02000.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02024750"            # Kino Aki
+cue = "whk00240"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02024750_whk00240.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c02024750"            # Kino Aki
+cue = "whk00690"
+lang = "ja"
+file = "assets/sounds/voice/ja/c02024750_whk00690.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c03030430"            # Bjorn Kyle
+cue = "whd00580"
+lang = "ja"
+file = "assets/sounds/voice/ja/c03030430_whd00580.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c04000170"            # Kageyama Hikaru
+cue = "whs01480"
+lang = "ja"
+file = "assets/sounds/voice/ja/c04000170_whs01480.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c04000170"            # Kageyama Hikaru
+cue = "who00820"
+lang = "ja"
+file = "assets/sounds/voice/ja/c04000170_who00820.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c04000360"            # Sorano Aoi
+cue = "whk00880"
+lang = "ja"
+file = "assets/sounds/voice/ja/c04000360_whk00880.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c04000360"            # Sorano Aoi
+cue = "whk00530"
+lang = "ja"
+file = "assets/sounds/voice/ja/c04000360_whk00530.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c05024680"            # adult Someoka
+cue = "whs01990"
+lang = "ja"
+file = "assets/sounds/voice/ja/c05024680_whs01990.wav"
+normalize = "none"
+
+[[voice]]
+bank = "c05024700"            # adult Fubuki
+cue = ["whs00600", "whs00600_mm"]
+lang = "ja"
+file = "assets/sounds/voice/ja/c05024700_whs00600.wav"
+normalize = "none"

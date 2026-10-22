@@ -1,7 +1,7 @@
 -- VRFW › team synergies declared by mods: the rows of a synergy detail panel (rows
 -- team16_03_synergy_chara_condition_list), shared by every menu that shows one: the synergy list
 -- (equip_synergy_menu_list/300_synergy.lua) and the shop (shop_menu_buy/310_synergy_shop.lua). This file defines the
--- functions only (VRFW_Synergy.ApplyPanel / Tick / Built); each menu's file calls them from its own events. The engine
+-- functions only (VRFW_Synergy.ApplyPanel / Tick / Built / HideExtras); each menu's file calls them from its own events. The engine
 -- draws the declared rows itself (the framework's hook on its row builder: the nexus, the members that fill the slots, a
 -- pool character for an empty slot); after the game's code VRFW_Synergy.ApplyPanel, for a declared synergy only:
 --   * the nexus row: drawn as any member row (the game's face of the nexus, his name, the retail check box), only the
@@ -349,6 +349,14 @@ end
 
 -- ------------------------------------------------------------------------------------------------ the rows
 
+-- a row's face or its plate off: hidden and fully transparent. The face picture the game asked for loads after the panel
+-- is drawn and the engine shows the mesh again once it has loaded (a player's face behind a crest, a face on an empty
+-- slot); the transparency stays. reset_row makes both opaque again
+local function hide_part(inst, mesh)
+  pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, mesh, false, inst)
+  pcall(funcLuaMenuCommand, PRIM_ALPHA, ROW, inst, mesh, 0)
+end
+
 -- a row back to the game's look (it may have been a nexus / empty row of another synergy's panel)
 local function reset_row(inst)
   pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, true, inst)
@@ -397,8 +405,8 @@ function S.ApplyPanel(item)
     if big ~= 0 and (row.kind == KIND_EMPTY or row.kind == KIND_FILLED) then
       -- slot_members: the pool's team crest in the big square (as the nexus icon); filled: the filler's name (the
       -- row's check is the game's); empty: the pool's members' minifaces right after the crest, no text
-      pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, false, inst)
-      pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
+      hide_part(inst, FACE)
+      hide_part(inst, FACE_BASE)
       if ci < N_CREST then
         show(L_CREST, ci, big, inst, (FACE_X0 + FACE_X1) / 2, BIG_CREST_PX)
         ci = ci + 1
@@ -418,7 +426,7 @@ function S.ApplyPanel(item)
         end
       end
     elseif row.kind == KIND_EMPTY then
-      pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE, false, inst)
+      hide_part(inst, FACE)
       for _, m in ipairs(SERIES) do pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, m, false, inst) end
       local crests = crest_ok and split_ids(row.crests) or {}
       local role = type(row.role) == "string" and row.role or ""
@@ -427,7 +435,7 @@ function S.ApplyPanel(item)
       if rsheet then
         -- a staff slot: the role's icon in place of the grey square, the required series' icons right-aligned, the
         -- role's short name
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
+        hide_part(inst, FACE_BASE)
         if ii < N_ICON then
           show_icon(ii, rsheet, rsprite, inst, (FACE_X0 + FACE_X1) / 2, 0, ROLE_SCALE)
           ii = ii + 1
@@ -438,7 +446,7 @@ function S.ApplyPanel(item)
         S.extras = true
       elseif #crests > 0 then
         -- no label, no plate: only the allowed teams' crests, right-aligned on the series icons' place
-        pcall(funcLuaMenuCommand, SET_MESH_VISIBLE, ROW, FACE_BASE, false, inst)
+        hide_part(inst, FACE_BASE)
         s = ""
         for j, id in ipairs(crests) do
           if ci < N_CREST then
@@ -582,6 +590,12 @@ function S.Built(layer, inst)
     dress(layer, inst)
     ask(layer, inst)
   end
+end
+
+-- every extra piece (crests, minifaces, icons) off, the rows left as drawn: a page of the panel without the condition
+-- rows (the shop's effects page) or a detail that is not a synergy. The next ApplyPanel shows them again
+function S.HideExtras()
+  hide_extras()
 end
 
 -- the rows' layer and check parts, for the menus' own files

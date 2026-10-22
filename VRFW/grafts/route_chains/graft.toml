@@ -30,8 +30,12 @@ stem = "vs_route_town_menu"
   point = "vs_route_town_menu.OpenCommandSelect.RouteChainsReplace"
   text = '''
   local evt_rch_menu = VRFW_RCH_MenuFor(a1) -- VRFW route_chains
-  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], evt_rch_menu)
-  VRFW_RCH_ParentUi(evt_rch_menu, false)
+  if VRFW_RB_PieceOpen ~= nil and VRFW_RB_PieceOpen(a1) then -- VRFW route_board: the piece ran its own flow (a gacha node)
+    evt_rch_menu = nil
+  else
+    funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], evt_rch_menu)
+    VRFW_RCH_ParentUi(evt_rch_menu, false)
+  end
 '''
   crc = "none"
 
@@ -39,7 +43,7 @@ stem = "vs_route_town_menu"
   type = "replace"
   point = "vs_route_town_menu.OpenCommandSelect.RouteChains2"
   text = '''
-    return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], evt_rch_menu) -- VRFW route_chains
+    return evt_rch_menu ~= nil and funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], evt_rch_menu) -- VRFW route_chains
 '''
   crc = "none"
 
@@ -49,6 +53,9 @@ stem = "vs_route_town_menu"
   type = "insert_before"
   point = "vs_route_town_menu.OpenCommandSelect.RouteChainsBefore"
   text = '''
+  if VRFW_RB_MenuClosed ~= nil then
+    VRFW_RB_MenuClosed(a1) -- VRFW route_board: a mod's command row that wrote no retail result (the gacha's draw)
+  end
   local evt_rch_g, evt_rch_d = VRFW_RCH_Picked(a1) -- VRFW route_chains
   if evt_rch_g ~= nil then
     funcLuaMenuCommand(2171393651, 1138543975 --[[mainmenu01_06_base_button_guide]], false)

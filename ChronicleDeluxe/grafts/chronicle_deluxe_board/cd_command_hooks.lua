@@ -53,10 +53,12 @@ function K.FitPanel(layer, kind, rows, extra)
   funcLuaMenuCommand(K.NODE_SCALE, layer, 0, p.node, p.width, p.height - K.ROW_HEIGHT * (p.slots - rows) + (extra or 0))
 end
 
--- this mod fits the panel (not Inazuma Fantasy's redesign, and the mod's difficulty set is declared)
+-- this mod fits the panel (not Inazuma Fantasy's redesign, the mod's difficulty set is declared, and not a framework
+-- service's piece: a gacha node keeps its one command row, no lineup, no team level, no «Plantilla de equipo»)
 function K.OwnsPanel(kind)
   return EVT_ChrFrameFit == nil and VRFW_MatchDifficulty ~= nil
     and VRFW_MatchDifficulty.Set(kind == 1 and "gate" or "route") ~= nil
+    and not (VRFW_RBC_ServicePiece ~= nil and VRFW_RBC_ServicePiece())
 end
 
 if VRFW_Host ~= nil then

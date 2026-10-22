@@ -1,0 +1,45 @@
+# New Recruitment › the declaration schema of the pachangas (kind NewRecruitment.pachangas/1, any mod's
+# content\pachangas\*.toml; docs/game/mods/new-recruitment-pachangas.md). The run time is this module's
+# scripts\pachangas.lua; this file lists every key it reads, so `vrfw check` validates the files and the ModManager
+# draws their forms from it («Cadenas» › «Pachangas»: a zone's board node, its pachangas and their players'
+# challenges). `ref` names what a value points at: a game index category (team, match, stadium, any:variant), a text
+# row (text_key), a Chronicle board node (route_node) or another entry of this schema (entry:<Entry>).
+schema = "VRFW.decl_schema/1"
+kind = "NewRecruitment.pachangas/1"
+folder = "content/pachangas"
+
+[entry.PachangaZone]
+doc = "a pachanga zone: one Chronicle board node whose list holds the zone's pachangas"
+name = { type = "name", required = true, doc = "the zone's name (a-z 0-9 _); the pachangas name it in zone" }
+game = { type = "string", values = ["ie1", "ie2", "ie3", "go", "cs", "galaxy"], doc = "the saga the zone belongs to" }
+node = { type = "string", required = true, ref = "route_node", doc = "the [[VRFW.RouteNode]] Name of the zone's board node" }
+title = { type = "string", ref = "text_key", doc = "the text row id of the zone's name (menu_text)" }
+chronicle = { type = "string", ref = "match", doc = "the Chronicle match whose piece the zone's node hangs from" }
+stadium = { type = "string", ref = "stadium", doc = "the map the zone's pachangas are played on" }
+
+[entry.Pachanga]
+doc = "a pachanga: a friendly against a team of the zone; its players join the club when their challenge is met"
+name = { type = "name", required = true, doc = "the pachanga's name (a-z 0-9 _)" }
+zone = { type = "string", required = true, ref = "entry:PachangaZone", doc = "the zone whose list shows it" }
+team = { type = "string", required = true, ref = "team", doc = "the rival team (a mod team key or a game team)" }
+team_name = { type = "string", doc = "the team's name shown when its team has none" }
+level = { type = "int", min = 1, max = 999, doc = "the rival players' level" }
+format = { type = "string", values = ["5v5", "11v11"], default = "5v5", doc = "the match format" }
+challenge = { type = "string", ref = "entry:PachangaChallenge", doc = "one challenge for every player (empty: each player's own, challenges)" }
+cards = { type = "ids", ref = "any:variant", doc = "the rival players' cards (chara_param keys): the players who can join" }
+challenges = { type = "strings", ref = "entry:PachangaChallenge", doc = "the challenge of each player of cards, in the same order" }
+lineups = { type = "lists", min = 0, doc = "the rotation of a pachanga with more than five players: lineups of card indexes (0-based in cards), one per entry, in turn" }
+
+[entry.PachangaChallenge]
+doc = "a player's mini-challenge: met during the pachanga, the player joins the club when it ends"
+name = { type = "name", required = true, doc = "the challenge's name (a-z 0-9 _); the pachangas name it in challenges" }
+number = { type = "int", min = 1, doc = "its number in the owner's list" }
+check = { type = "string", required = true, doc = "the evaluator of scripts\\pachangas.lua that tells whether it was met" }
+params = { type = "table", doc = "the evaluator's numbers (n, s, element…), also filled into the text" }
+text = { type = "string", ref = "text_key", doc = "the text row id of its description (menu_text; {n}, {s}, {element} filled from params)" }
+ready = { type = "bool", default = true, doc = "false: not observable yet, never assigned" }
+
+[entry.PachangaTechniqueList]
+doc = "a list of techniques a challenge's evaluator looks for"
+name = { type = "name", required = true, doc = "the list's name (a-z 0-9 _)" }
+skills = { type = "ints", doc = "the techniques (skill_config ids)" }

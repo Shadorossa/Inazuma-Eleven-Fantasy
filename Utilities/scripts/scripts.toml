@@ -97,14 +97,6 @@ file = "team_planner.lua"
 budget = 5000000
 memory_kb = 65536
 
-# Friends panel: the friend list / presence / asks go through VRFW.net (the framework's Steam friends API); a friend's
-# details read chara_param (cols 1, 2 of ~6k rows), chara_base, formation_config and item_text once for the names; the
-# profile reads the active squad (29 member reads + their records) and the career store
-[[script]]
-file = "friends.lua"
-budget = 3000000
-memory_kb = 32768
-
 # Technique preview: the move table (skill/skill), chara_base and chara_model / chara_body are read once at load (the
 # load gets 10 budgets); a card's question reads the active squad (29 member reads + their records, their learn lists)
 [[script]]

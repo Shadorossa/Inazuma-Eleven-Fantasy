@@ -39,7 +39,8 @@
 --
 -- The add-character path (CMND_ADD_PARTY): the
 -- retail summon screen's AddSummonChara call (20 arguments: card, level, ..., team set 16 = the normal bank, rarity,
--- ..., source), then 0xB349C762 as AddSummonChara does, then CMND_SYSTEM_AUTO_SAVE. Safe in the menus of a loaded save
+-- ..., source), then 0xB349C762 as AddSummonChara does, the season bit 0x100000 cleared on the new player
+-- (VRFW_Recruit.ClearSeason: no seasonal cards with the framework), then CMND_SYSTEM_AUTO_SAVE. Safe in the menus of a loaded save
 -- (the office, the Mercado); never in free walk (the autosave is blocked there).
 if VRFW_Recruit == nil then
   local R = {
@@ -69,7 +70,10 @@ if VRFW_Recruit == nil then
       ADD_SPIRIT = 2757645277,       -- CMND_ADD_ITEM_SPIRIT (card, n, rarity, used): n < 0 takes
       RETIRE = 3955826921,           -- the bank's retire (funcLuaMenuCommand, handle) -> ok
       STATUS = 1131797651,           -- (handle, field) -> a value of the player's status (12 = rarity)
+      HAS_ATTRIBUTE = 29506568,      -- 0x01C23C08 (handle, mask) -> the player's attribute has those bits
+      SET_ATTRIBUTE = 1525180681,    -- 0x5AE86909 (handle, mask, on): sets / clears attribute bits
     },
+    ATTRIBUTE_SEASON = 0x100000,     -- the «Jugador de temporada» bit CMND_ADD_PARTY leaves on these signings
     SPIRIT_RARITIES = {0, 1, 2, 3, 4},   -- a spirit price is paid with any rarity, lowest first
     holders = {},                    -- card list -> club players, until Refresh()
     cleared = {},                    -- "game:difficulty" -> won, until Refresh()
@@ -391,9 +395,30 @@ if VRFW_Recruit == nil then
       R.Log("sign failed", param, level, rarity)
       return nil, "refused"
     end
-    R.Log("signed", param, "level", level, "rarity", rarity, "handle", hdl)
+    R.Log("signed", param, "level", level, "rarity", rarity, hdl)
     R.Refresh()
+    R.ClearSeason(param, hdl)
     return hdl or 0
+  end
+
+  -- A signing is a normal club player: CMND_ADD_PARTY leaves the season bit on the new record (the bank's «Jugador de
+  -- temporada» banner and plate), so it is cleared on the new handle (or, when the call gave none, on the club
+  -- players of that card: it was not in the club before the signing).
+  function R.ClearSeason(param, hdl)
+    local handles = {}
+    if type(hdl) == "number" and hdl ~= 0 then
+      handles[1] = hdl
+    else
+      for _, h in ipairs(R.Holders({param})) do
+        handles[#handles + 1] = h.handle
+      end
+    end
+    for _, h in ipairs(handles) do
+      if call(R.C.HAS_ATTRIBUTE, h, R.ATTRIBUTE_SEASON) == true then
+        call(R.C.SET_ATTRIBUTE, h, R.ATTRIBUTE_SEASON, false)
+        R.Log("season bit cleared", param, h, "still set", call(R.C.HAS_ATTRIBUTE, h, R.ATTRIBUTE_SEASON) == true)
+      end
+    end
   end
 
   -- one recruit with its rules: opt = {param, level, rarity, source, reqs = {...}, price = {item, count}}
@@ -456,20 +481,32 @@ if VRFW_Recruit == nil then
   end
 end
 
--- A recruit trial (a contact map's team page, «Prueba»): the friendly `friendly` against `game` at `difficulty`, with
--- the challenge objective and the per-card «passed» key tag / sub, started from THIS menu through the match start
--- service (VRFW_MATCH, _all\12_match_start.lua). The contact map screen calls it in its hub's VM (CMND MENU_CALL) and
+-- A recruit trial (a contact map's team page, «Prueba»): the friendly `friendly` against the team of the page's match
+-- `game` at `difficulty`, with the challenge objective and the per-card «passed» key tag / sub, started from THIS menu
+-- through the match start service (VRFW_MATCH, _all\12_match_start.lua). The rival is the page match's own rival team
+-- (teams.rival.team, so a friendly that plays its own match row, e.g. a 5v5 row, meets the page's team) and the stadium
+-- the page match's own one (game data, CMND_VRFW_RECRUIT_GAME_STADIUM); a home stadium declared for the rival team
+-- comes first when the friendly asks rival_home. The contact map screen calls it in its hub's VM (CMND MENU_CALL) and
 -- closes itself. Returns true when the launch runs.
 if VRFW_RecruitTrial == nil then
+  local GAME_RIVAL = 2204933160      -- (game, difficulty) -> the match row's rival team
+  local GAME_STADIUM = 943736720     -- CMND_VRFW_RECRUIT_GAME_STADIUM (game) -> map crc (0 = none)
+
   function VRFW_RecruitTrial(friendly, game, difficulty, tag, sub, objective)
     if type(VRFW_MATCH) ~= "table" or type(VRFW_MATCH.start) ~= "function" or type(friendly) ~= "string" then
       return false
     end
-    local ok, started, why = pcall(VRFW_MATCH.start, {friendly = friendly, game = game, difficulty = difficulty or 1,
-      tag = tag, sub = sub, objective = objective, settle = 20, black = false})
+    difficulty = difficulty or 1
+    local okr, rival = pcall(funcLuaCommand, GAME_RIVAL, game, difficulty)
+    rival = (okr and type(rival) == "number" and rival ~= 0) and rival or nil
+    local oks, stadium = pcall(funcLuaCommand, GAME_STADIUM, game)
+    stadium = (oks and type(stadium) == "number" and stadium ~= 0) and stadium or nil
+    local ok, started, why = pcall(VRFW_MATCH.start, {friendly = friendly, game = game, difficulty = difficulty,
+      tag = tag, sub = sub, objective = objective, rival = rival, stadium = stadium,
+      overrides = rival and {{"teams.rival.team", rival}} or nil, settle = 20, black = false})
     if VRFW_Recruit ~= nil then
-      VRFW_Recruit.Log("trial start", friendly, game, difficulty, tag, sub, objective, tostring(ok), tostring(started),
-        tostring(why))
+      VRFW_Recruit.Log("trial start", friendly, game, difficulty, tag, sub, objective, "rival", tostring(rival),
+        "stadium", tostring(stadium), tostring(ok), tostring(started), tostring(why))
     end
     return ok and started == true
   end

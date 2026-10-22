@@ -10,6 +10,8 @@
 #   element, the aura's own art on the right, the item icon on the band's square, the name, the rate).
 # A row reused by another kind of row gets the retail layout back. Always on: without a declared section the
 # framework never marks a row and every row stays retail. [VRFW.DropList] HideTabs: those tabs left out of the tab list.
+# A gacha node's list (CMND_VRFW_GACHA_OF_GAME of its game, docs/framework/gacha.md): the owned players' spirits are
+# left out while it is open (CMND_VRFW_DROP_LIST_EXCLUDE_OWNED, on at OnInit, off at FinalizeMenu).
 name = "vrfw_drop_list"
 mod = "vr_framework"
 order = 100

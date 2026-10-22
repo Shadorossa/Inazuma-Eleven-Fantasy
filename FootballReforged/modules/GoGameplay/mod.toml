@@ -1,0 +1,45 @@
+id = "go_gameplay"
+# name / description: the English fallback; the card on Football Reforged's page shows the text keys mod_name /
+# mod_description in the game's language (text\keys.toml)
+name = "GO Gameplay"
+version = "1.1.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Inazuma Eleven GO style duels. In a focus battle against the CPU nobody moves and there is no countdown: you pick a special move or a side (go left / go right, block left / block right). The CPU answers with a special move of its own or a side: same side, the defender wins; opposite sides, the attacker; its special move wins unless your power beats it by a margin (config.toml). No sliding tackles in the match, for you and the CPU."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-21"
+# This mod's own names (TOML keys GoGameplay.X, rule ids go_gameplay.*); never VRFW.
+prefix = "GoGameplay"
+folder = "GoGameplay"
+# Created on 2026-10-21 (owner request: Inazuma Eleven GO style duels as a Football Reforged module, off by default;
+# docs/game/mods/go-gameplay.md). Only declarations on framework mechanisms (standard layout, docs/framework/mod-layout.md):
+#   content\rules\go_duels.toml          behaviour rules (VRFW.behaviour/1): the duel choice service armed at every match
+#                                        (duel_choice setup), the side buttons (duel_choice side), the side run back
+#                                        (block = false after Utilities' block), no breakthrough / dash / prepared block in
+#                                        a focus battle, no sliding tackle input, the CPU's sliding rate 0 (ai_rate)
+#   content\rules\ai\no_sliding.toml     match AI profile (VRFW.match_ai/1): slidingEnableRate 0 for both sides
+#   content\params\focus_timer.toml      game params (VRFW.param/1): SoccerFocusBattleGlobalParam focusModeLimitTime and
+#                                        opponentSkillSelectLimitTime (retail 5 s each) raised so no countdown runs out
+#   config.toml                          [duel_choice]: the power margin, who wins on the same side, the CPU's side read
+#                                        and special-move rates (docs/framework/duel-choice.md §2)
+#   text\keys.toml                       the card's name / description, 9 languages
+# 1.1.0 (owner 2026-10-21): the GO choice resolution through the VR-Framework's duel choice service (VRFW 2.33.0;
+# docs/framework/duel-choice.md); the movement lock is the service's (only in duels it applies to, lifted once decided).
+requires = ["vr_framework>=2.33.0", "football_reforged>=1.2.0"]
+conflicts = []
+loader_modules = []
+permissions = []
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too.
+[module]
+of = "football_reforged"
+order = 120
+# starts switched OFF (owner 2026-10-21: the player opts in on its card); docs/framework/mod-families.md §1.4
+default_enabled = false

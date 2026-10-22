@@ -1,0 +1,15 @@
+schema = "VRFW.match_ai/1"
+# GO Gameplay › no sliding tackles by the CPU (docs/game/mods/go-gameplay.md §5; format: docs/framework/match-ai.md).
+# No Modes / AiLevels / Teams / Games list = every offline match; Side "both" = the rival and your AI teammates.
+# No class choice: each team keeps its own class (the game's or another mod's); only this knob is set over it.
+# Priority 100: above the other modules' profiles of the same specificity. The match_start rules of
+# rules\go_duels.toml (ai_rate) also cover the situations of other profiles.
+
+[[VRFW.MatchAI]]
+Name = "GoGameplay.NoSliding"
+Side = "both"
+Priority = 100
+
+[VRFW.MatchAI.Rates]
+# the chance of the AI's sliding roll (retail 0.03 .. 0.8 by AI level): 0 = it never slides
+slidingEnableRate = 0.0

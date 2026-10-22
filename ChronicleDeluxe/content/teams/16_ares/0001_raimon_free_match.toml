@@ -1,0 +1,34 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (owner 2026-10-22; docs/game/mods/chronicle-deluxe-free-match.md §18): the two Raimon of the Ares tab of
+# the free match, two different teams with their own names (the game's Chronicle line-ups are both named «Raimon»):
+#   fm_raimon_ares      the line-up that faces Barcelona Orb (pltm_cro_ie7_01): «Raimon (Ares)», this mod's text
+#   fm_raimon_island    the line-up of the Ares final (pltm_cro_ie7_13): the game's team name «Raimon Isla Remota»
+# Only the free match plays them (content/teams/90_rules/free_match.toml [[VRFW.FreeMatchGame]]).
+default_lang = "en"
+
+[[team]]
+name = "fm_raimon_ares"
+based_on = "pltm_cro_ie7_01"            # Raimon, first Ares battle (against Barcelona Orb)
+  [team.text.en]
+  name = "Raimon (Ares)"
+  [team.text.es]
+  name = "Raimon (Ares)"
+  [team.text.fr]
+  name = "Raimon (Ares)"
+  [team.text.de]
+  name = "Raimon (Ares)"
+  [team.text.it]
+  name = "Raimon (Ares)"
+  [team.text.pt]
+  name = "Raimon (Ares)"
+  [team.text.ja]
+  name = "雷門（アレス）"
+  [team.text.zh_hans]
+  name = "雷门（Ares）"
+  [team.text.zh_hant]
+  name = "雷門（Ares）"
+
+[[team]]
+name = "fm_raimon_island"
+based_on = "pltm_cro_ie7_13"            # Raimon, Ares final (against Academia Plenilunio)
+name_text = 0xF1A03014                  # «Raimon Isla Remota» (team_text, the game's name of that Raimon)

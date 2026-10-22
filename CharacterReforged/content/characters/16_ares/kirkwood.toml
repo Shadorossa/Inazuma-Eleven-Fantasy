@@ -55,9 +55,9 @@ moves = [
 target = "c07050010"                                   # Axel Blaze
 moves = [
   { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
-  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
-  { move = 0x19025F83, level = 26 },                        # Quick Draw
+  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x0B011EBF, level = 11 },                        # Fireball Screw
+  { move = 0xEAB3792D, level = 21 },                        # Grand Fire
 ]
 VRFW.MoveGrades = [
   { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
@@ -73,8 +73,8 @@ target = "c07050060"                                   # Malcolm Night
 moves = [
   { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x1ECA5CE1, level = 39 },                        # Wrath Shot
-  { move = 0x2B343D01, level = 79 },                        # Cyclone
+  { move = 0x6C827857, level = 39 },                        # Rolling Steal
+  { move = 0xB6F26F5F, level = 60 },                        # Tri-Pegasus
 ]
 
   [[edit.cards]]
@@ -89,7 +89,7 @@ moves = [
   { move = 0x19025F83, level = 1 },                         # Quick Draw
   { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
   { move = 0x261BDCA8, level = 50 },                        # Moonsault
-  { move = 0x6ADE9E01, level = 74 },                        # Illusory Ball
+  { move = 0xA7B451B3, level = 58 },                        # Paladin Strike
 ]
 
   [[edit.cards]]
@@ -103,8 +103,8 @@ target = "c07050080"                                   # Dan Mirthful
 moves = [
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
   { move = 0x00196EC2, level = 42 },                        # Earthquake
-  { move = 0xA8E0F6C2, level = 49 },                        # Kung Fu Header
-  { move = 0x78E027BC, level = 72 },                        # Shine Drive
+  { move = 0x1A472053, level = 49 },                        # Double Wrath Shot
+  { move = 0x78E027BC, level = 50 },                        # Shine Drive
 ]
 
   [[edit.cards]]
@@ -116,10 +116,10 @@ moves = [
 [[edit]]
 target = "c07050090"                                   # Ricky Clover
 moves = [
-  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
   { move = 0x5781A373, level = 1 },                         # Hurricane Arrows
-  { move = 0x627FC293, level = 44 },                        # Meteor Attack
-  { move = 0x4AD6453E, level = 64 },                        # Back Tornado
+  { move = 0x4AD6453E, level = 45 },                        # Back Tornado
+  { move = 0x52CEB5F6, level = 70 },                        # Iron Wall
 ]
 
   [[edit.cards]]
@@ -133,7 +133,7 @@ target = "c07050100"                                   # Toby Damian
 moves = [
   { move = 0x261BDCA8, level = 1 },                         # Moonsault
   { move = 0x4AD6453E, level = 1 },                         # Back Tornado
-  { move = 0x19025F83, level = 48 },                        # Quick Draw
+  { move = 0x4CDC2C6B, level = 48 },                        # Shooting Star
   { move = 0x5049A011, level = 56 },                        # Spinning Shot
 ]
 
@@ -146,10 +146,10 @@ moves = [
 [[edit]]
 target = "c07050110"                                   # York Nashmith
 moves = [
-  { move = 0x7207C577, level = 1 },                         # Boost Glider
-  { move = 0x7B64F3D2, level = 42 },                        # Hawk Shot
-  { move = 0xDEB28A7B, level = 54 },                        # Monkey Turn
-  { move = 0x4AD6453E, level = 76 },                        # Back Tornado
+  { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
+  { move = 0x2A37FC88, level = 32 },                        # Revolution V
+  { move = 0x4AD6453E, level = 50 },                        # Back Tornado
+  { move = 0x7207C577, level = 54 },                        # Boost Glider
 ]
 
   [[edit.cards]]
@@ -161,10 +161,10 @@ moves = [
 [[edit]]
 target = "c07050120"                                   # Zachary Moore
 moves = [
-  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x49041E53, level = 1 },                         # Crosscut Feint
   { move = 0x6ADE9E01, level = 42 },                        # Illusory Ball
   { move = 0x4890FB67, level = 53 },                        # Twin Boost
-  { move = 0x7207C577, level = 84 },                        # Boost Glider
+  { move = 0x7207C577, level = 58 },                        # Boost Glider
 ]
 
   [[edit.cards]]
@@ -176,10 +176,10 @@ moves = [
 [[edit]]
 target = "c07050020"                                   # Marvin Murdock
 moves = [
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0x2F78EA0D, level = 1 },                         # Triangle Z
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x35E70F22, level = 45 },                        # Grenade Shot
-  { move = 0x7207C577, level = 70 },                        # Boost Glider
+  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
+  { move = 0x6ADE9E01, level = 37 },                        # Illusory Ball
 ]
 
   [[edit.cards]]
@@ -191,10 +191,10 @@ moves = [
 [[edit]]
 target = "c07050030"                                   # Thomas Murdock
 moves = [
-  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0x4AD6453E, level = 1 },                         # Back Tornado
-  { move = 0x5643C944, level = 45 },                        # Killer Slide
-  { move = 0x2F78EA0D, level = 70 },                        # Triangle Z
+  { move = 0x2F78EA0D, level = 35 },                        # Triangle Z
+  { move = 0x36A270F2, level = 55 },                        # Rolling Slide
 ]
 
   [[edit.cards]]
@@ -206,10 +206,10 @@ moves = [
 [[edit]]
 target = "c07050040"                                   # Tyler Murdock
 moves = [
-  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
   { move = 0x4AD6453E, level = 1 },                         # Back Tornado
-  { move = 0x142DBE2A, level = 45 },                        # Foul Offence
-  { move = 0x2F78EA0D, level = 70 },                        # Triangle Z
+  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
+  { move = 0x2F78EA0D, level = 10 },                        # Triangle Z
+  { move = 0x3BF45E9A, level = 65 },                        # Triple Boost
 ]
 
   [[edit.cards]]

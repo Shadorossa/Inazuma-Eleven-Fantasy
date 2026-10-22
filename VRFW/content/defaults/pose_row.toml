@@ -1,0 +1,64 @@
+# The pose row screen's layout (vrfw_pose_row_menu, docs/framework/pose-row.md §3): screen px of a 1920 x 1080 menu,
+# y down. Read by scripts\pose_row.lua (served with each declaration) and by the preview
+# (research/scripts/pose_row_preview.py).
+[layout]
+rows = 10                       # list rows shown at once
+list = { x = 60, y = 160, w = 560, h = 74, gap = 8 }
+panel = { x = 650, y = 160, w = 1220, h = 800 }
+title = { x = 686, y = 196, scale = 1.25 }
+info = { x = 686, y = 246, scale = 0.8 }
+hint = { x = 686, y = 928, scale = 0.75 }
+# the models' screen centres (one per slot), their feet and head lines on screen
+slot_x = [792, 1032, 1272, 1512, 1752]
+feet_y = 668
+head_y = 338
+# the card under each model
+card = { w = 230, h = 196, y = 700, bar = 6 }
+
+# style "node_panel": the Chronicle board's node panel look (left) and a blue side panel with the models (right)
+[layout.node_panel]
+title = { x = 40, y = 42, w = 890, h = 70, scale = 1.15 }
+banner = { x = 90, y = 190, w = 530, h = 160, scale = 1.0, icon = { x = 515, y = 265, size = 150 } }
+rows = { x = 90, y = 380, w = 540, h = 52, step = 66, shown = 5, scale = 0.85 }
+more = { x = 300, y = 718, scale = 0.6 }
+# the lineup: the formation's name, the VS pitch (its scale) and the player cards (their scale)
+lineup = { x = 90, y = 740, w = 540, h = 210, name_y = 20, name_scale = 0.7, pitch_top = 40, pitch_scale_x = 0.62, pitch_scale_y = 0.29, card_scale = 0.36 }
+team = { x = 360, y = 978, scale = 0.7 }
+# the side panel sprite (vsroute01_15 list_base01) has a 28 px clear margin: its blue box is x 700-1830, y 165-935
+panel = { x = 651, y = 121, w = 1228, h = 858 }
+panel_title = { x = 710, y = 130, scale = 1.1 }
+panel_info = { x = 730, y = 205, scale = 0.8 }
+page = { x = 1640, y = 205, scale = 0.7 }
+slot_x = [844, 1058, 1272, 1486, 1700]
+feet_y = 623
+head_y = 263
+model_z = -1.1
+card = { w = 202, h = 266, y = 649, bar = 6 }
+# the players of the page under the models: one row each (check box, name, challenge)
+player_rows = { x = 740, y = 648, w = 1050, h = 46, step = 54, name_scale = 0.62, text_scale = 0.55, text_x = 340 }
+# the style's art by role: [retail atlas, sprite] (the Chronicle board's node panel vsroute01_16 / _17 and the rate
+# panel vsroute01_15); a mod's content\screen_art\*.toml (Screen = "pose_row") still wins
+[layout.node_panel.art]
+title_band = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
+banner = ["#/menu/30_vsroute/vsroute01/vsroute01_17/vsroute01_17.g4tx", "myteam_base01_a"]
+row = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_off"]
+row_focus = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
+level_circle = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "lv_base02"]
+check = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_icon_state_comp02"]
+lineup_panel = ["#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g4tx", "list_base01"]
+label_plate = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"]
+player_row = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_off"]
+player_row_off = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"]
+check_box = ["#/menu/102_team/team16/team16_03/team16_03.g4tx", "icon_check_box01"]
+check_mark = ["#/menu/102_team/team16/team16_03/team16_03.g4tx", "icon_list_check01"]
+button_plate = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
+side_panel = ["#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g4tx", "list_base01"]
+
+# The model camera (the shop list base's: eye (0, 2.25, 12.5) looking at (0, 1.6, 0), 3060 px a metre at 1 m) and the
+# depth the models stand at (world z): the screen turns slot_x / feet_y into world places with it.
+[camera]
+eye_y = 2.25
+eye_z = 12.5
+look_y = 1.6
+px_per_m_at_1m = 3060
+model_z = -2.35

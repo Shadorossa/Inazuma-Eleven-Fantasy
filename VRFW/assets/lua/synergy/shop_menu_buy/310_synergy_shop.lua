@@ -5,7 +5,8 @@
 -- with no team (255: the engine reads no team for any value from 16 up, the synergy screen's own "none"): every
 -- condition unfulfilled. Then each row shows its check box empty, and a synergy declared by a mod gets the synergy
 -- screen's row look (VRFW_Synergy.ApplyPanel, lua\synergy\_all\30_synergy_rows.lua). The game's arguments are never
--- changed: the second draw comes after the game's own.
+-- changed: the second draw comes after the game's own. The effects page (page 1) and any other item: the rows' extra
+-- pieces hidden.
 -- Switch: config.toml [synergy] shop_conditions (CMND_VRFW_SYNERGY_SHOP_CONDITIONS, asked once per shop); false = the
 -- game's panel. No engine call at load time.
 if VRFW_Host ~= nil then
@@ -39,12 +40,27 @@ if VRFW_Host ~= nil then
     return ok and cat == SYNERGY_CATEGORY
   end
 
-  -- the panel of `item` on `page` again, with no team; the rows' check boxes empty; a declared synergy's row look
+  -- the extra pieces of the condition rows off (another item, the effects page)
+  local function hide_extras()
+    local S = VRFW_Synergy
+    if S ~= nil and S.HideExtras ~= nil then
+      pcall(S.HideExtras)
+    end
+  end
+
+  -- the panel of `item` on `page` again, with no team; on the conditions page (0) the rows' check boxes empty and a
+  -- declared synergy's row look; the effects page (1) shows the effect texts only: no crest, miniface or icon of the rows
   local function redraw(item, page)
     if not enabled() or type(item) ~= "number" or item == 0 or not is_synergy(item) then
+      hide_extras()
       return
     end
-    pcall(funcLuaMenuCommand, UPDATE, DETAIL, 0, item, NO_TEAM, type(page) == "number" and page or 0, true, false)
+    page = type(page) == "number" and page or 0
+    pcall(funcLuaMenuCommand, UPDATE, DETAIL, 0, item, NO_TEAM, page, true, false)
+    if page ~= 0 then
+      hide_extras()
+      return
+    end
     local S = VRFW_Synergy
     if S ~= nil and S.ApplyPanel ~= nil then
       S.detail = DETAIL
@@ -70,6 +86,8 @@ if VRFW_Host ~= nil then
     fn = function(r, a1, a2, a3)
       if a3 == SYNERGY_CATEGORY then
         redraw(a2, page())
+      else
+        hide_extras()
       end
     end,
   })

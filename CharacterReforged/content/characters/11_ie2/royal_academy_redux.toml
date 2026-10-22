@@ -7,10 +7,13 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02023610"                                   # Joseph King
 moves = [
-  { move = 0xA7157B91, level = 1 },                         # Power Shield
-  { move = 0xA6D711A6, level = 26 },                        # Full Power Shield
-  { move = 0x7B64F3D2, level = 31 },                        # Hawk Shot
-  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
+  { move = 0xCB8E6D04, level = 1 },                         # Mighty Save
+  { move = 0xBD8A9EBE, level = 1 },                         # Infinite Wall
+  { move = 0x8E7E960B, level = 10 },                        # Drill Smasher
+]
+VRFW.MoveGrades = [
+  { Move = 0xBD8A9EBE, Grade = 2 },                         # Infinite Wall
 ]
 
   [[edit.cards]]
@@ -21,10 +24,10 @@ moves = [
 [[edit]]
 target = "c02023710"                                   # David Samford
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0x7DAF3139, level = 25 },                        # Emperor Penguin No. 2
-  { move = 0x61FB16FD, level = 47 },                        # Divine Arrows
+  { move = 0x240BEDF2, level = 1 },                         # Bounce Shot
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x4683AADF, level = 70 },                        # Space Penguin
 ]
 
   [[edit.cards]]
@@ -38,8 +41,8 @@ target = "c02023620"                                   # Rowan Beltzer
 moves = [
   { move = 0x2B343D01, level = 1 },                         # Cyclone
   { move = 0xB7F1AED6, level = 1 },                         # Double Cyclone
-  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
-  { move = 0x4AD6453E, level = 32 },                        # Back Tornado
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
+  { move = 0xB7300568, level = 32 },                        # Double Tornado
 ]
 
   [[edit.cards]]
@@ -54,7 +57,7 @@ moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0x71831119, level = 1 },                         # Foul Offence 2
   { move = 0x55C71D2A, level = 28 },                        # About Face
-  { move = 0x0CF4E55C, level = 30 },                        # Double Touch
+  { move = 0x17A96A44, level = 30 },                        # Clone Faker
 ]
 
   [[edit.cards]]
@@ -66,10 +69,10 @@ moves = [
 [[edit]]
 target = "c02023640"                                   # Argie Bargie
 moves = [
+  { move = 0x23C3EE90, level = 1 },                         # Shoulder Tackle
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
-  { move = 0x53CD747F, level = 26 },                        # Tarzan Kick
-  { move = 0x67F17FA8, level = 46 },                        # Mega Quake
+  { move = 0xB7F1AED6, level = 10 },                        # Double Cyclone
+  { move = 0x7BA5586C, level = 65 },                        # Mad Express
 ]
 
   [[edit.cards]]
@@ -82,10 +85,10 @@ moves = [
 [[edit]]
 target = "c02023650"                                   # Lee Bamboo
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
   { move = 0x4E9A9232, level = 25 },                        # Spinning Cut
-  { move = 0x71831119, level = 46 },                        # Foul Offence 2
+  { move = 0x43B5739B, level = 46 },                        # Lightning Bolt
 ]
 
   [[edit.cards]]
@@ -97,9 +100,9 @@ moves = [
 [[edit]]
 target = "c02023660"                                   # Eton Messer
 moves = [
-  { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
-  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
   { move = 0x1A472053, level = 1 },                         # Double Wrath Shot
+  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
+  { move = 0x49041E53, level = 1 },                         # Crosscut Feint
   { move = 0x5B6C28ED, level = 42 },                        # Invisible Fake
 ]
 
@@ -116,7 +119,7 @@ moves = [
   { move = 0x18C035B4, level = 1 },                         # Ghost Pull
   { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
   { move = 0x09BBF3D9, level = 28 },                        # Dark Whirlwind
-  { move = 0xB5B7108F, level = 36 },                        # Shadow Stitch
+  { move = 0x28B0E96F, level = 36 },                        # Heavy Mettle
 ]
 
   [[edit.cards]]
@@ -129,9 +132,9 @@ moves = [
 target = "c02023680"                                   # Sue Sparrow
 moves = [
   { move = 0x4AD6453E, level = 1 },                         # Back Tornado
-  { move = 0x2B343D01, level = 1 },                         # Cyclone
-  { move = 0x3D4653B0, level = 28 },                        # Poison Fog
-  { move = 0x17A96A44, level = 49 },                        # Clone Faker
+  { move = 0x3B8D915B, level = 22 },                        # Meteor Shower
+  { move = 0x7F2824DE, level = 49 },                        # Dual Storm
+  { move = 0xC16279D1, level = 60 },                        # Field of Force
 ]
 
   [[edit.cards]]
@@ -146,7 +149,7 @@ target = "c02023690"                                   # Riley Jamm
 moves = [
   { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
   { move = 0x1A472053, level = 1 },                         # Double Wrath Shot
-  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x31ABD82E, level = 1 },                         # Circus Block
   { move = 0xB27F13ED, level = 64 },                        # Death Zone
 ]
 
@@ -163,10 +166,10 @@ growth_pattern = 1
 growth = "normal"
 stats = { kick = 279, control = 251, technique = 271, pressure = 198, physical = 184, intelligence = 252, agility = 197, freedom = 293 }
 moves = [
-  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
-  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
-  { move = 0x71831119, level = 1 },                         # Foul Offence 2
   { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0xBF6D0AC5, level = 50 },                        # Emperor Penguin No. 3
+  { move = 0xC16279D1, level = 60 },                        # Field of Force
 ]
 VRFW.MoveGrades = [
   { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
@@ -177,8 +180,8 @@ target = "c02023720"                                   # Jimbo Cellar
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0xF14FDC17, level = 1 },                         # Shot Pocket
-  { move = 0xA6D711A6, level = 30 },                        # Full Power Shield
-  { move = 0x4E9A9232, level = 40 },                        # Spinning Cut
+  { move = 0x105C91A7, level = 50 },                        # Slingshot
+  { move = 0x88B554E0, level = 50 },                        # Galatyn
 ]
 
   [[edit.cards]]
@@ -192,7 +195,7 @@ target = "c02023730"                                   # Zenn Wildhorse
 moves = [
   { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
   { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
-  { move = 0x4AD6453E, level = 31 },                        # Back Tornado
+  { move = 0x6ADE9E01, level = 31 },                        # Illusory Ball
   { move = 0x68982058, level = 53 },                        # Armadillo Circus
 ]
 
@@ -209,7 +212,7 @@ moves = [
   { move = 0x19025F83, level = 1 },                         # Quick Draw
   { move = 0x01DB04F5, level = 29 },                        # Defence Scan
   { move = 0xC66BD10D, level = 36 },                        # Zigzag Spark
-  { move = 0x2B343D01, level = 46 },                        # Cyclone
+  { move = 0xB4757AB8, level = 46 },                        # Divine Stamp
 ]
 
   [[edit.cards]]
@@ -222,10 +225,10 @@ moves = [
 [[edit]]
 target = "c02023750"                                   # Cosimo Beck
 moves = [
-  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
-  { move = 0x261BDCA8, level = 30 },                        # Moonsault
-  { move = 0x3663DB4C, level = 38 },                        # Utter Gutsiness Bat
-  { move = 0x5506B694, level = 52 },                        # Utter Gutsiness Club
+  { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
+  { move = 0x5506B694, level = 30 },                        # Utter Gutsiness Club
+  { move = 0x750E6DAB, level = 38 },                        # Matador Feint
+  { move = 0xDCA94D3F, level = 52 },                        # Flash Upper
 ]
 
   [[edit.cards]]
@@ -238,9 +241,9 @@ moves = [
 target = "c02023760"                                   # Maston Color
 moves = [
   { move = 0x695A4A6F, level = 1 },                         # Magic
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x2D68DB57, level = 1 },                         # Deceptive Step
   { move = 0x3069B219, level = 31 },                        # Super Sumo Stomp
-  { move = 0x4031A7F5, level = 40 },                        # Mole Fake
+  { move = 0xDD365E15, level = 40 },                        # Mole Shuffle
 ]
 
   [[edit.cards]]

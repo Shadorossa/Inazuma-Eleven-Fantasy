@@ -1,0 +1,44 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe (2026-10-22): a rival of the chain «Ruta del entrenador del Mary Times» (content/teams/70_route_nodes/
+# chain_ie2_marytimes.toml, tile l02). Its own team (owner 2026-10-22: not the Chronicle's Occult), built from the IE2 DS
+# record (research/data/ie2ds/chain_teams.json, PracticeGame3B tile 6, team.pkb 530 «Occult Plus», level 45): the same
+# eleven players, kit numbers, positions and captain, with the cards of the Chronicle's Occult (tm_cro_ie1_0300).
+# Not in the Battle Bay grid (no `appears`).
+default_lang = "en"
+[[team]]
+name = "ct_wk_occult_plus"
+key = "evt_ct_wk_occult_plus"
+based_on = "tm_cro_ie1_0300" # Occult (the same school's team): formation, kit, crest, tactics
+level = 45
+series = "IE2"
+roster = "exact"
+member = [
+  { card = 0x375C67FE, slot = 0, number = 1, rarity_step = 1 }, # Nathan Jones (GK)
+  { card = 0x1C71343D, slot = 1, number = 2, rarity_step = 1 }, # Russell Walk (DF)
+  { card = 0x056A057C, slot = 2, number = 3, rarity_step = 1 }, # Jason Jones (DF)
+  { card = 0x4A2B93BB, slot = 3, number = 4, rarity_step = 1 }, # Ken Furan (DF)
+  { card = 0x5330A2FA, slot = 4, number = 5, rarity_step = 1 }, # Jerry Fulton (DF)
+  { card = 0x781DF139, slot = 5, number = 6, rarity_step = 1 }, # Ray Mannings (MF)
+  { card = 0x6106C078, slot = 6, number = 7, rarity_step = 1 }, # Robert Mayer (MF)
+  { card = 0xE69EDCB7, slot = 7, number = 8, rarity_step = 1 }, # Alexander Brave (MF)
+  { card = 0xFF85EDF6, slot = 8, number = 9, rarity_step = 1, captain = true }, # Johan Tassman (FW)
+  { card = 0x2F853C88, slot = 9, number = 10, rarity_step = 1 }, # Troy Moon (MF)
+  { card = 0x369E0DC9, slot = 10, number = 11, rarity_step = 1 }, # Burt Wolf (MF)
+]
+
+[team.text.es]
+name = "Occult Plus"
+short = "Occult Plus"
+
+[team.text.en]
+name = "Occult Plus"
+short = "Occult Plus"
+
+[team.text.ja]
+name = "オカルト改"
+short = "オカルト改"
+
+# each player plays its card's first 4 moves (the engine reads them from the card; the Hiper comes from its slot 9)
+[[edit]]
+target = "ct_wk_occult_plus"
+card_moves = 4

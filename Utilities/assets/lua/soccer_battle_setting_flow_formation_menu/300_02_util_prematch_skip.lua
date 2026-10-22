@@ -174,26 +174,32 @@ function OnLayerLoadCompleted(...)
 end
 
 -- While the lineup layers load under the cover (GO): keep it black, as event_menu's Step does during the events.
-local util_xs_prev_step = Step
-function Step(...)
-  if util_xs_close_now then               -- the retail GoToSoccerGame minus its fade out: native state 14 goes on at once
-    util_xs_close_now = false
-    local ok, err = pcall(function()
-      CloseCommonTimer()
-      funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
-    end)
-    UTIL_XS.Log("lineup group closed (direct jump)", tostring(ok), tostring(err))
-    return
-  end
-  local ok, err = pcall(function()
-    if UTIL_XS.Get(UTIL_XS.GO) == 1 and UTIL_XS.Get(UTIL_XS.COVER) == 1 then
-      UTIL_XS.Cover(0)
-      UTIL_XS.Hold()
+-- Placed through VRFW_Host.wrap: Clean HUD's prematch_lineups patch of this script redefines Step and runs after this
+-- mod's files, so a plain wrapper would be dropped (the group then never closes: black screen, lineup cursor only).
+local function UtilXsLineupStep(prev)
+  return function(...)
+    if util_xs_close_now then             -- the retail GoToSoccerGame minus its fade out: native state 14 goes on at once
+      util_xs_close_now = false
+      local ok, err = pcall(function()
+        CloseCommonTimer()
+        funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
+      end)
+      UTIL_XS.Log("lineup group closed (direct jump)", tostring(ok), tostring(err))
+      return
     end
-  end)
-  if not ok then
-    UTIL_XS.Log("lineup step error", tostring(err))
+    local ok, err = pcall(function()
+      if UTIL_XS.Get(UTIL_XS.GO) == 1 and UTIL_XS.Get(UTIL_XS.COVER) == 1 then
+        UTIL_XS.Cover(0)
+        UTIL_XS.Hold()
+      end
+    end)
+    if not ok then
+      UTIL_XS.Log("lineup step error", tostring(err))
+    end
+    return prev(...)
   end
-  return util_xs_prev_step(...)
+end
+if not (type(VRFW_Host) == "table" and type(VRFW_Host.wrap) == "function" and VRFW_Host.wrap("Step", UtilXsLineupStep)) then
+  Step = UtilXsLineupStep(Step)
 end
 -- ===== EVT utilities prematch skip lineups END =====

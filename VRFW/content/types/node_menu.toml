@@ -1,0 +1,13 @@
+# Declaration schema of the board node menus (content\node_menus\*.toml, docs/framework/node-menu.md): [[VRFW.NodeMenu]]
+# (Chronicle board nodes whose piece runs a mod's own menu instead of the command menu). An unknown key, wrong type or
+# out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.node_menu/1"
+folder = "content/node_menus"
+
+[entry.NodeMenu]
+doc = "Chronicle board nodes that open a mod's menu: picking one of their pieces calls the handler instead of opening the command menu"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+nodes = { type = "strings", required = true, doc = "the [[VRFW.RouteNode]] Names of the nodes (any mod's)" }
+handler = { type = "string", required = true, doc = "a Lua function of the board script's VM (vs_route_town_menu), `Name` or `Table.Name`: handler(piece index, node name, menu key) -> true when it ran its flow (false = the piece's command menu opens as usual)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

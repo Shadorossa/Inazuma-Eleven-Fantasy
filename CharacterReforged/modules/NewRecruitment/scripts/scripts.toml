@@ -1,5 +1,5 @@
-# Settings of New Recruitment's scripts (kind VRFW.script/1, docs/framework/scripts.md §2). No [[script]] list: every
-# top-level scripts\*.lua is an entry point, every .lua below (lib\) a library for `require`.
+# Settings of New Recruitment's scripts (kind VRFW.script/1, docs/framework/scripts.md §2). Every
+# top-level scripts\*.lua is an entry point (the [[script]] rows below only set their permissions), every .lua below (lib\) a library for `require`.
 schema = "VRFW.script/1"
 
 # The spirit purge of a duplicated save (scripts\spirit_purge.lua, 2026-10-14) holds a whole save at once (12.6 MB in,
@@ -9,3 +9,12 @@ schema = "VRFW.script/1"
 budget = 5000000
 memory_kb = 65536
 allow = []
+
+# The pachanga zones (scripts\pachangas.lua, docs/game/mods/new-recruitment-pachangas.md) keep which pachangas were won
+# in the save slot (save key won.<pachanga>): the save permission.
+[[script]]
+file = "spirit_purge.lua"
+
+[[script]]
+file = "pachangas.lua"
+allow = ["save"]

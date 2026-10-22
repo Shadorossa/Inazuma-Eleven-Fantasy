@@ -4,17 +4,17 @@ schema = "VRFW.team/2"
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_1_moves"
 moves = [0x3D794772, 0x6588D533, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_10_moves"
 moves = [0x6588D533, 0x94405906, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_0_moves"
 moves = [0x9A755221, 0x1FA91CF4, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_9_moves"
@@ -24,7 +24,7 @@ levels = [1, 1, 0, 0, 0, 0]
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_4_moves"
 moves = [0x6588D533, 0x5E233E68, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_5_moves"
@@ -34,7 +34,7 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_6_moves"
 moves = [0x6588D533, 0x3D794772, 0x8EDFBC29, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_2_moves"
@@ -44,7 +44,7 @@ levels = [1, 1, 1, 1, 0, 0]
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_7_moves"
 moves = [0xABA58912, 0x087999EE, 0xA8E0F6C2, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_8_moves"
@@ -54,38 +54,39 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_3_moves"
 moves = [0x3D794772, 0xB13A6C3D, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_11_moves"
 moves = [0x20D01E43, 0x928B9BED, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_12_moves"
 moves = [0x132416F6, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 0, 0, 0, 0, 0]
+levels = [1, 0, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_13_moves"
 moves = [0x19025F83, 0xACAC21CE, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_14_moves"
 moves = [0x7BC5D9F0, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 0, 0, 0, 0, 0]
+levels = [1, 0, 0, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.victory_0300.slot_15_moves"
 moves = [0x19025F83, 0xAF150D21, 0xFB997A80, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 0, 0, 0, 0]
+levels = [1, 1, 0, 0, 0, 0]
 
 [[team]]
 name = "victory_0300"
 key = "bbcr_victory_0300_bb"
 name_text = 0xE9C4668E
 level = 40
+card_moves = 6
 series = "VICTORY"
 stadium_fallback = "s03g001"
 appears = [{ list = "bb_stadium", category = "main", season = "series_09", row = { copy = false, stadium = 0xAE15CCD0, image = "ev_chronicle_img/ev_bb_s10g001_01.g4tx", image_name = "ev_bb_s10g001_01", bgm = 0x6C1E6CDD } }]
@@ -386,4 +387,3 @@ rarity_step = 4
 c14_19 = [-1, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
-loadout = 0

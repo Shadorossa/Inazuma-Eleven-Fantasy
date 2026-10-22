@@ -1,9 +1,16 @@
 schema = "VRFW.catalog/1"
 # Node kinds of a match flow (schema VRFW.catalog/1): category, ports and arguments of each kind. Built into the framework.
-# Each kind is implemented by name in the framework's match_flow.lua; a new kind needs code there.
+# Each kind is implemented by name in the framework's match_flow.lua; a new kind needs code there (a new trigger kind
+# does not: every trigger.* kind only starts a run).
 # [category.<cat>]: default ins/outs ports (all flow ports): trigger, cond, action, scene, rule, end, note.
 # [[kind]]: kind, cat, row (trigger type; -1 = the node's own `type` argument), args = [{ name, type, default }].
-# Argument types: int, num, bool, team (user/rival), member (soccer member id), id (number, 0x.. or text -> crc32), text, enum (+ values).
+# Argument types: int, num, bool, team (user/rival), member (soccer member id), id (number, 0x.. or text -> crc32), text,
+# enum (+ values; + codes = what each value writes into a trigger row), list (call arguments: a TOML array).
+# A trigger kind's `target` / `sub` name the arguments written into the row's target / sub columns (a member / id 0 or an
+# empty text = any); `clauses` turn arguments into `if` clauses of the row's condition; `alias` = more names an
+# [[event]]'s `when` accepts (the kind's name without `trigger.` always works).
+# [[clause]]: the readable `if` clauses, each compiled into the game's condition bytecode with the function names of
+# schemas/conditions.toml. [events]: how [[event]] tables are lowered into nodes (docs/framework/types/trigger.md §9).
 
 [category.trigger]
 ins = []
@@ -34,10 +41,12 @@ ins = []
 outs = []
 
 # ---- triggers
+# Team keys of the trigger rows: crc32("0") = 4108050209 (the user), crc32("1") = 2212294583 (the rival).
 [[kind]]
 kind = "trigger.match_init"
 cat = "trigger"
 row = 249
+alias = ["match_start"]
 
 [[kind]]
 kind = "trigger.kickoff"
@@ -49,6 +58,17 @@ kind = "trigger.time"
 cat = "trigger"
 row = 227
 args = [
+    { name = "cond", type = "text", default = "" },
+]
+
+# The timed poll (227) with the clause `minute >= N`.
+[[kind]]
+kind = "trigger.minute"
+cat = "trigger"
+row = 227
+clauses = [{ arg = "minute", clause = "minute", op = "ge" }]
+args = [
+    { name = "minute", type = "int", default = 1 },
     { name = "cond", type = "text", default = "" },
 ]
 
@@ -64,14 +84,39 @@ args = [
 kind = "trigger.focus_result"
 cat = "trigger"
 row = 244
+target = "team"
 args = [
     { name = "team", type = "team", default = "user" },
 ]
 
+# A focus battle starts: `member` = the user's player, `vs` = the opponent (0 = any).
 [[kind]]
 kind = "trigger.focus_start"
 cat = "trigger"
 row = 203
+target = "member"
+sub = "vs"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "vs", type = "member", default = "0" },
+]
+
+# A focus battle won by `member`.
+[[kind]]
+kind = "trigger.focus_won"
+cat = "trigger"
+row = 214
+target = "member"
+args = [
+    { name = "member", type = "member", default = "0" },
+]
+
+# A focus battle of `member` ended, whatever the result.
+[[kind]]
+kind = "trigger.focus_done"
+cat = "trigger"
+row = 212
+target = "member"
 args = [
     { name = "member", type = "member", default = "0" },
 ]
@@ -84,28 +129,135 @@ args = [
     { name = "cond", type = "text", default = "" },
 ]
 
+# The ball carrier enters the attacking area; `member` (0 = anyone) adds the clause `ball_owner = member`.
+[[kind]]
+kind = "trigger.area_enter"
+cat = "trigger"
+row = 207
+clauses = [{ arg = "member", clause = "ball_owner" }]
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "cond", type = "text", default = "" },
+]
+
+# A pass received by `member`.
+[[kind]]
+kind = "trigger.pass_to"
+cat = "trigger"
+row = 234
+target = "member"
+args = [
+    { name = "member", type = "member", default = "0" },
+]
+
+# `n` passes in a row.
+[[kind]]
+kind = "trigger.passes"
+cat = "trigger"
+row = 220
+target = "n"
+args = [
+    { name = "n", type = "int", default = 3 },
+]
+
 [[kind]]
 kind = "trigger.shot"
 cat = "trigger"
 row = 211
+target = "team"
 args = [
     { name = "team", type = "team", default = "user" },
+]
+
+# A shot by `member`; `technique` = the technique id (`whs00060`; empty = any shot).
+[[kind]]
+kind = "trigger.shot_by"
+cat = "trigger"
+row = 254
+target = "member"
+sub = "technique"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "technique", type = "text", default = "" },
+]
+
+# A shot against keeper `keeper` resolved; `technique` = the keeper's technique id (empty = any).
+[[kind]]
+kind = "trigger.save"
+cat = "trigger"
+row = 221
+target = "keeper"
+sub = "technique"
+args = [
+    { name = "keeper", type = "member", default = "0" },
+    { name = "technique", type = "text", default = "" },
 ]
 
 [[kind]]
 kind = "trigger.goal"
 cat = "trigger"
 row = 233
+target = "team"
 args = [
     { name = "team", type = "team", default = "user" },
 ]
 
+# A goal by `member`; `technique` = the technique id it was scored with (empty = any).
+[[kind]]
+kind = "trigger.goal_by"
+cat = "trigger"
+row = 232
+target = "member"
+sub = "technique"
+args = [
+    { name = "member", type = "member", default = "0" },
+    { name = "technique", type = "text", default = "" },
+]
+
+# The sequence after a goal of `team` (the row's target is the team's index: 0 user, 1 rival).
+[[kind]]
+kind = "trigger.after_goal"
+cat = "trigger"
+row = 250
+target = "team"
+args = [
+    { name = "team", type = "enum", default = "user", values = ["user", "rival"], codes = [0, 1] },
+]
+
+# A technique activated by `member`; `technique` = its id (empty = any).
 [[kind]]
 kind = "trigger.technique"
 cat = "trigger"
 row = 251
+target = "member"
+sub = "technique"
+alias = ["technique_activated"]
 args = [
     { name = "member", type = "member", default = "0" },
+    { name = "technique", type = "text", default = "" },
+]
+
+# A technique used: `technique` = its id, `member` = who used it (0 = anyone).
+[[kind]]
+kind = "trigger.technique_used"
+cat = "trigger"
+row = 230
+target = "technique"
+sub = "member"
+alias = ["skill_used"]
+args = [
+    { name = "technique", type = "text", default = "" },
+    { name = "member", type = "member", default = "0" },
+]
+
+# A special tactic used: `tactic` = its id (`wht20010_st0301`; empty = any).
+[[kind]]
+kind = "trigger.tactic"
+cat = "trigger"
+row = 222
+target = "tactic"
+args = [
+    { name = "tactic", type = "text", default = "" },
 ]
 
 [[kind]]
@@ -117,6 +269,7 @@ row = 256
 kind = "trigger.period_whistle"
 cat = "trigger"
 row = 257
+alias = ["period_end"]
 args = [
     { name = "cond", type = "text", default = "" },
 ]
@@ -130,14 +283,17 @@ row = 248
 kind = "trigger.result"
 cat = "trigger"
 row = 202
+target = "result"
 args = [
-    { name = "result", type = "enum", default = "user", values = ["user", "rival", "draw"] },
+    { name = "result", type = "enum", default = "user", values = ["user", "rival", "draw"], codes = [4108050209, 2212294583, 255] },
 ]
 
 [[kind]]
 kind = "trigger.row"
 cat = "trigger"
 row = -1
+target = "target"
+sub = "sub"
 args = [
     { name = "type", type = "int", default = 201 },
     { name = "target", type = "id", default = "0" },
@@ -146,12 +302,13 @@ args = [
 ]
 
 # ---- conditions
+# `op` has / lacks: every / no bit of `value` set in the byte flag (the bits `act.set_bits` sets)
 [[kind]]
 kind = "cond.step"
 cat = "cond"
 args = [
     { name = "flag", type = "id", default = "0x97FCB2EF" },
-    { name = "op", type = "enum", default = "eq", values = ["eq", "ne", "ge", "le", "gt", "lt"] },
+    { name = "op", type = "enum", default = "eq", values = ["eq", "ne", "ge", "le", "gt", "lt", "has", "lacks"] },
     { name = "value", type = "int", default = 1 },
 ]
 
@@ -190,6 +347,15 @@ args = [
 # ---- actions
 [[kind]]
 kind = "act.set_byte"
+cat = "action"
+args = [
+    { name = "flag", type = "id", default = "0x97FCB2EF" },
+    { name = "value", type = "int", default = 1 },
+]
+
+# every bit of `value` set in the byte flag, the others kept (`cond.step` op has / lacks reads them)
+[[kind]]
+kind = "act.set_bits"
 cat = "action"
 args = [
     { name = "flag", type = "id", default = "0x97FCB2EF" },
@@ -353,6 +519,17 @@ args = [
     { name = "args", type = "text", default = "" },
 ]
 
+# A function of the game's prog_common Lua by its name (`fn`) with `args` (a TOML array: numbers, true / false,
+# texts, { id = "<name>" } = its crc32, { team = "user" / "rival" } = the team key). The build checks the name and the
+# argument count against the game's own prog_common file.
+[[kind]]
+kind = "act.call"
+cat = "action"
+args = [
+    { name = "fn", type = "text", default = "" },
+    { name = "args", type = "list", default = "" },
+]
+
 [[kind]]
 kind = "act.log"
 cat = "action"
@@ -414,3 +591,96 @@ cat = "note"
 args = [
     { name = "text", type = "text", default = "" },
 ]
+
+# ---- readable `if` clauses (a trigger node's `if` argument, an [[event]]'s `if`)
+# key = the clause name; call = the function (schemas/conditions.toml); args = its arguments: "value" (the clause's
+# value, typed by `value`: int, member, id) or "quest" (the flow's objective list, or the clause's own `quest`).
+# is = the fixed comparison ("== 1"); without it the clause's value is the compared number (20 = "== 20", ">= 20").
+# choice = word values, each its own comparison (`int` = against a number, `against` = against another function).
+[[clause]]
+key = "minute"
+call = "GetSoccerElapsedTime"
+
+[[clause]]
+key = "half"
+choice = [
+    { value = "1", call = "IsSoccerGamePhaseFirst", op = "eq", int = 1 },
+    { value = "2", call = "IsSoccerGamePhaseSecond", op = "eq", int = 1 },
+]
+
+[[clause]]
+key = "phase"
+call = "GetSoccerPhase"
+
+[[clause]]
+key = "score"
+choice = [
+    { value = "lead", call = "GetSelfScore", op = "gt", against = "GetEnemyScore" },
+    { value = "behind", call = "GetSelfScore", op = "lt", against = "GetEnemyScore" },
+    { value = "tie", call = "GetSelfScore", op = "eq", against = "GetEnemyScore" },
+    { value = "not_lead", call = "GetSelfScore", op = "le", against = "GetEnemyScore" },
+    { value = "not_behind", call = "GetSelfScore", op = "ge", against = "GetEnemyScore" },
+]
+
+# the user's goals, the rival's goals, the goal difference (never negative: pair it with `score`)
+[[clause]]
+key = "goals"
+call = "GetSelfScore"
+
+[[clause]]
+key = "rival_goals"
+call = "GetEnemyScore"
+
+[[clause]]
+key = "diff"
+call = "GetScoreDiff"
+
+[[clause]]
+key = "ball_owner"
+call = "IsBallOwnerSoccerCharaParamId"
+args = ["value"]
+value = "member"
+is = "== 1"
+
+[[clause]]
+key = "possession"
+choice = [
+    { value = "user", call = "IsSelfTeamPossession", op = "eq", int = 1 },
+    { value = "rival", call = "IsSelfTeamPossession", op = "eq", int = 0 },
+]
+
+[[clause]]
+key = "quest_line_done"
+call = "GetSoccerQuestInnerStatus"
+args = ["quest", "value"]
+value = "int"
+is = "== 255"
+
+[[clause]]
+key = "quest_line_open"
+call = "GetSoccerQuestInnerStatus"
+args = ["quest", "value"]
+value = "int"
+is = "!= 255"
+
+# a temp soccer bit flag set (`{ value = "<flag>", is = "!= 1" }` = not set)
+[[clause]]
+key = "flag"
+call = "GetTempSoccerCommonBitFlag"
+args = ["value"]
+value = "id"
+is = "== 1"
+
+# a temp soccer byte flag (`{ value = "<flag>", is = ">= 2" }`; a bare flag = "== 1")
+[[clause]]
+key = "byte"
+call = "GetTempSoccerCommonByteFlag"
+args = ["value"]
+value = "id"
+is = "== 1"
+
+# ---- [[event]] tables: each event becomes a trigger node, its step checks, its talks and its actions
+[events]
+# the byte flags that hold the events' done bits (8 per byte: one bit per event that is `once` or named in an
+# `after`); a flow's own `step_flags` replaces the list
+step_flags = ["0x97FCB2EF", "0x0EF5E355"]

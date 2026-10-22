@@ -1,0 +1,113 @@
+schema = "VRFW.changelog/1"
+# New Recruitment: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+lang = "es"
+name = "New Recruitment"
+
+[en]
+name = "New Recruitment"
+
+[fr]
+name = "New Recruitment"
+
+[de]
+name = "New Recruitment"
+
+[it]
+name = "New Recruitment"
+
+[pt]
+name = "New Recruitment"
+
+[ja]
+name = "New Recruitment"
+
+[zh_hans]
+name = "New Recruitment"
+
+[zh_hant]
+name = "New Recruitment"
+
+[[release]]
+icon = "general"
+notes = [
+    "Una carta por personaje, como en los juegos clásicos.",
+    "Sin espíritus de jugador: ficha en la Oficina.",
+    "Pachangas de IE1-3, GO, CS y Galaxy en el tablero.",
+    "Cada rival con su reto: cúmplelo y pedirá unirse.",
+    "Lista en 3D: los 5 jugadores posan con su reto.",
+]
+
+  [release.en]
+  notes = [
+      "One card per character, as in the classic games.",
+      "No player spirits: sign players at the Market office.",
+      "Pick-up matches of IE1-3, GO, CS, Galaxy on the board.",
+      "Each rival has a challenge: meet it and he asks to join.",
+      "3D list: the 5 players pose with their challenge.",
+  ]
+
+  [release.fr]
+  notes = [
+      "Une carte par personnage, comme dans les classiques.",
+      "Plus d'esprits de joueur : recrute au bureau du Marché.",
+      "Matchs amicaux d'IE1-3, GO, CS, Galaxy sur le tableau.",
+      "Chaque rival a un défi : réussis-le et il te rejoint.",
+      "Liste en 3D : les 5 joueurs posent avec leur défi.",
+  ]
+
+  [release.de]
+  notes = [
+      "Eine Karte pro Figur, wie in den klassischen Spielen.",
+      "Keine Spielergeister: Spieler im Büro des Markts holen.",
+      "Freundschaftsspiele aus IE1-3, GO, CS, Galaxy im Brett.",
+      "Jeder Gegner hat eine Aufgabe: erfüllt, will er rein.",
+      "3D-Liste: die 5 Spieler posieren mit ihrer Aufgabe.",
+  ]
+
+  [release.it]
+  notes = [
+      "Una carta per personaggio, come nei giochi classici.",
+      "Niente spiriti giocatore: ingaggia all'ufficio Mercato.",
+      "Partitelle di IE1-3, GO, CS e Galaxy sul tabellone.",
+      "Ogni rivale ha una sfida: completala e si unirà a te.",
+      "Lista in 3D: i 5 giocatori posano con la loro sfida.",
+  ]
+
+  [release.pt]
+  notes = [
+      "Uma carta por personagem, como nos jogos clássicos.",
+      "Sem espíritos de jogador: contrata no escritório.",
+      "Peladinhas de IE1-3, GO, CS e Galaxy no tabuleiro.",
+      "Cada rival tem um desafio: cumpre-o e ele pede entrada.",
+      "Lista em 3D: os 5 jogadores posam com o seu desafio.",
+  ]
+
+  [release.ja]
+  notes = [
+      "クラシック作品のように1キャラ1枚。",
+      "選手のスピリットなし：マーケットの事務所で獲得。",
+      "IE1-3・GO・CS・ギャラクシーのミニバトルを盤面に。",
+      "各選手に課題：達成すると加入を申し出る。",
+      "3Dリスト：5人の選手が課題と一緒にポーズ。",
+  ]
+
+  [release.zh_hans]
+  notes = [
+      "每个角色一张卡，与经典作品相同。",
+      "没有球员之魂：在市场的事务所签约球员。",
+      "棋盘上有IE1-3、GO、CS、银河的街头对战。",
+      "每名对手都有挑战：完成后他会请求加入。",
+      "3D列表：5名球员与他们的挑战一起摆姿势。",
+  ]
+
+  [release.zh_hant]
+  notes = [
+      "每個角色一張卡，與經典作品相同。",
+      "沒有球員之魂：在市場的事務所簽約球員。",
+      "棋盤上有IE1-3、GO、CS、銀河的街頭對戰。",
+      "每名對手都有挑戰：完成後他會請求加入。",
+      "3D列表：5名球員與他們的挑戰一起擺姿勢。",
+  ]

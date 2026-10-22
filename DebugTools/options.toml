@@ -1,0 +1,12 @@
+schema = "VRFW.option/2"
+# Debug Tools' row in «Opciones de mods» (format: docs/app/mod-options.md §3). Value kept in
+# evt_loader\mod_options\debug_tools.json. Read by the VR-Framework's contact maps each time a contact map screen opens
+# (content\contact_maps\bypass.toml declares it as a bypass switch): no restart.
+
+[[option]]
+id = "sign_all"                               # row key debug_tools.sign_all
+type = "toggle"                               # 0 = Desactivado (the real rules), 1 = Activado (everything open and free)
+label = "sign_all"                            # text\keys.toml
+help = "sign_all_help"
+default = false
+order = 100

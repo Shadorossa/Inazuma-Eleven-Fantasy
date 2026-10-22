@@ -1,0 +1,30 @@
+# Chronicle Deluxe: the texts of the Chronicle board's gacha node (content/gacha/kizuna_coin_gacha.toml,
+# [[VRFW.GachaPool]] question; VRFW docs/framework/gacha.md). The question is asked before every draw (no item is taken
+# for now: owner 2026-10-21).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "chronicle_deluxe_gacha_question"
+es = "¿Quieres gastar una moneda?"
+en = "Do you want to spend a coin?"
+fr = "Veux-tu dépenser une pièce ?"
+de = "Möchtest du eine Münze ausgeben?"
+it = "Vuoi spendere una moneta?"
+pt = "Queres gastar uma moeda?"
+ja = "コインを使いますか？"
+zh_hans = "要使用一枚硬币吗？"
+zh_hant = "要使用一枚硬幣嗎？"
+
+# the node panel's one command row (the battle rows' place): runs the draw
+[[row]]
+id = "chronicle_deluxe_gacha_command"
+es = "Insertar moneda"
+en = "Insert a coin"
+fr = "Insérer une pièce"
+de = "Münze einwerfen"
+it = "Inserisci una moneta"
+pt = "Inserir moeda"
+ja = "コインを入れる"
+zh_hans = "投入硬币"
+zh_hant = "投入硬幣"

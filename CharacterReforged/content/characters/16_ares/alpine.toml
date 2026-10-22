@@ -9,8 +9,8 @@ target = "c07090010"                                   # Shawn Froste
 moves = [
   { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
   { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
   { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+  { move = 0x1FC99D68, level = 11 },                        # Snow Angel
 ]
 
   [[edit.cards]]
@@ -53,12 +53,13 @@ moves = [
 target = "c07090140"                                   # Kevin Dragonfly
 moves = [
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
-  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
-  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+  { move = 0x5F989B9E, level = 18 },                        # Wyvern Crash
+  { move = 0x10D90D59, level = 32 },                        # Wyvern Blizzard
+  { move = 0xE937AD43, level = 42 },                        # Dragon Slayer
 ]
 VRFW.MoveGrades = [
   { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+  { Move = 0x5F989B9E, Grade = 1 },                         # Wyvern Crash
 ]
 
   [[edit.cards]]
@@ -71,9 +72,9 @@ VRFW.MoveGrades = [
 target = "c07090100"                                   # Adam Ropes
 moves = [
   { move = 0xD9E65BBA, level = 1 },                         # Aurora Curtain
-  { move = 0x5C38F92C, level = 16 },                        # Mistral
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0x039DBAAC, level = 29 },                        # Land of Ice
-  { move = 0xB7F1AED6, level = 45 },                        # Double Cyclone
+  { move = 0xC4701649, level = 66 },                        # Ice Block
 ]
 
   [[edit.cards]]
@@ -85,10 +86,10 @@ moves = [
 [[edit]]
 target = "c07090090"                                   # Joaquine Downtown
 moves = [
-  { move = 0x039DBAAC, level = 21 },                        # Land of Ice
-  { move = 0x2C3D95DD, level = 27 },                        # Sleeping Dust
-  { move = 0xAC6D8A70, level = 34 },                        # Rainbow Arc
-  { move = 0xDCF43422, level = 40 },                        # Aurora Dribble
+  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
+  { move = 0x37A1B17B, level = 34 },                        # Fire Rooster
+  { move = 0x1FC99D68, level = 55 },                        # Snow Angel
+  { move = 0x08EEBD53, level = 65 },                        # Feint Play
 ]
 
   [[edit.cards]]
@@ -101,10 +102,10 @@ moves = [
 [[edit]]
 target = "c07090070"                                   # Milton Bindings
 moves = [
-  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0xACAC21CE, level = 13 },                        # Fake Ball
   { move = 0x039DBAAC, level = 25 },                        # Land of Ice
   { move = 0x0455B9CE, level = 31 },                        # Run Ball Run
-  { move = 0x2B343D01, level = 39 },                        # Cyclone
+  { move = 0x50880BAF, level = 45 },                        # Frozen Steal
 ]
 
   [[edit.cards]]
@@ -116,9 +117,9 @@ moves = [
 [[edit]]
 target = "c07090110"                                   # Spike Gleeson
 moves = [
-  { move = 0xDF70E04C, level = 8 },                         # Rodeo Clown
+  { move = 0x4E9A9232, level = 8 },                         # Spinning Cut
   { move = 0x33ED6677, level = 18 },                        # Doppelganger
-  { move = 0x322F0C40, level = 30 },                        # Spider Web
+  { move = 0xDCF43422, level = 30 },                        # Aurora Dribble
   { move = 0xB5B7108F, level = 37 },                        # Shadow Stitch
 ]
 
@@ -131,9 +132,9 @@ moves = [
 [[edit]]
 target = "c07090080"                                   # Sean Snowfield
 moves = [
-  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x2D68DB57, level = 1 },                         # Deceptive Step
   { move = 0x55C71D2A, level = 1 },                         # About Face
-  { move = 0x3069B219, level = 29 },                        # Super Sumo Stomp
+  { move = 0xD8794890, level = 29 },                        # Kangaroo Kick
   { move = 0x67F17FA8, level = 52 },                        # Mega Quake
 ]
 
@@ -146,10 +147,10 @@ moves = [
 [[edit]]
 target = "c07090050"                                   # Kerry Bootgaiter
 moves = [
-  { move = 0x259F08C6, level = 10 },                        # Whirlwind Twister
-  { move = 0x55C71D2A, level = 16 },                        # About Face
-  { move = 0x70417B2E, level = 30 },                        # Deceptor Dribble
-  { move = 0x58E8FC83, level = 48 },                        # Rolling Hell
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x2A37FC88, level = 30 },                        # Revolution V
+  { move = 0x50880BAF, level = 35 },                        # Frozen Steal
+  { move = 0xC0A013E6, level = 55 },                        # Liar Shot
 ]
 
   [[edit.cards]]
@@ -163,7 +164,7 @@ moves = [
 target = "c07090060"                                   # Maddox Rock
 moves = [
   { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
-  { move = 0x0CF4E55C, level = 18 },                        # Double Touch
+  { move = 0xAC6D8A70, level = 18 },                        # Rainbow Arc
   { move = 0x011AAF4B, level = 27 },                        # Gyro Head
   { move = 0xDCF43422, level = 42 },                        # Aurora Dribble
 ]
@@ -179,9 +180,9 @@ moves = [
 target = "c07090040"                                   # Robert Skipolson
 moves = [
   { move = 0x1F0836D6, level = 12 },                        # Comet Shot
-  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0x70417B2E, level = 20 },                        # Deceptor Dribble
   { move = 0x7B64F3D2, level = 29 },                        # Hawk Shot
-  { move = 0x70417B2E, level = 38 },                        # Deceptor Dribble
+  { move = 0xD9BB22A7, level = 38 },                        # Air Ride
 ]
 
   [[edit.cards]]
@@ -193,10 +194,10 @@ moves = [
 [[edit]]
 target = "c07090030"                                   # Roland Climbstein
 moves = [
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x79224D8B, level = 19 },                        # Freeze Shot
-  { move = 0x19C3F43D, level = 38 },                        # Eternal Blizzard
+  { move = 0x19C3F43D, level = 19 },                        # Eternal Blizzard
+  { move = 0x5E5AF1A9, level = 55 },                        # Northern Impact
 ]
 
   [[edit.cards]]
@@ -209,10 +210,10 @@ moves = [
 [[edit]]
 target = "c07090120"                                   # Quentin Rackner
 moves = [
-  { move = 0x79224D8B, level = 1 },                         # Freeze Shot
-  { move = 0x3C843987, level = 11 },                        # Flurry Dash
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x19C3F43D, level = 11 },                        # Eternal Blizzard
   { move = 0xC7A9BB3A, level = 25 },                        # Whirlwind Cut
-  { move = 0x19C3F43D, level = 32 },                        # Eternal Blizzard
+  { move = 0x46FA651E, level = 32 },                        # Water Veil
 ]
 
   [[edit.cards]]

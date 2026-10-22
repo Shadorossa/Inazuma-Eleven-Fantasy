@@ -1,0 +1,168 @@
+# The VR-Framework's pose row screen vrfw_pose_row_menu (docs/framework/pose-row.md): a list on the left and, for the
+# selected entry, up to 5 players as 3D models posing in a row with a card under each (name, position, «new» / «in the
+# club», a line of text and a check). What it lists is a mod's [[VRFW.PoseRow]] (content\pose_rows\*.toml, its source
+# command); the screen is mechanism only. Opened with VRFW_PoseRow.Open (assets\lua\menu\_all\76_pose_row.lua).
+# Base savedata_management_menu (background, header, cursor, button guides, the off-screen input anchor) as the
+# contact map. The models: ONE layer instance whose CMenuCharaModelComponent holds 5 model slots (m_useObjectNum, the
+# retail shop list base's 4 raised to 5: retail menus show several models from one component, the Victory Road top 11,
+# the VS team background 5), each slot placed by the script. The script: graft pose_row (`menu_assemble.py build --mod
+# vr_framework`), packed by framework_pack.py as assets\lua\screens\vrfw_pose_row_menu.lua.
+schema = "VRFW.menu/2"
+
+# the anchor's layout (.g4pkm): a copy of the retail save01_01 with the system line / time text moved off screen
+layout = [
+    { file = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm", from = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" },
+    { file = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm", joint = "_system_line01", translate = [97.0, 2803.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm", joint = "_text_time01", translate = [116.0, 2812.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm", joint = "_pos_time01", translate = [377.0, 2822.0, 0.0] },
+    { file = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm", joint = "_pos_top_list_atc01", translate = [0.0, 2696.0, 0.0] },
+]
+
+# ---- objects ----------------------------------------------------------------------------------------------------------
+[[object]]
+name = "vrfw_pr_rows"
+from = "save01_01_list_attach_base"
+remove = [
+    { param = "NullLayerName", match = { 1 = 0x6735D333, 2 = 0x9E0634B0, 3 = 0xCDF9A8B9, 4 = 1 } },
+    { param = "NullLayerName", match = { 1 = 0x1032E3A5, 2 = 0xE9010426, 3 = 0xCDF9A8B9, 4 = 2 } },
+    { param = "NullLayerName", match = { 1 = 0x8E567606, 2 = 0x77659185, 3 = 0xCDF9A8B9, 4 = 3 } },
+    { param = "NullLayerName", match = { 1 = 0xF9514690, 2 = 0x0062A113, 3 = 0xCDF9A8B9, 4 = 4 } },
+    { param = "NullLayerName", match = { 1 = 0x6058172A, 2 = 0x996BF0A9, 3 = 0x1FA09B6B, 4 = 0 } },
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/51_save/save01/save01_01/save01_01.g4pkm" }, values = { 1 = "common/menu/51_save/save01/vrfw_pr_rows/vrfw_pr_rows.g4pkm" } },
+]
+
+# the panel's ground: the BACKGROUND pass (m_drawType 1, as the retail shop01_00_background), under the 3D models;
+# every other layer is drawn over them
+[[object]]
+name = "vrfw_pr_ground"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 454 } }]
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]
+
+# list rows, cards, badges and pills (tinted plain shapes, or a mod's declared art)
+[[object]]
+name = "vrfw_pr_plate"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 457 } }]
+
+# the 3D models: the retail shop list base (its CMenuCharaModelComponent and the shop's model camera) with 5 model
+# slots and no self rotation, the list / sound / collision / analog parts removed; driven by the shared
+# EVT_CharaModelNew (evt_menu_kit.lua#CharaModel), one per slot
+[[object]]
+name = "vrfw_pr_model"
+from = "shop01_01_list_base"
+remove_block = ["CMenuListViewShop", "CMenuSoundCmdProperty", "MenuCollisionSetting", "CAnalogInputComponent"]
+set = [
+    { param = "m_useObjectNum", match = { 1 = 4 }, values = { 1 = 5 } },
+    { param = "m_isRotateSelf", match = { 1 = 1 }, values = { 1 = 0 } },
+]
+
+# the node panel style's lineup (as the Chronicle board's command menu shows a team): the VS screen's formation pitch
+# (vsroute02_06) without its card attachments, and the game's small player card (team00_01) under its retail object
+# name (the game's card fills know its cards by it), no collision and no attach rows
+[[object]]
+name = "vrfw_pr_pitch"
+from = "vsroute02_06_enemy_formation_base"
+remove_block = ["CMenuAttachLocator"]
+
+[[object]]
+name = "vrfw_pr_card"
+from = "team00_01_chara_card_for_vsroute"
+keep_name = true
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+
+# ---- the screen -------------------------------------------------------------------------------------------------------
+[[screen]]
+name = "vrfw_pose_row_menu"
+like = "language_option_menu"
+# input priority 240 as the contact map: above the menu it opens over, under the question / message windows
+set = { priority = 240 }
+base = "savedata_management_menu"
+script = "assets/lua/screens/vrfw_pose_row_menu.lua"
+
+[screen.rows]
+layer = [
+    { layer = "save01_01_list_attach_base", object = "vrfw_pr_rows" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "mainmenu90_00_background" },
+    { layer = "vrfw_pr_ground", object = "vrfw_pr_ground", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_pr_plate", object = "vrfw_pr_plate", count = 64, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_pr_text", object = "save01_02_list_item", count = 84, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_pr_model", object = "vrfw_pr_model", count = 1, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_pr_pitch", object = "vrfw_pr_pitch", count = 1 },
+    { layer = "vrfw_pr_card", object = "vrfw_pr_card", count = 5 },
+    { layer = "mainmenu01_08_chara_3d_shadow", from = "shop_menu", count = 5 },
+    { layer = "mainmenu90_01_header" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu01_10_return_arrow_button_guide" },
+    { layer = "mainmenu01_06_base_button_guide" },
+    { layer = "mainmenu01_07_button_guide" },
+]
+# arrows move (CMD_FUNCTION vrfw_pr_up / _down / _left / _right), Accept picks, Back / right click closes
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0x5952969B, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0xFFAB59D4, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x99332E87, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x849CDE34, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    # L1 / R1 the side panel's pages, Y the declaration's extra action (vrfw_pr_page_prev / _page_next / _extra)
+    { layer = "save01_02_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = 0x8401434E, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = 0x3CCCDB27, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = 0x7D69A645, flag = 1 },
+]
+res = [
+    "#/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx",
+    "#/menu/200_icon/100_num/num_menu01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_ch_img01.g4tx",
+    "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
+    # the plain shapes (VRFW_ScreenArt.Plain); a mod's declared art is loaded by the script on demand
+    "#/menu/220_img/vrfw_plain/vrfw_plain.g4tx",
+    { path = "menu_chara_model_comp", kind = 2 },
+    "#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx",
+    # the node panel style's retail art (content\defaults\pose_row.toml [layout.node_panel.art]) and its banner icon
+    "#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g4tx",
+    "#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx",
+    "#/menu/30_vsroute/vsroute01/vsroute01_17/vsroute01_17.g4tx",
+    "#/menu/200_icon/12_icon_minimap/icon_minimap.g4tx",
+    # the lineup: the pitch, the player cards (their atlas, positions, elements, levels) and their rarity effects
+    "#/menu/30_vsroute/vsroute02/vsroute02_06/vsroute02_06.g4tx",
+    "#/menu/102_team/team16/team16_03/team16_03.g4tx",
+    "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx",
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
+    "#/menu/200_icon/100_num/num_menu02.g4tx",
+    "#/menu/200_icon/100_num/num_lv.g4tx",
+    { path = "ega1400a_1", kind = 1 }, { path = "ega1400a_2", kind = 1 },
+    { path = "ega1450a_1", kind = 1 }, { path = "ega1450a_3", kind = 1 },
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "save01_01_list_attach_base", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_10_return_arrow_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_06_base_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_07_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "vrfw_pr_ground", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pr_plate", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pr_text", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pr_model", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu01_08_chara_3d_shadow", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "vrfw_pr_pitch", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pr_card", flags = [0, 0, 0, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 3] },
+    { group = "vrfw_pose_row_menu", flags = [1], slice = [3, 13] },
+]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+]
+shift_base = []
+shift = []

@@ -1,0 +1,15 @@
+schema = "VRFW.game/2"
+
+# Pose rows: a mod's list screen whose selected entry shows its players as 3D models posing in a row
+# (content\pose_rows\*.toml, docs/framework/pose-row.md). Run time: scripts\pose_row.lua; screen: vrfw_pose_row_menu
+# (graft pose_row); game Lua side: assets\lua\menu\_all\76_pose_row.lua.
+
+# (key crc) -> { key, source, pose, models, title, decide, owned, new, label, hint, layout, camera }
+[[VRFW.Command]]
+name = "CMND_VRFW_POSE_ROW"
+handler = "PoseRow.Get"
+
+# (language code, card…) -> { { name, position } … }
+[[VRFW.Command]]
+name = "CMND_VRFW_POSE_ROW_CARDS"
+handler = "PoseRow.Cards"

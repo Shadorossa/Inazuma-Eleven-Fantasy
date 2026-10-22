@@ -177,33 +177,6 @@ keys = ["E"]
 # log each hold of R2 on the map (start and end lines in loader.log)
 log = true
 
-[friends]
-# Friends panel («Lista de amigos», docs/game/ui/friends.md): the top bar entry slides a narrow panel in on the right of
-# the menu with the player's Steam friends in one list (in the game, online, away, offline; then by name); a friend
-# with the mod opens his details (active team, career summary) and the actions (invite to my Battle Bay private room, join his, send my team code, the
-# mods we differ in, Steam profile). Steam only (the game's steam_api64.dll) and the VR-Framework's own transport;
-# nothing goes through EOS.
-enabled = true
-# the profile friends get when they ask (squad, career summary) is read again at most this often (seconds; at least 5)
-profile_refresh_s = 30
-
-[friends.panel]
-# the panel (screen px, 1920 x 1080, y down): left edge and width, top (under the top bar), the row height, the
-# title bar's height, the details pane's width (left of the panel), frames of the slide-in
-x = 1440
-width = 480
-top = 72
-row_h = 64
-head_h = 72
-details_w = 560
-slide_frames = 10
-
-[friends.status_menus]
-# the status a menu publishes when it opens (the script stem of the menu VM); other menus keep the last one. While a
-# private room is open or a match runs the framework publishes «room» / «match» itself.
-bb = ["bb_stadium_top_menu", "enjoy_team_select_menu"]
-menu = ["soccer_top_menu", "market_menu", "item_menu", "play_guide_top_menu", "chronicle_mode_top_menu", "victory_road_top_menu", "information_top_menu", "team_dock_common_top_menu", "title_menu_2"]
-
 [auto_commander]
 # «Modo Comandante automático» (row of Mod options, scripts\auto_commander.lua). Which matches it starts in Commander mode.
 # always_games: match rows (soccer_game_config keys) whose matches always start in Commander mode, the game's gate

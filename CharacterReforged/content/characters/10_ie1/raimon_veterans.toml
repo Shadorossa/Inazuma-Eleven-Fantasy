@@ -15,16 +15,16 @@ stats = { kick = 155, control = 215, technique = 225, pressure = 238, physical =
   moves = [
     { move = 0x8C382852, level = 1 },                       # God Hand
     { move = 0x8FBCFC3C, level = 1 },                       # Blazing Knuckle
-    { move = 0xA491AFFF, level = 88 },                      # Majin the Hand
-    { move = 0xB039ADB4, level = 99 },                      # Inazuma Break
+    { move = 0xA491AFFF, level = 1 },                       # Majin the Hand
+    { move = 0xF64674CB, level = 40 },                      # Fist of Justice
   ]
 
 [[edit]]
 target = "c01002620"                                   # Charles Island
 moves = [
   { move = 0x2B343D01, level = 1 },                         # Cyclone
-  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
-  { move = 0x520F1E48, level = 45 },                        # Psycho Shot
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x38094535, level = 55 },                        # Sub-Terfuge
   { move = 0x63BDA8A4, level = 60 },                        # Inazuma Drop
 ]
 
@@ -38,9 +38,9 @@ moves = [
 target = "c01002630"                                   # Garret Hairtown
 moves = [
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
-  { move = 0xA8E0F6C2, level = 39 },                        # Kung Fu Header
-  { move = 0x49529150, level = 72 },                        # Snake Shot
+  { move = 0xC7A9BB3A, level = 21 },                        # Whirlwind Cut
+  { move = 0x37A1B17B, level = 35 },                        # Fire Rooster
+  { move = 0x31ABD82E, level = 35 },                        # Circus Block
 ]
 
   [[edit.cards]]
@@ -54,8 +54,8 @@ target = "c01002640"                                   # Arthur Sweet
 moves = [
   { move = 0x2B343D01, level = 1 },                         # Cyclone
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0x3663DB4C, level = 42 },                        # Utter Gutsiness Bat
-  { move = 0x0597D3F9, level = 65 },                        # Dragon Tornado
+  { move = 0x1B44E1DA, level = 42 },                        # Stone Wall
+  { move = 0x0597D3F9, level = 52 },                        # Dragon Tornado
 ]
 
   [[edit.cards]]
@@ -69,8 +69,8 @@ target = "c01002650"                                   # Peter Mildred
 moves = [
   { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
   { move = 0x01DB04F5, level = 1 },                         # Defence Scan
-  { move = 0x35E70F22, level = 37 },                        # Grenade Shot
-  { move = 0x17A96A44, level = 68 },                        # Clone Faker
+  { move = 0x18019E0A, level = 37 },                        # Double Grenade
+  { move = 0x17A96A44, level = 44 },                        # Clone Faker
 ]
 
   [[edit.cards]]
@@ -85,7 +85,7 @@ target = "c01002660"                                   # Josh Nathaniel
 moves = [
   { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
   { move = 0x3663DB4C, level = 1 },                         # Utter Gutsiness Bat
-  { move = 0x7EEA4EE9, level = 34 },                        # Blade Attack
+  { move = 0x7A67325B, level = 34 },                        # Flame Dance
   { move = 0xE9968761, level = 49 },                        # Rocket Kobushi
 ]
 
@@ -99,10 +99,10 @@ moves = [
 [[edit]]
 target = "c01002670"                                   # Edward Gladstone
 moves = [
-  { move = 0x60397CCA, level = 1 },                         # Cross Drive
-  { move = 0x4E9A9232, level = 34 },                        # Spinning Cut
-  { move = 0x4890FB67, level = 38 },                        # Twin Boost
-  { move = 0xB4757AB8, level = 88 },                        # Divine Stamp
+  { move = 0xB4B4D106, level = 1 },                         # Dragon Cannon
+  { move = 0x74CC079C, level = 1 },                         # Big Fan
+  { move = 0xC42D6F54, level = 60 },                        # Aikido
+  { move = 0xB4757AB8, level = 70 },                        # Divine Stamp
 ]
 
   [[edit.cards]]
@@ -116,7 +116,7 @@ target = "c01002680"                                   # Tyler Thomas
 moves = [
   { move = 0x695A4A6F, level = 1 },                         # Magic
   { move = 0x60397CCA, level = 1 },                         # Cross Drive
-  { move = 0xF14FDC17, level = 40 },                        # Shot Pocket
+  { move = 0x105C91A7, level = 50 },                        # Slingshot
   { move = 0x6ADE9E01, level = 61 },                        # Illusory Ball
 ]
 
@@ -132,7 +132,7 @@ moves = [
   { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
   { move = 0x63BDA8A4, level = 1 },                         # Inazuma Drop
   { move = 0x19025F83, level = 45 },                        # Quick Draw
-  { move = 0x61FB16FD, level = 79 },                        # Divine Arrows
+  { move = 0x61FB16FD, level = 49 },                        # Divine Arrows
 ]
 
   [[edit.cards]]
@@ -144,10 +144,10 @@ moves = [
 [[edit]]
 target = "c01002700"                                   # Ian Suffolk
 moves = [
-  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
-  { move = 0x34256515, level = 1 },                         # Dynamite Shot
-  { move = 0x142DBE2A, level = 44 },                        # Foul Offence
-  { move = 0x55C71D2A, level = 72 },                        # About Face
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0xC66BD10D, level = 35 },                        # Zigzag Spark
+  { move = 0x64B40078, level = 67 },                        # The Phoenix
 ]
 
   [[edit.cards]]
@@ -160,9 +160,9 @@ moves = [
 target = "c01002710"                                   # Constant Builder
 moves = [
   { move = 0x7D6E9A87, level = 1 },                         # The Wall
-  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
   { move = 0x41F3CDC2, level = 38 },                        # Scorching Tackle
-  { move = 0x37A1B17B, level = 64 },                        # Fire Rooster
+  { move = 0xC21AFE80, level = 64 },                        # Whirlwind Drop
 ]
 
   [[edit.cards]]
@@ -178,7 +178,7 @@ moves = [
   { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
   { move = 0x0F703132, level = 34 },                        # Black Magic
   { move = 0x01DB04F5, level = 51 },                        # Defence Scan
-  { move = 0xB5B7108F, level = 80 },                        # Shadow Stitch
+  { move = 0x0710C61E, level = 55 },                        # Perimeter Zone
 ]
 
   [[edit.cards]]
@@ -193,7 +193,7 @@ moves = [
   { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
   { move = 0xA8E0F6C2, level = 34 },                        # Kung Fu Header
   { move = 0x2D3E5454, level = 46 },                        # Clone Shot
-  { move = 0xBFCC20E7, level = 72 },                        # Wood Chopper
+  { move = 0xC42D6F54, level = 52 },                        # Aikido
 ]
 
   [[edit.cards]]
@@ -208,8 +208,8 @@ target = "c01002740"                                   # Dom Foreman
 moves = [
   { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
   { move = 0x2EBA803A, level = 38 },                        # Dirt Ball
-  { move = 0x4031A7F5, level = 49 },                        # Mole Fake
-  { move = 0x7207C577, level = 75 },                        # Boost Glider
+  { move = 0xDD365E15, level = 49 },                        # Mole Shuffle
+  { move = 0x7207C577, level = 55 },                        # Boost Glider
 ]
 
   [[edit.cards]]
@@ -225,7 +225,7 @@ moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0x142DBE2A, level = 34 },                        # Foul Offence
   { move = 0x55C71D2A, level = 54 },                        # About Face
-  { move = 0x3D4653B0, level = 70 },                        # Poison Fog
+  { move = 0xAA67E325, level = 58 },                        # Desert Blast
 ]
 
   [[edit.cards]]
@@ -238,7 +238,7 @@ moves = [
 target = "c01002760"                                   # Bill Steakspear
 moves = [
   { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
-  { move = 0x4F58F805, level = 1 },                         # Coil Turn
+  { move = 0x025FD09B, level = 1 },                         # Volcano Cut
   { move = 0x7CACF0B0, level = 42 },                        # Horn Train
   { move = 0x4523C86D, level = 69 },                        # Killer Blade
 ]

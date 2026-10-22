@@ -9,6 +9,14 @@
 --   VRFW_RB_IsCommand(item) -> bool              a command-menu result (parameter 2612514222) that is a mod's item
 --   VRFW_RB_Command(item, piece) -> bool         run it (OpenCommandSelect); false = refused (error sound, back to the
 --                                                command menu)
+--   VRFW_RB_PieceOpen(piece) -> bool             a piece was picked (OpenCommandSelect, before its menu opens): true
+--                                                = the piece ran its own flow instead of the command menu (the board
+--                                                goes back as after «back»); default: a mod's node menu
+--                                                (VRFW_NodeMenu.OpenPiece, a [[VRFW.NodeMenu]] node), else false
+--   VRFW_RB_MenuClosed(piece)                    the piece's command menu just closed, before its result is read: a
+--                                                mod's row that wrote no retail result runs here (the board then goes
+--                                                back as after «back»); default: the framework's gacha node
+--                                                (VRFW_Gacha.AfterMenu: its «insert a coin» row runs the draw)
 --   VRFW_RB_BackOnBoard()                        back on the board after a match (state 8), before the retail result
 --   VRFW_RB_Won(piece, slot)                     a won board match (state 10), before the clear handling
 --   VRFW_RB_Clear(c)                             the clear handling starts: c = {diff, piece, slot, kind, ok, wait,
@@ -59,6 +67,19 @@ end
 
 function VRFW_RB_Command(item, piece)
   return false
+end
+
+function VRFW_RB_PieceOpen(piece)
+  if VRFW_NodeMenu ~= nil and VRFW_NodeMenu.OpenPiece ~= nil then
+    return VRFW_NodeMenu.OpenPiece(piece) == true
+  end
+  return false
+end
+
+function VRFW_RB_MenuClosed(piece)
+  if VRFW_Gacha ~= nil and VRFW_Gacha.AfterMenu ~= nil then
+    VRFW_Gacha.AfterMenu(piece)
+  end
 end
 
 function VRFW_RB_BackOnBoard()

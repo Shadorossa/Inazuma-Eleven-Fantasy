@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c04000350"                                   # Spotter
 moves = [
-  { move = 0xAE5C7145, level = 13 },                        # Fangtasmagoria
-  { move = 0xAA67E325, level = 25 },                        # Desert Blast
-  { move = 0xA9E3374B, level = 35 },                        # Cyclone Sprint
-  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+  { move = 0xAA67E325, level = 3 },                         # Desert Blast
+  { move = 0xB58AE80E, level = 25 },                        # Silk Road
+  { move = 0xAE5C7145, level = 42 },                        # Fangtasmagoria
+  { move = 0x06458894, level = 51 },                        # Feint Dash
 ]
 
   [[edit.cards]]
@@ -23,9 +23,9 @@ moves = [
 target = "c05026610"                                   # Jordan Greenway
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x10A0C298, level = 1 },                         # Warp Drive
-  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
-  { move = 0x029E7B25, level = 53 },                        # Gaia Break
+  { move = 0x10A0C298, level = 5 },                         # Warp Drive
+  { move = 0x43B5739B, level = 38 },                        # Lightning Bolt
+  { move = 0x97C48D68, level = 48 },                        # Astro Gate
 ]
 VRFW.MoveGrades = [
   { Move = 0x7C6D5B0E, Grade = 1 },                         # Astro Break
@@ -42,8 +42,8 @@ VRFW.MoveGrades = [
 target = "c05026510"                                   # Nelly Evans
 moves = [
   { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x900C8E0A, level = 1 },                         # Maestro's Call
-  { move = 0x2A4E3349, level = 39 },                        # Heart Beat
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
+  { move = 0x900C8E0A, level = 43 },                        # Maestro's Call
   { move = 0x87379CDF, level = 65 },                        # Fire Tornado TC
 ]
 
@@ -56,9 +56,9 @@ moves = [
 [[edit]]
 target = "c05026520"                                   # Celia Hills
 moves = [
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
   { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x01DB04F5, level = 1 },                         # Defence Scan
-  { move = 0x4E9A9232, level = 27 },                        # Spinning Cut
+  { move = 0xC16279D1, level = 50 },                        # Field of Force
   { move = 0x32EEA7FE, level = 70 },                        # Death Zone 2
 ]
 
@@ -73,9 +73,9 @@ moves = [
 target = "c05026600"                                   # Austin Hobbes
 moves = [
   { move = 0x0CF4E55C, level = 1 },                         # Double Touch
-  { move = 0x232D05EC, level = 3 },                         # Tiger Drive
   { move = 0xA6763B84, level = 11 },                        # Gladius Arch
-  { move = 0xF02C9C02, level = 21 },                        # Tiger Storm
+  { move = 0x232D05EC, level = 21 },                        # Tiger Drive
+  { move = 0xF02C9C02, level = 31 },                        # Tiger Storm
 ]
 
   [[edit.cards]]
@@ -87,10 +87,10 @@ moves = [
 [[edit]]
 target = "c05026540"                                   # Camellia Travis
 moves = [
-  { move = 0x4E9A9232, level = 16 },                        # Spinning Cut
-  { move = 0xB5B7108F, level = 29 },                        # Shadow Stitch
-  { move = 0xC7A9BB3A, level = 36 },                        # Whirlwind Cut
-  { move = 0x3F00EDE9, level = 50 },                        # Dash Storm
+  { move = 0x73C5AF40, level = 10 },                        # Dash Accelerator
+  { move = 0x7EEA4EE9, level = 16 },                        # Blade Attack
+  { move = 0x4890FB67, level = 23 },                        # Twin Boost
+  { move = 0x36A270F2, level = 38 },                        # Rolling Slide
 ]
 
   [[edit.cards]]
@@ -102,10 +102,10 @@ moves = [
 [[edit]]
 target = "c05026560"                                   # Charley Horse
 moves = [
-  { move = 0x2E7B2B84, level = 12 },                        # Thief's Eye
-  { move = 0x6B1CF436, level = 17 },                        # Bewildered
+  { move = 0x2E7B2B84, level = 1 },                         # Thief's Eye
+  { move = 0x6B1CF436, level = 13 },                        # Bewildered
   { move = 0x3663DB4C, level = 24 },                        # Utter Gutsiness Bat
-  { move = 0x737DCB3F, level = 43 },                        # Pancake Defence
+  { move = 0x737DCB3F, level = 40 },                        # Pancake Defence
 ]
 
   [[edit.cards]]
@@ -133,10 +133,10 @@ moves = [
 [[edit]]
 target = "c05026630"                                   # Faythe Heeler
 moves = [
-  { move = 0xA37D1A41, level = 1 },                         # Hyper-Swiper
-  { move = 0x6DD736DD, level = 17 },                        # Ribbon Shower
-  { move = 0xBBA44137, level = 37 },                        # Great Wall
-  { move = 0xB0F8060A, level = 51 },                        # Ozone Flayer
+  { move = 0xA37D1A41, level = 6 },                         # Hyper-Swiper
+  { move = 0x75994916, level = 17 },                        # Cunning Pull
+  { move = 0x6DD736DD, level = 37 },                        # Ribbon Shower
+  { move = 0xB0F8060A, level = 53 },                        # Ozone Flayer
 ]
 
   [[edit.cards]]
@@ -149,9 +149,9 @@ moves = [
 target = "c05026640"                                   # Maia
 moves = [
   { move = 0x6BA49049, level = 1 },                         # Mystic Mist
-  { move = 0x20D01E43, level = 15 },                        # Hey Presto
-  { move = 0xDCC9CCA3, level = 36 },                        # Tesla Coil
-  { move = 0xEC78BBC6, level = 58 },                        # Black Ash
+  { move = 0x20D01E43, level = 10 },                        # Hey Presto
+  { move = 0x23C3EE90, level = 37 },                        # Shoulder Tackle
+  { move = 0xEC78BBC6, level = 62 },                        # Black Ash
 ]
 
   [[edit.cards]]
@@ -179,10 +179,10 @@ moves = [
 [[edit]]
 target = "c06037450"                                   # William Glass
 moves = [
-  { move = 0x01DB04F5, level = 28 },                        # Defence Scan
-  { move = 0x0F703132, level = 40 },                        # Black Magic
-  { move = 0x61FB16FD, level = 75 },                        # Divine Arrows
-  { move = 0xDF70E04C, level = 99 },                        # Rodeo Clown
+  { move = 0x72514A74, level = 1 },                         # Low Drive
+  { move = 0x29B328E6, level = 30 },                        # Spectacle Crash
+  { move = 0x163D8F70, level = 50 },                        # Chip Shot
+  { move = 0xBCE9DEAB, level = 75 },                        # Chaos Break
 ]
 
   [[edit.cards]]
@@ -197,8 +197,8 @@ target = "c06039020"                                   # Seymour Hillman
 moves = [
   { move = 0x8C382852, level = 1 },                         # God Hand
   { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
-  { move = 0xA491AFFF, level = 88 },                        # Majin the Hand
-  { move = 0xB039ADB4, level = 99 },                        # Inazuma Break
+  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
+  { move = 0xF64674CB, level = 40 },                        # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -211,8 +211,8 @@ moves = [
 target = "c06037400"                                   # Victoria Vanguard
 moves = [
   { move = 0xAF28F5A0, level = 1 },                         # The Tower
-  { move = 0xAC6D8A70, level = 21 },                        # Rainbow Arc
-  { move = 0x4E5B398C, level = 34 },                        # Acrobat Bomber
+  { move = 0x54C4DCA3, level = 21 },                        # Butterfly Trance
+  { move = 0xC42D6F54, level = 34 },                        # Aikido
   { move = 0x49933AEE, level = 69 },                        # Perfect Tower
 ]
 VRFW.MoveGrades = [
@@ -232,7 +232,7 @@ moves = [
   { move = 0x5AF33BC7, level = 1 },                         # God Hand
   { move = 0xDD6B2708, level = 1 },                         # Majin the Hand
   { move = 0xF2CB0879, level = 1 },                         # Mugen the Hand
-  { move = 0x74CC079C, level = 35 },                        # Big Fan
+  { move = 0xF7841EFC, level = 11 },                        # Fiend Hand
 ]
 VRFW.MoveGrades = [
   { Move = 0xF2CB0879, Grade = 1 },                         # Mugen the Hand
@@ -247,10 +247,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c06037440"                                   # Archer Hawkins
 moves = [
-  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
-  { move = 0x04941270, level = 4 },                         # Vac Attack
+  { move = 0x08EEBD53, level = 1 },                         # Feint Play
   { move = 0x142DBE2A, level = 30 },                        # Foul Offence
   { move = 0x7B64F3D2, level = 40 },                        # Hawk Shot
+  { move = 0x04941270, level = 50 },                        # Vac Attack
 ]
 
   [[edit.cards]]
@@ -263,10 +263,10 @@ moves = [
 [[edit]]
 target = "c06037460"                                   # Arion Sherwind
 moves = [
-  { move = 0x6F918884, level = 1 },                         # Easy Breezy
   { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
-  { move = 0xC755E805, level = 62 },                        # Triple Threat
-  { move = 0xA9E3374B, level = 72 },                        # Cyclone Sprint
+  { move = 0x6F918884, level = 1 },                         # Easy Breezy
+  { move = 0xA37D1A41, level = 1 },                         # Hyper-Swiper
+  { move = 0x7C1494CF, level = 40 },                        # Tornado Tunnel
 ]
 
   [[edit.cards]]
@@ -277,7 +277,7 @@ moves = [
 [[edit]]
 target = "c06037380"                                   # Janison Veteran
 moves = [
-  { move = 0x2A4E3349, level = 1 },                         # Heart Beat
+  { move = 0xCB8E6D04, level = 1 },                         # Mighty Save
   { move = 0xDF2D9951, level = 15 },                        # Close Counter
   { move = 0x50E88A33, level = 34 },                        # Fist Beam
   { move = 0xB8C5883B, level = 64 },                        # God Hand X
@@ -360,10 +360,10 @@ moves = [
 [[edit]]
 target = "c04017260"                                   # Ton Nino
 moves = [
-  { move = 0x3C843987, level = 8 },                         # Flurry Dash
-  { move = 0xC66BD10D, level = 19 },                        # Zigzag Spark
-  { move = 0x7EEA4EE9, level = 30 },                        # Blade Attack
-  { move = 0x2D3E5454, level = 56 },                        # Clone Shot
+  { move = 0x60397CCA, level = 14 },                        # Cross Drive
+  { move = 0xC66BD10D, level = 22 },                        # Zigzag Spark
+  { move = 0x3663DB4C, level = 36 },                        # Utter Gutsiness Bat
+  { move = 0x47380F29, level = 51 },                        # Echo Ball
 ]
 
   [[edit.cards]]

@@ -1,0 +1,13 @@
+schema = "VRFW.param/1"
+# GO Gameplay › no focus battle countdown (docs/game/mods/go-gameplay.md §3; format: docs/framework/types/param.md).
+# SoccerFocusBattleGlobalParam (game_param.cfg.bin), retail values of v7.1.2 / v7.2.1:
+#   focusModeLimitTime            5.0 s  the focus battle's time (FocusBtlState Update sets the «FocusBattleStateTimer»
+#                                        with it; the focus manager keeps elapsed / limit at +0xCB0 / +0xCB4; the HUD
+#                                        stopwatch is 1 - elapsed / limit)
+#   opponentSkillSelectLimitTime  5.0 s  the time YOU get to answer the rival's special move («¡ELIGE!»; the focus
+#                                        manager's +0xCC8 / +0xCCC). The CPU's own answer time
+#                                        (opponentSkillSelectLimitTimeForAI) stays the game's.
+# 3600 s = an hour: in a match the stopwatch stays full and never runs out. Values are game seconds.
+[game_param.SoccerFocusBattleGlobalParam]
+focusModeLimitTime = 3600.0
+opponentSkillSelectLimitTime = 3600.0

@@ -353,7 +353,7 @@ if VRFW_EmblemGrid == nil then
       -- a caller's picture: its texture loaded once per path, its sprite on the emblem's texture slot when it is in
       local tc = crc(img.texture)
       if not self.loaded[tc] then
-        pcall(funcLuaCommand, EG.C.LOAD_TEX, img.texture)
+        pcall(funcLuaMenuCommand, EG.C.LOAD_TEX, img.texture)   -- CMND_LOAD_MENU_RES_TEXTURE is a menu command
         self.loaded[tc] = self.frame
       end
       local okl, loading = pcall(funcLuaCommand, EG.C.TEX_LOADING, tc)

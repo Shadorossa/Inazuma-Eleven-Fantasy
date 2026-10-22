@@ -1,0 +1,40 @@
+schema = "VRFW.game/2"
+
+# Gacha service: pools of cards mods declare (content\gacha\*.toml, docs/framework/gacha.md). Run time: scripts\gacha.lua;
+# game Lua side: assets\lua\menu\_all\74_gacha.lua (the question, the draw, the signing, the obtained screen).
+
+# (pieceId) -> pool index (1-based), 0 = the piece opens no gacha
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_OF_PIECE"
+handler = "Gacha.OfPiece"
+
+# (index) -> key, question text id, tint r, g, b (0-255), cost item, cost count, level, card count, draw event id
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_POOL"
+handler = "Gacha.Pool"
+
+# (index) -> the pool's cards (chara_param ids)
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_CARDS"
+handler = "Gacha.Cards"
+
+# (index) -> the cards a draw picks from now (their character has no player in the club)
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_CANDIDATES"
+handler = "Gacha.Candidates"
+
+# (game id) -> the pool index of the board node playing that game, 0 = none
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_OF_GAME"
+handler = "Gacha.OfGame"
+
+# (index) -> the node panel's command text id, its banner image id (0 = none)
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_TEXTS"
+handler = "Gacha.Texts"
+
+# (card, i) -> the obtained screen's page (VRFW.PoseRow source of content\pose_rows\gacha_obtained.toml): i = 0 the
+# header, i = 1 the drawn player
+[[VRFW.Command]]
+name = "CMND_VRFW_GACHA_OBTAINED"
+handler = "Gacha.ObtainedPage"

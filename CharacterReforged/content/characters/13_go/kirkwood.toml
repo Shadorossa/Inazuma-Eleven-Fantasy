@@ -36,9 +36,9 @@ target = "c04002300_5100"                              # Langford Ash
 target = "c04002210"                                   # Strom Boojum
 moves = [
   { move = 0xDF2D9951, level = 1 },                         # Close Counter
-  { move = 0xDBA0E5E3, level = 30 },                        # Gigant Wall
-  { move = 0xA7157B91, level = 40 },                        # Power Shield
-  { move = 0xED1BFBD3, level = 56 },                        # Fingers of Gaia
+  { move = 0xD2955C45, level = 21 },                        # Power Catch
+  { move = 0xCB8E6D04, level = 42 },                        # Mighty Save
+  { move = 0xED1BFBD3, level = 58 },                        # Fingers of Gaia
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -56,10 +56,10 @@ moves = [
 [[edit]]
 target = "c04002220"                                   # Dock Hickory
 moves = [
-  { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
-  { move = 0x141046AB, level = 20 },                        # Overnight Fortress
-  { move = 0xC2E6ADBF, level = 27 },                        # Log Roll
-  { move = 0x530CDFC1, level = 36 },                        # Mystifying Mist
+  { move = 0x414BA9BD, level = 2 },                         # Pincer Pinch
+  { move = 0x23C3EE90, level = 22 },                        # Shoulder Tackle
+  { move = 0xF88DC090, level = 26 },                        # Z Slash
+  { move = 0x93885A64, level = 32 },                        # Fire Drill
 ]
 
   [[edit.cards]]
@@ -73,9 +73,9 @@ moves = [
 target = "c04002230"                                   # Bourne Birch
 moves = [
   { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
-  { move = 0x6ADE9E01, level = 32 },                        # Illusory Ball
-  { move = 0xDF2D9951, level = 47 },                        # Close Counter
-  { move = 0x7D6E9A87, level = 62 },                        # The Wall
+  { move = 0x660EED1E, level = 20 },                        # Low Scythe Slice
+  { move = 0xDF2D9951, level = 46 },                        # Close Counter
+  { move = 0x7D6E9A87, level = 63 },                        # The Wall
 ]
 
   [[edit.cards]]
@@ -89,9 +89,9 @@ moves = [
 target = "c04002240"                                   # Flynt Pine
 moves = [
   { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
-  { move = 0xB60E3C60, level = 15 },                        # Plasma Cut
-  { move = 0x0C08B663, level = 31 },                        # Doom Dive Drive
-  { move = 0x3297683F, level = 60 },                        # Warp Step
+  { move = 0x3AD8DFD1, level = 13 },                        # Curving Cut
+  { move = 0x0C08B663, level = 28 },                        # Doom Dive Drive
+  { move = 0xB60E3C60, level = 63 },                        # Plasma Cut
 ]
 
   [[edit.cards]]
@@ -104,9 +104,9 @@ moves = [
 target = "c04002250"                                   # Trent Poplar
 moves = [
   { move = 0x414BA9BD, level = 1 },                         # Pincer Pinch
-  { move = 0xD1E62D0A, level = 20 },                        # Mushroom Hop
-  { move = 0xC2E6ADBF, level = 27 },                        # Log Roll
-  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+  { move = 0x75994916, level = 19 },                        # Cunning Pull
+  { move = 0xD1E62D0A, level = 24 },                        # Mushroom Hop
+  { move = 0x7DAF3139, level = 59 },                        # Emperor Penguin No. 2
 ]
 
   [[edit.cards]]
@@ -119,10 +119,10 @@ moves = [
 [[edit]]
 target = "c04002260"                                   # River Willows
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x8B90AAAC, level = 19 },                        # Fortissimo
-  { move = 0x650FA58E, level = 35 },                        # Spin Out
-  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+  { move = 0x650FA58E, level = 2 },                         # Spin Out
+  { move = 0xE8F5C774, level = 20 },                        # Megalodon
+  { move = 0x501F2F12, level = 39 },                        # Heel Flick
+  { move = 0xCB79C825, level = 61 },                        # In-Line Stampede
 ]
 
   [[edit.cards]]
@@ -135,10 +135,10 @@ moves = [
 [[edit]]
 target = "c04002270"                                   # Beck Heath
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x6F918884, level = 19 },                        # Easy Breezy
-  { move = 0xC66BD10D, level = 25 },                        # Zigzag Spark
-  { move = 0x530CDFC1, level = 36 },                        # Mystifying Mist
+  { move = 0xC66BD10D, level = 2 },                         # Zigzag Spark
+  { move = 0x6F918884, level = 20 },                        # Easy Breezy
+  { move = 0x900C8E0A, level = 22 },                        # Maestro's Call
+  { move = 0x49041E53, level = 34 },                        # Crosscut Feint
 ]
 
   [[edit.cards]]
@@ -150,10 +150,10 @@ moves = [
 [[edit]]
 target = "c04002280"                                   # Brook Linden
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0xDDCA0D2A, level = 22 },                        # Bouncing Bomb
-  { move = 0x05567847, level = 27 },                        # Runaway Train
-  { move = 0x4E22F64D, level = 40 },                        # Transporter Device
+  { move = 0xF88DC090, level = 1 },                         # Z Slash
+  { move = 0x332CCDC9, level = 22 },                        # Heel Kick
+  { move = 0x79E3E635, level = 30 },                        # Racing Flame
+  { move = 0x2D68DB57, level = 42 },                        # Deceptive Step
 ]
 
   [[edit.cards]]
@@ -166,9 +166,9 @@ moves = [
 target = "c04002290"                                   # Bay Laurel
 moves = [
   { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
-  { move = 0xDA3FF6C9, level = 26 },                        # Criss-Cross
-  { move = 0x4FE09C7A, level = 43 },                        # Acrobatic Keep
-  { move = 0xA0BDF96F, level = 60 },                        # Ballista Barrage
+  { move = 0xF88DC090, level = 11 },                        # Z Slash
+  { move = 0x4FE09C7A, level = 48 },                        # Acrobatic Keep
+  { move = 0xDD0BA694, level = 64 },                        # Okehazama Ravine
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -186,10 +186,10 @@ moves = [
 [[edit]]
 target = "c04002300"                                   # Langford Ash
 moves = [
-  { move = 0xBBE07677, level = 1 },                         # Sidewinder
-  { move = 0xC324C788, level = 34 },                        # Blast Mine
-  { move = 0xADD8A52B, level = 40 },                        # Matchlock Bullet
-  { move = 0xC4D13C6B, level = 48 },                        # Katana Kick
+  { move = 0xADD8A52B, level = 1 },                         # Matchlock Bullet
+  { move = 0x4031A7F5, level = 16 },                        # Mole Fake
+  { move = 0x163D8F70, level = 41 },                        # Chip Shot
+  { move = 0xE35B59DB, level = 56 },                        # Twin Sun Smash
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -207,9 +207,9 @@ moves = [
 target = "c04002310"                                   # Escott Aspen
 moves = [
   { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
-  { move = 0xEFFC6FA8, level = 34 },                        # Warhead
-  { move = 0xB60E3C60, level = 40 },                        # Plasma Cut
-  { move = 0x00A10ABD, level = 60 },                        # Ball Lightning
+  { move = 0xEFFC6FA8, level = 17 },                        # Warhead
+  { move = 0x72514A74, level = 37 },                        # Low Drive
+  { move = 0xB60E3C60, level = 62 },                        # Plasma Cut
 ]
 
   [[edit.cards]]
@@ -222,10 +222,10 @@ moves = [
 [[edit]]
 target = "c04002320"                                   # Maxwell Mahogany
 moves = [
-  { move = 0xC636A810, level = 4 },                         # Combustion Catch
-  { move = 0x37009B59, level = 30 },                        # Burnout Burst
-  { move = 0x585098FC, level = 39 },                        # Slice and Dice
-  { move = 0xDF2D9951, level = 52 },                        # Close Counter
+  { move = 0xC636A810, level = 8 },                         # Combustion Catch
+  { move = 0xCB8E6D04, level = 19 },                        # Mighty Save
+  { move = 0x37009B59, level = 35 },                        # Burnout Burst
+  { move = 0xDF2D9951, level = 53 },                        # Close Counter
 ]
 
   [[edit.cards]]
@@ -237,10 +237,10 @@ moves = [
 [[edit]]
 target = "c04002330"                                   # Bradford Ash
 moves = [
-  { move = 0xB9A6C82E, level = 1 },                         # Triangle ZZ
-  { move = 0x14D1ED15, level = 26 },                        # Jumping Jack
-  { move = 0xE35B59DB, level = 35 },                        # Twin Sun Smash
-  { move = 0x64CDCFB9, level = 48 },                        # Rising Dragon
+  { move = 0xB9A6C82E, level = 4 },                         # Triangle ZZ
+  { move = 0x14D1ED15, level = 24 },                        # Jumping Jack
+  { move = 0x240BEDF2, level = 37 },                        # Bounce Shot
+  { move = 0xE452F107, level = 48 },                        # Dust Javelin
 ]
 
   [[edit.cards]]
@@ -253,10 +253,10 @@ moves = [
 [[edit]]
 target = "c04002340"                                   # Calder Elm
 moves = [
-  { move = 0xDF8CB373, level = 4 },                         # Sonic Shot
-  { move = 0x39CB2F02, level = 30 },                        # Dragster
+  { move = 0xE8F5C774, level = 6 },                         # Megalodon
+  { move = 0x6F918884, level = 15 },                        # Easy Breezy
   { move = 0xA2FB4736, level = 35 },                        # Flying Fish
-  { move = 0x6F918884, level = 45 },                        # Easy Breezy
+  { move = 0x240BEDF2, level = 43 },                        # Bounce Shot
 ]
 
   [[edit.cards]]
@@ -269,10 +269,10 @@ moves = [
 [[edit]]
 target = "c04002350"                                   # Laike Alder
 moves = [
-  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
-  { move = 0x5DA7EA06, level = 22 },                        # Boomerang Bluff
-  { move = 0x1C4D4906, level = 31 },                        # Whirlpool
-  { move = 0x25276CB9, level = 58 },                        # Solar Surprise
+  { move = 0xB58AE80E, level = 4 },                         # Silk Road
+  { move = 0x5643C944, level = 25 },                        # Killer Slide
+  { move = 0xF4604B0E, level = 33 },                        # Fancy-Footwork
+  { move = 0xDD0BA694, level = 60 },                        # Okehazama Ravine
 ]
 
   [[edit.cards]]
@@ -285,10 +285,10 @@ moves = [
 [[edit]]
 target = "c04002360"                                   # Tahoma Sequoia
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0xA2FB4736, level = 30 },                        # Flying Fish
-  { move = 0xF400CA92, level = 40 },                        # Anchors Aweigh
-  { move = 0x5739C70C, level = 45 },                        # Guided Collide
+  { move = 0x5739C70C, level = 1 },                         # Guided Collide
+  { move = 0xB0BC314A, level = 12 },                        # Spin Meister
+  { move = 0xA7157B91, level = 42 },                        # Power Shield
+  { move = 0x49041E53, level = 45 },                        # Crosscut Feint
 ]
 
   [[edit.cards]]
@@ -301,10 +301,10 @@ moves = [
 [[edit]]
 target = "c05026590"                                   # Byron Love
 moves = [
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
   { move = 0x1C8CE2B8, level = 1 },                         # God Knows
-  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
-  { move = 0xB4757AB8, level = 50 },                        # Divine Stamp
-  { move = 0x61FB16FD, level = 80 },                        # Divine Arrows
+  { move = 0x7577A26A, level = 50 },                        # God Break
+  { move = 0x3A4FFB6C, level = 66 },                        # The Ikaros
 ]
 
   [[edit.cards]]

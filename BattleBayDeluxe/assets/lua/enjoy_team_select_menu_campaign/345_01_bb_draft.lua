@@ -238,7 +238,7 @@ BBCR_DRAFT_PK = {
   -- CMND_SET_PRIM_COLOR never tints the cmn01_10 quad's mesh (as the Torneo's connectors, bb-tournament.md §6.1b), so
   -- the one white sprite tinted per part stayed white. Each part is now a pre-coloured flat sprite of the mod's own
   -- atlas (research/scripts/bbd_pack_art.py, content/images/menu/220_img/bbd_pk.toml), faded with
-  -- CMND_SET_LAYER_MODEL_ALPHA (the retail locked-dock fade, the friends panel's quads).
+  -- CMND_SET_LAYER_MODEL_ALPHA (the retail locked-dock fade).
   ART = 1048010258 --[[#/menu/220_img/bbd_pk/bbd_pk.g4tx]],
   MESH_QUAD = 312193881 --[[_icon_new01]],
   NODE_QUAD = 1909474081 --[[icon_new01]],
@@ -804,8 +804,9 @@ function BBCR_DRAFT_GridBack()
 end
 
 -- tile / panel: the tile the focus goes back to and the panel's redraw (default: the Draft tile, BBCR_DRAFT_PanelBack;
--- the «Plantilla» viewer, bbd_roster.lua, passes the team it showed)
-function BBCR_DRAFT_Refresh(tile, panel)
+-- the «Plantilla» viewer, bbd_roster.lua, passes the team it showed); keep = the grid was only hidden: a slot that still
+-- shows the same team keeps its crest (not released and asked again)
+function BBCR_DRAFT_Refresh(tile, panel, keep)
   local B = BBCR_DRAFT
   tile = tile or B.tile
   local page = funcLuaCommand(B.PAGE_REFRESH)
@@ -823,7 +824,9 @@ function BBCR_DRAFT_Refresh(tile, panel)
     end
     for _, a in ipairs(args) do
       funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, a[1], a[2][1] ~= 0)
-      funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, a[1], B.EMBLEM_TEX)
+      if not keep then
+        funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, a[1], B.EMBLEM_TEX)
+      end
       pcall(SetupEmblemIcon, a[1], a[2][1], a[2][2], a[2][3])
       funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, a[2][1] ~= 0, a[1])
     end
@@ -2260,7 +2263,8 @@ end
 --     page's model layer) once per opening.
 --   * Closing is ordered: the page is asked to close again until it is gone (a page still opening is waited for),
 --     and only then the grid comes back (the retail OnCloseEndLayer of the difficulty window, then
---     BBCR_DRAFT_Refresh with the focus on the same tile and its panel redrawn). Y acts only after the key was
+--     BBCR_DRAFT_Refresh with the focus on the same tile and its panel redrawn; the grid's crests kept, not reloaded:
+--     VRFW_BBP_KeepCrests). Y acts only after the key was
 --     released (CMD_FUNC3 repeats while held). Nothing is accepted while the page opens or closes.
 --   * The footer «<Y> Plantilla» (text evt_bbd_roster) after the grid's retail entries (Aceptar, Descripción), declared
 --     to the VR-Framework's footer prompts (VRFW_FooterPrompts, attached to UpdateButtonGuide on this menu's guide
@@ -3052,6 +3056,11 @@ function BBD_ROSTER_Finish(why)
   funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, true)
   -- the grid back as after the difficulty window (the Draft's own refresh request of that wrapper undone: the
   -- refresh below is this screen's)
+  -- the grid's layers were only hidden: its crests stay loaded and are kept by the redraws of the way back (no white
+  -- squares while they would reload); BBD_ROSTER_Step ends it after the refresh
+  if VRFW_BBP_KeepCrests ~= nil then
+    pcall(VRFW_BBP_KeepCrests, true)
+  end
   local keep = B.refresh
   local ok, err = pcall(OnCloseEndLayer, B.DIFFWIN, 0)
   B.refresh = keep
@@ -3228,9 +3237,12 @@ function BBD_ROSTER_Step()
     if R.refresh <= 0 then
       R.refresh = nil
       local q = R.back
-      local ok, err = pcall(BBCR_DRAFT_Refresh, q and q.tile or -1, BBD_ROSTER_Panel)
+      local ok, err = pcall(BBCR_DRAFT_Refresh, q and q.tile or -1, BBD_ROSTER_Panel, true)
       if not ok then
         BBD_ROSTER_Log("refresh error", tostring(err))
+      end
+      if VRFW_BBP_KeepCrests ~= nil then
+        pcall(VRFW_BBP_KeepCrests, false)
       end
       R.back = nil
     end

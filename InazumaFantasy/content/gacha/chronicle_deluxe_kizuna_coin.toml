@@ -1,0 +1,9 @@
+schema = "VRFW.gacha/1"
+# Inazuma Fantasy: its «Tezcat (Mixi Max Arion)» (content/characters/tezcat_arion_miximax.toml, tezcat_mixi_max_arion;
+# docs/game/characters/tezcat-arion-miximax.md) in Chronicle Deluxe's board gacha (the Mix-Max forms pool,
+# chronicle_deluxe.kizuna_coin_gacha: exported by Chronicle Deluxe's mod.toml). Without Chronicle Deluxe the pool is not
+# declared and nothing is added (VRFW docs/framework/gacha.md).
+
+[[VRFW.GachaAdd]]
+pool = "chronicle_deluxe.kizuna_coin_gacha"
+cards = ["inazuma_fantasy_2.tezcat_mixi_max_arion"]

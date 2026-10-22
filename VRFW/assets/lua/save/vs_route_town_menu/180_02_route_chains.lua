@@ -145,8 +145,15 @@ end
 -- the board's piece balloon (UpdatePieceAtcBalloon: team name + the team's player face icon_chr_dmy01): a chain node
 -- shows its name only, no player over it. `idx` = the board piece index. False: the balloon's chara
 -- is set to 0 before the retail face call, so the retail "no face" branch runs (face meshes hidden, no face draw; the
--- node's `Team` is only a placeholder that gives the piece a game, its player must never be drawn).
+-- node's `Team` is only a placeholder that gives the piece a game, its player must never be drawn). The same for a gacha
+-- node (VRFW_Gacha.IsPiece) and a mod's node menu (VRFW_NodeMenu.IsPiece).
 function VRFW_RCH_BalloonFace(idx)
+  if VRFW_Gacha ~= nil and VRFW_Gacha.IsPiece ~= nil and VRFW_Gacha.IsPiece(idx) then
+    return false -- a gacha node (framework gacha service): its team is a placeholder too
+  end
+  if VRFW_NodeMenu ~= nil and VRFW_NodeMenu.IsPiece ~= nil and VRFW_NodeMenu.IsPiece(idx) then
+    return false -- a node menu (framework node menus): its team is a placeholder too
+  end
   return VRFW_RCH_Of(idx) == nil
 end
 

@@ -434,16 +434,6 @@ order = 70
 action = { title = "1806468555", direct = { menu = "market_menu" } }
 menus = ["market_menu"]
 
-[[entry]]
-host = "top_bar"
-id = "friends"
-text = { es = "Lista de amigos", en = "Friends list", fr = "Liste d'amis", de = "Freundesliste", it = "Lista amici", pt = "Lista de amigos", ja = "フレンドリスト", zh_hans = "好友列表", zh_hant = "好友列表" }
-icon = "#/menu/100_mainmenu/mainmenu90/mainmenu90_11/mainmenu90_11.g4tx:icon_list_m18_on"
-icon_aspect = 2.0455
-order = 75
-action = { lua = "Utilities.FriendsPanel" }
-menus = []
-
 # the switch on every host (the menu = the script stem the runtime sees); the open button (L3 / N, Utilities' action
 # CMD_VRFW_TOPBAR_OPEN) enters the bar where `open = true`; Mercado (market_menu) and Objetos (item_menu) have their
 # own L3 (retail CMD_FUNC5): mouse only there, like the team dock hub (its retail R3 / N); the

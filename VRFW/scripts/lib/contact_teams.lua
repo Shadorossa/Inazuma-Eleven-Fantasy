@@ -6,7 +6,7 @@
 --                       of its pieces' events; the map's name is the series most of its players come from
 --   "free_match"        the «Competir contra bots» games (soccer_opponent_info, in its order) that are on no route
 -- A page (zone) = one opponent team (SOCCER_GAME_DIFFICULTY opponent_team of every difficulty row of those games);
--- teams with the same name text are one page (the first place) when MergeSameName is on. A player = a team member
+-- teams with the same name text and the same players are one page (the first place) when MergeSameName is on. A player = a team member
 -- (team_config); his node sells the card that plays for that team, on his home page (a term's Page, else a page of one of
 -- his own teams, else his first page). Rules of the set ([VRFW.ContactSet.Teams]) decide staff, one page per character
 -- and the price tiers; a card's terms ([[VRFW.ContactTerms]]) replace its level, price and requirements.
@@ -119,9 +119,11 @@ local function read_teams(warn)
   return teams
 end
 
--- the Chronicle board's routes: { { games = {g, ...} }, ... } in table order
+-- the Chronicle board's routes: { { games = {g, ...}, type = routeType }, ... } in table order, and the games of the
+-- pieces no route holds (the free-match tabs' hidden pieces, [[VRFW.FreeMatchGame]] / [[VRFW.GameTab]]) by their
+-- routeType (the free-match tab they are listed in): out.loose[routeType] = {g, ...} in table order
 local function read_routes(warn)
-  local out = {}
+  local out = { loose = {} }
   local r, e1 = rows("vsroute/vs_route")
   local p, e2 = rows("vsroute/vs_route_piece")
   local ev, e3 = rows("vsroute/vs_route_piece_event")
@@ -129,26 +131,66 @@ local function read_routes(warn)
     warn("Chronicle board not readable (" .. tostring(e1 or e2 or e3) .. "): no route page")
     return out
   end
+  local function piece_games(piece, games, seen)
+    local es, en = slice(piece and (piece.eventInfoRef or piece[24]))
+    if es then
+      for j = es, es + en - 1 do
+        local e = ev[j + 1]
+        local g = e and u32(scalar(e.paramCrc1 or e[1])) or 0
+        if g ~= 0 and not seen[g] then
+          seen[g] = true
+          games[#games + 1] = g
+        end
+      end
+    end
+  end
+  -- the free-match tab of each game: the routeType of the first piece (table order) whose event slice holds it
+  out.tab_of = {}
+  for _, piece in ipairs(p) do
+    local t = tonumber(scalar(piece.routeType or piece[1]))
+    local es, en = slice(piece.eventInfoRef or piece[24])
+    if t ~= nil and es then
+      for j = es, es + en - 1 do
+        local e = ev[j + 1]
+        local g = e and u32(scalar(e.paramCrc1 or e[1])) or 0
+        if g ~= 0 and out.tab_of[g] == nil then out.tab_of[g] = t end
+      end
+    end
+  end
+  local held = {}
   for _, route in ipairs(r) do
-    local games, seen = {}, {}
+    local games, seen, rtype = {}, {}, nil
     local s, n = slice(route.pieceInfo or route[3])
     if s then
       for i = s, s + n - 1 do
         local piece = p[i + 1]
-        local es, en = slice(piece and (piece.eventInfoRef or piece[24]))
-        if es then
-          for j = es, es + en - 1 do
-            local e = ev[j + 1]
-            local g = e and u32(scalar(e.paramCrc1 or e[1])) or 0
-            if g ~= 0 and not seen[g] then
-              seen[g] = true
-              games[#games + 1] = g
-            end
-          end
-        end
+        held[i + 1] = true
+        if rtype == nil and piece then rtype = tonumber(scalar(piece.routeType or piece[1])) end
+        piece_games(piece, games, seen)
       end
     end
-    out[#out + 1] = { games = games }
+    out[#out + 1] = { games = games, type = rtype }
+  end
+  local seen = {}
+  for i, piece in ipairs(p) do
+    if not held[i] then
+      local t = tonumber(scalar(piece.routeType or piece[1]))
+      if t ~= nil then
+        out.loose[t] = out.loose[t] or {}
+        seen[t] = seen[t] or {}
+        piece_games(piece, out.loose[t], seen[t])
+      end
+    end
+  end
+  return out
+end
+
+-- the free-match list's place of each game: game -> its first row of soccer_opponent_info (the list's row order)
+local function read_list_rows()
+  local out = {}
+  for i, row in ipairs(rows("soccer/soccer_opponent_info") or {}) do
+    local g = u32(scalar(row.battleId or row[2]))
+    if g ~= 0 and out[g] == nil then out[g] = i end
   end
   return out
 end
@@ -233,10 +275,11 @@ local function data(warn)
   if G ~= nil then return G end
   local t0 = VRFW.now()
   G = {}
-  G.games = read_games(warn)
+  G.games, G.order = read_games(warn)
   G.teams = read_teams(warn)
   G.routes = read_routes(warn)
   G.free = read_free_match(warn)
+  G.list_row = read_list_rows()
   G.series = read_series()
   G.card, G.of_base, G.special = read_cards()
   G.piece_flag = read_piece_flags()
@@ -252,7 +295,19 @@ end
 local function rules_of(set, warn)
   local t = type(set.teams) == "table" and set.teams or {}
   local R = { staff = t.Staff == true, one_page = t.OnePagePerCharacter ~= false, merge = t.MergeSameName ~= false,
-    max_level = tonumber(t.MaxLevel) or 0, tiers = {} }
+    max_level = tonumber(t.MaxLevel) or 0, tiers = {}, earliest = t.HomePage == "earliest", places = {} }
+  if t.HomePage ~= nil and t.HomePage ~= "earliest" and t.HomePage ~= "terms" then
+    warn(set.where .. ": [VRFW.ContactSet.Teams] HomePage " .. tostring(t.HomePage) .. " (earliest, terms): terms used")
+  end
+  for k, p in ipairs(type(t.Place) == "table" and t.Place or {}) do
+    local team = type(p) == "table" and u32(p.Team) or 0
+    local anchor = type(p) == "table" and u32(p.After or p.Before) or 0
+    if team ~= 0 and anchor ~= 0 then
+      R.places[#R.places + 1] = { team = team, anchor = anchor, before = p.After == nil }
+    else
+      warn(set.where .. ": [[VRFW.ContactSet.Teams.Place]] #" .. k .. ": Team and After / Before (team name texts) needed (left out)")
+    end
+  end
   for k, p in ipairs(type(t.Price) == "table" and t.Price or {}) do
     if type(p) == "table" then
       R.tiers[#R.tiers + 1] = { name = tostring(p.Tier or ("#" .. k)), special = p.Special == true,
@@ -331,19 +386,57 @@ end
 
 -- ---------------------------------------------------------------------------------------------------- pages
 
+-- the free-match classes of a game's difficulty rows (INAZUMA .. BATALLA LEGENDARIA, docs/framework/free-match-tabs.md)
+local CLASS_LO, CLASS_HI = 6, 9
+
+-- the team a game's page shows: the team of its lowest free-match class row (the class the free-match list shows,
+-- a mod's [[VRFW.FreeMatchRival]] included), else (no class row) the team of each of its rows
+local function page_teams_of(rows_of_game)
+  local low = nil
+  for _, d in ipairs(rows_of_game) do
+    if d[1] >= CLASS_LO and d[1] <= CLASS_HI and (low == nil or d[1] < low[1]) then low = d end
+  end
+  if low ~= nil then return { [low[2]] = true } end
+  return nil
+end
+
+-- the identity of a team for MergeSameName: its name text and its players (the characters of slots 0-18); two teams
+-- are one page only when both match (the same team under another id), never by the name alone; nil = no name
+local same_keys = {}
+local function same_team_key(D, id)
+  if same_keys[id] ~= nil then return same_keys[id] or nil end
+  local team = D.teams[id]
+  local key = false
+  if team ~= nil and team.name_text ~= 0 then
+    local bases = {}
+    for _, mb in ipairs(team.members) do
+      local c = D.card[mb.card]
+      if mb.slot >= 0 and mb.slot < 19 then bases[#bases + 1] = c and c.base ~= 0 and c.base or mb.card end
+    end
+    table.sort(bases)
+    key = string.format("%08x:", team.name_text) .. table.concat(bases, ",")
+  end
+  same_keys[id] = key
+  return key or nil
+end
+
 -- the pages of a list of games: { {team, teams, name_text, level, clears = {g, d, ...}, games = {[g] = true}}, ... }
 local function pages_of(D, games, R, pages, by_team, by_name)
   pages, by_team, by_name = pages or {}, by_team or {}, by_name or {}
   for _, g in ipairs(games) do
+    local only = page_teams_of(D.games[g] or {})
+    -- the page: its team(s) from the rows the page shows
+    local pg = nil
     for _, d in ipairs(D.games[g] or {}) do
       local team = D.teams[d[2]]
-      if team ~= nil and #team.members > 0 then
-        local pg = by_team[d[2]]
-        if pg == nil and R.merge and team.name_text ~= 0 then pg = by_name[team.name_text] end
+      if team ~= nil and #team.members > 0 and (only == nil or only[d[2]]) then
+        pg = by_team[d[2]]
+        local same = same_team_key(D, d[2])
+        if pg == nil and R.merge and same ~= nil then pg = by_name[same] end
         if pg == nil then
           pg = { team = d[2], teams = {}, name_text = team.name_text, level = 0, clears = {}, seen = {}, games = {} }
           pages[#pages + 1] = pg
-          if team.name_text ~= 0 then by_name[team.name_text] = pg end
+          if same ~= nil then by_name[same] = pg end
         end
         by_team[d[2]] = pg
         pg.games[g] = true
@@ -351,14 +444,22 @@ local function pages_of(D, games, R, pages, by_team, by_name)
           pg.teams[d[2]] = true
           pg.teams[#pg.teams + 1] = d[2]
         end
+      end
+    end
+    -- every row of the game (with class rows: all on the shown team's page; else each on its own team's page): the
+    -- page's unlock (a win at any difficulty) and its level (the lowest)
+    for _, d in ipairs(D.games[g] or {}) do
+      local team = D.teams[d[2]]
+      local tp = only ~= nil and pg or by_team[d[2]]
+      if tp ~= nil and team ~= nil and #team.members > 0 then
         local key = g .. ":" .. d[1]
-        if not pg.seen[key] then
-          pg.seen[key] = true
-          pg.clears[#pg.clears + 1] = g
-          pg.clears[#pg.clears + 1] = d[1]
+        if not tp.seen[key] then
+          tp.seen[key] = true
+          tp.clears[#tp.clears + 1] = g
+          tp.clears[#tp.clears + 1] = d[1]
         end
         local lv = team.level > 0 and team.level or d[3]
-        if lv > 0 and (pg.level == 0 or lv < pg.level) then pg.level = lv end
+        if lv > 0 and (tp.level == 0 or lv < tp.level) then tp.level = lv end
       end
     end
   end
@@ -389,9 +490,19 @@ local function pitch_of(D, pg)
   return at
 end
 
+-- a member's role on a page: "player" (slots 0-18, a card without the staff flags), "staff" (a card with the coach /
+-- manager flag: the managers of slots 16-18, the coach of slot 19, or a staff card in a player slot), nil = not sold
+-- (slot 19 and up without the staff flags: a scripted entry). Staff is sold only when the set's Staff rule is on.
+local function role_of(R, c, mb)
+  if c == nil or c.base == 0 then return nil end
+  if c.staff then return R.staff and "staff" or nil end
+  if mb.slot >= 19 then return nil end
+  return "player"
+end
+
 -- the page a character is sold on: a term's Page (the old office's), else a page of one of his own teams
 -- (chara_base team_1..3 named like the page), else his first page
-local function home_pages(D, maps, ctx, terms)
+local function home_pages(D, maps, ctx, terms, R)
   local all, by_game = {}, {}
   for _, mp in ipairs(maps) do
     for _, pg in ipairs(mp.pages) do
@@ -419,6 +530,26 @@ local function home_pages(D, maps, ctx, terms)
     return own[b]
   end
   local home = {}
+  if R.earliest then
+    -- the earliest page in the set's order (maps in their order, pages in theirs) where he is a member of the
+    -- page's teams: as a player first, as staff only when he plays on no page
+    for _, pg in ipairs(all) do
+      for _, t in ipairs(pg.teams) do
+        for _, mb in ipairs(D.teams[t].members) do
+          local c = D.card[mb.card]
+          local role = role_of(R, c, mb)
+          if role == "player" then
+            first[c.base] = first[c.base] or pg
+          elseif role == "staff" then
+            first_staff[c.base] = first_staff[c.base] or pg
+          end
+        end
+      end
+    end
+    for b, pg in pairs(first) do home[b] = pg end
+    for b, pg in pairs(first_staff) do home[b] = home[b] or pg end
+    return home
+  end
   for _, pg in ipairs(all) do
     local name = pg.name_text ~= 0 and ctx.team_name(pg.name_text) or ""
     for _, t in ipairs(pg.teams) do
@@ -458,6 +589,71 @@ local function home_pages(D, maps, ctx, terms)
   return home
 end
 
+-- the games of a route's map: its pieces' games, then the listed games of the pieces no route holds that are filed
+-- under the route's free-match tab (a mod's [[VRFW.FreeMatchGame]]; a game already on a route stays there), in the
+-- free-match list's row order
+local function route_games(D, route, on_route, done)
+  local games = {}
+  for _, g in ipairs(route.games) do games[#games + 1] = g end
+  local loose = route.type ~= nil and D.routes.loose[route.type] or nil
+  if loose ~= nil and not done[route.type] then
+    done[route.type] = true
+    local extra = {}
+    for _, g in ipairs(loose) do
+      if not on_route[g] and D.list_row[g] ~= nil then extra[#extra + 1] = g end
+    end
+    table.sort(extra, function(x, y) return D.list_row[x] < D.list_row[y] end)
+    for _, g in ipairs(extra) do games[#games + 1] = g end
+  end
+  return games
+end
+
+-- [[VRFW.ContactSet.Teams.Place]]: the page of a team (by its name text) moved next to another team's page (After /
+-- Before, by name text), on that page's map; a team with no page yet gets one from the games that field it
+local function place_pages(D, maps, R, set, warn)
+  local function find(name_text)
+    for _, mp in ipairs(maps) do
+      for k, pg in ipairs(mp.pages) do
+        if pg.name_text == name_text then return mp, k end
+      end
+    end
+    return nil
+  end
+  for _, p in ipairs(R.places) do
+    local amp = find(p.anchor)
+    if amp == nil then
+      warn(string.format("%s: Place: no page of team name 0x%08X to place 0x%08X next to (left where it is)", set.where,
+        p.anchor, p.team))
+    else
+      local smp, sk = find(p.team)
+      local page = nil
+      if smp ~= nil then
+        page = table.remove(smp.pages, sk)
+      else
+        local games = {}
+        for _, g in ipairs(D.order or {}) do
+          for _, d in ipairs(D.games[g] or {}) do
+            local team = D.teams[d[2]]
+            if team ~= nil and team.name_text == p.team and #team.members > 0 then
+              games[#games + 1] = g
+              break
+            end
+          end
+        end
+        for _, pg in ipairs(pages_of(D, games, R)) do
+          if pg.name_text == p.team then page = pg break end
+        end
+      end
+      if page == nil then
+        warn(string.format("%s: Place: no game fields team name 0x%08X (no page)", set.where, p.team))
+      else
+        local _, ak = find(p.anchor)
+        table.insert(amp.pages, p.before and ak or ak + 1, page)
+      end
+    end
+  end
+end
+
 -- Builds the derived maps of one set. decls: { {m = declaration, mod, where, key}, ... } (maps with a Teams table);
 -- ctx: { warn, info, crc, own_face(card, base) -> false without a face of his own, team_name(text id) -> name }
 function M.build(set, decls, ctx)
@@ -470,8 +666,10 @@ function M.build(set, decls, ctx)
     if oa ~= ob then return oa < ob end
     return a.key < b.key
   end)
-  -- 1. the maps and their pages, in the set's order
+  -- 1. the maps and their pages, in the set's order; one team (same name, same players) is one page across the maps:
+  -- a game copied under another tab ([[VRFW.GameTab]]) or listed there again is that page's game too
   local maps, free_map = {}, nil
+  local same_pages = {}
   for _, d in ipairs(decls) do
     local T = d.m.Teams
     local src = tostring(T.Source or "")
@@ -481,10 +679,15 @@ function M.build(set, decls, ctx)
         only = {}
         for _, x in ipairs(T.Routes) do only[math.floor(tonumber(x) or -1)] = true end
       end
+      local on_route = {}
+      for _, route in ipairs(D.routes) do
+        for _, g in ipairs(route.games) do on_route[g] = true end
+      end
+      local loose_done = {}
       for k, route in ipairs(D.routes) do
         if (only == nil or only[k - 1]) and #route.games > 0 then
           maps[#maps + 1] = { d = d, key = string.format("%s.%02d", d.key, k - 1), route = k - 1,
-            pages = pages_of(D, route.games, R) }
+            pages = pages_of(D, route_games(D, route, on_route, loose_done), R, nil, nil, same_pages) }
         end
       end
     elseif src == "free_match" then
@@ -497,7 +700,7 @@ function M.build(set, decls, ctx)
         if not on_route[g] then games[#games + 1] = g end
       end
       local mp = { d = d, key = d.key }
-      mp.pages, mp.by_team, mp.by_name = pages_of(D, games, R)
+      mp.pages, mp.by_team, mp.by_name = pages_of(D, games, R, nil, nil, same_pages)
       maps[#maps + 1] = mp
       free_map = free_map or mp
     else
@@ -550,7 +753,31 @@ function M.build(set, decls, ctx)
       end
     end
   end
-  local home = R.one_page and home_pages(D, maps, ctx, terms) or {}
+  place_pages(D, maps, R, set, warn)
+  local home = R.one_page and home_pages(D, maps, ctx, terms, R) or {}
+  -- a term with `Extra = true`: its card is sold on the page of its `Page` games even when he is no player of that
+  -- page's team (a staff slot, or no member at all); that page is his home
+  local extras = {}
+  for card, term in pairs(terms) do
+    local c = D.card[card]
+    if term.Extra == true and type(term.Page) == "table" and c ~= nil and c.base ~= 0 then
+      local at = nil
+      for _, mp in ipairs(maps) do
+        for _, pg in ipairs(mp.pages) do
+          for _, g in ipairs(term.Page) do
+            if at == nil and pg.games[u32(g)] then at = pg end
+          end
+        end
+      end
+      if at ~= nil then
+        extras[at] = extras[at] or {}
+        table.insert(extras[at], card)
+        if R.one_page then home[c.base] = at end
+      else
+        warn(string.format("set %s: extra card %08X: no page holds its Page games (left out)", set.key, card))
+      end
+    end
+  end
   local function teams_of(b)
     local n = 0
     for _ in pairs(char_pages[b] or {}) do n = n + 1 end
@@ -588,12 +815,23 @@ function M.build(set, decls, ctx)
         reqs = { { kind = "cleared", games = pg.clears, count = 1, name_text = pg.name_text } } }
       local here, first = {}, #M2.nodes + 1
       local spots = pitch_of(D, pg)
+      -- the page's players: its teams' members, then its extra cards (the bench)
+      local cands = {}
       for _, t in ipairs(pg.teams) do
-        for _, mb in ipairs(D.teams[t].members) do
+        for _, mb in ipairs(D.teams[t].members) do cands[#cands + 1] = { t = t, mb = mb } end
+      end
+      local ex = extras[pg] or {}
+      table.sort(ex)
+      for _, card in ipairs(ex) do
+        cands[#cands + 1] = { t = pg.team, mb = { card = card, slot = -1, captain = false }, extra = true }
+      end
+      for _, cand in ipairs(cands) do
+        local t, mb = cand.t, cand.mb
+        do
           local c = D.card[mb.card]
-          local staff = mb.slot >= 19 or (c and c.staff)
+          local role = cand.extra and "player" or role_of(R, c, mb)
           local mine = c and c.base ~= 0 and (not R.one_page or home[c.base] == pg)
-          if c and c.base ~= 0 and not here[c.base] and (R.staff or not staff) and mine
+          if role ~= nil and not here[c.base] and mine
             and not (R.one_page and placed[c.base]) then
             here[c.base] = true
             local term = terms[mb.card]
@@ -630,7 +868,7 @@ function M.build(set, decls, ctx)
             local node = { kind = "player", zone = z, card = mb.card, base = c.base, face = "", level = level,
               price = price, spirit = spirit, item = item, x = 0, y = 0, links = {}, story = false, notes = {},
               cards = D.of_base[c.base] or { mb.card }, reqs = reqs, trials = optional, slot = mb.slot,
-              element = c.element, position = c.position, main = t == pg.team,
+              element = c.element, position = c.position, main = t == pg.team and not cand.extra, staff = role == "staff",
               px = spot and spot.x or -1, py = spot and spot.y or -1 }
             if ctx.own_face(mb.card, c.base) == false then
               node.kind = "hidden"
@@ -655,7 +893,7 @@ function M.build(set, decls, ctx)
         if c and not here[c.base] and ctx.own_face(card, c.base) ~= false then
           M2.nodes[#M2.nodes + 1] = { kind = "ghost", zone = z, card = card, base = c.base, face = "", level = 0, main = true,
             price = 0, x = 0, y = 0, links = {}, story = false, notes = {}, reqs = {}, slot = spot.slot,
-            px = spot.x, py = spot.y }
+            px = spot.x, py = spot.y, sold_at = home[c.base] and home[c.base].name_text or 0 }
         end
       end
       if zone.count > 0 then
@@ -682,6 +920,11 @@ function M.build(set, decls, ctx)
   ctx.info(string.format("set %s: team pages: %d maps, %d players (%s; %d with terms), %d without a face of their own "
     .. "left out", set.key, #out, n_players, table.concat(parts, ", "), n_terms, n_faceless))
   return out
+end
+
+-- the free-match tab of every game a piece holds (game -> routeType of its first piece); the game data read once
+function M.game_tabs(warn)
+  return data(warn or function() end).routes.tab_of or {}
 end
 
 return M

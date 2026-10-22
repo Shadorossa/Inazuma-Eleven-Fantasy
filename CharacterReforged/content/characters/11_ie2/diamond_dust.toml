@@ -20,10 +20,10 @@ moves = [
 [[edit]]
 target = "c02020840"                                   # Gocker
 moves = [
-  { move = 0x29728358, level = 1 },                         # Planet Shield
-  { move = 0x3526A49C, level = 59 },                        # Road Roller
-  { move = 0x65B7C1F1, level = 64 },                        # Sumo Stomp
-  { move = 0x50880BAF, level = 72 },                        # Frozen Steal
+  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x6C827857, level = 1 },                         # Rolling Steal
+  { move = 0x74CC079C, level = 22 },                        # Big Fan
+  { move = 0x2DFFFFEA, level = 55 },                        # Ground Quake
 ]
 
   [[edit.cards]]
@@ -36,8 +36,8 @@ moves = [
 target = "c02020870"                                   # Droll
 moves = [
   { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x19025F83, level = 60 },                        # Quick Draw
-  { move = 0x3C843987, level = 65 },                        # Flurry Dash
+  { move = 0x039DBAAC, level = 25 },                        # Land of Ice
+  { move = 0x0D368F6B, level = 65 },                        # Heaven's Time
   { move = 0x1B854A64, level = 70 },                        # Cosmic Blast
 ]
 
@@ -51,9 +51,9 @@ moves = [
 target = "c02020880"                                   # Rhine
 moves = [
   { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
-  { move = 0x46FA651E, level = 1 },                         # Water Veil
   { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+  { move = 0x46FA651E, level = 42 },                        # Water Veil
+  { move = 0x4683AADF, level = 75 },                        # Space Penguin
 ]
 
   [[edit.cards]]
@@ -66,20 +66,41 @@ moves = [
 target = "c02020890"                                   # Gazelle
 growth = "normal"
 stats = { kick = 339, control = 257, technique = 263, pressure = 193, physical = 188, intelligence = 234, agility = 165, freedom = 213 }
-moves = [
-  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
-  { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x09C23C18, level = 77 },                        # Fire Blizzard
-]
+
+  [[edit.cards]]
+  id = 0x37DCD24E    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                       # Power Shot
+    { move = 0x5E5AF1A9, level = 1 },                       # Northern Impact
+    { move = 0x0D368F6B, level = 1 },                       # Heaven's Time
+    { move = 0x09C23C18, level = 60 },                      # Fire Blizzard
+  ]
+
+  [[edit.cards]]
+  id = 0x3BB3BC24    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                       # Power Shot
+    { move = 0x5E5AF1A9, level = 1 },                       # Northern Impact
+    { move = 0x0D368F6B, level = 1 },                       # Heaven's Time
+    { move = 0x09C23C18, level = 60 },                      # Fire Blizzard
+  ]
+
+  [[edit.cards]]
+  id = 0xBDB75D6F    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6B4A7B35, level = 1 },                       # Power Shot
+    { move = 0x5E5AF1A9, level = 1 },                       # Northern Impact
+    { move = 0x0D368F6B, level = 1 },                       # Heaven's Time
+    { move = 0x09C23C18, level = 60 },                      # Fire Blizzard
+  ]
 
 [[edit]]
 target = "c02022610"                                   # Beluga
 moves = [
   { move = 0xC4701649, level = 1 },                         # Ice Block
-  { move = 0x2B343D01, level = 1 },                         # Cyclone
-  { move = 0x94E17324, level = 60 },                        # Tornado Catch
-  { move = 0x50880BAF, level = 70 },                        # Frozen Steal
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
+  { move = 0x8B31808E, level = 32 },                        # Wormhole
+  { move = 0x50880BAF, level = 60 },                        # Frozen Steal
 ]
 
   [[edit.cards]]
@@ -91,10 +112,10 @@ moves = [
 [[edit]]
 target = "c02022620"                                   # Arkew
 moves = [
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x08EEBD53, level = 1 },                         # Feint Play
   { move = 0x50880BAF, level = 1 },                         # Frozen Steal
-  { move = 0x01DB04F5, level = 62 },                        # Defence Scan
-  { move = 0xC4701649, level = 75 },                        # Ice Block
+  { move = 0x23C3EE90, level = 1 },                         # Shoulder Tackle
+  { move = 0x5E5AF1A9, level = 62 },                        # Northern Impact
 ]
 
   [[edit.cards]]
@@ -107,9 +128,9 @@ moves = [
 target = "c02022650"                                   # Icer
 moves = [
   { move = 0x514A6198, level = 1 },                         # Asteroid Belt
-  { move = 0x50880BAF, level = 1 },                         # Frozen Steal
-  { move = 0xDCF43422, level = 59 },                        # Aurora Dribble
-  { move = 0x5E5AF1A9, level = 75 },                        # Northern Impact
+  { move = 0x79224D8B, level = 15 },                        # Freeze Shot
+  { move = 0x06458894, level = 60 },                        # Feint Dash
+  { move = 0x94405906, level = 75 },                        # Grand Fenrir
 ]
 
   [[edit.cards]]
@@ -123,9 +144,9 @@ moves = [
 target = "c02022660"                                   # Balen
 moves = [
   { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x4E9A9232, level = 59 },                        # Spinning Cut
-  { move = 0xB633C4E1, level = 62 },                        # Photon Crash
-  { move = 0x574008CD, level = 68 },                        # Kung Fu Fighting
+  { move = 0x4E9A9232, level = 29 },                        # Spinning Cut
+  { move = 0x36A270F2, level = 45 },                        # Rolling Slide
+  { move = 0x7DAF3139, level = 68 },                        # Emperor Penguin No. 2
 ]
 
   [[edit.cards]]
@@ -139,7 +160,7 @@ target = "c02022690"                                   # Blown
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
   { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x4F58F805, level = 59 },                        # Coil Turn
+  { move = 0xDCF43422, level = 32 },                        # Aurora Dribble
   { move = 0x5E5AF1A9, level = 70 },                        # Northern Impact
 ]
 
@@ -154,9 +175,9 @@ moves = [
 target = "c02022710"                                   # Frost
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x61FB16FD, level = 59 },                        # Divine Arrows
+  { move = 0x5F989B9E, level = 33 },                        # Wyvern Crash
+  { move = 0x97C48D68, level = 59 },                        # Astro Gate
   { move = 0x46FA651E, level = 68 },                        # Water Veil
-  { move = 0x6DAEF91C, level = 80 },                        # Supernova
 ]
 
   [[edit.cards]]

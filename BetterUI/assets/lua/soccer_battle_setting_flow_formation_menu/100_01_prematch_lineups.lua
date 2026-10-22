@@ -407,15 +407,17 @@ function SetupTeamInfoHeaderLayer(a1, a2)
   if soccer_team_info == false then
     soccer_team_info2 = 0
   end
-  local search_prim_index = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], l3, n5, 762262827)
+  local ret3 = funcLuaCommand(1961459131, team_no)
+  local l4 = ret3 and 644987410 or 762262827
+  local search_prim_index = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], l3, n5, l4)
   funcLuaMenuCommand(3609943765, l3, 0, search_prim_index, soccer_team_info2)
   SetupEmblemIcon(l3, n5, team_no, 3778085091, 0)
   if a2 == false then
     funcLuaMenuCommand(558735651, l3, 2884377976, 3775818648, 2137718331, 0, n5)
     funcLuaMenuCommand(558735651, l3, 2884377976, 4187439281, 1620971787, 0, n5)
   end
-  local ret3 = funcLuaCommand(1191545622)
-  if IsEnableSequenceTimer() or ret3 then
+  local ret4 = funcLuaCommand(1191545622)
+  if IsEnableSequenceTimer() or ret4 then
     funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], l3, n5, 902337421 --[[offset01]], 0, 2375276105)
   end
 end

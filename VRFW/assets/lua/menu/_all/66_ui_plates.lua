@@ -65,6 +65,10 @@ if VRFW_UI == nil then
     SLOT_POS = 255392163,          -- icon_position_status_dmy01 (the badge's texture slot)
     FRAME = 2273809808,            -- _seasonal_frame01
     LV_NUM = 3434305008,           -- num_status_lv01
+    -- the «Nv.» label, its lock and the digits' node; the rarity banner's node and mesh
+    LV_PARTS = {MESH = 1034363700 --[[_gtxt_status_lv01]], LOCK = 4071435007 --[[_icon_lock_lv01]],
+      NODE = 2976428572 --[[_num_status_lv01]]},
+    RARITY = {NODE = 1457835367 --[[_pos_rarity01]], MESH = 1052197874 --[[_player_rarity01]]},
     PORTRAIT = 2531809341,         -- _icon_chr_status01 (the portrait icon)
     -- the band strip (a soccer11_04 plate showing only its two band sprites and / or its description box)
     BAND = {263290134, 2528652460},                                  -- _status_chr_base_s01 / _s02
@@ -357,9 +361,47 @@ if VRFW_UI == nil then
     if ok and type(prim) == "number" then
       M(C.PRIM_SET, layer, inst or 0, prim, math.floor(level))
       M(C.PRIM_VIS, layer, inst or 0, HR.LV_NUM, true)
+      M(C.NODE_VIS, layer, HR.LV_PARTS.NODE, true, inst or 0)
+      M(C.MESH, layer, HR.LV_PARTS.MESH, true, inst or 0)
+      M(C.MESH, layer, HR.LV_PARTS.LOCK, false, inst or 0)
       return true
     end
     return false
+  end
+
+  -- a row without a level: the «Nv.» label, its lock and the digits off
+  function HR.LevelOff(layer, inst)
+    M(C.MESH, layer, HR.LV_PARTS.MESH, false, inst or 0)
+    M(C.MESH, layer, HR.LV_PARTS.LOCK, false, inst or 0)
+    M(C.NODE_VIS, layer, HR.LV_PARTS.NODE, false, inst or 0)
+    M(C.PRIM_VIS, layer, inst or 0, HR.LV_NUM, false)
+  end
+
+  -- a plate without its rarity banner: the banner's node and mesh off (the node holds only the banner)
+  function HR.RarityOff(layer, inst)
+    M(C.NODE_VIS, layer, HR.RARITY.NODE, false, inst or 0)
+    M(C.MESH, layer, HR.RARITY.MESH, false, inst or 0)
+  end
+
+  -- a plate without rarity banner and without level: the banner, the whole level group (_pos_lv01: «Nv.», its lock,
+  -- the digits and their dummy mesh) and the exp gauge under it (_pos_exp01) off
+  HR.LEVEL_GROUP = 44923504        -- _pos_lv01
+  HR.EXP_GROUP = 1469422130        -- _pos_exp01
+  function HR.Bare(layer, inst)
+    HR.RarityOff(layer, inst)
+    HR.LevelOff(layer, inst)
+    M(C.NODE_VIS, layer, HR.LEVEL_GROUP, false, inst or 0)
+    M(C.NODE_VIS, layer, HR.EXP_GROUP, false, inst or 0)
+  end
+
+  -- status handles whose header rows show no rarity title (a screen marks its temporary status here); ShowsTitle is a
+  -- rule a mod can declare for a header host that asks whether a card's title shows (false = no title)
+  HR.noTitle = {}
+  function HR.ShowsTitle(hdl)
+    if hdl ~= nil and HR.noTitle[hdl] then
+      return false
+    end
+    return nil
   end
 
   function HR.PortraitOff(layer, inst)

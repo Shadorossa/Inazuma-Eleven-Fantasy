@@ -1,0 +1,20 @@
+schema = "VRFW.sound/1"
+# Voices of a character's cards (docs/game/audio/variant-voice-gaps.md). The cards of one character (same Japanese
+# name) often play different voice banks: a Mix-Max, seasonal or keshin-armed card has its own bank, or borrows the
+# base card's bank, and each bank lacks shouts the others have (the seasonal Fei c05028090 plays c05020110, which has no
+# «Colmillo retorcido» shout; ja/c05028090 has it). The framework adds to every bank a card plays the cues of these
+# kinds that another bank of the same character has and it lacks, copied from the player's own banks (base bank first);
+# the bank's own lines are never replaced. One character = the same name in Japanese and in English; an adult bank only
+# takes an adult bank's cues and a youth bank a youth bank's (chara_base age group). A bank that has one key of a
+# technique (God Hand whk00010) also gets its other keys (whk00480, whk01710) as copies of that cue.
+[[VRFW.VoiceFill]]
+Name = "CharacterReforged.CharacterVoices"
+NameLanguages = ["ja", "en"]
+SameAgeGroup = true
+AlternateKeys = true
+Cues = [
+  # technique shouts and their scene variants, keshin / totem invocations, Mix-Max and armour shouts
+  "wh*", "a*_wh*", "k*_inc", "wmm", "wmt", "armed", "was*", "wao*", "wad*", "wak*",
+  # in-match lines: match, goal, pass, shot, keeper, special lines and reactions
+  "bt*", "gl*", "pa*", "sh*", "kp*", "sp*", "wa0*", "fr*", "jp*",
+]

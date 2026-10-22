@@ -1,0 +1,110 @@
+# Texts of the VR-Framework's gacha service (docs/framework/gacha.md): rows of menu_text in the framework's 9 languages,
+# read by the gacha's game Lua (assets\lua\menu\_all\63_gacha.lua) with CMND_TEXT_GET by id = crc32(row id). A pool's own
+# question is the declaring mod's text ([[VRFW.GachaPool]] question).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# every card of the pool is already in the club (nothing can be drawn); crc32("vrfw_gacha_pool_empty")
+[[row]]
+id = "vrfw_gacha_pool_empty"
+es = "Ya tienes a todos los jugadores de este gacha."
+en = "You already have every player of this gacha."
+fr = "Tu as déjà tous les joueurs de ce gacha."
+de = "Du hast schon alle Spieler dieses Gachas."
+it = "Hai già tutti i giocatori di questo gacha."
+pt = "Já tens todos os jogadores deste gacha."
+ja = "このガチャの選手はすべて仲間になっています。"
+zh_hans = "这个扭蛋的球员已全部入队。"
+zh_hant = "這個扭蛋的球員已全部入隊。"
+
+# the draw's cost is missing (the pool's cost_item); crc32("vrfw_gacha_no_cost")
+[[row]]
+id = "vrfw_gacha_no_cost"
+es = "No tienes suficientes objetos para usar este gacha."
+en = "You don't have enough items to use this gacha."
+fr = "Tu n'as pas assez d'objets pour utiliser ce gacha."
+de = "Du hast nicht genug Gegenstände für dieses Gacha."
+it = "Non hai abbastanza oggetti per usare questo gacha."
+pt = "Não tens objetos suficientes para usar este gacha."
+ja = "このガチャを回すためのアイテムが足りません。"
+zh_hans = "道具不足，无法使用这个扭蛋。"
+zh_hant = "道具不足，無法使用這個扭蛋。"
+
+# a gacha node's command row when its pool names none (GachaPool `command`); crc32("vrfw_gacha_command")
+[[row]]
+id = "vrfw_gacha_command"
+es = "Girar el gacha"
+en = "Spin the gacha"
+fr = "Lancer le gacha"
+de = "Gacha drehen"
+it = "Gira il gacha"
+pt = "Girar o gacha"
+ja = "ガチャを回す"
+zh_hans = "转扭蛋"
+zh_hant = "轉扭蛋"
+
+# the drawn player joined the club (%s = his name); crc32("vrfw_gacha_joined")
+[[row]]
+id = "vrfw_gacha_joined"
+es = "¡%s se ha unido al equipo!"
+en = "%s joined the team!"
+fr = "%s a rejoint l'équipe !"
+de = "%s ist dem Team beigetreten!"
+it = "%s si è unito alla squadra!"
+pt = "%s juntou-se à equipa!"
+ja = "%sが仲間になった！"
+zh_hans = "%s加入了球队！"
+zh_hant = "%s加入了球隊！"
+
+# the obtained screen (content\pose_rows\gacha_obtained.toml): its header; crc32("vrfw_gacha_obtained_header")
+[[row]]
+id = "vrfw_gacha_obtained_header"
+es = "Nuevo jugador"
+en = "New player"
+fr = "Nouveau joueur"
+de = "Neuer Spieler"
+it = "Nuovo giocatore"
+pt = "Novo jogador"
+ja = "新しい選手"
+zh_hans = "新球员"
+zh_hant = "新球員"
+
+# the panel's title; crc32("vrfw_gacha_obtained_title")
+[[row]]
+id = "vrfw_gacha_obtained_title"
+es = "¡Enhorabuena!"
+en = "Congratulations!"
+fr = "Félicitations !"
+de = "Herzlichen Glückwunsch!"
+it = "Congratulazioni!"
+pt = "Parabéns!"
+ja = "おめでとう！"
+zh_hans = "恭喜！"
+zh_hant = "恭喜！"
+
+# the panel's line under the title; crc32("vrfw_gacha_obtained_info")
+[[row]]
+id = "vrfw_gacha_obtained_info"
+es = "¡Se ha unido al equipo!"
+en = "Joined the team!"
+fr = "A rejoint l'équipe !"
+de = "Ist dem Team beigetreten!"
+it = "Si è unito alla squadra!"
+pt = "Juntou-se à equipa!"
+ja = "仲間になった！"
+zh_hans = "加入了球队！"
+zh_hant = "加入了球隊！"
+
+# the list row and the tag on the player's card; crc32("vrfw_gacha_obtained_tag")
+[[row]]
+id = "vrfw_gacha_obtained_tag"
+es = "¡Nuevo fichaje!"
+en = "New signing!"
+fr = "Nouvelle recrue !"
+de = "Neuzugang!"
+it = "Nuovo acquisto!"
+pt = "Nova contratação!"
+ja = "新加入！"
+zh_hans = "新加盟！"
+zh_hant = "新加盟！"

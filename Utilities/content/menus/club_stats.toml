@@ -1,8 +1,12 @@
-# Utilities' «Estadísticas del club» (docs/game/ui/club-stats.md): the layers the panel
-# (assets/lua/play_guide_top_menu/150_club_stats.lua) draws with in «Caseta del club» (play_guide_top_menu), the same
-# recipe as the friends panel (content/menus/friends_panel.toml): quads of cmn01_10_new_icon for the friends atlas and the
-# game's list plates, the retail list character card for the portraits, the retail back-button text for the texts.
-# Added after the header in the group «common»; hidden until the panel opens.
+# Utilities' «Estadísticas del club» (docs/game/ui/club-stats.md): a page of its own, util_club_stats_menu, opened from
+# «Caseta del club» (play_guide_top_menu) the way that menu opens its «Archivo de escenas» (scene_archive_menu): the
+# Caseta keeps its background, header (title swapped), button guide and return arrow; this menu draws the page's
+# content over them and closes with B / Esc / right click.
+# Layers: the retail content guide line of the archive (the totals' «since» line), one retail list row of «Guardar»
+# kept off screen as the input anchor (every key of the page comes to it: MENU_CMD_INFO rows -> OnFunction / OnBack),
+# and the page's drawing pools: quads of cmn01_10_new_icon for the page's atlas (util_club_stats) and the game's list
+# plates, the retail list character card for the portraits, the retail back-button text for the texts.
+# Script: assets/lua/screens/util_club_stats_menu.lua.
 schema = "VRFW.menu/2"
 
 [[object]]
@@ -39,23 +43,53 @@ set = [
     { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 1005 } },
 ]
 
-[[patch]]
-menu = "play_guide_top_menu"
-add_layer = { name = "util_cst_back", object = "util_cst_back", count = 6, scale = 0.01, after = "mainmenu90_01_header", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_01_header" }] }
-res = ["#/menu/220_img/util_friends/util_friends.g4tx", "#/menu/51_save/save01/save01_02/save01_02.g4tx", "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx"]
+[[screen]]
+name = "util_club_stats_menu"
+like = "scene_archive_menu"                # registry row: a child page of «Caseta del club», as the archive
+base = "scene_archive_menu"
+script = "assets/lua/screens/util_club_stats_menu.lua"
 
-[[patch]]
-menu = "play_guide_top_menu"
-add_layer = { name = "util_cst_plate", object = "util_cst_plate", count = 40, scale = 0.01, after = "util_cst_back", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_back" }] }
-
-[[patch]]
-menu = "play_guide_top_menu"
-add_layer = { name = "util_cst_icon", object = "util_cst_icon", count = 12, scale = 0.01, after = "util_cst_plate", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_plate" }] }
-
-[[patch]]
-menu = "play_guide_top_menu"
-add_layer = { name = "util_cst_face", object = "util_cst_face", count = 9, scale = 0.01, after = "util_cst_icon", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_icon" }] }
-
-[[patch]]
-menu = "play_guide_top_menu"
-add_layer = { name = "util_cst_text", object = "util_cst_text", count = 120, scale = 0.01, after = "util_cst_face", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "util_cst_face" }] }
+[screen.rows]
+layer = [
+    { layer = "save01_02_list_item", from = "savedata_management_menu", count = 1 },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "util_cst_back", object = "util_cst_back", count = 4, scale = 0.01 },
+    { layer = "util_cst_plate", object = "util_cst_plate", count = 40, scale = 0.01 },
+    { layer = "util_cst_icon", object = "util_cst_icon", count = 12, scale = 0.01 },
+    { layer = "util_cst_face", object = "util_cst_face", count = 10, scale = 0.01 },
+    { layer = "util_cst_text", object = "util_cst_text", count = 120, scale = 0.01 },
+]
+# the anchor takes every key: B / Esc / right click close the page (CMD_BACK), up / down move, L1 / R1 a page,
+# Select (Tab) the next sort column
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = "util_cst_up", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = "util_cst_down", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = "util_cst_page_up", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = "util_cst_page_down", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC2", command = "CMD_FUNCTION", arg = "util_cst_sort", flag = 1 },
+]
+res = [
+    "#/menu/220_img/util_club_stats/util_club_stats.g4tx",
+    "#/menu/51_save/save01/save01_02/save01_02.g4tx",
+    "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx",
+]
+group_base = [
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "util_cst_back", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_cst_plate", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_cst_icon", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_cst_face", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_cst_text", flags = [0, 1, 0, 0, 1, 0] },
+]
+group = [
+    { group = "util_club_stats_menu", flags = [1], slice = [0, 7] },
+]
+focus_base = [[0x3A06AC3D, 0, 0]]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+]
+shift_base = []
+shift = []

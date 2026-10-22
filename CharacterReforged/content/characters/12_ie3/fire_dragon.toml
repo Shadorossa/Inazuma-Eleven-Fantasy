@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c03030710"                                   # Bryce Whitingale
 moves = [
-  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x163D8F70, level = 1 },                         # Chip Shot
   { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x09C23C18, level = 77 },                        # Fire Blizzard
+  { move = 0x5E5AF1A9, level = 10 },                        # Northern Impact
+  { move = 0x09C23C18, level = 50 },                        # Fire Blizzard
 ]
 VRFW.MoveGrades = [
   { Move = 0x46FA651E, Grade = 1 },                         # Water Veil
@@ -24,10 +24,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c03030690"                                   # Claude Beacons
 moves = [
-  { move = 0x44BCDB47, level = 1 },                         # Pyroclastic
-  { move = 0xAE2B3429, level = 1 },                         # Atomic Flare
+  { move = 0x163D8F70, level = 1 },                         # Chip Shot
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0x111B676E, level = 77 },                        # Fire Blizzard
+  { move = 0xAE2B3429, level = 10 },                        # Atomic Flare
+  { move = 0x111B676E, level = 50 },                        # Fire Blizzard
 ]
 VRFW.MoveGrades = [
   { Move = 0x5FE1545F, Grade = 1 },                         # Flame Veil
@@ -44,7 +44,7 @@ moves = [
   { move = 0x5B3151F0, level = 1 },                         # Nitro Slap
   { move = 0x47657634, level = 20 },                        # Flame Breath
   { move = 0xEF5D458A, level = 20 },                        # Burnout
-  { move = 0x5E7E4775, level = 47 },                        # Table-Turner
+  { move = 0xF9B80F86, level = 47 },                        # Strong Punch
 ]
 VRFW.MoveGrades = [
   { Move = 0x5B3151F0, Grade = 1 },                         # Nitro Slap
@@ -107,7 +107,7 @@ moves = [
   { move = 0x79E3E635, level = 1 },                         # Racing Flame
   { move = 0x3663DB4C, level = 16 },                        # Utter Gutsiness Bat
   { move = 0xEBD03938, level = 23 },                        # Utter Gutsiness Catch
-  { move = 0x5781A373, level = 42 },                        # Hurricane Arrows
+  { move = 0x23C3EE90, level = 42 },                        # Shoulder Tackle
 ]
 
   [[edit.cards]]
@@ -122,7 +122,7 @@ moves = [
   { move = 0x79E3E635, level = 1 },                         # Racing Flame
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
   { move = 0x41F3CDC2, level = 20 },                        # Scorching Tackle
-  { move = 0xABA58912, level = 46 },                        # Ignited Steal
+  { move = 0x1F5EB9D5, level = 46 },                        # Nutmeg
 ]
 VRFW.MoveGrades = [
   { Move = 0x79E3E635, Grade = 1 },                         # Racing Flame
@@ -139,7 +139,7 @@ target = "c03030680"                                   # Eunyeong Kim
 moves = [
   { move = 0x087999EE, level = 1 },                         # Heel Drop
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0x58E8FC83, level = 20 },                        # Rolling Hell
 ]
 VRFW.MoveGrades = [
@@ -156,7 +156,7 @@ VRFW.MoveGrades = [
 target = "c03030700"                                   # Changsu Choi
 moves = [
   { move = 0x087999EE, level = 1 },                         # Heel Drop
-  { move = 0x457EB170, level = 1 },                         # Pyrokinetic
+  { move = 0x62294D90, level = 1 },                         # Dust Kick
   { move = 0xB4B4D106, level = 20 },                        # Dragon Cannon
   { move = 0x316A7390, level = 63 },                        # Land Dragon
 ]
@@ -173,7 +173,7 @@ target = "c03030720"                                   # Chi-Won Ho
 moves = [
   { move = 0x5B3151F0, level = 1 },                         # Nitro Slap
   { move = 0x8FBCFC3C, level = 25 },                        # Blazing Knuckle
-  { move = 0xBFCC20E7, level = 36 },                        # Wood Chopper
+  { move = 0xD2955C45, level = 36 },                        # Power Catch
   { move = 0xEF5D458A, level = 50 },                        # Burnout
 ]
 
@@ -218,7 +218,7 @@ target = "c03030750"                                   # Sung-Jin Noh
 moves = [
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
   { move = 0x259F08C6, level = 12 },                        # Whirlwind Twister
-  { move = 0x41F3CDC2, level = 43 },                        # Scorching Tackle
+  { move = 0x6B4A7B35, level = 43 },                        # Power Shot
   { move = 0x4DDFEDE2, level = 72 },                        # Eagle Buster
 ]
 

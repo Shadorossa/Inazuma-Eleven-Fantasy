@@ -166,6 +166,13 @@ do
     end
     local okc, _, menu, mode = pcall(funcLuaCommand, C.CALLER, M.stem)
     if not okc then menu, mode = nil, nil end
+    -- after the match the game reopens the menu scene's root, not a menu opened inside it: the way back of a
+    -- return = "menus" friendly waits for the root (this menu is still the one closed at the reservation)
+    local root = param_get(PARAM_SCENE_ROOT)
+    if type(menu) == "number" and root ~= nil and root ~= unsigned(menu) and menu_exists(root) then
+      pcall(funcLuaCommand, C.CALLER, root)
+      log("caller: the scene root", root, "(the menu the game reopens after the match)")
+    end
     if type(spec.play_mode) == "number" then
       pcall(funcLuaCommand, C.PLAY_MODE, spec.play_mode)
     end

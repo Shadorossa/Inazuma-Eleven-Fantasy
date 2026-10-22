@@ -9,3 +9,7 @@ handler = "Recruit.Club"
 [[VRFW.Command]]
 name = "CMND_VRFW_RECRUIT_HOLDERS"  # (card, ...) -> { {handle, param, level, busy}, ... }: the club players of those cards
 handler = "Recruit.Holders"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_RECRUIT_GAME_STADIUM"  # (game) -> map crc (0 = none): a match row's own stadium in the game data
+handler = "Recruit.GameStadium"

@@ -7,14 +7,15 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02024720"                                   # Thor Stoutberg
 moves = [
+  { move = 0x62294D90, level = 1 },                         # Dust Kick
   { move = 0xDB01CFC1, level = 1 },                         # Thunder Beast
-  { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
-  { move = 0x3069B219, level = 30 },                        # Super Sumo Stomp
-  { move = 0x1B44E1DA, level = 56 },                        # Stone Wall
+  { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
+  { move = 0xB2BEB853, level = 1 },                         # Whale Guard
 ]
 VRFW.MoveGrades = [
   { Move = 0xDB01CFC1, Grade = 2 },                         # Thunder Beast
   { Move = 0x3069B219, Grade = 2 },                         # Super Sumo Stomp
+  { Move = 0xB2BEB853, Grade = 2 },                         # Whale Guard
 ]
 
   [[edit.cards]]
@@ -27,9 +28,9 @@ VRFW.MoveGrades = [
 target = "c03030060"                                   # Jordan Greenway
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x10A0C298, level = 1 },                         # Warp Drive
-  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
-  { move = 0x029E7B25, level = 53 },                        # Gaia Break
+  { move = 0x10A0C298, level = 5 },                         # Warp Drive
+  { move = 0x43B5739B, level = 38 },                        # Lightning Bolt
+  { move = 0x97C48D68, level = 48 },                        # Astro Gate
 ]
 VRFW.MoveGrades = [
   { Move = 0x7C6D5B0E, Grade = 1 },                         # Astro Break
@@ -46,9 +47,9 @@ VRFW.MoveGrades = [
 target = "c03030040"                                   # Xavier Foster
 moves = [
   { move = 0x65766A4F, level = 1 },                         # Meteor Blade
-  { move = 0x6DAEF91C, level = 35 },                        # Supernova
-  { move = 0xB633C4E1, level = 41 },                        # Photon Crash
-  { move = 0x2296A01A, level = 62 },                        # Southern Cross
+  { move = 0xB633C4E1, level = 5 },                         # Photon Crash
+  { move = 0xC3D894B7, level = 35 },                        # The Dawn
+  { move = 0xEE3E059F, level = 40 },                        # Celestial Smash
 ]
 VRFW.MoveGrades = [
   { Move = 0x65766A4F, Grade = 1 },                         # Meteor Blade
@@ -61,45 +62,43 @@ VRFW.MoveGrades = [
 
 [[edit]]
 target = "c03030050"                                   # Caleb Stonewall
-moves = [
-  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
-  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
-  { move = 0x71831119, level = 1 },                         # Foul Offence 2
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-]
-VRFW.MoveGrades = [
-  { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
-]
 
   [[edit.cards]]
   id = 0x840661DF                                         # MF/FW · fire
   growth_pattern = 1
   growth = "normal"
   stats = { kick = 279, control = 251, technique = 271, pressure = 198, physical = 184, intelligence = 252, agility = 197, freedom = 293 }
+  moves = [
+    { move = 0x5643C944, level = 1 },                       # Killer Slide
+    { move = 0x71831119, level = 1 },                       # Foul Offence 2
+    { move = 0xBF6D0AC5, level = 50 },                      # Emperor Penguin No. 3
+    { move = 0xC16279D1, level = 60 },                      # Field of Force
+  ]
+
 
 [[edit]]
-target = "c03030010"                                   # Austin Hobbes
-moves = [
-  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
-  { move = 0x232D05EC, level = 3 },                         # Tiger Drive
-  { move = 0xA6763B84, level = 11 },                        # Gladius Arch
-  { move = 0xF02C9C02, level = 21 },                        # Tiger Storm
+target = "c03030050"
+card = 0x840661DF
+VRFW.MoveGrades = [
+  { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
 ]
+[[edit]]
+target = "c03030010"                                   # Austin Hobbes
 
   [[edit.cards]]
   id = 0xE06AA4DB                                         # FW/MF · forest
   rank = 3
   growth = "normal"
   stats = { kick = 292, control = 252, technique = 230, pressure = 190, physical = 146, intelligence = 212, agility = 203, freedom = 351 }
+  moves = [
+    { move = 0x0CF4E55C, level = 1 },                       # Double Touch
+    { move = 0xA6763B84, level = 11 },                      # Gladius Arch
+    { move = 0x232D05EC, level = 21 },                      # Tiger Drive
+    { move = 0xF02C9C02, level = 31 },                      # Tiger Storm
+  ]
 
 [[edit]]
 target = "c03030020"                                   # Archer Hawkins
-moves = [
-  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
-  { move = 0x04941270, level = 4 },                         # Vac Attack
-  { move = 0x142DBE2A, level = 30 },                        # Foul Offence
-  { move = 0x7B64F3D2, level = 40 },                        # Hawk Shot
-]
 
   [[edit.cards]]
   id = 0xCB47F718                                         # DF/MF · wind
@@ -107,14 +106,20 @@ moves = [
   rank = 3
   growth = "normal"
   stats = { kick = 243, control = 158, technique = 203, pressure = 223, physical = 278, intelligence = 217, agility = 163, freedom = 271 }
+  moves = [
+    { move = 0x08EEBD53, level = 1 },                       # Feint Play
+    { move = 0x142DBE2A, level = 30 },                      # Foul Offence
+    { move = 0x7B64F3D2, level = 40 },                      # Hawk Shot
+    { move = 0x04941270, level = 50 },                      # Vac Attack
+  ]
 
 [[edit]]
 target = "c03030080"                                   # Camellia Travis
 moves = [
-  { move = 0x4E9A9232, level = 16 },                        # Spinning Cut
-  { move = 0xB5B7108F, level = 29 },                        # Shadow Stitch
-  { move = 0xC7A9BB3A, level = 36 },                        # Whirlwind Cut
-  { move = 0x3F00EDE9, level = 50 },                        # Dash Storm
+  { move = 0x73C5AF40, level = 10 },                        # Dash Accelerator
+  { move = 0x7EEA4EE9, level = 16 },                        # Blade Attack
+  { move = 0x4890FB67, level = 23 },                        # Twin Boost
+  { move = 0x36A270F2, level = 38 },                        # Rolling Slide
 ]
 
   [[edit.cards]]
@@ -141,10 +146,10 @@ moves = [
 [[edit]]
 target = "c11901160"                                   # Jude Sharp
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x4890FB67, level = 1 },                         # Twin Boost
   { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+  { move = 0x32EEA7FE, level = 55 },                        # Death Zone 2
 ]
 
   [[edit.cards]]

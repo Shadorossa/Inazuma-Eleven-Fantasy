@@ -1,0 +1,17 @@
+# The recruit service's action of the save adjust (Options › «Ajustar save», docs/framework/save-adjust.md): players
+# signed by the recruit service (VRFW_Recruit.Sign: contact map, office, pachangas, the board's gacha and rewards)
+# before VRFW 2.66 kept the season bit the game's add-character call leaves on them («Jugador de temporada» in the
+# bank). The action clears that bit on those records only (scripts\recruit.lua, Recruit.SaveAdjust.clear_season:
+# normal-bank players joined by signing / scouting, never a retail season card of rarity 9, a story or an INAROGUE
+# player). Log: «save adjust: clear_season: …».
+schema = "VRFW.save_adjust/1"
+
+[[VRFW.SaveAdjust]]
+id = "clear_season"
+label = "vrfw_save_tools_clear_season"
+description = "vrfw_save_tools_clear_season_desc"
+result = "vrfw_save_tools_clear_season_done"
+order = 50
+script = "recruit.lua"
+run = "Recruit.SaveAdjust.clear_season"
+available = "Recruit.SaveAdjust.can_clear_season"

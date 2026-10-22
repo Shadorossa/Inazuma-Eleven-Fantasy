@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02024010"                                   # Rocky Black
 moves = [
-  { move = 0x422A60B1, level = 1 },                         # Barrier Reef
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
   { move = 0x5E7E4775, level = 1 },                         # Table-Turner
   { move = 0x96A7CD7D, level = 1 },                         # Tsunami Wall
-  { move = 0xC2BBD4A2, level = 46 },                        # Wild Claw
+  { move = 0x422A60B1, level = 46 },                        # Barrier Reef
 ]
 
   [[edit.cards]]
@@ -23,8 +23,8 @@ moves = [
 target = "c02024020"                                   # Chad Taylor
 moves = [
   { move = 0x4F58F805, level = 1 },                         # Coil Turn
-  { move = 0x259F08C6, level = 33 },                        # Whirlwind Twister
-  { move = 0x261BDCA8, level = 38 },                        # Moonsault
+  { move = 0x46FA651E, level = 33 },                        # Water Veil
+  { move = 0x74CC079C, level = 38 },                        # Big Fan
   { move = 0x4D1E465C, level = 43 },                        # Fake Bomber
 ]
 
@@ -39,8 +39,8 @@ target = "c02024030"                                   # Victor Hills
 moves = [
   { move = 0x637C031A, level = 1 },                         # No Escape
   { move = 0x8DFA4265, level = 35 },                        # Toughness Block
-  { move = 0xA7157B91, level = 42 },                        # Power Shield
-  { move = 0x65B7C1F1, level = 51 },                        # Sumo Stomp
+  { move = 0x96A7CD7D, level = 42 },                        # Tsunami Wall
+  { move = 0x75994916, level = 51 },                        # Cunning Pull
 ]
 
   [[edit.cards]]
@@ -55,23 +55,78 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 274, control = 182, technique = 208, pressure = 231, physical = 232, intelligence = 258, agility = 167, freedom = 209 }
-moves = [
-  { move = 0xA4B51923, level = 1 },                         # The Typhoon
-  { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
-  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
-  { move = 0xB2BEB853, level = 50 },                        # Whale Guard
-]
+
+  [[edit.cards]]
+  id = 0x5700BD47    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6C827857, level = 1 },                       # Rolling Steal
+    { move = 0x2BF596BF, level = 1 },                       # Tsunami Boost
+    { move = 0xB2BEB853, level = 28 },                      # Whale Guard
+    { move = 0xA4B51923, level = 38 },                      # The Typhoon
+  ]
+
+  [[edit.cards]]
+  id = 0x8968E5CD    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6C827857, level = 1 },                       # Rolling Steal
+    { move = 0x2BF596BF, level = 1 },                       # Tsunami Boost
+    { move = 0xB2BEB853, level = 28 },                      # Whale Guard
+    { move = 0xA4B51923, level = 38 },                      # The Typhoon
+  ]
+
+  [[edit.cards]]
+  id = 0x968E6287    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6C827857, level = 1 },                       # Rolling Steal
+    { move = 0x2BF596BF, level = 1 },                       # Tsunami Boost
+    { move = 0xB2BEB853, level = 28 },                      # Whale Guard
+    { move = 0xA4B51923, level = 38 },                      # The Typhoon
+  ]
+
+  [[edit.cards]]
+  id = 0xD78D1393    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x6C827857, level = 1 },                       # Rolling Steal
+    { move = 0x2BF596BF, level = 1 },                       # Tsunami Boost
+    { move = 0xB2BEB853, level = 28 },                      # Whale Guard
+    { move = 0xA4B51923, level = 38 },                      # The Typhoon
+  ]
+
+
+[[edit]]
+target = "c02024040"
+card = 0x5700BD47
 VRFW.MoveGrades = [
   { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost
 ]
 
 [[edit]]
+target = "c02024040"
+card = 0x8968E5CD
+VRFW.MoveGrades = [
+  { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost
+]
+
+[[edit]]
+target = "c02024040"
+card = 0x968E6287
+VRFW.MoveGrades = [
+  { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost
+]
+
+[[edit]]
+target = "c02024040"
+card = 0xD78D1393
+VRFW.MoveGrades = [
+  { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost
+]
+[[edit]]
 target = "c02024050"                                   # Hector Redding
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x75994916, level = 1 },                         # Cunning Pull
   { move = 0x41F3CDC2, level = 35 },                        # Scorching Tackle
-  { move = 0x44E1A25A, level = 38 },                        # Pressure Punch
-  { move = 0x4D1E465C, level = 45 },                        # Fake Bomber
+  { move = 0x36A270F2, level = 38 },                        # Rolling Slide
+  { move = 0xF5C2A0A5, level = 55 },                        # Capoeira Grab
 ]
 
   [[edit.cards]]
@@ -85,7 +140,7 @@ target = "c02024060"                                   # Mackenzie Fordline
 moves = [
   { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
   { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
-  { move = 0x142DBE2A, level = 37 },                        # Foul Offence
+  { move = 0xB2BEB853, level = 37 },                        # Whale Guard
   { move = 0x2B343D01, level = 42 },                        # Cyclone
 ]
 
@@ -100,8 +155,8 @@ target = "c02024070"                                   # Cadence Soundtown
 moves = [
   { move = 0x7A67325B, level = 1 },                         # Flame Dance
   { move = 0x3EC287DE, level = 33 },                        # Bubble Gum
-  { move = 0x01DB04F5, level = 40 },                        # Defence Scan
-  { move = 0xDD365E15, level = 50 },                        # Mole Shuffle
+  { move = 0x47380F29, level = 40 },                        # Echo Ball
+  { move = 0x13D845C9, level = 62 },                        # Samba Strike
 ]
 
   [[edit.cards]]
@@ -114,10 +169,10 @@ moves = [
 [[edit]]
 target = "c02024080"                                   # Dora Delight
 moves = [
-  { move = 0xB2BEB853, level = 1 },                         # Whale Guard
+  { move = 0x62294D90, level = 1 },                         # Dust Kick
   { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
-  { move = 0x7A67325B, level = 44 },                        # Flame Dance
-  { move = 0x68982058, level = 56 },                        # Armadillo Circus
+  { move = 0xB2BEB853, level = 44 },                        # Whale Guard
+  { move = 0xF1EEF635, level = 56 },                        # The Hurricane
 ]
 
   [[edit.cards]]
@@ -133,7 +188,7 @@ moves = [
   { move = 0x4DDFEDE2, level = 1 },                         # Eagle Buster
   { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
   { move = 0x332CCDC9, level = 36 },                        # Heel Kick
-  { move = 0xDEB28A7B, level = 47 },                        # Monkey Turn
+  { move = 0xA01CD34D, level = 65 },                        # Temporal Wall
 ]
 
   [[edit.cards]]
@@ -146,8 +201,8 @@ moves = [
 [[edit]]
 target = "c02024100"                                   # Joston Easton
 moves = [
-  { move = 0x5AAE42DA, level = 1 },                         # Triple Dash
-  { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
+  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x46FA651E, level = 1 },                         # Water Veil
   { move = 0x3EC287DE, level = 43 },                        # Bubble Gum
   { move = 0x261BDCA8, level = 55 },                        # Moonsault
 ]
@@ -165,7 +220,7 @@ moves = [
   { move = 0x78E027BC, level = 1 },                         # Shine Drive
   { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
   { move = 0x60397CCA, level = 34 },                        # Cross Drive
-  { move = 0x4DDFEDE2, level = 49 },                        # Eagle Buster
+  { move = 0xE8F5C774, level = 49 },                        # Megalodon
 ]
 
   [[edit.cards]]
@@ -179,8 +234,8 @@ target = "c02024120"                                   # Gaston Cooley
 moves = [
   { move = 0xD824318D, level = 1 },                         # Swan Dive
   { move = 0x259F08C6, level = 36 },                        # Whirlwind Twister
-  { move = 0x5C38F92C, level = 40 },                        # Mistral
   { move = 0x96A7CD7D, level = 53 },                        # Tsunami Wall
+  { move = 0xC4701649, level = 66 },                        # Ice Block
 ]
 
   [[edit.cards]]
@@ -193,7 +248,7 @@ moves = [
 target = "c02024130"                                   # Bevan Breakfast
 moves = [
   { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
-  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x695A4A6F, level = 1 },                         # Magic
   { move = 0x2EBA803A, level = 37 },                        # Dirt Ball
   { move = 0x637C031A, level = 64 },                        # No Escape
 ]
@@ -209,7 +264,7 @@ target = "c02024140"                                   # Jack Griddle
 moves = [
   { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
   { move = 0x1D4E888F, level = 1 },                         # Condor Dive
-  { move = 0x6B1CF436, level = 34 },                        # Bewildered
+  { move = 0x7A67325B, level = 34 },                        # Flame Dance
   { move = 0xDD365E15, level = 54 },                        # Mole Shuffle
 ]
 
@@ -222,7 +277,7 @@ moves = [
 [[edit]]
 target = "c02024150"                                   # Stan Andagi
 moves = [
-  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
   { move = 0x166B0073, level = 1 },                         # Super Armadillo
   { move = 0x00196EC2, level = 36 },                        # Earthquake
   { move = 0x025FD09B, level = 47 },                        # Volcano Cut

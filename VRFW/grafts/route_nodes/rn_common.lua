@@ -111,6 +111,7 @@ function VRFW_RN_Load()
     end
   end
   VRFW_RN_Log("load", "nodes", #VRFW_RN.nodes, "roads", #VRFW_RN.roads)
+  VRFW_RN_WrapChara()
   for i = 1, #VRFW_RN.nodes do
     local nd = VRFW_RN.nodes[i]
     VRFW_RN_Log("node", i - 1, "piece", nd.piece, "idx", nd.idx, "slot", nd.slot, "linked", tostring(nd.linked), "gates", #nd.gates, "scale", nd.pieceScale)
@@ -197,7 +198,72 @@ function VRFW_RN_Hidden(idx)
     return false
   end
   local node = VRFW_RN_Load().byIdx[idx]
+  if node ~= nil and VRFW_RN_GroupHidden(node) then
+    return true
+  end
   return node ~= nil and node.lockedGuide == 0 and not VRFW_RN_Shown(node)
+end
+
+-- Hideable board groups ([[VRFW.BoardGroup]], content\board_groups\*.toml, scripts\board_group.lua): a mod lists board
+-- nodes that a switch hides at once, visually only (not drawn, not focusable, the d-pad skips them; their data and
+-- save state stay). The switch lives for the game session (CMND_VRFW_BOARD_HIDE); a mod's key or button calls
+-- VRFW_RN_SetHide. VRFW_RN_GROUPS = {pieces = {[pieceId] = true}, n}: read once per board VM.
+VRFW_RN_GROUPS = nil
+VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- CMND_VRFW_BOARD_GROUPS () -> { pieceId, … } of the hideable groups
+VRFW_RN_CMD_HIDE = 2817173096           -- CMND_VRFW_BOARD_HIDE () -> on; ("set", 0 | 1) -> on
+
+function VRFW_RN_Groups()
+  if VRFW_RN_GROUPS ~= nil then
+    return VRFW_RN_GROUPS
+  end
+  VRFW_RN_GROUPS = {pieces = {}, n = 0, on = false}
+  local ok, list = pcall(funcLuaCommand, VRFW_RN_CMD_GROUP_PIECES)
+  if ok and type(list) == "table" then
+    for _, p in ipairs(list) do
+      if type(p) == "number" then
+        VRFW_RN_GROUPS.pieces[p % 4294967296] = true
+        VRFW_RN_GROUPS.n = VRFW_RN_GROUPS.n + 1
+      end
+    end
+  end
+  local okh, on = pcall(funcLuaCommand, VRFW_RN_CMD_HIDE)
+  VRFW_RN_GROUPS.on = okh and on == true
+  VRFW_RN_Log("groups: hideable pieces", VRFW_RN_GROUPS.n, "hidden", tostring(VRFW_RN_GROUPS.on))
+  return VRFW_RN_GROUPS
+end
+
+function VRFW_RN_GroupHidden(node)
+  local G = VRFW_RN_Groups()
+  return G.on and node.piece ~= nil and G.pieces[node.piece % 4294967296] == true
+end
+
+-- how many board nodes a hide switch would hide (0: no mod declares a hideable group)
+function VRFW_RN_HideableCount()
+  return VRFW_RN_Groups().n
+end
+
+function VRFW_RN_HideOn()
+  return VRFW_RN_Groups().on
+end
+
+-- the switch: on = the hideable groups' nodes hidden (saved for the session); the pieces in view are placed again
+function VRFW_RN_SetHide(on)
+  local G = VRFW_RN_Groups()
+  on = on == true
+  if G.on == on then
+    return
+  end
+  G.on = on
+  pcall(funcLuaCommand, VRFW_RN_CMD_HIDE, "set", on and 1 or 0)
+  for _, node in ipairs(VRFW_RN_Load().nodes) do
+    if node.idx >= 0 and G.pieces[node.piece % 4294967296] then
+      local ok, inst = pcall(funcLuaMenuVSRouteTownCommand, VRFW_RN_CMD_PIECE_INSTANCE, node.idx)
+      if ok and type(inst) == "number" and inst >= 0 then
+        UpdatePlacementPiece(inst, VRFW_RN_Hidden(node.idx) and -1 or node.idx)
+      end
+    end
+  end
+  VRFW_RN_Log("groups: hidden", tostring(on))
 end
 
 -- The board balloon's text id of piece `idx` (UpdatePieceAtcBalloon): a closed node drawn locked shows its
@@ -715,6 +781,128 @@ function VRFW_RN_Path(t)
   end
   VRFW_RN_Log("rails: error", tostring(out))
   return t
+end
+
+-- Road-less nodes (`Road = false`: a point beside the board with no road of its own) never take the caravan off the
+-- roads: it stops at the node's beside piece, the road point the node hangs from, and leaves from there.
+-- VRFW_RN_OffRoad(t) (the move path, flat x1, y1, x2, y2, … of the map layer, after VRFW_RN_Path): a path that ends
+-- or starts at a road-less node ends / starts at its beside piece instead. VRFW_RN_CharaPiece(idx): the piece the
+-- caravan stands on for board piece `idx` (UpdateCharaPos, wrapped once by VRFW_RN_WrapChara). A node is road-less when
+-- the team type gives it a rail (beside -> node) but no road sprite. Kill switch VRFW_RN_RAILS.
+VRFW_RN_OFFROAD = nil
+
+function VRFW_RN_OffRoadNodes()
+  if VRFW_RN_OFFROAD ~= nil then
+    return VRFW_RN_OFFROAD
+  end
+  local L = VRFW_RN_Load()
+  local drawn = {}
+  for _, r in ipairs(L.roads) do
+    drawn[r.node] = true
+  end
+  VRFW_RN_OFFROAD = {byIdx = {}, n = 0}
+  for _, node in ipairs(L.nodes) do
+    if node.idx >= 0 and node.bidx >= 0 and #node.path >= 2 and not drawn[node.i] then
+      VRFW_RN_OFFROAD.byIdx[node.idx] = node
+      VRFW_RN_OFFROAD.n = VRFW_RN_OFFROAD.n + 1
+    end
+  end
+  VRFW_RN_Log("rails: road-less nodes", VRFW_RN_OFFROAD.n)
+  return VRFW_RN_OFFROAD
+end
+
+-- the piece the caravan stands on for board piece idx: a road-less node's beside piece, else idx
+function VRFW_RN_CharaPiece(idx)
+  if not VRFW_RN_RAILS or type(idx) ~= "number" or idx < 0 then
+    return idx
+  end
+  local node = VRFW_RN_OffRoadNodes().byIdx[idx]
+  return node ~= nil and node.bidx or idx
+end
+
+function VRFW_RN_OffRoad(t)
+  if not VRFW_RN_RAILS or type(t) ~= "table" or #t < 4 then
+    return t
+  end
+  local ok, out = pcall(function()
+    local P = {}
+    for k = 1, #t - 1, 2 do
+      P[#P + 1] = {t[k], t[k + 1]}
+    end
+    local changed, last = false, nil
+    for idx, node in pairs(VRFW_RN_OffRoadNodes().byIdx) do
+      local nx, ny = VRFW_RN_LayerPos(idx)
+      local bx, by = VRFW_RN_LayerPos(node.bidx)
+      if nx ~= nil and bx ~= nil then
+        local N, B = {nx, ny}, {bx, by}
+        if VRFW_RN_Near(P[#P], N) or VRFW_RN_Near(P[1], N) then
+          last = {N = N, B = B}
+        end
+        if VRFW_RN_Near(P[#P], N) then        -- going to the node: the caravan stops at its beside piece
+          table.remove(P)
+          if #P == 0 or not VRFW_RN_Near(P[#P], B) then
+            P[#P + 1] = B
+          end
+          changed = true
+        end
+        if #P > 0 and VRFW_RN_Near(P[1], N) then   -- leaving the node: from its beside piece
+          table.remove(P, 1)
+          if #P == 0 or not VRFW_RN_Near(P[1], B) then
+            table.insert(P, 1, B)
+          end
+          changed = true
+        end
+      end
+    end
+    if not changed then
+      return t
+    end
+    -- no leg of no length: the board's move divides by each leg's length (a zero leg gave the caravan a NaN place,
+    -- drawn huge over the board: install 265, from the piece beside a pachanga point)
+    local Q = {P[1]}
+    for k = 2, #P do
+      if not VRFW_RN_Near(P[k], Q[#Q]) then
+        Q[#Q + 1] = P[k]
+      end
+    end
+    P = Q
+    if #P < 2 then
+      -- the caravan is already at the road point: a step of a hair towards the node (it turns to face it, stays put)
+      local a, n = P[1], last and last.N or P[1]
+      local dx, dy = n[1] - a[1], n[2] - a[2]
+      local l = math.sqrt(dx * dx + dy * dy)
+      if l < 1e-6 then
+        dx, dy, l = 1, 0, 1
+      end
+      P[2] = {a[1] + dx / l * 0.5, a[2] + dy / l * 0.5}
+    end
+    local r = {}
+    for _, q in ipairs(P) do
+      r[#r + 1] = q[1]
+      r[#r + 1] = q[2]
+    end
+    VRFW_RN_Log("rails: road-less end", #t / 2, "->", #P, "points")
+    return r
+  end)
+  if ok and type(out) == "table" then
+    return out
+  end
+  VRFW_RN_Log("rails: road-less error", tostring(out))
+  return t
+end
+
+-- the caravan's place on the board (retail UpdateCharaPos(piece index), every idle frame): a road-less node's beside
+-- piece instead of the node; wrapped once, from the board's OnInit (VRFW_RN_Load's first call)
+VRFW_RN_CHARA_WRAPPED = false
+function VRFW_RN_WrapChara()
+  if VRFW_RN_CHARA_WRAPPED or type(UpdateCharaPos) ~= "function" then
+    return
+  end
+  VRFW_RN_CHARA_WRAPPED = true
+  local prev = UpdateCharaPos
+  UpdateCharaPos = function(a1, ...)
+    return prev(VRFW_RN_CharaPiece(a1), ...)
+  end
 end
 
 -- The board cursor follows the same rails (the green cursor still slid straight from Big Waves to

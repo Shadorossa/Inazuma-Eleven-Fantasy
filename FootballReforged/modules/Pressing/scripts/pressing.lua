@@ -90,8 +90,6 @@ P.settings = SETTINGS
 
 -- the soccer state of open play (the press runs only there)
 local STATE_IN_PLAY = 9
--- how often the focus field gate is asserted again (the framework forgets it at a new match)
-local GATE_EVERY_MS = 1000
 
 -- per team: the handles pressing now (handle -> the carrier his arrows point at, or true); the CPU's press until /
 -- rest until / next decision. owner: the team with the ball (nil = loose); last_owner: the last team that had it
@@ -101,7 +99,7 @@ local State = {
     [0] = { pressers = {}, count = 0, cpu_until = 0, cpu_rest = 0, cpu_next = 0 },
     [1] = { pressers = {}, count = 0, cpu_until = 0, cpu_rest = 0, cpu_next = 0 },
   },
-  gate_at = 0,
+  gate_set = false,   -- the focus field gate is set for this match (the framework forgets it at a new match)
   owner = nil,
   last_owner = nil,
   hud = false,
@@ -288,22 +286,27 @@ local function stop_all(why)
   stop(1, why)
 end
 
-local function assert_gate(now)
-  if SETTINGS.focus_field_gate == "off" or now - State.gate_at < GATE_EVERY_MS then return end
-  State.gate_at = now
+-- the focus field gate, once per match at its first frame (a refusal, e.g. not an offline match: logged once, the
+-- match keeps the game's focus field)
+local function set_gate()
+  if State.gate_set or SETTINGS.focus_field_gate == "off" then return end
+  State.gate_set = true
   for team = 0, 1 do
     local ok, done, why = pcall(VRFW.ai.focus_field_gate, team, SETTINGS.focus_field_gate)
-    if ok and not done and why and not State.gate_warned then
+    if not (ok and done) and not State.gate_warned then
       State.gate_warned = true
-      info("focus field gate not set: " .. tostring(why))
+      info("focus field gate not set: " .. tostring(ok and why or done))
     end
   end
 end
 
+VRFW.on("match_start", function() State.gate_set = false return nil end)
+VRFW.on("match_end", function() State.gate_set = false return nil end)
+
 VRFW.on("tick", function(ev)
   local m = ev.match or VRFW.match()
   local now = VRFW.now()
-  assert_gate(now)
+  set_gate()
   if not m or m.soccer_state ~= STATE_IN_PLAY then
     stop_all("play stopped")
     State.owner, State.last_owner = nil, nil

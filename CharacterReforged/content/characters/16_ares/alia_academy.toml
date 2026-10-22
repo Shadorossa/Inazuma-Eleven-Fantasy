@@ -8,9 +8,9 @@ schema = "VRFW.character/2"
 target = "c07100090"                                   # Ben Blowton
 moves = [
   { move = 0xABA58912, level = 1 },                         # Ignited Steal
-  { move = 0x4D1E465C, level = 59 },                        # Fake Bomber
-  { move = 0x166B0073, level = 63 },                        # Super Armadillo
-  { move = 0xA01CD34D, level = 70 },                        # Temporal Wall
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x166B0073, level = 35 },                        # Super Armadillo
+  { move = 0x9765A74A, level = 65 },                        # Beast Fang
 ]
 
   [[edit.cards]]
@@ -23,10 +23,10 @@ moves = [
 [[edit]]
 target = "c07100060"                                   # Bryce Whitingale
 moves = [
-  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x163D8F70, level = 1 },                         # Chip Shot
   { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x09C23C18, level = 77 },                        # Fire Blizzard
+  { move = 0x5E5AF1A9, level = 10 },                        # Northern Impact
+  { move = 0x09C23C18, level = 50 },                        # Fire Blizzard
 ]
 VRFW.MoveGrades = [
   { Move = 0x46FA651E, Grade = 1 },                         # Water Veil
@@ -40,10 +40,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c07100070"                                   # Claude Beacons
 moves = [
-  { move = 0x44BCDB47, level = 1 },                         # Pyroclastic
-  { move = 0xAE2B3429, level = 1 },                         # Atomic Flare
+  { move = 0x163D8F70, level = 1 },                         # Chip Shot
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0x111B676E, level = 77 },                        # Fire Blizzard
+  { move = 0xAE2B3429, level = 10 },                        # Atomic Flare
+  { move = 0x111B676E, level = 50 },                        # Fire Blizzard
 ]
 VRFW.MoveGrades = [
   { Move = 0x5FE1545F, Grade = 1 },                         # Flame Veil
@@ -58,9 +58,9 @@ VRFW.MoveGrades = [
 target = "c07100100"                                   # Grant Icewater
 moves = [
   { move = 0x6633159F, level = 1 },                         # Gravitation
-  { move = 0x520F1E48, level = 22 },                        # Psycho Shot
+  { move = 0x7FE98F60, level = 22 },                        # Ganymede Ray
   { move = 0x28B0E96F, level = 38 },                        # Heavy Mettle
-  { move = 0x7FE98F60, level = 44 },                        # Ganymede Ray
+  { move = 0x18019E0A, level = 44 },                        # Double Grenade
 ]
 
   [[edit.cards]]
@@ -73,9 +73,9 @@ moves = [
 target = "c07100030"                                   # Jordan Greenway
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x10A0C298, level = 1 },                         # Warp Drive
-  { move = 0x1B854A64, level = 32 },                        # Cosmic Blast
-  { move = 0x029E7B25, level = 53 },                        # Gaia Break
+  { move = 0x10A0C298, level = 5 },                         # Warp Drive
+  { move = 0x43B5739B, level = 38 },                        # Lightning Bolt
+  { move = 0x97C48D68, level = 48 },                        # Astro Gate
 ]
 VRFW.MoveGrades = [
   { Move = 0x7C6D5B0E, Grade = 1 },                         # Astro Break
@@ -91,9 +91,9 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c07100130"                                   # Ronny Metcalf
 moves = [
-  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
-  { move = 0x029E7B25, level = 1 },                         # Gaia Break
   { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x3B8D915B, level = 33 },                        # Meteor Shower
   { move = 0x5AAE42DA, level = 50 },                        # Triple Dash
 ]
 VRFW.MoveGrades = [
@@ -111,9 +111,9 @@ VRFW.MoveGrades = [
 target = "c07100050"                                   # Isabelle Trick
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
-  { move = 0x4683AADF, level = 35 },                        # Space Penguin
-  { move = 0xC66BD10D, level = 55 },                        # Zigzag Spark
+  { move = 0x750E6DAB, level = 45 },                        # Matador Feint
+  { move = 0x5E233E68, level = 55 },                        # Super Elastico
+  { move = 0xEB71131A, level = 70 },                        # X Blast
 ]
 
   [[edit.cards]]
@@ -126,9 +126,9 @@ moves = [
 target = "c07100010"                                   # Hunter Foster
 moves = [
   { move = 0x65766A4F, level = 1 },                         # Meteor Blade
-  { move = 0x6DAEF91C, level = 35 },                        # Supernova
-  { move = 0xB633C4E1, level = 41 },                        # Photon Crash
-  { move = 0x2296A01A, level = 62 },                        # Southern Cross
+  { move = 0xB633C4E1, level = 5 },                         # Photon Crash
+  { move = 0xC3D894B7, level = 35 },                        # The Dawn
+  { move = 0xEE3E059F, level = 40 },                        # Celestial Smash
 ]
 VRFW.MoveGrades = [
   { Move = 0x65766A4F, Grade = 1 },                         # Meteor Blade
@@ -156,8 +156,8 @@ moves = [
 [[edit]]
 target = "c07100120"                                   # Bonnie Sparks
 moves = [
-  { move = 0xB13A6C3D, level = 1 },                         # Zigzag Flame
   { move = 0xABA58912, level = 1 },                         # Ignited Steal
+  { move = 0xB13A6C3D, level = 38 },                        # Zigzag Flame
   { move = 0x3B8D915B, level = 44 },                        # Meteor Shower
   { move = 0xEF5D458A, level = 69 },                        # Burnout
 ]
@@ -171,10 +171,10 @@ moves = [
 [[edit]]
 target = "c07100110"                                   # Claire Lesnow
 moves = [
-  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
-  { move = 0x46FA651E, level = 1 },                         # Water Veil
-  { move = 0x8B31808E, level = 60 },                        # Wormhole
-  { move = 0xC4701649, level = 75 },                        # Ice Block
+  { move = 0x50880BAF, level = 1 },                         # Frozen Steal
+  { move = 0xC4701649, level = 30 },                        # Ice Block
+  { move = 0x6C827857, level = 40 },                        # Rolling Steal
+  { move = 0xB8C5883B, level = 65 },                        # God Hand X
 ]
 
   [[edit.cards]]
@@ -188,9 +188,9 @@ moves = [
 target = "c07100080"                                   # Nigel August
 moves = [
   { move = 0x30A819A7, level = 1 },                         # Twin Boost F
-  { move = 0xAE2B3429, level = 1 },                         # Atomic Flare
   { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0xABA58912, level = 1 },                         # Ignited Steal
+  { move = 0xAE2B3429, level = 50 },                        # Atomic Flare
+  { move = 0x3D10DCB3, level = 60 },                        # Curve Shot
 ]
 
   [[edit.cards]]
@@ -202,13 +202,15 @@ moves = [
 [[edit]]
 target = "c07100040"                                   # Dave Quagmire
 moves = [
-  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x3F00EDE9, level = 1 },                         # Dash Storm
+  { move = 0x1C8CE2B8, level = 1 },                         # God Knows
   { move = 0x035C1112, level = 1 },                         # Gungnir
-  { move = 0x6ADE9E01, level = 41 },                        # Illusory Ball
-  { move = 0x142DBE2A, level = 54 },                        # Foul Offence
 ]
 VRFW.MoveGrades = [
   { Move = 0x6ADE9E01, Grade = 1 },                         # Illusory Ball
+  { Move = 0x3F00EDE9, Grade = 1 },                         # Dash Storm
+  { Move = 0x1C8CE2B8, Grade = 1 },                         # God Knows
 ]
 
   [[edit.cards]]
@@ -222,8 +224,8 @@ target = "c07100140"                                   # Zeke Valanche
 moves = [
   { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
   { move = 0x029E7B25, level = 1 },                         # Gaia Break
-  { move = 0x8B31808E, level = 1 },                         # Wormhole
   { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
+  { move = 0xEF5D458A, level = 50 },                        # Burnout
 ]
 VRFW.MoveGrades = [
   { Move = 0x8E7E960B, Grade = 1 },                         # Drill Smasher

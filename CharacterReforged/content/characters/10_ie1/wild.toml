@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c01000610"                                   # Charlie Boardfield
 moves = [
+  { move = 0xCB8E6D04, level = 1 },                         # Mighty Save
   { move = 0xC2BBD4A2, level = 1 },                         # Wild Claw
-  { move = 0x00196EC2, level = 24 },                        # Earthquake
-  { move = 0x8FBCFC3C, level = 50 },                        # Blazing Knuckle
-  { move = 0x166B0073, level = 86 },                        # Super Armadillo
+  { move = 0x5E7E4775, level = 37 },                        # Table-Turner
+  { move = 0xEF5D458A, level = 56 },                        # Burnout
 ]
 
   [[edit.cards]]
@@ -23,9 +23,9 @@ moves = [
 target = "c01000620"                                   # Hugo Tallgeese
 moves = [
   { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
-  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x37A1B17B, level = 1 },                         # Fire Rooster
   { move = 0xC7A9BB3A, level = 34 },                        # Whirlwind Cut
-  { move = 0x7207C577, level = 91 },                        # Boost Glider
+  { move = 0x7207C577, level = 70 },                        # Boost Glider
 ]
 
   [[edit.cards]]
@@ -40,8 +40,8 @@ target = "c01000630"                                   # Wilson Fishman
 moves = [
   { move = 0x19025F83, level = 1 },                         # Quick Draw
   { move = 0x4E9A9232, level = 25 },                        # Spinning Cut
-  { move = 0xDF70E04C, level = 44 },                        # Rodeo Clown
-  { move = 0x0455B9CE, level = 88 },                        # Run Ball Run
+  { move = 0x2BF596BF, level = 44 },                        # Tsunami Boost
+  { move = 0x46FA651E, level = 58 },                        # Water Veil
 ]
 
   [[edit.cards]]
@@ -53,10 +53,10 @@ moves = [
 [[edit]]
 target = "c01000640"                                   # Peter Johnson
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x73C5AF40, level = 18 },                        # Dash Accelerator
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x10A0C298, level = 18 },                        # Warp Drive
   { move = 0xACAC21CE, level = 38 },                        # Fake Ball
-  { move = 0x06130797, level = 59 },                        # Rolling Kick
+  { move = 0x322F0C40, level = 49 },                        # Spider Web
 ]
 
   [[edit.cards]]
@@ -70,8 +70,8 @@ target = "c01000650"                                   # Leonard O'Shea
 moves = [
   { move = 0x166B0073, level = 1 },                         # Super Armadillo
   { move = 0x7CACF0B0, level = 1 },                         # Horn Train
-  { move = 0xC379BE95, level = 40 },                        # Counter Strike
-  { move = 0x0455B9CE, level = 66 },                        # Run Ball Run
+  { move = 0xDD365E15, level = 40 },                        # Mole Shuffle
+  { move = 0x9765A74A, level = 75 },                        # Beast Fang
 ]
 
   [[edit.cards]]
@@ -84,10 +84,10 @@ moves = [
 [[edit]]
 target = "c01000660"                                   # Cham Lion
 moves = [
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
   { move = 0x19025F83, level = 1 },                         # Quick Draw
-  { move = 0x592A96B4, level = 18 },                        # Afterimage
-  { move = 0x55C71D2A, level = 48 },                        # About Face
-  { move = 0x4B142F09, level = 83 },                        # Teleport Shot
+  { move = 0x5B6C28ED, level = 48 },                        # Invisible Fake
+  { move = 0x121A2FFE, level = 54 },                        # Mirage Shot
 ]
 
   [[edit.cards]]
@@ -102,8 +102,8 @@ target = "c01000670"                                   # Steve Eagle
 moves = [
   { move = 0x1D4E888F, level = 1 },                         # Condor Dive
   { move = 0x7B64F3D2, level = 20 },                        # Hawk Shot
-  { move = 0x6ADE9E01, level = 28 },                        # Illusory Ball
-  { move = 0x7207C577, level = 90 },                        # Boost Glider
+  { move = 0xC7A9BB3A, level = 32 },                        # Whirlwind Cut
+  { move = 0x4DDFEDE2, level = 71 },                        # Eagle Buster
 ]
 
   [[edit.cards]]
@@ -117,8 +117,8 @@ target = "c01000680"                                   # Bruce Monkey
 moves = [
   { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
   { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
-  { move = 0x4F58F805, level = 35 },                        # Coil Turn
-  { move = 0x261BDCA8, level = 95 },                        # Moonsault
+  { move = 0xD8794890, level = 35 },                        # Kangaroo Kick
+  { move = 0x261BDCA8, level = 55 },                        # Moonsault
 ]
 
   [[edit.cards]]
@@ -130,10 +130,10 @@ moves = [
 [[edit]]
 target = "c01000690"                                   # Gary Lancaster
 moves = [
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
   { move = 0x166B0073, level = 1 },                         # Super Armadillo
-  { move = 0x6B1CF436, level = 16 },                        # Bewildered
-  { move = 0x3663DB4C, level = 59 },                        # Utter Gutsiness Bat
+  { move = 0x4BD584B7, level = 48 },                        # Power Charge
 ]
 
   [[edit.cards]]
@@ -148,8 +148,8 @@ target = "c01000700"                                   # Harry Snake
 moves = [
   { move = 0x49529150, level = 1 },                         # Snake Shot
   { move = 0xC66BD10D, level = 21 },                        # Zigzag Spark
-  { move = 0x60397CCA, level = 35 },                        # Cross Drive
-  { move = 0x322F0C40, level = 80 },                        # Spider Web
+  { move = 0x60397CCA, level = 36 },                        # Cross Drive
+  { move = 0x43B5739B, level = 65 },                        # Lightning Bolt
 ]
 
   [[edit.cards]]
@@ -163,9 +163,9 @@ moves = [
 target = "c01000710"                                   # Adrian Speed
 moves = [
   { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
-  { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
+  { move = 0x2296A01A, level = 1 },                         # Southern Cross
   { move = 0x34256515, level = 24 },                        # Dynamite Shot
-  { move = 0x2D3E5454, level = 72 },                        # Clone Shot
+  { move = 0x2D3E5454, level = 60 },                        # Clone Shot
 ]
 
   [[edit.cards]]
@@ -180,7 +180,7 @@ moves = [
   { move = 0x53CD747F, level = 1 },                         # Tarzan Kick
   { move = 0xDEB28A7B, level = 30 },                        # Monkey Turn
   { move = 0x0455B9CE, level = 48 },                        # Run Ball Run
-  { move = 0x6ADE9E01, level = 71 },                        # Illusory Ball
+  { move = 0x6ADE9E01, level = 51 },                        # Illusory Ball
 ]
 
   [[edit.cards]]
@@ -193,9 +193,9 @@ moves = [
 target = "c01000730"                                   # Philip Anders
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0xDF70E04C, level = 24 },                        # Rodeo Clown
+  { move = 0x142DBE2A, level = 24 },                        # Foul Offence
   { move = 0xA8E0F6C2, level = 35 },                        # Kung Fu Header
-  { move = 0x142DBE2A, level = 66 },                        # Foul Offence
+  { move = 0x68982058, level = 66 },                        # Armadillo Circus
 ]
 
   [[edit.cards]]
@@ -209,8 +209,8 @@ target = "c01000740"                                   # Rocky Rackham
 moves = [
   { move = 0x166B0073, level = 1 },                         # Super Armadillo
   { move = 0x35E70F22, level = 18 },                        # Grenade Shot
-  { move = 0x7CACF0B0, level = 37 },                        # Horn Train
-  { move = 0x55C71D2A, level = 82 },                        # About Face
+  { move = 0x68982058, level = 37 },                        # Armadillo Circus
+  { move = 0x55C71D2A, level = 40 },                        # About Face
 ]
 
   [[edit.cards]]
@@ -225,8 +225,8 @@ target = "c01000750"                                   # Matt Mouseman
 moves = [
   { move = 0xACAC21CE, level = 15 },                        # Fake Ball
   { move = 0x6B1CF436, level = 25 },                        # Bewildered
-  { move = 0x4B142F09, level = 42 },                        # Teleport Shot
-  { move = 0x592A96B4, level = 75 },                        # Afterimage
+  { move = 0xAC6D8A70, level = 42 },                        # Rainbow Arc
+  { move = 0x592A96B4, level = 55 },                        # Afterimage
 ]
 
   [[edit.cards]]
@@ -239,10 +239,10 @@ moves = [
 [[edit]]
 target = "c01000760"                                   # Chad Bullford
 moves = [
-  { move = 0x7CACF0B0, level = 1 },                         # Horn Train
-  { move = 0x8DFA4265, level = 27 },                        # Toughness Block
-  { move = 0xC2BBD4A2, level = 46 },                        # Wild Claw
-  { move = 0x65B7C1F1, level = 80 },                        # Sumo Stomp
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xC2BBD4A2, level = 36 },                        # Wild Claw
+  { move = 0xDBA0E5E3, level = 53 },                        # Gigant Wall
 ]
 
   [[edit.cards]]

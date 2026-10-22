@@ -965,10 +965,11 @@ function R.install(X)
         icon = VRFW.crc32(n)
       end
     end
-    -- the board balloon's label: a chain node shows its own title (its team is never played); other nodes: none
+    -- the board balloon's label: a chain node and a `TitleBalloon` node show their own title (their team is never
+    -- played); other nodes: none (the team's name)
     local is_chain = d.chain ~= nil and T.trim(d.chain) ~= ""
     local guide = 0
-    if is_chain and not T.is_empty(d.title) then
+    if (is_chain or d.title_balloon == true) and not T.is_empty(d.title) then
       guide = VRFW.crc32(game_key .. "_guide")
       local texts = {}
       for _, k in ipairs(T.keys(d.title)) do

@@ -1,0 +1,13 @@
+# Chronicle Deluxe: the draw animation of the Chronicle board's gacha (content/gacha/kizuna_coin_gacha.toml, tint
+# #FF8A1E): an ORANGE copy of the retail pack-opening effect object of Players Universe (ev74100100, the object of the
+# retail event ev74_10010: the spirit orbs, the light streaks, the ribbons). The retail object is not touched (no in-place
+# recolour): Players Universe keeps its blue draw. Preview: research/scripts/fx_preview.py … --hue 28.
+# The event that plays the copy: ev74_10080 (content/base_tables/event_cfg, research/scripts/chronicle_deluxe_gacha_event_build.py),
+# the pool's `event` (content/gacha/kizuna_coin_gacha.toml).
+schema = "VRFW.effect/1"
+
+[[recolor]]
+object = "ev74100100"
+copy = "ev74100800"                    # same name length as the retail object (effect.md §2)
+hue = 28
+mode = "set"

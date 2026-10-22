@@ -15,8 +15,12 @@ Hub = "free_match"
 ElementCurrency = { wind = "0xC35FFA3C", forest = "0x90B639BB", fire = "0x86503F3A", mountain = "0x81274E23" }
 # their names on the cost line and in the messages (text\rows\menu_text.toml)
 ElementCurrencyTitle = { wind = "new_recruitment_office_fichas_wind", forest = "new_recruitment_office_fichas_forest", fire = "new_recruitment_office_fichas_fire", mountain = "new_recruitment_office_fichas_mountain" }
+# one of them, on a team page's cost line («Ficha de montaña x22 (0)»)
+ElementCurrencyUnit = { wind = "new_recruitment_office_ficha_wind", forest = "new_recruitment_office_ficha_forest", fire = "new_recruitment_office_ficha_fire", mountain = "new_recruitment_office_ficha_mountain" }
 # «Dimitir»: the fichas of his element a released player gives back (the old office's 3)
 ReleaseRefund = 3
+# the rarity a signed player joins at: 4, a normal card
+JoinRarity = 4
 # the friendly a card's trial is played as (content\friendlies\office_trial.toml)
 TrialFriendly = "new_recruitment_office_trial"
 # the old office's requirements (office_terms.toml): asked only while config.toml [office] requirements is true
@@ -25,9 +29,10 @@ Requirements = { config = "office.requirements", default = false }
 
   # rules of every team page of the set
   [VRFW.ContactSet.Teams]
-  Staff = false                    # managers and coaches (team slots 19-20) are not sold
-  OnePagePerCharacter = true       # a character is sold on one page only (his old office page, else his own team's)
-  MergeSameName = true             # teams with the same name are one page
+  Staff = true                     # managers (team slots 16-18) and the coach (slot 19) are sold too
+  OnePagePerCharacter = true       # a character is sold on one page only
+  HomePage = "earliest"            # ...the first page of the office (series order, then page order) he plays for
+  MergeSameName = true             # the same team under another id (same name, same players) is one page
 
   # the price of a card without old terms (a mod's new player, a game update's): the old office's tiers, in fichas of
   # his element; the first tier whose conditions hold; price = Base + PerLevel x the level he joins at
@@ -59,6 +64,20 @@ Requirements = { config = "office.requirements", default = false }
   Tier = "normal"
   Base = 2
   PerLevel = 0.05
+
+  # pages moved next to another team's page (team name texts of the game): «Ogro» after «Dark Team» (IE3), «Mar de
+  # árboles» after «Jóvenes Inazuma», «Sallys» after «Inazuma Kids FC» (IE1)
+  [[VRFW.ContactSet.Teams.Place]]
+  Team = 0x68FEB138                # Equipo Ogro / Team Ogre
+  After = 0x061540B2               # Dark Team / Devil Army Z
+
+  [[VRFW.ContactSet.Teams.Place]]
+  Team = 0xE13FDAEC                # Mar de árboles / Forest Team
+  After = 0xFAB717E2               # Jóvenes Inazuma / Young Inazuma
+
+  [[VRFW.ContactSet.Teams.Place]]
+  Team = 0x63356893                # Sallys / Street Sally's
+  After = 0x640E03F2               # Inazuma Kids FC
 
 # one list per route of the Chronicle board (in the board's order), named after the series of its players
 [[VRFW.ContactMap]]

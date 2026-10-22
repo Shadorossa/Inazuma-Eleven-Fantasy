@@ -1,0 +1,29 @@
+schema = "VRFW.editor/1"
+# Chronicle Deluxe: the ModManager form of its teams' member rows (docs/framework/modmanager-editor-schemas.md, «Forms
+# of a type»). For every team this mod declares (the IE1 / IE2 story rivals, the chain rivals, the wiki teams), the
+# «Equipos» page shows each player's own level in the selected player's panel and on his card: the team type's member
+# key `level_offset` (member column 12, his level over the level the team plays at), shown and edited as the level he
+# plays at, from 1 to the level cap in effect. An edit is saved IN PLACE into the row of that player in the team's own
+# file. The moves, their learn levels and their grades are the team editor's own fields. Read only by ModManager: the
+# game does not read content\editor\.
+#
+# Generated files (content\teams\10_ie1\0310_ie1_story_teams.toml, 11_ie2\0310_ie2_story_teams.toml,
+# 70_route_nodes\rivals_*.toml) are written again by their builders (research/scripts/chronicle_deluxe_*_build.py):
+# an edit made there is lost when they run again, unless it is brought into the builder's data.
+
+[[Shape]]
+Id = "team_member_level"
+For = "member"
+Within = "team"
+Label = { ja = "選手ごとのレベル", en = "Each player's level", es = "Nivel de cada jugador", fr = "Niveau de chaque joueur", de = "Level jedes Spielers", it = "Livello di ogni giocatore", pt = "Nível de cada jogador", zh_hans = "每名球员的等级", zh_hant = "每名球員的等級" }
+Help = { ja = "この選手がこのチームでプレーするレベル（チームのレベル＋彼自身の差）。", en = "The level this player plays at in this team (the team's level plus his own difference).", es = "El nivel al que juega este jugador en este equipo (el nivel del equipo más su propia diferencia).", fr = "Le niveau auquel ce joueur joue dans cette équipe (le niveau de l'équipe plus son propre écart).", de = "Das Level, auf dem dieser Spieler in diesem Team spielt (das Level des Teams plus sein eigener Abstand).", it = "Il livello a cui gioca questo giocatore in questa squadra (il livello della squadra più la sua differenza).", pt = "O nível em que este jogador joga nesta equipa (o nível da equipa mais a sua própria diferença).", zh_hans = "该球员在本队比赛时的等级（球队等级加上他自己的差值）。", zh_hant = "該球員在本隊比賽時的等級（球隊等級加上他自己的差值）。" }
+  [[Shape.Field]]
+  Key = "level_offset"
+  Type = "int"
+  RelativeTo = "team_level"
+  Min = 1
+  MaxFrom = "level_cap"
+  Default = 0
+  Badge = true
+  Label = { ja = "レベル", en = "Level", es = "Nivel", fr = "Niveau", de = "Level", it = "Livello", pt = "Nível", zh_hans = "等级", zh_hant = "等級" }
+  Help = { ja = "この選手のレベル。チームのレベルとの差がメンバー行の level_offset に保存されます。", en = "This player's level. Its difference from the team's level is saved as level_offset in his member row.", es = "El nivel de este jugador. Su diferencia con el nivel del equipo se guarda como level_offset en su fila de miembro.", fr = "Le niveau de ce joueur. Son écart avec le niveau de l'équipe est enregistré comme level_offset dans sa ligne de membre.", de = "Das Level dieses Spielers. Sein Abstand zum Level des Teams wird als level_offset in seiner Mitgliedszeile gespeichert.", it = "Il livello di questo giocatore. La differenza con il livello della squadra viene salvata come level_offset nella sua riga di membro.", pt = "O nível deste jogador. A diferença para o nível da equipa é guardada como level_offset na sua linha de membro.", zh_hans = "该球员的等级。与球队等级的差值保存为其成员行的 level_offset。", zh_hant = "該球員的等級。與球隊等級的差值保存為其成員行的 level_offset。" }

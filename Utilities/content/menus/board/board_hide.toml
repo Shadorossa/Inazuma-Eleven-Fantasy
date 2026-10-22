@@ -1,0 +1,10 @@
+# Utilities › the Chronicle board's hide switch (assets\lua\vs_route_town_menu\160_board_hide.lua): X (CMD_FUNC4, free
+# on the board) sends the function crc32("utilities_board_hide") to the board script. The board's input rows hang on
+# its background layer, as the game's own keys.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "vs_route_town_menu"
+add_cmd = [
+    { layer = "vsroute00_00_background", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = 0xFF54F6B6 },   # utilities_board_hide
+]

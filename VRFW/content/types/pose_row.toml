@@ -1,0 +1,29 @@
+# Declaration schema of the pose rows (content\pose_rows\*.toml, docs/framework/pose-row.md): [[VRFW.PoseRow]] (a list
+# screen whose selected entry shows its players as 3D models posing in a row). An unknown key, wrong type or
+# out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.pose_row/1"
+folder = "content/pose_rows"
+
+[entry.PoseRow]
+doc = "A pose row screen of a mod: the list and each entry's players come from the mod's own game Lua command"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+source = { type = "string", required = true, doc = "the mod's game Lua command (CMND_…) the screen asks: (context, 0) -> the header, (context, i) -> entry i (docs/framework/pose-row.md §2)" }
+pose = { type = "string", default = "0x8ACD3EBF", doc = "the models' pose (menu_chara_model_pose_config id, \"0x…\" or its name; default the retail shop's)" }
+models = { type = "int", default = 5, min = 1, max = 5, doc = "models per entry (the screen's model slots)" }
+title = { type = "string", default = "", doc = "menu_text row id of the header's title" }
+decide = { type = "string", default = "", doc = "menu_text row id of the Accept prompt (empty: the game's «Aceptar»)" }
+owned = { type = "string", default = "", doc = "menu_text row id of the tag of a player the club has" }
+new = { type = "string", default = "", doc = "menu_text row id of the tag of a player the club does not have" }
+label = { type = "string", default = "", doc = "menu_text row id of the label above each player's line of text (e.g. «Challenge:»)" }
+style = { type = "string", default = "list", doc = "\"list\" (the list screen) or \"node_panel\" (the Chronicle board's node panel look with a side panel of the models; docs/framework/pose-row.md §3)" }
+banner = { type = "string", default = "", doc = "node_panel: menu_text row id of the banner's label" }
+icon_atlas = { type = "string", default = "", doc = "node_panel: the banner's picture, a retail atlas (\"#/menu/…/x.g4tx\")" }
+icon_sprite = { type = "string", default = "", doc = "node_panel: the sprite of icon_atlas" }
+panel_title = { type = "string", default = "", doc = "node_panel: menu_text row id of the side panel's title" }
+team = { type = "string", default = "", doc = "menu_text row id of the Y action (none: no Y): the screen closes with pick -1, the opener runs it" }
+page = { type = "string", default = "", doc = "menu_text row id of the side panel's page line (%d / %d)" }
+hint = { type = "string", default = "", doc = "menu_text row id of the line under the models" }
+motion = { type = "string", default = "", doc = "a motion the models play once shown: \"summon\" = the retail summon performance's (by position and body type), a clip name or \"0x…\"; empty = the pose only" }
+centered = { type = "bool", default = false, doc = "the models centred in the panel (else the layout's slot_x)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -1,0 +1,12 @@
+schema = "VRFW.base_table/1"
+if_mod = "chronicle_deluxe"
+# Inazuma Fantasy: «Tezcat (Mixi Max Arion)» (content/characters/tezcat_arion_miximax.toml, character c90370081) in the
+# drop-rate list of Chronicle Deluxe's board gacha: its spirit character table (key of chronicle_deluxe_gacha_pool_build.py)
+# gets his character, as content/gacha/chronicle_deluxe_kizuna_coin.toml adds his card to the pool (the list and the
+# draw list the same players). Only with Chronicle Deluxe.
+
+[[keyed]]
+table = "soccer/soccer_drop_spirit_chara_table"
+  [[keyed.set]]
+  key = 0x826DB86E   # crc32("chronicle_deluxe.kizuna_coin_gacha.spirit_players")
+  cells = { data = { add = [ { charaId = 0xB2E8F4AE, weight = 1 } ] } }   # c90370081 (tezcat_mixi_max_arion's character)

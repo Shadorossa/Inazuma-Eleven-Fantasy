@@ -1,0 +1,135 @@
+schema = "VRFW.behaviour/1"
+# GO Gameplay › duels and tackles (docs/game/mods/go-gameplay.md; formats: docs/framework/rules.md,
+# docs/framework/duel-choice.md).
+
+# ------------------------------------------------------------------------------------------------ the GO duel
+# The framework's duel choice service (built-in sink duel_choice): armed at every match with this module's settings
+# (config.toml [duel_choice]: the power margin, who wins on the same side, how often the CPU reads your side). In a
+# focus battle of your controlled player against the CPU: nobody moves, the CPU never chooses first, the only choices
+# are a special move or a side, and a side is resolved at once by the GO rule (docs/game/mods/go-gameplay.md §4).
+# The service is off on a build where one of its game functions is missing: then every duel is the game's.
+
+[[rule]]
+id = "duel_choice_setup"
+on = "match_start"
+[rule.do]
+duel_choice = { setup = true, config = "duel_choice" }
+
+# The side buttons: the focus battle's «Ir por la izquierda / derecha» («Bloquear …» when defending),
+# CMD_FOCUS_AUTO_RUN_LEFT / _RIGHT (pad LB / RB, keyboard Z / C, as the player's control settings say).
+
+[[rule]]
+id = "side_left"
+on = "button_press:CMD_FOCUS_AUTO_RUN_LEFT"
+[rule.when]
+soccer_state = 14
+[rule.do]
+duel_choice = { side = "left" }
+
+[[rule]]
+id = "side_right"
+on = "button_press:CMD_FOCUS_AUTO_RUN_RIGHT"
+[rule.when]
+soccer_state = 14
+[rule.do]
+duel_choice = { side = "right" }
+
+# Utilities' rules focus_no_auto_run_left / _right answer these two commands «off» (button_hold + block = true).
+# These rules run after them (higher priority) on the same trigger and say block = false: the last rule's block wins
+# (rules.md §2.2), so the commands reach the game and the rules above again. Nothing in Utilities changes.
+
+[[rule]]
+id = "side_run_left"
+on = "button_hold:CMD_FOCUS_AUTO_RUN_LEFT"
+priority = 100
+[rule.do]
+block = false
+
+[[rule]]
+id = "side_run_right"
+on = "button_hold:CMD_FOCUS_AUTO_RUN_RIGHT"
+priority = 100
+[rule.do]
+block = false
+
+# The focus battle's other moves are not choices in a GO duel: breakthrough, dash and the prepared block are answered
+# «off» in a focus battle (state 14). The power charge / power block are refused by the duel choice service itself
+# (only a special move or a side is a first choice).
+
+[[rule]]
+id = "no_focus_breakthrough"
+on = "button_hold:CMD_FOCUS_BATTLE_BREAKTHROUGH"
+[rule.when]
+soccer_state = 14
+[rule.do]
+block = true
+
+[[rule]]
+id = "no_focus_breakthrough_2"
+on = "button_hold:CMD_FOCUS_BATTLE_BREAKTHROUGH2"
+[rule.when]
+soccer_state = 14
+[rule.do]
+block = true
+
+[[rule]]
+id = "no_focus_dash"
+on = "button_hold:CMD_FOCUS_BATTLE_DASH"
+[rule.when]
+soccer_state = 14
+[rule.do]
+block = true
+
+[[rule]]
+id = "no_focus_prep_block"
+on = "button_hold:CMD_FOCUS_BATTLE_PREP_BLOCK"
+[rule.when]
+soccer_state = 14
+[rule.do]
+block = true
+
+# ------------------------------------------------------------------------------------------------ no sliding tackle
+# Your sliding tackle («Entrada deslizante», the game's button guide) is CMD_DEFENSE_ACTION_02 (+ its hold / release
+# commands). Answered «off» in open play (state 9) and in a focus battle (state 14); in a shoot zone (state 16) the same
+# button is an interception and stays the game's.
+
+[[rule]]
+id = "no_sliding_tackle"
+on = "button_hold:CMD_DEFENSE_ACTION_02"
+[rule.when]
+soccer_state = [9, 14]
+[rule.do]
+block = true
+
+[[rule]]
+id = "no_sliding_tackle_hold"
+on = "button_hold:CMD_DEFENSE_ACTION_HOLD_02"
+[rule.when]
+soccer_state = [9, 14]
+[rule.do]
+block = true
+
+[[rule]]
+id = "no_sliding_tackle_release"
+on = "button_hold:CMD_DEFENSE_ACTION_RELEASE_02"
+[rule.when]
+soccer_state = [9, 14]
+[rule.do]
+block = true
+
+# The CPU's sliding tackles: the AI property slidingEnableRate (the chance of its sliding roll) is 0 for both teams.
+# The rules' ai_rate values sit above every match AI profile and situation (docs/framework/match-ai.md §2, §6), so a
+# rival profile with sliding (Legendary Match: 0.8, 0.95 in one situation) does not bring them back. The profile in
+# rules\ai\no_sliding.toml says the same from the class load on.
+
+[[rule]]
+id = "cpu_no_sliding_user_side"
+on = "match_start"
+[rule.do]
+ai_rate = { who = "user", slidingEnableRate = 0.0 }
+
+[[rule]]
+id = "cpu_no_sliding_rival_side"
+on = "match_start"
+[rule.do]
+ai_rate = { who = "rival", slidingEnableRate = 0.0 }

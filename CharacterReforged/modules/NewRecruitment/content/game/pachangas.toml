@@ -1,0 +1,64 @@
+schema = "VRFW.game/2"
+
+# New Recruitment › the pachanga zones of the Chronicle board (docs/game/mods/new-recruitment-pachangas.md). Run time:
+# scripts\pachangas.lua; game Lua side: assets\lua\vs_route_town_menu\new_recruitment_pachangas.lua.
+
+# (node name) -> zone index, title text id, stadium map crc, pachanga count
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_ZONE"
+handler = "NewRecruitment.PachangaZone"
+
+# (zone index, i) -> key, rival team crc, team name, level, format, challenge, won, card count, cards…
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_GET"
+handler = "NewRecruitment.PachangaGet"
+
+# (key, i) -> card, challenge type name, its text id, its first param, met before
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_PLAYER"
+handler = "NewRecruitment.PachangaPlayer"
+
+# (card) -> true (save key met.<card>)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_SET_MET"
+handler = "NewRecruitment.PachangaSetMet"
+
+# (key) -> true: the next match is that pachanga's
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_ARM"
+handler = "NewRecruitment.PachangaArm"
+
+# () -> key, won, goals for, goals against, level, met count, met cards… of the last armed pachanga's match (read once)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_RESULT"
+handler = "NewRecruitment.PachangaResult"
+
+# (key) -> true when the pachanga was won in this save slot
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_WON"
+handler = "NewRecruitment.PachangaWon"
+
+# (key) -> true (save key won.<key>)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_SET_WON"
+handler = "NewRecruitment.PachangaSetWon"
+
+# (zone index, i) -> the pose row screen's page: i = 0 the header, i >= 1 pachanga i (content\pose_rows\pachangas.toml)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_MENU"
+handler = "NewRecruitment.PachangaMenu"
+
+# (key) -> the cards who play its next match (the rotation's lineup, goalkeeper first)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_LINEUP"
+handler = "NewRecruitment.PachangaLineup"
+
+# (team level) -> true: the base the pachangas' levels scale from (the board sets it when a zone's list opens)
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_BASE"
+handler = "NewRecruitment.PachangaBase"
+
+# (key) -> its level now, the friendly's match row level
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_PACHANGA_LEVEL"
+handler = "NewRecruitment.PachangaLevel"

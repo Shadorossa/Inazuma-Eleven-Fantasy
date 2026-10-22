@@ -107,7 +107,7 @@ name = "vrfw_cm_card"
 from = "cmn01_10_new_icon"
 set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
 
-# the card's requirement icons (462) and their met / unmet badges (463)
+# the card's requirement icons (462: 5 rows + a team page's check box and its mark) and their met / unmet badges (463)
 [[object]]
 name = "vrfw_cm_req"
 from = "cmn01_10_new_icon"
@@ -171,13 +171,13 @@ layer = [
     { layer = "vrfw_cm_line", object = "vrfw_cm_line", count = 210, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_tile", object = "vrfw_cm_tile", count = 200, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_face", object = "vrfw_cm_face", count = 60, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "vrfw_cm_tag", object = "vrfw_cm_tag", count = 40, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_tag", object = "vrfw_cm_tag", count = 70, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_ui", object = "vrfw_cm_ui", count = 8, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_card", object = "vrfw_cm_card", count = 1, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_icon", object = "vrfw_cm_icon", count = 1, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_bust", object = "vrfw_cm_bust", count = 162 },
     { layer = "vrfw_cm_busticon", object = "vrfw_cm_busticon", count = 1 },
-    { layer = "vrfw_cm_req", object = "vrfw_cm_req", count = 5, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_req", object = "vrfw_cm_req", count = 7, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_reqok", object = "vrfw_cm_reqok", count = 4, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_title", object = "save01_02_list_item", count = 20, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_cardtxt", object = "save01_02_list_item", count = 6, align = [1, 8], scale = 0.20000000298023224 },

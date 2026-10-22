@@ -4,17 +4,17 @@ schema = "VRFW.team/2"
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_0_moves"
 moves = [0xF14FDC17, 0xE9968761, 0xC7F4C227, 0xEA12530F, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 40, 40, 0, 0]
+levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_4_moves"
 moves = [0x01DB04F5, 0x55C71D2A, 0x245D62F1, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [11, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_3_moves"
 moves = [0x01DB04F5, 0x245D62F1, 0x520F1E48, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_1_moves"
@@ -24,7 +24,7 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_2_moves"
 moves = [0x01DB04F5, 0x245D62F1, 0x520F1E48, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [40, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_7_moves"
@@ -44,7 +44,7 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_9_moves"
 moves = [0x520F1E48, 0x245D62F1, 0x01DB04F5, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [11, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_5_moves"
@@ -54,13 +54,14 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.ares_0400.slot_10_moves"
 moves = [0xB3BD79DA, 0x245D62F1, 0x518BCA26, 0x01DB04F5, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 40, 40, 0, 0]
+levels = [1, 1, 1, 1, 0, 0]
 
 [[team]]
 name = "ares_0400"
 key = "bbcr_ares_0400_bb"
 name_text = 0x2300E8C1
 level = 40
+card_moves = 6
 series = "ARES"
 stadium_fallback = "s22g001b"
 stadium_image = "ev_chronicle_img/ev_bb_s22g001b_01.g4tx"
@@ -281,4 +282,3 @@ rarity_step = 4
 c14_19 = [-1, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
-loadout = 0

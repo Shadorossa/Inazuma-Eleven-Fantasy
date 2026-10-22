@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c01001210"                                   # Morgan Sanders
 moves = [
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
   { move = 0xF08DB620, level = 1 },                         # Whirlwind
-  { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0x2D3E5454, level = 38 },                        # Clone Shot
-  { move = 0xE854ED56, level = 92 },                        # Warp Space
+  { move = 0xA553C5C8, level = 1 },                         # Clone Block
+  { move = 0x2354CA2D, level = 62 },                        # Wind God's Dance
 ]
 
   [[edit.cards]]
@@ -23,9 +23,9 @@ moves = [
 target = "c01001220"                                   # Newton Flust
 moves = [
   { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
-  { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0x6B1CF436, level = 52 },                        # Bewildered
-  { move = 0x2EBA803A, level = 93 },                        # Dirt Ball
+  { move = 0x6B1CF436, level = 22 },                        # Bewildered
+  { move = 0x1A868BED, level = 32 },                        # Clone Defence
+  { move = 0x8C990270, level = 57 },                        # Gunshot
 ]
 
   [[edit.cards]]
@@ -37,10 +37,10 @@ moves = [
 [[edit]]
 target = "c01001230"                                   # Jim Hillfort
 moves = [
-  { move = 0x592A96B4, level = 1 },                         # Afterimage
+  { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
   { move = 0x322F0C40, level = 1 },                         # Spider Web
-  { move = 0xB5B7108F, level = 85 },                        # Shadow Stitch
-  { move = 0x2D3E5454, level = 94 },                        # Clone Shot
+  { move = 0xC7A9BB3A, level = 27 },                        # Whirlwind Cut
+  { move = 0x2D3E5454, level = 60 },                        # Clone Shot
 ]
 
   [[edit.cards]]
@@ -53,9 +53,9 @@ moves = [
 target = "c01001240"                                   # Galen Thunderbird
 moves = [
   { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
-  { move = 0x3D4653B0, level = 1 },                         # Poison Fog
-  { move = 0xB5B7108F, level = 40 },                        # Shadow Stitch
-  { move = 0x322F0C40, level = 92 },                        # Spider Web
+  { move = 0x09BBF3D9, level = 1 },                         # Dark Whirlwind
+  { move = 0xB5B7108F, level = 30 },                        # Shadow Stitch
+  { move = 0x58E8FC83, level = 42 },                        # Rolling Hell
 ]
 
   [[edit.cards]]
@@ -67,10 +67,10 @@ moves = [
 [[edit]]
 target = "c01001250"                                   # Finn Stoned
 moves = [
-  { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
+  { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
   { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
-  { move = 0xACAC21CE, level = 44 },                        # Fake Ball
-  { move = 0x4031A7F5, level = 79 },                        # Mole Fake
+  { move = 0x4031A7F5, level = 34 },                        # Mole Fake
+  { move = 0xDD365E15, level = 49 },                        # Mole Shuffle
 ]
 
   [[edit.cards]]
@@ -82,10 +82,10 @@ moves = [
 [[edit]]
 target = "c01001260"                                   # Phil Wingate
 moves = [
+  { move = 0x62294D90, level = 1 },                         # Dust Kick
   { move = 0x322F0C40, level = 1 },                         # Spider Web
-  { move = 0x592A96B4, level = 1 },                         # Afterimage
-  { move = 0xC7A9BB3A, level = 37 },                        # Whirlwind Cut
-  { move = 0x5781A373, level = 95 },                        # Hurricane Arrows
+  { move = 0x5781A373, level = 37 },                        # Hurricane Arrows
+  { move = 0xC21AFE80, level = 75 },                        # Whirlwind Drop
 ]
 
   [[edit.cards]]
@@ -99,9 +99,9 @@ moves = [
 target = "c01001270"                                   # Jez Shell
 moves = [
   { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0xAB6422AC, level = 38 },                        # Phantom Shot
-  { move = 0x33ED6677, level = 64 },                        # Doppelganger
-  { move = 0x2D3E5454, level = 90 },                        # Clone Shot
+  { move = 0x70417B2E, level = 38 },                        # Deceptor Dribble
+  { move = 0x33ED6677, level = 41 },                        # Doppelganger
+  { move = 0x2D3E5454, level = 57 },                        # Clone Shot
 ]
 
   [[edit.cards]]
@@ -114,9 +114,9 @@ moves = [
 target = "c01001280"                                   # Jupiter Jumper
 moves = [
   { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
-  { move = 0x2EBA803A, level = 1 },                         # Dirt Ball
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
   { move = 0x592A96B4, level = 37 },                        # Afterimage
-  { move = 0x261BDCA8, level = 56 },                        # Moonsault
+  { move = 0x261BDCA8, level = 46 },                        # Moonsault
 ]
 
   [[edit.cards]]
@@ -130,9 +130,9 @@ moves = [
 target = "c01001290"                                   # Sam Samurai
 moves = [
   { move = 0x2D3E5454, level = 1 },                         # Clone Shot
-  { move = 0x19025F83, level = 35 },                        # Quick Draw
-  { move = 0xB5B7108F, level = 46 },                        # Shadow Stitch
-  { move = 0x37A1B17B, level = 88 },                        # Fire Rooster
+  { move = 0x332CCDC9, level = 35 },                        # Heel Kick
+  { move = 0xB5B7108F, level = 45 },                        # Shadow Stitch
+  { move = 0x37A1B17B, level = 58 },                        # Fire Rooster
 ]
 
   [[edit.cards]]
@@ -145,9 +145,9 @@ moves = [
 target = "c01001300"                                   # Hank Sullivan
 moves = [
   { move = 0x592A96B4, level = 1 },                         # Afterimage
-  { move = 0x2D3E5454, level = 1 },                         # Clone Shot
-  { move = 0x3C843987, level = 39 },                        # Flurry Dash
-  { move = 0xB5B7108F, level = 90 },                        # Shadow Stitch
+  { move = 0x1A472053, level = 1 },                         # Double Wrath Shot
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x2AF65736, level = 41 },                        # Bamboo Pattern
 ]
 
   [[edit.cards]]
@@ -160,10 +160,10 @@ moves = [
 [[edit]]
 target = "c01001310"                                   # Sail Bluesea
 moves = [
-  { move = 0x2EBA803A, level = 1 },                         # Dirt Ball
-  { move = 0x3D4653B0, level = 1 },                         # Poison Fog
+  { move = 0x72514A74, level = 1 },                         # Low Drive
   { move = 0x592A96B4, level = 1 },                         # Afterimage
-  { move = 0x37A1B17B, level = 38 },                        # Fire Rooster
+  { move = 0x1A868BED, level = 10 },                        # Clone Defence
+  { move = 0x37A1B17B, level = 55 },                        # Fire Rooster
 ]
 
   [[edit.cards]]
@@ -175,9 +175,9 @@ moves = [
 [[edit]]
 target = "c01001320"                                   # John Reynolds
 moves = [
-  { move = 0x34256515, level = 1 },                         # Dynamite Shot
+  { move = 0x2D3E5454, level = 1 },                         # Clone Shot
   { move = 0x3C843987, level = 33 },                        # Flurry Dash
-  { move = 0x2D3E5454, level = 42 },                        # Clone Shot
+  { move = 0xC42D6F54, level = 42 },                        # Aikido
   { move = 0x592A96B4, level = 58 },                        # Afterimage
 ]
 
@@ -193,7 +193,7 @@ moves = [
   { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
   { move = 0x1D4E888F, level = 36 },                        # Condor Dive
   { move = 0x627FC293, level = 44 },                        # Meteor Attack
-  { move = 0x261BDCA8, level = 69 },                        # Moonsault
+  { move = 0x3B8D915B, level = 59 },                        # Meteor Shower
 ]
 
   [[edit.cards]]
@@ -206,10 +206,10 @@ moves = [
 [[edit]]
 target = "c01001340"                                   # Cal Trops
 moves = [
-  { move = 0x7B64F3D2, level = 1 },                         # Hawk Shot
+  { move = 0x4E5B398C, level = 1 },                         # Acrobat Bomber
   { move = 0x4890FB67, level = 42 },                        # Twin Boost
-  { move = 0xAD6E4BF9, level = 75 },                        # Harvest
-  { move = 0x58E8FC83, level = 94 },                        # Rolling Hell
+  { move = 0xAD6E4BF9, level = 65 },                        # Harvest
+  { move = 0x58E8FC83, level = 79 },                        # Rolling Hell
 ]
 
   [[edit.cards]]
@@ -222,10 +222,10 @@ moves = [
 [[edit]]
 target = "c01001350"                                   # Winston Falls
 moves = [
-  { move = 0x33ED6677, level = 1 },                         # Doppelganger
+  { move = 0x322F0C40, level = 1 },                         # Spider Web
   { move = 0x592A96B4, level = 1 },                         # Afterimage
-  { move = 0x322F0C40, level = 48 },                        # Spider Web
-  { move = 0xB5B7108F, level = 67 },                        # Shadow Stitch
+  { move = 0x5B6C28ED, level = 38 },                        # Invisible Fake
+  { move = 0xB5B7108F, level = 57 },                        # Shadow Stitch
 ]
 
   [[edit.cards]]
@@ -238,10 +238,10 @@ moves = [
 [[edit]]
 target = "c01001360"                                   # Kevin Castle
 moves = [
-  { move = 0x4F58F805, level = 1 },                         # Coil Turn
-  { move = 0x18C035B4, level = 38 },                        # Ghost Pull
-  { move = 0xA7157B91, level = 48 },                        # Power Shield
-  { move = 0xF08DB620, level = 80 },                        # Whirlwind
+  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0x5C38F92C, level = 18 },                        # Mistral
+  { move = 0xF08DB620, level = 28 },                        # Whirlwind
+  { move = 0x5E7E4775, level = 48 },                        # Table-Turner
 ]
 
   [[edit.cards]]

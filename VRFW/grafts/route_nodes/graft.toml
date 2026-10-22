@@ -84,12 +84,13 @@ stem = "vs_route_town_menu"
 '''
   crc = "none"
 
-  # the caravan follows the nodes' roads (fork point, bends), not a straight line from beside (VRFW_RN_Path)
+  # the caravan follows the nodes' roads (fork point, bends), not a straight line from beside (VRFW_RN_Path), and stops on
+  # the road nearest to a road-less node (VRFW_RN_OffRoad)
   [[files.ops]]
   type = "replace"
   point = "vs_route_town_menu.CheckCharaMoveTownMapPiece.RouteNodes"
   text = '''
-  t9 = VRFW_RN_Path(funcLuaMenuVSRouteTownCommand(111188339, n14, n11)) -- VRFW route_nodes
+  t9 = VRFW_RN_OffRoad(VRFW_RN_Path(funcLuaMenuVSRouteTownCommand(111188339, n14, n11))) -- VRFW route_nodes
 '''
   crc = "none"
 

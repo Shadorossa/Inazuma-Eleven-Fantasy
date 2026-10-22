@@ -6,30 +6,36 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c02021210"                                   # Dvalin
-moves = [
-  { move = 0x8B31808E, level = 1 },                         # Wormhole
-  { move = 0x8E7E960B, level = 1 },                         # Drill Smasher
-  { move = 0x19025F83, level = 42 },                        # Quick Draw
-  { move = 0x6633159F, level = 78 },                        # Gravitation
-]
-VRFW.MoveGrades = [
-  { Move = 0x8B31808E, Grade = 1 },                         # Wormhole
-  { Move = 0x8E7E960B, Grade = 1 },                         # Drill Smasher
-]
 
   [[edit.cards]]
   id = 0xC04535D4                                         # GK/FW · fire
   rank = 3
   growth = "normal"
   stats = { kick = 243, control = 209, technique = 215, pressure = 235, physical = 232, intelligence = 239, agility = 246, freedom = 242 }
+  moves = [
+    { move = 0x8B31808E, level = 1 },                       # Wormhole
+    { move = 0x8E7E960B, level = 1 },                       # Drill Smasher
+    { move = 0x035C1112, level = 1 },                       # Gungnir
+    { move = 0x7FE98F60, level = 1 },                       # Ganymede Ray
+  ]
 
+
+[[edit]]
+target = "c02021210"
+card = 0xC04535D4
+VRFW.MoveGrades = [
+  { Move = 0x8B31808E, Grade = 1 },                         # Wormhole
+  { Move = 0x8E7E960B, Grade = 1 },                         # Drill Smasher
+  { Move = 0x035C1112, Grade = 1 },                         # Gungnir
+  { Move = 0x7FE98F60, Grade = 1 },                         # Ganymede Ray
+]
 [[edit]]
 target = "c02021220"                                   # Kenville
 moves = [
   { move = 0x10A0C298, level = 1 },                         # Warp Drive
   { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
-  { move = 0xC7A9BB3A, level = 38 },                        # Whirlwind Cut
-  { move = 0x514A6198, level = 70 },                        # Asteroid Belt
+  { move = 0x78E027BC, level = 38 },                        # Shine Drive
+  { move = 0x514A6198, level = 52 },                        # Asteroid Belt
 ]
 
   [[edit.cards]]
@@ -42,9 +48,9 @@ moves = [
 target = "c02021230"                                   # Mole
 moves = [
   { move = 0x10A0C298, level = 1 },                         # Warp Drive
-  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
-  { move = 0x46A71C03, level = 44 },                        # Black Hole
-  { move = 0x8E7E960B, level = 60 },                        # Drill Smasher
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x47657634, level = 44 },                        # Flame Breath
+  { move = 0x8E7E960B, level = 52 },                        # Drill Smasher
 ]
 
   [[edit.cards]]
@@ -58,7 +64,7 @@ target = "c02021240"                                   # Kayson
 moves = [
   { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
   { move = 0x514A6198, level = 1 },                         # Asteroid Belt
-  { move = 0x3D4653B0, level = 41 },                        # Poison Fog
+  { move = 0x09BBF3D9, level = 41 },                        # Dark Whirlwind
   { move = 0x142DBE2A, level = 55 },                        # Foul Offence
 ]
 
@@ -74,7 +80,7 @@ moves = [
   { move = 0x6633159F, level = 1 },                         # Gravitation
   { move = 0x00196EC2, level = 40 },                        # Earthquake
   { move = 0x28B0E96F, level = 46 },                        # Heavy Mettle
-  { move = 0x29728358, level = 65 },                        # Planet Shield
+  { move = 0x7BA5586C, level = 65 },                        # Mad Express
 ]
 
   [[edit.cards]]
@@ -89,7 +95,7 @@ target = "c02021260"                                   # Fedora
 moves = [
   { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
   { move = 0xB633C4E1, level = 31 },                        # Photon Crash
-  { move = 0x7EEA4EE9, level = 39 },                        # Blade Attack
+  { move = 0x4D1E465C, level = 39 },                        # Fake Bomber
   { move = 0xA5777314, level = 65 },                        # Assault Shot
 ]
 
@@ -104,7 +110,7 @@ target = "c02021270"                                   # Krypto
 moves = [
   { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
   { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
-  { move = 0x2C3D95DD, level = 42 },                        # Sleeping Dust
+  { move = 0x105C91A7, level = 42 },                        # Slingshot
   { move = 0x2296A01A, level = 53 },                        # Southern Cross
 ]
 
@@ -119,8 +125,8 @@ target = "c02021280"                                   # Sworm
 moves = [
   { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
   { move = 0xB633C4E1, level = 39 },                        # Photon Crash
-  { move = 0x011AAF4B, level = 51 },                        # Gyro Head
-  { move = 0x7FE98F60, level = 63 },                        # Ganymede Ray
+  { move = 0x7FE98F60, level = 51 },                        # Ganymede Ray
+  { move = 0x1B854A64, level = 63 },                        # Cosmic Blast
 ]
 
   [[edit.cards]]
@@ -132,10 +138,10 @@ moves = [
 [[edit]]
 target = "c02021290"                                   # Mercury
 moves = [
-  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x4AD6453E, level = 1 },                         # Back Tornado
   { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
-  { move = 0x4C1D87D5, level = 36 },                        # Bed of Roses
-  { move = 0x035C1112, level = 70 },                        # Gungnir
+  { move = 0x8C990270, level = 55 },                        # Gunshot
+  { move = 0x035C1112, level = 65 },                        # Gungnir
 ]
 
   [[edit.cards]]
@@ -149,7 +155,7 @@ target = "c02021300"                                   # Metron
 moves = [
   { move = 0x029E7B25, level = 1 },                         # Gaia Break
   { move = 0x10A0C298, level = 1 },                         # Warp Drive
-  { move = 0x60397CCA, level = 37 },                        # Cross Drive
+  { move = 0x163D8F70, level = 1 },                         # Chip Shot
   { move = 0x7C6D5B0E, level = 55 },                        # Astro Break
 ]
 
@@ -167,7 +173,7 @@ growth = "normal"
 stats = { kick = 282, control = 240, technique = 234, pressure = 221, physical = 185, intelligence = 228, agility = 188, freedom = 230 }
 moves = [
   { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
-  { move = 0x029E7B25, level = 1 },                         # Gaia Break
-  { move = 0x8B31808E, level = 60 },                        # Wormhole
-  { move = 0xA01CD34D, level = 88 },                        # Temporal Wall
+  { move = 0xB1FBC783, level = 1 },                         # Reflect Buster
+  { move = 0x2F78EA0D, level = 10 },                        # Triangle Z
+  { move = 0x8B31808E, level = 50 },                        # Wormhole
 ]

@@ -6,25 +6,32 @@ schema = "VRFW.character/2"
 
 [[edit]]
 target = "c01000210"                                   # Joseph King
-moves = [
-  { move = 0xA7157B91, level = 1 },                         # Power Shield
-  { move = 0xA6D711A6, level = 26 },                        # Full Power Shield
-  { move = 0x7B64F3D2, level = 31 },                        # Hawk Shot
-  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
-]
 
   [[edit.cards]]
   id = 0x33D11B4C                                         # GK/MF · fire
   growth = "normal"
   stats = { kick = 180, control = 197, technique = 196, pressure = 242, physical = 255, intelligence = 216, agility = 265, freedom = 305 }
+  moves = [
+    { move = 0xF9B80F86, level = 1 },                       # Strong Punch
+    { move = 0xCB8E6D04, level = 1 },                       # Mighty Save
+    { move = 0xBD8A9EBE, level = 1 },                       # Infinite Wall
+    { move = 0x8E7E960B, level = 10 },                      # Drill Smasher
+  ]
 
+
+[[edit]]
+target = "c01000210"
+card = 0x33D11B4C
+VRFW.MoveGrades = [
+  { Move = 0xBD8A9EBE, Grade = 2 },                         # Infinite Wall
+]
 [[edit]]
 target = "c01000220"                                   # Peter Drent
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x00196EC2, level = 1 },                         # Earthquake
+  { move = 0x5405771D, level = 1 },                         # Supreme Spin
+  { move = 0x00196EC2, level = 20 },                        # Earthquake
   { move = 0xB1FBC783, level = 42 },                        # Reflect Buster
-  { move = 0x67F17FA8, level = 80 },                        # Mega Quake
+  { move = 0x2DFFFFEA, level = 64 },                        # Ground Quake
 ]
 
   [[edit.cards]]
@@ -39,8 +46,8 @@ target = "c01000230"                                   # Ben Simmons
 moves = [
   { move = 0x142DBE2A, level = 1 },                         # Foul Offence
   { move = 0x2B343D01, level = 1 },                         # Cyclone
-  { move = 0x6ADE9E01, level = 40 },                        # Illusory Ball
-  { move = 0x60397CCA, level = 85 },                        # Cross Drive
+  { move = 0x132416F6, level = 44 },                        # Dog Run
+  { move = 0xB7F1AED6, level = 55 },                        # Double Cyclone
 ]
 
   [[edit.cards]]
@@ -54,8 +61,8 @@ target = "c01000240"                                   # Alan Master
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x34256515, level = 23 },                        # Dynamite Shot
-  { move = 0x4E9A9232, level = 74 },                        # Spinning Cut
+  { move = 0x49041E53, level = 1 },                         # Crosscut Feint
+  { move = 0x47380F29, level = 62 },                        # Echo Ball
 ]
 
   [[edit.cards]]
@@ -70,7 +77,7 @@ moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0x17A96A44, level = 1 },                         # Clone Faker
   { move = 0x01DB04F5, level = 31 },                        # Defence Scan
-  { move = 0xAEEA9F97, level = 85 },                        # Sigma Zone
+  { move = 0xAEEA9F97, level = 49 },                        # Sigma Zone
 ]
 
   [[edit.cards]]
@@ -84,9 +91,9 @@ moves = [
 target = "c01000260"                                   # Herman Waldon
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
-  { move = 0xB27F13ED, level = 25 },                        # Death Zone
-  { move = 0x2B343D01, level = 76 },                        # Cyclone
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0x79224D8B, level = 36 },                        # Freeze Shot
+  { move = 0xA6763B84, level = 66 },                        # Gladius Arch
 ]
 
   [[edit.cards]]
@@ -98,10 +105,10 @@ moves = [
 [[edit]]
 target = "c01000270"                                   # John Bloom
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x142DBE2A, level = 1 },                         # Foul Offence
+  { move = 0x2D68DB57, level = 1 },                         # Deceptive Step
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
   { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
-  { move = 0x79224D8B, level = 65 },                        # Freeze Shot
+  { move = 0x0A3F27B7, level = 52 },                        # Foul Offence 3
 ]
 
   [[edit.cards]]
@@ -113,10 +120,10 @@ moves = [
 [[edit]]
 target = "c01000280"                                   # Derek Swing
 moves = [
-  { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0x79224D8B, level = 25 },                        # Freeze Shot
-  { move = 0x5643C944, level = 30 },                        # Killer Slide
-  { move = 0xB27F13ED, level = 90 },                        # Death Zone
+  { move = 0x06458894, level = 1 },                         # Feint Dash
+  { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
+  { move = 0x17A96A44, level = 32 },                        # Clone Faker
+  { move = 0x32EEA7FE, level = 75 },                        # Death Zone 2
 ]
 
   [[edit.cards]]
@@ -128,10 +135,10 @@ moves = [
 [[edit]]
 target = "c01000290"                                   # Daniel Hatch
 moves = [
+  { move = 0x240BEDF2, level = 1 },                         # Bounce Shot
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x1ECA5CE1, level = 1 },                         # Wrath Shot
-  { move = 0xB27F13ED, level = 25 },                        # Death Zone
-  { move = 0xC7A9BB3A, level = 39 },                        # Whirlwind Cut
+  { move = 0xB7F1AED6, level = 10 },                        # Double Cyclone
+  { move = 0x1A472053, level = 45 },                        # Double Wrath Shot
 ]
 
   [[edit.cards]]
@@ -146,31 +153,61 @@ target = "c01000300"                                   # Jude Sharp
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 281, control = 258, technique = 282, pressure = 200, physical = 181, intelligence = 259, agility = 157, freedom = 271 }
-moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x4890FB67, level = 1 },                         # Twin Boost
-  { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
-]
+
+  [[edit.cards]]
+  id = 0x2B08403A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC42D6F54, level = 1 },                       # Aikido
+    { move = 0x4E9A9232, level = 1 },                       # Spinning Cut
+    { move = 0xB039ADB4, level = 1 },                       # Inazuma Break
+    { move = 0x32EEA7FE, level = 55 },                      # Death Zone 2
+  ]
+
+  [[edit.cards]]
+  id = 0x34EEC770    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC42D6F54, level = 1 },                       # Aikido
+    { move = 0x4E9A9232, level = 1 },                       # Spinning Cut
+    { move = 0xB039ADB4, level = 1 },                       # Inazuma Break
+    { move = 0x32EEA7FE, level = 55 },                      # Death Zone 2
+  ]
+
+  [[edit.cards]]
+  id = 0x3881A91A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC42D6F54, level = 1 },                       # Aikido
+    { move = 0x4E9A9232, level = 1 },                       # Spinning Cut
+    { move = 0xB039ADB4, level = 1 },                       # Inazuma Break
+    { move = 0x32EEA7FE, level = 55 },                      # Death Zone 2
+  ]
+
+  [[edit.cards]]
+  id = 0x75EDB664    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC42D6F54, level = 1 },                       # Aikido
+    { move = 0x4E9A9232, level = 1 },                       # Spinning Cut
+    { move = 0xB039ADB4, level = 1 },                       # Inazuma Break
+    { move = 0x32EEA7FE, level = 55 },                      # Death Zone 2
+  ]
 
 [[edit]]
 target = "c01000310"                                   # David Samford
 growth = "normal"
 stats = { kick = 292, control = 251, technique = 248, pressure = 211, physical = 130, intelligence = 219, agility = 169, freedom = 284 }
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x17A96A44, level = 1 },                         # Clone Faker
-  { move = 0x7DAF3139, level = 25 },                        # Emperor Penguin No. 2
-  { move = 0x61FB16FD, level = 47 },                        # Divine Arrows
+  { move = 0x240BEDF2, level = 1 },                         # Bounce Shot
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x4683AADF, level = 70 },                        # Space Penguin
 ]
 
 [[edit]]
 target = "c01000320"                                   # Bob Carlton
 moves = [
-  { move = 0x00196EC2, level = 1 },                         # Earthquake
-  { move = 0x73C5AF40, level = 24 },                        # Dash Accelerator
-  { move = 0xB3BD79DA, level = 34 },                        # Patriot Shot
-  { move = 0x0455B9CE, level = 63 },                        # Run Ball Run
+  { move = 0xA7157B91, level = 1 },                         # Power Shield
+  { move = 0xA6D711A6, level = 24 },                        # Full Power Shield
+  { move = 0x00196EC2, level = 35 },                        # Earthquake
+  { move = 0x91AE65A1, level = 44 },                        # Giant Spider
 ]
 
   [[edit.cards]]
@@ -185,7 +222,7 @@ moves = [
   { move = 0x35E70F22, level = 1 },                         # Grenade Shot
   { move = 0x5643C944, level = 28 },                        # Killer Slide
   { move = 0x142DBE2A, level = 41 },                        # Foul Offence
-  { move = 0x4890FB67, level = 67 },                        # Twin Boost
+  { move = 0x30A819A7, level = 57 },                        # Twin Boost F
 ]
 
   [[edit.cards]]
@@ -200,8 +237,8 @@ target = "c01000340"                                   # Jim Lawrenson
 moves = [
   { move = 0x142DBE2A, level = 1 },                         # Foul Offence
   { move = 0xAAA6489B, level = 29 },                        # Spiral Shot
-  { move = 0x1ECA5CE1, level = 46 },                        # Wrath Shot
-  { move = 0x7B64F3D2, level = 75 },                        # Hawk Shot
+  { move = 0x1A472053, level = 36 },                        # Double Wrath Shot
+  { move = 0x4F9953BB, level = 56 },                        # Baby Corodragon
 ]
 
   [[edit.cards]]
@@ -213,10 +250,10 @@ moves = [
 [[edit]]
 target = "c01000350"                                   # Barry Potts
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x259F08C6, level = 29 },                        # Whirlwind Twister
-  { move = 0x166B0073, level = 40 },                        # Super Armadillo
-  { move = 0xA8E0F6C2, level = 55 },                        # Kung Fu Header
+  { move = 0x261BDCA8, level = 1 },                         # Moonsault
+  { move = 0x259F08C6, level = 19 },                        # Whirlwind Twister
+  { move = 0x68982058, level = 40 },                        # Armadillo Circus
+  { move = 0xA8E0F6C2, level = 45 },                        # Kung Fu Header
 ]
 
   [[edit.cards]]
@@ -228,10 +265,10 @@ moves = [
 [[edit]]
 target = "c01000360"                                   # Steve Ingham
 moves = [
-  { move = 0x4B142F09, level = 1 },                         # Teleport Shot
-  { move = 0x18C035B4, level = 28 },                        # Ghost Pull
+  { move = 0x72514A74, level = 1 },                         # Low Drive
+  { move = 0x087999EE, level = 30 },                        # Heel Drop
   { move = 0x7B64F3D2, level = 35 },                        # Hawk Shot
-  { move = 0x1F0836D6, level = 97 },                        # Comet Shot
+  { move = 0x1F0836D6, level = 39 },                        # Comet Shot
 ]
 
   [[edit.cards]]
@@ -244,10 +281,10 @@ moves = [
 [[edit]]
 target = "c01010970"                                   # Jude Sharp
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x4890FB67, level = 1 },                         # Twin Boost
   { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+  { move = 0x32EEA7FE, level = 55 },                        # Death Zone 2
 ]
 
   [[edit.cards]]
@@ -259,9 +296,9 @@ moves = [
 target = "c11801020"                                   # Ray Dark
 moves = [
   { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0xBF6D0AC5, level = 26 },                        # Emperor Penguin No. 3
-  { move = 0x0DCADC54, level = 34 },                        # Emperor Penguin 7
-  { move = 0xC9B4602F, level = 60 },                        # Final Death Zone
 ]
 
   [[edit.cards]]

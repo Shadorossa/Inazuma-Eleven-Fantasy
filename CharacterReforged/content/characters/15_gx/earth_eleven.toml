@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c06030210"                                   # Skie Blue
 moves = [
-  { move = 0xC636A810, level = 4 },                         # Combustion Catch
-  { move = 0xC13F00CC, level = 25 },                        # Flower Power
-  { move = 0x06B22DB5, level = 35 },                        # Gyro-Blocker
-  { move = 0x53E9C2A3, level = 99 },                        # Capable Hands
+  { move = 0xC13F00CC, level = 4 },                         # Flower Power
+  { move = 0xD2955C45, level = 25 },                        # Power Catch
+  { move = 0xCB8E6D04, level = 39 },                        # Mighty Save
+  { move = 0x53E9C2A3, level = 51 },                        # Capable Hands
 ]
 
   [[edit.cards]]
@@ -21,22 +21,22 @@ moves = [
 
 [[edit]]
 target = "c06030010"                                   # Terry Archibald
-moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x04F493EC, level = 48 },                        # Dragon Rage Dunk
-  { move = 0xE4849E49, level = 58 },                        # Wild Dunk
-  { move = 0xE6C22010, level = 68 },                        # Claw de Force
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x7BCEA96F, level = 1 },                         # Tótem mamut [aura]
-]
 
   [[edit.cards]]
   id = 0xB2528B7C                                         # GK/MF · wind
   growth = "normal"
   stats = { kick = 150, control = 247, technique = 153, pressure = 200, physical = 282, intelligence = 257, agility = 270, freedom = 385 }
+  moves = [
+    { move = 0xD2955C45, level = 1 },                       # Power Catch
+    { move = 0x04F493EC, level = 48 },                      # Dragon Rage Dunk
+    { move = 0xE4849E49, level = 58 },                      # Wild Dunk
+    { move = 0xE6C22010, level = 68 },                      # Claw de Force
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x7BCEA96F, level = 1 },                       # Tótem mamut [aura]
+  ]
 
 [[edit]]
 target = "c06030020"                                   # Trina Verdure
@@ -62,7 +62,7 @@ moves = [
 [[edit]]
 target = "c06030030"                                   # Keenan Sharpe
 moves = [
-  { move = 0xB4488239, level = 5 },                         # Look! UFO
+  { move = 0x75994916, level = 5 },                         # Cunning Pull
   { move = 0x5DA7EA06, level = 13 },                        # Boomerang Bluff
   { move = 0x0F4DC9B3, level = 30 },                        # Logicstical Sync
   { move = 0xA23AEC88, level = 40 },                        # Copy Cut
@@ -103,10 +103,10 @@ moves = [
 [[edit]]
 target = "c06030050"                                   # Frank Foreman
 moves = [
-  { move = 0xEFFC6FA8, level = 1 },                         # Warhead
+  { move = 0x3AD8DFD1, level = 1 },                         # Curving Cut
   { move = 0xF4604B0E, level = 12 },                        # Fancy-Footwork
   { move = 0x82788A5A, level = 25 },                        # Straight Counter
-  { move = 0xBDAE2862, level = 43 },                        # Hellfire
+  { move = 0x08EEBD53, level = 43 },                        # Feint Play
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -123,38 +123,38 @@ moves = [
 
 [[edit]]
 target = "c06030060"                                   # Buddy Fury
-moves = [
-  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
-  { move = 0xCABBA212, level = 2 },                         # Menacing Glare
-  { move = 0x52CEB5F6, level = 51 },                        # Iron Wall
-  { move = 0x81FC5E34, level = 61 },                        # Driving Header
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0xD9DB2AFA, level = 1 },                         # Tótem oso pardo [aura]
-]
 
   [[edit.cards]]
   id = 0xFD131DBB                                         # MF/DF · mountain
   rank = 3
   growth = "normal"
   stats = { kick = 269, control = 257, technique = 271, pressure = 189, physical = 201, intelligence = 252, agility = 192, freedom = 271 }
+  moves = [
+    { move = 0x1F5EB9D5, level = 1 },                       # Nutmeg
+    { move = 0xCABBA212, level = 2 },                       # Menacing Glare
+    { move = 0x52CEB5F6, level = 51 },                      # Iron Wall
+    { move = 0x81FC5E34, level = 61 },                      # Driving Header
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0xD9DB2AFA, level = 1 },                       # Tótem oso pardo [aura]
+  ]
 
 [[edit]]
 target = "c06038010"                                   # Buddy Fury
-moves = [
-  { move = 0x179492C5, level = 1 },                         # Center Scythe Slice
-  { move = 0xCABBA212, level = 2 },                         # Menacing Glare
-  { move = 0x52CEB5F6, level = 51 },                        # Iron Wall
-  { move = 0x81FC5E34, level = 61 },                        # Driving Header
-]
 
   [[edit.cards]]
   id = 0x77E6A393                                         # MF/DF · mountain
   rank = 3
   growth = "normal"
   stats = { kick = 277, control = 255, technique = 275, pressure = 189, physical = 198, intelligence = 250, agility = 185, freedom = 243 }
+  moves = [
+    { move = 0x1F5EB9D5, level = 1 },                       # Nutmeg
+    { move = 0xCABBA212, level = 2 },                       # Menacing Glare
+    { move = 0x52CEB5F6, level = 51 },                      # Iron Wall
+    { move = 0x81FC5E34, level = 61 },                      # Driving Header
+  ]
 
 [[edit]]
 target = "c06030070"                                   # Cerise Blossom
@@ -179,7 +179,7 @@ moves = [
 [[edit]]
 target = "c06030110"                                   # Falco Flashman
 moves = [
-  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0x568262FA, level = 30 },                        # Dark Tornado
   { move = 0xB3CA3CB6, level = 40 },                        # Parkour Power
   { move = 0x9B63BB1B, level = 50 },                        # Black Dawn
@@ -197,27 +197,27 @@ moves = [
 
 [[edit]]
 target = "c06038020"                                   # Falco Flashman
-moves = [
-  { move = 0xD9BB22A7, level = 1 },                         # Air Ride
-  { move = 0x568262FA, level = 30 },                        # Dark Tornado
-  { move = 0xB3CA3CB6, level = 40 },                        # Parkour Power
-  { move = 0x9B63BB1B, level = 50 },                        # Black Dawn
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x2E3D11F1, level = 1 },                         # Tótem halcón [aura]
-]
 
   [[edit.cards]]
   id = 0x5CCBF050                                         # FW/MF · wind
   growth = "normal"
   stats = { kick = 312, control = 239, technique = 201, pressure = 184, physical = 204, intelligence = 192, agility = 211, freedom = 305 }
+  moves = [
+    { move = 0x3D10DCB3, level = 1 },                       # Curve Shot
+    { move = 0x568262FA, level = 30 },                      # Dark Tornado
+    { move = 0xB3CA3CB6, level = 40 },                      # Parkour Power
+    { move = 0x9B63BB1B, level = 50 },                      # Black Dawn
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x2E3D11F1, level = 1 },                       # Tótem halcón [aura]
+  ]
 
 [[edit]]
 target = "c06030120"                                   # Zack Avalon
 moves = [
-  { move = 0x64CDCFB9, level = 1 },                         # Rising Dragon
+  { move = 0x240BEDF2, level = 1 },                         # Bounce Shot
   { move = 0xD4222DDC, level = 1 },                         # Kabuki Break
   { move = 0xC9BAEA82, level = 40 },                        # Eye of the Storm
   { move = 0xB6852A33, level = 50 },                        # I Am the Almighty
@@ -253,9 +253,9 @@ moves = [
 target = "c06039290"                                   # Astero Black
 moves = [
   { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0x5643C944, level = 1 },                         # Killer Slide
   { move = 0xBF6D0AC5, level = 26 },                        # Emperor Penguin No. 3
-  { move = 0x0DCADC54, level = 34 },                        # Emperor Penguin 7
-  { move = 0xC9B4602F, level = 60 },                        # Final Death Zone
 ]
 
   [[edit.cards]]

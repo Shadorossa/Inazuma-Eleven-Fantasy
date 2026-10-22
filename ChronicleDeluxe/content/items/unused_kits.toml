@@ -1,0 +1,158 @@
+schema = "VRFW.item/2"
+# Kit items of uniforms that are in the game with no item and no team wearing them (docs/game/kits-unused.md A1 / A4).
+# Hand-made (not generated). The first heroic win of the kit's team gives it (config.toml [heroic] extra_kits ->
+# research/scripts/chronicle_deluxe_heroic_build.py -> content/base_tables/gamedata/soccer/soccer_prize_config.toml).
+# The Victory Road «(V)» kits use the item sheets' own icon (key_id: the id is the CRC of icon_key) and are cloned from
+# «Equipación Alpino (V)»; the second kits of Sílice, Naiadi and G. de la Reina have no icon in the game and show the
+# icon of the team's normal kit (their id is the CRC of chronicle_deluxe.<name>).
+default_lang = "es"
+
+[[item]]                                 # Mary Times (V): u112001 / keeper u112051, home _10 + away _20
+name = "kit_mary_times_v"
+base = "uni_u111901"
+category = "kit"
+icon_key = "uni_u112001"
+key_id = true
+model = { uniform = 0xB2361629 }
+  [item.text.es]
+  name = "Equipación Mary Times (V)"
+  [item.text.en]
+  name = "Mary Times Kit (V)"
+  [item.text.fr]
+  name = "Maillot Mary Times (V)"
+  [item.text.de]
+  name = "Mary-Times-Trikot (V)"
+  [item.text.it]
+  name = "Divisa Mary Times (V)"
+  [item.text.pt]
+  name = "Uniforme Oumihara (V)"
+  [item.text.ja]
+  name = "[大海原/おうみはら]ウェア（Ｖ）"
+  [item.text.zh_hans]
+  name = "大海原球衣（V）"
+  [item.text.zh_hant]
+  name = "大海原服裝（V）"
+
+[[item]]                                 # Cala Pirata (V): u112801 / keeper u112851, home _10 only
+name = "kit_pirates_cove_v"
+base = "uni_u111901"
+category = "kit"
+icon_key = "uni_u112801"
+key_id = true
+model = { uniform = 0x414D80F6 }
+  [item.text.es]
+  name = "Equipación Cala Pirata (V)"
+  [item.text.en]
+  name = "Pirates Cove Kit (V)"
+  [item.text.fr]
+  name = "Maillot Baie des pirates (V)"
+  [item.text.de]
+  name = "Pirates-Cove-Trikot (V)"
+  [item.text.it]
+  name = "Divisa Accademia Baia dei Pirati (V)"
+  [item.text.pt]
+  name = "Uniforme do Instituto Kaiou (V)"
+  [item.text.ja]
+  name = "[海王/かいおう]ウェア（Ｖ）"
+  [item.text.zh_hans]
+  name = "海王球衣（V）"
+  [item.text.zh_hant]
+  name = "海王服裝（V）"
+
+[[item]]                                 # Inazuma Japón (V): u112401 / keeper u112451, home _10 only; its uniform is
+name = "kit_inazuma_japan_v"             # this mod's kit (content/looks/inazuma_japan_v.toml: the game has no rows)
+base = "uni_u111901"
+category = "kit"
+icon_key = "uni_u112401"
+key_id = true
+model = { uniform = 0x5DD47751 }         # crc32(chronicle_deluxe.inazuma_japan_v)
+  [item.text.es]
+  name = "Equipación Inazuma Japón (V)"
+  [item.text.en]
+  name = "Inazuma National Kit (V)"
+  [item.text.fr]
+  name = "Maillot Inazuma Japon (V)"
+  [item.text.de]
+  name = "Inazuma-Japan-Trikot (V)"
+  [item.text.it]
+  name = "Divisa Inazuma Japan (V)"
+  [item.text.pt]
+  name = "Uniforme Super Onze do Japão (V)"
+  [item.text.ja]
+  name = "イナズマジャパンウェア（Ｖ）"
+  [item.text.zh_hans]
+  name = "闪电日本球衣（V）"
+  [item.text.zh_hant]
+  name = "閃電日本服裝（V）"
+
+[[item]]                                 # Sílice, second kit: u061801 / keeper u061851, _10 + _20
+name = "kit_silica_eleven_alt"
+base = "uni_u060701"
+category = "kit"
+model = { uniform = 0x4E6D84E6 }
+  [item.text.es]
+  name = "Equipación Sílice alternativa"
+  [item.text.en]
+  name = "Silica Eleven Alternate Kit"
+  [item.text.fr]
+  name = "Maillot alternatif Onze de Silica"
+  [item.text.de]
+  name = "Silica-Eleven-Ausweichtrikot"
+  [item.text.it]
+  name = "Divisa alternativa Silica"
+  [item.text.pt]
+  name = "Uniforme Alternativo Onze de Silica"
+  [item.text.ja]
+  name = "アナザー・サンドリアスウェア"
+  [item.text.zh_hans]
+  name = "沙德利亚斯备用球衣"
+  [item.text.zh_hant]
+  name = "備用·沙德利亞斯服裝"
+
+[[item]]                                 # Naiadi, second kit: u061901 / keeper u061951, _10 + _20
+name = "kit_naiadi_eleven_alt"
+base = "uni_u060801"
+category = "kit"
+model = { uniform = 0xD4E13C3D }
+  [item.text.es]
+  name = "Equipación Naiadi alternativa"
+  [item.text.en]
+  name = "Naiadi Eleven Alternate Kit"
+  [item.text.fr]
+  name = "Maillot alternatif Onze de Naiadi"
+  [item.text.de]
+  name = "Naiadi-Eleven-Ausweichtrikot"
+  [item.text.it]
+  name = "Divisa alternativa Naiadi"
+  [item.text.pt]
+  name = "Uniforme Alternativo Onze de Naiadi"
+  [item.text.ja]
+  name = "アナザー・サザナーラウェア"
+  [item.text.zh_hans]
+  name = "萨扎纳拉备用球衣"
+  [item.text.zh_hant]
+  name = "備用·薩扎納拉服裝"
+
+[[item]]                                 # G. de la Reina, second kit: u081601 / keeper u081651, _10 + _20
+name = "kit_queens_guardians_alt"
+base = "uni_u081101"
+category = "kit"
+model = { uniform = 0x8B0168AE }
+  [item.text.es]
+  name = "Equipación G. de la Reina alternativa"
+  [item.text.en]
+  name = "Guardians of the Queen Alt. Kit"
+  [item.text.fr]
+  name = "Maillot alt. Gardiens de la Reine"
+  [item.text.de]
+  name = "Guard.-of-the-Queen-Ausweichtrikot"
+  [item.text.it]
+  name = "Divisa alternativa Guardiani Regina"
+  [item.text.pt]
+  name = "Uniforme Alternativo Guardiões da Rainha"
+  [item.text.ja]
+  name = "アナザー・ガーディアンズオブ[Ｑ/クイーン]ウェア"
+  [item.text.zh_hans]
+  name = "女王守护者备用球衣"
+  [item.text.zh_hant]
+  name = "備用·女王守護者服裝"

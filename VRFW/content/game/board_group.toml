@@ -1,0 +1,14 @@
+schema = "VRFW.game/2"
+
+# Board groups: Chronicle board nodes a hide switch hides at once (content\board_groups\*.toml,
+# docs/framework/route-board.md §9). Run time: scripts\board_group.lua; board side: graft route_nodes (VRFW_RN_SetHide).
+
+# () -> { pieceId, … } of every hideable group's nodes
+[[VRFW.Command]]
+name = "CMND_VRFW_BOARD_GROUPS"
+handler = "BoardGroup.Pieces"
+
+# () -> on; ("set", 0 | 1) -> on: the hide switch (kept for the game session)
+[[VRFW.Command]]
+name = "CMND_VRFW_BOARD_HIDE"
+handler = "BoardGroup.Hide"

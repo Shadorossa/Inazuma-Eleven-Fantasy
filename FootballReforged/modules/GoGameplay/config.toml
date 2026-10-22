@@ -1,0 +1,31 @@
+# GO Gameplay: its settings (read when a match starts by the framework's duel choice service, through the rule
+# content\rules\go_duels.toml › duel_choice_setup; restart the game after a change). docs/game/mods/go-gameplay.md §4
+
+[duel_choice]
+# THE RIVAL'S SPECIAL MOVE AGAINST YOUR SIDE. The rival's move steals the ball (or stops you) unless your plain duel
+# power beats the move's power by this margin; then you win with your side.
+#   margin_kind = "ratio":      you win when your power >= the move's power x margin (1.5 = 50 % more)
+#   margin_kind = "difference": you win when your power >= the move's power + margin (power units)
+margin = 1.5
+margin_kind = "ratio"
+
+# SIDE AGAINST SIDE. Who wins when both pick the same side: "defender" (the GO rule: the defender read the attacker's
+# side; opposite sides = the attacker goes through) or "attacker".
+same_side_winner = "defender"
+
+# THE CPU'S SIDE. The chance (0..1) that the CPU picks the side that wins for it; 0.5 = a pure guess.
+cpu_read_rate = 0.5
+
+# THE CPU'S SPECIAL MOVE. The chance (0..1) that the CPU answers your side with a special move of its own moveset
+# (dribble when it attacks, block when it defends, the strongest it can pay for); -1 = its own AI rate
+# (focusAtkSkillRate / focusDefSkillRate of its AI level).
+cpu_special_rate = -1.0
+
+# true: nobody moves in the duel until it is decided. true: the only first choices are a special move or a side (a power
+# charge / power block is refused) and the CPU never chooses first.
+lock_movement = true
+choices_only = true
+
+# After the CPU's winning move is sent, your answer window is closed as soon as it opens (at the latest after this many
+# ms).
+answer_wait_ms = 5000

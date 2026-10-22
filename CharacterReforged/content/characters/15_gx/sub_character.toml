@@ -8,9 +8,9 @@ schema = "VRFW.character/2"
 target = "c06039330"                                   # Axel Blaze
 moves = [
   { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
-  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
-  { move = 0x19025F83, level = 26 },                        # Quick Draw
+  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x0B011EBF, level = 11 },                        # Fireball Screw
+  { move = 0xEAB3792D, level = 21 },                        # Grand Fire
 ]
 VRFW.MoveGrades = [
   { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
@@ -24,7 +24,7 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c06039240"                                   # Keenan Sharpe
 moves = [
-  { move = 0xB4488239, level = 5 },                         # Look! UFO
+  { move = 0x75994916, level = 5 },                         # Cunning Pull
   { move = 0x5DA7EA06, level = 13 },                        # Boomerang Bluff
   { move = 0x0F4DC9B3, level = 30 },                        # Logicstical Sync
   { move = 0xA23AEC88, level = 40 },                        # Copy Cut
@@ -54,10 +54,10 @@ moves = [
 [[edit]]
 target = "c06030140"                                   # Fake Victor
 moves = [
+  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
+  { move = 0x0C08B663, level = 1 },                         # Doom Dive Drive
   { move = 0x1F7F73BA, level = 10 },                        # Bicycle Slash
   { move = 0x90CD25B4, level = 20 },                        # Supernatural Strike
-  { move = 0x910F4F83, level = 47 },                        # Fire Tornado DD
-  { move = 0x19B4B151, level = 62 },                        # Great Blaster
 ]
 
   [[edit.cards]]
@@ -68,7 +68,7 @@ moves = [
 [[edit]]
 target = "c06030230"                                   # Catra Page
 moves = [
-  { move = 0xB501FE5D, level = 1 },                         # Holy Roller
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0x2C3D95DD, level = 18 },                        # Sleeping Dust
   { move = 0x0AC37488, level = 39 },                        # Heavenly Drive
   { move = 0x7DD6FEF8, level = 54 },                        # Athena's Anthem
@@ -83,7 +83,7 @@ moves = [
 [[edit]]
 target = "c06039370"                                   # Catra Page
 moves = [
-  { move = 0xB501FE5D, level = 1 },                         # Holy Roller
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0x2C3D95DD, level = 18 },                        # Sleeping Dust
   { move = 0x0AC37488, level = 39 },                        # Heavenly Drive
   { move = 0x7DD6FEF8, level = 54 },                        # Athena's Anthem
@@ -98,7 +98,7 @@ moves = [
 [[edit]]
 target = "c06030240"                                   # Laraya Orbes
 moves = [
-  { move = 0x90CD25B4, level = 1 },                         # Supernatural Strike
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0x86F5F6E8, level = 21 },                        # Cupid's Arrow
   { move = 0x0D0B77EA, level = 42 },                        # Floral Fiesta
   { move = 0xC5D2FDE2, level = 55 },                        # Oglitteration
@@ -114,7 +114,7 @@ moves = [
 [[edit]]
 target = "c06039380"                                   # Laraya Orbes
 moves = [
-  { move = 0x90CD25B4, level = 1 },                         # Supernatural Strike
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0x86F5F6E8, level = 21 },                        # Cupid's Arrow
   { move = 0x0D0B77EA, level = 42 },                        # Floral Fiesta
   { move = 0xC5D2FDE2, level = 55 },                        # Oglitteration
@@ -131,7 +131,7 @@ moves = [
 target = "c06038030"                                   # Ptumri Emnator
 moves = [
   { move = 0xEDBAD1F1, level = 1 },                         # Brimstone Rain
-  { move = 0x568262FA, level = 21 },                        # Dark Tornado
+  { move = 0x72514A74, level = 21 },                        # Low Drive
   { move = 0xF88DC090, level = 42 },                        # Z Slash
   { move = 0xBD2BB49C, level = 53 },                        # Dark Matter
 ]
@@ -146,7 +146,7 @@ moves = [
 target = "c06039280"                                   # Ptumri Emnator
 moves = [
   { move = 0x568262FA, level = 1 },                         # Dark Tornado
-  { move = 0xF88DC090, level = 24 },                        # Z Slash
+  { move = 0x163D8F70, level = 24 },                        # Chip Shot
   { move = 0xEDBAD1F1, level = 38 },                        # Brimstone Rain
   { move = 0xBD2BB49C, level = 53 },                        # Dark Matter
 ]
@@ -160,9 +160,9 @@ moves = [
 [[edit]]
 target = "c06039300"                                   # Ptumri
 moves = [
-  { move = 0xA01CD34D, level = 1 },                         # Temporal Wall
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
   { move = 0x8B31808E, level = 20 },                        # Wormhole
-  { move = 0x9B3048AB, level = 34 },                        # Shadow Catch
+  { move = 0xCB8E6D04, level = 34 },                        # Mighty Save
   { move = 0x1DEFA2AD, level = 47 },                        # We Have Liftoff!
 ]
 
@@ -176,7 +176,7 @@ moves = [
 target = "c06039130"                                   # Justin Shipwood
 moves = [
   { move = 0x4B3099D5, level = 1 },                         # Stomper Stopper
-  { move = 0x9AF2229C, level = 16 },                        # Gravity Point
+  { move = 0xCB8E6D04, level = 16 },                        # Mighty Save
   { move = 0x9B3048AB, level = 24 },                        # Shadow Catch
   { move = 0xF5C2A0A5, level = 35 },                        # Capoeira Grab
 ]
@@ -190,9 +190,9 @@ moves = [
 [[edit]]
 target = "c06039140"                                   # Skip Flashman
 moves = [
-  { move = 0x650FA58E, level = 1 },                         # Spin Out
+  { move = 0x08EEBD53, level = 1 },                         # Feint Play
   { move = 0xA37D1A41, level = 11 },                        # Hyper-Swiper
-  { move = 0x7C1494CF, level = 22 },                        # Tornado Tunnel
+  { move = 0x75994916, level = 22 },                        # Cunning Pull
   { move = 0x62BE692D, level = 32 },                        # Whirlwind Force
 ]
 
@@ -206,9 +206,9 @@ moves = [
 [[edit]]
 target = "c06039150"                                   # Chip Flashman
 moves = [
-  { move = 0x2A37FC88, level = 1 },                         # Revolution V
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0xDF8CB373, level = 13 },                        # Sonic Shot
-  { move = 0x3F00EDE9, level = 21 },                        # Dash Storm
+  { move = 0x240BEDF2, level = 21 },                        # Bounce Shot
   { move = 0x9349F1DA, level = 30 },                        # Zephyr Shot
 ]
 
@@ -223,7 +223,7 @@ target = "c06039160"                                   # Thales Foreman
 moves = [
   { move = 0x05567847, level = 1 },                         # Runaway Train
   { move = 0x79E3E635, level = 14 },                        # Racing Flame
-  { move = 0x72BFA108, level = 25 },                        # Wall of Atlantis
+  { move = 0x08EEBD53, level = 25 },                        # Feint Play
   { move = 0x141046AB, level = 36 },                        # Overnight Fortress
 ]
 
@@ -237,7 +237,7 @@ moves = [
 target = "c06039180"                                   # Cedric Blossom
 moves = [
   { move = 0x928B9BED, level = 1 },                         # Optimal Trajectory
-  { move = 0xADAFE047, level = 14 },                        # Dual Strike
+  { move = 0x72514A74, level = 14 },                        # Low Drive
   { move = 0x8B90AAAC, level = 24 },                        # Fortissimo
   { move = 0xD6649385, level = 34 },                        # Tusk Force
 ]
@@ -251,7 +251,7 @@ moves = [
 [[edit]]
 target = "c06039190"                                   # Marigold Blossom
 moves = [
-  { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
+  { move = 0x72514A74, level = 1 },                         # Low Drive
   { move = 0xA3392D01, level = 12 },                        # Rainbow Bubble Burst
   { move = 0xD3A09353, level = 23 },                        # Hoopsie-Daisy
   { move = 0x86F5F6E8, level = 33 },                        # Cupid's Arrow
@@ -268,7 +268,7 @@ target = "c06039200"                                   # Judy Scarriot
 moves = [
   { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
   { move = 0xD3A09353, level = 16 },                        # Hoopsie-Daisy
-  { move = 0xAC6D8A70, level = 26 },                        # Rainbow Arc
+  { move = 0x3D10DCB3, level = 26 },                        # Curve Shot
   { move = 0xAAD10DF7, level = 37 },                        # Mermaid Smash
 ]
 
@@ -282,7 +282,7 @@ moves = [
 target = "c06039210"                                   # Jasper Lerner
 moves = [
   { move = 0x928B9BED, level = 1 },                         # Optimal Trajectory
-  { move = 0x1755397B, level = 17 },                        # Dark Energy Star
+  { move = 0x72514A74, level = 17 },                        # Low Drive
   { move = 0xBBE07677, level = 28 },                        # Sidewinder
   { move = 0xC4D13C6B, level = 38 },                        # Katana Kick
 ]
@@ -296,7 +296,7 @@ moves = [
 [[edit]]
 target = "c06039220"                                   # Mabel Lerner
 moves = [
-  { move = 0x928B9BED, level = 1 },                         # Optimal Trajectory
+  { move = 0x501F2F12, level = 1 },                         # Heel Flick
   { move = 0xED7B7A4F, level = 12 },                        # Defence Equation
   { move = 0x56FBAD3B, level = 28 },                        # Seal Matrix
   { move = 0x0F4DC9B3, level = 41 },                        # Logicstical Sync
@@ -327,7 +327,7 @@ moves = [
 [[edit]]
 target = "c06039260"                                   # Miriam Sharpe
 moves = [
-  { move = 0x8D5B6847, level = 1 },                         # Odin Sword
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0x016DEA27, level = 12 },                        # Accelerator Gears
   { move = 0x5DA7EA06, level = 27 },                        # Boomerang Bluff
   { move = 0xAC1ACF1C, level = 38 },                        # Flower Plower
@@ -344,7 +344,7 @@ target = "c06039270"                                   # Globulus Ava
 moves = [
   { move = 0xB8A509A7, level = 1 },                         # Asterocks
   { move = 0x0E8FA384, level = 23 },                        # Warsaw
-  { move = 0xA2BF7076, level = 39 },                        # Side Swipe
+  { move = 0x3AD8DFD1, level = 39 },                        # Curving Cut
   { move = 0x88D5D57C, level = 54 },                        # Judgment Ray
 ]
 
@@ -360,7 +360,7 @@ target = "c06039400"                                   # Globulus Ava
 moves = [
   { move = 0xB8A509A7, level = 1 },                         # Asterocks
   { move = 0x0E8FA384, level = 23 },                        # Warsaw
-  { move = 0xA2BF7076, level = 39 },                        # Side Swipe
+  { move = 0x3AD8DFD1, level = 39 },                        # Curving Cut
   { move = 0x88D5D57C, level = 54 },                        # Judgment Ray
 ]
 
@@ -374,9 +374,9 @@ moves = [
 [[edit]]
 target = "c06039390"                                   # Elreid Orbes
 moves = [
-  { move = 0xB01D1B68, level = 1 },                         # Power Spike
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0x37009B59, level = 25 },                        # Burnout Burst
-  { move = 0x9765A74A, level = 38 },                        # Beast Fang
+  { move = 0xD2955C45, level = 38 },                        # Power Catch
   { move = 0xE6C22010, level = 52 },                        # Claw de Force
 ]
 
@@ -390,9 +390,9 @@ moves = [
 [[edit]]
 target = "c06039410"                                   # Ducksquiggan Barboyle
 moves = [
-  { move = 0x00A10ABD, level = 1 },                         # Ball Lightning
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
   { move = 0x518BCA26, level = 20 },                        # Fire Tornado
-  { move = 0xEE3E059F, level = 35 },                        # Celestial Smash
+  { move = 0x6B4A7B35, level = 35 },                        # Power Shot
   { move = 0xB2085681, level = 50 },                        # Volcanic Rock
 ]
 

@@ -7,10 +7,14 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02024700"                                   # Canon Evans
 moves = [
-  { move = 0x332CCDC9, level = 1 },                         # Heel Kick
-  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0x07D16DA0, level = 1 },                         # Inazuma-1
+  { move = 0x6C6C932B, level = 1 },                         # Megaton Head
   { move = 0x31ABD82E, level = 30 },                        # Circus Block
   { move = 0x7E2BE557, level = 45 },                        # Legendary Wolf
+]
+VRFW.MoveGrades = [
+  { Move = 0x07D16DA0, Grade = 1 },                         # Inazuma-1
+  { Move = 0x6C6C932B, Grade = 1 },                         # Megaton Head
 ]
 
   [[edit.cards]]
@@ -21,10 +25,13 @@ moves = [
 [[edit]]
 target = "c02024710"                                   # Syon Blaze
 moves = [
-  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
   { move = 0x63BDA8A4, level = 1 },                         # Inazuma Drop
   { move = 0x427719AC, level = 30 },                        # Gale Dash
-  { move = 0x00D8C57C, level = 45 },                        # Fireball Storm
+  { move = 0xEAB3792D, level = 45 },                        # Grand Fire
+]
+VRFW.MoveGrades = [
+  { Move = 0x41F3CDC2, Grade = 1 },                         # Scorching Tackle
 ]
 
   [[edit.cards]]
@@ -35,8 +42,8 @@ moves = [
 [[edit]]
 target = "c02029240"                                   # In Chikita
 moves = [
-  { move = 0x6C6C932B, level = 1 },                         # Megaton Head
-  { move = 0xACAC21CE, level = 15 },                        # Fake Ball
+  { move = 0x3D10DCB3, level = 1 },                         # Curve Shot
+  { move = 0x6C6C932B, level = 15 },                        # Megaton Head
   { move = 0x7A67325B, level = 27 },                        # Flame Dance
   { move = 0xDD365E15, level = 48 },                        # Mole Shuffle
 ]

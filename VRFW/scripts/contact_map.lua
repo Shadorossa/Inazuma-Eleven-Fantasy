@@ -2,7 +2,7 @@
 -- Declarations: [[VRFW.ContactSet]], [[VRFW.ContactMap]] with its Zone / Node / Item entries. Recruiting, prices and the per-save record are the screen's.
 -- A [[VRFW.ContactMap]] with a [VRFW.ContactMap.Teams] table is built from the game's teams and matches (lib/contact_teams.lua).
 --   CMND_VRFW_CONTACT_SETS()          -> { {key, crc, title, maps}, ... }  every declared set
---   CMND_VRFW_CONTACT_MAPS(set, lang) -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex, sprite, players, excl, series}, ... }, reveal }  (set = crc32 of "<mod>.<name>" or the text)
+--   CMND_VRFW_CONTACT_MAPS(set, lang) -> { key, title, rc, ic, rct, ict, maps = { {key, title, kind, tex, sprite, players, excl, series}, ... }, reveal, refund, join_rarity }  (set = crc32 of "<mod>.<name>" or the text)
 --   CMND_VRFW_CONTACT_MAP(map, lang)  -> { key, kind, title, tex, sprite, strict, series, zones = {... label, reqs}, items = {...}, nodes = { {kind, zone, card, face, level, price, name, x, y, links, reqs, story, notes, cards} } }  (map = key text or crc32)
 -- Titles are sent as crc32 of their menu_text row id; character and team names are read from the game's chara_text / team_text in the asked language.
 
@@ -50,6 +50,9 @@ local Teams = require "lib/contact_teams"   -- team pages derived from the game'
 -- ---------------------------------------------------------------------------------------------- declarations
 
 local SETS, SET_BY, MAPS, MAP_BY = nil, {}, {}, {}
+-- [[VRFW.ContactBypass]] Option = "<option id>" (a test mod's own Mods options row): while that row is on, every page
+-- of every set is open and signing asks no requirement and spends nothing; { {mod, option}, ... }
+local BYPASS = {}
 local KINDS = { zones = true, network = true, list = true }
 local NODE_KINDS = { player = true, gate = true, open = true, start = true }
 
@@ -507,7 +510,7 @@ local function requirements_on(v, mod)
 end
 
 -- [VRFW.ContactSet] ElementCurrencyTitle = { wind = "<menu_text row>", … }: the name of each element's price spirit
--- (e.g. «Fichas de Viento»); element number -> crc32 of the row
+-- (e.g. «Fichas de Viento»; ElementCurrencyUnit: one of them, «Ficha de viento»); element number -> crc32 of the row
 local function element_titles(t)
   if type(t) ~= "table" then return nil end
   local out = {}
@@ -539,6 +542,12 @@ local function load()
   local DERIVED, TERMS, TRIALS = {}, {}, {}
   for _, f in ipairs(files) do
     local v = type(f.data) == "table" and type(f.data.VRFW) == "table" and f.data.VRFW or {}
+    for _, b in ipairs(type(v.ContactBypass) == "table" and v.ContactBypass or {}) do
+      if type(b) == "table" and type(b.Option) == "string" and b.Option ~= "" then
+        BYPASS[#BYPASS + 1] = f.mod .. "." .. b.Option
+        warn("[debug] mods/" .. f.mod .. ": contact map bypass switch " .. f.mod .. "." .. b.Option .. " declared (test only)")
+      end
+    end
     for _, s in ipairs(type(v.ContactSet) == "table" and v.ContactSet or {}) do
       if type(s.Name) == "string" then
         local key = f.mod .. "." .. s.Name
@@ -549,9 +558,11 @@ local function load()
           element_currency = element_currency(s.ElementCurrency),
           trial_friendly = type(s.TrialFriendly) == "string" and s.TrialFriendly or nil, terms = {}, trials = {},
           refund = math.max(0, math.floor(tonumber(s.ReleaseRefund) or 0)),
+          join_rarity = tonumber(s.JoinRarity) and math.max(0, math.floor(tonumber(s.JoinRarity))) or nil,
           requirements = requirements_on(s.Requirements, f.mod),
           hub = type(s.Hub) == "string" and s.Hub or nil,
-          element_title = element_titles(s.ElementCurrencyTitle) }
+          element_title = element_titles(s.ElementCurrencyTitle),
+          element_unit = element_titles(s.ElementCurrencyUnit) }
         if SET_BY[key] == nil then
           SETS[#SETS + 1] = set
           SET_BY[key], SET_BY[set.crc] = set, set
@@ -772,7 +783,16 @@ end
 -- While a set's hub is open (CMND_VRFW_CONTACT_HUB_FILTER(set) from the list's OnInit; 0 from any other open and when
 -- the hub closes), the free-match list's builder (hook ContactHub.ListBuild, content/game/contact_hub.toml) keeps only
 -- the rows whose match has a team page: its row pointers (aggregate + 0x10) compacted, its count (+ 0x08) lowered.
-local HUBF = { games = nil, applied = false, logs = 0 }
+local HUBF = { games = nil, applied = false, logs = 0, bypass = false, tabs = nil }
+
+-- a declared bypass switch ([[VRFW.ContactBypass]]) is on now
+local function bypass_on()
+  for _, key in ipairs(BYPASS) do
+    local ok, v = pcall(VRFW.option, key)
+    if ok and v ~= nil and v ~= 0 and v ~= false then return true end
+  end
+  return false
+end
 
 function ContactMap.HubFilter(set)
   local s = (set ~= nil and set ~= 0) and find_set(set) or nil
@@ -787,6 +807,11 @@ function ContactMap.HubFilter(set)
     end
   end
   HUBF.games = games
+  -- a bypass switch on: the list also shows the rows of teams not unlocked yet (every page reachable)
+  HUBF.bypass = bypass_on()
+  if HUBF.bypass and HUBF.tabs == nil then
+    HUBF.tabs = Teams.game_tabs(warn)
+  end
   if not HUBF.applied then
     local ok, done, e = pcall(VRFW.hook.apply, "ContactHub.ListBuild")
     HUBF.applied = ok and done == true
@@ -803,11 +828,79 @@ local function rd(ty, at)
   return nil
 end
 
+-- The builder (BuildRows) walks the opponent table (aggregate + 0x810: rows + 0x50, count + 0x58, 0x1C bytes: category,
+-- game, sort, 4 class conditions) and appends a 12-byte entry (game, category, sort, 4 class marks) and its pointer for
+-- each row of the asked tab (filter + 4) whose class is open; at most 0x100. With a bypass switch on, the rows of the tab
+-- that have a page and were left out are built the same way, and the pointers are put back in the table's order.
+local ROWS = { TABLE = 0x810, ROWS = 0x50, COUNT = 0x58, STRIDE = 0x1C, ENTRY = 12, MAX = 0x100, JOVENES = 0x10C538F9 }
+
+local function tab_of_row(category, game)
+  if game == ROWS.JOVENES then return 1 end      -- the builder's own exception (the tutorial team in the IE2 tab)
+  if category == 0 then return 8 end
+  return (HUBF.tabs or {})[game] or 0
+end
+
+local function add_locked_rows(agg, entries, filter)
+  local tab = rd("u8", filter + 4)
+  local tbl = rd("ptr", agg + ROWS.TABLE)
+  if type(tab) ~= "number" or type(tbl) ~= "number" or tbl < 0x10000 then return end
+  local rows, count = rd("ptr", tbl + ROWS.ROWS), rd("u32", tbl + ROWS.COUNT)
+  local n = rd("u32", agg + 8)
+  if type(rows) ~= "number" or rows < 0x10000 or type(count) ~= "number" or count > 4096 or type(n) ~= "number" then
+    return
+  end
+  local have, used = {}, 0
+  for i = 0, n - 1 do
+    local q = rd("ptr", agg + 0x10 + i * 8)
+    local g = q and rd("u32", q)
+    if g then have[u32(g)] = q end
+    if q and q >= entries then used = math.max(used, math.floor((q - entries) / ROWS.ENTRY) + 1) end
+  end
+  local order, added = {}, 0
+  for r = 0, count - 1 do
+    local at = rows + r * ROWS.STRIDE
+    local category, g = rd("u32", at), rd("u32", at + 4)
+    g = g and u32(g) or 0
+    if g ~= 0 and category ~= nil then
+      if have[g] then
+        order[#order + 1] = have[g]
+        have[g] = nil
+      elseif HUBF.games[g] and tab_of_row(category, g) == tab and used < ROWS.MAX and #order < ROWS.MAX then
+        local e = entries + used * ROWS.ENTRY
+        local sort = rd("u32", at + 8) or 0
+        pcall(VRFW.mem.write, "u32", e, g)
+        pcall(VRFW.mem.write, "u8", e + 4, category % 256)
+        pcall(VRFW.mem.write, "u16", e + 6, sort % 65536)
+        for k = 0, 3 do pcall(VRFW.mem.write, "u8", e + 8 + k, 0xFF) end
+        used = used + 1
+        added = added + 1
+        order[#order + 1] = e
+      end
+    end
+  end
+  for _, q in pairs(have) do order[#order + 1] = q end   -- a built row the table walk did not meet: kept, at the end
+  if added == 0 or #order > ROWS.MAX then return end
+  for i, q in ipairs(order) do pcall(VRFW.mem.write, "ptr", agg + 0x10 + (i - 1) * 8, q) end
+  pcall(VRFW.mem.write, "u32", agg + 8, #order)
+  if HUBF.logs < 20 then
+    HUBF.logs = HUBF.logs + 1
+    info(string.format("hub list: bypass switch on: %d locked team(s) of tab %d listed", added, tab))
+  end
+end
+
 VRFW.on("hook:ContactHub.ListBuild:post", function(ev)
   local games = HUBF.games
   if games == nil then return end
   local agg, entries = tonumber(ev.args and ev.args[1]) or 0, tonumber(ev.args and ev.args[2]) or 0
   if agg < 0x10000 or entries < 0x10000 then return end
+  local filter = tonumber(ev.args and ev.args[4]) or 0
+  if HUBF.bypass and filter >= 0x10000 then
+    local ok, e = pcall(add_locked_rows, agg, entries, filter)
+    if not ok and HUBF.logs < 20 then
+      HUBF.logs = HUBF.logs + 1
+      warn("hub list: bypass rows not added (" .. tostring(e) .. ")")
+    end
+  end
   local n = rd("u32", agg + 8)
   if type(n) ~= "number" or n == 0 or n > 4096 then return end
   -- the retail layout only (pointers into the entries the builder was handed): a raised list keeps its rows
@@ -850,9 +943,13 @@ function ContactMap.Maps(set, code)
   local s = find_set(set)
   if s == nil then return nil end
   names_for(lang_of(code))           -- the screen opens: its maps' names, once per language (ContactMap.Map serves them)
-  -- refund: the spirits a released player gives back on a team page (ReleaseRefund, the price's spirit)
-  local out = { key = s.key, title = s.title, rc = s.rc, ic = s.ic, rct = s.rct, ict = s.ict, maps = {}, reveal = REVEAL_ALL,
-    refund = s.refund or 0 }
+  -- refund: the spirits a released player gives back on a team page (ReleaseRefund, the price's spirit); join_rarity:
+  -- the rarity a signed player joins at (JoinRarity; nil = the recruit service's default)
+  -- bypass: a declared bypass switch is on now (read at each open: the row applies without a restart)
+  local bypass = bypass_on()
+  local out = { key = s.key, title = s.title, rc = s.rc, ic = s.ic, rct = s.rct, ict = s.ict, maps = {},
+    reveal = REVEAL_ALL or bypass, bypass = bypass,
+    refund = s.refund or 0, join_rarity = s.join_rarity }
   for _, M in ipairs(s.maps) do
     -- series: a chara_series_id whose name (CMND_GET_CHARA_SERIES_INFO) the screen shows instead of the title
     out.maps[#out.maps + 1] = { key = M.key, title = M.title, kind = M.kind, tex = M.tex, sprite = M.sprite, players = M.players,
@@ -871,6 +968,11 @@ end
 local function pay_title(s, spirit)
   local e = pay_element(s, spirit)
   return e ~= 0 and s.element_title and s.element_title[e] or 0
+end
+-- [VRFW.ContactSet] ElementCurrencyUnit: the name of ONE price spirit of that element (a team page's cost line)
+local function pay_unit(s, spirit)
+  local e = pay_element(s, spirit)
+  return e ~= 0 and s.element_unit and s.element_unit[e] or 0
 end
 
 function ContactMap.Map(map, code)
@@ -922,8 +1024,9 @@ function ContactMap.Map(map, code)
     out.nodes[i] = { kind = n.kind, zone = n.zone, card = n.card, face = n.face, level = n.level, price = n.price,
       name = n.base ~= 0 and name_of_base(n.base) or name_of_card(n.card), x = n.x, y = n.y, links = n.links, reqs = reqs,
       cards = n.cards, spirit = n.spirit, item = n.item, slot = n.slot, px = n.px, py = n.py, trials = n.trials,
-      element = n.element, position = n.position, main = n.main,
-      pay_element = pay_element(s, n.spirit), pay_title = pay_title(s, n.spirit),
+      element = n.element, position = n.position, main = n.main, staff = n.staff,
+      sold_at = (n.sold_at or 0) ~= 0 and team_name(n.sold_at, lang) or nil,
+      pay_element = pay_element(s, n.spirit), pay_title = pay_title(s, n.spirit), pay_unit = pay_unit(s, n.spirit),
       pay_name = (n.spirit or 0) ~= 0 and name_of_card(n.spirit) or nil }
     if n.story then
       local notes = {}

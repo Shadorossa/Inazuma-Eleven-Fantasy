@@ -1,5 +1,6 @@
 -- Derives the uniform of a card's own team from game data (mod overlays included); names no character, team or kit.
--- Kit.of(card) -> uniform, flags, source   (card = chara_param id; uniform 0 = none found; flags = 2 for a goalkeeper;
+-- Kit.of(card) -> uniform, flags, source   (card = chara_param id; uniform 0 = none found; flags = the model's look
+--   bits: 2 a goalkeeper, 16 a coach card, 32 a manager card (their own clothes, as the retail team dock asks);
 --   source = "belong" | "roster" | "none")
 -- Lookup chain, first hit wins:
 --   1. belong: the character's teams in belong_team_config, kit column of the series era, then the team's other eras;
@@ -111,7 +112,7 @@ local function read_all()
   D.card = setmetatable({}, { __index = function(t, card)
     local ok, c = pcall(VRFW.chara.card, card)
     if not ok or type(c) ~= "table" then return nil end
-    local v = { u32(c.base), u32(c.position) }
+    local v = { u32(c.base), u32(c.position), c.coach == true, c.manager == true }
     rawset(t, card, v)
     return v
   end })
@@ -202,6 +203,12 @@ function M.of(card)
     if u then src = "roster" end
   end
   if u == nil then flags = 0 end
+  -- staff cards: the coach's / manager's own clothes (the costume the game looks up with that bit)
+  if p ~= nil and p[3] then
+    flags = 16
+  elseif p ~= nil and p[4] then
+    flags = 32
+  end
   CACHE[card] = { u or 0, flags, src }
   return u or 0, flags, src
 end

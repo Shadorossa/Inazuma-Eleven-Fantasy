@@ -645,7 +645,7 @@ if VRFW_TopBar == nil then
       end
     end
     -- a badge: a mod of this VM sets VRFW_TopBarBadges[<entry key>] = {tex = <menu path of a loaded
-    -- atlas>, sprite = <sprite name>} (nil = none), e.g. a pending-requests count on a friends entry.
+    -- atlas>, sprite = <sprite name>} (nil = none), e.g. a count on an entry.
     -- The first entry of the row with one gets it at its icon's top-right corner, on the spare plate instance MAX.
     local badge = nil
     local bs = _G.VRFW_TopBarBadges

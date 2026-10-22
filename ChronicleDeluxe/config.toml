@@ -39,6 +39,19 @@ heroic_kits = [
     "fbtl_cro05_090_010",    # Ejército de Terracota (and its twin game)
 ]
 
+# Kits that are in the game with no item and no team wearing them (owner 2026-10-22, docs/game/kits-unused.md A1 / A4):
+# the item is declared by hand in content/items/unused_kits.toml and the first heroic win of `game` (the team the kit
+# belongs to) gives it, only while the player has none. `item` = the item's id key: its icon_key for a key_id item, else
+# chronicle_deluxe.<name> (the id is the CRC of that text).
+extra_kits = [
+    { game = "fbtl_cro02_130_010", item = "uni_u112001" },                                  # Mary Times (V)
+    { game = "fbtl_cro04_070_010", item = "uni_u112801" },                                  # Cala Pirata (V)
+    { game = "fbtl_cro03_190_010", item = "uni_u112401" },                                  # Inazuma Japón (V)
+    { game = "fbtl_cro06_080_010", item = "chronicle_deluxe.kit_silica_eleven_alt" },       # Sílice (second kit)
+    { game = "evt_rn_galaxy_naiadi_side", item = "chronicle_deluxe.kit_naiadi_eleven_alt" },  # Naiadi (second kit), rematch node
+    { game = "fbtl_cro08_100_010", item = "chronicle_deluxe.kit_queens_guardians_alt" },    # G. de la Reina (second kit)
+]
+
 # Kits of teams sold in a store instead (owner 2026-10-20: Raimon of the Ares era «en tienda por ahora»): the kit item
 # is created when the team's uniform has none, and sold in `store` while `store_mod` is active, at the price of the
 # store's other Raimon kit of that game (Equipación Raimon Isla Remota: 14 Puntos de pasión). A kit no single team owns

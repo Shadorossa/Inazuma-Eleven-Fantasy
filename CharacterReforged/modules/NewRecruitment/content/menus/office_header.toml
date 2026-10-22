@@ -1,0 +1,11 @@
+# New Recruitment › the office's team pages: the player's header row (the name bar over the info card) never shows the
+# rarity title. The contact-map screen marks the temporary status of the player it shows (VRFW_UI.HeaderRow.noTitle);
+# this rule of Character Reforged's host character_reforged.header_rarity answers «no title» for those handles, so
+# the header never shows it after the title's sprite has loaded either.
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "character_reforged.header_rarity"
+id = "office_no_title"
+order = 50
+action = { lua = "VRFW_UI.HeaderRow.ShowsTitle" }

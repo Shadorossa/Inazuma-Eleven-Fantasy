@@ -16,8 +16,8 @@ default = false
 order = 300
 
 # «Todos los tiros son lejanos» (owner 2026-10-21): on = content\techniques\all_long_shots.toml applies (its `option`
-# key): every shot technique gets the long-shot flag. Read when the technique data builds: a change applies at the
-# next start of the game.
+# key): every shot technique gets the long-shot flag; content\params\all_long_shots.toml (same `option` key) sets the
+# long-shot cooldown (longShootSkillRecastTime) to 0. Read when the data builds: a change applies at the next start.
 [[option]]
 id = "all_long_shots"                         # row key shot_fx.all_long_shots
 type = "toggle"                               # 0 = Desactivado (the game's own flags), 1 = Activado (every shot a long shot)
@@ -25,4 +25,4 @@ label = "all_long_shots"                      # «Todos los tiros son lejanos» 
 help = "all_long_shots_help"
 default = false
 order = 310
-restart = true                                 # read when the technique data builds: readers get the value the game started with
+restart = true                                 # read when the technique / param data builds: readers get the value the game started with

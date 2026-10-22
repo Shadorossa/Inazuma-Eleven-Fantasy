@@ -1,0 +1,83 @@
+schema = "VRFW.changelog/1"
+# GO Gameplay: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]]
+icon = "general"
+notes = [
+    "Duelos al estilo GO, desactivado por defecto.",
+    "En el foco nadie se mueve: supertécnica o lado.",
+    "Mismo lado gana el defensor; opuesto, el atacante.",
+    "Su supertécnica gana salvo que tu poder la supere.",
+    "Sin cuenta atrás y sin entradas deslizantes.",
+]
+
+[release.en]
+notes = [
+    "GO style duels, off by default.",
+    "In a focus battle nobody moves: special or side.",
+    "Same side, the defender wins; opposite, the attacker.",
+    "Its special move wins unless your power beats it.",
+    "No countdown and no sliding tackles.",
+]
+
+[release.fr]
+notes = [
+    "Duels façon GO, désactivé par défaut.",
+    "En focus personne ne bouge : supertechnique ou côté.",
+    "Même côté, le défenseur gagne ; opposé, l'attaquant.",
+    "Sa supertechnique gagne sauf si ta puissance l'écrase.",
+    "Pas de compte à rebours ni de tacles glissés.",
+]
+
+[release.de]
+notes = [
+    "Duelle wie in GO, standardmäßig aus.",
+    "Im Fokus bewegt sich niemand: Technik oder Seite.",
+    "Gleiche Seite: Verteidiger gewinnt; sonst Angreifer.",
+    "Seine Technik siegt, außer deine Stärke ist höher.",
+    "Kein Countdown und keine Grätschen.",
+]
+
+[release.it]
+notes = [
+    "Duelli stile GO, disattivato di base.",
+    "Nel focus nessuno si muove: supertecnica o lato.",
+    "Stesso lato vince il difensore; opposto, l'attaccante.",
+    "La sua tecnica vince salvo che tu sia molto più forte.",
+    "Niente conto alla rovescia né scivolate.",
+]
+
+[release.pt]
+notes = [
+    "Duelos ao estilo GO, desativado por defeito.",
+    "No foco ninguém se mexe: supertécnica ou lado.",
+    "Mesmo lado ganha o defensor; oposto, o atacante.",
+    "A técnica dele ganha salvo se o teu poder a superar.",
+    "Sem contagem decrescente e sem carrinhos.",
+]
+
+[release.ja]
+notes = [
+    "GO風デュエル。初期設定はオフ。",
+    "フォーカスでは誰も動かない：必殺技か左右。",
+    "同じ側は守備側、逆は攻撃側の勝ち。",
+    "パワーで大きく上回らない限り相手の技が勝つ。",
+    "カウントダウンとスライディングなし。",
+]
+
+[release.zh_hans]
+notes = [
+    "GO风格对决，默认关闭。",
+    "焦点对决中谁都不动：必杀技或一侧。",
+    "同侧防守方胜，异侧进攻方胜。",
+    "除非你的力量远超，否则对手必杀技获胜。",
+    "没有倒计时，也没有铲球。",
+]
+
+[release.zh_hant]
+notes = [
+    "GO風格對決，預設關閉。",
+    "焦點對決中誰都不動：必殺技或一側。",
+    "同側防守方勝，異側進攻方勝。",
+    "除非你的力量遠超，否則對手必殺技獲勝。",
+    "沒有倒數計時，也沒有鏟球。",
+]

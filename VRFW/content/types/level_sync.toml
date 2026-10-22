@@ -1,0 +1,12 @@
+# Declaration schema for [[VRFW.LevelSync]] (content\level_sync\*.toml); an unknown key, wrong type or out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.level_sync/1"
+folder = "content/level_sync"
+
+[entry.LevelSync]
+doc = "the user's team plays the matches of the given difficulty rows at one level: each player's match stats are the stats of that level (the saved players keep their level, EXP and moves); for the first declaration of a row, a later one of the same row is left out"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+difficulties = { type = "ints", min = 1, max = 255, required = true, doc = "difficulty rows (SOCCER_GAME_DIFFICULTY col 0, e.g. 6 = the free match's first class) of every game" }
+level = { type = "int", min = 1, max = 999, required = true, doc = "the level the user's players play at" }
+raise = { type = "bool", default = true, doc = "a player below the level plays at it too (false: only the players above it are brought down, as the game's own level sync)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -1,0 +1,24 @@
+# New Recruitment › the pachanga list of a Chronicle board zone (docs/game/mods/new-recruitment-pachangas.md): the
+# framework's pose row screen (docs/framework/pose-row.md) with the zone's pachangas; the selected one's 5 players pose
+# in 3D with their mini-challenge. Pages: scripts\pachangas.lua (CMND_NEWRECRUITMENT_PACHANGA_MENU). Opened by the
+# board's NewRecruitment.PachangaMenu.Open (assets\lua\vs_route_town_menu\new_recruitment_pachangas.lua).
+schema = "VRFW.pose_row/1"
+if_mod = "football_reforged"
+
+[[VRFW.PoseRow]]
+name = "pachangas"
+source = "CMND_NEWRECRUITMENT_PACHANGA_MENU"
+models = 5
+title = "new_recruitment_pachangas_title"
+decide = "new_recruitment_pachangas_play"
+owned = "new_recruitment_pachangas_owned"
+new = "new_recruitment_pachangas_new"
+label = "new_recruitment_pachangas_challenge_label"
+hint = "new_recruitment_pachangas_hint"
+# the Chronicle board's node panel look (owner 2026-10-22): the zone's pachangas as its rows, the blue side panel with
+# the players posing (5 a page: every player of the pachanga), Y «Plantilla de equipo»
+style = "node_panel"
+banner = "new_recruitment_pachangas_title"
+panel_title = "new_recruitment_pachangas_players"
+team = "new_recruitment_pachangas_team_dock"
+page = "new_recruitment_pachangas_page"

@@ -1,16 +1,24 @@
 schema = "VRFW.friendly/1"
 # New Recruitment › the recruitment office's trial («Prueba»): a requirement { Trial = N } of a card
-# (content\contact_maps\office_terms.toml) is played as this friendly against its rival page's match, with the trial's
-# challenge (keep the ball / score / win the ball), started from the Mercado under the office (VRFW match start service)
-# and back to it. «Superada» per card and trial: the key office.{tag}.{sub} (tag = the card, sub = the trial), the same
-# key Inazuma Fantasy's old office wrote, so an old pass still counts. The save is never written during the trial.
+# (content\contact_maps\office_terms.toml) is played as a pachanga with the trial's challenge (keep the ball / score /
+# win the ball): the same match setup as the module's pachangas (content\friendlies\pachanga.toml): a retail 5v5 row,
+# Football Reforged's 5-a-side ruleset (no special tactics, no referee) and the player's active pachanga team, against
+# the trial page's team (VRFW_RecruitTrial: the page match's rival as teams.rival.team) at that match's own stadium
+# (game data; a home stadium declared for the rival team comes first). Started from the Mercado under the office (VRFW
+# match start service) and back to it. «Superada» per card and trial: the key office.{tag}.{sub} (tag = the card,
+# sub = the trial), the same key Inazuma Fantasy's old office wrote, so an old pass still counts. The save is never
+# written during the trial.
+if_mod = "football_reforged"
 
 [[friendly]]
 id = "new_recruitment_office_trial"
 name = "Recruitment office trial"
-team = "current"
+game = "sbtl_rojiura_01"    # a retail 5v5 match row (game type 2), as the pachangas: never a story / Chronicle row
+ruleset = "if_pachanga_5v5"
+team = "active_friendly"
+kit_from_11 = true
 pre_match = true
-rival_home = true           # at the rival team's home stadium when it has one
+rival_home = true           # at the rival team's home stadium when it has one, else the caller's (the page match's)
 challenge = "ctx"
 save = "sink"
 return = "menus"

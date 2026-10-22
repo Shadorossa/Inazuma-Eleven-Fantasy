@@ -13,8 +13,8 @@ stats = { kick = 211, control = 208, technique = 219, pressure = 244, physical =
 moves = [
   { move = 0xB907E20C, level = 1 },                         # Procyon Net
   { move = 0xA01CD34D, level = 35 },                        # Temporal Wall
-  { move = 0xB633C4E1, level = 44 },                        # Photon Crash
-  { move = 0xE854ED56, level = 53 },                        # Warp Space
+  { move = 0xF9B80F86, level = 44 },                        # Strong Punch
+  { move = 0xCB8E6D04, level = 60 },                        # Mighty Save
 ]
 
 [[edit]]
@@ -23,10 +23,10 @@ rank = 3
 growth = "normal"
 stats = { kick = 209, control = 194, technique = 215, pressure = 254, physical = 230, intelligence = 301, agility = 188, freedom = 221 }
 moves = [
-  { move = 0xB633C4E1, level = 1 },                         # Photon Crash
   { move = 0xAEEA9F97, level = 1 },                         # Sigma Zone
-  { move = 0x592A96B4, level = 53 },                        # Afterimage
-  { move = 0x43B5739B, level = 73 },                        # Lightning Bolt
+  { move = 0xAA67E325, level = 28 },                        # Desert Blast
+  { move = 0x43B5739B, level = 53 },                        # Lightning Bolt
+  { move = 0x34E4CEAB, level = 65 },                        # Barbarian Shield
 ]
 
 [[edit]]
@@ -37,8 +37,8 @@ stats = { kick = 217, control = 181, technique = 201, pressure = 265, physical =
 moves = [
   { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
   { move = 0x6633159F, level = 1 },                         # Gravitation
-  { move = 0x46A71C03, level = 52 },                        # Black Hole
-  { move = 0xB907E20C, level = 72 },                        # Procyon Net
+  { move = 0xB907E20C, level = 52 },                        # Procyon Net
+  { move = 0x8C990270, level = 62 },                        # Gunshot
 ]
 
 [[edit]]
@@ -50,10 +50,10 @@ stats = { kick = 208, control = 189, technique = 200, pressure = 250, physical =
   [[edit.cards]]
   id = 0xB9BFBD23    # normal card (the character's special cards keep their own set)
   moves = [
-    { move = 0x00196EC2, level = 1 },                       # Earthquake
-    { move = 0x29728358, level = 1 },                       # Planet Shield
-    { move = 0x166B0073, level = 55 },                      # Super Armadillo
-    { move = 0x6633159F, level = 67 },                      # Gravitation
+    { move = 0x6C827857, level = 1 },                       # Rolling Steal
+    { move = 0xAD6E4BF9, level = 1 },                       # Harvest
+    { move = 0x00196EC2, level = 10 },                      # Earthquake
+    { move = 0x7207C577, level = 67 },                      # Boost Glider
   ]
 
 [[edit]]
@@ -67,9 +67,9 @@ stats = { kick = 212, control = 190, technique = 208, pressure = 248, physical =
   id = 0xA0A48C62    # normal card (the character's special cards keep their own set)
   moves = [
     { move = 0x28B0E96F, level = 1 },                       # Heavy Mettle
-    { move = 0x65B7C1F1, level = 52 },                      # Sumo Stomp
-    { move = 0x166B0073, level = 55 },                      # Super Armadillo
-    { move = 0x29728358, level = 69 },                      # Planet Shield
+    { move = 0x3069B219, level = 38 },                      # Super Sumo Stomp
+    { move = 0x29728358, level = 51 },                      # Planet Shield
+    { move = 0x1B854A64, level = 60 },                      # Cosmic Blast
   ]
 
 [[edit]]
@@ -80,8 +80,8 @@ stats = { kick = 277, control = 244, technique = 273, pressure = 203, physical =
 moves = [
   { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
   { move = 0x4B142F09, level = 53 },                        # Teleport Shot
-  { move = 0x261BDCA8, level = 65 },                        # Moonsault
-  { move = 0x4683AADF, level = 77 },                        # Space Penguin
+  { move = 0x21127474, level = 54 },                        # Ultra Moon
+  { move = 0x4683AADF, level = 70 },                        # Space Penguin
 ]
 
 [[edit]]
@@ -91,8 +91,8 @@ growth = "normal"
 stats = { kick = 228, control = 246, technique = 278, pressure = 216, physical = 184, intelligence = 255, agility = 181, freedom = 230 }
 moves = [
   { move = 0x2296A01A, level = 1 },                         # Southern Cross
-  { move = 0xDF70E04C, level = 55 },                        # Rodeo Clown
-  { move = 0x3EC287DE, level = 60 },                        # Bubble Gum
+  { move = 0xAAA6489B, level = 24 },                        # Spiral Shot
+  { move = 0xC0A013E6, level = 50 },                        # Liar Shot
   { move = 0xAEEA9F97, level = 67 },                        # Sigma Zone
 ]
 
@@ -103,9 +103,9 @@ growth = "normal"
 stats = { kick = 261, control = 244, technique = 289, pressure = 201, physical = 178, intelligence = 244, agility = 174, freedom = 217 }
 moves = [
   { move = 0x43B5739B, level = 1 },                         # Lightning Bolt
+  { move = 0x1D8F2331, level = 42 },                        # Yo-Yo Ball
   { move = 0x520F1E48, level = 52 },                        # Psycho Shot
   { move = 0x65766A4F, level = 56 },                        # Meteor Blade
-  { move = 0x2296A01A, level = 68 },                        # Southern Cross
 ]
 
 [[edit]]
@@ -115,10 +115,10 @@ rank = 3
 growth = "normal"
 stats = { kick = 277, control = 248, technique = 244, pressure = 215, physical = 182, intelligence = 231, agility = 178, freedom = 234 }
 moves = [
-  { move = 0xB4757AB8, level = 1 },                         # Divine Stamp
-  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x7FE98F60, level = 1 },                         # Ganymede Ray
-  { move = 0x6DAEF91C, level = 75 },                        # Supernova
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
+  { move = 0x7FE98F60, level = 10 },                        # Ganymede Ray
+  { move = 0xB4757AB8, level = 40 },                        # Divine Stamp
+  { move = 0x6DAEF91C, level = 55 },                        # Supernova
 ]
 
 [[edit]]
@@ -137,9 +137,48 @@ moves = [
 target = "c02021510"                                   # Xene
 growth = "normal"
 stats = { kick = 329, control = 250, technique = 257, pressure = 212, physical = 193, intelligence = 231, agility = 167, freedom = 213 }
-moves = [
-  { move = 0x65766A4F, level = 1 },                         # Meteor Blade
-  { move = 0x6DAEF91C, level = 35 },                        # Supernova
-  { move = 0xB633C4E1, level = 41 },                        # Photon Crash
-  { move = 0x2296A01A, level = 62 },                        # Southern Cross
-]
+
+  [[edit.cards]]
+  id = 0x430EC21A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x65766A4F, level = 1 },                       # Meteor Blade
+    { move = 0x1162A8AF, level = 22 },                      # Bewilder Blast
+    { move = 0x6DAEF91C, level = 35 },                      # Supernova
+    { move = 0xB633C4E1, level = 41 },                      # Photon Crash
+  ]
+
+  [[edit.cards]]
+  id = 0x4F61AC70    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x65766A4F, level = 1 },                       # Meteor Blade
+    { move = 0x1162A8AF, level = 22 },                      # Bewilder Blast
+    { move = 0x6DAEF91C, level = 35 },                      # Supernova
+    { move = 0xB633C4E1, level = 41 },                      # Photon Crash
+  ]
+
+  [[edit.cards]]
+  id = 0x74CC4CEA    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x65766A4F, level = 1 },                       # Meteor Blade
+    { move = 0x1162A8AF, level = 22 },                      # Bewilder Blast
+    { move = 0x6DAEF91C, level = 35 },                      # Supernova
+    { move = 0xB633C4E1, level = 41 },                      # Photon Crash
+  ]
+
+  [[edit.cards]]
+  id = 0x9BEFD50F    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x65766A4F, level = 1 },                       # Meteor Blade
+    { move = 0x1162A8AF, level = 22 },                      # Bewilder Blast
+    { move = 0x6DAEF91C, level = 35 },                      # Supernova
+    { move = 0xB633C4E1, level = 41 },                      # Photon Crash
+  ]
+
+  [[edit.cards]]
+  id = 0xC50A2351    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x65766A4F, level = 1 },                       # Meteor Blade
+    { move = 0x1162A8AF, level = 22 },                      # Bewilder Blast
+    { move = 0x6DAEF91C, level = 35 },                      # Supernova
+    { move = 0xB633C4E1, level = 41 },                      # Photon Crash
+  ]

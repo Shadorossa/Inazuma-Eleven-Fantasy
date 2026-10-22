@@ -1,0 +1,21 @@
+# VR-Framework pose rows: the new screen vrfw_pose_row_menu (src vrfw_pose_row_menu.lua), a mod's [[VRFW.PoseRow]]
+# (content\pose_rows\*.toml, served by scripts\pose_row.lua): a list whose selected entry shows its players as 3D
+# models posing in a row. Declared in the framework's menus\pose_row.toml (layers, objects), built with
+# `menu_assemble.py build --mod vr_framework` and packed by framework_pack.py as assets\lua\screens\
+# vrfw_pose_row_menu.lua (the menu type serves it as common/script/lua/menu/vrfw_pose_row_menu.lua.bin). Opened by
+# VRFW_PoseRow.Open (assets\lua\menu\_all\76_pose_row.lua); nothing opens it when no mod declares a pose row.
+name = "pose_row"
+order = 122
+mod = "vr_framework"
+requires = []
+conflicts = []
+wraps = []
+description = "Pose row screen (vrfw_pose_row_menu)"
+
+[[files]]
+path = "common/script/lua/menu/vrfw_pose_row_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "vrfw_pose_row_menu.lua"
+  crc = "none"

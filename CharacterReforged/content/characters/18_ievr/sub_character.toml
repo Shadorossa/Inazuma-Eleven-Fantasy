@@ -143,9 +143,9 @@ moves = [
 target = "c11500170"                                   # Chester Horse Jr
 moves = [
   { move = 0x6B1CF436, level = 5 },                         # Bewildered
-  { move = 0xDEB28A7B, level = 15 },                        # Monkey Turn
-  { move = 0x3663DB4C, level = 25 },                        # Utter Gutsiness Bat
-  { move = 0x17A96A44, level = 35 },                        # Clone Faker
+  { move = 0x01DB04F5, level = 15 },                        # Defence Scan
+  { move = 0x29B328E6, level = 29 },                        # Spectacle Crash
+  { move = 0x47380F29, level = 44 },                        # Echo Ball
 ]
 
   [[edit.cards]]
@@ -312,10 +312,13 @@ stats = { kick = 163, control = 278, technique = 194, pressure = 176, physical =
 [[edit]]
 target = "c11500500"                                   # Mark Evans
 moves = [
-  { move = 0x8C382852, level = 1 },                         # God Hand
-  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
-  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
-  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0xEE9F2FBD, level = 11 },                        # God Catch
+  { move = 0x8AF3EAB9, level = 21 },                        # Hammer of Fury
+  { move = 0x93E8DBF8, level = 31 },                        # Dimensional Hand
+]
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -340,10 +343,10 @@ moves = [
 [[edit]]
 target = "c11500520"                                   # Jude Sharp
 moves = [
-  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xC42D6F54, level = 1 },                         # Aikido
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x4890FB67, level = 1 },                         # Twin Boost
   { move = 0xB039ADB4, level = 1 },                         # Inazuma Break
+  { move = 0x32EEA7FE, level = 55 },                        # Death Zone 2
 ]
 
   [[edit.cards]]
@@ -356,9 +359,9 @@ moves = [
 target = "c11500530"                                   # Axel Blaze
 moves = [
   { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
-  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
-  { move = 0x19025F83, level = 26 },                        # Quick Draw
+  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x0B011EBF, level = 11 },                        # Fireball Screw
+  { move = 0xEAB3792D, level = 21 },                        # Grand Fire
 ]
 VRFW.MoveGrades = [
   { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado

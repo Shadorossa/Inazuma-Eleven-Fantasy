@@ -214,6 +214,60 @@ function S.club_apply(c, outcome, gf, ga, today)
   if c.unbeaten_run > c.best_unbeaten_run then c.best_unbeaten_run = c.unbeaten_run end
 end
 
+-- The club totals of a file whose players were counted in matches the totals never saw (`recorded` > club
+-- `matches`: matches recorded before the key `club` existed). They are taken from the same records the players'
+-- numbers come from: matches = `recorded`; wins / draws / losses and clean sheets = those of the player with the most
+-- matches (every credited player of a match gets its result, so a player who played every recorded match gives the
+-- club's exact numbers; otherwise the matches he missed stay out of V-E-D); goals for = the players' goals, goals
+-- against = what their keepers conceded; the biggest win = the best won match among the players' last matches;
+-- the runs = the whole span when it had no loss / only wins. Each total keeps the larger of the counted and the
+-- derived value. Returns true when something changed.
+function S.club_reconcile(f)
+  local c = f.club or S.club_new()
+  f.club = c
+  local recorded = f.recorded or 0
+  if recorded <= c.matches then return false end
+  local anchor, gf, ga = nil, 0, 0
+  local best_for, best_against, best_day = 0, 0, 0
+  for _, s in pairs(f.players) do
+    if (s.matches or 0) > 0 then
+      if anchor == nil or s.matches > anchor.matches then anchor = s end
+      gf = gf + (s.goals or 0)
+      ga = ga + (s.conceded or 0)
+      local l = s.last
+      if l and l.result == 1 and l.day > 0 then
+        local margin, best = l.gf - l.ga, best_for - best_against
+        if best_day == 0 or margin > best or (margin == best and l.gf > best_for) then
+          best_for, best_against, best_day = l.gf, l.ga, l.day
+        end
+      end
+    end
+  end
+  local function up(k, v) if v > c[k] then c[k] = v end end
+  c.matches = recorded
+  if anchor then
+    up("wins", anchor.wins)
+    up("draws", anchor.draws)
+    up("losses", anchor.losses)
+    up("clean_sheets", anchor.clean_sheets)
+    if anchor.matches == recorded and anchor.losses == 0 then
+      c.unbeaten_run = recorded
+      up("best_unbeaten_run", recorded)
+      if anchor.draws == 0 then
+        c.win_run = recorded
+        up("best_win_run", recorded)
+      end
+    end
+  end
+  up("goals_for", gf)
+  up("goals_against", ga)
+  if c.best_win_day == 0 and best_day > 0 then
+    c.best_win_for, c.best_win_against, c.best_win_day = best_for, best_against, best_day
+  end
+  if (f.since or 0) > 0 and (c.since == 0 or f.since < c.since) then c.since = f.since end
+  return true
+end
+
 -- ------------------------------------------------------------------------------------------- store
 
 function S.key(hdl) return string.format("%08X", hdl) end
@@ -309,6 +363,8 @@ function S.decode(text, slot)
   end
   -- the migrated file is written back with the next change (f.version = the current one)
   f.migrated_from = version < S.FILE_VERSION and version or nil
+  -- club totals behind the players' numbers (matches recorded before the key `club`): taken from the same records
+  f.club_reconciled = S.club_reconcile(f)
   return f
 end
 

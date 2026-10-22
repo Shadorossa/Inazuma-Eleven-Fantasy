@@ -9,8 +9,8 @@ target = "c06032010"                                   # Ceram Longicorn
 moves = [
   { move = 0x78410D9E, level = 1 },                         # Venus Balltrap
   { move = 0xF5A22139, level = 25 },                        # Bindweed
-  { move = 0xF309624E, level = 36 },                        # Dual Smash
-  { move = 0x9AF2229C, level = 53 },                        # Gravity Point
+  { move = 0xD2955C45, level = 36 },                        # Power Catch
+  { move = 0xF9B80F86, level = 53 },                        # Strong Punch
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -61,7 +61,7 @@ target = "c06032040"                                   # Formica Anz
 moves = [
   { move = 0xD1E62D0A, level = 1 },                         # Mushroom Hop
   { move = 0x5739C70C, level = 17 },                        # Guided Collide
-  { move = 0x21127474, level = 32 },                        # Ultra Moon
+  { move = 0x2D68DB57, level = 32 },                        # Deceptive Step
   { move = 0xB37CD264, level = 48 },                        # Am-Bush
 ]
 
@@ -93,7 +93,7 @@ target = "c06032060"                                   # Lepidoptera Flutterby
 moves = [
   { move = 0xD1E62D0A, level = 2 },                         # Mushroom Hop
   { move = 0xF5A22139, level = 7 },                         # Bindweed
-  { move = 0x6E53E2B3, level = 33 },                        # Angel Ball
+  { move = 0x2D68DB57, level = 33 },                        # Deceptive Step
   { move = 0x2C3D95DD, level = 46 },                        # Sleeping Dust
 ]
 
@@ -125,7 +125,7 @@ moves = [
   { move = 0xAB1367C0, level = 10 },                        # Giant Beanstalk
   { move = 0xD1E62D0A, level = 22 },                        # Mushroom Hop
   { move = 0xF5A22139, level = 37 },                        # Bindweed
-  { move = 0x3F00EDE9, level = 46 },                        # Dash Storm
+  { move = 0x62294D90, level = 46 },                        # Dust Kick
 ]
 
   [[edit.cards]]
@@ -189,41 +189,41 @@ moves = [
 
 [[edit]]
 target = "c06032120"                                   # Ruger Baran
-moves = [
-  { move = 0xB04EE8D8, level = 12 },                        # Scream of Eden
-  { move = 0x79224D8B, level = 26 },                        # Freeze Shot
-  { move = 0x6ADE9E01, level = 40 },                        # Illusory Ball
-  { move = 0xC513565C, level = 54 },                        # Doom Spear
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x1B02DBAF, level = 1 },                         # Tótem Pelion [aura]
-]
 
   [[edit.cards]]
   id = 0x32B47A03                                         # FW/MF · forest
   growth = "normal"
   stats = { kick = 294, control = 232, technique = 251, pressure = 231, physical = 154, intelligence = 236, agility = 201, freedom = 305 }
+  moves = [
+    { move = 0xB04EE8D8, level = 12 },                      # Scream of Eden
+    { move = 0x3D10DCB3, level = 26 },                      # Curve Shot
+    { move = 0x6ADE9E01, level = 40 },                      # Illusory Ball
+    { move = 0x6B4A7B35, level = 54 },                      # Power Shot
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x1B02DBAF, level = 1 },                       # Tótem Pelion [aura]
+  ]
 
 [[edit]]
 target = "c06032130"                                   # Gandares Baran
-moves = [
-  { move = 0xB04EE8D8, level = 13 },                        # Scream of Eden
-  { move = 0x8B90AAAC, level = 28 },                        # Fortissimo
-  { move = 0x660EED1E, level = 43 },                        # Low Scythe Slice
-  { move = 0xF9C4BCF4, level = 56 },                        # Double Helix
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x62F85358, level = 1 },                         # Tótem Belion [aura]
-]
 
   [[edit.cards]]
   id = 0x2BAF4B42                                         # FW/MF · forest
   growth = "normal"
   stats = { kick = 302, control = 238, technique = 255, pressure = 190, physical = 197, intelligence = 205, agility = 188, freedom = 351 }
+  moves = [
+    { move = 0xB04EE8D8, level = 13 },                      # Scream of Eden
+    { move = 0x3D10DCB3, level = 28 },                      # Curve Shot
+    { move = 0x660EED1E, level = 43 },                      # Low Scythe Slice
+    { move = 0x240BEDF2, level = 56 },                      # Bounce Shot
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x62F85358, level = 1 },                       # Tótem Belion [aura]
+  ]
 
 [[edit]]
 target = "c06032140"                                   # Banda Crix Junior
@@ -246,8 +246,8 @@ target = "c06035790"                                   # Elater Clicka
 moves = [
   { move = 0x4E22F64D, level = 1 },                         # Transporter Device
   { move = 0x2CFC3E63, level = 18 },                        # Dragon Crash
-  { move = 0x21127474, level = 28 },                        # Ultra Moon
-  { move = 0x4E5B398C, level = 38 },                        # Acrobat Bomber
+  { move = 0x3D10DCB3, level = 28 },                        # Curve Shot
+  { move = 0x6B4A7B35, level = 38 },                        # Power Shot
 ]
 
   [[edit.cards]]

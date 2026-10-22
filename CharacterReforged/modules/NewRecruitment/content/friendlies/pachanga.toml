@@ -1,0 +1,20 @@
+schema = "VRFW.friendly/1"
+# New Recruitment › a pachanga of a Chronicle board zone (docs/game/mods/new-recruitment-pachangas.md): a 5v5 friendly
+# with Football Reforged's 5-a-side ruleset (no special tactics, no referee) and the player's active pachanga team,
+# against the pachanga's team (the caller's override teams.rival.team) at the zone's stadium (the caller's `stadium`),
+# started from the board (VRFW match start service) and back to it. The save is never written during the match; the
+# win is read by the module's script (match_end) and its players join the club on the board afterwards.
+if_mod = "football_reforged"
+
+[[friendly]]
+id = "new_recruitment_pachanga"
+name = "New Recruitment pachanga"
+ruleset = "if_pachanga_5v5"
+team = "active_friendly"
+kit_from_11 = true
+pre_match = true
+challenge = "none"
+save = "sink"
+return = "menus"
+pass = "none"
+before = [{ op = "fade_encounter", frames = 120 }]

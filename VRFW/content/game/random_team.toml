@@ -52,3 +52,23 @@ handler = "RandomTeam.Info"
 name = "CMND_VRFW_RANDOM_TEAM_RESTORE"   # (team or 0 = every slot team written) -> ok, rows: placeholders back
 handler = "RandomTeam.Restore"
 needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# Team lineup (scripts\team_lineup.lua, docs/framework/team-lineup.md): (team id, card…) -> true, rows moved | false, why:
+# those cards take the team's roster slots 0.. for its next matches (in memory, never saved)
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_LINEUP"
+handler = "TeamLineup.Set"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# (team id) -> the team's kit (uniform id of its record; 0 = none): the pose row screen dresses a row's players in it
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_KIT"
+handler = "TeamLineup.Kit"
+needs = ["RandomTeamFind", "RandomTeamRecord"]
+
+# (team id, row level, level) -> true, rows: the team plays at that level for its next matches (members' offsets over
+# the match row's rival level; in memory, never saved)
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_LEVEL"
+handler = "TeamLineup.Level"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]

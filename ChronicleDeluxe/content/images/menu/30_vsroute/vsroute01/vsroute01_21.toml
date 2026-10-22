@@ -31,3 +31,55 @@ ops = [{ op = "mix_gradient", image = "chronicle_deluxe_legendary_ball_lv_base00
 atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
 name = "chronicle_deluxe_legendary_ball"
 recipe = "chronicle_deluxe_legendary_ball"
+
+# The class orbs of the free-match class cards (owner 2026-10-21: the orb of each class's colour in place of the ticks,
+# only as a colour legend; docs/game/mods/chronicle-deluxe-free-match.md §17): copies of the Competition list's own orbs
+# (vsroute01_06b.g4tx, the PLAYER'S files) in the card's atlas, the atlas the card's tick slot list_icon_state_comp01
+# already takes its sprites from. INAZUMA blue clear_icon01, ZONA LETAL purple clear_icon02, BATALLA LEGENDARIA the
+# legendary orb of the «team cleared» gauge (the same recipe as chronicle_deluxe_legendary_orb, vsroute01_06b.toml).
+[[recipe]]
+name = "chronicle_deluxe_class_orb_inazuma"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon01"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+name = "chronicle_deluxe_class_orb_inazuma"
+recipe = "chronicle_deluxe_class_orb_inazuma"
+
+[[recipe]]
+name = "chronicle_deluxe_class_orb_lethal_zone"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon02"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+name = "chronicle_deluxe_class_orb_lethal_zone"
+recipe = "chronicle_deluxe_class_orb_lethal_zone"
+
+[[recipe]]
+name = "chronicle_deluxe_class_orb_legendary_base"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon02"
+
+[[recipe]]
+name = "chronicle_deluxe_class_orb_legendary_cyan"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon01"
+ops = [{ op = "hue", turns = -0.1 }]
+
+[[recipe]]
+name = "chronicle_deluxe_class_orb_legendary_lime"
+game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+sprite = "clear_icon03"
+ops = [{ op = "hue", turns = 0.1 }]
+
+[[recipe]]
+name = "chronicle_deluxe_class_orb_legendary"
+from = "chronicle_deluxe_class_orb_legendary_base"
+ops = [{ op = "mix_gradient", image = "chronicle_deluxe_class_orb_legendary_cyan", weight = [-0.2, 1.4, 1.4], clamp = [0.0, 1.0] }, { op = "mix_gradient", image = "chronicle_deluxe_class_orb_legendary_lime", weight = [-1.2, 1.6, 1.6], clamp = [0.0, 1.0] }]
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+name = "chronicle_deluxe_class_orb_legendary"
+recipe = "chronicle_deluxe_class_orb_legendary"

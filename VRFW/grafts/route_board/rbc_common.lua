@@ -60,6 +60,12 @@ VRFW_RBC.L = setmetatable({}, {
 })
 
 function VRFW_RBC_Rows(rows, kind, slot)
+  if VRFW_Gacha ~= nil and VRFW_Gacha.RowsFor ~= nil then
+    local g = VRFW_Gacha.RowsFor(slot, rows) -- a gacha node: the pool's one command row
+    if g ~= nil then
+      return g
+    end
+  end
   if VRFW_RN_Rows ~= nil then
     return VRFW_RN_Rows(rows, slot)
   end
@@ -67,6 +73,16 @@ function VRFW_RBC_Rows(rows, kind, slot)
 end
 
 function VRFW_RBC_Guide(item, icons, texts, cmds)
+end
+
+-- true while the open command menu belongs to a piece whose rows are a framework service's own (a gacha node: its one
+-- command row): a mod's match panel (team lineup, team level, the panel fitted to the battle rows) stays off there
+function VRFW_RBC_ServicePiece()
+  if VRFW_Gacha == nil or VRFW_Gacha.OfSlot == nil or VRFW_RBC == nil or VRFW_RBC.L == nil then
+    return false
+  end
+  local ok, slot = pcall(function() return VRFW_RBC.L.n2 end)
+  return ok and type(slot) == "number" and VRFW_Gacha.OfSlot(slot) > 0
 end
 
 VRFW_RBC.panel = VRFW_RBC.panel or {extra = 0, bands = {}}

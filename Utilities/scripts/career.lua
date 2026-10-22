@@ -179,6 +179,12 @@ local function load_store(slot)
   local wm = "not set yet"
   if f.watermark then wm = "get_order " .. f.watermark .. " (since " .. f.since .. ")" end
   info("slot " .. slot .. ": " .. n .. " players, " .. f.recorded .. " matches recorded, watermark " .. wm)
+  if f.club_reconciled then
+    local c = f.club
+    info("slot " .. slot .. ": club totals taken from the players' records (" .. c.matches .. " match(es), "
+      .. c.wins .. "-" .. c.draws .. "-" .. c.losses .. ", goals " .. c.goals_for .. "-" .. c.goals_against
+      .. ", since " .. c.since .. "); written with the next change")
+  end
   if f.migrated_from then
     info("slot " .. slot .. ": " .. S.BLOB .. " version " .. f.migrated_from .. " read as version " .. S.FILE_VERSION
       .. " (first goal / first MVP dates and best matches derived where the numbers allow; written with the next change)")
@@ -655,9 +661,9 @@ end
 
 -- ---------------------------------------------------------------------------------------- club statistics screen
 
--- «Estadísticas del club» (row of «Caseta del club», graft util_club_stats_row + the panel
--- assets/lua/play_guide_top_menu/150_club_stats.lua): the club totals of the store and one row per player of the
--- user's club who has a career record (played a counted match or was signed since the store started).
+-- «Estadísticas del club» (row of «Caseta del club», graft util_club_stats_row, opening the page util_club_stats_menu
+-- from assets/lua/play_guide_top_menu/150_club_stats.lua): the club totals of the store and one row per saved
+-- character of the save (any squad, the bank) who played at least one counted match.
 local T = require "lib/original_names_tables"
 
 local club_rows = {}
@@ -720,7 +726,7 @@ function Utilities.Career.Club(code)
   club_load_names(club_lang(tonumber(code)))
   for k, s in pairs(st.players) do
     local hdl = tonumber(k, 16)
-    if hdl and (s.matches > 0 or s.signed > 0) then
+    if hdl and s.matches > 0 then
       local param, order = ident(hdl)
       if param and param == s.param and order == s.order then
         local base = club_base_of(param)

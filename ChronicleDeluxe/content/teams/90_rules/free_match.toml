@@ -10,16 +10,20 @@ Unlock = "together"
 # orb of the highest class won (INAZUMA / ZONA LETAL / BATALLA LEGENDARIA), nothing lit when none is won; the same
 # gauge goes under the selected crest of BetterMenu's Competition strip.
 Orb = "best"
+# The class menu has no clear / advantage-win marks nor their box (owner 2026-10-21: «quita los ticks»): each class card
+# shows its class's orb instead, as a colour legend only (assets\lua\soccer_vs_cpu_class_select_menu\
+# 280_free_match_class_orbs.lua; docs/game/mods/chronicle-deluxe-free-match.md §17).
+ClearTicks = false
 
 # Equipo Ogro in the IE3 tab (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §9): its game (the last
-# IE1 board battle) is listed under the IE3 tab, right after Pequeños Gigantes (IE3's final rivals, the place InaRogue's
-# team order gives Ogre too) and before Raimon equipo B; the board keeps its piece. The framework lists a copy of the game
+# IE1 board battle) is listed under the IE3 tab, right after Dark Team (owner 2026-10-22; it was after Pequeños
+# Gigantes); the board keeps its piece. The framework lists a copy of the game
 # in a hidden piece of that tab with the same unlock (the Ogre Crónica win) and the same clear bits (an old save keeps
 # its won classes) (docs/framework/free-match-tabs.md §9).
 [[VRFW.GameTab]]
 Game = "fbtl_cro01_130_010"        # Equipo Ogro
 Tab = 2                            # IE3
-After = "fbtl_cro03_180_010"       # Pequeños Gigantes
+After = "fbtl_cro03_130_010"       # Dark Team
 
 # ---- 1.11.1 (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §10). VRFW 2.7.2 keys
 # (docs/framework/free-match-tabs.md §12). New games copy the rows of the Chronicle battle they come from (the three
@@ -143,16 +147,38 @@ Tab = 5
 Unlock = "fbtl_cro06_010_010"
 Before = "fbtl_cro06_020_010"          # Dragones de Fuego (the first Galaxy game once Royal Academy left)
 
-# Ares (1.11.16, owner 2026-10-20): Raimon of the Inakuni island arc (the line-up of the Ares final against Academia
-# Plenilunio, coach Mister), right after Barcelona Orb; the rows (three classes, AI, stadium) are those of that final,
+# Ares (1.11.16, owner 2026-10-20): Raimon of the Inakuni island arc («Raimon Isla Remota», the line-up of the Ares final
+# against Academia Plenilunio, coach Mister), right after Barcelona Orb; the rows (three classes, AI, stadium) are those of that final,
 # and it opens with Barcelona Orb, as its neighbour.
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_raimon_ares"
-Team = "pltm_cro_ie7_13"
+Team = "chronicle_deluxe.fm_raimon_island"  # «Raimon Isla Remota» (content/teams/16_ares/0001_raimon_free_match.toml)
 Template = "fbtl_cro07_130_010"        # ¡Hacia la cima! (Academia Plenilunio)
 Tab = 6
 Unlock = "fbtl_cro07_010_010"          # Barcelona Orb
 After = "fbtl_cro07_010_010"
+
+# Ares (owner 2026-10-22, for New Recruitment's office): Raimon of the first Ares battle (the line-up that faces Barcelona
+# Orb: Bobby Shearer, Jack Wallside, Erik Eagle, Steve Grim, Tim Saunders, Maxwell Carson, Jim Wraith, Sam Kincaid…),
+# right before Barcelona Orb (the tab's first); rows (three classes, AI, stadium) of that battle, opening with it.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_ares_first"
+Team = "chronicle_deluxe.fm_raimon_ares"    # «Raimon (Ares)» (content/teams/16_ares/0001_raimon_free_match.toml)
+Template = "fbtl_cro07_010_010"        # Barcelona Orb
+Tab = 6
+Unlock = "fbtl_cro07_010_010"
+Before = "fbtl_cro07_010_010"
+
+# Orion (owner 2026-10-22, for New Recruitment's office): Star Unicorn (the game's team of its Orion legend match,
+# tm_cro_legend_ORION_06), right before Navy Invader; rows (three classes, AI, stadium) of the Navy Invader battle,
+# opening with it, as its neighbour.
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_star_unicorn"
+Team = "tm_cro_legend_ORION_06"
+Template = "fbtl_cro08_070_010"        # Navy Invader
+Tab = 7
+Unlock = "fbtl_cro08_070_010"
+Before = "fbtl_cro08_070_010"
 
 # Orion (1.11.16, owner 2026-10-20): Inazuma Japón (the line-up of the Orion final against Chispas Perfectas), right
 # before Bisonte Rojo (first in the tab), opening with Bisonte Rojo, as its neighbour; rows of that final.

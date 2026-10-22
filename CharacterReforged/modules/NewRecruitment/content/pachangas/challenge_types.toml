@@ -1,0 +1,188 @@
+schema = "NewRecruitment.pachangas/1"
+# New Recruitment › the mini-challenge types of the pachangas' players (owner's pick 2026-10-22,
+# docs/game/mods/new-recruitment-pachangas.md §8). A rival player of a pachanga joins the club when the match ends and
+# HIS challenge was met. `check` = the evaluator of scripts\pachangas.lua (fed by the VRFW match events: goal,
+# shot_start, chain_window_*, duel_won / duel_lost / block_won, keeper_save / keeper_beaten, possession, move_power,
+# match_end); `params` = its numbers; `text` = the menu_text row (text\rows\pachanga_text.toml) with {n}, {s}, {element}
+# filled from `params`; `ready = false` = not observable yet (never assigned). The assignment of a type to each player is
+# generated (research/data/pachangas/challenge_rules.toml).
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_1"
+number = 1
+check = "goals"
+params = { n = 1 }
+text = "new_recruitment_challenge_goals"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_2"
+number = 2
+check = "goals"
+params = { n = 2 }
+text = "new_recruitment_challenge_goals"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_technique"
+number = 3
+check = "goal_technique"
+text = "new_recruitment_challenge_goal_technique"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_own_element"
+number = 4
+check = "goal_own_element"
+text = "new_recruitment_challenge_goal_own_element"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_chain"
+number = 5
+check = "goal_chain"
+text = "new_recruitment_challenge_goal_chain"
+
+# 6 (a header / volley technique): skill_config has no field that tells a header or a volley apart: not assigned
+[[NewRecruitment.PachangaChallenge]]
+name = "score_header_volley"
+number = 6
+check = "goal_technique_in"
+ready = false
+text = "new_recruitment_challenge_goal_header"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_late"
+number = 8
+check = "goal_late"
+params = { s = 30 }
+text = "new_recruitment_challenge_goal_late"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "two_goals_minute"
+number = 9
+check = "goals_within"
+params = { n = 2, s = 60 }
+text = "new_recruitment_challenge_goals_within"
+
+# 10 (a long shot): the shot's long-shot bit is not given to scripts yet (shot_start has no arg): not assigned
+[[NewRecruitment.PachangaChallenge]]
+name = "score_long"
+number = 10
+check = "goal_long"
+ready = false
+text = "new_recruitment_challenge_goal_long"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "dribble_him"
+number = 11
+check = "duel_him"
+params = { kind = "move", side = "offense", n = 1 }
+text = "new_recruitment_challenge_dribble_him"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "steal_him"
+number = 12
+check = "duel_him"
+params = { kind = "move", side = "defense", n = 1 }
+text = "new_recruitment_challenge_steal_him"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_on_him"
+number = 13
+check = "goal_on_keeper"
+text = "new_recruitment_challenge_score_on_him"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "three_duels_him"
+number = 15
+check = "duel_him"
+params = { kind = "", side = "", n = 3 }
+text = "new_recruitment_challenge_duels_him"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "he_scores_none"
+number = 16
+check = "he_scores_none"
+text = "new_recruitment_challenge_he_scores_none"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "assist"
+number = 17
+check = "assist"
+params = { s = 8 }
+text = "new_recruitment_challenge_assist"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "passes_10"
+number = 18
+check = "passes"
+params = { n = 10 }
+text = "new_recruitment_challenge_passes"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "goal_after_passes"
+number = 19
+check = "goal_after_passes"
+params = { n = 3 }
+text = "new_recruitment_challenge_goal_after_passes"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "keeper_or_defender_scores"
+number = 21
+check = "goal_by_position"
+params = { positions = [1, 4] }
+text = "new_recruitment_challenge_goal_gk_df"
+
+# 22 (a supertactic): the pachangas' ruleset locks the special tactics (if_pachanga_5v5): dropped
+
+[[NewRecruitment.PachangaChallenge]]
+name = "clean_sheet"
+number = 23
+check = "clean_sheet"
+text = "new_recruitment_challenge_clean_sheet"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "keeper_saves_2"
+number = 24
+check = "keeper_saves"
+params = { n = 2 }
+text = "new_recruitment_challenge_keeper_saves"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "save_his_shot"
+number = 25
+check = "save_his_shot"
+text = "new_recruitment_challenge_save_his_shot"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "three_technique_blocks"
+number = 26
+check = "technique_blocks"
+params = { n = 3 }
+text = "new_recruitment_challenge_technique_blocks"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "win_by_one"
+number = 31
+check = "win_by"
+params = { n = 1 }
+text = "new_recruitment_challenge_win_by_one"
+
+# 33 (summon a keshin): the framework has no «aura used» event a script can read the side of yet (aura_start is the
+# can-use check, match:aura gives a raw command pointer): not assigned
+[[NewRecruitment.PachangaChallenge]]
+name = "summon_keshin"
+number = 33
+check = "aura_used"
+ready = false
+text = "new_recruitment_challenge_summon_keshin"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "score_keshin_technique"
+number = 35
+check = "goal_technique_in"
+params = { list = "keshin" }
+text = "new_recruitment_challenge_goal_keshin"
+
+[[NewRecruitment.PachangaChallenge]]
+name = "use_his_element"
+number = 36
+check = "move_element"
+text = "new_recruitment_challenge_his_element"

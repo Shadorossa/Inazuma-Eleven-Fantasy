@@ -9,12 +9,12 @@ levels = [1, 1, 1, 1, 1, 0]
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_1_moves"
 moves = [0x7A67325B, 0x0D0B77EA, 0x36A270F2, 0xABA58912, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 40, 40, 0, 0]
+levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_2_moves"
 moves = [0x7A67325B, 0x31ABD82E, 0x2C3D95DD, 0x36A270F2, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 40, 40, 0, 0]
+levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_3_moves"
@@ -34,12 +34,12 @@ levels = [1, 1, 1, 0, 0, 0]
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_5_moves"
 moves = [0x8917BF4B, 0x58E8FC83, 0x485150D9, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_8_moves"
 moves = [0x17227C17, 0x4FE09C7A, 0x58E8FC83, 0xA5F2EFEA, 0xFB997A80, 0xFB997A80]
-levels = [1, 1, 40, 40, 0, 0]
+levels = [1, 1, 1, 1, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_6_moves"
@@ -59,7 +59,7 @@ levels = [1, 1, 1, 0, 0, 0]
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_11_moves"
 moves = [0xD8794890, 0x2FB941B3, 0x64CDCFB9, 0xFB997A80, 0xFB997A80, 0xFB997A80]
-levels = [1, 40, 40, 0, 0, 0]
+levels = [1, 1, 1, 0, 0, 0]
 
 [[loadout]]
 id = "bb_chronicle_teams.orion_0500.slot_12_moves"
@@ -76,6 +76,7 @@ name = "orion_0500"
 key = "bbcr_orion_0500_bb"
 name_text = 0xB63AF0BD
 level = 40
+card_moves = 6
 series = "ORION"
 stadium_fallback = "s24g001b"
 stadium_image = "ev_chronicle_img/ev_bb_s24g001_01.g4tx"
@@ -344,4 +345,3 @@ rarity_step = 4
 c14_19 = [-1, -1, -1, -1, -1, -1]
 rates = [1, 1, 1, 1, 1, 1, 1, 1]
 role = [0, 0]
-loadout = 0

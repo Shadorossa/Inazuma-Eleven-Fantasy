@@ -1,0 +1,9 @@
+schema = "VRFW.level_sync/1"
+
+# Owner 2026-10-22: the free match's Lv 50 class (INAZUMA, difficulty row 6: content\defaults\match_difficulty.toml
+# [MatchDifficulty.Class1] Level = 50) plays the user's team at Lv 50 too. Every player's match stats are his Lv 50
+# stats, above or below it; the saved players keep their level, EXP and moves (docs/game/mods/chronicle-deluxe-free-match.md §19).
+[[VRFW.LevelSync]]
+name = "free_match_lv50"
+difficulties = [6]
+level = 50

@@ -94,19 +94,40 @@ target = "c04000010"                                   # Samguk Han
 rank = 3
 growth = "normal"
 stats = { kick = 149, control = 228, technique = 185, pressure = 221, physical = 184, intelligence = 221, agility = 255, freedom = 413 }
-moves = [
-  { move = 0xC636A810, level = 1 },                         # Combustion Catch
-  { move = 0xB8C5883B, level = 20 },                        # God Hand X
-  { move = 0xED1BFBD3, level = 36 },                        # Fingers of Gaia
-  { move = 0x53E9C2A3, level = 50 },                        # Capable Hands
-]
+
+  [[edit.cards]]
+  id = 0x626DE085    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC636A810, level = 1 },                       # Combustion Catch
+    { move = 0x5B3151F0, level = 10 },                      # Nitro Slap
+    { move = 0xED1BFBD3, level = 21 },                      # Fingers of Gaia
+    { move = 0x53E9C2A3, level = 42 },                      # Capable Hands
+  ]
+
+  [[edit.cards]]
+  id = 0x6FA6FC57    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC636A810, level = 1 },                       # Combustion Catch
+    { move = 0x5B3151F0, level = 10 },                      # Nitro Slap
+    { move = 0xED1BFBD3, level = 21 },                      # Fingers of Gaia
+    { move = 0x53E9C2A3, level = 42 },                      # Capable Hands
+  ]
+
+  [[edit.cards]]
+  id = 0xCFD747C3    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xC636A810, level = 1 },                       # Combustion Catch
+    { move = 0x5B3151F0, level = 10 },                      # Nitro Slap
+    { move = 0xED1BFBD3, level = 21 },                      # Fingers of Gaia
+    { move = 0x53E9C2A3, level = 42 },                      # Capable Hands
+  ]
 
 [[edit]]
 target = "c04000020"                                   # Subaru Honda
 moves = [
-  { move = 0x05567847, level = 5 },                         # Runaway Train
-  { move = 0xF6E75EE9, level = 14 },                        # Headbanger
-  { move = 0x3663DB4C, level = 25 },                        # Utter Gutsiness Bat
+  { move = 0x05567847, level = 1 },                         # Runaway Train
+  { move = 0x3663DB4C, level = 14 },                        # Utter Gutsiness Bat
+  { move = 0x75994916, level = 25 },                        # Cunning Pull
   { move = 0x414BA9BD, level = 37 },                        # Pincer Pinch
 ]
 
@@ -121,25 +142,14 @@ target = "c04000030"                                   # Gabriel Garcia
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 165, control = 211, technique = 184, pressure = 244, physical = 200, intelligence = 297, agility = 180, freedom = 355 }
-moves = [
-  { move = 0x530CDFC1, level = 5 },                         # Mystifying Mist
-  { move = 0x2296A01A, level = 21 },                        # Southern Cross
-  { move = 0x6BA49049, level = 31 },                        # Mystic Mist
-  { move = 0x2B8C597E, level = 41 },                        # Fugue Wave
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x2C6739AC, level = 1 },                         # Brunilda [aura]
-]
 
   [[edit.cards]]
   id = 0x505B8207    # this card's moveset differs from the list above
   moves = [
-    { move = 0x530CDFC1, level = 5 },                       # Mystifying Mist
-    { move = 0x2296A01A, level = 21 },                      # Southern Cross
-    { move = 0x6BA49049, level = 31 },                      # Mystic Mist
-    { move = 0x2B8C597E, level = 41 },                      # Fugue Wave
+    { move = 0x530CDFC1, level = 1 },                       # Mystifying Mist
+    { move = 0x6BA49049, level = 21 },                      # Mystic Mist
+    { move = 0x2296A01A, level = 31 },                      # Southern Cross
+    { move = 0xEEFFAE21, level = 46 },                      # Jungle Jam
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
@@ -147,13 +157,41 @@ moves = [
     { move = 0x099B8EDF, level = 1 },                       # Miximax Trans: Juana [aura]
   ]
 
+  [[edit.cards]]
+  id = 0x5D909ED5    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x530CDFC1, level = 1 },                       # Mystifying Mist
+    { move = 0x6BA49049, level = 21 },                      # Mystic Mist
+    { move = 0x2296A01A, level = 31 },                      # Southern Cross
+    { move = 0xEEFFAE21, level = 46 },                      # Jungle Jam
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x2C6739AC, level = 1 },                       # Brunilda [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0xFDE12541    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x530CDFC1, level = 1 },                       # Mystifying Mist
+    { move = 0x6BA49049, level = 21 },                      # Mystic Mist
+    { move = 0x2296A01A, level = 31 },                      # Southern Cross
+    { move = 0xEEFFAE21, level = 46 },                      # Jungle Jam
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x2C6739AC, level = 1 },                       # Brunilda [aura]
+  ]
+
 [[edit]]
 target = "c04000040"                                   # Wanli Changcheng
 moves = [
-  { move = 0xBBA44137, level = 5 },                         # Great Wall
+  { move = 0xBBA44137, level = 1 },                         # Great Wall
   { move = 0x17110E3B, level = 15 },                        # Jumbo Sandwich
   { move = 0x72BFA108, level = 37 },                        # Wall of Atlantis
-  { move = 0x7D6E9A87, level = 40 },                        # The Wall
+  { move = 0x6C827857, level = 48 },                        # Rolling Steal
 ]
 
   [[edit.cards]]
@@ -165,30 +203,30 @@ moves = [
 
 [[edit]]
 target = "c04000050"                                   # Jean-Pierre Lapin
-moves = [
-  { move = 0x737DCB3F, level = 21 },                        # Pancake Defence
-  { move = 0x19BA3BFC, level = 37 },                        # Dance on Air
-  { move = 0x8C382852, level = 50 },                        # God Hand
-  { move = 0x14D1ED15, level = 60 },                        # Jumping Jack
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x6DF74BDB, level = 1 },                         # Miximax Trans: Liu Bei [aura]
-]
 
   [[edit.cards]]
   id = 0x06012581                                         # GK/DF · mountain
   growth = "normal"
   stats = { kick = 130, control = 223, technique = 189, pressure = 161, physical = 247, intelligence = 186, agility = 335, freedom = 367 }
+  moves = [
+    { move = 0xC636A810, level = 1 },                       # Combustion Catch
+    { move = 0x737DCB3F, level = 1 },                       # Pancake Defence
+    { move = 0x62DEE8B1, level = 9 },                       # Jumping Whack
+    { move = 0xF2CB0879, level = 30 },                      # Mugen the Hand
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x6DF74BDB, level = 1 },                       # Miximax Trans: Liu Bei [aura]
+  ]
 
 [[edit]]
 target = "c04000060"                                   # Adé Kébé
 moves = [
-  { move = 0xC2E6ADBF, level = 5 },                         # Log Roll
+  { move = 0xC2E6ADBF, level = 1 },                         # Log Roll
   { move = 0x3EC287DE, level = 15 },                        # Bubble Gum
-  { move = 0xA2FB4736, level = 25 },                        # Flying Fish
-  { move = 0x6A66FA7E, level = 35 },                        # Killer Whale
+  { move = 0xA2FB4736, level = 27 },                        # Flying Fish
+  { move = 0x1C4D4906, level = 48 },                        # Whirlpool
 ]
 
   [[edit.cards]]
@@ -201,10 +239,10 @@ moves = [
 [[edit]]
 target = "c04000070"                                   # Eugene Peabody
 moves = [
-  { move = 0x39CB2F02, level = 5 },                         # Dragster
-  { move = 0xC66BD10D, level = 15 },                        # Zigzag Spark
-  { move = 0x2354CA2D, level = 25 },                        # Wind God's Dance
-  { move = 0x62BE692D, level = 34 },                        # Whirlwind Force
+  { move = 0x39CB2F02, level = 1 },                         # Dragster
+  { move = 0x49041E53, level = 15 },                        # Crosscut Feint
+  { move = 0xC66BD10D, level = 29 },                        # Zigzag Spark
+  { move = 0x04941270, level = 41 },                        # Vac Attack
 ]
 
   [[edit.cards]]
@@ -218,25 +256,14 @@ moves = [
 target = "c04000080"                                   # Arion Sherwind
 growth = "normal"
 stats = { kick = 266, control = 220, technique = 305, pressure = 200, physical = 197, intelligence = 219, agility = 174, freedom = 230 }
-moves = [
-  { move = 0x6F918884, level = 1 },                         # Easy Breezy
-  { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
-  { move = 0xC755E805, level = 62 },                        # Triple Threat
-  { move = 0xA9E3374B, level = 72 },                        # Cyclone Sprint
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x264170D9, level = 1 },                         # Pegaso [aura]
-]
 
   [[edit.cards]]
   id = 0xB3AF5BCC    # this card's moveset differs from the list above
   moves = [
-    { move = 0x6F918884, level = 1 },                       # Easy Breezy
     { move = 0x9349F1DA, level = 1 },                       # Zephyr Shot
-    { move = 0xC755E805, level = 62 },                      # Triple Threat
-    { move = 0xA9E3374B, level = 72 },                      # Cyclone Sprint
+    { move = 0x6F918884, level = 1 },                       # Easy Breezy
+    { move = 0xA37D1A41, level = 1 },                       # Hyper-Swiper
+    { move = 0x7C1494CF, level = 40 },                      # Tornado Tunnel
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
@@ -244,52 +271,108 @@ moves = [
     { move = 0x1080BF9E, level = 1 },                       # Miximax Trans: Rey Arturo [aura]
   ]
 
+  [[edit.cards]]
+  id = 0x02693477    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x9349F1DA, level = 1 },                       # Zephyr Shot
+    { move = 0x6F918884, level = 1 },                       # Easy Breezy
+    { move = 0xA37D1A41, level = 1 },                       # Hyper-Swiper
+    { move = 0x7C1494CF, level = 40 },                      # Tornado Tunnel
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x264170D9, level = 1 },                       # Pegaso [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0x1E15FC8A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x9349F1DA, level = 1 },                       # Zephyr Shot
+    { move = 0x6F918884, level = 1 },                       # Easy Breezy
+    { move = 0xA37D1A41, level = 1 },                       # Hyper-Swiper
+    { move = 0x7C1494CF, level = 40 },                      # Tornado Tunnel
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x264170D9, level = 1 },                       # Pegaso [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0x9B04579A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x9349F1DA, level = 1 },                       # Zephyr Shot
+    { move = 0x6F918884, level = 1 },                       # Easy Breezy
+    { move = 0xA37D1A41, level = 1 },                       # Hyper-Swiper
+    { move = 0x7C1494CF, level = 40 },                      # Tornado Tunnel
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x264170D9, level = 1 },                       # Pegaso [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0xBE64471E    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x9349F1DA, level = 1 },                       # Zephyr Shot
+    { move = 0x6F918884, level = 1 },                       # Easy Breezy
+    { move = 0xA37D1A41, level = 1 },                       # Hyper-Swiper
+    { move = 0x7C1494CF, level = 40 },                      # Tornado Tunnel
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x264170D9, level = 1 },                       # Pegaso [aura]
+  ]
+
 [[edit]]
 target = "c04000090"                                   # Riccardo Di Rigo
-moves = [
-  { move = 0x8B90AAAC, level = 1 },                         # Fortissimo
-  { move = 0x20D01E43, level = 17 },                        # Hey Presto
-  { move = 0xEDBAD1F1, level = 45 },                        # Brimstone Rain
-  { move = 0x7DD6FEF8, level = 52 },                        # Athena's Anthem
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x752E10AD, level = 1 },                         # Miximax Trans: Nobunaga [aura]
-]
 
   [[edit.cards]]
   id = 0xAAB46A8D                                         # MF/DF · forest
   growth_pattern = 1
   growth = "normal"
   stats = { kick = 246, control = 271, technique = 242, pressure = 219, physical = 186, intelligence = 281, agility = 194, freedom = 221 }
+  moves = [
+    { move = 0x8B90AAAC, level = 1 },                       # Fortissimo
+    { move = 0x20D01E43, level = 1 },                       # Hey Presto
+    { move = 0x2D68DB57, level = 17 },                      # Deceptive Step
+    { move = 0x7DD6FEF8, level = 52 },                      # Athena's Anthem
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x752E10AD, level = 1 },                       # Miximax Trans: Nobunaga [aura]
+  ]
 
 [[edit]]
 target = "c04000100"                                   # Victor Blade
-moves = [
-  { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
-  { move = 0x0C08B663, level = 17 },                        # Doom Dive Drive
-  { move = 0x910F4F83, level = 47 },                        # Fire Tornado DD
-  { move = 0x90CD25B4, level = 62 },                        # Supernatural Strike
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x4718722F, level = 1 },                         # Miximax Trans: <FLC:OKITA> [aura]
-]
 
   [[edit.cards]]
   id = 0x7AB4BBF3                                         # FW/MF · fire
   growth = "normal"
   stats = { kick = 360, control = 261, technique = 231, pressure = 189, physical = 182, intelligence = 225, agility = 170, freedom = 213 }
+  moves = [
+    { move = 0x8A52C09B, level = 1 },                       # Doomsword Slash
+    { move = 0x0C08B663, level = 1 },                       # Doom Dive Drive
+    { move = 0x1F7F73BA, level = 13 },                      # Bicycle Slash
+    { move = 0x90CD25B4, level = 20 },                      # Supernatural Strike
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x4718722F, level = 1 },                       # Miximax Trans: <FLC:OKITA> [aura]
+  ]
 
 [[edit]]
 target = "c04000110"                                   # Michael Ballzack
 moves = [
-  { move = 0xBBE07677, level = 5 },                         # Sidewinder
-  { move = 0x5DA7EA06, level = 15 },                        # Boomerang Bluff
+  { move = 0xBBE07677, level = 1 },                         # Sidewinder
+  { move = 0x4031A7F5, level = 15 },                        # Mole Fake
   { move = 0x4FE09C7A, level = 30 },                        # Acrobatic Keep
-  { move = 0xA0BDF96F, level = 45 },                        # Ballista Barrage
+  { move = 0x00AF8010, level = 45 },                        # Splitting Hares
 ]
 
   [[edit.cards]]
@@ -301,10 +384,10 @@ moves = [
 [[edit]]
 target = "c04000120"                                   # Lars Dijkstra
 moves = [
-  { move = 0x4E9A9232, level = 5 },                         # Spinning Cut
+  { move = 0x62294D90, level = 5 },                         # Dust Kick
   { move = 0x457EB170, level = 17 },                        # Pyrokinetic
-  { move = 0xA37D1A41, level = 20 },                        # Hyper-Swiper
-  { move = 0x585098FC, level = 44 },                        # Slice and Dice
+  { move = 0x2D68DB57, level = 20 },                        # Deceptive Step
+  { move = 0x4E9A9232, level = 44 },                        # Spinning Cut
 ]
 
   [[edit.cards]]
@@ -318,9 +401,9 @@ moves = [
 target = "c04000130"                                   # Doug McArthur
 moves = [
   { move = 0xDF8CB373, level = 1 },                         # Sonic Shot
-  { move = 0x7E2BE557, level = 15 },                        # Legendary Wolf
-  { move = 0xC324C788, level = 24 },                        # Blast Mine
-  { move = 0x19C3F43D, level = 35 },                        # Eternal Blizzard
+  { move = 0x828A53C8, level = 15 },                        # Plasma Ball
+  { move = 0x7E2BE557, level = 24 },                        # Legendary Wolf
+  { move = 0x84385EE2, level = 38 },                        # Black Tide Ride
 ]
 
   [[edit.cards]]
@@ -333,9 +416,9 @@ moves = [
 target = "c04000140"                                   # Sven Johansson
 moves = [
   { move = 0x12E67CC1, level = 3 },                         # Future Eye
-  { move = 0xAF28F5A0, level = 15 },                        # The Tower
-  { move = 0x2A4E3349, level = 25 },                        # Heart Beat
-  { move = 0xB0F8060A, level = 47 },                        # Ozone Flayer
+  { move = 0x3AD8DFD1, level = 15 },                        # Curving Cut
+  { move = 0x08EEBD53, level = 24 },                        # Feint Play
+  { move = 0xAF28F5A0, level = 47 },                        # The Tower
 ]
 
   [[edit.cards]]
@@ -349,9 +432,9 @@ moves = [
 target = "c04000150"                                   # Aitor Cazador
 moves = [
   { move = 0x4A17EE80, level = 1 },                         # Hunter's Net
-  { move = 0xC324C788, level = 29 },                        # Blast Mine
-  { move = 0x6ADE9E01, level = 37 },                        # Illusory Ball
-  { move = 0x0E0A3F7A, level = 41 },                        # Spatial Portal
+  { move = 0xC324C788, level = 25 },                        # Blast Mine
+  { move = 0x75994916, level = 37 },                        # Cunning Pull
+  { move = 0x0E0A3F7A, level = 63 },                        # Spatial Portal
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -370,9 +453,9 @@ moves = [
 target = "c04000160"                                   # Ryoma Nishiki
 moves = [
   { move = 0x4FE09C7A, level = 1 },                         # Acrobatic Keep
-  { move = 0xC4D13C6B, level = 29 },                        # Katana Kick
-  { move = 0x64CDCFB9, level = 35 },                        # Rising Dragon
-  { move = 0xB4B4D106, level = 40 },                        # Dragon Cannon
+  { move = 0xC4D13C6B, level = 25 },                        # Katana Kick
+  { move = 0x64CDCFB9, level = 34 },                        # Rising Dragon
+  { move = 0x501F2F12, level = 51 },                        # Heel Flick
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -389,10 +472,10 @@ moves = [
 [[edit]]
 target = "c04000170"                                   # Lucian Dark
 moves = [
-  { move = 0x0DCADC54, level = 30 },                        # Emperor Penguin 7
-  { move = 0x3297683F, level = 45 },                        # Warp Step
-  { move = 0x7DAF3139, level = 52 },                        # Emperor Penguin No. 2
-  { move = 0x1755397B, level = 62 },                        # Dark Energy Star
+  { move = 0x7DAF3139, level = 4 },                         # Emperor Penguin No. 2
+  { move = 0x72514A74, level = 25 },                        # Low Drive
+  { move = 0xB58AE80E, level = 37 },                        # Silk Road
+  { move = 0x1755397B, level = 48 },                        # Dark Energy Star
 ]
 
   [[edit.cards]]
@@ -404,10 +487,10 @@ moves = [
 [[edit]]
 target = "c04000360"                                   # Skie Blue
 moves = [
-  { move = 0xC636A810, level = 4 },                         # Combustion Catch
-  { move = 0xC13F00CC, level = 25 },                        # Flower Power
-  { move = 0x06B22DB5, level = 35 },                        # Gyro-Blocker
-  { move = 0x53E9C2A3, level = 99 },                        # Capable Hands
+  { move = 0xC13F00CC, level = 4 },                         # Flower Power
+  { move = 0xD2955C45, level = 25 },                        # Power Catch
+  { move = 0xCB8E6D04, level = 39 },                        # Mighty Save
+  { move = 0x53E9C2A3, level = 51 },                        # Capable Hands
 ]
 
   [[edit.cards]]
@@ -419,10 +502,10 @@ moves = [
 [[edit]]
 target = "c04000370"                                   # Rosie Redd
 moves = [
-  { move = 0x20D01E43, level = 19 },                        # Hey Presto
-  { move = 0x650FA58E, level = 25 },                        # Spin Out
-  { move = 0x6DD736DD, level = 35 },                        # Ribbon Shower
-  { move = 0x7DD6FEF8, level = 99 },                        # Athena's Anthem
+  { move = 0x6DD736DD, level = 9 },                         # Ribbon Shower
+  { move = 0x49041E53, level = 25 },                        # Crosscut Feint
+  { move = 0x2D68DB57, level = 37 },                        # Deceptive Step
+  { move = 0x7DD6FEF8, level = 53 },                        # Athena's Anthem
 ]
 
   [[edit.cards]]
@@ -434,10 +517,10 @@ moves = [
 [[edit]]
 target = "c04000380"                                   # Jade Greene
 moves = [
-  { move = 0x9349F1DA, level = 19 },                        # Zephyr Shot
-  { move = 0x232D05EC, level = 25 },                        # Tiger Drive
-  { move = 0x54C4DCA3, level = 35 },                        # Butterfly Trance
-  { move = 0xC755E805, level = 99 },                        # Triple Threat
+  { move = 0x54C4DCA3, level = 10 },                        # Butterfly Trance
+  { move = 0x240BEDF2, level = 25 },                        # Bounce Shot
+  { move = 0x163D8F70, level = 35 },                        # Chip Shot
+  { move = 0xC755E805, level = 65 },                        # Triple Threat
 ]
 
   [[edit.cards]]
@@ -449,10 +532,13 @@ moves = [
 [[edit]]
 target = "c05024610"                                   # Mark Evans
 moves = [
-  { move = 0x8C382852, level = 1 },                         # God Hand
-  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
-  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
-  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0xEE9F2FBD, level = 11 },                        # God Catch
+  { move = 0x8AF3EAB9, level = 21 },                        # Hammer of Fury
+  { move = 0x93E8DBF8, level = 31 },                        # Dimensional Hand
+]
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -479,9 +565,9 @@ moves = [
 target = "c11904010"                                   # Aitor Cazador
 moves = [
   { move = 0x4A17EE80, level = 1 },                         # Hunter's Net
-  { move = 0xC324C788, level = 29 },                        # Blast Mine
-  { move = 0x6ADE9E01, level = 37 },                        # Illusory Ball
-  { move = 0x0E0A3F7A, level = 41 },                        # Spatial Portal
+  { move = 0xC324C788, level = 25 },                        # Blast Mine
+  { move = 0x75994916, level = 37 },                        # Cunning Pull
+  { move = 0x0E0A3F7A, level = 63 },                        # Spatial Portal
 ]
 
   [[edit.cards]]

@@ -399,6 +399,11 @@ name = "ai_rate"
 sink = true
 summary = "built-in sink: match AI knob values on a team (docs/framework/match-ai.md)"
 
+[[effect]]
+name = "duel_choice"
+sink = true
+summary = "built-in sink: the duel choice service, armed on match_start (setup) or a side choice in a focus battle (docs/framework/duel-choice.md)"
+
 # [[condition]]: a `when` key. needs = the fact it reads ("actor" / "move"; only holds on a trigger that provides it).
 
 [[condition]]

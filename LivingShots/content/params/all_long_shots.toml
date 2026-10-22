@@ -1,0 +1,9 @@
+schema = "VRFW.param/1"
+# «Living Shots»: with the option «Todos los tiros son lejanos» (options.toml `all_long_shots`, default off) a long
+# shot has no cooldown. SoccerTimerGlobalParam.longShootSkillRecastTime (game_param.cfg.bin, retail 60.0 s on v7.1.2
+# and v7.2.1) is the wait after a long shot before the next one (the «UpdateLongShootRecastMeter» gauge); 0 = none.
+# Read when the param data builds: a change applies at the next start.
+option = "all_long_shots"
+
+[game_param.SoccerTimerGlobalParam]
+longShootSkillRecastTime = 0.0

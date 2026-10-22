@@ -177,3 +177,40 @@ pt = "As regras de carregamento dos teus mods já ajustaram este jogo ao voltar 
 ja = "再読み込みの際に、MODの読み込みルールでこのセーブデータはすでに調整されました。"
 zh_hans = "重新读取时，你的模组的读取规则已调整了此存档。"
 zh_hant = "重新讀取時，你的模組的讀取規則已調整了此存檔。"
+
+# The recruit service's action (content\save_adjust\recruit.toml): the season bit off the players it signed.
+[[row]]
+id = "vrfw_save_tools_clear_season"
+es = "Quitar «Jugador de temporada» a los fichajes"
+en = "Remove «Season player» from signings"
+fr = "Retirer « Joueur de saison » des recrues"
+de = "«Saisonspieler» bei Verpflichtungen entfernen"
+it = "Togli «Giocatore stagionale» agli ingaggi"
+pt = "Tirar «Jogador da temporada» às contratações"
+ja = "スカウトした選手の「シーズン選手」を解除"
+zh_hans = "取消招募球员的「赛季球员」"
+zh_hant = "取消招募球員的「賽季球員」"
+
+[[row]]
+id = "vrfw_save_tools_clear_season_desc"
+es = "Los jugadores que ficharon tus mods (mapa de contactos, oficina, pachangas, gacha) pasan a ser jugadores normales del club. Los jugadores de temporada del juego, los de la historia y los de INAROGUE no se tocan."
+en = "The players your mods signed (contact map, office, pachangas, gacha) become normal club players. The game's season players, story players and INAROGUE players are not touched."
+fr = "Les joueurs recrutés par tes mods (carte des contacts, bureau, matchs amicaux, gacha) deviennent des joueurs normaux du club. Les joueurs de saison du jeu, ceux de l'histoire et ceux d'INAROGUE ne sont pas touchés."
+de = "Die von deinen Mods verpflichteten Spieler (Kontaktkarte, Büro, Freundschaftsspiele, Gacha) werden normale Vereinsspieler. Saisonspieler des Spiels, Story-Spieler und INAROGUE-Spieler bleiben unverändert."
+it = "I giocatori ingaggiati dalle tue mod (mappa dei contatti, ufficio, amichevoli, gacha) diventano giocatori normali del club. I giocatori stagionali del gioco, quelli della storia e quelli di INAROGUE non vengono toccati."
+pt = "Os jogadores que os teus mods contrataram (mapa de contactos, escritório, peladinhas, gacha) passam a ser jogadores normais do clube. Os jogadores da temporada do jogo, os da história e os do INAROGUE não são alterados."
+ja = "MODでスカウトした選手（コンタクトマップ、オフィス、草試合、ガチャ）を通常のクラブ選手にします。ゲームのシーズン選手、ストーリーの選手、INAROGUEの選手は変更しません。"
+zh_hans = "你的模组招募的球员（联络地图、办公室、友谊赛、扭蛋）变为俱乐部的普通球员。游戏的赛季球员、剧情球员和 INAROGUE 球员不受影响。"
+zh_hant = "你的模組招募的球員（聯絡地圖、辦公室、友誼賽、扭蛋）變為俱樂部的普通球員。遊戲的賽季球員、劇情球員和 INAROGUE 球員不受影響。"
+
+[[row]]
+id = "vrfw_save_tools_clear_season_done"
+es = "Fichajes que ya no son de temporada: %d."
+en = "Signings no longer season players: %d."
+fr = "Recrues qui ne sont plus de saison : %d."
+de = "Verpflichtungen, die keine Saisonspieler mehr sind: %d."
+it = "Ingaggi non più stagionali: %d."
+pt = "Contratações que já não são da temporada: %d."
+ja = "シーズン選手でなくなった選手：%d人"
+zh_hans = "不再是赛季球员的招募球员：%d 名。"
+zh_hant = "不再是賽季球員的招募球員：%d 名。"

@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c01000410"                                   # Nathan Jones
 moves = [
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0x4523C86D, level = 1 },                         # Killer Blade
   { move = 0xE854ED56, level = 1 },                         # Warp Space
-  { move = 0x7EEA4EE9, level = 19 },                        # Blade Attack
-  { move = 0xF08DB620, level = 55 },                        # Whirlwind
+  { move = 0x88B554E0, level = 50 },                        # Galatyn
 ]
 
   [[edit.cards]]
@@ -23,9 +23,9 @@ moves = [
 target = "c01000420"                                   # Russell Walk
 moves = [
   { move = 0x18C035B4, level = 1 },                         # Ghost Pull
-  { move = 0x4B142F09, level = 15 },                        # Teleport Shot
+  { move = 0xAB6422AC, level = 15 },                        # Phantom Shot
   { move = 0x0F703132, level = 30 },                        # Black Magic
-  { move = 0xAB6422AC, level = 56 },                        # Phantom Shot
+  { move = 0xA6763B84, level = 55 },                        # Gladius Arch
 ]
 
   [[edit.cards]]
@@ -38,9 +38,9 @@ moves = [
 target = "c01000430"                                   # Jason Jones
 moves = [
   { move = 0x33ED6677, level = 1 },                         # Doppelganger
-  { move = 0x695A4A6F, level = 10 },                        # Magic
-  { move = 0x18C035B4, level = 42 },                        # Ghost Pull
-  { move = 0xACAC21CE, level = 66 },                        # Fake Ball
+  { move = 0x5B6C28ED, level = 10 },                        # Invisible Fake
+  { move = 0x18C035B4, level = 21 },                        # Ghost Pull
+  { move = 0x4D1E465C, level = 49 },                        # Fake Bomber
 ]
 
   [[edit.cards]]
@@ -52,10 +52,10 @@ moves = [
 [[edit]]
 target = "c01000440"                                   # Ken Furan
 moves = [
-  { move = 0xBE0E4AD0, level = 10 },                        # Fireball Knuckle
-  { move = 0xE9968761, level = 34 },                        # Rocket Kobushi
-  { move = 0x8FBCFC3C, level = 80 },                        # Blazing Knuckle
-  { move = 0xC379BE95, level = 95 },                        # Counter Strike
+  { move = 0xC0FD6AFB, level = 10 },                        # Fireball Head
+  { move = 0xEA12530F, level = 30 },                        # Double Rocket
+  { move = 0x8FBCFC3C, level = 42 },                        # Blazing Knuckle
+  { move = 0xC379BE95, level = 56 },                        # Counter Strike
 ]
 
   [[edit.cards]]
@@ -67,10 +67,10 @@ moves = [
 [[edit]]
 target = "c01000450"                                   # Jerry Fulton
 moves = [
-  { move = 0x33ED6677, level = 1 },                         # Doppelganger
+  { move = 0x23C3EE90, level = 1 },                         # Shoulder Tackle
   { move = 0xAB6422AC, level = 12 },                        # Phantom Shot
-  { move = 0x0F703132, level = 44 },                        # Black Magic
-  { move = 0xB5B7108F, level = 90 },                        # Shadow Stitch
+  { move = 0x10A0C298, level = 44 },                        # Warp Drive
+  { move = 0xB5B7108F, level = 50 },                        # Shadow Stitch
 ]
 
   [[edit.cards]]
@@ -85,8 +85,8 @@ target = "c01000460"                                   # Ray Mannings
 moves = [
   { move = 0x18C035B4, level = 1 },                         # Ghost Pull
   { move = 0x0F703132, level = 9 },                         # Black Magic
-  { move = 0x695A4A6F, level = 40 },                        # Magic
-  { move = 0xE854ED56, level = 87 },                        # Warp Space
+  { move = 0x7FE98F60, level = 28 },                        # Ganymede Ray
+  { move = 0x09BBF3D9, level = 39 },                        # Dark Whirlwind
 ]
 
   [[edit.cards]]
@@ -100,9 +100,9 @@ moves = [
 target = "c01000470"                                   # Robert Mayer
 moves = [
   { move = 0x18C035B4, level = 1 },                         # Ghost Pull
-  { move = 0x3D4653B0, level = 33 },                        # Poison Fog
-  { move = 0x322F0C40, level = 69 },                        # Spider Web
-  { move = 0xE854ED56, level = 93 },                        # Warp Space
+  { move = 0x09BBF3D9, level = 23 },                        # Dark Whirlwind
+  { move = 0x322F0C40, level = 35 },                        # Spider Web
+  { move = 0xE854ED56, level = 44 },                        # Warp Space
 ]
 
   [[edit.cards]]
@@ -117,8 +117,8 @@ target = "c01000480"                                   # Alexander Brave
 moves = [
   { move = 0x0F703132, level = 1 },                         # Black Magic
   { move = 0xB5B7108F, level = 36 },                        # Shadow Stitch
-  { move = 0xAB6422AC, level = 72 },                        # Phantom Shot
-  { move = 0xC7A9BB3A, level = 91 },                        # Whirlwind Cut
+  { move = 0x5781A373, level = 40 },                        # Hurricane Arrows
+  { move = 0xC7A9BB3A, level = 51 },                        # Whirlwind Cut
 ]
 
   [[edit.cards]]
@@ -132,9 +132,9 @@ moves = [
 target = "c01000490"                                   # Johan Tassman
 moves = [
   { move = 0x4B142F09, level = 1 },                         # Teleport Shot
-  { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
-  { move = 0x79224D8B, level = 29 },                        # Freeze Shot
-  { move = 0xC7A9BB3A, level = 47 },                        # Whirlwind Cut
+  { move = 0xAB6422AC, level = 10 },                        # Phantom Shot
+  { move = 0x7C6D5B0E, level = 26 },                        # Astro Break
+  { move = 0xB27F13ED, level = 53 },                        # Death Zone
 ]
 
   [[edit.cards]]
@@ -148,8 +148,8 @@ target = "c01000500"                                   # Troy Moon
 moves = [
   { move = 0x695A4A6F, level = 1 },                         # Magic
   { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
-  { move = 0x261BDCA8, level = 40 },                        # Moonsault
-  { move = 0xC2BBD4A2, level = 90 },                        # Wild Claw
+  { move = 0x21127474, level = 40 },                        # Ultra Moon
+  { move = 0x7E2BE557, level = 75 },                        # Legendary Wolf
 ]
 
   [[edit.cards]]
@@ -161,10 +161,10 @@ moves = [
 [[edit]]
 target = "c01000510"                                   # Burt Wolf
 moves = [
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0xAB6422AC, level = 1 },                         # Phantom Shot
-  { move = 0x695A4A6F, level = 22 },                        # Magic
-  { move = 0x3D4653B0, level = 38 },                        # Poison Fog
-  { move = 0x58E8FC83, level = 85 },                        # Rolling Hell
+  { move = 0x3D4653B0, level = 17 },                        # Poison Fog
+  { move = 0x34E4CEAB, level = 52 },                        # Barbarian Shield
 ]
 
   [[edit.cards]]
@@ -177,9 +177,9 @@ moves = [
 target = "c01000520"                                   # Rob Crombie
 moves = [
   { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
-  { move = 0x33ED6677, level = 14 },                        # Doppelganger
-  { move = 0x4B142F09, level = 29 },                        # Teleport Shot
-  { move = 0x7CACF0B0, level = 47 },                        # Horn Train
+  { move = 0xE854ED56, level = 1 },                         # Warp Space
+  { move = 0xE9968761, level = 28 },                        # Rocket Kobushi
+  { move = 0xC379BE95, level = 47 },                        # Counter Strike
 ]
 
   [[edit.cards]]
@@ -193,9 +193,9 @@ moves = [
 target = "c01000530"                                   # Chuck Dollman
 moves = [
   { move = 0xAB6422AC, level = 9 },                         # Phantom Shot
-  { move = 0x0F703132, level = 18 },                        # Black Magic
+  { move = 0x322F0C40, level = 18 },                        # Spider Web
   { move = 0x33ED6677, level = 32 },                        # Doppelganger
-  { move = 0xE9968761, level = 76 },                        # Rocket Kobushi
+  { move = 0xC42D6F54, level = 66 },                        # Aikido
 ]
 
   [[edit.cards]]
@@ -208,9 +208,9 @@ moves = [
 target = "c01000540"                                   # Uxley Allen
 moves = [
   { move = 0x1F0836D6, level = 1 },                         # Comet Shot
-  { move = 0x520F1E48, level = 27 },                        # Psycho Shot
+  { move = 0x7C6D5B0E, level = 16 },                        # Astro Break
   { move = 0xA8E0F6C2, level = 38 },                        # Kung Fu Header
-  { move = 0x18C035B4, level = 47 },                        # Ghost Pull
+  { move = 0x1B854A64, level = 47 },                        # Cosmic Blast
 ]
 
   [[edit.cards]]
@@ -225,8 +225,8 @@ target = "c01000550"                                   # Phil Noir
 moves = [
   { move = 0x0F703132, level = 1 },                         # Black Magic
   { move = 0x520F1E48, level = 21 },                        # Psycho Shot
-  { move = 0x33ED6677, level = 30 },                        # Doppelganger
-  { move = 0xB27F13ED, level = 93 },                        # Death Zone
+  { move = 0x70417B2E, level = 30 },                        # Deceptor Dribble
+  { move = 0xB27F13ED, level = 83 },                        # Death Zone
 ]
 
   [[edit.cards]]
@@ -239,10 +239,10 @@ moves = [
 [[edit]]
 target = "c01000560"                                   # Mick Askley
 moves = [
-  { move = 0x18C035B4, level = 16 },                        # Ghost Pull
-  { move = 0x58E8FC83, level = 45 },                        # Rolling Hell
-  { move = 0x7CACF0B0, level = 68 },                        # Horn Train
-  { move = 0xE854ED56, level = 80 },                        # Warp Space
+  { move = 0x18C035B4, level = 10 },                        # Ghost Pull
+  { move = 0x0F703132, level = 15 },                        # Black Magic
+  { move = 0x34E4CEAB, level = 42 },                        # Barbarian Shield
+  { move = 0x58E8FC83, level = 50 },                        # Rolling Hell
 ]
 
   [[edit.cards]]

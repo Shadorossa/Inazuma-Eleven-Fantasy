@@ -1,25 +1,20 @@
 schema = "VRFW.team/2"
-# Chronicle Deluxe (owner 2026-10-20/21): the chain of the IE2 Mary Times coach (wiki «Oumihara's Coach's route») merged
-# with the IE2 Alpino coach's chain (wiki «Hakuren's Coach's route»), with no team that is in another chain of this mod
-# (Sonny's) or anywhere in Chronicle mode (the board's matches, the legend teams, the side nodes). Same team = the same
-# players (the wiki lineup's characters against every tm_cro_* / pltm_cro_* team of team_config and this mod's teams:
-# 60 % or more of the smaller roster), or the same team under a letter / number (Royal Claustro B, Gafitas A, The Card,
-# the Chupabanquillos, Sospechosos, Enmascarados A / B and Selección Juvenil A / B: one each at most, none if the other
-# is already used). Left out: Neo Royal Academy, Alius A / B, Tarjeteros, Divinidades y Alienígenas, Prominence /
-# Polvo de Diamantes, Caos, Royal Claustro A / B, Occult Plus (the Occult's roster), Ultra Raimon A / B, Servicio
-# Secreto Plus, Inazuma Kids FC Plus, Selección nacional B, Ray Dark All Stars, Fase previa / nacional FF B (legend or
-# board teams); Chupabanquillos 1-4, Antiguo Kirkwood, Ases de Inazuma, Gafitas A (Sonny's chain); Robots Guardias (no
-# VR team). Ten teams are left (5 of each chain); the one IE2-era refill outside Chronicle and the chains is Jóvenes
-# Inazuma (the IE2 secret warehouse route's Young Inazuma = VR's own tm_tutorial_002; its Raimon OB has the same
-# players). The other IE2 route teams are variants of the families above. Rows: 5 matches up, 6 down, each + a double
-# chest.
-# Sources: research/build/wiki (taisen routes, team pages), research/data/chains/chains_all.csv, the Spanish wiki's
-# «Lista de Cadenas de Partidos (Inazuma Eleven 2)» (conditions, Spanish names). Hand-maintained: not in _chains.toml.
-# Rivals (owner 2026-10-21): each tile plays its copy of content/teams/70_route_nodes/rivals_ie2_marytimes.toml
-# (generated: every player at the original DS chain match's level + his bonus, his DS learn list) at the DS level + 40
-# (the IE2 saga shift); the «levels <= 50» matches ask Lv. 90 or lower.
-# Save: chain.chronicle_deluxe.ie2_marytimes of owner vr_framework = one character per tile in the declaration order below;
-# never reorder released tiles, only append.
+# Chronicle Deluxe: the IE2 Mary Times coach's chain (wiki «Oumihara's Coach's route»), with the structure and the
+# rivals of the original board (owner 2026-10-22): the IE2 DS ROM's PracticeGame3B (Blizzard; 3F = Fire), read from
+# research/data/ie2ds/chain_teams.json and the board file itself (+0 kind, +2 tile no., +4 / +6 x, y, +62 links).
+# Page 1: three branches from the start (upper 4 matches, middle 3 + a chest, lower 4); page 2: the upper and lower
+# branches go on with 4 matches each and end in their «¡Hecho!» chest. The «RESERVA» tiles are the Chupabanquillos
+# (Benchers) 1 / 2 (no fixed DS level: the wiki's). A rival VR has natively (the vanilla legend teams, the Chronicle's)
+# is that team; the others are this mod's teams. One chain per team, no «?» tile (owner 2026-10-22): a rival VR lacks
+# (Robots Guardias), a Chronicle mode team (Polvo de Diamantes, Caos) or a team of Sonny's IE1 route (Chupabanquillos 1 /
+# 2, Antiguo Kirkwood, Fase previa FF B, Ases de Inazuma 1) is replaced by an unused team: its other form, else an IE2
+# team of the same route / era, else a legend team of similar theme, at the original tile's level.
+# Rivals: each tile plays its copy in content/teams/70_route_nodes/rivals_ie2_marytimes.toml (generated: every player at
+# the DS chain match's level + his bonus, his DS learn list) at the DS level + 40 (the IE2 saga shift); the DS
+# «levels <= 50» matches ask Lv. 90 or lower. A team with no DS roster match on the boards of _chains.toml (Tarjeteros:
+# VR's is the IE1 roster; the replacements above but Equipo Canon and Ases de Inazuma 2) plays as it is.
+# Save: chain.chronicle_deluxe.ie2_marytimes of owner vr_framework = one character per tile in the declaration order below
+# (this 23-tile board since 1.35.0, no carry of the older board's progress); never reorder released tiles, only append.
 default_lang = "es"
 
 # the Chronicle board node: on the Mary Times beach, its road down the pier to the sea pitch (RD of the Mary Times
@@ -78,155 +73,233 @@ RivalStats = "normal"            # every rival with an ordinary team's stats (th
   IfMod = "true_hissatsu"
   Text = "chronicle_deluxe_chain_prize_upgrade_book"
 
-  # the start, left of the two branches (the original board's «Inicio»)
+  # the start («Inicio»): three branches leave it, as on the DS
   [[VRFW.Chain.Tile]]
   Id = "start"
   Kind = "start"
   Pos = [1, 2]
-  Links = ["u01", "l01"]
+  Links = ["u01", "m01", "l01"]
 
-  # Upper #1: Mask Man B (wiki Mary Times Upper #2, level 37, Players with levels <= 50)
+  # Upper 1: Neo Royal Academy (DS tile 1, level 40): VR's own legend team
   [[VRFW.Chain.Tile]]
   Id = "u01"
   Kind = "match"
   Pos = [2, 1]
   Team = "chronicle_deluxe.ie2_marytimes_u01"
-  Level = 77
+  Level = 80
   Links = ["u02"]
-  Challenge = "ChronicleDeluxe.MaxLevel90"
 
-  # Upper #2: Team Canon (wiki Mary Times Upper #3, level 55, Win the match; IE2 Fire)
+  # Upper 2: Enmascarados B (DS tile 2, level 37, players Lv <= 50)
   [[VRFW.Chain.Tile]]
   Id = "u02"
   Kind = "match"
   Pos = [3, 1]
   Team = "chronicle_deluxe.ie2_marytimes_u02"
-  Level = 95
+  Level = 77
   Links = ["u03"]
+  Challenge = "ChronicleDeluxe.MaxLevel90"
 
-  # Upper #3: Kyappikyapi A (wiki Alpino Upper #5, level 58, Spanish wiki: a team of boys)
+  # Upper 3: Equipo Blaze (DS tile 3, level 55; IE2 Fire: Equipo Canon)
   [[VRFW.Chain.Tile]]
   Id = "u03"
   Kind = "match"
   Pos = [4, 1]
   Team = "chronicle_deluxe.ie2_marytimes_u03"
-  Level = 98
+  Level = 95
   Links = ["u04"]
-  Challenge = "ChronicleDeluxe.OnlyBoys"
 
-  # Upper #4: Adult Team (wiki Alpino Upper #7, level 65, Win the match)
+  # Upper 4: Alius A (DS tile 4 «A. Alius», level 58): VR's own legend team
   [[VRFW.Chain.Tile]]
   Id = "u04"
   Kind = "match"
   Pos = [5, 1]
   Team = "chronicle_deluxe.ie2_marytimes_u04"
-  Level = 105
+  Level = 98
   Links = ["u05"]
 
-  # Upper #5: Zennihon Youth A (wiki Alpino Upper #8, level 70, Win the match)
+  # Middle 1: Robots Guardias (DS tile 19, level 42) has no VR team: Jóvenes Inazuma (tm_tutorial_002, the IE2
+  # secret warehouse route's Young Inazuma), unused elsewhere; played as it is
   [[VRFW.Chain.Tile]]
-  Id = "u05"
+  Id = "m01"
   Kind = "match"
-  Page = 2
-  Pos = [1, 1]
-  Team = "chronicle_deluxe.ie2_marytimes_u05"
-  Level = 110
-  Links = ["u06"]
+  Pos = [2, 2]
+  Team = "tm_tutorial_002"
+  Level = 82
+  Links = ["m02"]
 
-  # Upper: the double chest (owner 2026-10-20): no base reward; the branch all at rank A or better gives Syon Blaze
-  # (Gouenji Masato, the wiki's Upper clear reward in IE2 Blizzard), the branch all at rank S gives Canon Evans (Endou
-  # Canon, the clear reward in IE2 Fire) and the Middle branch's S reward «Wyvern Blizzard» (its manual). The tiers
-  # stack: all at S gives both. Each character has one card in chara_param.
-  # Left out: S «Kazemaru Ichirouta» (the original Upper S reward), Middle «Gakushuu» (not in VR).
+  # Middle 2: Polvo de Diamantes (DS tile 20, level 70) is a Chronicle team: Reinas del Hielo (VR's IE2 legend
+  # team, the ice theme, Clear of Diamond Dust in it); played as it is
   [[VRFW.Chain.Tile]]
-  Id = "u_chest"
+  Id = "m02"
+  Kind = "match"
+  Pos = [3, 2]
+  Team = "tm_cro_legend_IE2_03"
+  Level = 110
+  Links = ["m03"]
+
+  # Middle 3: Caos (DS tile 21, level 93) is a Chronicle team: Nuevo Caos (VR's IE2 legend team, Caos's other form);
+  # played as it is
+  [[VRFW.Chain.Tile]]
+  Id = "m03"
+  Kind = "match"
+  Pos = [4, 2]
+  Team = "tm_cro_legend_IE2_08"
+  Level = 133
+  Links = ["m_chest"]
+
+  # Middle: the double chest (DS tile 22: «Gakushuu», not in VR / S «Wyvern Blizzard»)
+  [[VRFW.Chain.Tile]]
+  Id = "m_chest"
   Kind = "dchest"
-  Page = 2
-  Pos = [3, 1]
-    [[VRFW.Chain.Tile.AReward]]  # Syon Blaze (c02024710, his only card)
-    Player = "0xF150070D"
-    [[VRFW.Chain.Tile.SReward]]  # Canon Evans (c02024700, his only card)
-    Player = "0xE84B364C"
-    [[VRFW.Chain.Tile.SReward]]  # Wyvern Blizzard (manual)
+  Pos = [5, 2]
+    [[VRFW.Chain.Tile.SReward]]  # Wyvern Blizzard (manual): the DS chest's S reward
     Item = 0x10D90D59
 
-  # Lower #1: Little Team (wiki Mary Times Lower #3, level 50, Players with levels <= 50)
+  # Lower 1: Royal Claustro A (DS tile 5, level 40): VR's own legend team
   [[VRFW.Chain.Tile]]
   Id = "l01"
   Kind = "match"
   Pos = [2, 3]
   Team = "chronicle_deluxe.ie2_marytimes_l01"
-  Level = 90
+  Level = 80
   Links = ["l02"]
-  Challenge = "ChronicleDeluxe.MaxLevel90"
 
-  # Lower #2: Ryuugaku Team (wiki Alpino Lower #4, level 50, Spanish wiki: players without shooting moves (no VRFW filter: left out))
+  # Lower 2: Occult Plus (DS tile 6, level 45): this mod's own team (11_ie2/0011_occult_plus.toml)
   [[VRFW.Chain.Tile]]
   Id = "l02"
   Kind = "match"
   Pos = [3, 3]
   Team = "chronicle_deluxe.ie2_marytimes_l02"
-  Level = 90
+  Level = 85
   Links = ["l03"]
 
-  # Lower #3: Team Inazuma A (wiki Mary Times Lower #4, level 52, Win the match)
+  # Lower 3: Chiquis (DS tile 7, level 50, players Lv <= 50)
   [[VRFW.Chain.Tile]]
   Id = "l03"
   Kind = "match"
   Pos = [4, 3]
   Team = "chronicle_deluxe.ie2_marytimes_l03"
-  Level = 92
+  Level = 90
   Links = ["l04"]
+  Challenge = "ChronicleDeluxe.MaxLevel90"
 
-  # Lower #4: Team Masato (wiki Mary Times Upper #3, level 55, Win the match; IE2 Blizzard)
+  # Lower 4: Inazuma A (DS tile 8, level 52)
   [[VRFW.Chain.Tile]]
   Id = "l04"
   Kind = "match"
   Pos = [5, 3]
   Team = "chronicle_deluxe.ie2_marytimes_l04"
-  Level = 95
+  Level = 92
   Links = ["l05"]
 
-  # Lower #5: Inazuma '09 (wiki Alpino Lower #8, level 75, Win the match)
+  # Upper 5: «RESERVA», Chupabanquillos 1 (DS tile 9, the wiki's level 55) is Sonny's: Ninjas a Gogó (VR's IE1 legend
+  # team, unused elsewhere; Raimon 1 would replay Ultra Raimon's players of u07); played as it is
+  [[VRFW.Chain.Tile]]
+  Id = "u05"
+  Kind = "match"
+  Page = 2
+  Pos = [1, 1]
+  Team = "tm_cro_legend_ie1_07"
+  Level = 95
+  Links = ["u06"]
+
+  # Upper 6: Tarjeteros (DS tile 10, level 60): VR's legend Tarjeteros (its IE1 roster; the IE2 one is not in VR)
+  [[VRFW.Chain.Tile]]
+  Id = "u06"
+  Kind = "match"
+  Page = 2
+  Pos = [2, 1]
+  Team = "tm_cro_legend_ie1_03"
+  Level = 100
+  Links = ["u07"]
+
+  # Upper 7: Ultra Raimon (DS tile 11, level 65): VR's legend Suplentes del Raimon (the same players)
+  [[VRFW.Chain.Tile]]
+  Id = "u07"
+  Kind = "match"
+  Page = 2
+  Pos = [3, 1]
+  Team = "chronicle_deluxe.ie2_marytimes_u07"
+  Level = 105
+  Links = ["u08"]
+
+  # Upper 8: Divinidades y Alienígenas (DS tile 12, level 70): VR's own legend team
+  [[VRFW.Chain.Tile]]
+  Id = "u08"
+  Kind = "match"
+  Page = 2
+  Pos = [4, 1]
+  Team = "chronicle_deluxe.ie2_marytimes_u08"
+  Level = 110
+  Links = ["u_chest"]
+
+  # Upper end («¡Hecho!», DS tile 13): the double chest
+  [[VRFW.Chain.Tile]]
+  Id = "u_chest"
+  Kind = "dchest"
+  Page = 2
+  Pos = [5, 1]
+    # rank A or better on the branch: Syon Blaze (Gouenji Masato, the DS chest in IE2 Blizzard); all at S: Canon
+    # Evans (Endou Canon, the chest in IE2 Fire). Left out: the S «Kazemaru Ichirouta» (a Raimon player)
+    [[VRFW.Chain.Tile.AReward]]  # Syon Blaze (c02024710, his only card)
+    Player = "0xF150070D"
+    [[VRFW.Chain.Tile.SReward]]  # Canon Evans (c02024700, his only card)
+    Player = "0xE84B364C"
+
+  # Lower 5: Antiguo Kirkwood (DS tile 14, level 55) is Sonny's: Equipo Canon (this route's tile 3 in IE2 Fire,
+  # DS PracticeGame3F, level 55)
   [[VRFW.Chain.Tile]]
   Id = "l05"
   Kind = "match"
   Page = 2
   Pos = [1, 3]
   Team = "chronicle_deluxe.ie2_marytimes_l05"
-  Level = 115
+  Level = 95
   Links = ["l06"]
 
-  # Lower #6: Young Inazuma (wiki Maniya Saito Upper #8, level 83, Win the match; VR: the retail team Jóvenes Inazuma)
+  # Lower 6: Fase previa FF B (DS tile 15, level 50, players Lv <= 50) is Sonny's: Los Superadorables (VR's IE1
+  # legend team, unused elsewhere); played as it is
   [[VRFW.Chain.Tile]]
   Id = "l06"
   Kind = "match"
   Page = 2
   Pos = [2, 3]
-  Team = "chronicle_deluxe.ie2_marytimes_l06"
-  Level = 120
+  Team = "tm_cro_legend_ie1_02"
+  Level = 90
+  Links = ["l07"]
+  Challenge = "ChronicleDeluxe.MaxLevel90"
+
+  # Lower 7: «RESERVA», Chupabanquillos 2 (DS tile 16, the wiki's level 58) is Sonny's: Neo Raimon (VR's IE1 legend
+  # team, Raimon's other form); played as it is
+  [[VRFW.Chain.Tile]]
+  Id = "l07"
+  Kind = "match"
+  Page = 2
+  Pos = [3, 3]
+  Team = "tm_cro_legend_ie1_10"
+  Level = 98
+  Links = ["l08"]
+
+  # Lower 8: Ases de Inazuma 1 / Inazuma '08 (DS tile 17, level 75) is Sonny's: Ases de Inazuma 2 / Inazuma '09
+  # (its other form, DS PracticeGame1B, level 75)
+  [[VRFW.Chain.Tile]]
+  Id = "l08"
+  Kind = "match"
+  Page = 2
+  Pos = [4, 3]
+  Team = "chronicle_deluxe.ie2_marytimes_l08"
+  Level = 115
   Links = ["l_chest"]
 
-  # Lower: the double chest. Wiki rewards: «Whale Guard» (its manual, below) / S «Handa Shinichi» (a player: left out)
+  # Lower end («¡Hecho!», DS tile 18): the double chest
   [[VRFW.Chain.Tile]]
   Id = "l_chest"
   Kind = "dchest"
   Page = 2
-  Pos = [3, 3]
+  Pos = [5, 3]
+    # left out: the S «Handa Shinichi» (a Raimon player)
     [[VRFW.Chain.Tile.Reward]]   # Whale Guard (manual)
     Item = 0xB2BEB853
-
-  # Upper #6 (owner 2026-10-21: the missing teams added): Gafitas A (wiki 〇Megane〇 A, Alpino Lower #3, level 40,
-  # «Players without hissatsu»: no VRFW filter, left out). Declared last (tiles are only appended), placed between
-  # Zennihon Youth A and the Upper chest
-  [[VRFW.Chain.Tile]]
-  Id = "u06"
-  Kind = "match"
-  Page = 2
-  Pos = [2, 1]
-  Team = "chronicle_deluxe.ie2_marytimes_u06"
-  Level = 80
-  Links = ["u_chest"]
 
 [[VRFW.MatchChallenge]]
 Name = "ChronicleDeluxe.MaxLevel90"
@@ -234,13 +307,6 @@ Title = "chronicle_deluxe_mc_max_level_90"
 Scope = "squad"
   [[VRFW.MatchChallenge.Require]]
   Every = { MaxLevel = 90 }
-
-[[VRFW.MatchChallenge]]
-Name = "ChronicleDeluxe.OnlyBoys"
-Title = "chronicle_deluxe_mc_only_boys"
-Scope = "squad"
-  [[VRFW.MatchChallenge.Require]]
-  Every = { Gender = "male" }
 
 # no in-match drops in this chain's matches (the rewards are the chests and the rank rewards above)
 [[VRFW.GameDrops]]
@@ -311,6 +377,48 @@ SpiritDrop2 = "0xE523407A"
 
 [[VRFW.GameDrops]]
 Game = "evt_ch_ie2_marytimes_12"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_13"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_14"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_15"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_16"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_17"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_18"
+ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
+SpiritDrop = "0xE523407A"
+SpiritDrop2 = "0xE523407A"
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_19"
 ItemDrop = "0xE6676C51"        # chronicle_deluxe.no_item_drops (an empty table, base_tables soccer_drop_config.toml)
 SpiritDrop = "0xE523407A"
 SpiritDrop2 = "0xE523407A"

@@ -1,6 +1,6 @@
-# Texts of Utilities' «Estadísticas del club» (the row of «Caseta del club», graft util_club_stats_row, and its panel
-# assets/lua/play_guide_top_menu/150_club_stats.lua, which reads them with CMND_TEXT_GET(crc32(id))). Format:
-# docs/game/engine/text-engine.md §2. «{1}» = a value the panel fills in. Dates use utilities.cs_date (career.toml).
+# Texts of Utilities' «Estadísticas del club» (the row of «Caseta del club», graft util_club_stats_row, and its page
+# util_club_stats_menu, assets/lua/screens/util_club_stats_menu.lua, which reads them with CMND_TEXT_GET(crc32(id))).
+# Format: docs/game/engine/text-engine.md §2. «{1}» = a value the page fills in. Dates use utilities.cs_date (career.toml).
 schema = "VRFW.text/2"
 table = "menu_text"
 
@@ -381,31 +381,44 @@ ja = "加入日が新しい順"
 zh_hans = "最新加入"
 zh_hant = "最新加入"
 
-# the keys line
+# the button guide of the page: Select changes the sort column
 [[row]]
-id = "Utilities.ClubStats.Keys"
-es = "<CMD_LEFT><CMD_RIGHT> Ordenar   <CMD_BACK> Volver"
-en = "<CMD_LEFT><CMD_RIGHT> Sort   <CMD_BACK> Back"
-fr = "<CMD_LEFT><CMD_RIGHT> Trier   <CMD_BACK> Retour"
-de = "<CMD_LEFT><CMD_RIGHT> Sortieren   <CMD_BACK> Zurück"
-it = "<CMD_LEFT><CMD_RIGHT> Ordina   <CMD_BACK> Indietro"
-pt = "<CMD_LEFT><CMD_RIGHT> Ordenar   <CMD_BACK> Voltar"
-ja = "<CMD_LEFT><CMD_RIGHT> 並び替え   <CMD_BACK> 戻る"
-zh_hans = "<CMD_LEFT><CMD_RIGHT> 排序   <CMD_BACK> 返回"
-zh_hant = "<CMD_LEFT><CMD_RIGHT> 排序   <CMD_BACK> 返回"
+id = "Utilities.ClubStats.Sort"
+es = "Ordenar"
+en = "Sort"
+fr = "Trier"
+de = "Sortieren"
+it = "Ordina"
+pt = "Ordenar"
+ja = "並び替え"
+zh_hans = "排序"
+zh_hant = "排序"
+
+# the totals line when the day they started is unknown
+[[row]]
+id = "Utilities.ClubStats.ClubTotals"
+es = "Totales del club"
+en = "Club totals"
+fr = "Totaux du club"
+de = "Vereinsbilanz"
+it = "Totali del club"
+pt = "Totais do clube"
+ja = "クラブ通算"
+zh_hans = "俱乐部总计"
+zh_hant = "俱樂部總計"
 
 # the player list while no player has numbers
 [[row]]
 id = "Utilities.ClubStats.NoPlayers"
-es = "Aún no hay datos de jugadores: se cuentan desde el próximo partido."
-en = "No player numbers yet: they count from your next match."
-fr = "Pas encore de données : elles comptent dès ton prochain match."
-de = "Noch keine Spielerdaten: sie zählen ab deinem nächsten Spiel."
-it = "Ancora nessun dato: si contano dalla prossima partita."
-pt = "Ainda sem dados: contam a partir da próxima partida."
-ja = "選手の記録はまだありません。次の試合から記録されます。"
-zh_hans = "暂无球员数据，将从下一场比赛开始记录。"
-zh_hant = "暫無球員資料，將從下一場比賽開始記錄。"
+es = "Ningún jugador ha jugado aún un partido contado."
+en = "No player has played a counted match yet."
+fr = "Aucun joueur n'a encore joué de match compté."
+de = "Noch kein Spieler hat ein gezähltes Spiel bestritten."
+it = "Nessun giocatore ha ancora giocato una partita contata."
+pt = "Nenhum jogador jogou ainda uma partida contada."
+ja = "記録された試合に出場した選手はまだいません。"
+zh_hans = "还没有球员参加过计入统计的比赛。"
+zh_hant = "還沒有球員參加過計入統計的比賽。"
 
 # the screen without a save's numbers (a mod's own save slot)
 [[row]]

@@ -9,8 +9,8 @@ target = "c02024410"                                   # Daisy Fields
 moves = [
   { move = 0xC13F00CC, level = 1 },                         # Flower Power
   { move = 0xBC48F489, level = 1 },                         # Claw Slash
-  { move = 0x5405771D, level = 25 },                        # Supreme Spin
-  { move = 0x5E7E4775, level = 37 },                        # Table-Turner
+  { move = 0x5B3151F0, level = 37 },                        # Nitro Slap
+  { move = 0xD2955C45, level = 65 },                        # Power Catch
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -45,10 +45,10 @@ moves = [
 [[edit]]
 target = "c02024430"                                   # Hellen Hearth
 moves = [
-  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x3AD8DFD1, level = 1 },                         # Curving Cut
   { move = 0x2C3D95DD, level = 1 },                         # Sleeping Dust
-  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
-  { move = 0x4C1D87D5, level = 47 },                        # Bed of Roses
+  { move = 0x4C1D87D5, level = 1 },                         # Bed of Roses
+  { move = 0x0D368F6B, level = 47 },                        # Heaven's Time
 ]
 
   [[edit.cards]]
@@ -62,8 +62,8 @@ target = "c02024440"                                   # Rose Pinkpetal
 moves = [
   { move = 0x4D1E465C, level = 1 },                         # Fake Bomber
   { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
-  { move = 0x261BDCA8, level = 30 },                        # Moonsault
-  { move = 0x6DD736DD, level = 38 },                        # Ribbon Shower
+  { move = 0x6DD736DD, level = 30 },                        # Ribbon Shower
+  { move = 0x2C3D95DD, level = 38 },                        # Sleeping Dust
 ]
 
   [[edit.cards]]
@@ -77,8 +77,8 @@ target = "c02024450"                                   # Esther Greenland
 moves = [
   { move = 0x2C3D95DD, level = 1 },                         # Sleeping Dust
   { move = 0x7EEA4EE9, level = 26 },                        # Blade Attack
-  { move = 0x1F0836D6, level = 33 },                        # Comet Shot
-  { move = 0x78E027BC, level = 39 },                        # Shine Drive
+  { move = 0x65766A4F, level = 33 },                        # Meteor Blade
+  { move = 0xECD991E4, level = 55 },                        # The Stinger
 ]
 
   [[edit.cards]]
@@ -92,8 +92,8 @@ target = "c02024460"                                   # Bela Bluebells
 moves = [
   { move = 0x5049A011, level = 1 },                         # Spinning Shot
   { move = 0x55C71D2A, level = 1 },                         # About Face
-  { move = 0xDEB28A7B, level = 26 },                        # Monkey Turn
-  { move = 0x6DD736DD, level = 40 },                        # Ribbon Shower
+  { move = 0x6DD736DD, level = 28 },                        # Ribbon Shower
+  { move = 0x316A7390, level = 40 },                        # Land Dragon
 ]
 
   [[edit.cards]]
@@ -109,7 +109,7 @@ moves = [
   { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
   { move = 0x55C71D2A, level = 1 },                         # About Face
   { move = 0x4D1E465C, level = 29 },                        # Fake Bomber
-  { move = 0x142DBE2A, level = 37 },                        # Foul Offence
+  { move = 0x21127474, level = 57 },                        # Ultra Moon
 ]
 
   [[edit.cards]]
@@ -122,9 +122,9 @@ moves = [
 target = "c02024480"                                   # Hillary Bush
 moves = [
   { move = 0x6DD736DD, level = 1 },                         # Ribbon Shower
-  { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
+  { move = 0xAC6D8A70, level = 1 },                         # Rainbow Arc
   { move = 0x4F58F805, level = 25 },                        # Coil Turn
-  { move = 0xAC6D8A70, level = 35 },                        # Rainbow Arc
+  { move = 0xC42D6F54, level = 55 },                        # Aikido
 ]
 
   [[edit.cards]]
@@ -139,7 +139,7 @@ moves = [
   { move = 0x06130797, level = 1 },                         # Rolling Kick
   { move = 0x261BDCA8, level = 1 },                         # Moonsault
   { move = 0x6DD736DD, level = 32 },                        # Ribbon Shower
-  { move = 0x3663DB4C, level = 43 },                        # Utter Gutsiness Bat
+  { move = 0x5E233E68, level = 60 },                        # Super Elastico
 ]
 
   [[edit.cards]]
@@ -156,17 +156,17 @@ stats = { kick = 273, control = 250, technique = 220, pressure = 185, physical =
 moves = [
   { move = 0x4C1D87D5, level = 1 },                         # Bed of Roses
   { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
-  { move = 0x27D9B69F, level = 31 },                        # Prima Donna
-  { move = 0x4741C0E8, level = 45 },                        # Steeple Shot
+  { move = 0xC5EF0563, level = 45 },                        # Three-Legged Rush
+  { move = 0x163D8F70, level = 60 },                        # Chip Shot
 ]
 
 [[edit]]
 target = "c02024510"                                   # Lily Willow
 moves = [
-  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x72514A74, level = 1 },                         # Low Drive
   { move = 0x54C4DCA3, level = 1 },                         # Butterfly Trance
-  { move = 0x6DD736DD, level = 1 },                         # Ribbon Shower
-  { move = 0x2C3D95DD, level = 40 },                        # Sleeping Dust
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x750E6DAB, level = 40 },                        # Matador Feint
 ]
 
   [[edit.cards]]
@@ -178,10 +178,10 @@ moves = [
 [[edit]]
 target = "c02024520"                                   # Dell Closeout
 moves = [
-  { move = 0x4523C86D, level = 1 },                         # Killer Blade
-  { move = 0xC13F00CC, level = 28 },                        # Flower Power
+  { move = 0xCB8E6D04, level = 1 },                         # Mighty Save
+  { move = 0xC13F00CC, level = 1 },                         # Flower Power
   { move = 0x55C71D2A, level = 30 },                        # About Face
-  { move = 0xBC48F489, level = 46 },                        # Claw Slash
+  { move = 0x5E7E4775, level = 46 },                        # Table-Turner
 ]
 
   [[edit.cards]]
@@ -194,9 +194,9 @@ moves = [
 target = "c02024530"                                   # Amy Spires
 moves = [
   { move = 0xDF70E04C, level = 1 },                         # Rodeo Clown
-  { move = 0x7EEA4EE9, level = 1 },                         # Blade Attack
-  { move = 0x322F0C40, level = 36 },                        # Spider Web
-  { move = 0x4741C0E8, level = 54 },                        # Steeple Shot
+  { move = 0x4741C0E8, level = 1 },                         # Steeple Shot
+  { move = 0x2C3D95DD, level = 36 },                        # Sleeping Dust
+  { move = 0x74CC079C, level = 54 },                        # Big Fan
 ]
 
   [[edit.cards]]
@@ -212,7 +212,7 @@ moves = [
   { move = 0x0CF4E55C, level = 1 },                         # Double Touch
   { move = 0x3EC287DE, level = 32 },                        # Bubble Gum
   { move = 0x6DD736DD, level = 40 },                        # Ribbon Shower
-  { move = 0x27D9B69F, level = 56 },                        # Prima Donna
+  { move = 0xA7B451B3, level = 56 },                        # Paladin Strike
 ]
 
   [[edit.cards]]
@@ -224,9 +224,9 @@ moves = [
 [[edit]]
 target = "c02024550"                                   # Gayle Revel
 moves = [
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0xAAA6489B, level = 1 },                         # Spiral Shot
-  { move = 0x261BDCA8, level = 29 },                        # Moonsault
-  { move = 0x34256515, level = 37 },                        # Dynamite Shot
+  { move = 0xAA67E325, level = 37 },                        # Desert Blast
   { move = 0x74CC079C, level = 49 },                        # Big Fan
 ]
 
@@ -239,10 +239,10 @@ moves = [
 [[edit]]
 target = "c02024560"                                   # Janine Brook
 moves = [
-  { move = 0x8DFA4265, level = 1 },                         # Toughness Block
+  { move = 0xBC48F489, level = 1 },                         # Claw Slash
   { move = 0x5405771D, level = 30 },                        # Supreme Spin
   { move = 0x3663DB4C, level = 38 },                        # Utter Gutsiness Bat
-  { move = 0xDA628FD4, level = 53 },                        # Sliding Goal
+  { move = 0xDCA94D3F, level = 53 },                        # Flash Upper
 ]
 
   [[edit.cards]]

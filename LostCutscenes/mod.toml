@@ -3,13 +3,13 @@ id = "new_animations"
 # «Lost Cutscenes» since 1.3.2 (2026-10-11; «Lost Scenes» 1.3.0-1.3.1, «New Animations» / «Nuevas animaciones» before;
 # repo / install folder LostScenes until 1.3.1): the same name in every language; the id stays.
 name = "Lost Cutscenes"
-version = "1.4.9"
+version = "1.5.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Lost scenes back in matches: animations the game ships but never plays and scenes from earlier Inazuma Eleven games. Keeper: three save / goal pairs the game ships but never plays (standing catch and dives to both sides, each with its beaten version) join the random keeper-gauge scenes; «Effortless save»: a shot that takes at most 15 % of the gauge from a keeper without a move is stopped one-handed over his head (Galileo's catch from Chronicle Mode, played by the match's keeper). Duels: a Power Charge or Power Block won without a hyper move plays a Chrono Stone / Galaxy duel scene. De-summons: when a Keshin, a Keshin armour or a Miximax ends in open play, the player kneels, sweeps the spirit away or throws his arms out (Chrono Stone). Celebrations: the Inazuma Eleven Cross intros as goal celebrations of their characters (Mark Evans, Axel Blaze, Arion Sherwind…) and four open poses. Override chains: when a shot is chained into its combined move (Dragon Crash → Fire Tornado = Dragon Tornado, Cosmic Blaster, Wyvern Blizzard, Tiger Storm, Icebreaker, Emperor Penguin No. 2 feat. Shark, Beyond the Death Zone), the combined scene starts at the pass instead of repeating the first shot. Always on: the mod has no options."
+description = "Lost scenes back in matches: animations the game ships but never plays and scenes from earlier Inazuma Eleven games. Keeper: three save / goal pairs the game ships but never plays (standing catch and dives to both sides, each with its beaten version) join the random keeper-gauge scenes; «Effortless save»: a shot that takes at most 15 % of the gauge from a keeper without a move is stopped one-handed over his head (Galileo's catch from Chronicle Mode, played by the match's keeper). Duels: a Power Charge or Power Block won without a hyper move plays a Chrono Stone / Galaxy duel scene. De-summons: when a Keshin, a Keshin armour or a Miximax ends in open play, the player kneels, sweeps the spirit away or throws his arms out (Chrono Stone). Override chains: when a shot is chained into its combined move (Dragon Crash → Fire Tornado = Dragon Tornado, Cosmic Blaster, Wyvern Blizzard, Tiger Storm, Icebreaker, Emperor Penguin No. 2 feat. Shark, Beyond the Death Zone), the combined scene starts at the pass instead of repeating the first shot. Always on: the mod has no options."
 priority = 0
 tags = ["Visual"]
-updated = "2026-10-15"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [[LostCutscenes.X]], Lua LostCutscenes.X, any later text, command or key); never VRFW.
 prefix = "LostCutscenes"
 folder = "LostCutscenes"
@@ -30,10 +30,9 @@ folder = "LostCutscenes"
 #                                     ev80_80240, Flamberge 3 seats ev60_81900, moved with the same ids to the mod Group
 #                                     Summons in 1.4.6, 2026-10-14; the keys new_animations.grifo_trio / arturo_duo /
 #                                     flamberge_trio are its [[alias]]es: docs/game/mods/group-summons.md)
-#   content\celebrations\cross_intros.toml + content\characters\celebrations.toml + assets\data\…\ev71\ev71_18*,
-#   content\base_tables\…\ev71        the 30 Cross goal celebrations (1.1.0, from Inazuma Fantasy; celebration type +
-#                                     character claims; event files Level-5-derived: research/recipes/celebrations/
-#                                     new_animations.toml, never committed)
+#   (the 30 Cross goal celebrations, content\celebrations\cross_intros.toml + content\characters\celebrations.toml +
+#                                     their events, 1.1.0-1.4.9: moved to the mod IECross in 1.5.0, 2026-10-22, with
+#                                     the same events; the keys new_animations.cross_* are its [[alias]]es)
 #   content\anims\override_handoff.toml + content\techniques\overrides\handoff.toml
 #                                     override chain hand-off scenes (1.2.0, from Inazuma Fantasy): the retail chain
 #                                     combos' scenes from the pass on (anim type, built at boot from retail events +

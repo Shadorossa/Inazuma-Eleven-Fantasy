@@ -11,6 +11,8 @@ schema = "VRFW.changelog/1"
 # 2026-10-21: that row covers IE1-IE3.
 # 2026-10-21: that row covers the GO saga (GO, Chrono Stone, Galaxy) too.
 # 1.13.0 (2026-10-21): rewritten: GO-saga matches added, the own team at rival level again, story auras, IE2 chains.
+# 1.19.0 (2026-10-22): the first row names the board's Mix-Max gacha.
+# 1.26.0 (2026-10-22): the chains row: Suzette's (Rika's) board holds the warehouse's, no rival twice.
 lang = "es"
 name = "Chronicle Deluxe"
 
@@ -41,10 +43,10 @@ name = "Chronicle Deluxe"
 [[release]]
 icon = "general"
 notes = [
-    "Crónica: Umbrella, Sally's y partidos GO-Galaxy nuevos.",
+    "Crónica: Umbrella, Sally's, GO-Galaxy y gacha Mix-Max.",
     "Partido libre: Nv. 50/99/200 y orbe de la mejor ganada.",
     "IE1-Galaxy: niveles y técnicas reales; Raimon al rival.",
-    "Cadenas: Sonny, Mary Times, madre de Rika y almacén.",
+    "Cadenas: Sonny, Mary Times, Suzette; sin repetir rival.",
     "Elementales: solo con el elemento débil ante el suyo.",
     "Botín «AURAS»; tus auras llegan según la historia.",
     "Sello del Maestro: técnicas y auras ilimitadas.",
@@ -52,10 +54,10 @@ notes = [
 
 [release.en]
 notes = [
-    "Chronicle: Umbrella, Sally's and new GO-Galaxy matches.",
+    "Chronicle: Umbrella, Sally's, GO-Galaxy, Mix-Max gacha.",
     "Free match: Lv 50/99/200, an orb for the best one won.",
     "IE1-Galaxy: original levels/moves; Raimon at rival Lv.",
-    "Chains: Sonny, Mary Times, Rika's mother, the warehouse.",
+    "Chains: Sonny, Mary Times, Suzette; no rival seen twice.",
     "Elemental teams: only the element weak against theirs.",
     "Drops: «AURAS» section; your auras unlock in the story.",
     "Master's Seal (Destructores): unlimited moves and auras.",
@@ -63,10 +65,10 @@ notes = [
 
 [release.fr]
 notes = [
-    "Chronique : Umbrella, Sally's et matchs GO-Galaxy.",
+    "Chronique : Umbrella, Sally's, GO-Galaxy, gacha Mix-Max.",
     "Match libre : Niv. 50/99/200, orbe du meilleur gagné.",
     "IE1-Galaxy : niveaux/techniques réels ; Raimon au rival.",
-    "Chaînes : Sonny, Mary Times, mère de Rika, entrepôt.",
+    "Chaînes : Sonny, Mary Times, Suzette ; rivaux uniques.",
     "Élémentaires : seulement l'élément faible face au leur.",
     "Butin : section «AURAS» ; vos auras selon le récit.",
     "Sceau du maître : techniques et auras illimitées.",
@@ -74,10 +76,10 @@ notes = [
 
 [release.de]
 notes = [
-    "Chronik: Umbrella, Sally's und neue GO-Galaxy-Spiele.",
+    "Chronik: Umbrella, Sally's, GO-Galaxy, Mix-Max-Gacha.",
     "Freies Spiel: Lv. 50/99/200, Kugel für den besten Sieg.",
     "IE1-Galaxy: Original-Level/Techniken; Raimon wie Gegner.",
-    "Ketten: Sonny, Mary Times, Rikas Mutter, Lagerhaus.",
+    "Ketten: Sonny, Mary Times, Suzette; kein Gegner doppelt.",
     "Element-Teams: nur das ihnen unterlegene Element.",
     "Beute: Abschnitt «AURAS»; eure Auren laut Story.",
     "Siegel des Meisters: Techniken und Auren unbegrenzt.",
@@ -85,10 +87,10 @@ notes = [
 
 [release.it]
 notes = [
-    "Cronaca: Umbrella, Sally's e nuove partite GO-Galaxy.",
+    "Cronaca: Umbrella, Sally's, GO-Galaxy, gacha Mix-Max.",
     "Partita libera: Liv. 50/99/200, sfera della migliore.",
     "IE1-Galaxy: livelli/tecniche reali; Raimon al rivale.",
-    "Catene: Sonny, Mary Times, madre di Rika, magazzino.",
+    "Catene: Sonny, Mary Times, Suzette; rivali mai ripetuti.",
     "Elementali: solo l'elemento debole contro il loro.",
     "Premi: sezione «AURAS»; le tue aure secondo la storia.",
     "Sigillo del Maestro: tecniche e aure illimitate.",
@@ -96,10 +98,10 @@ notes = [
 
 [release.pt]
 notes = [
-    "Crónica: Umbrella, Sally's e novos jogos GO-Galaxy.",
+    "Crónica: Umbrella, Sally's, GO-Galaxy, gacha Mix-Max.",
     "Jogo livre: Nv. 50/99/200, orbe da melhor ganha.",
     "IE1-Galaxy: níveis/técnicas originais; Raimon ao rival.",
-    "Cadeias: Sonny, Oumihara, mãe da Rika, armazém.",
+    "Cadeias: Sonny, Oumihara, Suzette; sem rivais repetidos.",
     "Elementais: só o elemento fraco contra o seu.",
     "Prémios: secção «AURAS»; as tuas auras pela história.",
     "Selo do Mestre: técnicas e auras ilimitadas.",
@@ -107,10 +109,10 @@ notes = [
 
 [release.ja]
 notes = [
-    "クロニクル：傘美野・サリーズとGO追加試合。",
+    "クロニクル：傘美野・サリーズ・GO追加・ミキシガチャ。",
     "フリー対戦：Lv50・99・200、最高勝利の玉。",
     "IE1-ギャラクシー：原作のLvと技、雷門は相手Lv。",
-    "チェーン：大介・大海原・リカの母・秘密倉庫。",
+    "チェーン：大介・大海原・リカ。同じ相手は二度なし。",
     "属性チームは弱点属性の選手だけで挑む。",
     "ドロップ「AURAS」欄、オーラは物語で解放。",
     "マスターの証（デストラクターズ）：技とオーラ無制限。",
@@ -118,10 +120,10 @@ notes = [
 
 [release.zh_hans]
 notes = [
-    "编年史：伞美野、莎莉斯与GO系列新增比赛。",
+    "编年史：伞美野、莎莉斯、GO新增比赛与Mix-Max扭蛋。",
     "自由对战：Lv50、99、200，显示最高胜利。",
     "IE1至银河：原作等级与必杀技，雷门同对手等级。",
-    "对战路线：大介、大海原、理香妈妈、秘密仓库。",
+    "对战路线：大介、大海原、理香，对手不重复。",
     "属性队伍：只能用被克制属性的球员。",
     "掉落「AURAS」分区，我方灵气按剧情解锁。",
     "大师之印（毁灭者队）：必杀技和灵气无限装备。",
@@ -129,10 +131,10 @@ notes = [
 
 [release.zh_hant]
 notes = [
-    "編年史：傘美野、莎莉斯與GO系列新增比賽。",
+    "編年史：傘美野、莎莉斯、GO新增比賽與Mix-Max扭蛋。",
     "自由對戰：Lv50、99、200，顯示最高勝利。",
     "IE1至銀河：原作等級與必殺技，雷門同對手等級。",
-    "對戰路線：大介、大海原、理香媽媽、秘密倉庫。",
+    "對戰路線：大介、大海原、理香，對手不重複。",
     "屬性隊伍：只能用被克制屬性的球員。",
     "掉落「AURAS」分區，我方靈氣按劇情解鎖。",
     "大師之印（毀滅者隊）：必殺技和靈氣無限裝備。",

@@ -1,0 +1,28 @@
+# Declaration schema of the gacha service (content\gacha\*.toml, docs/framework/gacha.md): [[VRFW.GachaPool]] (a pool and
+# the Chronicle board node that opens it) and [[VRFW.GachaAdd]] (cards another mod adds to an extensible pool). An unknown
+# key, wrong type or out-of-range value drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.gacha/1"
+folder = "content/gacha"
+
+[entry.GachaPool]
+doc = "a gacha pool: one card is drawn at random (equal odds) among the cards the club can sign (VRFW_Recruit.CanSign: a card already in the club is left out) and signed like any recruitment"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+cards = { type = "strings", required = true, doc = "the cards: chara_param ids (0x…) or a mod's character <mod>.<name> (its card)" }
+node = { type = "name", doc = "the [[VRFW.RouteNode]] Name of the Chronicle board node that opens the pool (its piece runs the gacha instead of the command menu); none = opened only by VRFW_Gacha.Run" }
+question = { type = "string", required = true, doc = "the yes / no question shown before a draw: a text key (a [[row]] of the mod's text) or a text id (0x…)" }
+tint = { type = "string", default = "#FFFFFF", doc = "the colour of the pool's draw (#rrggbb): informative, the colour is the event's own (an effect [[recolor]] of the mod)" }
+event = { type = "string", default = "", doc = "the event played after a draw, before the obtained screen (an event name, e.g. a copy of the retail pack opening ev74_10010 with a recoloured effect); none = straight to the obtained screen" }
+cost_item = { type = "string", default = "", doc = "an item a draw takes (a name or 0x…): none = free" }
+cost_count = { type = "int", min = 0, max = 9999, default = 0, doc = "how many of cost_item a draw takes" }
+level = { type = "int", min = 1, max = 999, default = 1, doc = "the drawn player's level" }
+command = { type = "string", default = "vrfw_gacha_command", doc = "the node panel's one command row (replaces the battle rows): a text key or id" }
+banner = { type = "string", default = "", doc = "the node panel's banner picture instead of the team's: a VRFW image name of the mod (content/images); none = the retail banner" }
+extensible = { type = "bool", default = false, doc = "other mods may add cards with [[VRFW.GachaAdd]] (the mod also lists <name> in mod.toml [exports] keys)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.GachaAdd]
+doc = "cards added to another mod's extensible pool; a pool that is not declared (its mod off) or not extensible = nothing added (info line)"
+pool = { type = "string", required = true, doc = "the pool's key <mod>.<name>" }
+cards = { type = "strings", required = true, doc = "the cards: chara_param ids (0x…) or a mod's character <mod>.<name> (its card)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

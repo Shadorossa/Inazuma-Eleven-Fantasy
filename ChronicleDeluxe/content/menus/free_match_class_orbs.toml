@@ -1,0 +1,12 @@
+schema = "VRFW.menu/2"
+# Chronicle Deluxe: the class orb of the free-match class card (docs/game/mods/chronicle-deluxe-free-match.md §17). The
+# card's tick quad _list_icon_state_comp01 of vsroute01_21.g4pkm (48 x 48 at 138, 26) shows the class's orb instead of
+# the tick (assets\lua\soccer_vs_cpu_class_select_menu\280_free_match_class_orbs.lua); the orb sprites are 32 px with
+# a 15 px core, so the quad keeps 48 x 48 (core ~22 px, the size of the hidden mark box) and is centred on that box
+# (_list_state_base01: 24 x 24 at 147, 12, centre 159, 0). Values from the v7.1.2 layout.
+
+[[layout]]
+file = "common/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4pkm"
+joint = "_list_icon_state_comp01"
+translate = [135.0, 24.0, 0.0]
+scale = [48.0, 48.0, 1.0]

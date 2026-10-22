@@ -8,7 +8,7 @@ schema = "VRFW.character/2"
 target = "c03031610"                                   # Gigi Blasi
 moves = [
   { move = 0xA3980723, level = 1 },                         # Colosseum Guard
-  { move = 0x41AEB4DF, level = 1 },                         # Crystal Barrier
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
   { move = 0x00196EC2, level = 33 },                        # Earthquake
   { move = 0xDBA0E5E3, level = 42 },                        # Gigant Wall
 ]
@@ -29,7 +29,7 @@ moves = [
   { move = 0x3C843987, level = 1 },                         # Flurry Dash
   { move = 0x34E4CEAB, level = 20 },                        # Barbarian Shield
   { move = 0x3F00EDE9, level = 53 },                        # Dash Storm
-  { move = 0xB7F1AED6, level = 62 },                        # Double Cyclone
+  { move = 0x75994916, level = 62 },                        # Cunning Pull
 ]
 
   [[edit.cards]]
@@ -74,7 +74,7 @@ target = "c03031650"                                   # Marco Maserati
 moves = [
   { move = 0x31ABD82E, level = 1 },                         # Circus Block
   { move = 0x261BDCA8, level = 1 },                         # Moonsault
-  { move = 0x21127474, level = 35 },                        # Ultra Moon
+  { move = 0x08EEBD53, level = 35 },                        # Feint Play
   { move = 0x47380F29, level = 57 },                        # Echo Ball
 ]
 
@@ -148,22 +148,26 @@ moves = [
 
 [[edit]]
 target = "c03031700"                                   # Paolo Bianchi
-moves = [
-  { move = 0x8D5B6847, level = 1 },                         # Odin Sword
-  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
-  { move = 0x61FB16FD, level = 42 },                        # Divine Arrows
-  { move = 0x6F918884, level = 58 },                        # Easy Breezy
-]
-VRFW.MoveGrades = [
-  { Move = 0x8D5B6847, Grade = 1 },                         # Odin Sword
-]
 
   [[edit.cards]]
   id = 0x4482E47A                                         # FW/MF · forest
   rank = 3
   growth = "normal"
   stats = { kick = 275, control = 278, technique = 286, pressure = 126, physical = 212, intelligence = 211, agility = 178, freedom = 279 }
+  moves = [
+    { move = 0x8D5B6847, level = 1 },                       # Odin Sword
+    { move = 0x0CF4E55C, level = 1 },                       # Double Touch
+    { move = 0x61FB16FD, level = 42 },                      # Divine Arrows
+    { move = 0x72514A74, level = 58 },                      # Low Drive
+  ]
 
+
+[[edit]]
+target = "c03031700"
+card = 0x4482E47A
+VRFW.MoveGrades = [
+  { Move = 0x8D5B6847, Grade = 1 },                         # Odin Sword
+]
 [[edit]]
 target = "c03031710"                                   # Raffaele Generani
 moves = [
@@ -216,7 +220,7 @@ moves = [
   { move = 0x0CF4E55C, level = 1 },                         # Double Touch
   { move = 0xAC6D8A70, level = 1 },                         # Rainbow Arc
   { move = 0x31ABD82E, level = 45 },                        # Circus Block
-  { move = 0x4E9A9232, level = 65 },                        # Spinning Cut
+  { move = 0x06458894, level = 65 },                        # Feint Dash
 ]
 
   [[edit.cards]]

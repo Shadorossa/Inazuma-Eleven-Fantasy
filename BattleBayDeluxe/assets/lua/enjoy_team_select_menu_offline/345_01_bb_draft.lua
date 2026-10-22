@@ -249,7 +249,7 @@ BBCR_DRAFT_PK = {
   -- CMND_SET_PRIM_COLOR never tints the cmn01_10 quad's mesh (as the Torneo's connectors, bb-tournament.md §6.1b), so
   -- the one white sprite tinted per part stayed white. Each part is now a pre-coloured flat sprite of the mod's own
   -- atlas (research/scripts/bbd_pack_art.py, content/images/menu/220_img/bbd_pk.toml), faded with
-  -- CMND_SET_LAYER_MODEL_ALPHA (the retail locked-dock fade, the friends panel's quads).
+  -- CMND_SET_LAYER_MODEL_ALPHA (the retail locked-dock fade).
   ART = 1048010258 --[[#/menu/220_img/bbd_pk/bbd_pk.g4tx]],
   MESH_QUAD = 312193881 --[[_icon_new01]],
   NODE_QUAD = 1909474081 --[[icon_new01]],
@@ -815,8 +815,9 @@ function BBCR_DRAFT_GridBack()
 end
 
 -- tile / panel: the tile the focus goes back to and the panel's redraw (default: the Draft tile, BBCR_DRAFT_PanelBack;
--- the «Plantilla» viewer, bbd_roster.lua, passes the team it showed)
-function BBCR_DRAFT_Refresh(tile, panel)
+-- the «Plantilla» viewer, bbd_roster.lua, passes the team it showed); keep = the grid was only hidden: a slot that still
+-- shows the same team keeps its crest (not released and asked again)
+function BBCR_DRAFT_Refresh(tile, panel, keep)
   local B = BBCR_DRAFT
   tile = tile or B.tile
   local page = funcLuaCommand(B.PAGE_REFRESH)
@@ -834,7 +835,9 @@ function BBCR_DRAFT_Refresh(tile, panel)
     end
     for _, a in ipairs(args) do
       funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, a[1], a[2][1] ~= 0)
-      funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, a[1], B.EMBLEM_TEX)
+      if not keep then
+        funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, a[1], B.EMBLEM_TEX)
+      end
       pcall(SetupEmblemIcon, a[1], a[2][1], a[2][2], a[2][3])
       funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, a[2][1] ~= 0, a[1])
     end

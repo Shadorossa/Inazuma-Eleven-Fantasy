@@ -35,9 +35,9 @@ target = "c04002100_5000"                              # Njord Snio
 [[edit]]
 target = "c04002010"                                   # Wolfe Whyte
 moves = [
-  { move = 0x41AEB4DF, level = 1 },                         # Crystal Barrier
-  { move = 0xC4701649, level = 20 },                        # Ice Block
-  { move = 0xF14FDC17, level = 35 },                        # Shot Pocket
+  { move = 0x41AEB4DF, level = 3 },                         # Crystal Barrier
+  { move = 0xCB8E6D04, level = 15 },                        # Mighty Save
+  { move = 0xF9B80F86, level = 36 },                        # Strong Punch
   { move = 0xCD6AEF2D, level = 58 },                        # All-Star
 ]
 
@@ -51,9 +51,9 @@ moves = [
 target = "c04002020"                                   # Sascha Kotch
 moves = [
   { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x1C4D4906, level = 26 },                        # Whirlpool
-  { move = 0x5643C944, level = 35 },                        # Killer Slide
-  { move = 0x72BFA108, level = 56 },                        # Wall of Atlantis
+  { move = 0x5643C944, level = 19 },                        # Killer Slide
+  { move = 0x3AD8DFD1, level = 37 },                        # Curving Cut
+  { move = 0x72BFA108, level = 53 },                        # Wall of Atlantis
 ]
 
   [[edit.cards]]
@@ -66,10 +66,10 @@ moves = [
 [[edit]]
 target = "c04002030"                                   # Guy l'Acier
 moves = [
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x016DEA27, level = 20 },                        # Accelerator Gears
-  { move = 0x2354CA2D, level = 35 },                        # Wind God's Dance
-  { move = 0x19C3F43D, level = 48 },                        # Eternal Blizzard
+  { move = 0x039DBAAC, level = 5 },                         # Land of Ice
+  { move = 0x6C827857, level = 16 },                        # Rolling Steal
+  { move = 0x016DEA27, level = 35 },                        # Accelerator Gears
+  { move = 0xD9BB22A7, level = 51 },                        # Air Ride
 ]
 
   [[edit.cards]]
@@ -82,9 +82,9 @@ moves = [
 target = "c04002040"                                   # Matther Horne
 moves = [
   { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x6A66FA7E, level = 30 },                        # Killer Whale
-  { move = 0x5739C70C, level = 35 },                        # Guided Collide
-  { move = 0xC324C788, level = 44 },                        # Blast Mine
+  { move = 0x6C827857, level = 19 },                        # Rolling Steal
+  { move = 0x5739C70C, level = 32 },                        # Guided Collide
+  { move = 0xB9676390, level = 47 },                        # Particle Accelerator
 ]
 
   [[edit.cards]]
@@ -98,9 +98,9 @@ moves = [
 target = "c04002050"                                   # Iggie Loo
 moves = [
   { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x650FA58E, level = 25 },                        # Spin Out
-  { move = 0x6ADE9E01, level = 47 },                        # Illusory Ball
-  { move = 0x7DAF3139, level = 62 },                        # Emperor Penguin No. 2
+  { move = 0x650FA58E, level = 24 },                        # Spin Out
+  { move = 0xD9BB22A7, level = 43 },                        # Air Ride
+  { move = 0x19C3F43D, level = 67 },                        # Eternal Blizzard
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -119,9 +119,9 @@ moves = [
 target = "c04002060"                                   # Bob Sled
 moves = [
   { move = 0x768AB9C5, level = 1 },                         # Frosticle
-  { move = 0x5E5AF1A9, level = 15 },                        # Northern Impact
-  { move = 0x039DBAAC, level = 43 },                        # Land of Ice
-  { move = 0x3C843987, level = 62 },                        # Flurry Dash
+  { move = 0x1F5EB9D5, level = 12 },                        # Nutmeg
+  { move = 0x039DBAAC, level = 39 },                        # Land of Ice
+  { move = 0x5E5AF1A9, level = 63 },                        # Northern Impact
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -139,9 +139,9 @@ moves = [
 target = "c04002070"                                   # Blain Chills
 moves = [
   { move = 0x768AB9C5, level = 1 },                         # Frosticle
-  { move = 0x15138722, level = 15 },                        # Will-o'-the-Wisp Shot
-  { move = 0x0DCADC54, level = 31 },                        # Emperor Penguin 7
-  { move = 0x585098FC, level = 45 },                        # Slice and Dice
+  { move = 0x501F2F12, level = 13 },                        # Heel Flick
+  { move = 0x15138722, level = 33 },                        # Will-o'-the-Wisp Shot
+  { move = 0x1F5EB9D5, level = 43 },                        # Nutmeg
 ]
 
   [[edit.cards]]
@@ -154,9 +154,9 @@ moves = [
 target = "c04002080"                                   # Art Tundra
 moves = [
   { move = 0x768AB9C5, level = 1 },                         # Frosticle
-  { move = 0x19C3F43D, level = 33 },                        # Eternal Blizzard
-  { move = 0x20D01E43, level = 36 },                        # Hey Presto
-  { move = 0xDE4ED944, level = 48 },                        # Snowstorm Leopard
+  { move = 0x19C3F43D, level = 24 },                        # Eternal Blizzard
+  { move = 0x6F918884, level = 37 },                        # Easy Breezy
+  { move = 0x7E2BE557, level = 47 },                        # Legendary Wolf
 ]
 
   [[edit.cards]]
@@ -168,9 +168,9 @@ moves = [
 [[edit]]
 target = "c04002090"                                   # Borel Aurora
 moves = [
-  { move = 0x768AB9C5, level = 1 },                         # Frosticle
-  { move = 0xB0BC314A, level = 20 },                        # Spin Meister
-  { move = 0xA2FB4736, level = 35 },                        # Flying Fish
+  { move = 0x768AB9C5, level = 3 },                         # Frosticle
+  { move = 0x49041E53, level = 20 },                        # Crosscut Feint
+  { move = 0xB0BC314A, level = 36 },                        # Spin Meister
   { move = 0x6A66FA7E, level = 40 },                        # Killer Whale
 ]
 
@@ -184,9 +184,9 @@ moves = [
 target = "c04002100"                                   # Njord Snio
 moves = [
   { move = 0xDE4ED944, level = 1 },                         # Snowstorm Leopard
-  { move = 0x768AB9C5, level = 33 },                        # Frosticle
-  { move = 0xCB79C825, level = 40 },                        # In-Line Stampede
-  { move = 0x3297683F, level = 50 },                        # Warp Step
+  { move = 0x768AB9C5, level = 15 },                        # Frosticle
+  { move = 0x240BEDF2, level = 48 },                        # Bounce Shot
+  { move = 0x9B63BB1B, level = 61 },                        # Black Dawn
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -204,9 +204,9 @@ moves = [
 target = "c04002110"                                   # Yule Hoarfrost
 moves = [
   { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
-  { move = 0x039DBAAC, level = 33 },                        # Land of Ice
-  { move = 0x7E2BE557, level = 40 },                        # Legendary Wolf
-  { move = 0x3297683F, level = 60 },                        # Warp Step
+  { move = 0x039DBAAC, level = 22 },                        # Land of Ice
+  { move = 0x6B4A7B35, level = 43 },                        # Power Shot
+  { move = 0x7E2BE557, level = 62 },                        # Legendary Wolf
 ]
 
   [[edit.cards]]
@@ -219,10 +219,10 @@ moves = [
 [[edit]]
 target = "c04002120"                                   # Suno Aisu
 moves = [
-  { move = 0x5DA7EA06, level = 15 },                        # Boomerang Bluff
-  { move = 0x62DEE8B1, level = 35 },                        # Jumping Whack
-  { move = 0x50E88A33, level = 40 },                        # Fist Beam
-  { move = 0x41AEB4DF, level = 48 },                        # Crystal Barrier
+  { move = 0x62DEE8B1, level = 12 },                        # Jumping Whack
+  { move = 0xD2955C45, level = 21 },                        # Power Catch
+  { move = 0xCB8E6D04, level = 41 },                        # Mighty Save
+  { move = 0x0536F9DB, level = 48 },                        # Sand Blaster
 ]
 
   [[edit.cards]]
@@ -234,10 +234,10 @@ moves = [
 [[edit]]
 target = "c04002130"                                   # Himesh Himalaya
 moves = [
-  { move = 0x768AB9C5, level = 10 },                        # Frosticle
-  { move = 0x24E5068E, level = 15 },                        # Fractal Repeller
-  { move = 0x530CDFC1, level = 31 },                        # Mystifying Mist
-  { move = 0xA9E3374B, level = 40 },                        # Cyclone Sprint
+  { move = 0x768AB9C5, level = 2 },                         # Frosticle
+  { move = 0x08EEBD53, level = 14 },                        # Feint Play
+  { move = 0x24E5068E, level = 32 },                        # Fractal Repeller
+  { move = 0xA9E3374B, level = 39 },                        # Cyclone Sprint
 ]
 
   [[edit.cards]]
@@ -250,10 +250,10 @@ moves = [
 [[edit]]
 target = "c04002140"                                   # Blake Wintry
 moves = [
-  { move = 0x768AB9C5, level = 10 },                        # Frosticle
-  { move = 0x14D1ED15, level = 26 },                        # Jumping Jack
-  { move = 0xCF7FA2C4, level = 35 },                        # Gold Rush
-  { move = 0x62BE692D, level = 44 },                        # Whirlwind Force
+  { move = 0x768AB9C5, level = 1 },                         # Frosticle
+  { move = 0xCF7FA2C4, level = 16 },                        # Gold Rush
+  { move = 0x2D68DB57, level = 38 },                        # Deceptive Step
+  { move = 0xEF3DC416, level = 41 },                        # Skytree Hop
 ]
 
   [[edit.cards]]
@@ -266,10 +266,10 @@ moves = [
 [[edit]]
 target = "c04002150"                                   # Fritz Brisk
 moves = [
-  { move = 0x530CDFC1, level = 19 },                        # Mystifying Mist
-  { move = 0xF626F557, level = 30 },                        # Electric Impedance
-  { move = 0x4E9A9232, level = 40 },                        # Spinning Cut
-  { move = 0x768AB9C5, level = 48 },                        # Frosticle
+  { move = 0x4E9A9232, level = 23 },                        # Spinning Cut
+  { move = 0x2D68DB57, level = 26 },                        # Deceptive Step
+  { move = 0x49041E53, level = 43 },                        # Crosscut Feint
+  { move = 0x768AB9C5, level = 46 },                        # Frosticle
 ]
 
   [[edit.cards]]
@@ -281,9 +281,9 @@ moves = [
 [[edit]]
 target = "c04002160"                                   # Grisley Bear
 moves = [
-  { move = 0x0BFD4D80, level = 12 },                        # Grand Slam
-  { move = 0xF6E75EE9, level = 19 },                        # Headbanger
-  { move = 0x05567847, level = 27 },                        # Runaway Train
+  { move = 0xE196F1D1, level = 1 },                         # Burning Bomb
+  { move = 0xF6E75EE9, level = 18 },                        # Headbanger
+  { move = 0x72514A74, level = 25 },                        # Low Drive
   { move = 0x44BCDB47, level = 56 },                        # Pyroclastic
 ]
 

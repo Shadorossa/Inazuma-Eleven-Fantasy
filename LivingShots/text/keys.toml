@@ -11,7 +11,7 @@ mod_description = "Special shots keep their cut-in look while the ball flies: Do
 skip_goal_scene = "Skip special goal scene"
 skip_goal_scene_help = "On: goals scored with this mod's moves show the normal goal scene."
 all_long_shots = "All shots are long shots"
-all_long_shots_help = "On: every shot technique is a long shot (applies at the next start)."
+all_long_shots_help = "On: every shot technique is a long shot, with no long-shot cooldown (applies at the next start)."
 
 [es.new]
 mod_name = "Living Shots"
@@ -19,7 +19,7 @@ mod_description = "Las supertécnicas de tiro conservan su aspecto de la cinemá
 skip_goal_scene = "Saltar la cinemática de gol especial"
 skip_goal_scene_help = "Activado: los goles con técnicas de este mod muestran el gol normal."
 all_long_shots = "Todos los tiros son lejanos"
-all_long_shots_help = "Activado: toda técnica de tiro es un tiro lejano (al reiniciar el juego)."
+all_long_shots_help = "Activado: toda técnica de tiro es un tiro lejano, sin espera entre tiros lejanos (al reiniciar el juego)."
 
 [fr.new]
 mod_name = "Living Shots"
@@ -27,7 +27,7 @@ mod_description = "Les tirs spéciaux gardent l'aspect de leur cinématique pend
 skip_goal_scene = "Passer la scène de but spéciale"
 skip_goal_scene_help = "Activé : les buts marqués avec ce mod montrent le but normal."
 all_long_shots = "Tous les tirs sont des tirs lointains"
-all_long_shots_help = "Activé : chaque technique de tir est un tir lointain (au redémarrage)."
+all_long_shots_help = "Activé : chaque technique de tir est un tir lointain, sans temps de recharge (au redémarrage)."
 
 [de.new]
 mod_name = "Living Shots"
@@ -35,7 +35,7 @@ mod_description = "Spezialschüsse behalten ihr Aussehen aus der Zwischensequenz
 skip_goal_scene = "Spezial-Torszene überspringen"
 skip_goal_scene_help = "An: Tore mit Techniken dieses Mods zeigen die normale Torszene."
 all_long_shots = "Alle Schüsse sind Fernschüsse"
-all_long_shots_help = "An: Jede Schusstechnik ist ein Fernschuss (ab dem nächsten Start)."
+all_long_shots_help = "An: Jede Schusstechnik ist ein Fernschuss, ohne Abklingzeit (ab dem nächsten Start)."
 
 [it.new]
 mod_name = "Living Shots"
@@ -43,7 +43,7 @@ mod_description = "I tiri speciali mantengono l'aspetto della loro scena mentre 
 skip_goal_scene = "Salta la scena del gol speciale"
 skip_goal_scene_help = "Attivato: i gol con le tecniche di questa mod mostrano il gol normale."
 all_long_shots = "Tutti i tiri sono tiri dalla distanza"
-all_long_shots_help = "Attivato: ogni tecnica di tiro è un tiro dalla distanza (al riavvio)."
+all_long_shots_help = "Attivato: ogni tecnica di tiro è un tiro dalla distanza, senza tempo di ricarica (al riavvio)."
 
 [pt.new]
 mod_name = "Living Shots"
@@ -51,7 +51,7 @@ mod_description = "Os chutes especiais mantêm o visual da sua cena enquanto a b
 skip_goal_scene = "Saltar a cena de golo especial"
 skip_goal_scene_help = "Ativado: os golos com técnicas deste mod mostram o golo normal."
 all_long_shots = "Todos os chutes são de longe"
-all_long_shots_help = "Ativado: toda técnica de chute é um chute de longe (ao reiniciar o jogo)."
+all_long_shots_help = "Ativado: toda técnica de chute é um chute de longe, sem tempo de recarga (ao reiniciar o jogo)."
 
 [ja.new]
 mod_name = "Living Shots"
@@ -59,7 +59,7 @@ mod_description = "必殺シュートが、ボールが飛んでいる間もカ�
 skip_goal_scene = "特殊ゴール演出をスキップ"
 skip_goal_scene_help = "オン：このMODの必殺技でのゴールは通常のゴール演出になります。"
 all_long_shots = "全シュートをロングシュートに"
-all_long_shots_help = "オン：すべてのシュート技がロングシュートになります（次回起動時）。"
+all_long_shots_help = "オン：すべてのシュート技がロングシュートになり、リキャストもなくなります（次回起動時）。"
 
 [zh_hans.new]
 mod_name = "Living Shots"
@@ -67,7 +67,7 @@ mod_description = "必杀射门在球飞行时也保持过场演出中的外观�
 skip_goal_scene = "跳过特殊进球演出"
 skip_goal_scene_help = "开：用本模组必杀技的进球显示普通进球演出。"
 all_long_shots = "所有射门都是远射"
-all_long_shots_help = "开：所有射门必杀技都成为远射（下次启动时生效）。"
+all_long_shots_help = "开：所有射门必杀技都成为远射，且远射没有冷却（下次启动时生效）。"
 
 [zh_hant.new]
 mod_name = "Living Shots"
@@ -75,4 +75,4 @@ mod_description = "必殺射門在球飛行時也保持過場演出中的外觀�
 skip_goal_scene = "跳過特殊進球演出"
 skip_goal_scene_help = "開：用本模組必殺技的進球顯示普通進球演出。"
 all_long_shots = "所有射門都是遠射"
-all_long_shots_help = "開：所有射門必殺技都成為遠射（下次啟動時生效）。"
+all_long_shots_help = "開：所有射門必殺技都成為遠射，且遠射沒有冷卻（下次啟動時生效）。"

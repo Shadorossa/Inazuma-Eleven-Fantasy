@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c05024650"                                   # Nathan Swift
 moves = [
-  { move = 0x3C843987, level = 7 },                         # Flurry Dash
-  { move = 0x19025F83, level = 18 },                        # Quick Draw
-  { move = 0x17A96A44, level = 36 },                        # Clone Faker
-  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x2354CA2D, level = 15 },                        # Wind God's Dance
+  { move = 0xF1EEF635, level = 45 },                        # The Hurricane
+  { move = 0xC21AFE80, level = 55 },                        # Whirlwind Drop
 ]
 VRFW.MoveGrades = [
   { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
@@ -25,10 +25,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c05024630"                                   # Jack Wallside
 moves = [
-  { move = 0x7D6E9A87, level = 11 },                        # The Wall
-  { move = 0x166B0073, level = 16 },                        # Super Armadillo
-  { move = 0x4031A7F5, level = 32 },                        # Mole Fake
-  { move = 0x67F17FA8, level = 55 },                        # Mega Quake
+  { move = 0x7D6E9A87, level = 1 },                         # The Wall
+  { move = 0x4031A7F5, level = 12 },                        # Mole Fake
+  { move = 0x1B44E1DA, level = 23 },                        # Stone Wall
+  { move = 0xA8215D7C, level = 35 },                        # The Mountain
 ]
 VRFW.MoveGrades = [
   { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
@@ -44,9 +44,9 @@ VRFW.MoveGrades = [
 target = "c05024710"                                   # Axel Blaze
 moves = [
   { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
-  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
-  { move = 0x19025F83, level = 26 },                        # Quick Draw
+  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x0B011EBF, level = 11 },                        # Fireball Screw
+  { move = 0xEAB3792D, level = 21 },                        # Grand Fire
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -66,12 +66,13 @@ VRFW.MoveGrades = [
 target = "c05024680"                                   # Kevin Dragonfly
 moves = [
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
-  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
-  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+  { move = 0x5F989B9E, level = 18 },                        # Wyvern Crash
+  { move = 0x10D90D59, level = 32 },                        # Wyvern Blizzard
+  { move = 0xE937AD43, level = 42 },                        # Dragon Slayer
 ]
 VRFW.MoveGrades = [
   { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+  { Move = 0x5F989B9E, Grade = 1 },                         # Wyvern Crash
 ]
 
   [[edit.cards]]
@@ -99,8 +100,8 @@ target = "c05024700"                                   # Shawn Froste
 moves = [
   { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
   { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
   { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+  { move = 0x1FC99D68, level = 11 },                        # Snow Angel
 ]
 
   [[edit.cards]]
@@ -111,10 +112,10 @@ moves = [
 [[edit]]
 target = "c05024660"                                   # Caleb Stonewall
 moves = [
-  { move = 0xBF6D0AC5, level = 1 },                         # Emperor Penguin No. 3
-  { move = 0x3BF45E9A, level = 1 },                         # Triple Boost
-  { move = 0x71831119, level = 1 },                         # Foul Offence 2
   { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x71831119, level = 1 },                         # Foul Offence 2
+  { move = 0xBF6D0AC5, level = 50 },                        # Emperor Penguin No. 3
+  { move = 0xC16279D1, level = 60 },                        # Field of Force
 ]
 VRFW.MoveGrades = [
   { Move = 0x5643C944, Grade = 1 },                         # Killer Slide
@@ -129,10 +130,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c05024640"                                   # Hurley Kane
 moves = [
-  { move = 0xA4B51923, level = 1 },                         # The Typhoon
+  { move = 0x6C827857, level = 1 },                         # Rolling Steal
   { move = 0x2BF596BF, level = 1 },                         # Tsunami Boost
-  { move = 0x4E9A9232, level = 35 },                        # Spinning Cut
-  { move = 0xB2BEB853, level = 50 },                        # Whale Guard
+  { move = 0xB2BEB853, level = 28 },                        # Whale Guard
+  { move = 0xA4B51923, level = 38 },                        # The Typhoon
 ]
 VRFW.MoveGrades = [
   { Move = 0x2BF596BF, Grade = 1 },                         # Tsunami Boost

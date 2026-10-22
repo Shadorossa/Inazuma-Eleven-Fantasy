@@ -1,0 +1,56 @@
+# The pose row screen (vrfw_pose_row_menu, docs/framework/pose-row.md): the short position badge under each model,
+# by main_position (1 GK, 2 FW, 3 MF, 4 DF). Rows of menu_text, read by id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# badge: goalkeeper
+[[row]]
+id = "vrfw_pr_pos_1"
+es = "PR"
+en = "GK"
+fr = "GB"
+de = "TW"
+it = "PO"
+pt = "GR"
+ja = "GK"
+zh_hans = "GK"
+zh_hant = "GK"
+
+# badge: forward
+[[row]]
+id = "vrfw_pr_pos_2"
+es = "DL"
+en = "FW"
+fr = "AT"
+de = "ST"
+it = "AT"
+pt = "AV"
+ja = "FW"
+zh_hans = "FW"
+zh_hant = "FW"
+
+# badge: midfielder
+[[row]]
+id = "vrfw_pr_pos_3"
+es = "MC"
+en = "MF"
+fr = "MC"
+de = "MF"
+it = "CC"
+pt = "MC"
+ja = "MF"
+zh_hans = "MF"
+zh_hant = "MF"
+
+# badge: defender
+[[row]]
+id = "vrfw_pr_pos_4"
+es = "DF"
+en = "DF"
+fr = "DF"
+de = "AB"
+it = "DF"
+pt = "DF"
+ja = "DF"
+zh_hans = "DF"
+zh_hant = "DF"

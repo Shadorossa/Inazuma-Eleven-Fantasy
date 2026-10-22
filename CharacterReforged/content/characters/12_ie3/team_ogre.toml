@@ -10,7 +10,7 @@ moves = [
   { move = 0x5977EFA9, level = 1 },                         # High Voltage
   { move = 0xBB415C55, level = 1 },                         # Needle Hammer
   { move = 0x906C0F96, level = 1 },                         # Electric Trap
-  { move = 0xB01D1B68, level = 46 },                        # Power Spike
+  { move = 0xD2955C45, level = 46 },                        # Power Catch
 ]
 VRFW.MoveGrades = [
   { Move = 0x5977EFA9, Grade = 2 },                         # High Voltage
@@ -29,7 +29,7 @@ target = "c03033620"                                   # Lump Trungus
 moves = [
   { move = 0x06D2AC29, level = 1 },                         # Diabolical Cut
   { move = 0x7BA5586C, level = 1 },                         # Mad Express
-  { move = 0x0BFD4D80, level = 1 },                         # Grand Slam
+  { move = 0x08EEBD53, level = 1 },                         # Feint Play
   { move = 0x025FD09B, level = 52 },                        # Volcano Cut
 ]
 VRFW.MoveGrades = [
@@ -87,7 +87,7 @@ moves = [
   { move = 0xAEEA9F97, level = 1 },                         # Sigma Zone
   { move = 0x1162A8AF, level = 1 },                         # Bewilder Blast
   { move = 0x4BD584B7, level = 34 },                        # Power Charge
-  { move = 0x05567847, level = 53 },                        # Runaway Train
+  { move = 0x62294D90, level = 53 },                        # Dust Kick
 ]
 VRFW.MoveGrades = [
   { Move = 0x4BD584B7, Grade = 1 },                         # Power Charge
@@ -121,7 +121,7 @@ VRFW.MoveGrades = [
 target = "c03033670"                                   # Radd Ischer
 moves = [
   { move = 0x4BD584B7, level = 1 },                         # Power Charge
-  { move = 0x05567847, level = 1 },                         # Runaway Train
+  { move = 0x23C3EE90, level = 1 },                         # Shoulder Tackle
   { move = 0x025FD09B, level = 56 },                        # Volcano Cut
   { move = 0x906C0F96, level = 62 },                        # Electric Trap
 ]
@@ -138,17 +138,17 @@ VRFW.MoveGrades = [
 
 [[edit]]
 target = "c03033690"                                   # Bash Lancer
-moves = [
-  { move = 0xDC08671D, level = 1 },                         # Doom Break
-  { move = 0xC513565C, level = 1 },                         # Doom Spear
-  { move = 0xF4A1E0B0, level = 57 },                        # Entropic Arrows
-  { move = 0xC16279D1, level = 63 },                        # Field of Force
-]
 
   [[edit.cards]]
   id = 0x3E8BFD8F                                         # FW/MF · forest
   growth = "normal"
   stats = { kick = 370, control = 239, technique = 257, pressure = 198, physical = 180, intelligence = 211, agility = 171, freedom = 217 }
+  moves = [
+    { move = 0xDC08671D, level = 1 },                       # Doom Break
+    { move = 0xC513565C, level = 1 },                       # Doom Spear
+    { move = 0x72514A74, level = 57 },                      # Low Drive
+    { move = 0xC16279D1, level = 63 },                      # Field of Force
+  ]
 
 [[edit]]
 target = "c03033700"                                   # Ichabod Stark
@@ -175,7 +175,7 @@ moves = [
   { move = 0x025FD09B, level = 1 },                         # Volcano Cut
   { move = 0x4BD584B7, level = 1 },                         # Power Charge
   { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
-  { move = 0x0E0A3F7A, level = 66 },                        # Spatial Portal
+  { move = 0x75994916, level = 66 },                        # Cunning Pull
 ]
 VRFW.MoveGrades = [
   { Move = 0x4BD584B7, Grade = 1 },                         # Power Charge

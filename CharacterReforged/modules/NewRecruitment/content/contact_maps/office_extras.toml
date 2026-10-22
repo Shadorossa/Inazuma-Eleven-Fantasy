@@ -1,0 +1,12 @@
+schema = "VRFW.contact_map/1"
+# New Recruitment › the recruitment office: players sold on a team page they do not play for (`Extra = true`,
+# docs/framework/contact-map.md §21.1): the card joins that page's bench, and that page is his only page. Hand-written
+# (office_terms.toml is generated); price and level come from the set's tiers and the page (office.toml) unless given.
+
+[[VRFW.ContactTerms]]
+Set = "office"
+Terms = [
+  # Xavier Schiller (Ares; on the game's teams only Academia Alia's coach slot) on the Academia Alia page
+  # (game fbtl_cro07_110_010)
+  { Card = 0xB3F47A7E, Page = [0x75251AFD], Extra = true },
+]

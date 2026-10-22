@@ -8,55 +8,319 @@ schema = "VRFW.character/2"
 target = "c01000010"                                   # Mark Evans
 growth = "normal"
 stats = { kick = 247, control = 216, technique = 163, pressure = 201, physical = 258, intelligence = 228, agility = 269, freedom = 209 }
-moves = [
-  { move = 0x8C382852, level = 1 },                         # God Hand
-  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
-  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
-  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
-]
 
   [[edit.cards]]
   id = 0x8EEDF4C6                                         # Ídolo (FFI): his moment kit is IE3 Inazuma Japan
   if_not_mod = "inazuma_fantasy_2"                        # Inazuma Fantasy adopts this card into its own Idol character
   moment_kit = 0xC68FF352
 
+  [[edit.cards]]
+  id = 0x18FEC374    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x23DC2602    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x2FB34868    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x3055CF22    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x3D9ED3F0    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x6EB0397C    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x8193A099    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+  [[edit.cards]]
+  id = 0x9DEF6864    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0xF64674CB, level = 1 },                       # Fist of Justice
+    { move = 0xEE9F2FBD, level = 11 },                      # God Catch
+    { move = 0x8AF3EAB9, level = 21 },                      # Hammer of Fury
+    { move = 0x93E8DBF8, level = 31 },                      # Dimensional Hand
+  ]
+
+
+[[edit]]
+target = "c01000010"
+card = 0x18FEC374
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x23DC2602
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x2FB34868
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x3055CF22
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x3D9ED3F0
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x6EB0397C
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x8193A099
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
+
+[[edit]]
+target = "c01000010"
+card = 0x9DEF6864
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
+]
 [[edit]]
 target = "c01000020"                                   # Nathan Swift
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 247, control = 220, technique = 239, pressure = 215, physical = 240, intelligence = 301, agility = 193, freedom = 389 }
-moves = [
-  { move = 0x3C843987, level = 7 },                         # Flurry Dash
-  { move = 0x19025F83, level = 18 },                        # Quick Draw
-  { move = 0x17A96A44, level = 36 },                        # Clone Faker
-  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
-]
+
+  [[edit.cards]]
+  id = 0x049E1BAB    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x3C843987, level = 1 },                       # Flurry Dash
+    { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+    { move = 0xC21AFE80, level = 55 },                      # Whirlwind Drop
+  ]
+
+  [[edit.cards]]
+  id = 0x08F175C1    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x3C843987, level = 1 },                       # Flurry Dash
+    { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+    { move = 0xC21AFE80, level = 55 },                      # Whirlwind Drop
+  ]
+
+  [[edit.cards]]
+  id = 0x16B38033    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x3C843987, level = 1 },                       # Flurry Dash
+    { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+    { move = 0xC21AFE80, level = 55 },                      # Whirlwind Drop
+  ]
+
+  [[edit.cards]]
+  id = 0x1B789CE1    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x3C843987, level = 1 },                       # Flurry Dash
+    { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+    { move = 0xC21AFE80, level = 55 },                      # Whirlwind Drop
+  ]
+
+  [[edit.cards]]
+  id = 0xB6C23BA7    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x3C843987, level = 1 },                       # Flurry Dash
+    { move = 0x2354CA2D, level = 15 },                      # Wind God's Dance
+    { move = 0xF1EEF635, level = 45 },                      # The Hurricane
+    { move = 0xC21AFE80, level = 55 },                      # Whirlwind Drop
+  ]
+
+
+[[edit]]
+target = "c01000020"
+card = 0x049E1BAB
 VRFW.MoveGrades = [
   { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
 ]
 
 [[edit]]
+target = "c01000020"
+card = 0x08F175C1
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
+
+[[edit]]
+target = "c01000020"
+card = 0x16B38033
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
+
+[[edit]]
+target = "c01000020"
+card = 0x1B789CE1
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
+
+[[edit]]
+target = "c01000020"
+card = 0xB6C23BA7
+VRFW.MoveGrades = [
+  { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
+]
+[[edit]]
 target = "c01000030"                                   # Jack Wallside
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 78, control = 211, technique = 221, pressure = 265, physical = 248, intelligence = 320, agility = 201, freedom = 297 }
-moves = [
-  { move = 0x7D6E9A87, level = 11 },                        # The Wall
-  { move = 0x166B0073, level = 16 },                        # Super Armadillo
-  { move = 0x4031A7F5, level = 32 },                        # Mole Fake
-  { move = 0x67F17FA8, level = 55 },                        # Mega Quake
-]
+
+  [[edit.cards]]
+  id = 0x0263ADA0    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                       # The Wall
+    { move = 0x4031A7F5, level = 12 },                      # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  ]
+
+  [[edit.cards]]
+  id = 0x1D852AEA    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                       # The Wall
+    { move = 0x4031A7F5, level = 12 },                      # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  ]
+
+  [[edit.cards]]
+  id = 0x5C865BFE    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                       # The Wall
+    { move = 0x4031A7F5, level = 12 },                      # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  ]
+
+  [[edit.cards]]
+  id = 0x70D1E498    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                       # The Wall
+    { move = 0x4031A7F5, level = 12 },                      # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  ]
+
+  [[edit.cards]]
+  id = 0xB3A5C21B    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x7D6E9A87, level = 1 },                       # The Wall
+    { move = 0x4031A7F5, level = 12 },                      # Mole Fake
+    { move = 0x1B44E1DA, level = 23 },                      # Stone Wall
+    { move = 0xA8215D7C, level = 35 },                      # The Mountain
+  ]
+
+
+[[edit]]
+target = "c01000030"
+card = 0x0263ADA0
 VRFW.MoveGrades = [
   { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
 ]
 
 [[edit]]
+target = "c01000030"
+card = 0x1D852AEA
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
+
+[[edit]]
+target = "c01000030"
+card = 0x5C865BFE
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
+
+[[edit]]
+target = "c01000030"
+card = 0x70D1E498
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
+
+[[edit]]
+target = "c01000030"
+card = 0xB3A5C21B
+VRFW.MoveGrades = [
+  { Move = 0x7D6E9A87, Grade = 1 },                         # The Wall
+]
+[[edit]]
 target = "c01000040"                                   # Jim Wraith
 moves = [
-  { move = 0x4F58F805, level = 8 },                         # Coil Turn
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
   { move = 0x55C71D2A, level = 22 },                        # About Face
-  { move = 0x592A96B4, level = 32 },                        # Afterimage
-  { move = 0xB5B7108F, level = 44 },                        # Shadow Stitch
+  { move = 0xB5B7108F, level = 34 },                        # Shadow Stitch
+  { move = 0x38094535, level = 60 },                        # Sub-Terfuge
 ]
 
   [[edit.cards]]
@@ -69,10 +333,10 @@ moves = [
 [[edit]]
 target = "c01000050"                                   # Tod Ironside
 moves = [
-  { move = 0xDF70E04C, level = 7 },                         # Rodeo Clown
-  { move = 0x1F0836D6, level = 10 },                        # Comet Shot
-  { move = 0xDEB28A7B, level = 25 },                        # Monkey Turn
-  { move = 0x0455B9CE, level = 35 },                        # Run Ball Run
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0x1F0836D6, level = 7 },                         # Comet Shot
+  { move = 0x6C827857, level = 20 },                        # Rolling Steal
+  { move = 0x31ABD82E, level = 42 },                        # Circus Block
 ]
 VRFW.MoveGrades = [
   { Move = 0x1F0836D6, Grade = 1 },                         # Comet Shot
@@ -88,10 +352,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c01000060"                                   # Steve Grim
 moves = [
-  { move = 0x06130797, level = 10 },                        # Rolling Kick
-  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
-  { move = 0x2B343D01, level = 39 },                        # Cyclone
-  { move = 0x79224D8B, level = 50 },                        # Freeze Shot
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x06130797, level = 12 },                        # Rolling Kick
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+  { move = 0x8D5B6847, level = 66 },                        # Odin Sword
 ]
 
   [[edit.cards]]
@@ -104,10 +368,10 @@ moves = [
 [[edit]]
 target = "c01000070"                                   # Tim Saunders
 moves = [
-  { move = 0x259F08C6, level = 6 },                         # Whirlwind Twister
-  { move = 0xA8E0F6C2, level = 18 },                        # Kung Fu Header
-  { move = 0x17A96A44, level = 32 },                        # Clone Faker
-  { move = 0x2D3E5454, level = 46 },                        # Clone Shot
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x011AAF4B, level = 18 },                        # Gyro Head
+  { move = 0x574008CD, level = 35 },                        # Kung Fu Fighting
+  { move = 0x316A7390, level = 48 },                        # Land Dragon
 ]
 
   [[edit.cards]]
@@ -120,10 +384,10 @@ moves = [
 [[edit]]
 target = "c01000080"                                   # Sam Kincaid
 moves = [
-  { move = 0x35E70F22, level = 12 },                        # Grenade Shot
+  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
   { move = 0x6B1CF436, level = 14 },                        # Bewildered
-  { move = 0xACAC21CE, level = 23 },                        # Fake Ball
-  { move = 0x4890FB67, level = 34 },                        # Twin Boost
+  { move = 0x4D1E465C, level = 23 },                        # Fake Bomber
+  { move = 0x0597D3F9, level = 37 },                        # Dragon Tornado
 ]
 
   [[edit.cards]]
@@ -136,10 +400,10 @@ moves = [
 [[edit]]
 target = "c01000090"                                   # Maxwell Carson
 moves = [
-  { move = 0x19025F83, level = 7 },                         # Quick Draw
-  { move = 0xAAA6489B, level = 10 },                        # Spiral Shot
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
   { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
-  { move = 0x4AD6453E, level = 36 },                        # Back Tornado
+  { move = 0x3F00EDE9, level = 38 },                        # Dash Storm
+  { move = 0x240BEDF2, level = 55 },                        # Bounce Shot
 ]
 
   [[edit.cards]]
@@ -152,28 +416,116 @@ moves = [
 target = "c01000100"                                   # Axel Blaze
 growth = "normal"
 stats = { kick = 328, control = 244, technique = 258, pressure = 184, physical = 208, intelligence = 205, agility = 185, freedom = 247 }
-moves = [
-  { move = 0x518BCA26, level = 1 },                         # Fire Tornado
-  { move = 0x41F3CDC2, level = 17 },                        # Scorching Tackle
-  { move = 0x63BDA8A4, level = 25 },                        # Inazuma Drop
-  { move = 0x19025F83, level = 26 },                        # Quick Draw
-]
+
+  [[edit.cards]]
+  id = 0x288C9454    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+  [[edit.cards]]
+  id = 0x376A131E    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+  [[edit.cards]]
+  id = 0x3B057D74    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+  [[edit.cards]]
+  id = 0x7669620A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+  [[edit.cards]]
+  id = 0x85363312    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+  [[edit.cards]]
+  id = 0x994AFBEF    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x518BCA26, level = 1 },                       # Fire Tornado
+    { move = 0x00D8C57C, level = 1 },                       # Fireball Storm
+    { move = 0x0B011EBF, level = 11 },                      # Fireball Screw
+    { move = 0xEAB3792D, level = 21 },                      # Grand Fire
+  ]
+
+
+[[edit]]
+target = "c01000100"
+card = 0x288C9454
 VRFW.MoveGrades = [
   { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
 ]
 
+[[edit]]
+target = "c01000100"
+card = 0x376A131E
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
+
+[[edit]]
+target = "c01000100"
+card = 0x3B057D74
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
+
+[[edit]]
+target = "c01000100"
+card = 0x7669620A
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
+
+[[edit]]
+target = "c01000100"
+card = 0x85363312
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
+
+[[edit]]
+target = "c01000100"
+card = 0x994AFBEF
+VRFW.MoveGrades = [
+  { Move = 0x518BCA26, Grade = 1 },                         # Fire Tornado
+]
 [[edit]]
 target = "c01000110"                                   # Kevin Dragonfly
 rank = 3
 growth = "normal"
 moves = [
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
-  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
-  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+  { move = 0x5F989B9E, level = 18 },                        # Wyvern Crash
+  { move = 0x10D90D59, level = 32 },                        # Wyvern Blizzard
+  { move = 0xE937AD43, level = 42 },                        # Dragon Slayer
 ]
 VRFW.MoveGrades = [
   { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+  { Move = 0x5F989B9E, Grade = 1 },                         # Wyvern Crash
 ]
 
   [[edit.cards]]
@@ -191,19 +543,19 @@ rank = 3
 growth = "normal"
 stats = { kick = 238, control = 279, technique = 282, pressure = 197, physical = 146, intelligence = 240, agility = 165, freedom = 417 }
 moves = [
-  { move = 0x01DB04F5, level = 28 },                        # Defence Scan
-  { move = 0x0F703132, level = 40 },                        # Black Magic
-  { move = 0x61FB16FD, level = 75 },                        # Divine Arrows
-  { move = 0xDF70E04C, level = 99 },                        # Rodeo Clown
+  { move = 0x72514A74, level = 1 },                         # Low Drive
+  { move = 0x29B328E6, level = 30 },                        # Spectacle Crash
+  { move = 0x163D8F70, level = 50 },                        # Chip Shot
+  { move = 0xBCE9DEAB, level = 75 },                        # Chaos Break
 ]
 
   [[edit.cards]]
   id = 0x1ABAF6D6    # this card's moveset differs from the list above
   moves = [
-    { move = 0x01DB04F5, level = 28 },                      # Defence Scan
-    { move = 0x0F703132, level = 40 },                      # Black Magic
-    { move = 0x61FB16FD, level = 75 },                      # Divine Arrows
-    { move = 0xDF70E04C, level = 99 },                      # Rodeo Clown
+    { move = 0x72514A74, level = 1 },                       # Low Drive
+    { move = 0x29B328E6, level = 30 },                      # Spectacle Crash
+    { move = 0x163D8F70, level = 50 },                      # Chip Shot
+    { move = 0xBCE9DEAB, level = 75 },                      # Chaos Break
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
@@ -235,13 +587,75 @@ growth_pattern = 1
 rank = 3
 growth = "normal"
 stats = { kick = 293, control = 257, technique = 250, pressure = 207, physical = 153, intelligence = 254, agility = 171, freedom = 393 }
-moves = [
-  { move = 0x5049A011, level = 1 },                         # Spinning Shot
-  { move = 0x4E9A9232, level = 18 },                        # Spinning Cut
-  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
-  { move = 0x64B40078, level = 47 },                        # The Phoenix
+
+  [[edit.cards]]
+  id = 0x02E4DD1D    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x5049A011, level = 1 },                       # Spinning Shot
+    { move = 0x261BDCA8, level = 18 },                      # Moonsault
+    { move = 0x7A67325B, level = 30 },                      # Flame Dance
+    { move = 0xAE2B3429, level = 53 },                      # Atomic Flare
+  ]
+
+  [[edit.cards]]
+  id = 0x116D343D    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x5049A011, level = 1 },                       # Spinning Shot
+    { move = 0x261BDCA8, level = 18 },                      # Moonsault
+    { move = 0x7A67325B, level = 30 },                      # Flame Dance
+    { move = 0xAE2B3429, level = 53 },                      # Atomic Flare
+  ]
+
+  [[edit.cards]]
+  id = 0x1D025A57    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x5049A011, level = 1 },                       # Spinning Shot
+    { move = 0x261BDCA8, level = 18 },                      # Moonsault
+    { move = 0x7A67325B, level = 30 },                      # Flame Dance
+    { move = 0xAE2B3429, level = 53 },                      # Atomic Flare
+  ]
+
+  [[edit.cards]]
+  id = 0x5C012B43    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x5049A011, level = 1 },                       # Spinning Shot
+    { move = 0x261BDCA8, level = 18 },                      # Moonsault
+    { move = 0x7A67325B, level = 30 },                      # Flame Dance
+    { move = 0xAE2B3429, level = 53 },                      # Atomic Flare
+  ]
+
+
+[[edit]]
+target = "c01010910"
+card = 0x02E4DD1D
+VRFW.MoveGrades = [
+  { Move = 0x7A67325B, Grade = 1 },                         # Flame Dance
+  { Move = 0xAE2B3429, Grade = 1 },                         # Atomic Flare
 ]
 
+[[edit]]
+target = "c01010910"
+card = 0x116D343D
+VRFW.MoveGrades = [
+  { Move = 0x7A67325B, Grade = 1 },                         # Flame Dance
+  { Move = 0xAE2B3429, Grade = 1 },                         # Atomic Flare
+]
+
+[[edit]]
+target = "c01010910"
+card = 0x1D025A57
+VRFW.MoveGrades = [
+  { Move = 0x7A67325B, Grade = 1 },                         # Flame Dance
+  { Move = 0xAE2B3429, Grade = 1 },                         # Atomic Flare
+]
+
+[[edit]]
+target = "c01010910"
+card = 0x5C012B43
+VRFW.MoveGrades = [
+  { Move = 0x7A67325B, Grade = 1 },                         # Flame Dance
+  { Move = 0xAE2B3429, Grade = 1 },                         # Atomic Flare
+]
 [[edit]]
 target = "c01010920"                                   # Bobby Shearer
 growth_pattern = 1
@@ -250,18 +664,18 @@ growth = "normal"
 stats = { kick = 165, control = 216, technique = 186, pressure = 247, physical = 242, intelligence = 319, agility = 208, freedom = 375 }
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x7EEA4EE9, level = 19 },                        # Blade Attack
+  { move = 0x025FD09B, level = 21 },                        # Volcano Cut
   { move = 0x4AD6453E, level = 32 },                        # Back Tornado
-  { move = 0x5781A373, level = 45 },                        # Hurricane Arrows
+  { move = 0xA9229CF5, level = 55 },                        # The Galaxy
 ]
 
 [[edit]]
 target = "c01010930"                                   # Paul Peabody
 moves = [
-  { move = 0xDF70E04C, level = 5 },                         # Rodeo Clown
-  { move = 0x55C71D2A, level = 22 },                        # About Face
-  { move = 0x8C382852, level = 35 },                        # God Hand
-  { move = 0xA491AFFF, level = 68 },                        # Majin the Hand
+  { move = 0x6B1CF436, level = 5 },                         # Bewildered
+  { move = 0x8C382852, level = 22 },                        # God Hand
+  { move = 0xA491AFFF, level = 42 },                        # Majin the Hand
+  { move = 0xA1DEB97A, level = 75 },                        # Soul Hand
 ]
 
   [[edit.cards]]
@@ -273,10 +687,10 @@ moves = [
 [[edit]]
 target = "c02024730"                                   # Nelly Raimon
 moves = [
-  { move = 0x8B90AAAC, level = 12 },                        # Fortissimo
-  { move = 0x86F5F6E8, level = 20 },                        # Cupid's Arrow
-  { move = 0xDA3FF6C9, level = 31 },                        # Criss-Cross
-  { move = 0x1755397B, level = 82 },                        # Dark Energy Star
+  { move = 0x86F5F6E8, level = 3 },                         # Cupid's Arrow
+  { move = 0x72514A74, level = 15 },                        # Low Drive
+  { move = 0xDA3FF6C9, level = 26 },                        # Criss-Cross
+  { move = 0xBF6D0AC5, level = 60 },                        # Emperor Penguin No. 3
 ]
 
   [[edit.cards]]
@@ -286,6 +700,12 @@ moves = [
 
 [[edit]]
 target = "c02024740"                                   # Celia Hills
+moves = [
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
+  { move = 0x6ADE9E01, level = 1 },                         # Illusory Ball
+  { move = 0xC16279D1, level = 50 },                        # Field of Force
+  { move = 0x32EEA7FE, level = 70 },                        # Death Zone 2
+]
 
   [[edit.cards]]
   id = 0x8C27F348                                         # MF/DF · wind
@@ -302,10 +722,10 @@ target = "c02024740"                                   # Celia Hills
 [[edit]]
 target = "c02024750"                                   # Silvia Woods
 moves = [
-  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
-  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
-  { move = 0x8C382852, level = 23 },                        # God Hand
-  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xC19E2AEE, level = 35 },                        # Pegasus Shot
+  { move = 0xF2CB0879, level = 70 },                        # Mugen the Hand
 ]
 
   [[edit.cards]]
@@ -333,10 +753,13 @@ target = "c01000100_5000"                              # Axel Blaze
 [[edit]]
 target = "c11901150"                                   # Mark Evans
 moves = [
-  { move = 0x8C382852, level = 1 },                         # God Hand
-  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
-  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
-  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0xEE9F2FBD, level = 11 },                        # God Catch
+  { move = 0x8AF3EAB9, level = 21 },                        # Hammer of Fury
+  { move = 0x93E8DBF8, level = 31 },                        # Dimensional Hand
+]
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
 ]
 
   [[edit.cards]]

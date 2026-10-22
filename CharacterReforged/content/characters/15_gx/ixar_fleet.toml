@@ -8,7 +8,7 @@ schema = "VRFW.character/2"
 target = "c06032810"                                   # Phobos Quasar
 moves = [
   { move = 0xFFD91151, level = 8 },                         # Goal Gobbler
-  { move = 0xF5C2A0A5, level = 27 },                        # Capoeira Grab
+  { move = 0xD2955C45, level = 27 },                        # Power Catch
   { move = 0x88D5D57C, level = 42 },                        # Judgment Ray
   { move = 0x9AF2229C, level = 56 },                        # Gravity Point
   { move = 0, level = 0 },                                  # (empty)
@@ -48,7 +48,7 @@ moves = [
 target = "c06032830"                                   # Meteo Garnet
 moves = [
   { move = 0x88D5D57C, level = 1 },                         # Judgment Ray
-  { move = 0xAF150D21, level = 27 },                        # Swallow Counter
+  { move = 0x08EEBD53, level = 27 },                        # Feint Play
   { move = 0x2B8C597E, level = 39 },                        # Fugue Wave
   { move = 0xB9676390, level = 53 },                        # Particle Accelerator
 ]
@@ -64,7 +64,7 @@ moves = [
 target = "c06032840"                                   # Deimos Lepton
 moves = [
   { move = 0x88D5D57C, level = 3 },                         # Judgment Ray
-  { move = 0xC5EF0563, level = 28 },                        # Three-Legged Rush
+  { move = 0x23C3EE90, level = 28 },                        # Shoulder Tackle
   { move = 0xF4604B0E, level = 40 },                        # Fancy-Footwork
   { move = 0x25276CB9, level = 50 },                        # Solar Surprise
   { move = 0, level = 0 },                                  # (empty)
@@ -84,7 +84,7 @@ moves = [
 target = "c06032850"                                   # Ymir Catena
 moves = [
   { move = 0x88D5D57C, level = 1 },                         # Judgment Ray
-  { move = 0x768AB9C5, level = 24 },                        # Frosticle
+  { move = 0x75994916, level = 24 },                        # Cunning Pull
   { move = 0x650FA58E, level = 37 },                        # Spin Out
   { move = 0xBA662B00, level = 54 },                        # Pterrordactyl Swoop
   { move = 0, level = 0 },                                  # (empty)
@@ -106,7 +106,7 @@ target = "c06032860"                                   # Sinope Linea
 moves = [
   { move = 0x88D5D57C, level = 8 },                         # Judgment Ray
   { move = 0x039DBAAC, level = 25 },                        # Land of Ice
-  { move = 0x750E6DAB, level = 36 },                        # Matador Feint
+  { move = 0x08EEBD53, level = 36 },                        # Feint Play
   { move = 0xC41097D5, level = 48 },                        # Acrobotics
 ]
 
@@ -121,7 +121,7 @@ moves = [
 target = "c06032870"                                   # Tarvos Boson
 moves = [
   { move = 0xFACB7EC9, level = 12 },                        # Shiny Feathers
-  { move = 0xD9BB22A7, level = 24 },                        # Air Ride
+  { move = 0x62294D90, level = 24 },                        # Dust Kick
   { move = 0xF4604B0E, level = 36 },                        # Fancy-Footwork
   { move = 0xDA3FF6C9, level = 52 },                        # Criss-Cross
 ]
@@ -158,7 +158,7 @@ moves = [
 target = "c06032890"                                   # Despina Lux
 moves = [
   { move = 0x1EBD198D, level = 13 },                        # Magic Amp
-  { move = 0xC5EF0563, level = 27 },                        # Three-Legged Rush
+  { move = 0x163D8F70, level = 27 },                        # Chip Shot
   { move = 0x2354CA2D, level = 43 },                        # Wind God's Dance
   { move = 0x0AC37488, level = 52 },                        # Heavenly Drive
 ]
@@ -171,29 +171,29 @@ moves = [
 
 [[edit]]
 target = "c06032900"                                   # Ozrock Boldar
-moves = [
-  { move = 0x07A628CC, level = 11 },                        # Stargazer
-  { move = 0x2A37FC88, level = 29 },                        # Revolution V
-  { move = 0xFACB7EC9, level = 44 },                        # Shiny Feathers
-  { move = 0x88D5D57C, level = 59 },                        # Judgment Ray
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x50CE31DA, level = 1 },                         # Tótem Ixaal [aura]
-]
 
   [[edit.cards]]
   id = 0x0E914939                                         # FW/MF · wind
   rank = 3
   growth = "normal"
   stats = { kick = 333, control = 288, technique = 185, pressure = 161, physical = 230, intelligence = 243, agility = 171, freedom = 335 }
+  moves = [
+    { move = 0x07A628CC, level = 11 },                      # Stargazer
+    { move = 0x163D8F70, level = 29 },                      # Chip Shot
+    { move = 0xFACB7EC9, level = 44 },                      # Shiny Feathers
+    { move = 0x88D5D57C, level = 59 },                      # Judgment Ray
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x50CE31DA, level = 1 },                       # Tótem Ixaal [aura]
+  ]
 
 [[edit]]
 target = "c06032910"                                   # Loge Colles
 moves = [
   { move = 0x1EBD198D, level = 13 },                        # Magic Amp
-  { move = 0x21127474, level = 21 },                        # Ultra Moon
+  { move = 0x240BEDF2, level = 21 },                        # Bounce Shot
   { move = 0xD0A1DBC3, level = 37 },                        # Bungee Ball Burst
   { move = 0xBD2BB49C, level = 53 },                        # Dark Matter
 ]

@@ -1,0 +1,7 @@
+schema = "VRFW.contact_map/1"
+# Debug Tools: while the «Mods» options row debug_tools.sign_all is on, every contact map (e.g. New Recruitment's
+# office) shows all its pages open and any player is signed without requirements and without spending anything
+# (docs/framework/contact-map.md, «Bypass switch»). The players signed this way are real signings of the save.
+
+[[VRFW.ContactBypass]]
+Option = "sign_all"

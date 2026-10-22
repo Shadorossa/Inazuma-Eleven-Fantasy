@@ -2,13 +2,13 @@ id = "inazuma_fantasy_2"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Inazuma Fantasy"
-version = "1.7.0"
+version = "1.11.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Fantasy. The Market has three shops of its own, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points): a «General Store» with every ticket (Kizuna areas, stadiums), consumable, name plate, kit, team emblem (but the crests a Chronicle battle gives), Kizuna decoration, sticker and title the game's shops sell (the titles at their Chronicle collection costs); a «Training Shop» with every piece of player equipment, special tactic, synergy and keshin / miximax / soul move; and «Special Moves», one tab per move type (shot, dribble, block, catch). Those rows leave the game's shops, player spirits and premade Diamonds are no longer sold, and the game's Market shops, left empty, leave the Market, and every menu entry of them (Chronicle, Vs, Kizuna and other mode menus) opens the General Store; the story shops keep theirs. Every match also pays Friendship and Passion Points at its end (amounts in config.toml). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 prefix = "InazumaFantasy"
 folder = "InazumaFantasy"
 # A new mod (2026-10-14). The earlier Inazuma Fantasy (id inazuma_fantasy) is kept apart in research/mods/_aside/; this
@@ -39,6 +39,9 @@ folder = "InazumaFantasy"
 #                                       tezcat_arion_miximax_reforged.toml: Character Reforged's values of Tezcat's card
 #   content\models\characters\c90370080.toml + assets\models\characters\c90370080\   the head
 #   assets\menu\200_icon\10_icon_chr\face\c9037008{0,1}_l.g4tx   their face icons
+#   content\gacha\chronicle_deluxe_kizuna_coin.toml   «Tezcat (Mixi Max Arion)» in Chronicle Deluxe's board gacha (1.8.0;
+#                                       nothing without Chronicle Deluxe); content\base_tables\gamedata\soccer\soccer_drop_config.toml:
+#                                       his character in that gacha's drop-rate list (1.10.0, if_mod chronicle_deluxe)
 # Graft (research/grafts): inazuma_fantasy_general_store (the Mercado entries, market_menu: its four shops first, a retail
 # shop whose every row is hidden left out).
 # lua_early: the graft is a merge-path patch of market_menu; early, the later wrappers of that script stay on top of it.

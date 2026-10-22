@@ -1,0 +1,11 @@
+# Chronicle Deluxe: the banner picture of the board gacha node's command menu (content/gacha/kizuna_coin_gacha.toml
+# `banner`; VRFW docs/framework/gacha.md): the gacha creature's head where the «MI EQUIPO» banner shows the team's
+# picture (texture slot myteam_dmy01 of vsroute01_17, a square picture seen through the banner's mask band, y 39-61 %).
+# Built by research/scripts/chronicle_deluxe_gacha_icon_build.py's cut-out from the owner's local reference picture.
+schema = "VRFW.image/1"
+
+[[sprite]]
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_17/<LG>/vsroute01_17.g4tx"
+name = "chronicle_deluxe_gacha_banner01"
+png = "gacha_banner/chronicle_deluxe_gacha_banner01.png"
+size = [512, 512]

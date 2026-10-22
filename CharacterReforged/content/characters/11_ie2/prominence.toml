@@ -8,8 +8,8 @@ schema = "VRFW.character/2"
 target = "c02020810"                                   # Grent
 moves = [
   { move = 0xEF5D458A, level = 1 },                         # Burnout
-  { move = 0x4D1E465C, level = 1 },                         # Fake Bomber
-  { move = 0xBE0E4AD0, level = 60 },                        # Fireball Knuckle
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
+  { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
   { move = 0xABA58912, level = 75 },                        # Ignited Steal
 ]
 
@@ -23,8 +23,8 @@ moves = [
 target = "c02020820"                                   # Baller
 moves = [
   { move = 0xABA58912, level = 1 },                         # Ignited Steal
-  { move = 0x01DB04F5, level = 52 },                        # Defence Scan
-  { move = 0xB13A6C3D, level = 61 },                        # Zigzag Flame
+  { move = 0xB13A6C3D, level = 38 },                        # Zigzag Flame
+  { move = 0x3B8D915B, level = 44 },                        # Meteor Shower
   { move = 0xEF5D458A, level = 69 },                        # Burnout
 ]
 
@@ -38,9 +38,9 @@ moves = [
 target = "c02020850"                                   # Bomber
 moves = [
   { move = 0xABA58912, level = 1 },                         # Ignited Steal
-  { move = 0x4D1E465C, level = 59 },                        # Fake Bomber
-  { move = 0x166B0073, level = 63 },                        # Super Armadillo
-  { move = 0xA01CD34D, level = 70 },                        # Temporal Wall
+  { move = 0x79E3E635, level = 1 },                         # Racing Flame
+  { move = 0x166B0073, level = 35 },                        # Super Armadillo
+  { move = 0x9765A74A, level = 65 },                        # Beast Fang
 ]
 
   [[edit.cards]]
@@ -53,9 +53,9 @@ moves = [
 [[edit]]
 target = "c02020860"                                   # Heat
 moves = [
-  { move = 0x9765A74A, level = 1 },                         # Beast Fang
-  { move = 0x029E7B25, level = 1 },                         # Gaia Break
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
   { move = 0x3B8D915B, level = 1 },                         # Meteor Shower
+  { move = 0x9765A74A, level = 10 },                        # Beast Fang
   { move = 0x30A819A7, level = 63 },                        # Twin Boost F
 ]
 
@@ -69,12 +69,33 @@ moves = [
 target = "c02020900"                                   # Torch
 growth = "normal"
 stats = { kick = 343, control = 259, technique = 261, pressure = 186, physical = 190, intelligence = 230, agility = 167, freedom = 213 }
-moves = [
-  { move = 0x132416F6, level = 1 },                         # Dog Run
-  { move = 0xAE2B3429, level = 1 },                         # Atomic Flare
-  { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0x111B676E, level = 77 },                        # Fire Blizzard
-]
+
+  [[edit.cards]]
+  id = 0x6DB78C11    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x72514A74, level = 1 },                       # Low Drive
+    { move = 0xAE2B3429, level = 1 },                       # Atomic Flare
+    { move = 0x132416F6, level = 35 },                      # Dog Run
+    { move = 0x111B676E, level = 60 },                      # Fire Blizzard
+  ]
+
+  [[edit.cards]]
+  id = 0xE7DC0330    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x72514A74, level = 1 },                       # Low Drive
+    { move = 0xAE2B3429, level = 1 },                       # Atomic Flare
+    { move = 0x132416F6, level = 35 },                      # Dog Run
+    { move = 0x111B676E, level = 60 },                      # Fire Blizzard
+  ]
+
+  [[edit.cards]]
+  id = 0xEBB36D5A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x72514A74, level = 1 },                       # Low Drive
+    { move = 0xAE2B3429, level = 1 },                       # Atomic Flare
+    { move = 0x132416F6, level = 35 },                      # Dog Run
+    { move = 0x111B676E, level = 60 },                      # Fire Blizzard
+  ]
 
 [[edit]]
 target = "c02020910"                                   # Neppten
@@ -85,10 +106,10 @@ stats = { kick = 270, control = 248, technique = 246, pressure = 215, physical =
   [[edit.cards]]
   id = 0x74ACBD50    # normal card (the character's special cards keep their own set)
   moves = [
-    { move = 0x7FE98F60, level = 1 },                       # Ganymede Ray
+    { move = 0x30A819A7, level = 1 },                       # Twin Boost F
     { move = 0x5FE1545F, level = 1 },                       # Flame Veil
-    { move = 0x30A819A7, level = 60 },                      # Twin Boost F
-    { move = 0xAE2B3429, level = 70 },                      # Atomic Flare
+    { move = 0xAE2B3429, level = 50 },                      # Atomic Flare
+    { move = 0x6B4A7B35, level = 60 },                      # Power Shot
   ]
 
 [[edit]]
@@ -96,8 +117,8 @@ target = "c02022430"                                   # Balcke
 moves = [
   { move = 0x6633159F, level = 1 },                         # Gravitation
   { move = 0x2296A01A, level = 1 },                         # Southern Cross
-  { move = 0x3BF45E9A, level = 65 },                        # Triple Boost
-  { move = 0xEF5D458A, level = 73 },                        # Burnout
+  { move = 0x29728358, level = 45 },                        # Planet Shield
+  { move = 0xD9477198, level = 60 },                        # Emperor Penguin X
 ]
 
   [[edit.cards]]
@@ -109,10 +130,10 @@ moves = [
 [[edit]]
 target = "c02022440"                                   # Seats
 moves = [
-  { move = 0x28B0E96F, level = 1 },                         # Heavy Mettle
+  { move = 0x087999EE, level = 1 },                         # Heel Drop
   { move = 0xABA58912, level = 1 },                         # Ignited Steal
-  { move = 0x33ED6677, level = 62 },                        # Doppelganger
-  { move = 0xA5777314, level = 65 },                        # Assault Shot
+  { move = 0xA5777314, level = 35 },                        # Assault Shot
+  { move = 0x6DAEF91C, level = 65 },                        # Supernova
 ]
 
   [[edit.cards]]
@@ -124,10 +145,10 @@ moves = [
 [[edit]]
 target = "c02022470"                                   # Lean
 moves = [
-  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x2296A01A, level = 1 },                         # Southern Cross
-  { move = 0x27D9B69F, level = 65 },                        # Prima Donna
-  { move = 0xAE2B3429, level = 75 },                        # Atomic Flare
+  { move = 0x41F3CDC2, level = 1 },                         # Scorching Tackle
+  { move = 0xBDAE2862, level = 25 },                        # Hellfire
+  { move = 0x62294D90, level = 60 },                        # Dust Kick
+  { move = 0xEAB3792D, level = 75 },                        # Grand Fire
 ]
 
   [[edit.cards]]
@@ -139,10 +160,10 @@ moves = [
 [[edit]]
 target = "c02022480"                                   # Bountine
 moves = [
-  { move = 0x5FE1545F, level = 1 },                         # Flame Veil
-  { move = 0x6ADE9E01, level = 59 },                        # Illusory Ball
-  { move = 0x4C1D87D5, level = 64 },                        # Bed of Roses
-  { move = 0x035C1112, level = 72 },                        # Gungnir
+  { move = 0x27D9B69F, level = 1 },                         # Prima Donna
+  { move = 0x1F5EB9D5, level = 1 },                         # Nutmeg
+  { move = 0x035C1112, level = 50 },                        # Gungnir
+  { move = 0xABA58912, level = 55 },                        # Ignited Steal
 ]
 
   [[edit.cards]]
@@ -154,10 +175,10 @@ moves = [
 [[edit]]
 target = "c02022490"                                   # Sidern
 moves = [
-  { move = 0x4BD584B7, level = 1 },                         # Power Charge
-  { move = 0x7C6D5B0E, level = 1 },                         # Astro Break
-  { move = 0x37A1B17B, level = 65 },                        # Fire Rooster
-  { move = 0xAE2B3429, level = 75 },                        # Atomic Flare
+  { move = 0x72514A74, level = 1 },                         # Low Drive
+  { move = 0x4BD584B7, level = 22 },                        # Power Charge
+  { move = 0x37A1B17B, level = 40 },                        # Fire Rooster
+  { move = 0xAE2B3429, level = 60 },                        # Atomic Flare
 ]
 
   [[edit.cards]]

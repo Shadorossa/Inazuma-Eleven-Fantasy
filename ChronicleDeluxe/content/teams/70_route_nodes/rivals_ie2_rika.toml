@@ -28,26 +28,26 @@ member = [
   { slot = 10, patch = true, level_offset = 0, moves = [0x332CCDC9, 0x34256515, 0x2F78EA0D], levels = [62, 67, 95] },  # Teal Redsky, DS Lv 35: whs00570@62 · whs00170@67 · whs00260@95
 ]
 
-# u02: DS PracticeGame2B record 381 «Súper Triple C» Lv 50
+# u02: DS PracticeGame1B record 365 «Alius B» Lv 50
 [[team]]
 name = "ie2_rika_u02"
-based_on = "tm_cro_ie2_0900"
-same_as = "tm_cro_ie2_0900"
+based_on = "tm_cro_legend_IE2_05"
+same_as = "tm_cro_legend_IE2_05"
 
 [[edit]]
 target = "ie2_rika_u02"
 member = [
-  { slot = 0, patch = true, level_offset = 0, moves = [0xC13F00CC, 0xBC48F489, 0x5405771D, 0x5E7E4775], levels = [41, 41, 65, 77] },  # Daisy Fields, DS Lv 50: whk00360@41 · whk00330@41 · whd00320@65 · whk00280@77
-  { slot = 1, patch = true, level_offset = 0, moves = [0x4D1E465C, 0x3EC287DE, 0x261BDCA8, 0x6DD736DD], levels = [41, 41, 70, 78] },  # Rose Pinkpetal, DS Lv 50: whd00330@41 · who00320@41 · who00230@70 · who00440@78
-  { slot = 2, patch = true, level_offset = 0, moves = [0x2C3D95DD, 0x7EEA4EE9, 0x1F0836D6, 0x78E027BC], levels = [41, 66, 73, 79] },  # Esther Greenland, DS Lv 50: whd00470@41 · whd00210@66 · whs00140@73 · whs00300@79
-  { slot = 3, patch = true, level_offset = 0, moves = [0x2C3D95DD, 0x27D9B69F, 0x4C1D87D5], levels = [41, 41, 87] },  # Hellen Hearth, DS Lv 50: whd00470@41 · who00330@41 · whs00620@87
-  { slot = 4, patch = true, level_offset = 0, moves = [0xDF70E04C, 0x4D1E465C, 0x6B1CF436, 0x31ABD82E], levels = [41, 41, 72, 82] },  # Alexia Sand, DS Lv 50: who00090@41 · whd00330@41 · who00140@72 · whd00260@82
-  { slot = 5, patch = true, level_offset = 0, moves = [0x06130797, 0x261BDCA8, 0x6DD736DD, 0x3663DB4C], levels = [41, 41, 72, 83] },  # Mary Moor, DS Lv 50: whs00150@41 · who00230@41 · who00440@72 · whs00270@83
-  { slot = 6, patch = true, level_offset = 0, moves = [0x5049A011, 0x55C71D2A, 0xDEB28A7B, 0x6DD736DD], levels = [41, 41, 66, 80] },  # Bela Bluebells, DS Lv 50: whs00130@41 · whd00220@41 · who00190@66 · who00440@80
-  { slot = 7, patch = true, level_offset = 0, moves = [0x6DD736DD, 0xAAA6489B, 0x4F58F805, 0xAC6D8A70], levels = [41, 41, 65, 75] },  # Hillary Bush, DS Lv 50: who00440@41 · whs00190@41 · whd00030@65 · whs00490@75
-  { slot = 8, patch = true, level_offset = 0, moves = [0x3EC287DE, 0x55C71D2A, 0x4D1E465C, 0x142DBE2A], levels = [41, 41, 69, 77] },  # Natalie Sunrise, DS Lv 50: who00320@41 · whd00220@41 · whd00330@69 · who00210@77
-  { slot = 9, patch = true, level_offset = 0, moves = [0x54C4DCA3, 0x6DD736DD, 0x2C3D95DD], levels = [41, 41, 80] },  # Lily Willow, DS Lv 50: whs00730@41 · who00440@41 · whd00470@80
-  { slot = 10, patch = true, level_offset = 0, moves = [0x4C1D87D5, 0x54C4DCA3, 0x27D9B69F, 0x4741C0E8], levels = [41, 41, 71, 85] },  # Suzette Hartland, DS Lv 50: whs00620@41 · whs00730@41 · who00330@71 · whs00920@85
+  { slot = 0, patch = true, level_offset = 0, moves = [0x8B31808E, 0x8E7E960B, 0x19025F83, 0x6633159F], levels = [41, 41, 82, 118] },  # Dvalin, DS Lv 50: whk00410@41 · whk00310@41 · whd00050@82 · whd00300@118
+  { slot = 1, patch = true, level_offset = 0, moves = [0x514A6198, 0x261BDCA8, 0xB633C4E1, 0xB907E20C], levels = [41, 63, 74, 109] },  # Coral, DS Lv 50: whd00420@41 · who00230@63 · whd00290@74 · whk00430@109
+  { slot = 2, patch = true, level_offset = 0, moves = [0x10A0C298, 0xB633C4E1, 0x46A71C03, 0x8E7E960B], levels = [41, 41, 84, 100] },  # Mole, DS Lv 50: who00410@41 · whd00290@41 · whk00390@84 · whk00310@100
+  { slot = 3, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x7FE98F60, 0x6DAEF91C], levels = [41, 41, 115] },  # Wittz, DS Lv 50: whs00500@41 · whs00700@41 · whs00810@115
+  { slot = 4, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x3B8D915B, 0x2C3D95DD, 0x2296A01A], levels = [41, 41, 82, 93] },  # Krypto, DS Lv 50: whs00500@41 · who00420@41 · whd00470@82 · who00430@93
+  { slot = 5, patch = true, level_offset = 0, moves = [0x6633159F, 0x3069B219, 0x10A0C298], levels = [60, 78, 86] },  # Gigs, DS Lv 50: whd00300@60 · whd00360@78 · who00410@86
+  { slot = 6, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x10A0C298, 0x514A6198, 0x1B854A64], levels = [41, 55, 67, 79] },  # Diam, DS Lv 50: whs00500@41 · who00410@55 · whd00420@67 · whs00740@79
+  { slot = 7, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x10A0C298, 0x1B854A64, 0x029E7B25], levels = [41, 41, 72, 93] },  # Janus, DS Lv 50: whs00500@41 · who00410@41 · whs00740@72 · whs00750@93
+  { slot = 8, patch = true, level_offset = 0, moves = [0x3B8D915B, 0xB633C4E1, 0x011AAF4B, 0x7FE98F60], levels = [41, 79, 91, 103] },  # Sworm, DS Lv 50: who00420@41 · whd00290@79 · whs00550@91 · whs00700@103
+  { slot = 9, patch = true, level_offset = 0, moves = [0x43B5739B, 0x520F1E48, 0x65766A4F, 0x2296A01A], levels = [41, 92, 96, 108] },  # Ark, DS Lv 50: who00370@41 · whs00230@92 · whs00510@96 · who00430@108
+  { slot = 10, patch = true, level_offset = 0, moves = [0x65766A4F, 0x6DAEF91C, 0xB633C4E1, 0x2296A01A], levels = [41, 75, 81, 102] },  # Xene, DS Lv 50: whs00510@41 · whs00810@75 · whd00290@81 · who00430@102
 ]
 
 # u03: DS PracticeGame2B record 392 «Sospechosos B» Lv 0 (no fixed level: the wiki's)
@@ -138,201 +138,244 @@ member = [
   { slot = 10, patch = true, level_offset = 0, moves = [0x53CD747F, 0x166B0073, 0x3663DB4C], levels = [41, 41, 88] },  # Gary Lancaster, DS Lv 70: whs00330@41 · who00110@41 · whs00270@88
 ]
 
-# l01: DS PracticeGame2B record 399 «Nuevo Alpino» Lv 70
+# l01: DS PracticeGame1B record 369 «Selección juvenil A» Lv 70
 [[team]]
 name = "ie2_rika_l01"
-based_on = "tm_cro_ie2_0400"
-same_as = "tm_cro_ie2_0400"
+based_on = "chronicle_deluxe.ct_wk_zennihon_youth_a"
+same_as = "chronicle_deluxe.ct_wk_zennihon_youth_a"
 
 [[edit]]
 target = "ie2_rika_l01"
 member = [
-  { slot = 0, patch = true, level_offset = 0, moves = [0xD9E65BBA, 0x5C38F92C, 0x039DBAAC, 0xB7F1AED6], levels = [41, 56, 69, 85] },  # Adam Ropes, DS Lv 70: whk00270@41 · whk00180@56 · whd00240@69 · whd00390@85
-  { slot = 1, patch = true, level_offset = 0, moves = [0xDF70E04C, 0x33ED6677, 0x322F0C40, 0xB5B7108F], levels = [48, 58, 70, 77] },  # Spike Gleeson, DS Lv 70: who00090@48 · whd00160@58 · whd00060@70 · whd00090@77
-  { slot = 2, patch = true, level_offset = 3, moves = [0x55C71D2A, 0x3069B219, 0x67F17FA8], levels = [41, 69, 92] },  # Sean Snowfield, DS Lv 73: whd00220@41 · whd00360@69 · whd00200@92
-  { slot = 3, patch = true, level_offset = 0, moves = [0x18C035B4, 0x039DBAAC, 0x0455B9CE, 0x2B343D01], levels = [53, 65, 71, 79] },  # Milton Bindings, DS Lv 70: whd00150@53 · whd00240@65 · whs00250@71 · whd00070@79
-  { slot = 4, patch = true, level_offset = 0, moves = [0x039DBAAC, 0x2C3D95DD, 0xAC6D8A70, 0xDCF43422], levels = [61, 67, 74, 80] },  # Joaquine Downtown, DS Lv 70: whd00240@61 · whd00470@67 · whs00490@74 · who00290@80
-  { slot = 5, patch = true, level_offset = 3, moves = [0x19C3F43D, 0x3C843987, 0xDCF43422, 0x79224D8B], levels = [41, 52, 78, 100] },  # Shawn Froste, DS Lv 73: whs00440@41 · who00020@52 · who00290@78 · whs00200@100
-  { slot = 6, patch = true, level_offset = 0, moves = [0x1F0836D6, 0x60397CCA, 0x7B64F3D2, 0x70417B2E], levels = [52, 60, 69, 78] },  # Robert Skipolson, DS Lv 70: whs00140@52 · whs00210@60 · whs00100@69 · who00250@78
-  { slot = 7, patch = true, level_offset = 0, moves = [0x70417B2E, 0x0CF4E55C, 0x011AAF4B, 0xDCF43422], levels = [41, 58, 67, 82] },  # Maddox Rock, DS Lv 70: who00250@41 · who00300@58 · whs00550@67 · who00290@82
-  { slot = 8, patch = true, level_offset = 0, moves = [0x259F08C6, 0x55C71D2A, 0x70417B2E, 0x58E8FC83], levels = [50, 56, 70, 88] },  # Kerry Bootgaiter, DS Lv 70: who00030@50 · whd00220@56 · who00250@70 · who00060@88
-  { slot = 9, patch = true, level_offset = 1, moves = [0x039DBAAC, 0x79224D8B, 0x19C3F43D], levels = [41, 59, 78] },  # Roland Climbstein, DS Lv 71: whd00240@41 · whs00200@59 · whs00440@78
-  { slot = 10, patch = true, level_offset = 1, moves = [0x79224D8B, 0x3C843987, 0xC7A9BB3A, 0x19C3F43D], levels = [41, 51, 65, 72] },  # Quentin Rackner, DS Lv 71: whs00200@41 · who00020@51 · who00180@65 · whs00440@72
-  { slot = 11, patch = true, level_offset = 0, moves = [0xBFCC20E7, 0x5C38F92C, 0xF08DB620, 0xD9E65BBA], levels = [49, 64, 79, 98] },  # Trent Peggs, DS Lv 70: whk00130@49 · whk00180@64 · whk00140@79 · whk00270@98
-  { slot = 12, patch = true, level_offset = 0, moves = [0x5643C944, 0x4031A7F5, 0x039DBAAC, 0x025FD09B], levels = [41, 67, 73, 104] },  # Martin Ursus, DS Lv 70: whd00020@41 · who00170@67 · whd00240@73 · whd00340@104
-  { slot = 13, patch = true, level_offset = 0, moves = [0x0CF4E55C, 0x627FC293, 0xDCF43422, 0x3663DB4C], levels = [50, 58, 73, 89] },  # Pete Bogg, DS Lv 70: who00300@50 · whs00110@58 · who00290@73 · whs00270@89
-  { slot = 14, patch = true, level_offset = 0, moves = [0x7CACF0B0, 0x166B0073, 0x7D6E9A87, 0x00196EC2], levels = [49, 59, 66, 74] },  # Gem Strata, DS Lv 70: whd00110@49 · who00110@59 · whd00010@66 · whd00040@74
+  { slot = 0, patch = true, level_offset = 0, moves = [0x47657634, 0xBFCC20E7, 0xA553C5C8], levels = [41, 60, 85] },  # Crane Kik, DS Lv 70: whk00290@41 · whk00130@60 · whk00320@85
+  { slot = 1, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x5405771D, 0xAD6E4BF9, 0xBD8A9EBE], levels = [41, 69, 98, 117] },  # Mark Hillvalley , DS Lv 70: whd00100@41 · whd00320@69 · whd00180@98 · whk00230@117
+  { slot = 2, patch = true, level_offset = 0, moves = [0x592A96B4, 0x322F0C40, 0xB5B7108F, 0x2D3E5454], levels = [41, 41, 67, 100] },  # Jim Hillfort, DS Lv 70: who00160@41 · whd00060@41 · whd00090@67 · whs00160@100
+  { slot = 3, patch = true, level_offset = 0, moves = [0x166B0073, 0x7CACF0B0, 0xC379BE95, 0x0455B9CE], levels = [41, 41, 80, 106] },  # Leonard O'Shea, DS Lv 70: who00110@41 · whd00110@41 · whk00060@80 · whs00250@106
+  { slot = 4, patch = true, level_offset = 0, moves = [0x7A67325B, 0x3EC287DE, 0x01DB04F5, 0xDD365E15], levels = [41, 73, 80, 90] },  # Cadence Soundtown, DS Lv 70: whd00410@41 · who00320@73 · whd00140@80 · who00390@90
+  { slot = 5, patch = true, level_offset = 0, moves = [0xACAC21CE, 0x1F0836D6, 0x34256515], levels = [41, 64, 78] },  # Walter Valiant, DS Lv 70: whd00080@41 · whs00140@64 · whs00170@78
+  { slot = 6, patch = true, level_offset = 0, moves = [0xB1FBC783, 0x41F3CDC2, 0x61FB16FD], levels = [41, 41, 98] },  # Jonas Demetrius, DS Lv 70: whs00280@41 · who00070@41 · whs00310@98
+  { slot = 7, patch = true, level_offset = 0, moves = [0x0F703132, 0x245D62F1, 0x7577A26A], levels = [70, 115, 139] },  # William Glass, DS Lv 70: who00100@70 · who00130@115 · whs00900@139
+  { slot = 8, patch = true, level_offset = 0, moves = [0x3BF45E9A, 0x71831119, 0x5643C944], levels = [41, 41, 41] },  # Caleb Stonewall, DS Lv 70: whs00870@41 · who00350@41 · whd00020@41
+  { slot = 9, patch = true, level_offset = 0, moves = [0x5049A011, 0x6ADE9E01, 0x7A67325B, 0x64B40078], levels = [41, 58, 70, 87] },  # Erik Eagle, DS Lv 70: whs00130@41 · who00040@58 · whd00410@70 · whs00410@87
+  { slot = 10, patch = true, level_offset = 0, moves = [0x65766A4F, 0x6DAEF91C, 0xB633C4E1, 0x2296A01A], levels = [41, 75, 81, 102] },  # Xene, DS Lv 70: whs00510@41 · whs00810@75 · whd00290@81 · who00430@102
 ]
 
-# l02: DS PracticeGame2B record 400 «Nuevo Claustro» Lv 74
+# l02: DS PracticeGame1B record 353 «Equipo de adultos» Lv 65
 [[team]]
 name = "ie2_rika_l02"
-based_on = "tm_cro_ie2_0600"
-same_as = "tm_cro_ie2_0600"
+based_on = "chronicle_deluxe.ct_wk_adult_team"
+same_as = "chronicle_deluxe.ct_wk_adult_team"
 
 [[edit]]
 target = "ie2_rika_l02"
 member = [
-  { slot = 0, patch = true, level_offset = 2, moves = [0x47657634, 0xBFCC20E7, 0xA553C5C8], levels = [41, 60, 85] },  # Crane Kik, DS Lv 76: whk00290@41 · whk00130@60 · whk00320@85
-  { slot = 1, patch = true, level_offset = 1, moves = [0x322F0C40, 0x1A868BED, 0x0F703132, 0xB4757AB8], levels = [41, 41, 61, 86] },  # Parry Waxon, DS Lv 75: whd00060@41 · whd00250@41 · who00100@61 · whd00190@86
-  { slot = 2, patch = true, level_offset = 1, moves = [0x3D4653B0, 0xB5B7108F, 0x09BBF3D9, 0x17A96A44], levels = [53, 60, 69, 90] },  # Bri Spark, DS Lv 75: who00120@53 · whd00090@60 · who00400@69 · who00010@90
-  { slot = 3, patch = true, level_offset = 0, moves = [0x259F08C6, 0x19025F83, 0x574008CD, 0xB4757AB8], levels = [41, 54, 67, 82] },  # Max Fortune, DS Lv 74: who00030@41 · whd00050@54 · whs00530@67 · whd00190@82
-  { slot = 4, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x3069B219, 0x41F3CDC2, 0x4031A7F5], levels = [41, 41, 66, 77] },  # Brendan Water, DS Lv 74: whd00100@41 · whd00360@41 · who00070@66 · who00170@77
-  { slot = 5, patch = true, level_offset = 0, moves = [0x0CF4E55C, 0x09BBF3D9, 0xB5B7108F, 0x2D3E5454], levels = [41, 63, 74, 82] },  # Junior Fardream, DS Lv 74: who00300@41 · who00400@63 · whd00090@74 · whs00160@82
-  { slot = 6, patch = true, level_offset = 0, moves = [0x17A96A44, 0x6B1CF436, 0x3663DB4C, 0xC7A9BB3A], levels = [57, 61, 70, 85] },  # Ian Telektual, DS Lv 74: who00010@57 · who00140@61 · whs00270@70 · who00180@85
-  { slot = 7, patch = true, level_offset = 0, moves = [0xA8E0F6C2, 0x2D3E5454, 0x33ED6677, 0x261BDCA8], levels = [41, 41, 58, 79] },  # Lee Dinglite, DS Lv 74: whs00290@41 · whs00160@41 · whd00160@58 · who00230@79
-  { slot = 8, patch = true, level_offset = 2, moves = [0x0CF4E55C, 0x2CFC3E63, 0xB5B7108F, 0xB4B4D106], levels = [41, 41, 73, 82] },  # Tyke Wando, DS Lv 76: who00300@41 · whs00060@41 · whd00090@73 · whs00580@82
-  { slot = 9, patch = true, level_offset = 3, moves = [0x574008CD, 0x259F08C6, 0xADAFE047], levels = [41, 41, 93] },  # Marshall Artz, DS Lv 77: whs00530@41 · who00030@41 · whs00590@93
-  { slot = 10, patch = true, level_offset = 2, moves = [0xB4B4D106, 0x427719AC, 0x4DDFEDE2], levels = [41, 41, 97] },  # Dirk Artz, DS Lv 76: whs00580@41 · who00270@41 · whs00720@97
-  { slot = 11, patch = true, level_offset = 0, moves = [0x62BE692D, 0x259F08C6, 0x55C71D2A, 0x6B1CF436], levels = [41, 58, 64, 68] },  # Scott Banyan, DS Lv 74: whd00500@41 · who00030@58 · whd00220@64 · who00140@68
-  { slot = 12, patch = true, level_offset = 0, moves = [0x94E17324, 0xC0FD6AFB, 0xA8E0F6C2, 0x47657634], levels = [41, 62, 73, 89] },  # Earnest Bookworm, DS Lv 74: whk00100@41 · whk00260@62 · whs00290@73 · whk00290@89
-  { slot = 13, patch = true, level_offset = 0, moves = [0x18C035B4, 0x0F703132, 0x4B142F09, 0x322F0C40], levels = [41, 41, 68, 83] },  # Ollie Gami, DS Lv 74: whd00150@41 · who00100@41 · whs00220@68 · whd00060@83
-  { slot = 14, patch = true, level_offset = 0, moves = [0xDEB28A7B, 0x41F3CDC2, 0x518BCA26, 0x025FD09B], levels = [41, 69, 75, 90] },  # Roman Kandel, DS Lv 74: who00190@41 · who00070@69 · whs00030@75 · whd00340@90
-  { slot = 15, patch = true, level_offset = 0, moves = [0x4B142F09, 0xA8E0F6C2, 0x259F08C6, 0xB4B4D106], levels = [41, 70, 74, 95] },  # Don Ation, DS Lv 74: whs00220@41 · whs00290@70 · who00030@74 · whs00580@95
+  { slot = 0, patch = true, level_offset = 5, moves = [0x8DFA4265, 0xBFCC20E7, 0x8FBCFC3C, 0x5E7E4775], levels = [41, 61, 75, 95] },  # Suzanne Yuma, DS Lv 70: whk00110@41 · whk00130@61 · whk00210@75 · whk00280@95
+  { slot = 1, patch = true, level_offset = 0, moves = [0x485150D9, 0x8DFA4265, 0x01DB04F5, 0x922AB1CF], levels = [41, 65, 73, 79] },  # Ian Smith, DS Lv 65: whd00430@41 · whk00110@65 · whd00140@73 · whk00400@79
+  { slot = 2, patch = true, level_offset = 3, moves = [0x592A96B4, 0xB5B7108F, 0x2AF65736], levels = [75, 80, 120] },  # Tammy Fielding, DS Lv 68: who00160@75 · whd00090@80 · whd00170@120
+  { slot = 3, patch = true, level_offset = 0, moves = [0x7CACF0B0, 0x00196EC2, 0x4031A7F5], levels = [66, 80, 87] },  # Louis Hillside, DS Lv 65: whd00110@66 · whd00040@80 · who00170@87
+  { slot = 4, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x4523C86D, 0xBFCC20E7, 0x7EEA4EE9], levels = [41, 62, 82, 110] },  # Ness Sheldon, DS Lv 65: whd00100@41 · whk00190@62 · whk00130@82 · whd00210@110
+  { slot = 5, patch = true, level_offset = 0, moves = [0x245D62F1, 0x4D1E465C, 0x0710C61E, 0x74B5C85D], levels = [50, 61, 70, 81] },  # Marshall Firsthand, DS Lv 65: who00130@50 · whd00330@61 · whd00440@70 · whs00800@81
+  { slot = 6, patch = true, level_offset = 0, moves = [0xDF70E04C, 0x259F08C6, 0x6ADE9E01, 0x2EBA803A], levels = [41, 62, 74, 85] },  # Alex Lovely, DS Lv 65: who00090@41 · who00030@62 · who00040@74 · whs00360@85
+  { slot = 7, patch = true, level_offset = 0, moves = [0x695A4A6F, 0xB3BD79DA, 0xC42D6F54, 0xA5777314], levels = [49, 59, 72, 95] },  # Taylor Firepool, DS Lv 65: who00240@49 · whs00180@59 · who00380@72 · whs00890@95
+  { slot = 8, patch = true, level_offset = 0, moves = [0x4E5B398C, 0x34256515, 0x4D1E465C, 0x74B5C85D], levels = [41, 56, 67, 84] },  # Joe Kenneddy, DS Lv 65: whs00520@41 · whs00170@56 · whd00330@67 · whs00800@84
+  { slot = 9, patch = true, level_offset = 0, moves = [0xC42D6F54, 0x245D62F1, 0x2A37FC88], levels = [41, 56, 101] },  # Marge Fielding, DS Lv 65: who00380@41 · who00130@56 · whs00560@101
+  { slot = 10, patch = true, level_offset = 0, moves = [0x74B5C85D, 0xAAA6489B, 0xC66BD10D, 0x2A37FC88], levels = [41, 53, 64, 92] },  # Holly Mirror, DS Lv 65: whs00800@41 · whs00190@53 · who00080@64 · whs00560@92
 ]
 
-# l03: DS PracticeGame2B record 401 «Nuevo Fauxshore» Lv 77
+# l03: DS PracticeGame1B record 367 «Selección nacional B» Lv 60
 [[team]]
 name = "ie2_rika_l03"
-based_on = "tm_cro_ie2_1100"
-same_as = "tm_cro_ie2_1100"
+based_on = "tm_cro_legend_IE2_11"
+same_as = "tm_cro_legend_IE2_11"
 
 [[edit]]
 target = "ie2_rika_l03"
 member = [
-  { slot = 0, patch = true, level_offset = 2, moves = [0x8C382852, 0xA491AFFF, 0x74CC079C, 0xF2CB0879], levels = [41, 140, 75, 140] },  # Darren LaChance, DS Lv 79: whk00010@41 · whk00220@140 · who00450@75 · whk00240@140
-  { slot = 1, patch = true, level_offset = 0, moves = [0x5506B694, 0x7CACF0B0, 0x41F3CDC2, 0x4D1E465C], levels = [41, 41, 75, 87] },  # Louis Leave, DS Lv 77: whs00630@41 · whd00110@41 · who00070@75 · whd00330@87
-  { slot = 2, patch = true, level_offset = 0, moves = [0x7D6E9A87, 0x74CC079C, 0xBFCC20E7, 0x5E7E4775], levels = [41, 41, 73, 91] },  # Maurice Badgame, DS Lv 77: whd00010@41 · who00450@41 · whk00130@73 · whk00280@91
-  { slot = 3, patch = true, level_offset = 0, moves = [0x4CDC2C6B, 0x7CACF0B0, 0x3C843987, 0x58E8FC83], levels = [41, 69, 73, 95] },  # Mick Mishap, DS Lv 77: whd00230@41 · whd00110@69 · who00020@73 · who00060@95
-  { slot = 4, patch = true, level_offset = 0, moves = [0x31ABD82E, 0x4F58F805, 0x74CC079C], levels = [41, 68, 86] },  # Drancis Fake, DS Lv 77: whd00260@41 · whd00030@68 · who00450@86
-  { slot = 6, patch = true, level_offset = 0, moves = [0x49529150, 0x31ABD82E, 0x2EBA803A, 0x4E5B398C], levels = [41, 41, 69, 83] },  # Ulric Richmen, DS Lv 77: whs00120@41 · whd00260@41 · whs00360@69 · whs00520@83
-  { slot = 7, patch = true, level_offset = 0, moves = [0x3663DB4C, 0x74CC079C, 0x627FC293, 0xC5EF0563], levels = [41, 41, 73, 93] },  # Joe Poker, DS Lv 77: whs00270@41 · who00450@41 · whs00110@73 · who00280@93
-  { slot = 8, patch = true, level_offset = 1, moves = [0x18019E0A, 0x695A4A6F, 0x74CC079C, 0x5506B694], levels = [41, 69, 79, 87] },  # Spencer Duskplay, DS Lv 78: whs00540@41 · who00240@69 · who00450@79 · whs00630@87
-  { slot = 9, patch = true, level_offset = 2, moves = [0xAC6D8A70, 0xC5EF0563, 0x34256515], levels = [41, 41, 81] },  # Jonathan Luckyman, DS Lv 79: whs00490@41 · who00280@41 · whs00170@81
-  { slot = 10, patch = true, level_offset = 0, moves = [0x19025F83, 0x68982058, 0xC0FD6AFB, 0x47657634], levels = [41, 41, 72, 88] },  # Cannon Random, DS Lv 77: whd00050@41 · who00340@41 · whk00260@72 · whk00290@88
-  { slot = 11, patch = true, level_offset = 0, moves = [0x8DFA4265, 0xBE0E4AD0, 0xEBD03938, 0xC379BE95], levels = [41, 41, 76, 92] },  # Wiley Cracker, DS Lv 77: whk00110@41 · whk00030@41 · whk00250@76 · whk00060@92
-  { slot = 12, patch = true, level_offset = 0, moves = [0x3EC287DE, 0x35E70F22, 0x34256515, 0x142DBE2A], levels = [41, 68, 74, 82] },  # Mark Failing, DS Lv 77: who00320@41 · whs00070@68 · whs00170@74 · who00210@82
-  { slot = 13, patch = true, level_offset = 0, moves = [0x35E70F22, 0x7CACF0B0, 0xAC6D8A70, 0x4D1E465C], levels = [41, 70, 76, 85] },  # Alton Cotts, DS Lv 77: whs00070@41 · whd00110@70 · whs00490@76 · whd00330@85
-  { slot = 14, patch = true, level_offset = 0, moves = [0xAAA6489B, 0x011AAF4B, 0x4890FB67, 0xC5EF0563], levels = [41, 69, 80, 94] },  # Mike Passing, DS Lv 77: whs00190@41 · whs00550@69 · whs00020@80 · who00280@94
-  { slot = 15, patch = true, level_offset = 0, moves = [0xA7157B91, 0xC0FD6AFB, 0x4E9A9232, 0x4CDC2C6B], levels = [41, 41, 73, 89] },  # Knowle Bathers, DS Lv 77: whk00020@41 · whk00260@41 · whd00130@73 · whd00230@89
+  { slot = 0, patch = true, level_offset = 0, moves = [0xD9E65BBA, 0x5C38F92C, 0x039DBAAC, 0xB7F1AED6], levels = [41, 56, 69, 85] },  # Adam Ropes, DS Lv 60: whk00270@41 · whk00180@56 · whd00240@69 · whd00390@85
+  { slot = 1, patch = true, level_offset = 0, moves = [0x55C71D2A, 0x3069B219, 0x67F17FA8], levels = [41, 69, 92] },  # Sean Snowfield, DS Lv 60: whd00220@41 · whd00360@69 · whd00200@92
+  { slot = 2, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x74CC079C, 0x3069B219], levels = [41, 41, 79] },  # Dave Fate, DS Lv 60: whd00100@41 · who00450@41 · whd00360@79
+  { slot = 3, patch = true, level_offset = 0, moves = [0x5643C944, 0x41F3CDC2, 0x44E1A25A, 0x4D1E465C], levels = [41, 75, 78, 85] },  # Hector Redding, DS Lv 60: whd00020@41 · who00070@75 · whk00090@78 · whd00330@85
+  { slot = 4, patch = true, level_offset = 0, moves = [0x039DBAAC, 0x2C3D95DD, 0xAC6D8A70, 0xDCF43422], levels = [61, 67, 74, 80] },  # Joaquine Downtown, DS Lv 60: whd00240@61 · whd00470@67 · whs00490@74 · who00290@80
+  { slot = 5, patch = true, level_offset = 0, moves = [0x3EC287DE, 0x7A67325B, 0x68982058], levels = [41, 84, 96] },  # Dora Delight, DS Lv 60: who00320@41 · whd00410@84 · who00340@96
+  { slot = 6, patch = true, level_offset = 0, moves = [0x49529150, 0x31ABD82E, 0x2EBA803A, 0x4E5B398C], levels = [41, 41, 69, 83] },  # Ulric Richmen, DS Lv 60: whs00120@41 · whd00260@41 · whs00360@69 · whs00520@83
+  { slot = 7, patch = true, level_offset = 0, moves = [0x0CF4E55C, 0x09BBF3D9, 0xB5B7108F, 0x2D3E5454], levels = [41, 63, 74, 82] },  # Junior Fardream, DS Lv 60: who00300@41 · who00400@63 · whd00090@74 · whs00160@82
+  { slot = 8, patch = true, level_offset = 0, moves = [0x4DDFEDE2, 0x7B64F3D2, 0x332CCDC9, 0xDEB28A7B], levels = [41, 41, 76, 87] },  # Tom Contented, DS Lv 60: whs00720@41 · whs00100@41 · whs00570@76 · who00190@87
+  { slot = 9, patch = true, level_offset = 0, moves = [0x039DBAAC, 0x79224D8B, 0x19C3F43D], levels = [41, 59, 78] },  # Roland Climbstein, DS Lv 60: whd00240@41 · whs00200@59 · whs00440@78
+  { slot = 10, patch = true, level_offset = 0, moves = [0x79224D8B, 0x3C843987, 0xC7A9BB3A, 0x19C3F43D], levels = [41, 51, 65, 72] },  # Quentin Rackner, DS Lv 60: whs00200@41 · who00020@51 · who00180@65 · whs00440@72
 ]
 
-# l04: DS PracticeGame2B record 402 «Nueva Mary Times» Lv 80
+# l04: DS PracticeGame1B record 366 «Chavalillas A» Lv 0 (no fixed level: the wiki's)
 [[team]]
 name = "ie2_rika_l04"
-based_on = "tm_cro_ie2_1300"
-same_as = "tm_cro_ie2_1300"
+based_on = "chronicle_deluxe.ct_wk_kyappikyapi_a"
+same_as = "chronicle_deluxe.ct_wk_kyappikyapi_a"
 
 [[edit]]
 target = "ie2_rika_l04"
 member = [
-  { slot = 0, patch = true, level_offset = 2, moves = [0x5E7E4775, 0x96A7CD7D, 0xC2BBD4A2], levels = [41, 41, 86] },  # Rocky Black, DS Lv 82: whk00280@41 · whk00200@41 · whk00160@86
-  { slot = 1, patch = true, level_offset = 3, moves = [0x2BF596BF, 0x4E9A9232, 0xB2BEB853], levels = [41, 75, 90] },  # Hurley Kane, DS Lv 83: whs00460@41 · whd00130@75 · whd00490@90
-  { slot = 2, patch = true, level_offset = 0, moves = [0x5643C944, 0x41F3CDC2, 0x44E1A25A, 0x4D1E465C], levels = [41, 75, 78, 85] },  # Hector Redding, DS Lv 80: whd00020@41 · who00070@75 · whk00090@78 · whd00330@85
-  { slot = 3, patch = true, level_offset = 0, moves = [0x637C031A, 0x8DFA4265, 0xA7157B91, 0x65B7C1F1], levels = [41, 75, 82, 91] },  # Victor Hills, DS Lv 80: whd00400@41 · whk00110@75 · whk00020@82 · whd00100@91
-  { slot = 4, patch = true, level_offset = 0, moves = [0x4F58F805, 0x259F08C6, 0x261BDCA8, 0x4D1E465C], levels = [41, 73, 78, 83] },  # Chad Taylor, DS Lv 80: whd00030@41 · who00030@73 · who00230@78 · whd00330@83
-  { slot = 5, patch = true, level_offset = 0, moves = [0x5AAE42DA, 0xDF70E04C, 0x3EC287DE, 0x261BDCA8], levels = [41, 41, 83, 95] },  # Joston Easton, DS Lv 80: who00360@41 · who00090@41 · who00320@83 · who00230@95
-  { slot = 6, patch = true, level_offset = 0, moves = [0xAB6422AC, 0x7EEA4EE9, 0x142DBE2A, 0x2B343D01], levels = [41, 41, 77, 82] },  # Mackenzie Fordline, DS Lv 80: whs00090@41 · whd00210@41 · who00210@77 · whd00070@82
-  { slot = 7, patch = true, level_offset = 0, moves = [0x3EC287DE, 0x7A67325B, 0x68982058], levels = [41, 84, 96] },  # Dora Delight, DS Lv 80: who00320@41 · whd00410@84 · who00340@96
-  { slot = 8, patch = true, level_offset = 1, moves = [0x7A67325B, 0x3EC287DE, 0x01DB04F5, 0xDD365E15], levels = [41, 73, 80, 90] },  # Cadence Soundtown, DS Lv 81: whd00410@41 · who00320@73 · whd00140@80 · who00390@90
-  { slot = 9, patch = true, level_offset = 0, moves = [0x4DDFEDE2, 0x7B64F3D2, 0x332CCDC9, 0xDEB28A7B], levels = [41, 41, 76, 87] },  # Tom Contented, DS Lv 80: whs00720@41 · whs00100@41 · whs00570@76 · who00190@87
-  { slot = 10, patch = true, level_offset = 2, moves = [0x78E027BC, 0xC66BD10D, 0x60397CCA, 0x4DDFEDE2], levels = [41, 41, 74, 89] },  # Spring Millpond, DS Lv 82: whs00300@41 · who00080@41 · whs00210@74 · whs00720@89
-  { slot = 11, patch = true, level_offset = 1, moves = [0xD824318D, 0x259F08C6, 0x5C38F92C, 0x96A7CD7D], levels = [41, 76, 80, 93] },  # Gaston Cooley, DS Lv 81: whk00370@41 · who00030@76 · whk00180@80 · whk00200@93
-  { slot = 12, patch = true, level_offset = 0, moves = [0xDEB28A7B, 0x55C71D2A, 0x2EBA803A, 0x637C031A], levels = [41, 41, 77, 104] },  # Bevan Breakfast, DS Lv 80: who00190@41 · whd00220@41 · whs00360@77 · whd00400@104
-  { slot = 13, patch = true, level_offset = 0, moves = [0x53CD747F, 0x1D4E888F, 0x6B1CF436, 0xDD365E15], levels = [41, 41, 74, 94] },  # Jack Griddle, DS Lv 80: whs00330@41 · whs00240@41 · who00140@74 · who00390@94
-  { slot = 14, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x166B0073, 0x00196EC2, 0x025FD09B], levels = [41, 41, 76, 87] },  # Stan Andagi, DS Lv 80: whd00100@41 · who00110@41 · whd00040@76 · whd00340@87
-  { slot = 15, patch = true, level_offset = 0, moves = [0x1ECA5CE1, 0x0CF4E55C, 0x78E027BC, 0x54C4DCA3], levels = [41, 74, 79, 92] },  # Coral Talent, DS Lv 80: whs00040@41 · who00300@74 · whs00300@79 · whs00730@92
+  { slot = 0, patch = true, moves = [0xC13F00CC, 0xBC48F489, 0x5405771D, 0x5E7E4775], levels = [41, 41, 65, 77] },  # Daisy Fields, DS Lv 0: whk00360@41 · whk00330@41 · whd00320@65 · whk00280@77
+  { slot = 1, patch = true, moves = [0xDF70E04C, 0x4D1E465C, 0x6B1CF436, 0x31ABD82E], levels = [41, 41, 72, 82] },  # Alexia Sand, DS Lv 0: who00090@41 · whd00330@41 · who00140@72 · whd00260@82
+  { slot = 2, patch = true, moves = [0x2C3D95DD, 0x27D9B69F, 0x4C1D87D5], levels = [41, 41, 87] },  # Hellen Hearth, DS Lv 0: whd00470@41 · who00330@41 · whs00620@87
+  { slot = 3, patch = true, moves = [0x592A96B4, 0xB5B7108F, 0x2AF65736], levels = [75, 80, 120] },  # Tammy Fielding, DS Lv 3: who00160@75 · whd00090@80 · whd00170@120
+  { slot = 4, patch = true, moves = [0x4F58F805, 0x695A4A6F, 0x039DBAAC, 0x2C3D95DD], levels = [41, 59, 70, 88] },  # Pip Daltry, DS Lv 0: whd00030@41 · who00240@59 · whd00240@70 · whd00470@88
+  { slot = 5, patch = true, moves = [0xDF70E04C, 0x259F08C6, 0x6ADE9E01, 0x2EBA803A], levels = [41, 62, 74, 85] },  # Alex Lovely, DS Lv 0: who00090@41 · who00030@62 · who00040@74 · whs00360@85
+  { slot = 6, patch = true, moves = [0x73C5AF40, 0x695A4A6F, 0x5643C944, 0xA8E0F6C2], levels = [41, 61, 68, 94] },  # Lizzy Squirrel, DS Lv 0: who00050@41 · who00240@61 · whd00020@68 · whs00290@94
+  { slot = 7, patch = true, moves = [0x5049A011, 0x55C71D2A, 0xDEB28A7B, 0x6DD736DD], levels = [41, 41, 66, 80] },  # Bela Bluebells, DS Lv 0: whs00130@41 · whd00220@41 · who00190@66 · who00440@80
+  { slot = 8, patch = true, moves = [0x54C4DCA3, 0x6DD736DD, 0x2C3D95DD], levels = [41, 41, 80] },  # Lily Willow, DS Lv 0: whs00730@41 · who00440@41 · whd00470@80
+  { slot = 9, patch = true, moves = [0x1F0836D6, 0xDF70E04C, 0x7B64F3D2, 0x7DAF3139], levels = [41, 48, 61, 100] },  # Maddie Moonlight, DS Lv 5: whs00140@41 · who00090@48 · whs00100@61 · whs00400@100
+  { slot = 10, patch = true, moves = [0x1F0836D6, 0x27D9B69F, 0x54C4DCA3], levels = [41, 80, 105] },  # Samantha Moonlight, DS Lv 5: whs00140@41 · who00330@80 · whs00730@105
 ]
 
-# l05: DS PracticeGame2B record 403 «Nueva R. A. Redux» Lv 84
+# l05: DS PracticeGame1B record 371 «Gafitas A» Lv 0 (no fixed level: the wiki's)
 [[team]]
 name = "ie2_rika_l05"
-based_on = "tm_cro_ie2_0800"
-same_as = "tm_cro_ie2_0800"
+based_on = "chronicle_deluxe.ct_wk_megane_a"
+same_as = "chronicle_deluxe.ct_wk_megane_a"
 
 [[edit]]
 target = "ie2_rika_l05"
 member = [
-  { slot = 0, patch = true, level_offset = 2, moves = [0x9765A74A, 0xA7157B91, 0xA6D711A6], levels = [41, 72, 77] },  # Joseph King, DS Lv 86: whk00300@41 · whk00020@72 · whk00120@77
-  { slot = 1, patch = true, level_offset = 0, moves = [0x5643C944, 0x142DBE2A, 0x4E9A9232, 0x71831119], levels = [41, 41, 65, 86] },  # Lee Bamboo, DS Lv 84: whd00020@41 · who00210@41 · whd00130@65 · who00350@86
-  { slot = 2, patch = true, level_offset = 3, moves = [0x7CACF0B0, 0x53CD747F, 0x67F17FA8], levels = [41, 66, 86] },  # Argie Bargie, DS Lv 87: whd00110@41 · whs00330@66 · whd00200@86
-  { slot = 3, patch = true, level_offset = 0, moves = [0x5643C944, 0x71831119, 0x55C71D2A, 0x0CF4E55C], levels = [41, 41, 68, 70] },  # Blade Healen, DS Lv 84: whd00020@41 · who00350@41 · whd00220@68 · who00300@70
-  { slot = 4, patch = true, level_offset = 0, moves = [0x2B343D01, 0xB7F1AED6, 0x35E70F22, 0x4AD6453E], levels = [41, 41, 41, 72] },  # Rowan Beltzer, DS Lv 84: whd00070@41 · whd00390@41 · whs00070@41 · whs00320@72
-  { slot = 5, patch = true, level_offset = 2, moves = [0x3BF45E9A, 0x71831119, 0x5643C944], levels = [41, 41, 41] },  # Caleb Stonewall, DS Lv 86: whs00870@41 · who00350@41 · whd00020@41
-  { slot = 6, patch = true, level_offset = 0, moves = [0x1ECA5CE1, 0x245D62F1, 0x01DB04F5, 0x5B6C28ED], levels = [41, 41, 41, 82] },  # Eton Messer, DS Lv 84: whs00040@41 · who00130@41 · whd00140@41 · who00260@82
-  { slot = 7, patch = true, level_offset = 0, moves = [0x4AD6453E, 0x2B343D01, 0x3D4653B0, 0x17A96A44], levels = [41, 41, 68, 89] },  # Sue Sparrow, DS Lv 84: whs00320@41 · whd00070@41 · who00120@68 · who00010@89
-  { slot = 8, patch = true, level_offset = 0, moves = [0x18C035B4, 0x6ADE9E01, 0x09BBF3D9, 0xB5B7108F], levels = [41, 41, 68, 76] },  # Jonah Spark, DS Lv 84: whd00150@41 · who00040@41 · who00400@68 · whd00090@76
-  { slot = 9, patch = true, level_offset = 1, moves = [0x1ECA5CE1, 0x1A472053, 0x142DBE2A, 0xB27F13ED], levels = [41, 41, 41, 104] },  # Riley Jamm, DS Lv 85: whs00040@41 · whs00640@41 · who00210@41 · whs00080@104
-  { slot = 10, patch = true, level_offset = 3, moves = [0x6730D416, 0x142DBE2A, 0x7DAF3139], levels = [41, 68, 100] },  # David Samford, DS Lv 87: whs00610@41 · who00210@68 · whs00400@100
-  { slot = 11, patch = true, level_offset = 0, moves = [0x5643C944, 0xF14FDC17, 0xA6D711A6, 0x4E9A9232], levels = [41, 41, 70, 80] },  # Jimbo Cellar, DS Lv 84: whd00020@41 · whk00040@41 · whk00120@70 · whd00130@80
-  { slot = 12, patch = true, level_offset = 0, moves = [0xDF70E04C, 0xAB6422AC, 0x4AD6453E, 0x68982058], levels = [41, 41, 71, 93] },  # Zenn Wildhorse, DS Lv 84: who00090@41 · whs00090@41 · whs00320@71 · who00340@93
-  { slot = 13, patch = true, level_offset = 0, moves = [0x19025F83, 0x01DB04F5, 0xC66BD10D, 0x2B343D01], levels = [41, 69, 76, 86] },  # Dawson Little, DS Lv 84: whd00050@41 · whd00140@69 · who00080@76 · whd00070@86
-  { slot = 14, patch = true, level_offset = 0, moves = [0x73C5AF40, 0x261BDCA8, 0x3663DB4C, 0x5506B694], levels = [41, 70, 78, 92] },  # Cosimo Beck, DS Lv 84: who00050@41 · who00230@70 · whs00270@78 · whs00630@92
-  { slot = 15, patch = true, level_offset = 0, moves = [0x695A4A6F, 0x5643C944, 0x3069B219, 0x4031A7F5], levels = [41, 41, 71, 80] },  # Maston Color, DS Lv 84: who00240@41 · whd00020@41 · whd00360@71 · who00170@80
+  { slot = 0, patch = true, moves = [0xE854ED56, 0x33ED6677, 0x3D4653B0, 0xB4757AB8], levels = [53, 71, 80, 93] },  # Randolph Lords, DS Lv 0: whk00050@53 · whd00160@71 · who00120@80 · whd00190@93
+  { slot = 1, patch = true, moves = [0x55C71D2A, 0x3EC287DE, 0xF08DB620, 0xC7A9BB3A], levels = [58, 69, 76, 84] },  # Heath Planner, DS Lv 0: whd00220@58 · who00320@69 · whk00140@76 · who00180@84
+  { slot = 2, patch = true, moves = [0x322F0C40, 0x245D62F1, 0x01DB04F5, 0x2B343D01], levels = [56, 72, 78, 90] },  # Izzy Island, DS Lv 0: whd00060@56 · who00130@72 · whd00140@78 · whd00070@90
+  { slot = 3, patch = true, moves = [0x6DD736DD, 0x01DB04F5, 0x27D9B69F, 0xB5B7108F], levels = [60, 66, 76, 83] },  # Clara Tompkins, DS Lv 0: who00440@60 · whd00140@66 · who00330@76 · whd00090@83
+  { slot = 4, patch = true, moves = [0x01DB04F5, 0x520F1E48, 0x245D62F1, 0x4890FB67], levels = [41, 41, 66, 88] },  # Victor Kind, DS Lv 0: whd00140@41 · whs00230@41 · who00130@66 · whs00020@88
+  { slot = 5, patch = true, moves = [0x01DB04F5, 0x261BDCA8, 0xAC6D8A70, 0x2B343D01], levels = [57, 70, 83, 92] },  # Swithin Sainte, DS Lv 0: whd00140@57 · who00230@70 · whs00490@83 · whd00070@92
+  { slot = 6, patch = true, moves = [0x0F703132, 0x245D62F1, 0x7577A26A], levels = [70, 115, 139] },  # William Glass, DS Lv 0: who00100@70 · who00130@115 · whs00900@139
+  { slot = 7, patch = true, moves = [0x1F0836D6, 0x261BDCA8, 0xDCF43422, 0xB4B4D106], levels = [54, 62, 71, 84] },  # Bert Neptune, DS Lv 0: whs00140@54 · who00230@62 · who00290@71 · whs00580@84
+  { slot = 8, patch = true, moves = [0x3663DB4C, 0xACAC21CE, 0x6B1CF436], levels = [41, 66, 77] },  # Light Nobel, DS Lv 0: whs00270@41 · whd00080@66 · who00140@77
+  { slot = 9, patch = true, moves = [0x7A67325B, 0x3EC287DE, 0x01DB04F5, 0xDD365E15], levels = [41, 73, 80, 90] },  # Cadence Soundtown, DS Lv 0: whd00410@41 · who00320@73 · whd00140@80 · who00390@90
+  { slot = 10, patch = true, moves = [0x6B1CF436, 0x3663DB4C, 0x33ED6677, 0x7EEA4EE9], levels = [41, 41, 61, 78] },  # Mark Gambling, DS Lv 0: who00140@41 · whs00270@41 · whd00160@61 · whd00210@78
 ]
 
-# l06: DS PracticeGame2B record 404 «Nuevo Géminis» Lv 87
+# l06: DS PracticeGame1B record 372 «Alumnos intercambio» Lv 50
 [[team]]
 name = "ie2_rika_l06"
-based_on = "tm_cro_ie2_0100"
-same_as = "tm_cro_ie2_0100"
+based_on = "chronicle_deluxe.ct_wk_ryuugaku_team"
+same_as = "chronicle_deluxe.ct_wk_ryuugaku_team"
 
 [[edit]]
 target = "ie2_rika_l06"
 member = [
-  { slot = 0, patch = true, level_offset = 1, moves = [0x46A71C03, 0x00196EC2, 0x8E7E960B], levels = [41, 74, 102] },  # Galileo, DS Lv 88: whk00390@41 · whd00040@74 · whk00310@102
-  { slot = 1, patch = true, level_offset = 0, moves = [0x6633159F, 0x520F1E48, 0x28B0E96F, 0x7FE98F60], levels = [41, 62, 78, 84] },  # Ganymede, DS Lv 87: whd00300@41 · whs00230@62 · whd00270@78 · whs00700@84
-  { slot = 2, patch = true, level_offset = 0, moves = [0xB633C4E1, 0x2B343D01, 0x7C6D5B0E, 0x514A6198], levels = [41, 66, 72, 89] },  # Charon, DS Lv 87: whd00290@41 · whd00070@66 · whs00500@72 · whd00420@89
-  { slot = 3, patch = true, level_offset = 0, moves = [0x6633159F, 0x3069B219, 0x10A0C298], levels = [60, 78, 86] },  # Gigs, DS Lv 87: whd00300@60 · whd00360@78 · who00410@86
-  { slot = 4, patch = true, level_offset = 0, moves = [0x514A6198, 0x261BDCA8, 0xB633C4E1, 0xB907E20C], levels = [41, 63, 74, 109] },  # Coral, DS Lv 87: whd00420@41 · who00230@63 · whd00290@74 · whk00430@109
-  { slot = 5, patch = true, level_offset = 3, moves = [0x7C6D5B0E, 0x10A0C298, 0x1B854A64, 0x029E7B25], levels = [41, 41, 72, 93] },  # Janus, DS Lv 90: whs00500@41 · who00410@41 · whs00740@72 · whs00750@93
-  { slot = 6, patch = true, level_offset = 0, moves = [0x6633159F, 0x10A0C298, 0x8B31808E, 0xA01CD34D], levels = [41, 41, 78, 112] },  # Pandora, DS Lv 87: whd00300@41 · who00410@41 · whk00410@78 · whk00420@112
-  { slot = 7, patch = true, level_offset = 0, moves = [0x10A0C298, 0x6633159F, 0x34256515, 0x65766A4F], levels = [41, 50, 59, 96] },  # Io, DS Lv 87: who00410@41 · whd00300@50 · whs00170@59 · whs00510@96
-  { slot = 8, patch = true, level_offset = 1, moves = [0x10A0C298, 0x695A4A6F, 0x33ED6677, 0x035C1112], levels = [41, 59, 68, 100] },  # Grengo, DS Lv 88: who00410@41 · who00240@59 · whd00160@68 · whs00650@100
-  { slot = 9, patch = true, level_offset = 2, moves = [0x1B854A64, 0xAB6422AC, 0x10A0C298, 0x4683AADF], levels = [41, 59, 77, 115] },  # Rihm, DS Lv 89: whs00740@41 · whs00090@59 · who00410@77 · whs00820@115
-  { slot = 10, patch = true, level_offset = 1, moves = [0x7C6D5B0E, 0x10A0C298, 0x514A6198, 0x1B854A64], levels = [41, 55, 67, 79] },  # Diam, DS Lv 88: whs00500@41 · who00410@55 · whd00420@67 · whs00740@79
+  { slot = 0, patch = true, level_offset = 0, moves = [0xBE0E4AD0, 0x8C382852, 0xF64674CB], levels = [41, 63, 110] },  # Silvia Woods, DS Lv 50: whk00030@41 · whk00010@63 · whk00440@110
+  { slot = 1, patch = true, level_offset = 0, moves = [0x4D1E465C, 0x7A67325B, 0x025FD09B], levels = [58, 69, 89] },  # Guile Crocket, DS Lv 50: whd00330@58 · whd00410@69 · whd00340@89
+  { slot = 2, patch = true, level_offset = 0, moves = [0x73C5AF40, 0x4E9A9232, 0x18019E0A, 0xB6F26F5F], levels = [41, 41, 79, 112] },  # Malcolm Night, DS Lv 50: who00050@41 · whd00130@41 · whs00540@79 · whs00680@112
+  { slot = 3, patch = true, level_offset = 0, moves = [0xDF70E04C, 0x55C71D2A, 0x6B1CF436, 0x627FC293], levels = [48, 57, 68, 73] },  # Francis Paine, DS Lv 50: who00090@48 · whd00220@57 · who00140@68 · whs00110@73
+  { slot = 4, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0x6B1CF436, 0x55C71D2A, 0x00196EC2], levels = [51, 61, 71, 79] },  # Benedict Eggers, DS Lv 50: whd00100@51 · who00140@61 · whd00220@71 · whd00040@79
+  { slot = 5, patch = true, level_offset = 0, moves = [0xAAA6489B, 0x6ADE9E01, 0x55C71D2A, 0x4D1E465C], levels = [55, 68, 74, 86] },  # Lehman Rind, DS Lv 50: whs00190@55 · who00040@68 · whd00220@74 · whd00330@86
+  { slot = 6, patch = true, level_offset = 0, moves = [0x19025F83, 0x41F3CDC2, 0x78E027BC, 0x427719AC], levels = [47, 59, 70, 84] },  # Holly Cricket, DS Lv 50: whd00050@47 · who00070@59 · whs00300@70 · who00270@84
+  { slot = 7, patch = true, level_offset = 0, moves = [0x5643C944, 0x025FD09B, 0x4AD6453E, 0x3BF45E9A], levels = [41, 61, 72, 95] },  # Bobby Shearer, DS Lv 50: whd00020@41 · whd00340@61 · whs00320@72 · whs00870@95
+  { slot = 8, patch = true, level_offset = 0, moves = [0x568262FA, 0x3663DB4C, 0x2C3D95DD], levels = [67, 72, 87] },  # Ann Taisie, DS Lv 50: whs00430@67 · whs00270@72 · whd00470@87
+  { slot = 9, patch = true, level_offset = 0, moves = [0x5049A011, 0x6ADE9E01, 0x7A67325B, 0x64B40078], levels = [41, 58, 70, 87] },  # Erik Eagle, DS Lv 50: whs00130@41 · who00040@58 · whd00410@70 · whs00410@87
+  { slot = 10, patch = true, level_offset = 0, moves = [0x332CCDC9, 0x518BCA26, 0xC7A9BB3A, 0x4890FB67], levels = [53, 64, 77, 85] },  # Beata Pummel, DS Lv 50: whs00570@53 · whs00030@64 · who00180@77 · whs00020@85
 ]
 
-# l07: DS PracticeGame2B record 405 «Nuevo Épsilon» Lv 90
+# l07: DS PracticeGame1B record 363 «Ray Dark All Stars» Lv 40
 [[team]]
 name = "ie2_rika_l07"
-based_on = "tm_cro_ie2_0700"
-same_as = "tm_cro_ie2_0700"
+based_on = "tm_cro_legend_IE3_01"
+same_as = "tm_cro_legend_IE3_01"
 
 [[edit]]
 target = "ie2_rika_l07"
 member = [
-  { slot = 0, patch = true, level_offset = 3, moves = [0x8B31808E, 0x8E7E960B, 0x19025F83, 0x6633159F], levels = [41, 41, 82, 118] },  # Dvalin, DS Lv 93: whk00410@41 · whk00310@41 · whd00050@82 · whd00300@118
-  { slot = 1, patch = true, level_offset = 1, moves = [0x28B0E96F, 0x514A6198, 0x3D4653B0, 0x142DBE2A], levels = [41, 41, 81, 95] },  # Kayson, DS Lv 91: whd00270@41 · whd00420@41 · who00120@81 · who00210@95
-  { slot = 2, patch = true, level_offset = 0, moves = [0x6633159F, 0x00196EC2, 0x28B0E96F, 0x29728358], levels = [41, 80, 86, 105] },  # Tytan, DS Lv 90: whd00300@41 · whd00040@80 · whd00270@86 · whd00370@105
-  { slot = 3, patch = true, level_offset = 0, moves = [0x10A0C298, 0xB633C4E1, 0x46A71C03, 0x8E7E960B], levels = [41, 41, 84, 100] },  # Mole, DS Lv 90: who00410@41 · whd00290@41 · whk00390@84 · whk00310@100
-  { slot = 4, patch = true, level_offset = 0, moves = [0x10A0C298, 0x28B0E96F, 0xC7A9BB3A, 0x514A6198], levels = [41, 41, 78, 110] },  # Kenville, DS Lv 90: who00410@41 · whd00270@41 · who00180@78 · whd00420@110
-  { slot = 5, patch = true, level_offset = 1, moves = [0x029E7B25, 0x10A0C298, 0x60397CCA, 0x7C6D5B0E], levels = [41, 41, 77, 95] },  # Metron, DS Lv 91: whs00750@41 · who00410@41 · whs00210@77 · whs00500@95
-  { slot = 6, patch = true, level_offset = 0, moves = [0x3B8D915B, 0xB633C4E1, 0x7EEA4EE9, 0xA5777314], levels = [41, 71, 79, 105] },  # Fedora, DS Lv 90: who00420@41 · whd00290@71 · whd00210@79 · whs00890@105
-  { slot = 7, patch = true, level_offset = 0, moves = [0x3B8D915B, 0xB633C4E1, 0x011AAF4B, 0x7FE98F60], levels = [41, 79, 91, 103] },  # Sworm, DS Lv 90: who00420@41 · whd00290@79 · whs00550@91 · whs00700@103
-  { slot = 8, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x3B8D915B, 0x2C3D95DD, 0x2296A01A], levels = [41, 41, 82, 93] },  # Krypto, DS Lv 90: whs00500@41 · who00420@41 · whd00470@82 · who00430@93
-  { slot = 9, patch = true, level_offset = 2, moves = [0x7FE98F60, 0x029E7B25, 0x8B31808E, 0xA01CD34D], levels = [41, 41, 100, 128] },  # Zell, DS Lv 92: whs00700@41 · whs00750@41 · whk00410@100 · whk00420@128
-  { slot = 10, patch = true, level_offset = 1, moves = [0x029E7B25, 0x3B8D915B, 0x4C1D87D5, 0x035C1112], levels = [41, 41, 76, 110] },  # Mercury, DS Lv 91: whs00750@41 · who00420@41 · whs00620@76 · whs00650@110
+  { slot = 0, patch = true, level_offset = 0, moves = [0x65B7C1F1, 0xDBA0E5E3, 0x96A7CD7D], levels = [41, 41, 41] },  # Paul Siddon, DS Lv 40: whd00100@41 · whk00170@41 · whk00200@41
+  { slot = 1, patch = true, level_offset = 0, moves = [0xB4757AB8, 0x18C035B4, 0x142DBE2A, 0x58E8FC83], levels = [41, 85, 95, 110] },  # Lane War, DS Lv 40: whd00190@41 · whd00150@85 · who00210@95 · who00060@110
+  { slot = 2, patch = true, level_offset = 0, moves = [0x00196EC2, 0x67F17FA8, 0xB1FBC783], levels = [41, 41, 104] },  # Danny Wood, DS Lv 40: whd00040@41 · whd00200@41 · whs00280@104
+  { slot = 3, patch = true, level_offset = 0, moves = [0xB4757AB8, 0x78E027BC, 0x1A868BED, 0x3F00EDE9], levels = [41, 76, 100, 111] },  # Apollo Light, DS Lv 40: whd00190@41 · whs00300@76 · whd00250@100 · who00220@111
+  { slot = 4, patch = true, level_offset = 0, moves = [0x3F00EDE9, 0xB4757AB8, 0x518BCA26, 0x37A1B17B], levels = [41, 41, 98, 107] },  # Jeff Iron, DS Lv 40: who00220@41 · whd00190@41 · whs00030@98 · whs00370@107
+  { slot = 5, patch = true, level_offset = 0, moves = [0x6ADE9E01, 0x4E9A9232, 0x4890FB67, 0x3BF45E9A], levels = [41, 41, 41, 95] },  # Jude Sharp, DS Lv 40: who00040@41 · whd00130@41 · whs00020@41 · whs00870@95
+  { slot = 6, patch = true, level_offset = 0, moves = [0x1ECA5CE1, 0x245D62F1, 0x01DB04F5, 0x5B6C28ED], levels = [41, 41, 41, 82] },  # Eton Messer, DS Lv 40: whs00040@41 · who00130@41 · whd00140@41 · who00260@82
+  { slot = 7, patch = true, level_offset = 0, moves = [0x4AD6453E, 0x2B343D01, 0x3D4653B0, 0x17A96A44], levels = [41, 41, 68, 89] },  # Sue Sparrow, DS Lv 40: whs00320@41 · whd00070@41 · who00120@68 · who00010@89
+  { slot = 8, patch = true, level_offset = 0, moves = [0x3BF45E9A, 0x71831119, 0x5643C944], levels = [41, 41, 41] },  # Caleb Stonewall, DS Lv 40: whs00870@41 · who00350@41 · whd00020@41
+  { slot = 9, patch = true, level_offset = 0, moves = [0x1ECA5CE1, 0x1A472053, 0x142DBE2A, 0xB27F13ED], levels = [41, 41, 41, 104] },  # Riley Jamm, DS Lv 40: whs00040@41 · whs00640@41 · who00210@41 · whs00080@104
+  { slot = 10, patch = true, level_offset = 0, moves = [0x1C8CE2B8, 0x0D368F6B, 0x7577A26A], levels = [41, 41, 90] },  # Byron Love, DS Lv 40: whs00340@41 · who00200@41 · whs00900@90
 ]
 
-# l08: DS PracticeGame2B record 406 «Nuevo Génesis» Lv 92
+# w_u02: DS PracticeGame4B record 395 «Gafitas B» Lv 0 (no fixed level: the wiki's)
 [[team]]
-name = "ie2_rika_l08"
-based_on = "tm_cro_ie2_1200"
-same_as = "tm_cro_ie2_1200"
+name = "ie2_rika_w_u02"
+based_on = "chronicle_deluxe.ct_wk_megane_b"
+same_as = "chronicle_deluxe.ct_wk_megane_b"
 
 [[edit]]
-target = "ie2_rika_l08"
+target = "ie2_rika_w_u02"
 member = [
-  { slot = 0, patch = true, level_offset = 0, moves = [0xB907E20C, 0xA01CD34D, 0xB633C4E1, 0xE854ED56], levels = [41, 75, 84, 93] },  # Nero, DS Lv 92: whk00430@41 · whk00420@75 · whd00290@84 · whk00050@93
-  { slot = 1, patch = true, level_offset = 0, moves = [0x29728358, 0x166B0073, 0x6633159F], levels = [41, 95, 107] },  # Zohen, DS Lv 92: whd00370@41 · who00110@95 · whd00300@107
-  { slot = 2, patch = true, level_offset = 0, moves = [0x28B0E96F, 0x65B7C1F1, 0x166B0073, 0x29728358], levels = [41, 92, 95, 109] },  # Hauser, DS Lv 92: whd00270@41 · whd00100@92 · who00110@95 · whd00370@109
-  { slot = 3, patch = true, level_offset = 1, moves = [0x43B5739B, 0x6633159F, 0x46A71C03, 0xB907E20C], levels = [41, 41, 92, 112] },  # Kiburn, DS Lv 93: who00370@41 · whd00300@41 · whk00390@92 · whk00430@112
-  { slot = 4, patch = true, level_offset = 1, moves = [0xB633C4E1, 0xAEEA9F97, 0x592A96B4, 0x43B5739B], levels = [41, 41, 93, 113] },  # Gele, DS Lv 93: whd00290@41 · whd00380@41 · who00160@93 · who00370@113
-  { slot = 5, patch = true, level_offset = 3, moves = [0x7C6D5B0E, 0x3B8D915B, 0x4683AADF, 0xC66BD10D], levels = [41, 41, 75, 95] },  # Bellatrix, DS Lv 95: whs00500@41 · who00420@41 · whs00820@75 · who00080@95
-  { slot = 6, patch = true, level_offset = 0, moves = [0x43B5739B, 0x4B142F09, 0x261BDCA8, 0x4683AADF], levels = [41, 93, 105, 117] },  # Kormer, DS Lv 92: who00370@41 · whs00220@93 · who00230@105 · whs00820@117
-  { slot = 7, patch = true, level_offset = 1, moves = [0x43B5739B, 0x520F1E48, 0x65766A4F, 0x2296A01A], levels = [41, 92, 96, 108] },  # Ark, DS Lv 93: who00370@41 · whs00230@92 · whs00510@96 · who00430@108
-  { slot = 8, patch = true, level_offset = 0, moves = [0x2296A01A, 0xDF70E04C, 0x3EC287DE, 0xAEEA9F97], levels = [41, 95, 100, 107] },  # Kiwill, DS Lv 92: who00430@41 · who00090@95 · who00320@100 · whd00380@107
-  { slot = 9, patch = true, level_offset = 0, moves = [0x7C6D5B0E, 0x7FE98F60, 0x6DAEF91C], levels = [41, 41, 115] },  # Wittz, DS Lv 92: whs00500@41 · whs00700@41 · whs00810@115
-  { slot = 10, patch = true, level_offset = 2, moves = [0x65766A4F, 0x6DAEF91C, 0xB633C4E1, 0x2296A01A], levels = [41, 75, 81, 102] },  # Xene, DS Lv 94: whs00510@41 · whs00810@75 · whd00290@81 · who00430@102
+  { slot = 0, patch = true, moves = [0xBFCC20E7, 0xACAC21CE, 0x5B6C28ED, 0xD9E65BBA], levels = [56, 64, 78, 86] },  # Minnie Stratio, DS Lv 0: whk00130@56 · whd00080@64 · who00260@78 · whk00270@86
+  { slot = 1, patch = true, moves = [0x0F703132, 0x33ED6677, 0xAD6E4BF9, 0x15EFD41D], levels = [50, 58, 80, 99] },  # Ness Lockley, DS Lv 0: who00100@50 · whd00160@58 · whd00180@80 · who00310@99
+  { slot = 2, patch = true, moves = [0x18C035B4, 0xB5B7108F, 0x592A96B4, 0xB4757AB8], levels = [53, 62, 68, 98] },  # Drew Crenshaw, DS Lv 0: whd00150@53 · whd00090@62 · who00160@68 · whd00190@98
+  { slot = 3, patch = true, moves = [0x7EEA4EE9, 0x09BBF3D9, 0x0710C61E, 0xDCF43422], levels = [57, 72, 86, 97] },  # Colt Youngstein, DS Lv 0: whd00210@57 · who00400@72 · whd00440@86 · who00290@97
+  { slot = 4, patch = true, moves = [0x5643C944, 0x17A96A44, 0x01DB04F5, 0x245D62F1], levels = [41, 41, 71, 89] },  # Gus Martin, DS Lv 0: whd00020@41 · who00010@41 · whd00140@71 · who00130@89
+  { slot = 5, patch = true, moves = [0x17A96A44, 0x6B1CF436, 0x3663DB4C, 0xC7A9BB3A], levels = [57, 61, 70, 85] },  # Ian Telektual, DS Lv 0: who00010@57 · who00140@61 · whs00270@70 · who00180@85
+  { slot = 6, patch = true, moves = [0x6B1CF436, 0x63BDA8A4], levels = [65, 80] },  # Gaby Farmer, DS Lv 0: who00140@65 · whs00010@80
+  { slot = 7, patch = true, moves = [0x518BCA26, 0x592A96B4, 0x3EC287DE, 0x7A67325B], levels = [59, 64, 78, 81] },  # Billy Blanc, DS Lv 0: whs00030@59 · who00160@64 · who00320@78 · whd00410@81
+  { slot = 8, patch = true, moves = [0x2CFC3E63, 0xB4B4D106, 0x00D8C57C], levels = [41, 80, 110] },  # Verne Spring, DS Lv 0: whs00060@41 · whs00580@80 · whs00450@110
+  { slot = 9, patch = true, moves = [0x5049A011, 0x55C71D2A, 0xDEB28A7B, 0x6DD736DD], levels = [41, 41, 66, 80] },  # Bela Bluebells, DS Lv 0: whs00130@41 · whd00220@41 · who00190@66 · who00440@80
+  { slot = 10, patch = true, moves = [0x520F1E48, 0x3EC287DE, 0xB3BD79DA, 0x4E5B398C], levels = [58, 68, 78, 89] },  # Terry Namby, DS Lv 0: whs00230@58 · who00320@68 · whs00180@78 · whs00520@89
+]
+
+# w_u03: DS PracticeGame4B record 391 «Sospechosos A» Lv 0 (no fixed level: the wiki's)
+[[team]]
+name = "ie2_rika_w_u03"
+based_on = "chronicle_deluxe.ct_wk_ayashii_yatsura_a"
+same_as = "chronicle_deluxe.ct_wk_ayashii_yatsura_a"
+
+[[edit]]
+target = "ie2_rika_w_u03"
+member = [
+  { slot = 0, patch = true, moves = [0xBFCC20E7, 0xF08DB620, 0x47657634, 0xDBA0E5E3], levels = [51, 66, 82, 105] },  # Mark Izushy, DS Lv 0: whk00130@51 · whk00140@66 · whk00290@82 · whk00170@105
+  { slot = 1, patch = true, moves = [0x7CACF0B0, 0x41F3CDC2, 0x18019E0A, 0x7A67325B], levels = [57, 70, 79, 106] },  # Terry Orr, DS Lv 0: whd00110@57 · who00070@70 · whs00540@79 · whd00410@106
+  { slot = 2, patch = true, moves = [0x65B7C1F1, 0x166B0073, 0x00196EC2, 0x2B343D01], levels = [48, 59, 73, 85] },  # Bill Clanger, DS Lv 0: whd00100@48 · who00110@59 · whd00040@73 · whd00070@85
+  { slot = 3, patch = true, moves = [0x7EEA4EE9, 0x3EC287DE, 0xF14FDC17, 0xEBD03938], levels = [58, 70, 77, 84] },  # Hannibal Whipp, DS Lv 0: whd00210@58 · who00320@70 · whk00040@77 · whk00250@84
+  { slot = 4, patch = true, moves = [0x7CACF0B0, 0x41F3CDC2, 0x34256515, 0x7A67325B], levels = [50, 66, 77, 99] },  # Tom Felix, DS Lv 0: whd00110@50 · who00070@66 · whs00170@77 · whd00410@99
+  { slot = 5, patch = true, moves = [0x01DB04F5, 0x70417B2E, 0xB4757AB8], levels = [61, 80, 101] },  # Gary Burdine, DS Lv 0: whd00140@61 · who00250@80 · whd00190@101
+  { slot = 6, patch = true, moves = [0x18C035B4, 0x6ADE9E01, 0x09BBF3D9, 0xB5B7108F], levels = [41, 41, 68, 76] },  # Jonah Spark, DS Lv 0: whd00150@41 · who00040@41 · who00400@68 · whd00090@76
+  { slot = 7, patch = true, moves = [0x7CACF0B0, 0x259F08C6, 0x1A868BED, 0x17A96A44], levels = [52, 64, 73, 79] },  # Luke Raffles, DS Lv 0: whd00110@52 · who00030@64 · whd00250@73 · who00010@79
+  { slot = 8, patch = true, moves = [0x1ECA5CE1, 0x7B64F3D2, 0x316A7390], levels = [57, 73, 100] },  # Richard Trogg, DS Lv 0: whs00040@57 · whs00100@73 · whs00670@100
+  { slot = 9, patch = true, moves = [0xDEB28A7B, 0x41F3CDC2, 0x322F0C40, 0x574008CD], levels = [50, 65, 75, 86] },  # Tate Immy, DS Lv 0: who00190@50 · who00070@65 · whd00060@75 · whs00530@86
+  { slot = 10, patch = true, moves = [0x7CACF0B0, 0x3EC287DE, 0x4D1E465C, 0xB5B7108F], levels = [53, 66, 79, 86] },  # Red Dayers, DS Lv 0: whd00110@53 · who00320@66 · whd00330@79 · whd00090@86
+]
+
+# w_u04: DS PracticeGame4B record 388 «Chupabanquillos 6» Lv 0 (no fixed level: the wiki's)
+[[team]]
+name = "ie2_rika_w_u04"
+based_on = "chronicle_deluxe.ct_wk_benchers_6"
+same_as = "chronicle_deluxe.ct_wk_benchers_6"
+
+[[edit]]
+target = "ie2_rika_w_u04"
+member = [
+  { slot = 0, patch = true, moves = [0xD824318D, 0x259F08C6, 0x5C38F92C, 0x96A7CD7D], levels = [41, 76, 80, 93] },  # Gaston Cooley, DS Lv 0: whk00370@41 · who00030@76 · whk00180@80 · whk00200@93
+  { slot = 1, patch = true, moves = [0xACAC21CE, 0x3C843987, 0x01DB04F5, 0x2B343D01], levels = [41, 66, 80, 99] },  # Mike Vox, DS Lv 0: whd00080@41 · who00020@66 · whd00140@80 · whd00070@99
+  { slot = 2, patch = true, moves = [0x65B7C1F1, 0x00196EC2, 0x142DBE2A, 0x67F17FA8], levels = [41, 85, 93, 118] },  # Harry Closs, DS Lv 0: whd00100@41 · whd00040@85 · who00210@93 · whd00200@118
+  { slot = 3, patch = true, moves = [0xA7157B91, 0xC0FD6AFB, 0x00196EC2, 0xA6D711A6], levels = [41, 64, 75, 84] },  # Bob Carlton, DS Lv 0: whk00020@41 · whk00260@64 · whd00040@75 · whk00120@84
+  { slot = 4, patch = true, moves = [0x33ED6677, 0x8DFA4265, 0x322F0C40, 0xE9968761], levels = [41, 66, 75, 86] },  # Bill Formby, DS Lv 0: whd00160@41 · whk00110@66 · whd00060@75 · whk00150@86
+  { slot = 5, patch = true, moves = [0x7B64F3D2, 0x4890FB67, 0xAD6E4BF9, 0x58E8FC83], levels = [41, 82, 105, 119] },  # Cal Trops, DS Lv 0: whs00100@41 · whs00020@82 · whd00180@105 · who00060@119
+  { slot = 6, patch = true, moves = [0x53CD747F, 0xDEB28A7B, 0x0455B9CE, 0x6ADE9E01], levels = [41, 70, 88, 91] },  # Alan Coe, DS Lv 0: whs00330@41 · who00190@70 · whs00250@88 · who00040@91
+  { slot = 7, patch = true, moves = [0xF14FDC17, 0x245D62F1, 0x01DB04F5, 0xB3BD79DA], levels = [41, 66, 78, 89] },  # Reg Underwood, DS Lv 0: whk00040@41 · who00130@66 · whd00140@78 · whs00180@89
+  { slot = 8, patch = true, moves = [0x65B7C1F1, 0x166B0073, 0x00196EC2, 0x025FD09B], levels = [41, 41, 76, 87] },  # Stan Andagi, DS Lv 0: whd00100@41 · who00110@41 · whd00040@76 · whd00340@87
+  { slot = 9, patch = true, moves = [0x1F0836D6, 0x259F08C6, 0x4E9A9232, 0xA8E0F6C2], levels = [50, 60, 72, 89] },  # Theakston Plank, DS Lv 0: whs00140@50 · who00030@60 · whd00130@72 · whs00290@89
+  { slot = 10, patch = true, moves = [0x0F703132, 0x520F1E48, 0x33ED6677, 0xB27F13ED], levels = [41, 61, 70, 123] },  # Phil Noir, DS Lv 0: who00100@41 · whs00230@61 · whd00160@70 · whs00080@123
+]
+
+# w_u05: DS PracticeGame4B record 397 «Inazuma B» Lv 60
+[[team]]
+name = "ie2_rika_w_u05"
+based_on = "chronicle_deluxe.ct_wk_team_inazuma_b"
+same_as = "chronicle_deluxe.ct_wk_team_inazuma_b"
+
+[[edit]]
+target = "ie2_rika_w_u05"
+member = [
+  { slot = 0, patch = true, level_offset = 0, moves = [0x8C382852, 0xA491AFFF, 0xF64674CB, 0xB576BB31], levels = [41, 41, 140, 140] },  # Mark Evans, DS Lv 60: whk00010@41 · whk00220@41 · whk00440@140 · whs00480@140
+  { slot = 1, patch = true, level_offset = 0, moves = [0x3C843987, 0x17A96A44, 0x1A868BED, 0x37A1B17B], levels = [41, 65, 78, 85] },  # Nathan Swift, DS Lv 60: who00020@41 · who00010@65 · whd00250@78 · whs00370@85
+  { slot = 2, patch = true, level_offset = 0, moves = [0x7D6E9A87, 0x166B0073, 0x4031A7F5, 0x1B44E1DA], levels = [41, 56, 72, 140] },  # Jack Wallside, DS Lv 60: whd00010@41 · who00110@56 · who00170@72 · whd00350@140
+  { slot = 3, patch = true, level_offset = 0, moves = [0x4F58F805, 0x55C71D2A, 0xB5B7108F, 0x2AF65736], levels = [41, 62, 74, 100] },  # Jim Wraith, DS Lv 60: whd00030@41 · whd00220@62 · whd00090@74 · whd00170@100
+  { slot = 4, patch = true, level_offset = 0, moves = [0xDEB28A7B, 0x1F0836D6, 0x3663DB4C, 0x68982058], levels = [47, 55, 68, 80] },  # Tod Ironside, DS Lv 60: who00190@47 · whs00140@55 · whs00270@68 · who00340@80
+  { slot = 5, patch = true, level_offset = 0, moves = [0xC66BD10D, 0x06130797, 0x4CDC2C6B], levels = [41, 52, 70] },  # Steve Grim, DS Lv 60: who00080@41 · whs00150@52 · whd00230@70
+  { slot = 6, patch = true, level_offset = 0, moves = [0x259F08C6, 0x011AAF4B, 0x574008CD, 0x1A868BED], levels = [41, 58, 75, 88] },  # Tim Saunders, DS Lv 60: who00030@41 · whs00550@58 · whs00530@75 · whd00250@88
+  { slot = 7, patch = true, level_offset = 0, moves = [0x35E70F22, 0x6B1CF436, 0xACAC21CE, 0x63BDA8A4], levels = [41, 54, 63, 77] },  # Sam Kincaid, DS Lv 60: whs00070@41 · who00140@54 · whd00080@63 · whs00010@77
+  { slot = 8, patch = true, level_offset = 0, moves = [0x19025F83, 0x6ADE9E01, 0x3F00EDE9], levels = [41, 60, 78] },  # Maxwell Carson, DS Lv 60: whd00050@41 · who00040@60 · who00220@78
+  { slot = 9, patch = true, level_offset = 0, moves = [0x518BCA26, 0x41F3CDC2, 0x63BDA8A4, 0x00D8C57C], levels = [41, 57, 65, 140] },  # Axel Blaze, DS Lv 60: whs00030@41 · who00070@57 · whs00010@65 · whs00450@140
+  { slot = 10, patch = true, level_offset = 0, moves = [0x2CFC3E63, 0x0597D3F9, 0x5F989B9E, 0x10D90D59], levels = [41, 64, 140, 92] },  # Kevin Dragonfly, DS Lv 60: whs00060@41 · whs00350@64 · whs00830@140 · whs00840@92
 ]

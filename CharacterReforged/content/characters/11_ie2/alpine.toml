@@ -8,9 +8,9 @@ schema = "VRFW.character/2"
 target = "c02023210"                                   # Adam Ropes
 moves = [
   { move = 0xD9E65BBA, level = 1 },                         # Aurora Curtain
-  { move = 0x5C38F92C, level = 16 },                        # Mistral
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0x039DBAAC, level = 29 },                        # Land of Ice
-  { move = 0xB7F1AED6, level = 45 },                        # Double Cyclone
+  { move = 0xC4701649, level = 66 },                        # Ice Block
 ]
 
   [[edit.cards]]
@@ -22,10 +22,10 @@ moves = [
 [[edit]]
 target = "c02023220"                                   # Joaquine Downtown
 moves = [
-  { move = 0x039DBAAC, level = 21 },                        # Land of Ice
-  { move = 0x2C3D95DD, level = 27 },                        # Sleeping Dust
-  { move = 0xAC6D8A70, level = 34 },                        # Rainbow Arc
-  { move = 0xDCF43422, level = 40 },                        # Aurora Dribble
+  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
+  { move = 0x37A1B17B, level = 34 },                        # Fire Rooster
+  { move = 0x1FC99D68, level = 55 },                        # Snow Angel
+  { move = 0x08EEBD53, level = 65 },                        # Feint Play
 ]
 
   [[edit.cards]]
@@ -38,10 +38,10 @@ moves = [
 [[edit]]
 target = "c02023230"                                   # Milton Bindings
 moves = [
-  { move = 0x18C035B4, level = 13 },                        # Ghost Pull
+  { move = 0xACAC21CE, level = 13 },                        # Fake Ball
   { move = 0x039DBAAC, level = 25 },                        # Land of Ice
   { move = 0x0455B9CE, level = 31 },                        # Run Ball Run
-  { move = 0x2B343D01, level = 39 },                        # Cyclone
+  { move = 0x50880BAF, level = 45 },                        # Frozen Steal
 ]
 
   [[edit.cards]]
@@ -53,9 +53,9 @@ moves = [
 [[edit]]
 target = "c02023240"                                   # Spike Gleeson
 moves = [
-  { move = 0xDF70E04C, level = 8 },                         # Rodeo Clown
+  { move = 0x4E9A9232, level = 8 },                         # Spinning Cut
   { move = 0x33ED6677, level = 18 },                        # Doppelganger
-  { move = 0x322F0C40, level = 30 },                        # Spider Web
+  { move = 0xDCF43422, level = 30 },                        # Aurora Dribble
   { move = 0xB5B7108F, level = 37 },                        # Shadow Stitch
 ]
 
@@ -68,9 +68,9 @@ moves = [
 [[edit]]
 target = "c02023250"                                   # Sean Snowfield
 moves = [
-  { move = 0xD8794890, level = 1 },                         # Kangaroo Kick
+  { move = 0x2D68DB57, level = 1 },                         # Deceptive Step
   { move = 0x55C71D2A, level = 1 },                         # About Face
-  { move = 0x3069B219, level = 29 },                        # Super Sumo Stomp
+  { move = 0xD8794890, level = 29 },                        # Kangaroo Kick
   { move = 0x67F17FA8, level = 52 },                        # Mega Quake
 ]
 
@@ -83,10 +83,10 @@ moves = [
 [[edit]]
 target = "c02023260"                                   # Kerry Bootgaiter
 moves = [
-  { move = 0x259F08C6, level = 10 },                        # Whirlwind Twister
-  { move = 0x55C71D2A, level = 16 },                        # About Face
-  { move = 0x70417B2E, level = 30 },                        # Deceptor Dribble
-  { move = 0x58E8FC83, level = 48 },                        # Rolling Hell
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x2A37FC88, level = 30 },                        # Revolution V
+  { move = 0x50880BAF, level = 35 },                        # Frozen Steal
+  { move = 0xC0A013E6, level = 55 },                        # Liar Shot
 ]
 
   [[edit.cards]]
@@ -100,7 +100,7 @@ moves = [
 target = "c02023270"                                   # Maddox Rock
 moves = [
   { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
-  { move = 0x0CF4E55C, level = 18 },                        # Double Touch
+  { move = 0xAC6D8A70, level = 18 },                        # Rainbow Arc
   { move = 0x011AAF4B, level = 27 },                        # Gyro Head
   { move = 0xDCF43422, level = 42 },                        # Aurora Dribble
 ]
@@ -116,9 +116,9 @@ moves = [
 target = "c02023280"                                   # Robert Skipolson
 moves = [
   { move = 0x1F0836D6, level = 12 },                        # Comet Shot
-  { move = 0x60397CCA, level = 20 },                        # Cross Drive
+  { move = 0x70417B2E, level = 20 },                        # Deceptor Dribble
   { move = 0x7B64F3D2, level = 29 },                        # Hawk Shot
-  { move = 0x70417B2E, level = 38 },                        # Deceptor Dribble
+  { move = 0xD9BB22A7, level = 38 },                        # Air Ride
 ]
 
   [[edit.cards]]
@@ -135,8 +135,8 @@ stats = { kick = 224, control = 189, technique = 217, pressure = 294, physical =
 moves = [
   { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
   { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
   { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+  { move = 0x1FC99D68, level = 11 },                        # Snow Angel
 ]
 
   [[edit.cards]]
@@ -144,8 +144,8 @@ moves = [
   moves = [
     { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
     { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
-    { move = 0x039DBAAC, level = 1 },                       # Land of Ice
     { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
@@ -161,8 +161,8 @@ stats = { kick = 315, control = 242, technique = 259, pressure = 247, physical =
 moves = [
   { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
   { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
   { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
+  { move = 0x1FC99D68, level = 11 },                        # Snow Angel
 ]
 
 [[edit]]
@@ -170,20 +170,59 @@ target = "c02023380"                                   # Shawn Froste
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 315, control = 242, technique = 259, pressure = 247, physical = 161, intelligence = 252, agility = 153, freedom = 247 }
-moves = [
-  { move = 0x19C3F43D, level = 1 },                         # Eternal Blizzard
-  { move = 0xDCF43422, level = 1 },                         # Aurora Dribble
-  { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x7E2BE557, level = 1 },                         # Legendary Wolf
-]
+
+  [[edit.cards]]
+  id = 0x0B8A439A    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
+  ]
+
+  [[edit.cards]]
+  id = 0xA5AAAB6B    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
+  ]
+
+  [[edit.cards]]
+  id = 0xA9C5C501    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
+  ]
+
+  [[edit.cards]]
+  id = 0xBA4C2C21    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
+  ]
+
+  [[edit.cards]]
+  id = 0xE4A9DA7F    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x19C3F43D, level = 1 },                       # Eternal Blizzard
+    { move = 0xDCF43422, level = 1 },                       # Aurora Dribble
+    { move = 0x7E2BE557, level = 1 },                       # Legendary Wolf
+    { move = 0x1FC99D68, level = 11 },                      # Snow Angel
+  ]
 
 [[edit]]
 target = "c02023300"                                   # Roland Climbstein
 moves = [
-  { move = 0x5E5AF1A9, level = 1 },                         # Northern Impact
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0x039DBAAC, level = 1 },                         # Land of Ice
-  { move = 0x79224D8B, level = 19 },                        # Freeze Shot
-  { move = 0x19C3F43D, level = 38 },                        # Eternal Blizzard
+  { move = 0x19C3F43D, level = 19 },                        # Eternal Blizzard
+  { move = 0x5E5AF1A9, level = 55 },                        # Northern Impact
 ]
 
   [[edit.cards]]
@@ -196,10 +235,10 @@ moves = [
 [[edit]]
 target = "c02023310"                                   # Quentin Rackner
 moves = [
-  { move = 0x79224D8B, level = 1 },                         # Freeze Shot
-  { move = 0x3C843987, level = 11 },                        # Flurry Dash
+  { move = 0x7DAF3139, level = 1 },                         # Emperor Penguin No. 2
+  { move = 0x19C3F43D, level = 11 },                        # Eternal Blizzard
   { move = 0xC7A9BB3A, level = 25 },                        # Whirlwind Cut
-  { move = 0x19C3F43D, level = 32 },                        # Eternal Blizzard
+  { move = 0x46FA651E, level = 32 },                        # Water Veil
 ]
 
   [[edit.cards]]
@@ -212,9 +251,9 @@ moves = [
 target = "c02023320"                                   # Trent Peggs
 moves = [
   { move = 0xBFCC20E7, level = 9 },                         # Wood Chopper
-  { move = 0x5C38F92C, level = 24 },                        # Mistral
+  { move = 0xD9E65BBA, level = 24 },                        # Aurora Curtain
   { move = 0xF08DB620, level = 39 },                        # Whirlwind
-  { move = 0xD9E65BBA, level = 58 },                        # Aurora Curtain
+  { move = 0xC5B27C7E, level = 58 },                        # Storm Rider
 ]
 
   [[edit.cards]]
@@ -227,7 +266,7 @@ moves = [
 [[edit]]
 target = "c02023330"                                   # Martin Ursus
 moves = [
-  { move = 0x5643C944, level = 1 },                         # Killer Slide
+  { move = 0x23C3EE90, level = 1 },                         # Shoulder Tackle
   { move = 0x4031A7F5, level = 27 },                        # Mole Fake
   { move = 0x039DBAAC, level = 33 },                        # Land of Ice
   { move = 0x025FD09B, level = 64 },                        # Volcano Cut
@@ -245,7 +284,7 @@ moves = [
   { move = 0x0CF4E55C, level = 10 },                        # Double Touch
   { move = 0x627FC293, level = 18 },                        # Meteor Attack
   { move = 0xDCF43422, level = 33 },                        # Aurora Dribble
-  { move = 0x3663DB4C, level = 49 },                        # Utter Gutsiness Bat
+  { move = 0xADAFE047, level = 49 },                        # Dual Strike
 ]
 
   [[edit.cards]]
@@ -258,10 +297,10 @@ moves = [
 [[edit]]
 target = "c02023350"                                   # Gem Strata
 moves = [
-  { move = 0x7CACF0B0, level = 9 },                         # Horn Train
-  { move = 0x166B0073, level = 19 },                        # Super Armadillo
-  { move = 0x7D6E9A87, level = 26 },                        # The Wall
-  { move = 0x00196EC2, level = 34 },                        # Earthquake
+  { move = 0x261BDCA8, level = 9 },                         # Moonsault
+  { move = 0x21127474, level = 40 },                        # Ultra Moon
+  { move = 0x316A7390, level = 52 },                        # Land Dragon
+  { move = 0x2FB941B3, level = 55 },                        # Stone Prison
 ]
 
   [[edit.cards]]
@@ -275,8 +314,8 @@ target = "c02023360"                                   # Horace Onlign
 moves = [
   { move = 0x06130797, level = 1 },                         # Rolling Kick
   { move = 0x3C843987, level = 1 },                         # Flurry Dash
-  { move = 0x0455B9CE, level = 25 },                        # Run Ball Run
-  { move = 0x79224D8B, level = 35 },                        # Freeze Shot
+  { move = 0x79224D8B, level = 25 },                        # Freeze Shot
+  { move = 0x46FA651E, level = 57 },                        # Water Veil
 ]
 
   [[edit.cards]]

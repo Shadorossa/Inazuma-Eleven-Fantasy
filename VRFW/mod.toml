@@ -1,14 +1,73 @@
 id = "vr_framework"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.25.0"
+version = "2.76.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-21"
+updated = "2026-10-22"
+# 2.76.0: AllOpen fix: a row with a condition gets an always-true one instead of an empty string (empty = false: every row was locked).
+# 2.75.0: a return = "menus" friendly also starts from the Chronicle board (match_engine friendly.rs menu_mode: play
+# mode 4; the pachangas' A was refused). Pose row node panel: the retail art drawn straight from the screen's res atlases (no on-demand load:
+# the white fallback), the lineup as the board's formation view (VS pitch + the game's small player cards), the
+# players of a page as rows (check box, name, challenge; a club player's row disabled), the page turn redraws
+# them, the rows' window stays put under the pointer (no rebuild loop), the caller's models put back where they
+# were (the board's caravan). Graft pose_row changed: points regen needed.
+# 2.73.0: [VRFW.BbUnlock] AllOpen also clears the rows' unlock-effect flag (no gold padlock with an empty balloon).
+# 2.72.0: CMND_VRFW_TEAM_LEVEL (scripts\team_lineup.lua): a team plays its next matches at a given level (its
+# members' offsets over the match row's level, in memory). No graft changed.
+# 2.71.0: the pose row's node panel style draws with the Chronicle board's retail art (vsroute01_15 / _16 / _17:
+# [layout.node_panel.art]; the plain tinted shapes stayed white in game); each model slot has its own model key (the
+# caravan of the board under the screen shares key 0: it was drawn huge after the list); a row's `team` dresses its
+# players in that team's kit (CMND_VRFW_TEAM_KIT); wrapped texts never run past their column. Graft pose_row changed:
+# points regen needed.
+# 2.70.0: pose rows' style node_panel (the Chronicle board's node panel look, a side panel of the models, 5 a
+# page with L1 / R1, Y = the declaration's `team` action: pick -1); VRFW_PoseRow.Open hides the opener's
+# layers instance by instance and gives back only those; CMND_VRFW_TEAM_LINEUP (scripts\team_lineup.lua,
+# docs/framework/team-lineup.md). Graft pose_row changed: points regen needed.
+# 2.69.0: VRFW_Recruit.Sign clears the season bit 0x100000 CMND_ADD_PARTY leaves on a signing (the bank showed contact
+# map / office / pachanga / gacha players as «Jugador de temporada»); the save adjust action clear_season repairs older
+# signings (content\save_adjust\recruit.toml). No graft changed.
+# 2.66.0: [VRFW.BbUnlock] AllOpen = true (any mod): no Battle Bay grid row is locked, the game's own unlock conditions
+# are cleared too (docs/framework/bb-pages.md §8.1).
+# 2.65.0: [[VRFW.BoardGroup]] chain / title (content\types\board_group.toml): a shared chain of board nodes for the
+# ModManager «Cadenas» section, one per id across mods (the first mod in load order declares it, the others add their
+# nodes); no effect in game (docs/framework/route-board.md §9).
+# 2.64.0: the caravan was drawn huge after a move to (or from) a road-less board node next to it (a move leg of no
+# length: the board's move divides by it, NaN place): graft route_nodes VRFW_RN_OffRoad drops zero legs and
+# gives a half-pixel step towards the node instead. Graft route_nodes changed: points regen needed.
+# 2.58.0: VRFW_PoseRow.Open hides the caller's own menu models while the screen is up (opts.models: the Chronicle
+# board's caravan showed huge over the pachanga list); TitleBalloon in the active route builder (team_engine
+# route.rs: the balloon showed the team's name). No graft changed.
+# 2.51.0: board groups (content\board_groups\*.toml, VRFW.board_group/1): board nodes a session switch hides at once
+# (VRFW_RN_SetHide, graft route_nodes); [[VRFW.RouteNode]] TitleBalloon (the balloon shows the node's Title); a
+# gacha node's command menu keeps mods' match panels off (VRFW_RBC_ServicePiece, graft route_board); install:
+# _deploy.toml [[retail_sprites]] cut a retail sprite into a mod PNG (docs/framework/route-board.md §9). Grafts
+# route_nodes and route_board changed: points regen needed. TitleBalloon is a new key of team_engine decl.rs.
+# 2.49.0: a road-less board node (Road = false) never takes the caravan off the roads: it stops at the node's beside
+# piece and leaves from there (graft route_nodes: VRFW_RN_OffRoad on the move path, UpdateCharaPos wrapped by
+# VRFW_RN_WrapChara). Graft route_nodes changed: points regen needed.
+# 2.46.0: pose rows (content\pose_rows\*.toml, VRFW.pose_row/1, docs/framework/pose-row.md): a mod's list screen whose
+# selected entry shows its players as 3D models posing in a row (screen vrfw_pose_row_menu, graft pose_row: 5 model
+# slots of one component, VRFW_PoseRow.Open); EVT_CharaModelNew takes a model slot and releases it; VRFW_Team.Captain
+# (docs/framework/team-captain.md). Graft pose_row new and evt_menu_kit.lua changed: points regen needed.
+# 2.45.0: a goal celebration moved to another mod ([[alias]] old -> new in its celebration file) keeps its
+# performanceId (crc32 of its oldest key: the players' saved picks stay) and claims of its old key still resolve.
+# 2.43.0: board node menus (content\node_menus\*.toml, VRFW.node_menu/1, docs/framework/node-menu.md): a Chronicle
+# board node whose piece runs a mod's own menu (its handler) instead of the command menu; the default of
+# VRFW_RB_PieceOpen asks the node menus; their balloon shows no player face (route_chains).
+# 2.42.0: the gacha node's panel: the retail command menu with the pool's one row and banner (VRFW_RBC_Rows,
+# VRFW_RB_MenuClosed), its drop-rate list without the owned players (CMND_VRFW_DROP_LIST_EXCLUDE_OWNED), the draw's
+# candidates the same (CMND_VRFW_GACHA_CANDIDATES, VRFW.chara.owned_of_character); docs/framework/gacha.md.
+# 2.38.0: v7.2.1 is the reference build (complete profile game/v7.2.1, row 0 of the version gate, its exe fingerprints;
+# v7.1.2 stays as a ported profile).
+# 2.35.0: gacha pools (content\gacha\*.toml, VRFW.gacha/1, docs/framework/gacha.md): a Chronicle board node draws a
+# player (question, draw event, the retail «joins the club» screen); hook point VRFW_RB_PieceOpen of the board.
+# 2.34.0: VRFW.net = the private rooms and the clipboard.
+# 2.31.0: the emblem grid loads a picture with funcLuaMenuCommand.
 # No plugin key: the framework's code is linked into the ModLoader (winmm.dll) and runs for the mod with this id.
 # The framework API version this folder's content is written for (checked like any mod's requires_api)
 requires_api = ">=1"

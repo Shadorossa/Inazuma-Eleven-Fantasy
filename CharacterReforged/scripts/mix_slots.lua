@@ -46,7 +46,7 @@ local BLOB, TABLE, DEFAULTS = "hiper_slots.json", "MixSlot", "MovesetDefault"
 local OPTION = "skill_set_view"
 local REC_PLACED, REC_NATIVE, REC_ROUTE, REC_LIST, LIST_ENTRY = 0x94, 0xC8, 0x1AC, 0x50, 8
 local BOARD_SLOTS, LIST_SLOTS = 9, 6
-local ROUTE_EVERY_MS, OPTION_EVERY_MS = 3000, 1000
+local ROUTE_EVERY_MS = 3000
 
 local function u32(v)
   if type(v) == "boolean" then return v and 1 or 0 end
@@ -530,7 +530,7 @@ local function sweep_start(on, report_why)
   SWEEP.mix_rows, SWEEP.context_rows = {}, {}
   SWEEP.stored, SWEEP.projected = 0, 0
   SWEEP.with_aura, SWEEP.with_mix = 0, 0
-  SWEEP.report_players, SWEEP.report_lines = 0, 0
+  SWEEP.report_players, SWEEP.report_examples, SWEEP.report_hidden = 0, {}, 0
   for k, id in pairs(st.mix) do
     local card = tonumber(k, 16)
     if card then
@@ -570,6 +570,9 @@ local function context_row(c, p, b, on)
   return { aura = aura, mix = mix, aura_from = aura_from, mix_from = mix_from }
 end
 
+-- the hidden entries shown in a projection's summary line
+local REPORT_EXAMPLES = 3
+
 local function sweep_card(st, c)
   local p, b = project_with_board(c.hdl, c.addr)
   if not st.mix[key(c.hdl)] and p.mix ~= 0 then
@@ -583,14 +586,13 @@ local function sweep_card(st, c)
   if mix ~= 0 then SWEEP.with_mix = SWEEP.with_mix + 1 end
   if SWEEP.report_why and #p.hidden > 0 then
     SWEEP.report_players = SWEEP.report_players + 1
-    if SWEEP.report_lines < 60 then
-      SWEEP.report_lines = SWEEP.report_lines + 1
+    SWEEP.report_hidden = SWEEP.report_hidden + #p.hidden
+    if #SWEEP.report_examples < REPORT_EXAMPLES then
       local hidden = {}
       for _, h in ipairs(p.hidden) do
         hidden[#hidden + 1] = string.format("%s %s (list position %d)", h.kind, hex(h.id), h.pos + 1)
       end
-      info(string.format("projection (%s): card %s: aura slot %s, mix slot %s; hidden in the new set (kept in his list): %s",
-        SWEEP.report_why, hex(c.hdl), hex(p.aura), hex(p.mix), table.concat(hidden, ", ")))
+      SWEEP.report_examples[#SWEEP.report_examples + 1] = string.format("card %s: %s", hex(c.hdl), table.concat(hidden, ", "))
     end
   end
 end
@@ -607,9 +609,9 @@ local function sweep_finish()
       SWEEP.on and "new set" or "Victory Road", #SWEEP.context_rows, SWEEP.with_aura, SWEEP.with_mix, CONTEXT,
       SWEEP.stored, SWEEP.projected))
   end
-  if SWEEP.report_why and SWEEP.report_players > SWEEP.report_lines then
-    info(string.format("projection (%s): %d more player(s) with hidden entries", SWEEP.report_why,
-      SWEEP.report_players - SWEEP.report_lines))
+  if SWEEP.report_why and SWEEP.report_players > 0 then
+    info(string.format("projection (%s): %d player(s) with entries hidden in the new set (%d in all, kept in their lists); first: %s",
+      SWEEP.report_why, SWEEP.report_players, SWEEP.report_hidden, table.concat(SWEEP.report_examples, "; ")))
   end
   SWEEP.cards, SWEEP.mix_rows, SWEEP.context_rows = nil, nil, nil
 end
@@ -717,7 +719,23 @@ local function force_branch1()
   return n, #cards
 end
 
-local RT = { on = nil, next_opt = 0, next_route = 0, edge = false }
+local RT = { on = nil, option_dirty = true, next_route = 0, edge = false }
+
+-- the option «Tabla de habilidades» read again: at the first step and after each option change (event option_changed)
+local function option_check()
+  RT.option_dirty = false
+  local on = CharacterReforged.SkillSetOnNow()
+  if RT.on == on then return end
+  local was = RT.on
+  RT.on = on
+  if was ~= nil or on then
+    info("option «Tabla de habilidades»: " .. (on and "new set (6 + aura slot + mix slot)" or "Victory Road (the mix slots stay saved, hidden)"))
+  end
+  RT.edge = on
+  RT.why = "option on"
+  RT.next_route = 0
+  SWEEP.dirty, SWEEP.running = true, false
+end
 
 local function tick()
   local now = VRFW.now()
@@ -727,21 +745,7 @@ local function tick()
     SWEEP.running = false
     pcall(load)
   end
-  if now >= RT.next_opt then
-    RT.next_opt = now + OPTION_EVERY_MS
-    local on = CharacterReforged.SkillSetOnNow()
-    if RT.on ~= on then
-      local was = RT.on
-      RT.on = on
-      if was ~= nil or on then
-        info("option «Tabla de habilidades»: " .. (on and "new set (6 + aura slot + mix slot)" or "Victory Road (the mix slots stay saved, hidden)"))
-      end
-      RT.edge = on
-      RT.why = "option on"
-      RT.next_route = 0
-      SWEEP.dirty, SWEEP.running = true, false
-    end
-  end
+  if RT.option_dirty then option_check() end
   local idle = RT.on ~= nil and VRFW.slots.ready() and not (VRFW.in_match and VRFW.in_match())
   if RT.on and idle and now >= RT.next_route then
     RT.next_route = now + ROUTE_EVERY_MS
@@ -801,6 +805,8 @@ function CharacterReforged.CommandStep()
 end
 
 VRFW.on("tick", function() pcall(tick) end)
+-- any option: a parent row switched off changes what this row answers too
+VRFW.on("option_changed", function() RT.option_dirty = true end)
 VRFW.on("menu:open:post", function() pcall(menu_step) end)
 VRFW.on("slot_load", function()
   ST.slot, ST.st = -1, nil

@@ -237,8 +237,27 @@ do
   end
 end
 
+-- a list whose match asks it (a gacha node's game, CMND_VRFW_GACHA_OF_GAME): the owned players' spirits leave it
+-- (CMND_VRFW_DROP_LIST_EXCLUDE_OWNED, item_engine: no row, the rates over the players left); off when the list closes
+VRFW_DropList.GAME_PARAM = 3946214491                 -- the list's game (the command menu's RegisterPropValue)
+VRFW_DropList.GACHA_OF_GAME = 1822383973
+VRFW_DropList.EXCLUDE_OWNED = 3491817672
+function VRFW_DropList.ExcludeOwnedFor(game)
+  local D = VRFW_DropList
+  local okp, pool = pcall(funcLuaCommand, D.GACHA_OF_GAME, game or 0)
+  local on = okp and type(pool) == "number" and pool > 0
+  pcall(funcLuaCommand, D.EXCLUDE_OWNED, on and 1 or 0)
+end
+
 local vrfw_dl_init = OnInit
 function OnInit(...)
+  local game = 0
+  local okh, has = pcall(funcLuaCommand, 2947612279, VRFW_DropList.GAME_PARAM)
+  if okh and has then
+    local okg, g = pcall(funcLuaCommand, 3522198769, VRFW_DropList.GAME_PARAM)
+    if okg and type(g) == "number" then game = g end
+  end
+  VRFW_DropList.ExcludeOwnedFor(game)
   local r = {vrfw_dl_init(...)}
   pcall(funcLuaMenuCommand, VRFW_DropList.LOAD_TEX, VRFW_DropList.T30_PATH)
   VRFW_DropList.styled = {}
@@ -349,5 +368,14 @@ function OnUpdateTabData(a1, ...)
     end
   end
   return table.unpack(r)
+end
+
+-- the list closes: the owned-player rule of this list is off again
+local vrfw_dl_final = FinalizeMenu
+function FinalizeMenu(...)
+  pcall(funcLuaCommand, VRFW_DropList.EXCLUDE_OWNED, 0)
+  if vrfw_dl_final ~= nil then
+    return vrfw_dl_final(...)
+  end
 end
 -- ===== EVT vrfw_drop_list END =====

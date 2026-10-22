@@ -1,0 +1,15 @@
+# Declaration schema of the board groups (content\board_groups\*.toml, docs/framework/route-board.md §9):
+# [[VRFW.BoardGroup]] (Chronicle board nodes a switch hides at once). An unknown key, wrong type or out-of-range value
+# drops that declaration with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.board_group/1"
+folder = "content/board_groups"
+
+[entry.BoardGroup]
+doc = "Chronicle board nodes a hide switch hides at once (visual only: not drawn, not focusable; their data and save state stay)"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+nodes = { type = "strings", required = true, doc = "the [[VRFW.RouteNode]] Names of the nodes (any mod's)" }
+hideable = { type = "bool", default = true, doc = "the hide switch hides these nodes" }
+chain = { type = "string", doc = "a shared chain id (a-z 0-9 _, no mod prefix): the ModManager «Cadenas» section shows every group of every mod with this id as ONE chain of board nodes; the first mod in load order declares it (its title), the others add their nodes. No effect in game" }
+title = { type = "string", ref = "text_key", doc = "with chain: the text row id of the chain's title (the declaring mod's text rows)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

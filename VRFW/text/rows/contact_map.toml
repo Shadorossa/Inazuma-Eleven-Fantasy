@@ -817,15 +817,28 @@ ja = "このチームにはスカウトできる選手がいません。"
 zh_hans = "这支队伍没有可以招募的球员。"
 zh_hant = "這支隊伍沒有可以招募的球員。"
 
-# the cost line of a player's card (price, the currency's name, what the player has)
+# the cost line of a team page's player card, after the spirit's name and its element icon: the price, what the player has
 [[row]]
 id = "vrfw_cm_req_pay"
-es = "Coste: %d %s (tienes %d)"
-en = "Cost: %d %s (you have %d)"
-fr = "Coût : %d %s (tu en as %d)"
-de = "Kosten: %d %s (du hast %d)"
-it = "Costo: %d %s (ne hai %d)"
-pt = "Custo: %d %s (tens %d)"
-ja = "コスト：%d %s（所持 %d）"
-zh_hans = "费用：%d %s（拥有 %d）"
-zh_hant = "費用：%d %s（擁有 %d）"
+es = "x%d (%d)"
+en = "x%d (%d)"
+fr = "x%d (%d)"
+de = "x%d (%d)"
+it = "x%d (%d)"
+pt = "x%d (%d)"
+ja = "×%d（%d）"
+zh_hans = "×%d（%d）"
+zh_hant = "×%d（%d）"
+
+# a team page: a player shown here who is signed on another page («Se ficha en: Raimon»)
+[[row]]
+id = "vrfw_cm_sold_at"
+es = "Se ficha en: %s"
+en = "Signed on: %s"
+fr = "Recrutement : %s"
+de = "Verpflichtung bei: %s"
+it = "Si ingaggia in: %s"
+pt = "Contrata-se em: %s"
+ja = "スカウト先: %s"
+zh_hans = "招募于：%s"
+zh_hant = "招募於：%s"

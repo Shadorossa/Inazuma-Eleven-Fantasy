@@ -240,10 +240,13 @@ moves = [
 [[edit]]
 target = "c07110020"                                   # Mark Evans
 moves = [
-  { move = 0x8C382852, level = 1 },                         # God Hand
-  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
-  { move = 0x35E70F22, level = 10 },                        # Grenade Shot
-  { move = 0x5DFA931B, level = 20 },                        # Triple Defence
+  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0xEE9F2FBD, level = 11 },                        # God Catch
+  { move = 0x8AF3EAB9, level = 21 },                        # Hammer of Fury
+  { move = 0x93E8DBF8, level = 31 },                        # Dimensional Hand
+]
+VRFW.MoveGrades = [
+  { Move = 0xF64674CB, Grade = 1 },                         # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -256,8 +259,8 @@ target = "c11807270"                                   # Seymour Hillman
 moves = [
   { move = 0x8C382852, level = 1 },                         # God Hand
   { move = 0x8FBCFC3C, level = 1 },                         # Blazing Knuckle
-  { move = 0xA491AFFF, level = 88 },                        # Majin the Hand
-  { move = 0xB039ADB4, level = 99 },                        # Inazuma Break
+  { move = 0xA491AFFF, level = 1 },                         # Majin the Hand
+  { move = 0xF64674CB, level = 40 },                        # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -270,10 +273,10 @@ moves = [
 [[edit]]
 target = "c11807260"                                   # Silvia Woods
 moves = [
-  { move = 0xC19E2AEE, level = 1 },                         # Pegasus Shot
-  { move = 0xBE0E4AD0, level = 1 },                         # Fireball Knuckle
-  { move = 0x8C382852, level = 23 },                        # God Hand
-  { move = 0xF64674CB, level = 70 },                        # Fist of Justice
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
+  { move = 0x8C382852, level = 1 },                         # God Hand
+  { move = 0xC19E2AEE, level = 35 },                        # Pegasus Shot
+  { move = 0xF2CB0879, level = 70 },                        # Mugen the Hand
 ]
 
   [[edit.cards]]

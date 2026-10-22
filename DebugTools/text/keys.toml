@@ -6,8 +6,40 @@ default_lang = "en"
 
 [en.new]
 mod_name = "Debug Tools"
-mod_description = "For testing only: while this mod is enabled, every debug and «unlock everything» setting of the other mods is on (every chain open and playable, every INAROGUE player, avatar, coach and album entry, the contact maps drawn open...). Disable it and everything is back to normal: nothing is written to your save by it."
+mod_description = "For testing only: while this mod is enabled, every debug and «unlock everything» setting of the other mods is on (every chain open and playable, every INAROGUE player, avatar, coach and album entry, the contact maps drawn open...). Disable it and everything is back to normal: nothing is written to your save by it. Its Mods options row «Contact maps: everything open and free» (off by default) opens every contact map page and signs any player without requirements or cost: those signings are real."
+sign_all = "Contact maps: everything open and free"
+sign_all_help = "On: every office / contact map page is open and any player is signed without requirements or cost; the office list also shows the teams not unlocked yet (test only; the signings are real)."
 
 [es.new]
 mod_name = "Herramientas de depuración"
-mod_description = "Solo para pruebas: mientras este mod está activado, todos los ajustes de depuración y de «desbloquear todo» de los demás mods están encendidos (todas las cadenas abiertas y jugables, todos los jugadores, avatares, entrenadores y entradas del álbum de INAROGUE, los mapas de contactos abiertos...). Desactívalo y todo vuelve a la normalidad: no escribe nada en tu partida."
+mod_description = "Solo para pruebas: mientras este mod está activado, todos los ajustes de depuración y de «desbloquear todo» de los demás mods están encendidos (todas las cadenas abiertas y jugables, todos los jugadores, avatares, entrenadores y entradas del álbum de INAROGUE, los mapas de contactos abiertos...). Desactívalo y todo vuelve a la normalidad: no escribe nada en tu partida. Su fila de opciones «Mapas de contactos: todo abierto y gratis» (desactivada por defecto) abre todas las páginas de los mapas de contactos y ficha a cualquier jugador sin requisitos ni coste: esos fichajes sí son reales."
+sign_all = "Mapas de contactos: todo abierto y gratis"
+sign_all_help = "Activado: todas las páginas de la oficina y de los mapas de contactos están abiertas y cualquier jugador se ficha sin requisitos ni coste; la lista de la oficina también muestra los equipos aún no desbloqueados (solo para pruebas; los fichajes son reales)."
+
+[fr.new]
+sign_all = "Cartes de contacts : tout ouvert et gratuit"
+sign_all_help = "Activé : toutes les pages du bureau et des cartes de contacts sont ouvertes et tout joueur se recrute sans conditions ni coût; la liste du bureau montre aussi les équipes pas encore débloquées (tests uniquement ; les recrutements sont réels)."
+
+[de.new]
+sign_all = "Kontaktkarten: alles offen und gratis"
+sign_all_help = "An: alle Seiten des Büros und der Kontaktkarten sind offen und jeder Spieler wird ohne Bedingungen und Kosten verpflichtet; die Büroliste zeigt auch noch nicht freigeschaltete Teams (nur zum Testen; die Verpflichtungen sind echt)."
+
+[it.new]
+sign_all = "Mappe contatti: tutto aperto e gratis"
+sign_all_help = "Attivato: tutte le pagine dell'ufficio e delle mappe contatti sono aperte e ogni giocatore si ingaggia senza requisiti né costi; la lista dell'ufficio mostra anche le squadre non ancora sbloccate (solo per test; gli ingaggi sono reali)."
+
+[pt.new]
+sign_all = "Mapas de contactos: tudo aberto e grátis"
+sign_all_help = "Ativado: todas as páginas do escritório e dos mapas de contactos estão abertas e qualquer jogador é contratado sem requisitos nem custo; a lista do escritório mostra também as equipas ainda não desbloqueadas (só para testes; as contratações são reais)."
+
+[ja.new]
+sign_all = "コンタクトマップ：全開放・無料"
+sign_all_help = "オン：事務所とコンタクトマップの全ページが開き、条件もコストもなく誰でもスカウトできます。事務所のリストには未解放のチームも表示されます（テスト用。スカウトは実際に行われます）。"
+
+[zh_hans.new]
+sign_all = "联络地图：全部开放且免费"
+sign_all_help = "开启：事务所和联络地图的所有页面开放，任何球员都可无条件、无花费招募；事务所列表也显示尚未解锁的球队（仅供测试；招募真实生效）。"
+
+[zh_hant.new]
+sign_all = "聯絡地圖：全部開放且免費"
+sign_all_help = "開啟：事務所和聯絡地圖的所有頁面開放，任何球員都可無條件、無花費招募；事務所列表也顯示尚未解鎖的球隊（僅供測試；招募真實生效）。"

@@ -1,0 +1,9 @@
+schema = "VRFW.game/2"
+
+# Board node menus: Chronicle board nodes whose piece runs a mod's menu (content\node_menus\*.toml,
+# docs/framework/node-menu.md). Run time: scripts\node_menu.lua; game Lua side: assets\lua\menu\_all\75_node_menu.lua.
+
+# (pieceId) -> handler name, node name, menu key (nothing = the piece opens no mod menu)
+[[VRFW.Command]]
+name = "CMND_VRFW_NODE_MENU_OF_PIECE"
+handler = "NodeMenu.OfPiece"

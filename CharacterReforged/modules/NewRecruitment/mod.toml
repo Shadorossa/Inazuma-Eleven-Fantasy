@@ -2,13 +2,13 @@ id = "new_recruitment"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "New Recruitment"
-version = "1.1.7"
+version = "1.19.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove the duplicate players of the current save (never a card the club cannot release, which is always the copy kept). The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) the Tab shortcut of the Chronicle board and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The recruitment office («Oficina de fichajes», the Mercado bar of «El atrio de los indomables»): every team you have beaten has a page in it, and its players are signed for «fichas» (the element spirits of their element) at the old office's prices and levels (its requirements, players at a level, items, trial matches, are kept but off: config.toml [office] requirements; the trials stay playable), shown as the team's lineup on a pitch; a signed player can be released («Dimitir», fichas back), one page per character, built from the game's own teams and matches. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with No More Rarities a recruited player is its 5★ card."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [NewRecruitment.X], Lua NewRecruitment.X); never VRFW.
 prefix = "NewRecruitment"
 folder = "NewRecruitment"
@@ -66,6 +66,31 @@ folder = "NewRecruitment"
 # backup blobs are Character Reforged's. No save import is needed.
 # vr_framework 2.4.32: [VRFW.DropList.Spirits]; 2.4.36: the slot_duplicate event; 2.4.40: the save tools.
 # character_reforged 1.7.8: the duplicate rules' apply_on_load.
+# 1.19.0 (owner test 2026-10-22, install 268): no icon on the pachanga list's banner (VRFW 2.75.0: the formation
+# view, the players' rows, the caravan put back).
+# 1.18.0 (owner 2026-10-22): the pachangas' levels follow the board, IE1 easiest, Galaxy hardest (zone_rules.toml
+# [level] scale = "chronicle": zone bases 5-140 in era and heroic order, each pachanga its zone's base + its offset),
+# no longer the player's team level.
+# 1.17.0 (owner 2026-10-22): the pachangas' levels scale with the player's team level (zone_rules.toml [level]); in
+# a zone each pachanga its own level (the lowest = the team level, the others + their data difference, at least +1).
+# 1.16.0 (owner test 2026-10-22, install 267): the pachanga list with the board's retail art, the team names on the
+# rows, the players in their pachanga team's kit, no giant caravan after leaving it (VRFW 2.71.0).
+# 1.15.0 (owner 2026-10-22, preview OK): the pachanga list in the Chronicle board's node panel look (rows = the
+# zone's pachangas, the lineup, Y «Plantilla de equipo», the blue side panel «Jugadores» with every player
+# posing, 5 a page); a pachanga with more than 5 players rotates its lineup at every entry (zone_rules.toml
+# [lineup], zones.toml `lineups`, save key rot.<pachanga>, CMND_NEWRECRUITMENT_PACHANGA_LINEUP).
+# 1.14.0 (owner 2026-10-22): the pachanga points' board group is the shared «Cadenas» chain «pachangas»
+# (vr_framework 2.65.0 chain / title); content\types\pachangas.toml: the declaration schema of content\pachangas\
+# (NewRecruitment.pachangas/1: zones, pachangas, challenges, technique lists, with their refs) for `vrfw check` and the
+# ModManager forms. Nothing changes in game.
+# 1.13.0 (owner test 2026-10-22, install 265): entering a pachanga point from the piece beside it no longer
+# draws the caravan huge (VRFW 2.64.0).
+# 1.12.0 (owner test 2026-10-22, install 263): the board's caravan is hidden while the pachanga list is up (it showed
+# huge over it); the zone point's balloon «Pachangas · <zone>» (VRFW 2.58.0 route.rs TitleBalloon).
+# 1.10.0 (owner 2026-10-22, preview OK): a pachanga zone point shows the retail street-match marker of the field
+# minimap (Icon; cut from the game's atlas at install: _deploy.toml [[retail_sprites]]) and the balloon
+# «Pachangas · <zone>» (TitleBalloon) instead of a team crest and name; the 50 points are one hideable board group
+# (content\board_groups\pachangas.toml: Utilities' X on the board hides / shows them).
 # 1.1.4 (owner test 2026-10-20): the «Espíritu» dock row is found again when BetterUI's shortcut tiles took rows 7, 8, 9 out of the list (the list was never found: the row stayed); a not-found list is logged
 # 1.1.3 (owner 2026-10-20): the «Espíritu» row of «Plantilla de equipo» is hidden in every save (it was kept in a mode's reserved save); only the row, the spirit screen and its data stay
 # 1.0.1 (vr_framework 2.4.133: [VRFW.DropList.Spirits] ExcludeAll): no player drops in matches, no player groups in the
@@ -83,14 +108,43 @@ folder = "NewRecruitment"
 # terms and extras.
 # 1.1.6 (vr_framework 2.8.72): the office team page's look (content\screen_art\contact_map.toml + the atlases
 # content\images\menu\220_img\new_recruitment_office*: card plates, cost card, panel ground); the hub lists only teams with a page.
-requires = ["vr_framework>=2.8.74", "character_reforged>=1.7.8"]
+# 1.8.0 (owner test 2026-10-22, install 262): the pachanga commands are registered (mod.toml permissions =
+# ["command"]: without it every CMND_NEWRECRUITMENT_PACHANGA_* was refused, so a zone point found no zone and opened
+# the retail Chronicle panel); the caravan stops at the road beside a pachanga point (VRFW 2.49.0).
+# 1.6.0 (owner 2026-10-22, previews approved): the visible part of the pachangas: the 50 zone points on the Chronicle
+# board (content\teams\80_pachangas\nodes.toml, generated: no road, piece at 0.8), the zone's pachanga list as the
+# framework's pose row screen (content\pose_rows\pachangas.toml: the selected pachanga's 5 players posing in 3D with
+# their challenge; CMND_NEWRECRUITMENT_PACHANGA_MENU), the join scene (content\talk_templates\, generated by
+# research/scripts/new_recruitment_join_templates.py: every joiner comes up at once, each asks in turn, Sí / No, signed
+# on Sí with the shared grant, rarity 4).
+# 1.5.0 (owner 2026-10-22): every rival player of a pachanga has a mini-challenge (content\pachangas\challenge_types.toml,
+# assigned by research/data/pachangas/challenge_rules.toml into zones.toml); scripts\pachangas.lua follows them from the
+# VRFW match events and the players whose challenge was met join at the match end (no longer the whole team on a win).
+# 1.4.0 (owner 2026-10-22, docs/game/mods/new-recruitment-pachangas.md): the pachanga zones of the Chronicle board,
+# data and mechanism (the board nodes and the list screen wait for the owner's preview OK): files GENERATED by
+# research/scripts/new_recruitment_pachanga_zones.py from research/data/pachangas/ (zone_rules.toml, <game>.json,
+# coverage.json: the 470 pachangas of IE1-3 / GO / Chrono Stone / Galaxy that hold the players the office does not sell):
+#   content\pachangas\zones.toml        [[NewRecruitment.PachangaZone]] (50 zones: node, title, Chronicle match, stadium)
+#                                     + [[NewRecruitment.Pachanga]] (zone, rival team, level, format, challenge, cards)
+#   content\teams\80_pachangas\teams.toml   one 5v5 rival team per pachanga (home stadium = its zone's)
+#   content\node_menus\pachangas.toml   [[VRFW.NodeMenu]] (vr_framework 2.43.0): the zone nodes' pieces open the list
+#   text\rows\pachanga_zones.toml       the zone names (9 languages)
+# Hand-written: text\rows\pachanga_text.toml (the list's labels); content\friendlies\pachanga.toml (the friendly
+# new_recruitment_pachanga: 5v5, Football Reforged's if_pachanga_5v5, the active pachanga team, save sink, back to the
+# board); scripts\pachangas.lua + content\game\pachangas.toml (CMND_NEWRECRUITMENT_PACHANGA_*: the zones, the armed
+# match, its result from match_end, the won pachangas: save key won.<pachanga>); assets\lua\vs_route_town_menu\
+# new_recruitment_pachangas.lua (the board side: a pachanga played through the VRFW match start service; on a win its
+# players the club does not have join it, VRFW_Recruit, one copy per character).
+requires = ["vr_framework>=2.75.0", "character_reforged>=1.7.8"]
 conflicts = []
 loader_modules = ["lua_bridge"]
+# its scripts answer game Lua commands (content\game\pachangas.toml: CMND_NEWRECRUITMENT_PACHANGA_*)
+permissions = ["command"]
 
 # its own content\ folders read by other mods' scripts: Character Reforged's duplicate hook (duplicate_rules) and
 # Utilities' team planner (team_planner); vrfw check's layout lint accepts them (docs/framework/mod-layout.md)
 [layout]
-script_folders = ["duplicate_rules", "team_planner"]
+script_folders = ["duplicate_rules", "team_planner", "pachangas"]
 
 # A MODULE of Character Reforged (docs/framework/mod-families.md): the Mods screen, the ModManager and `vrfw list` show it
 # inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod of its own; switching Character

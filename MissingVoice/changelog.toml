@@ -1,0 +1,96 @@
+schema = "VRFW.changelog/1"
+# Missing Voice: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+name = "Missing Voice"
+
+[en]
+name = "Missing Voice"
+
+[fr]
+name = "Missing Voice"
+
+[de]
+name = "Missing Voice"
+
+[it]
+name = "Missing Voice"
+
+[pt]
+name = "Missing Voice"
+
+[ja]
+name = "Missing Voice"
+
+[zh_hans]
+name = "Missing Voice"
+
+[zh_hant]
+name = "Missing Voice"
+
+[[release]]
+icon = "general"
+notes = [
+    "Supertécnicas que sonaban mudas ahora tienen voz.",
+    "Voces japonesas del mismo jugador en GO Strikers 2013.",
+    "Solo en el banco de voz japonés de sus cartas.",
+]
+
+[release.en]
+notes = [
+    "Special moves that were silent now have a voice.",
+    "Japanese lines of the same player in GO Strikers 2013.",
+    "Only in the Japanese voice bank of their cards.",
+]
+
+[release.fr]
+notes = [
+    "Les techniques muettes ont maintenant une voix.",
+    "Voix japonaises du même joueur dans GO Strikers 2013.",
+    "Seulement dans les voix japonaises de ses cartes.",
+]
+
+[release.de]
+notes = [
+    "Stumme Spezialtechniken haben jetzt eine Stimme.",
+    "Japanische Zeilen desselben Spielers aus GO Strikers 2013.",
+    "Nur in der japanischen Sprachbank seiner Karten.",
+]
+
+[release.it]
+notes = [
+    "Le tecniche che erano mute ora hanno una voce.",
+    "Voci giapponesi dello stesso giocatore in GO Strikers 2013.",
+    "Solo nelle voci giapponesi delle sue carte.",
+]
+
+[release.pt]
+notes = [
+    "Técnicas que estavam mudas agora têm voz.",
+    "Vozes japonesas do mesmo jogador em GO Strikers 2013.",
+    "Só no banco de voz japonês das suas cartas.",
+]
+
+[release.ja]
+notes = [
+    "ボイスのなかった必殺技にボイスを追加。",
+    "GOストライカーズ2013の同じ選手の日本語ボイス。",
+    "その選手のカードの日本語ボイスのみ。",
+]
+
+[release.zh_hans]
+notes = [
+    "原本没有语音的必杀技现在有了语音。",
+    "取自GO前锋2013中同一名球员的日语语音。",
+    "仅限其卡片的日语语音库。",
+]
+
+[release.zh_hant]
+notes = [
+    "原本沒有語音的必殺技現在有了語音。",
+    "取自GO前鋒2013中同一名球員的日語語音。",
+    "僅限其卡片的日語語音庫。",
+]

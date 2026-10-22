@@ -8,9 +8,13 @@ schema = "VRFW.character/2"
 target = "c03031470"                                   # Erik Eagle
 moves = [
   { move = 0x5049A011, level = 1 },                         # Spinning Shot
-  { move = 0x4E9A9232, level = 18 },                        # Spinning Cut
-  { move = 0x6ADE9E01, level = 30 },                        # Illusory Ball
-  { move = 0x64B40078, level = 47 },                        # The Phoenix
+  { move = 0x261BDCA8, level = 18 },                        # Moonsault
+  { move = 0x7A67325B, level = 30 },                        # Flame Dance
+  { move = 0xAE2B3429, level = 53 },                        # Atomic Flare
+]
+VRFW.MoveGrades = [
+  { Move = 0x7A67325B, Grade = 1 },                         # Flame Dance
+  { Move = 0xAE2B3429, Grade = 1 },                         # Atomic Flare
 ]
 
   [[edit.cards]]
@@ -23,9 +27,9 @@ moves = [
 target = "c03031450"                                   # Bobby Shearer
 moves = [
   { move = 0x5643C944, level = 1 },                         # Killer Slide
-  { move = 0x7EEA4EE9, level = 19 },                        # Blade Attack
+  { move = 0x025FD09B, level = 21 },                        # Volcano Cut
   { move = 0x4AD6453E, level = 32 },                        # Back Tornado
-  { move = 0x5781A373, level = 45 },                        # Hurricane Arrows
+  { move = 0xA9229CF5, level = 55 },                        # The Galaxy
 ]
 
   [[edit.cards]]
@@ -38,7 +42,7 @@ moves = [
 target = "c03031410"                                   # Billy Dash
 moves = [
   { move = 0xDCA94D3F, level = 1 },                         # Flash Upper
-  { move = 0xF08DB620, level = 1 },                         # Whirlwind
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0xE9968761, level = 32 },                        # Rocket Kobushi
   { move = 0x8C990270, level = 75 },                        # Gunshot
 ]
@@ -115,7 +119,7 @@ moves = [
 target = "c03031480"                                   # Shane Pierce
 moves = [
   { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
-  { move = 0x0D368F6B, level = 1 },                         # Heaven's Time
+  { move = 0x2D68DB57, level = 1 },                         # Deceptive Step
   { move = 0x79224D8B, level = 10 },                        # Freeze Shot
   { move = 0xC19E2AEE, level = 65 },                        # Pegasus Shot
 ]
@@ -131,7 +135,7 @@ target = "c03031490"                                   # Mark Krueger
 moves = [
   { move = 0x94405906, level = 1 },                         # Grand Fenrir
   { move = 0x3A4FFB6C, level = 1 },                         # The Ikaros
-  { move = 0xDA3FF6C9, level = 1 },                         # Criss-Cross
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0xB6F26F5F, level = 45 },                        # Tri-Pegasus
 ]
 VRFW.MoveGrades = [
@@ -151,7 +155,7 @@ moves = [
   { move = 0xD8851BAF, level = 1 },                         # Unicorn Boost
   { move = 0x3EC287DE, level = 15 },                        # Bubble Gum
   { move = 0x2A37FC88, level = 42 },                        # Revolution V
-  { move = 0x0BFD4D80, level = 50 },                        # Grand Slam
+  { move = 0x240BEDF2, level = 50 },                        # Bounce Shot
 ]
 
   [[edit.cards]]
@@ -209,7 +213,7 @@ moves = [
 target = "c03031540"                                   # Bob Bobbins
 moves = [
   { move = 0x3EC287DE, level = 1 },                         # Bubble Gum
-  { move = 0xACAC21CE, level = 1 },                         # Fake Ball
+  { move = 0x6C827857, level = 1 },                         # Rolling Steal
   { move = 0x7EEA4EE9, level = 18 },                        # Blade Attack
   { move = 0xBD8A9EBE, level = 60 },                        # Infinite Wall
 ]

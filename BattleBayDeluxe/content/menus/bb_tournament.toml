@@ -271,7 +271,7 @@ scale = [0.0, 0.0, 1.0]
 # 1.5.60 (owner 2026-10-14: the group stage always on ONE page): the group tables are drawn in a menu of their own
 # (evt_bbd_tn_groups_menu, the [[screen]] at the end of this file), so this menu keeps only the bracket's pools: txt 64
 # (the 63 scores of a 64-team bracket, the 64 goals of a 32-match results page, the champion screen's 2). Budget of
-# bb_stadium_top_menu: retail 26 + Utilities (top bar 36, friends panel 233) + these 484 = 779.
+# bb_stadium_top_menu: retail 26 + Utilities (top bar 36) + these 484 = 546.
 # 2026-10-19: + the 16-team retail bracket's 50, box 64 -> 36 (a results page draws at most 32 boxes, the tree page
 # the final stadium's panel: 2), txt 64 -> 66 (the final stadium's name and label beside a 64-team tree's 63 scores):
 # these 508 = 803. Every pool costs its

@@ -16,10 +16,10 @@ target = "c05020140_5000"                              # Goldie Lemmon
 [[edit]]
 target = "c05028070"                                   # Jean-Pierre Lapin
 moves = [
-  { move = 0x737DCB3F, level = 21 },                        # Pancake Defence
-  { move = 0x19BA3BFC, level = 37 },                        # Dance on Air
-  { move = 0x8C382852, level = 50 },                        # God Hand
-  { move = 0x14D1ED15, level = 60 },                        # Jumping Jack
+  { move = 0xC636A810, level = 1 },                         # Combustion Catch
+  { move = 0x737DCB3F, level = 1 },                         # Pancake Defence
+  { move = 0x62DEE8B1, level = 9 },                         # Jumping Whack
+  { move = 0xF2CB0879, level = 30 },                        # Mugen the Hand
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -36,8 +36,8 @@ moves = [
 target = "c05028040"                                   # Riccardo Di Rigo
 moves = [
   { move = 0x8B90AAAC, level = 1 },                         # Fortissimo
-  { move = 0x20D01E43, level = 17 },                        # Hey Presto
-  { move = 0xEDBAD1F1, level = 45 },                        # Brimstone Rain
+  { move = 0x20D01E43, level = 1 },                         # Hey Presto
+  { move = 0x2D68DB57, level = 17 },                        # Deceptive Step
   { move = 0x7DD6FEF8, level = 52 },                        # Athena's Anthem
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -56,9 +56,9 @@ moves = [
 target = "c05028110"                                   # Victor Blade
 moves = [
   { move = 0x8A52C09B, level = 1 },                         # Doomsword Slash
-  { move = 0x0C08B663, level = 17 },                        # Doom Dive Drive
-  { move = 0x910F4F83, level = 47 },                        # Fire Tornado DD
-  { move = 0x90CD25B4, level = 62 },                        # Supernatural Strike
+  { move = 0x0C08B663, level = 1 },                         # Doom Dive Drive
+  { move = 0x1F7F73BA, level = 13 },                        # Bicycle Slash
+  { move = 0x90CD25B4, level = 20 },                        # Supernatural Strike
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -76,25 +76,42 @@ target = "c05020140"                                   # Goldie Lemmon
 growth_pattern = 1
 growth = "normal"
 stats = { kick = 242, control = 201, technique = 216, pressure = 239, physical = 235, intelligence = 311, agility = 201, freedom = 267 }
-moves = [
-  { move = 0x8A936B25, level = 1 },                         # Goopy Gloopy Goo
-  { move = 0xB7474004, level = 1 },                         # Dough Ray Me
-  { move = 0x19BA3BFC, level = 33 },                        # Dance on Air
-  { move = 0x87379CDF, level = 67 },                        # Fire Tornado TC
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x22B6DD1C, level = 1 },                         # Miximax Trans: R. dragones [aura]
-]
+
+  [[edit.cards]]
+  id = 0xB0DD6F1B    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x8A936B25, level = 1 },                       # Goopy Gloopy Goo
+    { move = 0xB7474004, level = 1 },                       # Dough Ray Me
+    { move = 0x19BA3BFC, level = 27 },                      # Dance on Air
+    { move = 0x87379CDF, level = 67 },                      # Fire Tornado TC
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x22B6DD1C, level = 1 },                       # Miximax Trans: R. dragones [aura]
+  ]
+
+  [[edit.cards]]
+  id = 0xC26F2623    # normal card (the character's special cards keep their own set)
+  moves = [
+    { move = 0x8A936B25, level = 1 },                       # Goopy Gloopy Goo
+    { move = 0xB7474004, level = 1 },                       # Dough Ray Me
+    { move = 0x19BA3BFC, level = 27 },                      # Dance on Air
+    { move = 0x87379CDF, level = 67 },                      # Fire Tornado TC
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x22B6DD1C, level = 1 },                       # Miximax Trans: R. dragones [aura]
+  ]
 
 [[edit]]
 target = "c05028030"                                   # Arion Sherwind
 moves = [
-  { move = 0x6F918884, level = 1 },                         # Easy Breezy
   { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
-  { move = 0xC755E805, level = 62 },                        # Triple Threat
-  { move = 0xA9E3374B, level = 72 },                        # Cyclone Sprint
+  { move = 0x6F918884, level = 1 },                         # Easy Breezy
+  { move = 0xA37D1A41, level = 1 },                         # Hyper-Swiper
+  { move = 0x7C1494CF, level = 40 },                        # Tornado Tunnel
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -110,10 +127,10 @@ moves = [
 [[edit]]
 target = "c05028050"                                   # Gabriel Garcia
 moves = [
-  { move = 0x530CDFC1, level = 5 },                         # Mystifying Mist
-  { move = 0x2296A01A, level = 21 },                        # Southern Cross
-  { move = 0x6BA49049, level = 31 },                        # Mystic Mist
-  { move = 0x2B8C597E, level = 41 },                        # Fugue Wave
+  { move = 0x530CDFC1, level = 1 },                         # Mystifying Mist
+  { move = 0x6BA49049, level = 21 },                        # Mystic Mist
+  { move = 0x2296A01A, level = 31 },                        # Southern Cross
+  { move = 0xEEFFAE21, level = 46 },                        # Jungle Jam
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -131,9 +148,9 @@ moves = [
 target = "c05028100"                                   # Ryoma Nishiki
 moves = [
   { move = 0x4FE09C7A, level = 1 },                         # Acrobatic Keep
-  { move = 0xC4D13C6B, level = 29 },                        # Katana Kick
-  { move = 0x64CDCFB9, level = 35 },                        # Rising Dragon
-  { move = 0xB4B4D106, level = 40 },                        # Dragon Cannon
+  { move = 0xC4D13C6B, level = 25 },                        # Katana Kick
+  { move = 0x64CDCFB9, level = 34 },                        # Rising Dragon
+  { move = 0x501F2F12, level = 51 },                        # Heel Flick
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -151,10 +168,10 @@ moves = [
 [[edit]]
 target = "c05028120"                                   # Goldie Lemmon
 moves = [
-  { move = 0xC636A810, level = 1 },                         # Combustion Catch
-  { move = 0xED1BFBD3, level = 21 },                        # Fingers of Gaia
-  { move = 0x53E9C2A3, level = 42 },                        # Capable Hands
-  { move = 0xB8C5883B, level = 66 },                        # God Hand X
+  { move = 0x8A936B25, level = 1 },                         # Goopy Gloopy Goo
+  { move = 0xC5D2FDE2, level = 1 },                         # Oglitteration
+  { move = 0x6C827857, level = 47 },                        # Rolling Steal
+  { move = 0x87379CDF, level = 69 },                        # Fire Tornado TC
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -171,10 +188,10 @@ moves = [
 [[edit]]
 target = "c05028130"                                   # Arion Sherwind
 moves = [
-  { move = 0x6F918884, level = 1 },                         # Easy Breezy
   { move = 0x9349F1DA, level = 1 },                         # Zephyr Shot
-  { move = 0xC755E805, level = 62 },                        # Triple Threat
-  { move = 0xA9E3374B, level = 72 },                        # Cyclone Sprint
+  { move = 0x6F918884, level = 1 },                         # Easy Breezy
+  { move = 0xA37D1A41, level = 1 },                         # Hyper-Swiper
+  { move = 0x7C1494CF, level = 40 },                        # Tornado Tunnel
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)

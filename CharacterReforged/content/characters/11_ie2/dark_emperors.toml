@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02024300"                                   # Nathan Swift
 moves = [
-  { move = 0x3C843987, level = 7 },                         # Flurry Dash
-  { move = 0x19025F83, level = 18 },                        # Quick Draw
-  { move = 0x17A96A44, level = 36 },                        # Clone Faker
-  { move = 0x37A1B17B, level = 45 },                        # Fire Rooster
+  { move = 0x3C843987, level = 1 },                         # Flurry Dash
+  { move = 0x2354CA2D, level = 15 },                        # Wind God's Dance
+  { move = 0xF1EEF635, level = 45 },                        # The Hurricane
+  { move = 0xC21AFE80, level = 55 },                        # Whirlwind Drop
 ]
 VRFW.MoveGrades = [
   { Move = 0x3C843987, Grade = 1 },                         # Flurry Dash
@@ -25,10 +25,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c02024240"                                   # Jim Wraith
 moves = [
-  { move = 0x4F58F805, level = 8 },                         # Coil Turn
+  { move = 0x10A0C298, level = 1 },                         # Warp Drive
   { move = 0x55C71D2A, level = 22 },                        # About Face
-  { move = 0x592A96B4, level = 32 },                        # Afterimage
-  { move = 0xB5B7108F, level = 44 },                        # Shadow Stitch
+  { move = 0xB5B7108F, level = 34 },                        # Shadow Stitch
+  { move = 0x38094535, level = 60 },                        # Sub-Terfuge
 ]
 
   [[edit.cards]]
@@ -40,10 +40,10 @@ moves = [
 [[edit]]
 target = "c02024250"                                   # Tod Ironside
 moves = [
-  { move = 0xDF70E04C, level = 7 },                         # Rodeo Clown
-  { move = 0x1F0836D6, level = 10 },                        # Comet Shot
-  { move = 0xDEB28A7B, level = 25 },                        # Monkey Turn
-  { move = 0x0455B9CE, level = 35 },                        # Run Ball Run
+  { move = 0x70417B2E, level = 1 },                         # Deceptor Dribble
+  { move = 0x1F0836D6, level = 7 },                         # Comet Shot
+  { move = 0x6C827857, level = 20 },                        # Rolling Steal
+  { move = 0x31ABD82E, level = 42 },                        # Circus Block
 ]
 VRFW.MoveGrades = [
   { Move = 0x1F0836D6, Grade = 1 },                         # Comet Shot
@@ -58,10 +58,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c02024260"                                   # Steve Grim
 moves = [
-  { move = 0x06130797, level = 10 },                        # Rolling Kick
-  { move = 0xC66BD10D, level = 20 },                        # Zigzag Spark
-  { move = 0x2B343D01, level = 39 },                        # Cyclone
-  { move = 0x79224D8B, level = 50 },                        # Freeze Shot
+  { move = 0xC66BD10D, level = 1 },                         # Zigzag Spark
+  { move = 0x06130797, level = 12 },                        # Rolling Kick
+  { move = 0x4CDC2C6B, level = 30 },                        # Shooting Star
+  { move = 0x8D5B6847, level = 66 },                        # Odin Sword
 ]
 
   [[edit.cards]]
@@ -73,10 +73,10 @@ moves = [
 [[edit]]
 target = "c02024270"                                   # Tim Saunders
 moves = [
-  { move = 0x259F08C6, level = 6 },                         # Whirlwind Twister
-  { move = 0xA8E0F6C2, level = 18 },                        # Kung Fu Header
-  { move = 0x17A96A44, level = 32 },                        # Clone Faker
-  { move = 0x2D3E5454, level = 46 },                        # Clone Shot
+  { move = 0x427719AC, level = 1 },                         # Gale Dash
+  { move = 0x011AAF4B, level = 18 },                        # Gyro Head
+  { move = 0x574008CD, level = 35 },                        # Kung Fu Fighting
+  { move = 0x316A7390, level = 48 },                        # Land Dragon
 ]
 
   [[edit.cards]]
@@ -88,10 +88,10 @@ moves = [
 [[edit]]
 target = "c02024280"                                   # Sam Kincaid
 moves = [
-  { move = 0x35E70F22, level = 12 },                        # Grenade Shot
+  { move = 0x35E70F22, level = 1 },                         # Grenade Shot
   { move = 0x6B1CF436, level = 14 },                        # Bewildered
-  { move = 0xACAC21CE, level = 23 },                        # Fake Ball
-  { move = 0x4890FB67, level = 34 },                        # Twin Boost
+  { move = 0x4D1E465C, level = 23 },                        # Fake Bomber
+  { move = 0x0597D3F9, level = 37 },                        # Dragon Tornado
 ]
 
   [[edit.cards]]
@@ -103,10 +103,10 @@ moves = [
 [[edit]]
 target = "c02024290"                                   # Maxwell Carson
 moves = [
-  { move = 0x19025F83, level = 7 },                         # Quick Draw
-  { move = 0xAAA6489B, level = 10 },                        # Spiral Shot
+  { move = 0x19025F83, level = 1 },                         # Quick Draw
   { move = 0x6ADE9E01, level = 20 },                        # Illusory Ball
-  { move = 0x4AD6453E, level = 36 },                        # Back Tornado
+  { move = 0x3F00EDE9, level = 38 },                        # Dash Storm
+  { move = 0x240BEDF2, level = 55 },                        # Bounce Shot
 ]
 
   [[edit.cards]]
@@ -119,12 +119,13 @@ moves = [
 target = "c02024310"                                   # Kevin Dragonfly
 moves = [
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0x0597D3F9, level = 24 },                        # Dragon Tornado
-  { move = 0xC66BD10D, level = 24 },                        # Zigzag Spark
-  { move = 0x58E8FC83, level = 44 },                        # Rolling Hell
+  { move = 0x5F989B9E, level = 18 },                        # Wyvern Crash
+  { move = 0x10D90D59, level = 32 },                        # Wyvern Blizzard
+  { move = 0xE937AD43, level = 42 },                        # Dragon Slayer
 ]
 VRFW.MoveGrades = [
   { Move = 0x2CFC3E63, Grade = 1 },                         # Dragon Crash
+  { Move = 0x5F989B9E, Grade = 1 },                         # Wyvern Crash
 ]
 
   [[edit.cards]]
@@ -136,10 +137,10 @@ VRFW.MoveGrades = [
 [[edit]]
 target = "c02024210"                                   # Thomas Feldt
 moves = [
+  { move = 0xF9B80F86, level = 1 },                         # Strong Punch
   { move = 0xF14FDC17, level = 1 },                         # Shot Pocket
-  { move = 0xE9968761, level = 1 },                         # Rocket Kobushi
-  { move = 0x8FBCFC3C, level = 34 },                        # Blazing Knuckle
-  { move = 0x01DB04F5, level = 45 },                        # Defence Scan
+  { move = 0xEA12530F, level = 30 },                        # Double Rocket
+  { move = 0x8E7E960B, level = 52 },                        # Drill Smasher
 ]
 
   [[edit.cards]]
@@ -153,8 +154,8 @@ target = "c02024220"                                   # Malcolm Night
 moves = [
   { move = 0x73C5AF40, level = 1 },                         # Dash Accelerator
   { move = 0x4E9A9232, level = 1 },                         # Spinning Cut
-  { move = 0x1ECA5CE1, level = 39 },                        # Wrath Shot
-  { move = 0x2B343D01, level = 79 },                        # Cyclone
+  { move = 0x6C827857, level = 39 },                        # Rolling Steal
+  { move = 0xB6F26F5F, level = 60 },                        # Tri-Pegasus
 ]
 
   [[edit.cards]]
@@ -166,10 +167,10 @@ moves = [
 [[edit]]
 target = "c02024230"                                   # Shadow Cimmerian
 moves = [
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
+  { move = 0x568262FA, level = 1 },                         # Dark Tornado
   { move = 0xB5B7108F, level = 1 },                         # Shadow Stitch
-  { move = 0x568262FA, level = 18 },                        # Dark Tornado
-  { move = 0x33ED6677, level = 24 },                        # Doppelganger
-  { move = 0xB27F13ED, level = 44 },                        # Death Zone
+  { move = 0x32EEA7FE, level = 70 },                        # Death Zone 2
 ]
 
   [[edit.cards]]

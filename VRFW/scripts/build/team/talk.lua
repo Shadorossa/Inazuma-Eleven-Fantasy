@@ -760,7 +760,10 @@ function K.install(X)
         local sp
         for _, c in ipairs(cast) do if c.key == s then sp = X.talk_chara(c.chara) break end end
         local text = T.copy(b.text)
-        if sp ~= nil then lip_rows[#lip_rows + 1] = { label = label, speaker = sp, texts = T.copy(text) } end
+        -- the line's voice: its own (`none` / `<bank>/<cue>`), else a taken-over talk keeps its game cue
+        local voice = b.voice
+        if voice == nil and target ~= nil then voice = id .. "/" .. label end
+        if sp ~= nil or b.voice ~= nil then lip_rows[#lip_rows + 1] = { label = label, speaker = sp, texts = T.copy(text), voice = voice } end
         local sp_panel = sp
         if sp == nil then
           local vv = voices[s]
@@ -834,7 +837,10 @@ function K.install(X)
     if not tok then return nil, tre end
     local lip = d.lip_sync
     if lip == nil then lip = target == nil end
-    if lip then
+    -- a line with a voice of its own needs the talk's bank even without lip sync
+    local own_voice = false
+    for _, l in ipairs(d.line or {}) do if l.voice ~= nil then own_voice = true end end
+    if lip or own_voice then
       local vok, ve = VRFW.team.talk_voice(d.scene, id, lip_rows)
       if not vok then VRFW.log.warn("talk " .. key .. ": no lip sync (" .. ve .. "): the mouths stay still") end
     end

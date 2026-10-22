@@ -9,7 +9,7 @@ target = "c06031610"                                   # Van Tarel
 moves = [
   { move = 0x4A776F1C, level = 1 },                         # Hydro Breath
   { move = 0xC79443BB, level = 23 },                        # Waterfall
-  { move = 0x8B31808E, level = 35 },                        # Wormhole
+  { move = 0xF9B80F86, level = 35 },                        # Strong Punch
   { move = 0xE6C22010, level = 51 },                        # Claw de Force
   { move = 0, level = 0 },                                  # (empty)
   { move = 0, level = 0 },                                  # (empty)
@@ -29,7 +29,7 @@ target = "c06031620"                                   # Squalcha Nhess
 moves = [
   { move = 0xC79443BB, level = 5 },                         # Waterfall
   { move = 0x039DBAAC, level = 18 },                        # Land of Ice
-  { move = 0x78218C02, level = 36 },                        # Duskfall
+  { move = 0x6C827857, level = 36 },                        # Rolling Steal
   { move = 0x0F4DC9B3, level = 50 },                        # Logicstical Sync
 ]
 
@@ -62,7 +62,7 @@ moves = [
   { move = 0x87BC8A8C, level = 1 },                         # Hydro Flow
   { move = 0xC79443BB, level = 10 },                        # Waterfall
   { move = 0xFD49C046, level = 32 },                        # Bubble Trouble
-  { move = 0x2354CA2D, level = 43 },                        # Wind God's Dance
+  { move = 0x06458894, level = 43 },                        # Feint Dash
 ]
 
   [[edit.cards]]
@@ -74,18 +74,18 @@ moves = [
 
 [[edit]]
 target = "c06031650"                                   # Plink Powai
-moves = [
-  { move = 0x87BC8A8C, level = 1 },                         # Hydro Flow
-  { move = 0xC79443BB, level = 11 },                        # Waterfall
-  { move = 0x7C1494CF, level = 36 },                        # Tornado Tunnel
-  { move = 0xE3D04F88, level = 55 },                        # Jackknife
-]
 
   [[edit.cards]]
   id = 0x6A0F55AF                                         # MF/DF · wind
   rank = 3
   growth = "normal"
   stats = { kick = 173, control = 227, technique = 282, pressure = 211, physical = 186, intelligence = 224, agility = 205, freedom = 279 }
+  moves = [
+    { move = 0x87BC8A8C, level = 1 },                       # Hydro Flow
+    { move = 0xC79443BB, level = 11 },                      # Waterfall
+    { move = 0x06458894, level = 36 },                      # Feint Dash
+    { move = 0xE3D04F88, level = 55 },                      # Jackknife
+  ]
 
 [[edit]]
 target = "c06031660"                                   # Puddel Khaspian
@@ -93,7 +93,7 @@ moves = [
   { move = 0x87BC8A8C, level = 4 },                         # Hydro Flow
   { move = 0xFD49C046, level = 17 },                        # Bubble Trouble
   { move = 0x6DD736DD, level = 31 },                        # Ribbon Shower
-  { move = 0x7DD6FEF8, level = 48 },                        # Athena's Anthem
+  { move = 0x06458894, level = 48 },                        # Feint Dash
 ]
 
   [[edit.cards]]
@@ -108,7 +108,7 @@ target = "c06031670"                                   # Sploosh Saroma
 moves = [
   { move = 0x87BC8A8C, level = 5 },                         # Hydro Flow
   { move = 0xFD49C046, level = 18 },                        # Bubble Trouble
-  { move = 0x7C1494CF, level = 30 },                        # Tornado Tunnel
+  { move = 0x06458894, level = 30 },                        # Feint Dash
   { move = 0x04941270, level = 45 },                        # Vac Attack
 ]
 
@@ -155,7 +155,7 @@ target = "c06031700"                                   # Serban Bacha
 moves = [
   { move = 0xFD49C046, level = 6 },                         # Bubble Trouble
   { move = 0x87BC8A8C, level = 12 },                        # Hydro Flow
-  { move = 0x828A53C8, level = 32 },                        # Plasma Ball
+  { move = 0x3D10DCB3, level = 32 },                        # Curve Shot
   { move = 0xDE4ED944, level = 46 },                        # Snowstorm Leopard
 ]
 
@@ -182,17 +182,6 @@ moves = [
 
 [[edit]]
 target = "c06031720"                                   # Rondula Flehl
-moves = [
-  { move = 0xE3D04F88, level = 5 },                         # Jackknife
-  { move = 0x0D368F6B, level = 26 },                        # Heaven's Time
-  { move = 0xB501FE5D, level = 39 },                        # Holy Roller
-  { move = 0xC42D6F54, level = 54 },                        # Aikido
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0, level = 0 },                                  # (empty)
-  { move = 0x6C7554B7, level = 1 },                         # Tótem Fenikias [aura]
-]
 
   [[edit.cards]]
   id = 0x248CA95F                                         # MF/FW · wind
@@ -200,6 +189,17 @@ moves = [
   rank = 3
   growth = "normal"
   stats = { kick = 285, control = 254, technique = 286, pressure = 184, physical = 188, intelligence = 248, agility = 189, freedom = 254 }
+  moves = [
+    { move = 0xE3D04F88, level = 5 },                       # Jackknife
+    { move = 0x1F5EB9D5, level = 26 },                      # Nutmeg
+    { move = 0xB501FE5D, level = 39 },                      # Holy Roller
+    { move = 0x62294D90, level = 54 },                      # Dust Kick
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0, level = 0 },                                # (empty)
+    { move = 0x6C7554B7, level = 1 },                       # Tótem Fenikias [aura]
+  ]
 
 [[edit]]
 target = "c11806050"                                   # Porco Umir

@@ -7,10 +7,10 @@ schema = "VRFW.character/2"
 [[edit]]
 target = "c02023410"                                   # Crane Kik
 moves = [
-  { move = 0xF64674CB, level = 1 },                         # Fist of Justice
+  { move = 0xD2955C45, level = 1 },                         # Power Catch
   { move = 0x47657634, level = 1 },                         # Flame Breath
-  { move = 0xBFCC20E7, level = 20 },                        # Wood Chopper
-  { move = 0xA553C5C8, level = 45 },                        # Clone Block
+  { move = 0xA553C5C8, level = 20 },                        # Clone Block
+  { move = 0xF64674CB, level = 55 },                        # Fist of Justice
 ]
 
   [[edit.cards]]
@@ -24,7 +24,7 @@ target = "c02023420"                                   # Parry Waxon
 moves = [
   { move = 0x322F0C40, level = 1 },                         # Spider Web
   { move = 0x1A868BED, level = 1 },                         # Clone Defence
-  { move = 0x0F703132, level = 21 },                        # Black Magic
+  { move = 0x592A96B4, level = 21 },                        # Afterimage
   { move = 0xB4757AB8, level = 46 },                        # Divine Stamp
 ]
 
@@ -38,7 +38,7 @@ moves = [
 target = "c02023430"                                   # Bri Spark
 moves = [
   { move = 0x3D4653B0, level = 13 },                        # Poison Fog
-  { move = 0xB5B7108F, level = 20 },                        # Shadow Stitch
+  { move = 0x574008CD, level = 20 },                        # Kung Fu Fighting
   { move = 0x09BBF3D9, level = 29 },                        # Dark Whirlwind
   { move = 0x17A96A44, level = 50 },                        # Clone Faker
 ]
@@ -53,7 +53,7 @@ moves = [
 target = "c02023440"                                   # Max Fortune
 moves = [
   { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
-  { move = 0x19025F83, level = 14 },                        # Quick Draw
+  { move = 0x1A868BED, level = 14 },                        # Clone Defence
   { move = 0x574008CD, level = 27 },                        # Kung Fu Fighting
   { move = 0xB4757AB8, level = 42 },                        # Divine Stamp
 ]
@@ -69,7 +69,7 @@ target = "c02023450"                                   # Brendan Water
 moves = [
   { move = 0x65B7C1F1, level = 1 },                         # Sumo Stomp
   { move = 0x3069B219, level = 1 },                         # Super Sumo Stomp
-  { move = 0x41F3CDC2, level = 26 },                        # Scorching Tackle
+  { move = 0x79E3E635, level = 35 },                        # Racing Flame
   { move = 0x4031A7F5, level = 37 },                        # Mole Fake
 ]
 
@@ -82,7 +82,7 @@ moves = [
 [[edit]]
 target = "c02023460"                                   # Junior Fardream
 moves = [
-  { move = 0x0CF4E55C, level = 1 },                         # Double Touch
+  { move = 0x49041E53, level = 1 },                         # Crosscut Feint
   { move = 0x09BBF3D9, level = 23 },                        # Dark Whirlwind
   { move = 0xB5B7108F, level = 34 },                        # Shadow Stitch
   { move = 0x2D3E5454, level = 42 },                        # Clone Shot
@@ -97,10 +97,10 @@ moves = [
 [[edit]]
 target = "c02023470"                                   # Ian Telektual
 moves = [
+  { move = 0x06458894, level = 1 },                         # Feint Dash
   { move = 0x17A96A44, level = 17 },                        # Clone Faker
   { move = 0x6B1CF436, level = 21 },                        # Bewildered
-  { move = 0x3663DB4C, level = 30 },                        # Utter Gutsiness Bat
-  { move = 0xC7A9BB3A, level = 45 },                        # Whirlwind Cut
+  { move = 0x58E8FC83, level = 38 },                        # Rolling Hell
 ]
 
   [[edit.cards]]
@@ -116,7 +116,7 @@ moves = [
   { move = 0xA8E0F6C2, level = 1 },                         # Kung Fu Header
   { move = 0x2D3E5454, level = 1 },                         # Clone Shot
   { move = 0x33ED6677, level = 18 },                        # Doppelganger
-  { move = 0x261BDCA8, level = 39 },                        # Moonsault
+  { move = 0xC7A9BB3A, level = 39 },                        # Whirlwind Cut
 ]
 
   [[edit.cards]]
@@ -128,10 +128,10 @@ moves = [
 [[edit]]
 target = "c02023490"                                   # Marshall Artz
 moves = [
-  { move = 0x00D8C57C, level = 1 },                         # Fireball Storm
+  { move = 0x72514A74, level = 1 },                         # Low Drive
   { move = 0x574008CD, level = 1 },                         # Kung Fu Fighting
   { move = 0x259F08C6, level = 1 },                         # Whirlwind Twister
-  { move = 0xADAFE047, level = 53 },                        # Dual Strike
+  { move = 0x00D8C57C, level = 60 },                        # Fireball Storm
 ]
 
   [[edit.cards]]
@@ -146,8 +146,8 @@ target = "c02023500"                                   # Tyke Wando
 moves = [
   { move = 0x0CF4E55C, level = 1 },                         # Double Touch
   { move = 0x2CFC3E63, level = 1 },                         # Dragon Crash
-  { move = 0xB5B7108F, level = 33 },                        # Shadow Stitch
-  { move = 0xB4B4D106, level = 42 },                        # Dragon Cannon
+  { move = 0x6C6C932B, level = 33 },                        # Megaton Head
+  { move = 0x316A7390, level = 42 },                        # Land Dragon
 ]
 
   [[edit.cards]]
@@ -159,10 +159,10 @@ moves = [
 [[edit]]
 target = "c02023510"                                   # Dirk Artz
 moves = [
-  { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
+  { move = 0x6B4A7B35, level = 1 },                         # Power Shot
   { move = 0xB4B4D106, level = 1 },                         # Dragon Cannon
   { move = 0x427719AC, level = 1 },                         # Gale Dash
-  { move = 0x4DDFEDE2, level = 57 },                        # Eagle Buster
+  { move = 0x62BE692D, level = 57 },                        # Whirlwind Force
 ]
 
   [[edit.cards]]
@@ -180,9 +180,9 @@ growth = "normal"
 stats = { kick = 151, control = 209, technique = 215, pressure = 236, physical = 216, intelligence = 297, agility = 174, freedom = 351 }
 moves = [
   { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
-  { move = 0x259F08C6, level = 18 },                        # Whirlwind Twister
-  { move = 0x55C71D2A, level = 24 },                        # About Face
-  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x427719AC, level = 22 },                        # Gale Dash
+  { move = 0xAD6E4BF9, level = 42 },                        # Harvest
 ]
 VRFW.MoveGrades = [
   { Move = 0x62BE692D, Grade = 1 },                         # Whirlwind Force
@@ -192,9 +192,9 @@ VRFW.MoveGrades = [
   id = 0x442EB819    # this card's moveset differs from the list above
   moves = [
     { move = 0x62BE692D, level = 1 },                       # Whirlwind Force
-    { move = 0x259F08C6, level = 18 },                      # Whirlwind Twister
-    { move = 0x55C71D2A, level = 24 },                      # About Face
-    { move = 0x6B1CF436, level = 28 },                      # Bewildered
+    { move = 0x55C71D2A, level = 1 },                       # About Face
+    { move = 0x427719AC, level = 22 },                      # Gale Dash
+    { move = 0xAD6E4BF9, level = 42 },                      # Harvest
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
     { move = 0, level = 0 },                                # (empty)
@@ -207,8 +207,8 @@ target = "c02023530"                                   # Earnest Bookworm
 moves = [
   { move = 0x94E17324, level = 1 },                         # Tornado Catch
   { move = 0xC0FD6AFB, level = 22 },                        # Fireball Head
-  { move = 0xA8E0F6C2, level = 33 },                        # Kung Fu Header
-  { move = 0x47657634, level = 49 },                        # Flame Breath
+  { move = 0x47657634, level = 33 },                        # Flame Breath
+  { move = 0x5E7E4775, level = 49 },                        # Table-Turner
 ]
 
   [[edit.cards]]
@@ -224,7 +224,7 @@ moves = [
   { move = 0x18C035B4, level = 1 },                         # Ghost Pull
   { move = 0x0F703132, level = 1 },                         # Black Magic
   { move = 0x4B142F09, level = 28 },                        # Teleport Shot
-  { move = 0x322F0C40, level = 43 },                        # Spider Web
+  { move = 0x2AF65736, level = 43 },                        # Bamboo Pattern
 ]
 
   [[edit.cards]]
@@ -238,7 +238,7 @@ target = "c02023550"                                   # Roman Kandel
 moves = [
   { move = 0xDEB28A7B, level = 1 },                         # Monkey Turn
   { move = 0x41F3CDC2, level = 29 },                        # Scorching Tackle
-  { move = 0x518BCA26, level = 35 },                        # Fire Tornado
+  { move = 0xBDAE2862, level = 35 },                        # Hellfire
   { move = 0x025FD09B, level = 50 },                        # Volcano Cut
 ]
 
@@ -253,7 +253,7 @@ target = "c02023560"                                   # Don Ation
 moves = [
   { move = 0x4B142F09, level = 1 },                         # Teleport Shot
   { move = 0xA8E0F6C2, level = 30 },                        # Kung Fu Header
-  { move = 0x259F08C6, level = 34 },                        # Whirlwind Twister
+  { move = 0x62BE692D, level = 34 },                        # Whirlwind Force
   { move = 0xB4B4D106, level = 55 },                        # Dragon Cannon
 ]
 
@@ -284,9 +284,9 @@ moves = [
 target = "c11902330"                                   # Scott Banyan
 moves = [
   { move = 0x62BE692D, level = 1 },                         # Whirlwind Force
-  { move = 0x259F08C6, level = 18 },                        # Whirlwind Twister
-  { move = 0x55C71D2A, level = 24 },                        # About Face
-  { move = 0x6B1CF436, level = 28 },                        # Bewildered
+  { move = 0x55C71D2A, level = 1 },                         # About Face
+  { move = 0x427719AC, level = 22 },                        # Gale Dash
+  { move = 0xAD6E4BF9, level = 42 },                        # Harvest
 ]
 VRFW.MoveGrades = [
   { Move = 0x62BE692D, Grade = 1 },                         # Whirlwind Force

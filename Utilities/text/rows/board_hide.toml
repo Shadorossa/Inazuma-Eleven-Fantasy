@@ -1,0 +1,30 @@
+# Texts of Utilities' Chronicle board hide switch (assets\lua\vs_route_town_menu\160_board_hide.lua): the bottom
+# guide entry of X. Id = crc32 of the label.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# X while the hideable nodes are shown
+[[row]]
+id = "Utilities.BoardHideGuide"
+es = "Ocultar"
+en = "Hide"
+fr = "Masquer"
+de = "Ausblenden"
+it = "Nascondi"
+pt = "Ocultar"
+ja = "非表示"
+zh_hans = "隐藏"
+zh_hant = "隱藏"
+
+# X while they are hidden
+[[row]]
+id = "Utilities.BoardShowGuide"
+es = "Mostrar"
+en = "Show"
+fr = "Afficher"
+de = "Einblenden"
+it = "Mostra"
+pt = "Mostrar"
+ja = "表示"
+zh_hans = "显示"
+zh_hant = "顯示"
